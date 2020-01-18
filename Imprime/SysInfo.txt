@@ -1,0 +1,1 @@
+﻿Provider=SQLOLEDB.1;Password=P@ssword;Persist Security Info=True;User ID=sa;Initial Catalog=SistemaFacturacionRevetsa;Data Source=JUANBERMUDEZ\SQL2005

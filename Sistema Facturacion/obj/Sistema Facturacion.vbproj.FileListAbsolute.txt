@@ -1,0 +1,755 @@
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\Sistema Facturacion.exe.config
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema Facturacion.exe
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema Facturacion.xml
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema Facturacion.pdb
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\Sistema Facturacion.exe
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\Sistema Facturacion.pdb
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\Sistema Facturacion.xml
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\ARVSPackage.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1Excel.2.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1Flash.2.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1Preview.2.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1PrintDocument.Classic.2.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1BarCode.2.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Chart.2.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Chart3D.2.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Command.2.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1FlexGrid.2.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1FlexGrid.Classic.2.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Input.2.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1List.2.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Preview.2.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Ribbon.2.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Spell.2.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Thesaurus.2.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1LicUpdater.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1Excel.2.xml
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Chart.2.xml
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1TrueDBGrid.2.xml
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Input.2.xml
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1List.2.xml
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1FlexGrid.2.xml
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1BarCode.2.xml
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Ribbon.2.xml
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1PrintDocument.Classic.2.xml
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Command.2.xml
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Chart3D.2.xml
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1Preview.2.xml
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Preview.2.xml
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\Interop.MSDASC.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Interop.MSDASC.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema Facturacion.vbproj.ResolveComReference.cache
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmImportacion.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmMargenes.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmMargenVentas.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmTransferenciaListado.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepEntradaProductos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturaPagadas.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturasTareas.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturasTiras.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepListadoCotizaciones.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmTipoPrecios.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmTransferencias.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCompañias.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCompras.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmComprasHistorico.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmConsecutivos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCoordenadasRecibos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmFacturas.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmFacturasHistoricos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmPermisos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmPlantillas.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmProcesarPlantilla.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmRecibosFacturas.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmRubros.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmServicios.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmTareas.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmViewer.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmActualiza.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCordenadas.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ExportForm.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmLiquidacion.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmPreciosProductos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.MDIParent1.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepActividadProducto.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepActividadProductoLinea.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepArqueoCaja.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCatalogoFoto.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCatalogoProductos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCompras.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCotizacionFoto.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepDenominacion.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepDetalleCheque.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepDetalleImpuestos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturas.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepInformeCaja.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepIngresoCaja.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepKardex.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepKardexLinea.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepLiquidacion.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepListadoBodegas.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepListadoClientes.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepListadoProveedores.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepListadoVendedores.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepMovimientoProductos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepPagoClientes.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepPagoProveedores.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepPlantillas.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepRecibo2.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepReporteVentas.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepSaldoClientes.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepSalidaProductos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepTransferencias.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVentasClientes.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVentasProductos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArpEnsamble.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmArqueo.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCajeros.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmMetodosPagos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmEnsamble.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmBodegas.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmInventarioFisico.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmPagos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmPersonalizar.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmRecibos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmReportes.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmTasaCambio.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmVendedor.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmClientes.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmImpuestos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmLineaProductos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmProveedores.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmUsuarios.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmConfigurar.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmConsultas.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmProductos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmEntrada.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.Resources.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVentasVendedor.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.SubReporteCompras.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.SubReporteFacturas.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.SplashScreen1.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema Facturacion.vbproj.GenerateResource.Cache
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema Facturacion.exe.licenses
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepReciboTira.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturas2.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepSalidaBodega.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCotizaciones.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepInventarioFisico.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepControlProductos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.SubReporteCompras2.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.SubReporteFacturas2.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturasVendedor.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCuentasXCobrar.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepEstadoCuentas.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmNotaDebito.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmRegistroDebito.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmSeries.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCuentasXPagar.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepProveedores.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepProductosBajoMinimo.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepGraficoVentasClientes.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepProductosVendidos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepRotacionInventario.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepUtilidadVentas.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepNotasDebitoCredito.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepListaRecibos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVentasCategorias.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCategoriaDetalle.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVentasCategoriaResumen.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepNotaDebito.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmDetalleLote.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepEstadoCuentasClientes.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepDevolucionVentas.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepKardexUnidades.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepSalidaProductosTipo.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepExistencia.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepSaldoClientesHistoricos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepExistenciaCostos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepSalidaProductosTipo2.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepPrecioVrsCosto.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmLotes.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmListaLotes.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmLotesFactura.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepProductoVendedor.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\Interop.C1Chart2D8U.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\AxInterop.C1Chart2D8U.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Interop.C1Chart2D8U.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\AxInterop.C1Chart2D8U.dll
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepProductoVendedorResumen.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmProyectos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepMovimientoProyectos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVendedorCliente.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepUtilidadProyecto.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCotizacionesMembretes.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVentasClientesXProductos.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturasTiras2.resources
+C:\Users\Juan Bermudez\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepResumenFacturaProducto.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\Sistema Facturacion.exe.config
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema Facturacion.exe
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema Facturacion.xml
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema Facturacion.pdb
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\Sistema Facturacion.exe
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\Sistema Facturacion.pdb
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\Sistema Facturacion.xml
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\ARVSPackage.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1Excel.2.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1Flash.2.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1Preview.2.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1PrintDocument.Classic.2.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1BarCode.2.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Chart.2.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Chart3D.2.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Command.2.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1FlexGrid.2.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1FlexGrid.Classic.2.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Input.2.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1List.2.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Preview.2.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Ribbon.2.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Spell.2.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Thesaurus.2.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1LicUpdater.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1Excel.2.xml
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Chart.2.xml
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1TrueDBGrid.2.xml
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Input.2.xml
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1List.2.xml
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1FlexGrid.2.xml
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1BarCode.2.xml
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Ribbon.2.xml
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1PrintDocument.Classic.2.xml
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Command.2.xml
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Chart3D.2.xml
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1Preview.2.xml
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Preview.2.xml
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\Interop.C1Chart2D8U.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\Interop.MSDASC.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\AxInterop.C1Chart2D8U.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\ResolveAssemblyReference.cache
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Interop.C1Chart2D8U.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Interop.MSDASC.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\AxInterop.C1Chart2D8U.dll
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema Facturacion.vbproj.ResolveComReference.cache
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCuentasXPagar.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmDetalleLote.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmListaLotes.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmLotes.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmLotesFactura.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmSeries.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCuentasXCobrar.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmImportacion.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmMargenes.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmMargenVentas.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmNotaDebito.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmRegistroDebito.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmTransferenciaListado.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmProyectos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCategoriaDetalle.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepControlProductos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCotizaciones.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCotizacionesMembretes.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepDevolucionVentas.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepEntradaProductos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepEstadoCuentas.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepEstadoCuentasClientes.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepExistencia.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepExistenciaCostos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturaPagadas.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturas2.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturasTareas.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturasTiras.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturasTiras2.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturasVendedor.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepGraficoVentasClientes.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepInventarioFisico.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepKardexUnidades.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepListadoCotizaciones.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmTipoPrecios.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmTransferencias.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCompañias.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCompras.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmComprasHistorico.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmConsecutivos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCoordenadasRecibos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmFacturas.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmFacturasHistoricos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmPermisos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmPlantillas.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmProcesarPlantilla.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmRecibosFacturas.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmRubros.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmServicios.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmTareas.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmViewer.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmActualiza.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCordenadas.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ExportForm.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmLiquidacion.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmPreciosProductos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.MDIParent1.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepActividadProducto.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepActividadProductoLinea.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepArqueoCaja.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCatalogoFoto.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCatalogoProductos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCompras.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCotizacionFoto.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepDenominacion.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepDetalleCheque.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepDetalleImpuestos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturas.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepInformeCaja.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepIngresoCaja.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepKardex.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepKardexLinea.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepLiquidacion.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepListadoBodegas.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepListadoClientes.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepListadoProveedores.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepListadoVendedores.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepListaRecibos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepMovimientoProductos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepMovimientoProyectos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepNotaDebito.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepNotasDebitoCredito.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepPagoClientes.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepPagoProveedores.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepPlantillas.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepPrecioVrsCosto.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepProductosBajoMinimo.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepProductosVendidos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepProductoVendedor.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepProductoVendedorResumen.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepProveedores.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepRecibo2.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepReciboTira.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepReporteVentas.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepResumenFacturaProducto.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepRotacionInventario.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepSaldoClientes.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepSaldoClientesHistoricos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepSalidaBodega.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepSalidaProductos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepSalidaProductosTipo.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepSalidaProductosTipo2.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepTransferencias.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepUtilidadProyecto.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepUtilidadVentas.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVendedorCliente.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVentasCategoriaResumen.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVentasCategorias.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVentasClientes.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVentasClientesXProductos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVentasProductos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArpEnsamble.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmArqueo.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCajeros.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmMetodosPagos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmEnsamble.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmBodegas.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmInventarioFisico.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmPagos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmPersonalizar.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmRecibos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmReportes.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmTasaCambio.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmVendedor.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmClientes.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmImpuestos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmLineaProductos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmProveedores.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmUsuarios.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmConfigurar.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmConsultas.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmProductos.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmEntrada.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.Resources.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVentasVendedor.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.SubReporteCompras.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.SubReporteCompras2.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.SubReporteFacturas.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.SubReporteFacturas2.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.SplashScreen1.resources
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema Facturacion.vbproj.GenerateResource.Cache
+F:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema Facturacion.exe.licenses
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\ResolveAssemblyReference.cache
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Interop.C1Chart2D8U.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Interop.MSDASC.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\AxInterop.C1Chart2D8U.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema Facturacion.vbproj.ResolveComReference.cache
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmAccesos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCompañiaEndoso.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCuentasXPagar.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmDetalleLote.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmListaLotes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmLotes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmLotesFactura.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmSeries.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCuentasXCobrar.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmImportacion.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmMargenes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmMargenVentas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmNotaDebito.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmRegistroDebito.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmTransferenciaListado.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmProyectos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCategoriaDetalle.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepComprobanteComprasRubro.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepComprobanteEntradaSalidaProveedor.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepComprobanteSalida.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepControlProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCotizaciones.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCotizacionesMembretes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepDetalleFacturaProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepDevolucionVentas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepEntradaProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepEstadoCuentas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepEstadoCuentasClientes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepExistencia.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepExistenciaCostos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturaPagadas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturas2.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturasTareas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturasTiras.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturasTiras2.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturasVendedor.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepGraficoVentasClientes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepInventarioFisico.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepKardexUnidades.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepListadoCotizaciones.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmTipoPrecios.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmTransferencias.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCompañias.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCompras.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmComprasHistorico.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmConsecutivos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCoordenadasRecibos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmFacturas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmFacturasHistoricos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmPermisos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmPlantillas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmProcesarPlantilla.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmRecibosFacturas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmRubros.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmServicios.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmTareas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmViewer.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmActualiza.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCordenadas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ExportForm.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmLiquidacion.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmPreciosProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.MDIParent1.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepActividadProducto.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepActividadProductoLinea.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepArqueoCaja.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCatalogoFoto.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCatalogoProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCompras.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCotizacionFoto.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepDenominacion.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepDetalleCheque.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepDetalleImpuestos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepFacturas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepInformeCaja.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepIngresoCaja.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepKardex.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepKardexLinea.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepLiquidacion.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepListadoBodegas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepListadoClientes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepListadoProveedores.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepListadoVendedores.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepListaRecibos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepMovimientoProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepMovimientoProyectos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepNotaDebito.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepNotasDebitoCredito.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepPagoClientes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepPagoProveedores.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepPlantillas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepPrecioVrsCosto.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepProductosBajoMinimo.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepProductosVendidos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepProductoVendedor.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepProductoVendedorResumen.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepProveedores.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepRecibo2.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepReciboTira.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepRendimientoEnsamble.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepReporteVentas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepResumenAlcaldias.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepResumenFacturaProducto.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepRotacionInventario.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepSaldoClientes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepSaldoClientesHistoricos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepSalidaBodega.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepSalidaProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepSalidaProductosTipo.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepSalidaProductosTipo2.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepTransferencias.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepUtilidadProyecto.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepUtilidadVentas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVendedorCliente.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVentasCategoriaResumen.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVentasCategorias.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVentasClientes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVentasClientesXProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVentasEndoso.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVentasProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArpEnsamble.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmArqueo.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCajeros.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmMetodosPagos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmEnsamble.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmBodegas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmInventarioFisico.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmPagos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmPersonalizar.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmRecibos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmTasaCambio.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmVendedor.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmClientes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmImpuestos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmLineaProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmProveedores.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmUsuarios.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmConfigurar.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmConsultas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmEntrada.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.Resources.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepVentasVendedor.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmExportar.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.SubReporteCompras.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.SubReporteCompras2.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.SubReporteComprobanteEntrada.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.SubReporteFacturas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.SubReporteFacturas2.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.SplashScreen1.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema Facturacion.vbproj.GenerateResource.Cache
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\Sistema Facturacion.exe.config
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\Sistema Facturacion.exe
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\Sistema Facturacion.pdb
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\Sistema Facturacion.xml
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\ARVSPackage.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1Excel.2.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1Flash.2.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1Preview.2.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1PrintDocument.Classic.2.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1BarCode.2.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Chart.2.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Chart3D.2.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Command.2.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1FlexGrid.2.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1FlexGrid.Classic.2.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Input.2.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1List.2.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Preview.2.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Ribbon.2.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Spell.2.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Thesaurus.2.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1LicUpdater.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1Excel.2.xml
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Chart.2.xml
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Input.2.xml
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1List.2.xml
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1FlexGrid.2.xml
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1BarCode.2.xml
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Ribbon.2.xml
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1PrintDocument.Classic.2.xml
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Command.2.xml
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Chart3D.2.xml
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1Preview.2.xml
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.Win.C1Preview.2.xml
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\Interop.C1Chart2D8U.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\Interop.MSDASC.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\AxInterop.C1Chart2D8U.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmReportes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema Facturacion.exe.licenses
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema Facturacion.exe
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema Facturacion.xml
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema Facturacion.pdb
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCopia.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmAccesosAddPerfil.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmAgregarRecibo.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCrearRecibo.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepEstadoCuentas2.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepDetalleMovimientoProducto.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmProcesar.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\ResolveAssemblyReference.cache
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Interop.C1Chart2D8U.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Interop.MSDASC.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\AxInterop.C1Chart2D8U.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema Facturacion.vbproj.ResolveComReference.cache
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmAccesos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmAccesosAddPerfil.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmActualizar.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmAgregarRecibo.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmCompañiaEndoso.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmCopia.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmCrearRecibo.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmCuentasXPagar.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmDetalleLote.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmListaLotes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmLotes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmLotesFactura.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmProcesar.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmSeries.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmCuentasXCobrar.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmImportacion.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmMargenes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmMargenVentas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmNotaDebito.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmRegistroDebito.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmTransferenciaListado.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmProyectos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepCategoriaDetalle.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepComprobanteComprasRubro.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepComprobanteEntradaSalidaProveedor.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepComprobanteSalida.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepControlProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepCotizaciones.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepCotizacionesMembretes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepDetalleFacturaProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepDetalleMovimientoProducto.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepDevolucionVentas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepEntradaProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepEstadoCuentas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepEstadoCuentas2.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepEstadoCuentasClientes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepExistencia.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepExistenciaCostos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepFacturaPagadas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepFacturas2.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepFacturasTareas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepFacturasTiras.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepFacturasTiras2.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepFacturasVendedor.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepGraficoVentasClientes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepInventarioFisico.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepKardexUnidades.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepListadoCotizaciones.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmTipoPrecios.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmTransferencias.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmCompañias.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmCompras.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmComprasHistorico.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmConsecutivos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmCoordenadasRecibos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmFacturas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmFacturasHistoricos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmPermisos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmPlantillas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmProcesarPlantilla.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmRecibosFacturas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmRubros.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmServicios.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmTareas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmViewer.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmActualiza.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmCordenadas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ExportForm.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmLiquidacion.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmPreciosProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.MDIParent1.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepActividadProducto.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepActividadProductoLinea.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepArqueoCaja.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepCatalogoFoto.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepCatalogoProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepCompras.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepCotizacionFoto.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepDenominacion.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepDetalleCheque.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepDetalleImpuestos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepFacturas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepInformeCaja.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepIngresoCaja.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepKardex.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepKardexLinea.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepLiquidacion.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepListadoBodegas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepListadoClientes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepListadoProveedores.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepListadoVendedores.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepListaRecibos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepMovimientoProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepMovimientoProyectos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepNotaDebito.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepNotasDebitoCredito.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepPagoClientes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepPagoProveedores.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepPlantillas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepPrecioVrsCosto.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepProductosBajoMinimo.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepProductosVendidos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepProductoVendedor.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepProductoVendedorResumen.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepProveedores.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepRecibo2.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepReciboTira.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepRendimientoEnsamble.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepReporteVentas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepResumenAlcaldias.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepResumenFacturaProducto.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepRotacionInventario.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepSaldoClientes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepSaldoClientesHistoricos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepSalidaBodega.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepSalidaProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepSalidaProductosTipo.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepSalidaProductosTipo2.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepTransferencias.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepUtilidadProyecto.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepUtilidadVentas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepVendedorCliente.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepVentasCategoriaResumen.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepVentasCategorias.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepVentasClientes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepVentasClientesXProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepVentasEndoso.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepVentasProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArpEnsamble.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmArqueo.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmCajeros.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmMetodosPagos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmEnsamble.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmBodegas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmInventarioFisico.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmPagos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmPersonalizar.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmRecibos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmReportes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmTasaCambio.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmVendedor.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmClientes.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmImpuestos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmLineaProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmProveedores.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmUsuarios.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmConfigurar.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmConsultas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmProductos.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmEntrada.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.Resources.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.ArepVentasVendedor.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.FrmExportar.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.SubReporteCompras.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.SubReporteCompras2.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.SubReporteComprobanteEntrada.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.SubReporteFacturas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.SubReporteFacturas2.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema_Facturacion.SplashScreen1.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema Facturacion.vbproj.GenerateResource.Cache
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Release\Sistema Facturacion.exe.licenses
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCoordenadasNotas.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\bin\Debug\C1.C1DataExtender.2.dll
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepLineaVendedorResumen.resources
+D:\Sistemas\Sistema de Facturacion SQL\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmAjustarCostos.resources
+D:\Sistemas\Sistema de Facturacion SQL 6.0\Sistema Facturacion\bin\Debug\Sistema Facturacion.exe.config
+D:\Sistemas\Sistema de Facturacion SQL 6.0\Sistema Facturacion\obj\Debug\Sistema Facturacion.exe
+D:\Sistemas\Sistema de Facturacion SQL 6.0\Sistema Facturacion\obj\Debug\Sistema Facturacion.xml
+D:\Sistemas\Sistema de Facturacion SQL 6.0\Sistema Facturacion\obj\Debug\Sistema Facturacion.pdb

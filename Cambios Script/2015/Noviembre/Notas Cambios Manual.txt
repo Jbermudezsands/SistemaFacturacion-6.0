@@ -1,0 +1,5 @@
+Modificar, 
+
+Tabla: DetalleFacturacion
+Campo: Descuento
+Cambiar : Tipo Float a NVarchar(10)

@@ -1,0 +1,1 @@
+﻿Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=SistemaFacturacionInstituto;Data Source=CONSULTOR\SQL2005

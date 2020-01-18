@@ -1,0 +1,102 @@
+bin\Debug\Sistema Facturacion.exe
+bin\Debug\Sistema Facturacion.pdb
+bin\Debug\Sistema Facturacion.xml
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\Sistema_Facturacion.MDIParent1.resources
+obj\Debug\Sistema_Facturacion.Resources.resources
+obj\Debug\Sistema Facturacion.vbproj.GenerateResource.Cache
+obj\Debug\Sistema Facturacion.exe.licenses
+obj\Debug\Sistema Facturacion.exe
+obj\Debug\Sistema Facturacion.xml
+obj\Debug\Sistema Facturacion.pdb
+obj\Debug\Sistema_Facturacion.FrmProductos.resources
+obj\Debug\Sistema_Facturacion.FrmEntrada.resources
+obj\Debug\Sistema_Facturacion.SplashScreen1.resources
+bin\Debug\C1.Win.C1List.2.xml
+bin\Debug\C1.Win.C1TrueDBGrid.2.xml
+obj\Debug\Sistema_Facturacion.FrmConsultas.resources
+obj\Debug\Sistema_Facturacion.FrmConfigurar.resources
+obj\Debug\Sistema_Facturacion.FrmUsuarios.resources
+obj\Debug\Sistema_Facturacion.FrmProveedores.resources
+obj\Debug\Sistema_Facturacion.FrmLineaProductos.resources
+obj\Debug\Sistema_Facturacion.FrmImpuestos.resources
+obj\Debug\Sistema_Facturacion.FrmClientes.resources
+bin\Debug\Interop.ASControls.dll
+bin\Debug\Interop.MSDASC.dll
+obj\Debug\Interop.ASControls.dll
+obj\Debug\Interop.MSDASC.dll
+obj\Debug\Sistema Facturacion.vbproj.ResolveComReference.cache
+obj\Debug\Sistema_Facturacion.FrmVendedor.resources
+bin\Debug\C1.C1PrintDocument.Classic.2.dll
+bin\Debug\C1.Win.C1BarCode.2.dll
+bin\Debug\C1.Win.C1Chart.2.dll
+bin\Debug\C1.Win.C1Input.2.dll
+bin\Debug\C1.Win.C1Chart.2.xml
+bin\Debug\C1.Win.C1BarCode.2.xml
+bin\Debug\C1.Win.C1Input.2.xml
+bin\Debug\C1.C1PrintDocument.Classic.2.xml
+bin\Debug\Interop.C1Chart2D8U.dll
+bin\Debug\AxInterop.C1Chart2D8U.dll
+obj\Debug\Interop.C1Chart2D8U.dll
+obj\Debug\AxInterop.C1Chart2D8U.dll
+obj\Debug\Sistema_Facturacion.FrmTasaCambio.resources
+obj\Debug\Sistema_Facturacion.FrmPersonalizar.resources
+obj\Debug\Sistema_Facturacion.FrmInventarioFisico.resources
+obj\Debug\Sistema_Facturacion.FrmBodegas.resources
+obj\Debug\Sistema_Facturacion.FrmEnsamble.resources
+obj\Release\ResolveAssemblyReference.cache
+obj\Release\Interop.ASControls.dll
+obj\Release\Interop.C1Chart2D8U.dll
+obj\Release\Interop.MSDASC.dll
+obj\Release\AxInterop.C1Chart2D8U.dll
+obj\Release\Sistema Facturacion.vbproj.ResolveComReference.cache
+obj\Release\Sistema_Facturacion.FrmEnsamble.resources
+obj\Release\Sistema_Facturacion.FrmBodegas.resources
+obj\Release\Sistema_Facturacion.FrmInventarioFisico.resources
+obj\Release\Sistema_Facturacion.FrmPersonalizar.resources
+obj\Release\Sistema_Facturacion.FrmTasaCambio.resources
+obj\Release\Sistema_Facturacion.FrmVendedor.resources
+obj\Release\Sistema_Facturacion.FrmClientes.resources
+obj\Release\Sistema_Facturacion.FrmImpuestos.resources
+obj\Release\Sistema_Facturacion.FrmLineaProductos.resources
+obj\Release\Sistema_Facturacion.FrmProveedores.resources
+obj\Release\Sistema_Facturacion.FrmUsuarios.resources
+obj\Release\Sistema_Facturacion.FrmConfigurar.resources
+obj\Release\Sistema_Facturacion.FrmConsultas.resources
+obj\Release\Sistema_Facturacion.FrmProductos.resources
+obj\Release\Sistema_Facturacion.FrmEntrada.resources
+obj\Release\Sistema_Facturacion.MDIParent1.resources
+obj\Release\Sistema_Facturacion.Resources.resources
+obj\Release\Sistema_Facturacion.SplashScreen1.resources
+obj\Release\Sistema Facturacion.vbproj.GenerateResource.Cache
+obj\Release\Sistema Facturacion.exe.licenses
+bin\Debug\ActiveReports.Interop.dll
+bin\Debug\ARVSPackage.dll
+obj\Debug\Sistema_Facturacion.ArpEnsamble.resources
+obj\Debug\Sistema_Facturacion.FrmViewer.resources
+bin\Debug\Sistema Facturacion.exe.config
+obj\Release\Sistema_Facturacion.ArpEnsamble.resources
+obj\Release\Sistema_Facturacion.FrmViewer.resources
+bin\Release\Sistema Facturacion.exe.config
+obj\Debug\Sistema_Facturacion.FrmCompras.resources
+obj\Debug\Sistema_Facturacion.FrmMetodosPagos.resources
+obj\Debug\Sistema_Facturacion.ArepCompras.resources
+obj\Debug\Sistema_Facturacion.FrmFacturas.resources
+obj\Debug\Sistema_Facturacion.ArepFacturas.resources
+obj\Debug\Sistema_Facturacion.FrmPagos.resources
+obj\Debug\Sistema_Facturacion.ArepPagoProveedores.resources
+obj\Debug\Sistema_Facturacion.FrmRecibos.resources
+obj\Debug\Sistema_Facturacion.ArepPagoClientes.resources
+obj\Debug\Sistema_Facturacion.FrmArqueo.resources
+obj\Debug\Sistema_Facturacion.FrmCajeros.resources
+obj\Debug\Sistema_Facturacion.FrmReportes.resources
+obj\Debug\Sistema_Facturacion.ArepCatalogoProductos.resources
+obj\Debug\Sistema_Facturacion.ArepArqueoCaja.resources
+obj\Debug\Sistema_Facturacion.ArepDenominacion.resources
+obj\Debug\Sistema_Facturacion.ArepDetalleCheque.resources
+obj\Debug\Sistema_Facturacion.ArepListadoClientes.resources
+obj\Debug\Sistema_Facturacion.ArepListadoProveedores.resources
+obj\Debug\Sistema_Facturacion.ArepListadoVendedores.resources
+obj\Debug\Sistema_Facturacion.ArepListadoBodegas.resources
+obj\Debug\Sistema_Facturacion.ArepCatalogoFoto.resources
+obj\Debug\Sistema_Facturacion.ArepActividadProducto.resources
