@@ -193,6 +193,12 @@
     <Compile Include="FrmDetalleLote.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmFacturacionBascula.Designer.vb">
+      <DependentUpon>FrmFacturacionBascula.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmFacturacionBascula.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmInformacion.Designer.vb">
       <DependentUpon>FrmInformacion.vb</DependentUpon>
     </Compile>
@@ -1280,6 +1286,10 @@
     <EmbeddedResource Include="FrmDetalleLote.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmDetalleLote.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmFacturacionBascula.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmFacturacionBascula.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmInformacion.resx">
       <SubType>Designer</SubType>

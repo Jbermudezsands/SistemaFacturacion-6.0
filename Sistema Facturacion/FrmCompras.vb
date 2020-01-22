@@ -226,6 +226,10 @@ Public Class FrmCompras
                     ConsecutivoCompra = BuscaConsecutivo("DevCompra")
                 Case "Transferencia Recibida"
                     ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
+                Case "Cuenta"
+                    ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+                Case "Cuenta CR"
+                    ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
             End Select
 
             '/////////////////////////////////////////////////////////////////////////////////////////
@@ -490,46 +494,53 @@ Public Class FrmCompras
         DataSet.Reset()
         Select Case Cols
             Case 0
-                CodProducto = Me.TrueDBGridComponentes.Columns(0).Text
 
-                If PerteneceProductoBodega(Me.CboCodigoBodega.Text, Me.TrueDBGridComponentes.Columns(0).Text) = False Then
-                    Mensaje = "No Pertenece el Producto a esta Bodega" & Chr(13) & _
-                              "Precio ESC Para Salir"
-                    MsgBox(Mensaje, MsgBoxStyle.Critical, "Zeus Facturacion")
-                    e.Cancel = True
-                    Exit Sub
-                End If
+                If Me.CboTipoProducto.Text <> "Cuenta" Then
+                    If Me.CboTipoProducto.Text <> "Cuenta CR" Then
+                        CodProducto = Me.TrueDBGridComponentes.Columns(0).Text
 
-
-                SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
-                DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-                DataAdapter.Fill(DataSet, "Productos")
-                If DataSet.Tables("Productos").Rows.Count = 0 Then
-                    CodProducto = Me.TrueDBGridComponentes.Columns(0).Text
-                    SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-                    DataAdapter.Fill(DataSet, "Productos")
-                    If DataSet.Tables("Productos").Rows.Count = 0 Then
-
-                        '////////////////BUSCO EL CODIGO ALTERNATIVO ///////////////////////////////////////////////////
-                        Dim CodigoAlterno As String = CodProducto
-
-                        SqlProveedor = "SELECT  *  FROM Codigos_Alternos WHERE (Cod_Alternativo = '" & CodigoAlterno & "')"
-                        DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-                        DataAdapter.Fill(DataSet, "Alternos")
-                        If Not DataSet.Tables("Alternos").Rows.Count = 0 Then
-                            Me.TrueDBGridComponentes.Columns(0).Text = DataSet.Tables("Alternos").Rows(0)("Cod_Producto")
-                            'Me.TrueDBGridComponentes.Col = 2
-                        Else
-                            MsgBox("El Producto Seleccionado no Existe", MsgBoxStyle.Critical, "Sistema Facturacion")
+                        If PerteneceProductoBodega(Me.CboCodigoBodega.Text, Me.TrueDBGridComponentes.Columns(0).Text) = False Then
+                            Mensaje = "No Pertenece el Producto a esta Bodega" & Chr(13) & _
+                                      "Precio ESC Para Salir"
+                            MsgBox(Mensaje, MsgBoxStyle.Critical, "Zeus Facturacion")
+                            e.Cancel = True
                             Exit Sub
                         End If
+
+
+                        SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
+                        DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+                        DataAdapter.Fill(DataSet, "Productos")
+                        If DataSet.Tables("Productos").Rows.Count = 0 Then
+                            CodProducto = Me.TrueDBGridComponentes.Columns(0).Text
+                            SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
+                            DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+                            DataAdapter.Fill(DataSet, "Productos")
+                            If DataSet.Tables("Productos").Rows.Count = 0 Then
+
+                                '////////////////BUSCO EL CODIGO ALTERNATIVO ///////////////////////////////////////////////////
+                                Dim CodigoAlterno As String = CodProducto
+
+                                SqlProveedor = "SELECT  *  FROM Codigos_Alternos WHERE (Cod_Alternativo = '" & CodigoAlterno & "')"
+                                DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+                                DataAdapter.Fill(DataSet, "Alternos")
+                                If Not DataSet.Tables("Alternos").Rows.Count = 0 Then
+                                    Me.TrueDBGridComponentes.Columns(0).Text = DataSet.Tables("Alternos").Rows(0)("Cod_Producto")
+                                    'Me.TrueDBGridComponentes.Col = 2
+                                Else
+                                    MsgBox("El Producto Seleccionado no Existe", MsgBoxStyle.Critical, "Sistema Facturacion")
+                                    Exit Sub
+                                End If
+                            End If
+                        Else
+                            Me.TrueDBGridComponentes.Columns(1).Text = DataSet.Tables("Productos").Rows(0)("Descripcion_Producto")
+                            Me.TrueDBGridComponentes.Columns(3).Text = DataSet.Tables("Productos").Rows(0)("Ultimo_Precio_Compra")
+                        End If
+                        DataSet.Tables("Productos").Clear()
+
                     End If
-                Else
-                    Me.TrueDBGridComponentes.Columns(1).Text = DataSet.Tables("Productos").Rows(0)("Descripcion_Producto")
-                    Me.TrueDBGridComponentes.Columns(3).Text = DataSet.Tables("Productos").Rows(0)("Ultimo_Precio_Compra")
                 End If
-                DataSet.Tables("Productos").Clear()
+
             Case 2
                 If Me.TrueDBGridComponentes.Columns(2).Text <> "" Then
                     Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
@@ -538,8 +549,8 @@ Public Class FrmCompras
                 If Me.TrueDBGridComponentes.Columns(4).Text <> "" Then
                     Descuento = (CDbl(Me.TrueDBGridComponentes.Columns(4).Text) / 100)
                 End If
-                If Me.TrueDBGridComponentes.Columns(2).Text <> "" Then
-                    Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
+                If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                 End If
             Case 4
 
@@ -552,47 +563,62 @@ Public Class FrmCompras
 
         End Select
 
-        '///////////////////////////////////////DEFINO EL TIPO DE SERVICIO O DESCUENTO ////////////////////////////////////////////
-        Select Case TipoDescuento
-            Case "ImporteFijo"
-                Me.TrueDBGridComponentes.Columns(2).Text = 1
-                Cantidad = 1
-                Me.TrueDBGridComponentes.Columns(4).Text = ""
-                If Me.TxtMonedaFactura.Text = "Cordobas" Then
-                    Me.TrueDBGridComponentes.Columns(3).Text = Format(PrecioDescCordobas, "##,##0.0000")
-                    Precio = PrecioDescCordobas
-                Else
-                    Me.TrueDBGridComponentes.Columns(3).Text = Format(PrecioDescDolar, "##,##0.0000")
-                    Precio = PrecioDescDolar
-                End If
+        If Me.CboTipoProducto.Text <> "Cuenta" Then
+            If Me.CboTipoProducto.Text <> "Cuenta CR" Then
+                '///////////////////////////////////////  TIPO DE SERVICIO O DESCUENTO ////////////////////////////////////////////
+                Select Case TipoDescuento
+                    Case "ImporteFijo"
+                        Me.TrueDBGridComponentes.Columns(2).Text = 1
+                        Cantidad = 1
+                        Me.TrueDBGridComponentes.Columns(4).Text = ""
+                        If Me.TxtMonedaFactura.Text = "Cordobas" Then
+                            Me.TrueDBGridComponentes.Columns(3).Text = Format(PrecioDescCordobas, "##,##0.0000")
+                            Precio = PrecioDescCordobas
+                        Else
+                            Me.TrueDBGridComponentes.Columns(3).Text = Format(PrecioDescDolar, "##,##0.0000")
+                            Precio = PrecioDescDolar
+                        End If
 
-            Case "SubTotal"
-                Me.TrueDBGridComponentes.Columns(2).Text = 1
-                Cantidad = 1
-                Me.TrueDBGridComponentes.Columns(4).Text = ""
-                SubTotal = Me.TxtSubTotal.Text
-                If PrecioDescCordobas <> 0 Then
-                    PorcientoDescuento = (PrecioDescCordobas / 100)
-                End If
-                Precio = SubTotal * PorcientoDescuento
-                Me.TrueDBGridComponentes.Columns(3).Text = Format(Precio, "##,##0.0000")
+                    Case "SubTotal"
+                        Me.TrueDBGridComponentes.Columns(2).Text = 1
+                        Cantidad = 1
+                        Me.TrueDBGridComponentes.Columns(4).Text = ""
+                        SubTotal = Me.TxtSubTotal.Text
+                        If PrecioDescCordobas <> 0 Then
+                            PorcientoDescuento = (PrecioDescCordobas / 100)
+                        End If
+                        Precio = SubTotal * PorcientoDescuento
+                        Me.TrueDBGridComponentes.Columns(3).Text = Format(Precio, "##,##0.0000")
 
-        End Select
+                End Select
 
-        SubTotal = Cantidad * Precio
-        Neto = SubTotal * (1 - Descuento)
-
-        Select Case TipoProducto
-            Case "Productos"
                 SubTotal = Cantidad * Precio
                 Neto = SubTotal * (1 - Descuento)
-            Case "Descuento"
-                Neto = Math.Abs(Cantidad * Precio) * -1
-        End Select
+
+                Select Case TipoProducto
+                    Case "Productos"
+                        SubTotal = Cantidad * Precio
+                        Neto = SubTotal * (1 - Descuento)
+                    Case "Descuento"
+                        Neto = Math.Abs(Cantidad * Precio) * -1
+                End Select
 
 
-        Me.TrueDBGridComponentes.Columns(5).Text = Format(Precio * (1 - Descuento), "##,##0.0000")
-        Me.TrueDBGridComponentes.Columns(6).Text = Format(Neto, "##,##0.0000")
+                Me.TrueDBGridComponentes.Columns(5).Text = Format(Precio * (1 - Descuento), "##,##0.0000")
+                Me.TrueDBGridComponentes.Columns(6).Text = Format(Neto, "##,##0.0000")
+
+            End If
+        End If
+
+
+        If Me.CboTipoProducto.Text <> "Cuenta" Then
+            Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = Format(Precio, "##,##0.0000")
+            Me.TrueDBGridComponentes.Columns("Importe").Text = Format(Precio, "##,##0.0000")
+        ElseIf Me.CboTipoProducto.Text <> "Cuenta CR" Then
+            Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = Format(Precio, "##,##0.0000")
+            Me.TrueDBGridComponentes.Columns("Importe").Text = Format(Precio, "##,##0.0000")
+        End If
+
 
 
         If Me.TxtCodigoProveedor.Text = "" Then
@@ -617,27 +643,31 @@ Public Class FrmCompras
             Exit Sub
         Else
 
-            CodProducto = Me.TrueDBGridComponentes.Columns(0).Text
-            SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-            DataAdapter.Fill(DataSet, "Productos")
-            If DataSet.Tables("Productos").Rows.Count = 0 Then
+            If Me.CboTipoProducto.Text <> "Cuenta" Then
+                If Me.CboTipoProducto.Text <> "Cuenta CR" Then
+                    CodProducto = Me.TrueDBGridComponentes.Columns(0).Text
+                    SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
+                    DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+                    DataAdapter.Fill(DataSet, "Productos")
+                    If DataSet.Tables("Productos").Rows.Count = 0 Then
 
-                '////////////////BUSCO EL CODIGO ALTERNATIVO ///////////////////////////////////////////////////
-                Dim CodigoAlterno As String = CodProducto
+                        '////////////////BUSCO EL CODIGO ALTERNATIVO ///////////////////////////////////////////////////
+                        Dim CodigoAlterno As String = CodProducto
 
-                SqlProveedor = "SELECT  *  FROM Codigos_Alternos WHERE (Cod_Alternativo = '" & CodigoAlterno & "')"
-                DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-                DataAdapter.Fill(DataSet, "Alternos")
-                If Not DataSet.Tables("Alternos").Rows.Count = 0 Then
-                    Me.TrueDBGridComponentes.Columns(0).Text = DataSet.Tables("Alternos").Rows(0)("Cod_Producto")
-                Else
-                    MsgBox("El Producto Seleccionado no Existe", MsgBoxStyle.Critical, "Sistema Facturacion")
-                    Exit Sub
+                        SqlProveedor = "SELECT  *  FROM Codigos_Alternos WHERE (Cod_Alternativo = '" & CodigoAlterno & "')"
+                        DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+                        DataAdapter.Fill(DataSet, "Alternos")
+                        If Not DataSet.Tables("Alternos").Rows.Count = 0 Then
+                            Me.TrueDBGridComponentes.Columns(0).Text = DataSet.Tables("Alternos").Rows(0)("Cod_Producto")
+                        Else
+                            MsgBox("El Producto Seleccionado no Existe", MsgBoxStyle.Critical, "Sistema Facturacion")
+                            Exit Sub
+                        End If
+                    End If
                 End If
+
             End If
         End If
-
     End Sub
 
     Private Sub TrueDBGridComponentes_BeforeDelete(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TrueDBGridComponentes.BeforeDelete
@@ -699,8 +729,14 @@ Public Class FrmCompras
 
         If e.ColIndex = 0 Then
 
-            Quien = "CodigoProductosCompra"
-            My.Forms.FrmConsultas.ShowDialog()
+            If Me.CboTipoProducto.Text = "Cuenta" Then
+                Quien = "Cuenta"
+                My.Forms.FrmConsultas.ShowDialog()
+            Else
+                Quien = "CodigoProductosCompra"
+                My.Forms.FrmConsultas.ShowDialog()
+            End If
+
             ActualizaMETODOcOMPRA()
 
             If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
@@ -709,97 +745,102 @@ Public Class FrmCompras
                 Me.TrueDBGridComponentes.Columns(0).Text = My.Forms.FrmConsultas.Codigo
                 Me.TrueDBGridComponentes.Columns(1).Text = My.Forms.FrmConsultas.Descripcion
 
-                '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                '/////////////////////////////////////////////////BUSCO EL ULTIMO PRECIO DE COMPRA /////////////////////////////////////////////
-                '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                CodigoProducto = My.Forms.FrmConsultas.Codigo
-                SQlString = "SELECT Cod_Producto, Cantidad, Precio_Unitario, Importe FROM Detalle_Compras WHERE (Cod_Producto = '" & CodigoProducto & "') AND (Precio_Unitario <> 0)"
-                DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-                DataAdapter.Fill(DataSet, "Productos")
-                Registros = DataSet.Tables("Productos").Rows.Count
+                If Me.CboTipoProducto.Text = "Cuenta" Then
+                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = 1
 
-                If Registros = 0 Then
-                    Me.TrueDBGridComponentes.Columns(3).Text = My.Forms.FrmConsultas.Precio
                 Else
 
-                    Precio = DataSet.Tables("Productos").Rows(Registros - 1)("Precio_Unitario")
-                    If Precio = 0 Then
-                        Me.TrueDBGridComponentes.Columns(3).Text = Format(My.Forms.FrmConsultas.Precio, "##,##0.0000")
+                    '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    '/////////////////////////////////////////////////BUSCO EL ULTIMO PRECIO DE COMPRA /////////////////////////////////////////////
+                    '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    CodigoProducto = My.Forms.FrmConsultas.Codigo
+                    SQlString = "SELECT Cod_Producto, Cantidad, Precio_Unitario, Importe FROM Detalle_Compras WHERE (Cod_Producto = '" & CodigoProducto & "') AND (Precio_Unitario <> 0)"
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+                    DataAdapter.Fill(DataSet, "Productos")
+                    Registros = DataSet.Tables("Productos").Rows.Count
+
+                    If Registros = 0 Then
+                        Me.TrueDBGridComponentes.Columns(3).Text = My.Forms.FrmConsultas.Precio
                     Else
-                        Me.TrueDBGridComponentes.Columns(3).Text = Format(DataSet.Tables("Productos").Rows(Registros - 1)("Precio_Unitario"), "##,##0.0000")
+
+                        Precio = DataSet.Tables("Productos").Rows(Registros - 1)("Precio_Unitario")
+                        If Precio = 0 Then
+                            Me.TrueDBGridComponentes.Columns(3).Text = Format(My.Forms.FrmConsultas.Precio, "##,##0.0000")
+                        Else
+                            Me.TrueDBGridComponentes.Columns(3).Text = Format(DataSet.Tables("Productos").Rows(Registros - 1)("Precio_Unitario"), "##,##0.0000")
+                        End If
+
                     End If
 
+
+                    Me.TrueDBGridComponentes.Columns(3).Caption = "Precio Unit"
+                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
+                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = False
+
+
+
+                    '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    '////////////////////////////////BUSCO EL CODIGO PARA EL PRODUCTO///////////////////////////////////////////
+                    '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    CodigoProducto = My.Forms.FrmConsultas.Codigo
+                    SQlString = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodigoProducto & "')"
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+                    DataAdapter.Fill(DataSet, "TipoProductos")
+                    If DataSet.Tables("TipoProductos").Rows.Count <> 0 Then
+                        TipoProducto = DataSet.Tables("TipoProductos").Rows(0)("Tipo_Producto")
+                        TipoDescuento = DataSet.Tables("TipoProductos").Rows(0)("Unidad_Medida")
+                        PrecioDescCordobas = DataSet.Tables("TipoProductos").Rows(0)("Precio_Venta")
+                        PrecioDescDolar = DataSet.Tables("TipoProductos").Rows(0)("Precio_Lista")
+                    End If
+
+                    '///////////////////////////////////////DEFINO EL TIPO DE SERVICIO O DESCUENTO ////////////////////////////////////////////
+                    Select Case TipoDescuento
+                        Case "ImporteFijo"
+                            Me.TrueDBGridComponentes.Columns(2).Text = 1
+                            Cantidad = 1
+                            Me.TrueDBGridComponentes.Columns(4).Text = ""
+                            If Me.TxtMonedaFactura.Text = "Cordobas" Then
+                                Me.TrueDBGridComponentes.Columns(3).Text = Format(PrecioDescCordobas, "##,##0.0000")
+                                Precio = PrecioDescCordobas
+                            Else
+                                Me.TrueDBGridComponentes.Columns(3).Text = Format(PrecioDescDolar, "##,##0.0000")
+                                Precio = PrecioDescDolar
+                            End If
+
+                        Case "SubTotal"
+
+                            Me.TrueDBGridComponentes.Columns(2).Text = 1
+                            Cantidad = 1
+                            Me.TrueDBGridComponentes.Columns(4).Text = ""
+                            SubTotal = Me.TxtSubTotal.Text
+                            If PrecioDescCordobas <> 0 Then
+                                PorcientoDescuento = (PrecioDescCordobas / 100)
+                            End If
+                            Precio = SubTotal * PorcientoDescuento
+                            Me.TrueDBGridComponentes.Columns(3).Text = Format(Precio, "##,##0.0000")
+
+                    End Select
+
+
+
+                    Select Case TipoProducto
+                        Case "Servicio"
+                            SubTotal = Cantidad * Precio
+                            Neto = SubTotal
+                            Me.TrueDBGridComponentes.Columns(5).Text = Format(Cantidad * Precio, "##,##0.0000")
+                            Me.TrueDBGridComponentes.Columns(6).Text = Format(Neto, "##,##0.0000")
+                        Case "Descuento"
+                            Neto = Math.Abs(Cantidad * Precio) * -1
+                            Me.TrueDBGridComponentes.Columns(5).Text = Format(Cantidad * Precio, "##,##0.0000")
+                            Me.TrueDBGridComponentes.Columns(6).Text = Format(Neto, "##,##0.0000")
+
+
+                    End Select
+
+
+
                 End If
-
-
-                Me.TrueDBGridComponentes.Columns(3).Caption = "Precio Unit"
-                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
-                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = False
-
-
-
-                '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                '////////////////////////////////BUSCO EL CODIGO PARA EL PRODUCTO///////////////////////////////////////////
-                '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                CodigoProducto = My.Forms.FrmConsultas.Codigo
-                SQlString = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodigoProducto & "')"
-                DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-                DataAdapter.Fill(DataSet, "TipoProductos")
-                If DataSet.Tables("TipoProductos").Rows.Count <> 0 Then
-                    TipoProducto = DataSet.Tables("TipoProductos").Rows(0)("Tipo_Producto")
-                    TipoDescuento = DataSet.Tables("TipoProductos").Rows(0)("Unidad_Medida")
-                    PrecioDescCordobas = DataSet.Tables("TipoProductos").Rows(0)("Precio_Venta")
-                    PrecioDescDolar = DataSet.Tables("TipoProductos").Rows(0)("Precio_Lista")
-                End If
-
-                '///////////////////////////////////////DEFINO EL TIPO DE SERVICIO O DESCUENTO ////////////////////////////////////////////
-                Select Case TipoDescuento
-                    Case "ImporteFijo"
-                        Me.TrueDBGridComponentes.Columns(2).Text = 1
-                        Cantidad = 1
-                        Me.TrueDBGridComponentes.Columns(4).Text = ""
-                        If Me.TxtMonedaFactura.Text = "Cordobas" Then
-                            Me.TrueDBGridComponentes.Columns(3).Text = Format(PrecioDescCordobas, "##,##0.0000")
-                            Precio = PrecioDescCordobas
-                        Else
-                            Me.TrueDBGridComponentes.Columns(3).Text = Format(PrecioDescDolar, "##,##0.0000")
-                            Precio = PrecioDescDolar
-                        End If
-
-                    Case "SubTotal"
-
-                        Me.TrueDBGridComponentes.Columns(2).Text = 1
-                        Cantidad = 1
-                        Me.TrueDBGridComponentes.Columns(4).Text = ""
-                        SubTotal = Me.TxtSubTotal.Text
-                        If PrecioDescCordobas <> 0 Then
-                            PorcientoDescuento = (PrecioDescCordobas / 100)
-                        End If
-                        Precio = SubTotal * PorcientoDescuento
-                        Me.TrueDBGridComponentes.Columns(3).Text = Format(Precio, "##,##0.0000")
-
-                End Select
-
-
-
-                Select Case TipoProducto
-                    Case "Servicio"
-                        SubTotal = Cantidad * Precio
-                        Neto = SubTotal
-                        Me.TrueDBGridComponentes.Columns(5).Text = Format(Cantidad * Precio, "##,##0.0000")
-                        Me.TrueDBGridComponentes.Columns(6).Text = Format(Neto, "##,##0.0000")
-                    Case "Descuento"
-                        Neto = Math.Abs(Cantidad * Precio) * -1
-                        Me.TrueDBGridComponentes.Columns(5).Text = Format(Cantidad * Precio, "##,##0.0000")
-                        Me.TrueDBGridComponentes.Columns(6).Text = Format(Neto, "##,##0.0000")
-
-
-                End Select
-
-
-
             End If
-
 
         ElseIf e.ColIndex = 8 Then
 
@@ -1375,6 +1416,141 @@ Public Class FrmCompras
             Me.GroupBox2.Text = "Informacion del Proveedor"
 
         End If
+
+        If CboTipoProducto.Text = "Cuenta" Then
+
+            Me.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
+            Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 350
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
+            Me.TrueDBGridComponentes.Columns(2).Caption = "Ordenado"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 64
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Visible = False
+            Me.TrueDBGridComponentes.Columns(3).Caption = "Monto"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = False
+            Me.TrueDBGridComponentes.Columns(4).Caption = "%Desc"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 43
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Visible = False
+            Me.TrueDBGridComponentes.Columns(5).Caption = "Precio Neto"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Width = 65
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Locked = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Visible = False
+            Me.TrueDBGridComponentes.Columns(6).Caption = "Importe"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Width = 61
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Locked = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Visible = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(7).Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(8).Button = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(8).Visible = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("TasaCambio").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Lote").Visible = False
+
+        ElseIf CboTipoProducto.Text = "Cuenta CR" Then
+
+            Me.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
+            Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 350
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
+            Me.TrueDBGridComponentes.Columns(2).Caption = "Ordenado"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 64
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Visible = False
+            Me.TrueDBGridComponentes.Columns(3).Caption = "Monto"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = False
+            Me.TrueDBGridComponentes.Columns(4).Caption = "%Desc"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 43
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Visible = False
+            Me.TrueDBGridComponentes.Columns(5).Caption = "Precio Neto"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Width = 65
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Locked = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Visible = False
+            Me.TrueDBGridComponentes.Columns(6).Caption = "Importe"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Width = 61
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Locked = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Visible = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(7).Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(8).Button = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(8).Visible = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("TasaCambio").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Lote").Visible = False
+
+        ElseIf FacturaTarea = True Then
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            Me.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
+            Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 259
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
+            Me.TrueDBGridComponentes.Columns(2).Caption = "Ordenado"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 64
+            Me.TrueDBGridComponentes.Columns(3).Caption = "Precio Unit"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = False
+            Me.TrueDBGridComponentes.Columns(4).Caption = "%Desc"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 43
+            Me.TrueDBGridComponentes.Columns(5).Caption = "Precio Neto"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Width = 65
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Locked = True
+            Me.TrueDBGridComponentes.Columns(6).Caption = "Importe"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Width = 61
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Locked = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(7).Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(8).Button = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("TasaCambio").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
+
+        Else
+
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            Me.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
+            Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 259
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
+            Me.TrueDBGridComponentes.Columns(2).Caption = "Ordenado"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 64
+            Me.TrueDBGridComponentes.Columns(3).Caption = "Precio Unit"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = False
+            Me.TrueDBGridComponentes.Columns(4).Caption = "%Desc"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 43
+            Me.TrueDBGridComponentes.Columns(5).Caption = "Precio Neto"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Width = 65
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Locked = True
+            Me.TrueDBGridComponentes.Columns(6).Caption = "Importe"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Width = 61
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Locked = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(7).Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("TasaCambio").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
+
+
+
+        End If
+
 
     End Sub
 
@@ -2439,6 +2615,10 @@ Public Class FrmCompras
                         ConsecutivoCompra = BuscaConsecutivo("DevCompra")
                     Case "Transferencia Recibida"
                         ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
+                    Case "Cuenta"
+                        ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+                    Case "Cuenta CR"
+                        ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
                 End Select
 
                 '/////////////////////////////////////////////////////////////////////////////////////////
@@ -2531,42 +2711,42 @@ Public Class FrmCompras
                 End If
             End If
 
+            If Me.CboTipoProducto.Text <> "Cuenta" Then
+                If Me.CboTipoProducto.Text <> "Cuenta" Then
+                    If TipoProducto <> "Descuento" And TipoProducto <> "Servicio" Then
+                        If BuscaProducto(CodigoProducto, Me.CboCodigoBodega.Text) = True Then
+                            'GrabaDetalleCompra(NumeroCompra, CodigoProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, NumeroLote, FechaLote)
 
+                            Select Case Me.CboTipoProducto.Text
+                                Case "Mercancia Recibida"
+                                    ActualizaCostoPromedio(CodigoProducto)
+                                    'DiferenciaCantidad = CDbl(Cantidad) - CDbl(CantidadAnterior)
+                                    'DiferenciaPrecio = CDbl(PrecioNeto) - CDbl(PrecioAnterior)
+                                    'ExistenciasCostos(CodigoProducto, DiferenciaCantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
+                                    'CostoAnterior = BuscaCosto(CodProducto, Me.CboCodigoBodega.Text)
+                                    'CostoBodega(CodProducto, Cantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
+                                    'CostoActual = BuscaCosto(CodProducto, Me.CboCodigoBodega.Text)
+                                    GrabaComprasHistoricos(NumeroCompra, Me.DTPFecha.Value, "Mercancia Recibida", CodProducto, CostoAnterior, CostoActual, Me.CboCodigoBodega.Text)
 
+                                Case "Devolucion de Compra"
+                                    ActualizaCostoPromedio(CodigoProducto)
+                                    'DiferenciaCantidad = CDbl(Cantidad) - CDbl(CantidadAnterior)
+                                    'DiferenciaPrecio = CDbl(PrecioNeto) - CDbl(PrecioAnterior)
+                                    'ExistenciasCostos(CodigoProducto, DiferenciaCantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
+                                    'CostoBodega(CodProducto, Cantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
+                            End Select
+                        Else
+                            MsgBox("No se Puede Agregar este Producto ,No esta Asignado en la Bodega", MsgBoxStyle.Critical, "BODEGA " & Me.CboCodigoBodega.Text)
 
+                        End If
+                    Else
 
-            If TipoProducto <> "Descuento" And TipoProducto <> "Servicio" Then
-                If BuscaProducto(CodigoProducto, Me.CboCodigoBodega.Text) = True Then
-                    'GrabaDetalleCompra(NumeroCompra, CodigoProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, NumeroLote, FechaLote)
-
-                    Select Case Me.CboTipoProducto.Text
-                        Case "Mercancia Recibida"
-                            ActualizaCostoPromedio(CodigoProducto)
-                            'DiferenciaCantidad = CDbl(Cantidad) - CDbl(CantidadAnterior)
-                            'DiferenciaPrecio = CDbl(PrecioNeto) - CDbl(PrecioAnterior)
-                            'ExistenciasCostos(CodigoProducto, DiferenciaCantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
-                            'CostoAnterior = BuscaCosto(CodProducto, Me.CboCodigoBodega.Text)
-                            'CostoBodega(CodProducto, Cantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
-                            'CostoActual = BuscaCosto(CodProducto, Me.CboCodigoBodega.Text)
-                            GrabaComprasHistoricos(NumeroCompra, Me.DTPFecha.Value, "Mercancia Recibida", CodProducto, CostoAnterior, CostoActual, Me.CboCodigoBodega.Text)
-
-                        Case "Devolucion de Compra"
-                            ActualizaCostoPromedio(CodigoProducto)
-                            'DiferenciaCantidad = CDbl(Cantidad) - CDbl(CantidadAnterior)
-                            'DiferenciaPrecio = CDbl(PrecioNeto) - CDbl(PrecioAnterior)
-                            'ExistenciasCostos(CodigoProducto, DiferenciaCantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
-                            'CostoBodega(CodProducto, Cantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
-                    End Select
-                Else
-                    MsgBox("No se Puede Agregar este Producto ,No esta Asignado en la Bodega", MsgBoxStyle.Critical, "BODEGA " & Me.CboCodigoBodega.Text)
-
+                        'GrabaDetalleCompra(NumeroCompra, CodigoProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, NumeroLote, FechaLote)
+                    End If
                 End If
-            Else
-
-                'GrabaDetalleCompra(NumeroCompra, CodigoProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, NumeroLote, FechaLote)
             End If
-
         End If
+
 
         Me.Button7.Enabled = True
         Me.CboCodigoBodega.Enabled = True

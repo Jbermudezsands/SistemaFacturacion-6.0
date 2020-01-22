@@ -738,6 +738,21 @@ Public Class FrmConsultas
                     Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
 
                     MiConexion.Close()
+
+                Case "Cuenta"
+                    SQlProductos = "SELECT CodCuentas , DescripcionCuentas As Descripcion, TipoCuenta FROM Cuentas "
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    MiConexion.Open()
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiconexionContabilidad)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+
+                    MiConexion.Close()
+
                 Case "Bodegas"
                     SQlProductos = "SELECT  * FROM   Bodegas"
                     Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
@@ -1269,6 +1284,11 @@ Public Class FrmConsultas
             Case "CuentaIngresoAjuste"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("CodCuentas")
+
+            Case "Cuenta"
+                Posicion = Me.BindingConsultas.Position
+                Codigo = Me.BindingConsultas.Item(Posicion)("CodCuentas")
+                Descripcion = Me.BindingConsultas.Item(Posicion)("Descripcion")
             Case "CodigoImpuestos"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("Cod_Iva")

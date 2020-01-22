@@ -177,6 +177,8 @@ Module Funciones
             Select Case FrmRecepcion.CboTipoRecepcion.Text
                 Case "Recepcion"
                     ConsecutivoCompra = BuscaConsecutivo("Recepcion")
+                Case "SalidaBascula"
+                    ConsecutivoCompra = BuscaConsecutivo("SalidaBascula")
 
                 Case "RePesaje"
                     ConsecutivoCompra = BuscaConsecutivo("ReImprime")
@@ -5788,7 +5790,7 @@ Module Funciones
         FechaCompra = Format(Fecha, "dd/MM/yyyy")
         Fecha = FechaVencimiento
         FechaVencimiento = Format(Fecha, "dd/MM/yyyy")
-        FechaHora = Format(FrmCompras.DTPFecha.Value, "dd/MM/yyyy") & " " & Format(Now, "HH:mm")
+        FechaHora = Format(Fecha, "dd/MM/yyyy") & " " & Format(Now, "HH:mm")
 
         MiConexion.Close()
 

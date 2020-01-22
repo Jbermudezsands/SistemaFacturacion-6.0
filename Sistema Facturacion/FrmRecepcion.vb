@@ -37,6 +37,8 @@ Public Class FrmRecepcion
             Me.CboCodigoProveedor.Columns(1).Caption = "Proveedor"
             Me.CboCodigoProveedor.Columns(2).Caption = "Origen"
 
+            Me.GroupBox2.Visible = False
+
         ElseIf Quien = "SalidaBascula" Then
             Me.CboTipoRecepcion.Text = "Salidabascula"
 
@@ -48,6 +50,7 @@ Public Class FrmRecepcion
             Me.CboCodigoProveedor.Columns(0).Caption = "Codigo"
             Me.CboCodigoProveedor.Columns(1).Caption = "Clientes"
             Me.CboCodigoProveedor.Columns(2).Caption = "Origen"
+            Me.BtnProcesar.Visible = False
 
         ElseIf Quien = "Repesaje" Then
             Me.CboTipoRecepcion.Text = "Repesaje"
@@ -60,6 +63,8 @@ Public Class FrmRecepcion
             Me.CboCodigoProveedor.Columns(0).Caption = "Codigo"
             Me.CboCodigoProveedor.Columns(1).Caption = "Proveedor"
             Me.CboCodigoProveedor.Columns(2).Caption = "Origen"
+
+            Me.BtnProcesar.Visible = False
         End If
 
 
@@ -872,7 +877,9 @@ Public Class FrmRecepcion
         Dim PrecioNeto As Double, Importe As Double
         Dim StrSqlUpdate As String, iResultado As Integer, SqlString As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim Fecha As String, MontoIva As Double
+        Dim Fecha As String, MontoIva As Double, Sql As String
+
+
 
 
         ConsecutivoCompra = BuscaConsecutivo("Compra")
@@ -888,27 +895,34 @@ Public Class FrmRecepcion
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL DETALLE DE LA COMPRA /////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-        Registros = Me.BindingDetalle.Count
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Sql = "SELECT  Cod_Productos, Descripcion_Producto, SUM(Cantidad) AS Cantidad, SUM(Precio) AS Precio, SUM(PesoKg) AS PesoKg, SUM(Tara) AS Tara, SUM(PesoNetoLb) AS PesoNetoLb, SUM(PesoNetoKg) AS PesoNetoKg, SUM(QQ) AS QQ  FROM Detalle_Recepcion GROUP BY NumeroRecepcion, TipoRecepcion, Cod_Productos, Descripcion_Producto " & _
+              "HAVING (NumeroRecepcion = '" & Me.TxtNumeroEnsamble.Text & "') AND (TipoRecepcion = 'Recepcion')"
+        DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+        DataAdapter.Fill(DataSet, "DetalleRecepcion")
+
+
+        Registros = DataSet.Tables("DetalleRecepcion").Rows.Count
         iPosicion = 0
 
         Do While iPosicion < Registros
-            CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
+            CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Productos")
 
             'If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descuento")) Then
             '    Descuento = Me.BindingDetalle.Item(iPosicion)("Descuento")
             'End If
             PrecioFOB = 0 'Me.BindingDetalle.Item(iPosicion)("FOB")
             PrecioCosto = 0 'Me.BindingDetalle.Item(iPosicion)("Precio_Costo")
-            If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Cantidad")) Then
-                Cantidad = Me.BindingDetalle.Item(iPosicion)("Cantidad")
+            Descuento = 0
+            If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("PesoNetoKg")) Then
+                Cantidad = Me.BindingDetalle.Item(iPosicion)("PesoNetoKg")
                 PrecioUnitario = 0 'PrecioCosto / Cantidad
             End If
-            PrecioNeto = 0 'PrecioUnitario * Cantidad
-            Importe = 0 'PrecioCosto - Descuento
+            PrecioNeto = PrecioUnitario * Cantidad
+            Importe = PrecioCosto - Descuento
 
             GrabaDetalleCompraLiquidacion(NumeroCompra, CodigoProducto, PrecioUnitario, Descuento, PrecioUnitario, Importe, Cantidad, "Cordobas", CDate(Me.DTPFecha.Text))
-
             ExistenciasCostos(CodigoProducto, Cantidad, PrecioUnitario, "Mercancia Recibida", Me.CboCodigoBodega.Text)
 
 

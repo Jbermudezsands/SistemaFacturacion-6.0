@@ -968,13 +968,6 @@ Public Class MDIMain
 
     Private Sub RibbonRecepcion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonRecepcion.Click
         Quien = "Recepcion"
-        My.Forms.FrmRecepcion.Label3.Visible = False
-        My.Forms.FrmRecepcion.Label4.Visible = False
-        My.Forms.FrmRecepcion.Label5.Visible = False
-        My.Forms.FrmRecepcion.CboPlaca.Visible = False
-        My.Forms.FrmRecepcion.Button5.Visible = False
-        My.Forms.FrmRecepcion.TxtMarca.Visible = False
-
         My.Forms.FrmRecepcion.Show()
     End Sub
 
