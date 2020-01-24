@@ -134,7 +134,7 @@ Public Class FrmVehiculo
         Dim SQLString As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-        Dim Resultado As String, StrSQl As String
+        Dim Resultado As String, StrSQl As String, IdVehiculo As Double
 
         Resultado = MsgBox("¿Esta Seguro de Eliminar el Usuario?", MsgBoxStyle.OkCancel, "Sistema de Facturacion")
 
@@ -145,14 +145,16 @@ Public Class FrmVehiculo
 
 
 
-        SqlString = "SELECT  Placa, Marca, TipoVehiculo, Activo FROM Vehiculo WHERE (Placa = '" & Me.CboPlaca.Text & "')"
+        SQLString = "SELECT  Placa, Marca, TipoVehiculo, Activo, IdVehiculo FROM Vehiculo WHERE (Placa = '" & Me.CboPlaca.Text & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
         DataAdapter.Fill(DataSet, "Clientes")
         If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
+            IdVehiculo = DataSet.Tables("Clientes").Rows(0)("IdVehiculo")
+
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
 
             '---------------ANTES DE BORRAR VERIFICO SI EXISTE PLACAS PARA LA RECEPCION ---------------------
-            SQLString = "SELECT  NumeroRecepcion FROM Recepcion WHERE  (Id_Placa = '" & Me.CboPlaca.Text & "')"
+            SQLString = "SELECT  NumeroRecepcion FROM Recepcion WHERE  (Id_Vehiculo = " & IdVehiculo & ")"
             DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
             DataAdapter.Fill(DataSet, "ConsultaRec")
             If Not DataSet.Tables("ConsultaRec").Rows.Count = 0 Then
@@ -161,7 +163,7 @@ Public Class FrmVehiculo
             End If
 
 
-            StrSqlUpdate = "DELETE FROM [Vehiculo] WHERE (Placa = '" & Me.CboPlaca.Text & "')"
+            StrSqlUpdate = "DELETE FROM [Vehiculo] WHERE (Id_Vehiculo = " & IdVehiculo & ")"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery

@@ -450,7 +450,7 @@ Module Funciones
         Dim Fecha As String
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim Subtotal As Double, Lote As String, TipoProceso As String = "", IdLugarAcopio As Double
+        Dim Subtotal As Double, Lote As String, TipoProceso As String = "", idVehiculo As Double, CodConductor As String, TipoPesada As String
         Dim Procesar As Double
 
 
@@ -459,6 +459,11 @@ Module Funciones
 
         'Fecha = Format(CDate(FrmRecepcion.DTPFecha.Text), "yyyy-MM-dd")
         Lote = FrmRecepcion.Año & "-" & FrmRecepcion.Mes & "-" & FrmRecepcion.Dia
+
+        idVehiculo = My.Forms.FrmRecepcion.CboPlaca.Columns(0).Text
+        CodConductor = My.Forms.FrmRecepcion.CboConductor.Columns(0).Text
+        TipoPesada = My.Forms.FrmRecepcion.CmbTipoPesada.Text
+
 
         If FrmRecepcion.txtsubtotal.Text <> "" Then
             Subtotal = FrmRecepcion.txtsubtotal.Text
@@ -480,10 +485,10 @@ Module Funciones
             '////////////////////////////AGREGO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
 
-            SqlCompras = "INSERT INTO Recepcion ([NumeroRecepcion],[Fecha],[TipoRecepcion],[Cod_Proveedor],[Conductor] ,[Id_identificacion] ,[Id_Placa],[Cod_Bodega],[Observaciones],[SubTotal],[Lote],[FechaHora],[Contabilizado]) " & _
-                         "VALUES ('" & ConsecutivoRecepcion & "','" & Format(CDate(Fecha), "dd/MM/yyyy") & "', '" & My.Forms.FrmRecepcion.CboTipoRecepcion.Text & "' ,'" & My.Forms.FrmRecepcion.CboCodigoProveedor.Columns(0).Text & "' ,'" & My.Forms.FrmRecepcion.CboConductor.Text & "' ,'" & My.Forms.FrmRecepcion.txtid.Text & "' ,'" & My.Forms.FrmRecepcion.CboPlaca.Text & "' ,'" & FrmRecepcion.CboCodigoBodega.Text & "' ,'" & FrmRecepcion.txtobservaciones.Text & "' ,'" & Subtotal & "' ,'" & Lote & "','" & Format(CDate(Fecha), "dd/MM/yyyy HH:mm:ss") & "', " & Procesar & " ) "
+            SqlCompras = "INSERT INTO Recepcion ([NumeroRecepcion],[Fecha],[TipoRecepcion],[Cod_Proveedor],[Conductor] ,[Id_identificacion] ,[Id_Vehiculo],[Cod_Bodega],[Observaciones],[SubTotal],[Lote],[FechaHora],[Contabilizado],[TipoPesada]) " & _
+                         "VALUES ('" & ConsecutivoRecepcion & "','" & Format(CDate(Fecha), "dd/MM/yyyy") & "', '" & My.Forms.FrmRecepcion.CboTipoRecepcion.Text & "' ,'" & My.Forms.FrmRecepcion.CboCodigoProveedor.Columns(0).Text & "' ,'" & CodConductor & "' ,'" & My.Forms.FrmRecepcion.txtid.Text & "' ,'" & idVehiculo & "' ,'" & FrmRecepcion.CboCodigoBodega.Text & "' ,'" & FrmRecepcion.txtobservaciones.Text & "' ,'" & Subtotal & "' ,'" & Lote & "','" & Format(CDate(Fecha), "dd/MM/yyyy HH:mm:ss") & "', " & Procesar & ", '" & TipoPesada & "'  ) "
 
-            'SqlCompras = "INSERT INTO [Recepcion] ([NumeroRecepcion],[Fecha],[TipoRecepcion],[Cod_Proveedor],[Conductor],[Id_identificacion],[Id_Placa],[Cod_Bodega],[Observaciones],[SubTotal],[Lote]) " & _
+            'SqlCompras = "INSERT INTO [Recepcion] ([NumeroRecepcion],[Fecha],[TipoRecepcion],[Cod_Proveedor],[Conductor],[Id_identificacion],[Id_Vehiculo],[Cod_Bodega],[Observaciones],[SubTotal],[Lote]) " & _
             '             "VALUES ('" & ConsecutivoRecepcion & "','" & Format(FrmRecepcion.DTPFecha.Value, "dd/MM/yyyy") & "','" & FrmRecepcion.CboTipoRecepcion.Text & "','" & FrmRecepcion.CboCodigoProveedor.Columns(0).Text & "','" & FrmRecepcion.CboConductor.Text & "', '" & FrmRecepcion.txtid.Text & "','" & FrmRecepcion.txtplaca.Text & "','" & FrmRecepcion.CboCodigoBodega.Columns(0).Text & "','" & FrmRecepcion.txtobservaciones.Text & "','" & Subtotal & "','" & Lote & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
@@ -494,7 +499,7 @@ Module Funciones
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "UPDATE [Recepcion] SET [Cod_Proveedor] = '" & FrmRecepcion.CboCodigoProveedor.Columns(0).Text & "',[Conductor] = '" & FrmRecepcion.CboConductor.Text & "',[Id_identificacion] ='" & FrmRecepcion.txtid.Text & "',[Id_Placa] = '" & FrmRecepcion.CboPlaca.Text & "',[Observaciones] = '" & FrmRecepcion.txtobservaciones.Text & "',[SubTotal] = '" & Subtotal & "',[Lote] = '" & Lote & "', [Contabilizado] = " & Procesar & " " & _
+            SqlCompras = "UPDATE [Recepcion] SET [Cod_Proveedor] = '" & FrmRecepcion.CboCodigoProveedor.Columns(0).Text & "',[Conductor] = '" & CodConductor & "',[Id_identificacion] ='" & FrmRecepcion.txtid.Text & "',[Id_Vehiculo] = '" & idVehiculo & "',[Observaciones] = '" & FrmRecepcion.txtobservaciones.Text & "',[SubTotal] = '" & Subtotal & "',[Lote] = '" & Lote & "', [Contabilizado] = " & Procesar & " ,[TipoPesada] = '" & TipoPesada & "'" & _
                          "WHERE (NumeroRecepcion = '" & ConsecutivoRecepcion & "') AND (TipoRecepcion = '" & FrmRecepcion.CboTipoRecepcion.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)

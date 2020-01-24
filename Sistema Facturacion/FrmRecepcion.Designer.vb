@@ -82,6 +82,7 @@ Partial Class FrmRecepcion
         Me.LblEstado = New System.Windows.Forms.Label
         Me.txtapellido = New System.Windows.Forms.TextBox
         Me.CmdFacturar = New System.Windows.Forms.Button
+        Me.CmbTipoPesada = New System.Windows.Forms.ComboBox
         Me.GroupBox1.SuspendLayout()
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboCodigoProducto, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -101,6 +102,7 @@ Partial Class FrmRecepcion
         'GroupBox1
         '
         Me.GroupBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(27, Byte), Integer), CType(CType(94, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.GroupBox1.Controls.Add(Me.CmbTipoPesada)
         Me.GroupBox1.Controls.Add(Me.C1Button2)
         Me.GroupBox1.Controls.Add(Me.CboCodigoBodega)
         Me.GroupBox1.Controls.Add(Me.CmdPesada)
@@ -111,7 +113,7 @@ Partial Class FrmRecepcion
         Me.GroupBox1.Controls.Add(Me.txtid)
         Me.GroupBox1.Location = New System.Drawing.Point(3, 143)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(528, 161)
+        Me.GroupBox1.Size = New System.Drawing.Size(528, 175)
         Me.GroupBox1.TabIndex = 225
         Me.GroupBox1.TabStop = False
         '
@@ -141,7 +143,7 @@ Partial Class FrmRecepcion
         Me.CboCodigoBodega.EditorHeight = 33
         Me.CboCodigoBodega.Images.Add(CType(resources.GetObject("CboCodigoBodega.Images"), System.Drawing.Image))
         Me.CboCodigoBodega.ItemHeight = 15
-        Me.CboCodigoBodega.Location = New System.Drawing.Point(228, 80)
+        Me.CboCodigoBodega.Location = New System.Drawing.Point(318, 80)
         Me.CboCodigoBodega.MatchEntryTimeout = CType(2000, Long)
         Me.CboCodigoBodega.MaxDropDownItems = CType(5, Short)
         Me.CboCodigoBodega.MaxLength = 32767
@@ -150,7 +152,7 @@ Partial Class FrmRecepcion
         Me.CboCodigoBodega.RowDivider.Color = System.Drawing.Color.DarkGray
         Me.CboCodigoBodega.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
         Me.CboCodigoBodega.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboCodigoBodega.Size = New System.Drawing.Size(248, 39)
+        Me.CboCodigoBodega.Size = New System.Drawing.Size(158, 39)
         Me.CboCodigoBodega.TabIndex = 246
         Me.CboCodigoBodega.PropBag = resources.GetString("CboCodigoBodega.PropBag")
         '
@@ -159,7 +161,7 @@ Partial Class FrmRecepcion
         Me.CmdPesada.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CmdPesada.Image = CType(resources.GetObject("CmdPesada.Image"), System.Drawing.Image)
         Me.CmdPesada.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.CmdPesada.Location = New System.Drawing.Point(11, 84)
+        Me.CmdPesada.Location = New System.Drawing.Point(11, 115)
         Me.CmdPesada.Name = "CmdPesada"
         Me.CmdPesada.Size = New System.Drawing.Size(114, 52)
         Me.CmdPesada.TabIndex = 245
@@ -174,7 +176,7 @@ Partial Class FrmRecepcion
         Me.ChkTaraSaco.CheckState = System.Windows.Forms.CheckState.Checked
         Me.ChkTaraSaco.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ChkTaraSaco.ForeColor = System.Drawing.Color.White
-        Me.ChkTaraSaco.Location = New System.Drawing.Point(230, 126)
+        Me.ChkTaraSaco.Location = New System.Drawing.Point(259, 126)
         Me.ChkTaraSaco.Name = "ChkTaraSaco"
         Me.ChkTaraSaco.Size = New System.Drawing.Size(215, 29)
         Me.ChkTaraSaco.TabIndex = 239
@@ -233,7 +235,7 @@ Partial Class FrmRecepcion
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
-        Me.Label2.Location = New System.Drawing.Point(166, 88)
+        Me.Label2.Location = New System.Drawing.Point(256, 86)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(56, 15)
         Me.Label2.TabIndex = 3
@@ -246,6 +248,7 @@ Partial Class FrmRecepcion
         Me.txtid.Size = New System.Drawing.Size(172, 20)
         Me.txtid.TabIndex = 234
         Me.txtid.Text = "001"
+        Me.txtid.Visible = False
         '
         'TrueDBGridComponentes
         '
@@ -255,7 +258,7 @@ Partial Class FrmRecepcion
         Me.TrueDBGridComponentes.Caption = "Listado de Productos"
         Me.TrueDBGridComponentes.GroupByCaption = "Drag a column header here to group by that column"
         Me.TrueDBGridComponentes.Images.Add(CType(resources.GetObject("TrueDBGridComponentes.Images"), System.Drawing.Image))
-        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(-3, 311)
+        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(-3, 324)
         Me.TrueDBGridComponentes.Name = "TrueDBGridComponentes"
         Me.TrueDBGridComponentes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
@@ -535,7 +538,7 @@ Partial Class FrmRecepcion
         Me.LblPeso.AutoSize = True
         Me.LblPeso.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblPeso.ForeColor = System.Drawing.Color.Maroon
-        Me.LblPeso.Location = New System.Drawing.Point(942, 574)
+        Me.LblPeso.Location = New System.Drawing.Point(942, 585)
         Me.LblPeso.Name = "LblPeso"
         Me.LblPeso.Size = New System.Drawing.Size(49, 24)
         Me.LblPeso.TabIndex = 228
@@ -546,7 +549,7 @@ Partial Class FrmRecepcion
         Me.Button6.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
         Me.Button6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button6.Location = New System.Drawing.Point(12, 587)
+        Me.Button6.Location = New System.Drawing.Point(12, 598)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(161, 33)
         Me.Button6.TabIndex = 227
@@ -557,7 +560,7 @@ Partial Class FrmRecepcion
         '
         Me.txtsubtotal.Enabled = False
         Me.txtsubtotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtsubtotal.Location = New System.Drawing.Point(886, 601)
+        Me.txtsubtotal.Location = New System.Drawing.Point(886, 612)
         Me.txtsubtotal.Name = "txtsubtotal"
         Me.txtsubtotal.Size = New System.Drawing.Size(105, 26)
         Me.txtsubtotal.TabIndex = 226
@@ -693,7 +696,7 @@ Partial Class FrmRecepcion
         '
         'txtobservaciones
         '
-        Me.txtobservaciones.Location = New System.Drawing.Point(231, 597)
+        Me.txtobservaciones.Location = New System.Drawing.Point(231, 608)
         Me.txtobservaciones.Multiline = True
         Me.txtobservaciones.Name = "txtobservaciones"
         Me.txtobservaciones.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
@@ -705,7 +708,7 @@ Partial Class FrmRecepcion
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
-        Me.Label1.Location = New System.Drawing.Point(227, 578)
+        Me.Label1.Location = New System.Drawing.Point(227, 589)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(149, 20)
         Me.Label1.TabIndex = 184
@@ -726,7 +729,7 @@ Partial Class FrmRecepcion
         Me.GroupBox2.Controls.Add(Me.Label4)
         Me.GroupBox2.Location = New System.Drawing.Point(537, 143)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(450, 162)
+        Me.GroupBox2.Size = New System.Drawing.Size(450, 177)
         Me.GroupBox2.TabIndex = 237
         Me.GroupBox2.TabStop = False
         '
@@ -792,7 +795,7 @@ Partial Class FrmRecepcion
         Me.CboPlaca.DeadAreaBackColor = System.Drawing.Color.Empty
         Me.CboPlaca.DisplayMember = "Placa"
         Me.CboPlaca.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
-        Me.CboPlaca.DropDownWidth = 185
+        Me.CboPlaca.DropDownWidth = 300
         Me.CboPlaca.EditorBackColor = System.Drawing.SystemColors.Window
         Me.CboPlaca.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CboPlaca.EditorForeColor = System.Drawing.SystemColors.WindowText
@@ -845,7 +848,7 @@ Partial Class FrmRecepcion
         Me.CboConductor.DeadAreaBackColor = System.Drawing.Color.Empty
         Me.CboConductor.DisplayMember = "Nombre"
         Me.CboConductor.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
-        Me.CboConductor.DropDownWidth = 275
+        Me.CboConductor.DropDownWidth = 300
         Me.CboConductor.EditorBackColor = System.Drawing.SystemColors.Window
         Me.CboConductor.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CboConductor.EditorForeColor = System.Drawing.SystemColors.WindowText
@@ -881,7 +884,7 @@ Partial Class FrmRecepcion
         Me.LblEstado.AutoSize = True
         Me.LblEstado.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblEstado.ForeColor = System.Drawing.Color.BlanchedAlmond
-        Me.LblEstado.Location = New System.Drawing.Point(854, 640)
+        Me.LblEstado.Location = New System.Drawing.Point(854, 651)
         Me.LblEstado.Name = "LblEstado"
         Me.LblEstado.Size = New System.Drawing.Size(137, 24)
         Me.LblEstado.TabIndex = 238
@@ -910,6 +913,17 @@ Partial Class FrmRecepcion
         Me.CmdFacturar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.CmdFacturar.UseVisualStyleBackColor = True
         Me.CmdFacturar.Visible = False
+        '
+        'CmbTipoPesada
+        '
+        Me.CmbTipoPesada.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbTipoPesada.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CmbTipoPesada.FormattingEnabled = True
+        Me.CmbTipoPesada.Items.AddRange(New Object() {"PESADA BASCULA", "PESADA MANUAL"})
+        Me.CmbTipoPesada.Location = New System.Drawing.Point(9, 78)
+        Me.CmbTipoPesada.Name = "CmbTipoPesada"
+        Me.CmbTipoPesada.Size = New System.Drawing.Size(205, 32)
+        Me.CmbTipoPesada.TabIndex = 248
         '
         'FrmRecepcion
         '
@@ -1022,4 +1036,5 @@ Partial Class FrmRecepcion
     Friend WithEvents C1Button2 As C1.Win.C1Input.C1Button
     Friend WithEvents BtnProcesar As System.Windows.Forms.Button
     Friend WithEvents CmdFacturar As System.Windows.Forms.Button
+    Friend WithEvents CmbTipoPesada As System.Windows.Forms.ComboBox
 End Class

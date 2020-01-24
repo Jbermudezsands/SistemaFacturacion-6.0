@@ -26,9 +26,12 @@ Public Class FrmRecepcion
         Procesar = False
         DataSet.Reset()
 
+        Me.CmbTipoPesada.Text = "PESADA BASCULA"
+        Me.CmdPesada.Visible = False
+
         If Quien = "Recepcion" Then
             Me.CboTipoRecepcion.Text = "Recepcion"
-            sql = "SELECT * FROM Proveedor"
+            sql = "SELECT * FROM Proveedor WHERE (InventarioFisico = 1)"
             DataAdapter = New SqlClient.SqlDataAdapter(sql, MiConexion)
             DataAdapter.Fill(DataSet, "ListaProveedores")
             Me.CboCodigoProveedor.DataSource = DataSet.Tables("ListaProveedores")
@@ -55,7 +58,7 @@ Public Class FrmRecepcion
         ElseIf Quien = "Repesaje" Then
             Me.CboTipoRecepcion.Text = "Repesaje"
 
-            sql = "SELECT * FROM Proveedor"
+            sql = "SELECT * FROM Proveedor WHERE (InventarioFisico = 1)"
             DataAdapter = New SqlClient.SqlDataAdapter(sql, MiConexion)
             DataAdapter.Fill(DataSet, "ListaProveedores")
             Me.CboCodigoProveedor.DataSource = DataSet.Tables("ListaProveedores")
@@ -108,7 +111,7 @@ Public Class FrmRecepcion
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////CARGO LAS BODEGAS////////////////////////////////////////////////////////////////////
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlString = "SELECT Placa, Marca, TipoVehiculo FROM Vehiculo WHERE(Activo = 1)"
+        SqlString = "SELECT IdVehiculo, Placa, Marca, TipoVehiculo FROM Vehiculo WHERE(Activo = 1)"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "Placa")
         Me.CboPlaca.DataSource = DataSet.Tables("Placa")
@@ -116,7 +119,7 @@ Public Class FrmRecepcion
             Me.CboPlaca.Text = DataSet.Tables("Placa").Rows(0)("Placa")
         End If
         Me.CboPlaca.Columns(0).Caption = "Placa"
-        'Me.CboCodigoBodega.Columns(1).Caption = "Placa"
+        Me.CboPlaca.Splits.Item(0).DisplayColumns("IdVehiculo").Visible = False
 
 
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -130,7 +133,7 @@ Public Class FrmRecepcion
             Me.CboConductor.Text = DataSet.Tables("Conductor").Rows(0)("Nombre")
         End If
         Me.CboConductor.Columns(0).Caption = "Codigo"
-        'Me.CboCodigoBodega.Columns(1).Caption = "Placa"
+        Me.CboConductor.Splits.Item(0).DisplayColumns("Codigo").Visible = False
 
         MiConexion.Close()
 
@@ -277,38 +280,68 @@ Public Class FrmRecepcion
         Dim SqlProveedor As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim CodigoSubProveedor As String = ""
 
-
-        SqlProveedor = "SELECT  * FROM Proveedor  WHERE (Cod_Proveedor = '" & Me.CboCodigoProveedor.Text & "')"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-        DataAdapter.Fill(DataSet, "Proveedor")
-        If Not DataSet.Tables("Proveedor").Rows.Count = 0 Then
-            Me.txtnombre.Text = DataSet.Tables("Proveedor").Rows(0)("Nombre_Proveedor")
-
-            If Not IsDBNull(DataSet.Tables("Proveedor").Rows(0)("Apellido_Proveedor")) Then
-                Me.txtnombre.Text = DataSet.Tables("Proveedor").Rows(0)("Nombre_Proveedor") & " " & DataSet.Tables("Proveedor").Rows(0)("Apellido_Proveedor")
-            End If
-
-            '////////////////////////////////////////////////BUSCO DATOS DEL CONDUCTOR ///////////////////////////////////
-            SqlProveedor = "SELECT DISTINCT Conductor, Id_identificacion, Id_Placa, Cod_Bodega, Observaciones, SubTotal, Telefono,Cod_SubProveedor  FROM Recepcion WHERE (Cod_Proveedor = '" & Me.CboCodigoProveedor.Text & "') ORDER BY Conductor"
+        If Quien = "Recepcion" Then
+            SqlProveedor = "SELECT  * FROM Proveedor  WHERE (Cod_Proveedor = '" & Me.CboCodigoProveedor.Text & "') AND (InventarioFisico = 1)"
             DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-            DataAdapter.Fill(DataSet, "Datos")
-            If Not DataSet.Tables("Datos").Rows.Count = 0 Then
-                If Not IsDBNull(DataSet.Tables("Datos").Rows(0)("Conductor")) Then
-                    Me.CboConductor.Text = DataSet.Tables("Datos").Rows(0)("Conductor")
-                End If
-                If Not IsDBNull(DataSet.Tables("Datos").Rows(0)("Id_identificacion")) Then
-                    Me.txtid.Text = DataSet.Tables("Datos").Rows(0)("Id_identificacion")
+            DataAdapter.Fill(DataSet, "Proveedor")
+            If Not DataSet.Tables("Proveedor").Rows.Count = 0 Then
+                Me.txtnombre.Text = DataSet.Tables("Proveedor").Rows(0)("Nombre_Proveedor")
+
+                If Not IsDBNull(DataSet.Tables("Proveedor").Rows(0)("Apellido_Proveedor")) Then
+                    Me.txtnombre.Text = DataSet.Tables("Proveedor").Rows(0)("Nombre_Proveedor") & " " & DataSet.Tables("Proveedor").Rows(0)("Apellido_Proveedor")
                 End If
 
-                If Not IsDBNull(DataSet.Tables("Datos").Rows(0)("Id_Placa")) Then
-                    Me.CboPlaca.Text = DataSet.Tables("Datos").Rows(0)("Id_Placa")
+            End If
+
+        ElseIf Quien = "SalidaBascula" Then
+            SqlProveedor = "SELECT  * FROM Proveedor  WHERE (Cod_Proveedor = '" & Me.CboCodigoProveedor.Text & "') AND (InventarioFisico = 1)"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+            DataAdapter.Fill(DataSet, "Proveedor")
+            If Not DataSet.Tables("Proveedor").Rows.Count = 0 Then
+                Me.txtnombre.Text = DataSet.Tables("Proveedor").Rows(0)("Nombre_Proveedor")
+
+                If Not IsDBNull(DataSet.Tables("Proveedor").Rows(0)("Apellido_Proveedor")) Then
+                    Me.txtnombre.Text = DataSet.Tables("Proveedor").Rows(0)("Nombre_Proveedor") & " " & DataSet.Tables("Proveedor").Rows(0)("Apellido_Proveedor")
                 End If
-                If Not IsDBNull(DataSet.Tables("Datos").Rows(0)("Cod_SubProveedor")) Then
-                    CodigoSubProveedor = DataSet.Tables("Datos").Rows(0)("Cod_SubProveedor")
-                End If
+
             End If
 
 
+        ElseIf Quien = "Repesaje" Then
+            SqlProveedor = "SELECT  * FROM Proveedor  WHERE (Cod_Proveedor = '" & Me.CboCodigoProveedor.Text & "') AND (InventarioFisico = 1)"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+            DataAdapter.Fill(DataSet, "Proveedor")
+            If Not DataSet.Tables("Proveedor").Rows.Count = 0 Then
+                Me.txtnombre.Text = DataSet.Tables("Proveedor").Rows(0)("Nombre_Proveedor")
+
+                If Not IsDBNull(DataSet.Tables("Proveedor").Rows(0)("Apellido_Proveedor")) Then
+                    Me.txtnombre.Text = DataSet.Tables("Proveedor").Rows(0)("Nombre_Proveedor") & " " & DataSet.Tables("Proveedor").Rows(0)("Apellido_Proveedor")
+                End If
+
+            End If
+
+
+        End If
+
+
+        '////////////////////////////////////////////////BUSCO DATOS DEL CONDUCTOR ///////////////////////////////////
+        SqlProveedor = "SELECT DISTINCT Conductor, Id_identificacion, Id_Vehiculo, Cod_Bodega, Observaciones, SubTotal, Telefono,Cod_SubProveedor  FROM Recepcion WHERE (Cod_Proveedor = '" & Me.CboCodigoProveedor.Text & "') ORDER BY Conductor"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+        DataAdapter.Fill(DataSet, "Datos")
+        If Not DataSet.Tables("Datos").Rows.Count = 0 Then
+            If Not IsDBNull(DataSet.Tables("Datos").Rows(0)("Conductor")) Then
+                Me.CboConductor.Text = DataSet.Tables("Datos").Rows(0)("Conductor")
+            End If
+            If Not IsDBNull(DataSet.Tables("Datos").Rows(0)("Id_identificacion")) Then
+                Me.txtid.Text = DataSet.Tables("Datos").Rows(0)("Id_identificacion")
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Datos").Rows(0)("Id_Vehiculo")) Then
+                Me.CboPlaca.Text = DataSet.Tables("Datos").Rows(0)("Id_Vehiculo")
+            End If
+            If Not IsDBNull(DataSet.Tables("Datos").Rows(0)("Cod_SubProveedor")) Then
+                CodigoSubProveedor = DataSet.Tables("Datos").Rows(0)("Cod_SubProveedor")
+            End If
         End If
 
     End Sub
@@ -796,7 +829,7 @@ Public Class FrmRecepcion
                     Me.CboCodigoProveedor.Text = DataSet.Tables("Recepcion").Rows(0)("Cod_Proveedor")
                     Me.CboConductor.Text = DataSet.Tables("Recepcion").Rows(0)("Conductor")
                     Me.txtid.Text = DataSet.Tables("Recepcion").Rows(0)("Id_identificacion")
-                    Me.CboPlaca.Text = DataSet.Tables("Recepcion").Rows(0)("Id_Placa")
+                    Me.CboPlaca.Text = DataSet.Tables("Recepcion").Rows(0)("Id_Vehiculo")
                     Me.txtobservaciones.Text = DataSet.Tables("Recepcion").Rows(0)("Observaciones")
                     Me.txtsubtotal.Text = TotalRecepcion(Me.TxtNumeroEnsamble.Text, Me.DTPFecha.Text, Me.CboTipoRecepcion.Text)
                     Me.LblHora.Text = Format(DataSet.Tables("Recepcion").Rows(0)("FechaHora"), "hh:mm:ss tt")
@@ -907,7 +940,7 @@ Public Class FrmRecepcion
         iPosicion = 0
 
         Do While iPosicion < Registros
-            CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Productos")
+            CodigoProducto = DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Cod_Productos")
 
             'If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descuento")) Then
             '    Descuento = Me.BindingDetalle.Item(iPosicion)("Descuento")
@@ -915,8 +948,8 @@ Public Class FrmRecepcion
             PrecioFOB = 0 'Me.BindingDetalle.Item(iPosicion)("FOB")
             PrecioCosto = 0 'Me.BindingDetalle.Item(iPosicion)("Precio_Costo")
             Descuento = 0
-            If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("PesoNetoKg")) Then
-                Cantidad = Me.BindingDetalle.Item(iPosicion)("PesoNetoKg")
+            If Not IsDBNull(DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("PesoNetoKg")) Then
+                Cantidad = DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("PesoNetoKg")
                 PrecioUnitario = 0 'PrecioCosto / Cantidad
             End If
             PrecioNeto = PrecioUnitario * Cantidad
@@ -929,14 +962,25 @@ Public Class FrmRecepcion
             iPosicion = iPosicion + 1
         Loop
 
-        ''//////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ''////////////////////////////////////////DESACTIVO LA LIQUIDACION/////////////////////////////////////////
-        ''////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        'MiConexion.Close()
-        'StrSqlUpdate = "UPDATE [Liquidacion] SET [Activo] = 0  WHERE (Numero_Liquidacion = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Liquidacion = CONVERT(DATETIME, '" & Format(Me.DTPFecha.Value, "yyyy-MM-dd") & "', 102))"
-        'MiConexion.Open()
-        'ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-        'iResultado = ComandoUpdate.ExecuteNonQuery
-        'MiConexion.Close()
+
+        MsgBox("Se ha Procesado con la Compra " & NumeroCompra, MsgBoxStyle.Information, "Zeus Facturacion")
+    End Sub
+
+    Private Sub CmbTipoPesada_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmbTipoPesada.SelectedIndexChanged
+
+        Select Case Me.CmbTipoPesada.Text
+
+            Case "PESADA BASCULA"
+                Me.Button11.Enabled = True
+                Me.Button10.Enabled = True
+                Me.CmdPesada.Visible = False
+
+            Case "PESADA MANUAL"
+                Me.Button11.Enabled = False
+                Me.Button10.Enabled = False
+                Me.CmdPesada.Visible = True
+
+
+        End Select
     End Sub
 End Class
