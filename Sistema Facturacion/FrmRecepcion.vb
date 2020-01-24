@@ -963,6 +963,12 @@ Public Class FrmRecepcion
         Loop
 
 
+        StrSqlUpdate = "UPDATE [Recepcion] SET [Numero_Compra] = '" & NumeroCompra & "' ,[Tipo_Compra] = 'Mercancia Recibida' ,[Fecha_Compra] = '" & CDate(Me.DTPFecha.Text) & "' ,[Procesado] = 1 WHERE  (NumeroRecepcion = '" & NumeroCompra & "') AND (TipoRecepcion = 'Recepcion')"
+        MiConexion.Open()
+        ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+        iResultado = ComandoUpdate.ExecuteNonQuery
+        MiConexion.Close()
+
         MsgBox("Se ha Procesado con la Compra " & NumeroCompra, MsgBoxStyle.Information, "Zeus Facturacion")
     End Sub
 
