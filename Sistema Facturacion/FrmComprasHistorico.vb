@@ -44,7 +44,7 @@ Public Class FrmComprasHistorico
         Dim SqlProveedor As String, CodProducto As String
         Dim ConsecutivoCompra As Double, iPosicion As Double, Registros As Double, NumeroCompra As String
         Dim CodigoProducto As String, PrecioUnitario As Double, Descuento As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double
-        Dim DiferenciaCantidad As Double, DiferenciaPrecio As Double, NumeroLote As String, FechaLote As Date
+        Dim DiferenciaCantidad As Double, DiferenciaPrecio As Double, NumeroLote As String, FechaLote As Date, DescripcionProducto As String
 
         If Me.CboCodigoBodega.Text = "" Then
             MsgBox("Es necesario que seleccione el tipo de Compra", MsgBoxStyle.Critical, "Sistema Facturacion")
@@ -92,6 +92,8 @@ Public Class FrmComprasHistorico
                     ConsecutivoCompra = BuscaConsecutivo("DevCompra")
                 Case "Transferencia Recibida"
                     ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
+                Case "Cuenta"
+                    ConsecutivoCompra = BuscaConsecutivo("Cuenta")
             End Select
         Else
             ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
@@ -120,6 +122,9 @@ Public Class FrmComprasHistorico
 
 
         CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Productos")
+        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto")) Then
+            DescripcionProducto = Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto")
+        End If
         PrecioUnitario = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
         If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descuento")) Then
             Descuento = Me.BindingDetalle.Item(iPosicion)("Descuento")
@@ -141,7 +146,7 @@ Public Class FrmComprasHistorico
             FechaLote = "01/01/1900"
         End If
 
-        GrabaDetalleCompra(NumeroCompra, CodigoProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, NumeroLote, FechaLote)
+        GrabaDetalleCompra(NumeroCompra, CodigoProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, NumeroLote, FechaLote, DescripcionProducto)
 
         Select Case Me.CboTipoProducto.Text
             Case "Mercancia Recibida"

@@ -90,7 +90,7 @@ Public Class FrmCuentasXPagar
         '/////////////////////////AGREGO LA CONSULTA PARA TODAS LAS FACTURAS DE CREDITO //////////////////////////////////////////////////////
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         SQlString = "SELECT CASE WHEN Detalle_MetodoCompras.Monto = Compras.SubTotal + Compras.IVA THEN 'Contado' ELSE 'Credito' END AS MetodoPago, Detalle_MetodoCompras.Monto, Compras.* FROM Compras LEFT OUTER JOIN Detalle_MetodoCompras ON Compras.Numero_Compra = Detalle_MetodoCompras.Numero_Compra AND Compras.Fecha_Compra = Detalle_MetodoCompras.Fecha_Compra And Compras.Tipo_Compra = Detalle_MetodoCompras.Tipo_Compra  " & _
-                    "WHERE (Compras.Tipo_Compra = 'Mercancia Recibida') AND (Compras.Cod_Proveedor = '" & Me.CboCodigoProveedor.Text & "') AND (CASE WHEN Detalle_MetodoCompras.Monto = Compras.SubTotal + Compras.IVA THEN 'Contado' ELSE 'Credito' END = 'Credito')"
+                    "WHERE (Compras.Tipo_Compra = 'Mercancia Recibida') AND (Compras.Cod_Proveedor = '" & Me.CboCodigoProveedor.Text & "') AND (CASE WHEN Detalle_MetodoCompras.Monto = Compras.SubTotal + Compras.IVA THEN 'Contado' ELSE 'Credito' END = 'Credito') OR (Compras.Tipo_Compra = 'Cuenta')"
         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
         DataAdapter.Fill(DataSet, "Proveedores")
         Registros = DataSet.Tables("Proveedores").Rows.Count

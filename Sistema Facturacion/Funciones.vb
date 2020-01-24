@@ -5862,7 +5862,7 @@ Module Funciones
 
 
 
-    Public Sub GrabaDetalleCompra(ByVal ConsecutivoCompra As String, ByVal CodProducto As String, ByVal PrecioUnitario As Double, ByVal Descuento As Double, ByVal PrecioNeto As Double, ByVal Importe As Double, ByVal Cantidad As Double, ByVal Numero_Lote As String, ByVal Fecha_Lote As Date)
+    Public Sub GrabaDetalleCompra(ByVal ConsecutivoCompra As String, ByVal CodProducto As String, ByVal PrecioUnitario As Double, ByVal Descuento As Double, ByVal PrecioNeto As Double, ByVal Importe As Double, ByVal Cantidad As Double, ByVal Numero_Lote As String, ByVal Fecha_Lote As Date, ByVal DescripcionProducto As String)
         Dim Sqldetalle As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, TasaCambio As String
         Dim Fecha As String, MiConexion As New SqlClient.SqlConnection(Conexion), SqlUpdate As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, MonedaCompra As String, MonedaProducto As String
@@ -5909,8 +5909,8 @@ Module Funciones
 
         Else
 
-            SqlUpdate = "INSERT INTO [Detalle_Compras] ([Numero_Compra],[Fecha_Compra],[Tipo_Compra],[Cod_Producto],[Cantidad],[Precio_Unitario],[Descuento],[Precio_Neto],[Importe],[TasaCambio],[Numero_Lote],[Fecha_Vence]) " & _
-            "VALUES ('" & ConsecutivoCompra & "','" & FrmCompras.DTPFecha.Value & "','" & FrmCompras.CboTipoProducto.Text & "','" & CodProducto & "' ," & Cantidad & "," & PrecioUnitario & "," & Descuento & " ," & PrecioNeto & "," & Importe & "," & TasaCambio & ",'" & Numero_Lote & "','" & Format(Fecha_Lote, "dd/MM/yyyy") & "')"
+            SqlUpdate = "INSERT INTO [Detalle_Compras] ([Numero_Compra],[Fecha_Compra],[Tipo_Compra],[Cod_Producto],[Cantidad],[Precio_Unitario],[Descuento],[Precio_Neto],[Importe],[TasaCambio],[Numero_Lote],[Fecha_Vence],[Descripcion_Producto])" & _
+            "VALUES ('" & ConsecutivoCompra & "','" & FrmCompras.DTPFecha.Value & "','" & FrmCompras.CboTipoProducto.Text & "','" & CodProducto & "' ," & Cantidad & "," & PrecioUnitario & "," & Descuento & " ," & PrecioNeto & "," & Importe & "," & TasaCambio & ",'" & Numero_Lote & "','" & Format(Fecha_Lote, "dd/MM/yyyy") & "', '" & DescripcionProducto & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
