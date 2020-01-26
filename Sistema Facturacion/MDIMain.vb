@@ -998,4 +998,9 @@ Public Class MDIMain
 
         '
     End Sub
+
+    Private Sub RibbonButton5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton5.Click
+        My.Forms.FrmFacturacionBascula.MdiParent = Me
+        My.Forms.FrmFacturacionBascula.Show()
+    End Sub
 End Class

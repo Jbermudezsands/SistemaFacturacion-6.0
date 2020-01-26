@@ -22,6 +22,7 @@ Partial Class FrmRecepcion
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmRecepcion))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.CmbTipoPesada = New System.Windows.Forms.ComboBox
         Me.C1Button2 = New C1.Win.C1Input.C1Button
         Me.CboCodigoBodega = New C1.Win.C1List.C1Combo
         Me.CmdPesada = New System.Windows.Forms.Button
@@ -82,7 +83,6 @@ Partial Class FrmRecepcion
         Me.LblEstado = New System.Windows.Forms.Label
         Me.txtapellido = New System.Windows.Forms.TextBox
         Me.CmdFacturar = New System.Windows.Forms.Button
-        Me.CmbTipoPesada = New System.Windows.Forms.ComboBox
         Me.GroupBox1.SuspendLayout()
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboCodigoProducto, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -116,6 +116,17 @@ Partial Class FrmRecepcion
         Me.GroupBox1.Size = New System.Drawing.Size(528, 175)
         Me.GroupBox1.TabIndex = 225
         Me.GroupBox1.TabStop = False
+        '
+        'CmbTipoPesada
+        '
+        Me.CmbTipoPesada.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbTipoPesada.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CmbTipoPesada.FormattingEnabled = True
+        Me.CmbTipoPesada.Items.AddRange(New Object() {"PESADA BASCULA", "PESADA MANUAL"})
+        Me.CmbTipoPesada.Location = New System.Drawing.Point(9, 78)
+        Me.CmbTipoPesada.Name = "CmbTipoPesada"
+        Me.CmbTipoPesada.Size = New System.Drawing.Size(205, 32)
+        Me.CmbTipoPesada.TabIndex = 248
         '
         'C1Button2
         '
@@ -913,17 +924,6 @@ Partial Class FrmRecepcion
         Me.CmdFacturar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.CmdFacturar.UseVisualStyleBackColor = True
         Me.CmdFacturar.Visible = False
-        '
-        'CmbTipoPesada
-        '
-        Me.CmbTipoPesada.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CmbTipoPesada.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CmbTipoPesada.FormattingEnabled = True
-        Me.CmbTipoPesada.Items.AddRange(New Object() {"PESADA BASCULA", "PESADA MANUAL"})
-        Me.CmbTipoPesada.Location = New System.Drawing.Point(9, 78)
-        Me.CmbTipoPesada.Name = "CmbTipoPesada"
-        Me.CmbTipoPesada.Size = New System.Drawing.Size(205, 32)
-        Me.CmbTipoPesada.TabIndex = 248
         '
         'FrmRecepcion
         '

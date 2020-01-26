@@ -35,6 +35,7 @@ Public Class FrmRecepcion
             DataAdapter = New SqlClient.SqlDataAdapter(sql, MiConexion)
             DataAdapter.Fill(DataSet, "ListaProveedores")
             Me.CboCodigoProveedor.DataSource = DataSet.Tables("ListaProveedores")
+            Me.LblSucursal.Text = "RECEPCION DE PRODUCTOS"
 
             Me.CboCodigoProveedor.Columns(0).Caption = "Codigo"
             Me.CboCodigoProveedor.Columns(1).Caption = "Proveedor"
@@ -49,6 +50,7 @@ Public Class FrmRecepcion
             DataAdapter = New SqlClient.SqlDataAdapter(sql, MiConexion)
             DataAdapter.Fill(DataSet, "ListaClientes")
             Me.CboCodigoProveedor.DataSource = DataSet.Tables("ListaClientes")
+            Me.LblSucursal.Text = "SALIDA DE PRODUCTOS"
 
             Me.CboCodigoProveedor.Columns(0).Caption = "Codigo"
             Me.CboCodigoProveedor.Columns(1).Caption = "Clientes"
@@ -62,6 +64,8 @@ Public Class FrmRecepcion
             DataAdapter = New SqlClient.SqlDataAdapter(sql, MiConexion)
             DataAdapter.Fill(DataSet, "ListaProveedores")
             Me.CboCodigoProveedor.DataSource = DataSet.Tables("ListaProveedores")
+
+            Me.LblSucursal.Text = "REPESAJE DE PRODUCTOS"
 
             Me.CboCodigoProveedor.Columns(0).Caption = "Codigo"
             Me.CboCodigoProveedor.Columns(1).Caption = "Proveedor"
@@ -294,14 +298,14 @@ Public Class FrmRecepcion
             End If
 
         ElseIf Quien = "SalidaBascula" Then
-            SqlProveedor = "SELECT  * FROM Proveedor  WHERE (Cod_Proveedor = '" & Me.CboCodigoProveedor.Text & "') AND (InventarioFisico = 1)"
+            SqlProveedor = "SELECT * FROM Clientes WHERE (Cod_Cliente = '" & Me.CboCodigoProveedor.Text & "')"
             DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-            DataAdapter.Fill(DataSet, "Proveedor")
-            If Not DataSet.Tables("Proveedor").Rows.Count = 0 Then
-                Me.txtnombre.Text = DataSet.Tables("Proveedor").Rows(0)("Nombre_Proveedor")
+            DataAdapter.Fill(DataSet, "Clientes")
+            If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
+                Me.txtnombre.Text = DataSet.Tables("Clientes").Rows(0)("Nombre_Cliente")
 
-                If Not IsDBNull(DataSet.Tables("Proveedor").Rows(0)("Apellido_Proveedor")) Then
-                    Me.txtnombre.Text = DataSet.Tables("Proveedor").Rows(0)("Nombre_Proveedor") & " " & DataSet.Tables("Proveedor").Rows(0)("Apellido_Proveedor")
+                If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Apellido_Cliente")) Then
+                    Me.txtnombre.Text = DataSet.Tables("Clientes").Rows(0)("Nombre_Cliente") & " " & DataSet.Tables("Clientes").Rows(0)("Apellido_Cliente")
                 End If
 
             End If
@@ -783,17 +787,39 @@ Public Class FrmRecepcion
     End Sub
 
     Private Sub Button5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click
-        Quien = "Recepcion"
-        My.Forms.FrmConsultas.ShowDialog()
-        If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
-            Me.DTPFecha.Text = FrmConsultas.Fecha
-            Me.CboConductor.Text = FrmConsultas.Conductor
-            Me.CboCodigoProveedor.Text = FrmConsultas.CodProveedor
-            Me.CboTipoRecepcion.Text = FrmConsultas.TipoCompra
-            Me.TxtNumeroEnsamble.Text = FrmConsultas.Codigo
+        If Quien = "Recepcion" Then
+            My.Forms.FrmConsultas.ShowDialog()
+            If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
+                Me.DTPFecha.Text = FrmConsultas.Fecha
+                Me.CboConductor.Text = FrmConsultas.Conductor
+                Me.CboCodigoProveedor.Text = FrmConsultas.CodProveedor
+                Me.CboTipoRecepcion.Text = FrmConsultas.TipoCompra
+                Me.TxtNumeroEnsamble.Text = FrmConsultas.Codigo
+            End If
+
+        ElseIf Quien = "SalidaBascula" Then
+            My.Forms.FrmConsultas.ShowDialog()
+            If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
+                Me.DTPFecha.Text = FrmConsultas.Fecha
+                Me.CboConductor.Text = FrmConsultas.Conductor
+                Me.CboCodigoProveedor.Text = FrmConsultas.CodProveedor
+                Me.CboTipoRecepcion.Text = FrmConsultas.TipoCompra
+                Me.TxtNumeroEnsamble.Text = FrmConsultas.Codigo
+            End If
+
+        ElseIf Quien = "Repesaje" Then
+            My.Forms.FrmConsultas.ShowDialog()
+            If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
+                Me.DTPFecha.Text = FrmConsultas.Fecha
+                Me.CboConductor.Text = FrmConsultas.Conductor
+                Me.CboCodigoProveedor.Text = FrmConsultas.CodProveedor
+                Me.CboTipoRecepcion.Text = FrmConsultas.TipoCompra
+                Me.TxtNumeroEnsamble.Text = FrmConsultas.Codigo
+            End If
         End If
         My.Application.DoEvents()
         Siguiente()
+
     End Sub
 
     Private Sub TxtNumeroEnsamble_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtNumeroEnsamble.TextChanged
@@ -818,10 +844,20 @@ Public Class FrmRecepcion
 
                 TipoCompra = Me.CboTipoRecepcion.Text
                 Fecha = Format(CDate(Me.DTPFecha.Text), "yyyy-MM-dd")
-                'SqlCompras = "SELECT Proveedor.Nombre_Proveedor, Recepcion.* FROM Recepcion INNER JOIN Proveedor ON Recepcion.Cod_Proveedor = Proveedor.Cod_Proveedor  " & _
-                '             "WHERE (Recepcion.Activo = 1) AND (Recepcion.NumeroRecepcion = '" & Me.TxtNumeroEnsamble.Text & "') AND (Recepcion.Fecha = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Recepcion.TipoRecepcion = '" & Me.CboTipoRecepcion.Text & "')"
-                SqlCompras = "SELECT Proveedor.Nombre_Proveedor, Recepcion.* FROM Recepcion INNER JOIN Proveedor ON Recepcion.Cod_Proveedor = Proveedor.Cod_Proveedor  " & _
-                             "WHERE (Recepcion.NumeroRecepcion = '" & Me.TxtNumeroEnsamble.Text & "') AND (Recepcion.Fecha BETWEEN CONVERT(DATETIME, '" & Fecha & " 00:00:00', 102) AND CONVERT(DATETIME, '" & Fecha & " 23:59:00', 102)) AND (Recepcion.TipoRecepcion = 'Recepcion')"
+
+                If TipoCompra = "Recepcion" Then
+                    SqlCompras = "SELECT Proveedor.Nombre_Proveedor, Recepcion.* FROM Recepcion INNER JOIN Proveedor ON Recepcion.Cod_Proveedor = Proveedor.Cod_Proveedor  " & _
+                                 "WHERE (Recepcion.NumeroRecepcion = '" & Me.TxtNumeroEnsamble.Text & "') AND (Recepcion.Fecha BETWEEN CONVERT(DATETIME, '" & Fecha & " 00:00:00', 102) AND CONVERT(DATETIME, '" & Fecha & " 23:59:00', 102)) AND (Recepcion.TipoRecepcion = '" & TipoCompra & "')"
+
+                ElseIf TipoCompra = "SalidaBascula" Then
+                    SqlCompras = "SELECT Clientes.Nombre_Cliente + ' ' + Apellido_Cliente As Nombre_Proveedor, Recepcion.* FROM Recepcion INNER JOIN Clientes ON Recepcion.Cod_Proveedor = Clientes.Cod_Cliente  " & _
+                                 "WHERE (Recepcion.NumeroRecepcion = '" & Me.TxtNumeroEnsamble.Text & "') AND (Recepcion.Fecha BETWEEN CONVERT(DATETIME, '" & Fecha & " 00:00:00', 102) AND CONVERT(DATETIME, '" & Fecha & " 23:59:00', 102)) AND (Recepcion.TipoRecepcion = '" & TipoCompra & "')"
+                ElseIf TipoCompra = "Repesaje" Then
+                    SqlCompras = "SELECT Proveedor.Nombre_Proveedor, Recepcion.* FROM Recepcion INNER JOIN Proveedor ON Recepcion.Cod_Proveedor = Proveedor.Cod_Proveedor  " & _
+                                 "WHERE (Recepcion.NumeroRecepcion = '" & Me.TxtNumeroEnsamble.Text & "') AND (Recepcion.Fecha BETWEEN CONVERT(DATETIME, '" & Fecha & " 00:00:00', 102) AND CONVERT(DATETIME, '" & Fecha & " 23:59:00', 102)) AND (Recepcion.TipoRecepcion = '" & TipoCompra & "')"
+
+                End If
+
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
                 DataAdapter.Fill(DataSet, "Recepcion")
                 If Not DataSet.Tables("Recepcion").Rows.Count = 0 Then
@@ -836,6 +872,11 @@ Public Class FrmRecepcion
                     Me.Timer1.Stop()
 
                     If DataSet.Tables("Recepcion").Rows(0)("Contabilizado") = "True" Then
+                        Me.Button7.Enabled = False
+                        Me.Button10.Enabled = False
+                        Me.Button11.Enabled = False
+                        Me.BtnProcesar.Enabled = False
+                    ElseIf DataSet.Tables("Recepcion").Rows(0)("Procesado") = "True" Then
                         Me.Button7.Enabled = False
                         Me.Button10.Enabled = False
                         Me.Button11.Enabled = False
@@ -962,8 +1003,9 @@ Public Class FrmRecepcion
             iPosicion = iPosicion + 1
         Loop
 
+        MiConexion.Close()
 
-        StrSqlUpdate = "UPDATE [Recepcion] SET [Numero_Compra] = '" & NumeroCompra & "' ,[Tipo_Compra] = 'Mercancia Recibida' ,[Fecha_Compra] = '" & CDate(Me.DTPFecha.Text) & "' ,[Procesado] = 1 WHERE  (NumeroRecepcion = '" & NumeroCompra & "') AND (TipoRecepcion = 'Recepcion')"
+        StrSqlUpdate = "UPDATE [Recepcion] SET [Numero_Compra] = '" & NumeroCompra & "' ,[Tipo_Compra] = 'Mercancia Recibida' ,[Fecha_Compra] = '" & CDate(Me.DTPFecha.Text) & "' ,[Procesado] = 1 WHERE  (NumeroRecepcion = '" & Me.TxtNumeroEnsamble.Text & "') AND (TipoRecepcion = 'Recepcion')"
         MiConexion.Open()
         ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
         iResultado = ComandoUpdate.ExecuteNonQuery
@@ -988,5 +1030,9 @@ Public Class FrmRecepcion
 
 
         End Select
+    End Sub
+
+    Private Sub CboTipoRecepcion_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboTipoRecepcion.SelectedIndexChanged
+
     End Sub
 End Class

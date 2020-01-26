@@ -686,14 +686,14 @@ Partial Public Class ArepRecepcion
         Me.LblNombres.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblNombres.Border.TopColor = System.Drawing.Color.Black
         Me.LblNombres.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblNombres.Height = 0.2105262!
+        Me.LblNombres.Height = 0.3333333!
         Me.LblNombres.HyperLink = Nothing
-        Me.LblNombres.Left = 0.8125!
+        Me.LblNombres.Left = 0.8333333!
         Me.LblNombres.Name = "LblNombres"
         Me.LblNombres.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.LblNombres.Text = ""
-        Me.LblNombres.Top = 0.3125!
-        Me.LblNombres.Width = 2.736842!
+        Me.LblNombres.Top = 0.3333333!
+        Me.LblNombres.Width = 2.722222!
         '
         'LblConductor
         '
@@ -705,14 +705,14 @@ Partial Public Class ArepRecepcion
         Me.LblConductor.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblConductor.Border.TopColor = System.Drawing.Color.Black
         Me.LblConductor.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblConductor.Height = 0.1875!
+        Me.LblConductor.Height = 0.1666667!
         Me.LblConductor.HyperLink = Nothing
-        Me.LblConductor.Left = 4.9375!
+        Me.LblConductor.Left = 4.611111!
         Me.LblConductor.Name = "LblConductor"
         Me.LblConductor.Style = "ddo-char-set: 0; text-align: left; font-size: 8.25pt; "
         Me.LblConductor.Text = ""
-        Me.LblConductor.Top = 0.3125!
-        Me.LblConductor.Width = 1.4375!
+        Me.LblConductor.Top = 0.3333333!
+        Me.LblConductor.Width = 1.888889!
         '
         'Label2
         '
@@ -750,6 +750,7 @@ Partial Public Class ArepRecepcion
         Me.Label4.Style = "ddo-char-set: 0; text-align: left; font-weight: bold; font-size: 8.25pt; "
         Me.Label4.Text = "Origen"
         Me.Label4.Top = 0.5625!
+        Me.Label4.Visible = False
         Me.Label4.Width = 0.7368421!
         '
         'Label6
@@ -764,11 +765,11 @@ Partial Public Class ArepRecepcion
         Me.Label6.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label6.Height = 0.1875!
         Me.Label6.HyperLink = Nothing
-        Me.Label6.Left = 4.1875!
+        Me.Label6.Left = 3.888889!
         Me.Label6.Name = "Label6"
         Me.Label6.Style = "ddo-char-set: 0; text-align: left; font-weight: bold; font-size: 8.25pt; "
         Me.Label6.Text = "Conductor"
-        Me.Label6.Top = 0.3125!
+        Me.Label6.Top = 0.3333333!
         Me.Label6.Width = 0.6875!
         '
         'LblOrigen
@@ -781,14 +782,15 @@ Partial Public Class ArepRecepcion
         Me.LblOrigen.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblOrigen.Border.TopColor = System.Drawing.Color.Black
         Me.LblOrigen.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblOrigen.Height = 0.2105264!
+        Me.LblOrigen.Height = 0.1666667!
         Me.LblOrigen.HyperLink = Nothing
-        Me.LblOrigen.Left = 0.8125!
+        Me.LblOrigen.Left = 0.8333333!
         Me.LblOrigen.Name = "LblOrigen"
         Me.LblOrigen.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.LblOrigen.Text = ""
-        Me.LblOrigen.Top = 0.5625!
-        Me.LblOrigen.Width = 2.736842!
+        Me.LblOrigen.Top = 0.6111111!
+        Me.LblOrigen.Visible = False
+        Me.LblOrigen.Width = 2.722222!
         '
         'LblCedula
         '
@@ -800,14 +802,14 @@ Partial Public Class ArepRecepcion
         Me.LblCedula.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblCedula.Border.TopColor = System.Drawing.Color.Black
         Me.LblCedula.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblCedula.Height = 0.1875!
+        Me.LblCedula.Height = 0.1666667!
         Me.LblCedula.HyperLink = Nothing
-        Me.LblCedula.Left = 4.9375!
+        Me.LblCedula.Left = 4.611111!
         Me.LblCedula.Name = "LblCedula"
         Me.LblCedula.Style = "ddo-char-set: 0; text-align: left; font-size: 8.25pt; "
         Me.LblCedula.Text = ""
-        Me.LblCedula.Top = 0.5625!
-        Me.LblCedula.Width = 1.4375!
+        Me.LblCedula.Top = 0.5555556!
+        Me.LblCedula.Width = 1.888889!
         '
         'Label8
         '
@@ -821,11 +823,11 @@ Partial Public Class ArepRecepcion
         Me.Label8.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label8.Height = 0.1875!
         Me.Label8.HyperLink = Nothing
-        Me.Label8.Left = 4.1875!
+        Me.Label8.Left = 3.888889!
         Me.Label8.Name = "Label8"
         Me.Label8.Style = "ddo-char-set: 0; text-align: left; font-weight: bold; font-size: 8.25pt; "
         Me.Label8.Text = "Cedula"
-        Me.Label8.Top = 0.5625!
+        Me.Label8.Top = 0.5555556!
         Me.Label8.Width = 0.6875!
         '
         'Label9
@@ -845,6 +847,7 @@ Partial Public Class ArepRecepcion
         Me.Label9.Style = "ddo-char-set: 0; text-align: left; font-weight: bold; font-size: 8.25pt; "
         Me.Label9.Text = "Pila"
         Me.Label9.Top = 0.8125!
+        Me.Label9.Visible = False
         Me.Label9.Width = 0.7368421!
         '
         'LblPila
@@ -864,6 +867,7 @@ Partial Public Class ArepRecepcion
         Me.LblPila.Style = "ddo-char-set: 0; text-align: left; font-size: 8.25pt; "
         Me.LblPila.Text = ""
         Me.LblPila.Top = 0.8125!
+        Me.LblPila.Visible = False
         Me.LblPila.Width = 2.736842!
         '
         'Label10
@@ -878,11 +882,11 @@ Partial Public Class ArepRecepcion
         Me.Label10.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label10.Height = 0.1875!
         Me.Label10.HyperLink = Nothing
-        Me.Label10.Left = 4.1875!
+        Me.Label10.Left = 3.888889!
         Me.Label10.Name = "Label10"
         Me.Label10.Style = "ddo-char-set: 0; text-align: left; font-weight: bold; font-size: 8.25pt; "
         Me.Label10.Text = "Placa"
-        Me.Label10.Top = 0.8125!
+        Me.Label10.Top = 0.8333333!
         Me.Label10.Width = 0.6875!
         '
         'LblPlaca
@@ -895,14 +899,14 @@ Partial Public Class ArepRecepcion
         Me.LblPlaca.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblPlaca.Border.TopColor = System.Drawing.Color.Black
         Me.LblPlaca.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblPlaca.Height = 0.1875!
+        Me.LblPlaca.Height = 0.1666667!
         Me.LblPlaca.HyperLink = Nothing
-        Me.LblPlaca.Left = 4.9375!
+        Me.LblPlaca.Left = 4.611111!
         Me.LblPlaca.Name = "LblPlaca"
         Me.LblPlaca.Style = "ddo-char-set: 0; text-align: left; font-size: 8.25pt; "
         Me.LblPlaca.Text = ""
-        Me.LblPlaca.Top = 0.8125!
-        Me.LblPlaca.Width = 1.4375!
+        Me.LblPlaca.Top = 0.8333333!
+        Me.LblPlaca.Width = 1.888889!
         '
         'GroupFooter1
         '
@@ -1005,7 +1009,7 @@ Partial Public Class ArepRecepcion
         Me.PageSettings.Margins.Top = 0.5!
         Me.PageSettings.PaperHeight = 11.0!
         Me.PageSettings.PaperWidth = 8.5!
-        Me.PrintWidth = 7.674891!
+        Me.PrintWidth = 6.622807!
         Me.Sections.Add(Me.ReportHeader1)
         Me.Sections.Add(Me.PageHeader1)
         Me.Sections.Add(Me.GroupHeader1)

@@ -133,6 +133,7 @@ Partial Class MDIMain
         Me.RibbonRecepcion = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonSalidaBascula = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton4 = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonButton5 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonGroup12 = New C1.Win.C1Ribbon.RibbonGroup
         Me.RibbonConductor = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonVehiculo = New C1.Win.C1Ribbon.RibbonButton
@@ -142,7 +143,6 @@ Partial Class MDIMain
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
         Me.TxtUsuario = New System.Windows.Forms.TextBox
-        Me.RibbonButton5 = New C1.Win.C1Ribbon.RibbonButton
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1043,6 +1043,14 @@ Partial Class MDIMain
         Me.RibbonButton4.Text = "Repesaje"
         Me.RibbonButton4.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
+        'RibbonButton5
+        '
+        Me.RibbonButton5.ID = "RibbonButton5"
+        Me.RibbonButton5.LargeImage = CType(resources.GetObject("RibbonButton5.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton5.SmallImage = CType(resources.GetObject("RibbonButton5.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton5.Text = "Facturacion"
+        Me.RibbonButton5.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
         'RibbonGroup12
         '
         Me.RibbonGroup12.ID = "RibbonGroup12"
@@ -1112,14 +1120,6 @@ Partial Class MDIMain
         Me.TxtUsuario.TabIndex = 15
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
-        '
-        'RibbonButton5
-        '
-        Me.RibbonButton5.ID = "RibbonButton5"
-        Me.RibbonButton5.LargeImage = CType(resources.GetObject("RibbonButton5.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton5.SmallImage = CType(resources.GetObject("RibbonButton5.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton5.Text = "Facturacion"
-        Me.RibbonButton5.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'MDIMain
         '
