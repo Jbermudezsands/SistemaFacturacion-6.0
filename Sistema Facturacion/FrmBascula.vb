@@ -237,7 +237,7 @@ Public Class FrmBascula
         Me.TrueDBGridComponentes.Columns("Tara").Text = Tara
         Me.TrueDBGridComponentes.Columns("PesoNetoLb").Text = PesoNetoLb
         Me.TrueDBGridComponentes.Columns("PesoNetoKg").Text = PesoNetoKg
-        Me.TrueDBGridComponentes.Columns("QQ").Text = QQ
+        Me.TrueDBGridComponentes.Columns("Saco").Text = QQ
         'Me.TrueDBGridComponentes.Columns(11).Text = Format(Precio / 46, "##,##0.00")
         Me.TrueDBGridComponentes.Columns("Linea").Text = Linea
         Me.TxtNumeroRemision.Text = NumeroRemision
@@ -521,7 +521,7 @@ Public Class FrmBascula
             Exit Sub
         End If
 
-        If TipoPesada = "Repesaje" & Posicion Then
+        If TipoPesada = "Repesaje" Then
             'TotalRecibos = Me.TDBGridDetalle.Columns("PesoNeto2").Text
 
             ''/////////////////////SE QUITA VALIDACION POR INTRUCCIONES DE EXPORTADORA ARCHIVO EXCEL 30/07/2019 /

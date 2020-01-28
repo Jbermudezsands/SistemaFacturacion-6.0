@@ -82,7 +82,7 @@ Partial Class FrmPagos
         Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label9.Location = New System.Drawing.Point(220, 24)
+        Me.Label9.Location = New System.Drawing.Point(277, 24)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(245, 13)
         Me.Label9.TabIndex = 166
@@ -104,7 +104,7 @@ Partial Class FrmPagos
         Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox1.Location = New System.Drawing.Point(-2, 0)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(749, 60)
+        Me.PictureBox1.Size = New System.Drawing.Size(799, 60)
         Me.PictureBox1.TabIndex = 164
         Me.PictureBox1.TabStop = False
         '
@@ -239,7 +239,7 @@ Partial Class FrmPagos
         Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75
         Me.TrueDBGridComponentes.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridComponentes.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TrueDBGridComponentes.Size = New System.Drawing.Size(544, 147)
+        Me.TrueDBGridComponentes.Size = New System.Drawing.Size(648, 147)
         Me.TrueDBGridComponentes.TabIndex = 171
         Me.TrueDBGridComponentes.Text = "C1TrueDBGrid1"
         Me.TrueDBGridComponentes.PropBag = resources.GetString("TrueDBGridComponentes.PropBag")
@@ -400,13 +400,13 @@ Partial Class FrmPagos
         Me.TrueDBGridMetodo.Caption = "Metodos de Pago"
         Me.TrueDBGridMetodo.GroupByCaption = "Drag a column header here to group by that column"
         Me.TrueDBGridMetodo.Images.Add(CType(resources.GetObject("TrueDBGridMetodo.Images"), System.Drawing.Image))
-        Me.TrueDBGridMetodo.Location = New System.Drawing.Point(299, 159)
+        Me.TrueDBGridMetodo.Location = New System.Drawing.Point(343, 159)
         Me.TrueDBGridMetodo.Name = "TrueDBGridMetodo"
         Me.TrueDBGridMetodo.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridMetodo.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TrueDBGridMetodo.PreviewInfo.ZoomFactor = 75
         Me.TrueDBGridMetodo.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridMetodo.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TrueDBGridMetodo.Size = New System.Drawing.Size(257, 119)
+        Me.TrueDBGridMetodo.Size = New System.Drawing.Size(316, 119)
         Me.TrueDBGridMetodo.TabIndex = 204
         Me.TrueDBGridMetodo.Text = "C1TrueDBGrid1"
         Me.TrueDBGridMetodo.PropBag = resources.GetString("TrueDBGridMetodo.PropBag")
@@ -415,7 +415,7 @@ Partial Class FrmPagos
         '
         Me.TxtMonedaFactura.FormattingEnabled = True
         Me.TxtMonedaFactura.Items.AddRange(New Object() {"Cordobas", "Dolares"})
-        Me.TxtMonedaFactura.Location = New System.Drawing.Point(572, 86)
+        Me.TxtMonedaFactura.Location = New System.Drawing.Point(676, 86)
         Me.TxtMonedaFactura.Name = "TxtMonedaFactura"
         Me.TxtMonedaFactura.Size = New System.Drawing.Size(78, 21)
         Me.TxtMonedaFactura.TabIndex = 230
@@ -424,7 +424,7 @@ Partial Class FrmPagos
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(576, 70)
+        Me.Label13.Location = New System.Drawing.Point(680, 70)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(46, 13)
         Me.Label13.TabIndex = 229
@@ -455,7 +455,7 @@ Partial Class FrmPagos
         Me.GroupBox3.Controls.Add(Me.CmdNuevo)
         Me.GroupBox3.Controls.Add(Me.ButtonAgregar)
         Me.GroupBox3.Controls.Add(Me.Button8)
-        Me.GroupBox3.Location = New System.Drawing.Point(574, 110)
+        Me.GroupBox3.Location = New System.Drawing.Point(678, 110)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(91, 242)
         Me.GroupBox3.TabIndex = 233
@@ -473,7 +473,7 @@ Partial Class FrmPagos
         '
         'TxtObservaciones
         '
-        Me.TxtObservaciones.Location = New System.Drawing.Point(562, 376)
+        Me.TxtObservaciones.Location = New System.Drawing.Point(666, 376)
         Me.TxtObservaciones.Multiline = True
         Me.TxtObservaciones.Name = "TxtObservaciones"
         Me.TxtObservaciones.Size = New System.Drawing.Size(103, 116)
@@ -492,7 +492,7 @@ Partial Class FrmPagos
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(562, 358)
+        Me.Label8.Location = New System.Drawing.Point(666, 358)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(78, 13)
         Me.Label8.TabIndex = 237
@@ -502,7 +502,7 @@ Partial Class FrmPagos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(677, 497)
+        Me.ClientSize = New System.Drawing.Size(777, 497)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.OptRet7Porciento)
         Me.Controls.Add(Me.TxtObservaciones)

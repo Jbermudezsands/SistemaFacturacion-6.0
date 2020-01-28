@@ -872,20 +872,38 @@ Public Class FrmRecepcion
                     Me.Timer1.Stop()
 
                     If DataSet.Tables("Recepcion").Rows(0)("Contabilizado") = "True" Then
+                        Me.Button6.Enabled = False
                         Me.Button7.Enabled = False
                         Me.Button10.Enabled = False
                         Me.Button11.Enabled = False
                         Me.BtnProcesar.Enabled = False
+                        Me.TrueDBGridComponentes.Enabled = False
+                        Me.GroupBox6.Enabled = False
+                        Me.GroupBox1.Enabled = False
+                        Me.GroupBox2.Enabled = False
+                        Me.GroupBox9.Enabled = False
                     ElseIf DataSet.Tables("Recepcion").Rows(0)("Procesado") = "True" Then
+                        Me.Button6.Enabled = False
                         Me.Button7.Enabled = False
                         Me.Button10.Enabled = False
                         Me.Button11.Enabled = False
                         Me.BtnProcesar.Enabled = False
+                        Me.TrueDBGridComponentes.Enabled = False
+                        Me.GroupBox6.Enabled = False
+                        Me.GroupBox1.Enabled = False
+                        Me.GroupBox2.Enabled = False
+                        Me.GroupBox9.Enabled = False
                     Else
+                        Me.Button6.Enabled = True
                         Me.Button7.Enabled = True
                         Me.Button10.Enabled = True
                         Me.Button11.Enabled = True
                         Me.BtnProcesar.Enabled = True
+                        Me.TrueDBGridComponentes.Enabled = True
+                        Me.GroupBox6.Enabled = True
+                        Me.GroupBox1.Enabled = True
+                        Me.GroupBox2.Enabled = True
+                        Me.GroupBox9.Enabled = True
                     End If
 
                     '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

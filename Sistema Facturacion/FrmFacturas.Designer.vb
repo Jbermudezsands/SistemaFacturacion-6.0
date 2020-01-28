@@ -105,6 +105,7 @@ Partial Class FrmFacturas
         Me.DTPFechaHora = New System.Windows.Forms.DateTimePicker
         Me.GroupBox5 = New System.Windows.Forms.GroupBox
         Me.PictureBox3 = New System.Windows.Forms.PictureBox
+        Me.Button5 = New System.Windows.Forms.Button
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrueDBGridMetodo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
@@ -766,9 +767,9 @@ Partial Class FrmFacturas
         Me.Button8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
         Me.Button8.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button8.Location = New System.Drawing.Point(38, 236)
+        Me.Button8.Location = New System.Drawing.Point(9, 234)
         Me.Button8.Name = "Button8"
-        Me.Button8.Size = New System.Drawing.Size(75, 66)
+        Me.Button8.Size = New System.Drawing.Size(62, 68)
         Me.Button8.TabIndex = 184
         Me.Button8.Text = "Salir"
         Me.Button8.TextAlign = System.Drawing.ContentAlignment.BottomCenter
@@ -1104,6 +1105,7 @@ Partial Class FrmFacturas
         '
         'GroupBox5
         '
+        Me.GroupBox5.Controls.Add(Me.Button5)
         Me.GroupBox5.Controls.Add(Me.CmdNuevo)
         Me.GroupBox5.Controls.Add(Me.ButtonAgregar)
         Me.GroupBox5.Controls.Add(Me.ButtonBorrar)
@@ -1127,6 +1129,20 @@ Partial Class FrmFacturas
         Me.PictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox3.TabIndex = 227
         Me.PictureBox3.TabStop = False
+        '
+        'Button5
+        '
+        Me.Button5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
+        Me.Button5.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.Button5.Location = New System.Drawing.Point(77, 236)
+        Me.Button5.Name = "Button5"
+        Me.Button5.Size = New System.Drawing.Size(62, 66)
+        Me.Button5.TabIndex = 209
+        Me.Button5.Tag = "27"
+        Me.Button5.Text = "Previo"
+        Me.Button5.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.Button5.UseVisualStyleBackColor = True
         '
         'FrmFacturas
         '
@@ -1296,4 +1312,5 @@ Partial Class FrmFacturas
     Friend WithEvents DTPFechaHora As System.Windows.Forms.DateTimePicker
     Friend WithEvents GroupBox5 As System.Windows.Forms.GroupBox
     Friend WithEvents PictureBox3 As System.Windows.Forms.PictureBox
+    Friend WithEvents Button5 As System.Windows.Forms.Button
 End Class

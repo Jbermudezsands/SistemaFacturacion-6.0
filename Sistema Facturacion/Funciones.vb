@@ -543,6 +543,17 @@ Module Funciones
         FrmRecepcion.Button11.Enabled = True
         FrmRecepcion.BtnProcesar.Enabled = True
 
+        FrmRecepcion.Button6.Enabled = True
+        FrmRecepcion.Button7.Enabled = True
+        FrmRecepcion.Button10.Enabled = True
+        FrmRecepcion.Button11.Enabled = True
+        FrmRecepcion.BtnProcesar.Enabled = True
+        FrmRecepcion.TrueDBGridComponentes.Enabled = True
+        FrmRecepcion.GroupBox6.Enabled = True
+        FrmRecepcion.GroupBox1.Enabled = True
+        FrmRecepcion.GroupBox2.Enabled = True
+        FrmRecepcion.GroupBox9.Enabled = True
+
 
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
@@ -6010,6 +6021,7 @@ Module Funciones
 
 
         My.Forms.FrmCompras.ds.Tables("DetalleCompra").Reset()
+
         If My.Forms.FrmCompras.FacturaTarea = True Then
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
@@ -6091,38 +6103,75 @@ Module Funciones
 
         End If
 
-        ''//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ''///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
-        ''//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        'SqlString = "SELECT  Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario, Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe FROM  Productos INNER JOIN  Detalle_Compras ON Productos.Cod_Productos = Detalle_Compras.Cod_Producto  WHERE (Detalle_Compras.Numero_Compra = '-1')"
-        ''DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        ''DataAdapter.Fill(DataSet, "DetalleCompra")
-        ''FrmCompras.BindingDetalle.DataSource = DataSet.Tables("DetalleCompra")
-        'FrmCompras.ds = New DataSet
-        'FrmCompras.da = New SqlDataAdapter(SqlString, MiConexion)
-        'FrmCompras.CmdBuilder = New SqlCommandBuilder(FrmCompras.da)
-        'FrmCompras.da.Fill(FrmCompras.ds, "DetalleCompra")
-        'FrmCompras.BindingDetalle.DataSource = FrmCompras.ds.Tables("DetalleCompra")
-        'FrmCompras.TrueDBGridComponentes.DataSource = FrmCompras.BindingDetalle
-        'FrmCompras.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
-        'FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
-        'FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
-        'FrmCompras.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
-        'FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 259
-        'FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
-        'FrmCompras.TrueDBGridComponentes.Columns(2).Caption = "Ordenado"
-        'FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 64
-        'FrmCompras.TrueDBGridComponentes.Columns(3).Caption = "Precio Unit"
-        'FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
-        'FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = True
-        'FrmCompras.TrueDBGridComponentes.Columns(4).Caption = "%Desc"
-        'FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 43
-        'FrmCompras.TrueDBGridComponentes.Columns(5).Caption = "Precio Neto"
-        'FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Width = 65
-        'FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Locked = True
-        'FrmCompras.TrueDBGridComponentes.Columns(6).Caption = "Importe"
-        'FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Width = 61
-        'FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Locked = True
+
+        If FrmCompras.CboTipoProducto.Text = "Cuenta" Then
+            FrmCompras.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
+            FrmCompras.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 350
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
+            FrmCompras.TrueDBGridComponentes.Columns(2).Caption = "Ordenado"
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 64
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Visible = False
+            FrmCompras.TrueDBGridComponentes.Columns(3).Caption = "Monto"
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = False
+            FrmCompras.TrueDBGridComponentes.Columns(4).Caption = "%Desc"
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 43
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Visible = False
+            FrmCompras.TrueDBGridComponentes.Columns(5).Caption = "Precio Neto"
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Width = 65
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Locked = True
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Visible = False
+            FrmCompras.TrueDBGridComponentes.Columns(6).Caption = "Importe"
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Width = 61
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Locked = True
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Visible = True
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(7).Visible = False
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(8).Button = True
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(8).Visible = True
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("TasaCambio").Visible = False
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("NuFrmComprasro_Compra").Visible = False
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = False
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Lote").Visible = False
+
+        ElseIf FrmCompras.CboTipoProducto.Text = "Cuenta DB" Then
+            FrmCompras.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
+            FrmCompras.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 350
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
+            FrmCompras.TrueDBGridComponentes.Columns(2).Caption = "Ordenado"
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 64
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Visible = False
+            FrmCompras.TrueDBGridComponentes.Columns(3).Caption = "Monto"
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = False
+            FrmCompras.TrueDBGridComponentes.Columns(4).Caption = "%Desc"
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 43
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Visible = False
+            FrmCompras.TrueDBGridComponentes.Columns(5).Caption = "Precio Neto"
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Width = 65
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Locked = True
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Visible = False
+            FrmCompras.TrueDBGridComponentes.Columns(6).Caption = "Importe"
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Width = 61
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Locked = True
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Visible = True
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(7).Visible = False
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(8).Button = True
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(8).Visible = True
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("TasaCambio").Visible = False
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("NuFrmComprasro_Compra").Visible = False
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = False
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Lote").Visible = False
+        End If
 
         FrmCompras.RadioButton1.Checked = True
         My.Forms.FrmCompras.TxtSubTotal.Text = ""

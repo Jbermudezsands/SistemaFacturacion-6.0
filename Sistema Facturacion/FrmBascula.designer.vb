@@ -250,6 +250,7 @@ Partial Class FrmBascula
         '
         'TxtTipoRemision
         '
+        Me.TxtTipoRemision.AutoCompleteCustomSource.AddRange(New String() {"Repesaje"})
         Me.TxtTipoRemision.Enabled = False
         Me.TxtTipoRemision.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TxtTipoRemision.Location = New System.Drawing.Point(11, 11)

@@ -10050,4 +10050,1276 @@ Public Class FrmFacturas
     Private Sub TrueDBGridComponentes_AfterSort(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.FilterEventArgs) Handles TrueDBGridComponentes.AfterSort
 
     End Sub
+
+    Private Sub Button5_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click
+        Dim SQL As New DataDynamics.ActiveReports.DataSources.SqlDBDataSource, RutaLogo As String, iPosicion As Double, Registros As Double
+        Dim ArepFacturas As New ArepFacturas, SqlDatos As String, SQlDetalle As String, Fecha As String, Monto As Double, NombrePago As String
+        Dim ArepFacturasTiras As New ArepFacturasTiras2, ArepFacturaMediaPagina As New ArepFacturaMedia
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, NumeroTarjeta As String, FechaVenceTarjeta As String
+        Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, SqlCompras As String, TasaCambio As Double
+        Dim NumeroFactura As String, MonedaImprime As String, MonedaFactura As String
+        Dim TipoImpresion As String, SqlString As String, RutaBD As String, ConexionAccess As String
+        Dim ArepCotizacionFoto As New ArepCotizacionFoto, CodTarea As String = Nothing
+        Dim ArepOrdenTrabajo As New ArepFacturasTiras
+        Dim CodigoProducto As String
+
+        Dim ArepFacturasTareas As New ArepFacturasTareas, FacturaBodega As Boolean = False, CompraBodega As Boolean = False
+        Dim ArepFacturas2 As New ArepFacturas2, ArepSalidaBodega As New ArepSalidaBodega, Ancho As Double, Largo As Double
+        Dim ArepCotizaciones As New ArepCotizaciones, ImprimeFacturaPreview As Boolean = True, CostoUnitario As Double = 0
+
+        Try
+
+            If Me.CboTipoProducto.Text = "" Then
+                MsgBox("Seleccione un Tipo", MsgBoxStyle.Critical, "Zeus Facturacion")
+                Exit Sub
+            End If
+
+            If BuscaTasaCambio(Me.DTPFecha.Value) = 0 Then
+                MsgBox("No Existe Tasa de Cambio", MsgBoxStyle.Critical, "Zeus Facturacion")
+                Exit Sub
+            End If
+
+            If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+                MsgBox("No se puede grabar antes de asignar numero factura", MsgBoxStyle.Critical, "Zeus Facturacion")
+                Exit Sub
+            End If
+
+            Me.Button2.Enabled = False
+
+
+            If PermiteEditar(Acceso, Me.CboTipoProducto.Text) = True Then
+
+                SqlDatos = "SELECT * FROM DatosEmpresa"
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                DataAdapter.Fill(DataSet, "DatosEmpresa")
+                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                    ConsecutivoFacturaSerie = DataSet.Tables("DatosEmpresa").Rows(0)("ConsecutivoFacSerie")
+                End If
+
+
+                ''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
+                ''//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+                'If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+                '    Select Case Me.CboTipoProducto.Text
+                '        Case "Cotizacion"
+                '            ConsecutivoFactura = BuscaConsecutivo("Cotizacion")
+                '        Case "Factura"
+                '            If ConsecutivoFacturaManual = False Then
+                '                ConsecutivoFactura = BuscaConsecutivo("Factura")
+                '            Else
+                '                FrmConsecutivos.ShowDialog()
+                '                ConsecutivoFactura = FrmConsecutivos.NumeroFactura
+                '            End If
+                '        Case "Devolucion de Venta"
+                '            ConsecutivoFactura = BuscaConsecutivo("DevFactura")
+                '        Case "Transferencia Enviada"
+                '            ConsecutivoFactura = BuscaConsecutivo("Transferencia_Enviada")
+                '        Case "Salida Bodega"
+                '            ConsecutivoFactura = BuscaConsecutivo("SalidaBodega")
+                '    End Select
+
+                ''/////////////////////////////////////////////////////////////////////////////////////////
+                ''///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
+                ''////////////////////////////////////////////////////////////////////////////////////////
+                'SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
+                'DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
+                'DataAdapter.Fill(DataSet, "Configuracion")
+                'If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
+                '    If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) Then
+                '        FacturaBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")
+                '    End If
+
+                '    If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) Then
+                '        CompraBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")
+                '    End If
+
+                'End If
+
+                'If FacturaBodega = True Then
+                '    NumeroFactura = Me.CboCodigoBodega.Columns(0).Text & "-" & Format(ConsecutivoFactura, "0000#")
+                'Else
+                '    NumeroFactura = Format(ConsecutivoFactura, "0000#")
+                'End If
+
+                'Else
+                ''ConsecutivoFactura = Me.TxtNumeroEnsamble.Text
+                ''NumeroFactura = Format(ConsecutivoFactura, "0000#")
+                'NumeroFactura = Me.TxtNumeroEnsamble.Text
+                'End If
+
+                'If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+                '    NumeroFactura = GenerarNumeroFactura(ConsecutivoFacturaManual, Me.CboTipoProducto.Text)
+                'Else
+                '    NumeroFactura = Me.TxtNumeroEnsamble.Text
+                'End If
+
+
+                NumeroFactura = Me.TxtNumeroEnsamble.Text
+
+                '////////////////////////////////////////////////////////////////////////////////////////////////////
+                '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
+                '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+                GrabaFacturas(NumeroFactura)
+
+                '////////////////////////////////////////////////////////////////////////////////////////////////////
+                '/////////////////////////////GRABO EL DETALLE DE LA FACTURA /////////////////////////////////////////////
+                '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+
+
+                Registros = Me.BindingDetalle.Count
+                'iPosicion = Me.BindingDetalle.Position
+
+
+                Me.BindingDetalle.MoveFirst()
+                Registros = Me.BindingDetalle.Count
+                iPosicion = 0
+                Monto = 0
+                Do While iPosicion < Registros
+
+                    My.Application.DoEvents()
+
+                    '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("id_Detalle_Factura")) Then
+                    '            IdDetalle = Me.BindingDetalle.Item(iPosicion)("id_Detalle_Factura")
+                    '        Else
+                    '            IdDetalle = -1
+                    '        End If
+
+                    CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
+                    'Me.BindingDetalle.Item(iPosicion)("Numero_Factura") = NumeroFactura
+                    'Me.BindingDetalle.Item(iPosicion)("Fecha_Factura") = DTPFecha.Value
+                    'Me.BindingDetalle.Item(iPosicion)("Tipo_Factura") = CboTipoProducto.Text
+                    Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto") = Replace(Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto"), "'", "")
+
+
+                    ActualizaDetalleBodega(Me.CboCodigoBodega.Text, CodigoProducto)
+                    '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")) Then
+                    '            PrecioUnitario = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
+                    '        Else
+                    '            PrecioUnitario = 0
+                    '        End If
+                    '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descuento")) Then
+                    '            Descuento = Me.BindingDetalle.Item(iPosicion)("Descuento")
+                    '        End If
+                    '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Precio_Neto")) Then
+                    '            PrecioNeto = Me.BindingDetalle.Item(iPosicion)("Precio_Neto")
+                    '        Else
+                    '            PrecioNeto = 0
+                    '        End If
+                    '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Importe")) Then
+                    '            Importe = Me.BindingDetalle.Item(iPosicion)("Importe")
+                    '        Else
+                    '            Importe = 0
+                    '        End If
+                    '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Cantidad")) Then
+                    '            Cantidad = Me.BindingDetalle.Item(iPosicion)("Cantidad")
+                    '        Else
+                    '            Cantidad = 0
+                    '        End If
+
+                    CostoUnitario = 0
+
+                    If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Costo_Unitario")) Then
+                        'CostoUnitario = CostoPromedioKardexBodega(CodigoProducto, Me.DTPFecha.Value, Me.CboCodigoBodega.Text)
+                        CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                        Me.BindingDetalle.Item(iPosicion)("Costo_Unitario") = CostoUnitario
+                    Else
+                        If FacturaTarea = True Then
+                            CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                        Else
+                            CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                        End If
+                        Me.BindingDetalle.Item(iPosicion)("Costo_Unitario") = CostoUnitario
+                    End If
+
+
+
+                    'Descripcion_Producto = Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto")
+
+                    'If FacturaTarea = True Then
+                    '    If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("CodTarea")) Then
+                    '        CodTarea = Me.BindingDetalle.Item(iPosicion)("CodTarea")
+                    '    Else
+                    '        CodTarea = 0
+                    '    End If
+                    '    GrabaDetalleFacturaTarea(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CodTarea)
+                    'Else
+                    '    GrabaDetalleFactura(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CostoUnitario)
+                    'End If
+
+                    'Select Case Me.CboTipoProducto.Text
+                    '    Case "Factura"
+                    '        DiferenciaCantidad = CDbl(Cantidad) - CDbl(CantidadAnterior)
+                    '        DiferenciaPrecio = CDbl(PrecioAnterior) - CDbl(PrecioNeto)
+                    '        ExistenciasCostos(CodigoProducto, DiferenciaCantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
+                    '    Case "Devolucion de Venta"
+                    '        DiferenciaCantidad = CDbl(Cantidad) - CDbl(CantidadAnterior)
+                    '        DiferenciaPrecio = CDbl(Cantidad) - CDbl(CantidadAnterior)
+                    '        ExistenciasCostos(CodigoProducto, DiferenciaCantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
+                    'End Select
+
+                    iPosicion = iPosicion + 1
+                Loop
+
+                da.Update(ds.Tables("DetalleFactura"))
+                '////////////////////////////////////////////////////////////////////////////////////////////////////
+                '/////////////////////////////GRABO LOS METODOS DE PAGO /////////////////////////////////////////////
+                '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+
+                Me.BindingMetodo.MoveFirst()
+                Registros = Me.BindingMetodo.Count
+                iPosicion = 0
+                Monto = 0
+                Do While iPosicion < Registros
+                    NombrePago = Me.BindingMetodo.Item(iPosicion)("NombrePago")
+                    Monto = Me.BindingMetodo.Item(iPosicion)("Monto") + Monto
+                    If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")) Then
+                        NumeroTarjeta = Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")
+                    Else
+                        NumeroTarjeta = 0
+                    End If
+                    If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("FechaVence")) Then
+                        FechaVenceTarjeta = Me.BindingMetodo.Item(iPosicion)("FechaVence")
+                    Else
+                        FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
+                    End If
+
+                    GrabaMetodoDetalleFactura(NumeroFactura, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta)
+                    iPosicion = iPosicion + 1
+                Loop
+
+
+            End If
+
+            ActualizaMETODOFactura()
+
+            SqlDatos = "SELECT * FROM DatosEmpresa"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+            DataAdapter.Fill(DataSet, "DatosEmpresa")
+
+            If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+
+                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")) Then
+                    ImprimeFacturaPreview = DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")
+                Else
+                    ImprimeFacturaPreview = False
+                End If
+
+                'ArepCotizaciones.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                'ArepCotizaciones.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                'ArepCotizaciones.LblCorreo.Text = EmailVendedor(Me.CboCodigoVendedor.Columns(0).Text)
+                'ArepCotizaciones.LblMoneda.Text = Me.TxtMonedaImprime.Text
+                'ArepCotizaciones.LblLetras.Text = Letras(Me.TxtNetoPagar.Text, Me.TxtMonedaFactura.Text)
+
+                'ArepCotizacionFoto.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                'ArepCotizacionFoto.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+
+                'ArepFacturas.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                'ArepFacturas.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+
+                'ArepFacturasTareas.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                'ArepFacturasTareas.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+
+                'ArepFacturasTiras.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                'ArepFacturasTiras.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+
+                'ArepSalidaBodega.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                'ArepSalidaBodega.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+
+                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")) Then
+                    ArepFacturasTiras.LblTelefono.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")
+                End If
+                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")) Then
+                    ArepFacturas.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
+                    'ArepCotizacionFoto.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
+                    ArepFacturasTareas.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
+                    ArepFacturasTiras.LblRuc.Text = "RUC: " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
+                    ArepSalidaBodega.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
+                    ArepFacturaMediaPagina.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
+                    'ArepCotizaciones.LblRuc.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")
+                End If
+                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
+                    RutaLogo = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
+                    If Dir(RutaLogo) <> "" Then
+                        ArepFacturas.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                        'ArepCotizacionFoto.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                        ArepFacturasTareas.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                        ArepFacturasTiras.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                        ArepSalidaBodega.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                        'ArepCotizaciones.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                    End If
+
+                End If
+            End If
+
+            'ArepFacturasTiras.TxtVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+
+            'ArepCotizacionFoto.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+            'ArepCotizacionFoto.Label1.Text = "Cliente"
+            'ArepCotizacionFoto.LblNotas.Text = Me.TxtObservaciones.Text
+            'ArepCotizacionFoto.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+            'ArepCotizacionFoto.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+            'ArepCotizacionFoto.LblTipoCompra.Text = Me.CboTipoProducto.Text
+            'ArepCotizacionFoto.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
+            'ArepCotizacionFoto.LblNombres.Text = Me.TxtNombres.Text
+            'ArepCotizacionFoto.LblApellidos.Text = Me.TxtApellidos.Text
+            'ArepCotizacionFoto.LblDireccionProveedor.Text = Me.TxtDireccion.Text
+            'ArepCotizacionFoto.LblTelefono.Text = Me.TxtTelefono.Text
+            'ArepCotizacionFoto.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
+            'ArepCotizacionFoto.LblBodegas.Text = Me.CboCodigoBodega.Columns(0).Text + " " + Me.CboCodigoBodega.Columns(1).Text
+
+            'ArepSalidaBodega.LblNotas.Text = Me.TxtObservaciones.Text
+            'ArepSalidaBodega.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
+
+            ''//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            'ArepCotizaciones.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+            'ArepCotizaciones.LblNotas.Text = Me.TxtObservaciones.Text
+            'ArepCotizaciones.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+            'ArepCotizaciones.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+            'ArepCotizaciones.LblNombres.Text = Me.TxtNombres.Text
+            'ArepCotizaciones.LblDireccionProveedor.Text = Me.TxtDireccion.Text
+            'ArepCotizaciones.LblTelefono.Text = Me.TxtTelefono.Text
+            'ArepCotizaciones.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
+
+            ArepFacturaMediaPagina.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+            ArepFacturas.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+            ArepFacturas2.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+            ArepFacturas.Label1.Text = "Cliente"
+            ArepFacturaMediaPagina.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+            ArepFacturas.LblNotas.Text = Me.TxtObservaciones.Text
+            ArepFacturas.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+            ArepFacturas.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+            ArepFacturaMediaPagina.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+            ArepFacturas.LblTipoCompra.Text = Me.CboTipoProducto.Text
+            ArepFacturas.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
+            ArepFacturas.LblNombres.Text = Me.TxtNombres.Text
+            ArepFacturaMediaPagina.LblNombres.Text = Me.TxtNombres.Text
+            ArepFacturas.LblApellidos.Text = Me.TxtApellidos.Text
+            ArepFacturaMediaPagina.LblApellidos.Text = Me.TxtApellidos.Text
+
+            ArepFacturas.LblDireccionProveedor.Text = Me.TxtDireccion.Text
+            ArepFacturas.LblTelefono.Text = Me.TxtTelefono.Text
+            ArepFacturas.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
+            ArepFacturas.LblBodegas.Text = Me.CboCodigoBodega.Columns(0).Text + " " + Me.CboCodigoBodega.Columns(1).Text
+
+            ArepFacturas2.Label1.Text = "Cliente"
+            ArepFacturas2.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+            ArepFacturas2.LblNotas.Text = Me.TxtObservaciones.Text
+            ArepFacturas2.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
+            ArepFacturas2.LblNombres.Text = Me.TxtNombres.Text
+            ArepFacturas2.LblApellidos.Text = Me.TxtApellidos.Text
+            ArepFacturas2.LblDireccionProveedor.Text = Me.TxtDireccion.Text
+            ArepFacturas2.LblTelefono.Text = Me.TxtTelefono.Text
+            ArepFacturas2.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
+            ArepFacturas2.LblBodegas.Text = Me.CboCodigoBodega.Columns(0).Text + " " + Me.CboCodigoBodega.Columns(1).Text
+
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ArepFacturasTareas.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+            ArepFacturasTareas.Label1.Text = "Cliente"
+            ArepFacturasTareas.LblNotas.Text = Me.TxtObservaciones.Text
+            ArepFacturasTareas.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+            ArepFacturasTareas.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+            ArepFacturasTareas.LblTipoCompra.Text = Me.CboTipoProducto.Text
+            ArepFacturasTareas.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
+            ArepFacturasTareas.LblNombres.Text = Me.TxtNombres.Text
+            ArepFacturasTareas.LblApellidos.Text = Me.TxtApellidos.Text
+            ArepFacturasTareas.LblDireccionProveedor.Text = Me.TxtDireccion.Text
+            ArepFacturasTareas.LblTelefono.Text = Me.TxtTelefono.Text
+            ArepFacturasTareas.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
+            ArepFacturaMediaPagina.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
+            ArepFacturasTareas.LblBodegas.Text = Me.CboCodigoBodega.Columns(0).Text + " " + Me.CboCodigoBodega.Columns(1).Text
+
+            ArepSalidaBodega.LblBodegas.Text = Me.CboCodigoBodega.Columns(0).Text + " " + Me.CboCodigoBodega.Columns(1).Text
+
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ArepFacturasTiras.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+            ArepFacturasTiras.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+            ArepFacturasTiras.LblTipoCompra.Text = Me.CboTipoProducto.Text
+            ArepFacturasTiras.LblNombres.Text = Me.TxtNombres.Text & " " & Me.TxtApellidos.Text
+            ArepFacturasTiras.LblApellidos.Text = Me.TxtApellidos.Text
+
+
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ArepOrdenTrabajo.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+            ArepOrdenTrabajo.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+            ArepOrdenTrabajo.LblTipoCompra.Text = Me.CboTipoProducto.Text
+            ArepOrdenTrabajo.LblNombres.Text = Me.TxtNombres.Text & " " & Me.TxtApellidos.Text
+
+
+
+            ArepSalidaBodega.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+            ArepSalidaBodega.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+            ArepSalidaBodega.LblTipoCompra.Text = Me.CboTipoProducto.Text
+            ArepSalidaBodega.LblNombres.Text = Me.TxtNombres.Text & " " & Me.TxtApellidos.Text
+
+            MonedaFactura = Me.TxtMonedaFactura.Text
+            MonedaImprime = Me.TxtMonedaImprime.Text
+            Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
+
+            If MonedaFactura = "Cordobas" Then
+                If MonedaImprime = "Cordobas" Then
+                    TasaCambio = 1
+                Else
+                    TasaCambio = (1 / BuscaTasaCambio(Me.DTPFecha.Value))
+                End If
+            ElseIf MonedaFactura = "Dolares" Then
+                If MonedaImprime = "Cordobas" Then
+                    TasaCambio = BuscaTasaCambio(Me.DTPFecha.Value)
+                Else
+                    TasaCambio = 1
+                End If
+            End If
+
+            'If Val(Me.TxtSubTotal.Text) <> 0 Then
+            '    ArepCotizacionFoto.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+            'Else
+            '    ArepCotizacionFoto.LblSubTotal.Text = "0.00"
+            'End If
+
+            If Val(Me.TxtIva.Text) <> 0 Then
+                ArepSalidaBodega.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+            Else
+                ArepSalidaBodega.LblIva.Text = "0.00"
+            End If
+
+            'If Val(Me.TxtIva.Text) <> 0 Then
+            '    ArepCotizacionFoto.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+            'Else
+            '    ArepCotizacionFoto.LblIva.Text = "0.00"
+            'End If
+
+            'If Val(Me.TxtPagado.Text) <> 0 Then
+            '    ArepCotizacionFoto.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
+            'Else
+            '    ArepCotizacionFoto.LblPagado.Text = "0.00"
+            'End If
+            'If Val(Me.TxtNetoPagar.Text) <> 0 Then
+            '    ArepCotizacionFoto.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+            'Else
+            '    ArepCotizacionFoto.LblTotal.Text = "0.00"
+            'End If
+            'If Val(Me.TxtDescuento.Text) <> 0 Then
+            '    ArepCotizacionFoto.LblDescuento.Text = Format(CDbl(Me.TxtDescuento.Text) * TasaCambio, "##,##0.00")
+            'Else
+            '    ArepCotizacionFoto.LblDescuento.Text = "0.00"
+            'End If
+
+
+            If Val(Me.TxtSubTotal.Text) <> 0 Then
+                'ArepCotizaciones.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+                ArepFacturas.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+                ArepFacturas2.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+                ArepFacturasTiras.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+                ArepOrdenTrabajo.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+                ArepSalidaBodega.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+                ArepFacturasTiras.LblPropina.Text = Format(CDbl(Me.TxtPropina.Text) * TasaCambio, "##,##0.00")
+                ArepFacturaMediaPagina.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+                ArepFacturasTareas.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+
+            Else
+                'ArepCotizaciones.LblSubTotal.Text = "0.00"
+                ArepFacturas.LblSubTotal.Text = "0.00"
+                ArepFacturas2.LblSubTotal.Text = "0.00"
+                ArepFacturasTiras.LblSubTotal.Text = "0.00"
+                ArepSalidaBodega.LblSubTotal.Text = "0.00"
+                ArepOrdenTrabajo.LblSubTotal.Text = "0.00"
+                ArepFacturasTiras.LblPropina.Text = "0.00"
+                ArepFacturaMediaPagina.LblSubTotal.Text = "0.00"
+                ArepFacturasTareas.LblSubTotal.Text = "0.00"
+            End If
+
+            If Val(Me.TxtIva.Text) <> 0 Then
+                'ArepCotizaciones.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+                ArepFacturas.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+                ArepFacturas2.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+                ArepFacturasTiras.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+                ArepOrdenTrabajo.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+                ArepSalidaBodega.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+                ArepFacturaMediaPagina.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+                ArepFacturasTareas.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+            Else
+                'ArepCotizaciones.LblIva.Text = "0.00"
+                ArepFacturas.LblIva.Text = "0.00"
+                ArepFacturas2.LblIva.Text = "0.00"
+                ArepFacturasTiras.LblIva.Text = "0.00"
+                ArepOrdenTrabajo.LblIva.Text = "0.00"
+                ArepFacturaMediaPagina.LblIva.Text = "0.00"
+                ArepFacturasTareas.LblIva.Text = "0.00"
+            End If
+
+            If Val(Me.TxtPagado.Text) <> 0 Then
+                ArepFacturas.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
+                ArepFacturas2.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
+                ArepFacturasTiras.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
+                ArepOrdenTrabajo.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
+                ArepFacturaMediaPagina.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
+                ArepFacturasTareas.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
+            Else
+                ArepFacturas.LblPagado.Text = "0.00"
+                ArepFacturas2.LblPagado.Text = "0.00"
+                ArepFacturasTiras.LblPagado.Text = "0.00"
+                ArepOrdenTrabajo.LblPagado.Text = "0.00"
+                ArepFacturaMediaPagina.LblPagado.Text = "0.00"
+                ArepFacturasTareas.LblPagado.Text = "0.00"
+            End If
+
+            If Val(Me.TxtNetoPagar.Text) <> 0 Then
+                'ArepCotizaciones.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+                ArepFacturas.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+                ArepFacturas2.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+                ArepFacturasTiras.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+                ArepOrdenTrabajo.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+                ArepSalidaBodega.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+                ArepFacturaMediaPagina.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+                ArepFacturasTareas.LblPagado.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+            Else
+                'ArepCotizaciones.LblTotal.Text = "0.00"
+                ArepFacturas.LblTotal.Text = "0.00"
+                ArepFacturas2.LblTotal.Text = "0.00"
+                ArepFacturasTiras.LblTotal.Text = "0.00"
+                ArepOrdenTrabajo.LblTotal.Text = "0.00"
+                ArepSalidaBodega.LblTotal.Text = "0.00"
+                ArepFacturaMediaPagina.LblTotal.Text = "0.00"
+                ArepFacturasTareas.LblPagado.Text = "0.00"
+
+            End If
+            If Val(Me.TxtDescuento.Text) <> 0 Then
+                ArepFacturas.LblDescuento.Text = Format(CDbl(Me.TxtDescuento.Text) * TasaCambio, "##,##0.00")
+                ArepFacturas2.LblDescuento.Text = Format(CDbl(Me.TxtDescuento.Text) * TasaCambio, "##,##0.00")
+                ArepFacturaMediaPagina.LblDescuento.Text = Format(CDbl(Me.TxtDescuento.Text) * TasaCambio, "##,##0.00")
+                ArepFacturasTareas.LblDescuento.Text = Format(CDbl(Me.TxtDescuento.Text) * TasaCambio, "##,##0.00")
+            Else
+                ArepFacturas.LblDescuento.Text = "0.00"
+                ArepFacturas2.LblDescuento.Text = "0.00"
+                ArepFacturaMediaPagina.LblDescuento.Text = "0.00"
+                ArepFacturasTareas.LblDescuento.Text = "0.00"
+            End If
+
+
+            ArepFacturasTiras.LblTotal1.Text = Format((CDbl(Me.TxtIva.Text) + CDbl(Me.TxtSubTotal.Text) + CDbl(Me.TxtPropina.Text)) * TasaCambio, "##,##0.00")
+            ArepOrdenTrabajo.LblTotal1.Text = Format((CDbl(Me.TxtIva.Text) + CDbl(Me.TxtSubTotal.Text)) * TasaCambio, "##,##0.00")
+            ArepSalidaBodega.LblTotal.Text = Format((CDbl(Me.TxtIva.Text) + CDbl(Me.TxtSubTotal.Text)) * TasaCambio, "##,##0.00")
+            ArepFacturasTareas.LblTotal.Text = Format((CDbl(Me.TxtIva.Text) + CDbl(Me.TxtSubTotal.Text)) * TasaCambio, "##,##0.00")
+
+
+
+            '////////////////////////////////////////////////////////////////////////////////////////////////////
+            '/////////////////////////////IMPRIMO LOS METODOS DE PAGO /////////////////////////////////////////////
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+
+            Me.BindingMetodo.MoveFirst()
+            Registros = Me.BindingMetodo.Count
+            iPosicion = 0
+            Monto = 0
+            ArepFacturas.TxtMetodo.Text = "Credito"
+            ArepFacturas2.TxtMetodo.Text = "Credito"
+            ArepCotizacionFoto.TxtMetodo.Text = "Credito"
+            Do While iPosicion < Registros
+                NombrePago = Me.BindingMetodo.Item(iPosicion)("NombrePago")
+                Monto = Me.BindingMetodo.Item(iPosicion)("Monto") + Monto
+                If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")) Then
+                    NumeroTarjeta = Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")
+                Else
+                    NumeroTarjeta = 0
+                End If
+                If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("FechaVence")) Then
+                    FechaVenceTarjeta = Me.BindingMetodo.Item(iPosicion)("FechaVence")
+                Else
+                    FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
+                End If
+
+                ArepFacturas.TxtMetodo.Text = NombrePago & " " & Monto
+                ArepFacturas2.TxtMetodo.Text = NombrePago & " " & Monto
+                ArepCotizacionFoto.TxtMetodo.Text = NombrePago & " " & Monto
+
+                '//////////////////////////////////////////////////////////////////////////////////////////////
+                '////////////////////////////EDITO EL ENCABEZADO DE LA FACTURA SI EXISTEN FORMA DE PAGO///////////////////////////////////
+                '/////////////////////////////////////////////////////////////////////////////////////////////////
+                MiConexion.Close()
+                If Me.CboTipoProducto.Text <> "Cotizacion" Then
+                    SqlCompras = "UPDATE [Facturas]  SET [FechaPago] = '" & Format(Now, "dd/MM/yyyy") & "' " & _
+                                 "WHERE  (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
+                    MiConexion.Open()
+                    ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
+                    iResultado = ComandoUpdate.ExecuteNonQuery
+                    MiConexion.Close()
+                End If
+
+                iPosicion = iPosicion + 1
+            Loop
+
+
+
+            SQlDetalle = ""
+            Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
+
+            If MonedaFactura = "Cordobas" Then
+                If MonedaImprime = "Cordobas" Then
+                    '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
+                    SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Productos.Unidad_Medida, Detalle_Facturas.CodTarea FROM  Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto " & _
+                        "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
+                ElseIf MonedaImprime = "Dolares" Then
+                    SQlDetalle = "SELECT     Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad,Detalle_Facturas.Precio_Unitario * (1 / TasaCambio.MontoTasa) AS Precio_Unitario, Detalle_Facturas.Descuento * (1 / TasaCambio.MontoTasa) AS Descuento, Detalle_Facturas.Precio_Neto * (1 / TasaCambio.MontoTasa) AS Precio_Neto, Detalle_Facturas.Importe * (1 / TasaCambio.MontoTasa) AS Importe, TasaCambio.MontoTasa, Productos.Unidad_Medida, Detalle_Facturas.CodTarea FROM Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa  " & _
+                                 "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND  (Detalle_Facturas.Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
+
+                End If
+            ElseIf MonedaFactura = "Dolares" Then
+                If MonedaImprime = "Dolares" Then
+                    '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
+                    SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Productos.Unidad_Medida,Detalle_Facturas.CodTarea FROM  Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto " & _
+                        "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
+                ElseIf MonedaImprime = "Cordobas" Then
+                    SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad,Detalle_Facturas.Precio_Unitario * TasaCambio.MontoTasa AS Precio_Unitario, Detalle_Facturas.Descuento * TasaCambio.MontoTasa AS Descuento,Detalle_Facturas.Precio_Neto * TasaCambio.MontoTasa AS Precio_Neto, Detalle_Facturas.Importe * TasaCambio.MontoTasa AS Importe,TasaCambio.MontoTasa,Productos.Unidad_Medida, Detalle_Facturas.CodTarea FROM Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa " & _
+                        "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME,'" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
+
+                End If
+            End If
+
+
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////////////VERIFICO QUE TIPO DE IMPRESION ESTA CONFIGURADA/////////////////////////////////////////////////////////
+            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            NumeroFactura = Me.TxtNumeroEnsamble.Text
+
+            Select Case Me.CboTipoProducto.Text
+                Case "Factura"
+
+                    TipoImpresion = Me.CboTipoProducto.Text
+
+                    If Me.CmbSerie.Visible = True Then
+                        TipoImpresion = Me.CboTipoProducto.Text & Me.CmbSerie.Text
+                    Else
+                        TipoImpresion = Me.CboTipoProducto.Text
+                    End If
+
+                    SqlString = "SELECT  *  FROM Impresion WHERE (Impresion = '" & TipoImpresion & " ')"
+                    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                    DataAdapter.Fill(DataSet, "Coordenadas")
+                    If Not DataSet.Tables("Coordenadas").Rows.Count = 0 Then
+
+                        Select Case DataSet.Tables("Coordenadas").Rows(0)("Configuracion")
+
+                            Case "Papel en Blanco MediaPagina"
+
+                                SqlDatos = "SELECT * FROM DatosEmpresa"
+                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                                DataAdapter.Fill(DataSet, "DatosEmpresa")
+                                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                                    ArepFacturaMediaPagina.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                    ArepFacturaMediaPagina.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                                End If
+
+                                SQL.ConnectionString = Conexion
+                                SQL.SQL = SQlDetalle
+                                ArepFacturaMediaPagina.DataSource = SQL
+                                ArepFacturaMediaPagina.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+
+                                Dim ViewerForm As New FrmViewer()
+                                ViewerForm.arvMain.Document = ArepFacturaMediaPagina.Document
+                                ViewerForm.Show()
+
+                                If ImprimeFacturaPreview = True Then
+                                    ViewerForm.Show()
+                                    ArepFacturaMediaPagina.Run(True)
+                                Else
+                                    ArepFacturaMediaPagina.Run(True)
+                                    ViewerForm.arvMain.Document.Print(False, False, False)
+                                End If
+                            Case "Papel en Blanco, Lotes"
+                                SqlDatos = "SELECT * FROM DatosEmpresa"
+                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                                DataAdapter.Fill(DataSet, "DatosEmpresa")
+                                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                                    ArepFacturasTareas.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                    ArepFacturasTareas.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                                End If
+
+                                SQL.ConnectionString = Conexion
+                                SQL.SQL = SQlDetalle
+                                ArepFacturasTareas.DataSource = SQL
+                                ArepFacturasTareas.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+
+                                Dim ViewerForm As New FrmViewer()
+                                ViewerForm.arvMain.Document = ArepFacturasTareas.Document
+                                'ViewerForm.Show()
+
+                                If ImprimeFacturaPreview = True Then
+                                    ViewerForm.Show()
+                                    ArepFacturasTareas.Run(True)
+                                Else
+                                    ArepFacturasTareas.Run(True)
+                                    ViewerForm.arvMain.Document.Print(False, False, False)
+                                End If
+
+                            Case "Papel en Blanco, Sin Encabezado"
+                                SqlDatos = "SELECT * FROM DatosEmpresa"
+                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                                DataAdapter.Fill(DataSet, "DatosEmpresa")
+                                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                                    ArepFacturasTareas.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                    ArepFacturasTareas.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                                End If
+
+                                SQL.ConnectionString = Conexion
+                                SQL.SQL = SQlDetalle
+                                ArepFacturas2.DataSource = SQL
+                                ArepFacturas2.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+                                ArepFacturas2.LblLetras.Text = Letras(CDbl(Me.TxtSubTotal.Text) + CDbl(Me.TxtIva.Text), Me.TxtMonedaFactura.Text)
+
+                                Dim ViewerForm As New FrmViewer()
+                                ViewerForm.arvMain.Document = ArepFacturas2.Document
+                                ViewerForm.Show()
+
+                                If ImprimeFacturaPreview = True Then
+                                    ViewerForm.Show()
+                                    ArepFacturas2.Run(True)
+                                Else
+                                    ArepFacturas2.Run(True)
+                                    ViewerForm.arvMain.Document.Print(False, False, False)
+                                End If
+
+                            Case "Tira de Papel"
+
+                                SqlDatos = "SELECT * FROM DatosEmpresa"
+                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                                DataAdapter.Fill(DataSet, "DatosEmpresa")
+                                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                                    ArepFacturasTiras.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                    ArepFacturasTiras.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+
+                                    ArepOrdenTrabajo.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                    ArepOrdenTrabajo.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                                End If
+
+                                ArepFacturasTiras.TxtVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+                                ArepOrdenTrabajo.TxtVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+
+                                SQL.ConnectionString = Conexion
+                                SQL.SQL = SQlDetalle
+                                ArepFacturasTiras.DataSource = SQL
+                                ArepFacturasTiras.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+
+                                ArepOrdenTrabajo.DataSource = SQL
+                                ArepOrdenTrabajo.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+                                If MonedaImprime = "Cordobas" Then
+                                    ArepFacturasTiras.Simbolo1.Text = "C$"
+                                    ArepFacturasTiras.Simbolo2.Text = "C$"
+                                    ArepFacturasTiras.Simbolo3.Text = "C$"
+                                    ArepFacturasTiras.Simbolo4.Text = "C$"
+                                    ArepFacturasTiras.Simbolo5.Text = "C$"
+
+                                    ArepOrdenTrabajo.Simbolo1.Text = "C$"
+                                    ArepOrdenTrabajo.Simbolo2.Text = "C$"
+                                    ArepOrdenTrabajo.Simbolo3.Text = "C$"
+                                    ArepOrdenTrabajo.Simbolo4.Text = "C$"
+                                    ArepOrdenTrabajo.Simbolo5.Text = "C$"
+                                Else
+                                    ArepFacturasTiras.Simbolo1.Text = "$"
+                                    ArepFacturasTiras.Simbolo2.Text = "$"
+                                    ArepFacturasTiras.Simbolo3.Text = "$"
+                                    ArepFacturasTiras.Simbolo4.Text = "$"
+                                    ArepFacturasTiras.Simbolo5.Text = "$"
+
+                                    ArepOrdenTrabajo.Simbolo1.Text = "$"
+                                    ArepOrdenTrabajo.Simbolo2.Text = "$"
+                                    ArepOrdenTrabajo.Simbolo3.Text = "$"
+                                    ArepOrdenTrabajo.Simbolo4.Text = "$"
+                                    ArepOrdenTrabajo.Simbolo5.Text = "$"
+                                End If
+
+
+                                If Me.CboReferencia.Text = "Orden de Trabajo" Then
+                                    Dim ViewerForm As New FrmViewer()
+                                    ViewerForm.arvMain.Document = ArepOrdenTrabajo.Document
+
+                                    'ViewerForm.Show()
+                                    'ArepFacturasTiras.Run(True)
+                                    If ImprimeFacturaPreview = True Then
+                                        ViewerForm.Show()
+                                        ArepOrdenTrabajo.Run(True)
+                                    Else
+                                        ArepOrdenTrabajo.Run(True)
+                                        ViewerForm.arvMain.Document.Print(False, False, False)
+                                    End If
+
+
+                                Else
+                                    Dim ViewerForm As New FrmViewer()
+                                    ViewerForm.arvMain.Document = ArepFacturasTiras.Document
+
+                                    'ViewerForm.Show()
+                                    'ArepFacturasTiras.Run(True)
+                                    If ImprimeFacturaPreview = True Then
+                                        ViewerForm.Show()
+                                        ArepFacturasTiras.Run(True)
+                                    Else
+                                        ArepFacturasTiras.Run(True)
+                                        ViewerForm.arvMain.Document.Print(False, False, False)
+                                    End If
+                                End If
+
+
+
+                                'ArepFacturas.Run(False)
+                                'ArepFacturas.Show()
+                            Case "Papel en Blanco"
+
+                                SqlDatos = "SELECT * FROM DatosEmpresa"
+                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                                DataAdapter.Fill(DataSet, "DatosEmpresa")
+                                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                                    ArepFacturas.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                    ArepFacturas.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                                End If
+
+                                SQL.ConnectionString = Conexion
+                                SQL.SQL = SQlDetalle
+                                ArepFacturas.DataSource = SQL
+                                ArepFacturas.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+
+                                Dim ViewerForm As New FrmViewer()
+                                ViewerForm.arvMain.Document = ArepFacturas.Document
+                                ViewerForm.Show()
+
+                                If ImprimeFacturaPreview = True Then
+                                    ViewerForm.Show()
+                                    ArepFacturas.Run(True)
+                                Else
+                                    ArepFacturas.Run(True)
+                                    ViewerForm.arvMain.Document.Print(False, False, False)
+                                End If
+
+                            Case "Personalizado"
+
+                                SqlDatos = "SELECT * FROM DatosEmpresa"
+                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                                DataAdapter.Fill(DataSet, "DatosEmpresa")
+                                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                                    ArepFacturas.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                    ArepFacturas.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                                End If
+
+                                SQL.ConnectionString = Conexion
+                                SQL.SQL = SQlDetalle
+                                ArepFacturas.DataSource = SQL
+                                ArepFacturas.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+
+                                Dim ViewerForm As New FrmViewer()
+                                ViewerForm.arvMain.Document = ArepFacturas.Document
+                                ViewerForm.Show()
+
+                                If ImprimeFacturaPreview = True Then
+                                    ViewerForm.Show()
+                                    ArepFacturas.Run(True)
+                                Else
+                                    ArepFacturas.Run(True)
+                                    ViewerForm.arvMain.Document.Print(False, False, False)
+                                End If
+
+                                'TipoImpresion = Me.CboTipoProducto.Text
+
+
+                                'Dim StrSQLUpdate As String
+                                'Dim RutaReportes As String, StrSQLAccess As String = "SELECT * FROM Usuarios " 'WHERE (((Usuarios.TipoImpresion)='Factura'))
+                                'RutaBD = My.Application.Info.DirectoryPath & "\TrueDbGridFr.dll"
+                                'ConexionAccess = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source= " & RutaBD & " "
+
+                                'Dim MiConexionAccess As New OleDb.OleDbConnection(ConexionAccess), ComandoUpdateAccess As New OleDb.OleDbCommand
+                                'Dim DataAdapterAccess As New OleDb.OleDbDataAdapter(StrSQLAccess, MiConexionAccess)
+                                'Dim DatasetDatos As New DataSet
+
+
+                                'MiConexionAccess.Open()
+                                'DataAdapterAccess.Fill(DatasetDatos, "Usuarios")
+
+
+                                'StrSQLUpdate = "UPDATE Usuarios SET [TipoImpresion] = '" & TipoImpresion & "',[NumeroImpresion] = '" & Me.TxtNumeroEnsamble.Text & "' "
+                                'ComandoUpdateAccess = New OleDb.OleDbCommand(StrSQLUpdate, MiConexionAccess)
+                                'iResultado = ComandoUpdateAccess.ExecuteNonQuery
+                                'MiConexionAccess.Close()
+
+                                ''///////////////////////////CON ESTE ARCHIVO SE CAMBIA LA CONEXION PARA IMPRIMIR /////////////////////////
+                                'EscribirArchivo()
+
+                                'RutaReportes = My.Application.Info.DirectoryPath & "\Imprime.exe"
+                                'If Dir(RutaReportes) <> "" Then
+                                '    Shell(RutaReportes)
+                                'End If
+
+                        End Select
+                    End If
+
+                Case "Cotizacion"
+                    TipoImpresion = Me.CboTipoProducto.Text
+                    SqlString = "SELECT  *  FROM Impresion WHERE (Impresion = '" & TipoImpresion & " ')"
+                    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                    DataAdapter.Fill(DataSet, "Coordenadas")
+                    If Not DataSet.Tables("Coordenadas").Rows.Count = 0 Then
+                        Select Case DataSet.Tables("Coordenadas").Rows(0)("Configuracion")
+                            Case "Papel en Blanco Membrete"
+                                Dim ArepCotizacionesMembretes As New ArepCotizacionesMembretes
+                                SqlDatos = "SELECT * FROM DatosEmpresa"
+                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                                DataAdapter.Fill(DataSet, "DatosEmpresa")
+                                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")) Then
+                                        ImprimeFacturaPreview = DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")
+                                    Else
+                                        ImprimeFacturaPreview = False
+                                    End If
+
+                                    ArepCotizacionesMembretes.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                    ArepCotizacionesMembretes.LblNombrePie.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                    ArepCotizacionesMembretes.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                                    ArepCotizacionesMembretes.LblCorreo.Text = EmailVendedor(Me.CboCodigoVendedor.Columns(0).Text)
+                                    ArepCotizacionesMembretes.LblTelefonoVendedor.Text = TelefonoVendedor(Me.CboCodigoVendedor.Columns(0).Text)
+                                    ArepCotizacionesMembretes.LblMoneda.Text = Me.TxtMonedaImprime.Text
+                                    ArepCotizacionesMembretes.LblLetras.Text = Letras(Me.TxtNetoPagar.Text, Me.TxtMonedaFactura.Text)
+
+                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")) Then
+                                        ArepCotizacionesMembretes.LblRuc.Text = "Numero RUC: " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
+                                    End If
+
+                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")) Then
+                                        ArepCotizacionesMembretes.LblTelefonos.Text = "Telefono: " & DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")
+                                    End If
+
+                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
+                                        RutaLogo = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
+                                        If Dir(RutaLogo) <> "" Then
+                                            ArepCotizaciones.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                                        End If
+                                    End If
+                                End If
+                                ''//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                ArepCotizacionesMembretes.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+                                ArepCotizacionesMembretes.LblNotas.Text = Me.TxtObservaciones.Text
+                                ArepCotizacionesMembretes.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+                                ArepCotizacionesMembretes.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+                                ArepCotizacionesMembretes.LblNombres.Text = Me.TxtNombres.Text
+                                ArepCotizacionesMembretes.LblDireccionProveedor.Text = Me.TxtDireccion.Text
+                                ArepCotizacionesMembretes.LblTelefono.Text = Me.TxtTelefono.Text
+                                ArepCotizacionesMembretes.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
+
+                                If Val(Me.TxtSubTotal.Text) <> 0 Then
+                                    ArepCotizacionesMembretes.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+                                Else
+                                    ArepCotizacionesMembretes.LblSubTotal.Text = "0.00"
+                                End If
+                                If Val(Me.TxtIva.Text) <> 0 Then
+                                    ArepCotizacionesMembretes.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+                                Else
+                                    ArepCotizacionesMembretes.LblIva.Text = "0.00"
+                                End If
+                                If Val(Me.TxtNetoPagar.Text) <> 0 Then
+                                    ArepCotizacionesMembretes.LblTotal.Text = Format((CDbl(Me.TxtSubTotal.Text) + CDbl(Me.TxtIva.Text)) * TasaCambio, "##,##0.00")
+                                Else
+                                    ArepCotizacionesMembretes.LblTotal.Text = "0.00"
+                                End If
+
+                                SQL.ConnectionString = Conexion
+                                SQL.SQL = SQlDetalle
+                                ArepCotizacionesMembretes.DataSource = SQL
+                                ArepCotizacionesMembretes.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+
+                                Dim ViewerForm As New FrmViewer()
+                                ViewerForm.arvMain.Document = ArepCotizacionesMembretes.Document
+                                ViewerForm.Show()
+                                ArepCotizacionesMembretes.Run(True)
+
+                            Case "Papel en Blanco"
+                                SqlDatos = "SELECT * FROM DatosEmpresa"
+                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                                DataAdapter.Fill(DataSet, "DatosEmpresa")
+                                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")) Then
+                                        ImprimeFacturaPreview = DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")
+                                    Else
+                                        ImprimeFacturaPreview = False
+                                    End If
+
+                                    ArepCotizaciones.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                    ArepCotizaciones.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                                    ArepCotizaciones.LblCorreo.Text = EmailVendedor(Me.CboCodigoVendedor.Columns(0).Text)
+                                    ArepCotizaciones.LblTelefonoVendedor.Text = TelefonoVendedor(Me.CboCodigoVendedor.Columns(0).Text)
+                                    ArepCotizaciones.LblMoneda.Text = Me.TxtMonedaImprime.Text
+                                    ArepCotizaciones.LblLetras.Text = Letras(Me.TxtNetoPagar.Text, Me.TxtMonedaFactura.Text)
+
+                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")) Then
+                                        ArepCotizaciones.LblRuc.Text = "Numero RUC: " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
+                                    End If
+
+                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")) Then
+                                        ArepCotizaciones.LblTelefonos.Text = "Telefono: " & DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")
+                                    End If
+
+                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
+                                        RutaLogo = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
+                                        If Dir(RutaLogo) <> "" Then
+                                            ArepCotizaciones.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                                        End If
+                                    End If
+                                End If
+                                ''//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                ArepCotizaciones.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+                                ArepCotizaciones.LblNotas.Text = Me.TxtObservaciones.Text
+                                ArepCotizaciones.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+                                ArepCotizaciones.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+                                ArepCotizaciones.LblNombres.Text = Me.TxtNombres.Text
+                                ArepCotizaciones.LblDireccionProveedor.Text = Me.TxtDireccion.Text
+                                ArepCotizaciones.LblTelefono.Text = Me.TxtTelefono.Text
+                                ArepCotizaciones.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
+
+                                If Val(Me.TxtSubTotal.Text) <> 0 Then
+                                    ArepCotizaciones.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+                                Else
+                                    ArepCotizaciones.LblSubTotal.Text = "0.00"
+                                End If
+                                If Val(Me.TxtIva.Text) <> 0 Then
+                                    ArepCotizaciones.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+                                Else
+                                    ArepCotizaciones.LblIva.Text = "0.00"
+                                End If
+                                If Val(Me.TxtNetoPagar.Text) <> 0 Then
+                                    ArepCotizaciones.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+                                Else
+                                    ArepCotizaciones.LblTotal.Text = "0.00"
+                                End If
+
+                                SQL.ConnectionString = Conexion
+                                SQL.SQL = SQlDetalle
+                                ArepCotizaciones.DataSource = SQL
+                                ArepCotizaciones.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+
+                                Dim ViewerForm As New FrmViewer()
+                                ViewerForm.arvMain.Document = ArepCotizaciones.Document
+                                ViewerForm.Show()
+                                ArepCotizaciones.Run(True)
+                            Case "Cotizacion con Fotos"
+                                SqlDatos = "SELECT * FROM DatosEmpresa"
+                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                                DataAdapter.Fill(DataSet, "DatosEmpresa")
+                                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+
+                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")) Then
+                                        ImprimeFacturaPreview = DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")
+                                    Else
+                                        ImprimeFacturaPreview = False
+                                    End If
+
+                                    ArepCotizacionFoto.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                    ArepCotizacionFoto.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+
+                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")) Then
+                                        ArepCotizacionFoto.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
+                                    End If
+                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
+                                        RutaLogo = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
+                                        If Dir(RutaLogo) <> "" Then
+                                            ArepCotizacionFoto.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                                        End If
+
+                                    End If
+                                End If
+                                '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                ArepCotizacionFoto.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+                                ArepCotizacionFoto.Label1.Text = "Cliente"
+                                ArepCotizacionFoto.LblNotas.Text = Me.TxtObservaciones.Text
+                                ArepCotizacionFoto.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+                                ArepCotizacionFoto.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+                                ArepCotizacionFoto.LblTipoCompra.Text = Me.CboTipoProducto.Text
+                                ArepCotizacionFoto.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
+                                ArepCotizacionFoto.LblNombres.Text = Me.TxtNombres.Text
+                                ArepCotizacionFoto.LblApellidos.Text = Me.TxtApellidos.Text
+                                ArepCotizacionFoto.LblDireccionProveedor.Text = Me.TxtDireccion.Text
+                                ArepCotizacionFoto.LblTelefono.Text = Me.TxtTelefono.Text
+                                ArepCotizacionFoto.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
+                                ArepCotizacionFoto.LblBodegas.Text = Me.CboCodigoBodega.Columns(0).Text + " " + Me.CboCodigoBodega.Columns(1).Text
+
+                                If Val(Me.TxtSubTotal.Text) <> 0 Then
+                                    ArepCotizacionFoto.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+                                Else
+                                    ArepCotizacionFoto.LblSubTotal.Text = "0.00"
+                                End If
+                                If Val(Me.TxtIva.Text) <> 0 Then
+                                    ArepCotizacionFoto.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+                                Else
+                                    ArepCotizacionFoto.LblIva.Text = "0.00"
+                                End If
+                                If Val(Me.TxtPagado.Text) <> 0 Then
+                                    ArepCotizacionFoto.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
+                                Else
+                                    ArepCotizacionFoto.LblPagado.Text = "0.00"
+                                End If
+                                If Val(Me.TxtNetoPagar.Text) <> 0 Then
+                                    ArepCotizacionFoto.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+                                Else
+                                    ArepCotizacionFoto.LblTotal.Text = "0.00"
+                                End If
+                                If Val(Me.TxtDescuento.Text) <> 0 Then
+                                    ArepCotizacionFoto.LblDescuento.Text = Format(CDbl(Me.TxtDescuento.Text) * TasaCambio, "##,##0.00")
+                                Else
+                                    ArepCotizacionFoto.LblDescuento.Text = "0.00"
+                                End If
+
+                                SQL.ConnectionString = Conexion
+                                SQL.SQL = SQlDetalle
+                                ArepCotizacionFoto.DataSource = SQL
+                                ArepCotizacionFoto.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+                                ArepCotizacionFoto.TxtMetodo.Visible = False
+
+                                Dim ViewerForm As New FrmViewer()
+                                ViewerForm.arvMain.Document = ArepCotizacionFoto.Document
+                                ViewerForm.Show()
+                                ArepCotizacionFoto.Run(True)
+
+
+                        End Select
+                    End If
+
+                Case "Salida Bodega"
+
+                    TipoImpresion = Me.CboTipoProducto.Text
+
+                    SqlString = "SELECT  *  FROM Impresion WHERE (Impresion = '" & TipoImpresion & " ')"
+                    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                    DataAdapter.Fill(DataSet, "Coordenadas")
+                    If Not DataSet.Tables("Coordenadas").Rows.Count = 0 Then
+                        Select Case DataSet.Tables("Coordenadas").Rows(0)("Configuracion")
+                            Case "Papel en Blanco"
+                                SqlDatos = "SELECT * FROM DatosEmpresa"
+                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                                DataAdapter.Fill(DataSet, "DatosEmpresa")
+                                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                                    ArepSalidaBodega.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                                    ArepSalidaBodega.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                End If
+
+                                ArepSalidaBodega.LblNotas.Text = Me.TxtObservaciones.Text
+                                ArepSalidaBodega.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
+
+
+                                SqlString = "SELECT  *  FROM Impresion WHERE (Impresion = '" & TipoImpresion & " ')"
+                                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                                DataAdapter.Fill(DataSet, "Coordenadas")
+                                Ancho = DataSet.Tables("Coordenadas").Rows(0)("Ancho")
+                                Largo = DataSet.Tables("Coordenadas").Rows(0)("Largo")
+
+                                SQL.ConnectionString = Conexion
+                                SQL.SQL = SQlDetalle
+                                ArepSalidaBodega.DataSource = SQL
+                                ArepSalidaBodega.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+                                'ArepSalidaBodega.PageSettings.PaperWidth = Str(Ancho)
+                                'ArepSalidaBodega.PageSettings.PaperHeight = Largo
+                                'ArepSalidaBodega.PageSettings.PaperKind = System.Drawing.Printing.PaperKind.Custom
+
+                                Dim ViewerForm As New FrmViewer()
+                                ViewerForm.arvMain.Document = ArepSalidaBodega.Document
+                                ViewerForm.Show()
+                                ArepSalidaBodega.Run(False)
+
+                            Case "Personalizado"
+
+                                If ConsecutivoFacturaSerie = False Then
+                                    TipoImpresion = Me.CboTipoProducto.Text
+                                Else
+                                    TipoImpresion = Me.CboTipoProducto.Text & Me.CmbSerie.Text
+                                End If
+
+                                Dim StrSQLUpdate As String
+                                Dim RutaReportes As String, StrSQLAccess As String = "SELECT * FROM Usuarios " 'WHERE (((Usuarios.TipoImpresion)='Factura'))
+                                RutaBD = My.Application.Info.DirectoryPath & "\TrueDbGridFr.dll"
+                                ConexionAccess = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source= " & RutaBD & " "
+
+                                Dim MiConexionAccess As New OleDb.OleDbConnection(ConexionAccess), ComandoUpdateAccess As New OleDb.OleDbCommand
+                                Dim DataAdapterAccess As New OleDb.OleDbDataAdapter(StrSQLAccess, MiConexionAccess)
+                                Dim DatasetDatos As New DataSet
+
+
+                                MiConexionAccess.Open()
+                                DataAdapterAccess.Fill(DatasetDatos, "Usuarios")
+
+
+                                StrSQLUpdate = "UPDATE Usuarios SET [TipoImpresion] = '" & TipoImpresion & "',[NumeroImpresion] = '" & NumeroFactura & "' "
+                                ComandoUpdateAccess = New OleDb.OleDbCommand(StrSQLUpdate, MiConexionAccess)
+                                iResultado = ComandoUpdateAccess.ExecuteNonQuery
+                                MiConexionAccess.Close()
+
+                                '///////////////////////////CON ESTE ARCHIVO SE CAMBIA LA CONEXION PARA IMPRIMIR /////////////////////////
+                                EscribirArchivo()
+
+                                RutaReportes = My.Application.Info.DirectoryPath & "\Imprime.exe"
+                                If Dir(RutaReportes) <> "" Then
+                                    Shell(RutaReportes)
+                                End If
+                        End Select
+                    End If
+
+                Case Else
+                    SQL.ConnectionString = Conexion
+                    SQL.SQL = SQlDetalle
+                    ArepFacturas.DataSource = SQL
+                    ArepFacturas.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+                    Dim ViewerForm As New FrmViewer()
+                    ViewerForm.arvMain.Document = ArepFacturas.Document
+                    ViewerForm.Show()
+                    ArepFacturas.Run(False)
+                    'ArepFacturas.Run(False)
+                    'ArepFacturas.Show()
+            End Select
+
+
+            '//////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////////EDITO EL ENCABEZADO DE LA FACTURA///////////////////////////////////
+            '/////////////////////////////////////////////////////////////////////////////////////////////////
+            If Me.CboTipoProducto.Text <> "Cotizacion" Then
+                'SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'False' " & _
+                '             "WHERE  (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
+                'MiConexion.Open()
+                'ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
+                'iResultado = ComandoUpdate.ExecuteNonQuery
+                'MiConexion.Close()
+            End If
+
+            Bitacora(Now, NombreUsuario, Me.CboTipoProducto.Text, "Imprimio la Factura: " & Me.TxtNumeroEnsamble.Text)
+
+            LimpiarFacturas()
+
+            If NombreCliente = "Alumnos" Then
+                Me.Label12.Visible = False
+                Me.CboCodigoVendedor.Visible = False
+            End If
+
+            If UsuarioBodega <> "Ninguna" Then
+                Me.CboCodigoBodega.Text = UsuarioBodega
+                Me.CboCodigoBodega.Enabled = False
+                Me.Button7.Enabled = False
+            End If
+
+            If UsuarioTipoFactura <> "Ninguna" Then
+                Me.CboTipoProducto.Text = UsuarioTipoFactura
+            End If
+
+            If UsuarioVendedor <> "Ninguna" Then
+                Me.CboCodigoVendedor.Text = UsuarioVendedor
+            End If
+
+            If UsuarioCliente <> "Ninguna" Then
+                Me.TxtCodigoClientes.Text = UsuarioCliente
+            End If
+
+
+            Me.Button2.Enabled = True
+
+            'CmdCerrar_Click(sender, e)
+
+            SalirFactura = True
+
+
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+
+    End Sub
 End Class

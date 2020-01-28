@@ -857,7 +857,8 @@ Public Class FrmInventarioFisico
             Me.NumeroTemporal = Me.Random.Next()
         End If
 
-
+        My.Forms.FrmBascula.TxtTipoRemision.Text = "Repesaje"
+        My.Forms.FrmBascula.TipoPesada = "Repesaje"
         My.Forms.FrmBascula.Show()
     End Sub
 End Class
