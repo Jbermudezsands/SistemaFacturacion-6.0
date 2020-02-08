@@ -104,8 +104,9 @@ Partial Class FrmFacturas
         Me.BindingDetalle = New System.Windows.Forms.BindingSource(Me.components)
         Me.DTPFechaHora = New System.Windows.Forms.DateTimePicker
         Me.GroupBox5 = New System.Windows.Forms.GroupBox
-        Me.PictureBox3 = New System.Windows.Forms.PictureBox
+        Me.BtnSalida = New System.Windows.Forms.Button
         Me.Button5 = New System.Windows.Forms.Button
+        Me.PictureBox3 = New System.Windows.Forms.PictureBox
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrueDBGridMetodo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
@@ -1105,6 +1106,7 @@ Partial Class FrmFacturas
         '
         'GroupBox5
         '
+        Me.GroupBox5.Controls.Add(Me.BtnSalida)
         Me.GroupBox5.Controls.Add(Me.Button5)
         Me.GroupBox5.Controls.Add(Me.CmdNuevo)
         Me.GroupBox5.Controls.Add(Me.ButtonAgregar)
@@ -1119,16 +1121,20 @@ Partial Class FrmFacturas
         Me.GroupBox5.TabIndex = 226
         Me.GroupBox5.TabStop = False
         '
-        'PictureBox3
+        'BtnSalida
         '
-        Me.PictureBox3.BackColor = System.Drawing.Color.Transparent
-        Me.PictureBox3.Image = CType(resources.GetObject("PictureBox3.Image"), System.Drawing.Image)
-        Me.PictureBox3.Location = New System.Drawing.Point(343, 112)
-        Me.PictureBox3.Name = "PictureBox3"
-        Me.PictureBox3.Size = New System.Drawing.Size(126, 96)
-        Me.PictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox3.TabIndex = 227
-        Me.PictureBox3.TabStop = False
+        Me.BtnSalida.Enabled = False
+        Me.BtnSalida.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnSalida.Image = CType(resources.GetObject("BtnSalida.Image"), System.Drawing.Image)
+        Me.BtnSalida.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnSalida.Location = New System.Drawing.Point(78, 87)
+        Me.BtnSalida.Name = "BtnSalida"
+        Me.BtnSalida.Size = New System.Drawing.Size(62, 66)
+        Me.BtnSalida.TabIndex = 210
+        Me.BtnSalida.Text = "Salida"
+        Me.BtnSalida.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnSalida.UseVisualStyleBackColor = True
+        Me.BtnSalida.Visible = False
         '
         'Button5
         '
@@ -1144,11 +1150,22 @@ Partial Class FrmFacturas
         Me.Button5.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.Button5.UseVisualStyleBackColor = True
         '
+        'PictureBox3
+        '
+        Me.PictureBox3.BackColor = System.Drawing.Color.Transparent
+        Me.PictureBox3.Image = CType(resources.GetObject("PictureBox3.Image"), System.Drawing.Image)
+        Me.PictureBox3.Location = New System.Drawing.Point(343, 112)
+        Me.PictureBox3.Name = "PictureBox3"
+        Me.PictureBox3.Size = New System.Drawing.Size(126, 96)
+        Me.PictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox3.TabIndex = 227
+        Me.PictureBox3.TabStop = False
+        '
         'FrmFacturas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(893, 499)
+        Me.ClientSize = New System.Drawing.Size(899, 499)
         Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.GroupBox5)
         Me.Controls.Add(Me.DTPFechaHora)
@@ -1313,4 +1330,5 @@ Partial Class FrmFacturas
     Friend WithEvents GroupBox5 As System.Windows.Forms.GroupBox
     Friend WithEvents PictureBox3 As System.Windows.Forms.PictureBox
     Friend WithEvents Button5 As System.Windows.Forms.Button
+    Friend WithEvents BtnSalida As System.Windows.Forms.Button
 End Class

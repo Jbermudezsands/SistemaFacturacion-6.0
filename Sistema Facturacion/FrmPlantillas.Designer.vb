@@ -809,7 +809,7 @@ Partial Class FrmPlantillas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(911, 544)
+        Me.ClientSize = New System.Drawing.Size(914, 544)
         Me.Controls.Add(Me.GroupBox6)
         Me.Controls.Add(Me.TxtMonedaImprime)
         Me.Controls.Add(Me.CmdBorrarLinea)

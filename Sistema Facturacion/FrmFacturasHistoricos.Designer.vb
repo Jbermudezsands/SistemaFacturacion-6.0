@@ -512,7 +512,7 @@ Partial Class FrmFacturasHistoricos
         '
         Me.CboTipoProducto.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboTipoProducto.FormattingEnabled = True
-        Me.CboTipoProducto.Items.AddRange(New Object() {"Cotizacion", "Factura", "Devolucion de Venta", "Transferencia Enviada", "Salida Bodega"})
+        Me.CboTipoProducto.Items.AddRange(New Object() {"Cotizacion", "Factura", "Devolucion de Venta", "Transferencia Enviada", "Salida Bodega", "Orden de Trabajo"})
         Me.CboTipoProducto.Location = New System.Drawing.Point(43, 13)
         Me.CboTipoProducto.Name = "CboTipoProducto"
         Me.CboTipoProducto.Size = New System.Drawing.Size(135, 21)
@@ -622,7 +622,6 @@ Partial Class FrmFacturasHistoricos
         '
         'ButtonBorrar
         '
-        Me.ButtonBorrar.Enabled = False
         Me.ButtonBorrar.Image = CType(resources.GetObject("ButtonBorrar.Image"), System.Drawing.Image)
         Me.ButtonBorrar.Location = New System.Drawing.Point(6, 12)
         Me.ButtonBorrar.Name = "ButtonBorrar"

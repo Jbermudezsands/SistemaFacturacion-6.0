@@ -1259,6 +1259,7 @@ Public Class FrmReportes
 
             Case "Reporte Excel"
                 Me.ListBox.Items.Add("Reporte de Ventas Productos x Mes")
+                Me.ListBox.Items.Add("Reporte de Ventas Excel")
         End Select
 
         '/////////////////////////////////////////////////////////////////////////////////////////////
@@ -1487,6 +1488,160 @@ Public Class FrmReportes
         Fecha2 = Me.DTPFechaFin.Value
         My.Application.DoEvents()
         Select Case Me.ListBox.Text
+
+            Case "Reporte de Ventas Excel"
+                Dim Meses As Double, Dia As Double = Microsoft.VisualBasic.DateAndTime.Day(Me.DTPFechaIni.Value)
+                Dim i As Integer, j As Integer, FechaIni As Date, FechaFin As Date, Ruta As String, Registros As Double, Contador As Double = 0, CodigoProducto As String = ""
+                Dim oExcel As Object, oBook As Object, oSheet As Object, TestArray() As String = {"B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ"}
+                Dim MesArray() As String = {"Enero", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"}
+
+                Dim objExcel = New Microsoft.Office.Interop.Excel.Application, Moneda As String
+
+
+                SqlDatos = "SELECT * FROM DatosEmpresa"
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                DataAdapter.Fill(DataSet, "DatosEmpresa")
+
+                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                    NombreEmpresa = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                    DireccionEmpresa = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                End If
+
+
+
+                SqlDatos = "SELECT DISTINCT  Facturas.Numero_Factura, Facturas.Nombre_Cliente + ' ' + Facturas.Apellido_Cliente AS Cliente, Vendedores.Nombre_Vendedor + ' ' + Vendedores.Apellido_Vendedor AS Vendedor, Facturas.MonedaFactura, Facturas.MetodoPago, Facturas.SubTotal, Facturas.IVA, Facturas.Pagado, Facturas.NetoPagar, CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Facturas.SubTotal * TasaCambio.MontoTasa ELSE Facturas.SubTotal END AS ImporteCordobas, CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Facturas.SubTotal / TasaCambio.MontoTasa ELSE Facturas.SubTotal END AS ImporteDolares, CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Facturas.IVA * TasaCambio.MontoTasa ELSE Facturas.IVA END AS IvaCordobas, CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Facturas.IVA / TasaCambio.MontoTasa ELSE Facturas.IVA END AS IvaDolares, CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Facturas.NetoPagar * TasaCambio.MontoTasa ELSE Facturas.NetoPagar END AS NetoCordobas, CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Facturas.NetoPagar / TasaCambio.MontoTasa ELSE Facturas.NetoPagar END AS NetoDolares, Facturas.Fecha_Factura, Facturas.Tipo_Factura FROM  Facturas INNER JOIN Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN  TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN  Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura  " & _
+                           "WHERE (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Facturas.Tipo_Factura = 'Factura')"
+                If Me.CmbVendedores.Text <> "" Then
+                    If Me.CmbVendedores2.Text <> "" Then
+                        SqlDatos = SqlDatos & " AND (Vendedores.Cod_Vendedor BETWEEN '" & Me.CmbVendedores.Text & "' AND '" & Me.CmbVendedores2.Text & "') "
+
+                    End If
+                End If
+
+
+
+                If Me.CmbClientes.Text <> "" Then
+                    If Me.CmbClientes2.Text <> "" Then
+                        SqlDatos = SqlDatos & " AND (Clientes.Cod_Cliente BETWEEN '" & Me.CmbClientes.Text & "' AND '" & Me.CmbClientes2.Text & "') "
+
+                    End If
+                End If
+
+                SqlDatos = SqlDatos & "ORDER BY Facturas.MonedaFactura"
+
+                'Meses = DateDiff("m", Me.DTPFechaIni.Value, Me.DTPFechaFin.Value)
+                'If Format(Me.DTPFechaFin.Value, "dd/MM/yyyy") < DateSerial(Year(Me.DTPFechaFin.Value), Month(Me.DTPFechaIni.Value), Dia) Then
+                '    Meses = Meses - 1
+                'End If
+
+                'oExcel = CreateObject("Excel.Application")
+                'oBook = oExcel.Workbooks.Add
+                'oSheet = oBook.Worksheets(1)
+
+
+
+
+                objExcel.Visible = True 'lo hacemos visible
+                objExcel.SheetsInNewWorkbook = 1 'decimos cuantas hojas queremos en el nuevo documento
+                objExcel.Workbooks.Add() ' añadimos el objeto al workbook
+
+                'objExcel.ActiveSheet.Cells("A1") = "Factura No"
+
+                Moneda = "Cordobas"
+                If Me.OptCordobas.Checked = True Then
+                    Moneda = "Cordobas"
+                ElseIf Me.OptDolares.Checked = True Then
+                    Moneda = "Dolares"
+                End If
+
+                objExcel.ActiveSheet.Range("A1:G1").Merge()
+                objExcel.ActiveSheet.Range("A1").Value = NombreEmpresa
+                objExcel.ActiveSheet.Range("A2:G2").Merge()
+                objExcel.ActiveSheet.Range("A2").Value = DireccionEmpresa
+                objExcel.ActiveSheet.Range("A3:G3").Merge()
+                objExcel.ActiveSheet.Range("A3").Value = "DESDE:" & Format(Fecha1, "dd/MM/yyyy") & " HASTA:" & Format(Fecha2, "dd/MM/yyyy") & "     EXPRESADO EN " & Moneda
+
+                objExcel.ActiveSheet.Range("A5").Value = "Factura No"
+                objExcel.ActiveSheet.Range("B5").Value = "Nombre Cliente"
+                objExcel.ActiveSheet.Range("C5").Value = "Nombre Vendedor"
+                objExcel.ActiveSheet.Range("D5").Value = "Metodo"
+                objExcel.ActiveSheet.Range("E5").Value = "Sub Total"
+                objExcel.ActiveSheet.Range("F5").Value = "IVA"
+                objExcel.ActiveSheet.Range("G5").Value = "Neto Pagar"
+
+                objExcel.ActiveSheet.Columns("A").ColumnWidth = 15.75
+                objExcel.ActiveSheet.Columns("B").ColumnWidth = 83.86
+                objExcel.ActiveSheet.Columns("C").ColumnWidth = 32.71
+                'objExcel.ActiveSheet.Columns("D").ColumnWidth = 10.71
+                'objExcel.ActiveSheet.Columns("E").ColumnWidth = 55.75
+                'objExcel.ActiveSheet.Columns("D").ColumnWidth = 34.63
+                objExcel.ActiveSheet.Columns("E").NumberFormat = "##,##0.00"
+                objExcel.ActiveSheet.Columns("F").NumberFormat = "##,##0.00"
+                objExcel.ActiveSheet.Columns("G").NumberFormat = "##,##0.00"
+
+                objExcel.ActiveSheet.Range("A5", "G5").Interior.Color = RGB(180, 198, 231)
+                objExcel.ActiveSheet.range("A5", "G5").Font.Size = 12
+                objExcel.ActiveSheet.range("A5", "G5").Font.Bold = True
+                objExcel.ActiveSheet.range("A5", "G5").WrapText = True
+                objExcel.ActiveSheet.Range("A5", "G5").HorizontalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
+                objExcel.ActiveSheet.Range("A5", "G5").VerticalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
+                objExcel.ActiveSheet.Range("A5", "G5").Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous
+
+
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                DataAdapter.Fill(DataSet, "TotalFacturas")
+                Registros = DataSet.Tables("TotalFacturas").Rows.Count
+                j = 0
+                Contador = 6
+                Me.ProgressBar.Maximum = Registros
+                Me.ProgressBar.Minimum = 0
+                Me.ProgressBar.Value = 0
+                Me.ProgressBar.Visible = True
+
+                Dim Numero_Factura As String, NombreCliente As String
+
+
+                Do While Registros > j
+                    My.Application.DoEvents()
+
+                    Numero_Factura = DataSet.Tables("TotalFacturas").Rows(j)("Numero_Factura")
+                    NombreCliente = DataSet.Tables("TotalFacturas").Rows(j)("Cliente")
+
+                    objExcel.ActiveSheet.Range("A" & Contador).Value = DataSet.Tables("TotalFacturas").Rows(j)("Numero_Factura")
+                    objExcel.ActiveSheet.Range("B" & Contador).Value = DataSet.Tables("TotalFacturas").Rows(j)("Cliente")
+                    objExcel.ActiveSheet.Range("C" & Contador).Value = DataSet.Tables("TotalFacturas").Rows(j)("Vendedor")
+                    objExcel.ActiveSheet.Range("D" & Contador).Value = DataSet.Tables("TotalFacturas").Rows(j)("MetodoPago")
+
+                    If Me.OptCordobas.Checked = True Then
+                        objExcel.ActiveSheet.Range("E" & Contador).Value = DataSet.Tables("TotalFacturas").Rows(j)("ImporteCordobas")
+                        objExcel.ActiveSheet.Range("F" & Contador).Value = DataSet.Tables("TotalFacturas").Rows(j)("IvaCordobas")
+                        objExcel.ActiveSheet.Range("G" & Contador).Value = DataSet.Tables("TotalFacturas").Rows(j)("ImporteCordobas") + DataSet.Tables("TotalFacturas").Rows(j)("IvaCordobas")
+                    Else
+                        objExcel.ActiveSheet.Range("E" & Contador).Value = DataSet.Tables("TotalFacturas").Rows(j)("ImporteDolares")
+                        objExcel.ActiveSheet.Range("F" & Contador).Value = DataSet.Tables("TotalFacturas").Rows(j)("IvaDolares")
+                        objExcel.ActiveSheet.Range("G" & Contador).Value = DataSet.Tables("TotalFacturas").Rows(j)("ImporteDolares") + DataSet.Tables("TotalFacturas").Rows(j)("IvaDolares")
+                    End If
+
+                    Me.Text = "Procesando Factura: " & Numero_Factura & " " & NombreCliente
+
+
+
+
+                    j = j + 1
+                    Contador = Contador + 1
+                    Me.ProgressBar.Value = Me.ProgressBar.Value + 1
+                Loop
+
+
+
+                'oExcel.Visible = True
+
+                'oExcel.UserControl = True
+
+                ''Guardaremos el documento en el escritorio con el nombre prueba
+                'Ruta = "\desktop\Ventas " & Format(Now, "ddMMyyyy") & ".xls"
+                'oBook.SaveAs(Environ("UserProfile") & Ruta)
+
 
             Case "Reporte de Comision x Recuperacion"
                 Dim SQlString As String, NumeroRecibo As String = ""
@@ -11206,6 +11361,12 @@ Public Class FrmReportes
         Me.CmbAgrupado.Enabled = True
 
         Select Case ListBox.Text
+            Case "Reporte de Ventas Excel"
+                Me.GroupBox1.Visible = True
+                Me.GroupVendedor.Visible = True
+                Me.GroupVendedor.Location = New Point(280, 123)
+                Me.GroupBox2.Visible = True
+                Me.GroupBoxProductos.Visible = False
             Case "Reporte de Comision x Recuperacion"
                 Me.GroupBox1.Visible = True
                 Me.GroupVendedor.Visible = True

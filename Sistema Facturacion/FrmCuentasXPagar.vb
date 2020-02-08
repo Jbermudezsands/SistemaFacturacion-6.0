@@ -66,7 +66,7 @@ Public Class FrmCuentasXPagar
         Dim oDataRow As DataRow, MontoFactura As Double, FechaFactura As Date, Dias As Double, TasaInteres As Double, MontoMora As Double, Total As Double
         Dim Registros2 As Double, j As Double, TasaCambioRecibo As Double, TotalFactura As Double = 0, TotalAbonos As Double = 0, TotalCargos As Double = 0
         Dim TotalMora As Double = 0, FechaVence As Date, NumeroNota As String = "", MontoNota As Double = 0, NumeroNotaCR As String = "", MontoNotaCR As Double = 0, TotalMontoNotaCR As Double = 0, TotalMontoNotaDB As Double = 0
-        Dim CodigoProveedor As Double = 0, TipoNota As String
+        Dim CodigoProveedor As String, TipoNota As String
 
 
         If Me.CboCodigoProveedor.Text = "" Then

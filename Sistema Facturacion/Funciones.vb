@@ -24,6 +24,8 @@ Module Funciones
 
     End Function
 
+
+
     Public Sub ActualizaDetalleRecepcion(ByVal ConsecutivoRecepcion As String, ByVal TipoRecepcion As String)
 
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -2570,7 +2572,9 @@ Module Funciones
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+
         If FrmFacturas.TxtNumeroEnsamble.Text = "-----0-----" Then
+
             Select Case TipoFactura
                 Case "Cotizacion"
                     If FacturaSerie = False Then
@@ -2594,23 +2598,30 @@ Module Funciones
                         End If
                     End If
                 Case "Devolucion de Venta"
-                        If FacturaSerie = False Then
-                            ConsecutivoFactura = BuscaConsecutivo("DevFactura")
-                        Else
-                            ConsecutivoFactura = BuscaConsecutivoSerie("DevFactura", FrmFacturas.CmbSerie.Text)
-                        End If
+                    If FacturaSerie = False Then
+                        ConsecutivoFactura = BuscaConsecutivo("DevFactura")
+                    Else
+                        ConsecutivoFactura = BuscaConsecutivoSerie("DevFactura", FrmFacturas.CmbSerie.Text)
+                    End If
                 Case "Transferencia Enviada"
-                        If FacturaSerie = False Then
-                            ConsecutivoFactura = BuscaConsecutivo("Transferencia_Enviada")
-                        Else
-                            ConsecutivoFactura = BuscaConsecutivoSerie("Transferencia_Enviada", FrmFacturas.CmbSerie.Text)
-                        End If
+                    If FacturaSerie = False Then
+                        ConsecutivoFactura = BuscaConsecutivo("Transferencia_Enviada")
+                    Else
+                        ConsecutivoFactura = BuscaConsecutivoSerie("Transferencia_Enviada", FrmFacturas.CmbSerie.Text)
+                    End If
                 Case "Salida Bodega"
-                        If FacturaSerie = False Then
-                            ConsecutivoFactura = BuscaConsecutivo("SalidaBodega")
-                        Else
-                            ConsecutivoFactura = BuscaConsecutivoSerie("SalidaBodega", FrmFacturas.CmbSerie.Text)
-                        End If
+                    If FacturaSerie = False Then
+                        ConsecutivoFactura = BuscaConsecutivo("SalidaBodega")
+                    Else
+                        ConsecutivoFactura = BuscaConsecutivoSerie("SalidaBodega", FrmFacturas.CmbSerie.Text)
+                    End If
+
+                Case "Orden de Trabajo"
+                    If FacturaSerie = False Then
+                        ConsecutivoFactura = BuscaConsecutivo("OrdenSalida")
+                    Else
+                        ConsecutivoFactura = BuscaConsecutivoSerie("OrdenSalida", FrmFacturas.CmbSerie.Text)
+                    End If
 
             End Select
 
@@ -6132,7 +6143,7 @@ Module Funciones
             FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(8).Button = True
             FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(8).Visible = True
             FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("TasaCambio").Visible = False
-            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("NuFrmComprasro_Compra").Visible = False
+            FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
             FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
             FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
             FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = False
@@ -8205,7 +8216,7 @@ Module Funciones
 
     End Sub
 
-    Public Sub GrabaDetallePagos(ByVal ConsecutivoPago As String, ByVal NumeroCompra As String, ByVal MontoPagado As Double)
+    Public Sub GrabaDetallePagos(ByVal ConsecutivoPago As String, ByVal NumeroCompra As String, ByVal MontoPagado As Double, ByVal Retencion As Double)
         Dim SqlPagos As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim Fecha As String
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -8224,8 +8235,8 @@ Module Funciones
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////AGREGO EL DETALLE DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlPagos = "INSERT INTO [DetalleReciboPago]([CodReciboPago],[Fecha_Recibo],[Numero_Compra],[MontoPagado]) " & _
-                       "VALUES('" & ConsecutivoPago & "','" & Format(FrmPagos.DTPFecha.Value, "dd/MM/yyyy") & "','" & NumeroCompra & "','" & MontoPagado & "')"
+            SqlPagos = "INSERT INTO [DetalleReciboPago]([CodReciboPago],[Fecha_Recibo],[Numero_Compra],[MontoPagado],[MontoRetencion]) " & _
+                       "VALUES('" & ConsecutivoPago & "','" & Format(FrmPagos.DTPFecha.Value, "dd/MM/yyyy") & "','" & NumeroCompra & "','" & Retencion & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlPagos, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -8235,7 +8246,7 @@ Module Funciones
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////EDITO EL DETALLE DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlPagos = "UPDATE [DetalleReciboPago] SET [MontoPagado] = '" & MontoPagado & "' " & _
+            SqlPagos = "UPDATE [DetalleReciboPago] SET [MontoPagado] = '" & MontoPagado & "', [MontoRetencion] = '" & Retencion & "'" & _
                        "WHERE ([CodReciboPago]='" & ConsecutivoPago & "') AND (Fecha_Recibo = CONVERT(DATETIME, '" & Fecha & "', 102)) AND ([Numero_Compra]='" & NumeroCompra & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlPagos, MiConexion)
@@ -12350,11 +12361,11 @@ Module Funciones
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         FrmPlantillas.LstClientes.ClearItems()
-        FrmPlantillas.DataSetListBox.Tables("PlantillaClientes").Clear()
+        My.Forms.FrmPlantillas.DataSetListBox.Reset()
         SqlString = "SELECT Cod_Cliente, Nombre_Cliente FROM PlantillaClientes WHERE (NumeroPlantilla = N'-1') AND (FechaPlantilla = '01/01/1900') AND (Tipo_Plantilla = N'-1') AND (Cod_Cliente = N'-1')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "ListaClientes")
-        FrmPlantillas.LstClientes.DataSource = DataSet.Tables("ListaClientes")
+        DataAdapter.Fill(My.Forms.FrmPlantillas.DataSetListBox, "PlantillaClientes")
+        FrmPlantillas.LstClientes.DataSource = My.Forms.FrmPlantillas.DataSetListBox.Tables("PlantillaClientes")
         FrmPlantillas.LstClientes.Splits.Item(0).DisplayColumns(0).Width = 73
         FrmPlantillas.LstClientes.Splits.Item(0).DisplayColumns(1).Width = 155
 

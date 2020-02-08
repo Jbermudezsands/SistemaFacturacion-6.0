@@ -149,12 +149,12 @@ Public Class FrmImportacion
                 CodRubro = MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("CODRUBRO")
             End If
             If Not IsDBNull(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("PVTADOL")) Then
-                PVtaDolar = Format(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("PVTADOL"), "##,##0.00")
+                PVtaDolar = Format(CDbl(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("PVTADOL")), "##,##0.00")
             Else
                 PVtaDolar = 0
             End If
             If Not IsDBNull(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("PVTACOR")) Then
-                PVtaCordobas = Format(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("PVTACOR"), "##,##0.00")
+                PVtaCordobas = Format(CDbl(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("PVTACOR")), "##,##0.00")
             Else
                 PVtaCordobas = 0
             End If

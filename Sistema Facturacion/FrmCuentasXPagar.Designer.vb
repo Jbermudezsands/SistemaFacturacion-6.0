@@ -69,7 +69,7 @@ Partial Class FrmCuentasXPagar
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(75, 34)
         Me.Button3.TabIndex = 189
-        Me.Button3.Text = "Recibos"
+        Me.Button3.Text = "Pagos"
         Me.Button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button3.UseVisualStyleBackColor = True
         '

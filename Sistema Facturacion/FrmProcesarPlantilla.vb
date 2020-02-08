@@ -1,6 +1,25 @@
 Public Class FrmProcesarPlantilla
     Public FacturaInicial As String = "", FacturaFinal As String = ""
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
+    Public Function Mes(ByVal ValorMes As Double) As String
+        Select Case ValorMes
+            Case 1 : Mes = "ENERO"
+            Case 2 : Mes = "FEBRERO"
+            Case 3 : Mes = "MARZO"
+            Case 4 : Mes = "ABRIL"
+            Case 5 : Mes = "MAYO"
+            Case 6 : Mes = "JUNIO"
+            Case 7 : Mes = "JULIO"
+            Case 8 : Mes = "AGOSTO"
+            Case 9 : Mes = "SEPTIEMBRE"
+            Case 10 : Mes = "OCTUBRE"
+            Case 11 : Mes = "NOVIEMBRE"
+            Case 12 : Mes = "DICIEMBRE"
+        End Select
+    End Function
+
+
+
 
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
         Dim Registros As Double, iPosicion As Double
@@ -10,9 +29,13 @@ Public Class FrmProcesarPlantilla
         Dim DiferenciaCantidad As Double, DiferenciaPrecio As Double, Descripcion_Producto As String, IdDetalle As Double = -1
         Dim SQlProveedor As String, DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet, SubTotal As Double, Iva As Double, Pagado As Double, Neto As Double
         Dim Fecha As String = "", FechaVencimiento As String = "", FechaAnterior As Date, Mes As Double, Dia As Double, Año As Double
-        Dim i As Double = 0
+        Dim i As Double = 0, TextMes As String = ""
 
         Try
+
+            Fecha = Format(FrmPlantillas.DTPFecha.Value, "yyyy-MM-dd")
+
+            TextMes = "CORRESPONDIENTE A " & Me.Mes(Month(Fecha)) & " " & Year(Fecha)
 
 
             Registros = Me.BindingClientes.Count
@@ -24,6 +47,8 @@ Public Class FrmProcesarPlantilla
             Me.ProgressBar.Value = 0
             Me.ProgressBar.Maximum = Registros
             Do While iPosicion < Registros
+
+
 
                 Me.LblProcesar.Text = "Procesando " & (iPosicion + 1) & " de " & Registros & " Clientes"
 
@@ -37,6 +62,9 @@ Public Class FrmProcesarPlantilla
                 DataAdapter.Fill(DataSet, "Clientes")
                 If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
                     NombreCliente = DataSet.Tables("Clientes").Rows(0)("Nombre_Cliente")
+                    My.Application.DoEvents()
+                    Me.Text = "Procesando " & NombreCliente
+
                     If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Apellido_Cliente")) Then
                         ApellidoCliente = DataSet.Tables("Clientes").Rows(0)("Apellido_Cliente")
                     End If
@@ -153,7 +181,7 @@ Public Class FrmProcesarPlantilla
                         Descripcion_Producto = FrmPlantillas.BindingDetalle.Item(iPosicion2)("Descripcion_Producto")
                         Fecha = Format(FrmPlantillas.DTPFecha.Value, "yyyy-MM-dd")
 
-                        GrabaDetalleFacturaPlantilla(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CDate(Fecha))
+                        GrabaDetalleFacturaPlantilla(NumeroFactura, CodigoProducto, Descripcion_Producto & "*** " & TextMes & " ***", PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CDate(Fecha))
 
                         Select Case FrmPlantillas.CboTipoProducto.Text
                             Case "Factura"
@@ -298,7 +326,12 @@ Public Class FrmProcesarPlantilla
     End Sub
 
     Private Sub FrmProcesarPlantilla_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
+        Me.LblProcesar.Text = ""
+        Me.Text = "Procesar Planilla"
+        Me.ProgressBar.Minimum = 0
+        Me.ProgressBar.Visible = True
+        Me.ProgressBar.Value = 0
+        Me.ProgressBar.Maximum = 0
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click

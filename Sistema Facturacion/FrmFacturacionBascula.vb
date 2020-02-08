@@ -321,6 +321,7 @@ Public Class FrmFacturacionBascula
         CodigoCliente = Me.TrueDBGridConsultas.Item(Posicion)("Cod_Cliente")
         CodigoBodega = Me.TrueDBGridConsultas.Item(Posicion)("Cod_Bodega")
         SubTotal = Me.TrueDBGridConsultas.Item(Posicion)("SubTotal")
+        NombreCliente = Me.TrueDBGridConsultas.Item(Posicion)("Nombres")
 
         Sql = "SELECT * FROM DatosEmpresa"
         DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)

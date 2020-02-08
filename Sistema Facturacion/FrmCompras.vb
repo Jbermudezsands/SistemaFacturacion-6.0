@@ -648,10 +648,10 @@ Public Class FrmCompras
         End If
 
 
-        If Me.CboTipoProducto.Text <> "Cuenta" Then
+        If Me.CboTipoProducto.Text = "Cuenta" Then
             Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = Format(Precio, "##,##0.0000")
             Me.TrueDBGridComponentes.Columns("Importe").Text = Format(Precio, "##,##0.0000")
-        ElseIf Me.CboTipoProducto.Text <> "Cuenta DB" Then
+        ElseIf Me.CboTipoProducto.Text = "Cuenta DB" Then
             Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = Format(Precio, "##,##0.0000")
             Me.TrueDBGridComponentes.Columns("Importe").Text = Format(Precio, "##,##0.0000")
         End If
@@ -1722,8 +1722,8 @@ Public Class FrmCompras
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Lote").Visible = False
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = False
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Lote").Visible = False
 
 
         End If

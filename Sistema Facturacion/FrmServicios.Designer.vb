@@ -139,7 +139,8 @@ Partial Class FrmServicios
         Me.TxtNombreProducto.Location = New System.Drawing.Point(232, 127)
         Me.TxtNombreProducto.Multiline = True
         Me.TxtNombreProducto.Name = "TxtNombreProducto"
-        Me.TxtNombreProducto.Size = New System.Drawing.Size(250, 21)
+        Me.TxtNombreProducto.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.TxtNombreProducto.Size = New System.Drawing.Size(250, 94)
         Me.TxtNombreProducto.TabIndex = 168
         '
         'Label3
@@ -203,7 +204,7 @@ Partial Class FrmServicios
         Me.GroupBox2.Controls.Add(Me.OptSubTotal)
         Me.GroupBox2.Controls.Add(Me.OptUnidades)
         Me.GroupBox2.Controls.Add(Me.OptImporteFijo)
-        Me.GroupBox2.Location = New System.Drawing.Point(17, 155)
+        Me.GroupBox2.Location = New System.Drawing.Point(17, 242)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(473, 40)
         Me.GroupBox2.TabIndex = 173
@@ -212,7 +213,7 @@ Partial Class FrmServicios
         'OptSubTotal
         '
         Me.OptSubTotal.AutoSize = True
-        Me.OptSubTotal.Location = New System.Drawing.Point(368, 13)
+        Me.OptSubTotal.Location = New System.Drawing.Point(362, 17)
         Me.OptSubTotal.Name = "OptSubTotal"
         Me.OptSubTotal.Size = New System.Drawing.Size(71, 17)
         Me.OptSubTotal.TabIndex = 3
@@ -245,7 +246,7 @@ Partial Class FrmServicios
         '
         Me.GroupBox3.Controls.Add(Me.Label2)
         Me.GroupBox3.Controls.Add(Me.CboRubro)
-        Me.GroupBox3.Location = New System.Drawing.Point(12, 201)
+        Me.GroupBox3.Location = New System.Drawing.Point(12, 288)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(247, 54)
         Me.GroupBox3.TabIndex = 174
@@ -296,7 +297,7 @@ Partial Class FrmServicios
         Me.GroupBox4.Controls.Add(Me.ChkGrabado)
         Me.GroupBox4.Controls.Add(Me.TxtPrecioCordobas)
         Me.GroupBox4.Controls.Add(Me.LblDescripcion)
-        Me.GroupBox4.Location = New System.Drawing.Point(305, 201)
+        Me.GroupBox4.Location = New System.Drawing.Point(305, 288)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(185, 109)
         Me.GroupBox4.TabIndex = 175
@@ -355,7 +356,7 @@ Partial Class FrmServicios
         Me.GroupBox5.Controls.Add(Me.TxtCtaCosto)
         Me.GroupBox5.Controls.Add(Me.Label11)
         Me.GroupBox5.Controls.Add(Me.Button2)
-        Me.GroupBox5.Location = New System.Drawing.Point(9, 316)
+        Me.GroupBox5.Location = New System.Drawing.Point(9, 395)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(481, 53)
         Me.GroupBox5.TabIndex = 176
@@ -415,7 +416,7 @@ Partial Class FrmServicios
         '
         Me.ButtonBorrar.Image = CType(resources.GetObject("ButtonBorrar.Image"), System.Drawing.Image)
         Me.ButtonBorrar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonBorrar.Location = New System.Drawing.Point(173, 375)
+        Me.ButtonBorrar.Location = New System.Drawing.Point(520, 309)
         Me.ButtonBorrar.Name = "ButtonBorrar"
         Me.ButtonBorrar.Size = New System.Drawing.Size(75, 67)
         Me.ButtonBorrar.TabIndex = 179
@@ -428,7 +429,7 @@ Partial Class FrmServicios
         '
         Me.ButtonAgregar.Image = CType(resources.GetObject("ButtonAgregar.Image"), System.Drawing.Image)
         Me.ButtonAgregar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonAgregar.Location = New System.Drawing.Point(92, 375)
+        Me.ButtonAgregar.Location = New System.Drawing.Point(520, 138)
         Me.ButtonAgregar.Name = "ButtonAgregar"
         Me.ButtonAgregar.Size = New System.Drawing.Size(75, 67)
         Me.ButtonAgregar.TabIndex = 178
@@ -441,7 +442,7 @@ Partial Class FrmServicios
         '
         Me.CmdNuevo.Image = CType(resources.GetObject("CmdNuevo.Image"), System.Drawing.Image)
         Me.CmdNuevo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdNuevo.Location = New System.Drawing.Point(11, 375)
+        Me.CmdNuevo.Location = New System.Drawing.Point(520, 65)
         Me.CmdNuevo.Name = "CmdNuevo"
         Me.CmdNuevo.Size = New System.Drawing.Size(75, 67)
         Me.CmdNuevo.TabIndex = 177
@@ -454,7 +455,7 @@ Partial Class FrmServicios
         Me.Button8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
         Me.Button8.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button8.Location = New System.Drawing.Point(415, 376)
+        Me.Button8.Location = New System.Drawing.Point(520, 382)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(75, 66)
         Me.Button8.TabIndex = 180
@@ -467,7 +468,7 @@ Partial Class FrmServicios
         Me.CboActivo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboActivo.FormattingEnabled = True
         Me.CboActivo.Items.AddRange(New Object() {"Activo", "Inactivo"})
-        Me.CboActivo.Location = New System.Drawing.Point(81, 263)
+        Me.CboActivo.Location = New System.Drawing.Point(81, 350)
         Me.CboActivo.Name = "CboActivo"
         Me.CboActivo.Size = New System.Drawing.Size(123, 21)
         Me.CboActivo.TabIndex = 181
@@ -475,7 +476,7 @@ Partial Class FrmServicios
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(14, 266)
+        Me.Label13.Location = New System.Drawing.Point(14, 353)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(37, 13)
         Me.Label13.TabIndex = 182
@@ -484,7 +485,7 @@ Partial Class FrmServicios
         'CboIva
         '
         Me.CboIva.FormattingEnabled = True
-        Me.CboIva.Location = New System.Drawing.Point(81, 289)
+        Me.CboIva.Location = New System.Drawing.Point(81, 376)
         Me.CboIva.Name = "CboIva"
         Me.CboIva.Size = New System.Drawing.Size(123, 21)
         Me.CboIva.TabIndex = 184
@@ -492,7 +493,7 @@ Partial Class FrmServicios
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(15, 293)
+        Me.Label14.Location = New System.Drawing.Point(15, 380)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(60, 13)
         Me.Label14.TabIndex = 183
@@ -502,7 +503,7 @@ Partial Class FrmServicios
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(496, 448)
+        Me.ClientSize = New System.Drawing.Size(606, 470)
         Me.Controls.Add(Me.CboIva)
         Me.Controls.Add(Me.Label14)
         Me.Controls.Add(Me.CboActivo)
