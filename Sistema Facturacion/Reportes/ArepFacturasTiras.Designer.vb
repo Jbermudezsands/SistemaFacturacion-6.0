@@ -921,7 +921,7 @@ Partial Public Class ArepFacturasTiras
         Me.PageSettings.Margins.Top = 0.1!
         Me.PageSettings.PaperHeight = 11.0!
         Me.PageSettings.PaperWidth = 8.5!
-        Me.PrintWidth = 2.483005!
+        Me.PrintWidth = 2.535089!
         Me.Sections.Add(Me.ReportHeader1)
         Me.Sections.Add(Me.PageHeader1)
         Me.Sections.Add(Me.Detail1)

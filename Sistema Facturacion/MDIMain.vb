@@ -1003,4 +1003,10 @@ Public Class MDIMain
         My.Forms.FrmFacturacionBascula.MdiParent = Me
         My.Forms.FrmFacturacionBascula.Show()
     End Sub
+
+    Private Sub RibbonReporteCtasXCob1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonReporteCtasXCob1.Click
+        Quien = "Reporte Cuentas x Pagar"
+        My.Forms.FrmReportes.MdiParent = Me
+        My.Forms.FrmReportes.Show()
+    End Sub
 End Class

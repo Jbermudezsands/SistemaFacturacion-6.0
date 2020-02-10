@@ -356,6 +356,113 @@ Public Class FrmReportes
 
 
     End Function
+    Public Function ConsultaCreditosProveedor(ByVal CodigoProveedor As String, ByVal FechaInicio As Date, ByVal FechaFin As Date, ByVal Moneda As String) As Double
+        Dim SQlString As String, NumeroRecibo As String = ""
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Registros As Double, i As Double
+        Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer = 0
+        Dim MontoRecibo As Double, MontoMetodoFactura As Double = 0
+        Dim TotalCreditos As Double = 0, TotalAbonos As Double = 0, TotalCargos As Double = 0
+        Dim TotalMora As Double = 0, NumeroNota As String = "", MontoNota As Double = 0, NumeroNotaCR As String = "", MontoNotaCR As Double = 0, TotalMontoNotaCR As Double = 0, TotalMontoNotaDB As Double = 0
+        Dim TipoNota As String
+
+        '---------------------------------------------------------------------------------------------------------------------------------------
+        '------------------------------------------CONSULTA DE RECIBOS DE CAJA ----------------------------------------------------------------
+        '---------------------------------------------------------------------------------------------------------------------------------------
+        SQlString = "SELECT DetalleReciboPago.CodReciboPago, DetalleReciboPago.Fecha_Recibo, DetalleReciboPago.Numero_Compra, DetalleReciboPago.MontoPagado, CASE WHEN ReciboPago.MonedaRecibo = 'Cordobas' THEN DetalleReciboPago.MontoPagado ELSE DetalleReciboPago.MontoPagado * TasaCambio.MontoTasa END AS MontoCordobas, CASE WHEN ReciboPago.MonedaRecibo = 'Dolares' THEN DetalleReciboPago.MontoPagado ELSE DetalleReciboPago.MontoPagado / TasaCambio.MontoTasa END AS MontoDolares, ReciboPago.Cod_Proveedor FROM DetalleReciboPago INNER JOIN ReciboPago ON DetalleReciboPago.CodReciboPago = ReciboPago.CodReciboPago AND DetalleReciboPago.Fecha_Recibo = ReciboPago.Fecha_Recibo INNER JOIN TasaCambio ON ReciboPago.Fecha_Recibo = TasaCambio.FechaTasa WHERE (DetalleReciboPago.Fecha_Recibo BETWEEN CONVERT(DATETIME, '" & Format(FechaInicio, "yyyy-MM-dd") & "',102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (ReciboPago.Cod_Proveedor = '" & CodigoProveedor & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Compras")
+
+
+        Registros = DataSet.Tables("Compras").Rows.Count
+        i = 0
+        TotalCreditos = 0
+        Me.ProgressBar1.Minimum = 0
+        Me.ProgressBar1.Visible = True
+        Me.ProgressBar1.Value = 0
+        Me.ProgressBar1.Maximum = DataSet.Tables("Compras").Rows.Count
+        Do While Registros > i
+            My.Application.DoEvents()
+            If Moneda = "Cordobas" Then
+                MontoRecibo = DataSet.Tables("Compras").Rows(i)("MontoCordobas")
+            Else
+                MontoRecibo = DataSet.Tables("Compras").Rows(i)("MontoDolares")
+            End If
+            TotalCreditos = TotalCreditos + MontoRecibo
+            i = i + 1
+            Me.ProgressBar1.Value = i
+        Loop
+
+        '-------------------------------------------------------------------------------------------------------------------------------------------
+        '-----------------------CONSULTO NOTAS DE CREDITOS CLIENTES --------------------------------------------------------------------------------
+        '-------------------------------------------------------------------------------------------------------------------------------------------
+        SQlString = "SELECT NotaDebito.Tipo, Detalle_Nota.Numero_Nota AS Expr1, CASE WHEN IndiceNota.MonedaNota = 'Cordobas' THEN Detalle_Nota.Monto ELSE Detalle_Nota.Monto * TasaCambio.MontoTasa END AS MontoCordobas, CASE WHEN IndiceNota.MonedaNota = 'Dolares' THEN Detalle_Nota.Monto ELSE Detalle_Nota.Monto / TasaCambio.MontoTasa END AS MontoDolares FROM Detalle_Nota INNER JOIN  NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota INNER JOIN TasaCambio ON IndiceNota.Fecha_Nota = TasaCambio.FechaTasa WHERE (NotaDebito.Tipo Like '%Credito Proveedores%') AND (IndiceNota.Cod_Cliente = '" & CodigoProveedor & "') AND (IndiceNota.Fecha_Nota BETWEEN CONVERT(DATETIME, '" & Format(FechaInicio, "yyyy-MM-dd") & "',102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102))"
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Notas")
+        Registros = DataSet.Tables("Notas").Rows.Count
+        Me.ProgressBar1.Minimum = 0
+        Me.ProgressBar1.Visible = True
+        Me.ProgressBar1.Value = 0
+        Me.ProgressBar1.Maximum = Registros
+        i = 0
+        Do While Registros > i
+
+            TipoNota = DataSet.Tables("Notas").Rows(i)("Tipo")
+
+            My.Application.DoEvents()
+            If Moneda = "Cordobas" Then
+                If TipoNota <> "Credito Clientes Dif $" Then
+                    MontoNota = DataSet.Tables("Notas").Rows(i)("MontoCordobas")
+                Else
+                    MontoNota = 0
+                End If
+            Else
+                If TipoNota <> "Credito Clientes Dif C$" Then
+                    MontoNota = DataSet.Tables("Notas").Rows(i)("MontoDolares")
+                Else
+                    MontoNota = 0
+                End If
+            End If
+            TotalCreditos = TotalCreditos + MontoNota
+            i = i + 1
+            Me.ProgressBar1.Value = i
+        Loop
+
+
+
+        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////BUSCO EL DETALLE DE METODO PARA LAS FACTURAS DE CONTADO //////////////////////////////////////////////////////
+        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        MontoMetodoFactura = 0
+        SQlString = "SELECT Compras.Cod_Proveedor, CASE WHEN MetodoPago.Moneda = 'Cordobas' THEN Detalle_MetodoCompras.Monto ELSE Detalle_MetodoCompras.Monto * TasaCambio.MontoTasa END AS MontoCordobas, CASE WHEN MetodoPago.Moneda = 'Dolares' THEN Detalle_MetodoCompras.Monto ELSE Detalle_MetodoCompras.Monto / TasaCambio.MontoTasa END AS MontoDolares FROM Detalle_MetodoCompras INNER JOIN MetodoPago ON Detalle_MetodoCompras.NombrePago = MetodoPago.NombrePago INNER JOIN Compras ON Detalle_MetodoCompras.Numero_Compra = Compras.Numero_Compra AND Detalle_MetodoCompras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_MetodoCompras.Tipo_Compra = Compras.Tipo_Compras INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa  " & _
+                    "WHERE (Detalle_MetodoCompras.Tipo_Compra = 'Mercancia Recibida') AND (Compras.Cod_Compra = '" & CodigoProveedor & "') AND (Detalle_MetodoCompra.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(FechaInicio, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Compras.Nombre_Proveedor <> N'******CANCELADO')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapter.Fill(DataSet, "MetodoCompra")
+        Registros = DataSet.Tables("MetodoCompra").Rows.Count
+        i = 0
+        Me.ProgressBar1.Minimum = 0
+        Me.ProgressBar1.Visible = True
+        Me.ProgressBar1.Value = 0
+        Me.ProgressBar1.Maximum = Registros
+        Do While Registros > i
+            My.Application.DoEvents()
+            If Moneda = "Cordobas" Then
+                MontoNota = DataSet.Tables("MetodoCompra").Rows(i)("MontoCordobas")
+            Else
+                MontoNota = DataSet.Tables("MetodoCompra").Rows(i)("MontoDolares")
+            End If
+            TotalCreditos = TotalCreditos + MontoNota
+            i = i + 1
+            Me.ProgressBar1.Value = i
+        Loop
+
+        ConsultaCreditosProveedor = TotalCreditos
+
+
+    End Function
+
+
+
+
     Public Function ConsultaSaldoCliente(ByVal CodigoCliente As String, ByVal FechaInicio As Date, ByVal FechaFin As Date, ByVal Moneda As String, ByVal DiasIni As Double, ByVal DiasFin As Double) As Double
 
         Dim SQlString As String, NumeroRecibo As String = ""
@@ -1260,6 +1367,10 @@ Public Class FrmReportes
             Case "Reporte Excel"
                 Me.ListBox.Items.Add("Reporte de Ventas Productos x Mes")
                 Me.ListBox.Items.Add("Reporte de Ventas Excel")
+
+            Case "Reporte Cuentas x Pagar"
+                Me.ListBox.Items.Add("Reporte de Saldo de Proveedores")
+                Me.ListBox.Items.Add("Reporte de Historico de Saldo Proveedores")
         End Select
 
         '/////////////////////////////////////////////////////////////////////////////////////////////
@@ -1488,6 +1599,91 @@ Public Class FrmReportes
         Fecha2 = Me.DTPFechaFin.Value
         My.Application.DoEvents()
         Select Case Me.ListBox.Text
+
+            Case "Reporte de Saldo de Proveedores"
+                Dim ArepSaldoProveedores As New ArepSaldoClientes
+                Dim SqlString As String, Registros As Double, CodigoProveedor As String
+                Dim oDataRow As DataRow, i As Double = 0, Debito As Double = 0, Credito As Double, SaldoInicial As Double
+                Dim Moneda As String = "", Registros2 As Double = 0, j As Double = 0
+
+
+                If Dir(RutaLogo) <> "" Then
+                    ArepSaldoProveedores.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                End If
+                ArepSaldoProveedores.LblTitulo.Text = NombreEmpresa
+                ArepSaldoProveedores.LblDireccion.Text = DireccionEmpresa
+                ArepSaldoProveedores.LblRuc.Text = Ruc
+
+                '*******************************************************************************************************************************
+                '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
+                '*******************************************************************************************************************************
+                DataSet.Reset()
+                SqlString = "SELECT Proveedor.Cod_Proveedor, Proveedor.Nombre_Proveedor, Proveedor.Apellido_Proveedor, Compras.SubTotal AS SaldoInicial, Compras.IVA AS Debito, Compras.NetoPagar AS Credito, Compras.NetoPagar AS SaldoFinal FROM  Proveedor INNER JOIN Compras ON Proveedor.Cod_Proveedor = Compras.Cod_Proveedor WHERE (Proveedor.Cod_Proveedor = N'-1000000')"
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                DataAdapter.Fill(DataSet, "TotalVentas")
+
+                If Me.CmbClientes.Text = "" And Me.CmbClientes2.Text = "" Then
+                    'SqlDatos = "SELECT DISTINCT SUM(Facturas.MontoCredito) AS MontoCredito, Facturas.Cod_Cliente, Clientes.Nombre_Cliente, Clientes.Apellido_Cliente FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura <= CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) GROUP BY Facturas.Cod_Cliente, Clientes.Nombre_Cliente,Clientes.Apellido_Cliente ORDER BY Facturas.Cod_Cliente"
+                    SqlDatos = "SELECT DISTINCT Nombre_Proveedor, Apellido_Proveedor, Cod_Proveedor FROM  Proveedor GROUP BY Nombre_Proveedor, Apellido_Proveedor, Cod_Proveedor  ORDER BY Proveedor.Cod_Proveedor"
+                Else
+                    'SqlDatos = "SELECT DISTINCT SUM(Facturas.MontoCredito) AS MontoCredito, Facturas.Cod_Cliente, Clientes.Nombre_Cliente, Clientes.Apellido_Cliente FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura <= CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) GROUP BY Facturas.Cod_Cliente, Clientes.Nombre_Cliente,Clientes.Apellido_Cliente HAVING (Facturas.Cod_Cliente BETWEEN '" & Me.CmbClientes.Text & "' AND '" & Me.CmbClientes2.Text & "') ORDER BY Facturas.Cod_Cliente"
+                    SqlDatos = "SELECT DISTINCT Nombre_Proveedor, Apellido_Proveedor, Cod_Proveedor FROM  Proveedor GROUP BY Nombre_Proveedor, Apellido_Proveedor, Cod_Proveedor HAVING  (Proveedor.Cod_Proveedor BETWEEN '" & Me.CmbClientes.Text & "' AND '" & Me.CmbClientes2.Text & "') ORDER BY Proveedor.Cod_Proveedor"
+                End If
+
+                'SQL.ConnectionString = Conexion
+                'SQL.SQL = SqlDatos
+
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                DataAdapter.Fill(DataSet, "Productos")
+                Me.ProgressBar.Maximum = DataSet.Tables("Productos").Rows.Count
+                Me.ProgressBar.Minimum = 0
+                Me.ProgressBar.Value = 0
+                Me.ProgressBar.Visible = True
+                Registros = DataSet.Tables("Productos").Rows.Count
+                i = 0
+                Do While Registros > i
+                    CodigoProveedor = DataSet.Tables("Productos").Rows(i)("Cod_Proveedor")
+
+                    If Me.OptCordobas.Checked = True Then
+                        Moneda = "Cordobas"
+                    Else
+                        Moneda = "Dolares"
+                    End If
+                    Credito = ConsultaCreditosCliente(CodigoProveedor, Me.DTPFechaIni.Value, Me.DTPFechaFin.Value, Moneda)
+                    Debito = ConsultaDebitosCliente(CodigoProveedor, Me.DTPFechaIni.Value, Me.DTPFechaFin.Value, Moneda)
+                    SaldoInicial = SaldoInicialCliente(CodigoProveedor, Me.DTPFechaIni.Value, Moneda)
+
+                    If Format(SaldoInicial + Debito + Credito, "##,##0.00") <> "0.00" Then
+                        oDataRow = DataSet.Tables("TotalVentas").NewRow
+                        oDataRow("Cod_Cliente") = DataSet.Tables("Productos").Rows(i)("Cod_Proveedor")
+                        oDataRow("Nombre_Cliente") = DataSet.Tables("Productos").Rows(i)("Nombre_Proveedor") & " " & DataSet.Tables("Productos").Rows(i)("Apellido_Proveedor")
+                        oDataRow("SaldoInicial") = SaldoInicial
+                        oDataRow("Debito") = Debito
+                        oDataRow("Credito") = Credito
+                        oDataRow("SaldoFinal") = SaldoInicial + Debito - Credito
+                        DataSet.Tables("TotalVentas").Rows.Add(oDataRow)
+                    End If
+
+                    Me.Text = "Procesando: " & CodigoProveedor & " " & DataSet.Tables("Productos").Rows(i)("Nombre_Proveedor")
+                    Me.ProgressBar.Value = Me.ProgressBar.Value + 1
+                    i = i + 1
+                Loop
+
+
+                Me.ProgressBar1.Visible = False
+
+                Dim ViewerForm As New FrmViewer()
+                ViewerForm.arvMain.Document = ArepSaldoProveedores.Document
+                My.Application.DoEvents()
+                ArepSaldoProveedores.LblImpreso.Text = "Impreso: " & Format(Now, "Long Date")
+                ArepSaldoProveedores.DataSource = DataSet.Tables("TotalVentas")
+                ArepSaldoProveedores.Run(False)
+                ViewerForm.Show()
+
+                Me.Label1.Visible = True
+                Me.DTPFechaIni.Visible = True
+                Me.GroupVendedor.Visible = True
+
 
             Case "Reporte de Ventas Excel"
                 Dim Meses As Double, Dia As Double = Microsoft.VisualBasic.DateAndTime.Day(Me.DTPFechaIni.Value)

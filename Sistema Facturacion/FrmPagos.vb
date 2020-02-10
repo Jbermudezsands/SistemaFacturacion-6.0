@@ -46,8 +46,6 @@ Public Class FrmPagos
             NumeroCompra = Me.TrueDBGridComponentes.Item(iPosicion)("Numero_Compra")
             Retencion = 0
 
-
-
             If Not IsDBNull(Me.TrueDBGridComponentes.Item(iPosicion)("MontoPagado")) Then
                 MontoPagado = Me.TrueDBGridComponentes.Item(iPosicion)("MontoPagado")
 
@@ -85,6 +83,8 @@ Public Class FrmPagos
                 End If
             Else
                 MontoPagado = 0
+                Me.TrueDBGridComponentes.Item(iPosicion)("Retencion") = 0
+                Me.TrueDBGridComponentes.Item(iPosicion)("NetoPagar") = Me.TrueDBGridComponentes.Item(iPosicion)("Saldo")
             End If
 
 

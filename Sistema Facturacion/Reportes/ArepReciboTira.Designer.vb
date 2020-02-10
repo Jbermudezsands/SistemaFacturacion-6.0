@@ -20,10 +20,6 @@ Partial Public Class ArepReciboTira
         Dim OleDBDataSource1 As DataDynamics.ActiveReports.DataSources.OleDBDataSource = New DataDynamics.ActiveReports.DataSources.OleDBDataSource
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ArepReciboTira))
         Me.PageHeader1 = New DataDynamics.ActiveReports.PageHeader
-        Me.Detail1 = New DataDynamics.ActiveReports.Detail
-        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
-        Me.ReportHeader1 = New DataDynamics.ActiveReports.ReportHeader
-        Me.ReportFooter1 = New DataDynamics.ActiveReports.ReportFooter
         Me.ImgLogo = New DataDynamics.ActiveReports.Picture
         Me.LblDireccion = New DataDynamics.ActiveReports.Label
         Me.LblRuc = New DataDynamics.ActiveReports.Label
@@ -39,17 +35,21 @@ Partial Public Class ArepReciboTira
         Me.Label1 = New DataDynamics.ActiveReports.Label
         Me.LblNombres = New DataDynamics.ActiveReports.Label
         Me.LblTelefono = New DataDynamics.ActiveReports.Label
+        Me.Label5 = New DataDynamics.ActiveReports.Label
         Me.TxtVendedor = New DataDynamics.ActiveReports.TextBox
         Me.Label6 = New DataDynamics.ActiveReports.Label
+        Me.Detail1 = New DataDynamics.ActiveReports.Detail
         Me.TextBox5 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox3 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox4 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox1 = New DataDynamics.ActiveReports.TextBox
+        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
+        Me.ReportHeader1 = New DataDynamics.ActiveReports.ReportHeader
+        Me.ReportFooter1 = New DataDynamics.ActiveReports.ReportFooter
         Me.LblPagadoRecibo = New DataDynamics.ActiveReports.Label
         Me.Label8 = New DataDynamics.ActiveReports.Label
         Me.Label2 = New DataDynamics.ActiveReports.Label
         Me.LblMontoTexto = New DataDynamics.ActiveReports.Label
-        Me.Label5 = New DataDynamics.ActiveReports.Label
         CType(Me.ImgLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblDireccion, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblRuc, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -65,6 +65,7 @@ Partial Public Class ArepReciboTira
         CType(Me.Label1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblNombres, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblTelefono, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TxtVendedor, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox5, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -75,7 +76,6 @@ Partial Public Class ArepReciboTira
         CType(Me.Label8, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblMontoTexto, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Label5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         '
         'PageHeader1
@@ -83,29 +83,6 @@ Partial Public Class ArepReciboTira
         Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.ImgLogo, Me.LblDireccion, Me.LblRuc, Me.LblTipoCompra, Me.LblOrden, Me.lblOrderDate, Me.LblFechaOrden, Me.LblEncabezado, Me.Label18, Me.Label23, Me.Label15, Me.Label22, Me.Label1, Me.LblNombres, Me.LblTelefono, Me.Label5, Me.TxtVendedor, Me.Label6})
         Me.PageHeader1.Height = 3.114583!
         Me.PageHeader1.Name = "PageHeader1"
-        '
-        'Detail1
-        '
-        Me.Detail1.ColumnSpacing = 0.0!
-        Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TextBox5, Me.TextBox3, Me.TextBox4, Me.TextBox1})
-        Me.Detail1.Height = 0.2291667!
-        Me.Detail1.Name = "Detail1"
-        '
-        'PageFooter1
-        '
-        Me.PageFooter1.Height = 0.0!
-        Me.PageFooter1.Name = "PageFooter1"
-        '
-        'ReportHeader1
-        '
-        Me.ReportHeader1.Height = 0.0!
-        Me.ReportHeader1.Name = "ReportHeader1"
-        '
-        'ReportFooter1
-        '
-        Me.ReportFooter1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.LblPagadoRecibo, Me.Label8, Me.Label2, Me.LblMontoTexto})
-        Me.ReportFooter1.Height = 2.09375!
-        Me.ReportFooter1.Name = "ReportFooter1"
         '
         'ImgLogo
         '
@@ -403,6 +380,26 @@ Partial Public Class ArepReciboTira
         Me.LblTelefono.Top = 1.315789!
         Me.LblTelefono.Width = 2.789474!
         '
+        'Label5
+        '
+        Me.Label5.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label5.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label5.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label5.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label5.Border.RightColor = System.Drawing.Color.Black
+        Me.Label5.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label5.Border.TopColor = System.Drawing.Color.Black
+        Me.Label5.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label5.Height = 0.2105263!
+        Me.Label5.HyperLink = Nothing
+        Me.Label5.Left = 0.2105263!
+        Me.Label5.Name = "Label5"
+        Me.Label5.Style = "color: #404040; ddo-char-set: 0; text-align: left; font-weight: bold; font-size: " & _
+            "8.25pt; "
+        Me.Label5.Text = "Cajero"
+        Me.Label5.Top = 2.526316!
+        Me.Label5.Width = 0.6315789!
+        '
         'TxtVendedor
         '
         Me.TxtVendedor.Border.BottomColor = System.Drawing.Color.Black
@@ -441,6 +438,13 @@ Partial Public Class ArepReciboTira
         Me.Label6.Top = 1.631579!
         Me.Label6.Width = 1.736842!
         '
+        'Detail1
+        '
+        Me.Detail1.ColumnSpacing = 0.0!
+        Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TextBox5, Me.TextBox3, Me.TextBox4, Me.TextBox1})
+        Me.Detail1.Height = 0.2291667!
+        Me.Detail1.Name = "Detail1"
+        '
         'TextBox5
         '
         Me.TextBox5.Border.BottomColor = System.Drawing.Color.Black
@@ -457,6 +461,7 @@ Partial Public Class ArepReciboTira
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.OutputFormat = resources.GetString("TextBox5.OutputFormat")
         Me.TextBox5.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; font-family: Cambria; "
+        Me.TextBox5.Text = Nothing
         Me.TextBox5.Top = 0.0!
         Me.TextBox5.Width = 0.6315789!
         '
@@ -476,6 +481,7 @@ Partial Public Class ArepReciboTira
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.OutputFormat = resources.GetString("TextBox3.OutputFormat")
         Me.TextBox3.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; font-family: Cambria; "
+        Me.TextBox3.Text = Nothing
         Me.TextBox3.Top = 0.0!
         Me.TextBox3.Width = 0.6315789!
         '
@@ -495,6 +501,7 @@ Partial Public Class ArepReciboTira
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.OutputFormat = resources.GetString("TextBox4.OutputFormat")
         Me.TextBox4.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; font-family: Cambria; "
+        Me.TextBox4.Text = Nothing
         Me.TextBox4.Top = 0.0!
         Me.TextBox4.Width = 0.5789473!
         '
@@ -513,8 +520,25 @@ Partial Public Class ArepReciboTira
         Me.TextBox1.Left = 0.2631579!
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Style = "ddo-char-set: 0; font-size: 8.25pt; font-family: Cambria; "
+        Me.TextBox1.Text = Nothing
         Me.TextBox1.Top = 0.0!
         Me.TextBox1.Width = 0.5789474!
+        '
+        'PageFooter1
+        '
+        Me.PageFooter1.Height = 0.0!
+        Me.PageFooter1.Name = "PageFooter1"
+        '
+        'ReportHeader1
+        '
+        Me.ReportHeader1.Height = 0.0!
+        Me.ReportHeader1.Name = "ReportHeader1"
+        '
+        'ReportFooter1
+        '
+        Me.ReportFooter1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.LblPagadoRecibo, Me.Label8, Me.Label2, Me.LblMontoTexto})
+        Me.ReportFooter1.Height = 2.09375!
+        Me.ReportFooter1.Name = "ReportFooter1"
         '
         'LblPagadoRecibo
         '
@@ -593,26 +617,6 @@ Partial Public Class ArepReciboTira
         Me.LblMontoTexto.Top = 0.3157895!
         Me.LblMontoTexto.Width = 2.368421!
         '
-        'Label5
-        '
-        Me.Label5.Border.BottomColor = System.Drawing.Color.Black
-        Me.Label5.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label5.Border.LeftColor = System.Drawing.Color.Black
-        Me.Label5.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label5.Border.RightColor = System.Drawing.Color.Black
-        Me.Label5.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label5.Border.TopColor = System.Drawing.Color.Black
-        Me.Label5.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label5.Height = 0.2105263!
-        Me.Label5.HyperLink = Nothing
-        Me.Label5.Left = 0.2105263!
-        Me.Label5.Name = "Label5"
-        Me.Label5.Style = "color: #404040; ddo-char-set: 0; text-align: left; font-weight: bold; font-size: " & _
-            "8.25pt; "
-        Me.Label5.Text = "Cajero"
-        Me.Label5.Top = 2.526316!
-        Me.Label5.Width = 0.6315789!
-        '
         'ArepReciboTira
         '
         Me.MasterReport = False
@@ -626,7 +630,7 @@ Partial Public Class ArepReciboTira
         Me.PageSettings.Margins.Top = 0.1!
         Me.PageSettings.PaperHeight = 11.0!
         Me.PageSettings.PaperWidth = 8.5!
-        Me.PrintWidth = 2.833333!
+        Me.PrintWidth = 2.864583!
         Me.Sections.Add(Me.ReportHeader1)
         Me.Sections.Add(Me.PageHeader1)
         Me.Sections.Add(Me.Detail1)
@@ -653,6 +657,7 @@ Partial Public Class ArepReciboTira
         CType(Me.Label1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LblNombres, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LblTelefono, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TxtVendedor, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label6, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox5, System.ComponentModel.ISupportInitialize).EndInit()
@@ -663,7 +668,6 @@ Partial Public Class ArepReciboTira
         CType(Me.Label8, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LblMontoTexto, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Label5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
 
     End Sub

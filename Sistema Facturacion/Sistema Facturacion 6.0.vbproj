@@ -559,6 +559,12 @@
     <Compile Include="Reportes\ArepRecibo2.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\ArepReciboCajaTira.Designer.vb">
+      <DependentUpon>ArepReciboCajaTira.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepReciboCajaTira.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\ArepReciboTira.Designer.vb">
       <DependentUpon>ArepReciboTira.vb</DependentUpon>
     </Compile>
@@ -1746,6 +1752,10 @@
     <EmbeddedResource Include="Reportes\ArepRecibo2.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ArepRecibo2.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepReciboCajaTira.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepReciboCajaTira.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepReciboTira.resx">
       <SubType>Designer</SubType>

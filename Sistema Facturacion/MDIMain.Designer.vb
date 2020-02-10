@@ -143,6 +143,7 @@ Partial Class MDIMain
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
         Me.TxtUsuario = New System.Windows.Forms.TextBox
+        Me.RibbonReporteCtasXCob1 = New C1.Win.C1Ribbon.RibbonButton
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -951,6 +952,7 @@ Partial Class MDIMain
         Me.RibbonGroup6.Items.Add(Me.RibbonReporteVentasCompras)
         Me.RibbonGroup6.Items.Add(Me.RibbonReporteInventario)
         Me.RibbonGroup6.Items.Add(Me.RibbonReporteCtasXCob)
+        Me.RibbonGroup6.Items.Add(Me.RibbonReporteCtasXCob1)
         Me.RibbonGroup6.Items.Add(Me.RibbonReporteGraficos)
         Me.RibbonGroup6.Items.Add(Me.RibbonReporteGraficos1)
         Me.RibbonGroup6.Text = "Reportes"
@@ -1121,6 +1123,14 @@ Partial Class MDIMain
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
         '
+        'RibbonReporteCtasXCob1
+        '
+        Me.RibbonReporteCtasXCob1.ID = "RibbonReporteCtasXCob1"
+        Me.RibbonReporteCtasXCob1.LargeImage = CType(resources.GetObject("RibbonReporteCtasXCob1.LargeImage"), System.Drawing.Image)
+        Me.RibbonReporteCtasXCob1.SmallImage = CType(resources.GetObject("RibbonReporteCtasXCob1.SmallImage"), System.Drawing.Image)
+        Me.RibbonReporteCtasXCob1.Text = "CuentasxPagar"
+        Me.RibbonReporteCtasXCob1.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
         'MDIMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1264,5 +1274,6 @@ Partial Class MDIMain
     Friend WithEvents RibbonButton3 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton4 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton5 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonReporteCtasXCob1 As C1.Win.C1Ribbon.RibbonButton
 
 End Class
