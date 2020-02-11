@@ -32,6 +32,7 @@ Partial Class FrmFacturacionBascula
         Me.BtnActualizar = New System.Windows.Forms.Button
         Me.BindingDetalle = New System.Windows.Forms.BindingSource(Me.components)
         Me.ProgressBar = New System.Windows.Forms.ProgressBar
+        Me.Button1 = New System.Windows.Forms.Button
         CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -106,7 +107,7 @@ Partial Class FrmFacturacionBascula
         Me.BtnSalir.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnSalir.Image = CType(resources.GetObject("BtnSalir.Image"), System.Drawing.Image)
         Me.BtnSalir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnSalir.Location = New System.Drawing.Point(783, 382)
+        Me.BtnSalir.Location = New System.Drawing.Point(783, 414)
         Me.BtnSalir.Name = "BtnSalir"
         Me.BtnSalir.Size = New System.Drawing.Size(114, 56)
         Me.BtnSalir.TabIndex = 235
@@ -161,11 +162,25 @@ Partial Class FrmFacturacionBascula
         Me.ProgressBar.TabIndex = 240
         Me.ProgressBar.Visible = False
         '
+        'Button1
+        '
+        Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
+        Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button1.Location = New System.Drawing.Point(783, 323)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(114, 56)
+        Me.Button1.TabIndex = 241
+        Me.Button1.Text = "Anular"
+        Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button1.UseVisualStyleBackColor = True
+        '
         'FrmFacturacionBascula
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(905, 479)
+        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.ProgressBar)
         Me.Controls.Add(Me.BtnActualizar)
         Me.Controls.Add(Me.BtnVer)
@@ -197,4 +212,5 @@ Partial Class FrmFacturacionBascula
     Friend WithEvents BtnActualizar As System.Windows.Forms.Button
     Friend WithEvents BindingDetalle As System.Windows.Forms.BindingSource
     Friend WithEvents ProgressBar As System.Windows.Forms.ProgressBar
+    Friend WithEvents Button1 As System.Windows.Forms.Button
 End Class

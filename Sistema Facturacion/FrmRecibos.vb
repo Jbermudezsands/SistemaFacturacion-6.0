@@ -306,7 +306,7 @@ Public Class FrmRecibos
         Dim ArepPagoClientes As New ArepPagoClientes, RutaLogo As String, NumeroTarjeta As String, FechaVenceTarjeta As String
         Dim SQL As New DataDynamics.ActiveReports.DataSources.SqlDBDataSource, SQlPagos As String, Descripcion As String = "", FechaVence As Date
         Dim SQlString As String, TipoImpresion As String, RutaBD As String, ArepRecibos2 As New ArepRecibo2
-        Dim ConexionAccess As String, iResultado As Integer, ArepReciboTira As New ArepReciboTira
+        Dim ConexionAccess As String, iResultado As Integer, ArepReciboTira As New ArepReciboTira, ArepReciboTira2 As New ArepReciboCajaTira
         Dim ComandoUpdate As New SqlClient.SqlCommand, SqlConsecutivo As String, ConsecutivoManual As Boolean = False
         Dim Saldo As Double = 0, Retencion1 As Double = 0, Retencion2 As Double = 0, NumeroNota As String = "", Consecutivo As Double = 0
         Dim ReciboSerie As Boolean = False, idDetalle As Double = -1
@@ -672,9 +672,13 @@ Public Class FrmRecibos
             ArepRecibos2.LblTitulo.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
             ArepRecibos2.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
 
+            ArepReciboTira2.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+            ArepReciboTira2.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+
             If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")) Then
                 ArepPagoClientes.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
                 ArepReciboTira.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
+                ArepReciboTira2.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
                 ArepRecibos2.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
             End If
             If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
@@ -682,6 +686,7 @@ Public Class FrmRecibos
                 If Dir(RutaLogo) <> "" Then
                     ArepPagoClientes.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
                     ArepReciboTira.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                    ArepReciboTira2.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
                     ArepRecibos2.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
                 End If
 
@@ -716,6 +721,13 @@ Public Class FrmRecibos
         ArepReciboTira.LblOrden.Text = NumeroRecibo
         ArepReciboTira.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyy")
 
+        '----------------------------SEGUNDO FORMATO DE TIRA 2-----------------------------------------------------
+        ArepReciboTira2.LblNombres.Text = Me.TxtNombres.Text
+        ArepReciboTira2.LblDireccion.Text = Me.TxtDireccion.Text
+        ArepReciboTira2.LblTelefono.Text = Me.TxtTelefono.Text
+        ArepReciboTira2.LblReciboNo.Text = "Recibo Oficial No:" & NumeroRecibo
+        ArepReciboTira2.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyy")
+
         SqlDatos = "SELECT  *  FROM DetalleRecibo WHERE (CodReciboPago = '" & NumeroRecibo & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
         DataAdapter.Fill(DataSet, "BuscaConcepto")
@@ -726,7 +738,7 @@ Public Class FrmRecibos
         End If
 
 
-        SQlPagos = "SELECT DISTINCT Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.MontoCredito+DetalleRecibo.MontoPagado as MontoCredito,DetalleRecibo.MontoPagado, Facturas.MontoCredito AS Saldo FROM Facturas LEFT OUTER JOIN DetalleRecibo ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura  " & _
+        SQlPagos = "SELECT DISTINCT Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.MontoCredito+DetalleRecibo.MontoPagado as MontoCredito,DetalleRecibo.MontoPagado, Facturas.MontoCredito AS Saldo, DetalleRecibo.Descripcion, DetalleRecibo.NombrePago FROM Facturas LEFT OUTER JOIN DetalleRecibo ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura  " & _
                    "WHERE (Facturas.MontoCredito <> 0) AND (Facturas.Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "') AND (Facturas.Tipo_Factura = 'Factura') AND (DetalleRecibo.CodReciboPago = '" & NumeroRecibo & "') ORDER BY Facturas.Numero_Factura DESC"
 
         SQL.ConnectionString = Conexion
@@ -740,6 +752,27 @@ Public Class FrmRecibos
             Descuento = Me.TxtDescuento.Text
         End If
 
+
+        '/////////////////////////////////////////////CONSULTO LOSDATOS DE LOS CLIENTES //////////////////////////////////////////////
+
+        SQlString = "SELECT  Clientes.*  FROM Clientes WHERE  (Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Clientes")
+        If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
+
+            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("RUC")) Then
+                ArepReciboTira2.TxtRuc.Text = DataSet.Tables("Clientes").Rows(0)("RUC")
+            ElseIf Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Cedula")) Then
+                ArepReciboTira2.TxtRuc.Text = DataSet.Tables("Clientes").Rows(0)("Cedula")
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Direccion_Cliente")) Then
+                ArepReciboTira2.TxtDireccion.Text = DataSet.Tables("Clientes").Rows(0)("Direccion_Cliente")
+            End If
+        End If
+
+
+
         ArepPagoClientes.LblSubTotalRecibo.Text = Me.TxtSubTotal.Text
         ArepPagoClientes.LblDescuentoRecibo.Text = Format(Descuento, "##,##0.00")
         ArepPagoClientes.LblPagadoRecibo.Text = Me.TxtNetoPagar.Text
@@ -747,6 +780,10 @@ Public Class FrmRecibos
         ArepReciboTira.LblMontoTexto.Text = Me.LblLetras.Text
         ArepReciboTira.TxtVendedor.Text = Me.CboCajero.Columns(1).Text
         ArepRecibos2.TxtMonto.Text = Format(CDbl(Me.TxtNetoPagar.Text), "##,##0.00")
+
+        ArepReciboTira2.LblPagadoRecibo.Text = Me.TxtNetoPagar.Text
+        ArepReciboTira2.LblMontoTexto.Text = Me.LblLetras.Text
+        ArepReciboTira2.TxtVendedor.Text = Me.CboCajero.Columns(1).Text
 
 
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -770,6 +807,16 @@ Public Class FrmRecibos
                 DataAdapter.Fill(DataSet, "Coordenadas")
                 If Not DataSet.Tables("Coordenadas").Rows.Count = 0 Then
                     Select Case DataSet.Tables("Coordenadas").Rows(0)("Configuracion")
+                        Case "Tiras de Papel2"
+                            SQL.ConnectionString = Conexion
+                            SQL.SQL = SQlPagos
+                            ArepReciboTira2.DataSource = SQL
+                            Dim ViewerForm As New FrmViewer()
+
+                            ViewerForm.arvMain.Document = ArepReciboTira2.Document
+                            ViewerForm.Show()
+                            'ArepPagoClientes.Run(False)
+                            ArepReciboTira2.Run(False)
                         Case "Tira de Papel"
                             SQL.ConnectionString = Conexion
                             SQL.SQL = SQlPagos

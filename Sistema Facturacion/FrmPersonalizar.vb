@@ -919,6 +919,7 @@ Public Class FrmPersonalizar
         Me.ChkNotasSerie.Visible = False
         Me.ChkMediaPagina.Visible = False
         Me.OptPapelBlancoLotes.Visible = False
+        Me.OptPapelBlancoLotes.Text = "Papel en Blanco, Lotes"
 
         SqlString = "SELECT * FROM Impresion WHERE (Impresion = '" & Me.ListBox1.Text & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
@@ -1044,6 +1045,9 @@ Public Class FrmPersonalizar
 
                 Case "Recibos de Caja"
 
+                    Me.OptPapelBlancoLotes.Visible = True
+                    Me.OptPapelBlancoLotes.Text = "Tiras de Papel2"
+
                     If Me.ChkReciboSerie.Checked = True Then
                         Me.CmbSerieImprime.Visible = True
                     Else
@@ -1052,6 +1056,9 @@ Public Class FrmPersonalizar
 
                     If Configuracion = "Papel en Blanco" Then
                         Me.OptPapelBlanco.Checked = True
+                    ElseIf Configuracion = "Tiras de Papel2" Then
+                        Me.OptPapelBlancoLotes.Checked = True
+
                     Else
                         Me.OptPersonalizado.Checked = True
                         Me.CmdConfigurar.Visible = True

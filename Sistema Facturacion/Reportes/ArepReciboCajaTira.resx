@@ -123,4 +123,13 @@
   <metadata name="$this.TrayLargeIcon" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <data name="OleDBDataSource1.SQL" xml:space="preserve">
+    <value>SELECT DISTINCT 
+                         Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.MontoCredito + DetalleRecibo.MontoPagado AS MontoCredito, DetalleRecibo.MontoPagado, 
+                         Facturas.MontoCredito AS Saldo, DetalleRecibo.Descripcion, DetalleRecibo.NombrePago
+FROM            Facturas LEFT OUTER JOIN
+                         DetalleRecibo ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura
+WHERE        (Facturas.MontoCredito &lt;&gt; 0) AND (Facturas.Cod_Cliente = '00002') AND (Facturas.Tipo_Factura = 'Factura') AND (DetalleRecibo.CodReciboPago = '00001')
+ORDER BY Facturas.Numero_Factura DESC</value>
+  </data>
 </root>
