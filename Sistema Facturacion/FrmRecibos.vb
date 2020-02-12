@@ -674,6 +674,7 @@ Public Class FrmRecibos
 
             ArepReciboTira2.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
             ArepReciboTira2.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+            ArepReciboTira2.LblTelefono.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")
 
             If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")) Then
                 ArepPagoClientes.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
@@ -723,10 +724,10 @@ Public Class FrmRecibos
 
         '----------------------------SEGUNDO FORMATO DE TIRA 2-----------------------------------------------------
         ArepReciboTira2.LblNombres.Text = Me.TxtNombres.Text
-        ArepReciboTira2.LblDireccion.Text = Me.TxtDireccion.Text
-        ArepReciboTira2.LblTelefono.Text = Me.TxtTelefono.Text
+        ArepReciboTira2.TxtDireccion.Text = Me.TxtDireccion.Text
         ArepReciboTira2.LblReciboNo.Text = "Recibo Oficial No: " & NumeroRecibo
         ArepReciboTira2.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyy")
+        ArepReciboTira2.LblObservaciones.Text = Me.TxtObservaciones.Text
 
         SqlDatos = "SELECT  *  FROM DetalleRecibo WHERE (CodReciboPago = '" & NumeroRecibo & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)

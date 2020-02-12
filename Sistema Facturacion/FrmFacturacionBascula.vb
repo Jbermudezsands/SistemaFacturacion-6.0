@@ -386,4 +386,30 @@ Public Class FrmFacturacionBascula
 
         BtnActualizar_Click(sender, e)
     End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        Dim SqlString As String, NumeroRecepcion As String, i As Double
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Sql As String
+        Dim StrSqlUpdate As String, iResultado As Integer
+        Dim ComandoUpdate As New SqlClient.SqlCommand
+
+        i = Me.TrueDBGridConsultas.Row
+        NumeroRecepcion = Me.TrueDBGridConsultas.Item(i)("NumeroRecepcion")
+
+        SqlString = "SELECT NumeroRecepcion, TipoRecepcion, Fecha, Cod_Proveedor, Cod_SubProveedor, Conductor, Id_identificacion, Id_Vehiculo, Cod_Bodega, Observaciones, SubTotal, Telefono, Cancelar, Activo, Seleccion, Peso, Lote, Contabilizado, FechaHora, TipoPesada, Numero_Compra, Tipo_Compra, Fecha_Compra, Procesado FROM Recepcion WHERE  (NumeroRecepcion = '" & NumeroRecepcion & "') AND (TipoRecepcion = 'SalidaBascula')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "DetalleRecepcion")
+
+        If DataSet.Tables("DetalleRecepcion").Rows.Count <> 0 Then
+            MiConexion.Close()
+            StrSqlUpdate = "UPDATE [Recepcion] SET [Cancelar] = 1 WHERE  (NumeroRecepcion = '" & NumeroRecepcion & "') AND (TipoRecepcion = 'SalidaBascula')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+        End If
+
+
+        BtnActualizar_Click(sender, e)
+    End Sub
 End Class

@@ -2141,7 +2141,6 @@ Public Class FrmFacturas
         'Try
 
 
-
         If Me.CboTipoProducto.Text = "" Then
             MsgBox("Seleccione un Tipo", MsgBoxStyle.Critical, "Zeus Facturacion")
             Exit Sub
@@ -2155,11 +2154,13 @@ Public Class FrmFacturas
             End If
         End If
 
-
-
-
         If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
             MsgBox("No se puede grabar antes de asignar numero factura", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If BuscaTasaCambio(Me.DTPFecha.Value) = 0 Then
+            MsgBox("No Existe Tasa de Cambio", MsgBoxStyle.Critical, "Zeus Facturacion")
             Exit Sub
         End If
 
