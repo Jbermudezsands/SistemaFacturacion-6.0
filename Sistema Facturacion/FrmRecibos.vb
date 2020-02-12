@@ -725,7 +725,7 @@ Public Class FrmRecibos
         ArepReciboTira2.LblNombres.Text = Me.TxtNombres.Text
         ArepReciboTira2.LblDireccion.Text = Me.TxtDireccion.Text
         ArepReciboTira2.LblTelefono.Text = Me.TxtTelefono.Text
-        ArepReciboTira2.LblReciboNo.Text = "Recibo Oficial No:" & NumeroRecibo
+        ArepReciboTira2.LblReciboNo.Text = "Recibo Oficial No: " & NumeroRecibo
         ArepReciboTira2.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyy")
 
         SqlDatos = "SELECT  *  FROM DetalleRecibo WHERE (CodReciboPago = '" & NumeroRecibo & "')"
@@ -739,7 +739,7 @@ Public Class FrmRecibos
 
 
         SQlPagos = "SELECT DISTINCT Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.MontoCredito+DetalleRecibo.MontoPagado as MontoCredito,DetalleRecibo.MontoPagado, Facturas.MontoCredito AS Saldo, DetalleRecibo.Descripcion, DetalleRecibo.NombrePago FROM Facturas LEFT OUTER JOIN DetalleRecibo ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura  " & _
-                   "WHERE (Facturas.MontoCredito <> 0) AND (Facturas.Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "') AND (Facturas.Tipo_Factura = 'Factura') AND (DetalleRecibo.CodReciboPago = '" & NumeroRecibo & "') ORDER BY Facturas.Numero_Factura DESC"
+                   "WHERE (Facturas.Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "') AND (Facturas.Tipo_Factura = 'Factura') AND (DetalleRecibo.CodReciboPago = '" & NumeroRecibo & "') ORDER BY Facturas.Numero_Factura DESC"
 
         SQL.ConnectionString = Conexion
         SQL.SQL = SQlPagos
@@ -1180,6 +1180,9 @@ Public Class FrmRecibos
                 Me.TxtDescuento.Text = DataSet.Tables("Recibos").Rows(0)("Descuento")
                 Me.TxtNetoPagar.Text = DataSet.Tables("Recibos").Rows(0)("Total")
 
+                If ConsecutivoReciboSerie = True Then
+                    Me.CmbSerie.Text = Mid(Me.TxtNumeroEnsamble.Text, 1, 1)
+                End If
 
 
 

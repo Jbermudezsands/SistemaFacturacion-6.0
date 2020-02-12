@@ -580,6 +580,11 @@ Public Class FrmRecibosFacturas
     Private Sub TrueDBGridComponentes_BeforeColUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.BeforeColUpdateEventArgs) Handles TrueDBGridComponentes.BeforeColUpdate
         Dim MontoCredito As Double, MontoAplicado As Double
 
+        If Not IsNumeric(Me.TrueDBGridComponentes.Columns(3).Text) Then
+            MsgBox("Es Necesario Digitar Numero", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
         If Me.TrueDBGridComponentes.Columns(2).Text = "" Then
             MontoCredito = 0
         Else
