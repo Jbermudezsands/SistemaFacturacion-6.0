@@ -94,6 +94,9 @@ Public Class FrmArqueo
         DataAdapter.Fill(DataSet, "Cheques")
         iPosicion = 0
         Registros = DataSet.Tables("Cheques").Rows.Count
+        Me.ProgressBar.Minimum = 0
+        Me.ProgressBar.Maximum = Registros
+        Me.ProgressBar.Value = 0
         If DataSet.Tables("Cheques").Rows.Count <> 0 Then
             Do While iPosicion < Registros
                 NumeroFactura = "Fact" & DataSet.Tables("Cheques").Rows(iPosicion)("Numero_Factura")
@@ -101,8 +104,9 @@ Public Class FrmArqueo
                 NumeroTarjeta = DataSet.Tables("Cheques").Rows(iPosicion)("NumeroTarjeta")
                 FechaVence = DataSet.Tables("Cheques").Rows(iPosicion)("FechaVence")
                 Monto = DataSet.Tables("Cheques").Rows(iPosicion)("Monto")
-                GrabaDetalleArqueoCheque(NumeroArqueo, "Cordobas", NumeroTarjeta, FechaVence, Monto, NumeroFactura, NombrePago)
+                GrabaDetalleArqueoCheque(Fecha, NumeroArqueo, "Cordobas", Monto, NumeroFactura, NombrePago, NumeroTarjeta, FechaVence)
                 iPosicion = iPosicion + 1
+                Me.ProgressBar.Value = Me.ProgressBar.Value + 1
             Loop
         End If
 
@@ -119,6 +123,9 @@ Public Class FrmArqueo
         DataAdapter.Fill(DataSet, "ChequesDolar")
         iPosicion = 0
         Registros = DataSet.Tables("ChequesDolar").Rows.Count
+        Me.ProgressBar.Minimum = 0
+        Me.ProgressBar.Maximum = Registros
+        Me.ProgressBar.Value = 0
         If DataSet.Tables("ChequesDolar").Rows.Count <> 0 Then
             Do While iPosicion < Registros
                 NumeroFactura = "Fact" & DataSet.Tables("ChequesDolar").Rows(iPosicion)("Numero_Factura")
@@ -126,8 +133,9 @@ Public Class FrmArqueo
                 NumeroTarjeta = DataSet.Tables("ChequesDolar").Rows(iPosicion)("NumeroTarjeta")
                 FechaVence = DataSet.Tables("ChequesDolar").Rows(iPosicion)("FechaVence")
                 Monto = DataSet.Tables("ChequesDolar").Rows(iPosicion)("Monto")
-                GrabaDetalleArqueoCheque(NumeroArqueo, "Dolares", NumeroTarjeta, FechaVence, Monto, NumeroFactura, NombrePago)
+                GrabaDetalleArqueoCheque(Fecha, NumeroArqueo, "Dolares", Monto, NumeroFactura, NombrePago, NumeroTarjeta, FechaVence)
                 iPosicion = iPosicion + 1
+                Me.ProgressBar.Value = Me.ProgressBar.Value + 1
             Loop
         End If
 
@@ -141,6 +149,9 @@ Public Class FrmArqueo
         DataAdapter.Fill(DataSet, "Cheques")
         iPosicion = 0
         Registros = DataSet.Tables("Cheques").Rows.Count
+        Me.ProgressBar.Minimum = 0
+        Me.ProgressBar.Maximum = Registros
+        Me.ProgressBar.Value = 0
         If DataSet.Tables("Cheques").Rows.Count <> 0 Then
             Do While iPosicion < Registros
                 NumeroFactura = "Rec" & DataSet.Tables("Cheques").Rows(iPosicion)("CodRecibo")
@@ -148,8 +159,9 @@ Public Class FrmArqueo
                 NumeroTarjeta = DataSet.Tables("Cheques").Rows(iPosicion)("NumeroTarjeta")
                 FechaVence = DataSet.Tables("Cheques").Rows(iPosicion)("Fecha_Vence")
                 Monto = DataSet.Tables("Cheques").Rows(iPosicion)("Monto")
-                GrabaDetalleArqueoCheque(NumeroArqueo, "Cordobas", NumeroTarjeta, FechaVence, Monto, NumeroFactura, NombrePago)
+                GrabaDetalleArqueoCheque(Fecha, NumeroArqueo, "Cordobas", Monto, NumeroFactura, NombrePago, NumeroTarjeta, FechaVence)
                 iPosicion = iPosicion + 1
+                Me.ProgressBar.Value = Me.ProgressBar.Value + 1
             Loop
         End If
 
@@ -163,6 +175,9 @@ Public Class FrmArqueo
         DataAdapter.Fill(DataSet, "ChequesDolar")
         iPosicion = 0
         Registros = DataSet.Tables("ChequesDolar").Rows.Count
+        Me.ProgressBar.Minimum = 0
+        Me.ProgressBar.Maximum = Registros
+        Me.ProgressBar.Value = 0
         If DataSet.Tables("ChequesDolar").Rows.Count <> 0 Then
             Do While iPosicion < Registros
                 NumeroFactura = "Rec" & DataSet.Tables("ChequesDolar").Rows(iPosicion)("CodRecibo")
@@ -170,8 +185,9 @@ Public Class FrmArqueo
                 NumeroTarjeta = DataSet.Tables("ChequesDolar").Rows(iPosicion)("NumeroTarjeta")
                 FechaVence = DataSet.Tables("ChequesDolar").Rows(iPosicion)("Fecha_Vence")
                 Monto = DataSet.Tables("ChequesDolar").Rows(iPosicion)("Monto")
-                GrabaDetalleArqueoCheque(NumeroArqueo, "Dolares", NumeroTarjeta, FechaVence, Monto, NumeroFactura, NombrePago)
+                GrabaDetalleArqueoCheque(Fecha, NumeroArqueo, "Dolares", Monto, NumeroFactura, NombrePago, NumeroTarjeta, FechaVence)
                 iPosicion = iPosicion + 1
+                Me.ProgressBar.Value = Me.ProgressBar.Value + 1
             Loop
         End If
 
@@ -445,5 +461,57 @@ Public Class FrmArqueo
         '/////////////////////////////GRABO EL ENCABEZADO DE LOS PAGOS /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
         GrabaArqueo(NumeroArqueo)
+    End Sub
+
+    Private Sub TdbGridChequeCordobas_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TdbGridChequeCordobas.Click
+
+    End Sub
+
+    Private Sub Label9_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label9.Click
+
+    End Sub
+
+    Private Sub LblCajero_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles LblCajero.Click
+
+    End Sub
+
+    Private Sub TxtSumaFacturaDolares_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtSumaFacturaDolares.TextChanged
+
+    End Sub
+
+    Private Sub TxtPracticadoPor_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtPracticadoPor.TextChanged
+
+    End Sub
+
+    Private Sub TextBox10_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBox10.TextChanged
+
+    End Sub
+
+    Private Sub Label11_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label11.Click
+
+    End Sub
+
+    Private Sub Label10_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label10.Click
+
+    End Sub
+
+    Private Sub TxtTotalChequeCordobas_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtTotalChequeCordobas.TextChanged
+
+    End Sub
+
+    Private Sub Label12_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label12.Click
+
+    End Sub
+
+    Private Sub TxtTotalChequeDolares_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtTotalChequeDolares.TextChanged
+
+    End Sub
+
+    Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSalir.Click
+        Me.Close()
+    End Sub
+
+    Private Sub ProgressBar1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ProgressBar.Click
+
     End Sub
 End Class

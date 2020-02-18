@@ -106,7 +106,7 @@ Partial Public Class ArepReciboCajaTira
             "amily: Elephant; "
         Me.Label6.Text = "RECIBIDO"
         Me.Label6.Top = 0.7777779!
-        Me.Label6.Width = 2.777778!
+        Me.Label6.Width = 2.666667!
         '
         'LblReciboNo
         '
@@ -125,7 +125,7 @@ Partial Public Class ArepReciboCajaTira
         Me.LblReciboNo.Style = "ddo-char-set: 0; text-align: center; font-weight: bold; font-size: 9pt; "
         Me.LblReciboNo.Text = "Recibo Oficial No: 12344555"
         Me.LblReciboNo.Top = 2.333333!
-        Me.LblReciboNo.Width = 2.777778!
+        Me.LblReciboNo.Width = 2.666667!
         '
         'Label1
         '
@@ -139,12 +139,12 @@ Partial Public Class ArepReciboCajaTira
         Me.Label1.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label1.Height = 0.2222223!
         Me.Label1.HyperLink = Nothing
-        Me.Label1.Left = 0.1111111!
+        Me.Label1.Left = 0.3333333!
         Me.Label1.Name = "Label1"
         Me.Label1.Style = "ddo-char-set: 0; text-align: left; font-size: 8.25pt; "
         Me.Label1.Text = "Cajero:"
         Me.Label1.Top = 2.666667!
-        Me.Label1.Width = 0.6111111!
+        Me.Label1.Width = 0.5!
         '
         'Label2
         '
@@ -158,12 +158,12 @@ Partial Public Class ArepReciboCajaTira
         Me.Label2.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label2.Height = 0.2222222!
         Me.Label2.HyperLink = Nothing
-        Me.Label2.Left = 0.1111111!
+        Me.Label2.Left = 0.3333333!
         Me.Label2.Name = "Label2"
         Me.Label2.Style = "ddo-char-set: 0; text-align: left; font-size: 8.25pt; "
         Me.Label2.Text = "Fecha:"
         Me.Label2.Top = 2.888889!
-        Me.Label2.Width = 0.6!
+        Me.Label2.Width = 0.5!
         '
         'Label3
         '
@@ -175,14 +175,14 @@ Partial Public Class ArepReciboCajaTira
         Me.Label3.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label3.Border.TopColor = System.Drawing.Color.Black
         Me.Label3.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label3.Height = 0.2222222!
+        Me.Label3.Height = 0.2222221!
         Me.Label3.HyperLink = Nothing
-        Me.Label3.Left = 0.1111111!
+        Me.Label3.Left = 0.3333333!
         Me.Label3.Name = "Label3"
         Me.Label3.Style = "ddo-char-set: 0; text-align: left; font-size: 8.25pt; "
         Me.Label3.Text = "Ced/Ruc:"
         Me.Label3.Top = 3.111111!
-        Me.Label3.Width = 0.6111111!
+        Me.Label3.Width = 0.5!
         '
         'Label4
         '
@@ -194,14 +194,14 @@ Partial Public Class ArepReciboCajaTira
         Me.Label4.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label4.Border.TopColor = System.Drawing.Color.Black
         Me.Label4.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label4.Height = 0.2222221!
+        Me.Label4.Height = 0.2222223!
         Me.Label4.HyperLink = Nothing
-        Me.Label4.Left = 0.1111111!
+        Me.Label4.Left = 0.3333333!
         Me.Label4.Name = "Label4"
         Me.Label4.Style = "ddo-char-set: 0; text-align: left; font-size: 8.25pt; "
         Me.Label4.Text = "Cliente:"
         Me.Label4.Top = 3.333333!
-        Me.Label4.Width = 0.6111111!
+        Me.Label4.Width = 0.5!
         '
         'Label5
         '
@@ -213,14 +213,14 @@ Partial Public Class ArepReciboCajaTira
         Me.Label5.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label5.Border.TopColor = System.Drawing.Color.Black
         Me.Label5.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label5.Height = 0.2222223!
+        Me.Label5.Height = 0.2777778!
         Me.Label5.HyperLink = Nothing
-        Me.Label5.Left = 0.1111111!
+        Me.Label5.Left = 0.3333333!
         Me.Label5.Name = "Label5"
         Me.Label5.Style = "ddo-char-set: 0; text-align: left; font-size: 8.25pt; "
-        Me.Label5.Text = "Direccion:"
+        Me.Label5.Text = "Direccion"
         Me.Label5.Top = 3.555556!
-        Me.Label5.Width = 0.6111111!
+        Me.Label5.Width = 0.5555556!
         '
         'Label22
         '
@@ -232,15 +232,15 @@ Partial Public Class ArepReciboCajaTira
         Me.Label22.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label22.Border.TopColor = System.Drawing.Color.Black
         Me.Label22.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
-        Me.Label22.Height = 0.2777777!
+        Me.Label22.Height = 0.2777779!
         Me.Label22.HyperLink = Nothing
-        Me.Label22.Left = 0.1111111!
+        Me.Label22.Left = 0.3888889!
         Me.Label22.Name = "Label22"
         Me.Label22.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
             "d-color: White; font-size: 8.25pt; "
         Me.Label22.Text = "Concepto"
         Me.Label22.Top = 4.166667!
-        Me.Label22.Width = 1.5!
+        Me.Label22.Width = 1.222222!
         '
         'Label7
         '
@@ -272,7 +272,7 @@ Partial Public Class ArepReciboCajaTira
         Me.Label8.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label8.Border.TopColor = System.Drawing.Color.Black
         Me.Label8.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
-        Me.Label8.Height = 0.2777777!
+        Me.Label8.Height = 0.2777779!
         Me.Label8.HyperLink = Nothing
         Me.Label8.Left = 2.111111!
         Me.Label8.Name = "Label8"
@@ -280,7 +280,7 @@ Partial Public Class ArepReciboCajaTira
             "d-color: White; font-size: 8.25pt; "
         Me.Label8.Text = "Monto"
         Me.Label8.Top = 4.166667!
-        Me.Label8.Width = 0.6666667!
+        Me.Label8.Width = 0.6111111!
         '
         'ImgLogo
         '
@@ -300,6 +300,7 @@ Partial Public Class ArepReciboCajaTira
         Me.ImgLogo.Name = "ImgLogo"
         Me.ImgLogo.SizeMode = DataDynamics.ActiveReports.SizeModes.Stretch
         Me.ImgLogo.Top = 0.05555556!
+        Me.ImgLogo.Visible = False
         Me.ImgLogo.Width = 1.526316!
         '
         'LblDireccion
@@ -320,7 +321,7 @@ Partial Public Class ArepReciboCajaTira
             "ily: Microsoft Sans Serif; "
         Me.LblDireccion.Text = ""
         Me.LblDireccion.Top = 1.333333!
-        Me.LblDireccion.Width = 2.777778!
+        Me.LblDireccion.Width = 2.666667!
         '
         'LblRuc
         '
@@ -332,7 +333,7 @@ Partial Public Class ArepReciboCajaTira
         Me.LblRuc.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblRuc.Border.TopColor = System.Drawing.Color.Black
         Me.LblRuc.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblRuc.Height = 0.2105263!
+        Me.LblRuc.Height = 0.2222222!
         Me.LblRuc.HyperLink = Nothing
         Me.LblRuc.Left = 0.0!
         Me.LblRuc.Name = "LblRuc"
@@ -340,7 +341,7 @@ Partial Public Class ArepReciboCajaTira
             "ily: Cambria; "
         Me.LblRuc.Text = ""
         Me.LblRuc.Top = 1.777778!
-        Me.LblRuc.Width = 2.789474!
+        Me.LblRuc.Width = 2.666667!
         '
         'LblEncabezado
         '
@@ -352,7 +353,7 @@ Partial Public Class ArepReciboCajaTira
         Me.LblEncabezado.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblEncabezado.Border.TopColor = System.Drawing.Color.Black
         Me.LblEncabezado.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblEncabezado.Height = 0.2105263!
+        Me.LblEncabezado.Height = 0.2222222!
         Me.LblEncabezado.HyperLink = Nothing
         Me.LblEncabezado.Left = 0.0!
         Me.LblEncabezado.Name = "LblEncabezado"
@@ -360,7 +361,7 @@ Partial Public Class ArepReciboCajaTira
             "ze: 9.75pt; font-family: Microsoft Sans Serif; "
         Me.LblEncabezado.Text = ""
         Me.LblEncabezado.Top = 1.111111!
-        Me.LblEncabezado.Width = 2.789474!
+        Me.LblEncabezado.Width = 2.666667!
         '
         'LblTelefono
         '
@@ -372,7 +373,7 @@ Partial Public Class ArepReciboCajaTira
         Me.LblTelefono.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblTelefono.Border.TopColor = System.Drawing.Color.Black
         Me.LblTelefono.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblTelefono.Height = 0.2105263!
+        Me.LblTelefono.Height = 0.2222223!
         Me.LblTelefono.HyperLink = Nothing
         Me.LblTelefono.Left = 0.0!
         Me.LblTelefono.Name = "LblTelefono"
@@ -380,7 +381,7 @@ Partial Public Class ArepReciboCajaTira
             "ily: Cambria; "
         Me.LblTelefono.Text = ""
         Me.LblTelefono.Top = 2.0!
-        Me.LblTelefono.Width = 2.789474!
+        Me.LblTelefono.Width = 2.666667!
         '
         'LblFechaOrden
         '
@@ -392,14 +393,14 @@ Partial Public Class ArepReciboCajaTira
         Me.LblFechaOrden.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblFechaOrden.Border.TopColor = System.Drawing.Color.Black
         Me.LblFechaOrden.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblFechaOrden.Height = 0.2222223!
+        Me.LblFechaOrden.Height = 0.2222222!
         Me.LblFechaOrden.HyperLink = Nothing
-        Me.LblFechaOrden.Left = 0.7222223!
+        Me.LblFechaOrden.Left = 0.8888889!
         Me.LblFechaOrden.Name = "LblFechaOrden"
         Me.LblFechaOrden.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.LblFechaOrden.Text = ""
         Me.LblFechaOrden.Top = 2.888889!
-        Me.LblFechaOrden.Width = 0.7777777!
+        Me.LblFechaOrden.Width = 0.7222223!
         '
         'TxtVendedor
         '
@@ -412,12 +413,12 @@ Partial Public Class ArepReciboCajaTira
         Me.TxtVendedor.Border.TopColor = System.Drawing.Color.Black
         Me.TxtVendedor.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TxtVendedor.Height = 0.2222223!
-        Me.TxtVendedor.Left = 0.7222223!
+        Me.TxtVendedor.Left = 0.8888889!
         Me.TxtVendedor.Name = "TxtVendedor"
-        Me.TxtVendedor.Style = "ddo-char-set: 0; font-size: 8.25pt; font-family: Cambria; "
+        Me.TxtVendedor.Style = "ddo-char-set: 0; font-size: 8.25pt; font-family: Arial; "
         Me.TxtVendedor.Text = Nothing
         Me.TxtVendedor.Top = 2.666667!
-        Me.TxtVendedor.Width = 2.0!
+        Me.TxtVendedor.Width = 1.833333!
         '
         'LblNombres
         '
@@ -429,14 +430,14 @@ Partial Public Class ArepReciboCajaTira
         Me.LblNombres.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblNombres.Border.TopColor = System.Drawing.Color.Black
         Me.LblNombres.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblNombres.Height = 0.2222221!
+        Me.LblNombres.Height = 0.2222223!
         Me.LblNombres.HyperLink = Nothing
-        Me.LblNombres.Left = 0.7222223!
+        Me.LblNombres.Left = 0.8888889!
         Me.LblNombres.Name = "LblNombres"
-        Me.LblNombres.Style = "ddo-char-set: 0; font-size: 8.25pt; font-family: Cambria; "
+        Me.LblNombres.Style = "ddo-char-set: 0; font-size: 8.25pt; font-family: Arial; "
         Me.LblNombres.Text = ""
         Me.LblNombres.Top = 3.333333!
-        Me.LblNombres.Width = 2.0!
+        Me.LblNombres.Width = 1.833333!
         '
         'TxtRuc
         '
@@ -448,13 +449,13 @@ Partial Public Class ArepReciboCajaTira
         Me.TxtRuc.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TxtRuc.Border.TopColor = System.Drawing.Color.Black
         Me.TxtRuc.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.TxtRuc.Height = 0.2222222!
-        Me.TxtRuc.Left = 0.7222223!
+        Me.TxtRuc.Height = 0.2222221!
+        Me.TxtRuc.Left = 0.8888889!
         Me.TxtRuc.Name = "TxtRuc"
-        Me.TxtRuc.Style = "ddo-char-set: 0; font-size: 8.25pt; font-family: Cambria; "
+        Me.TxtRuc.Style = "ddo-char-set: 0; font-size: 8.25pt; font-family: Arial; "
         Me.TxtRuc.Text = Nothing
         Me.TxtRuc.Top = 3.111111!
-        Me.TxtRuc.Width = 2.0!
+        Me.TxtRuc.Width = 1.833333!
         '
         'TxtDireccion
         '
@@ -466,19 +467,19 @@ Partial Public Class ArepReciboCajaTira
         Me.TxtDireccion.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TxtDireccion.Border.TopColor = System.Drawing.Color.Black
         Me.TxtDireccion.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.TxtDireccion.Height = 0.4444446!
-        Me.TxtDireccion.Left = 0.7222223!
+        Me.TxtDireccion.Height = 0.4444444!
+        Me.TxtDireccion.Left = 0.8888889!
         Me.TxtDireccion.Name = "TxtDireccion"
-        Me.TxtDireccion.Style = "ddo-char-set: 0; font-size: 8.25pt; font-family: Cambria; "
+        Me.TxtDireccion.Style = "ddo-char-set: 0; font-size: 8.25pt; font-family: Arial; "
         Me.TxtDireccion.Text = Nothing
         Me.TxtDireccion.Top = 3.555556!
-        Me.TxtDireccion.Width = 2.0!
+        Me.TxtDireccion.Width = 1.833333!
         '
         'Detail1
         '
         Me.Detail1.ColumnSpacing = 0.0!
         Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TextBox4, Me.TextBox2, Me.TextBox1})
-        Me.Detail1.Height = 0.2604167!
+        Me.Detail1.Height = 0.2708333!
         Me.Detail1.Name = "Detail1"
         '
         'TextBox4
@@ -496,10 +497,10 @@ Partial Public Class ArepReciboCajaTira
         Me.TextBox4.Left = 2.111111!
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.OutputFormat = resources.GetString("TextBox4.OutputFormat")
-        Me.TextBox4.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; font-family: Cambria; "
+        Me.TextBox4.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; font-family: Arial; "
         Me.TextBox4.Text = Nothing
         Me.TextBox4.Top = 0.0!
-        Me.TextBox4.Width = 0.6666667!
+        Me.TextBox4.Width = 0.6111111!
         '
         'TextBox2
         '
@@ -515,7 +516,7 @@ Partial Public Class ArepReciboCajaTira
         Me.TextBox2.Height = 0.2222222!
         Me.TextBox2.Left = 1.611111!
         Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; font-family: Cambria; "
+        Me.TextBox2.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; font-family: Arial; "
         Me.TextBox2.Text = Nothing
         Me.TextBox2.Top = 0.0!
         Me.TextBox2.Width = 0.5!
@@ -532,12 +533,12 @@ Partial Public Class ArepReciboCajaTira
         Me.TextBox1.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox1.DataField = "Descripcion"
         Me.TextBox1.Height = 0.2222222!
-        Me.TextBox1.Left = 0.1111111!
+        Me.TextBox1.Left = 0.4444444!
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Style = "ddo-char-set: 0; font-size: 8.25pt; font-family: Cambria; "
+        Me.TextBox1.Style = "ddo-char-set: 0; font-size: 8.25pt; font-family: Arial; "
         Me.TextBox1.Text = Nothing
         Me.TextBox1.Top = 0.0!
-        Me.TextBox1.Width = 1.5!
+        Me.TextBox1.Width = 1.166667!
         '
         'PageFooter1
         '
@@ -567,7 +568,7 @@ Partial Public Class ArepReciboCajaTira
         Me.LblPagadoRecibo.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblPagadoRecibo.Height = 0.1875!
         Me.LblPagadoRecibo.HyperLink = Nothing
-        Me.LblPagadoRecibo.Left = 1.888889!
+        Me.LblPagadoRecibo.Left = 1.833333!
         Me.LblPagadoRecibo.Name = "LblPagadoRecibo"
         Me.LblPagadoRecibo.Style = "ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 8.25pt; "
         Me.LblPagadoRecibo.Text = ""
@@ -586,7 +587,7 @@ Partial Public Class ArepReciboCajaTira
         Me.Label10.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label10.Height = 0.1875!
         Me.Label10.HyperLink = Nothing
-        Me.Label10.Left = 0.7222223!
+        Me.Label10.Left = 0.6666667!
         Me.Label10.Name = "Label10"
         Me.Label10.Style = "color: Black; ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 8" & _
             ".25pt; "
@@ -604,14 +605,14 @@ Partial Public Class ArepReciboCajaTira
         Me.LblMontoTexto.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblMontoTexto.Border.TopColor = System.Drawing.Color.Black
         Me.LblMontoTexto.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblMontoTexto.Height = 0.2222222!
+        Me.LblMontoTexto.Height = 0.3333333!
         Me.LblMontoTexto.HyperLink = Nothing
-        Me.LblMontoTexto.Left = 0.05555556!
+        Me.LblMontoTexto.Left = 0.3888889!
         Me.LblMontoTexto.Name = "LblMontoTexto"
-        Me.LblMontoTexto.Style = "ddo-char-set: 0; font-size: 9.75pt; font-family: Cambria; "
+        Me.LblMontoTexto.Style = "ddo-char-set: 0; font-size: 8.25pt; font-family: Arial; "
         Me.LblMontoTexto.Text = ""
         Me.LblMontoTexto.Top = 0.2777778!
-        Me.LblMontoTexto.Width = 2.722222!
+        Me.LblMontoTexto.Width = 2.333333!
         '
         'Label11
         '
@@ -625,12 +626,12 @@ Partial Public Class ArepReciboCajaTira
         Me.Label11.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label11.Height = 0.2222222!
         Me.Label11.HyperLink = Nothing
-        Me.Label11.Left = 0.1111111!
+        Me.Label11.Left = 0.2777778!
         Me.Label11.Name = "Label11"
-        Me.Label11.Style = ""
+        Me.Label11.Style = "ddo-char-set: 0; font-size: 9pt; "
         Me.Label11.Text = "Recibo necesita sello y Firma del Cajero"
-        Me.Label11.Top = 1.611111!
-        Me.Label11.Width = 2.555556!
+        Me.Label11.Top = 1.722222!
+        Me.Label11.Width = 2.388889!
         '
         'LblObservaciones
         '
@@ -642,14 +643,14 @@ Partial Public Class ArepReciboCajaTira
         Me.LblObservaciones.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblObservaciones.Border.TopColor = System.Drawing.Color.Black
         Me.LblObservaciones.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblObservaciones.Height = 0.3333333!
+        Me.LblObservaciones.Height = 0.5000001!
         Me.LblObservaciones.HyperLink = Nothing
-        Me.LblObservaciones.Left = 0.05555556!
+        Me.LblObservaciones.Left = 0.3888889!
         Me.LblObservaciones.Name = "LblObservaciones"
-        Me.LblObservaciones.Style = "ddo-char-set: 0; font-size: 9.75pt; font-family: Cambria; "
+        Me.LblObservaciones.Style = "ddo-char-set: 0; font-size: 8.25pt; font-family: Arial; "
         Me.LblObservaciones.Text = ""
-        Me.LblObservaciones.Top = 0.6111111!
-        Me.LblObservaciones.Width = 2.722222!
+        Me.LblObservaciones.Top = 0.6666667!
+        Me.LblObservaciones.Width = 2.333333!
         '
         'ArepReciboCajaTira
         '
@@ -659,12 +660,12 @@ Partial Public Class ArepReciboCajaTira
         OleDBDataSource1.SQL = resources.GetString("OleDBDataSource1.SQL")
         Me.DataSource = OleDBDataSource1
         Me.PageSettings.Margins.Bottom = 0.0!
-        Me.PageSettings.Margins.Left = 0.03!
-        Me.PageSettings.Margins.Right = 0.03!
+        Me.PageSettings.Margins.Left = 0.01!
+        Me.PageSettings.Margins.Right = 0.01!
         Me.PageSettings.Margins.Top = 0.0!
         Me.PageSettings.PaperHeight = 11.0!
         Me.PageSettings.PaperWidth = 8.5!
-        Me.PrintWidth = 2.822917!
+        Me.PrintWidth = 2.770834!
         Me.Sections.Add(Me.ReportHeader1)
         Me.Sections.Add(Me.PageHeader1)
         Me.Sections.Add(Me.Detail1)

@@ -8817,6 +8817,8 @@ Module Funciones
         End If
 
     End Sub
+
+
     Public Sub GrabaMetodoDetalleRecibo(ByVal ConsecutivoRecibo As String, ByVal NombrePago As String, ByVal Monto As Double, ByVal NumeroTarjeta As String, ByVal FechaVence As String)
         Dim Sqldetalle As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim Fecha As String, MiConexion As New SqlClient.SqlConnection(Conexion), SqlUpdate As String, FechaVencimiento As String
@@ -8892,6 +8894,48 @@ Module Funciones
 
     End Sub
 
+
+    Public Sub GrabaDetalleArqueoCheque(ByVal FechaArqueo As Date, ByVal ConsecutivoArqueo As String, ByVal Moneda As String, ByVal Monto As Double, ByVal NumeroFactura As String, ByVal NombrePago As String, ByVal NumeroTarjeta As String, ByVal FechaVence As Date)
+        Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim Fecha As String, Fecha2 As String, SQlString As String = ""
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+
+        Fecha = Format(FechaArqueo, "yyyy-MM-dd")
+        Fecha2 = Format(FechaArqueo, "dd/MM/yyyy")
+
+        MiConexion.Close()
+
+        'SQlString = "SELECT * FROM Detalle_Arqueo WHERE (CodArqueo = '" & ConsecutivoArqueo & "') AND (FechaArqueo = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (idDenominacion = " & idDenominacion & ") AND (Moneda = '" & Moneda & "')"
+        SQlString = "SELECT  idDetalleArqueoCheque, CodArqueo, FechaArqueo, Modena, NumeroFactura, NombrePago, NumeroTarjeta, Fecha_Vence, Monto FROM Detalle_ArqueoCheque WHERE (CodArqueo = '" & ConsecutivoArqueo & "') AND (NumeroFactura = '" & NumeroFactura & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Arqueo")
+        If DataSet.Tables("Arqueo").Rows.Count = 0 Then
+
+            'If FrmArqueo.TxtNumeroEnsamble.Text = "-----0-----" Then
+            '//////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////////AGREGO EL ENCABEZADO DEL ARQUEO//////////////////////////////////
+            '/////////////////////////////////////////////////////////////////////////////////////////////////
+            SqlCompras = "INSERT INTO [Detalle_ArqueoCheque] ([CodArqueo],[FechaArqueo],[Modena],[NumeroFactura],[NombrePago],[NumeroTarjeta],[Fecha_Vence],[Monto]) " & _
+                         "VALUES ('" & ConsecutivoArqueo & "' , CONVERT(DATETIME, '" & Fecha & "', 102)) , '" & Moneda & "', '" & NumeroFactura & "', '" & NombrePago & "' , '" & NumeroTarjeta & "', CONVERT(DATETIME, '" & FechaVence & "', 102)) ," & Monto & ")"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+        Else
+            '//////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////////EDITO EL ENCABEZADO DEL ARQUEO///////////////////////////////////
+            '/////////////////////////////////////////////////////////////////////////////////////////////////
+            SqlCompras = "UPDATE [Detalle_ArqueoCheque] SET [NombrePago] = '" & NombrePago & "',[Monto] = '" & Monto & "' " & _
+                         "WHERE (CodArqueo = '" & ConsecutivoArqueo & "') AND (NumeroFactura = '" & NumeroFactura & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+        End If
+
+    End Sub
     Public Sub GrabaDetalleArqueo(ByVal ConsecutivoArqueo As String, ByVal Moneda As String, ByVal idDenominacion As Double, ByVal Valor As String, ByVal Cantidad As Double, ByVal Monto As Double)
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim Fecha As String, Fecha2 As String, SQlString As String = ""
@@ -9097,41 +9141,41 @@ Module Funciones
         FrmArqueo.TxtSubTotalDolares.Text = Format(MontoDolar, "##,##0.00")
     End Sub
 
-    Public Sub GrabaDetalleArqueoCheque(ByVal ConsecutivoArqueo As String, ByVal Moneda As String, ByVal NumeroTarjeta As String, ByVal FechaVence As String, ByVal Monto As Double, ByVal NumeroFactura As String, ByVal NombrePago As String)
-        Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-        Dim Fecha As String, Fecha2 As String
-        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+    'Public Sub GrabaDetalleArqueoCheque(ByVal ConsecutivoArqueo As String, ByVal Moneda As String, ByVal NumeroTarjeta As String, ByVal FechaVence As String, ByVal Monto As Double, ByVal NumeroFactura As String, ByVal NombrePago As String)
+    '    Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+    '    Dim Fecha As String, Fecha2 As String
+    '    Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+    '    Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
-        Fecha = Format(FrmArqueo.DTFecha.Value, "yyyy-MM-dd")
-        Fecha2 = Format(FrmArqueo.DTFecha.Value, "dd/MM/yyyy")
+    '    Fecha = Format(FrmArqueo.DTFecha.Value, "yyyy-MM-dd")
+    '    Fecha2 = Format(FrmArqueo.DTFecha.Value, "dd/MM/yyyy")
 
-        MiConexion.Close()
+    '    MiConexion.Close()
 
-        If FrmArqueo.TxtNumeroEnsamble.Text = "-----0-----" Then
-            '//////////////////////////////////////////////////////////////////////////////////////////////
-            '////////////////////////////AGREGO EL DETALLE CHEQUES/////////////////////////////////
-            '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "INSERT INTO [Detalle_ArqueoCheque] ([CodArqueo],[FechaArqueo],[Modena],[NumeroFactura],[NombrePago],[NumeroTarjeta],[Fecha_Vence],[Monto]) " & _
-                         "VALUES('" & ConsecutivoArqueo & "','" & Fecha2 & "','" & Moneda & "','" & NumeroFactura & "','" & NombrePago & "','" & NumeroTarjeta & "','" & FechaVence & "'," & Monto & ")"
-            MiConexion.Open()
-            ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
-            iResultado = ComandoUpdate.ExecuteNonQuery
-            MiConexion.Close()
+    '    If FrmArqueo.TxtNumeroEnsamble.Text = "-----0-----" Then
+    '        '//////////////////////////////////////////////////////////////////////////////////////////////
+    '        '////////////////////////////AGREGO EL DETALLE CHEQUES/////////////////////////////////
+    '        '/////////////////////////////////////////////////////////////////////////////////////////////////
+    '        SqlCompras = "INSERT INTO [Detalle_ArqueoCheque] ([CodArqueo],[FechaArqueo],[Modena],[NumeroFactura],[NombrePago],[NumeroTarjeta],[Fecha_Vence],[Monto]) " & _
+    '                     "VALUES('" & ConsecutivoArqueo & "','" & Fecha2 & "','" & Moneda & "','" & NumeroFactura & "','" & NombrePago & "','" & NumeroTarjeta & "','" & FechaVence & "'," & Monto & ")"
+    '        MiConexion.Open()
+    '        ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
+    '        iResultado = ComandoUpdate.ExecuteNonQuery
+    '        MiConexion.Close()
 
-        Else
-            '//////////////////////////////////////////////////////////////////////////////////////////////
-            '////////////////////////////EDITO EL ENCABEZADO DEL ARQUEO///////////////////////////////////
-            '////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "UPDATE [Detalle_ArqueoCheque] SET [NumeroTarjeta] = '" & NumeroTarjeta & "',[Fecha_Vence] = '" & FechaVence & "',[Monto] = " & Monto & ",[NumeroFactura] = '" & NumeroFactura & "',[NombrePago] = '" & NombrePago & "'  " & _
-                         "WHERE (CodArqueo = '" & ConsecutivoArqueo & "') AND (FechaArqueo = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Moneda = '" & Moneda & "')"
-            MiConexion.Open()
-            ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
-            iResultado = ComandoUpdate.ExecuteNonQuery
-            MiConexion.Close()
-        End If
+    '    Else
+    '        '//////////////////////////////////////////////////////////////////////////////////////////////
+    '        '////////////////////////////EDITO EL ENCABEZADO DEL ARQUEO///////////////////////////////////
+    '        '////////////////////////////////////////////////////////////////////////////////////////////////
+    '        SqlCompras = "UPDATE [Detalle_ArqueoCheque] SET [NumeroTarjeta] = '" & NumeroTarjeta & "',[Fecha_Vence] = '" & FechaVence & "',[Monto] = " & Monto & ",[NumeroFactura] = '" & NumeroFactura & "',[NombrePago] = '" & NombrePago & "'  " & _
+    '                     "WHERE (CodArqueo = '" & ConsecutivoArqueo & "') AND (FechaArqueo = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Moneda = '" & Moneda & "')"
+    '        MiConexion.Open()
+    '        ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
+    '        iResultado = ComandoUpdate.ExecuteNonQuery
+    '        MiConexion.Close()
+    '    End If
 
-    End Sub
+    'End Sub
 
 
     Public Function BuscaTasaCambio(ByVal FechaTasa As Date) As Double

@@ -68,6 +68,9 @@ Partial Class FrmArqueo
         Me.BindingDetalleChequeCordobas = New System.Windows.Forms.BindingSource(Me.components)
         Me.TxtSumaFacturaCordobas = New System.Windows.Forms.TextBox
         Me.Label16 = New System.Windows.Forms.Label
+        Me.BtnSalir = New System.Windows.Forms.Button
+        Me.BtnProcesar = New System.Windows.Forms.Button
+        Me.ProgressBar = New System.Windows.Forms.ProgressBar
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TdbGridCordobas, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -84,7 +87,7 @@ Partial Class FrmArqueo
         'TxtCajero
         '
         Me.TxtCajero.Enabled = False
-        Me.TxtCajero.Location = New System.Drawing.Point(110, 90)
+        Me.TxtCajero.Location = New System.Drawing.Point(366, 74)
         Me.TxtCajero.Name = "TxtCajero"
         Me.TxtCajero.Size = New System.Drawing.Size(214, 20)
         Me.TxtCajero.TabIndex = 1
@@ -92,7 +95,7 @@ Partial Class FrmArqueo
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(10, 93)
+        Me.Label1.Location = New System.Drawing.Point(266, 77)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(94, 13)
         Me.Label1.TabIndex = 2
@@ -101,7 +104,7 @@ Partial Class FrmArqueo
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(336, 90)
+        Me.Label2.Location = New System.Drawing.Point(645, 78)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(37, 13)
         Me.Label2.TabIndex = 3
@@ -111,7 +114,7 @@ Partial Class FrmArqueo
         '
         Me.DTFecha.CustomFormat = "dd/MM/yyyy  hh:mm:ss"
         Me.DTFecha.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.DTFecha.Location = New System.Drawing.Point(379, 86)
+        Me.DTFecha.Location = New System.Drawing.Point(688, 74)
         Me.DTFecha.Name = "DTFecha"
         Me.DTFecha.Size = New System.Drawing.Size(143, 20)
         Me.DTFecha.TabIndex = 4
@@ -120,7 +123,7 @@ Partial Class FrmArqueo
         '
         Me.CmdIniciar.Image = CType(resources.GetObject("CmdIniciar.Image"), System.Drawing.Image)
         Me.CmdIniciar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdIniciar.Location = New System.Drawing.Point(528, 65)
+        Me.CmdIniciar.Location = New System.Drawing.Point(1052, 62)
         Me.CmdIniciar.Name = "CmdIniciar"
         Me.CmdIniciar.Size = New System.Drawing.Size(75, 45)
         Me.CmdIniciar.TabIndex = 123
@@ -134,7 +137,7 @@ Partial Class FrmArqueo
         Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label9.Location = New System.Drawing.Point(249, 19)
+        Me.Label9.Location = New System.Drawing.Point(537, 20)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(122, 13)
         Me.Label9.TabIndex = 126
@@ -156,7 +159,7 @@ Partial Class FrmArqueo
         Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox1.Location = New System.Drawing.Point(-1, -1)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(666, 60)
+        Me.PictureBox1.Size = New System.Drawing.Size(1242, 60)
         Me.PictureBox1.TabIndex = 124
         Me.PictureBox1.TabStop = False
         '
@@ -166,13 +169,13 @@ Partial Class FrmArqueo
         Me.TdbGridCordobas.Caption = "DETALLE EFECTIVO CORDOBAS"
         Me.TdbGridCordobas.GroupByCaption = "Drag a column header here to group by that column"
         Me.TdbGridCordobas.Images.Add(CType(resources.GetObject("TdbGridCordobas.Images"), System.Drawing.Image))
-        Me.TdbGridCordobas.Location = New System.Drawing.Point(13, 116)
+        Me.TdbGridCordobas.Location = New System.Drawing.Point(13, 110)
         Me.TdbGridCordobas.Name = "TdbGridCordobas"
         Me.TdbGridCordobas.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TdbGridCordobas.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TdbGridCordobas.PreviewInfo.ZoomFactor = 75
         Me.TdbGridCordobas.PrintInfo.PageSettings = CType(resources.GetObject("TdbGridCordobas.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TdbGridCordobas.Size = New System.Drawing.Size(291, 248)
+        Me.TdbGridCordobas.Size = New System.Drawing.Size(257, 248)
         Me.TdbGridCordobas.TabIndex = 215
         Me.TdbGridCordobas.Text = "C1TrueDBGrid1"
         Me.TdbGridCordobas.PropBag = resources.GetString("TdbGridCordobas.PropBag")
@@ -183,13 +186,13 @@ Partial Class FrmArqueo
         Me.TdbGridDolares.Caption = "DETALLE EFECTIVO DOLARES"
         Me.TdbGridDolares.GroupByCaption = "Drag a column header here to group by that column"
         Me.TdbGridDolares.Images.Add(CType(resources.GetObject("TdbGridDolares.Images"), System.Drawing.Image))
-        Me.TdbGridDolares.Location = New System.Drawing.Point(310, 116)
+        Me.TdbGridDolares.Location = New System.Drawing.Point(277, 110)
         Me.TdbGridDolares.Name = "TdbGridDolares"
         Me.TdbGridDolares.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TdbGridDolares.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TdbGridDolares.PreviewInfo.ZoomFactor = 75
         Me.TdbGridDolares.PrintInfo.PageSettings = CType(resources.GetObject("TdbGridDolares.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TdbGridDolares.Size = New System.Drawing.Size(293, 249)
+        Me.TdbGridDolares.Size = New System.Drawing.Size(257, 249)
         Me.TdbGridDolares.TabIndex = 216
         Me.TdbGridDolares.Text = "C1TrueDBGrid1"
         Me.TdbGridDolares.PropBag = resources.GetString("TdbGridDolares.PropBag")
@@ -197,7 +200,7 @@ Partial Class FrmArqueo
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(188, 370)
+        Me.Label3.Location = New System.Drawing.Point(153, 362)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(50, 13)
         Me.Label3.TabIndex = 217
@@ -207,7 +210,7 @@ Partial Class FrmArqueo
         '
         Me.TxtSubTotalCordobas.BackColor = System.Drawing.Color.White
         Me.TxtSubTotalCordobas.ForeColor = System.Drawing.Color.Black
-        Me.TxtSubTotalCordobas.Location = New System.Drawing.Point(244, 370)
+        Me.TxtSubTotalCordobas.Location = New System.Drawing.Point(209, 362)
         Me.TxtSubTotalCordobas.Name = "TxtSubTotalCordobas"
         Me.TxtSubTotalCordobas.Size = New System.Drawing.Size(60, 20)
         Me.TxtSubTotalCordobas.TabIndex = 218
@@ -217,7 +220,7 @@ Partial Class FrmArqueo
         'TxtSumaFacturaDolares
         '
         Me.TxtSumaFacturaDolares.BackColor = System.Drawing.Color.White
-        Me.TxtSumaFacturaDolares.Location = New System.Drawing.Point(402, 371)
+        Me.TxtSumaFacturaDolares.Location = New System.Drawing.Point(1060, 366)
         Me.TxtSumaFacturaDolares.Name = "TxtSumaFacturaDolares"
         Me.TxtSumaFacturaDolares.Size = New System.Drawing.Size(67, 20)
         Me.TxtSumaFacturaDolares.TabIndex = 220
@@ -226,7 +229,7 @@ Partial Class FrmArqueo
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(310, 373)
+        Me.Label4.Location = New System.Drawing.Point(956, 368)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(86, 13)
         Me.Label4.TabIndex = 219
@@ -235,7 +238,7 @@ Partial Class FrmArqueo
         'TxtSubTotalDolares
         '
         Me.TxtSubTotalDolares.BackColor = System.Drawing.Color.White
-        Me.TxtSubTotalDolares.Location = New System.Drawing.Point(540, 371)
+        Me.TxtSubTotalDolares.Location = New System.Drawing.Point(471, 362)
         Me.TxtSubTotalDolares.Name = "TxtSubTotalDolares"
         Me.TxtSubTotalDolares.Size = New System.Drawing.Size(61, 20)
         Me.TxtSubTotalDolares.TabIndex = 222
@@ -245,7 +248,7 @@ Partial Class FrmArqueo
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(475, 374)
+        Me.Label5.Location = New System.Drawing.Point(406, 365)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(59, 13)
         Me.Label5.TabIndex = 221
@@ -257,13 +260,13 @@ Partial Class FrmArqueo
         Me.TdbGridChequeCordobas.Caption = "DETALLE CHEQUE/TARJETAS CORDOBAS"
         Me.TdbGridChequeCordobas.GroupByCaption = "Drag a column header here to group by that column"
         Me.TdbGridChequeCordobas.Images.Add(CType(resources.GetObject("TdbGridChequeCordobas.Images"), System.Drawing.Image))
-        Me.TdbGridChequeCordobas.Location = New System.Drawing.Point(10, 395)
+        Me.TdbGridChequeCordobas.Location = New System.Drawing.Point(837, 110)
         Me.TdbGridChequeCordobas.Name = "TdbGridChequeCordobas"
         Me.TdbGridChequeCordobas.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TdbGridChequeCordobas.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TdbGridChequeCordobas.PreviewInfo.ZoomFactor = 75
         Me.TdbGridChequeCordobas.PrintInfo.PageSettings = CType(resources.GetObject("TdbGridChequeCordobas.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TdbGridChequeCordobas.Size = New System.Drawing.Size(291, 91)
+        Me.TdbGridChequeCordobas.Size = New System.Drawing.Size(291, 249)
         Me.TdbGridChequeCordobas.TabIndex = 223
         Me.TdbGridChequeCordobas.Text = "C1TrueDBGrid1"
         Me.TdbGridChequeCordobas.PropBag = resources.GetString("TdbGridChequeCordobas.PropBag")
@@ -274,13 +277,13 @@ Partial Class FrmArqueo
         Me.TdbGridChequeDolares.Caption = "DETALLE CHEQUE/TARJETAS DOLARES"
         Me.TdbGridChequeDolares.GroupByCaption = "Drag a column header here to group by that column"
         Me.TdbGridChequeDolares.Images.Add(CType(resources.GetObject("TdbGridChequeDolares.Images"), System.Drawing.Image))
-        Me.TdbGridChequeDolares.Location = New System.Drawing.Point(310, 395)
+        Me.TdbGridChequeDolares.Location = New System.Drawing.Point(540, 110)
         Me.TdbGridChequeDolares.Name = "TdbGridChequeDolares"
         Me.TdbGridChequeDolares.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TdbGridChequeDolares.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TdbGridChequeDolares.PreviewInfo.ZoomFactor = 75
         Me.TdbGridChequeDolares.PrintInfo.PageSettings = CType(resources.GetObject("TdbGridChequeDolares.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TdbGridChequeDolares.Size = New System.Drawing.Size(291, 91)
+        Me.TdbGridChequeDolares.Size = New System.Drawing.Size(291, 248)
         Me.TdbGridChequeDolares.TabIndex = 224
         Me.TdbGridChequeDolares.Text = "C1TrueDBGrid1"
         Me.TdbGridChequeDolares.PropBag = resources.GetString("TdbGridChequeDolares.PropBag")
@@ -288,7 +291,7 @@ Partial Class FrmArqueo
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(404, 519)
+        Me.Label6.Location = New System.Drawing.Point(927, 422)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(103, 13)
         Me.Label6.TabIndex = 225
@@ -297,7 +300,7 @@ Partial Class FrmArqueo
         'TxtCordobasDolares
         '
         Me.TxtCordobasDolares.BackColor = System.Drawing.Color.White
-        Me.TxtCordobasDolares.Location = New System.Drawing.Point(513, 516)
+        Me.TxtCordobasDolares.Location = New System.Drawing.Point(1036, 419)
         Me.TxtCordobasDolares.Name = "TxtCordobasDolares"
         Me.TxtCordobasDolares.Size = New System.Drawing.Size(90, 20)
         Me.TxtCordobasDolares.TabIndex = 226
@@ -306,7 +309,7 @@ Partial Class FrmArqueo
         'TxtValorFacturas
         '
         Me.TxtValorFacturas.BackColor = System.Drawing.Color.White
-        Me.TxtValorFacturas.Location = New System.Drawing.Point(513, 540)
+        Me.TxtValorFacturas.Location = New System.Drawing.Point(1036, 443)
         Me.TxtValorFacturas.Name = "TxtValorFacturas"
         Me.TxtValorFacturas.Size = New System.Drawing.Size(90, 20)
         Me.TxtValorFacturas.TabIndex = 228
@@ -315,7 +318,7 @@ Partial Class FrmArqueo
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(417, 543)
+        Me.Label7.Location = New System.Drawing.Point(940, 446)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(84, 13)
         Me.Label7.TabIndex = 227
@@ -324,7 +327,7 @@ Partial Class FrmArqueo
         'TxtDiferencia
         '
         Me.TxtDiferencia.BackColor = System.Drawing.Color.White
-        Me.TxtDiferencia.Location = New System.Drawing.Point(513, 564)
+        Me.TxtDiferencia.Location = New System.Drawing.Point(1036, 467)
         Me.TxtDiferencia.Name = "TxtDiferencia"
         Me.TxtDiferencia.Size = New System.Drawing.Size(90, 20)
         Me.TxtDiferencia.TabIndex = 230
@@ -333,7 +336,7 @@ Partial Class FrmArqueo
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(452, 567)
+        Me.Label8.Location = New System.Drawing.Point(975, 470)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(55, 13)
         Me.Label8.TabIndex = 229
@@ -344,7 +347,7 @@ Partial Class FrmArqueo
         Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button2.Location = New System.Drawing.Point(325, 518)
+        Me.Button2.Location = New System.Drawing.Point(1144, 182)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(75, 66)
         Me.Button2.TabIndex = 231
@@ -356,7 +359,7 @@ Partial Class FrmArqueo
         'TxtTotalChequeCordobas
         '
         Me.TxtTotalChequeCordobas.BackColor = System.Drawing.Color.White
-        Me.TxtTotalChequeCordobas.Location = New System.Drawing.Point(211, 492)
+        Me.TxtTotalChequeCordobas.Location = New System.Drawing.Point(737, 394)
         Me.TxtTotalChequeCordobas.Name = "TxtTotalChequeCordobas"
         Me.TxtTotalChequeCordobas.Size = New System.Drawing.Size(90, 20)
         Me.TxtTotalChequeCordobas.TabIndex = 233
@@ -365,7 +368,7 @@ Partial Class FrmArqueo
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(91, 494)
+        Me.Label10.Location = New System.Drawing.Point(617, 396)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(122, 13)
         Me.Label10.TabIndex = 232
@@ -374,7 +377,7 @@ Partial Class FrmArqueo
         'TxtTotalChequeDolares
         '
         Me.TxtTotalChequeDolares.BackColor = System.Drawing.Color.White
-        Me.TxtTotalChequeDolares.Location = New System.Drawing.Point(528, 492)
+        Me.TxtTotalChequeDolares.Location = New System.Drawing.Point(1054, 394)
         Me.TxtTotalChequeDolares.Name = "TxtTotalChequeDolares"
         Me.TxtTotalChequeDolares.Size = New System.Drawing.Size(73, 20)
         Me.TxtTotalChequeDolares.TabIndex = 237
@@ -383,7 +386,7 @@ Partial Class FrmArqueo
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(463, 494)
+        Me.Label11.Location = New System.Drawing.Point(989, 396)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(59, 13)
         Me.Label11.TabIndex = 236
@@ -392,7 +395,7 @@ Partial Class FrmArqueo
         'TextBox10
         '
         Me.TextBox10.BackColor = System.Drawing.Color.White
-        Me.TextBox10.Location = New System.Drawing.Point(382, 492)
+        Me.TextBox10.Location = New System.Drawing.Point(908, 394)
         Me.TextBox10.Name = "TextBox10"
         Me.TextBox10.Size = New System.Drawing.Size(68, 20)
         Me.TextBox10.TabIndex = 235
@@ -400,7 +403,7 @@ Partial Class FrmArqueo
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(310, 494)
+        Me.Label12.Location = New System.Drawing.Point(836, 396)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(66, 13)
         Me.Label12.TabIndex = 234
@@ -409,7 +412,7 @@ Partial Class FrmArqueo
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(7, 503)
+        Me.Label13.Location = New System.Drawing.Point(13, 404)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(78, 13)
         Me.Label13.TabIndex = 238
@@ -418,17 +421,17 @@ Partial Class FrmArqueo
         'TxtObservaciones
         '
         Me.TxtObservaciones.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.TxtObservaciones.Location = New System.Drawing.Point(7, 519)
+        Me.TxtObservaciones.Location = New System.Drawing.Point(13, 420)
         Me.TxtObservaciones.Multiline = True
         Me.TxtObservaciones.Name = "TxtObservaciones"
         Me.TxtObservaciones.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TxtObservaciones.Size = New System.Drawing.Size(118, 59)
+        Me.TxtObservaciones.Size = New System.Drawing.Size(257, 59)
         Me.TxtObservaciones.TabIndex = 239
         '
         'TxtPracticadoPor
         '
         Me.TxtPracticadoPor.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.TxtPracticadoPor.Location = New System.Drawing.Point(131, 555)
+        Me.TxtPracticadoPor.Location = New System.Drawing.Point(280, 458)
         Me.TxtPracticadoPor.Name = "TxtPracticadoPor"
         Me.TxtPracticadoPor.Size = New System.Drawing.Size(107, 20)
         Me.TxtPracticadoPor.TabIndex = 241
@@ -436,7 +439,7 @@ Partial Class FrmArqueo
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(136, 539)
+        Me.Label14.Location = New System.Drawing.Point(285, 442)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(72, 13)
         Me.Label14.TabIndex = 240
@@ -459,7 +462,7 @@ Partial Class FrmArqueo
         Me.CboCajero.EditorHeight = 15
         Me.CboCajero.Images.Add(CType(resources.GetObject("CboCajero.Images"), System.Drawing.Image))
         Me.CboCajero.ItemHeight = 15
-        Me.CboCajero.Location = New System.Drawing.Point(110, 63)
+        Me.CboCajero.Location = New System.Drawing.Point(78, 73)
         Me.CboCajero.MatchEntryTimeout = CType(2000, Long)
         Me.CboCajero.MaxDropDownItems = CType(5, Short)
         Me.CboCajero.MaxLength = 32767
@@ -475,7 +478,7 @@ Partial Class FrmArqueo
         'LblCajero
         '
         Me.LblCajero.AutoSize = True
-        Me.LblCajero.Location = New System.Drawing.Point(58, 68)
+        Me.LblCajero.Location = New System.Drawing.Point(26, 78)
         Me.LblCajero.Name = "LblCajero"
         Me.LblCajero.Size = New System.Drawing.Size(37, 13)
         Me.LblCajero.TabIndex = 242
@@ -484,7 +487,7 @@ Partial Class FrmArqueo
         'TxtNumeroEnsamble
         '
         Me.TxtNumeroEnsamble.Enabled = False
-        Me.TxtNumeroEnsamble.Location = New System.Drawing.Point(379, 63)
+        Me.TxtNumeroEnsamble.Location = New System.Drawing.Point(911, 75)
         Me.TxtNumeroEnsamble.Name = "TxtNumeroEnsamble"
         Me.TxtNumeroEnsamble.Size = New System.Drawing.Size(76, 20)
         Me.TxtNumeroEnsamble.TabIndex = 245
@@ -493,7 +496,7 @@ Partial Class FrmArqueo
         'Label15
         '
         Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(329, 66)
+        Me.Label15.Location = New System.Drawing.Point(861, 78)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(44, 13)
         Me.Label15.TabIndex = 244
@@ -502,7 +505,7 @@ Partial Class FrmArqueo
         'Button6
         '
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
-        Me.Button6.Location = New System.Drawing.Point(461, 51)
+        Me.Button6.Location = New System.Drawing.Point(993, 63)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(37, 32)
         Me.Button6.TabIndex = 246
@@ -512,7 +515,7 @@ Partial Class FrmArqueo
         '
         Me.CmdGrabar.Image = CType(resources.GetObject("CmdGrabar.Image"), System.Drawing.Image)
         Me.CmdGrabar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdGrabar.Location = New System.Drawing.Point(244, 519)
+        Me.CmdGrabar.Location = New System.Drawing.Point(1144, 115)
         Me.CmdGrabar.Name = "CmdGrabar"
         Me.CmdGrabar.Size = New System.Drawing.Size(75, 65)
         Me.CmdGrabar.TabIndex = 247
@@ -525,7 +528,7 @@ Partial Class FrmArqueo
         '
         Me.TxtSumaFacturaCordobas.BackColor = System.Drawing.Color.White
         Me.TxtSumaFacturaCordobas.ForeColor = System.Drawing.Color.Black
-        Me.TxtSumaFacturaCordobas.Location = New System.Drawing.Point(110, 369)
+        Me.TxtSumaFacturaCordobas.Location = New System.Drawing.Point(759, 362)
         Me.TxtSumaFacturaCordobas.Name = "TxtSumaFacturaCordobas"
         Me.TxtSumaFacturaCordobas.Size = New System.Drawing.Size(72, 20)
         Me.TxtSumaFacturaCordobas.TabIndex = 249
@@ -534,17 +537,54 @@ Partial Class FrmArqueo
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(17, 371)
+        Me.Label16.Location = New System.Drawing.Point(666, 364)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(93, 13)
         Me.Label16.TabIndex = 248
         Me.Label16.Text = "Sum Fact/Rec C$"
         '
+        'BtnSalir
+        '
+        Me.BtnSalir.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnSalir.Image = CType(resources.GetObject("BtnSalir.Image"), System.Drawing.Image)
+        Me.BtnSalir.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnSalir.Location = New System.Drawing.Point(1144, 419)
+        Me.BtnSalir.Name = "BtnSalir"
+        Me.BtnSalir.Size = New System.Drawing.Size(75, 66)
+        Me.BtnSalir.TabIndex = 251
+        Me.BtnSalir.Text = "Salir"
+        Me.BtnSalir.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnSalir.UseVisualStyleBackColor = True
+        '
+        'BtnProcesar
+        '
+        Me.BtnProcesar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnProcesar.Image = CType(resources.GetObject("BtnProcesar.Image"), System.Drawing.Image)
+        Me.BtnProcesar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnProcesar.Location = New System.Drawing.Point(1144, 251)
+        Me.BtnProcesar.Name = "BtnProcesar"
+        Me.BtnProcesar.Size = New System.Drawing.Size(75, 66)
+        Me.BtnProcesar.TabIndex = 252
+        Me.BtnProcesar.Tag = "28"
+        Me.BtnProcesar.Text = "Procesar"
+        Me.BtnProcesar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnProcesar.UseVisualStyleBackColor = True
+        '
+        'ProgressBar
+        '
+        Me.ProgressBar.Location = New System.Drawing.Point(468, 463)
+        Me.ProgressBar.Name = "ProgressBar"
+        Me.ProgressBar.Size = New System.Drawing.Size(434, 23)
+        Me.ProgressBar.TabIndex = 253
+        '
         'FrmArqueo
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(613, 590)
+        Me.ClientSize = New System.Drawing.Size(1236, 505)
+        Me.Controls.Add(Me.ProgressBar)
+        Me.Controls.Add(Me.BtnProcesar)
+        Me.Controls.Add(Me.BtnSalir)
         Me.Controls.Add(Me.TxtSumaFacturaCordobas)
         Me.Controls.Add(Me.Label16)
         Me.Controls.Add(Me.CmdGrabar)
@@ -655,4 +695,7 @@ Partial Class FrmArqueo
     Friend WithEvents BindingDetalleChequeCordobas As System.Windows.Forms.BindingSource
     Friend WithEvents TxtSumaFacturaCordobas As System.Windows.Forms.TextBox
     Friend WithEvents Label16 As System.Windows.Forms.Label
+    Friend WithEvents BtnSalir As System.Windows.Forms.Button
+    Friend WithEvents BtnProcesar As System.Windows.Forms.Button
+    Friend WithEvents ProgressBar As System.Windows.Forms.ProgressBar
 End Class
