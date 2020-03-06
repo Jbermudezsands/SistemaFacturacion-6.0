@@ -514,4 +514,8 @@ Public Class FrmArqueo
     Private Sub ProgressBar1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ProgressBar.Click
 
     End Sub
+
+    Private Sub BtnProcesar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnProcesar.Click
+
+    End Sub
 End Class

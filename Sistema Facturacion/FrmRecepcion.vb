@@ -229,6 +229,7 @@ Public Class FrmRecepcion
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
         If Me.BindingDetalle.Count <> 0 Then
             GrabaRecepcion(Me.TxtNumeroEnsamble.Text)
+            Bitacora(Now, NombreUsuario, "Recepcion", "Se Agrego la Recepcion: " & Me.TxtNumeroEnsamble.Text)
             LimpiaRecepcion()
         Else
             MsgBox("Seleccione Productos para poder Grabar", MsgBoxStyle.Critical, "Zeus Inventario")
@@ -411,6 +412,8 @@ Public Class FrmRecepcion
         SQL.ConnectionString = Conexion
         SQL.SQL = SqlString
 
+        Bitacora(Now, NombreUsuario, "Recepcion", "Se Imprimio la Tickets: " & Me.TxtNumeroEnsamble.Text)
+
         Dim ViewerForm As New FrmViewer()
         ViewerForm.arvMain.Document = ArepBitacoraRecepcion.Document
         My.Application.DoEvents()
@@ -511,6 +514,9 @@ Public Class FrmRecepcion
         'ArepRecepcion.LblCedula.Text = Me.txtid.Text
         'ArepRecepcion.LblPlaca.Text = Me.txtplaca.Text
 
+
+        Bitacora(Now, NombreUsuario, "Recepcion", "Se Imprimio la Recepcion: " & Me.TxtNumeroEnsamble.Text)
+
         Dim ViewerForm As New FrmViewer()
         ViewerForm.arvMain.Document = ArepRecepcion.Document
         My.Application.DoEvents()
@@ -558,6 +564,7 @@ Public Class FrmRecepcion
             MiConexion.Close()
         End If
 
+        Bitacora(Now, NombreUsuario, "Recepcion", "Se Elimino la Linea en la Recepcion No: " & Me.TxtNumeroEnsamble.Text)
 
 
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -959,6 +966,7 @@ Public Class FrmRecepcion
         Procesar = True
 
         Me.CmdFacturar_Click(sender, e)
+        Bitacora(Now, NombreUsuario, "Recepcion", "Se Proceso la Recepcion No: " & Me.TxtNumeroEnsamble.Text)
         Me.Button7_Click(sender, e)
     End Sub
 
@@ -1052,5 +1060,9 @@ Public Class FrmRecepcion
 
     Private Sub CboTipoRecepcion_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboTipoRecepcion.SelectedIndexChanged
 
+    End Sub
+
+    Private Sub ChkTaraSaco_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChkTaraSaco.CheckedChanged
+        Bitacora(Now, NombreUsuario, "Recepcion", "Cambio Calculo de Tara en la Recepcion No: " & Me.TxtNumeroEnsamble.Text)
     End Sub
 End Class

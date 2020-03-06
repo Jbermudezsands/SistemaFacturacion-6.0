@@ -8917,7 +8917,7 @@ Module Funciones
             '////////////////////////////AGREGO EL ENCABEZADO DEL ARQUEO//////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
             SqlCompras = "INSERT INTO [Detalle_ArqueoCheque] ([CodArqueo],[FechaArqueo],[Modena],[NumeroFactura],[NombrePago],[NumeroTarjeta],[Fecha_Vence],[Monto]) " & _
-                         "VALUES ('" & ConsecutivoArqueo & "' , CONVERT(DATETIME, '" & Fecha & "', 102)) , '" & Moneda & "', '" & NumeroFactura & "', '" & NombrePago & "' , '" & NumeroTarjeta & "', CONVERT(DATETIME, '" & FechaVence & "', 102)) ," & Monto & ")"
+                         "VALUES ('" & ConsecutivoArqueo & "' , CONVERT(DATETIME, '" & Fecha & "', 102) , '" & Moneda & "', '" & NumeroFactura & "', '" & NombrePago & "' , '" & NumeroTarjeta & "', CONVERT(DATETIME, '" & FechaVence & "', 102) ," & Monto & ")"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery

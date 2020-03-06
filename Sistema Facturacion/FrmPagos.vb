@@ -211,9 +211,9 @@ Public Class FrmPagos
 
             MiConexion.Open()
             DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-            DataAdapter.Fill(DataSet, "Consultas")
-            Me.BindingFacturas.DataSource = DataSet.Tables("Consultas")
-            Me.TrueDBGridComponentes.DataSource = Me.BindingFacturas
+            DataAdapter.Fill(DataSet, "FactConsultas")
+            Me.BindingFacturas.DataSource = DataSet.Tables("FactConsultas")
+            Me.TrueDBGridComponentes.DataSource = Me.BindingFacturas.DataSource
 
             Me.TrueDBGridComponentes.Columns(0).Caption = "Compra No"
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Width = 63

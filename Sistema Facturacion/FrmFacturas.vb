@@ -11344,7 +11344,7 @@ Public Class FrmFacturas
                 'MiConexion.Close()
             End If
 
-            Bitacora(Now, NombreUsuario, Me.CboTipoProducto.Text, "Imprimio la Factura: " & Me.TxtNumeroEnsamble.Text)
+            Bitacora(Now, NombreUsuario, Me.CboTipoProducto.Text, "Imprimio la Factura Previo: " & Me.TxtNumeroEnsamble.Text)
 
             LimpiarFacturas()
 
@@ -11529,6 +11529,7 @@ Public Class FrmFacturas
         'da.Update(ds.Tables("DetalleFactura"))
         'ds.Tables("DetalleFactura").Clear()
 
+        Bitacora(Now, NombreUsuario, "Facturacion", "Se Genero una Salida: " & Me.TxtNumeroEnsamble.Text)
 
         '///////////////////////////////////////BUSCO EL DETALLE DE LA FACTURA///////////////////////////////////////////////////////
         SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario, Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM  Detalle_Facturas  " & _

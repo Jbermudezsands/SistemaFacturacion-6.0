@@ -13,6 +13,9 @@ Public Class FrmImportacion
 
 
     Private Sub FrmImportacion_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim SqlString As String
+
 
         Try
 
@@ -21,6 +24,7 @@ Public Class FrmImportacion
             '"Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
 
             Me.DTPFecha.Value = Format(Now, "dd/MM/yyyy")
+            Me.DtpFechaCtasXCobrar.Value = Format(Now, "dd/MM/yyyy")
 
             Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(0).Width = 75
             Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 75
@@ -38,6 +42,25 @@ Public Class FrmImportacion
             Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(11).Width = 75
             Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(12).Width = 75
             Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(13).Width = 75
+
+            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '///////////////////////CARGO LOS SERIES////////////////////////////////////////////////////////////////////////////////////////
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            DataSet.Reset()
+            SqlString = "SELECT DISTINCT Serie FROM ConsecutivoSerie ORDER BY Serie DESC"
+            MiConexion.Open()
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            DataAdapter.Fill(DataSet, "ConsecutivoSerie")
+            CmbSerie.DataSource = DataSet.Tables("ConsecutivoSerie")
+            If Not DataSet.Tables("ConsecutivoSerie").Rows.Count = 0 Then
+                Me.CmbSerie.Text = DataSet.Tables("ConsecutivoSerie").Rows(0)("Serie")
+            End If
+            MiConexion.Close()
+
+
+
+
+
         Catch ex As Exception
             MsgBox(Err.Description)
         End Try
@@ -568,5 +591,136 @@ Public Class FrmImportacion
             iPosicionFila = iPosicionFila + 1
             Me.ProgressBar.Value = iPosicionFila
         Loop
+    End Sub
+
+    Private Sub C1Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+    End Sub
+
+    Private Sub C1Button7_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnLeerCtaxCob.Click
+        Me.OpenFileDialog.ShowDialog()
+        RutaBD = OpenFileDialog.FileName
+        Me.TxtRutaCtaxCobrar.Text = RutaBD
+        'ConexionExcel = "DRIVER=Microsoft Excel Driver (*.xls);" & "DBQ=" & RutaBD
+        ConexionExcel = "Provider=Microsoft.Jet.OLEDB.4.0;Extended Properties = 'Excel 8.0'; Data Source= " & RutaBD & " "
+        MiConexionExcel = New OleDb.OleDbConnection(ConexionExcel)
+        DataAdapterExcel = New OleDb.OleDbDataAdapter("SELECT * FROM [Hoja1$]", MiConexionExcel)
+
+        Dim commandbuilder As New OleDb.OleDbCommandBuilder(Me.DataAdapterExcel)
+        MiConexionExcel.Open()
+        DataAdapterExcel.Fill(MiDataSet, "DatosExcelCtasXCob")
+
+        Me.TDGridCtasXCobrar.DataSource = MiDataSet.Tables("DatosExcelCtasXCob")
+
+        Me.TDGridCtasXCobrar.Splits.Item(0).DisplayColumns(0).Width = 122
+        Me.TDGridCtasXCobrar.Splits.Item(0).DisplayColumns(1).Width = 373
+        Me.TDGridCtasXCobrar.Splits.Item(0).DisplayColumns(2).Width = 90
+        'Me.TrueDBGridClientes.Splits.Item(0).DisplayColumns(4).Width = 100
+        'Me.TrueDBGridClientes.Splits.Item(0).DisplayColumns(5).Width = 100
+        'Me.TrueDBGridClientes.Splits.Item(0).DisplayColumns(6).Width = 100
+
+
+        MiConexionExcel.Close()
+    End Sub
+
+    Private Sub GroupBox7_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox7.Enter
+
+    End Sub
+
+    Private Sub BtnProcesarCtaxCob_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnProcesarCtaxCob.Click
+        Dim iPosicionFila As Double, CodCliente As String, NombreCliente As String, Saldo As Double
+        Dim PrecioC As Double = 0, PrecioD As Double = 0
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim ConsecutivoConSerie As Boolean, TipoNota As String, Consecutivo As Double, NumeroNota As String, CodTipoNota As String
+        Dim CodigoNotaDebito As String = "001", CodigoNotaCredito As String = "01", SqlString As String, NombreNotaDebito As String = "", NombreNotaCredito As String = ""
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, NombreNota As String = ""
+
+
+        '////////////////////////////////////////////BUSCO EL TIPO DE NOTA ////////////////////////////////////////////////////////////
+        SqlString = "SELECT  CodigoNB, Tipo, Descripcion, CuentaContable FROM NotaDebito WHERE (Tipo = 'Debito Clientes')"
+        MiConexion.Open()
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "NotaDebito")
+        If Not DataSet.Tables("NotaDebito").Rows.Count = 0 Then
+            CodigoNotaDebito = DataSet.Tables("NotaDebito").Rows(0)("CodigoNB")
+            NombreNotaDebito = DataSet.Tables("NotaDebito").Rows(0)("Descripcion")
+        End If
+        MiConexion.Close()
+
+        SqlString = "SELECT  CodigoNB, Tipo, Descripcion, CuentaContable FROM NotaDebito WHERE (Tipo = 'Credito Clientes')"
+        MiConexion.Open()
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "NotaCredito")
+        If Not DataSet.Tables("NotaCredito").Rows.Count = 0 Then
+            CodigoNotaCredito = DataSet.Tables("NotaCredito").Rows(0)("CodigoNB")
+            NombreNotaCredito = DataSet.Tables("NotaDebito").Rows(0)("Descripcion")
+        End If
+        MiConexion.Close()
+
+
+        iPosicionFila = 0
+        Me.ProgressBar.Minimum = 0
+        Me.ProgressBar.Visible = True
+        Me.ProgressBar.Value = 0
+        Me.ProgressBar.Maximum = MiDataSet.Tables("DatosExcelCtasXCob").Rows.Count
+        Do While iPosicionFila < (MiDataSet.Tables("DatosExcelCtasXCob").Rows.Count)
+            My.Application.DoEvents()
+            CodCliente = ""
+            NombreCliente = ""
+
+            If Not IsDBNull(MiDataSet.Tables("DatosExcelCtasXCob").Rows(iPosicionFila)("CodigoCliente")) Then
+                CodCliente = MiDataSet.Tables("DatosExcelCtasXCob").Rows(iPosicionFila)("CodigoCliente")
+                CodCliente = Replace(CodCliente, "'", " ")
+            End If
+
+            If Not IsDBNull(MiDataSet.Tables("DatosExcelCtasXCob").Rows(iPosicionFila)("NombreCliente")) Then
+                NombreCliente = MiDataSet.Tables("DatosExcelCtasXCob").Rows(iPosicionFila)("NombreCliente")
+                NombreCliente = Replace(NombreCliente, "'", " ")
+                Me.Text = "Procesando " & iPosicionFila & " de " & MiDataSet.Tables("DatosExcelCtasXCob").Rows.Count & " " & NombreCliente
+            End If
+
+            If Not IsDBNull(MiDataSet.Tables("DatosExcelCtasXCob").Rows(iPosicionFila)("Saldo")) Then
+                Saldo = MiDataSet.Tables("DatosExcelCtasXCob").Rows(iPosicionFila)("Saldo")
+            End If
+
+            MiConexion.Close()
+
+            If Saldo > 0 Then
+                TipoNota = "Debito Clientes"
+                CodTipoNota = CodigoNotaDebito
+                NombreNota = NombreNotaDebito
+            Else
+                TipoNota = "Credito Clientes"
+                CodTipoNota = CodigoNotaCredito
+                NombreNota = NombreNotaCredito
+            End If
+
+
+            If ConsecutivoConSerie = False Then
+                Select Case TipoNota
+                    Case "Debito Clientes" : Consecutivo = BuscaConsecutivo("NotaDebito")
+                    Case "Credito Clientes" : Consecutivo = BuscaConsecutivo("NotaCredito")
+                End Select
+                NumeroNota = Format(Consecutivo, "0000#")
+            Else
+
+                Select Case TipoNota
+                    Case "Debito Clientes" : Consecutivo = BuscaConsecutivoSerie("NotaDebito", Me.CmbSerie.Text)
+                    Case "Credito Clientes" : Consecutivo = BuscaConsecutivoSerie("NotaCredito", Me.CmbSerie.Text)
+                End Select
+                NumeroNota = Me.CmbSerie.Text & Format(Consecutivo, "0000#")
+            End If
+
+            GrabaNotaDebito(NumeroNota, Me.DtpFechaCtasXCobrar.Text, CodTipoNota, Saldo, Me.LblMoneda.Text, CodCliente, NombreCliente, "Importacion desde Excel", True, False)
+            GrabaDetalleNotaDebito(NumeroNota, Me.DtpFechaCtasXCobrar.Text, CodTipoNota, NombreNota, "0000", Saldo)
+
+            Me.Text = "Procesando " & iPosicionFila & " de " & MiDataSet.Tables("DatosExcelCtasXCob").Rows.Count & " " & NombreCliente
+            iPosicionFila = iPosicionFila + 1
+            Me.ProgressBar.Value = iPosicionFila
+        Loop
+    End Sub
+
+    Private Sub Label7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label7.Click
+
     End Sub
 End Class

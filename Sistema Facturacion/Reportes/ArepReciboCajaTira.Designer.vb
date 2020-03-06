@@ -85,7 +85,7 @@ Partial Public Class ArepReciboCajaTira
         'PageHeader1
         '
         Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.Label6, Me.LblReciboNo, Me.Label1, Me.Label2, Me.Label3, Me.Label4, Me.Label5, Me.Label22, Me.Label7, Me.Label8, Me.ImgLogo, Me.LblDireccion, Me.LblRuc, Me.LblEncabezado, Me.LblTelefono, Me.LblFechaOrden, Me.TxtVendedor, Me.LblNombres, Me.TxtRuc, Me.TxtDireccion})
-        Me.PageHeader1.Height = 4.458333!
+        Me.PageHeader1.Height = 4.46875!
         Me.PageHeader1.Name = "PageHeader1"
         '
         'Label6
@@ -219,7 +219,7 @@ Partial Public Class ArepReciboCajaTira
         Me.Label5.Name = "Label5"
         Me.Label5.Style = "ddo-char-set: 0; text-align: left; font-size: 8.25pt; "
         Me.Label5.Text = "Direccion"
-        Me.Label5.Top = 3.555556!
+        Me.Label5.Top = 3.666667!
         Me.Label5.Width = 0.5555556!
         '
         'Label22
@@ -430,7 +430,7 @@ Partial Public Class ArepReciboCajaTira
         Me.LblNombres.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblNombres.Border.TopColor = System.Drawing.Color.Black
         Me.LblNombres.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblNombres.Height = 0.2222223!
+        Me.LblNombres.Height = 0.2777779!
         Me.LblNombres.HyperLink = Nothing
         Me.LblNombres.Left = 0.8888889!
         Me.LblNombres.Name = "LblNombres"
@@ -472,7 +472,7 @@ Partial Public Class ArepReciboCajaTira
         Me.TxtDireccion.Name = "TxtDireccion"
         Me.TxtDireccion.Style = "ddo-char-set: 0; font-size: 8.25pt; font-family: Arial; "
         Me.TxtDireccion.Text = Nothing
-        Me.TxtDireccion.Top = 3.555556!
+        Me.TxtDireccion.Top = 3.666667!
         Me.TxtDireccion.Width = 1.833333!
         '
         'Detail1

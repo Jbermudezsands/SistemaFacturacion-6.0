@@ -200,7 +200,7 @@ Partial Class FrmArqueo
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(153, 362)
+        Me.Label3.Location = New System.Drawing.Point(143, 362)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(50, 13)
         Me.Label3.TabIndex = 217
@@ -210,7 +210,7 @@ Partial Class FrmArqueo
         '
         Me.TxtSubTotalCordobas.BackColor = System.Drawing.Color.White
         Me.TxtSubTotalCordobas.ForeColor = System.Drawing.Color.Black
-        Me.TxtSubTotalCordobas.Location = New System.Drawing.Point(209, 362)
+        Me.TxtSubTotalCordobas.Location = New System.Drawing.Point(210, 361)
         Me.TxtSubTotalCordobas.Name = "TxtSubTotalCordobas"
         Me.TxtSubTotalCordobas.Size = New System.Drawing.Size(60, 20)
         Me.TxtSubTotalCordobas.TabIndex = 218
@@ -220,7 +220,7 @@ Partial Class FrmArqueo
         'TxtSumaFacturaDolares
         '
         Me.TxtSumaFacturaDolares.BackColor = System.Drawing.Color.White
-        Me.TxtSumaFacturaDolares.Location = New System.Drawing.Point(1060, 366)
+        Me.TxtSumaFacturaDolares.Location = New System.Drawing.Point(1059, 361)
         Me.TxtSumaFacturaDolares.Name = "TxtSumaFacturaDolares"
         Me.TxtSumaFacturaDolares.Size = New System.Drawing.Size(67, 20)
         Me.TxtSumaFacturaDolares.TabIndex = 220
@@ -238,7 +238,7 @@ Partial Class FrmArqueo
         'TxtSubTotalDolares
         '
         Me.TxtSubTotalDolares.BackColor = System.Drawing.Color.White
-        Me.TxtSubTotalDolares.Location = New System.Drawing.Point(471, 362)
+        Me.TxtSubTotalDolares.Location = New System.Drawing.Point(471, 361)
         Me.TxtSubTotalDolares.Name = "TxtSubTotalDolares"
         Me.TxtSubTotalDolares.Size = New System.Drawing.Size(61, 20)
         Me.TxtSubTotalDolares.TabIndex = 222
@@ -260,7 +260,7 @@ Partial Class FrmArqueo
         Me.TdbGridChequeCordobas.Caption = "DETALLE CHEQUE/TARJETAS CORDOBAS"
         Me.TdbGridChequeCordobas.GroupByCaption = "Drag a column header here to group by that column"
         Me.TdbGridChequeCordobas.Images.Add(CType(resources.GetObject("TdbGridChequeCordobas.Images"), System.Drawing.Image))
-        Me.TdbGridChequeCordobas.Location = New System.Drawing.Point(837, 110)
+        Me.TdbGridChequeCordobas.Location = New System.Drawing.Point(540, 110)
         Me.TdbGridChequeCordobas.Name = "TdbGridChequeCordobas"
         Me.TdbGridChequeCordobas.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TdbGridChequeCordobas.PreviewInfo.Size = New System.Drawing.Size(0, 0)
@@ -277,7 +277,7 @@ Partial Class FrmArqueo
         Me.TdbGridChequeDolares.Caption = "DETALLE CHEQUE/TARJETAS DOLARES"
         Me.TdbGridChequeDolares.GroupByCaption = "Drag a column header here to group by that column"
         Me.TdbGridChequeDolares.Images.Add(CType(resources.GetObject("TdbGridChequeDolares.Images"), System.Drawing.Image))
-        Me.TdbGridChequeDolares.Location = New System.Drawing.Point(540, 110)
+        Me.TdbGridChequeDolares.Location = New System.Drawing.Point(835, 110)
         Me.TdbGridChequeDolares.Name = "TdbGridChequeDolares"
         Me.TdbGridChequeDolares.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TdbGridChequeDolares.PreviewInfo.Size = New System.Drawing.Size(0, 0)
@@ -528,7 +528,7 @@ Partial Class FrmArqueo
         '
         Me.TxtSumaFacturaCordobas.BackColor = System.Drawing.Color.White
         Me.TxtSumaFacturaCordobas.ForeColor = System.Drawing.Color.Black
-        Me.TxtSumaFacturaCordobas.Location = New System.Drawing.Point(759, 362)
+        Me.TxtSumaFacturaCordobas.Location = New System.Drawing.Point(759, 361)
         Me.TxtSumaFacturaCordobas.Name = "TxtSumaFacturaCordobas"
         Me.TxtSumaFacturaCordobas.Size = New System.Drawing.Size(72, 20)
         Me.TxtSumaFacturaCordobas.TabIndex = 249
@@ -537,7 +537,7 @@ Partial Class FrmArqueo
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(666, 364)
+        Me.Label16.Location = New System.Drawing.Point(660, 364)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(93, 13)
         Me.Label16.TabIndex = 248

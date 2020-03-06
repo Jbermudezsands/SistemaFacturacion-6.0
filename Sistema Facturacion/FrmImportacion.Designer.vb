@@ -63,6 +63,21 @@ Partial Class FrmImportacion
         Me.C1Button5 = New C1.Win.C1Input.C1Button
         Me.DefaultToolTipController1 = New DevExpress.Utils.DefaultToolTipController(Me.components)
         Me.ProgressBar = New System.Windows.Forms.ProgressBar
+        Me.XtraTabPage4 = New DevExpress.XtraTab.XtraTabPage
+        Me.GroupBox6 = New System.Windows.Forms.GroupBox
+        Me.GroupBox7 = New System.Windows.Forms.GroupBox
+        Me.OptCtasxCobrar = New System.Windows.Forms.RadioButton
+        Me.TxtRutaCtaxCobrar = New System.Windows.Forms.TextBox
+        Me.Label5 = New System.Windows.Forms.Label
+        Me.BtnProcesarCtaxCob = New C1.Win.C1Input.C1Button
+        Me.BtnLeerCtaxCob = New C1.Win.C1Input.C1Button
+        Me.TDGridCtasXCobrar = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.ChkImportarSaldos = New System.Windows.Forms.CheckBox
+        Me.DtpFechaCtasXCobrar = New System.Windows.Forms.DateTimePicker
+        Me.Label6 = New System.Windows.Forms.Label
+        Me.CmbSerie = New C1.Win.C1List.C1Combo
+        Me.Label7 = New System.Windows.Forms.Label
+        Me.LblMoneda = New System.Windows.Forms.Label
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.XtraTabControl1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -79,6 +94,11 @@ Partial Class FrmImportacion
         CType(Me.TrueDBGridPrecios, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
+        Me.XtraTabPage4.SuspendLayout()
+        Me.GroupBox6.SuspendLayout()
+        Me.GroupBox7.SuspendLayout()
+        CType(Me.TDGridCtasXCobrar, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.CmbSerie, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'PictureBox2
@@ -121,7 +141,7 @@ Partial Class FrmImportacion
         Me.XtraTabControl1.SelectedTabPage = Me.XtraTabPage1
         Me.XtraTabControl1.Size = New System.Drawing.Size(921, 392)
         Me.XtraTabControl1.TabIndex = 108
-        Me.XtraTabControl1.TabPages.AddRange(New DevExpress.XtraTab.XtraTabPage() {Me.XtraTabPage1, Me.XtraTabPage2, Me.XtraTabPage3})
+        Me.XtraTabControl1.TabPages.AddRange(New DevExpress.XtraTab.XtraTabPage() {Me.XtraTabPage1, Me.XtraTabPage2, Me.XtraTabPage3, Me.XtraTabPage4})
         '
         'XtraTabPage1
         '
@@ -503,6 +523,201 @@ Partial Class FrmImportacion
         Me.ProgressBar.Size = New System.Drawing.Size(682, 23)
         Me.ProgressBar.TabIndex = 109
         '
+        'XtraTabPage4
+        '
+        Me.XtraTabPage4.Controls.Add(Me.TDGridCtasXCobrar)
+        Me.XtraTabPage4.Controls.Add(Me.GroupBox6)
+        Me.XtraTabPage4.Name = "XtraTabPage4"
+        Me.XtraTabPage4.Size = New System.Drawing.Size(911, 362)
+        Me.XtraTabPage4.Text = "Ctas x Cobrar"
+        '
+        'GroupBox6
+        '
+        Me.GroupBox6.Controls.Add(Me.LblMoneda)
+        Me.GroupBox6.Controls.Add(Me.Label7)
+        Me.GroupBox6.Controls.Add(Me.CmbSerie)
+        Me.GroupBox6.Controls.Add(Me.ChkImportarSaldos)
+        Me.GroupBox6.Controls.Add(Me.BtnLeerCtaxCob)
+        Me.GroupBox6.Controls.Add(Me.DtpFechaCtasXCobrar)
+        Me.GroupBox6.Controls.Add(Me.GroupBox7)
+        Me.GroupBox6.Controls.Add(Me.Label6)
+        Me.GroupBox6.Controls.Add(Me.TxtRutaCtaxCobrar)
+        Me.GroupBox6.Controls.Add(Me.Label5)
+        Me.GroupBox6.Controls.Add(Me.BtnProcesarCtaxCob)
+        Me.GroupBox6.Location = New System.Drawing.Point(13, 2)
+        Me.GroupBox6.Name = "GroupBox6"
+        Me.GroupBox6.Size = New System.Drawing.Size(876, 80)
+        Me.GroupBox6.TabIndex = 127
+        Me.GroupBox6.TabStop = False
+        '
+        'GroupBox7
+        '
+        Me.GroupBox7.Controls.Add(Me.OptCtasxCobrar)
+        Me.GroupBox7.Location = New System.Drawing.Point(6, 3)
+        Me.GroupBox7.Name = "GroupBox7"
+        Me.GroupBox7.Size = New System.Drawing.Size(158, 71)
+        Me.GroupBox7.TabIndex = 126
+        Me.GroupBox7.TabStop = False
+        Me.GroupBox7.Text = "Tipo Importacion"
+        '
+        'OptCtasxCobrar
+        '
+        Me.OptCtasxCobrar.AutoSize = True
+        Me.OptCtasxCobrar.Checked = True
+        Me.OptCtasxCobrar.Location = New System.Drawing.Point(11, 17)
+        Me.OptCtasxCobrar.Name = "OptCtasxCobrar"
+        Me.OptCtasxCobrar.Size = New System.Drawing.Size(106, 17)
+        Me.OptCtasxCobrar.TabIndex = 125
+        Me.OptCtasxCobrar.TabStop = True
+        Me.OptCtasxCobrar.Text = "Cuentas x Cobrar"
+        Me.OptCtasxCobrar.UseVisualStyleBackColor = True
+        '
+        'TxtRutaCtaxCobrar
+        '
+        Me.TxtRutaCtaxCobrar.Enabled = False
+        Me.TxtRutaCtaxCobrar.Location = New System.Drawing.Point(302, 26)
+        Me.TxtRutaCtaxCobrar.Name = "TxtRutaCtaxCobrar"
+        Me.TxtRutaCtaxCobrar.Size = New System.Drawing.Size(370, 20)
+        Me.TxtRutaCtaxCobrar.TabIndex = 110
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(299, 10)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(89, 13)
+        Me.Label5.TabIndex = 109
+        Me.Label5.Text = "Ruta de Archivos"
+        '
+        'BtnProcesarCtaxCob
+        '
+        Me.BtnProcesarCtaxCob.Image = CType(resources.GetObject("BtnProcesarCtaxCob.Image"), System.Drawing.Image)
+        Me.BtnProcesarCtaxCob.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnProcesarCtaxCob.Location = New System.Drawing.Point(772, 14)
+        Me.BtnProcesarCtaxCob.Name = "BtnProcesarCtaxCob"
+        Me.BtnProcesarCtaxCob.Size = New System.Drawing.Size(88, 48)
+        Me.BtnProcesarCtaxCob.TabIndex = 108
+        Me.BtnProcesarCtaxCob.Tag = "28"
+        Me.BtnProcesarCtaxCob.Text = "Procesar"
+        Me.BtnProcesarCtaxCob.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnProcesarCtaxCob.UseVisualStyleBackColor = True
+        Me.BtnProcesarCtaxCob.VisualStyleBaseStyle = C1.Win.C1Input.VisualStyle.Office2007Blue
+        '
+        'BtnLeerCtaxCob
+        '
+        Me.BtnLeerCtaxCob.Image = CType(resources.GetObject("BtnLeerCtaxCob.Image"), System.Drawing.Image)
+        Me.BtnLeerCtaxCob.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnLeerCtaxCob.Location = New System.Drawing.Point(678, 14)
+        Me.BtnLeerCtaxCob.Name = "BtnLeerCtaxCob"
+        Me.BtnLeerCtaxCob.Size = New System.Drawing.Size(88, 48)
+        Me.BtnLeerCtaxCob.TabIndex = 127
+        Me.BtnLeerCtaxCob.Tag = "25"
+        Me.BtnLeerCtaxCob.Text = "Leer Archivo"
+        Me.BtnLeerCtaxCob.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnLeerCtaxCob.UseVisualStyleBackColor = True
+        Me.BtnLeerCtaxCob.VisualStyleBaseStyle = C1.Win.C1Input.VisualStyle.Office2007Blue
+        '
+        'TDGridCtasXCobrar
+        '
+        Me.TDGridCtasXCobrar.AllowUpdate = False
+        Me.TDGridCtasXCobrar.AlternatingRows = True
+        Me.TDGridCtasXCobrar.FilterBar = True
+        Me.TDGridCtasXCobrar.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TDGridCtasXCobrar.Images.Add(CType(resources.GetObject("TDGridCtasXCobrar.Images"), System.Drawing.Image))
+        Me.TDGridCtasXCobrar.Location = New System.Drawing.Point(9, 90)
+        Me.TDGridCtasXCobrar.Name = "TDGridCtasXCobrar"
+        Me.TDGridCtasXCobrar.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TDGridCtasXCobrar.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TDGridCtasXCobrar.PreviewInfo.ZoomFactor = 75
+        Me.TDGridCtasXCobrar.PrintInfo.PageSettings = CType(resources.GetObject("C1TrueDBGrid1.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TDGridCtasXCobrar.Size = New System.Drawing.Size(892, 267)
+        Me.TDGridCtasXCobrar.TabIndex = 128
+        Me.TDGridCtasXCobrar.Text = "C1TrueDBGrid1"
+        Me.TDGridCtasXCobrar.PropBag = resources.GetString("TDGridCtasXCobrar.PropBag")
+        '
+        'ChkImportarSaldos
+        '
+        Me.ChkImportarSaldos.AutoSize = True
+        Me.ChkImportarSaldos.Checked = True
+        Me.ChkImportarSaldos.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.ChkImportarSaldos.Enabled = False
+        Me.ChkImportarSaldos.Location = New System.Drawing.Point(173, 56)
+        Me.ChkImportarSaldos.Name = "ChkImportarSaldos"
+        Me.ChkImportarSaldos.Size = New System.Drawing.Size(123, 17)
+        Me.ChkImportarSaldos.TabIndex = 128
+        Me.ChkImportarSaldos.Text = "Solo Importar Saldos"
+        Me.ChkImportarSaldos.UseVisualStyleBackColor = True
+        '
+        'DtpFechaCtasXCobrar
+        '
+        Me.DtpFechaCtasXCobrar.CustomFormat = ""
+        Me.DtpFechaCtasXCobrar.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DtpFechaCtasXCobrar.Location = New System.Drawing.Point(173, 30)
+        Me.DtpFechaCtasXCobrar.Name = "DtpFechaCtasXCobrar"
+        Me.DtpFechaCtasXCobrar.Size = New System.Drawing.Size(104, 20)
+        Me.DtpFechaCtasXCobrar.TabIndex = 127
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(170, 14)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(76, 13)
+        Me.Label6.TabIndex = 126
+        Me.Label6.Text = "Fecha Compra"
+        '
+        'CmbSerie
+        '
+        Me.CmbSerie.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CmbSerie.Caption = ""
+        Me.CmbSerie.CaptionHeight = 17
+        Me.CmbSerie.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CmbSerie.ColumnCaptionHeight = 17
+        Me.CmbSerie.ColumnFooterHeight = 17
+        Me.CmbSerie.ComboStyle = C1.Win.C1List.ComboStyleEnum.DropdownList
+        Me.CmbSerie.ContentHeight = 15
+        Me.CmbSerie.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CmbSerie.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
+        Me.CmbSerie.DropDownWidth = 100
+        Me.CmbSerie.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CmbSerie.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CmbSerie.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CmbSerie.EditorHeight = 15
+        Me.CmbSerie.Images.Add(CType(resources.GetObject("CmbSerie.Images"), System.Drawing.Image))
+        Me.CmbSerie.ItemHeight = 15
+        Me.CmbSerie.Location = New System.Drawing.Point(343, 52)
+        Me.CmbSerie.MatchEntryTimeout = CType(2000, Long)
+        Me.CmbSerie.MaxDropDownItems = CType(5, Short)
+        Me.CmbSerie.MaxLength = 32767
+        Me.CmbSerie.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CmbSerie.Name = "CmbSerie"
+        Me.CmbSerie.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CmbSerie.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CmbSerie.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CmbSerie.Size = New System.Drawing.Size(43, 21)
+        Me.CmbSerie.TabIndex = 215
+        Me.CmbSerie.Visible = False
+        Me.CmbSerie.PropBag = resources.GetString("CmbSerie.PropBag")
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(302, 55)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(39, 13)
+        Me.Label7.TabIndex = 216
+        Me.Label7.Text = "SERIE"
+        '
+        'LblMoneda
+        '
+        Me.LblMoneda.AutoSize = True
+        Me.LblMoneda.ForeColor = System.Drawing.Color.Navy
+        Me.LblMoneda.Location = New System.Drawing.Point(395, 58)
+        Me.LblMoneda.Name = "LblMoneda"
+        Me.LblMoneda.Size = New System.Drawing.Size(52, 13)
+        Me.LblMoneda.TabIndex = 217
+        Me.LblMoneda.Text = "Cordobas"
+        '
         'FrmImportacion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -539,6 +754,13 @@ Partial Class FrmImportacion
         Me.GroupBox5.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
+        Me.XtraTabPage4.ResumeLayout(False)
+        Me.GroupBox6.ResumeLayout(False)
+        Me.GroupBox6.PerformLayout()
+        Me.GroupBox7.ResumeLayout(False)
+        Me.GroupBox7.PerformLayout()
+        CType(Me.TDGridCtasXCobrar, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.CmbSerie, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -582,4 +804,19 @@ Partial Class FrmImportacion
     Friend WithEvents C1Button1 As C1.Win.C1Input.C1Button
     Friend WithEvents C1Button5 As C1.Win.C1Input.C1Button
     Friend WithEvents TrueDBGridPrecios As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents XtraTabPage4 As DevExpress.XtraTab.XtraTabPage
+    Friend WithEvents GroupBox6 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox7 As System.Windows.Forms.GroupBox
+    Friend WithEvents OptCtasxCobrar As System.Windows.Forms.RadioButton
+    Friend WithEvents TxtRutaCtaxCobrar As System.Windows.Forms.TextBox
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents BtnProcesarCtaxCob As C1.Win.C1Input.C1Button
+    Friend WithEvents BtnLeerCtaxCob As C1.Win.C1Input.C1Button
+    Friend WithEvents TDGridCtasXCobrar As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents ChkImportarSaldos As System.Windows.Forms.CheckBox
+    Friend WithEvents DtpFechaCtasXCobrar As System.Windows.Forms.DateTimePicker
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents CmbSerie As C1.Win.C1List.C1Combo
+    Friend WithEvents LblMoneda As System.Windows.Forms.Label
 End Class

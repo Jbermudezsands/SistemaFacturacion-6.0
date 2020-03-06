@@ -552,6 +552,8 @@ Public Class FrmFacturasHistoricos
             Iposicion = Iposicion + 1
         Loop
 
+        Bitacora(Now, NombreUsuario, Me.CboTipoProducto.Text, "Anulo Facturo Historico: " & Me.TxtNumeroEnsamble.Text)
+
         LimpiarFacturas()
         Me.Button7.Enabled = True
         Me.CboCodigoBodega.Enabled = True
