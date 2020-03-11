@@ -680,3 +680,5 @@ D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Factur
 D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema Facturacion 6.0.exe.licenses
 D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmFacturacionBascula.resources
 D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepReciboCajaTira.resources
+D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmPlanillaLeche.resources
+D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmRutaDistribucion.resources

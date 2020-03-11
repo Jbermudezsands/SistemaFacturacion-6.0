@@ -216,7 +216,7 @@ Public Class FrmRecibos
         Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(2).Visible = False
         Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(3).Visible = False
 
-        SqlString = "SELECT NombrePago, Descripcion, Numero_Factura, MontoPagado,NumeroTarjeta,FechaVence,MontoFactura,AplicaFactura,SaldoFactura, idDetalleRecibo, CodReciboPago, Fecha_Recibo FROM DetalleRecibo WHERE (CodReciboPago = '-1') "
+        SqlString = "SELECT NombrePago, Descripcion, Numero_Factura, MontoPagado,NumeroTarjeta,FechaVence,MontoFactura,AplicaFactura,SaldoFactura, idDetalleRecibo, CodReciboPago, Fecha_Recibo, Numero_Nota FROM DetalleRecibo WHERE (CodReciboPago = '-1') "
         ds = New DataSet
         da = New SqlDataAdapter(SqlString, MiConexion)
         CmdBuilder = New SqlCommandBuilder(da)
@@ -310,6 +310,7 @@ Public Class FrmRecibos
         Dim ComandoUpdate As New SqlClient.SqlCommand, SqlConsecutivo As String, ConsecutivoManual As Boolean = False
         Dim Saldo As Double = 0, Retencion1 As Double = 0, Retencion2 As Double = 0, NumeroNota As String = "", Consecutivo As Double = 0
         Dim ReciboSerie As Boolean = False, idDetalle As Double = -1
+        Dim oDataRow As DataRow, i As Double
 
 
         If ds.Tables("DetalleRecibo").Rows.Count = 0 Then
@@ -739,11 +740,84 @@ Public Class FrmRecibos
         End If
 
 
-        SQlPagos = "SELECT DISTINCT Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.MontoCredito+DetalleRecibo.MontoPagado as MontoCredito,DetalleRecibo.MontoPagado, Facturas.MontoCredito AS Saldo, DetalleRecibo.Descripcion, DetalleRecibo.NombrePago FROM Facturas LEFT OUTER JOIN DetalleRecibo ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura  " & _
-                   "WHERE (Facturas.Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "') AND (Facturas.Tipo_Factura = 'Factura') AND (DetalleRecibo.CodReciboPago = '" & NumeroRecibo & "') ORDER BY Facturas.Numero_Factura DESC"
 
-        SQL.ConnectionString = Conexion
-        SQL.SQL = SQlPagos
+        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////////////ESTA CONSULTA NUNCA TENDRA REGISTROS /////////////////////////////////////////////////////////
+        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SQlPagos = "SELECT DISTINCT Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.MontoCredito+DetalleRecibo.MontoPagado as MontoCredito,DetalleRecibo.MontoPagado, Facturas.MontoCredito AS Saldo, DetalleRecibo.Descripcion, DetalleRecibo.NombrePago FROM Facturas LEFT OUTER JOIN DetalleRecibo ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura  " & _
+                   "WHERE (Facturas.Cod_Cliente = '-100000') AND (Facturas.Tipo_Factura = 'Factura') AND (DetalleRecibo.CodReciboPago = '" & NumeroRecibo & "') ORDER BY Facturas.Numero_Factura DESC"
+        MiConexion.Open()
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlPagos, MiConexion)
+        DataAdapter.Fill(DataSet, "ReciboPago")
+
+        SQlString = "SELECT DISTINCT DetalleRecibo.MontoPagado, DetalleRecibo.Descripcion, DetalleRecibo.NombrePago, DetalleRecibo.Numero_Nota, DetalleRecibo.Numero_Factura, Recibo.Cod_Cliente FROM  DetalleRecibo INNER JOIN  Recibo ON DetalleRecibo.CodReciboPago = Recibo.CodReciboPago AND DetalleRecibo.Fecha_Recibo = Recibo.Fecha_Recibo  " & _
+                    "WHERE (DetalleRecibo.CodReciboPago = '" & NumeroRecibo & "') AND (Recibo.Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Recibos")
+        MiConexion.Close()
+
+        Dim FechaFactura As Date, TipoFactura As String = "", NumeroFactura As String
+        i = 0
+        Do While DataSet.Tables("Recibos").Rows.Count > i
+
+            NumeroFactura = DataSet.Tables("Recibos").Rows(i)("Numero_Factura")
+            MontoPagado = DataSet.Tables("Recibos").Rows(i)("MontoPagado")
+
+            ''''''''''''''''''''''''''''''''''''''''''''''VERIFICO SI ES FACTURA ///////////////////////////////////////////////////////////////
+            If Mid(DataSet.Tables("Recibos").Rows(i)("Numero_Factura"), 1, 2) <> "NB" Then
+                '//////////////////////////SI ES NB ES NOTA DE DEBITO /////////////////////////////////////
+                SQlString = "SELECT DISTINCT Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.MontoCredito+DetalleRecibo.MontoPagado as MontoCredito,DetalleRecibo.MontoPagado, Facturas.MontoCredito AS Saldo, DetalleRecibo.Descripcion, DetalleRecibo.NombrePago FROM Facturas LEFT OUTER JOIN DetalleRecibo ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura  " & _
+                                  "WHERE (Facturas.Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "') AND (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Numero_Factura = '" & NumeroFactura & "') ORDER BY Facturas.Numero_Factura DESC"
+                DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+                DataAdapter.Fill(DataSet, "Consulta")
+                MiConexion.Close()
+
+                If DataSet.Tables("Consulta").Rows.Count <> 0 Then
+                    FechaFactura = DataSet.Tables("Consulta").Rows(0)("Fecha_Factura")
+                    MontoCredito = DataSet.Tables("Consulta").Rows(0)("MontoCredito")
+                    Saldo = DataSet.Tables("Consulta").Rows(0)("Saldo")
+                    TipoFactura = "Factura"
+                End If
+            Else
+
+                NumeroNota = Mid(DataSet.Tables("Recibos").Rows(i)("Numero_Factura"), 3, Len(DataSet.Tables("Recibos").Rows(i)("Numero_Factura")))
+
+                SQlString = "SELECT  Detalle_Nota.Numero_Factura, Detalle_Nota.Fecha_Nota, Detalle_Nota.Monto, Detalle_Nota.Numero_Nota, IndiceNota.MonedaNota, IndiceNota.Cod_Cliente,  IndiceNota.Nombre_Cliente, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Tipo_Nota, NotaDebito.Tipo FROM Detalle_Nota INNER JOIN  IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND  Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB " & _
+                            "WHERE (Detalle_Nota.Numero_Factura = N'0000') AND (IndiceNota.Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "') AND (NotaDebito.Tipo = 'Debito Clientes') AND   (Detalle_Nota.Numero_Nota = '" & NumeroNota & "')"
+                DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+                DataAdapter.Fill(DataSet, "Consulta")
+                MiConexion.Close()
+                If DataSet.Tables("Consulta").Rows.Count <> 0 Then
+                    FechaFactura = DataSet.Tables("Consulta").Rows(0)("Fecha_Nota")
+                    MontoCredito = DataSet.Tables("Consulta").Rows(0)("Monto")
+                    Saldo = DataSet.Tables("Consulta").Rows(0)("Monto") - DataSet.Tables("Recibos").Rows(i)("MontoPagado")
+                    TipoFactura = "NotaDebito"
+                End If
+
+            End If
+
+            DataSet.Tables("Consulta").Reset()
+
+
+
+            oDataRow = DataSet.Tables("ReciboPago").NewRow
+            oDataRow("Numero_Factura") = NumeroFactura
+            oDataRow("Fecha_Factura") = FechaFactura
+            oDataRow("MontoCredito") = Format(MontoCredito, "##,##0.00")
+            oDataRow("MontoPagado") = MontoPagado
+            oDataRow("Descripcion") = DataSet.Tables("Recibos").Rows(i)("Descripcion")
+            oDataRow("NombrePago") = DataSet.Tables("Recibos").Rows(i)("NombrePago")
+            oDataRow("Saldo") = Format(Saldo, "##,##0.00")
+            'oDataRow("Tipo_Factura") = TipoFactura
+            DataSet.Tables("ReciboPago").Rows.Add(oDataRow)
+
+            i = i + 1
+        Loop
+
+
+
+        'SQL.ConnectionString = Conexion
+        'SQL.SQL = SQlPagos
         ArepPagoClientes.Document.Name = "SOLICITUD DE PAGO CLIENTES"
         ArepReciboTira.Document.Name = "RECIBOS DE CAJA"
 
@@ -809,9 +883,10 @@ Public Class FrmRecibos
                 If Not DataSet.Tables("Coordenadas").Rows.Count = 0 Then
                     Select Case DataSet.Tables("Coordenadas").Rows(0)("Configuracion")
                         Case "Tiras de Papel2"
-                            SQL.ConnectionString = Conexion
-                            SQL.SQL = SQlPagos
-                            ArepReciboTira2.DataSource = SQL
+                            'SQL.ConnectionString = Conexion
+                            'SQL.SQL = SQlPagos
+
+                            ArepReciboTira2.DataSource = DataSet.Tables("ReciboPago")
                             Dim ViewerForm As New FrmViewer()
 
                             ViewerForm.arvMain.Document = ArepReciboTira2.Document
@@ -819,9 +894,9 @@ Public Class FrmRecibos
                             'ArepPagoClientes.Run(False)
                             ArepReciboTira2.Run(False)
                         Case "Tira de Papel"
-                            SQL.ConnectionString = Conexion
-                            SQL.SQL = SQlPagos
-                            ArepReciboTira.DataSource = SQL
+                            'SQL.ConnectionString = Conexion
+                            'SQL.SQL = SQlPagos
+                            ArepReciboTira.DataSource = DataSet.Tables("ReciboPago")
                             Dim ViewerForm As New FrmViewer()
 
                             ViewerForm.arvMain.Document = ArepReciboTira.Document
@@ -829,9 +904,9 @@ Public Class FrmRecibos
                             'ArepPagoClientes.Run(False)
                             ArepReciboTira.Run(False)
                         Case "Papel en Blanco"
-                            SQL.ConnectionString = Conexion
-                            SQL.SQL = SQlPagos
-                            ArepPagoClientes.DataSource = SQL
+                            'SQL.ConnectionString = Conexion
+                            'SQL.SQL = SQlPagos
+                            ArepPagoClientes.DataSource = DataSet.Tables("ReciboPago")
 
                             Dim ViewerForm As New FrmViewer()
                             ViewerForm.arvMain.Document = ArepPagoClientes.Document
@@ -842,7 +917,7 @@ Public Class FrmRecibos
                         Case "Papel en Blanco Standard"
                             'SQL.ConnectionString = Conexion
                             'SQL.SQL = SQlPagos
-                            'ArepPagoClientes.DataSource = SQL
+                            ArepPagoClientes.DataSource = DataSet.Tables("ReciboPago")
 
                             Dim ViewerForm As New FrmViewer()
                             'ViewerForm.arvMain.Document = ArepPagoClientes.Document

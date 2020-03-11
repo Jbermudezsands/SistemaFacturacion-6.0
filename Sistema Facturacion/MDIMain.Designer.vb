@@ -77,6 +77,7 @@ Partial Class MDIMain
         Me.RibbonImpuestos = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonTasaCambio = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonCajeros = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonButton6 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonGroup1 = New C1.Win.C1Ribbon.RibbonGroup
         Me.RibbonProductos = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonLineaProductos = New C1.Win.C1Ribbon.RibbonButton
@@ -126,6 +127,7 @@ Partial Class MDIMain
         Me.RibbonReporteVentasCompras = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonReporteInventario = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonReporteCtasXCob = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonReporteCtasXCob1 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonReporteGraficos = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonReporteGraficos1 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonTab5 = New C1.Win.C1Ribbon.RibbonTab
@@ -139,11 +141,12 @@ Partial Class MDIMain
         Me.RibbonVehiculo = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton2 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton3 = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonTab6 = New C1.Win.C1Ribbon.RibbonTab
+        Me.RibbonGroup13 = New C1.Win.C1Ribbon.RibbonGroup
         Me.C1StatusBar1 = New C1.Win.C1Ribbon.C1StatusBar
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
         Me.TxtUsuario = New System.Windows.Forms.TextBox
-        Me.RibbonReporteCtasXCob1 = New C1.Win.C1Ribbon.RibbonButton
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -174,6 +177,7 @@ Partial Class MDIMain
         Me.c1Ribbon1.Tabs.Add(Me.RibbonTab3)
         Me.c1Ribbon1.Tabs.Add(Me.RibbonTab4)
         Me.c1Ribbon1.Tabs.Add(Me.RibbonTab5)
+        Me.c1Ribbon1.Tabs.Add(Me.RibbonTab6)
         '
         'RibbonApplicationMenu1
         '
@@ -533,6 +537,7 @@ Partial Class MDIMain
         Me.ViewZoomGroup.Items.Add(Me.RibbonImpuestos)
         Me.ViewZoomGroup.Items.Add(Me.RibbonTasaCambio)
         Me.ViewZoomGroup.Items.Add(Me.RibbonCajeros)
+        Me.ViewZoomGroup.Items.Add(Me.RibbonButton6)
         Me.ViewZoomGroup.Text = "Basico"
         '
         'RibbonClietes
@@ -582,6 +587,14 @@ Partial Class MDIMain
         Me.RibbonCajeros.SmallImage = CType(resources.GetObject("RibbonCajeros.SmallImage"), System.Drawing.Image)
         Me.RibbonCajeros.Text = "Cajeros"
         Me.RibbonCajeros.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonButton6
+        '
+        Me.RibbonButton6.ID = "RibbonButton6"
+        Me.RibbonButton6.LargeImage = CType(resources.GetObject("RibbonButton6.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton6.SmallImage = CType(resources.GetObject("RibbonButton6.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton6.Text = "Ruta Distribucion"
+        Me.RibbonButton6.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'RibbonGroup1
         '
@@ -989,6 +1002,14 @@ Partial Class MDIMain
         Me.RibbonReporteCtasXCob.Text = "CuentasxCobrar"
         Me.RibbonReporteCtasXCob.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
+        'RibbonReporteCtasXCob1
+        '
+        Me.RibbonReporteCtasXCob1.ID = "RibbonReporteCtasXCob1"
+        Me.RibbonReporteCtasXCob1.LargeImage = CType(resources.GetObject("RibbonReporteCtasXCob1.LargeImage"), System.Drawing.Image)
+        Me.RibbonReporteCtasXCob1.SmallImage = CType(resources.GetObject("RibbonReporteCtasXCob1.SmallImage"), System.Drawing.Image)
+        Me.RibbonReporteCtasXCob1.Text = "CuentasxPagar"
+        Me.RibbonReporteCtasXCob1.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
         'RibbonReporteGraficos
         '
         Me.RibbonReporteGraficos.ID = "RibbonReporteGraficos"
@@ -1094,6 +1115,17 @@ Partial Class MDIMain
         Me.RibbonButton3.Text = "Generar"
         Me.RibbonButton3.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
+        'RibbonTab6
+        '
+        Me.RibbonTab6.Groups.Add(Me.RibbonGroup13)
+        Me.RibbonTab6.ID = "RibbonTab6"
+        Me.RibbonTab6.Text = "Planilla Leche"
+        '
+        'RibbonGroup13
+        '
+        Me.RibbonGroup13.ID = "RibbonGroup13"
+        Me.RibbonGroup13.Text = "Group"
+        '
         'C1StatusBar1
         '
         Me.C1StatusBar1.LeftPaneItems.Add(Me.DocumentModifiedLabel)
@@ -1122,14 +1154,6 @@ Partial Class MDIMain
         Me.TxtUsuario.TabIndex = 15
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
-        '
-        'RibbonReporteCtasXCob1
-        '
-        Me.RibbonReporteCtasXCob1.ID = "RibbonReporteCtasXCob1"
-        Me.RibbonReporteCtasXCob1.LargeImage = CType(resources.GetObject("RibbonReporteCtasXCob1.LargeImage"), System.Drawing.Image)
-        Me.RibbonReporteCtasXCob1.SmallImage = CType(resources.GetObject("RibbonReporteCtasXCob1.SmallImage"), System.Drawing.Image)
-        Me.RibbonReporteCtasXCob1.Text = "CuentasxPagar"
-        Me.RibbonReporteCtasXCob1.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'MDIMain
         '
@@ -1275,5 +1299,8 @@ Partial Class MDIMain
     Friend WithEvents RibbonButton4 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton5 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonReporteCtasXCob1 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonTab6 As C1.Win.C1Ribbon.RibbonTab
+    Friend WithEvents RibbonGroup13 As C1.Win.C1Ribbon.RibbonGroup
+    Friend WithEvents RibbonButton6 As C1.Win.C1Ribbon.RibbonButton
 
 End Class

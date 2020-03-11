@@ -28,6 +28,18 @@ Public Class FrmConsultas
             Dim DataAdapter As New SqlClient.SqlDataAdapter, SQlProductos As String
 
             Select Case Quien
+                Case "Ruta"
+                    SQlProductos = "SELECT   CodRuta, Nombre_Ruta FROM Ruta_Distribucion"
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Codigo Ruta"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(0).Width = 70
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Nombre Ruta"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 150
+
                 Case "Repesaje"
                     SQlProductos = "SELECT Recepcion.NumeroRecepcion, Recepcion.Fecha, Proveedor.Nombre_Proveedor + ' ' + Proveedor.Apellido_Proveedor AS Nombres, Conductor, Proveedor.Cod_Proveedor,Recepcion.TipoRecepcion FROM Recepcion INNER JOIN Proveedor ON Recepcion.Cod_Proveedor = Proveedor.Cod_Proveedor " & _
                                    "WHERE(Recepcion.Cancelar = 0) AND (TipoRecepcion = '" & FrmRecepcion.CboTipoRecepcion.Text & "') ORDER BY Recepcion.NumeroRecepcion"
@@ -1083,6 +1095,10 @@ Public Class FrmConsultas
         TipoProducto = ""
 
         Select Case Quien
+            Case "Ruta"
+                Posicion = Me.BindingConsultas.Position
+                Codigo = Me.BindingConsultas.Item(Posicion)("CodRuta")
+                Descripcion = Me.BindingConsultas.Item(Posicion)("Nombre_Ruta")
             Case "Repesaje"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("NumeroRecepcion")

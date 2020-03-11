@@ -270,7 +270,7 @@ Public Class FrmRecibosFacturas
         DataAdapter.Fill(DataSet, "Consultas")
 
 
-        SqlString = "SELECT DISTINCT  Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.MontoCredito, DetalleRecibo.MontoPagado - DetalleRecibo.MontoPagado AS MontoPagado, Facturas.MontoCredito AS Saldo FROM   Facturas INNER JOIN  Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura LEFT OUTER JOIN DetalleRecibo ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura  " & _
+        SqlString = "SELECT DISTINCT  Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.MontoCredito, DetalleRecibo.MontoPagado - DetalleRecibo.MontoPagado AS MontoPagado, Facturas.MontoCredito AS Saldo, Facturas.Tipo_Factura FROM   Facturas INNER JOIN  Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura LEFT OUTER JOIN DetalleRecibo ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura  " & _
                     "WHERE (Facturas.MontoCredito <> 0) AND (Facturas.Cod_Cliente = '-1') AND (Facturas.Tipo_Factura = 'Factura') ORDER BY Facturas.Fecha_Factura"
 
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
@@ -297,6 +297,7 @@ Public Class FrmRecibosFacturas
                     oDataRow("MontoCredito") = Format(MontoCredito, "##,##0.00")
                     oDataRow("MontoPagado") = 0
                     oDataRow("Saldo") = Format(Saldo, "##,##0.00")
+                    oDataRow("Tipo_Factura") = "Factura"
                     DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
                 Else
                     '//////////////MONTOS EN DOLARES /////////////////////////
@@ -306,6 +307,7 @@ Public Class FrmRecibosFacturas
                     oDataRow("MontoCredito") = Format(MontoCredito * TasaCambio, "##,##0.00")
                     oDataRow("MontoPagado") = 0
                     oDataRow("Saldo") = Format(Saldo * TasaCambio, "##,##0.00")
+                    oDataRow("Tipo_Factura") = "Factura"
                     DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
                 End If
             Else
@@ -316,6 +318,7 @@ Public Class FrmRecibosFacturas
                     oDataRow("MontoCredito") = Format(MontoCredito / TasaCambio, "##,##0.00")
                     oDataRow("MontoPagado") = 0
                     oDataRow("Saldo") = Format(Saldo / TasaCambio, "##,##0.00")
+                    oDataRow("Tipo_Factura") = "Factura"
                     DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
                 Else
                     oDataRow = DataSet.Tables("FacturaRecibos").NewRow
@@ -324,6 +327,7 @@ Public Class FrmRecibosFacturas
                     oDataRow("MontoCredito") = Format(MontoCredito, "##,##0.00")
                     oDataRow("MontoPagado") = 0
                     oDataRow("Saldo") = Format(Saldo, "##,##0.00")
+                    oDataRow("Tipo_Factura") = "Factura"
                     DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
                 End If
 
@@ -354,7 +358,7 @@ Public Class FrmRecibosFacturas
             MontoCredito = DataSet.Tables("ConsultaNota").Rows(iPosicion)("Monto")
             MonedaFactura = DataSet.Tables("ConsultaNota").Rows(iPosicion)("MonedaNota")
 
-            SqlString = "SELECT SUM(MontoPagado) AS MontoPagado FROM DetalleRecibo WHERE (Numero_Nota = '" & NumeroNota & "')"
+            SqlString = "SELECT SUM(MontoPagado) AS MontoPagado FROM DetalleRecibo WHERE (Numero_Nota = '" & NumeroFactura & "')"
             DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
             DataAdapter.Fill(DataSet, "Saldo")
             MiConexion.Close()
@@ -378,6 +382,7 @@ Public Class FrmRecibosFacturas
                     oDataRow("MontoCredito") = Format(MontoCredito, "##,##0.00")
                     oDataRow("MontoPagado") = 0
                     oDataRow("Saldo") = Format(Saldo, "##,##0.00")
+                    oDataRow("Tipo_Factura") = "NotaDebito"
                     DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
                 Else
                     '//////////////MONTOS EN DOLARES /////////////////////////
@@ -387,6 +392,7 @@ Public Class FrmRecibosFacturas
                     oDataRow("MontoCredito") = Format(MontoCredito * TasaCambio, "##,##0.00")
                     oDataRow("MontoPagado") = 0
                     oDataRow("Saldo") = Format(Saldo * TasaCambio, "##,##0.00")
+                    oDataRow("Tipo_Factura") = "NotaDebito"
                     DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
                 End If
             Else
@@ -397,6 +403,7 @@ Public Class FrmRecibosFacturas
                     oDataRow("MontoCredito") = Format(MontoCredito / TasaCambio, "##,##0.00")
                     oDataRow("MontoPagado") = 0
                     oDataRow("Saldo") = Format(Saldo / TasaCambio, "##,##0.00")
+                    oDataRow("Tipo_Factura") = "NotaDebito"
                     DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
                 Else
                     oDataRow = DataSet.Tables("FacturaRecibos").NewRow
@@ -405,6 +412,7 @@ Public Class FrmRecibosFacturas
                     oDataRow("MontoCredito") = Format(MontoCredito, "##,##0.00")
                     oDataRow("MontoPagado") = 0
                     oDataRow("Saldo") = Format(Saldo, "##,##0.00")
+                    oDataRow("Tipo_Factura") = "NotaDebito"
                     DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
                 End If
 
@@ -429,6 +437,7 @@ Public Class FrmRecibosFacturas
         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 90
         Me.TrueDBGridComponentes.Columns(4).Caption = "Saldo"
         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 90
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Factura").Visible = False
 
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////CARGO LAS FORMA DE PAGO////////////////////////////////////////////////////////////////////
@@ -751,7 +760,7 @@ Public Class FrmRecibosFacturas
         Dim Respuesta As Integer = 0, oDataRow As DataRow, SQlString As String, NombrePago As String, NumeroFactura As String = "", NumeroTarjeta As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, FechaVence As Date, Pagado As Double = 0
         Dim SaldoFacturaInicial As Double, AplicaFactura As Double, SaldoFacturaFinal As Double, FechaFactura As Date, Descripcion As String = ""
-
+        Dim TipoFactura As String
 
         If Me.TxtImporteRecibido.Text <> "" Then
             MontoRecibido = Me.TxtImporteRecibido.Text
@@ -765,7 +774,7 @@ Public Class FrmRecibosFacturas
         '*****************************************************************************************************************************************************
         '///////////////////////CON ESTA CONSULTA BORRO EL DETALLE DEL RECIBO ////////////////////////////////////////////////////////////////////////////////
         '**********************************************************************************************************************************************
-        SQlString = "SELECT NombrePago, Descripcion, Numero_Factura, MontoPagado,NumeroTarjeta,FechaVence,MontoFactura,AplicaFactura,SaldoFactura FROM DetalleRecibo WHERE (CodReciboPago = '-1') AND (Fecha_Recibo = CONVERT(DATETIME, '2010-01-01 00:00:00', 102))"
+        SQlString = "SELECT NombrePago, Descripcion, Numero_Factura, Numero_Nota, MontoPagado,NumeroTarjeta,FechaVence,MontoFactura,AplicaFactura,SaldoFactura FROM DetalleRecibo WHERE (CodReciboPago = '-1') AND (Fecha_Recibo = CONVERT(DATETIME, '2010-01-01 00:00:00', 102))"
         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
         DataAdapter.Fill(DataSet, "DetalleRecibo")
 
@@ -786,7 +795,8 @@ Public Class FrmRecibosFacturas
             End If
             NombrePago = Me.BindingMetodo.Item(iPosicion)("NombrePago")
             'FechaFactura = Me.BindingFacturas.Item(iPosicion)("Fecha_Factura")
-            'NumeroFactura = Me.BindingFacturas.Item(iPosicionFacturas)("Numero_Factura")
+            TipoFactura = Me.BindingFacturas.Item(iPosicionFacturas)("Tipo_Factura")
+
             If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")) Then
                 NumeroTarjeta = Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")
             Else
@@ -833,7 +843,13 @@ Public Class FrmRecibosFacturas
                     oDataRow = FrmRecibos.ds.Tables("DetalleRecibo").NewRow
                     oDataRow("NombrePago") = NombrePago
                     oDataRow("Descripcion") = "PAGO " & Descripcion
-                    oDataRow("Numero_Factura") = NumeroFactura
+                    If TipoFactura = "Factura" Then
+                        oDataRow("Numero_Nota") = "0000"
+                        oDataRow("Numero_Factura") = NumeroFactura
+                    Else
+                        oDataRow("Numero_Nota") = NumeroFactura
+                        oDataRow("Numero_Factura") = NumeroFactura
+                    End If
                     oDataRow("MontoPagado") = MontoFactura
                     oDataRow("NumeroTarjeta") = NumeroTarjeta
                     oDataRow("FechaVence") = FechaVence
@@ -857,7 +873,13 @@ Public Class FrmRecibosFacturas
                     oDataRow = FrmRecibos.ds.Tables("DetalleRecibo").NewRow
                     oDataRow("NombrePago") = NombrePago
                     oDataRow("Descripcion") = "PAGO " & Descripcion
-                    oDataRow("Numero_Factura") = NumeroFactura
+                    If TipoFactura = "Factura" Then
+                        oDataRow("Numero_Nota") = "0000"
+                        oDataRow("Numero_Factura") = NumeroFactura
+                    Else
+                        oDataRow("Numero_Nota") = NumeroFactura
+                        oDataRow("Numero_Factura") = NumeroFactura
+                    End If
                     oDataRow("MontoPagado") = MontoFactura
                     oDataRow("NumeroTarjeta") = NumeroTarjeta
                     oDataRow("FechaVence") = FechaVence
@@ -873,7 +895,7 @@ Public Class FrmRecibosFacturas
             Do While iPosicionFacturas < RegistrosFacturas
                 If MontoMetodo <> 0 Then
 
-
+                    TipoFactura = Me.BindingFacturas.Item(iPosicionFacturas)("Tipo_Factura")
                     NumeroFactura = Me.BindingFacturas.Item(iPosicionFacturas)("Numero_Factura")
                     FechaFactura = Me.BindingFacturas.Item(iPosicionFacturas)("Fecha_Factura")
                     If Not IsDBNull(Me.BindingFacturas.Item(iPosicionFacturas)("MontoPagado")) Then
@@ -917,7 +939,13 @@ Public Class FrmRecibosFacturas
                             oDataRow = FrmRecibos.ds.Tables("DetalleRecibo").NewRow
                             oDataRow("NombrePago") = NombrePago
                             oDataRow("Descripcion") = "PAGO " & Descripcion
-                            oDataRow("Numero_Factura") = NumeroFactura
+                            If TipoFactura = "Factura" Then
+                                oDataRow("Numero_Nota") = "0000"
+                                oDataRow("Numero_Factura") = NumeroFactura
+                            Else
+                                oDataRow("Numero_Nota") = NumeroFactura
+                                oDataRow("Numero_Factura") = NumeroFactura
+                            End If
                             oDataRow("MontoPagado") = MontoFactura
                             oDataRow("NumeroTarjeta") = NumeroTarjeta
                             oDataRow("FechaVence") = FechaVence
@@ -938,7 +966,13 @@ Public Class FrmRecibosFacturas
                             oDataRow = FrmRecibos.ds.Tables("DetalleRecibo").NewRow
                             oDataRow("NombrePago") = NombrePago
                             oDataRow("Descripcion") = "PAGO " & Descripcion
-                            oDataRow("Numero_Factura") = NumeroFactura
+                            If TipoFactura = "Factura" Then
+                                oDataRow("Numero_Nota") = "0000"
+                                oDataRow("Numero_Factura") = NumeroFactura
+                            Else
+                                oDataRow("Numero_Nota") = NumeroFactura
+                                oDataRow("Numero_Factura") = NumeroFactura
+                            End If
                             oDataRow("MontoPagado") = MontoMetodo
                             oDataRow("NumeroTarjeta") = NumeroTarjeta
                             oDataRow("FechaVence") = FechaVence

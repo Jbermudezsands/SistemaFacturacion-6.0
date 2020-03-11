@@ -240,7 +240,7 @@ Partial Public Class ArepReciboCajaTira
             "d-color: White; font-size: 8.25pt; "
         Me.Label22.Text = "Concepto"
         Me.Label22.Top = 4.166667!
-        Me.Label22.Width = 1.222222!
+        Me.Label22.Width = 1.166667!
         '
         'Label7
         '
@@ -252,15 +252,15 @@ Partial Public Class ArepReciboCajaTira
         Me.Label7.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label7.Border.TopColor = System.Drawing.Color.Black
         Me.Label7.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
-        Me.Label7.Height = 0.2777777!
+        Me.Label7.Height = 0.2777779!
         Me.Label7.HyperLink = Nothing
-        Me.Label7.Left = 1.611111!
+        Me.Label7.Left = 1.555556!
         Me.Label7.Name = "Label7"
         Me.Label7.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
             "d-color: White; font-size: 8.25pt; "
         Me.Label7.Text = "No Factura"
         Me.Label7.Top = 4.166667!
-        Me.Label7.Width = 0.5000001!
+        Me.Label7.Width = 0.5555555!
         '
         'Label8
         '
@@ -514,12 +514,12 @@ Partial Public Class ArepReciboCajaTira
         Me.TextBox2.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox2.DataField = "Numero_Factura"
         Me.TextBox2.Height = 0.2222222!
-        Me.TextBox2.Left = 1.611111!
+        Me.TextBox2.Left = 1.555556!
         Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; font-family: Arial; "
+        Me.TextBox2.Style = "ddo-char-set: 0; text-align: center; font-size: 6.75pt; font-family: Arial; "
         Me.TextBox2.Text = Nothing
         Me.TextBox2.Top = 0.0!
-        Me.TextBox2.Width = 0.5!
+        Me.TextBox2.Width = 0.5555555!
         '
         'TextBox1
         '
@@ -538,7 +538,7 @@ Partial Public Class ArepReciboCajaTira
         Me.TextBox1.Style = "ddo-char-set: 0; font-size: 8.25pt; font-family: Arial; "
         Me.TextBox1.Text = Nothing
         Me.TextBox1.Top = 0.0!
-        Me.TextBox1.Width = 1.166667!
+        Me.TextBox1.Width = 1.111111!
         '
         'PageFooter1
         '

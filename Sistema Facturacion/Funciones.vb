@@ -8236,7 +8236,7 @@ Module Funciones
             '////////////////////////////AGREGO EL DETALLE DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
             SqlPagos = "INSERT INTO [DetalleReciboPago]([CodReciboPago],[Fecha_Recibo],[Numero_Compra],[MontoPagado],[MontoRetencion]) " & _
-                       "VALUES('" & ConsecutivoPago & "','" & Format(FrmPagos.DTPFecha.Value, "dd/MM/yyyy") & "','" & NumeroCompra & "','" & Retencion & "')"
+                       "VALUES('" & ConsecutivoPago & "','" & Format(FrmPagos.DTPFecha.Value, "dd/MM/yyyy") & "','" & NumeroCompra & "','" & MontoPagado & "','" & Retencion & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlPagos, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery

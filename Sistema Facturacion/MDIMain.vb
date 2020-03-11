@@ -597,53 +597,53 @@ Public Class MDIMain
 
             My.Application.DoEvents()
 
-            'If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) Then
-            '    If DataSet.Tables("DatosEmpresa").Rows(0)("Version") = "Inventario" Then
-            '        Me.RibbonPersonalizar.Enabled = True
-            '        Me.RibbonPerfiles.Enabled = False : Me.RibbonPerfiles1.Enabled = False
-            '        Me.RibbonAjustes.Enabled = True
-            '        Me.RibbonActualizacion.Enabled = False : Me.RibbonActualizacion1.Enabled = False
-            '        Me.RibbonInventarioFisico.Enabled = True
-            '        Me.RibbonConfigurar.Enabled = True : Me.RibbonConfigurar1.Enabled = True
-            '        Me.RibbonExportar.Enabled = False
-            '        Me.RibbonImportar.Enabled = False
-            '        Me.RibbonUsuarios.Enabled = True : Me.RibbonUsuarios1.Enabled = True : Me.MenuUsuarios.Enabled = True
-            '        Me.RibbonInventarioFisico.Enabled = True
-            '        Me.RibbonCompras.Enabled = True : Me.RibbonCompras1.Enabled = True
-            '        Me.RibbonReporteGenerales.Enabled = False
-            '        Me.RibbonReporteCtasXCob.Enabled = False
-            '        Me.RibbonPlantillaVtasCompras.Enabled = False
-            '        Me.RibbonHistoricoFactura.Enabled = True : Me.RibbonHistoricoFactura1.Enabled = True
-            '        Me.RibbonHistoricoCompras.Enabled = True : Me.RibbonHistoricoCompras1.Enabled = True
-            '        Me.RibbonTareas.Enabled = False
-            '        Me.RibbonCajeros.Enabled = False
-            '        Me.RibbonTransferencia.Enabled = False : Me.RibbonTransferencia1.Enabled = False
-            '        Me.RibbonTiposPrecios.Enabled = False
-            '        Me.RibbonTasaCambio.Enabled = True : Me.RibbonTasaCambio1.Enabled = True
-            '        Me.RibbonServicios.Enabled = False : Me.RibbonServicios1.Enabled = False
-            '        Me.RibbonRubros.Enabled = True
-            '        Me.RibbonProyectos.Enabled = False
-            '        Me.RibbonNotaDebitoCredito.Enabled = False
-            '        Me.RibbonImpuestos.Enabled = True
-            '        Me.RibbonLiquidacion.Enabled = True : Me.RibbonLiquidacion1.Enabled = True
-            '        Me.RibbonArqueo.Enabled = False
-            '        Me.RibbonVendedores.Enabled = False
-            '        Me.RibbonProveedores.Enabled = True
-            '        Me.RibbonProductos.Enabled = True : Me.RibbonProductos1.Enabled = True
-            '        Me.RibbonLineaProductos.Enabled = True
-            '        Me.RibbonEnsamble.Enabled = True
-            '        Me.RibbonCtasXPagar.Enabled = False
-            '        Me.RibbonCtasxCobrar.Enabled = False : Me.RibbonCtasXCobrar1.Enabled = False
-            '        Me.RibbonBodegas.Enabled = False
-            '        Me.RibbonArqueo.Enabled = False
-            '        Me.RibbonReporteVentasCompras.Enabled = False
-            '        Me.RibbonFacturacion.Enabled = True : Me.RibbonFacturacion1.Enabled = True
-            '        Me.RibbonPagos.Enabled = False
-            '        Me.RibbonArqueo.Enabled = False
-            '        Me.RibbonClietes.Enabled = True : Me.RibbonClietes1.Enabled = True
-            '        Me.RibbonRecibos.Enabled = False
-            '    End If
-            'End If
+            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) Then
+                If DataSet.Tables("DatosEmpresa").Rows(0)("Version") = "Inventario" Then
+                    Me.RibbonPersonalizar.Enabled = True
+                    Me.RibbonPerfiles.Enabled = False : Me.RibbonPerfiles1.Enabled = False
+                    Me.RibbonAjustes.Enabled = True
+                    Me.RibbonActualizacion.Enabled = False : Me.RibbonActualizacion1.Enabled = False
+                    Me.RibbonInventarioFisico.Enabled = True
+                    Me.RibbonConfigurar.Enabled = True : Me.RibbonConfigurar1.Enabled = True
+                    Me.RibbonExportar.Enabled = False
+                    Me.RibbonImportar.Enabled = False
+                    Me.RibbonUsuarios.Enabled = True : Me.RibbonUsuarios1.Enabled = True : Me.MenuUsuarios.Enabled = True
+                    Me.RibbonInventarioFisico.Enabled = True
+                    Me.RibbonCompras.Enabled = True : Me.RibbonCompras1.Enabled = True
+                    Me.RibbonReporteGenerales.Enabled = False
+                    Me.RibbonReporteCtasXCob.Enabled = False
+                    Me.RibbonPlantillaVtasCompras.Enabled = False
+                    Me.RibbonHistoricoFactura.Enabled = True : Me.RibbonHistoricoFactura1.Enabled = True
+                    Me.RibbonHistoricoCompras.Enabled = True : Me.RibbonHistoricoCompras1.Enabled = True
+                    Me.RibbonTareas.Enabled = False
+                    Me.RibbonCajeros.Enabled = False
+                    Me.RibbonTransferencia.Enabled = False : Me.RibbonTransferencia1.Enabled = False
+                    Me.RibbonTiposPrecios.Enabled = False
+                    Me.RibbonTasaCambio.Enabled = True : Me.RibbonTasaCambio1.Enabled = True
+                    Me.RibbonServicios.Enabled = False : Me.RibbonServicios1.Enabled = False
+                    Me.RibbonRubros.Enabled = True
+                    Me.RibbonProyectos.Enabled = False
+                    Me.RibbonNotaDebitoCredito.Enabled = False
+                    Me.RibbonImpuestos.Enabled = True
+                    Me.RibbonLiquidacion.Enabled = True : Me.RibbonLiquidacion1.Enabled = True
+                    Me.RibbonArqueo.Enabled = False
+                    Me.RibbonVendedores.Enabled = False
+                    Me.RibbonProveedores.Enabled = True
+                    Me.RibbonProductos.Enabled = True : Me.RibbonProductos1.Enabled = True
+                    Me.RibbonLineaProductos.Enabled = True
+                    Me.RibbonEnsamble.Enabled = True
+                    Me.RibbonCtasXPagar.Enabled = False
+                    Me.RibbonCtasxCobrar.Enabled = False : Me.RibbonCtasXCobrar1.Enabled = False
+                    Me.RibbonBodegas.Enabled = False
+                    Me.RibbonArqueo.Enabled = False
+                    Me.RibbonReporteVentasCompras.Enabled = False
+                    Me.RibbonFacturacion.Enabled = True : Me.RibbonFacturacion1.Enabled = True
+                    Me.RibbonPagos.Enabled = False
+                    Me.RibbonArqueo.Enabled = False
+                    Me.RibbonClietes.Enabled = True : Me.RibbonClietes1.Enabled = True
+                    Me.RibbonRecibos.Enabled = False
+                End If
+            End If
 
 
             If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("CodigoClienteNumerico")) Then
@@ -1008,5 +1008,9 @@ Public Class MDIMain
         Quien = "Reporte Cuentas x Pagar"
         My.Forms.FrmReportes.MdiParent = Me
         My.Forms.FrmReportes.Show()
+    End Sub
+
+    Private Sub RibbonButton6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton6.Click
+
     End Sub
 End Class

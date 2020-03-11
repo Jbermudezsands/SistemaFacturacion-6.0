@@ -52,6 +52,10 @@ Partial Class FrmProveedores
         Me.Label1 = New System.Windows.Forms.Label
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.TruDbGridHistoricosCompras = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.TabPage3 = New System.Windows.Forms.TabPage
+        Me.C1Combo1 = New C1.Win.C1List.C1Combo
+        Me.Button3 = New System.Windows.Forms.Button
+        Me.Label10 = New System.Windows.Forms.Label
         Me.BindingHistoricoCompras = New System.Windows.Forms.BindingSource(Me.components)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -60,6 +64,8 @@ Partial Class FrmProveedores
         CType(Me.CboCodigoProveedor, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage2.SuspendLayout()
         CType(Me.TruDbGridHistoricosCompras, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage3.SuspendLayout()
+        CType(Me.C1Combo1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.BindingHistoricoCompras, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -150,6 +156,7 @@ Partial Class FrmProveedores
         '
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
+        Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Location = New System.Drawing.Point(12, 64)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
@@ -404,6 +411,66 @@ Partial Class FrmProveedores
         Me.TruDbGridHistoricosCompras.Text = "C1TrueDBGrid2"
         Me.TruDbGridHistoricosCompras.PropBag = resources.GetString("TruDbGridHistoricosCompras.PropBag")
         '
+        'TabPage3
+        '
+        Me.TabPage3.Controls.Add(Me.C1Combo1)
+        Me.TabPage3.Controls.Add(Me.Button3)
+        Me.TabPage3.Controls.Add(Me.Label10)
+        Me.TabPage3.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage3.Name = "TabPage3"
+        Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage3.Size = New System.Drawing.Size(382, 284)
+        Me.TabPage3.TabIndex = 2
+        Me.TabPage3.Text = "Informacion"
+        Me.TabPage3.UseVisualStyleBackColor = True
+        '
+        'C1Combo1
+        '
+        Me.C1Combo1.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.C1Combo1.Caption = ""
+        Me.C1Combo1.CaptionHeight = 17
+        Me.C1Combo1.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.C1Combo1.ColumnCaptionHeight = 17
+        Me.C1Combo1.ColumnFooterHeight = 17
+        Me.C1Combo1.ContentHeight = 15
+        Me.C1Combo1.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.C1Combo1.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.C1Combo1.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.C1Combo1.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.C1Combo1.EditorHeight = 15
+        Me.C1Combo1.Images.Add(CType(resources.GetObject("C1Combo1.Images"), System.Drawing.Image))
+        Me.C1Combo1.ItemHeight = 15
+        Me.C1Combo1.Location = New System.Drawing.Point(119, 24)
+        Me.C1Combo1.MatchEntryTimeout = CType(2000, Long)
+        Me.C1Combo1.MaxDropDownItems = CType(5, Short)
+        Me.C1Combo1.MaxLength = 32767
+        Me.C1Combo1.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.C1Combo1.Name = "C1Combo1"
+        Me.C1Combo1.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.C1Combo1.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.C1Combo1.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.C1Combo1.Size = New System.Drawing.Size(209, 21)
+        Me.C1Combo1.TabIndex = 106
+        Me.C1Combo1.PropBag = resources.GetString("C1Combo1.PropBag")
+        '
+        'Button3
+        '
+        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
+        Me.Button3.Location = New System.Drawing.Point(334, 11)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(37, 38)
+        Me.Button3.TabIndex = 107
+        Me.Button3.UseVisualStyleBackColor = True
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(13, 24)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(88, 13)
+        Me.Label10.TabIndex = 108
+        Me.Label10.Text = "Ruta Distribucion"
+        '
         'FrmProveedores
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -428,6 +495,9 @@ Partial Class FrmProveedores
         CType(Me.CboCodigoProveedor, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage2.ResumeLayout(False)
         CType(Me.TruDbGridHistoricosCompras, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage3.ResumeLayout(False)
+        Me.TabPage3.PerformLayout()
+        CType(Me.C1Combo1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.BindingHistoricoCompras, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -465,4 +535,8 @@ Partial Class FrmProveedores
     Friend WithEvents BindingHistoricoCompras As System.Windows.Forms.BindingSource
     Friend WithEvents TruDbGridHistoricosCompras As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents ChkInventario As System.Windows.Forms.CheckBox
+    Friend WithEvents TabPage3 As System.Windows.Forms.TabPage
+    Friend WithEvents C1Combo1 As C1.Win.C1List.C1Combo
+    Friend WithEvents Button3 As System.Windows.Forms.Button
+    Friend WithEvents Label10 As System.Windows.Forms.Label
 End Class

@@ -271,6 +271,12 @@
     <Compile Include="FrmRespaldar.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmRutaDistribucion.Designer.vb">
+      <DependentUpon>FrmRutaDistribucion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmRutaDistribucion.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmTeclado.designer.vb">
       <DependentUpon>FrmTeclado.vb</DependentUpon>
     </Compile>
@@ -1218,6 +1224,12 @@
     <Compile Include="Reportes\SubReporteFacturas2.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="FrmPlanillaLeche.Designer.vb">
+      <DependentUpon>FrmPlanillaLeche.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPlanillaLeche.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SplashScreen1.Designer.vb">
       <DependentUpon>SplashScreen1.vb</DependentUpon>
     </Compile>
@@ -1344,6 +1356,10 @@
     <EmbeddedResource Include="FrmRespaldar.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmRespaldar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmRutaDistribucion.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmRutaDistribucion.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmTeclado.resx">
       <DependentUpon>FrmTeclado.vb</DependentUpon>
@@ -1967,6 +1983,10 @@
     <EmbeddedResource Include="Reportes\SubReporteFacturas2.resx">
       <DependentUpon>SubReporteFacturas2.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPlanillaLeche.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmPlanillaLeche.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SplashScreen1.resx">
       <SubType>Designer</SubType>

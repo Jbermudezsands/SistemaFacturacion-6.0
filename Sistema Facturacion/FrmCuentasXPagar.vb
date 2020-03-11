@@ -80,7 +80,7 @@ Public Class FrmCuentasXPagar
         DataSet.Reset()
         DatasetReporte.Reset()
         SQlString = "SELECT Compras.Fecha_Compra As Fecha_Factura, Compras.Numero_Compra As Numero_Factura, Compras.Numero_Compra As Numero_Recibo, Compras.Numero_Compra As NotaDebito, Compras.SubTotal As MontoNota, Compras.SubTotal As Monto, Compras.Fecha_Compra As FechaVence, Compras.IVA As Abono, Compras.SubTotal AS Saldo, Compras.SubTotal As Moratorio, Compras.SubTotal As Dias, Compras.SubTotal AS Total  FROM Compras INNER JOIN Proveedor ON Compras.Cod_Proveedor = Proveedor.Cod_Proveedor  " & _
-                    "WHERE (Compras.Tipo_Compra = 'Mercancia Recibida') AND (Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '01/01/1900', 102) AND CONVERT(DATETIME, '01/01/1900', 102)) ORDER BY Compras.Fecha_Compra, Compras.Numero_Compra"
+                    "WHERE  (Compras.Tipo_Compra = 'Mercancia Recibida' OR Compras.Tipo_Compra = 'Cuenta')  AND (Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '01/01/1900', 102) AND CONVERT(DATETIME, '01/01/1900', 102)) ORDER BY Compras.Fecha_Compra, Compras.Numero_Compra"
         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
         DataAdapter.Fill(DatasetReporte, "TotalVentas")
 
@@ -90,7 +90,7 @@ Public Class FrmCuentasXPagar
         '/////////////////////////AGREGO LA CONSULTA PARA TODAS LAS FACTURAS DE CREDITO //////////////////////////////////////////////////////
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         SQlString = "SELECT CASE WHEN Detalle_MetodoCompras.Monto = Compras.SubTotal + Compras.IVA THEN 'Contado' ELSE 'Credito' END AS MetodoPago, Detalle_MetodoCompras.Monto, Compras.* FROM Compras LEFT OUTER JOIN Detalle_MetodoCompras ON Compras.Numero_Compra = Detalle_MetodoCompras.Numero_Compra AND Compras.Fecha_Compra = Detalle_MetodoCompras.Fecha_Compra And Compras.Tipo_Compra = Detalle_MetodoCompras.Tipo_Compra  " & _
-                    "WHERE (Compras.Tipo_Compra = 'Mercancia Recibida') AND (Compras.Cod_Proveedor = '" & Me.CboCodigoProveedor.Text & "') AND (CASE WHEN Detalle_MetodoCompras.Monto = Compras.SubTotal + Compras.IVA THEN 'Contado' ELSE 'Credito' END = 'Credito') OR (Compras.Tipo_Compra = 'Cuenta')"
+                    "WHERE  (Compras.Tipo_Compra = 'Mercancia Recibida' OR Compras.Tipo_Compra = 'Cuenta')  AND (Compras.Cod_Proveedor = '" & Me.CboCodigoProveedor.Text & "') AND (CASE WHEN Detalle_MetodoCompras.Monto = Compras.SubTotal + Compras.IVA THEN 'Contado' ELSE 'Credito' END = 'Credito') "
         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
         DataAdapter.Fill(DataSet, "Proveedores")
         Registros = DataSet.Tables("Proveedores").Rows.Count
