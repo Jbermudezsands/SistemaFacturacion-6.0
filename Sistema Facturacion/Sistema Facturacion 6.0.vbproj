@@ -63,12 +63,6 @@
     <Reference Include="C1.Win.C1Thesaurus.2, Version=2.2.20073.78, Culture=neutral, PublicKeyToken=c644e6d97aec9e47, processorArchitecture=MSIL" />
     <Reference Include="C1.Win.C1TrueDBGrid.2, Version=2.0.20063.60825, Culture=neutral, PublicKeyToken=75ae3fb0e2b1e0da, processorArchitecture=MSIL" />
     <Reference Include="C1LicUpdater, Version=1.0.2314.28129, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=10.2.3600.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
-    <Reference Include="CrystalDecisions.Enterprise.Framework, Version=10.2.3600.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
-    <Reference Include="CrystalDecisions.Enterprise.InfoStore, Version=10.2.3600.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
-    <Reference Include="CrystalDecisions.ReportSource, Version=10.2.3600.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
-    <Reference Include="CrystalDecisions.Shared, Version=10.2.3600.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
-    <Reference Include="CrystalDecisions.Windows.Forms, Version=10.2.3600.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
     <Reference Include="DevExpress.Data3, Version=3.2.3.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4" />
     <Reference Include="DevExpress.Utils3, Version=3.2.3.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4" />
     <Reference Include="DevExpress.XtraEditors3, Version=3.2.3.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL" />
@@ -121,6 +115,12 @@
     <Compile Include="FrmAccesosAddPerfil.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmActivar.designer.vb">
+      <DependentUpon>FrmActivar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmActivar.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmAjustarCostos.Designer.vb">
       <DependentUpon>FrmAjustarCostos.vb</DependentUpon>
     </Compile>
@@ -157,6 +157,12 @@
     <Compile Include="FrmConductor.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmCooperativa.designer.vb">
+      <DependentUpon>FrmCooperativa.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmCooperativa.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmCoordenadasNotas.Designer.vb">
       <DependentUpon>FrmCoordenadasNotas.vb</DependentUpon>
     </Compile>
@@ -187,10 +193,22 @@
     <Compile Include="frmDBBackup.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmDepartamentos.Designer.vb">
+      <DependentUpon>FrmDepartamentos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmDepartamentos.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmDetalleLote.Designer.vb">
       <DependentUpon>FrmDetalleLote.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmDetalleLote.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmEscolaridad.designer.vb">
+      <DependentUpon>FrmEscolaridad.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmEscolaridad.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmFacturacionBascula.Designer.vb">
@@ -235,6 +253,24 @@
     <Compile Include="FrmNuevoLote.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmPeriodos.Designer.vb">
+      <DependentUpon>FrmPeriodos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPeriodos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPlanilla.designer.vb">
+      <DependentUpon>FrmPlanilla.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPlanilla.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmProductor.designer.vb">
+      <DependentUpon>FrmProductor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmProductor.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmPuertos.designer.vb">
       <DependentUpon>FrmPuertos.vb</DependentUpon>
     </Compile>
@@ -251,6 +287,12 @@
       <DependentUpon>FrmRecepcion.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmRecepcion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmRecepcionPlanilla.Designer.vb">
+      <DependentUpon>FrmRecepcionPlanilla.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmRecepcionPlanilla.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmReciboPago.Designer.vb">
@@ -335,6 +377,12 @@
       <DependentUpon>ArepCategoriaDetalle.vb</DependentUpon>
     </Compile>
     <Compile Include="Reportes\ArepCategoriaDetalle.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\ArepColillas.designer.vb">
+      <DependentUpon>ArepColillas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepColillas.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reportes\ArepComprobanteComprasRubro.Designer.vb">
@@ -481,6 +529,12 @@
     <Compile Include="Reportes\ArepLineaVendedor.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\ArepListaRecepcion.designer.vb">
+      <DependentUpon>ArepListaRecepcion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepListaRecepcion.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\ArepListaRecibos.Designer.vb">
       <DependentUpon>ArepListaRecibos.vb</DependentUpon>
     </Compile>
@@ -515,6 +569,12 @@
       <DependentUpon>ArepNotasDebitoCredito.vb</DependentUpon>
     </Compile>
     <Compile Include="Reportes\ArepNotasDebitoCredito.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\ArepPlanilla.designer.vb">
+      <DependentUpon>ArepPlanilla.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepPlanilla.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reportes\ArepPrecioVrsCosto.Designer.vb">
@@ -1224,12 +1284,6 @@
     <Compile Include="Reportes\SubReporteFacturas2.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="FrmPlanillaLeche.Designer.vb">
-      <DependentUpon>FrmPlanillaLeche.vb</DependentUpon>
-    </Compile>
-    <Compile Include="FrmPlanillaLeche.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="SplashScreen1.Designer.vb">
       <DependentUpon>SplashScreen1.vb</DependentUpon>
     </Compile>
@@ -1257,6 +1311,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>FrmAccesosAddPerfil.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmActivar.resx">
+      <DependentUpon>FrmActivar.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmAjustarCostos.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmAjustarCostos.vb</DependentUpon>
@@ -1281,6 +1339,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>FrmConductor.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmCooperativa.resx">
+      <DependentUpon>FrmCooperativa.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmCoordenadasNotas.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmCoordenadasNotas.vb</DependentUpon>
@@ -1301,9 +1363,17 @@
       <DependentUpon>frmDBBackup.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmDepartamentos.resx">
+      <DependentUpon>FrmDepartamentos.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmDetalleLote.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmDetalleLote.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmEscolaridad.resx">
+      <DependentUpon>FrmEscolaridad.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmFacturacionBascula.resx">
       <SubType>Designer</SubType>
@@ -1333,6 +1403,18 @@
       <SubType>Designer</SubType>
       <DependentUpon>FrmNuevoLote.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmPeriodos.resx">
+      <DependentUpon>FrmPeriodos.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPlanilla.resx">
+      <DependentUpon>FrmPlanilla.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmProductor.resx">
+      <DependentUpon>FrmProductor.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmPuertos.resx">
       <DependentUpon>FrmPuertos.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1344,6 +1426,10 @@
     <EmbeddedResource Include="FrmRecepcion.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmRecepcion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmRecepcionPlanilla.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmRecepcionPlanilla.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmReciboPago.resx">
       <SubType>Designer</SubType>
@@ -1416,6 +1502,10 @@
     <EmbeddedResource Include="Reportes\ArepCategoriaDetalle.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ArepCategoriaDetalle.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepColillas.resx">
+      <DependentUpon>ArepColillas.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepComprobanteComprasRubro.resx">
       <SubType>Designer</SubType>
@@ -1701,6 +1791,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>ArepListadoVendedores.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepListaRecepcion.resx">
+      <DependentUpon>ArepListaRecepcion.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepListaRecibos.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ArepListaRecibos.vb</DependentUpon>
@@ -1732,6 +1826,10 @@
     <EmbeddedResource Include="Reportes\ArepPagoProveedores.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ArepPagoProveedores.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepPlanilla.resx">
+      <DependentUpon>ArepPlanilla.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepPlantillas.resx">
       <SubType>Designer</SubType>
@@ -1983,10 +2081,6 @@
     <EmbeddedResource Include="Reportes\SubReporteFacturas2.resx">
       <DependentUpon>SubReporteFacturas2.vb</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmPlanillaLeche.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>FrmPlanillaLeche.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SplashScreen1.resx">
       <SubType>Designer</SubType>

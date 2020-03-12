@@ -13,6 +13,6 @@ Module Variables
     Public CadenaRecibo As String, PrimerRegistroFactura As Boolean, PrimerRegistroCompra As Boolean
     Public EditarFactura As Boolean = True, CodigoProducto() As String, Mensaje As String
     Public CambioFechaRespuesta As Boolean = False, FechaFacturacion As Date, RefNotaDebito As String
-
+    Public iAño As Integer, FechaGuardar As Date
 
 End Module

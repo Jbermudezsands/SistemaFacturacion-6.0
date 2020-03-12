@@ -147,6 +147,17 @@ Partial Class MDIMain
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
         Me.TxtUsuario = New System.Windows.Forms.TextBox
+        Me.RibbonProductor = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonButton11 = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonButton61 = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonGroup14 = New C1.Win.C1Ribbon.RibbonGroup
+        Me.RibbonButton111 = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonButton12 = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonGroup15 = New C1.Win.C1Ribbon.RibbonGroup
+        Me.RibbonButton20 = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonButtonDepartamento = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonButtonCooperativa = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonButtonRuta = New C1.Win.C1Ribbon.RibbonButton
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1118,13 +1129,18 @@ Partial Class MDIMain
         'RibbonTab6
         '
         Me.RibbonTab6.Groups.Add(Me.RibbonGroup13)
+        Me.RibbonTab6.Groups.Add(Me.RibbonGroup14)
+        Me.RibbonTab6.Groups.Add(Me.RibbonGroup15)
         Me.RibbonTab6.ID = "RibbonTab6"
         Me.RibbonTab6.Text = "Planilla Leche"
         '
         'RibbonGroup13
         '
         Me.RibbonGroup13.ID = "RibbonGroup13"
-        Me.RibbonGroup13.Text = "Group"
+        Me.RibbonGroup13.Items.Add(Me.RibbonProductor)
+        Me.RibbonGroup13.Items.Add(Me.RibbonButton11)
+        Me.RibbonGroup13.Items.Add(Me.RibbonButton61)
+        Me.RibbonGroup13.Text = "Registros"
         '
         'C1StatusBar1
         '
@@ -1154,6 +1170,94 @@ Partial Class MDIMain
         Me.TxtUsuario.TabIndex = 15
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
+        '
+        'RibbonProductor
+        '
+        Me.RibbonProductor.ID = "RibbonProductor"
+        Me.RibbonProductor.LargeImage = CType(resources.GetObject("RibbonProductor.LargeImage"), System.Drawing.Image)
+        Me.RibbonProductor.SmallImage = CType(resources.GetObject("RibbonProductor.SmallImage"), System.Drawing.Image)
+        Me.RibbonProductor.Text = "Productor"
+        Me.RibbonProductor.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonButton11
+        '
+        Me.RibbonButton11.ID = "RibbonButton11"
+        Me.RibbonButton11.LargeImage = CType(resources.GetObject("RibbonButton11.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton11.SmallImage = CType(resources.GetObject("RibbonButton11.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton11.Text = "Periodos"
+        Me.RibbonButton11.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonButton61
+        '
+        Me.RibbonButton61.ID = "RibbonButton61"
+        Me.RibbonButton61.LargeImage = CType(resources.GetObject("RibbonButton61.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton61.SmallImage = CType(resources.GetObject("RibbonButton61.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton61.Text = "Recepcion"
+        Me.RibbonButton61.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonGroup14
+        '
+        Me.RibbonGroup14.ID = "RibbonGroup14"
+        Me.RibbonGroup14.Items.Add(Me.RibbonButton111)
+        Me.RibbonGroup14.Items.Add(Me.RibbonButton12)
+        Me.RibbonGroup14.Text = "Calculos"
+        '
+        'RibbonButton111
+        '
+        Me.RibbonButton111.ID = "RibbonButton111"
+        Me.RibbonButton111.LargeImage = CType(resources.GetObject("RibbonButton111.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton111.SmallImage = CType(resources.GetObject("RibbonButton111.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton111.Text = "Planilla"
+        Me.RibbonButton111.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonButton12
+        '
+        Me.RibbonButton12.ID = "RibbonButton12"
+        Me.RibbonButton12.LargeImage = CType(resources.GetObject("RibbonButton12.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton12.SmallImage = CType(resources.GetObject("RibbonButton12.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton12.Text = "Activar"
+        Me.RibbonButton12.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonGroup15
+        '
+        Me.RibbonGroup15.ID = "RibbonGroup15"
+        Me.RibbonGroup15.Items.Add(Me.RibbonButton20)
+        Me.RibbonGroup15.Items.Add(Me.RibbonButtonDepartamento)
+        Me.RibbonGroup15.Items.Add(Me.RibbonButtonCooperativa)
+        Me.RibbonGroup15.Items.Add(Me.RibbonButtonRuta)
+        Me.RibbonGroup15.Text = "Catalogo"
+        '
+        'RibbonButton20
+        '
+        Me.RibbonButton20.ID = "RibbonButton20"
+        Me.RibbonButton20.LargeImage = CType(resources.GetObject("RibbonButton20.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton20.SmallImage = CType(resources.GetObject("RibbonButton20.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton20.Text = "Escolaridad"
+        Me.RibbonButton20.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonButtonDepartamento
+        '
+        Me.RibbonButtonDepartamento.ID = "RibbonButtonDepartamento"
+        Me.RibbonButtonDepartamento.LargeImage = CType(resources.GetObject("RibbonButtonDepartamento.LargeImage"), System.Drawing.Image)
+        Me.RibbonButtonDepartamento.SmallImage = CType(resources.GetObject("RibbonButtonDepartamento.SmallImage"), System.Drawing.Image)
+        Me.RibbonButtonDepartamento.Text = "Deparmento"
+        Me.RibbonButtonDepartamento.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonButtonCooperativa
+        '
+        Me.RibbonButtonCooperativa.ID = "RibbonButtonCooperativa"
+        Me.RibbonButtonCooperativa.LargeImage = CType(resources.GetObject("RibbonButtonCooperativa.LargeImage"), System.Drawing.Image)
+        Me.RibbonButtonCooperativa.SmallImage = CType(resources.GetObject("RibbonButtonCooperativa.SmallImage"), System.Drawing.Image)
+        Me.RibbonButtonCooperativa.Text = "Cooperativa"
+        Me.RibbonButtonCooperativa.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonButtonRuta
+        '
+        Me.RibbonButtonRuta.ID = "RibbonButtonRuta"
+        Me.RibbonButtonRuta.LargeImage = CType(resources.GetObject("RibbonButtonRuta.LargeImage"), System.Drawing.Image)
+        Me.RibbonButtonRuta.SmallImage = CType(resources.GetObject("RibbonButtonRuta.SmallImage"), System.Drawing.Image)
+        Me.RibbonButtonRuta.Text = "Ruta Distribucion"
+        Me.RibbonButtonRuta.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'MDIMain
         '
@@ -1302,5 +1406,16 @@ Partial Class MDIMain
     Friend WithEvents RibbonTab6 As C1.Win.C1Ribbon.RibbonTab
     Friend WithEvents RibbonGroup13 As C1.Win.C1Ribbon.RibbonGroup
     Friend WithEvents RibbonButton6 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonProductor As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButton11 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButton61 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonGroup14 As C1.Win.C1Ribbon.RibbonGroup
+    Friend WithEvents RibbonButton111 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButton12 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonGroup15 As C1.Win.C1Ribbon.RibbonGroup
+    Friend WithEvents RibbonButton20 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButtonDepartamento As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButtonCooperativa As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButtonRuta As C1.Win.C1Ribbon.RibbonButton
 
 End Class

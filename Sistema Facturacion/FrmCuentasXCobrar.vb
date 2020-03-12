@@ -11,7 +11,7 @@ Public Class FrmCuentasXCobrar
 
     Private Sub FrmCuentasXCobrar_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim Sql As String = "SELECT Cod_Cliente As Codigo, Nombre_Cliente + ' ' + Apellido_Cliente AS Nombres  FROM Clientes "
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter(Sql, MiConexion), SqlString As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter(Sql, MiConexion), SqlString As String = ""
         DataAdapter.Fill(DataSet, "Clientes")
         If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
             Me.CboCodigoCliente.DataSource = DataSet.Tables("Clientes")
@@ -875,9 +875,9 @@ Public Class FrmCuentasXCobrar
     End Sub
 
     Private Sub AjustarDiferencialCambiarioToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AjustarDiferencialCambiarioToolStripMenuItem.Click
-        Dim Consecutivo As Double, SQlstring As String, TipoNota As String = "Credito Clientes", Monto As Double, Moneda As String, CodigoNota As String = "", Descripcion As String = ""
+        Dim Consecutivo As Double = 0, SQlstring As String, TipoNota As String = "Credito Clientes", Monto As Double, Moneda As String, CodigoNota As String = "", Descripcion As String = ""
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim NumeroNota As String, Consecutivoconserie As Boolean = True
+        Dim NumeroNota As String = "", Consecutivoconserie As Boolean = True
 
         '/////////////////////////////////////////////////DIFERENCIAL CAMBIARIO AUTOMATICO ////////////////////////////
 

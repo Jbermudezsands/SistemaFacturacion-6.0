@@ -2,6 +2,642 @@ Imports System.Data.SqlClient
 Imports System.Threading
 
 Module Funciones
+
+
+
+
+    Public Sub LimpiarRecepcionPlanilla()
+        Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+
+        My.Forms.FrmRecepcionPlanilla.TxtNumeroEnsamble.Text = "-----0-----"
+        My.Forms.FrmRecepcionPlanilla.TxtCodigoProveedor.Text = ""
+
+
+
+        FrmRecepcionPlanilla.DTPFecha.Value = Format(Now, "dd/MM/yyyy")
+        FrmRecepcionPlanilla.DTVencimiento.Value = Format(Now, "dd/MM/yyyy")
+
+        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '//////////////////////////CARGO LAS BODEGAS////////////////////////////////////////////////////////////////////
+        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlString = "SELECT  * FROM   Bodegas"
+        MiConexion.Open()
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataSet.Reset()
+        DataAdapter.Fill(DataSet, "Bodegas")
+        FrmRecepcionPlanilla.CboCodigoBodega.DataSource = DataSet.Tables("Bodegas")
+        If Not DataSet.Tables("Bodegas").Rows.Count = 0 Then
+            FrmRecepcionPlanilla.CboCodigoBodega.Text = DataSet.Tables("Bodegas").Rows(0)("Cod_Bodega")
+        End If
+        FrmRecepcionPlanilla.CboCodigoBodega.Columns(0).Caption = "Codigo"
+        FrmRecepcionPlanilla.CboCodigoBodega.Columns(1).Caption = "Nombre Bodega"
+
+
+        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '//////////////////////////CARGO LAS FORMA DE PAGO////////////////////////////////////////////////////////////////////
+        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlString = "SELECT  NombrePago, Monto,NumeroTarjeta,FechaVence FROM Detalle_MetodoCompras WHERE (Numero_Compra = '-1')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "MetodoPago")
+        FrmRecepcionPlanilla.BindingMetodo.DataSource = DataSet.Tables("MetodoPago")
+        FrmRecepcionPlanilla.TrueDBGridMetodo.DataSource = FrmRecepcionPlanilla.BindingMetodo
+        FrmRecepcionPlanilla.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(1).Width = 110
+        FrmRecepcionPlanilla.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(1).Width = 70
+        FrmRecepcionPlanilla.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(0).Button = True
+        FrmRecepcionPlanilla.TrueDBGridMetodo.Columns(1).NumberFormat = "##,##0.00"
+        FrmRecepcionPlanilla.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(2).Visible = False
+        FrmRecepcionPlanilla.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(3).Visible = False
+        MiConexion.Close()
+
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlString = "SELECT  Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario, Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe FROM  Productos INNER JOIN  Detalle_Compras ON Productos.Cod_Productos = Detalle_Compras.Cod_Producto  WHERE (Detalle_Compras.Numero_Compra = '-1')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "DetalleCompra")
+        FrmRecepcionPlanilla.BindingDetalle.DataSource = DataSet.Tables("DetalleCompra")
+        FrmRecepcionPlanilla.TrueDBGridComponentes.DataSource = FrmRecepcion.BindingDetalle
+        FrmRecepcionPlanilla.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
+        FrmRecepcionPlanilla.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
+        FrmRecepcionPlanilla.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
+        FrmRecepcionPlanilla.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
+        FrmRecepcionPlanilla.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 259
+        FrmRecepcionPlanilla.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
+        FrmRecepcionPlanilla.TrueDBGridComponentes.Columns(2).Caption = "Ordenado"
+        FrmRecepcionPlanilla.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 64
+        FrmRecepcionPlanilla.TrueDBGridComponentes.Columns(3).Caption = "Precio Unit"
+        FrmRecepcionPlanilla.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
+        FrmRecepcionPlanilla.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = True
+        FrmRecepcionPlanilla.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Visible = False
+        FrmRecepcionPlanilla.TrueDBGridComponentes.Columns(4).Caption = "%Desc"
+        FrmRecepcionPlanilla.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 43
+        FrmRecepcionPlanilla.TrueDBGridComponentes.Columns(5).Caption = "Precio Neto"
+        FrmRecepcionPlanilla.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Width = 65
+        FrmRecepcionPlanilla.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Locked = True
+        FrmRecepcionPlanilla.TrueDBGridComponentes.Columns(6).Caption = "Importe"
+        FrmRecepcionPlanilla.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Width = 61
+        FrmRecepcionPlanilla.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Locked = True
+
+        FrmRecepcionPlanilla.RadioButton1.Checked = True
+        My.Forms.FrmRecepcionPlanilla.TxtSubTotal.Text = ""
+        My.Forms.FrmRecepcionPlanilla.TxtIva.Text = ""
+        My.Forms.FrmRecepcionPlanilla.TxtPagado.Text = ""
+        My.Forms.FrmRecepcionPlanilla.TxtNetoPagar.Text = ""
+        My.Forms.FrmRecepcionPlanilla.TxtObservaciones.Text = ""
+    End Sub
+    Public Sub GrabaMetodoDetalleRecepcion(ByVal ConsecutivoCompra As String, ByVal NombrePago As String, ByVal Monto As Double, ByVal NumeroTarjeta As String, ByVal FechaVence As String)
+        Dim Sqldetalle As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim Fecha As String, MiConexion As New SqlClient.SqlConnection(Conexion), SqlUpdate As String, FechaVencimiento As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+
+        Fecha = Format(FrmRecepcionPlanilla.DTPFecha.Value, "yyyy-MM-dd")
+        FechaVencimiento = Format(CDate(FechaVence), "dd/MM/yyyy")
+
+
+        Sqldetalle = "SELECT *  FROM Detalle_MetodoCompras WHERE (Numero_Compra = '" & ConsecutivoCompra & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Compra = '" & FrmRecepcionPlanilla.CboTipoProducto.Text & "') AND (NombrePago = '" & NombrePago & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(Sqldetalle, MiConexion)
+        DataAdapter.Fill(DataSet, "DetalleMetodoCompra")
+        If Not DataSet.Tables("DetalleMetodoCompra").Rows.Count = 0 Then
+            '//////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////////EDITO EL DETALLE DE COMPRAS///////////////////////////////////
+            '/////////////////////////////////////////////////////////////////////////////////////////////////
+            SqlUpdate = "UPDATE [Detalle_MetodoCompras] SET [NombrePago] = '" & NombrePago & "',[Monto] = " & Monto & ",[NumeroTarjeta] = '" & NumeroTarjeta & "',[FechaVence] = '" & FechaVencimiento & "' " & _
+                         "WHERE (Numero_Compra = '" & ConsecutivoCompra & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Compra = '" & FrmRecepcionPlanilla.CboTipoProducto.Text & "') AND (NombrePago = '" & NombrePago & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+        Else
+            MiConexion.Close()
+            SqlUpdate = "INSERT INTO [Detalle_MetodoCompras] ([Numero_Compra],[Fecha_Compra],[Tipo_Compra],[NombrePago],[Monto],[NumeroTarjeta] ,[FechaVence]) " & _
+                        "VALUES ('" & ConsecutivoCompra & "','" & FrmRecepcionPlanilla.DTPFecha.Value & "','" & FrmRecepcionPlanilla.CboTipoProducto.Text & "','" & NombrePago & "'," & Monto & " ,'" & NumeroTarjeta & "','" & FechaVencimiento & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+        End If
+
+    End Sub
+
+
+
+    Public Sub GrabaDetalleRecepcionPlanilla(ByVal ConsecutivoCompra As String, ByVal CodProducto As String, ByVal PrecioUnitario As Double, ByVal Descuento As Double, ByVal PrecioNeto As Double, ByVal Importe As Double, ByVal Cantidad As Double)
+        Dim Sqldetalle As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, TasaCambio As String
+        Dim Fecha As String, MiConexion As New SqlClient.SqlConnection(Conexion), SqlUpdate As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, MonedaCompra As String, MonedaProducto As String
+
+        MonedaCompra = FrmRecepcionPlanilla.TxtMonedaFactura.Text
+        MonedaProducto = "Cordobas"
+        TasaCambio = 0
+
+        If MonedaCompra = "Cordobas" Then
+            If MonedaProducto = "Cordobas" Then
+                TasaCambio = 1
+            Else
+                If BuscaTasaCambio(FrmRecepcionPlanilla.DTPFecha.Value) <> 0 Then
+                    TasaCambio = (1 / BuscaTasaCambio(FrmRecepcionPlanilla.DTPFecha.Value))
+                End If
+            End If
+        ElseIf MonedaCompra = "Dolares" Then
+            If MonedaProducto = "Cordobas" Then
+                TasaCambio = BuscaTasaCambio(FrmRecepcionPlanilla.DTPFecha.Value)
+            Else
+                TasaCambio = 1
+            End If
+        End If
+
+
+        Fecha = Format(FrmRecepcionPlanilla.DTPFecha.Value, "yyyy-MM-dd")
+
+        Sqldetalle = "SELECT *  FROM Detalle_Compras WHERE (Numero_Compra = '" & ConsecutivoCompra & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Compra = '" & FrmRecepcionPlanilla.CboTipoProducto.Text & "') AND (Cod_Producto = '" & CodProducto & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(Sqldetalle, MiConexion)
+        DataAdapter.Fill(DataSet, "DetalleCompra")
+        If Not DataSet.Tables("DetalleCompra").Rows.Count = 0 Then
+            '//////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////////EDITO EL DETALLE DE COMPRAS///////////////////////////////////
+            '/////////////////////////////////////////////////////////////////////////////////////////////////
+            SqlUpdate = "UPDATE [Detalle_Compras] SET [Cantidad] = " & Cantidad & " ,[Precio_Unitario] = " & PrecioUnitario & ",[Descuento] = " & Descuento & " ,[Precio_Neto] = " & PrecioNeto & ",[Importe] = " & Importe & ",[TasaCambio] = " & TasaCambio & " " & _
+                        "WHERE (Numero_Compra = '" & ConsecutivoCompra & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Compra = '" & FrmRecepcionPlanilla.CboTipoProducto.Text & "') AND (Cod_Producto = '" & CodProducto & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+        Else
+
+            SqlUpdate = "INSERT INTO [Detalle_Compras] ([Numero_Compra],[Fecha_Compra],[Tipo_Compra],[Cod_Producto],[Cantidad],[Precio_Unitario],[Descuento],[Precio_Neto],[Importe],[TasaCambio]) " & _
+            "VALUES ('" & ConsecutivoCompra & "','" & Format(FrmRecepcionPlanilla.DTPFecha.Value, "dd/MM/yyyy") & "','" & FrmRecepcionPlanilla.CboTipoProducto.Text & "','" & CodProducto & "' ," & Cantidad & "," & PrecioUnitario & "," & Descuento & " ," & PrecioNeto & "," & Importe & "," & TasaCambio & ")"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+        End If
+
+    End Sub
+
+
+    Public Sub GrabaComprasRecepcion(ByVal ConsecutivoCompra As String)
+        Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim Fecha As String, MonedaCompra As String
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim Subtotal As Double, Iva As Double, Neto As Double, Pagado As Double
+
+
+        MonedaCompra = FrmRecepcionPlanilla.TxtMonedaFactura.Text
+
+        Fecha = Format(FrmRecepcionPlanilla.DTPFecha.Value, "yyyy-MM-dd")
+
+        If FrmRecepcionPlanilla.TxtSubTotal.Text <> "" Then
+            Subtotal = FrmRecepcionPlanilla.TxtSubTotal.Text
+        Else
+            Subtotal = 0
+        End If
+
+        If FrmRecepcionPlanilla.TxtIva.Text <> "" Then
+            Iva = FrmRecepcionPlanilla.TxtIva.Text
+        Else
+            Iva = 0
+        End If
+
+        If FrmRecepcionPlanilla.TxtPagado.Text <> "" Then
+            Pagado = FrmRecepcionPlanilla.TxtPagado.Text
+        Else
+            Pagado = 0
+        End If
+
+        If FrmRecepcionPlanilla.TxtNetoPagar.Text <> "" Then
+            Neto = FrmRecepcionPlanilla.TxtNetoPagar.Text
+        Else
+            Neto = 0
+        End If
+
+        MiConexion.Close()
+
+        If FrmRecepcionPlanilla.TxtNumeroEnsamble.Text = "-----0-----" Then
+            '//////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////////AGREGO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
+            '/////////////////////////////////////////////////////////////////////////////////////////////////
+            SqlCompras = "INSERT INTO [Compras] ([Numero_Compra] ,[Fecha_Compra],[Tipo_Compra],[Cod_Proveedor],[TipoProductor],[Cod_Bodega],[Nombre_Proveedor],[Apellido_Proveedor],[Direccion_Proveedor],[Telefono_Proveedor],[Fecha_Vencimiento],[Observaciones],[SubTotal],[IVA],[Pagado],[NetoPagar],[MontoCredito],[MonedaCompra]) " & _
+            "VALUES ('" & ConsecutivoCompra & "','" & FrmRecepcionPlanilla.DTPFecha.Value & "','" & FrmRecepcionPlanilla.CboTipoProducto.Text & "','" & FrmRecepcionPlanilla.TxtCodigoProveedor.Text & "','Productor','" & FrmRecepcionPlanilla.CboCodigoBodega.Text & "' , '" & FrmRecepcionPlanilla.TxtNombres.Text & "','" & FrmRecepcionPlanilla.TxtApellidos.Text & "','" & FrmRecepcionPlanilla.TxtDireccion.Text & "','" & FrmRecepcionPlanilla.TxtTelefono.Text & "','" & FrmRecepcionPlanilla.DTVencimiento.Value & "','" & FrmRecepcionPlanilla.TxtObservaciones.Text & "'," & Subtotal & "," & Iva & "," & Pagado & "," & Neto & "," & Neto & ",'" & MonedaCompra & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+        Else
+            '//////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
+            '/////////////////////////////////////////////////////////////////////////////////////////////////
+            SqlCompras = "UPDATE [Compras]  SET [Cod_Proveedor] = '" & FrmRecepcionPlanilla.TxtCodigoProveedor.Text & "',[TipoProductor] = 'Productor',[Nombre_Proveedor] = '" & FrmRecepcionPlanilla.TxtNombres.Text & "',[Apellido_Proveedor] = '" & FrmRecepcionPlanilla.TxtApellidos.Text & "',[Direccion_Proveedor] = '" & FrmRecepcionPlanilla.TxtDireccion.Text & "',[Telefono_Proveedor] = '" & FrmRecepcionPlanilla.TxtTelefono.Text & "',[Fecha_Vencimiento] = '" & FrmRecepcionPlanilla.DTVencimiento.Value & "' ,[Observaciones] = '" & FrmRecepcionPlanilla.TxtObservaciones.Text & "',[SubTotal] = " & Subtotal & ",[IVA] = " & Iva & ",[Pagado] = " & Pagado & ",[NetoPagar] = " & Neto & ",[MontoCredito] = " & Neto & ",[MonedaCompra] = '" & MonedaCompra & "'  " & _
+                         "WHERE  (Numero_Compra = '" & ConsecutivoCompra & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Compra = '" & FrmRecepcionPlanilla.CboTipoProducto.Text & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+        End If
+
+    End Sub
+
+
+    Public Sub ActualizaMETODORecepcionPlanilla()
+        Dim Metodo As String, iPosicion As Double, Registros As Double, Monto As Double
+        Dim Subtotal As Double, Iva As Double, Neto As Double, CodProducto As String, SQlString As String
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion), CodIva As String, Tasa As Double, Moneda As String, Fecha As String, SQLTasa As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, TasaCambio As Double, TipoMetodo As String, SQLMetodo As String
+
+
+        Registros = FrmRecepcionPlanilla.BindingMetodo.Count
+        iPosicion = 0
+
+        Do While iPosicion < Registros
+            Metodo = FrmRecepcionPlanilla.BindingMetodo.Item(iPosicion)("NombrePago")
+            TasaCambio = 1
+            Fecha = Format(FrmRecepcionPlanilla.DTPFecha.Value, "yyyy-MM-dd")
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '//////////////////////////////BUSCO LA MONEDA DEL METODO DE PAGO///////////////////////////////////////////////////////
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            Moneda = "Cordobas"
+            TipoMetodo = "Cambio"
+            SQLMetodo = "SELECT * FROM MetodoPago WHERE (NombrePago = '" & Metodo & "')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SQLMetodo, MiConexion)
+            DataAdapter.Fill(DataSet, "Metodo")
+            If DataSet.Tables("Metodo").Rows.Count <> 0 Then
+                Moneda = DataSet.Tables("Metodo").Rows(0)("Moneda")
+                TipoMetodo = DataSet.Tables("Metodo").Rows(0)("TipoPago")
+            End If
+            DataSet.Tables("Metodo").Clear()
+
+
+            Select Case Moneda
+                Case "Cordobas"
+                    TasaCambio = 1
+
+                Case "Dolares"
+                    SQLTasa = "SELECT  * FROM TasaCambio WHERE (FechaTasa = CONVERT(DATETIME, '" & Fecha & "', 102))"
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQLTasa, MiConexion)
+                    DataAdapter.Fill(DataSet, "TasaCambio")
+                    If DataSet.Tables("TasaCambio").Rows.Count <> 0 Then
+                        TasaCambio = DataSet.Tables("TasaCambio").Rows(0)("MontoTasa")
+                    Else
+                        'TasaCambio = 0
+                        MsgBox("La Tasa de Cambio no Existe para esta Fecha", MsgBoxStyle.Critical, "Sistema Facturacion")
+                        FrmRecepcionPlanilla.BindingMetodo.Item(iPosicion)("Monto") = 0
+                    End If
+                    DataSet.Tables("TasaCambio").Clear()
+            End Select
+
+            If TipoMetodo = "Cambio" Then
+                TasaCambio = TasaCambio * -1
+            End If
+
+            Monto = (FrmRecepcionPlanilla.BindingMetodo.Item(iPosicion)("Monto") * TasaCambio) + Monto
+            iPosicion = iPosicion + 1
+        Loop
+
+        Registros = FrmRecepcionPlanilla.BindingDetalle.Count
+        iPosicion = 0
+
+        Do While iPosicion < Registros
+            If Not IsDBNull(FrmRecepcionPlanilla.BindingDetalle.Item(iPosicion)("Importe")) Then
+                Subtotal = CDbl(FrmRecepcionPlanilla.BindingDetalle.Item(iPosicion)("Importe")) + Subtotal
+            End If
+            iPosicion = iPosicion + 1
+        Loop
+
+        CodProducto = FrmRecepcionPlanilla.TrueDBGridComponentes.Columns(0).Text
+        SQlString = "SELECT Productos.*  FROM Productos WHERE (Cod_Productos = '" & CodProducto & "') "
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Productos")
+        If Not DataSet.Tables("Productos").Rows.Count = 0 Then
+            CodIva = DataSet.Tables("Productos").Rows(0)("Cod_Iva")
+            SQlString = "SELECT *  FROM Impuestos WHERE  (Cod_Iva = '" & CodIva & "')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+            DataAdapter.Fill(DataSet, "IVA")
+            If Not DataSet.Tables("IVA").Rows.Count = 0 Then
+                Tasa = DataSet.Tables("IVA").Rows(0)("Impuesto")
+            End If
+        End If
+
+        Iva = Subtotal * Tasa
+        Neto = (Subtotal + Iva) - Monto
+        FrmRecepcionPlanilla.TxtSubTotal.Text = Format(Subtotal, "##,##0.00")
+        FrmRecepcionPlanilla.TxtIva.Text = Format(Iva, "##,##0.00")
+        FrmRecepcionPlanilla.TxtPagado.Text = Format(Monto, "##,##0.00")
+        FrmRecepcionPlanilla.TxtNetoPagar.Text = Format(Neto, "##,##0.00")
+    End Sub
+    Public Function SabadosMes(ByVal FechaNomina As Date) As Integer
+
+        Dim MiDiaSemana As Byte, I As Integer
+        Dim DiasMes As Integer
+        Dim Sabados As Byte
+        Dim Fecha As String
+        Dim Dias As Date
+
+        Fecha = CDate(FechaNomina)
+
+        Dias = (DateSerial(Year(FechaNomina), Month(FechaNomina) + 1, 0))
+        DiasMes = Dias.Day
+
+        Sabados = 0
+
+        For I = 1 To DiasMes
+            'construyo la fecha
+            Fecha = Str(I) + "/" + Str(Month(FechaNomina)) + "/" + Str(Year(FechaNomina))
+            Fecha = CDate(Fecha)
+            MiDiaSemana = Weekday(Fecha, vbMonday)
+            If MiDiaSemana = 6 Then
+                Sabados = Sabados + 1
+            End If
+        Next
+
+        SabadosMes = Sabados
+
+    End Function
+
+
+
+    Public Function GuardarMes(ByVal iMes As Double, ByVal Fecha As Date) As String
+        GuardarMes = 0
+        Select Case iMes
+
+            Case 1
+                GuardarMes = "Enero"
+            Case 2
+                GuardarMes = "Febrero"
+            Case 3
+                GuardarMes = "Marzo"
+            Case 4
+                GuardarMes = "Abril"
+            Case 5
+                GuardarMes = "Mayo"
+            Case 6
+                GuardarMes = "Junio"
+            Case 7
+                GuardarMes = "Julio"
+            Case 8
+                GuardarMes = "Agosto"
+            Case 9
+                GuardarMes = "Septiembre"
+            Case 10
+                GuardarMes = "Octubre"
+            Case 11
+                GuardarMes = "Noviembre"
+            Case 12
+                GuardarMes = "Diciembre"
+                FechaGuardar = Fecha.AddDays(6)
+        End Select
+
+    End Function
+
+
+    Public Sub Semanas(ByVal año As Integer)
+
+        Dim sCad As String
+        Dim Fecha As Date
+        Dim FechaFin As Date
+        Dim iCont As Integer
+        Dim iValor As Integer
+        Dim iMes As Integer
+
+
+
+
+        sCad = "01/01/"
+
+        'Me.DtaAño.RecordSource = "SELECT Año, Actual, FecIni, FecFin From Año_Fiscal Where (Actual = 1)"
+        'Me.DtaAño.Refresh()
+
+        'If Not Me.DtaAño.Recordset.EOF Then
+        sCad = sCad + CStr(año)
+        iAño = año
+        Fecha = sCad
+        sCad = "31/12/"
+        sCad = sCad + CStr(año)
+        FechaFin = sCad
+        'End If
+
+        iValor = CInt(Mid$(Fecha, 4, 2))
+
+        iMes = 1
+
+        Do While Fecha <= (FechaFin.AddDays(6))
+
+            If Format(Fecha, "dddd") = "Sabado" And iMes = iValor Then
+                iCont = iCont + 1
+                Fecha = Fecha.AddDays(8)
+
+            ElseIf iMes <> iValor Then
+                sCad = GuardarMes(iMes, Fecha)
+                'Fecha = FechaGuardar
+                iMes = iValor
+                iCont = 0
+            Else
+                Fecha = DateAdd(DateInterval.Day, 1, Fecha)
+
+            End If
+
+            iValor = CInt(Mid$(Fecha, 4, 2))
+
+        Loop
+
+        'End If
+
+        Exit Sub
+
+
+
+
+        'Me.dtaSem.Recordset.AddNew
+        'Me.dtaSem.Recordset.Fields(0) = iAño
+        'Me.dtaSem.Recordset.Fields(1) = sCad
+        'Me.dtaSem.Recordset.Fields(2) = iCont
+        'Me.dtaSem.UpdateRecord
+
+        'Return
+
+
+
+
+    End Sub
+
+
+    Public Function DepurarFecha(ByVal TxtFecha As Date) As Boolean
+
+        Dim iCont As Integer
+        Dim sCad As String = ""
+        Dim sCad2 As String = ""
+
+        Do While iCont < 3
+
+
+            Select Case iCont
+
+                Case 0
+                    sCad = Mid$(TxtFecha, 1, 2)
+                    sCad2 = Mid$(TxtFecha, 4, 2)
+                    sCad = Trim(sCad)
+                    If Not IsNumeric(sCad) Then
+                        DepurarFecha = True
+                        Exit Function
+                    ElseIf CInt(sCad2) = 1 Or CInt(sCad2) = 3 Or _
+                           CInt(sCad2) = 5 Or CInt(sCad2) = 7 Or _
+                           CInt(sCad2) = 8 Or CInt(sCad2) = 10 Or _
+                           CInt(sCad2) = 12 Then
+                        If Not (CInt(sCad) >= 1 And CInt(sCad) <= 31) Then
+                            DepurarFecha = True
+                            Exit Function
+                        End If
+                    ElseIf CInt(sCad2) = 2 Then
+                        If Not (CInt(sCad) >= 1 And CInt(sCad) <= 28) Then
+                            DepurarFecha = True
+                            Exit Function
+                        End If
+
+                    ElseIf Not (CInt(sCad) >= 1 And CInt(sCad) <= 30) Then
+                        DepurarFecha = True
+                        Exit Function
+
+                    ElseIf Not (CInt(sCad2) >= 1 And CInt(sCad2) <= 12) Then
+                        DepurarFecha = True
+                        Exit Function
+
+
+                    End If
+
+                Case 1
+                    sCad = Mid$(TxtFecha, 4, 2)
+                    sCad = Trim(sCad)
+                Case 2
+                    sCad = Mid$(TxtFecha, 7, 4)
+                    sCad = Trim(sCad)
+
+                    If Not IsNumeric(sCad) Then
+                        If CInt(sCad) <= 1995 Then
+                            DepurarFecha = True
+                            Exit Function
+                        End If
+
+                    End If
+
+            End Select
+
+            If Not IsNumeric(sCad) Then
+                DepurarFecha = True
+                Exit Function
+            End If
+
+
+
+            iCont = iCont + 1
+
+
+        Loop
+
+        DepurarFecha = False
+
+    End Function
+
+
+
+
+    Public Sub GenerarPeriodo(ByVal Fecha1 As Date, ByVal Fecha2 As Date, ByVal Año As Double, ByVal TipoPlanilla As String)
+        Dim iPeriodo As Integer
+        Dim saMes() As Object = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"}, Lineas As Integer
+        Dim saMes2() As Object = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"}
+        Dim iCont As Integer
+        Dim Numfecha2 As String
+        Dim iMes As Integer
+        Dim iSem As Integer
+        Dim FechaIni As Date
+        Dim FechaFin As Date
+        'Dim iAño As Integer
+        'Dim sIntervalo As String
+        'Dim bBisiesto As Boolean
+        Dim Fechas As Date
+
+        iPeriodo = 1
+        iSem = 1
+        iCont = 0
+
+        Select Case TipoPlanilla
+            Case "Semanal Domingo"
+
+                'If DepurarFecha(Me.DTPFechaInicio.Value) Then
+                '    MsgBox("La Fecha Inicial no es válida, corrija", vbInformation)
+                '    Me.DTPFechaInicio.Focus()
+                '    Exit Sub
+                'ElseIf DepurarFecha(Me.DTPFechaFin.Value) Then
+                '    MsgBox("La Fecha Final no es válida, corrija", vbInformation)
+                '    Me.DTPFechaFin.Focus()
+                '    Exit Sub
+                'End If
+
+
+
+                FrmPeriodos.lstPlanilla.Items.Clear()
+                FechaIni = Format(Fecha1, "dd/MM/yyyy")
+                FechaFin = DateAdd(DateInterval.Day, 6, FechaIni)
+
+
+                If Not IsNumeric(Año) Then
+
+                    MsgBox("El año actual de planilla no es válido", vbInformation, "Error!!!")
+                    'Exit Function
+                End If
+
+                Semanas(Year(FechaFin))
+                'Hay que setear el año actual de planilla OJO
+                'Para que no de problemas
+                Lineas = 1
+                If FechaFin < Fecha2 Then
+                    Do While FechaFin <= Fecha2  'Hay que setear el año actual de planilla OJO
+                        'Me.dtaSem.Recordset.FindFirst "[Mes] like '" & saMes(iCont) & "' AND [Año] like " & Me.DtaAño.Recordset("Año") & ""
+                        'iMes = 'Me.dtaSem.Recordset.Fields(2)
+                        Fechas = "01/" & saMes(iCont) & "/" & Año
+                        Numfecha2 = Fechas
+                        iMes = SabadosMes(Numfecha2)
+                        FrmPeriodos.lstPlanilla.Items.Add("        " & saMes2(iCont))
+
+
+                        Do While iMes >= iSem 'And iPeriodo <= 52
+                            'GuardarPeriodo
+                            FrmPeriodos.lstPlanilla.Items.Add(" " & CStr(iPeriodo) & "   " & CStr(FechaIni) & "  al  " & CStr(FechaFin))
+                            FechaIni = DateAdd(DateInterval.Day, 1, FechaFin)
+                            FechaFin = DateAdd(DateInterval.Day, 6, FechaIni)
+
+
+                            iSem = iSem + 1
+                            iPeriodo = iPeriodo + 1
+                            Lineas = Lineas + 1
+                        Loop
+
+                        iSem = 1
+                        iCont = iCont + 1
+                        FrmPeriodos.lstPlanilla.Items.Add("      ")
+                        If Lineas = 14 Then
+                            FrmPeriodos.lstPlanilla.Items.Add("      ")
+                        End If
+                    Loop
+
+                Else
+                    MsgBox("El intervalo de la fecha inicial y final no es válido", vbInformation, "corrija")
+                End If
+
+
+        End Select
+
+
+        iPeriodo = 1
+        iSem = 1
+        iCont = 0
+    End Sub
+
+
     Public Function TotalRecepcion(ByVal NumeroRecepcion As String, ByVal FechaRecepcion As Date, ByVal TipoRecepcion As String) As Double
         Dim Fecha As String, SqlCompras As String, Registros As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)

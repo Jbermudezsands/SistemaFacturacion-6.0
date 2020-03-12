@@ -1011,6 +1011,47 @@ Public Class MDIMain
     End Sub
 
     Private Sub RibbonButton6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton6.Click
+        My.Forms.FrmRutaDistribucion.MdiParent = Me
+        My.Forms.FrmRutaDistribucion.Show()
+    End Sub
 
+    Private Sub RibbonProductor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonProductor.Click
+        My.Forms.FrmProductor.MdiParent = Me
+        My.Forms.FrmProductor.Show()
+    End Sub
+
+    Private Sub RibbonButton11_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton11.Click
+        My.Forms.FrmPeriodos.MdiParent = Me
+        My.Forms.FrmPeriodos.Show()
+    End Sub
+
+    Private Sub RibbonButton12_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton12.Click
+        My.Forms.FrmActivar.MdiParent = Me
+        My.Forms.FrmActivar.Show()
+    End Sub
+
+    Private Sub RibbonButton111_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton111.Click
+        My.Forms.FrmPlanilla.MdiParent = Me
+        My.Forms.FrmPlanilla.Show()
+    End Sub
+
+    Private Sub RibbonButton20_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton20.Click
+        My.Forms.FrmEscolaridad.MdiParent = Me
+        My.Forms.FrmEscolaridad.Show()
+    End Sub
+
+    Private Sub RibbonButtonDepartamento_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButtonDepartamento.Click
+        My.Forms.FrmDepartamentos.MdiParent = Me
+        My.Forms.FrmDepartamentos.Show()
+    End Sub
+
+    Private Sub RibbonButtonCooperativa_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButtonCooperativa.Click
+        My.Forms.FrmCooperativa.MdiParent = Me
+        My.Forms.FrmCooperativa.Show()
+    End Sub
+
+    Private Sub RibbonButtonRuta_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButtonRuta.Click
+        My.Forms.FrmRutaDistribucion.MdiParent = Me
+        My.Forms.FrmRutaDistribucion.Show()
     End Sub
 End Class

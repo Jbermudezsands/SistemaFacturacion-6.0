@@ -9,7 +9,6 @@ Public Class FrmRutaDistribucion
         DataAdapter.Fill(DataSet, "Ruta")
         If Not DataSet.Tables("Ruta").Rows.Count = 0 Then
             Me.CmbCodigo.DataSource = DataSet.Tables("Ruta")
-
         End If
     End Sub
 

@@ -14,6 +14,16 @@ Public Class FrmProveedores
         End If
 
 
+        Dim SqlString As String = "SELECT  * FROM Ruta_Distribucion"
+
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        'DataSet.Tables("Notas").Reset()
+        DataAdapter.Fill(DataSet, "Ruta")
+        If Not DataSet.Tables("Ruta").Rows.Count = 0 Then
+            Me.CmbCodigo.DataSource = DataSet.Tables("Ruta")
+        End If
+
+
     End Sub
 
     Private Sub CboCodigoProveedor_TextChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -208,5 +218,9 @@ Public Class FrmProveedores
         Quien = "CuentaCobrar"
         My.Forms.FrmConsultas.ShowDialog()
         Me.TxtCtaxCobrar.Text = My.Forms.FrmConsultas.Codigo
+    End Sub
+
+    Private Sub TabPage3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TabPage3.Click
+
     End Sub
 End Class
