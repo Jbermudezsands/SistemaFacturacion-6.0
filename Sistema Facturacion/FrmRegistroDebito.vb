@@ -1,5 +1,5 @@
 Public Class FrmRegistroDebito
-    Public MiConexion As New SqlClient.SqlConnection(Conexion), TipoNota As String, ConsecutivoConSerie As Boolean, NumeroFactura As String, NumeroRuc As String, NombreCliente As String, Codigo As String, Monto As Double
+    Public MiConexion As New SqlClient.SqlConnection(Conexion), MiconexionContabilidad As New SqlClient.SqlConnection(ConexionContabilidad), TipoNota As String, ConsecutivoConSerie As Boolean, NumeroFactura As String, NumeroRuc As String, NombreCliente As String, Codigo As String, Monto As Double
     Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
         Me.Close()
     End Sub
@@ -115,8 +115,14 @@ Public Class FrmRegistroDebito
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         Dim Consecutivo As Double, SQlstring As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim NumeroNota As String
+        Dim NumeroNota As String, TipoCuenta As Boolean
 
+
+        If Me.ChkTipoCuenta.Checked = True Then
+            TipoCuenta = True
+        Else
+            TipoCuenta = False
+        End If
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////BUSCO EL CONSECUTIVO DE LA NOTA /////////////////////////////////////////////
@@ -178,7 +184,7 @@ Public Class FrmRegistroDebito
 
 
         Me.TxtNumeroEnsamble.Text = NumeroNota
-        GrabaNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, Me.TxtMonto.Text, Me.LblMoneda.Text, Me.TxtCodCliente.Text, Me.LblNombre.Text, Me.TxtObservaciones.Text, True, False)
+        GrabaNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, Me.TxtMonto.Text, Me.LblMoneda.Text, Me.TxtCodCliente.Text, Me.LblNombre.Text, Me.TxtObservaciones.Text, True, False, TipoCuenta)
         GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, Me.TxtDescripcion.Text, Me.LblFactura.Text, Me.TxtMonto.Text)
         My.Forms.FrmCuentasXCobrar.CmdGrabar.PerformClick()
         MsgBox("Se ha Grabado con Exito!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
@@ -259,7 +265,7 @@ Public Class FrmRegistroDebito
         End If
 
         NumeroNota = Me.TxtNumeroEnsamble.Text
-        GrabaNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, Monto, Me.LblMoneda.Text, Me.TxtCodCliente.Text, NombreCliente, Me.TxtObservaciones.Text, False, True)
+        GrabaNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, Monto, Me.LblMoneda.Text, Me.TxtCodCliente.Text, NombreCliente, Me.TxtObservaciones.Text, False, True, False)
         GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, NombreCliente, Me.LblFactura.Text, Monto)
         My.Forms.FrmCuentasXCobrar.CmdGrabar.PerformClick()
         MsgBox("Se ha Anulado con Exito!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
@@ -591,5 +597,37 @@ Public Class FrmRegistroDebito
         If X28 <> 0 And Y28 <> 0 Then
             e.Graphics.DrawString(MontoLetras, prFont, Brushes.Black, X28, Y28)
         End If
+    End Sub
+
+    Private Sub ChkTipoCuenta_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChkTipoCuenta.CheckedChanged
+        Dim SqlString As String = ""
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+
+        If Me.ChkTipoCuenta.Checked = True Then
+            'Quien = "Cuenta"
+            'My.Forms.FrmConsultas.ShowDialog()
+            SqlString = "SELECT CodCuentas , DescripcionCuentas As Descripcion, TipoCuenta FROM Cuentas "
+
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiconexionContabilidad)
+            DataAdapter.Fill(DataSet, "Cuenta")
+            If Not DataSet.Tables("Cuenta").Rows.Count = 0 Then
+                Me.CmbCodigo.DataSource = DataSet.Tables("Cuenta")
+            End If
+
+
+
+        Else
+            If LblMoneda.Text = "Cordobas" Then
+                SqlString = "SELECT CodigoNB AS Cod, Descripcion, Tipo FROM NotaDebito WHERE Tipo = '" & TipoNota & "' OR Tipo='" & TipoNota & " Dif C$' "
+            Else
+                SqlString = "SELECT CodigoNB AS Cod, Descripcion, Tipo FROM NotaDebito WHERE Tipo = '" & TipoNota & "' OR Tipo='" & TipoNota & " Dif $'"
+            End If
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            DataAdapter.Fill(DataSet, "Notas")
+            If Not DataSet.Tables("Notas").Rows.Count = 0 Then
+                Me.CmbCodigo.DataSource = DataSet.Tables("Notas")
+            End If
+        End If
+
     End Sub
 End Class

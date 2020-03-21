@@ -11684,9 +11684,10 @@ Public Class FrmReportes
 
             Case "Reporte de Ventas x Clientes al Contado"
                 Me.GroupClientes.Visible = False
-                Me.GroupVendedor.Visible = False
                 Me.GroupBox3.Visible = True
                 Me.CmbAgrupado.Text = "Bodega"
+                Me.GroupVendedor.Visible = True
+                Me.GroupVendedor.Location = New Point(280, 123)
 
             Case "Reporte Salidas de Productos x Tipo"
                 Me.GroupBox3.Visible = True

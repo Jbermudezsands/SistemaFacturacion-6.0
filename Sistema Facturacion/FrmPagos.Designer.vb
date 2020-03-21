@@ -502,7 +502,7 @@ Partial Class FrmPagos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(777, 497)
+        Me.ClientSize = New System.Drawing.Size(787, 497)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.OptRet7Porciento)
         Me.Controls.Add(Me.TxtObservaciones)

@@ -50,6 +50,7 @@ Partial Class FrmRegistroDebito
         Me.ChkFactura = New System.Windows.Forms.CheckBox
         Me.ChkSseries = New System.Windows.Forms.CheckBox
         Me.PrintNota = New System.Drawing.Printing.PrintDocument
+        Me.ChkTipoCuenta = New System.Windows.Forms.CheckBox
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CmbCodigo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -378,7 +379,7 @@ Partial Class FrmRegistroDebito
         'ChkSseries
         '
         Me.ChkSseries.AutoSize = True
-        Me.ChkSseries.Location = New System.Drawing.Point(292, 198)
+        Me.ChkSseries.Location = New System.Drawing.Point(292, 194)
         Me.ChkSseries.Name = "ChkSseries"
         Me.ChkSseries.Size = New System.Drawing.Size(135, 17)
         Me.ChkSseries.TabIndex = 215
@@ -388,11 +389,22 @@ Partial Class FrmRegistroDebito
         'PrintNota
         '
         '
+        'ChkTipoCuenta
+        '
+        Me.ChkTipoCuenta.AutoSize = True
+        Me.ChkTipoCuenta.Location = New System.Drawing.Point(292, 213)
+        Me.ChkTipoCuenta.Name = "ChkTipoCuenta"
+        Me.ChkTipoCuenta.Size = New System.Drawing.Size(84, 17)
+        Me.ChkTipoCuenta.TabIndex = 216
+        Me.ChkTipoCuenta.Text = "Tipo Cuenta"
+        Me.ChkTipoCuenta.UseVisualStyleBackColor = True
+        '
         'FrmRegistroDebito
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(541, 234)
+        Me.Controls.Add(Me.ChkTipoCuenta)
         Me.Controls.Add(Me.ChkSseries)
         Me.Controls.Add(Me.ChkFactura)
         Me.Controls.Add(Me.CmbSerie)
@@ -465,4 +477,5 @@ Partial Class FrmRegistroDebito
     Friend WithEvents ChkFactura As System.Windows.Forms.CheckBox
     Friend WithEvents ChkSseries As System.Windows.Forms.CheckBox
     Friend WithEvents PrintNota As System.Drawing.Printing.PrintDocument
+    Friend WithEvents ChkTipoCuenta As System.Windows.Forms.CheckBox
 End Class

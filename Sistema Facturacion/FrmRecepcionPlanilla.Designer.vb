@@ -376,7 +376,7 @@ Partial Class FrmRecepcionPlanilla
         Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label9.Location = New System.Drawing.Point(257, 20)
+        Me.Label9.Location = New System.Drawing.Point(327, 20)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(188, 13)
         Me.Label9.TabIndex = 237
@@ -488,7 +488,7 @@ Partial Class FrmRecepcionPlanilla
         Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox1.Location = New System.Drawing.Point(2, -2)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(749, 60)
+        Me.PictureBox1.Size = New System.Drawing.Size(916, 60)
         Me.PictureBox1.TabIndex = 236
         Me.PictureBox1.TabStop = False
         '
@@ -498,7 +498,7 @@ Partial Class FrmRecepcionPlanilla
         Me.CmdFacturar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CmdFacturar.Image = CType(resources.GetObject("CmdFacturar.Image"), System.Drawing.Image)
         Me.CmdFacturar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdFacturar.Location = New System.Drawing.Point(260, 459)
+        Me.CmdFacturar.Location = New System.Drawing.Point(733, 144)
         Me.CmdFacturar.Name = "CmdFacturar"
         Me.CmdFacturar.Size = New System.Drawing.Size(75, 66)
         Me.CmdFacturar.TabIndex = 261
@@ -510,7 +510,7 @@ Partial Class FrmRecepcionPlanilla
         '
         Me.CmdNuevo.Image = CType(resources.GetObject("CmdNuevo.Image"), System.Drawing.Image)
         Me.CmdNuevo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdNuevo.Location = New System.Drawing.Point(20, 458)
+        Me.CmdNuevo.Location = New System.Drawing.Point(733, 76)
         Me.CmdNuevo.Name = "CmdNuevo"
         Me.CmdNuevo.Size = New System.Drawing.Size(75, 67)
         Me.CmdNuevo.TabIndex = 260
@@ -521,20 +521,20 @@ Partial Class FrmRecepcionPlanilla
         'GroupBox4
         '
         Me.GroupBox4.Controls.Add(Me.TxtObservaciones)
-        Me.GroupBox4.Location = New System.Drawing.Point(424, 461)
+        Me.GroupBox4.Location = New System.Drawing.Point(709, 302)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(198, 64)
+        Me.GroupBox4.Size = New System.Drawing.Size(198, 127)
         Me.GroupBox4.TabIndex = 259
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Observaciones"
         '
         'TxtObservaciones
         '
-        Me.TxtObservaciones.Location = New System.Drawing.Point(6, 19)
+        Me.TxtObservaciones.Location = New System.Drawing.Point(9, 19)
         Me.TxtObservaciones.Multiline = True
         Me.TxtObservaciones.Name = "TxtObservaciones"
         Me.TxtObservaciones.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TxtObservaciones.Size = New System.Drawing.Size(186, 39)
+        Me.TxtObservaciones.Size = New System.Drawing.Size(186, 102)
         Me.TxtObservaciones.TabIndex = 0
         '
         'Button2
@@ -542,7 +542,7 @@ Partial Class FrmRecepcionPlanilla
         Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button2.Location = New System.Drawing.Point(341, 458)
+        Me.Button2.Location = New System.Drawing.Point(810, 143)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(75, 66)
         Me.Button2.TabIndex = 258
@@ -554,7 +554,7 @@ Partial Class FrmRecepcionPlanilla
         '
         Me.ButtonBorrar.Image = CType(resources.GetObject("ButtonBorrar.Image"), System.Drawing.Image)
         Me.ButtonBorrar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonBorrar.Location = New System.Drawing.Point(182, 458)
+        Me.ButtonBorrar.Location = New System.Drawing.Point(733, 211)
         Me.ButtonBorrar.Name = "ButtonBorrar"
         Me.ButtonBorrar.Size = New System.Drawing.Size(75, 67)
         Me.ButtonBorrar.TabIndex = 257
@@ -566,7 +566,7 @@ Partial Class FrmRecepcionPlanilla
         '
         Me.ButtonAgregar.Image = CType(resources.GetObject("ButtonAgregar.Image"), System.Drawing.Image)
         Me.ButtonAgregar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonAgregar.Location = New System.Drawing.Point(101, 458)
+        Me.ButtonAgregar.Location = New System.Drawing.Point(810, 76)
         Me.ButtonAgregar.Name = "ButtonAgregar"
         Me.ButtonAgregar.Size = New System.Drawing.Size(75, 67)
         Me.ButtonAgregar.TabIndex = 256
@@ -579,7 +579,7 @@ Partial Class FrmRecepcionPlanilla
         Me.Button8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
         Me.Button8.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button8.Location = New System.Drawing.Point(628, 461)
+        Me.Button8.Location = New System.Drawing.Point(810, 212)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(75, 66)
         Me.Button8.TabIndex = 255
@@ -611,7 +611,7 @@ Partial Class FrmRecepcionPlanilla
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(723, 532)
+        Me.ClientSize = New System.Drawing.Size(912, 484)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.CmdFacturar)

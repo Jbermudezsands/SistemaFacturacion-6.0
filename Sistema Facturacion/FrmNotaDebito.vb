@@ -53,7 +53,7 @@ Public Class FrmNotaDebito
         DataAdapter.Fill(DataSet, "Notas")
         If Not DataSet.Tables("Notas").Rows.Count = 0 Then
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-            StrSqlUpdate = "UPDATE NotaDebito  SET [Descripcion] = '" & Me.TxtDescripcion.Text & "' ,[CuentaContable] = '" & Me.TxtCuentas.Text & "' WHERE (CodigoNB = '" & Me.CboCodigoCliente.Text & "')"
+            StrSqlUpdate = "UPDATE NotaDebito  SET [Descripcion] = '" & Me.TxtDescripcion.Text & "' ,[CuentaContable] = '" & Me.TxtCuentas.Text & "' WHERE (CodigoNB = '" & Me.CmbCodigo.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery

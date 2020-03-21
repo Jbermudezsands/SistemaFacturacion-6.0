@@ -28,6 +28,65 @@ Public Class FrmConsultas
             Dim DataAdapter As New SqlClient.SqlDataAdapter, SQlProductos As String
 
             Select Case Quien
+
+                Case "CodigoProductosDetalle"
+                    SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Costo_Promedio, Existencia_Unidades,Cod_Iva FROM Productos Where (Tipo_Producto <> 'Ensambles')"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    MiConexion.Open()
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Codigo"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(0).Width = 70
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 170
+                    Me.TrueDBGridConsultas.Columns(2).Caption = "Tipo"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(2).Width = 65
+                    Me.TrueDBGridConsultas.Columns(3).Caption = "Costo Prom"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(3).Width = 65
+                    Me.TrueDBGridConsultas.Columns(3).NumberFormat = "##,##0.00"
+                    Me.TrueDBGridConsultas.Columns(4).Caption = "Existencia"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(4).Width = 65
+                    Me.TrueDBGridConsultas.Columns(4).NumberFormat = "##,##0.00"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(5).Visible = False
+
+                    MiConexion.Close()
+
+                Case "CodigoProductor"
+                    SQlProductos = "SELECT  CodProductor, NombreProductor, ApellidoProductor FROM Productor WHERE (TipoProductor = 'Productor')"
+                    MiConexion.Open()
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(0).Width = 100
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 100
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(2).Width = 100
+
+                Case "RecepcionPlanilla"
+                    If FrmCompras.CboTipoProducto.Text <> "" Then
+                        SQlProductos = "SELECT Compras.Numero_Compra AS Numero, Compras.Nombre_Proveedor + ' ' + Compras.Apellido_Proveedor AS Proveedor, Compras.Fecha_Compra AS Fecha, Compras.Tipo_Compra AS Tipo  FROM  Compras WHERE (Compras.Activo = 1) AND (Tipo_Compra = 'Recepcion') ORDER BY Numero  "
+                    Else
+                        SQlProductos = "SELECT Compras.Numero_Compra AS Numero, Compras.Nombre_Proveedor + ' ' + Compras.Apellido_Proveedor AS Proveedor, Compras.Fecha_Compra AS Fecha, Compras.Tipo_Compra AS Tipo  FROM  Compras WHERE (Compras.Activo = 1) AND (Tipo_Compra = '" & FrmRecepcionPlanilla.CboTipoProducto.Text & "') ORDER BY Numero  "
+                    End If
+                    MiConexion.Open()
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(0).Width = 65
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 195
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(2).Width = 65
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(3).Width = 110
+
+
+
                 Case "Ruta"
                     SQlProductos = "SELECT   CodRuta, Nombre_Ruta FROM Ruta_Distribucion"
                     DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
@@ -1095,6 +1154,16 @@ Public Class FrmConsultas
         TipoProducto = ""
 
         Select Case Quien
+            Case "CodigoProductor"
+                Posicion = Me.BindingConsultas.Position
+                Codigo = Me.BindingConsultas.Item(Posicion)("CodProductor")
+                Nombres = Me.BindingConsultas.Item(Posicion)("NombreProductor")
+                Apellidos = Me.BindingConsultas.Item(Posicion)("ApellidoProductor")
+            Case "RecepcionPlanilla"
+                Posicion = Me.BindingConsultas.Position
+                Codigo = Me.BindingConsultas.Item(Posicion)("Numero")
+                Fecha = Me.BindingConsultas.Item(Posicion)("Fecha")
+                TipoCompra = Me.BindingConsultas.Item(Posicion)("Tipo")
             Case "Ruta"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("CodRuta")
@@ -1266,7 +1335,7 @@ Public Class FrmConsultas
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("Cod_Productos")
                 Descripcion = Me.BindingConsultas.Item(Posicion)("Descripcion_Producto")
-                Precio = Me.BindingConsultas.Item(Posicion)("Costo")
+                Precio = 0 'Me.BindingConsultas.Item(Posicion)("Costo")
                 CodIva = Me.BindingConsultas.Item(Posicion)("Cod_Iva")
                 TipoProducto = Me.BindingConsultas.Item(Posicion)("Tipo_Producto")
             Case "CodigoProductosCompra"

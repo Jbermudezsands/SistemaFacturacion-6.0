@@ -67,6 +67,11 @@ Public Class FrmPlanilla
                 Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(9).Width = 78
                 Me.TDGridDeducciones2.Columns(9).NumberFormat = "##,##0.00"
 
+                Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns("Trazabilidad").Width = 70
+                Me.TDGridDeducciones2.Columns("Trazabilidad").NumberFormat = "##,##0.00"
+                Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns("OtrasDeducciones").Width = 70
+                Me.TDGridDeducciones2.Columns("OtrasDeducciones").NumberFormat = "##,##0.00"
+
                 SqlString = "SELECT Detalle_Nomina.CodProductor, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.Lunes,Detalle_Nomina.Martes, Detalle_Nomina.Miercoles, Detalle_Nomina.Jueves, Detalle_Nomina.Viernes, Detalle_Nomina.Sabado,Detalle_Nomina.Domingo, Detalle_Nomina.Total, Detalle_Nomina.PrecioVenta, Detalle_Nomina.TotalIngresos FROM Detalle_Nomina INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor')"
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 DataAdapter.Fill(DataSet, "DetalleIngresos")
@@ -103,25 +108,26 @@ Public Class FrmPlanilla
 
 
 
-                SqlString = "SELECT Detalle_Nomina.CodProductor, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.IR,Detalle_Nomina.DeduccionPolicia, Detalle_Nomina.Anticipo, Detalle_Nomina.DeduccionTransporte, Detalle_Nomina.Pulperia,Detalle_Nomina.Inseminacion, Detalle_Nomina.ProductosVeterinarios,Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios AS TotalEgresos, Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios) AS NetoPagar FROM  Detalle_Nomina INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor " & _
+                SqlString = "SELECT Detalle_Nomina.CodProductor, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.IR,Detalle_Nomina.DeduccionPolicia, Detalle_Nomina.Anticipo, Detalle_Nomina.DeduccionTransporte, Detalle_Nomina.Pulperia,Detalle_Nomina.Inseminacion, Detalle_Nomina.Trazabilidad, Detalle_Nomina.ProductosVeterinarios,Detalle_Nomina.OtrasDeducciones, Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.Trazabilidad AS TotalEgresos, Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.Trazabilidad) AS NetoPagar FROM  Detalle_Nomina INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor " & _
                             "WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor')"
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 DataAdapter.Fill(DataSet, "DetalleEgresos")
                 Me.TDGridDeducciones.DataSource = DataSet.Tables("DetalleEgresos")
-                Me.TDGridDeducciones.Splits(0).DisplayColumns(0).Width = 70
+                Me.TDGridDeducciones.Splits(0).DisplayColumns(0).Width = 50
                 Me.TDGridDeducciones.Columns(0).Caption = "Codigo"
                 Me.TDGridDeducciones.Splits(0).DisplayColumns(0).Locked = True
                 Me.TDGridDeducciones.Splits(0).DisplayColumns(1).Width = 180
                 Me.TDGridDeducciones.Splits(0).DisplayColumns(1).Locked = True
-                Me.TDGridDeducciones.Splits(0).DisplayColumns(2).Width = 70
+                Me.TDGridDeducciones.Splits(0).DisplayColumns(2).Width = 60
                 Me.TDGridDeducciones.Splits(0).DisplayColumns(2).Locked = True
                 Me.TDGridDeducciones.Columns(2).NumberFormat = "##,##0.00"
-                Me.TDGridDeducciones.Splits(0).DisplayColumns(3).Width = 70
+                Me.TDGridDeducciones.Splits(0).DisplayColumns(3).Width = 60
                 Me.TDGridDeducciones.Splits(0).DisplayColumns(3).Locked = True
+                Me.TDGridDeducciones.Splits(0).DisplayColumns("DeduccionPolicia").Visible = False
                 Me.TDGridDeducciones.Columns(3).NumberFormat = "##,##0.00"
                 Me.TDGridDeducciones.Columns(3).Caption = "Policia"
                 Me.TDGridDeducciones.Columns(4).NumberFormat = "##,##0.00"
-                Me.TDGridDeducciones.Splits(0).DisplayColumns(4).Width = 70
+                Me.TDGridDeducciones.Splits(0).DisplayColumns(4).Width = 60
                 Me.TDGridDeducciones.Splits(0).DisplayColumns(4).Locked = True
                 Me.TDGridDeducciones.Columns(5).NumberFormat = "##,##0.00"
                 Me.TDGridDeducciones.Splits(0).DisplayColumns(5).Width = 70
@@ -133,19 +139,29 @@ Public Class FrmPlanilla
                 Me.TDGridDeducciones.Columns(7).NumberFormat = "##,##0.00"
                 Me.TDGridDeducciones.Splits(0).DisplayColumns(7).Width = 70
                 Me.TDGridDeducciones.Splits(0).DisplayColumns(7).Locked = True
-                Me.TDGridDeducciones.Columns(8).NumberFormat = "##,##0.00"
-                Me.TDGridDeducciones.Splits(0).DisplayColumns(8).Width = 70
-                Me.TDGridDeducciones.Splits(0).DisplayColumns(8).Locked = True
-                Me.TDGridDeducciones.Columns(8).Caption = "Veterinario"
-                Me.TDGridDeducciones.Columns(9).NumberFormat = "##,##0.00"
-                Me.TDGridDeducciones.Splits(0).DisplayColumns(9).Width = 80
-                Me.TDGridDeducciones.Splits(0).DisplayColumns(9).Locked = True
-                Me.TDGridDeducciones.Columns(10).NumberFormat = "##,##0.00"
-                Me.TDGridDeducciones.Splits(0).DisplayColumns(10).Width = 80
-                Me.TDGridDeducciones.Splits(0).DisplayColumns(10).Locked = True
+                Me.TDGridDeducciones.Columns("Trazabilidad").NumberFormat = "##,##0.00"
+                Me.TDGridDeducciones.Splits(0).DisplayColumns("Trazabilidad").Width = 70
+                Me.TDGridDeducciones.Splits(0).DisplayColumns("Trazabilidad").Locked = True
+                Me.TDGridDeducciones.Columns("ProductosVeterinarios").NumberFormat = "##,##0.00"
+                Me.TDGridDeducciones.Splits(0).DisplayColumns("ProductosVeterinarios").Width = 70
+                Me.TDGridDeducciones.Splits(0).DisplayColumns("ProductosVeterinarios").Locked = True
+                Me.TDGridDeducciones.Columns("ProductosVeterinarios").Caption = "Veterinario"
 
+                Me.TDGridDeducciones.Columns("OtrasDeducciones").Caption = "Otras"
+                Me.TDGridDeducciones.Columns("OtrasDeducciones").NumberFormat = "##,##0.00"
+                Me.TDGridDeducciones.Splits(0).DisplayColumns("OtrasDeducciones").Width = 80
+                Me.TDGridDeducciones.Splits(0).DisplayColumns("OtrasDeducciones").Locked = True
+                Me.TDGridDeducciones.Columns("TotalEgresos").NumberFormat = "##,##0.00"
+                Me.TDGridDeducciones.Splits(0).DisplayColumns("TotalEgresos").Width = 80
+                Me.TDGridDeducciones.Splits(0).DisplayColumns("TotalEgresos").Locked = True
 
+                Me.TDGridDeducciones.Columns("NetoPagar").NumberFormat = "##,##0.00"
+                Me.TDGridDeducciones.Splits(0).DisplayColumns("NetoPagar").Width = 80
+                Me.TDGridDeducciones.Splits(0).DisplayColumns("NetoPagar").Locked = True
 
+                'Me.TDGridDeducciones.Columns(10).NumberFormat = "##,##0.00"
+                'Me.TDGridDeducciones.Splits(0).DisplayColumns(10).Width = 80
+                'Me.TDGridDeducciones.Splits(0).DisplayColumns(10).Locked = True
 
             Else
                 MsgBox("No Existe nomina asignada al periodo Seleccionado", MsgBoxStyle.Critical, "Zeus Acopio")
@@ -175,7 +191,7 @@ Public Class FrmPlanilla
         Dim iPosicion2 As Double = 0, Registros2 As Double = 0, Contador As Double = 1, PrecioUnitario As Double, IngresoBruto, PorcientoIr As Double
         Dim MontoIr As Double, PorcientoPolicia As Double, MontoPolicia As Double, MontoVeterinario As Double, ROC1 As String = 0, ROC2 As String = 0, ROC3 As String = 0, ROC4 As String = 0, ROC5 As String = 0, ROC6 As String = 0, ROC7 As String = 0
         Dim Anticipo As Double, Transporte As Double, Pulperia As Double, Inseminacion As Double, NCompra As String
-        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Trazabilidad As Double, Otros As Double
 
 
         If Me.CboTipoPlanilla.Text = "" Then
@@ -288,6 +304,8 @@ Public Class FrmPlanilla
                 Transporte = 0
                 Pulperia = 0
                 Inseminacion = 0
+                Trazabilidad = 0
+                Otros = 0
                 SqlString = "SELECT  * FROM Deducciones_Planilla WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "') AND (CodProductor = '" & CodProductor & "') AND (TipoProductor = 'Productor')"
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 DataAdapter.Fill(DataSet, "DeduccionPlanilla")
@@ -296,6 +314,8 @@ Public Class FrmPlanilla
                     Transporte = DataSet.Tables("DeduccionPlanilla").Rows(0)("Transporte")
                     Pulperia = DataSet.Tables("DeduccionPlanilla").Rows(0)("Pulperia")
                     Inseminacion = DataSet.Tables("DeduccionPlanilla").Rows(0)("Inseminacion")
+                    Trazabilidad = DataSet.Tables("DeduccionPlanilla").Rows(0)("Trazabilidad")
+                    Otros = DataSet.Tables("DeduccionPlanilla").Rows(0)("OtrasDeducciones")
                 End If
                 DataSet.Tables("DeduccionPlanilla").Clear()
 
@@ -332,25 +352,37 @@ Public Class FrmPlanilla
             DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
             DataAdapter.Fill(DataSet, "DetalleNomina")
             If DataSet.Tables("DetalleNomina").Rows.Count = 0 Then
-                StrSqlUpdate = "INSERT INTO [Detalle_Nomina] ([NumNomina],[CodProductor],[TipoProductor],[Roc1],[Lunes],[Roc2],[Martes],[Roc3],[Miercoles],[Roc4],[Jueves],[Roc5],[Viernes],[Roc6],[Sabado],[Roc7],[Domingo],[Total],[PrecioVenta],[TotalIngresos],[IR],[DeduccionPolicia],[Anticipo],[DeduccionTransporte],[Pulperia],[Inseminacion],[ProductosVeterinarios]) " & _
-                               "VALUES ('" & Me.TxtNumNomina.Text & "','" & CodProductor & "','Productor','" & ROC1 & "'," & MontoLunes & ",'" & ROC2 & "'," & MontoMartes & ",'" & ROC3 & "'," & MontoMiercoles & ",'" & ROC4 & "'," & MontoJueves & ",'" & ROC5 & "'," & MontoViernes & ",'" & ROC6 & "'," & MontoSabado & ",'" & ROC7 & "'," & MontoDomingo & "," & CantidadTotal & " ," & PrecioUnitario & "," & IngresoBruto & "," & MontoIr & "," & MontoPolicia & "," & Anticipo & "," & Transporte & "," & Pulperia & "," & Inseminacion & "," & MontoVeterinario & ")"
+                StrSqlUpdate = "INSERT INTO [Detalle_Nomina] ([NumNomina],[CodProductor],[TipoProductor],[Roc1],[Lunes],[Roc2],[Martes],[Roc3],[Miercoles],[Roc4],[Jueves],[Roc5],[Viernes],[Roc6],[Sabado],[Roc7],[Domingo],[Total],[PrecioVenta],[TotalIngresos],[IR],[DeduccionPolicia],[Anticipo],[DeduccionTransporte],[Pulperia],[Inseminacion],[Trazabilidad][ProductosVeterinarios],[OtrasDeducciones]) " & _
+                               "VALUES ('" & Me.TxtNumNomina.Text & "','" & CodProductor & "','Productor','" & ROC1 & "'," & MontoLunes & ",'" & ROC2 & "'," & MontoMartes & ",'" & ROC3 & "'," & MontoMiercoles & ",'" & ROC4 & "'," & MontoJueves & ",'" & ROC5 & "'," & MontoViernes & ",'" & ROC6 & "'," & MontoSabado & ",'" & ROC7 & "'," & MontoDomingo & "," & CantidadTotal & " ," & PrecioUnitario & "," & IngresoBruto & "," & MontoIr & "," & MontoPolicia & "," & Anticipo & "," & Transporte & "," & Pulperia & "," & Inseminacion & "," & Trazabilidad & " ," & MontoVeterinario & " ," & Otros & ")"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
                 iResultado = ComandoUpdate.ExecuteNonQuery
                 MiConexion.Close()
 
             Else
-                StrSqlUpdate = "UPDATE [Detalle_Nomina] SET [Roc1] = '" & ROC1 & "',[Lunes] = " & MontoLunes & ",[Roc2] = '" & ROC2 & "',[Martes] = " & MontoMartes & ",[Roc3] = '" & ROC3 & "',[Miercoles] = '" & MontoMiercoles & "',[Roc4] = '" & ROC4 & "',[Jueves] = " & MontoJueves & ",[Roc5] = '" & ROC5 & "',[Viernes] =" & MontoViernes & ",[Roc6] = '" & ROC6 & "',[Sabado] = " & MontoSabado & ",[Roc7] = '" & ROC7 & "',[Domingo] = " & MontoDomingo & ",[Total] = " & CantidadTotal & ",[PrecioVenta] = " & PrecioUnitario & ",[TotalIngresos] = " & IngresoBruto & ",[IR] = " & MontoIr & ",[DeduccionPolicia] = " & MontoPolicia & ",[Anticipo] = " & Anticipo & ",[DeduccionTransporte] = " & Transporte & " ,[Pulperia] = " & Pulperia & ",[Inseminacion] = " & Inseminacion & ",[ProductosVeterinarios] = " & MontoVeterinario & " " & _
+
+                If Not IsDBNull(DataSet.Tables("DetalleNomina").Rows(0)("PrecioVenta")) Then
+                    If DataSet.Tables("DetalleNomina").Rows(0)("PrecioVenta") <= 0 Then
+                        PrecioUnitario = Me.TxtPrecioUnitario.Text
+                    Else
+                        PrecioUnitario = DataSet.Tables("DetalleNomina").Rows(0)("PrecioVenta")
+                    End If
+                Else
+                    PrecioUnitario = Me.TxtPrecioUnitario.Text
+                End If
+
+
+                StrSqlUpdate = "UPDATE [Detalle_Nomina] SET [Roc1] = '" & ROC1 & "',[Lunes] = " & MontoLunes & ",[Roc2] = '" & ROC2 & "',[Martes] = " & MontoMartes & ",[Roc3] = '" & ROC3 & "',[Miercoles] = '" & MontoMiercoles & "',[Roc4] = '" & ROC4 & "',[Jueves] = " & MontoJueves & ",[Roc5] = '" & ROC5 & "',[Viernes] =" & MontoViernes & ",[Roc6] = '" & ROC6 & "',[Sabado] = " & MontoSabado & ",[Roc7] = '" & ROC7 & "',[Domingo] = " & MontoDomingo & ",[Total] = " & CantidadTotal & ",[PrecioVenta] = " & PrecioUnitario & ",[TotalIngresos] = " & IngresoBruto & ",[IR] = " & MontoIr & ",[DeduccionPolicia] = " & MontoPolicia & ",[Anticipo] = " & Anticipo & ",[DeduccionTransporte] = " & Transporte & " ,[Pulperia] = " & Pulperia & ",[Inseminacion] = " & Inseminacion & ",[ProductosVeterinarios] = " & MontoVeterinario & " ,[Trazabilidad] = " & Trazabilidad & ",[OtrasDeducciones] = " & Otros & " " & _
                                "WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "') AND (CodProductor = '" & CodProductor & "') AND (TipoProductor = 'Productor')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
                 iResultado = ComandoUpdate.ExecuteNonQuery
                 MiConexion.Close()
-            End If
-            DataSet.Tables("DetalleNomina").Clear()
+                End If
+                DataSet.Tables("DetalleNomina").Clear()
 
-            iPosicion = iPosicion + 1
-            Me.ProgressBar.Value = iPosicion
+                iPosicion = iPosicion + 1
+                Me.ProgressBar.Value = iPosicion
         Loop
 
 
@@ -380,7 +412,7 @@ Public Class FrmPlanilla
         Me.TDGridIngresos.Splits(0).DisplayColumns(9).Width = 61
         Me.TDGridIngresos.Splits(0).DisplayColumns(9).Locked = True
         Me.TDGridIngresos.Splits(0).DisplayColumns(10).Width = 70
-        Me.TDGridIngresos.Splits(0).DisplayColumns(10).Locked = True
+        Me.TDGridIngresos.Splits(0).DisplayColumns(10).Locked = False
         Me.TDGridIngresos.Columns(9).Caption = "Total Litros"
         Me.TDGridIngresos.Columns(10).NumberFormat = "##,##0.00"
         Me.TDGridIngresos.Columns(10).Caption = "PrecioUnit"
@@ -388,25 +420,27 @@ Public Class FrmPlanilla
         Me.TDGridIngresos.Splits(0).DisplayColumns(11).Locked = True
         Me.TDGridIngresos.Columns(11).NumberFormat = "##,##0.00"
 
-        SqlString = "SELECT Detalle_Nomina.CodProductor, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.IR,Detalle_Nomina.DeduccionPolicia, Detalle_Nomina.Anticipo, Detalle_Nomina.DeduccionTransporte, Detalle_Nomina.Pulperia,Detalle_Nomina.Inseminacion, Detalle_Nomina.ProductosVeterinarios,Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios AS TotalEgresos, Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios) AS NetoPagar FROM  Detalle_Nomina INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor " & _
-                    "WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor')"
+
+        SqlString = "SELECT Detalle_Nomina.CodProductor, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.IR,Detalle_Nomina.DeduccionPolicia, Detalle_Nomina.Anticipo, Detalle_Nomina.DeduccionTransporte, Detalle_Nomina.Pulperia,Detalle_Nomina.Inseminacion, Detalle_Nomina.Trazabilidad, Detalle_Nomina.ProductosVeterinarios,Detalle_Nomina.OtrasDeducciones, Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.Trazabilidad AS TotalEgresos, Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.Trazabilidad) AS NetoPagar FROM  Detalle_Nomina INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor " & _
+            "WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "DetalleEgresos")
         Me.TDGridDeducciones.DataSource = DataSet.Tables("DetalleEgresos")
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(0).Width = 70
+        Me.TDGridDeducciones.Splits(0).DisplayColumns(0).Width = 50
         Me.TDGridDeducciones.Columns(0).Caption = "Codigo"
         Me.TDGridDeducciones.Splits(0).DisplayColumns(0).Locked = True
         Me.TDGridDeducciones.Splits(0).DisplayColumns(1).Width = 180
         Me.TDGridDeducciones.Splits(0).DisplayColumns(1).Locked = True
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(2).Width = 70
+        Me.TDGridDeducciones.Splits(0).DisplayColumns(2).Width = 60
         Me.TDGridDeducciones.Splits(0).DisplayColumns(2).Locked = True
         Me.TDGridDeducciones.Columns(2).NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(3).Width = 70
+        Me.TDGridDeducciones.Splits(0).DisplayColumns(3).Width = 60
         Me.TDGridDeducciones.Splits(0).DisplayColumns(3).Locked = True
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("DeduccionPolicia").Visible = False
         Me.TDGridDeducciones.Columns(3).NumberFormat = "##,##0.00"
         Me.TDGridDeducciones.Columns(3).Caption = "Policia"
         Me.TDGridDeducciones.Columns(4).NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(4).Width = 70
+        Me.TDGridDeducciones.Splits(0).DisplayColumns(4).Width = 60
         Me.TDGridDeducciones.Splits(0).DisplayColumns(4).Locked = True
         Me.TDGridDeducciones.Columns(5).NumberFormat = "##,##0.00"
         Me.TDGridDeducciones.Splits(0).DisplayColumns(5).Width = 70
@@ -418,16 +452,66 @@ Public Class FrmPlanilla
         Me.TDGridDeducciones.Columns(7).NumberFormat = "##,##0.00"
         Me.TDGridDeducciones.Splits(0).DisplayColumns(7).Width = 70
         Me.TDGridDeducciones.Splits(0).DisplayColumns(7).Locked = True
-        Me.TDGridDeducciones.Columns(8).NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(8).Width = 70
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(8).Locked = True
-        Me.TDGridDeducciones.Columns(8).Caption = "Veterinario"
-        Me.TDGridDeducciones.Columns(9).NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(9).Width = 80
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(9).Locked = True
-        Me.TDGridDeducciones.Columns(10).NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(10).Width = 80
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(10).Locked = True
+        Me.TDGridDeducciones.Columns("Trazabilidad").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Trazabilidad").Width = 70
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Trazabilidad").Locked = True
+        Me.TDGridDeducciones.Columns("ProductosVeterinarios").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("ProductosVeterinarios").Width = 70
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("ProductosVeterinarios").Locked = True
+        Me.TDGridDeducciones.Columns("ProductosVeterinarios").Caption = "Veterinario"
+
+        Me.TDGridDeducciones.Columns("OtrasDeducciones").Caption = "Otras"
+        Me.TDGridDeducciones.Columns("OtrasDeducciones").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("OtrasDeducciones").Width = 80
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("OtrasDeducciones").Locked = True
+        Me.TDGridDeducciones.Columns("TotalEgresos").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("TotalEgresos").Width = 80
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("TotalEgresos").Locked = True
+
+        Me.TDGridDeducciones.Columns("NetoPagar").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("NetoPagar").Width = 80
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("NetoPagar").Locked = True
+
+        'SqlString = "SELECT Detalle_Nomina.CodProductor, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.IR,Detalle_Nomina.DeduccionPolicia, Detalle_Nomina.Anticipo, Detalle_Nomina.DeduccionTransporte, Detalle_Nomina.Pulperia,Detalle_Nomina.Inseminacion, Detalle_Nomina.ProductosVeterinarios,Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios AS TotalEgresos, Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios) AS NetoPagar FROM  Detalle_Nomina INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor " & _
+        '            "WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor')"
+        'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        'DataAdapter.Fill(DataSet, "DetalleEgresos")
+        'Me.TDGridDeducciones.DataSource = DataSet.Tables("DetalleEgresos")
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(0).Width = 70
+        'Me.TDGridDeducciones.Columns(0).Caption = "Codigo"
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(0).Locked = True
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(1).Width = 180
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(1).Locked = True
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(2).Width = 70
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(2).Locked = True
+        'Me.TDGridDeducciones.Columns(2).NumberFormat = "##,##0.00"
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(3).Width = 70
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(3).Locked = True
+        'Me.TDGridDeducciones.Columns(3).NumberFormat = "##,##0.00"
+        'Me.TDGridDeducciones.Columns(3).Caption = "Policia"
+        'Me.TDGridDeducciones.Columns(4).NumberFormat = "##,##0.00"
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(4).Width = 70
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(4).Locked = True
+        'Me.TDGridDeducciones.Columns(5).NumberFormat = "##,##0.00"
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(5).Width = 70
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(5).Locked = True
+        'Me.TDGridDeducciones.Columns(5).Caption = "Transporte"
+        'Me.TDGridDeducciones.Columns(6).NumberFormat = "##,##0.00"
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(6).Width = 70
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(6).Locked = True
+        'Me.TDGridDeducciones.Columns(7).NumberFormat = "##,##0.00"
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(7).Width = 70
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(7).Locked = True
+        'Me.TDGridDeducciones.Columns(8).NumberFormat = "##,##0.00"
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(8).Width = 70
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(8).Locked = True
+        'Me.TDGridDeducciones.Columns(8).Caption = "Veterinario"
+        'Me.TDGridDeducciones.Columns(9).NumberFormat = "##,##0.00"
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(9).Width = 80
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(9).Locked = True
+        'Me.TDGridDeducciones.Columns(10).NumberFormat = "##,##0.00"
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(10).Width = 80
+        'Me.TDGridDeducciones.Splits(0).DisplayColumns(10).Locked = True
 
         Me.CmdNomina.Enabled = True
         Me.CmdColillas.Enabled = True
@@ -442,7 +526,7 @@ Public Class FrmPlanilla
         Dim SqlString As String, CodProductor As String, NombreProductor As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-        Dim Anticipo As Double, Transporte As Double, Pulperia As Double, Inseminacion As Double
+        Dim Anticipo As Double, Transporte As Double, Pulperia As Double, Inseminacion As Double, Trazabilidad As Double, Otros As Double
 
 
         CodProductor = Me.TDGridDeducciones2.Columns(2).Text
@@ -471,6 +555,17 @@ Public Class FrmPlanilla
             Inseminacion = 0
         End If
 
+        If IsNumeric(Me.TDGridDeducciones2.Columns("Trazabilidad").Text) Then
+            Trazabilidad = Me.TDGridDeducciones2.Columns("Trazabilidad").Text
+        Else
+            Trazabilidad = 0
+        End If
+
+        If IsNumeric(Me.TDGridDeducciones2.Columns("OtrasDeducciones").Text) Then
+            Otros = Me.TDGridDeducciones2.Columns("OtrasDeducciones").Text
+        Else
+            Otros = 0
+        End If
 
 
         SqlString = "SELECT  * FROM Deducciones_Planilla WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "') AND (CodProductor = '" & CodProductor & "') AND (TipoProductor = 'Productor')ORDER BY CodProductor"
@@ -478,15 +573,15 @@ Public Class FrmPlanilla
         DataAdapter.Fill(DataSet, "DetalleDeduccion")
         If DataSet.Tables("DetalleDeduccion").Rows.Count = 0 Then
             '///////////SI EXISTE EL LO ACTUALIZO////////////////
-            StrSqlUpdate = "INSERT INTO [Deducciones_Planilla] ([NumNomina],[CodProductor],[TipoProductor],[NombreProductor],[NoAnticipo],[Anticipo],[Transporte],[Pulperia],[Inseminacion]) " & _
-                           "VALUES ('" & Me.TxtNumNomina.Text & "','" & CodProductor & "','Productor','" & NombreProductor & "','" & Me.TDGridDeducciones2.Columns(5).Text & "'," & Anticipo & "," & Transporte & "," & Pulperia & " ," & Inseminacion & ")"
+            StrSqlUpdate = "INSERT INTO [Deducciones_Planilla] ([NumNomina],[CodProductor],[TipoProductor],[NombreProductor],[NoAnticipo],[Anticipo],[Transporte],[Pulperia],[Inseminacion],[Trazabilidad],[OtrasDeducciones]) " & _
+                           "VALUES ('" & Me.TxtNumNomina.Text & "','" & CodProductor & "','Productor','" & NombreProductor & "','" & Me.TDGridDeducciones2.Columns(5).Text & "'," & Anticipo & "," & Transporte & "," & Pulperia & " ," & Inseminacion & "," & Trazabilidad & "," & Otros & ")"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
             MiConexion.Close()
 
         Else
-            StrSqlUpdate = "UPDATE [Deducciones_Planilla] SET [NoAnticipo] = '" & Me.TDGridDeducciones2.Columns(5).Text & "' ,[Anticipo] = " & Anticipo & ",[Transporte] = " & Transporte & ",[Pulperia] = " & Pulperia & ",[Inseminacion] = " & Inseminacion & "  WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "') AND (CodProductor = '" & CodProductor & "') AND (TipoProductor = 'Productor')"
+            StrSqlUpdate = "UPDATE [Deducciones_Planilla] SET [NoAnticipo] = '" & Me.TDGridDeducciones2.Columns(5).Text & "' ,[Anticipo] = " & Anticipo & ",[Transporte] = " & Transporte & ",[Pulperia] = " & Pulperia & ",[Inseminacion] = " & Inseminacion & ", [Trazabilidad] = " & Trazabilidad & ", [OtrasDeducciones] = " & Otros & "  WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "') AND (CodProductor = '" & CodProductor & "') AND (TipoProductor = 'Productor')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -690,8 +785,11 @@ Public Class FrmPlanilla
         ArepColillas.LblRecepcion.Text = "Recepcion de Leche de la Semana del " & FechaInicio.Day & " al " & FechaFin.Day & " de " & Mes & " " & FechaFin.Year
 
         '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
-        SqlDetalle = "SELECT  Nomina.NumPlanilla, Nomina.FechaInicial, Nomina.FechaFinal, Productor.CodProductor,Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.Roc1, Detalle_Nomina.Lunes, Detalle_Nomina.Roc2, Detalle_Nomina.Martes, Detalle_Nomina.Roc3, Detalle_Nomina.Miercoles, Detalle_Nomina.Roc4, Detalle_Nomina.Jueves, Detalle_Nomina.Roc5, Detalle_Nomina.Viernes, Detalle_Nomina.Roc6, Detalle_Nomina.Sabado, Detalle_Nomina.Roc7, Detalle_Nomina.Domingo, Detalle_Nomina.Total, Ruta.Cod_Ruta, Ruta.Nombre_Ruta FROM  Detalle_Nomina INNER JOIN Nomina ON Detalle_Nomina.NumNomina = Nomina.NumPlanilla INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor INNER JOIN Ruta ON Productor.CodRuta = Ruta.Cod_Ruta  " & _
-                     "WHERE (Nomina.NumPlanilla = '" & Me.TxtNumNomina.Text & "') ORDER BY Ruta.Cod_Ruta, Productor.CodProductor "
+        'SqlDetalle = "SELECT  Nomina.NumPlanilla, Nomina.FechaInicial, Nomina.FechaFinal, Productor.CodProductor,Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.Roc1, Detalle_Nomina.Lunes, Detalle_Nomina.Roc2, Detalle_Nomina.Martes, Detalle_Nomina.Roc3, Detalle_Nomina.Miercoles, Detalle_Nomina.Roc4, Detalle_Nomina.Jueves, Detalle_Nomina.Roc5, Detalle_Nomina.Viernes, Detalle_Nomina.Roc6, Detalle_Nomina.Sabado, Detalle_Nomina.Roc7, Detalle_Nomina.Domingo, Detalle_Nomina.Total, Ruta.Cod_Ruta, Ruta.Nombre_Ruta FROM  Detalle_Nomina INNER JOIN Nomina ON Detalle_Nomina.NumNomina = Nomina.NumPlanilla INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor INNER JOIN Ruta ON Productor.CodRuta = Ruta.Cod_Ruta  " & _
+        '             "WHERE (Nomina.NumPlanilla = '" & Me.TxtNumNomina.Text & "') ORDER BY Ruta.Cod_Ruta, Productor.CodProductor "
+
+        SqlDetalle = "SELECT  Nomina.NumPlanilla, Nomina.FechaInicial, Nomina.FechaFinal, Productor.CodProductor, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.Roc1, Detalle_Nomina.Lunes, Detalle_Nomina.Roc2, Detalle_Nomina.Martes, Detalle_Nomina.Roc3, Detalle_Nomina.Miercoles, Detalle_Nomina.Roc4, Detalle_Nomina.Jueves, Detalle_Nomina.Roc5, Detalle_Nomina.Viernes, Detalle_Nomina.Roc6, Detalle_Nomina.Sabado, Detalle_Nomina.Roc7, Detalle_Nomina.Domingo, Detalle_Nomina.Total, Ruta_Distribucion.CodRuta, Ruta_Distribucion.Nombre_Ruta FROM  Detalle_Nomina INNER JOIN Nomina ON Detalle_Nomina.NumNomina = Nomina.NumPlanilla INNER JOIN  Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor INNER JOIN  Ruta_Distribucion ON Productor.CodRuta = Ruta_Distribucion.CodRuta  " & _
+                     "WHERE  (Nomina.NumPlanilla = '" & Me.TxtNumNomina.Text & "') ORDER BY Ruta_Distribucion.CodRuta, Productor.CodProductor"
         SQL.ConnectionString = Conexion
         SQL.SQL = SqlDetalle
         ArepColillas.DataSource = SQL
@@ -758,6 +856,36 @@ Public Class FrmPlanilla
         End If
 
         FechaInicio = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
+
+        '///////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////GENERO UNA COMPRA POR PROVEEDOR ////////////////////////////////////////
+        ''///////////////////////////////////////////////////////////////////////////////////////////////////////
+        'Dim iPosicion As Double, Registros As Double, CodProductor As String, Fecha As Date, Nombres As String, CantidadTotal As Double, Contador As Double
+
+        'iPosicion = 0
+        'Me.ProgressBar.Visible = True
+        'Me.ProgressBar.Minimum = 0
+        'Me.ProgressBar.Visible = True
+        'Me.ProgressBar.Value = 0
+        'Registros = DataSet.Tables("Productor").Rows.Count
+        'Me.ProgressBar.Maximum = Registros
+        'Do While iPosicion < Registros
+        '    My.Application.DoEvents()
+        '    CodProductor = DataSet.Tables("Productor").Rows(iPosicion)("CodProductor")
+        '    Fecha = Me.DTPFechaIni.Value
+        '    Nombres = DataSet.Tables("Productor").Rows(iPosicion)("NombreProductor") + " " + DataSet.Tables("Productor").Rows(iPosicion)("ApellidoProductor")
+        '    Me.LblProcesando.Text = "PROCESANDO PRODUCTOR: " & CodProductor & " " & Nombres
+        '    CantidadTotal = 0
+        '    Contador = 1
+
+
+
+        '    iPosicion = iPosicion + 1
+        'Loop
+
+
+
+
 
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////ACTUALIZO LOS ENCABEZADOS DEl TIPO NOMINA//////////////////////////////////

@@ -253,6 +253,12 @@
     <Compile Include="FrmNuevoLote.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmPagos2.Designer.vb">
+      <DependentUpon>FrmPagos2.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPagos2.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmPeriodos.Designer.vb">
       <DependentUpon>FrmPeriodos.vb</DependentUpon>
     </Compile>
@@ -1402,6 +1408,10 @@
     <EmbeddedResource Include="FrmNuevoLote.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmNuevoLote.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPagos2.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmPagos2.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmPeriodos.resx">
       <DependentUpon>FrmPeriodos.vb</DependentUpon>

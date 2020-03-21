@@ -65,7 +65,7 @@ Public Class FrmAjustes
         Dim dv As DataView, Filtro As String, Registros As Double, i As Double, Monto As Double, FechaFactura As Date
         Dim Consecutivo As Double, SQlstring As String, TipoNota As String = "Credito Clientes", Moneda As String, CodigoNota As String = "", Descripcion As String = ""
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, NumeroFactura As String
-        Dim NumeroNota As String, Consecutivoconserie As Boolean = True
+        Dim NumeroNota As String, Consecutivoconserie As Boolean = True, TipoCuenta As Boolean
 
         Filtro = "Fecha_Factura >= '" & Format(Me.DTPFechaIni.Value, "yyyy-MM-dd") & "' AND Fecha_Factura <= '" & Format(Me.DTPFechaFin.Value, "yyyy-MM-dd") & "' AND Total <= " & Me.TxtMonto.Value & " "
         dv = New DataView(FrmCuentasXCobrar.DatasetReporte.Tables("TotalVentas"))
@@ -75,6 +75,8 @@ Public Class FrmAjustes
         Me.ProgressBar1.Minimum = 0
         Me.ProgressBar1.Maximum = Registros
         Me.ProgressBar1.Value = 0
+
+
 
         MsgBox("Se Procesaran " & Registros & " Facturas", MsgBoxStyle.Exclamation, "Zeus Facturacion")
 
@@ -160,7 +162,7 @@ Public Class FrmAjustes
                         End If
 
 
-                        GrabaNotaDebito(NumeroNota, FechaFactura, CodigoNota, Monto, Moneda, Me.CboCodigoCliente.Text, Me.TxtNombre.Text, "Ajuste Automatico Zeus Facturacion", True, False)
+                        GrabaNotaDebito(NumeroNota, FechaFactura, CodigoNota, Monto, Moneda, Me.CboCodigoCliente.Text, Me.TxtNombre.Text, "Ajuste Automatico Zeus Facturacion", True, False, False)
                         GrabaDetalleNotaDebito(NumeroNota, FechaFactura, CodigoNota, Descripcion, NumeroFactura, Monto)
 
 
@@ -199,7 +201,7 @@ Public Class FrmAjustes
 
 
 
-                        GrabaNotaDebito(NumeroNota, FechaFactura, CodigoNota, Abs(Monto), Moneda, Me.CboCodigoCliente.Text, Me.TxtNombre.Text, "Ajuste Automatico Zeus Facturacion", True, False)
+                        GrabaNotaDebito(NumeroNota, FechaFactura, CodigoNota, Abs(Monto), Moneda, Me.CboCodigoCliente.Text, Me.TxtNombre.Text, "Ajuste Automatico Zeus Facturacion", True, False, False)
                         GrabaDetalleNotaDebito(NumeroNota, FechaFactura, CodigoNota, Descripcion, NumeroFactura, Abs(Monto))
 
 

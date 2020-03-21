@@ -711,7 +711,7 @@ Public Class FrmImportacion
                 NumeroNota = Me.CmbSerie.Text & Format(Consecutivo, "0000#")
             End If
 
-            GrabaNotaDebito(NumeroNota, Me.DtpFechaCtasXCobrar.Text, CodTipoNota, Saldo, Me.LblMoneda.Text, CodCliente, NombreCliente, "Importacion desde Excel", True, False)
+            GrabaNotaDebito(NumeroNota, Me.DtpFechaCtasXCobrar.Text, CodTipoNota, Saldo, Me.LblMoneda.Text, CodCliente, NombreCliente, "Importacion desde Excel", True, False, False)
             GrabaDetalleNotaDebito(NumeroNota, Me.DtpFechaCtasXCobrar.Text, CodTipoNota, NombreNota, "0000", Saldo)
 
             Me.Text = "Procesando " & iPosicionFila & " de " & MiDataSet.Tables("DatosExcelCtasXCob").Rows.Count & " " & NombreCliente

@@ -1318,4 +1318,30 @@ Public Class FrmRecepcionPlanilla
         Me.CmdFacturar.Enabled = False
 
     End Sub
+
+    Private Sub Button6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
+        Try
+
+            Quien = "RecepcionPlanilla"
+            My.Forms.FrmConsultas.ShowDialog()
+            Me.DTPFecha.Value = My.Forms.FrmConsultas.Fecha
+            Me.CboTipoProducto.Text = My.Forms.FrmConsultas.TipoCompra
+            Me.TxtNumeroEnsamble.Text = My.Forms.FrmConsultas.Codigo
+            Me.CboCodigoBodega.Enabled = False
+            Me.Button7.Enabled = False
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
+        Quien = "Bodegas"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.CboCodigoBodega.Text = My.Forms.FrmConsultas.Codigo
+    End Sub
+
+    Private Sub TrueDBGridComponentes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.Click
+
+    End Sub
 End Class

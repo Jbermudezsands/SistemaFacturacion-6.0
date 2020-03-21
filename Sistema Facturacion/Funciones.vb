@@ -57,7 +57,7 @@ Module Funciones
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "DetalleCompra")
         FrmRecepcionPlanilla.BindingDetalle.DataSource = DataSet.Tables("DetalleCompra")
-        FrmRecepcionPlanilla.TrueDBGridComponentes.DataSource = FrmRecepcion.BindingDetalle
+        FrmRecepcionPlanilla.TrueDBGridComponentes.DataSource = FrmRecepcionPlanilla.BindingDetalle
         FrmRecepcionPlanilla.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
         FrmRecepcionPlanilla.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
         FrmRecepcionPlanilla.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
@@ -6252,7 +6252,7 @@ Module Funciones
         End If
     End Sub
 
-    Public Sub GrabaNotaDebito(ByVal ConsecutivoNotaDebito As String, ByVal FechaNota As Date, ByVal TipoNota As String, ByVal CuentaContable As String, ByVal Moneda As String, ByVal CodigoCliente As String, ByVal NombreCliente As String, ByVal Observaciones As String, ByVal Activo As Boolean, ByVal Contabilizado As Boolean)
+    Public Sub GrabaNotaDebito(ByVal ConsecutivoNotaDebito As String, ByVal FechaNota As Date, ByVal TipoNota As String, ByVal CuentaContable As String, ByVal Moneda As String, ByVal CodigoCliente As String, ByVal NombreCliente As String, ByVal Observaciones As String, ByVal Activo As Boolean, ByVal Contabilizado As Boolean, ByVal TipoCuenta As Boolean)
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Fecha As String
         Dim SqlString As String, MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -6288,17 +6288,16 @@ Module Funciones
             MiConexion.Close()
 
         Else
-
-
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "UPDATE [IndiceNota] SET [Fecha_Nota] = '" & Format(FechaNota, "dd/MM/yyyy") & "',[Tipo_Nota] = '" & TipoNota & "',[MonedaNota] = '" & Moneda & "',[Cod_Cliente] = '" & CodigoCliente & "',[Nombre_Cliente] = '" & NombreCliente & "' ,[Observaciones] = '" & Observaciones & "' ,[Activo] =" & NotaActivo & ",[Contabilizado] =" & NotaContabilizado & ",[Marca] ='True' " & _
+            SqlCompras = "UPDATE [IndiceNota] SET [Fecha_Nota] = '" & Format(FechaNota, "dd/MM/yyyy") & "',[Tipo_Nota] = '" & TipoNota & "',[MonedaNota] = '" & Moneda & "',[Cod_Cliente] = '" & CodigoCliente & "',[Nombre_Cliente] = '" & NombreCliente & "' ,[Observaciones] = '" & Observaciones & "' ,[Activo] =" & NotaActivo & ",[Contabilizado] =" & NotaContabilizado & ",[Marca] ='True',[TipoCuenta] =" & TipoCuenta & " " & _
                          "WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Nota = '" & TipoNota & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
             MiConexion.Close()
+
         End If
     End Sub
 

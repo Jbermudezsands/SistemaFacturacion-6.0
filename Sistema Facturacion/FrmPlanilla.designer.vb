@@ -223,7 +223,7 @@ Partial Class FrmPlanilla
         Me.CmdBorraLinea.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.CmdBorraLinea.Location = New System.Drawing.Point(0, -3)
         Me.CmdBorraLinea.Name = "CmdBorraLinea"
-        Me.CmdBorraLinea.Size = New System.Drawing.Size(1012, 60)
+        Me.CmdBorraLinea.Size = New System.Drawing.Size(1041, 60)
         Me.CmdBorraLinea.TabIndex = 164
         Me.CmdBorraLinea.TabStop = False
         '
@@ -248,7 +248,7 @@ Partial Class FrmPlanilla
         Me.TabControl1.Location = New System.Drawing.Point(12, 120)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(984, 266)
+        Me.TabControl1.Size = New System.Drawing.Size(1014, 266)
         Me.TabControl1.TabIndex = 174
         '
         'Ingresos
@@ -257,7 +257,7 @@ Partial Class FrmPlanilla
         Me.Ingresos.Location = New System.Drawing.Point(4, 22)
         Me.Ingresos.Name = "Ingresos"
         Me.Ingresos.Padding = New System.Windows.Forms.Padding(3)
-        Me.Ingresos.Size = New System.Drawing.Size(976, 240)
+        Me.Ingresos.Size = New System.Drawing.Size(1006, 240)
         Me.Ingresos.TabIndex = 0
         Me.Ingresos.Text = "Ingresos"
         Me.Ingresos.UseVisualStyleBackColor = True
@@ -286,7 +286,7 @@ Partial Class FrmPlanilla
         Me.Deducciones.Location = New System.Drawing.Point(4, 22)
         Me.Deducciones.Name = "Deducciones"
         Me.Deducciones.Padding = New System.Windows.Forms.Padding(3)
-        Me.Deducciones.Size = New System.Drawing.Size(976, 240)
+        Me.Deducciones.Size = New System.Drawing.Size(1006, 240)
         Me.Deducciones.TabIndex = 1
         Me.Deducciones.Text = "Deducciones"
         Me.Deducciones.UseVisualStyleBackColor = True
@@ -304,7 +304,7 @@ Partial Class FrmPlanilla
         Me.TDGridDeducciones.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TDGridDeducciones.PreviewInfo.ZoomFactor = 75
         Me.TDGridDeducciones.PrintInfo.PageSettings = CType(resources.GetObject("TDGridDeducciones.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TDGridDeducciones.Size = New System.Drawing.Size(964, 229)
+        Me.TDGridDeducciones.Size = New System.Drawing.Size(994, 229)
         Me.TDGridDeducciones.TabIndex = 171
         Me.TDGridDeducciones.Text = "C1TrueDBGrid1"
         Me.TDGridDeducciones.PropBag = resources.GetString("TDGridDeducciones.PropBag")
@@ -316,7 +316,7 @@ Partial Class FrmPlanilla
         Me.Configuracion.Controls.Add(Me.GroupBox2)
         Me.Configuracion.Location = New System.Drawing.Point(4, 22)
         Me.Configuracion.Name = "Configuracion"
-        Me.Configuracion.Size = New System.Drawing.Size(976, 240)
+        Me.Configuracion.Size = New System.Drawing.Size(1006, 240)
         Me.Configuracion.TabIndex = 2
         Me.Configuracion.Text = "Configuracion"
         Me.Configuracion.UseVisualStyleBackColor = True
@@ -339,13 +339,13 @@ Partial Class FrmPlanilla
         Me.TDGridDeducciones2.FilterBar = True
         Me.TDGridDeducciones2.GroupByCaption = "Drag a column header here to group by that column"
         Me.TDGridDeducciones2.Images.Add(CType(resources.GetObject("TDGridDeducciones2.Images"), System.Drawing.Image))
-        Me.TDGridDeducciones2.Location = New System.Drawing.Point(255, 23)
+        Me.TDGridDeducciones2.Location = New System.Drawing.Point(158, 19)
         Me.TDGridDeducciones2.Name = "TDGridDeducciones2"
         Me.TDGridDeducciones2.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TDGridDeducciones2.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TDGridDeducciones2.PreviewInfo.ZoomFactor = 75
         Me.TDGridDeducciones2.PrintInfo.PageSettings = CType(resources.GetObject("TDGridDeducciones2.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TDGridDeducciones2.Size = New System.Drawing.Size(711, 187)
+        Me.TDGridDeducciones2.Size = New System.Drawing.Size(838, 187)
         Me.TDGridDeducciones2.TabIndex = 171
         Me.TDGridDeducciones2.Text = "C1TrueDBGrid1"
         Me.TDGridDeducciones2.PropBag = resources.GetString("TDGridDeducciones2.PropBag")
@@ -360,23 +360,23 @@ Partial Class FrmPlanilla
         Me.GroupBox2.Controls.Add(Me.Label4)
         Me.GroupBox2.Location = New System.Drawing.Point(7, 13)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(242, 120)
+        Me.GroupBox2.Size = New System.Drawing.Size(145, 94)
         Me.GroupBox2.TabIndex = 0
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Configuracion Planilla"
         '
         'TxtPrecioUnitario
         '
-        Me.TxtPrecioUnitario.Location = New System.Drawing.Point(126, 81)
+        Me.TxtPrecioUnitario.Location = New System.Drawing.Point(95, 54)
         Me.TxtPrecioUnitario.Name = "TxtPrecioUnitario"
-        Me.TxtPrecioUnitario.Size = New System.Drawing.Size(100, 20)
+        Me.TxtPrecioUnitario.Size = New System.Drawing.Size(43, 20)
         Me.TxtPrecioUnitario.TabIndex = 5
         Me.TxtPrecioUnitario.Text = "1"
         '
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(16, 84)
+        Me.Label6.Location = New System.Drawing.Point(16, 57)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(76, 13)
         Me.Label6.TabIndex = 4
@@ -384,26 +384,28 @@ Partial Class FrmPlanilla
         '
         'TxtDeduccionPolicia
         '
-        Me.TxtDeduccionPolicia.Location = New System.Drawing.Point(126, 55)
+        Me.TxtDeduccionPolicia.Location = New System.Drawing.Point(95, 157)
         Me.TxtDeduccionPolicia.Name = "TxtDeduccionPolicia"
-        Me.TxtDeduccionPolicia.Size = New System.Drawing.Size(100, 20)
+        Me.TxtDeduccionPolicia.Size = New System.Drawing.Size(43, 20)
         Me.TxtDeduccionPolicia.TabIndex = 3
-        Me.TxtDeduccionPolicia.Text = "2.5"
+        Me.TxtDeduccionPolicia.Text = "0"
+        Me.TxtDeduccionPolicia.Visible = False
         '
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(16, 58)
+        Me.Label5.Location = New System.Drawing.Point(16, 160)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(104, 13)
+        Me.Label5.Size = New System.Drawing.Size(49, 13)
         Me.Label5.TabIndex = 2
-        Me.Label5.Text = "% Deduccion Policia"
+        Me.Label5.Text = "% Policia"
+        Me.Label5.Visible = False
         '
         'TxtIR
         '
-        Me.TxtIR.Location = New System.Drawing.Point(126, 29)
+        Me.TxtIR.Location = New System.Drawing.Point(95, 29)
         Me.TxtIR.Name = "TxtIR"
-        Me.TxtIR.Size = New System.Drawing.Size(100, 20)
+        Me.TxtIR.Size = New System.Drawing.Size(43, 20)
         Me.TxtIR.TabIndex = 1
         Me.TxtIR.Text = "3"
         '
@@ -511,7 +513,7 @@ Partial Class FrmPlanilla
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1008, 471)
+        Me.ClientSize = New System.Drawing.Size(1031, 471)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.ProgressBar2)
         Me.Controls.Add(Me.LblProcesando)

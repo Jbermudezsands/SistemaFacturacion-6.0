@@ -642,7 +642,23 @@ Public Class MDIMain
                     Me.RibbonArqueo.Enabled = False
                     Me.RibbonClietes.Enabled = True : Me.RibbonClietes1.Enabled = True
                     Me.RibbonRecibos.Enabled = False
+
+
+                ElseIf DataSet.Tables("DatosEmpresa").Rows(0)("Version") = "Bascula" Then
+                    Me.RibbonTab5.Visible = True
+                    Me.RibbonTab6.Visible = False
+
+                ElseIf DataSet.Tables("DatosEmpresa").Rows(0)("Version") = "Planilla" Then
+                    Me.RibbonTab5.Visible = False
+                    Me.RibbonTab6.Visible = True
+
+                ElseIf DataSet.Tables("DatosEmpresa").Rows(0)("Version") = "Facturacion" Then
+                    Me.RibbonTab5.Visible = False
+                    Me.RibbonTab6.Visible = False
+
                 End If
+
+
             End If
 
 
@@ -1053,5 +1069,10 @@ Public Class MDIMain
     Private Sub RibbonButtonRuta_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButtonRuta.Click
         My.Forms.FrmRutaDistribucion.MdiParent = Me
         My.Forms.FrmRutaDistribucion.Show()
+    End Sub
+
+    Private Sub RibbonButton61_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton61.Click
+        My.Forms.FrmRecepcionPlanilla.MdiParent = Me
+        My.Forms.FrmRecepcionPlanilla.Show()
     End Sub
 End Class

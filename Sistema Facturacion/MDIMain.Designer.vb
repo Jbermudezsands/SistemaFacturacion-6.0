@@ -143,10 +143,6 @@ Partial Class MDIMain
         Me.RibbonButton3 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonTab6 = New C1.Win.C1Ribbon.RibbonTab
         Me.RibbonGroup13 = New C1.Win.C1Ribbon.RibbonGroup
-        Me.C1StatusBar1 = New C1.Win.C1Ribbon.C1StatusBar
-        Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
-        Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
-        Me.TxtUsuario = New System.Windows.Forms.TextBox
         Me.RibbonProductor = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton11 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton61 = New C1.Win.C1Ribbon.RibbonButton
@@ -158,6 +154,10 @@ Partial Class MDIMain
         Me.RibbonButtonDepartamento = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButtonCooperativa = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButtonRuta = New C1.Win.C1Ribbon.RibbonButton
+        Me.C1StatusBar1 = New C1.Win.C1Ribbon.C1StatusBar
+        Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
+        Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
+        Me.TxtUsuario = New System.Windows.Forms.TextBox
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1142,35 +1142,6 @@ Partial Class MDIMain
         Me.RibbonGroup13.Items.Add(Me.RibbonButton61)
         Me.RibbonGroup13.Text = "Registros"
         '
-        'C1StatusBar1
-        '
-        Me.C1StatusBar1.LeftPaneItems.Add(Me.DocumentModifiedLabel)
-        Me.C1StatusBar1.Location = New System.Drawing.Point(0, 493)
-        Me.C1StatusBar1.Name = "C1StatusBar1"
-        Me.C1StatusBar1.RightPaneItems.Add(Me.RibbonLabel1)
-        Me.C1StatusBar1.RightPaneWidth = 100
-        Me.C1StatusBar1.Size = New System.Drawing.Size(1213, 22)
-        Me.C1StatusBar1.TabIndex = 4
-        '
-        'DocumentModifiedLabel
-        '
-        Me.DocumentModifiedLabel.ID = "DocumentModifiedLabel"
-        Me.DocumentModifiedLabel.SmallImage = CType(resources.GetObject("DocumentModifiedLabel.SmallImage"), System.Drawing.Image)
-        '
-        'RibbonLabel1
-        '
-        Me.RibbonLabel1.ID = "RibbonLabel1"
-        Me.RibbonLabel1.Text = "Version 6.15"
-        '
-        'TxtUsuario
-        '
-        Me.TxtUsuario.Location = New System.Drawing.Point(556, 247)
-        Me.TxtUsuario.Name = "TxtUsuario"
-        Me.TxtUsuario.Size = New System.Drawing.Size(100, 20)
-        Me.TxtUsuario.TabIndex = 15
-        Me.TxtUsuario.Text = "Desconocido"
-        Me.TxtUsuario.Visible = False
-        '
         'RibbonProductor
         '
         Me.RibbonProductor.ID = "RibbonProductor"
@@ -1258,6 +1229,35 @@ Partial Class MDIMain
         Me.RibbonButtonRuta.SmallImage = CType(resources.GetObject("RibbonButtonRuta.SmallImage"), System.Drawing.Image)
         Me.RibbonButtonRuta.Text = "Ruta Distribucion"
         Me.RibbonButtonRuta.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'C1StatusBar1
+        '
+        Me.C1StatusBar1.LeftPaneItems.Add(Me.DocumentModifiedLabel)
+        Me.C1StatusBar1.Location = New System.Drawing.Point(0, 493)
+        Me.C1StatusBar1.Name = "C1StatusBar1"
+        Me.C1StatusBar1.RightPaneItems.Add(Me.RibbonLabel1)
+        Me.C1StatusBar1.RightPaneWidth = 100
+        Me.C1StatusBar1.Size = New System.Drawing.Size(1213, 22)
+        Me.C1StatusBar1.TabIndex = 4
+        '
+        'DocumentModifiedLabel
+        '
+        Me.DocumentModifiedLabel.ID = "DocumentModifiedLabel"
+        Me.DocumentModifiedLabel.SmallImage = CType(resources.GetObject("DocumentModifiedLabel.SmallImage"), System.Drawing.Image)
+        '
+        'RibbonLabel1
+        '
+        Me.RibbonLabel1.ID = "RibbonLabel1"
+        Me.RibbonLabel1.Text = "Version 6.16"
+        '
+        'TxtUsuario
+        '
+        Me.TxtUsuario.Location = New System.Drawing.Point(556, 247)
+        Me.TxtUsuario.Name = "TxtUsuario"
+        Me.TxtUsuario.Size = New System.Drawing.Size(100, 20)
+        Me.TxtUsuario.TabIndex = 15
+        Me.TxtUsuario.Text = "Desconocido"
+        Me.TxtUsuario.Visible = False
         '
         'MDIMain
         '

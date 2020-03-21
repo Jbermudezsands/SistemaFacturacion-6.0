@@ -29,6 +29,8 @@ Partial Class FrmProductor
         Me.Button8 = New System.Windows.Forms.Button
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.TxtNumeroCedula = New System.Windows.Forms.MaskedTextBox
+        Me.Label29 = New System.Windows.Forms.Label
         Me.CboCodigoProductor = New C1.Win.C1List.C1Combo
         Me.ChkCausaIVA = New System.Windows.Forms.CheckBox
         Me.CboRuta = New C1.Win.C1List.C1Combo
@@ -251,6 +253,8 @@ Partial Class FrmProductor
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.TxtNumeroCedula)
+        Me.TabPage1.Controls.Add(Me.Label29)
         Me.TabPage1.Controls.Add(Me.CboCodigoProductor)
         Me.TabPage1.Controls.Add(Me.ChkCausaIVA)
         Me.TabPage1.Controls.Add(Me.CboRuta)
@@ -292,6 +296,23 @@ Partial Class FrmProductor
         Me.TabPage1.Text = "Datos Generales"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
+        'TxtNumeroCedula
+        '
+        Me.TxtNumeroCedula.Location = New System.Drawing.Point(485, 81)
+        Me.TxtNumeroCedula.Mask = "0000000000000>A"
+        Me.TxtNumeroCedula.Name = "TxtNumeroCedula"
+        Me.TxtNumeroCedula.Size = New System.Drawing.Size(135, 20)
+        Me.TxtNumeroCedula.TabIndex = 168
+        '
+        'Label29
+        '
+        Me.Label29.AutoSize = True
+        Me.Label29.Location = New System.Drawing.Point(391, 86)
+        Me.Label29.Name = "Label29"
+        Me.Label29.Size = New System.Drawing.Size(40, 13)
+        Me.Label29.TabIndex = 167
+        Me.Label29.Text = "Cedula"
+        '
         'CboCodigoProductor
         '
         Me.CboCodigoProductor.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
@@ -326,7 +347,7 @@ Partial Class FrmProductor
         Me.ChkCausaIVA.AutoSize = True
         Me.ChkCausaIVA.Checked = True
         Me.ChkCausaIVA.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.ChkCausaIVA.Location = New System.Drawing.Point(485, 257)
+        Me.ChkCausaIVA.Location = New System.Drawing.Point(485, 273)
         Me.ChkCausaIVA.Name = "ChkCausaIVA"
         Me.ChkCausaIVA.Size = New System.Drawing.Size(76, 17)
         Me.ChkCausaIVA.TabIndex = 165
@@ -351,7 +372,7 @@ Partial Class FrmProductor
         Me.CboRuta.EditorHeight = 15
         Me.CboRuta.Images.Add(CType(resources.GetObject("CboRuta.Images"), System.Drawing.Image))
         Me.CboRuta.ItemHeight = 15
-        Me.CboRuta.Location = New System.Drawing.Point(485, 170)
+        Me.CboRuta.Location = New System.Drawing.Point(485, 186)
         Me.CboRuta.MatchEntryTimeout = CType(2000, Long)
         Me.CboRuta.MaxDropDownItems = CType(5, Short)
         Me.CboRuta.MaxLength = 32767
@@ -382,7 +403,7 @@ Partial Class FrmProductor
         Me.CboCooperativa.EditorHeight = 15
         Me.CboCooperativa.Images.Add(CType(resources.GetObject("CboCooperativa.Images"), System.Drawing.Image))
         Me.CboCooperativa.ItemHeight = 15
-        Me.CboCooperativa.Location = New System.Drawing.Point(485, 145)
+        Me.CboCooperativa.Location = New System.Drawing.Point(485, 161)
         Me.CboCooperativa.MatchEntryTimeout = CType(2000, Long)
         Me.CboCooperativa.MaxDropDownItems = CType(5, Short)
         Me.CboCooperativa.MaxLength = 32767
@@ -413,7 +434,7 @@ Partial Class FrmProductor
         Me.CboDepartamentos.EditorHeight = 15
         Me.CboDepartamentos.Images.Add(CType(resources.GetObject("CboDepartamentos.Images"), System.Drawing.Image))
         Me.CboDepartamentos.ItemHeight = 15
-        Me.CboDepartamentos.Location = New System.Drawing.Point(485, 118)
+        Me.CboDepartamentos.Location = New System.Drawing.Point(485, 134)
         Me.CboDepartamentos.MatchEntryTimeout = CType(2000, Long)
         Me.CboDepartamentos.MaxDropDownItems = CType(5, Short)
         Me.CboDepartamentos.MaxLength = 32767
@@ -444,7 +465,7 @@ Partial Class FrmProductor
         Me.CboEscolaridad.EditorHeight = 15
         Me.CboEscolaridad.Images.Add(CType(resources.GetObject("CboEscolaridad.Images"), System.Drawing.Image))
         Me.CboEscolaridad.ItemHeight = 15
-        Me.CboEscolaridad.Location = New System.Drawing.Point(485, 90)
+        Me.CboEscolaridad.Location = New System.Drawing.Point(485, 106)
         Me.CboEscolaridad.MatchEntryTimeout = CType(2000, Long)
         Me.CboEscolaridad.MaxDropDownItems = CType(5, Short)
         Me.CboEscolaridad.MaxLength = 32767
@@ -460,7 +481,7 @@ Partial Class FrmProductor
         'Button2
         '
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.Location = New System.Drawing.Point(591, 226)
+        Me.Button2.Location = New System.Drawing.Point(591, 242)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(29, 30)
         Me.Button2.TabIndex = 164
@@ -469,7 +490,7 @@ Partial Class FrmProductor
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(591, 194)
+        Me.Button1.Location = New System.Drawing.Point(591, 210)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(29, 30)
         Me.Button1.TabIndex = 163
@@ -478,7 +499,7 @@ Partial Class FrmProductor
         'Label28
         '
         Me.Label28.AutoSize = True
-        Me.Label28.Location = New System.Drawing.Point(393, 233)
+        Me.Label28.Location = New System.Drawing.Point(393, 249)
         Me.Label28.Name = "Label28"
         Me.Label28.Size = New System.Drawing.Size(67, 13)
         Me.Label28.TabIndex = 162
@@ -487,7 +508,7 @@ Partial Class FrmProductor
         'TxtCtaxPagar
         '
         Me.TxtCtaxPagar.AcceptsReturn = True
-        Me.TxtCtaxPagar.Location = New System.Drawing.Point(485, 230)
+        Me.TxtCtaxPagar.Location = New System.Drawing.Point(485, 246)
         Me.TxtCtaxPagar.Name = "TxtCtaxPagar"
         Me.TxtCtaxPagar.Size = New System.Drawing.Size(100, 20)
         Me.TxtCtaxPagar.TabIndex = 13
@@ -495,7 +516,7 @@ Partial Class FrmProductor
         'Lbl
         '
         Me.Lbl.AutoSize = True
-        Me.Lbl.Location = New System.Drawing.Point(394, 202)
+        Me.Lbl.Location = New System.Drawing.Point(394, 218)
         Me.Lbl.Name = "Lbl"
         Me.Lbl.Size = New System.Drawing.Size(70, 13)
         Me.Lbl.TabIndex = 160
@@ -503,7 +524,7 @@ Partial Class FrmProductor
         '
         'TxtCtaxCobrar
         '
-        Me.TxtCtaxCobrar.Location = New System.Drawing.Point(485, 199)
+        Me.TxtCtaxCobrar.Location = New System.Drawing.Point(485, 215)
         Me.TxtCtaxCobrar.Name = "TxtCtaxCobrar"
         Me.TxtCtaxCobrar.Size = New System.Drawing.Size(100, 20)
         Me.TxtCtaxCobrar.TabIndex = 12
@@ -512,7 +533,7 @@ Partial Class FrmProductor
         '
         Me.CboSexo.FormattingEnabled = True
         Me.CboSexo.Items.AddRange(New Object() {"Masculino", "Femenino"})
-        Me.CboSexo.Location = New System.Drawing.Point(485, 63)
+        Me.CboSexo.Location = New System.Drawing.Point(485, 56)
         Me.CboSexo.Name = "CboSexo"
         Me.CboSexo.Size = New System.Drawing.Size(135, 21)
         Me.CboSexo.TabIndex = 7
@@ -520,7 +541,7 @@ Partial Class FrmProductor
         'Label27
         '
         Me.Label27.AutoSize = True
-        Me.Label27.Location = New System.Drawing.Point(390, 69)
+        Me.Label27.Location = New System.Drawing.Point(390, 62)
         Me.Label27.Name = "Label27"
         Me.Label27.Size = New System.Drawing.Size(31, 13)
         Me.Label27.TabIndex = 156
@@ -529,7 +550,7 @@ Partial Class FrmProductor
         'Label26
         '
         Me.Label26.AutoSize = True
-        Me.Label26.Location = New System.Drawing.Point(390, 177)
+        Me.Label26.Location = New System.Drawing.Point(390, 193)
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(30, 13)
         Me.Label26.TabIndex = 154
@@ -538,7 +559,7 @@ Partial Class FrmProductor
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(390, 150)
+        Me.Label5.Location = New System.Drawing.Point(390, 166)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(64, 13)
         Me.Label5.TabIndex = 152
@@ -547,7 +568,7 @@ Partial Class FrmProductor
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(390, 123)
+        Me.Label4.Location = New System.Drawing.Point(390, 139)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(79, 13)
         Me.Label4.TabIndex = 150
@@ -556,7 +577,7 @@ Partial Class FrmProductor
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(390, 96)
+        Me.Label3.Location = New System.Drawing.Point(390, 112)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(62, 13)
         Me.Label3.TabIndex = 148
@@ -565,7 +586,7 @@ Partial Class FrmProductor
         'DTFechaNacimientos
         '
         Me.DTFechaNacimientos.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DTFechaNacimientos.Location = New System.Drawing.Point(485, 39)
+        Me.DTFechaNacimientos.Location = New System.Drawing.Point(485, 32)
         Me.DTFechaNacimientos.Name = "DTFechaNacimientos"
         Me.DTFechaNacimientos.Size = New System.Drawing.Size(135, 20)
         Me.DTFechaNacimientos.TabIndex = 6
@@ -573,7 +594,7 @@ Partial Class FrmProductor
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(388, 39)
+        Me.Label2.Location = New System.Drawing.Point(388, 32)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(93, 13)
         Me.Label2.TabIndex = 146
@@ -582,7 +603,7 @@ Partial Class FrmProductor
         'DTFechaAdmision
         '
         Me.DTFechaAdmision.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DTFechaAdmision.Location = New System.Drawing.Point(485, 13)
+        Me.DTFechaAdmision.Location = New System.Drawing.Point(485, 6)
         Me.DTFechaAdmision.Name = "DTFechaAdmision"
         Me.DTFechaAdmision.Size = New System.Drawing.Size(135, 20)
         Me.DTFechaAdmision.TabIndex = 5
@@ -590,7 +611,7 @@ Partial Class FrmProductor
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(388, 13)
+        Me.Label1.Location = New System.Drawing.Point(388, 6)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(82, 13)
         Me.Label1.TabIndex = 144
@@ -601,7 +622,7 @@ Partial Class FrmProductor
         Me.ChkActivo.AutoSize = True
         Me.ChkActivo.Checked = True
         Me.ChkActivo.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.ChkActivo.Location = New System.Drawing.Point(399, 257)
+        Me.ChkActivo.Location = New System.Drawing.Point(399, 273)
         Me.ChkActivo.Name = "ChkActivo"
         Me.ChkActivo.Size = New System.Drawing.Size(56, 17)
         Me.ChkActivo.TabIndex = 143
@@ -1515,4 +1536,6 @@ Partial Class FrmProductor
     Friend WithEvents CboCodigoProductor As C1.Win.C1List.C1Combo
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
+    Friend WithEvents Label29 As System.Windows.Forms.Label
+    Friend WithEvents TxtNumeroCedula As System.Windows.Forms.MaskedTextBox
 End Class

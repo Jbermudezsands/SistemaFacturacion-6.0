@@ -774,7 +774,7 @@ Partial Public Class ArepPlanilla
         '
         Me.Detail1.ColumnSpacing = 0.0!
         Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TextBox1, Me.TextBox2, Me.TextBox3, Me.TextBox4, Me.TextBox5, Me.TextBox6, Me.TextBox7, Me.TextBox8, Me.TextBox9, Me.TextBox10, Me.TextBox11, Me.TextBox12, Me.TextBox13, Me.TextBox14, Me.TextBox15, Me.TextBox16, Me.TextBox17, Me.TextBox18, Me.TextBox19, Me.TextBox20, Me.TextBox21, Me.TextBox24, Me.TextBox25})
-        Me.Detail1.Height = 0.1979167!
+        Me.Detail1.Height = 0.1770833!
         Me.Detail1.Name = "Detail1"
         '
         'TextBox1
@@ -1200,11 +1200,12 @@ Partial Public Class ArepPlanilla
         Me.TextBox24.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.TextBox24.DataField = "Anticipo"
         Me.TextBox24.Height = 0.1875!
-        Me.TextBox24.Left = 8.875!
+        Me.TextBox24.Left = 8.833333!
         Me.TextBox24.Name = "TextBox24"
         Me.TextBox24.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox24.Text = "Anticipo"
-        Me.TextBox24.Top = 0.0!
+        Me.TextBox24.Top = 0.3333333!
+        Me.TextBox24.Visible = False
         Me.TextBox24.Width = 0.5625!
         '
         'TextBox25
@@ -1219,11 +1220,12 @@ Partial Public Class ArepPlanilla
         Me.TextBox25.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.TextBox25.DataField = "DeduccionTransporte"
         Me.TextBox25.Height = 0.1875!
-        Me.TextBox25.Left = 9.4375!
+        Me.TextBox25.Left = 9.444445!
         Me.TextBox25.Name = "TextBox25"
         Me.TextBox25.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox25.Text = "Transporte"
-        Me.TextBox25.Top = 0.0!
+        Me.TextBox25.Top = 0.3888889!
+        Me.TextBox25.Visible = False
         Me.TextBox25.Width = 0.5625!
         '
         'PageFooter1
