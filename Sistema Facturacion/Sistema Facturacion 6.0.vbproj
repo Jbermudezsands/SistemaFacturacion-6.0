@@ -229,6 +229,12 @@
     <Compile Include="FrmListaLotes.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmListaSolicitud.Designer.vb">
+      <DependentUpon>FrmListaSolicitud.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmListaSolicitud.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmLotes.Designer.vb">
       <DependentUpon>FrmLotes.vb</DependentUpon>
     </Compile>
@@ -245,6 +251,12 @@
       <DependentUpon>FrmLotesInfo.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmLotesInfo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmNuevaSolicitud.Designer.vb">
+      <DependentUpon>FrmNuevaSolicitud.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmNuevaSolicitud.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmNuevoLote.Designer.vb">
@@ -1393,6 +1405,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>FrmListaLotes.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmListaSolicitud.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmListaSolicitud.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmLotes.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmLotes.vb</DependentUpon>
@@ -1404,6 +1420,10 @@
     <EmbeddedResource Include="FrmLotesInfo.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmLotesInfo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmNuevaSolicitud.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmNuevaSolicitud.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmNuevoLote.resx">
       <SubType>Designer</SubType>

@@ -644,15 +644,15 @@ Public Class MDIMain
                     Me.RibbonRecibos.Enabled = False
 
 
-                ElseIf DataSet.Tables("DatosEmpresa").Rows(0)("Version") = "Bascula" Then
+                ElseIf Trim(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) = "Bascula" Then
                     Me.RibbonTab5.Visible = True
                     Me.RibbonTab6.Visible = False
 
-                ElseIf DataSet.Tables("DatosEmpresa").Rows(0)("Version") = "Planilla" Then
+                ElseIf Trim(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) = "Planilla" Then
                     Me.RibbonTab5.Visible = False
                     Me.RibbonTab6.Visible = True
 
-                ElseIf DataSet.Tables("DatosEmpresa").Rows(0)("Version") = "Facturacion" Then
+                ElseIf Trim(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) = "Facturacion" Then
                     Me.RibbonTab5.Visible = False
                     Me.RibbonTab6.Visible = False
 
@@ -1074,5 +1074,10 @@ Public Class MDIMain
     Private Sub RibbonButton61_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton61.Click
         My.Forms.FrmRecepcionPlanilla.MdiParent = Me
         My.Forms.FrmRecepcionPlanilla.Show()
+    End Sub
+
+    Private Sub RibbonButton7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton7.Click
+        My.Forms.FrmListaSolicitud.MdiParent = Me
+        My.Forms.FrmListaSolicitud.Show()
     End Sub
 End Class

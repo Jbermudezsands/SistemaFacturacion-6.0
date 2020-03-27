@@ -568,7 +568,7 @@ Partial Public Class ArepMovimientoProductos
         '
         Me.Detail1.ColumnSpacing = 0.0!
         Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.SrpCompras, Me.SrpFacturas})
-        Me.Detail1.Height = 0.4791667!
+        Me.Detail1.Height = 0.4166667!
         Me.Detail1.Name = "Detail1"
         '
         'SrpCompras
@@ -582,13 +582,13 @@ Partial Public Class ArepMovimientoProductos
         Me.SrpCompras.Border.TopColor = System.Drawing.Color.Black
         Me.SrpCompras.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.SrpCompras.CloseBorder = False
-        Me.SrpCompras.Height = 0.1875!
-        Me.SrpCompras.Left = 0.0625!
+        Me.SrpCompras.Height = 0.1666667!
+        Me.SrpCompras.Left = 0.05555556!
         Me.SrpCompras.Name = "SrpCompras"
         Me.SrpCompras.Report = Nothing
         Me.SrpCompras.ReportName = "SrpCompras"
         Me.SrpCompras.Top = 0.0!
-        Me.SrpCompras.Width = 7.8125!
+        Me.SrpCompras.Width = 7.888889!
         '
         'SrpFacturas
         '
@@ -601,13 +601,13 @@ Partial Public Class ArepMovimientoProductos
         Me.SrpFacturas.Border.TopColor = System.Drawing.Color.Black
         Me.SrpFacturas.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.SrpFacturas.CloseBorder = False
-        Me.SrpFacturas.Height = 0.25!
-        Me.SrpFacturas.Left = 0.0625!
+        Me.SrpFacturas.Height = 0.1666667!
+        Me.SrpFacturas.Left = 0.05555556!
         Me.SrpFacturas.Name = "SrpFacturas"
         Me.SrpFacturas.Report = Nothing
         Me.SrpFacturas.ReportName = "SrpFacturas"
-        Me.SrpFacturas.Top = 0.1875!
-        Me.SrpFacturas.Width = 7.8125!
+        Me.SrpFacturas.Top = 0.2222222!
+        Me.SrpFacturas.Width = 7.888889!
         '
         'PageFooter1
         '

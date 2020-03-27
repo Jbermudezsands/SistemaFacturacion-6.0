@@ -103,6 +103,7 @@ Partial Class MDIMain
         Me.RibbonArqueo = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonCtasxCobrar = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonCtasXPagar = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonButton7 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonTab2 = New C1.Win.C1Ribbon.RibbonTab
         Me.RibbonGroup4 = New C1.Win.C1Ribbon.RibbonGroup
         Me.RibbonHistoricoFactura = New C1.Win.C1Ribbon.RibbonButton
@@ -777,6 +778,7 @@ Partial Class MDIMain
         Me.RibbonGroup3.Items.Add(Me.RibbonArqueo)
         Me.RibbonGroup3.Items.Add(Me.RibbonCtasxCobrar)
         Me.RibbonGroup3.Items.Add(Me.RibbonCtasXPagar)
+        Me.RibbonGroup3.Items.Add(Me.RibbonButton7)
         Me.RibbonGroup3.Text = "Financieros"
         '
         'RibbonPagos
@@ -820,6 +822,14 @@ Partial Class MDIMain
         Me.RibbonCtasXPagar.Text = "CtasxPagar"
         Me.RibbonCtasXPagar.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         Me.RibbonCtasXPagar.ToolTip = "Cuentas por Pagar"
+        '
+        'RibbonButton7
+        '
+        Me.RibbonButton7.ID = "RibbonButton7"
+        Me.RibbonButton7.LargeImage = CType(resources.GetObject("RibbonButton7.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton7.SmallImage = CType(resources.GetObject("RibbonButton7.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton7.Text = "Solicitud"
+        Me.RibbonButton7.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'RibbonTab2
         '
@@ -1417,5 +1427,6 @@ Partial Class MDIMain
     Friend WithEvents RibbonButtonDepartamento As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButtonCooperativa As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButtonRuta As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButton7 As C1.Win.C1Ribbon.RibbonButton
 
 End Class

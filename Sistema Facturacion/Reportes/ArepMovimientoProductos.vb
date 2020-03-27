@@ -4,10 +4,12 @@ Imports System.Data
 Imports System
 
 
-Public Class ArepMovimientoProductos 
+Public Class ArepMovimientoProductos
     Inherits ActiveReport3
     Private ComprasSubReport As SubReporteCompras = Nothing
     Private FacturasSubReport As SubReporteFacturas = Nothing
+
+
 
 
 
@@ -27,11 +29,25 @@ Public Class ArepMovimientoProductos
             Me.SrpFacturas.Report = FacturasSubReport
             Me.SrpFacturas.Report.DataSource = New DataDynamics.ActiveReports.DataSources.SqlDBDataSource
         End If
+
+        Dim FechaIni As String, Inicial As Double
+
+        My.Application.DoEvents()
+
+        FechaIni = Format(My.Forms.FrmReportes.DTPFechaIni.Value, "yyyy-MM-dd")
+        If FrmReportes.CmbAgrupado.Text = "Bodega" Then
+            Inicial = BuscaInventarioInicialEntreBodega(Me.TxtCodProducto.Text, FechaIni, My.Forms.FrmReportes.CmbRango1.Text, My.Forms.FrmReportes.CmbRango2.Text)
+        Else
+            Inicial = BuscaInventarioInicial(Me.TxtCodProducto.Text, FechaIni)
+        End If
+        Me.TxtSaldoInicial.Text = Format(Inicial, "##,##0.00")
+        Me.TxtImporteInicial.Text = Format(MontoInicial, "##,##0.00")
+
     End Sub
 
     Private Sub Detail1_Format(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Detail1.Format
         Dim SQLString As String, CodProductos As String = "", FechaIni As String, FechaFin As String
-        Dim CodBodega1 As String = "", CodBodega2 As String = ""
+        Dim CodBodega1 As String = "", CodBodega2 As String = "", Dataset As New DataSet
 
         FechaIni = Format(My.Forms.FrmReportes.DTPFechaIni.Value, "yyyy-MM-dd")
         FechaFin = Format(My.Forms.FrmReportes.DTPFechaFin.Value, "yyyy-MM-dd")
@@ -46,11 +62,10 @@ Public Class ArepMovimientoProductos
 
         If My.Forms.FrmReportes.CmbRango1.Text = "" And My.Forms.FrmReportes.CmbRango2.Text = "" Then
             SQLString = "SELECT Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad AS Importe, Facturas.Cod_Bodega,Precio_Unitario FROM  Detalle_Facturas INNER JOIN Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " & _
-                        "WHERE (Detalle_Facturas.Tipo_Factura <> N'Cotizacion') AND (Detalle_Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & FechaIni & "', 102) AND CONVERT(DATETIME, '" & FechaFin & "', 102)) AND (Detalle_Facturas.Cod_Producto BETWEEN '" & CodProductos & "' AND '" & CodProductos & "')  ORDER BY Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Cod_Producto"  'AND (Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad <> 0)
+                        "WHERE (Detalle_Facturas.Tipo_Factura <> N'Cotizacion' AND Detalle_Facturas.Tipo_Factura <> 'Orden de Trabajo') AND (Detalle_Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & FechaIni & "', 102) AND CONVERT(DATETIME, '" & FechaFin & "', 102)) AND (Detalle_Facturas.Cod_Producto BETWEEN '" & CodProductos & "' AND '" & CodProductos & "')  ORDER BY Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Cod_Producto"  'AND (Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad <> 0)
         Else
             SQLString = "SELECT  Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad AS Importe, Facturas.Cod_Bodega,Precio_Unitario FROM Detalle_Facturas INNER JOIN Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " & _
-                        "WHERE (Detalle_Facturas.Tipo_Factura <> N'Cotizacion') AND (Detalle_Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & FechaIni & "', 102) AND CONVERT(DATETIME, '" & FechaFin & "', 102)) AND (Detalle_Facturas.Cod_Producto BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Facturas.Cod_Bodega BETWEEN '" & CodBodega1 & "' AND '" & CodBodega2 & "')  ORDER BY Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Cod_Producto"  'AND (Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad <> 0)
-
+                        "WHERE (Detalle_Facturas.Tipo_Factura <> N'Cotizacion' AND Detalle_Facturas.Tipo_Factura <> 'Orden de Trabajo') AND (Detalle_Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & FechaIni & "', 102) AND CONVERT(DATETIME, '" & FechaFin & "', 102)) AND (Detalle_Facturas.Cod_Producto BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Facturas.Cod_Bodega BETWEEN '" & CodBodega1 & "' AND '" & CodBodega2 & "')  ORDER BY Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Cod_Producto"  'AND (Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad <> 0)
         End If
 
 
@@ -58,6 +73,7 @@ Public Class ArepMovimientoProductos
         CType(Me.SrpFacturas.Report.DataSource, DataDynamics.ActiveReports.DataSources.SqlDBDataSource).ConnectionString = Conexion
         CType(Me.SrpFacturas.Report.DataSource, DataDynamics.ActiveReports.DataSources.SqlDBDataSource).SQL = SQLString
         My.Application.DoEvents()
+
 
         If My.Forms.FrmReportes.CmbRango1.Text = "" And My.Forms.FrmReportes.CmbRango2.Text = "" Then
             'SQLString = "SELECT Detalle_Compras.Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cantidad, Detalle_Compras.Importe, Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Numero_Compra, Compras.Cod_Bodega FROM Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  " & _
@@ -86,30 +102,33 @@ Public Class ArepMovimientoProductos
 
             End If
         End If
-            '//////////////////////////////ACTUALIZO EL REPORTE CON LA CONSULTA //////////////////////////////////////////////////////////////////////
-            CType(Me.SrpCompras.Report.DataSource, DataDynamics.ActiveReports.DataSources.SqlDBDataSource).ConnectionString = Conexion
-            CType(Me.SrpCompras.Report.DataSource, DataDynamics.ActiveReports.DataSources.SqlDBDataSource).SQL = SQLString
-            My.Application.DoEvents()
 
-            My.Forms.FrmReportes.Text = "Procesando: " & CodProductos
-            My.Forms.FrmReportes.ProgressBar.Value = My.Forms.FrmReportes.ProgressBar.Value + 1
-            My.Application.DoEvents()
+
+
+        '//////////////////////////////ACTUALIZO EL REPORTE CON LA CONSULTA //////////////////////////////////////////////////////////////////////
+        CType(Me.SrpCompras.Report.DataSource, DataDynamics.ActiveReports.DataSources.SqlDBDataSource).ConnectionString = Conexion
+        CType(Me.SrpCompras.Report.DataSource, DataDynamics.ActiveReports.DataSources.SqlDBDataSource).SQL = SQLString
+        My.Application.DoEvents()
+
+        My.Forms.FrmReportes.Text = "Procesando: " & CodProductos
+        My.Forms.FrmReportes.ProgressBar.Value = My.Forms.FrmReportes.ProgressBar.Value + 1
+        My.Application.DoEvents()
 
     End Sub
 
     Private Sub GroupHeader1_Format(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupHeader1.Format
-        Dim FechaIni As String, Inicial As Double
+        'Dim FechaIni As String, Inicial As Double
 
-        My.Application.DoEvents()
+        'My.Application.DoEvents()
 
-        FechaIni = Format(My.Forms.FrmReportes.DTPFechaIni.Value, "yyyy-MM-dd")
-        If FrmReportes.CmbAgrupado.Text = "Bodega" Then
-            Inicial = BuscaInventarioInicialEntreBodega(Me.TxtCodProducto.Text, FechaIni, My.Forms.FrmReportes.CmbRango1.Text, My.Forms.FrmReportes.CmbRango2.Text)
-        Else
-            Inicial = BuscaInventarioInicial(Me.TxtCodProducto.Text, FechaIni)
-        End If
-        Me.TxtSaldoInicial.Text = Format(Inicial, "##,##0.00")
-        Me.TxtImporteInicial.Text = Format(MontoInicial, "##,##0.00")
+        'FechaIni = Format(My.Forms.FrmReportes.DTPFechaIni.Value, "yyyy-MM-dd")
+        'If FrmReportes.CmbAgrupado.Text = "Bodega" Then
+        '    Inicial = BuscaInventarioInicialEntreBodega(Me.TxtCodProducto.Text, FechaIni, My.Forms.FrmReportes.CmbRango1.Text, My.Forms.FrmReportes.CmbRango2.Text)
+        'Else
+        '    Inicial = BuscaInventarioInicial(Me.TxtCodProducto.Text, FechaIni)
+        'End If
+        'Me.TxtSaldoInicial.Text = Format(Inicial, "##,##0.00")
+        'Me.TxtImporteInicial.Text = Format(MontoInicial, "##,##0.00")
     End Sub
 
     Private Sub GroupFooter1_Format(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupFooter1.Format

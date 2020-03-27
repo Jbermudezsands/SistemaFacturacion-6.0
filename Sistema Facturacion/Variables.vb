@@ -14,5 +14,5 @@ Module Variables
     Public EditarFactura As Boolean = True, CodigoProducto() As String, Mensaje As String
     Public CambioFechaRespuesta As Boolean = False, FechaFacturacion As Date, RefNotaDebito As String
     Public iAño As Integer, FechaGuardar As Date
-
+    Public DatasetDetalle As New DataSet
 End Module
