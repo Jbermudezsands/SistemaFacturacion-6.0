@@ -25,14 +25,20 @@ Partial Class FrmNuevaSolicitud
         Me.LblTitulo = New System.Windows.Forms.Label
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.lbldatosre = New System.Windows.Forms.Label
+        Me.Grupo = New System.Windows.Forms.GroupBox
+        Me.DtpHoraManual = New System.Windows.Forms.DateTimePicker
+        Me.DTPFecha = New System.Windows.Forms.Label
+        Me.LblHora = New System.Windows.Forms.Label
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Grupo.SuspendLayout()
         Me.SuspendLayout()
         '
         'CboUnidad
         '
         Me.CboUnidad.FormattingEnabled = True
-        Me.CboUnidad.Location = New System.Drawing.Point(122, 83)
+        Me.CboUnidad.Location = New System.Drawing.Point(123, 143)
         Me.CboUnidad.Name = "CboUnidad"
         Me.CboUnidad.Size = New System.Drawing.Size(211, 21)
         Me.CboUnidad.TabIndex = 17
@@ -40,7 +46,7 @@ Partial Class FrmNuevaSolicitud
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(14, 86)
+        Me.Label5.Location = New System.Drawing.Point(15, 146)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(102, 13)
         Me.Label5.TabIndex = 16
@@ -78,11 +84,69 @@ Partial Class FrmNuevaSolicitud
         Me.PictureBox1.TabIndex = 112
         Me.PictureBox1.TabStop = False
         '
+        'lbldatosre
+        '
+        Me.lbldatosre.AutoSize = True
+        Me.lbldatosre.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbldatosre.ForeColor = System.Drawing.Color.Black
+        Me.lbldatosre.Location = New System.Drawing.Point(35, -2)
+        Me.lbldatosre.Name = "lbldatosre"
+        Me.lbldatosre.Size = New System.Drawing.Size(181, 20)
+        Me.lbldatosre.TabIndex = 176
+        Me.lbldatosre.Text = "DATOS DE SOLICITUD"
+        '
+        'Grupo
+        '
+        Me.Grupo.BackColor = System.Drawing.Color.Transparent
+        Me.Grupo.Controls.Add(Me.DtpHoraManual)
+        Me.Grupo.Controls.Add(Me.DTPFecha)
+        Me.Grupo.Controls.Add(Me.LblHora)
+        Me.Grupo.Controls.Add(Me.lbldatosre)
+        Me.Grupo.Location = New System.Drawing.Point(9, 70)
+        Me.Grupo.Name = "Grupo"
+        Me.Grupo.Size = New System.Drawing.Size(588, 65)
+        Me.Grupo.TabIndex = 247
+        Me.Grupo.TabStop = False
+        '
+        'DtpHoraManual
+        '
+        Me.DtpHoraManual.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DtpHoraManual.Format = System.Windows.Forms.DateTimePickerFormat.Time
+        Me.DtpHoraManual.Location = New System.Drawing.Point(20, 72)
+        Me.DtpHoraManual.Name = "DtpHoraManual"
+        Me.DtpHoraManual.Size = New System.Drawing.Size(188, 35)
+        Me.DtpHoraManual.TabIndex = 184
+        Me.DtpHoraManual.Visible = False
+        '
+        'DTPFecha
+        '
+        Me.DTPFecha.AutoSize = True
+        Me.DTPFecha.BackColor = System.Drawing.Color.Transparent
+        Me.DTPFecha.Font = New System.Drawing.Font("Microsoft Sans Serif", 21.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DTPFecha.ForeColor = System.Drawing.Color.Black
+        Me.DTPFecha.Location = New System.Drawing.Point(18, 22)
+        Me.DTPFecha.Name = "DTPFecha"
+        Me.DTPFecha.Size = New System.Drawing.Size(169, 33)
+        Me.DTPFecha.TabIndex = 182
+        Me.DTPFecha.Text = "20/10/2017"
+        '
+        'LblHora
+        '
+        Me.LblHora.AutoSize = True
+        Me.LblHora.Font = New System.Drawing.Font("Microsoft Sans Serif", 21.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblHora.ForeColor = System.Drawing.Color.Black
+        Me.LblHora.Location = New System.Drawing.Point(203, 22)
+        Me.LblHora.Name = "LblHora"
+        Me.LblHora.Size = New System.Drawing.Size(205, 33)
+        Me.LblHora.TabIndex = 181
+        Me.LblHora.Text = "10:23:55 p.m."
+        '
         'FrmNuevaSolicitud
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(609, 459)
+        Me.Controls.Add(Me.Grupo)
         Me.Controls.Add(Me.LblTitulo)
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.PictureBox1)
@@ -94,6 +158,8 @@ Partial Class FrmNuevaSolicitud
         Me.Text = "Nueva Solicitud"
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Grupo.ResumeLayout(False)
+        Me.Grupo.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -103,4 +169,9 @@ Partial Class FrmNuevaSolicitud
     Friend WithEvents LblTitulo As System.Windows.Forms.Label
     Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents lbldatosre As System.Windows.Forms.Label
+    Friend WithEvents Grupo As System.Windows.Forms.GroupBox
+    Friend WithEvents DtpHoraManual As System.Windows.Forms.DateTimePicker
+    Friend WithEvents DTPFecha As System.Windows.Forms.Label
+    Friend WithEvents LblHora As System.Windows.Forms.Label
 End Class

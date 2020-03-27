@@ -10443,6 +10443,9 @@ Public Class FrmReportes
                 Dim SQlString As String = "", Registros As Double, i As Double, oDataRow As DataRow, Registros2 As Double = 0
                 Dim Monto As Double = 0, NombreRubro As String = ""
 
+
+                MiConexion.Close()
+
                 If Dir(RutaLogo) <> "" Then
                     ArepComprobantesCaja.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
                 End If
@@ -10452,6 +10455,7 @@ Public Class FrmReportes
                 ArepComprobantesCaja.LblRuc.Text = Ruc
                 ArepComprobantesCaja.LblFecha.Text = "Desde " & Format(Fecha1, "dd/MM/yyyy") & " Hasta " & Format(Fecha2, "dd/MM/yyyy")
 
+                MiConexion.Open()
                 '*******************************************************************************************************************************
                 '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
                 '*******************************************************************************************************************************
@@ -10556,6 +10560,8 @@ Public Class FrmReportes
                 '           "HAVING  (Detalle_Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Rubro.Nombre_Rubro DESC"
                 'SQL.ConnectionString = Conexion
                 'SQL.SQL = SqlDatos
+
+                MiConexion.Close()
 
                 Dim ViewerForm As New FrmViewer()
                 'ArepComprobantesCaja.DataSource = SQL
@@ -11941,6 +11947,8 @@ Public Class FrmReportes
                 Me.GroupClientes.Visible = False
                 Me.GroupVendedor.Visible = False
                 Me.GroupBox1.Visible = True
+                Me.GroupVendedor.Visible = True
+                Me.GroupVendedor.Location = New Point(280, 123)
             Case "Reporte de Saldo de Clientes"
                 Me.Label1.Visible = False
                 Me.DTPFechaIni.Visible = False
