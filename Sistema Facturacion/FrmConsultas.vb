@@ -456,6 +456,36 @@ Public Class FrmConsultas
                     Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 620
 
                     MiConexion.Close()
+
+                Case "CodigoProductosSolicitud"
+                    Dim CodigoBodega As String = ""
+                    CodigoBodega = FrmNuevaSolicitud.CboCodigoBodega.Text
+
+                    Me.Size = New System.Drawing.Size(988, 424)
+                    Me.Location = New Point(160, 160)
+
+                    Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
+                    Me.ButtonSalir.Location = New Point(880, 305)
+
+                    SQlProductos = "SELECT DISTINCT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos WHERE (DetalleBodegas.Cod_Bodegas = '" & CodigoBodega & "') AND (Productos.Activo = N'Activo') ORDER BY Productos.Cod_Productos"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    MiConexion.Open()
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Codigo"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(0).Width = 70
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 170
+                    Me.TrueDBGridConsultas.Columns(2).Caption = "Tipo"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(2).Width = 65
+
+                    MiConexion.Close()
+
                 Case "CodigoProductosFactura"
                     Dim CodigoBodega As String = ""
                     CodigoBodega = FrmFacturas.CboCodigoBodega.Text
@@ -1269,6 +1299,10 @@ Public Class FrmConsultas
                 Descripcion = Me.BindingConsultas.Item(Posicion)("Descripcion_Producto")
                 Precio = Me.BindingConsultas.Item(Posicion)("Precio_Lista")
                 CodIva = Me.BindingConsultas.Item(Posicion)("Cod_Iva")
+            Case "CodigoProductosSolicitud"
+                Posicion = Me.BindingConsultas.Position
+                Codigo = Me.BindingConsultas.Item(Posicion)("Cod_Productos")
+                Descripcion = Me.BindingConsultas.Item(Posicion)("Descripcion_Producto")
             Case "Arqueo"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("CodArqueo")

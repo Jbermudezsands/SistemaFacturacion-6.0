@@ -47,11 +47,9 @@ Partial Class FrmArqueo
         Me.Label8 = New System.Windows.Forms.Label
         Me.Button2 = New System.Windows.Forms.Button
         Me.TxtTotalChequeCordobas = New System.Windows.Forms.TextBox
-        Me.Label10 = New System.Windows.Forms.Label
         Me.TxtTotalChequeDolares = New System.Windows.Forms.TextBox
         Me.Label11 = New System.Windows.Forms.Label
         Me.TextBox10 = New System.Windows.Forms.TextBox
-        Me.Label12 = New System.Windows.Forms.Label
         Me.Label13 = New System.Windows.Forms.Label
         Me.TxtObservaciones = New System.Windows.Forms.TextBox
         Me.TxtPracticadoPor = New System.Windows.Forms.TextBox
@@ -71,6 +69,10 @@ Partial Class FrmArqueo
         Me.BtnSalir = New System.Windows.Forms.Button
         Me.BtnProcesar = New System.Windows.Forms.Button
         Me.ProgressBar = New System.Windows.Forms.ProgressBar
+        Me.Label17 = New System.Windows.Forms.Label
+        Me.Label18 = New System.Windows.Forms.Label
+        Me.TxtFondoApertura = New System.Windows.Forms.TextBox
+        Me.Label10 = New System.Windows.Forms.Label
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TdbGridCordobas, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -210,7 +212,7 @@ Partial Class FrmArqueo
         '
         Me.TxtSubTotalCordobas.BackColor = System.Drawing.Color.White
         Me.TxtSubTotalCordobas.ForeColor = System.Drawing.Color.Black
-        Me.TxtSubTotalCordobas.Location = New System.Drawing.Point(210, 361)
+        Me.TxtSubTotalCordobas.Location = New System.Drawing.Point(210, 362)
         Me.TxtSubTotalCordobas.Name = "TxtSubTotalCordobas"
         Me.TxtSubTotalCordobas.Size = New System.Drawing.Size(60, 20)
         Me.TxtSubTotalCordobas.TabIndex = 218
@@ -220,16 +222,17 @@ Partial Class FrmArqueo
         'TxtSumaFacturaDolares
         '
         Me.TxtSumaFacturaDolares.BackColor = System.Drawing.Color.White
-        Me.TxtSumaFacturaDolares.Location = New System.Drawing.Point(1059, 361)
+        Me.TxtSumaFacturaDolares.Location = New System.Drawing.Point(559, 420)
         Me.TxtSumaFacturaDolares.Name = "TxtSumaFacturaDolares"
         Me.TxtSumaFacturaDolares.Size = New System.Drawing.Size(67, 20)
         Me.TxtSumaFacturaDolares.TabIndex = 220
         Me.TxtSumaFacturaDolares.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.TxtSumaFacturaDolares.Visible = False
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(956, 368)
+        Me.Label4.Location = New System.Drawing.Point(966, 367)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(86, 13)
         Me.Label4.TabIndex = 219
@@ -238,7 +241,7 @@ Partial Class FrmArqueo
         'TxtSubTotalDolares
         '
         Me.TxtSubTotalDolares.BackColor = System.Drawing.Color.White
-        Me.TxtSubTotalDolares.Location = New System.Drawing.Point(471, 361)
+        Me.TxtSubTotalDolares.Location = New System.Drawing.Point(473, 362)
         Me.TxtSubTotalDolares.Name = "TxtSubTotalDolares"
         Me.TxtSubTotalDolares.Size = New System.Drawing.Size(61, 20)
         Me.TxtSubTotalDolares.TabIndex = 222
@@ -291,7 +294,7 @@ Partial Class FrmArqueo
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(927, 422)
+        Me.Label6.Location = New System.Drawing.Point(927, 397)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(103, 13)
         Me.Label6.TabIndex = 225
@@ -300,7 +303,7 @@ Partial Class FrmArqueo
         'TxtCordobasDolares
         '
         Me.TxtCordobasDolares.BackColor = System.Drawing.Color.White
-        Me.TxtCordobasDolares.Location = New System.Drawing.Point(1036, 419)
+        Me.TxtCordobasDolares.Location = New System.Drawing.Point(1036, 394)
         Me.TxtCordobasDolares.Name = "TxtCordobasDolares"
         Me.TxtCordobasDolares.Size = New System.Drawing.Size(90, 20)
         Me.TxtCordobasDolares.TabIndex = 226
@@ -309,7 +312,7 @@ Partial Class FrmArqueo
         'TxtValorFacturas
         '
         Me.TxtValorFacturas.BackColor = System.Drawing.Color.White
-        Me.TxtValorFacturas.Location = New System.Drawing.Point(1036, 443)
+        Me.TxtValorFacturas.Location = New System.Drawing.Point(1036, 418)
         Me.TxtValorFacturas.Name = "TxtValorFacturas"
         Me.TxtValorFacturas.Size = New System.Drawing.Size(90, 20)
         Me.TxtValorFacturas.TabIndex = 228
@@ -318,7 +321,7 @@ Partial Class FrmArqueo
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(940, 446)
+        Me.Label7.Location = New System.Drawing.Point(940, 421)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(84, 13)
         Me.Label7.TabIndex = 227
@@ -359,25 +362,16 @@ Partial Class FrmArqueo
         'TxtTotalChequeCordobas
         '
         Me.TxtTotalChequeCordobas.BackColor = System.Drawing.Color.White
-        Me.TxtTotalChequeCordobas.Location = New System.Drawing.Point(737, 394)
+        Me.TxtTotalChequeCordobas.Location = New System.Drawing.Point(741, 362)
         Me.TxtTotalChequeCordobas.Name = "TxtTotalChequeCordobas"
         Me.TxtTotalChequeCordobas.Size = New System.Drawing.Size(90, 20)
         Me.TxtTotalChequeCordobas.TabIndex = 233
         Me.TxtTotalChequeCordobas.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
-        'Label10
-        '
-        Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(617, 396)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(122, 13)
-        Me.Label10.TabIndex = 232
-        Me.Label10.Text = "Total Cheq mas Tarjetas"
-        '
         'TxtTotalChequeDolares
         '
         Me.TxtTotalChequeDolares.BackColor = System.Drawing.Color.White
-        Me.TxtTotalChequeDolares.Location = New System.Drawing.Point(1054, 394)
+        Me.TxtTotalChequeDolares.Location = New System.Drawing.Point(1054, 362)
         Me.TxtTotalChequeDolares.Name = "TxtTotalChequeDolares"
         Me.TxtTotalChequeDolares.Size = New System.Drawing.Size(73, 20)
         Me.TxtTotalChequeDolares.TabIndex = 237
@@ -386,28 +380,21 @@ Partial Class FrmArqueo
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(989, 396)
+        Me.Label11.Location = New System.Drawing.Point(808, 427)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(59, 13)
         Me.Label11.TabIndex = 236
         Me.Label11.Text = "SubTotal $"
+        Me.Label11.Visible = False
         '
         'TextBox10
         '
         Me.TextBox10.BackColor = System.Drawing.Color.White
-        Me.TextBox10.Location = New System.Drawing.Point(908, 394)
+        Me.TextBox10.Location = New System.Drawing.Point(719, 419)
         Me.TextBox10.Name = "TextBox10"
         Me.TextBox10.Size = New System.Drawing.Size(68, 20)
         Me.TextBox10.TabIndex = 235
-        '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(836, 396)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(66, 13)
-        Me.Label12.TabIndex = 234
-        Me.Label12.Text = "SubTotal C$"
+        Me.TextBox10.Visible = False
         '
         'Label13
         '
@@ -528,16 +515,17 @@ Partial Class FrmArqueo
         '
         Me.TxtSumaFacturaCordobas.BackColor = System.Drawing.Color.White
         Me.TxtSumaFacturaCordobas.ForeColor = System.Drawing.Color.Black
-        Me.TxtSumaFacturaCordobas.Location = New System.Drawing.Point(759, 361)
+        Me.TxtSumaFacturaCordobas.Location = New System.Drawing.Point(291, 420)
         Me.TxtSumaFacturaCordobas.Name = "TxtSumaFacturaCordobas"
         Me.TxtSumaFacturaCordobas.Size = New System.Drawing.Size(72, 20)
         Me.TxtSumaFacturaCordobas.TabIndex = 249
         Me.TxtSumaFacturaCordobas.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.TxtSumaFacturaCordobas.Visible = False
         '
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(660, 364)
+        Me.Label16.Location = New System.Drawing.Point(604, 365)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(93, 13)
         Me.Label16.TabIndex = 248
@@ -569,6 +557,7 @@ Partial Class FrmArqueo
         Me.BtnProcesar.Text = "Procesar"
         Me.BtnProcesar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.BtnProcesar.UseVisualStyleBackColor = True
+        Me.BtnProcesar.Visible = False
         '
         'ProgressBar
         '
@@ -577,11 +566,52 @@ Partial Class FrmArqueo
         Me.ProgressBar.Size = New System.Drawing.Size(434, 23)
         Me.ProgressBar.TabIndex = 253
         '
+        'Label17
+        '
+        Me.Label17.AutoSize = True
+        Me.Label17.Location = New System.Drawing.Point(412, 423)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(122, 13)
+        Me.Label17.TabIndex = 232
+        Me.Label17.Text = "Total Cheq mas Tarjetas"
+        Me.Label17.Visible = False
+        '
+        'Label18
+        '
+        Me.Label18.AutoSize = True
+        Me.Label18.Location = New System.Drawing.Point(631, 423)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(66, 13)
+        Me.Label18.TabIndex = 234
+        Me.Label18.Text = "SubTotal C$"
+        Me.Label18.Visible = False
+        '
+        'TxtFondoApertura
+        '
+        Me.TxtFondoApertura.BackColor = System.Drawing.Color.White
+        Me.TxtFondoApertura.Enabled = False
+        Me.TxtFondoApertura.Location = New System.Drawing.Point(1036, 441)
+        Me.TxtFondoApertura.Name = "TxtFondoApertura"
+        Me.TxtFondoApertura.Size = New System.Drawing.Size(90, 20)
+        Me.TxtFondoApertura.TabIndex = 255
+        Me.TxtFondoApertura.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(944, 444)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(80, 13)
+        Me.Label10.TabIndex = 254
+        Me.Label10.Text = "Fondo Apertura"
+        '
         'FrmArqueo
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1236, 505)
+        Me.Controls.Add(Me.TxtFondoApertura)
+        Me.Controls.Add(Me.Label10)
         Me.Controls.Add(Me.ProgressBar)
         Me.Controls.Add(Me.BtnProcesar)
         Me.Controls.Add(Me.BtnSalir)
@@ -600,9 +630,9 @@ Partial Class FrmArqueo
         Me.Controls.Add(Me.TxtTotalChequeDolares)
         Me.Controls.Add(Me.Label11)
         Me.Controls.Add(Me.TextBox10)
-        Me.Controls.Add(Me.Label12)
+        Me.Controls.Add(Me.Label18)
         Me.Controls.Add(Me.TxtTotalChequeCordobas)
-        Me.Controls.Add(Me.Label10)
+        Me.Controls.Add(Me.Label17)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.TxtDiferencia)
         Me.Controls.Add(Me.Label8)
@@ -674,11 +704,9 @@ Partial Class FrmArqueo
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents Button2 As System.Windows.Forms.Button
     Friend WithEvents TxtTotalChequeCordobas As System.Windows.Forms.TextBox
-    Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents TxtTotalChequeDolares As System.Windows.Forms.TextBox
     Friend WithEvents Label11 As System.Windows.Forms.Label
     Friend WithEvents TextBox10 As System.Windows.Forms.TextBox
-    Friend WithEvents Label12 As System.Windows.Forms.Label
     Friend WithEvents Label13 As System.Windows.Forms.Label
     Friend WithEvents TxtObservaciones As System.Windows.Forms.TextBox
     Friend WithEvents TxtPracticadoPor As System.Windows.Forms.TextBox
@@ -698,4 +726,8 @@ Partial Class FrmArqueo
     Friend WithEvents BtnSalir As System.Windows.Forms.Button
     Friend WithEvents BtnProcesar As System.Windows.Forms.Button
     Friend WithEvents ProgressBar As System.Windows.Forms.ProgressBar
+    Friend WithEvents Label17 As System.Windows.Forms.Label
+    Friend WithEvents Label18 As System.Windows.Forms.Label
+    Friend WithEvents TxtFondoApertura As System.Windows.Forms.TextBox
+    Friend WithEvents Label10 As System.Windows.Forms.Label
 End Class

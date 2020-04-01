@@ -43,7 +43,7 @@ Public Class FrmArqueo
         Dim ConsecutivoArqueo As Double, NumeroArqueo As String, SqlDenominaciones As String, idDenominacion As Double, CodCajero As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, iPosicion As Double, Registros As Double
         Dim Valor As Double, SQlcheques As String, Fecha As String, NumeroTarjeta As String, FechaVence As String, Monto As Double
-        Dim NumeroFactura As String, NombrePago As String
+        Dim NumeroFactura As String, NombrePago As String, FondoApertura As Double
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
@@ -55,10 +55,14 @@ Public Class FrmArqueo
         End If
         NumeroArqueo = Format(ConsecutivoArqueo, "0000#")
 
+
+        FondoApertura = InputBox("Fondo Apertura", "Zeus Facturacion")
+        Me.TxtFondoApertura.Text = Format(FondoApertura, "##,##0.00")
+
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL ENCABEZADO DE LOS PAGOS /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-        GrabaArqueo(NumeroArqueo)
+        GrabaArqueo(NumeroArqueo, FondoApertura)
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO LAS DENOMINACIONES /////////////////////////////////////////////
@@ -74,7 +78,6 @@ Public Class FrmArqueo
                 Valor = DataSet.Tables("Denominacion").Rows(iPosicion)("Valor")
                 GrabaDetalleArqueo(NumeroArqueo, "Cordobas", idDenominacion, Valor, "0.00", "0.00")
                 GrabaDetalleArqueo(NumeroArqueo, "Dolares", idDenominacion, Valor, "0.00", "0.00")
-
                 iPosicion = iPosicion + 1
             Loop
         End If
@@ -193,6 +196,8 @@ Public Class FrmArqueo
 
         Me.TxtNumeroEnsamble.Text = NumeroArqueo
         Me.CmdGrabar.Enabled = True
+
+        BtnProcesar_Click(sender, e)
     End Sub
 
     Private Sub Button6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
@@ -232,6 +237,13 @@ Public Class FrmArqueo
 
             If Not IsDBNull(DataSet.Tables("Arqueo").Rows(0)("PracticadoPor")) Then
                 Me.TxtPracticadoPor.Text = DataSet.Tables("Arqueo").Rows(0)("PracticadoPor")
+            End If
+
+
+            If Not IsDBNull(DataSet.Tables("Arqueo").Rows(0)("FondoApertura")) Then
+                Me.TxtFondoApertura.Text = DataSet.Tables("Arqueo").Rows(0)("FondoApertura")
+            Else
+                Me.TxtFondoApertura.Text = "0.00"
             End If
 
         End If
@@ -410,7 +422,7 @@ Public Class FrmArqueo
 
     Private Sub CmdGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGrabar.Click
         Dim Registros As Double, iPosicion As Double, NumeroArqueo As String, idDenominacion As Double
-        Dim Valor As Double, Cantidad As Double, Monto As Double
+        Dim Valor As Double, Cantidad As Double, Monto As Double, FondoApertura As Double
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO DENOMINACION CORDOBAS////////////////////////////////////////////////////
@@ -457,10 +469,15 @@ Public Class FrmArqueo
         Loop
 
 
+        If Me.TxtFondoApertura.Text = "" Then
+            FondoApertura = 0
+        Else
+            FondoApertura = Me.TxtFondoApertura.Text
+        End If
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL ENCABEZADO DE LOS PAGOS /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-        GrabaArqueo(NumeroArqueo)
+        GrabaArqueo(NumeroArqueo, FondoApertura)
     End Sub
 
     Private Sub TdbGridChequeCordobas_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TdbGridChequeCordobas.Click
@@ -491,7 +508,7 @@ Public Class FrmArqueo
 
     End Sub
 
-    Private Sub Label10_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label10.Click
+    Private Sub Label10_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label17.Click
 
     End Sub
 
@@ -499,7 +516,7 @@ Public Class FrmArqueo
 
     End Sub
 
-    Private Sub Label12_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label12.Click
+    Private Sub Label12_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label18.Click
 
     End Sub
 
@@ -516,6 +533,84 @@ Public Class FrmArqueo
     End Sub
 
     Private Sub BtnProcesar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnProcesar.Click
+        Dim Registros As Double, i As Double, NumeroFactura As String, NumeroRecibo As String
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+
+
+        '////////////////////////////////////////RECORRO EL GRID PARA ACTULIZAR LA FACTURA O RECIBO /////////////////////////////
+        Registros = Me.TdbGridChequeCordobas.RowCount
+        i = 0
+        Me.ProgressBar.Minimum = 0
+        Me.ProgressBar.Maximum = Registros
+        Me.ProgressBar.Value = 0
+        Do While Registros > i
+            My.Application.DoEvents()
+
+            If Mid(Me.TdbGridChequeCordobas.Item(i)(0), 1, 4) = "Fact" Then
+                NumeroFactura = Mid(Me.TdbGridChequeCordobas.Columns(0).Text, 5, Len(Me.TdbGridChequeCordobas.Item(i)(0)))
+
+                StrSqlUpdate = "UPDATE [Detalle_MetodoFacturas]  SET [Arqueado] = 1 WHERE (Numero_Factura = '" & NumeroFactura & "')"
+                MiConexion.Open()
+                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                iResultado = ComandoUpdate.ExecuteNonQuery
+                MiConexion.Close()
+
+            ElseIf Mid(Me.TdbGridChequeCordobas.Item(i)(0), 1, 3) = "Rec" Then
+                NumeroRecibo = Mid(Me.TdbGridChequeCordobas.Item(i)(0), 4, Len(Me.TdbGridChequeCordobas.Item(i)(0)))
+
+
+                StrSqlUpdate = "UPDATE [Detalle_MetodoRecibo] SET [Arqueado] = 1 WHERE  (CodRecibo = '" & NumeroRecibo & "')"
+                MiConexion.Open()
+                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                iResultado = ComandoUpdate.ExecuteNonQuery
+                MiConexion.Close()
+            End If
+
+
+            Me.ProgressBar.Value = Me.ProgressBar.Value + 1
+            My.Application.DoEvents()
+
+            i = i + 1
+        Loop
+
+
+
+
+        '////////////////////////////////////////RECORRO EL GRID PARA ACTULIZAR LA FACTURA O RECIBO /////////////////////////////
+        Registros = Me.TdbGridChequeDolares.RowCount
+        i = 0
+        Me.ProgressBar.Minimum = 0
+        Me.ProgressBar.Maximum = Registros
+        Me.ProgressBar.Value = 0
+        Do While Registros > i
+            My.Application.DoEvents()
+
+            If Mid(Me.TdbGridChequeDolares.Item(i)(0).Text, 1, 4) = "Fact" Then
+                NumeroFactura = Mid(Me.TdbGridChequeDolares.Item(i)(0).Text, 5, Len(Me.TdbGridChequeDolares.Item(i)(0).Text))
+
+                StrSqlUpdate = "UPDATE [Detalle_MetodoFacturas] SET [Arqueado] = 1 WHERE (Numero_Factura = '" & NumeroFactura & "')"
+                MiConexion.Open()
+                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                iResultado = ComandoUpdate.ExecuteNonQuery
+                MiConexion.Close()
+
+            ElseIf Mid(Me.TdbGridChequeDolares.Item(i)(0).Text, 1, 3) = "Rec" Then
+                NumeroRecibo = Mid(Me.TdbGridChequeDolares.Item(i)(0).Text, 4, Len(Me.TdbGridChequeDolares.Item(i)(0).Text))
+
+
+                StrSqlUpdate = "UPDATE [Detalle_MetodoRecibo] SET [Arqueado] = 1 WHERE  (CodRecibo = '" & NumeroRecibo & "')"
+                MiConexion.Open()
+                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                iResultado = ComandoUpdate.ExecuteNonQuery
+                MiConexion.Close()
+            End If
+
+
+            Me.ProgressBar.Value = Me.ProgressBar.Value + 1
+
+            i = i + 1
+        Loop
+
 
     End Sub
 End Class

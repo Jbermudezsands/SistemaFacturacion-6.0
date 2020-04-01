@@ -5090,14 +5090,30 @@ Public Class FrmReportes
 
                 If Me.OptDolares.Checked = True Then
                     ArepListaRecibos.LblMoneda.Text = "Expresado en Dolares"
-                    SqlString = "SELECT Recibo.CodReciboPago, Recibo.Fecha_Recibo, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, DetalleRecibo.Numero_Factura, DetalleRecibo.MontoPagado, Recibo.MonedaRecibo, TasaCambio.MontoTasa, CASE WHEN MonedaRecibo = 'Cordobas' THEN DetalleRecibo.MontoPagado / TasaCambio.MontoTasa ELSE DetalleRecibo.MontoPagado END AS MontoRecibo,Recibo.Activo FROM Recibo INNER JOIN Clientes ON Recibo.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN DetalleRecibo ON Recibo.CodReciboPago = DetalleRecibo.CodReciboPago AND Recibo.Fecha_Recibo = DetalleRecibo.Fecha_Recibo INNER JOIN TasaCambio ON Recibo.Fecha_Recibo = TasaCambio.FechaTasa  " & _
-                                "WHERE (Recibo.Fecha_Recibo BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Recibo.Fecha_Recibo"
+                    If Me.CmbVendedores.Text = "" And Me.CmbVendedores2.Text = "" Then
+
+                        SqlString = "SELECT Recibo.CodReciboPago, Recibo.Fecha_Recibo, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, DetalleRecibo.Numero_Factura, DetalleRecibo.MontoPagado, Recibo.MonedaRecibo, TasaCambio.MontoTasa, CASE WHEN MonedaRecibo = 'Cordobas' THEN DetalleRecibo.MontoPagado / TasaCambio.MontoTasa ELSE DetalleRecibo.MontoPagado END AS MontoRecibo,Recibo.Activo FROM Recibo INNER JOIN Clientes ON Recibo.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN DetalleRecibo ON Recibo.CodReciboPago = DetalleRecibo.CodReciboPago AND Recibo.Fecha_Recibo = DetalleRecibo.Fecha_Recibo INNER JOIN TasaCambio ON Recibo.Fecha_Recibo = TasaCambio.FechaTasa  " & _
+                                    "WHERE (Recibo.Fecha_Recibo BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Recibo.Fecha_Recibo"
+
+                    Else
+
+                        SqlString = "SELECT  Recibo.CodReciboPago, Recibo.Fecha_Recibo, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, DetalleRecibo.Numero_Factura, DetalleRecibo.MontoPagado, Recibo.MonedaRecibo, TasaCambio.MontoTasa, CASE WHEN MonedaRecibo = 'Cordobas' THEN DetalleRecibo.MontoPagado / TasaCambio.MontoTasa ELSE DetalleRecibo.MontoPagado END AS MontoRecibo, Recibo.Activo, Facturas.Tipo_Factura FROM Recibo INNER JOIN  Clientes ON Recibo.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN DetalleRecibo ON Recibo.CodReciboPago = DetalleRecibo.CodReciboPago AND Recibo.Fecha_Recibo = DetalleRecibo.Fecha_Recibo INNER JOIN  TasaCambio ON Recibo.Fecha_Recibo = TasaCambio.FechaTasa LEFT OUTER JOIN Facturas ON DetalleRecibo.Numero_Factura = Facturas.Numero_Factura  " & _
+                                    "WHERE  (Recibo.Fecha_Recibo BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Facturas.Cod_Vendedor BETWEEN '" & Me.CmbVendedores.Text & "' AND '" & Me.CmbVendedores2.Text & "') ORDER BY Recibo.Fecha_Recibo"
+
+                    End If
                 Else
                     ArepListaRecibos.LblMoneda.Text = "Expresado en Cordobas"
-                    SqlString = "SELECT Recibo.CodReciboPago, Recibo.Fecha_Recibo, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, DetalleRecibo.Numero_Factura, DetalleRecibo.MontoPagado, Recibo.MonedaRecibo, TasaCambio.MontoTasa, CASE WHEN MonedaRecibo = 'Dolares' THEN DetalleRecibo.MontoPagado * TasaCambio.MontoTasa ELSE DetalleRecibo.MontoPagado END AS MontoRecibo,Recibo.Activo FROM Recibo INNER JOIN Clientes ON Recibo.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN DetalleRecibo ON Recibo.CodReciboPago = DetalleRecibo.CodReciboPago AND Recibo.Fecha_Recibo = DetalleRecibo.Fecha_Recibo INNER JOIN TasaCambio ON Recibo.Fecha_Recibo = TasaCambio.FechaTasa  " & _
-                                "WHERE (Recibo.Fecha_Recibo BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Recibo.Fecha_Recibo"
-                End If
+                    If Me.CmbVendedores.Text = "" And Me.CmbVendedores2.Text = "" Then
 
+                        SqlString = "SELECT Recibo.CodReciboPago, Recibo.Fecha_Recibo, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, DetalleRecibo.Numero_Factura, DetalleRecibo.MontoPagado, Recibo.MonedaRecibo, TasaCambio.MontoTasa, CASE WHEN MonedaRecibo = 'Dolares' THEN DetalleRecibo.MontoPagado * TasaCambio.MontoTasa ELSE DetalleRecibo.MontoPagado END AS MontoRecibo,Recibo.Activo FROM Recibo INNER JOIN Clientes ON Recibo.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN DetalleRecibo ON Recibo.CodReciboPago = DetalleRecibo.CodReciboPago AND Recibo.Fecha_Recibo = DetalleRecibo.Fecha_Recibo INNER JOIN TasaCambio ON Recibo.Fecha_Recibo = TasaCambio.FechaTasa  " & _
+                                    "WHERE (Recibo.Fecha_Recibo BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Recibo.Fecha_Recibo"
+
+                    Else
+
+                        SqlString = "SELECT Recibo.CodReciboPago, Recibo.Fecha_Recibo, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, DetalleRecibo.Numero_Factura, DetalleRecibo.MontoPagado, Recibo.MonedaRecibo, TasaCambio.MontoTasa, CASE WHEN MonedaRecibo = 'Dolares' THEN DetalleRecibo.MontoPagado * TasaCambio.MontoTasa ELSE DetalleRecibo.MontoPagado END AS MontoRecibo, Recibo.Activo, Facturas.Numero_Factura AS Expr1 FROM  Recibo INNER JOIN  Clientes ON Recibo.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN DetalleRecibo ON Recibo.CodReciboPago = DetalleRecibo.CodReciboPago AND Recibo.Fecha_Recibo = DetalleRecibo.Fecha_Recibo INNER JOIN TasaCambio ON Recibo.Fecha_Recibo = TasaCambio.FechaTasa LEFT OUTER JOIN Facturas ON DetalleRecibo.Numero_Factura = Facturas.Numero_Factura  " & _
+                                    "WHERE (Recibo.Fecha_Recibo BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Cod_Vendedor BETWEEN '" & Me.CmbVendedores.Text & "' AND '" & Me.CmbVendedores2.Text & "') ORDER BY Recibo.Fecha_Recibo"
+                    End If
+                End If
                 SQL.ConnectionString = Conexion
                 SQL.SQL = SqlString
 
@@ -5601,1157 +5617,1157 @@ Public Class FrmReportes
 
                 End If
 
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                    DataAdapter.Fill(DataSet, "TotalFacturas")
-                    Registros = DataSet.Tables("TotalFacturas").Rows.Count
-                    i = 0
-                    Me.ProgressBar.Maximum = Registros
-                    Me.ProgressBar.Minimum = 0
-                    Me.ProgressBar.Value = 0
-                    Me.ProgressBar.Visible = True
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                DataAdapter.Fill(DataSet, "TotalFacturas")
+                Registros = DataSet.Tables("TotalFacturas").Rows.Count
+                i = 0
+                Me.ProgressBar.Maximum = Registros
+                Me.ProgressBar.Minimum = 0
+                Me.ProgressBar.Value = 0
+                Me.ProgressBar.Visible = True
 
-                    Do While Registros > i
-                        My.Application.DoEvents()
-                        If Not IsDBNull(DataSet.Tables("TotalFacturas").Rows(i)("Cantidad")) Then
-                            If DataSet.Tables("TotalFacturas").Rows(i)("Cantidad") <> 0 Then
-                                Cantidad = DataSet.Tables("TotalFacturas").Rows(i)("Cantidad")
-                                Importe = DataSet.Tables("TotalFacturas").Rows(i)("Importe")
-                                CodBodega = DataSet.Tables("TotalFacturas").Rows(i)("Cod_Bodega")
-                                CodigoProducto = DataSet.Tables("TotalFacturas").Rows(i)("Cod_Producto")
-                                CostoUnitario = 0
-                                '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                '/////////////////////////BUSCO EL COSTO DEL PRODUCTO PARA ESTA BODEGA //////////////////////////////////////////////////////////
-                                '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                'SqlDatos = "SELECT  *  FROM DetalleBodegas WHERE (Cod_Bodegas = '" & CodBodega & "') AND (Cod_Productos = '" & CodigoProducto & "')"
-                                'DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                                'DataAdapter.Fill(DataSet, "CostoBodega")
-                                'If DataSet.Tables("CostoBodega").Rows.Count <> 0 Then
-                                '    If Me.OptCordobas.Checked = True Then
-                                '        If Not IsDBNull(DataSet.Tables("CostoBodega").Rows(0)("Costo")) Then
-                                '            CostoUnitario = DataSet.Tables("CostoBodega").Rows(0)("Costo")
-                                '        End If
-                                '    Else
-                                '        TasaCambio = BuscaTasaCambio(DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura"))
-                                '        If Not IsDBNull(DataSet.Tables("CostoBodega").Rows(0)("Costo")) Then
-                                '            CostoUnitario = DataSet.Tables("CostoBodega").Rows(0)("Costo") / TasaCambio
-                                '        End If
-                                '    End If
-                                'End If
-                                'DataSet.Tables("CostoBodega").Reset()
+                Do While Registros > i
+                    My.Application.DoEvents()
+                    If Not IsDBNull(DataSet.Tables("TotalFacturas").Rows(i)("Cantidad")) Then
+                        If DataSet.Tables("TotalFacturas").Rows(i)("Cantidad") <> 0 Then
+                            Cantidad = DataSet.Tables("TotalFacturas").Rows(i)("Cantidad")
+                            Importe = DataSet.Tables("TotalFacturas").Rows(i)("Importe")
+                            CodBodega = DataSet.Tables("TotalFacturas").Rows(i)("Cod_Bodega")
+                            CodigoProducto = DataSet.Tables("TotalFacturas").Rows(i)("Cod_Producto")
+                            CostoUnitario = 0
+                            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                            '/////////////////////////BUSCO EL COSTO DEL PRODUCTO PARA ESTA BODEGA //////////////////////////////////////////////////////////
+                            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                            'SqlDatos = "SELECT  *  FROM DetalleBodegas WHERE (Cod_Bodegas = '" & CodBodega & "') AND (Cod_Productos = '" & CodigoProducto & "')"
+                            'DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                            'DataAdapter.Fill(DataSet, "CostoBodega")
+                            'If DataSet.Tables("CostoBodega").Rows.Count <> 0 Then
+                            '    If Me.OptCordobas.Checked = True Then
+                            '        If Not IsDBNull(DataSet.Tables("CostoBodega").Rows(0)("Costo")) Then
+                            '            CostoUnitario = DataSet.Tables("CostoBodega").Rows(0)("Costo")
+                            '        End If
+                            '    Else
+                            '        TasaCambio = BuscaTasaCambio(DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura"))
+                            '        If Not IsDBNull(DataSet.Tables("CostoBodega").Rows(0)("Costo")) Then
+                            '            CostoUnitario = DataSet.Tables("CostoBodega").Rows(0)("Costo") / TasaCambio
+                            '        End If
+                            '    End If
+                            'End If
+                            'DataSet.Tables("CostoBodega").Reset()
 
-                                If Me.OptCordobas.Checked = True Then
-                                    If Not IsDBNull(DataSet.Tables("TotalFacturas").Rows(0)("Costo_Unitario")) Then
-                                        CostoUnitario = DataSet.Tables("TotalFacturas").Rows(i)("Costo_Unitario")
-                                    End If
+                            If Me.OptCordobas.Checked = True Then
+                                If Not IsDBNull(DataSet.Tables("TotalFacturas").Rows(0)("Costo_Unitario")) Then
+                                    CostoUnitario = DataSet.Tables("TotalFacturas").Rows(i)("Costo_Unitario")
+                                End If
+                            Else
+                                TasaCambio = BuscaTasaCambio(DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura"))
+                                If Not IsDBNull(DataSet.Tables("TotalFacturas").Rows(0)("Costo_Unitario")) Then
+                                    CostoUnitario = DataSet.Tables("TotalFacturas").Rows(i)("Costo_Unitario") / TasaCambio
+                                End If
+                            End If
+
+
+                            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                            '/////////////////////////BUSCO EL TIPO DE PRODUCTO //////////////////////////////////////////////////////////
+                            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                            SqlDatos = "SELECT  *  FROM Productos WHERE (Cod_Productos = '" & CodigoProducto & "')"
+                            DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                            DataAdapter.Fill(DataSet, "Producto")
+                            If DataSet.Tables("Producto").Rows.Count <> 0 Then
+                                If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Tipo_Producto")) Then
+                                    TipoProducto = DataSet.Tables("Producto").Rows(0)("Tipo_Producto")
+                                End If
+                            End If
+                            DataSet.Tables("Producto").Reset()
+
+                            If TipoProducto <> "Descuento" Then
+                                Costo = Cantidad * CostoUnitario
+                                Utilidad = Importe - Costo
+                                Porciento = Utilidad / Importe
+                            Else
+                                Costo = 0
+                                Utilidad = 0
+                                Porciento = 0
+                            End If
+
+                            If Me.OptCordobas.Checked = True Then
+                                If DataSet.Tables("TotalFacturas").Rows(i)("MonedaFactura") = "Cordobas" Then
+                                    TasaCambio = 1
                                 Else
                                     TasaCambio = BuscaTasaCambio(DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura"))
-                                    If Not IsDBNull(DataSet.Tables("TotalFacturas").Rows(0)("Costo_Unitario")) Then
-                                        CostoUnitario = DataSet.Tables("TotalFacturas").Rows(i)("Costo_Unitario") / TasaCambio
-                                    End If
                                 End If
-
-
-                                '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                '/////////////////////////BUSCO EL TIPO DE PRODUCTO //////////////////////////////////////////////////////////
-                                '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                SqlDatos = "SELECT  *  FROM Productos WHERE (Cod_Productos = '" & CodigoProducto & "')"
-                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                                DataAdapter.Fill(DataSet, "Producto")
-                                If DataSet.Tables("Producto").Rows.Count <> 0 Then
-                                    If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Tipo_Producto")) Then
-                                        TipoProducto = DataSet.Tables("Producto").Rows(0)("Tipo_Producto")
-                                    End If
-                                End If
-                                DataSet.Tables("Producto").Reset()
-
-                                If TipoProducto <> "Descuento" Then
-                                    Costo = Cantidad * CostoUnitario
-                                    Utilidad = Importe - Costo
-                                    Porciento = Utilidad / Importe
+                            Else
+                                If DataSet.Tables("TotalFacturas").Rows(i)("MonedaFactura") = "Dolares" Then
+                                    TasaCambio = 1
                                 Else
-                                    Costo = 0
-                                    Utilidad = 0
-                                    Porciento = 0
+                                    TasaCambio = 1 / BuscaTasaCambio(DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura"))
                                 End If
-
-                                If Me.OptCordobas.Checked = True Then
-                                    If DataSet.Tables("TotalFacturas").Rows(i)("MonedaFactura") = "Cordobas" Then
-                                        TasaCambio = 1
-                                    Else
-                                        TasaCambio = BuscaTasaCambio(DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura"))
-                                    End If
-                                Else
-                                    If DataSet.Tables("TotalFacturas").Rows(i)("MonedaFactura") = "Dolares" Then
-                                        TasaCambio = 1
-                                    Else
-                                        TasaCambio = 1 / BuscaTasaCambio(DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura"))
-                                    End If
-                                End If
-
-                                Criterios = "Cod_Productos= '" & DataSet.Tables("TotalFacturas").Rows(i)("Cod_Producto") & "'"
-                                Buscar_Fila = DataSet.Tables("TotalVentas").Select(Criterios)
-                                If Buscar_Fila.Length > 0 Then
-                                    Posicion = DataSet.Tables("TotalVentas").Rows.IndexOf(Buscar_Fila(0))
-                                    Importe = DataSet.Tables("TotalFacturas").Rows(i)("Importe")
-                                    MontoAcumulado = DataSet.Tables("TotalVentas").Rows(Posicion)("Importe")
-                                    Cantidad = DataSet.Tables("TotalFacturas").Rows(i)("Cantidad")
-                                    CantidadAcumulada = DataSet.Tables("TotalVentas").Rows(Posicion)("Cantidad")
-                                    DataSet.Tables("TotalVentas").Rows(Posicion)("Importe") = MontoAcumulado + Importe * TasaCambio
-                                    DataSet.Tables("TotalVentas").Rows(Posicion)("Cantidad") = Cantidad + CantidadAcumulada
-                                    DataSet.Tables("TotalVentas").Rows(Posicion)("Costo") = (Cantidad + CantidadAcumulada) * CostoUnitario
-                                    DataSet.Tables("TotalVentas").Rows(Posicion)("Utilidad") = DataSet.Tables("TotalVentas").Rows(Posicion)("Importe") - DataSet.Tables("TotalVentas").Rows(Posicion)("Costo")
-                                    DataSet.Tables("TotalVentas").Rows(Posicion)("Porciento") = DataSet.Tables("TotalVentas").Rows(Posicion)("Utilidad") / DataSet.Tables("TotalVentas").Rows(Posicion)("Importe")
-                                Else
-                                    Utilidad = (Importe * TasaCambio) - Costo
-                                    Porciento = Utilidad / Costo
-
-                                    oDataRow = DataSet.Tables("TotalVentas").NewRow
-                                    oDataRow("Cod_Productos") = CodigoProducto
-                                    oDataRow("Cantidad") = Cantidad
-                                    oDataRow("Descripcion_Producto") = DataSet.Tables("TotalFacturas").Rows(i)("Descripcion_Producto")
-                                    oDataRow("Importe") = Importe * TasaCambio
-                                    oDataRow("Costo") = Costo
-                                    oDataRow("Utilidad") = Utilidad
-                                    oDataRow("Porciento") = Porciento
-                                    oDataRow("Cod_Bodega") = DataSet.Tables("TotalFacturas").Rows(i)("Cod_Bodega")
-                                    DataSet.Tables("TotalVentas").Rows.Add(oDataRow)
-                                End If
-
-
-
                             End If
+
+                            Criterios = "Cod_Productos= '" & DataSet.Tables("TotalFacturas").Rows(i)("Cod_Producto") & "'"
+                            Buscar_Fila = DataSet.Tables("TotalVentas").Select(Criterios)
+                            If Buscar_Fila.Length > 0 Then
+                                Posicion = DataSet.Tables("TotalVentas").Rows.IndexOf(Buscar_Fila(0))
+                                Importe = DataSet.Tables("TotalFacturas").Rows(i)("Importe")
+                                MontoAcumulado = DataSet.Tables("TotalVentas").Rows(Posicion)("Importe")
+                                Cantidad = DataSet.Tables("TotalFacturas").Rows(i)("Cantidad")
+                                CantidadAcumulada = DataSet.Tables("TotalVentas").Rows(Posicion)("Cantidad")
+                                DataSet.Tables("TotalVentas").Rows(Posicion)("Importe") = MontoAcumulado + Importe * TasaCambio
+                                DataSet.Tables("TotalVentas").Rows(Posicion)("Cantidad") = Cantidad + CantidadAcumulada
+                                DataSet.Tables("TotalVentas").Rows(Posicion)("Costo") = (Cantidad + CantidadAcumulada) * CostoUnitario
+                                DataSet.Tables("TotalVentas").Rows(Posicion)("Utilidad") = DataSet.Tables("TotalVentas").Rows(Posicion)("Importe") - DataSet.Tables("TotalVentas").Rows(Posicion)("Costo")
+                                DataSet.Tables("TotalVentas").Rows(Posicion)("Porciento") = DataSet.Tables("TotalVentas").Rows(Posicion)("Utilidad") / DataSet.Tables("TotalVentas").Rows(Posicion)("Importe")
+                            Else
+                                Utilidad = (Importe * TasaCambio) - Costo
+                                Porciento = Utilidad / Costo
+
+                                oDataRow = DataSet.Tables("TotalVentas").NewRow
+                                oDataRow("Cod_Productos") = CodigoProducto
+                                oDataRow("Cantidad") = Cantidad
+                                oDataRow("Descripcion_Producto") = DataSet.Tables("TotalFacturas").Rows(i)("Descripcion_Producto")
+                                oDataRow("Importe") = Importe * TasaCambio
+                                oDataRow("Costo") = Costo
+                                oDataRow("Utilidad") = Utilidad
+                                oDataRow("Porciento") = Porciento
+                                oDataRow("Cod_Bodega") = DataSet.Tables("TotalFacturas").Rows(i)("Cod_Bodega")
+                                DataSet.Tables("TotalVentas").Rows.Add(oDataRow)
+                            End If
+
+
+
                         End If
+                    End If
 
-                        i = i + 1
-                        Me.ProgressBar.Value = Me.ProgressBar.Value + 1
-                    Loop
+                    i = i + 1
+                    Me.ProgressBar.Value = Me.ProgressBar.Value + 1
+                Loop
 
-                    Dim ViewerForm As New FrmViewer()
+                Dim ViewerForm As New FrmViewer()
 
-                    ViewerForm.arvMain.Document = ArepVentas.Document
-                    My.Application.DoEvents()
-                    ArepVentas.DataSource = DataSet.Tables("TotalVentas")
-                    ArepVentas.Run(False)
-                    ViewerForm.Show()
+                ViewerForm.arvMain.Document = ArepVentas.Document
+                My.Application.DoEvents()
+                ArepVentas.DataSource = DataSet.Tables("TotalVentas")
+                ArepVentas.Run(False)
+                ViewerForm.Show()
 
 
 
             Case "Reporte de Notas Debito/Credito"
-                    Dim ArepNotasDebitoCredito As New ArepNotasDebitoCredito
+                Dim ArepNotasDebitoCredito As New ArepNotasDebitoCredito
 
 
-                    If Dir(RutaLogo) <> "" Then
-                        ArepNotasDebitoCredito.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                        ArepNotasDebitoCredito.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                    End If
+                If Dir(RutaLogo) <> "" Then
+                    ArepNotasDebitoCredito.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                    ArepNotasDebitoCredito.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                End If
 
-                    ArepNotasDebitoCredito.LblTitulo.Text = NombreEmpresa
-                    ArepNotasDebitoCredito.LblDireccion.Text = DireccionEmpresa
-                    ArepNotasDebitoCredito.LblRango.Text = "Impreso: Desde " & Format(Fecha1, "dd/MM/yyyy") & " Hasta " & Format(Fecha2, "dd/MM/yyyy")
+                ArepNotasDebitoCredito.LblTitulo.Text = NombreEmpresa
+                ArepNotasDebitoCredito.LblDireccion.Text = DireccionEmpresa
+                ArepNotasDebitoCredito.LblRango.Text = "Impreso: Desde " & Format(Fecha1, "dd/MM/yyyy") & " Hasta " & Format(Fecha2, "dd/MM/yyyy")
 
-                    If Me.CmbNotas.Text = "" And Me.CmbNotas2.Text = "" Then
-                        If Me.OptCordobas.Checked = True Then
-                            SqlDatos = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, CASE WHEN IndiceNota.MonedaNota = 'Cordobas' THEN Detalle_Nota.Monto ELSE Detalle_Nota.Monto * TasaCambio.MontoTasa END AS Monto, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, IndiceNota.Numero_Nota AS Expr1, IndiceNota.Fecha_Nota AS Expr2, IndiceNota.Tipo_Nota AS Expr3, TasaCambio.FechaTasa, IndiceNota.MonedaNota, TasaCambio.MontoTasa FROM  Clientes INNER JOIN IndiceNota ON Clientes.Cod_Cliente = IndiceNota.Cod_Cliente INNER JOIN TasaCambio ON IndiceNota.Fecha_Nota = TasaCambio.FechaTasa RIGHT OUTER JOIN Detalle_Nota ON IndiceNota.Tipo_Nota = Detalle_Nota.Tipo_Nota AND IndiceNota.Fecha_Nota = Detalle_Nota.Fecha_Nota AND IndiceNota.Numero_Nota = Detalle_Nota.Numero_Nota LEFT OUTER JOIN Facturas ON Detalle_Nota.Numero_Factura = Facturas.Numero_Factura  " & _
-                                       "WHERE (Detalle_Nota.Fecha_Nota BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102))  ORDER BY Detalle_Nota.Tipo_Nota, Detalle_Nota.Fecha_Nota DESC"
-                        Else
-                            SqlDatos = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, CASE WHEN IndiceNota.MonedaNota = 'Dolares' THEN Detalle_Nota.Monto ELSE Detalle_Nota.Monto / TasaCambio.MontoTasa END AS Monto, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, IndiceNota.Numero_Nota AS Expr1, IndiceNota.Fecha_Nota AS Expr2, IndiceNota.Tipo_Nota AS Expr3, TasaCambio.FechaTasa, IndiceNota.MonedaNota, TasaCambio.MontoTasa FROM  Clientes INNER JOIN IndiceNota ON Clientes.Cod_Cliente = IndiceNota.Cod_Cliente INNER JOIN TasaCambio ON IndiceNota.Fecha_Nota = TasaCambio.FechaTasa RIGHT OUTER JOIN Detalle_Nota ON IndiceNota.Tipo_Nota = Detalle_Nota.Tipo_Nota AND IndiceNota.Fecha_Nota = Detalle_Nota.Fecha_Nota AND IndiceNota.Numero_Nota = Detalle_Nota.Numero_Nota LEFT OUTER JOIN Facturas ON Detalle_Nota.Numero_Factura = Facturas.Numero_Factura  " & _
-                                        "WHERE (Detalle_Nota.Fecha_Nota BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Detalle_Nota.Tipo_Nota, Detalle_Nota.Fecha_Nota DESC"
-                        End If
+                If Me.CmbNotas.Text = "" And Me.CmbNotas2.Text = "" Then
+                    If Me.OptCordobas.Checked = True Then
+                        SqlDatos = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, CASE WHEN IndiceNota.MonedaNota = 'Cordobas' THEN Detalle_Nota.Monto ELSE Detalle_Nota.Monto * TasaCambio.MontoTasa END AS Monto, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, IndiceNota.Numero_Nota AS Expr1, IndiceNota.Fecha_Nota AS Expr2, IndiceNota.Tipo_Nota AS Expr3, TasaCambio.FechaTasa, IndiceNota.MonedaNota, TasaCambio.MontoTasa FROM  Clientes INNER JOIN IndiceNota ON Clientes.Cod_Cliente = IndiceNota.Cod_Cliente INNER JOIN TasaCambio ON IndiceNota.Fecha_Nota = TasaCambio.FechaTasa RIGHT OUTER JOIN Detalle_Nota ON IndiceNota.Tipo_Nota = Detalle_Nota.Tipo_Nota AND IndiceNota.Fecha_Nota = Detalle_Nota.Fecha_Nota AND IndiceNota.Numero_Nota = Detalle_Nota.Numero_Nota LEFT OUTER JOIN Facturas ON Detalle_Nota.Numero_Factura = Facturas.Numero_Factura  " & _
+                                   "WHERE (Detalle_Nota.Fecha_Nota BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102))  ORDER BY Detalle_Nota.Tipo_Nota, Detalle_Nota.Fecha_Nota DESC"
                     Else
-                        If Me.OptCordobas.Checked = True Then
-                            SqlDatos = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, CASE WHEN IndiceNota.MonedaNota = 'Cordobas' THEN Detalle_Nota.Monto ELSE Detalle_Nota.Monto * TasaCambio.MontoTasa END AS Monto, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, IndiceNota.Numero_Nota AS Expr1, IndiceNota.Fecha_Nota AS Expr2, IndiceNota.Tipo_Nota AS Expr3, TasaCambio.FechaTasa, IndiceNota.MonedaNota, TasaCambio.MontoTasa FROM  Clientes INNER JOIN IndiceNota ON Clientes.Cod_Cliente = IndiceNota.Cod_Cliente INNER JOIN TasaCambio ON IndiceNota.Fecha_Nota = TasaCambio.FechaTasa RIGHT OUTER JOIN Detalle_Nota ON IndiceNota.Tipo_Nota = Detalle_Nota.Tipo_Nota AND IndiceNota.Fecha_Nota = Detalle_Nota.Fecha_Nota AND IndiceNota.Numero_Nota = Detalle_Nota.Numero_Nota LEFT OUTER JOIN Facturas ON Detalle_Nota.Numero_Factura = Facturas.Numero_Factura  " & _
-                                       "WHERE (Detalle_Nota.Fecha_Nota BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Detalle_Nota.Tipo_Nota BETWEEN '" & Me.CmbNotas.Text & "' AND '" & Me.CmbNotas2.Text & "') ORDER BY Detalle_Nota.Tipo_Nota, Detalle_Nota.Fecha_Nota DESC"
-                        Else
-                            SqlDatos = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, CASE WHEN IndiceNota.MonedaNota = 'Dolares' THEN Detalle_Nota.Monto ELSE Detalle_Nota.Monto / TasaCambio.MontoTasa END AS Monto, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, IndiceNota.Numero_Nota AS Expr1, IndiceNota.Fecha_Nota AS Expr2, IndiceNota.Tipo_Nota AS Expr3, TasaCambio.FechaTasa, IndiceNota.MonedaNota, TasaCambio.MontoTasa FROM  Clientes INNER JOIN IndiceNota ON Clientes.Cod_Cliente = IndiceNota.Cod_Cliente INNER JOIN TasaCambio ON IndiceNota.Fecha_Nota = TasaCambio.FechaTasa RIGHT OUTER JOIN Detalle_Nota ON IndiceNota.Tipo_Nota = Detalle_Nota.Tipo_Nota AND IndiceNota.Fecha_Nota = Detalle_Nota.Fecha_Nota AND IndiceNota.Numero_Nota = Detalle_Nota.Numero_Nota LEFT OUTER JOIN Facturas ON Detalle_Nota.Numero_Factura = Facturas.Numero_Factura  " & _
-                                        "WHERE (Detalle_Nota.Fecha_Nota BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Detalle_Nota.Tipo_Nota BETWEEN '" & Me.CmbNotas.Text & "' AND '" & Me.CmbNotas2.Text & "') ORDER BY Detalle_Nota.Tipo_Nota, Detalle_Nota.Fecha_Nota DESC"
-                        End If
+                        SqlDatos = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, CASE WHEN IndiceNota.MonedaNota = 'Dolares' THEN Detalle_Nota.Monto ELSE Detalle_Nota.Monto / TasaCambio.MontoTasa END AS Monto, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, IndiceNota.Numero_Nota AS Expr1, IndiceNota.Fecha_Nota AS Expr2, IndiceNota.Tipo_Nota AS Expr3, TasaCambio.FechaTasa, IndiceNota.MonedaNota, TasaCambio.MontoTasa FROM  Clientes INNER JOIN IndiceNota ON Clientes.Cod_Cliente = IndiceNota.Cod_Cliente INNER JOIN TasaCambio ON IndiceNota.Fecha_Nota = TasaCambio.FechaTasa RIGHT OUTER JOIN Detalle_Nota ON IndiceNota.Tipo_Nota = Detalle_Nota.Tipo_Nota AND IndiceNota.Fecha_Nota = Detalle_Nota.Fecha_Nota AND IndiceNota.Numero_Nota = Detalle_Nota.Numero_Nota LEFT OUTER JOIN Facturas ON Detalle_Nota.Numero_Factura = Facturas.Numero_Factura  " & _
+                                    "WHERE (Detalle_Nota.Fecha_Nota BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Detalle_Nota.Tipo_Nota, Detalle_Nota.Fecha_Nota DESC"
                     End If
-                    SQL.ConnectionString = Conexion
-                    SQL.SQL = SqlDatos
+                Else
+                    If Me.OptCordobas.Checked = True Then
+                        SqlDatos = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, CASE WHEN IndiceNota.MonedaNota = 'Cordobas' THEN Detalle_Nota.Monto ELSE Detalle_Nota.Monto * TasaCambio.MontoTasa END AS Monto, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, IndiceNota.Numero_Nota AS Expr1, IndiceNota.Fecha_Nota AS Expr2, IndiceNota.Tipo_Nota AS Expr3, TasaCambio.FechaTasa, IndiceNota.MonedaNota, TasaCambio.MontoTasa FROM  Clientes INNER JOIN IndiceNota ON Clientes.Cod_Cliente = IndiceNota.Cod_Cliente INNER JOIN TasaCambio ON IndiceNota.Fecha_Nota = TasaCambio.FechaTasa RIGHT OUTER JOIN Detalle_Nota ON IndiceNota.Tipo_Nota = Detalle_Nota.Tipo_Nota AND IndiceNota.Fecha_Nota = Detalle_Nota.Fecha_Nota AND IndiceNota.Numero_Nota = Detalle_Nota.Numero_Nota LEFT OUTER JOIN Facturas ON Detalle_Nota.Numero_Factura = Facturas.Numero_Factura  " & _
+                                   "WHERE (Detalle_Nota.Fecha_Nota BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Detalle_Nota.Tipo_Nota BETWEEN '" & Me.CmbNotas.Text & "' AND '" & Me.CmbNotas2.Text & "') ORDER BY Detalle_Nota.Tipo_Nota, Detalle_Nota.Fecha_Nota DESC"
+                    Else
+                        SqlDatos = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, CASE WHEN IndiceNota.MonedaNota = 'Dolares' THEN Detalle_Nota.Monto ELSE Detalle_Nota.Monto / TasaCambio.MontoTasa END AS Monto, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, IndiceNota.Numero_Nota AS Expr1, IndiceNota.Fecha_Nota AS Expr2, IndiceNota.Tipo_Nota AS Expr3, TasaCambio.FechaTasa, IndiceNota.MonedaNota, TasaCambio.MontoTasa FROM  Clientes INNER JOIN IndiceNota ON Clientes.Cod_Cliente = IndiceNota.Cod_Cliente INNER JOIN TasaCambio ON IndiceNota.Fecha_Nota = TasaCambio.FechaTasa RIGHT OUTER JOIN Detalle_Nota ON IndiceNota.Tipo_Nota = Detalle_Nota.Tipo_Nota AND IndiceNota.Fecha_Nota = Detalle_Nota.Fecha_Nota AND IndiceNota.Numero_Nota = Detalle_Nota.Numero_Nota LEFT OUTER JOIN Facturas ON Detalle_Nota.Numero_Factura = Facturas.Numero_Factura  " & _
+                                    "WHERE (Detalle_Nota.Fecha_Nota BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Detalle_Nota.Tipo_Nota BETWEEN '" & Me.CmbNotas.Text & "' AND '" & Me.CmbNotas2.Text & "') ORDER BY Detalle_Nota.Tipo_Nota, Detalle_Nota.Fecha_Nota DESC"
+                    End If
+                End If
+                SQL.ConnectionString = Conexion
+                SQL.SQL = SqlDatos
 
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                    DataAdapter.Fill(DataSet, "Productos")
-                    Me.ProgressBar.Maximum = DataSet.Tables("Productos").Rows.Count
-                    Me.ProgressBar.Minimum = 0
-                    Me.ProgressBar.Value = 0
-                    Me.ProgressBar.Visible = True
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                DataAdapter.Fill(DataSet, "Productos")
+                Me.ProgressBar.Maximum = DataSet.Tables("Productos").Rows.Count
+                Me.ProgressBar.Minimum = 0
+                Me.ProgressBar.Value = 0
+                Me.ProgressBar.Visible = True
 
-                    Dim ViewerForm As New FrmViewer()
-                    ViewerForm.arvMain.Document = ArepNotasDebitoCredito.Document
-                    My.Application.DoEvents()
-                    ArepNotasDebitoCredito.DataSource = SQL
-                    ArepNotasDebitoCredito.Run(False)
-                    ViewerForm.Show()
+                Dim ViewerForm As New FrmViewer()
+                ViewerForm.arvMain.Document = ArepNotasDebitoCredito.Document
+                My.Application.DoEvents()
+                ArepNotasDebitoCredito.DataSource = SQL
+                ArepNotasDebitoCredito.Run(False)
+                ViewerForm.Show()
 
             Case "Reporte de Utilidad por Factura"
-                    Dim ArepUtilidadVentas As New ArepUtilidadVentas
-                    Dim SQLString As String, Registro As Double = 0, Iposicion As Double = 0
-                    Dim FechaFin As String
-                    Dim Existencia As Double, NumeroFactura As String, Total As Double = 0
-                    Dim oDataRow As DataRow, CtoFactura As Double, Utilidad As String, Porciento As Double
-                    Dim DvProductos As DataView
+                Dim ArepUtilidadVentas As New ArepUtilidadVentas
+                Dim SQLString As String, Registro As Double = 0, Iposicion As Double = 0
+                Dim FechaFin As String
+                Dim Existencia As Double, NumeroFactura As String, Total As Double = 0
+                Dim oDataRow As DataRow, CtoFactura As Double, Utilidad As String, Porciento As Double
+                Dim DvProductos As DataView
 
-                    If Dir(RutaLogo) <> "" Then
-                        ArepUtilidadVentas.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                        ArepUtilidadVentas.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                    End If
+                If Dir(RutaLogo) <> "" Then
+                    ArepUtilidadVentas.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                    ArepUtilidadVentas.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                End If
 
-                    ArepUtilidadVentas.LblTitulo.Text = NombreEmpresa
-                    ArepUtilidadVentas.LblDireccion.Text = DireccionEmpresa
-                    ArepUtilidadVentas.LblRuc.Text = Ruc
-                    ArepUtilidadVentas.LblImpreso.Text = "Impreso: Desde " & Format(Fecha1, "dd/MM/yyyy") & " Hasta " & Format(Fecha2, "dd/MM/yyyy")
+                ArepUtilidadVentas.LblTitulo.Text = NombreEmpresa
+                ArepUtilidadVentas.LblDireccion.Text = DireccionEmpresa
+                ArepUtilidadVentas.LblRuc.Text = Ruc
+                ArepUtilidadVentas.LblImpreso.Text = "Impreso: Desde " & Format(Fecha1, "dd/MM/yyyy") & " Hasta " & Format(Fecha2, "dd/MM/yyyy")
 
-                    '*******************************************************************************************************************************
-                    '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
-                    '*******************************************************************************************************************************
-                    SQLString = "SELECT  Facturas.Numero_Factura, Facturas.Tipo_Factura AS Costo, Facturas.Nombre_Cliente, Vendedores.Nombre_Vendedor,CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Facturas.SubTotal * TasaCambio.MontoTasa END AS Importe, Facturas.NetoPagar AS Utilidad, Facturas.NetoPagar AS PorcientoUtilidad FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor WHERE (CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN (Facturas.SubTotal) * TasaCambio.MontoTasa END <> 0) AND (Facturas.Tipo_Factura = N'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '2014-01-11 00:00:00', 102) AND CONVERT(DATETIME, '2014-11-30 00:00:00', 102)) AND (Facturas.Numero_Factura = N'-10000') ORDER BY Facturas.Numero_Factura"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
-                    DataAdapter.Fill(DataSet, "Utilidad")
+                '*******************************************************************************************************************************
+                '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
+                '*******************************************************************************************************************************
+                SQLString = "SELECT  Facturas.Numero_Factura, Facturas.Tipo_Factura AS Costo, Facturas.Nombre_Cliente, Vendedores.Nombre_Vendedor,CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Facturas.SubTotal * TasaCambio.MontoTasa END AS Importe, Facturas.NetoPagar AS Utilidad, Facturas.NetoPagar AS PorcientoUtilidad FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor WHERE (CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN (Facturas.SubTotal) * TasaCambio.MontoTasa END <> 0) AND (Facturas.Tipo_Factura = N'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '2014-01-11 00:00:00', 102) AND CONVERT(DATETIME, '2014-11-30 00:00:00', 102)) AND (Facturas.Numero_Factura = N'-10000') ORDER BY Facturas.Numero_Factura"
+                DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
+                DataAdapter.Fill(DataSet, "Utilidad")
 
+                If Me.OptCordobas.Checked = True Then
+                    SqlDatos = "SELECT  Facturas.Numero_Factura, MAX(Facturas.Tipo_Factura) AS Costo, MAX(Facturas.Nombre_Cliente) AS Nombre_Cliente, MAX(Vendedores.Nombre_Vendedor + N' ' + Vendedores.Apellido_Vendedor) AS Nombre_Vendedor, SUM(CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Detalle_Facturas.Importe * TasaCambio.MontoTasa ELSE Detalle_Facturas.Importe END) AS Importe, SUM(Facturas.NetoPagar) AS Utilidad, SUM(Facturas.NetoPagar) AS PorcientoUtilidad, MAX(Facturas.Fecha_Factura) AS Fecha_Factura FROM Vendedores INNER JOIN Facturas ON Vendedores.Cod_Vendedor = Facturas.Cod_Vendedor INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura  " & _
+                               "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) GROUP BY Facturas.Numero_Factura ORDER BY Facturas.Numero_Factura"
+                    'SqlDatos = "SELECT Facturas.Numero_Factura, Facturas.Tipo_Factura AS Costo, Facturas.Nombre_Cliente, Vendedores.Nombre_Vendedor, CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Facturas.SubTotal * TasaCambio.MontoTasa ELSE Facturas.SubTotal END AS Importe, Facturas.NetoPagar AS Utilidad, Facturas.NetoPagar AS PorcientoUtilidad,Facturas.Fecha_Factura FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN  Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor WHERE  (Facturas.Tipo_Factura = N'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Nombre_Vendedor,Facturas.Numero_Factura"
+                Else
+                    'SqlDatos = "SELECT Facturas.Numero_Factura, Facturas.Tipo_Factura AS Costo, Facturas.Nombre_Cliente, Vendedores.Nombre_Vendedor, CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Facturas.SubTotal / TasaCambio.MontoTasa ELSE Facturas.SubTotal END AS Importe, Facturas.NetoPagar AS Utilidad, Facturas.NetoPagar AS PorcientoUtilidad,Facturas.Fecha_Factura FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN  Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor WHERE (Facturas.Tipo_Factura = N'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Nombre_Vendedor,Facturas.Numero_Factura"
+                    SqlDatos = "SELECT  Facturas.Numero_Factura, MAX(Facturas.Tipo_Factura) AS Costo, MAX(Facturas.Nombre_Cliente) AS Nombre_Cliente, MAX(Vendedores.Nombre_Vendedor + N' ' + Vendedores.Apellido_Vendedor) AS Nombre_Vendedor, SUM(CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Detalle_Facturas.Importe  ELSE Detalle_Facturas.Importe / TasaCambio.MontoTasa END) AS Importe, SUM(Facturas.NetoPagar) AS Utilidad, SUM(Facturas.NetoPagar) AS PorcientoUtilidad, MAX(Facturas.Fecha_Factura) AS Fecha_Factura FROM Vendedores INNER JOIN Facturas ON Vendedores.Cod_Vendedor = Facturas.Cod_Vendedor INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura  " & _
+                               "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) GROUP BY Facturas.Numero_Factura ORDER BY Facturas.Numero_Factura"
+                End If
+
+                '*****************************************************************************************************************************************
+                '////////////////////////////////////////////CON ESTE CICLO RECORRO LA CONSULTA //////////////////////////////////////////
+                '*****************************************************************************************************************************************
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                DataAdapter.Fill(DataSet, "Productos")
+                Me.ProgressBar.Maximum = DataSet.Tables("Productos").Rows.Count
+                Me.ProgressBar.Minimum = 0
+                Me.ProgressBar.Value = 0
+                Me.ProgressBar.Visible = True
+                Registro = DataSet.Tables("Productos").Rows.Count
+                Iposicion = 0
+                Existencia = 0
+                Do While Iposicion < Registro
+                    'FechaIni = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
+                    'Fecha = Format(Me.DTPFechaFin.Value, "yyyy-MM-dd")
+                    FechaFin = DataSet.Tables("Productos").Rows(Iposicion)("Fecha_Factura")
+                    NumeroFactura = DataSet.Tables("Productos").Rows(Iposicion)("Numero_Factura")
                     If Me.OptCordobas.Checked = True Then
-                        SqlDatos = "SELECT  Facturas.Numero_Factura, MAX(Facturas.Tipo_Factura) AS Costo, MAX(Facturas.Nombre_Cliente) AS Nombre_Cliente, MAX(Vendedores.Nombre_Vendedor + N' ' + Vendedores.Apellido_Vendedor) AS Nombre_Vendedor, SUM(CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Detalle_Facturas.Importe * TasaCambio.MontoTasa ELSE Detalle_Facturas.Importe END) AS Importe, SUM(Facturas.NetoPagar) AS Utilidad, SUM(Facturas.NetoPagar) AS PorcientoUtilidad, MAX(Facturas.Fecha_Factura) AS Fecha_Factura FROM Vendedores INNER JOIN Facturas ON Vendedores.Cod_Vendedor = Facturas.Cod_Vendedor INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura  " & _
-                                   "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) GROUP BY Facturas.Numero_Factura ORDER BY Facturas.Numero_Factura"
-                        'SqlDatos = "SELECT Facturas.Numero_Factura, Facturas.Tipo_Factura AS Costo, Facturas.Nombre_Cliente, Vendedores.Nombre_Vendedor, CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Facturas.SubTotal * TasaCambio.MontoTasa ELSE Facturas.SubTotal END AS Importe, Facturas.NetoPagar AS Utilidad, Facturas.NetoPagar AS PorcientoUtilidad,Facturas.Fecha_Factura FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN  Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor WHERE  (Facturas.Tipo_Factura = N'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Nombre_Vendedor,Facturas.Numero_Factura"
+                        CtoFactura = CostoFactura(NumeroFactura, FechaFin, "Cordobas")
                     Else
-                        'SqlDatos = "SELECT Facturas.Numero_Factura, Facturas.Tipo_Factura AS Costo, Facturas.Nombre_Cliente, Vendedores.Nombre_Vendedor, CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Facturas.SubTotal / TasaCambio.MontoTasa ELSE Facturas.SubTotal END AS Importe, Facturas.NetoPagar AS Utilidad, Facturas.NetoPagar AS PorcientoUtilidad,Facturas.Fecha_Factura FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN  Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor WHERE (Facturas.Tipo_Factura = N'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Nombre_Vendedor,Facturas.Numero_Factura"
-                        SqlDatos = "SELECT  Facturas.Numero_Factura, MAX(Facturas.Tipo_Factura) AS Costo, MAX(Facturas.Nombre_Cliente) AS Nombre_Cliente, MAX(Vendedores.Nombre_Vendedor + N' ' + Vendedores.Apellido_Vendedor) AS Nombre_Vendedor, SUM(CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Detalle_Facturas.Importe  ELSE Detalle_Facturas.Importe / TasaCambio.MontoTasa END) AS Importe, SUM(Facturas.NetoPagar) AS Utilidad, SUM(Facturas.NetoPagar) AS PorcientoUtilidad, MAX(Facturas.Fecha_Factura) AS Fecha_Factura FROM Vendedores INNER JOIN Facturas ON Vendedores.Cod_Vendedor = Facturas.Cod_Vendedor INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura  " & _
-                                   "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) GROUP BY Facturas.Numero_Factura ORDER BY Facturas.Numero_Factura"
+                        CtoFactura = CostoFactura(NumeroFactura, FechaFin, "Dolares")
+                    End If
+                    Utilidad = DataSet.Tables("Productos").Rows(Iposicion)("Importe") - CtoFactura
+                    If Val(DataSet.Tables("Productos").Rows(Iposicion)("Importe")) <> 0 Then
+                        Porciento = Utilidad / DataSet.Tables("Productos").Rows(Iposicion)("Importe")
+                    Else
+                        Porciento = 0
                     End If
 
-                    '*****************************************************************************************************************************************
-                    '////////////////////////////////////////////CON ESTE CICLO RECORRO LA CONSULTA //////////////////////////////////////////
-                    '*****************************************************************************************************************************************
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                    DataAdapter.Fill(DataSet, "Productos")
-                    Me.ProgressBar.Maximum = DataSet.Tables("Productos").Rows.Count
-                    Me.ProgressBar.Minimum = 0
-                    Me.ProgressBar.Value = 0
-                    Me.ProgressBar.Visible = True
-                    Registro = DataSet.Tables("Productos").Rows.Count
-                    Iposicion = 0
-                    Existencia = 0
-                    Do While Iposicion < Registro
-                        'FechaIni = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
-                        'Fecha = Format(Me.DTPFechaFin.Value, "yyyy-MM-dd")
-                        FechaFin = DataSet.Tables("Productos").Rows(Iposicion)("Fecha_Factura")
-                        NumeroFactura = DataSet.Tables("Productos").Rows(Iposicion)("Numero_Factura")
-                        If Me.OptCordobas.Checked = True Then
-                            CtoFactura = CostoFactura(NumeroFactura, FechaFin, "Cordobas")
-                        Else
-                            CtoFactura = CostoFactura(NumeroFactura, FechaFin, "Dolares")
-                        End If
-                        Utilidad = DataSet.Tables("Productos").Rows(Iposicion)("Importe") - CtoFactura
-                        If Val(DataSet.Tables("Productos").Rows(Iposicion)("Importe")) <> 0 Then
-                            Porciento = Utilidad / DataSet.Tables("Productos").Rows(Iposicion)("Importe")
-                        Else
-                            Porciento = 0
-                        End If
-
-                        oDataRow = DataSet.Tables("Utilidad").NewRow
-                        oDataRow("Numero_Factura") = DataSet.Tables("Productos").Rows(Iposicion)("Numero_Factura")
-                        oDataRow("Nombre_Cliente") = DataSet.Tables("Productos").Rows(Iposicion)("Nombre_Cliente")
-                        oDataRow("Nombre_Vendedor") = DataSet.Tables("Productos").Rows(Iposicion)("Nombre_Vendedor")
-                        oDataRow("Importe") = DataSet.Tables("Productos").Rows(Iposicion)("Importe")
-                        oDataRow("Costo") = CtoFactura
-                        oDataRow("Utilidad") = Utilidad
-                        oDataRow("PorcientoUtilidad") = Porciento
-                        DataSet.Tables("Utilidad").Rows.Add(oDataRow)
+                    oDataRow = DataSet.Tables("Utilidad").NewRow
+                    oDataRow("Numero_Factura") = DataSet.Tables("Productos").Rows(Iposicion)("Numero_Factura")
+                    oDataRow("Nombre_Cliente") = DataSet.Tables("Productos").Rows(Iposicion)("Nombre_Cliente")
+                    oDataRow("Nombre_Vendedor") = DataSet.Tables("Productos").Rows(Iposicion)("Nombre_Vendedor")
+                    oDataRow("Importe") = DataSet.Tables("Productos").Rows(Iposicion)("Importe")
+                    oDataRow("Costo") = CtoFactura
+                    oDataRow("Utilidad") = Utilidad
+                    oDataRow("PorcientoUtilidad") = Porciento
+                    DataSet.Tables("Utilidad").Rows.Add(oDataRow)
 
 
-                        Me.Text = "Procesando: " & NumeroFactura
+                    Me.Text = "Procesando: " & NumeroFactura
 
-                        If Me.ProgressBar.Maximum <> 0 Then
-                            Me.ProgressBar.Value = Me.ProgressBar.Value + 1
-                        End If
+                    If Me.ProgressBar.Maximum <> 0 Then
+                        Me.ProgressBar.Value = Me.ProgressBar.Value + 1
+                    End If
 
-                        My.Application.DoEvents()
-                        Iposicion = Iposicion + 1
-
-                    Loop
-
-                    DvProductos = New DataView(DataSet.Tables("Utilidad"))
-                    DvProductos.Sort = "Nombre_Vendedor,Numero_Factura DESC"
-
-                    ArepUtilidadVentas.DataSource = DvProductos
-                    'ArepUtilidadVentas.Document.Name = "Reporte de Productos com mas Inventarios"
-                    Dim ViewerForm As New FrmViewer()
-                    ViewerForm.arvMain.Document = ArepUtilidadVentas.Document
                     My.Application.DoEvents()
-                    ArepUtilidadVentas.Run(False)
-                    ViewerForm.Show()
+                    Iposicion = Iposicion + 1
+
+                Loop
+
+                DvProductos = New DataView(DataSet.Tables("Utilidad"))
+                DvProductos.Sort = "Nombre_Vendedor,Numero_Factura DESC"
+
+                ArepUtilidadVentas.DataSource = DvProductos
+                'ArepUtilidadVentas.Document.Name = "Reporte de Productos com mas Inventarios"
+                Dim ViewerForm As New FrmViewer()
+                ViewerForm.arvMain.Document = ArepUtilidadVentas.Document
+                My.Application.DoEvents()
+                ArepUtilidadVentas.Run(False)
+                ViewerForm.Show()
 
 
 
             Case "Reporte de Utilidad por Proyectos"
-                    Dim ArepUtilidadProyecto As New ArepUtilidadProyecto
-                    Dim SQLString As String, Registro As Double = 0, Iposicion As Double = 0
-                    Dim FechaFin As String
-                    Dim Existencia As Double, NumeroProyecto As String, Total As Double = 0
-                    Dim oDataRow As DataRow, CtoFactura As Double, Utilidad As String, Porciento As Double
-                    Dim DvProductos As DataView
+                Dim ArepUtilidadProyecto As New ArepUtilidadProyecto
+                Dim SQLString As String, Registro As Double = 0, Iposicion As Double = 0
+                Dim FechaFin As String
+                Dim Existencia As Double, NumeroProyecto As String, Total As Double = 0
+                Dim oDataRow As DataRow, CtoFactura As Double, Utilidad As String, Porciento As Double
+                Dim DvProductos As DataView
 
-                    If Dir(RutaLogo) <> "" Then
-                        ArepUtilidadProyecto.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                        ArepUtilidadProyecto.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                    End If
+                If Dir(RutaLogo) <> "" Then
+                    ArepUtilidadProyecto.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                    ArepUtilidadProyecto.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                End If
 
-                    ArepUtilidadProyecto.LblTitulo.Text = NombreEmpresa
-                    ArepUtilidadProyecto.LblDireccion.Text = DireccionEmpresa
-                    ArepUtilidadProyecto.LblRuc.Text = Ruc
-                    ArepUtilidadProyecto.LblImpreso.Text = "Impreso: Desde " & Format(Fecha1, "dd/MM/yyyy") & " Hasta " & Format(Fecha2, "dd/MM/yyyy")
+                ArepUtilidadProyecto.LblTitulo.Text = NombreEmpresa
+                ArepUtilidadProyecto.LblDireccion.Text = DireccionEmpresa
+                ArepUtilidadProyecto.LblRuc.Text = Ruc
+                ArepUtilidadProyecto.LblImpreso.Text = "Impreso: Desde " & Format(Fecha1, "dd/MM/yyyy") & " Hasta " & Format(Fecha2, "dd/MM/yyyy")
 
-                    '*******************************************************************************************************************************
-                    '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
-                    '*******************************************************************************************************************************
-                    SQLString = "SELECT  Facturas.Numero_Factura, Facturas.Tipo_Factura AS Costo, Facturas.Nombre_Cliente, Facturas.Nombre_Cliente As NombreProyectos, Vendedores.Nombre_Vendedor,CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Facturas.SubTotal * TasaCambio.MontoTasa END AS Importe, Facturas.NetoPagar AS Utilidad, Facturas.NetoPagar AS PorcientoUtilidad FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor WHERE (CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN (Facturas.SubTotal) * TasaCambio.MontoTasa END <> 0) AND (Facturas.Tipo_Factura = N'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '2014-01-11 00:00:00', 102) AND CONVERT(DATETIME, '2014-11-30 00:00:00', 102)) AND (Facturas.Numero_Factura = N'-10000') ORDER BY Facturas.Numero_Factura"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
-                    DataAdapter.Fill(DataSet, "Utilidad")
+                '*******************************************************************************************************************************
+                '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
+                '*******************************************************************************************************************************
+                SQLString = "SELECT  Facturas.Numero_Factura, Facturas.Tipo_Factura AS Costo, Facturas.Nombre_Cliente, Facturas.Nombre_Cliente As NombreProyectos, Vendedores.Nombre_Vendedor,CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Facturas.SubTotal * TasaCambio.MontoTasa END AS Importe, Facturas.NetoPagar AS Utilidad, Facturas.NetoPagar AS PorcientoUtilidad FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor WHERE (CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN (Facturas.SubTotal) * TasaCambio.MontoTasa END <> 0) AND (Facturas.Tipo_Factura = N'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '2014-01-11 00:00:00', 102) AND CONVERT(DATETIME, '2014-11-30 00:00:00', 102)) AND (Facturas.Numero_Factura = N'-10000') ORDER BY Facturas.Numero_Factura"
+                DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
+                DataAdapter.Fill(DataSet, "Utilidad")
 
+                If Me.OptCordobas.Checked = True Then
+                    'SqlDatos = "SELECT Facturas.Numero_Factura, Facturas.Tipo_Factura AS Costo, Facturas.Nombre_Cliente, Vendedores.Nombre_Vendedor, CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Facturas.SubTotal * TasaCambio.MontoTasa ELSE Facturas.SubTotal END AS Importe, Facturas.NetoPagar AS Utilidad, Facturas.NetoPagar AS PorcientoUtilidad, Facturas.Fecha_Factura, Proyectos.CodigoProyectos, Proyectos.NombreProyectos FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor INNER JOIN Proyectos ON Facturas.CodigoProyecto = Proyectos.CodigoProyectos WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Vendedores.Nombre_Vendedor, Facturas.Numero_Factura"
+                    SqlDatos = "SELECT MAX(Facturas.Numero_Factura) AS Numero_Factura, MAX(Facturas.Nombre_Cliente) AS Nombre_Cliente, MAX(Vendedores.Nombre_Vendedor) AS Nombre_Vendedor, SUM(CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Facturas.SubTotal * TasaCambio.MontoTasa ELSE Facturas.SubTotal END) AS Importe, SUM(Facturas.NetoPagar) AS Utilidad, SUM(Facturas.NetoPagar) AS PorcientoUtilidad, Proyectos.CodigoProyectos, Proyectos.NombreProyectos FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor INNER JOIN Proyectos ON Facturas.CodigoProyecto = Proyectos.CodigoProyectos WHERE (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Facturas.Tipo_Factura = 'Factura') GROUP BY Proyectos.CodigoProyectos, Proyectos.NombreProyectos ORDER BY Nombre_Vendedor, Numero_Factura"
+                Else
+                    'SqlDatos = "SELECT Facturas.Numero_Factura, Facturas.Tipo_Factura AS Costo, Facturas.Nombre_Cliente, Vendedores.Nombre_Vendedor, Vendedores.Nombre_Vendedor AS NombreProyecto, CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Facturas.SubTotal / TasaCambio.MontoTasa ELSE Facturas.SubTotal END AS Importe, Facturas.NetoPagar AS Utilidad, Facturas.NetoPagar AS PorcientoUtilidad, Facturas.Fecha_Factura, Proyectos.CodigoProyectos, Proyectos.NombreProyectos FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor INNER JOIN Proyectos ON Facturas.CodigoProyecto = Proyectos.CodigoProyectos WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Vendedores.Nombre_Vendedor, Facturas.Numero_Factura"
+                    SqlDatos = "SELECT MAX(Facturas.Numero_Factura) AS Numero_Factura, MAX(Facturas.Nombre_Cliente) AS Nombre_Cliente, MAX(Vendedores.Nombre_Vendedor) AS Nombre_Vendedor, SUM(CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Facturas.SubTotal / TasaCambio.MontoTasa ELSE Facturas.SubTotal END) AS Importe, SUM(Facturas.NetoPagar) AS Utilidad, SUM(Facturas.NetoPagar) AS PorcientoUtilidad, Proyectos.CodigoProyectos, Proyectos.NombreProyectos FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor INNER JOIN Proyectos ON Facturas.CodigoProyecto = Proyectos.CodigoProyectos WHERE (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Facturas.Tipo_Factura = 'Factura') GROUP BY Proyectos.CodigoProyectos, Proyectos.NombreProyectos ORDER BY Nombre_Vendedor, Numero_Factura"
+                End If
+
+                '*****************************************************************************************************************************************
+                '////////////////////////////////////////////CON ESTE CICLO RECORRO LA CONSULTA //////////////////////////////////////////
+                '*****************************************************************************************************************************************
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                DataAdapter.Fill(DataSet, "Productos")
+                Me.ProgressBar.Maximum = DataSet.Tables("Productos").Rows.Count
+                Me.ProgressBar.Minimum = 0
+                Me.ProgressBar.Value = 0
+                Me.ProgressBar.Visible = True
+                Registro = DataSet.Tables("Productos").Rows.Count
+                Iposicion = 0
+                Existencia = 0
+                Do While Iposicion < Registro
+                    'FechaIni = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
+                    'Fecha = Format(Me.DTPFechaFin.Value, "yyyy-MM-dd")
+                    'FechaFin = DataSet.Tables("Productos").Rows(Iposicion)("Fecha_Factura")
+                    FechaFin = Format(Me.DTPFechaFin.Value, "yyyy-MM-dd")
+                    NumeroProyecto = DataSet.Tables("Productos").Rows(Iposicion)("CodigoProyectos")
                     If Me.OptCordobas.Checked = True Then
-                        'SqlDatos = "SELECT Facturas.Numero_Factura, Facturas.Tipo_Factura AS Costo, Facturas.Nombre_Cliente, Vendedores.Nombre_Vendedor, CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Facturas.SubTotal * TasaCambio.MontoTasa ELSE Facturas.SubTotal END AS Importe, Facturas.NetoPagar AS Utilidad, Facturas.NetoPagar AS PorcientoUtilidad, Facturas.Fecha_Factura, Proyectos.CodigoProyectos, Proyectos.NombreProyectos FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor INNER JOIN Proyectos ON Facturas.CodigoProyecto = Proyectos.CodigoProyectos WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Vendedores.Nombre_Vendedor, Facturas.Numero_Factura"
-                        SqlDatos = "SELECT MAX(Facturas.Numero_Factura) AS Numero_Factura, MAX(Facturas.Nombre_Cliente) AS Nombre_Cliente, MAX(Vendedores.Nombre_Vendedor) AS Nombre_Vendedor, SUM(CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Facturas.SubTotal * TasaCambio.MontoTasa ELSE Facturas.SubTotal END) AS Importe, SUM(Facturas.NetoPagar) AS Utilidad, SUM(Facturas.NetoPagar) AS PorcientoUtilidad, Proyectos.CodigoProyectos, Proyectos.NombreProyectos FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor INNER JOIN Proyectos ON Facturas.CodigoProyecto = Proyectos.CodigoProyectos WHERE (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Facturas.Tipo_Factura = 'Factura') GROUP BY Proyectos.CodigoProyectos, Proyectos.NombreProyectos ORDER BY Nombre_Vendedor, Numero_Factura"
+                        CtoFactura = CostoProyecto(NumeroProyecto, FechaFin, "Cordobas")
                     Else
-                        'SqlDatos = "SELECT Facturas.Numero_Factura, Facturas.Tipo_Factura AS Costo, Facturas.Nombre_Cliente, Vendedores.Nombre_Vendedor, Vendedores.Nombre_Vendedor AS NombreProyecto, CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Facturas.SubTotal / TasaCambio.MontoTasa ELSE Facturas.SubTotal END AS Importe, Facturas.NetoPagar AS Utilidad, Facturas.NetoPagar AS PorcientoUtilidad, Facturas.Fecha_Factura, Proyectos.CodigoProyectos, Proyectos.NombreProyectos FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor INNER JOIN Proyectos ON Facturas.CodigoProyecto = Proyectos.CodigoProyectos WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Vendedores.Nombre_Vendedor, Facturas.Numero_Factura"
-                        SqlDatos = "SELECT MAX(Facturas.Numero_Factura) AS Numero_Factura, MAX(Facturas.Nombre_Cliente) AS Nombre_Cliente, MAX(Vendedores.Nombre_Vendedor) AS Nombre_Vendedor, SUM(CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Facturas.SubTotal / TasaCambio.MontoTasa ELSE Facturas.SubTotal END) AS Importe, SUM(Facturas.NetoPagar) AS Utilidad, SUM(Facturas.NetoPagar) AS PorcientoUtilidad, Proyectos.CodigoProyectos, Proyectos.NombreProyectos FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor INNER JOIN Proyectos ON Facturas.CodigoProyecto = Proyectos.CodigoProyectos WHERE (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Facturas.Tipo_Factura = 'Factura') GROUP BY Proyectos.CodigoProyectos, Proyectos.NombreProyectos ORDER BY Nombre_Vendedor, Numero_Factura"
+                        CtoFactura = CostoProyecto(NumeroProyecto, FechaFin, "Dolares")
                     End If
 
-                    '*****************************************************************************************************************************************
-                    '////////////////////////////////////////////CON ESTE CICLO RECORRO LA CONSULTA //////////////////////////////////////////
-                    '*****************************************************************************************************************************************
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                    DataAdapter.Fill(DataSet, "Productos")
-                    Me.ProgressBar.Maximum = DataSet.Tables("Productos").Rows.Count
-                    Me.ProgressBar.Minimum = 0
-                    Me.ProgressBar.Value = 0
-                    Me.ProgressBar.Visible = True
-                    Registro = DataSet.Tables("Productos").Rows.Count
-                    Iposicion = 0
-                    Existencia = 0
-                    Do While Iposicion < Registro
-                        'FechaIni = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
-                        'Fecha = Format(Me.DTPFechaFin.Value, "yyyy-MM-dd")
-                        'FechaFin = DataSet.Tables("Productos").Rows(Iposicion)("Fecha_Factura")
-                        FechaFin = Format(Me.DTPFechaFin.Value, "yyyy-MM-dd")
-                        NumeroProyecto = DataSet.Tables("Productos").Rows(Iposicion)("CodigoProyectos")
-                        If Me.OptCordobas.Checked = True Then
-                            CtoFactura = CostoProyecto(NumeroProyecto, FechaFin, "Cordobas")
-                        Else
-                            CtoFactura = CostoProyecto(NumeroProyecto, FechaFin, "Dolares")
-                        End If
+                    Utilidad = DataSet.Tables("Productos").Rows(Iposicion)("Importe") - CtoFactura
 
-                        Utilidad = DataSet.Tables("Productos").Rows(Iposicion)("Importe") - CtoFactura
+                    If Val(DataSet.Tables("Productos").Rows(Iposicion)("Importe")) <> 0 Then
+                        Porciento = Utilidad / DataSet.Tables("Productos").Rows(Iposicion)("Importe")
+                    Else
+                        Porciento = 0
+                    End If
 
-                        If Val(DataSet.Tables("Productos").Rows(Iposicion)("Importe")) <> 0 Then
-                            Porciento = Utilidad / DataSet.Tables("Productos").Rows(Iposicion)("Importe")
-                        Else
-                            Porciento = 0
-                        End If
-
-                        oDataRow = DataSet.Tables("Utilidad").NewRow
-                        oDataRow("Numero_Factura") = DataSet.Tables("Productos").Rows(Iposicion)("Numero_Factura")
-                        oDataRow("Nombre_Cliente") = DataSet.Tables("Productos").Rows(Iposicion)("Nombre_Cliente")
-                        oDataRow("Nombre_Vendedor") = DataSet.Tables("Productos").Rows(Iposicion)("Nombre_Vendedor")
-                        oDataRow("NombreProyectos") = DataSet.Tables("Productos").Rows(Iposicion)("NombreProyectos")
-                        oDataRow("Importe") = DataSet.Tables("Productos").Rows(Iposicion)("Importe")
-                        oDataRow("Costo") = CtoFactura
-                        oDataRow("Utilidad") = Utilidad
-                        oDataRow("PorcientoUtilidad") = Porciento
-                        DataSet.Tables("Utilidad").Rows.Add(oDataRow)
+                    oDataRow = DataSet.Tables("Utilidad").NewRow
+                    oDataRow("Numero_Factura") = DataSet.Tables("Productos").Rows(Iposicion)("Numero_Factura")
+                    oDataRow("Nombre_Cliente") = DataSet.Tables("Productos").Rows(Iposicion)("Nombre_Cliente")
+                    oDataRow("Nombre_Vendedor") = DataSet.Tables("Productos").Rows(Iposicion)("Nombre_Vendedor")
+                    oDataRow("NombreProyectos") = DataSet.Tables("Productos").Rows(Iposicion)("NombreProyectos")
+                    oDataRow("Importe") = DataSet.Tables("Productos").Rows(Iposicion)("Importe")
+                    oDataRow("Costo") = CtoFactura
+                    oDataRow("Utilidad") = Utilidad
+                    oDataRow("PorcientoUtilidad") = Porciento
+                    DataSet.Tables("Utilidad").Rows.Add(oDataRow)
 
 
-                        Me.Text = "Procesando: " & NumeroProyecto
+                    Me.Text = "Procesando: " & NumeroProyecto
 
-                        If Me.ProgressBar.Maximum <> 0 Then
-                            Me.ProgressBar.Value = Me.ProgressBar.Value + 1
-                        End If
+                    If Me.ProgressBar.Maximum <> 0 Then
+                        Me.ProgressBar.Value = Me.ProgressBar.Value + 1
+                    End If
 
-                        My.Application.DoEvents()
-                        Iposicion = Iposicion + 1
-
-                    Loop
-
-                    DvProductos = New DataView(DataSet.Tables("Utilidad"))
-                    DvProductos.Sort = "Nombre_Vendedor,Numero_Factura DESC"
-
-                    ArepUtilidadProyecto.DataSource = DvProductos
-                    'ArepUtilidadVentas.Document.Name = "Reporte de Productos com mas Inventarios"
-                    Dim ViewerForm As New FrmViewer()
-                    ViewerForm.arvMain.Document = ArepUtilidadProyecto.Document
                     My.Application.DoEvents()
-                    ArepUtilidadProyecto.Run(False)
-                    ViewerForm.Show()
+                    Iposicion = Iposicion + 1
+
+                Loop
+
+                DvProductos = New DataView(DataSet.Tables("Utilidad"))
+                DvProductos.Sort = "Nombre_Vendedor,Numero_Factura DESC"
+
+                ArepUtilidadProyecto.DataSource = DvProductos
+                'ArepUtilidadVentas.Document.Name = "Reporte de Productos com mas Inventarios"
+                Dim ViewerForm As New FrmViewer()
+                ViewerForm.arvMain.Document = ArepUtilidadProyecto.Document
+                My.Application.DoEvents()
+                ArepUtilidadProyecto.Run(False)
+                ViewerForm.Show()
 
 
 
             Case "Reporte Rotacion de Inventario"
-                    Dim ArepRotacionInventario As New ArepRotacionInventario
-                    Dim SQLString As String, Registro As Double = 0, Iposicion As Double = 0
-                    Dim CodProducto As String, FechaIni As String, FechaFin As String
-                    Dim Existencia As Double, CodBodega As String, Total As Double = 0
-                    Dim oDataRow As DataRow, NombreProducto As String, NombreBodega As String
-                    Dim Fecha As Date, CostoPromedio As Double, Rotacion As Double, Indice As Double
-                    Dim DvProductos As DataView
+                Dim ArepRotacionInventario As New ArepRotacionInventario
+                Dim SQLString As String, Registro As Double = 0, Iposicion As Double = 0
+                Dim CodProducto As String, FechaIni As String, FechaFin As String
+                Dim Existencia As Double, CodBodega As String, Total As Double = 0
+                Dim oDataRow As DataRow, NombreProducto As String, NombreBodega As String
+                Dim Fecha As Date, CostoPromedio As Double, Rotacion As Double, Indice As Double
+                Dim DvProductos As DataView
 
-                    If Dir(RutaLogo) <> "" Then
-                        ArepRotacionInventario.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                        ArepRotacionInventario.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                If Dir(RutaLogo) <> "" Then
+                    ArepRotacionInventario.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                    ArepRotacionInventario.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                End If
+
+                ArepRotacionInventario.LblTitulo.Text = NombreEmpresa
+                ArepRotacionInventario.LblDireccion.Text = DireccionEmpresa
+                ArepRotacionInventario.LblRuc.Text = Ruc
+
+                '*******************************************************************************************************************************
+                '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
+                '*******************************************************************************************************************************
+                SQLString = "SELECT Cod_Productos As Cod_Producto, Descripcion_Producto, Unidad_Medida, Minimo, Existencia_Unidades AS Cantidad, Existencia_DineroDolar AS Costo, Existencia_DineroDolar AS Rotacion, Existencia_DineroDolar AS Indice FROM Productos WHERE (Activo = Activo) AND (Tipo_Producto <> N'Descuento') AND (Cod_Productos = N'-100000') ORDER BY Cantidad DESC"
+                DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
+                DataAdapter.Fill(DataSet, "Rotacion")
+
+                SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  ORDER BY Productos.Cod_Productos"
+
+                '*****************************************************************************************************************************************
+                '////////////////////////////////////////////CON ESTE CICLO RECORRO LA CONSULTA //////////////////////////////////////////
+                '*****************************************************************************************************************************************
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                DataAdapter.Fill(DataSet, "Productos")
+                Me.ProgressBar.Maximum = DataSet.Tables("Productos").Rows.Count
+                Me.ProgressBar.Minimum = 0
+                Me.ProgressBar.Value = 0
+                Me.ProgressBar.Visible = True
+                Registro = DataSet.Tables("Productos").Rows.Count
+                Iposicion = 0
+                Existencia = 0
+                Do While Iposicion < Registro
+                    FechaIni = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
+                    Fecha = Format(Me.DTPFechaFin.Value, "yyyy-MM-dd")
+                    FechaFin = Format(Fecha.AddDays(1), "yyyy-MM-dd")
+                    CodProducto = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Productos")
+                    NombreProducto = DataSet.Tables("Productos").Rows(Iposicion)("Descripcion_Producto")
+                    NombreBodega = DataSet.Tables("Productos").Rows(Iposicion)("Descripcion_Linea")
+                    CodBodega = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Linea")
+                    'Existencia = ExistenciaProductoFecha(CodProducto, FechaFin)
+                    Existencia = Format(BuscaInventarioInicial(CodProducto, FechaFin))
+                    CostoPromedio = CostoPromedioKardex(CodProducto, FechaFin)
+
+                    'If CodProducto = "102-08-119" Then
+                    '    CodProducto = "102-08-119"
+                    'End If
+                    If Existencia <> 0 Then
+                        If DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Descuento" And DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Servicio" Then
+                            oDataRow = DataSet.Tables("Rotacion").NewRow
+                            oDataRow("Cod_Producto") = CodProducto
+                            oDataRow("Descripcion_Producto") = NombreProducto
+                            oDataRow("Unidad_Medida") = DataSet.Tables("Productos").Rows(Iposicion)("Unidad_Medida")
+                            oDataRow("Minimo") = DataSet.Tables("Productos").Rows(Iposicion)("Minimo")
+                            oDataRow("Cantidad") = Existencia
+                            If Me.OptCordobas.Checked = True Then
+                                oDataRow("Costo") = Existencia * CostoPromedio
+                                Rotacion = Format(CostoPromedio / Existencia, "##,##0.0000")
+                            Else
+                                oDataRow("Costo") = Existencia * CostoPromedioDolar
+                                Rotacion = Format(CostoPromedioDolar / Existencia, "##,##0.0000")
+                            End If
+
+                            If Rotacion <> 0 Then
+                                oDataRow("Rotacion") = Rotacion
+                                oDataRow("Indice") = 360 / Rotacion
+                            Else
+                                Indice = 0
+                            End If
+
+
+                            DataSet.Tables("Rotacion").Rows.Add(oDataRow)
+
+                        End If
                     End If
 
-                    ArepRotacionInventario.LblTitulo.Text = NombreEmpresa
-                    ArepRotacionInventario.LblDireccion.Text = DireccionEmpresa
-                    ArepRotacionInventario.LblRuc.Text = Ruc
 
-                    '*******************************************************************************************************************************
-                    '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
-                    '*******************************************************************************************************************************
-                    SQLString = "SELECT Cod_Productos As Cod_Producto, Descripcion_Producto, Unidad_Medida, Minimo, Existencia_Unidades AS Cantidad, Existencia_DineroDolar AS Costo, Existencia_DineroDolar AS Rotacion, Existencia_DineroDolar AS Indice FROM Productos WHERE (Activo = Activo) AND (Tipo_Producto <> N'Descuento') AND (Cod_Productos = N'-100000') ORDER BY Cantidad DESC"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
-                    DataAdapter.Fill(DataSet, "Rotacion")
+                    Me.Text = "Procesando: " & CodProducto
 
-                    SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  ORDER BY Productos.Cod_Productos"
+                    If Me.ProgressBar.Maximum <> 0 Then
+                        Me.ProgressBar.Value = Me.ProgressBar.Value + 1
+                    End If
 
-                    '*****************************************************************************************************************************************
-                    '////////////////////////////////////////////CON ESTE CICLO RECORRO LA CONSULTA //////////////////////////////////////////
-                    '*****************************************************************************************************************************************
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                    DataAdapter.Fill(DataSet, "Productos")
-                    Me.ProgressBar.Maximum = DataSet.Tables("Productos").Rows.Count
-                    Me.ProgressBar.Minimum = 0
-                    Me.ProgressBar.Value = 0
-                    Me.ProgressBar.Visible = True
-                    Registro = DataSet.Tables("Productos").Rows.Count
-                    Iposicion = 0
-                    Existencia = 0
-                    Do While Iposicion < Registro
-                        FechaIni = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
-                        Fecha = Format(Me.DTPFechaFin.Value, "yyyy-MM-dd")
-                        FechaFin = Format(Fecha.AddDays(1), "yyyy-MM-dd")
-                        CodProducto = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Productos")
-                        NombreProducto = DataSet.Tables("Productos").Rows(Iposicion)("Descripcion_Producto")
-                        NombreBodega = DataSet.Tables("Productos").Rows(Iposicion)("Descripcion_Linea")
-                        CodBodega = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Linea")
-                        'Existencia = ExistenciaProductoFecha(CodProducto, FechaFin)
-                        Existencia = Format(BuscaInventarioInicial(CodProducto, FechaFin))
-                        CostoPromedio = CostoPromedioKardex(CodProducto, FechaFin)
-
-                        'If CodProducto = "102-08-119" Then
-                        '    CodProducto = "102-08-119"
-                        'End If
-                        If Existencia <> 0 Then
-                            If DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Descuento" And DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Servicio" Then
-                                oDataRow = DataSet.Tables("Rotacion").NewRow
-                                oDataRow("Cod_Producto") = CodProducto
-                                oDataRow("Descripcion_Producto") = NombreProducto
-                                oDataRow("Unidad_Medida") = DataSet.Tables("Productos").Rows(Iposicion)("Unidad_Medida")
-                                oDataRow("Minimo") = DataSet.Tables("Productos").Rows(Iposicion)("Minimo")
-                                oDataRow("Cantidad") = Existencia
-                                If Me.OptCordobas.Checked = True Then
-                                    oDataRow("Costo") = Existencia * CostoPromedio
-                                    Rotacion = Format(CostoPromedio / Existencia, "##,##0.0000")
-                                Else
-                                    oDataRow("Costo") = Existencia * CostoPromedioDolar
-                                    Rotacion = Format(CostoPromedioDolar / Existencia, "##,##0.0000")
-                                End If
-
-                                If Rotacion <> 0 Then
-                                    oDataRow("Rotacion") = Rotacion
-                                    oDataRow("Indice") = 360 / Rotacion
-                                Else
-                                    Indice = 0
-                                End If
-
-
-                                DataSet.Tables("Rotacion").Rows.Add(oDataRow)
-
-                            End If
-                        End If
-
-
-                        Me.Text = "Procesando: " & CodProducto
-
-                        If Me.ProgressBar.Maximum <> 0 Then
-                            Me.ProgressBar.Value = Me.ProgressBar.Value + 1
-                        End If
-
-                        My.Application.DoEvents()
-                        Iposicion = Iposicion + 1
-
-                    Loop
-
-                    'DvProductos = New DataView(DataSet.Tables("BajoMinimo"), "Descripcion_Producto like '%'", "Cantidad DESC", DataViewRowState.OriginalRows)
-                    DvProductos = New DataView(DataSet.Tables("Rotacion"))
-                    DvProductos.Sort = "Costo DESC"
-
-                    ArepRotacionInventario.DataSource = DvProductos
-                    ArepRotacionInventario.Document.Name = "Reporte de Productos com mas Inventarios"
-                    ArepRotacionInventario.Label1.Text = "Reporte de Productos com mas Inventarios"
-                    ArepRotacionInventario.Label14.Text = "Existencia"
-                    Dim ViewerForm As New FrmViewer()
-                    ViewerForm.arvMain.Document = ArepRotacionInventario.Document
                     My.Application.DoEvents()
-                    ArepRotacionInventario.Run(False)
-                    ViewerForm.Show()
+                    Iposicion = Iposicion + 1
+
+                Loop
+
+                'DvProductos = New DataView(DataSet.Tables("BajoMinimo"), "Descripcion_Producto like '%'", "Cantidad DESC", DataViewRowState.OriginalRows)
+                DvProductos = New DataView(DataSet.Tables("Rotacion"))
+                DvProductos.Sort = "Costo DESC"
+
+                ArepRotacionInventario.DataSource = DvProductos
+                ArepRotacionInventario.Document.Name = "Reporte de Productos com mas Inventarios"
+                ArepRotacionInventario.Label1.Text = "Reporte de Productos com mas Inventarios"
+                ArepRotacionInventario.Label14.Text = "Existencia"
+                Dim ViewerForm As New FrmViewer()
+                ViewerForm.arvMain.Document = ArepRotacionInventario.Document
+                My.Application.DoEvents()
+                ArepRotacionInventario.Run(False)
+                ViewerForm.Show()
 
 
             Case "Reporte de Productos mas Inventarios"
-                    Dim ArepProductosMasInventarios As New ArepProductosVendidos
-                    Dim SQLString As String, Registro As Double = 0, Iposicion As Double = 0
-                    Dim CodProducto As String, FechaIni As String, FechaFin As String
-                    Dim Existencia As Double, CodBodega As String, Total As Double = 0
-                    Dim oDataRow As DataRow, NombreProducto As String, NombreBodega As String
-                    Dim Fecha As Date, CostoPromedio As Double
-                    Dim DvProductos As DataView
+                Dim ArepProductosMasInventarios As New ArepProductosVendidos
+                Dim SQLString As String, Registro As Double = 0, Iposicion As Double = 0
+                Dim CodProducto As String, FechaIni As String, FechaFin As String
+                Dim Existencia As Double, CodBodega As String, Total As Double = 0
+                Dim oDataRow As DataRow, NombreProducto As String, NombreBodega As String
+                Dim Fecha As Date, CostoPromedio As Double
+                Dim DvProductos As DataView
 
-                    If Dir(RutaLogo) <> "" Then
-                        ArepProductosMasInventarios.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                        ArepProductosMasInventarios.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                If Dir(RutaLogo) <> "" Then
+                    ArepProductosMasInventarios.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                    ArepProductosMasInventarios.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                End If
+
+                ArepProductosMasInventarios.LblTitulo.Text = NombreEmpresa
+                ArepProductosMasInventarios.LblDireccion.Text = DireccionEmpresa
+                ArepProductosMasInventarios.LblRuc.Text = Ruc
+
+                '*******************************************************************************************************************************
+                '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
+                '*******************************************************************************************************************************
+                SQLString = "SELECT Cod_Productos As Cod_Producto, Descripcion_Producto, Unidad_Medida, Minimo, Existencia_Unidades AS Cantidad, Existencia_DineroDolar AS Costo FROM Productos WHERE (Activo = Activo) AND (Tipo_Producto <> N'Descuento') AND (Cod_Productos = N'-100000') ORDER BY Cantidad DESC"
+                DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
+                DataAdapter.Fill(DataSet, "BajoMinimo")
+
+                SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  ORDER BY Productos.Cod_Productos"
+
+                '*****************************************************************************************************************************************
+                '////////////////////////////////////////////CON ESTE CICLO RECORRO LA CONSULTA //////////////////////////////////////////
+                '*****************************************************************************************************************************************
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                DataAdapter.Fill(DataSet, "Productos")
+                Me.ProgressBar.Maximum = DataSet.Tables("Productos").Rows.Count
+                Me.ProgressBar.Minimum = 0
+                Me.ProgressBar.Value = 0
+                Me.ProgressBar.Visible = True
+                Registro = DataSet.Tables("Productos").Rows.Count
+                Iposicion = 0
+                Existencia = 0
+                Do While Iposicion < Registro
+                    FechaIni = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
+                    Fecha = Format(Me.DTPFechaFin.Value, "yyyy-MM-dd")
+                    FechaFin = Format(Fecha.AddDays(1), "yyyy-MM-dd")
+                    CodProducto = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Productos")
+                    NombreProducto = DataSet.Tables("Productos").Rows(Iposicion)("Descripcion_Producto")
+                    NombreBodega = DataSet.Tables("Productos").Rows(Iposicion)("Descripcion_Linea")
+                    CodBodega = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Linea")
+                    'Existencia = ExistenciaProductoFecha(CodProducto, FechaFin)
+                    Existencia = Format(BuscaInventarioInicial(CodProducto, FechaFin))
+                    CostoPromedio = CostoPromedioKardex(CodProducto, FechaFin)
+                    If Existencia <> 0 Then
+                        If DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Descuento" And DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Servicio" Then
+                            oDataRow = DataSet.Tables("BajoMinimo").NewRow
+                            oDataRow("Cod_Producto") = CodProducto
+                            oDataRow("Descripcion_Producto") = NombreProducto
+                            oDataRow("Unidad_Medida") = DataSet.Tables("Productos").Rows(Iposicion)("Unidad_Medida")
+                            oDataRow("Minimo") = DataSet.Tables("Productos").Rows(Iposicion)("Minimo")
+                            oDataRow("Cantidad") = Existencia
+                            If Me.OptCordobas.Checked = True Then
+                                oDataRow("Costo") = Existencia * CostoPromedio
+                            Else
+                                oDataRow("Costo") = Existencia * CostoPromedioDolar
+                            End If
+                            DataSet.Tables("BajoMinimo").Rows.Add(oDataRow)
+
+                        End If
                     End If
 
-                    ArepProductosMasInventarios.LblTitulo.Text = NombreEmpresa
-                    ArepProductosMasInventarios.LblDireccion.Text = DireccionEmpresa
-                    ArepProductosMasInventarios.LblRuc.Text = Ruc
 
-                    '*******************************************************************************************************************************
-                    '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
-                    '*******************************************************************************************************************************
-                    SQLString = "SELECT Cod_Productos As Cod_Producto, Descripcion_Producto, Unidad_Medida, Minimo, Existencia_Unidades AS Cantidad, Existencia_DineroDolar AS Costo FROM Productos WHERE (Activo = Activo) AND (Tipo_Producto <> N'Descuento') AND (Cod_Productos = N'-100000') ORDER BY Cantidad DESC"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
-                    DataAdapter.Fill(DataSet, "BajoMinimo")
+                    Me.Text = "Procesando: " & CodProducto
 
-                    SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  ORDER BY Productos.Cod_Productos"
+                    If Me.ProgressBar.Maximum <> 0 Then
+                        Me.ProgressBar.Value = Me.ProgressBar.Value + 1
+                    End If
 
-                    '*****************************************************************************************************************************************
-                    '////////////////////////////////////////////CON ESTE CICLO RECORRO LA CONSULTA //////////////////////////////////////////
-                    '*****************************************************************************************************************************************
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                    DataAdapter.Fill(DataSet, "Productos")
-                    Me.ProgressBar.Maximum = DataSet.Tables("Productos").Rows.Count
-                    Me.ProgressBar.Minimum = 0
-                    Me.ProgressBar.Value = 0
-                    Me.ProgressBar.Visible = True
-                    Registro = DataSet.Tables("Productos").Rows.Count
-                    Iposicion = 0
-                    Existencia = 0
-                    Do While Iposicion < Registro
-                        FechaIni = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
-                        Fecha = Format(Me.DTPFechaFin.Value, "yyyy-MM-dd")
-                        FechaFin = Format(Fecha.AddDays(1), "yyyy-MM-dd")
-                        CodProducto = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Productos")
-                        NombreProducto = DataSet.Tables("Productos").Rows(Iposicion)("Descripcion_Producto")
-                        NombreBodega = DataSet.Tables("Productos").Rows(Iposicion)("Descripcion_Linea")
-                        CodBodega = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Linea")
-                        'Existencia = ExistenciaProductoFecha(CodProducto, FechaFin)
-                        Existencia = Format(BuscaInventarioInicial(CodProducto, FechaFin))
-                        CostoPromedio = CostoPromedioKardex(CodProducto, FechaFin)
-                        If Existencia <> 0 Then
-                            If DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Descuento" And DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Servicio" Then
+                    My.Application.DoEvents()
+                    Iposicion = Iposicion + 1
+
+                Loop
+
+                'DvProductos = New DataView(DataSet.Tables("BajoMinimo"), "Descripcion_Producto like '%'", "Cantidad DESC", DataViewRowState.OriginalRows)
+                DvProductos = New DataView(DataSet.Tables("BajoMinimo"))
+                DvProductos.Sort = "Costo DESC"
+
+                ArepProductosMasInventarios.DataSource = DvProductos
+                ArepProductosMasInventarios.Document.Name = "Reporte de Productos com mas Inventarios"
+                ArepProductosMasInventarios.LblReporte.Text = "Reporte de Productos com mas Inventarios"
+                ArepProductosMasInventarios.Label14.Text = "Existencia"
+                Dim ViewerForm As New FrmViewer()
+                ViewerForm.arvMain.Document = ArepProductosMasInventarios.Document
+                My.Application.DoEvents()
+                ArepProductosMasInventarios.Run(False)
+                ViewerForm.Show()
+
+            Case "Reporte de Productos mas Vendidos"
+                Dim ArepProductosMasVendidos As New ArepProductosVendidos
+                ArepProductosMasVendidos.LblTitulo.Text = NombreEmpresa
+                ArepProductosMasVendidos.LblDireccion.Text = DireccionEmpresa
+                ArepProductosMasVendidos.LblRuc.Text = Ruc
+                ArepProductosMasVendidos.LblRango.Text = "DESDE: " & Format(Fecha1, "dd/MM/yyyy") & "       HASTA: " & Format(Fecha2, "dd/MM/yyyy")
+                If Dir(RutaLogo) <> "" Then
+                    ArepProductosMasVendidos.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                End If
+
+                SqlDatos = "SELECT  Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, SUM(Detalle_Facturas.Cantidad) AS Cantidad, SUM(Detalle_Facturas.Importe) AS Importe FROM Facturas INNER JOIN Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND  Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura WHERE (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) GROUP BY Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto HAVING (Facturas.Tipo_Factura = 'Factura') ORDER BY Cantidad DESC"
+
+                SQL.ConnectionString = Conexion
+                SQL.SQL = SqlDatos
+                ArepProductosMasVendidos.DataSource = SQL
+                ArepProductosMasVendidos.Document.Name = "Reporte de Productos mas Vendidos"
+                ArepProductosMasVendidos.LblReporte.Text = "Reporte de Productos mas Vendidos"
+                Dim ViewerForm As New FrmViewer()
+                ViewerForm.arvMain.Document = ArepProductosMasVendidos.Document
+                My.Application.DoEvents()
+                ArepProductosMasVendidos.Run(False)
+                ViewerForm.Show()
+
+            Case "Reporte Grafico x Clientes"
+                Dim ArepReporteVentasClientes As New ArepGraficoVentasClientes
+
+                ArepReporteVentasClientes.LblTitulo.Text = NombreEmpresa
+                ArepReporteVentasClientes.LblDireccion.Text = DireccionEmpresa
+                ArepReporteVentasClientes.LblRuc.Text = Ruc
+                ArepReporteVentasClientes.LblRango.Text = "DESDE: " & Format(Fecha1, "dd/MM/yyyy") & "       HASTA: " & Format(Fecha2, "dd/MM/yyyy")
+                'SQlDatosSuma = "SELECT MAX(Vendedores.Cod_Vendedor) AS Expr1, MAX(Vendedores.Nombre_Vendedor + N' ' + Vendedores.Apellido_Vendedor) AS NombreVendedor, SUM(Facturas.SubTotal) AS MontoVendido FROM  Vendedores INNER JOIN Facturas ON Vendedores.Cod_Vendedor = Facturas.Cod_Vendedor "
+                If Me.OptDolares.Checked = True Then
+                    SQlDatosSuma = "SELECT SUM(CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Facturas.SubTotal ELSE Facturas.SubTotal/TasaCambio.MontoTasa END) AS MontoVendido,MAX(Clientes.Cod_Cliente) AS Cod_Cliente, MAX(Clientes.Nombre_Cliente) AS Nombre_Cliente FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " & _
+                                   "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY MontoVendido DESC"
+
+                    SqlDatos = "SELECT SUM(CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Facturas.SubTotal ELSE Facturas.SubTotal/TasaCambio.MontoTasa END) AS MontoVendido, Clientes.Cod_Cliente, Clientes.Nombre_Cliente FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente " & _
+                             "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) GROUP BY Clientes.Cod_Cliente, Clientes.Nombre_Cliente ORDER BY MontoVendido DESC"
+                    ArepReporteVentasClientes.LblMoneda.Text = "Expresado en Dolares"
+                Else
+                    SQlDatosSuma = "SELECT SUM(CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Facturas.SubTotal ELSE Facturas.SubTotal * TasaCambio.MontoTasa END) AS MontoVendido,MAX(Clientes.Cod_Cliente) AS Cod_Cliente, MAX(Clientes.Nombre_Cliente) AS Nombre_Cliente FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " & _
+                                   "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY MontoVendido DESC"
+
+                    SqlDatos = "SELECT SUM(CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Facturas.SubTotal ELSE Facturas.SubTotal * TasaCambio.MontoTasa END) AS MontoVendido, Clientes.Cod_Cliente, Clientes.Nombre_Cliente FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente " & _
+                               "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) GROUP BY Clientes.Cod_Cliente, Clientes.Nombre_Cliente ORDER BY MontoVendido DESC"
+                    ArepReporteVentasClientes.LblMoneda.Text = "Expresado en Cordobas"
+                End If
+                SQL.ConnectionString = Conexion
+                SQL.SQL = SqlDatos
+
+
+                ArepReporteVentasClientes.ChartControl1.DataSource = SQL
+                ArepReporteVentasClientes.DataSource = SQL
+
+                DataAdapter = New SqlClient.SqlDataAdapter(SQlDatosSuma, MiConexion)
+                DataAdapter.Fill(DataSet, "VentasTotales")
+                If Not DataSet.Tables("VentasTotales").Rows.Count = 0 Then
+                    If Not IsDBNull(DataSet.Tables("VentasTotales").Rows(0)("MontoVendido")) Then
+                        ArepReporteVentasClientes.VentasTotales = DataSet.Tables("VentasTotales").Rows(0)("MontoVendido")
+                    Else
+                        MsgBox("No existen Registros", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+                        Exit Select
+                        ArepReporteVentasClientes.VentasTotales = 0
+                    End If
+                Else
+                    ArepReporteVentasClientes.VentasTotales = 0
+                End If
+
+
+                ArepReporteVentasClientes.Document.Name = "Reporte de Ventas x Clientes"
+                Dim ViewerForm As New FrmViewer()
+                ViewerForm.arvMain.Document = ArepReporteVentasClientes.Document
+                My.Application.DoEvents()
+                ArepReporteVentasClientes.Run(False)
+                ViewerForm.Show()
+
+            Case "Productos Bajo Minimo"
+                Dim ArepProductosBajoMinimo As New ArepProductosBajoMinimo
+                Dim SQLString As String, Registro As Double = 0, Iposicion As Double = 0
+                Dim CodProducto As String, FechaIni As String, FechaFin As String
+                Dim Existencia As Double, CodBodega As String, Total As Double = 0
+                Dim oDataRow As DataRow, NombreProducto As String, NombreBodega As String
+                Dim Fecha As Date
+
+                If Dir(RutaLogo) <> "" Then
+                    ArepProductosBajoMinimo.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                    ArepProductosBajoMinimo.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                End If
+
+                ArepProductosBajoMinimo.LblTitulo.Text = NombreEmpresa
+                ArepProductosBajoMinimo.LblDireccion.Text = DireccionEmpresa
+                ArepProductosBajoMinimo.LblRuc.Text = Ruc
+
+                '*******************************************************************************************************************************
+                '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
+                '*******************************************************************************************************************************
+                SQLString = "SELECT Cod_Productos, Descripcion_Producto, Unidad_Medida, Minimo, Existencia_Unidades AS Existencia, Existencia_DineroDolar AS Diferencia FROM Productos WHERE (Activo = Activo) AND (Tipo_Producto <> N'Descuento') AND (Cod_Productos = N'-100000')"
+                DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
+                DataAdapter.Fill(DataSet, "BajoMinimo")
+
+                SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  ORDER BY Productos.Cod_Productos"
+                'Select Case Me.CmbAgrupado.Text
+                '    Case "Codigo Producto"
+                '        If Me.CboCodigoProducto.Text = "" Then
+                '            If Me.CboCodigoProducto2.Text = "" Then
+                '                SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  ORDER BY Productos.Cod_Productos"
+                '            Else
+                '                SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  AND (Productos.Cod_Productos BETWEEN '" & CodigoInicio & "' AND '" & Me.CboCodigoProducto2.Text & "') ORDER BY Productos.Cod_Productos"
+                '            End If
+                '        ElseIf Me.CboCodigoProducto2.Text = "" Then
+                '            SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  AND (Productos.Cod_Productos BETWEEN '" & Me.CboCodigoProducto.Text & "' AND '" & CodigoFin & "') ORDER BY Productos.Cod_Productos"
+                '        Else
+                '            SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  AND (Productos.Cod_Productos BETWEEN '" & Me.CboCodigoProducto.Text & "' AND '" & Me.CboCodigoProducto2.Text & "') ORDER BY Productos.Cod_Productos"
+                '        End If
+
+                '    Case "Linea"
+                '        If Me.CmbRango1.Text = "" Then
+                '            If Me.CmbRango2.Text = "" Then
+                '                SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  ORDER BY Productos.Cod_Linea"
+                '            Else
+                '                SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  AND (Productos.Cod_Linea BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Linea"
+                '            End If
+
+                '        ElseIf Me.CmbRango2.Text = "" Then
+                '            SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  ORDER BY Productos.Cod_Linea"
+                '        Else
+                '            SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  AND (Productos.Cod_Linea BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Linea"
+                '        End If
+
+
+                '    Case "Bodega"
+                '        If Me.CboCodigoProducto.Text = "" And Me.CboCodigoProducto2.Text = "" Then
+                '            If Me.CmbRango1.Text = "" Then
+                '                If Me.CmbRango2.Text = "" Then
+                '                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
+                '                Else
+                '                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  WHERE (Bodegas.Cod_Bodega BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
+                '                End If
+                '            ElseIf Me.CmbRango2.Text = "" Then
+                '                If Me.CmbRango1.Text = "" Then
+                '                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
+                '                Else
+                '                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  WHERE (Bodegas.Cod_Bodega BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
+                '                End If
+                '            Else
+                '                SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  WHERE (Bodegas.Cod_Bodega BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
+                '            End If
+                '        Else
+
+                '            Cadena = "WHERE (Productos.Cod_Productos BETWEEN '" & Me.CboCodigoProducto.Text & "' AND '" & Me.CboCodigoProducto2.Text & "') ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
+                '            If Me.CmbRango1.Text = "" Then
+                '                If Me.CmbRango2.Text = "" Then
+                '                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  " & Cadena
+                '                Else
+                '                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  WHERE (Bodegas.Cod_Bodega BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') " & Cadena
+                '                End If
+                '            ElseIf Me.CmbRango2.Text = "" Then
+                '                If Me.CmbRango1.Text = "" Then
+                '                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
+                '                Else
+                '                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  WHERE (Bodegas.Cod_Bodega BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') " & Cadena
+                '                End If
+                '            Else
+                '                SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  WHERE (Bodegas.Cod_Bodega BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') " & Cadena
+                '            End If
+                '        End If
+
+                '    Case "Rubro"
+                '        If Me.CmbRango1.Text = "" Then
+                '            If Me.CmbRango2.Text = "" Then
+                '                SqlDatos = "SELECT Productos.Cod_Productos, Productos.Tipo_Producto, Productos.Descripcion_Producto, Productos.Ubicacion, Productos.Cod_Linea, Productos.Cod_Cuenta_Inventario, Productos.Cod_Cuenta_Costo, Productos.Cod_Cuenta_Ventas, Productos.Cod_Cuenta_GastoAjuste, Productos.Cod_Cuenta_IngresoAjuste, Productos.Unidad_Medida, Productos.Precio_Venta, Productos.Precio_Lista, Productos.Descuento, Productos.Existencia_Negativa, Productos.Cod_Iva, Productos.Activo, Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Ultimo_Precio_Venta, Productos.Ultimo_Precio_Compra, Productos.Existencia_Dinero, Productos.Existencia_Unidades, Productos.Existencia_DineroDolar, Productos.Minimo, Productos.Reorden, Productos.Nota, Productos.CodComponente, Productos.Cod_Rubro, Rubro.Nombre_Rubro FROM Productos INNER JOIN  Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro  " & _
+                '                           "WHERE  (Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) ORDER BY Productos.Cod_Rubro"
+                '            Else
+                '                SqlDatos = "SELECT Productos.Cod_Productos, Productos.Tipo_Producto, Productos.Descripcion_Producto, Productos.Ubicacion, Productos.Cod_Linea, Productos.Cod_Cuenta_Inventario, Productos.Cod_Cuenta_Costo, Productos.Cod_Cuenta_Ventas, Productos.Cod_Cuenta_GastoAjuste, Productos.Cod_Cuenta_IngresoAjuste, Productos.Unidad_Medida, Productos.Precio_Venta, Productos.Precio_Lista, Productos.Descuento, Productos.Existencia_Negativa, Productos.Cod_Iva, Productos.Activo, Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Ultimo_Precio_Venta, Productos.Ultimo_Precio_Compra, Productos.Existencia_Dinero, Productos.Existencia_Unidades, Productos.Existencia_DineroDolar, Productos.Minimo, Productos.Reorden, Productos.Nota, Productos.CodComponente, Productos.Cod_Rubro, Rubro.Nombre_Rubro FROM Productos INNER JOIN  Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro  " & _
+                '                           "WHERE  (Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) AND (Productos.Cod_Rubro BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Rubro"
+
+                '            End If
+
+                '        ElseIf Me.CmbRango2.Text = "" Then
+                '            SqlDatos = "SELECT Productos.Cod_Productos, Productos.Tipo_Producto, Productos.Descripcion_Producto, Productos.Ubicacion, Productos.Cod_Linea, Productos.Cod_Cuenta_Inventario, Productos.Cod_Cuenta_Costo, Productos.Cod_Cuenta_Ventas, Productos.Cod_Cuenta_GastoAjuste, Productos.Cod_Cuenta_IngresoAjuste, Productos.Unidad_Medida, Productos.Precio_Venta, Productos.Precio_Lista, Productos.Descuento, Productos.Existencia_Negativa, Productos.Cod_Iva, Productos.Activo, Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Ultimo_Precio_Venta, Productos.Ultimo_Precio_Compra, Productos.Existencia_Dinero, Productos.Existencia_Unidades, Productos.Existencia_DineroDolar, Productos.Minimo, Productos.Reorden, Productos.Nota, Productos.CodComponente, Productos.Cod_Rubro, Rubro.Nombre_Rubro FROM Productos INNER JOIN  Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro  " & _
+                '                       "WHERE  (Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) ORDER BY Productos.Cod_Rubro"
+                '        Else
+                '            SqlDatos = "SELECT Productos.Cod_Productos, Productos.Tipo_Producto, Productos.Descripcion_Producto, Productos.Ubicacion, Productos.Cod_Linea, Productos.Cod_Cuenta_Inventario, Productos.Cod_Cuenta_Costo, Productos.Cod_Cuenta_Ventas, Productos.Cod_Cuenta_GastoAjuste, Productos.Cod_Cuenta_IngresoAjuste, Productos.Unidad_Medida, Productos.Precio_Venta, Productos.Precio_Lista, Productos.Descuento, Productos.Existencia_Negativa, Productos.Cod_Iva, Productos.Activo, Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Ultimo_Precio_Venta, Productos.Ultimo_Precio_Compra, Productos.Existencia_Dinero, Productos.Existencia_Unidades, Productos.Existencia_DineroDolar, Productos.Minimo, Productos.Reorden, Productos.Nota, Productos.CodComponente, Productos.Cod_Rubro, Rubro.Nombre_Rubro FROM Productos INNER JOIN  Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro  " & _
+                '                       "WHERE  (Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) AND (Productos.Cod_Rubro BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Rubro"
+                '        End If
+
+
+
+                'End Select
+
+                '*****************************************************************************************************************************************
+                '////////////////////////////////////////////CON ESTE CICLO RECORRO LA CONSULTA //////////////////////////////////////////
+                '*****************************************************************************************************************************************
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                DataAdapter.Fill(DataSet, "Productos")
+                Me.ProgressBar.Maximum = DataSet.Tables("Productos").Rows.Count
+                Me.ProgressBar.Minimum = 0
+                Me.ProgressBar.Value = 0
+                Me.ProgressBar.Visible = True
+                Registro = DataSet.Tables("Productos").Rows.Count
+                Iposicion = 0
+                Existencia = 0
+                Do While Iposicion < Registro
+                    FechaIni = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
+                    Fecha = Format(Me.DTPFechaFin.Value, "yyyy-MM-dd")
+                    FechaFin = Format(Fecha.AddDays(1), "yyyy-MM-dd")
+                    CodProducto = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Productos")
+                    NombreProducto = DataSet.Tables("Productos").Rows(Iposicion)("Descripcion_Producto")
+                    NombreBodega = DataSet.Tables("Productos").Rows(Iposicion)("Descripcion_Linea")
+                    CodBodega = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Linea")
+                    'Existencia = ExistenciaProductoFecha(CodProducto, FechaFin)
+                    Existencia = Format(BuscaInventarioInicial(CodProducto, FechaFin))
+                    If Existencia <> 0 Then
+                        If DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Descuento" And DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Servicio" Then
+                            If DataSet.Tables("Productos").Rows(Iposicion)("Minimo") >= Existencia Then
                                 oDataRow = DataSet.Tables("BajoMinimo").NewRow
-                                oDataRow("Cod_Producto") = CodProducto
+                                oDataRow("Cod_Productos") = CodProducto
                                 oDataRow("Descripcion_Producto") = NombreProducto
                                 oDataRow("Unidad_Medida") = DataSet.Tables("Productos").Rows(Iposicion)("Unidad_Medida")
                                 oDataRow("Minimo") = DataSet.Tables("Productos").Rows(Iposicion)("Minimo")
-                                oDataRow("Cantidad") = Existencia
-                                If Me.OptCordobas.Checked = True Then
-                                    oDataRow("Costo") = Existencia * CostoPromedio
-                                Else
-                                    oDataRow("Costo") = Existencia * CostoPromedioDolar
-                                End If
+                                oDataRow("Existencia") = Existencia
+                                oDataRow("Diferencia") = Existencia - DataSet.Tables("Productos").Rows(Iposicion)("Minimo")
                                 DataSet.Tables("BajoMinimo").Rows.Add(oDataRow)
-
                             End If
                         End If
-
-
-                        Me.Text = "Procesando: " & CodProducto
-
-                        If Me.ProgressBar.Maximum <> 0 Then
-                            Me.ProgressBar.Value = Me.ProgressBar.Value + 1
-                        End If
-
-                        My.Application.DoEvents()
-                        Iposicion = Iposicion + 1
-
-                    Loop
-
-                    'DvProductos = New DataView(DataSet.Tables("BajoMinimo"), "Descripcion_Producto like '%'", "Cantidad DESC", DataViewRowState.OriginalRows)
-                    DvProductos = New DataView(DataSet.Tables("BajoMinimo"))
-                    DvProductos.Sort = "Costo DESC"
-
-                    ArepProductosMasInventarios.DataSource = DvProductos
-                    ArepProductosMasInventarios.Document.Name = "Reporte de Productos com mas Inventarios"
-                    ArepProductosMasInventarios.LblReporte.Text = "Reporte de Productos com mas Inventarios"
-                    ArepProductosMasInventarios.Label14.Text = "Existencia"
-                    Dim ViewerForm As New FrmViewer()
-                    ViewerForm.arvMain.Document = ArepProductosMasInventarios.Document
-                    My.Application.DoEvents()
-                    ArepProductosMasInventarios.Run(False)
-                    ViewerForm.Show()
-
-            Case "Reporte de Productos mas Vendidos"
-                    Dim ArepProductosMasVendidos As New ArepProductosVendidos
-                    ArepProductosMasVendidos.LblTitulo.Text = NombreEmpresa
-                    ArepProductosMasVendidos.LblDireccion.Text = DireccionEmpresa
-                    ArepProductosMasVendidos.LblRuc.Text = Ruc
-                    ArepProductosMasVendidos.LblRango.Text = "DESDE: " & Format(Fecha1, "dd/MM/yyyy") & "       HASTA: " & Format(Fecha2, "dd/MM/yyyy")
-                    If Dir(RutaLogo) <> "" Then
-                        ArepProductosMasVendidos.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                    End If
-
-                    SqlDatos = "SELECT  Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, SUM(Detalle_Facturas.Cantidad) AS Cantidad, SUM(Detalle_Facturas.Importe) AS Importe FROM Facturas INNER JOIN Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND  Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura WHERE (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) GROUP BY Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto HAVING (Facturas.Tipo_Factura = 'Factura') ORDER BY Cantidad DESC"
-
-                    SQL.ConnectionString = Conexion
-                    SQL.SQL = SqlDatos
-                    ArepProductosMasVendidos.DataSource = SQL
-                    ArepProductosMasVendidos.Document.Name = "Reporte de Productos mas Vendidos"
-                    ArepProductosMasVendidos.LblReporte.Text = "Reporte de Productos mas Vendidos"
-                    Dim ViewerForm As New FrmViewer()
-                    ViewerForm.arvMain.Document = ArepProductosMasVendidos.Document
-                    My.Application.DoEvents()
-                    ArepProductosMasVendidos.Run(False)
-                    ViewerForm.Show()
-
-            Case "Reporte Grafico x Clientes"
-                    Dim ArepReporteVentasClientes As New ArepGraficoVentasClientes
-
-                    ArepReporteVentasClientes.LblTitulo.Text = NombreEmpresa
-                    ArepReporteVentasClientes.LblDireccion.Text = DireccionEmpresa
-                    ArepReporteVentasClientes.LblRuc.Text = Ruc
-                    ArepReporteVentasClientes.LblRango.Text = "DESDE: " & Format(Fecha1, "dd/MM/yyyy") & "       HASTA: " & Format(Fecha2, "dd/MM/yyyy")
-                    'SQlDatosSuma = "SELECT MAX(Vendedores.Cod_Vendedor) AS Expr1, MAX(Vendedores.Nombre_Vendedor + N' ' + Vendedores.Apellido_Vendedor) AS NombreVendedor, SUM(Facturas.SubTotal) AS MontoVendido FROM  Vendedores INNER JOIN Facturas ON Vendedores.Cod_Vendedor = Facturas.Cod_Vendedor "
-                    If Me.OptDolares.Checked = True Then
-                        SQlDatosSuma = "SELECT SUM(CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Facturas.SubTotal ELSE Facturas.SubTotal/TasaCambio.MontoTasa END) AS MontoVendido,MAX(Clientes.Cod_Cliente) AS Cod_Cliente, MAX(Clientes.Nombre_Cliente) AS Nombre_Cliente FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " & _
-                                       "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY MontoVendido DESC"
-
-                        SqlDatos = "SELECT SUM(CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Facturas.SubTotal ELSE Facturas.SubTotal/TasaCambio.MontoTasa END) AS MontoVendido, Clientes.Cod_Cliente, Clientes.Nombre_Cliente FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente " & _
-                                 "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) GROUP BY Clientes.Cod_Cliente, Clientes.Nombre_Cliente ORDER BY MontoVendido DESC"
-                        ArepReporteVentasClientes.LblMoneda.Text = "Expresado en Dolares"
-                    Else
-                        SQlDatosSuma = "SELECT SUM(CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Facturas.SubTotal ELSE Facturas.SubTotal * TasaCambio.MontoTasa END) AS MontoVendido,MAX(Clientes.Cod_Cliente) AS Cod_Cliente, MAX(Clientes.Nombre_Cliente) AS Nombre_Cliente FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " & _
-                                       "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY MontoVendido DESC"
-
-                        SqlDatos = "SELECT SUM(CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Facturas.SubTotal ELSE Facturas.SubTotal * TasaCambio.MontoTasa END) AS MontoVendido, Clientes.Cod_Cliente, Clientes.Nombre_Cliente FROM Facturas INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente " & _
-                                   "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) GROUP BY Clientes.Cod_Cliente, Clientes.Nombre_Cliente ORDER BY MontoVendido DESC"
-                        ArepReporteVentasClientes.LblMoneda.Text = "Expresado en Cordobas"
-                    End If
-                    SQL.ConnectionString = Conexion
-                    SQL.SQL = SqlDatos
-
-
-                    ArepReporteVentasClientes.ChartControl1.DataSource = SQL
-                    ArepReporteVentasClientes.DataSource = SQL
-
-                    DataAdapter = New SqlClient.SqlDataAdapter(SQlDatosSuma, MiConexion)
-                    DataAdapter.Fill(DataSet, "VentasTotales")
-                    If Not DataSet.Tables("VentasTotales").Rows.Count = 0 Then
-                        If Not IsDBNull(DataSet.Tables("VentasTotales").Rows(0)("MontoVendido")) Then
-                            ArepReporteVentasClientes.VentasTotales = DataSet.Tables("VentasTotales").Rows(0)("MontoVendido")
-                        Else
-                            MsgBox("No existen Registros", MsgBoxStyle.Exclamation, "Zeus Facturacion")
-                            Exit Select
-                            ArepReporteVentasClientes.VentasTotales = 0
-                        End If
-                    Else
-                        ArepReporteVentasClientes.VentasTotales = 0
                     End If
 
 
-                    ArepReporteVentasClientes.Document.Name = "Reporte de Ventas x Clientes"
-                    Dim ViewerForm As New FrmViewer()
-                    ViewerForm.arvMain.Document = ArepReporteVentasClientes.Document
-                    My.Application.DoEvents()
-                    ArepReporteVentasClientes.Run(False)
-                    ViewerForm.Show()
 
-            Case "Productos Bajo Minimo"
-                    Dim ArepProductosBajoMinimo As New ArepProductosBajoMinimo
-                    Dim SQLString As String, Registro As Double = 0, Iposicion As Double = 0
-                    Dim CodProducto As String, FechaIni As String, FechaFin As String
-                    Dim Existencia As Double, CodBodega As String, Total As Double = 0
-                    Dim oDataRow As DataRow, NombreProducto As String, NombreBodega As String
-                    Dim Fecha As Date
 
-                    If Dir(RutaLogo) <> "" Then
-                        ArepProductosBajoMinimo.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                        ArepProductosBajoMinimo.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+
+                    Me.Text = "Procesando: " & CodProducto
+
+                    If Me.ProgressBar.Maximum <> 0 Then
+                        Me.ProgressBar.Value = Me.ProgressBar.Value + 1
                     End If
 
-                    ArepProductosBajoMinimo.LblTitulo.Text = NombreEmpresa
-                    ArepProductosBajoMinimo.LblDireccion.Text = DireccionEmpresa
-                    ArepProductosBajoMinimo.LblRuc.Text = Ruc
-
-                    '*******************************************************************************************************************************
-                    '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
-                    '*******************************************************************************************************************************
-                    SQLString = "SELECT Cod_Productos, Descripcion_Producto, Unidad_Medida, Minimo, Existencia_Unidades AS Existencia, Existencia_DineroDolar AS Diferencia FROM Productos WHERE (Activo = Activo) AND (Tipo_Producto <> N'Descuento') AND (Cod_Productos = N'-100000')"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
-                    DataAdapter.Fill(DataSet, "BajoMinimo")
-
-                    SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  ORDER BY Productos.Cod_Productos"
-                    'Select Case Me.CmbAgrupado.Text
-                    '    Case "Codigo Producto"
-                    '        If Me.CboCodigoProducto.Text = "" Then
-                    '            If Me.CboCodigoProducto2.Text = "" Then
-                    '                SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  ORDER BY Productos.Cod_Productos"
-                    '            Else
-                    '                SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  AND (Productos.Cod_Productos BETWEEN '" & CodigoInicio & "' AND '" & Me.CboCodigoProducto2.Text & "') ORDER BY Productos.Cod_Productos"
-                    '            End If
-                    '        ElseIf Me.CboCodigoProducto2.Text = "" Then
-                    '            SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  AND (Productos.Cod_Productos BETWEEN '" & Me.CboCodigoProducto.Text & "' AND '" & CodigoFin & "') ORDER BY Productos.Cod_Productos"
-                    '        Else
-                    '            SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  AND (Productos.Cod_Productos BETWEEN '" & Me.CboCodigoProducto.Text & "' AND '" & Me.CboCodigoProducto2.Text & "') ORDER BY Productos.Cod_Productos"
-                    '        End If
-
-                    '    Case "Linea"
-                    '        If Me.CmbRango1.Text = "" Then
-                    '            If Me.CmbRango2.Text = "" Then
-                    '                SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  ORDER BY Productos.Cod_Linea"
-                    '            Else
-                    '                SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  AND (Productos.Cod_Linea BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Linea"
-                    '            End If
-
-                    '        ElseIf Me.CmbRango2.Text = "" Then
-                    '            SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  ORDER BY Productos.Cod_Linea"
-                    '        Else
-                    '            SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  AND (Productos.Cod_Linea BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Linea"
-                    '        End If
-
-
-                    '    Case "Bodega"
-                    '        If Me.CboCodigoProducto.Text = "" And Me.CboCodigoProducto2.Text = "" Then
-                    '            If Me.CmbRango1.Text = "" Then
-                    '                If Me.CmbRango2.Text = "" Then
-                    '                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
-                    '                Else
-                    '                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  WHERE (Bodegas.Cod_Bodega BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
-                    '                End If
-                    '            ElseIf Me.CmbRango2.Text = "" Then
-                    '                If Me.CmbRango1.Text = "" Then
-                    '                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
-                    '                Else
-                    '                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  WHERE (Bodegas.Cod_Bodega BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
-                    '                End If
-                    '            Else
-                    '                SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  WHERE (Bodegas.Cod_Bodega BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
-                    '            End If
-                    '        Else
-
-                    '            Cadena = "WHERE (Productos.Cod_Productos BETWEEN '" & Me.CboCodigoProducto.Text & "' AND '" & Me.CboCodigoProducto2.Text & "') ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
-                    '            If Me.CmbRango1.Text = "" Then
-                    '                If Me.CmbRango2.Text = "" Then
-                    '                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  " & Cadena
-                    '                Else
-                    '                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  WHERE (Bodegas.Cod_Bodega BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') " & Cadena
-                    '                End If
-                    '            ElseIf Me.CmbRango2.Text = "" Then
-                    '                If Me.CmbRango1.Text = "" Then
-                    '                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
-                    '                Else
-                    '                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  WHERE (Bodegas.Cod_Bodega BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') " & Cadena
-                    '                End If
-                    '            Else
-                    '                SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  WHERE (Bodegas.Cod_Bodega BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') " & Cadena
-                    '            End If
-                    '        End If
-
-                    '    Case "Rubro"
-                    '        If Me.CmbRango1.Text = "" Then
-                    '            If Me.CmbRango2.Text = "" Then
-                    '                SqlDatos = "SELECT Productos.Cod_Productos, Productos.Tipo_Producto, Productos.Descripcion_Producto, Productos.Ubicacion, Productos.Cod_Linea, Productos.Cod_Cuenta_Inventario, Productos.Cod_Cuenta_Costo, Productos.Cod_Cuenta_Ventas, Productos.Cod_Cuenta_GastoAjuste, Productos.Cod_Cuenta_IngresoAjuste, Productos.Unidad_Medida, Productos.Precio_Venta, Productos.Precio_Lista, Productos.Descuento, Productos.Existencia_Negativa, Productos.Cod_Iva, Productos.Activo, Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Ultimo_Precio_Venta, Productos.Ultimo_Precio_Compra, Productos.Existencia_Dinero, Productos.Existencia_Unidades, Productos.Existencia_DineroDolar, Productos.Minimo, Productos.Reorden, Productos.Nota, Productos.CodComponente, Productos.Cod_Rubro, Rubro.Nombre_Rubro FROM Productos INNER JOIN  Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro  " & _
-                    '                           "WHERE  (Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) ORDER BY Productos.Cod_Rubro"
-                    '            Else
-                    '                SqlDatos = "SELECT Productos.Cod_Productos, Productos.Tipo_Producto, Productos.Descripcion_Producto, Productos.Ubicacion, Productos.Cod_Linea, Productos.Cod_Cuenta_Inventario, Productos.Cod_Cuenta_Costo, Productos.Cod_Cuenta_Ventas, Productos.Cod_Cuenta_GastoAjuste, Productos.Cod_Cuenta_IngresoAjuste, Productos.Unidad_Medida, Productos.Precio_Venta, Productos.Precio_Lista, Productos.Descuento, Productos.Existencia_Negativa, Productos.Cod_Iva, Productos.Activo, Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Ultimo_Precio_Venta, Productos.Ultimo_Precio_Compra, Productos.Existencia_Dinero, Productos.Existencia_Unidades, Productos.Existencia_DineroDolar, Productos.Minimo, Productos.Reorden, Productos.Nota, Productos.CodComponente, Productos.Cod_Rubro, Rubro.Nombre_Rubro FROM Productos INNER JOIN  Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro  " & _
-                    '                           "WHERE  (Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) AND (Productos.Cod_Rubro BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Rubro"
-
-                    '            End If
-
-                    '        ElseIf Me.CmbRango2.Text = "" Then
-                    '            SqlDatos = "SELECT Productos.Cod_Productos, Productos.Tipo_Producto, Productos.Descripcion_Producto, Productos.Ubicacion, Productos.Cod_Linea, Productos.Cod_Cuenta_Inventario, Productos.Cod_Cuenta_Costo, Productos.Cod_Cuenta_Ventas, Productos.Cod_Cuenta_GastoAjuste, Productos.Cod_Cuenta_IngresoAjuste, Productos.Unidad_Medida, Productos.Precio_Venta, Productos.Precio_Lista, Productos.Descuento, Productos.Existencia_Negativa, Productos.Cod_Iva, Productos.Activo, Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Ultimo_Precio_Venta, Productos.Ultimo_Precio_Compra, Productos.Existencia_Dinero, Productos.Existencia_Unidades, Productos.Existencia_DineroDolar, Productos.Minimo, Productos.Reorden, Productos.Nota, Productos.CodComponente, Productos.Cod_Rubro, Rubro.Nombre_Rubro FROM Productos INNER JOIN  Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro  " & _
-                    '                       "WHERE  (Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) ORDER BY Productos.Cod_Rubro"
-                    '        Else
-                    '            SqlDatos = "SELECT Productos.Cod_Productos, Productos.Tipo_Producto, Productos.Descripcion_Producto, Productos.Ubicacion, Productos.Cod_Linea, Productos.Cod_Cuenta_Inventario, Productos.Cod_Cuenta_Costo, Productos.Cod_Cuenta_Ventas, Productos.Cod_Cuenta_GastoAjuste, Productos.Cod_Cuenta_IngresoAjuste, Productos.Unidad_Medida, Productos.Precio_Venta, Productos.Precio_Lista, Productos.Descuento, Productos.Existencia_Negativa, Productos.Cod_Iva, Productos.Activo, Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Ultimo_Precio_Venta, Productos.Ultimo_Precio_Compra, Productos.Existencia_Dinero, Productos.Existencia_Unidades, Productos.Existencia_DineroDolar, Productos.Minimo, Productos.Reorden, Productos.Nota, Productos.CodComponente, Productos.Cod_Rubro, Rubro.Nombre_Rubro FROM Productos INNER JOIN  Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro  " & _
-                    '                       "WHERE  (Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) AND (Productos.Cod_Rubro BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Rubro"
-                    '        End If
-
-
-
-                    'End Select
-
-                    '*****************************************************************************************************************************************
-                    '////////////////////////////////////////////CON ESTE CICLO RECORRO LA CONSULTA //////////////////////////////////////////
-                    '*****************************************************************************************************************************************
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                    DataAdapter.Fill(DataSet, "Productos")
-                    Me.ProgressBar.Maximum = DataSet.Tables("Productos").Rows.Count
-                    Me.ProgressBar.Minimum = 0
-                    Me.ProgressBar.Value = 0
-                    Me.ProgressBar.Visible = True
-                    Registro = DataSet.Tables("Productos").Rows.Count
-                    Iposicion = 0
-                    Existencia = 0
-                    Do While Iposicion < Registro
-                        FechaIni = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
-                        Fecha = Format(Me.DTPFechaFin.Value, "yyyy-MM-dd")
-                        FechaFin = Format(Fecha.AddDays(1), "yyyy-MM-dd")
-                        CodProducto = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Productos")
-                        NombreProducto = DataSet.Tables("Productos").Rows(Iposicion)("Descripcion_Producto")
-                        NombreBodega = DataSet.Tables("Productos").Rows(Iposicion)("Descripcion_Linea")
-                        CodBodega = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Linea")
-                        'Existencia = ExistenciaProductoFecha(CodProducto, FechaFin)
-                        Existencia = Format(BuscaInventarioInicial(CodProducto, FechaFin))
-                        If Existencia <> 0 Then
-                            If DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Descuento" And DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Servicio" Then
-                                If DataSet.Tables("Productos").Rows(Iposicion)("Minimo") >= Existencia Then
-                                    oDataRow = DataSet.Tables("BajoMinimo").NewRow
-                                    oDataRow("Cod_Productos") = CodProducto
-                                    oDataRow("Descripcion_Producto") = NombreProducto
-                                    oDataRow("Unidad_Medida") = DataSet.Tables("Productos").Rows(Iposicion)("Unidad_Medida")
-                                    oDataRow("Minimo") = DataSet.Tables("Productos").Rows(Iposicion)("Minimo")
-                                    oDataRow("Existencia") = Existencia
-                                    oDataRow("Diferencia") = Existencia - DataSet.Tables("Productos").Rows(Iposicion)("Minimo")
-                                    DataSet.Tables("BajoMinimo").Rows.Add(oDataRow)
-                                End If
-                            End If
-                        End If
-
-
-
-
-
-                        Me.Text = "Procesando: " & CodProducto
-
-                        If Me.ProgressBar.Maximum <> 0 Then
-                            Me.ProgressBar.Value = Me.ProgressBar.Value + 1
-                        End If
-
-                        My.Application.DoEvents()
-                        Iposicion = Iposicion + 1
-
-                    Loop
-
-                    ArepProductosBajoMinimo.Label7.Text = "Impreso: " & Format(Now, "Long Date")
-                    ArepProductosBajoMinimo.DataSource = DataSet.Tables("BajoMinimo")
-                    ArepProductosBajoMinimo.LblTitulo.Text = NombreEmpresa
-                    ArepProductosBajoMinimo.LblDireccion.Text = DireccionEmpresa
-                    ArepProductosBajoMinimo.LblRuc.Text = Ruc
-                    ArepProductosBajoMinimo.DataSource = SQL
-                    ArepProductosBajoMinimo.Document.Name = "PRODUCTOS BAJO MINIMO"
-                    Dim ViewerForm As New FrmViewer()
-                    ViewerForm.arvMain.Document = ArepProductosBajoMinimo.Document
                     My.Application.DoEvents()
-                    ArepProductosBajoMinimo.Run(False)
-                    ViewerForm.Show()
+                    Iposicion = Iposicion + 1
+
+                Loop
+
+                ArepProductosBajoMinimo.Label7.Text = "Impreso: " & Format(Now, "Long Date")
+                ArepProductosBajoMinimo.DataSource = DataSet.Tables("BajoMinimo")
+                ArepProductosBajoMinimo.LblTitulo.Text = NombreEmpresa
+                ArepProductosBajoMinimo.LblDireccion.Text = DireccionEmpresa
+                ArepProductosBajoMinimo.LblRuc.Text = Ruc
+                ArepProductosBajoMinimo.DataSource = SQL
+                ArepProductosBajoMinimo.Document.Name = "PRODUCTOS BAJO MINIMO"
+                Dim ViewerForm As New FrmViewer()
+                ViewerForm.arvMain.Document = ArepProductosBajoMinimo.Document
+                My.Application.DoEvents()
+                ArepProductosBajoMinimo.Run(False)
+                ViewerForm.Show()
 
 
             Case "Reporte Grafico x Proveedor"
-                    Dim ArepReporteProveedores As New ArepProveedores
-                    Dim SqlString As String, Registros As Double, i As Double
-                    Dim Buscar_Fila() As DataRow, Criterios As String, Posicion As Integer, oDataRow As DataRow
-                    Dim NetoPagar As Double, MontoCompra As Double, MontoCompraD As Double
+                Dim ArepReporteProveedores As New ArepProveedores
+                Dim SqlString As String, Registros As Double, i As Double
+                Dim Buscar_Fila() As DataRow, Criterios As String, Posicion As Integer, oDataRow As DataRow
+                Dim NetoPagar As Double, MontoCompra As Double, MontoCompraD As Double
 
-                    '*******************************************************************************************************************************
-                    '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
-                    '*******************************************************************************************************************************
-                    DataSet.Reset()
-                    SqlString = "SELECT Compras.Tipo_Compra, Compras.Nombre_Proveedor, Compras.SubTotal + Compras.IVA AS NetoPagar, CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN Compras.SubTotal + Compras.IVA WHEN Compras.MonedaCompra = 'Dolares' THEN (Compras.SubTotal + Compras.IVA) * TasaCambio.MontoTasa END AS MontoCompra, CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN (Compras.SubTotal + Compras.IVA) / TasaCambio.MontoTasa WHEN Compras.MonedaCompra = 'Dolares' THEN Compras.SubTotal + Compras.IVA END AS MontoCompraD, Compras.Cod_Proveedor FROM Compras INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa " & _
-                                "WHERE (Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '2013-11-01 00:00:00', 102) AND CONVERT(DATETIME, '2013-11-01 00:00:00', 102)) AND (Compras.Tipo_Compra = N'Mercancia Recibida') AND (Compras.Nombre_Proveedor <> N'******CANCELADO') AND (Compras.MonedaCompra = N'11111') ORDER BY Compras.Nombre_Proveedor"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-                    DataAdapter.Fill(DataSet, "TotalProveedor")
+                '*******************************************************************************************************************************
+                '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
+                '*******************************************************************************************************************************
+                DataSet.Reset()
+                SqlString = "SELECT Compras.Tipo_Compra, Compras.Nombre_Proveedor, Compras.SubTotal + Compras.IVA AS NetoPagar, CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN Compras.SubTotal + Compras.IVA WHEN Compras.MonedaCompra = 'Dolares' THEN (Compras.SubTotal + Compras.IVA) * TasaCambio.MontoTasa END AS MontoCompra, CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN (Compras.SubTotal + Compras.IVA) / TasaCambio.MontoTasa WHEN Compras.MonedaCompra = 'Dolares' THEN Compras.SubTotal + Compras.IVA END AS MontoCompraD, Compras.Cod_Proveedor FROM Compras INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa " & _
+                            "WHERE (Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '2013-11-01 00:00:00', 102) AND CONVERT(DATETIME, '2013-11-01 00:00:00', 102)) AND (Compras.Tipo_Compra = N'Mercancia Recibida') AND (Compras.Nombre_Proveedor <> N'******CANCELADO') AND (Compras.MonedaCompra = N'11111') ORDER BY Compras.Nombre_Proveedor"
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                DataAdapter.Fill(DataSet, "TotalProveedor")
 
-                    ArepReporteProveedores.LblTitulo.Text = NombreEmpresa
-                    ArepReporteProveedores.LblDireccion.Text = DireccionEmpresa
-                    ArepReporteProveedores.LblRuc.Text = Ruc
-                    ArepReporteProveedores.LblRango.Text = "DESDE: " & Format(Fecha1, "dd/MM/yyyy") & "       HASTA: " & Format(Fecha2, "dd/MM/yyyy")
+                ArepReporteProveedores.LblTitulo.Text = NombreEmpresa
+                ArepReporteProveedores.LblDireccion.Text = DireccionEmpresa
+                ArepReporteProveedores.LblRuc.Text = Ruc
+                ArepReporteProveedores.LblRango.Text = "DESDE: " & Format(Fecha1, "dd/MM/yyyy") & "       HASTA: " & Format(Fecha2, "dd/MM/yyyy")
 
-                    SqlDatos = "SELECT Compras.Tipo_Compra, Compras.Nombre_Proveedor, Compras.SubTotal + Compras.IVA AS NetoPagar, CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN Compras.SubTotal + Compras.IVA WHEN Compras.MonedaCompra = 'Dolares' THEN (Compras.SubTotal + Compras.IVA) * TasaCambio.MontoTasa END AS MontoCompra, CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN (Compras.SubTotal + Compras.IVA) / TasaCambio.MontoTasa WHEN Compras.MonedaCompra = 'Dolares' THEN Compras.SubTotal + Compras.IVA END AS MontoCompraD, Compras.MonedaCompra,Compras.Cod_Proveedor FROM Compras INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa " & _
-                                "WHERE (Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Compras.Tipo_Compra = N'Mercancia Recibida') AND (Compras.Nombre_Proveedor <> N'******CANCELADO') ORDER BY Compras.Nombre_Proveedor"
+                SqlDatos = "SELECT Compras.Tipo_Compra, Compras.Nombre_Proveedor, Compras.SubTotal + Compras.IVA AS NetoPagar, CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN Compras.SubTotal + Compras.IVA WHEN Compras.MonedaCompra = 'Dolares' THEN (Compras.SubTotal + Compras.IVA) * TasaCambio.MontoTasa END AS MontoCompra, CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN (Compras.SubTotal + Compras.IVA) / TasaCambio.MontoTasa WHEN Compras.MonedaCompra = 'Dolares' THEN Compras.SubTotal + Compras.IVA END AS MontoCompraD, Compras.MonedaCompra,Compras.Cod_Proveedor FROM Compras INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa " & _
+                            "WHERE (Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Compras.Tipo_Compra = N'Mercancia Recibida') AND (Compras.Nombre_Proveedor <> N'******CANCELADO') ORDER BY Compras.Nombre_Proveedor"
 
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                    DataAdapter.Fill(DataSet, "TotalCompras")
-                    Registros = DataSet.Tables("TotalCompras").Rows.Count
-                    i = 0
-                    Me.ProgressBar.Maximum = Registros
-                    Me.ProgressBar.Minimum = 0
-                    Me.ProgressBar.Value = 0
-                    Me.ProgressBar.Visible = True
-                    ArepReporteProveedores.ComprasTotales = 0
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                DataAdapter.Fill(DataSet, "TotalCompras")
+                Registros = DataSet.Tables("TotalCompras").Rows.Count
+                i = 0
+                Me.ProgressBar.Maximum = Registros
+                Me.ProgressBar.Minimum = 0
+                Me.ProgressBar.Value = 0
+                Me.ProgressBar.Visible = True
+                ArepReporteProveedores.ComprasTotales = 0
 
-                    Do While Registros > i
-                        My.Application.DoEvents()
-
-                        Criterios = "Cod_Proveedor= '" & DataSet.Tables("TotalCompras").Rows(i)("Cod_Proveedor") & "'"
-                        Buscar_Fila = DataSet.Tables("TotalProveedor").Select(Criterios)
-                        If Buscar_Fila.Length > 0 Then
-                            Posicion = DataSet.Tables("TotalProveedor").Rows.IndexOf(Buscar_Fila(0))
-                            NetoPagar = DataSet.Tables("TotalCompras").Rows(i)("NetoPagar")
-                            If Me.OptDolares.Checked = True Then
-                                MontoCompra = DataSet.Tables("TotalCompras").Rows(i)("MontoCompraD")
-                                MontoCompraD = DataSet.Tables("TotalCompras").Rows(i)("MontoCompraD")
-                            Else
-                                MontoCompra = DataSet.Tables("TotalCompras").Rows(i)("MontoCompra")
-                                MontoCompraD = DataSet.Tables("TotalCompras").Rows(i)("MontoCompraD")
-                            End If
-                            DataSet.Tables("TotalProveedor").Rows(Posicion)("NetoPagar") = DataSet.Tables("TotalProveedor").Rows(Posicion)("NetoPagar") + NetoPagar
-                            DataSet.Tables("TotalProveedor").Rows(Posicion)("MontoCompra") = DataSet.Tables("TotalProveedor").Rows(Posicion)("MontoCompra") + MontoCompra
-                            DataSet.Tables("TotalProveedor").Rows(Posicion)("MontoCompraD") = DataSet.Tables("TotalProveedor").Rows(Posicion)("MontoCompraD") + MontoCompraD
-                        Else
-
-
-                            oDataRow = DataSet.Tables("TotalProveedor").NewRow
-                            oDataRow("Tipo_Compra") = "Mercancia Recibida"
-                            oDataRow("Nombre_Proveedor") = DataSet.Tables("TotalCompras").Rows(i)("Nombre_Proveedor")
-                            oDataRow("NetoPagar") = DataSet.Tables("TotalCompras").Rows(i)("NetoPagar")
-                            If Me.OptDolares.Checked = True Then
-                                oDataRow("MontoCompra") = DataSet.Tables("TotalCompras").Rows(i)("MontoCompraD")
-                                oDataRow("MontoCompraD") = DataSet.Tables("TotalCompras").Rows(i)("MontoCompraD")
-                            Else
-                                oDataRow("MontoCompra") = DataSet.Tables("TotalCompras").Rows(i)("MontoCompra")
-                                oDataRow("MontoCompraD") = DataSet.Tables("TotalCompras").Rows(i)("MontoCompraD")
-                            End If
-                            oDataRow("Cod_Proveedor") = DataSet.Tables("TotalCompras").Rows(i)("Cod_Proveedor")
-                            DataSet.Tables("TotalProveedor").Rows.Add(oDataRow)
-                        End If
-
-                        If Me.OptDolares.Checked = True Then
-                            ArepReporteProveedores.ComprasTotales = ArepReporteProveedores.ComprasTotales + DataSet.Tables("TotalCompras").Rows(i)("MontoCompraD")
-                        Else
-                            ArepReporteProveedores.ComprasTotales = ArepReporteProveedores.ComprasTotales + DataSet.Tables("TotalCompras").Rows(i)("MontoCompra")
-                        End If
-                        i = i + 1
-                        Me.ProgressBar.Value = Me.ProgressBar.Value + 1
-
-                    Loop
-
-                    ArepReporteProveedores.ChartControl.DataSource = DataSet.Tables("TotalProveedor")
-                    ArepReporteProveedores.DataSource = DataSet.Tables("TotalProveedor")
-                    ArepReporteProveedores.Document.Name = "Reporte por Proveedor"
-                    Dim ViewerForm As New FrmViewer()
-                    ViewerForm.arvMain.Document = ArepReporteProveedores.Document
+                Do While Registros > i
                     My.Application.DoEvents()
-                    ArepReporteProveedores.Run(False)
-                    ViewerForm.Show()
+
+                    Criterios = "Cod_Proveedor= '" & DataSet.Tables("TotalCompras").Rows(i)("Cod_Proveedor") & "'"
+                    Buscar_Fila = DataSet.Tables("TotalProveedor").Select(Criterios)
+                    If Buscar_Fila.Length > 0 Then
+                        Posicion = DataSet.Tables("TotalProveedor").Rows.IndexOf(Buscar_Fila(0))
+                        NetoPagar = DataSet.Tables("TotalCompras").Rows(i)("NetoPagar")
+                        If Me.OptDolares.Checked = True Then
+                            MontoCompra = DataSet.Tables("TotalCompras").Rows(i)("MontoCompraD")
+                            MontoCompraD = DataSet.Tables("TotalCompras").Rows(i)("MontoCompraD")
+                        Else
+                            MontoCompra = DataSet.Tables("TotalCompras").Rows(i)("MontoCompra")
+                            MontoCompraD = DataSet.Tables("TotalCompras").Rows(i)("MontoCompraD")
+                        End If
+                        DataSet.Tables("TotalProveedor").Rows(Posicion)("NetoPagar") = DataSet.Tables("TotalProveedor").Rows(Posicion)("NetoPagar") + NetoPagar
+                        DataSet.Tables("TotalProveedor").Rows(Posicion)("MontoCompra") = DataSet.Tables("TotalProveedor").Rows(Posicion)("MontoCompra") + MontoCompra
+                        DataSet.Tables("TotalProveedor").Rows(Posicion)("MontoCompraD") = DataSet.Tables("TotalProveedor").Rows(Posicion)("MontoCompraD") + MontoCompraD
+                    Else
+
+
+                        oDataRow = DataSet.Tables("TotalProveedor").NewRow
+                        oDataRow("Tipo_Compra") = "Mercancia Recibida"
+                        oDataRow("Nombre_Proveedor") = DataSet.Tables("TotalCompras").Rows(i)("Nombre_Proveedor")
+                        oDataRow("NetoPagar") = DataSet.Tables("TotalCompras").Rows(i)("NetoPagar")
+                        If Me.OptDolares.Checked = True Then
+                            oDataRow("MontoCompra") = DataSet.Tables("TotalCompras").Rows(i)("MontoCompraD")
+                            oDataRow("MontoCompraD") = DataSet.Tables("TotalCompras").Rows(i)("MontoCompraD")
+                        Else
+                            oDataRow("MontoCompra") = DataSet.Tables("TotalCompras").Rows(i)("MontoCompra")
+                            oDataRow("MontoCompraD") = DataSet.Tables("TotalCompras").Rows(i)("MontoCompraD")
+                        End If
+                        oDataRow("Cod_Proveedor") = DataSet.Tables("TotalCompras").Rows(i)("Cod_Proveedor")
+                        DataSet.Tables("TotalProveedor").Rows.Add(oDataRow)
+                    End If
+
+                    If Me.OptDolares.Checked = True Then
+                        ArepReporteProveedores.ComprasTotales = ArepReporteProveedores.ComprasTotales + DataSet.Tables("TotalCompras").Rows(i)("MontoCompraD")
+                    Else
+                        ArepReporteProveedores.ComprasTotales = ArepReporteProveedores.ComprasTotales + DataSet.Tables("TotalCompras").Rows(i)("MontoCompra")
+                    End If
+                    i = i + 1
+                    Me.ProgressBar.Value = Me.ProgressBar.Value + 1
+
+                Loop
+
+                ArepReporteProveedores.ChartControl.DataSource = DataSet.Tables("TotalProveedor")
+                ArepReporteProveedores.DataSource = DataSet.Tables("TotalProveedor")
+                ArepReporteProveedores.Document.Name = "Reporte por Proveedor"
+                Dim ViewerForm As New FrmViewer()
+                ViewerForm.arvMain.Document = ArepReporteProveedores.Document
+                My.Application.DoEvents()
+                ArepReporteProveedores.Run(False)
+                ViewerForm.Show()
 
             Case "Reporte de Facturas x Vendedor"
-                    Dim ArepFacturasVendedor As New ArepFacturasVendedor
-                    Dim SqlString As String, Registros As Double, TasaCambio As Double, i As Double
-                    Dim oDataRow As DataRow
+                Dim ArepFacturasVendedor As New ArepFacturasVendedor
+                Dim SqlString As String, Registros As Double, TasaCambio As Double, i As Double
+                Dim oDataRow As DataRow
 
-                    '*******************************************************************************************************************************
-                    '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
-                    '*******************************************************************************************************************************
-                    DataSet.Reset()
-                    'SqlString = "SELECT Productos.Cod_Productos,Detalle_Compras.Cantidad, Productos.Descripcion_Producto,Detalle_Compras.Precio_Unitario As Importe, Detalle_Compras.Descuento As Cod_Bodega, Detalle_Compras.Precio_Neto As Costo, Compras.Su_Referencia As Utilidad, Compras.Nuestra_Referencia As Porciento FROM  Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra WHERE (Compras.Cod_Bodega = N'-1000') ORDER BY Detalle_Compras.Fecha_Compra"
-                    SqlString = "SELECT Facturas.Fecha_Factura, Facturas.Numero_Factura, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombre_Cliente, Facturas.SubTotal, Facturas.IVA, Facturas.Descuento, Facturas.MetodoPago, Facturas.SubTotal + Facturas.IVA AS TotalFactura,Facturas.Cod_Vendedor, Facturas.Cod_Vendedor As NombreVendedor  FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " & _
-                                "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.MetodoPago = 'Credito') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '01/01/1900', 102) AND CONVERT(DATETIME, '01/01/1900', 102)) ORDER BY Facturas.Fecha_Factura, Facturas.Numero_Factura"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-                    DataAdapter.Fill(DataSet, "TotalVentas")
+                '*******************************************************************************************************************************
+                '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
+                '*******************************************************************************************************************************
+                DataSet.Reset()
+                'SqlString = "SELECT Productos.Cod_Productos,Detalle_Compras.Cantidad, Productos.Descripcion_Producto,Detalle_Compras.Precio_Unitario As Importe, Detalle_Compras.Descuento As Cod_Bodega, Detalle_Compras.Precio_Neto As Costo, Compras.Su_Referencia As Utilidad, Compras.Nuestra_Referencia As Porciento FROM  Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra WHERE (Compras.Cod_Bodega = N'-1000') ORDER BY Detalle_Compras.Fecha_Compra"
+                SqlString = "SELECT Facturas.Fecha_Factura, Facturas.Numero_Factura, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombre_Cliente, Facturas.SubTotal, Facturas.IVA, Facturas.Descuento, Facturas.MetodoPago, Facturas.SubTotal + Facturas.IVA AS TotalFactura,Facturas.Cod_Vendedor, Facturas.Cod_Vendedor As NombreVendedor  FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " & _
+                            "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.MetodoPago = 'Credito') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '01/01/1900', 102) AND CONVERT(DATETIME, '01/01/1900', 102)) ORDER BY Facturas.Fecha_Factura, Facturas.Numero_Factura"
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                DataAdapter.Fill(DataSet, "TotalVentas")
 
-                    '//////////////////////CON ESTA CONSULTA SELECCIONO TODAS LAS FACTURAS DE CONTADO//////////////////////////////////////
-                    If Me.CmbVendedores.Text <> "" And Me.CmbVendedores2.Text <> "" Then
+                '//////////////////////CON ESTA CONSULTA SELECCIONO TODAS LAS FACTURAS DE CONTADO//////////////////////////////////////
+                If Me.CmbVendedores.Text <> "" And Me.CmbVendedores2.Text <> "" Then
                     SqlDatos = "SELECT Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.MonedaFactura, Facturas.Cod_Cliente, Facturas.Cod_Cajero, Facturas.Nombre_Cliente, Facturas.Apellido_Cliente, Facturas.NetoPagar, Facturas.MontoCredito, Facturas.SubTotal, Facturas.IVA, Facturas.MetodoPago, Facturas.Cod_Vendedor, Vendedores.Nombre_Vendedor + ' ' + Vendedores.Apellido_Vendedor AS NombreVendedor, Facturas.SubTotal + Facturas.IVA AS TotalFactura FROM Facturas INNER JOIN " & _
                                "Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor WHERE  (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Nombre_Cliente <> N'******CANCELADO') AND (Facturas.Cod_Vendedor BETWEEN '" & Me.CmbVendedores.Text & "' AND '" & Me.CmbVendedores2.Text & "') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Facturas.Cod_Vendedor, Facturas.MetodoPago"
-                    Else
-                        SqlDatos = "SELECT Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.MonedaFactura, Facturas.Cod_Cliente, Facturas.Cod_Cajero, Facturas.Nombre_Cliente, Facturas.Apellido_Cliente, Facturas.NetoPagar, Facturas.MontoCredito, Facturas.SubTotal, Facturas.IVA, Facturas.MetodoPago, Facturas.Cod_Vendedor, Vendedores.Nombre_Vendedor + ' ' + Vendedores.Apellido_Vendedor AS NombreVendedor, Facturas.SubTotal + Facturas.IVA AS TotalFactura FROM Facturas INNER JOIN " & _
-                                   "Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor WHERE  (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Nombre_Cliente <> N'******CANCELADO') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Facturas.Cod_Vendedor, Facturas.MetodoPago"
-                    End If
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                    DataAdapter.Fill(DataSet, "TotalFacturas")
-                    Registros = DataSet.Tables("TotalFacturas").Rows.Count
-                    i = 0
-                    Me.ProgressBar.Maximum = Registros
-                    Me.ProgressBar.Minimum = 0
-                    Me.ProgressBar.Value = 0
-                    Me.ProgressBar.Visible = True
+                Else
+                    SqlDatos = "SELECT Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.MonedaFactura, Facturas.Cod_Cliente, Facturas.Cod_Cajero, Facturas.Nombre_Cliente, Facturas.Apellido_Cliente, Facturas.NetoPagar, Facturas.MontoCredito, Facturas.SubTotal, Facturas.IVA, Facturas.MetodoPago, Facturas.Cod_Vendedor, Vendedores.Nombre_Vendedor + ' ' + Vendedores.Apellido_Vendedor AS NombreVendedor, Facturas.SubTotal + Facturas.IVA AS TotalFactura FROM Facturas INNER JOIN " & _
+                               "Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor WHERE  (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Nombre_Cliente <> N'******CANCELADO') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Facturas.Cod_Vendedor, Facturas.MetodoPago"
+                End If
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                DataAdapter.Fill(DataSet, "TotalFacturas")
+                Registros = DataSet.Tables("TotalFacturas").Rows.Count
+                i = 0
+                Me.ProgressBar.Maximum = Registros
+                Me.ProgressBar.Minimum = 0
+                Me.ProgressBar.Value = 0
+                Me.ProgressBar.Visible = True
 
-                    Do While Registros > i
-                        My.Application.DoEvents()
-
-                        If Me.OptCordobas.Checked = True Then
-                            If DataSet.Tables("TotalFacturas").Rows(i)("MonedaFactura") = "Cordobas" Then
-                                TasaCambio = 1
-                            Else
-                                TasaCambio = BuscaTasaCambio(DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura"))
-                            End If
-                        Else
-                            If DataSet.Tables("TotalFacturas").Rows(i)("MonedaFactura") = "Dolares" Then
-                                TasaCambio = 1
-                            Else
-                                TasaCambio = 1 / BuscaTasaCambio(DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura"))
-                            End If
-                        End If
-
-                        oDataRow = DataSet.Tables("TotalVentas").NewRow
-                        oDataRow("Fecha_Factura") = DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura")
-                        oDataRow("Numero_Factura") = DataSet.Tables("TotalFacturas").Rows(i)("Numero_Factura")
-                        oDataRow("Nombre_Cliente") = DataSet.Tables("TotalFacturas").Rows(i)("Nombre_Cliente")
-                        oDataRow("SubTotal") = DataSet.Tables("TotalFacturas").Rows(i)("SubTotal") * TasaCambio
-                        oDataRow("IVA") = DataSet.Tables("TotalFacturas").Rows(i)("IVA") * TasaCambio
-                        oDataRow("MetodoPago") = DataSet.Tables("TotalFacturas").Rows(i)("MetodoPago")
-                        oDataRow("TotalFactura") = DataSet.Tables("TotalFacturas").Rows(i)("TotalFactura") * TasaCambio
-                        oDataRow("Cod_Vendedor") = DataSet.Tables("TotalFacturas").Rows(i)("Cod_Vendedor")
-                        oDataRow("NombreVendedor") = DataSet.Tables("TotalFacturas").Rows(i)("NombreVendedor")
-                        DataSet.Tables("TotalVentas").Rows.Add(oDataRow)
-
-                        i = i + 1
-                        Me.ProgressBar.Value = Me.ProgressBar.Value + 1
-                    Loop
-
-
-                    If Dir(RutaLogo) <> "" Then
-                        ArepFacturasVendedor.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                    End If
-                    ArepFacturasVendedor.LblTitulo.Text = NombreEmpresa
-                    ArepFacturasVendedor.LblDireccion.Text = DireccionEmpresa
-                    ArepFacturasVendedor.LblRuc.Text = Ruc
-                    If Me.OptDolares.Checked = True Then
-                        ArepFacturasVendedor.LblMoneda.Text = "Expresado en Dolares"
-                    Else
-                        ArepFacturasVendedor.LblMoneda.Text = "Expresado en Cordobas"
-                    End If
-
-                    ArepFacturasVendedor.LblReporte.Text = "Reporte de Facturas x Vendedor"
-
-                    SQL.ConnectionString = Conexion
-                    SQL.SQL = SqlDatos
-
-                    Dim ViewerForm As New FrmViewer()
-                    ViewerForm.arvMain.Document = ArepFacturasVendedor.Document
+                Do While Registros > i
                     My.Application.DoEvents()
-                    'ArepVentasClientes.DataSource = SQL
-                    ArepFacturasVendedor.DataSource = DataSet.Tables("TotalVentas")
-                    ArepFacturasVendedor.Run(False)
-                    ViewerForm.Show()
+
+                    If Me.OptCordobas.Checked = True Then
+                        If DataSet.Tables("TotalFacturas").Rows(i)("MonedaFactura") = "Cordobas" Then
+                            TasaCambio = 1
+                        Else
+                            TasaCambio = BuscaTasaCambio(DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura"))
+                        End If
+                    Else
+                        If DataSet.Tables("TotalFacturas").Rows(i)("MonedaFactura") = "Dolares" Then
+                            TasaCambio = 1
+                        Else
+                            TasaCambio = 1 / BuscaTasaCambio(DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura"))
+                        End If
+                    End If
+
+                    oDataRow = DataSet.Tables("TotalVentas").NewRow
+                    oDataRow("Fecha_Factura") = DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura")
+                    oDataRow("Numero_Factura") = DataSet.Tables("TotalFacturas").Rows(i)("Numero_Factura")
+                    oDataRow("Nombre_Cliente") = DataSet.Tables("TotalFacturas").Rows(i)("Nombre_Cliente")
+                    oDataRow("SubTotal") = DataSet.Tables("TotalFacturas").Rows(i)("SubTotal") * TasaCambio
+                    oDataRow("IVA") = DataSet.Tables("TotalFacturas").Rows(i)("IVA") * TasaCambio
+                    oDataRow("MetodoPago") = DataSet.Tables("TotalFacturas").Rows(i)("MetodoPago")
+                    oDataRow("TotalFactura") = DataSet.Tables("TotalFacturas").Rows(i)("TotalFactura") * TasaCambio
+                    oDataRow("Cod_Vendedor") = DataSet.Tables("TotalFacturas").Rows(i)("Cod_Vendedor")
+                    oDataRow("NombreVendedor") = DataSet.Tables("TotalFacturas").Rows(i)("NombreVendedor")
+                    DataSet.Tables("TotalVentas").Rows.Add(oDataRow)
+
+                    i = i + 1
+                    Me.ProgressBar.Value = Me.ProgressBar.Value + 1
+                Loop
+
+
+                If Dir(RutaLogo) <> "" Then
+                    ArepFacturasVendedor.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                End If
+                ArepFacturasVendedor.LblTitulo.Text = NombreEmpresa
+                ArepFacturasVendedor.LblDireccion.Text = DireccionEmpresa
+                ArepFacturasVendedor.LblRuc.Text = Ruc
+                If Me.OptDolares.Checked = True Then
+                    ArepFacturasVendedor.LblMoneda.Text = "Expresado en Dolares"
+                Else
+                    ArepFacturasVendedor.LblMoneda.Text = "Expresado en Cordobas"
+                End If
+
+                ArepFacturasVendedor.LblReporte.Text = "Reporte de Facturas x Vendedor"
+
+                SQL.ConnectionString = Conexion
+                SQL.SQL = SqlDatos
+
+                Dim ViewerForm As New FrmViewer()
+                ViewerForm.arvMain.Document = ArepFacturasVendedor.Document
+                My.Application.DoEvents()
+                'ArepVentasClientes.DataSource = SQL
+                ArepFacturasVendedor.DataSource = DataSet.Tables("TotalVentas")
+                ArepFacturasVendedor.Run(False)
+                ViewerForm.Show()
 
             Case "Control de Entradas y Salidas"
-                    Dim ArepControlProductos As New ArepControlProductos
+                Dim ArepControlProductos As New ArepControlProductos
 
-                    If Dir(RutaLogo) <> "" Then
-                        ArepControlProductos.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                    End If
+                If Dir(RutaLogo) <> "" Then
+                    ArepControlProductos.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                End If
 
-                    ArepControlProductos.LblTitulo.Text = NombreEmpresa
-                    ArepControlProductos.LblDireccion.Text = DireccionEmpresa
-                    ArepControlProductos.LblRuc.Text = Ruc
+                ArepControlProductos.LblTitulo.Text = NombreEmpresa
+                ArepControlProductos.LblDireccion.Text = DireccionEmpresa
+                ArepControlProductos.LblRuc.Text = Ruc
 
-                    SqlDatos = "SELECT  Cod_Productos, Descripcion_Producto FROM Productos "
-                    If Me.CboCodProducto.Text = "" Then
-                        If Me.CboCodProducto2.Text = "" Then
-                            SqlDatos = SqlDatos & " ORDER BY Cod_Productos"
-                        Else
-                            SqlDatos = SqlDatos & " WHERE (Cod_Productos BETWEEN '" & CodigoInicio & "' AND '" & Me.CboCodProducto2.Text & "') ORDER BY Cod_Productos"
-                        End If
-                    ElseIf Me.CboCodProducto2.Text = "" Then
-                        SqlDatos = SqlDatos & " WHERE (Cod_Productos BETWEEN '" & Me.CboCodProducto.Text & "' AND '" & CodigoFin & "') ORDER BY Cod_Productos"
+                SqlDatos = "SELECT  Cod_Productos, Descripcion_Producto FROM Productos "
+                If Me.CboCodProducto.Text = "" Then
+                    If Me.CboCodProducto2.Text = "" Then
+                        SqlDatos = SqlDatos & " ORDER BY Cod_Productos"
                     Else
-                        SqlDatos = SqlDatos & " WHERE (Cod_Productos BETWEEN '" & Me.CboCodProducto.Text & "' AND '" & Me.CboCodProducto2.Text & "') ORDER BY Cod_Productos"
+                        SqlDatos = SqlDatos & " WHERE (Cod_Productos BETWEEN '" & CodigoInicio & "' AND '" & Me.CboCodProducto2.Text & "') ORDER BY Cod_Productos"
                     End If
+                ElseIf Me.CboCodProducto2.Text = "" Then
+                    SqlDatos = SqlDatos & " WHERE (Cod_Productos BETWEEN '" & Me.CboCodProducto.Text & "' AND '" & CodigoFin & "') ORDER BY Cod_Productos"
+                Else
+                    SqlDatos = SqlDatos & " WHERE (Cod_Productos BETWEEN '" & Me.CboCodProducto.Text & "' AND '" & Me.CboCodProducto2.Text & "') ORDER BY Cod_Productos"
+                End If
 
 
-                    SQL.ConnectionString = Conexion
-                    SQL.SQL = SqlDatos
+                SQL.ConnectionString = Conexion
+                SQL.SQL = SqlDatos
 
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                    DataAdapter.Fill(DataSet, "Movimientos")
-                    Me.ProgressBar.Maximum = DataSet.Tables("Movimientos").Rows.Count
-                    Me.ProgressBar.Minimum = 0
-                    Me.ProgressBar.Value = 0
-                    Me.ProgressBar.Visible = True
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                DataAdapter.Fill(DataSet, "Movimientos")
+                Me.ProgressBar.Maximum = DataSet.Tables("Movimientos").Rows.Count
+                Me.ProgressBar.Minimum = 0
+                Me.ProgressBar.Value = 0
+                Me.ProgressBar.Visible = True
 
-                    Dim ViewerForm As New FrmViewer()
-                    ViewerForm.arvMain.Document = ArepControlProductos.Document
-                    My.Application.DoEvents()
-                    ArepControlProductos.DataSource = SQL
-                    ArepControlProductos.Run(False)
-                    ViewerForm.Show()
+                Dim ViewerForm As New FrmViewer()
+                ViewerForm.arvMain.Document = ArepControlProductos.Document
+                My.Application.DoEvents()
+                ArepControlProductos.DataSource = SQL
+                ArepControlProductos.Run(False)
+                ViewerForm.Show()
 
 
             Case "Reporte de Ventas x Clientes al Credito"
-                    Dim SqlString As String, Registros As Double
-                    Dim CostoUnitario As Double = 0, Utilidad As Double = 0, Porciento As Double = 0, Costo As Double = 0
-                    Dim CodigoProducto As String = "", TipoProducto As String = ""
-                    Dim ArepVentasClientes As New ArepVentasClientes, i As Double
-                    Dim oDataRow As DataRow, TasaCambio As Double
+                Dim SqlString As String, Registros As Double
+                Dim CostoUnitario As Double = 0, Utilidad As Double = 0, Porciento As Double = 0, Costo As Double = 0
+                Dim CodigoProducto As String = "", TipoProducto As String = ""
+                Dim ArepVentasClientes As New ArepVentasClientes, i As Double
+                Dim oDataRow As DataRow, TasaCambio As Double
 
-                    If Dir(RutaLogo) <> "" Then
-                        ArepVentasClientes.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                    End If
-                    ArepVentasClientes.LblTitulo.Text = NombreEmpresa
-                    ArepVentasClientes.LblDireccion.Text = DireccionEmpresa
-                    ArepVentasClientes.LblRuc.Text = Ruc
-                    ArepVentasClientes.LblNombre.Text = "Ventas de Clientes al Credito"
-                    ArepVentasClientes.Label7.Text = "Impreso Desde " & Format(Fecha1, "dd/MM/yyyy") & "   Hasta    " & Format(Fecha2, "dd/MM/yyyy")
-                    If Me.OptDolares.Checked = True Then
-                        ArepVentasClientes.LblMoneda.Text = "Expresado en Dolares"
-                    Else
-                        ArepVentasClientes.LblMoneda.Text = "Expresado en Cordobas"
-                    End If
+                If Dir(RutaLogo) <> "" Then
+                    ArepVentasClientes.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                End If
+                ArepVentasClientes.LblTitulo.Text = NombreEmpresa
+                ArepVentasClientes.LblDireccion.Text = DireccionEmpresa
+                ArepVentasClientes.LblRuc.Text = Ruc
+                ArepVentasClientes.LblNombre.Text = "Ventas de Clientes al Credito"
+                ArepVentasClientes.Label7.Text = "Impreso Desde " & Format(Fecha1, "dd/MM/yyyy") & "   Hasta    " & Format(Fecha2, "dd/MM/yyyy")
+                If Me.OptDolares.Checked = True Then
+                    ArepVentasClientes.LblMoneda.Text = "Expresado en Dolares"
+                Else
+                    ArepVentasClientes.LblMoneda.Text = "Expresado en Cordobas"
+                End If
 
-                    '*******************************************************************************************************************************
-                    '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
-                    '*******************************************************************************************************************************
-                    DataSet.Reset()
-                    'SqlString = "SELECT Productos.Cod_Productos,Detalle_Compras.Cantidad, Productos.Descripcion_Producto,Detalle_Compras.Precio_Unitario As Importe, Detalle_Compras.Descuento As Cod_Bodega, Detalle_Compras.Precio_Neto As Costo, Compras.Su_Referencia As Utilidad, Compras.Nuestra_Referencia As Porciento FROM  Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra WHERE (Compras.Cod_Bodega = N'-1000') ORDER BY Detalle_Compras.Fecha_Compra"
-                    SqlString = "SELECT Facturas.Fecha_Factura, Facturas.Numero_Factura, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nomibres, Facturas.SubTotal, Facturas.IVA, Facturas.Descuento, Facturas.MetodoPago, Facturas.SubTotal + Facturas.IVA AS Total FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " & _
-                                "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.MetodoPago = 'Credito') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '01/01/1900', 102) AND CONVERT(DATETIME, '01/01/1900', 102)) ORDER BY Facturas.Fecha_Factura, Facturas.Numero_Factura"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-                    DataAdapter.Fill(DataSet, "TotalVentas")
-
-
-                    '//////////////////////CON ESTA CONSULTA SELECCIONO TODAS LAS FACTURAS DE CONTADO//////////////////////////////////////
-                    SqlDatos = "SELECT Facturas.Fecha_Factura, Facturas.Numero_Factura, Facturas.Nombre_Cliente + ' ' + Facturas.Apellido_Cliente AS Nomibres, Facturas.SubTotal, Facturas.IVA, Facturas.Descuento, Facturas.MetodoPago, Facturas.SubTotal + Facturas.IVA AS Total,Facturas.MonedaFactura FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " & _
-                               "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.MetodoPago = 'Credito') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Facturas.Fecha_Factura, Facturas.Numero_Factura"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                    DataAdapter.Fill(DataSet, "TotalFacturas")
-                    Registros = DataSet.Tables("TotalFacturas").Rows.Count
-                    i = 0
-                    Me.ProgressBar.Maximum = Registros
-                    Me.ProgressBar.Minimum = 0
-                    Me.ProgressBar.Value = 0
-                    Me.ProgressBar.Visible = True
-
-                    Do While Registros > i
-                        My.Application.DoEvents()
-
-                        If Me.OptCordobas.Checked = True Then
-                            If DataSet.Tables("TotalFacturas").Rows(i)("MonedaFactura") = "Cordobas" Then
-                                TasaCambio = 1
-                            Else
-                                TasaCambio = BuscaTasaCambio(DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura"))
-                            End If
-                        Else
-                            If DataSet.Tables("TotalFacturas").Rows(i)("MonedaFactura") = "Dolares" Then
-                                TasaCambio = 1
-                            Else
-                                TasaCambio = 1 / BuscaTasaCambio(DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura"))
-                            End If
-                        End If
-
-                        oDataRow = DataSet.Tables("TotalVentas").NewRow
-                        oDataRow("Fecha_Factura") = DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura")
-                        oDataRow("Numero_Factura") = DataSet.Tables("TotalFacturas").Rows(i)("Numero_Factura")
-                        oDataRow("Nomibres") = DataSet.Tables("TotalFacturas").Rows(i)("Nomibres")
-                        oDataRow("SubTotal") = DataSet.Tables("TotalFacturas").Rows(i)("SubTotal") * TasaCambio
-                        oDataRow("IVA") = DataSet.Tables("TotalFacturas").Rows(i)("IVA") * TasaCambio
-                        oDataRow("MetodoPago") = DataSet.Tables("TotalFacturas").Rows(i)("MetodoPago")
-                        oDataRow("Total") = DataSet.Tables("TotalFacturas").Rows(i)("Total") * TasaCambio
-                        DataSet.Tables("TotalVentas").Rows.Add(oDataRow)
-
-                        i = i + 1
-                        Me.ProgressBar.Value = Me.ProgressBar.Value + 1
-                    Loop
+                '*******************************************************************************************************************************
+                '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
+                '*******************************************************************************************************************************
+                DataSet.Reset()
+                'SqlString = "SELECT Productos.Cod_Productos,Detalle_Compras.Cantidad, Productos.Descripcion_Producto,Detalle_Compras.Precio_Unitario As Importe, Detalle_Compras.Descuento As Cod_Bodega, Detalle_Compras.Precio_Neto As Costo, Compras.Su_Referencia As Utilidad, Compras.Nuestra_Referencia As Porciento FROM  Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra WHERE (Compras.Cod_Bodega = N'-1000') ORDER BY Detalle_Compras.Fecha_Compra"
+                SqlString = "SELECT Facturas.Fecha_Factura, Facturas.Numero_Factura, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nomibres, Facturas.SubTotal, Facturas.IVA, Facturas.Descuento, Facturas.MetodoPago, Facturas.SubTotal + Facturas.IVA AS Total FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " & _
+                            "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.MetodoPago = 'Credito') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '01/01/1900', 102) AND CONVERT(DATETIME, '01/01/1900', 102)) ORDER BY Facturas.Fecha_Factura, Facturas.Numero_Factura"
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                DataAdapter.Fill(DataSet, "TotalVentas")
 
 
+                '//////////////////////CON ESTA CONSULTA SELECCIONO TODAS LAS FACTURAS DE CONTADO//////////////////////////////////////
+                SqlDatos = "SELECT Facturas.Fecha_Factura, Facturas.Numero_Factura, Facturas.Nombre_Cliente + ' ' + Facturas.Apellido_Cliente AS Nomibres, Facturas.SubTotal, Facturas.IVA, Facturas.Descuento, Facturas.MetodoPago, Facturas.SubTotal + Facturas.IVA AS Total,Facturas.MonedaFactura FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " & _
+                           "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.MetodoPago = 'Credito') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Facturas.Fecha_Factura, Facturas.Numero_Factura"
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                DataAdapter.Fill(DataSet, "TotalFacturas")
+                Registros = DataSet.Tables("TotalFacturas").Rows.Count
+                i = 0
+                Me.ProgressBar.Maximum = Registros
+                Me.ProgressBar.Minimum = 0
+                Me.ProgressBar.Value = 0
+                Me.ProgressBar.Visible = True
 
-
-                    SQL.ConnectionString = Conexion
-                    SQL.SQL = SqlDatos
-
-                    Dim ViewerForm As New FrmViewer()
-                    ViewerForm.arvMain.Document = ArepVentasClientes.Document
+                Do While Registros > i
                     My.Application.DoEvents()
-                    'ArepVentasClientes.DataSource = SQL
-                    ArepVentasClientes.DataSource = DataSet.Tables("TotalVentas")
-                    ArepVentasClientes.Run(False)
-                    ViewerForm.Show()
+
+                    If Me.OptCordobas.Checked = True Then
+                        If DataSet.Tables("TotalFacturas").Rows(i)("MonedaFactura") = "Cordobas" Then
+                            TasaCambio = 1
+                        Else
+                            TasaCambio = BuscaTasaCambio(DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura"))
+                        End If
+                    Else
+                        If DataSet.Tables("TotalFacturas").Rows(i)("MonedaFactura") = "Dolares" Then
+                            TasaCambio = 1
+                        Else
+                            TasaCambio = 1 / BuscaTasaCambio(DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura"))
+                        End If
+                    End If
+
+                    oDataRow = DataSet.Tables("TotalVentas").NewRow
+                    oDataRow("Fecha_Factura") = DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura")
+                    oDataRow("Numero_Factura") = DataSet.Tables("TotalFacturas").Rows(i)("Numero_Factura")
+                    oDataRow("Nomibres") = DataSet.Tables("TotalFacturas").Rows(i)("Nomibres")
+                    oDataRow("SubTotal") = DataSet.Tables("TotalFacturas").Rows(i)("SubTotal") * TasaCambio
+                    oDataRow("IVA") = DataSet.Tables("TotalFacturas").Rows(i)("IVA") * TasaCambio
+                    oDataRow("MetodoPago") = DataSet.Tables("TotalFacturas").Rows(i)("MetodoPago")
+                    oDataRow("Total") = DataSet.Tables("TotalFacturas").Rows(i)("Total") * TasaCambio
+                    DataSet.Tables("TotalVentas").Rows.Add(oDataRow)
+
+                    i = i + 1
+                    Me.ProgressBar.Value = Me.ProgressBar.Value + 1
+                Loop
+
+
+
+
+                SQL.ConnectionString = Conexion
+                SQL.SQL = SqlDatos
+
+                Dim ViewerForm As New FrmViewer()
+                ViewerForm.arvMain.Document = ArepVentasClientes.Document
+                My.Application.DoEvents()
+                'ArepVentasClientes.DataSource = SQL
+                ArepVentasClientes.DataSource = DataSet.Tables("TotalVentas")
+                ArepVentasClientes.Run(False)
+                ViewerForm.Show()
 
 
 
@@ -10596,8 +10612,13 @@ Public Class FrmReportes
                 'SqlDatos = "SELECT  Rubro.Nombre_Rubro, MAX(Detalle_MetodoFacturas.NombrePago) AS NombrePago, SUM(Detalle_MetodoFacturas.Monto * ROUND(Detalle_Facturas.TasaCambio, 2)) AS Monto, MAX(Facturas.MonedaFactura) AS MonedaFactura, MAX(Facturas.Numero_Factura) AS Numero_Factura FROM  Detalle_MetodoFacturas INNER JOIN Facturas ON Detalle_MetodoFacturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_MetodoFacturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_MetodoFacturas.Tipo_Factura = Facturas.Tipo_Factura INNER JOIN Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura INNER JOIN Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro  " & _
                 '           "WHERE (Facturas.FechaPago = CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND Facturas.FechaPago = CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) GROUP BY Rubro.Nombre_Rubro ORDER BY Rubro.Nombre_Rubro DESC"
 
-                SqlDatos = "SELECT  Rubro.Nombre_Rubro, MAX(Detalle_MetodoFacturas.NombrePago) AS NombrePago, SUM(Detalle_MetodoFacturas.Monto * ROUND(Detalle_Facturas.TasaCambio, 2)) AS Montos, MAX(Facturas.MonedaFactura) AS MonedaFactura, MAX(Facturas.Numero_Factura) AS Numero_Factura, SUM(Detalle_Facturas.Importe * ROUND(Detalle_Facturas.TasaCambio, 2)) AS Monto FROM  Detalle_MetodoFacturas INNER JOIN Facturas ON Detalle_MetodoFacturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_MetodoFacturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_MetodoFacturas.Tipo_Factura = Facturas.Tipo_Factura INNER JOIN Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura INNER JOIN Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro  " & _
-                           "WHERE (Facturas.FechaPago = CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102)) AND (Facturas.FechaPago = CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) GROUP BY Rubro.Nombre_Rubro ORDER BY Rubro.Nombre_Rubro DESC"
+                If Me.CmbVendedores.Text = "" And Me.CmbVendedores2.Text = "" Then
+                    SqlDatos = "SELECT  Rubro.Nombre_Rubro, MAX(Detalle_MetodoFacturas.NombrePago) AS NombrePago, SUM(Detalle_MetodoFacturas.Monto * ROUND(Detalle_Facturas.TasaCambio, 2)) AS Montos, MAX(Facturas.MonedaFactura) AS MonedaFactura, MAX(Facturas.Numero_Factura) AS Numero_Factura, SUM(Detalle_Facturas.Importe * ROUND(Detalle_Facturas.TasaCambio, 2)) AS Monto FROM  Detalle_MetodoFacturas INNER JOIN Facturas ON Detalle_MetodoFacturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_MetodoFacturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_MetodoFacturas.Tipo_Factura = Facturas.Tipo_Factura INNER JOIN Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura INNER JOIN Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro  " & _
+                               "WHERE (Facturas.FechaPago = CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102)) AND (Facturas.FechaPago = CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) GROUP BY Rubro.Nombre_Rubro ORDER BY Rubro.Nombre_Rubro DESC"
+                Else
+                    SqlDatos = "SELECT  Rubro.Nombre_Rubro, MAX(Detalle_MetodoFacturas.NombrePago) AS NombrePago, SUM(Detalle_MetodoFacturas.Monto * ROUND(Detalle_Facturas.TasaCambio, 2)) AS Montos, MAX(Facturas.MonedaFactura) AS MonedaFactura, MAX(Facturas.Numero_Factura) AS Numero_Factura, SUM(Detalle_Facturas.Importe * ROUND(Detalle_Facturas.TasaCambio, 2)) AS Monto FROM  Detalle_MetodoFacturas INNER JOIN Facturas ON Detalle_MetodoFacturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_MetodoFacturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_MetodoFacturas.Tipo_Factura = Facturas.Tipo_Factura INNER JOIN Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura INNER JOIN Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro  " & _
+                                "WHERE (Facturas.FechaPago = CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102)) AND (Facturas.FechaPago = CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102))  AND (Facturas.Cod_Vendedor BETWEEN '" & Me.CmbVendedores.Text & "' AND '" & Me.CmbVendedores2.Text & "')GROUP BY Rubro.Nombre_Rubro ORDER BY Rubro.Nombre_Rubro DESC"
+                End If
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
                 DataAdapter.Fill(DataSet, "Facturas")
                 Registros = DataSet.Tables("Facturas").Rows.Count
@@ -10625,8 +10646,13 @@ Public Class FrmReportes
                 '***************************************************************************************************************************+
                 '//////////////////////CON ESTA CONSULTA BUSTO TODO EL DINERO  EN RECIBOS/////////////////////////////////////////////////////
                 '****************************************************************************************************************************
-                SQlString = "SELECT  MAX(Recibo.MonedaRecibo) AS MonedaRecibido, SUM(DetalleRecibo.MontoPagado) AS MontoPagado, MAX(Rubro.Codigo_Rubro) AS Codigo_Rubro, Rubro.Nombre_Rubro, MAX(DetalleRecibo.TasaCambio) AS TasaCambio, SUM(DetalleRecibo.MontoPagado * DetalleRecibo.TasaCambio) AS Monto FROM Recibo INNER JOIN DetalleRecibo ON Recibo.CodReciboPago = DetalleRecibo.CodReciboPago AND Recibo.Fecha_Recibo = DetalleRecibo.Fecha_Recibo INNER JOIN Facturas ON DetalleRecibo.Numero_Factura = Facturas.Numero_Factura INNER JOIN Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura INNER JOIN Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro INNER JOIN TasaCambio ON Recibo.Fecha_Recibo = TasaCambio.FechaTasa  GROUP BY Recibo.Fecha_Recibo, Rubro.Nombre_Rubro  " & _
-                            "HAVING (Recibo.Fecha_Recibo BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102))  ORDER BY MAX(Rubro.Codigo_Rubro), Recibo.Fecha_Recibo "
+                If Me.CmbVendedores.Text = "" And Me.CmbVendedores2.Text = "" Then
+                    SQlString = "SELECT  MAX(Recibo.MonedaRecibo) AS MonedaRecibido, SUM(DetalleRecibo.MontoPagado) AS MontoPagado, MAX(Rubro.Codigo_Rubro) AS Codigo_Rubro, Rubro.Nombre_Rubro, MAX(DetalleRecibo.TasaCambio) AS TasaCambio, SUM(DetalleRecibo.MontoPagado * DetalleRecibo.TasaCambio) AS Monto FROM Recibo INNER JOIN DetalleRecibo ON Recibo.CodReciboPago = DetalleRecibo.CodReciboPago AND Recibo.Fecha_Recibo = DetalleRecibo.Fecha_Recibo INNER JOIN Facturas ON DetalleRecibo.Numero_Factura = Facturas.Numero_Factura INNER JOIN Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura INNER JOIN Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro INNER JOIN TasaCambio ON Recibo.Fecha_Recibo = TasaCambio.FechaTasa   " & _
+                                "GROUP BY Recibo.Fecha_Recibo, Rubro.Nombre_Rubro  HAVING (Recibo.Fecha_Recibo BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102))  ORDER BY MAX(Rubro.Codigo_Rubro), Recibo.Fecha_Recibo "
+                Else
+                    SQlString = "SELECT  MAX(Recibo.MonedaRecibo) AS MonedaRecibido, SUM(DetalleRecibo.MontoPagado) AS MontoPagado, MAX(Rubro.Codigo_Rubro) AS Codigo_Rubro, Rubro.Nombre_Rubro, MAX(DetalleRecibo.TasaCambio) AS TasaCambio, SUM(DetalleRecibo.MontoPagado * DetalleRecibo.TasaCambio) AS Monto FROM Recibo INNER JOIN DetalleRecibo ON Recibo.CodReciboPago = DetalleRecibo.CodReciboPago AND Recibo.Fecha_Recibo = DetalleRecibo.Fecha_Recibo INNER JOIN Facturas ON DetalleRecibo.Numero_Factura = Facturas.Numero_Factura INNER JOIN Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura INNER JOIN Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro INNER JOIN TasaCambio ON Recibo.Fecha_Recibo = TasaCambio.FechaTasa   " & _
+                                "WHERE (Facturas.Cod_Vendedor BETWEEN '" & Me.CmbVendedores.Text & "' AND '" & Me.CmbVendedores2.Text & "') GROUP BY Recibo.Fecha_Recibo, Rubro.Nombre_Rubro  HAVING (Recibo.Fecha_Recibo BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102))  ORDER BY MAX(Rubro.Codigo_Rubro), Recibo.Fecha_Recibo "
+                End If
                 'AND (Rubro.Nombre_Rubro = '" & NombreRubro & "')
                 DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
                 DataAdapter.Fill(DataSet, "Recibos")
@@ -11889,6 +11915,9 @@ Public Class FrmReportes
                 Me.GroupBox1.Visible = True
                 Me.GroupClientes.Visible = False
                 Me.GroupBoxNotas.Visible = False
+                Me.GroupVendedor.Visible = True
+                Me.GroupVendedor.Location = New Point(280, 123)
+
             Case "Reporte de Notas Debito/Credito"
                 Me.GroupBox1.Visible = True
                 Me.GroupBoxNotas.Location = New Point(280, 123)

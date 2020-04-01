@@ -240,6 +240,7 @@ Public Class FrmRecibos
         Me.TDBGridDetalle.Splits.Item(0).DisplayColumns(9).Visible = False
         Me.TDBGridDetalle.Splits.Item(0).DisplayColumns(10).Visible = False
         Me.TDBGridDetalle.Splits.Item(0).DisplayColumns(11).Visible = False
+        Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("Numero_Nota").Visible = False
 
         MiConexion.Close()
     End Sub

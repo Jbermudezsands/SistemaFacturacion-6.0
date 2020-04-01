@@ -165,8 +165,8 @@
   <data name="CmdGrabar.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK9wAA
-        CvcBEOiS5wAAEj9JREFUaEO9mglYjdkfx2UZSyEUieyEsc6MsU2NECqNdZDdjGX4W7JmiYwRGpnsDRVC
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK9gAA
+        CvYBwq9wAwAAEj9JREFUaEO9mglYjdkfx2UZSyEUieyEsc6MsU2NECqNdZDdjGX4W7JmiYwRGpnsDRVC
         pIUoUYpEIUo17YsWqe5tubfbXdq//9957711qzvL/5nn+b/P83nO23vfc873e87vbO9TCwB/SfjbLL2X
         sYVjX8bxhxMDid6ELtGJaEu0VJfv/4Xah0o6jjzYQ3PorrRu0zwqdGd6iwkhUULwiDziA5HYzdTrzTz7
         1093e6QEbHZN8Fp3IfbK5vPvz1qfeXds7fHXNlZ2EZvm2DxfOcM6dKHxxidmX//wyHjU8oAvhy3xHzZo
@@ -463,8 +463,8 @@
   <data name="PictureBox2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAXCgAA
-        FwoBCgHK/QAADo9JREFUaEPVmQtYTekax/fe1W7vdhRC08hQud+NETPD4biMcS2N6zHTHAbjXqiUVITu
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAXCQAA
+        FwkBp7jrkAAADo9JREFUaEPVmQtYTekax/fe1W7vdhRC08hQud+NETPD4biMcS2N6zHTHAbjXqiUVITu
         qKh0kxTdJSqXKLrfs1VUEgo5buMwc45L+3/eb6UmWZnzOM1zHut5flrrfdb61vv/vvd9v3dtAgAfNbzG
         jwle439Dtw4C0df9hQbjBwqHTRgk1NPWEAj57vuz4TW+D71uQp0ts1U8D65QfXRojUQRvkGiiLHUUCTY
         dn7ktVwWOf8rkZGmTKDC9+yfAa+xLXp0Fuo4mEhK3ZdIFZ4/SuHzkxSBP0txxEwDcds+w2nnIUhxH/oq

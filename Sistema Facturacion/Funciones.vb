@@ -9216,7 +9216,7 @@ Module Funciones
         '//////////////////////////CARGO LAS FORMA DE PAGO////////////////////////////////////////////////////////////////////
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         FrmRecibos.ds.Reset()
-        SqlString = "SELECT NombrePago, Descripcion, Numero_Factura, MontoPagado,NumeroTarjeta,FechaVence,MontoFactura,AplicaFactura,SaldoFactura, idDetalleRecibo, CodReciboPago, Fecha_Recibo FROM DetalleRecibo WHERE (CodReciboPago = '-1') AND (Fecha_Recibo = CONVERT(DATETIME, '2010-01-01 00:00:00', 102))"
+        SqlString = "SELECT NombrePago, Descripcion, Numero_Factura, MontoPagado,NumeroTarjeta,FechaVence,MontoFactura,AplicaFactura,SaldoFactura, idDetalleRecibo, CodReciboPago, Fecha_Recibo, Numero_Nota FROM DetalleRecibo WHERE (CodReciboPago = '-1') AND (Fecha_Recibo = CONVERT(DATETIME, '2010-01-01 00:00:00', 102))"
         FrmRecibos.ds = New DataSet
         FrmRecibos.da = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         FrmRecibos.CmdBuilder = New SqlClient.SqlCommandBuilder(FrmRecibos.da)
@@ -9241,6 +9241,7 @@ Module Funciones
         FrmRecibos.TDBGridDetalle.Splits.Item(0).DisplayColumns(9).Visible = False
         FrmRecibos.TDBGridDetalle.Splits.Item(0).DisplayColumns(10).Visible = False
         FrmRecibos.TDBGridDetalle.Splits.Item(0).DisplayColumns(11).Visible = False
+        FrmRecibos.TDBGridDetalle.Splits.Item(0).DisplayColumns("Numero_Nota").Visible = False
         MiConexion.Close()
 
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -9493,7 +9494,7 @@ Module Funciones
 
     End Sub
 
-    Public Sub GrabaArqueo(ByVal ConsecutivoArqueo As String)
+    Public Sub GrabaArqueo(ByVal ConsecutivoArqueo As String, ByVal FondoApertura As Double)
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim Fecha As String, Fecha2 As String
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -9508,8 +9509,8 @@ Module Funciones
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////AGREGO EL ENCABEZADO DEL ARQUEO//////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "INSERT INTO [Arqueo] ([CodArqueo],[FechaArqueo],[Cod_Cajero]) " & _
-                         "VALUES('" & ConsecutivoArqueo & "','" & Fecha2 & "','" & FrmArqueo.CboCajero.Text & "')"
+            SqlCompras = "INSERT INTO [Arqueo] ([CodArqueo],[FechaArqueo],[Cod_Cajero], [FondoApertura]) " & _
+                         "VALUES('" & ConsecutivoArqueo & "','" & Fecha2 & "','" & FrmArqueo.CboCajero.Text & "', " & FondoApertura & ")"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -9519,7 +9520,7 @@ Module Funciones
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////EDITO EL ENCABEZADO DEL ARQUEO///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "UPDATE [Arqueo] SET [TotalCordobasDolares] = " & CDbl(FrmArqueo.TxtCordobasDolares.Text) & ",[ValorFacturas] = " & CDbl(FrmArqueo.TxtValorFacturas.Text) & ",[Observaciones] = '" & FrmArqueo.TxtObservaciones.Text & "',[PracticadoPor] = '" & FrmArqueo.TxtPracticadoPor.Text & "' " & _
+            SqlCompras = "UPDATE [Arqueo] SET [TotalCordobasDolares] = " & CDbl(FrmArqueo.TxtCordobasDolares.Text) & ",[ValorFacturas] = " & CDbl(FrmArqueo.TxtValorFacturas.Text) & ",[Observaciones] = '" & FrmArqueo.TxtObservaciones.Text & "',[PracticadoPor] = '" & FrmArqueo.TxtPracticadoPor.Text & "' , [FondoApertura] = " & FondoApertura & " " & _
                          "WHERE (CodArqueo = '" & ConsecutivoArqueo & "') AND (FechaArqueo = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Cod_Cajero = '" & FrmArqueo.CboCajero.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
@@ -9552,7 +9553,7 @@ Module Funciones
             '////////////////////////////AGREGO EL ENCABEZADO DEL ARQUEO//////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
             SqlCompras = "INSERT INTO [Detalle_ArqueoCheque] ([CodArqueo],[FechaArqueo],[Modena],[NumeroFactura],[NombrePago],[NumeroTarjeta],[Fecha_Vence],[Monto]) " & _
-                         "VALUES ('" & ConsecutivoArqueo & "' , CONVERT(DATETIME, '" & Fecha & "', 102) , '" & Moneda & "', '" & NumeroFactura & "', '" & NombrePago & "' , '" & NumeroTarjeta & "', CONVERT(DATETIME, '" & FechaVence & "', 102) ," & Monto & ")"
+                         "VALUES ('" & ConsecutivoArqueo & "' , CONVERT(DATETIME, '" & Format(CDate(Fecha), "yyyy-MM-dd") & "', 102) , '" & Moneda & "', '" & NumeroFactura & "', '" & NombrePago & "' , '" & NumeroTarjeta & "', CONVERT(DATETIME, '" & Format(CDate(FechaVence), "yyyy-MM-dd") & "', 102) ," & Monto & ")"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -9616,7 +9617,7 @@ Module Funciones
         Dim iPosicion As Double, Registros As Double, Monto As Double, MontoDolar As Double, MontoCheque As Double, MontoDolarCheque As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion), SQlEfectivo As String, MontoEfectivo As Double, MontoEfectivoDolar As Double
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, CodCajero As String, Total As Double
-        Dim TasaCambio As Double, FechaTasa As String, SubTotal As Double, TotalRecibido As Double
+        Dim TasaCambio As Double, FechaTasa As String, SubTotal As Double, TotalRecibido As Double, FondoApertura As Double
 
         FechaTasa = FrmArqueo.DTFecha.Value
         CodCajero = FrmArqueo.CboCajero.Text
@@ -9697,6 +9698,12 @@ Module Funciones
                 iPosicion = iPosicion + 1
             Loop
         End If
+        If FrmArqueo.TxtFondoApertura.Text = "" Then
+            FondoApertura = 0
+        Else
+            FondoApertura = FrmArqueo.TxtFondoApertura.Text
+        End If
+
         TotalRecibido = MontoEfectivo + TotalRecibido
         DataSet.Reset()
 
@@ -9762,7 +9769,14 @@ Module Funciones
                 iPosicion = iPosicion + 1
             Loop
         End If
-        TotalRecibido = MontoEfectivo + TotalRecibido
+
+        If FrmArqueo.TxtFondoApertura.Text = "" Then
+            FondoApertura = 0
+        Else
+            FondoApertura = FrmArqueo.TxtFondoApertura.Text
+        End If
+
+        TotalRecibido = MontoEfectivo + TotalRecibido + FondoApertura
         DataSet.Reset()
 
         FrmArqueo.TxtDiferencia.Text = Format(TotalRecibido - Total, "##,##0.00")
