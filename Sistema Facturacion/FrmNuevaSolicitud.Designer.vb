@@ -41,6 +41,7 @@ Partial Class FrmNuevaSolicitud
         Me.Button7 = New System.Windows.Forms.Button
         Me.Button12 = New System.Windows.Forms.Button
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.BtnAutorizar = New System.Windows.Forms.Button
         Me.Button9 = New System.Windows.Forms.Button
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.BindingDetalle = New System.Windows.Forms.BindingSource(Me.components)
@@ -51,6 +52,7 @@ Partial Class FrmNuevaSolicitud
         Me.CboRubro = New C1.Win.C1List.C1Combo
         Me.ImageList = New System.Windows.Forms.ImageList(Me.components)
         Me.CboGerencia = New System.Windows.Forms.ComboBox
+        Me.BtnOrdenCompra = New System.Windows.Forms.Button
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Grupo.SuspendLayout()
@@ -244,7 +246,7 @@ Partial Class FrmNuevaSolicitud
         '
         'Button7
         '
-        Me.Button7.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button7.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
         Me.Button7.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.Button7.Location = New System.Drawing.Point(6, 14)
@@ -257,10 +259,10 @@ Partial Class FrmNuevaSolicitud
         '
         'Button12
         '
-        Me.Button12.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button12.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button12.Image = CType(resources.GetObject("Button12.Image"), System.Drawing.Image)
         Me.Button12.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button12.Location = New System.Drawing.Point(7, 81)
+        Me.Button12.Location = New System.Drawing.Point(7, 74)
         Me.Button12.Name = "Button12"
         Me.Button12.Size = New System.Drawing.Size(114, 57)
         Me.Button12.TabIndex = 256
@@ -270,6 +272,8 @@ Partial Class FrmNuevaSolicitud
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.BtnOrdenCompra)
+        Me.GroupBox1.Controls.Add(Me.BtnAutorizar)
         Me.GroupBox1.Controls.Add(Me.Button9)
         Me.GroupBox1.Controls.Add(Me.Button7)
         Me.GroupBox1.Controls.Add(Me.Button12)
@@ -278,6 +282,19 @@ Partial Class FrmNuevaSolicitud
         Me.GroupBox1.Size = New System.Drawing.Size(127, 366)
         Me.GroupBox1.TabIndex = 257
         Me.GroupBox1.TabStop = False
+        '
+        'BtnAutorizar
+        '
+        Me.BtnAutorizar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnAutorizar.Image = CType(resources.GetObject("BtnAutorizar.Image"), System.Drawing.Image)
+        Me.BtnAutorizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.BtnAutorizar.Location = New System.Drawing.Point(6, 134)
+        Me.BtnAutorizar.Name = "BtnAutorizar"
+        Me.BtnAutorizar.Size = New System.Drawing.Size(114, 54)
+        Me.BtnAutorizar.TabIndex = 258
+        Me.BtnAutorizar.Text = "Autorizar"
+        Me.BtnAutorizar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnAutorizar.UseVisualStyleBackColor = True
         '
         'Button9
         '
@@ -401,6 +418,20 @@ Partial Class FrmNuevaSolicitud
         Me.CboGerencia.Size = New System.Drawing.Size(211, 21)
         Me.CboGerencia.TabIndex = 263
         '
+        'BtnOrdenCompra
+        '
+        Me.BtnOrdenCompra.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnOrdenCompra.Image = CType(resources.GetObject("BtnOrdenCompra.Image"), System.Drawing.Image)
+        Me.BtnOrdenCompra.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.BtnOrdenCompra.Location = New System.Drawing.Point(6, 134)
+        Me.BtnOrdenCompra.Name = "BtnOrdenCompra"
+        Me.BtnOrdenCompra.Size = New System.Drawing.Size(114, 54)
+        Me.BtnOrdenCompra.TabIndex = 264
+        Me.BtnOrdenCompra.Text = "Orden Compra"
+        Me.BtnOrdenCompra.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnOrdenCompra.UseVisualStyleBackColor = True
+        Me.BtnOrdenCompra.Visible = False
+        '
         'FrmNuevaSolicitud
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -472,4 +503,6 @@ Partial Class FrmNuevaSolicitud
     Friend WithEvents ImageList As System.Windows.Forms.ImageList
     Friend WithEvents CboGerencia As System.Windows.Forms.ComboBox
     Friend WithEvents TxtNumeroEnsamble As System.Windows.Forms.TextBox
+    Friend WithEvents BtnAutorizar As System.Windows.Forms.Button
+    Friend WithEvents BtnOrdenCompra As System.Windows.Forms.Button
 End Class

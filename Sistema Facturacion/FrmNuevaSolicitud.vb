@@ -3,6 +3,7 @@ Imports System.Data.SqlClient
 Public Class FrmNuevaSolicitud
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder, NumeroSolicitud As String
+    Public Estatus As String = ""
     Public Sub InsertarRowGrid()
         Dim oTabla As DataTable, iPosicion As Double, CodigoProducto As String
 
@@ -128,7 +129,9 @@ Public Class FrmNuevaSolicitud
         DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
         DataAdapter.Fill(DataSet, "Gerencia")
         Me.CboGerencia.DataSource = DataSet.Tables("Gerencia")
-        Me.CboGerencia.Text = DataSet.Tables("Gerencia").Rows(0)("Gerencia_Solicitante")
+        If Not DataSet.Tables("Gerencia").Rows.Count = 0 Then
+            Me.CboGerencia.Text = DataSet.Tables("Gerencia").Rows(0)("Gerencia_Solicitante")
+        End If
         MiConexion.Close()
 
         Sql = "SELECT DISTINCT Departamento_Solicitante FROM Solicitud_Compra ORDER BY Departamento_Solicitante"
@@ -167,11 +170,16 @@ Public Class FrmNuevaSolicitud
 
 
         If My.Forms.FrmListaSolicitud.Nuevo = True Then
-            Me.Timer1.Enabled = True
             Me.DTPFecha.Text = Format(Now, "dd/MM/yyyy")
+            Me.Timer1.Enabled = True
+
             Me.DTPFechaRequerido.Value = Format(Now, "dd/MM/yyyy")
             Me.TxtConcepto.Text = ""
             Me.TxtNumeroEnsamble.Text = "-----0-----"
+
+            Me.CboCodigoBodega.Enabled = True
+            Me.Button3.Enabled = True
+            Me.Button7.Enabled = True
 
             SqlString = "SELECT Cod_Producto, Descripcion_Producto, Cantidad, Autorizado, Numero_Solicitud FROM Detalle_Solicitud WHERE (Descripcion_Producto = N'-100000')"
             ds = New DataSet
@@ -183,12 +191,15 @@ Public Class FrmNuevaSolicitud
             Me.TrueDBGridComponentes.Columns("Cod_Producto").Caption = "Codigo"
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Button = True
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Width = 63
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Locked = False
             Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Caption = "Descripcion"
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 280
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Solicitud").Visible = False
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 60
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Locked = False
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Autorizado").Width = 60
-
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Autorizado").Locked = True
             Me.TrueDBGridComponentes.Columns("Autorizado").ValueItems.Presentation = C1.Win.C1TrueDBGrid.PresentationEnum.Normal
             Me.TrueDBGridComponentes.Columns("Autorizado").ValueItems.CycleOnClick = True
             With Me.TrueDBGridComponentes.Columns("Autorizado").ValueItems.Values
@@ -205,6 +216,7 @@ Public Class FrmNuevaSolicitud
 
                 Me.TrueDBGridComponentes.Columns("Autorizado").ValueItems.Translate = True
             End With
+
         End If
 
     End Sub
@@ -214,7 +226,7 @@ Public Class FrmNuevaSolicitud
 
         Fecha_Solicitud = CDate(Me.DTPFecha.Text + " " + Me.LblHora.Text)
 
-        GrabarSolicitud(Me.TxtNumeroEnsamble.Text, Fecha_Solicitud, Me.CboGerencia.Text, Me.CboDepartamento.Text, Me.CboRubro.Text, Me.TxtConcepto.Text, "Procesado", Me.CboCodigoBodega.Text, Me.DTPFechaRequerido.Value)
+        GrabarSolicitud(Me.TxtNumeroEnsamble.Text, Fecha_Solicitud, Me.CboGerencia.Text, Me.CboDepartamento.Text, Me.CboRubro.Text, Me.TxtConcepto.Text, "Grabado", Me.CboCodigoBodega.Text, Me.DTPFechaRequerido.Value)
 
         InsertarRowGrid()
 
@@ -417,13 +429,29 @@ Public Class FrmNuevaSolicitud
             Me.BindingDetalle.DataSource = ds.Tables("DetalleSolicitud")
             Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
             Me.TrueDBGridComponentes.Columns("Cod_Producto").Caption = "Codigo"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Button = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Button = False
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Width = 63
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Locked = True
             Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Caption = "Descripcion"
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 280
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Solicitud").Visible = False
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 60
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Locked = True
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Autorizado").Width = 60
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Autorizado").Locked = True
+
+            Me.CboCodigoBodega.Enabled = False
+            Me.Button3.Enabled = False
+            Me.Button7.Enabled = False
+
+            If Estatus = "Autorizado" Then
+                Me.BtnAutorizar.Visible = False
+                Me.BtnOrdenCompra.Visible = True
+            Else
+                Me.BtnAutorizar.Visible = True
+                Me.BtnOrdenCompra.Visible = False
+            End If
 
             Me.TrueDBGridComponentes.Columns("Autorizado").ValueItems.Presentation = C1.Win.C1TrueDBGrid.PresentationEnum.Normal
             Me.TrueDBGridComponentes.Columns("Autorizado").ValueItems.CycleOnClick = True
@@ -453,5 +481,31 @@ Public Class FrmNuevaSolicitud
 
     Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
         Me.Close()
+    End Sub
+
+    Private Sub BtnAutorizar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAutorizar.Click
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim NumSolicitud As String, Resultado As Double, iPosicion As Double
+
+        MiConexion.Close()
+
+
+        iPosicion = My.Forms.FrmListaSolicitud.TDGridSolicitud.Row
+        NumSolicitud = My.Forms.FrmListaSolicitud.TDGridSolicitud.Item(iPosicion)("Numero_Solicitud")
+
+        ''''''''''''''''''''''''''''''''CAMBIO EL ESTATUS DE LA SOLICITUD---------------------------------------------
+        StrSqlUpdate = "UPDATE [Solicitud_Compra] SET [Estado_Solicitud] = 'Autorizado' WHERE (Numero_Solicitud = '" & NumSolicitud & "')"
+        MiConexion.Open()
+        ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+        iResultado = ComandoUpdate.ExecuteNonQuery
+
+
+        StrSqlUpdate = "UPDATE [Detalle_Solicitud] SET [Autorizado] = 'True'  WHERE (Numero_Solicitud = '" & NumSolicitud & "')"
+        'MiConexion.Open()
+        ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+        iResultado = ComandoUpdate.ExecuteNonQuery
+        MiConexion.Close()
+
+        MsgBox("Autorizado con Exito!!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
     End Sub
 End Class
