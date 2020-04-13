@@ -8,12 +8,13 @@ Public Class FrmListaSolicitud
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
         Me.Nuevo = True
+        My.Forms.FrmNuevaSolicitud.TxtNumeroEnsamble.Text = "-----0-----"
         My.Forms.FrmNuevaSolicitud.ShowDialog()
         Me.Nuevo = False
         BtnActualizar_Click(sender, e)
     End Sub
 
-    Private Sub BtnActualizar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnActualizar.Click
+    Public Sub BtnActualizar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnActualizar.Click
         Dim SqlString As String, DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet
 
         SqlString = "SELECT DISTINCT Solicitud_Compra.Numero_Solicitud, Solicitud_Compra.Fecha_Solicitud, Solicitud_Compra.Fecha_Requerido, Solicitud_Compra.Departamento_Solicitante, Solicitud_Compra.Gerencia_Solicitante, Solicitud_Compra.Estado_Solicitud FROM Detalle_Solicitud INNER JOIN Solicitud_Compra ON Detalle_Solicitud.Numero_Solicitud = Solicitud_Compra.Numero_Solicitud  WHERE (Detalle_Solicitud.Activo = 1) AND (Solicitud_Compra.Estado_Solicitud <> 'Anulado')"
@@ -87,10 +88,13 @@ Public Class FrmListaSolicitud
         ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
         iResultado = ComandoUpdate.ExecuteNonQuery
         MiConexion.Close()
+
+        Me.BtnActualizar_Click(sender, e)
     End Sub
 
     Private Sub BtnVer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnVer.Click
         Me.Nuevo = False
+        My.Forms.FrmNuevaSolicitud.TxtNumeroEnsamble.Text = "-----0-----"
         My.Forms.FrmNuevaSolicitud.Estatus = Me.TDGridSolicitud.Columns("Estado_Solicitud").Text
         My.Forms.FrmNuevaSolicitud.TxtNumeroEnsamble.Text = Me.TDGridSolicitud.Columns("Numero_Solicitud").Text
         My.Forms.FrmNuevaSolicitud.ShowDialog()
@@ -108,27 +112,16 @@ Public Class FrmListaSolicitud
         End If
 
         Autorizar_Solicitud()
-    End Sub
-
-    Private Sub TDGridSolicitud_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TDGridSolicitud.Click
-
-
-
-
-    End Sub
-
-    Private Sub TDGridSolicitud_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles TDGridSolicitud.Resize
-
-
-
+        Me.BtnActualizar_Click(sender, e)
     End Sub
 
     Private Sub TDGridSolicitud_RowColChange(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.RowColChangeEventArgs) Handles TDGridSolicitud.RowColChange
         If Me.TDGridSolicitud.RowCount > 0 Then
             Select Case Me.TDGridSolicitud.Columns("Estado_Solicitud").Text
-                Case "Autorizado" : Me.CmdNuevo.Enabled = False
-                Case "Grabado" : Me.CmdNuevo.Enabled = True
-                Case "Anulado" : Me.CmdNuevo.Enabled = False
+                Case "Autorizado" : Me.CmdNuevo.Enabled = False : Me.BtnVer.Enabled = True : Me.Button1.Enabled = True
+                Case "Grabado" : Me.CmdNuevo.Enabled = True : Me.BtnVer.Enabled = True : Me.Button1.Enabled = True
+                Case "Anulado" : Me.CmdNuevo.Enabled = False : Me.BtnVer.Enabled = False : Me.Button1.Enabled = False
+                Case "Procesado" : Me.CmdNuevo.Enabled = False : Me.BtnVer.Enabled = True : Me.Button1.Enabled = False
             End Select
         End If
     End Sub

@@ -71,8 +71,8 @@ Partial Public Class ArepColillas
         Me.LblPeriodo = New DataDynamics.ActiveReports.Label
         Me.TxtTotalIngresos = New DataDynamics.ActiveReports.TextBox
         Me.TextBox20 = New DataDynamics.ActiveReports.TextBox
-        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
         Me.Label1 = New DataDynamics.ActiveReports.Label
+        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
         CType(Me.LblEncabezado, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -945,12 +945,12 @@ Partial Public Class ArepColillas
         Me.TextBox16.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox16.DataField = "TotalEgresos"
         Me.TextBox16.Height = 0.1875!
-        Me.TextBox16.Left = 4.6875!
+        Me.TextBox16.Left = 4.678571!
         Me.TextBox16.Name = "TextBox16"
         Me.TextBox16.OutputFormat = resources.GetString("TextBox16.OutputFormat")
         Me.TextBox16.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox16.Text = Nothing
-        Me.TextBox16.Top = 2.125!
+        Me.TextBox16.Top = 2.107143!
         Me.TextBox16.Width = 0.875!
         '
         'TextBox17
@@ -1108,15 +1108,11 @@ Partial Public Class ArepColillas
         Me.TextBox20.Height = 0.1979167!
         Me.TextBox20.Left = 4.4375!
         Me.TextBox20.Name = "TextBox20"
+        Me.TextBox20.OutputFormat = resources.GetString("TextBox20.OutputFormat")
         Me.TextBox20.Style = "ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 9.75pt; "
         Me.TextBox20.Text = Nothing
         Me.TextBox20.Top = 2.5625!
         Me.TextBox20.Width = 1.0!
-        '
-        'PageFooter1
-        '
-        Me.PageFooter1.Height = 0.0!
-        Me.PageFooter1.Name = "PageFooter1"
         '
         'Label1
         '
@@ -1136,6 +1132,11 @@ Partial Public Class ArepColillas
         Me.Label1.Text = ""
         Me.Label1.Top = 2.8125!
         Me.Label1.Width = 7.5!
+        '
+        'PageFooter1
+        '
+        Me.PageFooter1.Height = 0.0!
+        Me.PageFooter1.Name = "PageFooter1"
         '
         'ArepColillas
         '

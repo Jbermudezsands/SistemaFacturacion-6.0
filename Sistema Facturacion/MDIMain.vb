@@ -213,7 +213,9 @@ Public Class MDIMain
     End Sub
 
     Private Sub RibbonCompras1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonCompras1.Click
+
         My.Forms.FrmCompras.MdiParent = Me
+        My.Forms.FrmCompras.EsSolicitud = False
         My.Forms.FrmCompras.Show()
     End Sub
 
@@ -304,6 +306,7 @@ Public Class MDIMain
 
     Private Sub RibbonCompras_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonCompras.Click
         My.Forms.FrmCompras.MdiParent = Me
+        My.Forms.FrmCompras.EsSolicitud = False
         My.Forms.FrmCompras.Show()
     End Sub
 
@@ -1079,5 +1082,10 @@ Public Class MDIMain
     Private Sub RibbonButton7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton7.Click
         My.Forms.FrmListaSolicitud.MdiParent = Me
         My.Forms.FrmListaSolicitud.Show()
+    End Sub
+
+    Private Sub RibbonButton8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton8.Click
+        My.Forms.FrmListaOrdenCompra.MdiParent = Me
+        My.Forms.FrmListaOrdenCompra.Show()
     End Sub
 End Class

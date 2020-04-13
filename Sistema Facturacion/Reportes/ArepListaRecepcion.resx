@@ -121,16 +121,15 @@
     <value>True</value>
   </metadata>
   <data name="OleDBDataSource1.SQL" xml:space="preserve">
-    <value>SELECT     Nomina.NumPlanilla, Nomina.FechaInicial, Nomina.FechaFinal, Productor.CodProductor, 
-                      Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.Roc1, Detalle_Nomina.Lunes, Detalle_Nomina.Roc2, 
-                      Detalle_Nomina.Martes, Detalle_Nomina.Roc3, Detalle_Nomina.Miercoles, Detalle_Nomina.Roc4, Detalle_Nomina.Jueves, Detalle_Nomina.Roc5, 
-                      Detalle_Nomina.Viernes, Detalle_Nomina.Roc6, Detalle_Nomina.Sabado, Detalle_Nomina.Roc7, Detalle_Nomina.Domingo, Detalle_Nomina.Total, 
-                      Ruta.Cod_Ruta, Ruta.Nombre_Ruta
-FROM         Detalle_Nomina INNER JOIN
-                      Nomina ON Detalle_Nomina.NumNomina = Nomina.NumPlanilla INNER JOIN
-                      Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor INNER JOIN
-                      Ruta ON Productor.CodRuta = Ruta.Cod_Ruta
-WHERE     (Nomina.NumPlanilla = N'00010')
-ORDER BY Ruta.Cod_Ruta, Productor.CodProductor</value>
+    <value>SELECT        Nomina.NumPlanilla, Nomina.FechaInicial, Nomina.FechaFinal, Productor.CodProductor, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, 
+                         Detalle_Nomina.Roc1, Detalle_Nomina.Lunes, Detalle_Nomina.Roc2, Detalle_Nomina.Martes, Detalle_Nomina.Roc3, Detalle_Nomina.Miercoles, 
+                         Detalle_Nomina.Roc4, Detalle_Nomina.Jueves, Detalle_Nomina.Roc5, Detalle_Nomina.Viernes, Detalle_Nomina.Roc6, Detalle_Nomina.Sabado, 
+                         Detalle_Nomina.Roc7, Detalle_Nomina.Domingo, Detalle_Nomina.Total, Ruta_Distribucion.CodRuta, Ruta_Distribucion.Nombre_Ruta
+FROM            Detalle_Nomina INNER JOIN
+                         Nomina ON Detalle_Nomina.NumNomina = Nomina.NumPlanilla INNER JOIN
+                         Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor INNER JOIN
+                         Ruta_Distribucion ON Productor.CodRuta = Ruta_Distribucion.CodRuta
+WHERE        (Nomina.NumPlanilla = '00001')
+ORDER BY Ruta_Distribucion.CodRuta, Productor.CodProductor</value>
   </data>
 </root>

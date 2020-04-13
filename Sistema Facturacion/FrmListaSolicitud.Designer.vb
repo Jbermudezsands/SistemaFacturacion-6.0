@@ -168,7 +168,7 @@ Partial Class FrmListaSolicitud
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(932, 436)
+        Me.ClientSize = New System.Drawing.Size(931, 436)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.CmdNuevo)
         Me.Controls.Add(Me.Button1)

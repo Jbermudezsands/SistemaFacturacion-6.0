@@ -41,6 +41,7 @@ Partial Class FrmNuevaSolicitud
         Me.Button7 = New System.Windows.Forms.Button
         Me.Button12 = New System.Windows.Forms.Button
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.BtnOrdenCompra = New System.Windows.Forms.Button
         Me.BtnAutorizar = New System.Windows.Forms.Button
         Me.Button9 = New System.Windows.Forms.Button
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
@@ -52,7 +53,6 @@ Partial Class FrmNuevaSolicitud
         Me.CboRubro = New C1.Win.C1List.C1Combo
         Me.ImageList = New System.Windows.Forms.ImageList(Me.components)
         Me.CboGerencia = New System.Windows.Forms.ComboBox
-        Me.BtnOrdenCompra = New System.Windows.Forms.Button
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Grupo.SuspendLayout()
@@ -78,7 +78,7 @@ Partial Class FrmNuevaSolicitud
         Me.LblTitulo.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.LblTitulo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblTitulo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.LblTitulo.Location = New System.Drawing.Point(215, 25)
+        Me.LblTitulo.Location = New System.Drawing.Point(310, 21)
         Me.LblTitulo.Name = "LblTitulo"
         Me.LblTitulo.Size = New System.Drawing.Size(150, 13)
         Me.LblTitulo.TabIndex = 114
@@ -100,7 +100,7 @@ Partial Class FrmNuevaSolicitud
         Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox1.Location = New System.Drawing.Point(-2, -9)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(698, 73)
+        Me.PictureBox1.Size = New System.Drawing.Size(779, 73)
         Me.PictureBox1.TabIndex = 112
         Me.PictureBox1.TabStop = False
         '
@@ -125,7 +125,7 @@ Partial Class FrmNuevaSolicitud
         Me.Grupo.Controls.Add(Me.lbldatosre)
         Me.Grupo.Location = New System.Drawing.Point(9, 70)
         Me.Grupo.Name = "Grupo"
-        Me.Grupo.Size = New System.Drawing.Size(644, 65)
+        Me.Grupo.Size = New System.Drawing.Size(753, 65)
         Me.Grupo.TabIndex = 247
         Me.Grupo.TabStop = False
         '
@@ -133,7 +133,7 @@ Partial Class FrmNuevaSolicitud
         '
         Me.TxtNumeroEnsamble.Enabled = False
         Me.TxtNumeroEnsamble.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtNumeroEnsamble.Location = New System.Drawing.Point(524, 20)
+        Me.TxtNumeroEnsamble.Location = New System.Drawing.Point(633, 19)
         Me.TxtNumeroEnsamble.Name = "TxtNumeroEnsamble"
         Me.TxtNumeroEnsamble.Size = New System.Drawing.Size(97, 29)
         Me.TxtNumeroEnsamble.TabIndex = 185
@@ -239,7 +239,7 @@ Partial Class FrmNuevaSolicitud
         Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75
         Me.TrueDBGridComponentes.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridComponentes.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TrueDBGridComponentes.Size = New System.Drawing.Size(508, 167)
+        Me.TrueDBGridComponentes.Size = New System.Drawing.Size(617, 167)
         Me.TrueDBGridComponentes.TabIndex = 254
         Me.TrueDBGridComponentes.Text = "C1TrueDBGrid1"
         Me.TrueDBGridComponentes.PropBag = resources.GetString("TrueDBGridComponentes.PropBag")
@@ -277,11 +277,25 @@ Partial Class FrmNuevaSolicitud
         Me.GroupBox1.Controls.Add(Me.Button9)
         Me.GroupBox1.Controls.Add(Me.Button7)
         Me.GroupBox1.Controls.Add(Me.Button12)
-        Me.GroupBox1.Location = New System.Drawing.Point(526, 156)
+        Me.GroupBox1.Location = New System.Drawing.Point(635, 151)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(127, 366)
         Me.GroupBox1.TabIndex = 257
         Me.GroupBox1.TabStop = False
+        '
+        'BtnOrdenCompra
+        '
+        Me.BtnOrdenCompra.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnOrdenCompra.Image = CType(resources.GetObject("BtnOrdenCompra.Image"), System.Drawing.Image)
+        Me.BtnOrdenCompra.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.BtnOrdenCompra.Location = New System.Drawing.Point(6, 135)
+        Me.BtnOrdenCompra.Name = "BtnOrdenCompra"
+        Me.BtnOrdenCompra.Size = New System.Drawing.Size(114, 54)
+        Me.BtnOrdenCompra.TabIndex = 264
+        Me.BtnOrdenCompra.Text = "Orden Compra"
+        Me.BtnOrdenCompra.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnOrdenCompra.UseVisualStyleBackColor = True
+        Me.BtnOrdenCompra.Visible = False
         '
         'BtnAutorizar
         '
@@ -418,25 +432,11 @@ Partial Class FrmNuevaSolicitud
         Me.CboGerencia.Size = New System.Drawing.Size(211, 21)
         Me.CboGerencia.TabIndex = 263
         '
-        'BtnOrdenCompra
-        '
-        Me.BtnOrdenCompra.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnOrdenCompra.Image = CType(resources.GetObject("BtnOrdenCompra.Image"), System.Drawing.Image)
-        Me.BtnOrdenCompra.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnOrdenCompra.Location = New System.Drawing.Point(6, 134)
-        Me.BtnOrdenCompra.Name = "BtnOrdenCompra"
-        Me.BtnOrdenCompra.Size = New System.Drawing.Size(114, 54)
-        Me.BtnOrdenCompra.TabIndex = 264
-        Me.BtnOrdenCompra.Text = "Orden Compra"
-        Me.BtnOrdenCompra.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.BtnOrdenCompra.UseVisualStyleBackColor = True
-        Me.BtnOrdenCompra.Visible = False
-        '
         'FrmNuevaSolicitud
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(661, 528)
+        Me.ClientSize = New System.Drawing.Size(774, 528)
         Me.Controls.Add(Me.CboGerencia)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.CboRubro)

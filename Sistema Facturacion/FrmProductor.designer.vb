@@ -67,6 +67,12 @@ Partial Class FrmProductor
         Me.CmdBorrarFoto = New System.Windows.Forms.Button
         Me.ImgFoto = New System.Windows.Forms.PictureBox
         Me.TabPage2 = New System.Windows.Forms.TabPage
+        Me.GroupBox11 = New System.Windows.Forms.GroupBox
+        Me.GroupBox12 = New System.Windows.Forms.GroupBox
+        Me.TextBox4 = New System.Windows.Forms.TextBox
+        Me.Label32 = New System.Windows.Forms.Label
+        Me.TxtPrecio = New System.Windows.Forms.TextBox
+        Me.Label33 = New System.Windows.Forms.Label
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
         Me.TxtEstadoCivil = New System.Windows.Forms.TextBox
         Me.Label14 = New System.Windows.Forms.Label
@@ -143,6 +149,8 @@ Partial Class FrmProductor
         Me.GroupBox6.SuspendLayout()
         CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage2.SuspendLayout()
+        Me.GroupBox11.SuspendLayout()
+        Me.GroupBox12.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -748,6 +756,7 @@ Partial Class FrmProductor
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.GroupBox11)
         Me.TabPage2.Controls.Add(Me.GroupBox3)
         Me.TabPage2.Controls.Add(Me.GroupBox1)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
@@ -758,6 +767,61 @@ Partial Class FrmProductor
         Me.TabPage2.Text = "Informacion Adicional"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
+        'GroupBox11
+        '
+        Me.GroupBox11.Controls.Add(Me.GroupBox12)
+        Me.GroupBox11.Controls.Add(Me.TxtPrecio)
+        Me.GroupBox11.Controls.Add(Me.Label33)
+        Me.GroupBox11.Location = New System.Drawing.Point(326, 132)
+        Me.GroupBox11.Name = "GroupBox11"
+        Me.GroupBox11.Size = New System.Drawing.Size(315, 58)
+        Me.GroupBox11.TabIndex = 2
+        Me.GroupBox11.TabStop = False
+        Me.GroupBox11.Text = "Bases de Calculo"
+        '
+        'GroupBox12
+        '
+        Me.GroupBox12.Controls.Add(Me.TextBox4)
+        Me.GroupBox12.Controls.Add(Me.Label32)
+        Me.GroupBox12.Location = New System.Drawing.Point(315, 0)
+        Me.GroupBox12.Name = "GroupBox12"
+        Me.GroupBox12.Size = New System.Drawing.Size(315, 170)
+        Me.GroupBox12.TabIndex = 1
+        Me.GroupBox12.TabStop = False
+        Me.GroupBox12.Text = "GroupBox12"
+        '
+        'TextBox4
+        '
+        Me.TextBox4.Location = New System.Drawing.Point(112, 16)
+        Me.TextBox4.Name = "TextBox4"
+        Me.TextBox4.Size = New System.Drawing.Size(197, 20)
+        Me.TextBox4.TabIndex = 140
+        '
+        'Label32
+        '
+        Me.Label32.AutoSize = True
+        Me.Label32.Location = New System.Drawing.Point(6, 16)
+        Me.Label32.Name = "Label32"
+        Me.Label32.Size = New System.Drawing.Size(93, 13)
+        Me.Label32.TabIndex = 141
+        Me.Label32.Text = "Nombre Productor"
+        '
+        'TxtPrecio
+        '
+        Me.TxtPrecio.Location = New System.Drawing.Point(112, 22)
+        Me.TxtPrecio.Name = "TxtPrecio"
+        Me.TxtPrecio.Size = New System.Drawing.Size(106, 20)
+        Me.TxtPrecio.TabIndex = 19
+        '
+        'Label33
+        '
+        Me.Label33.AutoSize = True
+        Me.Label33.Location = New System.Drawing.Point(6, 22)
+        Me.Label33.Name = "Label33"
+        Me.Label33.Size = New System.Drawing.Size(70, 13)
+        Me.Label33.TabIndex = 141
+        Me.Label33.Text = "Precio Leche"
+        '
         'GroupBox3
         '
         Me.GroupBox3.Controls.Add(Me.TxtEstadoCivil)
@@ -767,9 +831,9 @@ Partial Class FrmProductor
         Me.GroupBox3.Controls.Add(Me.GroupBox4)
         Me.GroupBox3.Controls.Add(Me.TxtComunidad)
         Me.GroupBox3.Controls.Add(Me.Label17)
-        Me.GroupBox3.Location = New System.Drawing.Point(327, 44)
+        Me.GroupBox3.Location = New System.Drawing.Point(326, 21)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(315, 170)
+        Me.GroupBox3.Size = New System.Drawing.Size(315, 106)
         Me.GroupBox3.TabIndex = 1
         Me.GroupBox3.TabStop = False
         '
@@ -861,7 +925,7 @@ Partial Class FrmProductor
         Me.GroupBox1.Controls.Add(Me.GroupBox2)
         Me.GroupBox1.Controls.Add(Me.TxtNombreConyugue)
         Me.GroupBox1.Controls.Add(Me.Label6)
-        Me.GroupBox1.Location = New System.Drawing.Point(6, 43)
+        Me.GroupBox1.Location = New System.Drawing.Point(6, 20)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(315, 170)
         Me.GroupBox1.TabIndex = 0
@@ -1401,6 +1465,10 @@ Partial Class FrmProductor
         Me.GroupBox6.ResumeLayout(False)
         CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage2.ResumeLayout(False)
+        Me.GroupBox11.ResumeLayout(False)
+        Me.GroupBox11.PerformLayout()
+        Me.GroupBox12.ResumeLayout(False)
+        Me.GroupBox12.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
@@ -1538,4 +1606,10 @@ Partial Class FrmProductor
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
     Friend WithEvents Label29 As System.Windows.Forms.Label
     Friend WithEvents TxtNumeroCedula As System.Windows.Forms.MaskedTextBox
+    Friend WithEvents GroupBox11 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox12 As System.Windows.Forms.GroupBox
+    Friend WithEvents TextBox4 As System.Windows.Forms.TextBox
+    Friend WithEvents Label32 As System.Windows.Forms.Label
+    Friend WithEvents TxtPrecio As System.Windows.Forms.TextBox
+    Friend WithEvents Label33 As System.Windows.Forms.Label
 End Class

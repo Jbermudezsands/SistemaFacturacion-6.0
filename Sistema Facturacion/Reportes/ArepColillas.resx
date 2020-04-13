@@ -177,6 +177,9 @@
   <data name="TxtTotalIngresos.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
+  <data name="TextBox20.OutputFormat" xml:space="preserve">
+    <value>#,##0.00</value>
+  </data>
   <metadata name="$this.TrayLargeIcon" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
