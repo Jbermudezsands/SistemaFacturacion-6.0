@@ -47,8 +47,10 @@ Public Class FrmConsecutivos
         '--------------------------------------------BUSCO EL CONSECUTIVO ANTEPONIENDO CEROS --------------------------------------
         If Quien = "Recibo" Then
             If FrmRecibos.ConsecutivoReciboSerie = True Then
-                SQlString = "SELECT Serie, Factura, Cotizacion, SalidaBodega, DevFactura, Transferencia_Enviada, Recibo, Transferencia_Recibida, MercanciaRecibida, DevCompra, OrdenCompra, NotaDebito, NotaCredito FROM ConsecutivoSerie " & _
-                            "WHERE (Serie = '" & FrmRecibos.CmbSerie.Text & "') AND (Recibo = " & NumeroFactura & ")"
+                NumeroFactura = FrmFacturas.CmbSerie.Text & NumeroFactura
+                SQlString = "SELECT * FROM Recibo WHERE (CodReciboPago = '" & NumeroFactura & "')"
+                'SQlString = "SELECT Serie, Factura, Cotizacion, SalidaBodega, DevFactura, Transferencia_Enviada, Recibo, Transferencia_Recibida, MercanciaRecibida, DevCompra, OrdenCompra, NotaDebito, NotaCredito FROM ConsecutivoSerie " & _
+                '            "WHERE (Serie = '" & FrmRecibos.CmbSerie.Text & "') AND (Recibo = " & NumeroFactura & ")"
                 Me.LblTitulo.Text = "CONSECUTIVO RECIBO"
                 Me.LblTitulo2.Text = "RECIBO NO"
 

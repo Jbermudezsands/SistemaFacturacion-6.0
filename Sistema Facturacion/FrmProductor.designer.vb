@@ -137,6 +137,8 @@ Partial Class FrmProductor
         Me.Label19 = New System.Windows.Forms.Label
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog
+        Me.CboTipoNomina = New C1.Win.C1List.C1Combo
+        Me.Label30 = New System.Windows.Forms.Label
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -164,6 +166,7 @@ Partial Class FrmProductor
         CType(Me.C1TrueDBGrid2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox9.SuspendLayout()
         Me.GroupBox10.SuspendLayout()
+        CType(Me.CboTipoNomina, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'LblTitulo
@@ -769,12 +772,14 @@ Partial Class FrmProductor
         '
         'GroupBox11
         '
+        Me.GroupBox11.Controls.Add(Me.CboTipoNomina)
+        Me.GroupBox11.Controls.Add(Me.Label30)
         Me.GroupBox11.Controls.Add(Me.GroupBox12)
         Me.GroupBox11.Controls.Add(Me.TxtPrecio)
         Me.GroupBox11.Controls.Add(Me.Label33)
-        Me.GroupBox11.Location = New System.Drawing.Point(326, 132)
+        Me.GroupBox11.Location = New System.Drawing.Point(326, 20)
         Me.GroupBox11.Name = "GroupBox11"
-        Me.GroupBox11.Size = New System.Drawing.Size(315, 58)
+        Me.GroupBox11.Size = New System.Drawing.Size(315, 88)
         Me.GroupBox11.TabIndex = 2
         Me.GroupBox11.TabStop = False
         Me.GroupBox11.Text = "Bases de Calculo"
@@ -810,7 +815,7 @@ Partial Class FrmProductor
         '
         Me.TxtPrecio.Location = New System.Drawing.Point(112, 22)
         Me.TxtPrecio.Name = "TxtPrecio"
-        Me.TxtPrecio.Size = New System.Drawing.Size(106, 20)
+        Me.TxtPrecio.Size = New System.Drawing.Size(120, 20)
         Me.TxtPrecio.TabIndex = 19
         '
         'Label33
@@ -831,7 +836,7 @@ Partial Class FrmProductor
         Me.GroupBox3.Controls.Add(Me.GroupBox4)
         Me.GroupBox3.Controls.Add(Me.TxtComunidad)
         Me.GroupBox3.Controls.Add(Me.Label17)
-        Me.GroupBox3.Location = New System.Drawing.Point(326, 21)
+        Me.GroupBox3.Location = New System.Drawing.Point(326, 114)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(315, 106)
         Me.GroupBox3.TabIndex = 1
@@ -1434,6 +1439,46 @@ Partial Class FrmProductor
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
         '
+        'CboTipoNomina
+        '
+        Me.CboTipoNomina.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboTipoNomina.Caption = ""
+        Me.CboTipoNomina.CaptionHeight = 17
+        Me.CboTipoNomina.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboTipoNomina.ColumnCaptionHeight = 17
+        Me.CboTipoNomina.ColumnFooterHeight = 17
+        Me.CboTipoNomina.ContentHeight = 15
+        Me.CboTipoNomina.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboTipoNomina.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
+        Me.CboTipoNomina.DropDownWidth = 300
+        Me.CboTipoNomina.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboTipoNomina.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboTipoNomina.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboTipoNomina.EditorHeight = 15
+        Me.CboTipoNomina.Images.Add(CType(resources.GetObject("CboTipoNomina.Images"), System.Drawing.Image))
+        Me.CboTipoNomina.ItemHeight = 15
+        Me.CboTipoNomina.Location = New System.Drawing.Point(112, 48)
+        Me.CboTipoNomina.MatchEntryTimeout = CType(2000, Long)
+        Me.CboTipoNomina.MaxDropDownItems = CType(5, Short)
+        Me.CboTipoNomina.MaxLength = 32767
+        Me.CboTipoNomina.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboTipoNomina.Name = "CboTipoNomina"
+        Me.CboTipoNomina.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboTipoNomina.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboTipoNomina.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboTipoNomina.Size = New System.Drawing.Size(120, 21)
+        Me.CboTipoNomina.TabIndex = 143
+        Me.CboTipoNomina.PropBag = resources.GetString("CboTipoNomina.PropBag")
+        '
+        'Label30
+        '
+        Me.Label30.AutoSize = True
+        Me.Label30.Location = New System.Drawing.Point(9, 56)
+        Me.Label30.Name = "Label30"
+        Me.Label30.Size = New System.Drawing.Size(67, 13)
+        Me.Label30.TabIndex = 142
+        Me.Label30.Text = "Tipo Nomina"
+        '
         'FrmProductor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1491,6 +1536,7 @@ Partial Class FrmProductor
         Me.GroupBox9.PerformLayout()
         Me.GroupBox10.ResumeLayout(False)
         Me.GroupBox10.PerformLayout()
+        CType(Me.CboTipoNomina, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1612,4 +1658,6 @@ Partial Class FrmProductor
     Friend WithEvents Label32 As System.Windows.Forms.Label
     Friend WithEvents TxtPrecio As System.Windows.Forms.TextBox
     Friend WithEvents Label33 As System.Windows.Forms.Label
+    Friend WithEvents CboTipoNomina As C1.Win.C1List.C1Combo
+    Friend WithEvents Label30 As System.Windows.Forms.Label
 End Class

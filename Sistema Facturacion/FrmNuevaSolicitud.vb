@@ -216,11 +216,6 @@ Public Class FrmNuevaSolicitud
         End If
 
 
-
-
-
-
-
         If My.Forms.FrmListaSolicitud.Nuevo = True Then
             Me.DTPFecha.Text = Format(Now, "dd/MM/yyyy")
             Me.Timer1.Enabled = True
@@ -470,6 +465,7 @@ Public Class FrmNuevaSolicitud
         Dim item As C1.Win.C1TrueDBGrid.ValueItem = New C1.Win.C1TrueDBGrid.ValueItem(), item2 As C1.Win.C1TrueDBGrid.ValueItem = New C1.Win.C1TrueDBGrid.ValueItem()
 
         If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+
             Exit Sub
         End If
 
@@ -746,6 +742,10 @@ Public Class FrmNuevaSolicitud
 
 
 
+
+    End Sub
+
+    Private Sub Grupo_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Grupo.Enter
 
     End Sub
 End Class

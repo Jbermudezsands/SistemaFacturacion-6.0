@@ -29,6 +29,27 @@ Public Class FrmConsultas
 
             Select Case Quien
 
+                Case "TipoNomina"
+                    SQlProductos = "SELECT  CodTipoNomina, TipoNomina, PeriodoNomina FROM TipoNomina "
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    MiConexion.Open()
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Codigo"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(0).Width = 70
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 170
+                    Me.TrueDBGridConsultas.Columns(2).Caption = "Periodo"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(2).Width = 65
+
+
+                    MiConexion.Close()
+
                 Case "CodigoProductosDetalle"
                     SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Costo_Promedio, Existencia_Unidades,Cod_Iva FROM Productos Where (Tipo_Producto <> 'Ensambles')"
                     Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
@@ -1184,6 +1205,10 @@ Public Class FrmConsultas
         TipoProducto = ""
 
         Select Case Quien
+            Case "TipoNomina"
+                Posicion = Me.BindingConsultas.Position
+                Codigo = Me.BindingConsultas.Item(Posicion)("CodTipoNomina")
+                Nombres = Me.BindingConsultas.Item(Posicion)("TipoNomina")
             Case "CodigoProductor"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("CodProductor")

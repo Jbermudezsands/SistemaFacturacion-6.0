@@ -285,6 +285,9 @@ Public Class FrmRegistroDebito
         End If
 
 
+        Button1_Click(sender, e)
+
+
 
         SqlDatos = "SELECT * FROM DatosEmpresa"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)

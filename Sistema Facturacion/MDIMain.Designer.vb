@@ -156,6 +156,7 @@ Partial Class MDIMain
         Me.RibbonButtonDepartamento = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButtonCooperativa = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButtonRuta = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonButton9 = New C1.Win.C1Ribbon.RibbonButton
         Me.C1StatusBar1 = New C1.Win.C1Ribbon.C1StatusBar
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
@@ -1216,6 +1217,7 @@ Partial Class MDIMain
         Me.RibbonGroup15.Items.Add(Me.RibbonButtonDepartamento)
         Me.RibbonGroup15.Items.Add(Me.RibbonButtonCooperativa)
         Me.RibbonGroup15.Items.Add(Me.RibbonButtonRuta)
+        Me.RibbonGroup15.Items.Add(Me.RibbonButton9)
         Me.RibbonGroup15.Text = "Catalogo"
         '
         'RibbonButton20
@@ -1250,6 +1252,14 @@ Partial Class MDIMain
         Me.RibbonButtonRuta.Text = "Ruta Distribucion"
         Me.RibbonButtonRuta.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
+        'RibbonButton9
+        '
+        Me.RibbonButton9.ID = "RibbonButton9"
+        Me.RibbonButton9.LargeImage = CType(resources.GetObject("RibbonButton9.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton9.SmallImage = CType(resources.GetObject("RibbonButton9.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton9.Text = "Tipo-Nomina"
+        Me.RibbonButton9.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
         'C1StatusBar1
         '
         Me.C1StatusBar1.LeftPaneItems.Add(Me.DocumentModifiedLabel)
@@ -1268,7 +1278,7 @@ Partial Class MDIMain
         'RibbonLabel1
         '
         Me.RibbonLabel1.ID = "RibbonLabel1"
-        Me.RibbonLabel1.Text = "Version 6.16"
+        Me.RibbonLabel1.Text = "Version 6.17"
         '
         'TxtUsuario
         '
@@ -1439,5 +1449,6 @@ Partial Class MDIMain
     Friend WithEvents RibbonButtonRuta As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton7 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton8 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButton9 As C1.Win.C1Ribbon.RibbonButton
 
 End Class

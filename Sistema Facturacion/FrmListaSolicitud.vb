@@ -9,6 +9,7 @@ Public Class FrmListaSolicitud
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
         Me.Nuevo = True
         My.Forms.FrmNuevaSolicitud.TxtNumeroEnsamble.Text = "-----0-----"
+        My.Forms.FrmNuevaSolicitud.TrueDBGridComponentes.Enabled = True
         My.Forms.FrmNuevaSolicitud.ShowDialog()
         Me.Nuevo = False
         BtnActualizar_Click(sender, e)
@@ -16,6 +17,7 @@ Public Class FrmListaSolicitud
 
     Public Sub BtnActualizar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnActualizar.Click
         Dim SqlString As String, DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet
+
 
         SqlString = "SELECT DISTINCT Solicitud_Compra.Numero_Solicitud, Solicitud_Compra.Fecha_Solicitud, Solicitud_Compra.Fecha_Requerido, Solicitud_Compra.Departamento_Solicitante, Solicitud_Compra.Gerencia_Solicitante, Solicitud_Compra.Estado_Solicitud FROM Detalle_Solicitud INNER JOIN Solicitud_Compra ON Detalle_Solicitud.Numero_Solicitud = Solicitud_Compra.Numero_Solicitud  WHERE (Detalle_Solicitud.Activo = 1) AND (Solicitud_Compra.Estado_Solicitud <> 'Anulado')"
         MiConexion.Open()
@@ -127,6 +129,10 @@ Public Class FrmListaSolicitud
     End Sub
 
     Private Sub TDGridSolicitud_SizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TDGridSolicitud.SizeChanged
+
+    End Sub
+
+    Private Sub TDGridSolicitud_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TDGridSolicitud.Click
 
     End Sub
 End Class

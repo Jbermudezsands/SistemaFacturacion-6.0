@@ -673,7 +673,7 @@ Partial Public Class ArepListaRecepcion
         '
         Me.GroupHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.Label2, Me.TextBox1, Me.Label3, Me.Label4, Me.Label6, Me.Label8, Me.Label9, Me.Label12, Me.Label15, Me.Label18, Me.Label21, Me.Label24, Me.Label26, Me.Label1, Me.Label5, Me.Label7, Me.Label10, Me.Label11, Me.Label13, Me.Label14, Me.Label16, Me.Label17, Me.Label19, Me.Label20, Me.Label22, Me.Label23})
         Me.GroupHeader1.DataField = "CodRuta"
-        Me.GroupHeader1.Height = 0.7083333!
+        Me.GroupHeader1.Height = 0.6770833!
         Me.GroupHeader1.Name = "GroupHeader1"
         '
         'Label2
@@ -766,11 +766,11 @@ Partial Public Class ArepListaRecepcion
         Me.Label6.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label6.Height = 0.1875!
         Me.Label6.HyperLink = Nothing
-        Me.Label6.Left = 2.25!
+        Me.Label6.Left = 2.257143!
         Me.Label6.Name = "Label6"
         Me.Label6.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
         Me.Label6.Text = "Lunes"
-        Me.Label6.Top = 0.3125!
+        Me.Label6.Top = 0.3142857!
         Me.Label6.Width = 0.75!
         '
         'Label8
@@ -1865,7 +1865,7 @@ Partial Public Class ArepListaRecepcion
         Me.Sections.Add(Me.PageFooter1)
         Me.Sections.Add(Me.ReportFooter1)
         Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Arial; font-style: normal; text-decoration: none; font-weight: norma" & _
-                    "l; font-size: 10pt; color: Black; ", "Normal"))
+                    "l; font-size: 10pt; color: Black; ddo-char-set: 204; ", "Normal"))
         Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-size: 16pt; font-weight: bold; ", "Heading1", "Normal"))
         Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Times New Roman; font-size: 14pt; font-weight: bold; font-style: ita" & _
                     "lic; ", "Heading2", "Normal"))

@@ -1314,6 +1314,12 @@
     <Compile Include="SplashScreen1.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="TipoNomina.Designer.vb">
+      <DependentUpon>TipoNomina.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TipoNomina.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Variables.vb" />
     <Compile Include="FrmVehiculo.Designer.vb">
       <DependentUpon>FrmVehiculo.vb</DependentUpon>
@@ -2129,6 +2135,10 @@
     <EmbeddedResource Include="FrmVehiculo.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmVehiculo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TipoNomina.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TipoNomina.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

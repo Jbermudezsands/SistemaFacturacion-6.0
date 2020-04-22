@@ -95,13 +95,12 @@ Public Class FrmPeriodos
         iSem = 1
         iCont = 0
     End Sub
-
-    Private Sub FrmPeriodos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub CargarPeriodos()
         Dim SQL As String, Año As Double, Registros As Double, Fecha1 As Date, Fecha2 As Date, TipoPlanilla As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
 
-        SQL = "SELECT  *  FROM FechaPlanilla WHERE(Activa = 1)"
+        SQL = "SELECT  *  FROM FechaPlanilla WHERE(Activa = 1) AND (CodTipoNomina = '" & Me.CboTipoNomina.Text & "') "
         DataAdapter = New SqlClient.SqlDataAdapter(SQL, MiConexion)
         DataAdapter.Fill(DataSet, "Periodos")
         If Not DataSet.Tables("Periodos").Rows.Count = 0 Then
@@ -127,7 +126,20 @@ Public Class FrmPeriodos
 
 
 
+    End Sub
 
+
+
+    Private Sub FrmPeriodos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Dim SQL As String, Año As Double, Registros As Double, Fecha1 As Date, Fecha2 As Date, TipoPlanilla As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+
+        Sql = "SELECT  * FROM  TipoNomina"
+        DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+        DataAdapter.Fill(DataSet, "TipoNomina")
+        If Not DataSet.Tables("TipoNomina").Rows.Count = 0 Then
+            Me.CboTipoNomina.DataSource = DataSet.Tables("TipoNomina")
+        End If
     End Sub
 
     Private Sub DTPFechaFin_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DTPFechaFin.ValueChanged
@@ -185,13 +197,19 @@ Public Class FrmPeriodos
 
                 '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 '//////////////////////////////////////////BUSCO EL TIPO DE LA NOMINA//////////////////////////////////////////
-                SQL = "SELECT * FROM TipoNomina WHERE (TipoNomina = '" & Me.CmbTipoPlanilla.Text & "')"
-                DataAdapter = New SqlClient.SqlDataAdapter(SQL, MiConexion)
-                DataAdapter.Fill(DataSet, "TipoPlanilla")
-                If DataSet.Tables("TipoPlanilla").Rows.Count <> 0 Then
-                    CodTipoNomina = DataSet.Tables("TipoPlanilla").Rows(0)("CodTipoNomina")
-                End If
+                'SQL = "SELECT * FROM TipoNomina WHERE (TipoNomina = '" & Me.CmbTipoPlanilla.Text & "')"
+                'DataAdapter = New SqlClient.SqlDataAdapter(SQL, MiConexion)
+                'DataAdapter.Fill(DataSet, "TipoPlanilla")
+                'If DataSet.Tables("TipoPlanilla").Rows.Count <> 0 Then
+                '    CodTipoNomina = DataSet.Tables("TipoPlanilla").Rows(0)("CodTipoNomina")
+                'End If
 
+                If Me.CboTipoNomina.Text <> "" Then
+                    CodTipoNomina = Me.CboTipoNomina.Text
+                Else
+                    MsgBox("El Tipo de Nomina no es válido", vbInformation, "Error!!!")
+                    Exit Sub
+                End If
                 '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 '//////////////////////////////////////////////BUSCO SI EXISTE LA NOMINA//////////////////////////////////////////////////
                 '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
@@ -233,16 +251,16 @@ Public Class FrmPeriodos
                             Año = FechaFin.Year
                             Mes = FechaFin.Month
                             Periodo = iPeriodo
-                            SQL = "SELECT  * FROM Periodos WHERE (Periodo = " & Periodo & ") AND (año = " & Año & ") AND (mes = " & Mes & ") AND (TipoNomina = '" & Me.CmbTipoPlanilla.Text & "')"
+                            SQL = "SELECT  * FROM Periodos WHERE (Periodo = " & Periodo & ") AND (año = " & Año & ") AND (mes = " & Mes & ") AND (TipoNomina = '" & CodTipoNomina & "')"
                             DataAdapter = New SqlClient.SqlDataAdapter(SQL, MiConexion)
                             DataAdapter.Fill(DataSet, "Periodos")
                             If DataSet.Tables("Periodos").Rows.Count = 0 Then
                                 If Periodo = 1 Then
                                     StrSqlUpdate = "INSERT INTO [Periodos] ([Periodo],[año],[mes],[TipoNomina],[Inicio],[Final],[Actual]) " & _
-                                                   "VALUES(" & Periodo & " ," & Año & "," & Mes & " ,'" & Me.CmbTipoPlanilla.Text & "','" & FechaIni & "','" & FechaFin & "',0)"
+                                                   "VALUES(" & Periodo & " ," & Año & "," & Mes & " ,'" & CodTipoNomina & "','" & FechaIni & "','" & FechaFin & "',0)"
                                 Else
                                     StrSqlUpdate = "INSERT INTO [Periodos] ([Periodo],[año],[mes],[TipoNomina],[Inicio],[Final]) " & _
-                                                   "VALUES(" & Periodo & " ," & Año & "," & Mes & " ,'" & Me.CmbTipoPlanilla.Text & "','" & FechaIni & "','" & FechaFin & "')"
+                                                   "VALUES(" & Periodo & " ," & Año & "," & Mes & " ,'" & CodTipoNomina & "','" & FechaIni & "','" & FechaFin & "')"
                                 End If
                                 MiConexion.Open()
                                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -283,5 +301,14 @@ Public Class FrmPeriodos
         iPeriodo = 1
         iSem = 1
         iCont = 0
+    End Sub
+
+    Private Sub CmbTipoPlanilla_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmbTipoPlanilla.SelectedIndexChanged
+
+    End Sub
+
+    Private Sub CboTipoNomina_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboTipoNomina.TextChanged
+        lstPlanilla.Items.Clear()
+        CargarPeriodos()
     End Sub
 End Class

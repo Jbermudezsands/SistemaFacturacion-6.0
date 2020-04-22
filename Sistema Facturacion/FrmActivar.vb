@@ -36,7 +36,7 @@ Public Class FrmActivar
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////////////CARGO LOS PERIODOS ACTIVOS/////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlString = "SELECT * FROM Periodos WHERE (Calculada = 0) AND (TipoNomina = '" & Nomina & "') ORDER BY Periodo"
+        SqlString = "SELECT * FROM Periodos WHERE (Calculada = 0) AND (TipoNomina = '" & CodTipoNomina & "') ORDER BY Periodo"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "Periodos")
         If DataSet.Tables("Periodos").Rows.Count <> 0 Then
@@ -84,7 +84,7 @@ Public Class FrmActivar
             FechaInicio = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
 
 
-            StrSqlUpdate = "UPDATE [Periodos] SET [Actual] = 1 ,[NumNomina] = '" & NumeroPlanilla & "' WHERE (TipoNomina = '" & Nomina & "') AND (Inicio = CONVERT(DATETIME, '" & FechaInicio & "', 102))"
+            StrSqlUpdate = "UPDATE [Periodos] SET [Actual] = 1 ,[NumNomina] = '" & NumeroPlanilla & "' WHERE (TipoNomina = '" & CodTipoNomina & "') AND (Inicio = CONVERT(DATETIME, '" & FechaInicio & "', 102))"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery

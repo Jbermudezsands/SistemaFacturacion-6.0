@@ -59,6 +59,8 @@ Partial Class FrmPlanilla
         Me.ProgressBar2 = New System.Windows.Forms.ProgressBar
         Me.Button2 = New System.Windows.Forms.Button
         Me.BindingDeducciones2 = New System.Windows.Forms.BindingSource(Me.components)
+        Me.TxtBolsa = New System.Windows.Forms.TextBox
+        Me.Label8 = New System.Windows.Forms.Label
         Me.GroupBox1.SuspendLayout()
         CType(Me.CboTipoPlanilla, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -352,6 +354,8 @@ Partial Class FrmPlanilla
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.TxtBolsa)
+        Me.GroupBox2.Controls.Add(Me.Label8)
         Me.GroupBox2.Controls.Add(Me.TxtPrecioUnitario)
         Me.GroupBox2.Controls.Add(Me.Label6)
         Me.GroupBox2.Controls.Add(Me.TxtDeduccionPolicia)
@@ -360,14 +364,14 @@ Partial Class FrmPlanilla
         Me.GroupBox2.Controls.Add(Me.Label4)
         Me.GroupBox2.Location = New System.Drawing.Point(7, 13)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(145, 94)
+        Me.GroupBox2.Size = New System.Drawing.Size(145, 222)
         Me.GroupBox2.TabIndex = 0
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Configuracion Planilla"
         '
         'TxtPrecioUnitario
         '
-        Me.TxtPrecioUnitario.Location = New System.Drawing.Point(95, 54)
+        Me.TxtPrecioUnitario.Location = New System.Drawing.Point(93, 113)
         Me.TxtPrecioUnitario.Name = "TxtPrecioUnitario"
         Me.TxtPrecioUnitario.Size = New System.Drawing.Size(43, 20)
         Me.TxtPrecioUnitario.TabIndex = 5
@@ -376,7 +380,7 @@ Partial Class FrmPlanilla
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(16, 57)
+        Me.Label6.Location = New System.Drawing.Point(14, 116)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(76, 13)
         Me.Label6.TabIndex = 4
@@ -384,22 +388,20 @@ Partial Class FrmPlanilla
         '
         'TxtDeduccionPolicia
         '
-        Me.TxtDeduccionPolicia.Location = New System.Drawing.Point(95, 157)
+        Me.TxtDeduccionPolicia.Location = New System.Drawing.Point(93, 84)
         Me.TxtDeduccionPolicia.Name = "TxtDeduccionPolicia"
         Me.TxtDeduccionPolicia.Size = New System.Drawing.Size(43, 20)
         Me.TxtDeduccionPolicia.TabIndex = 3
         Me.TxtDeduccionPolicia.Text = "0"
-        Me.TxtDeduccionPolicia.Visible = False
         '
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(16, 160)
+        Me.Label5.Location = New System.Drawing.Point(14, 87)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(49, 13)
         Me.Label5.TabIndex = 2
         Me.Label5.Text = "% Policia"
-        Me.Label5.Visible = False
         '
         'TxtIR
         '
@@ -509,6 +511,23 @@ Partial Class FrmPlanilla
         Me.Button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.Button2.UseVisualStyleBackColor = True
         '
+        'TxtBolsa
+        '
+        Me.TxtBolsa.Location = New System.Drawing.Point(93, 58)
+        Me.TxtBolsa.Name = "TxtBolsa"
+        Me.TxtBolsa.Size = New System.Drawing.Size(43, 20)
+        Me.TxtBolsa.TabIndex = 7
+        Me.TxtBolsa.Text = "0.50"
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(14, 61)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(44, 13)
+        Me.Label8.TabIndex = 6
+        Me.Label8.Text = "% Bolsa"
+        '
         'FrmPlanilla
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -589,4 +608,6 @@ Partial Class FrmPlanilla
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents BindingDeducciones2 As System.Windows.Forms.BindingSource
     Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents TxtBolsa As System.Windows.Forms.TextBox
+    Friend WithEvents Label8 As System.Windows.Forms.Label
 End Class

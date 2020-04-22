@@ -1088,4 +1088,9 @@ Public Class MDIMain
         My.Forms.FrmListaOrdenCompra.MdiParent = Me
         My.Forms.FrmListaOrdenCompra.Show()
     End Sub
+
+    Private Sub RibbonButton9_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton9.Click
+        My.Forms.TipoNomina.MdiParent = Me
+        My.Forms.TipoNomina.Show()
+    End Sub
 End Class

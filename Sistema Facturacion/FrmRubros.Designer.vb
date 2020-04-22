@@ -261,7 +261,7 @@ Partial Class FrmRubros
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(446, 285)
+        Me.ClientSize = New System.Drawing.Size(454, 285)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.TabControl1)

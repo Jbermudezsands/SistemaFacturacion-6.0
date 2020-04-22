@@ -19,15 +19,28 @@ Public Class ArepVentasClientes
         End If
 
 
-        SqlString = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Precio_Neto, Productos.Tipo_Producto, Detalle_Facturas.Numero_Factura, Detalle_Facturas.Cantidad FROM Detalle_Facturas INNER JOIN Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos  " & _
-                    "WHERE (Productos.Tipo_Producto = 'Descuento') AND (Detalle_Facturas.Numero_Factura = '" & NumeroFactura & "')"
+        'SqlString = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Precio_Neto, Productos.Tipo_Producto, Detalle_Facturas.Numero_Factura, Detalle_Facturas.Cantidad FROM Detalle_Facturas INNER JOIN Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos  " & _
+        '            "WHERE (Productos.Tipo_Producto = 'Descuento') AND (Detalle_Facturas.Numero_Factura = '" & NumeroFactura & "')"
+
+        SqlString = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Precio_Neto, Productos.Tipo_Producto, Detalle_Facturas.Numero_Factura, Detalle_Facturas.Cantidad, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Detalle_Facturas.Precio_Unitario ELSE Detalle_Facturas.Precio_Unitario * TasaCambio.MontoTasa END AS MontoCordobas, CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Detalle_Facturas.Precio_Unitario ELSE Detalle_Facturas.Precio_Unitario / TasaCambio.MontoTasa END AS MontoDolares FROM Detalle_Facturas INNER JOIN Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa  " & _
+                    "WHERE  (Productos.Tipo_Producto LIKE '%Descuento%') AND (Detalle_Facturas.Numero_Factura = '" & NumeroFactura & "') AND (Detalle_Facturas.Tipo_Factura = 'Factura')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "TotalFacturas")
         If DataSet.Tables("TotalFacturas").Rows.Count <> 0 Then
-            If Not IsDBNull(DataSet.Tables("TotalFacturas").Rows(0)("Precio_Unitario")) Then
-                MontoDescuento = DataSet.Tables("TotalFacturas").Rows(0)("Precio_Unitario")
+
+            If My.Forms.FrmReportes.OptCordobas.Checked = True Then
+                If Not IsDBNull(DataSet.Tables("TotalFacturas").Rows(0)("MontoCordobas")) Then
+                    MontoDescuento = DataSet.Tables("TotalFacturas").Rows(0)("MontoCordobas")
+                End If
+
+            ElseIf My.Forms.FrmReportes.OptDolares.Checked = True Then
+                If Not IsDBNull(DataSet.Tables("TotalFacturas").Rows(0)("MontoDolares")) Then
+                    MontoDescuento = DataSet.Tables("TotalFacturas").Rows(0)("MontoDolares")
+                End If
             End If
         End If
+
+        My.Application.DoEvents()
 
         If Me.TxtFecha.Text <> "" Then
             Fecha = Me.TxtFecha.Text
