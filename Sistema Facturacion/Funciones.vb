@@ -6292,7 +6292,7 @@ Module Funciones
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Fecha As String
         Dim SqlString As String, MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim NotaActivo As Integer, NotaContabilizado As Integer
+        Dim NotaActivo As Integer, NotaContabilizado As Integer, Tipo As Double = 0
 
         If Activo = True Then
             NotaActivo = 1
@@ -6306,6 +6306,12 @@ Module Funciones
             NotaContabilizado = 0
         End If
 
+        If TipoCuenta = False Then
+            Tipo = 0
+        Else
+            Tipo = 1
+        End If
+
         Fecha = Format(FechaNota, "yyyy-MM-dd")
 
         SqlString = "SELECT  *  FROM IndiceNota WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Nota = '" & TipoNota & "')"
@@ -6316,8 +6322,8 @@ Module Funciones
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////AGREGO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "INSERT INTO [IndiceNota] ([Numero_Nota],[Fecha_Nota],[Tipo_Nota],[MonedaNota],[Cod_Cliente],[Nombre_Cliente],[Observaciones],[Marca]) " & _
-                         "VALUES ('" & ConsecutivoNotaDebito & "','" & Format(FechaNota, "dd/MM/yyyy") & "','" & TipoNota & "','" & Moneda & "','" & CodigoCliente & "','" & NombreCliente & "' ,'" & Observaciones & "','True')"
+            SqlCompras = "INSERT INTO [IndiceNota] ([Numero_Nota],[Fecha_Nota],[Tipo_Nota],[MonedaNota],[Cod_Cliente],[Nombre_Cliente],[Observaciones],[Marca],[TipoCuenta]) " & _
+                         "VALUES ('" & ConsecutivoNotaDebito & "','" & Format(FechaNota, "dd/MM/yyyy") & "','" & TipoNota & "','" & Moneda & "','" & CodigoCliente & "','" & NombreCliente & "' ,'" & Observaciones & "','True', " & Tipo & ")"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -6327,7 +6333,7 @@ Module Funciones
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "UPDATE [IndiceNota] SET [Fecha_Nota] = '" & Format(FechaNota, "dd/MM/yyyy") & "',[Tipo_Nota] = '" & TipoNota & "',[MonedaNota] = '" & Moneda & "',[Cod_Cliente] = '" & CodigoCliente & "',[Nombre_Cliente] = '" & NombreCliente & "' ,[Observaciones] = '" & Observaciones & "' ,[Activo] =" & NotaActivo & ",[Contabilizado] =" & NotaContabilizado & ",[Marca] ='True',[TipoCuenta] =" & TipoCuenta & " " & _
+            SqlCompras = "UPDATE [IndiceNota] SET [Fecha_Nota] = '" & Format(FechaNota, "dd/MM/yyyy") & "',[Tipo_Nota] = '" & TipoNota & "',[MonedaNota] = '" & Moneda & "',[Cod_Cliente] = '" & CodigoCliente & "',[Nombre_Cliente] = '" & NombreCliente & "' ,[Observaciones] = '" & Observaciones & "' ,[Activo] =" & NotaActivo & ",[Contabilizado] =" & NotaContabilizado & ",[Marca] ='True',[TipoCuenta] =" & Tipo & " " & _
                          "WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Nota = '" & TipoNota & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)

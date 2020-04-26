@@ -44,6 +44,8 @@ Partial Class FrmPlanilla
         Me.Button1 = New System.Windows.Forms.Button
         Me.TDGridDeducciones2 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.TxtBolsa = New System.Windows.Forms.TextBox
+        Me.Label8 = New System.Windows.Forms.Label
         Me.TxtPrecioUnitario = New System.Windows.Forms.TextBox
         Me.Label6 = New System.Windows.Forms.Label
         Me.TxtDeduccionPolicia = New System.Windows.Forms.TextBox
@@ -59,8 +61,6 @@ Partial Class FrmPlanilla
         Me.ProgressBar2 = New System.Windows.Forms.ProgressBar
         Me.Button2 = New System.Windows.Forms.Button
         Me.BindingDeducciones2 = New System.Windows.Forms.BindingSource(Me.components)
-        Me.TxtBolsa = New System.Windows.Forms.TextBox
-        Me.Label8 = New System.Windows.Forms.Label
         Me.GroupBox1.SuspendLayout()
         CType(Me.CboTipoPlanilla, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -369,6 +369,23 @@ Partial Class FrmPlanilla
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Configuracion Planilla"
         '
+        'TxtBolsa
+        '
+        Me.TxtBolsa.Location = New System.Drawing.Point(93, 58)
+        Me.TxtBolsa.Name = "TxtBolsa"
+        Me.TxtBolsa.Size = New System.Drawing.Size(43, 20)
+        Me.TxtBolsa.TabIndex = 7
+        Me.TxtBolsa.Text = "0.50"
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(14, 61)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(44, 13)
+        Me.Label8.TabIndex = 6
+        Me.Label8.Text = "% Bolsa"
+        '
         'TxtPrecioUnitario
         '
         Me.TxtPrecioUnitario.Location = New System.Drawing.Point(93, 113)
@@ -510,23 +527,6 @@ Partial Class FrmPlanilla
         Me.Button2.Text = "Imp Colillas"
         Me.Button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.Button2.UseVisualStyleBackColor = True
-        '
-        'TxtBolsa
-        '
-        Me.TxtBolsa.Location = New System.Drawing.Point(93, 58)
-        Me.TxtBolsa.Name = "TxtBolsa"
-        Me.TxtBolsa.Size = New System.Drawing.Size(43, 20)
-        Me.TxtBolsa.TabIndex = 7
-        Me.TxtBolsa.Text = "0.50"
-        '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(14, 61)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(44, 13)
-        Me.Label8.TabIndex = 6
-        Me.Label8.Text = "% Bolsa"
         '
         'FrmPlanilla
         '

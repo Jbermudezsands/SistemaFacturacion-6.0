@@ -68,6 +68,8 @@ Partial Class FrmProductor
         Me.ImgFoto = New System.Windows.Forms.PictureBox
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
+        Me.CboTipoNomina = New C1.Win.C1List.C1Combo
+        Me.Label30 = New System.Windows.Forms.Label
         Me.GroupBox12 = New System.Windows.Forms.GroupBox
         Me.TextBox4 = New System.Windows.Forms.TextBox
         Me.Label32 = New System.Windows.Forms.Label
@@ -135,10 +137,50 @@ Partial Class FrmProductor
         Me.Label20 = New System.Windows.Forms.Label
         Me.TxtAreaPasto = New System.Windows.Forms.TextBox
         Me.Label19 = New System.Windows.Forms.Label
+        Me.TabPage5 = New System.Windows.Forms.TabPage
+        Me.GroupBox15 = New System.Windows.Forms.GroupBox
+        Me.Button10 = New System.Windows.Forms.Button
+        Me.TxtCtaOtras = New System.Windows.Forms.TextBox
+        Me.Label39 = New System.Windows.Forms.Label
+        Me.Button11 = New System.Windows.Forms.Button
+        Me.TxtCtaVeterinario = New System.Windows.Forms.TextBox
+        Me.Label40 = New System.Windows.Forms.Label
+        Me.Button12 = New System.Windows.Forms.Button
+        Me.TxtCtaTrazabilidad = New System.Windows.Forms.TextBox
+        Me.Label41 = New System.Windows.Forms.Label
+        Me.Button13 = New System.Windows.Forms.Button
+        Me.TxtCtaInseminacion = New System.Windows.Forms.TextBox
+        Me.Label42 = New System.Windows.Forms.Label
+        Me.Button14 = New System.Windows.Forms.Button
+        Me.TxtCtaTransporte = New System.Windows.Forms.TextBox
+        Me.GroupBox16 = New System.Windows.Forms.GroupBox
+        Me.TextBox15 = New System.Windows.Forms.TextBox
+        Me.Label43 = New System.Windows.Forms.Label
+        Me.Label44 = New System.Windows.Forms.Label
+        Me.GroupBox13 = New System.Windows.Forms.GroupBox
+        Me.Button9 = New System.Windows.Forms.Button
+        Me.TxtPulperia = New System.Windows.Forms.TextBox
+        Me.Label36 = New System.Windows.Forms.Label
+        Me.Button7 = New System.Windows.Forms.Button
+        Me.TxtAnticipo = New System.Windows.Forms.TextBox
+        Me.Label35 = New System.Windows.Forms.Label
+        Me.Button5 = New System.Windows.Forms.Button
+        Me.TxtCtaBolsa = New System.Windows.Forms.TextBox
+        Me.Label34 = New System.Windows.Forms.Label
+        Me.Button4 = New System.Windows.Forms.Button
+        Me.TxtCtaIr = New System.Windows.Forms.TextBox
+        Me.Label31 = New System.Windows.Forms.Label
+        Me.Button3 = New System.Windows.Forms.Button
+        Me.TxtCtaBanco = New System.Windows.Forms.TextBox
+        Me.GroupBox14 = New System.Windows.Forms.GroupBox
+        Me.TextBox7 = New System.Windows.Forms.TextBox
+        Me.Label37 = New System.Windows.Forms.Label
+        Me.Label38 = New System.Windows.Forms.Label
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog
-        Me.CboTipoNomina = New C1.Win.C1List.C1Combo
-        Me.Label30 = New System.Windows.Forms.Label
+        Me.Button15 = New System.Windows.Forms.Button
+        Me.TxtCtaGastoPlanilla = New System.Windows.Forms.TextBox
+        Me.Label45 = New System.Windows.Forms.Label
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -152,6 +194,7 @@ Partial Class FrmProductor
         CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox11.SuspendLayout()
+        CType(Me.CboTipoNomina, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox12.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -166,7 +209,11 @@ Partial Class FrmProductor
         CType(Me.C1TrueDBGrid2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox9.SuspendLayout()
         Me.GroupBox10.SuspendLayout()
-        CType(Me.CboTipoNomina, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage5.SuspendLayout()
+        Me.GroupBox15.SuspendLayout()
+        Me.GroupBox16.SuspendLayout()
+        Me.GroupBox13.SuspendLayout()
+        Me.GroupBox14.SuspendLayout()
         Me.SuspendLayout()
         '
         'LblTitulo
@@ -256,6 +303,7 @@ Partial Class FrmProductor
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Controls.Add(Me.TabPage4)
+        Me.TabControl1.Controls.Add(Me.TabPage5)
         Me.TabControl1.Location = New System.Drawing.Point(8, 65)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
@@ -783,6 +831,46 @@ Partial Class FrmProductor
         Me.GroupBox11.TabIndex = 2
         Me.GroupBox11.TabStop = False
         Me.GroupBox11.Text = "Bases de Calculo"
+        '
+        'CboTipoNomina
+        '
+        Me.CboTipoNomina.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboTipoNomina.Caption = ""
+        Me.CboTipoNomina.CaptionHeight = 17
+        Me.CboTipoNomina.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboTipoNomina.ColumnCaptionHeight = 17
+        Me.CboTipoNomina.ColumnFooterHeight = 17
+        Me.CboTipoNomina.ContentHeight = 15
+        Me.CboTipoNomina.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboTipoNomina.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
+        Me.CboTipoNomina.DropDownWidth = 300
+        Me.CboTipoNomina.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboTipoNomina.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboTipoNomina.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboTipoNomina.EditorHeight = 15
+        Me.CboTipoNomina.Images.Add(CType(resources.GetObject("CboTipoNomina.Images"), System.Drawing.Image))
+        Me.CboTipoNomina.ItemHeight = 15
+        Me.CboTipoNomina.Location = New System.Drawing.Point(112, 48)
+        Me.CboTipoNomina.MatchEntryTimeout = CType(2000, Long)
+        Me.CboTipoNomina.MaxDropDownItems = CType(5, Short)
+        Me.CboTipoNomina.MaxLength = 32767
+        Me.CboTipoNomina.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboTipoNomina.Name = "CboTipoNomina"
+        Me.CboTipoNomina.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboTipoNomina.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboTipoNomina.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboTipoNomina.Size = New System.Drawing.Size(120, 21)
+        Me.CboTipoNomina.TabIndex = 143
+        Me.CboTipoNomina.PropBag = resources.GetString("CboTipoNomina.PropBag")
+        '
+        'Label30
+        '
+        Me.Label30.AutoSize = True
+        Me.Label30.Location = New System.Drawing.Point(9, 56)
+        Me.Label30.Name = "Label30"
+        Me.Label30.Size = New System.Drawing.Size(67, 13)
+        Me.Label30.TabIndex = 142
+        Me.Label30.Text = "Tipo Nomina"
         '
         'GroupBox12
         '
@@ -1435,49 +1523,403 @@ Partial Class FrmProductor
         Me.Label19.TabIndex = 0
         Me.Label19.Text = "Area de Pasto"
         '
+        'TabPage5
+        '
+        Me.TabPage5.Controls.Add(Me.GroupBox15)
+        Me.TabPage5.Controls.Add(Me.GroupBox13)
+        Me.TabPage5.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage5.Name = "TabPage5"
+        Me.TabPage5.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage5.Size = New System.Drawing.Size(647, 297)
+        Me.TabPage5.TabIndex = 4
+        Me.TabPage5.Text = "Cuentas"
+        Me.TabPage5.UseVisualStyleBackColor = True
+        '
+        'GroupBox15
+        '
+        Me.GroupBox15.Controls.Add(Me.Button9)
+        Me.GroupBox15.Controls.Add(Me.TxtPulperia)
+        Me.GroupBox15.Controls.Add(Me.Button10)
+        Me.GroupBox15.Controls.Add(Me.Label36)
+        Me.GroupBox15.Controls.Add(Me.TxtCtaOtras)
+        Me.GroupBox15.Controls.Add(Me.Label39)
+        Me.GroupBox15.Controls.Add(Me.Button11)
+        Me.GroupBox15.Controls.Add(Me.TxtCtaVeterinario)
+        Me.GroupBox15.Controls.Add(Me.Label40)
+        Me.GroupBox15.Controls.Add(Me.Button12)
+        Me.GroupBox15.Controls.Add(Me.TxtCtaTrazabilidad)
+        Me.GroupBox15.Controls.Add(Me.Label41)
+        Me.GroupBox15.Controls.Add(Me.Button13)
+        Me.GroupBox15.Controls.Add(Me.TxtCtaInseminacion)
+        Me.GroupBox15.Controls.Add(Me.Label42)
+        Me.GroupBox15.Controls.Add(Me.Button14)
+        Me.GroupBox15.Controls.Add(Me.TxtCtaTransporte)
+        Me.GroupBox15.Controls.Add(Me.GroupBox16)
+        Me.GroupBox15.Controls.Add(Me.Label44)
+        Me.GroupBox15.Location = New System.Drawing.Point(327, 6)
+        Me.GroupBox15.Name = "GroupBox15"
+        Me.GroupBox15.Size = New System.Drawing.Size(303, 201)
+        Me.GroupBox15.TabIndex = 2
+        Me.GroupBox15.TabStop = False
+        '
+        'Button10
+        '
+        Me.Button10.Image = CType(resources.GetObject("Button10.Image"), System.Drawing.Image)
+        Me.Button10.Location = New System.Drawing.Point(231, 164)
+        Me.Button10.Name = "Button10"
+        Me.Button10.Size = New System.Drawing.Size(29, 30)
+        Me.Button10.TabIndex = 177
+        Me.Button10.UseVisualStyleBackColor = True
+        '
+        'TxtCtaOtras
+        '
+        Me.TxtCtaOtras.Location = New System.Drawing.Point(125, 169)
+        Me.TxtCtaOtras.Name = "TxtCtaOtras"
+        Me.TxtCtaOtras.Size = New System.Drawing.Size(100, 20)
+        Me.TxtCtaOtras.TabIndex = 176
+        '
+        'Label39
+        '
+        Me.Label39.AutoSize = True
+        Me.Label39.Location = New System.Drawing.Point(21, 173)
+        Me.Label39.Name = "Label39"
+        Me.Label39.Size = New System.Drawing.Size(98, 13)
+        Me.Label39.TabIndex = 175
+        Me.Label39.Text = "Otras Deducciones"
+        '
+        'Button11
+        '
+        Me.Button11.Image = CType(resources.GetObject("Button11.Image"), System.Drawing.Image)
+        Me.Button11.Location = New System.Drawing.Point(231, 103)
+        Me.Button11.Name = "Button11"
+        Me.Button11.Size = New System.Drawing.Size(29, 30)
+        Me.Button11.TabIndex = 174
+        Me.Button11.UseVisualStyleBackColor = True
+        '
+        'TxtCtaVeterinario
+        '
+        Me.TxtCtaVeterinario.Location = New System.Drawing.Point(125, 108)
+        Me.TxtCtaVeterinario.Name = "TxtCtaVeterinario"
+        Me.TxtCtaVeterinario.Size = New System.Drawing.Size(100, 20)
+        Me.TxtCtaVeterinario.TabIndex = 173
+        '
+        'Label40
+        '
+        Me.Label40.AutoSize = True
+        Me.Label40.Location = New System.Drawing.Point(8, 112)
+        Me.Label40.Name = "Label40"
+        Me.Label40.Size = New System.Drawing.Size(113, 13)
+        Me.Label40.TabIndex = 172
+        Me.Label40.Text = "Productos Veterinarios"
+        '
+        'Button12
+        '
+        Me.Button12.Image = CType(resources.GetObject("Button12.Image"), System.Drawing.Image)
+        Me.Button12.Location = New System.Drawing.Point(231, 72)
+        Me.Button12.Name = "Button12"
+        Me.Button12.Size = New System.Drawing.Size(29, 30)
+        Me.Button12.TabIndex = 171
+        Me.Button12.UseVisualStyleBackColor = True
+        '
+        'TxtCtaTrazabilidad
+        '
+        Me.TxtCtaTrazabilidad.Location = New System.Drawing.Point(125, 77)
+        Me.TxtCtaTrazabilidad.Name = "TxtCtaTrazabilidad"
+        Me.TxtCtaTrazabilidad.Size = New System.Drawing.Size(100, 20)
+        Me.TxtCtaTrazabilidad.TabIndex = 170
+        '
+        'Label41
+        '
+        Me.Label41.AutoSize = True
+        Me.Label41.Location = New System.Drawing.Point(55, 80)
+        Me.Label41.Name = "Label41"
+        Me.Label41.Size = New System.Drawing.Size(64, 13)
+        Me.Label41.TabIndex = 169
+        Me.Label41.Text = "Trazabilidad"
+        '
+        'Button13
+        '
+        Me.Button13.Image = CType(resources.GetObject("Button13.Image"), System.Drawing.Image)
+        Me.Button13.Location = New System.Drawing.Point(231, 42)
+        Me.Button13.Name = "Button13"
+        Me.Button13.Size = New System.Drawing.Size(29, 30)
+        Me.Button13.TabIndex = 168
+        Me.Button13.UseVisualStyleBackColor = True
+        '
+        'TxtCtaInseminacion
+        '
+        Me.TxtCtaInseminacion.Location = New System.Drawing.Point(125, 47)
+        Me.TxtCtaInseminacion.Name = "TxtCtaInseminacion"
+        Me.TxtCtaInseminacion.Size = New System.Drawing.Size(100, 20)
+        Me.TxtCtaInseminacion.TabIndex = 167
+        '
+        'Label42
+        '
+        Me.Label42.AutoSize = True
+        Me.Label42.Location = New System.Drawing.Point(50, 51)
+        Me.Label42.Name = "Label42"
+        Me.Label42.Size = New System.Drawing.Size(69, 13)
+        Me.Label42.TabIndex = 166
+        Me.Label42.Text = "Inseminacion"
+        '
+        'Button14
+        '
+        Me.Button14.Image = CType(resources.GetObject("Button14.Image"), System.Drawing.Image)
+        Me.Button14.Location = New System.Drawing.Point(231, 11)
+        Me.Button14.Name = "Button14"
+        Me.Button14.Size = New System.Drawing.Size(29, 30)
+        Me.Button14.TabIndex = 165
+        Me.Button14.UseVisualStyleBackColor = True
+        '
+        'TxtCtaTransporte
+        '
+        Me.TxtCtaTransporte.Location = New System.Drawing.Point(125, 16)
+        Me.TxtCtaTransporte.Name = "TxtCtaTransporte"
+        Me.TxtCtaTransporte.Size = New System.Drawing.Size(100, 20)
+        Me.TxtCtaTransporte.TabIndex = 164
+        '
+        'GroupBox16
+        '
+        Me.GroupBox16.Controls.Add(Me.TextBox15)
+        Me.GroupBox16.Controls.Add(Me.Label43)
+        Me.GroupBox16.Location = New System.Drawing.Point(315, 0)
+        Me.GroupBox16.Name = "GroupBox16"
+        Me.GroupBox16.Size = New System.Drawing.Size(315, 170)
+        Me.GroupBox16.TabIndex = 1
+        Me.GroupBox16.TabStop = False
+        Me.GroupBox16.Text = "GroupBox16"
+        '
+        'TextBox15
+        '
+        Me.TextBox15.Location = New System.Drawing.Point(112, 16)
+        Me.TextBox15.Name = "TextBox15"
+        Me.TextBox15.Size = New System.Drawing.Size(197, 20)
+        Me.TextBox15.TabIndex = 140
+        '
+        'Label43
+        '
+        Me.Label43.AutoSize = True
+        Me.Label43.Location = New System.Drawing.Point(6, 16)
+        Me.Label43.Name = "Label43"
+        Me.Label43.Size = New System.Drawing.Size(93, 13)
+        Me.Label43.TabIndex = 141
+        Me.Label43.Text = "Nombre Productor"
+        '
+        'Label44
+        '
+        Me.Label44.AutoSize = True
+        Me.Label44.Location = New System.Drawing.Point(61, 16)
+        Me.Label44.Name = "Label44"
+        Me.Label44.Size = New System.Drawing.Size(58, 13)
+        Me.Label44.TabIndex = 141
+        Me.Label44.Text = "Transporte"
+        '
+        'GroupBox13
+        '
+        Me.GroupBox13.Controls.Add(Me.Button15)
+        Me.GroupBox13.Controls.Add(Me.TxtCtaGastoPlanilla)
+        Me.GroupBox13.Controls.Add(Me.Label45)
+        Me.GroupBox13.Controls.Add(Me.Button7)
+        Me.GroupBox13.Controls.Add(Me.TxtAnticipo)
+        Me.GroupBox13.Controls.Add(Me.Label35)
+        Me.GroupBox13.Controls.Add(Me.Button5)
+        Me.GroupBox13.Controls.Add(Me.TxtCtaBolsa)
+        Me.GroupBox13.Controls.Add(Me.Label34)
+        Me.GroupBox13.Controls.Add(Me.Button4)
+        Me.GroupBox13.Controls.Add(Me.TxtCtaIr)
+        Me.GroupBox13.Controls.Add(Me.Label31)
+        Me.GroupBox13.Controls.Add(Me.Button3)
+        Me.GroupBox13.Controls.Add(Me.TxtCtaBanco)
+        Me.GroupBox13.Controls.Add(Me.GroupBox14)
+        Me.GroupBox13.Controls.Add(Me.Label38)
+        Me.GroupBox13.Location = New System.Drawing.Point(6, 6)
+        Me.GroupBox13.Name = "GroupBox13"
+        Me.GroupBox13.Size = New System.Drawing.Size(299, 201)
+        Me.GroupBox13.TabIndex = 1
+        Me.GroupBox13.TabStop = False
+        '
+        'Button9
+        '
+        Me.Button9.Image = CType(resources.GetObject("Button9.Image"), System.Drawing.Image)
+        Me.Button9.Location = New System.Drawing.Point(231, 133)
+        Me.Button9.Name = "Button9"
+        Me.Button9.Size = New System.Drawing.Size(29, 30)
+        Me.Button9.TabIndex = 177
+        Me.Button9.UseVisualStyleBackColor = True
+        '
+        'TxtPulperia
+        '
+        Me.TxtPulperia.AcceptsReturn = True
+        Me.TxtPulperia.Location = New System.Drawing.Point(125, 138)
+        Me.TxtPulperia.Name = "TxtPulperia"
+        Me.TxtPulperia.Size = New System.Drawing.Size(100, 20)
+        Me.TxtPulperia.TabIndex = 176
+        '
+        'Label36
+        '
+        Me.Label36.AutoSize = True
+        Me.Label36.Location = New System.Drawing.Point(1, 141)
+        Me.Label36.Name = "Label36"
+        Me.Label36.Size = New System.Drawing.Size(113, 13)
+        Me.Label36.TabIndex = 175
+        Me.Label36.Text = "Administracion Fondos"
+        '
+        'Button7
+        '
+        Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
+        Me.Button7.Location = New System.Drawing.Point(250, 139)
+        Me.Button7.Name = "Button7"
+        Me.Button7.Size = New System.Drawing.Size(29, 30)
+        Me.Button7.TabIndex = 174
+        Me.Button7.UseVisualStyleBackColor = True
+        '
+        'TxtAnticipo
+        '
+        Me.TxtAnticipo.AcceptsReturn = True
+        Me.TxtAnticipo.Location = New System.Drawing.Point(144, 145)
+        Me.TxtAnticipo.Name = "TxtAnticipo"
+        Me.TxtAnticipo.Size = New System.Drawing.Size(100, 20)
+        Me.TxtAnticipo.TabIndex = 173
+        '
+        'Label35
+        '
+        Me.Label35.AutoSize = True
+        Me.Label35.Location = New System.Drawing.Point(37, 145)
+        Me.Label35.Name = "Label35"
+        Me.Label35.Size = New System.Drawing.Size(96, 13)
+        Me.Label35.TabIndex = 172
+        Me.Label35.Text = "Anticipo de Planilla"
+        '
+        'Button5
+        '
+        Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
+        Me.Button5.Location = New System.Drawing.Point(250, 108)
+        Me.Button5.Name = "Button5"
+        Me.Button5.Size = New System.Drawing.Size(29, 30)
+        Me.Button5.TabIndex = 171
+        Me.Button5.UseVisualStyleBackColor = True
+        '
+        'TxtCtaBolsa
+        '
+        Me.TxtCtaBolsa.Location = New System.Drawing.Point(144, 113)
+        Me.TxtCtaBolsa.Name = "TxtCtaBolsa"
+        Me.TxtCtaBolsa.Size = New System.Drawing.Size(100, 20)
+        Me.TxtCtaBolsa.TabIndex = 170
+        '
+        'Label34
+        '
+        Me.Label34.AutoSize = True
+        Me.Label34.Location = New System.Drawing.Point(47, 113)
+        Me.Label34.Name = "Label34"
+        Me.Label34.Size = New System.Drawing.Size(86, 13)
+        Me.Label34.TabIndex = 169
+        Me.Label34.Text = "Bolsa de Valores"
+        '
+        'Button4
+        '
+        Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
+        Me.Button4.Location = New System.Drawing.Point(250, 77)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(29, 30)
+        Me.Button4.TabIndex = 168
+        Me.Button4.UseVisualStyleBackColor = True
+        '
+        'TxtCtaIr
+        '
+        Me.TxtCtaIr.Location = New System.Drawing.Point(144, 82)
+        Me.TxtCtaIr.Name = "TxtCtaIr"
+        Me.TxtCtaIr.Size = New System.Drawing.Size(100, 20)
+        Me.TxtCtaIr.TabIndex = 167
+        '
+        'Label31
+        '
+        Me.Label31.AutoSize = True
+        Me.Label31.Location = New System.Drawing.Point(78, 85)
+        Me.Label31.Name = "Label31"
+        Me.Label31.Size = New System.Drawing.Size(55, 13)
+        Me.Label31.TabIndex = 166
+        Me.Label31.Text = "Cuenta IR"
+        '
+        'Button3
+        '
+        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
+        Me.Button3.Location = New System.Drawing.Point(250, 46)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(29, 30)
+        Me.Button3.TabIndex = 165
+        Me.Button3.UseVisualStyleBackColor = True
+        '
+        'TxtCtaBanco
+        '
+        Me.TxtCtaBanco.Location = New System.Drawing.Point(144, 51)
+        Me.TxtCtaBanco.Name = "TxtCtaBanco"
+        Me.TxtCtaBanco.Size = New System.Drawing.Size(100, 20)
+        Me.TxtCtaBanco.TabIndex = 164
+        '
+        'GroupBox14
+        '
+        Me.GroupBox14.Controls.Add(Me.TextBox7)
+        Me.GroupBox14.Controls.Add(Me.Label37)
+        Me.GroupBox14.Location = New System.Drawing.Point(315, 0)
+        Me.GroupBox14.Name = "GroupBox14"
+        Me.GroupBox14.Size = New System.Drawing.Size(315, 170)
+        Me.GroupBox14.TabIndex = 1
+        Me.GroupBox14.TabStop = False
+        Me.GroupBox14.Text = "GroupBox14"
+        '
+        'TextBox7
+        '
+        Me.TextBox7.Location = New System.Drawing.Point(112, 16)
+        Me.TextBox7.Name = "TextBox7"
+        Me.TextBox7.Size = New System.Drawing.Size(197, 20)
+        Me.TextBox7.TabIndex = 140
+        '
+        'Label37
+        '
+        Me.Label37.AutoSize = True
+        Me.Label37.Location = New System.Drawing.Point(6, 16)
+        Me.Label37.Name = "Label37"
+        Me.Label37.Size = New System.Drawing.Size(93, 13)
+        Me.Label37.TabIndex = 141
+        Me.Label37.Text = "Nombre Productor"
+        '
+        'Label38
+        '
+        Me.Label38.AutoSize = True
+        Me.Label38.Location = New System.Drawing.Point(58, 56)
+        Me.Label38.Name = "Label38"
+        Me.Label38.Size = New System.Drawing.Size(75, 13)
+        Me.Label38.TabIndex = 141
+        Me.Label38.Text = "Cuenta Banco"
+        '
         'OpenFileDialog1
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
         '
-        'CboTipoNomina
+        'Button15
         '
-        Me.CboTipoNomina.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
-        Me.CboTipoNomina.Caption = ""
-        Me.CboTipoNomina.CaptionHeight = 17
-        Me.CboTipoNomina.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
-        Me.CboTipoNomina.ColumnCaptionHeight = 17
-        Me.CboTipoNomina.ColumnFooterHeight = 17
-        Me.CboTipoNomina.ContentHeight = 15
-        Me.CboTipoNomina.DeadAreaBackColor = System.Drawing.Color.Empty
-        Me.CboTipoNomina.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
-        Me.CboTipoNomina.DropDownWidth = 300
-        Me.CboTipoNomina.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CboTipoNomina.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CboTipoNomina.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CboTipoNomina.EditorHeight = 15
-        Me.CboTipoNomina.Images.Add(CType(resources.GetObject("CboTipoNomina.Images"), System.Drawing.Image))
-        Me.CboTipoNomina.ItemHeight = 15
-        Me.CboTipoNomina.Location = New System.Drawing.Point(112, 48)
-        Me.CboTipoNomina.MatchEntryTimeout = CType(2000, Long)
-        Me.CboTipoNomina.MaxDropDownItems = CType(5, Short)
-        Me.CboTipoNomina.MaxLength = 32767
-        Me.CboTipoNomina.MouseCursor = System.Windows.Forms.Cursors.Default
-        Me.CboTipoNomina.Name = "CboTipoNomina"
-        Me.CboTipoNomina.RowDivider.Color = System.Drawing.Color.DarkGray
-        Me.CboTipoNomina.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
-        Me.CboTipoNomina.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboTipoNomina.Size = New System.Drawing.Size(120, 21)
-        Me.CboTipoNomina.TabIndex = 143
-        Me.CboTipoNomina.PropBag = resources.GetString("CboTipoNomina.PropBag")
+        Me.Button15.Image = CType(resources.GetObject("Button15.Image"), System.Drawing.Image)
+        Me.Button15.Location = New System.Drawing.Point(250, 16)
+        Me.Button15.Name = "Button15"
+        Me.Button15.Size = New System.Drawing.Size(29, 30)
+        Me.Button15.TabIndex = 177
+        Me.Button15.UseVisualStyleBackColor = True
         '
-        'Label30
+        'TxtCtaGastoPlanilla
         '
-        Me.Label30.AutoSize = True
-        Me.Label30.Location = New System.Drawing.Point(9, 56)
-        Me.Label30.Name = "Label30"
-        Me.Label30.Size = New System.Drawing.Size(67, 13)
-        Me.Label30.TabIndex = 142
-        Me.Label30.Text = "Tipo Nomina"
+        Me.TxtCtaGastoPlanilla.Location = New System.Drawing.Point(144, 21)
+        Me.TxtCtaGastoPlanilla.Name = "TxtCtaGastoPlanilla"
+        Me.TxtCtaGastoPlanilla.Size = New System.Drawing.Size(100, 20)
+        Me.TxtCtaGastoPlanilla.TabIndex = 176
+        '
+        'Label45
+        '
+        Me.Label45.AutoSize = True
+        Me.Label45.Location = New System.Drawing.Point(58, 26)
+        Me.Label45.Name = "Label45"
+        Me.Label45.Size = New System.Drawing.Size(71, 13)
+        Me.Label45.TabIndex = 175
+        Me.Label45.Text = "Gasto Planilla"
         '
         'FrmProductor
         '
@@ -1512,6 +1954,7 @@ Partial Class FrmProductor
         Me.TabPage2.ResumeLayout(False)
         Me.GroupBox11.ResumeLayout(False)
         Me.GroupBox11.PerformLayout()
+        CType(Me.CboTipoNomina, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox12.ResumeLayout(False)
         Me.GroupBox12.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
@@ -1536,7 +1979,15 @@ Partial Class FrmProductor
         Me.GroupBox9.PerformLayout()
         Me.GroupBox10.ResumeLayout(False)
         Me.GroupBox10.PerformLayout()
-        CType(Me.CboTipoNomina, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage5.ResumeLayout(False)
+        Me.GroupBox15.ResumeLayout(False)
+        Me.GroupBox15.PerformLayout()
+        Me.GroupBox16.ResumeLayout(False)
+        Me.GroupBox16.PerformLayout()
+        Me.GroupBox13.ResumeLayout(False)
+        Me.GroupBox13.PerformLayout()
+        Me.GroupBox14.ResumeLayout(False)
+        Me.GroupBox14.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1660,4 +2111,46 @@ Partial Class FrmProductor
     Friend WithEvents Label33 As System.Windows.Forms.Label
     Friend WithEvents CboTipoNomina As C1.Win.C1List.C1Combo
     Friend WithEvents Label30 As System.Windows.Forms.Label
+    Friend WithEvents TabPage5 As System.Windows.Forms.TabPage
+    Friend WithEvents GroupBox13 As System.Windows.Forms.GroupBox
+    Friend WithEvents Button4 As System.Windows.Forms.Button
+    Friend WithEvents TxtCtaIr As System.Windows.Forms.TextBox
+    Friend WithEvents Label31 As System.Windows.Forms.Label
+    Friend WithEvents Button3 As System.Windows.Forms.Button
+    Friend WithEvents TxtCtaBanco As System.Windows.Forms.TextBox
+    Friend WithEvents GroupBox14 As System.Windows.Forms.GroupBox
+    Friend WithEvents TextBox7 As System.Windows.Forms.TextBox
+    Friend WithEvents Label37 As System.Windows.Forms.Label
+    Friend WithEvents Label38 As System.Windows.Forms.Label
+    Friend WithEvents GroupBox15 As System.Windows.Forms.GroupBox
+    Friend WithEvents Button10 As System.Windows.Forms.Button
+    Friend WithEvents TxtCtaOtras As System.Windows.Forms.TextBox
+    Friend WithEvents Label39 As System.Windows.Forms.Label
+    Friend WithEvents Button11 As System.Windows.Forms.Button
+    Friend WithEvents TxtCtaVeterinario As System.Windows.Forms.TextBox
+    Friend WithEvents Label40 As System.Windows.Forms.Label
+    Friend WithEvents Button12 As System.Windows.Forms.Button
+    Friend WithEvents TxtCtaTrazabilidad As System.Windows.Forms.TextBox
+    Friend WithEvents Label41 As System.Windows.Forms.Label
+    Friend WithEvents Button13 As System.Windows.Forms.Button
+    Friend WithEvents TxtCtaInseminacion As System.Windows.Forms.TextBox
+    Friend WithEvents Label42 As System.Windows.Forms.Label
+    Friend WithEvents Button14 As System.Windows.Forms.Button
+    Friend WithEvents TxtCtaTransporte As System.Windows.Forms.TextBox
+    Friend WithEvents GroupBox16 As System.Windows.Forms.GroupBox
+    Friend WithEvents TextBox15 As System.Windows.Forms.TextBox
+    Friend WithEvents Label43 As System.Windows.Forms.Label
+    Friend WithEvents Label44 As System.Windows.Forms.Label
+    Friend WithEvents Button9 As System.Windows.Forms.Button
+    Friend WithEvents TxtPulperia As System.Windows.Forms.TextBox
+    Friend WithEvents Label36 As System.Windows.Forms.Label
+    Friend WithEvents Button7 As System.Windows.Forms.Button
+    Friend WithEvents TxtAnticipo As System.Windows.Forms.TextBox
+    Friend WithEvents Label35 As System.Windows.Forms.Label
+    Friend WithEvents Button5 As System.Windows.Forms.Button
+    Friend WithEvents TxtCtaBolsa As System.Windows.Forms.TextBox
+    Friend WithEvents Label34 As System.Windows.Forms.Label
+    Friend WithEvents Button15 As System.Windows.Forms.Button
+    Friend WithEvents TxtCtaGastoPlanilla As System.Windows.Forms.TextBox
+    Friend WithEvents Label45 As System.Windows.Forms.Label
 End Class

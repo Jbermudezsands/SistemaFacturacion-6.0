@@ -130,12 +130,14 @@
     <value>True</value>
   </metadata>
   <data name="OleDBDataSource1.SQL" xml:space="preserve">
-    <value>SELECT     Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, 
-                      Detalle_Nota.Numero_Factura, Detalle_Nota.Monto, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres
-FROM         Detalle_Nota INNER JOIN
-                      Facturas ON Detalle_Nota.Numero_Factura = Facturas.Numero_Factura INNER JOIN
-                      Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente
-WHERE     (Detalle_Nota.Fecha_Nota BETWEEN CONVERT(DATETIME, '2014-09-06 00:00:00', 102) AND CONVERT(DATETIME, '2014-09-06 00:00:00', 102))
+    <value>SELECT        Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, 
+                         Detalle_Nota.Numero_Factura, Detalle_Nota.Monto, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, IndiceNota.Observaciones
+FROM            Detalle_Nota INNER JOIN
+                         Facturas ON Detalle_Nota.Numero_Factura = Facturas.Numero_Factura INNER JOIN
+                         Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN
+                         IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND 
+                         Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota
+WHERE        (Detalle_Nota.Fecha_Nota BETWEEN CONVERT(DATETIME, '2014-09-06 00:00:00', 102) AND CONVERT(DATETIME, '2014-09-06 00:00:00', 102))
 ORDER BY Detalle_Nota.Tipo_Nota, Detalle_Nota.Fecha_Nota DESC</value>
   </data>
 </root>

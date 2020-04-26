@@ -710,7 +710,7 @@ Partial Public Class ArepPlanilla
         Me.Label15.Left = 9.464286!
         Me.Label15.Name = "Label15"
         Me.Label15.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
-        Me.Label15.Text = "Pulperia"
+        Me.Label15.Text = "Admon Fondos"
         Me.Label15.Top = 1.821429!
         Me.Label15.Width = 0.5!
         '
@@ -729,7 +729,7 @@ Partial Public Class ArepPlanilla
         Me.Label16.Left = 9.964286!
         Me.Label16.Name = "Label16"
         Me.Label16.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
-        Me.Label16.Text = "Insemina Artificial"
+        Me.Label16.Text = "Traza"
         Me.Label16.Top = 1.821429!
         Me.Label16.Width = 0.52!
         '
@@ -1253,7 +1253,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox18.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox18.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox18.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.TextBox18.DataField = "Inseminacion"
+        Me.TextBox18.DataField = "Trazabilidad"
         Me.TextBox18.Height = 0.1875!
         Me.TextBox18.Left = 10.0!
         Me.TextBox18.Name = "TextBox18"
@@ -1909,7 +1909,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox67.Name = "TextBox67"
         Me.TextBox67.OutputFormat = resources.GetString("TextBox67.OutputFormat")
         Me.TextBox67.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
-        Me.TextBox67.Text = "Pulperia"
+        Me.TextBox67.Text = "Admon Fondos"
         Me.TextBox67.Top = 1.277778!
         Me.TextBox67.Width = 0.8333331!
         '
@@ -1928,7 +1928,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox68.Name = "TextBox68"
         Me.TextBox68.OutputFormat = resources.GetString("TextBox68.OutputFormat")
         Me.TextBox68.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
-        Me.TextBox68.Text = "Inseminacion"
+        Me.TextBox68.Text = "Trazabilidad"
         Me.TextBox68.Top = 1.5!
         Me.TextBox68.Width = 0.8333331!
         '
@@ -2132,7 +2132,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox78.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox78.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox78.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.TextBox78.DataField = "Inseminacion"
+        Me.TextBox78.DataField = "Trazabilidad"
         Me.TextBox78.Height = 0.1666667!
         Me.TextBox78.Left = 7.277778!
         Me.TextBox78.Name = "TextBox78"
@@ -2840,7 +2840,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox41.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox41.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox41.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.TextBox41.DataField = "Inseminacion"
+        Me.TextBox41.DataField = "Trazabilidad"
         Me.TextBox41.Height = 0.1785714!
         Me.TextBox41.Left = 10.03571!
         Me.TextBox41.Name = "TextBox41"

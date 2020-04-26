@@ -123,6 +123,9 @@
   <data name="TextBox6.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
+  <data name="TextBox8.OutputFormat" xml:space="preserve">
+    <value>dd/MM/yyyy</value>
+  </data>
   <data name="TextBox7.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
@@ -130,7 +133,7 @@
     <value>True</value>
   </metadata>
   <data name="OleDBDataSource1.SQL" xml:space="preserve">
-    <value>SELECT     Recibo.CodReciboPago, Recibo.Fecha_Recibo, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, DetalleRecibo.Numero_Factura, 
+    <value>SELECT     Recibo.CodReciboPago, Recibo.Observaciones, Recibo.Fecha_Recibo, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, DetalleRecibo.Numero_Factura, 
                       DetalleRecibo.MontoPagado, Recibo.MonedaRecibo, TasaCambio.MontoTasa, 
                       CASE WHEN MonedaRecibo = 'Dolares' THEN DetalleRecibo.MontoPagado * TasaCambio.MontoTasa ELSE DetalleRecibo.MontoPagado END AS MontoRecibo,  Recibo.Activo
 FROM         Recibo INNER JOIN

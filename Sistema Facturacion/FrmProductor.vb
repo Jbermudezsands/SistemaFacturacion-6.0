@@ -80,7 +80,7 @@ Public Class FrmProductor
         DataAdapter.Fill(DataSet, "Productor")
         If Not DataSet.Tables("Productor").Rows.Count = 0 Then
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-            StrSqlUpdate = "UPDATE [Productor] SET [NombreProductor] = '" & Me.TxtNombre.Text & "',[ApellidoProductor] = '" & Me.TxtApellidos.Text & "',[FechaAdmision] = '" & Me.DTFechaAdmision.Text & "',[FechaNacimiento] = '" & Me.DTFechaNacimientos.Text & "',[DireccionProductor] = '" & Me.TxtDireccion.Text & "',[Sexo] = '" & Me.CboSexo.Text & "',[CodEscolaridad] = '" & Me.CboEscolaridad.Columns(0).Text & "',[CodDepartamentos] = '" & Me.CboDepartamentos.Columns(0).Text & "',[CodCooperativa] = '" & Me.CboCooperativa.Columns(0).Text & "',[CodRuta] = '" & Me.CboRuta.Columns(0).Text & "',[NombreConyugue] = '" & Me.TxtNombreConyugue.Text & "',[NumeroHijos] = '" & Me.TxtNumeroHijos.Text & "',[Telefonos] = '" & Me.TxtTelefono.Text & "',[Fax] = '" & Me.TxtFax.Text & "',[CorreoElectronico] = '" & Me.TxtCorreoElectronico.Text & "',[Comunidad] = '" & Me.TxtComunidad.Text & "',[Edad] = '" & Me.TxtEdad.Text & "',[EstadoCivil] = '" & Me.TxtEstadoCivil.Text & "',[FuentesAgua] = " & FuentesAgua & ",[ViviendaPropia] = " & Vivienda & ",[DescripcionVivienda] = '" & Me.TxtVivienda.Text & "',[TenenciaTierra] = '" & TenenciaTierra & "' ,[AreadePasto] = '" & Me.TxtAreaPasto.Text & "',[CantidadVacas] = " & Val(Me.TxtCantidadVacas.Text) & ",[CantidadVaquillas] = " & Val(Me.TxtCantidadVaquillas.Text) & ",[CantidadBueyes] = " & Val(Me.TxtCantidadBueyes.Text) & ",[CantidadTerrenos] = " & Val(Me.TxtCantidadTerreno.Text) & " ,[CualEmpresa] = '" & Me.TxtCualEmpresa.Text & "',[Cod_Cuenta_Cliente] = '" & Me.TxtCtaxCobrar.Text & "',[Cod_Cuenta_Proveedor] = '" & Me.TxtCtaxPagar.Text & "',[Activo] = " & Activo & ",[CausaIVA] = " & CausaIva & ",[TieneContrato] = " & TieneContrato & ",[Cedula] = '" & Me.TxtNumeroCedula.Text & "',[Precio] = " & Precio & " ,[CodTipoNomina] = '" & Me.CboTipoNomina.Text & "'  WHERE  (CodProductor = '" & Me.CboCodigoProductor.Text & "') AND (TipoProductor = 'Productor')"
+            StrSqlUpdate = "UPDATE [Productor] SET [NombreProductor] = '" & Me.TxtNombre.Text & "',[ApellidoProductor] = '" & Me.TxtApellidos.Text & "',[FechaAdmision] = '" & Me.DTFechaAdmision.Text & "',[FechaNacimiento] = '" & Me.DTFechaNacimientos.Text & "',[DireccionProductor] = '" & Me.TxtDireccion.Text & "',[Sexo] = '" & Me.CboSexo.Text & "',[CodEscolaridad] = '" & Me.CboEscolaridad.Columns(0).Text & "',[CodDepartamentos] = '" & Me.CboDepartamentos.Columns(0).Text & "',[CodCooperativa] = '" & Me.CboCooperativa.Columns(0).Text & "',[CodRuta] = '" & Me.CboRuta.Columns(0).Text & "',[NombreConyugue] = '" & Me.TxtNombreConyugue.Text & "',[NumeroHijos] = '" & Me.TxtNumeroHijos.Text & "',[Telefonos] = '" & Me.TxtTelefono.Text & "',[Fax] = '" & Me.TxtFax.Text & "',[CorreoElectronico] = '" & Me.TxtCorreoElectronico.Text & "',[Comunidad] = '" & Me.TxtComunidad.Text & "',[Edad] = '" & Me.TxtEdad.Text & "',[EstadoCivil] = '" & Me.TxtEstadoCivil.Text & "',[FuentesAgua] = " & FuentesAgua & ",[ViviendaPropia] = " & Vivienda & ",[DescripcionVivienda] = '" & Me.TxtVivienda.Text & "',[TenenciaTierra] = '" & TenenciaTierra & "' ,[AreadePasto] = '" & Me.TxtAreaPasto.Text & "',[CantidadVacas] = " & Val(Me.TxtCantidadVacas.Text) & ",[CantidadVaquillas] = " & Val(Me.TxtCantidadVaquillas.Text) & ",[CantidadBueyes] = " & Val(Me.TxtCantidadBueyes.Text) & ",[CantidadTerrenos] = " & Val(Me.TxtCantidadTerreno.Text) & " ,[CualEmpresa] = '" & Me.TxtCualEmpresa.Text & "',[Cod_Cuenta_Cliente] = '" & Me.TxtCtaxCobrar.Text & "',[Cod_Cuenta_Proveedor] = '" & Me.TxtCtaxPagar.Text & "',[Activo] = " & Activo & ",[CausaIVA] = " & CausaIva & ",[TieneContrato] = " & TieneContrato & ",[Cedula] = '" & Me.TxtNumeroCedula.Text & "',[Precio] = " & Precio & " ,[CodTipoNomina] = '" & Me.CboTipoNomina.Text & "',[Cuenta_Banco] = '" & Me.TxtCtaBanco.Text & "', [Cuenta_IR] = '" & Me.TxtCtaIr.Text & "', [Cuenta_Bolsa] = '" & Me.TxtCtaBolsa.Text & "', [Cuenta_Anticipo] = '" & Me.TxtAnticipo.Text & "', [Cuenta_Pulperia] = '" & Me.TxtPulperia.Text & "' , [Cuenta_Transporte] = '" & Me.TxtCtaTransporte.Text & "' , [Cuenta_Inseminacion] = '" & Me.TxtCtaInseminacion.Text & "', [Cuenta_Trazabilidad] = '" & Me.TxtCtaTrazabilidad.Text & "', [Cuenta_Veterinario] = '" & Me.TxtCtaVeterinario.Text & "', [Cuenta_GastoPlanilla] = '" & Me.TxtCtaGastoPlanilla.Text & "', [Cuenta_Otras] = '" & Me.TxtCtaOtras.Text & "'  WHERE  (CodProductor = '" & Me.CboCodigoProductor.Text & "') AND (TipoProductor = 'Productor')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -89,8 +89,8 @@ Public Class FrmProductor
         Else
             MiConexion.Close()
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Productor] ([CodProductor],[TipoProductor],[NombreProductor] ,[ApellidoProductor],[FechaAdmision],[FechaNacimiento],[DireccionProductor],[Sexo],[CodEscolaridad],[CodDepartamentos],[CodCooperativa],[CodRuta],[NombreConyugue],[NumeroHijos],[Telefonos],[Fax],[CorreoElectronico],[Comunidad],[Edad],[EstadoCivil],[FuentesAgua],[ViviendaPropia],[DescripcionVivienda],[TenenciaTierra],[AreadePasto],[CantidadVacas],[CantidadVaquillas],[CantidadBueyes],[CantidadTerrenos],[CualEmpresa],[Cod_Cuenta_Cliente],[Cod_Cuenta_Proveedor],[Activo],[CausaIVA],[TieneContrato],[Cedula],[Precio],[CodTipoNomina]) " & _
-                           "VALUES ('" & Me.CboCodigoProductor.Text & "','Productor','" & Me.TxtNombre.Text & "','" & Me.TxtApellidos.Text & "'," & Format(Me.DTFechaAdmision.Value, "yyyy/MM/dd") & "," & Format(Me.DTFechaNacimientos.Value, "yyyy/MM/dd") & ",'" & Me.TxtDireccion.Text & "','" & Me.CboSexo.Text & "','" & Me.CboEscolaridad.Columns(0).Text & "','" & Me.CboDepartamentos.Columns(0).Text & "','" & Me.CboCooperativa.Columns(0).Text & "','" & Me.CboRuta.Columns(0).Text & "','" & Me.TxtNombreConyugue.Text & "','" & Me.TxtNumeroHijos.Text & "','" & Me.TxtTelefono.Text & "','" & Me.TxtFax.Text & "','" & Me.TxtCorreoElectronico.Text & "','" & Me.TxtComunidad.Text & "','" & Me.TxtEdad.Text & "','" & Me.TxtEstadoCivil.Text & "','" & FuentesAgua & "','" & Vivienda & "','" & Me.TxtVivienda.Text & "','" & TenenciaTierra & "','" & Me.TxtAreaPasto.Text & "','" & Me.TxtCantidadVacas.Text & "','" & Me.TxtCantidadVaquillas.Text & "','" & Me.TxtCantidadBueyes.Text & "','" & Me.TxtCantidadTerreno.Text & "','" & Me.TxtCualEmpresa.Text & "','" & Me.TxtCtaxCobrar.Text & "','" & Me.TxtCtaxPagar.Text & "'," & Activo & "," & CausaIva & "," & TieneContrato & ",'" & Me.TxtNumeroCedula.Text & "'," & Precio & ",'" & Me.CboTipoNomina.Text & "')"
+            StrSqlUpdate = "INSERT INTO [Productor] ([CodProductor],[TipoProductor],[NombreProductor] ,[ApellidoProductor],[FechaAdmision],[FechaNacimiento],[DireccionProductor],[Sexo],[CodEscolaridad],[CodDepartamentos],[CodCooperativa],[CodRuta],[NombreConyugue],[NumeroHijos],[Telefonos],[Fax],[CorreoElectronico],[Comunidad],[Edad],[EstadoCivil],[FuentesAgua],[ViviendaPropia],[DescripcionVivienda],[TenenciaTierra],[AreadePasto],[CantidadVacas],[CantidadVaquillas],[CantidadBueyes],[CantidadTerrenos],[CualEmpresa],[Cod_Cuenta_Cliente],[Cod_Cuenta_Proveedor],[Activo],[CausaIVA],[TieneContrato],[Cedula],[Precio],[CodTipoNomina],[Cuenta_Banco],[Cuenta_IR],[Cuenta_Bolsa],[Cuenta_Anticipo],[Cuenta_Pulperia],[Cuenta_Transporte],[Cuenta_Inseminacion],[Cuenta_Trazabilidad],[Cuenta_Veterinario],[Cuenta_Otras],[Cuenta_GastoPlanilla]) " & _
+                           "VALUES ('" & Me.CboCodigoProductor.Text & "','Productor','" & Me.TxtNombre.Text & "','" & Me.TxtApellidos.Text & "'," & Format(Me.DTFechaAdmision.Value, "yyyy/MM/dd") & "," & Format(Me.DTFechaNacimientos.Value, "yyyy/MM/dd") & ",'" & Me.TxtDireccion.Text & "','" & Me.CboSexo.Text & "','" & Me.CboEscolaridad.Columns(0).Text & "','" & Me.CboDepartamentos.Columns(0).Text & "','" & Me.CboCooperativa.Columns(0).Text & "','" & Me.CboRuta.Columns(0).Text & "','" & Me.TxtNombreConyugue.Text & "','" & Me.TxtNumeroHijos.Text & "','" & Me.TxtTelefono.Text & "','" & Me.TxtFax.Text & "','" & Me.TxtCorreoElectronico.Text & "','" & Me.TxtComunidad.Text & "','" & Me.TxtEdad.Text & "','" & Me.TxtEstadoCivil.Text & "','" & FuentesAgua & "','" & Vivienda & "','" & Me.TxtVivienda.Text & "','" & TenenciaTierra & "','" & Me.TxtAreaPasto.Text & "','" & Me.TxtCantidadVacas.Text & "','" & Me.TxtCantidadVaquillas.Text & "','" & Me.TxtCantidadBueyes.Text & "','" & Me.TxtCantidadTerreno.Text & "','" & Me.TxtCualEmpresa.Text & "','" & Me.TxtCtaxCobrar.Text & "','" & Me.TxtCtaxPagar.Text & "'," & Activo & "," & CausaIva & "," & TieneContrato & ",'" & Me.TxtNumeroCedula.Text & "'," & Precio & ",'" & Me.CboTipoNomina.Text & "','" & Me.TxtCtaBanco.Text & "', '" & Me.TxtCtaIr.Text & "' ,'" & Me.TxtCtaBolsa.Text & "', '" & Me.TxtAnticipo.Text & "', '" & Me.TxtCtaBanco.Text & "','" & Me.TxtPulperia.Text & "', '" & Me.TxtCtaTransporte.Text & "','" & Me.TxtCtaInseminacion.Text & "','" & Me.TxtCtaTrazabilidad.Text & "','" & Me.TxtCtaVeterinario.Text & "', '" & Me.TxtCtaOtras.Text & "', '" & Me.TxtCtaGastoPlanilla.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -297,6 +297,66 @@ Public Class FrmProductor
                 Me.CboTipoNomina.Text = ""
             End If
 
+            If Not IsDBNull(DataSet.Tables("Productor").Rows(0)("Cuenta_Banco")) Then
+                Me.TxtCtaBanco.Text = DataSet.Tables("Productor").Rows(0)("Cuenta_Banco")
+            Else
+                Me.TxtCtaBanco.Text = ""
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Productor").Rows(0)("Cuenta_IR")) Then
+                Me.TxtCtaIr.Text = DataSet.Tables("Productor").Rows(0)("Cuenta_IR")
+            Else
+                Me.TxtCtaIr.Text = ""
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Productor").Rows(0)("Cuenta_Bolsa")) Then
+                Me.TxtCtaBolsa.Text = DataSet.Tables("Productor").Rows(0)("Cuenta_Bolsa")
+            Else
+                Me.TxtCtaBolsa.Text = ""
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Productor").Rows(0)("Cuenta_Anticipo")) Then
+                Me.TxtAnticipo.Text = DataSet.Tables("Productor").Rows(0)("Cuenta_Anticipo")
+            Else
+                Me.TxtAnticipo.Text = ""
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Productor").Rows(0)("Cuenta_Pulperia")) Then
+                Me.TxtPulperia.Text = DataSet.Tables("Productor").Rows(0)("Cuenta_Pulperia")
+            Else
+                Me.TxtPulperia.Text = ""
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Productor").Rows(0)("Cuenta_Transporte")) Then
+                Me.TxtCtaTransporte.Text = DataSet.Tables("Productor").Rows(0)("Cuenta_Transporte")
+            Else
+                Me.TxtCtaTransporte.Text = ""
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Productor").Rows(0)("Cuenta_Inseminacion")) Then
+                Me.TxtCtaInseminacion.Text = DataSet.Tables("Productor").Rows(0)("Cuenta_Inseminacion")
+            Else
+                Me.TxtCtaInseminacion.Text = ""
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Productor").Rows(0)("Cuenta_Trazabilidad")) Then
+                Me.TxtCtaTrazabilidad.Text = DataSet.Tables("Productor").Rows(0)("Cuenta_Trazabilidad")
+            Else
+                Me.TxtCtaTrazabilidad.Text = ""
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Productor").Rows(0)("Cuenta_Veterinario")) Then
+                Me.TxtCtaVeterinario.Text = DataSet.Tables("Productor").Rows(0)("Cuenta_Veterinario")
+            Else
+                Me.TxtCtaVeterinario.Text = ""
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Productor").Rows(0)("Cuenta_Otras")) Then
+                Me.TxtCtaOtras.Text = DataSet.Tables("Productor").Rows(0)("Cuenta_Otras")
+            Else
+                Me.TxtCtaOtras.Text = ""
+            End If
+
             If Not IsDBNull(DataSet.Tables("Productor").Rows(0)("FuentesAgua")) Then
                 FuentesAgua = DataSet.Tables("Productor").Rows(0)("FuentesAgua")
                 If FuentesAgua = True Then
@@ -381,6 +441,19 @@ Public Class FrmProductor
             Me.TxtNumeroCedula.Text = ""
             Me.TxtPrecio.Text = ""
             Me.CboTipoNomina.Text = ""
+            Me.TxtCtaBanco.Text = ""
+            Me.TxtCtaBolsa.Text = ""
+            Me.TxtAnticipo.Text = ""
+            Me.TxtPulperia.Text = ""
+            Me.TxtCtaInseminacion.Text = ""
+            Me.TxtCtaIr.Text = ""
+            Me.TxtCtaOtras.Text = ""
+            Me.TxtCtaTransporte.Text = ""
+            Me.TxtCtaTrazabilidad.Text = ""
+            Me.TxtCtaVeterinario.Text = ""
+            Me.TxtCtaxCobrar.Text = ""
+            Me.TxtCtaxPagar.Text = ""
+
         End If
     End Sub
 
@@ -428,5 +501,72 @@ Public Class FrmProductor
         Quien = "CodigoProductor"
         My.Forms.FrmConsultas.ShowDialog()
         Me.CboCodigoProductor.Text = My.Forms.FrmConsultas.Codigo
+    End Sub
+
+    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+        Quien = "CuentasContables"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.TxtCtaBanco.Text = My.Forms.FrmConsultas.Codigo
+    End Sub
+
+
+    Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
+        Quien = "CuentasContables"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.TxtCtaIr.Text = My.Forms.FrmConsultas.Codigo
+    End Sub
+
+    Private Sub Button5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click
+        Quien = "CuentasContables"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.TxtCtaBolsa.Text = My.Forms.FrmConsultas.Codigo
+    End Sub
+
+    Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
+        Quien = "CuentasContables"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.TxtAnticipo.Text = My.Forms.FrmConsultas.Codigo
+    End Sub
+
+    Private Sub Button9_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button9.Click
+        Quien = "CuentasContables"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.TxtPulperia.Text = My.Forms.FrmConsultas.Codigo
+    End Sub
+
+    Private Sub Button14_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button14.Click
+        Quien = "CuentasContables"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.TxtCtaTransporte.Text = My.Forms.FrmConsultas.Codigo
+    End Sub
+
+    Private Sub Button13_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button13.Click
+        Quien = "CuentasContables"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.TxtCtaInseminacion.Text = My.Forms.FrmConsultas.Codigo
+    End Sub
+
+    Private Sub Button12_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button12.Click
+        Quien = "CuentasContables"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.TxtCtaTrazabilidad.Text = My.Forms.FrmConsultas.Codigo
+    End Sub
+
+    Private Sub Button11_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button11.Click
+        Quien = "CuentasContables"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.TxtCtaVeterinario.Text = My.Forms.FrmConsultas.Codigo
+    End Sub
+
+    Private Sub Button10_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button10.Click
+        Quien = "CuentasContables"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.TxtCtaOtras.Text = My.Forms.FrmConsultas.Codigo
+    End Sub
+
+    Private Sub Button15_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button15.Click
+        Quien = "CuentasContables"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.TxtCtaGastoPlanilla.Text = My.Forms.FrmConsultas.Codigo
     End Sub
 End Class

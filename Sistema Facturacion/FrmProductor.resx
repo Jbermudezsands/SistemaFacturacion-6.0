@@ -487,16 +487,6 @@
         QmCC
 </value>
   </data>
-  <data name="CboTipoNomina.Images" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAA0SURBVChTdYkBCgAgDAL9/6eLIsd0eSCKhw/r9aCLtC88
-        vAdHMEIXKUIUhMK76EfagglgA6CqHOQpL6GyAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="CboTipoNomina.PropBag" xml:space="preserve">
-    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style3{}Style4{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Style10{}EvenRow{BackColor:Aqua;}Style11{}Group{BackColor:ControlDark;Border:None,,0, 0, 0, 0;AlignVert:Center;}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{AlignHorz:Near;}Style2{}Normal{}Style7{}Heading{Wrap:True;AlignVert:Center;Border:Raised,,1, 1, 1, 1;ForeColor:ControlText;BackColor:Control;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
-  </data>
   <data name="CboCodigoProductor.Images" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -505,7 +495,7 @@
 </value>
   </data>
   <data name="CboCodigoProductor.PropBag" xml:space="preserve">
-    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style3{}Style4{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Style10{}EvenRow{BackColor:Aqua;}Style11{}Group{AlignVert:Center;Border:None,,0, 0, 0, 0;BackColor:ControlDark;}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{AlignHorz:Near;}Style2{}Normal{}Style7{}Heading{Wrap:True;BackColor:Control;Border:Raised,,1, 1, 1, 1;ForeColor:ControlText;AlignVert:Center;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
+    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style3{}Style4{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Style10{}EvenRow{BackColor:Aqua;}Style11{}Group{BackColor:ControlDark;Border:None,,0, 0, 0, 0;AlignVert:Center;}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{AlignHorz:Near;}Style2{}Normal{}Style7{}Heading{Wrap:True;AlignVert:Center;Border:Raised,,1, 1, 1, 1;ForeColor:ControlText;BackColor:Control;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
   </data>
   <data name="CboRuta.Images" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -515,7 +505,7 @@
 </value>
   </data>
   <data name="CboRuta.PropBag" xml:space="preserve">
-    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style3{}Style4{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Style10{}EvenRow{BackColor:Aqua;}Style11{}Group{AlignVert:Center;Border:None,,0, 0, 0, 0;BackColor:ControlDark;}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{AlignHorz:Near;}Style2{}Normal{}Style7{}Heading{Wrap:True;BackColor:Control;Border:Raised,,1, 1, 1, 1;ForeColor:ControlText;AlignVert:Center;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
+    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style3{}Style4{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Style10{}EvenRow{BackColor:Aqua;}Style11{}Group{BackColor:ControlDark;Border:None,,0, 0, 0, 0;AlignVert:Center;}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{AlignHorz:Near;}Style2{}Normal{}Style7{}Heading{Wrap:True;AlignVert:Center;Border:Raised,,1, 1, 1, 1;ForeColor:ControlText;BackColor:Control;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
   </data>
   <data name="CboCooperativa.Images" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -525,7 +515,7 @@
 </value>
   </data>
   <data name="CboCooperativa.PropBag" xml:space="preserve">
-    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style3{}Style4{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Style10{}EvenRow{BackColor:Aqua;}Style11{}Group{AlignVert:Center;Border:None,,0, 0, 0, 0;BackColor:ControlDark;}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{AlignHorz:Near;}Style2{}Normal{}Style7{}Heading{Wrap:True;BackColor:Control;Border:Raised,,1, 1, 1, 1;ForeColor:ControlText;AlignVert:Center;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
+    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style3{}Style4{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Style10{}EvenRow{BackColor:Aqua;}Style11{}Group{BackColor:ControlDark;Border:None,,0, 0, 0, 0;AlignVert:Center;}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{AlignHorz:Near;}Style2{}Normal{}Style7{}Heading{Wrap:True;AlignVert:Center;Border:Raised,,1, 1, 1, 1;ForeColor:ControlText;BackColor:Control;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
   </data>
   <data name="CboDepartamentos.Images" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -535,7 +525,7 @@
 </value>
   </data>
   <data name="CboDepartamentos.PropBag" xml:space="preserve">
-    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style3{}Style4{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Style10{}EvenRow{BackColor:Aqua;}Style11{}Group{AlignVert:Center;Border:None,,0, 0, 0, 0;BackColor:ControlDark;}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{AlignHorz:Near;}Style2{}Normal{}Style7{}Heading{Wrap:True;BackColor:Control;Border:Raised,,1, 1, 1, 1;ForeColor:ControlText;AlignVert:Center;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
+    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style3{}Style4{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Style10{}EvenRow{BackColor:Aqua;}Style11{}Group{BackColor:ControlDark;Border:None,,0, 0, 0, 0;AlignVert:Center;}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{AlignHorz:Near;}Style2{}Normal{}Style7{}Heading{Wrap:True;AlignVert:Center;Border:Raised,,1, 1, 1, 1;ForeColor:ControlText;BackColor:Control;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
   </data>
   <data name="CboEscolaridad.Images" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -545,7 +535,7 @@
 </value>
   </data>
   <data name="CboEscolaridad.PropBag" xml:space="preserve">
-    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style3{}Style4{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Style10{}EvenRow{BackColor:Aqua;}Style11{}Group{AlignVert:Center;Border:None,,0, 0, 0, 0;BackColor:ControlDark;}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{AlignHorz:Near;}Style2{}Normal{}Style7{}Heading{Wrap:True;BackColor:Control;Border:Raised,,1, 1, 1, 1;ForeColor:ControlText;AlignVert:Center;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
+    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style3{}Style4{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Style10{}EvenRow{BackColor:Aqua;}Style11{}Group{BackColor:ControlDark;Border:None,,0, 0, 0, 0;AlignVert:Center;}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{AlignHorz:Near;}Style2{}Normal{}Style7{}Heading{Wrap:True;AlignVert:Center;Border:Raised,,1, 1, 1, 1;ForeColor:ControlText;BackColor:Control;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
   </data>
   <data name="Button2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -4765,6 +4755,16 @@
         FABQAUAFABQAUAFAH//Z
 </value>
   </data>
+  <data name="CboTipoNomina.Images" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAA0SURBVChTdYkBCgAgDAL9/6eLIsd0eSCKhw/r9aCLtC88
+        vAdHMEIXKUIUhMK76EfagglgA6CqHOQpL6GyAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="CboTipoNomina.PropBag" xml:space="preserve">
+    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style3{}Style4{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Style10{}EvenRow{BackColor:Aqua;}Style11{}Group{AlignVert:Center;Border:None,,0, 0, 0, 0;BackColor:ControlDark;}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{AlignHorz:Near;}Style2{}Normal{}Style7{}Heading{Wrap:True;BackColor:Control;Border:Raised,,1, 1, 1, 1;ForeColor:ControlText;AlignVert:Center;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
+  </data>
   <data name="C1TrueDBGrid1.Images" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -4800,7 +4800,7 @@
 </value>
   </data>
   <data name="C1TrueDBGrid1.PropBag" xml:space="preserve">
-    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1TrueDBGrid.Design.ContextWrapper"&gt;&lt;Data&gt;Style15{}Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style3{}Style12{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Editor{}Style4{}FilterBar{}EvenRow{BackColor:Aqua;}Style11{}Style13{}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{}Style2{}Style14{}Normal{}Style7{}Heading{Wrap:True;BackColor:Control;Border:Flat,ControlDark,0, 1, 0, 1;ForeColor:ControlText;AlignVert:Center;}Style10{AlignHorz:Near;}Group{AlignVert:Center;Border:None,,0, 0, 0, 0;BackColor:ControlDark;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1TrueDBGrid.MergeView Name="" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" MarqueeStyle="DottedCellBorder" RecordSelectorWidth="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;Height&gt;133&lt;/Height&gt;&lt;CaptionStyle parent="Style2" me="Style10" /&gt;&lt;EditorStyle parent="Editor" me="Style5" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style8" /&gt;&lt;FilterBarStyle parent="FilterBar" me="Style13" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style12" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style7" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style9" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style11" /&gt;&lt;SelectedStyle parent="Selected" me="Style6" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;ClientRect&gt;0, 0, 608, 133&lt;/ClientRect&gt;&lt;BorderSide&gt;0&lt;/BorderSide&gt;&lt;/C1.Win.C1TrueDBGrid.MergeView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="Editor" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Normal" me="FilterBar" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;None&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;ClientArea&gt;0, 0, 608, 133&lt;/ClientArea&gt;&lt;PrintPageHeaderStyle parent="" me="Style14" /&gt;&lt;PrintPageFooterStyle parent="" me="Style15" /&gt;&lt;/Blob&gt;</value>
+    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1TrueDBGrid.Design.ContextWrapper"&gt;&lt;Data&gt;Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style13{}Style3{}Style12{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Editor{}Style4{}FilterBar{}EvenRow{BackColor:Aqua;}Style11{}Group{BackColor:ControlDark;Border:None,,0, 0, 0, 0;AlignVert:Center;}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{}Style2{}Style14{}Normal{}Style7{}Heading{Wrap:True;AlignVert:Center;Border:Flat,ControlDark,0, 1, 0, 1;ForeColor:ControlText;BackColor:Control;}Style10{AlignHorz:Near;}Style15{}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1TrueDBGrid.MergeView Name="" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" MarqueeStyle="DottedCellBorder" RecordSelectorWidth="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;Height&gt;133&lt;/Height&gt;&lt;CaptionStyle parent="Style2" me="Style10" /&gt;&lt;EditorStyle parent="Editor" me="Style5" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style8" /&gt;&lt;FilterBarStyle parent="FilterBar" me="Style13" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style12" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style7" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style9" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style11" /&gt;&lt;SelectedStyle parent="Selected" me="Style6" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;ClientRect&gt;0, 0, 608, 133&lt;/ClientRect&gt;&lt;BorderSide&gt;0&lt;/BorderSide&gt;&lt;/C1.Win.C1TrueDBGrid.MergeView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="Editor" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Normal" me="FilterBar" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;None&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;ClientArea&gt;0, 0, 608, 133&lt;/ClientArea&gt;&lt;PrintPageHeaderStyle parent="" me="Style14" /&gt;&lt;PrintPageFooterStyle parent="" me="Style15" /&gt;&lt;/Blob&gt;</value>
   </data>
   <data name="C1TrueDBGrid2.Images" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -4837,7 +4837,293 @@
 </value>
   </data>
   <data name="C1TrueDBGrid2.PropBag" xml:space="preserve">
-    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1TrueDBGrid.Design.ContextWrapper"&gt;&lt;Data&gt;Style15{}Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style3{}Style12{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Editor{}Style4{}FilterBar{}EvenRow{BackColor:Aqua;}Style11{}Style13{}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{}Style2{}Style14{}Normal{}Style7{}Heading{Wrap:True;BackColor:Control;Border:Flat,ControlDark,0, 1, 0, 1;ForeColor:ControlText;AlignVert:Center;}Style10{AlignHorz:Near;}Group{AlignVert:Center;Border:None,,0, 0, 0, 0;BackColor:ControlDark;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1TrueDBGrid.MergeView Name="" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" MarqueeStyle="DottedCellBorder" RecordSelectorWidth="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;Height&gt;115&lt;/Height&gt;&lt;CaptionStyle parent="Style2" me="Style10" /&gt;&lt;EditorStyle parent="Editor" me="Style5" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style8" /&gt;&lt;FilterBarStyle parent="FilterBar" me="Style13" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style12" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style7" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style9" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style11" /&gt;&lt;SelectedStyle parent="Selected" me="Style6" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;ClientRect&gt;0, 0, 618, 115&lt;/ClientRect&gt;&lt;BorderSide&gt;0&lt;/BorderSide&gt;&lt;/C1.Win.C1TrueDBGrid.MergeView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="Editor" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Normal" me="FilterBar" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;None&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;ClientArea&gt;0, 0, 618, 115&lt;/ClientArea&gt;&lt;PrintPageHeaderStyle parent="" me="Style14" /&gt;&lt;PrintPageFooterStyle parent="" me="Style15" /&gt;&lt;/Blob&gt;</value>
+    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1TrueDBGrid.Design.ContextWrapper"&gt;&lt;Data&gt;Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style13{}Style3{}Style12{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Editor{}Style4{}FilterBar{}EvenRow{BackColor:Aqua;}Style11{}Group{BackColor:ControlDark;Border:None,,0, 0, 0, 0;AlignVert:Center;}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{}Style2{}Style14{}Normal{}Style7{}Heading{Wrap:True;AlignVert:Center;Border:Flat,ControlDark,0, 1, 0, 1;ForeColor:ControlText;BackColor:Control;}Style10{AlignHorz:Near;}Style15{}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1TrueDBGrid.MergeView Name="" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" MarqueeStyle="DottedCellBorder" RecordSelectorWidth="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;Height&gt;115&lt;/Height&gt;&lt;CaptionStyle parent="Style2" me="Style10" /&gt;&lt;EditorStyle parent="Editor" me="Style5" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style8" /&gt;&lt;FilterBarStyle parent="FilterBar" me="Style13" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style12" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style7" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style9" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style11" /&gt;&lt;SelectedStyle parent="Selected" me="Style6" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;ClientRect&gt;0, 0, 618, 115&lt;/ClientRect&gt;&lt;BorderSide&gt;0&lt;/BorderSide&gt;&lt;/C1.Win.C1TrueDBGrid.MergeView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="Editor" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Normal" me="FilterBar" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;None&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;ClientArea&gt;0, 0, 618, 115&lt;/ClientArea&gt;&lt;PrintPageHeaderStyle parent="" me="Style14" /&gt;&lt;PrintPageFooterStyle parent="" me="Style15" /&gt;&lt;/Blob&gt;</value>
+  </data>
+  <data name="Button9.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAABJxJREFUSEvtlXtM
+        U1ccx29pSy20kEJEecMKk4GESUdFXgaYlkRhMy7S4sYWtxkzNh4DcRuIi/Isj9KiPAoVQXnLQ4gENFoo
+        ogiCi48hbqhsYwgKEwShove3c2qXzInMqP9t3+Tk3Of3c76/e865xH9TTCaTsLOzI9zd3QmBQIBagOaY
+        y7Uj2Gy29qlXkIWFBbElOJgdGRm1Ky+/oEtxuOpOTmHZqHR/bkd4RGTC1g8/svby8np5mK2tLRESsnVF
+        VrbsemnHIGScuQ3S3gko+XEKFBcnoOLCCIgVdeqwryLEW4SiJebm5to3X1AODg7E+5s2vS3OkIxmKG9B
+        7rX7UDo4A3VDs9DyuxraRx/C2TvzoLqtBkX7TxAVG39OKAoxNDMz0zr8i7hcLiEUitwTvt87nn/iB8i+
+        OgXygWkov/EAGn+dhdPI+Pzdebg48Qh6xx9Bx9hDkKsGIfzrne2BgUF0BoOhdVpErq6uy+J2J/xRcrgc
+        JN3Df4PMaCCnRtRwDqW4gADdCIZTNf82B6lVKhCKRN/hQS4qGo1GeHh4RBQVl5AVVTUg6x2GLATJ05ar
+        FpWreXhOkwabK1HfMqyG+l9mQdozBpE74+7yeDw9rd3CwlH9/d/Nx4C6hkYo6LwG6VcmIad/CgqvT8MR
+        lOYoAh1DiZrQ6HEyDC5D14vQ/WhxMfD5fAGVStU6LiA6nY6TSOsbmsiW1pNQe6oT0i7dg8wrU7C//76m
+        bId+noEjKBU2xj0+x9dz0P0YWRV4enpGYJ/nikKhEPb29qEVldVku6oDurrOQ17nAAJNQgZKJEXT9wAy
+        w+XLH3jSYzj+bumXJyFsXwG48nhhiyYxRAOwNmaZbP9gw0xiqAASv42BiuqjIOm6CakIlIaMsFkmAuJ0
+        GCxG53gQMSeH4MvI2MdoAfO1dk+LoUMQbxkQhJ+pzkrhm0yVJNCSbItZBdU7XCBt7x5Qtp8BqfISAt3T
+        wP7Z9vVNwPakIvD29jltYGBA09o+EQU1CyZBrF2mo7/Rip4Ws8ZIXSziQs9uPjmW6w+XE9fANyEBoGxT
+        wfHmFiisaQJxay+k9IxozFNQi2sbgi+S5eDr69fH4XBsdHTQiP8SC/HeMaYQAebUwM+cWTfTBGZQ8ckK
+        uJrkAQhAdse7QVHwG7BLKECAVqitb4TyyhooLi2DPLkCZPKDICkohqTUdNKNz29A+5fxUwAsFyOq3mYu
+        oy7eZykp2WhJHtvhRN7I8CFHcnxJZfQqUhpkRa63Zg6amRjHBgW9N5CckvY4N7+QLDxYAnLFITI75wAZ
+        GRX9AO3QqSwW69lljsvkyKFtS1pnSuZvtoHjYc4wLPOFW1lr0fFKSFlvSq5ernuWRadYU3UoeGrrIyMB
+        2jRTnZycKh0dHcusrKzi0W/AGa0tbLewbAzoH2dusCBPRLhA357V0J/sCdXbHCAOJXPg0Cv1aBTDhd7G
+        JXmmLM8TS5e6/FOe0XhPPB9/A2hGacLdOPOWLGoKk0bR1T72aqKhMpjo00MT1pnPdSNQtLfJ9FIm9fMl
+        VLQiX6foVArBZtD8LNl0mSGD6kd/wSr8r9csgvgTAIKbcdlgGmYAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="Button10.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAABJxJREFUSEvtlXtM
+        U1ccx29pSy20kEJEecMKk4GESUdFXgaYlkRhMy7S4sYWtxkzNh4DcRuIi/Isj9KiPAoVQXnLQ4gENFoo
+        ogiCi48hbqhsYwgKEwShove3c2qXzInMqP9t3+Tk3Of3c76/e865xH9TTCaTsLOzI9zd3QmBQIBagOaY
+        y7Uj2Gy29qlXkIWFBbElOJgdGRm1Ky+/oEtxuOpOTmHZqHR/bkd4RGTC1g8/svby8np5mK2tLRESsnVF
+        VrbsemnHIGScuQ3S3gko+XEKFBcnoOLCCIgVdeqwryLEW4SiJebm5to3X1AODg7E+5s2vS3OkIxmKG9B
+        7rX7UDo4A3VDs9DyuxraRx/C2TvzoLqtBkX7TxAVG39OKAoxNDMz0zr8i7hcLiEUitwTvt87nn/iB8i+
+        OgXygWkov/EAGn+dhdPI+Pzdebg48Qh6xx9Bx9hDkKsGIfzrne2BgUF0BoOhdVpErq6uy+J2J/xRcrgc
+        JN3Df4PMaCCnRtRwDqW4gADdCIZTNf82B6lVKhCKRN/hQS4qGo1GeHh4RBQVl5AVVTUg6x2GLATJ05ar
+        FpWreXhOkwabK1HfMqyG+l9mQdozBpE74+7yeDw9rd3CwlH9/d/Nx4C6hkYo6LwG6VcmIad/CgqvT8MR
+        lOYoAh1DiZrQ6HEyDC5D14vQ/WhxMfD5fAGVStU6LiA6nY6TSOsbmsiW1pNQe6oT0i7dg8wrU7C//76m
+        bId+noEjKBU2xj0+x9dz0P0YWRV4enpGYJ/nikKhEPb29qEVldVku6oDurrOQ17nAAJNQgZKJEXT9wAy
+        w+XLH3jSYzj+bumXJyFsXwG48nhhiyYxRAOwNmaZbP9gw0xiqAASv42BiuqjIOm6CakIlIaMsFkmAuJ0
+        GCxG53gQMSeH4MvI2MdoAfO1dk+LoUMQbxkQhJ+pzkrhm0yVJNCSbItZBdU7XCBt7x5Qtp8BqfISAt3T
+        wP7Z9vVNwPakIvD29jltYGBA09o+EQU1CyZBrF2mo7/Rip4Ws8ZIXSziQs9uPjmW6w+XE9fANyEBoGxT
+        wfHmFiisaQJxay+k9IxozFNQi2sbgi+S5eDr69fH4XBsdHTQiP8SC/HeMaYQAebUwM+cWTfTBGZQ8ckK
+        uJrkAQhAdse7QVHwG7BLKECAVqitb4TyyhooLi2DPLkCZPKDICkohqTUdNKNz29A+5fxUwAsFyOq3mYu
+        oy7eZykp2WhJHtvhRN7I8CFHcnxJZfQqUhpkRa63Zg6amRjHBgW9N5CckvY4N7+QLDxYAnLFITI75wAZ
+        GRX9AO3QqSwW69lljsvkyKFtS1pnSuZvtoHjYc4wLPOFW1lr0fFKSFlvSq5ernuWRadYU3UoeGrrIyMB
+        2jRTnZycKh0dHcusrKzi0W/AGa0tbLewbAzoH2dusCBPRLhA357V0J/sCdXbHCAOJXPg0Cv1aBTDhd7G
+        JXmmLM8TS5e6/FOe0XhPPB9/A2hGacLdOPOWLGoKk0bR1T72aqKhMpjo00MT1pnPdSNQtLfJ9FIm9fMl
+        VLQiX6foVArBZtD8LNl0mSGD6kd/wSr8r9csgvgTAIKbcdlgGmYAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="Button11.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAABJxJREFUSEvtlXtM
+        U1ccx29pSy20kEJEecMKk4GESUdFXgaYlkRhMy7S4sYWtxkzNh4DcRuIi/Isj9KiPAoVQXnLQ4gENFoo
+        ogiCi48hbqhsYwgKEwShove3c2qXzInMqP9t3+Tk3Of3c76/e865xH9TTCaTsLOzI9zd3QmBQIBagOaY
+        y7Uj2Gy29qlXkIWFBbElOJgdGRm1Ky+/oEtxuOpOTmHZqHR/bkd4RGTC1g8/svby8np5mK2tLRESsnVF
+        VrbsemnHIGScuQ3S3gko+XEKFBcnoOLCCIgVdeqwryLEW4SiJebm5to3X1AODg7E+5s2vS3OkIxmKG9B
+        7rX7UDo4A3VDs9DyuxraRx/C2TvzoLqtBkX7TxAVG39OKAoxNDMz0zr8i7hcLiEUitwTvt87nn/iB8i+
+        OgXygWkov/EAGn+dhdPI+Pzdebg48Qh6xx9Bx9hDkKsGIfzrne2BgUF0BoOhdVpErq6uy+J2J/xRcrgc
+        JN3Df4PMaCCnRtRwDqW4gADdCIZTNf82B6lVKhCKRN/hQS4qGo1GeHh4RBQVl5AVVTUg6x2GLATJ05ar
+        FpWreXhOkwabK1HfMqyG+l9mQdozBpE74+7yeDw9rd3CwlH9/d/Nx4C6hkYo6LwG6VcmIad/CgqvT8MR
+        lOYoAh1DiZrQ6HEyDC5D14vQ/WhxMfD5fAGVStU6LiA6nY6TSOsbmsiW1pNQe6oT0i7dg8wrU7C//76m
+        bId+noEjKBU2xj0+x9dz0P0YWRV4enpGYJ/nikKhEPb29qEVldVku6oDurrOQ17nAAJNQgZKJEXT9wAy
+        w+XLH3jSYzj+bumXJyFsXwG48nhhiyYxRAOwNmaZbP9gw0xiqAASv42BiuqjIOm6CakIlIaMsFkmAuJ0
+        GCxG53gQMSeH4MvI2MdoAfO1dk+LoUMQbxkQhJ+pzkrhm0yVJNCSbItZBdU7XCBt7x5Qtp8BqfISAt3T
+        wP7Z9vVNwPakIvD29jltYGBA09o+EQU1CyZBrF2mo7/Rip4Ws8ZIXSziQs9uPjmW6w+XE9fANyEBoGxT
+        wfHmFiisaQJxay+k9IxozFNQi2sbgi+S5eDr69fH4XBsdHTQiP8SC/HeMaYQAebUwM+cWTfTBGZQ8ckK
+        uJrkAQhAdse7QVHwG7BLKECAVqitb4TyyhooLi2DPLkCZPKDICkohqTUdNKNz29A+5fxUwAsFyOq3mYu
+        oy7eZykp2WhJHtvhRN7I8CFHcnxJZfQqUhpkRa63Zg6amRjHBgW9N5CckvY4N7+QLDxYAnLFITI75wAZ
+        GRX9AO3QqSwW69lljsvkyKFtS1pnSuZvtoHjYc4wLPOFW1lr0fFKSFlvSq5ernuWRadYU3UoeGrrIyMB
+        2jRTnZycKh0dHcusrKzi0W/AGa0tbLewbAzoH2dusCBPRLhA357V0J/sCdXbHCAOJXPg0Cv1aBTDhd7G
+        JXmmLM8TS5e6/FOe0XhPPB9/A2hGacLdOPOWLGoKk0bR1T72aqKhMpjo00MT1pnPdSNQtLfJ9FIm9fMl
+        VLQiX6foVArBZtD8LNl0mSGD6kd/wSr8r9csgvgTAIKbcdlgGmYAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="Button12.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAABJxJREFUSEvtlXtM
+        U1ccx29pSy20kEJEecMKk4GESUdFXgaYlkRhMy7S4sYWtxkzNh4DcRuIi/Isj9KiPAoVQXnLQ4gENFoo
+        ogiCi48hbqhsYwgKEwShove3c2qXzInMqP9t3+Tk3Of3c76/e865xH9TTCaTsLOzI9zd3QmBQIBagOaY
+        y7Uj2Gy29qlXkIWFBbElOJgdGRm1Ky+/oEtxuOpOTmHZqHR/bkd4RGTC1g8/svby8np5mK2tLRESsnVF
+        VrbsemnHIGScuQ3S3gko+XEKFBcnoOLCCIgVdeqwryLEW4SiJebm5to3X1AODg7E+5s2vS3OkIxmKG9B
+        7rX7UDo4A3VDs9DyuxraRx/C2TvzoLqtBkX7TxAVG39OKAoxNDMz0zr8i7hcLiEUitwTvt87nn/iB8i+
+        OgXygWkov/EAGn+dhdPI+Pzdebg48Qh6xx9Bx9hDkKsGIfzrne2BgUF0BoOhdVpErq6uy+J2J/xRcrgc
+        JN3Df4PMaCCnRtRwDqW4gADdCIZTNf82B6lVKhCKRN/hQS4qGo1GeHh4RBQVl5AVVTUg6x2GLATJ05ar
+        FpWreXhOkwabK1HfMqyG+l9mQdozBpE74+7yeDw9rd3CwlH9/d/Nx4C6hkYo6LwG6VcmIad/CgqvT8MR
+        lOYoAh1DiZrQ6HEyDC5D14vQ/WhxMfD5fAGVStU6LiA6nY6TSOsbmsiW1pNQe6oT0i7dg8wrU7C//76m
+        bId+noEjKBU2xj0+x9dz0P0YWRV4enpGYJ/nikKhEPb29qEVldVku6oDurrOQ17nAAJNQgZKJEXT9wAy
+        w+XLH3jSYzj+bumXJyFsXwG48nhhiyYxRAOwNmaZbP9gw0xiqAASv42BiuqjIOm6CakIlIaMsFkmAuJ0
+        GCxG53gQMSeH4MvI2MdoAfO1dk+LoUMQbxkQhJ+pzkrhm0yVJNCSbItZBdU7XCBt7x5Qtp8BqfISAt3T
+        wP7Z9vVNwPakIvD29jltYGBA09o+EQU1CyZBrF2mo7/Rip4Ws8ZIXSziQs9uPjmW6w+XE9fANyEBoGxT
+        wfHmFiisaQJxay+k9IxozFNQi2sbgi+S5eDr69fH4XBsdHTQiP8SC/HeMaYQAebUwM+cWTfTBGZQ8ckK
+        uJrkAQhAdse7QVHwG7BLKECAVqitb4TyyhooLi2DPLkCZPKDICkohqTUdNKNz29A+5fxUwAsFyOq3mYu
+        oy7eZykp2WhJHtvhRN7I8CFHcnxJZfQqUhpkRa63Zg6amRjHBgW9N5CckvY4N7+QLDxYAnLFITI75wAZ
+        GRX9AO3QqSwW69lljsvkyKFtS1pnSuZvtoHjYc4wLPOFW1lr0fFKSFlvSq5ernuWRadYU3UoeGrrIyMB
+        2jRTnZycKh0dHcusrKzi0W/AGa0tbLewbAzoH2dusCBPRLhA357V0J/sCdXbHCAOJXPg0Cv1aBTDhd7G
+        JXmmLM8TS5e6/FOe0XhPPB9/A2hGacLdOPOWLGoKk0bR1T72aqKhMpjo00MT1pnPdSNQtLfJ9FIm9fMl
+        VLQiX6foVArBZtD8LNl0mSGD6kd/wSr8r9csgvgTAIKbcdlgGmYAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="Button13.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAABJxJREFUSEvtlXtM
+        U1ccx29pSy20kEJEecMKk4GESUdFXgaYlkRhMy7S4sYWtxkzNh4DcRuIi/Isj9KiPAoVQXnLQ4gENFoo
+        ogiCi48hbqhsYwgKEwShove3c2qXzInMqP9t3+Tk3Of3c76/e865xH9TTCaTsLOzI9zd3QmBQIBagOaY
+        y7Uj2Gy29qlXkIWFBbElOJgdGRm1Ky+/oEtxuOpOTmHZqHR/bkd4RGTC1g8/svby8np5mK2tLRESsnVF
+        VrbsemnHIGScuQ3S3gko+XEKFBcnoOLCCIgVdeqwryLEW4SiJebm5to3X1AODg7E+5s2vS3OkIxmKG9B
+        7rX7UDo4A3VDs9DyuxraRx/C2TvzoLqtBkX7TxAVG39OKAoxNDMz0zr8i7hcLiEUitwTvt87nn/iB8i+
+        OgXygWkov/EAGn+dhdPI+Pzdebg48Qh6xx9Bx9hDkKsGIfzrne2BgUF0BoOhdVpErq6uy+J2J/xRcrgc
+        JN3Df4PMaCCnRtRwDqW4gADdCIZTNf82B6lVKhCKRN/hQS4qGo1GeHh4RBQVl5AVVTUg6x2GLATJ05ar
+        FpWreXhOkwabK1HfMqyG+l9mQdozBpE74+7yeDw9rd3CwlH9/d/Nx4C6hkYo6LwG6VcmIad/CgqvT8MR
+        lOYoAh1DiZrQ6HEyDC5D14vQ/WhxMfD5fAGVStU6LiA6nY6TSOsbmsiW1pNQe6oT0i7dg8wrU7C//76m
+        bId+noEjKBU2xj0+x9dz0P0YWRV4enpGYJ/nikKhEPb29qEVldVku6oDurrOQ17nAAJNQgZKJEXT9wAy
+        w+XLH3jSYzj+bumXJyFsXwG48nhhiyYxRAOwNmaZbP9gw0xiqAASv42BiuqjIOm6CakIlIaMsFkmAuJ0
+        GCxG53gQMSeH4MvI2MdoAfO1dk+LoUMQbxkQhJ+pzkrhm0yVJNCSbItZBdU7XCBt7x5Qtp8BqfISAt3T
+        wP7Z9vVNwPakIvD29jltYGBA09o+EQU1CyZBrF2mo7/Rip4Ws8ZIXSziQs9uPjmW6w+XE9fANyEBoGxT
+        wfHmFiisaQJxay+k9IxozFNQi2sbgi+S5eDr69fH4XBsdHTQiP8SC/HeMaYQAebUwM+cWTfTBGZQ8ckK
+        uJrkAQhAdse7QVHwG7BLKECAVqitb4TyyhooLi2DPLkCZPKDICkohqTUdNKNz29A+5fxUwAsFyOq3mYu
+        oy7eZykp2WhJHtvhRN7I8CFHcnxJZfQqUhpkRa63Zg6amRjHBgW9N5CckvY4N7+QLDxYAnLFITI75wAZ
+        GRX9AO3QqSwW69lljsvkyKFtS1pnSuZvtoHjYc4wLPOFW1lr0fFKSFlvSq5ernuWRadYU3UoeGrrIyMB
+        2jRTnZycKh0dHcusrKzi0W/AGa0tbLewbAzoH2dusCBPRLhA357V0J/sCdXbHCAOJXPg0Cv1aBTDhd7G
+        JXmmLM8TS5e6/FOe0XhPPB9/A2hGacLdOPOWLGoKk0bR1T72aqKhMpjo00MT1pnPdSNQtLfJ9FIm9fMl
+        VLQiX6foVArBZtD8LNl0mSGD6kd/wSr8r9csgvgTAIKbcdlgGmYAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="Button14.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAABJxJREFUSEvtlXtM
+        U1ccx29pSy20kEJEecMKk4GESUdFXgaYlkRhMy7S4sYWtxkzNh4DcRuIi/Isj9KiPAoVQXnLQ4gENFoo
+        ogiCi48hbqhsYwgKEwShove3c2qXzInMqP9t3+Tk3Of3c76/e865xH9TTCaTsLOzI9zd3QmBQIBagOaY
+        y7Uj2Gy29qlXkIWFBbElOJgdGRm1Ky+/oEtxuOpOTmHZqHR/bkd4RGTC1g8/svby8np5mK2tLRESsnVF
+        VrbsemnHIGScuQ3S3gko+XEKFBcnoOLCCIgVdeqwryLEW4SiJebm5to3X1AODg7E+5s2vS3OkIxmKG9B
+        7rX7UDo4A3VDs9DyuxraRx/C2TvzoLqtBkX7TxAVG39OKAoxNDMz0zr8i7hcLiEUitwTvt87nn/iB8i+
+        OgXygWkov/EAGn+dhdPI+Pzdebg48Qh6xx9Bx9hDkKsGIfzrne2BgUF0BoOhdVpErq6uy+J2J/xRcrgc
+        JN3Df4PMaCCnRtRwDqW4gADdCIZTNf82B6lVKhCKRN/hQS4qGo1GeHh4RBQVl5AVVTUg6x2GLATJ05ar
+        FpWreXhOkwabK1HfMqyG+l9mQdozBpE74+7yeDw9rd3CwlH9/d/Nx4C6hkYo6LwG6VcmIad/CgqvT8MR
+        lOYoAh1DiZrQ6HEyDC5D14vQ/WhxMfD5fAGVStU6LiA6nY6TSOsbmsiW1pNQe6oT0i7dg8wrU7C//76m
+        bId+noEjKBU2xj0+x9dz0P0YWRV4enpGYJ/nikKhEPb29qEVldVku6oDurrOQ17nAAJNQgZKJEXT9wAy
+        w+XLH3jSYzj+bumXJyFsXwG48nhhiyYxRAOwNmaZbP9gw0xiqAASv42BiuqjIOm6CakIlIaMsFkmAuJ0
+        GCxG53gQMSeH4MvI2MdoAfO1dk+LoUMQbxkQhJ+pzkrhm0yVJNCSbItZBdU7XCBt7x5Qtp8BqfISAt3T
+        wP7Z9vVNwPakIvD29jltYGBA09o+EQU1CyZBrF2mo7/Rip4Ws8ZIXSziQs9uPjmW6w+XE9fANyEBoGxT
+        wfHmFiisaQJxay+k9IxozFNQi2sbgi+S5eDr69fH4XBsdHTQiP8SC/HeMaYQAebUwM+cWTfTBGZQ8ckK
+        uJrkAQhAdse7QVHwG7BLKECAVqitb4TyyhooLi2DPLkCZPKDICkohqTUdNKNz29A+5fxUwAsFyOq3mYu
+        oy7eZykp2WhJHtvhRN7I8CFHcnxJZfQqUhpkRa63Zg6amRjHBgW9N5CckvY4N7+QLDxYAnLFITI75wAZ
+        GRX9AO3QqSwW69lljsvkyKFtS1pnSuZvtoHjYc4wLPOFW1lr0fFKSFlvSq5ernuWRadYU3UoeGrrIyMB
+        2jRTnZycKh0dHcusrKzi0W/AGa0tbLewbAzoH2dusCBPRLhA357V0J/sCdXbHCAOJXPg0Cv1aBTDhd7G
+        JXmmLM8TS5e6/FOe0XhPPB9/A2hGacLdOPOWLGoKk0bR1T72aqKhMpjo00MT1pnPdSNQtLfJ9FIm9fMl
+        VLQiX6foVArBZtD8LNl0mSGD6kd/wSr8r9csgvgTAIKbcdlgGmYAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="Button15.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAABJxJREFUSEvtlXtM
+        U1ccx29pSy20kEJEecMKk4GESUdFXgaYlkRhMy7S4sYWtxkzNh4DcRuIi/Isj9KiPAoVQXnLQ4gENFoo
+        ogiCi48hbqhsYwgKEwShove3c2qXzInMqP9t3+Tk3Of3c76/e865xH9TTCaTsLOzI9zd3QmBQIBagOaY
+        y7Uj2Gy29qlXkIWFBbElOJgdGRm1Ky+/oEtxuOpOTmHZqHR/bkd4RGTC1g8/svby8np5mK2tLRESsnVF
+        VrbsemnHIGScuQ3S3gko+XEKFBcnoOLCCIgVdeqwryLEW4SiJebm5to3X1AODg7E+5s2vS3OkIxmKG9B
+        7rX7UDo4A3VDs9DyuxraRx/C2TvzoLqtBkX7TxAVG39OKAoxNDMz0zr8i7hcLiEUitwTvt87nn/iB8i+
+        OgXygWkov/EAGn+dhdPI+Pzdebg48Qh6xx9Bx9hDkKsGIfzrne2BgUF0BoOhdVpErq6uy+J2J/xRcrgc
+        JN3Df4PMaCCnRtRwDqW4gADdCIZTNf82B6lVKhCKRN/hQS4qGo1GeHh4RBQVl5AVVTUg6x2GLATJ05ar
+        FpWreXhOkwabK1HfMqyG+l9mQdozBpE74+7yeDw9rd3CwlH9/d/Nx4C6hkYo6LwG6VcmIad/CgqvT8MR
+        lOYoAh1DiZrQ6HEyDC5D14vQ/WhxMfD5fAGVStU6LiA6nY6TSOsbmsiW1pNQe6oT0i7dg8wrU7C//76m
+        bId+noEjKBU2xj0+x9dz0P0YWRV4enpGYJ/nikKhEPb29qEVldVku6oDurrOQ17nAAJNQgZKJEXT9wAy
+        w+XLH3jSYzj+bumXJyFsXwG48nhhiyYxRAOwNmaZbP9gw0xiqAASv42BiuqjIOm6CakIlIaMsFkmAuJ0
+        GCxG53gQMSeH4MvI2MdoAfO1dk+LoUMQbxkQhJ+pzkrhm0yVJNCSbItZBdU7XCBt7x5Qtp8BqfISAt3T
+        wP7Z9vVNwPakIvD29jltYGBA09o+EQU1CyZBrF2mo7/Rip4Ws8ZIXSziQs9uPjmW6w+XE9fANyEBoGxT
+        wfHmFiisaQJxay+k9IxozFNQi2sbgi+S5eDr69fH4XBsdHTQiP8SC/HeMaYQAebUwM+cWTfTBGZQ8ckK
+        uJrkAQhAdse7QVHwG7BLKECAVqitb4TyyhooLi2DPLkCZPKDICkohqTUdNKNz29A+5fxUwAsFyOq3mYu
+        oy7eZykp2WhJHtvhRN7I8CFHcnxJZfQqUhpkRa63Zg6amRjHBgW9N5CckvY4N7+QLDxYAnLFITI75wAZ
+        GRX9AO3QqSwW69lljsvkyKFtS1pnSuZvtoHjYc4wLPOFW1lr0fFKSFlvSq5ernuWRadYU3UoeGrrIyMB
+        2jRTnZycKh0dHcusrKzi0W/AGa0tbLewbAzoH2dusCBPRLhA357V0J/sCdXbHCAOJXPg0Cv1aBTDhd7G
+        JXmmLM8TS5e6/FOe0XhPPB9/A2hGacLdOPOWLGoKk0bR1T72aqKhMpjo00MT1pnPdSNQtLfJ9FIm9fMl
+        VLQiX6foVArBZtD8LNl0mSGD6kd/wSr8r9csgvgTAIKbcdlgGmYAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="Button7.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAABJxJREFUSEvtlXtM
+        U1ccx29pSy20kEJEecMKk4GESUdFXgaYlkRhMy7S4sYWtxkzNh4DcRuIi/Isj9KiPAoVQXnLQ4gENFoo
+        ogiCi48hbqhsYwgKEwShove3c2qXzInMqP9t3+Tk3Of3c76/e865xH9TTCaTsLOzI9zd3QmBQIBagOaY
+        y7Uj2Gy29qlXkIWFBbElOJgdGRm1Ky+/oEtxuOpOTmHZqHR/bkd4RGTC1g8/svby8np5mK2tLRESsnVF
+        VrbsemnHIGScuQ3S3gko+XEKFBcnoOLCCIgVdeqwryLEW4SiJebm5to3X1AODg7E+5s2vS3OkIxmKG9B
+        7rX7UDo4A3VDs9DyuxraRx/C2TvzoLqtBkX7TxAVG39OKAoxNDMz0zr8i7hcLiEUitwTvt87nn/iB8i+
+        OgXygWkov/EAGn+dhdPI+Pzdebg48Qh6xx9Bx9hDkKsGIfzrne2BgUF0BoOhdVpErq6uy+J2J/xRcrgc
+        JN3Df4PMaCCnRtRwDqW4gADdCIZTNf82B6lVKhCKRN/hQS4qGo1GeHh4RBQVl5AVVTUg6x2GLATJ05ar
+        FpWreXhOkwabK1HfMqyG+l9mQdozBpE74+7yeDw9rd3CwlH9/d/Nx4C6hkYo6LwG6VcmIad/CgqvT8MR
+        lOYoAh1DiZrQ6HEyDC5D14vQ/WhxMfD5fAGVStU6LiA6nY6TSOsbmsiW1pNQe6oT0i7dg8wrU7C//76m
+        bId+noEjKBU2xj0+x9dz0P0YWRV4enpGYJ/nikKhEPb29qEVldVku6oDurrOQ17nAAJNQgZKJEXT9wAy
+        w+XLH3jSYzj+bumXJyFsXwG48nhhiyYxRAOwNmaZbP9gw0xiqAASv42BiuqjIOm6CakIlIaMsFkmAuJ0
+        GCxG53gQMSeH4MvI2MdoAfO1dk+LoUMQbxkQhJ+pzkrhm0yVJNCSbItZBdU7XCBt7x5Qtp8BqfISAt3T
+        wP7Z9vVNwPakIvD29jltYGBA09o+EQU1CyZBrF2mo7/Rip4Ws8ZIXSziQs9uPjmW6w+XE9fANyEBoGxT
+        wfHmFiisaQJxay+k9IxozFNQi2sbgi+S5eDr69fH4XBsdHTQiP8SC/HeMaYQAebUwM+cWTfTBGZQ8ckK
+        uJrkAQhAdse7QVHwG7BLKECAVqitb4TyyhooLi2DPLkCZPKDICkohqTUdNKNz29A+5fxUwAsFyOq3mYu
+        oy7eZykp2WhJHtvhRN7I8CFHcnxJZfQqUhpkRa63Zg6amRjHBgW9N5CckvY4N7+QLDxYAnLFITI75wAZ
+        GRX9AO3QqSwW69lljsvkyKFtS1pnSuZvtoHjYc4wLPOFW1lr0fFKSFlvSq5ernuWRadYU3UoeGrrIyMB
+        2jRTnZycKh0dHcusrKzi0W/AGa0tbLewbAzoH2dusCBPRLhA357V0J/sCdXbHCAOJXPg0Cv1aBTDhd7G
+        JXmmLM8TS5e6/FOe0XhPPB9/A2hGacLdOPOWLGoKk0bR1T72aqKhMpjo00MT1pnPdSNQtLfJ9FIm9fMl
+        VLQiX6foVArBZtD8LNl0mSGD6kd/wSr8r9csgvgTAIKbcdlgGmYAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="Button5.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAABJxJREFUSEvtlXtM
+        U1ccx29pSy20kEJEecMKk4GESUdFXgaYlkRhMy7S4sYWtxkzNh4DcRuIi/Isj9KiPAoVQXnLQ4gENFoo
+        ogiCi48hbqhsYwgKEwShove3c2qXzInMqP9t3+Tk3Of3c76/e865xH9TTCaTsLOzI9zd3QmBQIBagOaY
+        y7Uj2Gy29qlXkIWFBbElOJgdGRm1Ky+/oEtxuOpOTmHZqHR/bkd4RGTC1g8/svby8np5mK2tLRESsnVF
+        VrbsemnHIGScuQ3S3gko+XEKFBcnoOLCCIgVdeqwryLEW4SiJebm5to3X1AODg7E+5s2vS3OkIxmKG9B
+        7rX7UDo4A3VDs9DyuxraRx/C2TvzoLqtBkX7TxAVG39OKAoxNDMz0zr8i7hcLiEUitwTvt87nn/iB8i+
+        OgXygWkov/EAGn+dhdPI+Pzdebg48Qh6xx9Bx9hDkKsGIfzrne2BgUF0BoOhdVpErq6uy+J2J/xRcrgc
+        JN3Df4PMaCCnRtRwDqW4gADdCIZTNf82B6lVKhCKRN/hQS4qGo1GeHh4RBQVl5AVVTUg6x2GLATJ05ar
+        FpWreXhOkwabK1HfMqyG+l9mQdozBpE74+7yeDw9rd3CwlH9/d/Nx4C6hkYo6LwG6VcmIad/CgqvT8MR
+        lOYoAh1DiZrQ6HEyDC5D14vQ/WhxMfD5fAGVStU6LiA6nY6TSOsbmsiW1pNQe6oT0i7dg8wrU7C//76m
+        bId+noEjKBU2xj0+x9dz0P0YWRV4enpGYJ/nikKhEPb29qEVldVku6oDurrOQ17nAAJNQgZKJEXT9wAy
+        w+XLH3jSYzj+bumXJyFsXwG48nhhiyYxRAOwNmaZbP9gw0xiqAASv42BiuqjIOm6CakIlIaMsFkmAuJ0
+        GCxG53gQMSeH4MvI2MdoAfO1dk+LoUMQbxkQhJ+pzkrhm0yVJNCSbItZBdU7XCBt7x5Qtp8BqfISAt3T
+        wP7Z9vVNwPakIvD29jltYGBA09o+EQU1CyZBrF2mo7/Rip4Ws8ZIXSziQs9uPjmW6w+XE9fANyEBoGxT
+        wfHmFiisaQJxay+k9IxozFNQi2sbgi+S5eDr69fH4XBsdHTQiP8SC/HeMaYQAebUwM+cWTfTBGZQ8ckK
+        uJrkAQhAdse7QVHwG7BLKECAVqitb4TyyhooLi2DPLkCZPKDICkohqTUdNKNz29A+5fxUwAsFyOq3mYu
+        oy7eZykp2WhJHtvhRN7I8CFHcnxJZfQqUhpkRa63Zg6amRjHBgW9N5CckvY4N7+QLDxYAnLFITI75wAZ
+        GRX9AO3QqSwW69lljsvkyKFtS1pnSuZvtoHjYc4wLPOFW1lr0fFKSFlvSq5ernuWRadYU3UoeGrrIyMB
+        2jRTnZycKh0dHcusrKzi0W/AGa0tbLewbAzoH2dusCBPRLhA357V0J/sCdXbHCAOJXPg0Cv1aBTDhd7G
+        JXmmLM8TS5e6/FOe0XhPPB9/A2hGacLdOPOWLGoKk0bR1T72aqKhMpjo00MT1pnPdSNQtLfJ9FIm9fMl
+        VLQiX6foVArBZtD8LNl0mSGD6kd/wSr8r9csgvgTAIKbcdlgGmYAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="Button4.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAABJxJREFUSEvtlXtM
+        U1ccx29pSy20kEJEecMKk4GESUdFXgaYlkRhMy7S4sYWtxkzNh4DcRuIi/Isj9KiPAoVQXnLQ4gENFoo
+        ogiCi48hbqhsYwgKEwShove3c2qXzInMqP9t3+Tk3Of3c76/e865xH9TTCaTsLOzI9zd3QmBQIBagOaY
+        y7Uj2Gy29qlXkIWFBbElOJgdGRm1Ky+/oEtxuOpOTmHZqHR/bkd4RGTC1g8/svby8np5mK2tLRESsnVF
+        VrbsemnHIGScuQ3S3gko+XEKFBcnoOLCCIgVdeqwryLEW4SiJebm5to3X1AODg7E+5s2vS3OkIxmKG9B
+        7rX7UDo4A3VDs9DyuxraRx/C2TvzoLqtBkX7TxAVG39OKAoxNDMz0zr8i7hcLiEUitwTvt87nn/iB8i+
+        OgXygWkov/EAGn+dhdPI+Pzdebg48Qh6xx9Bx9hDkKsGIfzrne2BgUF0BoOhdVpErq6uy+J2J/xRcrgc
+        JN3Df4PMaCCnRtRwDqW4gADdCIZTNf82B6lVKhCKRN/hQS4qGo1GeHh4RBQVl5AVVTUg6x2GLATJ05ar
+        FpWreXhOkwabK1HfMqyG+l9mQdozBpE74+7yeDw9rd3CwlH9/d/Nx4C6hkYo6LwG6VcmIad/CgqvT8MR
+        lOYoAh1DiZrQ6HEyDC5D14vQ/WhxMfD5fAGVStU6LiA6nY6TSOsbmsiW1pNQe6oT0i7dg8wrU7C//76m
+        bId+noEjKBU2xj0+x9dz0P0YWRV4enpGYJ/nikKhEPb29qEVldVku6oDurrOQ17nAAJNQgZKJEXT9wAy
+        w+XLH3jSYzj+bumXJyFsXwG48nhhiyYxRAOwNmaZbP9gw0xiqAASv42BiuqjIOm6CakIlIaMsFkmAuJ0
+        GCxG53gQMSeH4MvI2MdoAfO1dk+LoUMQbxkQhJ+pzkrhm0yVJNCSbItZBdU7XCBt7x5Qtp8BqfISAt3T
+        wP7Z9vVNwPakIvD29jltYGBA09o+EQU1CyZBrF2mo7/Rip4Ws8ZIXSziQs9uPjmW6w+XE9fANyEBoGxT
+        wfHmFiisaQJxay+k9IxozFNQi2sbgi+S5eDr69fH4XBsdHTQiP8SC/HeMaYQAebUwM+cWTfTBGZQ8ckK
+        uJrkAQhAdse7QVHwG7BLKECAVqitb4TyyhooLi2DPLkCZPKDICkohqTUdNKNz29A+5fxUwAsFyOq3mYu
+        oy7eZykp2WhJHtvhRN7I8CFHcnxJZfQqUhpkRa63Zg6amRjHBgW9N5CckvY4N7+QLDxYAnLFITI75wAZ
+        GRX9AO3QqSwW69lljsvkyKFtS1pnSuZvtoHjYc4wLPOFW1lr0fFKSFlvSq5ernuWRadYU3UoeGrrIyMB
+        2jRTnZycKh0dHcusrKzi0W/AGa0tbLewbAzoH2dusCBPRLhA357V0J/sCdXbHCAOJXPg0Cv1aBTDhd7G
+        JXmmLM8TS5e6/FOe0XhPPB9/A2hGacLdOPOWLGoKk0bR1T72aqKhMpjo00MT1pnPdSNQtLfJ9FIm9fMl
+        VLQiX6foVArBZtD8LNl0mSGD6kd/wSr8r9csgvgTAIKbcdlgGmYAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="Button3.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAABJxJREFUSEvtlXtM
+        U1ccx29pSy20kEJEecMKk4GESUdFXgaYlkRhMy7S4sYWtxkzNh4DcRuIi/Isj9KiPAoVQXnLQ4gENFoo
+        ogiCi48hbqhsYwgKEwShove3c2qXzInMqP9t3+Tk3Of3c76/e865xH9TTCaTsLOzI9zd3QmBQIBagOaY
+        y7Uj2Gy29qlXkIWFBbElOJgdGRm1Ky+/oEtxuOpOTmHZqHR/bkd4RGTC1g8/svby8np5mK2tLRESsnVF
+        VrbsemnHIGScuQ3S3gko+XEKFBcnoOLCCIgVdeqwryLEW4SiJebm5to3X1AODg7E+5s2vS3OkIxmKG9B
+        7rX7UDo4A3VDs9DyuxraRx/C2TvzoLqtBkX7TxAVG39OKAoxNDMz0zr8i7hcLiEUitwTvt87nn/iB8i+
+        OgXygWkov/EAGn+dhdPI+Pzdebg48Qh6xx9Bx9hDkKsGIfzrne2BgUF0BoOhdVpErq6uy+J2J/xRcrgc
+        JN3Df4PMaCCnRtRwDqW4gADdCIZTNf82B6lVKhCKRN/hQS4qGo1GeHh4RBQVl5AVVTUg6x2GLATJ05ar
+        FpWreXhOkwabK1HfMqyG+l9mQdozBpE74+7yeDw9rd3CwlH9/d/Nx4C6hkYo6LwG6VcmIad/CgqvT8MR
+        lOYoAh1DiZrQ6HEyDC5D14vQ/WhxMfD5fAGVStU6LiA6nY6TSOsbmsiW1pNQe6oT0i7dg8wrU7C//76m
+        bId+noEjKBU2xj0+x9dz0P0YWRV4enpGYJ/nikKhEPb29qEVldVku6oDurrOQ17nAAJNQgZKJEXT9wAy
+        w+XLH3jSYzj+bumXJyFsXwG48nhhiyYxRAOwNmaZbP9gw0xiqAASv42BiuqjIOm6CakIlIaMsFkmAuJ0
+        GCxG53gQMSeH4MvI2MdoAfO1dk+LoUMQbxkQhJ+pzkrhm0yVJNCSbItZBdU7XCBt7x5Qtp8BqfISAt3T
+        wP7Z9vVNwPakIvD29jltYGBA09o+EQU1CyZBrF2mo7/Rip4Ws8ZIXSziQs9uPjmW6w+XE9fANyEBoGxT
+        wfHmFiisaQJxay+k9IxozFNQi2sbgi+S5eDr69fH4XBsdHTQiP8SC/HeMaYQAebUwM+cWTfTBGZQ8ckK
+        uJrkAQhAdse7QVHwG7BLKECAVqitb4TyyhooLi2DPLkCZPKDICkohqTUdNKNz29A+5fxUwAsFyOq3mYu
+        oy7eZykp2WhJHtvhRN7I8CFHcnxJZfQqUhpkRa63Zg6amRjHBgW9N5CckvY4N7+QLDxYAnLFITI75wAZ
+        GRX9AO3QqSwW69lljsvkyKFtS1pnSuZvtoHjYc4wLPOFW1lr0fFKSFlvSq5ernuWRadYU3UoeGrrIyMB
+        2jRTnZycKh0dHcusrKzi0W/AGa0tbLewbAzoH2dusCBPRLhA357V0J/sCdXbHCAOJXPg0Cv1aBTDhd7G
+        JXmmLM8TS5e6/FOe0XhPPB9/A2hGacLdOPOWLGoKk0bR1T72aqKhMpjo00MT1pnPdSNQtLfJ9FIm9fMl
+        VLQiX6foVArBZtD8LNl0mSGD6kd/wSr8r9csgvgTAIKbcdlgGmYAAAAASUVORK5CYII=
+</value>
   </data>
   <metadata name="OpenFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>19, 20</value>

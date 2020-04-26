@@ -29,6 +29,20 @@ Public Class FrmConsultas
 
             Select Case Quien
 
+                Case "CuentasContables"
+                    SQlProductos = "SELECT CodCuentas , DescripcionCuentas As Descripcion, TipoCuenta FROM Cuentas "
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    MiConexion.Open()
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiconexionContabilidad)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+
+                    MiConexion.Close()
+
                 Case "TipoNomina"
                     SQlProductos = "SELECT  CodTipoNomina, TipoNomina, PeriodoNomina FROM TipoNomina "
                     Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"

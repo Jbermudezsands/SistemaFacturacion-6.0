@@ -616,12 +616,18 @@ Public Class FrmCompras
         Cols = e.ColIndex
         If Me.TrueDBGridComponentes.Columns(3).Text <> "" Then
             Precio = CDbl(Me.TrueDBGridComponentes.Columns(3).Text)
-
         Else
             Precio = 0
         End If
         Descuento = 0
         Tasa = 0
+
+        If Me.TrueDBGridComponentes.Columns("Cantidad").Text = "" Then
+            MsgBox("Digite la Cantidad", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
+        End If
+
+
 
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
