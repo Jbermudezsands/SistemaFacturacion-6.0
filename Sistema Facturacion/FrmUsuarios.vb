@@ -95,6 +95,10 @@ Public Class FrmUsuarios
         Me.CboCodigoBodega.Columns(0).Caption = "Codigo"
         Me.CboCodigoBodega.Columns(1).Caption = "Nombre Bodega"
 
+        Me.CboCodigoBodegaCompra.DataSource = DataSet.Tables("Bodegas")
+        Me.CboCodigoBodegaCompra.Columns(0).Caption = "Codigo"
+        Me.CboCodigoBodegaCompra.Columns(1).Caption = "Nombre Bodega"
+
 
         If Acceso = "Administrador" Then
             SqlUsuarios = "SELECT Usuario  FROM Usuarios"
@@ -149,6 +153,17 @@ Public Class FrmUsuarios
             Me.CboCodigoCliente.Text = DataSet.Tables("Clientes").Rows(0)("Codigo")
         End If
 
+        '/////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////////////CARGO LOS PROVEEDORES /////////////////////////////////////////////////
+        '///////////////////////////////////////////////////////////////////////////////////////////////
+        Sql = "SELECT Cod_Proveedor As Codigo, Nombre_Proveedor + ' ' + Apellido_Proveedor AS Nombres  FROM Proveedor "
+        DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+        DataAdapter.Fill(DataSet, "Proveedor")
+        If Not DataSet.Tables("Proveedor").Rows.Count = 0 Then
+            Me.CboProveedor.DataSource = DataSet.Tables("Proveedor")
+            Me.CboProveedor.Text = DataSet.Tables("Proveedor").Rows(0)("Codigo")
+        End If
+
 
     End Sub
 
@@ -165,11 +180,38 @@ Public Class FrmUsuarios
             If Not IsDBNull(DataSet.Tables("Usuario").Rows(0)("Bodega")) Then
                 Me.CboCodigoBodega.Text = DataSet.Tables("Usuario").Rows(0)("Bodega")
             End If
+
+            If Not IsDBNull(DataSet.Tables("Usuario").Rows(0)("TipoFactura")) Then
+                Me.CboTipoProducto.Text = DataSet.Tables("Usuario").Rows(0)("TipoFactura")
+            End If
+            If Not IsDBNull(DataSet.Tables("Usuario").Rows(0)("SerieFactura")) Then
+                Me.CmbSerie.Text = DataSet.Tables("Usuario").Rows(0)("SerieFactura")
+            End If
+            If Not IsDBNull(DataSet.Tables("Usuario").Rows(0)("CodVendedor")) Then
+                Me.CboCodigoVendedor.Text = DataSet.Tables("Usuario").Rows(0)("CodVendedor")
+            End If
+            If Not IsDBNull(DataSet.Tables("Usuario").Rows(0)("CodCliente")) Then
+                Me.CboCodigoCliente.Text = DataSet.Tables("Usuario").Rows(0)("CodCliente")
+            End If
+            If Not IsDBNull(DataSet.Tables("Usuario").Rows(0)("TipoCompra")) Then
+                Me.CboTipoCompra.Text = DataSet.Tables("Usuario").Rows(0)("TipoCompra")
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Usuario").Rows(0)("BodegaCompra")) Then
+                Me.CboCodigoBodegaCompra.Text = DataSet.Tables("Usuario").Rows(0)("BodegaCompra")
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Usuario").Rows(0)("CodProveedor")) Then
+                Me.CboProveedor.Text = DataSet.Tables("Usuario").Rows(0)("CodProveedor")
+            End If
         Else
             Me.CboNivel.Text = ""
             Me.TxtContraseña.Text = ""
             Me.TxtConfirmar.Text = ""
             Me.CboCodigoBodega.Text = ""
+            Me.CboTipoCompra.Text = ""
+            Me.CboProveedor.Text = ""
+            Me.CboCodigoBodegaCompra.Text = ""
         End If
     End Sub
 
@@ -215,7 +257,7 @@ Public Class FrmUsuarios
             MiConexion.Close()
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
 
-            StrSqlUpdate = "UPDATE [Usuarios] SET [Contraseña] = '" & Me.TxtContraseña.Text & "',[Nivel] = '" & Me.CboNivel.Text & "',[Bodega]= '" & Me.CboCodigoBodega.Text & "',[TipoFactura]= '" & Me.CboTipoProducto.Text & "',[CodVendedor]= '" & Me.CboCodigoVendedor.Text & "',[CodCliente]= '" & Me.CboCodigoCliente.Text & "',[SerieFactura]= '" & Me.CmbSerie.Text & "'    " & _
+            StrSqlUpdate = "UPDATE [Usuarios] SET [Contraseña] = '" & Me.TxtContraseña.Text & "',[Nivel] = '" & Me.CboNivel.Text & "',[Bodega]= '" & Me.CboCodigoBodega.Text & "',[TipoFactura]= '" & Me.CboTipoProducto.Text & "',[CodVendedor]= '" & Me.CboCodigoVendedor.Text & "',[CodCliente]= '" & Me.CboCodigoCliente.Text & "',[SerieFactura]= '" & Me.CmbSerie.Text & "',[BodegaCompra]= '" & Me.CboCodigoBodegaCompra.Text & "', [TipoCompra]= '" & Me.CboTipoCompra.Text & "', [CodProveedor]= '" & Me.CboProveedor.Text & "'   " & _
                            "WHERE [Usuario] = '" & Me.CboUsuario.Text & "' "
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -226,8 +268,8 @@ Public Class FrmUsuarios
             MiConexion.Close()
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
             'Nivel = Me.CboNivel.Text
-            StrSqlUpdate = "INSERT INTO [Usuarios] ([Usuario],[Contraseña],[Nivel],[Bodega],[TipoFactura],[CodVendedor],[CodCliente],[SerieFactura]) " & _
-                           "VALUES('" & Me.CboUsuario.Text & "','" & Me.TxtContraseña.Text & "','" & Me.CboNivel.Text & "','" & Me.CboCodigoBodega.Text & "','" & Me.CboTipoProducto.Text & "','" & Me.CboCodigoVendedor.Text & "','" & Me.CboCodigoCliente.Text & "','" & Me.CmbSerie.Text & "')"
+            StrSqlUpdate = "INSERT INTO [Usuarios] ([Usuario],[Contraseña],[Nivel],[Bodega],[TipoFactura],[CodVendedor],[CodCliente],[SerieFactura],[BodegaCompra],[TipoCompra],[CodProveedor]) " & _
+                           "VALUES('" & Me.CboUsuario.Text & "','" & Me.TxtContraseña.Text & "','" & Me.CboNivel.Text & "','" & Me.CboCodigoBodega.Text & "','" & Me.CboTipoProducto.Text & "','" & Me.CboCodigoVendedor.Text & "','" & Me.CboCodigoCliente.Text & "','" & Me.CmbSerie.Text & "','" & Me.CboCodigoBodegaCompra.Text & "','" & Me.CboTipoCompra.Text & "' ,'" & Me.CboProveedor.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery

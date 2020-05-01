@@ -130,7 +130,7 @@ Public Class FrmNuevaSolicitud
  
 
     End Sub
-    Public Sub GrabarSolicitud(ByVal Numero_Solicitud As String, ByVal Fecha_Solicitud As Date, ByVal Gerencia_Solicitante As String, ByVal Departamento As String, ByVal Cod_Rubro As String, ByVal Concepto As String, ByVal Estado_Solicitud As String, ByVal Codigo_Bodega As String, ByVal Fecha_Requerido As Date)
+    Public Sub GrabarSolicitud(ByVal Numero_Solicitud As String, ByVal Fecha_Solicitud As Date, ByVal Gerencia_Solicitante As String, ByVal Departamento As String, ByVal Cod_Rubro As String, ByVal Concepto As String, ByVal Estado_Solicitud As String, ByVal Codigo_Bodega As String, ByVal Fecha_Requerido As Date, ByVal CodigoProyecto As String)
         Dim SQLClientes As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
@@ -151,8 +151,8 @@ Public Class FrmNuevaSolicitud
 
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Solicitud_Compra] ([Numero_Solicitud],[Fecha_Solicitud],[Fecha_Hora_Solicitud] ,[Gerencia_Solicitante],[Departamento_Solicitante],[Codigo_Rubro],[Concepto] ,[Estado_Solicitud] ,[Cod_Bodega], [Fecha_Requerido]) " & _
-                           "VALUES ('" & Numero_Solicitud & "', CONVERT(DATETIME, '" & Format(Fecha_Solicitud, "yyyy-MM-dd") & "', 102)  ,CONVERT(DATETIME, '" & Format(Fecha_Solicitud, "yyyy-MM-dd HH:mm:ss") & "', 102) , '" & Gerencia_Solicitante & "', '" & Departamento & "' ,'" & Cod_Rubro & "' ,'" & Concepto & "','" & Estado_Solicitud & "' ,'" & Codigo_Bodega & "', CONVERT(DATETIME, '" & Format(Fecha_Requerido, "yyyy-MM-dd") & "', 102))"
+            StrSqlUpdate = "INSERT INTO [Solicitud_Compra] ([Numero_Solicitud],[Fecha_Solicitud],[Fecha_Hora_Solicitud] ,[Gerencia_Solicitante],[Departamento_Solicitante],[Codigo_Rubro],[Concepto] ,[Estado_Solicitud] ,[Cod_Bodega], [Fecha_Requerido], [CodigoProyecto]) " & _
+                           "VALUES ('" & Numero_Solicitud & "', CONVERT(DATETIME, '" & Format(Fecha_Solicitud, "yyyy-MM-dd") & "', 102)  ,CONVERT(DATETIME, '" & Format(Fecha_Solicitud, "yyyy-MM-dd HH:mm:ss") & "', 102) , '" & Gerencia_Solicitante & "', '" & Departamento & "' ,'" & Cod_Rubro & "' ,'" & Concepto & "','" & Estado_Solicitud & "' ,'" & Codigo_Bodega & "', CONVERT(DATETIME, '" & Format(Fecha_Requerido, "yyyy-MM-dd") & "', 102), '" & CodigoProyecto & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -174,19 +174,19 @@ Public Class FrmNuevaSolicitud
 
         MiConexion.Close()
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '///////////////////////CARGO LOS VENDEDORES////////////////////////////////////////////////////////////////////////////////////////
+        '///////////////////////CARGO la gerencia////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        Sql = "SELECT DISTINCT Gerencia_Solicitante FROM Solicitud_Compra ORDER BY Gerencia_Solicitante"
+        Sql = "SELECT GerenciaSolicitud  FROM GerenciaSolicitud "
         MiConexion.Open()
         DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
         DataAdapter.Fill(DataSet, "Gerencia")
         Me.CboGerencia.DataSource = DataSet.Tables("Gerencia")
         If Not DataSet.Tables("Gerencia").Rows.Count = 0 Then
-            Me.CboGerencia.Text = DataSet.Tables("Gerencia").Rows(0)("Gerencia_Solicitante")
+            Me.CboGerencia.Text = DataSet.Tables("Gerencia").Rows(0)("GerenciaSolicitud")
         End If
         MiConexion.Close()
 
-        Sql = "SELECT DISTINCT Departamento_Solicitante FROM Solicitud_Compra ORDER BY Departamento_Solicitante"
+        Sql = "SELECT DepartamentoSolicitud FROM Departamento_Solicitante ORDER BY DepartamentoSolicitud"
         MiConexion.Open()
         DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
         DataAdapter.Fill(DataSet, "Departamento")
@@ -213,6 +213,15 @@ Public Class FrmNuevaSolicitud
         If Not DataSet.Tables("Rubros").Rows.Count = 0 Then
             Me.CboRubro.DataSource = DataSet.Tables("Rubros")
             Me.CboRubro.Text = DataSet.Tables("Rubros").Rows(0)("Codigo_Rubro")
+        End If
+
+        '/////////////////////////////////////////////PROYECTOS ///////////////////////////////////////////////////////////
+        SqlString = "SELECT CodigoProyectos, NombreProyectos, FechaInicio, FechaFin FROM Proyectos WHERE(Activo = 1)"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Proyectos")
+        If Not DataSet.Tables("Proyectos").Rows.Count = 0 Then
+            Me.CboProyecto.DataSource = DataSet.Tables("Proyectos")
+            Me.CboProyecto.Splits.Item(0).DisplayColumns(1).Width = 350
         End If
 
 
@@ -279,7 +288,7 @@ Public Class FrmNuevaSolicitud
 
         Fecha_Solicitud = CDate(Me.DTPFecha.Text + " " + Me.LblHora.Text)
 
-        GrabarSolicitud(Me.TxtNumeroEnsamble.Text, Fecha_Solicitud, Me.CboGerencia.Text, Me.CboDepartamento.Text, Me.CboRubro.Text, Me.TxtConcepto.Text, "Grabado", Me.CboCodigoBodega.Text, Me.DTPFechaRequerido.Value)
+        GrabarSolicitud(Me.TxtNumeroEnsamble.Text, Fecha_Solicitud, Me.CboGerencia.Text, Me.CboDepartamento.Text, Me.CboRubro.Text, Me.TxtConcepto.Text, "Grabado", Me.CboCodigoBodega.Text, Me.DTPFechaRequerido.Value, Me.CboProyecto.Columns(0).Text)
 
         InsertarRowGrid()
 
@@ -463,6 +472,7 @@ Public Class FrmNuevaSolicitud
     Private Sub TxtNumeroEnsamble_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtNumeroEnsamble.TextChanged
         Dim Sql As String, DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet, SqlString As String
         Dim item As C1.Win.C1TrueDBGrid.ValueItem = New C1.Win.C1TrueDBGrid.ValueItem(), item2 As C1.Win.C1TrueDBGrid.ValueItem = New C1.Win.C1TrueDBGrid.ValueItem()
+        Dim CodigoProyecto As String = ""
 
         If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
 
@@ -475,7 +485,7 @@ Public Class FrmNuevaSolicitud
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////CARGO LAS SOLICUTIDS////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        Sql = "SELECT  Numero_Solicitud, Fecha_Solicitud, Fecha_Hora_Solicitud, Gerencia_Solicitante, Departamento_Solicitante, Codigo_Rubro, Concepto, Estado_Solicitud,  Cod_Bodega, Fecha_Requerido FROM Solicitud_Compra " & _
+        Sql = "SELECT  Numero_Solicitud, Fecha_Solicitud, Fecha_Hora_Solicitud, Gerencia_Solicitante, Departamento_Solicitante, Codigo_Rubro, Concepto, Estado_Solicitud,  Cod_Bodega, CodigoProyecto, Fecha_Requerido FROM Solicitud_Compra " & _
               "WHERE  (Numero_Solicitud = '" & Me.TxtNumeroEnsamble.Text & "')"
         MiConexion.Open()
         DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
@@ -487,8 +497,18 @@ Public Class FrmNuevaSolicitud
             Me.DTPFecha.Text = DataSet.Tables("Gerencia").Rows(0)("Fecha_Solicitud")
             Me.DTPFechaRequerido.Value = DataSet.Tables("Gerencia").Rows(0)("Fecha_Requerido")
             Me.CboCodigoBodega.Text = DataSet.Tables("Gerencia").Rows(0)("Cod_Bodega")
+            If Not IsDBNull(DataSet.Tables("Gerencia").Rows(0)("CodigoProyecto")) Then
+                CodigoProyecto = DataSet.Tables("Gerencia").Rows(0)("CodigoProyecto")
+            End If
             Me.CboRubro.Text = DataSet.Tables("Gerencia").Rows(0)("Codigo_Rubro")
             Me.TxtConcepto.Text = DataSet.Tables("Gerencia").Rows(0)("Concepto")
+
+            Sql = "SELECT  CodigoProyectos, NombreProyectos, FechaInicio, FechaFin, Moneda, VentaEstimada, CostoEstimado, Activo FROM Proyectos WHERE  (CodigoProyectos = '001')"
+            DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+            DataAdapter.Fill(DataSet, "Proyectos")
+            If DataSet.Tables("Proyectos").Rows.Count <> 0 Then
+                Me.CboProyecto.Text = DataSet.Tables("Proyectos").Rows(0)("NombreProyectos")
+            End If
 
             Me.Timer1.Enabled = False
             Me.LblHora.Text = Format(DataSet.Tables("Gerencia").Rows(0)("Fecha_Hora_Solicitud"), "hh:mm:ss tt")
@@ -747,5 +767,13 @@ Public Class FrmNuevaSolicitud
 
     Private Sub Grupo_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Grupo.Enter
 
+    End Sub
+
+    Private Sub C1Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles C1Button4.Click
+        Quien = "ProyectosFactura"
+        My.Forms.FrmConsultas.ShowDialog()
+        If Not My.Forms.FrmConsultas.Descripcion = "" Then
+            Me.CboProyecto.Text = My.Forms.FrmConsultas.Descripcion
+        End If
     End Sub
 End Class

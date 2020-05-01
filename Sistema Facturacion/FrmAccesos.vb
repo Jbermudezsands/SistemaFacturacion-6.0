@@ -88,6 +88,7 @@ Public Class FrmAccesos
         Me.ListBoxOpciones.Items.Add("Cotizacion")
         Me.ListBoxOpciones.Items.Add("Devolucion de Venta")
         Me.ListBoxOpciones.Items.Add("Salida Bodega")
+        Me.ListBoxOpciones.Items.Add("Orden de Trabajo")
         Me.ListBoxOpciones.Items.Add("Compras")
         Me.ListBoxOpciones.Items.Add("Pagos")
         Me.ListBoxOpciones.Items.Add("Recibo de Caja")
@@ -157,6 +158,14 @@ Public Class FrmAccesos
 
         ListBox_SelectedIndexChanged(sender, e)
         Select Case Me.ListBoxOpciones.Text
+            Case "Orden de Trabajo"
+                Me.ChkAnular.Visible = True
+                Me.ChkAnular.Location = New Point(7, 133)
+                Me.ChkProcesar.Visible = True
+                Me.ChkProcesar.Location = New Point(7, 89)
+                Me.ChkImprimir.Visible = True
+                Me.ChkImprimir.Location = New Point(7, 110)
+                Me.ChkEditar.Visible = True
             Case "Salida Bodega"
                 Me.ChkAnular.Visible = True
                 Me.ChkAnular.Location = New Point(7, 133)
@@ -395,6 +404,7 @@ Public Class FrmAccesos
 
         Cadena = ""
 
+
         If Me.ChkAbrir.Checked = True Then
             If Cadena <> "" Then
                 Cadena = Cadena & "," & "Abrir"
@@ -474,6 +484,16 @@ Public Class FrmAccesos
             End If
         Else
             Cadena = Cadena & "," & "NoCambiarBodega"
+        End If
+
+        If Me.ChkPrevio.Checked = True Then
+            If Cadena <> "" Then
+                Cadena = Cadena & "," & "Previo"
+            Else
+                Cadena = "Previo"
+            End If
+        Else
+            Cadena = "NoPrevio"
         End If
 
 

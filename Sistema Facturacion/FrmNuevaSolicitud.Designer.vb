@@ -53,6 +53,9 @@ Partial Class FrmNuevaSolicitud
         Me.CboRubro = New C1.Win.C1List.C1Combo
         Me.ImageList = New System.Windows.Forms.ImageList(Me.components)
         Me.CboGerencia = New System.Windows.Forms.ComboBox
+        Me.C1Button4 = New C1.Win.C1Input.C1Button
+        Me.CboProyecto = New C1.Win.C1List.C1Combo
+        Me.Label12 = New System.Windows.Forms.Label
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Grupo.SuspendLayout()
@@ -61,6 +64,7 @@ Partial Class FrmNuevaSolicitud
         CType(Me.BindingDetalle, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboRubro, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.CboProyecto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label5
@@ -174,7 +178,8 @@ Partial Class FrmNuevaSolicitud
         '
         'CboDepartamento
         '
-        Me.CboDepartamento.DisplayMember = "Departamento_Solicitante"
+        Me.CboDepartamento.DisplayMember = "DepartamentoSolicitud"
+        Me.CboDepartamento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboDepartamento.FormattingEnabled = True
         Me.CboDepartamento.Location = New System.Drawing.Point(123, 170)
         Me.CboDepartamento.Name = "CboDepartamento"
@@ -381,11 +386,12 @@ Partial Class FrmNuevaSolicitud
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(266, 229)
+        Me.Label4.Location = New System.Drawing.Point(266, 200)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(41, 13)
         Me.Label4.TabIndex = 262
         Me.Label4.Text = "Rubros"
+        Me.Label4.Visible = False
         '
         'CboRubro
         '
@@ -403,7 +409,7 @@ Partial Class FrmNuevaSolicitud
         Me.CboRubro.EditorHeight = 15
         Me.CboRubro.Images.Add(CType(resources.GetObject("CboRubro.Images"), System.Drawing.Image))
         Me.CboRubro.ItemHeight = 15
-        Me.CboRubro.Location = New System.Drawing.Point(313, 226)
+        Me.CboRubro.Location = New System.Drawing.Point(313, 197)
         Me.CboRubro.MatchEntryTimeout = CType(2000, Long)
         Me.CboRubro.MaxDropDownItems = CType(5, Short)
         Me.CboRubro.MaxLength = 32767
@@ -414,6 +420,7 @@ Partial Class FrmNuevaSolicitud
         Me.CboRubro.RowSubDividerColor = System.Drawing.Color.DarkGray
         Me.CboRubro.Size = New System.Drawing.Size(170, 21)
         Me.CboRubro.TabIndex = 261
+        Me.CboRubro.Visible = False
         Me.CboRubro.PropBag = resources.GetString("CboRubro.PropBag")
         '
         'ImageList
@@ -425,18 +432,73 @@ Partial Class FrmNuevaSolicitud
         '
         'CboGerencia
         '
-        Me.CboGerencia.DisplayMember = "Gerencia_Solicitante"
+        Me.CboGerencia.DisplayMember = "GerenciaSolicitud"
+        Me.CboGerencia.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboGerencia.FormattingEnabled = True
         Me.CboGerencia.Location = New System.Drawing.Point(123, 143)
         Me.CboGerencia.Name = "CboGerencia"
         Me.CboGerencia.Size = New System.Drawing.Size(211, 21)
         Me.CboGerencia.TabIndex = 263
         '
+        'C1Button4
+        '
+        Me.C1Button4.Image = CType(resources.GetObject("C1Button4.Image"), System.Drawing.Image)
+        Me.C1Button4.Location = New System.Drawing.Point(456, 225)
+        Me.C1Button4.Name = "C1Button4"
+        Me.C1Button4.Size = New System.Drawing.Size(39, 24)
+        Me.C1Button4.TabIndex = 266
+        Me.C1Button4.UseVisualStyleBackColor = True
+        Me.C1Button4.VisualStyle = C1.Win.C1Input.VisualStyle.System
+        '
+        'CboProyecto
+        '
+        Me.CboProyecto.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboProyecto.Caption = ""
+        Me.CboProyecto.CaptionHeight = 17
+        Me.CboProyecto.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboProyecto.ColumnCaptionHeight = 17
+        Me.CboProyecto.ColumnFooterHeight = 17
+        Me.CboProyecto.ContentHeight = 15
+        Me.CboProyecto.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboProyecto.DisplayMember = "NombreProyectos"
+        Me.CboProyecto.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
+        Me.CboProyecto.DropDownWidth = 300
+        Me.CboProyecto.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboProyecto.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboProyecto.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboProyecto.EditorHeight = 15
+        Me.CboProyecto.Images.Add(CType(resources.GetObject("CboProyecto.Images"), System.Drawing.Image))
+        Me.CboProyecto.ItemHeight = 15
+        Me.CboProyecto.Location = New System.Drawing.Point(313, 226)
+        Me.CboProyecto.MatchEntryTimeout = CType(2000, Long)
+        Me.CboProyecto.MaxDropDownItems = CType(5, Short)
+        Me.CboProyecto.MaxLength = 32767
+        Me.CboProyecto.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboProyecto.Name = "CboProyecto"
+        Me.CboProyecto.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboProyecto.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboProyecto.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboProyecto.Size = New System.Drawing.Size(137, 21)
+        Me.CboProyecto.TabIndex = 265
+        Me.CboProyecto.PropBag = resources.GetString("CboProyecto.PropBag")
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(263, 228)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(49, 13)
+        Me.Label12.TabIndex = 264
+        Me.Label12.Text = "Proyecto"
+        '
         'FrmNuevaSolicitud
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(774, 528)
+        Me.Controls.Add(Me.C1Button4)
+        Me.Controls.Add(Me.CboProyecto)
+        Me.Controls.Add(Me.Label12)
         Me.Controls.Add(Me.CboGerencia)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.CboRubro)
@@ -469,6 +531,7 @@ Partial Class FrmNuevaSolicitud
         CType(Me.BindingDetalle, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboRubro, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.CboProyecto, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -505,4 +568,7 @@ Partial Class FrmNuevaSolicitud
     Friend WithEvents TxtNumeroEnsamble As System.Windows.Forms.TextBox
     Friend WithEvents BtnAutorizar As System.Windows.Forms.Button
     Friend WithEvents BtnOrdenCompra As System.Windows.Forms.Button
+    Friend WithEvents C1Button4 As C1.Win.C1Input.C1Button
+    Friend WithEvents CboProyecto As C1.Win.C1List.C1Combo
+    Friend WithEvents Label12 As System.Windows.Forms.Label
 End Class

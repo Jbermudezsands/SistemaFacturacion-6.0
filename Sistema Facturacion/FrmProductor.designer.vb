@@ -139,7 +139,10 @@ Partial Class FrmProductor
         Me.Label19 = New System.Windows.Forms.Label
         Me.TabPage5 = New System.Windows.Forms.TabPage
         Me.GroupBox15 = New System.Windows.Forms.GroupBox
+        Me.Button9 = New System.Windows.Forms.Button
+        Me.TxtPulperia = New System.Windows.Forms.TextBox
         Me.Button10 = New System.Windows.Forms.Button
+        Me.Label36 = New System.Windows.Forms.Label
         Me.TxtCtaOtras = New System.Windows.Forms.TextBox
         Me.Label39 = New System.Windows.Forms.Label
         Me.Button11 = New System.Windows.Forms.Button
@@ -158,9 +161,9 @@ Partial Class FrmProductor
         Me.Label43 = New System.Windows.Forms.Label
         Me.Label44 = New System.Windows.Forms.Label
         Me.GroupBox13 = New System.Windows.Forms.GroupBox
-        Me.Button9 = New System.Windows.Forms.Button
-        Me.TxtPulperia = New System.Windows.Forms.TextBox
-        Me.Label36 = New System.Windows.Forms.Label
+        Me.Button15 = New System.Windows.Forms.Button
+        Me.TxtCtaGastoPlanilla = New System.Windows.Forms.TextBox
+        Me.Label45 = New System.Windows.Forms.Label
         Me.Button7 = New System.Windows.Forms.Button
         Me.TxtAnticipo = New System.Windows.Forms.TextBox
         Me.Label35 = New System.Windows.Forms.Label
@@ -178,9 +181,6 @@ Partial Class FrmProductor
         Me.Label38 = New System.Windows.Forms.Label
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog
-        Me.Button15 = New System.Windows.Forms.Button
-        Me.TxtCtaGastoPlanilla = New System.Windows.Forms.TextBox
-        Me.Label45 = New System.Windows.Forms.Label
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -1562,6 +1562,23 @@ Partial Class FrmProductor
         Me.GroupBox15.TabIndex = 2
         Me.GroupBox15.TabStop = False
         '
+        'Button9
+        '
+        Me.Button9.Image = CType(resources.GetObject("Button9.Image"), System.Drawing.Image)
+        Me.Button9.Location = New System.Drawing.Point(231, 133)
+        Me.Button9.Name = "Button9"
+        Me.Button9.Size = New System.Drawing.Size(29, 30)
+        Me.Button9.TabIndex = 177
+        Me.Button9.UseVisualStyleBackColor = True
+        '
+        'TxtPulperia
+        '
+        Me.TxtPulperia.AcceptsReturn = True
+        Me.TxtPulperia.Location = New System.Drawing.Point(125, 138)
+        Me.TxtPulperia.Name = "TxtPulperia"
+        Me.TxtPulperia.Size = New System.Drawing.Size(100, 20)
+        Me.TxtPulperia.TabIndex = 176
+        '
         'Button10
         '
         Me.Button10.Image = CType(resources.GetObject("Button10.Image"), System.Drawing.Image)
@@ -1570,6 +1587,15 @@ Partial Class FrmProductor
         Me.Button10.Size = New System.Drawing.Size(29, 30)
         Me.Button10.TabIndex = 177
         Me.Button10.UseVisualStyleBackColor = True
+        '
+        'Label36
+        '
+        Me.Label36.AutoSize = True
+        Me.Label36.Location = New System.Drawing.Point(1, 141)
+        Me.Label36.Name = "Label36"
+        Me.Label36.Size = New System.Drawing.Size(113, 13)
+        Me.Label36.TabIndex = 175
+        Me.Label36.Text = "Administracion Fondos"
         '
         'TxtCtaOtras
         '
@@ -1738,31 +1764,30 @@ Partial Class FrmProductor
         Me.GroupBox13.TabIndex = 1
         Me.GroupBox13.TabStop = False
         '
-        'Button9
+        'Button15
         '
-        Me.Button9.Image = CType(resources.GetObject("Button9.Image"), System.Drawing.Image)
-        Me.Button9.Location = New System.Drawing.Point(231, 133)
-        Me.Button9.Name = "Button9"
-        Me.Button9.Size = New System.Drawing.Size(29, 30)
-        Me.Button9.TabIndex = 177
-        Me.Button9.UseVisualStyleBackColor = True
+        Me.Button15.Image = CType(resources.GetObject("Button15.Image"), System.Drawing.Image)
+        Me.Button15.Location = New System.Drawing.Point(250, 16)
+        Me.Button15.Name = "Button15"
+        Me.Button15.Size = New System.Drawing.Size(29, 30)
+        Me.Button15.TabIndex = 177
+        Me.Button15.UseVisualStyleBackColor = True
         '
-        'TxtPulperia
+        'TxtCtaGastoPlanilla
         '
-        Me.TxtPulperia.AcceptsReturn = True
-        Me.TxtPulperia.Location = New System.Drawing.Point(125, 138)
-        Me.TxtPulperia.Name = "TxtPulperia"
-        Me.TxtPulperia.Size = New System.Drawing.Size(100, 20)
-        Me.TxtPulperia.TabIndex = 176
+        Me.TxtCtaGastoPlanilla.Location = New System.Drawing.Point(144, 21)
+        Me.TxtCtaGastoPlanilla.Name = "TxtCtaGastoPlanilla"
+        Me.TxtCtaGastoPlanilla.Size = New System.Drawing.Size(100, 20)
+        Me.TxtCtaGastoPlanilla.TabIndex = 176
         '
-        'Label36
+        'Label45
         '
-        Me.Label36.AutoSize = True
-        Me.Label36.Location = New System.Drawing.Point(1, 141)
-        Me.Label36.Name = "Label36"
-        Me.Label36.Size = New System.Drawing.Size(113, 13)
-        Me.Label36.TabIndex = 175
-        Me.Label36.Text = "Administracion Fondos"
+        Me.Label45.AutoSize = True
+        Me.Label45.Location = New System.Drawing.Point(58, 26)
+        Me.Label45.Name = "Label45"
+        Me.Label45.Size = New System.Drawing.Size(71, 13)
+        Me.Label45.TabIndex = 175
+        Me.Label45.Text = "Gasto Planilla"
         '
         'Button7
         '
@@ -1895,31 +1920,6 @@ Partial Class FrmProductor
         'OpenFileDialog1
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
-        '
-        'Button15
-        '
-        Me.Button15.Image = CType(resources.GetObject("Button15.Image"), System.Drawing.Image)
-        Me.Button15.Location = New System.Drawing.Point(250, 16)
-        Me.Button15.Name = "Button15"
-        Me.Button15.Size = New System.Drawing.Size(29, 30)
-        Me.Button15.TabIndex = 177
-        Me.Button15.UseVisualStyleBackColor = True
-        '
-        'TxtCtaGastoPlanilla
-        '
-        Me.TxtCtaGastoPlanilla.Location = New System.Drawing.Point(144, 21)
-        Me.TxtCtaGastoPlanilla.Name = "TxtCtaGastoPlanilla"
-        Me.TxtCtaGastoPlanilla.Size = New System.Drawing.Size(100, 20)
-        Me.TxtCtaGastoPlanilla.TabIndex = 176
-        '
-        'Label45
-        '
-        Me.Label45.AutoSize = True
-        Me.Label45.Location = New System.Drawing.Point(58, 26)
-        Me.Label45.Name = "Label45"
-        Me.Label45.Size = New System.Drawing.Size(71, 13)
-        Me.Label45.TabIndex = 175
-        Me.Label45.Text = "Gasto Planilla"
         '
         'FrmProductor
         '

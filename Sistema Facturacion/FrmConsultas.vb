@@ -1219,6 +1219,10 @@ Public Class FrmConsultas
         TipoProducto = ""
 
         Select Case Quien
+            Case "CuentasContables"
+                Posicion = Me.BindingConsultas.Position
+                Codigo = Me.BindingConsultas.Item(Posicion)("CodCuentas")
+                Descripcion = Me.BindingConsultas.Item(Posicion)("Descripcion")
             Case "TipoNomina"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("CodTipoNomina")

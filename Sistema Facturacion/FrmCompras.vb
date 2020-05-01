@@ -1350,6 +1350,10 @@ Public Class FrmCompras
         Me.CboReferencia.Items.Add("Correcciones")
         Me.CboReferencia.Items.Add("Devoluciones")
 
+        Me.CboCodigoBodega.Text = UsuarioBodegaCompra
+        Me.CboTipoProducto.Text = UsuarioTipoCompra
+        Me.TxtCodigoProveedor.Text = UsuarioProveedor
+
     End Sub
 
     Private Sub Button9_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button9.Click

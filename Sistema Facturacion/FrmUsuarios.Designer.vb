@@ -44,6 +44,12 @@ Partial Class FrmUsuarios
         Me.Label3 = New System.Windows.Forms.Label
         Me.CmbSerie = New C1.Win.C1List.C1Combo
         Me.CboNivel = New C1.Win.C1List.C1Combo
+        Me.Label4 = New System.Windows.Forms.Label
+        Me.CboProveedor = New C1.Win.C1List.C1Combo
+        Me.Label6 = New System.Windows.Forms.Label
+        Me.CboTipoCompra = New System.Windows.Forms.ComboBox
+        Me.CboCodigoBodegaCompra = New C1.Win.C1List.C1Combo
+        Me.Label5 = New System.Windows.Forms.Label
         CType(Me.CboUsuario, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -52,6 +58,8 @@ Partial Class FrmUsuarios
         CType(Me.CboCodigoCliente, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CmbSerie, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboNivel, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.CboProveedor, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.CboCodigoBodegaCompra, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label1
@@ -66,7 +74,7 @@ Partial Class FrmUsuarios
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(18, 99)
+        Me.Label2.Location = New System.Drawing.Point(65, 102)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(31, 13)
         Me.Label2.TabIndex = 1
@@ -75,7 +83,7 @@ Partial Class FrmUsuarios
         'LblContraseña
         '
         Me.LblContraseña.AutoSize = True
-        Me.LblContraseña.Location = New System.Drawing.Point(18, 264)
+        Me.LblContraseña.Location = New System.Drawing.Point(34, 313)
         Me.LblContraseña.Name = "LblContraseña"
         Me.LblContraseña.Size = New System.Drawing.Size(61, 13)
         Me.LblContraseña.TabIndex = 2
@@ -83,7 +91,7 @@ Partial Class FrmUsuarios
         '
         'TxtContraseña
         '
-        Me.TxtContraseña.Location = New System.Drawing.Point(101, 262)
+        Me.TxtContraseña.Location = New System.Drawing.Point(101, 310)
         Me.TxtContraseña.Name = "TxtContraseña"
         Me.TxtContraseña.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.TxtContraseña.Size = New System.Drawing.Size(203, 20)
@@ -122,7 +130,7 @@ Partial Class FrmUsuarios
         '
         Me.Button2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.Location = New System.Drawing.Point(226, 319)
+        Me.Button2.Location = New System.Drawing.Point(226, 355)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(78, 68)
         Me.Button2.TabIndex = 64
@@ -135,7 +143,7 @@ Partial Class FrmUsuarios
         Me.CmdGrabar.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.CmdGrabar.Image = CType(resources.GetObject("CmdGrabar.Image"), System.Drawing.Image)
         Me.CmdGrabar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdGrabar.Location = New System.Drawing.Point(12, 318)
+        Me.CmdGrabar.Location = New System.Drawing.Point(12, 354)
         Me.CmdGrabar.Name = "CmdGrabar"
         Me.CmdGrabar.Size = New System.Drawing.Size(78, 68)
         Me.CmdGrabar.TabIndex = 63
@@ -146,7 +154,7 @@ Partial Class FrmUsuarios
         '
         'TxtConfirmar
         '
-        Me.TxtConfirmar.Location = New System.Drawing.Point(101, 290)
+        Me.TxtConfirmar.Location = New System.Drawing.Point(102, 332)
         Me.TxtConfirmar.Name = "TxtConfirmar"
         Me.TxtConfirmar.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.TxtConfirmar.Size = New System.Drawing.Size(203, 20)
@@ -156,7 +164,7 @@ Partial Class FrmUsuarios
         'LblConfirmar
         '
         Me.LblConfirmar.AutoSize = True
-        Me.LblConfirmar.Location = New System.Drawing.Point(18, 292)
+        Me.LblConfirmar.Location = New System.Drawing.Point(44, 332)
         Me.LblConfirmar.Name = "LblConfirmar"
         Me.LblConfirmar.Size = New System.Drawing.Size(51, 13)
         Me.LblConfirmar.TabIndex = 65
@@ -200,7 +208,7 @@ Partial Class FrmUsuarios
         Me.ButtonBorrar.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.ButtonBorrar.Image = CType(resources.GetObject("ButtonBorrar.Image"), System.Drawing.Image)
         Me.ButtonBorrar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonBorrar.Location = New System.Drawing.Point(101, 320)
+        Me.ButtonBorrar.Location = New System.Drawing.Point(101, 356)
         Me.ButtonBorrar.Name = "ButtonBorrar"
         Me.ButtonBorrar.Size = New System.Drawing.Size(75, 67)
         Me.ButtonBorrar.TabIndex = 70
@@ -225,7 +233,7 @@ Partial Class FrmUsuarios
         Me.CboCodigoBodega.EditorHeight = 15
         Me.CboCodigoBodega.Images.Add(CType(resources.GetObject("CboCodigoBodega.Images"), System.Drawing.Image))
         Me.CboCodigoBodega.ItemHeight = 15
-        Me.CboCodigoBodega.Location = New System.Drawing.Point(102, 127)
+        Me.CboCodigoBodega.Location = New System.Drawing.Point(102, 122)
         Me.CboCodigoBodega.MatchEntryTimeout = CType(2000, Long)
         Me.CboCodigoBodega.MaxDropDownItems = CType(5, Short)
         Me.CboCodigoBodega.MaxLength = 32767
@@ -241,7 +249,7 @@ Partial Class FrmUsuarios
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(18, 127)
+        Me.Label11.Location = New System.Drawing.Point(51, 127)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(44, 13)
         Me.Label11.TabIndex = 156
@@ -250,7 +258,7 @@ Partial Class FrmUsuarios
         'LblTipoFactura
         '
         Me.LblTipoFactura.AutoSize = True
-        Me.LblTipoFactura.Location = New System.Drawing.Point(17, 183)
+        Me.LblTipoFactura.Location = New System.Drawing.Point(33, 171)
         Me.LblTipoFactura.Name = "LblTipoFactura"
         Me.LblTipoFactura.Size = New System.Drawing.Size(64, 13)
         Me.LblTipoFactura.TabIndex = 158
@@ -260,8 +268,8 @@ Partial Class FrmUsuarios
         '
         Me.CboTipoProducto.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboTipoProducto.FormattingEnabled = True
-        Me.CboTipoProducto.Items.AddRange(New Object() {"Cotizacion", "Factura", "Devolucion de Venta", "Salida Bodega"})
-        Me.CboTipoProducto.Location = New System.Drawing.Point(101, 181)
+        Me.CboTipoProducto.Items.AddRange(New Object() {"Cotizacion", "Factura", "Devolucion de Venta", "Orden de Trabajo", "Salida Bodega"})
+        Me.CboTipoProducto.Location = New System.Drawing.Point(101, 168)
         Me.CboTipoProducto.Name = "CboTipoProducto"
         Me.CboTipoProducto.Size = New System.Drawing.Size(203, 21)
         Me.CboTipoProducto.TabIndex = 159
@@ -283,7 +291,7 @@ Partial Class FrmUsuarios
         Me.CboCodigoVendedor.EditorHeight = 15
         Me.CboCodigoVendedor.Images.Add(CType(resources.GetObject("CboCodigoVendedor.Images"), System.Drawing.Image))
         Me.CboCodigoVendedor.ItemHeight = 15
-        Me.CboCodigoVendedor.Location = New System.Drawing.Point(102, 211)
+        Me.CboCodigoVendedor.Location = New System.Drawing.Point(102, 192)
         Me.CboCodigoVendedor.MatchEntryTimeout = CType(2000, Long)
         Me.CboCodigoVendedor.MaxDropDownItems = CType(5, Short)
         Me.CboCodigoVendedor.MaxLength = 32767
@@ -299,7 +307,7 @@ Partial Class FrmUsuarios
         'LblVendedor
         '
         Me.LblVendedor.AutoSize = True
-        Me.LblVendedor.Location = New System.Drawing.Point(20, 211)
+        Me.LblVendedor.Location = New System.Drawing.Point(43, 192)
         Me.LblVendedor.Name = "LblVendedor"
         Me.LblVendedor.Size = New System.Drawing.Size(53, 13)
         Me.LblVendedor.TabIndex = 194
@@ -321,7 +329,7 @@ Partial Class FrmUsuarios
         Me.CboCodigoCliente.EditorHeight = 15
         Me.CboCodigoCliente.Images.Add(CType(resources.GetObject("CboCodigoCliente.Images"), System.Drawing.Image))
         Me.CboCodigoCliente.ItemHeight = 15
-        Me.CboCodigoCliente.Location = New System.Drawing.Point(102, 235)
+        Me.CboCodigoCliente.Location = New System.Drawing.Point(102, 216)
         Me.CboCodigoCliente.MatchEntryTimeout = CType(2000, Long)
         Me.CboCodigoCliente.MaxDropDownItems = CType(5, Short)
         Me.CboCodigoCliente.MaxLength = 32767
@@ -337,7 +345,7 @@ Partial Class FrmUsuarios
         'LblCodigo
         '
         Me.LblCodigo.AutoSize = True
-        Me.LblCodigo.Location = New System.Drawing.Point(21, 239)
+        Me.LblCodigo.Location = New System.Drawing.Point(16, 216)
         Me.LblCodigo.Name = "LblCodigo"
         Me.LblCodigo.Size = New System.Drawing.Size(80, 13)
         Me.LblCodigo.TabIndex = 198
@@ -346,7 +354,7 @@ Partial Class FrmUsuarios
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(18, 157)
+        Me.Label3.Location = New System.Drawing.Point(26, 148)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(70, 13)
         Me.Label3.TabIndex = 199
@@ -371,7 +379,7 @@ Partial Class FrmUsuarios
         Me.CmbSerie.EditorHeight = 15
         Me.CmbSerie.Images.Add(CType(resources.GetObject("CmbSerie.Images"), System.Drawing.Image))
         Me.CmbSerie.ItemHeight = 15
-        Me.CmbSerie.Location = New System.Drawing.Point(102, 154)
+        Me.CmbSerie.Location = New System.Drawing.Point(102, 145)
         Me.CmbSerie.MatchEntryTimeout = CType(2000, Long)
         Me.CmbSerie.MaxDropDownItems = CType(5, Short)
         Me.CmbSerie.MaxLength = 32767
@@ -400,7 +408,7 @@ Partial Class FrmUsuarios
         Me.CboNivel.EditorHeight = 15
         Me.CboNivel.Images.Add(CType(resources.GetObject("CboNivel.Images"), System.Drawing.Image))
         Me.CboNivel.ItemHeight = 15
-        Me.CboNivel.Location = New System.Drawing.Point(102, 100)
+        Me.CboNivel.Location = New System.Drawing.Point(102, 98)
         Me.CboNivel.MatchEntryTimeout = CType(2000, Long)
         Me.CboNivel.MaxDropDownItems = CType(5, Short)
         Me.CboNivel.MaxLength = 32767
@@ -413,11 +421,112 @@ Partial Class FrmUsuarios
         Me.CboNivel.TabIndex = 213
         Me.CboNivel.PropBag = resources.GetString("CboNivel.PropBag")
         '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(41, 264)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(56, 13)
+        Me.Label4.TabIndex = 219
+        Me.Label4.Text = "Proveedor"
+        '
+        'CboProveedor
+        '
+        Me.CboProveedor.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboProveedor.Caption = ""
+        Me.CboProveedor.CaptionHeight = 17
+        Me.CboProveedor.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboProveedor.ColumnCaptionHeight = 17
+        Me.CboProveedor.ColumnFooterHeight = 17
+        Me.CboProveedor.ContentHeight = 15
+        Me.CboProveedor.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboProveedor.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboProveedor.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboProveedor.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboProveedor.EditorHeight = 15
+        Me.CboProveedor.Images.Add(CType(resources.GetObject("CboProveedor.Images"), System.Drawing.Image))
+        Me.CboProveedor.ItemHeight = 15
+        Me.CboProveedor.Location = New System.Drawing.Point(103, 264)
+        Me.CboProveedor.MatchEntryTimeout = CType(2000, Long)
+        Me.CboProveedor.MaxDropDownItems = CType(5, Short)
+        Me.CboProveedor.MaxLength = 32767
+        Me.CboProveedor.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboProveedor.Name = "CboProveedor"
+        Me.CboProveedor.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboProveedor.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboProveedor.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboProveedor.Size = New System.Drawing.Size(202, 21)
+        Me.CboProveedor.TabIndex = 218
+        Me.CboProveedor.PropBag = resources.GetString("CboProveedor.PropBag")
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(29, 240)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(67, 13)
+        Me.Label6.TabIndex = 214
+        Me.Label6.Text = "Tipo Compra"
+        '
+        'CboTipoCompra
+        '
+        Me.CboTipoCompra.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboTipoCompra.FormattingEnabled = True
+        Me.CboTipoCompra.Items.AddRange(New Object() {"Orden de Compra", "Mercancia Recibida", "Devolucion de Compra", "Cuenta", "Cuenta DB"})
+        Me.CboTipoCompra.Location = New System.Drawing.Point(102, 240)
+        Me.CboTipoCompra.Name = "CboTipoCompra"
+        Me.CboTipoCompra.Size = New System.Drawing.Size(202, 21)
+        Me.CboTipoCompra.TabIndex = 220
+        '
+        'CboCodigoBodegaCompra
+        '
+        Me.CboCodigoBodegaCompra.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboCodigoBodegaCompra.Caption = ""
+        Me.CboCodigoBodegaCompra.CaptionHeight = 17
+        Me.CboCodigoBodegaCompra.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboCodigoBodegaCompra.ColumnCaptionHeight = 17
+        Me.CboCodigoBodegaCompra.ColumnFooterHeight = 17
+        Me.CboCodigoBodegaCompra.ContentHeight = 15
+        Me.CboCodigoBodegaCompra.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboCodigoBodegaCompra.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboCodigoBodegaCompra.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboCodigoBodegaCompra.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboCodigoBodegaCompra.EditorHeight = 15
+        Me.CboCodigoBodegaCompra.Images.Add(CType(resources.GetObject("CboCodigoBodegaCompra.Images"), System.Drawing.Image))
+        Me.CboCodigoBodegaCompra.ItemHeight = 15
+        Me.CboCodigoBodegaCompra.Location = New System.Drawing.Point(103, 287)
+        Me.CboCodigoBodegaCompra.MatchEntryTimeout = CType(2000, Long)
+        Me.CboCodigoBodegaCompra.MaxDropDownItems = CType(5, Short)
+        Me.CboCodigoBodegaCompra.MaxLength = 32767
+        Me.CboCodigoBodegaCompra.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboCodigoBodegaCompra.Name = "CboCodigoBodegaCompra"
+        Me.CboCodigoBodegaCompra.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboCodigoBodegaCompra.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboCodigoBodegaCompra.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboCodigoBodegaCompra.Size = New System.Drawing.Size(202, 21)
+        Me.CboCodigoBodegaCompra.TabIndex = 222
+        Me.CboCodigoBodegaCompra.PropBag = resources.GetString("CboCodigoBodegaCompra.PropBag")
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(53, 287)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(44, 13)
+        Me.Label5.TabIndex = 221
+        Me.Label5.Text = "Bodega"
+        '
         'FrmUsuarios
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(310, 391)
+        Me.ClientSize = New System.Drawing.Size(310, 427)
+        Me.Controls.Add(Me.CboCodigoBodegaCompra)
+        Me.Controls.Add(Me.Label5)
+        Me.Controls.Add(Me.CboTipoCompra)
+        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.CboProveedor)
+        Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.CboNivel)
         Me.Controls.Add(Me.CmbSerie)
         Me.Controls.Add(Me.Label3)
@@ -453,6 +562,8 @@ Partial Class FrmUsuarios
         CType(Me.CboCodigoCliente, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CmbSerie, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboNivel, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.CboProveedor, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.CboCodigoBodegaCompra, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -481,4 +592,10 @@ Partial Class FrmUsuarios
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents CmbSerie As C1.Win.C1List.C1Combo
     Friend WithEvents CboNivel As C1.Win.C1List.C1Combo
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents CboProveedor As C1.Win.C1List.C1Combo
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents CboTipoCompra As System.Windows.Forms.ComboBox
+    Friend WithEvents CboCodigoBodegaCompra As C1.Win.C1List.C1Combo
+    Friend WithEvents Label5 As System.Windows.Forms.Label
 End Class
