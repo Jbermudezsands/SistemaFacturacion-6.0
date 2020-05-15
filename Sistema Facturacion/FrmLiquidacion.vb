@@ -414,7 +414,7 @@ Public Class FrmLiquidacion
         Dim CodProducto As String, SqlString As String, TotalGastos As Double, iPosicion As Double
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, TasaImpuesto As Double, Encontrado As Boolean = False
         Dim oDataRow As DataRow, CodigoIva As String, Registros3 As Double, iPosicion3 As Double, CodIvaDetaLLE As String
-        Dim TotalIva As Double = 0, Tasacambio As Double
+        Dim TotalIva As Double = 0, Tasacambio As Double, GastosImpuestos As Double, GastosPorciento As Double
 
 
         If Me.CmbImpuesto.Text = "" Then
@@ -430,7 +430,7 @@ Public Class FrmLiquidacion
 
         TotalGastos = CDbl(Me.TxtSeguro.Text) + CDbl(Me.TxtTransporte.Text) + CDbl(Me.TxtAlmacen.Text) + CDbl(Me.TxtFletes.Text) + CDbl(Me.TxtAgente.Text) + CDbl(Me.TxtFletesInternos.Text) + CDbl(Me.TxtCustodio.Text) + CDbl(Me.TxtGastosAduana.Text) + CDbl(Me.TxtOtrosGastos.Text)
 
-
+        GastosImpuestos = CDbl(Me.TxtSeguro.Text) + CDbl(Me.TxtFletes.Text) + CDbl(Me.TxtGastosAduana.Text)
 
         PrecioCompra = 0
         FOB = 0
@@ -452,6 +452,7 @@ Public Class FrmLiquidacion
             My.Application.DoEvents()
             FOB = Me.BindingDetalle.Item(IposicionFila)("FOB")
             Porciento = (FOB / TotalFOB)
+
 
             CodProducto = Me.BindingDetalle.Item(IposicionFila)("Cod_Producto")
 
@@ -482,9 +483,9 @@ Public Class FrmLiquidacion
 
                 If Me.CmbImpuesto.Text = Me.CmbMoneda.Text Then
                     If DataSet.Tables("ImpuestosProductos").Rows(iPosicion)("Cod_Iva") = "15%" Then
-                        TotalIva = TotalIva + CDbl(Format(FOB * TasaImpuesto, "##0.00"))
+                        TotalIva = TotalIva + CDbl(Format((FOB + GastosImpuestos + CDbl(Me.TxtGastosAduana.Text)) * TasaImpuesto, "##0.00"))
                     Else
-                        TotalImpuestos = TotalImpuestos + CDbl(Format(FOB * TasaImpuesto, "##0.00"))
+                        TotalImpuestos = TotalImpuestos + CDbl(Format((FOB + GastosImpuestos + CDbl(Me.TxtGastosAduana.Text)) * TasaImpuesto, "##0.00"))
                     End If
 
 
@@ -542,11 +543,11 @@ Public Class FrmLiquidacion
                     'oDataRow("Monto") = CDbl(Format(FOB * TasaImpuesto, "##0.00"))
 
                     If Me.CmbImpuesto.Text = Me.CmbMoneda.Text Then
-                        oDataRow("Monto") = CDbl(Format(FOB * TasaImpuesto, "##0.00"))
+                        oDataRow("Monto") = CDbl(Format((FOB + GastosImpuestos) * TasaImpuesto, "##0.00"))
                     ElseIf Me.CmbMoneda.Text = "Dolares" Then
-                        oDataRow("Monto") = CDbl(Format((FOB * Tasacambio) * TasaImpuesto, "##0.00"))
+                        oDataRow("Monto") = CDbl(Format(((FOB + GastosImpuestos) * Tasacambio) * TasaImpuesto, "##0.00"))
                     ElseIf Me.CmbMoneda.Text = "Cordobas" Then
-                        oDataRow("Monto") = CDbl(Format((FOB / Tasacambio) * TasaImpuesto, "##0.00"))
+                        oDataRow("Monto") = CDbl(Format(((FOB + GastosImpuestos) / Tasacambio) * TasaImpuesto, "##0.00"))
                     End If
                     DataSet.Tables("ImpuestosDetalle").Rows.Add(oDataRow)
                     Encontrado = True

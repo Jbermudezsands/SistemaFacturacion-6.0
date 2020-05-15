@@ -391,7 +391,6 @@ Partial Class FrmNuevaSolicitud
         Me.Label4.Size = New System.Drawing.Size(41, 13)
         Me.Label4.TabIndex = 262
         Me.Label4.Text = "Rubros"
-        Me.Label4.Visible = False
         '
         'CboRubro
         '
@@ -420,7 +419,6 @@ Partial Class FrmNuevaSolicitud
         Me.CboRubro.RowSubDividerColor = System.Drawing.Color.DarkGray
         Me.CboRubro.Size = New System.Drawing.Size(170, 21)
         Me.CboRubro.TabIndex = 261
-        Me.CboRubro.Visible = False
         Me.CboRubro.PropBag = resources.GetString("CboRubro.PropBag")
         '
         'ImageList

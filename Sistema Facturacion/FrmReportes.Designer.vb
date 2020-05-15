@@ -123,13 +123,13 @@ Partial Class FrmReportes
         Me.Label25 = New System.Windows.Forms.Label
         Me.CboMunicipioIni = New C1.Win.C1List.C1Combo
         Me.Label26 = New System.Windows.Forms.Label
+        Me.ListaImagenes = New System.Windows.Forms.ImageList(Me.components)
         Me.ChkFacturasCero = New System.Windows.Forms.CheckBox
         Me.GroupBoxLote = New System.Windows.Forms.GroupBox
         Me.CboLoteFin = New C1.Win.C1List.C1Combo
         Me.Label27 = New System.Windows.Forms.Label
         Me.CboLoteIni = New C1.Win.C1List.C1Combo
         Me.Label28 = New System.Windows.Forms.Label
-        Me.ListaImagenes = New System.Windows.Forms.ImageList(Me.components)
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -1732,6 +1732,20 @@ Partial Class FrmReportes
         Me.Label26.TabIndex = 63
         Me.Label26.Text = "Desde"
         '
+        'ListaImagenes
+        '
+        Me.ListaImagenes.ImageStream = CType(resources.GetObject("ListaImagenes.ImageStream"), System.Windows.Forms.ImageListStreamer)
+        Me.ListaImagenes.TransparentColor = System.Drawing.Color.Transparent
+        Me.ListaImagenes.Images.SetKeyName(0, "Circulo0.png")
+        Me.ListaImagenes.Images.SetKeyName(1, "Circulo1.png")
+        Me.ListaImagenes.Images.SetKeyName(2, "Circulo2.png")
+        Me.ListaImagenes.Images.SetKeyName(3, "Circulo3.png")
+        Me.ListaImagenes.Images.SetKeyName(4, "Circulo4.png")
+        Me.ListaImagenes.Images.SetKeyName(5, "Circulo5.png")
+        Me.ListaImagenes.Images.SetKeyName(6, "Circulo6.png")
+        Me.ListaImagenes.Images.SetKeyName(7, "Circulo7.png")
+        Me.ListaImagenes.Images.SetKeyName(8, "Circulo8.png")
+        '
         'ChkFacturasCero
         '
         Me.ChkFacturasCero.AutoSize = True
@@ -1836,25 +1850,11 @@ Partial Class FrmReportes
         Me.Label28.TabIndex = 63
         Me.Label28.Text = "Desde"
         '
-        'ListaImagenes
-        '
-        Me.ListaImagenes.ImageStream = CType(resources.GetObject("ListaImagenes.ImageStream"), System.Windows.Forms.ImageListStreamer)
-        Me.ListaImagenes.TransparentColor = System.Drawing.Color.Transparent
-        Me.ListaImagenes.Images.SetKeyName(0, "Circulo0.png")
-        Me.ListaImagenes.Images.SetKeyName(1, "Circulo1.png")
-        Me.ListaImagenes.Images.SetKeyName(2, "Circulo2.png")
-        Me.ListaImagenes.Images.SetKeyName(3, "Circulo3.png")
-        Me.ListaImagenes.Images.SetKeyName(4, "Circulo4.png")
-        Me.ListaImagenes.Images.SetKeyName(5, "Circulo5.png")
-        Me.ListaImagenes.Images.SetKeyName(6, "Circulo6.png")
-        Me.ListaImagenes.Images.SetKeyName(7, "Circulo7.png")
-        Me.ListaImagenes.Images.SetKeyName(8, "Circulo8.png")
-        '
         'FrmReportes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(878, 502)
+        Me.ClientSize = New System.Drawing.Size(886, 502)
         Me.ControlBox = False
         Me.Controls.Add(Me.Imagen)
         Me.Controls.Add(Me.GroupBoxLote)
@@ -2052,11 +2052,11 @@ Partial Class FrmReportes
     Friend WithEvents Label25 As System.Windows.Forms.Label
     Friend WithEvents CboMunicipioIni As C1.Win.C1List.C1Combo
     Friend WithEvents Label26 As System.Windows.Forms.Label
+    Friend WithEvents ListaImagenes As System.Windows.Forms.ImageList
     Friend WithEvents ChkFacturasCero As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBoxLote As System.Windows.Forms.GroupBox
     Friend WithEvents CboLoteFin As C1.Win.C1List.C1Combo
     Friend WithEvents Label27 As System.Windows.Forms.Label
     Friend WithEvents CboLoteIni As C1.Win.C1List.C1Combo
     Friend WithEvents Label28 As System.Windows.Forms.Label
-    Friend WithEvents ListaImagenes As System.Windows.Forms.ImageList
 End Class

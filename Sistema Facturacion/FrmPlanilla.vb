@@ -1165,7 +1165,7 @@ Public Class FrmPlanilla
         Dim CantPlanilla As Double = 0, PLunes As Double, PMartes As Double, PMiercoles As Double, PJueves As Double, PViernes As Double, PSabado As Double, PDomingo As Double
         Dim iPosicion As Double, Registros As Double, CodProductor As String, Fecha As Date, Nombres As String, CantidadTotal As Double, Contador As Double
         Dim iPosicion2 As Double, Cantidad As Double, NCompra As Double, Registros2 As Double
-        Dim Monto As Double
+        Dim Monto As Double, CodTipoNomina As String
         Dim ROC1 As String = 0, ROC2 As String = 0, ROC3 As String = 0, ROC4 As String = 0, ROC5 As String = 0, ROC6 As String = 0, ROC7 As String = 0
         Dim NumeroCompra As String, ConsecutivoCompra As Double, PrecioVenta As Double
         Respuesta = MsgBox("Desea Cerrar la Nomina", MsgBoxStyle.YesNo, "Zeus Acopio")
@@ -1174,6 +1174,7 @@ Public Class FrmPlanilla
         End If
 
         FechaInicio = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
+        CodTipoNomina = Me.CboTipoPlanilla.Text
 
         '///////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////GENERO UNA COMPRA POR PROVEEDOR ////////////////////////////////////////
@@ -1344,13 +1345,13 @@ Public Class FrmPlanilla
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////ACTUALIZO LOS ENCABEZADOS DEl TIPO NOMINA//////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        StrSqlUpdate = "UPDATE [TipoNomina] SET [Activa] = 0 WHERE (CodTipoNomina = '" & Me.CboTipoPlanilla.Text & "')"
+        StrSqlUpdate = "UPDATE [TipoNomina] SET [Activa] = 0 WHERE (CodTipoNomina = '" & CodTipoNomina & "')"
         MiConexion.Open()
         ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
         iResultado = ComandoUpdate.ExecuteNonQuery
         MiConexion.Close()
 
-        StrSqlUpdate = "UPDATE [Periodos] SET [Actual] = 0,[Calculada] = 1  WHERE (TipoNomina = '" & Me.CboTipoPlanilla.Columns(1).Text & "') AND (Inicio = CONVERT(DATETIME, '" & FechaInicio & "', 102) AND [NumNomina] = '" & Me.TxtNumNomina.Text & "')"
+        StrSqlUpdate = "UPDATE [Periodos] SET [Actual] = 0,[Calculada] = 1  WHERE (TipoNomina = '" & CodTipoNomina & "')  AND [NumNomina] = '" & Me.TxtNumNomina.Text & "' "
         MiConexion.Open()
         ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
         iResultado = ComandoUpdate.ExecuteNonQuery
@@ -1362,8 +1363,6 @@ Public Class FrmPlanilla
         Me.CboTipoPlanilla.DataSource = DataSet.Tables("TipoNomina")
 
         Me.TxtNumNomina.Text = ""
-
-
 
         SqlString = "SELECT * FROM Deducciones_Planilla WHERE (NumNomina = '-1')ORDER BY CodProductor"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)

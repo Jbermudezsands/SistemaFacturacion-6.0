@@ -530,7 +530,7 @@ Partial Class FrmLiquidacion
         '
         'TxtAgente
         '
-        Me.TxtAgente.Location = New System.Drawing.Point(100, 109)
+        Me.TxtAgente.Location = New System.Drawing.Point(304, 107)
         Me.TxtAgente.Name = "TxtAgente"
         Me.TxtAgente.Size = New System.Drawing.Size(94, 20)
         Me.TxtAgente.TabIndex = 17
@@ -540,11 +540,11 @@ Partial Class FrmLiquidacion
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(9, 111)
+        Me.Label10.Location = New System.Drawing.Point(213, 107)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(28, 13)
+        Me.Label10.Size = New System.Drawing.Size(86, 13)
         Me.Label10.TabIndex = 16
-        Me.Label10.Text = "0.00"
+        Me.Label10.Text = "Gatos Impuestos"
         '
         'TxtFletes
         '

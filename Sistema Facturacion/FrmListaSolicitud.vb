@@ -73,7 +73,7 @@ Public Class FrmListaSolicitud
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-        Dim NumSolicitud As String, Resultado As Double
+        Dim NumSolicitud As String, Resultado As Double, iPosicion As Double
 
         Resultado = MsgBox("¿Esta Seguro de Anular la Solicitud?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
 
@@ -83,7 +83,9 @@ Public Class FrmListaSolicitud
 
         MiConexion.Close()
 
-        NumSolicitud = Me.TDGridSolicitud.Item(0)("Numero_Solicitud")
+
+        iPosicion = Me.TDGridSolicitud.Row
+        NumSolicitud = Me.TDGridSolicitud.Item(iPosicion)("Numero_Solicitud")
 
         StrSqlUpdate = "UPDATE [dbo].[Solicitud_Compra] SET [Estado_Solicitud] = 'Anulado' WHERE (Numero_Solicitud = '" & NumSolicitud & "')"
         MiConexion.Open()

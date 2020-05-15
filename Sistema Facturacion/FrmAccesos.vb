@@ -486,6 +486,7 @@ Public Class FrmAccesos
             Cadena = Cadena & "," & "NoCambiarBodega"
         End If
 
+
         If Me.ChkPrevio.Checked = True Then
             If Cadena <> "" Then
                 Cadena = Cadena & "," & "Previo"
@@ -493,7 +494,7 @@ Public Class FrmAccesos
                 Cadena = "Previo"
             End If
         Else
-            Cadena = "NoPrevio"
+            Cadena = Cadena & "," & "NoPrevio"
         End If
 
 

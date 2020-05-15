@@ -315,11 +315,11 @@ Partial Public Class ArepColillas
         Me.Label9.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label9.Height = 0.1875!
         Me.Label9.HyperLink = Nothing
-        Me.Label9.Left = 0.0!
+        Me.Label9.Left = 0.025!
         Me.Label9.Name = "Label9"
         Me.Label9.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.Label9.Text = "Lunes"
-        Me.Label9.Top = 1.0625!
+        Me.Label9.Top = 1.325!
         Me.Label9.Width = 0.8125!
         '
         'Label10
@@ -334,11 +334,11 @@ Partial Public Class ArepColillas
         Me.Label10.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label10.Height = 0.1875!
         Me.Label10.HyperLink = Nothing
-        Me.Label10.Left = 0.0!
+        Me.Label10.Left = 0.025!
         Me.Label10.Name = "Label10"
         Me.Label10.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.Label10.Text = "Martes"
-        Me.Label10.Top = 1.25!
+        Me.Label10.Top = 1.525!
         Me.Label10.Width = 0.8125!
         '
         'Label11
@@ -353,11 +353,11 @@ Partial Public Class ArepColillas
         Me.Label11.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label11.Height = 0.1875!
         Me.Label11.HyperLink = Nothing
-        Me.Label11.Left = 0.0!
+        Me.Label11.Left = 0.025!
         Me.Label11.Name = "Label11"
         Me.Label11.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.Label11.Text = "Miercoles"
-        Me.Label11.Top = 1.4375!
+        Me.Label11.Top = 1.7!
         Me.Label11.Width = 0.8125!
         '
         'Label12
@@ -372,11 +372,11 @@ Partial Public Class ArepColillas
         Me.Label12.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label12.Height = 0.1875!
         Me.Label12.HyperLink = Nothing
-        Me.Label12.Left = 0.0!
+        Me.Label12.Left = 0.025!
         Me.Label12.Name = "Label12"
         Me.Label12.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.Label12.Text = "Jueves"
-        Me.Label12.Top = 1.625!
+        Me.Label12.Top = 1.9!
         Me.Label12.Width = 0.8125!
         '
         'Label13
@@ -391,11 +391,11 @@ Partial Public Class ArepColillas
         Me.Label13.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label13.Height = 0.1875!
         Me.Label13.HyperLink = Nothing
-        Me.Label13.Left = 0.0!
+        Me.Label13.Left = 0.025!
         Me.Label13.Name = "Label13"
         Me.Label13.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.Label13.Text = "Viernes"
-        Me.Label13.Top = 1.8125!
+        Me.Label13.Top = 2.075!
         Me.Label13.Width = 0.8125!
         '
         'Label15
@@ -410,11 +410,11 @@ Partial Public Class ArepColillas
         Me.Label15.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label15.Height = 0.1875!
         Me.Label15.HyperLink = Nothing
-        Me.Label15.Left = 0.0!
+        Me.Label15.Left = 0.025!
         Me.Label15.Name = "Label15"
         Me.Label15.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.Label15.Text = "Sabado"
-        Me.Label15.Top = 2.0!
+        Me.Label15.Top = 2.275!
         Me.Label15.Width = 0.8125!
         '
         'Label16
@@ -429,11 +429,11 @@ Partial Public Class ArepColillas
         Me.Label16.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label16.Height = 0.1875!
         Me.Label16.HyperLink = Nothing
-        Me.Label16.Left = 0.0!
+        Me.Label16.Left = 0.025!
         Me.Label16.Name = "Label16"
         Me.Label16.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.Label16.Text = "Domingo"
-        Me.Label16.Top = 2.1875!
+        Me.Label16.Top = 1.125!
         Me.Label16.Width = 0.8125!
         '
         'Label17
@@ -678,12 +678,12 @@ Partial Public Class ArepColillas
         Me.TextBox2.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox2.DataField = "Lunes"
         Me.TextBox2.Height = 0.1875!
-        Me.TextBox2.Left = 0.8125!
+        Me.TextBox2.Left = 0.825!
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.OutputFormat = resources.GetString("TextBox2.OutputFormat")
         Me.TextBox2.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox2.Text = Nothing
-        Me.TextBox2.Top = 1.0625!
+        Me.TextBox2.Top = 1.325!
         Me.TextBox2.Width = 0.875!
         '
         'TextBox3
@@ -698,12 +698,12 @@ Partial Public Class ArepColillas
         Me.TextBox3.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox3.DataField = "Martes"
         Me.TextBox3.Height = 0.1875!
-        Me.TextBox3.Left = 0.8125!
+        Me.TextBox3.Left = 0.825!
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.OutputFormat = resources.GetString("TextBox3.OutputFormat")
         Me.TextBox3.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox3.Text = Nothing
-        Me.TextBox3.Top = 1.25!
+        Me.TextBox3.Top = 1.525!
         Me.TextBox3.Width = 0.875!
         '
         'TextBox4
@@ -718,12 +718,12 @@ Partial Public Class ArepColillas
         Me.TextBox4.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox4.DataField = "Miercoles"
         Me.TextBox4.Height = 0.1875!
-        Me.TextBox4.Left = 0.8125!
+        Me.TextBox4.Left = 0.825!
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.OutputFormat = resources.GetString("TextBox4.OutputFormat")
         Me.TextBox4.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox4.Text = Nothing
-        Me.TextBox4.Top = 1.4375!
+        Me.TextBox4.Top = 1.7!
         Me.TextBox4.Width = 0.875!
         '
         'TextBox5
@@ -738,12 +738,12 @@ Partial Public Class ArepColillas
         Me.TextBox5.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox5.DataField = "Jueves"
         Me.TextBox5.Height = 0.1875!
-        Me.TextBox5.Left = 0.8125!
+        Me.TextBox5.Left = 0.825!
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.OutputFormat = resources.GetString("TextBox5.OutputFormat")
         Me.TextBox5.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox5.Text = Nothing
-        Me.TextBox5.Top = 1.625!
+        Me.TextBox5.Top = 1.9!
         Me.TextBox5.Width = 0.875!
         '
         'TextBox6
@@ -758,12 +758,12 @@ Partial Public Class ArepColillas
         Me.TextBox6.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox6.DataField = "Viernes"
         Me.TextBox6.Height = 0.1875!
-        Me.TextBox6.Left = 0.8125!
+        Me.TextBox6.Left = 0.825!
         Me.TextBox6.Name = "TextBox6"
         Me.TextBox6.OutputFormat = resources.GetString("TextBox6.OutputFormat")
         Me.TextBox6.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox6.Text = Nothing
-        Me.TextBox6.Top = 1.8125!
+        Me.TextBox6.Top = 2.075!
         Me.TextBox6.Width = 0.875!
         '
         'TextBox7
@@ -778,12 +778,12 @@ Partial Public Class ArepColillas
         Me.TextBox7.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox7.DataField = "Sabado"
         Me.TextBox7.Height = 0.1875!
-        Me.TextBox7.Left = 0.8125!
+        Me.TextBox7.Left = 0.825!
         Me.TextBox7.Name = "TextBox7"
         Me.TextBox7.OutputFormat = resources.GetString("TextBox7.OutputFormat")
         Me.TextBox7.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox7.Text = Nothing
-        Me.TextBox7.Top = 2.0!
+        Me.TextBox7.Top = 2.275!
         Me.TextBox7.Width = 0.875!
         '
         'TextBox8
@@ -798,12 +798,12 @@ Partial Public Class ArepColillas
         Me.TextBox8.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox8.DataField = "Domingo"
         Me.TextBox8.Height = 0.1875!
-        Me.TextBox8.Left = 0.8125!
+        Me.TextBox8.Left = 0.825!
         Me.TextBox8.Name = "TextBox8"
         Me.TextBox8.OutputFormat = resources.GetString("TextBox8.OutputFormat")
         Me.TextBox8.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox8.Text = Nothing
-        Me.TextBox8.Top = 2.1875!
+        Me.TextBox8.Top = 1.125!
         Me.TextBox8.Width = 0.875!
         '
         'TextBox9
