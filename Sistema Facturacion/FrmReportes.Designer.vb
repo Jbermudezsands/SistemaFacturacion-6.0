@@ -744,7 +744,7 @@ Partial Class FrmReportes
         '
         Me.Imagen.BackColor = System.Drawing.Color.White
         Me.Imagen.Image = CType(resources.GetObject("Imagen.Image"), System.Drawing.Image)
-        Me.Imagen.Location = New System.Drawing.Point(919, 489)
+        Me.Imagen.Location = New System.Drawing.Point(878, 507)
         Me.Imagen.Name = "Imagen"
         Me.Imagen.Size = New System.Drawing.Size(888, 350)
         Me.Imagen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
@@ -1838,15 +1838,22 @@ Partial Class FrmReportes
         '
         'ListaImagenes
         '
-        Me.ListaImagenes.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
-        Me.ListaImagenes.ImageSize = New System.Drawing.Size(16, 16)
+        Me.ListaImagenes.ImageStream = CType(resources.GetObject("ListaImagenes.ImageStream"), System.Windows.Forms.ImageListStreamer)
         Me.ListaImagenes.TransparentColor = System.Drawing.Color.Transparent
+        Me.ListaImagenes.Images.SetKeyName(0, "Circulo0.png")
+        Me.ListaImagenes.Images.SetKeyName(1, "Circulo1.png")
+        Me.ListaImagenes.Images.SetKeyName(2, "Circulo2.png")
+        Me.ListaImagenes.Images.SetKeyName(3, "Circulo3.png")
+        Me.ListaImagenes.Images.SetKeyName(4, "Circulo4.png")
+        Me.ListaImagenes.Images.SetKeyName(5, "Circulo5.png")
+        Me.ListaImagenes.Images.SetKeyName(6, "Circulo6.png")
+        Me.ListaImagenes.Images.SetKeyName(7, "Circulo7.png")
         '
         'FrmReportes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(878, 502)
+        Me.ClientSize = New System.Drawing.Size(881, 516)
         Me.ControlBox = False
         Me.Controls.Add(Me.Imagen)
         Me.Controls.Add(Me.GroupBoxLote)

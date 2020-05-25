@@ -18,10 +18,13 @@ Public Class FrmListaSolicitud
     Public Sub BtnActualizar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnActualizar.Click
         Dim SqlString As String, DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet
 
-
-        SqlString = "SELECT DISTINCT Solicitud_Compra.Numero_Solicitud, Solicitud_Compra.Fecha_Solicitud, Solicitud_Compra.Fecha_Requerido, Solicitud_Compra.Departamento_Solicitante, Solicitud_Compra.Gerencia_Solicitante, Solicitud_Compra.Estado_Solicitud, Solicitud_Compra.Concepto FROM Detalle_Solicitud INNER JOIN Solicitud_Compra ON Detalle_Solicitud.Numero_Solicitud = Solicitud_Compra.Numero_Solicitud  WHERE (Detalle_Solicitud.Activo = 1) AND (Solicitud_Compra.Estado_Solicitud <> 'Anulado')"
+        If Me.OptTodos.Checked = True Then
+            SqlString = "SELECT DISTINCT Solicitud_Compra.Numero_Solicitud, Solicitud_Compra.Fecha_Solicitud, Solicitud_Compra.Fecha_Requerido, Solicitud_Compra.Departamento_Solicitante, Solicitud_Compra.Gerencia_Solicitante, Solicitud_Compra.Estado_Solicitud, Solicitud_Compra.Concepto FROM Detalle_Solicitud INNER JOIN Solicitud_Compra ON Detalle_Solicitud.Numero_Solicitud = Solicitud_Compra.Numero_Solicitud  WHERE (Detalle_Solicitud.Activo = 1) AND (Solicitud_Compra.Estado_Solicitud <> 'Anulado')"
+        ElseIf Me.OptSinProcesar.Checked = True Then
+            SqlString = "SELECT DISTINCT Solicitud_Compra.Numero_Solicitud, Solicitud_Compra.Fecha_Solicitud, Solicitud_Compra.Fecha_Requerido, Solicitud_Compra.Departamento_Solicitante, Solicitud_Compra.Gerencia_Solicitante, Solicitud_Compra.Estado_Solicitud, Solicitud_Compra.Concepto FROM Detalle_Solicitud INNER JOIN Solicitud_Compra ON Detalle_Solicitud.Numero_Solicitud = Solicitud_Compra.Numero_Solicitud  WHERE (Detalle_Solicitud.Activo = 1) AND (Solicitud_Compra.Estado_Solicitud <> 'Anulado') AND (Solicitud_Compra.Estado_Solicitud <> 'Procesado')"
+        End If
         MiConexion.Open()
-        DataAdapter = New SqlClient.SqlDataAdapter(Sqlstring, MiConexion)
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "Lista")
         Me.TDGridSolicitud.DataSource = DataSet.Tables("Lista")
 
@@ -40,7 +43,7 @@ Public Class FrmListaSolicitud
     End Sub
 
     Private Sub FrmListaSolicitud_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        BtnActualizar_Click(sender, e)
+        'BtnActualizar_Click(sender, e)
     End Sub
 
     Public Sub Autorizar_Solicitud()
@@ -136,5 +139,13 @@ Public Class FrmListaSolicitud
 
     Private Sub TDGridSolicitud_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TDGridSolicitud.Click
 
+    End Sub
+
+    Private Sub OptTodos_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptTodos.CheckedChanged
+        BtnActualizar_Click(sender, e)
+    End Sub
+
+    Private Sub OptSinProcesar_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptSinProcesar.CheckedChanged
+        BtnActualizar_Click(sender, e)
     End Sub
 End Class

@@ -30,9 +30,13 @@ Partial Class FrmListaSolicitud
         Me.BtnSalir = New System.Windows.Forms.Button
         Me.CmdNuevo = New System.Windows.Forms.Button
         Me.Button2 = New System.Windows.Forms.Button
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.OptTodos = New System.Windows.Forms.RadioButton
+        Me.OptSinProcesar = New System.Windows.Forms.RadioButton
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'TDGridSolicitud
@@ -164,11 +168,45 @@ Partial Class FrmListaSolicitud
         Me.Button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button2.UseVisualStyleBackColor = True
         '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.OptSinProcesar)
+        Me.GroupBox1.Controls.Add(Me.OptTodos)
+        Me.GroupBox1.Location = New System.Drawing.Point(697, 424)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(170, 49)
+        Me.GroupBox1.TabIndex = 248
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Filtros de Solicitudes"
+        '
+        'OptTodos
+        '
+        Me.OptTodos.AutoSize = True
+        Me.OptTodos.Location = New System.Drawing.Point(12, 21)
+        Me.OptTodos.Name = "OptTodos"
+        Me.OptTodos.Size = New System.Drawing.Size(55, 17)
+        Me.OptTodos.TabIndex = 0
+        Me.OptTodos.Text = "Todos"
+        Me.OptTodos.UseVisualStyleBackColor = True
+        '
+        'OptSinProcesar
+        '
+        Me.OptSinProcesar.AutoSize = True
+        Me.OptSinProcesar.Checked = True
+        Me.OptSinProcesar.Location = New System.Drawing.Point(78, 22)
+        Me.OptSinProcesar.Name = "OptSinProcesar"
+        Me.OptSinProcesar.Size = New System.Drawing.Size(85, 17)
+        Me.OptSinProcesar.TabIndex = 1
+        Me.OptSinProcesar.TabStop = True
+        Me.OptSinProcesar.Text = "Sin Procesar"
+        Me.OptSinProcesar.UseVisualStyleBackColor = True
+        '
         'FrmListaSolicitud
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1009, 436)
+        Me.ClientSize = New System.Drawing.Size(1009, 475)
+        Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.CmdNuevo)
         Me.Controls.Add(Me.Button1)
@@ -186,6 +224,8 @@ Partial Class FrmListaSolicitud
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -200,4 +240,7 @@ Partial Class FrmListaSolicitud
     Friend WithEvents BtnSalir As System.Windows.Forms.Button
     Friend WithEvents CmdNuevo As System.Windows.Forms.Button
     Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents OptSinProcesar As System.Windows.Forms.RadioButton
+    Friend WithEvents OptTodos As System.Windows.Forms.RadioButton
 End Class
