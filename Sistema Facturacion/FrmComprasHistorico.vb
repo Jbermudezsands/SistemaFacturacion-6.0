@@ -1064,23 +1064,24 @@ Public Class FrmComprasHistorico
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
-            Select Case Me.CboTipoProducto.Text
-                Case "Orden de Compra"
-                    ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
-                Case "Mercancia Recibida"
-                    ConsecutivoCompra = BuscaConsecutivo("Compra")
-                Case "Devolucion de Compra"
-                    ConsecutivoCompra = BuscaConsecutivo("DevCompra")
-                Case "Transferencia Recibida"
-                    ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
-            End Select
-        Else
-            ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
-        End If
+        'If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+        '    Select Case Me.CboTipoProducto.Text
+        '        Case "Orden de Compra"
+        '            ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
+        '        Case "Mercancia Recibida"
+        '            ConsecutivoCompra = BuscaConsecutivo("Compra")
+        '        Case "Devolucion de Compra"
+        '            ConsecutivoCompra = BuscaConsecutivo("DevCompra")
+        '        Case "Transferencia Recibida"
+        '            ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
+        '    End Select
+        'Else
+        '    ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
+        'End If
 
-        NumeroCompra = Format(ConsecutivoCompra, "0000#")
+        'NumeroCompra = Format(ConsecutivoCompra, "0000#")
 
+        NumeroCompra = Me.TxtNumeroEnsamble.Text
 
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
