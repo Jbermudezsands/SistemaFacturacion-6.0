@@ -6148,7 +6148,7 @@ Module Funciones
         Do While iPosicion < Registros
             Metodo = FrmCompras.BindingMetodo.Item(iPosicion)("NombrePago")
             TasaCambio = 1
-            Fecha = Format(FrmFacturas.DTPFecha.Value, "yyyy-MM-dd")
+            Fecha = Format(FrmCompras.DTPFecha.Value, "yyyy-MM-dd")
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             '//////////////////////////////BUSCO LA MONEDA DEL METODO DE PAGO///////////////////////////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -6166,20 +6166,30 @@ Module Funciones
 
             Select Case Moneda
                 Case "Cordobas"
-                    TasaCambio = 1
+                    If FrmCompras.TxtMonedaFactura.Text = "Cordobas" Then
+                        TasaCambio = 1
+                    Else
+                        TasaCambio = BuscaTasaCambio(Fecha)
+                    End If
 
                 Case "Dolares"
-                    SQLTasa = "SELECT  * FROM TasaCambio WHERE (FechaTasa = CONVERT(DATETIME, '" & Fecha & "', 102))"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SQLTasa, MiConexion)
-                    DataAdapter.Fill(DataSet, "TasaCambio")
-                    If DataSet.Tables("TasaCambio").Rows.Count <> 0 Then
-                        TasaCambio = DataSet.Tables("TasaCambio").Rows(0)("MontoTasa")
+
+                    If FrmCompras.TxtMonedaFactura.Text = "Dolares" Then
+                        TasaCambio = 1
                     Else
-                        'TasaCambio = 0
-                        MsgBox("La Tasa de Cambio no Existe para esta Fecha", MsgBoxStyle.Critical, "Sistema Facturacion")
-                        FrmFacturas.BindingMetodo.Item(iPosicion)("Monto") = 0
+                        SQLTasa = "SELECT  * FROM TasaCambio WHERE (FechaTasa = CONVERT(DATETIME, '" & Fecha & "', 102))"
+                        DataAdapter = New SqlClient.SqlDataAdapter(SQLTasa, MiConexion)
+                        DataAdapter.Fill(DataSet, "TasaCambio")
+                        If DataSet.Tables("TasaCambio").Rows.Count <> 0 Then
+                            TasaCambio = DataSet.Tables("TasaCambio").Rows(0)("MontoTasa")
+                        Else
+                            'TasaCambio = 0
+                            MsgBox("La Tasa de Cambio no Existe para esta Fecha", MsgBoxStyle.Critical, "Sistema Facturacion")
+                            FrmFacturas.BindingMetodo.Item(iPosicion)("Monto") = 0
+                        End If
+                        DataSet.Tables("TasaCambio").Clear()
                     End If
-                    DataSet.Tables("TasaCambio").Clear()
+
             End Select
 
             If TipoMetodo = "Cambio" Then
@@ -6682,7 +6692,43 @@ Module Funciones
         End If
 
     End Sub
+    Public Sub GrabaMetodoDetalleCompraLiquidacion(ByVal ConsecutivoCompra As String, ByVal NombrePago As String, ByVal Monto As Double, ByVal NumeroTarjeta As String, ByVal FechaVence As String, ByVal TipoPago As String, ByVal FechaCompra As Date, ByVal TipoCompra As String)
+        Dim Sqldetalle As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim Fecha As String, MiConexion As New SqlClient.SqlConnection(Conexion), SqlUpdate As String, FechaVencimiento As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim NumeroCompra As String = ""
 
+        Fecha = Format(FechaCompra, "yyyy-MM-dd")
+        FechaVencimiento = Format(CDate(FechaVence), "dd/MM/yyyy")
+
+        NumeroCompra = ConsecutivoCompra
+
+        Sqldetalle = "SELECT *  FROM Detalle_MetodoCompras WHERE (Numero_Compra = '" & ConsecutivoCompra & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Compra = '" & TipoCompra & "') AND (NombrePago = '" & NombrePago & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(Sqldetalle, MiConexion)
+        DataAdapter.Fill(DataSet, "DetalleMetodoCompra")
+        If Not DataSet.Tables("DetalleMetodoCompra").Rows.Count = 0 Then
+            '//////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////////EDITO EL DETALLE DE COMPRAS///////////////////////////////////
+            '/////////////////////////////////////////////////////////////////////////////////////////////////
+            SqlUpdate = "UPDATE [Detalle_MetodoCompras] SET [NombrePago] = '" & NombrePago & "',[Monto] = " & Monto & ",[NumeroTarjeta] = '" & NumeroTarjeta & "',[FechaVence] = '" & FechaVencimiento & "' " & _
+                         "WHERE (Numero_Compra = '" & ConsecutivoCompra & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Compra = '" & TipoCompra & "') AND (NombrePago = '" & NombrePago & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+        Else
+            MiConexion.Close()
+            SqlUpdate = "INSERT INTO [Detalle_MetodoCompras] ([Numero_Compra],[Fecha_Compra],[Tipo_Compra],[NombrePago],[Monto],[NumeroTarjeta] ,[FechaVence]) " & _
+                        "VALUES ('" & NumeroCompra & "',CONVERT(DATETIME, '" & Fecha & "', 102),'" & TipoCompra & "','" & NombrePago & "'," & Monto & " ,'" & NumeroTarjeta & "','" & FechaVencimiento & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+        End If
+
+    End Sub
 
     Public Sub GrabaMetodoDetalleCompra(ByVal ConsecutivoCompra As String, ByVal NombrePago As String, ByVal Monto As Double, ByVal NumeroTarjeta As String, ByVal FechaVence As String)
         Dim Sqldetalle As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
@@ -6692,7 +6738,8 @@ Module Funciones
 
         Fecha = Format(FrmCompras.DTPFecha.Value, "yyyy-MM-dd")
         FechaVencimiento = Format(CDate(FechaVence), "dd/MM/yyyy")
-        NumeroCompra = My.Forms.FrmCompras.TxtNumeroEnsamble.Text
+        'NumeroCompra = My.Forms.FrmCompras.TxtNumeroEnsamble.Text
+        NumeroCompra = ConsecutivoCompra
 
         Sqldetalle = "SELECT *  FROM Detalle_MetodoCompras WHERE (Numero_Compra = '" & ConsecutivoCompra & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Compra = '" & FrmCompras.CboTipoProducto.Text & "') AND (NombrePago = '" & NombrePago & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(Sqldetalle, MiConexion)

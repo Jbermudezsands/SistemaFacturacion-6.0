@@ -316,8 +316,13 @@ Public Class FrmCuentasXCobrar
                 End If
             End If
 
-            MontoFactura = (DataSet.Tables("Clientes").Rows(i)("SubTotal") + DataSet.Tables("Clientes").Rows(i)("IVA")) * TasaCambio
+            MontoFactura = Format((DataSet.Tables("Clientes").Rows(i)("SubTotal") + DataSet.Tables("Clientes").Rows(i)("IVA")) * TasaCambio, "##,##0.00")
 
+            '///////////////////////////////////////REDONDEO PARA LA SUMA //////////////////////////////
+            MontoFactura = Format(MontoFactura, "####0.00")
+            TotalMontoNotaDB = Format(TotalMontoNotaDB, "####0.00")
+            TotalMontoNotaCR = Format(TotalMontoNotaCR, "####0.00")
+            MontoMetodoFactura = Format(MontoMetodoFactura, "####0.00")
 
 
             Dias = DateDiff(DateInterval.Day, FechaVence, Me.DTPFechaFin.Value)

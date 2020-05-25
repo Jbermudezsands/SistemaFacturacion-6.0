@@ -102,6 +102,7 @@ Partial Class FrmActualiza
         Me.Label1 = New System.Windows.Forms.Label
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage4 = New System.Windows.Forms.TabPage
+        Me.ProgressBarFactura = New System.Windows.Forms.ProgressBar
         Me.ProgressBar6 = New System.Windows.Forms.ProgressBar
         Me.Button16 = New System.Windows.Forms.Button
         Me.GroupBox8 = New System.Windows.Forms.GroupBox
@@ -122,7 +123,20 @@ Partial Class FrmActualiza
         Me.TabPage7 = New System.Windows.Forms.TabPage
         Me.Button20 = New System.Windows.Forms.Button
         Me.TabPage8 = New System.Windows.Forms.TabPage
-        Me.ProgressBarFactura = New System.Windows.Forms.ProgressBar
+        Me.GroupBox10 = New System.Windows.Forms.GroupBox
+        Me.OptCuentasPagarRe = New System.Windows.Forms.RadioButton
+        Me.OptCuentasCobrarRe = New System.Windows.Forms.RadioButton
+        Me.GroupBox11 = New System.Windows.Forms.GroupBox
+        Me.Button21 = New System.Windows.Forms.Button
+        Me.Button22 = New System.Windows.Forms.Button
+        Me.TxtRebalorizarHasta = New System.Windows.Forms.TextBox
+        Me.Label23 = New System.Windows.Forms.Label
+        Me.TxtRebalorizaDesde = New System.Windows.Forms.TextBox
+        Me.Label24 = New System.Windows.Forms.Label
+        Me.ProgressBarRe = New System.Windows.Forms.ProgressBar
+        Me.BtnRebalorizar = New System.Windows.Forms.Button
+        Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker
+        Me.Label25 = New System.Windows.Forms.Label
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -143,6 +157,9 @@ Partial Class FrmActualiza
         Me.TabPage6.SuspendLayout()
         Me.GroupBox9.SuspendLayout()
         Me.TabPage7.SuspendLayout()
+        Me.TabPage8.SuspendLayout()
+        Me.GroupBox10.SuspendLayout()
+        Me.GroupBox11.SuspendLayout()
         Me.SuspendLayout()
         '
         'PictureBox2
@@ -831,7 +848,7 @@ Partial Class FrmActualiza
         'CmdIniciar
         '
         Me.CmdIniciar.Image = CType(resources.GetObject("CmdIniciar.Image"), System.Drawing.Image)
-        Me.CmdIniciar.Location = New System.Drawing.Point(369, 142)
+        Me.CmdIniciar.Location = New System.Drawing.Point(381, 139)
         Me.CmdIniciar.Name = "CmdIniciar"
         Me.CmdIniciar.Size = New System.Drawing.Size(96, 59)
         Me.CmdIniciar.TabIndex = 4
@@ -960,6 +977,14 @@ Partial Class FrmActualiza
         Me.TabPage4.TabIndex = 5
         Me.TabPage4.Text = "Calculos"
         Me.TabPage4.UseVisualStyleBackColor = True
+        '
+        'ProgressBarFactura
+        '
+        Me.ProgressBarFactura.Location = New System.Drawing.Point(11, 141)
+        Me.ProgressBarFactura.Name = "ProgressBarFactura"
+        Me.ProgressBarFactura.Size = New System.Drawing.Size(343, 23)
+        Me.ProgressBarFactura.TabIndex = 16
+        Me.ProgressBarFactura.Visible = False
         '
         'ProgressBar6
         '
@@ -1159,21 +1184,155 @@ Partial Class FrmActualiza
         '
         'TabPage8
         '
+        Me.TabPage8.Controls.Add(Me.DTPFechaFin)
+        Me.TabPage8.Controls.Add(Me.Label25)
+        Me.TabPage8.Controls.Add(Me.BtnRebalorizar)
+        Me.TabPage8.Controls.Add(Me.ProgressBarRe)
+        Me.TabPage8.Controls.Add(Me.GroupBox11)
+        Me.TabPage8.Controls.Add(Me.GroupBox10)
         Me.TabPage8.Location = New System.Drawing.Point(4, 22)
         Me.TabPage8.Name = "TabPage8"
         Me.TabPage8.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage8.Size = New System.Drawing.Size(510, 206)
         Me.TabPage8.TabIndex = 8
-        Me.TabPage8.Text = "Lotes"
+        Me.TabPage8.Text = "Rebalorizar"
         Me.TabPage8.UseVisualStyleBackColor = True
         '
-        'ProgressBarFactura
+        'GroupBox10
         '
-        Me.ProgressBarFactura.Location = New System.Drawing.Point(11, 141)
-        Me.ProgressBarFactura.Name = "ProgressBarFactura"
-        Me.ProgressBarFactura.Size = New System.Drawing.Size(343, 23)
-        Me.ProgressBarFactura.TabIndex = 16
-        Me.ProgressBarFactura.Visible = False
+        Me.GroupBox10.Controls.Add(Me.OptCuentasPagarRe)
+        Me.GroupBox10.Controls.Add(Me.OptCuentasCobrarRe)
+        Me.GroupBox10.Location = New System.Drawing.Point(11, 6)
+        Me.GroupBox10.Name = "GroupBox10"
+        Me.GroupBox10.Size = New System.Drawing.Size(467, 44)
+        Me.GroupBox10.TabIndex = 6
+        Me.GroupBox10.TabStop = False
+        Me.GroupBox10.Text = "Tipo de Cuentas"
+        '
+        'OptCuentasPagarRe
+        '
+        Me.OptCuentasPagarRe.AutoSize = True
+        Me.OptCuentasPagarRe.Location = New System.Drawing.Point(185, 19)
+        Me.OptCuentasPagarRe.Name = "OptCuentasPagarRe"
+        Me.OptCuentasPagarRe.Size = New System.Drawing.Size(103, 17)
+        Me.OptCuentasPagarRe.TabIndex = 1
+        Me.OptCuentasPagarRe.TabStop = True
+        Me.OptCuentasPagarRe.Text = "Cuentas x Pagar"
+        Me.OptCuentasPagarRe.UseVisualStyleBackColor = True
+        '
+        'OptCuentasCobrarRe
+        '
+        Me.OptCuentasCobrarRe.AutoSize = True
+        Me.OptCuentasCobrarRe.Checked = True
+        Me.OptCuentasCobrarRe.Location = New System.Drawing.Point(20, 19)
+        Me.OptCuentasCobrarRe.Name = "OptCuentasCobrarRe"
+        Me.OptCuentasCobrarRe.Size = New System.Drawing.Size(106, 17)
+        Me.OptCuentasCobrarRe.TabIndex = 0
+        Me.OptCuentasCobrarRe.TabStop = True
+        Me.OptCuentasCobrarRe.Text = "Cuentas x Cobrar"
+        Me.OptCuentasCobrarRe.UseVisualStyleBackColor = True
+        '
+        'GroupBox11
+        '
+        Me.GroupBox11.Controls.Add(Me.Button21)
+        Me.GroupBox11.Controls.Add(Me.Button22)
+        Me.GroupBox11.Controls.Add(Me.TxtRebalorizarHasta)
+        Me.GroupBox11.Controls.Add(Me.Label23)
+        Me.GroupBox11.Controls.Add(Me.TxtRebalorizaDesde)
+        Me.GroupBox11.Controls.Add(Me.Label24)
+        Me.GroupBox11.Location = New System.Drawing.Point(11, 52)
+        Me.GroupBox11.Name = "GroupBox11"
+        Me.GroupBox11.Size = New System.Drawing.Size(467, 54)
+        Me.GroupBox11.TabIndex = 7
+        Me.GroupBox11.TabStop = False
+        Me.GroupBox11.Text = "Rango de Cuentas a Filtrar"
+        '
+        'Button21
+        '
+        Me.Button21.Image = CType(resources.GetObject("Button21.Image"), System.Drawing.Image)
+        Me.Button21.Location = New System.Drawing.Point(403, 10)
+        Me.Button21.Name = "Button21"
+        Me.Button21.Size = New System.Drawing.Size(37, 38)
+        Me.Button21.TabIndex = 129
+        Me.Button21.UseVisualStyleBackColor = True
+        '
+        'Button22
+        '
+        Me.Button22.Image = CType(resources.GetObject("Button22.Image"), System.Drawing.Image)
+        Me.Button22.Location = New System.Drawing.Point(172, 10)
+        Me.Button22.Name = "Button22"
+        Me.Button22.Size = New System.Drawing.Size(37, 38)
+        Me.Button22.TabIndex = 128
+        Me.Button22.UseVisualStyleBackColor = True
+        '
+        'TxtRebalorizarHasta
+        '
+        Me.TxtRebalorizarHasta.Location = New System.Drawing.Point(297, 22)
+        Me.TxtRebalorizarHasta.Name = "TxtRebalorizarHasta"
+        Me.TxtRebalorizarHasta.Size = New System.Drawing.Size(100, 20)
+        Me.TxtRebalorizarHasta.TabIndex = 9
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Location = New System.Drawing.Point(253, 25)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(35, 13)
+        Me.Label23.TabIndex = 8
+        Me.Label23.Text = "Hasta"
+        '
+        'TxtRebalorizaDesde
+        '
+        Me.TxtRebalorizaDesde.Location = New System.Drawing.Point(66, 22)
+        Me.TxtRebalorizaDesde.Name = "TxtRebalorizaDesde"
+        Me.TxtRebalorizaDesde.Size = New System.Drawing.Size(100, 20)
+        Me.TxtRebalorizaDesde.TabIndex = 7
+        '
+        'Label24
+        '
+        Me.Label24.AutoSize = True
+        Me.Label24.Location = New System.Drawing.Point(22, 25)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(38, 13)
+        Me.Label24.TabIndex = 6
+        Me.Label24.Text = "Desde"
+        '
+        'ProgressBarRe
+        '
+        Me.ProgressBarRe.Location = New System.Drawing.Point(11, 154)
+        Me.ProgressBarRe.Name = "ProgressBarRe"
+        Me.ProgressBarRe.Size = New System.Drawing.Size(337, 23)
+        Me.ProgressBarRe.TabIndex = 8
+        '
+        'BtnRebalorizar
+        '
+        Me.BtnRebalorizar.Image = CType(resources.GetObject("BtnRebalorizar.Image"), System.Drawing.Image)
+        Me.BtnRebalorizar.Location = New System.Drawing.Point(382, 118)
+        Me.BtnRebalorizar.Name = "BtnRebalorizar"
+        Me.BtnRebalorizar.Size = New System.Drawing.Size(96, 59)
+        Me.BtnRebalorizar.TabIndex = 9
+        Me.BtnRebalorizar.Tag = "25"
+        Me.BtnRebalorizar.Text = "Iniciar"
+        Me.BtnRebalorizar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnRebalorizar.UseVisualStyleBackColor = True
+        '
+        'DTPFechaFin
+        '
+        Me.DTPFechaFin.CustomFormat = ""
+        Me.DTPFechaFin.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DTPFechaFin.Location = New System.Drawing.Point(94, 119)
+        Me.DTPFechaFin.Name = "DTPFechaFin"
+        Me.DTPFechaFin.Size = New System.Drawing.Size(104, 20)
+        Me.DTPFechaFin.TabIndex = 188
+        '
+        'Label25
+        '
+        Me.Label25.AutoSize = True
+        Me.Label25.Location = New System.Drawing.Point(24, 121)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(65, 13)
+        Me.Label25.TabIndex = 187
+        Me.Label25.Text = "Fecha Corte"
         '
         'FrmActualiza
         '
@@ -1224,6 +1383,12 @@ Partial Class FrmActualiza
         Me.GroupBox9.ResumeLayout(False)
         Me.GroupBox9.PerformLayout()
         Me.TabPage7.ResumeLayout(False)
+        Me.TabPage8.ResumeLayout(False)
+        Me.TabPage8.PerformLayout()
+        Me.GroupBox10.ResumeLayout(False)
+        Me.GroupBox10.PerformLayout()
+        Me.GroupBox11.ResumeLayout(False)
+        Me.GroupBox11.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1331,4 +1496,18 @@ Partial Class FrmActualiza
     Friend WithEvents Button20 As System.Windows.Forms.Button
     Friend WithEvents TabPage8 As System.Windows.Forms.TabPage
     Friend WithEvents ProgressBarFactura As System.Windows.Forms.ProgressBar
+    Friend WithEvents GroupBox10 As System.Windows.Forms.GroupBox
+    Friend WithEvents OptCuentasPagarRe As System.Windows.Forms.RadioButton
+    Friend WithEvents OptCuentasCobrarRe As System.Windows.Forms.RadioButton
+    Friend WithEvents ProgressBarRe As System.Windows.Forms.ProgressBar
+    Friend WithEvents GroupBox11 As System.Windows.Forms.GroupBox
+    Friend WithEvents Button21 As System.Windows.Forms.Button
+    Friend WithEvents Button22 As System.Windows.Forms.Button
+    Friend WithEvents TxtRebalorizarHasta As System.Windows.Forms.TextBox
+    Friend WithEvents Label23 As System.Windows.Forms.Label
+    Friend WithEvents TxtRebalorizaDesde As System.Windows.Forms.TextBox
+    Friend WithEvents Label24 As System.Windows.Forms.Label
+    Friend WithEvents BtnRebalorizar As System.Windows.Forms.Button
+    Friend WithEvents DTPFechaFin As System.Windows.Forms.DateTimePicker
+    Friend WithEvents Label25 As System.Windows.Forms.Label
 End Class

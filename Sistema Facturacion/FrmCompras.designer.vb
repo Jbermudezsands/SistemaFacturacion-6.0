@@ -538,7 +538,7 @@ Partial Class FrmCompras
         Me.TrueDBGridMetodo.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TrueDBGridMetodo.PreviewInfo.ZoomFactor = 75
         Me.TrueDBGridMetodo.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridMetodo.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TrueDBGridMetodo.Size = New System.Drawing.Size(220, 84)
+        Me.TrueDBGridMetodo.Size = New System.Drawing.Size(232, 84)
         Me.TrueDBGridMetodo.TabIndex = 150
         Me.TrueDBGridMetodo.Text = "C1TrueDBGrid1"
         Me.TrueDBGridMetodo.Visible = False
@@ -720,11 +720,11 @@ Partial Class FrmCompras
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(326, 273)
+        Me.Label7.Location = New System.Drawing.Point(321, 273)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(67, 13)
+        Me.Label7.Size = New System.Drawing.Size(68, 13)
         Me.Label7.TabIndex = 205
-        Me.Label7.Text = "NReferencia"
+        Me.Label7.Text = "Num Factura"
         '
         'CmdProcesar
         '

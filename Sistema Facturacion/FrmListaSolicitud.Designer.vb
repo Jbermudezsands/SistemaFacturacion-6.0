@@ -49,7 +49,7 @@ Partial Class FrmListaSolicitud
         Me.TDGridSolicitud.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TDGridSolicitud.PreviewInfo.ZoomFactor = 75
         Me.TDGridSolicitud.PrintInfo.PageSettings = CType(resources.GetObject("TDGridSolicitud.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TDGridSolicitud.Size = New System.Drawing.Size(801, 360)
+        Me.TDGridSolicitud.Size = New System.Drawing.Size(862, 360)
         Me.TDGridSolicitud.TabIndex = 131
         Me.TDGridSolicitud.Text = "C1TrueDBGrid1"
         Me.TDGridSolicitud.PropBag = resources.GetString("TDGridSolicitud.PropBag")
@@ -59,7 +59,7 @@ Partial Class FrmListaSolicitud
         Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox1.Location = New System.Drawing.Point(-4, -2)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(937, 60)
+        Me.PictureBox1.Size = New System.Drawing.Size(1018, 60)
         Me.PictureBox1.TabIndex = 134
         Me.PictureBox1.TabStop = False
         '
@@ -91,7 +91,7 @@ Partial Class FrmListaSolicitud
         Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
         Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button1.Location = New System.Drawing.Point(812, 303)
+        Me.Button1.Location = New System.Drawing.Point(883, 303)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(114, 56)
         Me.Button1.TabIndex = 245
@@ -104,7 +104,7 @@ Partial Class FrmListaSolicitud
         Me.BtnActualizar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnActualizar.Image = CType(resources.GetObject("BtnActualizar.Image"), System.Drawing.Image)
         Me.BtnActualizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnActualizar.Location = New System.Drawing.Point(812, 181)
+        Me.BtnActualizar.Location = New System.Drawing.Point(883, 181)
         Me.BtnActualizar.Name = "BtnActualizar"
         Me.BtnActualizar.Size = New System.Drawing.Size(114, 56)
         Me.BtnActualizar.TabIndex = 244
@@ -117,7 +117,7 @@ Partial Class FrmListaSolicitud
         Me.BtnVer.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnVer.Image = CType(resources.GetObject("BtnVer.Image"), System.Drawing.Image)
         Me.BtnVer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnVer.Location = New System.Drawing.Point(812, 122)
+        Me.BtnVer.Location = New System.Drawing.Point(883, 122)
         Me.BtnVer.Name = "BtnVer"
         Me.BtnVer.Size = New System.Drawing.Size(114, 56)
         Me.BtnVer.TabIndex = 243
@@ -130,7 +130,7 @@ Partial Class FrmListaSolicitud
         Me.BtnSalir.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnSalir.Image = CType(resources.GetObject("BtnSalir.Image"), System.Drawing.Image)
         Me.BtnSalir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnSalir.Location = New System.Drawing.Point(812, 368)
+        Me.BtnSalir.Location = New System.Drawing.Point(883, 368)
         Me.BtnSalir.Name = "BtnSalir"
         Me.BtnSalir.Size = New System.Drawing.Size(114, 56)
         Me.BtnSalir.TabIndex = 242
@@ -143,7 +143,7 @@ Partial Class FrmListaSolicitud
         Me.CmdNuevo.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CmdNuevo.Image = CType(resources.GetObject("CmdNuevo.Image"), System.Drawing.Image)
         Me.CmdNuevo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.CmdNuevo.Location = New System.Drawing.Point(812, 243)
+        Me.CmdNuevo.Location = New System.Drawing.Point(883, 243)
         Me.CmdNuevo.Name = "CmdNuevo"
         Me.CmdNuevo.Size = New System.Drawing.Size(114, 54)
         Me.CmdNuevo.TabIndex = 246
@@ -156,7 +156,7 @@ Partial Class FrmListaSolicitud
         Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button2.Location = New System.Drawing.Point(812, 64)
+        Me.Button2.Location = New System.Drawing.Point(883, 64)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(114, 56)
         Me.Button2.TabIndex = 247
@@ -168,7 +168,7 @@ Partial Class FrmListaSolicitud
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(931, 436)
+        Me.ClientSize = New System.Drawing.Size(1009, 436)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.CmdNuevo)
         Me.Controls.Add(Me.Button1)

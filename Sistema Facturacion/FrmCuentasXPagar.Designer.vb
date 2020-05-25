@@ -147,7 +147,7 @@ Partial Class FrmCuentasXPagar
         Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox1.Location = New System.Drawing.Point(-1, -1)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(937, 60)
+        Me.PictureBox1.Size = New System.Drawing.Size(1002, 60)
         Me.PictureBox1.TabIndex = 183
         Me.PictureBox1.TabStop = False
         '
@@ -165,7 +165,7 @@ Partial Class FrmCuentasXPagar
         Me.TDGridImpuestos.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TDGridImpuestos.PreviewInfo.ZoomFactor = 75
         Me.TDGridImpuestos.PrintInfo.PageSettings = CType(resources.GetObject("TDGridImpuestos.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TDGridImpuestos.Size = New System.Drawing.Size(902, 208)
+        Me.TDGridImpuestos.Size = New System.Drawing.Size(968, 208)
         Me.TDGridImpuestos.TabIndex = 180
         Me.TDGridImpuestos.Text = "C1TrueDBGrid1"
         Me.TDGridImpuestos.PropBag = resources.GetString("TDGridImpuestos.PropBag")
@@ -423,7 +423,7 @@ Partial Class FrmCuentasXPagar
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(926, 451)
+        Me.ClientSize = New System.Drawing.Size(996, 451)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Button8)
@@ -437,7 +437,7 @@ Partial Class FrmCuentasXPagar
         Me.Controls.Add(Me.DTPFechaIni)
         Me.Name = "FrmCuentasXPagar"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Cuentas x Pagar"
+        Me.Text = "Cuetas x Pagar"
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TDGridImpuestos, System.ComponentModel.ISupportInitialize).EndInit()

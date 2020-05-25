@@ -19,7 +19,7 @@ Public Class FrmListaSolicitud
         Dim SqlString As String, DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet
 
 
-        SqlString = "SELECT DISTINCT Solicitud_Compra.Numero_Solicitud, Solicitud_Compra.Fecha_Solicitud, Solicitud_Compra.Fecha_Requerido, Solicitud_Compra.Departamento_Solicitante, Solicitud_Compra.Gerencia_Solicitante, Solicitud_Compra.Estado_Solicitud FROM Detalle_Solicitud INNER JOIN Solicitud_Compra ON Detalle_Solicitud.Numero_Solicitud = Solicitud_Compra.Numero_Solicitud  WHERE (Detalle_Solicitud.Activo = 1) AND (Solicitud_Compra.Estado_Solicitud <> 'Anulado')"
+        SqlString = "SELECT DISTINCT Solicitud_Compra.Numero_Solicitud, Solicitud_Compra.Fecha_Solicitud, Solicitud_Compra.Fecha_Requerido, Solicitud_Compra.Departamento_Solicitante, Solicitud_Compra.Gerencia_Solicitante, Solicitud_Compra.Estado_Solicitud, Solicitud_Compra.Concepto FROM Detalle_Solicitud INNER JOIN Solicitud_Compra ON Detalle_Solicitud.Numero_Solicitud = Solicitud_Compra.Numero_Solicitud  WHERE (Detalle_Solicitud.Activo = 1) AND (Solicitud_Compra.Estado_Solicitud <> 'Anulado')"
         MiConexion.Open()
         DataAdapter = New SqlClient.SqlDataAdapter(Sqlstring, MiConexion)
         DataAdapter.Fill(DataSet, "Lista")
@@ -34,8 +34,8 @@ Public Class FrmListaSolicitud
         Me.TDGridSolicitud.Columns("Departamento_Solicitante").Caption = "Departamento Solicitante"
         Me.TDGridSolicitud.Splits.Item(0).DisplayColumns("Departamento_Solicitante").Width = 123
         Me.TDGridSolicitud.Columns("Gerencia_Solicitante").Caption = "Gerencia Solicitante"
-        Me.TDGridSolicitud.Splits.Item(0).DisplayColumns("Gerencia_Solicitante").Width = 202
-
+        Me.TDGridSolicitud.Splits.Item(0).DisplayColumns("Gerencia_Solicitante").Width = 150
+        Me.TDGridSolicitud.Splits.Item(0).DisplayColumns("Concepto").Width = 150
         MiConexion.Close()
     End Sub
 

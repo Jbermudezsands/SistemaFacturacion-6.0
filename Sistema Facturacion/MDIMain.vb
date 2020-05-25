@@ -876,7 +876,7 @@ Public Class MDIMain
                         Do While Not strLine Is Nothing
 
                             'Write the line to the Console window.
-                            objStreamWriter.WriteLine("")
+                            'objStreamWriter.WriteLine("")
 
 
                             'Read the next line.

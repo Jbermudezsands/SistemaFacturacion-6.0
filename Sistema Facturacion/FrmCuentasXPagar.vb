@@ -66,8 +66,7 @@ Public Class FrmCuentasXPagar
         Dim oDataRow As DataRow, MontoFactura As Double, FechaFactura As Date, Dias As Double, TasaInteres As Double, MontoMora As Double, Total As Double
         Dim Registros2 As Double, j As Double, TasaCambioRecibo As Double, TotalFactura As Double = 0, TotalAbonos As Double = 0, TotalCargos As Double = 0
         Dim TotalMora As Double = 0, FechaVence As Date, NumeroNota As String = "", MontoNota As Double = 0, NumeroNotaCR As String = "", MontoNotaCR As Double = 0, TotalMontoNotaCR As Double = 0, TotalMontoNotaDB As Double = 0
-        Dim CodigoProveedor As String, TipoNota As String
-
+        Dim CodigoProveedor As String, TipoNota As String, Observaciones As String, MontoMetodoCompra As Double, Numero_Compra As String
 
         If Me.CboCodigoProveedor.Text = "" Then
             Exit Sub
@@ -79,7 +78,7 @@ Public Class FrmCuentasXPagar
         '*******************************************************************************************************************************
         DataSet.Reset()
         DatasetReporte.Reset()
-        SQlString = "SELECT Compras.Fecha_Compra As Fecha_Factura, Compras.Numero_Compra As Numero_Factura, Compras.Numero_Compra As Numero_Recibo, Compras.Numero_Compra As NotaDebito, Compras.SubTotal As MontoNota, Compras.SubTotal As Monto, Compras.Fecha_Compra As FechaVence, Compras.IVA As Abono, Compras.SubTotal AS Saldo, Compras.SubTotal As Moratorio, Compras.SubTotal As Dias, Compras.SubTotal AS Total  FROM Compras INNER JOIN Proveedor ON Compras.Cod_Proveedor = Proveedor.Cod_Proveedor  " & _
+        SQlString = "SELECT Compras.Fecha_Compra As Fecha_Factura, Compras.Numero_Compra As Numero_Factura, Compras.Numero_Compra As Numero_Recibo, Compras.Numero_Compra As NotaDebito, Compras.SubTotal As MontoNota, Compras.SubTotal As Monto, Compras.Fecha_Compra As FechaVence, Compras.IVA As Abono, Compras.SubTotal AS Saldo, Compras.SubTotal As Moratorio, Compras.SubTotal As Dias, Compras.SubTotal AS Total, Compras.Observaciones   FROM Compras INNER JOIN Proveedor ON Compras.Cod_Proveedor = Proveedor.Cod_Proveedor  " & _
                     "WHERE  (Compras.Tipo_Compra = 'Mercancia Recibida' OR Compras.Tipo_Compra = 'Cuenta')  AND (Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '01/01/1900', 102) AND CONVERT(DATETIME, '01/01/1900', 102)) ORDER BY Compras.Fecha_Compra, Compras.Numero_Compra"
         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
         DataAdapter.Fill(DatasetReporte, "TotalVentas")
@@ -125,7 +124,19 @@ Public Class FrmCuentasXPagar
                 End If
             End If
 
-            NumeroFactura = DataSet.Tables("Proveedores").Rows(i)("Numero_Compra")
+            'NumeroFactura = DataSet.Tables("Proveedores").Rows(i)("Numero_Compra") Su_Referencia
+            If Not IsDBNull(DataSet.Tables("Proveedores").Rows(i)("Su_Referencia")) Then
+                NumeroFactura = DataSet.Tables("Proveedores").Rows(i)("Su_Referencia")
+            Else
+                NumeroFactura = DataSet.Tables("Proveedores").Rows(i)("Numero_Compra")
+            End If
+
+            Numero_Compra = DataSet.Tables("Proveedores").Rows(i)("Numero_Compra")
+
+            If Not IsDBNull(DataSet.Tables("Proveedores").Rows(i)("Observaciones")) Then
+                Observaciones = DataSet.Tables("Proveedores").Rows(i)("Observaciones")
+            End If
+
             FechaFactura = DataSet.Tables("Proveedores").Rows(i)("Fecha_Compra")
             FechaVence = DataSet.Tables("Proveedores").Rows(i)("Fecha_Vencimiento")
             '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -135,7 +146,7 @@ Public Class FrmCuentasXPagar
             '            "HAVING (DetalleRecibo.Numero_Factura = '" & NumeroFactura & "')"
 
 
-            SQlString = "SELECT * FROM  ReciboPago INNER JOIN DetalleReciboPago ON ReciboPago.CodReciboPago = DetalleReciboPago.CodReciboPago AND ReciboPago.Fecha_Recibo = DetalleReciboPago.Fecha_Recibo WHERE (DetalleReciboPago.Numero_Compra = '" & NumeroFactura & "')"
+            SQlString = "SELECT * FROM  ReciboPago INNER JOIN DetalleReciboPago ON ReciboPago.CodReciboPago = DetalleReciboPago.CodReciboPago AND ReciboPago.Fecha_Recibo = DetalleReciboPago.Fecha_Recibo WHERE (DetalleReciboPago.Numero_Compra = '" & Numero_Compra & "')"
             DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
             DataAdapter.Fill(DataSet, "Recibos")
             Registros2 = DataSet.Tables("Recibos").Rows.Count
@@ -169,7 +180,7 @@ Public Class FrmCuentasXPagar
             '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             '//////////////////////////////////////BUSCO SI EXISTEN NOTAS DE DEBITO PARA ESTA FACTURA //////////////////////////////////////////////////////
             '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            SQlString = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Monto, NotaDebito.Tipo, IndiceNota.MonedaNota, IndiceNota.Fecha_Nota AS Expr1, IndiceNota.Tipo_Nota AS Expr2 FROM Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota WHERE (NotaDebito.Tipo = 'Debito Proveedores') AND (Detalle_Nota.Numero_Factura = '" & NumeroFactura & "')"
+            SQlString = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Monto, NotaDebito.Tipo, IndiceNota.MonedaNota, IndiceNota.Fecha_Nota AS Expr1, IndiceNota.Tipo_Nota AS Expr2 FROM Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota WHERE (NotaDebito.Tipo = 'Debito Proveedores') AND (Detalle_Nota.Numero_Factura = '" & Numero_Compra & "')"
 
             DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
             DataAdapter.Fill(DataSet, "NotaDB")
@@ -202,11 +213,13 @@ Public Class FrmCuentasXPagar
                 j = j + 1
             Loop
             DataSet.Tables("NotaDB").Reset()
+
+
             '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             '//////////////////////////////////////BUSCO SI EXISTEN NOTAS DE CREDITO PARA ESTA FACTURA //////////////////////////////////////////////////////
             '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             'SQlString = "SELECT Detalle_Nota.*, NotaDebito.Tipo, IndiceNota.MonedaNota FROM Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota WHERE  (NotaDebito.Tipo = 'Credito Clientes') AND (Detalle_Nota.Numero_Factura = '" & NumeroFactura & "')"
-            SQlString = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Monto, NotaDebito.Tipo, IndiceNota.MonedaNota, IndiceNota.Fecha_Nota AS Expr1, IndiceNota.Tipo_Nota AS Expr2 FROM Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota WHERE (NotaDebito.Tipo = 'Credito Proveedores') AND (Detalle_Nota.Numero_Factura = '" & NumeroFactura & "')"
+            SQlString = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Monto, NotaDebito.Tipo, IndiceNota.MonedaNota, IndiceNota.Fecha_Nota AS Expr1, IndiceNota.Tipo_Nota AS Expr2 FROM Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota WHERE (NotaDebito.Tipo = 'Credito Proveedores') AND (Detalle_Nota.Numero_Factura = '" & Numero_Compra & "')"
 
             DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
             DataAdapter.Fill(DataSet, "NotaCR")
@@ -252,9 +265,39 @@ Public Class FrmCuentasXPagar
             '    End If
             'End If
 
+
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '//////////////////////////////////////BUSCO EL DETALLE DE METODO PARA LAS COMPRAS DE CONTADO //////////////////////////////////////////////////////
+            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            MontoMetodoCompra = 0
+            SQlString = "SELECT * FROM Detalle_MetodoCompras INNER JOIN MetodoPago ON Detalle_MetodoCompras.NombrePago = MetodoPago.NombrePago WHERE (Detalle_MetodoCompras.Tipo_Compra = 'Mercancia Recibida') AND (Detalle_MetodoCompras.Numero_Compra = '" & Numero_Compra & "')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+            DataAdapter.Fill(DataSet, "MetodoCompra")
+            If DataSet.Tables("MetodoCompra").Rows.Count <> 0 Then
+                If Me.OptCordobas.Checked = True Then
+                    If DataSet.Tables("MetodoCompra").Rows(0)("Moneda") = "Cordobas" Then
+                        TasaCambioRecibo = 1
+                    Else
+                        TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("MetodoCompra").Rows(0)("Fecha_Compra"))
+                    End If
+                Else
+                    If DataSet.Tables("MetodoCompra").Rows(0)("Moneda") = "Dolares" Then
+                        TasaCambioRecibo = 1
+                    Else
+                        TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("MetodoCompra").Rows(0)("Fecha_Compra"))
+                    End If
+                End If
+
+                MontoMetodoCompra = DataSet.Tables("MetodoCompra").Rows(0)("Monto") * TasaCambioRecibo
+
+            End If
+            DataSet.Tables("MetodoCompra").Reset()
+
+
+
             MontoFactura = (DataSet.Tables("Proveedores").Rows(i)("SubTotal") + DataSet.Tables("Proveedores").Rows(i)("IVA")) * TasaCambio
             Dias = DateDiff(DateInterval.Day, FechaVence, Me.DTPFechaFin.Value)
-            Saldo = MontoFactura - MontoRecibo + MontoNota - MontoNotaCR
+            Saldo = MontoFactura - MontoRecibo + MontoNota - MontoNotaCR - MontoMetodoCompra
             If Format(Saldo, "##,##0.00") = "0.00" Then
                 Dias = 0
             End If
@@ -263,7 +306,7 @@ Public Class FrmCuentasXPagar
 
             oDataRow = DatasetReporte.Tables("TotalVentas").NewRow
             oDataRow("Fecha_Factura") = DataSet.Tables("Proveedores").Rows(i)("Fecha_Compra")
-            oDataRow("Numero_Factura") = DataSet.Tables("Proveedores").Rows(i)("Numero_Compra")
+            oDataRow("Numero_Factura") = NumeroFactura
             oDataRow("Numero_Recibo") = NumeroRecibo
             If NumeroNota = "" Then
                 If NumeroNotaCR <> "" Then
@@ -278,12 +321,13 @@ Public Class FrmCuentasXPagar
             End If
             oDataRow("Monto") = Format(MontoFactura, "##,##0.00")
             oDataRow("FechaVence") = DataSet.Tables("Proveedores").Rows(i)("Fecha_Vencimiento")
-            oDataRow("Abono") = Format(MontoRecibo, "##,##0.00")
+            oDataRow("Abono") = Format(MontoRecibo + MontoMetodoCompra, "##,##0.00")
             oDataRow("MontoNota") = Format(MontoNota - MontoNotaCR, "##,##0.00")
             oDataRow("Saldo") = Format(Saldo, "##,##0.00")
             oDataRow("Moratorio") = Format(MontoMora, "##,##0.00")
             oDataRow("Dias") = Dias
             oDataRow("Total") = Format(Total, "##,##0.00")
+            oDataRow("Observaciones") = Observaciones
             DatasetReporte.Tables("TotalVentas").Rows.Add(oDataRow)
 
             i = i + 1
@@ -511,7 +555,7 @@ Public Class FrmCuentasXPagar
 
 
         Me.TxtCargos.Text = Format(TotalCargos, "##,##0.00")
-        Me.TxtAbonos.Text = Format(TotalAbonos, "##,##0.00")
+        Me.TxtAbonos.Text = Format(TotalAbonos + MontoMetodoCompra, "##,##0.00")
         Me.TxtMora.Text = Format(TotalMora, "##,##0.00")
         Me.TxtNB.Text = Format(TotalMontoNotaDB - TotalMontoNotaCR, "##,##0.00")
         Me.TxtSaldoFinal.Text = Format(TotalFactura, "##,##0.00")

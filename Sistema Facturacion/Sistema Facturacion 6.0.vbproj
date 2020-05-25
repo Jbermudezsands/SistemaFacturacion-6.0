@@ -709,6 +709,12 @@
     <Compile Include="Reportes\ArepSalidaProductosTipo2.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\ArepSolicitudCompra.Designer.vb">
+      <DependentUpon>ArepSolicitudCompra.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepSolicitudCompra.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\ArepUtilidadProyecto.Designer.vb">
       <DependentUpon>ArepUtilidadProyecto.vb</DependentUpon>
     </Compile>

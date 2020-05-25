@@ -69,7 +69,11 @@ Public Class FrmRecibosFacturas
 
             NumeroFactura = DataSet.Tables("Clientes").Rows(i)("Numero_Factura")
             FechaFactura = DataSet.Tables("Clientes").Rows(i)("Fecha_Factura")
-            FechaVence = DataSet.Tables("Clientes").Rows(i)("Fecha_Vencimiento")
+            If Not IsDBNull(DataSet.Tables("Clientes").Rows(i)("Fecha_Vencimiento")) Then
+                FechaVence = DataSet.Tables("Clientes").Rows(i)("Fecha_Vencimiento")
+            Else
+                FechaVence = DataSet.Tables("Clientes").Rows(i)("Fecha_Factura")
+            End If
             '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             '//////////////////////////////////////BUSCO SI EXISTEN RECIBOS PARA LA FACTURA //////////////////////////////////////////////////////
             '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

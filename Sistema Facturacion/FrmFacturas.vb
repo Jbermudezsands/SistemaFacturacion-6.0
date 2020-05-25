@@ -1264,7 +1264,7 @@ Public Class FrmFacturas
                 Me.DTVencimiento.Value = FechaCredito.AddDays(DiasCredito)
 
                 Me.TrueDBGridComponentes.Enabled = True
-                'Me.TrueDBGridComponentes.Focus()
+
 
 
             Else
@@ -1742,7 +1742,7 @@ Public Class FrmFacturas
         DataAdapter.Fill(DataSet, "Proyectos")
         If Not DataSet.Tables("Proyectos").Rows.Count = 0 Then
             Me.CboProyecto.DataSource = DataSet.Tables("Proyectos")
-            Me.CboProyecto.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 350
+            Me.CboProyecto.Splits.Item(0).DisplayColumns("NombreProyectos").Width = 350
         End If
 
 

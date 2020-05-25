@@ -12,8 +12,8 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("Systems And Solutions")> 
 <Assembly: AssemblyProduct("Sistema Facturacion")> 
-<Assembly: AssemblyCopyright("©  2019")> 
-<Assembly: AssemblyTrademark("")> 
+<Assembly: AssemblyCopyright("©  2020")> 
+<Assembly: AssemblyTrademark("Zeus Facturacion")> 
 
 <Assembly: ComVisible(False)> 
 
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' mediante el asterisco ('*'), como se muestra a continuación:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("6.0.5.0")> 
-<Assembly: AssemblyFileVersion("6.0.5.0")> 
+<Assembly: AssemblyVersion("6.0.19.0")> 
+<Assembly: AssemblyFileVersion("6.0.19.0")> 
