@@ -697,3 +697,5 @@ D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Factur
 D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmNuevaSolicitud.resources
 D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmListaOrdenCompra.resources
 D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.TipoNomina.resources
+D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepSolicitudCompra.resources
+D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmFecha.resources

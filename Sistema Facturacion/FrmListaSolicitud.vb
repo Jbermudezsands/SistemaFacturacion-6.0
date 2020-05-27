@@ -35,10 +35,10 @@ Public Class FrmListaSolicitud
         Me.TDGridSolicitud.Columns("Fecha_Requerido").Caption = "Fecha Requerido"
         Me.TDGridSolicitud.Splits.Item(0).DisplayColumns("Fecha_Requerido").Width = 96
         Me.TDGridSolicitud.Columns("Departamento_Solicitante").Caption = "Departamento Solicitante"
-        Me.TDGridSolicitud.Splits.Item(0).DisplayColumns("Departamento_Solicitante").Width = 123
+        Me.TDGridSolicitud.Splits.Item(0).DisplayColumns("Departamento_Solicitante").Width = 135
         Me.TDGridSolicitud.Columns("Gerencia_Solicitante").Caption = "Gerencia Solicitante"
         Me.TDGridSolicitud.Splits.Item(0).DisplayColumns("Gerencia_Solicitante").Width = 150
-        Me.TDGridSolicitud.Splits.Item(0).DisplayColumns("Concepto").Width = 150
+        Me.TDGridSolicitud.Splits.Item(0).DisplayColumns("Concepto").Width = 250
         MiConexion.Close()
     End Sub
 

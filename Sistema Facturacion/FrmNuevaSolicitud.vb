@@ -172,60 +172,66 @@ Public Class FrmNuevaSolicitud
         Dim Sql As String, DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet, SqlString As String
         Dim item As C1.Win.C1TrueDBGrid.ValueItem = New C1.Win.C1TrueDBGrid.ValueItem()
 
-        MiConexion.Close()
-        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '///////////////////////CARGO la gerencia////////////////////////////////////////////////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        Sql = "SELECT GerenciaSolicitud  FROM GerenciaSolicitud "
-        MiConexion.Open()
-        DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
-        DataAdapter.Fill(DataSet, "Gerencia")
-        Me.CboGerencia.DataSource = DataSet.Tables("Gerencia")
-        If Not DataSet.Tables("Gerencia").Rows.Count = 0 Then
-            Me.CboGerencia.Text = DataSet.Tables("Gerencia").Rows(0)("GerenciaSolicitud")
-        End If
-        MiConexion.Close()
 
-        Sql = "SELECT DepartamentoSolicitud FROM Departamento_Solicitante ORDER BY DepartamentoSolicitud"
-        MiConexion.Open()
-        DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
-        DataAdapter.Fill(DataSet, "Departamento")
-        Me.CboDepartamento.DataSource = DataSet.Tables("Departamento")
-        MiConexion.Close()
 
-        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '//////////////////////////CARGO LAS BODEGAS////////////////////////////////////////////////////////////////////
-        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlString = "SELECT  * FROM   Bodegas"
-        MiConexion.Open()
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "Bodegas")
-        Me.CboCodigoBodega.DataSource = DataSet.Tables("Bodegas")
-        If Not DataSet.Tables("Bodegas").Rows.Count = 0 Then
-            Me.CboCodigoBodega.Text = DataSet.Tables("Bodegas").Rows(0)("Cod_Bodega")
-        End If
-        Me.CboCodigoBodega.Columns(0).Caption = "Codigo"
-        Me.CboCodigoBodega.Columns(1).Caption = "Nombre Bodega"
 
-        Sql = "SELECT  * FROM  Rubro"
-        DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
-        DataAdapter.Fill(DataSet, "Rubros")
-        If Not DataSet.Tables("Rubros").Rows.Count = 0 Then
-            Me.CboRubro.DataSource = DataSet.Tables("Rubros")
-            Me.CboRubro.Text = DataSet.Tables("Rubros").Rows(0)("Codigo_Rubro")
-        End If
-
-        '/////////////////////////////////////////////PROYECTOS ///////////////////////////////////////////////////////////
-        SqlString = "SELECT CodigoProyectos, NombreProyectos, FechaInicio, FechaFin FROM Proyectos WHERE(Activo = 1)"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "Proyectos")
-        If Not DataSet.Tables("Proyectos").Rows.Count = 0 Then
-            Me.CboProyecto.DataSource = DataSet.Tables("Proyectos")
-            Me.CboProyecto.Splits.Item(0).DisplayColumns(1).Width = 350
-        End If
 
 
         If My.Forms.FrmListaSolicitud.Nuevo = True Then
+
+
+            MiConexion.Close()
+            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '///////////////////////CARGO la gerencia////////////////////////////////////////////////////////////////////////////////////////
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            Sql = "SELECT GerenciaSolicitud  FROM GerenciaSolicitud "
+            MiConexion.Open()
+            DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+            DataAdapter.Fill(DataSet, "Gerencia")
+            Me.CboGerencia.DataSource = DataSet.Tables("Gerencia")
+            If Not DataSet.Tables("Gerencia").Rows.Count = 0 Then
+                Me.CboGerencia.Text = DataSet.Tables("Gerencia").Rows(0)("GerenciaSolicitud")
+            End If
+            MiConexion.Close()
+
+            Sql = "SELECT DepartamentoSolicitud FROM Departamento_Solicitante ORDER BY DepartamentoSolicitud"
+            MiConexion.Open()
+            DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+            DataAdapter.Fill(DataSet, "Departamento")
+            Me.CboDepartamento.DataSource = DataSet.Tables("Departamento")
+            MiConexion.Close()
+
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '//////////////////////////CARGO LAS BODEGAS////////////////////////////////////////////////////////////////////
+            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            SqlString = "SELECT  * FROM   Bodegas"
+            MiConexion.Open()
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            DataAdapter.Fill(DataSet, "Bodegas")
+            Me.CboCodigoBodega.DataSource = DataSet.Tables("Bodegas")
+            If Not DataSet.Tables("Bodegas").Rows.Count = 0 Then
+                Me.CboCodigoBodega.Text = DataSet.Tables("Bodegas").Rows(0)("Cod_Bodega")
+            End If
+            Me.CboCodigoBodega.Columns(0).Caption = "Codigo"
+            Me.CboCodigoBodega.Columns(1).Caption = "Nombre Bodega"
+
+            Sql = "SELECT  * FROM  Rubro"
+            DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+            DataAdapter.Fill(DataSet, "Rubros")
+            If Not DataSet.Tables("Rubros").Rows.Count = 0 Then
+                Me.CboRubro.DataSource = DataSet.Tables("Rubros")
+                Me.CboRubro.Text = DataSet.Tables("Rubros").Rows(0)("Codigo_Rubro")
+            End If
+
+            '/////////////////////////////////////////////PROYECTOS ///////////////////////////////////////////////////////////
+            SqlString = "SELECT CodigoProyectos, NombreProyectos, FechaInicio, FechaFin FROM Proyectos WHERE(Activo = 1)"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            DataAdapter.Fill(DataSet, "Proyectos")
+            If Not DataSet.Tables("Proyectos").Rows.Count = 0 Then
+                Me.CboProyecto.DataSource = DataSet.Tables("Proyectos")
+                Me.CboProyecto.Splits.Item(0).DisplayColumns(1).Width = 350
+            End If
+
             Me.DTPFecha.Text = Format(Now, "dd/MM/yyyy")
             Me.Timer1.Enabled = True
 
@@ -278,6 +284,47 @@ Public Class FrmNuevaSolicitud
 
                 Me.TrueDBGridComponentes.Columns("Autorizado").ValueItems.Translate = True
             End With
+
+
+
+        Else
+            'MiConexion.Close()
+            ''////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''///////////////////////CARGO la gerencia////////////////////////////////////////////////////////////////////////////////////////
+            ''//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            'Sql = "SELECT GerenciaSolicitud  FROM GerenciaSolicitud "
+            'MiConexion.Open()
+            'DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+            'DataAdapter.Fill(DataSet, "Gerencia")
+            'Me.CboGerencia.DataSource = DataSet.Tables("Gerencia")
+            'MiConexion.Close()
+
+            'Sql = "SELECT DepartamentoSolicitud FROM Departamento_Solicitante ORDER BY DepartamentoSolicitud"
+            'MiConexion.Open()
+            'DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+            'DataAdapter.Fill(DataSet, "Departamento")
+            'Me.CboDepartamento.DataSource = DataSet.Tables("Departamento")
+            'MiConexion.Close()
+
+            ' ''/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ' ''//////////////////////////CARGO LAS BODEGAS////////////////////////////////////////////////////////////////////
+            ' ''////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''SqlString = "SELECT  * FROM   Bodegas"
+            ''MiConexion.Open()
+            ''DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            ''DataAdapter.Fill(DataSet, "Bodegas")
+            ''Me.CboCodigoBodega.DataSource = DataSet.Tables("Bodegas")
+            ''Me.CboCodigoBodega.Columns(0).Caption = "Codigo"
+            ''Me.CboCodigoBodega.Columns(1).Caption = "Nombre Bodega"
+
+            'Sql = "SELECT  * FROM  Rubro"
+            'DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+            'DataAdapter.Fill(DataSet, "Rubros")
+
+            ''/////////////////////////////////////////////PROYECTOS ///////////////////////////////////////////////////////////
+            'SqlString = "SELECT CodigoProyectos, NombreProyectos, FechaInicio, FechaFin FROM Proyectos WHERE(Activo = 1)"
+            'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            'DataAdapter.Fill(DataSet, "Proyectos")
 
         End If
 
@@ -475,9 +522,47 @@ Public Class FrmNuevaSolicitud
         Dim CodigoProyecto As String = ""
 
         If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
-
             Exit Sub
         End If
+
+
+        MiConexion.Close()
+        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '///////////////////////CARGO la gerencia////////////////////////////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        Sql = "SELECT GerenciaSolicitud  FROM GerenciaSolicitud "
+        MiConexion.Open()
+        DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+        DataAdapter.Fill(DataSet, "GerenciaSolicitud")
+        Me.CboGerencia.DataSource = DataSet.Tables("GerenciaSolicitud")
+        MiConexion.Close()
+
+        Sql = "SELECT DepartamentoSolicitud FROM Departamento_Solicitante ORDER BY DepartamentoSolicitud"
+        MiConexion.Open()
+        DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+        DataAdapter.Fill(DataSet, "Departamento")
+        Me.CboDepartamento.DataSource = DataSet.Tables("Departamento")
+        MiConexion.Close()
+
+        ''/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''//////////////////////////CARGO LAS BODEGAS////////////////////////////////////////////////////////////////////
+        ''////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlString = "SELECT  * FROM   Bodegas"
+        MiConexion.Open()
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Bodegas")
+        Me.CboCodigoBodega.DataSource = DataSet.Tables("Bodegas")
+        Me.CboCodigoBodega.Columns(0).Caption = "Codigo"
+        Me.CboCodigoBodega.Columns(1).Caption = "Nombre Bodega"
+
+        Sql = "SELECT  * FROM  Rubro"
+        DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+        DataAdapter.Fill(DataSet, "Rubros")
+
+        '/////////////////////////////////////////////PROYECTOS ///////////////////////////////////////////////////////////
+        SqlString = "SELECT CodigoProyectos, NombreProyectos, FechaInicio, FechaFin FROM Proyectos WHERE(Activo = 1)"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Proyectos")
 
 
 
@@ -683,6 +768,9 @@ Public Class FrmNuevaSolicitud
         Fecha_Vence = Format(Now, "dd/MM/yyyy")
         Fecha_Hora = Now
 
+        My.Forms.FrmFecha.ShowDialog()
+        Fecha_Compra = Format(My.Forms.FrmFecha.DTPFechaRequerido.Value, "dd/MM/yyyy")
+
         ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
         NumeroCompra = Format(ConsecutivoCompra, "0000#")
 
@@ -775,5 +863,55 @@ Public Class FrmNuevaSolicitud
         If Not My.Forms.FrmConsultas.Descripcion = "" Then
             Me.CboProyecto.Text = My.Forms.FrmConsultas.Descripcion
         End If
+    End Sub
+
+    Private Sub Button12_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button12.Click
+        Dim SQL As New DataDynamics.ActiveReports.DataSources.SqlDBDataSource, RutaLogo As String
+        Dim ArepSolicitudCompra As New ArepSolicitudCompra, SqlDetalle As String, NumeroSolicitud As String, sQLDatos As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+
+        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+            MsgBox("Debe Grabar primero la solicitud", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        SqlDatos = "SELECT * FROM DatosEmpresa"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+        DataAdapter.Fill(DataSet, "DatosEmpresa")
+
+        If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+
+            ArepSolicitudCompra.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+            ArepSolicitudCompra.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+
+            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")) Then
+                ArepSolicitudCompra.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
+            End If
+
+            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")) Then
+                ArepSolicitudCompra.LblTelefonos.Text = "Telefono: " & DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")
+            End If
+
+            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
+                RutaLogo = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
+                If Dir(RutaLogo) <> "" Then
+                    ArepSolicitudCompra.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                End If
+            End If
+        End If
+
+        NumeroSolicitud = Me.TxtNumeroEnsamble.Text
+        ArepSolicitudCompra.TxtProyecto.Text = Me.CboProyecto.Text
+
+        SqlDetalle = "SELECT Detalle_Solicitud.Cod_Producto, Detalle_Solicitud.Descripcion_Producto, Detalle_Solicitud.Cantidad, Detalle_Solicitud.Autorizado, Detalle_Solicitud.Comprado, Detalle_Solicitud.Numero_Solicitud, Detalle_Solicitud.Id_DetalleSolicitud, Detalle_Solicitud.Orden_Compra, Solicitud_Compra.Fecha_Solicitud, Solicitud_Compra.Gerencia_Solicitante, Solicitud_Compra.Departamento_Solicitante, Solicitud_Compra.Codigo_Rubro, Solicitud_Compra.Concepto, Solicitud_Compra.Cod_Bodega, Solicitud_Compra.Fecha_Requerido, Solicitud_Compra.CodigoProyecto, Productos.Cod_Productos, Productos.Unidad_Medida FROM Detalle_Solicitud INNER JOIN Solicitud_Compra ON Detalle_Solicitud.Numero_Solicitud = Solicitud_Compra.Numero_Solicitud INNER JOIN Productos ON Detalle_Solicitud.Cod_Producto = Productos.Cod_Productos  " & _
+                     "WHERE (Detalle_Solicitud.Orden_Compra IS NULL) AND (Detalle_Solicitud.Numero_Solicitud = '" & NumeroSolicitud & "')"
+
+        Sql.ConnectionString = Conexion
+        Sql.SQL = SQlDetalle
+        ArepSolicitudCompra.DataSource = SQL
+        Dim ViewerForm As New FrmViewer()
+        ViewerForm.arvMain.Document = ArepSolicitudCompra.Document
+        ViewerForm.Show()
+        ArepSolicitudCompra.Run(False)
     End Sub
 End Class
