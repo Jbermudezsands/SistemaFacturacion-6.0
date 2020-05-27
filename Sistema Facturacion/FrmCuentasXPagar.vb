@@ -553,6 +553,62 @@ Public Class FrmCuentasXPagar
         Loop
 
 
+        NumeroRecibo = ""
+        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////BUSCO SI EXISTEN DEVOLUCIONES DE COMPRA//////////////////////////////////////////////////////
+        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SQlString = "SELECT CASE WHEN Detalle_MetodoCompras.Monto = Compras.SubTotal + Compras.IVA THEN 'Contado' ELSE 'Credito' END AS MetodoPago, Detalle_MetodoCompras.Monto, Compras.* FROM Compras LEFT OUTER JOIN Detalle_MetodoCompras ON Compras.Numero_Compra = Detalle_MetodoCompras.Numero_Compra AND Compras.Fecha_Compra = Detalle_MetodoCompras.Fecha_Compra And Compras.Tipo_Compra = Detalle_MetodoCompras.Tipo_Compra  " & _
+                           "WHERE  (Compras.Tipo_Compra = 'Devolucion de Compra')  AND (Compras.Cod_Proveedor = '" & Me.CboCodigoProveedor.Text & "') AND (CASE WHEN Detalle_MetodoCompras.Monto = Compras.SubTotal + Compras.IVA THEN 'Contado' ELSE 'Credito' END = 'Credito') "
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Devoluciones")
+        Registros2 = DataSet.Tables("Devoluciones").Rows.Count
+        j = 0
+        MontoRecibo = 0
+
+        Do While Registros2 > j
+
+            If Me.OptCordobas.Checked = True Then
+                If DataSet.Tables("Devoluciones").Rows(j)("MonedaCompra") = "Cordobas" Then
+                    TasaCambioRecibo = 1
+                Else
+                    TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("Devoluciones").Rows(j)("Fecha_Compra"))
+                End If
+            Else
+                If DataSet.Tables("Devoluciones").Rows(j)("MonedaCompra") = "Dolares" Then
+                    TasaCambioRecibo = 1
+                Else
+                    TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("Devoluciones").Rows(j)("Fecha_Compra"))
+                End If
+            End If
+            If NumeroRecibo = "" Then
+                NumeroRecibo = DataSet.Tables("Devoluciones").Rows(j)("Numero_Compra")
+            Else
+                NumeroRecibo = DataSet.Tables("Devoluciones").Rows(j)("Numero_Compra")
+            End If
+            MontoRecibo = DataSet.Tables("Devoluciones").Rows(j)("NetoPagar") * TasaCambioRecibo
+
+            Dias = DateDiff(DateInterval.Day, DataSet.Tables("Devoluciones").Rows(j)("Fecha_Compra"), Me.DTPFechaFin.Value)
+
+            oDataRow = DatasetReporte.Tables("TotalVentas").NewRow
+            oDataRow("Fecha_Factura") = DataSet.Tables("Devoluciones").Rows(j)("Fecha_Compra")
+            oDataRow("Numero_Factura") = NumeroRecibo
+            oDataRow("Numero_Recibo") = " "
+            oDataRow("Monto") = "0"
+            oDataRow("FechaVence") = DataSet.Tables("Devoluciones").Rows(j)("Fecha_Compra")
+            oDataRow("Abono") = Format(MontoRecibo, "##,##0.00")
+            oDataRow("MontoNota") = "0"
+            oDataRow("Saldo") = Format(-1 * MontoRecibo, "##,##0.00")
+            oDataRow("Moratorio") = "0"
+            oDataRow("Dias") = Dias
+            oDataRow("Total") = Format(-1 * MontoRecibo, "##,##0.00")
+            DatasetReporte.Tables("TotalVentas").Rows.Add(oDataRow)
+
+            TotalAbonos = TotalAbonos + MontoRecibo
+            TotalFactura = TotalFactura - MontoRecibo
+            j = j + 1
+        Loop
+
+
 
         Me.TxtCargos.Text = Format(TotalCargos, "##,##0.00")
         Me.TxtAbonos.Text = Format(TotalAbonos + MontoMetodoCompra, "##,##0.00")

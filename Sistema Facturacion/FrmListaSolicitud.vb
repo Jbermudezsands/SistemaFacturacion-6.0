@@ -43,7 +43,8 @@ Public Class FrmListaSolicitud
     End Sub
 
     Private Sub FrmListaSolicitud_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        'BtnActualizar_Click(sender, e)
+        Quien = "Load"
+        BtnActualizar_Click(sender, e)
     End Sub
 
     Public Sub Autorizar_Solicitud()
@@ -142,10 +143,10 @@ Public Class FrmListaSolicitud
     End Sub
 
     Private Sub OptTodos_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptTodos.CheckedChanged
-        BtnActualizar_Click(sender, e)
+
     End Sub
 
     Private Sub OptSinProcesar_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptSinProcesar.CheckedChanged
-        BtnActualizar_Click(sender, e)
+
     End Sub
 End Class
