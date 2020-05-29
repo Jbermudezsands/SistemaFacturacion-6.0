@@ -172,6 +172,7 @@ Module aletras
                         End Select
                     Case 1, 4, 7
                         '*********Asigna las palabras para las unidades*********
+
                         Select Case Mid(entero, num, 1)
                             Case "1"
                                 If flag = "N" Then
@@ -197,7 +198,42 @@ Module aletras
                                 If flag = "N" Then palabras = palabras & "ocho "
                             Case "9"
                                 If flag = "N" Then palabras = palabras & "nueve "
+
                         End Select
+
+
+                        '///////////////////si el decimal anterior era cero, asigno en numero entero ---------------
+                        If flag = "S" Then
+                            If Mid(entero, num - 1, 1) = 0 Then
+                                Select Case Mid(entero, num, 1)
+                                    Case "1"
+                                        If flag = "N" Then
+                                            If y = 1 Then
+                                                palabras = palabras & "uno "
+                                            Else
+                                                palabras = palabras & "un "
+                                            End If
+                                        End If
+                                    Case "2"
+                                        If flag = "N" Then palabras = palabras & "dos "
+                                    Case "3"
+                                        If flag = "N" Then palabras = palabras & "tres "
+                                    Case "4"
+                                        If flag = "N" Then palabras = palabras & "cuatro "
+                                    Case "5"
+                                        If flag = "N" Then palabras = palabras & "cinco "
+                                    Case "6"
+                                        If flag = "N" Then palabras = palabras & "seis "
+                                    Case "7"
+                                        If flag = "N" Then palabras = palabras & "siete "
+                                    Case "8"
+                                        If flag = "S" Then palabras = palabras & "ocho "
+                                    Case "9"
+                                        If flag = "S" Then palabras = palabras & "nueve "
+
+                                End Select
+                            End If
+                        End If
                 End Select
 
                 '***********Asigna la palabra mil***************

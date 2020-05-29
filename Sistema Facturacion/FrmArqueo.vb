@@ -585,8 +585,8 @@ Public Class FrmArqueo
         Do While Registros > i
             My.Application.DoEvents()
 
-            If Mid(Me.TdbGridChequeDolares.Item(i)(0).Text, 1, 4) = "Fact" Then
-                NumeroFactura = Mid(Me.TdbGridChequeDolares.Item(i)(0).Text, 5, Len(Me.TdbGridChequeDolares.Item(i)(0).Text))
+            If Mid(Me.TdbGridChequeDolares.Item(i)(0), 1, 4) = "Fact" Then
+                NumeroFactura = Mid(Me.TdbGridChequeDolares.Item(i)(0), 5, Len(Me.TdbGridChequeDolares.Item(i)(0)))
 
                 StrSqlUpdate = "UPDATE [Detalle_MetodoFacturas] SET [Arqueado] = 1 WHERE (Numero_Factura = '" & NumeroFactura & "')"
                 MiConexion.Open()
@@ -594,8 +594,8 @@ Public Class FrmArqueo
                 iResultado = ComandoUpdate.ExecuteNonQuery
                 MiConexion.Close()
 
-            ElseIf Mid(Me.TdbGridChequeDolares.Item(i)(0).Text, 1, 3) = "Rec" Then
-                NumeroRecibo = Mid(Me.TdbGridChequeDolares.Item(i)(0).Text, 4, Len(Me.TdbGridChequeDolares.Item(i)(0).Text))
+            ElseIf Mid(Me.TdbGridChequeDolares.Item(i)(0), 1, 3) = "Rec" Then
+                NumeroRecibo = Mid(Me.TdbGridChequeDolares.Item(i)(0), 4, Len(Me.TdbGridChequeDolares.Item(i)(0)))
 
 
                 StrSqlUpdate = "UPDATE [Detalle_MetodoRecibo] SET [Arqueado] = 1 WHERE  (CodRecibo = '" & NumeroRecibo & "')"
@@ -611,6 +611,8 @@ Public Class FrmArqueo
             i = i + 1
         Loop
 
+
+        MsgBox("Se ha procesado el Arqueo!!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
 
     End Sub
 End Class
