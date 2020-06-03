@@ -9747,8 +9747,8 @@ Public Class FrmReportes
                         oDataRow("Tipo_Factura") = DataSet.Tables("TransferenciaEnviada").Rows(Registros)("Tipo_Factura")
                         oDataRow("Cod_Producto") = DataSet.Tables("TransferenciaEnviada").Rows(Registros)("Cod_Producto")
                         oDataRow("Descripcion_Producto") = DataSet.Tables("TransferenciaEnviada").Rows(Registros)("Descripcion_Producto")
-                        oDataRow("CantidadCompra") = DataSet.Tables("TransferenciaEnviada").Rows(Registros)("Cantidad")
-                        oDataRow("ImporteCompra") = DataSet.Tables("TransferenciaEnviada").Rows(Registros)("Importe")
+                        oDataRow("Cantidad") = DataSet.Tables("TransferenciaEnviada").Rows(Registros)("Cantidad")
+                        oDataRow("Importe") = DataSet.Tables("TransferenciaEnviada").Rows(Registros)("Importe")
                         oDataRow("Orden") = 2
                         oDataRow("Cod_Bodega") = DataSet.Tables("TransferenciaEnviada").Rows(Registros)("Cod_Bodega")
                         DataSet.Tables("DetalleMovimientos").Rows.Add(oDataRow)

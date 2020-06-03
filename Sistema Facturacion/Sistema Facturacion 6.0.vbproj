@@ -229,6 +229,12 @@
     <Compile Include="FrmInformacion.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmLiquidacionLeche.Designer.vb">
+      <DependentUpon>FrmLiquidacionLeche.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmLiquidacionLeche.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmListaLotes.Designer.vb">
       <DependentUpon>FrmListaLotes.vb</DependentUpon>
     </Compile>
@@ -1428,6 +1434,10 @@
     <EmbeddedResource Include="FrmInformacion.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmInformacion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmLiquidacionLeche.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmLiquidacionLeche.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmListaLotes.resx">
       <SubType>Designer</SubType>

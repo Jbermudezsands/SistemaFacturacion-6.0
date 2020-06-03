@@ -11774,6 +11774,8 @@ Module Funciones
         ImporteCompraD = 0
         TransferenciaRecibida = 0
         TransferenciaEnviada = 0
+        DevolucionFactura = 0
+        DevolucionCompra = 0
 
         '//////////////////////////////////BUSCO EL TOTAL DE LAS COMPRAS CORDOBAS////////////////////////////////////////////////////////////////////
 
@@ -11882,7 +11884,7 @@ Module Funciones
         DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
         DataAdapter.Fill(DataSet, "DevolucionCompras")
         If DataSet.Tables("DevolucionCompras").Rows.Count <> 0 Then
-            DevolucionFactura = DataSet.Tables("DevolucionCompras").Rows(0)("Cantidad")
+            DevolucionCompra = DataSet.Tables("DevolucionCompras").Rows(0)("Cantidad")
             ImporteDevCompra = DataSet.Tables("DevolucionCompras").Rows(0)("Importe")
             ImporteDevCompraD = DataSet.Tables("DevolucionCompras").Rows(0)("Importe")
         End If

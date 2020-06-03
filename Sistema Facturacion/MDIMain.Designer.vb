@@ -161,6 +161,7 @@ Partial Class MDIMain
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
         Me.TxtUsuario = New System.Windows.Forms.TextBox
+        Me.RibbonButton10 = New C1.Win.C1Ribbon.RibbonButton
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1192,6 +1193,7 @@ Partial Class MDIMain
         Me.RibbonGroup14.ID = "RibbonGroup14"
         Me.RibbonGroup14.Items.Add(Me.RibbonButton111)
         Me.RibbonGroup14.Items.Add(Me.RibbonButton12)
+        Me.RibbonGroup14.Items.Add(Me.RibbonButton10)
         Me.RibbonGroup14.Text = "Calculos"
         '
         'RibbonButton111
@@ -1288,6 +1290,14 @@ Partial Class MDIMain
         Me.TxtUsuario.TabIndex = 15
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
+        '
+        'RibbonButton10
+        '
+        Me.RibbonButton10.ID = "RibbonButton10"
+        Me.RibbonButton10.LargeImage = CType(resources.GetObject("RibbonButton10.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton10.SmallImage = CType(resources.GetObject("RibbonButton10.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton10.Text = "Liquidacion"
+        Me.RibbonButton10.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'MDIMain
         '
@@ -1450,5 +1460,6 @@ Partial Class MDIMain
     Friend WithEvents RibbonButton7 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton8 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton9 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButton10 As C1.Win.C1Ribbon.RibbonButton
 
 End Class
