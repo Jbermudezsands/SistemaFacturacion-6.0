@@ -11443,15 +11443,28 @@ Public Class FrmFacturas
         Me.TxtNumeroEnsamble.Text = NumeroFactura
 
 
+        '////////////////////////////////BLOQUEO LOS BOTONES HASTA QUE SE GRABE LA SALIDA ///////////////////////////////////
+        Me.ButtonAgregar.Enabled = False
+        Me.Button2.Enabled = False
+        Me.CmdProcesar.Enabled = False
+        Me.Button8.Enabled = False
+        Me.Button5.Enabled = False
+        Me.BtnSalida.Enabled = False
+        Me.CmdNuevo.Enabled = False
+
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL DETALLE DE LA FACTURA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
 
-        Me.BindingDetalle.MoveFirst()
+        'Me.BindingDetalle.MoveFirst()
         Registros = Me.BindingDetalle.Count
         iPosicion = 0
 
+
+
         Do While iPosicion < Registros
+
+            CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
 
             If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("id_Detalle_Factura")) Then
                 IdDetalle = Me.BindingDetalle.Item(iPosicion)("id_Detalle_Factura")
@@ -11459,7 +11472,7 @@ Public Class FrmFacturas
                 IdDetalle = -1
             End If
 
-            CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
+
             'Me.BindingDetalle.Item(iPosicion)("Numero_Factura") = NumeroFactura
             'Me.BindingDetalle.Item(iPosicion)("Fecha_Factura") = DTPFecha.Value
             'Me.BindingDetalle.Item(iPosicion)("Tipo_Factura") = CboTipoProducto.Text
@@ -11571,6 +11584,16 @@ Public Class FrmFacturas
 
         '////////////////////////////ACTUALIZO TODO POR CUALQUIER CAMBIO /////////////////////////////////
         ActualizaMETODOFactura()
+
+
+        '////////////////////////////////BLOQUEO LOS BOTONES HASTA QUE SE GRABE LA SALIDA ///////////////////////////////////
+        Me.ButtonAgregar.Enabled = True
+        Me.Button2.Enabled = True
+        Me.CmdProcesar.Enabled = True
+        Me.Button8.Enabled = True
+        Me.Button5.Enabled = True
+        Me.BtnSalida.Enabled = True
+        Me.CmdNuevo.Enabled = True
         'GrabaFacturas(NumeroFactura)
 
         '    Catch ex As Exception

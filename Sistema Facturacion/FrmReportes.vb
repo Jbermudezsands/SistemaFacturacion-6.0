@@ -12022,7 +12022,7 @@ Public Class FrmReportes
                 Me.GroupBoxProductos.Visible = True
                 Me.GroupBoxProductos.Location = New Point(280, 123)
                 Me.GroupBox3.Visible = True
-                Me.CmbAgrupado.Text = "Codigo Producto"
+                Me.CmbAgrupado.Text = "Bodega"
             Case "Reporte de Kardex Unidades"
                 Me.GroupBoxProductos.Visible = True
                 Me.GroupBoxProductos.Location = New Point(280, 123)

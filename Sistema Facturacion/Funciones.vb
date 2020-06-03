@@ -6327,7 +6327,7 @@ Module Funciones
 
         Fecha = Format(FechaNota, "yyyy-MM-dd")
 
-        SqlString = "SELECT  *  FROM IndiceNota WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Nota = '" & TipoNota & "')"
+        SqlString = "SELECT  *  FROM IndiceNota WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') "  'AND (Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Nota = '" & TipoNota & "')
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "NotaDebito")
         If DataSet.Tables("NotaDebito").Rows.Count = 0 Then
@@ -6347,7 +6347,7 @@ Module Funciones
             '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
             SqlCompras = "UPDATE [IndiceNota] SET [Fecha_Nota] = '" & Format(FechaNota, "dd/MM/yyyy") & "',[Tipo_Nota] = '" & TipoNota & "',[MonedaNota] = '" & Moneda & "',[Cod_Cliente] = '" & CodigoCliente & "',[Nombre_Cliente] = '" & NombreCliente & "' ,[Observaciones] = '" & Observaciones & "' ,[Activo] =" & NotaActivo & ",[Contabilizado] =" & NotaContabilizado & ",[Marca] ='True',[TipoCuenta] =" & Tipo & " " & _
-                         "WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Nota = '" & TipoNota & "')"
+                         "WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') "  'AND (Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Nota = '" & TipoNota & "')
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
