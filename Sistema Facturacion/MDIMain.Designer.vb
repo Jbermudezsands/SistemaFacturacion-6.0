@@ -151,6 +151,7 @@ Partial Class MDIMain
         Me.RibbonGroup14 = New C1.Win.C1Ribbon.RibbonGroup
         Me.RibbonButton111 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton12 = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonButton10 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonGroup15 = New C1.Win.C1Ribbon.RibbonGroup
         Me.RibbonButton20 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButtonDepartamento = New C1.Win.C1Ribbon.RibbonButton
@@ -161,7 +162,7 @@ Partial Class MDIMain
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
         Me.TxtUsuario = New System.Windows.Forms.TextBox
-        Me.RibbonButton10 = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonRevalorizar1 = New C1.Win.C1Ribbon.RibbonButton
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -951,6 +952,7 @@ Partial Class MDIMain
         Me.RibbonGroup9.Items.Add(Me.RibbonPersonalizar)
         Me.RibbonGroup9.Items.Add(Me.RibbonActualizacion)
         Me.RibbonGroup9.Items.Add(Me.RibbonAjustes)
+        Me.RibbonGroup9.Items.Add(Me.RibbonRevalorizar1)
         Me.RibbonGroup9.Text = "Configuracion"
         '
         'RibbonConfigurar
@@ -1212,6 +1214,14 @@ Partial Class MDIMain
         Me.RibbonButton12.Text = "Activar"
         Me.RibbonButton12.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
+        'RibbonButton10
+        '
+        Me.RibbonButton10.ID = "RibbonButton10"
+        Me.RibbonButton10.LargeImage = CType(resources.GetObject("RibbonButton10.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton10.SmallImage = CType(resources.GetObject("RibbonButton10.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton10.Text = "Liquidacion"
+        Me.RibbonButton10.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
         'RibbonGroup15
         '
         Me.RibbonGroup15.ID = "RibbonGroup15"
@@ -1291,13 +1301,13 @@ Partial Class MDIMain
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
         '
-        'RibbonButton10
+        'RibbonRevalorizar1
         '
-        Me.RibbonButton10.ID = "RibbonButton10"
-        Me.RibbonButton10.LargeImage = CType(resources.GetObject("RibbonButton10.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton10.SmallImage = CType(resources.GetObject("RibbonButton10.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton10.Text = "Liquidacion"
-        Me.RibbonButton10.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        Me.RibbonRevalorizar1.ID = "RibbonRevalorizar1"
+        Me.RibbonRevalorizar1.LargeImage = CType(resources.GetObject("RibbonRevalorizar1.LargeImage"), System.Drawing.Image)
+        Me.RibbonRevalorizar1.SmallImage = CType(resources.GetObject("RibbonRevalorizar1.SmallImage"), System.Drawing.Image)
+        Me.RibbonRevalorizar1.Text = "Revalorizar"
+        Me.RibbonRevalorizar1.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'MDIMain
         '
@@ -1461,5 +1471,6 @@ Partial Class MDIMain
     Friend WithEvents RibbonButton8 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton9 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton10 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonRevalorizar1 As C1.Win.C1Ribbon.RibbonButton
 
 End Class

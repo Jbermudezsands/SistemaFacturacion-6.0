@@ -474,16 +474,16 @@ Partial Public Class ArepPlanilla
         Me.Label5.Border.LeftColor = System.Drawing.Color.Black
         Me.Label5.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label5.Border.RightColor = System.Drawing.Color.Black
-        Me.Label5.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
+        Me.Label5.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label5.Border.TopColor = System.Drawing.Color.Black
         Me.Label5.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label5.Height = 0.3125!
         Me.Label5.HyperLink = Nothing
-        Me.Label5.Left = 3.464286!
+        Me.Label5.Left = 2.975!
         Me.Label5.Name = "Label5"
         Me.Label5.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
         Me.Label5.Text = "Miercoles"
-        Me.Label5.Top = 1.821429!
+        Me.Label5.Top = 1.825!
         Me.Label5.Width = 0.54!
         '
         'Label3
@@ -491,18 +491,18 @@ Partial Public Class ArepPlanilla
         Me.Label3.Border.BottomColor = System.Drawing.Color.Black
         Me.Label3.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label3.Border.LeftColor = System.Drawing.Color.Black
-        Me.Label3.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
+        Me.Label3.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label3.Border.RightColor = System.Drawing.Color.Black
         Me.Label3.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label3.Border.TopColor = System.Drawing.Color.Black
         Me.Label3.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label3.Height = 0.3125!
         Me.Label3.HyperLink = Nothing
-        Me.Label3.Left = 2.464286!
+        Me.Label3.Left = 1.975!
         Me.Label3.Name = "Label3"
         Me.Label3.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
         Me.Label3.Text = "Lunes"
-        Me.Label3.Top = 1.821429!
+        Me.Label3.Top = 1.825!
         Me.Label3.Width = 0.52!
         '
         'Label4
@@ -517,11 +517,11 @@ Partial Public Class ArepPlanilla
         Me.Label4.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label4.Height = 0.31!
         Me.Label4.HyperLink = Nothing
-        Me.Label4.Left = 2.964286!
+        Me.Label4.Left = 2.475!
         Me.Label4.Name = "Label4"
         Me.Label4.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
         Me.Label4.Text = "Martes"
-        Me.Label4.Top = 1.821429!
+        Me.Label4.Top = 1.825!
         Me.Label4.Width = 0.4999999!
         '
         'Label6
@@ -536,11 +536,11 @@ Partial Public Class ArepPlanilla
         Me.Label6.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label6.Height = 0.3125!
         Me.Label6.HyperLink = Nothing
-        Me.Label6.Left = 4.0!
+        Me.Label6.Left = 3.5!
         Me.Label6.Name = "Label6"
         Me.Label6.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
         Me.Label6.Text = "Jueves"
-        Me.Label6.Top = 1.821429!
+        Me.Label6.Top = 1.825!
         Me.Label6.Width = 0.52!
         '
         'Label7
@@ -555,11 +555,11 @@ Partial Public Class ArepPlanilla
         Me.Label7.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label7.Height = 0.3125!
         Me.Label7.HyperLink = Nothing
-        Me.Label7.Left = 4.535715!
+        Me.Label7.Left = 4.05!
         Me.Label7.Name = "Label7"
         Me.Label7.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
         Me.Label7.Text = "Viernes"
-        Me.Label7.Top = 1.821429!
+        Me.Label7.Top = 1.825!
         Me.Label7.Width = 0.52!
         '
         'Label8
@@ -574,11 +574,11 @@ Partial Public Class ArepPlanilla
         Me.Label8.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label8.Height = 0.3125!
         Me.Label8.HyperLink = Nothing
-        Me.Label8.Left = 5.06!
+        Me.Label8.Left = 4.575!
         Me.Label8.Name = "Label8"
         Me.Label8.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
         Me.Label8.Text = "Sabado"
-        Me.Label8.Top = 1.821429!
+        Me.Label8.Top = 1.825!
         Me.Label8.Width = 0.52!
         '
         'Label9
@@ -593,11 +593,11 @@ Partial Public Class ArepPlanilla
         Me.Label9.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label9.Height = 0.3125!
         Me.Label9.HyperLink = Nothing
-        Me.Label9.Left = 1.964286!
+        Me.Label9.Left = 5.075!
         Me.Label9.Name = "Label9"
         Me.Label9.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
         Me.Label9.Text = "Domingo"
-        Me.Label9.Top = 1.821429!
+        Me.Label9.Top = 1.825!
         Me.Label9.Width = 0.52!
         '
         'Label10
@@ -909,7 +909,7 @@ Partial Public Class ArepPlanilla
         '
         Me.Detail1.ColumnSpacing = 0.0!
         Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TextBox1, Me.TextBox2, Me.TextBox3, Me.TextBox4, Me.TextBox5, Me.TextBox6, Me.TextBox7, Me.TextBox8, Me.TextBox9, Me.TextBox10, Me.TextBox11, Me.TextBox12, Me.TextBox13, Me.TextBox14, Me.TextBox15, Me.TextBox16, Me.TextBox17, Me.TextBox18, Me.TextBox19, Me.TextBox20, Me.TextBox21, Me.TextBox24, Me.TextBox25, Me.TextBox83, Me.TextBox86})
-        Me.Detail1.Height = 0.1770833!
+        Me.Detail1.Height = 0.21875!
         Me.Detail1.Name = "Detail1"
         '
         'TextBox1
@@ -963,7 +963,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox3.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox3.DataField = "Lunes"
         Me.TextBox3.Height = 0.1875!
-        Me.TextBox3.Left = 2.5!
+        Me.TextBox3.Left = 1.975!
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox3.Text = "Lunes"
@@ -982,7 +982,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox4.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox4.DataField = "Martes"
         Me.TextBox4.Height = 0.1875!
-        Me.TextBox4.Left = 3.0!
+        Me.TextBox4.Left = 2.475!
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox4.Text = "Martes"
@@ -1001,7 +1001,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox5.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox5.DataField = "Miercoles"
         Me.TextBox5.Height = 0.1785714!
-        Me.TextBox5.Left = 3.535714!
+        Me.TextBox5.Left = 3.025!
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox5.Text = "Miercoles"
@@ -1020,7 +1020,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox6.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox6.DataField = "Jueves"
         Me.TextBox6.Height = 0.1875!
-        Me.TextBox6.Left = 4.0!
+        Me.TextBox6.Left = 3.475!
         Me.TextBox6.Name = "TextBox6"
         Me.TextBox6.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox6.Text = "Jueves"
@@ -1039,7 +1039,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox7.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox7.DataField = "Viernes"
         Me.TextBox7.Height = 0.1875!
-        Me.TextBox7.Left = 4.535715!
+        Me.TextBox7.Left = 4.025!
         Me.TextBox7.Name = "TextBox7"
         Me.TextBox7.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox7.Text = "Viernes"
@@ -1058,7 +1058,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox8.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox8.DataField = "Sabado"
         Me.TextBox8.Height = 0.1875!
-        Me.TextBox8.Left = 5.06!
+        Me.TextBox8.Left = 4.55!
         Me.TextBox8.Name = "TextBox8"
         Me.TextBox8.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox8.Text = "Sabado"
@@ -1077,7 +1077,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox9.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox9.DataField = "Domingo"
         Me.TextBox9.Height = 0.1875!
-        Me.TextBox9.Left = 1.964286!
+        Me.TextBox9.Left = 5.075!
         Me.TextBox9.Name = "TextBox9"
         Me.TextBox9.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox9.Text = "Domingo"
@@ -1468,11 +1468,11 @@ Partial Public Class ArepPlanilla
         Me.TextBox23.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox23.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox23.Height = 0.1875!
-        Me.TextBox23.Left = 2.392857!
+        Me.TextBox23.Left = 2.4!
         Me.TextBox23.Name = "TextBox23"
         Me.TextBox23.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox23.Text = "Lunes"
-        Me.TextBox23.Top = 0.6428571!
+        Me.TextBox23.Top = 0.4!
         Me.TextBox23.Width = 0.5625!
         '
         'TextBox39
@@ -1486,11 +1486,11 @@ Partial Public Class ArepPlanilla
         Me.TextBox39.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox39.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox39.Height = 0.1875!
-        Me.TextBox39.Left = 2.392857!
+        Me.TextBox39.Left = 2.4!
         Me.TextBox39.Name = "TextBox39"
         Me.TextBox39.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox39.Text = "Martes"
-        Me.TextBox39.Top = 0.8571429!
+        Me.TextBox39.Top = 0.6!
         Me.TextBox39.Width = 0.5625!
         '
         'TextBox44
@@ -1504,11 +1504,11 @@ Partial Public Class ArepPlanilla
         Me.TextBox44.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox44.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox44.Height = 0.1875!
-        Me.TextBox44.Left = 2.392857!
+        Me.TextBox44.Left = 2.4!
         Me.TextBox44.Name = "TextBox44"
         Me.TextBox44.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox44.Text = "Miercoles"
-        Me.TextBox44.Top = 1.035714!
+        Me.TextBox44.Top = 0.8!
         Me.TextBox44.Width = 0.5625!
         '
         'TextBox45
@@ -1522,11 +1522,11 @@ Partial Public Class ArepPlanilla
         Me.TextBox45.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox45.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox45.Height = 0.1875!
-        Me.TextBox45.Left = 2.392857!
+        Me.TextBox45.Left = 2.4!
         Me.TextBox45.Name = "TextBox45"
         Me.TextBox45.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox45.Text = "Jueves"
-        Me.TextBox45.Top = 1.25!
+        Me.TextBox45.Top = 1.0!
         Me.TextBox45.Width = 0.5625!
         '
         'TextBox47
@@ -1540,11 +1540,11 @@ Partial Public Class ArepPlanilla
         Me.TextBox47.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox47.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox47.Height = 0.1875!
-        Me.TextBox47.Left = 2.392857!
+        Me.TextBox47.Left = 2.4!
         Me.TextBox47.Name = "TextBox47"
         Me.TextBox47.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox47.Text = "Viernes"
-        Me.TextBox47.Top = 1.464286!
+        Me.TextBox47.Top = 1.225!
         Me.TextBox47.Width = 0.5625!
         '
         'TextBox49
@@ -1558,11 +1558,11 @@ Partial Public Class ArepPlanilla
         Me.TextBox49.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox49.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox49.Height = 0.1875!
-        Me.TextBox49.Left = 2.392857!
+        Me.TextBox49.Left = 2.4!
         Me.TextBox49.Name = "TextBox49"
         Me.TextBox49.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox49.Text = "Sabado"
-        Me.TextBox49.Top = 1.678571!
+        Me.TextBox49.Top = 1.45!
         Me.TextBox49.Width = 0.5625!
         '
         'TextBox50
@@ -1576,11 +1576,11 @@ Partial Public Class ArepPlanilla
         Me.TextBox50.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox50.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox50.Height = 0.1875!
-        Me.TextBox50.Left = 2.392857!
+        Me.TextBox50.Left = 2.375!
         Me.TextBox50.Name = "TextBox50"
         Me.TextBox50.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox50.Text = "Domingo"
-        Me.TextBox50.Top = 0.4285714!
+        Me.TextBox50.Top = 1.7!
         Me.TextBox50.Width = 0.5625!
         '
         'TextBox51
@@ -1641,7 +1641,7 @@ Partial Public Class ArepPlanilla
         Me.TxtLunes.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TxtLunes.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
         Me.TxtLunes.Text = "Lunes"
-        Me.TxtLunes.Top = 0.6428571!
+        Me.TxtLunes.Top = 0.4!
         Me.TxtLunes.Width = 0.5625!
         '
         'TxtMartes
@@ -1663,7 +1663,7 @@ Partial Public Class ArepPlanilla
         Me.TxtMartes.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TxtMartes.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
         Me.TxtMartes.Text = "Martes"
-        Me.TxtMartes.Top = 0.8571429!
+        Me.TxtMartes.Top = 0.6!
         Me.TxtMartes.Width = 0.5625!
         '
         'TxtMiercoles
@@ -1685,7 +1685,7 @@ Partial Public Class ArepPlanilla
         Me.TxtMiercoles.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TxtMiercoles.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
         Me.TxtMiercoles.Text = "Miercoles"
-        Me.TxtMiercoles.Top = 1.035714!
+        Me.TxtMiercoles.Top = 0.8!
         Me.TxtMiercoles.Width = 0.5625!
         '
         'TxtJueves
@@ -1707,7 +1707,7 @@ Partial Public Class ArepPlanilla
         Me.TxtJueves.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TxtJueves.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
         Me.TxtJueves.Text = "Jueves"
-        Me.TxtJueves.Top = 1.25!
+        Me.TxtJueves.Top = 1.0!
         Me.TxtJueves.Width = 0.5625!
         '
         'TextBox58
@@ -1729,7 +1729,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox58.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox58.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
         Me.TextBox58.Text = "Viernes"
-        Me.TextBox58.Top = 1.464286!
+        Me.TextBox58.Top = 1.225!
         Me.TextBox58.Width = 0.5625!
         '
         'TextBox59
@@ -1751,7 +1751,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox59.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox59.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
         Me.TextBox59.Text = "Sabado"
-        Me.TextBox59.Top = 1.678571!
+        Me.TextBox59.Top = 1.45!
         Me.TextBox59.Width = 0.5625!
         '
         'TextBox60
@@ -1766,14 +1766,14 @@ Partial Public Class ArepPlanilla
         Me.TextBox60.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox60.DataField = "Domingo"
         Me.TextBox60.Height = 0.1875!
-        Me.TextBox60.Left = 3.0!
+        Me.TextBox60.Left = 2.975!
         Me.TextBox60.Name = "TextBox60"
         Me.TextBox60.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox60.SummaryGroup = "GroupHeader1"
         Me.TextBox60.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox60.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
         Me.TextBox60.Text = "Domingo"
-        Me.TextBox60.Top = 0.4285714!
+        Me.TextBox60.Top = 1.675!
         Me.TextBox60.Width = 0.5625!
         '
         'TextBox61
@@ -2249,7 +2249,7 @@ Partial Public Class ArepPlanilla
         Me.TxtMontoLunes.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TxtMontoLunes.DataField = "MontoLunes"
         Me.TxtMontoLunes.Height = 0.1666667!
-        Me.TxtMontoLunes.Left = 3.607143!
+        Me.TxtMontoLunes.Left = 3.6!
         Me.TxtMontoLunes.Name = "TxtMontoLunes"
         Me.TxtMontoLunes.OutputFormat = resources.GetString("TxtMontoLunes.OutputFormat")
         Me.TxtMontoLunes.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
@@ -2257,7 +2257,7 @@ Partial Public Class ArepPlanilla
         Me.TxtMontoLunes.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TxtMontoLunes.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
         Me.TxtMontoLunes.Text = Nothing
-        Me.TxtMontoLunes.Top = 0.6428571!
+        Me.TxtMontoLunes.Top = 0.4!
         Me.TxtMontoLunes.Width = 0.7777777!
         '
         'TextBox52
@@ -2272,7 +2272,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox52.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox52.DataField = "MontoMartes"
         Me.TextBox52.Height = 0.1666667!
-        Me.TextBox52.Left = 3.607143!
+        Me.TextBox52.Left = 3.6!
         Me.TextBox52.Name = "TextBox52"
         Me.TextBox52.OutputFormat = resources.GetString("TextBox52.OutputFormat")
         Me.TextBox52.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
@@ -2280,7 +2280,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox52.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox52.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
         Me.TextBox52.Text = Nothing
-        Me.TextBox52.Top = 0.8571429!
+        Me.TextBox52.Top = 0.6!
         Me.TextBox52.Width = 0.7777777!
         '
         'TextBox54
@@ -2295,7 +2295,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox54.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox54.DataField = "MontoMiercoles"
         Me.TextBox54.Height = 0.1666667!
-        Me.TextBox54.Left = 3.607143!
+        Me.TextBox54.Left = 3.6!
         Me.TextBox54.Name = "TextBox54"
         Me.TextBox54.OutputFormat = resources.GetString("TextBox54.OutputFormat")
         Me.TextBox54.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
@@ -2303,7 +2303,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox54.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox54.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
         Me.TextBox54.Text = Nothing
-        Me.TextBox54.Top = 1.071429!
+        Me.TextBox54.Top = 0.825!
         Me.TextBox54.Width = 0.7777777!
         '
         'TextBox55
@@ -2318,7 +2318,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox55.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox55.DataField = "MontoJueves"
         Me.TextBox55.Height = 0.1666667!
-        Me.TextBox55.Left = 3.607143!
+        Me.TextBox55.Left = 3.6!
         Me.TextBox55.Name = "TextBox55"
         Me.TextBox55.OutputFormat = resources.GetString("TextBox55.OutputFormat")
         Me.TextBox55.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
@@ -2326,7 +2326,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox55.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox55.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
         Me.TextBox55.Text = Nothing
-        Me.TextBox55.Top = 1.285714!
+        Me.TextBox55.Top = 1.025!
         Me.TextBox55.Width = 0.7777777!
         '
         'TextBox56
@@ -2341,7 +2341,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox56.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox56.DataField = "MontoViernes"
         Me.TextBox56.Height = 0.1666667!
-        Me.TextBox56.Left = 3.607143!
+        Me.TextBox56.Left = 3.6!
         Me.TextBox56.Name = "TextBox56"
         Me.TextBox56.OutputFormat = resources.GetString("TextBox56.OutputFormat")
         Me.TextBox56.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
@@ -2349,7 +2349,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox56.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox56.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
         Me.TextBox56.Text = Nothing
-        Me.TextBox56.Top = 1.535714!
+        Me.TextBox56.Top = 1.25!
         Me.TextBox56.Width = 0.7777777!
         '
         'TextBox57
@@ -2364,7 +2364,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox57.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox57.DataField = "MontoSabado"
         Me.TextBox57.Height = 0.1666667!
-        Me.TextBox57.Left = 3.607143!
+        Me.TextBox57.Left = 3.6!
         Me.TextBox57.Name = "TextBox57"
         Me.TextBox57.OutputFormat = resources.GetString("TextBox57.OutputFormat")
         Me.TextBox57.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
@@ -2372,7 +2372,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox57.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox57.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
         Me.TextBox57.Text = Nothing
-        Me.TextBox57.Top = 1.75!
+        Me.TextBox57.Top = 1.475!
         Me.TextBox57.Width = 0.7777777!
         '
         'TextBox82
@@ -2387,7 +2387,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox82.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox82.DataField = "MontoDomingo"
         Me.TextBox82.Height = 0.1666667!
-        Me.TextBox82.Left = 3.607143!
+        Me.TextBox82.Left = 3.625!
         Me.TextBox82.Name = "TextBox82"
         Me.TextBox82.OutputFormat = resources.GetString("TextBox82.OutputFormat")
         Me.TextBox82.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
@@ -2395,7 +2395,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox82.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox82.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
         Me.TextBox82.Text = Nothing
-        Me.TextBox82.Top = 0.4285714!
+        Me.TextBox82.Top = 1.7!
         Me.TextBox82.Width = 0.7777777!
         '
         'TextBox84
@@ -2511,7 +2511,7 @@ Partial Public Class ArepPlanilla
         'GroupFooter1
         '
         Me.GroupFooter1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TextBox26, Me.TextBox27, Me.TextBox28, Me.TextBox29, Me.TextBox30, Me.TextBox31, Me.TextBox32, Me.TextBox33, Me.TextBox34, Me.TextBox35, Me.TextBox36, Me.TextBox37, Me.TextBox38, Me.TextBox40, Me.TextBox41, Me.TextBox42, Me.TextBox43, Me.TextBox46, Me.TextBox48, Me.TextBox87, Me.TextBox88})
-        Me.GroupFooter1.Height = 0.2083333!
+        Me.GroupFooter1.Height = 0.21875!
         Me.GroupFooter1.Name = "GroupFooter1"
         '
         'TextBox26
@@ -2526,7 +2526,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox26.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox26.DataField = "Lunes"
         Me.TextBox26.Height = 0.1875!
-        Me.TextBox26.Left = 2.5!
+        Me.TextBox26.Left = 1.975!
         Me.TextBox26.Name = "TextBox26"
         Me.TextBox26.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox26.SummaryGroup = "GroupHeader1"
@@ -2548,7 +2548,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox27.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox27.DataField = "Martes"
         Me.TextBox27.Height = 0.1875!
-        Me.TextBox27.Left = 3.035714!
+        Me.TextBox27.Left = 2.525!
         Me.TextBox27.Name = "TextBox27"
         Me.TextBox27.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox27.SummaryGroup = "GroupHeader1"
@@ -2570,7 +2570,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox28.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox28.DataField = "Miercoles"
         Me.TextBox28.Height = 0.1875!
-        Me.TextBox28.Left = 3.56!
+        Me.TextBox28.Left = 3.05!
         Me.TextBox28.Name = "TextBox28"
         Me.TextBox28.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox28.SummaryGroup = "GroupHeader1"
@@ -2592,7 +2592,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox29.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox29.DataField = "Jueves"
         Me.TextBox29.Height = 0.1875!
-        Me.TextBox29.Left = 4.035715!
+        Me.TextBox29.Left = 3.525!
         Me.TextBox29.Name = "TextBox29"
         Me.TextBox29.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox29.SummaryGroup = "GroupHeader1"
@@ -2614,7 +2614,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox30.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox30.DataField = "Viernes"
         Me.TextBox30.Height = 0.1875!
-        Me.TextBox30.Left = 4.535715!
+        Me.TextBox30.Left = 4.025!
         Me.TextBox30.Name = "TextBox30"
         Me.TextBox30.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox30.SummaryGroup = "GroupHeader1"
@@ -2636,7 +2636,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox31.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox31.DataField = "Sabado"
         Me.TextBox31.Height = 0.1875!
-        Me.TextBox31.Left = 5.071429!
+        Me.TextBox31.Left = 4.55!
         Me.TextBox31.Name = "TextBox31"
         Me.TextBox31.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox31.SummaryGroup = "GroupHeader1"
@@ -2658,7 +2658,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox32.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox32.DataField = "Domingo"
         Me.TextBox32.Height = 0.1875!
-        Me.TextBox32.Left = 1.964!
+        Me.TextBox32.Left = 5.075!
         Me.TextBox32.Name = "TextBox32"
         Me.TextBox32.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox32.SummaryGroup = "GroupHeader1"

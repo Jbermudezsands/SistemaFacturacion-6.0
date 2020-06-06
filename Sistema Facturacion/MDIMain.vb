@@ -1093,4 +1093,13 @@ Public Class MDIMain
         My.Forms.TipoNomina.MdiParent = Me
         My.Forms.TipoNomina.Show()
     End Sub
+
+    Private Sub RibbonButton13_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+    End Sub
+
+    Private Sub RibbonRevalorizar1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonRevalorizar1.Click
+        My.Forms.FrmRevalorizar.MdiParent = Me
+        My.Forms.FrmRevalorizar.Show()
+    End Sub
 End Class

@@ -79,6 +79,20 @@ Partial Public Class ArepColillas
         Me.Label28 = New DataDynamics.ActiveReports.Label
         Me.TextBox23 = New DataDynamics.ActiveReports.TextBox
         Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
+        Me.Label30 = New DataDynamics.ActiveReports.Label
+        Me.Label31 = New DataDynamics.ActiveReports.Label
+        Me.Label32 = New DataDynamics.ActiveReports.Label
+        Me.Label33 = New DataDynamics.ActiveReports.Label
+        Me.Label34 = New DataDynamics.ActiveReports.Label
+        Me.Label35 = New DataDynamics.ActiveReports.Label
+        Me.Label36 = New DataDynamics.ActiveReports.Label
+        Me.TextBox24 = New DataDynamics.ActiveReports.TextBox
+        Me.TextBox25 = New DataDynamics.ActiveReports.TextBox
+        Me.TextBox26 = New DataDynamics.ActiveReports.TextBox
+        Me.TextBox27 = New DataDynamics.ActiveReports.TextBox
+        Me.TextBox28 = New DataDynamics.ActiveReports.TextBox
+        Me.TextBox29 = New DataDynamics.ActiveReports.TextBox
+        Me.TextBox30 = New DataDynamics.ActiveReports.TextBox
         CType(Me.LblEncabezado, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -136,6 +150,20 @@ Partial Public Class ArepColillas
         CType(Me.TextBox22, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label28, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox23, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label30, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label31, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label32, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label33, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label34, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label35, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label36, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TextBox24, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TextBox25, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TextBox26, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TextBox27, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TextBox28, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TextBox29, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TextBox30, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         '
         'PageHeader1
@@ -146,7 +174,7 @@ Partial Public Class ArepColillas
         'Detail1
         '
         Me.Detail1.ColumnSpacing = 0.0!
-        Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.LblEncabezado, Me.Label2, Me.Label3, Me.Label4, Me.Label5, Me.Label6, Me.Label7, Me.Label8, Me.Label9, Me.Label10, Me.Label11, Me.Label12, Me.Label13, Me.Label15, Me.Label16, Me.Label17, Me.Label19, Me.Label20, Me.Label21, Me.Label22, Me.Label23, Me.Label24, Me.Label25, Me.Label26, Me.Label27, Me.Label29, Me.TextBox1, Me.TextBox2, Me.TextBox3, Me.TextBox4, Me.TextBox5, Me.TextBox6, Me.TextBox7, Me.TextBox8, Me.TextBox9, Me.TextBox10, Me.TextBox11, Me.TextBox12, Me.TextBox13, Me.TextBox14, Me.TextBox15, Me.TextBox16, Me.TextBox17, Me.TextBox18, Me.TextBox19, Me.TxtFechaFinal, Me.TxtFechaInicial, Me.LblPeriodo, Me.TxtTotalIngresos, Me.TextBox20, Me.Label1, Me.Label14, Me.TextBox21, Me.Label18, Me.TextBox22, Me.Label28, Me.TextBox23})
+        Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.LblEncabezado, Me.Label2, Me.Label3, Me.Label4, Me.Label5, Me.Label6, Me.Label7, Me.Label8, Me.Label9, Me.Label10, Me.Label11, Me.Label12, Me.Label13, Me.Label15, Me.Label16, Me.Label17, Me.Label19, Me.Label20, Me.Label21, Me.Label22, Me.Label23, Me.Label24, Me.Label25, Me.Label26, Me.Label27, Me.Label29, Me.TextBox1, Me.TextBox2, Me.TextBox3, Me.TextBox4, Me.TextBox5, Me.TextBox6, Me.TextBox7, Me.TextBox8, Me.TextBox9, Me.TextBox10, Me.TextBox11, Me.TextBox12, Me.TextBox13, Me.TextBox14, Me.TextBox15, Me.TextBox16, Me.TextBox17, Me.TextBox18, Me.TextBox19, Me.TxtFechaFinal, Me.TxtFechaInicial, Me.LblPeriodo, Me.TxtTotalIngresos, Me.TextBox20, Me.Label1, Me.Label14, Me.TextBox21, Me.Label18, Me.TextBox22, Me.Label28, Me.TextBox23, Me.Label30, Me.Label31, Me.Label32, Me.Label33, Me.Label34, Me.Label35, Me.Label36, Me.TextBox24, Me.TextBox25, Me.TextBox26, Me.TextBox27, Me.TextBox28, Me.TextBox29, Me.TextBox30})
         Me.Detail1.Height = 3.270833!
         Me.Detail1.KeepTogether = True
         Me.Detail1.Name = "Detail1"
@@ -319,7 +347,7 @@ Partial Public Class ArepColillas
         Me.Label9.Name = "Label9"
         Me.Label9.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.Label9.Text = "Lunes"
-        Me.Label9.Top = 1.325!
+        Me.Label9.Top = 1.075!
         Me.Label9.Width = 0.8125!
         '
         'Label10
@@ -338,7 +366,7 @@ Partial Public Class ArepColillas
         Me.Label10.Name = "Label10"
         Me.Label10.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.Label10.Text = "Martes"
-        Me.Label10.Top = 1.525!
+        Me.Label10.Top = 1.275!
         Me.Label10.Width = 0.8125!
         '
         'Label11
@@ -357,7 +385,7 @@ Partial Public Class ArepColillas
         Me.Label11.Name = "Label11"
         Me.Label11.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.Label11.Text = "Miercoles"
-        Me.Label11.Top = 1.7!
+        Me.Label11.Top = 1.45!
         Me.Label11.Width = 0.8125!
         '
         'Label12
@@ -376,7 +404,7 @@ Partial Public Class ArepColillas
         Me.Label12.Name = "Label12"
         Me.Label12.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.Label12.Text = "Jueves"
-        Me.Label12.Top = 1.9!
+        Me.Label12.Top = 1.65!
         Me.Label12.Width = 0.8125!
         '
         'Label13
@@ -395,7 +423,7 @@ Partial Public Class ArepColillas
         Me.Label13.Name = "Label13"
         Me.Label13.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.Label13.Text = "Viernes"
-        Me.Label13.Top = 2.075!
+        Me.Label13.Top = 1.825!
         Me.Label13.Width = 0.8125!
         '
         'Label15
@@ -414,7 +442,7 @@ Partial Public Class ArepColillas
         Me.Label15.Name = "Label15"
         Me.Label15.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.Label15.Text = "Sabado"
-        Me.Label15.Top = 2.275!
+        Me.Label15.Top = 2.025!
         Me.Label15.Width = 0.8125!
         '
         'Label16
@@ -433,7 +461,7 @@ Partial Public Class ArepColillas
         Me.Label16.Name = "Label16"
         Me.Label16.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.Label16.Text = "Domingo"
-        Me.Label16.Top = 1.125!
+        Me.Label16.Top = 2.225!
         Me.Label16.Width = 0.8125!
         '
         'Label17
@@ -683,7 +711,7 @@ Partial Public Class ArepColillas
         Me.TextBox2.OutputFormat = resources.GetString("TextBox2.OutputFormat")
         Me.TextBox2.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox2.Text = Nothing
-        Me.TextBox2.Top = 1.325!
+        Me.TextBox2.Top = 1.075!
         Me.TextBox2.Width = 0.875!
         '
         'TextBox3
@@ -703,7 +731,7 @@ Partial Public Class ArepColillas
         Me.TextBox3.OutputFormat = resources.GetString("TextBox3.OutputFormat")
         Me.TextBox3.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox3.Text = Nothing
-        Me.TextBox3.Top = 1.525!
+        Me.TextBox3.Top = 1.275!
         Me.TextBox3.Width = 0.875!
         '
         'TextBox4
@@ -723,7 +751,7 @@ Partial Public Class ArepColillas
         Me.TextBox4.OutputFormat = resources.GetString("TextBox4.OutputFormat")
         Me.TextBox4.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox4.Text = Nothing
-        Me.TextBox4.Top = 1.7!
+        Me.TextBox4.Top = 1.45!
         Me.TextBox4.Width = 0.875!
         '
         'TextBox5
@@ -743,7 +771,7 @@ Partial Public Class ArepColillas
         Me.TextBox5.OutputFormat = resources.GetString("TextBox5.OutputFormat")
         Me.TextBox5.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox5.Text = Nothing
-        Me.TextBox5.Top = 1.9!
+        Me.TextBox5.Top = 1.65!
         Me.TextBox5.Width = 0.875!
         '
         'TextBox6
@@ -763,7 +791,7 @@ Partial Public Class ArepColillas
         Me.TextBox6.OutputFormat = resources.GetString("TextBox6.OutputFormat")
         Me.TextBox6.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox6.Text = Nothing
-        Me.TextBox6.Top = 2.075!
+        Me.TextBox6.Top = 1.825!
         Me.TextBox6.Width = 0.875!
         '
         'TextBox7
@@ -783,7 +811,7 @@ Partial Public Class ArepColillas
         Me.TextBox7.OutputFormat = resources.GetString("TextBox7.OutputFormat")
         Me.TextBox7.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox7.Text = Nothing
-        Me.TextBox7.Top = 2.275!
+        Me.TextBox7.Top = 2.025!
         Me.TextBox7.Width = 0.875!
         '
         'TextBox8
@@ -803,7 +831,7 @@ Partial Public Class ArepColillas
         Me.TextBox8.OutputFormat = resources.GetString("TextBox8.OutputFormat")
         Me.TextBox8.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox8.Text = Nothing
-        Me.TextBox8.Top = 1.125!
+        Me.TextBox8.Top = 2.25!
         Me.TextBox8.Width = 0.875!
         '
         'TextBox9
@@ -1040,11 +1068,11 @@ Partial Public Class ArepColillas
         Me.TxtFechaFinal.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TxtFechaFinal.DataField = "FechaFinal"
         Me.TxtFechaFinal.Height = 0.1979167!
-        Me.TxtFechaFinal.Left = 1.775!
+        Me.TxtFechaFinal.Left = 6.125!
         Me.TxtFechaFinal.Name = "TxtFechaFinal"
         Me.TxtFechaFinal.Style = ""
         Me.TxtFechaFinal.Text = "TxtFechaFinal"
-        Me.TxtFechaFinal.Top = 1.6!
+        Me.TxtFechaFinal.Top = 1.825!
         Me.TxtFechaFinal.Visible = False
         Me.TxtFechaFinal.Width = 1.0!
         '
@@ -1060,11 +1088,11 @@ Partial Public Class ArepColillas
         Me.TxtFechaInicial.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TxtFechaInicial.DataField = "FechaInicial"
         Me.TxtFechaInicial.Height = 0.1979167!
-        Me.TxtFechaInicial.Left = 1.775!
+        Me.TxtFechaInicial.Left = 6.125!
         Me.TxtFechaInicial.Name = "TxtFechaInicial"
         Me.TxtFechaInicial.Style = ""
         Me.TxtFechaInicial.Text = "TxtFechaInicial"
-        Me.TxtFechaInicial.Top = 1.85!
+        Me.TxtFechaInicial.Top = 2.075!
         Me.TxtFechaInicial.Visible = False
         Me.TxtFechaInicial.Width = 1.0!
         '
@@ -1268,6 +1296,279 @@ Partial Public Class ArepColillas
         Me.PageFooter1.Height = 0.0!
         Me.PageFooter1.Name = "PageFooter1"
         '
+        'Label30
+        '
+        Me.Label30.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label30.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label30.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label30.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label30.Border.RightColor = System.Drawing.Color.Black
+        Me.Label30.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label30.Border.TopColor = System.Drawing.Color.Black
+        Me.Label30.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label30.Height = 0.1875!
+        Me.Label30.HyperLink = Nothing
+        Me.Label30.Left = 1.75!
+        Me.Label30.Name = "Label30"
+        Me.Label30.Style = "ddo-char-set: 0; font-size: 8.25pt; "
+        Me.Label30.Text = "Precio Lunes"
+        Me.Label30.Top = 1.05!
+        Me.Label30.Width = 0.8125!
+        '
+        'Label31
+        '
+        Me.Label31.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label31.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label31.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label31.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label31.Border.RightColor = System.Drawing.Color.Black
+        Me.Label31.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label31.Border.TopColor = System.Drawing.Color.Black
+        Me.Label31.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label31.Height = 0.1875!
+        Me.Label31.HyperLink = Nothing
+        Me.Label31.Left = 1.75!
+        Me.Label31.Name = "Label31"
+        Me.Label31.Style = "ddo-char-set: 0; font-size: 8.25pt; "
+        Me.Label31.Text = "Precio Martes"
+        Me.Label31.Top = 1.25!
+        Me.Label31.Width = 0.8125!
+        '
+        'Label32
+        '
+        Me.Label32.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label32.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label32.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label32.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label32.Border.RightColor = System.Drawing.Color.Black
+        Me.Label32.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label32.Border.TopColor = System.Drawing.Color.Black
+        Me.Label32.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label32.Height = 0.1875!
+        Me.Label32.HyperLink = Nothing
+        Me.Label32.Left = 1.75!
+        Me.Label32.Name = "Label32"
+        Me.Label32.Style = "ddo-char-set: 0; font-size: 8.25pt; "
+        Me.Label32.Text = "Precio Mierc."
+        Me.Label32.Top = 1.425!
+        Me.Label32.Width = 0.8125!
+        '
+        'Label33
+        '
+        Me.Label33.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label33.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label33.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label33.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label33.Border.RightColor = System.Drawing.Color.Black
+        Me.Label33.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label33.Border.TopColor = System.Drawing.Color.Black
+        Me.Label33.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label33.Height = 0.1875!
+        Me.Label33.HyperLink = Nothing
+        Me.Label33.Left = 1.75!
+        Me.Label33.Name = "Label33"
+        Me.Label33.Style = "ddo-char-set: 0; font-size: 8.25pt; "
+        Me.Label33.Text = "Precio Jueves"
+        Me.Label33.Top = 1.625!
+        Me.Label33.Width = 0.8125!
+        '
+        'Label34
+        '
+        Me.Label34.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label34.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label34.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label34.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label34.Border.RightColor = System.Drawing.Color.Black
+        Me.Label34.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label34.Border.TopColor = System.Drawing.Color.Black
+        Me.Label34.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label34.Height = 0.1875!
+        Me.Label34.HyperLink = Nothing
+        Me.Label34.Left = 1.75!
+        Me.Label34.Name = "Label34"
+        Me.Label34.Style = "ddo-char-set: 0; font-size: 8.25pt; "
+        Me.Label34.Text = "Precio Viernes"
+        Me.Label34.Top = 1.8!
+        Me.Label34.Width = 0.8125!
+        '
+        'Label35
+        '
+        Me.Label35.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label35.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label35.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label35.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label35.Border.RightColor = System.Drawing.Color.Black
+        Me.Label35.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label35.Border.TopColor = System.Drawing.Color.Black
+        Me.Label35.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label35.Height = 0.1875!
+        Me.Label35.HyperLink = Nothing
+        Me.Label35.Left = 1.75!
+        Me.Label35.Name = "Label35"
+        Me.Label35.Style = "ddo-char-set: 0; font-size: 8.25pt; "
+        Me.Label35.Text = "Precio Sabado"
+        Me.Label35.Top = 2.0!
+        Me.Label35.Width = 0.8125!
+        '
+        'Label36
+        '
+        Me.Label36.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label36.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label36.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label36.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label36.Border.RightColor = System.Drawing.Color.Black
+        Me.Label36.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label36.Border.TopColor = System.Drawing.Color.Black
+        Me.Label36.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label36.Height = 0.1875!
+        Me.Label36.HyperLink = Nothing
+        Me.Label36.Left = 1.75!
+        Me.Label36.Name = "Label36"
+        Me.Label36.Style = "ddo-char-set: 0; font-size: 8.25pt; "
+        Me.Label36.Text = "Precio Dom"
+        Me.Label36.Top = 2.2!
+        Me.Label36.Width = 0.8125!
+        '
+        'TextBox24
+        '
+        Me.TextBox24.Border.BottomColor = System.Drawing.Color.Black
+        Me.TextBox24.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox24.Border.LeftColor = System.Drawing.Color.Black
+        Me.TextBox24.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox24.Border.RightColor = System.Drawing.Color.Black
+        Me.TextBox24.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox24.Border.TopColor = System.Drawing.Color.Black
+        Me.TextBox24.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox24.DataField = "PrecioLunes"
+        Me.TextBox24.Height = 0.175!
+        Me.TextBox24.Left = 2.55!
+        Me.TextBox24.Name = "TextBox24"
+        Me.TextBox24.OutputFormat = resources.GetString("TextBox24.OutputFormat")
+        Me.TextBox24.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
+        Me.TextBox24.Text = Nothing
+        Me.TextBox24.Top = 1.05!
+        Me.TextBox24.Width = 0.6000001!
+        '
+        'TextBox25
+        '
+        Me.TextBox25.Border.BottomColor = System.Drawing.Color.Black
+        Me.TextBox25.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox25.Border.LeftColor = System.Drawing.Color.Black
+        Me.TextBox25.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox25.Border.RightColor = System.Drawing.Color.Black
+        Me.TextBox25.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox25.Border.TopColor = System.Drawing.Color.Black
+        Me.TextBox25.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox25.DataField = "PrecioMartes"
+        Me.TextBox25.Height = 0.2!
+        Me.TextBox25.Left = 2.55!
+        Me.TextBox25.Name = "TextBox25"
+        Me.TextBox25.OutputFormat = resources.GetString("TextBox25.OutputFormat")
+        Me.TextBox25.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
+        Me.TextBox25.Text = Nothing
+        Me.TextBox25.Top = 1.25!
+        Me.TextBox25.Width = 0.6000001!
+        '
+        'TextBox26
+        '
+        Me.TextBox26.Border.BottomColor = System.Drawing.Color.Black
+        Me.TextBox26.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox26.Border.LeftColor = System.Drawing.Color.Black
+        Me.TextBox26.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox26.Border.RightColor = System.Drawing.Color.Black
+        Me.TextBox26.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox26.Border.TopColor = System.Drawing.Color.Black
+        Me.TextBox26.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox26.DataField = "PrecioMiercoles"
+        Me.TextBox26.Height = 0.175!
+        Me.TextBox26.Left = 2.55!
+        Me.TextBox26.Name = "TextBox26"
+        Me.TextBox26.OutputFormat = resources.GetString("TextBox26.OutputFormat")
+        Me.TextBox26.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
+        Me.TextBox26.Text = Nothing
+        Me.TextBox26.Top = 1.425!
+        Me.TextBox26.Width = 0.6000001!
+        '
+        'TextBox27
+        '
+        Me.TextBox27.Border.BottomColor = System.Drawing.Color.Black
+        Me.TextBox27.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox27.Border.LeftColor = System.Drawing.Color.Black
+        Me.TextBox27.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox27.Border.RightColor = System.Drawing.Color.Black
+        Me.TextBox27.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox27.Border.TopColor = System.Drawing.Color.Black
+        Me.TextBox27.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox27.DataField = "PrecioJueves"
+        Me.TextBox27.Height = 0.1750001!
+        Me.TextBox27.Left = 2.55!
+        Me.TextBox27.Name = "TextBox27"
+        Me.TextBox27.OutputFormat = resources.GetString("TextBox27.OutputFormat")
+        Me.TextBox27.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
+        Me.TextBox27.Text = Nothing
+        Me.TextBox27.Top = 1.625!
+        Me.TextBox27.Width = 0.6000001!
+        '
+        'TextBox28
+        '
+        Me.TextBox28.Border.BottomColor = System.Drawing.Color.Black
+        Me.TextBox28.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox28.Border.LeftColor = System.Drawing.Color.Black
+        Me.TextBox28.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox28.Border.RightColor = System.Drawing.Color.Black
+        Me.TextBox28.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox28.Border.TopColor = System.Drawing.Color.Black
+        Me.TextBox28.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox28.DataField = "PrecioViernes"
+        Me.TextBox28.Height = 0.1750001!
+        Me.TextBox28.Left = 2.55!
+        Me.TextBox28.Name = "TextBox28"
+        Me.TextBox28.OutputFormat = resources.GetString("TextBox28.OutputFormat")
+        Me.TextBox28.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
+        Me.TextBox28.Text = Nothing
+        Me.TextBox28.Top = 1.8!
+        Me.TextBox28.Width = 0.6000001!
+        '
+        'TextBox29
+        '
+        Me.TextBox29.Border.BottomColor = System.Drawing.Color.Black
+        Me.TextBox29.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox29.Border.LeftColor = System.Drawing.Color.Black
+        Me.TextBox29.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox29.Border.RightColor = System.Drawing.Color.Black
+        Me.TextBox29.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox29.Border.TopColor = System.Drawing.Color.Black
+        Me.TextBox29.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox29.DataField = "PrecioSabado"
+        Me.TextBox29.Height = 0.1750001!
+        Me.TextBox29.Left = 2.55!
+        Me.TextBox29.Name = "TextBox29"
+        Me.TextBox29.OutputFormat = resources.GetString("TextBox29.OutputFormat")
+        Me.TextBox29.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
+        Me.TextBox29.Text = Nothing
+        Me.TextBox29.Top = 2.0!
+        Me.TextBox29.Width = 0.6000001!
+        '
+        'TextBox30
+        '
+        Me.TextBox30.Border.BottomColor = System.Drawing.Color.Black
+        Me.TextBox30.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox30.Border.LeftColor = System.Drawing.Color.Black
+        Me.TextBox30.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox30.Border.RightColor = System.Drawing.Color.Black
+        Me.TextBox30.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox30.Border.TopColor = System.Drawing.Color.Black
+        Me.TextBox30.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox30.DataField = "PrecioDomingo"
+        Me.TextBox30.Height = 0.175!
+        Me.TextBox30.Left = 2.55!
+        Me.TextBox30.Name = "TextBox30"
+        Me.TextBox30.OutputFormat = resources.GetString("TextBox30.OutputFormat")
+        Me.TextBox30.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
+        Me.TextBox30.Text = Nothing
+        Me.TextBox30.Top = 2.225!
+        Me.TextBox30.Width = 0.6000001!
+        '
         'ArepColillas
         '
         Me.MasterReport = False
@@ -1348,6 +1649,20 @@ Partial Public Class ArepColillas
         CType(Me.TextBox22, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label28, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox23, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label30, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label31, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label32, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label33, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label34, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label35, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label36, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TextBox24, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TextBox25, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TextBox26, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TextBox27, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TextBox28, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TextBox29, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TextBox30, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
 
     End Sub
@@ -1408,4 +1723,18 @@ Partial Public Class ArepColillas
     Friend WithEvents TextBox22 As DataDynamics.ActiveReports.TextBox
     Friend WithEvents Label28 As DataDynamics.ActiveReports.Label
     Friend WithEvents TextBox23 As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents Label30 As DataDynamics.ActiveReports.Label
+    Friend WithEvents Label31 As DataDynamics.ActiveReports.Label
+    Friend WithEvents Label32 As DataDynamics.ActiveReports.Label
+    Friend WithEvents Label33 As DataDynamics.ActiveReports.Label
+    Friend WithEvents Label34 As DataDynamics.ActiveReports.Label
+    Friend WithEvents Label35 As DataDynamics.ActiveReports.Label
+    Friend WithEvents Label36 As DataDynamics.ActiveReports.Label
+    Friend WithEvents TextBox24 As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents TextBox25 As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents TextBox26 As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents TextBox27 As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents TextBox28 As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents TextBox29 As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents TextBox30 As DataDynamics.ActiveReports.TextBox
 End Class

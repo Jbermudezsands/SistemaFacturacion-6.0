@@ -189,23 +189,45 @@
   <data name="TextBox23.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
+  <data name="TextBox24.OutputFormat" xml:space="preserve">
+    <value>#,##0.00</value>
+  </data>
+  <data name="TextBox25.OutputFormat" xml:space="preserve">
+    <value>#,##0.00</value>
+  </data>
+  <data name="TextBox26.OutputFormat" xml:space="preserve">
+    <value>#,##0.00</value>
+  </data>
+  <data name="TextBox27.OutputFormat" xml:space="preserve">
+    <value>#,##0.00</value>
+  </data>
+  <data name="TextBox28.OutputFormat" xml:space="preserve">
+    <value>#,##0.00</value>
+  </data>
+  <data name="TextBox29.OutputFormat" xml:space="preserve">
+    <value>#,##0.00</value>
+  </data>
+  <data name="TextBox30.OutputFormat" xml:space="preserve">
+    <value>#,##0.00</value>
+  </data>
   <metadata name="$this.TrayLargeIcon" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="OleDBDataSource1.SQL" xml:space="preserve">
-    <value>SELECT     Detalle_Nomina.CodProductor, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.Lunes, 
-                      Detalle_Nomina.Martes, Detalle_Nomina.Miercoles, Detalle_Nomina.Jueves, Detalle_Nomina.Viernes, Detalle_Nomina.Sabado, 
-                      Detalle_Nomina.Domingo, Detalle_Nomina.Total, Detalle_Nomina.PrecioVenta, Detalle_Nomina.TotalIngresos, Detalle_Nomina.IR, Detalle_Nomina.Bolsa, Detalle_Nomina.OtrasDeducciones,Detalle_Nomina.Trazabilidad,
-                      Detalle_Nomina.DeduccionPolicia, Detalle_Nomina.Anticipo, Detalle_Nomina.DeduccionTransporte, Detalle_Nomina.Pulperia, 
-                      Detalle_Nomina.Inseminacion, Detalle_Nomina.ProductosVeterinarios, 
-                      Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia +
-                       Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios AS TotalEgresos, 
-                      Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte
-                       + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios) AS NetoPagar, Nomina.NumPlanilla, 
-                      Nomina.FechaInicial, Nomina.FechaFinal
-FROM         Detalle_Nomina INNER JOIN
-                      Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor INNER JOIN
-                      Nomina ON Detalle_Nomina.NumNomina = Nomina.NumPlanilla
-WHERE     (Detalle_Nomina.NumNomina = '00010') AND (Detalle_Nomina.TipoProductor = 'Productor')</value>
+    <value>SELECT        Detalle_Nomina.CodProductor, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.Lunes, Detalle_Nomina.Martes, 
+                         Detalle_Nomina.Miercoles, Detalle_Nomina.Jueves, Detalle_Nomina.Viernes, Detalle_Nomina.Sabado, Detalle_Nomina.Domingo, Detalle_Nomina.Total, 
+                         Detalle_Nomina.PrecioVenta, Detalle_Nomina.TotalIngresos, Detalle_Nomina.IR, Detalle_Nomina.Bolsa, Detalle_Nomina.OtrasDeducciones, 
+                         Detalle_Nomina.Trazabilidad, Detalle_Nomina.DeduccionPolicia, Detalle_Nomina.Anticipo, Detalle_Nomina.DeduccionTransporte, Detalle_Nomina.Pulperia, 
+                         Detalle_Nomina.Inseminacion, Detalle_Nomina.ProductosVeterinarios, 
+                         Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion
+                          + Detalle_Nomina.ProductosVeterinarios AS TotalEgresos, 
+                         Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia
+                          + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios) AS NetoPagar, Nomina.NumPlanilla, Nomina.FechaInicial, Nomina.FechaFinal, 
+                         Detalle_Nomina.PrecioLunes, Detalle_Nomina.PrecioMartes, Detalle_Nomina.PrecioMiercoles, Detalle_Nomina.PrecioJueves, Detalle_Nomina.PrecioViernes, 
+                         Detalle_Nomina.PrecioSabado, Detalle_Nomina.PrecioDomingo
+FROM            Detalle_Nomina INNER JOIN
+                         Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor INNER JOIN
+                         Nomina ON Detalle_Nomina.NumNomina = Nomina.NumPlanilla
+WHERE        (Detalle_Nomina.NumNomina = '00010') AND (Detalle_Nomina.TipoProductor = 'Productor')</value>
   </data>
 </root>

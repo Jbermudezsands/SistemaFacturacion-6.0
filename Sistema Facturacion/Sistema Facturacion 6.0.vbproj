@@ -349,6 +349,12 @@
     <Compile Include="FrmRespaldar.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmRevalorizar.Designer.vb">
+      <DependentUpon>FrmRevalorizar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmRevalorizar.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmRutaDistribucion.Designer.vb">
       <DependentUpon>FrmRutaDistribucion.vb</DependentUpon>
     </Compile>
@@ -1514,6 +1520,10 @@
     <EmbeddedResource Include="FrmRespaldar.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmRespaldar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmRevalorizar.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmRevalorizar.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmRutaDistribucion.resx">
       <SubType>Designer</SubType>

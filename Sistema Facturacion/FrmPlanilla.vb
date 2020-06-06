@@ -172,7 +172,13 @@ Public Class FrmPlanilla
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 DataAdapter.Fill(DataSet, "Nomina")
                 If DataSet.Tables("Nomina").Rows.Count <> 0 Then
-                    Me.TxtPrecioUnitario.Text = DataSet.Tables("Nomina").Rows(0)("PrecioUnitario")
+                    Me.TxtPrecioLunes.Text = DataSet.Tables("Nomina").Rows(0)("PrecioLunes")
+                    Me.TxtPrecioMartes.Text = DataSet.Tables("Nomina").Rows(0)("PrecioMartes")
+                    Me.TxtPrecioMiercoles.Text = DataSet.Tables("Nomina").Rows(0)("PrecioMiercoles")
+                    Me.TxtPrecioJueves.Text = DataSet.Tables("Nomina").Rows(0)("PrecioJueves")
+                    Me.TxtPrecioViernes.Text = DataSet.Tables("Nomina").Rows(0)("PrecioViernes")
+                    Me.TxtPrecioSabado.Text = DataSet.Tables("Nomina").Rows(0)("PrecioSabado")
+                    Me.TxtPrecioDomingo.Text = DataSet.Tables("Nomina").Rows(0)("PrecioDomingo")
                     Me.TxtIR.Text = DataSet.Tables("Nomina").Rows(0)("PorcientoIR")
                     Me.TxtDeduccionPolicia.Text = DataSet.Tables("Nomina").Rows(0)("PorcientoPolicia")
                 End If
@@ -217,7 +223,7 @@ Public Class FrmPlanilla
                 'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 'DataAdapter.Fill(DataSet, "DetalleIngresos")
                 'Me.TDGridIngresos.DataSource = DataSet.Tables("DetalleIngresos")
-                SqlString = "SELECT CodProductor, Nombres, Domingo, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Total, PrecioVenta, TotalIngresos, NumNomina, TipoProductor FROM Detalle_Nomina WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor')"
+                SqlString = "SELECT CodProductor, Nombres, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo, Total, PrecioVenta, TotalIngresos, NumNomina, TipoProductor FROM Detalle_Nomina WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor')"
                 ds = New DataSet
                 da = New SqlDataAdapter(SqlString, MiConexion)
                 CmdBuilder = New SqlCommandBuilder(da)
@@ -346,10 +352,11 @@ Public Class FrmPlanilla
         Dim MontoLunes As Double, MontoMartes As Double, MontoMiercoles As Double, MontoJueves As Double, MontoViernes As Double, MontoSabado As Double, MontoDomingo As Double
         Dim iPosicion2 As Double = 0, Registros2 As Double = 0, Contador As Double = 1, PrecioUnitario As Double, IngresoBruto, PorcientoIr As Double
         Dim MontoIr As Double, PorcientoPolicia As Double, MontoPolicia As Double, MontoVeterinario As Double, ROC1 As String = 0, ROC2 As String = 0, ROC3 As String = 0, ROC4 As String = 0, ROC5 As String = 0, ROC6 As String = 0, ROC7 As String = 0
-        Dim Anticipo As Double, Transporte As Double, Pulperia As Double, Inseminacion As Double, NCompra As String
+        Dim Anticipo As Double, Transporte As Double, Pulperia As Double, Inseminacion As Double, NCompra As String, PrecioLunes As Double, PrecioMartes As Double, PrecioMiercoles As Double, PrecioJueves As Double, PrecioViernes As Double, PrecioSabado As Double, PrecioDomingo As Double
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Trazabilidad As Double, Otros As Double
         Dim CantPlanilla As Double = 0, PLunes As Double, PMartes As Double, PMiercoles As Double, PJueves As Double, PViernes As Double, PSabado As Double, PDomingo As Double
-        Dim PorcientoBolsa As Double = 0, MontoBolsa As Double = 0, ProductosVeterinarios As Double = 0
+        Dim PorcientoBolsa As Double = 0, MontoBolsa As Double = 0, ProductosVeterinarios As Double = 0, CantLunes As Double = 0, CantMartes As Double = 0, CantMiercoles As Double = 0, CantJueves As Double = 0, CantViernes As Double = 0, CantSabado As Double = 0, CantDomingo As Double = 0
+
 
         If Me.CboTipoPlanilla.Text = "" Then
             MsgBox("Seleccione la Nomina, para Calcular", MsgBoxStyle.Critical, "Zeus Acopio")
@@ -357,15 +364,56 @@ Public Class FrmPlanilla
         End If
 
         Fecha = Me.DTPFechaIni.Value
-        PrecioUnitario = Me.TxtPrecioUnitario.Text
+        If Me.TxtPrecioLunes.Text = "" Then
+            PrecioUnitario = 0
+        Else
+            PrecioUnitario = Me.TxtPrecioLunes.Text
+        End If
         PorcientoIr = Val(Me.TxtIR.Text) / 100
         PorcientoBolsa = Val(Me.TxtBolsa.Text) / 100
         PorcientoPolicia = Val(Me.TxtDeduccionPolicia.Text) / 100
 
+        If Me.TxtPrecioLunes.Text = "" Then
+            Me.TxtPrecioLunes.Text = 0
+        End If
+
+        If Me.TxtPrecioMartes.Text = "" Then
+            Me.TxtPrecioMartes.Text = 0
+        End If
+
+        If Me.TxtPrecioMiercoles.Text = "" Then
+            Me.TxtPrecioMiercoles.Text = 0
+        End If
+
+        If Me.TxtPrecioJueves.Text = "" Then
+            Me.TxtPrecioJueves.Text = 0
+        End If
+
+        If Me.TxtPrecioViernes.Text = "" Then
+            Me.TxtPrecioViernes.Text = 0
+        End If
+
+        If Me.TxtPrecioSabado.Text = "" Then
+            Me.TxtPrecioSabado.Text = 0
+        End If
+
+        If Me.TxtPrecioDomingo.Text = "" Then
+            Me.TxtPrecioDomingo.Text = 0
+        End If
+
+        PrecioLunes = Me.TxtPrecioLunes.Text
+        PrecioMartes = Me.TxtPrecioMartes.Text
+        PrecioMiercoles = Me.TxtPrecioMiercoles.Text
+        PrecioJueves = Me.TxtPrecioJueves.Text
+        PrecioViernes = Me.TxtPrecioViernes.Text
+        PrecioSabado = Me.TxtPrecioSabado.Text
+        PrecioDomingo = Me.TxtPrecioDomingo.Text
+
+
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////ACTUALIZO LOS ENCABEZADOS DE LA NOMINA//////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        StrSqlUpdate = "UPDATE [Nomina] SET [PorcientoIR] = " & Val(Me.TxtIR.Text) & ",[PorcientoPolicia] =  " & Val(Me.TxtDeduccionPolicia.Text) & ",[PrecioUnitario] = " & Val(Me.TxtPrecioUnitario.Text) & " " & _
+        StrSqlUpdate = "UPDATE [Nomina] SET [PorcientoIR] = " & Val(Me.TxtIR.Text) & ",[PorcientoPolicia] =  " & Val(Me.TxtDeduccionPolicia.Text) & ",[PrecioUnitario] = " & Val(Me.TxtPrecioLunes.Text) & ", [PrecioLunes] = " & Val(Me.TxtPrecioLunes.Text) & ", [PrecioMartes] = " & Val(Me.TxtPrecioMartes.Text) & ", [PrecioMiercoles] = " & Val(Me.TxtPrecioMiercoles.Text) & ", [PrecioJueves] = " & Val(Me.TxtPrecioJueves.Text) & ", [PrecioViernes] = " & Val(Me.TxtPrecioViernes.Text) & ", [PrecioSabado] = " & Val(Me.TxtPrecioSabado.Text) & ", [PrecioDomingo] = " & Val(Me.TxtPrecioDomingo.Text) & " " & _
                        "WHERE (NumPlanilla = '" & Me.TxtNumNomina.Text & "') "
         MiConexion.Open()
         ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -391,8 +439,27 @@ Public Class FrmPlanilla
             My.Application.DoEvents()
             CodProductor = DataSet.Tables("Productor").Rows(iPosicion)("CodProductor")
 
+
+
+            MontoLunes = 0
+            MontoMartes = 0
+            MontoMiercoles = 0
+            MontoJueves = 0
+            MontoViernes = 0
+            MontoSabado = 0
+            MontoDomingo = 0
+
+
             If Not IsDBNull(DataSet.Tables("Productor").Rows(iPosicion)("Precio")) Then
                 PrecioUnitario = DataSet.Tables("Productor").Rows(iPosicion)("Precio")
+
+                PrecioLunes = PrecioUnitario
+                PrecioMartes = PrecioUnitario
+                PrecioMiercoles = PrecioUnitario
+                PrecioJueves = PrecioUnitario
+                PrecioViernes = PrecioUnitario
+                PrecioSabado = PrecioUnitario
+                PrecioDomingo = PrecioUnitario
             End If
 
             '//////////////////////////////////////////////CONSULTO SI ESTE PRODUCTOR YA TIENE UNA PLANILLA GRABADA ANTERIOR ////////////////////////////
@@ -408,6 +475,43 @@ Public Class FrmPlanilla
                 PSabado = DataSet.Tables("Consulta").Rows(0)("Sabado")
                 PDomingo = DataSet.Tables("Consulta").Rows(0)("Domingo")
                 PrecioUnitario = DataSet.Tables("Consulta").Rows(0)("PrecioVenta")
+
+                PrecioLunes = PrecioUnitario
+                PrecioMartes = PrecioUnitario
+                PrecioMiercoles = PrecioUnitario
+                PrecioJueves = PrecioUnitario
+                PrecioViernes = PrecioUnitario
+                PrecioSabado = PrecioUnitario
+                PrecioDomingo = PrecioUnitario
+
+                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioLunes")) Then
+                '    PrecioLunes = DataSet.Tables("Consulta").Rows(0)("PrecioLunes")
+                'End If
+
+                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioMartes")) Then
+                '    PrecioMartes = DataSet.Tables("Consulta").Rows(0)("PrecioMartes")
+                'End If
+
+                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioMiercoles")) Then
+                '    PrecioMiercoles = DataSet.Tables("Consulta").Rows(0)("PrecioMiercoles")
+                'End If
+
+                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioJueves")) Then
+                '    PrecioJueves = DataSet.Tables("Consulta").Rows(0)("PrecioJueves")
+                'End If
+
+                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioViernes")) Then
+                '    PrecioViernes = DataSet.Tables("Consulta").Rows(0)("PrecioViernes")
+                'End If
+
+                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioSabado")) Then
+                '    PrecioSabado = DataSet.Tables("Consulta").Rows(0)("PrecioSabado")
+                'End If
+
+                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioDomingo")) Then
+                '    PrecioDomingo = DataSet.Tables("Consulta").Rows(0)("PrecioDomingo")
+                'End If
+
             Else
                 PLunes = 0
                 PMartes = 0
@@ -419,6 +523,38 @@ Public Class FrmPlanilla
             End If
 
             DataSet.Tables("Consulta").Reset()
+
+
+            '////////////////////////////////////////////CAMBIO EL PRECIO SI EL USUARIO DIGITA PRECIO PARA UN DIA /////////////////////////////
+            '////////////////////////////////////////////SI EL PRECIO ES CERO NO CAMBIO NADA /////////////////////////////////////////////////
+
+            If Val(Me.TxtPrecioLunes.Text) <> 0 Then
+                PrecioLunes = Me.TxtPrecioLunes.Text
+            End If
+
+            If Val(Me.TxtPrecioMartes.Text) <> 0 Then
+                PrecioMartes = Me.TxtPrecioMartes.Text
+            End If
+
+            If Val(Me.TxtPrecioMiercoles.Text) <> 0 Then
+                PrecioMiercoles = Me.TxtPrecioMiercoles.Text
+            End If
+
+            If Val(Me.TxtPrecioJueves.Text) <> 0 Then
+                PrecioJueves = Me.TxtPrecioJueves.Text
+            End If
+
+            If Val(Me.TxtPrecioViernes.Text) <> 0 Then
+                PrecioViernes = Me.TxtPrecioViernes.Text
+            End If
+
+            If Val(Me.TxtPrecioSabado.Text) <> 0 Then
+                PrecioSabado = Me.TxtPrecioSabado.Text
+            End If
+
+            If Val(Me.TxtPrecioDomingo.Text) <> 0 Then
+                PrecioDomingo = Me.TxtPrecioDomingo.Text
+            End If
 
 
 
@@ -457,11 +593,6 @@ Public Class FrmPlanilla
                 DataSet.Tables("Recepciones").Clear()
 
 
-
-
-
-
-
                 Contador = Fecha.DayOfWeek
 
                 Select Case Contador
@@ -470,49 +601,57 @@ Public Class FrmPlanilla
                             Cantidad = PLunes
                             ROC1 = 0
                         End If
-                        MontoLunes = Cantidad
+                        CantLunes = Cantidad
+                        MontoLunes = Cantidad * PrecioLunes
                         ROC1 = NCompra
                     Case 2
                         If PMartes > Cantidad Then
                             Cantidad = PMartes
                             ROC2 = 0
                         End If
-                        MontoMartes = Cantidad
+                        CantMartes = Cantidad
+                        MontoMartes = Cantidad * PrecioMartes
                         ROC2 = NCompra
                     Case 3
                         If PMiercoles > Cantidad Then
                             Cantidad = PMiercoles
                             ROC3 = 0
                         End If
-                        MontoMiercoles = Cantidad
+                        CantMiercoles = Cantidad
+                        MontoMiercoles = Cantidad * PrecioMiercoles
                         ROC3 = NCompra
                     Case 4
                         If PJueves > Cantidad Then
                             Cantidad = PJueves
                             ROC4 = 0
                         End If
-                        MontoJueves = Cantidad
+                        CantJueves = Cantidad
+                        MontoJueves = Cantidad * PrecioJueves
                         ROC4 = NCompra
                     Case 5
                         If PViernes > Cantidad Then
                             Cantidad = PViernes
                             ROC5 = 0
                         End If
-                        MontoViernes = Cantidad
+                        CantViernes = Cantidad
+                        MontoViernes = Cantidad * PrecioViernes
                         ROC5 = NCompra
                     Case 6
                         If PSabado > Cantidad Then
                             Cantidad = PSabado
                             ROC6 = 0
                         End If
-                        MontoSabado = Cantidad
+                        CantSabado = Cantidad
+                        MontoSabado = Cantidad * PrecioSabado
                         ROC6 = NCompra
                     Case 0
                         If PDomingo > Cantidad Then
                             Cantidad = PDomingo
                             ROC7 = 0
                         End If
-                        MontoDomingo = Cantidad
+
+                        CantDomingo = Cantidad
+                        MontoDomingo = Cantidad * PrecioDomingo
                         ROC7 = NCompra
                 End Select
 
@@ -521,7 +660,7 @@ Public Class FrmPlanilla
                 End If
 
                 CantidadTotal = CantidadTotal + Cantidad
-                IngresoBruto = CantidadTotal * PrecioUnitario
+                IngresoBruto = MontoLunes + MontoMartes + MontoMiercoles + MontoJueves + MontoViernes + MontoSabado + MontoDomingo
                 MontoIr = PorcientoIr * IngresoBruto
                 MontoPolicia = PorcientoPolicia * CantidadTotal
                 MontoBolsa = PorcientoBolsa * IngresoBruto
@@ -549,13 +688,22 @@ Public Class FrmPlanilla
                         MontoVeterinario = DataSet.Tables("DeduccionPlanilla").Rows(0)("ProductosVeterinarios")
                     End If
                     Otros = DataSet.Tables("DeduccionPlanilla").Rows(0)("OtrasDeducciones")
+
+                Else
+                    '///////////SI NO EXISTE AGREGO UNA DEDUCCION EN CERO CON EL PRODUCTOR////////////////
+                    StrSqlUpdate = "INSERT INTO [Deducciones_Planilla] ([NumNomina],[CodProductor],[TipoProductor],[NombreProductor],[NoAnticipo],[Anticipo],[Transporte],[Pulperia],[Inseminacion],[Trazabilidad],[OtrasDeducciones],[ProductosVeterinarios]) " & _
+                                   "VALUES ('" & Me.TxtNumNomina.Text & "','" & CodProductor & "','Productor','" & Nombres & "','0000',0,0,0,0,0,0,0)"
+                    MiConexion.Open()
+                    ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                    iResultado = ComandoUpdate.ExecuteNonQuery
+                    MiConexion.Close()
                 End If
                 DataSet.Tables("DeduccionPlanilla").Clear()
 
 
 
                 '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                '/////////////////////////////////////////////////BUSCO LOS PRODUCTOS VETERINARIOS/////////////////////////////////////////////////
+                '/////////////////////////////////////////////////BUSCO LOS PRODUCTOS VETERINARIOS EN FACTURACION/////////////////////////////////////////////////
                 '////////////////////////////////////////////////777777777777777777777777777777777777777777777777777777777777777777777
                 SqlString = "SELECT DISTINCT MAX(Facturas.Numero_Factura) AS Numero_Factura, MAX(Facturas.Fecha_Factura) AS Fecha_Factura, SUM(Facturas.MontoCredito) AS MontoCredito, SUM(DetalleRecibo.MontoPagado - DetalleRecibo.MontoPagado) AS MontoPagado, SUM(Facturas.MontoCredito) AS Saldo FROM  Facturas LEFT OUTER JOIN DetalleRecibo ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura " & _
                             "WHERE (Facturas.Cod_Cliente = '" & CodProductor & "') AND (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Vencimiento <= CONVERT(DATETIME,'" & Format(Me.DTPFechaFin.Value, "yyyy-MM-dd") & "', 102)) HAVING (SUM(Facturas.MontoCredito) <> 0) AND (MAX(Facturas.TipoProductor) = 'Productor') ORDER BY MAX(Facturas.Numero_Factura) DESC"
@@ -585,8 +733,8 @@ Public Class FrmPlanilla
             DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
             DataAdapter.Fill(DataSet, "DetalleNomina")
             If DataSet.Tables("DetalleNomina").Rows.Count = 0 Then
-                StrSqlUpdate = "INSERT INTO [Detalle_Nomina] ([NumNomina],[CodProductor],[TipoProductor],[Roc1],[Lunes],[Roc2],[Martes],[Roc3],[Miercoles],[Roc4],[Jueves],[Roc5],[Viernes],[Roc6],[Sabado],[Roc7],[Domingo],[Total],[PrecioVenta],[TotalIngresos],[IR],[DeduccionPolicia],[Anticipo],[DeduccionTransporte],[Pulperia],[Inseminacion],[Trazabilidad],[ProductosVeterinarios],[OtrasDeducciones],[Nombres],[Bolsa]) " & _
-                               "VALUES ('" & Me.TxtNumNomina.Text & "','" & CodProductor & "','Productor','" & ROC1 & "'," & MontoLunes & ",'" & ROC2 & "'," & MontoMartes & ",'" & ROC3 & "'," & MontoMiercoles & ",'" & ROC4 & "'," & MontoJueves & ",'" & ROC5 & "'," & MontoViernes & ",'" & ROC6 & "'," & MontoSabado & ",'" & ROC7 & "'," & MontoDomingo & "," & CantidadTotal & " ," & PrecioUnitario & "," & IngresoBruto & "," & MontoIr & "," & MontoPolicia & "," & Anticipo & "," & Transporte & "," & Pulperia & "," & Inseminacion & "," & Trazabilidad & " ," & MontoVeterinario & " ," & Otros & ", '" & Nombres & "', " & MontoBolsa & ")"
+                StrSqlUpdate = "INSERT INTO [Detalle_Nomina] ([NumNomina],[CodProductor],[TipoProductor],[Roc1],[Lunes],[Roc2],[Martes],[Roc3],[Miercoles],[Roc4],[Jueves],[Roc5],[Viernes],[Roc6],[Sabado],[Roc7],[Domingo],[Total],[PrecioVenta],[TotalIngresos],[IR],[DeduccionPolicia],[Anticipo],[DeduccionTransporte],[Pulperia],[Inseminacion],[Trazabilidad],[ProductosVeterinarios],[OtrasDeducciones],[Nombres],[Bolsa],[PrecioLunes],[PrecioMartes],[PrecioMiercoles],[PrecioJueves],[PrecioViernes],[PrecioSabado],[PrecioDomingo]) " & _
+                               "VALUES ('" & Me.TxtNumNomina.Text & "','" & CodProductor & "','Productor','" & ROC1 & "'," & CantLunes & ",'" & ROC2 & "'," & CantMartes & ",'" & ROC3 & "'," & CantMiercoles & ",'" & ROC4 & "'," & CantJueves & ",'" & ROC5 & "'," & CantViernes & ",'" & ROC6 & "'," & CantSabado & ",'" & ROC7 & "'," & CantDomingo & "," & CantidadTotal & " ," & PrecioUnitario & "," & IngresoBruto & "," & MontoIr & "," & MontoPolicia & "," & Anticipo & "," & Transporte & "," & Pulperia & "," & Inseminacion & "," & Trazabilidad & " ," & MontoVeterinario & " ," & Otros & ", '" & Nombres & "', " & MontoBolsa & ", " & PrecioLunes & "," & PrecioMartes & ", " & PrecioMiercoles & ", " & PrecioJueves & ", " & PrecioViernes & ", " & PrecioSabado & ", " & PrecioDomingo & ")"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
                 iResultado = ComandoUpdate.ExecuteNonQuery
@@ -605,7 +753,7 @@ Public Class FrmPlanilla
                 'End If
 
 
-                StrSqlUpdate = "UPDATE [Detalle_Nomina] SET [Roc1] = '" & ROC1 & "',[Lunes] = " & MontoLunes & ",[Roc2] = '" & ROC2 & "',[Martes] = " & MontoMartes & ",[Roc3] = '" & ROC3 & "',[Miercoles] = '" & MontoMiercoles & "',[Roc4] = '" & ROC4 & "',[Jueves] = " & MontoJueves & ",[Roc5] = '" & ROC5 & "',[Viernes] =" & MontoViernes & ",[Roc6] = '" & ROC6 & "',[Sabado] = " & MontoSabado & ",[Roc7] = '" & ROC7 & "',[Domingo] = " & MontoDomingo & ",[Total] = " & CantidadTotal & ",[PrecioVenta] = " & PrecioUnitario & ",[TotalIngresos] = " & IngresoBruto & ",[IR] = " & MontoIr & ",[DeduccionPolicia] = " & MontoPolicia & ",[Anticipo] = " & Anticipo & ",[DeduccionTransporte] = " & Transporte & " ,[Pulperia] = " & Pulperia & ",[Inseminacion] = " & Inseminacion & ",[ProductosVeterinarios] = " & MontoVeterinario & " ,[Trazabilidad] = " & Trazabilidad & ",[OtrasDeducciones] = " & Otros & " ,[Nombres] = '" & Nombres & "', [Bolsa] = '" & MontoBolsa & "' " & _
+                StrSqlUpdate = "UPDATE [Detalle_Nomina] SET [Roc1] = '" & ROC1 & "',[Lunes] = " & CantLunes & ",[Roc2] = '" & ROC2 & "',[Martes] = " & CantMartes & ",[Roc3] = '" & ROC3 & "',[Miercoles] = '" & CantMiercoles & "',[Roc4] = '" & ROC4 & "',[Jueves] = " & CantJueves & ",[Roc5] = '" & ROC5 & "',[Viernes] =" & CantViernes & ",[Roc6] = '" & ROC6 & "',[Sabado] = " & CantSabado & ",[Roc7] = '" & ROC7 & "',[Domingo] = " & CantDomingo & ",[Total] = " & CantidadTotal & ",[PrecioVenta] = " & PrecioUnitario & ",[TotalIngresos] = " & IngresoBruto & ",[IR] = " & MontoIr & ",[DeduccionPolicia] = " & MontoPolicia & ",[Anticipo] = " & Anticipo & ",[DeduccionTransporte] = " & Transporte & " ,[Pulperia] = " & Pulperia & ",[Inseminacion] = " & Inseminacion & ",[ProductosVeterinarios] = " & MontoVeterinario & " ,[Trazabilidad] = " & Trazabilidad & ",[OtrasDeducciones] = " & Otros & " ,[Nombres] = '" & Nombres & "', [Bolsa] = '" & MontoBolsa & "' , [PrecioLunes] = '" & PrecioLunes & "',  [PrecioMartes] = '" & PrecioMartes & "',  [PrecioMiercoles] = '" & PrecioMiercoles & "' , [PrecioJueves] = '" & PrecioJueves & "', [PrecioViernes] = '" & PrecioViernes & "', [PrecioSabado] = '" & PrecioSabado & "', [PrecioDomingo] = '" & PrecioDomingo & "'   " & _
                                "WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "') AND (CodProductor = '" & CodProductor & "') AND (TipoProductor = 'Productor')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -620,7 +768,7 @@ Public Class FrmPlanilla
 
         'Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres
         ds.Tables("DetalleIngresos").Reset()
-        SqlString = "SELECT CodProductor, Nombres, Domingo, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Total, PrecioVenta, TotalIngresos, NumNomina, TipoProductor FROM Detalle_Nomina WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor')"
+        SqlString = "SELECT CodProductor, Nombres, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado,  Domingo, Total, PrecioVenta, TotalIngresos, NumNomina, TipoProductor FROM Detalle_Nomina WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor')"
         ds = New DataSet
         da = New SqlDataAdapter(SqlString, MiConexion)
         CmdBuilder = New SqlCommandBuilder(da)
@@ -1139,7 +1287,7 @@ Public Class FrmPlanilla
 
 
         '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
-        SqlDetalle = "SELECT  Detalle_Nomina.CodProductor, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.Lunes,Detalle_Nomina.Martes, Detalle_Nomina.Miercoles, Detalle_Nomina.Jueves, Detalle_Nomina.Viernes, Detalle_Nomina.Sabado,Detalle_Nomina.Domingo, Detalle_Nomina.Total, Detalle_Nomina.PrecioVenta, Detalle_Nomina.TotalIngresos,  Detalle_Nomina.Trazabilidad, Detalle_Nomina.IR,Detalle_Nomina.Bolsa,Detalle_Nomina.OtrasDeducciones, Detalle_Nomina.DeduccionPolicia, Detalle_Nomina.Anticipo, Detalle_Nomina.DeduccionTransporte, Detalle_Nomina.Pulperia,Detalle_Nomina.Inseminacion, Detalle_Nomina.ProductosVeterinarios,Detalle_Nomina.IR +  Detalle_Nomina.Trazabilidad + Detalle_Nomina.Bolsa + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios AS TotalEgresos,Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR +  Detalle_Nomina.Trazabilidad + Detalle_Nomina.Bolsa + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios) AS NetoPagar, Nomina.NumPlanilla,Nomina.FechaInicial, Nomina.FechaFinal FROM  Detalle_Nomina INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor INNER JOIN Nomina ON Detalle_Nomina.NumNomina = Nomina.NumPlanilla  " & _
+        SqlDetalle = "SELECT  Detalle_Nomina.CodProductor, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.Lunes,Detalle_Nomina.Martes, Detalle_Nomina.Miercoles, Detalle_Nomina.Jueves, Detalle_Nomina.Viernes, Detalle_Nomina.Sabado,Detalle_Nomina.Domingo, Detalle_Nomina.Total, Detalle_Nomina.PrecioVenta, Detalle_Nomina.TotalIngresos,  Detalle_Nomina.Trazabilidad, Detalle_Nomina.IR,Detalle_Nomina.Bolsa,Detalle_Nomina.OtrasDeducciones, Detalle_Nomina.DeduccionPolicia, Detalle_Nomina.Anticipo, Detalle_Nomina.DeduccionTransporte, Detalle_Nomina.Pulperia,Detalle_Nomina.Inseminacion, Detalle_Nomina.ProductosVeterinarios,Detalle_Nomina.IR +  Detalle_Nomina.Trazabilidad + Detalle_Nomina.Bolsa + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios AS TotalEgresos,Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR +  Detalle_Nomina.Trazabilidad + Detalle_Nomina.Bolsa + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios) AS NetoPagar, Nomina.NumPlanilla,Nomina.FechaInicial, Nomina.FechaFinal ,  Detalle_Nomina.PrecioLunes, Detalle_Nomina.PrecioMartes, Detalle_Nomina.PrecioMiercoles, Detalle_Nomina.PrecioJueves, Detalle_Nomina.PrecioViernes, Detalle_Nomina.PrecioSabado, Detalle_Nomina.PrecioDomingo FROM  Detalle_Nomina INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor INNER JOIN Nomina ON Detalle_Nomina.NumNomina = Nomina.NumPlanilla  " & _
                      "WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor') "
         SQL.ConnectionString = Conexion
         SQL.SQL = SqlDetalle
@@ -1473,6 +1621,10 @@ Public Class FrmPlanilla
         Me.Button2.Enabled = False
         Me.CmdCerrar.Enabled = False
         Me.CboTipoPlanilla.Text = ""
+
+    End Sub
+
+    Private Sub Label13_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label13.Click
 
     End Sub
 End Class

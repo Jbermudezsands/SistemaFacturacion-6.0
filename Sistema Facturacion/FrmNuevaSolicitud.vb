@@ -558,11 +558,13 @@ Public Class FrmNuevaSolicitud
         Sql = "SELECT  * FROM  Rubro"
         DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
         DataAdapter.Fill(DataSet, "Rubros")
+        Me.CboRubro.DataSource = DataSet.Tables("Rubros")
 
         '/////////////////////////////////////////////PROYECTOS ///////////////////////////////////////////////////////////
-        SqlString = "SELECT CodigoProyectos, NombreProyectos, FechaInicio, FechaFin FROM Proyectos WHERE(Activo = 1)"
+        SqlString = "SELECT CodigoProyectos, NombreProyectos, FechaInicio, FechaFin FROM Proyectos "
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "Proyectos")
+        Me.CboProyecto.DataSource = DataSet.Tables("Proyectos")
 
 
 

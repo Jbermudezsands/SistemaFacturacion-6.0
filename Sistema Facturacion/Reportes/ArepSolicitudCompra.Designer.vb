@@ -838,7 +838,7 @@ Partial Public Class ArepSolicitudCompra
         Me.Label7.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label7.Height = 0.2!
         Me.Label7.HyperLink = Nothing
-        Me.Label7.Left = 0.025!
+        Me.Label7.Left = 1.7!
         Me.Label7.Name = "Label7"
         Me.Label7.Style = "ddo-char-set: 0; text-align: center; font-weight: normal; font-size: 8.25pt; "
         Me.Label7.Text = "Adquisiciones"
@@ -857,10 +857,10 @@ Partial Public Class ArepSolicitudCompra
         Me.Label9.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label9.Height = 0.2!
         Me.Label9.HyperLink = Nothing
-        Me.Label9.Left = 1.675!
+        Me.Label9.Left = 1.7!
         Me.Label9.Name = "Label9"
         Me.Label9.Style = "ddo-char-set: 0; text-align: center; font-weight: normal; font-size: 8.25pt; "
-        Me.Label9.Text = "Revisado por"
+        Me.Label9.Text = "Recibido Por"
         Me.Label9.Top = 0.525!
         Me.Label9.Width = 1.125!
         '
@@ -876,7 +876,7 @@ Partial Public Class ArepSolicitudCompra
         Me.Label10.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label10.Height = 0.2!
         Me.Label10.HyperLink = Nothing
-        Me.Label10.Left = 1.675!
+        Me.Label10.Left = 0.0!
         Me.Label10.Name = "Label10"
         Me.Label10.Style = "ddo-char-set: 0; text-align: center; font-weight: normal; font-size: 8.25pt; "
         Me.Label10.Text = "Gerente Solicitante"
