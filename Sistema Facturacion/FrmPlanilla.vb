@@ -206,7 +206,6 @@ Public Class FrmPlanilla
                 Me.TDGridDeducciones2.Columns("Pulperia").Caption = "Fondos"
                 Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(9).Width = 78
                 Me.TDGridDeducciones2.Columns(9).NumberFormat = "##,##0.00"
-
                 Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns("Trazabilidad").Width = 70
                 Me.TDGridDeducciones2.Columns("Trazabilidad").NumberFormat = "##,##0.00"
                 Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns("OtrasDeducciones").Width = 70
@@ -867,6 +866,38 @@ Public Class FrmPlanilla
         Me.TDGridDeducciones.Columns("NetoPagar").NumberFormat = "##,##0.00"
         Me.TDGridDeducciones.Splits(0).DisplayColumns("NetoPagar").Width = 80
         Me.TDGridDeducciones.Splits(0).DisplayColumns("NetoPagar").Locked = True
+
+
+        SqlString = "SELECT IdDeduccion, NumNomina, CodProductor, TipoProductor, NombreProductor, NoAnticipo, Anticipo, Transporte, Pulperia, Inseminacion, Trazabilidad, ProductosVeterinarios , OtrasDeducciones  FROM Deducciones_Planilla WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "')ORDER BY CodProductor"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Deducciones")
+        Me.BindingDeducciones2.DataSource = DataSet.Tables("Deducciones")
+        Me.TDGridDeducciones2.DataSource = Me.BindingDeducciones2
+        Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(0).Visible = False
+        Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(1).Visible = False
+        Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(2).Button = True
+        Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(2).Width = 100
+        Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(3).Visible = False
+        Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(4).Width = 156
+        Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(5).Width = 78
+        Me.TDGridDeducciones2.Columns(5).NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(6).Width = 78
+        Me.TDGridDeducciones2.Columns(6).NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(7).Width = 78
+        Me.TDGridDeducciones2.Columns(7).NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns("Pulperia").Width = 78
+        Me.TDGridDeducciones2.Columns("Pulperia").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones2.Columns("Pulperia").Caption = "Fondos"
+        Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(9).Width = 78
+        Me.TDGridDeducciones2.Columns(9).NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns("Trazabilidad").Width = 70
+        Me.TDGridDeducciones2.Columns("Trazabilidad").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns("OtrasDeducciones").Width = 70
+        Me.TDGridDeducciones2.Columns("OtrasDeducciones").Caption = "Otras"
+        Me.TDGridDeducciones2.Columns("OtrasDeducciones").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns("ProductosVeterinarios").Width = 70
+        Me.TDGridDeducciones2.Columns("ProductosVeterinarios").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones2.Columns("ProductosVeterinarios").Caption = "Veterinario"
 
         'SqlString = "SELECT Detalle_Nomina.CodProductor, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.IR,Detalle_Nomina.DeduccionPolicia, Detalle_Nomina.Anticipo, Detalle_Nomina.DeduccionTransporte, Detalle_Nomina.Pulperia,Detalle_Nomina.Inseminacion, Detalle_Nomina.ProductosVeterinarios,Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios AS TotalEgresos, Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios) AS NetoPagar FROM  Detalle_Nomina INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor " & _
         '            "WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor')"

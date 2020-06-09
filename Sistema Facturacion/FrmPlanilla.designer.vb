@@ -44,6 +44,18 @@ Partial Class FrmPlanilla
         Me.Button1 = New System.Windows.Forms.Button
         Me.TDGridDeducciones2 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.TxtPrecioDomingo = New System.Windows.Forms.TextBox
+        Me.Label15 = New System.Windows.Forms.Label
+        Me.TxtPrecioSabado = New System.Windows.Forms.TextBox
+        Me.Label14 = New System.Windows.Forms.Label
+        Me.TxtPrecioViernes = New System.Windows.Forms.TextBox
+        Me.Label13 = New System.Windows.Forms.Label
+        Me.TxtPrecioJueves = New System.Windows.Forms.TextBox
+        Me.Label12 = New System.Windows.Forms.Label
+        Me.TxtPrecioMiercoles = New System.Windows.Forms.TextBox
+        Me.Label11 = New System.Windows.Forms.Label
+        Me.TxtPrecioMartes = New System.Windows.Forms.TextBox
+        Me.Label10 = New System.Windows.Forms.Label
         Me.TxtBolsa = New System.Windows.Forms.TextBox
         Me.Label8 = New System.Windows.Forms.Label
         Me.TxtPrecioLunes = New System.Windows.Forms.TextBox
@@ -61,18 +73,6 @@ Partial Class FrmPlanilla
         Me.ProgressBar2 = New System.Windows.Forms.ProgressBar
         Me.Button2 = New System.Windows.Forms.Button
         Me.BindingDeducciones2 = New System.Windows.Forms.BindingSource(Me.components)
-        Me.TxtPrecioMartes = New System.Windows.Forms.TextBox
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.TxtPrecioMiercoles = New System.Windows.Forms.TextBox
-        Me.Label11 = New System.Windows.Forms.Label
-        Me.TxtPrecioJueves = New System.Windows.Forms.TextBox
-        Me.Label12 = New System.Windows.Forms.Label
-        Me.TxtPrecioViernes = New System.Windows.Forms.TextBox
-        Me.Label13 = New System.Windows.Forms.Label
-        Me.TxtPrecioSabado = New System.Windows.Forms.TextBox
-        Me.Label14 = New System.Windows.Forms.Label
-        Me.TxtPrecioDomingo = New System.Windows.Forms.TextBox
-        Me.Label15 = New System.Windows.Forms.Label
         Me.GroupBox1.SuspendLayout()
         CType(Me.CboTipoPlanilla, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -300,7 +300,7 @@ Partial Class FrmPlanilla
         Me.Deducciones.Location = New System.Drawing.Point(4, 22)
         Me.Deducciones.Name = "Deducciones"
         Me.Deducciones.Padding = New System.Windows.Forms.Padding(3)
-        Me.Deducciones.Size = New System.Drawing.Size(1006, 252)
+        Me.Deducciones.Size = New System.Drawing.Size(1006, 257)
         Me.Deducciones.TabIndex = 1
         Me.Deducciones.Text = "Deducciones"
         Me.Deducciones.UseVisualStyleBackColor = True
@@ -393,13 +393,115 @@ Partial Class FrmPlanilla
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Configuracion Planilla"
         '
+        'TxtPrecioDomingo
+        '
+        Me.TxtPrecioDomingo.Location = New System.Drawing.Point(91, 223)
+        Me.TxtPrecioDomingo.Name = "TxtPrecioDomingo"
+        Me.TxtPrecioDomingo.Size = New System.Drawing.Size(43, 20)
+        Me.TxtPrecioDomingo.TabIndex = 187
+        Me.TxtPrecioDomingo.Text = "0"
+        '
+        'Label15
+        '
+        Me.Label15.AutoSize = True
+        Me.Label15.Location = New System.Drawing.Point(7, 226)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(82, 13)
+        Me.Label15.TabIndex = 186
+        Me.Label15.Text = "Precio Domingo"
+        '
+        'TxtPrecioSabado
+        '
+        Me.TxtPrecioSabado.Location = New System.Drawing.Point(92, 202)
+        Me.TxtPrecioSabado.Name = "TxtPrecioSabado"
+        Me.TxtPrecioSabado.Size = New System.Drawing.Size(43, 20)
+        Me.TxtPrecioSabado.TabIndex = 185
+        Me.TxtPrecioSabado.Text = "0"
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(15, 205)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(77, 13)
+        Me.Label14.TabIndex = 184
+        Me.Label14.Text = "Precio Sabado"
+        '
+        'TxtPrecioViernes
+        '
+        Me.TxtPrecioViernes.Location = New System.Drawing.Point(92, 178)
+        Me.TxtPrecioViernes.Name = "TxtPrecioViernes"
+        Me.TxtPrecioViernes.Size = New System.Drawing.Size(43, 20)
+        Me.TxtPrecioViernes.TabIndex = 15
+        Me.TxtPrecioViernes.Text = "0"
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(17, 181)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(75, 13)
+        Me.Label13.TabIndex = 14
+        Me.Label13.Text = "Precio Viernes"
+        '
+        'TxtPrecioJueves
+        '
+        Me.TxtPrecioJueves.Location = New System.Drawing.Point(92, 154)
+        Me.TxtPrecioJueves.Name = "TxtPrecioJueves"
+        Me.TxtPrecioJueves.Size = New System.Drawing.Size(43, 20)
+        Me.TxtPrecioJueves.TabIndex = 13
+        Me.TxtPrecioJueves.Text = "0"
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(18, 157)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(74, 13)
+        Me.Label12.TabIndex = 12
+        Me.Label12.Text = "Precio Jueves"
+        '
+        'TxtPrecioMiercoles
+        '
+        Me.TxtPrecioMiercoles.Location = New System.Drawing.Point(92, 131)
+        Me.TxtPrecioMiercoles.Name = "TxtPrecioMiercoles"
+        Me.TxtPrecioMiercoles.Size = New System.Drawing.Size(43, 20)
+        Me.TxtPrecioMiercoles.TabIndex = 11
+        Me.TxtPrecioMiercoles.Text = "0"
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(7, 134)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(85, 13)
+        Me.Label11.TabIndex = 10
+        Me.Label11.Text = "Precio Miercoles"
+        '
+        'TxtPrecioMartes
+        '
+        Me.TxtPrecioMartes.Location = New System.Drawing.Point(92, 109)
+        Me.TxtPrecioMartes.Name = "TxtPrecioMartes"
+        Me.TxtPrecioMartes.Size = New System.Drawing.Size(43, 20)
+        Me.TxtPrecioMartes.TabIndex = 9
+        Me.TxtPrecioMartes.Text = "0"
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(20, 112)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(72, 13)
+        Me.Label10.TabIndex = 8
+        Me.Label10.Text = "Precio Martes"
+        '
         'TxtBolsa
         '
         Me.TxtBolsa.Location = New System.Drawing.Point(93, 39)
         Me.TxtBolsa.Name = "TxtBolsa"
         Me.TxtBolsa.Size = New System.Drawing.Size(43, 20)
         Me.TxtBolsa.TabIndex = 7
-        Me.TxtBolsa.Text = "0.50"
+        Me.TxtBolsa.Text = "0.30"
         '
         'Label8
         '
@@ -440,9 +542,9 @@ Partial Class FrmPlanilla
         Me.Label5.AutoSize = True
         Me.Label5.Location = New System.Drawing.Point(14, 65)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(49, 13)
+        Me.Label5.Size = New System.Drawing.Size(43, 13)
         Me.Label5.TabIndex = 2
-        Me.Label5.Text = "% Policia"
+        Me.Label5.Text = "% Otros"
         '
         'TxtIR
         '
@@ -450,7 +552,7 @@ Partial Class FrmPlanilla
         Me.TxtIR.Name = "TxtIR"
         Me.TxtIR.Size = New System.Drawing.Size(43, 20)
         Me.TxtIR.TabIndex = 1
-        Me.TxtIR.Text = "3"
+        Me.TxtIR.Text = "1"
         '
         'Label4
         '
@@ -551,108 +653,6 @@ Partial Class FrmPlanilla
         Me.Button2.Text = "Imp Colillas"
         Me.Button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.Button2.UseVisualStyleBackColor = True
-        '
-        'TxtPrecioMartes
-        '
-        Me.TxtPrecioMartes.Location = New System.Drawing.Point(92, 109)
-        Me.TxtPrecioMartes.Name = "TxtPrecioMartes"
-        Me.TxtPrecioMartes.Size = New System.Drawing.Size(43, 20)
-        Me.TxtPrecioMartes.TabIndex = 9
-        Me.TxtPrecioMartes.Text = "0"
-        '
-        'Label10
-        '
-        Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(20, 112)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(72, 13)
-        Me.Label10.TabIndex = 8
-        Me.Label10.Text = "Precio Martes"
-        '
-        'TxtPrecioMiercoles
-        '
-        Me.TxtPrecioMiercoles.Location = New System.Drawing.Point(92, 131)
-        Me.TxtPrecioMiercoles.Name = "TxtPrecioMiercoles"
-        Me.TxtPrecioMiercoles.Size = New System.Drawing.Size(43, 20)
-        Me.TxtPrecioMiercoles.TabIndex = 11
-        Me.TxtPrecioMiercoles.Text = "0"
-        '
-        'Label11
-        '
-        Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(7, 134)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(85, 13)
-        Me.Label11.TabIndex = 10
-        Me.Label11.Text = "Precio Miercoles"
-        '
-        'TxtPrecioJueves
-        '
-        Me.TxtPrecioJueves.Location = New System.Drawing.Point(92, 154)
-        Me.TxtPrecioJueves.Name = "TxtPrecioJueves"
-        Me.TxtPrecioJueves.Size = New System.Drawing.Size(43, 20)
-        Me.TxtPrecioJueves.TabIndex = 13
-        Me.TxtPrecioJueves.Text = "0"
-        '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(18, 157)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(74, 13)
-        Me.Label12.TabIndex = 12
-        Me.Label12.Text = "Precio Jueves"
-        '
-        'TxtPrecioViernes
-        '
-        Me.TxtPrecioViernes.Location = New System.Drawing.Point(92, 178)
-        Me.TxtPrecioViernes.Name = "TxtPrecioViernes"
-        Me.TxtPrecioViernes.Size = New System.Drawing.Size(43, 20)
-        Me.TxtPrecioViernes.TabIndex = 15
-        Me.TxtPrecioViernes.Text = "0"
-        '
-        'Label13
-        '
-        Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(17, 181)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(75, 13)
-        Me.Label13.TabIndex = 14
-        Me.Label13.Text = "Precio Viernes"
-        '
-        'TxtPrecioSabado
-        '
-        Me.TxtPrecioSabado.Location = New System.Drawing.Point(92, 202)
-        Me.TxtPrecioSabado.Name = "TxtPrecioSabado"
-        Me.TxtPrecioSabado.Size = New System.Drawing.Size(43, 20)
-        Me.TxtPrecioSabado.TabIndex = 185
-        Me.TxtPrecioSabado.Text = "0"
-        '
-        'Label14
-        '
-        Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(15, 205)
-        Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(77, 13)
-        Me.Label14.TabIndex = 184
-        Me.Label14.Text = "Precio Sabado"
-        '
-        'TxtPrecioDomingo
-        '
-        Me.TxtPrecioDomingo.Location = New System.Drawing.Point(91, 223)
-        Me.TxtPrecioDomingo.Name = "TxtPrecioDomingo"
-        Me.TxtPrecioDomingo.Size = New System.Drawing.Size(43, 20)
-        Me.TxtPrecioDomingo.TabIndex = 187
-        Me.TxtPrecioDomingo.Text = "0"
-        '
-        'Label15
-        '
-        Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(7, 226)
-        Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(82, 13)
-        Me.Label15.TabIndex = 186
-        Me.Label15.Text = "Precio Domingo"
         '
         'FrmPlanilla
         '

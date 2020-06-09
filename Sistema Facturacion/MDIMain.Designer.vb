@@ -123,6 +123,7 @@ Partial Class MDIMain
         Me.RibbonPersonalizar = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonActualizacion = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonAjustes = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonRevalorizar1 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonTab4 = New C1.Win.C1Ribbon.RibbonTab
         Me.RibbonGroup6 = New C1.Win.C1Ribbon.RibbonGroup
         Me.RibbonReporteGenerales = New C1.Win.C1Ribbon.RibbonButton
@@ -162,7 +163,6 @@ Partial Class MDIMain
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
         Me.TxtUsuario = New System.Windows.Forms.TextBox
-        Me.RibbonRevalorizar1 = New C1.Win.C1Ribbon.RibbonButton
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -987,6 +987,14 @@ Partial Class MDIMain
         Me.RibbonAjustes.Text = "Ajustes"
         Me.RibbonAjustes.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
+        'RibbonRevalorizar1
+        '
+        Me.RibbonRevalorizar1.ID = "RibbonRevalorizar1"
+        Me.RibbonRevalorizar1.LargeImage = CType(resources.GetObject("RibbonRevalorizar1.LargeImage"), System.Drawing.Image)
+        Me.RibbonRevalorizar1.SmallImage = CType(resources.GetObject("RibbonRevalorizar1.SmallImage"), System.Drawing.Image)
+        Me.RibbonRevalorizar1.Text = "Revalorizar"
+        Me.RibbonRevalorizar1.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
         'RibbonTab4
         '
         Me.RibbonTab4.Groups.Add(Me.RibbonGroup6)
@@ -1290,7 +1298,7 @@ Partial Class MDIMain
         'RibbonLabel1
         '
         Me.RibbonLabel1.ID = "RibbonLabel1"
-        Me.RibbonLabel1.Text = "Version 6.21"
+        Me.RibbonLabel1.Text = "Version 6.22"
         '
         'TxtUsuario
         '
@@ -1300,14 +1308,6 @@ Partial Class MDIMain
         Me.TxtUsuario.TabIndex = 15
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
-        '
-        'RibbonRevalorizar1
-        '
-        Me.RibbonRevalorizar1.ID = "RibbonRevalorizar1"
-        Me.RibbonRevalorizar1.LargeImage = CType(resources.GetObject("RibbonRevalorizar1.LargeImage"), System.Drawing.Image)
-        Me.RibbonRevalorizar1.SmallImage = CType(resources.GetObject("RibbonRevalorizar1.SmallImage"), System.Drawing.Image)
-        Me.RibbonRevalorizar1.Text = "Revalorizar"
-        Me.RibbonRevalorizar1.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'MDIMain
         '

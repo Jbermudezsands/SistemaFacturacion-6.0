@@ -33,24 +33,25 @@ Partial Class FrmRevalorizar
         Me.OptCuentasCobrarRe = New System.Windows.Forms.RadioButton
         Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker
         Me.Label25 = New System.Windows.Forms.Label
-        Me.ProgressBarRe = New System.Windows.Forms.ProgressBar
+        Me.ProgressBar = New System.Windows.Forms.ProgressBar
         Me.BtnRebalorizar = New System.Windows.Forms.Button
-        Me.CheckBox1 = New System.Windows.Forms.CheckBox
+        Me.ChkMoneda = New System.Windows.Forms.CheckBox
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.TabPage2 = New System.Windows.Forms.TabPage
-        Me.TDGridIngresos = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.ImageList = New System.Windows.Forms.ImageList(Me.components)
-        Me.BtnVer = New System.Windows.Forms.Button
-        Me.C1TrueDBGrid1 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.BtnCalcular = New System.Windows.Forms.Button
         Me.BtnSalir = New System.Windows.Forms.Button
+        Me.BtnCalcular = New System.Windows.Forms.Button
+        Me.BtnVer = New System.Windows.Forms.Button
+        Me.TDGridIngresos = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.TabPage2 = New System.Windows.Forms.TabPage
+        Me.C1TrueDBGrid1 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.ImageList = New System.Windows.Forms.ImageList(Me.components)
+        Me.ProgressBar2 = New System.Windows.Forms.ProgressBar
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox10.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
-        Me.TabPage2.SuspendLayout()
         CType(Me.TDGridIngresos, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage2.SuspendLayout()
         CType(Me.C1TrueDBGrid1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -171,12 +172,12 @@ Partial Class FrmRevalorizar
         Me.Label25.TabIndex = 190
         Me.Label25.Text = "Fecha Ejecucion"
         '
-        'ProgressBarRe
+        'ProgressBar
         '
-        Me.ProgressBarRe.Location = New System.Drawing.Point(12, 142)
-        Me.ProgressBarRe.Name = "ProgressBarRe"
-        Me.ProgressBarRe.Size = New System.Drawing.Size(639, 23)
-        Me.ProgressBarRe.TabIndex = 189
+        Me.ProgressBar.Location = New System.Drawing.Point(12, 142)
+        Me.ProgressBar.Name = "ProgressBar"
+        Me.ProgressBar.Size = New System.Drawing.Size(639, 23)
+        Me.ProgressBar.TabIndex = 189
         '
         'BtnRebalorizar
         '
@@ -191,18 +192,18 @@ Partial Class FrmRevalorizar
         Me.BtnRebalorizar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.BtnRebalorizar.UseVisualStyleBackColor = True
         '
-        'CheckBox1
+        'ChkMoneda
         '
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Checked = True
-        Me.CheckBox1.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBox1.Enabled = False
-        Me.CheckBox1.Location = New System.Drawing.Point(255, 116)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(121, 17)
-        Me.CheckBox1.TabIndex = 193
-        Me.CheckBox1.Text = "Facturas en Dolares"
-        Me.CheckBox1.UseVisualStyleBackColor = True
+        Me.ChkMoneda.AutoSize = True
+        Me.ChkMoneda.Checked = True
+        Me.ChkMoneda.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.ChkMoneda.Enabled = False
+        Me.ChkMoneda.Location = New System.Drawing.Point(255, 116)
+        Me.ChkMoneda.Name = "ChkMoneda"
+        Me.ChkMoneda.Size = New System.Drawing.Size(121, 17)
+        Me.ChkMoneda.TabIndex = 193
+        Me.ChkMoneda.Text = "Facturas en Dolares"
+        Me.ChkMoneda.UseVisualStyleBackColor = True
         '
         'TabControl1
         '
@@ -211,18 +212,19 @@ Partial Class FrmRevalorizar
         Me.TabControl1.Location = New System.Drawing.Point(2, 7)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(759, 437)
+        Me.TabControl1.Size = New System.Drawing.Size(759, 458)
         Me.TabControl1.TabIndex = 194
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.ProgressBar2)
         Me.TabPage1.Controls.Add(Me.BtnSalir)
         Me.TabPage1.Controls.Add(Me.BtnCalcular)
         Me.TabPage1.Controls.Add(Me.BtnVer)
         Me.TabPage1.Controls.Add(Me.TDGridIngresos)
         Me.TabPage1.Controls.Add(Me.GroupBox10)
-        Me.TabPage1.Controls.Add(Me.ProgressBarRe)
-        Me.TabPage1.Controls.Add(Me.CheckBox1)
+        Me.TabPage1.Controls.Add(Me.ProgressBar)
+        Me.TabPage1.Controls.Add(Me.ChkMoneda)
         Me.TabPage1.Controls.Add(Me.DTPFechaFin)
         Me.TabPage1.Controls.Add(Me.GroupBox11)
         Me.TabPage1.Controls.Add(Me.Label25)
@@ -230,46 +232,37 @@ Partial Class FrmRevalorizar
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(751, 411)
+        Me.TabPage1.Size = New System.Drawing.Size(751, 432)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Generales"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
-        'TabPage2
+        'BtnSalir
         '
-        Me.TabPage2.Controls.Add(Me.C1TrueDBGrid1)
-        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(751, 411)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Detalle Facturas"
-        Me.TabPage2.UseVisualStyleBackColor = True
+        Me.BtnSalir.AccessibleName = "Bt"
+        Me.BtnSalir.Image = CType(resources.GetObject("BtnSalir.Image"), System.Drawing.Image)
+        Me.BtnSalir.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnSalir.Location = New System.Drawing.Point(670, 21)
+        Me.BtnSalir.Name = "BtnSalir"
+        Me.BtnSalir.Size = New System.Drawing.Size(74, 73)
+        Me.BtnSalir.TabIndex = 198
+        Me.BtnSalir.Tag = "25"
+        Me.BtnSalir.Text = "Salir"
+        Me.BtnSalir.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnSalir.UseVisualStyleBackColor = True
         '
-        'TDGridIngresos
+        'BtnCalcular
         '
-        Me.TDGridIngresos.AlternatingRows = True
-        Me.TDGridIngresos.Caption = "Listado de Nominas"
-        Me.TDGridIngresos.FilterBar = True
-        Me.TDGridIngresos.GroupByCaption = "Drag a column header here to group by that column"
-        Me.TDGridIngresos.Images.Add(CType(resources.GetObject("TDGridIngresos.Images"), System.Drawing.Image))
-        Me.TDGridIngresos.Location = New System.Drawing.Point(9, 179)
-        Me.TDGridIngresos.Name = "TDGridIngresos"
-        Me.TDGridIngresos.PreviewInfo.Location = New System.Drawing.Point(0, 0)
-        Me.TDGridIngresos.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TDGridIngresos.PreviewInfo.ZoomFactor = 75
-        Me.TDGridIngresos.PrintInfo.PageSettings = CType(resources.GetObject("TDGridIngresos.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TDGridIngresos.Size = New System.Drawing.Size(663, 224)
-        Me.TDGridIngresos.TabIndex = 194
-        Me.TDGridIngresos.Text = "C1TrueDBGrid1"
-        Me.TDGridIngresos.PropBag = resources.GetString("TDGridIngresos.PropBag")
-        '
-        'ImageList
-        '
-        Me.ImageList.ImageStream = CType(resources.GetObject("ImageList.ImageStream"), System.Windows.Forms.ImageListStreamer)
-        Me.ImageList.TransparentColor = System.Drawing.Color.Transparent
-        Me.ImageList.Images.SetKeyName(0, "Check3.png")
-        Me.ImageList.Images.SetKeyName(1, "Uncheked3.png")
+        Me.BtnCalcular.Image = CType(resources.GetObject("BtnCalcular.Image"), System.Drawing.Image)
+        Me.BtnCalcular.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnCalcular.Location = New System.Drawing.Point(503, 21)
+        Me.BtnCalcular.Name = "BtnCalcular"
+        Me.BtnCalcular.Size = New System.Drawing.Size(74, 73)
+        Me.BtnCalcular.TabIndex = 196
+        Me.BtnCalcular.Tag = "25"
+        Me.BtnCalcular.Text = "Calcular"
+        Me.BtnCalcular.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnCalcular.UseVisualStyleBackColor = True
         '
         'BtnVer
         '
@@ -282,6 +275,35 @@ Partial Class FrmRevalorizar
         Me.BtnVer.Tag = "25"
         Me.BtnVer.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.BtnVer.UseVisualStyleBackColor = True
+        '
+        'TDGridIngresos
+        '
+        Me.TDGridIngresos.AlternatingRows = True
+        Me.TDGridIngresos.Caption = "Listado de Nominas"
+        Me.TDGridIngresos.FilterBar = True
+        Me.TDGridIngresos.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TDGridIngresos.Images.Add(CType(resources.GetObject("TDGridIngresos.Images"), System.Drawing.Image))
+        Me.TDGridIngresos.Location = New System.Drawing.Point(6, 202)
+        Me.TDGridIngresos.Name = "TDGridIngresos"
+        Me.TDGridIngresos.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TDGridIngresos.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TDGridIngresos.PreviewInfo.ZoomFactor = 75
+        Me.TDGridIngresos.PrintInfo.PageSettings = CType(resources.GetObject("TDGridIngresos.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TDGridIngresos.Size = New System.Drawing.Size(663, 224)
+        Me.TDGridIngresos.TabIndex = 194
+        Me.TDGridIngresos.Text = "C1TrueDBGrid1"
+        Me.TDGridIngresos.PropBag = resources.GetString("TDGridIngresos.PropBag")
+        '
+        'TabPage2
+        '
+        Me.TabPage2.Controls.Add(Me.C1TrueDBGrid1)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Size = New System.Drawing.Size(751, 411)
+        Me.TabPage2.TabIndex = 1
+        Me.TabPage2.Text = "Detalle Facturas"
+        Me.TabPage2.UseVisualStyleBackColor = True
         '
         'C1TrueDBGrid1
         '
@@ -301,38 +323,25 @@ Partial Class FrmRevalorizar
         Me.C1TrueDBGrid1.Text = "C1TrueDBGrid1"
         Me.C1TrueDBGrid1.PropBag = resources.GetString("C1TrueDBGrid1.PropBag")
         '
-        'BtnCalcular
+        'ImageList
         '
-        Me.BtnCalcular.Image = CType(resources.GetObject("BtnCalcular.Image"), System.Drawing.Image)
-        Me.BtnCalcular.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.BtnCalcular.Location = New System.Drawing.Point(503, 21)
-        Me.BtnCalcular.Name = "BtnCalcular"
-        Me.BtnCalcular.Size = New System.Drawing.Size(74, 73)
-        Me.BtnCalcular.TabIndex = 196
-        Me.BtnCalcular.Tag = "25"
-        Me.BtnCalcular.Text = "Calcular"
-        Me.BtnCalcular.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.BtnCalcular.UseVisualStyleBackColor = True
+        Me.ImageList.ImageStream = CType(resources.GetObject("ImageList.ImageStream"), System.Windows.Forms.ImageListStreamer)
+        Me.ImageList.TransparentColor = System.Drawing.Color.Transparent
+        Me.ImageList.Images.SetKeyName(0, "Check3.png")
+        Me.ImageList.Images.SetKeyName(1, "Uncheked3.png")
         '
-        'BtnSalir
+        'ProgressBar2
         '
-        Me.BtnSalir.AccessibleName = "Bt"
-        Me.BtnSalir.Image = CType(resources.GetObject("BtnSalir.Image"), System.Drawing.Image)
-        Me.BtnSalir.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.BtnSalir.Location = New System.Drawing.Point(670, 21)
-        Me.BtnSalir.Name = "BtnSalir"
-        Me.BtnSalir.Size = New System.Drawing.Size(74, 73)
-        Me.BtnSalir.TabIndex = 198
-        Me.BtnSalir.Tag = "25"
-        Me.BtnSalir.Text = "Salir"
-        Me.BtnSalir.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.BtnSalir.UseVisualStyleBackColor = True
+        Me.ProgressBar2.Location = New System.Drawing.Point(12, 171)
+        Me.ProgressBar2.Name = "ProgressBar2"
+        Me.ProgressBar2.Size = New System.Drawing.Size(320, 23)
+        Me.ProgressBar2.TabIndex = 199
         '
         'FrmRevalorizar
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(767, 444)
+        Me.ClientSize = New System.Drawing.Size(767, 466)
         Me.ControlBox = False
         Me.Controls.Add(Me.TabControl1)
         Me.Name = "FrmRevalorizar"
@@ -344,8 +353,8 @@ Partial Class FrmRevalorizar
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
-        Me.TabPage2.ResumeLayout(False)
         CType(Me.TDGridIngresos, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage2.ResumeLayout(False)
         CType(Me.C1TrueDBGrid1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
@@ -362,9 +371,9 @@ Partial Class FrmRevalorizar
     Friend WithEvents OptCuentasCobrarRe As System.Windows.Forms.RadioButton
     Friend WithEvents DTPFechaFin As System.Windows.Forms.DateTimePicker
     Friend WithEvents Label25 As System.Windows.Forms.Label
-    Friend WithEvents ProgressBarRe As System.Windows.Forms.ProgressBar
+    Friend WithEvents ProgressBar As System.Windows.Forms.ProgressBar
     Friend WithEvents BtnRebalorizar As System.Windows.Forms.Button
-    Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
+    Friend WithEvents ChkMoneda As System.Windows.Forms.CheckBox
     Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
     Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
     Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
@@ -374,4 +383,5 @@ Partial Class FrmRevalorizar
     Friend WithEvents C1TrueDBGrid1 As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents BtnCalcular As System.Windows.Forms.Button
     Friend WithEvents BtnSalir As System.Windows.Forms.Button
+    Friend WithEvents ProgressBar2 As System.Windows.Forms.ProgressBar
 End Class

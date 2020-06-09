@@ -276,7 +276,7 @@ Public Class FrmActualiza
     End Sub
 
     Private Sub FrmActualiza_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.DTPFechaFin.Value = Now
+        'Me.DTPFechaFin.Value = Now
     End Sub
 
     Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
@@ -1311,83 +1311,83 @@ Public Class FrmActualiza
         My.Forms.FrmProcesar.ShowDialog()
     End Sub
 
-    Private Sub Button22_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button22.Click
-        If Me.OptCuentasCobrarRe.Checked = True Then
-            Quien = "CodigoCliente"
-            My.Forms.FrmConsultas.ShowDialog()
-            Me.TxtRebalorizaDesde.Text = My.Forms.FrmConsultas.Codigo
-        ElseIf Me.OptCuentasPagarRe.Checked = True Then
-            Quien = "CuentaPagar"
-            My.Forms.FrmConsultas.ShowDialog()
-            Me.TxtRebalorizaDesde.Text = My.Forms.FrmConsultas.Codigo
-        End If
+    Private Sub Button22_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        'If Me.OptCuentasCobrarRe.Checked = True Then
+        '    Quien = "CodigoCliente"
+        '    My.Forms.FrmConsultas.ShowDialog()
+        '    Me.TxtRebalorizaDesde.Text = My.Forms.FrmConsultas.Codigo
+        'ElseIf Me.OptCuentasPagarRe.Checked = True Then
+        '    Quien = "CuentaPagar"
+        '    My.Forms.FrmConsultas.ShowDialog()
+        '    Me.TxtRebalorizaDesde.Text = My.Forms.FrmConsultas.Codigo
+        'End If
     End Sub
 
-    Private Sub Button21_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button21.Click
-        If Me.OptCuentasCobrarRe.Checked = True Then
-            Quien = "CuentaCobrar"
-            My.Forms.FrmConsultas.ShowDialog()
-            Me.TxtRebalorizarHasta.Text = My.Forms.FrmConsultas.Codigo
-        ElseIf Me.OptCuentasPagarRe.Checked = True Then
-            Quien = "CuentaPagar"
-            My.Forms.FrmConsultas.ShowDialog()
-            Me.TxtRebalorizarHasta.Text = My.Forms.FrmConsultas.Codigo
-        End If
+    Private Sub Button21_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        'If Me.OptCuentasCobrarRe.Checked = True Then
+        '    Quien = "CuentaCobrar"
+        '    My.Forms.FrmConsultas.ShowDialog()
+        '    Me.TxtRebalorizarHasta.Text = My.Forms.FrmConsultas.Codigo
+        'ElseIf Me.OptCuentasPagarRe.Checked = True Then
+        '    Quien = "CuentaPagar"
+        '    My.Forms.FrmConsultas.ShowDialog()
+        '    Me.TxtRebalorizarHasta.Text = My.Forms.FrmConsultas.Codigo
+        'End If
     End Sub
 
-    Private Sub BtnRebalorizar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnRebalorizar.Click
-        Dim SqlProductos As String
-        Dim DataAdapter As New SqlClient.SqlDataAdapter, Dataset As New DataSet
-        Dim iPosicionFila As Double, CodCuenta As String, DescripcionCuenta As String
-        Dim SQLClientes As String, CodCuentaCosto As String = 0, CodCuentaVentas As String = 0, CodLinea As String = 0, CodIva As String = 0
-        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-        Dim CodBodega As String = "", NombreCliente As String = "", ApellidoCliente As String = "", DireccionCliente As String = "-", TelefonoCliente As String = "505"
-        Dim RUCCliente As String = "-"
+    Private Sub BtnRebalorizar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        'Dim SqlProductos As String
+        'Dim DataAdapter As New SqlClient.SqlDataAdapter, Dataset As New DataSet
+        'Dim iPosicionFila As Double, CodCuenta As String, DescripcionCuenta As String
+        'Dim SQLClientes As String, CodCuentaCosto As String = 0, CodCuentaVentas As String = 0, CodLinea As String = 0, CodIva As String = 0
+        'Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        'Dim CodBodega As String = "", NombreCliente As String = "", ApellidoCliente As String = "", DireccionCliente As String = "-", TelefonoCliente As String = "505"
+        'Dim RUCCliente As String = "-"
 
-        If Me.OptCuentasCobrarRe.Checked = True Then
-            SqlProductos = "SELECT *  FROM Clientes WHERE (Cod_Cliente BETWEEN '" & Me.TxtRebalorizaDesde.Text & "' AND '" & Me.TxtRebalorizarHasta.Text & "')"
-        ElseIf Me.OptCuentasPagarRe.Checked = True Then
-            SqlProductos = "SELECT *  FROM Proveedor WHERE (Cod_Proveedor BETWEEN '" & Me.TxtRebalorizaDesde.Text & "' AND '" & Me.TxtRebalorizarHasta.Text & "')"
-        End If
-        MiConexion.Open()
+        'If Me.OptCuentasCobrarRe.Checked = True Then
+        '    SqlProductos = "SELECT *  FROM Clientes WHERE (Cod_Cliente BETWEEN '" & Me.TxtRebalorizaDesde.Text & "' AND '" & Me.TxtRebalorizarHasta.Text & "')"
+        'ElseIf Me.OptCuentasPagarRe.Checked = True Then
+        '    SqlProductos = "SELECT *  FROM Proveedor WHERE (Cod_Proveedor BETWEEN '" & Me.TxtRebalorizaDesde.Text & "' AND '" & Me.TxtRebalorizarHasta.Text & "')"
+        'End If
+        'MiConexion.Open()
 
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlProductos, MiConexion)
-        Dataset.Reset()
-        DataAdapter.Fill(Dataset, "Consultas")
-        If Not Dataset.Tables("Consultas").Rows.Count = 0 Then
-            iPosicionFila = 0
-            Me.ProgressBar.Minimum = 0
-            Me.ProgressBar.Visible = True
-            Me.ProgressBar.Value = 0
-            Me.ProgressBar.Maximum = Dataset.Tables("Consultas").Rows.Count
-
-
-            Do While iPosicionFila < (Dataset.Tables("Consultas").Rows.Count)
-                My.Application.DoEvents()
+        'DataAdapter = New SqlClient.SqlDataAdapter(SqlProductos, MiConexion)
+        'Dataset.Reset()
+        'DataAdapter.Fill(Dataset, "Consultas")
+        'If Not Dataset.Tables("Consultas").Rows.Count = 0 Then
+        '    iPosicionFila = 0
+        '    Me.ProgressBar.Minimum = 0
+        '    Me.ProgressBar.Visible = True
+        '    Me.ProgressBar.Value = 0
+        '    Me.ProgressBar.Maximum = Dataset.Tables("Consultas").Rows.Count
 
 
-                CodCuenta = Dataset.Tables("Consultas").Rows(iPosicionFila)("Cod_Cliente")
+        '    Do While iPosicionFila < (Dataset.Tables("Consultas").Rows.Count)
+        '        My.Application.DoEvents()
 
 
-                MiConexion.Close()
+        '        CodCuenta = Dataset.Tables("Consultas").Rows(iPosicionFila)("Cod_Cliente")
 
-                If Me.OptCuentasCobrarRe.Checked = True Then
 
-                ElseIf Me.OptCuentasPagarRe.Checked = True Then
+        '        MiConexion.Close()
 
-                End If
+        '        If Me.OptCuentasCobrarRe.Checked = True Then
 
-                '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                '////////////////////////////////////////LIMPIO LAS VARIABLES //////////////////////////////////////////////////////////
-                NombreCliente = ""
-                ApellidoCliente = ""
-                DireccionCliente = "-"
-                TelefonoCliente = "505"
-                RUCCliente = "-"
+        '        ElseIf Me.OptCuentasPagarRe.Checked = True Then
 
-                iPosicionFila = iPosicionFila + 1
-                Me.ProgressBar.Value = iPosicionFila
-            Loop
-        End If
+        '        End If
+
+        '        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '        '////////////////////////////////////////LIMPIO LAS VARIABLES //////////////////////////////////////////////////////////
+        '        NombreCliente = ""
+        '        ApellidoCliente = ""
+        '        DireccionCliente = "-"
+        '        TelefonoCliente = "505"
+        '        RUCCliente = "-"
+
+        '        iPosicionFila = iPosicionFila + 1
+        '        Me.ProgressBar.Value = iPosicionFila
+        '    Loop
+        'End If
     End Sub
 End Class
