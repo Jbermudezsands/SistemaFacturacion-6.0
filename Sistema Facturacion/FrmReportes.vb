@@ -9995,7 +9995,7 @@ Public Class FrmReportes
                 Dim ViewerForm As New FrmViewer()
 
                 DvDetalleProductos = New DataView(DataSet.Tables("DetalleMovimientos"))
-                DvDetalleProductos.Sort = "Fecha_Factura, Orden"
+                DvDetalleProductos.Sort = "Cod_Producto, Fecha_Factura, Orden"
 
                 'DatasetDetalle.Reset()
                 'DatasetDetalle.Tables.Add(DataSet.Tables("DetalleMovimientos").Copy)

@@ -262,7 +262,7 @@ Public Class FrmPlanilla
 
 
                 SqlString = "SELECT Detalle_Nomina.CodProductor, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.IR, Detalle_Nomina.Bolsa, Detalle_Nomina.DeduccionPolicia, Detalle_Nomina.Anticipo, Detalle_Nomina.DeduccionTransporte, Detalle_Nomina.Pulperia,Detalle_Nomina.Inseminacion, Detalle_Nomina.Trazabilidad, Detalle_Nomina.ProductosVeterinarios,Detalle_Nomina.OtrasDeducciones, Detalle_Nomina.IR + Detalle_Nomina.Bolsa + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.Trazabilidad AS TotalEgresos, Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.Trazabilidad) AS NetoPagar FROM  Detalle_Nomina INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor " & _
-                            "WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor')"
+                            "WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor') ORDER BY CodProductor"
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 DataAdapter.Fill(DataSet, "DetalleEgresos")
                 Me.TDGridDeducciones.DataSource = DataSet.Tables("DetalleEgresos")
@@ -950,6 +950,40 @@ Public Class FrmPlanilla
     End Sub
 
     Private Sub TDGridDeducciones2_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles TDGridDeducciones2.AfterUpdate
+
+        Me.TDGridDeducciones2.Col = 2
+    End Sub
+
+    Private Sub TDGridDeducciones2_BeforeColEdit(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.BeforeColEditEventArgs) Handles TDGridDeducciones2.BeforeColEdit
+
+
+    End Sub
+
+    Private Sub TDGridDeducciones2_BeforeColUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.BeforeColUpdateEventArgs) Handles TDGridDeducciones2.BeforeColUpdate
+        Dim Cols As Double, CodProductor As String, SqlString As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+
+        Cols = e.ColIndex
+
+        Select Case Cols
+            Case 2
+
+                CodProductor = Me.TDGridDeducciones2.Columns(2).Text
+                SqlString = "SELECT *  FROM Productor WHERE (CodProductor = '" & CodProductor & "') AND (TipoProductor = 'Productor')"
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                DataAdapter.Fill(DataSet, "Productor")
+                If DataSet.Tables("Productor").Rows.Count = 0 Then
+                    MsgBox("El Producto Seleccionado no Existe", MsgBoxStyle.Critical, "Sistema Facturacion")
+                    Exit Sub
+                Else
+                    Me.TDGridDeducciones2.Columns(2).Text = DataSet.Tables("Productor").Rows(0)("CodProductor")
+                    Me.TDGridDeducciones2.Columns(4).Text = DataSet.Tables("Productor").Rows(0)("NombreProductor")
+                End If
+
+        End Select
+    End Sub
+
+    Private Sub TDGridDeducciones2_BeforeUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TDGridDeducciones2.BeforeUpdate
         Dim SqlString As String, CodProductor As String, NombreProductor As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
@@ -1021,40 +1055,6 @@ Public Class FrmPlanilla
             iResultado = ComandoUpdate.ExecuteNonQuery
             MiConexion.Close()
         End If
-
-
-
-
-        Me.TDGridDeducciones2.Col = 2
-    End Sub
-
-    Private Sub TDGridDeducciones2_BeforeColEdit(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.BeforeColEditEventArgs) Handles TDGridDeducciones2.BeforeColEdit
-
-
-    End Sub
-
-    Private Sub TDGridDeducciones2_BeforeColUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.BeforeColUpdateEventArgs) Handles TDGridDeducciones2.BeforeColUpdate
-        Dim Cols As Double, CodProductor As String, SqlString As String
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-
-        Cols = e.ColIndex
-
-        Select Case Cols
-            Case 2
-
-                CodProductor = Me.TDGridDeducciones2.Columns(2).Text
-                SqlString = "SELECT *  FROM Productor WHERE (CodProductor = '" & CodProductor & "') AND (TipoProductor = 'Productor')"
-                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-                DataAdapter.Fill(DataSet, "Productor")
-                If DataSet.Tables("Productor").Rows.Count = 0 Then
-                    MsgBox("El Producto Seleccionado no Existe", MsgBoxStyle.Critical, "Sistema Facturacion")
-                    Exit Sub
-                Else
-                    Me.TDGridDeducciones2.Columns(2).Text = DataSet.Tables("Productor").Rows(0)("CodProductor")
-                    Me.TDGridDeducciones2.Columns(4).Text = DataSet.Tables("Productor").Rows(0)("NombreProductor")
-                End If
-
-        End Select
     End Sub
 
     Private Sub TDGridDeducciones2_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TDGridDeducciones2.ButtonClick
