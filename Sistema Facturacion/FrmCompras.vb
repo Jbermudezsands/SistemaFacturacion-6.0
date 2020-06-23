@@ -1194,10 +1194,29 @@ Public Class FrmCompras
         DataAdapter.Fill(DataSet, "Bodegas")
         Me.CboCodigoBodega.DataSource = DataSet.Tables("Bodegas")
         If Not DataSet.Tables("Bodegas").Rows.Count = 0 Then
-            Me.CboCodigoBodega.Text = DataSet.Tables("Bodegas").Rows(0)("Cod_Bodega")
+            If EsSolicitud = False Then
+                Me.CboCodigoBodega.Text = DataSet.Tables("Bodegas").Rows(0)("Cod_Bodega")
+            End If
         End If
         Me.CboCodigoBodega.Columns(0).Caption = "Codigo"
         Me.CboCodigoBodega.Columns(1).Caption = "Nombre Bodega"
+
+
+        SqlString = "SELECT CodigoProyectos, NombreProyectos, FechaInicio, FechaFin FROM Proyectos WHERE(Activo = 1)"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Proyectos")
+        If Not DataSet.Tables("Proyectos").Rows.Count = 0 Then
+            Me.CboProyecto.DataSource = DataSet.Tables("Proyectos")
+            Me.CboProyecto.Splits.Item(0).DisplayColumns(1).Width = 350
+        End If
+
+        Me.CboReferencia.Items.Add("Produccion")
+        Me.CboReferencia.Items.Add("Compras")
+        Me.CboReferencia.Items.Add("Compras y Beneficios")
+        Me.CboReferencia.Items.Add("Re-Empaque de Productos")
+        Me.CboReferencia.Items.Add("Beneficios")
+        Me.CboReferencia.Items.Add("Correcciones")
+        Me.CboReferencia.Items.Add("Devoluciones")
 
 
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1302,57 +1321,44 @@ Public Class FrmCompras
             End If
         End If
 
+        If EsSolicitud = False Then
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '//////////////////////////////////////MONEDA COMPRA//////////////////////////////////////////////////////////////////////////////////
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            SqlDatos = "SELECT * FROM DatosEmpresa"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+            DataAdapter.Fill(DataSet, "DatosEmpresa")
+            If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                Me.TxtMonedaFactura.Text = DataSet.Tables("DatosEmpresa").Rows(0)("MonedaCompra")
+                Me.TxtMonedaImprime.Text = DataSet.Tables("DatosEmpresa").Rows(0)("MonedaImprimeCompra")
+            End If
 
-        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '//////////////////////////////////////MONEDA COMPRA//////////////////////////////////////////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlDatos = "SELECT * FROM DatosEmpresa"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-        DataAdapter.Fill(DataSet, "DatosEmpresa")
-        If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
-            Me.TxtMonedaFactura.Text = DataSet.Tables("DatosEmpresa").Rows(0)("MonedaCompra")
-            Me.TxtMonedaImprime.Text = DataSet.Tables("DatosEmpresa").Rows(0)("MonedaImprimeCompra")
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '///////////////////////////////BUSCO SI TIENE CONFIGURADO EFECTIVO DEFAUL/////////////////////////////////////////////////////////////////
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            'SqlString = "SELECT  * FROM DatosEmpresa "
+            'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            'DataAdapter.Fill(DataSet, "DatosEmpresa")
+            'If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
+            '    If DataSet.Tables("DatosEmpresa").Rows(0)("MetodoPagoDefecto") = "Efectivo" Then
+            '        Me.RadioButton2.Checked = True
+            '    Else
+            '        Me.RadioButton2.Checked = False
+            '    End If
+            'End If
+
+
+            If UsuarioBodega <> "Ninguna" Then
+                Me.CboCodigoBodega.Text = UsuarioBodega
+                Me.CboCodigoBodega.Enabled = False
+                Me.Button7.Enabled = False
+            End If
+
+            Me.CboCodigoBodega.Text = UsuarioBodegaCompra
+            Me.CboTipoProducto.Text = UsuarioTipoCompra
+            Me.TxtCodigoProveedor.Text = UsuarioProveedor
+
         End If
-
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '///////////////////////////////BUSCO SI TIENE CONFIGURADO EFECTIVO DEFAUL/////////////////////////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        'SqlString = "SELECT  * FROM DatosEmpresa "
-        'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        'DataAdapter.Fill(DataSet, "DatosEmpresa")
-        'If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
-        '    If DataSet.Tables("DatosEmpresa").Rows(0)("MetodoPagoDefecto") = "Efectivo" Then
-        '        Me.RadioButton2.Checked = True
-        '    Else
-        '        Me.RadioButton2.Checked = False
-        '    End If
-        'End If
-
-        SqlString = "SELECT CodigoProyectos, NombreProyectos, FechaInicio, FechaFin FROM Proyectos WHERE(Activo = 1)"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "Proyectos")
-        If Not DataSet.Tables("Proyectos").Rows.Count = 0 Then
-            Me.CboProyecto.DataSource = DataSet.Tables("Proyectos")
-            Me.CboProyecto.Splits.Item(0).DisplayColumns(1).Width = 350
-        End If
-
-        If UsuarioBodega <> "Ninguna" Then
-            Me.CboCodigoBodega.Text = UsuarioBodega
-            Me.CboCodigoBodega.Enabled = False
-            Me.Button7.Enabled = False
-        End If
-
-        Me.CboReferencia.Items.Add("Produccion")
-        Me.CboReferencia.Items.Add("Compras")
-        Me.CboReferencia.Items.Add("Compras y Beneficios")
-        Me.CboReferencia.Items.Add("Re-Empaque de Productos")
-        Me.CboReferencia.Items.Add("Beneficios")
-        Me.CboReferencia.Items.Add("Correcciones")
-        Me.CboReferencia.Items.Add("Devoluciones")
-
-        Me.CboCodigoBodega.Text = UsuarioBodegaCompra
-        Me.CboTipoProducto.Text = UsuarioTipoCompra
-        Me.TxtCodigoProveedor.Text = UsuarioProveedor
 
     End Sub
 
@@ -1977,13 +1983,13 @@ Public Class FrmCompras
 
                         SqlCompras = "SELECT * FROM Proyectos WHERE  (CodigoProyectos = '" & CodigoProyecto & "')"
                         DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
-                        DataAdapter.Fill(DataSet, "Consulta")
-                        If Not DataSet.Tables("Consulta").Rows.Count = 0 Then
-                            Me.CboProyecto.Text = DataSet.Tables("Consulta").Rows(0)("NombreProyectos")
+                        DataAdapter.Fill(DataSet, "ConsultaProyecto")
+                        If Not DataSet.Tables("ConsultaProyecto").Rows.Count = 0 Then
+                            Me.CboProyecto.Text = DataSet.Tables("ConsultaProyecto").Rows(0)("NombreProyectos")
                         Else
                             Me.CboProyecto.Text = ""
                         End If
-                        DataSet.Tables("Consulta").Reset()
+                        DataSet.Tables("ConsultaProyecto").Reset()
 
                     Else
                         Me.CboProyecto.Text = ""
@@ -3433,10 +3439,6 @@ Public Class FrmCompras
         If Not My.Forms.FrmConsultas.Descripcion = "" Then
             Me.CboProyecto.Text = My.Forms.FrmConsultas.Descripcion
         End If
-    End Sub
-
-    Private Sub DTPFecha_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DTPFecha.ValueChanged
-
     End Sub
 
     Private Sub Button10_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)

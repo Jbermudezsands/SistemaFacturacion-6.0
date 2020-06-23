@@ -339,7 +339,7 @@ Public Class FrmRecibos
 
             If Me.OptRet1Porciento.Checked = True Or Me.OptRet2Porciento.Checked = True Then
                 Saldo = ValidarFacturaEnRecibo(Me.TxtCodigoClientes.Text, NumeroCompra, MontoPagado, Me.TxtMonedaFactura.Text)
-                If MontoPagado < Saldo Then
+                If MontoPagado <= Saldo Then
 
 
                     If Me.OptRet1Porciento.Checked = True Then

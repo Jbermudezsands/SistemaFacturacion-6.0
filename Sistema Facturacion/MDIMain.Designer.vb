@@ -1298,7 +1298,7 @@ Partial Class MDIMain
         'RibbonLabel1
         '
         Me.RibbonLabel1.ID = "RibbonLabel1"
-        Me.RibbonLabel1.Text = "Version 6.22"
+        Me.RibbonLabel1.Text = "Version 6.23"
         '
         'TxtUsuario
         '

@@ -55,13 +55,12 @@ Public Class FrmListaOrdenCompra
         Fecha_Hora = Me.TDGridSolicitud.Columns("FechaHora").Text
 
         '//////////////////////////////////////////CARGO LA ORDEN DE COMPRA EN EL MODULO DE COMPRAS //////////////
-
+        My.Forms.FrmCompras.EsSolicitud = True
         My.Forms.FrmCompras.CboTipoProducto.Enabled = False
         My.Forms.FrmCompras.GroupBox1.Enabled = False
         My.Forms.FrmCompras.GroupBox5.Enabled = False
         My.Forms.FrmCompras.CargarCompra(Fecha_Compra, Fecha_Hora, NumeroCompra, "Orden de Compra")
         My.Forms.FrmCompras.TrueDBGridComponentes.Enabled = False
-        My.Forms.FrmCompras.EsSolicitud = True
         My.Forms.FrmCompras.ShowDialog()
         My.Forms.FrmCompras.EsSolicitud = False
     End Sub

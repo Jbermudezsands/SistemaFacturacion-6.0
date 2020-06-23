@@ -130,7 +130,7 @@ Public Class FrmNuevaSolicitud
  
 
     End Sub
-    Public Sub GrabarSolicitud(ByVal Numero_Solicitud As String, ByVal Fecha_Solicitud As Date, ByVal Gerencia_Solicitante As String, ByVal Departamento As String, ByVal Cod_Rubro As String, ByVal Concepto As String, ByVal Estado_Solicitud As String, ByVal Codigo_Bodega As String, ByVal Fecha_Requerido As Date, ByVal CodigoProyecto As String)
+    Public Sub GrabarSolicitud(ByVal Numero_Solicitud As String, ByVal Fecha_Solicitud As Date, ByVal Gerencia_Solicitante As String, ByVal Departamento As String, ByVal Cod_Rubro As String, ByVal Concepto As String, ByVal Estado_Solicitud As String, ByVal Codigo_Bodega As String, ByVal Fecha_Requerido As Date, ByVal CodigoProyecto As String, ByVal Actualizar As Boolean)
         Dim SQLClientes As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
@@ -142,12 +142,14 @@ Public Class FrmNuevaSolicitud
         DataAdapter = New SqlClient.SqlDataAdapter(SQLClientes, MiConexion)
         DataAdapter.Fill(DataSet, "Solicitud")
         If Not DataSet.Tables("Solicitud").Rows.Count = 0 Then
-            '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-            'StrSqlUpdate = "UPDATE [Solicitud_Compra] SET [Gerencia_Solicitante] = '" & Gerencia_Solicitante & "',[Departamento_Solicitante] = '" & Departamento & "' ,[Codigo_Rubro] = '" & Cod_Rubro & "',[Concepto] = '" & Concepto & "' ,[Estado_Solicitud] = '" & Estado_Solicitud & "',[Cod_Bodega] = '" & Codigo_Bodega & "', [Fecha_Requerido] = '" & Fecha_Requerido & "'  WHERE (Numero_Solicitud = '" & Numero_Solicitud & "')"
-            'MiConexion.Open()
-            'ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-            'iResultado = ComandoUpdate.ExecuteNonQuery
-            'MiConexion.Close()
+            If Actualizar = True Then
+                '//////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
+                StrSqlUpdate = "UPDATE [Solicitud_Compra] SET [Gerencia_Solicitante] = '" & Gerencia_Solicitante & "',[Departamento_Solicitante] = '" & Departamento & "' ,[Codigo_Rubro] = '" & Cod_Rubro & "',[Concepto] = '" & Concepto & "' ,[Estado_Solicitud] = '" & Estado_Solicitud & "',[Cod_Bodega] = '" & Codigo_Bodega & "', [Fecha_Requerido] = '" & Fecha_Requerido & "'  WHERE (Numero_Solicitud = '" & Numero_Solicitud & "')"
+                MiConexion.Open()
+                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                iResultado = ComandoUpdate.ExecuteNonQuery
+                MiConexion.Close()
+            End If
 
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
@@ -335,7 +337,7 @@ Public Class FrmNuevaSolicitud
 
         Fecha_Solicitud = CDate(Me.DTPFecha.Text + " " + Me.LblHora.Text)
 
-        GrabarSolicitud(Me.TxtNumeroEnsamble.Text, Fecha_Solicitud, Me.CboGerencia.Text, Me.CboDepartamento.Text, Me.CboRubro.Text, Me.TxtConcepto.Text, "Grabado", Me.CboCodigoBodega.Text, Me.DTPFechaRequerido.Value, Me.CboProyecto.Columns(0).Text)
+        GrabarSolicitud(Me.TxtNumeroEnsamble.Text, Fecha_Solicitud, Me.CboGerencia.Text, Me.CboDepartamento.Text, Me.CboRubro.Text, Me.TxtConcepto.Text, "Grabado", Me.CboCodigoBodega.Text, Me.DTPFechaRequerido.Value, Me.CboProyecto.Columns(0).Text, False)
 
         InsertarRowGrid()
 
@@ -526,45 +528,6 @@ Public Class FrmNuevaSolicitud
         End If
 
 
-        MiConexion.Close()
-        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '///////////////////////CARGO la gerencia////////////////////////////////////////////////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        Sql = "SELECT GerenciaSolicitud  FROM GerenciaSolicitud "
-        MiConexion.Open()
-        DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
-        DataAdapter.Fill(DataSet, "GerenciaSolicitud")
-        Me.CboGerencia.DataSource = DataSet.Tables("GerenciaSolicitud")
-        MiConexion.Close()
-
-        Sql = "SELECT DepartamentoSolicitud FROM Departamento_Solicitante ORDER BY DepartamentoSolicitud"
-        MiConexion.Open()
-        DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
-        DataAdapter.Fill(DataSet, "Departamento")
-        Me.CboDepartamento.DataSource = DataSet.Tables("Departamento")
-        MiConexion.Close()
-
-        ''/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ''//////////////////////////CARGO LAS BODEGAS////////////////////////////////////////////////////////////////////
-        ''////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlString = "SELECT  * FROM   Bodegas"
-        MiConexion.Open()
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "Bodegas")
-        Me.CboCodigoBodega.DataSource = DataSet.Tables("Bodegas")
-        Me.CboCodigoBodega.Columns(0).Caption = "Codigo"
-        Me.CboCodigoBodega.Columns(1).Caption = "Nombre Bodega"
-
-        Sql = "SELECT  * FROM  Rubro"
-        DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
-        DataAdapter.Fill(DataSet, "Rubros")
-        Me.CboRubro.DataSource = DataSet.Tables("Rubros")
-
-        '/////////////////////////////////////////////PROYECTOS ///////////////////////////////////////////////////////////
-        SqlString = "SELECT CodigoProyectos, NombreProyectos, FechaInicio, FechaFin FROM Proyectos "
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "Proyectos")
-        Me.CboProyecto.DataSource = DataSet.Tables("Proyectos")
 
 
 
@@ -579,6 +542,50 @@ Public Class FrmNuevaSolicitud
         DataAdapter.Fill(DataSet, "Gerencia")
 
         If DataSet.Tables("Gerencia").Rows.Count <> 0 Then
+
+
+            MiConexion.Close()
+            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '///////////////////////CARGO la gerencia////////////////////////////////////////////////////////////////////////////////////////
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            Sql = "SELECT GerenciaSolicitud  FROM GerenciaSolicitud "
+            MiConexion.Open()
+            DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+            DataAdapter.Fill(DataSet, "GerenciaSolicitud")
+            Me.CboGerencia.DataSource = DataSet.Tables("GerenciaSolicitud")
+            MiConexion.Close()
+
+            Sql = "SELECT DepartamentoSolicitud FROM Departamento_Solicitante ORDER BY DepartamentoSolicitud"
+            MiConexion.Open()
+            DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+            DataAdapter.Fill(DataSet, "Departamento")
+            Me.CboDepartamento.DataSource = DataSet.Tables("Departamento")
+            MiConexion.Close()
+
+            ''/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''//////////////////////////CARGO LAS BODEGAS////////////////////////////////////////////////////////////////////
+            ''////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            Sql = "SELECT  * FROM   Bodegas"
+            MiConexion.Open()
+            DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+            DataAdapter.Fill(DataSet, "Bodegas")
+            Me.CboCodigoBodega.DataSource = DataSet.Tables("Bodegas")
+            Me.CboCodigoBodega.Columns(0).Caption = "Codigo"
+            Me.CboCodigoBodega.Columns(1).Caption = "Nombre Bodega"
+
+            Sql = "SELECT  * FROM  Rubro"
+            DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+            DataAdapter.Fill(DataSet, "Rubros")
+            Me.CboRubro.DataSource = DataSet.Tables("Rubros")
+
+            '/////////////////////////////////////////////PROYECTOS ///////////////////////////////////////////////////////////
+            Sql = "SELECT CodigoProyectos, NombreProyectos, FechaInicio, FechaFin FROM Proyectos WHERE(Activo = 1)"
+            DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+            DataAdapter.Fill(DataSet, "Proyectos")
+            Me.CboProyecto.DataSource = DataSet.Tables("Proyectos")
+
+
+
             Me.CboGerencia.Text = DataSet.Tables("Gerencia").Rows(0)("Gerencia_Solicitante")
             Me.CboDepartamento.Text = DataSet.Tables("Gerencia").Rows(0)("Departamento_Solicitante")
             Me.DTPFecha.Text = DataSet.Tables("Gerencia").Rows(0)("Fecha_Solicitud")
@@ -590,12 +597,14 @@ Public Class FrmNuevaSolicitud
             Me.CboRubro.Text = DataSet.Tables("Gerencia").Rows(0)("Codigo_Rubro")
             Me.TxtConcepto.Text = DataSet.Tables("Gerencia").Rows(0)("Concepto")
 
-            Sql = "SELECT  CodigoProyectos, NombreProyectos, FechaInicio, FechaFin, Moneda, VentaEstimada, CostoEstimado, Activo FROM Proyectos WHERE  (CodigoProyectos = '001')"
+            Sql = "SELECT  CodigoProyectos, NombreProyectos, FechaInicio, FechaFin, Moneda, VentaEstimada, CostoEstimado, Activo FROM Proyectos WHERE  (CodigoProyectos = '" & CodigoProyecto & "')"
             DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
-            DataAdapter.Fill(DataSet, "Proyectos")
-            If DataSet.Tables("Proyectos").Rows.Count <> 0 Then
-                Me.CboProyecto.Text = DataSet.Tables("Proyectos").Rows(0)("NombreProyectos")
+            DataAdapter.Fill(DataSet, "ConsultaProyectos")
+            If DataSet.Tables("ConsultaProyectos").Rows.Count <> 0 Then
+                Me.CboProyecto.Text = DataSet.Tables("ConsultaProyectos").Rows(0)("NombreProyectos")
             End If
+
+
 
             Me.Timer1.Enabled = False
             Me.LblHora.Text = Format(DataSet.Tables("Gerencia").Rows(0)("Fecha_Hora_Solicitud"), "hh:mm:ss tt")
@@ -726,7 +735,12 @@ Public Class FrmNuevaSolicitud
     End Sub
 
     Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
+        Dim Fecha_Solicitud As Date
+
+        Fecha_Solicitud = CDate(Me.DTPFecha.Text + " " + Me.LblHora.Text)
+        GrabarSolicitud(Me.TxtNumeroEnsamble.Text, Fecha_Solicitud, Me.CboGerencia.Text, Me.CboDepartamento.Text, Me.CboRubro.Text, Me.TxtConcepto.Text, "Grabado", Me.CboCodigoBodega.Text, Me.DTPFechaRequerido.Value, Me.CboProyecto.Columns(0).Text, True)
         Me.Close()
+
     End Sub
 
     Private Sub BtnAutorizar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAutorizar.Click
@@ -786,7 +800,7 @@ Public Class FrmNuevaSolicitud
             Apellidos = DataSet.Tables("Proveedor").Rows(0)("Nombre_Proveedor")
 
             '//////////////////////////////////GRABO LOS ENCABEZADOS ///////////////////////////////////////////////////////////////////////
-            GrabaEncabezadoCompras(NumeroCompra, Fecha_Compra, "Orden de Compra", CodigoProveedor, Me.CboCodigoBodega.Text, Nombres, Apellidos, Fecha_Vence, Val(0), Val(0), Val(0), Val(0), "Cordobas", "Procesado por la Solicitud de Compra " & Me.TxtNumeroEnsamble.Text)
+            GrabaEncabezadoCompras(NumeroCompra, Fecha_Compra, "Orden de Compra", CodigoProveedor, Me.CboCodigoBodega.Text, Nombres, Apellidos, Fecha_Compra, Val(0), Val(0), Val(0), Val(0), "Cordobas", "Procesado por la Solicitud de Compra " & Me.TxtNumeroEnsamble.Text)
 
 
             Registros = Me.TrueDBGridComponentes.RowCount
@@ -798,6 +812,7 @@ Public Class FrmNuevaSolicitud
                 Comprado = Me.TrueDBGridComponentes.Item(i)("Comprado")
                 Cantidad = Me.TrueDBGridComponentes.Item(i)("Cantidad")
                 iDetalleSolicitud = Me.TrueDBGridComponentes.Item(i)("Id_DetalleSolicitud")
+
 
                 MiConexion.Close()
                 If Comprado = True Then
@@ -811,8 +826,14 @@ Public Class FrmNuevaSolicitud
                     ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
                     iResultado = ComandoUpdate.ExecuteNonQuery
 
+
+                    If CodigoProducto = "" Then
+                        MsgBox("No se Digito el Codigo del Producto, se Cancela el proceso", MsgBoxStyle.Critical, "Zeus factuacion")
+                    Else
+                        GrabaDetalleCompraSolicitud(NumeroCompra, CodigoProducto, 0, 0, 0, 0, Cantidad, "0000", "01/01/1900", Descripcion, "Cordobas", Fecha_Compra, "Orden de Compra")
+                    End If
                     '////////////////////////////////////////GRABO EL DETALLE DE ORDEN DE COMPRA ////////////////////////////////
-                    GrabaDetalleCompraSolicitud(NumeroCompra, CodigoProducto, 0, 0, 0, 0, Cantidad, "0000", "01/01/1900", Descripcion, "Cordobas", Fecha_Compra, "Orden de Compra")
+
                 End If
                 i = i + 1
             Loop
@@ -835,8 +856,9 @@ Public Class FrmNuevaSolicitud
             Me.Hide()
 
             '//////////////////////////////////////////CARGO LA ORDEN DE COMPRA EN EL MODULO DE COMPRAS //////////////
-            My.Forms.FrmCompras.CargarCompra(Fecha_Compra, Fecha_Hora, NumeroCompra, "Orden de Compra")
+
             My.Forms.FrmCompras.EsSolicitud = True
+            My.Forms.FrmCompras.CargarCompra(Fecha_Compra, Fecha_Hora, NumeroCompra, "Orden de Compra")
             My.Forms.FrmCompras.ShowDialog()
             My.Forms.FrmCompras.EsSolicitud = False
 
@@ -915,5 +937,9 @@ Public Class FrmNuevaSolicitud
         ViewerForm.arvMain.Document = ArepSolicitudCompra.Document
         ViewerForm.Show()
         ArepSolicitudCompra.Run(False)
+    End Sub
+
+    Private Sub CboProyecto_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboProyecto.TextChanged
+
     End Sub
 End Class

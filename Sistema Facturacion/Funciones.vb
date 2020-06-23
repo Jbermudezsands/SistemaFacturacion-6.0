@@ -6604,6 +6604,11 @@ Module Funciones
             End If
         End If
 
+        If CodProducto = "" Then
+
+            Exit Sub
+        End If
+
 
         Fecha = Format(Fecha_Compra, "yyyy-MM-dd")
 

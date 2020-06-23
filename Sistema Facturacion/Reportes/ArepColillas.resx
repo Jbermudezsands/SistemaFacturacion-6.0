@@ -210,6 +210,9 @@
   <data name="TextBox30.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
+  <data name="TextBox31.OutputFormat" xml:space="preserve">
+    <value />
+  </data>
   <metadata name="$this.TrayLargeIcon" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -224,10 +227,11 @@
                          Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia
                           + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios) AS NetoPagar, Nomina.NumPlanilla, Nomina.FechaInicial, Nomina.FechaFinal, 
                          Detalle_Nomina.PrecioLunes, Detalle_Nomina.PrecioMartes, Detalle_Nomina.PrecioMiercoles, Detalle_Nomina.PrecioJueves, Detalle_Nomina.PrecioViernes, 
-                         Detalle_Nomina.PrecioSabado, Detalle_Nomina.PrecioDomingo
+                         Detalle_Nomina.PrecioSabado, Detalle_Nomina.PrecioDomingo, TipoNomina.CodTipoNomina, TipoNomina.TipoNomina
 FROM            Detalle_Nomina INNER JOIN
                          Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor INNER JOIN
-                         Nomina ON Detalle_Nomina.NumNomina = Nomina.NumPlanilla
+                         Nomina ON Detalle_Nomina.NumNomina = Nomina.NumPlanilla INNER JOIN
+                         TipoNomina ON Nomina.CodTipoNomina = TipoNomina.CodTipoNomina
 WHERE        (Detalle_Nomina.NumNomina = '00010') AND (Detalle_Nomina.TipoProductor = 'Productor')</value>
   </data>
 </root>
