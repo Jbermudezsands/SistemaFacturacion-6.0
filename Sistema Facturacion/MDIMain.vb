@@ -4,6 +4,8 @@ Imports System.Windows.Forms
 Imports System.IO
 Imports System.Threading
 Imports System
+Imports System.IOImports
+Imports System.Text
 
 Public Class MDIMain
 
@@ -450,7 +452,7 @@ Public Class MDIMain
     End Sub
 
     Private Sub RibbonActualizacion1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonActualizacion1.Click
-        Dim Directorio As String, RutaUpdate As String, Sql As String
+        Dim Directorio As String, RutaUpdate As String, Sql As String, RutaCompartida As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim objStreamReader As StreamReader
         Dim objStreamWriter As StreamWriter
@@ -462,35 +464,39 @@ Public Class MDIMain
             DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
             DataAdapter.Fill(DataSet, "DatosEmpresa")
             If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
-                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
-                    If Dir(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) <> "" Then
+                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("RutaCompartida")) Then
+                    RutaCompartida = DataSet.Tables("DatosEmpresa").Rows(0)("RutaCompartida") + "\Sistema Facturacion 6.0.exe"
+                    If Dir(RutaCompartida) <> "" Then
 
                         '---------------------------------------------------------------------------------------------
                         '------------------------BORRO EL ARCHIVO ----------------------------------------------------
                         '---------------------------------------------------------------------------------------------
 
-                        RutaUpdate = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
-                        objStreamReader = New StreamReader(My.Application.Info.DirectoryPath + "\RutaUpdate.dll")
-                        strLine = objStreamReader.ReadLine
-                        Do While Not strLine Is Nothing
+                        RutaUpdate = DataSet.Tables("DatosEmpresa").Rows(0)("RutaCompartida")
+                        'objStreamReader = New StreamReader(My.Application.Info.DirectoryPath + "\RutaUpdate.dll")
+                        objStreamWriter = New StreamWriter(My.Application.Info.DirectoryPath + "\RutaUpdate.dll")
+                        'strLine = objStreamReader.ReadLine
+                        'Do While Not strLine Is Nothing
 
-                            'Write the line to the Console window.
-                            objStreamWriter.WriteLine("")
+                        '    'Write the line to the Console window.
+                        '    'objStreamWriter.WriteLine("")
 
 
-                            'Read the next line.
-                            strLine = objStreamReader.ReadLine 'LEO LA LINEA
+                        '    'Read the next line.
+                        '    strLine = objStreamReader.ReadLine 'LEO LA LINEA
 
-                        Loop
+                        'Loop
 
                         '---------------------------------------------------------------------------------------------
                         '------------------------GRABO LA NUEVA RUTA ----------------------------------------------------
                         '---------------------------------------------------------------------------------------------
                         objStreamWriter.WriteLine(RutaUpdate)
+                        objStreamWriter.Close()
+                        'objStreamReader.Close()
 
                         Directorio = My.Application.Info.DirectoryPath & "\Actualizar.exe"
                         Directorio = Shell(Directorio, vbNormalFocus)
-                        objStreamReader.Close()
+
                         Me.Close()
                     Else
                         MsgBox("NO existe el Archivo en la Ruta Indicada", vbCritical, "Zeus Contable")
@@ -852,7 +858,7 @@ Public Class MDIMain
 
     Private Sub RibbonActualizacion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonActualizacion.Click
         Dim Directorio As String, RutaUpdate As String, Sql As String
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, RutaCompartida As String
         Dim objStreamReader As StreamReader
         Dim objStreamWriter As StreamWriter
         Dim strLine As String
@@ -863,35 +869,39 @@ Public Class MDIMain
             DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
             DataAdapter.Fill(DataSet, "DatosEmpresa")
             If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
-                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
-                    If Dir(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) <> "" Then
+                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("RutaCompartida")) Then
+                    RutaCompartida = DataSet.Tables("DatosEmpresa").Rows(0)("RutaCompartida") + "\Sistema Facturacion 6.0.exe"
+                    If Dir(RutaCompartida) <> "" Then
 
                         '---------------------------------------------------------------------------------------------
                         '------------------------BORRO EL ARCHIVO ----------------------------------------------------
                         '---------------------------------------------------------------------------------------------
 
-                        RutaUpdate = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
-                        objStreamReader = New StreamReader(My.Application.Info.DirectoryPath + "\RutaUpdate.dll")
-                        strLine = objStreamReader.ReadLine
-                        Do While Not strLine Is Nothing
+                        RutaUpdate = DataSet.Tables("DatosEmpresa").Rows(0)("RutaCompartida")
+                        'objStreamReader = New StreamReader(My.Application.Info.DirectoryPath + "\RutaUpdate.dll")
+                        objStreamWriter = New StreamWriter(My.Application.Info.DirectoryPath + "\RutaUpdate.dll")
+                        'strLine = objStreamReader.ReadLine
+                        'Do While Not strLine Is Nothing
 
-                            'Write the line to the Console window.
-                            'objStreamWriter.WriteLine("")
+                        '    'Write the line to the Console window.
+                        '    'objStreamWriter.WriteLine("")
 
 
-                            'Read the next line.
-                            strLine = objStreamReader.ReadLine 'LEO LA LINEA
+                        '    'Read the next line.
+                        '    strLine = objStreamReader.ReadLine 'LEO LA LINEA
 
-                        Loop
+                        'Loop
 
                         '---------------------------------------------------------------------------------------------
                         '------------------------GRABO LA NUEVA RUTA ----------------------------------------------------
                         '---------------------------------------------------------------------------------------------
                         objStreamWriter.WriteLine(RutaUpdate)
+                        objStreamWriter.Close()
+                        'objStreamReader.Close()
 
                         Directorio = My.Application.Info.DirectoryPath & "\Actualizar.exe"
                         Directorio = Shell(Directorio, vbNormalFocus)
-                        objStreamReader.Close()
+
                         Me.Close()
                     Else
                         MsgBox("NO existe el Archivo en la Ruta Indicada", vbCritical, "Zeus Contable")
@@ -1101,5 +1111,16 @@ Public Class MDIMain
     Private Sub RibbonRevalorizar1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonRevalorizar1.Click
         My.Forms.FrmRevalorizar.MdiParent = Me
         My.Forms.FrmRevalorizar.Show()
+    End Sub
+
+    Private Sub RibbonListaNomina_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonListaNomina.Click
+        My.Forms.FrmListadoNominas.MdiParent = Me
+        My.Forms.FrmListadoNominas.Show()
+    End Sub
+
+    Private Sub RibbonButton13_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton13.Click
+        Quien = "Reportes Leche"
+        My.Forms.FrmReportes.MdiParent = Me
+        My.Forms.FrmReportes.Show()
     End Sub
 End Class

@@ -1258,11 +1258,41 @@ Public Class FrmReportes
         Me.GroupBox1.Visible = False
         Me.GroupBoxProductos.Visible = False
         Me.GroupBox3.Visible = False
+        Me.GroupBox2.Enabled = True
 
         Me.DTPFechaFin.Value = Now
         Me.DTPFechaIni.Value = Now
 
         Select Case Quien
+            Case "Reportes Leche"
+                Me.ChkFacturasCero.Visible = False
+                Me.LblTitulo.Text = "REPORTE GENERAL PLANILLA LECHE"
+                Me.ListBox.Items.Add("Reporte Planilla IR")
+                Me.ListBox.Items.Add("Reporte Planilla IR x Productor")
+                Me.GroupBox2.Enabled = False
+                Me.GroupBoxAño.Visible = True
+                Me.GroupBoxAño.Location = New Point(280, 65)
+
+                '/////////////////////////////////////////////////////////////////////////////////////////////
+                '//////////////////////CARGO LOS COMBOS DEL FORMULARIO REPORTES/////////////////////////////
+                '///////////////////////////////////////////////////////////////////////////////////////////////
+                SqlProductos = "SELECT DISTINCT MONTH(FechaFinal) AS Mes  FROM Nomina "
+                DataAdapterProductos = New SqlClient.SqlDataAdapter(SqlProductos, MiConexion)
+                DataAdapterProductos.Fill(DataSet, "Mes")
+                If Not DataSet.Tables("Mes").Rows.Count = 0 Then
+                    Me.CboMes.DataSource = DataSet.Tables("Mes")
+                    Me.CboMes.Text = DataSet.Tables("Mes").Rows(0)("Mes")
+                End If
+
+                SqlProductos = "SELECT DISTINCT YEAR(FechaFinal)  AS Año FROM Nomina "
+                DataAdapterProductos = New SqlClient.SqlDataAdapter(SqlProductos, MiConexion)
+                DataAdapterProductos.Fill(DataSet, "Año")
+                If Not DataSet.Tables("Año").Rows.Count = 0 Then
+                    Me.CboAño.DataSource = DataSet.Tables("Año")
+                    Me.CboAño.Text = DataSet.Tables("Año").Rows(0)("Año")
+                End If
+
+
             Case "Reporte General"
                 Me.PictureBox3.Visible = False
                 Me.PictureBox2.Visible = True
@@ -1579,6 +1609,7 @@ Public Class FrmReportes
         Dim DvEndoso As DataView, DvDetalleProductos As DataView
 
 
+
         Dim Fecha1 As Date, Fecha2 As Date
 
         Imagen.Visible = True
@@ -1599,6 +1630,68 @@ Public Class FrmReportes
         Fecha2 = Me.DTPFechaFin.Value
         My.Application.DoEvents()
         Select Case Me.ListBox.Text
+            Case "Reporte Planilla IR x Productor"
+
+                Dim ArepReporteIRProductor As New ArepReporteIRProductor
+                Dim Mes As Double, Año As Double
+
+                Mes = Me.CboMes.Text
+                Año = Me.CboAño.Text
+
+
+                If Dir(RutaLogo) <> "" Then
+                    ArepReporteIRProductor.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                End If
+                ArepReporteIRProductor.LblTitulo.Text = NombreEmpresa
+                ArepReporteIRProductor.LblDireccion.Text = DireccionEmpresa
+                ArepReporteIRProductor.LblRuc.Text = Ruc
+
+                'SqlDatos = "SELECT SUM(Detalle_Nomina.Total) AS Total, SUM(Detalle_Nomina.TotalIngresos) AS TotalIngresos, SUM(Detalle_Nomina.IR) AS IR, SUM(Detalle_Nomina.Trazabilidad) AS Trazabilidad, SUM(Detalle_Nomina.Bolsa) AS Bolsa, SUM(Detalle_Nomina.OtrasDeducciones) AS OtrasDeducciones, SUM(Detalle_Nomina.DeduccionPolicia) AS DeduccionPolicia, SUM(Detalle_Nomina.Anticipo) AS Anticipo, SUM(Detalle_Nomina.DeduccionTransporte) AS DeduccionTransporte, SUM(Detalle_Nomina.Pulperia) AS Pulperia, SUM(Detalle_Nomina.Inseminacion) AS Inseminacion, SUM(Detalle_Nomina.ProductosVeterinarios) AS ProductosVeterinarios, SUM(Detalle_Nomina.IR + Detalle_Nomina.Bolsa + Detalle_Nomina.Trazabilidad + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios) AS TotalEgresos, SUM(Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR + Detalle_Nomina.Trazabilidad + Detalle_Nomina.Bolsa + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios))  AS NetoPagar, Nomina.CodTipoNomina, TipoNomina.TipoNomina, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Productor.CodProductor FROM Detalle_Nomina INNER JOIN Nomina ON Detalle_Nomina.NumNomina = Nomina.NumPlanilla INNER JOIN TipoNomina ON Nomina.CodTipoNomina = TipoNomina.CodTipoNomina INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor  " & _
+                '           "WHERE (Detalle_Nomina.TipoProductor = 'Productor') AND (Nomina.Año = " & Año & ") AND (Nomina.mes = " & Mes & ") GROUP BY Nomina.CodTipoNomina, TipoNomina.TipoNomina, Productor.NombreProductor, Productor.ApellidoProductor, Productor.CodProductor ORDER BY Nomina.CodTipoNomina, Productor.CodProductor"
+
+                SqlDatos = "SELECT   Productor.Cedula, Detalle_Nomina.Total, Detalle_Nomina.TotalIngresos, Detalle_Nomina.IR, Detalle_Nomina.Trazabilidad, Detalle_Nomina.Bolsa, Detalle_Nomina.OtrasDeducciones, Detalle_Nomina.DeduccionPolicia, Detalle_Nomina.Anticipo, Detalle_Nomina.DeduccionTransporte, Detalle_Nomina.Pulperia, Detalle_Nomina.Inseminacion, Detalle_Nomina.ProductosVeterinarios, (Detalle_Nomina.IR + Detalle_Nomina.Bolsa + Detalle_Nomina.Trazabilidad + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios) AS TotalEgresos, Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR + Detalle_Nomina.Trazabilidad + Detalle_Nomina.Bolsa + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios) AS NetoPagar, Nomina.CodTipoNomina, TipoNomina.TipoNomina, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Productor.CodProductor, Nomina.NumPlanilla, Nomina.FechaInicial, Nomina.FechaFinal FROM  Detalle_Nomina INNER JOIN Nomina ON Detalle_Nomina.NumNomina = Nomina.NumPlanilla INNER JOIN  TipoNomina ON Nomina.CodTipoNomina = TipoNomina.CodTipoNomina INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor " & _
+                            "WHERE  (Detalle_Nomina.TipoProductor = 'Productor') AND (Nomina.Año = " & Año & ") AND (Nomina.mes = " & Mes & ") ORDER BY Nomina.CodTipoNomina, Productor.CodProductor"
+                SQL.ConnectionString = Conexion
+                SQL.SQL = SqlDatos
+
+                Dim ViewerForm As New FrmViewer()
+                ViewerForm.arvMain.Document = ArepReporteIRProductor.Document
+                My.Application.DoEvents()
+                ArepReporteIRProductor.DataSource = SQL
+                ArepReporteIRProductor.Run(False)
+                ViewerForm.Show()
+
+            Case "Reporte Planilla IR"
+                Dim ArepReporteIRPlanillaLeche As New ArepReporteIRPlanillaLeche
+                Dim Mes As Double, Año As Double
+
+                Mes = Me.CboMes.Text
+                Año = Me.CboAño.Text
+
+
+                If Dir(RutaLogo) <> "" Then
+                    ArepReporteIRPlanillaLeche.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                End If
+                ArepReporteIRPlanillaLeche.LblTitulo.Text = NombreEmpresa
+                ArepReporteIRPlanillaLeche.LblDireccion.Text = DireccionEmpresa
+                ArepReporteIRPlanillaLeche.LblRuc.Text = Ruc
+
+                SqlDatos = "SELECT  SUM(Detalle_Nomina.Total) AS Total, SUM(Detalle_Nomina.TotalIngresos) AS TotalIngresos, SUM(Detalle_Nomina.IR) AS IR, SUM(Detalle_Nomina.Trazabilidad) AS Trazabilidad, SUM(Detalle_Nomina.Bolsa) AS Bolsa, SUM(Detalle_Nomina.OtrasDeducciones) AS OtrasDeducciones, SUM(Detalle_Nomina.DeduccionPolicia) AS DeduccionPolicia, SUM(Detalle_Nomina.Anticipo) AS Anticipo, SUM(Detalle_Nomina.DeduccionTransporte) AS DeduccionTransporte, SUM(Detalle_Nomina.Pulperia) AS Pulperia, SUM(Detalle_Nomina.Inseminacion) AS Inseminacion, SUM(Detalle_Nomina.ProductosVeterinarios) AS ProductosVeterinarios, SUM(Detalle_Nomina.IR + Detalle_Nomina.Bolsa + Detalle_Nomina.Trazabilidad + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios) AS TotalEgresos, SUM(Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR + Detalle_Nomina.Trazabilidad + Detalle_Nomina.Bolsa + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios)) AS NetoPagar, Nomina.CodTipoNomina, TipoNomina.TipoNomina  FROM Detalle_Nomina INNER JOIN Nomina ON Detalle_Nomina.NumNomina = Nomina.NumPlanilla INNER JOIN TipoNomina ON Nomina.CodTipoNomina = TipoNomina.CodTipoNomina  " & _
+                           "WHERE (Detalle_Nomina.TipoProductor = 'Productor') AND (Nomina.Año = " & Año & ") AND (Nomina.mes = " & Mes & ") GROUP BY Nomina.CodTipoNomina, TipoNomina.TipoNomina ORDER BY Nomina.CodTipoNomina"
+
+
+                SQL.ConnectionString = Conexion
+                SQL.SQL = SqlDatos
+
+                Dim ViewerForm As New FrmViewer()
+                ViewerForm.arvMain.Document = ArepReporteIRPlanillaLeche.Document
+                My.Application.DoEvents()
+                ArepReporteIRPlanillaLeche.DataSource = SQL
+                ArepReporteIRPlanillaLeche.Run(False)
+                ViewerForm.Show()
+
+
+
 
             Case "Reporte de Saldo de Proveedores"
                 Dim ArepSaldoProveedores As New ArepSaldoClientes
@@ -4198,6 +4291,8 @@ Public Class FrmReportes
                 Dim oDataRow As DataRow, i As Double, Registro As Double = 0
                 Dim CodigoProducto As String
                 Dim ArepExistencia As New ArepExistencia
+                Dim Compras As Double, Ventas As Double, Inicial As Double, FechaIni As String, FechaFin As String
+
 
                 '*******************************************************************************************************************************
                 '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
@@ -4206,20 +4301,49 @@ Public Class FrmReportes
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 DataAdapter.Fill(DataSet, "Existencia")
 
-                If Me.CboCodProducto.Text = "" And Me.CboCodProducto2.Text = "" Then
-                    If Me.CmbRango1.Text = "" And Me.CmbRango2.Text = "" Then
-                        SqlString = "SELECT Cod_Productos, Tipo_Producto, Descripcion_Producto, Unidad_Medida, Existencia_Unidades FROM Productos WHERE  (Tipo_Producto <> N'Servicio') "
+                If Me.CmbAgrupado.Text = "Codigo Producto" Then
+
+                    If Me.CboCodProducto.Text = "" And Me.CboCodProducto2.Text = "" Then
+                        If Me.CmbRango1.Text = "" And Me.CmbRango2.Text = "" Then
+                            SqlString = "SELECT Cod_Productos, Tipo_Producto, Descripcion_Producto, Unidad_Medida, Existencia_Unidades FROM Productos WHERE  (Tipo_Producto <> N'Servicio') "
+                        Else
+                            SqlString = "SELECT Cod_Productos, Tipo_Producto, Descripcion_Producto, Unidad_Medida, Existencia_Unidades FROM Productos WHERE  (Tipo_Producto <> N'Servicio') "
+                        End If
                     Else
-                        SqlString = "SELECT Cod_Productos, Tipo_Producto, Descripcion_Producto, Unidad_Medida, Existencia_Unidades FROM Productos WHERE  (Tipo_Producto <> N'Servicio') "
-                    End If
-                Else
-                    If Me.CmbRango1.Text = "" And Me.CmbRango2.Text = "" Then
-                        SqlString = "SELECT Cod_Productos, Tipo_Producto, Descripcion_Producto, Unidad_Medida, Existencia_Unidades FROM Productos WHERE  (Tipo_Producto <> N'Servicio') AND (Cod_Productos BETWEEN '" & Me.CboCodProducto.Text & "' AND '" & Me.CboCodProducto2.Text & "')"
-                    Else
-                        SqlString = "SELECT Cod_Productos, Tipo_Producto, Descripcion_Producto, Unidad_Medida, Existencia_Unidades FROM Productos WHERE  (Tipo_Producto <> N'Servicio') AND (Cod_Productos BETWEEN '" & Me.CboCodProducto.Text & "' AND '" & Me.CboCodProducto2.Text & "')"
+                        If Me.CmbRango1.Text = "" And Me.CmbRango2.Text = "" Then
+                            SqlString = "SELECT Cod_Productos, Tipo_Producto, Descripcion_Producto, Unidad_Medida, Existencia_Unidades FROM Productos WHERE  (Tipo_Producto <> N'Servicio') AND (Cod_Productos BETWEEN '" & Me.CboCodProducto.Text & "' AND '" & Me.CboCodProducto2.Text & "')"
+                        Else
+                            SqlString = "SELECT Cod_Productos, Tipo_Producto, Descripcion_Producto, Unidad_Medida, Existencia_Unidades FROM Productos WHERE  (Tipo_Producto <> N'Servicio') AND (Cod_Productos BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "')"
+                        End If
+
                     End If
 
+                ElseIf Me.CmbAgrupado.Text = "Linea" Then
+                    If Me.CmbRango1.Text = "" And Me.CmbRango2.Text = "" Then
+                        SqlString = "SELECT Cod_Productos, Tipo_Producto, Descripcion_Producto, Unidad_Medida, Existencia_Unidades FROM Productos WHERE  (Tipo_Producto <> N'Servicio') "
+                    Else
+                        SqlString = "SELECT Cod_Productos, Tipo_Producto, Descripcion_Producto, Unidad_Medida, Existencia_Unidades FROM Productos WHERE  (Tipo_Producto <> N'Servicio') AND (Cod_Linea BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "')"
+                    End If
+
+                ElseIf Me.CmbAgrupado.Text = "Bodega" Then
+
+                    If Me.CboCodProducto.Text = "" And Me.CboCodProducto2.Text = "" Then
+                        If Me.CmbRango1.Text = "" And Me.CmbRango2.Text = "" Then
+                            SqlString = "SELECT Cod_Productos, Tipo_Producto, Descripcion_Producto, Unidad_Medida, Existencia_Unidades FROM Productos WHERE  (Tipo_Producto <> N'Servicio') "
+                        Else
+                            SqlString = "SELECT Cod_Productos, Tipo_Producto, Descripcion_Producto, Unidad_Medida, Existencia_Unidades FROM Productos WHERE  (Tipo_Producto <> N'Servicio') "
+                        End If
+                    Else
+                        If Me.CmbRango1.Text = "" And Me.CmbRango2.Text = "" Then
+                            SqlString = "SELECT Cod_Productos, Tipo_Producto, Descripcion_Producto, Unidad_Medida, Existencia_Unidades FROM Productos WHERE  (Tipo_Producto <> N'Servicio') AND (Cod_Productos BETWEEN '" & Me.CboCodProducto.Text & "' AND '" & Me.CboCodProducto2.Text & "')"
+                        Else
+                            SqlString = "SELECT Cod_Productos, Tipo_Producto, Descripcion_Producto, Unidad_Medida, Existencia_Unidades FROM Productos WHERE  (Tipo_Producto <> N'Servicio') AND (Cod_Productos BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "')"
+                        End If
+
+                    End If
                 End If
+
+
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 DataAdapter.Fill(DataSet, "Productos")
                 Me.ProgressBar.Maximum = DataSet.Tables("Productos").Rows.Count
@@ -4229,52 +4353,78 @@ Public Class FrmReportes
                 Registro = DataSet.Tables("Productos").Rows.Count
                 i = 0
                 Do While i < Registro
-
-
-                    '//////////////////////////////////////////////////////////////////////////////////////////////
-                    '///////////////BUSCO LAS BODEGAS DEL PRODUCTO/////////////////////////////////////////////////
-                    '////////////////////////////////////////////////////////////////////////////////////////////
                     CodigoProducto = DataSet.Tables("Productos").Rows(i)("Cod_Productos")
-                    SqlString = "SELECT  DetalleBodegas.Cod_Bodegas, Bodegas.Nombre_Bodega,DetalleBodegas.Existencia FROM DetalleBodegas INNER JOIN Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  " & _
-                                "WHERE (DetalleBodegas.Cod_Productos = '" & CodigoProducto & "') AND (DetalleBodegas.Cod_Bodegas BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "')"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-                    DataAdapter.Fill(DataSet, "Bodegas")
 
-                    '//////////////////////////////////////////////////////////////////////////////////////////////////////
-                    '////////////////////////BUSCO LA EXISTENCIA DE ESTE PRODUCTO PARA CADA BODEGA//////////////////////////
-                    '/////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    Existencia = 0
-                    iPosicionFila = 0
-                    Do While iPosicionFila < (DataSet.Tables("Bodegas").Rows.Count)
+                    If Me.CmbAgrupado.Text = "Bodega" Then
+
+                        '//////////////////////////////////////////////////////////////////////////////////////////////
+                        '///////////////BUSCO LAS BODEGAS DEL PRODUCTO/////////////////////////////////////////////////
+                        '////////////////////////////////////////////////////////////////////////////////////////////
+
+                        SqlString = "SELECT  DetalleBodegas.Cod_Bodegas, Bodegas.Nombre_Bodega,DetalleBodegas.Existencia FROM DetalleBodegas INNER JOIN Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  " & _
+                                    "WHERE (DetalleBodegas.Cod_Productos = '" & CodigoProducto & "') AND (DetalleBodegas.Cod_Bodegas BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "')"
+                        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                        DataAdapter.Fill(DataSet, "Bodegas")
+
+                        '//////////////////////////////////////////////////////////////////////////////////////////////////////
+                        '////////////////////////BUSCO LA EXISTENCIA DE ESTE PRODUCTO PARA CADA BODEGA//////////////////////////
+                        '/////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        Existencia = 0
+                        iPosicionFila = 0
+                        Do While iPosicionFila < (DataSet.Tables("Bodegas").Rows.Count)
+
+                            My.Application.DoEvents()
+                            CodigoBodega = DataSet.Tables("Bodegas").Rows(iPosicionFila)("Cod_Bodegas")
+                            ExistenciaBodega = BuscaExistenciaBodega(CodigoProducto, CodigoBodega)
+
+                            Existencia = Existencia + ExistenciaBodega
+
+                            oDataRow = DataSet.Tables("Existencia").NewRow
+                            oDataRow("Cod_Productos") = DataSet.Tables("Productos").Rows(i)("Cod_Productos")
+                            oDataRow("Descripcion_Producto") = DataSet.Tables("Productos").Rows(i)("Descripcion_Producto")
+                            oDataRow("Tipo_Producto") = DataSet.Tables("Productos").Rows(i)("Tipo_Producto")
+                            oDataRow("Unidad_Medida") = DataSet.Tables("Productos").Rows(i)("Unidad_Medida")
+                            oDataRow("CodBodega") = CodigoBodega
+                            oDataRow("Existencia_Unidades") = ExistenciaBodega
+                            DataSet.Tables("Existencia").Rows.Add(oDataRow)
+
+
+                            MiConexion.Close()
+                            iPosicionFila = iPosicionFila + 1
+                        Loop
+                        DataSet.Tables("Bodegas").Reset()
+
+                        'oDataRow = DataSet.Tables("Existencia").NewRow
+                        'oDataRow("Cod_Productos") = DataSet.Tables("Productos").Rows(i)("Cod_Productos")
+                        'oDataRow("Descripcion_Producto") = DataSet.Tables("Productos").Rows(i)("Descripcion_Producto")
+                        'oDataRow("Tipo_Producto") = DataSet.Tables("Productos").Rows(i)("Tipo_Producto")
+                        'oDataRow("Unidad_Medida") = DataSet.Tables("Productos").Rows(i)("Unidad_Medida")
+                        'oDataRow("Existencia_Unidades") = Existencia
+
+                    Else
 
                         My.Application.DoEvents()
-                        CodigoBodega = DataSet.Tables("Bodegas").Rows(iPosicionFila)("Cod_Bodegas")
-                        ExistenciaBodega = BuscaExistenciaBodega(CodigoProducto, CodigoBodega)
 
-                        Existencia = Existencia + ExistenciaBodega
+                        'Existencia = BuscaExistencia(CodigoProducto)
+
+                        FechaIni = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
+                        FechaFin = Format(Me.DTPFechaFin.Value, "yyyy-MM-dd")
+
+                        Compras = Format(BuscaCompra(CodigoProducto, FechaIni, FechaFin), "####0.00")
+                        Ventas = Format(BuscaVenta(CodigoProducto, FechaIni, FechaFin), "####0.00")
+                        Inicial = Format(BuscaInventarioInicial(CodigoProducto, FechaIni), "####0.00")
+                        Existencia = Inicial + Compras - Ventas
 
                         oDataRow = DataSet.Tables("Existencia").NewRow
                         oDataRow("Cod_Productos") = DataSet.Tables("Productos").Rows(i)("Cod_Productos")
                         oDataRow("Descripcion_Producto") = DataSet.Tables("Productos").Rows(i)("Descripcion_Producto")
                         oDataRow("Tipo_Producto") = DataSet.Tables("Productos").Rows(i)("Tipo_Producto")
                         oDataRow("Unidad_Medida") = DataSet.Tables("Productos").Rows(i)("Unidad_Medida")
-                        oDataRow("CodBodega") = CodigoBodega
-                        oDataRow("Existencia_Unidades") = ExistenciaBodega
+                        'oDataRow("CodBodega") = CodigoBodega
+                        oDataRow("Existencia_Unidades") = Existencia
                         DataSet.Tables("Existencia").Rows.Add(oDataRow)
 
-                        MiConexion.Close()
-                        iPosicionFila = iPosicionFila + 1
-                    Loop
-                    DataSet.Tables("Bodegas").Reset()
-
-                    'oDataRow = DataSet.Tables("Existencia").NewRow
-                    'oDataRow("Cod_Productos") = DataSet.Tables("Productos").Rows(i)("Cod_Productos")
-                    'oDataRow("Descripcion_Producto") = DataSet.Tables("Productos").Rows(i)("Descripcion_Producto")
-                    'oDataRow("Tipo_Producto") = DataSet.Tables("Productos").Rows(i)("Tipo_Producto")
-                    'oDataRow("Unidad_Medida") = DataSet.Tables("Productos").Rows(i)("Unidad_Medida")
-                    'oDataRow("Existencia_Unidades") = Existencia
-
-
+                    End If
 
 
                     Me.ProgressBar.Value = Me.ProgressBar.Value + 1
@@ -11754,6 +11904,9 @@ Public Class FrmReportes
         Me.CmbAgrupado.Enabled = True
 
         Select Case ListBox.Text
+            Case "Reporte de Ventas Excel"
+
+
             Case "Reporte de Ventas Excel"
                 Me.GroupBox1.Visible = True
                 Me.GroupVendedor.Visible = True

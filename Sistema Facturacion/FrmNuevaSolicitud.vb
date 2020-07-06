@@ -778,6 +778,7 @@ Public Class FrmNuevaSolicitud
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, CodigoProveedor As String, Nombres As String, Apellidos As String
         Dim CodigoProducto As String, Comprado As Boolean, Cantidad As Double, iDetalleSolicitud As Double = 0
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Fecha_Compra As Date, Fecha_Vence As Date, Fecha_Hora As Date
+        Dim CodigoProyecto As String
 
         Fecha_Solicitud = CDate(Me.DTPFecha.Text + " " + Me.LblHora.Text)
         Fecha_Compra = Format(Now, "dd/MM/yyyy")
@@ -790,6 +791,13 @@ Public Class FrmNuevaSolicitud
         ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
         NumeroCompra = Format(ConsecutivoCompra, "0000#")
 
+
+        CodigoProyecto = ""
+        If Not Me.CboProyecto.Text = "" Then
+            CodigoProyecto = Me.CboProyecto.Columns(0).Text
+        End If
+
+
         '//////////////////////////////////////SELECCIONO EL PRIMER PROVEEDOR PARA LLENAR LOS DATOS BASICOS DE LA ORDEN DE COMPRA PARA SU POSTERIOR CAMBIO ////////////////
         SqlString = "SELECT Cod_Proveedor, Nombre_Proveedor, Apellido_Proveedor, Direccion_Proveedor, Telefono, Cod_Cuenta_Proveedor, Cod_Cuenta_Pagar,  Cod_Cuenta_Cobrar, Merma, InventarioFisico, RUC, CodRuta FROM Proveedor ORDER BY Cod_Proveedor"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
@@ -800,7 +808,7 @@ Public Class FrmNuevaSolicitud
             Apellidos = DataSet.Tables("Proveedor").Rows(0)("Nombre_Proveedor")
 
             '//////////////////////////////////GRABO LOS ENCABEZADOS ///////////////////////////////////////////////////////////////////////
-            GrabaEncabezadoCompras(NumeroCompra, Fecha_Compra, "Orden de Compra", CodigoProveedor, Me.CboCodigoBodega.Text, Nombres, Apellidos, Fecha_Compra, Val(0), Val(0), Val(0), Val(0), "Cordobas", "Procesado por la Solicitud de Compra " & Me.TxtNumeroEnsamble.Text)
+            GrabaEncabezadoCompras(NumeroCompra, Fecha_Compra, "Orden de Compra", CodigoProveedor, Me.CboCodigoBodega.Text, Nombres, Apellidos, Fecha_Compra, Val(0), Val(0), Val(0), Val(0), "Cordobas", "Procesado por la Solicitud de Compra " & Me.TxtNumeroEnsamble.Text, CodigoProyecto)
 
 
             Registros = Me.TrueDBGridComponentes.RowCount
@@ -858,7 +866,10 @@ Public Class FrmNuevaSolicitud
             '//////////////////////////////////////////CARGO LA ORDEN DE COMPRA EN EL MODULO DE COMPRAS //////////////
 
             My.Forms.FrmCompras.EsSolicitud = True
-            My.Forms.FrmCompras.CargarCompra(Fecha_Compra, Fecha_Hora, NumeroCompra, "Orden de Compra")
+            My.Forms.FrmCompras.Fecha_Compra = Fecha_Compra
+            My.Forms.FrmCompras.FechaHoraCompra = Fecha_Hora
+            My.Forms.FrmCompras.NumeroCompra = NumeroCompra
+            My.Forms.FrmCompras.TipoCompra = "Orden de Compra"
             My.Forms.FrmCompras.ShowDialog()
             My.Forms.FrmCompras.EsSolicitud = False
 

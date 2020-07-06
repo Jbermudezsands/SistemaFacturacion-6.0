@@ -123,9 +123,18 @@ Open App.Path + "\RutaUpdate.dll" For Input As #1
   Loop
 Close #1
 
-RutaOrigen = App.Path + "\Sistema Facturacion.exe"
-RutaUpdate = RutaUpdate
+RutaOrigen = App.Path + "\Sistema Facturacion 6.0.exe"
+RutaUpdate = RutaUpdate + "\Sistema Facturacion 6.0.exe"
 
+If Dir(RutaOrigen) = "" Then
+  MsgBox "La Ruta Origen no Existe", vbCritical, "Zeus Facturacion"
+  Exit Sub
+End If
+
+If Dir(RutaUpdate) = "" Then
+  MsgBox "La Ruta Actualizacion no Existe", vbCritical, "Zeus Facturacion"
+  Exit Sub
+End If
 
 'Me.CommonDialog1.ShowOpen
 'Set miFile = fso.GetFile(CommonDialog1.FileTitle)
@@ -143,7 +152,7 @@ FechaActualizacion = miFile.DateLastModified
 If FechaActualizacion > FechaLocal Then
   Respuesta = MsgBox("Existe una Nueva Version,Desea Actualizar?", vbYesNo, "Actualizando..")
   If Respuesta = 6 Then
-    KillProcess ("Sistema Facturacion.exe")
+    KillProcess ("Sistema Facturacion 6.0.exe")
     DoEvents
     '------------RETARDO EL PROCEDIMIENTO ------------------------------------------------
     For I = 1 To 1000

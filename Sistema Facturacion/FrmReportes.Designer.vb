@@ -130,6 +130,11 @@ Partial Class FrmReportes
         Me.CboLoteIni = New C1.Win.C1List.C1Combo
         Me.Label28 = New System.Windows.Forms.Label
         Me.ListaImagenes = New System.Windows.Forms.ImageList(Me.components)
+        Me.GroupBoxAño = New System.Windows.Forms.GroupBox
+        Me.CboAño = New System.Windows.Forms.ComboBox
+        Me.CboMes = New System.Windows.Forms.ComboBox
+        Me.Label29 = New System.Windows.Forms.Label
+        Me.Label30 = New System.Windows.Forms.Label
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -174,6 +179,7 @@ Partial Class FrmReportes
         Me.GroupBoxLote.SuspendLayout()
         CType(Me.CboLoteFin, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboLoteIni, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBoxAño.SuspendLayout()
         Me.SuspendLayout()
         '
         'LblTitulo
@@ -744,7 +750,7 @@ Partial Class FrmReportes
         '
         Me.Imagen.BackColor = System.Drawing.Color.White
         Me.Imagen.Image = CType(resources.GetObject("Imagen.Image"), System.Drawing.Image)
-        Me.Imagen.Location = New System.Drawing.Point(878, 507)
+        Me.Imagen.Location = New System.Drawing.Point(885, 519)
         Me.Imagen.Name = "Imagen"
         Me.Imagen.Size = New System.Drawing.Size(888, 350)
         Me.Imagen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
@@ -1849,11 +1855,63 @@ Partial Class FrmReportes
         Me.ListaImagenes.Images.SetKeyName(6, "Circulo6.png")
         Me.ListaImagenes.Images.SetKeyName(7, "Circulo7.png")
         '
+        'GroupBoxAño
+        '
+        Me.GroupBoxAño.Controls.Add(Me.CboAño)
+        Me.GroupBoxAño.Controls.Add(Me.CboMes)
+        Me.GroupBoxAño.Controls.Add(Me.Label29)
+        Me.GroupBoxAño.Controls.Add(Me.Label30)
+        Me.GroupBoxAño.Location = New System.Drawing.Point(902, 468)
+        Me.GroupBoxAño.Name = "GroupBoxAño"
+        Me.GroupBoxAño.Size = New System.Drawing.Size(352, 52)
+        Me.GroupBoxAño.TabIndex = 215
+        Me.GroupBoxAño.TabStop = False
+        Me.GroupBoxAño.Text = "Rango de Fechas"
+        Me.GroupBoxAño.Visible = False
+        '
+        'CboAño
+        '
+        Me.CboAño.DisplayMember = "Año"
+        Me.CboAño.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboAño.FormattingEnabled = True
+        Me.CboAño.Location = New System.Drawing.Point(225, 20)
+        Me.CboAño.Name = "CboAño"
+        Me.CboAño.Size = New System.Drawing.Size(121, 21)
+        Me.CboAño.TabIndex = 4
+        '
+        'CboMes
+        '
+        Me.CboMes.DisplayMember = "Mes"
+        Me.CboMes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboMes.FormattingEnabled = True
+        Me.CboMes.Location = New System.Drawing.Point(41, 19)
+        Me.CboMes.Name = "CboMes"
+        Me.CboMes.Size = New System.Drawing.Size(121, 21)
+        Me.CboMes.TabIndex = 3
+        '
+        'Label29
+        '
+        Me.Label29.AutoSize = True
+        Me.Label29.Location = New System.Drawing.Point(181, 23)
+        Me.Label29.Name = "Label29"
+        Me.Label29.Size = New System.Drawing.Size(26, 13)
+        Me.Label29.TabIndex = 2
+        Me.Label29.Text = "Año"
+        '
+        'Label30
+        '
+        Me.Label30.AutoSize = True
+        Me.Label30.Location = New System.Drawing.Point(7, 20)
+        Me.Label30.Name = "Label30"
+        Me.Label30.Size = New System.Drawing.Size(27, 13)
+        Me.Label30.TabIndex = 0
+        Me.Label30.Text = "Mes"
+        '
         'FrmReportes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(881, 516)
+        Me.ClientSize = New System.Drawing.Size(863, 521)
         Me.ControlBox = False
         Me.Controls.Add(Me.Imagen)
         Me.Controls.Add(Me.GroupBoxLote)
@@ -1884,6 +1942,7 @@ Partial Class FrmReportes
         Me.Controls.Add(Me.ChkProductosCero)
         Me.Controls.Add(Me.ChkAgrupVtas)
         Me.Controls.Add(Me.GroupBoxDepartamento)
+        Me.Controls.Add(Me.GroupBoxAño)
         Me.Name = "FrmReportes"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Reportes"
@@ -1944,6 +2003,8 @@ Partial Class FrmReportes
         Me.GroupBoxLote.PerformLayout()
         CType(Me.CboLoteFin, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboLoteIni, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBoxAño.ResumeLayout(False)
+        Me.GroupBoxAño.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2058,4 +2119,9 @@ Partial Class FrmReportes
     Friend WithEvents CboLoteIni As C1.Win.C1List.C1Combo
     Friend WithEvents Label28 As System.Windows.Forms.Label
     Friend WithEvents ListaImagenes As System.Windows.Forms.ImageList
+    Friend WithEvents GroupBoxAño As System.Windows.Forms.GroupBox
+    Friend WithEvents Label29 As System.Windows.Forms.Label
+    Friend WithEvents Label30 As System.Windows.Forms.Label
+    Friend WithEvents CboAño As System.Windows.Forms.ComboBox
+    Friend WithEvents CboMes As System.Windows.Forms.ComboBox
 End Class

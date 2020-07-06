@@ -159,10 +159,12 @@ Partial Class MDIMain
         Me.RibbonButtonCooperativa = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButtonRuta = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton9 = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonListaNomina = New C1.Win.C1Ribbon.RibbonButton
         Me.C1StatusBar1 = New C1.Win.C1Ribbon.C1StatusBar
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
         Me.TxtUsuario = New System.Windows.Forms.TextBox
+        Me.RibbonButton13 = New C1.Win.C1Ribbon.RibbonButton
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1238,6 +1240,8 @@ Partial Class MDIMain
         Me.RibbonGroup15.Items.Add(Me.RibbonButtonCooperativa)
         Me.RibbonGroup15.Items.Add(Me.RibbonButtonRuta)
         Me.RibbonGroup15.Items.Add(Me.RibbonButton9)
+        Me.RibbonGroup15.Items.Add(Me.RibbonListaNomina)
+        Me.RibbonGroup15.Items.Add(Me.RibbonButton13)
         Me.RibbonGroup15.Text = "Catalogo"
         '
         'RibbonButton20
@@ -1280,6 +1284,14 @@ Partial Class MDIMain
         Me.RibbonButton9.Text = "Tipo-Nomina"
         Me.RibbonButton9.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
+        'RibbonListaNomina
+        '
+        Me.RibbonListaNomina.ID = "RibbonListaNomina"
+        Me.RibbonListaNomina.LargeImage = CType(resources.GetObject("RibbonListaNomina.LargeImage"), System.Drawing.Image)
+        Me.RibbonListaNomina.SmallImage = CType(resources.GetObject("RibbonListaNomina.SmallImage"), System.Drawing.Image)
+        Me.RibbonListaNomina.Text = "List-Nominas"
+        Me.RibbonListaNomina.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
         'C1StatusBar1
         '
         Me.C1StatusBar1.LeftPaneItems.Add(Me.DocumentModifiedLabel)
@@ -1298,7 +1310,7 @@ Partial Class MDIMain
         'RibbonLabel1
         '
         Me.RibbonLabel1.ID = "RibbonLabel1"
-        Me.RibbonLabel1.Text = "Version 6.23"
+        Me.RibbonLabel1.Text = "Version 6.26"
         '
         'TxtUsuario
         '
@@ -1308,6 +1320,14 @@ Partial Class MDIMain
         Me.TxtUsuario.TabIndex = 15
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
+        '
+        'RibbonButton13
+        '
+        Me.RibbonButton13.ID = "RibbonButton13"
+        Me.RibbonButton13.LargeImage = CType(resources.GetObject("RibbonButton13.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton13.SmallImage = CType(resources.GetObject("RibbonButton13.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton13.Text = "Reportes"
+        Me.RibbonButton13.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'MDIMain
         '
@@ -1472,5 +1492,7 @@ Partial Class MDIMain
     Friend WithEvents RibbonButton9 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton10 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonRevalorizar1 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonListaNomina As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButton13 As C1.Win.C1Ribbon.RibbonButton
 
 End Class

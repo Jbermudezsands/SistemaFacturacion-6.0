@@ -429,7 +429,7 @@ Public Class FrmEnsamble
         Dim ConsecutivoFactura As Double, NumeroFactura As String = "", NombreProductos As String, TPrecioUnitario As Double = 0
         Dim TipoServicio As String, TImporte As Double = 0, TasaCompra As Double, SqlCompras As String
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-        Dim Registros As Double = 0, Existencia As Double
+        Dim Registros As Double = 0, Existencia As Double, CodigoProyecto As String
         Dim CantidadReal As Double = 0
 
 
@@ -662,13 +662,18 @@ Public Class FrmEnsamble
         PrecioCompra = TImporte / Cantidad
         Importe = Cantidad * PrecioCompra
 
+        CodigoProyecto = ""
+        'If Not Me.CboProyecto.Text = "" Then
+        '    CodigoProyecto = Me.CboProyecto.Columns(0).Text
+        'End If
+
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////GENERO LA COMPRA PARA ENTRADA DE INVENTARIO //////////////////////////////////////
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         If IposicionFila = 0 Then
             ConsecutivoCompra = BuscaConsecutivo("Compra")
             NumeroCompra = Format(ConsecutivoCompra, "0000#")
-            GrabaEncabezadoCompras(NumeroCompra, Fecha, "Mercancia Recibida", CodProveedor, Me.CboCodigoBodega.Text, NombreCliente, NombreCliente, Fecha, Val(0), 0, Val(0), Val(0), "Cordobas", "Procesado por Ensamble " & ConsecutivoEnsamble)
+            GrabaEncabezadoCompras(NumeroCompra, Fecha, "Mercancia Recibida", CodProveedor, Me.CboCodigoBodega.Text, NombreCliente, NombreCliente, Fecha, Val(0), 0, Val(0), Val(0), "Cordobas", "Procesado por Ensamble " & ConsecutivoEnsamble, CodigoProyecto)
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
@@ -797,7 +802,7 @@ Public Class FrmEnsamble
         Dim ConsecutivoCompra As Double, NumeroCompra As String = "", SqlString As String, CodCliente As String, CodProveedor As String, NombreProveedor As String
         Dim CodProductos As String, PrecioCompra As Double, Importe As Double, Cantidad As Double
         Dim ConsecutivoFactura As Double, NumeroFactura As String = "", NombreProductos As String, TPrecioUnitario As Double = 0
-        Dim TipoServicio As String, TImporte As Double = 0, TasaCompra As Double
+        Dim TipoServicio As String, TImporte As Double = 0, TasaCompra As Double, CodigoProyecto As String
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Registros As Double
 
 
@@ -834,6 +839,12 @@ Public Class FrmEnsamble
 
 
 
+        CodigoProyecto = ""
+        'If Not Me.CboProyecto.Text = "" Then
+        '    CodigoProyecto = Me.CboProyecto.Columns(0).Text
+        'End If
+
+
 
 
             '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -845,11 +856,13 @@ Public Class FrmEnsamble
             MiConexion.Open()
             DataAdapter = New SqlClient.SqlDataAdapter(SQlEnsamble, MiConexion)
             DataAdapter.Fill(DataSet, "ListaProductos")
-            MiConexion.Close()
+        MiConexion.Close()
+
             If Not DataSet.Tables("ListaProductos").Rows.Count = 0 Then
                 IposicionFila = 0
                 TPrecioUnitario = 0
-                TImporte = 0
+            TImporte = 0
+
                 Do While IposicionFila < (DataSet.Tables("ListaProductos").Rows.Count)
 
                     '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -858,7 +871,7 @@ Public Class FrmEnsamble
                     If IposicionFila = 0 Then
                         ConsecutivoCompra = BuscaConsecutivo("Compra")
                         NumeroCompra = Format(ConsecutivoCompra, "0000#")
-                        GrabaEncabezadoCompras(NumeroCompra, Fecha, "Mercancia Recibida", CodProveedor, Me.CboCodigoBodega.Text, NombreCliente, NombreCliente, Fecha, Val(0), 0, Val(0), Val(0), "Cordobas", "Procesado por DesEnsamble " & ConsecutivoEnsamble)
+                    GrabaEncabezadoCompras(NumeroCompra, Fecha, "Mercancia Recibida", CodProveedor, Me.CboCodigoBodega.Text, NombreCliente, NombreCliente, Fecha, Val(0), 0, Val(0), Val(0), "Cordobas", "Procesado por DesEnsamble " & ConsecutivoEnsamble, CodigoProyecto)
                     End If
 
                     CodProductos = DataSet.Tables("ListaProductos").Rows(IposicionFila)("CodProducto")

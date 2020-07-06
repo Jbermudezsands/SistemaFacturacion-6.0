@@ -1,5 +1,7 @@
 Imports System.Data.SqlClient
 Imports System.Threading
+Imports System.IO
+
 
 Public Class FrmFacturas
     Inherits System.Windows.Forms.Form

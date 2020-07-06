@@ -235,6 +235,12 @@
     <Compile Include="FrmLiquidacionLeche.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmListadoNominas.Designer.vb">
+      <DependentUpon>FrmListadoNominas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmListadoNominas.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmListaLotes.Designer.vb">
       <DependentUpon>FrmListaLotes.vb</DependentUpon>
     </Compile>
@@ -683,6 +689,18 @@
       <DependentUpon>ArepRendimientoEnsamble.vb</DependentUpon>
     </Compile>
     <Compile Include="Reportes\ArepRendimientoEnsamble.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\ArepReporteIRPlanillaLeche.Designer.vb">
+      <DependentUpon>ArepReporteIRPlanillaLeche.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepReporteIRPlanillaLeche.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\ArepReporteIRProductor.Designer.vb">
+      <DependentUpon>ArepReporteIRProductor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepReporteIRProductor.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reportes\ArepResumenAlcaldias.Designer.vb">
@@ -1445,6 +1463,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>FrmLiquidacionLeche.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmListadoNominas.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmListadoNominas.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmListaLotes.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmListaLotes.vb</DependentUpon>
@@ -1960,6 +1982,14 @@
     <EmbeddedResource Include="Reportes\ArepRendimientoEnsamble.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ArepRendimientoEnsamble.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepReporteIRPlanillaLeche.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepReporteIRPlanillaLeche.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepReporteIRProductor.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepReporteIRProductor.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepReporteVentas.resx">
       <SubType>Designer</SubType>

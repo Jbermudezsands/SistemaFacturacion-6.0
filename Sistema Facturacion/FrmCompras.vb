@@ -5,6 +5,7 @@ Public Class FrmCompras
     Public MiConexion As New SqlClient.SqlConnection(Conexion), CodigoIva As String, CantidadAnterior As Double, PrecioAnterior As Double, FacturaTarea As Boolean = False
     Public NumeroLote As String = "SINLOTE", FechaLote As Date = "01/01/1900", MiconexionContabilidad As New SqlClient.SqlConnection(ConexionContabilidad)
     Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder, EsSolicitud As Boolean = False
+    Public Fecha_Compra As Date, FechaHoraCompra As Date, NumeroCompra As String, TipoCompra As String
     Public Sub CargarCompra(ByVal FechaCompra As Date, ByVal FechaHoraCompra As Date, ByVal NumeroCompra As String, ByVal TipoCompra As String)
         Dim SqlDatos As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SqlString As String
 
@@ -100,7 +101,7 @@ Public Class FrmCompras
         Me.DTPFecha.Value = FechaCompra
         Me.DTPFechaHora.Value = FechaHoraCompra
         Me.CboTipoProducto.Text = TipoCompra
-        Me.TxtNumeroEnsamble.Text = "-----0-----"
+        'Me.TxtNumeroEnsamble.Text = "-----0-----"
         Me.TxtNumeroEnsamble.Text = NumeroCompra
         Me.CboCodigoBodega.Enabled = False
         Me.Button7.Enabled = False
@@ -1321,17 +1322,19 @@ Public Class FrmCompras
             End If
         End If
 
+        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////MONEDA COMPRA//////////////////////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlDatos = "SELECT * FROM DatosEmpresa"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+        DataAdapter.Fill(DataSet, "DatosEmpresa")
+        If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+            Me.TxtMonedaFactura.Text = DataSet.Tables("DatosEmpresa").Rows(0)("MonedaCompra")
+            Me.TxtMonedaImprime.Text = DataSet.Tables("DatosEmpresa").Rows(0)("MonedaImprimeCompra")
+        End If
+
+
         If EsSolicitud = False Then
-            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            '//////////////////////////////////////MONEDA COMPRA//////////////////////////////////////////////////////////////////////////////////
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlDatos = "SELECT * FROM DatosEmpresa"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-            DataAdapter.Fill(DataSet, "DatosEmpresa")
-            If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
-                Me.TxtMonedaFactura.Text = DataSet.Tables("DatosEmpresa").Rows(0)("MonedaCompra")
-                Me.TxtMonedaImprime.Text = DataSet.Tables("DatosEmpresa").Rows(0)("MonedaImprimeCompra")
-            End If
 
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             '///////////////////////////////BUSCO SI TIENE CONFIGURADO EFECTIVO DEFAUL/////////////////////////////////////////////////////////////////
@@ -1357,7 +1360,10 @@ Public Class FrmCompras
             Me.CboCodigoBodega.Text = UsuarioBodegaCompra
             Me.CboTipoProducto.Text = UsuarioTipoCompra
             Me.TxtCodigoProveedor.Text = UsuarioProveedor
+        Else
 
+            Me.CargarCompra(Fecha_Compra, FechaHoraCompra, NumeroCompra, "Orden de Compra")
+            EsSolicitud = False
         End If
 
     End Sub
@@ -1666,6 +1672,8 @@ Public Class FrmCompras
 
         Me.Button7.Enabled = True
         Me.CboCodigoBodega.Enabled = True
+
+
 
     End Sub
 
@@ -2495,6 +2503,10 @@ Public Class FrmCompras
 
         TasaCambio = BuscaTasaCambio(Me.DTPFecha.Value)
 
+        'If MonedaImprime = "" Then
+        '    MonedaImprime = "Cordobas"
+        'End If
+
         If MonedaFactura = "Cordobas" Then
             If MonedaImprime = "Cordobas" Then
                 '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
@@ -2552,9 +2564,9 @@ Public Class FrmCompras
         SQL.SQL = SQlDetalle
         ArepCompras.DataSource = SQL
         ArepCompras.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
-        ArepCompras.PageSettings.PaperWidth = Str(Ancho)
-        ArepCompras.PageSettings.PaperHeight = Largo
-        ArepCompras.PageSettings.PaperKind = System.Drawing.Printing.PaperKind.Custom
+        'ArepCompras.PageSettings.PaperWidth = Str(Ancho)
+        'ArepCompras.PageSettings.PaperHeight = Largo
+        'ArepCompras.PageSettings.PaperKind = System.Drawing.Printing.PaperKind.Custom
         Dim ViewerForm As New FrmViewer()
         ViewerForm.arvMain.Document = ArepCompras.Document
         ViewerForm.Show()
@@ -2607,7 +2619,7 @@ Public Class FrmCompras
         Dim NombrePago As String, Monto As Double, NumeroTarjeta As String, FechaVenceTarjeta As String
         Dim CodigoProducto As String, PrecioUnitario As Double, Descuento As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double
         Dim TipoCompra As String = "Mercancia Recibida", Numero As String, Fecha As String
-        Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, CodigoProyecto As String
 
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2628,12 +2640,16 @@ Public Class FrmCompras
 
         NumeroCompra = Format(ConsecutivoCompra, "0000#")
 
+        CodigoProyecto = ""
+        If Not Me.CboProyecto.Text = "" Then
+            CodigoProyecto = Me.CboProyecto.Columns(0).Text
+        End If
 
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-        GrabaEncabezadoCompras(NumeroCompra, Me.DTPFecha.Value, "Mercancia Recibida", Me.TxtCodigoProveedor.Text, Me.CboCodigoBodega.Text, Me.TxtNombres.Text, Me.TxtApellidos.Text, Me.DTPFecha.Value, Val(Me.TxtSubTotal.Text), Val(Me.TxtIva.Text), Val(Me.TxtPagado.Text), Val(Me.TxtNetoPagar.Text), Me.TxtMonedaFactura.Text, "Procesado por la Orden de Compra " & Me.TxtNumeroEnsamble.Text)
+        GrabaEncabezadoCompras(NumeroCompra, Me.DTPFecha.Value, "Mercancia Recibida", Me.TxtCodigoProveedor.Text, Me.CboCodigoBodega.Text, Me.TxtNombres.Text, Me.TxtApellidos.Text, Me.DTPFecha.Value, Val(Me.TxtSubTotal.Text), Val(Me.TxtIva.Text), Val(Me.TxtPagado.Text), Val(Me.TxtNetoPagar.Text), Me.TxtMonedaFactura.Text, "Procesado por la Orden de Compra " & Me.TxtNumeroEnsamble.Text, CodigoProyecto)
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL DETALLE DE LA COMPRA /////////////////////////////////////////////

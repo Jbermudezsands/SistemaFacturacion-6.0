@@ -947,7 +947,7 @@ Public Class FrmLiquidacion
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-        GrabaEncabezadoCompras(NumeroCompra, Me.DTPFecha.Value, "Mercancia Recibida", Me.TxtCodigoProveedor.Text, Me.CboCodigoBodega.Text, Me.TxtNombres.Text, Me.TxtApellidos.Text, Me.DTPFecha.Value, Val(Me.TxtTotalCosto.Text), MontoIva, MontoIva + Val(Me.TxtTotalCosto.Text), MontoIva + Val(Me.TxtTotalCosto.Text), Me.CmbMoneda.Text, "Procesado por Liquidacion " & Me.TxtNumeroEnsamble.Text)
+        GrabaEncabezadoCompras(NumeroCompra, Me.DTPFecha.Value, "Mercancia Recibida", Me.TxtCodigoProveedor.Text, Me.CboCodigoBodega.Text, Me.TxtNombres.Text, Me.TxtApellidos.Text, Me.DTPFecha.Value, Val(Me.TxtTotalCosto.Text), MontoIva, MontoIva + Val(Me.TxtTotalCosto.Text), MontoIva + Val(Me.TxtTotalCosto.Text), Me.CmbMoneda.Text, "Procesado por Liquidacion " & Me.TxtNumeroEnsamble.Text, "")
 
 
 

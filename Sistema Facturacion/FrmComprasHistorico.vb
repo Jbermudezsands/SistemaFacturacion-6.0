@@ -1255,7 +1255,7 @@ Public Class FrmComprasHistorico
         Dim ConsecutivoCompra As Double, iPosicion As Double, Registros As Double, NumeroCompra As String
         Dim NombrePago As String, Monto As Double, NumeroTarjeta As String, FechaVenceTarjeta As String
         Dim CodigoProducto As String, PrecioUnitario As Double, Descuento As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double
-        Dim TipoCompra As String = "Mercancia Recibida"
+        Dim TipoCompra As String = "Mercancia Recibida", CodigoProyecto As String
 
 
 
@@ -1277,12 +1277,15 @@ Public Class FrmComprasHistorico
 
         NumeroCompra = Format(ConsecutivoCompra, "0000#")
 
-
+        CodigoProyecto = ""
+        'If Not Me.CboProyecto.Text = "" Then
+        '    CodigoProyecto = Me.CboProyecto.Columns(0).Text
+        'End If
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-        GrabaEncabezadoCompras(NumeroCompra, Me.DTPFecha.Value, "Mercancia Recibida", Me.TxtCodigoProveedor.Text, Me.CboCodigoBodega.Text, Me.TxtNombres.Text, Me.TxtApellidos.Text, Me.DTPFecha.Value, Val(Me.TxtSubTotal.Text), Val(Me.TxtIva.Text), Val(Me.TxtPagado.Text), Val(Me.TxtNetoPagar.Text), Me.TxtMonedaFactura.Text, "Procesado por la Orden de Compra " & Me.TxtNumeroEnsamble.Text)
+        GrabaEncabezadoCompras(NumeroCompra, Me.DTPFecha.Value, "Mercancia Recibida", Me.TxtCodigoProveedor.Text, Me.CboCodigoBodega.Text, Me.TxtNombres.Text, Me.TxtApellidos.Text, Me.DTPFecha.Value, Val(Me.TxtSubTotal.Text), Val(Me.TxtIva.Text), Val(Me.TxtPagado.Text), Val(Me.TxtNetoPagar.Text), Me.TxtMonedaFactura.Text, "Procesado por la Orden de Compra " & Me.TxtNumeroEnsamble.Text, CodigoProyecto)
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL DETALLE DE LA COMPRA /////////////////////////////////////////////
