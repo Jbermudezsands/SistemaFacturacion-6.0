@@ -128,7 +128,7 @@
   </metadata>
   <data name="OleDBDataSource1.SQL" xml:space="preserve">
     <value>SELECT        MAX(id_Eventos) AS id_Eventos, MAX(NumeroRecepcion) AS NumeroRecepcion, MAX(Fecha) AS Fecha, MAX(TipoRecepcion) AS TipoRecepcion, Cod_Productos, 
-                         Descripcion_Producto, MAX(Codigo_Beams) AS Codigo_Beams, SUM(Cantidad) AS Cantidad, MAX(Unidad_Medida) AS Unidad_Medida
+                         Descripcion_Producto, MAX(Codigo_Beams) AS Codigo_Beams, SUM(Cantidad) AS Cantidad, MAX(Unidad_Medida) AS Unidad_Medida, SUM(PesoKg) AS PesoKg
 FROM            Detalle_Recepcion
 GROUP BY Cod_Productos, Descripcion_Producto
 HAVING        (MAX(NumeroRecepcion) = N'00019') AND (MAX(Fecha) = CONVERT(DATETIME, '2014-02-13 00:00:00', 102)) AND (MAX(TipoRecepcion) = N'Recepcion')

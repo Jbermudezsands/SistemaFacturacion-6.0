@@ -1,5 +1,7 @@
 Public Class FrmLiquidacion
     Public MiConexion As New SqlClient.SqlConnection(Conexion), TotalFob As Double, TotalCosto As Double
+    Public DatasetLiquidacion As New DataSet
+
     Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
         Me.Close()
     End Sub
@@ -445,9 +447,10 @@ Public Class FrmLiquidacion
             Exit Sub
         End If
 
+        DatasetLiquidacion.Reset()
         SqlString = "SELECT Cod_Iva, Monto FROM ImpuestosLiquidacion WHERE (Fecha_Liquidacion = CONVERT(DATETIME, '1900-01-01 00:00:00', 102)) AND (Numero_Liquidacion = N'00032')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "ImpuestosDetalle")
+        DataAdapter.Fill(DatasetLiquidacion, "ImpuestosDetalle")
         TotalIva = 0
         Do While IposicionFila < Registros
             My.Application.DoEvents()
@@ -512,15 +515,15 @@ Public Class FrmLiquidacion
                 '//////////////////////////////////////////AQUI AGREGO EL DETALLE de los impuestos///////////////////////////////////////////////////////////////
                 '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                Registros3 = DataSet.Tables("ImpuestosDetalle").Rows.Count
+                Registros3 = DatasetLiquidacion.Tables("ImpuestosDetalle").Rows.Count
                 CodigoIva = DataSet.Tables("ImpuestosProductos").Rows(iPosicion)("Cod_Iva")
                 Encontrado = False
                 iPosicion3 = 0
                 Do While iPosicion3 < Registros3
 
-                    CodIvaDetaLLE = DataSet.Tables("ImpuestosDetalle").Rows(iPosicion3)("Cod_Iva")
+                    CodIvaDetaLLE = DatasetLiquidacion.Tables("ImpuestosDetalle").Rows(iPosicion3)("Cod_Iva")
                     If CodigoIva = CodIvaDetaLLE Then
-                        oDataRow = DataSet.Tables("ImpuestosDetalle").Rows(iPosicion3)
+                        oDataRow = DatasetLiquidacion.Tables("ImpuestosDetalle").Rows(iPosicion3)
 
                         If Me.CmbImpuesto.Text = Me.CmbMoneda.Text Then
                             If DataSet.Tables("ImpuestosProductos").Rows(iPosicion)("Cod_Iva") = "15%" Then
@@ -553,7 +556,7 @@ Public Class FrmLiquidacion
                 Loop
 
                 If Encontrado = False Then
-                    oDataRow = DataSet.Tables("ImpuestosDetalle").NewRow
+                    oDataRow = DatasetLiquidacion.Tables("ImpuestosDetalle").NewRow
                     oDataRow("Cod_Iva") = DataSet.Tables("ImpuestosProductos").Rows(iPosicion)("Cod_Iva")
                     'oDataRow("Monto") = CDbl(Format(FOB * TasaImpuesto, "##0.00"))
 
@@ -577,7 +580,7 @@ Public Class FrmLiquidacion
                             oDataRow("Monto") = CDbl(Format(((FOB + GastosImpuestos) / Tasacambio) * TasaImpuesto, "##0.00"))
                         End If
                     End If
-                        DataSet.Tables("ImpuestosDetalle").Rows.Add(oDataRow)
+                    DatasetLiquidacion.Tables("ImpuestosDetalle").Rows.Add(oDataRow)
                         Encontrado = True
                     End If
 
@@ -587,7 +590,7 @@ Public Class FrmLiquidacion
             DataSet.Tables("ImpuestosProductos").Clear()
 
 
-            Me.TDGridImpuestos.DataSource = DataSet.Tables("ImpuestosDetalle")
+            Me.TDGridImpuestos.DataSource = DatasetLiquidacion.Tables("ImpuestosDetalle")
 
             If Tasacambio = 0 Then
                 Tasacambio = 1
@@ -613,6 +616,9 @@ Public Class FrmLiquidacion
                 TotalIva = TotalIva * Tasacambio
             End If
 
+            If IsNumeric(Me.TxtGastoImpuesto.Text) Then
+                TotalImpuestos = TotalImpuestos + CDbl(Me.TxtGastoImpuesto.Text)
+            End If
 
             If (TotalImpuestos + TotalGastos) <> 0 Then
                 PrecioCompra = CDbl(FOB) + CDbl(TotalImpuestos) + CDbl(TotalGastos * Porciento)
@@ -753,7 +759,9 @@ Public Class FrmLiquidacion
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, RutaLogo As String
         Dim ConsecutivoCompra As Double, NumeroCompra As String, Iposicion As Double, Registros As Double
         Dim CodigoProducto As String, PrecioUnitario As Double, Descuento As Double, PrecioCosto As Double, Cantidad As Double, FOB As Double
-        Dim TasaCambio As Double, GastoImpuesto As Double
+        Dim TasaCambio As Double, GastoImpuesto As Double, Registros2 As Double, iPosicion2 As Double, TotalImpuestos As Double, CodigoIva As String, TasaImpuesto As Double
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+
 
         If Me.CmbImpuesto.Text = "" Then
             MsgBox("Se necesita la mondeda del impuesto,", MsgBoxStyle.Critical, "Zeus Facturacion")
@@ -798,6 +806,40 @@ Public Class FrmLiquidacion
             GastoImpuesto = Me.BindingDetalle.Item(Iposicion)("Gasto_Impuesto")
             GrabaDetalleLiquidacion(NumeroCompra, Me.DTPFecha.Text, CodigoProducto, Cantidad, PrecioUnitario, Descuento, FOB, PrecioCosto, TasaCambio, GastoImpuesto)
             Iposicion = Iposicion + 1
+
+
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '///////////////////////////////////////////////BUSCO LOS IMPUESTOS PARA CADA PRODUCTO/////////////////////////////////////////
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            SQLString = "SELECT  * FROM ImpuestosProductos INNER JOIN Impuestos ON ImpuestosProductos.Cod_Iva = Impuestos.Cod_Iva  WHERE (Cod_Productos = '" & CodigoProducto & "')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
+            DataAdapter.Fill(DataSet, "ImpuestosProductos")
+            Registros2 = DataSet.Tables("ImpuestosProductos").Rows.Count
+            iPosicion2 = 0
+            TotalImpuestos = 0
+            Do While iPosicion2 < Registros2
+                TasaImpuesto = DataSet.Tables("ImpuestosProductos").Rows(iPosicion2)("Impuesto")
+                TotalImpuestos = TotalImpuestos + (FOB * TasaImpuesto)
+                CodigoIva = DataSet.Tables("ImpuestosProductos").Rows(iPosicion2)("Cod_Iva")
+
+                MiConexion.Close()
+                StrSqlUpdate = "DELETE FROM [ImpuestosLiquidacion] WHERE (Numero_Liquidacion = '" & NumeroCompra & "') AND (Fecha_Liquidacion = CONVERT(DATETIME, '" & Format(Me.DTPFecha.Value, "yyyy-MM-dd") & "', 102)) AND (Cod_Producto = '" & CodigoProducto & "') AND (Cod_Iva = '" & CodigoIva & "')"
+                MiConexion.Open()
+                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                iResultado = ComandoUpdate.ExecuteNonQuery
+                MiConexion.Close()
+
+                '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                '//////////////////////////////////////////AQUI AGREGO EL DETALLE de los impuestos///////////////////////////////////////////////////////////////
+                '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                GrabaDetalleImpuestosLiquidacion(NumeroCompra, Me.DTPFecha.Value, CodigoProducto, CodigoIva, (FOB * TasaImpuesto))
+
+                iPosicion2 = iPosicion2 + 1
+            Loop
+            DataSet.Tables("ImpuestosProductos").Reset()
+
+
         Loop
 
         If Me.TxtNumeroEnsamble.Text = "-----0-----" Then

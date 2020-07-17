@@ -349,7 +349,7 @@ Partial Public Class ArepRecepcion
         Me.TextBox2.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox2.DataField = "Cantidad"
         Me.TextBox2.Height = 0.2105263!
-        Me.TextBox2.Left = 5.68421!
+        Me.TextBox2.Left = 5.2!
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.OutputFormat = resources.GetString("TextBox2.OutputFormat")
         Me.TextBox2.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
@@ -424,14 +424,14 @@ Partial Public Class ArepRecepcion
         Me.TextBox7.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox7.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox7.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.TextBox7.DataField = "Codigo_Beams"
-        Me.TextBox7.Height = 0.2105263!
-        Me.TextBox7.Left = 5.210526!
+        Me.TextBox7.DataField = "PesoKg"
+        Me.TextBox7.Height = 0.2!
+        Me.TextBox7.Left = 5.75!
         Me.TextBox7.Name = "TextBox7"
         Me.TextBox7.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
         Me.TextBox7.Text = Nothing
         Me.TextBox7.Top = 0.0!
-        Me.TextBox7.Width = 0.4736842!
+        Me.TextBox7.Width = 0.5000002!
         '
         'PageFooter1
         '
@@ -568,7 +568,7 @@ Partial Public Class ArepRecepcion
         Me.lblQty.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.lblQty.Height = 0.2105264!
         Me.lblQty.HyperLink = Nothing
-        Me.lblQty.Left = 5.6875!
+        Me.lblQty.Left = 5.2!
         Me.lblQty.Name = "lblQty"
         Me.lblQty.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
             "d-color: White; font-size: 8.25pt; "
@@ -588,11 +588,11 @@ Partial Public Class ArepRecepcion
         Me.Label3.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label3.Height = 0.2105263!
         Me.Label3.HyperLink = Nothing
-        Me.Label3.Left = 5.1875!
+        Me.Label3.Left = 5.775!
         Me.Label3.Name = "Label3"
         Me.Label3.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
             "d-color: White; font-size: 8.25pt; "
-        Me.Label3.Text = "Bin"
+        Me.Label3.Text = "Kg"
         Me.Label3.Top = 1.125!
         Me.Label3.Width = 0.4736845!
         '
@@ -983,7 +983,7 @@ Partial Public Class ArepRecepcion
         Me.TextBox6.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox6.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox6.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.TextBox6.DataField = "Cantidad"
+        Me.TextBox6.DataField = "PesoKg"
         Me.TextBox6.Height = 0.2105263!
         Me.TextBox6.Left = 5.263157!
         Me.TextBox6.Name = "TextBox6"
@@ -1001,7 +1001,7 @@ Partial Public Class ArepRecepcion
         '
         Me.MasterReport = False
         OleDBDataSource1.ConnectionString = "Provider=SQLOLEDB.1;Password=P@ssword;Persist Security Info=True;User ID=sa;Initi" & _
-            "al Catalog=SistemaInvenario;Data Source=JUAN\SQL2012"
+            "al Catalog=FacturacionEMTRIDES;Data Source=JUANBERMUDEZ-PC\SQL2014"
         OleDBDataSource1.SQL = resources.GetString("OleDBDataSource1.SQL")
         Me.DataSource = OleDBDataSource1
         Me.PageSettings.Margins.Bottom = 0.5!

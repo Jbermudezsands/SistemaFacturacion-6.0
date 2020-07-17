@@ -52,6 +52,8 @@ Partial Class FrmLiquidacion
         Me.TxtTotalCosto = New System.Windows.Forms.TextBox
         Me.Label4 = New System.Windows.Forms.Label
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.TxtGastoImpuesto = New System.Windows.Forms.TextBox
+        Me.Label23 = New System.Windows.Forms.Label
         Me.TxtGastosAduana = New System.Windows.Forms.TextBox
         Me.Label15 = New System.Windows.Forms.Label
         Me.TxtCustodio = New System.Windows.Forms.TextBox
@@ -431,6 +433,8 @@ Partial Class FrmLiquidacion
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.TxtGastoImpuesto)
+        Me.GroupBox3.Controls.Add(Me.Label23)
         Me.GroupBox3.Controls.Add(Me.TxtGastosAduana)
         Me.GroupBox3.Controls.Add(Me.Label15)
         Me.GroupBox3.Controls.Add(Me.TxtCustodio)
@@ -455,6 +459,24 @@ Partial Class FrmLiquidacion
         Me.GroupBox3.TabIndex = 200
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Gastos e Impuestos de Liquidacion"
+        '
+        'TxtGastoImpuesto
+        '
+        Me.TxtGastoImpuesto.Location = New System.Drawing.Point(303, 108)
+        Me.TxtGastoImpuesto.Name = "TxtGastoImpuesto"
+        Me.TxtGastoImpuesto.Size = New System.Drawing.Size(94, 20)
+        Me.TxtGastoImpuesto.TabIndex = 27
+        Me.TxtGastoImpuesto.Text = "0.00"
+        Me.TxtGastoImpuesto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Location = New System.Drawing.Point(212, 108)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(81, 13)
+        Me.Label23.TabIndex = 26
+        Me.Label23.Text = "Gasto Impuesto"
         '
         'TxtGastosAduana
         '
@@ -530,7 +552,7 @@ Partial Class FrmLiquidacion
         '
         'TxtAgente
         '
-        Me.TxtAgente.Location = New System.Drawing.Point(304, 107)
+        Me.TxtAgente.Location = New System.Drawing.Point(100, 108)
         Me.TxtAgente.Name = "TxtAgente"
         Me.TxtAgente.Size = New System.Drawing.Size(94, 20)
         Me.TxtAgente.TabIndex = 17
@@ -540,11 +562,11 @@ Partial Class FrmLiquidacion
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(213, 107)
+        Me.Label10.Location = New System.Drawing.Point(9, 108)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(86, 13)
+        Me.Label10.Size = New System.Drawing.Size(90, 13)
         Me.Label10.TabIndex = 16
-        Me.Label10.Text = "Gatos Impuestos"
+        Me.Label10.Text = "Agente Aduanero"
         '
         'TxtFletes
         '
@@ -955,4 +977,6 @@ Partial Class FrmLiquidacion
     Friend WithEvents TxtDAI As System.Windows.Forms.TextBox
     Friend WithEvents Label19 As System.Windows.Forms.Label
     Friend WithEvents PictureBox3 As System.Windows.Forms.PictureBox
+    Friend WithEvents TxtGastoImpuesto As System.Windows.Forms.TextBox
+    Friend WithEvents Label23 As System.Windows.Forms.Label
 End Class
