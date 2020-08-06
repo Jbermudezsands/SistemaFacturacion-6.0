@@ -284,6 +284,10 @@ Public Class FrmRecibosFacturas
         iPosicion = 0
         Registros = DataSet.Tables("Consultas").Rows.Count
 
+        My.Forms.FrmRecibos.ProgressBar1.Minimum = 0
+        My.Forms.FrmRecibos.ProgressBar1.Maximum = Registros
+        My.Forms.FrmRecibos.ProgressBar1.Value = 0
+
         Do While Registros > iPosicion
             NumeroFactura = DataSet.Tables("Consultas").Rows(iPosicion)("Numero_Factura")
             FechaFactura = DataSet.Tables("Consultas").Rows(iPosicion)("Fecha_Factura")
@@ -337,8 +341,9 @@ Public Class FrmRecibosFacturas
 
             End If
 
-
-                iPosicion = iPosicion + 1
+            My.Application.DoEvents()
+            iPosicion = iPosicion + 1
+            My.Forms.FrmRecibos.ProgressBar1.Value = My.Forms.FrmRecibos.ProgressBar1.Value + 1
         Loop
 
 
@@ -353,6 +358,10 @@ Public Class FrmRecibosFacturas
 
         iPosicion = 0
         Registros = DataSet.Tables("ConsultaNota").Rows.Count
+
+        My.Forms.FrmRecibos.ProgressBar1.Minimum = 0
+        My.Forms.FrmRecibos.ProgressBar1.Maximum = Registros
+        My.Forms.FrmRecibos.ProgressBar1.Value = 0
 
         Do While Registros > iPosicion
             NumeroNota = DataSet.Tables("ConsultaNota").Rows(iPosicion)("Numero_Nota")
@@ -423,8 +432,10 @@ Public Class FrmRecibosFacturas
             End If
 
 
-
+            My.Application.DoEvents()
             iPosicion = iPosicion + 1
+            My.Forms.FrmRecibos.ProgressBar1.Value = My.Forms.FrmRecibos.ProgressBar1.Value + 1
+
         Loop
 
 

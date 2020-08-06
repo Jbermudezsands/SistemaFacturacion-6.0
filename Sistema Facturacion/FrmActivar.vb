@@ -61,6 +61,7 @@ Public Class FrmActivar
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim CodTipoNomina As String, Posicion As Integer, ConsecutivoCompra As Double, NumeroPlanilla As String
         Dim FechaInicio As String, SqlString As String, Nomina As String, Año As Double, Mes As Double, Periodo As Double
+        Dim ConsecutivoConductores As Double, NumeroPlanillaConductores As String
 
         Try
 
@@ -118,6 +119,26 @@ Public Class FrmActivar
                 MiConexion.Close()
             End If
 
+
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////////AGREGO LA NOMINA CONTRATISTAS //////////////////////////////////////////////////////////////
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            SqlString = "SELECT NominaTransportista.* FROM NominaTransportista WHERE(Activo = 1)"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            DataAdapter.Fill(DataSet, "NominaConductor")
+            If DataSet.Tables("NominaConductor").Rows.Count = 0 Then
+
+                ConsecutivoConductores = BuscaConsecutivo("PlanillaConductor")
+                NumeroPlanillaConductores = Format(ConsecutivoConductores, "0000#")
+
+                StrSqlUpdate = "INSERT INTO [NominaTransportista] ([NumPlanilla],[CodTipoNomina],[FechaInicial],[FechaFinal],[Año],[mes],[Periodo]) " & _
+                               "VALUES( '" & NumeroPlanillaConductores & "', '" & CodTipoNomina & "','" & Format(Me.DTPFechaIni.Value, "dd/MM/yyyy") & "','" & Format(Me.DTPFechaFin.Value, "dd/MM/yyyy") & "'," & Año & " ," & Mes & "," & Periodo & ")"
+                MiConexion.Open()
+                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                iResultado = ComandoUpdate.ExecuteNonQuery
+                MiConexion.Close()
+            End If
 
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             '///////////////////////////////ACTIVO LA NOMINA/////////////////////////////////////////////////////////////////

@@ -12565,18 +12565,19 @@ Module Funciones
     Public Sub GrabaEncabezadoLiquidacion(ByVal ConsecutivoCompra As String)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-        Dim TotalCosto As Double, TotalFob As Double
+        Dim TotalCosto As Double, TotalFob As Double, TasaCambio As Double
 
         TotalCosto = FrmLiquidacion.TxtTotalCosto.Text
         TotalFob = FrmLiquidacion.TxtTotalFob.Text
 
+        TasaCambio = FrmLiquidacion.TxtTasaCambio.Text
 
         If FrmLiquidacion.TxtNumeroEnsamble.Text = "-----0-----" Then
             '/////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////AGREGO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
             SqlCompras = "INSERT INTO [Liquidacion] ([Numero_Liquidacion],[Fecha_Liquidacion],[Cod_Proveedor],[Nombre_Proveedor],[Apellido_Proveedor],[TotalFOB],[TotalCosto],[Seguro],[Transporte],[Almacen],[Fletes],[CodBodega],[MonedaLiquidacion],[MonedaImpuestos],[GtoAgenteAduana],[GtoCustodio],[GtoAduana],[GtoOtros],[GtoFletesInternos],[TasaCambio],[GtoImpuestos]) " & _
-                         "VALUES('" & ConsecutivoCompra & "','" & FrmLiquidacion.DTPFecha.Text & "','" & FrmLiquidacion.TxtCodigoProveedor.Text & "','" & FrmLiquidacion.TxtNombres.Text & "','" & FrmLiquidacion.TxtApellidos.Text & "'," & TotalFob & "," & TotalCosto & "," & CDbl(FrmLiquidacion.TxtSeguro.Text) & "," & CDbl(FrmLiquidacion.TxtTransporte.Text) & "," & CDbl(FrmLiquidacion.TxtAlmacen.Text) & "," & CDbl(FrmLiquidacion.TxtFletes.Text) & ",'" & FrmLiquidacion.CboCodigoBodega.Text & "','" & FrmLiquidacion.CmbMoneda.Text & "','" & FrmLiquidacion.CmbImpuesto.Text & "'," & CDbl(FrmLiquidacion.TxtAgente.Text) & "," & CDbl(FrmLiquidacion.TxtCustodio.Text) & "," & CDbl(FrmLiquidacion.TxtGastosAduana.Text) & "," & CDbl(FrmLiquidacion.TxtOtrosGastos.Text) & "," & CDbl(FrmLiquidacion.TxtFletesInternos.Text) & "," & CDbl(FrmLiquidacion.TxtTasaCambio.Text) & ", ," & CDbl(FrmLiquidacion.TxtGastoImpuesto.Text) & ")"
+                         "VALUES('" & ConsecutivoCompra & "','" & FrmLiquidacion.DTPFecha.Text & "','" & FrmLiquidacion.TxtCodigoProveedor.Text & "','" & FrmLiquidacion.TxtNombres.Text & "','" & FrmLiquidacion.TxtApellidos.Text & "'," & TotalFob & "," & TotalCosto & "," & CDbl(FrmLiquidacion.TxtSeguro.Text) & "," & CDbl(FrmLiquidacion.TxtTransporte.Text) & "," & CDbl(FrmLiquidacion.TxtAlmacen.Text) & "," & CDbl(FrmLiquidacion.TxtFletes.Text) & ",'" & FrmLiquidacion.CboCodigoBodega.Text & "','" & FrmLiquidacion.CmbMoneda.Text & "','" & FrmLiquidacion.CmbImpuesto.Text & "'," & CDbl(FrmLiquidacion.TxtAgente.Text) & "," & CDbl(FrmLiquidacion.TxtCustodio.Text) & "," & CDbl(FrmLiquidacion.TxtGastosAduana.Text) & "," & CDbl(FrmLiquidacion.TxtOtrosGastos.Text) & "," & CDbl(FrmLiquidacion.TxtFletesInternos.Text) & "," & CDbl(TasaCambio) & "," & CDbl(FrmLiquidacion.TxtGastoImpuesto.Text) & ")"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery

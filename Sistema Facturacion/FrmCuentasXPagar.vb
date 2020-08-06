@@ -67,6 +67,7 @@ Public Class FrmCuentasXPagar
         Dim Registros2 As Double, j As Double, TasaCambioRecibo As Double, TotalFactura As Double = 0, TotalAbonos As Double = 0, TotalCargos As Double = 0
         Dim TotalMora As Double = 0, FechaVence As Date, NumeroNota As String = "", MontoNota As Double = 0, NumeroNotaCR As String = "", MontoNotaCR As Double = 0, TotalMontoNotaCR As Double = 0, TotalMontoNotaDB As Double = 0
         Dim CodigoProveedor As String, TipoNota As String, Observaciones As String, MontoMetodoCompra As Double, Numero_Compra As String
+        Dim H As Double
 
         If Me.CboCodigoProveedor.Text = "" Then
             Exit Sub
@@ -88,7 +89,7 @@ Public Class FrmCuentasXPagar
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////cod
         '/////////////////////////AGREGO LA CONSULTA PARA TODAS LAS FACTURAS DE CREDITO //////////////////////////////////////////////////////
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SQlString = "SELECT CASE WHEN Detalle_MetodoCompras.Monto = Compras.SubTotal + Compras.IVA THEN 'Contado' ELSE 'Credito' END AS MetodoPago, Detalle_MetodoCompras.Monto, Compras.* FROM Compras LEFT OUTER JOIN Detalle_MetodoCompras ON Compras.Numero_Compra = Detalle_MetodoCompras.Numero_Compra AND Compras.Fecha_Compra = Detalle_MetodoCompras.Fecha_Compra And Compras.Tipo_Compra = Detalle_MetodoCompras.Tipo_Compra  " & _
+        SQlString = "SELECT DISTINCT CASE WHEN Detalle_MetodoCompras.Monto = Compras.SubTotal + Compras.IVA THEN 'Contado' ELSE 'Credito' END AS MetodoPago, Compras.* FROM Compras LEFT OUTER JOIN Detalle_MetodoCompras ON Compras.Numero_Compra = Detalle_MetodoCompras.Numero_Compra AND Compras.Fecha_Compra = Detalle_MetodoCompras.Fecha_Compra And Compras.Tipo_Compra = Detalle_MetodoCompras.Tipo_Compra  " & _
                     "WHERE  (Compras.Tipo_Compra = 'Mercancia Recibida' OR Compras.Tipo_Compra = 'Cuenta')  AND (Compras.Cod_Proveedor = '" & Me.CboCodigoProveedor.Text & "') AND (CASE WHEN Detalle_MetodoCompras.Monto = Compras.SubTotal + Compras.IVA THEN 'Contado' ELSE 'Credito' END = 'Credito') "
         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
         DataAdapter.Fill(DataSet, "Proveedores")
@@ -273,24 +274,27 @@ Public Class FrmCuentasXPagar
             SQlString = "SELECT * FROM Detalle_MetodoCompras INNER JOIN MetodoPago ON Detalle_MetodoCompras.NombrePago = MetodoPago.NombrePago WHERE (Detalle_MetodoCompras.Tipo_Compra = 'Mercancia Recibida') AND (Detalle_MetodoCompras.Numero_Compra = '" & Numero_Compra & "')"
             DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
             DataAdapter.Fill(DataSet, "MetodoCompra")
-            If DataSet.Tables("MetodoCompra").Rows.Count <> 0 Then
+
+            j = 0
+            Do While DataSet.Tables("MetodoCompra").Rows.Count > j
                 If Me.OptCordobas.Checked = True Then
-                    If DataSet.Tables("MetodoCompra").Rows(0)("Moneda") = "Cordobas" Then
+                    If DataSet.Tables("MetodoCompra").Rows(j)("Moneda") = "Cordobas" Then
                         TasaCambioRecibo = 1
                     Else
-                        TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("MetodoCompra").Rows(0)("Fecha_Compra"))
+                        TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("MetodoCompra").Rows(j)("Fecha_Compra"))
                     End If
                 Else
-                    If DataSet.Tables("MetodoCompra").Rows(0)("Moneda") = "Dolares" Then
+                    If DataSet.Tables("MetodoCompra").Rows(j)("Moneda") = "Dolares" Then
                         TasaCambioRecibo = 1
                     Else
-                        TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("MetodoCompra").Rows(0)("Fecha_Compra"))
+                        TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("MetodoCompra").Rows(j)("Fecha_Compra"))
                     End If
                 End If
 
-                MontoMetodoCompra = DataSet.Tables("MetodoCompra").Rows(0)("Monto") * TasaCambioRecibo
+                MontoMetodoCompra = MontoMetodoCompra + DataSet.Tables("MetodoCompra").Rows(j)("Monto") * TasaCambioRecibo
 
-            End If
+                j = j + 1
+            Loop
             DataSet.Tables("MetodoCompra").Reset()
 
 

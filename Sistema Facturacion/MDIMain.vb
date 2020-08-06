@@ -1123,4 +1123,14 @@ Public Class MDIMain
         My.Forms.FrmReportes.MdiParent = Me
         My.Forms.FrmReportes.Show()
     End Sub
+
+    Private Sub RibbonButton14_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton14.Click
+        My.Forms.FrmConductorPlanilla.MdiParent = Me
+        My.Forms.FrmConductorPlanilla.Show()
+    End Sub
+
+    Private Sub RibbonButton15_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton15.Click
+        My.Forms.frmPlanillaConductores.MdiParent = Me
+        My.Forms.frmPlanillaConductores.Show()
+    End Sub
 End Class

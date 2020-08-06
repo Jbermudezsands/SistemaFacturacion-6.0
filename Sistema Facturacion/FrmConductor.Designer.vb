@@ -25,7 +25,6 @@ Partial Class FrmConductor
         Me.ButtonBorrar = New System.Windows.Forms.Button
         Me.ButtonNuevo = New System.Windows.Forms.Button
         Me.Button8 = New System.Windows.Forms.Button
-        Me.C1Button2 = New C1.Win.C1Input.C1Button
         Me.LblApellido = New System.Windows.Forms.Label
         Me.CboCodigoConductor = New C1.Win.C1List.C1Combo
         Me.TxtNombre = New System.Windows.Forms.TextBox
@@ -42,6 +41,10 @@ Partial Class FrmConductor
         Me.CboLstaNegra = New System.Windows.Forms.ComboBox
         Me.Label4 = New System.Windows.Forms.Label
         Me.TxtMotivo = New System.Windows.Forms.TextBox
+        Me.TxtCtaxPagar = New System.Windows.Forms.TextBox
+        Me.Label5 = New System.Windows.Forms.Label
+        Me.Button1 = New System.Windows.Forms.Button
+        Me.Button2 = New System.Windows.Forms.Button
         CType(Me.CboCodigoConductor, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -61,7 +64,7 @@ Partial Class FrmConductor
         '
         Me.ButtonGrabar.Image = CType(resources.GetObject("ButtonGrabar.Image"), System.Drawing.Image)
         Me.ButtonGrabar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonGrabar.Location = New System.Drawing.Point(99, 298)
+        Me.ButtonGrabar.Location = New System.Drawing.Point(99, 321)
         Me.ButtonGrabar.Name = "ButtonGrabar"
         Me.ButtonGrabar.Size = New System.Drawing.Size(78, 68)
         Me.ButtonGrabar.TabIndex = 265
@@ -74,7 +77,7 @@ Partial Class FrmConductor
         '
         Me.ButtonBorrar.Image = CType(resources.GetObject("ButtonBorrar.Image"), System.Drawing.Image)
         Me.ButtonBorrar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonBorrar.Location = New System.Drawing.Point(183, 298)
+        Me.ButtonBorrar.Location = New System.Drawing.Point(183, 321)
         Me.ButtonBorrar.Name = "ButtonBorrar"
         Me.ButtonBorrar.Size = New System.Drawing.Size(75, 67)
         Me.ButtonBorrar.TabIndex = 266
@@ -87,7 +90,7 @@ Partial Class FrmConductor
         '
         Me.ButtonNuevo.Image = CType(resources.GetObject("ButtonNuevo.Image"), System.Drawing.Image)
         Me.ButtonNuevo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonNuevo.Location = New System.Drawing.Point(18, 298)
+        Me.ButtonNuevo.Location = New System.Drawing.Point(18, 321)
         Me.ButtonNuevo.Name = "ButtonNuevo"
         Me.ButtonNuevo.Size = New System.Drawing.Size(75, 67)
         Me.ButtonNuevo.TabIndex = 264
@@ -100,22 +103,13 @@ Partial Class FrmConductor
         Me.Button8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
         Me.Button8.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button8.Location = New System.Drawing.Point(311, 298)
+        Me.Button8.Location = New System.Drawing.Point(311, 321)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(75, 66)
         Me.Button8.TabIndex = 267
         Me.Button8.Text = "Salir"
         Me.Button8.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.Button8.UseVisualStyleBackColor = True
-        '
-        'C1Button2
-        '
-        Me.C1Button2.Image = CType(resources.GetObject("C1Button2.Image"), System.Drawing.Image)
-        Me.C1Button2.Location = New System.Drawing.Point(326, 60)
-        Me.C1Button2.Name = "C1Button2"
-        Me.C1Button2.Size = New System.Drawing.Size(39, 23)
-        Me.C1Button2.TabIndex = 263
-        Me.C1Button2.UseVisualStyleBackColor = True
         '
         'LblApellido
         '
@@ -238,7 +232,7 @@ Partial Class FrmConductor
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(49, 163)
+        Me.Label2.Location = New System.Drawing.Point(59, 163)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(37, 13)
         Me.Label2.TabIndex = 272
@@ -247,7 +241,7 @@ Partial Class FrmConductor
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(32, 193)
+        Me.Label3.Location = New System.Drawing.Point(35, 193)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(61, 13)
         Me.Label3.TabIndex = 274
@@ -266,7 +260,7 @@ Partial Class FrmConductor
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(19, 228)
+        Me.Label4.Location = New System.Drawing.Point(7, 231)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(89, 13)
         Me.Label4.TabIndex = 275
@@ -280,11 +274,49 @@ Partial Class FrmConductor
         Me.TxtMotivo.Size = New System.Drawing.Size(275, 62)
         Me.TxtMotivo.TabIndex = 276
         '
+        'TxtCtaxPagar
+        '
+        Me.TxtCtaxPagar.Location = New System.Drawing.Point(111, 285)
+        Me.TxtCtaxPagar.Name = "TxtCtaxPagar"
+        Me.TxtCtaxPagar.Size = New System.Drawing.Size(120, 20)
+        Me.TxtCtaxPagar.TabIndex = 278
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(10, 288)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(80, 13)
+        Me.Label5.TabIndex = 277
+        Me.Label5.Text = "Cuenta x Pagar"
+        '
+        'Button1
+        '
+        Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
+        Me.Button1.Location = New System.Drawing.Point(237, 281)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(29, 30)
+        Me.Button1.TabIndex = 279
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'Button2
+        '
+        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
+        Me.Button2.Location = New System.Drawing.Point(322, 55)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(29, 30)
+        Me.Button2.TabIndex = 280
+        Me.Button2.UseVisualStyleBackColor = True
+        '
         'FrmConductor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(397, 376)
+        Me.ClientSize = New System.Drawing.Size(397, 399)
+        Me.Controls.Add(Me.Button2)
+        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.TxtCtaxPagar)
+        Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.TxtMotivo)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label3)
@@ -298,7 +330,6 @@ Partial Class FrmConductor
         Me.Controls.Add(Me.ButtonBorrar)
         Me.Controls.Add(Me.ButtonNuevo)
         Me.Controls.Add(Me.Button8)
-        Me.Controls.Add(Me.C1Button2)
         Me.Controls.Add(Me.LblApellido)
         Me.Controls.Add(Me.CboCodigoConductor)
         Me.Controls.Add(Me.TxtNombre)
@@ -321,7 +352,6 @@ Partial Class FrmConductor
     Friend WithEvents ButtonBorrar As System.Windows.Forms.Button
     Friend WithEvents ButtonNuevo As System.Windows.Forms.Button
     Friend WithEvents Button8 As System.Windows.Forms.Button
-    Friend WithEvents C1Button2 As C1.Win.C1Input.C1Button
     Friend WithEvents LblApellido As System.Windows.Forms.Label
     Friend WithEvents CboCodigoConductor As C1.Win.C1List.C1Combo
     Friend WithEvents TxtNombre As System.Windows.Forms.TextBox
@@ -338,4 +368,8 @@ Partial Class FrmConductor
     Friend WithEvents CboLstaNegra As System.Windows.Forms.ComboBox
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents TxtMotivo As System.Windows.Forms.TextBox
+    Friend WithEvents TxtCtaxPagar As System.Windows.Forms.TextBox
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents Button2 As System.Windows.Forms.Button
 End Class

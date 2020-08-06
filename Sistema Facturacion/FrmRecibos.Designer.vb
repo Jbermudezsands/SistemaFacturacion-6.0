@@ -62,6 +62,7 @@ Partial Class FrmRecibos
         Me.BindingMetodo = New System.Windows.Forms.BindingSource(Me.components)
         Me.BindingDetalleRecibo = New System.Windows.Forms.BindingSource(Me.components)
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.Button2 = New System.Windows.Forms.Button
         Me.TxtTipoRecibo = New System.Windows.Forms.TextBox
         Me.TxtMonedaFactura = New System.Windows.Forms.ComboBox
@@ -519,18 +520,26 @@ Partial Class FrmRecibos
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.ProgressBar1)
         Me.GroupBox3.Controls.Add(Me.Button2)
-        Me.GroupBox3.Location = New System.Drawing.Point(374, 148)
+        Me.GroupBox3.Location = New System.Drawing.Point(374, 144)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(128, 100)
+        Me.GroupBox3.Size = New System.Drawing.Size(155, 104)
         Me.GroupBox3.TabIndex = 225
         Me.GroupBox3.TabStop = False
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(6, 15)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(140, 10)
+        Me.ProgressBar1.TabIndex = 223
         '
         'Button2
         '
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button2.Location = New System.Drawing.Point(24, 19)
+        Me.Button2.Location = New System.Drawing.Point(36, 31)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(75, 67)
         Me.Button2.TabIndex = 222
@@ -766,4 +775,5 @@ Partial Class FrmRecibos
     Friend WithEvents CmbSerie As C1.Win.C1List.C1Combo
     Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
     Friend WithEvents PictureBox3 As System.Windows.Forms.PictureBox
+    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
 End Class

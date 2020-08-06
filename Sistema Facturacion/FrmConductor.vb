@@ -24,6 +24,7 @@ Public Class FrmConductor
         Me.CboCodigoConductor.Text = ""
         Me.CboLstaNegra.Text = "No"
         Me.CboActivo.Text = "Activo"
+        Me.TxtCtaxPagar.Text = ""
 
     End Sub
 
@@ -52,10 +53,8 @@ Public Class FrmConductor
         'Me.CboCodigoConductor.Columns(0).Caption = "Codigo"
     End Sub
 
-    Private Sub C1Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles C1Button2.Click
-        Quien = "Conductor"
-        My.Forms.FrmConsultas.ShowDialog()
-        Me.CboCodigoConductor.Text = My.Forms.FrmConsultas.Codigo
+    Private Sub C1Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
     End Sub
 
     Private Sub CboCodigoConductor_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboCodigoConductor.TextChanged
@@ -141,7 +140,7 @@ Public Class FrmConductor
         If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
 
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-            StrSqlUpdate = "UPDATE [Conductor]  SET [Nombre] = '" & Me.TxtNombre.Text & "',[Cedula] = '" & Me.TxtCedula.Text & "',[Licencia] = '" & Me.TxtLicencia.Text & "'  ,[Activo] = " & Activo & ",[ListaNegra] = " & ListaNegra & ",[RazonListaNegra]= '" & Me.TxtMotivo.Text & "'  WHERE (Activo = 1) AND (Codigo = '" & Me.CboCodigoConductor.Text & "')"
+            StrSqlUpdate = "UPDATE [Conductor]  SET [Nombre] = '" & Me.TxtNombre.Text & "',[Cedula] = '" & Me.TxtCedula.Text & "',[Licencia] = '" & Me.TxtLicencia.Text & "'  ,[Activo] = " & Activo & ",[ListaNegra] = " & ListaNegra & ",[RazonListaNegra]= '" & Me.TxtMotivo.Text & "' ,[Cuenta_Contable]= '" & Me.TxtCtaxPagar.Text & "'  WHERE (Activo = 1) AND (Codigo = '" & Me.CboCodigoConductor.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -149,7 +148,7 @@ Public Class FrmConductor
 
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Conductor] ([Codigo],[Nombre],[Cedula],[Licencia],[ListaNegra],[RazonListaNegra],[Activo]) VALUES ('" & Me.CboCodigoConductor.Text & "' ,'" & Me.TxtNombre.Text & "' ,'" & Me.TxtCedula.Text & "', '" & Me.TxtLicencia.Text & "', " & ListaNegra & ", '" & Me.TxtMotivo.Text & "', " & Activo & ") "
+            StrSqlUpdate = "INSERT INTO [Conductor] ([Codigo],[Nombre],[Cedula],[Licencia],[ListaNegra],[RazonListaNegra],[Activo],[Cuenta_Contable]) VALUES ('" & Me.CboCodigoConductor.Text & "' ,'" & Me.TxtNombre.Text & "' ,'" & Me.TxtCedula.Text & "', '" & Me.TxtLicencia.Text & "', " & ListaNegra & ", '" & Me.TxtMotivo.Text & "', " & Activo & ", '" & Me.TxtCtaxPagar.Text & "') "
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -164,5 +163,17 @@ Public Class FrmConductor
 
     Private Sub ButtonBorrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBorrar.Click
 
+    End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        Quien = "CuentaPagar"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.TxtCtaxPagar.Text = My.Forms.FrmConsultas.Codigo
+    End Sub
+
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+        Quien = "Conductor"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.CboCodigoConductor.Text = My.Forms.FrmConsultas.Codigo
     End Sub
 End Class

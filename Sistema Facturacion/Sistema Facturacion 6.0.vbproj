@@ -157,6 +157,12 @@
     <Compile Include="FrmConductor.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmConductorPlanilla.Designer.vb">
+      <DependentUpon>FrmConductorPlanilla.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmConductorPlanilla.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmCooperativa.designer.vb">
       <DependentUpon>FrmCooperativa.vb</DependentUpon>
     </Compile>
@@ -305,6 +311,12 @@
       <DependentUpon>FrmPlanilla.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmPlanilla.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPlanillaConductores.Designer.vb">
+      <DependentUpon>frmPlanillaConductores.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmPlanillaConductores.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmProductor.designer.vb">
@@ -467,6 +479,12 @@
       <DependentUpon>ArepCotizacionesMembretes.vb</DependentUpon>
     </Compile>
     <Compile Include="Reportes\ArepCotizacionesMembretes.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\ArepDepartamentoResumen.Designer.vb">
+      <DependentUpon>ArepDepartamentoResumen.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepDepartamentoResumen.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reportes\ArepDetalleFacturaProductos.Designer.vb">
@@ -1411,6 +1429,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>FrmConductor.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmConductorPlanilla.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmConductorPlanilla.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmCooperativa.resx">
       <DependentUpon>FrmCooperativa.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1510,6 +1532,14 @@
     <EmbeddedResource Include="FrmPlanilla.resx">
       <DependentUpon>FrmPlanilla.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPlanillaConductores.af-ZA.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmPlanillaConductores.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPlanillaConductores.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmPlanillaConductores.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmProductor.resx">
       <DependentUpon>FrmProductor.vb</DependentUpon>
@@ -1634,6 +1664,10 @@
     <EmbeddedResource Include="Reportes\ArepCotizacionesMembretes.resx">
       <DependentUpon>ArepCotizacionesMembretes.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepDepartamentoResumen.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepDepartamentoResumen.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepDetalleFacturaProductos.resx">
       <SubType>Designer</SubType>

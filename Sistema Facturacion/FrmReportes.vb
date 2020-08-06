@@ -2926,7 +2926,7 @@ Public Class FrmReportes
                     Dim CostoUnitario As Double = 0, Utilidad As Double = 0, Porciento As Double = 0, Costo As Double = 0
                     Dim CodigoProducto As String = "", TipoProducto As String = ""
                     Dim ArepVentasClientes As New ArepVentasClientes, i As Double
-                    Dim oDataRow As DataRow, TasaCambio As Double
+                Dim oDataRow As DataRow, TasaCambio As Double
 
                     If Dir(RutaLogo) <> "" Then
                         ArepVentasClientes.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
@@ -3049,21 +3049,23 @@ Public Class FrmReportes
                 Dim SqlString As String, Registros As Double
                 Dim CostoUnitario As Double = 0, Utilidad As Double = 0, Porciento As Double = 0, Costo As Double = 0
                 Dim CodigoProducto As String = "", TipoProducto As String = ""
-                Dim ArepVentasClientes As New ArepVentasClientes, i As Double
+                Dim ArepDepartamentoResumen As New ArepDepartamentoResumen, i As Double
                 Dim oDataRow As DataRow, TasaCambio As Double
+                Dim Buscar_Fila() As DataRow, Criterios As String, Posicion As Double
+
 
                 If Dir(RutaLogo) <> "" Then
-                    ArepVentasClientes.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                    ArepDepartamentoResumen.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
                 End If
-                ArepVentasClientes.LblTitulo.Text = NombreEmpresa
-                ArepVentasClientes.LblDireccion.Text = DireccionEmpresa
-                ArepVentasClientes.LblRuc.Text = Ruc
-                ArepVentasClientes.LblNombre.Text = "Ventas de Clientes"
-                ArepVentasClientes.Label7.Text = "Impreso Desde " & Format(Fecha1, "dd/MM/yyyy") & "   Hasta    " & Format(Fecha2, "dd/MM/yyyy")
+                ArepDepartamentoResumen.LblTitulo.Text = NombreEmpresa
+                ArepDepartamentoResumen.LblDireccion.Text = DireccionEmpresa
+                ArepDepartamentoResumen.LblRuc.Text = Ruc
+                ArepDepartamentoResumen.LblNombre.Text = "Ventas de Clientes"
+                ArepDepartamentoResumen.Label7.Text = "Impreso Desde " & Format(Fecha1, "dd/MM/yyyy") & "   Hasta    " & Format(Fecha2, "dd/MM/yyyy")
                 If Me.OptDolares.Checked = True Then
-                    ArepVentasClientes.LblMoneda.Text = "Expresado en Dolares"
+                    ArepDepartamentoResumen.LblMoneda.Text = "Expresado en Dolares"
                 Else
-                    ArepVentasClientes.LblMoneda.Text = "Expresado en Cordobas"
+                    ArepDepartamentoResumen.LblMoneda.Text = "Expresado en Cordobas"
                 End If
 
                 '*******************************************************************************************************************************
@@ -3084,17 +3086,17 @@ Public Class FrmReportes
                             'SqlDatos = "SELECT Facturas.Fecha_Factura, Facturas.Numero_Factura, Facturas.Nombre_Cliente + ' ' + Facturas.Apellido_Cliente AS Nomibres, Facturas.SubTotal, Facturas.IVA, Facturas.Descuento, Facturas.MetodoPago, Facturas.SubTotal + Facturas.IVA AS Total,Facturas.MonedaFactura FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " & _
                             '           "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Facturas.Fecha_Factura, Facturas.Numero_Factura"
                             SqlDatos = "SELECT  Facturas.Fecha_Factura, Facturas.Numero_Factura, Facturas.Nombre_Cliente + ' ' + Facturas.Apellido_Cliente AS Nomibres, Facturas.SubTotal, Facturas.IVA, Facturas.Descuento, Facturas.MetodoPago, Facturas.SubTotal + Facturas.IVA AS Total, Facturas.MonedaFactura, Vendedores.Nombre_Vendedor + ' ' + Vendedores.Apellido_Vendedor AS NombreVendedor, Vendedores.Cod_Vendedor, Clientes.Municipio FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor " & _
-                                       "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Facturas.Fecha_Factura, Facturas.Numero_Factura"
+                                       "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) ORDER BY Clientes.Municipio, Facturas.Fecha_Factura, Facturas.Numero_Factura"
 
                         End If
                     Else
                         If Me.CmbVendedores.Text = "" And Me.CmbVendedores2.Text = "" Then
                             SqlDatos = "SELECT Facturas.Fecha_Factura, Facturas.Numero_Factura, Facturas.Nombre_Cliente + ' ' + Facturas.Apellido_Cliente AS Nomibres, Facturas.SubTotal, Facturas.IVA, Facturas.Descuento, Facturas.MetodoPago, Facturas.SubTotal + Facturas.IVA AS Total,Facturas.MonedaFactura, Clientes.Municipio FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " & _
-                                        "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Clientes.Departamento BETWEEN '" & Me.CboCodDepartamentoIni.Text & "' AND '" & Me.CboCodDepartamentoFin.Text & "')ORDER BY Facturas.Fecha_Factura, Facturas.Numero_Factura"
+                                        "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Clientes.Departamento BETWEEN '" & Me.CboCodDepartamentoIni.Text & "' AND '" & Me.CboCodDepartamentoFin.Text & "')ORDER BY Clientes.Municipio, Facturas.Fecha_Factura, Facturas.Numero_Factura"
 
                         Else
                             SqlDatos = "SELECT Facturas.Fecha_Factura, Facturas.Numero_Factura, Facturas.Nombre_Cliente + ' ' + Facturas.Apellido_Cliente AS Nomibres, Facturas.SubTotal, Facturas.IVA, Facturas.Descuento, Facturas.MetodoPago, Facturas.SubTotal + Facturas.IVA AS Total, Facturas.MonedaFactura, Vendedores.Cod_Vendedor, Vendedores.Nombre_Vendedor + ' ' + Vendedores.Apellido_Vendedor AS NombreVendedor, Clientes.Municipio FROM  Facturas INNER JOIN  Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN  Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor  " & _
-                                       "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Clientes.Departamento BETWEEN '" & Me.CboCodDepartamentoIni.Text & "' AND '" & Me.CboCodDepartamentoFin.Text & "') AND (Vendedores.Cod_Vendedor BETWEEN '" & Me.CmbVendedores.Text & "' AND '" & Me.CmbVendedores2.Text & "') ORDER BY Facturas.Fecha_Factura, Facturas.Numero_Factura"
+                                       "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Clientes.Departamento BETWEEN '" & Me.CboCodDepartamentoIni.Text & "' AND '" & Me.CboCodDepartamentoFin.Text & "') AND (Vendedores.Cod_Vendedor BETWEEN '" & Me.CmbVendedores.Text & "' AND '" & Me.CmbVendedores2.Text & "') ORDER BY Clientes.Municipio, Facturas.Fecha_Factura, Facturas.Numero_Factura"
 
                         End If
                     End If
@@ -3102,17 +3104,17 @@ Public Class FrmReportes
                     If Me.CmbVendedores.Text = "" And Me.CmbVendedores2.Text = "" Then
 
                         SqlDatos = "SELECT Facturas.Fecha_Factura, Facturas.Numero_Factura, Facturas.Nombre_Cliente + ' ' + Facturas.Apellido_Cliente AS Nomibres, Facturas.SubTotal, Facturas.IVA, Facturas.Descuento, Facturas.MetodoPago, Facturas.SubTotal + Facturas.IVA AS Total, Facturas.MonedaFactura, Vendedores.Cod_Vendedor, Vendedores.Nombre_Vendedor + ' ' + Vendedores.Apellido_Vendedor AS NombreVendedor, Clientes.Municipio FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor  " & _
-                                     "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Clientes.Municipio BETWEEN '" & Me.CboMunicipioIni.Text & "' AND '" & Me.CboMunicipio2.Text & "') ORDER BY Facturas.Fecha_Factura, Facturas.Numero_Factura"
+                                     "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Clientes.Municipio BETWEEN '" & Me.CboMunicipioIni.Text & "' AND '" & Me.CboMunicipio2.Text & "') ORDER BY Clientes.Municipio, Facturas.Fecha_Factura, Facturas.Numero_Factura"
                     Else
                         SqlDatos = "SELECT Facturas.Fecha_Factura, Facturas.Numero_Factura, Facturas.Nombre_Cliente + ' ' + Facturas.Apellido_Cliente AS Nomibres, Facturas.SubTotal, Facturas.IVA, Facturas.Descuento, Facturas.MetodoPago, Facturas.SubTotal + Facturas.IVA AS Total, Facturas.MonedaFactura, Vendedores.Cod_Vendedor, Vendedores.Nombre_Vendedor + ' ' + Vendedores.Apellido_Vendedor AS NombreVendedor, Clientes.Municipio FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor  " & _
-                                     "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Clientes.Municipio BETWEEN '" & Me.CboMunicipioIni.Text & "' AND '" & Me.CboMunicipio2.Text & "') AND (Vendedores.Cod_Vendedor BETWEEN '" & Me.CmbVendedores.Text & "' AND '" & Me.CmbVendedores2.Text & "')  ORDER BY Facturas.Fecha_Factura, Facturas.Numero_Factura"
+                                     "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Clientes.Municipio BETWEEN '" & Me.CboMunicipioIni.Text & "' AND '" & Me.CboMunicipio2.Text & "') AND (Vendedores.Cod_Vendedor BETWEEN '" & Me.CmbVendedores.Text & "' AND '" & Me.CmbVendedores2.Text & "')  ORDER BY Clientes.Municipio, Facturas.Fecha_Factura, Facturas.Numero_Factura"
 
                     End If
 
                 Else
 
                     SqlDatos = "SELECT Facturas.Fecha_Factura, Facturas.Numero_Factura, Facturas.Nombre_Cliente + ' ' + Facturas.Apellido_Cliente AS Nomibres, Facturas.SubTotal, Facturas.IVA, Facturas.Descuento, Facturas.MetodoPago, Facturas.SubTotal + Facturas.IVA AS Total,Facturas.MonedaFactura, Clientes.Municipio FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " & _
-                               "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Clientes.Departamento BETWEEN '" & Me.CboCodDepartamentoIni.Text & "' AND '" & Me.CboCodDepartamentoFin.Text & "') AND (Clientes.Municipio BETWEEN '" & Me.CboMunicipioIni.Text & "' AND '" & Me.CboMunicipio2.Text & "') ORDER BY Facturas.Fecha_Factura, Facturas.Numero_Factura"
+                               "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(Fecha1, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) AND (Clientes.Departamento BETWEEN '" & Me.CboCodDepartamentoIni.Text & "' AND '" & Me.CboCodDepartamentoFin.Text & "') AND (Clientes.Municipio BETWEEN '" & Me.CboMunicipioIni.Text & "' AND '" & Me.CboMunicipio2.Text & "') ORDER BY Clientes.Municipio, Facturas.Fecha_Factura, Facturas.Numero_Factura"
                 End If
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
                 DataAdapter.Fill(DataSet, "TotalFacturas")
@@ -3140,16 +3142,36 @@ Public Class FrmReportes
                         End If
                     End If
 
-                    oDataRow = DataSet.Tables("TotalVentas").NewRow
-                    oDataRow("Municipio") = DataSet.Tables("TotalFacturas").Rows(i)("Municipio")
-                    oDataRow("Fecha_Factura") = DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura")
-                    oDataRow("Numero_Factura") = DataSet.Tables("TotalFacturas").Rows(i)("Numero_Factura")
-                    oDataRow("Nomibres") = DataSet.Tables("TotalFacturas").Rows(i)("Nomibres")
-                    oDataRow("SubTotal") = DataSet.Tables("TotalFacturas").Rows(i)("SubTotal") * TasaCambio
-                    oDataRow("IVA") = DataSet.Tables("TotalFacturas").Rows(i)("SubTotal") * 0.01 * TasaCambio
-                    oDataRow("MetodoPago") = DataSet.Tables("TotalFacturas").Rows(i)("MetodoPago")
-                    oDataRow("Total") = DataSet.Tables("TotalFacturas").Rows(i)("Total") * TasaCambio
-                    DataSet.Tables("TotalVentas").Rows.Add(oDataRow)
+
+
+                    Criterios = "Municipio= '" & DataSet.Tables("TotalFacturas").Rows(i)("Municipio") & "' "
+                    Buscar_Fila = DataSet.Tables("TotalVentas").Select(Criterios)
+                    If Buscar_Fila.Length > 0 Then
+
+                        Posicion = DataSet.Tables("TotalVentas").Rows.IndexOf(Buscar_Fila(0))
+                        DataSet.Tables("TotalVentas").Rows(Posicion)("Municipio") = DataSet.Tables("TotalFacturas").Rows(i)("Municipio")
+                        DataSet.Tables("TotalVentas").Rows(Posicion)("Fecha_Factura") = DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura")
+                        DataSet.Tables("TotalVentas").Rows(Posicion)("Numero_Factura") = DataSet.Tables("TotalFacturas").Rows(i)("Numero_Factura")
+                        DataSet.Tables("TotalVentas").Rows(Posicion)("Nomibres") = DataSet.Tables("TotalFacturas").Rows(i)("Nomibres")
+                        DataSet.Tables("TotalVentas").Rows(Posicion)("SubTotal") = DataSet.Tables("TotalVentas").Rows(Posicion)("SubTotal") + DataSet.Tables("TotalFacturas").Rows(i)("SubTotal")
+                        DataSet.Tables("TotalVentas").Rows(Posicion)("IVA") = DataSet.Tables("TotalVentas").Rows(Posicion)("IVA") + DataSet.Tables("TotalFacturas").Rows(i)("IVA")
+                        DataSet.Tables("TotalVentas").Rows(Posicion)("MetodoPago") = DataSet.Tables("TotalFacturas").Rows(Posicion)("MetodoPago")
+                        DataSet.Tables("TotalVentas").Rows(Posicion)("Total") = DataSet.Tables("TotalVentas").Rows(Posicion)("Total") + DataSet.Tables("TotalFacturas").Rows(i)("IVA")
+
+                    Else
+                        oDataRow = DataSet.Tables("TotalVentas").NewRow
+                        oDataRow("Municipio") = DataSet.Tables("TotalFacturas").Rows(i)("Municipio")
+                        oDataRow("Fecha_Factura") = DataSet.Tables("TotalFacturas").Rows(i)("Fecha_Factura")
+                        oDataRow("Numero_Factura") = DataSet.Tables("TotalFacturas").Rows(i)("Numero_Factura")
+                        oDataRow("Nomibres") = DataSet.Tables("TotalFacturas").Rows(i)("Nomibres")
+                        oDataRow("SubTotal") = DataSet.Tables("TotalFacturas").Rows(i)("SubTotal") * TasaCambio
+                        oDataRow("IVA") = DataSet.Tables("TotalFacturas").Rows(i)("SubTotal") * 0.01 * TasaCambio
+                        oDataRow("MetodoPago") = DataSet.Tables("TotalFacturas").Rows(i)("MetodoPago")
+                        oDataRow("Total") = DataSet.Tables("TotalFacturas").Rows(i)("Total") * TasaCambio
+                        DataSet.Tables("TotalVentas").Rows.Add(oDataRow)
+                    End If
+
+
 
                     i = i + 1
                     Me.ProgressBar.Value = Me.ProgressBar.Value + 1
@@ -3162,11 +3184,11 @@ Public Class FrmReportes
                 SQL.SQL = SqlDatos
 
                 Dim ViewerForm As New FrmViewer()
-                ViewerForm.arvMain.Document = ArepVentasClientes.Document
+                ViewerForm.arvMain.Document = ArepDepartamentoResumen.Document
                 My.Application.DoEvents()
                 'ArepVentasClientes.DataSource = SQL
-                ArepVentasClientes.DataSource = DataSet.Tables("TotalVentas")
-                ArepVentasClientes.Run(False)
+                ArepDepartamentoResumen.DataSource = DataSet.Tables("TotalVentas")
+                ArepDepartamentoResumen.Run(False)
                 ViewerForm.Show()
 
 
@@ -12071,6 +12093,15 @@ Public Class FrmReportes
                 Me.GroupBoxDepartamento.Visible = True
 
             Case "Reporte de Ventas x Dpto x Municipio"
+                Me.GroupBoxMunicipio.Location = New Point(280, 123)
+                Me.GroupBoxMunicipio.Visible = True
+                Me.GroupBoxDepartamento.Location = New Point(280, 216)
+                Me.GroupBoxDepartamento.Visible = True
+                Me.GroupVendedor.Visible = True
+                Me.GroupVendedor.Location = New Point(570, 123)
+
+
+            Case "Reporte de Ventas x Dpto x Municipio Resumen"
                 Me.GroupBoxMunicipio.Location = New Point(280, 123)
                 Me.GroupBoxMunicipio.Visible = True
                 Me.GroupBoxDepartamento.Location = New Point(280, 216)

@@ -658,7 +658,7 @@ Partial Class FrmPlanilla
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1036, 471)
+        Me.ClientSize = New System.Drawing.Size(1034, 471)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.ProgressBar2)
         Me.Controls.Add(Me.LblProcesando)
