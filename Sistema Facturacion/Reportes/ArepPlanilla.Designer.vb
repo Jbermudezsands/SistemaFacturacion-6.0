@@ -27,8 +27,8 @@ Partial Public Class ArepPlanilla
         Me.LblDireccion = New DataDynamics.ActiveReports.Label
         Me.LblOrden = New DataDynamics.ActiveReports.Label
         Me.LblFechaOrden = New DataDynamics.ActiveReports.Label
-        Me.Label1 = New DataDynamics.ActiveReports.Label
-        Me.Label2 = New DataDynamics.ActiveReports.Label
+        Me.LblCodigo = New DataDynamics.ActiveReports.Label
+        Me.LblNombre = New DataDynamics.ActiveReports.Label
         Me.Label5 = New DataDynamics.ActiveReports.Label
         Me.Label3 = New DataDynamics.ActiveReports.Label
         Me.Label4 = New DataDynamics.ActiveReports.Label
@@ -163,8 +163,8 @@ Partial Public Class ArepPlanilla
         CType(Me.LblDireccion, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblOrden, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblFechaOrden, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Label1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Label2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LblCodigo, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LblNombre, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label4, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -290,7 +290,7 @@ Partial Public Class ArepPlanilla
         '
         'PageHeader1
         '
-        Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.lblOrderNum, Me.lblOrderDate, Me.ImgLogo, Me.LblEncabezado, Me.LblDireccion, Me.LblOrden, Me.LblFechaOrden, Me.Label1, Me.Label2, Me.Label5, Me.Label3, Me.Label4, Me.Label6, Me.Label7, Me.Label8, Me.Label9, Me.Label10, Me.Label11, Me.Label12, Me.Label13, Me.Label14, Me.Label15, Me.Label16, Me.Label17, Me.Label18, Me.Label19, Me.Label20, Me.Label21, Me.LblRuc, Me.LblPeriodo, Me.Label22, Me.Label25})
+        Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.lblOrderNum, Me.lblOrderDate, Me.ImgLogo, Me.LblEncabezado, Me.LblDireccion, Me.LblOrden, Me.LblFechaOrden, Me.LblCodigo, Me.LblNombre, Me.Label5, Me.Label3, Me.Label4, Me.Label6, Me.Label7, Me.Label8, Me.Label9, Me.Label10, Me.Label11, Me.Label12, Me.Label13, Me.Label14, Me.Label15, Me.Label16, Me.Label17, Me.Label18, Me.Label19, Me.Label20, Me.Label21, Me.LblRuc, Me.LblPeriodo, Me.Label22, Me.Label25})
         Me.PageHeader1.Height = 2.166667!
         Me.PageHeader1.Name = "PageHeader1"
         '
@@ -429,43 +429,43 @@ Partial Public Class ArepPlanilla
         Me.LblFechaOrden.Top = 1.3125!
         Me.LblFechaOrden.Width = 0.8125!
         '
-        'Label1
+        'LblCodigo
         '
-        Me.Label1.Border.BottomColor = System.Drawing.Color.Black
-        Me.Label1.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
-        Me.Label1.Border.LeftColor = System.Drawing.Color.Black
-        Me.Label1.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
-        Me.Label1.Border.RightColor = System.Drawing.Color.Black
-        Me.Label1.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
-        Me.Label1.Border.TopColor = System.Drawing.Color.Black
-        Me.Label1.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
-        Me.Label1.Height = 0.3125!
-        Me.Label1.HyperLink = Nothing
-        Me.Label1.Left = 0.03571429!
-        Me.Label1.Name = "Label1"
-        Me.Label1.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
-        Me.Label1.Text = "Codigo Productor"
-        Me.Label1.Top = 1.821429!
-        Me.Label1.Width = 0.6875!
+        Me.LblCodigo.Border.BottomColor = System.Drawing.Color.Black
+        Me.LblCodigo.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
+        Me.LblCodigo.Border.LeftColor = System.Drawing.Color.Black
+        Me.LblCodigo.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
+        Me.LblCodigo.Border.RightColor = System.Drawing.Color.Black
+        Me.LblCodigo.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
+        Me.LblCodigo.Border.TopColor = System.Drawing.Color.Black
+        Me.LblCodigo.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
+        Me.LblCodigo.Height = 0.3125!
+        Me.LblCodigo.HyperLink = Nothing
+        Me.LblCodigo.Left = 0.03571429!
+        Me.LblCodigo.Name = "LblCodigo"
+        Me.LblCodigo.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
+        Me.LblCodigo.Text = "Codigo Productor"
+        Me.LblCodigo.Top = 1.821429!
+        Me.LblCodigo.Width = 0.6875!
         '
-        'Label2
+        'LblNombre
         '
-        Me.Label2.Border.BottomColor = System.Drawing.Color.Black
-        Me.Label2.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
-        Me.Label2.Border.LeftColor = System.Drawing.Color.Black
-        Me.Label2.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
-        Me.Label2.Border.RightColor = System.Drawing.Color.Black
-        Me.Label2.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
-        Me.Label2.Border.TopColor = System.Drawing.Color.Black
-        Me.Label2.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
-        Me.Label2.Height = 0.3125!
-        Me.Label2.HyperLink = Nothing
-        Me.Label2.Left = 0.7142857!
-        Me.Label2.Name = "Label2"
-        Me.Label2.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
-        Me.Label2.Text = "Nombre Productor"
-        Me.Label2.Top = 1.821429!
-        Me.Label2.Width = 1.25!
+        Me.LblNombre.Border.BottomColor = System.Drawing.Color.Black
+        Me.LblNombre.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
+        Me.LblNombre.Border.LeftColor = System.Drawing.Color.Black
+        Me.LblNombre.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
+        Me.LblNombre.Border.RightColor = System.Drawing.Color.Black
+        Me.LblNombre.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
+        Me.LblNombre.Border.TopColor = System.Drawing.Color.Black
+        Me.LblNombre.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
+        Me.LblNombre.Height = 0.3125!
+        Me.LblNombre.HyperLink = Nothing
+        Me.LblNombre.Left = 0.7250001!
+        Me.LblNombre.Name = "LblNombre"
+        Me.LblNombre.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
+        Me.LblNombre.Text = "Nombre Productor"
+        Me.LblNombre.Top = 1.825!
+        Me.LblNombre.Width = 1.25!
         '
         'Label5
         '
@@ -3027,8 +3027,8 @@ Partial Public Class ArepPlanilla
         CType(Me.LblDireccion, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LblOrden, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LblFechaOrden, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Label1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Label2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LblCodigo, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LblNombre, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label4, System.ComponentModel.ISupportInitialize).EndInit()
@@ -3160,8 +3160,8 @@ Partial Public Class ArepPlanilla
     Friend WithEvents LblDireccion As DataDynamics.ActiveReports.Label
     Friend WithEvents LblOrden As DataDynamics.ActiveReports.Label
     Friend WithEvents LblFechaOrden As DataDynamics.ActiveReports.Label
-    Friend WithEvents Label1 As DataDynamics.ActiveReports.Label
-    Friend WithEvents Label2 As DataDynamics.ActiveReports.Label
+    Friend WithEvents LblCodigo As DataDynamics.ActiveReports.Label
+    Friend WithEvents LblNombre As DataDynamics.ActiveReports.Label
     Friend WithEvents Label5 As DataDynamics.ActiveReports.Label
     Friend WithEvents Label3 As DataDynamics.ActiveReports.Label
     Friend WithEvents Label4 As DataDynamics.ActiveReports.Label

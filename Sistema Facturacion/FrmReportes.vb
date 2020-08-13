@@ -26,9 +26,9 @@ Public Class FrmReportes
         Do While Registros > i
             My.Application.DoEvents()
             If Moneda = "Cordobas" Then
-                MontoRecibo = DataSet.Tables("Recibos").Rows(i)("MontoCordobas")
+                MontoRecibo = Format(DataSet.Tables("Recibos").Rows(i)("MontoCordobas"), "##,##0.00")
             Else
-                MontoRecibo = DataSet.Tables("Recibos").Rows(i)("MontoDolares")
+                MontoRecibo = Format(DataSet.Tables("Recibos").Rows(i)("MontoDolares"), "##,##0.00")
             End If
             TotalCreditos = TotalCreditos + MontoRecibo
             i = i + 1
@@ -50,13 +50,13 @@ Public Class FrmReportes
 
             If Moneda = "Cordobas" Then
                 If TipoNota <> "Credito Clientes Dif $" Then
-                    MontoNota = DataSet.Tables("NotasCredito").Rows(i)("MontoCordobas")
+                    MontoNota = Format(DataSet.Tables("NotasCredito").Rows(i)("MontoCordobas"), "##,##0.00")
                 Else
                     MontoNota = 0
                 End If
             Else
                 If TipoNota <> "Credito Clientes Dif C$" Then
-                    MontoNota = DataSet.Tables("NotasCredito").Rows(i)("MontoDolares")
+                    MontoNota = Format(DataSet.Tables("NotasCredito").Rows(i)("MontoDolares"), "##,##0.00")
                 Else
                     MontoNota = 0
                 End If
@@ -86,9 +86,9 @@ Public Class FrmReportes
         Do While Registros > i
             My.Application.DoEvents()
             If Moneda = "Cordobas" Then
-                MontoNota = DataSet.Tables("MetodoFactura").Rows(i)("MontoCordobas")
+                MontoNota = Format(DataSet.Tables("MetodoFactura").Rows(i)("MontoCordobas"), "##,##0.00")
             Else
-                MontoNota = DataSet.Tables("MetodoFactura").Rows(i)("MontoDolares")
+                MontoNota = Format(DataSet.Tables("MetodoFactura").Rows(i)("MontoDolares"), "##,##0.00")
             End If
             TotalCreditos = TotalCreditos + MontoNota
             i = i + 1
@@ -115,9 +115,9 @@ Public Class FrmReportes
             My.Application.DoEvents()
             If Not IsDBNull(DataSet.Tables("Facturas").Rows(i)("NetoCordobas")) Then
                 If Moneda = "Cordobas" Then
-                    MontoFactura = DataSet.Tables("Facturas").Rows(i)("ImporteCordobas") + DataSet.Tables("Facturas").Rows(i)("IvaCordobas")
+                    MontoFactura = Format(DataSet.Tables("Facturas").Rows(i)("ImporteCordobas") + DataSet.Tables("Facturas").Rows(i)("IvaCordobas"), "##,##0.00")
                 Else
-                    MontoFactura = DataSet.Tables("Facturas").Rows(i)("ImporteDolares") + DataSet.Tables("Facturas").Rows(i)("IvaDolares")
+                    MontoFactura = Format(DataSet.Tables("Facturas").Rows(i)("ImporteDolares") + DataSet.Tables("Facturas").Rows(i)("IvaDolares"), "##,##0.00")
                 End If
                 TotalFactura = TotalFactura + MontoFactura
             End If
@@ -142,13 +142,13 @@ Public Class FrmReportes
 
             If Moneda = "Cordobas" Then
                 If TipoNota <> "Debito Clientes Dif $" Then
-                    MontoNota = DataSet.Tables("NotasDebito").Rows(i)("MontoCordobas")
+                    MontoNota = Format(DataSet.Tables("NotasDebito").Rows(i)("MontoCordobas"), "##,##0.00")
                 Else
                     MontoNota = 0
                 End If
             Else
                 If TipoNota <> "Debito Clientes Dif C$" Then
-                    MontoNota = DataSet.Tables("NotasDebito").Rows(i)("MontoDolares")
+                    MontoNota = Format(DataSet.Tables("NotasDebito").Rows(i)("MontoDolares"), "##,##0.00")
                 Else
                     MontoNota = 0
                 End If
@@ -160,7 +160,7 @@ Public Class FrmReportes
         Loop
 
 
-        SaldoInicialCliente = TotalFactura - TotalCreditos
+        SaldoInicialCliente = Format(TotalFactura - TotalCreditos, "##,##0.00")
 
 
     End Function
@@ -202,9 +202,9 @@ Public Class FrmReportes
 
 
             If Moneda = "Cordobas" Then
-                MontoFactura = DataSet.Tables("Facturas").Rows(i)("ImporteCordobas") + DataSet.Tables("Facturas").Rows(i)("IvaCordobas")
+                MontoFactura = Format(DataSet.Tables("Facturas").Rows(i)("ImporteCordobas") + DataSet.Tables("Facturas").Rows(i)("IvaCordobas"), "##,##0.00")
             Else
-                MontoFactura = DataSet.Tables("Facturas").Rows(i)("ImporteDolares") + DataSet.Tables("Facturas").Rows(i)("IvaDolares")
+                MontoFactura = Format(DataSet.Tables("Facturas").Rows(i)("ImporteDolares") + DataSet.Tables("Facturas").Rows(i)("IvaDolares"), "##,##0.00")
             End If
             TotalFactura = TotalFactura + MontoFactura
             i = i + 1
@@ -228,13 +228,13 @@ Public Class FrmReportes
 
             If Moneda = "Cordobas" Then
                 If TipoNota <> "Debito Clientes Dif $" Then
-                    MontoNota = DataSet.Tables("Notas").Rows(i)("MontoCordobas")
+                    MontoNota = Format(DataSet.Tables("Notas").Rows(i)("MontoCordobas"), "##,##0.00")
                 Else
                     MontoNota = 0
                 End If
             Else
                 If TipoNota <> "Debito Clientes Dif C$" Then
-                    MontoNota = DataSet.Tables("Notas").Rows(i)("MontoDolares")
+                    MontoNota = Format(DataSet.Tables("Notas").Rows(i)("MontoDolares"), "##,##0.00")
                 Else
                     MontoNota = 0
                 End If
@@ -280,9 +280,9 @@ Public Class FrmReportes
         Do While Registros > i
             My.Application.DoEvents()
             If Moneda = "Cordobas" Then
-                MontoRecibo = DataSet.Tables("Facturas").Rows(i)("MontoCordobas")
+                MontoRecibo = Format(DataSet.Tables("Facturas").Rows(i)("MontoCordobas"), "##,##0.00")
             Else
-                MontoRecibo = DataSet.Tables("Facturas").Rows(i)("MontoDolares")
+                MontoRecibo = Format(DataSet.Tables("Facturas").Rows(i)("MontoDolares"), "##,##0.00")
             End If
             TotalCreditos = TotalCreditos + MontoRecibo
             i = i + 1
@@ -308,13 +308,13 @@ Public Class FrmReportes
             My.Application.DoEvents()
             If Moneda = "Cordobas" Then
                 If TipoNota <> "Credito Clientes Dif $" Then
-                    MontoNota = DataSet.Tables("Notas").Rows(i)("MontoCordobas")
+                    MontoNota = Format(DataSet.Tables("Notas").Rows(i)("MontoCordobas"), "##,##0.00")
                 Else
                     MontoNota = 0
                 End If
             Else
                 If TipoNota <> "Credito Clientes Dif C$" Then
-                    MontoNota = DataSet.Tables("Notas").Rows(i)("MontoDolares")
+                    MontoNota = Format(DataSet.Tables("Notas").Rows(i)("MontoDolares"), "##,##0.00")
                 Else
                     MontoNota = 0
                 End If
@@ -343,9 +343,9 @@ Public Class FrmReportes
         Do While Registros > i
             My.Application.DoEvents()
             If Moneda = "Cordobas" Then
-                MontoNota = DataSet.Tables("MetodoFactura").Rows(i)("MontoCordobas")
+                MontoNota = Format(DataSet.Tables("MetodoFactura").Rows(i)("MontoCordobas"), "##,##0.00")
             Else
-                MontoNota = DataSet.Tables("MetodoFactura").Rows(i)("MontoDolares")
+                MontoNota = Format(DataSet.Tables("MetodoFactura").Rows(i)("MontoDolares"), "##,##0.00")
             End If
             TotalCreditos = TotalCreditos + MontoNota
             i = i + 1
@@ -4108,9 +4108,9 @@ Public Class FrmReportes
                             End If
 
                         ElseIf Me.CmbRango2.Text = "" Then
-                            SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) ORDER BY Productos.Cod_Linea"
+                            SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo) ORDER BY Productos.Cod_Linea"
                         Else
-                            SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) AND (Productos.Cod_Linea BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Linea"
+                            SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo) AND (Productos.Cod_Linea BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Linea"
                         End If
 
 
@@ -4118,7 +4118,7 @@ Public Class FrmReportes
                         If Me.CboCodProducto.Text = "" And Me.CboCodProducto2.Text = "" Then
                             If Me.CmbRango1.Text = "" Then
                                 If Me.CmbRango2.Text = "" Then
-                                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega WHERE (Productos.Costo_Promedio <> 0) ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
+                                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
                                 Else
                                     SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  WHERE (Bodegas.Cod_Bodega BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
                                 End If
@@ -4155,19 +4155,19 @@ Public Class FrmReportes
                         If Me.CmbRango1.Text = "" Then
                             If Me.CmbRango2.Text = "" Then
                                 SqlDatos = "SELECT Productos.Cod_Productos, Productos.Tipo_Producto, Productos.Descripcion_Producto, Productos.Ubicacion, Productos.Cod_Linea, Productos.Cod_Cuenta_Inventario, Productos.Cod_Cuenta_Costo, Productos.Cod_Cuenta_Ventas, Productos.Cod_Cuenta_GastoAjuste, Productos.Cod_Cuenta_IngresoAjuste, Productos.Unidad_Medida, Productos.Precio_Venta, Productos.Precio_Lista, Productos.Descuento, Productos.Existencia_Negativa, Productos.Cod_Iva, Productos.Activo, Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Ultimo_Precio_Venta, Productos.Ultimo_Precio_Compra, Productos.Existencia_Dinero, Productos.Existencia_Unidades, Productos.Existencia_DineroDolar, Productos.Minimo, Productos.Reorden, Productos.Nota, Productos.CodComponente, Productos.Cod_Rubro, Rubro.Nombre_Rubro FROM Productos INNER JOIN  Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro  " & _
-                                           "WHERE  (Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) ORDER BY Productos.Cod_Rubro"
+                                           "WHERE  (Productos.Activo = Productos.Activo)  ORDER BY Productos.Cod_Rubro"
                             Else
                                 SqlDatos = "SELECT Productos.Cod_Productos, Productos.Tipo_Producto, Productos.Descripcion_Producto, Productos.Ubicacion, Productos.Cod_Linea, Productos.Cod_Cuenta_Inventario, Productos.Cod_Cuenta_Costo, Productos.Cod_Cuenta_Ventas, Productos.Cod_Cuenta_GastoAjuste, Productos.Cod_Cuenta_IngresoAjuste, Productos.Unidad_Medida, Productos.Precio_Venta, Productos.Precio_Lista, Productos.Descuento, Productos.Existencia_Negativa, Productos.Cod_Iva, Productos.Activo, Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Ultimo_Precio_Venta, Productos.Ultimo_Precio_Compra, Productos.Existencia_Dinero, Productos.Existencia_Unidades, Productos.Existencia_DineroDolar, Productos.Minimo, Productos.Reorden, Productos.Nota, Productos.CodComponente, Productos.Cod_Rubro, Rubro.Nombre_Rubro FROM Productos INNER JOIN  Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro  " & _
-                                           "WHERE  (Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) AND (Productos.Cod_Rubro BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Rubro"
+                                           "WHERE  (Productos.Activo = Productos.Activo) AND (Productos.Cod_Rubro BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Rubro"
 
                             End If
 
                         ElseIf Me.CmbRango2.Text = "" Then
                             SqlDatos = "SELECT Productos.Cod_Productos, Productos.Tipo_Producto, Productos.Descripcion_Producto, Productos.Ubicacion, Productos.Cod_Linea, Productos.Cod_Cuenta_Inventario, Productos.Cod_Cuenta_Costo, Productos.Cod_Cuenta_Ventas, Productos.Cod_Cuenta_GastoAjuste, Productos.Cod_Cuenta_IngresoAjuste, Productos.Unidad_Medida, Productos.Precio_Venta, Productos.Precio_Lista, Productos.Descuento, Productos.Existencia_Negativa, Productos.Cod_Iva, Productos.Activo, Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Ultimo_Precio_Venta, Productos.Ultimo_Precio_Compra, Productos.Existencia_Dinero, Productos.Existencia_Unidades, Productos.Existencia_DineroDolar, Productos.Minimo, Productos.Reorden, Productos.Nota, Productos.CodComponente, Productos.Cod_Rubro, Rubro.Nombre_Rubro FROM Productos INNER JOIN  Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro  " & _
-                                       "WHERE  (Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) ORDER BY Productos.Cod_Rubro"
+                                       "WHERE  (Productos.Activo = Productos.Activo)  ORDER BY Productos.Cod_Rubro"
                         Else
                             SqlDatos = "SELECT Productos.Cod_Productos, Productos.Tipo_Producto, Productos.Descripcion_Producto, Productos.Ubicacion, Productos.Cod_Linea, Productos.Cod_Cuenta_Inventario, Productos.Cod_Cuenta_Costo, Productos.Cod_Cuenta_Ventas, Productos.Cod_Cuenta_GastoAjuste, Productos.Cod_Cuenta_IngresoAjuste, Productos.Unidad_Medida, Productos.Precio_Venta, Productos.Precio_Lista, Productos.Descuento, Productos.Existencia_Negativa, Productos.Cod_Iva, Productos.Activo, Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Ultimo_Precio_Venta, Productos.Ultimo_Precio_Compra, Productos.Existencia_Dinero, Productos.Existencia_Unidades, Productos.Existencia_DineroDolar, Productos.Minimo, Productos.Reorden, Productos.Nota, Productos.CodComponente, Productos.Cod_Rubro, Rubro.Nombre_Rubro FROM Productos INNER JOIN  Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro  " & _
-                                       "WHERE  (Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) AND (Productos.Cod_Rubro BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Rubro"
+                                       "WHERE  (Productos.Activo = Productos.Activo)  AND (Productos.Cod_Rubro BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Rubro"
                         End If
 
 
@@ -7714,7 +7714,9 @@ Public Class FrmReportes
                                 oDataRow("Numero_Compra") = DataSet.Tables("TotalDevolucionVentas").Rows(i)("Numero_Compra")
                                 oDataRow("Cod_Bodega") = DataSet.Tables("TotalDevolucionVentas").Rows(i)("Cod_Bodega")
                                 oDataRow("Precio_Unitario") = DataSet.Tables("TotalDevolucionVentas").Rows(i)("Precio_Unitario") * TasaCambio
-                                oDataRow("Descuento") = DataSet.Tables("TotalDevolucionVentas").Rows(i)("Descuento") * TasaCambio
+                                If Not IsDBNull(DataSet.Tables("TotalDevolucionVentas").Rows(i)("Descuento")) Then
+                                    oDataRow("Descuento") = DataSet.Tables("TotalDevolucionVentas").Rows(i)("Descuento") * TasaCambio
+                                End If
                                 oDataRow("Precio_Neto") = DataSet.Tables("TotalDevolucionVentas").Rows(i)("Precio_Neto") * TasaCambio
                                 oDataRow("Su_Referencia") = DataSet.Tables("TotalDevolucionVentas").Rows(i)("Su_Referencia")
                                 If Not IsDBNull(DataSet.Tables("TotalDevolucionVentas").Rows(i)("Nuestra_Referencia")) Then

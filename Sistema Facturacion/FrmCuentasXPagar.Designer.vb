@@ -65,7 +65,7 @@ Partial Class FrmCuentasXPagar
         Me.Button3.Enabled = False
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
         Me.Button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button3.Location = New System.Drawing.Point(677, 150)
+        Me.Button3.Location = New System.Drawing.Point(903, 154)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(75, 34)
         Me.Button3.TabIndex = 189
@@ -78,7 +78,7 @@ Partial Class FrmCuentasXPagar
         Me.Button1.Enabled = False
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
         Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button1.Location = New System.Drawing.Point(677, 110)
+        Me.Button1.Location = New System.Drawing.Point(903, 114)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(75, 34)
         Me.Button1.TabIndex = 188
@@ -90,7 +90,7 @@ Partial Class FrmCuentasXPagar
         '
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
         Me.Button8.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button8.Location = New System.Drawing.Point(758, 110)
+        Me.Button8.Location = New System.Drawing.Point(984, 114)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(75, 34)
         Me.Button8.TabIndex = 187
@@ -102,7 +102,7 @@ Partial Class FrmCuentasXPagar
         '
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
         Me.Button6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button6.Location = New System.Drawing.Point(758, 71)
+        Me.Button6.Location = New System.Drawing.Point(984, 75)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(75, 34)
         Me.Button6.TabIndex = 186
@@ -115,7 +115,7 @@ Partial Class FrmCuentasXPagar
         Me.Button5.Enabled = False
         Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
         Me.Button5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button5.Location = New System.Drawing.Point(677, 71)
+        Me.Button5.Location = New System.Drawing.Point(903, 75)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(75, 34)
         Me.Button5.TabIndex = 185
@@ -127,7 +127,7 @@ Partial Class FrmCuentasXPagar
         '
         Me.ProgressBar.Location = New System.Drawing.Point(16, 416)
         Me.ProgressBar.Name = "ProgressBar"
-        Me.ProgressBar.Size = New System.Drawing.Size(902, 26)
+        Me.ProgressBar.Size = New System.Drawing.Size(1043, 26)
         Me.ProgressBar.TabIndex = 184
         Me.ProgressBar.Visible = False
         '
@@ -135,7 +135,7 @@ Partial Class FrmCuentasXPagar
         '
         Me.PictureBox2.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
-        Me.PictureBox2.Location = New System.Drawing.Point(258, -1)
+        Me.PictureBox2.Location = New System.Drawing.Point(351, -1)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(389, 60)
         Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -147,7 +147,7 @@ Partial Class FrmCuentasXPagar
         Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox1.Location = New System.Drawing.Point(-1, -1)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(1002, 60)
+        Me.PictureBox1.Size = New System.Drawing.Size(1076, 60)
         Me.PictureBox1.TabIndex = 183
         Me.PictureBox1.TabStop = False
         '
@@ -165,7 +165,7 @@ Partial Class FrmCuentasXPagar
         Me.TDGridImpuestos.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TDGridImpuestos.PreviewInfo.ZoomFactor = 75
         Me.TDGridImpuestos.PrintInfo.PageSettings = CType(resources.GetObject("TDGridImpuestos.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TDGridImpuestos.Size = New System.Drawing.Size(968, 208)
+        Me.TDGridImpuestos.Size = New System.Drawing.Size(1043, 208)
         Me.TDGridImpuestos.TabIndex = 180
         Me.TDGridImpuestos.Text = "C1TrueDBGrid1"
         Me.TDGridImpuestos.PropBag = resources.GetString("TDGridImpuestos.PropBag")
@@ -423,7 +423,7 @@ Partial Class FrmCuentasXPagar
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(996, 451)
+        Me.ClientSize = New System.Drawing.Size(1071, 451)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Button8)

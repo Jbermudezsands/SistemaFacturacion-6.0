@@ -1133,4 +1133,9 @@ Public Class MDIMain
         My.Forms.frmPlanillaConductores.MdiParent = Me
         My.Forms.frmPlanillaConductores.Show()
     End Sub
+
+    Private Sub RibbonButton10_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton10.Click
+        My.Forms.FrmPlanillaLiquidacion.MdiParent = Me
+        My.Forms.FrmPlanillaLiquidacion.Show()
+    End Sub
 End Class

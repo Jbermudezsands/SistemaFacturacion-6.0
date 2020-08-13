@@ -303,11 +303,11 @@ Public Class FrmPagos
             Me.TrueDBGridComponentes.Columns(3).Text = ""
         End If
 
-        If MontoCredito < MontoAplicado Then
-            MsgBox("No se puede Pagar mas del Monto facturado", MsgBoxStyle.Critical, "Sistema Facturacion")
-            Me.TrueDBGridComponentes.Columns(3).Text = 0
-            MontoAplicado = 0
-        End If
+        'If MontoCredito < MontoAplicado Then
+        '    MsgBox("No se puede Pagar mas del Monto facturado", MsgBoxStyle.Critical, "Sistema Facturacion")
+        '    Me.TrueDBGridComponentes.Columns(3).Text = 0
+        '    MontoAplicado = 0
+        'End If
     End Sub
 
     Private Sub TrueDBGridMetodo_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridMetodo.AfterUpdate
@@ -643,6 +643,10 @@ Public Class FrmPagos
     End Sub
 
     Private Sub GroupBox2_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox2.Enter
+
+    End Sub
+
+    Private Sub TrueDBGridComponentes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.Click
 
     End Sub
 End Class

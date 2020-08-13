@@ -79,7 +79,7 @@ Public Class FrmCuentasXPagar
         '*******************************************************************************************************************************
         DataSet.Reset()
         DatasetReporte.Reset()
-        SQlString = "SELECT Compras.Fecha_Compra As Fecha_Factura, Compras.Numero_Compra As Numero_Factura, Compras.Numero_Compra As Numero_Recibo, Compras.Numero_Compra As NotaDebito, Compras.SubTotal As MontoNota, Compras.SubTotal As Monto, Compras.Fecha_Compra As FechaVence, Compras.IVA As Abono, Compras.SubTotal AS Saldo, Compras.SubTotal As Moratorio, Compras.SubTotal As Dias, Compras.SubTotal AS Total, Compras.Observaciones   FROM Compras INNER JOIN Proveedor ON Compras.Cod_Proveedor = Proveedor.Cod_Proveedor  " & _
+        SQlString = "SELECT Compras.Fecha_Compra As Fecha_Factura, Compras.Numero_Compra, Compras.Numero_Compra As Numero_Factura, Compras.Numero_Compra As Numero_Recibo, Compras.Numero_Compra As NotaDebito, Compras.SubTotal As MontoNota, Compras.SubTotal As Monto, Compras.Fecha_Compra As FechaVence, Compras.IVA As Abono, Compras.SubTotal AS Saldo, Compras.SubTotal As Moratorio, Compras.SubTotal As Dias, Compras.SubTotal AS Total, Compras.Observaciones   FROM Compras INNER JOIN Proveedor ON Compras.Cod_Proveedor = Proveedor.Cod_Proveedor  " & _
                     "WHERE  (Compras.Tipo_Compra = 'Mercancia Recibida' OR Compras.Tipo_Compra = 'Cuenta')  AND (Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '01/01/1900', 102) AND CONVERT(DATETIME, '01/01/1900', 102)) ORDER BY Compras.Fecha_Compra, Compras.Numero_Compra"
         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
         DataAdapter.Fill(DatasetReporte, "TotalVentas")
@@ -310,6 +310,7 @@ Public Class FrmCuentasXPagar
 
             oDataRow = DatasetReporte.Tables("TotalVentas").NewRow
             oDataRow("Fecha_Factura") = DataSet.Tables("Proveedores").Rows(i)("Fecha_Compra")
+            oDataRow("Numero_Compra") = Numero_Compra
             oDataRow("Numero_Factura") = NumeroFactura
             oDataRow("Numero_Recibo") = NumeroRecibo
             If NumeroNota = "" Then
@@ -626,35 +627,37 @@ Public Class FrmCuentasXPagar
 
 
         Me.TDGridImpuestos.DataSource = DatasetReporte.Tables("TotalVentas")
-        Me.TDGridImpuestos.Columns(0).Caption = "Fecha"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(0).Width = 73
-        Me.TDGridImpuestos.Columns(1).Caption = "Factura No"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(1).Width = 61
-        Me.TDGridImpuestos.Columns(2).Caption = "Recibo No"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(2).Width = 71
-        Me.TDGridImpuestos.Columns(3).Caption = "DB/CR No"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(3).Width = 80
-        Me.TDGridImpuestos.Columns(4).Caption = "Monto NB/CR"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(4).Width = 75
-        Me.TDGridImpuestos.Columns(5).Caption = "Cargo"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(5).Width = 70
-        Me.TDGridImpuestos.Columns(5).NumberFormat = "##,##0.00"
-        Me.TDGridImpuestos.Columns(6).Caption = "Fecha Vence"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(6).Width = 73
-        Me.TDGridImpuestos.Columns(7).Caption = "Abono"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(7).Width = 70
-        Me.TDGridImpuestos.Columns(7).NumberFormat = "##,##0.00"
-        Me.TDGridImpuestos.Columns(8).Caption = "Saldo"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(8).Width = 70
-        Me.TDGridImpuestos.Columns(8).NumberFormat = "##,##0.00"
-        Me.TDGridImpuestos.Columns(9).Caption = "Moratorio"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(9).Width = 70
-        Me.TDGridImpuestos.Columns(9).NumberFormat = "##,##0.00"
-        Me.TDGridImpuestos.Columns(10).Caption = "Dias"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(10).Width = 40
-        Me.TDGridImpuestos.Columns(11).Caption = "Total"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(11).Width = 70
-        Me.TDGridImpuestos.Columns(11).NumberFormat = "##,##0.00"
+        Me.TDGridImpuestos.Columns("Fecha_Factura").Caption = "Fecha"
+        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns("Fecha_Factura").Width = 73
+        Me.TDGridImpuestos.Columns("Numero_Compra").Caption = "Compra No"
+        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns("Numero_Compra").Width = 61
+        Me.TDGridImpuestos.Columns("Numero_Factura").Caption = "Factura No"
+        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns("Numero_Factura").Width = 61
+        Me.TDGridImpuestos.Columns("Numero_Recibo").Caption = "Recibo No"
+        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns("Numero_Recibo").Width = 71
+        Me.TDGridImpuestos.Columns("NotaDebito").Caption = "DB/CR No"
+        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns("NotaDebito").Width = 80
+        Me.TDGridImpuestos.Columns("MontoNota").Caption = "Monto NB/CR"
+        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns("MontoNota").Width = 75
+        Me.TDGridImpuestos.Columns("Monto").Caption = "Cargo"
+        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns("Monto").Width = 70
+        Me.TDGridImpuestos.Columns("Monto").NumberFormat = "##,##0.00"
+        Me.TDGridImpuestos.Columns("FechaVence").Caption = "Fecha Vence"
+        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns("FechaVence").Width = 73
+        Me.TDGridImpuestos.Columns("Abono").Caption = "Abono"
+        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns("Abono").Width = 70
+        Me.TDGridImpuestos.Columns("Abono").NumberFormat = "##,##0.00"
+        Me.TDGridImpuestos.Columns("Saldo").Caption = "Saldo"
+        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns("Saldo").Width = 70
+        Me.TDGridImpuestos.Columns("Saldo").NumberFormat = "##,##0.00"
+        Me.TDGridImpuestos.Columns("Moratorio").Caption = "Moratorio"
+        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns("Moratorio").Width = 70
+        Me.TDGridImpuestos.Columns("Moratorio").NumberFormat = "##,##0.00"
+        Me.TDGridImpuestos.Columns("Dias").Caption = "Dias"
+        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns("Dias").Width = 40
+        Me.TDGridImpuestos.Columns("Total").Caption = "Total"
+        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns("Total").Width = 70
+        Me.TDGridImpuestos.Columns("Total").NumberFormat = "##,##0.00"
     End Sub
 
     Private Sub Button5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click

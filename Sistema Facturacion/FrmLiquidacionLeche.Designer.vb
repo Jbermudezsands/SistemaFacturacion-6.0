@@ -1,5 +1,5 @@
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class FrmLiquidacionLeche
+Partial Class FrmPlanillaLiquidacion
     Inherits System.Windows.Forms.Form
 
     'Form reemplaza a Dispose para limpiar la lista de componentes.
@@ -19,7 +19,7 @@ Partial Class FrmLiquidacionLeche
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmLiquidacionLeche))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmPlanillaLiquidacion))
         Me.ProgressBar2 = New System.Windows.Forms.ProgressBar
         Me.LblProcesando = New System.Windows.Forms.Label
         Me.ProgressBar = New System.Windows.Forms.ProgressBar
@@ -33,7 +33,6 @@ Partial Class FrmLiquidacionLeche
         Me.TDGridDeducciones = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.Configuracion = New System.Windows.Forms.TabPage
         Me.Button1 = New System.Windows.Forms.Button
-        Me.TDGridDeducciones2 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
         Me.TxtBolsa = New System.Windows.Forms.TextBox
         Me.Label8 = New System.Windows.Forms.Label
@@ -55,17 +54,23 @@ Partial Class FrmLiquidacionLeche
         Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker
         Me.Label3 = New System.Windows.Forms.Label
         Me.Label2 = New System.Windows.Forms.Label
+        Me.CboCodigoCliente = New C1.Win.C1List.C1Combo
+        Me.LblCodigo = New System.Windows.Forms.Label
+        Me.Button2 = New System.Windows.Forms.Button
+        Me.CboCodigoBodega = New C1.Win.C1List.C1Combo
+        Me.Label20 = New System.Windows.Forms.Label
         Me.TabControl1.SuspendLayout()
         Me.Ingresos.SuspendLayout()
         CType(Me.TDGridIngresos, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Deducciones.SuspendLayout()
         CType(Me.TDGridDeducciones, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Configuracion.SuspendLayout()
-        CType(Me.TDGridDeducciones2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CmdBorraLinea, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
+        CType(Me.CboCodigoCliente, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'ProgressBar2
@@ -138,7 +143,7 @@ Partial Class FrmLiquidacionLeche
         Me.TabControl1.Controls.Add(Me.Ingresos)
         Me.TabControl1.Controls.Add(Me.Deducciones)
         Me.TabControl1.Controls.Add(Me.Configuracion)
-        Me.TabControl1.Location = New System.Drawing.Point(8, 148)
+        Me.TabControl1.Location = New System.Drawing.Point(12, 149)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(1014, 236)
@@ -179,7 +184,7 @@ Partial Class FrmLiquidacionLeche
         Me.Deducciones.Location = New System.Drawing.Point(4, 22)
         Me.Deducciones.Name = "Deducciones"
         Me.Deducciones.Padding = New System.Windows.Forms.Padding(3)
-        Me.Deducciones.Size = New System.Drawing.Size(1006, 240)
+        Me.Deducciones.Size = New System.Drawing.Size(1006, 210)
         Me.Deducciones.TabIndex = 1
         Me.Deducciones.Text = "Deducciones"
         Me.Deducciones.UseVisualStyleBackColor = True
@@ -205,11 +210,10 @@ Partial Class FrmLiquidacionLeche
         'Configuracion
         '
         Me.Configuracion.Controls.Add(Me.Button1)
-        Me.Configuracion.Controls.Add(Me.TDGridDeducciones2)
         Me.Configuracion.Controls.Add(Me.GroupBox2)
         Me.Configuracion.Location = New System.Drawing.Point(4, 22)
         Me.Configuracion.Name = "Configuracion"
-        Me.Configuracion.Size = New System.Drawing.Size(1006, 240)
+        Me.Configuracion.Size = New System.Drawing.Size(1006, 210)
         Me.Configuracion.TabIndex = 2
         Me.Configuracion.Text = "Configuracion"
         Me.Configuracion.UseVisualStyleBackColor = True
@@ -222,26 +226,6 @@ Partial Class FrmLiquidacionLeche
         Me.Button1.TabIndex = 172
         Me.Button1.Text = "Borrar Linea"
         Me.Button1.UseVisualStyleBackColor = True
-        '
-        'TDGridDeducciones2
-        '
-        Me.TDGridDeducciones2.AllowAddNew = True
-        Me.TDGridDeducciones2.AlternatingRows = True
-        Me.TDGridDeducciones2.Caption = "Deducciones"
-        Me.TDGridDeducciones2.Enabled = False
-        Me.TDGridDeducciones2.FilterBar = True
-        Me.TDGridDeducciones2.GroupByCaption = "Drag a column header here to group by that column"
-        Me.TDGridDeducciones2.Images.Add(CType(resources.GetObject("TDGridDeducciones2.Images"), System.Drawing.Image))
-        Me.TDGridDeducciones2.Location = New System.Drawing.Point(158, 19)
-        Me.TDGridDeducciones2.Name = "TDGridDeducciones2"
-        Me.TDGridDeducciones2.PreviewInfo.Location = New System.Drawing.Point(0, 0)
-        Me.TDGridDeducciones2.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TDGridDeducciones2.PreviewInfo.ZoomFactor = 75
-        Me.TDGridDeducciones2.PrintInfo.PageSettings = CType(resources.GetObject("TDGridDeducciones2.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TDGridDeducciones2.Size = New System.Drawing.Size(838, 187)
-        Me.TDGridDeducciones2.TabIndex = 171
-        Me.TDGridDeducciones2.Text = "C1TrueDBGrid1"
-        Me.TDGridDeducciones2.PropBag = resources.GetString("TDGridDeducciones2.PropBag")
         '
         'GroupBox2
         '
@@ -400,12 +384,12 @@ Partial Class FrmLiquidacionLeche
         '
         Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.ForeColor = System.Drawing.SystemColors.Desktop
-        Me.Label7.Location = New System.Drawing.Point(771, 26)
+        Me.Label7.ForeColor = System.Drawing.Color.Navy
+        Me.Label7.Location = New System.Drawing.Point(744, 26)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(89, 16)
+        Me.Label7.Size = New System.Drawing.Size(116, 16)
         Me.Label7.TabIndex = 182
-        Me.Label7.Text = "No. Nomina"
+        Me.Label7.Text = "No. Liquidacion"
         '
         'LblTotalPlanilla
         '
@@ -454,11 +438,103 @@ Partial Class FrmLiquidacionLeche
         Me.Label2.TabIndex = 176
         Me.Label2.Text = "Inicio Periodo"
         '
-        'FrmLiquidacionLeche
+        'CboCodigoCliente
+        '
+        Me.CboCodigoCliente.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboCodigoCliente.Caption = ""
+        Me.CboCodigoCliente.CaptionHeight = 17
+        Me.CboCodigoCliente.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboCodigoCliente.ColumnCaptionHeight = 17
+        Me.CboCodigoCliente.ColumnFooterHeight = 17
+        Me.CboCodigoCliente.ComboStyle = C1.Win.C1List.ComboStyleEnum.DropdownList
+        Me.CboCodigoCliente.ContentHeight = 15
+        Me.CboCodigoCliente.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboCodigoCliente.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboCodigoCliente.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboCodigoCliente.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboCodigoCliente.EditorHeight = 15
+        Me.CboCodigoCliente.Images.Add(CType(resources.GetObject("CboCodigoCliente.Images"), System.Drawing.Image))
+        Me.CboCodigoCliente.ItemHeight = 15
+        Me.CboCodigoCliente.Location = New System.Drawing.Point(117, 121)
+        Me.CboCodigoCliente.MatchEntryTimeout = CType(2000, Long)
+        Me.CboCodigoCliente.MaxDropDownItems = CType(5, Short)
+        Me.CboCodigoCliente.MaxLength = 32767
+        Me.CboCodigoCliente.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboCodigoCliente.Name = "CboCodigoCliente"
+        Me.CboCodigoCliente.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboCodigoCliente.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboCodigoCliente.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboCodigoCliente.Size = New System.Drawing.Size(209, 21)
+        Me.CboCodigoCliente.TabIndex = 197
+        Me.CboCodigoCliente.PropBag = resources.GetString("CboCodigoCliente.PropBag")
+        '
+        'LblCodigo
+        '
+        Me.LblCodigo.AutoSize = True
+        Me.LblCodigo.Location = New System.Drawing.Point(21, 121)
+        Me.LblCodigo.Name = "LblCodigo"
+        Me.LblCodigo.Size = New System.Drawing.Size(80, 13)
+        Me.LblCodigo.TabIndex = 198
+        Me.LblCodigo.Text = "Codigo Clientes"
+        '
+        'Button2
+        '
+        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
+        Me.Button2.Location = New System.Drawing.Point(332, 116)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(29, 30)
+        Me.Button2.TabIndex = 299
+        Me.Button2.UseVisualStyleBackColor = True
+        '
+        'CboCodigoBodega
+        '
+        Me.CboCodigoBodega.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboCodigoBodega.Caption = ""
+        Me.CboCodigoBodega.CaptionHeight = 17
+        Me.CboCodigoBodega.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboCodigoBodega.ColumnCaptionHeight = 17
+        Me.CboCodigoBodega.ColumnFooterHeight = 17
+        Me.CboCodigoBodega.ComboStyle = C1.Win.C1List.ComboStyleEnum.DropdownList
+        Me.CboCodigoBodega.ContentHeight = 15
+        Me.CboCodigoBodega.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboCodigoBodega.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboCodigoBodega.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboCodigoBodega.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboCodigoBodega.EditorHeight = 15
+        Me.CboCodigoBodega.Images.Add(CType(resources.GetObject("CboCodigoBodega.Images"), System.Drawing.Image))
+        Me.CboCodigoBodega.ItemHeight = 15
+        Me.CboCodigoBodega.Location = New System.Drawing.Point(442, 122)
+        Me.CboCodigoBodega.MatchEntryTimeout = CType(2000, Long)
+        Me.CboCodigoBodega.MaxDropDownItems = CType(5, Short)
+        Me.CboCodigoBodega.MaxLength = 32767
+        Me.CboCodigoBodega.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboCodigoBodega.Name = "CboCodigoBodega"
+        Me.CboCodigoBodega.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboCodigoBodega.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboCodigoBodega.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboCodigoBodega.Size = New System.Drawing.Size(123, 21)
+        Me.CboCodigoBodega.TabIndex = 301
+        Me.CboCodigoBodega.PropBag = resources.GetString("CboCodigoBodega.PropBag")
+        '
+        'Label20
+        '
+        Me.Label20.AutoSize = True
+        Me.Label20.Location = New System.Drawing.Point(393, 125)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(44, 13)
+        Me.Label20.TabIndex = 300
+        Me.Label20.Text = "Bodega"
+        '
+        'FrmPlanillaLiquidacion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1029, 470)
+        Me.Controls.Add(Me.CboCodigoBodega)
+        Me.Controls.Add(Me.Label20)
+        Me.Controls.Add(Me.Button2)
+        Me.Controls.Add(Me.CboCodigoCliente)
+        Me.Controls.Add(Me.LblCodigo)
         Me.Controls.Add(Me.ProgressBar2)
         Me.Controls.Add(Me.LblProcesando)
         Me.Controls.Add(Me.ProgressBar)
@@ -471,7 +547,7 @@ Partial Class FrmLiquidacionLeche
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.CmdBorraLinea)
         Me.Controls.Add(Me.GroupBox1)
-        Me.Name = "FrmLiquidacionLeche"
+        Me.Name = "FrmPlanillaLiquidacion"
         Me.Text = "FrmLiquidacionLeche"
         Me.TabControl1.ResumeLayout(False)
         Me.Ingresos.ResumeLayout(False)
@@ -479,13 +555,14 @@ Partial Class FrmLiquidacionLeche
         Me.Deducciones.ResumeLayout(False)
         CType(Me.TDGridDeducciones, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Configuracion.ResumeLayout(False)
-        CType(Me.TDGridDeducciones2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CmdBorraLinea, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        CType(Me.CboCodigoCliente, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -503,7 +580,6 @@ Partial Class FrmLiquidacionLeche
     Friend WithEvents TDGridDeducciones As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents Configuracion As System.Windows.Forms.TabPage
     Friend WithEvents Button1 As System.Windows.Forms.Button
-    Friend WithEvents TDGridDeducciones2 As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
     Friend WithEvents TxtBolsa As System.Windows.Forms.TextBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
@@ -525,4 +601,9 @@ Partial Class FrmLiquidacionLeche
     Friend WithEvents DTPFechaFin As System.Windows.Forms.DateTimePicker
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents CboCodigoCliente As C1.Win.C1List.C1Combo
+    Friend WithEvents LblCodigo As System.Windows.Forms.Label
+    Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents CboCodigoBodega As C1.Win.C1List.C1Combo
+    Friend WithEvents Label20 As System.Windows.Forms.Label
 End Class

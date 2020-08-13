@@ -450,6 +450,10 @@ Public Class FrmCuentasXCobrar
 
             Dias = DateDiff(DateInterval.Day, DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"), Me.DTPFechaFin.Value)
 
+            If Format(MontoNota - Abono, "##,##0.00") = "0.00" Then
+                Dias = 0
+            End If
+
             oDataRow = DatasetReporte.Tables("TotalVentas").NewRow
             oDataRow("Fecha_Factura") = DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota")
             oDataRow("Numero_Factura") = "0000"
@@ -521,6 +525,10 @@ Public Class FrmCuentasXCobrar
             'MontoNotaCR +
 
             Dias = DateDiff(DateInterval.Day, DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"), Me.DTPFechaFin.Value)
+
+            If Format(TotalFactura - MontoNotaCR, "##,##0.00") = "0.00" Then
+                Dias = 0
+            End If
 
             oDataRow = DatasetReporte.Tables("TotalVentas").NewRow
             oDataRow("Fecha_Factura") = DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota")

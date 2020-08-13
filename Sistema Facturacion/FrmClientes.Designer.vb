@@ -875,7 +875,7 @@ Partial Class FrmClientes
         Me.Controls.Add(Me.PictureBox1)
         Me.Name = "FrmClientes"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "vv "
+        Me.Text = "Registros Clientes"
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabControl1.ResumeLayout(False)
