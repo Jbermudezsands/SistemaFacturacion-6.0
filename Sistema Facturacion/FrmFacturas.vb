@@ -904,6 +904,13 @@ Public Class FrmFacturas
         Dim SqlDatos As String
 
 
+        Me.Label16.Text = "Referencia"
+        Me.CboReferencia.Visible = True
+
+        Me.BtnFacturas.Visible = False
+        Me.TxtNumeroFactura.Visible = False
+
+
         Me.BtnSalida.Visible = False
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////////////////MONEDA FACTURA//////////////////////////////////////////////////////////////////////////////////
@@ -968,7 +975,10 @@ Public Class FrmFacturas
             Me.GroupBox3.Enabled = True
             Me.TxtMonedaFactura.Text = "Cordobas"
             Me.TxtMonedaFactura.Enabled = False
-
+            Me.Label16.Text = "Factura No"
+            Me.CboReferencia.Visible = False
+            Me.BtnFacturas.Visible = True
+            Me.TxtNumeroFactura.Visible = True
         End If
 
         If Me.CboTipoProducto.Text = "Orden de Trabajo" Then
@@ -11606,5 +11616,29 @@ Public Class FrmFacturas
 
     Private Sub PictureBox1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBox1.Click
 
+    End Sub
+
+    Private Sub BtnFacturas_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnFacturas.Click
+        Quien = "DevFacturas"
+        My.Forms.FrmConsultas.ShowDialog()
+        If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
+            If Not My.Forms.FrmConsultas.TipoCompra = Nothing Then
+
+                Me.TxtNumeroFactura.Text = My.Forms.FrmConsultas.NumFactura
+
+                If PermiteEditar(Acceso, "Facturacion") = False Then
+                    If Me.CboTipoProducto.Text = "Facturacion" Then
+                        Me.ButtonAgregar.Enabled = False
+                    End If
+                    'Me.TrueDBGridComponentes.Enabled = False
+
+                Else
+                    Me.ButtonAgregar.Enabled = True
+                    Me.TrueDBGridComponentes.Enabled = True
+
+
+                End If
+            End If
+        End If
     End Sub
 End Class

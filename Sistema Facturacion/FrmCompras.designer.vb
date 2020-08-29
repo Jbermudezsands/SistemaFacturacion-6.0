@@ -90,6 +90,7 @@ Partial Class FrmCompras
         Me.Label12 = New System.Windows.Forms.Label
         Me.DTPFechaHora = New System.Windows.Forms.DateTimePicker
         Me.GroupBox5 = New System.Windows.Forms.GroupBox
+        Me.ChkAplicarCtasXPagar = New System.Windows.Forms.CheckBox
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -855,11 +856,23 @@ Partial Class FrmCompras
         Me.GroupBox5.TabIndex = 218
         Me.GroupBox5.TabStop = False
         '
+        'ChkAplicarCtasXPagar
+        '
+        Me.ChkAplicarCtasXPagar.AutoSize = True
+        Me.ChkAplicarCtasXPagar.Location = New System.Drawing.Point(188, 270)
+        Me.ChkAplicarCtasXPagar.Name = "ChkAplicarCtasXPagar"
+        Me.ChkAplicarCtasXPagar.Size = New System.Drawing.Size(123, 17)
+        Me.ChkAplicarCtasXPagar.TabIndex = 219
+        Me.ChkAplicarCtasXPagar.Text = "Aplicar Ctas X Pagar"
+        Me.ChkAplicarCtasXPagar.UseVisualStyleBackColor = True
+        Me.ChkAplicarCtasXPagar.Visible = False
+        '
         'FrmCompras
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(883, 502)
+        Me.Controls.Add(Me.ChkAplicarCtasXPagar)
         Me.Controls.Add(Me.GroupBox5)
         Me.Controls.Add(Me.DTPFechaHora)
         Me.Controls.Add(Me.C1Button4)
@@ -992,4 +1005,5 @@ Partial Class FrmCompras
     Friend WithEvents CboReferencia As System.Windows.Forms.ComboBox
     Friend WithEvents DTPFechaHora As System.Windows.Forms.DateTimePicker
     Friend WithEvents GroupBox5 As System.Windows.Forms.GroupBox
+    Friend WithEvents ChkAplicarCtasXPagar As System.Windows.Forms.CheckBox
 End Class

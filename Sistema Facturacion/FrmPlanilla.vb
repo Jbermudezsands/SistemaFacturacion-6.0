@@ -89,7 +89,7 @@ Public Class FrmPlanilla
 
 
     Private Sub FrmPlanilla_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dim SqlString As String
+        Dim SqlString As String, Fecha As Date
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
         'SqlString = "SELECT TipoNomina.CodTipoNomina, TipoNomina.TipoNomina, Periodos.Actual, Periodos.Periodo, Periodos.Inicio, Periodos.Final FROM  TipoNomina INNER JOIN Periodos ON TipoNomina.TipoNomina = Periodos.TipoNomina  WHERE(Periodos.Actual = 1)"
@@ -98,11 +98,24 @@ Public Class FrmPlanilla
         DataAdapter.Fill(DataSet, "TipoNomina")
         Me.CboTipoPlanilla.DataSource = DataSet.Tables("TipoNomina")
 
-        'SqlString = "SELECT Detalle_Nomina.CodProductor, Detalle_Nomina.Nombres, Detalle_Nomina.Domingo, Detalle_Nomina.Lunes,Detalle_Nomina.Martes, Detalle_Nomina.Miercoles, Detalle_Nomina.Jueves, Detalle_Nomina.Viernes, Detalle_Nomina.Sabado, Detalle_Nomina.Total, Detalle_Nomina.PrecioVenta, Detalle_Nomina.TotalIngresos FROM Detalle_Nomina INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor WHERE (Detalle_Nomina.NumNomina = '-100000') AND (Detalle_Nomina.TipoProductor = 'Productor')"
-        'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        'DataAdapter.Fill(DataSet, "DetalleIngresos")
-        'Me.TDGridIngresos.DataSource = DataSet.Tables("DetalleIngresos")
-        SqlString = "SELECT CodProductor, Nombres, Domingo, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Total, PrecioVenta, TotalIngresos, NumNomina, TipoProductor FROM Detalle_Nomina WHERE (NumNomina = '-100000') AND (TipoProductor = 'Productor')"
+
+
+        '///////////////////////////////////////////////////////////////////BUSCO LA  NOMINA ACTUAL PARA VER EL DIA DE LA SEMANA ///////////////////////
+        SqlString = "SELECT Periodo, año, mes, TipoNomina, Inicio, Final, Actual, Calculada, NumNomina  FROM Periodos WHERE(Actual = 1)"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "PeriodosActivo")
+        If DataSet.Tables("PeriodosActivo").Rows.Count <> 0 Then
+            Fecha = DataSet.Tables("PeriodosActivo").Rows(0)("Inicio")
+            If Fecha.DayOfWeek = 1 Then
+                SqlString = "SELECT CodProductor, Nombres, Domingo, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Total, PrecioVenta, TotalIngresos, NumNomina, TipoProductor FROM Detalle_Nomina WHERE (NumNomina = '-100000') AND (TipoProductor = 'Productor')"
+            ElseIf Fecha.DayOfWeek = 6 Then
+                SqlString = "SELECT CodProductor, Nombres, Sabado, Domingo, Lunes, Martes, Miercoles, Jueves, Viernes, Total, PrecioVenta, TotalIngresos, NumNomina, TipoProductor FROM Detalle_Nomina WHERE (NumNomina = '-100000') AND (TipoProductor = 'Productor')"
+            End If
+        Else
+            SqlString = "SELECT CodProductor, Nombres, Domingo, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Total, PrecioVenta, TotalIngresos, NumNomina, TipoProductor FROM Detalle_Nomina WHERE (NumNomina = '-100000') AND (TipoProductor = 'Productor')"
+        End If
+
+
         ds = New DataSet
         da = New SqlDataAdapter(SqlString, MiConexion)
         CmdBuilder = New SqlCommandBuilder(da)
@@ -147,7 +160,7 @@ Public Class FrmPlanilla
     End Sub
 
     Private Sub CboTipoPlanilla_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboTipoPlanilla.TextChanged
-        Dim SqlString As String, CodTipoNomina As String
+        Dim SqlString As String, CodTipoNomina As String, Fecha As Date
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, NumNomina As String
 
         CodTipoNomina = Me.CboTipoPlanilla.Text
@@ -222,7 +235,13 @@ Public Class FrmPlanilla
                 'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 'DataAdapter.Fill(DataSet, "DetalleIngresos")
                 'Me.TDGridIngresos.DataSource = DataSet.Tables("DetalleIngresos")
-                SqlString = "SELECT CodProductor, Nombres, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo, Total, PrecioVenta, TotalIngresos, NumNomina, TipoProductor FROM Detalle_Nomina WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor')"
+                Fecha = Me.DTPFechaIni.Value
+                If Fecha.DayOfWeek = 1 Then
+                    SqlString = "SELECT CodProductor, Nombres, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo, Total, PrecioVenta, TotalIngresos, NumNomina, TipoProductor FROM Detalle_Nomina WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor')"
+                ElseIf Fecha.DayOfWeek = 6 Then
+                    SqlString = "SELECT CodProductor, Nombres,Sabado, Domingo,  Lunes, Martes, Miercoles, Jueves, Viernes, Total, PrecioVenta, TotalIngresos, NumNomina, TipoProductor FROM Detalle_Nomina WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor')"
+                End If
+
                 ds = New DataSet
                 da = New SqlDataAdapter(SqlString, MiConexion)
                 CmdBuilder = New SqlCommandBuilder(da)
@@ -335,9 +354,9 @@ Public Class FrmPlanilla
 
 
 
-        Else
-            Me.CmdCalcular.Enabled = False
-        End If
+            Else
+                Me.CmdCalcular.Enabled = False
+            End If
     End Sub
 
     Private Sub CmdSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdSalir.Click
@@ -767,7 +786,14 @@ Public Class FrmPlanilla
 
         'Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres
         ds.Tables("DetalleIngresos").Reset()
-        SqlString = "SELECT CodProductor, Nombres, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado,  Domingo, Total, PrecioVenta, TotalIngresos, NumNomina, TipoProductor FROM Detalle_Nomina WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor')"
+
+        Fecha = Me.DTPFechaIni.Value
+        If Fecha.DayOfWeek = 1 Then
+            SqlString = "SELECT CodProductor, Nombres, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado,  Domingo, Total, PrecioVenta, TotalIngresos, NumNomina, TipoProductor FROM Detalle_Nomina WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor')"
+        ElseIf Fecha.DayOfWeek = 6 Then
+            SqlString = "SELECT CodProductor, Nombres, Sabado,  Domingo, Lunes, Martes, Miercoles, Jueves, Viernes, Total, PrecioVenta, TotalIngresos, NumNomina, TipoProductor FROM Detalle_Nomina WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor')"
+        End If
+
         ds = New DataSet
         da = New SqlDataAdapter(SqlString, MiConexion)
         CmdBuilder = New SqlCommandBuilder(da)
@@ -1159,7 +1185,7 @@ Public Class FrmPlanilla
     Private Sub CmdNomina_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdNomina.Click
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim ArepPlanilla As New ArepPlanilla, SqlDatos As String
-        Dim RutaLogo As String, SqlDetalle As String
+        Dim RutaLogo As String, SqlDetalle As String, Fecha As Date
         Dim SQL As New DataDynamics.ActiveReports.DataSources.SqlDBDataSource
 
 
@@ -1188,6 +1214,50 @@ Public Class FrmPlanilla
 
         ArepPlanilla.LblOrden.Text = Me.TxtNumNomina.Text
         ArepPlanilla.LblFechaOrden.Text = Me.DTPFechaFin.Value
+
+        Fecha = Me.DTPFechaIni.Value
+        If Fecha.DayOfWeek = 6 Then
+            ArepPlanilla.LblLunes.Text = "Sabado"
+            ArepPlanilla.LblMartes.Text = "Domingo"
+            ArepPlanilla.LblMiercoles.Text = "Lunes"
+            ArepPlanilla.LblJueves.Text = "Martes"
+            ArepPlanilla.LblViernes.Text = "Miercoles"
+            ArepPlanilla.LblSabado.Text = "Jueves"
+            ArepPlanilla.LblDomingo.Text = "Viernes"
+
+            ArepPlanilla.TextBox3.DataField = "Sabado"
+            ArepPlanilla.TextBox4.DataField = "Domingo"
+            ArepPlanilla.TextBox5.DataField = "Lunes"
+            ArepPlanilla.TextBox6.DataField = "Martes"
+            ArepPlanilla.TextBox7.DataField = "Miercoles"
+            ArepPlanilla.TextBox8.DataField = "Jueves"
+            ArepPlanilla.TextBox9.DataField = "Viernes"
+
+            ArepPlanilla.TextBox23.Text = "Sabado"
+            ArepPlanilla.TextBox39.Text = "Domingo"
+            ArepPlanilla.TextBox44.Text = "Lunes"
+            ArepPlanilla.TextBox45.Text = "Martes"
+            ArepPlanilla.TextBox47.Text = "Miercoles"
+            ArepPlanilla.TextBox49.Text = "Jueves"
+            ArepPlanilla.TextBox50.Text = "Viernes"
+
+            ArepPlanilla.TxtLunes.DataField = "Sabado"
+            ArepPlanilla.TxtMartes.DataField = "Domingo"
+            ArepPlanilla.TxtMiercoles.DataField = "Lunes"
+            ArepPlanilla.TxtJueves.DataField = "Martes"
+            ArepPlanilla.txtviernes.DataField = "Miercoles"
+            ArepPlanilla.TxtSabado.DataField = "Jueves"
+            ArepPlanilla.TxtDomingo.DataField = "Viernes"
+
+            ArepPlanilla.TxtMontoLunes.DataField = "Sabado"
+            ArepPlanilla.TxtMontoMartes.DataField = "Domingo"
+            ArepPlanilla.TxtMontoMiercoles.DataField = "Lunes"
+            ArepPlanilla.TxtMontoJueves.DataField = "Martes"
+            ArepPlanilla.TxtMontoViernes.DataField = "Miercoles"
+            ArepPlanilla.TxtMontoSabado.DataField = "Jueves"
+            ArepPlanilla.TxtMontoDomingo.DataField = "Viernes"
+
+        End If
 
         '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
         SqlDetalle = "SELECT Detalle_Nomina.NumNomina,Detalle_Nomina.CodProductor, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.Lunes,Detalle_Nomina.Martes, Detalle_Nomina.Miercoles, Detalle_Nomina.Jueves, Detalle_Nomina.Viernes, Detalle_Nomina.Sabado,Detalle_Nomina.Domingo, Detalle_Nomina.Total, Detalle_Nomina.PrecioVenta, Detalle_Nomina.TotalIngresos, Detalle_Nomina.IR, Detalle_Nomina.Trazabilidad, Detalle_Nomina.Bolsa, Detalle_Nomina.OtrasDeducciones, Detalle_Nomina.DeduccionPolicia, Detalle_Nomina.Anticipo, Detalle_Nomina.DeduccionTransporte, Detalle_Nomina.Pulperia,Detalle_Nomina.Inseminacion, Detalle_Nomina.ProductosVeterinarios,Detalle_Nomina.IR + Detalle_Nomina.Bolsa + Detalle_Nomina.Trazabilidad + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios AS TotalEgresos,Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR + Detalle_Nomina.Trazabilidad + Detalle_Nomina.Bolsa + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios) AS NetoPagar FROM  Detalle_Nomina INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor  " & _
@@ -1277,7 +1347,7 @@ Public Class FrmPlanilla
         Dim ArepColilla As New ArepColillas, SqlDatos As String
         Dim SqlDetalle As String, SqlString As String
         Dim SQL As New DataDynamics.ActiveReports.DataSources.SqlDBDataSource
-        Dim i As Double = 0, CodRuta As String
+        Dim i As Double = 0, CodRuta As String, Fecha As Date
 
 
 
@@ -1316,6 +1386,42 @@ Public Class FrmPlanilla
 
         'MsgBox("SE IMPRIME LAS COLILLAS DE " & DataSet.Tables("Ruta").Rows(i)("Nombre_Ruta"))
 
+        Fecha = Me.DTPFechaIni.Value
+        If Fecha.DayOfWeek = 6 Then
+            ArepColilla.LblLunes.Text = "Sabado"
+            ArepColilla.LblMartes.Text = "Domingo"
+            ArepColilla.LblMiercoles.Text = "Lunes"
+            ArepColilla.LblJueves.Text = "Martes"
+            ArepColilla.LblViernes.Text = "Miercoles"
+            ArepColilla.LblSabado.Text = "Jueves"
+            ArepColilla.LblDomingo.Text = "Viernes"
+
+            ArepColilla.LblPrecioLunes.Text = "Sabado"
+            ArepColilla.LblPrecioMartes.Text = "Domingo"
+            ArepColilla.LblPrecioMiercoles.Text = "Lunes"
+            ArepColilla.LblPrecioJueves.Text = "Martes"
+            ArepColilla.LblPrecioViernes.Text = "Miercoles"
+            ArepColilla.LblPrecioSabado.Text = "Jueves"
+            ArepColilla.LblPrecioDomingo.Text = "Viernes"
+
+            ArepColilla.TxtMontoLunes.DataField = "Sabado"
+            ArepColilla.TxtMontoMartes.DataField = "Domingo"
+            ArepColilla.TxtMontoMiercoles.DataField = "Lunes"
+            ArepColilla.TxtMontoJueves.DataField = "Martes"
+            ArepColilla.TxtMontoViernes.DataField = "Miercoles"
+            ArepColilla.TxtMontoSabado.DataField = "Jueves"
+            ArepColilla.TxtMontoDomingo.DataField = "Viernes"
+
+            ArepColilla.TxtPrecioLunes.DataField = "Sabado"
+            ArepColilla.TxtPrecioMartes.DataField = "Domingo"
+            ArepColilla.TxtPrecioMiercoles.DataField = "Lunes"
+            ArepColilla.TxtPrecioJueves.DataField = "Martes"
+            ArepColilla.TxtPrecioViernes.DataField = "Miercoles"
+            ArepColilla.TxtPrecioSabado.DataField = "Jueves"
+            ArepColilla.TxtPrecioDomingo.DataField = "Viernes"
+
+
+        End If
 
         '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
         SqlDetalle = "SELECT  Detalle_Nomina.CodProductor, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.Lunes,Detalle_Nomina.Martes, Detalle_Nomina.Miercoles, Detalle_Nomina.Jueves, Detalle_Nomina.Viernes, Detalle_Nomina.Sabado,Detalle_Nomina.Domingo, Detalle_Nomina.Total, Detalle_Nomina.PrecioVenta, Detalle_Nomina.TotalIngresos,  Detalle_Nomina.Trazabilidad, Detalle_Nomina.IR,Detalle_Nomina.Bolsa,Detalle_Nomina.OtrasDeducciones, Detalle_Nomina.DeduccionPolicia, Detalle_Nomina.Anticipo, Detalle_Nomina.DeduccionTransporte, Detalle_Nomina.Pulperia,Detalle_Nomina.Inseminacion, Detalle_Nomina.ProductosVeterinarios,Detalle_Nomina.IR +  Detalle_Nomina.Trazabilidad + Detalle_Nomina.Bolsa + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios AS TotalEgresos,Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR +  Detalle_Nomina.Trazabilidad + Detalle_Nomina.Bolsa + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios) AS NetoPagar, Nomina.NumPlanilla,Nomina.FechaInicial, Nomina.FechaFinal ,  Detalle_Nomina.PrecioLunes, Detalle_Nomina.PrecioMartes, Detalle_Nomina.PrecioMiercoles, Detalle_Nomina.PrecioJueves, Detalle_Nomina.PrecioViernes, Detalle_Nomina.PrecioSabado, Detalle_Nomina.PrecioDomingo, TipoNomina.TipoNomina FROM  Detalle_Nomina INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor INNER JOIN Nomina ON Detalle_Nomina.NumNomina = Nomina.NumPlanilla INNER JOIN TipoNomina ON Nomina.CodTipoNomina = TipoNomina.CodTipoNomina " & _

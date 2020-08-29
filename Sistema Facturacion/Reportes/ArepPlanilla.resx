@@ -222,22 +222,22 @@
   <data name="TxtMontoLunes.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
-  <data name="TextBox52.OutputFormat" xml:space="preserve">
+  <data name="TxtMontoMartes.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
-  <data name="TextBox54.OutputFormat" xml:space="preserve">
+  <data name="TxtMontoMiercoles.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
-  <data name="TextBox55.OutputFormat" xml:space="preserve">
+  <data name="TxtMontoJueves.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
-  <data name="TextBox56.OutputFormat" xml:space="preserve">
+  <data name="TxtMontoViernes.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
-  <data name="TextBox57.OutputFormat" xml:space="preserve">
+  <data name="TxtMontoSabado.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
-  <data name="TextBox82.OutputFormat" xml:space="preserve">
+  <data name="TxtMontoDomingo.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
   <data name="TextBox84.OutputFormat" xml:space="preserve">

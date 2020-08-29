@@ -1138,4 +1138,10 @@ Public Class MDIMain
         My.Forms.FrmPlanillaLiquidacion.MdiParent = Me
         My.Forms.FrmPlanillaLiquidacion.Show()
     End Sub
+
+    Private Sub RibbonButton16_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton16.Click
+        Quien = "Reporte Bascula"
+        My.Forms.FrmReportes.MdiParent = Me
+        My.Forms.FrmReportes.Show()
+    End Sub
 End Class

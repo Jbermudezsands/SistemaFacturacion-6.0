@@ -65,6 +65,7 @@ Public Class FrmActivar
 
         Try
 
+            Me.CmdNuevo.Enabled = False
 
 
             Posicion = Me.BindingNominas.Position

@@ -107,6 +107,9 @@ Partial Class FrmFacturas
         Me.BtnSalida = New System.Windows.Forms.Button
         Me.Button5 = New System.Windows.Forms.Button
         Me.PictureBox3 = New System.Windows.Forms.PictureBox
+        Me.TxtNumeroFactura = New System.Windows.Forms.TextBox
+        Me.BtnFacturas = New C1.Win.C1Input.C1Button
+        Me.ChkAplicarCtaXCobrar = New System.Windows.Forms.CheckBox
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrueDBGridMetodo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
@@ -403,13 +406,15 @@ Partial Class FrmFacturas
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.ChkAplicarCtaXCobrar)
+        Me.GroupBox2.Controls.Add(Me.BtnFacturas)
+        Me.GroupBox2.Controls.Add(Me.TxtNumeroFactura)
         Me.GroupBox2.Controls.Add(Me.ChkPropina)
         Me.GroupBox2.Controls.Add(Me.Label16)
         Me.GroupBox2.Controls.Add(Me.CboReferencia)
         Me.GroupBox2.Controls.Add(Me.OptRet2Porciento)
         Me.GroupBox2.Controls.Add(Me.OptRet1Porciento)
         Me.GroupBox2.Controls.Add(Me.OptExsonerado)
-        Me.GroupBox2.Controls.Add(Me.CmdCuentasxCobrar)
         Me.GroupBox2.Controls.Add(Me.TxtTelefono)
         Me.GroupBox2.Controls.Add(Me.TxtDireccion)
         Me.GroupBox2.Controls.Add(Me.TxtApellidos)
@@ -483,7 +488,7 @@ Partial Class FrmFacturas
         '
         'CmdCuentasxCobrar
         '
-        Me.CmdCuentasxCobrar.Location = New System.Drawing.Point(232, 16)
+        Me.CmdCuentasxCobrar.Location = New System.Drawing.Point(343, 89)
         Me.CmdCuentasxCobrar.Name = "CmdCuentasxCobrar"
         Me.CmdCuentasxCobrar.Size = New System.Drawing.Size(85, 23)
         Me.CmdCuentasxCobrar.TabIndex = 147
@@ -523,7 +528,7 @@ Partial Class FrmFacturas
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(194, 12)
+        Me.Button1.Location = New System.Drawing.Point(191, 12)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(37, 32)
         Me.Button1.TabIndex = 128
@@ -1161,6 +1166,34 @@ Partial Class FrmFacturas
         Me.PictureBox3.TabIndex = 227
         Me.PictureBox3.TabStop = False
         '
+        'TxtNumeroFactura
+        '
+        Me.TxtNumeroFactura.Location = New System.Drawing.Point(78, 126)
+        Me.TxtNumeroFactura.Name = "TxtNumeroFactura"
+        Me.TxtNumeroFactura.Size = New System.Drawing.Size(100, 20)
+        Me.TxtNumeroFactura.TabIndex = 226
+        Me.TxtNumeroFactura.Visible = False
+        '
+        'BtnFacturas
+        '
+        Me.BtnFacturas.Image = CType(resources.GetObject("BtnFacturas.Image"), System.Drawing.Image)
+        Me.BtnFacturas.Location = New System.Drawing.Point(184, 125)
+        Me.BtnFacturas.Name = "BtnFacturas"
+        Me.BtnFacturas.Size = New System.Drawing.Size(39, 24)
+        Me.BtnFacturas.TabIndex = 227
+        Me.BtnFacturas.UseVisualStyleBackColor = True
+        Me.BtnFacturas.VisualStyle = C1.Win.C1Input.VisualStyle.System
+        '
+        'ChkAplicarCtaXCobrar
+        '
+        Me.ChkAplicarCtaXCobrar.AutoSize = True
+        Me.ChkAplicarCtaXCobrar.Location = New System.Drawing.Point(218, 19)
+        Me.ChkAplicarCtaXCobrar.Name = "ChkAplicarCtaXCobrar"
+        Me.ChkAplicarCtaXCobrar.Size = New System.Drawing.Size(108, 17)
+        Me.ChkAplicarCtaXCobrar.TabIndex = 228
+        Me.ChkAplicarCtaXCobrar.Text = "Aplicar CtasXCob"
+        Me.ChkAplicarCtaXCobrar.UseVisualStyleBackColor = True
+        '
         'FrmFacturas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1175,6 +1208,7 @@ Partial Class FrmFacturas
         Me.Controls.Add(Me.TxtRetencion1Porciento)
         Me.Controls.Add(Me.C1Button5)
         Me.Controls.Add(Me.C1Button4)
+        Me.Controls.Add(Me.CmdCuentasxCobrar)
         Me.Controls.Add(Me.CboProyecto)
         Me.Controls.Add(Me.Label15)
         Me.Controls.Add(Me.C1Button3)
@@ -1331,4 +1365,7 @@ Partial Class FrmFacturas
     Friend WithEvents PictureBox3 As System.Windows.Forms.PictureBox
     Friend WithEvents Button5 As System.Windows.Forms.Button
     Friend WithEvents BtnSalida As System.Windows.Forms.Button
+    Friend WithEvents TxtNumeroFactura As System.Windows.Forms.TextBox
+    Friend WithEvents BtnFacturas As C1.Win.C1Input.C1Button
+    Friend WithEvents ChkAplicarCtaXCobrar As System.Windows.Forms.CheckBox
 End Class

@@ -120,25 +120,25 @@
   <data name="TextBox1.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
-  <data name="TextBox2.OutputFormat" xml:space="preserve">
+  <data name="TxtMontoLunes.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
-  <data name="TextBox3.OutputFormat" xml:space="preserve">
+  <data name="TxtMontoMartes.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
-  <data name="TextBox4.OutputFormat" xml:space="preserve">
+  <data name="TxtMontoMiercoles.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
-  <data name="TextBox5.OutputFormat" xml:space="preserve">
+  <data name="TxtMontoJueves.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
-  <data name="TextBox6.OutputFormat" xml:space="preserve">
+  <data name="TxtMontoViernes.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
-  <data name="TextBox7.OutputFormat" xml:space="preserve">
+  <data name="TxtMontoSabado.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
-  <data name="TextBox8.OutputFormat" xml:space="preserve">
+  <data name="TxtMontoDomingo.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
   <data name="TextBox9.OutputFormat" xml:space="preserve">
@@ -189,25 +189,25 @@
   <data name="TextBox23.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
-  <data name="TextBox24.OutputFormat" xml:space="preserve">
+  <data name="TxtPrecioLunes.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
-  <data name="TextBox25.OutputFormat" xml:space="preserve">
+  <data name="TxtPrecioMartes.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
-  <data name="TextBox26.OutputFormat" xml:space="preserve">
+  <data name="TxtPrecioMiercoles.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
-  <data name="TextBox27.OutputFormat" xml:space="preserve">
+  <data name="TxtPrecioJueves.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
-  <data name="TextBox28.OutputFormat" xml:space="preserve">
+  <data name="TxtPrecioViernes.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
-  <data name="TextBox29.OutputFormat" xml:space="preserve">
+  <data name="TxtPrecioSabado.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
-  <data name="TextBox30.OutputFormat" xml:space="preserve">
+  <data name="TxtPrecioDomingo.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
   <data name="TextBox31.OutputFormat" xml:space="preserve">

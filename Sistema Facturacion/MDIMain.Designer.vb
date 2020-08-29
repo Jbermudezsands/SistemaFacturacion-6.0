@@ -173,6 +173,8 @@ Partial Class MDIMain
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
         Me.TxtUsuario = New System.Windows.Forms.TextBox
+        Me.RibbonGroup16 = New C1.Win.C1Ribbon.RibbonGroup
+        Me.RibbonButton16 = New C1.Win.C1Ribbon.RibbonButton
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1098,6 +1100,7 @@ Partial Class MDIMain
         '
         Me.RibbonTab5.Groups.Add(Me.RibbonGroup11)
         Me.RibbonTab5.Groups.Add(Me.RibbonGroup12)
+        Me.RibbonTab5.Groups.Add(Me.RibbonGroup16)
         Me.RibbonTab5.ID = "RibbonTab5"
         Me.RibbonTab5.Text = "Bascula"
         '
@@ -1373,7 +1376,7 @@ Partial Class MDIMain
         'RibbonLabel1
         '
         Me.RibbonLabel1.ID = "RibbonLabel1"
-        Me.RibbonLabel1.Text = "Version 6.33"
+        Me.RibbonLabel1.Text = "Version 6.35"
         '
         'TxtUsuario
         '
@@ -1383,6 +1386,19 @@ Partial Class MDIMain
         Me.TxtUsuario.TabIndex = 15
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
+        '
+        'RibbonGroup16
+        '
+        Me.RibbonGroup16.ID = "RibbonGroup16"
+        Me.RibbonGroup16.Items.Add(Me.RibbonButton16)
+        Me.RibbonGroup16.Text = "Reportes Bascula"
+        '
+        'RibbonButton16
+        '
+        Me.RibbonButton16.ID = "RibbonButton16"
+        Me.RibbonButton16.SmallImage = CType(resources.GetObject("RibbonButton16.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton16.Text = "Reportes"
+        Me.RibbonButton16.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'MDIMain
         '
@@ -1557,5 +1573,7 @@ Partial Class MDIMain
     Friend WithEvents RibbonSeparator5 As C1.Win.C1Ribbon.RibbonSeparator
     Friend WithEvents RibbonSeparator6 As C1.Win.C1Ribbon.RibbonSeparator
     Friend WithEvents RibbonSeparator7 As C1.Win.C1Ribbon.RibbonSeparator
+    Friend WithEvents RibbonGroup16 As C1.Win.C1Ribbon.RibbonGroup
+    Friend WithEvents RibbonButton16 As C1.Win.C1Ribbon.RibbonButton
 
 End Class

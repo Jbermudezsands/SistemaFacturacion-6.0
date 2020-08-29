@@ -272,6 +272,59 @@ Public Class FrmCuentasXCobrar
             Loop
             DataSet.Tables("NotaCR").Reset()
 
+            Dim MontoDev As Double, TotalMontoDev As Double, NumeroDev As String
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '//////////////////////////////////////BUSCO SI EXISTEN DEVOLUCION DE VENTAS PARA ESTA FACTURA //////////////////////////////////////////////////////
+            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            SQlString = "SELECT Facturas.Fecha_Factura, Facturas.Numero_Factura, Facturas.MetodoPago As Numero_Recibo, Facturas.Numero_Factura As NotaDebito, Facturas.SubTotal As MontoNota, Facturas.SubTotal As Monto, Facturas.Fecha_Factura As FechaVence, Facturas.IVA As Abono, Facturas.SubTotal AS Saldo, Facturas.SubTotal As Moratorio, Facturas.SubTotal As Dias, Facturas.SubTotal AS Total  FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " & _
+            "WHERE (Facturas.Tipo_Factura = 'Devolucion de Venta') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '01/01/1900', 102) AND CONVERT(DATETIME, '01/01/1900', 102)) ORDER BY Facturas.Fecha_Factura, Facturas.Numero_Factura"
+
+            DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+            DataAdapter.Fill(DataSet, "DevVentas")
+            Registros2 = DataSet.Tables("DevVentas").Rows.Count
+            NumeroDev = ""
+            j = 0
+            MontoDev = 0
+            TotalMontoDev = 0
+            Do While Registros2 > j
+
+
+                If Me.OptCordobas.Checked = True Then
+                    If TipoNota <> "Credito Clientes Dif $" Then
+                        If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Cordobas" Then
+                            TasaCambioRecibo = 1
+                        Else
+                            TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                        End If
+                    Else
+                        TasaCambioRecibo = 0
+                    End If
+                Else
+                    If TipoNota <> "Credito Clientes Dif C$" Then
+                        If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Dolares" Then
+                            TasaCambioRecibo = 1
+                        Else
+                            TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                        End If
+                    Else
+                        TasaCambioRecibo = 0
+                    End If
+                End If
+
+
+                If NumeroNotaCR = "" Then
+                    NumeroNotaCR = DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
+                Else
+                    NumeroNotaCR = NumeroNotaCR & "," & DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
+                End If
+                MontoNotaCR = DataSet.Tables("NotaCR").Rows(j)("Monto") * TasaCambioRecibo
+                'MontoNotaCR +
+                TotalMontoNotaCR = TotalMontoNotaCR + MontoNotaCR
+                j = j + 1
+            Loop
+            DataSet.Tables("DevVentas").Reset()
+
+
             '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             '//////////////////////////////////////BUSCO EL DETALLE DE METODO PARA LAS FACTURAS DE CONTADO //////////////////////////////////////////////////////
             '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

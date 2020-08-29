@@ -1678,6 +1678,10 @@ Public Class FrmCompras
     End Sub
 
     Private Sub CboTipoProducto_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboTipoProducto.SelectedIndexChanged
+
+        Me.ChkAplicarCtasXPagar.Visible = False
+        Me.ChkAplicarCtasXPagar.Checked = False
+
         If Me.CboTipoProducto.Text <> "" Then
             Me.TrueDBGridComponentes.Enabled = True
         End If
@@ -1685,12 +1689,14 @@ Public Class FrmCompras
         If Me.CboTipoProducto.Text = "Cuenta" Then
             Me.GroupBox3.Enabled = False
             Me.RadioButton1.Checked = True
+            Me.ChkAplicarCtasXPagar.Visible = False
 
         End If
 
         If Me.CboTipoProducto.Text = "Devolucion de Compra" Then
             Me.GroupBox3.Enabled = False
             Me.RadioButton1.Checked = True
+            Me.ChkAplicarCtasXPagar.Visible = True
         End If
 
         If Me.CboTipoProducto.Text = "Orden de Compra" Then
@@ -1942,6 +1948,7 @@ Public Class FrmCompras
     Private Sub TxtNumeroEnsamble_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtNumeroEnsamble.TextChanged
         Dim SqlCompras As String, Fecha As String, TipoCompra As String, Exonerado As Boolean
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, CodigoProyecto As String
+        Dim AplicaCtasXPagar As Boolean = False
 
 
         If Quien = "NumeroCompras" Then
@@ -1966,6 +1973,12 @@ Public Class FrmCompras
                     If Not IsDBNull(DataSet.Tables("Compras").Rows(0)("Su_Referencia")) Then
                         Me.TxtReferencia.Text = DataSet.Tables("Compras").Rows(0)("Su_Referencia")
                     End If
+                    If Not IsDBNull(DataSet.Tables("Compras").Rows(0)("AplicarCtasXPagar")) Then
+                        AplicaCtasXPagar = DataSet.Tables("Compras").Rows(0)("AplicarCtasXPagar")
+                    End If
+
+                    Me.ChkAplicarCtasXPagar.Checked = AplicaCtasXPagar
+
                     Me.TxtCodigoProveedor.Text = DataSet.Tables("Compras").Rows(0)("Cod_Proveedor")
                     Me.TxtNombres.Text = DataSet.Tables("Compras").Rows(0)("Nombre_Proveedor")
                     Me.TxtApellidos.Text = DataSet.Tables("Compras").Rows(0)("Apellido_Proveedor")
@@ -2065,6 +2078,7 @@ Public Class FrmCompras
                         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
                         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
                         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Compra").Visible = False
 
                     Else
                         ds.Tables("DetalleCompra").Reset()
@@ -2107,6 +2121,7 @@ Public Class FrmCompras
                         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
                         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
                         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Compra").Visible = False
 
                     End If
 
@@ -2154,6 +2169,7 @@ Public Class FrmCompras
                         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
                         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
                         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Compra").Visible = False
                         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = False
                     End If
 

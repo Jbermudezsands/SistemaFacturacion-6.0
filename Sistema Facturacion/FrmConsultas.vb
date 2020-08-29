@@ -595,6 +595,23 @@ Public Class FrmConsultas
                     Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 195
                     Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(2).Width = 65
                     Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(3).Width = 110
+
+
+                Case "DevFacturas"
+
+                    SQlProductos = "SELECT Facturas.Numero_Factura AS Numero, Facturas.Nombre_Cliente + ' ' + Facturas.Apellido_Cliente AS Cliente, Facturas.Fecha_Factura AS Fecha, Facturas.Tipo_Factura AS Tipo  FROM  Facturas INNER JOIN  Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente WHERE (Facturas.Activo = 1) AND (Facturas.Tipo_Factura = 'Factura') ORDER BY Numero  "
+
+                    MiConexion.Open()
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(0).Width = 65
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 195
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(2).Width = 65
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(3).Width = 110
+
                 Case "Facturas"
                     If FrmFacturas.CboTipoProducto.Text <> "" Then
                         SQlProductos = "SELECT Facturas.Numero_Factura AS Numero, Facturas.Nombre_Cliente + ' ' + Facturas.Apellido_Cliente AS Cliente, Facturas.Fecha_Factura AS Fecha, Facturas.Tipo_Factura AS Tipo  FROM  Facturas INNER JOIN  Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente WHERE (Facturas.Activo = 1) AND (Facturas.Tipo_Factura = '" & FrmFacturas.CboTipoProducto.Text & "') ORDER BY Numero  "

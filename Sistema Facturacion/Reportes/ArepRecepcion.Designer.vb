@@ -69,6 +69,8 @@ Partial Public Class ArepRecepcion
         Me.LblNotas = New DataDynamics.ActiveReports.Label
         Me.Label7 = New DataDynamics.ActiveReports.Label
         Me.TextBox6 = New DataDynamics.ActiveReports.TextBox
+        Me.TextBox1 = New DataDynamics.ActiveReports.TextBox
+        Me.TextBox8 = New DataDynamics.ActiveReports.TextBox
         CType(Me.lblOrderNum, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.lblOrderDate, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ImgLogo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -110,6 +112,8 @@ Partial Public Class ArepRecepcion
         CType(Me.LblNotas, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox6, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TextBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TextBox8, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         '
         'PageHeader1
@@ -445,7 +449,8 @@ Partial Public Class ArepRecepcion
         '
         'ReportFooter1
         '
-        Me.ReportFooter1.Height = 0.25!
+        Me.ReportFooter1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TextBox1, Me.TextBox8})
+        Me.ReportFooter1.Height = 0.5625!
         Me.ReportFooter1.Name = "ReportFooter1"
         '
         'GroupHeader1
@@ -997,6 +1002,42 @@ Partial Public Class ArepRecepcion
         Me.TextBox6.Top = 0.0!
         Me.TextBox6.Width = 1.052632!
         '
+        'TextBox1
+        '
+        Me.TextBox1.Border.BottomColor = System.Drawing.Color.Black
+        Me.TextBox1.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox1.Border.LeftColor = System.Drawing.Color.Black
+        Me.TextBox1.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox1.Border.RightColor = System.Drawing.Color.Black
+        Me.TextBox1.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox1.Border.TopColor = System.Drawing.Color.Black
+        Me.TextBox1.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
+        Me.TextBox1.Height = 0.2!
+        Me.TextBox1.Left = 0.7!
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Style = "text-align: center; "
+        Me.TextBox1.Text = "Elaborardo Por"
+        Me.TextBox1.Top = 0.25!
+        Me.TextBox1.Width = 1.675!
+        '
+        'TextBox8
+        '
+        Me.TextBox8.Border.BottomColor = System.Drawing.Color.Black
+        Me.TextBox8.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox8.Border.LeftColor = System.Drawing.Color.Black
+        Me.TextBox8.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox8.Border.RightColor = System.Drawing.Color.Black
+        Me.TextBox8.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox8.Border.TopColor = System.Drawing.Color.Black
+        Me.TextBox8.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
+        Me.TextBox8.Height = 0.2!
+        Me.TextBox8.Left = 3.9!
+        Me.TextBox8.Name = "TextBox8"
+        Me.TextBox8.Style = "text-align: center; "
+        Me.TextBox8.Text = "Recibido Por"
+        Me.TextBox8.Top = 0.25!
+        Me.TextBox8.Width = 1.675!
+        '
         'ArepRecepcion
         '
         Me.MasterReport = False
@@ -1064,6 +1105,8 @@ Partial Public Class ArepRecepcion
         CType(Me.LblNotas, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label7, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox6, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TextBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TextBox8, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
 
     End Sub
@@ -1114,4 +1157,6 @@ Partial Public Class ArepRecepcion
     Friend WithEvents LblPlaca As DataDynamics.ActiveReports.Label
     Private WithEvents Label11 As DataDynamics.ActiveReports.Label
     Friend WithEvents LblLote As DataDynamics.ActiveReports.Label
+    Friend WithEvents TextBox1 As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents TextBox8 As DataDynamics.ActiveReports.TextBox
 End Class
