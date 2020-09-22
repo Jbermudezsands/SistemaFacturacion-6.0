@@ -1,101 +1,13 @@
+Imports System.Data.SqlClient
+
 Public Class FrmPagos
     Public MiConexion As New SqlClient.SqlConnection(Conexion), CodigoIva As String, CantidadAnterior As Double, PrecioAnterior As Double
+    Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder
+
     Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
         Me.Close()
     End Sub
-    Private Function CalcularRetencion() As Double
-        Dim Registros As Double, iPosicion As Double, NumeroCompra As String, MontoPagado As Double, MontoCredito As Double
-        Dim Impuesto As Double, SQlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim SubTotal As Double = 0, Iva As Double = 0, Ret10 As Double, Ret2 As Double, Ret1 As Double, Ret7 As Double, Retencion As Double = 0
-        Dim TotalRetencion As Double = 0
 
-        Me.BindingFacturas.MoveFirst()
-        Registros = Me.TrueDBGridComponentes.RowCount
-        iPosicion = 0
-
-
-        If Me.OptRet10Porciento.Checked = True Then
-            Ret10 = 0.1
-        Else
-            Ret10 = 0
-        End If
-
-        If Me.OptRet1Porciento.Checked = True Then
-            Ret1 = 0.01
-        Else
-            Ret1 = 0
-        End If
-
-
-        If Me.OptRet2Porciento.Checked = True Then
-            Ret2 = 0.02
-        Else
-            Ret2 = 0
-        End If
-
-
-        If Me.OptRet7Porciento.Checked = True Then
-            Ret7 = 0.07
-        Else
-            Ret7 = 0
-        End If
-
-        TotalRetencion = 0
-
-        Do While iPosicion < Registros
-            NumeroCompra = Me.TrueDBGridComponentes.Item(iPosicion)("Numero_Compra")
-            Retencion = 0
-
-            If Not IsDBNull(Me.TrueDBGridComponentes.Item(iPosicion)("MontoPagado")) Then
-                MontoPagado = Me.TrueDBGridComponentes.Item(iPosicion)("MontoPagado")
-
-                If MontoPagado > 0 Then
-
-                    If Me.TxtMonedaFactura.Text = "Cordobas" Then
-                        '/////////////////////////////BUSCO EL SUBTOTAL DE LA COMPRA SIN IMPUESTO //////////////////////////////
-                        SQlString = "SELECT DISTINCT Compras.Numero_Compra, Compras.Fecha_Compra, ROUND(CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN SubTotal ELSE SubTotal * TasaCambio.MontoTasa END, 2) AS SubTotal, ROUND(CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN IVA ELSE IVA * TasaCambio.MontoTasa END, 2) AS IVA FROM TasaCambio INNER JOIN Compras ON TasaCambio.FechaTasa = Compras.Fecha_Compra FULL OUTER JOIN DetalleReciboPago ON Compras.Numero_Compra = DetalleReciboPago.Numero_Compra  " & _
-                                    "WHERE (Compras.Tipo_Compra = 'Mercancia Recibida') AND (Compras.MontoCredito <> 0) AND (Compras.Cod_Proveedor = '" & Me.TxtCodigoProveedor.Text & "') AND (Compras.Numero_Compra = '" & NumeroCompra & "') OR (Compras.Tipo_Compra = 'Cuenta')"
-                    Else
-                        '/////////////////////////////BUSCO EL SUBTOTAL DE LA COMPRA SIN IMPUESTO //////////////////////////////
-                        SQlString = "SELECT DISTINCT Compras.Numero_Compra, Compras.Fecha_Compra, ROUND(CASE WHEN Compras.MonedaCompra = 'Dolares' THEN SubTotal ELSE SubTotal / TasaCambio.MontoTasa END, 2) AS SubTotal, ROUND(CASE WHEN Compras.MonedaCompra = 'Dolares' THEN IVA ELSE IVA / TasaCambio.MontoTasa END, 2) AS IVA FROM TasaCambio INNER JOIN Compras ON TasaCambio.FechaTasa = Compras.Fecha_Compra FULL OUTER JOIN DetalleReciboPago ON Compras.Numero_Compra = DetalleReciboPago.Numero_Compra  " & _
-                                    "WHERE (Compras.Tipo_Compra = 'Mercancia Recibida') AND (Compras.MontoCredito <> 0) AND (Compras.Cod_Proveedor = '" & Me.TxtCodigoProveedor.Text & "') AND (Compras.Numero_Compra = '" & NumeroCompra & "') OR (Compras.Tipo_Compra = 'Cuenta')"
-                    End If
-                    DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-                    DataAdapter.Fill(DataSet, "Compras")
-                    If DataSet.Tables("Compras").Rows.Count <> 0 Then
-                        SubTotal = DataSet.Tables("Compras").Rows(0)("SubTotal")
-                        Iva = DataSet.Tables("Compras").Rows(0)("IVA")
-                        Retencion = SubTotal * (Ret1 + Ret2 + Ret7 + Ret10)
-                    End If
-
-                    MontoCredito = Me.TrueDBGridComponentes.Item(iPosicion)("Saldo")
-
-                    '///////////////////////SI QUEDA SALDO SIGNIFICA QUE ES UN PAGO PARCIAL//////////////////////////////////////
-                    If MontoCredito <> 0 Then
-                        'MsgBox("Si realiza un Pago Parcial, el calculo es Proporcional!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
-                        If MontoPagado < SubTotal Then
-                            Retencion = MontoPagado * (Ret1 + Ret2 + Ret7 + Ret10)
-                            Me.TrueDBGridComponentes.Item(iPosicion)("Retencion") = Retencion
-                            Me.TrueDBGridComponentes.Item(iPosicion)("NetoPagar") = Me.TrueDBGridComponentes.Item(iPosicion)("Saldo") - Retencion
-                        End If
-                    End If
-
-                End If
-            Else
-                MontoPagado = 0
-                Me.TrueDBGridComponentes.Item(iPosicion)("Retencion") = 0
-                Me.TrueDBGridComponentes.Item(iPosicion)("NetoPagar") = Me.TrueDBGridComponentes.Item(iPosicion)("Saldo")
-            End If
-
-
-
-            TotalRetencion = TotalRetencion + Retencion
-            iPosicion = iPosicion + 1
-        Loop
-
-
-        CalcularRetencion = TotalRetencion
-    End Function
 
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
@@ -115,23 +27,9 @@ Public Class FrmPagos
 
         Me.DTPFecha.Value = Now
 
+        Me.TxtNumeroEnsamble.Text = "-----0-----"
 
 
-        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '//////////////////////////CARGO LAS FORMA DE PAGO////////////////////////////////////////////////////////////////////
-        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlString = "SELECT  NombrePago, Monto,NumeroTarjeta,FechaVence FROM Detalle_MetodoCompras WHERE (Numero_Compra = '-1')"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "MetodoPago")
-        Me.BindingMetodo.DataSource = DataSet.Tables("MetodoPago")
-        Me.TrueDBGridMetodo.DataSource = Me.BindingMetodo
-        Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(1).Width = 110
-        Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(1).Width = 70
-        Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(0).Button = True
-        Me.TrueDBGridMetodo.Columns(1).NumberFormat = "##,##0.00"
-        Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(2).Visible = False
-        Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(3).Visible = False
-        MiConexion.Close()
 
 
         'If Me.TxtMonedaFactura.Text = "Cordobas" Then
@@ -174,6 +72,33 @@ Public Class FrmPagos
         'Me.TrueDBGridComponentes.Columns("NetoPagar").Caption = "NetoPagar"
         'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("NetoPagar").Width = 100
 
+
+        SqlString = "SELECT NombrePago, Descripcion, Numero_Compra, Numero_Factura, MontoPagado,NumeroTarjeta,FechaVence,MontoFactura,AplicaFactura,SaldoFactura, idDetallePago, CodReciboPago, Fecha_Recibo, Numero_Nota FROM DetalleReciboPago WHERE (CodReciboPago = '-1') "
+        ds = New DataSet
+        da = New SqlDataAdapter(SqlString, MiConexion)
+        CmdBuilder = New SqlCommandBuilder(da)
+        da.Fill(ds, "DetalleRecibo")
+        Me.BindingDetalleRecibo.DataSource = ds.Tables("DetalleRecibo")
+        'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        'DataAdapter.Fill(DataSet, "DetalleRecibo")
+        'Me.BindingDetalleRecibo.DataSource = DataSet.Tables("DetalleRecibo")
+        Me.TDBGridDetalle.DataSource = Me.BindingDetalleRecibo
+        Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("NombrePago").Button = True
+        Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("NombrePago").Width = 85
+        Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("Descripcion").Width = 213
+        Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("Numero_Compra").Width = 100
+        Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("Numero_Factura").Width = 100
+        Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("MontoPagado").Width = 75
+        Me.TDBGridDetalle.Columns("MontoPagado").NumberFormat = "##,##0.00"
+        Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("NumeroTarjeta").Visible = False
+        Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("FechaVence").Visible = False
+        Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("MontoFactura").Visible = False
+        Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("AplicaFactura").Visible = False
+        Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("SaldoFactura").Visible = False
+        Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("idDetallePago").Visible = False
+        Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("CodReciboPago").Visible = False
+        Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("Fecha_Recibo").Visible = False
+        Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("Numero_Nota").Visible = False
     End Sub
 
     Private Sub TxtCodigoProveedor_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtCodigoProveedor.TextChanged
@@ -192,7 +117,7 @@ Public Class FrmPagos
             If Not IsDBNull(DataSet.Tables("Proveedor").Rows(0)("Telefono")) Then
                 Me.TxtTelefono.Text = DataSet.Tables("Proveedor").Rows(0)("Telefono")
             End If
-            Me.TrueDBGridComponentes.Enabled = True
+            ' ''Me.TrueDBGridComponentes.Enabled = True
 
             MiConexion.Close()
 
@@ -213,29 +138,29 @@ Public Class FrmPagos
             DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
             DataAdapter.Fill(DataSet, "FactConsultas")
             Me.BindingFacturas.DataSource = DataSet.Tables("FactConsultas")
-            Me.TrueDBGridComponentes.DataSource = Me.BindingFacturas.DataSource
+            'Me.TrueDBGridComponentes.DataSource = Me.BindingFacturas.DataSource
             MiConexion.Close()
 
-            Me.TrueDBGridComponentes.Columns(0).Caption = "Compra No"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Width = 63
+            'Me.TrueDBGridComponentes.Columns(0).Caption = "Compra No"
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Width = 63
 
-            Me.TrueDBGridComponentes.Columns("Fecha_Compra").Caption = "Fecha"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Width = 63
+            'Me.TrueDBGridComponentes.Columns("Fecha_Compra").Caption = "Fecha"
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Width = 63
 
-            Me.TrueDBGridComponentes.Columns("MontoCredito").Caption = "Monto Credito"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("MontoCredito").Width = 100
+            'Me.TrueDBGridComponentes.Columns("MontoCredito").Caption = "Monto Credito"
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("MontoCredito").Width = 100
 
-            Me.TrueDBGridComponentes.Columns("MontoPagado").Caption = "Monto Pagado"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("MontoPagado").Width = 100
+            'Me.TrueDBGridComponentes.Columns("MontoPagado").Caption = "Monto Pagado"
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("MontoPagado").Width = 100
 
-            Me.TrueDBGridComponentes.Columns("Saldo").Caption = "Saldo"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Saldo").Width = 100
+            'Me.TrueDBGridComponentes.Columns("Saldo").Caption = "Saldo"
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Saldo").Width = 100
 
-            Me.TrueDBGridComponentes.Columns("Retencion").Caption = "Retencion"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Retencion").Width = 63
+            'Me.TrueDBGridComponentes.Columns("Retencion").Caption = "Retencion"
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Retencion").Width = 63
 
-            Me.TrueDBGridComponentes.Columns("NetoPagar").Caption = "NetoPagar"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("NetoPagar").Width = 100
+            'Me.TrueDBGridComponentes.Columns("NetoPagar").Caption = "NetoPagar"
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("NetoPagar").Width = 100
 
         Else
 
@@ -243,84 +168,12 @@ Public Class FrmPagos
             Me.TxtApellidos.Text = ""
             Me.TxtDireccion.Text = ""
             Me.TxtTelefono.Text = ""
-            Me.TrueDBGridComponentes.Enabled = False
+            'Me.TrueDBGridComponentes.Enabled = False
             MiConexion.Close()
 
         End If
     End Sub
 
-    Private Sub TrueDBGridComponentes_AfterColUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridComponentes.AfterColUpdate
-        Dim Saldo As Double, MontoCredito As Double, MontoAplicado As Double, Retencion As Double, NetoPagar As Double
-
-        If Me.TrueDBGridComponentes.Columns("MontoCredito").Text = "" Then
-            MontoCredito = 0
-        Else
-            MontoCredito = CDbl(Me.TrueDBGridComponentes.Columns("MontoCredito").Text)
-        End If
-
-        If Me.TrueDBGridComponentes.Columns("MontoPagado").Text = "" Then
-            MontoAplicado = 0
-        Else
-            MontoAplicado = CDbl(Me.TrueDBGridComponentes.Columns("MontoPagado").Text)
-        End If
-
-
-        Saldo = MontoCredito - MontoAplicado
-        Me.TrueDBGridComponentes.Columns(4).Text = Format(Saldo, "##,##0.00")
-
-
-        Retencion = 0
-        If Me.TrueDBGridComponentes.Columns("Retencion").Text <> "" Then
-            Retencion = CDbl(Me.TrueDBGridComponentes.Columns("Retencion").Text)
-        End If
-
-        NetoPagar = Saldo - Retencion
-
-
-        Me.TrueDBGridComponentes.Columns("NetoPagar").Text = Format(NetoPagar, "##,##0.00")
-
-    End Sub
-
-    Private Sub TrueDBGridComponentes_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.AfterUpdate
-        ActualizaMETODOPagosProveedores(Me.TxtMonedaFactura.Text)
-    End Sub
-
-    Private Sub TrueDBGridComponentes_BeforeColUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.BeforeColUpdateEventArgs) Handles TrueDBGridComponentes.BeforeColUpdate
-        Dim MontoCredito As Double, MontoAplicado As Double
-
-        If Me.TrueDBGridComponentes.Columns(2).Text = "" Then
-            MontoCredito = 0
-        Else
-            MontoCredito = CDbl(Me.TrueDBGridComponentes.Columns(2).Text)
-        End If
-
-        If Me.TrueDBGridComponentes.Columns(3).Text = "" Then
-            MontoAplicado = 0
-        ElseIf IsNumeric(Me.TrueDBGridComponentes.Columns(3).Text) Then
-            MontoAplicado = CDbl(Me.TrueDBGridComponentes.Columns(3).Text)
-        Else
-            MsgBox("Monto a Pagar espera un Numero", MsgBoxStyle.Critical, "Zeus Facturacion")
-            Me.TrueDBGridComponentes.Columns(3).Text = ""
-        End If
-
-        'If MontoCredito < MontoAplicado Then
-        '    MsgBox("No se puede Pagar mas del Monto facturado", MsgBoxStyle.Critical, "Sistema Facturacion")
-        '    Me.TrueDBGridComponentes.Columns(3).Text = 0
-        '    MontoAplicado = 0
-        'End If
-    End Sub
-
-    Private Sub TrueDBGridMetodo_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridMetodo.AfterUpdate
-        ActualizaMETODOPagosProveedores(Me.TxtMonedaFactura.Text)
-    End Sub
-
-    Private Sub TrueDBGridMetodo_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridMetodo.ButtonClick
-        Dim Metodo As String
-        Quien = "MetodoPago"
-        My.Forms.FrmConsultas.ShowDialog()
-        Metodo = FrmConsultas.Codigo
-        Me.TrueDBGridMetodo.Columns(0).Text = Metodo
-    End Sub
 
 
 
@@ -354,10 +207,16 @@ Public Class FrmPagos
         Dim ArepPagoProveedores As New ArepPagoProveedores, RutaLogo As String
         Dim SQL As New DataDynamics.ActiveReports.DataSources.SqlDBDataSource, SQlPagos As String
         Dim Cadena As String, NombrePago As String, Filtro As String, SubTotal As Double, Ret1 As Double, Ret2 As Double, Ret7 As Double, Ret10 As Double
-        Dim Retencion As Double
+        Dim Retencion As Double, idDetalle As Double, Descripcion As String, NumeroTarjeta As String, FechaVence As Date, SQlString As String
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
 
-        If IsDBNull(Me.BindingMetodo.Item(iPosicion)("Monto")) Then
-            MsgBox("Es neceario completar el Metodo de Pago", MsgBoxStyle.Critical, "Zeus Facturacion")
+        'If IsDBNull(Me.BindingMetodo.Item(iPosicion)("Monto")) Then
+        '    MsgBox("Es neceario completar el Metodo de Pago", MsgBoxStyle.Critical, "Zeus Facturacion")
+        '    Exit Sub
+        'End If
+
+        If Me.BindingDetalleRecibo.Count = 0 Then
+            MsgBox("Es neceario completar el pago", MsgBoxStyle.Critical, "Zeus Facturacion")
             Exit Sub
         End If
 
@@ -378,98 +237,185 @@ Public Class FrmPagos
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
         GrabaPagos(NumeroPago)
 
-        '////////////////////////////////////////////////////////////////////////////////////////////////////
-        '/////////////////////////////GRABO EL DETALLE DE LA COMPRA /////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+        ''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''/////////////////////////////GRABO EL DETALLE DE LA COMPRA /////////////////////////////////////////////
+        ''//////////////////////////////////////////////////////////////////////////////////////////////////////////7
 
-        Me.BindingFacturas.MoveFirst()
-        Registros = Me.BindingFacturas.Count
+        'Me.BindingFacturas.MoveFirst()
+        'Registros = Me.BindingFacturas.Count
+        'iPosicion = 0
+
+        'Do While iPosicion < Registros
+        '    NumeroCompra = Me.BindingFacturas.Item(iPosicion)("Numero_Compra")
+        '    If Not IsDBNull(Me.BindingFacturas.Item(iPosicion)("MontoPagado")) Then
+        '        MontoPagado = Me.BindingFacturas.Item(iPosicion)("MontoPagado")
+        '    Else
+        '        MontoPagado = 0
+        '    End If
+
+        '    If Not IsDBNull(Me.BindingFacturas.Item(iPosicion)("Retencion")) Then
+        '        Retencion = Me.BindingFacturas.Item(iPosicion)("Retencion")
+        '    Else
+        '        Retencion = 0
+        '    End If
+
+
+        '    MontoCredito = Me.BindingFacturas.Item(iPosicion)("Saldo")
+        '    If MontoPagado <> 0 Then
+        '        GrabaDetallePagos(NumeroPago, NumeroCompra, MontoPagado, Retencion)
+        '        ActualizaMontoCreditoCompra(NumeroCompra, MontoCredito, Me.TxtMonedaFactura.Text)
+        '    End If
+        '    iPosicion = iPosicion + 1
+
+        'Loop
+
+
+        '////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////////GRABO EL DETALLE DEL RECIBO/////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Me.BindingDetalleRecibo.MoveFirst()
+        Registros = Me.BindingDetalleRecibo.Count
         iPosicion = 0
 
+        'SqlString = "SELECT NombrePago, Descripcion, Numero_Compra, Numero_Factura, MontoPagado,NumeroTarjeta,FechaVence,MontoFactura,AplicaFactura,SaldoFactura, idDetallePago, CodReciboPago, Fecha_Recibo, Numero_Nota FROM DetalleReciboPago WHERE (CodReciboPago = '-1') "
+
         Do While iPosicion < Registros
-            NumeroCompra = Me.BindingFacturas.Item(iPosicion)("Numero_Compra")
-            If Not IsDBNull(Me.BindingFacturas.Item(iPosicion)("MontoPagado")) Then
-                MontoPagado = Me.BindingFacturas.Item(iPosicion)("MontoPagado")
+
+            If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("idDetallePago")) Then
+                idDetalle = ds.Tables("DetalleRecibo").Rows(iPosicion)("idDetallePago")
+            Else
+                idDetalle = -1
+            End If
+
+            If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("Numero_Compra")) Then
+                NumeroCompra = ds.Tables("DetalleRecibo").Rows(iPosicion)("Numero_Compra")
+            Else
+                NumeroCompra = 0
+                ds.Tables("DetalleRecibo").Rows(iPosicion)("Numero_Compra") = 0
+            End If
+
+            ds.Tables("DetalleRecibo").Rows(iPosicion)("CodReciboPago") = NumeroPago
+            ds.Tables("DetalleRecibo").Rows(iPosicion)("Fecha_Recibo") = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+
+
+            NombrePago = ds.Tables("DetalleRecibo").Rows(iPosicion)("NombrePago")
+            If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("Descripcion")) Then
+                Descripcion = ds.Tables("DetalleRecibo").Rows(iPosicion)("Descripcion")
+            End If
+            If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("NumeroTarjeta")) Then
+                NumeroTarjeta = ds.Tables("DetalleRecibo").Rows(iPosicion)("NumeroTarjeta")
+            Else
+                NumeroTarjeta = 0
+            End If
+
+            If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("FechaVence")) Then
+                FechaVence = ds.Tables("DetalleRecibo").Rows(iPosicion)("FechaVence")
+            Else
+                FechaVence = Format(Now, "dd/MM/yyyy")
+            End If
+
+
+            MontoPagado = 0
+            MontoCredito = 0
+
+            If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("MontoPagado")) Then
+                If iPosicion <> 0 Then
+                    If Me.BindingDetalleRecibo.Item(iPosicion - 1)("NombrePago") = ds.Tables("DetalleRecibo").Rows(iPosicion)("NombrePago") Then
+                        MontoPagado = MontoPagado + ds.Tables("DetalleRecibo").Rows(iPosicion)("MontoPagado")
+                        If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("SaldoFactura")) Then
+                            MontoCredito = MontoCredito + ds.Tables("DetalleRecibo").Rows(iPosicion)("SaldoFactura")
+                        Else
+                            MontoCredito = MontoCredito
+                        End If
+                        Cadena = NombrePago & " $" & MontoPagado
+
+                        '//////////////////////////////////////////////////////////////////////////////////////
+                        '///////////////////////SI CAMBIA LA FECHA DEL RECIBO /////////////////////////////////
+                        '///////////////////////////////////////////////////////////////////////////////////////
+
+                        'If CambiaFechaRecibo = True Then
+                        '    GrabaMetodoDetalleRecibo(NumeroRecibo, NombrePago, MontoPagado, NumeroTarjeta, FechaVence)
+                        'End If
+                    Else
+                        MontoPagado = ds.Tables("DetalleRecibo").Rows(iPosicion)("MontoPagado")
+                        If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("SaldoFactura")) Then
+                            MontoCredito = ds.Tables("DetalleRecibo").Rows(iPosicion)("SaldoFactura")
+                        Else
+                            MontoCredito = MontoCredito
+                        End If
+
+                        '//////////////////////////////////////////////////////////////////////////////////////
+                        '///////////////////////SI CAMBIA LA FECHA DEL RECIBO /////////////////////////////////
+                        '///////////////////////////////////////////////////////////////////////////////////////
+                        'If CambiaFechaRecibo = True Then
+                        '    GrabaMetodoDetalleRecibo(NumeroRecibo, NombrePago, MontoPagado, NumeroTarjeta, FechaVence)
+                        'End If
+
+                    End If
+                Else
+
+                    MontoPagado = ds.Tables("DetalleRecibo").Rows(iPosicion)("MontoPagado")
+                    If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("SaldoFactura")) Then
+                        MontoCredito = ds.Tables("DetalleRecibo").Rows(iPosicion)("SaldoFactura")
+                    End If
+
+
+                    'GrabaDetallePagos(NumeroPago, NumeroCompra, MontoPagado, Retencion)
+                    ActualizaMontoCreditoCompra(NumeroCompra, MontoCredito, Me.TxtMonedaFactura.Text)
+
+                End If
+
             Else
                 MontoPagado = 0
             End If
 
-            If Not IsDBNull(Me.BindingFacturas.Item(iPosicion)("Retencion")) Then
-                Retencion = Me.BindingFacturas.Item(iPosicion)("Retencion")
-            Else
-                Retencion = 0
-            End If
 
-
-            MontoCredito = Me.BindingFacturas.Item(iPosicion)("Saldo")
+            'MontoCredito = ds.Tables("DetalleRecibo").Rows(iPosicion)("Saldo")
             If MontoPagado <> 0 Then
-                GrabaDetallePagos(NumeroPago, NumeroCompra, MontoPagado, Retencion)
+
+                If CambiaFechaRecibo = True Then
+                    'GrabaDetallePagos(NumeroPago, NumeroCompra, MontoPagado, Retencion)
+                End If
+
                 ActualizaMontoCreditoCompra(NumeroCompra, MontoCredito, Me.TxtMonedaFactura.Text)
+
+                '///////////////////////////////////////////BUSCO SI LA FACTURA QUEDA EN CERO PARA DESACTIVARLAS /////////////////////
+                SQlString = "SELECT   *  FROM Compras WHERE (Numero_Compra = '" & NumeroCompra & "') AND (Tipo_Compra = 'Mercancia Recibida') ORDER BY Fecha_Compra DESC"
+                DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+                DataAdapter.Fill(DataSet, "Compras")
+                If DataSet.Tables("Compras").Rows.Count <> 0 Then
+                    MiConexion.Close()
+                    MontoCredito = DataSet.Tables("Compras").Rows(0)("MontoCredito")
+                    If MontoCredito = 0 Then
+
+                        SQlPagos = "UPDATE [Compras]  SET [Activo] = 'False' " & _
+                                     "WHERE  (Numero_Compra = '" & NumeroCompra & "') AND (Tipo_Compra = 'Mercancia Recibida')"
+                        MiConexion.Open()
+                        ComandoUpdate = New SqlClient.SqlCommand(SQlPagos, MiConexion)
+                        iResultado = ComandoUpdate.ExecuteNonQuery
+                        MiConexion.Close()
+                    End If
+
+                End If
+
+            Else
+                ds.Tables("DetalleRecibo").Rows(iPosicion).Delete()
+                Registros = Registros - 1
+                iPosicion = iPosicion - 1
+
             End If
+
+
+
             iPosicion = iPosicion + 1
-
-
-            '/////////////////////////////////////////////////////////////////////////////////////////////
-            '///////////////////////////CALCULO LAS RETENCIONES //////////////////////////////////////////
-            '//////////////////////////////////////////////////////////////////////////////////////////////
-            'If Me.OptRet1Porciento.Checked = True Or Me.OptRet2Porciento.Checked = True Or Me.OptRet7Porciento.Checked = True Or Me.OptRet10Porciento.Checked = True Then
-            '    '////////////////////////////////////CONSULTO EL SUBTOTAL SIN EL IVA DE LA COMPRA //////////////////////////////////
-            '    If Me.TxtMonedaFactura.Text = "Cordobas" Then
-            '        MiConexion.Close()
-            '        'SqlProveedor = "SELECT DISTINCT Compras.Numero_Compra, Compras.Fecha_Compra, Compras.MontoCredito,  DetalleReciboPago.MontoPagado - DetalleReciboPago.MontoPagado AS MontoPagado, Compras.MontoCredito AS Saldo FROM  DetalleReciboPago FULL OUTER JOIN Compras ON DetalleReciboPago.Numero_Compra = Compras.Numero_Compra WHERE (Compras.Tipo_Compra = N'Mercancia Recibida') AND (Compras.MontoCredito <> 0) AND (Compras.Cod_Proveedor = '" & Me.TxtCodigoProveedor.Text & "')"
-            '        SqlDatos = "SELECT DISTINCT Compras.Numero_Compra, Compras.Fecha_Compra, ROUND(CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN SubTotal ELSE SubTotal * TasaCambio.MontoTasa END, 2) AS SubTotal, ROUND(CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN IVA ELSE IVA * TasaCambio.MontoTasa END, 2) AS IVA FROM TasaCambio INNER JOIN Compras ON TasaCambio.FechaTasa = Compras.Fecha_Compra FULL OUTER JOIN DetalleReciboPago ON Compras.Numero_Compra = DetalleReciboPago.Numero_Compra  " & _
-            '                       "WHERE (Compras.Tipo_Compra = N'Mercancia Recibida') AND (Compras.Cod_Proveedor = '" & Me.TxtCodigoProveedor.Text & "') AND (Compras.Numero_Compra = '" & NumeroCompra & "')"
-            '        MiConexion.Open()
-            '        DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-            '        DataAdapter.Fill(DataSet, "Consultas")
-            '        Me.BindingFacturas.DataSource = DataSet.Tables("Consultas")
-            '        Me.TrueDBGridComponentes.DataSource = Me.BindingFacturas
-
-            '    Else
-            '        MiConexion.Close()
-            '        'SqlProveedor = "SELECT DISTINCT Compras.Numero_Compra, Compras.Fecha_Compra, Compras.MontoCredito,  DetalleReciboPago.MontoPagado - DetalleReciboPago.MontoPagado AS MontoPagado, Compras.MontoCredito AS Saldo FROM  DetalleReciboPago FULL OUTER JOIN Compras ON DetalleReciboPago.Numero_Compra = Compras.Numero_Compra WHERE (Compras.Tipo_Compra = N'Mercancia Recibida') AND (Compras.MontoCredito <> 0) AND (Compras.Cod_Proveedor = '" & Me.TxtCodigoProveedor.Text & "')"
-            '        SqlDatos = "SELECT DISTINCT Compras.Numero_Compra, Compras.Fecha_Compra, ROUND(CASE WHEN Compras.MonedaCompra = 'Dolares' THEN SubTotal ELSE SubTotal / TasaCambio.MontoTasa END, 2) AS SubTotal, ROUND(CASE WHEN Compras.MonedaCompra = 'Dolares' THEN IVA ELSE IVA / TasaCambio.MontoTasa END, 2) AS IVA FROM TasaCambio INNER JOIN Compras ON TasaCambio.FechaTasa = Compras.Fecha_Compra FULL OUTER JOIN DetalleReciboPago ON Compras.Numero_Compra = DetalleReciboPago.Numero_Compra  " & _
-            '                       "WHERE (Compras.Tipo_Compra = N'Mercancia Recibida') AND (Compras.Cod_Proveedor = '" & Me.TxtCodigoProveedor.Text & "') AND (Compras.Numero_Compra = '" & NumeroCompra & "')"
-            '        MiConexion.Open()
-            '        DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-            '        DataAdapter.Fill(DataSet, "Consultas")
-            '        Me.BindingFacturas.DataSource = DataSet.Tables("Consultas")
-            '        Me.TrueDBGridComponentes.DataSource = Me.BindingFacturas
-            '    End If
-
-
-
-            '    If Me.OptRet1Porciento.Checked = True Then
-            '        If Not IsDBNull(DataSet.Tables("Consultas").Rows(0)("SubTotal")) Then
-            '            Ret1 = DataSet.Tables("Consultas").Rows(0)("SubTotal") * 0.01
-            '        End If
-            '    End If
-
-            '    If Me.OptRet2Porciento.Checked = True Then
-            '        If Not IsDBNull(DataSet.Tables("Consultas").Rows(0)("SubTotal")) Then
-            '            Ret2 = DataSet.Tables("Consultas").Rows(0)("SubTotal") * 0.02
-            '        End If
-            '    End If
-
-            '    If Me.OptRet7Porciento.Checked = True Then
-            '        If Not IsDBNull(DataSet.Tables("Consultas").Rows(0)("SubTotal")) Then
-            '            Ret7 = DataSet.Tables("Consultas").Rows(0)("SubTotal") * 0.07
-            '        End If
-            '    End If
-
-            '    If Me.OptRet10Porciento.Checked = True Then
-            '        If Not IsDBNull(DataSet.Tables("Consultas").Rows(0)("SubTotal")) Then
-            '            Ret10 = DataSet.Tables("Consultas").Rows(0)("SubTotal") * 0.1
-            '        End If
-            '    End If
-
-            'End If
-
-
-
-
-
         Loop
+
+        If CambiaFechaRecibo = False Then
+            da.Update(ds.Tables("DetalleRecibo"))
+        End If
+
+
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO METODO DE PAGO /////////////////////////////////////////////
@@ -599,29 +545,29 @@ Public Class FrmPagos
         DataAdapter = New SqlClient.SqlDataAdapter(Sqlstring, MiConexion)
         DataAdapter.Fill(DataSet, "Consultas")
         Me.BindingFacturas.DataSource = DataSet.Tables("Consultas")
-        Me.TrueDBGridComponentes.DataSource = Me.BindingFacturas.DataSource
+        'Me.TrueDBGridComponentes.DataSource = Me.BindingFacturas.DataSource
         MiConexion.Close()
 
-        Me.TrueDBGridComponentes.Columns(0).Caption = "Compra No"
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 63
+        'Me.TrueDBGridComponentes.Columns(0).Caption = "Compra No"
+        'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 63
 
-        Me.TrueDBGridComponentes.Columns("Fecha_Compra").Caption = "Fecha"
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Width = 63
+        'Me.TrueDBGridComponentes.Columns("Fecha_Compra").Caption = "Fecha"
+        'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Width = 63
 
-        Me.TrueDBGridComponentes.Columns("MontoCredito").Caption = "Monto Credito"
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("MontoCredito").Width = 100
+        'Me.TrueDBGridComponentes.Columns("MontoCredito").Caption = "Monto Credito"
+        'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("MontoCredito").Width = 100
 
-        Me.TrueDBGridComponentes.Columns("MontoPagado").Caption = "Monto Pagado"
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("MontoPagado").Width = 100
+        'Me.TrueDBGridComponentes.Columns("MontoPagado").Caption = "Monto Pagado"
+        'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("MontoPagado").Width = 100
 
-        Me.TrueDBGridComponentes.Columns("Saldo").Caption = "Saldo"
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Saldo").Width = 100
+        'Me.TrueDBGridComponentes.Columns("Saldo").Caption = "Saldo"
+        'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Saldo").Width = 100
 
-        Me.TrueDBGridComponentes.Columns("Retencion").Caption = "Retencion"
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Retencion").Width = 63
+        'Me.TrueDBGridComponentes.Columns("Retencion").Caption = "Retencion"
+        'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Retencion").Width = 63
 
-        Me.TrueDBGridComponentes.Columns("NetoPagar").Caption = "NetoPagar"
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("NetoPagar").Width = 100
+        'Me.TrueDBGridComponentes.Columns("NetoPagar").Caption = "NetoPagar"
+        'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("NetoPagar").Width = 100
 
 
     End Sub
@@ -646,7 +592,90 @@ Public Class FrmPagos
 
     End Sub
 
-    Private Sub TrueDBGridComponentes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.Click
+    Private Sub TrueDBGridComponentes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+    End Sub
+
+    Private Sub Label7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+    End Sub
+
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+        FrmPagosFacturas.OptRet1Porciento.Checked = Me.OptRet1Porciento.Checked
+        FrmPagosFacturas.OptRet2Porciento.Checked = Me.OptRet2Porciento.Checked
+        FrmPagosFacturas.OptRet7Porciento.Checked = Me.OptRet7Porciento.Checked
+        FrmPagosFacturas.OptRet10Porciento.Checked = Me.OptRet10Porciento.Checked
+        FrmPagosFacturas.TxtCodigoProveedor.Text = Me.TxtCodigoProveedor.Text
+        FrmPagosFacturas.TxtNombres.Text = Me.TxtNombres.Text
+        FrmPagosFacturas.TxtApellidos.Text = Me.TxtApellidos.Text
+
+        My.Forms.FrmPagosFacturas.ShowDialog()
+
+    End Sub
+
+    Private Sub TxtNumeroEnsamble_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtNumeroEnsamble.TextChanged
+        Dim SqlCompras As String, Fecha As String, SqlString As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+
+        If Me.TxtNumeroEnsamble.Text <> "-----0-----" Then
+            Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
+            SqlCompras = "SELECT ReciboPago.* FROM ReciboPago WHERE (CodReciboPago = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Recibo = CONVERT(DATETIME, '" & Fecha & "', 102))"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
+            DataAdapter.Fill(DataSet, "Recibos")
+            If Not DataSet.Tables("Recibos").Rows.Count = 0 Then
+                Me.TxtCodigoProveedor.Text = DataSet.Tables("Recibos").Rows(0)("Cod_Proveedor")
+                'Me.TxtNombres.Text = DataSet.Tables("Recibos").Rows(0)("NombreCliente")
+                'Me.TxtApellidos.Text = DataSet.Tables("Recibos").Rows(0)("ApellidosCliente")
+                'Me.TxtDireccion.Text = DataSet.Tables("Recibos").Rows(0)("DireccionCliente")
+                'Me.TxtTelefono.Text = DataSet.Tables("Recibos").Rows(0)("TelefonoCliente")
+                'Me.TxtMonedaFactura.Text = DataSet.Tables("Recibos").Rows(0)("MonedaRecibo")
+                Me.TxtSubTotal.Text = DataSet.Tables("Recibos").Rows(0)("Sub_Total")
+                Me.TxtDescuento.Text = DataSet.Tables("Recibos").Rows(0)("Descuento")
+                Me.TxtNetoPagar.Text = DataSet.Tables("Recibos").Rows(0)("Total")
+
+                SqlString = "SELECT NombrePago, Descripcion, Numero_Compra, Numero_Factura, MontoPagado,NumeroTarjeta,FechaVence,MontoFactura,AplicaFactura,SaldoFactura, idDetallePago, CodReciboPago, Fecha_Recibo, Numero_Nota FROM DetalleReciboPago WHERE (CodReciboPago = '" & Me.TxtNumeroEnsamble.Text & "') "
+                'SqlString = "SELECT NombrePago, Descripcion, Numero_Factura, MontoPagado,NumeroTarjeta,FechaVence,MontoFactura,AplicaFactura,SaldoFactura, idDetalleRecibo, CodReciboPago, Fecha_Recibo FROM DetalleRecibo WHERE (CodReciboPago = '-1') AND (Fecha_Recibo = CONVERT(DATETIME, '2010-01-01 00:00:00', 102))"
+                ds = New DataSet
+                da = New SqlDataAdapter(SqlString, MiConexion)
+                CmdBuilder = New SqlCommandBuilder(da)
+                da.Fill(ds, "DetalleRecibo")
+                Me.BindingDetalleRecibo.DataSource = ds.Tables("DetalleRecibo")
+                'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                'DataAdapter.Fill(DataSet, "DetalleRecibo")
+                'Me.BindingDetalleRecibo.DataSource = DataSet.Tables("DetalleRecibo")
+                'Me.TDBGridDetalle.DataSource = Me.BindingDetalleRecibo
+                Me.TDBGridDetalle.DataSource = Me.BindingDetalleRecibo
+                Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("NombrePago").Button = True
+                Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("NombrePago").Width = 85
+                Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("Descripcion").Width = 213
+                Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("Numero_Compra").Width = 100
+                Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("Numero_Factura").Width = 100
+                Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("MontoPagado").Width = 75
+                Me.TDBGridDetalle.Columns("MontoPagado").NumberFormat = "##,##0.00"
+                Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("NumeroTarjeta").Visible = False
+                Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("FechaVence").Visible = False
+                Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("MontoFactura").Visible = False
+                Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("AplicaFactura").Visible = False
+                Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("SaldoFactura").Visible = False
+                Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("idDetallePago").Visible = False
+                Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("CodReciboPago").Visible = False
+                Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("Fecha_Recibo").Visible = False
+                Me.TDBGridDetalle.Splits.Item(0).DisplayColumns("Numero_Nota").Visible = False
+
+            End If
+        End If
+    End Sub
+
+    Private Sub TDBGridDetalle_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TDBGridDetalle.ButtonClick
+        Dim Metodo As String
+        Quien = "MetodoPago"
+        My.Forms.FrmConsultas.ShowDialog()
+        Metodo = FrmConsultas.Codigo
+        Me.TDBGridDetalle.Columns("NombrePago").Text = Metodo
+        Me.TDBGridDetalle.Columns("Descripcion").Text = "PAGO PROVEEDOR"
+    End Sub
+
+    Private Sub TDBGridDetalle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TDBGridDetalle.Click
 
     End Sub
 End Class

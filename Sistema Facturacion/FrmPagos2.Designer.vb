@@ -63,6 +63,9 @@ Partial Class FrmPagos2
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.BindingFacturas = New System.Windows.Forms.BindingSource(Me.components)
         Me.BindingMetodo = New System.Windows.Forms.BindingSource(Me.components)
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
+        Me.Button2 = New System.Windows.Forms.Button
         Me.GroupBox3.SuspendLayout()
         CType(Me.TrueDBGridMetodo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -72,6 +75,7 @@ Partial Class FrmPagos2
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.BindingFacturas, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.BindingMetodo, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox4.SuspendLayout()
         Me.SuspendLayout()
         '
         'Label8
@@ -207,7 +211,7 @@ Partial Class FrmPagos2
         Me.TrueDBGridMetodo.Caption = "Metodos de Pago"
         Me.TrueDBGridMetodo.GroupByCaption = "Drag a column header here to group by that column"
         Me.TrueDBGridMetodo.Images.Add(CType(resources.GetObject("TrueDBGridMetodo.Images"), System.Drawing.Image))
-        Me.TrueDBGridMetodo.Location = New System.Drawing.Point(346, 169)
+        Me.TrueDBGridMetodo.Location = New System.Drawing.Point(150, 285)
         Me.TrueDBGridMetodo.Name = "TrueDBGridMetodo"
         Me.TrueDBGridMetodo.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridMetodo.PreviewInfo.Size = New System.Drawing.Size(0, 0)
@@ -316,7 +320,7 @@ Partial Class FrmPagos2
         Me.TrueDBGridComponentes.FilterBar = True
         Me.TrueDBGridComponentes.GroupByCaption = "Drag a column header here to group by that column"
         Me.TrueDBGridComponentes.Images.Add(CType(resources.GetObject("TrueDBGridComponentes.Images"), System.Drawing.Image))
-        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(15, 323)
+        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(15, 329)
         Me.TrueDBGridComponentes.Name = "TrueDBGridComponentes"
         Me.TrueDBGridComponentes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
@@ -476,11 +480,41 @@ Partial Class FrmPagos2
         Me.PictureBox1.TabIndex = 238
         Me.PictureBox1.TabStop = False
         '
+        'GroupBox4
+        '
+        Me.GroupBox4.Controls.Add(Me.ProgressBar1)
+        Me.GroupBox4.Controls.Add(Me.Button2)
+        Me.GroupBox4.Location = New System.Drawing.Point(454, 175)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(155, 104)
+        Me.GroupBox4.TabIndex = 264
+        Me.GroupBox4.TabStop = False
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(6, 15)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(140, 10)
+        Me.ProgressBar1.TabIndex = 223
+        '
+        'Button2
+        '
+        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
+        Me.Button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.Button2.Location = New System.Drawing.Point(36, 31)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(75, 67)
+        Me.Button2.TabIndex = 222
+        Me.Button2.Text = "Abonos"
+        Me.Button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.Button2.UseVisualStyleBackColor = True
+        '
         'FrmPagos2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(794, 512)
+        Me.Controls.Add(Me.GroupBox4)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.OptRet7Porciento)
         Me.Controls.Add(Me.TxtObservaciones)
@@ -520,6 +554,7 @@ Partial Class FrmPagos2
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.BindingFacturas, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.BindingMetodo, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox4.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -566,4 +601,7 @@ Partial Class FrmPagos2
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents BindingFacturas As System.Windows.Forms.BindingSource
     Friend WithEvents BindingMetodo As System.Windows.Forms.BindingSource
+    Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
+    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
+    Friend WithEvents Button2 As System.Windows.Forms.Button
 End Class

@@ -591,4 +591,11 @@ Public Class FrmPagos2
 
 
 
+    Private Sub TrueDBGridMetodo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridMetodo.Click
+
+    End Sub
+
+    Private Sub TrueDBGridComponentes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.Click
+
+    End Sub
 End Class

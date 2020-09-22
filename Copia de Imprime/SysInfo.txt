@@ -1,1 +1,0 @@
-﻿Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=SistemaFacturacionBuhler;Data Source=JUAN\SQL2005

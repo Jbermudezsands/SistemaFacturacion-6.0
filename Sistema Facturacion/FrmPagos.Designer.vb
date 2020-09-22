@@ -37,13 +37,6 @@ Partial Class FrmPagos
         Me.TxtNombres = New System.Windows.Forms.TextBox
         Me.Button1 = New System.Windows.Forms.Button
         Me.TxtCodigoProveedor = New System.Windows.Forms.TextBox
-        Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.TxtImporteAplicado = New System.Windows.Forms.TextBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.TxtPorAplicar = New System.Windows.Forms.TextBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.TxtImporteRecibido = New System.Windows.Forms.TextBox
-        Me.Label7 = New System.Windows.Forms.Label
         Me.CmdNuevo = New System.Windows.Forms.Button
         Me.ButtonAgregar = New System.Windows.Forms.Button
         Me.Button8 = New System.Windows.Forms.Button
@@ -54,7 +47,6 @@ Partial Class FrmPagos
         Me.TxtSubTotal = New System.Windows.Forms.TextBox
         Me.Label4 = New System.Windows.Forms.Label
         Me.BindingFacturas = New System.Windows.Forms.BindingSource(Me.components)
-        Me.TrueDBGridMetodo = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.BindingMetodo = New System.Windows.Forms.BindingSource(Me.components)
         Me.TxtMonedaFactura = New System.Windows.Forms.ComboBox
         Me.Label13 = New System.Windows.Forms.Label
@@ -65,15 +57,21 @@ Partial Class FrmPagos
         Me.TxtObservaciones = New System.Windows.Forms.TextBox
         Me.OptRet7Porciento = New System.Windows.Forms.CheckBox
         Me.Label8 = New System.Windows.Forms.Label
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
+        Me.Button2 = New System.Windows.Forms.Button
+        Me.TDBGridDetalle = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.BindingDetalleRecibo = New System.Windows.Forms.BindingSource(Me.components)
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
-        CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.BindingFacturas, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.TrueDBGridMetodo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.BindingMetodo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
+        Me.GroupBox4.SuspendLayout()
+        CType(Me.TDBGridDetalle, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.BindingDetalleRecibo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label9
@@ -104,7 +102,7 @@ Partial Class FrmPagos
         Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox1.Location = New System.Drawing.Point(-2, 0)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(799, 60)
+        Me.PictureBox1.Size = New System.Drawing.Size(880, 60)
         Me.PictureBox1.TabIndex = 164
         Me.PictureBox1.TabStop = False
         '
@@ -225,79 +223,6 @@ Partial Class FrmPagos
         Me.TxtCodigoProveedor.Size = New System.Drawing.Size(176, 20)
         Me.TxtCodigoProveedor.TabIndex = 0
         '
-        'TrueDBGridComponentes
-        '
-        Me.TrueDBGridComponentes.AlternatingRows = True
-        Me.TrueDBGridComponentes.Caption = "Listado de Facturas"
-        Me.TrueDBGridComponentes.Enabled = False
-        Me.TrueDBGridComponentes.FilterBar = True
-        Me.TrueDBGridComponentes.GroupByCaption = "Drag a column header here to group by that column"
-        Me.TrueDBGridComponentes.Images.Add(CType(resources.GetObject("TrueDBGridComponentes.Images"), System.Drawing.Image))
-        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(12, 313)
-        Me.TrueDBGridComponentes.Name = "TrueDBGridComponentes"
-        Me.TrueDBGridComponentes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
-        Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75
-        Me.TrueDBGridComponentes.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridComponentes.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TrueDBGridComponentes.Size = New System.Drawing.Size(648, 147)
-        Me.TrueDBGridComponentes.TabIndex = 171
-        Me.TrueDBGridComponentes.Text = "C1TrueDBGrid1"
-        Me.TrueDBGridComponentes.PropBag = resources.GetString("TrueDBGridComponentes.PropBag")
-        '
-        'TxtImporteAplicado
-        '
-        Me.TxtImporteAplicado.Enabled = False
-        Me.TxtImporteAplicado.Location = New System.Drawing.Point(306, 287)
-        Me.TxtImporteAplicado.Name = "TxtImporteAplicado"
-        Me.TxtImporteAplicado.Size = New System.Drawing.Size(87, 20)
-        Me.TxtImporteAplicado.TabIndex = 191
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Label1.Location = New System.Drawing.Point(220, 291)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(89, 13)
-        Me.Label1.TabIndex = 190
-        Me.Label1.Text = "Importe Aplicado "
-        '
-        'TxtPorAplicar
-        '
-        Me.TxtPorAplicar.Enabled = False
-        Me.TxtPorAplicar.Location = New System.Drawing.Point(469, 287)
-        Me.TxtPorAplicar.Name = "TxtPorAplicar"
-        Me.TxtPorAplicar.Size = New System.Drawing.Size(87, 20)
-        Me.TxtPorAplicar.TabIndex = 189
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Label5.Location = New System.Drawing.Point(409, 291)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(58, 13)
-        Me.Label5.TabIndex = 188
-        Me.Label5.Text = "Por Aplicar"
-        '
-        'TxtImporteRecibido
-        '
-        Me.TxtImporteRecibido.Enabled = False
-        Me.TxtImporteRecibido.Location = New System.Drawing.Point(112, 287)
-        Me.TxtImporteRecibido.Name = "TxtImporteRecibido"
-        Me.TxtImporteRecibido.Size = New System.Drawing.Size(88, 20)
-        Me.TxtImporteRecibido.TabIndex = 187
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Label7.Location = New System.Drawing.Point(21, 290)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(96, 13)
-        Me.Label7.TabIndex = 186
-        Me.Label7.Text = "Importe Recibido   "
-        '
         'CmdNuevo
         '
         Me.CmdNuevo.Image = CType(resources.GetObject("CmdNuevo.Image"), System.Drawing.Image)
@@ -314,7 +239,7 @@ Partial Class FrmPagos
         '
         Me.ButtonAgregar.Image = CType(resources.GetObject("ButtonAgregar.Image"), System.Drawing.Image)
         Me.ButtonAgregar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonAgregar.Location = New System.Drawing.Point(6, 87)
+        Me.ButtonAgregar.Location = New System.Drawing.Point(87, 14)
         Me.ButtonAgregar.Name = "ButtonAgregar"
         Me.ButtonAgregar.Size = New System.Drawing.Size(75, 67)
         Me.ButtonAgregar.TabIndex = 196
@@ -328,7 +253,7 @@ Partial Class FrmPagos
         Me.Button8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
         Me.Button8.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button8.Location = New System.Drawing.Point(6, 160)
+        Me.Button8.Location = New System.Drawing.Point(6, 87)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(75, 66)
         Me.Button8.TabIndex = 195
@@ -339,7 +264,7 @@ Partial Class FrmPagos
         'TxtDescuento
         '
         Me.TxtDescuento.Enabled = False
-        Me.TxtDescuento.Location = New System.Drawing.Point(245, 470)
+        Me.TxtDescuento.Location = New System.Drawing.Point(245, 450)
         Me.TxtDescuento.Name = "TxtDescuento"
         Me.TxtDescuento.Size = New System.Drawing.Size(67, 20)
         Me.TxtDescuento.TabIndex = 203
@@ -348,7 +273,7 @@ Partial Class FrmPagos
         '
         Me.Label10.AutoSize = True
         Me.Label10.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Label10.Location = New System.Drawing.Point(181, 473)
+        Me.Label10.Location = New System.Drawing.Point(181, 453)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(62, 13)
         Me.Label10.TabIndex = 202
@@ -358,7 +283,7 @@ Partial Class FrmPagos
         '
         Me.TxtNetoPagar.Enabled = False
         Me.TxtNetoPagar.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtNetoPagar.Location = New System.Drawing.Point(451, 466)
+        Me.TxtNetoPagar.Location = New System.Drawing.Point(451, 446)
         Me.TxtNetoPagar.Name = "TxtNetoPagar"
         Me.TxtNetoPagar.Size = New System.Drawing.Size(105, 26)
         Me.TxtNetoPagar.TabIndex = 201
@@ -368,7 +293,7 @@ Partial Class FrmPagos
         Me.Label6.AutoSize = True
         Me.Label6.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
         Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(342, 469)
+        Me.Label6.Location = New System.Drawing.Point(342, 449)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(103, 20)
         Me.Label6.TabIndex = 200
@@ -377,7 +302,7 @@ Partial Class FrmPagos
         'TxtSubTotal
         '
         Me.TxtSubTotal.Enabled = False
-        Me.TxtSubTotal.Location = New System.Drawing.Point(79, 468)
+        Me.TxtSubTotal.Location = New System.Drawing.Point(79, 448)
         Me.TxtSubTotal.Name = "TxtSubTotal"
         Me.TxtSubTotal.Size = New System.Drawing.Size(67, 20)
         Me.TxtSubTotal.TabIndex = 199
@@ -386,30 +311,11 @@ Partial Class FrmPagos
         '
         Me.Label4.AutoSize = True
         Me.Label4.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Label4.Location = New System.Drawing.Point(21, 473)
+        Me.Label4.Location = New System.Drawing.Point(21, 453)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(62, 13)
         Me.Label4.TabIndex = 198
         Me.Label4.Text = "Sub Total   "
-        '
-        'TrueDBGridMetodo
-        '
-        Me.TrueDBGridMetodo.AllowAddNew = True
-        Me.TrueDBGridMetodo.AllowDelete = True
-        Me.TrueDBGridMetodo.AlternatingRows = True
-        Me.TrueDBGridMetodo.Caption = "Metodos de Pago"
-        Me.TrueDBGridMetodo.GroupByCaption = "Drag a column header here to group by that column"
-        Me.TrueDBGridMetodo.Images.Add(CType(resources.GetObject("TrueDBGridMetodo.Images"), System.Drawing.Image))
-        Me.TrueDBGridMetodo.Location = New System.Drawing.Point(343, 159)
-        Me.TrueDBGridMetodo.Name = "TrueDBGridMetodo"
-        Me.TrueDBGridMetodo.PreviewInfo.Location = New System.Drawing.Point(0, 0)
-        Me.TrueDBGridMetodo.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TrueDBGridMetodo.PreviewInfo.ZoomFactor = 75
-        Me.TrueDBGridMetodo.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridMetodo.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TrueDBGridMetodo.Size = New System.Drawing.Size(316, 119)
-        Me.TrueDBGridMetodo.TabIndex = 204
-        Me.TrueDBGridMetodo.Text = "C1TrueDBGrid1"
-        Me.TrueDBGridMetodo.PropBag = resources.GetString("TrueDBGridMetodo.PropBag")
         '
         'TxtMonedaFactura
         '
@@ -457,7 +363,7 @@ Partial Class FrmPagos
         Me.GroupBox3.Controls.Add(Me.Button8)
         Me.GroupBox3.Location = New System.Drawing.Point(678, 110)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(91, 242)
+        Me.GroupBox3.Size = New System.Drawing.Size(180, 168)
         Me.GroupBox3.TabIndex = 233
         Me.GroupBox3.TabStop = False
         '
@@ -473,10 +379,10 @@ Partial Class FrmPagos
         '
         'TxtObservaciones
         '
-        Me.TxtObservaciones.Location = New System.Drawing.Point(666, 376)
+        Me.TxtObservaciones.Location = New System.Drawing.Point(676, 300)
         Me.TxtObservaciones.Multiline = True
         Me.TxtObservaciones.Name = "TxtObservaciones"
-        Me.TxtObservaciones.Size = New System.Drawing.Size(103, 116)
+        Me.TxtObservaciones.Size = New System.Drawing.Size(182, 130)
         Me.TxtObservaciones.TabIndex = 235
         '
         'OptRet7Porciento
@@ -492,17 +398,67 @@ Partial Class FrmPagos
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(666, 358)
+        Me.Label8.Location = New System.Drawing.Point(676, 284)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(78, 13)
         Me.Label8.TabIndex = 237
         Me.Label8.Text = "Observaciones"
         '
+        'GroupBox4
+        '
+        Me.GroupBox4.Controls.Add(Me.ProgressBar1)
+        Me.GroupBox4.Controls.Add(Me.Button2)
+        Me.GroupBox4.Location = New System.Drawing.Point(392, 165)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(155, 104)
+        Me.GroupBox4.TabIndex = 265
+        Me.GroupBox4.TabStop = False
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(6, 15)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(140, 10)
+        Me.ProgressBar1.TabIndex = 223
+        '
+        'Button2
+        '
+        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
+        Me.Button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.Button2.Location = New System.Drawing.Point(36, 31)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(75, 67)
+        Me.Button2.TabIndex = 222
+        Me.Button2.Text = "Abonos"
+        Me.Button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.Button2.UseVisualStyleBackColor = True
+        '
+        'TDBGridDetalle
+        '
+        Me.TDBGridDetalle.AllowAddNew = True
+        Me.TDBGridDetalle.AllowDelete = True
+        Me.TDBGridDetalle.AlternatingRows = True
+        Me.TDBGridDetalle.Caption = "Detalle de Recibos"
+        Me.TDBGridDetalle.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TDBGridDetalle.Images.Add(CType(resources.GetObject("TDBGridDetalle.Images"), System.Drawing.Image))
+        Me.TDBGridDetalle.Location = New System.Drawing.Point(12, 284)
+        Me.TDBGridDetalle.Name = "TDBGridDetalle"
+        Me.TDBGridDetalle.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TDBGridDetalle.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TDBGridDetalle.PreviewInfo.ZoomFactor = 75
+        Me.TDBGridDetalle.PrintInfo.PageSettings = CType(resources.GetObject("TDBGridDetalle.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TDBGridDetalle.Size = New System.Drawing.Size(648, 146)
+        Me.TDBGridDetalle.TabIndex = 266
+        Me.TDBGridDetalle.Text = "C1TrueDBGrid1"
+        Me.TDBGridDetalle.PropBag = resources.GetString("TDBGridDetalle.PropBag")
+        '
         'FrmPagos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(787, 497)
+        Me.ClientSize = New System.Drawing.Size(866, 480)
+        Me.Controls.Add(Me.TDBGridDetalle)
+        Me.Controls.Add(Me.GroupBox4)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.OptRet7Porciento)
         Me.Controls.Add(Me.TxtObservaciones)
@@ -512,20 +468,12 @@ Partial Class FrmPagos
         Me.Controls.Add(Me.OptRet1Porciento)
         Me.Controls.Add(Me.TxtMonedaFactura)
         Me.Controls.Add(Me.Label13)
-        Me.Controls.Add(Me.TrueDBGridMetodo)
         Me.Controls.Add(Me.TxtDescuento)
         Me.Controls.Add(Me.Label10)
         Me.Controls.Add(Me.TxtNetoPagar)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.TxtSubTotal)
         Me.Controls.Add(Me.Label4)
-        Me.Controls.Add(Me.TxtImporteAplicado)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.TxtPorAplicar)
-        Me.Controls.Add(Me.Label5)
-        Me.Controls.Add(Me.TxtImporteRecibido)
-        Me.Controls.Add(Me.Label7)
-        Me.Controls.Add(Me.TrueDBGridComponentes)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Label9)
@@ -542,11 +490,12 @@ Partial Class FrmPagos
         Me.GroupBox1.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
-        CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.BindingFacturas, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.TrueDBGridMetodo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.BindingMetodo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox4.ResumeLayout(False)
+        CType(Me.TDBGridDetalle, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.BindingDetalleRecibo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -567,13 +516,6 @@ Partial Class FrmPagos
     Friend WithEvents TxtNombres As System.Windows.Forms.TextBox
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents TxtCodigoProveedor As System.Windows.Forms.TextBox
-    Friend WithEvents TrueDBGridComponentes As C1.Win.C1TrueDBGrid.C1TrueDBGrid
-    Friend WithEvents TxtImporteAplicado As System.Windows.Forms.TextBox
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents TxtPorAplicar As System.Windows.Forms.TextBox
-    Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents TxtImporteRecibido As System.Windows.Forms.TextBox
-    Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents CmdNuevo As System.Windows.Forms.Button
     Friend WithEvents ButtonAgregar As System.Windows.Forms.Button
     Friend WithEvents Button8 As System.Windows.Forms.Button
@@ -584,7 +526,6 @@ Partial Class FrmPagos
     Friend WithEvents TxtSubTotal As System.Windows.Forms.TextBox
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents BindingFacturas As System.Windows.Forms.BindingSource
-    Friend WithEvents TrueDBGridMetodo As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents BindingMetodo As System.Windows.Forms.BindingSource
     Friend WithEvents TxtMonedaFactura As System.Windows.Forms.ComboBox
     Friend WithEvents Label13 As System.Windows.Forms.Label
@@ -595,4 +536,9 @@ Partial Class FrmPagos
     Friend WithEvents TxtObservaciones As System.Windows.Forms.TextBox
     Friend WithEvents OptRet7Porciento As System.Windows.Forms.CheckBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
+    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
+    Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents TDBGridDetalle As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents BindingDetalleRecibo As System.Windows.Forms.BindingSource
 End Class

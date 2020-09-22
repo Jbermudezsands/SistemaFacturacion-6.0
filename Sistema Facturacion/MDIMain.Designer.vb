@@ -148,6 +148,8 @@ Partial Class MDIMain
         Me.RibbonVehiculo = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton2 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton3 = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonGroup16 = New C1.Win.C1Ribbon.RibbonGroup
+        Me.RibbonButton16 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonTab6 = New C1.Win.C1Ribbon.RibbonTab
         Me.RibbonGroup13 = New C1.Win.C1Ribbon.RibbonGroup
         Me.RibbonProductor = New C1.Win.C1Ribbon.RibbonButton
@@ -173,8 +175,6 @@ Partial Class MDIMain
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
         Me.TxtUsuario = New System.Windows.Forms.TextBox
-        Me.RibbonGroup16 = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonButton16 = New C1.Win.C1Ribbon.RibbonButton
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1191,6 +1191,19 @@ Partial Class MDIMain
         Me.RibbonButton3.Text = "Generar"
         Me.RibbonButton3.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
+        'RibbonGroup16
+        '
+        Me.RibbonGroup16.ID = "RibbonGroup16"
+        Me.RibbonGroup16.Items.Add(Me.RibbonButton16)
+        Me.RibbonGroup16.Text = "Reportes Bascula"
+        '
+        'RibbonButton16
+        '
+        Me.RibbonButton16.ID = "RibbonButton16"
+        Me.RibbonButton16.SmallImage = CType(resources.GetObject("RibbonButton16.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton16.Text = "Reportes"
+        Me.RibbonButton16.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
         'RibbonTab6
         '
         Me.RibbonTab6.Groups.Add(Me.RibbonGroup13)
@@ -1376,7 +1389,7 @@ Partial Class MDIMain
         'RibbonLabel1
         '
         Me.RibbonLabel1.ID = "RibbonLabel1"
-        Me.RibbonLabel1.Text = "Version 6.35"
+        Me.RibbonLabel1.Text = "Version 6.38"
         '
         'TxtUsuario
         '
@@ -1386,19 +1399,6 @@ Partial Class MDIMain
         Me.TxtUsuario.TabIndex = 15
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
-        '
-        'RibbonGroup16
-        '
-        Me.RibbonGroup16.ID = "RibbonGroup16"
-        Me.RibbonGroup16.Items.Add(Me.RibbonButton16)
-        Me.RibbonGroup16.Text = "Reportes Bascula"
-        '
-        'RibbonButton16
-        '
-        Me.RibbonButton16.ID = "RibbonButton16"
-        Me.RibbonButton16.SmallImage = CType(resources.GetObject("RibbonButton16.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton16.Text = "Reportes"
-        Me.RibbonButton16.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'MDIMain
         '

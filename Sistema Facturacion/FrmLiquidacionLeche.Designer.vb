@@ -30,9 +30,6 @@ Partial Class FrmPlanillaLiquidacion
         Me.Ingresos = New System.Windows.Forms.TabPage
         Me.TDGridIngresos = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.Deducciones = New System.Windows.Forms.TabPage
-        Me.TDGridDeducciones = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.Configuracion = New System.Windows.Forms.TabPage
-        Me.Button1 = New System.Windows.Forms.Button
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
         Me.TxtBolsa = New System.Windows.Forms.TextBox
         Me.Label8 = New System.Windows.Forms.Label
@@ -42,11 +39,13 @@ Partial Class FrmPlanillaLiquidacion
         Me.Label5 = New System.Windows.Forms.Label
         Me.TxtIR = New System.Windows.Forms.TextBox
         Me.Label4 = New System.Windows.Forms.Label
+        Me.TDGridDeducciones = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.CmdCalcular = New System.Windows.Forms.Button
         Me.Label9 = New System.Windows.Forms.Label
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.CmdBorraLinea = New System.Windows.Forms.PictureBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.Button3 = New System.Windows.Forms.Button
         Me.TxtNumNomina = New System.Windows.Forms.TextBox
         Me.Label7 = New System.Windows.Forms.Label
         Me.LblTotalPlanilla = New System.Windows.Forms.Label
@@ -59,13 +58,13 @@ Partial Class FrmPlanillaLiquidacion
         Me.Button2 = New System.Windows.Forms.Button
         Me.CboCodigoBodega = New C1.Win.C1List.C1Combo
         Me.Label20 = New System.Windows.Forms.Label
+        Me.BtnGenerar = New System.Windows.Forms.Button
         Me.TabControl1.SuspendLayout()
         Me.Ingresos.SuspendLayout()
         CType(Me.TDGridIngresos, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Deducciones.SuspendLayout()
-        CType(Me.TDGridDeducciones, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.Configuracion.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
+        CType(Me.TDGridDeducciones, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CmdBorraLinea, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -109,7 +108,7 @@ Partial Class FrmPlanillaLiquidacion
         Me.CmdCerrar.Name = "CmdCerrar"
         Me.CmdCerrar.Size = New System.Drawing.Size(75, 75)
         Me.CmdCerrar.TabIndex = 193
-        Me.CmdCerrar.Text = "Procesar"
+        Me.CmdCerrar.Text = "Cerrar"
         Me.CmdCerrar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.CmdCerrar.UseVisualStyleBackColor = True
         '
@@ -130,7 +129,7 @@ Partial Class FrmPlanillaLiquidacion
         Me.CmdNomina.Enabled = False
         Me.CmdNomina.Image = CType(resources.GetObject("CmdNomina.Image"), System.Drawing.Image)
         Me.CmdNomina.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdNomina.Location = New System.Drawing.Point(89, 390)
+        Me.CmdNomina.Location = New System.Drawing.Point(191, 390)
         Me.CmdNomina.Name = "CmdNomina"
         Me.CmdNomina.Size = New System.Drawing.Size(75, 75)
         Me.CmdNomina.TabIndex = 190
@@ -142,7 +141,6 @@ Partial Class FrmPlanillaLiquidacion
         '
         Me.TabControl1.Controls.Add(Me.Ingresos)
         Me.TabControl1.Controls.Add(Me.Deducciones)
-        Me.TabControl1.Controls.Add(Me.Configuracion)
         Me.TabControl1.Location = New System.Drawing.Point(12, 149)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
@@ -163,11 +161,12 @@ Partial Class FrmPlanillaLiquidacion
         'TDGridIngresos
         '
         Me.TDGridIngresos.AlternatingRows = True
-        Me.TDGridIngresos.Caption = "Listado de Nominas"
+        Me.TDGridIngresos.Caption = "INGRESOS"
         Me.TDGridIngresos.FilterBar = True
+        Me.TDGridIngresos.FlatStyle = C1.Win.C1TrueDBGrid.FlatModeEnum.Popup
         Me.TDGridIngresos.GroupByCaption = "Drag a column header here to group by that column"
         Me.TDGridIngresos.Images.Add(CType(resources.GetObject("TDGridIngresos.Images"), System.Drawing.Image))
-        Me.TDGridIngresos.Location = New System.Drawing.Point(7, 10)
+        Me.TDGridIngresos.Location = New System.Drawing.Point(7, 9)
         Me.TDGridIngresos.Name = "TDGridIngresos"
         Me.TDGridIngresos.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TDGridIngresos.PreviewInfo.Size = New System.Drawing.Size(0, 0)
@@ -180,6 +179,7 @@ Partial Class FrmPlanillaLiquidacion
         '
         'Deducciones
         '
+        Me.Deducciones.Controls.Add(Me.GroupBox2)
         Me.Deducciones.Controls.Add(Me.TDGridDeducciones)
         Me.Deducciones.Location = New System.Drawing.Point(4, 22)
         Me.Deducciones.Name = "Deducciones"
@@ -188,44 +188,6 @@ Partial Class FrmPlanillaLiquidacion
         Me.Deducciones.TabIndex = 1
         Me.Deducciones.Text = "Deducciones"
         Me.Deducciones.UseVisualStyleBackColor = True
-        '
-        'TDGridDeducciones
-        '
-        Me.TDGridDeducciones.AlternatingRows = True
-        Me.TDGridDeducciones.Caption = "Listado de Nominas"
-        Me.TDGridDeducciones.FilterBar = True
-        Me.TDGridDeducciones.GroupByCaption = "Drag a column header here to group by that column"
-        Me.TDGridDeducciones.Images.Add(CType(resources.GetObject("TDGridDeducciones.Images"), System.Drawing.Image))
-        Me.TDGridDeducciones.Location = New System.Drawing.Point(6, 6)
-        Me.TDGridDeducciones.Name = "TDGridDeducciones"
-        Me.TDGridDeducciones.PreviewInfo.Location = New System.Drawing.Point(0, 0)
-        Me.TDGridDeducciones.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TDGridDeducciones.PreviewInfo.ZoomFactor = 75
-        Me.TDGridDeducciones.PrintInfo.PageSettings = CType(resources.GetObject("TDGridDeducciones.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TDGridDeducciones.Size = New System.Drawing.Size(994, 229)
-        Me.TDGridDeducciones.TabIndex = 171
-        Me.TDGridDeducciones.Text = "C1TrueDBGrid1"
-        Me.TDGridDeducciones.PropBag = resources.GetString("TDGridDeducciones.PropBag")
-        '
-        'Configuracion
-        '
-        Me.Configuracion.Controls.Add(Me.Button1)
-        Me.Configuracion.Controls.Add(Me.GroupBox2)
-        Me.Configuracion.Location = New System.Drawing.Point(4, 22)
-        Me.Configuracion.Name = "Configuracion"
-        Me.Configuracion.Size = New System.Drawing.Size(1006, 210)
-        Me.Configuracion.TabIndex = 2
-        Me.Configuracion.Text = "Configuracion"
-        Me.Configuracion.UseVisualStyleBackColor = True
-        '
-        'Button1
-        '
-        Me.Button1.Location = New System.Drawing.Point(845, 212)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 172
-        Me.Button1.Text = "Borrar Linea"
-        Me.Button1.UseVisualStyleBackColor = True
         '
         'GroupBox2
         '
@@ -237,12 +199,12 @@ Partial Class FrmPlanillaLiquidacion
         Me.GroupBox2.Controls.Add(Me.Label5)
         Me.GroupBox2.Controls.Add(Me.TxtIR)
         Me.GroupBox2.Controls.Add(Me.Label4)
-        Me.GroupBox2.Location = New System.Drawing.Point(7, 13)
+        Me.GroupBox2.Location = New System.Drawing.Point(3, 6)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(145, 222)
-        Me.GroupBox2.TabIndex = 0
+        Me.GroupBox2.Size = New System.Drawing.Size(145, 185)
+        Me.GroupBox2.TabIndex = 172
         Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Configuracion Planilla"
+        Me.GroupBox2.Text = "Configuracion Liquidacion"
         '
         'TxtBolsa
         '
@@ -312,12 +274,31 @@ Partial Class FrmPlanillaLiquidacion
         Me.Label4.TabIndex = 0
         Me.Label4.Text = "% IR"
         '
+        'TDGridDeducciones
+        '
+        Me.TDGridDeducciones.AlternatingRows = True
+        Me.TDGridDeducciones.Caption = "DEDUCCIONES"
+        Me.TDGridDeducciones.FilterBar = True
+        Me.TDGridDeducciones.FlatStyle = C1.Win.C1TrueDBGrid.FlatModeEnum.Popup
+        Me.TDGridDeducciones.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TDGridDeducciones.Images.Add(CType(resources.GetObject("TDGridDeducciones.Images"), System.Drawing.Image))
+        Me.TDGridDeducciones.Location = New System.Drawing.Point(175, 6)
+        Me.TDGridDeducciones.Name = "TDGridDeducciones"
+        Me.TDGridDeducciones.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TDGridDeducciones.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TDGridDeducciones.PreviewInfo.ZoomFactor = 75
+        Me.TDGridDeducciones.PrintInfo.PageSettings = CType(resources.GetObject("TDGridDeducciones.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TDGridDeducciones.Size = New System.Drawing.Size(801, 186)
+        Me.TDGridDeducciones.TabIndex = 171
+        Me.TDGridDeducciones.Text = "C1TrueDBGrid1"
+        Me.TDGridDeducciones.PropBag = resources.GetString("TDGridDeducciones.PropBag")
+        '
         'CmdCalcular
         '
         Me.CmdCalcular.Enabled = False
         Me.CmdCalcular.Image = CType(resources.GetObject("CmdCalcular.Image"), System.Drawing.Image)
         Me.CmdCalcular.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdCalcular.Location = New System.Drawing.Point(8, 390)
+        Me.CmdCalcular.Location = New System.Drawing.Point(110, 390)
         Me.CmdCalcular.Name = "CmdCalcular"
         Me.CmdCalcular.Size = New System.Drawing.Size(75, 75)
         Me.CmdCalcular.TabIndex = 188
@@ -359,6 +340,7 @@ Partial Class FrmPlanillaLiquidacion
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.Button3)
         Me.GroupBox1.Controls.Add(Me.TxtNumNomina)
         Me.GroupBox1.Controls.Add(Me.Label7)
         Me.GroupBox1.Controls.Add(Me.LblTotalPlanilla)
@@ -372,20 +354,30 @@ Partial Class FrmPlanillaLiquidacion
         Me.GroupBox1.TabIndex = 184
         Me.GroupBox1.TabStop = False
         '
+        'Button3
+        '
+        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
+        Me.Button3.Location = New System.Drawing.Point(942, 16)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(29, 30)
+        Me.Button3.TabIndex = 303
+        Me.Button3.UseVisualStyleBackColor = True
+        '
         'TxtNumNomina
         '
         Me.TxtNumNomina.Enabled = False
-        Me.TxtNumNomina.Location = New System.Drawing.Point(866, 22)
+        Me.TxtNumNomina.Location = New System.Drawing.Point(836, 22)
         Me.TxtNumNomina.Name = "TxtNumNomina"
         Me.TxtNumNomina.Size = New System.Drawing.Size(100, 20)
         Me.TxtNumNomina.TabIndex = 183
+        Me.TxtNumNomina.Text = "-----0-----"
         '
         'Label7
         '
         Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label7.ForeColor = System.Drawing.Color.Navy
-        Me.Label7.Location = New System.Drawing.Point(744, 26)
+        Me.Label7.Location = New System.Drawing.Point(714, 26)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(116, 16)
         Me.Label7.TabIndex = 182
@@ -404,7 +396,6 @@ Partial Class FrmPlanillaLiquidacion
         '
         'DTPFechaIni
         '
-        Me.DTPFechaIni.Enabled = False
         Me.DTPFechaIni.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.DTPFechaIni.Location = New System.Drawing.Point(96, 18)
         Me.DTPFechaIni.Name = "DTPFechaIni"
@@ -413,7 +404,6 @@ Partial Class FrmPlanillaLiquidacion
         '
         'DTPFechaFin
         '
-        Me.DTPFechaFin.Enabled = False
         Me.DTPFechaFin.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.DTPFechaFin.Location = New System.Drawing.Point(304, 19)
         Me.DTPFechaFin.Name = "DTPFechaFin"
@@ -473,9 +463,9 @@ Partial Class FrmPlanillaLiquidacion
         Me.LblCodigo.AutoSize = True
         Me.LblCodigo.Location = New System.Drawing.Point(21, 121)
         Me.LblCodigo.Name = "LblCodigo"
-        Me.LblCodigo.Size = New System.Drawing.Size(80, 13)
+        Me.LblCodigo.Size = New System.Drawing.Size(92, 13)
         Me.LblCodigo.TabIndex = 198
-        Me.LblCodigo.Text = "Codigo Clientes"
+        Me.LblCodigo.Text = "Codigo Proveedor"
         '
         'Button2
         '
@@ -525,11 +515,24 @@ Partial Class FrmPlanillaLiquidacion
         Me.Label20.TabIndex = 300
         Me.Label20.Text = "Bodega"
         '
+        'BtnGenerar
+        '
+        Me.BtnGenerar.Image = CType(resources.GetObject("BtnGenerar.Image"), System.Drawing.Image)
+        Me.BtnGenerar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnGenerar.Location = New System.Drawing.Point(12, 391)
+        Me.BtnGenerar.Name = "BtnGenerar"
+        Me.BtnGenerar.Size = New System.Drawing.Size(75, 75)
+        Me.BtnGenerar.TabIndex = 302
+        Me.BtnGenerar.Text = "Generar"
+        Me.BtnGenerar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnGenerar.UseVisualStyleBackColor = True
+        '
         'FrmPlanillaLiquidacion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1029, 470)
+        Me.Controls.Add(Me.BtnGenerar)
         Me.Controls.Add(Me.CboCodigoBodega)
         Me.Controls.Add(Me.Label20)
         Me.Controls.Add(Me.Button2)
@@ -553,10 +556,9 @@ Partial Class FrmPlanillaLiquidacion
         Me.Ingresos.ResumeLayout(False)
         CType(Me.TDGridIngresos, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Deducciones.ResumeLayout(False)
-        CType(Me.TDGridDeducciones, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Configuracion.ResumeLayout(False)
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
+        CType(Me.TDGridDeducciones, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CmdBorraLinea, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
@@ -577,18 +579,6 @@ Partial Class FrmPlanillaLiquidacion
     Friend WithEvents Ingresos As System.Windows.Forms.TabPage
     Friend WithEvents TDGridIngresos As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents Deducciones As System.Windows.Forms.TabPage
-    Friend WithEvents TDGridDeducciones As C1.Win.C1TrueDBGrid.C1TrueDBGrid
-    Friend WithEvents Configuracion As System.Windows.Forms.TabPage
-    Friend WithEvents Button1 As System.Windows.Forms.Button
-    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
-    Friend WithEvents TxtBolsa As System.Windows.Forms.TextBox
-    Friend WithEvents Label8 As System.Windows.Forms.Label
-    Friend WithEvents TxtPrecioUnitario As System.Windows.Forms.TextBox
-    Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents TxtDeduccionPolicia As System.Windows.Forms.TextBox
-    Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents TxtIR As System.Windows.Forms.TextBox
-    Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents CmdCalcular As System.Windows.Forms.Button
     Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
@@ -606,4 +596,16 @@ Partial Class FrmPlanillaLiquidacion
     Friend WithEvents Button2 As System.Windows.Forms.Button
     Friend WithEvents CboCodigoBodega As C1.Win.C1List.C1Combo
     Friend WithEvents Label20 As System.Windows.Forms.Label
+    Friend WithEvents BtnGenerar As System.Windows.Forms.Button
+    Friend WithEvents Button3 As System.Windows.Forms.Button
+    Friend WithEvents TDGridDeducciones As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend WithEvents TxtBolsa As System.Windows.Forms.TextBox
+    Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents TxtPrecioUnitario As System.Windows.Forms.TextBox
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents TxtDeduccionPolicia As System.Windows.Forms.TextBox
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents TxtIR As System.Windows.Forms.TextBox
+    Friend WithEvents Label4 As System.Windows.Forms.Label
 End Class

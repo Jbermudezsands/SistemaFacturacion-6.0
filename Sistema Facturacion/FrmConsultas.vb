@@ -333,7 +333,7 @@ Public Class FrmConsultas
                     MiConexion.Close()
 
                 Case "Pagos"
-                    SQlProductos = "SELECT ReciboPago.Fecha_Recibo, ReciboPago.CodReciboPago, Proveedor.Nombre_Proveedor, Proveedor.Cod_Proveedor FROM ReciboPago INNER JOIN Proveedor ON ReciboPago.Cod_Proveedor = Proveedor.Cod_Proveedor WHERE (ReciboPago.Activo = 1) AND (ReciboPago.Contabilizado = 0)"
+                    SQlProductos = "SELECT ReciboPago.Fecha_Recibo, ReciboPago.CodReciboPago, Proveedor.Nombre_Proveedor, Proveedor.Cod_Proveedor FROM ReciboPago INNER JOIN Proveedor ON ReciboPago.Cod_Proveedor = Proveedor.Cod_Proveedor "  'WHERE (ReciboPago.Activo = 1) AND (ReciboPago.Contabilizado = 0)
 
                     DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
                     DataSet.Reset()

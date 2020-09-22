@@ -25,6 +25,8 @@ Public Class MDIMain
         ElseIf B.ID = "Office2007BlackStyleButton" Then
             VisualStyle = C1.Win.C1Ribbon.VisualStyle.Office2007Black
         End If
+
+
     End Sub
 
     Private Sub c1Ribbon1_VisualStyleChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles c1Ribbon1.VisualStyleChanged

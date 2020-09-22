@@ -1368,6 +1368,12 @@
     <Compile Include="Reportes\SubReporteFacturas2.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="FrmPagosFacturas.Designer.vb">
+      <DependentUpon>FrmPagosFacturas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPagosFacturas.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SplashScreen1.Designer.vb">
       <DependentUpon>SplashScreen1.vb</DependentUpon>
     </Compile>
@@ -2231,6 +2237,10 @@
     <EmbeddedResource Include="Reportes\SubReporteFacturas2.resx">
       <DependentUpon>SubReporteFacturas2.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPagosFacturas.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmPagosFacturas.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SplashScreen1.resx">
       <SubType>Designer</SubType>

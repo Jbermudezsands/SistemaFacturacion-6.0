@@ -131,7 +131,7 @@ Public Class FrmCompras
             ds.Tables("DetalleCompra").AcceptChanges()
             da.Update(ds.Tables("DetalleCompra"))
 
-            ActualizarGridInsertRow()
+
 
             Me.TrueDBGridComponentes.Row = iPosicion
 
@@ -144,6 +144,7 @@ Public Class FrmCompras
             End If
         End If
 
+        ActualizarGridInsertRow()
         ActualizaDetalleBodega(Me.CboCodigoBodega.Text, CodigoProducto)
 
 
@@ -191,6 +192,10 @@ Public Class FrmCompras
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Locked = True
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(7).Visible = False
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(8).Button = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("TasaCambio").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
 
         Else
             ds.Tables("DetalleCompra").Reset()
@@ -217,19 +222,19 @@ Public Class FrmCompras
             Me.TrueDBGridComponentes.Columns(3).Caption = "Precio Unit"
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = False
-            Me.TrueDBGridComponentes.Columns(3).NumberFormat = "##,##0.00"
             Me.TrueDBGridComponentes.Columns(4).Caption = "%Desc"
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 43
             Me.TrueDBGridComponentes.Columns(5).Caption = "Precio Neto"
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Width = 65
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Locked = True
-            Me.TrueDBGridComponentes.Columns(5).NumberFormat = "##,##0.00"
             Me.TrueDBGridComponentes.Columns(6).Caption = "Importe"
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Width = 61
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Locked = True
-            Me.TrueDBGridComponentes.Columns(6).NumberFormat = "##,##0.00"
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(7).Visible = False
-
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("TasaCambio").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
         End If
 
     End Sub
@@ -376,9 +381,11 @@ Public Class FrmCompras
                 Case "Transferencia Recibida"
                     ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
                 Case "Cuenta"
-                    ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+                    'ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+                    ConsecutivoCompra = BuscaConsecutivo("Compra")
                 Case "Cuenta DB"
-                    ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
+                    'ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
+                    ConsecutivoCompra = BuscaConsecutivo("Compra")
             End Select
 
             '/////////////////////////////////////////////////////////////////////////////////////////
@@ -497,7 +504,7 @@ Public Class FrmCompras
         'Dim DiferenciaCantidad As Double, DiferenciaPrecio As Double, SQLString As String, TipoProducto As String = "", TipoDescuento As String, PrecioDescCordobas As Double, PrecioDescDolar
 
         If Me.CboCodigoBodega.Text = "" Then
-            MsgBox("Es necesario que seleccione el tipo de Compra", MsgBoxStyle.Critical, "Sistema Facturacion")
+            MsgBox("Es necesario que seleccione la  Bodega", MsgBoxStyle.Critical, "Sistema Facturacion")
             Exit Sub
         End If
 
@@ -1195,10 +1202,13 @@ Public Class FrmCompras
         DataAdapter.Fill(DataSet, "Bodegas")
         Me.CboCodigoBodega.DataSource = DataSet.Tables("Bodegas")
         If Not DataSet.Tables("Bodegas").Rows.Count = 0 Then
+            Me.CboCodigoBodega.Text = DataSet.Tables("Bodegas").Rows(0)("Cod_Bodega")
             If EsSolicitud = False Then
                 Me.CboCodigoBodega.Text = DataSet.Tables("Bodegas").Rows(0)("Cod_Bodega")
             End If
         End If
+
+
         Me.CboCodigoBodega.Columns(0).Caption = "Codigo"
         Me.CboCodigoBodega.Columns(1).Caption = "Nombre Bodega"
 
@@ -1284,7 +1294,7 @@ Public Class FrmCompras
                 '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
                 '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                SqlString = "SELECT  Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario, Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra FROM  Detalle_Compras  WHERE (Detalle_Compras.Numero_Compra = '-1')"
+                SqlString = "SELECT  Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario, Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, TasaCambio, Detalle_Compras.Numero_Compra, Detalle_Compras.Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Numero_Lote, Detalle_Compras.Fecha_Vence FROM  Detalle_Compras  WHERE (Detalle_Compras.Numero_Compra = '-1')"
                 'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 'DataAdapter.Fill(DataSet, "DetalleCompra")
                 'Me.BindingDetalle.DataSource = DataSet.Tables("DetalleCompra")
@@ -1318,6 +1328,8 @@ Public Class FrmCompras
                 Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
                 Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
                 Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Lote").Visible = False
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = False
 
             End If
         End If
@@ -1405,9 +1417,11 @@ Public Class FrmCompras
                 Case "Transferencia Recibida"
                     ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
                 Case "Cuenta"
-                    ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+                    'ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+                    ConsecutivoCompra = BuscaConsecutivo("Compra")
                 Case "Cuenta DB"
-                    ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
+                    'ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
+                    ConsecutivoCompra = BuscaConsecutivo("Compra")
             End Select
 
             '/////////////////////////////////////////////////////////////////////////////////////////
@@ -1540,7 +1554,12 @@ Public Class FrmCompras
                     NumeroLote = "SINLOTE"
                 End If
                 If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")) Then
-                    FechaLote = Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")
+                    If Me.BindingDetalle.Item(iPosicion)("Fecha_Vence") = "0" Then
+                        FechaLote = "01/01/1900"
+                    Else
+                        FechaLote = Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")
+                    End If
+
                 Else
                     FechaLote = "01/01/1900"
                 End If
@@ -1733,7 +1752,6 @@ Public Class FrmCompras
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
             Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 350
-            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
             Me.TrueDBGridComponentes.Columns(2).Caption = "Ordenado"
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 64
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Visible = False
@@ -2080,6 +2098,57 @@ Public Class FrmCompras
                         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
                         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Compra").Visible = False
 
+                    ElseIf CboTipoProducto.Text = "Cuenta" Then
+                        ds.Tables("DetalleCompra").Reset()
+                        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
+                        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        SqlCompras = "SELECT  Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario, Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, Detalle_Compras.Numero_Lote,Detalle_Compras.Fecha_Vence, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra FROM  Detalle_Compras  " & _
+                                    "WHERE (Detalle_Compras.Numero_Compra = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Compras.Tipo_Compra = '" & TipoCompra & "') ORDER BY Detalle_Compras.id_Detalle_Compra"
+                        'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
+                        'DataAdapter.Fill(DataSet, "DetalleCompra")
+                        'Me.BindingDetalle.DataSource = DataSet.Tables("DetalleCompra")
+                        ds = New DataSet
+                        da = New SqlDataAdapter(SqlCompras, MiConexion)
+                        CmdBuilder = New SqlCommandBuilder(da)
+                        da.Fill(ds, "DetalleCompra")
+                        Me.BindingDetalle.DataSource = ds.Tables("DetalleCompra")
+                        Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
+
+
+                        Me.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
+                        Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 350
+                        Me.TrueDBGridComponentes.Columns(2).Caption = "Ordenado"
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 64
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Visible = False
+                        Me.TrueDBGridComponentes.Columns(3).Caption = "Monto"
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = False
+                        Me.TrueDBGridComponentes.Columns(4).Caption = "%Desc"
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 43
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Visible = False
+                        Me.TrueDBGridComponentes.Columns(5).Caption = "Precio Neto"
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Width = 65
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Locked = True
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Visible = False
+                        Me.TrueDBGridComponentes.Columns(6).Caption = "Importe"
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Width = 61
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Locked = True
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Visible = True
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(7).Visible = False
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(8).Button = True
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(8).Visible = True
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("TasaCambio").Visible = False
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = False
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Lote").Visible = False
+
+
                     Else
                         ds.Tables("DetalleCompra").Reset()
                         '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
@@ -2354,6 +2423,13 @@ Public Class FrmCompras
                         ConsecutivoCompra = BuscaConsecutivo("DevCompra")
                     Case "Transferencia Recibida"
                         ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
+                    Case "Cuenta"
+                        'ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+                        ConsecutivoCompra = BuscaConsecutivo("Compra")
+                    Case "Cuenta DB"
+                        'ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
+                        ConsecutivoCompra = BuscaConsecutivo("Compra")
+
                 End Select
 
                 '/////////////////////////////////////////////////////////////////////////////////////////
@@ -2651,6 +2727,12 @@ Public Class FrmCompras
                 ConsecutivoCompra = BuscaConsecutivo("DevCompra")
             Case "Transferencia Recibida"
                 ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
+            Case "Cuenta"
+                'ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+                ConsecutivoCompra = BuscaConsecutivo("Compra")
+            Case "Cuenta DB"
+                'ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
+                ConsecutivoCompra = BuscaConsecutivo("Compra")
         End Select
 
 
@@ -2886,6 +2968,12 @@ Public Class FrmCompras
                     ConsecutivoCompra = BuscaConsecutivo("DevCompra")
                 Case "Transferencia Recibida"
                     ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
+                Case "Cuenta"
+                    'ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+                    ConsecutivoCompra = BuscaConsecutivo("Compra")
+                Case "Cuenta DB"
+                    'ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
+                    ConsecutivoCompra = BuscaConsecutivo("Compra")
             End Select
         Else
             ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
@@ -3199,6 +3287,12 @@ Public Class FrmCompras
                     ConsecutivoCompra = BuscaConsecutivo("DevCompra")
                 Case "Transferencia Recibida"
                     ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
+                Case "Cuenta"
+                    'ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+                    ConsecutivoCompra = BuscaConsecutivo("Compra")
+                Case "Cuenta DB"
+                    'ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
+                    ConsecutivoCompra = BuscaConsecutivo("Compra")
             End Select
 
             '/////////////////////////////////////////////////////////////////////////////////////////

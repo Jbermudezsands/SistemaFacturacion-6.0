@@ -93,7 +93,11 @@ Public Class FrmComprasHistorico
                 Case "Transferencia Recibida"
                     ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
                 Case "Cuenta"
-                    ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+                    'ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+                    ConsecutivoCompra = BuscaConsecutivo("Compra")
+                Case "Cuenta DB"
+                    'ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
+                    ConsecutivoCompra = BuscaConsecutivo("Compra")
             End Select
         Else
             ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
@@ -671,6 +675,12 @@ Public Class FrmComprasHistorico
                     ConsecutivoCompra = BuscaConsecutivo("DevCompra")
                 Case "Transferencia Recibida"
                     ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
+                Case "Cuenta"
+                    'ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+                    ConsecutivoCompra = BuscaConsecutivo("Compra")
+                Case "Cuenta DB"
+                    'ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
+                    ConsecutivoCompra = BuscaConsecutivo("Compra")
             End Select
         Else
             ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
@@ -1272,6 +1282,12 @@ Public Class FrmComprasHistorico
                 ConsecutivoCompra = BuscaConsecutivo("DevCompra")
             Case "Transferencia Recibida"
                 ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
+            Case "Cuenta"
+                'ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+                ConsecutivoCompra = BuscaConsecutivo("Compra")
+            Case "Cuenta DB"
+                'ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
+                ConsecutivoCompra = BuscaConsecutivo("Compra")
         End Select
 
 

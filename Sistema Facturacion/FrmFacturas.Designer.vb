@@ -45,19 +45,22 @@ Partial Class FrmFacturas
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.ChkAplicarCtaXCobrar = New System.Windows.Forms.CheckBox
+        Me.BtnFacturas = New C1.Win.C1Input.C1Button
+        Me.TxtNumeroFactura = New System.Windows.Forms.TextBox
         Me.ChkPropina = New System.Windows.Forms.CheckBox
         Me.Label16 = New System.Windows.Forms.Label
         Me.CboReferencia = New System.Windows.Forms.ComboBox
         Me.OptRet2Porciento = New System.Windows.Forms.CheckBox
         Me.OptRet1Porciento = New System.Windows.Forms.CheckBox
         Me.OptExsonerado = New System.Windows.Forms.CheckBox
-        Me.CmdCuentasxCobrar = New System.Windows.Forms.Button
         Me.TxtTelefono = New System.Windows.Forms.TextBox
         Me.TxtDireccion = New System.Windows.Forms.TextBox
         Me.TxtApellidos = New System.Windows.Forms.TextBox
         Me.TxtNombres = New System.Windows.Forms.TextBox
         Me.Button1 = New System.Windows.Forms.Button
         Me.TxtCodigoClientes = New System.Windows.Forms.TextBox
+        Me.CmdCuentasxCobrar = New System.Windows.Forms.Button
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.CmbSerie = New C1.Win.C1List.C1Combo
         Me.TxtMonedaFactura = New System.Windows.Forms.ComboBox
@@ -107,9 +110,6 @@ Partial Class FrmFacturas
         Me.BtnSalida = New System.Windows.Forms.Button
         Me.Button5 = New System.Windows.Forms.Button
         Me.PictureBox3 = New System.Windows.Forms.PictureBox
-        Me.TxtNumeroFactura = New System.Windows.Forms.TextBox
-        Me.BtnFacturas = New C1.Win.C1Input.C1Button
-        Me.ChkAplicarCtaXCobrar = New System.Windows.Forms.CheckBox
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrueDBGridMetodo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
@@ -428,6 +428,34 @@ Partial Class FrmFacturas
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Informacion del Cliente"
         '
+        'ChkAplicarCtaXCobrar
+        '
+        Me.ChkAplicarCtaXCobrar.AutoSize = True
+        Me.ChkAplicarCtaXCobrar.Location = New System.Drawing.Point(218, 19)
+        Me.ChkAplicarCtaXCobrar.Name = "ChkAplicarCtaXCobrar"
+        Me.ChkAplicarCtaXCobrar.Size = New System.Drawing.Size(108, 17)
+        Me.ChkAplicarCtaXCobrar.TabIndex = 228
+        Me.ChkAplicarCtaXCobrar.Text = "Aplicar CtasXCob"
+        Me.ChkAplicarCtaXCobrar.UseVisualStyleBackColor = True
+        '
+        'BtnFacturas
+        '
+        Me.BtnFacturas.Image = CType(resources.GetObject("BtnFacturas.Image"), System.Drawing.Image)
+        Me.BtnFacturas.Location = New System.Drawing.Point(184, 125)
+        Me.BtnFacturas.Name = "BtnFacturas"
+        Me.BtnFacturas.Size = New System.Drawing.Size(39, 24)
+        Me.BtnFacturas.TabIndex = 227
+        Me.BtnFacturas.UseVisualStyleBackColor = True
+        Me.BtnFacturas.VisualStyle = C1.Win.C1Input.VisualStyle.System
+        '
+        'TxtNumeroFactura
+        '
+        Me.TxtNumeroFactura.Location = New System.Drawing.Point(78, 126)
+        Me.TxtNumeroFactura.Name = "TxtNumeroFactura"
+        Me.TxtNumeroFactura.Size = New System.Drawing.Size(100, 20)
+        Me.TxtNumeroFactura.TabIndex = 226
+        Me.TxtNumeroFactura.Visible = False
+        '
         'ChkPropina
         '
         Me.ChkPropina.AutoSize = True
@@ -486,16 +514,6 @@ Partial Class FrmFacturas
         Me.OptExsonerado.Text = "Exonerado"
         Me.OptExsonerado.UseVisualStyleBackColor = True
         '
-        'CmdCuentasxCobrar
-        '
-        Me.CmdCuentasxCobrar.Location = New System.Drawing.Point(343, 89)
-        Me.CmdCuentasxCobrar.Name = "CmdCuentasxCobrar"
-        Me.CmdCuentasxCobrar.Size = New System.Drawing.Size(85, 23)
-        Me.CmdCuentasxCobrar.TabIndex = 147
-        Me.CmdCuentasxCobrar.Text = "Ctas x Cobrar"
-        Me.CmdCuentasxCobrar.UseVisualStyleBackColor = True
-        Me.CmdCuentasxCobrar.Visible = False
-        '
         'TxtTelefono
         '
         Me.TxtTelefono.Location = New System.Drawing.Point(12, 99)
@@ -540,6 +558,16 @@ Partial Class FrmFacturas
         Me.TxtCodigoClientes.Name = "TxtCodigoClientes"
         Me.TxtCodigoClientes.Size = New System.Drawing.Size(176, 20)
         Me.TxtCodigoClientes.TabIndex = 0
+        '
+        'CmdCuentasxCobrar
+        '
+        Me.CmdCuentasxCobrar.Location = New System.Drawing.Point(343, 89)
+        Me.CmdCuentasxCobrar.Name = "CmdCuentasxCobrar"
+        Me.CmdCuentasxCobrar.Size = New System.Drawing.Size(85, 23)
+        Me.CmdCuentasxCobrar.TabIndex = 147
+        Me.CmdCuentasxCobrar.Text = "Ctas x Cobrar"
+        Me.CmdCuentasxCobrar.UseVisualStyleBackColor = True
+        Me.CmdCuentasxCobrar.Visible = False
         '
         'GroupBox1
         '
@@ -1165,34 +1193,6 @@ Partial Class FrmFacturas
         Me.PictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox3.TabIndex = 227
         Me.PictureBox3.TabStop = False
-        '
-        'TxtNumeroFactura
-        '
-        Me.TxtNumeroFactura.Location = New System.Drawing.Point(78, 126)
-        Me.TxtNumeroFactura.Name = "TxtNumeroFactura"
-        Me.TxtNumeroFactura.Size = New System.Drawing.Size(100, 20)
-        Me.TxtNumeroFactura.TabIndex = 226
-        Me.TxtNumeroFactura.Visible = False
-        '
-        'BtnFacturas
-        '
-        Me.BtnFacturas.Image = CType(resources.GetObject("BtnFacturas.Image"), System.Drawing.Image)
-        Me.BtnFacturas.Location = New System.Drawing.Point(184, 125)
-        Me.BtnFacturas.Name = "BtnFacturas"
-        Me.BtnFacturas.Size = New System.Drawing.Size(39, 24)
-        Me.BtnFacturas.TabIndex = 227
-        Me.BtnFacturas.UseVisualStyleBackColor = True
-        Me.BtnFacturas.VisualStyle = C1.Win.C1Input.VisualStyle.System
-        '
-        'ChkAplicarCtaXCobrar
-        '
-        Me.ChkAplicarCtaXCobrar.AutoSize = True
-        Me.ChkAplicarCtaXCobrar.Location = New System.Drawing.Point(218, 19)
-        Me.ChkAplicarCtaXCobrar.Name = "ChkAplicarCtaXCobrar"
-        Me.ChkAplicarCtaXCobrar.Size = New System.Drawing.Size(108, 17)
-        Me.ChkAplicarCtaXCobrar.TabIndex = 228
-        Me.ChkAplicarCtaXCobrar.Text = "Aplicar CtasXCob"
-        Me.ChkAplicarCtaXCobrar.UseVisualStyleBackColor = True
         '
         'FrmFacturas
         '
