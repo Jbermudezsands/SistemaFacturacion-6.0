@@ -431,7 +431,7 @@ Partial Class FrmFacturas
         'ChkAplicarCtaXCobrar
         '
         Me.ChkAplicarCtaXCobrar.AutoSize = True
-        Me.ChkAplicarCtaXCobrar.Location = New System.Drawing.Point(218, 19)
+        Me.ChkAplicarCtaXCobrar.Location = New System.Drawing.Point(205, 19)
         Me.ChkAplicarCtaXCobrar.Name = "ChkAplicarCtaXCobrar"
         Me.ChkAplicarCtaXCobrar.Size = New System.Drawing.Size(108, 17)
         Me.ChkAplicarCtaXCobrar.TabIndex = 228
@@ -546,7 +546,7 @@ Partial Class FrmFacturas
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(191, 12)
+        Me.Button1.Location = New System.Drawing.Point(165, 11)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(37, 32)
         Me.Button1.TabIndex = 128
@@ -556,7 +556,7 @@ Partial Class FrmFacturas
         '
         Me.TxtCodigoClientes.Location = New System.Drawing.Point(12, 18)
         Me.TxtCodigoClientes.Name = "TxtCodigoClientes"
-        Me.TxtCodigoClientes.Size = New System.Drawing.Size(176, 20)
+        Me.TxtCodigoClientes.Size = New System.Drawing.Size(152, 20)
         Me.TxtCodigoClientes.TabIndex = 0
         '
         'CmdCuentasxCobrar

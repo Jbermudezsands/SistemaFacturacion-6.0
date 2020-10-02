@@ -253,9 +253,9 @@ Partial Class FrmPlanillaLiquidacion
         Me.Label5.AutoSize = True
         Me.Label5.Location = New System.Drawing.Point(14, 87)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(49, 13)
+        Me.Label5.Size = New System.Drawing.Size(67, 13)
         Me.Label5.TabIndex = 2
-        Me.Label5.Text = "% Policia"
+        Me.Label5.Text = "% Retencion"
         '
         'TxtIR
         '

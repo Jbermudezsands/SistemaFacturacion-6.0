@@ -6446,7 +6446,7 @@ Module Funciones
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "UPDATE [IndiceNota] SET [Fecha_Nota] = '" & Format(FechaNota, "dd/MM/yyyy") & "',[Tipo_Nota] = '" & TipoNota & "',[MonedaNota] = '" & Moneda & "',[Cod_Cliente] = '" & CodigoCliente & "',[Nombre_Cliente] = '" & NombreCliente & "' ,[Observaciones] = '" & Observaciones & "' ,[Activo] =" & NotaActivo & ",[Contabilizado] =" & NotaContabilizado & ",[Marca] ='True',[TipoCuenta] =" & Tipo & " " & _
+            SqlCompras = "UPDATE [IndiceNota] SET [MonedaNota] = '" & Moneda & "',[Cod_Cliente] = '" & CodigoCliente & "',[Nombre_Cliente] = '" & NombreCliente & "' ,[Observaciones] = '" & Observaciones & "' ,[Activo] =" & NotaActivo & ",[Contabilizado] =" & NotaContabilizado & ",[Marca] ='True',[TipoCuenta] =" & Tipo & " " & _
                          "WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') "  'AND (Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Nota = '" & TipoNota & "')
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)

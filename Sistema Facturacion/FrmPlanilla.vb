@@ -1764,4 +1764,8 @@ Public Class FrmPlanilla
     Private Sub Label13_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label13.Click
 
     End Sub
+
+    Private Sub TxtNumNomina_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtNumNomina.TextChanged
+
+    End Sub
 End Class

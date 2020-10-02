@@ -1212,8 +1212,10 @@ Public Class FrmRecibos
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
         If Me.TxtCodigoClientes.Text <> "" Then
+            Me.Button2.Enabled = False
             FrmRecibosFacturas.CodigoClientes = Me.TxtCodigoClientes.Text
             FrmRecibosFacturas.ShowDialog()
+            Me.Button2.Enabled = True
         Else
             MsgBox("Es necesario Seleccionar un Cliente", MsgBoxStyle.Critical, "Zeus Facturacion")
         End If

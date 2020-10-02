@@ -41,6 +41,8 @@ Partial Class FrmPagosFacturas
         Me.OptRet10Porciento = New System.Windows.Forms.CheckBox
         Me.OptRet2Porciento = New System.Windows.Forms.CheckBox
         Me.OptRet1Porciento = New System.Windows.Forms.CheckBox
+        Me.TxtRetencion = New System.Windows.Forms.TextBox
+        Me.Label2 = New System.Windows.Forms.Label
         CType(Me.TrueDBGridMetodo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.BindingFacturas, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -51,7 +53,7 @@ Partial Class FrmPagosFacturas
         '
         Me.ProgressBar.Location = New System.Drawing.Point(95, 332)
         Me.ProgressBar.Name = "ProgressBar"
-        Me.ProgressBar.Size = New System.Drawing.Size(484, 26)
+        Me.ProgressBar.Size = New System.Drawing.Size(565, 26)
         Me.ProgressBar.TabIndex = 225
         Me.ProgressBar.Visible = False
         '
@@ -66,7 +68,7 @@ Partial Class FrmPagosFacturas
         '
         'CmdSalir
         '
-        Me.CmdSalir.Location = New System.Drawing.Point(585, 335)
+        Me.CmdSalir.Location = New System.Drawing.Point(670, 335)
         Me.CmdSalir.Name = "CmdSalir"
         Me.CmdSalir.Size = New System.Drawing.Size(75, 23)
         Me.CmdSalir.TabIndex = 223
@@ -81,7 +83,7 @@ Partial Class FrmPagosFacturas
         Me.TrueDBGridMetodo.Caption = "Metodos de Pago"
         Me.TrueDBGridMetodo.GroupByCaption = "Drag a column header here to group by that column"
         Me.TrueDBGridMetodo.Images.Add(CType(resources.GetObject("TrueDBGridMetodo.Images"), System.Drawing.Image))
-        Me.TrueDBGridMetodo.Location = New System.Drawing.Point(344, 12)
+        Me.TrueDBGridMetodo.Location = New System.Drawing.Point(429, 12)
         Me.TrueDBGridMetodo.Name = "TrueDBGridMetodo"
         Me.TrueDBGridMetodo.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridMetodo.PreviewInfo.Size = New System.Drawing.Size(0, 0)
@@ -106,7 +108,7 @@ Partial Class FrmPagosFacturas
         Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75
         Me.TrueDBGridComponentes.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridComponentes.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TrueDBGridComponentes.Size = New System.Drawing.Size(648, 147)
+        Me.TrueDBGridComponentes.Size = New System.Drawing.Size(733, 147)
         Me.TrueDBGridComponentes.TabIndex = 227
         Me.TrueDBGridComponentes.Text = "C1TrueDBGrid1"
         Me.TrueDBGridComponentes.PropBag = resources.GetString("TrueDBGridComponentes.PropBag")
@@ -229,11 +231,31 @@ Partial Class FrmPagosFacturas
         Me.OptRet1Porciento.Text = "Retener 1%"
         Me.OptRet1Porciento.UseVisualStyleBackColor = True
         '
+        'TxtRetencion
+        '
+        Me.TxtRetencion.Enabled = False
+        Me.TxtRetencion.Location = New System.Drawing.Point(636, 154)
+        Me.TxtRetencion.Name = "TxtRetencion"
+        Me.TxtRetencion.Size = New System.Drawing.Size(87, 20)
+        Me.TxtRetencion.TabIndex = 242
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.Label2.Location = New System.Drawing.Point(576, 158)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(56, 13)
+        Me.Label2.TabIndex = 241
+        Me.Label2.Text = "Retencion"
+        '
         'FrmPagosFacturas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(674, 370)
+        Me.ClientSize = New System.Drawing.Size(757, 370)
+        Me.Controls.Add(Me.TxtRetencion)
+        Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.OptRet7Porciento)
         Me.Controls.Add(Me.OptRet10Porciento)
         Me.Controls.Add(Me.OptRet2Porciento)
@@ -284,4 +306,6 @@ Partial Class FrmPagosFacturas
     Friend WithEvents OptRet10Porciento As System.Windows.Forms.CheckBox
     Friend WithEvents OptRet2Porciento As System.Windows.Forms.CheckBox
     Friend WithEvents OptRet1Porciento As System.Windows.Forms.CheckBox
+    Friend WithEvents TxtRetencion As System.Windows.Forms.TextBox
+    Friend WithEvents Label2 As System.Windows.Forms.Label
 End Class

@@ -289,6 +289,8 @@ Public Class FrmRecibosFacturas
         My.Forms.FrmRecibos.ProgressBar1.Value = 0
 
         Do While Registros > iPosicion
+            My.Application.DoEvents()
+
             NumeroFactura = DataSet.Tables("Consultas").Rows(iPosicion)("Numero_Factura")
             FechaFactura = DataSet.Tables("Consultas").Rows(iPosicion)("Fecha_Factura")
             TasaCambio = BuscaTasaCambio(FechaFactura)

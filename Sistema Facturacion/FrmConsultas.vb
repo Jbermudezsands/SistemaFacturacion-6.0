@@ -28,6 +28,19 @@ Public Class FrmConsultas
             Dim DataAdapter As New SqlClient.SqlDataAdapter, SQlProductos As String
 
             Select Case Quien
+                Case "Liquidacion"
+                    SQlProductos = "SELECT LiquidacionLeche.NumeroLiquidacion, LiquidacionLeche.FechaInicio, LiquidacionLeche.FechaFin, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres FROM LiquidacionLeche INNER JOIN Clientes ON LiquidacionLeche.Cod_Proveedor = Clientes.Cod_Cliente "
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "No.Liquidacion"
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "FechaInicio"
+                    MiConexion.Open()
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiconexionContabilidad)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+
+                    MiConexion.Close()
 
                 Case "CuentasContables"
                     SQlProductos = "SELECT CodCuentas , DescripcionCuentas As Descripcion, TipoCuenta FROM Cuentas "

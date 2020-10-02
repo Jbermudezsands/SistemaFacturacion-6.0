@@ -628,11 +628,11 @@ Public Class FrmCuentasXPagar
 
         Me.TDGridImpuestos.DataSource = DatasetReporte.Tables("TotalVentas")
         Me.TDGridImpuestos.Columns("Fecha_Factura").Caption = "Fecha"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns("Fecha_Factura").Width = 73
+        'Me.TDGridImpuestos.Splits.Item(0).DisplayColumns("Fecha_Factura").Width = 90
         Me.TDGridImpuestos.Columns("Numero_Compra").Caption = "Compra No"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns("Numero_Compra").Width = 61
+        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns("Numero_Compra").Width = 90
         Me.TDGridImpuestos.Columns("Numero_Factura").Caption = "Factura No"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns("Numero_Factura").Width = 61
+        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns("Numero_Factura").Width = 80
         Me.TDGridImpuestos.Columns("Numero_Recibo").Caption = "Recibo No"
         Me.TDGridImpuestos.Splits.Item(0).DisplayColumns("Numero_Recibo").Width = 71
         Me.TDGridImpuestos.Columns("NotaDebito").Caption = "DB/CR No"

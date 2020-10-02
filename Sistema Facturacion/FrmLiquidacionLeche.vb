@@ -38,42 +38,77 @@ Public Class FrmPlanillaLiquidacion
 
 
         ds.Tables("DetalleIngresos").Reset()
-        SqlString = "SELECT Codigo, Nombres, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado,  Domingo, Total, PrecioVenta, TotalIngresos, NumNomina FROM Detalle_NominaLiquidacion WHERE (Detalle_NominaLiquidacion.NumNomina = '" & Me.TxtNumNomina.Text & "') "
+        SqlString = "SELECT  idDetalleLiquidacion, NumeroLiquidacion, Codigo_Productor, Nombre_Productor, Fecha, Cantidad_Enviada, Cantidad_Recibida, Diferencia, Agua, Litros_Agua, Ajuste_Cordobas, TotalLitros, Precio_Unitario, Total_Ingresos FROM DetalleLiquidacionLeche WHERE  (NumeroLiquidacion = '" & Me.TxtNumNomina.Text & "')"
         ds = New DataSet
         da = New SqlDataAdapter(SqlString, MiConexion)
         CmdBuilder = New SqlCommandBuilder(da)
         da.Fill(ds, "DetalleIngresos")
         Me.TDGridIngresos.DataSource = ds.Tables("DetalleIngresos")
-        Me.TDGridIngresos.Splits(0).DisplayColumns(0).Width = 70
-        Me.TDGridIngresos.Columns(0).Caption = "Codigo"
-        Me.TDGridIngresos.Splits(0).DisplayColumns(0).Locked = True
-        Me.TDGridIngresos.Splits(0).DisplayColumns(1).Width = 190
-        Me.TDGridIngresos.Splits(0).DisplayColumns(1).Locked = True
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Domingo").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Domingo").Locked = False
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Lunes").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Lunes").Locked = False
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Martes").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Martes").Locked = False
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Miercoles").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Miercoles").Locked = False
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Jueves").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Jueves").Locked = False
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Viernes").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Viernes").Locked = False
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Sabado").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Sabado").Locked = False
-        Me.TDGridIngresos.Splits(0).DisplayColumns(9).Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns(9).Locked = True
-        Me.TDGridIngresos.Splits(0).DisplayColumns(10).Width = 70
-        Me.TDGridIngresos.Splits(0).DisplayColumns(10).Locked = False
-        Me.TDGridIngresos.Columns(9).Caption = "Total Litros"
-        Me.TDGridIngresos.Columns(10).NumberFormat = "##,##0.00"
-        Me.TDGridIngresos.Columns(10).Caption = "PrecioUnit"
-        Me.TDGridIngresos.Splits(0).DisplayColumns(11).Width = 80
-        Me.TDGridIngresos.Splits(0).DisplayColumns(11).Locked = True
-        Me.TDGridIngresos.Columns(11).NumberFormat = "##,##0.00"
-        Me.TDGridIngresos.Splits(0).DisplayColumns("NumNomina").Visible = False
+
+        Me.TDGridIngresos.Splits(0).DisplayColumns("idDetalleLiquidacion").Visible = False
+        Me.TDGridIngresos.Splits(0).DisplayColumns("NumeroLiquidacion").Visible = False
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Codigo_Productor").Width = 70
+        Me.TDGridIngresos.Columns("Codigo_Productor").Caption = "Codigo"
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Codigo_Productor").Locked = True
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Nombre_Productor").Width = 190
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Nombre_Productor").Locked = True
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Fecha").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Fecha").Locked = False
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Cantidad_Enviada").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Cantidad_Enviada").Locked = False
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Cantidad_Recibida").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Cantidad_Recibida").Locked = False
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Diferencia").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Diferencia").Locked = True
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Agua").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Agua").Locked = False
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Litros_Agua").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Litros_Agua").Locked = False
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Ajuste_Cordobas").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Ajuste_Cordobas").Locked = False
+        Me.TDGridIngresos.Splits(0).DisplayColumns("TotalLitros").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("TotalLitros").Locked = True
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Precio_Unitario").Width = 70
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Precio_Unitario").Locked = False
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Total_Ingresos").Width = 70
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Total_Ingresos").Locked = False
+        Me.TDGridIngresos.Columns("TotalLitros").Caption = "Total Litros"
+        Me.TDGridIngresos.Columns("Precio_Unitario").NumberFormat = "##,##0.00"
+        Me.TDGridIngresos.Columns("Precio_Unitario").Caption = "PrecioUnit"
+
+
+
+        SqlString = "SELECT NumeroLiquidacion, Ir, Retencion, Productos_Veterinarios, Bolsa, Anticipos, Reembolso, Pagos_Ant_Retenidos, Total_Deducciones FROM DetalleLiquidacionLeche WHERE (NumeroLiquidacion ='" & Me.TxtNumNomina.Text & "')"
+        dsEgreso = New DataSet
+        daEgreso = New SqlDataAdapter(SqlString, MiConexion)
+        CmdBuilderEgreso = New SqlCommandBuilder(daEgreso)
+        daEgreso.Fill(dsEgreso, "DetalleEgresos")
+        Me.TDGridDeducciones.DataSource = dsEgreso.Tables("DetalleEgresos")
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("NumeroLiquidacion").Width = 50
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("NumeroLiquidacion").Visible = False
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Ir").Width = 180
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Ir").Locked = True
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Retencion").Width = 60
+        Me.TDGridDeducciones.Columns("Retencion").Caption = "Retencion Definitiva"
+        Me.TDGridDeducciones.Columns("Retencion").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Productos_Veterinarios").Width = 60
+        Me.TDGridDeducciones.Columns("Productos_Veterinarios").Caption = "Productos Veterinarios"
+        Me.TDGridDeducciones.Columns("Productos_Veterinarios").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Bolsa").Width = 60
+        Me.TDGridDeducciones.Columns("Bolsa").Caption = "Bolsa"
+        Me.TDGridDeducciones.Columns("Bolsa").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Anticipos").Width = 60
+        Me.TDGridDeducciones.Columns("Anticipos").Caption = "Anticipos"
+        Me.TDGridDeducciones.Columns("Anticipos").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Reembolso").Width = 60
+        Me.TDGridDeducciones.Columns("Reembolso").Caption = "Reembolso"
+        Me.TDGridDeducciones.Columns("Reembolso").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Pagos_Ant_Retenidos").Width = 60
+        Me.TDGridDeducciones.Columns("Pagos_Ant_Retenidos").Caption = "Pagos Ant Retenidos"
+        Me.TDGridDeducciones.Columns("Pagos_Ant_Retenidos").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Total_Deducciones").Width = 60
+        Me.TDGridDeducciones.Columns("Total_Deducciones").Caption = "Total Deducciones"
+        Me.TDGridDeducciones.Columns("Total_Deducciones").NumberFormat = "##,##0.00"
 
     End Sub
 
@@ -81,31 +116,59 @@ Public Class FrmPlanillaLiquidacion
         InsertarRowGridIngresos()
     End Sub
     Private Sub TDGridIngresos_AfterColUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TDGridIngresos.AfterColUpdate
-        Dim TotalLitros As Double, TotalIngresos As Double, PrecioUnitario As Double, Lunes As Double, Martes As Double, Miercoles As Double, Jueves As Double, Viernes As Double, Sabado As Double, Domingo As Double
+        Dim TotalLitros As Double, TotalIngresos As Double, PrecioUnitario As Double, Cantidad_Enviada As Double, Cantidad_Recibida As Double, Diferencia As Double, Litros_Agua As Double, Ajuste_Cordobas As Double, Sabado As Double, Domingo As Double
+        Dim Agua As String
 
-        Lunes = Me.TDGridIngresos.Columns("Lunes").Text
-        Martes = Me.TDGridIngresos.Columns("Martes").Text
-        Miercoles = Me.TDGridIngresos.Columns("Miercoles").Text
-        Jueves = Me.TDGridIngresos.Columns("Jueves").Text
-        Viernes = Me.TDGridIngresos.Columns("Viernes").Text
-        Sabado = Me.TDGridIngresos.Columns("Sabado").Text
-        Domingo = Me.TDGridIngresos.Columns("Domingo").Text
+        If IsNumeric(Me.TDGridIngresos.Columns("Cantidad_Enviada").Text) Then
+            Cantidad_Enviada = Me.TDGridIngresos.Columns("Cantidad_Enviada").Text
+        Else
+            Cantidad_Enviada = 0
+        End If
 
-        TotalLitros = Lunes + Martes + Miercoles + Jueves + Viernes + Sabado + Domingo
+        If IsNumeric(Me.TDGridIngresos.Columns("Cantidad_Recibida").Text) Then
+            Cantidad_Recibida = Me.TDGridIngresos.Columns("Cantidad_Recibida").Text
+        Else
+            Cantidad_Recibida = 0
+        End If
 
-        Me.TDGridIngresos.Columns("Total").Text = TotalLitros
+        If Me.TDGridIngresos.Columns("Agua").Text <> "" Then
+            Agua = Me.TDGridIngresos.Columns("Agua").Text
+        Else
+            Agua = "0%"
+        End If
 
-        If IsNumeric(Me.TDGridIngresos.Columns("PrecioVenta").Text) Then
-            PrecioUnitario = Me.TDGridIngresos.Columns("PrecioVenta").Text
+        If IsNumeric(Me.TDGridIngresos.Columns("Litros_Agua").Text) Then
+            Litros_Agua = Me.TDGridIngresos.Columns("Litros_Agua").Text
+        Else
+            Litros_Agua = 0
+        End If
+
+        If IsNumeric(Me.TDGridIngresos.Columns("Ajuste_Cordobas").Text) Then
+            Ajuste_Cordobas = Me.TDGridIngresos.Columns("Ajuste_Cordobas").Text
+        Else
+            Ajuste_Cordobas = 0
+        End If
+
+        Diferencia = Cantidad_Enviada - Cantidad_Recibida
+        Me.TDGridIngresos.Columns("Diferencia").Text = Diferencia
+
+        TotalLitros = Cantidad_Recibida - Litros_Agua
+        Me.TDGridIngresos.Columns("TotalLitros").Text = TotalLitros
+
+        If IsNumeric(Me.TxtPrecioUnitario.Text) Then
+            PrecioUnitario = Me.TxtPrecioUnitario.Text
+            Me.TDGridIngresos.Columns("Precio_Unitario").Text = Format(PrecioUnitario, "##,##0.00")
         Else
             PrecioUnitario = 0
         End If
 
-        TotalIngresos = TotalLitros * PrecioUnitario
+        TotalIngresos = (TotalLitros * PrecioUnitario) + Ajuste_Cordobas
 
-        Me.TDGridIngresos.Columns("TotalIngresos").Text = Format(TotalIngresos, "##,##0.00")
+        Me.TDGridIngresos.Columns("Total_Ingresos").Text = Format(TotalIngresos, "##,##0.00")
+        Me.TDGridIngresos.Columns("NumeroLiquidacion").Text = Me.TxtNumNomina.Text
 
         Me.TDGridIngresos.Col = 0
+        Me.TDGridIngresos.Row = Me.TDGridIngresos.Row + 1
 
     End Sub
 
@@ -113,6 +176,30 @@ Public Class FrmPlanillaLiquidacion
         Dim Sql As String, SqlConsulta As String = "SELECT Endoso.* FROM Endoso"
         Dim SqlString As String
         Dim NumNomina As String, Año As Double, Mes As Double, Periodo As Double
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+
+
+        SqlString = "SELECT  NominaTransportista.* FROM NominaTransportista  WHERE(Activo = 1)"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "TipoNomina")
+        If DataSet.Tables("TipoNomina").Rows.Count <> 0 Then
+            Me.DTPFechaIni.Value = DataSet.Tables("TipoNomina").Rows(0)("FechaInicial")
+            Me.DTPFechaFin.Value = DataSet.Tables("TipoNomina").Rows(0)("FechaFinal")
+            'Me.CmdCalcular.Enabled = True
+
+            NumNomina = DataSet.Tables("TipoNomina").Rows(0)("NumPlanilla")
+            Año = DataSet.Tables("TipoNomina").Rows(0)("Año")
+            Mes = DataSet.Tables("TipoNomina").Rows(0)("mes")
+            Periodo = DataSet.Tables("TipoNomina").Rows(0)("Periodo")
+
+            'Me.TxtNumNomina.Text = NumNomina
+
+        Else
+            'MsgBox("Se necesitan Nominas Activas para Calcular Planilla de Conductores", MsgBoxStyle.Critical, "Zeus Facturacion")
+            'Exit Sub
+        End If
+
+
 
         If CodigoClienteNumero = True Then
             Sql = "SELECT Cod_Cliente AS CodigoCliente, Nombre_Cliente + ' ' + Apellido_Cliente AS Nombres,REPLACE(STR(Cod_Cliente), ' ', '0') AS Orden FROM Clientes ORDER BY Orden"
@@ -120,7 +207,7 @@ Public Class FrmPlanillaLiquidacion
             Sql = "SELECT Cod_Cliente AS CodigoCliente, Nombre_Cliente + ' ' + Apellido_Cliente AS Nombres FROM Clientes "
         End If
 
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter(Sql, MiConexion)
+        DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
         DataAdapter.Fill(DataSet, "Clientes")
         If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
             Me.CboCodigoCliente.DataSource = DataSet.Tables("Clientes")
@@ -148,27 +235,27 @@ Public Class FrmPlanillaLiquidacion
 
 
 
-        SqlString = "SELECT  NominaLiquidacion.* FROM NominaLiquidacion  WHERE(Activo = 1)"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "NominaLiquidacion")
-        If DataSet.Tables("NominaLiquidacion").Rows.Count <> 0 Then
+        'SqlString = "SELECT  NominaLiquidacion.* FROM NominaLiquidacion  WHERE(Activo = 1)"
+        'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        'DataAdapter.Fill(DataSet, "NominaLiquidacion")
+        'If DataSet.Tables("NominaLiquidacion").Rows.Count <> 0 Then
 
 
-            Me.DTPFechaIni.Value = DataSet.Tables("NominaLiquidacion").Rows(0)("FechaInicial")
-            Me.DTPFechaFin.Value = DataSet.Tables("NominaLiquidacion").Rows(0)("FechaFinal")
-            Me.CmdCalcular.Enabled = True
+        '    Me.DTPFechaIni.Value = DataSet.Tables("NominaLiquidacion").Rows(0)("FechaInicial")
+        '    Me.DTPFechaFin.Value = DataSet.Tables("NominaLiquidacion").Rows(0)("FechaFinal")
+        '    Me.CmdCalcular.Enabled = True
 
-            NumNomina = DataSet.Tables("NominaLiquidacion").Rows(0)("NumPlanilla")
-            Año = DataSet.Tables("NominaLiquidacion").Rows(0)("Año")
-            Mes = DataSet.Tables("NominaLiquidacion").Rows(0)("mes")
-            Periodo = DataSet.Tables("NominaLiquidacion").Rows(0)("Periodo")
+        '    NumNomina = DataSet.Tables("NominaLiquidacion").Rows(0)("NumPlanilla")
+        '    Año = DataSet.Tables("NominaLiquidacion").Rows(0)("Año")
+        '    Mes = DataSet.Tables("NominaLiquidacion").Rows(0)("mes")
+        '    Periodo = DataSet.Tables("NominaLiquidacion").Rows(0)("Periodo")
 
-            Me.TxtNumNomina.Text = NumNomina
+        '    Me.TxtNumNomina.Text = NumNomina
 
-        Else
-            MsgBox("Se necesitan Nominas Activas para Calcular Planilla de Liquidacion", MsgBoxStyle.Critical, "Zeus Facturacion")
-            Exit Sub
-        End If
+        'Else
+        '    MsgBox("Se necesitan Nominas Activas para Calcular Planilla de Liquidacion", MsgBoxStyle.Critical, "Zeus Facturacion")
+        '    Exit Sub
+        'End If
 
 
         SqlString = "SELECT  idDetalleLiquidacion, NumeroLiquidacion, Codigo_Productor, Nombre_Productor, Fecha, Cantidad_Enviada, Cantidad_Recibida, Diferencia, Agua, Litros_Agua, Ajuste_Cordobas, TotalLitros, Precio_Unitario, Total_Ingresos FROM DetalleLiquidacionLeche WHERE  (NumeroLiquidacion = N'-10000')"
@@ -186,19 +273,19 @@ Public Class FrmPlanillaLiquidacion
         Me.TDGridIngresos.Splits(0).DisplayColumns("Nombre_Productor").Width = 190
         Me.TDGridIngresos.Splits(0).DisplayColumns("Nombre_Productor").Locked = True
         Me.TDGridIngresos.Splits(0).DisplayColumns("Fecha").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Fecha").Locked = True
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Fecha").Locked = False
         Me.TDGridIngresos.Splits(0).DisplayColumns("Cantidad_Enviada").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Cantidad_Enviada").Locked = True
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Cantidad_Enviada").Locked = False
         Me.TDGridIngresos.Splits(0).DisplayColumns("Cantidad_Recibida").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Cantidad_Recibida").Locked = True
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Cantidad_Recibida").Locked = False
         Me.TDGridIngresos.Splits(0).DisplayColumns("Diferencia").Width = 61
         Me.TDGridIngresos.Splits(0).DisplayColumns("Diferencia").Locked = True
         Me.TDGridIngresos.Splits(0).DisplayColumns("Agua").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Agua").Locked = True
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Agua").Locked = False
         Me.TDGridIngresos.Splits(0).DisplayColumns("Litros_Agua").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Litros_Agua").Locked = True
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Litros_Agua").Locked = False
         Me.TDGridIngresos.Splits(0).DisplayColumns("Ajuste_Cordobas").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Ajuste_Cordobas").Locked = True
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Ajuste_Cordobas").Locked = False
         Me.TDGridIngresos.Splits(0).DisplayColumns("TotalLitros").Width = 61
         Me.TDGridIngresos.Splits(0).DisplayColumns("TotalLitros").Locked = True
         Me.TDGridIngresos.Splits(0).DisplayColumns("Precio_Unitario").Width = 70
@@ -214,54 +301,40 @@ Public Class FrmPlanillaLiquidacion
 
 
 
-        SqlString = "SELECT Detalle_NominaLiquidacion.Codigo, Conductor.Nombre As  Nombres, Detalle_NominaLiquidacion.IR, Detalle_NominaLiquidacion.Bolsa, Detalle_NominaLiquidacion.DeduccionPolicia, Detalle_NominaLiquidacion.Anticipo, Detalle_NominaLiquidacion.DeduccionTransporte, Detalle_NominaLiquidacion.Pulperia,Detalle_NominaLiquidacion.Inseminacion, Detalle_NominaLiquidacion.Trazabilidad, Detalle_NominaLiquidacion.ProductosVeterinarios,Detalle_NominaLiquidacion.OtrasDeducciones, Detalle_NominaLiquidacion.IR + Detalle_NominaLiquidacion.Bolsa + Detalle_NominaLiquidacion.DeduccionPolicia + Detalle_NominaLiquidacion.Anticipo + Detalle_NominaLiquidacion.DeduccionTransporte + Detalle_NominaLiquidacion.Pulperia + Detalle_NominaLiquidacion.Inseminacion + Detalle_NominaLiquidacion.ProductosVeterinarios + Detalle_NominaLiquidacion.OtrasDeducciones + Detalle_NominaLiquidacion.Trazabilidad AS TotalEgresos, Detalle_NominaLiquidacion.TotalIngresos - (Detalle_NominaLiquidacion.IR + Detalle_NominaLiquidacion.DeduccionPolicia + Detalle_NominaLiquidacion.Anticipo + Detalle_NominaLiquidacion.DeduccionTransporte + Detalle_NominaLiquidacion.Pulperia + Detalle_NominaLiquidacion.Inseminacion + Detalle_NominaLiquidacion.ProductosVeterinarios + Detalle_NominaLiquidacion.OtrasDeducciones + Detalle_NominaLiquidacion.Trazabilidad) AS NetoPagar FROM  Detalle_NominaLiquidacion INNER JOIN Conductor ON Detalle_NominaLiquidacion.CodigoTransportista = Conductor.Codigo " & _
-                     "WHERE (Detalle_NominaLiquidacion.NumNomina = '" & Me.TxtNumNomina.Text & "') ORDER BY Codigo"
+        SqlString = "SELECT NumeroLiquidacion, Ir, Retencion, Productos_Veterinarios, Bolsa, Anticipos, Reembolso, Pagos_Ant_Retenidos, Total_Deducciones FROM DetalleLiquidacionLeche WHERE (NumeroLiquidacion = N'-1000')"
+
         dsEgreso = New DataSet
         daEgreso = New SqlDataAdapter(SqlString, MiConexion)
         CmdBuilderEgreso = New SqlCommandBuilder(daEgreso)
         daEgreso.Fill(dsEgreso, "DetalleEgresos")
         Me.TDGridDeducciones.DataSource = dsEgreso.Tables("DetalleEgresos")
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(0).Width = 50
-        Me.TDGridDeducciones.Columns(0).Caption = "Codigo"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(0).Locked = True
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(1).Width = 180
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(1).Locked = True
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(2).Width = 60
-        Me.TDGridDeducciones.Columns(2).NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(3).Width = 60
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("DeduccionPolicia").Visible = False
-        Me.TDGridDeducciones.Columns(3).NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Columns(3).Caption = "Policia"
-        Me.TDGridDeducciones.Columns(4).NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(4).Width = 60
-        Me.TDGridDeducciones.Columns(5).NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(5).Width = 70
-        Me.TDGridDeducciones.Columns(5).Caption = "Anticipo"
-        Me.TDGridDeducciones.Columns("DeduccionTransporte").Caption = "Transporte"
-        Me.TDGridDeducciones.Columns("DeduccionTransporte").NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("DeduccionTransporte").Width = 70
-        Me.TDGridDeducciones.Columns("Pulperia").NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("Pulperia").Width = 70
-        Me.TDGridDeducciones.Columns("Pulperia").Caption = "Fondos"
-        Me.TDGridDeducciones.Columns(7).NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(7).Width = 70
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(7).Locked = True
-        Me.TDGridDeducciones.Columns("Trazabilidad").NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("Trazabilidad").Width = 70
-        Me.TDGridDeducciones.Columns("ProductosVeterinarios").NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("ProductosVeterinarios").Width = 70
-        Me.TDGridDeducciones.Columns("ProductosVeterinarios").Caption = "Veterinario"
-        Me.TDGridDeducciones.Columns("OtrasDeducciones").Caption = "Otras"
-        Me.TDGridDeducciones.Columns("OtrasDeducciones").NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("OtrasDeducciones").Width = 80
-        Me.TDGridDeducciones.Columns("TotalEgresos").NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("TotalEgresos").Width = 80
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("TotalEgresos").Locked = True
-        Me.TDGridDeducciones.Columns("Inseminacion").NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("Inseminacion").Width = 70
-        Me.TDGridDeducciones.Columns("NetoPagar").NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("NetoPagar").Width = 80
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("NetoPagar").Locked = True
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("NumeroLiquidacion").Width = 50
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("NumeroLiquidacion").Visible = False
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Ir").Width = 180
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Ir").Locked = True
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Retencion").Width = 60
+        Me.TDGridDeducciones.Columns("Retencion").Caption = "Retencion Definitiva"
+        Me.TDGridDeducciones.Columns("Retencion").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Productos_Veterinarios").Width = 60
+        Me.TDGridDeducciones.Columns("Productos_Veterinarios").Caption = "Productos Veterinarios"
+        Me.TDGridDeducciones.Columns("Productos_Veterinarios").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Bolsa").Width = 60
+        Me.TDGridDeducciones.Columns("Bolsa").Caption = "Bolsa"
+        Me.TDGridDeducciones.Columns("Bolsa").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Anticipos").Width = 60
+        Me.TDGridDeducciones.Columns("Anticipos").Caption = "Anticipos"
+        Me.TDGridDeducciones.Columns("Anticipos").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Reembolso").Width = 60
+        Me.TDGridDeducciones.Columns("Reembolso").Caption = "Reembolso"
+        Me.TDGridDeducciones.Columns("Reembolso").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Pagos_Ant_Retenidos").Width = 60
+        Me.TDGridDeducciones.Columns("Pagos_Ant_Retenidos").Caption = "Pagos Ant Retenidos"
+        Me.TDGridDeducciones.Columns("Pagos_Ant_Retenidos").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Total_Deducciones").Width = 60
+        Me.TDGridDeducciones.Columns("Total_Deducciones").Caption = "Total Deducciones"
+        Me.TDGridDeducciones.Columns("Total_Deducciones").NumberFormat = "##,##0.00"
+
+ 
 
 
     End Sub
@@ -273,19 +346,14 @@ Public Class FrmPlanillaLiquidacion
     End Sub
 
     Private Sub CmdCalcular_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdCalcular.Click
-        Dim SqlProductos As String
         Dim SqlString As String, iPosicion As Double, Registros As Double
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim CodProductor As String, Nombres As String, Fecha As Date, Cantidad As Double, CantidadTotal As Double
-        Dim MontoLunes As Double, MontoMartes As Double, MontoMiercoles As Double, MontoJueves As Double, MontoViernes As Double, MontoSabado As Double, MontoDomingo As Double
-        Dim iPosicion2 As Double = 0, Registros2 As Double = 0, Contador As Double = 1, PrecioUnitario As Double, IngresoBruto, PorcientoIr As Double
-        Dim MontoIr As Double, PorcientoPolicia As Double, MontoPolicia As Double, MontoVeterinario As Double, ROC1 As String = 0, ROC2 As String = 0, ROC3 As String = 0, ROC4 As String = 0, ROC5 As String = 0, ROC6 As String = 0, ROC7 As String = 0
-        Dim Anticipo As Double, Transporte As Double, Pulperia As Double, Inseminacion As Double, NCompra As String, PrecioLunes As Double, PrecioMartes As Double, PrecioMiercoles As Double, PrecioJueves As Double, PrecioViernes As Double, PrecioSabado As Double, PrecioDomingo As Double
-        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Trazabilidad As Double, Otros As Double
-        Dim CantPlanilla As Double = 0, PLunes As Double, PMartes As Double, PMiercoles As Double, PJueves As Double, PViernes As Double, PSabado As Double, PDomingo As Double
+        Dim Fecha As Date, PorcientoPolicia As Double, Reembolso As Double
+        Dim iPosicion2 As Double = 0, Registros2 As Double = 0, Contador As Double = 1, PrecioUnitario As Double, PorcientoIr As Double
+        Dim Anticipo As Double, PagosRetenidos As Double
+        Dim ComandoUpdate As New SqlClient.SqlCommand
         Dim PorcientoBolsa As Double = 0, MontoBolsa As Double = 0, ProductosVeterinarios As Double = 0, CantLunes As Double = 0, CantMartes As Double = 0, CantMiercoles As Double = 0, CantJueves As Double = 0, CantViernes As Double = 0, CantSabado As Double = 0, CantDomingo As Double = 0
-        Dim CodProducto As String
-
+        Dim TotalIngresos As Double, Ir As Double, Bolsa As Double, RetDefitiva As Double, TotalDeducciones As Double = 0
 
 
 
@@ -301,190 +369,50 @@ Public Class FrmPlanillaLiquidacion
         PorcientoPolicia = Val(Me.TxtDeduccionPolicia.Text) / 100
         PrecioUnitario = Val(Me.TxtPrecioUnitario.Text)
 
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '//////////////////////////////////////////////ACTUALIZO LOS ENCABEZADOS DE LA NOMINA//////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        StrSqlUpdate = "UPDATE [NominaLiquidacion] SET [PorcientoIR] = " & Val(Me.TxtIR.Text) & ",[PorcientoPolicia] =  " & Val(Me.TxtDeduccionPolicia.Text) & ",[PrecioUnitario] = " & Val(Me.TxtPrecioUnitario.Text) & ",[CodigoCliente] = '" & Me.CboCodigoCliente.Text & "',[CodigoBodega] = '" & Me.CboCodigoBodega.Text & "'  " & _
-                       "WHERE (NumPlanilla = '" & Me.TxtNumNomina.Text & "') "
-        MiConexion.Open()
-        ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-        iResultado = ComandoUpdate.ExecuteNonQuery
-        MiConexion.Close()
-
-
-        '///////////////////////////////////////////////SELECCIONO LOS PROUCTOS 
-        SqlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Costo_Promedio, Existencia_Unidades,Cod_Iva FROM Productos Where (Tipo_Producto = 'Insumos')"
-        DataAdapter.Fill(DataSet, "Productos")
-        MiConexion.Close()
 
         iPosicion = 0
         Me.ProgressBar.Visible = True
         Me.ProgressBar.Minimum = 0
         Me.ProgressBar.Visible = True
         Me.ProgressBar.Value = 0
-        Registros = DataSet.Tables("Productos").Rows.Count
+        Registros = Me.TDGridIngresos.RowCount
         Me.ProgressBar.Maximum = Registros
+
+
+
         Do While iPosicion < Registros
 
-            CodProducto = DataSet.Tables("Productos").Rows(iPosicion)("Cod_Productos")
-
-
-            '//////////////////////////////////////////////CONSULTO SI ESTE PRODUCTOR YA TIENE UNA PLANILLA GRABADA ANTERIOR ////////////////////////////
-            SqlString = "SELECT Detalle_NominaLiquidacion.* FROM Detalle_NominaLiquidacion  WHERE  (NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Codigo = '" & CodProducto & "') "
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-            DataAdapter.Fill(DataSet, "Consulta")
-            If DataSet.Tables("Consulta").Rows.Count <> 0 Then
-                PLunes = DataSet.Tables("Consulta").Rows(0)("Lunes")
-                PMartes = DataSet.Tables("Consulta").Rows(0)("Martes")
-                PMiercoles = DataSet.Tables("Consulta").Rows(0)("Miercoles")
-                PJueves = DataSet.Tables("Consulta").Rows(0)("Jueves")
-                PViernes = DataSet.Tables("Consulta").Rows(0)("Viernes")
-                PSabado = DataSet.Tables("Consulta").Rows(0)("Sabado")
-                PDomingo = DataSet.Tables("Consulta").Rows(0)("Domingo")
-                PrecioUnitario = DataSet.Tables("Consulta").Rows(0)("PrecioVenta")
-
-                PrecioLunes = PrecioUnitario
-                PrecioMartes = PrecioUnitario
-                PrecioMiercoles = PrecioUnitario
-                PrecioJueves = PrecioUnitario
-                PrecioViernes = PrecioUnitario
-                PrecioSabado = PrecioUnitario
-                PrecioDomingo = PrecioUnitario
-
+            TotalIngresos = Me.TDGridIngresos.Item(iPosicion)("Total_Ingresos")
+            Ir = TotalIngresos * PorcientoIr
+            Bolsa = TotalIngresos * PorcientoBolsa
+            RetDefitiva = TotalIngresos * PorcientoPolicia
+            If Me.TDGridDeducciones.Item(iPosicion)("Productos_Veterinarios").ToString <> "" Then
+                ProductosVeterinarios = Me.TDGridDeducciones.Item(iPosicion)("Productos_Veterinarios")
             Else
-                PLunes = 0
-                PMartes = 0
-                PMiercoles = 0
-                PJueves = 0
-                PViernes = 0
-                PSabado = 0
-                PDomingo = 0
+                ProductosVeterinarios = 0
             End If
-            DataSet.Tables("Consulta").Reset()
 
-
-
-            Fecha = Me.DTPFechaIni.Value
-            Nombres = DataSet.Tables("Productos").Rows(iPosicion)("Descripcion_Producto")
-            Me.LblProcesando.Text = "PROCESANDO PRODUCTO: " & CodProducto & " " & Nombres
-            CantidadTotal = 0
-            Contador = 1
-
-            '///////////////////////////////////////////////////////////////////////////////////////////////////////////
-            '///////////////////////////////////RECORRO LA SEMANA PARA ACTUALIZAR ///////////////////////////////////
-            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            Me.ProgressBar2.Visible = True
-            Me.ProgressBar2.Minimum = 0
-            Me.ProgressBar2.Visible = True
-            Me.ProgressBar2.Value = 0
-            Me.ProgressBar2.Maximum = 7
-            Do While Fecha <= Me.DTPFechaFin.Value
-
-
-
-                Contador = Fecha.DayOfWeek
-                Cantidad = 0
-
-                Select Case Contador
-                    Case 1
-                        If PLunes > Cantidad Then
-                            Cantidad = PLunes
-                        End If
-                        CantLunes = Cantidad
-                        MontoLunes = Cantidad * PrecioLunes
-                    Case 2
-                        If PMartes > Cantidad Then
-                            Cantidad = PMartes
-                        End If
-                        CantMartes = Cantidad
-                        MontoMartes = Cantidad * PrecioMartes
-                    Case 3
-                        If PMiercoles > Cantidad Then
-                            Cantidad = PMiercoles
-                        End If
-                        CantMiercoles = Cantidad
-                        MontoMiercoles = Cantidad * PrecioMiercoles
-                    Case 4
-                        If PJueves > Cantidad Then
-                            Cantidad = PJueves
-                        End If
-                        CantJueves = Cantidad
-                        MontoJueves = Cantidad * PrecioJueves
-                    Case 5
-                        If PViernes > Cantidad Then
-                            Cantidad = PViernes
-                        End If
-                        CantViernes = Cantidad
-                        MontoViernes = Cantidad * PrecioViernes
-                    Case 6
-                        If PSabado > Cantidad Then
-                            Cantidad = PSabado
-                        End If
-                        CantSabado = Cantidad
-                        MontoSabado = Cantidad * PrecioSabado
-                    Case 0
-                        If PDomingo > Cantidad Then
-                            Cantidad = PDomingo
-                        End If
-                        CantDomingo = Cantidad
-                        MontoDomingo = Cantidad * PrecioDomingo
-                End Select
-
-
-                CantidadTotal = CantidadTotal + Cantidad
-                IngresoBruto = MontoLunes + MontoMartes + MontoMiercoles + MontoJueves + MontoViernes + MontoSabado + MontoDomingo
-                MontoIr = PorcientoIr * IngresoBruto
-                MontoPolicia = PorcientoPolicia * CantidadTotal
-                MontoBolsa = PorcientoBolsa * IngresoBruto
-
-
-                Contador = Contador + 1
-                Fecha = DateAdd(DateInterval.Day, 1, Fecha)
-                Me.ProgressBar2.Value = Me.ProgressBar2.Value + 1
-            Loop
-
-
-
-            SqlString = "SELECT  * FROM Detalle_NominaLiquidacion WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Codigo = '" & CodProducto & "') "
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-            DataAdapter.Fill(DataSet, "DetalleNomina")
-            If DataSet.Tables("DetalleNomina").Rows.Count = 0 Then
-                StrSqlUpdate = "INSERT INTO [Detalle_NominaLiquidacion] ([NumNomina],[Codigo],[Lunes],[Martes],[Miercoles],[Jueves],[Viernes],[Sabado],[Domingo],[Total],[PrecioVenta],[TotalIngresos],[IR],[DeduccionPolicia],[Anticipo],[DeduccionTransporte],[Pulperia],[Inseminacion],[Trazabilidad],[ProductosVeterinarios],[OtrasDeducciones],[Nombres],[Bolsa],[PrecioLunes],[PrecioMartes],[PrecioMiercoles],[PrecioJueves],[PrecioViernes],[PrecioSabado],[PrecioDomingo]) " & _
-                               "VALUES ('" & Me.TxtNumNomina.Text & "','" & CodProducto & "'," & CantLunes & "," & CantMartes & "," & CantMiercoles & "," & CantJueves & "," & CantViernes & "," & CantSabado & "," & CantDomingo & "," & CantidadTotal & " ," & PrecioUnitario & "," & IngresoBruto & "," & MontoIr & "," & MontoPolicia & "," & Anticipo & "," & Transporte & "," & Pulperia & "," & Inseminacion & "," & Trazabilidad & " ," & MontoVeterinario & " ," & Otros & ", '" & Nombres & "', " & MontoBolsa & ", " & PrecioLunes & "," & PrecioMartes & ", " & PrecioMiercoles & ", " & PrecioJueves & ", " & PrecioViernes & ", " & PrecioSabado & ", " & PrecioDomingo & ")"
-                MiConexion.Open()
-                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-                iResultado = ComandoUpdate.ExecuteNonQuery
-                MiConexion.Close()
-
+            If Me.TDGridIngresos.Item(iPosicion)("Anticipos").ToString <> "" Then
+                Anticipo = Me.TDGridIngresos.Item(iPosicion)("Anticipos")
             Else
-
-                StrSqlUpdate = "UPDATE [Detalle_NominaLiquidacion] SET [Lunes] = " & CantLunes & ",[Martes] = " & CantMartes & ",[Miercoles] = '" & CantMiercoles & "',[Jueves] = " & CantJueves & ",[Viernes] =" & CantViernes & ", [Sabado] = " & CantSabado & ",[Domingo] = " & CantDomingo & ",[Total] = " & CantidadTotal & ",[PrecioVenta] = " & PrecioUnitario & ",[TotalIngresos] = " & IngresoBruto & ",[IR] = " & MontoIr & ",[DeduccionPolicia] = " & MontoPolicia & ",[Nombres] = '" & Nombres & "', [Bolsa] = '" & MontoBolsa & "' , [PrecioLunes] = '" & PrecioLunes & "',  [PrecioMartes] = '" & PrecioMartes & "',  [PrecioMiercoles] = '" & PrecioMiercoles & "' , [PrecioJueves] = '" & PrecioJueves & "', [PrecioViernes] = '" & PrecioViernes & "', [PrecioSabado] = '" & PrecioSabado & "', [PrecioDomingo] = '" & PrecioDomingo & "'   " & _
-                               "WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Codigo = '" & CodProducto & "') "
-                MiConexion.Open()
-                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-                iResultado = ComandoUpdate.ExecuteNonQuery
-                MiConexion.Close()
+                Anticipo = 0
             End If
-            DataSet.Tables("DetalleNomina").Clear()
 
-            PLunes = 0
-            PMartes = 0
-            PMiercoles = 0
-            PJueves = 0
-            PViernes = 0
-            PSabado = 0
-            PDomingo = 0
+            If Me.TDGridIngresos.Item(iPosicion)("Reembolso").ToString <> "" Then
+                Reembolso = Me.TDGridIngresos.Item(iPosicion)("Reembolso")
+            Else
+                Reembolso = 0
+            End If
 
-            CantLunes = 0
-            CantMartes = 0
-            CantMiercoles = 0
-            CantJueves = 0
-            CantViernes = 0
-            CantSabado = 0
-            CantDomingo = 0
+            If Me.TDGridIngresos.Item(iPosicion)("Pagos_Ant_Retenidos").ToString <> "" Then
+                PagosRetenidos = Me.TDGridIngresos.Item(iPosicion)("Pagos_Ant_Retenidos")
+            Else
+                PagosRetenidos = 0
+            End If
 
-            Cantidad = 0
+            TotalDeducciones = Ir + Bolsa + RetDefitiva + ProductosVeterinarios + Anticipo + Reembolso + PagosRetenidos
 
+            Me.TDGridIngresos.Item(iPosicion)("Total_Deducciones") = Format(TotalDeducciones, "##,##0.00")
 
             iPosicion = iPosicion + 1
             Me.ProgressBar.Value = iPosicion
@@ -493,95 +421,77 @@ Public Class FrmPlanillaLiquidacion
 
 
         ds.Tables("DetalleIngresos").Reset()
-        SqlString = "SELECT Codigo, Nombres, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado,  Domingo, Total, PrecioVenta, TotalIngresos, NumNomina FROM Detalle_NominaLiquidacion WHERE (Detalle_NominaLiquidacion.NumNomina = '" & Me.TxtNumNomina.Text & "') "
+        SqlString = "SELECT  idDetalleLiquidacion, NumeroLiquidacion, Codigo_Productor, Nombre_Productor, Fecha, Cantidad_Enviada, Cantidad_Recibida, Diferencia, Agua, Litros_Agua, Ajuste_Cordobas, TotalLitros, Precio_Unitario, Total_Ingresos FROM DetalleLiquidacionLeche WHERE  (NumeroLiquidacion = '" & Me.TxtNumNomina.Text & "')"
         ds = New DataSet
         da = New SqlDataAdapter(SqlString, MiConexion)
         CmdBuilder = New SqlCommandBuilder(da)
         da.Fill(ds, "DetalleIngresos")
         Me.TDGridIngresos.DataSource = ds.Tables("DetalleIngresos")
-        Me.TDGridIngresos.Splits(0).DisplayColumns(0).Width = 70
-        Me.TDGridIngresos.Columns(0).Caption = "Codigo"
-        Me.TDGridIngresos.Splits(0).DisplayColumns(0).Locked = True
-        Me.TDGridIngresos.Splits(0).DisplayColumns(1).Width = 190
-        Me.TDGridIngresos.Splits(0).DisplayColumns(1).Locked = True
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Domingo").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Domingo").Locked = False
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Lunes").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Lunes").Locked = False
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Martes").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Martes").Locked = False
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Miercoles").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Miercoles").Locked = False
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Jueves").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Jueves").Locked = False
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Viernes").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Viernes").Locked = False
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Sabado").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Sabado").Locked = False
-        Me.TDGridIngresos.Splits(0).DisplayColumns(9).Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns(9).Locked = True
-        Me.TDGridIngresos.Splits(0).DisplayColumns(10).Width = 70
-        Me.TDGridIngresos.Splits(0).DisplayColumns(10).Locked = False
-        Me.TDGridIngresos.Columns(9).Caption = "Total Litros"
-        Me.TDGridIngresos.Columns(10).NumberFormat = "##,##0.00"
-        Me.TDGridIngresos.Columns(10).Caption = "PrecioUnit"
-        Me.TDGridIngresos.Splits(0).DisplayColumns(11).Width = 80
-        Me.TDGridIngresos.Splits(0).DisplayColumns(11).Locked = True
-        Me.TDGridIngresos.Columns(11).NumberFormat = "##,##0.00"
-        Me.TDGridIngresos.Splits(0).DisplayColumns("NumNomina").Visible = False
 
-        dsEgreso.Tables("DetalleEgresos").Reset()
-        SqlString = "SELECT Detalle_NominaLiquidacion.Codigo, Productos.Descripcion_Producto  AS Nombres, Detalle_NominaLiquidacion.IR, Detalle_NominaLiquidacion.Bolsa, Detalle_NominaLiquidacion.DeduccionPolicia, Detalle_NominaLiquidacion.Anticipo, Detalle_NominaLiquidacion.DeduccionTransporte, Detalle_NominaLiquidacion.Pulperia,Detalle_NominaLiquidacion.Inseminacion, Detalle_NominaLiquidacion.Trazabilidad, Detalle_NominaLiquidacion.ProductosVeterinarios,Detalle_NominaLiquidacion.OtrasDeducciones, Detalle_NominaLiquidacion.IR + Detalle_NominaLiquidacion.Bolsa + Detalle_NominaLiquidacion.DeduccionPolicia + Detalle_NominaLiquidacion.Anticipo + Detalle_NominaLiquidacion.DeduccionTransporte + Detalle_NominaLiquidacion.Pulperia + Detalle_NominaLiquidacion.Inseminacion + Detalle_NominaLiquidacion.ProductosVeterinarios + Detalle_NominaLiquidacion.OtrasDeducciones + Detalle_NominaLiquidacion.Trazabilidad AS TotalEgresos, Detalle_NominaLiquidacion.TotalIngresos - (Detalle_NominaLiquidacion.IR + Detalle_NominaLiquidacion.Bolsa + Detalle_NominaLiquidacion.DeduccionPolicia + Detalle_NominaLiquidacion.Anticipo + Detalle_NominaLiquidacion.DeduccionTransporte + Detalle_NominaLiquidacion.Pulperia + Detalle_NominaLiquidacion.Inseminacion + Detalle_NominaLiquidacion.ProductosVeterinarios + Detalle_NominaLiquidacion.OtrasDeducciones + Detalle_NominaLiquidacion.Trazabilidad) AS NetoPagar FROM  Detalle_NominaLiquidacion INNER JOIN Productos ON Detalle_NominaLiquidacion.Codigo = Productos.Cod_Productos  " & _
-                    "WHERE (Detalle_NominaLiquidacion.NumNomina = '" & Me.TxtNumNomina.Text & "') "
+        Me.TDGridIngresos.Splits(0).DisplayColumns("idDetalleLiquidacion").Visible = False
+        Me.TDGridIngresos.Splits(0).DisplayColumns("NumeroLiquidacion").Visible = False
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Codigo_Productor").Width = 70
+        Me.TDGridIngresos.Columns("Codigo_Productor").Caption = "Codigo"
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Codigo_Productor").Locked = True
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Nombre_Productor").Width = 190
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Nombre_Productor").Locked = True
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Fecha").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Fecha").Locked = False
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Cantidad_Enviada").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Cantidad_Enviada").Locked = False
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Cantidad_Recibida").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Cantidad_Recibida").Locked = False
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Diferencia").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Diferencia").Locked = True
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Agua").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Agua").Locked = False
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Litros_Agua").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Litros_Agua").Locked = False
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Ajuste_Cordobas").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Ajuste_Cordobas").Locked = False
+        Me.TDGridIngresos.Splits(0).DisplayColumns("TotalLitros").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("TotalLitros").Locked = True
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Precio_Unitario").Width = 70
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Precio_Unitario").Locked = False
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Total_Ingresos").Width = 70
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Total_Ingresos").Locked = False
+        Me.TDGridIngresos.Columns("TotalLitros").Caption = "Total Litros"
+        Me.TDGridIngresos.Columns("Precio_Unitario").NumberFormat = "##,##0.00"
+        Me.TDGridIngresos.Columns("Precio_Unitario").Caption = "PrecioUnit"
+
+
+
+        SqlString = "SELECT NumeroLiquidacion, Ir, Retencion, Productos_Veterinarios, Bolsa, Anticipos, Reembolso, Pagos_Ant_Retenidos, Total_Deducciones FROM DetalleLiquidacionLeche WHERE (NumeroLiquidacion ='" & Me.TxtNumNomina.Text & "')"
         dsEgreso = New DataSet
         daEgreso = New SqlDataAdapter(SqlString, MiConexion)
         CmdBuilderEgreso = New SqlCommandBuilder(daEgreso)
         daEgreso.Fill(dsEgreso, "DetalleEgresos")
         Me.TDGridDeducciones.DataSource = dsEgreso.Tables("DetalleEgresos")
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(0).Width = 50
-        Me.TDGridDeducciones.Columns(0).Caption = "Codigo"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(0).Locked = True
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(1).Width = 160
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(1).Locked = True
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(2).Width = 60
-        Me.TDGridDeducciones.Splits(0).DisplayColumns(2).Locked = True
-        Me.TDGridDeducciones.Columns(2).NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("NumeroLiquidacion").Width = 50
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("NumeroLiquidacion").Visible = False
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Ir").Width = 180
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Ir").Locked = True
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Retencion").Width = 60
+        Me.TDGridDeducciones.Columns("Retencion").Caption = "Retencion Definitiva"
+        Me.TDGridDeducciones.Columns("Retencion").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Productos_Veterinarios").Width = 60
+        Me.TDGridDeducciones.Columns("Productos_Veterinarios").Caption = "Productos Veterinarios"
+        Me.TDGridDeducciones.Columns("Productos_Veterinarios").NumberFormat = "##,##0.00"
         Me.TDGridDeducciones.Splits(0).DisplayColumns("Bolsa").Width = 60
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("Bolsa").Locked = True
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("Bolsa").Visible = True
-        Me.TDGridDeducciones.Columns("Bolsa").NumberFormat = "##,##0.00"
         Me.TDGridDeducciones.Columns("Bolsa").Caption = "Bolsa"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("DeduccionPolicia").Width = 60
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("DeduccionPolicia").Locked = True
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("DeduccionPolicia").Visible = False
-        Me.TDGridDeducciones.Columns("DeduccionPolicia").NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Columns("DeduccionPolicia").Caption = "Policia"
-        Me.TDGridDeducciones.Columns("Anticipo").NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("Anticipo").Width = 60
-        Me.TDGridDeducciones.Columns("DeduccionTransporte").NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("DeduccionTransporte").Width = 60
-        Me.TDGridDeducciones.Columns("DeduccionTransporte").Caption = "Transporte"
-        Me.TDGridDeducciones.Columns("Pulperia").NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("Pulperia").Width = 60
-        Me.TDGridDeducciones.Columns("Pulperia").Caption = "Fondos"
-        Me.TDGridDeducciones.Columns("Inseminacion").NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("Inseminacion").Width = 70
-        Me.TDGridDeducciones.Columns("Trazabilidad").NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("Trazabilidad").Width = 70
-        Me.TDGridDeducciones.Columns("ProductosVeterinarios").NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Columns("OtrasDeducciones").Caption = "Veterinario"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("ProductosVeterinarios").Width = 60
-        Me.TDGridDeducciones.Columns("ProductosVeterinarios").Caption = "Veterinario"
-        Me.TDGridDeducciones.Columns("OtrasDeducciones").Caption = "Otras"
-        Me.TDGridDeducciones.Columns("OtrasDeducciones").NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("OtrasDeducciones").Width = 60
-        Me.TDGridDeducciones.Columns("TotalEgresos").NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("TotalEgresos").Width = 80
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("TotalEgresos").Locked = True
-
-        Me.TDGridDeducciones.Columns("NetoPagar").NumberFormat = "##,##0.00"
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("NetoPagar").Width = 80
-        Me.TDGridDeducciones.Splits(0).DisplayColumns("NetoPagar").Locked = True
+        Me.TDGridDeducciones.Columns("Bolsa").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Anticipos").Width = 60
+        Me.TDGridDeducciones.Columns("Anticipos").Caption = "Anticipos"
+        Me.TDGridDeducciones.Columns("Anticipos").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Reembolso").Width = 60
+        Me.TDGridDeducciones.Columns("Reembolso").Caption = "Reembolso"
+        Me.TDGridDeducciones.Columns("Reembolso").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Pagos_Ant_Retenidos").Width = 60
+        Me.TDGridDeducciones.Columns("Pagos_Ant_Retenidos").Caption = "Pagos Ant Retenidos"
+        Me.TDGridDeducciones.Columns("Pagos_Ant_Retenidos").NumberFormat = "##,##0.00"
+        Me.TDGridDeducciones.Splits(0).DisplayColumns("Total_Deducciones").Width = 60
+        Me.TDGridDeducciones.Columns("Total_Deducciones").Caption = "Total Deducciones"
+        Me.TDGridDeducciones.Columns("Total_Deducciones").NumberFormat = "##,##0.00"
 
 
 
@@ -603,7 +513,7 @@ Public Class FrmPlanillaLiquidacion
         SqlCompras = "SELECT LiquidacionLeche.* FROM LiquidacionLeche WHERE (NumeroLiquidacion = '" & NumeroLiquidacion & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
         DataAdapter.Fill(DataSet, "Consulta")
-        If Not DataSet.Tables("Consulta").Rows.Count = 0 Then
+        If DataSet.Tables("Consulta").Rows.Count = 0 Then
 
             '/////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////AGREGO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
@@ -663,9 +573,23 @@ Public Class FrmPlanillaLiquidacion
         DataAdapter.Fill(DataSet, "Proveedor")
         If Not DataSet.Tables("Proveedor").Rows.Count = 0 Then
             Me.TDGridIngresos.Columns("Codigo_Productor").Text = DataSet.Tables("Proveedor").Rows(0)("Cod_Proveedor")
-            Me.TDGridIngresos.Columns("Nombre_Proveedor").Text = DataSet.Tables("Proveedor").Rows(0)("Nombre_Proveedor")
+            Me.TDGridIngresos.Columns("Nombre_Productor").Text = DataSet.Tables("Proveedor").Rows(0)("Nombre_Proveedor")
+            Me.TDGridIngresos.Columns("Fecha").Text = Format(Now, "dd/MM/yyyy")
+            Me.TDGridIngresos.Columns("Cantidad_Enviada").Text = 0
+            Me.TDGridIngresos.Columns("Cantidad_Recibida").Text = 0
+            Me.TDGridIngresos.Columns("Diferencia").Text = 0
+            Me.TDGridIngresos.Columns("Agua").Text = 0
+            Me.TDGridIngresos.Columns("Litros_Agua").Text = 0
+            Me.TDGridIngresos.Columns("Ajuste_Cordobas").Text = 0
+            Me.TDGridIngresos.Columns("TotalLitros").Text = 0
+            Me.TDGridIngresos.Columns("Precio_Unitario").Text = 0
+            Me.TDGridIngresos.Columns("Total_Ingresos").Text = 0
         End If
 
+
+        Me.CmdCalcular.Enabled = True
+        Me.CmdNomina.Enabled = True
+        Me.CmdCerrar.Enabled = True
 
         ''//////////////////////////////////////////Grabo el Detalle en Cero /////////////////////
         'SqlCompras = "INSERT INTO [LiquidacionLeche] ([NumeroLiquidacion],[FechaInicio],[FechaFin],[Cod_Bodega],[Cod_Proveedor],[PorcientoIR],[PorcientoPolicia],[PrecioUnitario],[Activo],[Contabilizado],[Marca]) " & _
@@ -682,10 +606,66 @@ Public Class FrmPlanillaLiquidacion
     End Sub
 
     Private Sub TDGridIngresos_BeforeUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TDGridIngresos.BeforeUpdate
-        '///////////////////////////////////7
+        Dim SqlCompras As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+
+        SqlCompras = "SELECT  * FROM Proveedor  WHERE (Cod_Proveedor = '" & Me.CboCodigoCliente.Text & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
+        DataAdapter.Fill(DataSet, "Proveedor")
+        If Not DataSet.Tables("Proveedor").Rows.Count = 0 Then
+            Me.TDGridIngresos.Columns("Codigo_Productor").Text = DataSet.Tables("Proveedor").Rows(0)("Cod_Proveedor")
+            Me.TDGridIngresos.Columns("Nombre_Productor").Text = DataSet.Tables("Proveedor").Rows(0)("Nombre_Proveedor")
+        End If
+
+        If Me.TDGridIngresos.Columns("Fecha").Text = "" Then
+            Me.TDGridIngresos.Columns("Fecha").Text = Format(Now, "dd/MM/yyyy")
+        End If
+
+        If Me.TDGridIngresos.Columns("Cantidad_Enviada").Text = "" Then
+            Me.TDGridIngresos.Columns("Cantidad_Enviada").Text = 0
+        End If
+
+        If Me.TDGridIngresos.Columns("Cantidad_Recibida").Text = "" Then
+            Me.TDGridIngresos.Columns("Cantidad_Recibida").Text = 0
+        End If
+
+        If Me.TDGridIngresos.Columns("Diferencia").Text = "" Then
+            Me.TDGridIngresos.Columns("Diferencia").Text = 0
+        End If
+
+        If Me.TDGridIngresos.Columns("Agua").Text = "" Then
+            Me.TDGridIngresos.Columns("Agua").Text = 0
+        End If
+
+        If Me.TDGridIngresos.Columns("Litros_Agua").Text = "" Then
+            Me.TDGridIngresos.Columns("Litros_Agua").Text = 0
+        End If
+
+        If Me.TDGridIngresos.Columns("Ajuste_Cordobas").Text = "" Then
+            Me.TDGridIngresos.Columns("Ajuste_Cordobas").Text = 0
+        End If
+
+        If Me.TDGridIngresos.Columns("TotalLitros").Text = "" Then
+            Me.TDGridIngresos.Columns("TotalLitros").Text = 0
+        End If
+
+        If Me.TDGridIngresos.Columns("Precio_Unitario").Text = "" Then
+            Me.TDGridIngresos.Columns("Precio_Unitario").Text = 0
+        End If
+
+        If Me.TDGridIngresos.Columns("Total_Ingresos").Text = "" Then
+            Me.TDGridIngresos.Columns("Total_Ingresos").Text = 0
+        End If
+
+
     End Sub
 
     Private Sub CboCodigoCliente_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboCodigoCliente.TextChanged
 
+    End Sub
+
+    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+        Quien = "Liquidacion"
+        My.Forms.FrmConsultas.Show()
     End Sub
 End Class

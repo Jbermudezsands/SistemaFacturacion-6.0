@@ -129,12 +129,21 @@ Partial Class FrmReportes
         Me.Label27 = New System.Windows.Forms.Label
         Me.CboLoteIni = New C1.Win.C1List.C1Combo
         Me.Label28 = New System.Windows.Forms.Label
-        Me.ListaImagenes = New System.Windows.Forms.ImageList(Me.components)
         Me.GroupBoxAño = New System.Windows.Forms.GroupBox
         Me.CboAño = New System.Windows.Forms.ComboBox
         Me.CboMes = New System.Windows.Forms.ComboBox
         Me.Label29 = New System.Windows.Forms.Label
         Me.Label30 = New System.Windows.Forms.Label
+        Me.GroupProveedores = New System.Windows.Forms.GroupBox
+        Me.BtnProveedor1 = New System.Windows.Forms.Button
+        Me.BtnProveedor2 = New System.Windows.Forms.Button
+        Me.BtnProveedorHasta = New System.Windows.Forms.Button
+        Me.BtnProveedorDesde = New System.Windows.Forms.Button
+        Me.CboProveedores2 = New C1.Win.C1List.C1Combo
+        Me.Label31 = New System.Windows.Forms.Label
+        Me.CboProveedores = New C1.Win.C1List.C1Combo
+        Me.Label32 = New System.Windows.Forms.Label
+        Me.ListaImagenes = New System.Windows.Forms.ImageList(Me.components)
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -180,6 +189,9 @@ Partial Class FrmReportes
         CType(Me.CboLoteFin, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboLoteIni, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBoxAño.SuspendLayout()
+        Me.GroupProveedores.SuspendLayout()
+        CType(Me.CboProveedores2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.CboProveedores, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'LblTitulo
@@ -532,7 +544,7 @@ Partial Class FrmReportes
         Me.GroupClientes.Controls.Add(Me.Label7)
         Me.GroupClientes.Controls.Add(Me.CmbClientes)
         Me.GroupClientes.Controls.Add(Me.Label8)
-        Me.GroupClientes.Location = New System.Drawing.Point(900, 227)
+        Me.GroupClientes.Location = New System.Drawing.Point(900, 228)
         Me.GroupClientes.Name = "GroupClientes"
         Me.GroupClientes.Size = New System.Drawing.Size(277, 86)
         Me.GroupClientes.TabIndex = 196
@@ -1754,7 +1766,7 @@ Partial Class FrmReportes
         Me.GroupBoxLote.Controls.Add(Me.Label27)
         Me.GroupBoxLote.Controls.Add(Me.CboLoteIni)
         Me.GroupBoxLote.Controls.Add(Me.Label28)
-        Me.GroupBoxLote.Location = New System.Drawing.Point(1068, 416)
+        Me.GroupBoxLote.Location = New System.Drawing.Point(1070, 424)
         Me.GroupBoxLote.Name = "GroupBoxLote"
         Me.GroupBoxLote.Size = New System.Drawing.Size(192, 85)
         Me.GroupBoxLote.TabIndex = 214
@@ -1842,19 +1854,6 @@ Partial Class FrmReportes
         Me.Label28.TabIndex = 63
         Me.Label28.Text = "Desde"
         '
-        'ListaImagenes
-        '
-        Me.ListaImagenes.ImageStream = CType(resources.GetObject("ListaImagenes.ImageStream"), System.Windows.Forms.ImageListStreamer)
-        Me.ListaImagenes.TransparentColor = System.Drawing.Color.Transparent
-        Me.ListaImagenes.Images.SetKeyName(0, "Circulo0.png")
-        Me.ListaImagenes.Images.SetKeyName(1, "Circulo1.png")
-        Me.ListaImagenes.Images.SetKeyName(2, "Circulo2.png")
-        Me.ListaImagenes.Images.SetKeyName(3, "Circulo3.png")
-        Me.ListaImagenes.Images.SetKeyName(4, "Circulo4.png")
-        Me.ListaImagenes.Images.SetKeyName(5, "Circulo5.png")
-        Me.ListaImagenes.Images.SetKeyName(6, "Circulo6.png")
-        Me.ListaImagenes.Images.SetKeyName(7, "Circulo7.png")
-        '
         'GroupBoxAño
         '
         Me.GroupBoxAño.Controls.Add(Me.CboAño)
@@ -1907,12 +1906,154 @@ Partial Class FrmReportes
         Me.Label30.TabIndex = 0
         Me.Label30.Text = "Mes"
         '
+        'GroupProveedores
+        '
+        Me.GroupProveedores.Controls.Add(Me.BtnProveedor1)
+        Me.GroupProveedores.Controls.Add(Me.BtnProveedor2)
+        Me.GroupProveedores.Controls.Add(Me.BtnProveedorHasta)
+        Me.GroupProveedores.Controls.Add(Me.BtnProveedorDesde)
+        Me.GroupProveedores.Controls.Add(Me.CboProveedores2)
+        Me.GroupProveedores.Controls.Add(Me.Label31)
+        Me.GroupProveedores.Controls.Add(Me.CboProveedores)
+        Me.GroupProveedores.Controls.Add(Me.Label32)
+        Me.GroupProveedores.Location = New System.Drawing.Point(1268, 477)
+        Me.GroupProveedores.Name = "GroupProveedores"
+        Me.GroupProveedores.Size = New System.Drawing.Size(277, 86)
+        Me.GroupProveedores.TabIndex = 216
+        Me.GroupProveedores.TabStop = False
+        Me.GroupProveedores.Text = "Rango de Proveedores"
+        '
+        'BtnProveedor1
+        '
+        Me.BtnProveedor1.Image = CType(resources.GetObject("BtnProveedor1.Image"), System.Drawing.Image)
+        Me.BtnProveedor1.Location = New System.Drawing.Point(225, 13)
+        Me.BtnProveedor1.Name = "BtnProveedor1"
+        Me.BtnProveedor1.Size = New System.Drawing.Size(37, 30)
+        Me.BtnProveedor1.TabIndex = 220
+        Me.BtnProveedor1.UseVisualStyleBackColor = True
+        '
+        'BtnProveedor2
+        '
+        Me.BtnProveedor2.Image = CType(resources.GetObject("BtnProveedor2.Image"), System.Drawing.Image)
+        Me.BtnProveedor2.Location = New System.Drawing.Point(225, 46)
+        Me.BtnProveedor2.Name = "BtnProveedor2"
+        Me.BtnProveedor2.Size = New System.Drawing.Size(37, 30)
+        Me.BtnProveedor2.TabIndex = 219
+        Me.BtnProveedor2.UseVisualStyleBackColor = True
+        '
+        'BtnProveedorHasta
+        '
+        Me.BtnProveedorHasta.Location = New System.Drawing.Point(225, 46)
+        Me.BtnProveedorHasta.Name = "BtnProveedorHasta"
+        Me.BtnProveedorHasta.Size = New System.Drawing.Size(37, 30)
+        Me.BtnProveedorHasta.TabIndex = 218
+        Me.BtnProveedorHasta.UseVisualStyleBackColor = True
+        '
+        'BtnProveedorDesde
+        '
+        Me.BtnProveedorDesde.Location = New System.Drawing.Point(225, 13)
+        Me.BtnProveedorDesde.Name = "BtnProveedorDesde"
+        Me.BtnProveedorDesde.Size = New System.Drawing.Size(37, 30)
+        Me.BtnProveedorDesde.TabIndex = 217
+        Me.BtnProveedorDesde.UseVisualStyleBackColor = True
+        '
+        'CboProveedores2
+        '
+        Me.CboProveedores2.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboProveedores2.Caption = ""
+        Me.CboProveedores2.CaptionHeight = 17
+        Me.CboProveedores2.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboProveedores2.ColumnCaptionHeight = 17
+        Me.CboProveedores2.ColumnFooterHeight = 17
+        Me.CboProveedores2.ContentHeight = 15
+        Me.CboProveedores2.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboProveedores2.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboProveedores2.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboProveedores2.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboProveedores2.EditorHeight = 15
+        Me.CboProveedores2.Images.Add(CType(resources.GetObject("CboProveedores2.Images"), System.Drawing.Image))
+        Me.CboProveedores2.ItemHeight = 15
+        Me.CboProveedores2.Location = New System.Drawing.Point(61, 46)
+        Me.CboProveedores2.MatchEntryTimeout = CType(2000, Long)
+        Me.CboProveedores2.MaxDropDownItems = CType(5, Short)
+        Me.CboProveedores2.MaxLength = 32767
+        Me.CboProveedores2.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboProveedores2.Name = "CboProveedores2"
+        Me.CboProveedores2.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboProveedores2.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboProveedores2.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboProveedores2.Size = New System.Drawing.Size(158, 21)
+        Me.CboProveedores2.TabIndex = 64
+        Me.CboProveedores2.PropBag = resources.GetString("CboProveedores2.PropBag")
+        '
+        'Label31
+        '
+        Me.Label31.AutoSize = True
+        Me.Label31.Location = New System.Drawing.Point(20, 46)
+        Me.Label31.Name = "Label31"
+        Me.Label31.Size = New System.Drawing.Size(35, 13)
+        Me.Label31.TabIndex = 66
+        Me.Label31.Text = "Hasta"
+        '
+        'CboProveedores
+        '
+        Me.CboProveedores.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboProveedores.Caption = ""
+        Me.CboProveedores.CaptionHeight = 17
+        Me.CboProveedores.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboProveedores.ColumnCaptionHeight = 17
+        Me.CboProveedores.ColumnFooterHeight = 17
+        Me.CboProveedores.ContentHeight = 15
+        Me.CboProveedores.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboProveedores.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboProveedores.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboProveedores.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboProveedores.EditorHeight = 15
+        Me.CboProveedores.Images.Add(CType(resources.GetObject("CboProveedores.Images"), System.Drawing.Image))
+        Me.CboProveedores.ItemHeight = 15
+        Me.CboProveedores.Location = New System.Drawing.Point(61, 19)
+        Me.CboProveedores.MatchEntryTimeout = CType(2000, Long)
+        Me.CboProveedores.MaxDropDownItems = CType(5, Short)
+        Me.CboProveedores.MaxLength = 32767
+        Me.CboProveedores.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboProveedores.Name = "CboProveedores"
+        Me.CboProveedores.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboProveedores.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboProveedores.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboProveedores.Size = New System.Drawing.Size(158, 21)
+        Me.CboProveedores.TabIndex = 61
+        Me.CboProveedores.PropBag = resources.GetString("CboProveedores.PropBag")
+        '
+        'Label32
+        '
+        Me.Label32.AutoSize = True
+        Me.Label32.Location = New System.Drawing.Point(17, 20)
+        Me.Label32.Name = "Label32"
+        Me.Label32.Size = New System.Drawing.Size(38, 13)
+        Me.Label32.TabIndex = 63
+        Me.Label32.Text = "Desde"
+        '
+        'ListaImagenes
+        '
+        Me.ListaImagenes.ImageStream = CType(resources.GetObject("ListaImagenes.ImageStream"), System.Windows.Forms.ImageListStreamer)
+        Me.ListaImagenes.TransparentColor = System.Drawing.Color.Transparent
+        Me.ListaImagenes.Images.SetKeyName(0, "Circulo0.png")
+        Me.ListaImagenes.Images.SetKeyName(1, "Circulo1.png")
+        Me.ListaImagenes.Images.SetKeyName(2, "Circulo2.png")
+        Me.ListaImagenes.Images.SetKeyName(3, "Circulo3.png")
+        Me.ListaImagenes.Images.SetKeyName(4, "Circulo4.png")
+        Me.ListaImagenes.Images.SetKeyName(5, "Circulo5.png")
+        Me.ListaImagenes.Images.SetKeyName(6, "Circulo6.png")
+        Me.ListaImagenes.Images.SetKeyName(7, "Circulo7.png")
+        Me.ListaImagenes.Images.SetKeyName(8, "")
+        '
         'FrmReportes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(863, 521)
+        Me.ClientSize = New System.Drawing.Size(883, 521)
         Me.ControlBox = False
+        Me.Controls.Add(Me.GroupProveedores)
         Me.Controls.Add(Me.Imagen)
         Me.Controls.Add(Me.GroupBoxLote)
         Me.Controls.Add(Me.ChkFacturasCero)
@@ -2005,6 +2146,10 @@ Partial Class FrmReportes
         CType(Me.CboLoteIni, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBoxAño.ResumeLayout(False)
         Me.GroupBoxAño.PerformLayout()
+        Me.GroupProveedores.ResumeLayout(False)
+        Me.GroupProveedores.PerformLayout()
+        CType(Me.CboProveedores2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.CboProveedores, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2118,10 +2263,19 @@ Partial Class FrmReportes
     Friend WithEvents Label27 As System.Windows.Forms.Label
     Friend WithEvents CboLoteIni As C1.Win.C1List.C1Combo
     Friend WithEvents Label28 As System.Windows.Forms.Label
-    Friend WithEvents ListaImagenes As System.Windows.Forms.ImageList
     Friend WithEvents GroupBoxAño As System.Windows.Forms.GroupBox
     Friend WithEvents Label29 As System.Windows.Forms.Label
     Friend WithEvents Label30 As System.Windows.Forms.Label
     Friend WithEvents CboAño As System.Windows.Forms.ComboBox
     Friend WithEvents CboMes As System.Windows.Forms.ComboBox
+    Friend WithEvents GroupProveedores As System.Windows.Forms.GroupBox
+    Friend WithEvents CboProveedores2 As C1.Win.C1List.C1Combo
+    Friend WithEvents Label31 As System.Windows.Forms.Label
+    Friend WithEvents CboProveedores As C1.Win.C1List.C1Combo
+    Friend WithEvents Label32 As System.Windows.Forms.Label
+    Friend WithEvents ListaImagenes As System.Windows.Forms.ImageList
+    Friend WithEvents BtnProveedorDesde As System.Windows.Forms.Button
+    Friend WithEvents BtnProveedorHasta As System.Windows.Forms.Button
+    Friend WithEvents BtnProveedor1 As System.Windows.Forms.Button
+    Friend WithEvents BtnProveedor2 As System.Windows.Forms.Button
 End Class

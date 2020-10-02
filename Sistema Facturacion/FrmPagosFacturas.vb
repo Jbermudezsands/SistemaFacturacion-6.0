@@ -1,5 +1,98 @@
 Public Class FrmPagosFacturas
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
+    Private Function CalcularRetencion() As Double
+        Dim Registros As Double, iPosicion As Double, NumeroCompra As String, MontoPagado As Double, MontoCredito As Double
+        Dim Impuesto As Double, SQlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim SubTotal As Double = 0, Iva As Double = 0, Ret10 As Double, Ret2 As Double, Ret1 As Double, Ret7 As Double, Retencion As Double = 0
+        Dim TotalRetencion As Double = 0
+
+        Me.BindingFacturas.MoveFirst()
+        Registros = Me.TrueDBGridComponentes.RowCount
+        iPosicion = 0
+
+
+        If Me.OptRet10Porciento.Checked = True Then
+            Ret10 = 0.1
+        Else
+            Ret10 = 0
+        End If
+
+        If Me.OptRet1Porciento.Checked = True Then
+            Ret1 = 0.01
+        Else
+            Ret1 = 0
+        End If
+
+
+        If Me.OptRet2Porciento.Checked = True Then
+            Ret2 = 0.02
+        Else
+            Ret2 = 0
+        End If
+
+
+        If Me.OptRet7Porciento.Checked = True Then
+            Ret7 = 0.07
+        Else
+            Ret7 = 0
+        End If
+
+        TotalRetencion = 0
+
+        Do While iPosicion < Registros
+            NumeroCompra = Me.TrueDBGridComponentes.Item(iPosicion)("Numero_Compra")
+            Retencion = 0
+
+            If Not IsDBNull(Me.TrueDBGridComponentes.Item(iPosicion)("MontoPagado")) Then
+                MontoPagado = Me.TrueDBGridComponentes.Item(iPosicion)("MontoPagado")
+
+                If MontoPagado > 0 Then
+
+                    If FrmPagos.TxtMonedaFactura.Text = "Cordobas" Then
+                        '/////////////////////////////BUSCO EL SUBTOTAL DE LA COMPRA SIN IMPUESTO //////////////////////////////
+                        SQlString = "SELECT DISTINCT Compras.Numero_Compra, Compras.Fecha_Compra, ROUND(CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN SubTotal ELSE SubTotal * TasaCambio.MontoTasa END, 2) AS SubTotal, ROUND(CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN IVA ELSE IVA * TasaCambio.MontoTasa END, 2) AS IVA FROM TasaCambio INNER JOIN Compras ON TasaCambio.FechaTasa = Compras.Fecha_Compra FULL OUTER JOIN DetalleReciboPago ON Compras.Numero_Compra = DetalleReciboPago.Numero_Compra  " & _
+                                    "WHERE (Compras.Tipo_Compra = 'Mercancia Recibida' OR Compras.Tipo_Compra = 'Cuenta') AND (Compras.MontoCredito <> 0) AND (Compras.Cod_Proveedor = '" & Me.TxtCodigoProveedor.Text & "') AND (Compras.Numero_Compra = '" & NumeroCompra & "') "
+                    Else
+                        '/////////////////////////////BUSCO EL SUBTOTAL DE LA COMPRA SIN IMPUESTO //////////////////////////////
+                        SQlString = "SELECT DISTINCT Compras.Numero_Compra, Compras.Fecha_Compra, ROUND(CASE WHEN Compras.MonedaCompra = 'Dolares' THEN SubTotal ELSE SubTotal / TasaCambio.MontoTasa END, 2) AS SubTotal, ROUND(CASE WHEN Compras.MonedaCompra = 'Dolares' THEN IVA ELSE IVA / TasaCambio.MontoTasa END, 2) AS IVA FROM TasaCambio INNER JOIN Compras ON TasaCambio.FechaTasa = Compras.Fecha_Compra FULL OUTER JOIN DetalleReciboPago ON Compras.Numero_Compra = DetalleReciboPago.Numero_Compra  " & _
+                                    "WHERE (Compras.Tipo_Compra = 'Mercancia Recibida' OR Compras.Tipo_Compra = 'Cuenta') AND (Compras.MontoCredito <> 0) AND (Compras.Cod_Proveedor = '" & Me.TxtCodigoProveedor.Text & "') AND (Compras.Numero_Compra = '" & NumeroCompra & "') OR (Compras.Tipo_Compra = 'Cuenta')"
+                    End If
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+                    DataAdapter.Fill(DataSet, "Compras")
+                    If DataSet.Tables("Compras").Rows.Count <> 0 Then
+                        SubTotal = DataSet.Tables("Compras").Rows(0)("SubTotal")
+                        Iva = DataSet.Tables("Compras").Rows(0)("IVA")
+                        Retencion = SubTotal * (Ret1 + Ret2 + Ret7 + Ret10)
+                    End If
+
+                    MontoCredito = Me.TrueDBGridComponentes.Item(iPosicion)("Saldo")
+
+                    '///////////////////////SI QUEDA SALDO SIGNIFICA QUE ES UN PAGO PARCIAL//////////////////////////////////////
+                    If MontoCredito <> 0 Then
+                        'MsgBox("Si realiza un Pago Parcial, el calculo es Proporcional!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+                        If MontoPagado < SubTotal Then
+                            Retencion = MontoPagado * (Ret1 + Ret2 + Ret7 + Ret10)
+                            Me.TrueDBGridComponentes.Item(iPosicion)("Retencion") = Retencion
+                            Me.TrueDBGridComponentes.Item(iPosicion)("NetoPagar") = Me.TrueDBGridComponentes.Item(iPosicion)("Saldo") - Retencion
+                        End If
+                    End If
+
+                End If
+            Else
+                MontoPagado = 0
+                Me.TrueDBGridComponentes.Item(iPosicion)("Retencion") = 0
+                Me.TrueDBGridComponentes.Item(iPosicion)("NetoPagar") = Me.TrueDBGridComponentes.Item(iPosicion)("Saldo")
+            End If
+
+
+
+            TotalRetencion = TotalRetencion + Retencion
+            iPosicion = iPosicion + 1
+        Loop
+
+
+        CalcularRetencion = TotalRetencion
+    End Function
 
     Private Sub TrueDBGridMetodo_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridMetodo.ButtonClick
         Dim Metodo As String
@@ -51,12 +144,12 @@ Public Class FrmPagosFacturas
                 'SqlProveedor = "SELECT DISTINCT Compras.Numero_Compra, Compras.Fecha_Compra, ROUND(CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN MontoCredito ELSE MontoCredito * TasaCambio.MontoTasa END, 2) AS MontoCredito, DetalleReciboPago.MontoPagado - DetalleReciboPago.MontoPagado AS MontoPagado, ROUND(CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN MontoCredito ELSE MontoCredito * TasaCambio.MontoTasa END, 2) AS Saldo FROM TasaCambio INNER JOIN Compras ON TasaCambio.FechaTasa = Compras.Fecha_Compra FULL OUTER JOIN DetalleReciboPago ON Compras.Numero_Compra = DetalleReciboPago.Numero_Compra  " & _
                 '               "WHERE (Compras.Tipo_Compra = N'Mercancia Recibida') AND (Compras.MontoCredito <> 0) AND (Compras.Cod_Proveedor = '" & Me.TxtCodigoProveedor.Text & "') OR (Compras.Tipo_Compra = 'Cuenta')"
 
-                SqlProveedor = "SELECT DISTINCT Compras.Numero_Compra, Compras.Fecha_Compra, ROUND(CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN MontoCredito ELSE MontoCredito * TasaCambio.MontoTasa END, 2) AS MontoCredito, DetalleReciboPago.MontoPagado - DetalleReciboPago.MontoPagado AS MontoPagado, ROUND(CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN MontoCredito ELSE MontoCredito * TasaCambio.MontoTasa END, 2) AS Saldo, DetalleReciboPago.MontoRetencion AS Retencion, ROUND(CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN MontoCredito ELSE MontoCredito * TasaCambio.MontoTasa END, 2) - ROUND(CASE WHEN DetalleReciboPago.MontoRetencion IS NULL THEN 0 ELSE DetalleReciboPago.MontoRetencion END, 2) AS NetoPagar, Compras.Tipo_Compra, Compras.Su_Referencia AS Numero_Factura FROM TasaCambio INNER JOIN Compras ON TasaCambio.FechaTasa = Compras.Fecha_Compra FULL OUTER JOIN DetalleReciboPago ON Compras.Numero_Compra = DetalleReciboPago.Numero_Compra  " & _
+                SqlProveedor = "SELECT DISTINCT Compras.Numero_Compra, Compras.Su_Referencia, Compras.Fecha_Compra, ROUND(CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN MontoCredito ELSE MontoCredito * TasaCambio.MontoTasa END, 2) AS MontoCredito, DetalleReciboPago.MontoPagado - DetalleReciboPago.MontoPagado AS MontoPagado, ROUND(CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN MontoCredito ELSE MontoCredito * TasaCambio.MontoTasa END, 2) AS Saldo, DetalleReciboPago.MontoRetencion AS Retencion, ROUND(CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN MontoCredito ELSE MontoCredito * TasaCambio.MontoTasa END, 2) - ROUND(CASE WHEN DetalleReciboPago.MontoRetencion IS NULL THEN 0 ELSE DetalleReciboPago.MontoRetencion END, 2) AS NetoPagar, Compras.Tipo_Compra, Compras.Su_Referencia AS Numero_Factura FROM TasaCambio INNER JOIN Compras ON TasaCambio.FechaTasa = Compras.Fecha_Compra FULL OUTER JOIN DetalleReciboPago ON Compras.Numero_Compra = DetalleReciboPago.Numero_Compra  " & _
                                "WHERE  (Compras.Tipo_Compra = 'Mercancia Recibida' OR Compras.Tipo_Compra = 'Cuenta') AND (Compras.MontoCredito <> 0) AND (Compras.Cod_Proveedor = '" & Me.TxtCodigoProveedor.Text & "') "
             Else
                 'SqlProveedor = "SELECT DISTINCT Compras.Numero_Compra, Compras.Fecha_Compra, ROUND(CASE WHEN Compras.MonedaCompra = 'Dolares' THEN MontoCredito ELSE MontoCredito / TasaCambio.MontoTasa END, 2) AS MontoCredito, DetalleReciboPago.MontoPagado - DetalleReciboPago.MontoPagado AS MontoPagado, ROUND(CASE WHEN Compras.MonedaCompra = 'Dolares' THEN MontoCredito ELSE MontoCredito / TasaCambio.MontoTasa END, 2) AS Saldo FROM TasaCambio INNER JOIN Compras ON TasaCambio.FechaTasa = Compras.Fecha_Compra FULL OUTER JOIN DetalleReciboPago ON Compras.Numero_Compra = DetalleReciboPago.Numero_Compra  " & _
                 '                "WHERE (Compras.Tipo_Compra = N'Mercancia Recibida') AND (Compras.MontoCredito <> 0) AND (Compras.Cod_Proveedor = '" & Me.TxtCodigoProveedor.Text & "') Or (Compras.Tipo_Compra = 'Cuenta')"
-                SqlProveedor = "SELECT DISTINCT Compras.Numero_Compra, Compras.Fecha_Compra, ROUND(CASE WHEN Compras.MonedaCompra = 'Dolares' THEN MontoCredito ELSE MontoCredito / TasaCambio.MontoTasa END, 2) AS MontoCredito, DetalleReciboPago.MontoPagado - DetalleReciboPago.MontoPagado AS MontoPagado, ROUND(CASE WHEN Compras.MonedaCompra = 'Dolares' THEN MontoCredito ELSE MontoCredito / TasaCambio.MontoTasa END, 2) AS Saldo, DetalleReciboPago.MontoRetencion AS Retencion, ROUND(CASE WHEN Compras.MonedaCompra = 'Dolares' THEN MontoCredito ELSE MontoCredito / TasaCambio.MontoTasa END, 2) - ROUND(CASE WHEN DetalleReciboPago.MontoRetencion IS NULL THEN 0 ELSE DetalleReciboPago.MontoRetencion END, 2) AS NetoPagar,  Compras.Tipo_Compra, Compras.Su_Referencia AS Numero_Factura FROM TasaCambio INNER JOIN Compras ON TasaCambio.FechaTasa = Compras.Fecha_Compra FULL OUTER JOIN DetalleReciboPago ON Compras.Numero_Compra = DetalleReciboPago.Numero_Compra  " & _
+                SqlProveedor = "SELECT DISTINCT Compras.Numero_Compra, Compras.Su_Referencia, Compras.Fecha_Compra, ROUND(CASE WHEN Compras.MonedaCompra = 'Dolares' THEN MontoCredito ELSE MontoCredito / TasaCambio.MontoTasa END, 2) AS MontoCredito, DetalleReciboPago.MontoPagado - DetalleReciboPago.MontoPagado AS MontoPagado, ROUND(CASE WHEN Compras.MonedaCompra = 'Dolares' THEN MontoCredito ELSE MontoCredito / TasaCambio.MontoTasa END, 2) AS Saldo, DetalleReciboPago.MontoRetencion AS Retencion, ROUND(CASE WHEN Compras.MonedaCompra = 'Dolares' THEN MontoCredito ELSE MontoCredito / TasaCambio.MontoTasa END, 2) - ROUND(CASE WHEN DetalleReciboPago.MontoRetencion IS NULL THEN 0 ELSE DetalleReciboPago.MontoRetencion END, 2) AS NetoPagar,  Compras.Tipo_Compra, Compras.Su_Referencia AS Numero_Factura FROM TasaCambio INNER JOIN Compras ON TasaCambio.FechaTasa = Compras.Fecha_Compra FULL OUTER JOIN DetalleReciboPago ON Compras.Numero_Compra = DetalleReciboPago.Numero_Compra  " & _
                                              "WHERE  (Compras.Tipo_Compra = 'Mercancia Recibida' OR Compras.Tipo_Compra = 'Cuenta') AND (Compras.MontoCredito <> 0) AND (Compras.Cod_Proveedor = '" & Me.TxtCodigoProveedor.Text & "') "
             End If
 
@@ -67,8 +160,11 @@ Public Class FrmPagosFacturas
             Me.TrueDBGridComponentes.DataSource = Me.BindingFacturas.DataSource
             MiConexion.Close()
 
-            Me.TrueDBGridComponentes.Columns(0).Caption = "Compra No"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Width = 63
+            Me.TrueDBGridComponentes.Columns("Numero_Compra").Caption = "Compra No"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Width = 80
+
+            Me.TrueDBGridComponentes.Columns("Su_Referencia").Caption = "Factura No"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Su_Referencia").Width = 80
 
             Me.TrueDBGridComponentes.Columns("Fecha_Compra").Caption = "Fecha"
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Width = 63
@@ -118,11 +214,13 @@ Public Class FrmPagosFacturas
             MontoAplicado = 0
         Else
             MontoAplicado = CDbl(Me.TrueDBGridComponentes.Columns("MontoPagado").Text)
+
         End If
 
 
+
         Saldo = MontoCredito - MontoAplicado
-        Me.TrueDBGridComponentes.Columns(4).Text = Format(Saldo, "##,##0.00")
+        Me.TrueDBGridComponentes.Columns("Saldo").Text = Format(Saldo, "##,##0.00")
 
 
         Retencion = 0
@@ -134,28 +232,31 @@ Public Class FrmPagosFacturas
 
 
         Me.TrueDBGridComponentes.Columns("NetoPagar").Text = Format(NetoPagar, "##,##0.00")
+
+
     End Sub
 
     Private Sub TrueDBGridComponentes_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.AfterUpdate
+        Me.TxtRetencion.Text = Format(CalcularRetencion(), "0.00")
         ActualizaMETODOPagosProveedores(FrmPagos.TxtMonedaFactura.Text)
     End Sub
 
     Private Sub TrueDBGridComponentes_BeforeColUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.BeforeColUpdateEventArgs) Handles TrueDBGridComponentes.BeforeColUpdate
         Dim MontoCredito As Double, MontoAplicado As Double
 
-        If Me.TrueDBGridComponentes.Columns(2).Text = "" Then
+        If Me.TrueDBGridComponentes.Columns("MontoCredito").Text = "" Then
             MontoCredito = 0
         Else
-            MontoCredito = CDbl(Me.TrueDBGridComponentes.Columns(2).Text)
+            MontoCredito = CDbl(Me.TrueDBGridComponentes.Columns("MontoCredito").Text)
         End If
 
-        If Me.TrueDBGridComponentes.Columns(3).Text = "" Then
+        If Me.TrueDBGridComponentes.Columns("MontoPagado").Text = "" Then
             MontoAplicado = 0
-        ElseIf IsNumeric(Me.TrueDBGridComponentes.Columns(3).Text) Then
-            MontoAplicado = CDbl(Me.TrueDBGridComponentes.Columns(3).Text)
+        ElseIf IsNumeric(Me.TrueDBGridComponentes.Columns("MontoPagado").Text) Then
+            MontoAplicado = CDbl(Me.TrueDBGridComponentes.Columns("MontoPagado").Text)
         Else
             MsgBox("Monto a Pagar espera un Numero", MsgBoxStyle.Critical, "Zeus Facturacion")
-            Me.TrueDBGridComponentes.Columns(3).Text = ""
+            Me.TrueDBGridComponentes.Columns("MontoPagado").Text = ""
         End If
 
         'If MontoCredito < MontoAplicado Then
@@ -448,5 +549,25 @@ Public Class FrmPagosFacturas
         'FrmPagos.TxtPorAplicar.Text = Me.TxtPorAplicar.Text
         'FrmPagos.TxtImporteAplicado.Text = Me.TxtImporteAplicado.Text
         Me.Close()
+    End Sub
+
+    Private Sub CmdSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdSalir.Click
+        Me.Close()
+    End Sub
+
+    Private Sub OptRet1Porciento_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptRet1Porciento.CheckedChanged
+        Me.TxtRetencion.Text = Format(CalcularRetencion(), "0.00")
+    End Sub
+
+    Private Sub OptRet2Porciento_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptRet2Porciento.CheckedChanged
+        Me.TxtRetencion.Text = Format(CalcularRetencion(), "0.00")
+    End Sub
+
+    Private Sub OptRet7Porciento_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptRet7Porciento.CheckedChanged
+        Me.TxtRetencion.Text = Format(CalcularRetencion(), "0.00")
+    End Sub
+
+    Private Sub OptRet10Porciento_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptRet10Porciento.CheckedChanged
+        Me.TxtRetencion.Text = Format(CalcularRetencion(), "0.00")
     End Sub
 End Class

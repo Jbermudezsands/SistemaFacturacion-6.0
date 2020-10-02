@@ -361,6 +361,7 @@ Partial Class FrmVendedor
         Me.TxtRecuperacion2.Name = "TxtRecuperacion2"
         Me.TxtRecuperacion2.Size = New System.Drawing.Size(51, 20)
         Me.TxtRecuperacion2.TabIndex = 4
+        Me.TxtRecuperacion2.Text = "0"
         '
         'Label13
         '
@@ -377,6 +378,7 @@ Partial Class FrmVendedor
         Me.TxtComision2.Name = "TxtComision2"
         Me.TxtComision2.Size = New System.Drawing.Size(34, 20)
         Me.TxtComision2.TabIndex = 5
+        Me.TxtComision2.Text = "0"
         '
         'Label14
         '
@@ -423,6 +425,7 @@ Partial Class FrmVendedor
         Me.TxtRecuperacion1.Name = "TxtRecuperacion1"
         Me.TxtRecuperacion1.Size = New System.Drawing.Size(51, 20)
         Me.TxtRecuperacion1.TabIndex = 6
+        Me.TxtRecuperacion1.Text = "0"
         '
         'Label11
         '
@@ -439,6 +442,7 @@ Partial Class FrmVendedor
         Me.TxtComision1.Name = "TxtComision1"
         Me.TxtComision1.Size = New System.Drawing.Size(34, 20)
         Me.TxtComision1.TabIndex = 1
+        Me.TxtComision1.Text = "0"
         '
         'Label6
         '

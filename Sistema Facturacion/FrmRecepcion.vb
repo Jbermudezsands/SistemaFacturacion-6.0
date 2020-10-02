@@ -211,6 +211,9 @@ Public Class FrmRecepcion
         Mes = Microsoft.VisualBasic.DateAndTime.Month(Now)
         Dia = Microsoft.VisualBasic.DateAndTime.Day(Now)
 
+        If UsuarioBodegaCompra <> "" Then
+            Me.CboCodigoBodega.Text = UsuarioBodegaCompra
+        End If
 
 
     End Sub

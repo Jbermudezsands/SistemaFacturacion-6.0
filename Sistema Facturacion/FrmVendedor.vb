@@ -53,6 +53,7 @@ Public Class FrmVendedor
             TipoComision = "RecuperacionVentas"
         End If
 
+        MiConexion.Close()
 
 
         SQLVendedor = "SELECT TOP (100) PERCENT Vendedores.* FROM Vendedores WHERE (Cod_Vendedor = '" & Me.CboCodigoVendedor.Text & "') ORDER BY Cod_Vendedor"
@@ -69,7 +70,7 @@ Public Class FrmVendedor
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
             StrSqlUpdate = "INSERT INTO [Vendedores] ([Cod_Vendedor],[Nombre_Vendedor],[Apellido_Vendedor],[Direccion_Vendedor],[Telefono_Vendedor],[Cod_Cuenta_Vendedor],[Comision1],[Comision2],[Recuperacion1],[Recuperacion2],[TipoComision]) " & _
-                           "VALUES ('" & Me.CboCodigoVendedor.Text & "','" & Me.TxtNombre.Text & "','" & Me.TxtApellidos.Text & "','" & Me.TxtDireccion.Text & "','" & Me.TxtTelefono.Text & "','" & Me.TxtCtaxCobrar.Text & "','" & Me.TxtComision1.Text & "','" & Me.TxtComision2.Text & "' ,'" & Me.TxtRecuperacion1.Text & "' ,'" & Me.TxtRecuperacion2.Text & "','" & TipoComision & "')"
+                           "VALUES ('" & Me.CboCodigoVendedor.Text & "','" & Me.TxtNombre.Text & "','" & Me.TxtApellidos.Text & "','" & Me.TxtDireccion.Text & "','" & Me.TxtTelefono.Text & "','" & Me.TxtCtaxCobrar.Text & "'," & Me.TxtComision1.Text & "," & Me.TxtComision2.Text & " ," & Me.TxtRecuperacion1.Text & " ," & Me.TxtRecuperacion2.Text & ",'" & TipoComision & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -138,10 +139,10 @@ Public Class FrmVendedor
             Me.TxtTelefono.Text = DataSet.Tables("Vendedores").Rows(0)("Telefono_Vendedor")
         Else
 
-            Me.TxtRecuperacion1.Text = ""
-            Me.TxtRecuperacion2.Text = ""
-            Me.TxtComision1.Text = ""
-            Me.TxtComision2.Text = ""
+            Me.TxtRecuperacion1.Text = "0"
+            Me.TxtRecuperacion2.Text = "0"
+            Me.TxtComision1.Text = "0"
+            Me.TxtComision2.Text = "0"
             Me.TxtNombre.Text = ""
             Me.TxtApellidos.Text = ""
             Me.TxtDireccion.Text = ""

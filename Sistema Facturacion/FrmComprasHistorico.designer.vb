@@ -111,7 +111,7 @@ Partial Class FrmComprasHistorico
         '
         Me.CboTipoProducto.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboTipoProducto.FormattingEnabled = True
-        Me.CboTipoProducto.Items.AddRange(New Object() {"Orden de Compra", "Mercancia Recibida", "Devolucion de Compra", "Transferencia Recibida"})
+        Me.CboTipoProducto.Items.AddRange(New Object() {"Orden de Compra", "Mercancia Recibida", "Devolucion de Compra", "Cuenta", "Cuenta DB"})
         Me.CboTipoProducto.Location = New System.Drawing.Point(43, 13)
         Me.CboTipoProducto.Name = "CboTipoProducto"
         Me.CboTipoProducto.Size = New System.Drawing.Size(135, 21)
@@ -663,7 +663,6 @@ Partial Class FrmComprasHistorico
         Me.GroupBox5.Size = New System.Drawing.Size(200, 189)
         Me.GroupBox5.TabIndex = 202
         Me.GroupBox5.TabStop = False
-        Me.GroupBox5.Text = "GroupBox5"
         '
         'FrmComprasHistorico
         '

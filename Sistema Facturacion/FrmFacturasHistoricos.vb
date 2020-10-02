@@ -101,9 +101,9 @@ Public Class FrmFacturasHistoricos
         Me.DTVencimiento.Value = Format(Now, "dd/MM/yyyy")
 
         If Acceso <> "Administrador" Then
-            Me.ButtonBorrar.Enabled = True
-        Else
             Me.ButtonBorrar.Enabled = False
+        Else
+            Me.ButtonBorrar.Enabled = True
         End If
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////

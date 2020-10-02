@@ -124,6 +124,12 @@ Partial Class FrmReportes
         Me.CboMunicipioIni = New C1.Win.C1List.C1Combo
         Me.Label26 = New System.Windows.Forms.Label
         Me.ListaImagenes = New System.Windows.Forms.ImageList(Me.components)
+        Me.ChkFacturasCero = New System.Windows.Forms.CheckBox
+        Me.GroupBoxLote = New System.Windows.Forms.GroupBox
+        Me.CboLoteFin = New C1.Win.C1List.C1Combo
+        Me.Label27 = New System.Windows.Forms.Label
+        Me.CboLoteIni = New C1.Win.C1List.C1Combo
+        Me.Label28 = New System.Windows.Forms.Label
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -165,6 +171,9 @@ Partial Class FrmReportes
         Me.GroupBoxMunicipio.SuspendLayout()
         CType(Me.CboMunicipio2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboMunicipioIni, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBoxLote.SuspendLayout()
+        CType(Me.CboLoteFin, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.CboLoteIni, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'LblTitulo
@@ -173,7 +182,7 @@ Partial Class FrmReportes
         Me.LblTitulo.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.LblTitulo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblTitulo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.LblTitulo.Location = New System.Drawing.Point(243, 26)
+        Me.LblTitulo.Location = New System.Drawing.Point(357, 23)
         Me.LblTitulo.Name = "LblTitulo"
         Me.LblTitulo.Size = New System.Drawing.Size(152, 13)
         Me.LblTitulo.TabIndex = 166
@@ -195,7 +204,7 @@ Partial Class FrmReportes
         Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox1.Location = New System.Drawing.Point(1, -1)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(766, 60)
+        Me.PictureBox1.Size = New System.Drawing.Size(888, 60)
         Me.PictureBox1.TabIndex = 164
         Me.PictureBox1.TabStop = False
         '
@@ -204,7 +213,7 @@ Partial Class FrmReportes
         Me.ListBox.FormattingEnabled = True
         Me.ListBox.Location = New System.Drawing.Point(12, 65)
         Me.ListBox.Name = "ListBox"
-        Me.ListBox.Size = New System.Drawing.Size(260, 290)
+        Me.ListBox.Size = New System.Drawing.Size(260, 342)
         Me.ListBox.TabIndex = 167
         '
         'Button2
@@ -212,7 +221,7 @@ Partial Class FrmReportes
         Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button2.Location = New System.Drawing.Point(12, 363)
+        Me.Button2.Location = New System.Drawing.Point(13, 414)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(75, 66)
         Me.Button2.TabIndex = 189
@@ -225,7 +234,7 @@ Partial Class FrmReportes
         Me.Button8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
         Me.Button8.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button8.Location = New System.Drawing.Point(578, 363)
+        Me.Button8.Location = New System.Drawing.Point(770, 419)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(75, 66)
         Me.Button8.TabIndex = 188
@@ -379,7 +388,7 @@ Partial Class FrmReportes
         Me.GroupBox3.Controls.Add(Me.Button3)
         Me.GroupBox3.Controls.Add(Me.Label5)
         Me.GroupBox3.Controls.Add(Me.CmbAgrupado)
-        Me.GroupBox3.Location = New System.Drawing.Point(280, 216)
+        Me.GroupBox3.Location = New System.Drawing.Point(281, 274)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(352, 84)
         Me.GroupBox3.TabIndex = 193
@@ -502,7 +511,7 @@ Partial Class FrmReportes
         Me.LblProcesando.AutoSize = True
         Me.LblProcesando.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblProcesando.ForeColor = System.Drawing.Color.Blue
-        Me.LblProcesando.Location = New System.Drawing.Point(201, 420)
+        Me.LblProcesando.Location = New System.Drawing.Point(326, 468)
         Me.LblProcesando.Name = "LblProcesando"
         Me.LblProcesando.Size = New System.Drawing.Size(237, 24)
         Me.LblProcesando.TabIndex = 195
@@ -517,7 +526,7 @@ Partial Class FrmReportes
         Me.GroupClientes.Controls.Add(Me.Label7)
         Me.GroupClientes.Controls.Add(Me.CmbClientes)
         Me.GroupClientes.Controls.Add(Me.Label8)
-        Me.GroupClientes.Location = New System.Drawing.Point(820, 217)
+        Me.GroupClientes.Location = New System.Drawing.Point(900, 227)
         Me.GroupClientes.Name = "GroupClientes"
         Me.GroupClientes.Size = New System.Drawing.Size(277, 86)
         Me.GroupClientes.TabIndex = 196
@@ -626,7 +635,7 @@ Partial Class FrmReportes
         Me.GroupVendedor.Controls.Add(Me.Label9)
         Me.GroupVendedor.Controls.Add(Me.CmbVendedores)
         Me.GroupVendedor.Controls.Add(Me.Label10)
-        Me.GroupVendedor.Location = New System.Drawing.Point(1114, 103)
+        Me.GroupVendedor.Location = New System.Drawing.Point(1194, 113)
         Me.GroupVendedor.Name = "GroupVendedor"
         Me.GroupVendedor.Size = New System.Drawing.Size(277, 85)
         Me.GroupVendedor.TabIndex = 197
@@ -735,9 +744,9 @@ Partial Class FrmReportes
         '
         Me.Imagen.BackColor = System.Drawing.Color.White
         Me.Imagen.Image = CType(resources.GetObject("Imagen.Image"), System.Drawing.Image)
-        Me.Imagen.Location = New System.Drawing.Point(10, 498)
+        Me.Imagen.Location = New System.Drawing.Point(919, 489)
         Me.Imagen.Name = "Imagen"
-        Me.Imagen.Size = New System.Drawing.Size(660, 298)
+        Me.Imagen.Size = New System.Drawing.Size(888, 350)
         Me.Imagen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
         Me.Imagen.TabIndex = 198
         Me.Imagen.TabStop = False
@@ -746,9 +755,9 @@ Partial Class FrmReportes
         'ProgressBar
         '
         Me.ProgressBar.AccessibleDescription = ""
-        Me.ProgressBar.Location = New System.Drawing.Point(93, 368)
+        Me.ProgressBar.Location = New System.Drawing.Point(94, 419)
         Me.ProgressBar.Name = "ProgressBar"
-        Me.ProgressBar.Size = New System.Drawing.Size(477, 23)
+        Me.ProgressBar.Size = New System.Drawing.Size(670, 23)
         Me.ProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous
         Me.ProgressBar.TabIndex = 199
         Me.ProgressBar.Visible = False
@@ -757,7 +766,7 @@ Partial Class FrmReportes
         '
         Me.GroupBox2.Controls.Add(Me.OptDolares)
         Me.GroupBox2.Controls.Add(Me.OptCordobas)
-        Me.GroupBox2.Location = New System.Drawing.Point(280, 298)
+        Me.GroupBox2.Location = New System.Drawing.Point(281, 372)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(171, 32)
         Me.GroupBox2.TabIndex = 200
@@ -766,7 +775,7 @@ Partial Class FrmReportes
         'OptDolares
         '
         Me.OptDolares.AutoSize = True
-        Me.OptDolares.Location = New System.Drawing.Point(95, 8)
+        Me.OptDolares.Location = New System.Drawing.Point(95, 10)
         Me.OptDolares.Name = "OptDolares"
         Me.OptDolares.Size = New System.Drawing.Size(61, 17)
         Me.OptDolares.TabIndex = 1
@@ -777,7 +786,7 @@ Partial Class FrmReportes
         '
         Me.OptCordobas.AutoSize = True
         Me.OptCordobas.Checked = True
-        Me.OptCordobas.Location = New System.Drawing.Point(15, 9)
+        Me.OptCordobas.Location = New System.Drawing.Point(15, 11)
         Me.OptCordobas.Name = "OptCordobas"
         Me.OptCordobas.Size = New System.Drawing.Size(70, 17)
         Me.OptCordobas.TabIndex = 0
@@ -871,9 +880,9 @@ Partial Class FrmReportes
         Me.GroupBoxProductos.Controls.Add(Me.Label13)
         Me.GroupBoxProductos.Controls.Add(Me.CboCodProducto)
         Me.GroupBoxProductos.Controls.Add(Me.Label14)
-        Me.GroupBoxProductos.Location = New System.Drawing.Point(819, 6)
+        Me.GroupBoxProductos.Location = New System.Drawing.Point(899, 16)
         Me.GroupBoxProductos.Name = "GroupBoxProductos"
-        Me.GroupBoxProductos.Size = New System.Drawing.Size(278, 85)
+        Me.GroupBoxProductos.Size = New System.Drawing.Size(268, 85)
         Me.GroupBoxProductos.TabIndex = 201
         Me.GroupBoxProductos.TabStop = False
         Me.GroupBoxProductos.Text = "Rango de Productos"
@@ -1016,7 +1025,7 @@ Partial Class FrmReportes
         Me.GroupBoxNotas.Controls.Add(Me.Label15)
         Me.GroupBoxNotas.Controls.Add(Me.CmbNotas)
         Me.GroupBoxNotas.Controls.Add(Me.Label16)
-        Me.GroupBoxNotas.Location = New System.Drawing.Point(820, 315)
+        Me.GroupBoxNotas.Location = New System.Drawing.Point(900, 325)
         Me.GroupBoxNotas.Name = "GroupBoxNotas"
         Me.GroupBoxNotas.Size = New System.Drawing.Size(277, 85)
         Me.GroupBoxNotas.TabIndex = 202
@@ -1129,7 +1138,7 @@ Partial Class FrmReportes
         Me.GroupBoxLinea.Controls.Add(Me.Label17)
         Me.GroupBoxLinea.Controls.Add(Me.CboCodigoLinea)
         Me.GroupBoxLinea.Controls.Add(Me.Label18)
-        Me.GroupBoxLinea.Location = New System.Drawing.Point(1103, 12)
+        Me.GroupBoxLinea.Location = New System.Drawing.Point(1183, 22)
         Me.GroupBoxLinea.Name = "GroupBoxLinea"
         Me.GroupBoxLinea.Size = New System.Drawing.Size(278, 85)
         Me.GroupBoxLinea.TabIndex = 203
@@ -1238,9 +1247,9 @@ Partial Class FrmReportes
         'ProgressBar1
         '
         Me.ProgressBar1.AccessibleDescription = ""
-        Me.ProgressBar1.Location = New System.Drawing.Point(289, 397)
+        Me.ProgressBar1.Location = New System.Drawing.Point(420, 448)
         Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(281, 17)
+        Me.ProgressBar1.Size = New System.Drawing.Size(344, 17)
         Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous
         Me.ProgressBar1.TabIndex = 204
         Me.ProgressBar1.Visible = False
@@ -1251,7 +1260,7 @@ Partial Class FrmReportes
         Me.GroupBoxTipo.Controls.Add(Me.Label19)
         Me.GroupBoxTipo.Controls.Add(Me.CmbTipoDesde)
         Me.GroupBoxTipo.Controls.Add(Me.Label20)
-        Me.GroupBoxTipo.Location = New System.Drawing.Point(820, 97)
+        Me.GroupBoxTipo.Location = New System.Drawing.Point(900, 107)
         Me.GroupBoxTipo.Name = "GroupBoxTipo"
         Me.GroupBoxTipo.Size = New System.Drawing.Size(278, 85)
         Me.GroupBoxTipo.TabIndex = 205
@@ -1344,7 +1353,7 @@ Partial Class FrmReportes
         'ChkResumen
         '
         Me.ChkResumen.AutoSize = True
-        Me.ChkResumen.Location = New System.Drawing.Point(820, 187)
+        Me.ChkResumen.Location = New System.Drawing.Point(900, 197)
         Me.ChkResumen.Name = "ChkResumen"
         Me.ChkResumen.Size = New System.Drawing.Size(132, 17)
         Me.ChkResumen.TabIndex = 206
@@ -1359,7 +1368,7 @@ Partial Class FrmReportes
         Me.GroupBoxProyectos.Controls.Add(Me.Label21)
         Me.GroupBoxProyectos.Controls.Add(Me.CboCodProyecto)
         Me.GroupBoxProyectos.Controls.Add(Me.Label22)
-        Me.GroupBoxProyectos.Location = New System.Drawing.Point(1114, 194)
+        Me.GroupBoxProyectos.Location = New System.Drawing.Point(1194, 204)
         Me.GroupBoxProyectos.Name = "GroupBoxProyectos"
         Me.GroupBoxProyectos.Size = New System.Drawing.Size(278, 85)
         Me.GroupBoxProyectos.TabIndex = 207
@@ -1468,7 +1477,7 @@ Partial Class FrmReportes
         'ChkProductosCero
         '
         Me.ChkProductosCero.AutoSize = True
-        Me.ChkProductosCero.Location = New System.Drawing.Point(819, 406)
+        Me.ChkProductosCero.Location = New System.Drawing.Point(899, 416)
         Me.ChkProductosCero.Name = "ChkProductosCero"
         Me.ChkProductosCero.Size = New System.Drawing.Size(150, 17)
         Me.ChkProductosCero.TabIndex = 208
@@ -1479,7 +1488,7 @@ Partial Class FrmReportes
         'ChkAgrupVtas
         '
         Me.ChkAgrupVtas.AutoSize = True
-        Me.ChkAgrupVtas.Location = New System.Drawing.Point(487, 307)
+        Me.ChkAgrupVtas.Location = New System.Drawing.Point(488, 366)
         Me.ChkAgrupVtas.Name = "ChkAgrupVtas"
         Me.ChkAgrupVtas.Size = New System.Drawing.Size(139, 17)
         Me.ChkAgrupVtas.TabIndex = 209
@@ -1490,7 +1499,7 @@ Partial Class FrmReportes
         'ChkTransferencias
         '
         Me.ChkTransferencias.AutoSize = True
-        Me.ChkTransferencias.Location = New System.Drawing.Point(819, 430)
+        Me.ChkTransferencias.Location = New System.Drawing.Point(899, 440)
         Me.ChkTransferencias.Name = "ChkTransferencias"
         Me.ChkTransferencias.Size = New System.Drawing.Size(130, 17)
         Me.ChkTransferencias.TabIndex = 210
@@ -1505,7 +1514,7 @@ Partial Class FrmReportes
         Me.GroupBoxDepartamento.Controls.Add(Me.Label23)
         Me.GroupBoxDepartamento.Controls.Add(Me.CboCodDepartamentoIni)
         Me.GroupBoxDepartamento.Controls.Add(Me.Label24)
-        Me.GroupBoxDepartamento.Location = New System.Drawing.Point(1115, 285)
+        Me.GroupBoxDepartamento.Location = New System.Drawing.Point(1195, 295)
         Me.GroupBoxDepartamento.Name = "GroupBoxDepartamento"
         Me.GroupBoxDepartamento.Size = New System.Drawing.Size(277, 85)
         Me.GroupBoxDepartamento.TabIndex = 211
@@ -1618,7 +1627,7 @@ Partial Class FrmReportes
         Me.GroupBoxMunicipio.Controls.Add(Me.Label25)
         Me.GroupBoxMunicipio.Controls.Add(Me.CboMunicipioIni)
         Me.GroupBoxMunicipio.Controls.Add(Me.Label26)
-        Me.GroupBoxMunicipio.Location = New System.Drawing.Point(1114, 376)
+        Me.GroupBoxMunicipio.Location = New System.Drawing.Point(1194, 386)
         Me.GroupBoxMunicipio.Name = "GroupBoxMunicipio"
         Me.GroupBoxMunicipio.Size = New System.Drawing.Size(277, 85)
         Me.GroupBoxMunicipio.TabIndex = 212
@@ -1737,16 +1746,121 @@ Partial Class FrmReportes
         Me.ListaImagenes.Images.SetKeyName(7, "Circulo7.png")
         Me.ListaImagenes.Images.SetKeyName(8, "Circulo8.png")
         '
+        'ChkFacturasCero
+        '
+        Me.ChkFacturasCero.AutoSize = True
+        Me.ChkFacturasCero.Location = New System.Drawing.Point(488, 386)
+        Me.ChkFacturasCero.Name = "ChkFacturasCero"
+        Me.ChkFacturasCero.Size = New System.Drawing.Size(144, 17)
+        Me.ChkFacturasCero.TabIndex = 213
+        Me.ChkFacturasCero.Text = "Incluir Facturas con Cero"
+        Me.ChkFacturasCero.UseVisualStyleBackColor = True
+        '
+        'GroupBoxLote
+        '
+        Me.GroupBoxLote.Controls.Add(Me.CboLoteFin)
+        Me.GroupBoxLote.Controls.Add(Me.Label27)
+        Me.GroupBoxLote.Controls.Add(Me.CboLoteIni)
+        Me.GroupBoxLote.Controls.Add(Me.Label28)
+        Me.GroupBoxLote.Location = New System.Drawing.Point(1068, 416)
+        Me.GroupBoxLote.Name = "GroupBoxLote"
+        Me.GroupBoxLote.Size = New System.Drawing.Size(192, 85)
+        Me.GroupBoxLote.TabIndex = 214
+        Me.GroupBoxLote.TabStop = False
+        Me.GroupBoxLote.Text = "Rango de Lotes"
+        Me.GroupBoxLote.Visible = False
+        '
+        'CboLoteFin
+        '
+        Me.CboLoteFin.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboLoteFin.Caption = ""
+        Me.CboLoteFin.CaptionHeight = 17
+        Me.CboLoteFin.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboLoteFin.ColumnCaptionHeight = 17
+        Me.CboLoteFin.ColumnFooterHeight = 17
+        Me.CboLoteFin.ContentHeight = 15
+        Me.CboLoteFin.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboLoteFin.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
+        Me.CboLoteFin.DropDownWidth = 300
+        Me.CboLoteFin.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboLoteFin.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboLoteFin.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboLoteFin.EditorHeight = 15
+        Me.CboLoteFin.Images.Add(CType(resources.GetObject("CboLoteFin.Images"), System.Drawing.Image))
+        Me.CboLoteFin.ItemHeight = 15
+        Me.CboLoteFin.Location = New System.Drawing.Point(49, 46)
+        Me.CboLoteFin.MatchEntryTimeout = CType(2000, Long)
+        Me.CboLoteFin.MaxDropDownItems = CType(5, Short)
+        Me.CboLoteFin.MaxLength = 32767
+        Me.CboLoteFin.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboLoteFin.Name = "CboLoteFin"
+        Me.CboLoteFin.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboLoteFin.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboLoteFin.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboLoteFin.Size = New System.Drawing.Size(134, 21)
+        Me.CboLoteFin.TabIndex = 64
+        Me.CboLoteFin.PropBag = resources.GetString("CboLoteFin.PropBag")
+        '
+        'Label27
+        '
+        Me.Label27.AutoSize = True
+        Me.Label27.Location = New System.Drawing.Point(8, 46)
+        Me.Label27.Name = "Label27"
+        Me.Label27.Size = New System.Drawing.Size(35, 13)
+        Me.Label27.TabIndex = 66
+        Me.Label27.Text = "Hasta"
+        '
+        'CboLoteIni
+        '
+        Me.CboLoteIni.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboLoteIni.Caption = ""
+        Me.CboLoteIni.CaptionHeight = 17
+        Me.CboLoteIni.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboLoteIni.ColumnCaptionHeight = 17
+        Me.CboLoteIni.ColumnFooterHeight = 17
+        Me.CboLoteIni.ContentHeight = 15
+        Me.CboLoteIni.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboLoteIni.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
+        Me.CboLoteIni.DropDownWidth = 300
+        Me.CboLoteIni.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboLoteIni.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboLoteIni.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboLoteIni.EditorHeight = 15
+        Me.CboLoteIni.Images.Add(CType(resources.GetObject("CboLoteIni.Images"), System.Drawing.Image))
+        Me.CboLoteIni.ItemHeight = 15
+        Me.CboLoteIni.Location = New System.Drawing.Point(49, 18)
+        Me.CboLoteIni.MatchEntryTimeout = CType(2000, Long)
+        Me.CboLoteIni.MaxDropDownItems = CType(5, Short)
+        Me.CboLoteIni.MaxLength = 32767
+        Me.CboLoteIni.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboLoteIni.Name = "CboLoteIni"
+        Me.CboLoteIni.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboLoteIni.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboLoteIni.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboLoteIni.Size = New System.Drawing.Size(134, 21)
+        Me.CboLoteIni.TabIndex = 61
+        Me.CboLoteIni.PropBag = resources.GetString("CboLoteIni.PropBag")
+        '
+        'Label28
+        '
+        Me.Label28.AutoSize = True
+        Me.Label28.Location = New System.Drawing.Point(5, 20)
+        Me.Label28.Name = "Label28"
+        Me.Label28.Size = New System.Drawing.Size(38, 13)
+        Me.Label28.TabIndex = 63
+        Me.Label28.Text = "Desde"
+        '
         'FrmReportes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(672, 465)
-        Me.Controls.Add(Me.GroupBoxMunicipio)
-        Me.Controls.Add(Me.GroupBoxDepartamento)
-        Me.Controls.Add(Me.ChkAgrupVtas)
-        Me.Controls.Add(Me.GroupBoxProyectos)
+        Me.ClientSize = New System.Drawing.Size(886, 502)
+        Me.ControlBox = False
         Me.Controls.Add(Me.Imagen)
+        Me.Controls.Add(Me.GroupBoxLote)
+        Me.Controls.Add(Me.ChkFacturasCero)
+        Me.Controls.Add(Me.GroupBoxMunicipio)
+        Me.Controls.Add(Me.GroupBoxProyectos)
         Me.Controls.Add(Me.ChkResumen)
         Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.GroupBox2)
@@ -1769,6 +1883,8 @@ Partial Class FrmReportes
         Me.Controls.Add(Me.GroupBoxTipo)
         Me.Controls.Add(Me.ChkTransferencias)
         Me.Controls.Add(Me.ChkProductosCero)
+        Me.Controls.Add(Me.ChkAgrupVtas)
+        Me.Controls.Add(Me.GroupBoxDepartamento)
         Me.Name = "FrmReportes"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Reportes"
@@ -1825,6 +1941,10 @@ Partial Class FrmReportes
         Me.GroupBoxMunicipio.PerformLayout()
         CType(Me.CboMunicipio2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboMunicipioIni, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBoxLote.ResumeLayout(False)
+        Me.GroupBoxLote.PerformLayout()
+        CType(Me.CboLoteFin, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.CboLoteIni, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1933,4 +2053,10 @@ Partial Class FrmReportes
     Friend WithEvents CboMunicipioIni As C1.Win.C1List.C1Combo
     Friend WithEvents Label26 As System.Windows.Forms.Label
     Friend WithEvents ListaImagenes As System.Windows.Forms.ImageList
+    Friend WithEvents ChkFacturasCero As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBoxLote As System.Windows.Forms.GroupBox
+    Friend WithEvents CboLoteFin As C1.Win.C1List.C1Combo
+    Friend WithEvents Label27 As System.Windows.Forms.Label
+    Friend WithEvents CboLoteIni As C1.Win.C1List.C1Combo
+    Friend WithEvents Label28 As System.Windows.Forms.Label
 End Class

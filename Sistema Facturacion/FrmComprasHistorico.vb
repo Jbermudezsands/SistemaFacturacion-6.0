@@ -564,6 +564,12 @@ Public Class FrmComprasHistorico
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim SqlDatos As String
 
+        If Acceso <> "Administrador" Then
+            Me.ButtonBorrar.Enabled = False
+        Else
+            Me.ButtonBorrar.Enabled = True
+        End If
+
         Me.DTPFecha.Value = Format(Now, "dd/MM/yyyy")
         Me.DTVencimiento.Value = Format(Now, "dd/MM/yyyy")
 
