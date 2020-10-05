@@ -234,7 +234,7 @@ Partial Public Class ArepSaldoClientes
         Me.lblProductID.Name = "lblProductID"
         Me.lblProductID.Style = "color: Black; text-align: center; font-weight: bold; background-color: White; fon" & _
             "t-size: 8.5pt; "
-        Me.lblProductID.Text = "Codigo Cliente"
+        Me.lblProductID.Text = "Codigo"
         Me.lblProductID.Top = 1.1875!
         Me.lblProductID.Width = 0.6875!
         '
@@ -254,7 +254,7 @@ Partial Public Class ArepSaldoClientes
         Me.Label2.Name = "Label2"
         Me.Label2.Style = "color: Black; text-align: center; font-weight: bold; background-color: White; fon" & _
             "t-size: 8.5pt; "
-        Me.Label2.Text = "Nombre Cliente"
+        Me.Label2.Text = "Nombres"
         Me.Label2.Top = 1.1875!
         Me.Label2.Width = 3.1875!
         '

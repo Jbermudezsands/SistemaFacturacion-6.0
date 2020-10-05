@@ -595,6 +595,12 @@
     <Compile Include="Reportes\ArepLineaVendedor.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\ArepLiquidacionLeche.Designer.vb">
+      <DependentUpon>ArepLiquidacionLeche.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepLiquidacionLeche.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\ArepListaRecepcion.designer.vb">
       <DependentUpon>ArepListaRecepcion.vb</DependentUpon>
     </Compile>
@@ -1758,6 +1764,10 @@
     <EmbeddedResource Include="Reportes\ArepLineaVendedor.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ArepLineaVendedor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepLiquidacionLeche.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepLiquidacionLeche.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepListadoCotizaciones.resx">
       <DependentUpon>ArepListadoCotizaciones.vb</DependentUpon>

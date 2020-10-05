@@ -59,6 +59,7 @@ Partial Class FrmPlanillaLiquidacion
         Me.CboCodigoBodega = New C1.Win.C1List.C1Combo
         Me.Label20 = New System.Windows.Forms.Label
         Me.BtnGenerar = New System.Windows.Forms.Button
+        Me.CmdNuevo = New System.Windows.Forms.Button
         Me.TabControl1.SuspendLayout()
         Me.Ingresos.SuspendLayout()
         CType(Me.TDGridIngresos, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -104,7 +105,7 @@ Partial Class FrmPlanillaLiquidacion
         Me.CmdCerrar.Enabled = False
         Me.CmdCerrar.Image = CType(resources.GetObject("CmdCerrar.Image"), System.Drawing.Image)
         Me.CmdCerrar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdCerrar.Location = New System.Drawing.Point(332, 390)
+        Me.CmdCerrar.Location = New System.Drawing.Point(340, 391)
         Me.CmdCerrar.Name = "CmdCerrar"
         Me.CmdCerrar.Size = New System.Drawing.Size(75, 75)
         Me.CmdCerrar.TabIndex = 193
@@ -129,7 +130,7 @@ Partial Class FrmPlanillaLiquidacion
         Me.CmdNomina.Enabled = False
         Me.CmdNomina.Image = CType(resources.GetObject("CmdNomina.Image"), System.Drawing.Image)
         Me.CmdNomina.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdNomina.Location = New System.Drawing.Point(191, 390)
+        Me.CmdNomina.Location = New System.Drawing.Point(259, 391)
         Me.CmdNomina.Name = "CmdNomina"
         Me.CmdNomina.Size = New System.Drawing.Size(75, 75)
         Me.CmdNomina.TabIndex = 190
@@ -282,6 +283,7 @@ Partial Class FrmPlanillaLiquidacion
         Me.TDGridDeducciones.FlatStyle = C1.Win.C1TrueDBGrid.FlatModeEnum.Popup
         Me.TDGridDeducciones.GroupByCaption = "Drag a column header here to group by that column"
         Me.TDGridDeducciones.Images.Add(CType(resources.GetObject("TDGridDeducciones.Images"), System.Drawing.Image))
+        Me.TDGridDeducciones.LinesPerRow = 1
         Me.TDGridDeducciones.Location = New System.Drawing.Point(175, 6)
         Me.TDGridDeducciones.Name = "TDGridDeducciones"
         Me.TDGridDeducciones.PreviewInfo.Location = New System.Drawing.Point(0, 0)
@@ -298,7 +300,7 @@ Partial Class FrmPlanillaLiquidacion
         Me.CmdCalcular.Enabled = False
         Me.CmdCalcular.Image = CType(resources.GetObject("CmdCalcular.Image"), System.Drawing.Image)
         Me.CmdCalcular.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdCalcular.Location = New System.Drawing.Point(110, 390)
+        Me.CmdCalcular.Location = New System.Drawing.Point(178, 391)
         Me.CmdCalcular.Name = "CmdCalcular"
         Me.CmdCalcular.Size = New System.Drawing.Size(75, 75)
         Me.CmdCalcular.TabIndex = 188
@@ -314,9 +316,9 @@ Partial Class FrmPlanillaLiquidacion
         Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.Label9.Location = New System.Drawing.Point(408, 19)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(198, 13)
+        Me.Label9.Size = New System.Drawing.Size(173, 13)
         Me.Label9.TabIndex = 187
-        Me.Label9.Text = "LIQUIDACION POR PROVEEDOR"
+        Me.Label9.Text = "LIQUIDACION POR CLIENTE"
         '
         'PictureBox2
         '
@@ -463,9 +465,9 @@ Partial Class FrmPlanillaLiquidacion
         Me.LblCodigo.AutoSize = True
         Me.LblCodigo.Location = New System.Drawing.Point(21, 121)
         Me.LblCodigo.Name = "LblCodigo"
-        Me.LblCodigo.Size = New System.Drawing.Size(92, 13)
+        Me.LblCodigo.Size = New System.Drawing.Size(75, 13)
         Me.LblCodigo.TabIndex = 198
-        Me.LblCodigo.Text = "Codigo Proveedor"
+        Me.LblCodigo.Text = "Codigo Cliente"
         '
         'Button2
         '
@@ -527,11 +529,24 @@ Partial Class FrmPlanillaLiquidacion
         Me.BtnGenerar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.BtnGenerar.UseVisualStyleBackColor = True
         '
+        'CmdNuevo
+        '
+        Me.CmdNuevo.Image = CType(resources.GetObject("CmdNuevo.Image"), System.Drawing.Image)
+        Me.CmdNuevo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.CmdNuevo.Location = New System.Drawing.Point(93, 391)
+        Me.CmdNuevo.Name = "CmdNuevo"
+        Me.CmdNuevo.Size = New System.Drawing.Size(75, 75)
+        Me.CmdNuevo.TabIndex = 303
+        Me.CmdNuevo.Text = "Nuevo"
+        Me.CmdNuevo.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.CmdNuevo.UseVisualStyleBackColor = True
+        '
         'FrmPlanillaLiquidacion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1029, 470)
+        Me.Controls.Add(Me.CmdNuevo)
         Me.Controls.Add(Me.BtnGenerar)
         Me.Controls.Add(Me.CboCodigoBodega)
         Me.Controls.Add(Me.Label20)
@@ -608,4 +623,5 @@ Partial Class FrmPlanillaLiquidacion
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents TxtIR As System.Windows.Forms.TextBox
     Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents CmdNuevo As System.Windows.Forms.Button
 End Class
