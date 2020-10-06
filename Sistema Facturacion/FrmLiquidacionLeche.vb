@@ -376,15 +376,15 @@ Public Class FrmPlanillaLiquidacion
     Private Sub TDGridIngresos_AfterColEdit(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TDGridIngresos.AfterColEdit
         Dim Fecha As Date
 
-        Fecha = Me.TDGridIngresos.Columns("Fecha").Text
+        'Fecha = Me.TDGridIngresos.Columns("Fecha").Text
 
-        If Fecha < Me.DTPFechaIni.Value Then
-            MsgBox("La Fecha Esta Fuera del Rango", MsgBoxStyle.Critical, "Zeus Facturacion")
-            Me.TDGridIngresos.Columns("Fecha").Text = Format(Me.DTPFechaIni.Value, "dd/MM/yyyy")
-        ElseIf Fecha > Me.DTPFechaFin.Value Then
-            MsgBox("La Fecha Esta Fuera del Rango", MsgBoxStyle.Critical, "Zeus Facturacion")
-            Me.TDGridIngresos.Columns("Fecha").Text = Format(Me.DTPFechaFin.Value, "dd/MM/yyyy")
-        End If
+        'If Fecha < Me.DTPFechaIni.Value Then
+        '    MsgBox("La Fecha Esta Fuera del Rango", MsgBoxStyle.Critical, "Zeus Facturacion")
+        '    Me.TDGridIngresos.Columns("Fecha").Text = Format(Me.DTPFechaIni.Value, "dd/MM/yyyy")
+        'ElseIf Fecha > Me.DTPFechaFin.Value Then
+        '    MsgBox("La Fecha Esta Fuera del Rango", MsgBoxStyle.Critical, "Zeus Facturacion")
+        '    Me.TDGridIngresos.Columns("Fecha").Text = Format(Me.DTPFechaFin.Value, "dd/MM/yyyy")
+        'End If
 
 
     End Sub
@@ -909,13 +909,13 @@ Public Class FrmPlanillaLiquidacion
 
         Me.TDGridIngresos.AllowAddNew = True
 
-        SqlCompras = "SELECT  * FROM Proveedor  WHERE (Cod_Proveedor = '" & Me.CboCodigoCliente.Text & "')"
+        SqlCompras = "SELECT  * FROM Clientes  WHERE (Cod_Cliente = '" & Me.CboCodigoCliente.Text & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
         DataAdapter.Fill(DataSet, "Proveedor")
         If Not DataSet.Tables("Proveedor").Rows.Count = 0 Then
-            Me.TDGridIngresos.Columns("Codigo_Productor").Text = DataSet.Tables("Proveedor").Rows(0)("Cod_Proveedor")
-            Me.TDGridIngresos.Columns("Nombre_Productor").Text = DataSet.Tables("Proveedor").Rows(0)("Nombre_Proveedor")
-            Me.TDGridIngresos.Columns("Fecha").Text = Format(Now, "dd/MM/yyyy")
+            Me.TDGridIngresos.Columns("Codigo_Productor").Text = DataSet.Tables("Proveedor").Rows(0)("Cod_Cliente")
+            Me.TDGridIngresos.Columns("Nombre_Productor").Text = DataSet.Tables("Proveedor").Rows(0)("Nombre_Cliente")
+            Me.TDGridIngresos.Columns("Fecha").Text = Format(Me.DTPFechaIni.Value, "dd/MM/yyyy")
             Me.TDGridIngresos.Columns("Cantidad_Enviada").Text = 0
             Me.TDGridIngresos.Columns("Cantidad_Recibida").Text = 0
             Me.TDGridIngresos.Columns("Diferencia").Text = 0
