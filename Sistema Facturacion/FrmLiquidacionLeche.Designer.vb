@@ -213,7 +213,7 @@ Partial Class FrmPlanillaLiquidacion
         Me.TxtBolsa.Name = "TxtBolsa"
         Me.TxtBolsa.Size = New System.Drawing.Size(43, 20)
         Me.TxtBolsa.TabIndex = 7
-        Me.TxtBolsa.Text = "0.50"
+        Me.TxtBolsa.Text = "0"
         '
         'Label8
         '
@@ -230,7 +230,7 @@ Partial Class FrmPlanillaLiquidacion
         Me.TxtPrecioUnitario.Name = "TxtPrecioUnitario"
         Me.TxtPrecioUnitario.Size = New System.Drawing.Size(43, 20)
         Me.TxtPrecioUnitario.TabIndex = 5
-        Me.TxtPrecioUnitario.Text = "1"
+        Me.TxtPrecioUnitario.Text = "12"
         '
         'Label6
         '
@@ -264,7 +264,7 @@ Partial Class FrmPlanillaLiquidacion
         Me.TxtIR.Name = "TxtIR"
         Me.TxtIR.Size = New System.Drawing.Size(43, 20)
         Me.TxtIR.TabIndex = 1
-        Me.TxtIR.Text = "3"
+        Me.TxtIR.Text = "1"
         '
         'Label4
         '

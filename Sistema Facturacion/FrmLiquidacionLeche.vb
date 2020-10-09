@@ -376,15 +376,15 @@ Public Class FrmPlanillaLiquidacion
     Private Sub TDGridIngresos_AfterColEdit(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TDGridIngresos.AfterColEdit
         Dim Fecha As Date
 
-        'Fecha = Me.TDGridIngresos.Columns("Fecha").Text
+        Fecha = Format(CDate(Me.TDGridIngresos.Columns("Fecha").Text), "dd/MM/yyyy")
 
-        'If Fecha < Me.DTPFechaIni.Value Then
-        '    MsgBox("La Fecha Esta Fuera del Rango", MsgBoxStyle.Critical, "Zeus Facturacion")
-        '    Me.TDGridIngresos.Columns("Fecha").Text = Format(Me.DTPFechaIni.Value, "dd/MM/yyyy")
-        'ElseIf Fecha > Me.DTPFechaFin.Value Then
-        '    MsgBox("La Fecha Esta Fuera del Rango", MsgBoxStyle.Critical, "Zeus Facturacion")
-        '    Me.TDGridIngresos.Columns("Fecha").Text = Format(Me.DTPFechaFin.Value, "dd/MM/yyyy")
-        'End If
+        If Fecha < Me.DTPFechaIni.Value Then
+            MsgBox("La Fecha Esta Fuera del Rango", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Me.TDGridIngresos.Columns("Fecha").Text = Format(Me.DTPFechaIni.Value, "dd/MM/yyyy")
+        ElseIf Fecha > Me.DTPFechaFin.Value Then
+            MsgBox("La Fecha Esta Fuera del Rango", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Me.TDGridIngresos.Columns("Fecha").Text = Format(Me.DTPFechaFin.Value, "dd/MM/yyyy")
+        End If
 
 
     End Sub
@@ -652,8 +652,8 @@ Public Class FrmPlanillaLiquidacion
         Dim Anticipo As Double, PagosRetenidos As Double, idDetalleLiquidacion As Double
         Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim PorcientoBolsa As Double = 0, MontoBolsa As Double = 0, ProductosVeterinarios As Double = 0, CantLunes As Double = 0, CantMartes As Double = 0, CantMiercoles As Double = 0, CantJueves As Double = 0, CantViernes As Double = 0, CantSabado As Double = 0, CantDomingo As Double = 0
-        Dim TotalIngresos As Double, Ir As Double, Bolsa As Double, RetDefitiva As Double, TotalDeducciones As Double = 0
-
+        Dim TotalIngresos As Double, Ir As Double, Bolsa As Double, RetDefitiva As Double, TotalDeducciones As Double = 0, TotalLitros As Double, Ajuste_Cordobas As Double
+        Dim Litros_Agua As Double, Cantidad_Recibida As Double
 
 
         If Me.CboCodigoCliente.Text = "" Then
@@ -680,6 +680,41 @@ Public Class FrmPlanillaLiquidacion
 
 
         Do While iPosicion < Registros
+
+
+            If IsNumeric(Me.TDGridIngresos.Columns("Cantidad_Recibida").Text) Then
+                Cantidad_Recibida = Me.TDGridIngresos.Columns("Cantidad_Recibida").Text
+            Else
+                Cantidad_Recibida = 0
+            End If
+
+            If IsNumeric(Me.TDGridIngresos.Columns("Litros_Agua").Text) Then
+                Litros_Agua = Me.TDGridIngresos.Columns("Litros_Agua").Text
+            Else
+                Litros_Agua = 0
+            End If
+
+            If IsNumeric(Me.TDGridIngresos.Columns("Ajuste_Cordobas").Text) Then
+                Ajuste_Cordobas = Me.TDGridIngresos.Columns("Ajuste_Cordobas").Text
+            Else
+                Ajuste_Cordobas = 0
+            End If
+
+            If IsNumeric(Me.TxtPrecioUnitario.Text) Then
+                PrecioUnitario = Me.TxtPrecioUnitario.Text
+                Me.TDGridIngresos.Columns("Precio_Unitario").Text = Format(PrecioUnitario, "##,##0.00")
+            Else
+                PrecioUnitario = 0
+            End If
+
+            TotalLitros = Cantidad_Recibida - Litros_Agua
+            Me.TDGridIngresos.Columns("TotalLitros").Text = TotalLitros
+
+            TotalIngresos = (TotalLitros * PrecioUnitario) + Ajuste_Cordobas
+
+            Me.TDGridIngresos.Columns("Total_Ingresos").Text = Format(TotalIngresos, "##,##0.00")
+
+
 
             TotalIngresos = Me.TDGridIngresos.Item(iPosicion)("Total_Ingresos")
             Ir = TotalIngresos * PorcientoIr
@@ -949,17 +984,22 @@ Public Class FrmPlanillaLiquidacion
     Private Sub TDGridIngresos_BeforeUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TDGridIngresos.BeforeUpdate
         Dim SqlCompras As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim iPosicion As Double, Fecha As Date
 
-        SqlCompras = "SELECT  * FROM Proveedor  WHERE (Cod_Proveedor = '" & Me.CboCodigoCliente.Text & "')"
+        SqlCompras = "SELECT  * FROM Clientes  WHERE (Cod_Cliente = '" & Me.CboCodigoCliente.Text & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
-        DataAdapter.Fill(DataSet, "Proveedor")
-        If Not DataSet.Tables("Proveedor").Rows.Count = 0 Then
-            Me.TDGridIngresos.Columns("Codigo_Productor").Text = DataSet.Tables("Proveedor").Rows(0)("Cod_Proveedor")
-            Me.TDGridIngresos.Columns("Nombre_Productor").Text = DataSet.Tables("Proveedor").Rows(0)("Nombre_Proveedor")
+        DataAdapter.Fill(DataSet, "Cliente")
+        If Not DataSet.Tables("Cliente").Rows.Count = 0 Then
+            Me.TDGridIngresos.Columns("Codigo_Productor").Text = DataSet.Tables("Cliente").Rows(0)("Cod_Cliente")
+            Me.TDGridIngresos.Columns("Nombre_Productor").Text = DataSet.Tables("Cliente").Rows(0)("Nombre_Cliente")
         End If
 
+
+
         If Me.TDGridIngresos.Columns("Fecha").Text = "" Then
-            Me.TDGridIngresos.Columns("Fecha").Text = Format(Now, "dd/MM/yyyy")
+            iPosicion = Me.TDGridIngresos.Row
+            Fecha = Me.TDGridIngresos.Item(iPosicion)("Fecha")
+            Me.TDGridIngresos.Columns("Fecha").Text = Format(Me.DTPFechaIni.Value, "dd/MM/yyyy")
         End If
 
         If Me.TDGridIngresos.Columns("Cantidad_Enviada").Text = "" Then

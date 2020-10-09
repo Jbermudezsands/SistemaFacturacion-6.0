@@ -121,25 +121,22 @@
     <value>dd/MM/yyyy</value>
   </data>
   <data name="TextBox8.OutputFormat" xml:space="preserve">
-    <value>#,##0.00</value>
+    <value>#,##</value>
   </data>
   <data name="TextBox9.OutputFormat" xml:space="preserve">
-    <value>#,##0.00</value>
+    <value>#,##</value>
   </data>
   <data name="TextBox10.OutputFormat" xml:space="preserve">
-    <value>#,##0.00</value>
-  </data>
-  <data name="TextBox11.OutputFormat" xml:space="preserve">
-    <value>0%</value>
+    <value>#,##</value>
   </data>
   <data name="TextBox12.OutputFormat" xml:space="preserve">
-    <value>#,##0.00</value>
+    <value>#,##</value>
   </data>
   <data name="TextBox13.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
   <data name="TextBox14.OutputFormat" xml:space="preserve">
-    <value>#,##0.00</value>
+    <value>#,##</value>
   </data>
   <data name="TextBox15.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
@@ -178,22 +175,22 @@
     <value>dd/MM/yyyy</value>
   </data>
   <data name="TextBox26.OutputFormat" xml:space="preserve">
-    <value>#,##0.00</value>
+    <value>#,##</value>
   </data>
   <data name="TextBox27.OutputFormat" xml:space="preserve">
-    <value>#,##0.00</value>
+    <value>#,##</value>
   </data>
   <data name="TextBox28.OutputFormat" xml:space="preserve">
-    <value>#,##0.00</value>
+    <value>#,##</value>
   </data>
   <data name="TextBox30.OutputFormat" xml:space="preserve">
-    <value>#,##0.00</value>
+    <value>#,##</value>
   </data>
   <data name="TextBox31.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
   <data name="TextBox32.OutputFormat" xml:space="preserve">
-    <value>#,##0.00</value>
+    <value>#,##</value>
   </data>
   <data name="TextBox33.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
