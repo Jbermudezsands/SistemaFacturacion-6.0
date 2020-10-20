@@ -521,6 +521,7 @@ Partial Class FrmNotaDebito
         '
         'CmbTipo
         '
+        Me.CmbTipo.DropDownWidth = 200
         Me.CmbTipo.FormattingEnabled = True
         Me.CmbTipo.Items.AddRange(New Object() {"Debito Clientes", "Credito Clientes", "Debito Proveedores", "Credito Proveedores", "Debito Clientes Dif $", "Credito Clientes Dif $", "Debito Clientes Dif C$", "Credito Clientes Dif C$", "Debito Proveedores Dif $", "Credito Proveedores Dif $", "Debito Proveedores Dif C$", "Credito Proveedores Dif C$"})
         Me.CmbTipo.Location = New System.Drawing.Point(296, 25)

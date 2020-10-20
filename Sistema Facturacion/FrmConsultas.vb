@@ -289,7 +289,20 @@ Public Class FrmConsultas
 
                 Case "NB"
 
-                    SQlProductos = "SELECT IndiceNota.Numero_Nota, IndiceNota.Fecha_Nota, IndiceNota.Nombre_Cliente, NotaDebito.Tipo FROM IndiceNota INNER JOIN Clientes ON IndiceNota.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN NotaDebito ON IndiceNota.Tipo_Nota = NotaDebito.CodigoNB WHERE (Clientes.Cod_Cliente =  '" & CodigoCliente & "') AND (IndiceNota.Activo = 1) AND (IndiceNota.Contabilizado = 0) AND (NotaDebito.Tipo = '" & Tipo & "') OR (NotaDebito.Tipo = '" & Tipo & " Dif C$') OR (NotaDebito.Tipo = '" & Tipo & " Dif $') ORDER BY IndiceNota.Numero_Nota"
+                    SQlProductos = "SELECT IndiceNota.Numero_Nota, IndiceNota.Fecha_Nota, IndiceNota.Nombre_Cliente, NotaDebito.Tipo FROM IndiceNota INNER JOIN Clientes ON IndiceNota.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN NotaDebito ON IndiceNota.Tipo_Nota = NotaDebito.CodigoNB WHERE (Clientes.Cod_Cliente =  '" & CodigoCliente & "') AND (IndiceNota.Activo = 1) AND (IndiceNota.Contabilizado = 0) AND (NotaDebito.Tipo = '%" & Tipo & "%') ORDER BY IndiceNota.Numero_Nota"
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(2).Width = 250
+                    MiConexion.Close()
+
+                Case "NBPROVEEDORES"
+
+                    'SQlProductos = "SELECT IndiceNota.Numero_Nota, IndiceNota.Fecha_Nota, IndiceNota.Nombre_Cliente, NotaDebito.Tipo FROM IndiceNota INNER JOIN Proveedor ON IndiceNota.Cod_Cliente = Proveedor.Cod_Proveedor INNER JOIN NotaDebito ON IndiceNota.Tipo_Nota = NotaDebito.CodigoNB WHERE (Clientes.Cod_Cliente =  '" & CodigoCliente & "') AND (IndiceNota.Activo = 1) AND (IndiceNota.Contabilizado = 0) AND (NotaDebito.Tipo = '%" & Tipo & "%') ORDER BY IndiceNota.Numero_Nota"
+                    SQlProductos = "SELECT  IndiceNota.Numero_Nota, IndiceNota.Fecha_Nota, IndiceNota.Nombre_Cliente, NotaDebito.Tipo, IndiceNota.Cod_Cliente, IndiceNota.Activo, IndiceNota.Contabilizado FROM IndiceNota INNER JOIN NotaDebito ON IndiceNota.Tipo_Nota = NotaDebito.CodigoNB INNER JOIN  Proveedor ON IndiceNota.Cod_Cliente = Proveedor.Cod_Proveedor WHERE   (IndiceNota.Cod_Cliente = '" & CodigoCliente & "') AND (NotaDebito.Tipo LIKE '%" & Tipo & "%') ORDER BY IndiceNota.Numero_Nota"
+
                     DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
                     DataSet.Reset()
                     DataAdapter.Fill(DataSet, "Consultas")
@@ -1312,6 +1325,11 @@ Public Class FrmConsultas
                 Codigo = Me.BindingConsultas.Item(Posicion)("CodigoProyectos")
 
             Case "NB"
+                Posicion = Me.BindingConsultas.Position
+                Codigo = Me.BindingConsultas.Item(Posicion)("Numero_Nota")
+                Fecha = Me.BindingConsultas.Item(Posicion)("Fecha_Nota")
+
+            Case "NBPROVEEDORES"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("Numero_Nota")
                 Fecha = Me.BindingConsultas.Item(Posicion)("Fecha_Nota")

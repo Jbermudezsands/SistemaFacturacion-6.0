@@ -1033,21 +1033,16 @@ Module Funciones
 
         'Estado = FrmRecepcion.CboEstado.Text
 
-
+        Precio = 0
         '/////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////CONSULTO EL PRECIO DE VENTA //////////////////////////////////////
         '////////////////////////////////////////////////////////////////////////////////////////////
-        'SqlString = "SELECT  Productos.* FROM Productos WHERE (Tipo_Producto <> 'Servicio') AND (Tipo_Producto <> 'Descuento')"
-        'DataAdapterProductos = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        'DataAdapterProductos.Fill(DataSet, "Precios")
-        'If Not DataSet.Tables("Precios").Rows.Count = 0 Then
-        '    Select Case FrmRecepcion.CboTipoProducto.Text
-        '        Case "A" : Precio = DataSet.Tables("Precios").Rows(0)("Precio_Venta")
-        '        Case "B" : Precio = DataSet.Tables("Precios").Rows(0)("Precio_Lista")
-        '        Case "C" : Precio = DataSet.Tables("Precios").Rows(0)("Precio_Compra")
-        '    End Select
-
-        'End If
+        SqlString = "SELECT  Productos.* FROM Productos WHERE (Cod_Productos = 'Descuento')"
+        DataAdapterProductos = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapterProductos.Fill(DataSet, "Precios")
+        If Not DataSet.Tables("Precios").Rows.Count = 0 Then
+            Precio = DataSet.Tables("Precios").Rows(0)("Precio_Venta")
+        End If
 
         'Precio = PrecioVenta(CodigoProducto, FrmRecepcion.IdLugarAcopio, FrmRecepcion.CboCategoria.Text, CDate(FrmRecepcion.DTPFecha.Text))
         'If FrmRecepcion.CboTipoIngresoBascula.Text = DescripcionTipoIngreso("BA") Then
@@ -1060,7 +1055,7 @@ Module Funciones
 
         'Precio = PrecioVenta(FrmRecepcion.IdLugarAcopio, FrmRecepcion.IdCalidad, FrmRecepcion.CboCategoria.Text, Fecha)
         'Precio = Format(Precio / 46, "##,##0.00")
-        Precio = 0
+
 
         '-------------------------------PREGUNTO LOS QUINTALES -----------------------------
         '--------------------------------------------------------------------------------------
@@ -6427,7 +6422,7 @@ Module Funciones
 
         Fecha = Format(FechaNota, "yyyy-MM-dd")
 
-        SqlString = "SELECT  *  FROM IndiceNota WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') "  'AND (Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Nota = '" & TipoNota & "')
+        SqlString = "SELECT  *  FROM IndiceNota WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Tipo_Nota = '" & TipoNota & "')"  'AND (Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102))
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "NotaDebito")
         If DataSet.Tables("NotaDebito").Rows.Count = 0 Then
@@ -9109,7 +9104,7 @@ Module Funciones
             '////////////////////////////AGREGO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
             SqlPagos = "INSERT INTO [ReciboPago] ([CodReciboPago],[Fecha_Recibo],[Cod_Proveedor],[Sub_Total],[Descuento],[Total],[MonedaRecibo],[Retencion1],[Retencion2],[Retencion3],[Retencion4],[Observaciones]) " & _
-                       "VALUES('" & ConsecutivoPago & "','" & Format(FrmPagos.DTPFecha.Value, "dd/MM/yyyy") & "','" & FrmPagos.TxtCodigoProveedor.Text & "','" & CDbl(FrmPagos.TxtSubTotal.Text) & "','" & CDbl(FrmPagos.TxtDescuento.Text) & "','" & CDbl(FrmPagos.TxtNetoPagar.Text) & "','" & MonedaRecibo & "','" & Retencion1 & "','" & Retencion2 & "','" & Retencion3 & "','" & Retencion4 & "','" & FrmPagos.TxtObservaciones.Text & "')"
+                       "VALUES('" & ConsecutivoPago & "','" & Format(My.Forms.FrmPagos.DTPFecha.Value, "dd/MM/yyyy") & "','" & My.Forms.FrmPagos.TxtCodigoProveedor.Text & "','" & CDbl(My.Forms.FrmPagos.TxtSubTotal.Text) & "','" & CDbl(My.Forms.FrmPagos.TxtDescuento.Text) & "','" & CDbl(My.Forms.FrmPagos.TxtNetoPagar.Text) & "','" & MonedaRecibo & "','" & Retencion1 & "','" & Retencion2 & "','" & Retencion3 & "','" & Retencion4 & "','" & My.Forms.FrmPagos.TxtObservaciones.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlPagos, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery

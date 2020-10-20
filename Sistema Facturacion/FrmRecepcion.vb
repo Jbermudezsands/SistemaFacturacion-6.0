@@ -94,8 +94,6 @@ Public Class FrmRecepcion
             Me.CboCodigoProducto.DataSource = DataSet.Tables("ListaProductos")
             Me.CboCodigoProducto.Text = DataSet.Tables("ListaProductos").Rows(0)("Descripcion_Producto")
         End If
-
-
         Me.CboCodigoProducto.Splits(0).DisplayColumns(1).Width = 400
 
 
@@ -213,6 +211,19 @@ Public Class FrmRecepcion
 
         If UsuarioBodegaCompra <> "" Then
             Me.CboCodigoBodega.Text = UsuarioBodegaCompra
+
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////////////////CARGO LOS PRODUCTOS //////////////////////////////////////////////
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            DataSet.Tables("ListaProductos").Reset()
+            SqlProductos = "SELECT Cod_Productos, Descripcion_Producto FROM Productos WHERE (Tipo_Producto <> 'Servicio') AND (Tipo_Producto <> 'Descuento')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlProductos, MiConexion)
+            DataAdapter.Fill(DataSet, "ListaProductos")
+            If Not DataSet.Tables("ListaProductos").Rows.Count = 0 Then
+                Me.CboCodigoProducto.DataSource = DataSet.Tables("ListaProductos")
+                Me.CboCodigoProducto.Text = DataSet.Tables("ListaProductos").Rows(0)("Descripcion_Producto")
+            End If
+            Me.CboCodigoProducto.Splits(0).DisplayColumns(1).Width = 400
         End If
 
 
@@ -374,7 +385,7 @@ Public Class FrmRecepcion
         Fecha = Format(CDate(Me.DTPFecha.Text), "yyyy-MM-dd")
 
 
-        SqlString = "SELECT  id_Eventos, NumeroRecepcion, Fecha, TipoRecepcion, Cod_Productos, Descripcion_Producto, Codigo_Beams, Cantidad, Unidad_Medida, Calidad, Estado, Precio, PesoKg, PesoNetoKg  FROM Detalle_Recepcion WHERE (NumeroRecepcion = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (TipoRecepcion = '" & Me.CboTipoRecepcion.Text & "')"
+        SqlString = "SELECT  id_Eventos, NumeroRecepcion, Fecha, TipoRecepcion, Cod_Productos, Descripcion_Producto, Codigo_Beams, Cantidad, Unidad_Medida, Calidad, Estado, Precio, PesoKg, PesoNetoKg, PesoKg * Precio as TotalPagar  FROM Detalle_Recepcion WHERE (NumeroRecepcion = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (TipoRecepcion = '" & Me.CboTipoRecepcion.Text & "')"
 
         Sqldatos = "SELECT * FROM DatosEmpresa"
         DataAdapter = New SqlClient.SqlDataAdapter(Sqldatos, MiConexion)
@@ -1069,5 +1080,9 @@ Public Class FrmRecepcion
 
     Private Sub ChkTaraSaco_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChkTaraSaco.CheckedChanged
         Bitacora(Now, NombreUsuario, "Recepcion", "Cambio Calculo de Tara en la Recepcion No: " & Me.TxtNumeroEnsamble.Text)
+    End Sub
+
+    Private Sub GroupBox1_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox1.Enter
+
     End Sub
 End Class

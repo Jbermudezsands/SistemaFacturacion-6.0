@@ -181,7 +181,7 @@ Public Class FrmCuentasXPagar
             '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             '//////////////////////////////////////BUSCO SI EXISTEN NOTAS DE DEBITO PARA ESTA FACTURA //////////////////////////////////////////////////////
             '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            SQlString = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Monto, NotaDebito.Tipo, IndiceNota.MonedaNota, IndiceNota.Fecha_Nota AS Expr1, IndiceNota.Tipo_Nota AS Expr2 FROM Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota WHERE (NotaDebito.Tipo = 'Debito Proveedores') AND (Detalle_Nota.Numero_Factura = '" & Numero_Compra & "') AND (IndiceNota.Cod_Cliente = '" & Me.CboCodigoProveedor.Text & "')"
+            SQlString = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Monto, NotaDebito.Tipo, IndiceNota.MonedaNota, IndiceNota.Fecha_Nota AS Expr1, IndiceNota.Tipo_Nota AS Expr2 FROM Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota WHERE (NotaDebito.Tipo LIKE  '%Debito Proveedores%') AND (Detalle_Nota.Numero_Factura = '" & Numero_Compra & "') AND (IndiceNota.Cod_Cliente = '" & Me.CboCodigoProveedor.Text & "')"
 
             DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
             DataAdapter.Fill(DataSet, "NotaDB")
@@ -191,27 +191,41 @@ Public Class FrmCuentasXPagar
             MontoNota = 0
             Do While Registros2 > j
 
+                TipoNota = DataSet.Tables("NotaDB").Rows(j)("Tipo")
+
+
                 If Me.OptCordobas.Checked = True Then
-                    If DataSet.Tables("NotaDB").Rows(j)("MonedaNota") = "Cordobas" Then
-                        TasaCambioRecibo = 1
+                    If TipoNota <> "Debito Clientes Dif $" Then
+                        If DataSet.Tables("NotaDB").Rows(j)("MonedaNota") = "Cordobas" Then
+                            TasaCambioRecibo = 1
+                        Else
+                            TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                        End If
                     Else
-                        TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                        TasaCambioRecibo = 0
                     End If
                 Else
-                    If DataSet.Tables("NotaDB").Rows(j)("MonedaNota") = "Dolares" Then
-                        TasaCambioRecibo = 1
+                    If TipoNota <> "Debito Clientes Dif C$" Then
+                        If DataSet.Tables("NotaDB").Rows(j)("MonedaNota") = "Dolares" Then
+                            TasaCambioRecibo = 1
+                        Else
+                            TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                        End If
                     Else
-                        TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                        TasaCambioRecibo = 0
                     End If
                 End If
-                If NumeroNota = "" Then
-                    NumeroNota = DataSet.Tables("NotaDB").Rows(j)("Numero_Nota")
-                Else
-                    NumeroNota = NumeroNota & "," & DataSet.Tables("NotaDB").Rows(j)("Numero_Nota")
-                End If
-                MontoNota = MontoNota + DataSet.Tables("NotaDB").Rows(j)("Monto") * TasaCambioRecibo
-                TotalMontoNotaDB = TotalMontoNotaDB + MontoNota
-                j = j + 1
+
+
+
+                    If NumeroNota = "" Then
+                        NumeroNota = DataSet.Tables("NotaDB").Rows(j)("Numero_Nota")
+                    Else
+                        NumeroNota = NumeroNota & "," & DataSet.Tables("NotaDB").Rows(j)("Numero_Nota")
+                    End If
+                    MontoNota = MontoNota + DataSet.Tables("NotaDB").Rows(j)("Monto") * TasaCambioRecibo
+                    TotalMontoNotaDB = TotalMontoNotaDB + MontoNota
+                    j = j + 1
             Loop
             DataSet.Tables("NotaDB").Reset()
 
@@ -220,7 +234,7 @@ Public Class FrmCuentasXPagar
             '//////////////////////////////////////BUSCO SI EXISTEN NOTAS DE CREDITO PARA ESTA FACTURA //////////////////////////////////////////////////////
             '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             'SQlString = "SELECT Detalle_Nota.*, NotaDebito.Tipo, IndiceNota.MonedaNota FROM Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota WHERE  (NotaDebito.Tipo = 'Credito Clientes') AND (Detalle_Nota.Numero_Factura = '" & NumeroFactura & "')"
-            SQlString = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Monto, NotaDebito.Tipo, IndiceNota.MonedaNota, IndiceNota.Fecha_Nota AS Expr1, IndiceNota.Tipo_Nota AS Expr2 FROM Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota WHERE (NotaDebito.Tipo = 'Credito Proveedores') AND (Detalle_Nota.Numero_Factura = '" & Numero_Compra & "')  AND (IndiceNota.Cod_Cliente = '" & Me.CboCodigoProveedor.Text & "')"
+            SQlString = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Monto, NotaDebito.Tipo, IndiceNota.MonedaNota, IndiceNota.Fecha_Nota AS Expr1, IndiceNota.Tipo_Nota AS Expr2 FROM Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota WHERE (NotaDebito.Tipo LIKE '%Credito Proveedores%') AND (Detalle_Nota.Numero_Factura = '" & Numero_Compra & "')  AND (IndiceNota.Cod_Cliente = '" & Me.CboCodigoProveedor.Text & "')"
 
             DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
             DataAdapter.Fill(DataSet, "NotaCR")
@@ -231,26 +245,37 @@ Public Class FrmCuentasXPagar
             Do While Registros2 > j
 
                 If Me.OptCordobas.Checked = True Then
-                    If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Cordobas" Then
-                        TasaCambioRecibo = 1
+                    If TipoNota <> "Debito Clientes Dif $" Then
+                        If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Cordobas" Then
+                            TasaCambioRecibo = 1
+                        Else
+                            TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                        End If
                     Else
-                        TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                        TasaCambioRecibo = 0
                     End If
+
                 Else
-                    If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Dolares" Then
-                        TasaCambioRecibo = 1
+
+                    If TipoNota <> "Debito Clientes Dif C$" Then
+                        If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Dolares" Then
+                            TasaCambioRecibo = 1
+                        Else
+                            TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                        End If
                     Else
-                        TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                        TasaCambioRecibo = 0
                     End If
+
                 End If
-                If NumeroNotaCR = "" Then
-                    NumeroNotaCR = DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
-                Else
-                    NumeroNotaCR = NumeroNotaCR & "," & DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
-                End If
-                MontoNotaCR = MontoNotaCR + DataSet.Tables("NotaCR").Rows(j)("Monto") * TasaCambioRecibo
-                TotalMontoNotaCR = TotalMontoNotaCR + MontoNotaCR
-                j = j + 1
+                    If NumeroNotaCR = "" Then
+                        NumeroNotaCR = DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
+                    Else
+                        NumeroNotaCR = NumeroNotaCR & "," & DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
+                    End If
+                    MontoNotaCR = MontoNotaCR + DataSet.Tables("NotaCR").Rows(j)("Monto") * TasaCambioRecibo
+                    TotalMontoNotaCR = TotalMontoNotaCR + MontoNotaCR
+                    j = j + 1
             Loop
             DataSet.Tables("NotaCR").Reset()
 
@@ -301,7 +326,7 @@ Public Class FrmCuentasXPagar
 
             MontoFactura = (DataSet.Tables("Proveedores").Rows(i)("SubTotal") + DataSet.Tables("Proveedores").Rows(i)("IVA")) * TasaCambio
             Dias = DateDiff(DateInterval.Day, FechaVence, Me.DTPFechaFin.Value)
-            Saldo = MontoFactura - MontoRecibo + MontoNota - MontoNotaCR - MontoMetodoCompra
+            Saldo = MontoFactura - MontoRecibo - MontoNota + MontoNotaCR - MontoMetodoCompra
             If Format(Saldo, "##,##0.00") = "0.00" Then
                 Dias = 0
             End If

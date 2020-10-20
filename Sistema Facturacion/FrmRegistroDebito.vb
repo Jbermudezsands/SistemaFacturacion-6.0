@@ -196,8 +196,16 @@ Public Class FrmRegistroDebito
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Moneda As String = "", TasaCambio As Double
         Dim Fecha As String
 
-        Quien = "NB"
-        My.Forms.FrmConsultas.CodigoCliente = My.Forms.FrmCuentasXCobrar.CboCodigoCliente.Text
+
+
+        If TipoNota = "Debito Proveedores" Or TipoNota = "Credito Proveedores" Then
+            My.Forms.FrmConsultas.CodigoCliente = My.Forms.FrmCuentasXPagar.CboCodigoProveedor.Text
+            Quien = "NBPROVEEDORES"
+        Else
+            My.Forms.FrmConsultas.CodigoCliente = My.Forms.FrmCuentasXCobrar.CboCodigoCliente.Text
+            Quien = "NB"
+        End If
+
         My.Forms.FrmConsultas.Tipo = TipoNota
         My.Forms.FrmConsultas.ShowDialog()
         If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
