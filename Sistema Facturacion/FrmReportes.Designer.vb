@@ -2051,10 +2051,10 @@ Partial Class FrmReportes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(883, 521)
+        Me.ClientSize = New System.Drawing.Size(888, 512)
         Me.ControlBox = False
-        Me.Controls.Add(Me.GroupProveedores)
         Me.Controls.Add(Me.Imagen)
+        Me.Controls.Add(Me.GroupProveedores)
         Me.Controls.Add(Me.GroupBoxLote)
         Me.Controls.Add(Me.ChkFacturasCero)
         Me.Controls.Add(Me.GroupBoxMunicipio)

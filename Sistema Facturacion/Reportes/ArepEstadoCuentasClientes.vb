@@ -2,7 +2,7 @@ Imports DataDynamics.ActiveReports
 Imports DataDynamics.ActiveReports.Document 
 
 Public Class ArepEstadoCuentasClientes 
-    Public Balance As Double = 0
+    Public Balance As Double = 0, TipoReporte As String = ""
     Private Sub GroupFooter1_Format(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupFooter1.Format
 
     End Sub
@@ -33,8 +33,16 @@ Public Class ArepEstadoCuentasClientes
             Moneda = "Dolares"
         End If
 
-        SaldoInicial = FrmReportes.SaldoInicialCliente(CodigoCliente, FrmReportes.DTPFechaIni.Value, Moneda)
+        If TipoReporte = "Proveedor" Then
+            SaldoInicial = FrmReportes.SaldoInicialProveedor(CodigoCliente, FrmReportes.DTPFechaIni.Value, Moneda)
+        Else
+            SaldoInicial = FrmReportes.SaldoInicialCliente(CodigoCliente, FrmReportes.DTPFechaIni.Value, Moneda)
+        End If
         Me.TxtSaldoInicial.Text = Format(SaldoInicial, "##,##0.00")
         Balance = SaldoInicial
+    End Sub
+
+    Private Sub PageHeader1_Format(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PageHeader1.Format
+
     End Sub
 End Class
