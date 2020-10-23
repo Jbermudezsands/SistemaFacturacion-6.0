@@ -738,7 +738,7 @@ Partial Class FrmRecepcion
         Me.GroupBox2.Controls.Add(Me.TxtCedula)
         Me.GroupBox2.Controls.Add(Me.CboConductor)
         Me.GroupBox2.Controls.Add(Me.Label4)
-        Me.GroupBox2.Location = New System.Drawing.Point(537, 143)
+        Me.GroupBox2.Location = New System.Drawing.Point(535, 141)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(450, 177)
         Me.GroupBox2.TabIndex = 237

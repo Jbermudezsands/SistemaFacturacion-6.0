@@ -2008,8 +2008,8 @@ Public Class FrmReportes
                         End If
                         oDataRow("TipoDocumento") = DataSet.Tables("Facturas").Rows(j)("Tipo_Compra")
                         oDataRow("Concepto") = "Venta"
-                        oDataRow("Debito") = MontoFactura
-                        oDataRow("Credito") = 0
+                        oDataRow("Debito") = 0
+                        oDataRow("Credito") = MontoFactura
                         oDataRow("Balance") = Balance + MontoFactura
                         DataSet.Tables("TotalVentas").Rows.Add(oDataRow)
                         'End If
@@ -2067,7 +2067,7 @@ Public Class FrmReportes
                         End If
                         oDataRow("Debito") = MontoNota
                         oDataRow("Credito") = 0
-                        oDataRow("Balance") = Balance + MontoNota
+                        oDataRow("Balance") = Balance - MontoNota
                         DataSet.Tables("TotalVentas").Rows.Add(oDataRow)
                         'End If
                         Balance = Balance + MontoNota
@@ -2107,8 +2107,8 @@ Public Class FrmReportes
                         oDataRow("Numero") = DataSet.Tables("Recibos").Rows(j)("CodReciboPago")
                         oDataRow("TipoDocumento") = "Recibo"
                         oDataRow("Concepto") = "Pago de la Factura No " & DataSet.Tables("Recibos").Rows(j)("Numero_Factura")
-                        oDataRow("Debito") = 0
-                        oDataRow("Credito") = MontoRecibo
+                        oDataRow("Debito") = MontoRecibo
+                        oDataRow("Credito") = 0
                         oDataRow("Balance") = Balance - MontoRecibo
                         DataSet.Tables("TotalVentas").Rows.Add(oDataRow)
                         'End If
@@ -2162,7 +2162,7 @@ Public Class FrmReportes
                         oDataRow("Concepto") = DataSet.Tables("NotasCredito").Rows(j)("Descripcion") & " Factura No " & DataSet.Tables("NotasCredito").Rows(j)("Numero_Factura") & " " & DataSet.Tables("NotasCredito").Rows(j)("Observaciones")
                         oDataRow("Debito") = 0
                         oDataRow("Credito") = MontoNotaCredito
-                        oDataRow("Balance") = Balance - MontoNotaCredito
+                        oDataRow("Balance") = Balance + MontoNotaCredito
                         DataSet.Tables("TotalVentas").Rows.Add(oDataRow)
 
                         j = j + 1
@@ -2201,8 +2201,8 @@ Public Class FrmReportes
                         oDataRow("Numero") = DataSet.Tables("MetodoFactura").Rows(j)("Numero_Compra")
                         oDataRow("TipoDocumento") = "Efectivo"
                         oDataRow("Concepto") = "Pago De Contado Compra No: " & DataSet.Tables("MetodoFactura").Rows(j)("Numero_Compra")
-                        oDataRow("Debito") = 0
-                        oDataRow("Credito") = MontoMetodoFactura
+                        oDataRow("Debito") = MontoMetodoFactura
+                        oDataRow("Credito") = 0
                         oDataRow("Balance") = Balance - MontoMetodoFactura
                         DataSet.Tables("TotalVentas").Rows.Add(oDataRow)
 
