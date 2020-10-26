@@ -29,7 +29,7 @@ Public Class FrmProcesarPlantilla
         Dim DiferenciaCantidad As Double, DiferenciaPrecio As Double, Descripcion_Producto As String, IdDetalle As Double = -1
         Dim SQlProveedor As String, DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet, SubTotal As Double, Iva As Double, Pagado As Double, Neto As Double
         Dim Fecha As String = "", FechaVencimiento As String = "", FechaAnterior As Date, Mes As Double, Dia As Double, Año As Double
-        Dim i As Double = 0, TextMes As String = ""
+        Dim i As Double = 0, TextMes As String = "", SqlString As String, TipoNota As String, CodigoNota As String, TipoCuenta As Boolean
 
         Try
 
@@ -109,6 +109,9 @@ Public Class FrmProcesarPlantilla
                             ConsecutivoFactura = BuscaConsecutivo("DevFactura")
                         Case "Transferencia Enviada"
                             ConsecutivoFactura = BuscaConsecutivo("Transferencia_Enviada")
+                        Case "Nota Debito Clientes"
+                            ConsecutivoFactura = BuscaConsecutivo("NotaDebito")
+
                     End Select
 
 
@@ -141,12 +144,30 @@ Public Class FrmProcesarPlantilla
                     Fecha = Format(FrmPlantillas.DTPFecha.Value, "yyyy-MM-dd")
                     FechaVencimiento = DateAdd(DateInterval.Day, Val(FrmPlantillas.TxtDiasVencimiento.Value), FrmPlantillas.DTPFecha.Value)
 
+                    '////////////////////////////////////VERIFICO EL TIPO DE NOTA DE DEBITO ////////////////////////////////////////////////////
+                    TipoNota = "Debito Clientes"
+                    TipoCuenta = False
+                    If My.Forms.FrmPlantillas.TxtMonedaFactura.Text = "Cordobas" Then
+                        SqlString = "SELECT CodigoNB AS Cod, Descripcion, Tipo FROM NotaDebito WHERE Tipo = '" & TipoNota & "' OR Tipo='" & TipoNota & " Dif C$' "
+                    Else
+                        SqlString = "SELECT CodigoNB AS Cod, Descripcion, Tipo FROM NotaDebito WHERE Tipo = '" & TipoNota & "' OR Tipo='" & TipoNota & " Dif $'"
+                    End If
+                    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                    DataAdapter.Fill(DataSet, "TipoNota")
+                    If Not DataSet.Tables("TipoNota").Rows.Count = 0 Then
+                        CodigoNota = DataSet.Tables("TipoNota").Rows(0)("Cod")
+                    End If
+                    DataSet.Tables("TipoNota").Reset()
+
+
                     '////////////////////////////////////////////////////////////////////////////////////////////////////
                     '/////////////////////////////GRABO EL ENCABEZADO DE LA FACTURA /////////////////////////////////////////////
-                    '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-                    GrabaFacturasPlantillas(NumeroFactura, CodigoCliente, CodBodega, NombreCliente, ApellidoCliente, DireccionCliente, TelefonoCliente, SubTotal, Iva, Pagado, Neto, Fecha, FechaVencimiento)
-
-
+                    '//////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    If FrmPlantillas.CboTipoProducto.Text = "Nota Debito Clientes" Then
+                        GrabaNotaDebito(NumeroFactura, Fecha, CodigoNota, Neto, My.Forms.FrmPlantillas.TxtMonedaFactura.Text, CodigoCliente, NombreCliente, My.Forms.FrmPlantillas.TxtObservaciones.Text, True, False, TipoCuenta)
+                    Else
+                        GrabaFacturasPlantillas(NumeroFactura, CodigoCliente, CodBodega, NombreCliente, ApellidoCliente, DireccionCliente, TelefonoCliente, SubTotal, Iva, Pagado, Neto, Fecha, FechaVencimiento)
+                    End If
                     '////////////////////////////////////////////////////////////////////////////////////////////////////
                     '/////////////////////////////GRABO EL DETALLE DE LA FACTURA /////////////////////////////////////////////
                     '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
@@ -181,7 +202,13 @@ Public Class FrmProcesarPlantilla
                         Descripcion_Producto = FrmPlantillas.BindingDetalle.Item(iPosicion2)("Descripcion_Producto")
                         Fecha = Format(FrmPlantillas.DTPFecha.Value, "yyyy-MM-dd")
 
-                        GrabaDetalleFacturaPlantilla(NumeroFactura, CodigoProducto, Descripcion_Producto & "*** " & TextMes & " ***", PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CDate(Fecha))
+                        If FrmPlantillas.CboTipoProducto.Text = "Nota Debito Clientes" Then
+                            GrabaDetalleNotaDebito(NumeroFactura, Fecha, CodigoNota, Descripcion_Producto & "*** " & TextMes & " ***", "0000", Neto)
+                        Else
+                            GrabaDetalleFacturaPlantilla(NumeroFactura, CodigoProducto, Descripcion_Producto & "*** " & TextMes & " ***", PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CDate(Fecha))
+                        End If
+
+
 
                         Select Case FrmPlantillas.CboTipoProducto.Text
                             Case "Factura"
@@ -228,9 +255,26 @@ Public Class FrmProcesarPlantilla
                                 ConsecutivoFactura = BuscaConsecutivo("DevFactura")
                             Case "Transferencia Enviada"
                                 ConsecutivoFactura = BuscaConsecutivo("Transferencia_Enviada")
+                            Case "Nota Debito Clientes"
+                                ConsecutivoFactura = BuscaConsecutivo("NotaDebito")
                         End Select
 
                         NumeroFactura = Format(ConsecutivoFactura, "0000#")
+
+                        '////////////////////////////////////VERIFICO EL TIPO DE NOTA DE DEBITO ////////////////////////////////////////////////////
+                        TipoNota = "Debito Clientes"
+                        TipoCuenta = False
+                        If My.Forms.FrmPlantillas.TxtMonedaFactura.Text = "Cordobas" Then
+                            SqlString = "SELECT CodigoNB AS Cod, Descripcion, Tipo FROM NotaDebito WHERE Tipo = '" & TipoNota & "' OR Tipo='" & TipoNota & " Dif C$' "
+                        Else
+                            SqlString = "SELECT CodigoNB AS Cod, Descripcion, Tipo FROM NotaDebito WHERE Tipo = '" & TipoNota & "' OR Tipo='" & TipoNota & " Dif $'"
+                        End If
+                        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                        DataAdapter.Fill(DataSet, "TipoNota")
+                        If Not DataSet.Tables("TipoNota").Rows.Count = 0 Then
+                            CodigoNota = DataSet.Tables("TipoNota").Rows(0)("Cod")
+                        End If
+                        DataSet.Tables("TipoNota").Reset()
 
 
                         SubTotal = FrmPlantillas.BindingDetalle.Item(iPosicion2)("Importe")
@@ -259,8 +303,12 @@ Public Class FrmProcesarPlantilla
                         '////////////////////////////////////////////////////////////////////////////////////////////////////
                         '/////////////////////////////GRABO EL ENCABEZADO DE LA FACTURA /////////////////////////////////////////////
                         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-                        GrabaFacturasPlantillas(NumeroFactura, CodigoCliente, CodBodega, NombreCliente, ApellidoCliente, DireccionCliente, TelefonoCliente, SubTotal, Iva, Pagado, Neto, Fecha, FechaVencimiento)
-
+                        'GrabaFacturasPlantillas(NumeroFactura, CodigoCliente, CodBodega, NombreCliente, ApellidoCliente, DireccionCliente, TelefonoCliente, SubTotal, Iva, Pagado, Neto, Fecha, FechaVencimiento)
+                        If FrmPlantillas.CboTipoProducto.Text = "Nota Debito Clientes" Then
+                            GrabaNotaDebito(NumeroFactura, Fecha, CodigoNota, Neto, My.Forms.FrmPlantillas.TxtMonedaFactura.Text, CodigoCliente, NombreCliente, My.Forms.FrmPlantillas.TxtObservaciones.Text, True, False, TipoCuenta)
+                        Else
+                            GrabaFacturasPlantillas(NumeroFactura, CodigoCliente, CodBodega, NombreCliente, ApellidoCliente, DireccionCliente, TelefonoCliente, SubTotal, Iva, Pagado, Neto, Fecha, FechaVencimiento)
+                        End If
 
                         '////////////////////////////////////////////////////////////////////////////////////////////////////
                         '/////////////////////////////GRABO EL DETALLE DE LA FACTURA /////////////////////////////////////////////
@@ -282,7 +330,14 @@ Public Class FrmProcesarPlantilla
                         Importe = FrmPlantillas.BindingDetalle.Item(iPosicion2)("Importe")
                         Cantidad = FrmPlantillas.BindingDetalle.Item(iPosicion2)("Cantidad")
                         Descripcion_Producto = FrmPlantillas.BindingDetalle.Item(iPosicion2)("Descripcion_Producto")
-                        GrabaDetalleFacturaPlantilla(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CDate(Fecha))
+
+                        'GrabaDetalleFacturaPlantilla(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CDate(Fecha))
+
+                        If FrmPlantillas.CboTipoProducto.Text = "Nota Debito Clientes" Then
+                            GrabaDetalleNotaDebito(NumeroFactura, Fecha, CodigoNota, Descripcion_Producto & "*** " & TextMes & " ***", "0000", Neto)
+                        Else
+                            GrabaDetalleFacturaPlantilla(NumeroFactura, CodigoProducto, Descripcion_Producto & "*** " & TextMes & " ***", PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CDate(Fecha))
+                        End If
 
                         Select Case FrmPlantillas.CboTipoProducto.Text
                             Case "Factura"
@@ -299,6 +354,7 @@ Public Class FrmProcesarPlantilla
 
                         iPosicion2 = iPosicion2 + 1
                         Me.ProgressBar1.Value = iPosicion2
+                        My.Application.DoEvents()
                     Loop
                 End If
 
@@ -313,6 +369,7 @@ Public Class FrmProcesarPlantilla
 
 
                 Me.ProgressBar.Value = iPosicion
+                My.Application.DoEvents()
             Loop
 
 

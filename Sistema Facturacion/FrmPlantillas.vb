@@ -119,6 +119,13 @@ Public Class FrmPlantillas
             If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
                 Me.TxtCodigoClientes.Text = My.Forms.FrmConsultas.Codigo
             End If
+        ElseIf Me.CboTipoProducto.Text = "Nota Debito Clientes" Then
+            Quien = "CodigoCliente"
+            My.Forms.FrmConsultas.ShowDialog()
+            If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
+                Me.TxtCodigoClientes.Text = My.Forms.FrmConsultas.Codigo
+            End If
+
         Else
 
             Quien = "CodigoProveedor"
@@ -1386,6 +1393,25 @@ Public Class FrmPlantillas
                         Me.TrueDBGridComponentes.Enabled = True
                     End If
 
+                Case "Nota Debito Clientes"
+                    SqlProveedor = "SELECT  * FROM Clientes  WHERE (Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
+                    DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+                    DataAdapter.Fill(DataSet, "Clientes")
+                    If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
+                        Me.TxtNombres.Text = DataSet.Tables("Clientes").Rows(0)("Nombre_Cliente")
+                        If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Apellido_Cliente")) Then
+                            'Me.TxtApellidos.Text = DataSet.Tables("Clientes").Rows(0)("Apellido_Cliente")
+                            Me.TxtNombres.Text = Me.TxtNombres.Text & " " & DataSet.Tables("Clientes").Rows(0)("Apellido_Cliente")
+                        End If
+                        'If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Direccion_Cliente")) Then
+                        '    Me.TxtDireccion.Text = DataSet.Tables("Clientes").Rows(0)("Direccion_Cliente")
+                        'End If
+                        'If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Telefono")) Then
+                        '    Me.TxtTelefono.Text = DataSet.Tables("Clientes").Rows(0)("Telefono")
+                        'End If
+                        Me.TrueDBGridComponentes.Enabled = True
+                    End If
+
                 Case "Orden de Compra"
                     SqlProveedor = "SELECT  * FROM Proveedor  WHERE (Cod_Proveedor = '" & Me.TxtCodigoClientes.Text & "')"
                     DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
@@ -1550,5 +1576,12 @@ Public Class FrmPlantillas
         End If
 
         ActualizaMETODOPlantilla()
+    End Sub
+
+    Private Sub CboTipoProducto_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboTipoProducto.SelectedIndexChanged
+        If Me.CboTipoProducto.Text = "Nota Debito Clientes" Then
+            Me.OptExsonerado.Checked = True
+        End If
+
     End Sub
 End Class

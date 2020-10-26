@@ -38,8 +38,8 @@ Partial Public Class ArepEstadoCuentasClientes
         Me.TextBox13 = New DataDynamics.ActiveReports.TextBox
         Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
         Me.GroupHeader1 = New DataDynamics.ActiveReports.GroupHeader
-        Me.Label2 = New DataDynamics.ActiveReports.Label
-        Me.Label4 = New DataDynamics.ActiveReports.Label
+        Me.LblNombre = New DataDynamics.ActiveReports.Label
+        Me.LblCodigo = New DataDynamics.ActiveReports.Label
         Me.LblDesde = New DataDynamics.ActiveReports.Label
         Me.Label6 = New DataDynamics.ActiveReports.Label
         Me.Label7 = New DataDynamics.ActiveReports.Label
@@ -57,6 +57,7 @@ Partial Public Class ArepEstadoCuentasClientes
         Me.GroupFooter1 = New DataDynamics.ActiveReports.GroupFooter
         Me.TextBox6 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox7 = New DataDynamics.ActiveReports.TextBox
+        Me.LblMoneda = New DataDynamics.ActiveReports.Label
         CType(Me.ImgLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblTitulo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblDireccion, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -72,8 +73,8 @@ Partial Public Class ArepEstadoCuentasClientes
         CType(Me.TextBox11, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox12, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox13, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Label2, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Label4, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LblNombre, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LblCodigo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblDesde, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label7, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -90,12 +91,13 @@ Partial Public Class ArepEstadoCuentasClientes
         CType(Me.Label13, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox7, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LblMoneda, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         '
         'PageHeader1
         '
-        Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.ImgLogo, Me.LblTitulo, Me.LblDireccion, Me.LblRuc, Me.TextBox1, Me.Label3, Me.Label1, Me.LblImpreso})
-        Me.PageHeader1.Height = 1.28125!
+        Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.ImgLogo, Me.LblTitulo, Me.LblDireccion, Me.LblRuc, Me.TextBox1, Me.Label3, Me.Label1, Me.LblImpreso, Me.LblMoneda})
+        Me.PageHeader1.Height = 1.447917!
         Me.PageHeader1.Name = "PageHeader1"
         '
         'ImgLogo
@@ -193,7 +195,7 @@ Partial Public Class ArepEstadoCuentasClientes
         Me.TextBox1.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.All
         Me.TextBox1.SummaryType = DataDynamics.ActiveReports.SummaryType.PageCount
         Me.TextBox1.Text = Nothing
-        Me.TextBox1.Top = 1.0!
+        Me.TextBox1.Top = 1.225!
         Me.TextBox1.Width = 0.4375!
         '
         'Label3
@@ -208,11 +210,11 @@ Partial Public Class ArepEstadoCuentasClientes
         Me.Label3.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label3.Height = 0.1875!
         Me.Label3.HyperLink = Nothing
-        Me.Label3.Left = 6.6875!
+        Me.Label3.Left = 6.675001!
         Me.Label3.Name = "Label3"
         Me.Label3.Style = ""
         Me.Label3.Text = "Pag."
-        Me.Label3.Top = 1.0!
+        Me.Label3.Top = 1.225!
         Me.Label3.Width = 0.3125!
         '
         'Label1
@@ -250,7 +252,7 @@ Partial Public Class ArepEstadoCuentasClientes
         Me.LblImpreso.Name = "LblImpreso"
         Me.LblImpreso.Style = "ddo-char-set: 0; font-size: 9pt; "
         Me.LblImpreso.Text = "Impreso:"
-        Me.LblImpreso.Top = 1.0!
+        Me.LblImpreso.Top = 1.225!
         Me.LblImpreso.Width = 5.4375!
         '
         'Detail1
@@ -403,48 +405,48 @@ Partial Public Class ArepEstadoCuentasClientes
         '
         'GroupHeader1
         '
-        Me.GroupHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.Label2, Me.Label4, Me.LblDesde, Me.Label6, Me.Label7, Me.Label8, Me.Label9, Me.Label10, Me.Label11, Me.Label12, Me.TxtCodigoCliente, Me.TextBox3, Me.TextBox4, Me.TextBox5, Me.TxtSaldoInicial, Me.Label13})
+        Me.GroupHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.LblNombre, Me.LblCodigo, Me.LblDesde, Me.Label6, Me.Label7, Me.Label8, Me.Label9, Me.Label10, Me.Label11, Me.Label12, Me.TxtCodigoCliente, Me.TextBox3, Me.TextBox4, Me.TextBox5, Me.TxtSaldoInicial, Me.Label13})
         Me.GroupHeader1.DataField = "Cod_Cliente"
         Me.GroupHeader1.Height = 1.333333!
         Me.GroupHeader1.Name = "GroupHeader1"
         '
-        'Label2
+        'LblNombre
         '
-        Me.Label2.Border.BottomColor = System.Drawing.Color.Black
-        Me.Label2.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label2.Border.LeftColor = System.Drawing.Color.Black
-        Me.Label2.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label2.Border.RightColor = System.Drawing.Color.Black
-        Me.Label2.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label2.Border.TopColor = System.Drawing.Color.Black
-        Me.Label2.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label2.Height = 0.1875!
-        Me.Label2.HyperLink = Nothing
-        Me.Label2.Left = 0.125!
-        Me.Label2.Name = "Label2"
-        Me.Label2.Style = "ddo-char-set: 0; font-weight: bold; font-size: 9pt; "
-        Me.Label2.Text = "Nombre de Cliente:"
-        Me.Label2.Top = 0.3125!
-        Me.Label2.Width = 1.25!
+        Me.LblNombre.Border.BottomColor = System.Drawing.Color.Black
+        Me.LblNombre.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblNombre.Border.LeftColor = System.Drawing.Color.Black
+        Me.LblNombre.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblNombre.Border.RightColor = System.Drawing.Color.Black
+        Me.LblNombre.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblNombre.Border.TopColor = System.Drawing.Color.Black
+        Me.LblNombre.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblNombre.Height = 0.1875!
+        Me.LblNombre.HyperLink = Nothing
+        Me.LblNombre.Left = 0.125!
+        Me.LblNombre.Name = "LblNombre"
+        Me.LblNombre.Style = "ddo-char-set: 0; font-weight: bold; font-size: 9pt; "
+        Me.LblNombre.Text = "Nombre de Cliente:"
+        Me.LblNombre.Top = 0.3125!
+        Me.LblNombre.Width = 1.25!
         '
-        'Label4
+        'LblCodigo
         '
-        Me.Label4.Border.BottomColor = System.Drawing.Color.Black
-        Me.Label4.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label4.Border.LeftColor = System.Drawing.Color.Black
-        Me.Label4.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label4.Border.RightColor = System.Drawing.Color.Black
-        Me.Label4.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label4.Border.TopColor = System.Drawing.Color.Black
-        Me.Label4.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label4.Height = 0.1875!
-        Me.Label4.HyperLink = Nothing
-        Me.Label4.Left = 0.125!
-        Me.Label4.Name = "Label4"
-        Me.Label4.Style = "ddo-char-set: 0; font-weight: bold; font-size: 9pt; "
-        Me.Label4.Text = "Codigo de Cliente:"
-        Me.Label4.Top = 0.0625!
-        Me.Label4.Width = 1.25!
+        Me.LblCodigo.Border.BottomColor = System.Drawing.Color.Black
+        Me.LblCodigo.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblCodigo.Border.LeftColor = System.Drawing.Color.Black
+        Me.LblCodigo.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblCodigo.Border.RightColor = System.Drawing.Color.Black
+        Me.LblCodigo.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblCodigo.Border.TopColor = System.Drawing.Color.Black
+        Me.LblCodigo.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblCodigo.Height = 0.1875!
+        Me.LblCodigo.HyperLink = Nothing
+        Me.LblCodigo.Left = 0.125!
+        Me.LblCodigo.Name = "LblCodigo"
+        Me.LblCodigo.Style = "ddo-char-set: 0; text-align: center; font-weight: bold; font-size: 9pt; "
+        Me.LblCodigo.Text = "Codigo de Cliente:"
+        Me.LblCodigo.Top = 0.0625!
+        Me.LblCodigo.Width = 1.25!
         '
         'LblDesde
         '
@@ -761,6 +763,25 @@ Partial Public Class ArepEstadoCuentasClientes
         Me.TextBox7.Top = 0.0!
         Me.TextBox7.Width = 0.875!
         '
+        'LblMoneda
+        '
+        Me.LblMoneda.Border.BottomColor = System.Drawing.Color.Black
+        Me.LblMoneda.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblMoneda.Border.LeftColor = System.Drawing.Color.Black
+        Me.LblMoneda.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblMoneda.Border.RightColor = System.Drawing.Color.Black
+        Me.LblMoneda.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblMoneda.Border.TopColor = System.Drawing.Color.Black
+        Me.LblMoneda.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblMoneda.Height = 0.175!
+        Me.LblMoneda.HyperLink = Nothing
+        Me.LblMoneda.Left = 0.0!
+        Me.LblMoneda.Name = "LblMoneda"
+        Me.LblMoneda.Style = "ddo-char-set: 0; text-align: center; font-size: 9pt; "
+        Me.LblMoneda.Text = ""
+        Me.LblMoneda.Top = 0.9!
+        Me.LblMoneda.Width = 7.475!
+        '
         'ArepEstadoCuentasClientes
         '
         Me.MasterReport = False
@@ -801,8 +822,8 @@ Partial Public Class ArepEstadoCuentasClientes
         CType(Me.TextBox11, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox12, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox13, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Label2, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Label4, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LblNombre, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LblCodigo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LblDesde, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label6, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label7, System.ComponentModel.ISupportInitialize).EndInit()
@@ -819,6 +840,7 @@ Partial Public Class ArepEstadoCuentasClientes
         CType(Me.Label13, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox6, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox7, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LblMoneda, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
 
     End Sub
@@ -832,8 +854,8 @@ Partial Public Class ArepEstadoCuentasClientes
     Friend WithEvents LblImpreso As DataDynamics.ActiveReports.Label
     Friend WithEvents GroupHeader1 As DataDynamics.ActiveReports.GroupHeader
     Friend WithEvents GroupFooter1 As DataDynamics.ActiveReports.GroupFooter
-    Friend WithEvents Label2 As DataDynamics.ActiveReports.Label
-    Friend WithEvents Label4 As DataDynamics.ActiveReports.Label
+    Friend WithEvents LblNombre As DataDynamics.ActiveReports.Label
+    Friend WithEvents LblCodigo As DataDynamics.ActiveReports.Label
     Friend WithEvents LblDesde As DataDynamics.ActiveReports.Label
     Friend WithEvents Label6 As DataDynamics.ActiveReports.Label
     Friend WithEvents Label7 As DataDynamics.ActiveReports.Label
@@ -857,4 +879,5 @@ Partial Public Class ArepEstadoCuentasClientes
     Friend WithEvents TextBox13 As DataDynamics.ActiveReports.TextBox
     Friend WithEvents TextBox6 As DataDynamics.ActiveReports.TextBox
     Friend WithEvents TextBox7 As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents LblMoneda As DataDynamics.ActiveReports.Label
 End Class
