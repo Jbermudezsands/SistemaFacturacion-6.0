@@ -42,6 +42,8 @@ Public Class FrmRecepcion
             Me.CboCodigoProveedor.Columns(2).Caption = "Origen"
 
             Me.GroupBox2.Visible = False
+            Me.GroupBoxRecolector.Visible = True
+            Me.GroupBoxRecolector.Location = New Point(535, 140)
 
         ElseIf Quien = "SalidaBascula" Then
             Me.CboTipoRecepcion.Text = "Salidabascula"
@@ -56,6 +58,7 @@ Public Class FrmRecepcion
             Me.CboCodigoProveedor.Columns(1).Caption = "Clientes"
             Me.CboCodigoProveedor.Columns(2).Caption = "Origen"
             Me.BtnProcesar.Visible = False
+            Me.GroupBoxRecolector.Visible = True
 
         ElseIf Quien = "Repesaje" Then
             Me.CboTipoRecepcion.Text = "Repesaje"
@@ -72,6 +75,7 @@ Public Class FrmRecepcion
             Me.CboCodigoProveedor.Columns(2).Caption = "Origen"
 
             Me.BtnProcesar.Visible = False
+            Me.GroupBoxRecolector.Visible = True
         End If
 
 
@@ -1083,6 +1087,57 @@ Public Class FrmRecepcion
     End Sub
 
     Private Sub GroupBox1_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox1.Enter
+
+    End Sub
+
+    Private Sub C1Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles C1Button4.Click
+        Quien = "Recolector"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.TxtRecolector.Text = My.Forms.FrmConsultas.Nombre_Recolector
+        Me.TxtTelefonoRecolector.Text = My.Forms.FrmConsultas.Telefono_Recolector
+        Me.TxtCedulaRecolector.Text = My.Forms.FrmConsultas.Cecula_Recolector
+        Me.ListBoxRecolector.Visible = False
+
+    End Sub
+
+    Private Sub TxtRecolector_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtRecolector.TextChanged
+        Dim SqlString As String
+        Dim DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet
+
+        Me.ListBoxRecolector.Visible = True
+        Me.ListBoxRecolector.Location = New Point(74, 51)
+        SqlString = "SELECT  NombreRecolector As Descripcion, TelefonoRecolector, CedulaRecolector FROM Recepcion WHERE  (NombreRecolector LIKE '%" & Me.TxtRecolector.Text & "%')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Consultas")
+        Me.ListBoxRecolector.DataSource = DataSet.Tables("Consultas")
+        If DataSet.Tables("Consultas").Rows.Count <> 0 Then
+            If Not IsDBNull(DataSet.Tables("Consultas").Rows(0)("TelefonoRecolector")) Then
+                Me.TxtTelefonoRecolector.Text = DataSet.Tables("Consultas").Rows(0)("TelefonoRecolector")
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Consultas").Rows(0)("CedulaRecolector")) Then
+                Me.TxtCedulaRecolector.Text = DataSet.Tables("Consultas").Rows(0)("CedulaRecolector")
+            End If
+        End If
+
+
+    End Sub
+
+    Private Sub ListBoxRecolector_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles ListBoxRecolector.DoubleClick
+        Me.TxtRecolector.Text = Me.ListBoxRecolector.Text
+        Me.ListBoxRecolector.Visible = False
+
+
+    End Sub
+
+
+
+    Private Sub ListBoxRecolector_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles ListBoxRecolector.LostFocus
+        Me.ListBoxRecolector.Visible = False
+    End Sub
+
+
+    Private Sub ListBoxRecolector_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListBoxRecolector.SelectedIndexChanged
 
     End Sub
 End Class

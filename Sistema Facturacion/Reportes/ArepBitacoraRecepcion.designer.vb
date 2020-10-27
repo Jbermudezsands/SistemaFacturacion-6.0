@@ -40,7 +40,6 @@ Partial Public Class ArepBitacoraRecepcion
         Me.LblLocalidad = New DataDynamics.ActiveReports.Label
         Me.LblHora = New DataDynamics.ActiveReports.Label
         Me.Detail1 = New DataDynamics.ActiveReports.Detail
-        Me.TextBox2 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox5 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox1 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox7 = New DataDynamics.ActiveReports.TextBox
@@ -54,7 +53,6 @@ Partial Public Class ArepBitacoraRecepcion
         Me.TextBox11 = New DataDynamics.ActiveReports.TextBox
         Me.GroupHeader1 = New DataDynamics.ActiveReports.GroupHeader
         Me.lblProductID = New DataDynamics.ActiveReports.Label
-        Me.lblQty = New DataDynamics.ActiveReports.Label
         Me.Label2 = New DataDynamics.ActiveReports.Label
         Me.LblApellidos = New DataDynamics.ActiveReports.Label
         Me.Label5 = New DataDynamics.ActiveReports.Label
@@ -122,7 +120,6 @@ Partial Public Class ArepBitacoraRecepcion
         CType(Me.LblCosecha, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblLocalidad, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblHora, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.TextBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox7, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -132,7 +129,6 @@ Partial Public Class ArepBitacoraRecepcion
         CType(Me.TextBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox11, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.lblProductID, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.lblQty, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblApellidos, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label5, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -558,28 +554,9 @@ Partial Public Class ArepBitacoraRecepcion
         'Detail1
         '
         Me.Detail1.ColumnSpacing = 0.0!
-        Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TextBox2, Me.TextBox5, Me.TextBox1, Me.TextBox7, Me.TextBox8, Me.TextBox9, Me.TextBox10})
-        Me.Detail1.Height = 0.2291667!
+        Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TextBox5, Me.TextBox1, Me.TextBox7, Me.TextBox8, Me.TextBox9, Me.TextBox10})
+        Me.Detail1.Height = 0.21875!
         Me.Detail1.Name = "Detail1"
-        '
-        'TextBox2
-        '
-        Me.TextBox2.Border.BottomColor = System.Drawing.Color.Black
-        Me.TextBox2.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.TextBox2.Border.LeftColor = System.Drawing.Color.Black
-        Me.TextBox2.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.TextBox2.Border.RightColor = System.Drawing.Color.Black
-        Me.TextBox2.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.TextBox2.Border.TopColor = System.Drawing.Color.Black
-        Me.TextBox2.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.TextBox2.DataField = "Cantidad"
-        Me.TextBox2.Height = 0.1875!
-        Me.TextBox2.Left = 0.3125!
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
-        Me.TextBox2.Text = Nothing
-        Me.TextBox2.Top = 0.0!
-        Me.TextBox2.Width = 0.5!
         '
         'TextBox5
         '
@@ -610,9 +587,9 @@ Partial Public Class ArepBitacoraRecepcion
         Me.TextBox1.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox1.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox1.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.TextBox1.DataField = "PesoKg"
+        Me.TextBox1.DataField = "PesoNetoKg"
         Me.TextBox1.Height = 0.1875!
-        Me.TextBox1.Left = 0.8125!
+        Me.TextBox1.Left = 0.325!
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
         Me.TextBox1.Text = Nothing
@@ -629,15 +606,15 @@ Partial Public Class ArepBitacoraRecepcion
         Me.TextBox7.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox7.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox7.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.TextBox7.DataField = "PesoNetoKg"
-        Me.TextBox7.Height = 0.1875!
-        Me.TextBox7.Left = 1.25!
+        Me.TextBox7.DataField = "Descripcion_Producto"
+        Me.TextBox7.Height = 0.175!
+        Me.TextBox7.Left = 0.775!
         Me.TextBox7.MultiLine = False
         Me.TextBox7.Name = "TextBox7"
         Me.TextBox7.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
         Me.TextBox7.Text = Nothing
         Me.TextBox7.Top = 0.0!
-        Me.TextBox7.Width = 0.4375!
+        Me.TextBox7.Width = 0.925!
         '
         'TextBox8
         '
@@ -755,7 +732,7 @@ Partial Public Class ArepBitacoraRecepcion
         '
         'GroupHeader1
         '
-        Me.GroupHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.lblProductID, Me.lblQty, Me.Label2, Me.LblApellidos, Me.Label5, Me.Line2, Me.LblBodegas, Me.LblBarco, Me.LblConductor, Me.Label8, Me.Label9, Me.LblOrigen, Me.LblCedula, Me.Label10, Me.Label11, Me.LblPila, Me.Label12, Me.LblPlaca, Me.Label14, Me.Label15, Me.Label16, Me.Label17, Me.Label18, Me.Label19, Me.Label20, Me.Label21, Me.Label22, Me.Label23, Me.Label24, Me.Label25, Me.Label26, Me.Label27, Me.Label28, Me.Label29, Me.Label30, Me.Label31, Me.Label32, Me.Label33, Me.Label34, Me.TextBox4, Me.Label1, Me.Label3, Me.Label4, Me.Label7, Me.Label37})
+        Me.GroupHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.lblProductID, Me.Label2, Me.LblApellidos, Me.Label5, Me.Line2, Me.LblBodegas, Me.LblBarco, Me.LblConductor, Me.Label8, Me.Label9, Me.LblOrigen, Me.LblCedula, Me.Label10, Me.Label11, Me.LblPila, Me.Label12, Me.LblPlaca, Me.Label14, Me.Label15, Me.Label16, Me.Label17, Me.Label18, Me.Label19, Me.Label20, Me.Label21, Me.Label22, Me.Label23, Me.Label24, Me.Label25, Me.Label26, Me.Label27, Me.Label28, Me.Label29, Me.Label30, Me.Label31, Me.Label32, Me.Label33, Me.Label34, Me.TextBox4, Me.Label1, Me.Label3, Me.Label4, Me.Label7, Me.Label37})
         Me.GroupHeader1.DataField = "NumeroRecepcion"
         Me.GroupHeader1.Height = 0.3541667!
         Me.GroupHeader1.Name = "GroupHeader1"
@@ -780,26 +757,6 @@ Partial Public Class ArepBitacoraRecepcion
         Me.lblProductID.Top = 0.1875!
         Me.lblProductID.Visible = False
         Me.lblProductID.Width = 0.6842105!
-        '
-        'lblQty
-        '
-        Me.lblQty.Border.BottomColor = System.Drawing.Color.Black
-        Me.lblQty.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
-        Me.lblQty.Border.LeftColor = System.Drawing.Color.Black
-        Me.lblQty.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
-        Me.lblQty.Border.RightColor = System.Drawing.Color.Black
-        Me.lblQty.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
-        Me.lblQty.Border.TopColor = System.Drawing.Color.Black
-        Me.lblQty.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
-        Me.lblQty.Height = 0.3125!
-        Me.lblQty.HyperLink = Nothing
-        Me.lblQty.Left = 0.3125!
-        Me.lblQty.Name = "lblQty"
-        Me.lblQty.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
-            "d-color: White; font-size: 8.25pt; "
-        Me.lblQty.Text = "Peso LB"
-        Me.lblQty.Top = 0.0!
-        Me.lblQty.Width = 0.5!
         '
         'Label2
         '
@@ -1556,7 +1513,7 @@ Partial Public Class ArepBitacoraRecepcion
         Me.Label1.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label1.Height = 0.3125!
         Me.Label1.HyperLink = Nothing
-        Me.Label1.Left = 0.8125!
+        Me.Label1.Left = 0.325!
         Me.Label1.Name = "Label1"
         Me.Label1.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
             "d-color: White; font-size: 8.25pt; "
@@ -1597,7 +1554,7 @@ Partial Public Class ArepBitacoraRecepcion
         Me.Label4.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label4.Height = 0.3125!
         Me.Label4.HyperLink = Nothing
-        Me.Label4.Left = 1.6875!
+        Me.Label4.Left = 1.675!
         Me.Label4.MultiLine = False
         Me.Label4.Name = "Label4"
         Me.Label4.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
@@ -1636,15 +1593,15 @@ Partial Public Class ArepBitacoraRecepcion
         Me.Label37.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label37.Border.TopColor = System.Drawing.Color.Black
         Me.Label37.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
-        Me.Label37.Height = 0.3125!
+        Me.Label37.Height = 0.313!
         Me.Label37.HyperLink = Nothing
-        Me.Label37.Left = 1.25!
+        Me.Label37.Left = 0.775!
         Me.Label37.Name = "Label37"
         Me.Label37.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
             "d-color: White; font-size: 8.25pt; "
-        Me.Label37.Text = "Peso NT KG"
+        Me.Label37.Text = "Descripcion"
         Me.Label37.Top = 0.0!
-        Me.Label37.Width = 0.4375!
+        Me.Label37.Width = 0.9!
         '
         'GroupFooter1
         '
@@ -1803,7 +1760,6 @@ Partial Public Class ArepBitacoraRecepcion
         CType(Me.LblCosecha, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LblLocalidad, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LblHora, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.TextBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox7, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1813,7 +1769,6 @@ Partial Public Class ArepBitacoraRecepcion
         CType(Me.TextBox4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox11, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.lblProductID, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.lblQty, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LblApellidos, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label5, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1867,10 +1822,8 @@ Partial Public Class ArepBitacoraRecepcion
     Friend WithEvents ReportFooter1 As DataDynamics.ActiveReports.ReportFooter
     Friend WithEvents GroupHeader1 As DataDynamics.ActiveReports.GroupHeader
     Private WithEvents lblProductID As DataDynamics.ActiveReports.Label
-    Private WithEvents lblQty As DataDynamics.ActiveReports.Label
     Private WithEvents Label2 As DataDynamics.ActiveReports.Label
     Friend WithEvents GroupFooter1 As DataDynamics.ActiveReports.GroupFooter
-    Friend WithEvents TextBox2 As DataDynamics.ActiveReports.TextBox
     Friend WithEvents TextBox3 As DataDynamics.ActiveReports.TextBox
     Friend WithEvents TextBox4 As DataDynamics.ActiveReports.TextBox
     Friend WithEvents TextBox5 As DataDynamics.ActiveReports.TextBox

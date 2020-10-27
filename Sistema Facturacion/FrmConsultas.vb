@@ -1,7 +1,7 @@
 Public Class FrmConsultas
     Public DataSet As New DataSet, TipoEnsamble As String, CodIva As String, TipoCompra As String, CodCajero As String, Nombres As String, Apellidos As String
     Public MiConexion As New SqlClient.SqlConnection(Conexion), Codigo As String, Descripcion As String, TipoProducto As String, CodComponente As Double, Precio As Double
-    Public MiconexionContabilidad As New SqlClient.SqlConnection(ConexionContabilidad), Cantidad As Double, CodProducto As String, Fecha As Date, FechaHora As Date
+    Public MiconexionContabilidad As New SqlClient.SqlConnection(ConexionContabilidad), Cantidad As Double, CodProducto As String, Fecha As Date, FechaHora As Date, Nombre_Recolector As String, Telefono_Recolector As String, Cecula_Recolector As String
     Public DescripcionImpuestos As String, TasaImpuestos As Double, TipoImpuesto As String, CodigoCliente As String, Tipo As String, CodigoProveedor As String, NumFactura As String, Conductor As String, CodProveedor As String
 
     Private Sub C1TrueDBGrid1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -28,6 +28,17 @@ Public Class FrmConsultas
             Dim DataAdapter As New SqlClient.SqlDataAdapter, SQlProductos As String
 
             Select Case Quien
+                Case "Recolector"
+
+                    DataSet.Reset()
+                    MiConexion.Open()
+                    SQlProductos = "SELECT DISTINCT NombreRecolector, TelefonoRecolector , CedulaRecolector FROM Recepcion WHERE(NombreRecolector Is Not NULL) ORDER BY NombreRecolector"
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+
+                    MiConexion.Close()
                 Case "LiquidacionLeche"
                     SQlProductos = "SELECT LiquidacionLeche.NumeroLiquidacion, LiquidacionLeche.FechaInicio, LiquidacionLeche.FechaFin, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres FROM LiquidacionLeche INNER JOIN Clientes ON LiquidacionLeche.Cod_Proveedor = Clientes.Cod_Cliente "
                     Me.TrueDBGridConsultas.Columns(0).Caption = "No.Liquidacion"
@@ -289,7 +300,7 @@ Public Class FrmConsultas
 
                 Case "NB"
 
-                    SQlProductos = "SELECT IndiceNota.Numero_Nota, IndiceNota.Fecha_Nota, IndiceNota.Nombre_Cliente, NotaDebito.Tipo FROM IndiceNota INNER JOIN Clientes ON IndiceNota.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN NotaDebito ON IndiceNota.Tipo_Nota = NotaDebito.CodigoNB WHERE (Clientes.Cod_Cliente =  '" & CodigoCliente & "') AND (IndiceNota.Activo = 1) AND (IndiceNota.Contabilizado = 0) AND (NotaDebito.Tipo = '%" & Tipo & "%') ORDER BY IndiceNota.Numero_Nota"
+                    SQlProductos = "SELECT IndiceNota.Numero_Nota, IndiceNota.Fecha_Nota, IndiceNota.Nombre_Cliente, NotaDebito.Tipo FROM IndiceNota INNER JOIN Clientes ON IndiceNota.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN NotaDebito ON IndiceNota.Tipo_Nota = NotaDebito.CodigoNB WHERE (Clientes.Cod_Cliente =  '" & CodigoCliente & "') AND (IndiceNota.Activo = 1) AND (IndiceNota.Contabilizado = 0) AND (NotaDebito.Tipo Like '%" & Tipo & "%') ORDER BY IndiceNota.Numero_Nota"
                     DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
                     DataSet.Reset()
                     DataAdapter.Fill(DataSet, "Consultas")
@@ -1262,6 +1273,20 @@ Public Class FrmConsultas
         TipoProducto = ""
 
         Select Case Quien
+            Case "Recolector"
+                Posicion = Me.BindingConsultas.Position
+
+                If Not IsDBNull(Me.BindingConsultas.Item(Posicion)("NombreRecolector")) Then
+                    Me.Nombre_Recolector = Me.BindingConsultas.Item(Posicion)("NombreRecolector")
+                End If
+                If Not IsDBNull(Me.BindingConsultas.Item(Posicion)("TelefonoRecolector")) Then
+                    Me.Telefono_Recolector = Me.BindingConsultas.Item(Posicion)("TelefonoRecolector")
+                End If
+
+                If Not IsDBNull(Me.BindingConsultas.Item(Posicion)("CedulaRecolector")) Then
+                    Me.Cecula_Recolector = Me.BindingConsultas.Item(Posicion)("CedulaRecolector")
+                End If
+
             Case "LiquidacionLeche"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("NumeroLiquidacion")
