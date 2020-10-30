@@ -1025,9 +1025,9 @@ Partial Class FrmRecepcion
         Me.Label10.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
         Me.Label10.Location = New System.Drawing.Point(31, 61)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(70, 16)
+        Me.Label10.Size = New System.Drawing.Size(63, 16)
         Me.Label10.TabIndex = 239
-        Me.Label10.Text = "Telefono"
+        Me.Label10.Text = "Nombre"
         '
         'FrmRecepcion
         '

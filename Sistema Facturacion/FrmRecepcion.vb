@@ -91,14 +91,7 @@ Public Class FrmRecepcion
             ConsecutivoFacturaSerie = DataSet.Tables("DatosEmpresa").Rows(0)("ConsecutivoFacSerie")
         End If
 
-        SqlProductos = "SELECT Cod_Productos, Descripcion_Producto FROM Productos WHERE (Tipo_Producto <> 'Servicio') AND (Tipo_Producto <> 'Descuento')"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlProductos, MiConexion)
-        DataAdapter.Fill(DataSet, "ListaProductos")
-        If Not DataSet.Tables("ListaProductos").Rows.Count = 0 Then
-            Me.CboCodigoProducto.DataSource = DataSet.Tables("ListaProductos")
-            Me.CboCodigoProducto.Text = DataSet.Tables("ListaProductos").Rows(0)("Descripcion_Producto")
-        End If
-        Me.CboCodigoProducto.Splits(0).DisplayColumns(1).Width = 400
+
 
 
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -213,13 +206,26 @@ Public Class FrmRecepcion
         Mes = Microsoft.VisualBasic.DateAndTime.Month(Now)
         Dia = Microsoft.VisualBasic.DateAndTime.Day(Now)
 
+
+
         If UsuarioBodegaCompra <> "" Then
+
             Me.CboCodigoBodega.Text = UsuarioBodegaCompra
 
             '/////////////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////////////CARGO LOS PRODUCTOS //////////////////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            DataSet.Tables("ListaProductos").Reset()
+            'DataSet.Tables("ListaProductos").Reset()
+            SqlProductos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto FROM  DetalleBodegas INNER JOIN Productos ON DetalleBodegas.Cod_Productos = Productos.Cod_Productos WHERE  (DetalleBodegas.Cod_Bodegas = '" & UsuarioBodega & "') AND (Productos.Tipo_Producto = 'Productos')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlProductos, MiConexion)
+            DataAdapter.Fill(DataSet, "ListaProductos")
+            If Not DataSet.Tables("ListaProductos").Rows.Count = 0 Then
+                Me.CboCodigoProducto.DataSource = DataSet.Tables("ListaProductos")
+                Me.CboCodigoProducto.Text = DataSet.Tables("ListaProductos").Rows(0)("Descripcion_Producto")
+                Me.CboCodigoProducto.Splits(0).DisplayColumns(1).Width = 400
+            End If
+        Else
+
             SqlProductos = "SELECT Cod_Productos, Descripcion_Producto FROM Productos WHERE (Tipo_Producto <> 'Servicio') AND (Tipo_Producto <> 'Descuento')"
             DataAdapter = New SqlClient.SqlDataAdapter(SqlProductos, MiConexion)
             DataAdapter.Fill(DataSet, "ListaProductos")
@@ -229,7 +235,6 @@ Public Class FrmRecepcion
             End If
             Me.CboCodigoProducto.Splits(0).DisplayColumns(1).Width = 400
         End If
-
 
     End Sub
 
@@ -415,6 +420,16 @@ Public Class FrmRecepcion
 
         ArepBitacoraRecepcion.LblOrden.Text = Me.TxtNumeroEnsamble.Text
         ArepBitacoraRecepcion.LblFechaOrden.Text = Format(CDate(Me.DTPFecha.Text), "dd/MM/yyyy")
+        If Me.TxtRecolector.Text <> "" Then
+            ArepBitacoraRecepcion.LblCodRecolector.Text = Me.TxtRecolector.Text
+        End If
+        If Me.TxtTelefonoRecolector.Text <> "" Then
+            ArepBitacoraRecepcion.LblNombreRecolector.Text = Me.TxtTelefonoRecolector.Text
+        End If
+        If Me.TxtCedulaRecolector.Text <> "" Then
+            ArepBitacoraRecepcion.LblCedulaRecolector.Text = Me.TxtCedulaRecolector.Text
+        End If
+
         ArepBitacoraRecepcion.LblTipoCompra.Text = Me.CboTipoRecepcion.Text
         'ArepBitacoraRecepcion.LblCodProveedor.Text = Me.CboCodigoProveedor.Text
         ArepBitacoraRecepcion.LblNombres.Text = Me.txtnombre.Text
@@ -1096,6 +1111,19 @@ Public Class FrmRecepcion
         Me.TxtRecolector.Text = My.Forms.FrmConsultas.Nombre_Recolector
         Me.TxtTelefonoRecolector.Text = My.Forms.FrmConsultas.Telefono_Recolector
         Me.TxtCedulaRecolector.Text = My.Forms.FrmConsultas.Cecula_Recolector
+        Me.ListBoxRecolector.Visible = False
+
+    End Sub
+
+    Private Sub TxtRecolector_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TxtRecolector.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            Me.ListBoxRecolector.Visible = False
+        End If
+    End Sub
+
+
+
+    Private Sub TxtRecolector_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TxtRecolector.LostFocus
         Me.ListBoxRecolector.Visible = False
 
     End Sub

@@ -1037,11 +1037,11 @@ Module Funciones
         '/////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////CONSULTO EL PRECIO DE VENTA //////////////////////////////////////
         '////////////////////////////////////////////////////////////////////////////////////////////
-        SqlString = "SELECT  Productos.* FROM Productos WHERE (Cod_Productos = 'Descuento')"
+        SqlString = "SELECT  Productos.* FROM Productos WHERE (Cod_Productos = '" & CodigoProducto & "')"
         DataAdapterProductos = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapterProductos.Fill(DataSet, "Precios")
         If Not DataSet.Tables("Precios").Rows.Count = 0 Then
-            Precio = DataSet.Tables("Precios").Rows(0)("Precio_Venta")
+            Precio = DataSet.Tables("Precios").Rows(0)("Descuento")
         End If
 
         'Precio = PrecioVenta(CodigoProducto, FrmRecepcion.IdLugarAcopio, FrmRecepcion.CboCategoria.Text, CDate(FrmRecepcion.DTPFecha.Text))
