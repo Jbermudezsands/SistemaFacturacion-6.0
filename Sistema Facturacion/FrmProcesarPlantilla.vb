@@ -58,7 +58,7 @@ Public Class FrmProcesarPlantilla
                 '   ////////////////////BUSO LOS DATOS DEL CLIENTE /////////////////////////////////////////////////////////
                 '***************************************************************************************************************
                 SQlProveedor = "SELECT  * FROM Clientes  WHERE (Cod_Cliente = '" & CodigoCliente & "')"
-                DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+                DataAdapter = New SqlClient.SqlDataAdapter(SQlProveedor, MiConexion)
                 DataAdapter.Fill(DataSet, "Clientes")
                 If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
                     NombreCliente = DataSet.Tables("Clientes").Rows(0)("Nombre_Cliente")
@@ -118,9 +118,9 @@ Public Class FrmProcesarPlantilla
                     NumeroFactura = Format(ConsecutivoFactura, "0000#")
 
                     If FrmPlantillas.TxtSubTotal.Text <> "" Then
-                        Subtotal = FrmPlantillas.TxtSubTotal.Text
+                        SubTotal = FrmPlantillas.TxtSubTotal.Text
                     Else
-                        Subtotal = 0
+                        SubTotal = 0
                     End If
 
                     If FrmPlantillas.TxtIva.Text <> "" Then
