@@ -22,6 +22,7 @@ Partial Class FrmRecepcion
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmRecepcion))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.BtnTara = New C1.Win.C1Input.C1Button
         Me.CmbTipoPesada = New System.Windows.Forms.ComboBox
         Me.C1Button2 = New C1.Win.C1Input.C1Button
         Me.CboCodigoBodega = New C1.Win.C1List.C1Combo
@@ -112,6 +113,7 @@ Partial Class FrmRecepcion
         'GroupBox1
         '
         Me.GroupBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(27, Byte), Integer), CType(CType(94, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.GroupBox1.Controls.Add(Me.BtnTara)
         Me.GroupBox1.Controls.Add(Me.CmbTipoPesada)
         Me.GroupBox1.Controls.Add(Me.C1Button2)
         Me.GroupBox1.Controls.Add(Me.CboCodigoBodega)
@@ -126,6 +128,16 @@ Partial Class FrmRecepcion
         Me.GroupBox1.Size = New System.Drawing.Size(528, 175)
         Me.GroupBox1.TabIndex = 225
         Me.GroupBox1.TabStop = False
+        '
+        'BtnTara
+        '
+        Me.BtnTara.Image = CType(resources.GetObject("BtnTara.Image"), System.Drawing.Image)
+        Me.BtnTara.Location = New System.Drawing.Point(480, 118)
+        Me.BtnTara.Name = "BtnTara"
+        Me.BtnTara.Size = New System.Drawing.Size(39, 40)
+        Me.BtnTara.TabIndex = 249
+        Me.BtnTara.UseVisualStyleBackColor = True
+        Me.BtnTara.Visible = False
         '
         'CmbTipoPesada
         '
@@ -1153,4 +1165,5 @@ Partial Class FrmRecepcion
     Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents TxtTelefonoRecolector As System.Windows.Forms.TextBox
     Friend WithEvents ListBoxRecolector As System.Windows.Forms.ListBox
+    Friend WithEvents BtnTara As C1.Win.C1Input.C1Button
 End Class

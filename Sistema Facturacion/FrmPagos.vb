@@ -609,7 +609,9 @@ Public Class FrmPagos
         FrmPagosFacturas.TxtNombres.Text = Me.TxtNombres.Text
         FrmPagosFacturas.TxtApellidos.Text = Me.TxtApellidos.Text
 
+
         My.Forms.FrmPagosFacturas.ShowDialog()
+
 
     End Sub
 

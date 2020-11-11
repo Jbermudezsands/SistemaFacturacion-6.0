@@ -66,8 +66,9 @@ Public Class FrmCuentasXPagar
         Dim oDataRow As DataRow, MontoFactura As Double, FechaFactura As Date, Dias As Double, TasaInteres As Double, MontoMora As Double, Total As Double
         Dim Registros2 As Double, j As Double, TasaCambioRecibo As Double, TotalFactura As Double = 0, TotalAbonos As Double = 0, TotalCargos As Double = 0
         Dim TotalMora As Double = 0, FechaVence As Date, NumeroNota As String = "", MontoNota As Double = 0, NumeroNotaCR As String = "", MontoNotaCR As Double = 0, TotalMontoNotaCR As Double = 0, TotalMontoNotaDB As Double = 0
-        Dim CodigoProveedor As String, TipoNota As String, Observaciones As String, MontoMetodoCompra As Double, Numero_Compra As String
-        Dim H As Double
+        Dim CodigoProveedor As String, TipoNota As String, Observaciones As String, MontoMetodoCompra As Double, Numero_Compra As String, Tipo_Compra As String
+        Dim H As Double, StrSqlUpdate As String, MontoCredito As Double, MonedaCompra As String, MontoReciboPgo As Double, MontoNotaDBPgo As Double, TasaCambioPgo As Double
+        Dim MontoNotaCRPgo As Double, MontoMetodoCompraPgo As Double, MontoPagado As Double
 
         If Me.CboCodigoProveedor.Text = "" Then
             Exit Sub
@@ -108,6 +109,9 @@ Public Class FrmCuentasXPagar
         Do While Registros > i
             NumeroRecibo = ""
             MontoRecibo = 0
+            MontoCredito = 0
+            MontoReciboPgo = 0
+            MontoNotaDBPgo = 0
 
             My.Application.DoEvents()
 
@@ -133,6 +137,10 @@ Public Class FrmCuentasXPagar
             End If
 
             Numero_Compra = DataSet.Tables("Proveedores").Rows(i)("Numero_Compra")
+            Tipo_Compra = DataSet.Tables("Proveedores").Rows(i)("Tipo_Compra")
+            MonedaCompra = DataSet.Tables("Proveedores").Rows(i)("MonedaCompra")
+            MontoCredito = (DataSet.Tables("Proveedores").Rows(i)("SubTotal") + DataSet.Tables("Proveedores").Rows(i)("IVA"))
+
 
             If Not IsDBNull(DataSet.Tables("Proveedores").Rows(i)("Observaciones")) Then
                 Observaciones = DataSet.Tables("Proveedores").Rows(i)("Observaciones")
@@ -152,7 +160,6 @@ Public Class FrmCuentasXPagar
             DataAdapter.Fill(DataSet, "Recibos")
             Registros2 = DataSet.Tables("Recibos").Rows.Count
             j = 0
-
             Do While Registros2 > j
 
                 If Me.OptCordobas.Checked = True Then
@@ -168,6 +175,31 @@ Public Class FrmCuentasXPagar
                         TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("Recibos").Rows(j)("Fecha_Recibo"))
                     End If
                 End If
+
+                '///////////////////////////////////////////////////////////////////////////////////////////
+                '/////////////////////////VERIFICO EL RECIBO PARA EL MONTO DE CREDITO //////////////////////
+                '////////////////////////////////////////////////////////////////////////////////////////////
+                If MonedaCompra = DataSet.Tables("Recibos").Rows(j)("MonedaRecibo") Then
+                    MontoReciboPgo = MontoReciboPgo + DataSet.Tables("Recibos").Rows(j)("MontoPagado")
+                Else
+                    If MonedaCompra = "Cordobas" Then
+                        If DataSet.Tables("Recibos").Rows(j)("MonedaRecibo") = "Cordobas" Then
+                            TasaCambioPgo = 1
+                        Else
+                            TasaCambioPgo = BuscaTasaCambio(DataSet.Tables("Recibos").Rows(j)("Fecha_Recibo"))
+                        End If
+                    Else
+                        If DataSet.Tables("Recibos").Rows(j)("MonedaRecibo") = "Dolares" Then
+                            TasaCambioPgo = 1
+                        Else
+                            TasaCambioPgo = 1 / BuscaTasaCambio(DataSet.Tables("Recibos").Rows(j)("Fecha_Recibo"))
+                        End If
+                    End If
+
+                    MontoReciboPgo = MontoReciboPgo + DataSet.Tables("Recibos").Rows(j)("MontoPagado") * TasaCambioPgo
+                End If
+
+
                 If NumeroRecibo = "" Then
                     NumeroRecibo = DataSet.Tables("Recibos").Rows(j)("CodReciboPago")
                 Else
@@ -182,7 +214,6 @@ Public Class FrmCuentasXPagar
             '//////////////////////////////////////BUSCO SI EXISTEN NOTAS DE DEBITO PARA ESTA FACTURA //////////////////////////////////////////////////////
             '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             SQlString = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Monto, NotaDebito.Tipo, IndiceNota.MonedaNota, IndiceNota.Fecha_Nota AS Expr1, IndiceNota.Tipo_Nota AS Expr2 FROM Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota WHERE (NotaDebito.Tipo LIKE  '%Debito Proveedores%') AND (Detalle_Nota.Numero_Factura = '" & Numero_Compra & "') AND (IndiceNota.Cod_Cliente = '" & Me.CboCodigoProveedor.Text & "')"
-
             DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
             DataAdapter.Fill(DataSet, "NotaDB")
             Registros2 = DataSet.Tables("NotaDB").Rows.Count
@@ -195,7 +226,7 @@ Public Class FrmCuentasXPagar
 
 
                 If Me.OptCordobas.Checked = True Then
-                    If TipoNota <> "Debito Clientes Dif $" Then
+                    If TipoNota <> "Debito Proveedores Dif $" Then
                         If DataSet.Tables("NotaDB").Rows(j)("MonedaNota") = "Cordobas" Then
                             TasaCambioRecibo = 1
                         Else
@@ -205,7 +236,7 @@ Public Class FrmCuentasXPagar
                         TasaCambioRecibo = 0
                     End If
                 Else
-                    If TipoNota <> "Debito Clientes Dif C$" Then
+                    If TipoNota <> "Debito Proveedores Dif C$" Then
                         If DataSet.Tables("NotaDB").Rows(j)("MonedaNota") = "Dolares" Then
                             TasaCambioRecibo = 1
                         Else
@@ -216,16 +247,47 @@ Public Class FrmCuentasXPagar
                     End If
                 End If
 
-
-
-                    If NumeroNota = "" Then
-                        NumeroNota = DataSet.Tables("NotaDB").Rows(j)("Numero_Nota")
+                '///////////////////////////////////////////////////////////////////////////////////////////
+                '/////////////////////////VERIFICO LA NB PARA EL MONTO DE CREDITO //////////////////////
+                '////////////////////////////////////////////////////////////////////////////////////////////
+                If MonedaCompra = DataSet.Tables("NotaDB").Rows(j)("MonedaNota") Then
+                    MontoNotaDBPgo = MontoNotaDBPgo + DataSet.Tables("NotaDB").Rows(j)("Monto")
+                Else
+                    If MonedaCompra = "Cordobas" Then
+                        If TipoNota <> "Debito Proveedores Dif $" Then
+                            If DataSet.Tables("NotaDB").Rows(j)("MonedaNota") = "Cordobas" Then
+                                TasaCambioPgo = 1
+                            Else
+                                TasaCambioPgo = BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                            End If
+                        Else
+                            TasaCambioPgo = 0
+                        End If
                     Else
-                        NumeroNota = NumeroNota & "," & DataSet.Tables("NotaDB").Rows(j)("Numero_Nota")
+                        If TipoNota <> "Debito Proveedores Dif C$" Then
+                            If DataSet.Tables("NotaDB").Rows(j)("MonedaNota") = "Dolares" Then
+                                TasaCambioPgo = 1
+                            Else
+                                TasaCambioPgo = 1 / BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                            End If
+                        Else
+                            TasaCambioPgo = 0
+                        End If
                     End If
-                    MontoNota = MontoNota + DataSet.Tables("NotaDB").Rows(j)("Monto") * TasaCambioRecibo
-                    TotalMontoNotaDB = TotalMontoNotaDB + MontoNota
-                    j = j + 1
+
+                    MontoNotaDBPgo = MontoNotaDBPgo + DataSet.Tables("NotaDB").Rows(j)("Monto") * TasaCambioPgo
+                End If
+
+
+
+                If NumeroNota = "" Then
+                    NumeroNota = DataSet.Tables("NotaDB").Rows(j)("Numero_Nota")
+                Else
+                    NumeroNota = NumeroNota & "," & DataSet.Tables("NotaDB").Rows(j)("Numero_Nota")
+                End If
+                MontoNota = MontoNota + DataSet.Tables("NotaDB").Rows(j)("Monto") * TasaCambioRecibo
+                TotalMontoNotaDB = TotalMontoNotaDB + MontoNota
+                j = j + 1
             Loop
             DataSet.Tables("NotaDB").Reset()
 
@@ -244,8 +306,10 @@ Public Class FrmCuentasXPagar
             MontoNotaCR = 0
             Do While Registros2 > j
 
+                TipoNota = DataSet.Tables("NotaCR").Rows(j)("Tipo")
+
                 If Me.OptCordobas.Checked = True Then
-                    If TipoNota <> "Debito Clientes Dif $" Then
+                    If TipoNota <> "Credito Proveedores Dif $" Then
                         If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Cordobas" Then
                             TasaCambioRecibo = 1
                         Else
@@ -257,7 +321,7 @@ Public Class FrmCuentasXPagar
 
                 Else
 
-                    If TipoNota <> "Debito Clientes Dif C$" Then
+                    If TipoNota <> "Credito Proveedores Dif C$" Then
                         If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Dolares" Then
                             TasaCambioRecibo = 1
                         Else
@@ -268,14 +332,50 @@ Public Class FrmCuentasXPagar
                     End If
 
                 End If
-                    If NumeroNotaCR = "" Then
-                        NumeroNotaCR = DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
+
+
+                '///////////////////////////////////////////////////////////////////////////////////////////
+                '/////////////////////////VERIFICO LA NB PARA EL MONTO DE CREDITO //////////////////////
+                '////////////////////////////////////////////////////////////////////////////////////////////
+                If MonedaCompra = DataSet.Tables("NotaCR").Rows(j)("MonedaNota") Then
+                    MontoNotaDBPgo = MontoNotaDBPgo + DataSet.Tables("NotaDB").Rows(j)("Monto")
+                Else
+                    If MonedaCompra = "Cordobas" Then
+                        If TipoNota <> "Debito Clientes Dif $" Then
+                            If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Cordobas" Then
+                                TasaCambioPgo = 1
+                            Else
+                                TasaCambioPgo = BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                            End If
+                        Else
+                            TasaCambioPgo = 0
+                        End If
+
                     Else
-                        NumeroNotaCR = NumeroNotaCR & "," & DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
+
+                        If TipoNota <> "Credito Proveedores Dif C$" Then
+                            If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Dolares" Then
+                                TasaCambioPgo = 1
+                            Else
+                                TasaCambioPgo = 1 / BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                            End If
+                        Else
+                            TasaCambioPgo = 0
+                        End If
                     End If
-                    MontoNotaCR = MontoNotaCR + DataSet.Tables("NotaCR").Rows(j)("Monto") * TasaCambioRecibo
-                    TotalMontoNotaCR = TotalMontoNotaCR + MontoNotaCR
-                    j = j + 1
+
+                    MontoNotaCRPgo = MontoNotaCRPgo + DataSet.Tables("NotaCR").Rows(j)("Monto") * TasaCambioPgo
+
+                End If
+
+                If NumeroNotaCR = "" Then
+                    NumeroNotaCR = DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
+                Else
+                    NumeroNotaCR = NumeroNotaCR & "," & DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
+                End If
+                MontoNotaCR = MontoNotaCR + DataSet.Tables("NotaCR").Rows(j)("Monto") * TasaCambioRecibo
+                TotalMontoNotaCR = TotalMontoNotaCR + MontoNotaCR
+                j = j + 1
             Loop
             DataSet.Tables("NotaCR").Reset()
 
@@ -296,7 +396,7 @@ Public Class FrmCuentasXPagar
             '//////////////////////////////////////BUSCO EL DETALLE DE METODO PARA LAS COMPRAS DE CONTADO //////////////////////////////////////////////////////
             '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             MontoMetodoCompra = 0
-            SQlString = "SELECT * FROM Detalle_MetodoCompras INNER JOIN MetodoPago ON Detalle_MetodoCompras.NombrePago = MetodoPago.NombrePago WHERE (Detalle_MetodoCompras.Tipo_Compra = 'Mercancia Recibida') AND (Detalle_MetodoCompras.Numero_Compra = '" & Numero_Compra & "')"
+            SQlString = "SELECT * FROM Detalle_MetodoCompras INNER JOIN MetodoPago ON Detalle_MetodoCompras.NombrePago = MetodoPago.NombrePago WHERE (Detalle_MetodoCompras.Tipo_Compra = 'Mercancia Recibida') AND (Detalle_MetodoCompras.Numero_Compra = '" & Numero_Compra & "') AND (Detalle_MetodoCompras.Tipo_Compra = '" & Tipo_Compra & "')"
             DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
             DataAdapter.Fill(DataSet, "MetodoCompra")
 
@@ -316,6 +416,33 @@ Public Class FrmCuentasXPagar
                     End If
                 End If
 
+                '///////////////////////////////////////////////////////////////////////////////////////////
+                '/////////////////////////VERIFICO METODO DE PAGO PARA EL MONTO DE CREDITO //////////////////////
+                '////////////////////////////////////////////////////////////////////////////////////////////
+                If MonedaCompra = DataSet.Tables("MetodoCompra").Rows(j)("Moneda") Then
+                    MontoMetodoCompraPgo = MontoMetodoCompraPgo + DataSet.Tables("MetodoCompra").Rows(j)("Monto")
+                Else
+
+                    If MonedaCompra = "Cordobas" Then
+                        If DataSet.Tables("MetodoCompra").Rows(j)("Moneda") = "Cordobas" Then
+                            TasaCambioPgo = 1
+                        Else
+                            TasaCambioPgo = BuscaTasaCambio(DataSet.Tables("MetodoCompra").Rows(j)("Fecha_Compra"))
+                        End If
+                    Else
+                        If DataSet.Tables("MetodoCompra").Rows(j)("Moneda") = "Dolares" Then
+                            TasaCambioPgo = 1
+                        Else
+                            TasaCambioPgo = 1 / BuscaTasaCambio(DataSet.Tables("MetodoCompra").Rows(j)("Fecha_Compra"))
+                        End If
+                    End If
+
+
+                    MontoMetodoCompraPgo = MontoMetodoCompraPgo + DataSet.Tables("MetodoCompra").Rows(j)("Monto") * TasaCambioPgo
+                End If
+
+
+
                 MontoMetodoCompra = MontoMetodoCompra + DataSet.Tables("MetodoCompra").Rows(j)("Monto") * TasaCambioRecibo
 
                 j = j + 1
@@ -327,8 +454,11 @@ Public Class FrmCuentasXPagar
             MontoFactura = (DataSet.Tables("Proveedores").Rows(i)("SubTotal") + DataSet.Tables("Proveedores").Rows(i)("IVA")) * TasaCambio
             Dias = DateDiff(DateInterval.Day, FechaVence, Me.DTPFechaFin.Value)
             Saldo = MontoFactura - MontoRecibo - MontoNota + MontoNotaCR - MontoMetodoCompra
+
+
             If Format(Saldo, "##,##0.00") = "0.00" Then
                 Dias = 0
+                Saldo = 0
             End If
             MontoMora = Dias * Saldo * TasaInteres
             Total = Saldo + MontoMora
@@ -359,6 +489,25 @@ Public Class FrmCuentasXPagar
             oDataRow("Total") = Format(Total, "##,##0.00")
             oDataRow("Observaciones") = Observaciones
             DatasetReporte.Tables("TotalVentas").Rows.Add(oDataRow)
+
+            MontoPagado = Format(MontoReciboPgo + MontoMetodoCompraPgo - MontoNotaCRPgo + MontoNotaDBPgo, "####0.00")
+            MontoCredito = Format(MontoCredito - MontoPagado, "####0.00")
+
+
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '///////////////////////////////////////ACTUALIZO EL MONTO DE CREDITO DE LA COMPRA ///////////////////////////////////////////////////////
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            SQlString = "SELECT Compras.* FROM Compras WHERE (Numero_Compra = '" & Numero_Compra & "') AND (Tipo_Compra = '" & Tipo_Compra & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Format(FechaFactura, "yyyy-MM-dd") & "', 102))"
+            DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+            DataAdapter.Fill(DataSet, "ConsultaFactura")
+            If DataSet.Tables("ConsultaFactura").Rows.Count <> 0 Then
+                StrSqlUpdate = "UPDATE [Compras] SET [Pagado] = " & MontoPagado & " ,[MontoCredito] = " & MontoCredito & " ,[AplicarCtasXPagar] = 1  WHERE (Numero_Compra = '" & Numero_Compra & "') AND (Tipo_Compra = '" & Tipo_Compra & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Format(FechaFactura, "yyyy-MM-dd") & "', 102))"
+                MiConexion.Open()
+                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                iResultado = ComandoUpdate.ExecuteNonQuery
+                MiConexion.Close()
+            End If
+
 
             i = i + 1
             Me.ProgressBar.Value = i
@@ -583,7 +732,7 @@ Public Class FrmCuentasXPagar
         Loop
 
 
-        NumeroRecibo = ""
+        Numero_Compra = ""
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////////////////BUSCO SI EXISTEN DEVOLUCIONES DE COMPRA//////////////////////////////////////////////////////
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -596,6 +745,8 @@ Public Class FrmCuentasXPagar
         MontoRecibo = 0
 
         Do While Registros2 > j
+
+
 
             If Me.OptCordobas.Checked = True Then
                 If DataSet.Tables("Devoluciones").Rows(j)("MonedaCompra") = "Cordobas" Then
@@ -610,18 +761,24 @@ Public Class FrmCuentasXPagar
                     TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("Devoluciones").Rows(j)("Fecha_Compra"))
                 End If
             End If
-            If NumeroRecibo = "" Then
-                NumeroRecibo = DataSet.Tables("Devoluciones").Rows(j)("Numero_Compra")
+
+            If Not IsDBNull(DataSet.Tables("Devoluciones").Rows(j)("Su_Referencia")) Then
+                NumeroFactura = DataSet.Tables("Devoluciones").Rows(j)("Su_Referencia")
             Else
-                NumeroRecibo = DataSet.Tables("Devoluciones").Rows(j)("Numero_Compra")
+                NumeroFactura = DataSet.Tables("Devoluciones").Rows(j)("Numero_Compra")
             End If
+
+            Numero_Compra = DataSet.Tables("Devoluciones").Rows(j)("Numero_Compra")
+
             MontoRecibo = DataSet.Tables("Devoluciones").Rows(j)("NetoPagar") * TasaCambioRecibo
 
             Dias = DateDiff(DateInterval.Day, DataSet.Tables("Devoluciones").Rows(j)("Fecha_Compra"), Me.DTPFechaFin.Value)
 
             oDataRow = DatasetReporte.Tables("TotalVentas").NewRow
             oDataRow("Fecha_Factura") = DataSet.Tables("Devoluciones").Rows(j)("Fecha_Compra")
-            oDataRow("Numero_Factura") = NumeroRecibo
+            oDataRow("Numero_Compra") = Numero_Compra
+            oDataRow("Numero_Factura") = NumeroFactura
+            'oDataRow("Numero_Factura") = NumeroRecibo
             oDataRow("Numero_Recibo") = " "
             oDataRow("Monto") = "0"
             oDataRow("FechaVence") = DataSet.Tables("Devoluciones").Rows(j)("Fecha_Compra")
@@ -631,6 +788,7 @@ Public Class FrmCuentasXPagar
             oDataRow("Moratorio") = "0"
             oDataRow("Dias") = Dias
             oDataRow("Total") = Format(-1 * MontoRecibo, "##,##0.00")
+            oDataRow("Observaciones") = "Devolucion de Compras"
             DatasetReporte.Tables("TotalVentas").Rows.Add(oDataRow)
 
             TotalAbonos = TotalAbonos + MontoRecibo
@@ -730,6 +888,11 @@ Public Class FrmCuentasXPagar
 
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
         My.Forms.FrmPagos.TxtCodigoProveedor.Text = Me.CboCodigoProveedor.Text
+        If Me.OptCordobas.Checked = True Then
+            My.Forms.FrmPagos.TxtMonedaFactura.Text = "Cordobas"
+        Else
+            My.Forms.FrmPagos.TxtMonedaFactura.Text = "Dolares"
+        End If
         My.Forms.FrmPagos.ShowDialog()
         CmdGrabar_Click(sender, e)
     End Sub
