@@ -338,14 +338,14 @@ Public Class FrmCuentasXPagar
                 '/////////////////////////VERIFICO LA NB PARA EL MONTO DE CREDITO //////////////////////
                 '////////////////////////////////////////////////////////////////////////////////////////////
                 If MonedaCompra = DataSet.Tables("NotaCR").Rows(j)("MonedaNota") Then
-                    MontoNotaDBPgo = MontoNotaDBPgo + DataSet.Tables("NotaDB").Rows(j)("Monto")
+                    MontoNotaDBPgo = MontoNotaDBPgo + DataSet.Tables("NotaCR").Rows(j)("Monto")
                 Else
                     If MonedaCompra = "Cordobas" Then
                         If TipoNota <> "Debito Clientes Dif $" Then
                             If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Cordobas" Then
                                 TasaCambioPgo = 1
                             Else
-                                TasaCambioPgo = BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                                TasaCambioPgo = BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
                             End If
                         Else
                             TasaCambioPgo = 0

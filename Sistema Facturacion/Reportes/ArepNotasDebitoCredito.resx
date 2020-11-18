@@ -126,18 +126,27 @@
   <data name="TextBox7.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
+  <data name="TextBox11.OutputFormat" xml:space="preserve">
+    <value>#,##0.00</value>
+  </data>
   <metadata name="$this.TrayLargeIcon" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="OleDBDataSource1.SQL" xml:space="preserve">
-    <value>SELECT        Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, 
-                         Detalle_Nota.Numero_Factura, Detalle_Nota.Monto, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, IndiceNota.Observaciones
-FROM            Detalle_Nota INNER JOIN
-                         Facturas ON Detalle_Nota.Numero_Factura = Facturas.Numero_Factura INNER JOIN
-                         Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN
-                         IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND 
-                         Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota
-WHERE        (Detalle_Nota.Fecha_Nota BETWEEN CONVERT(DATETIME, '2014-09-06 00:00:00', 102) AND CONVERT(DATETIME, '2014-09-06 00:00:00', 102))
+    <value>SELECT        Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, IndiceNota.Observaciones, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, 
+                         Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, 
+                         CASE WHEN IndiceNota.MonedaNota = 'Cordobas' THEN Detalle_Nota.Monto ELSE Detalle_Nota.Monto * TasaCambio.MontoTasa END AS Monto, 
+                         Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, IndiceNota.Numero_Nota AS Expr1, IndiceNota.Fecha_Nota AS Expr2, 
+                         IndiceNota.Tipo_Nota AS Expr3, TasaCambio.FechaTasa, IndiceNota.MonedaNota, TasaCambio.MontoTasa, Facturas.Cod_Bodega, Bodegas.Nombre_Bodega
+FROM            Facturas INNER JOIN
+                         Bodegas ON Facturas.Cod_Bodega = Bodegas.Cod_Bodega RIGHT OUTER JOIN
+                         Clientes INNER JOIN
+                         IndiceNota ON Clientes.Cod_Cliente = IndiceNota.Cod_Cliente INNER JOIN
+                         TasaCambio ON IndiceNota.Fecha_Nota = TasaCambio.FechaTasa RIGHT OUTER JOIN
+                         Detalle_Nota ON IndiceNota.Tipo_Nota = Detalle_Nota.Tipo_Nota AND IndiceNota.Fecha_Nota = Detalle_Nota.Fecha_Nota AND 
+                         IndiceNota.Numero_Nota = Detalle_Nota.Numero_Nota ON Facturas.Numero_Factura = Detalle_Nota.Numero_Factura
+WHERE        (Detalle_Nota.Fecha_Nota BETWEEN CONVERT(DATETIME, '2020-11-13', 102) AND CONVERT(DATETIME, '2020-11-13', 102)) AND (Detalle_Nota.Tipo_Nota BETWEEN
+                          '008' AND '008')
 ORDER BY Detalle_Nota.Tipo_Nota, Detalle_Nota.Fecha_Nota DESC</value>
   </data>
 </root>

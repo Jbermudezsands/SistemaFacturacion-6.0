@@ -457,6 +457,12 @@
     <Compile Include="Reportes\ArepColillas.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\ArepCompatativoLeche.Designer.vb">
+      <DependentUpon>ArepCompatativoLeche.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepCompatativoLeche.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\ArepComprobanteComprasRubro.Designer.vb">
       <DependentUpon>ArepComprobanteComprasRubro.vb</DependentUpon>
     </Compile>
@@ -1672,6 +1678,10 @@
     <EmbeddedResource Include="Reportes\ArepColillas.resx">
       <DependentUpon>ArepColillas.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepCompatativoLeche.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepCompatativoLeche.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepComprobanteComprasRubro.resx">
       <SubType>Designer</SubType>
