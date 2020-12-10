@@ -88,8 +88,8 @@ Public Class FrmSeries
 
         Criterios = "NSeries<> '' "
         Filas = DataSet.Tables("Series").Select(Criterios)
-        If Cantidad < Filas.Length + 1 Then
-            MsgBox("la cantidad de productos es menor que los numeros de series digitados", MsgBoxStyle.Critical, "Zeus Facturacion")
+        If Filas.Length + 1 > Cantidad Then
+            MsgBox("la cantidad de productos es mayor que los numeros de series digitados", MsgBoxStyle.Critical, "Zeus Facturacion")
             Me.TrueDBGridComponentes.Columns(1).Text = ""
             Me.TrueDBGridComponentes.Col = 1
             Me.TrueDBGridComponentes.Row = Me.TrueDBGridComponentes.Row - 1

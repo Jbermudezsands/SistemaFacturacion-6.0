@@ -164,7 +164,7 @@ Public Class FrmProcesarPlantilla
                     '/////////////////////////////GRABO EL ENCABEZADO DE LA FACTURA /////////////////////////////////////////////
                     '//////////////////////////////////////////////////////////////////////////////////////////////////////////
                     If FrmPlantillas.CboTipoProducto.Text = "Nota Debito Clientes" Then
-                        GrabaNotaDebito(NumeroFactura, Fecha, CodigoNota, Neto, My.Forms.FrmPlantillas.TxtMonedaFactura.Text, CodigoCliente, NombreCliente, My.Forms.FrmPlantillas.TxtObservaciones.Text, True, False, TipoCuenta)
+                        GrabaNotaDebito(NumeroFactura, Fecha, CodigoNota, Neto, My.Forms.FrmPlantillas.TxtMonedaFactura.Text, CodigoCliente, NombreCliente, TextMes & " " & My.Forms.FrmPlantillas.TxtObservaciones.Text, True, False, TipoCuenta)
                     Else
                         GrabaFacturasPlantillas(NumeroFactura, CodigoCliente, CodBodega, NombreCliente, ApellidoCliente, DireccionCliente, TelefonoCliente, SubTotal, Iva, Pagado, Neto, Fecha, FechaVencimiento)
                     End If

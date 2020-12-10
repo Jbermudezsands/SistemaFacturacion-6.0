@@ -35,12 +35,14 @@ Partial Public Class ArepCompatativoLeche
         Me.Label2 = New DataDynamics.ActiveReports.Label
         Me.Label4 = New DataDynamics.ActiveReports.Label
         Me.Label5 = New DataDynamics.ActiveReports.Label
+        Me.Label6 = New DataDynamics.ActiveReports.Label
         Me.Detail1 = New DataDynamics.ActiveReports.Detail
         Me.TextBox4 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox5 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox6 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox7 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox3 = New DataDynamics.ActiveReports.TextBox
+        Me.TextBox11 = New DataDynamics.ActiveReports.TextBox
         Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
         Me.GroupHeader1 = New DataDynamics.ActiveReports.GroupHeader
         Me.GroupFooter1 = New DataDynamics.ActiveReports.GroupFooter
@@ -48,6 +50,7 @@ Partial Public Class ArepCompatativoLeche
         Me.TextBox9 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox10 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox2 = New DataDynamics.ActiveReports.TextBox
+        Me.TextBox12 = New DataDynamics.ActiveReports.TextBox
         CType(Me.LblRuc, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblRango, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblDireccion, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -61,20 +64,23 @@ Partial Public Class ArepCompatativoLeche
         CType(Me.Label2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label5, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox3, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TextBox11, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox8, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox9, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox10, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TextBox12, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         '
         'PageHeader1
         '
-        Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.LblRuc, Me.LblRango, Me.LblDireccion, Me.LblTitulo, Me.Line2, Me.TextBox1, Me.ImgLogo, Me.Line1, Me.Label1, Me.Label10, Me.Label9, Me.Label3, Me.Label2, Me.Label4, Me.Label5})
+        Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.LblRuc, Me.LblRango, Me.LblDireccion, Me.LblTitulo, Me.Line2, Me.TextBox1, Me.ImgLogo, Me.Line1, Me.Label1, Me.Label10, Me.Label9, Me.Label3, Me.Label2, Me.Label4, Me.Label5, Me.Label6})
         Me.PageHeader1.Height = 1.833333!
         Me.PageHeader1.Name = "PageHeader1"
         '
@@ -147,7 +153,7 @@ Partial Public Class ArepCompatativoLeche
         Me.LblTitulo.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblTitulo.Height = 0.25!
         Me.LblTitulo.HyperLink = Nothing
-        Me.LblTitulo.Left = 0.1875!
+        Me.LblTitulo.Left = 0.175!
         Me.LblTitulo.Name = "LblTitulo"
         Me.LblTitulo.Style = "ddo-char-set: 0; text-align: center; font-weight: bold; font-size: 14.25pt; "
         Me.LblTitulo.Text = "SYSTEMS AND SOLUTIONS"
@@ -266,12 +272,12 @@ Partial Public Class ArepCompatativoLeche
         Me.Label10.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label10.Height = 0.3!
         Me.Label10.HyperLink = Nothing
-        Me.Label10.Left = 5.05!
+        Me.Label10.Left = 5.125!
         Me.Label10.Name = "Label10"
         Me.Label10.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
         Me.Label10.Text = "Leche Entregada"
         Me.Label10.Top = 1.45!
-        Me.Label10.Width = 0.8499997!
+        Me.Label10.Width = 0.8000002!
         '
         'Label9
         '
@@ -285,12 +291,12 @@ Partial Public Class ArepCompatativoLeche
         Me.Label9.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label9.Height = 0.3!
         Me.Label9.HyperLink = Nothing
-        Me.Label9.Left = 4.175!
+        Me.Label9.Left = 4.275!
         Me.Label9.Name = "Label9"
         Me.Label9.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
         Me.Label9.Text = "Leche Recibida Productor"
         Me.Label9.Top = 1.45!
-        Me.Label9.Width = 0.9!
+        Me.Label9.Width = 0.8750001!
         '
         'Label3
         '
@@ -347,7 +353,7 @@ Partial Public Class ArepCompatativoLeche
         Me.Label4.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
         Me.Label4.Text = "Periodo Nomina"
         Me.Label4.Top = 1.45!
-        Me.Label4.Width = 4.075!
+        Me.Label4.Width = 3.325!
         '
         'Label5
         '
@@ -368,10 +374,29 @@ Partial Public Class ArepCompatativoLeche
         Me.Label5.Top = 1.45!
         Me.Label5.Width = 0.8499997!
         '
+        'Label6
+        '
+        Me.Label6.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label6.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label6.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label6.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label6.Border.RightColor = System.Drawing.Color.Black
+        Me.Label6.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label6.Border.TopColor = System.Drawing.Color.Black
+        Me.Label6.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label6.Height = 0.3!
+        Me.Label6.HyperLink = Nothing
+        Me.Label6.Left = 3.375!
+        Me.Label6.Name = "Label6"
+        Me.Label6.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
+        Me.Label6.Text = "Monto  Pagado Leche C$"
+        Me.Label6.Top = 1.45!
+        Me.Label6.Width = 0.8750001!
+        '
         'Detail1
         '
         Me.Detail1.ColumnSpacing = 0.0!
-        Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TextBox4, Me.TextBox5, Me.TextBox6, Me.TextBox7, Me.TextBox3})
+        Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TextBox4, Me.TextBox5, Me.TextBox6, Me.TextBox7, Me.TextBox3, Me.TextBox11})
         Me.Detail1.Height = 0.21875!
         Me.Detail1.Name = "Detail1"
         '
@@ -392,7 +417,7 @@ Partial Public Class ArepCompatativoLeche
         Me.TextBox4.Style = ""
         Me.TextBox4.Text = Nothing
         Me.TextBox4.Top = 0.0!
-        Me.TextBox4.Width = 4.1!
+        Me.TextBox4.Width = 3.35!
         '
         'TextBox5
         '
@@ -406,13 +431,13 @@ Partial Public Class ArepCompatativoLeche
         Me.TextBox5.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox5.DataField = "Total"
         Me.TextBox5.Height = 0.2!
-        Me.TextBox5.Left = 4.175!
+        Me.TextBox5.Left = 4.275!
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.OutputFormat = resources.GetString("TextBox5.OutputFormat")
         Me.TextBox5.Style = "text-align: right; "
         Me.TextBox5.Text = Nothing
         Me.TextBox5.Top = 0.0!
-        Me.TextBox5.Width = 0.8999999!
+        Me.TextBox5.Width = 0.8749999!
         '
         'TextBox6
         '
@@ -466,13 +491,33 @@ Partial Public Class ArepCompatativoLeche
         Me.TextBox3.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox3.DataField = "TotalEntregado"
         Me.TextBox3.Height = 0.2!
-        Me.TextBox3.Left = 5.075!
+        Me.TextBox3.Left = 5.15!
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.OutputFormat = resources.GetString("TextBox3.OutputFormat")
         Me.TextBox3.Style = "text-align: right; "
         Me.TextBox3.Text = Nothing
         Me.TextBox3.Top = 0.0!
-        Me.TextBox3.Width = 0.8000001!
+        Me.TextBox3.Width = 0.725!
+        '
+        'TextBox11
+        '
+        Me.TextBox11.Border.BottomColor = System.Drawing.Color.Black
+        Me.TextBox11.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox11.Border.LeftColor = System.Drawing.Color.Black
+        Me.TextBox11.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox11.Border.RightColor = System.Drawing.Color.Black
+        Me.TextBox11.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox11.Border.TopColor = System.Drawing.Color.Black
+        Me.TextBox11.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox11.DataField = "TotalNetoPagado"
+        Me.TextBox11.Height = 0.2!
+        Me.TextBox11.Left = 3.4!
+        Me.TextBox11.Name = "TextBox11"
+        Me.TextBox11.OutputFormat = resources.GetString("TextBox11.OutputFormat")
+        Me.TextBox11.Style = "text-align: right; "
+        Me.TextBox11.Text = Nothing
+        Me.TextBox11.Top = 0.0!
+        Me.TextBox11.Width = 0.8749999!
         '
         'PageFooter1
         '
@@ -487,8 +532,8 @@ Partial Public Class ArepCompatativoLeche
         '
         'GroupFooter1
         '
-        Me.GroupFooter1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TextBox8, Me.TextBox9, Me.TextBox10, Me.TextBox2})
-        Me.GroupFooter1.Height = 0.3854167!
+        Me.GroupFooter1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TextBox8, Me.TextBox9, Me.TextBox10, Me.TextBox2, Me.TextBox12})
+        Me.GroupFooter1.Height = 0.2291667!
         Me.GroupFooter1.Name = "GroupFooter1"
         '
         'TextBox8
@@ -503,7 +548,7 @@ Partial Public Class ArepCompatativoLeche
         Me.TextBox8.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox8.DataField = "Total"
         Me.TextBox8.Height = 0.2!
-        Me.TextBox8.Left = 4.2!
+        Me.TextBox8.Left = 4.25!
         Me.TextBox8.Name = "TextBox8"
         Me.TextBox8.OutputFormat = resources.GetString("TextBox8.OutputFormat")
         Me.TextBox8.Style = "text-align: right; "
@@ -512,7 +557,7 @@ Partial Public Class ArepCompatativoLeche
         Me.TextBox8.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
         Me.TextBox8.Text = Nothing
         Me.TextBox8.Top = 0.0!
-        Me.TextBox8.Width = 0.8999999!
+        Me.TextBox8.Width = 0.8499999!
         '
         'TextBox9
         '
@@ -583,6 +628,29 @@ Partial Public Class ArepCompatativoLeche
         Me.TextBox2.Top = 0.0!
         Me.TextBox2.Width = 0.8999999!
         '
+        'TextBox12
+        '
+        Me.TextBox12.Border.BottomColor = System.Drawing.Color.Black
+        Me.TextBox12.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox12.Border.LeftColor = System.Drawing.Color.Black
+        Me.TextBox12.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox12.Border.RightColor = System.Drawing.Color.Black
+        Me.TextBox12.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox12.Border.TopColor = System.Drawing.Color.Black
+        Me.TextBox12.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox12.DataField = "TotalNetoPagado"
+        Me.TextBox12.Height = 0.2!
+        Me.TextBox12.Left = 3.425!
+        Me.TextBox12.Name = "TextBox12"
+        Me.TextBox12.OutputFormat = resources.GetString("TextBox12.OutputFormat")
+        Me.TextBox12.Style = "text-align: right; "
+        Me.TextBox12.SummaryGroup = "GroupHeader1"
+        Me.TextBox12.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
+        Me.TextBox12.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
+        Me.TextBox12.Text = Nothing
+        Me.TextBox12.Top = 0.0!
+        Me.TextBox12.Width = 0.8499999!
+        '
         'ArepCompatativoLeche
         '
         Me.MasterReport = False
@@ -621,15 +689,18 @@ Partial Public Class ArepCompatativoLeche
         CType(Me.Label2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label5, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label6, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox6, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox7, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox3, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TextBox11, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox8, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox9, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox10, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TextBox12, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
 
     End Sub
@@ -659,4 +730,7 @@ Partial Public Class ArepCompatativoLeche
     Friend WithEvents Label5 As DataDynamics.ActiveReports.Label
     Friend WithEvents TextBox3 As DataDynamics.ActiveReports.TextBox
     Friend WithEvents TextBox2 As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents Label6 As DataDynamics.ActiveReports.Label
+    Friend WithEvents TextBox11 As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents TextBox12 As DataDynamics.ActiveReports.TextBox
 End Class 

@@ -943,7 +943,20 @@ Public Class FrmRecibosFacturas
                         'DataSet.Tables("DetalleFacturas").Clear()
                     End If
 
-                    '
+                    '/////////////////////////////////////SI ES UNA NOTA DE DEBITO IMPRIMO LAS OBSERVACIONES ///////////////
+                    '/////////////////////////////////////////////////////////////////////////////////////////////////////
+                    If TipoFactura = "NotaDebito" Then
+                        'SQlString = "SELECT  Detalle_Nota.* FROM Detalle_Nota WHERE Numero_Nota = '" & Mid(NumeroFactura, 3, Len(NumeroFactura)) & "')"
+                        SQlString = "SELECT Detalle_Nota.Numero_Nota, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Fecha_Nota FROM  Detalle_Nota INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB  " & _
+                                    "WHERE (Detalle_Nota.Numero_Nota = '" & Mid(NumeroFactura, 3, Len(NumeroFactura)) & "') AND (NotaDebito.Tipo LIKE N'%Debito Clientes%')"
+                        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+                        DataAdapter.Fill(DataSet, "Consulta")
+                        If DataSet.Tables("Consulta").Rows.Count <> 0 Then
+                            Descripcion = DataSet.Tables("Consulta").Rows(0)("Descripcion")
+                        End If
+                    End If
+                    DataSet.Tables("Consulta").Reset()
+
 
                     If MontoFactura <> 0 Then
                         If MontoMetodo >= MontoFactura Then

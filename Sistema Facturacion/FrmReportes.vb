@@ -2829,7 +2829,7 @@ Public Class FrmReportes
                 Dim Mes As Double, Año As Double
                 Dim oDataRow As DataRow, i As Double, Registro As Double = 0, Periodo As String
                 Dim FechaInicio As Date, FechaFin As Date, CantRecibida As Double, CantLitrosAgua As Double, CantEnviada As Double, CantAcopiada As Double, Diferencia As Double
-                Dim CantLitrosPagados As Double
+                Dim CantLitrosPagados As Double, TotalNetoPagado As Double
 
                 Mes = Me.CboMes.Text
                 Año = Me.CboAño.Text
@@ -2845,7 +2845,7 @@ Public Class FrmReportes
                 '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 '///////////////////////////////////CREO UNA CONSULTA QUE NUNCA TENDRA REGISTROS /////////////////////////////////////////////////////////
                 '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                SqlDatos = "SELECT SUM(Detalle_Nomina.Total) AS Total, SUM(Detalle_Nomina.Total) AS TotalEntregado, SUM(Detalle_Nomina.Total) AS LitrosAgua, SUM(Detalle_Nomina.Total) AS Diferencia, SUM(Detalle_Nomina.Total) AS TotalLitrosPagado, Nomina.FechaInicial, Nomina.FechaFinal, TipoNomina.TipoNomina AS Periodo, Nomina.mes FROM  Detalle_Nomina INNER JOIN Nomina ON Detalle_Nomina.NumNomina = Nomina.NumPlanilla INNER JOIN  TipoNomina ON Nomina.CodTipoNomina = TipoNomina.CodTipoNomina WHERE (Detalle_Nomina.TipoProductor = 'Productor') AND (Nomina.Año = 2020) AND (Nomina.mes = -100000) GROUP BY Nomina.CodTipoNomina, TipoNomina.TipoNomina, Nomina.FechaInicial, Nomina.FechaFinal, Nomina.mes ORDER BY Nomina.CodTipoNomina"
+                SqlDatos = "SELECT SUM(Detalle_Nomina.Total) AS Total, SUM(Detalle_Nomina.Total) AS TotalEntregado, SUM(Detalle_Nomina.Total) AS LitrosAgua, SUM(Detalle_Nomina.Total) AS Diferencia, SUM(Detalle_Nomina.Total) AS TotalLitrosPagado, Nomina.FechaInicial, Nomina.FechaFinal, TipoNomina.TipoNomina AS Periodo, Nomina.mes, SUM(Detalle_Nomina.Total) As TotalNetoPagado FROM  Detalle_Nomina INNER JOIN Nomina ON Detalle_Nomina.NumNomina = Nomina.NumPlanilla INNER JOIN  TipoNomina ON Nomina.CodTipoNomina = TipoNomina.CodTipoNomina WHERE (Detalle_Nomina.TipoProductor = 'Productor') AND (Nomina.Año = 2020) AND (Nomina.mes = -100000) GROUP BY Nomina.CodTipoNomina, TipoNomina.TipoNomina, Nomina.FechaInicial, Nomina.FechaFinal, Nomina.mes ORDER BY Nomina.CodTipoNomina"
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
                 DataAdapter.Fill(DataSet, "Comparativo")
 
@@ -2871,7 +2871,7 @@ Public Class FrmReportes
 
 
                     'SqlDatos = "SELECT  Fecha, SUM(Cantidad_Enviada) AS Cantidad_Enviada, SUM(Cantidad_Recibida) AS Cantidad_Recibida, SUM(Diferencia) AS Diferencia, SUM(Litros_Agua) AS Litros_Agua, SUM(TotalLitros) AS TotalLitros FROM DetalleLiquidacionLeche GROUP BY Fecha HAVING  (Fecha BETWEEN CONVERT(DATETIME, '" & Format(FechaInicio, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102))"
-                    SqlDatos = "SELECT  SUM(Cantidad_Enviada) AS Cantidad_Enviada, SUM(Cantidad_Recibida) AS Cantidad_Recibida, SUM(Diferencia) AS Diferencia, SUM(Litros_Agua) AS Litros_Agua, SUM(TotalLitros) AS TotalLitros   FROM DetalleLiquidacionLeche WHERE  (Fecha BETWEEN CONVERT(DATETIME, '" & Format(FechaInicio, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102))"
+                    SqlDatos = "SELECT  SUM(Cantidad_Enviada) AS Cantidad_Enviada, SUM(Cantidad_Recibida) AS Cantidad_Recibida, SUM(Diferencia) AS Diferencia, SUM(Litros_Agua) AS Litros_Agua, SUM(TotalLitros) AS TotalLitros, SUM(Total_Ingresos - Total_Deducciones) AS TotalNetoPagado   FROM DetalleLiquidacionLeche WHERE  (Fecha BETWEEN CONVERT(DATETIME, '" & Format(FechaInicio, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102))"
                     DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
                     DataAdapter.Fill(DataSet, "Consulta")
                     If DataSet.Tables("Consulta").Rows.Count <> 0 Then
@@ -2900,6 +2900,12 @@ Public Class FrmReportes
                             CantLitrosPagados = 0
                         End If
 
+                        If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("TotalNetoPagado")) Then
+                            TotalNetoPagado = DataSet.Tables("Consulta").Rows(0)("TotalNetoPagado")
+                        Else
+                            TotalNetoPagado = 0
+                        End If
+
                     End If
 
 
@@ -2914,6 +2920,7 @@ Public Class FrmReportes
                     oDataRow("FechaFinal") = FechaFin
                     oDataRow("TotalLitrosPagado") = CantLitrosPagados
                     oDataRow("Periodo") = " Planilla desde " & Format(FechaInicio, "dd/MM/yyyy") & " Hasta " & Format(FechaFin, "dd/MM/yyyy")
+                    oDataRow("TotalNetoPagado") = TotalNetoPagado
                     DataSet.Tables("Comparativo").Rows.Add(oDataRow)
 
 

@@ -1214,6 +1214,9 @@ Public Class FrmPlanilla
 
         ArepPlanilla.LblOrden.Text = Me.TxtNumNomina.Text
         ArepPlanilla.LblFechaOrden.Text = Me.DTPFechaFin.Value
+        ArepPlanilla.LblPeriodo.Text = "Periodo desde " & Me.DTPFechaIni.Value & " Hasta " & Me.DTPFechaFin.Value
+        ArepPlanilla.LblImpreso.Text = "Impreso: " & Format(Now, "D")
+        ArepPlanilla.LblTipoNomina.Text = Me.CboTipoPlanilla.Text
 
         Fecha = Me.DTPFechaIni.Value
         If Fecha.DayOfWeek = 6 Then
