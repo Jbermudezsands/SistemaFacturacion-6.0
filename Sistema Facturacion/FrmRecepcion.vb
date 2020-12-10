@@ -1,5 +1,5 @@
 Public Class FrmRecepcion
-    Public MiConexion As New SqlClient.SqlConnection(Conexion), Año As String, Mes As String, Dia As String, ConsecutivoFacturaSerie As Boolean = False, Numero_Recepcion As String, PesoBruto As Double = 0, Procesar As Boolean = False
+    Public MiConexion As New SqlClient.SqlConnection(Conexion), Año As String, Mes As String, Dia As String, ConsecutivoFacturaSerie As Boolean = False, Numero_Recepcion As String, PesoBruto As Double = 0, Procesar As Boolean = False, Tara As Double
     Delegate Sub delegado(ByVal data As String)
     Private Sub Siguiente()
         If Me.TrueDBGridComponentes.RowCount <> 0 Then
@@ -374,12 +374,12 @@ Public Class FrmRecepcion
 
     End Sub
 
-    Private Sub Button11_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button11.Click
+    Public Sub Button11_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button11.Click
         My.Forms.FrmPuertos.Pregunta = "Recepcion"
         My.Forms.FrmPuertos.ShowDialog()
     End Sub
 
-    Private Sub Button10_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button10.Click
+    Public Sub Button10_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button10.Click
         Me.sp.Close()
         Me.LblEstado.Text = "DESCONECT"
         Me.LblEstado.ForeColor = Color.Black
@@ -394,7 +394,7 @@ Public Class FrmRecepcion
         Fecha = Format(CDate(Me.DTPFecha.Text), "yyyy-MM-dd")
 
 
-        SqlString = "SELECT  id_Eventos, NumeroRecepcion, Fecha, TipoRecepcion, Cod_Productos, Descripcion_Producto, Codigo_Beams, Cantidad, Unidad_Medida, Calidad, Estado, Precio, PesoKg, PesoNetoKg, PesoKg * Precio as TotalPagar  FROM Detalle_Recepcion WHERE (NumeroRecepcion = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (TipoRecepcion = '" & Me.CboTipoRecepcion.Text & "')"
+        SqlString = "SELECT  id_Eventos, NumeroRecepcion, Fecha, TipoRecepcion, Cod_Productos, Descripcion_Producto, Codigo_Beams, Cantidad, Unidad_Medida, Calidad, Estado, Precio, PesoKg, PesoNetoKg, PesoNetoKg * Precio as TotalPagar  FROM Detalle_Recepcion WHERE (NumeroRecepcion = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (TipoRecepcion = '" & Me.CboTipoRecepcion.Text & "')"
 
         Sqldatos = "SELECT * FROM DatosEmpresa"
         DataAdapter = New SqlClient.SqlDataAdapter(Sqldatos, MiConexion)
@@ -1099,6 +1099,7 @@ Public Class FrmRecepcion
 
     Private Sub ChkTaraSaco_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChkTaraSaco.CheckedChanged
         Bitacora(Now, NombreUsuario, "Recepcion", "Cambio Calculo de Tara en la Recepcion No: " & Me.TxtNumeroEnsamble.Text)
+
     End Sub
 
     Private Sub GroupBox1_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox1.Enter
@@ -1161,11 +1162,26 @@ Public Class FrmRecepcion
 
 
     Private Sub ListBoxRecolector_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles ListBoxRecolector.LostFocus
+        Me.TxtRecolector.Text = Me.ListBoxRecolector.Text
         Me.ListBoxRecolector.Visible = False
     End Sub
 
 
     Private Sub ListBoxRecolector_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListBoxRecolector.SelectedIndexChanged
 
+    End Sub
+
+    Private Sub ChkTaraSaco_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ChkTaraSaco.Click
+        If Me.ChkTaraSaco.Checked = True Then
+            Me.BtnTara.Visible = False
+        Else
+            Me.BtnTara.Visible = True
+        End If
+    End Sub
+
+    Private Sub BtnTara_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnTara.Click
+        Button10_Click(sender, e)
+        My.Forms.FrmTara.ShowDialog()
+        Button11_Click(sender, e)
     End Sub
 End Class

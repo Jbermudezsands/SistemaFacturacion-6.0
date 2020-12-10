@@ -32,6 +32,7 @@ Partial Public Class ArepListadoClientes
         Me.Label3 = New DataDynamics.ActiveReports.Label
         Me.Label1 = New DataDynamics.ActiveReports.Label
         Me.Label4 = New DataDynamics.ActiveReports.Label
+        Me.Label5 = New DataDynamics.ActiveReports.Label
         Me.Detail1 = New DataDynamics.ActiveReports.Detail
         Me.TextBox2 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox3 = New DataDynamics.ActiveReports.TextBox
@@ -39,9 +40,8 @@ Partial Public Class ArepListadoClientes
         Me.TextBox5 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox6 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox7 = New DataDynamics.ActiveReports.TextBox
-        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
-        Me.Label5 = New DataDynamics.ActiveReports.Label
         Me.TextBox8 = New DataDynamics.ActiveReports.TextBox
+        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
         CType(Me.ImgLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblTitulo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblDireccion, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -54,13 +54,13 @@ Partial Public Class ArepListadoClientes
         CType(Me.Label3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label4, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox7, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Label5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox8, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         '
@@ -305,6 +305,26 @@ Partial Public Class ArepListadoClientes
         Me.Label4.Top = 1.125!
         Me.Label4.Width = 0.6250002!
         '
+        'Label5
+        '
+        Me.Label5.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label5.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label5.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label5.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label5.Border.RightColor = System.Drawing.Color.Black
+        Me.Label5.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label5.Border.TopColor = System.Drawing.Color.Black
+        Me.Label5.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label5.Height = 0.2!
+        Me.Label5.HyperLink = Nothing
+        Me.Label5.Left = 5.425001!
+        Me.Label5.Name = "Label5"
+        Me.Label5.Style = "color: rgb(255,255,255); ddo-char-set: 0; text-align: center; font-weight: bold; " & _
+            "background-color: #8080FF; font-size: 8.25pt; "
+        Me.Label5.Text = "Direccion"
+        Me.Label5.Top = 1.125!
+        Me.Label5.Width = 1.5!
+        '
         'Detail1
         '
         Me.Detail1.ColumnSpacing = 0.0!
@@ -344,6 +364,7 @@ Partial Public Class ArepListadoClientes
         Me.TextBox3.DataField = "Nombres"
         Me.TextBox3.Height = 0.175!
         Me.TextBox3.Left = 0.925!
+        Me.TextBox3.MultiLine = False
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox3.Text = "Nombre_Cliente"
@@ -365,6 +386,7 @@ Partial Public Class ArepListadoClientes
         Me.TextBox4.Left = 4.825!
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.Style = "ddo-char-set: 0; font-size: 8.25pt; "
+        Me.TextBox4.Text = Nothing
         Me.TextBox4.Top = 0.0!
         Me.TextBox4.Width = 0.6249999!
         '
@@ -421,33 +443,9 @@ Partial Public Class ArepListadoClientes
         Me.TextBox7.Left = 3.975!
         Me.TextBox7.Name = "TextBox7"
         Me.TextBox7.Style = "ddo-char-set: 0; font-size: 8.25pt; "
+        Me.TextBox7.Text = Nothing
         Me.TextBox7.Top = 0.0!
         Me.TextBox7.Width = 0.8499999!
-        '
-        'PageFooter1
-        '
-        Me.PageFooter1.Height = 0.25!
-        Me.PageFooter1.Name = "PageFooter1"
-        '
-        'Label5
-        '
-        Me.Label5.Border.BottomColor = System.Drawing.Color.Black
-        Me.Label5.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label5.Border.LeftColor = System.Drawing.Color.Black
-        Me.Label5.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label5.Border.RightColor = System.Drawing.Color.Black
-        Me.Label5.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label5.Border.TopColor = System.Drawing.Color.Black
-        Me.Label5.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label5.Height = 0.2!
-        Me.Label5.HyperLink = Nothing
-        Me.Label5.Left = 5.425001!
-        Me.Label5.Name = "Label5"
-        Me.Label5.Style = "color: rgb(255,255,255); ddo-char-set: 0; text-align: center; font-weight: bold; " & _
-            "background-color: #8080FF; font-size: 8.25pt; "
-        Me.Label5.Text = "Direccion"
-        Me.Label5.Top = 1.125!
-        Me.Label5.Width = 1.5!
         '
         'TextBox8
         '
@@ -464,8 +462,14 @@ Partial Public Class ArepListadoClientes
         Me.TextBox8.Left = 5.425001!
         Me.TextBox8.Name = "TextBox8"
         Me.TextBox8.Style = "ddo-char-set: 0; font-size: 8.25pt; "
+        Me.TextBox8.Text = Nothing
         Me.TextBox8.Top = 0.0!
         Me.TextBox8.Width = 1.475!
+        '
+        'PageFooter1
+        '
+        Me.PageFooter1.Height = 0.25!
+        Me.PageFooter1.Name = "PageFooter1"
         '
         'ArepListadoClientes
         '
@@ -503,13 +507,13 @@ Partial Public Class ArepListadoClientes
         CType(Me.Label3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label4, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox6, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox7, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Label5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox8, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
 

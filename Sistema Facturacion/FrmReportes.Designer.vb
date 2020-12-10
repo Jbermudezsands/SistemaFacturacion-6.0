@@ -144,6 +144,7 @@ Partial Class FrmReportes
         Me.CboProveedores = New C1.Win.C1List.C1Combo
         Me.Label32 = New System.Windows.Forms.Label
         Me.ListaImagenes = New System.Windows.Forms.ImageList(Me.components)
+        Me.ChkAgrupadoBodega = New System.Windows.Forms.CheckBox
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -2047,6 +2048,17 @@ Partial Class FrmReportes
         Me.ListaImagenes.Images.SetKeyName(7, "Circulo7.png")
         Me.ListaImagenes.Images.SetKeyName(8, "")
         '
+        'ChkAgrupadoBodega
+        '
+        Me.ChkAgrupadoBodega.AutoSize = True
+        Me.ChkAgrupadoBodega.Location = New System.Drawing.Point(652, 383)
+        Me.ChkAgrupadoBodega.Name = "ChkAgrupadoBodega"
+        Me.ChkAgrupadoBodega.Size = New System.Drawing.Size(130, 17)
+        Me.ChkAgrupadoBodega.TabIndex = 217
+        Me.ChkAgrupadoBodega.Text = "Agrupado por Bodega"
+        Me.ChkAgrupadoBodega.UseVisualStyleBackColor = True
+        Me.ChkAgrupadoBodega.Visible = False
+        '
         'FrmReportes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2084,6 +2096,7 @@ Partial Class FrmReportes
         Me.Controls.Add(Me.ChkAgrupVtas)
         Me.Controls.Add(Me.GroupBoxDepartamento)
         Me.Controls.Add(Me.GroupBoxAño)
+        Me.Controls.Add(Me.ChkAgrupadoBodega)
         Me.Name = "FrmReportes"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Reportes"
@@ -2278,4 +2291,5 @@ Partial Class FrmReportes
     Friend WithEvents BtnProveedorHasta As System.Windows.Forms.Button
     Friend WithEvents BtnProveedor1 As System.Windows.Forms.Button
     Friend WithEvents BtnProveedor2 As System.Windows.Forms.Button
+    Friend WithEvents ChkAgrupadoBodega As System.Windows.Forms.CheckBox
 End Class

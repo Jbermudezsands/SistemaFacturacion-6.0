@@ -121,11 +121,9 @@ Public Class FrmPagosFacturas
         Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(3).Visible = False
         MiConexion.Close()
 
-
+        Me.CargarGridPagos()
     End Sub
-
-
-    Private Sub TxtCodigoProveedor_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtCodigoProveedor.TextChanged
+    Public Sub CargarGridPagos()
         Dim SqlProveedor As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         SqlProveedor = "SELECT  * FROM Proveedor  WHERE (Cod_Proveedor = '" & Me.TxtCodigoProveedor.Text & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
@@ -171,18 +169,21 @@ Public Class FrmPagosFacturas
 
             Me.TrueDBGridComponentes.Columns("MontoCredito").Caption = "Monto Credito"
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("MontoCredito").Width = 100
+            Me.TrueDBGridComponentes.Columns("MontoCredito").NumberFormat = "##,##0.00"
 
             Me.TrueDBGridComponentes.Columns("MontoPagado").Caption = "Monto Pagado"
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("MontoPagado").Width = 100
 
             Me.TrueDBGridComponentes.Columns("Saldo").Caption = "Saldo"
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Saldo").Width = 100
+            Me.TrueDBGridComponentes.Columns("Saldo").NumberFormat = "##,##0.00"
 
             Me.TrueDBGridComponentes.Columns("Retencion").Caption = "Retencion"
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Retencion").Width = 63
 
             Me.TrueDBGridComponentes.Columns("NetoPagar").Caption = "NetoPagar"
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("NetoPagar").Width = 100
+            Me.TrueDBGridComponentes.Columns("NetoPagar").NumberFormat = "##,##0.00"
 
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Factura").Visible = False
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
@@ -195,6 +196,10 @@ Public Class FrmPagosFacturas
             MiConexion.Close()
 
         End If
+    End Sub
+
+    Private Sub TxtCodigoProveedor_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtCodigoProveedor.TextChanged
+
     End Sub
 
     Private Sub TrueDBGridMetodo_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridMetodo.AfterUpdate

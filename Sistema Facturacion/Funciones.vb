@@ -1063,6 +1063,8 @@ Module Funciones
         QQ = 0
         If FrmRecepcion.ChkTaraSaco.Checked = True Then
             Factor = 3
+        Else
+            Factor = My.Forms.FrmRecepcion.Tara
         End If
 
         My.Forms.FrmQQ.ShowDialog()
@@ -4425,7 +4427,10 @@ Module Funciones
             If Not IsDBNull(DataSet.Tables("Compras").Rows(Iposicion)("Precio_Neto")) Then
                 PrecioUnitario = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Precio_Neto"))
             End If
-            CantidadCompra = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Cantidad")) + CantidadCompra
+
+            If Not IsDBNull(DataSet.Tables("Compras").Rows(Iposicion)("Cantidad")) Then
+                CantidadCompra = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Cantidad")) + CantidadCompra
+            End If
             If Not IsDBNull(DataSet.Tables("Compras").Rows(Iposicion)("Importe")) Then
                 Importe = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Importe"))
             End If

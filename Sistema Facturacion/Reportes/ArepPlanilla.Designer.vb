@@ -156,6 +156,8 @@ Partial Public Class ArepPlanilla
         Me.TextBox48 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox87 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox88 = New DataDynamics.ActiveReports.TextBox
+        Me.LblTipoNomina = New DataDynamics.ActiveReports.Label
+        Me.LblImpreso = New DataDynamics.ActiveReports.Label
         CType(Me.lblOrderNum, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.lblOrderDate, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ImgLogo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -286,11 +288,13 @@ Partial Public Class ArepPlanilla
         CType(Me.TextBox48, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox87, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox88, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LblTipoNomina, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LblImpreso, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         '
         'PageHeader1
         '
-        Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.lblOrderNum, Me.lblOrderDate, Me.ImgLogo, Me.LblEncabezado, Me.LblDireccion, Me.LblOrden, Me.LblFechaOrden, Me.LblCodigo, Me.LblNombre, Me.LblMiercoles, Me.LblLunes, Me.LblMartes, Me.LblJueves, Me.LblViernes, Me.LblSabado, Me.LblDomingo, Me.Label10, Me.Label11, Me.Label12, Me.Label13, Me.Label14, Me.Label15, Me.Label16, Me.Label17, Me.Label18, Me.Label19, Me.Label20, Me.Label21, Me.LblRuc, Me.LblPeriodo, Me.Label22, Me.Label25})
+        Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.lblOrderNum, Me.lblOrderDate, Me.ImgLogo, Me.LblEncabezado, Me.LblDireccion, Me.LblOrden, Me.LblFechaOrden, Me.LblCodigo, Me.LblNombre, Me.LblMiercoles, Me.LblLunes, Me.LblMartes, Me.LblJueves, Me.LblViernes, Me.LblSabado, Me.LblDomingo, Me.Label10, Me.Label11, Me.Label12, Me.Label13, Me.Label14, Me.Label15, Me.Label16, Me.Label17, Me.Label18, Me.Label19, Me.Label20, Me.Label21, Me.LblRuc, Me.LblPeriodo, Me.Label22, Me.Label25, Me.LblTipoNomina, Me.LblImpreso})
         Me.PageHeader1.Height = 2.166667!
         Me.PageHeader1.Name = "PageHeader1"
         '
@@ -863,7 +867,7 @@ Partial Public Class ArepPlanilla
         Me.LblPeriodo.Name = "LblPeriodo"
         Me.LblPeriodo.Style = "ddo-char-set: 0; font-style: italic; font-size: 8.25pt; "
         Me.LblPeriodo.Text = ""
-        Me.LblPeriodo.Top = 1.5625!
+        Me.LblPeriodo.Top = 1.55!
         Me.LblPeriodo.Width = 10.5625!
         '
         'Label22
@@ -2501,7 +2505,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox22.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox22.DataField = "Nombre_Ruta"
         Me.TextBox22.Height = 0.1666667!
-        Me.TextBox22.Left = 0.7222223!
+        Me.TextBox22.Left = 0.7250001!
         Me.TextBox22.Name = "TextBox22"
         Me.TextBox22.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox22.Text = Nothing
@@ -2990,6 +2994,44 @@ Partial Public Class ArepPlanilla
         Me.TextBox88.Top = 0.0!
         Me.TextBox88.Width = 0.58!
         '
+        'LblTipoNomina
+        '
+        Me.LblTipoNomina.Border.BottomColor = System.Drawing.Color.Black
+        Me.LblTipoNomina.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblTipoNomina.Border.LeftColor = System.Drawing.Color.Black
+        Me.LblTipoNomina.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblTipoNomina.Border.RightColor = System.Drawing.Color.Black
+        Me.LblTipoNomina.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblTipoNomina.Border.TopColor = System.Drawing.Color.Black
+        Me.LblTipoNomina.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblTipoNomina.Height = 0.1875!
+        Me.LblTipoNomina.HyperLink = Nothing
+        Me.LblTipoNomina.Left = 4.375!
+        Me.LblTipoNomina.Name = "LblTipoNomina"
+        Me.LblTipoNomina.Style = "ddo-char-set: 0; font-style: italic; font-size: 8.25pt; "
+        Me.LblTipoNomina.Text = ""
+        Me.LblTipoNomina.Top = 1.05!
+        Me.LblTipoNomina.Width = 2.0!
+        '
+        'LblImpreso
+        '
+        Me.LblImpreso.Border.BottomColor = System.Drawing.Color.Black
+        Me.LblImpreso.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblImpreso.Border.LeftColor = System.Drawing.Color.Black
+        Me.LblImpreso.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblImpreso.Border.RightColor = System.Drawing.Color.Black
+        Me.LblImpreso.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblImpreso.Border.TopColor = System.Drawing.Color.Black
+        Me.LblImpreso.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblImpreso.Height = 0.1875!
+        Me.LblImpreso.HyperLink = Nothing
+        Me.LblImpreso.Left = 4.375!
+        Me.LblImpreso.Name = "LblImpreso"
+        Me.LblImpreso.Style = "ddo-char-set: 0; font-style: italic; font-size: 8.25pt; "
+        Me.LblImpreso.Text = ""
+        Me.LblImpreso.Top = 1.275!
+        Me.LblImpreso.Width = 4.0!
+        '
         'ArepPlanilla
         '
         Me.MasterReport = False
@@ -3148,6 +3190,8 @@ Partial Public Class ArepPlanilla
         CType(Me.TextBox48, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox87, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox88, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LblTipoNomina, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LblImpreso, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
 
     End Sub
@@ -3285,4 +3329,6 @@ Partial Public Class ArepPlanilla
     Friend WithEvents TextBox88 As DataDynamics.ActiveReports.TextBox
     Friend WithEvents TextBox89 As DataDynamics.ActiveReports.TextBox
     Friend WithEvents TextBox90 As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents LblTipoNomina As DataDynamics.ActiveReports.Label
+    Friend WithEvents LblImpreso As DataDynamics.ActiveReports.Label
 End Class

@@ -36,6 +36,12 @@ Partial Public Class ArepBitacoraRecepcion
         Me.LblCosecha = New DataDynamics.ActiveReports.Label
         Me.LblLocalidad = New DataDynamics.ActiveReports.Label
         Me.LblHora = New DataDynamics.ActiveReports.Label
+        Me.Label39 = New DataDynamics.ActiveReports.Label
+        Me.Label40 = New DataDynamics.ActiveReports.Label
+        Me.Label41 = New DataDynamics.ActiveReports.Label
+        Me.LblCodRecolector = New DataDynamics.ActiveReports.Label
+        Me.LblNombreRecolector = New DataDynamics.ActiveReports.Label
+        Me.LblCedulaRecolector = New DataDynamics.ActiveReports.Label
         Me.Detail1 = New DataDynamics.ActiveReports.Detail
         Me.TextBox5 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox1 = New DataDynamics.ActiveReports.TextBox
@@ -98,12 +104,6 @@ Partial Public Class ArepBitacoraRecepcion
         Me.Label36 = New DataDynamics.ActiveReports.Label
         Me.Label38 = New DataDynamics.ActiveReports.Label
         Me.TextBox12 = New DataDynamics.ActiveReports.TextBox
-        Me.Label39 = New DataDynamics.ActiveReports.Label
-        Me.Label40 = New DataDynamics.ActiveReports.Label
-        Me.Label41 = New DataDynamics.ActiveReports.Label
-        Me.LblCodRecolector = New DataDynamics.ActiveReports.Label
-        Me.LblNombreRecolector = New DataDynamics.ActiveReports.Label
-        Me.LblCedulaRecolector = New DataDynamics.ActiveReports.Label
         CType(Me.lblOrderNum, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.lblOrderDate, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ImgLogo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -120,6 +120,12 @@ Partial Public Class ArepBitacoraRecepcion
         CType(Me.LblCosecha, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblLocalidad, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblHora, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label39, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label40, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label41, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LblCodRecolector, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LblNombreRecolector, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LblCedulaRecolector, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox7, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -175,12 +181,6 @@ Partial Public Class ArepBitacoraRecepcion
         CType(Me.Label36, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label38, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox12, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Label39, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Label40, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Label41, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.LblCodRecolector, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.LblNombreRecolector, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.LblCedulaRecolector, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         '
         'PageHeader1
@@ -499,6 +499,120 @@ Partial Public Class ArepBitacoraRecepcion
         Me.LblHora.Text = ""
         Me.LblHora.Top = 3.775!
         Me.LblHora.Width = 2.4375!
+        '
+        'Label39
+        '
+        Me.Label39.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label39.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label39.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label39.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label39.Border.RightColor = System.Drawing.Color.Black
+        Me.Label39.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label39.Border.TopColor = System.Drawing.Color.Black
+        Me.Label39.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label39.Height = 0.2!
+        Me.Label39.HyperLink = Nothing
+        Me.Label39.Left = 0.05!
+        Me.Label39.Name = "Label39"
+        Me.Label39.Style = "ddo-char-set: 0; text-align: left; font-weight: bold; font-size: 8.25pt; "
+        Me.Label39.Text = "Cod Recolector"
+        Me.Label39.Top = 3.15!
+        Me.Label39.Width = 0.9!
+        '
+        'Label40
+        '
+        Me.Label40.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label40.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label40.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label40.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label40.Border.RightColor = System.Drawing.Color.Black
+        Me.Label40.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label40.Border.TopColor = System.Drawing.Color.Black
+        Me.Label40.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label40.Height = 0.1750001!
+        Me.Label40.HyperLink = Nothing
+        Me.Label40.Left = 0.05!
+        Me.Label40.Name = "Label40"
+        Me.Label40.Style = "ddo-char-set: 0; text-align: left; font-weight: bold; font-size: 8.25pt; "
+        Me.Label40.Text = "Nombre Recol"
+        Me.Label40.Top = 3.35!
+        Me.Label40.Width = 0.925!
+        '
+        'Label41
+        '
+        Me.Label41.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label41.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label41.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label41.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label41.Border.RightColor = System.Drawing.Color.Black
+        Me.Label41.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label41.Border.TopColor = System.Drawing.Color.Black
+        Me.Label41.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label41.Height = 0.1750001!
+        Me.Label41.HyperLink = Nothing
+        Me.Label41.Left = 0.05!
+        Me.Label41.Name = "Label41"
+        Me.Label41.Style = "ddo-char-set: 0; text-align: left; font-weight: bold; font-size: 8.25pt; "
+        Me.Label41.Text = "Cedula"
+        Me.Label41.Top = 3.575!
+        Me.Label41.Width = 0.925!
+        '
+        'LblCodRecolector
+        '
+        Me.LblCodRecolector.Border.BottomColor = System.Drawing.Color.Black
+        Me.LblCodRecolector.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblCodRecolector.Border.LeftColor = System.Drawing.Color.Black
+        Me.LblCodRecolector.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblCodRecolector.Border.RightColor = System.Drawing.Color.Black
+        Me.LblCodRecolector.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblCodRecolector.Border.TopColor = System.Drawing.Color.Black
+        Me.LblCodRecolector.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblCodRecolector.Height = 0.2!
+        Me.LblCodRecolector.HyperLink = Nothing
+        Me.LblCodRecolector.Left = 0.9750001!
+        Me.LblCodRecolector.Name = "LblCodRecolector"
+        Me.LblCodRecolector.Style = "text-align: center; "
+        Me.LblCodRecolector.Text = ""
+        Me.LblCodRecolector.Top = 3.15!
+        Me.LblCodRecolector.Width = 1.525!
+        '
+        'LblNombreRecolector
+        '
+        Me.LblNombreRecolector.Border.BottomColor = System.Drawing.Color.Black
+        Me.LblNombreRecolector.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblNombreRecolector.Border.LeftColor = System.Drawing.Color.Black
+        Me.LblNombreRecolector.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblNombreRecolector.Border.RightColor = System.Drawing.Color.Black
+        Me.LblNombreRecolector.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblNombreRecolector.Border.TopColor = System.Drawing.Color.Black
+        Me.LblNombreRecolector.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblNombreRecolector.Height = 0.2!
+        Me.LblNombreRecolector.HyperLink = Nothing
+        Me.LblNombreRecolector.Left = 0.9750001!
+        Me.LblNombreRecolector.Name = "LblNombreRecolector"
+        Me.LblNombreRecolector.Style = ""
+        Me.LblNombreRecolector.Text = ""
+        Me.LblNombreRecolector.Top = 3.35!
+        Me.LblNombreRecolector.Width = 1.525!
+        '
+        'LblCedulaRecolector
+        '
+        Me.LblCedulaRecolector.Border.BottomColor = System.Drawing.Color.Black
+        Me.LblCedulaRecolector.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblCedulaRecolector.Border.LeftColor = System.Drawing.Color.Black
+        Me.LblCedulaRecolector.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblCedulaRecolector.Border.RightColor = System.Drawing.Color.Black
+        Me.LblCedulaRecolector.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblCedulaRecolector.Border.TopColor = System.Drawing.Color.Black
+        Me.LblCedulaRecolector.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblCedulaRecolector.Height = 0.2!
+        Me.LblCedulaRecolector.HyperLink = Nothing
+        Me.LblCedulaRecolector.Left = 0.9750001!
+        Me.LblCedulaRecolector.Name = "LblCedulaRecolector"
+        Me.LblCedulaRecolector.Style = ""
+        Me.LblCedulaRecolector.Text = ""
+        Me.LblCedulaRecolector.Top = 3.55!
+        Me.LblCedulaRecolector.Width = 1.525!
         '
         'Detail1
         '
@@ -1588,7 +1702,7 @@ Partial Public Class ArepBitacoraRecepcion
         Me.TextBox6.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox6.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox6.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.TextBox6.DataField = "PesoKg"
+        Me.TextBox6.DataField = "PesoNetoKg"
         Me.TextBox6.Height = 0.1875!
         Me.TextBox6.Left = 1.3125!
         Me.TextBox6.Name = "TextBox6"
@@ -1663,120 +1777,6 @@ Partial Public Class ArepBitacoraRecepcion
         Me.TextBox12.Top = 0.225!
         Me.TextBox12.Width = 0.75!
         '
-        'Label39
-        '
-        Me.Label39.Border.BottomColor = System.Drawing.Color.Black
-        Me.Label39.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label39.Border.LeftColor = System.Drawing.Color.Black
-        Me.Label39.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label39.Border.RightColor = System.Drawing.Color.Black
-        Me.Label39.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label39.Border.TopColor = System.Drawing.Color.Black
-        Me.Label39.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label39.Height = 0.2!
-        Me.Label39.HyperLink = Nothing
-        Me.Label39.Left = 0.05!
-        Me.Label39.Name = "Label39"
-        Me.Label39.Style = "ddo-char-set: 0; text-align: left; font-weight: bold; font-size: 8.25pt; "
-        Me.Label39.Text = "Cod Recolector"
-        Me.Label39.Top = 3.15!
-        Me.Label39.Width = 0.9!
-        '
-        'Label40
-        '
-        Me.Label40.Border.BottomColor = System.Drawing.Color.Black
-        Me.Label40.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label40.Border.LeftColor = System.Drawing.Color.Black
-        Me.Label40.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label40.Border.RightColor = System.Drawing.Color.Black
-        Me.Label40.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label40.Border.TopColor = System.Drawing.Color.Black
-        Me.Label40.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label40.Height = 0.1750001!
-        Me.Label40.HyperLink = Nothing
-        Me.Label40.Left = 0.05!
-        Me.Label40.Name = "Label40"
-        Me.Label40.Style = "ddo-char-set: 0; text-align: left; font-weight: bold; font-size: 8.25pt; "
-        Me.Label40.Text = "Nombre Recol"
-        Me.Label40.Top = 3.35!
-        Me.Label40.Width = 0.925!
-        '
-        'Label41
-        '
-        Me.Label41.Border.BottomColor = System.Drawing.Color.Black
-        Me.Label41.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label41.Border.LeftColor = System.Drawing.Color.Black
-        Me.Label41.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label41.Border.RightColor = System.Drawing.Color.Black
-        Me.Label41.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label41.Border.TopColor = System.Drawing.Color.Black
-        Me.Label41.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label41.Height = 0.1750001!
-        Me.Label41.HyperLink = Nothing
-        Me.Label41.Left = 0.05!
-        Me.Label41.Name = "Label41"
-        Me.Label41.Style = "ddo-char-set: 0; text-align: left; font-weight: bold; font-size: 8.25pt; "
-        Me.Label41.Text = "Cedula"
-        Me.Label41.Top = 3.575!
-        Me.Label41.Width = 0.925!
-        '
-        'LblCodRecolector
-        '
-        Me.LblCodRecolector.Border.BottomColor = System.Drawing.Color.Black
-        Me.LblCodRecolector.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblCodRecolector.Border.LeftColor = System.Drawing.Color.Black
-        Me.LblCodRecolector.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblCodRecolector.Border.RightColor = System.Drawing.Color.Black
-        Me.LblCodRecolector.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblCodRecolector.Border.TopColor = System.Drawing.Color.Black
-        Me.LblCodRecolector.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblCodRecolector.Height = 0.2!
-        Me.LblCodRecolector.HyperLink = Nothing
-        Me.LblCodRecolector.Left = 0.9750001!
-        Me.LblCodRecolector.Name = "LblCodRecolector"
-        Me.LblCodRecolector.Style = "text-align: center; "
-        Me.LblCodRecolector.Text = ""
-        Me.LblCodRecolector.Top = 3.15!
-        Me.LblCodRecolector.Width = 1.525!
-        '
-        'LblNombreRecolector
-        '
-        Me.LblNombreRecolector.Border.BottomColor = System.Drawing.Color.Black
-        Me.LblNombreRecolector.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblNombreRecolector.Border.LeftColor = System.Drawing.Color.Black
-        Me.LblNombreRecolector.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblNombreRecolector.Border.RightColor = System.Drawing.Color.Black
-        Me.LblNombreRecolector.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblNombreRecolector.Border.TopColor = System.Drawing.Color.Black
-        Me.LblNombreRecolector.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblNombreRecolector.Height = 0.2!
-        Me.LblNombreRecolector.HyperLink = Nothing
-        Me.LblNombreRecolector.Left = 0.9750001!
-        Me.LblNombreRecolector.Name = "LblNombreRecolector"
-        Me.LblNombreRecolector.Style = ""
-        Me.LblNombreRecolector.Text = ""
-        Me.LblNombreRecolector.Top = 3.35!
-        Me.LblNombreRecolector.Width = 1.525!
-        '
-        'LblCedulaRecolector
-        '
-        Me.LblCedulaRecolector.Border.BottomColor = System.Drawing.Color.Black
-        Me.LblCedulaRecolector.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblCedulaRecolector.Border.LeftColor = System.Drawing.Color.Black
-        Me.LblCedulaRecolector.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblCedulaRecolector.Border.RightColor = System.Drawing.Color.Black
-        Me.LblCedulaRecolector.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblCedulaRecolector.Border.TopColor = System.Drawing.Color.Black
-        Me.LblCedulaRecolector.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblCedulaRecolector.Height = 0.2!
-        Me.LblCedulaRecolector.HyperLink = Nothing
-        Me.LblCedulaRecolector.Left = 0.9750001!
-        Me.LblCedulaRecolector.Name = "LblCedulaRecolector"
-        Me.LblCedulaRecolector.Style = ""
-        Me.LblCedulaRecolector.Text = ""
-        Me.LblCedulaRecolector.Top = 3.55!
-        Me.LblCedulaRecolector.Width = 1.525!
-        '
         'ArepBitacoraRecepcion
         '
         Me.MasterReport = False
@@ -1820,6 +1820,12 @@ Partial Public Class ArepBitacoraRecepcion
         CType(Me.LblCosecha, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LblLocalidad, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LblHora, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label39, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label40, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label41, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LblCodRecolector, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LblNombreRecolector, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LblCedulaRecolector, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox7, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1875,12 +1881,6 @@ Partial Public Class ArepBitacoraRecepcion
         CType(Me.Label36, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label38, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox12, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Label39, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Label40, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Label41, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.LblCodRecolector, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.LblNombreRecolector, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.LblCedulaRecolector, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
 
     End Sub

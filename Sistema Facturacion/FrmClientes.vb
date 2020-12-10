@@ -77,6 +77,12 @@ Public Class FrmClientes
         End If
 
 
+        If Trim(Me.CboCodigoCliente.Text) = "" Then
+            MsgBox("Se necesito Codigo de Cliente", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+
         'SQLClientes = "SELECT *,REPLACE(STR(Cod_Cliente), ' ', '0') AS Orden FROM Clientes WHERE  (Cod_Cliente = '" & Me.CboCodigoCliente.Text & "') ORDER BY Orden"
         SQLClientes = "SELECT * FROM Clientes WHERE  (Cod_Cliente = '" & Me.CboCodigoCliente.Text & "') "
         DataAdapter = New SqlClient.SqlDataAdapter(SQLClientes, MiConexion)
