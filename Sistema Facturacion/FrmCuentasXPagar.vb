@@ -680,7 +680,7 @@ Public Class FrmCuentasXPagar
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////////////////BUSCO SI EXISTEN RECIBOS SIN FACTURAS //////////////////////////////////////////////////////
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SQlString = "SELECT  ReciboPago.CodReciboPago, ReciboPago.Fecha_Recibo, DetalleReciboPago.Numero_Compra, DetalleReciboPago.MontoPagado, ReciboPago.MonedaRecibo FROM ReciboPago INNER JOIN DetalleReciboPago ON ReciboPago.CodReciboPago = DetalleReciboPago.CodReciboPago AND ReciboPago.Fecha_Recibo = DetalleReciboPago.Fecha_Recibo WHERE (DetalleReciboPago.Numero_Compra = '0') AND (ReciboPago.Cod_Proveedor = '" & Me.CboCodigoProveedor.Text & "') ORDER BY ReciboPago.Fecha_Recibo"
+        SQlString = "SELECT  ReciboPago.CodReciboPago, ReciboPago.Fecha_Recibo, DetalleReciboPago.Numero_Compra, DetalleReciboPago.MontoPagado, ReciboPago.MonedaRecibo FROM ReciboPago INNER JOIN DetalleReciboPago ON ReciboPago.CodReciboPago = DetalleReciboPago.CodReciboPago AND ReciboPago.Fecha_Recibo = DetalleReciboPago.Fecha_Recibo WHERE (DetalleReciboPago.Numero_Compra LIKE '%T%' OR DetalleReciboPago.Numero_Compra = '0') AND (ReciboPago.Cod_Proveedor = '" & Me.CboCodigoProveedor.Text & "') ORDER BY ReciboPago.Fecha_Recibo"
         'SQlString = "SELECT  DetalleRecibo.CodReciboPago, DetalleRecibo.Fecha_Recibo, DetalleRecibo.Numero_Factura, DetalleRecibo.MontoPagado, Recibo.MonedaRecibo FROM  DetalleRecibo INNER JOIN Recibo ON DetalleRecibo.CodReciboPago = Recibo.CodReciboPago AND DetalleRecibo.Fecha_Recibo = Recibo.Fecha_Recibo WHERE (DetalleRecibo.Numero_Factura = '0') AND (Recibo.Cod_Cliente = '" & Me.CboCodigoProveedor.Text & "') ORDER BY DetalleRecibo.Fecha_Recibo"
         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
         DataAdapter.Fill(DataSet, "RecibosSF")
@@ -715,6 +715,7 @@ Public Class FrmCuentasXPagar
             oDataRow = DatasetReporte.Tables("TotalVentas").NewRow
             oDataRow("Fecha_Factura") = DataSet.Tables("RecibosSF").Rows(j)("Fecha_Recibo")
             oDataRow("Numero_Factura") = "0000"
+            oDataRow("Numero_Compra") = DataSet.Tables("RecibosSF").Rows(j)("Numero_Compra")
             oDataRow("Numero_Recibo") = NumeroRecibo
             oDataRow("Monto") = "0"
             oDataRow("FechaVence") = DataSet.Tables("RecibosSF").Rows(j)("Fecha_Recibo")
