@@ -276,6 +276,8 @@ Public Class FrmPagos2
 
         Me.TrueDBGridComponentes.Columns("NetoPagar").Text = Format(NetoPagar, "##,##0.00")
 
+        ActualizaMETODOPagosProveedores(Me.TxtMonedaFactura.Text)
+
     End Sub
 
     Private Sub TrueDBGridComponentes_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.AfterUpdate

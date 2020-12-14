@@ -211,7 +211,7 @@ Partial Class FrmPagos2
         Me.TrueDBGridMetodo.Caption = "Metodos de Pago"
         Me.TrueDBGridMetodo.GroupByCaption = "Drag a column header here to group by that column"
         Me.TrueDBGridMetodo.Images.Add(CType(resources.GetObject("TrueDBGridMetodo.Images"), System.Drawing.Image))
-        Me.TrueDBGridMetodo.Location = New System.Drawing.Point(150, 285)
+        Me.TrueDBGridMetodo.Location = New System.Drawing.Point(209, 279)
         Me.TrueDBGridMetodo.Name = "TrueDBGridMetodo"
         Me.TrueDBGridMetodo.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridMetodo.PreviewInfo.Size = New System.Drawing.Size(0, 0)

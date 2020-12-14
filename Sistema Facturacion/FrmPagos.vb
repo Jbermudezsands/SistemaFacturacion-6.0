@@ -668,6 +668,10 @@ Public Class FrmPagos
         End If
     End Sub
 
+    Private Sub TDBGridDetalle_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles TDBGridDetalle.AfterUpdate
+        ActualizaMETODOPagosProveedores(Me.TxtMonedaFactura.Text)
+    End Sub
+
     Private Sub TDBGridDetalle_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TDBGridDetalle.ButtonClick
         Dim Metodo As String
         Quien = "MetodoPago"

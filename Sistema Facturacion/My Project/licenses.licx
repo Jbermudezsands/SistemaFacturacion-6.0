@@ -1,4 +1,3 @@
-DevExpress.Patch.InMemoryPatch, DevExpress.Patch.Common, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7fc7bfca2443de66
 C1.C1PrintDocument.C1PrintDocument, C1.C1PrintDocument.Classic.2, Version=2.0.20073.409, Culture=neutral, PublicKeyToken=1a6f4158ebe6d3b8
 C1.Win.C1TrueDBGrid.C1TrueDBGrid, C1.Win.C1TrueDBGrid.2, Version=2.0.20063.60825, Culture=neutral, PublicKeyToken=75ae3fb0e2b1e0da
 C1.Win.C1Input.C1Button, C1.Win.C1Input.2, Version=2.0.20073.33104, Culture=neutral, PublicKeyToken=7e7ff60f0c214f9a
@@ -19,3 +18,5 @@ C1.Win.C1Chart.C1Chart, C1.Win.C1Chart.2, Version=2.0.20073.17282, Culture=neutr
 C1.Win.C1Chart3D.C1Chart3D, C1.Win.C1Chart3D.2, Version=2.0.20073.17282, Culture=neutral, PublicKeyToken=a22e16972c085838
 C1.Win.C1Command.C1NavBar, C1.Win.C1Command.2, Version=2.0.20073.19306, Culture=neutral, PublicKeyToken=e808566f358766d8
 DevExpress.XtraPivotGrid.PivotGridControl, DevExpress.XtraPivotGrid3, Version=1.2.3.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4
+
+

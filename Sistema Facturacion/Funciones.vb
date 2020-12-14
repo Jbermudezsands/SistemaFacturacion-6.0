@@ -8973,6 +8973,7 @@ Module Funciones
         Registros = FrmPagosFacturas.BindingMetodo.Count
         iPosicion = 0
 
+
         Do While iPosicion < Registros
             Metodo = FrmPagosFacturas.BindingMetodo.Item(iPosicion)("NombrePago")
             TasaCambio = 1
@@ -9030,8 +9031,8 @@ Module Funciones
         Loop
 
 
-        Registros = FrmPagosFacturas.BindingFacturas.Count
-        iPosicion = 0
+        'Registros = FrmPagosFacturas.BindingFacturas.Count
+        'iPosicion = 0
 
         Do While iPosicion < Registros
             If Not IsDBNull(FrmPagosFacturas.BindingFacturas.Item(iPosicion)("MontoPagado")) Then
@@ -9051,6 +9052,19 @@ Module Funciones
             '    FrmPagos.TxtDescuento.Text = ""
             'End If
         End If
+
+
+
+        '///////////////////////////////////TOTALIZO EL RECIBO DE PAGO /////////////////////////////////
+        Registros = FrmPagos.BindingDetalleRecibo.Count
+        iPosicion = 0
+        Monto = 0
+        Do While iPosicion < Registros
+            If Not IsDBNull(FrmPagos.BindingDetalleRecibo.Item(iPosicion)("MontoPagado")) Then
+                Monto = CDbl(FrmPagos.BindingDetalleRecibo.Item(iPosicion)("MontoPagado")) + Subtotal
+            End If
+            iPosicion = iPosicion + 1
+        Loop
 
 
 
