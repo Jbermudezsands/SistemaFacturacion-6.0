@@ -155,7 +155,7 @@ Public Class FrmCopia
         Dim NumeroCompra As String, FechaCompra As Date, TipoCompra As String
         Dim MiConexion As New SqlClient.SqlConnection(ConexionDestino), MiConexionOrigen As New SqlClient.SqlConnection(ConexionOrigen)
         Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, RegDetalle As Double, i2 As Double
-        Dim Exonerado As Double, StrSqlUpdate As String = ""
+        Dim Exonerado As Double, StrSqlUpdate As String = "", Descuento As Double
 
 
         Contador = 0
@@ -411,7 +411,8 @@ Public Class FrmCopia
             Case "Compra"
 
                 Dim MontoIva As Double = 0, MontoPagado As Double = 0, MontoNetoPagar As Double = 0, MontoCredito As Double = 0, SubTotal As Double = 0
-
+                Dim Cantidad As Double, PrecioUnitario As Double, PrecioNeto As Double, Importe As Double, TasaCambio As Double
+                Dim FechaHora As Date, TipoProductor As String, Estatus As String, NumeroSolicitud As String, NumeroOrden As String, Descripcion As String
 
                 '--------------------------------------------------------------------------------------------
                 '---------------------------CARGO EL DATASET DE LA COMPRA ORIGEN ----------------------------
@@ -438,6 +439,39 @@ Public Class FrmCopia
                     NumeroCompra = DataSet.Tables("ComprasOrigen").Rows(i)("Numero_Compra")
                     FechaCompra = DataSet.Tables("ComprasOrigen").Rows(i)("Fecha_Compra")
                     TipoCompra = DataSet.Tables("ComprasOrigen").Rows(i)("Tipo_Compra")
+
+                    If Not IsDBNull(DataSet.Tables("ComprasOrigen").Rows(i)("FechaHora")) Then
+                        FechaHora = DataSet.Tables("ComprasOrigen").Rows(i)("FechaHora")
+                    Else
+                        FechaHora = FechaCompra
+                    End If
+
+                    If Not IsDBNull(DataSet.Tables("ComprasOrigen").Rows(i)("TipoProductor")) Then
+                        TipoProductor = DataSet.Tables("ComprasOrigen").Rows(i)("TipoProductor")
+                    Else
+                        TipoProductor = ""
+                    End If
+
+                    If Not IsDBNull(DataSet.Tables("ComprasOrigen").Rows(i)("Estatus")) Then
+                        Estatus = DataSet.Tables("ComprasOrigen").Rows(i)("Estatus")
+                    Else
+                        Estatus = ""
+                    End If
+
+
+                    If Not IsDBNull(DataSet.Tables("ComprasOrigen").Rows(i)("Numero_Solicitud")) Then
+                        NumeroSolicitud = DataSet.Tables("ComprasOrigen").Rows(i)("Numero_Solicitud")
+                    Else
+                        NumeroSolicitud = ""
+                    End If
+
+                    If Not IsDBNull(DataSet.Tables("ComprasOrigen").Rows(i)("Numero_Orden")) Then
+                        NumeroOrden = DataSet.Tables("ComprasOrigen").Rows(i)("Numero_Orden")
+                    Else
+                        NumeroOrden = ""
+                    End If
+
+
                     If Not IsDBNull(DataSet.Tables("ComprasOrigen").Rows(i)("IVA")) Then
                         MontoIva = DataSet.Tables("ComprasOrigen").Rows(i)("IVA")
                     Else
@@ -488,12 +522,13 @@ Public Class FrmCopia
                             '//////////////////////////////////////////////////////////////////////////////////////////////
                             '////////////////////////////AGREGO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
                             '/////////////////////////////////////////////////////////////////////////////////////////////////
-                            SqlDatos = "INSERT INTO [Compras] ([Numero_Compra] ,[Fecha_Compra],[Tipo_Compra],[Cod_Proveedor],[Cod_Bodega],[Nombre_Proveedor],[Apellido_Proveedor],[Direccion_Proveedor],[Telefono_Proveedor],[Fecha_Vencimiento],[Observaciones],[SubTotal],[IVA],[Pagado],[NetoPagar],[MontoCredito],[MonedaCompra],[Exonerado],[Su_Referencia],[CodigoProyecto],[Referencia]) " & _
-                            "VALUES ('" & NumeroCompra & "','" & FechaCompra & "','" & TipoCompra & "','" & DataSet.Tables("ComprasOrigen").Rows(i)("Cod_Proveedor") & "','" & DataSet.Tables("ComprasOrigen").Rows(i)("Cod_Bodega") & "' , '" & DataSet.Tables("ComprasOrigen").Rows(i)("Nombre_Proveedor") & "','" & DataSet.Tables("ComprasOrigen").Rows(i)("Apellido_Proveedor") & "','" & DataSet.Tables("ComprasOrigen").Rows(i)("Direccion_Proveedor") & "','" & DataSet.Tables("ComprasOrigen").Rows(i)("Telefono_Proveedor") & "','" & DataSet.Tables("ComprasOrigen").Rows(i)("Fecha_Vencimiento") & "','" & DataSet.Tables("ComprasOrigen").Rows(i)("Observaciones") & "'," & SubTotal & "," & MontoIva & "," & MontoPagado & "," & MontoNetoPagar & "," & MontoCredito & ",'" & DataSet.Tables("ComprasOrigen").Rows(i)("MonedaCompra") & "'," & Exonerado & ",'" & DataSet.Tables("ComprasOrigen").Rows(i)("Su_Referencia") & "','" & DataSet.Tables("ComprasOrigen").Rows(i)("CodigoProyecto") & "','" & DataSet.Tables("ComprasOrigen").Rows(i)("Referencia") & "')"
+                            SqlDatos = "INSERT INTO [Compras] ([Numero_Compra] ,[Fecha_Compra],[Tipo_Compra],[Cod_Proveedor],[Cod_Bodega],[Nombre_Proveedor],[Apellido_Proveedor],[Direccion_Proveedor],[Telefono_Proveedor],[Fecha_Vencimiento],[Observaciones],[SubTotal],[IVA],[Pagado],[NetoPagar],[MontoCredito],[MonedaCompra],[Exonerado],[Su_Referencia],[CodigoProyecto],[Referencia],[FechaHora],[TipoProductor],[Estatus],[Numero_Solicitud],[Numero_Orden]) " & _
+                            "VALUES ('" & NumeroCompra & "','" & FechaCompra & "','" & TipoCompra & "','" & DataSet.Tables("ComprasOrigen").Rows(i)("Cod_Proveedor") & "','" & DataSet.Tables("ComprasOrigen").Rows(i)("Cod_Bodega") & "' , '" & DataSet.Tables("ComprasOrigen").Rows(i)("Nombre_Proveedor") & "','" & DataSet.Tables("ComprasOrigen").Rows(i)("Apellido_Proveedor") & "','" & DataSet.Tables("ComprasOrigen").Rows(i)("Direccion_Proveedor") & "','" & DataSet.Tables("ComprasOrigen").Rows(i)("Telefono_Proveedor") & "','" & DataSet.Tables("ComprasOrigen").Rows(i)("Fecha_Vencimiento") & "','" & DataSet.Tables("ComprasOrigen").Rows(i)("Observaciones") & "'," & SubTotal & "," & MontoIva & "," & MontoPagado & "," & MontoNetoPagar & "," & MontoCredito & ",'" & DataSet.Tables("ComprasOrigen").Rows(i)("MonedaCompra") & "'," & Exonerado & ",'" & DataSet.Tables("ComprasOrigen").Rows(i)("Su_Referencia") & "','" & DataSet.Tables("ComprasOrigen").Rows(i)("CodigoProyecto") & "','" & DataSet.Tables("ComprasOrigen").Rows(i)("Referencia") & "', CONVERT(DATETIME, '" & Format(FechaHora, "yyyy/MM/dd hh:mm:ss") & "', 102), '" & TipoProductor & "', '" & Estatus & "', '" & NumeroSolicitud & "', '" & NumeroOrden & "')"
                             MiConexion.Open()
                             ComandoUpdate = New SqlClient.SqlCommand(SqlDatos, MiConexion)
                             iResultado = ComandoUpdate.ExecuteNonQuery
                             MiConexion.Close()
+
 
 
                             '//////////////////////////////////////////////////////////////////////////////////////////////
@@ -506,12 +541,60 @@ Public Class FrmCopia
                             i2 = 0
                             Do While RegDetalle > i2
 
-                                SqlDatos = "INSERT INTO [Detalle_Compras] ([Numero_Compra],[Fecha_Compra],[Tipo_Compra],[Cod_Producto],[Cantidad],[Precio_Unitario],[Descuento],[Precio_Neto],[Importe],[TasaCambio]) " & _
-                                            "VALUES ('" & NumeroCompra & "','" & FechaCompra & "','" & TipoCompra & "','" & DataSet.Tables("ConsultaDetalle").Rows(i2)("Cod_Producto") & "' ," & DataSet.Tables("ConsultaDetalle").Rows(i2)("Cantidad") & "," & DataSet.Tables("ConsultaDetalle").Rows(i2)("Precio_Unitario") & "," & DataSet.Tables("ConsultaDetalle").Rows(i2)("Descuento") & " ," & DataSet.Tables("ConsultaDetalle").Rows(i2)("Precio_Neto") & "," & DataSet.Tables("ConsultaDetalle").Rows(i2)("Importe") & "," & DataSet.Tables("ConsultaDetalle").Rows(i2)("TasaCambio") & ")"
-                                MiConexion.Open()
-                                ComandoUpdate = New SqlClient.SqlCommand(SqlDatos, MiConexion)
-                                iResultado = ComandoUpdate.ExecuteNonQuery
-                                MiConexion.Close()
+                                If Not IsDBNull(DataSet.Tables("ConsultaDetalle").Rows(i2)("Descripcion_Producto")) Then
+                                    Descripcion = DataSet.Tables("ConsultaDetalle").Rows(i2)("Descripcion_Producto")
+                                Else
+                                    Descripcion = ""
+                                End If
+
+                                If Not IsDBNull(DataSet.Tables("ConsultaDetalle").Rows(i2)("Descuento")) Then
+                                    Descuento = DataSet.Tables("ConsultaDetalle").Rows(i2)("Descuento")
+                                Else
+                                    Descuento = 0
+                                End If
+
+                                If Not IsDBNull(DataSet.Tables("ConsultaDetalle").Rows(i2)("Cantidad")) Then
+                                    Cantidad = DataSet.Tables("ConsultaDetalle").Rows(i2)("Cantidad")
+                                Else
+                                    Cantidad = 0
+                                End If
+
+                                If Not IsDBNull(DataSet.Tables("ConsultaDetalle").Rows(i2)("Precio_Unitario")) Then
+                                    PrecioUnitario = DataSet.Tables("ConsultaDetalle").Rows(i2)("Precio_Unitario")
+                                Else
+                                    PrecioUnitario = 0
+                                End If
+
+                                If Not IsDBNull(DataSet.Tables("ConsultaDetalle").Rows(i2)("Precio_Neto")) Then
+                                    PrecioNeto = DataSet.Tables("ConsultaDetalle").Rows(i2)("Precio_Neto")
+                                Else
+                                    PrecioNeto = 0
+                                End If
+
+                                If Not IsDBNull(DataSet.Tables("ConsultaDetalle").Rows(i2)("Importe")) Then
+                                    Importe = DataSet.Tables("ConsultaDetalle").Rows(i2)("Importe")
+                                Else
+                                    Importe = 0
+                                End If
+
+                                If Not IsDBNull(DataSet.Tables("ConsultaDetalle").Rows(i2)("TasaCambio")) Then
+                                    TasaCambio = DataSet.Tables("ConsultaDetalle").Rows(i2)("TasaCambio")
+                                Else
+                                    TasaCambio = 0
+                                End If
+
+                                If Not IsDBNull(DataSet.Tables("ConsultaDetalle").Rows(i2)("Cod_Producto")) Then
+                                    SqlDatos = "INSERT INTO [Detalle_Compras] ([Numero_Compra],[Fecha_Compra],[Tipo_Compra],[Cod_Producto],[Cantidad],[Precio_Unitario],[Descuento],[Precio_Neto],[Importe],[TasaCambio],[Descripcion_Producto]) " & _
+                                                "VALUES ('" & NumeroCompra & "','" & FechaCompra & "','" & TipoCompra & "','" & DataSet.Tables("ConsultaDetalle").Rows(i2)("Cod_Producto") & "' ," & Cantidad & "," & PrecioUnitario & "," & Descuento & " ," & PrecioNeto & "," & Importe & "," & TasaCambio & ", '" & Descripcion & "')"
+                                    MiConexion.Open()
+                                    ComandoUpdate = New SqlClient.SqlCommand(SqlDatos, MiConexion)
+                                    iResultado = ComandoUpdate.ExecuteNonQuery
+                                    MiConexion.Close()
+                                Else
+                                    MsgBox("Existe Compras sin Productos, no se Agregara el Detalle Compra No." & NumeroCompra, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                End If
+
+
 
 
                                 i2 = i2 + 1
