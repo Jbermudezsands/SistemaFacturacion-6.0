@@ -430,6 +430,7 @@ Public Class FrmCompras
         If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
             Quien = "NumeroCompras"
             Me.TxtNumeroEnsamble.Text = NumeroCompra
+            Bitacora(Now, NombreUsuario, "Compras", "Agrego Una Compra: " & Me.TxtNumeroEnsamble.Text)
         End If
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -541,7 +542,7 @@ Public Class FrmCompras
         CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
         ActualizaDetalleBodega(Me.CboCodigoBodega.Text, CodigoProducto)
 
-
+        Bitacora(Now, NombreUsuario, "Compras", "Modifico Producto: " & CodigoProducto)
         Me.TrueDBGridComponentes.Col = 0
 
 
@@ -1173,6 +1174,11 @@ Public Class FrmCompras
 
     Private Sub FrmCompras_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
         Bloqueo(Me, Acceso, "Compras")
+    End Sub
+
+    Private Sub FrmCompras_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+        Quien = ""
+        LiberarCompras = False
     End Sub
 
     Private Sub FrmCompras_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -2223,6 +2229,11 @@ Public Class FrmCompras
                         Me.TrueDBGridComponentes.AllowUpdate = True
                         Me.TrueDBGridComponentes.AllowAddNew = True
                         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
+                    ElseIf LiberarCompras = True Then
+                        Me.TrueDBGridComponentes.AllowUpdate = True
+                        Me.TrueDBGridComponentes.AllowAddNew = True
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
+
                     Else
 
                         'Me.TrueDBGridComponentes.AllowUpdate = False
@@ -2989,6 +3000,7 @@ Public Class FrmCompras
 
         ReDim CodigoProducto(1)
         CodigoProducto(0) = CodProducto
+        Bitacora(Now, NombreUsuario, "Compras", "Elimino Producto: " & CodProducto & " Compra No." & Me.TxtNumeroEnsamble.Text)
         'My.Forms.FrmAjustarCostos.Registros = 1
         'My.Forms.FrmAjustarCostos.ShowDialog()
         My.Application.DoEvents()
@@ -3509,6 +3521,9 @@ Public Class FrmCompras
                     LimpiarCompras()
             End Select
         End If
+
+        Bitacora(Now, NombreUsuario, "Compras", "Proceso la Compra: " & Me.TxtNumeroEnsamble.Text)
+
     End Sub
 
     Private Sub TrueDBGridComponentes_ContextMenuStripChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.ContextMenuStripChanged

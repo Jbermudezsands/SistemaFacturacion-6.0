@@ -6793,6 +6793,8 @@ Module Funciones
             iResultado = ComandoUpdate.ExecuteNonQuery
             MiConexion.Close()
 
+            Bitacora(Now, NombreUsuario, "Compras", "Modifico Producto: " & CodProducto & " " & FrmCompras.CboTipoProducto.Text & " No." & ConsecutivoCompra)
+
         Else
 
             SqlUpdate = "INSERT INTO [Detalle_Compras] ([Numero_Compra],[Fecha_Compra],[Tipo_Compra],[Cod_Producto],[Cantidad],[Precio_Unitario],[Descuento],[Precio_Neto],[Importe],[TasaCambio],[Numero_Lote],[Fecha_Vence],[Descripcion_Producto])" & _
@@ -6802,6 +6804,7 @@ Module Funciones
             iResultado = ComandoUpdate.ExecuteNonQuery
             MiConexion.Close()
 
+            Bitacora(Now, NombreUsuario, "Compras", "Agrego Producto: " & CodProducto & " " & FrmCompras.CboTipoProducto.Text & " No." & ConsecutivoCompra)
         End If
 
     End Sub

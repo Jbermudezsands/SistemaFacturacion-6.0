@@ -1553,4 +1553,10 @@ Public Class FrmPersonalizar
         Me.ChkMediaPagina.Visible = False
         Me.ChkMediaPagina.Checked = False
     End Sub
+
+    Private Sub BtnDetalleCompra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnDetalleCompra.Click
+        LiberarCompras = True
+        My.Forms.FrmCompras.EsSolicitud = False
+        My.Forms.FrmCompras.Show()
+    End Sub
 End Class

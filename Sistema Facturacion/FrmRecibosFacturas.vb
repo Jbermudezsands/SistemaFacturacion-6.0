@@ -954,8 +954,10 @@ Public Class FrmRecibosFacturas
                         If DataSet.Tables("Consulta").Rows.Count <> 0 Then
                             Descripcion = DataSet.Tables("Consulta").Rows(0)("Descripcion")
                         End If
+
+                        DataSet.Tables("Consulta").Reset()
                     End If
-                    DataSet.Tables("Consulta").Reset()
+
 
 
                     If MontoFactura <> 0 Then

@@ -130,6 +130,8 @@ Partial Class FrmPersonalizar
         Me.TxtPagoProveedor = New System.Windows.Forms.NumericUpDown
         Me.Label19 = New System.Windows.Forms.Label
         Me.TabPage7 = New System.Windows.Forms.TabPage
+        Me.Agregar = New System.Windows.Forms.GroupBox
+        Me.BtnDetalleCompra = New System.Windows.Forms.Button
         Me.GroupBox21 = New System.Windows.Forms.GroupBox
         Me.Button13 = New System.Windows.Forms.Button
         Me.Button16 = New System.Windows.Forms.Button
@@ -215,6 +217,7 @@ Partial Class FrmPersonalizar
         Me.GroupBox9.SuspendLayout()
         CType(Me.TxtPagoProveedor, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage7.SuspendLayout()
+        Me.Agregar.SuspendLayout()
         Me.GroupBox21.SuspendLayout()
         Me.GroupBox20.SuspendLayout()
         Me.GroupBox19.SuspendLayout()
@@ -1411,6 +1414,7 @@ Partial Class FrmPersonalizar
         '
         'TabPage7
         '
+        Me.TabPage7.Controls.Add(Me.Agregar)
         Me.TabPage7.Controls.Add(Me.GroupBox21)
         Me.TabPage7.Controls.Add(Me.GroupBox20)
         Me.TabPage7.Controls.Add(Me.GroupBox19)
@@ -1422,6 +1426,25 @@ Partial Class FrmPersonalizar
         Me.TabPage7.TabIndex = 6
         Me.TabPage7.Text = "Configuracion"
         Me.TabPage7.UseVisualStyleBackColor = True
+        '
+        'Agregar
+        '
+        Me.Agregar.Controls.Add(Me.BtnDetalleCompra)
+        Me.Agregar.Location = New System.Drawing.Point(221, 149)
+        Me.Agregar.Name = "Agregar"
+        Me.Agregar.Size = New System.Drawing.Size(129, 81)
+        Me.Agregar.TabIndex = 4
+        Me.Agregar.TabStop = False
+        Me.Agregar.Text = "Agregar Registros"
+        '
+        'BtnDetalleCompra
+        '
+        Me.BtnDetalleCompra.Location = New System.Drawing.Point(8, 17)
+        Me.BtnDetalleCompra.Name = "BtnDetalleCompra"
+        Me.BtnDetalleCompra.Size = New System.Drawing.Size(102, 23)
+        Me.BtnDetalleCompra.TabIndex = 0
+        Me.BtnDetalleCompra.Text = "Dtalle Compra"
+        Me.BtnDetalleCompra.UseVisualStyleBackColor = True
         '
         'GroupBox21
         '
@@ -1461,7 +1484,7 @@ Partial Class FrmPersonalizar
         Me.GroupBox20.Controls.Add(Me.ChkPropina)
         Me.GroupBox20.Location = New System.Drawing.Point(213, 7)
         Me.GroupBox20.Name = "GroupBox20"
-        Me.GroupBox20.Size = New System.Drawing.Size(156, 223)
+        Me.GroupBox20.Size = New System.Drawing.Size(156, 136)
         Me.GroupBox20.TabIndex = 2
         Me.GroupBox20.TabStop = False
         '
@@ -1963,6 +1986,7 @@ Partial Class FrmPersonalizar
         Me.GroupBox9.PerformLayout()
         CType(Me.TxtPagoProveedor, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage7.ResumeLayout(False)
+        Me.Agregar.ResumeLayout(False)
         Me.GroupBox21.ResumeLayout(False)
         Me.GroupBox20.ResumeLayout(False)
         Me.GroupBox20.PerformLayout()
@@ -2135,4 +2159,6 @@ Partial Class FrmPersonalizar
     Friend WithEvents OptPapelBlancoLotes As System.Windows.Forms.RadioButton
     Friend WithEvents CheckBox3 As System.Windows.Forms.CheckBox
     Friend WithEvents ChkAuditoriaSegundoPlano As System.Windows.Forms.CheckBox
+    Friend WithEvents Agregar As System.Windows.Forms.GroupBox
+    Friend WithEvents BtnDetalleCompra As System.Windows.Forms.Button
 End Class
