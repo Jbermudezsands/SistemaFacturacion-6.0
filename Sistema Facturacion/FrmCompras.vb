@@ -3051,7 +3051,7 @@ Public Class FrmCompras
             End If
 
             If PrecioUnitario = 0 Then
-                Me.TrueDBGridComponentes.Columns(2).Text = 0
+                Me.TrueDBGridComponentes.Columns(3).Text = 0
             End If
         Else
             '///////////////////////////////////////DEFINO EL TIPO DE SERVICIO O DESCUENTO ////////////////////////////////////////////
