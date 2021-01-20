@@ -11916,16 +11916,16 @@ Public Class FrmReportes
                 ArepMovimientoProyectos.LblRuc.Text = Ruc
 
                 SqlDatos = "SELECT CodigoProyectos, NombreProyectos, FechaInicio, FechaFin, Moneda, VentaEstimada, CostoEstimado, Activo FROM  Proyectos"
-                If Me.CboCodProducto.Text = "" Then
-                    If Me.CboCodProducto2.Text = "" Then
+                If Me.CboCodProyecto.Text = "" Then
+                    If Me.CboCodProyecto2.Text = "" Then
                         SqlDatos = SqlDatos & " ORDER BY CodigoProyectos"
                     Else
-                        SqlDatos = SqlDatos & " WHERE (CodigoProyectos BETWEEN '" & CodigoInicio & "' AND '" & Me.CboCodProducto2.Text & "') ORDER BY CodigoProyectos"
+                        SqlDatos = SqlDatos & " WHERE (CodigoProyectos BETWEEN '" & CodigoInicio & "' AND '" & Me.CboCodProyecto2.Text & "') ORDER BY CodigoProyectos"
                     End If
-                ElseIf Me.CboCodProducto2.Text = "" Then
-                    SqlDatos = SqlDatos & " WHERE (CodigoProyectos BETWEEN '" & Me.CboCodProducto.Text & "' AND '" & CodigoFin & "') ORDER BY CodigoProyectos"
+                ElseIf Me.CboCodProyecto2.Text = "" Then
+                    SqlDatos = SqlDatos & " WHERE (CodigoProyectos BETWEEN '" & Me.CboCodProyecto.Text & "' AND '" & CodigoFin & "') ORDER BY CodigoProyectos"
                 Else
-                    SqlDatos = SqlDatos & " WHERE (CodigoProyectos BETWEEN '" & Me.CboCodProducto.Text & "' AND '" & Me.CboCodProducto2.Text & "') ORDER BY CodigoProyectos"
+                    SqlDatos = SqlDatos & " WHERE (CodigoProyectos BETWEEN '" & Me.CboCodProyecto.Text & "' AND '" & Me.CboCodProyecto2.Text & "') ORDER BY CodigoProyectos"
                 End If
 
 
@@ -13561,10 +13561,12 @@ Public Class FrmReportes
                 Me.GroupBox3.Visible = True
                 Me.CmbAgrupado.Text = "Bodega"
             Case "Movimientos de Proyectos"
-                Me.GroupBox3.Visible = False
+                Me.GroupBox3.Visible = True
                 Me.CmbAgrupado.Text = "Codigo Producto"
                 Me.GroupBoxProyectos.Visible = True
                 Me.GroupBoxProyectos.Location = New Point(280, 123)
+                Me.CmbAgrupado.Text = "Bodega"
+
             Case "Movimientos de Productos"
                 Me.GroupBox3.Visible = True
                 Me.CmbAgrupado.Text = "Bodega"
