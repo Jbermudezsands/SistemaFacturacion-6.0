@@ -763,6 +763,12 @@
     <Compile Include="Reportes\ArepRotacionInventario.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\ArepSaldoClienteCobrador.Designer.vb">
+      <DependentUpon>ArepSaldoClienteCobrador.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepSaldoClienteCobrador.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\ArepSaldoClientesHistoricos.Designer.vb">
       <DependentUpon>ArepSaldoClientesHistoricos.vb</DependentUpon>
     </Compile>
@@ -2086,6 +2092,10 @@
     <EmbeddedResource Include="Reportes\ArepRotacionInventario.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ArepRotacionInventario.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepSaldoClienteCobrador.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepSaldoClienteCobrador.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepSaldoClientes.resx">
       <SubType>Designer</SubType>
