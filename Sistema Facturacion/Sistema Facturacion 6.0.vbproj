@@ -2320,6 +2320,15 @@
     <None Include="Resources\light_green.png" />
     <None Include="Resources\Icono.bmp" />
     <None Include="Resources\billing1.png" />
+    <None Include="Resources\Progreso1.bmp" />
+    <None Include="Resources\Progreso2.bmp" />
+    <None Include="Resources\Progreso3.bmp" />
+    <None Include="Resources\Progreso4.bmp" />
+    <None Include="Resources\Progreso5.bmp" />
+    <None Include="Resources\Progreso6.bmp" />
+    <None Include="Resources\Progreso7.bmp" />
+    <None Include="Resources\Progreso8.bmp" />
+    <None Include="Resources\Progreso9.bmp" />
     <Content Include="Text Document.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -2329,22 +2338,6 @@
       <VersionMinor>7</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
-    <COMReference Include="AxC1Chart2D8U">
-      <Guid>{75634CE7-D088-4C44-8F7C-3C117CE5857B}</Guid>
-      <VersionMajor>8</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>aximp</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
-    <COMReference Include="C1Chart2D8U">
-      <Guid>{75634CE7-D088-4C44-8F7C-3C117CE5857B}</Guid>
-      <VersionMajor>8</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
     </COMReference>
     <COMReference Include="Microsoft.Office.Core">

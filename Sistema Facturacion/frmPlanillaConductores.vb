@@ -1238,9 +1238,9 @@ Public Class frmPlanillaConductores
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim SqlString As String
-        Dim CantPlanilla As Double = 0, PLunes As Double, PMartes As Double, PMiercoles As Double, PJueves As Double, PViernes As Double, PSabado As Double, PDomingo As Double
-        Dim iPosicion As Double, Registros As Double, CodProductor As String, Fecha As Date, Nombres As String, CantidadTotal As Double, Contador As Double
-        Dim iPosicion2 As Double, Cantidad As Double, NCompra As Double, Registros2 As Double
+        Dim CantPlanilla As Double = 0  ', PLunes As Double, PMartes As Double, PMiercoles As Double, PJueves As Double, PViernes As Double, PSabado As Double, PDomingo As Double
+        Dim iPosicion As Double, Registros As Double, Fecha As Date, Nombres As String
+        Dim NCompra As Double, Registros2 As Double
         Dim Monto As Double, CodTipoNomina As String
         Dim ROC1 As String = 0, ROC2 As String = 0, ROC3 As String = 0, ROC4 As String = 0, ROC5 As String = 0, ROC6 As String = 0, ROC7 As String = 0
         Dim NumeroCompra As String, ConsecutivoCompra As Double, PrecioVenta As Double

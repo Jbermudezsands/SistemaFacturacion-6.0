@@ -397,7 +397,7 @@ Public Class FrmImportacion
     End Sub
 
     Private Sub C1Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles C1Button3.Click
-        Dim iPosicionFila As Double = 0, Codigo As String, Nombres As String = "", Apellidos As String = "", Telefono As String = "", CtaContable As String = "", Ruc As String = ""
+        Dim iPosicionFila As Double = 0, Codigo As String = "", Nombres As String = "", Apellidos As String = "", Telefono As String = "", CtaContable As String = "", Ruc As String = ""
         Dim Direccion As String = "", Sql As String
         Dim DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
@@ -630,7 +630,6 @@ Public Class FrmImportacion
     Private Sub BtnProcesarCtaxCob_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnProcesarCtaxCob.Click
         Dim iPosicionFila As Double, CodCliente As String, NombreCliente As String, Saldo As Double
         Dim PrecioC As Double = 0, PrecioD As Double = 0
-        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim ConsecutivoConSerie As Boolean, TipoNota As String, Consecutivo As Double, NumeroNota As String, CodTipoNota As String
         Dim CodigoNotaDebito As String = "001", CodigoNotaCredito As String = "01", SqlString As String, NombreNotaDebito As String = "", NombreNotaCredito As String = ""
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, NombreNota As String = ""
