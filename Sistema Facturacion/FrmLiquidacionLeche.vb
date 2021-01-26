@@ -112,7 +112,7 @@ Public Class FrmPlanillaLiquidacion
 
 
     Public Sub InsertarRowGridIngresos()
-        Dim oTabla As DataTable, iPosicion As Double, CodigoProducto As String
+        Dim oTabla As DataTable, iPosicion As Double
 
         iPosicion = Me.TDGridIngresos.Row
 
@@ -243,7 +243,7 @@ Public Class FrmPlanillaLiquidacion
     End Sub
 
     Public Sub InsertarRowGridEgresos()
-        Dim oTabla As DataTable, iPosicion As Double, CodigoProducto As String
+        Dim oTabla As DataTable, iPosicion As Double
 
         iPosicion = Me.TDGridDeducciones.Row
 

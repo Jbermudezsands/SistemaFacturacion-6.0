@@ -136,6 +136,33 @@
   <data name="Pinned" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Pinned.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Progreso1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Progreso1.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Progreso2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Progreso2.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Progreso3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Progreso3.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Progreso4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Progreso4.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Progreso5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Progreso5.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Progreso6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Progreso6.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Progreso7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Progreso7.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Progreso8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Progreso8.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Progreso9" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Progreso9.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Unpinned" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Unpinned.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

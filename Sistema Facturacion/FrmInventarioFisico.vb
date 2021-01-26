@@ -672,17 +672,17 @@ Public Class FrmInventarioFisico
     End Sub
 
     Private Sub C1Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles C1Button1.Click
-        Dim Sql As String, SqlString As String
+        Dim Sql As String
         Dim DataAdapter = New SqlClient.SqlDataAdapter
-        Dim CodCliente As String, CodProveedor As String, NombreProveedor As String
+        Dim CodProveedor As String
 
         Dim StrSQLUpdate As String, ComandoUpdate As New SqlClient.SqlCommand
-        Dim iResultado As Integer, iPosicionFila As Double, FechaConteo As String
-        Dim CodProductos As String, Fecha As String
-        Dim Cantidad As Double, Agotado As Boolean, Agotado2 As Integer, FechaVence As Date
-        Dim ConsecutivoCompra As Double, NumeroCompra As String, NombreCliente As String
-        Dim ConsecutivoFactura As Double, NumeroFactura As String, PrecioCompra As Double, PrecioVenta As Double, Existencia As Double
-        Dim oDataRow As DataRow, Iposicion As Double, Registros As Double, Importe As Double, NombreProductos As String
+        Dim iResultado As Integer, iPosicionFila As Double
+        Dim CodProductos As String
+        Dim Cantidad As Double, FechaVence As Date
+        Dim ConsecutivoCompra As Double, NumeroCompra As String
+        Dim PrecioCompra As Double
+        Dim Importe As Double, NombreProductos As String
         Dim NumeroLote As String, CodBodega As String, Nombres As String, Apellidos As String, PrecioUnitario As Double = 0, PrecioNeto As Double = 0, Descuento As Double = 0
         Dim SubTotal As Double, IVA As Double
 

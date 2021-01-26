@@ -143,8 +143,8 @@ Partial Class FrmReportes
         Me.Label31 = New System.Windows.Forms.Label
         Me.CboProveedores = New C1.Win.C1List.C1Combo
         Me.Label32 = New System.Windows.Forms.Label
-        Me.ListaImagenes = New System.Windows.Forms.ImageList(Me.components)
         Me.ChkAgrupadoBodega = New System.Windows.Forms.CheckBox
+        Me.ListaImagenes = New System.Windows.Forms.ImageList(Me.components)
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -2034,20 +2034,6 @@ Partial Class FrmReportes
         Me.Label32.TabIndex = 63
         Me.Label32.Text = "Desde"
         '
-        'ListaImagenes
-        '
-        Me.ListaImagenes.ImageStream = CType(resources.GetObject("ListaImagenes.ImageStream"), System.Windows.Forms.ImageListStreamer)
-        Me.ListaImagenes.TransparentColor = System.Drawing.Color.Transparent
-        Me.ListaImagenes.Images.SetKeyName(0, "Circulo0.png")
-        Me.ListaImagenes.Images.SetKeyName(1, "Circulo1.png")
-        Me.ListaImagenes.Images.SetKeyName(2, "Circulo2.png")
-        Me.ListaImagenes.Images.SetKeyName(3, "Circulo3.png")
-        Me.ListaImagenes.Images.SetKeyName(4, "Circulo4.png")
-        Me.ListaImagenes.Images.SetKeyName(5, "Circulo5.png")
-        Me.ListaImagenes.Images.SetKeyName(6, "Circulo6.png")
-        Me.ListaImagenes.Images.SetKeyName(7, "Circulo7.png")
-        Me.ListaImagenes.Images.SetKeyName(8, "")
-        '
         'ChkAgrupadoBodega
         '
         Me.ChkAgrupadoBodega.AutoSize = True
@@ -2058,6 +2044,20 @@ Partial Class FrmReportes
         Me.ChkAgrupadoBodega.Text = "Agrupado por Bodega"
         Me.ChkAgrupadoBodega.UseVisualStyleBackColor = True
         Me.ChkAgrupadoBodega.Visible = False
+        '
+        'ListaImagenes
+        '
+        Me.ListaImagenes.ImageStream = CType(resources.GetObject("ListaImagenes.ImageStream"), System.Windows.Forms.ImageListStreamer)
+        Me.ListaImagenes.TransparentColor = System.Drawing.Color.Transparent
+        Me.ListaImagenes.Images.SetKeyName(0, "Progreso9.bmp")
+        Me.ListaImagenes.Images.SetKeyName(1, "Progreso1.bmp")
+        Me.ListaImagenes.Images.SetKeyName(2, "Progreso2.bmp")
+        Me.ListaImagenes.Images.SetKeyName(3, "Progreso3.bmp")
+        Me.ListaImagenes.Images.SetKeyName(4, "Progreso4.bmp")
+        Me.ListaImagenes.Images.SetKeyName(5, "Progreso5.bmp")
+        Me.ListaImagenes.Images.SetKeyName(6, "Progreso6.bmp")
+        Me.ListaImagenes.Images.SetKeyName(7, "Progreso7.bmp")
+        Me.ListaImagenes.Images.SetKeyName(8, "Progreso8.bmp")
         '
         'FrmReportes
         '
@@ -2286,10 +2286,10 @@ Partial Class FrmReportes
     Friend WithEvents Label31 As System.Windows.Forms.Label
     Friend WithEvents CboProveedores As C1.Win.C1List.C1Combo
     Friend WithEvents Label32 As System.Windows.Forms.Label
-    Friend WithEvents ListaImagenes As System.Windows.Forms.ImageList
     Friend WithEvents BtnProveedorDesde As System.Windows.Forms.Button
     Friend WithEvents BtnProveedorHasta As System.Windows.Forms.Button
     Friend WithEvents BtnProveedor1 As System.Windows.Forms.Button
     Friend WithEvents BtnProveedor2 As System.Windows.Forms.Button
     Friend WithEvents ChkAgrupadoBodega As System.Windows.Forms.CheckBox
+    Friend WithEvents ListaImagenes As System.Windows.Forms.ImageList
 End Class
