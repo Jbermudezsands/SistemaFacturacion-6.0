@@ -2049,21 +2049,22 @@ Partial Class FrmReportes
         '
         Me.ListaImagenes.ImageStream = CType(resources.GetObject("ListaImagenes.ImageStream"), System.Windows.Forms.ImageListStreamer)
         Me.ListaImagenes.TransparentColor = System.Drawing.Color.Transparent
-        Me.ListaImagenes.Images.SetKeyName(0, "Progreso9.bmp")
-        Me.ListaImagenes.Images.SetKeyName(1, "Progreso1.bmp")
-        Me.ListaImagenes.Images.SetKeyName(2, "Progreso2.bmp")
-        Me.ListaImagenes.Images.SetKeyName(3, "Progreso3.bmp")
-        Me.ListaImagenes.Images.SetKeyName(4, "Progreso4.bmp")
-        Me.ListaImagenes.Images.SetKeyName(5, "Progreso5.bmp")
-        Me.ListaImagenes.Images.SetKeyName(6, "Progreso6.bmp")
-        Me.ListaImagenes.Images.SetKeyName(7, "Progreso7.bmp")
-        Me.ListaImagenes.Images.SetKeyName(8, "Progreso8.bmp")
+        Me.ListaImagenes.Images.SetKeyName(0, "Barra1.png")
+        Me.ListaImagenes.Images.SetKeyName(1, "Barra2.png")
+        Me.ListaImagenes.Images.SetKeyName(2, "Barra3.png")
+        Me.ListaImagenes.Images.SetKeyName(3, "Barra4.png")
+        Me.ListaImagenes.Images.SetKeyName(4, "Barra5.png")
+        Me.ListaImagenes.Images.SetKeyName(5, "Barra6.png")
+        Me.ListaImagenes.Images.SetKeyName(6, "Barra7.png")
+        Me.ListaImagenes.Images.SetKeyName(7, "Barra8.png")
+        Me.ListaImagenes.Images.SetKeyName(8, "Barra9.png")
+        Me.ListaImagenes.Images.SetKeyName(9, "Barra00.png")
         '
         'FrmReportes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(885, 512)
+        Me.ClientSize = New System.Drawing.Size(883, 510)
         Me.ControlBox = False
         Me.Controls.Add(Me.Imagen)
         Me.Controls.Add(Me.GroupProveedores)
