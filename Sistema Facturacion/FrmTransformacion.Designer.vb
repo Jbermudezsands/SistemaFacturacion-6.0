@@ -29,9 +29,13 @@ Partial Class FrmTransformacion
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.TDGridSolicitud = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.OptActivos = New System.Windows.Forms.RadioButton
+        Me.OptTodos = New System.Windows.Forms.RadioButton
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Button2
@@ -91,7 +95,7 @@ Partial Class FrmTransformacion
         Me.BtnSalir.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnSalir.Image = CType(resources.GetObject("BtnSalir.Image"), System.Drawing.Image)
         Me.BtnSalir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnSalir.Location = New System.Drawing.Point(990, 373)
+        Me.BtnSalir.Location = New System.Drawing.Point(988, 348)
         Me.BtnSalir.Name = "BtnSalir"
         Me.BtnSalir.Size = New System.Drawing.Size(114, 56)
         Me.BtnSalir.TabIndex = 253
@@ -145,16 +149,50 @@ Partial Class FrmTransformacion
         Me.TDGridSolicitud.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TDGridSolicitud.PreviewInfo.ZoomFactor = 75
         Me.TDGridSolicitud.PrintInfo.PageSettings = CType(resources.GetObject("TDGridSolicitud.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TDGridSolicitud.Size = New System.Drawing.Size(965, 360)
+        Me.TDGridSolicitud.Size = New System.Drawing.Size(965, 335)
         Me.TDGridSolicitud.TabIndex = 249
         Me.TDGridSolicitud.Text = "C1TrueDBGrid1"
         Me.TDGridSolicitud.PropBag = resources.GetString("TDGridSolicitud.PropBag")
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.OptActivos)
+        Me.GroupBox1.Controls.Add(Me.OptTodos)
+        Me.GroupBox1.Location = New System.Drawing.Point(804, 410)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(170, 49)
+        Me.GroupBox1.TabIndex = 259
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Filtros de Solicitudes"
+        '
+        'OptActivos
+        '
+        Me.OptActivos.AutoSize = True
+        Me.OptActivos.Checked = True
+        Me.OptActivos.Location = New System.Drawing.Point(78, 22)
+        Me.OptActivos.Name = "OptActivos"
+        Me.OptActivos.Size = New System.Drawing.Size(60, 17)
+        Me.OptActivos.TabIndex = 1
+        Me.OptActivos.TabStop = True
+        Me.OptActivos.Text = "Activos"
+        Me.OptActivos.UseVisualStyleBackColor = True
+        '
+        'OptTodos
+        '
+        Me.OptTodos.AutoSize = True
+        Me.OptTodos.Location = New System.Drawing.Point(12, 21)
+        Me.OptTodos.Name = "OptTodos"
+        Me.OptTodos.Size = New System.Drawing.Size(55, 17)
+        Me.OptTodos.TabIndex = 0
+        Me.OptTodos.Text = "Todos"
+        Me.OptTodos.UseVisualStyleBackColor = True
         '
         'FrmTransformacion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1114, 501)
+        Me.ClientSize = New System.Drawing.Size(1114, 471)
+        Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.BtnActualizar)
@@ -169,6 +207,8 @@ Partial Class FrmTransformacion
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -182,4 +222,7 @@ Partial Class FrmTransformacion
     Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents TDGridSolicitud As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents OptActivos As System.Windows.Forms.RadioButton
+    Friend WithEvents OptTodos As System.Windows.Forms.RadioButton
 End Class

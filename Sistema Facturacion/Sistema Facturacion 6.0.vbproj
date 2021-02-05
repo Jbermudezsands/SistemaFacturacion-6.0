@@ -1416,6 +1416,12 @@
     <Compile Include="TipoNomina.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="TransformacionNueva.Designer.vb">
+      <DependentUpon>TransformacionNueva.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TransformacionNueva.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Variables.vb" />
     <Compile Include="FrmVehiculo.Designer.vb">
       <DependentUpon>FrmVehiculo.vb</DependentUpon>
@@ -2303,6 +2309,10 @@
     <EmbeddedResource Include="TipoNomina.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TipoNomina.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TransformacionNueva.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TransformacionNueva.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

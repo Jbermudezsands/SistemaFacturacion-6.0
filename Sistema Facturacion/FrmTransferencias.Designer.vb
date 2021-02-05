@@ -429,7 +429,7 @@ Partial Class FrmTransferencias
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(659, 513)
+        Me.ClientSize = New System.Drawing.Size(656, 513)
         Me.Controls.Add(Me.C1Button3)
         Me.Controls.Add(Me.C1Button2)
         Me.Controls.Add(Me.Button4)

@@ -3588,19 +3588,8 @@ Public Class FrmCompras
 
 
 
-    Private Sub TrueDBGridComponentes_CausesValidationChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.CausesValidationChanged
-
-    End Sub
-
-    Private Sub TrueDBGridComponentes_ClientSizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.ClientSizeChanged
-
-    End Sub
 
     Private Sub TrueDBGridComponentes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.Click
-
-    End Sub
-
-    Private Sub TxtObservaciones_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtObservaciones.TextChanged
 
     End Sub
 End Class

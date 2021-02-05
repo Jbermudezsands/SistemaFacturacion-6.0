@@ -148,6 +148,7 @@ Partial Class MDIMain
         Me.RibbonVehiculo = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton2 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton3 = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonButton17 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonGroup16 = New C1.Win.C1Ribbon.RibbonGroup
         Me.RibbonButton16 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonTab6 = New C1.Win.C1Ribbon.RibbonTab
@@ -175,7 +176,6 @@ Partial Class MDIMain
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
         Me.TxtUsuario = New System.Windows.Forms.TextBox
-        Me.RibbonButton17 = New C1.Win.C1Ribbon.RibbonButton
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1193,6 +1193,14 @@ Partial Class MDIMain
         Me.RibbonButton3.Text = "Generar"
         Me.RibbonButton3.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
+        'RibbonButton17
+        '
+        Me.RibbonButton17.ID = "RibbonButton17"
+        Me.RibbonButton17.LargeImage = CType(resources.GetObject("RibbonButton17.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton17.SmallImage = CType(resources.GetObject("RibbonButton17.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton17.Text = "Transforma"
+        Me.RibbonButton17.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
         'RibbonGroup16
         '
         Me.RibbonGroup16.ID = "RibbonGroup16"
@@ -1401,14 +1409,6 @@ Partial Class MDIMain
         Me.TxtUsuario.TabIndex = 15
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
-        '
-        'RibbonButton17
-        '
-        Me.RibbonButton17.ID = "RibbonButton17"
-        Me.RibbonButton17.LargeImage = CType(resources.GetObject("RibbonButton17.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton17.SmallImage = CType(resources.GetObject("RibbonButton17.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton17.Text = "Transforma"
-        Me.RibbonButton17.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'MDIMain
         '
