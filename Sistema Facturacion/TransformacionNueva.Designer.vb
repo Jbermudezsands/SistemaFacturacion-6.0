@@ -43,7 +43,7 @@ Partial Class TransformacionNueva
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.PictureBox3 = New System.Windows.Forms.PictureBox
         Me.TrueDBGridDestino = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.Button2 = New System.Windows.Forms.Button
+        Me.BtnBorrarLineaDestino = New System.Windows.Forms.Button
         Me.BindingDetalleOrigen = New System.Windows.Forms.BindingSource(Me.components)
         Me.BindingDetalleDestino = New System.Windows.Forms.BindingSource(Me.components)
         Me.GroupBox4.SuspendLayout()
@@ -354,24 +354,24 @@ Partial Class TransformacionNueva
         Me.TrueDBGridDestino.Text = "C1TrueDBGrid1"
         Me.TrueDBGridDestino.PropBag = resources.GetString("TrueDBGridDestino.PropBag")
         '
-        'Button2
+        'BtnBorrarLineaDestino
         '
-        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.ImageAlign = System.Drawing.ContentAlignment.BottomLeft
-        Me.Button2.Location = New System.Drawing.Point(672, 386)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(94, 23)
-        Me.Button2.TabIndex = 231
-        Me.Button2.Text = "Borrar Linea"
-        Me.Button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.BtnBorrarLineaDestino.Image = CType(resources.GetObject("BtnBorrarLineaDestino.Image"), System.Drawing.Image)
+        Me.BtnBorrarLineaDestino.ImageAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.BtnBorrarLineaDestino.Location = New System.Drawing.Point(672, 386)
+        Me.BtnBorrarLineaDestino.Name = "BtnBorrarLineaDestino"
+        Me.BtnBorrarLineaDestino.Size = New System.Drawing.Size(94, 23)
+        Me.BtnBorrarLineaDestino.TabIndex = 231
+        Me.BtnBorrarLineaDestino.Text = "Borrar Linea"
+        Me.BtnBorrarLineaDestino.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnBorrarLineaDestino.UseVisualStyleBackColor = True
         '
         'TransformacionNueva
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1252, 520)
-        Me.Controls.Add(Me.Button2)
+        Me.Controls.Add(Me.BtnBorrarLineaDestino)
         Me.Controls.Add(Me.TrueDBGridDestino)
         Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.Button4)
@@ -429,7 +429,7 @@ Partial Class TransformacionNueva
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents PictureBox3 As System.Windows.Forms.PictureBox
     Friend WithEvents TrueDBGridDestino As C1.Win.C1TrueDBGrid.C1TrueDBGrid
-    Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents BtnBorrarLineaDestino As System.Windows.Forms.Button
     Friend WithEvents BindingDetalleOrigen As System.Windows.Forms.BindingSource
     Friend WithEvents BindingDetalleDestino As System.Windows.Forms.BindingSource
 End Class

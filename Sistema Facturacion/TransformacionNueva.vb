@@ -10,7 +10,7 @@ Public Class TransformacionNueva
         Dim oTabla As DataTable, iPosicion As Double, CodigoProducto As String
 
         iPosicion = Me.TrueDBGridOrigen.Row
-        CodigoProducto = Me.TrueDBGridOrigen.Columns("Cod_Producto").Text
+        CodigoProducto = Me.TrueDBGridOrigen.Columns(3).Text
 
         CmdBuilderOrigen.RefreshSchema()
         oTabla = dsOrigen.Tables("DetalleOrigen").GetChanges(DataRowState.Added)
@@ -35,7 +35,7 @@ Public Class TransformacionNueva
 
         ActualizarGridInsertRowOrigen()
 
-
+        Bitacora(Now, NombreUsuario, "Transformacion de productos", "Se agrego Producto: " & CodigoProducto & " Transformacion No." & Me.TxtNumeroEnsamble.Text)
     End Sub
 
     Public Sub ActualizarGridInsertRowOrigen()
@@ -93,7 +93,7 @@ Public Class TransformacionNueva
 
         ActualizarGridInsertRowDestino()
 
-
+        Bitacora(Now, NombreUsuario, "Transformacion de productos", "Se agrego Producto: " & CodigoProducto & " Transformacion No." & Me.TxtNumeroEnsamble.Text)
     End Sub
 
 
@@ -208,48 +208,193 @@ Public Class TransformacionNueva
 
 
     Private Sub TrueDBGridOrigen_BeforeUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TrueDBGridOrigen.BeforeUpdate
+        Dim ConsecutivoCompra As Double, SqlConsecutivo As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim NumeroCompra As String
+
+
+
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
         If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
-            Select Case Me.CboTipoProducto.Text
 
-                    ConsecutivoCompra = BuscaConsecutivo("Transformacion")
+            ConsecutivoCompra = BuscaConsecutivo("Transforma")
+            NumeroCompra = Format(ConsecutivoCompra, "0000#")
+            Me.TxtNumeroEnsamble.Text = NumeroCompra
 
-
-                '/////////////////////////////////////////////////////////////////////////////////////////
-                '///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
-                '////////////////////////////////////////////////////////////////////////////////////////
-                    SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
-                    DataAdapter.Fill(DataSet, "Configuracion")
-                    If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
-                        If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) Then
-                            FacturaBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")
-                    End If
-
-                        If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) Then
-                            CompraBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")
-                    End If
-
-                End If
-
-                    If CompraBodega = True Then
-                        NumeroCompra = Me.CboCodigoBodega.Columns(0).Text & "-" & Format(ConsecutivoCompra, "0000#")
-                    Else
-                        NumeroCompra = Format(ConsecutivoCompra, "0000#")
-                End If
         Else
-                'ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
-                'NumeroCompra = Format(ConsecutivoCompra, "0000#")
-                    NumeroCompra = Me.TxtNumeroEnsamble.Text
+            'ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
+            'NumeroCompra = Format(ConsecutivoCompra, "0000#")
+            NumeroCompra = Me.TxtNumeroEnsamble.Text
         End If
 
 
 
 
-        end if 
+        GrabaTransformacion(NumeroCompra, Me.DTPFecha.Value, Me.CboCodigoBodega.Text, Me.CboCodigoBodega2.Text, Me.TxtObservaciones.Text)
 
 
+    End Sub
+
+    Public Sub GrabaTransformacion(ByVal NumeroTransforma As String, ByVal FechaTransforma As Date, ByVal BodegaOrigen As String, ByVal BodegaDestino As String, ByVal Observaciones As String)
+        Dim SqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, SqlString As String
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+
+        SqlString = "SELECT  Numero_Transforma, Fecha_Transforma, BodegaOrigen, BodegaDestino, Observaciones, Activo, Procesado, Anulado FROM Transformacion  " & _
+                    "WHERE  (Numero_Transforma = '" & NumeroTransforma & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Transformacion")
+        If Not DataSet.Tables("Transformacion").Rows.Count = 0 Then
+            '//////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////////AGREGO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
+            '/////////////////////////////////////////////////////////////////////////////////////////////////
+            SqlUpdate = "INSERT INTO [Transformacion] ([Numero_Transforma],[Fecha_Transforma],[BodegaOrigen],[BodegaDestino],[Observaciones],[Activo],[Procesado],[Anulado]) " & _
+                        "VALUES ('" & FechaTransforma & "' ,CONVERT(DATETIME, '" & FechaTransforma & "', 102), '" & BodegaOrigen & "' ,'" & BodegaDestino & "','" & Observaciones & "',1 ,0,0)"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+        Else
+            '//////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
+            '/////////////////////////////////////////////////////////////////////////////////////////////////
+            SqlUpdate = "UPDATE [Transformacion]  SET [Fecha_Transforma] = CONVERT(DATETIME, '" & FechaTransforma & "', 102) ,[BodegaOrigen] = '" & BodegaOrigen & "' ,[BodegaDestino] = '" & BodegaDestino & "' ,[Observaciones] = '" & Observaciones & "' ,[Activo] = 1 ,[Procesado] = 0 ,[Anulado] = 0 " & _
+                        "WHERE  (Numero_Transforma = '" & NumeroTransforma & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+        End If
+    End Sub
+
+    Private Sub TrueDBGridDestino_BeforeUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TrueDBGridDestino.BeforeUpdate
+        Dim ConsecutivoCompra As Double, SqlConsecutivo As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim NumeroCompra As String
+
+
+
+        '////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+
+            ConsecutivoCompra = BuscaConsecutivo("Transforma")
+            NumeroCompra = Format(ConsecutivoCompra, "0000#")
+            Me.TxtNumeroEnsamble.Text = NumeroCompra
+
+        Else
+            'ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
+            'NumeroCompra = Format(ConsecutivoCompra, "0000#")
+            NumeroCompra = Me.TxtNumeroEnsamble.Text
+        End If
+
+
+        GrabaTransformacion(NumeroCompra, Me.DTPFecha.Value, Me.CboCodigoBodega.Text, Me.CboCodigoBodega2.Text, Me.TxtObservaciones.Text)
+
+    End Sub
+
+    Private Sub TrueDBGridOrigen_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridOrigen.ButtonClick
+        Quien = "CodigoProductosBodega"
+        My.Forms.FrmConsultas.CodBodega = Me.CboCodigoBodega.Text
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.TrueDBGridOrigen.Columns("Codigo_Producto").Text = My.Forms.FrmConsultas.Codigo
+        Me.TrueDBGridOrigen.Columns("Descripcion_Producto").Text = My.Forms.FrmConsultas.Descripcion
+
+    End Sub
+
+
+    Private Sub TrueDBGridOrigen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridOrigen.Click
+
+    End Sub
+
+    Private Sub TrueDBGridDestino_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridDestino.ButtonClick
+        Quien = "CodigoProductosBodega"
+        My.Forms.FrmConsultas.CodBodega = Me.CboCodigoBodega.Text
+        My.Forms.FrmConsultas.ShowDialog()
+
+        Me.TrueDBGridDestino.Columns("Codigo_Producto").Text = My.Forms.FrmConsultas.Codigo
+        Me.TrueDBGridDestino.Columns("Descripcion_Producto").Text = My.Forms.FrmConsultas.Descripcion
+    End Sub
+
+    Private Sub TrueDBGridDestino_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridDestino.Click
+
+    End Sub
+
+    Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
+        Dim oDataRow As DataRow, oTablaBorrados As DataTable
+        Dim Resultado As Double, CodProducto As String, iPosicion As Double
+
+        Resultado = MsgBox("¿Esta Seguro de Eliminar la Linea?", MsgBoxStyle.OkCancel, "Sistema de Facturacion")
+
+        If Not Resultado = "1" Then
+            Exit Sub
+        End If
+
+
+
+
+
+        CodProducto = Me.TrueDBGridOrigen.Columns("Codigo_Producto").Text
+        iPosicion = Me.BindingDetalleOrigen.Position
+
+        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////////////////////////////////BORRO EL REGISTRO SELECCIONADO CARGANDOLO EN DATAROW ///////////////////////////
+        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        oDataRow = dsOrigen.Tables("DetalleOrigen").Rows(iPosicion)
+        oDataRow.Delete()
+
+        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////Obtengo las filas borradas/////////////////////////////////////////////////////////////////////////////////
+        oTablaBorrados = dsOrigen.Tables("DetalleOrigen").GetChanges(DataRowState.Deleted)
+        If Not IsNothing(oTablaBorrados) Then
+            '//////////////////SI NO TIENE REGISTROS EN BORRADOS ESTAN EN PANTALLA LOS CAMBIOS 77777777
+            daOrigen.Update(oTablaBorrados)
+        End If
+        dsOrigen.Tables("DetalleOrigen").AcceptChanges()
+        daOrigen.Update(dsOrigen.Tables("DetalleOrigen"))
+
+        Bitacora(Now, NombreUsuario, "Transformacion de productos", "Elimino Producto: " & CodProducto & " Transformacion No." & Me.TxtNumeroEnsamble.Text)
+    End Sub
+
+    Private Sub BtnBorrarLineaDestino_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnBorrarLineaDestino.Click
+        Dim oDataRow As DataRow, oTablaBorrados As DataTable
+        Dim Resultado As Double, CodProducto As String, iPosicion As Double
+
+        Resultado = MsgBox("¿Esta Seguro de Eliminar la Linea?", MsgBoxStyle.OkCancel, "Sistema de Facturacion")
+
+        If Not Resultado = "1" Then
+            Exit Sub
+        End If
+
+
+
+
+
+        CodProducto = Me.TrueDBGridOrigen.Columns("Codigo_Producto").Text
+        iPosicion = Me.BindingDetalleOrigen.Position
+
+        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////////////////////////////////BORRO EL REGISTRO SELECCIONADO CARGANDOLO EN DATAROW ///////////////////////////
+        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        oDataRow = dsDestino.Tables("DetalleDestino").Rows(iPosicion)
+        oDataRow.Delete()
+
+        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////Obtengo las filas borradas/////////////////////////////////////////////////////////////////////////////////
+        oTablaBorrados = dsDestino.Tables("DetalleDestino").GetChanges(DataRowState.Deleted)
+        If Not IsNothing(oTablaBorrados) Then
+            '//////////////////SI NO TIENE REGISTROS EN BORRADOS ESTAN EN PANTALLA LOS CAMBIOS 77777777
+            daDestino.Update(oTablaBorrados)
+        End If
+        dsDestino.Tables("DetalleDestino").AcceptChanges()
+        daDestino.Update(dsOrigen.Tables("DetalleDestino"))
+
+        Bitacora(Now, NombreUsuario, "Transformacion de productos", "Elimino Producto: " & CodProducto & " Transformacion No." & Me.TxtNumeroEnsamble.Text)
+    End Sub
+
+    Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
+        Me.Close()
     End Sub
 End Class
