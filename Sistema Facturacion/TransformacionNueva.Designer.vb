@@ -299,7 +299,7 @@ Partial Class TransformacionNueva
         Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label9.Location = New System.Drawing.Point(512, 25)
+        Me.Label9.Location = New System.Drawing.Point(503, 25)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(224, 13)
         Me.Label9.TabIndex = 220

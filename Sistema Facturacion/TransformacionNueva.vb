@@ -20,8 +20,6 @@ Public Class TransformacionNueva
             dsOrigen.Tables("DetalleOrigen").AcceptChanges()
             daOrigen.Update(dsOrigen.Tables("DetalleOrigen"))
 
-
-
             Me.TrueDBGridOrigen.Row = iPosicion
 
         Else
@@ -68,18 +66,15 @@ Public Class TransformacionNueva
         Dim oTabla As DataTable, iPosicion As Double, CodigoProducto As String
 
         iPosicion = Me.TrueDBGridDestino.Row
-        CodigoProducto = Me.TrueDBGridDestino.Columns("Cod_Producto").Text
+        CodigoProducto = Me.TrueDBGridDestino.Columns("Codigo_Producto").Text
 
         CmdBuilderDestino.RefreshSchema()
         oTabla = dsDestino.Tables("DetalleDestino").GetChanges(DataRowState.Added)
         If Not IsNothing(oTabla) Then
             '//////////////////SI  TIENE REGISTROS NUEVOS 
             daDestino.Update(oTabla)
-            dsDestino.Tables("DetalleOrigen").AcceptChanges()
-            daDestino.Update(dsOrigen.Tables("DetalleDestino"))
-
-
-
+            dsDestino.Tables("DetalleDestino").AcceptChanges()
+            daDestino.Update(dsDestino.Tables("DetalleDestino"))
             Me.TrueDBGridDestino.Row = iPosicion
 
         Else
@@ -200,12 +195,16 @@ Public Class TransformacionNueva
 
     Private Sub TrueDBGridOrigen_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridOrigen.AfterUpdate
         InsertarRowGridOrigen()
-    End Sub
 
-    Private Sub TrueDBGridDestino_BackColorChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridDestino.BackColorChanged
+        Me.TrueDBGridOrigen.Col = 3
+        Me.TrueDBGridDestino.Row = Me.TrueDBGridDestino.Row + 1
+    End Sub
+    Private Sub TrueDBGridDestino_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridDestino.AfterUpdate
         InsertarRowGridDestino()
-    End Sub
 
+        Me.TrueDBGridOrigen.Col = 3
+        Me.TrueDBGridDestino.Row = Me.TrueDBGridDestino.Row + 1
+    End Sub
 
     Private Sub TrueDBGridOrigen_BeforeUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TrueDBGridOrigen.BeforeUpdate
         Dim ConsecutivoCompra As Double, SqlConsecutivo As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -228,8 +227,8 @@ Public Class TransformacionNueva
             NumeroCompra = Me.TxtNumeroEnsamble.Text
         End If
 
-
-
+        Me.TrueDBGridOrigen.Columns("TipoTransforma").Text = "Origen"
+        Me.TrueDBGridOrigen.Columns("Numero_Transforma").Text = NumeroCompra
 
         GrabaTransformacion(NumeroCompra, Me.DTPFecha.Value, Me.CboCodigoBodega.Text, Me.CboCodigoBodega2.Text, Me.TxtObservaciones.Text)
 
@@ -245,12 +244,12 @@ Public Class TransformacionNueva
                     "WHERE  (Numero_Transforma = '" & NumeroTransforma & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "Transformacion")
-        If Not DataSet.Tables("Transformacion").Rows.Count = 0 Then
+        If DataSet.Tables("Transformacion").Rows.Count = 0 Then
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////AGREGO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
             SqlUpdate = "INSERT INTO [Transformacion] ([Numero_Transforma],[Fecha_Transforma],[BodegaOrigen],[BodegaDestino],[Observaciones],[Activo],[Procesado],[Anulado]) " & _
-                        "VALUES ('" & FechaTransforma & "' ,CONVERT(DATETIME, '" & FechaTransforma & "', 102), '" & BodegaOrigen & "' ,'" & BodegaDestino & "','" & Observaciones & "',1 ,0,0)"
+                        "VALUES ('" & NumeroTransforma & "' ,CONVERT(DATETIME, '" & Format(FechaTransforma, "yyyy-MM-dd") & "', 102), '" & BodegaOrigen & "' ,'" & BodegaDestino & "','" & Observaciones & "',1 ,0,0)"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -260,13 +259,23 @@ Public Class TransformacionNueva
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlUpdate = "UPDATE [Transformacion]  SET [Fecha_Transforma] = CONVERT(DATETIME, '" & FechaTransforma & "', 102) ,[BodegaOrigen] = '" & BodegaOrigen & "' ,[BodegaDestino] = '" & BodegaDestino & "' ,[Observaciones] = '" & Observaciones & "' ,[Activo] = 1 ,[Procesado] = 0 ,[Anulado] = 0 " & _
+            SqlUpdate = "UPDATE [Transformacion]  SET [Fecha_Transforma] = CONVERT(DATETIME, '" & Format(FechaTransforma, "yyyy-mm-dd") & "', 102) ,[BodegaOrigen] = '" & BodegaOrigen & "' ,[BodegaDestino] = '" & BodegaDestino & "' ,[Observaciones] = '" & Observaciones & "' ,[Activo] = 1 ,[Procesado] = 0 ,[Anulado] = 0 " & _
                         "WHERE  (Numero_Transforma = '" & NumeroTransforma & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
             MiConexion.Close()
         End If
+    End Sub
+
+
+    Private Sub TrueDBGridOrigen_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridOrigen.ButtonClick
+        Quien = "CodigoProductosBodega"
+        My.Forms.FrmConsultas.CodBodega = Me.CboCodigoBodega.Text
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.TrueDBGridOrigen.Columns("Codigo_Producto").Text = My.Forms.FrmConsultas.Codigo
+        Me.TrueDBGridOrigen.Columns("Descripcion_Producto").Text = My.Forms.FrmConsultas.Descripcion
+
     End Sub
 
     Private Sub TrueDBGridDestino_BeforeUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TrueDBGridDestino.BeforeUpdate
@@ -290,24 +299,12 @@ Public Class TransformacionNueva
             NumeroCompra = Me.TxtNumeroEnsamble.Text
         End If
 
+        Me.TrueDBGridDestino.Columns("TipoTransforma").Text = "Destino"
+        Me.TrueDBGridDestino.Columns("Numero_Transforma").Text = NumeroCompra
 
         GrabaTransformacion(NumeroCompra, Me.DTPFecha.Value, Me.CboCodigoBodega.Text, Me.CboCodigoBodega2.Text, Me.TxtObservaciones.Text)
-
     End Sub
 
-    Private Sub TrueDBGridOrigen_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridOrigen.ButtonClick
-        Quien = "CodigoProductosBodega"
-        My.Forms.FrmConsultas.CodBodega = Me.CboCodigoBodega.Text
-        My.Forms.FrmConsultas.ShowDialog()
-        Me.TrueDBGridOrigen.Columns("Codigo_Producto").Text = My.Forms.FrmConsultas.Codigo
-        Me.TrueDBGridOrigen.Columns("Descripcion_Producto").Text = My.Forms.FrmConsultas.Descripcion
-
-    End Sub
-
-
-    Private Sub TrueDBGridOrigen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridOrigen.Click
-
-    End Sub
 
     Private Sub TrueDBGridDestino_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridDestino.ButtonClick
         Quien = "CodigoProductosBodega"
@@ -318,9 +315,6 @@ Public Class TransformacionNueva
         Me.TrueDBGridDestino.Columns("Descripcion_Producto").Text = My.Forms.FrmConsultas.Descripcion
     End Sub
 
-    Private Sub TrueDBGridDestino_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridDestino.Click
-
-    End Sub
 
     Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
         Dim oDataRow As DataRow, oTablaBorrados As DataTable
@@ -368,10 +362,6 @@ Public Class TransformacionNueva
             Exit Sub
         End If
 
-
-
-
-
         CodProducto = Me.TrueDBGridOrigen.Columns("Codigo_Producto").Text
         iPosicion = Me.BindingDetalleOrigen.Position
 
@@ -396,5 +386,13 @@ Public Class TransformacionNueva
 
     Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
         Me.Close()
+    End Sub
+
+    Private Sub TrueDBGridOrigen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridOrigen.Click
+
+    End Sub
+
+    Private Sub TrueDBGridDestino_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridDestino.Click
+
     End Sub
 End Class
