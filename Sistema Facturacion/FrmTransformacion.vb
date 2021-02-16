@@ -49,9 +49,18 @@ Public Class FrmTransformacion
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-
-
-
+        My.Forms.TransformacionNueva.Nuevo = True
         My.Forms.TransformacionNueva.ShowDialog()
+    End Sub
+
+    Private Sub BtnVer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnVer.Click
+        My.Forms.TransformacionNueva.Nuevo = False
+        My.Forms.TransformacionNueva.TxtNumeroEnsamble.Text = "-----0-----"
+        My.Forms.TransformacionNueva.TxtNumeroEnsamble.Text = Me.TDGridSolicitud.Columns("Numero").Text
+        My.Forms.TransformacionNueva.ShowDialog()
+    End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+
     End Sub
 End Class

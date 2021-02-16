@@ -2349,6 +2349,18 @@
     <None Include="Resources\Progreso7.bmp" />
     <None Include="Resources\Progreso8.bmp" />
     <None Include="Resources\Progreso9.bmp" />
+    <None Include="Resources\Barra0.bmp" />
+    <None Include="Resources\Barra00.png" />
+    <None Include="Resources\Barra10.png" />
+    <None Include="Resources\Barra1.png" />
+    <None Include="Resources\Barra2.png" />
+    <None Include="Resources\Barra3.png" />
+    <None Include="Resources\Barra4.png" />
+    <None Include="Resources\Barra5.png" />
+    <None Include="Resources\Barra6.png" />
+    <None Include="Resources\Barra7.png" />
+    <None Include="Resources\Barra8.png" />
+    <None Include="Resources\Barra9.png" />
     <Content Include="Text Document.ico" />
   </ItemGroup>
   <ItemGroup>

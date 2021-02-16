@@ -13195,7 +13195,7 @@ Public Class FrmReportes
             Me.Imagen.Visible = True
         End If
 
-        If ImagenReporte = 7 Then
+        If ImagenReporte = 10 Then
             Imagen.Image = ListaImagenes.Images(ImagenReporte)
             Me.LblProcesando.Text = Me.LblProcesando.Text & "."
             ImagenReporte = 0
