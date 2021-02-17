@@ -565,4 +565,45 @@ Public Class TransformacionNueva
     Private Sub CmdGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGrabar.Click
         LimpiarPantalla()
     End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        Dim SqlDatos As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim ArepTransformacion As New ArepTransformacion
+
+        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+            MsgBox("No se puede imprimir sin registrar la transformacion", MsgBoxStyle.Critical, " Zeus Facturacion")
+            Exit Sub
+        End If
+
+        SqlDatos = "SELECT * FROM DatosEmpresa"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+        DataAdapter.Fill(DataSet, "DatosEmpresa")
+        If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+            ArepTransformacion.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+            areptransformacion.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+        End If
+
+
+        ArepTransformacion.Document.Name = "Reporte de Transformacion"
+        ArepTransformacion.Numero = Me.TxtNumeroEnsamble.Text
+
+        SqlDatos = "SELECT  Transformacion.Numero_Transforma, Transformacion.Fecha_Transforma, Transformacion.BodegaOrigen, Transformacion.BodegaDestino, Transformacion.Observaciones, Transformacion.Activo, Transformacion.Procesado, Transformacion.Anulado, Bodegas_1.Nombre_Bodega AS DBodegaDestino, Bodegas.Nombre_Bodega AS DBodegaOrigen FROM Transformacion INNER JOIN  Bodegas ON Transformacion.BodegaOrigen = Bodegas.Cod_Bodega INNER JOIN  Bodegas AS Bodegas_1 ON Transformacion.BodegaDestino = Bodegas_1.Cod_Bodega  " & _
+                   "WHERE  (Transformacion.Numero_Transforma = '" & Me.TxtNumeroEnsamble.Text & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+        DataAdapter.Fill(DataSet, "Consulta")
+        If Not DataSet.Tables("Consulta").Rows.Count = 0 Then
+            ArepTransformacion.LblBodegaOrigen.Text = DataSet.Tables("Consulta").Rows(0)("DBodegaOrigen")
+            ArepTransformacion.LblBodegaDestino.Text = DataSet.Tables("Consulta").Rows(0)("DBodegaDestino")
+        End If
+
+
+        Dim ViewerForm As New FrmViewer()
+
+        ViewerForm.arvMain.Document = ArepTransformacion.Document
+        ViewerForm.Show()
+        ArepTransformacion.Run(False)
+
+
+    End Sub
 End Class

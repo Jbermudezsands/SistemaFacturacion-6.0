@@ -32,6 +32,8 @@ Partial Class FrmTransformacion
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.OptActivos = New System.Windows.Forms.RadioButton
         Me.OptTodos = New System.Windows.Forms.RadioButton
+        Me.OptProcesados = New System.Windows.Forms.RadioButton
+        Me.BtnProcesar = New System.Windows.Forms.Button
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -56,7 +58,7 @@ Partial Class FrmTransformacion
         Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
         Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button1.Location = New System.Drawing.Point(990, 248)
+        Me.Button1.Location = New System.Drawing.Point(990, 241)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(114, 56)
         Me.Button1.TabIndex = 256
@@ -69,7 +71,7 @@ Partial Class FrmTransformacion
         Me.BtnActualizar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnActualizar.Image = CType(resources.GetObject("BtnActualizar.Image"), System.Drawing.Image)
         Me.BtnActualizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnActualizar.Location = New System.Drawing.Point(990, 186)
+        Me.BtnActualizar.Location = New System.Drawing.Point(990, 184)
         Me.BtnActualizar.Name = "BtnActualizar"
         Me.BtnActualizar.Size = New System.Drawing.Size(114, 56)
         Me.BtnActualizar.TabIndex = 255
@@ -95,7 +97,7 @@ Partial Class FrmTransformacion
         Me.BtnSalir.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnSalir.Image = CType(resources.GetObject("BtnSalir.Image"), System.Drawing.Image)
         Me.BtnSalir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnSalir.Location = New System.Drawing.Point(988, 348)
+        Me.BtnSalir.Location = New System.Drawing.Point(988, 358)
         Me.BtnSalir.Name = "BtnSalir"
         Me.BtnSalir.Size = New System.Drawing.Size(114, 56)
         Me.BtnSalir.TabIndex = 253
@@ -156,11 +158,12 @@ Partial Class FrmTransformacion
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.OptProcesados)
         Me.GroupBox1.Controls.Add(Me.OptActivos)
         Me.GroupBox1.Controls.Add(Me.OptTodos)
-        Me.GroupBox1.Location = New System.Drawing.Point(804, 410)
+        Me.GroupBox1.Location = New System.Drawing.Point(732, 410)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(170, 49)
+        Me.GroupBox1.Size = New System.Drawing.Size(242, 49)
         Me.GroupBox1.TabIndex = 259
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Filtros de Solicitudes"
@@ -169,7 +172,7 @@ Partial Class FrmTransformacion
         '
         Me.OptActivos.AutoSize = True
         Me.OptActivos.Checked = True
-        Me.OptActivos.Location = New System.Drawing.Point(78, 22)
+        Me.OptActivos.Location = New System.Drawing.Point(176, 21)
         Me.OptActivos.Name = "OptActivos"
         Me.OptActivos.Size = New System.Drawing.Size(60, 17)
         Me.OptActivos.TabIndex = 1
@@ -180,18 +183,43 @@ Partial Class FrmTransformacion
         'OptTodos
         '
         Me.OptTodos.AutoSize = True
-        Me.OptTodos.Location = New System.Drawing.Point(12, 21)
+        Me.OptTodos.Location = New System.Drawing.Point(17, 21)
         Me.OptTodos.Name = "OptTodos"
         Me.OptTodos.Size = New System.Drawing.Size(55, 17)
         Me.OptTodos.TabIndex = 0
         Me.OptTodos.Text = "Todos"
         Me.OptTodos.UseVisualStyleBackColor = True
         '
+        'OptProcesados
+        '
+        Me.OptProcesados.AutoSize = True
+        Me.OptProcesados.Location = New System.Drawing.Point(86, 21)
+        Me.OptProcesados.Name = "OptProcesados"
+        Me.OptProcesados.Size = New System.Drawing.Size(81, 17)
+        Me.OptProcesados.TabIndex = 2
+        Me.OptProcesados.Text = "Procesados"
+        Me.OptProcesados.UseVisualStyleBackColor = True
+        '
+        'BtnProcesar
+        '
+        Me.BtnProcesar.AccessibleDescription = ""
+        Me.BtnProcesar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnProcesar.Image = CType(resources.GetObject("BtnProcesar.Image"), System.Drawing.Image)
+        Me.BtnProcesar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.BtnProcesar.Location = New System.Drawing.Point(990, 299)
+        Me.BtnProcesar.Name = "BtnProcesar"
+        Me.BtnProcesar.Size = New System.Drawing.Size(114, 56)
+        Me.BtnProcesar.TabIndex = 260
+        Me.BtnProcesar.Text = "Procesar"
+        Me.BtnProcesar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnProcesar.UseVisualStyleBackColor = True
+        '
         'FrmTransformacion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1114, 471)
+        Me.Controls.Add(Me.BtnProcesar)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
@@ -225,4 +253,6 @@ Partial Class FrmTransformacion
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents OptActivos As System.Windows.Forms.RadioButton
     Friend WithEvents OptTodos As System.Windows.Forms.RadioButton
+    Friend WithEvents OptProcesados As System.Windows.Forms.RadioButton
+    Friend WithEvents BtnProcesar As System.Windows.Forms.Button
 End Class

@@ -799,6 +799,18 @@
     <Compile Include="Reportes\ArepSolicitudCompra.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\ArepSubDetalleTransformacion.Designer.vb">
+      <DependentUpon>ArepSubDetalleTransformacion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepSubDetalleTransformacion.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\ArepTransformacion.Designer.vb">
+      <DependentUpon>ArepTransformacion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepTransformacion.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\ArepUtilidadProyecto.Designer.vb">
       <DependentUpon>ArepUtilidadProyecto.vb</DependentUpon>
     </Compile>
@@ -1359,8 +1371,6 @@
     </Compile>
     <Compile Include="FrmExportar.vb">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Reportes\NewActiveReport2.vb">
     </Compile>
     <Compile Include="Reportes\SubReporteCompras.Designer.vb">
       <DependentUpon>SubReporteCompras.vb</DependentUpon>
@@ -2131,9 +2141,17 @@
       <SubType>Designer</SubType>
       <DependentUpon>ArepSolicitudCompra.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepSubDetalleTransformacion.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepSubDetalleTransformacion.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepTransferencias.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ArepTransferencias.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepTransformacion.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepTransformacion.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepUtilidadProyecto.resx">
       <SubType>Designer</SubType>
@@ -2349,7 +2367,6 @@
     <None Include="Resources\Progreso7.bmp" />
     <None Include="Resources\Progreso8.bmp" />
     <None Include="Resources\Progreso9.bmp" />
-    <None Include="Resources\Barra0.bmp" />
     <None Include="Resources\Barra00.png" />
     <None Include="Resources\Barra10.png" />
     <None Include="Resources\Barra1.png" />
