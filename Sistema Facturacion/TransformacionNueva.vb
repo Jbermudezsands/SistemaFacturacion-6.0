@@ -122,11 +122,15 @@ Public Class TransformacionNueva
     End Sub
     Private Sub TransformacionNueva_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
+
         If Nuevo = True Then
             LimpiarPantalla()
         Else
             CargarPantalla()
         End If
+
+
+
 
         'Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         'Dim Procesado As Boolean = True, SqlDatos As String
@@ -250,11 +254,19 @@ Public Class TransformacionNueva
             Me.CboCodigoBodega.Text = DataSet.Tables("Transformacion").Rows(0)("BodegaOrigen")
             Me.CboCodigoBodega2.Text = DataSet.Tables("Transformacion").Rows(0)("BodegaDestino")
             Me.DTPFecha.Value = DataSet.Tables("Transformacion").Rows(0)("Fecha_Transforma")
+            Me.TxtObservaciones.Text = DataSet.Tables("Transformacion").Rows(0)("Observaciones")
 
             ActualizarGridInsertRowOrigen()
             ActualizarGridInsertRowDestino()
 
         End If
+
+
+        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////////////////////DATOS POR DEFECTO //////////////////////////////////////////
+        '////////////////////////////////////////////////////////////////////////////////////////////////////
+        Me.CboCodigoBodega.Text = UsuarioBodegaCompra
+        Me.CboCodigoBodega2.Text = UsuarioBodegaCompra
 
 
         MiConexion.Close()
@@ -336,6 +348,13 @@ Public Class TransformacionNueva
         Me.TrueDBGridDestino.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 259
         Me.TrueDBGridDestino.Columns("Cantidad").Caption = "Cantidad"
         Me.TrueDBGridDestino.Splits.Item(0).DisplayColumns("Cantidad").Width = 64
+
+
+        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////////////////////DATOS POR DEFECTO //////////////////////////////////////////
+        '////////////////////////////////////////////////////////////////////////////////////////////////////
+        Me.CboCodigoBodega.Text = UsuarioBodegaCompra
+        Me.CboCodigoBodega2.Text = UsuarioBodegaCompra
 
     End Sub
 
@@ -563,6 +582,23 @@ Public Class TransformacionNueva
     End Sub
 
     Private Sub CmdGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGrabar.Click
+        Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim Fecha As String, Resultado As Double, Numero As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SQlProductos As String, IposicionFila As Double
+
+        MiConexion.Close()
+        Numero = Me.TxtNumeroEnsamble.Text
+        Fecha = Format(CDate(Me.DTPFecha.Value), "yyyy-MM-dd")
+        '//////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
+        '/////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlCompras = "UPDATE [Transformacion]  SET [Observaciones] = '" & Me.TxtObservaciones.Text & "'  WHERE (Numero_Transforma = '" & Numero & "')"
+        MiConexion.Open()
+        ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
+        iResultado = ComandoUpdate.ExecuteNonQuery
+        MiConexion.Close()
+
+
         LimpiarPantalla()
     End Sub
 
@@ -581,12 +617,20 @@ Public Class TransformacionNueva
         DataAdapter.Fill(DataSet, "DatosEmpresa")
         If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
             ArepTransformacion.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
-            areptransformacion.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+            ArepTransformacion.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+
+
+            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
+                ArepTransformacion.RutaLogo = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
+            End If
         End If
 
 
         ArepTransformacion.Document.Name = "Reporte de Transformacion"
         ArepTransformacion.Numero = Me.TxtNumeroEnsamble.Text
+        ArepTransformacion.LblNumero.Text = Me.TxtNumeroEnsamble.Text
+        ArepTransformacion.LblFecha.Text = Me.DTPFecha.Value
+        ArepTransformacion.TxtObservaciones.Text = Me.TxtObservaciones.Text
 
         SqlDatos = "SELECT  Transformacion.Numero_Transforma, Transformacion.Fecha_Transforma, Transformacion.BodegaOrigen, Transformacion.BodegaDestino, Transformacion.Observaciones, Transformacion.Activo, Transformacion.Procesado, Transformacion.Anulado, Bodegas_1.Nombre_Bodega AS DBodegaDestino, Bodegas.Nombre_Bodega AS DBodegaOrigen FROM Transformacion INNER JOIN  Bodegas ON Transformacion.BodegaOrigen = Bodegas.Cod_Bodega INNER JOIN  Bodegas AS Bodegas_1 ON Transformacion.BodegaDestino = Bodegas_1.Cod_Bodega  " & _
                    "WHERE  (Transformacion.Numero_Transforma = '" & Me.TxtNumeroEnsamble.Text & "')"
@@ -604,6 +648,10 @@ Public Class TransformacionNueva
         ViewerForm.Show()
         ArepTransformacion.Run(False)
 
+
+    End Sub
+
+    Private Sub GroupBox1_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox1.Enter
 
     End Sub
 End Class

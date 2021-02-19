@@ -48,6 +48,12 @@ Partial Public Class ArepTransformacion
         Me.Label6 = New DataDynamics.ActiveReports.Label
         Me.Detail1 = New DataDynamics.ActiveReports.Detail
         Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
+        Me.ReportHeader1 = New DataDynamics.ActiveReports.ReportHeader
+        Me.ReportFooter1 = New DataDynamics.ActiveReports.ReportFooter
+        Me.Label7 = New DataDynamics.ActiveReports.Label
+        Me.Label8 = New DataDynamics.ActiveReports.Label
+        Me.TxtObservaciones = New DataDynamics.ActiveReports.TextBox
+        Me.Label4 = New DataDynamics.ActiveReports.Label
         CType(Me.ImgLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblEncabezado, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblTipoCompra, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -73,12 +79,16 @@ Partial Public Class ArepTransformacion
         CType(Me.Label21, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label6, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label7, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label8, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TxtObservaciones, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         '
         'PageHeader1
         '
-        Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.ImgLogo, Me.LblEncabezado, Me.LblTipoCompra, Me.LblNumero, Me.lblOrderDate, Me.lblOrderNum, Me.LblFecha, Me.LblBodegaOrigen, Me.Label10, Me.Label22, Me.lblProductName, Me.lblQty, Me.Label12, Me.Label13, Me.Label3, Me.LblDireccion, Me.LblRuc, Me.Label1, Me.LblBodegaDestino, Me.Label5, Me.Label16, Me.Label20, Me.Label21, Me.SrpCompras, Me.SrpFacturas, Me.Label2, Me.Label6})
-        Me.PageHeader1.Height = 2.9375!
+        Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.ImgLogo, Me.LblEncabezado, Me.LblTipoCompra, Me.LblNumero, Me.lblOrderDate, Me.lblOrderNum, Me.LblFecha, Me.LblBodegaOrigen, Me.Label10, Me.Label22, Me.lblProductName, Me.lblQty, Me.Label12, Me.Label13, Me.Label3, Me.LblDireccion, Me.LblRuc, Me.Label1, Me.LblBodegaDestino, Me.Label5, Me.Label16, Me.Label20, Me.Label21, Me.SrpFacturas, Me.Label2, Me.Label6})
+        Me.PageHeader1.Height = 2.71875!
         Me.PageHeader1.Name = "PageHeader1"
         '
         'ImgLogo
@@ -393,6 +403,7 @@ Partial Public Class ArepTransformacion
         Me.LblDireccion.Style = "ddo-char-set: 0; font-style: italic; font-size: 8.25pt; "
         Me.LblDireccion.Text = ""
         Me.LblDireccion.Top = 0.368421!
+        Me.LblDireccion.Visible = False
         Me.LblDireccion.Width = 2.894737!
         '
         'LblRuc
@@ -549,7 +560,7 @@ Partial Public Class ArepTransformacion
         Me.SrpCompras.Name = "SrpCompras"
         Me.SrpCompras.Report = Nothing
         Me.SrpCompras.ReportName = "SrpCompras"
-        Me.SrpCompras.Top = 2.0!
+        Me.SrpCompras.Top = 0.0625!
         Me.SrpCompras.Width = 6.5625!
         '
         'SrpFacturas
@@ -568,7 +579,7 @@ Partial Public Class ArepTransformacion
         Me.SrpFacturas.Name = "SrpFacturas"
         Me.SrpFacturas.Report = Nothing
         Me.SrpFacturas.ReportName = "SrpFacturas"
-        Me.SrpFacturas.Top = 2.6875!
+        Me.SrpFacturas.Top = 2.0625!
         Me.SrpFacturas.Width = 6.5625!
         '
         'Label2
@@ -614,23 +625,116 @@ Partial Public Class ArepTransformacion
         'Detail1
         '
         Me.Detail1.ColumnSpacing = 0.0!
-        Me.Detail1.Height = 0.0!
+        Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.SrpCompras})
+        Me.Detail1.Height = 0.3541667!
         Me.Detail1.Name = "Detail1"
         '
         'PageFooter1
         '
-        Me.PageFooter1.Height = 0.25!
+        Me.PageFooter1.Height = 0.01041667!
         Me.PageFooter1.Name = "PageFooter1"
+        '
+        'ReportHeader1
+        '
+        Me.ReportHeader1.Height = 0.0!
+        Me.ReportHeader1.Name = "ReportHeader1"
+        '
+        'ReportFooter1
+        '
+        Me.ReportFooter1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.Label7, Me.Label8, Me.TxtObservaciones, Me.Label4})
+        Me.ReportFooter1.Height = 1.3125!
+        Me.ReportFooter1.Name = "ReportFooter1"
+        '
+        'Label7
+        '
+        Me.Label7.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label7.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label7.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label7.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label7.Border.RightColor = System.Drawing.Color.Black
+        Me.Label7.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label7.Border.TopColor = System.Drawing.Color.Black
+        Me.Label7.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
+        Me.Label7.Height = 0.1875!
+        Me.Label7.HyperLink = Nothing
+        Me.Label7.Left = 0.1875!
+        Me.Label7.Name = "Label7"
+        Me.Label7.Style = "ddo-char-set: 0; text-align: center; font-weight: bold; font-size: 9.75pt; "
+        Me.Label7.Text = "Traslado Recibido:"
+        Me.Label7.Top = 1.125!
+        Me.Label7.Width = 1.875!
+        '
+        'Label8
+        '
+        Me.Label8.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label8.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label8.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label8.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label8.Border.RightColor = System.Drawing.Color.Black
+        Me.Label8.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label8.Border.TopColor = System.Drawing.Color.Black
+        Me.Label8.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
+        Me.Label8.Height = 0.1875!
+        Me.Label8.HyperLink = Nothing
+        Me.Label8.Left = 4.0625!
+        Me.Label8.Name = "Label8"
+        Me.Label8.Style = "ddo-char-set: 0; text-align: center; font-weight: bold; font-size: 9.75pt; "
+        Me.Label8.Text = "Traslado Entregado:"
+        Me.Label8.Top = 1.125!
+        Me.Label8.Width = 1.875!
+        '
+        'TxtObservaciones
+        '
+        Me.TxtObservaciones.Border.BottomColor = System.Drawing.Color.Black
+        Me.TxtObservaciones.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TxtObservaciones.Border.LeftColor = System.Drawing.Color.Black
+        Me.TxtObservaciones.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TxtObservaciones.Border.RightColor = System.Drawing.Color.Black
+        Me.TxtObservaciones.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TxtObservaciones.Border.TopColor = System.Drawing.Color.Black
+        Me.TxtObservaciones.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TxtObservaciones.Height = 0.5!
+        Me.TxtObservaciones.Left = 0.0!
+        Me.TxtObservaciones.Name = "TxtObservaciones"
+        Me.TxtObservaciones.Style = ""
+        Me.TxtObservaciones.Text = Nothing
+        Me.TxtObservaciones.Top = 0.1875!
+        Me.TxtObservaciones.Width = 6.1875!
+        '
+        'Label4
+        '
+        Me.Label4.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label4.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label4.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label4.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label4.Border.RightColor = System.Drawing.Color.Black
+        Me.Label4.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label4.Border.TopColor = System.Drawing.Color.Black
+        Me.Label4.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
+        Me.Label4.Height = 0.1875!
+        Me.Label4.HyperLink = Nothing
+        Me.Label4.Left = 0.0!
+        Me.Label4.Name = "Label4"
+        Me.Label4.Style = ""
+        Me.Label4.Text = "Observaciones"
+        Me.Label4.Top = 0.0!
+        Me.Label4.Width = 1.5625!
         '
         'ArepTransformacion
         '
         Me.MasterReport = False
+        Me.PageSettings.Margins.Bottom = 0.5!
+        Me.PageSettings.Margins.Left = 0.3!
+        Me.PageSettings.Margins.Right = 0.3!
+        Me.PageSettings.Margins.Top = 0.5!
         Me.PageSettings.PaperHeight = 11.0!
         Me.PageSettings.PaperWidth = 8.5!
         Me.PrintWidth = 6.878472!
+        Me.Sections.Add(Me.ReportHeader1)
         Me.Sections.Add(Me.PageHeader1)
         Me.Sections.Add(Me.Detail1)
         Me.Sections.Add(Me.PageFooter1)
+        Me.Sections.Add(Me.ReportFooter1)
         Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Arial; font-style: normal; text-decoration: none; font-weight: norma" & _
                     "l; font-size: 10pt; color: Black; ", "Normal"))
         Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-size: 16pt; font-weight: bold; ", "Heading1", "Normal"))
@@ -662,6 +766,10 @@ Partial Public Class ArepTransformacion
         CType(Me.Label21, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label6, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label7, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label8, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TxtObservaciones, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
 
     End Sub
@@ -692,4 +800,10 @@ Partial Public Class ArepTransformacion
     Friend WithEvents SrpFacturas As DataDynamics.ActiveReports.SubReport
     Friend WithEvents Label2 As DataDynamics.ActiveReports.Label
     Private WithEvents Label6 As DataDynamics.ActiveReports.Label
+    Friend WithEvents ReportHeader1 As DataDynamics.ActiveReports.ReportHeader
+    Friend WithEvents ReportFooter1 As DataDynamics.ActiveReports.ReportFooter
+    Private WithEvents Label7 As DataDynamics.ActiveReports.Label
+    Private WithEvents Label8 As DataDynamics.ActiveReports.Label
+    Friend WithEvents TxtObservaciones As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents Label4 As DataDynamics.ActiveReports.Label
 End Class 

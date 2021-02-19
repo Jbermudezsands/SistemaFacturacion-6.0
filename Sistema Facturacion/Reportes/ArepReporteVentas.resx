@@ -153,6 +153,9 @@
   <data name="TextBox24.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
+  <data name="TextBox31.OutputFormat" xml:space="preserve">
+    <value>dd/MM/yyyy</value>
+  </data>
   <data name="TextBox15.OutputFormat" xml:space="preserve">
     <value>#,##0.00</value>
   </data>
@@ -188,7 +191,7 @@
   </metadata>
   <data name="OleDBDataSource1.SQL" xml:space="preserve">
     <value>SELECT     Facturas.Numero_Factura, Facturas.Nombre_Cliente + ' ' + Facturas.Apellido_Cliente AS Cliente, 
-                      Vendedores.Nombre_Vendedor + ' ' + Vendedores.Apellido_Vendedor AS Vendedor, Facturas.MonedaFactura, Facturas.MetodoPago, Facturas.SubTotal, Facturas.IVA, 
+                      Vendedores.Nombre_Vendedor + ' ' + Vendedores.Apellido_Vendedor AS Vendedor, Facturas.Fecha_Factura, Facturas.MonedaFactura, Facturas.MetodoPago, Facturas.SubTotal, Facturas.IVA, 
                       Facturas.Pagado, Facturas.NetoPagar, 
                       CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Facturas.SubTotal * TasaCambio.MontoTasa ELSE Facturas.SubTotal END AS ImporteCordobas, 
                       CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Facturas.SubTotal / TasaCambio.MontoTasa ELSE Facturas.SubTotal END AS ImporteDolares, 

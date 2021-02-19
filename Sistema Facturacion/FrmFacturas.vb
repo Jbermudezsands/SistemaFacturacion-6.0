@@ -4319,7 +4319,7 @@ Public Class FrmFacturas
                             DataAdapter.Fill(DataSet, "Alternos")
                             If Not DataSet.Tables("Alternos").Rows.Count = 0 Then
                                 CodigoAlterno = DataSet.Tables("Alternos").Rows(0)("Cod_Alternativo")
-                                Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = Trim(DataSet.Tables("Productos").Rows(0)("Descripcion_Producto")) & " ,Codigo SAC: " & CodigoAlterno
+                                Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = Trim(DataSet.Tables("Productos").Rows(0)("Descripcion_Producto")) & " ,SAC: " & CodigoAlterno
                             Else
                                 Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = Trim(DataSet.Tables("Productos").Rows(0)("Descripcion_Producto"))
                             End If
@@ -5705,7 +5705,7 @@ Public Class FrmFacturas
                                     Me.TrueDBGridComponentes.Columns("Descuento").Text = 0
 
                                 Else
-                                    Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = Trim(DataSet.Tables("Productos").Rows(0)("Descripcion_Producto")) & " Codigo SAC: " & CodigoAlterno
+                                    Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = Trim(DataSet.Tables("Productos").Rows(0)("Descripcion_Producto")) & " SAC: " & CodigoAlterno
                                     Me.TrueDBGridComponentes.Columns("Cantidad").Text = 1
 
                                     If Me.CboTipoProducto.Text = "Salida Bodega" Then
@@ -7503,7 +7503,7 @@ Public Class FrmFacturas
                     DataAdapter.Fill(DataSet, "Alternos")
                     If Not DataSet.Tables("Alternos").Rows.Count = 0 Then
                         CodigoAlterno = DataSet.Tables("Alternos").Rows(0)("Cod_Alternativo")
-                        Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = Trim(My.Forms.FrmConsultas.Descripcion) & " ,Codigo SAC: " & CodigoAlterno
+                        Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = Trim(My.Forms.FrmConsultas.Descripcion) & " ,SAC: " & CodigoAlterno
                     Else
                         Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = Trim(My.Forms.FrmConsultas.Descripcion)
                     End If

@@ -54,6 +54,7 @@ Public Class FrmTransformacion
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
         My.Forms.TransformacionNueva.Nuevo = True
         My.Forms.TransformacionNueva.ShowDialog()
+        ActualizarGrid()
     End Sub
 
     Private Sub BtnVer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnVer.Click
@@ -240,7 +241,7 @@ Public Class FrmTransformacion
             Descuento = 0
             If Not IsDBNull(DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Cantidad")) Then
                 Cantidad = DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Cantidad")
-                PrecioUnitario = CostoPromedioKardex(CodigoProducto, Fecha)
+                'PrecioUnitario = CostoPromedioKardex(CodigoProducto, Fecha)
             End If
             PrecioNeto = PrecioUnitario * Cantidad
             Importe = PrecioCosto - Descuento
