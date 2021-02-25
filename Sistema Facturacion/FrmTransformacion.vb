@@ -214,6 +214,7 @@ Public Class FrmTransformacion
             iPosicion = iPosicion + 1
         Loop
 
+        DataSet.Tables("DetalleRecepcion").Reset()
         MiConexion.Close()
 
         '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -226,21 +227,21 @@ Public Class FrmTransformacion
 
         Sql = "SELECT Detalle_Transformacion.* FROM Detalle_Transformacion WHERE (Numero_Transforma = '" & NumeroTransforma & "') AND (TipoTransforma = 'Origen')"
         DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
-        DataAdapter.Fill(DataSet, "DetalleRecepcion")
+        DataAdapter.Fill(DataSet, "DetalleSalida")
 
 
-        Registros = DataSet.Tables("DetalleRecepcion").Rows.Count
+        Registros = DataSet.Tables("DetalleSalida").Rows.Count
         iPosicion = 0
 
         Do While iPosicion < Registros
-            CodigoProducto = DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Codigo_Producto")
-            Descripcion_Producto = DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Descripcion_Producto")
+            CodigoProducto = DataSet.Tables("DetalleSalida").Rows(iPosicion)("Codigo_Producto")
+            Descripcion_Producto = DataSet.Tables("DetalleSalida").Rows(iPosicion)("Descripcion_Producto")
 
             PrecioFOB = 0 'Me.BindingDetalle.Item(iPosicion)("FOB")
             PrecioCosto = 0 'Me.BindingDetalle.Item(iPosicion)("Precio_Costo")
             Descuento = 0
-            If Not IsDBNull(DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Cantidad")) Then
-                Cantidad = DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Cantidad")
+            If Not IsDBNull(DataSet.Tables("DetalleSalida").Rows(iPosicion)("Cantidad")) Then
+                Cantidad = DataSet.Tables("DetalleSalida").Rows(iPosicion)("Cantidad")
                 'PrecioUnitario = CostoPromedioKardex(CodigoProducto, Fecha)
             End If
             PrecioNeto = PrecioUnitario * Cantidad
@@ -251,6 +252,8 @@ Public Class FrmTransformacion
 
             iPosicion = iPosicion + 1
         Loop
+
+        DataSet.Tables("DetalleSalida").Reset()
 
     End Sub
 End Class

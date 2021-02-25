@@ -42,10 +42,10 @@ Partial Public Class ArepTransformacion
         Me.Label16 = New DataDynamics.ActiveReports.Label
         Me.Label20 = New DataDynamics.ActiveReports.Label
         Me.Label21 = New DataDynamics.ActiveReports.Label
-        Me.SrpCompras = New DataDynamics.ActiveReports.SubReport
         Me.SrpFacturas = New DataDynamics.ActiveReports.SubReport
         Me.Label2 = New DataDynamics.ActiveReports.Label
         Me.Label6 = New DataDynamics.ActiveReports.Label
+        Me.SrpCompras = New DataDynamics.ActiveReports.SubReport
         Me.Detail1 = New DataDynamics.ActiveReports.Detail
         Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
         Me.ReportHeader1 = New DataDynamics.ActiveReports.ReportHeader
@@ -544,25 +544,6 @@ Partial Public Class ArepTransformacion
         Me.Label21.Top = 2.3125!
         Me.Label21.Width = 6.5625!
         '
-        'SrpCompras
-        '
-        Me.SrpCompras.Border.BottomColor = System.Drawing.Color.Black
-        Me.SrpCompras.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.SrpCompras.Border.LeftColor = System.Drawing.Color.Black
-        Me.SrpCompras.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.SrpCompras.Border.RightColor = System.Drawing.Color.Black
-        Me.SrpCompras.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.SrpCompras.Border.TopColor = System.Drawing.Color.Black
-        Me.SrpCompras.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.SrpCompras.CloseBorder = False
-        Me.SrpCompras.Height = 0.1875!
-        Me.SrpCompras.Left = 0.125!
-        Me.SrpCompras.Name = "SrpCompras"
-        Me.SrpCompras.Report = Nothing
-        Me.SrpCompras.ReportName = "SrpCompras"
-        Me.SrpCompras.Top = 0.0625!
-        Me.SrpCompras.Width = 6.5625!
-        '
         'SrpFacturas
         '
         Me.SrpFacturas.Border.BottomColor = System.Drawing.Color.Black
@@ -621,6 +602,25 @@ Partial Public Class ArepTransformacion
         Me.Label6.Text = "Qty"
         Me.Label6.Top = 2.5!
         Me.Label6.Width = 0.5!
+        '
+        'SrpCompras
+        '
+        Me.SrpCompras.Border.BottomColor = System.Drawing.Color.Black
+        Me.SrpCompras.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.SrpCompras.Border.LeftColor = System.Drawing.Color.Black
+        Me.SrpCompras.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.SrpCompras.Border.RightColor = System.Drawing.Color.Black
+        Me.SrpCompras.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.SrpCompras.Border.TopColor = System.Drawing.Color.Black
+        Me.SrpCompras.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.SrpCompras.CloseBorder = False
+        Me.SrpCompras.Height = 0.1875!
+        Me.SrpCompras.Left = 0.125!
+        Me.SrpCompras.Name = "SrpCompras"
+        Me.SrpCompras.Report = Nothing
+        Me.SrpCompras.ReportName = "SrpCompras"
+        Me.SrpCompras.Top = 0.0625!
+        Me.SrpCompras.Width = 6.5625!
         '
         'Detail1
         '
@@ -724,7 +724,6 @@ Partial Public Class ArepTransformacion
         '
         Me.MasterReport = False
         Me.PageSettings.Margins.Bottom = 0.5!
-        Me.PageSettings.Margins.Left = 0.3!
         Me.PageSettings.Margins.Right = 0.3!
         Me.PageSettings.Margins.Top = 0.5!
         Me.PageSettings.PaperHeight = 11.0!
