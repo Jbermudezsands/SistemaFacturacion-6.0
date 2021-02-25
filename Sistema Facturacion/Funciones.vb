@@ -2,6 +2,20 @@ Imports System.Data.SqlClient
 Imports System.Threading
 
 Module Funciones
+    Public Function ConsecutivoTranformacion() As String
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim SQlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+
+        SQlString = ""
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Consecutivo")
+        If DataSet.Tables("Consecutivo").Rows.Count <> 0 Then
+
+        End If
+
+
+    End Function
+
     Public Function CalcularRetencion() As Double
         Dim Registros As Double, iPosicion As Double, NumeroCompra As String, MontoPagado As Double, MontoCredito As Double
         Dim Impuesto As Double, SQlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter

@@ -117,43 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="TextBox6.OutputFormat" xml:space="preserve">
-    <value>C$#,##0.00</value>
-  </data>
-  <data name="TextBox7.OutputFormat" xml:space="preserve">
-    <value>$#,##0.00</value>
-  </data>
-  <data name="TextBox8.OutputFormat" xml:space="preserve">
-    <value>C$#,##0.00</value>
-  </data>
-  <data name="TextBox9.OutputFormat" xml:space="preserve">
-    <value>$#,##0.00</value>
-  </data>
-  <data name="TextBox11.OutputFormat" xml:space="preserve">
-    <value>C$#,##0.00</value>
-  </data>
-  <data name="TextBox12.OutputFormat" xml:space="preserve">
-    <value>$#,##0.00</value>
-  </data>
   <metadata name="$this.TrayLargeIcon" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="OleDBDataSource1.SQL" xml:space="preserve">
-    <value>SELECT     Detalle_Facturas.Cod_Producto, MAX(Detalle_Facturas.Descripcion_Producto) AS Descripcion_Producto, SUM(Detalle_Facturas.Cantidad) AS Cantidad, 
-                      Vendedores.Cod_Vendedor, MAX(Vendedores.Nombre_Vendedor) AS Nombre_Vendedor, 
-                      SUM(CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Detalle_Facturas.Importe * TasaCambio.MontoTasa ELSE Detalle_Facturas.Importe END) 
-                      AS ImporteCordobas, MAX(Facturas.MonedaFactura) AS Nombre_Vendedor, 
-                      SUM(CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Detalle_Facturas.Importe / TasaCambio.MontoTasa ELSE Detalle_Facturas.Importe END) 
-                      AS ImporteDolares, SUM(Detalle_Facturas.Importe) AS Importe, MAX(Lineas.Descripcion_Linea) AS Descripcion_Linea, Lineas.Cod_Linea
-FROM         Facturas INNER JOIN
-                      Vendedores ON Facturas.Cod_Vendedor = Vendedores.Cod_Vendedor INNER JOIN
-                      Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND 
-                      Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura INNER JOIN
-                      TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa INNER JOIN
-                      Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN
-                      Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea
-WHERE     (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '2015-02-01', 102) AND CONVERT(DATETIME, '2015-05-08', 102))
-GROUP BY Detalle_Facturas.Cod_Producto, Vendedores.Cod_Vendedor, Lineas.Cod_Linea
-ORDER BY Vendedores.Cod_Vendedor, Lineas.Cod_Linea, Detalle_Facturas.Cod_Producto</value>
+    <value>SELECT        Detalle_Transformacion.*, Productos.Unidad_Medida
+FROM            Detalle_Transformacion INNER JOIN
+                         Productos ON Detalle_Transformacion.Codigo_Producto = Productos.Cod_Productos
+WHERE        (Detalle_Transformacion.Numero_Transforma = N'00018') AND (Detalle_Transformacion.TipoTransforma = N'Origen')</value>
   </data>
 </root>

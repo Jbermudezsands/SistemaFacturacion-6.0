@@ -155,7 +155,7 @@ Partial Public Class ArepTransferencias
         Me.LblEncabezado.Left = 0.0625!
         Me.LblEncabezado.Name = "LblEncabezado"
         Me.LblEncabezado.Style = "color: #404040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
-            "d-color: #FFFFC0; font-size: 12pt; "
+            "d-color: White; font-size: 12pt; "
         Me.LblEncabezado.Text = ""
         Me.LblEncabezado.Top = 0.125!
         Me.LblEncabezado.Width = 3.0!
@@ -251,7 +251,7 @@ Partial Public Class ArepTransferencias
         Me.LblTipoCompra.Left = 0.0625!
         Me.LblTipoCompra.Name = "LblTipoCompra"
         Me.LblTipoCompra.Style = "color: #404040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
-            "d-color: #C0C0FF; font-size: 12pt; "
+            "d-color: White; font-size: 12pt; "
         Me.LblTipoCompra.Text = "Traslado de Bodega"
         Me.LblTipoCompra.Top = 0.5!
         Me.LblTipoCompra.Width = 3.0!
@@ -260,7 +260,7 @@ Partial Public Class ArepTransferencias
         '
         Me.Detail1.ColumnSpacing = 0.0!
         Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.Label3, Me.Label4, Me.Label5, Me.Label6})
-        Me.Detail1.Height = 0.25!
+        Me.Detail1.Height = 0.2395833!
         Me.Detail1.Name = "Detail1"
         '
         'Label3
@@ -357,19 +357,19 @@ Partial Public Class ArepTransferencias
         'lblTotals
         '
         Me.lblTotals.Border.BottomColor = System.Drawing.Color.Black
-        Me.lblTotals.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.lblTotals.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.lblTotals.Border.LeftColor = System.Drawing.Color.Black
-        Me.lblTotals.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.lblTotals.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.lblTotals.Border.RightColor = System.Drawing.Color.Black
-        Me.lblTotals.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.lblTotals.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.lblTotals.Border.TopColor = System.Drawing.Color.Black
-        Me.lblTotals.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.lblTotals.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.lblTotals.Height = 0.1875!
         Me.lblTotals.HyperLink = Nothing
         Me.lblTotals.Left = 4.75!
         Me.lblTotals.Name = "lblTotals"
-        Me.lblTotals.Style = "color: rgb(255,255,255); text-align: center; font-weight: bold; background-color:" & _
-            " #8080FF; font-size: 8.5pt; "
+        Me.lblTotals.Style = "color: #404040; text-align: center; font-weight: bold; background-color: White; f" & _
+            "ont-size: 8.5pt; "
         Me.lblTotals.Text = "Unidad Medida"
         Me.lblTotals.Top = 0.6875!
         Me.lblTotals.Width = 1.0625!
@@ -377,19 +377,19 @@ Partial Public Class ArepTransferencias
         'lblProductName
         '
         Me.lblProductName.Border.BottomColor = System.Drawing.Color.Black
-        Me.lblProductName.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.lblProductName.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.lblProductName.Border.LeftColor = System.Drawing.Color.Black
-        Me.lblProductName.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.lblProductName.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.lblProductName.Border.RightColor = System.Drawing.Color.Black
-        Me.lblProductName.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.lblProductName.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.lblProductName.Border.TopColor = System.Drawing.Color.Black
-        Me.lblProductName.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.lblProductName.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.lblProductName.Height = 0.1875!
         Me.lblProductName.HyperLink = Nothing
         Me.lblProductName.Left = 0.6875!
         Me.lblProductName.Name = "lblProductName"
-        Me.lblProductName.Style = "color: rgb(255,255,255); text-align: center; font-weight: bold; background-color:" & _
-            " #8080FF; font-size: 8.5pt; "
+        Me.lblProductName.Style = "color: #404040; text-align: center; font-weight: bold; background-color: White; f" & _
+            "ont-size: 8.5pt; "
         Me.lblProductName.Text = "Nombre Producto"
         Me.lblProductName.Top = 0.6875!
         Me.lblProductName.Width = 4.0625!
@@ -397,19 +397,19 @@ Partial Public Class ArepTransferencias
         'lblQty
         '
         Me.lblQty.Border.BottomColor = System.Drawing.Color.Black
-        Me.lblQty.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.lblQty.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.lblQty.Border.LeftColor = System.Drawing.Color.Black
-        Me.lblQty.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.lblQty.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.lblQty.Border.RightColor = System.Drawing.Color.Black
-        Me.lblQty.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.lblQty.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.lblQty.Border.TopColor = System.Drawing.Color.Black
-        Me.lblQty.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.lblQty.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.lblQty.Height = 0.1875!
         Me.lblQty.HyperLink = Nothing
         Me.lblQty.Left = 5.8125!
         Me.lblQty.Name = "lblQty"
-        Me.lblQty.Style = "color: rgb(255,255,255); ddo-char-set: 0; text-align: center; font-weight: bold; " & _
-            "background-color: #8080FF; font-size: 8.25pt; "
+        Me.lblQty.Style = "color: #404040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
+            "d-color: White; font-size: 8.25pt; "
         Me.lblQty.Text = "Qty"
         Me.lblQty.Top = 0.6875!
         Me.lblQty.Width = 0.75!
@@ -417,19 +417,19 @@ Partial Public Class ArepTransferencias
         'lblProductID
         '
         Me.lblProductID.Border.BottomColor = System.Drawing.Color.Black
-        Me.lblProductID.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.lblProductID.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.lblProductID.Border.LeftColor = System.Drawing.Color.Black
-        Me.lblProductID.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.lblProductID.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.lblProductID.Border.RightColor = System.Drawing.Color.Black
-        Me.lblProductID.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.lblProductID.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.lblProductID.Border.TopColor = System.Drawing.Color.Black
-        Me.lblProductID.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.lblProductID.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.lblProductID.Height = 0.1875!
         Me.lblProductID.HyperLink = Nothing
         Me.lblProductID.Left = 0.0625!
         Me.lblProductID.Name = "lblProductID"
-        Me.lblProductID.Style = "color: rgb(255,255,255); text-align: center; font-weight: bold; background-color:" & _
-            " #8080FF; font-size: 8.5pt; "
+        Me.lblProductID.Style = "color: #404040; text-align: center; font-weight: bold; background-color: White; f" & _
+            "ont-size: 8.5pt; "
         Me.lblProductID.Text = "Product ID"
         Me.lblProductID.Top = 0.6875!
         Me.lblProductID.Width = 0.6875!
@@ -467,8 +467,8 @@ Partial Public Class ArepTransferencias
         Me.Label10.HyperLink = Nothing
         Me.Label10.Left = 0.375!
         Me.Label10.Name = "Label10"
-        Me.Label10.Style = "color: rgb(255,255,255); text-align: center; font-weight: bold; background-color:" & _
-            " #8080FF; font-size: 8.5pt; "
+        Me.Label10.Style = "color: #404040; text-align: center; font-weight: bold; background-color: White; f" & _
+            "ont-size: 8.5pt; "
         Me.Label10.Text = "Bodega Origen"
         Me.Label10.Top = 0.1875!
         Me.Label10.Width = 2.4375!
@@ -506,8 +506,8 @@ Partial Public Class ArepTransferencias
         Me.Label2.HyperLink = Nothing
         Me.Label2.Left = 3.5625!
         Me.Label2.Name = "Label2"
-        Me.Label2.Style = "color: rgb(255,255,255); text-align: center; font-weight: bold; background-color:" & _
-            " #8080FF; font-size: 8.5pt; "
+        Me.Label2.Style = "color: #404040; text-align: center; font-weight: bold; background-color: White; f" & _
+            "ont-size: 8.5pt; "
         Me.Label2.Text = "Bodega Destino"
         Me.Label2.Top = 0.1875!
         Me.Label2.Width = 2.4375!
@@ -515,7 +515,7 @@ Partial Public Class ArepTransferencias
         'GroupFooter1
         '
         Me.GroupFooter1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.Label7, Me.Label8, Me.TxtObservaciones, Me.Label1})
-        Me.GroupFooter1.Height = 1.458333!
+        Me.GroupFooter1.Height = 1.708333!
         Me.GroupFooter1.Name = "GroupFooter1"
         '
         'Label7
@@ -534,7 +534,7 @@ Partial Public Class ArepTransferencias
         Me.Label7.Name = "Label7"
         Me.Label7.Style = "ddo-char-set: 0; text-align: center; font-weight: bold; font-size: 9.75pt; "
         Me.Label7.Text = "Traslado Recibido:"
-        Me.Label7.Top = 1.1875!
+        Me.Label7.Top = 1.375!
         Me.Label7.Width = 1.875!
         '
         'Label8
@@ -553,7 +553,7 @@ Partial Public Class ArepTransferencias
         Me.Label8.Name = "Label8"
         Me.Label8.Style = "ddo-char-set: 0; text-align: center; font-weight: bold; font-size: 9.75pt; "
         Me.Label8.Text = "Traslado Entregado:"
-        Me.Label8.Top = 1.1875!
+        Me.Label8.Top = 1.375!
         Me.Label8.Width = 1.875!
         '
         'TxtObservaciones
@@ -571,7 +571,7 @@ Partial Public Class ArepTransferencias
         Me.TxtObservaciones.Name = "TxtObservaciones"
         Me.TxtObservaciones.Style = ""
         Me.TxtObservaciones.Text = Nothing
-        Me.TxtObservaciones.Top = 0.25!
+        Me.TxtObservaciones.Top = 0.4375!
         Me.TxtObservaciones.Width = 6.1875!
         '
         'Label1
@@ -590,7 +590,7 @@ Partial Public Class ArepTransferencias
         Me.Label1.Name = "Label1"
         Me.Label1.Style = ""
         Me.Label1.Text = "Observaciones"
-        Me.Label1.Top = 0.0625!
+        Me.Label1.Top = 0.25!
         Me.Label1.Width = 1.5625!
         '
         'ArepTransferencias
@@ -601,7 +601,6 @@ Partial Public Class ArepTransferencias
         OleDBDataSource1.SQL = resources.GetString("OleDBDataSource1.SQL")
         Me.DataSource = OleDBDataSource1
         Me.PageSettings.Margins.Bottom = 0.5!
-        Me.PageSettings.Margins.Left = 0.5!
         Me.PageSettings.Margins.Right = 0.5!
         Me.PageSettings.Margins.Top = 0.5!
         Me.PageSettings.PaperHeight = 11.0!

@@ -313,7 +313,7 @@ Public Class FrmCuentasXPagar
                         If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Cordobas" Then
                             TasaCambioRecibo = 1
                         Else
-                            TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                            TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
                         End If
                     Else
                         TasaCambioRecibo = 0

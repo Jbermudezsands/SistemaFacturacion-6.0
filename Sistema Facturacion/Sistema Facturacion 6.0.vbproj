@@ -397,6 +397,12 @@
     <Compile Include="FrmTeclado.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmTransformacion.Designer.vb">
+      <DependentUpon>FrmTransformacion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmTransformacion.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MDIMain.Designer.vb">
       <DependentUpon>MDIMain.vb</DependentUpon>
     </Compile>
@@ -791,6 +797,18 @@
       <DependentUpon>ArepSolicitudCompra.vb</DependentUpon>
     </Compile>
     <Compile Include="Reportes\ArepSolicitudCompra.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\ArepSubDetalleTransformacion.Designer.vb">
+      <DependentUpon>ArepSubDetalleTransformacion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepSubDetalleTransformacion.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\ArepTransformacion.Designer.vb">
+      <DependentUpon>ArepTransformacion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepTransformacion.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reportes\ArepUtilidadProyecto.Designer.vb">
@@ -1354,8 +1372,6 @@
     <Compile Include="FrmExportar.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Reportes\NewActiveReport2.vb">
-    </Compile>
     <Compile Include="Reportes\SubReporteCompras.Designer.vb">
       <DependentUpon>SubReporteCompras.vb</DependentUpon>
     </Compile>
@@ -1408,6 +1424,12 @@
       <DependentUpon>TipoNomina.vb</DependentUpon>
     </Compile>
     <Compile Include="TipoNomina.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TransformacionNueva.Designer.vb">
+      <DependentUpon>TransformacionNueva.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TransformacionNueva.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Variables.vb" />
@@ -1622,6 +1644,10 @@
     <EmbeddedResource Include="FrmTeclado.resx">
       <DependentUpon>FrmTeclado.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmTransformacion.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmTransformacion.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MDIMain.resx">
       <DependentUpon>MDIMain.vb</DependentUpon>
@@ -2115,9 +2141,17 @@
       <SubType>Designer</SubType>
       <DependentUpon>ArepSolicitudCompra.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepSubDetalleTransformacion.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepSubDetalleTransformacion.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepTransferencias.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ArepTransferencias.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepTransformacion.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepTransformacion.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepUtilidadProyecto.resx">
       <SubType>Designer</SubType>
@@ -2294,6 +2328,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>TipoNomina.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TransformacionNueva.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TransformacionNueva.vb</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -2329,6 +2367,17 @@
     <None Include="Resources\Progreso7.bmp" />
     <None Include="Resources\Progreso8.bmp" />
     <None Include="Resources\Progreso9.bmp" />
+    <None Include="Resources\Barra00.png" />
+    <None Include="Resources\Barra10.png" />
+    <None Include="Resources\Barra1.png" />
+    <None Include="Resources\Barra2.png" />
+    <None Include="Resources\Barra3.png" />
+    <None Include="Resources\Barra4.png" />
+    <None Include="Resources\Barra5.png" />
+    <None Include="Resources\Barra6.png" />
+    <None Include="Resources\Barra7.png" />
+    <None Include="Resources\Barra8.png" />
+    <None Include="Resources\Barra9.png" />
     <Content Include="Text Document.ico" />
   </ItemGroup>
   <ItemGroup>

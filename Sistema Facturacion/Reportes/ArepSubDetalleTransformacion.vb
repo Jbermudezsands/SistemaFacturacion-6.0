@@ -1,6 +1,6 @@
 Imports DataDynamics.ActiveReports 
 Imports DataDynamics.ActiveReports.Document 
 
-Public Class NewActiveReport2 
+Public Class ArepSubDetalleTransformacion 
 
 End Class 

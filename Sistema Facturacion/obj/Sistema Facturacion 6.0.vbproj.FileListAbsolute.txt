@@ -711,3 +711,7 @@ D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Factur
 D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmPuertosTara.resources
 D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmTara.resources
 D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepCompatativoLeche.resources
+D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmTransformacion.resources
+D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.TransformacionNueva.resources
+D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepSubDetalleTransformacion.resources
+D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepTransformacion.resources
