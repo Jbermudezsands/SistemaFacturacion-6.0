@@ -20,8 +20,6 @@ Partial Public Class ArepSaldoClienteCobrador
         Dim OleDBDataSource1 As DataDynamics.ActiveReports.DataSources.OleDBDataSource = New DataDynamics.ActiveReports.DataSources.OleDBDataSource
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ArepSaldoClienteCobrador))
         Me.PageHeader1 = New DataDynamics.ActiveReports.PageHeader
-        Me.Detail1 = New DataDynamics.ActiveReports.Detail
-        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
         Me.ImgLogo = New DataDynamics.ActiveReports.Picture
         Me.LblTitulo = New DataDynamics.ActiveReports.Label
         Me.LblDireccion = New DataDynamics.ActiveReports.Label
@@ -35,11 +33,13 @@ Partial Public Class ArepSaldoClienteCobrador
         Me.Label6 = New DataDynamics.ActiveReports.Label
         Me.LblImpreso = New DataDynamics.ActiveReports.Label
         Me.Label7 = New DataDynamics.ActiveReports.Label
+        Me.Detail1 = New DataDynamics.ActiveReports.Detail
         Me.TextBox6 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox3 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox2 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox4 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox5 = New DataDynamics.ActiveReports.TextBox
+        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
         CType(Me.ImgLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblTitulo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblDireccion, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -65,18 +65,6 @@ Partial Public Class ArepSaldoClienteCobrador
         Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.ImgLogo, Me.LblTitulo, Me.LblDireccion, Me.LblRuc, Me.TextBox1, Me.Label3, Me.Label1, Me.Label2, Me.Label4, Me.Label5, Me.Label6, Me.LblImpreso, Me.Label7})
         Me.PageHeader1.Height = 1.5!
         Me.PageHeader1.Name = "PageHeader1"
-        '
-        'Detail1
-        '
-        Me.Detail1.ColumnSpacing = 0.0!
-        Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TextBox6, Me.TextBox3, Me.TextBox2, Me.TextBox4, Me.TextBox5})
-        Me.Detail1.Height = 0.2395833!
-        Me.Detail1.Name = "Detail1"
-        '
-        'PageFooter1
-        '
-        Me.PageFooter1.Height = 0.25!
-        Me.PageFooter1.Name = "PageFooter1"
         '
         'ImgLogo
         '
@@ -115,7 +103,7 @@ Partial Public Class ArepSaldoClienteCobrador
         Me.LblTitulo.Style = "ddo-char-set: 0; text-align: center; font-weight: bold; font-size: 14.25pt; "
         Me.LblTitulo.Text = "Systems And Solutions"
         Me.LblTitulo.Top = 0.0625!
-        Me.LblTitulo.Width = 7.4375!
+        Me.LblTitulo.Width = 7.9375!
         '
         'LblDireccion
         '
@@ -134,7 +122,7 @@ Partial Public Class ArepSaldoClienteCobrador
         Me.LblDireccion.Style = "text-align: center; "
         Me.LblDireccion.Text = ""
         Me.LblDireccion.Top = 0.3125!
-        Me.LblDireccion.Width = 7.4375!
+        Me.LblDireccion.Width = 7.9375!
         '
         'LblRuc
         '
@@ -153,7 +141,7 @@ Partial Public Class ArepSaldoClienteCobrador
         Me.LblRuc.Style = "text-align: center; "
         Me.LblRuc.Text = ""
         Me.LblRuc.Top = 0.5!
-        Me.LblRuc.Width = 7.4375!
+        Me.LblRuc.Width = 7.9375!
         '
         'TextBox1
         '
@@ -166,7 +154,7 @@ Partial Public Class ArepSaldoClienteCobrador
         Me.TextBox1.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox1.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox1.Height = 0.1875!
-        Me.TextBox1.Left = 7.0!
+        Me.TextBox1.Left = 7.5625!
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Style = ""
         Me.TextBox1.SummaryFunc = DataDynamics.ActiveReports.SummaryFunc.Count
@@ -188,7 +176,7 @@ Partial Public Class ArepSaldoClienteCobrador
         Me.Label3.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label3.Height = 0.1875!
         Me.Label3.HyperLink = Nothing
-        Me.Label3.Left = 6.6875!
+        Me.Label3.Left = 7.25!
         Me.Label3.Name = "Label3"
         Me.Label3.Style = ""
         Me.Label3.Text = "Pag."
@@ -212,7 +200,7 @@ Partial Public Class ArepSaldoClienteCobrador
         Me.Label1.Style = "ddo-char-set: 0; text-align: center; font-weight: bold; font-size: 9.75pt; "
         Me.Label1.Text = "Clientes con Saldos Pendientes"
         Me.Label1.Top = 0.6875!
-        Me.Label1.Width = 7.4375!
+        Me.Label1.Width = 7.9375!
         '
         'Label2
         '
@@ -232,7 +220,7 @@ Partial Public Class ArepSaldoClienteCobrador
             "t-size: 8.5pt; "
         Me.Label2.Text = "Nombres"
         Me.Label2.Top = 1.1875!
-        Me.Label2.Width = 1.5!
+        Me.Label2.Width = 1.875!
         '
         'Label4
         '
@@ -246,7 +234,7 @@ Partial Public Class ArepSaldoClienteCobrador
         Me.Label4.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label4.Height = 0.3125!
         Me.Label4.HyperLink = Nothing
-        Me.Label4.Left = 4.75!
+        Me.Label4.Left = 5.375!
         Me.Label4.Name = "Label4"
         Me.Label4.Style = "color: Black; text-align: center; font-weight: bold; background-color: White; fon" & _
             "t-size: 8.5pt; "
@@ -266,7 +254,7 @@ Partial Public Class ArepSaldoClienteCobrador
         Me.Label5.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label5.Height = 0.3125!
         Me.Label5.HyperLink = Nothing
-        Me.Label5.Left = 5.625!
+        Me.Label5.Left = 6.25!
         Me.Label5.Name = "Label5"
         Me.Label5.Style = "color: Black; text-align: center; font-weight: bold; background-color: White; fon" & _
             "t-size: 8.5pt; "
@@ -286,7 +274,7 @@ Partial Public Class ArepSaldoClienteCobrador
         Me.Label6.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label6.Height = 0.3125!
         Me.Label6.HyperLink = Nothing
-        Me.Label6.Left = 6.5!
+        Me.Label6.Left = 7.125!
         Me.Label6.Name = "Label6"
         Me.Label6.Style = "color: Black; text-align: center; font-weight: bold; background-color: White; fon" & _
             "t-size: 8.5pt; "
@@ -325,13 +313,20 @@ Partial Public Class ArepSaldoClienteCobrador
         Me.Label7.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label7.Height = 0.3125!
         Me.Label7.HyperLink = Nothing
-        Me.Label7.Left = 1.5!
+        Me.Label7.Left = 1.875!
         Me.Label7.Name = "Label7"
         Me.Label7.Style = "color: Black; text-align: center; font-weight: bold; background-color: White; fon" & _
             "t-size: 8.5pt; "
         Me.Label7.Text = "Direccion"
         Me.Label7.Top = 1.1875!
-        Me.Label7.Width = 3.25!
+        Me.Label7.Width = 3.5!
+        '
+        'Detail1
+        '
+        Me.Detail1.ColumnSpacing = 0.0!
+        Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TextBox6, Me.TextBox3, Me.TextBox2, Me.TextBox4, Me.TextBox5})
+        Me.Detail1.Height = 0.2395833!
+        Me.Detail1.Name = "Detail1"
         '
         'TextBox6
         '
@@ -345,7 +340,7 @@ Partial Public Class ArepSaldoClienteCobrador
         Me.TextBox6.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox6.DataField = "SaldoFinal"
         Me.TextBox6.Height = 0.1875!
-        Me.TextBox6.Left = 6.5!
+        Me.TextBox6.Left = 7.125!
         Me.TextBox6.Name = "TextBox6"
         Me.TextBox6.OutputFormat = resources.GetString("TextBox6.OutputFormat")
         Me.TextBox6.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
@@ -370,7 +365,7 @@ Partial Public Class ArepSaldoClienteCobrador
         Me.TextBox3.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox3.Text = Nothing
         Me.TextBox3.Top = 0.0!
-        Me.TextBox3.Width = 1.5!
+        Me.TextBox3.Width = 1.875!
         '
         'TextBox2
         '
@@ -384,12 +379,12 @@ Partial Public Class ArepSaldoClienteCobrador
         Me.TextBox2.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox2.DataField = "Direccion_Cliente"
         Me.TextBox2.Height = 0.1875!
-        Me.TextBox2.Left = 1.5!
+        Me.TextBox2.Left = 1.875!
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox2.Text = Nothing
         Me.TextBox2.Top = 0.0!
-        Me.TextBox2.Width = 3.25!
+        Me.TextBox2.Width = 3.5!
         '
         'TextBox4
         '
@@ -403,7 +398,7 @@ Partial Public Class ArepSaldoClienteCobrador
         Me.TextBox4.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox4.DataField = "Cedula"
         Me.TextBox4.Height = 0.1875!
-        Me.TextBox4.Left = 4.75!
+        Me.TextBox4.Left = 5.375!
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox4.Text = Nothing
@@ -422,12 +417,17 @@ Partial Public Class ArepSaldoClienteCobrador
         Me.TextBox5.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox5.DataField = "Telefono"
         Me.TextBox5.Height = 0.1875!
-        Me.TextBox5.Left = 5.625!
+        Me.TextBox5.Left = 6.25!
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox5.Text = Nothing
         Me.TextBox5.Top = 0.0!
         Me.TextBox5.Width = 0.875!
+        '
+        'PageFooter1
+        '
+        Me.PageFooter1.Height = 0.25!
+        Me.PageFooter1.Name = "PageFooter1"
         '
         'ArepSaldoClienteCobrador
         '
@@ -436,9 +436,13 @@ Partial Public Class ArepSaldoClienteCobrador
             "al Catalog=SistemaFacturacionEmtrides;Data Source=JUANBERMUDEZ\SQL2014"
         OleDBDataSource1.SQL = resources.GetString("OleDBDataSource1.SQL")
         Me.DataSource = OleDBDataSource1
+        Me.PageSettings.Margins.Bottom = 0.5!
+        Me.PageSettings.Margins.Left = 0.3!
+        Me.PageSettings.Margins.Right = 0.0!
+        Me.PageSettings.Margins.Top = 0.05!
         Me.PageSettings.PaperHeight = 11.0!
         Me.PageSettings.PaperWidth = 8.5!
-        Me.PrintWidth = 7.760417!
+        Me.PrintWidth = 8.0625!
         Me.Sections.Add(Me.PageHeader1)
         Me.Sections.Add(Me.Detail1)
         Me.Sections.Add(Me.PageFooter1)

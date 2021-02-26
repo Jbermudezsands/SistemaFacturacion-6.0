@@ -1992,7 +1992,7 @@ Public Class FrmReportes
         Select Case Me.ListBox.Text
 
             Case "Reporte de Saldo Cobrador"
-                Dim ArepSaldoClientes As New ArepSaldoClientes
+                Dim ArepSaldoClientes As New ArepSaldoClienteCobrador
                 Dim SqlString As String, Registros As Double, CodigoCliente As String
                 Dim oDataRow As DataRow, i As Double = 0, Debito As Double = 0, Credito As Double, SaldoInicial As Double
                 Dim Moneda As String = "", Registros2 As Double = 0, j As Double = 0
@@ -2009,16 +2009,16 @@ Public Class FrmReportes
                 '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
                 '*******************************************************************************************************************************
                 DataSet.Reset()
-                SqlString = "SELECT Clientes.Cod_Cliente, Clientes.Nombre_Cliente, Clientes.Apellido_Cliente, Clientes.Direccion_Cliente, Clientes.Cedula, Facturas.SubTotal AS SaldoInicial, Facturas.IVA AS Debito, Facturas.NetoPagar AS Credito, Facturas.NetoPagar AS SaldoFinal FROM  Clientes INNER JOIN Facturas ON Clientes.Cod_Cliente = Facturas.Cod_Cliente WHERE (Clientes.Cod_Cliente = N'-1000000')"
+                SqlString = "SELECT Clientes.Cod_Cliente, Clientes.Nombre_Cliente, Clientes.Apellido_Cliente, Clientes.Direccion_Cliente, Clientes.Cedula, Clientes.Telefono, Facturas.SubTotal AS SaldoInicial, Facturas.IVA AS Debito, Facturas.NetoPagar AS Credito, Facturas.NetoPagar AS SaldoFinal FROM  Clientes INNER JOIN Facturas ON Clientes.Cod_Cliente = Facturas.Cod_Cliente WHERE (Clientes.Cod_Cliente = N'-1000000')"
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 DataAdapter.Fill(DataSet, "TotalVentas")
 
                 If Me.CmbClientes.Text = "" And Me.CmbClientes2.Text = "" Then
                     'SqlDatos = "SELECT DISTINCT SUM(Facturas.MontoCredito) AS MontoCredito, Facturas.Cod_Cliente, Clientes.Nombre_Cliente, Clientes.Apellido_Cliente FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura <= CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) GROUP BY Facturas.Cod_Cliente, Clientes.Nombre_Cliente,Clientes.Apellido_Cliente ORDER BY Facturas.Cod_Cliente"
-                    SqlDatos = "SELECT DISTINCT Nombre_Cliente, Apellido_Cliente, Cod_Cliente, Direccion_Cliente, Cedula FROM  Clientes GROUP BY Nombre_Cliente, Apellido_Cliente, Cod_Cliente, Direccion_Cliente, Cedula  ORDER BY Clientes.Cod_Cliente"
+                    SqlDatos = "SELECT DISTINCT Nombre_Cliente, Apellido_Cliente, Cod_Cliente, Direccion_Cliente, Cedula, Telefono FROM  Clientes GROUP BY Nombre_Cliente, Apellido_Cliente, Cod_Cliente, Direccion_Cliente, Cedula , Telefono ORDER BY Clientes.Cod_Cliente"
                 Else
                     'SqlDatos = "SELECT DISTINCT SUM(Facturas.MontoCredito) AS MontoCredito, Facturas.Cod_Cliente, Clientes.Nombre_Cliente, Clientes.Apellido_Cliente FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Factura <= CONVERT(DATETIME, '" & Format(Fecha2, "yyyy-MM-dd") & "', 102)) GROUP BY Facturas.Cod_Cliente, Clientes.Nombre_Cliente,Clientes.Apellido_Cliente HAVING (Facturas.Cod_Cliente BETWEEN '" & Me.CmbClientes.Text & "' AND '" & Me.CmbClientes2.Text & "') ORDER BY Facturas.Cod_Cliente"
-                    SqlDatos = "SELECT DISTINCT Nombre_Cliente, Apellido_Cliente, Cod_Cliente, Direccion_Cliente, Cedula FROM  Clientes GROUP BY Nombre_Cliente, Apellido_Cliente, Cod_Cliente, Direccion_Cliente, Cedula HAVING  (Clientes.Cod_Cliente BETWEEN '" & Me.CmbClientes.Text & "' AND '" & Me.CmbClientes2.Text & "') ORDER BY Clientes.Cod_Cliente"
+                    SqlDatos = "SELECT DISTINCT Nombre_Cliente, Apellido_Cliente, Cod_Cliente, Direccion_Cliente, Cedula, Telefono FROM  Clientes GROUP BY Nombre_Cliente, Apellido_Cliente, Cod_Cliente, Direccion_Cliente, Cedula , Telefono HAVING  (Clientes.Cod_Cliente BETWEEN '" & Me.CmbClientes.Text & "' AND '" & Me.CmbClientes2.Text & "') ORDER BY Clientes.Cod_Cliente"
                 End If
 
                 'SQL.ConnectionString = Conexion
@@ -2102,9 +2102,10 @@ Public Class FrmReportes
                     If Format(SaldoInicial + Debito + Credito, "##,##0.00") <> "0.00" Then
                         oDataRow = DataSet.Tables("TotalVentas").NewRow
                         oDataRow("Cod_Cliente") = DataSet.Tables("Productos").Rows(i)("Cod_Cliente")
-                        oDataRow("Nombre_Cliente") = DataSet.Tables("Productos").Rows(i)("Nombre_Cliente") & " " & DataSet.Tables("Productos").Rows(i)("Apellido_Cliente")
-                        oDataRow("Direccion_Cliente") = DataSet.Tables("Productos").Rows(i)("Direccion_Cliente")
-                        oDataRow("Cedula") = DataSet.Tables("Productos").Rows(i)("Cedula")
+                        oDataRow("Nombre_Cliente") = Trim(DataSet.Tables("Productos").Rows(i)("Nombre_Cliente") & " " & DataSet.Tables("Productos").Rows(i)("Apellido_Cliente"))
+                        oDataRow("Direccion_Cliente") = Trim(DataSet.Tables("Productos").Rows(i)("Direccion_Cliente"))
+                        oDataRow("Cedula") = Trim(DataSet.Tables("Productos").Rows(i)("Cedula"))
+                        oDataRow("Telefono") = Trim(DataSet.Tables("Productos").Rows(i)("Telefono"))
                         oDataRow("SaldoInicial") = SaldoInicial
                         oDataRow("Debito") = Debito
                         oDataRow("Credito") = Credito
@@ -13338,7 +13339,7 @@ Public Class FrmReportes
             Me.Imagen.Visible = True
         End If
 
-        If ImagenReporte = 7 Then
+        If ImagenReporte = 10 Then
             Imagen.Image = ListaImagenes.Images(ImagenReporte)
             Me.LblProcesando.Text = Me.LblProcesando.Text & "."
             ImagenReporte = 0
@@ -13393,6 +13394,10 @@ Public Class FrmReportes
 
         Select Case ListBox.Text
 
+            Case "Reporte de Saldo Cobrador"
+                Me.GroupBox1.Visible = True
+                Me.GroupProveedores.Location = New Point(280, 123)
+                Me.GroupProveedores.Visible = True
             Case "Reporte de Historico de Saldo Proveedores"
                 Me.GroupBox1.Visible = True
                 Me.GroupProveedores.Location = New Point(280, 123)
