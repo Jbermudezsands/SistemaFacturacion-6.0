@@ -69,6 +69,8 @@
     <Reference Include="DevExpress.XtraNavBar3, Version=2.7.3.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraPivotGrid3, Version=1.2.3.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4" />
     <Reference Include="DevExpress.XtraVerticalGrid3, Version=1.6.3.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4" />
+    <Reference Include="Nevron.Presentation, Version=7.3.26.12, Culture=neutral, PublicKeyToken=6656c5d1103e75cc" />
+    <Reference Include="Nevron.System, Version=7.3.26.12, Culture=neutral, PublicKeyToken=6a987feae5e496fd" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -161,6 +163,18 @@
       <DependentUpon>FrmConductorPlanilla.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmConductorPlanilla.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmContratos.Designer.vb">
+      <DependentUpon>FrmContratos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmContratos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmContratosNuevos.Designer.vb">
+      <DependentUpon>FrmContratosNuevos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmContratosNuevos.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmCooperativa.designer.vb">
@@ -1484,6 +1498,14 @@
     <EmbeddedResource Include="FrmConductorPlanilla.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmConductorPlanilla.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmContratos.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmContratos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmContratosNuevos.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmContratosNuevos.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmCooperativa.resx">
       <DependentUpon>FrmCooperativa.vb</DependentUpon>
