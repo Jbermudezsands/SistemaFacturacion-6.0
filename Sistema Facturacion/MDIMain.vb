@@ -7,14 +7,72 @@ Imports System
 Imports System.IOImports
 Imports System.Text
 
+
 Public Class MDIMain
 
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
+    Public oHebraNotificacion As Thread
 
     Private Sub ExitButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ExitButton.Click, RibbonApplicationMenu1.DoubleClick
         Close()
     End Sub
+    Public Sub ConsultaBajoMinimo()
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim SQlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SqlDatos As String, Registro As Double, Iposicion As Double
+        Dim Existencia As Double, CodProducto As String, FechaIni As Date, Fecha As Date, FechaFin As Date, NombreProducto As String, NombreBodega As String
+        Dim CodBodega As String, oDataRow As DataRow
 
+        '*******************************************************************************************************************************
+        '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
+        '*******************************************************************************************************************************
+        SQLString = "SELECT Cod_Productos, Descripcion_Producto, Unidad_Medida, Minimo, Existencia_Unidades AS Existencia, Existencia_DineroDolar AS Diferencia FROM Productos WHERE (Activo = Activo) AND (Tipo_Producto <> N'Descuento') AND (Cod_Productos = N'-100000')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
+        DataAdapter.Fill(DataSet, "BajoMinimo")
+
+        SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo)  ORDER BY Productos.Cod_Productos"
+
+        '*****************************************************************************************************************************************
+        '////////////////////////////////////////////CON ESTE CICLO RECORRO LA CONSULTA //////////////////////////////////////////
+        '*****************************************************************************************************************************************
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+        DataAdapter.Fill(DataSet, "Productos")
+
+        Registro = DataSet.Tables("Productos").Rows.Count
+        Iposicion = 0
+        Existencia = 0
+        Do While Iposicion < Registro
+            FechaIni = Format(Now, "yyyy-MM-dd")
+            Fecha = Format(Now, "yyyy-MM-dd")
+            FechaFin = Format(Fecha.AddDays(1), "yyyy-MM-dd")
+            CodProducto = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Productos")
+            NombreProducto = DataSet.Tables("Productos").Rows(Iposicion)("Descripcion_Producto")
+            NombreBodega = DataSet.Tables("Productos").Rows(Iposicion)("Descripcion_Linea")
+            CodBodega = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Linea")
+            Existencia = Format(BuscaInventarioInicial(CodProducto, FechaFin))
+            If Existencia <> 0 Then
+                If DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Descuento" And DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Servicio" Then
+                    If DataSet.Tables("Productos").Rows(Iposicion)("Minimo") >= Existencia Then
+                        oDataRow = DataSet.Tables("BajoMinimo").NewRow
+                        oDataRow("Cod_Productos") = CodProducto
+                        oDataRow("Descripcion_Producto") = NombreProducto
+                        oDataRow("Unidad_Medida") = DataSet.Tables("Productos").Rows(Iposicion)("Unidad_Medida")
+                        oDataRow("Minimo") = DataSet.Tables("Productos").Rows(Iposicion)("Minimo")
+                        oDataRow("Existencia") = Existencia
+                        oDataRow("Diferencia") = Existencia - DataSet.Tables("Productos").Rows(Iposicion)("Minimo")
+                        DataSet.Tables("BajoMinimo").Rows.Add(oDataRow)
+                    End If
+                End If
+            End If
+
+
+            My.Application.DoEvents()
+            Iposicion = Iposicion + 1
+
+        Loop
+
+        oHebraNotificacion.Abort()
+
+    End Sub
 
     Private Sub StyleButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Office2007BlackStyleButton.Click, Office2007SilverStyleButton.Click, Office2007BlueStyleButton.Click
         Dim B As C1.Win.C1Ribbon.RibbonToggleButton = CType(sender, C1.Win.C1Ribbon.RibbonToggleButton)
@@ -501,7 +559,7 @@ Public Class MDIMain
 
                         Me.Close()
                     Else
-                        MsgBox("NO existe el Archivo en la Ruta Indicada", vbCritical, "Zeus Contable")
+                        MsgBox("NO existe Actualizacion en la Ruta Indicada", vbCritical, "Zeus Contable")
                     End If
                 Else
                     MsgBox("Seleccione una Ruta de Actualizacion", vbCritical, "Zeus Contable")
@@ -525,12 +583,22 @@ Public Class MDIMain
         Dim SqlDatos As String, Cadena2 As String = "", Registros As Double = 0
 
 
-
-
-
         TasaCambio = BuscaTasaCambio(Now)
 
         Me.Text = "Nombre Compañia: " & NombreCompañia
+
+        '/////////////////////////Cierro las herabas abiertas/////////////////
+        If Not (oHebraNotificacion Is Nothing) Then
+            If oHebraNotificacion.IsAlive Then
+                oHebraNotificacion.Abort()
+            End If
+        End If
+
+
+
+        '//////////////////////////GENERO UNA NUEVA HEBRA ////////////////////////////////////////////
+        oHebraNotificacion = New Thread(AddressOf ConsultaBajoMinimo)
+        oHebraNotificacion.Start()
 
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////// /CIERRO TODAS LAS OPCIONES QUE EL PERFIL NO TIENE ACCESO /////////////////////////////////////////////

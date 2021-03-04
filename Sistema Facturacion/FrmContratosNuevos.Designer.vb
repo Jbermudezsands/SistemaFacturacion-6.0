@@ -28,8 +28,8 @@ Partial Class FrmContratosNuevos
         Me.Button12 = New System.Windows.Forms.Button
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.Splitter1 = New System.Windows.Forms.Splitter
+        Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.GroupBox1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -116,7 +116,6 @@ Partial Class FrmContratosNuevos
         '
         'TabControl1
         '
-        Me.TabControl1.Appearance = System.Windows.Forms.TabAppearance.FlatButtons
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Location = New System.Drawing.Point(12, 12)
@@ -129,31 +128,32 @@ Partial Class FrmContratosNuevos
         '
         Me.TabPage1.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.TabPage1.Controls.Add(Me.Splitter1)
-        Me.TabPage1.Location = New System.Drawing.Point(4, 25)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(695, 323)
+        Me.TabPage1.Size = New System.Drawing.Size(695, 326)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Datos Grales"
         Me.TabPage1.UseVisualStyleBackColor = True
-        '
-        'TabPage2
-        '
-        Me.TabPage2.BackColor = System.Drawing.Color.LightSteelBlue
-        Me.TabPage2.Location = New System.Drawing.Point(4, 25)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(695, 323)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "TabPage2"
         '
         'Splitter1
         '
         Me.Splitter1.Location = New System.Drawing.Point(3, 3)
         Me.Splitter1.Name = "Splitter1"
-        Me.Splitter1.Size = New System.Drawing.Size(3, 317)
+        Me.Splitter1.Size = New System.Drawing.Size(3, 320)
         Me.Splitter1.TabIndex = 0
         Me.Splitter1.TabStop = False
+        '
+        'TabPage2
+        '
+        Me.TabPage2.BackColor = System.Drawing.Color.LightSteelBlue
+        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Size = New System.Drawing.Size(695, 326)
+        Me.TabPage2.TabIndex = 1
+        Me.TabPage2.Text = "Contrato"
+        Me.TabPage2.UseVisualStyleBackColor = True
         '
         'FrmContratosNuevos
         '
