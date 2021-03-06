@@ -69,7 +69,7 @@ Partial Class FrmContratos
         Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox1.Location = New System.Drawing.Point(-4, -3)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(1116, 60)
+        Me.PictureBox1.Size = New System.Drawing.Size(1130, 60)
         Me.PictureBox1.TabIndex = 252
         Me.PictureBox1.TabStop = False
         '
