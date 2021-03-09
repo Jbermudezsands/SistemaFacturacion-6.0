@@ -1219,4 +1219,9 @@ Public Class MDIMain
         My.Forms.FrmTransformacion.MdiParent = Me
         My.Forms.FrmTransformacion.Show()
     End Sub
+
+    Private Sub RibbonButton2_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton2.Click
+        My.Forms.FrmContratos.MdiParent = Me
+        My.Forms.FrmContratos.Show()
+    End Sub
 End Class
