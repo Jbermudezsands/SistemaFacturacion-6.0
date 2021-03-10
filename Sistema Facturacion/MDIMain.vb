@@ -10,7 +10,7 @@ Imports System.Text
 
 Public Class MDIMain
 
-    Public MiConexion As New SqlClient.SqlConnection(Conexion)
+    Public MiConexion As New SqlClient.SqlConnection(Conexion), ProductoMinimo As Boolean = False
     Public oHebraNotificacion As Thread
 
     Private Sub ExitButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ExitButton.Click, RibbonApplicationMenu1.DoubleClick
@@ -52,14 +52,16 @@ Public Class MDIMain
             If Existencia <> 0 Then
                 If DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Descuento" And DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Servicio" Then
                     If DataSet.Tables("Productos").Rows(Iposicion)("Minimo") >= Existencia Then
-                        oDataRow = DataSet.Tables("BajoMinimo").NewRow
-                        oDataRow("Cod_Productos") = CodProducto
-                        oDataRow("Descripcion_Producto") = NombreProducto
-                        oDataRow("Unidad_Medida") = DataSet.Tables("Productos").Rows(Iposicion)("Unidad_Medida")
-                        oDataRow("Minimo") = DataSet.Tables("Productos").Rows(Iposicion)("Minimo")
-                        oDataRow("Existencia") = Existencia
-                        oDataRow("Diferencia") = Existencia - DataSet.Tables("Productos").Rows(Iposicion)("Minimo")
-                        DataSet.Tables("BajoMinimo").Rows.Add(oDataRow)
+                        ProductoMinimo = True
+                        'oDataRow = DataSet.Tables("BajoMinimo").NewRow
+                        'oDataRow("Cod_Productos") = CodProducto
+                        'oDataRow("Descripcion_Producto") = NombreProducto
+                        'oDataRow("Unidad_Medida") = DataSet.Tables("Productos").Rows(Iposicion)("Unidad_Medida")
+                        'oDataRow("Minimo") = DataSet.Tables("Productos").Rows(Iposicion)("Minimo")
+                        'oDataRow("Existencia") = Existencia
+                        'oDataRow("Diferencia") = Existencia - DataSet.Tables("Productos").Rows(Iposicion)("Minimo")
+                        'DataSet.Tables("BajoMinimo").Rows.Add(oDataRow)
+                        Exit Do
                     End If
                 End If
             End If
@@ -70,7 +72,13 @@ Public Class MDIMain
 
         Loop
 
+        If ProductoMinimo = True Then
+            MsgBox("Existen productos por debajo del Minimo", MsgBoxStyle.Information, "Zeus Facturacion")
+        End If
+
         oHebraNotificacion.Abort()
+
+
 
     End Sub
 
@@ -596,9 +604,7 @@ Public Class MDIMain
 
 
 
-        '//////////////////////////GENERO UNA NUEVA HEBRA ////////////////////////////////////////////
-        oHebraNotificacion = New Thread(AddressOf ConsultaBajoMinimo)
-        oHebraNotificacion.Start()
+
 
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////// /CIERRO TODAS LAS OPCIONES QUE EL PERFIL NO TIENE ACCESO /////////////////////////////////////////////
@@ -834,6 +840,12 @@ Public Class MDIMain
             End If
         End If
         'End If
+
+        '//////////////////////////GENERO UNA NUEVA HEBRA ////////////////////////////////////////////
+        If RecibeNotificacion = True Then
+            oHebraNotificacion = New Thread(AddressOf ConsultaBajoMinimo)
+            oHebraNotificacion.Start()
+        End If
 
 
         SqlDatos = "SELECT * FROM DatosEmpresa"

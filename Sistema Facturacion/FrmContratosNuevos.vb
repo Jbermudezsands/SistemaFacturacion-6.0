@@ -166,6 +166,6 @@ Public Class FrmContratosNuevos
             MiConexion.Close()
 
         End If
-        Bitacora(Now, NombreUsuario, "Clientes", "Grabo el cliente: " & Me.TxtNombre.Text)
+        Bitacora(Now, NombreUsuario, "Clientes", "Grabo contrato nuevo: ")
     End Sub
 End Class
