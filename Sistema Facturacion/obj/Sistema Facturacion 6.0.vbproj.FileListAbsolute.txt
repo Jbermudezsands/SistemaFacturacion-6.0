@@ -717,3 +717,4 @@ D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Factur
 D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepTransformacion.resources
 D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmContratos.resources
 D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmContratosNuevos.resources
+D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmNotificacion.resources

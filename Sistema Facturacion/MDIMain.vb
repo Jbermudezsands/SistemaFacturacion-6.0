@@ -53,15 +53,14 @@ Public Class MDIMain
                 If DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Descuento" And DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Servicio" Then
                     If DataSet.Tables("Productos").Rows(Iposicion)("Minimo") >= Existencia Then
                         ProductoMinimo = True
-                        'oDataRow = DataSet.Tables("BajoMinimo").NewRow
-                        'oDataRow("Cod_Productos") = CodProducto
-                        'oDataRow("Descripcion_Producto") = NombreProducto
-                        'oDataRow("Unidad_Medida") = DataSet.Tables("Productos").Rows(Iposicion)("Unidad_Medida")
-                        'oDataRow("Minimo") = DataSet.Tables("Productos").Rows(Iposicion)("Minimo")
-                        'oDataRow("Existencia") = Existencia
-                        'oDataRow("Diferencia") = Existencia - DataSet.Tables("Productos").Rows(Iposicion)("Minimo")
-                        'DataSet.Tables("BajoMinimo").Rows.Add(oDataRow)
-                        Exit Do
+                        oDataRow = DataSet.Tables("BajoMinimo").NewRow
+                        oDataRow("Cod_Productos") = CodProducto
+                        oDataRow("Descripcion_Producto") = NombreProducto
+                        oDataRow("Unidad_Medida") = DataSet.Tables("Productos").Rows(Iposicion)("Unidad_Medida")
+                        oDataRow("Minimo") = DataSet.Tables("Productos").Rows(Iposicion)("Minimo")
+                        oDataRow("Existencia") = Existencia
+                        oDataRow("Diferencia") = Existencia - DataSet.Tables("Productos").Rows(Iposicion)("Minimo")
+                        DataSet.Tables("BajoMinimo").Rows.Add(oDataRow)
                     End If
                 End If
             End If
@@ -72,8 +71,15 @@ Public Class MDIMain
 
         Loop
 
+
         If ProductoMinimo = True Then
+
+            My.Forms.FrmNotificacion.Dataset.Reset()
+            My.Forms.FrmNotificacion.Dataset.Tables.Add(DataSet.Tables("BajoMinimo").Copy)
             MsgBox("Existen productos por debajo del Minimo", MsgBoxStyle.Information, "Zeus Facturacion")
+
+
+            My.Forms.FrmNotificacion.ShowDialog()
         End If
 
         oHebraNotificacion.Abort()

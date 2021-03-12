@@ -113,16 +113,34 @@ Public Class FrmContratosNuevos
     End Sub
 
     Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
-        Dim SQLClientes As String, Exonerado As Boolean
+        Dim SQLClientes As String, Exonerado As Integer
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim IdContrato1 As Double, IdContrato2 As Double
+        Dim ConsecutivoCompra As Double, NumeroCompra As String
+
 
         If Me.ChkExonerado.Checked = True Then
-            Exonerado = True
+            Exonerado = 1
         Else
-            Exonerado = False
+            Exonerado = 0
         End If
+
+        If Me.CmbContrato1.Text = "" Then
+            MsgBox("Es necesario seleccionar el tipo de contrato", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.TxtPrecioUnitario1.Text = "" Then
+            MsgBox("Es necesario Seleccionar el precio unitario", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+
+
+        ConsecutivoCompra = BuscaConsecutivo("Transforma")
+        NumeroCompra = Format(ConsecutivoCompra, "0000#")
+        Me.LblNumeroContrato.Text = NumeroCompra
 
 
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -150,7 +168,7 @@ Public Class FrmContratosNuevos
         DataAdapter.Fill(DataSet, "Clientes")
         If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-            StrSqlUpdate = "UPDATE [Contratos]    SET [Cod_Cliente] = '" & Me.TxtCodigoClientes.Text & "',[Tipo_Servicios1] = '" & Me.CmbContrato1.Text & "' ,[Tipo_Servicios2] = '" & Me.CmbContrato2.Text & "' ,[Frecuencia] = " & Me.CmbFrecuencia1.Text & " ,[Inicio_Contrato] = '" & Format(Me.DtpInicioContrato1.Value, "dd/MM/yyyy") & "' ,[Fin_Contrato] = '" & Format(Me.DtpFinContrato1.Value, "dd/MM/yyyy") & "' ,[Contacto_Administrativo] =  '" & Me.TxtContactoAdmon.Text & "' ,[Contacto_Operativo] =  '" & Me.TxtContactoOperativo.Text & "' ,[Precio_Unitario] = " & Me.TxtPrecioUnitario1.Text & " ,[Moneda] = '" & Me.CmbMoneda1.Text & "' ,[Activo] = '" & Me.ChkActivo.Checked & "'  ,[Exonerado] = " & Exonerado & " ,[Referencia] =  '" & Me.CboReferencia.Text & "'  ,[Observaciones] =  '" & Me.TxtObservaciones.Text & "' ,[Precio_Unitario2] =  '" & Me.TxtPrecioUnitario1.Text & "' ,[Inicio_Contrato2] = '" & Format(Me.DtpInicioContrato2.Value, "dd/MM/yyyy") & "' ,[Fin_Contrato2] = '" & Format(Me.DtpFinContrato2.Value, "dd/MM/yyyy") & "' ,[Moneda2] = '" & Me.CmbMoneda1.Text & "' ,[Frecuencia2] = '" & Me.CmbFrecuencia2.Text & "' ,[IdContrato1] = " & IdContrato1 & " ,[IdContrato2] = " & IdContrato2 & "  WHERE (Numero_Contrato = " & NumeroContrato & ") AND (Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
+            StrSqlUpdate = "UPDATE [Contratos]    SET [Cod_Cliente] = '" & Me.TxtCodigoClientes.Text & "',[Tipo_Servicios1] = '" & Me.CmbContrato1.Text & "' ,[Tipo_Servicios2] = '" & Me.CmbContrato2.Text & "' ,[Frecuencia] = '" & Me.CmbFrecuencia1.Text & "' ,[Inicio_Contrato] = '" & Format(Me.DtpInicioContrato1.Value, "dd/MM/yyyy") & "' ,[Fin_Contrato] = '" & Format(Me.DtpFinContrato1.Value, "dd/MM/yyyy") & "' ,[Contacto_Administrativo] =  '" & Me.TxtContactoAdmon.Text & "' ,[Contacto_Operativo] =  '" & Me.TxtContactoOperativo.Text & "' ,[Precio_Unitario] = " & Me.TxtPrecioUnitario1.Text & " ,[Moneda] = '" & Me.CmbMoneda1.Text & "' ,[Activo] = " & Me.ChkActivo.Checked & "  ,[Exonerado] = " & Exonerado & " ,[Referencia] =  '" & Me.CboReferencia.Text & "'  ,[Observaciones] =  '" & Me.TxtObservaciones.Text & "' ,[Precio_Unitario2] =  '" & Me.TxtPrecioUnitario1.Text & "' ,[Inicio_Contrato2] = '" & Format(Me.DtpInicioContrato2.Value, "dd/MM/yyyy") & "' ,[Fin_Contrato2] = '" & Format(Me.DtpFinContrato2.Value, "dd/MM/yyyy") & "' ,[Moneda2] = '" & Me.CmbMoneda1.Text & "' ,[Frecuencia2] = '" & Me.CmbFrecuencia2.Text & "' ,[IdContrato1] = " & IdContrato1 & " ,[IdContrato2] = " & IdContrato2 & "  WHERE (Numero_Contrato = " & NumeroContrato & ") AND (Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -159,13 +177,14 @@ Public Class FrmContratosNuevos
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
             StrSqlUpdate = "INSERT INTO [Contratos] ([Cod_Cliente],[Tipo_Servicios1],[Tipo_Servicios2],[Frecuencia],[Inicio_Contrato],[Fin_Contrato] ,[Contacto_Administrativo] ,[Contacto_Operativo],[Precio_Unitario] ,[Moneda],[Activo],[Anulado],[Retencion1],[Retencion2],[Exonerado],[Referencia],[Observaciones],[Precio_Unitario2],[Inicio_Contrato2],[Fin_Contrato2] ,[Moneda2] ,[Frecuencia2] ,[IdContrato1],[IdContrato2]) " & _
-                           "VALUES ('" & Me.TxtCodigoClientes.Text & "','" & Me.CmbContrato1.Text & "' ,'" & Me.CmbContrato2.Text & "' ," & Me.CmbFrecuencia1.Text & " ,'" & Format(Me.DtpInicioContrato1.Value, "dd/MM/yyyy") & "' ,'" & Format(Me.DtpFinContrato1.Value, "dd/MM/yyyy") & "' , '" & Me.TxtContactoAdmon.Text & "' , '" & Me.TxtContactoOperativo.Text & "' , " & Me.TxtPrecioUnitario1.Text & " , '" & Me.CmbMoneda1.Text & "' ,1,0,0,0, " & Exonerado & ", '" & Me.CboReferencia.Text & "' ,'" & Me.TxtObservaciones.Text & "' , " & Me.TxtPrecioUnitario2.Text & " ,'" & Format(Me.DtpInicioContrato2.Value, "dd/MM/yyyy") & "' ,'" & Format(Me.DtpFinContrato2.Value, "dd/MM/yyyy") & "' ,'" & Me.CmbMoneda1.Text & "' ,'" & Me.CmbFrecuencia2.Text & "'  , " & IdContrato1 & " ," & IdContrato2 & ")"
+                           "VALUES ('" & Me.TxtCodigoClientes.Text & "','" & Me.CmbContrato1.Text & "' ,'" & Me.CmbContrato2.Text & "' ,'" & Me.CmbFrecuencia1.Text & "' ,'" & Format(Me.DtpInicioContrato1.Value, "dd/MM/yyyy") & "' ,'" & Format(Me.DtpFinContrato1.Value, "dd/MM/yyyy") & "' , '" & Me.TxtContactoAdmon.Text & "' , '" & Me.TxtContactoOperativo.Text & "' , " & Me.TxtPrecioUnitario1.Text & " , '" & Me.CmbMoneda1.Text & "' ,1,0,0,0, " & Exonerado & ", '" & Me.CboReferencia.Text & "' ,'" & Me.TxtObservaciones.Text & "' , " & Me.TxtPrecioUnitario2.Text & " ,'" & Format(Me.DtpInicioContrato2.Value, "dd/MM/yyyy") & "' ,'" & Format(Me.DtpFinContrato2.Value, "dd/MM/yyyy") & "' ,'" & Me.CmbMoneda1.Text & "' ,'" & Me.CmbFrecuencia2.Text & "'  , " & IdContrato1 & " ," & IdContrato2 & ")"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
             MiConexion.Close()
 
         End If
+
         Bitacora(Now, NombreUsuario, "Clientes", "Grabo contrato nuevo: ")
     End Sub
 End Class

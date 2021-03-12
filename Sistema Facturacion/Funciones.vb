@@ -12503,7 +12503,7 @@ Module Funciones
 
         '////////////////////////////////////BUSCO EL TOTAL DE LA DEVOLUCION DE LAS  FACTURAS//////////////////////////////////////////////////////////////////////
         SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad, SUM(Detalle_Facturas.Cantidad*Detalle_Facturas.Costo_Unitario) AS Importe, Facturas.Tipo_Factura FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " & _
-                      "WHERE (Facturas.Fecha_Factura < CONVERT(DATETIME, '" & FechaIni & "', 102)) AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') GROUP BY Facturas.Tipo_Factura HAVING (Facturas.Tipo_Factura = 'Devolucion de Venta')"
+                      "WHERE (Facturas.Fecha_Factura < CONVERT(DATETIME, '" & Format(FechaIni2, "yyyy-MM-dd") & "', 102)) AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') GROUP BY Facturas.Tipo_Factura HAVING (Facturas.Tipo_Factura = 'Devolucion de Venta')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
         DataAdapter.Fill(DataSet, "DevolucionFacturas")
         If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then

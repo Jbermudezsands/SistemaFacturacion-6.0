@@ -1,0 +1,279 @@
+VERSION 5.00
+Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "MSADODC.OCX"
+Object = "{74848F95-A02A-4286-AF0C-A3C755E4A5B3}#1.0#0"; "actskn43.ocx"
+Begin VB.Form FrmImprime 
+   BackColor       =   &H00FFC0C0&
+   BorderStyle     =   1  'Fixed Single
+   Caption         =   "Imprimiendo..."
+   ClientHeight    =   2160
+   ClientLeft      =   45
+   ClientTop       =   435
+   ClientWidth     =   2745
+   Icon            =   "FrmImprimeCheque.frx":0000
+   LinkTopic       =   "Form1"
+   MaxButton       =   0   'False
+   MinButton       =   0   'False
+   ScaleHeight     =   2160
+   ScaleWidth      =   2745
+   StartUpPosition =   1  'CenterOwner
+   Begin ACTIVESKINLibCtl.SkinLabel SkinLabel2 
+      Height          =   255
+      Left            =   240
+      OleObjectBlob   =   "FrmImprimeCheque.frx":6C22
+      TabIndex        =   6
+      Top             =   1080
+      Width           =   975
+   End
+   Begin ACTIVESKINLibCtl.SkinLabel SkinLabel1 
+      Height          =   375
+      Left            =   240
+      OleObjectBlob   =   "FrmImprimeCheque.frx":6C92
+      TabIndex        =   5
+      Top             =   600
+      Width           =   975
+   End
+   Begin VB.CommandButton SmartButton2 
+      Caption         =   "Salir"
+      Height          =   495
+      Left            =   1440
+      TabIndex        =   4
+      Top             =   1560
+      Width           =   1215
+   End
+   Begin VB.CommandButton SmartButton1 
+      BackColor       =   &H00FF8080&
+      Caption         =   "Imprimir"
+      Height          =   495
+      Left            =   120
+      TabIndex        =   3
+      Top             =   1560
+      Width           =   1215
+   End
+   Begin MSAdodcLib.Adodc AdoTasa 
+      Height          =   495
+      Left            =   120
+      Top             =   4080
+      Width           =   3135
+      _ExtentX        =   5530
+      _ExtentY        =   873
+      ConnectMode     =   0
+      CursorLocation  =   3
+      IsolationLevel  =   -1
+      ConnectionTimeout=   15
+      CommandTimeout  =   30
+      CursorType      =   3
+      LockType        =   3
+      CommandType     =   8
+      CursorOptions   =   0
+      CacheSize       =   50
+      MaxRecords      =   0
+      BOFAction       =   0
+      EOFAction       =   0
+      ConnectStringType=   1
+      Appearance      =   1
+      BackColor       =   -2147483643
+      ForeColor       =   -2147483640
+      Orientation     =   0
+      Enabled         =   -1
+      Connect         =   ""
+      OLEDBString     =   ""
+      OLEDBFile       =   ""
+      DataSourceName  =   ""
+      OtherAttributes =   ""
+      UserName        =   ""
+      Password        =   ""
+      RecordSource    =   ""
+      Caption         =   "AdoTasa"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      _Version        =   393216
+   End
+   Begin MSAdodcLib.Adodc AdoEmpresa 
+      Height          =   375
+      Left            =   360
+      Top             =   5760
+      Width           =   2295
+      _ExtentX        =   4048
+      _ExtentY        =   661
+      ConnectMode     =   0
+      CursorLocation  =   3
+      IsolationLevel  =   -1
+      ConnectionTimeout=   15
+      CommandTimeout  =   30
+      CursorType      =   3
+      LockType        =   3
+      CommandType     =   8
+      CursorOptions   =   0
+      CacheSize       =   50
+      MaxRecords      =   0
+      BOFAction       =   0
+      EOFAction       =   0
+      ConnectStringType=   1
+      Appearance      =   1
+      BackColor       =   -2147483643
+      ForeColor       =   -2147483640
+      Orientation     =   0
+      Enabled         =   -1
+      Connect         =   ""
+      OLEDBString     =   ""
+      OLEDBFile       =   ""
+      DataSourceName  =   ""
+      OtherAttributes =   ""
+      UserName        =   ""
+      Password        =   ""
+      RecordSource    =   ""
+      Caption         =   "AdoEmpresa"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      _Version        =   393216
+   End
+   Begin MSAdodcLib.Adodc AdoEncabezado 
+      Height          =   375
+      Left            =   240
+      Top             =   5280
+      Width           =   2415
+      _ExtentX        =   4260
+      _ExtentY        =   661
+      ConnectMode     =   0
+      CursorLocation  =   3
+      IsolationLevel  =   -1
+      ConnectionTimeout=   15
+      CommandTimeout  =   30
+      CursorType      =   3
+      LockType        =   3
+      CommandType     =   8
+      CursorOptions   =   0
+      CacheSize       =   50
+      MaxRecords      =   0
+      BOFAction       =   0
+      EOFAction       =   0
+      ConnectStringType=   1
+      Appearance      =   1
+      BackColor       =   -2147483643
+      ForeColor       =   -2147483640
+      Orientation     =   0
+      Enabled         =   -1
+      Connect         =   ""
+      OLEDBString     =   ""
+      OLEDBFile       =   ""
+      DataSourceName  =   ""
+      OtherAttributes =   ""
+      UserName        =   ""
+      Password        =   ""
+      RecordSource    =   ""
+      Caption         =   "AdoEncabezado"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      _Version        =   393216
+   End
+   Begin MSAdodcLib.Adodc DtaConsulta 
+      Height          =   375
+      Left            =   120
+      Top             =   4680
+      Width           =   2535
+      _ExtentX        =   4471
+      _ExtentY        =   661
+      ConnectMode     =   0
+      CursorLocation  =   3
+      IsolationLevel  =   -1
+      ConnectionTimeout=   15
+      CommandTimeout  =   30
+      CursorType      =   3
+      LockType        =   3
+      CommandType     =   8
+      CursorOptions   =   0
+      CacheSize       =   50
+      MaxRecords      =   0
+      BOFAction       =   0
+      EOFAction       =   0
+      ConnectStringType=   1
+      Appearance      =   1
+      BackColor       =   -2147483643
+      ForeColor       =   -2147483640
+      Orientation     =   0
+      Enabled         =   -1
+      Connect         =   ""
+      OLEDBString     =   ""
+      OLEDBFile       =   ""
+      DataSourceName  =   ""
+      OtherAttributes =   ""
+      UserName        =   ""
+      Password        =   ""
+      RecordSource    =   ""
+      Caption         =   "DtaConsulta"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      _Version        =   393216
+   End
+   Begin MSAdodcLib.Adodc AdoCordenadas 
+      Height          =   375
+      Left            =   120
+      Top             =   4200
+      Width           =   2535
+      _ExtentX        =   4471
+      _ExtentY        =   661
+      ConnectMode     =   0
+      CursorLocation  =   3
+      IsolationLevel  =   -1
+      ConnectionTimeout=   15
+      CommandTimeout  =   30
+      CursorType      =   3
+      LockType        =   3
+      CommandType     =   8
+      CursorOptions   =   0
+      CacheSize       =   50
+      MaxRecords      =   0
+      BOFAction       =   0
+      EOFAction       =   0
+      ConnectStringType=   1
+      Appearance      =   1
+      BackColor       =   -2147483643
+      ForeColor       =   -2147483640
+      Orientation     =   0
+      Enabled         =   -1
+      Connect         =   ""
+      OLEDBString     =   ""
+      OLEDBFile       =   ""
+      DataSourceName  =   ""
+      OtherAttributes =   ""
+      UserName        =   ""
+      Password        =   ""
+      RecordSource    =   ""
+      Caption         =   "AdoCordenadas"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+    

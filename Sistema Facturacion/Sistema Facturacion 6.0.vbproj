@@ -297,6 +297,12 @@
     <Compile Include="FrmLotesInfo.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmNotificacion.Designer.vb">
+      <DependentUpon>FrmNotificacion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmNotificacion.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmNuevaSolicitud.Designer.vb">
       <DependentUpon>FrmNuevaSolicitud.vb</DependentUpon>
     </Compile>
@@ -1586,6 +1592,10 @@
     <EmbeddedResource Include="FrmLotesInfo.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmLotesInfo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmNotificacion.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmNotificacion.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmNuevaSolicitud.resx">
       <SubType>Designer</SubType>

@@ -869,7 +869,7 @@ Descuento = 0
                                   Cadena = Me.DtaConsulta.Recordset("Cod_Producto")
                                 End If
                                 
-                                If Len(Cadena) > 10 Then
+                                If Len(Cadena) > 15 Then
                                  Cadena = Trim(Cadena)
                                 End If
                                 Printer.Print Cadena

@@ -45,7 +45,7 @@ Partial Class FrmContratosNuevos
         Me.TxtNombres = New System.Windows.Forms.TextBox
         Me.Button1 = New System.Windows.Forms.Button
         Me.TxtCodigoClientes = New System.Windows.Forms.TextBox
-        Me.Label2 = New System.Windows.Forms.Label
+        Me.LblNumeroContrato = New System.Windows.Forms.Label
         Me.Label1 = New System.Windows.Forms.Label
         Me.Splitter1 = New System.Windows.Forms.Splitter
         Me.TabPage2 = New System.Windows.Forms.TabPage
@@ -156,7 +156,7 @@ Partial Class FrmContratosNuevos
         Me.TabPage1.Controls.Add(Me.TxtContactoAdmon)
         Me.TabPage1.Controls.Add(Me.Label3)
         Me.TabPage1.Controls.Add(Me.GroupBox2)
-        Me.TabPage1.Controls.Add(Me.Label2)
+        Me.TabPage1.Controls.Add(Me.LblNumeroContrato)
         Me.TabPage1.Controls.Add(Me.Label1)
         Me.TabPage1.Controls.Add(Me.Splitter1)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
@@ -343,15 +343,15 @@ Partial Class FrmContratosNuevos
         Me.TxtCodigoClientes.Size = New System.Drawing.Size(152, 20)
         Me.TxtCodigoClientes.TabIndex = 0
         '
-        'Label2
+        'LblNumeroContrato
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(144, 15)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(97, 29)
-        Me.Label2.TabIndex = 2
-        Me.Label2.Text = "000001"
+        Me.LblNumeroContrato.AutoSize = True
+        Me.LblNumeroContrato.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblNumeroContrato.Location = New System.Drawing.Point(144, 15)
+        Me.LblNumeroContrato.Name = "LblNumeroContrato"
+        Me.LblNumeroContrato.Size = New System.Drawing.Size(97, 29)
+        Me.LblNumeroContrato.TabIndex = 2
+        Me.LblNumeroContrato.Text = "000001"
         '
         'Label1
         '
@@ -429,7 +429,6 @@ Partial Class FrmContratosNuevos
         Me.TxtPrecioUnitario2.Name = "TxtPrecioUnitario2"
         Me.TxtPrecioUnitario2.Size = New System.Drawing.Size(122, 20)
         Me.TxtPrecioUnitario2.TabIndex = 227
-        Me.TxtPrecioUnitario2.Visible = False
         '
         'Label12
         '
@@ -557,7 +556,6 @@ Partial Class FrmContratosNuevos
         Me.TxtPrecioUnitario1.Name = "TxtPrecioUnitario1"
         Me.TxtPrecioUnitario1.Size = New System.Drawing.Size(122, 20)
         Me.TxtPrecioUnitario1.TabIndex = 227
-        Me.TxtPrecioUnitario1.Visible = False
         '
         'Label9
         '
@@ -673,7 +671,7 @@ Partial Class FrmContratosNuevos
     Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
     Friend WithEvents Splitter1 As System.Windows.Forms.Splitter
     Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents LblNumeroContrato As System.Windows.Forms.Label
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
     Friend WithEvents Label16 As System.Windows.Forms.Label
     Friend WithEvents CboReferencia As System.Windows.Forms.ComboBox
