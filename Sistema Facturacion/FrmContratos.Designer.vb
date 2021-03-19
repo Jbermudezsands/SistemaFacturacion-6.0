@@ -30,9 +30,10 @@ Partial Class FrmContratos
         Me.BtnVer = New System.Windows.Forms.Button
         Me.BtnSalir = New System.Windows.Forms.Button
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.RadioButton1 = New System.Windows.Forms.RadioButton
-        Me.RadioButton2 = New System.Windows.Forms.RadioButton
-        Me.RadioButton3 = New System.Windows.Forms.RadioButton
+        Me.OptAnulado = New System.Windows.Forms.RadioButton
+        Me.OptActivo = New System.Windows.Forms.RadioButton
+        Me.Button3 = New System.Windows.Forms.Button
+        Me.ProgressBar = New System.Windows.Forms.ProgressBar
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -84,7 +85,7 @@ Partial Class FrmContratos
         Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label9.Location = New System.Drawing.Point(462, 25)
+        Me.Label9.Location = New System.Drawing.Point(441, 25)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(161, 13)
         Me.Label9.TabIndex = 254
@@ -108,11 +109,11 @@ Partial Class FrmContratos
         Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
         Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button1.Location = New System.Drawing.Point(986, 247)
+        Me.Button1.Location = New System.Drawing.Point(986, 303)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(126, 56)
         Me.Button1.TabIndex = 264
-        Me.Button1.Text = "Anular"
+        Me.Button1.Text = "Facturar"
         Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button1.UseVisualStyleBackColor = True
         '
@@ -147,7 +148,7 @@ Partial Class FrmContratos
         Me.BtnSalir.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnSalir.Image = CType(resources.GetObject("BtnSalir.Image"), System.Drawing.Image)
         Me.BtnSalir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnSalir.Location = New System.Drawing.Point(983, 354)
+        Me.BtnSalir.Location = New System.Drawing.Point(983, 359)
         Me.BtnSalir.Name = "BtnSalir"
         Me.BtnSalir.Size = New System.Drawing.Size(128, 56)
         Me.BtnSalir.TabIndex = 261
@@ -157,47 +158,55 @@ Partial Class FrmContratos
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.RadioButton3)
-        Me.GroupBox1.Controls.Add(Me.RadioButton2)
-        Me.GroupBox1.Controls.Add(Me.RadioButton1)
-        Me.GroupBox1.Location = New System.Drawing.Point(667, 415)
+        Me.GroupBox1.Controls.Add(Me.OptAnulado)
+        Me.GroupBox1.Controls.Add(Me.OptActivo)
+        Me.GroupBox1.Location = New System.Drawing.Point(778, 415)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(310, 38)
+        Me.GroupBox1.Size = New System.Drawing.Size(199, 38)
         Me.GroupBox1.TabIndex = 266
         Me.GroupBox1.TabStop = False
         '
-        'RadioButton1
+        'OptAnulado
         '
-        Me.RadioButton1.AutoSize = True
-        Me.RadioButton1.Location = New System.Drawing.Point(11, 12)
-        Me.RadioButton1.Name = "RadioButton1"
-        Me.RadioButton1.Size = New System.Drawing.Size(55, 17)
-        Me.RadioButton1.TabIndex = 0
-        Me.RadioButton1.TabStop = True
-        Me.RadioButton1.Text = "Todos"
-        Me.RadioButton1.UseVisualStyleBackColor = True
+        Me.OptAnulado.AutoSize = True
+        Me.OptAnulado.Location = New System.Drawing.Point(108, 15)
+        Me.OptAnulado.Name = "OptAnulado"
+        Me.OptAnulado.Size = New System.Drawing.Size(69, 17)
+        Me.OptAnulado.TabIndex = 2
+        Me.OptAnulado.Text = "Anulados"
+        Me.OptAnulado.UseVisualStyleBackColor = True
         '
-        'RadioButton2
+        'OptActivo
         '
-        Me.RadioButton2.AutoSize = True
-        Me.RadioButton2.Location = New System.Drawing.Point(113, 12)
-        Me.RadioButton2.Name = "RadioButton2"
-        Me.RadioButton2.Size = New System.Drawing.Size(60, 17)
-        Me.RadioButton2.TabIndex = 1
-        Me.RadioButton2.TabStop = True
-        Me.RadioButton2.Text = "Activos"
-        Me.RadioButton2.UseVisualStyleBackColor = True
+        Me.OptActivo.AutoSize = True
+        Me.OptActivo.Checked = True
+        Me.OptActivo.Location = New System.Drawing.Point(18, 15)
+        Me.OptActivo.Name = "OptActivo"
+        Me.OptActivo.Size = New System.Drawing.Size(60, 17)
+        Me.OptActivo.TabIndex = 1
+        Me.OptActivo.TabStop = True
+        Me.OptActivo.Text = "Activos"
+        Me.OptActivo.UseVisualStyleBackColor = True
         '
-        'RadioButton3
+        'Button3
         '
-        Me.RadioButton3.AutoSize = True
-        Me.RadioButton3.Location = New System.Drawing.Point(230, 12)
-        Me.RadioButton3.Name = "RadioButton3"
-        Me.RadioButton3.Size = New System.Drawing.Size(69, 17)
-        Me.RadioButton3.TabIndex = 2
-        Me.RadioButton3.TabStop = True
-        Me.RadioButton3.Text = "Anulados"
-        Me.RadioButton3.UseVisualStyleBackColor = True
+        Me.Button3.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
+        Me.Button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button3.Location = New System.Drawing.Point(986, 247)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(126, 56)
+        Me.Button3.TabIndex = 267
+        Me.Button3.Text = "Anular"
+        Me.Button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button3.UseVisualStyleBackColor = True
+        '
+        'ProgressBar
+        '
+        Me.ProgressBar.Location = New System.Drawing.Point(12, 422)
+        Me.ProgressBar.Name = "ProgressBar"
+        Me.ProgressBar.Size = New System.Drawing.Size(735, 23)
+        Me.ProgressBar.TabIndex = 268
         '
         'FrmContratos
         '
@@ -205,6 +214,8 @@ Partial Class FrmContratos
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1125, 463)
         Me.ControlBox = False
+        Me.Controls.Add(Me.ProgressBar)
+        Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
@@ -238,7 +249,8 @@ Partial Class FrmContratos
     Friend WithEvents BtnVer As System.Windows.Forms.Button
     Friend WithEvents BtnSalir As System.Windows.Forms.Button
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents RadioButton3 As System.Windows.Forms.RadioButton
-    Friend WithEvents RadioButton2 As System.Windows.Forms.RadioButton
-    Friend WithEvents RadioButton1 As System.Windows.Forms.RadioButton
+    Friend WithEvents OptAnulado As System.Windows.Forms.RadioButton
+    Friend WithEvents OptActivo As System.Windows.Forms.RadioButton
+    Friend WithEvents Button3 As System.Windows.Forms.Button
+    Friend WithEvents ProgressBar As System.Windows.Forms.ProgressBar
 End Class

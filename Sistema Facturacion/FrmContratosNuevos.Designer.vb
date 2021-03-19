@@ -26,7 +26,6 @@ Partial Class FrmContratosNuevos
         Me.Button7 = New System.Windows.Forms.Button
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.ChkActivo = New System.Windows.Forms.CheckBox
         Me.GroupBox4 = New System.Windows.Forms.GroupBox
         Me.TxtObservaciones = New System.Windows.Forms.TextBox
         Me.TxtContactoOperativo = New System.Windows.Forms.TextBox
@@ -50,6 +49,10 @@ Partial Class FrmContratosNuevos
         Me.Splitter1 = New System.Windows.Forms.Splitter
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.GroupBox5 = New System.Windows.Forms.GroupBox
+        Me.ChkActivo2 = New System.Windows.Forms.CheckBox
+        Me.Label19 = New System.Windows.Forms.Label
+        Me.Label20 = New System.Windows.Forms.Label
+        Me.TxtNumero2 = New System.Windows.Forms.NumericUpDown
         Me.CmbMoneda2 = New System.Windows.Forms.ComboBox
         Me.Label11 = New System.Windows.Forms.Label
         Me.TxtPrecioUnitario2 = New System.Windows.Forms.TextBox
@@ -63,6 +66,10 @@ Partial Class FrmContratosNuevos
         Me.CmbContrato2 = New System.Windows.Forms.ComboBox
         Me.Label17 = New System.Windows.Forms.Label
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.ChkActivo = New System.Windows.Forms.CheckBox
+        Me.Label18 = New System.Windows.Forms.Label
+        Me.Label2 = New System.Windows.Forms.Label
+        Me.TxtNumero1 = New System.Windows.Forms.NumericUpDown
         Me.CmbMoneda1 = New System.Windows.Forms.ComboBox
         Me.Label10 = New System.Windows.Forms.Label
         Me.TxtPrecioUnitario1 = New System.Windows.Forms.TextBox
@@ -75,6 +82,13 @@ Partial Class FrmContratosNuevos
         Me.Label6 = New System.Windows.Forms.Label
         Me.CmbContrato1 = New System.Windows.Forms.ComboBox
         Me.Label5 = New System.Windows.Forms.Label
+        Me.TabPage3 = New System.Windows.Forms.TabPage
+        Me.Button2 = New System.Windows.Forms.Button
+        Me.Button3 = New System.Windows.Forms.Button
+        Me.GroupBox7 = New System.Windows.Forms.GroupBox
+        Me.TrueDBGridContrato2 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.GroupBox6 = New System.Windows.Forms.GroupBox
+        Me.TrueDBGridContrato1 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.GroupBox1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -82,7 +96,14 @@ Partial Class FrmContratosNuevos
         Me.GroupBox2.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
+        CType(Me.TxtNumero2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
+        CType(Me.TxtNumero1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage3.SuspendLayout()
+        Me.GroupBox7.SuspendLayout()
+        CType(Me.TrueDBGridContrato2, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox6.SuspendLayout()
+        CType(Me.TrueDBGridContrato1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox1
@@ -90,7 +111,7 @@ Partial Class FrmContratosNuevos
         Me.GroupBox1.Controls.Add(Me.BtnOrdenCompra)
         Me.GroupBox1.Controls.Add(Me.Button9)
         Me.GroupBox1.Controls.Add(Me.Button7)
-        Me.GroupBox1.Location = New System.Drawing.Point(736, 12)
+        Me.GroupBox1.Location = New System.Drawing.Point(769, 12)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(127, 366)
         Me.GroupBox1.TabIndex = 258
@@ -140,16 +161,16 @@ Partial Class FrmContratosNuevos
         '
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Location = New System.Drawing.Point(12, 12)
+        Me.TabControl1.Controls.Add(Me.TabPage3)
+        Me.TabControl1.Location = New System.Drawing.Point(12, 3)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(703, 352)
+        Me.TabControl1.Size = New System.Drawing.Size(695, 352)
         Me.TabControl1.TabIndex = 259
         '
         'TabPage1
         '
-        Me.TabPage1.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.TabPage1.Controls.Add(Me.ChkActivo)
+        Me.TabPage1.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
         Me.TabPage1.Controls.Add(Me.GroupBox4)
         Me.TabPage1.Controls.Add(Me.TxtContactoOperativo)
         Me.TabPage1.Controls.Add(Me.Label4)
@@ -162,19 +183,9 @@ Partial Class FrmContratosNuevos
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(695, 326)
+        Me.TabPage1.Size = New System.Drawing.Size(687, 326)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Datos Grales"
-        '
-        'ChkActivo
-        '
-        Me.ChkActivo.AutoSize = True
-        Me.ChkActivo.Location = New System.Drawing.Point(27, 253)
-        Me.ChkActivo.Name = "ChkActivo"
-        Me.ChkActivo.Size = New System.Drawing.Size(56, 17)
-        Me.ChkActivo.TabIndex = 228
-        Me.ChkActivo.Text = "Activo"
-        Me.ChkActivo.UseVisualStyleBackColor = True
         '
         'GroupBox4
         '
@@ -378,12 +389,16 @@ Partial Class FrmContratosNuevos
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(695, 326)
+        Me.TabPage2.Size = New System.Drawing.Size(687, 326)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Contrato"
         '
         'GroupBox5
         '
+        Me.GroupBox5.Controls.Add(Me.ChkActivo2)
+        Me.GroupBox5.Controls.Add(Me.Label19)
+        Me.GroupBox5.Controls.Add(Me.Label20)
+        Me.GroupBox5.Controls.Add(Me.TxtNumero2)
         Me.GroupBox5.Controls.Add(Me.CmbMoneda2)
         Me.GroupBox5.Controls.Add(Me.Label11)
         Me.GroupBox5.Controls.Add(Me.TxtPrecioUnitario2)
@@ -402,6 +417,42 @@ Partial Class FrmContratosNuevos
         Me.GroupBox5.TabIndex = 1
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Servicio 2"
+        '
+        'ChkActivo2
+        '
+        Me.ChkActivo2.AutoSize = True
+        Me.ChkActivo2.Location = New System.Drawing.Point(99, 205)
+        Me.ChkActivo2.Name = "ChkActivo2"
+        Me.ChkActivo2.Size = New System.Drawing.Size(56, 17)
+        Me.ChkActivo2.TabIndex = 233
+        Me.ChkActivo2.Text = "Activo"
+        Me.ChkActivo2.UseVisualStyleBackColor = True
+        '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.Location = New System.Drawing.Point(166, 183)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(68, 13)
+        Me.Label19.TabIndex = 235
+        Me.Label19.Text = "de cada mes"
+        '
+        'Label20
+        '
+        Me.Label20.AutoSize = True
+        Me.Label20.Location = New System.Drawing.Point(17, 181)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(74, 13)
+        Me.Label20.TabIndex = 234
+        Me.Label20.Text = "Dia a Facturar"
+        '
+        'TxtNumero2
+        '
+        Me.TxtNumero2.Location = New System.Drawing.Point(97, 178)
+        Me.TxtNumero2.Name = "TxtNumero2"
+        Me.TxtNumero2.Size = New System.Drawing.Size(63, 20)
+        Me.TxtNumero2.TabIndex = 233
+        Me.TxtNumero2.Value = New Decimal(New Integer() {5, 0, 0, 0})
         '
         'CmbMoneda2
         '
@@ -512,6 +563,10 @@ Partial Class FrmContratosNuevos
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.ChkActivo)
+        Me.GroupBox3.Controls.Add(Me.Label18)
+        Me.GroupBox3.Controls.Add(Me.Label2)
+        Me.GroupBox3.Controls.Add(Me.TxtNumero1)
         Me.GroupBox3.Controls.Add(Me.CmbMoneda1)
         Me.GroupBox3.Controls.Add(Me.Label10)
         Me.GroupBox3.Controls.Add(Me.TxtPrecioUnitario1)
@@ -530,6 +585,42 @@ Partial Class FrmContratosNuevos
         Me.GroupBox3.TabIndex = 0
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Servicio 1"
+        '
+        'ChkActivo
+        '
+        Me.ChkActivo.AutoSize = True
+        Me.ChkActivo.Location = New System.Drawing.Point(98, 206)
+        Me.ChkActivo.Name = "ChkActivo"
+        Me.ChkActivo.Size = New System.Drawing.Size(56, 17)
+        Me.ChkActivo.TabIndex = 233
+        Me.ChkActivo.Text = "Activo"
+        Me.ChkActivo.UseVisualStyleBackColor = True
+        '
+        'Label18
+        '
+        Me.Label18.AutoSize = True
+        Me.Label18.Location = New System.Drawing.Point(166, 184)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(68, 13)
+        Me.Label18.TabIndex = 232
+        Me.Label18.Text = "de cada mes"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(17, 182)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(74, 13)
+        Me.Label2.TabIndex = 231
+        Me.Label2.Text = "Dia a Facturar"
+        '
+        'TxtNumero1
+        '
+        Me.TxtNumero1.Location = New System.Drawing.Point(97, 178)
+        Me.TxtNumero1.Name = "TxtNumero1"
+        Me.TxtNumero1.Size = New System.Drawing.Size(63, 20)
+        Me.TxtNumero1.TabIndex = 230
+        Me.TxtNumero1.Value = New Decimal(New Integer() {5, 0, 0, 0})
         '
         'CmbMoneda1
         '
@@ -637,11 +728,107 @@ Partial Class FrmContratosNuevos
         Me.Label5.TabIndex = 163
         Me.Label5.Text = "Tipo Servicio"
         '
+        'TabPage3
+        '
+        Me.TabPage3.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.TabPage3.Controls.Add(Me.Button2)
+        Me.TabPage3.Controls.Add(Me.Button3)
+        Me.TabPage3.Controls.Add(Me.GroupBox7)
+        Me.TabPage3.Controls.Add(Me.GroupBox6)
+        Me.TabPage3.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage3.Name = "TabPage3"
+        Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage3.Size = New System.Drawing.Size(687, 326)
+        Me.TabPage3.TabIndex = 2
+        Me.TabPage3.Text = "Detalle"
+        '
+        'Button2
+        '
+        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
+        Me.Button2.ImageAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.Button2.Location = New System.Drawing.Point(499, 185)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(94, 23)
+        Me.Button2.TabIndex = 207
+        Me.Button2.Text = "Borrar Linea"
+        Me.Button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button2.UseVisualStyleBackColor = True
+        '
+        'Button3
+        '
+        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
+        Me.Button3.ImageAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.Button3.Location = New System.Drawing.Point(499, 25)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(94, 23)
+        Me.Button3.TabIndex = 206
+        Me.Button3.Text = "Borrar Linea"
+        Me.Button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button3.UseVisualStyleBackColor = True
+        '
+        'GroupBox7
+        '
+        Me.GroupBox7.Controls.Add(Me.TrueDBGridContrato2)
+        Me.GroupBox7.Location = New System.Drawing.Point(3, 156)
+        Me.GroupBox7.Name = "GroupBox7"
+        Me.GroupBox7.Size = New System.Drawing.Size(490, 138)
+        Me.GroupBox7.TabIndex = 163
+        Me.GroupBox7.TabStop = False
+        Me.GroupBox7.Text = "Detalle Contrato 1"
+        '
+        'TrueDBGridContrato2
+        '
+        Me.TrueDBGridContrato2.AllowAddNew = True
+        Me.TrueDBGridContrato2.AlternatingRows = True
+        Me.TrueDBGridContrato2.Caption = "Listado de Productos"
+        Me.TrueDBGridContrato2.DirectionAfterEnter = C1.Win.C1TrueDBGrid.DirectionAfterEnterEnum.MoveNone
+        Me.TrueDBGridContrato2.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TrueDBGridContrato2.Images.Add(CType(resources.GetObject("TrueDBGridContrato2.Images"), System.Drawing.Image))
+        Me.TrueDBGridContrato2.Location = New System.Drawing.Point(6, 29)
+        Me.TrueDBGridContrato2.Name = "TrueDBGridContrato2"
+        Me.TrueDBGridContrato2.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TrueDBGridContrato2.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TrueDBGridContrato2.PreviewInfo.ZoomFactor = 75
+        Me.TrueDBGridContrato2.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridContrato2.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TrueDBGridContrato2.Size = New System.Drawing.Size(465, 100)
+        Me.TrueDBGridContrato2.TabIndex = 165
+        Me.TrueDBGridContrato2.Text = "C1TrueDBGrid1"
+        Me.TrueDBGridContrato2.PropBag = resources.GetString("TrueDBGridContrato2.PropBag")
+        '
+        'GroupBox6
+        '
+        Me.GroupBox6.Controls.Add(Me.TrueDBGridContrato1)
+        Me.GroupBox6.Location = New System.Drawing.Point(6, 7)
+        Me.GroupBox6.Name = "GroupBox6"
+        Me.GroupBox6.Size = New System.Drawing.Size(487, 143)
+        Me.GroupBox6.TabIndex = 162
+        Me.GroupBox6.TabStop = False
+        Me.GroupBox6.Text = "Detalle Contrato 1"
+        '
+        'TrueDBGridContrato1
+        '
+        Me.TrueDBGridContrato1.AllowAddNew = True
+        Me.TrueDBGridContrato1.AlternatingRows = True
+        Me.TrueDBGridContrato1.Caption = "Listado de Productos"
+        Me.TrueDBGridContrato1.DirectionAfterEnter = C1.Win.C1TrueDBGrid.DirectionAfterEnterEnum.MoveNone
+        Me.TrueDBGridContrato1.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TrueDBGridContrato1.Images.Add(CType(resources.GetObject("TrueDBGridContrato1.Images"), System.Drawing.Image))
+        Me.TrueDBGridContrato1.Location = New System.Drawing.Point(8, 18)
+        Me.TrueDBGridContrato1.Name = "TrueDBGridContrato1"
+        Me.TrueDBGridContrato1.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TrueDBGridContrato1.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TrueDBGridContrato1.PreviewInfo.ZoomFactor = 75
+        Me.TrueDBGridContrato1.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridContrato1.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TrueDBGridContrato1.Size = New System.Drawing.Size(460, 100)
+        Me.TrueDBGridContrato1.TabIndex = 165
+        Me.TrueDBGridContrato1.Text = "C1TrueDBGrid1"
+        Me.TrueDBGridContrato1.PropBag = resources.GetString("TrueDBGridContrato1.PropBag")
+        '
         'FrmContratosNuevos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(875, 393)
+        Me.ClientSize = New System.Drawing.Size(894, 393)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.GroupBox1)
         Me.Name = "FrmContratosNuevos"
@@ -657,8 +844,15 @@ Partial Class FrmContratosNuevos
         Me.TabPage2.ResumeLayout(False)
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
+        CType(Me.TxtNumero2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
+        CType(Me.TxtNumero1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage3.ResumeLayout(False)
+        Me.GroupBox7.ResumeLayout(False)
+        CType(Me.TrueDBGridContrato2, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox6.ResumeLayout(False)
+        CType(Me.TrueDBGridContrato1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -690,7 +884,6 @@ Partial Class FrmContratosNuevos
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
     Friend WithEvents TxtObservaciones As System.Windows.Forms.TextBox
-    Friend WithEvents ChkActivo As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
     Friend WithEvents CmbContrato1 As System.Windows.Forms.ComboBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
@@ -717,4 +910,19 @@ Partial Class FrmContratosNuevos
     Friend WithEvents Label15 As System.Windows.Forms.Label
     Friend WithEvents CmbContrato2 As System.Windows.Forms.ComboBox
     Friend WithEvents Label17 As System.Windows.Forms.Label
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents TxtNumero1 As System.Windows.Forms.NumericUpDown
+    Friend WithEvents Label18 As System.Windows.Forms.Label
+    Friend WithEvents Label19 As System.Windows.Forms.Label
+    Friend WithEvents Label20 As System.Windows.Forms.Label
+    Friend WithEvents TxtNumero2 As System.Windows.Forms.NumericUpDown
+    Friend WithEvents ChkActivo2 As System.Windows.Forms.CheckBox
+    Friend WithEvents ChkActivo As System.Windows.Forms.CheckBox
+    Friend WithEvents TabPage3 As System.Windows.Forms.TabPage
+    Friend WithEvents GroupBox6 As System.Windows.Forms.GroupBox
+    Friend WithEvents TrueDBGridContrato1 As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents GroupBox7 As System.Windows.Forms.GroupBox
+    Friend WithEvents TrueDBGridContrato2 As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents Button3 As System.Windows.Forms.Button
 End Class
