@@ -68,7 +68,7 @@ Public Class FrmImportacion
     End Sub
 
 
-    Private Sub C1Button1_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdLeer.Click
+    Private Sub C1Button1_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs)
         '(Me.MiAdaptador)
         Me.OpenFileDialog.ShowDialog()
         RutaBD = OpenFileDialog.FileName
@@ -103,7 +103,7 @@ Public Class FrmImportacion
         MiConexionExcel.Close()
     End Sub
 
-    Private Sub C1Button2_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles C1Button2.Click
+    Private Sub C1Button2_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Dim SQL As String, iPosicionFila As Double
         Dim DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
@@ -380,7 +380,7 @@ Public Class FrmImportacion
         MiConexionExcel.Close()
     End Sub
 
-    Private Sub ChkProductos_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChkProductos.CheckedChanged
+    Private Sub ChkProductos_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs)
         If ChkProductos.Checked = True Then
             Me.FrameTipo.Enabled = False
             Me.OptActualizaInv.Checked = False

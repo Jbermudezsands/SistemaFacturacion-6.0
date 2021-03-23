@@ -162,7 +162,6 @@ D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Factur
 D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ExportForm.resources
 D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmLiquidacion.resources
 D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmPreciosProductos.resources
-D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.MDIParent1.resources
 D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepActividadProducto.resources
 D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepActividadProductoLinea.resources
 D:\Sistemas\Sistema de Facturacion SQL 6.0\SistemaFacturacion 6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepArqueoCaja.resources

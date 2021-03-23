@@ -49,6 +49,8 @@ Partial Class FrmContratosNuevos
         Me.Splitter1 = New System.Windows.Forms.Splitter
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.GroupBox5 = New System.Windows.Forms.GroupBox
+        Me.CboCodigoBodega2 = New C1.Win.C1List.C1Combo
+        Me.Label22 = New System.Windows.Forms.Label
         Me.ChkActivo2 = New System.Windows.Forms.CheckBox
         Me.Label19 = New System.Windows.Forms.Label
         Me.Label20 = New System.Windows.Forms.Label
@@ -66,6 +68,8 @@ Partial Class FrmContratosNuevos
         Me.CmbContrato2 = New System.Windows.Forms.ComboBox
         Me.Label17 = New System.Windows.Forms.Label
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.CboCodigoBodega = New C1.Win.C1List.C1Combo
+        Me.Label21 = New System.Windows.Forms.Label
         Me.ChkActivo = New System.Windows.Forms.CheckBox
         Me.Label18 = New System.Windows.Forms.Label
         Me.Label2 = New System.Windows.Forms.Label
@@ -83,8 +87,8 @@ Partial Class FrmContratosNuevos
         Me.CmbContrato1 = New System.Windows.Forms.ComboBox
         Me.Label5 = New System.Windows.Forms.Label
         Me.TabPage3 = New System.Windows.Forms.TabPage
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.Button3 = New System.Windows.Forms.Button
+        Me.BtnBorrarLineaCont2 = New System.Windows.Forms.Button
+        Me.BtnBorrarLineaCont1 = New System.Windows.Forms.Button
         Me.GroupBox7 = New System.Windows.Forms.GroupBox
         Me.TrueDBGridContrato2 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.GroupBox6 = New System.Windows.Forms.GroupBox
@@ -96,8 +100,10 @@ Partial Class FrmContratosNuevos
         Me.GroupBox2.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
+        CType(Me.CboCodigoBodega2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TxtNumero2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
+        CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TxtNumero1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage3.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
@@ -111,7 +117,7 @@ Partial Class FrmContratosNuevos
         Me.GroupBox1.Controls.Add(Me.BtnOrdenCompra)
         Me.GroupBox1.Controls.Add(Me.Button9)
         Me.GroupBox1.Controls.Add(Me.Button7)
-        Me.GroupBox1.Location = New System.Drawing.Point(769, 12)
+        Me.GroupBox1.Location = New System.Drawing.Point(722, 12)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(127, 366)
         Me.GroupBox1.TabIndex = 258
@@ -395,6 +401,8 @@ Partial Class FrmContratosNuevos
         '
         'GroupBox5
         '
+        Me.GroupBox5.Controls.Add(Me.CboCodigoBodega2)
+        Me.GroupBox5.Controls.Add(Me.Label22)
         Me.GroupBox5.Controls.Add(Me.ChkActivo2)
         Me.GroupBox5.Controls.Add(Me.Label19)
         Me.GroupBox5.Controls.Add(Me.Label20)
@@ -411,17 +419,56 @@ Partial Class FrmContratosNuevos
         Me.GroupBox5.Controls.Add(Me.Label15)
         Me.GroupBox5.Controls.Add(Me.CmbContrato2)
         Me.GroupBox5.Controls.Add(Me.Label17)
-        Me.GroupBox5.Location = New System.Drawing.Point(332, 22)
+        Me.GroupBox5.Location = New System.Drawing.Point(332, 24)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(297, 283)
         Me.GroupBox5.TabIndex = 1
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Servicio 2"
         '
+        'CboCodigoBodega2
+        '
+        Me.CboCodigoBodega2.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboCodigoBodega2.Caption = ""
+        Me.CboCodigoBodega2.CaptionHeight = 17
+        Me.CboCodigoBodega2.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboCodigoBodega2.ColumnCaptionHeight = 17
+        Me.CboCodigoBodega2.ColumnFooterHeight = 17
+        Me.CboCodigoBodega2.ComboStyle = C1.Win.C1List.ComboStyleEnum.DropdownList
+        Me.CboCodigoBodega2.ContentHeight = 15
+        Me.CboCodigoBodega2.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboCodigoBodega2.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboCodigoBodega2.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboCodigoBodega2.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboCodigoBodega2.EditorHeight = 15
+        Me.CboCodigoBodega2.Images.Add(CType(resources.GetObject("CboCodigoBodega2.Images"), System.Drawing.Image))
+        Me.CboCodigoBodega2.ItemHeight = 15
+        Me.CboCodigoBodega2.Location = New System.Drawing.Point(97, 177)
+        Me.CboCodigoBodega2.MatchEntryTimeout = CType(2000, Long)
+        Me.CboCodigoBodega2.MaxDropDownItems = CType(5, Short)
+        Me.CboCodigoBodega2.MaxLength = 32767
+        Me.CboCodigoBodega2.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboCodigoBodega2.Name = "CboCodigoBodega2"
+        Me.CboCodigoBodega2.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboCodigoBodega2.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboCodigoBodega2.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboCodigoBodega2.Size = New System.Drawing.Size(122, 21)
+        Me.CboCodigoBodega2.TabIndex = 237
+        Me.CboCodigoBodega2.PropBag = resources.GetString("CboCodigoBodega2.PropBag")
+        '
+        'Label22
+        '
+        Me.Label22.AutoSize = True
+        Me.Label22.Location = New System.Drawing.Point(45, 180)
+        Me.Label22.Name = "Label22"
+        Me.Label22.Size = New System.Drawing.Size(44, 13)
+        Me.Label22.TabIndex = 236
+        Me.Label22.Text = "Bodega"
+        '
         'ChkActivo2
         '
         Me.ChkActivo2.AutoSize = True
-        Me.ChkActivo2.Location = New System.Drawing.Point(99, 205)
+        Me.ChkActivo2.Location = New System.Drawing.Point(99, 227)
         Me.ChkActivo2.Name = "ChkActivo2"
         Me.ChkActivo2.Size = New System.Drawing.Size(56, 17)
         Me.ChkActivo2.TabIndex = 233
@@ -431,7 +478,7 @@ Partial Class FrmContratosNuevos
         'Label19
         '
         Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(166, 183)
+        Me.Label19.Location = New System.Drawing.Point(166, 205)
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(68, 13)
         Me.Label19.TabIndex = 235
@@ -440,7 +487,7 @@ Partial Class FrmContratosNuevos
         'Label20
         '
         Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(17, 181)
+        Me.Label20.Location = New System.Drawing.Point(17, 203)
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(74, 13)
         Me.Label20.TabIndex = 234
@@ -448,7 +495,7 @@ Partial Class FrmContratosNuevos
         '
         'TxtNumero2
         '
-        Me.TxtNumero2.Location = New System.Drawing.Point(97, 178)
+        Me.TxtNumero2.Location = New System.Drawing.Point(97, 200)
         Me.TxtNumero2.Name = "TxtNumero2"
         Me.TxtNumero2.Size = New System.Drawing.Size(63, 20)
         Me.TxtNumero2.TabIndex = 233
@@ -502,7 +549,7 @@ Partial Class FrmContratosNuevos
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(14, 135)
+        Me.Label13.Location = New System.Drawing.Point(24, 133)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(64, 13)
         Me.Label13.TabIndex = 169
@@ -563,6 +610,8 @@ Partial Class FrmContratosNuevos
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.CboCodigoBodega)
+        Me.GroupBox3.Controls.Add(Me.Label21)
         Me.GroupBox3.Controls.Add(Me.ChkActivo)
         Me.GroupBox3.Controls.Add(Me.Label18)
         Me.GroupBox3.Controls.Add(Me.Label2)
@@ -586,10 +635,49 @@ Partial Class FrmContratosNuevos
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Servicio 1"
         '
+        'CboCodigoBodega
+        '
+        Me.CboCodigoBodega.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboCodigoBodega.Caption = ""
+        Me.CboCodigoBodega.CaptionHeight = 17
+        Me.CboCodigoBodega.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboCodigoBodega.ColumnCaptionHeight = 17
+        Me.CboCodigoBodega.ColumnFooterHeight = 17
+        Me.CboCodigoBodega.ComboStyle = C1.Win.C1List.ComboStyleEnum.DropdownList
+        Me.CboCodigoBodega.ContentHeight = 15
+        Me.CboCodigoBodega.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboCodigoBodega.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboCodigoBodega.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboCodigoBodega.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboCodigoBodega.EditorHeight = 15
+        Me.CboCodigoBodega.Images.Add(CType(resources.GetObject("CboCodigoBodega.Images"), System.Drawing.Image))
+        Me.CboCodigoBodega.ItemHeight = 15
+        Me.CboCodigoBodega.Location = New System.Drawing.Point(98, 177)
+        Me.CboCodigoBodega.MatchEntryTimeout = CType(2000, Long)
+        Me.CboCodigoBodega.MaxDropDownItems = CType(5, Short)
+        Me.CboCodigoBodega.MaxLength = 32767
+        Me.CboCodigoBodega.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboCodigoBodega.Name = "CboCodigoBodega"
+        Me.CboCodigoBodega.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboCodigoBodega.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboCodigoBodega.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboCodigoBodega.Size = New System.Drawing.Size(122, 21)
+        Me.CboCodigoBodega.TabIndex = 235
+        Me.CboCodigoBodega.PropBag = resources.GetString("CboCodigoBodega.PropBag")
+        '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.Location = New System.Drawing.Point(44, 182)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(44, 13)
+        Me.Label21.TabIndex = 234
+        Me.Label21.Text = "Bodega"
+        '
         'ChkActivo
         '
         Me.ChkActivo.AutoSize = True
-        Me.ChkActivo.Location = New System.Drawing.Point(98, 206)
+        Me.ChkActivo.Location = New System.Drawing.Point(98, 228)
         Me.ChkActivo.Name = "ChkActivo"
         Me.ChkActivo.Size = New System.Drawing.Size(56, 17)
         Me.ChkActivo.TabIndex = 233
@@ -599,7 +687,7 @@ Partial Class FrmContratosNuevos
         'Label18
         '
         Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(166, 184)
+        Me.Label18.Location = New System.Drawing.Point(166, 206)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(68, 13)
         Me.Label18.TabIndex = 232
@@ -608,7 +696,7 @@ Partial Class FrmContratosNuevos
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(17, 182)
+        Me.Label2.Location = New System.Drawing.Point(17, 204)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(74, 13)
         Me.Label2.TabIndex = 231
@@ -616,7 +704,7 @@ Partial Class FrmContratosNuevos
         '
         'TxtNumero1
         '
-        Me.TxtNumero1.Location = New System.Drawing.Point(97, 178)
+        Me.TxtNumero1.Location = New System.Drawing.Point(97, 200)
         Me.TxtNumero1.Name = "TxtNumero1"
         Me.TxtNumero1.Size = New System.Drawing.Size(63, 20)
         Me.TxtNumero1.TabIndex = 230
@@ -669,7 +757,7 @@ Partial Class FrmContratosNuevos
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(14, 135)
+        Me.Label8.Location = New System.Drawing.Point(25, 135)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(64, 13)
         Me.Label8.TabIndex = 169
@@ -731,8 +819,8 @@ Partial Class FrmContratosNuevos
         'TabPage3
         '
         Me.TabPage3.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.TabPage3.Controls.Add(Me.Button2)
-        Me.TabPage3.Controls.Add(Me.Button3)
+        Me.TabPage3.Controls.Add(Me.BtnBorrarLineaCont2)
+        Me.TabPage3.Controls.Add(Me.BtnBorrarLineaCont1)
         Me.TabPage3.Controls.Add(Me.GroupBox7)
         Me.TabPage3.Controls.Add(Me.GroupBox6)
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
@@ -742,29 +830,29 @@ Partial Class FrmContratosNuevos
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Detalle"
         '
-        'Button2
+        'BtnBorrarLineaCont2
         '
-        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.ImageAlign = System.Drawing.ContentAlignment.BottomLeft
-        Me.Button2.Location = New System.Drawing.Point(499, 185)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(94, 23)
-        Me.Button2.TabIndex = 207
-        Me.Button2.Text = "Borrar Linea"
-        Me.Button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.BtnBorrarLineaCont2.Image = CType(resources.GetObject("BtnBorrarLineaCont2.Image"), System.Drawing.Image)
+        Me.BtnBorrarLineaCont2.ImageAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.BtnBorrarLineaCont2.Location = New System.Drawing.Point(499, 185)
+        Me.BtnBorrarLineaCont2.Name = "BtnBorrarLineaCont2"
+        Me.BtnBorrarLineaCont2.Size = New System.Drawing.Size(94, 23)
+        Me.BtnBorrarLineaCont2.TabIndex = 208
+        Me.BtnBorrarLineaCont2.Text = "Borrar Linea"
+        Me.BtnBorrarLineaCont2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnBorrarLineaCont2.UseVisualStyleBackColor = True
         '
-        'Button3
+        'BtnBorrarLineaCont1
         '
-        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
-        Me.Button3.ImageAlign = System.Drawing.ContentAlignment.BottomLeft
-        Me.Button3.Location = New System.Drawing.Point(499, 25)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(94, 23)
-        Me.Button3.TabIndex = 206
-        Me.Button3.Text = "Borrar Linea"
-        Me.Button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button3.UseVisualStyleBackColor = True
+        Me.BtnBorrarLineaCont1.Image = CType(resources.GetObject("BtnBorrarLineaCont1.Image"), System.Drawing.Image)
+        Me.BtnBorrarLineaCont1.ImageAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.BtnBorrarLineaCont1.Location = New System.Drawing.Point(499, 25)
+        Me.BtnBorrarLineaCont1.Name = "BtnBorrarLineaCont1"
+        Me.BtnBorrarLineaCont1.Size = New System.Drawing.Size(94, 23)
+        Me.BtnBorrarLineaCont1.TabIndex = 207
+        Me.BtnBorrarLineaCont1.Text = "Borrar Linea"
+        Me.BtnBorrarLineaCont1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnBorrarLineaCont1.UseVisualStyleBackColor = True
         '
         'GroupBox7
         '
@@ -828,7 +916,7 @@ Partial Class FrmContratosNuevos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(894, 393)
+        Me.ClientSize = New System.Drawing.Size(860, 393)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.GroupBox1)
         Me.Name = "FrmContratosNuevos"
@@ -844,9 +932,11 @@ Partial Class FrmContratosNuevos
         Me.TabPage2.ResumeLayout(False)
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
+        CType(Me.CboCodigoBodega2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TxtNumero2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
+        CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TxtNumero1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage3.ResumeLayout(False)
         Me.GroupBox7.ResumeLayout(False)
@@ -923,6 +1013,10 @@ Partial Class FrmContratosNuevos
     Friend WithEvents TrueDBGridContrato1 As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents GroupBox7 As System.Windows.Forms.GroupBox
     Friend WithEvents TrueDBGridContrato2 As C1.Win.C1TrueDBGrid.C1TrueDBGrid
-    Friend WithEvents Button2 As System.Windows.Forms.Button
-    Friend WithEvents Button3 As System.Windows.Forms.Button
+    Friend WithEvents CboCodigoBodega As C1.Win.C1List.C1Combo
+    Friend WithEvents Label21 As System.Windows.Forms.Label
+    Friend WithEvents CboCodigoBodega2 As C1.Win.C1List.C1Combo
+    Friend WithEvents Label22 As System.Windows.Forms.Label
+    Friend WithEvents BtnBorrarLineaCont2 As System.Windows.Forms.Button
+    Friend WithEvents BtnBorrarLineaCont1 As System.Windows.Forms.Button
 End Class

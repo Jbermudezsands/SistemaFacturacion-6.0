@@ -252,6 +252,14 @@ Public Class FrmContratosNuevos
                 Me.TxtNumero2.Value = DataSet.Tables("Contrato").Rows(0)("DiasFactura2")
             End If
 
+            If Not IsDBNull(DataSet.Tables("Contrato").Rows(0)("CodBodega1")) Then
+                Me.CboCodigoBodega.Text = DataSet.Tables("Contrato").Rows(0)("CodBodega1")
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Contrato").Rows(0)("CodBodega2")) Then
+                Me.CboCodigoBodega2.Text = DataSet.Tables("Contrato").Rows(0)("CodBodega2")
+            End If
+
 
 
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -415,6 +423,32 @@ Public Class FrmContratosNuevos
                 i = i + 1
             Loop
 
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '//////////////////////////CARGO LAS BODEGAS////////////////////////////////////////////////////////////////////
+            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            SqlString = "SELECT  * FROM   Bodegas"
+            MiConexion.Open()
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            DataAdapter.Fill(DataSet, "Bodegas")
+            Me.CboCodigoBodega.DataSource = DataSet.Tables("Bodegas")
+            If Not DataSet.Tables("Bodegas").Rows.Count = 0 Then
+                Me.CboCodigoBodega.Text = DataSet.Tables("Bodegas").Rows(0)("Cod_Bodega")
+            End If
+            Me.CboCodigoBodega.Columns(0).Caption = "Codigo"
+            Me.CboCodigoBodega.Columns(1).Caption = "Nombre Bodega"
+
+
+            SqlString = "SELECT  * FROM   Bodegas"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            DataAdapter.Fill(DataSet, "Bodegas2")
+            Me.CboCodigoBodega2.DataSource = DataSet.Tables("Bodegas2")
+            If Not DataSet.Tables("Bodegas2").Rows.Count = 0 Then
+                Me.CboCodigoBodega2.Text = DataSet.Tables("Bodegas2").Rows(0)("Cod_Bodega")
+            End If
+            Me.CboCodigoBodega2.Columns(0).Caption = "Codigo"
+            Me.CboCodigoBodega2.Columns(1).Caption = "Nombre Bodega"
+            MiConexion.Close()
+
             'If Cont > 0 Then
             '    Me.CmbContrato1.Text = DataSet.Tables("TipoContrato").Rows(0)("TipoContrato")
             '    Me.CmbContrato2.Text = DataSet.Tables("TipoContrato").Rows(0)("TipoContrato")
@@ -502,7 +536,7 @@ Public Class FrmContratosNuevos
         DataAdapter.Fill(DataSet, "Clientes")
         If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-            StrSqlUpdate = "UPDATE [Contratos]    SET [Cod_Cliente] = '" & Me.TxtCodigoClientes.Text & "',[Tipo_Servicios1] = '" & Me.CmbContrato1.Text & "' ,[Tipo_Servicios2] = '" & Me.CmbContrato2.Text & "' ,[Frecuencia] = '" & Me.CmbFrecuencia1.Text & "' ,[Inicio_Contrato] = '" & Format(Me.DtpInicioContrato1.Value, "dd/MM/yyyy") & "' ,[Fin_Contrato] = '" & Format(Me.DtpFinContrato1.Value, "dd/MM/yyyy") & "' ,[Contacto_Administrativo] =  '" & Me.TxtContactoAdmon.Text & "' ,[Contacto_Operativo] =  '" & Me.TxtContactoOperativo.Text & "' ,[Precio_Unitario] = " & Me.TxtPrecioUnitario1.Text & " ,[Moneda] = '" & Me.CmbMoneda1.Text & "' ,[Activo] = " & ContratoActivo & " ,[Activo2] = " & ContratoActivo2 & "  ,[Exonerado] = " & Exonerado & " ,[Referencia] =  '" & Me.CboReferencia.Text & "'  ,[Observaciones] =  '" & Me.TxtObservaciones.Text & "' ,[Precio_Unitario2] =  '" & Me.TxtPrecioUnitario1.Text & "' ,[Inicio_Contrato2] = '" & Format(Me.DtpInicioContrato2.Value, "dd/MM/yyyy") & "' ,[Fin_Contrato2] = '" & Format(Me.DtpFinContrato2.Value, "dd/MM/yyyy") & "' ,[Moneda2] = '" & Me.CmbMoneda1.Text & "' ,[Frecuencia2] = '" & Me.CmbFrecuencia2.Text & "' ,[IdContrato1] = " & IdContrato1 & " ,[IdContrato2] = " & IdContrato2 & ",[DiasFactura1] = " & Me.TxtNumero1.Value & " ,[DiasFactura2] = " & Me.TxtNumero2.Value & "  WHERE (Numero_Contrato = " & NumeroContrato & ") AND (Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
+            StrSqlUpdate = "UPDATE [Contratos]    SET [Cod_Cliente] = '" & Me.TxtCodigoClientes.Text & "',[Tipo_Servicios1] = '" & Me.CmbContrato1.Text & "' ,[Tipo_Servicios2] = '" & Me.CmbContrato2.Text & "' ,[Frecuencia] = '" & Me.CmbFrecuencia1.Text & "' ,[Inicio_Contrato] = '" & Format(Me.DtpInicioContrato1.Value, "dd/MM/yyyy") & "' ,[Fin_Contrato] = '" & Format(Me.DtpFinContrato1.Value, "dd/MM/yyyy") & "' ,[Contacto_Administrativo] =  '" & Me.TxtContactoAdmon.Text & "' ,[Contacto_Operativo] =  '" & Me.TxtContactoOperativo.Text & "' ,[Precio_Unitario] = " & Me.TxtPrecioUnitario1.Text & " ,[Moneda] = '" & Me.CmbMoneda1.Text & "' ,[Activo] = " & ContratoActivo & " ,[Activo2] = " & ContratoActivo2 & "  ,[Exonerado] = " & Exonerado & " ,[Referencia] =  '" & Me.CboReferencia.Text & "'  ,[Observaciones] =  '" & Me.TxtObservaciones.Text & "' ,[Precio_Unitario2] =  '" & Me.TxtPrecioUnitario1.Text & "' ,[Inicio_Contrato2] = '" & Format(Me.DtpInicioContrato2.Value, "dd/MM/yyyy") & "' ,[Fin_Contrato2] = '" & Format(Me.DtpFinContrato2.Value, "dd/MM/yyyy") & "' ,[Moneda2] = '" & Me.CmbMoneda1.Text & "' ,[Frecuencia2] = '" & Me.CmbFrecuencia2.Text & "' ,[IdContrato1] = " & IdContrato1 & " ,[IdContrato2] = " & IdContrato2 & ",[DiasFactura1] = " & Me.TxtNumero1.Value & " ,[DiasFactura2] = " & Me.TxtNumero2.Value & ",[CodBodega1] = '" & Me.CboCodigoBodega.Text & "',[CodBodega2] = '" & Me.CboCodigoBodega2.Text & "'  WHERE (Numero_Contrato = " & NumeroContrato & ") AND (Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -510,8 +544,8 @@ Public Class FrmContratosNuevos
 
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Contratos] ([Cod_Cliente],[Tipo_Servicios1],[Tipo_Servicios2],[Frecuencia],[Inicio_Contrato],[Fin_Contrato] ,[Contacto_Administrativo] ,[Contacto_Operativo],[Precio_Unitario] ,[Moneda],[Activo],[Activo2],[Anulado],[Retencion1],[Retencion2],[Exonerado],[Referencia],[Observaciones],[Precio_Unitario2],[Inicio_Contrato2],[Fin_Contrato2] ,[Moneda2] ,[Frecuencia2] ,[IdContrato1],[IdContrato2],[DiasFactura1],[DiasFactura2]) " & _
-                           "VALUES ('" & Me.TxtCodigoClientes.Text & "','" & Me.CmbContrato1.Text & "' ,'" & Me.CmbContrato2.Text & "' ,'" & Me.CmbFrecuencia1.Text & "' ,'" & Format(Me.DtpInicioContrato1.Value, "dd/MM/yyyy") & "' ,'" & Format(Me.DtpFinContrato1.Value, "dd/MM/yyyy") & "' , '" & Me.TxtContactoAdmon.Text & "' , '" & Me.TxtContactoOperativo.Text & "' , " & Me.TxtPrecioUnitario1.Text & " , '" & Me.CmbMoneda1.Text & "' ," & ContratoActivo & "," & ContratoActivo2 & ",0,0,0, " & Exonerado & ", '" & Me.CboReferencia.Text & "' ,'" & Me.TxtObservaciones.Text & "' , " & Me.TxtPrecioUnitario2.Text & " ,'" & Format(Me.DtpInicioContrato2.Value, "dd/MM/yyyy") & "' ,'" & Format(Me.DtpFinContrato2.Value, "dd/MM/yyyy") & "' ,'" & Me.CmbMoneda1.Text & "' ,'" & Me.CmbFrecuencia2.Text & "'  , " & IdContrato1 & " ," & IdContrato2 & ", " & Me.TxtNumero1.Value & " ," & Me.TxtNumero2.Value & ")"
+            StrSqlUpdate = "INSERT INTO [Contratos] ([Cod_Cliente],[Tipo_Servicios1],[Tipo_Servicios2],[Frecuencia],[Inicio_Contrato],[Fin_Contrato] ,[Contacto_Administrativo] ,[Contacto_Operativo],[Precio_Unitario] ,[Moneda],[Activo],[Activo2],[Anulado],[Retencion1],[Retencion2],[Exonerado],[Referencia],[Observaciones],[Precio_Unitario2],[Inicio_Contrato2],[Fin_Contrato2] ,[Moneda2] ,[Frecuencia2] ,[IdContrato1],[IdContrato2],[DiasFactura1],[DiasFactura2],[CodBodega1],[CodBodega2]) " & _
+                           "VALUES ('" & Me.TxtCodigoClientes.Text & "','" & Me.CmbContrato1.Text & "' ,'" & Me.CmbContrato2.Text & "' ,'" & Me.CmbFrecuencia1.Text & "' ,'" & Format(Me.DtpInicioContrato1.Value, "dd/MM/yyyy") & "' ,'" & Format(Me.DtpFinContrato1.Value, "dd/MM/yyyy") & "' , '" & Me.TxtContactoAdmon.Text & "' , '" & Me.TxtContactoOperativo.Text & "' , " & Me.TxtPrecioUnitario1.Text & " , '" & Me.CmbMoneda1.Text & "' ," & ContratoActivo & "," & ContratoActivo2 & ",0,0,0, " & Exonerado & ", '" & Me.CboReferencia.Text & "' ,'" & Me.TxtObservaciones.Text & "' , " & Me.TxtPrecioUnitario2.Text & " ,'" & Format(Me.DtpInicioContrato2.Value, "dd/MM/yyyy") & "' ,'" & Format(Me.DtpFinContrato2.Value, "dd/MM/yyyy") & "' ,'" & Me.CmbMoneda1.Text & "' ,'" & Me.CmbFrecuencia2.Text & "'  , " & IdContrato1 & " ," & IdContrato2 & ", " & Me.TxtNumero1.Value & " ," & Me.TxtNumero2.Value & ",'" & Me.CboCodigoBodega.Text & "','" & Me.CboCodigoBodega2.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -605,5 +639,110 @@ Public Class FrmContratosNuevos
 
     Private Sub CmbContrato1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmbContrato1.SelectedIndexChanged
 
+    End Sub
+
+
+    Private Sub BtnBorrarLineaCont1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnBorrarLineaCont1.Click
+        Dim Resultado As Double, CodProducto As String, iPosicion As Double, PrecioUnitario As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double
+        Dim idDetalle As Double, NombreProducto As String, Descuento As Double
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim FechaFactura As String, oDataRow As DataRow, oTablaBorrados As DataTable
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim NumeroFactura As String
+
+        Try
+
+            Resultado = MsgBox("¿Esta Seguro de Eliminar la Linea?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
+
+            If Not Resultado = "6" Then
+                Exit Sub
+            End If
+
+
+
+
+            CodProducto = Me.TrueDBGridContrato1.Columns("Cod_Productos").Text
+
+            Bitacora(Now, NombreUsuario, CodProducto, "Se elimino Producto: " & CodProducto & " " & NumeroContrato)
+
+            iPosicion = Me.TrueDBGridContrato1.Row
+
+
+            If Me.dsContrato1.Tables("DetalleContrato1").Rows.Count <> 0 Then
+
+                '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                '////////////////////////////////////////////BORRO EL REGISTRO SELECCIONADO CARGANDOLO EN DATAROW ///////////////////////////
+                '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                oDataRow = dsContrato1.Tables("DetalleContrato1").Rows(iPosicion)
+                oDataRow.Delete()
+
+                '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                '////////////////Obtengo las filas borradas/////////////////////////////////////////////////////////////////////////////////
+                oTablaBorrados = dsContrato1.Tables("DetalleContrato1").GetChanges(DataRowState.Deleted)
+                If Not IsNothing(oTablaBorrados) Then
+                    '//////////////////SI NO TIENE REGISTROS EN BORRADOS ESTAN EN PANTALLA LOS CAMBIOS 77777777
+                    Me.daContrato1.Update(oTablaBorrados)
+                End If
+                dsContrato1.Tables("DetalleContrato1").AcceptChanges()
+                daContrato1.Update(dsContrato1.Tables("DetalleContrato1"))
+
+            End If
+
+
+        Catch ex As Exception
+            MsgBox("Para borrar es necesario Grabar" & vbCrLf & ex.Message)
+        End Try
+    End Sub
+
+    Private Sub BtnBorrarLineaCont2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnBorrarLineaCont2.Click
+        Dim Resultado As Double, CodProducto As String, iPosicion As Double, PrecioUnitario As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double
+        Dim idDetalle As Double, NombreProducto As String, Descuento As Double
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim FechaFactura As String, oDataRow As DataRow, oTablaBorrados As DataTable
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim NumeroFactura As String
+
+        Try
+
+            Resultado = MsgBox("¿Esta Seguro de Eliminar la Linea?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
+
+            If Not Resultado = "6" Then
+                Exit Sub
+            End If
+
+
+
+
+            CodProducto = Me.TrueDBGridContrato2.Columns("Cod_Productos").Text
+
+            Bitacora(Now, NombreUsuario, CodProducto, "Se elimino Producto: " & CodProducto & " " & NumeroContrato)
+
+            iPosicion = Me.dsContrato2.Tables("DetalleContrato2").Rows.Count
+
+
+            If Me.dsContrato2.Tables("DetalleContrato2").Rows.Count <> 0 Then
+
+                '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                '////////////////////////////////////////////BORRO EL REGISTRO SELECCIONADO CARGANDOLO EN DATAROW ///////////////////////////
+                '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                oDataRow = dsContrato2.Tables("DetalleContrato2").Rows(iPosicion)
+                oDataRow.Delete()
+
+                '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                '////////////////Obtengo las filas borradas/////////////////////////////////////////////////////////////////////////////////
+                oTablaBorrados = dsContrato2.Tables("DetalleContrato2").GetChanges(DataRowState.Deleted)
+                If Not IsNothing(oTablaBorrados) Then
+                    '//////////////////SI NO TIENE REGISTROS EN BORRADOS ESTAN EN PANTALLA LOS CAMBIOS 77777777
+                    Me.daContrato2.Update(oTablaBorrados)
+                End If
+                dsContrato2.Tables("DetalleContrato2").AcceptChanges()
+                daContrato2.Update(dsContrato2.Tables("DetalleContrato2"))
+
+            End If
+
+
+        Catch ex As Exception
+            MsgBox("Para borrar es necesario Grabar" & vbCrLf & ex.Message)
+        End Try
     End Sub
 End Class

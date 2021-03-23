@@ -21,8 +21,6 @@ Partial Class FrmProductos
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmProductos))
-        Me.TabControl = New DevExpress.XtraTab.XtraTabControl
-        Me.Generales = New DevExpress.XtraTab.XtraTabPage
         Me.GroupBox5 = New System.Windows.Forms.GroupBox
         Me.CmdINgresoAjuste = New System.Windows.Forms.Button
         Me.CmdGastosAjuste = New System.Windows.Forms.Button
@@ -69,7 +67,6 @@ Partial Class FrmProductos
         Me.TxtUbicacion = New System.Windows.Forms.TextBox
         Me.Label8 = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
-        Me.Inventario = New DevExpress.XtraTab.XtraTabPage
         Me.GroupBox8 = New System.Windows.Forms.GroupBox
         Me.Button5 = New System.Windows.Forms.Button
         Me.Button4 = New System.Windows.Forms.Button
@@ -93,12 +90,10 @@ Partial Class FrmProductos
         Me.TxtCostoPromedio = New System.Windows.Forms.TextBox
         Me.Label21 = New System.Windows.Forms.Label
         Me.Label22 = New System.Windows.Forms.Label
-        Me.Historicos = New DevExpress.XtraTab.XtraTabPage
         Me.GroupBox10 = New System.Windows.Forms.GroupBox
         Me.TruDbGridHistoricosCompras = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.GroupBox9 = New System.Windows.Forms.GroupBox
         Me.TruDbGridHistoricosVentas = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.Componentes = New DevExpress.XtraTab.XtraTabPage
         Me.LblUnidadMedida = New System.Windows.Forms.Label
         Me.TxtRendimiento = New System.Windows.Forms.TextBox
         Me.Label30 = New System.Windows.Forms.Label
@@ -107,18 +102,15 @@ Partial Class FrmProductos
         Me.Button10 = New System.Windows.Forms.Button
         Me.CmdBorrarComponente = New System.Windows.Forms.Button
         Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.Impuestos = New DevExpress.XtraTab.XtraTabPage
         Me.GroupBox12 = New System.Windows.Forms.GroupBox
         Me.Button11 = New System.Windows.Forms.Button
         Me.cmdAddDocente = New System.Windows.Forms.Button
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.TDGridImpuestos = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.Alternativos = New DevExpress.XtraTab.XtraTabPage
         Me.GroupBox14 = New System.Windows.Forms.GroupBox
         Me.CmdBorrarAlterno = New System.Windows.Forms.Button
         Me.GroupBox13 = New System.Windows.Forms.GroupBox
         Me.TdGridAlternativos = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.Foto = New DevExpress.XtraTab.XtraTabPage
         Me.TxtNota = New System.Windows.Forms.TextBox
         Me.GroupBox6 = New System.Windows.Forms.GroupBox
         Me.CmdAgregar = New System.Windows.Forms.Button
@@ -148,9 +140,14 @@ Partial Class FrmProductos
         Me.BindingImpuestos = New System.Windows.Forms.BindingSource(Me.components)
         Me.BindingCodigoAlternos = New System.Windows.Forms.BindingSource(Me.components)
         Me.TextBox = New System.Windows.Forms.TextBox
-        CType(Me.TabControl, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.TabControl.SuspendLayout()
-        Me.Generales.SuspendLayout()
+        Me.TabControl = New System.Windows.Forms.TabControl
+        Me.Generales = New System.Windows.Forms.TabPage
+        Me.Inventario = New System.Windows.Forms.TabPage
+        Me.Historico = New System.Windows.Forms.TabPage
+        Me.Componentes = New System.Windows.Forms.TabPage
+        Me.Impuestos = New System.Windows.Forms.TabPage
+        Me.Alternativos = New System.Windows.Forms.TabPage
+        Me.Foto = New System.Windows.Forms.TabPage
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         CType(Me.TxtAumento, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -158,27 +155,21 @@ Partial Class FrmProductos
         Me.GroupBox1.SuspendLayout()
         CType(Me.CboRubro, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboLinea, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.Inventario.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
         CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox4.SuspendLayout()
-        Me.Historicos.SuspendLayout()
         Me.GroupBox10.SuspendLayout()
         CType(Me.TruDbGridHistoricosCompras, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox9.SuspendLayout()
         CType(Me.TruDbGridHistoricosVentas, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.Componentes.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
         CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.Impuestos.SuspendLayout()
         Me.GroupBox12.SuspendLayout()
         Me.GroupBox11.SuspendLayout()
         CType(Me.TDGridImpuestos, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.Alternativos.SuspendLayout()
         Me.GroupBox14.SuspendLayout()
         Me.GroupBox13.SuspendLayout()
         CType(Me.TdGridAlternativos, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.Foto.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -191,27 +182,15 @@ Partial Class FrmProductos
         CType(Me.BindingHistoricosVentas, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.BindingImpuestos, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.BindingCodigoAlternos, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabControl.SuspendLayout()
+        Me.Generales.SuspendLayout()
+        Me.Inventario.SuspendLayout()
+        Me.Historico.SuspendLayout()
+        Me.Componentes.SuspendLayout()
+        Me.Impuestos.SuspendLayout()
+        Me.Alternativos.SuspendLayout()
+        Me.Foto.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'TabControl
-        '
-        Me.TabControl.Location = New System.Drawing.Point(12, 123)
-        Me.TabControl.Name = "TabControl"
-        Me.TabControl.SelectedTabPage = Me.Generales
-        Me.TabControl.Size = New System.Drawing.Size(668, 322)
-        Me.TabControl.TabIndex = 30
-        Me.TabControl.TabPages.AddRange(New DevExpress.XtraTab.XtraTabPage() {Me.Generales, Me.Inventario, Me.Historicos, Me.Componentes, Me.Impuestos, Me.Alternativos, Me.Foto})
-        Me.TabControl.Text = "Foto"
-        '
-        'Generales
-        '
-        Me.Generales.Controls.Add(Me.GroupBox5)
-        Me.Generales.Controls.Add(Me.GroupBox3)
-        Me.Generales.Controls.Add(Me.GroupBox2)
-        Me.Generales.Controls.Add(Me.GroupBox1)
-        Me.Generales.Name = "Generales"
-        Me.Generales.Size = New System.Drawing.Size(660, 294)
-        Me.Generales.Text = "Generales"
         '
         'GroupBox5
         '
@@ -224,7 +203,7 @@ Partial Class FrmProductos
         Me.GroupBox5.Controls.Add(Me.CmdInventario)
         Me.GroupBox5.Controls.Add(Me.TxtCtaInventario)
         Me.GroupBox5.Controls.Add(Me.Label17)
-        Me.GroupBox5.Location = New System.Drawing.Point(325, 3)
+        Me.GroupBox5.Location = New System.Drawing.Point(294, 5)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(300, 139)
         Me.GroupBox5.TabIndex = 34
@@ -320,7 +299,7 @@ Partial Class FrmProductos
         Me.GroupBox3.Controls.Add(Me.Label6)
         Me.GroupBox3.Controls.Add(Me.TxtPrecioVenta)
         Me.GroupBox3.Controls.Add(Me.Label15)
-        Me.GroupBox3.Location = New System.Drawing.Point(325, 144)
+        Me.GroupBox3.Location = New System.Drawing.Point(293, 146)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(300, 148)
         Me.GroupBox3.TabIndex = 33
@@ -440,7 +419,7 @@ Partial Class FrmProductos
         Me.GroupBox2.Controls.Add(Me.TxtDescuento)
         Me.GroupBox2.Controls.Add(Me.Label7)
         Me.GroupBox2.Controls.Add(Me.Label5)
-        Me.GroupBox2.Location = New System.Drawing.Point(13, 129)
+        Me.GroupBox2.Location = New System.Drawing.Point(6, 124)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(284, 164)
         Me.GroupBox2.TabIndex = 32
@@ -555,7 +534,7 @@ Partial Class FrmProductos
         Me.GroupBox1.Controls.Add(Me.TxtUbicacion)
         Me.GroupBox1.Controls.Add(Me.Label8)
         Me.GroupBox1.Controls.Add(Me.Label4)
-        Me.GroupBox1.Location = New System.Drawing.Point(13, 3)
+        Me.GroupBox1.Location = New System.Drawing.Point(6, 5)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(284, 120)
         Me.GroupBox1.TabIndex = 31
@@ -697,20 +676,12 @@ Partial Class FrmProductos
         Me.Label4.TabIndex = 5
         Me.Label4.Text = "Linea"
         '
-        'Inventario
-        '
-        Me.Inventario.Controls.Add(Me.GroupBox8)
-        Me.Inventario.Controls.Add(Me.GroupBox4)
-        Me.Inventario.Name = "Inventario"
-        Me.Inventario.Size = New System.Drawing.Size(660, 294)
-        Me.Inventario.Text = "Inventario"
-        '
         'GroupBox8
         '
         Me.GroupBox8.Controls.Add(Me.Button5)
         Me.GroupBox8.Controls.Add(Me.Button4)
         Me.GroupBox8.Controls.Add(Me.TrueDBGridConsultas)
-        Me.GroupBox8.Location = New System.Drawing.Point(331, 14)
+        Me.GroupBox8.Location = New System.Drawing.Point(317, 7)
         Me.GroupBox8.Name = "GroupBox8"
         Me.GroupBox8.Size = New System.Drawing.Size(320, 271)
         Me.GroupBox8.TabIndex = 4
@@ -780,7 +751,7 @@ Partial Class FrmProductos
         Me.GroupBox4.Controls.Add(Me.TxtCostoPromedio)
         Me.GroupBox4.Controls.Add(Me.Label21)
         Me.GroupBox4.Controls.Add(Me.Label22)
-        Me.GroupBox4.Location = New System.Drawing.Point(17, 14)
+        Me.GroupBox4.Location = New System.Drawing.Point(6, 9)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(305, 271)
         Me.GroupBox4.TabIndex = 2
@@ -942,18 +913,10 @@ Partial Class FrmProductos
         Me.Label22.TabIndex = 1
         Me.Label22.Text = "Costo Promedio"
         '
-        'Historicos
-        '
-        Me.Historicos.Controls.Add(Me.GroupBox10)
-        Me.Historicos.Controls.Add(Me.GroupBox9)
-        Me.Historicos.Name = "Historicos"
-        Me.Historicos.Size = New System.Drawing.Size(660, 294)
-        Me.Historicos.Text = "Historicos"
-        '
         'GroupBox10
         '
         Me.GroupBox10.Controls.Add(Me.TruDbGridHistoricosCompras)
-        Me.GroupBox10.Location = New System.Drawing.Point(8, 147)
+        Me.GroupBox10.Location = New System.Drawing.Point(3, 146)
         Me.GroupBox10.Name = "GroupBox10"
         Me.GroupBox10.Size = New System.Drawing.Size(640, 143)
         Me.GroupBox10.TabIndex = 6
@@ -981,7 +944,7 @@ Partial Class FrmProductos
         'GroupBox9
         '
         Me.GroupBox9.Controls.Add(Me.TruDbGridHistoricosVentas)
-        Me.GroupBox9.Location = New System.Drawing.Point(8, 3)
+        Me.GroupBox9.Location = New System.Drawing.Point(6, -3)
         Me.GroupBox9.Name = "GroupBox9"
         Me.GroupBox9.Size = New System.Drawing.Size(640, 138)
         Me.GroupBox9.TabIndex = 5
@@ -1006,21 +969,10 @@ Partial Class FrmProductos
         Me.TruDbGridHistoricosVentas.Text = "C1TrueDBGrid1"
         Me.TruDbGridHistoricosVentas.PropBag = resources.GetString("TruDbGridHistoricosVentas.PropBag")
         '
-        'Componentes
-        '
-        Me.Componentes.Controls.Add(Me.LblUnidadMedida)
-        Me.Componentes.Controls.Add(Me.TxtRendimiento)
-        Me.Componentes.Controls.Add(Me.Label30)
-        Me.Componentes.Controls.Add(Me.GroupBox7)
-        Me.Componentes.Controls.Add(Me.TrueDBGridComponentes)
-        Me.Componentes.Name = "Componentes"
-        Me.Componentes.Size = New System.Drawing.Size(660, 294)
-        Me.Componentes.Text = "Lista Componentes"
-        '
         'LblUnidadMedida
         '
         Me.LblUnidadMedida.AutoSize = True
-        Me.LblUnidadMedida.Location = New System.Drawing.Point(611, 242)
+        Me.LblUnidadMedida.Location = New System.Drawing.Point(610, 223)
         Me.LblUnidadMedida.Name = "LblUnidadMedida"
         Me.LblUnidadMedida.Size = New System.Drawing.Size(27, 13)
         Me.LblUnidadMedida.TabIndex = 134
@@ -1028,7 +980,7 @@ Partial Class FrmProductos
         '
         'TxtRendimiento
         '
-        Me.TxtRendimiento.Location = New System.Drawing.Point(531, 236)
+        Me.TxtRendimiento.Location = New System.Drawing.Point(530, 217)
         Me.TxtRendimiento.Name = "TxtRendimiento"
         Me.TxtRendimiento.Size = New System.Drawing.Size(73, 20)
         Me.TxtRendimiento.TabIndex = 133
@@ -1037,7 +989,7 @@ Partial Class FrmProductos
         'Label30
         '
         Me.Label30.AutoSize = True
-        Me.Label30.Location = New System.Drawing.Point(527, 219)
+        Me.Label30.Location = New System.Drawing.Point(526, 200)
         Me.Label30.Name = "Label30"
         Me.Label30.Size = New System.Drawing.Size(118, 13)
         Me.Label30.TabIndex = 132
@@ -1048,7 +1000,7 @@ Partial Class FrmProductos
         Me.GroupBox7.Controls.Add(Me.CmdAgregarProducto)
         Me.GroupBox7.Controls.Add(Me.Button10)
         Me.GroupBox7.Controls.Add(Me.CmdBorrarComponente)
-        Me.GroupBox7.Location = New System.Drawing.Point(550, 27)
+        Me.GroupBox7.Location = New System.Drawing.Point(526, 9)
         Me.GroupBox7.Name = "GroupBox7"
         Me.GroupBox7.Size = New System.Drawing.Size(96, 178)
         Me.GroupBox7.TabIndex = 131
@@ -1103,7 +1055,7 @@ Partial Class FrmProductos
         Me.TrueDBGridComponentes.FilterBar = True
         Me.TrueDBGridComponentes.GroupByCaption = "Drag a column header here to group by that column"
         Me.TrueDBGridComponentes.Images.Add(CType(resources.GetObject("TrueDBGridComponentes.Images"), System.Drawing.Image))
-        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(8, 27)
+        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(6, 9)
         Me.TrueDBGridComponentes.Name = "TrueDBGridComponentes"
         Me.TrueDBGridComponentes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
@@ -1114,19 +1066,11 @@ Partial Class FrmProductos
         Me.TrueDBGridComponentes.Text = "C1TrueDBGrid1"
         Me.TrueDBGridComponentes.PropBag = resources.GetString("TrueDBGridComponentes.PropBag")
         '
-        'Impuestos
-        '
-        Me.Impuestos.Controls.Add(Me.GroupBox12)
-        Me.Impuestos.Controls.Add(Me.GroupBox11)
-        Me.Impuestos.Name = "Impuestos"
-        Me.Impuestos.Size = New System.Drawing.Size(660, 294)
-        Me.Impuestos.Text = "Impuestos"
-        '
         'GroupBox12
         '
         Me.GroupBox12.Controls.Add(Me.Button11)
         Me.GroupBox12.Controls.Add(Me.cmdAddDocente)
-        Me.GroupBox12.Location = New System.Drawing.Point(544, 3)
+        Me.GroupBox12.Location = New System.Drawing.Point(547, 3)
         Me.GroupBox12.Name = "GroupBox12"
         Me.GroupBox12.Size = New System.Drawing.Size(103, 271)
         Me.GroupBox12.TabIndex = 136
@@ -1162,7 +1106,7 @@ Partial Class FrmProductos
         'GroupBox11
         '
         Me.GroupBox11.Controls.Add(Me.TDGridImpuestos)
-        Me.GroupBox11.Location = New System.Drawing.Point(6, 3)
+        Me.GroupBox11.Location = New System.Drawing.Point(9, 5)
         Me.GroupBox11.Name = "GroupBox11"
         Me.GroupBox11.Size = New System.Drawing.Size(532, 271)
         Me.GroupBox11.TabIndex = 5
@@ -1188,18 +1132,10 @@ Partial Class FrmProductos
         Me.TDGridImpuestos.Text = "C1TrueDBGrid1"
         Me.TDGridImpuestos.PropBag = resources.GetString("TDGridImpuestos.PropBag")
         '
-        'Alternativos
-        '
-        Me.Alternativos.Controls.Add(Me.GroupBox14)
-        Me.Alternativos.Controls.Add(Me.GroupBox13)
-        Me.Alternativos.Name = "Alternativos"
-        Me.Alternativos.Size = New System.Drawing.Size(660, 294)
-        Me.Alternativos.Text = "Codigos Alternos"
-        '
         'GroupBox14
         '
         Me.GroupBox14.Controls.Add(Me.CmdBorrarAlterno)
-        Me.GroupBox14.Location = New System.Drawing.Point(544, 3)
+        Me.GroupBox14.Location = New System.Drawing.Point(543, 3)
         Me.GroupBox14.Name = "GroupBox14"
         Me.GroupBox14.Size = New System.Drawing.Size(103, 271)
         Me.GroupBox14.TabIndex = 137
@@ -1221,7 +1157,7 @@ Partial Class FrmProductos
         'GroupBox13
         '
         Me.GroupBox13.Controls.Add(Me.TdGridAlternativos)
-        Me.GroupBox13.Location = New System.Drawing.Point(6, 3)
+        Me.GroupBox13.Location = New System.Drawing.Point(5, 1)
         Me.GroupBox13.Name = "GroupBox13"
         Me.GroupBox13.Size = New System.Drawing.Size(532, 271)
         Me.GroupBox13.TabIndex = 6
@@ -1248,19 +1184,10 @@ Partial Class FrmProductos
         Me.TdGridAlternativos.Text = "C1TrueDBGrid1"
         Me.TdGridAlternativos.PropBag = resources.GetString("TdGridAlternativos.PropBag")
         '
-        'Foto
-        '
-        Me.Foto.Controls.Add(Me.TxtNota)
-        Me.Foto.Controls.Add(Me.GroupBox6)
-        Me.Foto.Controls.Add(Me.ImgFoto)
-        Me.Foto.Name = "Foto"
-        Me.Foto.Size = New System.Drawing.Size(660, 294)
-        Me.Foto.Text = "Foto"
-        '
         'TxtNota
         '
         Me.TxtNota.AcceptsReturn = True
-        Me.TxtNota.Location = New System.Drawing.Point(413, 132)
+        Me.TxtNota.Location = New System.Drawing.Point(407, 126)
         Me.TxtNota.MaxLength = 250
         Me.TxtNota.Multiline = True
         Me.TxtNota.Name = "TxtNota"
@@ -1273,7 +1200,7 @@ Partial Class FrmProductos
         '
         Me.GroupBox6.Controls.Add(Me.CmdAgregar)
         Me.GroupBox6.Controls.Add(Me.CmdBorrarFoto)
-        Me.GroupBox6.Location = New System.Drawing.Point(412, 13)
+        Me.GroupBox6.Location = New System.Drawing.Point(407, 8)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(219, 112)
         Me.GroupBox6.TabIndex = 1
@@ -1310,7 +1237,7 @@ Partial Class FrmProductos
         'ImgFoto
         '
         Me.ImgFoto.Image = CType(resources.GetObject("ImgFoto.Image"), System.Drawing.Image)
-        Me.ImgFoto.Location = New System.Drawing.Point(17, 13)
+        Me.ImgFoto.Location = New System.Drawing.Point(12, 8)
         Me.ImgFoto.Name = "ImgFoto"
         Me.ImgFoto.Size = New System.Drawing.Size(389, 237)
         Me.ImgFoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -1354,7 +1281,7 @@ Partial Class FrmProductos
         Me.Button8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
         Me.Button8.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button8.Location = New System.Drawing.Point(605, 451)
+        Me.Button8.Location = New System.Drawing.Point(618, 473)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(75, 66)
         Me.Button8.TabIndex = 21
@@ -1366,7 +1293,7 @@ Partial Class FrmProductos
         '
         Me.CmdNuevo.Image = CType(resources.GetObject("CmdNuevo.Image"), System.Drawing.Image)
         Me.CmdNuevo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdNuevo.Location = New System.Drawing.Point(11, 447)
+        Me.CmdNuevo.Location = New System.Drawing.Point(11, 469)
         Me.CmdNuevo.Name = "CmdNuevo"
         Me.CmdNuevo.Size = New System.Drawing.Size(75, 67)
         Me.CmdNuevo.TabIndex = 18
@@ -1378,7 +1305,7 @@ Partial Class FrmProductos
         '
         Me.ButtonBorrar.Image = CType(resources.GetObject("ButtonBorrar.Image"), System.Drawing.Image)
         Me.ButtonBorrar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonBorrar.Location = New System.Drawing.Point(173, 447)
+        Me.ButtonBorrar.Location = New System.Drawing.Point(173, 469)
         Me.ButtonBorrar.Name = "ButtonBorrar"
         Me.ButtonBorrar.Size = New System.Drawing.Size(75, 67)
         Me.ButtonBorrar.TabIndex = 20
@@ -1391,7 +1318,7 @@ Partial Class FrmProductos
         '
         Me.ButtonAgregar.Image = CType(resources.GetObject("ButtonAgregar.Image"), System.Drawing.Image)
         Me.ButtonAgregar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonAgregar.Location = New System.Drawing.Point(92, 447)
+        Me.ButtonAgregar.Location = New System.Drawing.Point(92, 469)
         Me.ButtonAgregar.Name = "ButtonAgregar"
         Me.ButtonAgregar.Size = New System.Drawing.Size(75, 67)
         Me.ButtonAgregar.TabIndex = 19
@@ -1515,17 +1442,120 @@ Partial Class FrmProductos
         '
         'TextBox
         '
-        Me.TextBox.Location = New System.Drawing.Point(312, 462)
+        Me.TextBox.Location = New System.Drawing.Point(312, 484)
         Me.TextBox.Name = "TextBox"
         Me.TextBox.Size = New System.Drawing.Size(100, 20)
         Me.TextBox.TabIndex = 64
         Me.TextBox.Visible = False
         '
+        'TabControl
+        '
+        Me.TabControl.Controls.Add(Me.Generales)
+        Me.TabControl.Controls.Add(Me.Inventario)
+        Me.TabControl.Controls.Add(Me.Historico)
+        Me.TabControl.Controls.Add(Me.Componentes)
+        Me.TabControl.Controls.Add(Me.Impuestos)
+        Me.TabControl.Controls.Add(Me.Alternativos)
+        Me.TabControl.Controls.Add(Me.Foto)
+        Me.TabControl.Location = New System.Drawing.Point(12, 117)
+        Me.TabControl.Name = "TabControl"
+        Me.TabControl.SelectedIndex = 0
+        Me.TabControl.Size = New System.Drawing.Size(684, 350)
+        Me.TabControl.TabIndex = 65
+        '
+        'Generales
+        '
+        Me.Generales.Controls.Add(Me.GroupBox3)
+        Me.Generales.Controls.Add(Me.GroupBox5)
+        Me.Generales.Controls.Add(Me.GroupBox2)
+        Me.Generales.Controls.Add(Me.GroupBox1)
+        Me.Generales.Location = New System.Drawing.Point(4, 22)
+        Me.Generales.Name = "Generales"
+        Me.Generales.Padding = New System.Windows.Forms.Padding(3)
+        Me.Generales.Size = New System.Drawing.Size(676, 324)
+        Me.Generales.TabIndex = 0
+        Me.Generales.Text = "Generales"
+        Me.Generales.UseVisualStyleBackColor = True
+        '
+        'Inventario
+        '
+        Me.Inventario.Controls.Add(Me.GroupBox8)
+        Me.Inventario.Controls.Add(Me.GroupBox4)
+        Me.Inventario.Location = New System.Drawing.Point(4, 22)
+        Me.Inventario.Name = "Inventario"
+        Me.Inventario.Padding = New System.Windows.Forms.Padding(3)
+        Me.Inventario.Size = New System.Drawing.Size(676, 324)
+        Me.Inventario.TabIndex = 1
+        Me.Inventario.Text = "Inventario"
+        Me.Inventario.UseVisualStyleBackColor = True
+        '
+        'Historico
+        '
+        Me.Historico.Controls.Add(Me.GroupBox10)
+        Me.Historico.Controls.Add(Me.GroupBox9)
+        Me.Historico.Location = New System.Drawing.Point(4, 22)
+        Me.Historico.Name = "Historico"
+        Me.Historico.Padding = New System.Windows.Forms.Padding(3)
+        Me.Historico.Size = New System.Drawing.Size(676, 324)
+        Me.Historico.TabIndex = 2
+        Me.Historico.Text = "Historico"
+        Me.Historico.UseVisualStyleBackColor = True
+        '
+        'Componentes
+        '
+        Me.Componentes.Controls.Add(Me.LblUnidadMedida)
+        Me.Componentes.Controls.Add(Me.TrueDBGridComponentes)
+        Me.Componentes.Controls.Add(Me.TxtRendimiento)
+        Me.Componentes.Controls.Add(Me.GroupBox7)
+        Me.Componentes.Controls.Add(Me.Label30)
+        Me.Componentes.Location = New System.Drawing.Point(4, 22)
+        Me.Componentes.Name = "Componentes"
+        Me.Componentes.Padding = New System.Windows.Forms.Padding(3)
+        Me.Componentes.Size = New System.Drawing.Size(676, 324)
+        Me.Componentes.TabIndex = 3
+        Me.Componentes.Text = "Lista Componentes"
+        Me.Componentes.UseVisualStyleBackColor = True
+        '
+        'Impuestos
+        '
+        Me.Impuestos.Controls.Add(Me.GroupBox12)
+        Me.Impuestos.Controls.Add(Me.GroupBox11)
+        Me.Impuestos.Location = New System.Drawing.Point(4, 22)
+        Me.Impuestos.Name = "Impuestos"
+        Me.Impuestos.Size = New System.Drawing.Size(692, 324)
+        Me.Impuestos.TabIndex = 4
+        Me.Impuestos.Text = "Impuestos"
+        Me.Impuestos.UseVisualStyleBackColor = True
+        '
+        'Alternativos
+        '
+        Me.Alternativos.Controls.Add(Me.GroupBox14)
+        Me.Alternativos.Controls.Add(Me.GroupBox13)
+        Me.Alternativos.Location = New System.Drawing.Point(4, 22)
+        Me.Alternativos.Name = "Alternativos"
+        Me.Alternativos.Size = New System.Drawing.Size(676, 324)
+        Me.Alternativos.TabIndex = 5
+        Me.Alternativos.Text = "Codigos Alternos"
+        Me.Alternativos.UseVisualStyleBackColor = True
+        '
+        'Foto
+        '
+        Me.Foto.Controls.Add(Me.TxtNota)
+        Me.Foto.Controls.Add(Me.ImgFoto)
+        Me.Foto.Controls.Add(Me.GroupBox6)
+        Me.Foto.Location = New System.Drawing.Point(4, 22)
+        Me.Foto.Name = "Foto"
+        Me.Foto.Size = New System.Drawing.Size(676, 324)
+        Me.Foto.TabIndex = 6
+        Me.Foto.Text = "Foto"
+        Me.Foto.UseVisualStyleBackColor = True
+        '
         'FrmProductos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(689, 521)
+        Me.ClientSize = New System.Drawing.Size(709, 555)
+        Me.Controls.Add(Me.TabControl)
         Me.Controls.Add(Me.TextBox)
         Me.Controls.Add(Me.TxtNombreProducto)
         Me.Controls.Add(Me.Label3)
@@ -1539,14 +1569,10 @@ Partial Class FrmProductos
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.PictureBox1)
-        Me.Controls.Add(Me.TabControl)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "FrmProductos"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        CType(Me.TabControl, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.TabControl.ResumeLayout(False)
-        Me.Generales.ResumeLayout(False)
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
@@ -1558,30 +1584,22 @@ Partial Class FrmProductos
         Me.GroupBox1.PerformLayout()
         CType(Me.CboRubro, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboLinea, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Inventario.ResumeLayout(False)
         Me.GroupBox8.ResumeLayout(False)
         CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
-        Me.Historicos.ResumeLayout(False)
         Me.GroupBox10.ResumeLayout(False)
         CType(Me.TruDbGridHistoricosCompras, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox9.ResumeLayout(False)
         CType(Me.TruDbGridHistoricosVentas, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Componentes.ResumeLayout(False)
-        Me.Componentes.PerformLayout()
         Me.GroupBox7.ResumeLayout(False)
         CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Impuestos.ResumeLayout(False)
         Me.GroupBox12.ResumeLayout(False)
         Me.GroupBox11.ResumeLayout(False)
         CType(Me.TDGridImpuestos, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Alternativos.ResumeLayout(False)
         Me.GroupBox14.ResumeLayout(False)
         Me.GroupBox13.ResumeLayout(False)
         CType(Me.TdGridAlternativos, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Foto.ResumeLayout(False)
-        Me.Foto.PerformLayout()
         Me.GroupBox6.ResumeLayout(False)
         CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1594,13 +1612,20 @@ Partial Class FrmProductos
         CType(Me.BindingHistoricosVentas, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.BindingImpuestos, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.BindingCodigoAlternos, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabControl.ResumeLayout(False)
+        Me.Generales.ResumeLayout(False)
+        Me.Inventario.ResumeLayout(False)
+        Me.Historico.ResumeLayout(False)
+        Me.Componentes.ResumeLayout(False)
+        Me.Componentes.PerformLayout()
+        Me.Impuestos.ResumeLayout(False)
+        Me.Alternativos.ResumeLayout(False)
+        Me.Foto.ResumeLayout(False)
+        Me.Foto.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents TabControl As DevExpress.XtraTab.XtraTabControl
-    Friend WithEvents Generales As DevExpress.XtraTab.XtraTabPage
-    Friend WithEvents Inventario As DevExpress.XtraTab.XtraTabPage
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
@@ -1657,8 +1682,6 @@ Partial Class FrmProductos
     Friend WithEvents CmdInventario As System.Windows.Forms.Button
     Friend WithEvents TxtCtaInventario As System.Windows.Forms.TextBox
     Friend WithEvents Label17 As System.Windows.Forms.Label
-    Friend WithEvents Historicos As DevExpress.XtraTab.XtraTabPage
-    Friend WithEvents Foto As DevExpress.XtraTab.XtraTabPage
     Friend WithEvents GroupBox6 As System.Windows.Forms.GroupBox
     Friend WithEvents ImgFoto As System.Windows.Forms.PictureBox
     Friend WithEvents TxtNota As System.Windows.Forms.TextBox
@@ -1688,7 +1711,6 @@ Partial Class FrmProductos
     Friend WithEvents GroupBox10 As System.Windows.Forms.GroupBox
     Friend WithEvents TruDbGridHistoricosCompras As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents BindingBodegas As System.Windows.Forms.BindingSource
-    Friend WithEvents Componentes As DevExpress.XtraTab.XtraTabPage
     Friend WithEvents TrueDBGridComponentes As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents Button7 As System.Windows.Forms.Button
     Friend WithEvents Button9 As System.Windows.Forms.Button
@@ -1700,7 +1722,6 @@ Partial Class FrmProductos
     Friend WithEvents BindingComponentes As System.Windows.Forms.BindingSource
     Friend WithEvents BindingHistoricoCompras As System.Windows.Forms.BindingSource
     Friend WithEvents BindingHistoricosVentas As System.Windows.Forms.BindingSource
-    Friend WithEvents Impuestos As DevExpress.XtraTab.XtraTabPage
     Friend WithEvents GroupBox11 As System.Windows.Forms.GroupBox
     Friend WithEvents TDGridImpuestos As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents GroupBox12 As System.Windows.Forms.GroupBox
@@ -1711,7 +1732,6 @@ Partial Class FrmProductos
     Friend WithEvents BindingImpuestos As System.Windows.Forms.BindingSource
     Friend WithEvents CmdPrecios As System.Windows.Forms.Button
     Friend WithEvents Button2 As System.Windows.Forms.Button
-    Friend WithEvents Alternativos As DevExpress.XtraTab.XtraTabPage
     Friend WithEvents GroupBox14 As System.Windows.Forms.GroupBox
     Friend WithEvents CmdBorrarAlterno As System.Windows.Forms.Button
     Friend WithEvents GroupBox13 As System.Windows.Forms.GroupBox
@@ -1725,5 +1745,13 @@ Partial Class FrmProductos
     Friend WithEvents TxtRendimiento As System.Windows.Forms.TextBox
     Friend WithEvents Label30 As System.Windows.Forms.Label
     Friend WithEvents CmdGenerar As System.Windows.Forms.Button
+    Friend WithEvents TabControl As System.Windows.Forms.TabControl
+    Friend WithEvents Generales As System.Windows.Forms.TabPage
+    Friend WithEvents Inventario As System.Windows.Forms.TabPage
+    Friend WithEvents Historico As System.Windows.Forms.TabPage
+    Friend WithEvents Componentes As System.Windows.Forms.TabPage
+    Friend WithEvents Impuestos As System.Windows.Forms.TabPage
+    Friend WithEvents Alternativos As System.Windows.Forms.TabPage
+    Friend WithEvents Foto As System.Windows.Forms.TabPage
 
 End Class

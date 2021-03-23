@@ -25,7 +25,6 @@ Partial Class FrmContratos
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.Label9 = New System.Windows.Forms.Label
         Me.Button2 = New System.Windows.Forms.Button
-        Me.Button1 = New System.Windows.Forms.Button
         Me.BtnActualizar = New System.Windows.Forms.Button
         Me.BtnVer = New System.Windows.Forms.Button
         Me.BtnSalir = New System.Windows.Forms.Button
@@ -34,6 +33,7 @@ Partial Class FrmContratos
         Me.OptActivo = New System.Windows.Forms.RadioButton
         Me.Button3 = New System.Windows.Forms.Button
         Me.ProgressBar = New System.Windows.Forms.ProgressBar
+        Me.BtnProcesar = New System.Windows.Forms.Button
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -104,19 +104,6 @@ Partial Class FrmContratos
         Me.Button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button2.UseVisualStyleBackColor = True
         '
-        'Button1
-        '
-        Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button1.Location = New System.Drawing.Point(986, 303)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(126, 56)
-        Me.Button1.TabIndex = 264
-        Me.Button1.Text = "Facturar"
-        Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button1.UseVisualStyleBackColor = True
-        '
         'BtnActualizar
         '
         Me.BtnActualizar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -148,9 +135,9 @@ Partial Class FrmContratos
         Me.BtnSalir.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnSalir.Image = CType(resources.GetObject("BtnSalir.Image"), System.Drawing.Image)
         Me.BtnSalir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnSalir.Location = New System.Drawing.Point(983, 359)
+        Me.BtnSalir.Location = New System.Drawing.Point(986, 359)
         Me.BtnSalir.Name = "BtnSalir"
-        Me.BtnSalir.Size = New System.Drawing.Size(128, 56)
+        Me.BtnSalir.Size = New System.Drawing.Size(125, 56)
         Me.BtnSalir.TabIndex = 261
         Me.BtnSalir.Text = "Salir"
         Me.BtnSalir.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -208,17 +195,30 @@ Partial Class FrmContratos
         Me.ProgressBar.Size = New System.Drawing.Size(735, 23)
         Me.ProgressBar.TabIndex = 268
         '
+        'BtnProcesar
+        '
+        Me.BtnProcesar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnProcesar.Image = CType(resources.GetObject("BtnProcesar.Image"), System.Drawing.Image)
+        Me.BtnProcesar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.BtnProcesar.Location = New System.Drawing.Point(986, 303)
+        Me.BtnProcesar.Name = "BtnProcesar"
+        Me.BtnProcesar.Size = New System.Drawing.Size(125, 56)
+        Me.BtnProcesar.TabIndex = 269
+        Me.BtnProcesar.Text = "Facturar"
+        Me.BtnProcesar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnProcesar.UseVisualStyleBackColor = True
+        '
         'FrmContratos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1125, 463)
         Me.ControlBox = False
+        Me.Controls.Add(Me.BtnProcesar)
         Me.Controls.Add(Me.ProgressBar)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.BtnActualizar)
         Me.Controls.Add(Me.BtnVer)
         Me.Controls.Add(Me.BtnSalir)
@@ -244,7 +244,6 @@ Partial Class FrmContratos
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents Button2 As System.Windows.Forms.Button
-    Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents BtnActualizar As System.Windows.Forms.Button
     Friend WithEvents BtnVer As System.Windows.Forms.Button
     Friend WithEvents BtnSalir As System.Windows.Forms.Button
@@ -253,4 +252,5 @@ Partial Class FrmContratos
     Friend WithEvents OptActivo As System.Windows.Forms.RadioButton
     Friend WithEvents Button3 As System.Windows.Forms.Button
     Friend WithEvents ProgressBar As System.Windows.Forms.ProgressBar
+    Friend WithEvents BtnProcesar As System.Windows.Forms.Button
 End Class

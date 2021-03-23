@@ -1242,4 +1242,8 @@ Public Class MDIMain
         My.Forms.FrmContratos.MdiParent = Me
         My.Forms.FrmContratos.Show()
     End Sub
+
+    Private Sub RibbonButton3_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton3.Click
+
+    End Sub
 End Class

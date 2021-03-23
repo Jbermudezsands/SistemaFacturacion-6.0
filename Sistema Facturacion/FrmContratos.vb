@@ -97,7 +97,7 @@ Public Class FrmContratos
 
     End Sub
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Dim SQlString As String, Cont As Double, i As Double
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Resultado As Double
 
@@ -126,5 +126,49 @@ Public Class FrmContratos
 
 
 
+    End Sub
+
+    Private Sub BtnProcesar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnProcesar.Click
+        'Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        'Dim Sql As String
+
+        ''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''/////////////////////////////GRABO EL ENCABEZADO DE LA SALIDA DE BODEGA /////////////////////////////////////////////
+        ''//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+
+        'Quien = "NumeroFacturas"
+        'NumeroFactura = GenerarNumeroFacturaBascula(ConsecutivoFacturaManual, "Factura")
+
+        'GrabaEncabezadoFacturas(NumeroFactura, FechaFactura, "Factura", CodigoCliente, CodigoBodega, NombreCliente, NombreCliente, FechaFactura, SubTotal, 0, SubTotal, SubTotal, "Cordobas", "Procesado por Inventario Fisico  ")
+
+
+
+        ''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''/////////////////////////////GRABO EL DETALLE DE LA COMPRA /////////////////////////////////////////////
+        ''//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        'Sql = "SELECT  Cod_Productos, Descripcion_Producto, SUM(Cantidad) AS Cantidad, SUM(Precio) AS Precio, SUM(PesoKg) AS PesoKg, SUM(Tara) AS Tara, SUM(PesoNetoLb) AS PesoNetoLb, SUM(PesoNetoKg) AS PesoNetoKg, SUM(QQ) AS QQ  FROM Detalle_Recepcion GROUP BY NumeroRecepcion, TipoRecepcion, Cod_Productos, Descripcion_Producto " & _
+        '      "HAVING (NumeroRecepcion = '" & NumeroRecepcion & "') AND (TipoRecepcion = '" & TipoRecepcion & "')"
+        'DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+        'DataAdapter.Fill(DataSet, "DetalleRecepcion")
+
+
+        'Registros = DataSet.Tables("DetalleRecepcion").Rows.Count
+        'iPosicion = 0
+
+        'Do While iPosicion < Registros
+
+        '    CodProductos = DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Cod_Productos")
+        '    NombreProductos = DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Descripcion_Producto")
+        '    PrecioCompra = DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Precio")
+        '    Cantidad = DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("PesoNetoKg")
+        '    Importe = 0
+
+        '    GrabaDetalleFacturaSalida(NumeroFactura, CodProductos, NombreProductos, PrecioCompra, 0, PrecioCompra, Importe, Cantidad, "Cordobas", FechaFactura, "Factura", PrecioCompra)
+        '    ActualizaExistencia(CodProductos)
+
+        '    iPosicion = iPosicion + 1
+        '    'Me.ProgressBar.Value = Me.ProgressBar.Value + 1
+        'Loop
     End Sub
 End Class
