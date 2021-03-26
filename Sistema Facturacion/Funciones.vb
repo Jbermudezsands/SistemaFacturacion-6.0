@@ -2274,7 +2274,7 @@ Module Funciones
                     Case 29 : If Permiso = "NoEliminar" Then Label.Enabled = False
                     Case 30 : If Permiso = "NoCambiarBodega" Then Label.Enabled = False
                 End Select
-            ElseIf TypeOf Label Is DevExpress.XtraTab.XtraTabPage Then
+            ElseIf TypeOf Label Is TabPage Then 'DevExpress.XtraTab.XtraTabPage
                 ObtenerContenedores(Label, Permiso)
             ElseIf TypeOf Label Is GroupBox Then
                 ObtenerContenedores(Label, Permiso)
@@ -2426,7 +2426,7 @@ Module Funciones
                                 End Select
                             ElseIf TypeOf Label Is GroupBox Then
                                 ObtenerContenedores(Label, Permiso)
-                            ElseIf TypeOf Label Is DevExpress.XtraTab.XtraTabControl Then
+                            ElseIf TypeOf Label Is TabControl Then 'DevExpress.XtraTab.XtraTabControl
                                 ObtenerContenedores(Label, Permiso)
                             End If
 
@@ -2464,7 +2464,7 @@ Module Funciones
                                 End Select
                             ElseIf TypeOf Label Is GroupBox Then
                                 ObtenerContenedores(Label, Permiso)
-                            ElseIf TypeOf Label Is DevExpress.XtraTab.XtraTabControl Then
+                            ElseIf TypeOf Label Is TabControl Then
                                 ObtenerContenedores(Label, Permiso)
                             End If
 

@@ -22,7 +22,6 @@ Partial Class FrmImportacion
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmImportacion))
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.Label9 = New System.Windows.Forms.Label
@@ -31,6 +30,9 @@ Partial Class FrmImportacion
         Me.TrueDBGridConsultas = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.TrueDBGridClientes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.OptProveedores = New System.Windows.Forms.RadioButton
+        Me.OptClientes = New System.Windows.Forms.RadioButton
         Me.TxtRutaClientes = New System.Windows.Forms.TextBox
         Me.Label4 = New System.Windows.Forms.Label
         Me.C1Button3 = New C1.Win.C1Input.C1Button
@@ -57,13 +59,9 @@ Partial Class FrmImportacion
         Me.TxtRutaCtaxCobrar = New System.Windows.Forms.TextBox
         Me.Label5 = New System.Windows.Forms.Label
         Me.BtnProcesarCtaxCob = New C1.Win.C1Input.C1Button
-        Me.DefaultToolTipController1 = New DevExpress.Utils.DefaultToolTipController(Me.components)
         Me.ProgressBar = New System.Windows.Forms.ProgressBar
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.TabPage2 = New System.Windows.Forms.TabPage
-        Me.TabPage3 = New System.Windows.Forms.TabPage
-        Me.TabPage4 = New System.Windows.Forms.TabPage
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.FrameTipo = New System.Windows.Forms.GroupBox
         Me.OptActualizaInv = New System.Windows.Forms.RadioButton
@@ -75,14 +73,15 @@ Partial Class FrmImportacion
         Me.Label2 = New System.Windows.Forms.Label
         Me.C1Button2 = New C1.Win.C1Input.C1Button
         Me.CmdLeer = New C1.Win.C1Input.C1Button
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox
-        Me.OptProveedores = New System.Windows.Forms.RadioButton
-        Me.OptClientes = New System.Windows.Forms.RadioButton
+        Me.TabPage2 = New System.Windows.Forms.TabPage
+        Me.TabPage3 = New System.Windows.Forms.TabPage
+        Me.TabPage4 = New System.Windows.Forms.TabPage
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrueDBGridClientes, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
         CType(Me.TrueDBGridPrecios, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -92,12 +91,11 @@ Partial Class FrmImportacion
         Me.GroupBox7.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
+        Me.FrameTipo.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.TabPage3.SuspendLayout()
         Me.TabPage4.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
-        Me.FrameTipo.SuspendLayout()
-        Me.GroupBox3.SuspendLayout()
         Me.SuspendLayout()
         '
         'PictureBox2
@@ -179,6 +177,40 @@ Partial Class FrmImportacion
         Me.GroupBox2.Size = New System.Drawing.Size(876, 80)
         Me.GroupBox2.TabIndex = 11
         Me.GroupBox2.TabStop = False
+        '
+        'GroupBox3
+        '
+        Me.GroupBox3.Controls.Add(Me.OptProveedores)
+        Me.GroupBox3.Controls.Add(Me.OptClientes)
+        Me.GroupBox3.Location = New System.Drawing.Point(10, 3)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(158, 71)
+        Me.GroupBox3.TabIndex = 125
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Tipo Importacion"
+        '
+        'OptProveedores
+        '
+        Me.OptProveedores.AutoSize = True
+        Me.OptProveedores.Location = New System.Drawing.Point(17, 43)
+        Me.OptProveedores.Name = "OptProveedores"
+        Me.OptProveedores.Size = New System.Drawing.Size(85, 17)
+        Me.OptProveedores.TabIndex = 126
+        Me.OptProveedores.TabStop = True
+        Me.OptProveedores.Text = "Proveedores"
+        Me.OptProveedores.UseVisualStyleBackColor = True
+        '
+        'OptClientes
+        '
+        Me.OptClientes.AutoSize = True
+        Me.OptClientes.Checked = True
+        Me.OptClientes.Location = New System.Drawing.Point(17, 20)
+        Me.OptClientes.Name = "OptClientes"
+        Me.OptClientes.Size = New System.Drawing.Size(62, 17)
+        Me.OptClientes.TabIndex = 125
+        Me.OptClientes.TabStop = True
+        Me.OptClientes.Text = "Clientes"
+        Me.OptClientes.UseVisualStyleBackColor = True
         '
         'TxtRutaClientes
         '
@@ -541,40 +573,6 @@ Partial Class FrmImportacion
         Me.TabPage1.Text = "Imp Inventario Inicial"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
-        'TabPage2
-        '
-        Me.TabPage2.Controls.Add(Me.TrueDBGridClientes)
-        Me.TabPage2.Controls.Add(Me.GroupBox2)
-        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(918, 366)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Imp Clientes/Proveedores"
-        Me.TabPage2.UseVisualStyleBackColor = True
-        '
-        'TabPage3
-        '
-        Me.TabPage3.Controls.Add(Me.TrueDBGridPrecios)
-        Me.TabPage3.Controls.Add(Me.GroupBox5)
-        Me.TabPage3.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Size = New System.Drawing.Size(918, 366)
-        Me.TabPage3.TabIndex = 2
-        Me.TabPage3.Text = "Precios"
-        Me.TabPage3.UseVisualStyleBackColor = True
-        '
-        'TabPage4
-        '
-        Me.TabPage4.Controls.Add(Me.TDGridCtasXCobrar)
-        Me.TabPage4.Controls.Add(Me.GroupBox6)
-        Me.TabPage4.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage4.Name = "TabPage4"
-        Me.TabPage4.Size = New System.Drawing.Size(918, 366)
-        Me.TabPage4.TabIndex = 3
-        Me.TabPage4.Text = "Ctas x Cobrar"
-        Me.TabPage4.UseVisualStyleBackColor = True
-        '
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.FrameTipo)
@@ -699,39 +697,39 @@ Partial Class FrmImportacion
         Me.CmdLeer.UseVisualStyleBackColor = True
         Me.CmdLeer.VisualStyleBaseStyle = C1.Win.C1Input.VisualStyle.Office2007Blue
         '
-        'GroupBox3
+        'TabPage2
         '
-        Me.GroupBox3.Controls.Add(Me.OptProveedores)
-        Me.GroupBox3.Controls.Add(Me.OptClientes)
-        Me.GroupBox3.Location = New System.Drawing.Point(10, 3)
-        Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(158, 71)
-        Me.GroupBox3.TabIndex = 125
-        Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Text = "Tipo Importacion"
+        Me.TabPage2.Controls.Add(Me.TrueDBGridClientes)
+        Me.TabPage2.Controls.Add(Me.GroupBox2)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Size = New System.Drawing.Size(918, 366)
+        Me.TabPage2.TabIndex = 1
+        Me.TabPage2.Text = "Imp Clientes/Proveedores"
+        Me.TabPage2.UseVisualStyleBackColor = True
         '
-        'OptProveedores
+        'TabPage3
         '
-        Me.OptProveedores.AutoSize = True
-        Me.OptProveedores.Location = New System.Drawing.Point(17, 43)
-        Me.OptProveedores.Name = "OptProveedores"
-        Me.OptProveedores.Size = New System.Drawing.Size(85, 17)
-        Me.OptProveedores.TabIndex = 126
-        Me.OptProveedores.TabStop = True
-        Me.OptProveedores.Text = "Proveedores"
-        Me.OptProveedores.UseVisualStyleBackColor = True
+        Me.TabPage3.Controls.Add(Me.TrueDBGridPrecios)
+        Me.TabPage3.Controls.Add(Me.GroupBox5)
+        Me.TabPage3.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage3.Name = "TabPage3"
+        Me.TabPage3.Size = New System.Drawing.Size(918, 366)
+        Me.TabPage3.TabIndex = 2
+        Me.TabPage3.Text = "Precios"
+        Me.TabPage3.UseVisualStyleBackColor = True
         '
-        'OptClientes
+        'TabPage4
         '
-        Me.OptClientes.AutoSize = True
-        Me.OptClientes.Checked = True
-        Me.OptClientes.Location = New System.Drawing.Point(17, 20)
-        Me.OptClientes.Name = "OptClientes"
-        Me.OptClientes.Size = New System.Drawing.Size(62, 17)
-        Me.OptClientes.TabIndex = 125
-        Me.OptClientes.TabStop = True
-        Me.OptClientes.Text = "Clientes"
-        Me.OptClientes.UseVisualStyleBackColor = True
+        Me.TabPage4.Controls.Add(Me.TDGridCtasXCobrar)
+        Me.TabPage4.Controls.Add(Me.GroupBox6)
+        Me.TabPage4.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage4.Name = "TabPage4"
+        Me.TabPage4.Size = New System.Drawing.Size(918, 366)
+        Me.TabPage4.TabIndex = 3
+        Me.TabPage4.Text = "Ctas x Cobrar"
+        Me.TabPage4.UseVisualStyleBackColor = True
         '
         'FrmImportacion
         '
@@ -753,6 +751,8 @@ Partial Class FrmImportacion
         CType(Me.TrueDBGridClientes, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
         CType(Me.TrueDBGridPrecios, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
@@ -766,15 +766,13 @@ Partial Class FrmImportacion
         Me.GroupBox7.PerformLayout()
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
-        Me.TabPage2.ResumeLayout(False)
-        Me.TabPage3.ResumeLayout(False)
-        Me.TabPage4.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.FrameTipo.ResumeLayout(False)
         Me.FrameTipo.PerformLayout()
-        Me.GroupBox3.ResumeLayout(False)
-        Me.GroupBox3.PerformLayout()
+        Me.TabPage2.ResumeLayout(False)
+        Me.TabPage3.ResumeLayout(False)
+        Me.TabPage4.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -784,7 +782,7 @@ Partial Class FrmImportacion
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents OpenFileDialog As System.Windows.Forms.OpenFileDialog
     Friend WithEvents TrueDBGridConsultas As C1.Win.C1TrueDBGrid.C1TrueDBGrid
-    Friend WithEvents DefaultToolTipController1 As DevExpress.Utils.DefaultToolTipController
+    'Friend WithEvents DefaultToolTipController1 As DevExpress.Utils.DefaultToolTipController
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
     Friend WithEvents TxtRutaClientes As System.Windows.Forms.TextBox
     Friend WithEvents Label4 As System.Windows.Forms.Label

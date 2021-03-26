@@ -1522,7 +1522,7 @@ Partial Class FrmProductos
         Me.Impuestos.Controls.Add(Me.GroupBox11)
         Me.Impuestos.Location = New System.Drawing.Point(4, 22)
         Me.Impuestos.Name = "Impuestos"
-        Me.Impuestos.Size = New System.Drawing.Size(692, 324)
+        Me.Impuestos.Size = New System.Drawing.Size(676, 324)
         Me.Impuestos.TabIndex = 4
         Me.Impuestos.Text = "Impuestos"
         Me.Impuestos.UseVisualStyleBackColor = True

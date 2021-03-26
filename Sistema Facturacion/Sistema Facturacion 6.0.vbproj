@@ -63,14 +63,6 @@
     <Reference Include="C1.Win.C1Thesaurus.2, Version=2.2.20073.78, Culture=neutral, PublicKeyToken=c644e6d97aec9e47, processorArchitecture=MSIL" />
     <Reference Include="C1.Win.C1TrueDBGrid.2, Version=2.0.20063.60825, Culture=neutral, PublicKeyToken=75ae3fb0e2b1e0da, processorArchitecture=MSIL" />
     <Reference Include="C1LicUpdater, Version=1.0.2314.28129, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Data3, Version=3.2.3.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4" />
-    <Reference Include="DevExpress.Utils3, Version=3.2.3.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4" />
-    <Reference Include="DevExpress.XtraEditors3, Version=3.2.3.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraNavBar3, Version=2.7.3.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraPivotGrid3, Version=1.2.3.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4" />
-    <Reference Include="DevExpress.XtraVerticalGrid3, Version=1.6.3.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4" />
-    <Reference Include="Nevron.Presentation, Version=7.3.26.12, Culture=neutral, PublicKeyToken=6656c5d1103e75cc" />
-    <Reference Include="Nevron.System, Version=7.3.26.12, Culture=neutral, PublicKeyToken=6a987feae5e496fd" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
