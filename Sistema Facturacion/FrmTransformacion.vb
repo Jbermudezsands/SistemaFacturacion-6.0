@@ -139,7 +139,7 @@ Public Class FrmTransformacion
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim Fecha As Date, MontoIva As Double, Sql As String, NumeroTransforma As String, Descripcion_Producto As String
         Dim CodBodegaOrigen As String, CodBodegaDestino As String, CodCliente As String, CodProveedor As String, NombreProveedor As String, ConsecutivoFactura As Double, NumeroFactura As String
-
+        Dim Merma As Double, Basura As Double
 
 
         '////////////////////BUSCO EL CLIENTE PARA INVENTARIO //////////////////////////////////////
@@ -200,10 +200,25 @@ Public Class FrmTransformacion
             PrecioFOB = 0 'Me.BindingDetalle.Item(iPosicion)("FOB")
             PrecioCosto = 0 'Me.BindingDetalle.Item(iPosicion)("Precio_Costo")
             Descuento = 0
+            Merma = 0
+            Basura = 0
             If Not IsDBNull(DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Cantidad")) Then
                 Cantidad = DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Cantidad")
                 PrecioUnitario = CostoPromedioKardex(CodigoProducto, Fecha)
             End If
+
+            If Not IsDBNull(DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Merma")) Then
+                Merma = DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Merma")
+            End If
+
+            If Not IsDBNull(DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Basura")) Then
+                Basura = DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Basura")
+            End If
+
+
+            Cantidad = Cantidad - Merma - Basura
+
+
             PrecioNeto = PrecioUnitario * Cantidad
             Importe = PrecioCosto - Descuento
 
@@ -240,10 +255,24 @@ Public Class FrmTransformacion
             PrecioFOB = 0 'Me.BindingDetalle.Item(iPosicion)("FOB")
             PrecioCosto = 0 'Me.BindingDetalle.Item(iPosicion)("Precio_Costo")
             Descuento = 0
+            Merma = 0
+            Basura = 0
             If Not IsDBNull(DataSet.Tables("DetalleSalida").Rows(iPosicion)("Cantidad")) Then
                 Cantidad = DataSet.Tables("DetalleSalida").Rows(iPosicion)("Cantidad")
                 'PrecioUnitario = CostoPromedioKardex(CodigoProducto, Fecha)
             End If
+
+            If Not IsDBNull(DataSet.Tables("DetalleSalida").Rows(iPosicion)("Merma")) Then
+                Merma = DataSet.Tables("DetalleSalida").Rows(iPosicion)("Merma")
+            End If
+
+            If Not IsDBNull(DataSet.Tables("DetalleSalida").Rows(iPosicion)("Basura")) Then
+                Basura = DataSet.Tables("DetalleSalida").Rows(iPosicion)("Basura")
+            End If
+
+
+            Cantidad = Cantidad - Merma - Basura
+
             PrecioNeto = PrecioUnitario * Cantidad
             Importe = PrecioCosto - Descuento
 

@@ -5678,7 +5678,7 @@ Public Class FrmReportes
                         If Me.CmbRango1.Text = "" And Me.CmbRango2.Text = "" Then
                             SqlString = "SELECT Cod_Productos, Tipo_Producto, Descripcion_Producto, Unidad_Medida, Existencia_Unidades FROM Productos WHERE  (Tipo_Producto <> N'Servicio') AND (Cod_Productos BETWEEN '" & Me.CboCodProducto.Text & "' AND '" & Me.CboCodProducto2.Text & "')"
                         Else
-                            SqlString = "SELECT Cod_Productos, Tipo_Producto, Descripcion_Producto, Unidad_Medida, Existencia_Unidades FROM Productos WHERE  (Tipo_Producto <> N'Servicio') AND (Cod_Productos BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "')"
+                            SqlString = "SELECT Cod_Productos, Tipo_Producto, Descripcion_Producto, Unidad_Medida, Existencia_Unidades FROM Productos WHERE  (Tipo_Producto <> N'Servicio') AND (Cod_Productos BETWEEN '" & Me.CboCodProducto.Text & "' AND '" & Me.CboCodProducto2.Text & "') "
                         End If
 
                     End If

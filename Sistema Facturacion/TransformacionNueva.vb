@@ -8,6 +8,8 @@ Public Class TransformacionNueva
     Public dsDestino As New DataSet, daDestino As New SqlClient.SqlDataAdapter, CmdBuilderDestino As New SqlCommandBuilder
     Public Nuevo As Boolean = False
 
+
+
     Public Sub InsertarRowGridOrigen()
         Dim oTabla As DataTable, iPosicion As Double, CodigoProducto As String
 
@@ -44,7 +46,7 @@ Public Class TransformacionNueva
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////////////CARGO EL DETALLE////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlString = "SELECT IdDetalleOrigen, TipoTransforma, Numero_Transforma, Codigo_Producto, Descripcion_Producto, Cantidad FROM Detalle_Transformacion " & _
+        SqlString = "SELECT IdDetalleOrigen, TipoTransforma, Numero_Transforma, Codigo_Producto, Descripcion_Producto, Cantidad, Merma, Basura, Porciento_Basura , Porciento_Merma  FROM Detalle_Transformacion " & _
                     "WHERE (Numero_Transforma = '" & Me.TxtNumeroEnsamble.Text & "') AND (TipoTransforma = 'Origen')"
         dsOrigen = New DataSet
         daOrigen = New SqlDataAdapter(SqlString, MiConexion)
@@ -59,9 +61,17 @@ Public Class TransformacionNueva
         Me.TrueDBGridOrigen.Splits.Item(0).DisplayColumns("Codigo_Producto").Button = True
         Me.TrueDBGridOrigen.Splits.Item(0).DisplayColumns("Codigo_Producto").Width = 74
         Me.TrueDBGridOrigen.Columns("Descripcion_Producto").Caption = "Descripcion"
-        Me.TrueDBGridOrigen.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 259
+        Me.TrueDBGridOrigen.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 215
         Me.TrueDBGridOrigen.Columns("Cantidad").Caption = "Cantidad"
         Me.TrueDBGridOrigen.Splits.Item(0).DisplayColumns("Cantidad").Width = 64
+        Me.TrueDBGridOrigen.Splits.Item(0).DisplayColumns("Merma").Width = 45
+        Me.TrueDBGridOrigen.Splits.Item(0).DisplayColumns("Basura").Width = 45
+        Me.TrueDBGridOrigen.Columns("Porciento_Basura").Caption = "%Bas"
+        Me.TrueDBGridOrigen.Splits.Item(0).DisplayColumns("Porciento_Basura").Width = 40
+        Me.TrueDBGridOrigen.Columns("Porciento_Merma").Caption = "%Mer"
+        Me.TrueDBGridOrigen.Splits.Item(0).DisplayColumns("Porciento_Merma").Width = 40
+        Me.TrueDBGridOrigen.Columns("Porciento_Merma").NumberFormat = "0.00%"
+        Me.TrueDBGridOrigen.Columns("Porciento_Basura").NumberFormat = "0.00%"
 
     End Sub
 
@@ -98,7 +108,7 @@ Public Class TransformacionNueva
     Public Sub ActualizarGridInsertRowDestino()
         Dim SqlString As String
 
-        SqlString = "SELECT IdDetalleOrigen, TipoTransforma, Numero_Transforma, Codigo_Producto, Descripcion_Producto, Cantidad FROM Detalle_Transformacion " & _
+        SqlString = "SELECT IdDetalleOrigen, TipoTransforma, Numero_Transforma, Codigo_Producto, Descripcion_Producto, Cantidad ,Merma, Basura, Porciento_Basura , Porciento_Merma FROM Detalle_Transformacion " & _
                     "WHERE (Numero_Transforma = '" & Me.TxtNumeroEnsamble.Text & "') AND (TipoTransforma = 'Destino')"
         dsDestino = New DataSet
         daDestino = New SqlDataAdapter(SqlString, MiConexion)
@@ -113,18 +123,28 @@ Public Class TransformacionNueva
         Me.TrueDBGridDestino.Splits.Item(0).DisplayColumns("Codigo_Producto").Button = True
         Me.TrueDBGridDestino.Splits.Item(0).DisplayColumns("Codigo_Producto").Width = 74
         Me.TrueDBGridDestino.Columns("Descripcion_Producto").Caption = "Descripcion"
-        Me.TrueDBGridDestino.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 259
+        Me.TrueDBGridDestino.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 215
         Me.TrueDBGridDestino.Columns("Cantidad").Caption = "Cantidad"
         Me.TrueDBGridDestino.Splits.Item(0).DisplayColumns("Cantidad").Width = 64
-
+        Me.TrueDBGridDestino.Splits.Item(0).DisplayColumns("Merma").Width = 45
+        Me.TrueDBGridDestino.Splits.Item(0).DisplayColumns("Basura").Width = 45
+        Me.TrueDBGridDestino.Columns("Porciento_Basura").Caption = "%Bas"
+        Me.TrueDBGridDestino.Splits.Item(0).DisplayColumns("Porciento_Basura").Width = 40
+        Me.TrueDBGridDestino.Columns("Porciento_Merma").Caption = "%Mer"
+        Me.TrueDBGridDestino.Splits.Item(0).DisplayColumns("Porciento_Merma").Width = 40
+        Me.TrueDBGridDestino.Columns("Porciento_Merma").NumberFormat = "0.00%"
+        Me.TrueDBGridDestino.Columns("Porciento_Basura").NumberFormat = "0.00%"
 
 
     End Sub
     Private Sub TransformacionNueva_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
 
+
+
         If Nuevo = True Then
             LimpiarPantalla()
+
         Else
             CargarPantalla()
         End If
@@ -225,7 +245,6 @@ Public Class TransformacionNueva
         Me.CboCodigoBodega.DataSource = DataSet.Tables("Bodegas")
         If Not DataSet.Tables("Bodegas").Rows.Count = 0 Then
             Me.CboCodigoBodega.Text = DataSet.Tables("Bodegas").Rows(0)("Cod_Bodega")
-
         End If
         Me.CboCodigoBodega.Columns(0).Caption = "Codigo"
         Me.CboCodigoBodega.Columns(1).Caption = "Nombre Bodega"
@@ -262,13 +281,6 @@ Public Class TransformacionNueva
         End If
 
 
-        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '////////////////////////////////DATOS POR DEFECTO //////////////////////////////////////////
-        '////////////////////////////////////////////////////////////////////////////////////////////////////
-        Me.CboCodigoBodega.Text = UsuarioBodegaCompra
-        Me.CboCodigoBodega2.Text = UsuarioBodegaCompra
-
-
         MiConexion.Close()
     End Sub
 
@@ -279,6 +291,7 @@ Public Class TransformacionNueva
 
         Me.DTPFecha.Value = Format(Now, "dd/MM/yyyy")
         Me.TxtNumeroEnsamble.Text = "-----0-----"
+        Me.TxtObservaciones.Text = ""
 
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////CARGO LAS BODEGAS////////////////////////////////////////////////////////////////////
@@ -309,10 +322,11 @@ Public Class TransformacionNueva
 
 
 
+
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////////////CARGO EL DETALLE////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlString = "SELECT IdDetalleOrigen, TipoTransforma, Numero_Transforma, Codigo_Producto, Descripcion_Producto, Cantidad FROM Detalle_Transformacion WHERE (IdDetalleOrigen = - 10000000) AND (TipoTransforma = 'Origen')"
+        SqlString = "SELECT IdDetalleOrigen, TipoTransforma, Numero_Transforma, Codigo_Producto, Descripcion_Producto, Cantidad, Merma, Basura, Porciento_Basura, Porciento_Merma  FROM Detalle_Transformacion WHERE (IdDetalleOrigen = - 10000000) AND (TipoTransforma = 'Origen')"
         dsOrigen = New DataSet
         daOrigen = New SqlDataAdapter(SqlString, MiConexion)
         CmdBuilderOrigen = New SqlCommandBuilder(daOrigen)
@@ -326,12 +340,20 @@ Public Class TransformacionNueva
         Me.TrueDBGridOrigen.Splits.Item(0).DisplayColumns("Codigo_Producto").Button = True
         Me.TrueDBGridOrigen.Splits.Item(0).DisplayColumns("Codigo_Producto").Width = 74
         Me.TrueDBGridOrigen.Columns("Descripcion_Producto").Caption = "Descripcion"
-        Me.TrueDBGridOrigen.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 259
+        Me.TrueDBGridOrigen.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 215
         Me.TrueDBGridOrigen.Columns("Cantidad").Caption = "Cantidad"
         Me.TrueDBGridOrigen.Splits.Item(0).DisplayColumns("Cantidad").Width = 64
+        Me.TrueDBGridOrigen.Splits.Item(0).DisplayColumns("Merma").Width = 45
+        Me.TrueDBGridOrigen.Splits.Item(0).DisplayColumns("Basura").Width = 45
+        Me.TrueDBGridOrigen.Columns("Porciento_Basura").Caption = "%Bas"
+        Me.TrueDBGridOrigen.Splits.Item(0).DisplayColumns("Porciento_Basura").Width = 40
+        Me.TrueDBGridOrigen.Columns("Porciento_Merma").Caption = "%Mer"
+        Me.TrueDBGridOrigen.Splits.Item(0).DisplayColumns("Porciento_Merma").Width = 40
+        Me.TrueDBGridOrigen.Columns("Porciento_Merma").NumberFormat = "0.00%"
+        Me.TrueDBGridOrigen.Columns("Porciento_Basura").NumberFormat = "0.00%"
 
 
-        SqlString = "SELECT IdDetalleOrigen, TipoTransforma, Numero_Transforma, Codigo_Producto, Descripcion_Producto, Cantidad FROM Detalle_Transformacion WHERE (IdDetalleOrigen = - 10000000) AND (TipoTransforma = 'Destino')"
+        SqlString = "SELECT IdDetalleOrigen, TipoTransforma, Numero_Transforma, Codigo_Producto, Descripcion_Producto, Cantidad, Merma, Basura, Porciento_Basura , Porciento_Merma  FROM Detalle_Transformacion WHERE (IdDetalleOrigen = - 10000000) AND (TipoTransforma = 'Destino')"
         dsDestino = New DataSet
         daDestino = New SqlDataAdapter(SqlString, MiConexion)
         CmdBuilderDestino = New SqlCommandBuilder(daDestino)
@@ -345,21 +367,38 @@ Public Class TransformacionNueva
         Me.TrueDBGridDestino.Splits.Item(0).DisplayColumns("Codigo_Producto").Button = True
         Me.TrueDBGridDestino.Splits.Item(0).DisplayColumns("Codigo_Producto").Width = 74
         Me.TrueDBGridDestino.Columns("Descripcion_Producto").Caption = "Descripcion"
-        Me.TrueDBGridDestino.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 259
+        Me.TrueDBGridDestino.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 215
         Me.TrueDBGridDestino.Columns("Cantidad").Caption = "Cantidad"
         Me.TrueDBGridDestino.Splits.Item(0).DisplayColumns("Cantidad").Width = 64
+        Me.TrueDBGridDestino.Splits.Item(0).DisplayColumns("Merma").Width = 45
+        Me.TrueDBGridDestino.Splits.Item(0).DisplayColumns("Basura").Width = 45
+        Me.TrueDBGridDestino.Columns("Porciento_Basura").Caption = "%Bas"
+        Me.TrueDBGridDestino.Splits.Item(0).DisplayColumns("Porciento_Basura").Width = 40
+        Me.TrueDBGridDestino.Columns("Porciento_Merma").Caption = "%Mer"
+        Me.TrueDBGridDestino.Splits.Item(0).DisplayColumns("Porciento_Merma").Width = 40
+        Me.TrueDBGridDestino.Columns("Porciento_Merma").NumberFormat = "0.00%"
+        Me.TrueDBGridDestino.Columns("Porciento_Basura").NumberFormat = "0.00%"
 
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '////////////////////////////////DATOS POR DEFECTO //////////////////////////////////////////
         '////////////////////////////////////////////////////////////////////////////////////////////////////
-        Me.CboCodigoBodega.Text = UsuarioBodegaCompra
-        Me.CboCodigoBodega2.Text = UsuarioBodegaCompra
+        If UsuarioBodegaCompra <> "" Then
+            Me.CboCodigoBodega.Text = UsuarioBodegaCompra
+            Me.CboCodigoBodega2.Text = UsuarioBodegaCompra
+        End If
+
+    End Sub
+
+    Private Sub TrueDBGridOrigen_AfterColUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridOrigen.AfterColUpdate
+
+
 
     End Sub
 
 
     Private Sub TrueDBGridOrigen_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridOrigen.AfterUpdate
+
         InsertarRowGridOrigen()
 
         Me.TrueDBGridOrigen.Col = 3
@@ -367,10 +406,37 @@ Public Class TransformacionNueva
 
     End Sub
     Private Sub TrueDBGridDestino_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridDestino.AfterUpdate
+
         InsertarRowGridDestino()
 
         Me.TrueDBGridDestino.Col = 3
         'Me.TrueDBGridDestino.Row = Me.TrueDBGridDestino.Row + 1
+    End Sub
+
+    Private Sub TrueDBGridOrigen_BeforeColUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.BeforeColUpdateEventArgs) Handles TrueDBGridOrigen.BeforeColUpdate
+        Dim CantMerma As Double, CantBasura As Double, CantTotal As Double, PBasura As Double, PMerma As Double
+
+        CantTotal = 0
+        If Me.TrueDBGridOrigen.Columns("Cantidad").Text <> "" Then
+            CantTotal = Me.TrueDBGridOrigen.Columns("Cantidad").Text
+        End If
+
+        CantMerma = 0
+        If Me.TrueDBGridOrigen.Columns("Merma").Text <> "" Then
+            CantMerma = Me.TrueDBGridOrigen.Columns("Merma").Text
+        End If
+
+        CantBasura = 0
+        If Me.TrueDBGridOrigen.Columns("Basura").Text <> "" Then
+            CantBasura = Me.TrueDBGridOrigen.Columns("Basura").Text
+        End If
+
+
+        PBasura = CantBasura / CantTotal
+        PMerma = CantMerma / CantTotal
+
+        Me.TrueDBGridOrigen.Columns("Porciento_Basura").Text = PBasura
+        Me.TrueDBGridOrigen.Columns("Porciento_Merma").Text = PMerma
     End Sub
 
     Private Sub TrueDBGridOrigen_BeforeUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TrueDBGridOrigen.BeforeUpdate
@@ -394,10 +460,34 @@ Public Class TransformacionNueva
             NumeroCompra = Me.TxtNumeroEnsamble.Text
         End If
 
-        If Me.TrueDBGridDestino.Columns("Cantidad").Text = "" Then
-            Me.TrueDBGridDestino.Columns("Cantidad").Text = 0
+        If Me.TrueDBGridOrigen.Columns("Cantidad").Text = "" Then
+            Me.TrueDBGridOrigen.Columns("Cantidad").Text = 0
         Else
-            Me.TrueDBGridDestino.Columns("Cantidad").Text = Abs(CDbl(Me.TrueDBGridDestino.Columns("Cantidad").Text))
+            Me.TrueDBGridOrigen.Columns("Cantidad").Text = Abs(CDbl(Me.TrueDBGridOrigen.Columns("Cantidad").Text))
+        End If
+
+        If Me.TrueDBGridOrigen.Columns("Merma").Text = "" Then
+            Me.TrueDBGridOrigen.Columns("Merma").Text = 0
+        Else
+            Me.TrueDBGridOrigen.Columns("Merma").Text = Abs(CDbl(Me.TrueDBGridOrigen.Columns("Merma").Text))
+        End If
+
+        If Me.TrueDBGridOrigen.Columns("Basura").Text = "" Then
+            Me.TrueDBGridOrigen.Columns("Basura").Text = 0
+        Else
+            Me.TrueDBGridOrigen.Columns("Basura").Text = Abs(CDbl(Me.TrueDBGridOrigen.Columns("Basura").Text))
+        End If
+
+        If Me.TrueDBGridOrigen.Columns("Porciento_Merma").Text = "" Then
+            Me.TrueDBGridOrigen.Columns("Porciento_Merma").Text = 0
+        Else
+            'Me.TrueDBGridOrigen.Columns("Porciento_Merma").Text = Abs(CDbl(Me.TrueDBGridOrigen.Columns("Porciento_Merma").Text))
+        End If
+
+        If Me.TrueDBGridOrigen.Columns("Porciento_Basura").Text = "" Then
+            Me.TrueDBGridOrigen.Columns("Porciento_Basura").Text = 0
+        Else
+            'Me.TrueDBGridOrigen.Columns("Porciento_Basura").Text = Abs(CDbl(Me.TrueDBGridOrigen.Columns("Porciento_Basura").Text))
         End If
 
         Me.TrueDBGridOrigen.Columns("TipoTransforma").Text = "Origen"
@@ -446,13 +536,37 @@ Public Class TransformacionNueva
         Quien = "CodigoProductosBodega"
         My.Forms.FrmConsultas.CodBodega = Me.CboCodigoBodega.Text
         My.Forms.FrmConsultas.ShowDialog()
-        Me.TrueDBGridOrigen.Columns("Codigo_Producto").Text = My.Forms.FrmConsultas.Codigo
-        Me.TrueDBGridOrigen.Columns("Descripcion_Producto").Text = My.Forms.FrmConsultas.Descripcion
 
+        If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
+            Me.TrueDBGridOrigen.Columns("Codigo_Producto").Text = My.Forms.FrmConsultas.Codigo
+            Me.TrueDBGridOrigen.Columns("Descripcion_Producto").Text = My.Forms.FrmConsultas.Descripcion
+        End If
     End Sub
 
     Private Sub TrueDBGridDestino_BeforeColUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.BeforeColUpdateEventArgs) Handles TrueDBGridDestino.BeforeColUpdate
+        Dim CantMerma As Double, CantBasura As Double, CantTotal As Double, PBasura As Double, PMerma As Double
 
+        CantTotal = 0
+        If Me.TrueDBGridDestino.Columns("Cantidad").Text <> "" Then
+            CantTotal = Me.TrueDBGridDestino.Columns("Cantidad").Text
+        End If
+
+        CantMerma = 0
+        If Me.TrueDBGridDestino.Columns("Merma").Text <> "" Then
+            CantMerma = Me.TrueDBGridDestino.Columns("Merma").Text
+        End If
+
+        CantBasura = 0
+        If Me.TrueDBGridDestino.Columns("Basura").Text <> "" Then
+            CantBasura = Me.TrueDBGridDestino.Columns("Basura").Text
+        End If
+
+
+        PBasura = CantBasura / CantTotal
+        PMerma = CantMerma / CantTotal
+
+        Me.TrueDBGridDestino.Columns("Porciento_Basura").Text = PBasura
+        Me.TrueDBGridDestino.Columns("Porciento_Merma").Text = PMerma
 
 
     End Sub
@@ -484,6 +598,30 @@ Public Class TransformacionNueva
             Me.TrueDBGridDestino.Columns("Cantidad").Text = Abs(CDbl(Me.TrueDBGridDestino.Columns("Cantidad").Text))
         End If
 
+        If Me.TrueDBGridDestino.Columns("Merma").Text = "" Then
+            Me.TrueDBGridDestino.Columns("Merma").Text = 0
+        Else
+            Me.TrueDBGridDestino.Columns("Merma").Text = Abs(CDbl(Me.TrueDBGridDestino.Columns("Merma").Text))
+        End If
+
+        If Me.TrueDBGridDestino.Columns("Basura").Text = "" Then
+            Me.TrueDBGridDestino.Columns("Basura").Text = 0
+        Else
+            Me.TrueDBGridDestino.Columns("Basura").Text = Abs(CDbl(Me.TrueDBGridDestino.Columns("Basura").Text))
+        End If
+
+        If Me.TrueDBGridDestino.Columns("Porciento_Merma").Text = "" Then
+            Me.TrueDBGridDestino.Columns("Porciento_Merma").Text = 0
+        Else
+            'Me.TrueDBGridDestino.Columns("Porciento_Merma").Text = Abs(CDbl(Me.TrueDBGridDestino.Columns("Porciento_Merma").Text))
+        End If
+
+        If Me.TrueDBGridDestino.Columns("Porciento_Basura").Text = "" Then
+            Me.TrueDBGridDestino.Columns("Porciento_Basura").Text = 0
+        Else
+            'Me.TrueDBGridDestino.Columns("Porciento_Basura").Text = Abs(CDbl(Me.TrueDBGridDestino.Columns("Porciento_Basura").Text))
+        End If
+
         Me.TrueDBGridDestino.Columns("TipoTransforma").Text = "Destino"
         Me.TrueDBGridDestino.Columns("Numero_Transforma").Text = NumeroCompra
 
@@ -496,8 +634,10 @@ Public Class TransformacionNueva
         My.Forms.FrmConsultas.CodBodega = Me.CboCodigoBodega.Text
         My.Forms.FrmConsultas.ShowDialog()
 
-        Me.TrueDBGridDestino.Columns("Codigo_Producto").Text = My.Forms.FrmConsultas.Codigo
-        Me.TrueDBGridDestino.Columns("Descripcion_Producto").Text = My.Forms.FrmConsultas.Descripcion
+        If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
+            Me.TrueDBGridDestino.Columns("Codigo_Producto").Text = My.Forms.FrmConsultas.Codigo
+            Me.TrueDBGridDestino.Columns("Descripcion_Producto").Text = My.Forms.FrmConsultas.Descripcion
+        End If
     End Sub
 
 

@@ -328,12 +328,14 @@ Public Class FrmProductos
             CodRubro = Me.CboRubro.Columns(0).Text
         End If
 
+
+
         SQLProductos = "SELECT Productos.*  FROM Productos WHERE (Cod_Productos = '" & Me.CboCodigoProducto.Text & "') "
         DataAdapter = New SqlClient.SqlDataAdapter(SQLProductos, MiConexion)
         DataAdapter.Fill(DataSet, "Proveedores")
         If Not DataSet.Tables("Proveedores").Rows.Count = 0 Then
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-            StrSqlUpdate = "UPDATE [Productos] SET [Descripcion_Producto] = '" & Me.TxtNombreProducto.Text & "',[Ubicacion] = '" & Me.TxtUbicacion.Text & "',[Cod_Linea] = '" & Me.CboLinea.Columns(0).Text & "',[Tipo_Producto] = '" & Me.CboTipoProducto.Text & "',[Cod_Cuenta_Inventario] = '" & Me.TxtCtaInventario.Text & "' ,[Cod_Cuenta_Costo] = '" & Me.TxtCtaCosto.Text & "',[Cod_Cuenta_Ventas] = '" & Me.TxtCuentaVenta.Text & "',[Unidad_Medida] = '" & Me.CboUnidad.Text & "',[Precio_Venta] = '" & CDbl(Me.TxtPrecioVenta.Text) & "',[Precio_Lista] = '" & CDbl(Me.TxtPrecioCompra.Text) & "',[Descuento] = '" & Me.TxtDescuento.Text & "',[Existencia_Negativa] = '" & Me.CboExistencia.Text & "',[Cod_Iva] = '" & Me.CboIva.Text & "' ,[Activo] = '" & Me.CboActivo.Text & "' ,[Minimo] = '" & Me.TxtMinimo.Text & "' ,[Reorden] = '" & Me.TxtReorden.Text & "',[Nota] = '" & Me.TxtNota.Text & "',[Cod_Cuenta_GastoAjuste]= '" & Me.TxtGastoAjuste.Text & "',[Cod_Cuenta_IngresoAjuste]= '" & Me.TxtIngresoAjuste.Text & "',[CodComponente]= " & CodComponente & ",[Cod_Rubro]= '" & CodRubro & "', [Porcentaje_Aumento]= " & Me.TxtAumento.Value & ",  [Rendimiento]= " & Me.TxtRendimiento.Text & "   WHERE (Cod_Productos = '" & Me.CboCodigoProducto.Text & "')"
+            StrSqlUpdate = "UPDATE [Productos] SET [Descripcion_Producto] = '" & Me.TxtNombreProducto.Text & "',[Ubicacion] = '" & Me.TxtUbicacion.Text & "',[Cod_Linea] = '" & Me.CboLinea.Columns(0).Text & "',[Tipo_Producto] = '" & Me.CboTipoProducto.Text & "',[Cod_Cuenta_Inventario] = '" & Me.TxtCtaInventario.Text & "' ,[Cod_Cuenta_Costo] = '" & Me.TxtCtaCosto.Text & "',[Cod_Cuenta_Ventas] = '" & Me.TxtCuentaVenta.Text & "',[Unidad_Medida] = '" & Me.CboUnidad.Text & "',[Precio_Venta] = '" & CDbl(Me.TxtPrecioVenta.Text) & "',[Precio_Lista] = '" & CDbl(Me.TxtPrecioCompra.Text) & "',[Descuento] = '" & Me.TxtDescuento.Text & "',[Existencia_Negativa] = '" & Me.CboExistencia.Text & "',[Cod_Iva] = '" & Me.CboIva.Text & "' ,[Activo] = '" & Me.CboActivo.Text & "' ,[Minimo] = '" & Me.TxtMinimo.Text & "' ,[Reorden] = '" & Me.TxtReorden.Text & "',[Nota] = '" & Me.TxtNota.Text & "',[Cod_Cuenta_GastoAjuste]= '" & Me.TxtGastoAjuste.Text & "',[Cod_Cuenta_IngresoAjuste]= '" & Me.TxtIngresoAjuste.Text & "',[CodComponente]= " & CodComponente & ",[Cod_Rubro]= '" & CodRubro & "', [Porcentaje_Aumento]= " & Me.TxtAumento.Value & ",  [Rendimiento]= " & Me.TxtRendimiento.Text & " ,[Merma]= " & Me.TxtMerma.Text & " ,  [Desperdicio]= " & Me.TxtDesperdicio.Text & "    WHERE (Cod_Productos = '" & Me.CboCodigoProducto.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -342,8 +344,8 @@ Public Class FrmProductos
         Else
             MiConexion.Close()
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Productos] ([Cod_Productos],[Descripcion_Producto],[Ubicacion],[Cod_Linea],[Tipo_Producto],[Cod_Cuenta_Inventario],[Cod_Cuenta_Costo],[Cod_Cuenta_Ventas],[Unidad_Medida],[Precio_Venta],[Precio_Lista],[Descuento],[Existencia_Negativa],[Cod_Iva],[Activo],[Minimo],[Reorden],[Nota],[Cod_Cuenta_GastoAjuste],[Cod_Cuenta_IngresoAjuste],[CodComponente],[Cod_Rubro],[Porcentaje_Aumento],[Rendimiento]) " & _
-                           "VALUES('" & Me.CboCodigoProducto.Text & "','" & Me.TxtNombreProducto.Text & "','" & Me.TxtUbicacion.Text & "','" & Me.CboLinea.Columns(0).Text & "','" & Me.CboTipoProducto.Text & "' ,'" & Me.TxtCtaInventario.Text & "','" & Me.TxtCtaCosto.Text & "','" & Me.TxtCuentaVenta.Text & "','" & Me.CboUnidad.Text & "','" & CDbl(Me.TxtPrecioVenta.Text) & "','" & CDbl(Me.TxtPrecioCompra.Text) & "','" & Me.TxtDescuento.Text & "','" & Me.CboExistencia.Text & "','" & Me.CboIva.Text & "','" & Me.CboActivo.Text & "','" & Me.TxtMinimo.Text & "' ,'" & Me.TxtReorden.Text & "','" & Me.TxtNota.Text & "','" & Me.TxtGastoAjuste.Text & "','" & Me.TxtIngresoAjuste.Text & "'," & CodComponente & ",'" & CodRubro & "'," & Me.TxtAumento.Value & "," & Me.TxtRendimiento.Text & ")"
+            StrSqlUpdate = "INSERT INTO [Productos] ([Cod_Productos],[Descripcion_Producto],[Ubicacion],[Cod_Linea],[Tipo_Producto],[Cod_Cuenta_Inventario],[Cod_Cuenta_Costo],[Cod_Cuenta_Ventas],[Unidad_Medida],[Precio_Venta],[Precio_Lista],[Descuento],[Existencia_Negativa],[Cod_Iva],[Activo],[Minimo],[Reorden],[Nota],[Cod_Cuenta_GastoAjuste],[Cod_Cuenta_IngresoAjuste],[CodComponente],[Cod_Rubro],[Porcentaje_Aumento],[Rendimiento],[Merma],[Desperdicio]) " & _
+                           "VALUES('" & Me.CboCodigoProducto.Text & "','" & Me.TxtNombreProducto.Text & "','" & Me.TxtUbicacion.Text & "','" & Me.CboLinea.Columns(0).Text & "','" & Me.CboTipoProducto.Text & "' ,'" & Me.TxtCtaInventario.Text & "','" & Me.TxtCtaCosto.Text & "','" & Me.TxtCuentaVenta.Text & "','" & Me.CboUnidad.Text & "','" & CDbl(Me.TxtPrecioVenta.Text) & "','" & CDbl(Me.TxtPrecioCompra.Text) & "','" & Me.TxtDescuento.Text & "','" & Me.CboExistencia.Text & "','" & Me.CboIva.Text & "','" & Me.CboActivo.Text & "','" & Me.TxtMinimo.Text & "' ,'" & Me.TxtReorden.Text & "','" & Me.TxtNota.Text & "','" & Me.TxtGastoAjuste.Text & "','" & Me.TxtIngresoAjuste.Text & "'," & CodComponente & ",'" & CodRubro & "'," & Me.TxtAumento.Value & "," & Me.TxtRendimiento.Text & ", " & Me.TxtMerma.Text & " ," & Me.TxtDesperdicio.Text & ")"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -2021,6 +2023,8 @@ Public Class FrmProductos
                 MsgBox("El Codigo " & CodigoAlterno & " es un Codigo Alternativo de " & DataSet.Tables("Alternos").Rows(0)("Cod_Producto"))
                 Me.CboCodigoProducto.Text = DataSet.Tables("Alternos").Rows(0)("Cod_Producto")
             Else
+                Me.TxtMerma.Text = ""
+                Me.TxtDesperdicio.Text = ""
                 Me.TxtUbicacion.Text = ""
                 Me.TxtCtaInventario.Text = ""
                 Me.TxtNombreProducto.Text = ""
@@ -2183,6 +2187,18 @@ Public Class FrmProductos
 
             If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Cod_Cuenta_IngresoAjuste")) Then
                 Me.TxtIngresoAjuste.Text = DataSet.Tables("Producto").Rows(0)("Cod_Cuenta_IngresoAjuste")
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Merma")) Then
+                Me.TxtMerma.Text = DataSet.Tables("Producto").Rows(0)("Merma")
+            Else
+                Me.TxtMerma.Text = "0.00"
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Desperdicio")) Then
+                Me.TxtDesperdicio.Text = DataSet.Tables("Producto").Rows(0)("Desperdicio")
+            Else
+                Me.TxtDesperdicio.Text = "0.00"
             End If
 
             CostoProducto = CostoPromedio(CodigoProducto)
@@ -2533,6 +2549,14 @@ Public Class FrmProductos
     End Sub
 
     Private Sub Label5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label5.Click
+
+    End Sub
+
+    Private Sub Inventario_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Inventario.Click
+
+    End Sub
+
+    Private Sub GroupBox4_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox4.Enter
 
     End Sub
 End Class

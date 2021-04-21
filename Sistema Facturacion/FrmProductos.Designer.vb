@@ -72,6 +72,10 @@ Partial Class FrmProductos
         Me.Button4 = New System.Windows.Forms.Button
         Me.TrueDBGridConsultas = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.GroupBox4 = New System.Windows.Forms.GroupBox
+        Me.TxtDesperdicio = New System.Windows.Forms.TextBox
+        Me.Label32 = New System.Windows.Forms.Label
+        Me.TxtMerma = New System.Windows.Forms.TextBox
+        Me.Label31 = New System.Windows.Forms.Label
         Me.Label26 = New System.Windows.Forms.Label
         Me.Label28 = New System.Windows.Forms.Label
         Me.TxtCostoPromedioDolar = New System.Windows.Forms.TextBox
@@ -733,6 +737,10 @@ Partial Class FrmProductos
         '
         'GroupBox4
         '
+        Me.GroupBox4.Controls.Add(Me.TxtDesperdicio)
+        Me.GroupBox4.Controls.Add(Me.Label32)
+        Me.GroupBox4.Controls.Add(Me.TxtMerma)
+        Me.GroupBox4.Controls.Add(Me.Label31)
         Me.GroupBox4.Controls.Add(Me.Label26)
         Me.GroupBox4.Controls.Add(Me.Label28)
         Me.GroupBox4.Controls.Add(Me.TxtCostoPromedioDolar)
@@ -753,10 +761,42 @@ Partial Class FrmProductos
         Me.GroupBox4.Controls.Add(Me.Label22)
         Me.GroupBox4.Location = New System.Drawing.Point(6, 9)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(305, 271)
+        Me.GroupBox4.Size = New System.Drawing.Size(305, 309)
         Me.GroupBox4.TabIndex = 2
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Datos del Producto"
+        '
+        'TxtDesperdicio
+        '
+        Me.TxtDesperdicio.Location = New System.Drawing.Point(138, 285)
+        Me.TxtDesperdicio.Name = "TxtDesperdicio"
+        Me.TxtDesperdicio.Size = New System.Drawing.Size(145, 20)
+        Me.TxtDesperdicio.TabIndex = 35
+        '
+        'Label32
+        '
+        Me.Label32.AutoSize = True
+        Me.Label32.Location = New System.Drawing.Point(10, 287)
+        Me.Label32.Name = "Label32"
+        Me.Label32.Size = New System.Drawing.Size(63, 13)
+        Me.Label32.TabIndex = 34
+        Me.Label32.Text = "Desperdicio"
+        '
+        'TxtMerma
+        '
+        Me.TxtMerma.Location = New System.Drawing.Point(138, 262)
+        Me.TxtMerma.Name = "TxtMerma"
+        Me.TxtMerma.Size = New System.Drawing.Size(145, 20)
+        Me.TxtMerma.TabIndex = 33
+        '
+        'Label31
+        '
+        Me.Label31.AutoSize = True
+        Me.Label31.Location = New System.Drawing.Point(10, 264)
+        Me.Label31.Name = "Label31"
+        Me.Label31.Size = New System.Drawing.Size(39, 13)
+        Me.Label31.TabIndex = 32
+        Me.Label31.Text = "Merma"
         '
         'Label26
         '
@@ -1753,5 +1793,9 @@ Partial Class FrmProductos
     Friend WithEvents Impuestos As System.Windows.Forms.TabPage
     Friend WithEvents Alternativos As System.Windows.Forms.TabPage
     Friend WithEvents Foto As System.Windows.Forms.TabPage
+    Friend WithEvents TxtDesperdicio As System.Windows.Forms.TextBox
+    Friend WithEvents Label32 As System.Windows.Forms.Label
+    Friend WithEvents TxtMerma As System.Windows.Forms.TextBox
+    Friend WithEvents Label31 As System.Windows.Forms.Label
 
 End Class
