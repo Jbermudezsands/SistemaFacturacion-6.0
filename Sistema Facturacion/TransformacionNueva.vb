@@ -533,6 +533,9 @@ Public Class TransformacionNueva
 
 
     Private Sub TrueDBGridOrigen_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridOrigen.ButtonClick
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim SqlString As String, CodigoProducto As String
+
         Quien = "CodigoProductosBodega"
         My.Forms.FrmConsultas.CodBodega = Me.CboCodigoBodega.Text
         My.Forms.FrmConsultas.ShowDialog()
@@ -540,11 +543,17 @@ Public Class TransformacionNueva
         If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
             Me.TrueDBGridOrigen.Columns("Codigo_Producto").Text = My.Forms.FrmConsultas.Codigo
             Me.TrueDBGridOrigen.Columns("Descripcion_Producto").Text = My.Forms.FrmConsultas.Descripcion
+            CodigoProducto = My.Forms.FrmConsultas.Codigo
+
+
+
         End If
     End Sub
 
     Private Sub TrueDBGridDestino_BeforeColUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.BeforeColUpdateEventArgs) Handles TrueDBGridDestino.BeforeColUpdate
         Dim CantMerma As Double, CantBasura As Double, CantTotal As Double, PBasura As Double, PMerma As Double
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim SqlString As String, CodigoProducto As String
 
         CantTotal = 0
         If Me.TrueDBGridDestino.Columns("Cantidad").Text <> "" Then
@@ -560,6 +569,41 @@ Public Class TransformacionNueva
         If Me.TrueDBGridDestino.Columns("Basura").Text <> "" Then
             CantBasura = Me.TrueDBGridDestino.Columns("Basura").Text
         End If
+
+
+        If CantMerma = 0 Then
+            If CantBasura = 0 Then
+                CodigoProducto = Me.TrueDBGridDestino.Columns("Codigo_Producto").Text
+                SqlString = "SELECT  * FROM Productos  " & _
+                "WHERE  (Cod_Productos = '" & CodigoProducto & "')"
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                DataAdapter.Fill(DataSet, "Producto")
+                If DataSet.Tables("Producto").Rows.Count <> 0 Then
+                    If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Merma")) Then
+                        PMerma = DataSet.Tables("Producto").Rows(0)("Merma")
+                    Else
+                        PMerma = 0
+                    End If
+
+                    If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Desperdicio")) Then
+                        PBasura = DataSet.Tables("Producto").Rows(0)("Desperdicio")
+                    Else
+                        PBasura = 0
+                    End If
+                End If
+
+                Me.TrueDBGridDestino.Columns("Porciento_Basura").Text = PBasura
+                Me.TrueDBGridDestino.Columns("Porciento_Merma").Text = PMerma
+
+                CantMerma = Format(CantTotal * PMerma, "##,##0.0000")
+                CantBasura = Format(CantTotal * PBasura, "##,##0.0000")
+
+                Me.TrueDBGridDestino.Columns("Merma").Text = Format(CantMerma, "##,##0.0000")
+                Me.TrueDBGridDestino.Columns("Basura").Text = Format(CantBasura, "##,##0.0000")
+
+            End If
+        End If
+
 
 
         PBasura = CantBasura / CantTotal
@@ -630,6 +674,7 @@ Public Class TransformacionNueva
 
 
     Private Sub TrueDBGridDestino_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridDestino.ButtonClick
+
         Quien = "CodigoProductosBodega"
         My.Forms.FrmConsultas.CodBodega = Me.CboCodigoBodega.Text
         My.Forms.FrmConsultas.ShowDialog()
@@ -637,6 +682,7 @@ Public Class TransformacionNueva
         If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
             Me.TrueDBGridDestino.Columns("Codigo_Producto").Text = My.Forms.FrmConsultas.Codigo
             Me.TrueDBGridDestino.Columns("Descripcion_Producto").Text = My.Forms.FrmConsultas.Descripcion
+
         End If
     End Sub
 
@@ -792,6 +838,10 @@ Public Class TransformacionNueva
     End Sub
 
     Private Sub GroupBox1_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox1.Enter
+
+    End Sub
+
+    Private Sub TrueDBGridDestino_DataSourceChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridDestino.DataSourceChanged
 
     End Sub
 End Class
