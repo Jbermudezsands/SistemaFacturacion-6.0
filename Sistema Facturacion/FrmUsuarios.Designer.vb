@@ -50,6 +50,7 @@ Partial Class FrmUsuarios
         Me.CboTipoCompra = New System.Windows.Forms.ComboBox
         Me.CboCodigoBodegaCompra = New C1.Win.C1List.C1Combo
         Me.Label5 = New System.Windows.Forms.Label
+        Me.ChkNotificacion = New System.Windows.Forms.CheckBox
         CType(Me.CboUsuario, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -516,11 +517,22 @@ Partial Class FrmUsuarios
         Me.Label5.TabIndex = 221
         Me.Label5.Text = "Bodega"
         '
+        'ChkNotificacion
+        '
+        Me.ChkNotificacion.AutoSize = True
+        Me.ChkNotificacion.Location = New System.Drawing.Point(170, 148)
+        Me.ChkNotificacion.Name = "ChkNotificacion"
+        Me.ChkNotificacion.Size = New System.Drawing.Size(129, 17)
+        Me.ChkNotificacion.TabIndex = 223
+        Me.ChkNotificacion.Text = "Recibir Notificaciones"
+        Me.ChkNotificacion.UseVisualStyleBackColor = True
+        '
         'FrmUsuarios
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(310, 427)
+        Me.Controls.Add(Me.ChkNotificacion)
         Me.Controls.Add(Me.CboCodigoBodegaCompra)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.CboTipoCompra)
@@ -598,4 +610,5 @@ Partial Class FrmUsuarios
     Friend WithEvents CboTipoCompra As System.Windows.Forms.ComboBox
     Friend WithEvents CboCodigoBodegaCompra As C1.Win.C1List.C1Combo
     Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents ChkNotificacion As System.Windows.Forms.CheckBox
 End Class

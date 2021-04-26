@@ -228,7 +228,10 @@ Public Class FrmProductos
         End If
         Me.CboIva.DisplayMember = "Descripcion_Iva"
 
-        Me.TabControl.TabPages(3).PageVisible = False
+        'Me.TabControl.TabPages(3).PageVisible = False
+        'Me.TabControl.TabPages.Remove(Me.TabControl.TabPages(3))
+        Me.Componentes.Parent = Nothing
+
 
         SqlProductos = "SELECT  * FROM  Rubro"
         DataAdapterProductos = New SqlClient.SqlDataAdapter(SqlProductos, MiConexion)
@@ -325,12 +328,14 @@ Public Class FrmProductos
             CodRubro = Me.CboRubro.Columns(0).Text
         End If
 
+
+
         SQLProductos = "SELECT Productos.*  FROM Productos WHERE (Cod_Productos = '" & Me.CboCodigoProducto.Text & "') "
         DataAdapter = New SqlClient.SqlDataAdapter(SQLProductos, MiConexion)
         DataAdapter.Fill(DataSet, "Proveedores")
         If Not DataSet.Tables("Proveedores").Rows.Count = 0 Then
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-            StrSqlUpdate = "UPDATE [Productos] SET [Descripcion_Producto] = '" & Me.TxtNombreProducto.Text & "',[Ubicacion] = '" & Me.TxtUbicacion.Text & "',[Cod_Linea] = '" & Me.CboLinea.Columns(0).Text & "',[Tipo_Producto] = '" & Me.CboTipoProducto.Text & "',[Cod_Cuenta_Inventario] = '" & Me.TxtCtaInventario.Text & "' ,[Cod_Cuenta_Costo] = '" & Me.TxtCtaCosto.Text & "',[Cod_Cuenta_Ventas] = '" & Me.TxtCuentaVenta.Text & "',[Unidad_Medida] = '" & Me.CboUnidad.Text & "',[Precio_Venta] = '" & CDbl(Me.TxtPrecioVenta.Text) & "',[Precio_Lista] = '" & CDbl(Me.TxtPrecioCompra.Text) & "',[Descuento] = '" & Me.TxtDescuento.Text & "',[Existencia_Negativa] = '" & Me.CboExistencia.Text & "',[Cod_Iva] = '" & Me.CboIva.Text & "' ,[Activo] = '" & Me.CboActivo.Text & "' ,[Minimo] = '" & Me.TxtMinimo.Text & "' ,[Reorden] = '" & Me.TxtReorden.Text & "',[Nota] = '" & Me.TxtNota.Text & "',[Cod_Cuenta_GastoAjuste]= '" & Me.TxtGastoAjuste.Text & "',[Cod_Cuenta_IngresoAjuste]= '" & Me.TxtIngresoAjuste.Text & "',[CodComponente]= " & CodComponente & ",[Cod_Rubro]= '" & CodRubro & "', [Porcentaje_Aumento]= " & Me.TxtAumento.Value & ",  [Rendimiento]= " & Me.TxtRendimiento.Text & "   WHERE (Cod_Productos = '" & Me.CboCodigoProducto.Text & "')"
+            StrSqlUpdate = "UPDATE [Productos] SET [Descripcion_Producto] = '" & Me.TxtNombreProducto.Text & "',[Ubicacion] = '" & Me.TxtUbicacion.Text & "',[Cod_Linea] = '" & Me.CboLinea.Columns(0).Text & "',[Tipo_Producto] = '" & Me.CboTipoProducto.Text & "',[Cod_Cuenta_Inventario] = '" & Me.TxtCtaInventario.Text & "' ,[Cod_Cuenta_Costo] = '" & Me.TxtCtaCosto.Text & "',[Cod_Cuenta_Ventas] = '" & Me.TxtCuentaVenta.Text & "',[Unidad_Medida] = '" & Me.CboUnidad.Text & "',[Precio_Venta] = '" & CDbl(Me.TxtPrecioVenta.Text) & "',[Precio_Lista] = '" & CDbl(Me.TxtPrecioCompra.Text) & "',[Descuento] = '" & Me.TxtDescuento.Text & "',[Existencia_Negativa] = '" & Me.CboExistencia.Text & "',[Cod_Iva] = '" & Me.CboIva.Text & "' ,[Activo] = '" & Me.CboActivo.Text & "' ,[Minimo] = '" & Me.TxtMinimo.Text & "' ,[Reorden] = '" & Me.TxtReorden.Text & "',[Nota] = '" & Me.TxtNota.Text & "',[Cod_Cuenta_GastoAjuste]= '" & Me.TxtGastoAjuste.Text & "',[Cod_Cuenta_IngresoAjuste]= '" & Me.TxtIngresoAjuste.Text & "',[CodComponente]= " & CodComponente & ",[Cod_Rubro]= '" & CodRubro & "', [Porcentaje_Aumento]= " & Me.TxtAumento.Value & ",  [Rendimiento]= " & Me.TxtRendimiento.Text & " ,[Merma]= " & Me.TxtMerma.Text & " ,  [Desperdicio]= " & Me.TxtDesperdicio.Text & "    WHERE (Cod_Productos = '" & Me.CboCodigoProducto.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -339,8 +344,8 @@ Public Class FrmProductos
         Else
             MiConexion.Close()
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Productos] ([Cod_Productos],[Descripcion_Producto],[Ubicacion],[Cod_Linea],[Tipo_Producto],[Cod_Cuenta_Inventario],[Cod_Cuenta_Costo],[Cod_Cuenta_Ventas],[Unidad_Medida],[Precio_Venta],[Precio_Lista],[Descuento],[Existencia_Negativa],[Cod_Iva],[Activo],[Minimo],[Reorden],[Nota],[Cod_Cuenta_GastoAjuste],[Cod_Cuenta_IngresoAjuste],[CodComponente],[Cod_Rubro],[Porcentaje_Aumento],[Rendimiento]) " & _
-                           "VALUES('" & Me.CboCodigoProducto.Text & "','" & Me.TxtNombreProducto.Text & "','" & Me.TxtUbicacion.Text & "','" & Me.CboLinea.Columns(0).Text & "','" & Me.CboTipoProducto.Text & "' ,'" & Me.TxtCtaInventario.Text & "','" & Me.TxtCtaCosto.Text & "','" & Me.TxtCuentaVenta.Text & "','" & Me.CboUnidad.Text & "','" & CDbl(Me.TxtPrecioVenta.Text) & "','" & CDbl(Me.TxtPrecioCompra.Text) & "','" & Me.TxtDescuento.Text & "','" & Me.CboExistencia.Text & "','" & Me.CboIva.Text & "','" & Me.CboActivo.Text & "','" & Me.TxtMinimo.Text & "' ,'" & Me.TxtReorden.Text & "','" & Me.TxtNota.Text & "','" & Me.TxtGastoAjuste.Text & "','" & Me.TxtIngresoAjuste.Text & "'," & CodComponente & ",'" & CodRubro & "'," & Me.TxtAumento.Value & "," & Me.TxtRendimiento.Text & ")"
+            StrSqlUpdate = "INSERT INTO [Productos] ([Cod_Productos],[Descripcion_Producto],[Ubicacion],[Cod_Linea],[Tipo_Producto],[Cod_Cuenta_Inventario],[Cod_Cuenta_Costo],[Cod_Cuenta_Ventas],[Unidad_Medida],[Precio_Venta],[Precio_Lista],[Descuento],[Existencia_Negativa],[Cod_Iva],[Activo],[Minimo],[Reorden],[Nota],[Cod_Cuenta_GastoAjuste],[Cod_Cuenta_IngresoAjuste],[CodComponente],[Cod_Rubro],[Porcentaje_Aumento],[Rendimiento],[Merma],[Desperdicio]) " & _
+                           "VALUES('" & Me.CboCodigoProducto.Text & "','" & Me.TxtNombreProducto.Text & "','" & Me.TxtUbicacion.Text & "','" & Me.CboLinea.Columns(0).Text & "','" & Me.CboTipoProducto.Text & "' ,'" & Me.TxtCtaInventario.Text & "','" & Me.TxtCtaCosto.Text & "','" & Me.TxtCuentaVenta.Text & "','" & Me.CboUnidad.Text & "','" & CDbl(Me.TxtPrecioVenta.Text) & "','" & CDbl(Me.TxtPrecioCompra.Text) & "','" & Me.TxtDescuento.Text & "','" & Me.CboExistencia.Text & "','" & Me.CboIva.Text & "','" & Me.CboActivo.Text & "','" & Me.TxtMinimo.Text & "' ,'" & Me.TxtReorden.Text & "','" & Me.TxtNota.Text & "','" & Me.TxtGastoAjuste.Text & "','" & Me.TxtIngresoAjuste.Text & "'," & CodComponente & ",'" & CodRubro & "'," & Me.TxtAumento.Value & "," & Me.TxtRendimiento.Text & ", " & Me.TxtMerma.Text & " ," & Me.TxtDesperdicio.Text & ")"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -465,7 +470,10 @@ Public Class FrmProductos
                         Me.TxtGastoAjuste.Text = "5101"
                     End If
 
-                    Me.TabControl.TabPages(3).PageVisible = False
+                    'Me.TabControl.TabPages(3).PageVisible = False
+                    'Me.TabControl.TabPages.Remove(Me.TabControl.TabPages(3))
+                    Me.Componentes.Parent = Nothing
+
                     '/////////////////////////////////LINEA DE PRODUCTOS ///////////////////////////////////////////////////////////////
                     SqlString = "SELECT * FROM Lineas "
                     DataAdapterProductos = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
@@ -905,6 +913,7 @@ Public Class FrmProductos
         '        End If
 
         '        Me.TabControl.TabPages(3).PageVisible = False
+
         '        '/////////////////////////////////LINEA DE PRODUCTOS ///////////////////////////////////////////////////////////////
         '        SqlString = "SELECT * FROM Lineas "
         '        DataAdapterProductos = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
@@ -1546,9 +1555,12 @@ Public Class FrmProductos
 
 
         If Me.CboTipoProducto.Text = "Ensambles" Then
-            Me.TabControl.TabPages(3).PageVisible = True
+            'Me.TabControl.TabPages(3).PageVisible = True
+            Me.Componentes.Parent = TabControl
+
         Else
-            Me.TabControl.TabPages(3).PageVisible = False
+            'Me.TabControl.TabPages(3).PageVisible = False
+            Me.Componentes.Parent = Nothing
 
         End If
     End Sub
@@ -1731,7 +1743,7 @@ Public Class FrmProductos
 
     End Sub
 
-    Private Sub Componentes_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Componentes.Paint
+    Private Sub Componentes_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs)
 
     End Sub
 
@@ -2011,6 +2023,8 @@ Public Class FrmProductos
                 MsgBox("El Codigo " & CodigoAlterno & " es un Codigo Alternativo de " & DataSet.Tables("Alternos").Rows(0)("Cod_Producto"))
                 Me.CboCodigoProducto.Text = DataSet.Tables("Alternos").Rows(0)("Cod_Producto")
             Else
+                Me.TxtMerma.Text = ""
+                Me.TxtDesperdicio.Text = ""
                 Me.TxtUbicacion.Text = ""
                 Me.TxtCtaInventario.Text = ""
                 Me.TxtNombreProducto.Text = ""
@@ -2066,7 +2080,7 @@ Public Class FrmProductos
                     Me.TxtGastoAjuste.Text = "5101"
                 End If
 
-                Me.TabControl.TabPages(3).PageVisible = False
+
                 '/////////////////////////////////LINEA DE PRODUCTOS ///////////////////////////////////////////////////////////////
                 SqlString = "SELECT * FROM Lineas "
                 DataAdapterProductos = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
@@ -2143,6 +2157,12 @@ Public Class FrmProductos
                 Me.TxtAumento.Value = Format(DataSet.Tables("Producto").Rows(0)("Porcentaje_Aumento"), "##,##0.00")
             End If
 
+
+
+            If Me.CboTipoProducto.Text = "Ensambles" Then
+                Me.Componentes.Parent = TabControl
+            End If
+
             If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Rendimiento")) Then
                 Me.TxtRendimiento.Text = DataSet.Tables("Producto").Rows(0)("Rendimiento")
             End If
@@ -2167,6 +2187,18 @@ Public Class FrmProductos
 
             If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Cod_Cuenta_IngresoAjuste")) Then
                 Me.TxtIngresoAjuste.Text = DataSet.Tables("Producto").Rows(0)("Cod_Cuenta_IngresoAjuste")
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Merma")) Then
+                Me.TxtMerma.Text = DataSet.Tables("Producto").Rows(0)("Merma")
+            Else
+                Me.TxtMerma.Text = "0.00"
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Desperdicio")) Then
+                Me.TxtDesperdicio.Text = DataSet.Tables("Producto").Rows(0)("Desperdicio")
+            Else
+                Me.TxtDesperdicio.Text = "0.00"
             End If
 
             CostoProducto = CostoPromedio(CodigoProducto)
@@ -2264,35 +2296,40 @@ Public Class FrmProductos
             Me.TruDbGridHistoricosCompras.Columns(3).NumberFormat = "##,##0.00"
 
 
-            '//////////////////////////////////////////////////////////////////////////////////////////////
-            '///////////////BUSCO LOS COMPONENTES DEL PRODUCTO/////////////////////////////////////////////////
-            '/////////////////////////////////////////////////////////////////////////////////////////////
+            If Me.CboTipoProducto.Text = "Ensambles" Then
+                '//////////////////////////////////////////////////////////////////////////////////////////////
+                '///////////////BUSCO LOS COMPONENTES DEL PRODUCTO/////////////////////////////////////////////////
+                '/////////////////////////////////////////////////////////////////////////////////////////////
+                Me.Componentes.Parent = Me.TabControl
+                SqlString = "SELECT *  FROM Componentes WHERE (Cod_Componente = '" & CodComponente & "')"
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                DataAdapter.Fill(DataSet, "Componentes")
+                Me.BindingComponentes.DataSource = DataSet.Tables("Componentes")
+                Me.TrueDBGridComponentes.DataSource = Me.BindingComponentes
 
-            SqlString = "SELECT *  FROM Componentes WHERE (Cod_Componente = '" & CodComponente & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-            DataAdapter.Fill(DataSet, "Componentes")
-            Me.BindingComponentes.DataSource = DataSet.Tables("Componentes")
-            Me.TrueDBGridComponentes.DataSource = Me.BindingComponentes
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Visible = False
+                Me.TrueDBGridComponentes.Columns(1).Caption = "Componente"
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 74
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 182
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Locked = True
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 68
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Width = 74
 
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Visible = False
-            Me.TrueDBGridComponentes.Columns(1).Caption = "Componente"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 74
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 182
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Locked = True
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 68
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Width = 74
+        End If
 
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            '///////////////////////////////////////BUSCO LOS IMPUESTOS DEL PRODUCTO////////////////////////////////////////////
-            '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlString = "SELECT  Impuestos.Cod_Iva, Impuestos.Descripcion_Iva, Impuestos.Impuesto, Impuestos.TipoImpuesto, ImpuestosProductos.Cod_Productos FROM  ImpuestosProductos INNER JOIN Impuestos ON ImpuestosProductos.Cod_Iva = Impuestos.Cod_Iva  " & _
-            "WHERE  (ImpuestosProductos.Cod_Productos = '" & Me.CboCodigoProducto.Text & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-            DataAdapter.Fill(DataSet, "ListaImpuestos")
-            Me.BindingImpuestos.DataSource = DataSet.Tables("ListaImpuestos")
-            Me.TDGridImpuestos.DataSource = Me.BindingImpuestos
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '///////////////////////////////////////BUSCO LOS IMPUESTOS DEL PRODUCTO////////////////////////////////////////////
+        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlString = "SELECT  Impuestos.Cod_Iva, Impuestos.Descripcion_Iva, Impuestos.Impuesto, Impuestos.TipoImpuesto, ImpuestosProductos.Cod_Productos FROM  ImpuestosProductos INNER JOIN Impuestos ON ImpuestosProductos.Cod_Iva = Impuestos.Cod_Iva  " & _
+        "WHERE  (ImpuestosProductos.Cod_Productos = '" & Me.CboCodigoProducto.Text & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "ListaImpuestos")
+        Me.BindingImpuestos.DataSource = DataSet.Tables("ListaImpuestos")
+        Me.TDGridImpuestos.DataSource = Me.BindingImpuestos
+        If DataSet.Tables("ListaImpuestos").Rows.Count <> 0 Then
+
             Me.TDGridImpuestos.Splits(0).DisplayColumns.Item(0).Width = 94
             Me.TDGridImpuestos.Splits(0).DisplayColumns.Item(0).Locked = True
             Me.TDGridImpuestos.Splits(0).DisplayColumns.Item(1).Width = 166
@@ -2302,138 +2339,144 @@ Public Class FrmProductos
             Me.TDGridImpuestos.Splits(0).DisplayColumns.Item(3).Width = 100
             Me.TDGridImpuestos.Splits(0).DisplayColumns.Item(3).Locked = True
             Me.TDGridImpuestos.Splits(0).DisplayColumns(4).Visible = False
+        End If
 
-            '//////////////////////////////////////////////////////////////////////////////////////////////
-            '///////////////BUSCO LOS CODIGOS ALTERNATIVOS/////////////////////////////////////////////////
-            '/////////////////////////////////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////
+        '///////////////BUSCO LOS CODIGOS ALTERNATIVOS/////////////////////////////////////////////////
+        '/////////////////////////////////////////////////////////////////////////////////////////////
 
-            SqlString = "SELECT  *  FROM Codigos_Alternos WHERE (Cod_Producto = '" & CodigoProducto & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-            DataAdapter.Fill(DataSet, "Alternativos")
-            Me.BindingCodigoAlternos.DataSource = DataSet.Tables("Alternativos")
-            Me.TdGridAlternativos.DataSource = Me.BindingCodigoAlternos
+        SqlString = "SELECT  *  FROM Codigos_Alternos WHERE (Cod_Producto = '" & CodigoProducto & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Alternativos")
+        Me.BindingCodigoAlternos.DataSource = DataSet.Tables("Alternativos")
+        Me.TdGridAlternativos.DataSource = Me.BindingCodigoAlternos
 
-            Me.TdGridAlternativos.Columns(0).Caption = "Codigo Alternos"
-            Me.TdGridAlternativos.Splits.Item(0).DisplayColumns(0).Width = 100
-            Me.TdGridAlternativos.Splits.Item(0).DisplayColumns(1).Visible = False
-            Me.TdGridAlternativos.Splits.Item(0).DisplayColumns(1).Locked = True
-            Me.TdGridAlternativos.Splits.Item(0).DisplayColumns(2).Width = 350
-
-
-            'Compras = Format(BuscaCompra(CodigoProducto, FechaIni, FechaFin), "####0.00")
-            'Ventas = Format(BuscaVenta(CodigoProducto, FechaIni, FechaFin), "####0.00")
-            'Inicial = Format(BuscaInventarioInicial(CodigoProducto, FechaIni), "####0.00")
-
-            Me.TxtUbicacion.Text = DataSet.Tables("Producto").Rows(0)("Ubicacion")
-            If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Cod_Cuenta_Inventario")) Then
-                Me.TxtCtaInventario.Text = DataSet.Tables("Producto").Rows(0)("Cod_Cuenta_Inventario")
-            End If
-
-            Me.TxtExistenciaUnidades.Text = Format(Existencia, "##,##0.00")
-            ExistenciaValores = Math.Abs(Existencia * CostoProducto)
-            Me.TxtExistenciaValores.Text = Format(ExistenciaValores, "##,##0.00")
-            ExistenciaValoresDolar = Math.Abs(Existencia * CostoProductoD)
-            Me.TxtExistenciaValoresD.Text = Format(ExistenciaValoresDolar, "##,##0.000")
-            'Me.TxtCostoPromedio.Text = Format(DataSet.Tables("Producto").Rows(0)("Costo_Promedio"), "##,##0.0000")
-            Me.TxtCostoPromedio.Text = Format(CostoProducto, "##,##0.000")
-            Me.TxtCostoPromedioDolar.Text = Format(CostoProductoD, "##,##0.000")
-
-            '////////BUSCO LA LINEA DEL PRODUCTO//////////
-            If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Cod_Linea")) Then
-                CodLinea = DataSet.Tables("Producto").Rows(0)("Cod_Linea")
-            Else
-                CodLinea = ""
-            End If
-            SqlLinea = "SELECT  * FROM Lineas WHERE (Cod_Linea = '" & CodLinea & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlLinea, MiConexion)
-            DataAdapter.Fill(DataSet, "LineaProducto")
-            If Not DataSet.Tables("LineaProducto").Rows.Count = 0 Then
-                Me.CboLinea.Text = DataSet.Tables("LineaProducto").Rows(0)("Descripcion_Linea")
-            End If
+        Me.TdGridAlternativos.Columns(0).Caption = "Codigo Alternos"
+        Me.TdGridAlternativos.Splits.Item(0).DisplayColumns(0).Width = 100
+        Me.TdGridAlternativos.Splits.Item(0).DisplayColumns(1).Visible = False
+        Me.TdGridAlternativos.Splits.Item(0).DisplayColumns(1).Locked = True
+        Me.TdGridAlternativos.Splits.Item(0).DisplayColumns(2).Width = 350
 
 
-            '////////BUSCO EL RUBRO DEL PRODUCTO//////////
-            If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Cod_Rubro")) Then
-                CodRubro = DataSet.Tables("Producto").Rows(0)("Cod_Rubro")
-            Else
-                CodRubro = ""
-            End If
-            SqlLinea = "SELECT  * FROM Rubro WHERE (Codigo_Rubro = '" & CodRubro & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlLinea, MiConexion)
-            DataAdapter.Fill(DataSet, "Rubro")
-            If Not DataSet.Tables("Rubro").Rows.Count = 0 Then
-                Me.CboRubro.Text = DataSet.Tables("Rubro").Rows(0)("Nombre_Rubro")
-            End If
+        'Compras = Format(BuscaCompra(CodigoProducto, FechaIni, FechaFin), "####0.00")
+        'Ventas = Format(BuscaVenta(CodigoProducto, FechaIni, FechaFin), "####0.00")
+        'Inicial = Format(BuscaInventarioInicial(CodigoProducto, FechaIni), "####0.00")
+
+        Me.TxtUbicacion.Text = DataSet.Tables("Producto").Rows(0)("Ubicacion")
+        If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Cod_Cuenta_Inventario")) Then
+            Me.TxtCtaInventario.Text = DataSet.Tables("Producto").Rows(0)("Cod_Cuenta_Inventario")
+        End If
+
+        Me.TxtExistenciaUnidades.Text = Format(Existencia, "##,##0.00")
+        ExistenciaValores = Math.Abs(Existencia * CostoProducto)
+        Me.TxtExistenciaValores.Text = Format(ExistenciaValores, "##,##0.00")
+        ExistenciaValoresDolar = Math.Abs(Existencia * CostoProductoD)
+        Me.TxtExistenciaValoresD.Text = Format(ExistenciaValoresDolar, "##,##0.000")
+        'Me.TxtCostoPromedio.Text = Format(DataSet.Tables("Producto").Rows(0)("Costo_Promedio"), "##,##0.0000")
+        Me.TxtCostoPromedio.Text = Format(CostoProducto, "##,##0.000")
+        Me.TxtCostoPromedioDolar.Text = Format(CostoProductoD, "##,##0.000")
+
+        '////////BUSCO LA LINEA DEL PRODUCTO//////////
+        If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Cod_Linea")) Then
+            CodLinea = DataSet.Tables("Producto").Rows(0)("Cod_Linea")
+        Else
+            CodLinea = ""
+        End If
+        SqlLinea = "SELECT  * FROM Lineas WHERE (Cod_Linea = '" & CodLinea & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlLinea, MiConexion)
+        DataAdapter.Fill(DataSet, "LineaProducto")
+        If Not DataSet.Tables("LineaProducto").Rows.Count = 0 Then
+            Me.CboLinea.Text = DataSet.Tables("LineaProducto").Rows(0)("Descripcion_Linea")
+        End If
+
+
+        '////////BUSCO EL RUBRO DEL PRODUCTO//////////
+        If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Cod_Rubro")) Then
+            CodRubro = DataSet.Tables("Producto").Rows(0)("Cod_Rubro")
+        Else
+            CodRubro = ""
+        End If
+        SqlLinea = "SELECT  * FROM Rubro WHERE (Codigo_Rubro = '" & CodRubro & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlLinea, MiConexion)
+        DataAdapter.Fill(DataSet, "Rubro")
+        If Not DataSet.Tables("Rubro").Rows.Count = 0 Then
+            Me.CboRubro.Text = DataSet.Tables("Rubro").Rows(0)("Nombre_Rubro")
+        End If
 
 
 
 
-            '////////BUSCO EL IMPUESTO DEL PRODUCTO///////////////////////
-            CodImpuesto = DataSet.Tables("Producto").Rows(0)("Cod_Iva")
-            SqlImpuesto = "SELECT * FROM Impuestos WHERE (Cod_Iva = '" & CodImpuesto & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlImpuesto, MiConexion)
-            DataAdapter.Fill(DataSet, "Impuesto")
-            If Not DataSet.Tables("Impuesto").Rows.Count = 0 Then
-                Me.CboIva.Text = DataSet.Tables("Impuesto").Rows(0)("Descripcion_Iva")
-            End If
+        '////////BUSCO EL IMPUESTO DEL PRODUCTO///////////////////////
+        CodImpuesto = DataSet.Tables("Producto").Rows(0)("Cod_Iva")
+        SqlImpuesto = "SELECT * FROM Impuestos WHERE (Cod_Iva = '" & CodImpuesto & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlImpuesto, MiConexion)
+        DataAdapter.Fill(DataSet, "Impuesto")
+        If Not DataSet.Tables("Impuesto").Rows.Count = 0 Then
+            Me.CboIva.Text = DataSet.Tables("Impuesto").Rows(0)("Descripcion_Iva")
+        End If
 
+        RutaOrigen = RutaCompartida & "\" & Trim(Me.CboCodigoProducto.Text) & ".jpg"
+
+        'If Dir(RutaCompartida, FileAttribute.Directory) <> "" Then
+        If System.IO.Directory.Exists(RutaCompartida) = True Then
             RutaOrigen = RutaCompartida & "\" & Trim(Me.CboCodigoProducto.Text) & ".jpg"
-
-            'If Dir(RutaCompartida, FileAttribute.Directory) <> "" Then
-            If System.IO.Directory.Exists(RutaCompartida) = True Then
-                RutaOrigen = RutaCompartida & "\" & Trim(Me.CboCodigoProducto.Text) & ".jpg"
-                If Dir(RutaOrigen) <> "" Then
-                    Me.ImgFoto.ImageLocation = RutaOrigen
-                Else
-                    RutaOrigen = My.Application.Info.DirectoryPath & "\Fotos\" & Me.CboCodigoProducto.Text & ".jpg"
-                    If System.IO.File.Exists(RutaOrigen) = True Then
-                        Me.ImgFoto.ImageLocation = RutaOrigen
-                    End If
-                End If
+            If Dir(RutaOrigen) <> "" Then
+                Me.ImgFoto.ImageLocation = RutaOrigen
             Else
                 RutaOrigen = My.Application.Info.DirectoryPath & "\Fotos\" & Me.CboCodigoProducto.Text & ".jpg"
                 If System.IO.File.Exists(RutaOrigen) = True Then
                     Me.ImgFoto.ImageLocation = RutaOrigen
                 End If
             End If
-
-            MiConexion.Close()
-
-            Exit Sub
-            'Else
-
-            'Dim CodigoAlterno As String = Me.CboCodigoProducto.Text
-
-            'SQl = "SELECT  *  FROM Codigos_Alternos WHERE (Cod_Alternativo = '" & CodigoAlterno & "')"
-            'DataAdapter = New SqlClient.SqlDataAdapter(SQl, MiConexion)
-            'DataAdapter.Fill(DataSet, "Alternos")
-            'If Not DataSet.Tables("Alternos").Rows.Count = 0 Then
-            '    MsgBox("El Codigo " & CodigoAlterno & " es un Codigo Alternativo de " & DataSet.Tables("Alternos").Rows(0)("Cod_Producto"))
-            '    Me.CboCodigoProducto.Text = DataSet.Tables("Alternos").Rows(0)("Cod_Producto")
-            'Else
-            '    Me.TxtUbicacion.Text = ""
-            '    Me.TxtCtaInventario.Text = ""
-            '    Me.TxtNombreProducto.Text = ""
-            '    Me.CboTipoProducto.Text = ""
-            '    Me.CboLinea.Text = ""
-            '    Me.CboUnidad.Text = ""
-            '    Me.TxtPrecioCompra.Text = ""
-            '    Me.TxtDescuento.Text = ""
-            '    Me.CboExistencia.Text = ""
-            '    Me.TxtCtaCosto.Text = ""
-            '    Me.TxtPrecioVenta.Text = ""
-            '    Me.CboIva.Text = ""
-            '    Me.CboActivo.Text = ""
-            '    Me.TxtCuentaVenta.Text = ""
-            '    Me.TxtMinimo.Text = "0.00"
-            '    Me.TxtReorden.Text = "0.00"
-            '    CodComponente = 0
-            'End If
-
+        Else
+            RutaOrigen = My.Application.Info.DirectoryPath & "\Fotos\" & Me.CboCodigoProducto.Text & ".jpg"
+            If System.IO.File.Exists(RutaOrigen) = True Then
+                Me.ImgFoto.ImageLocation = RutaOrigen
+            End If
         End If
 
         MiConexion.Close()
-        Quien = Nothing
+
+        Exit Sub
+        'Else
+
+        'Dim CodigoAlterno As String = Me.CboCodigoProducto.Text
+
+        'SQl = "SELECT  *  FROM Codigos_Alternos WHERE (Cod_Alternativo = '" & CodigoAlterno & "')"
+        'DataAdapter = New SqlClient.SqlDataAdapter(SQl, MiConexion)
+        'DataAdapter.Fill(DataSet, "Alternos")
+        'If Not DataSet.Tables("Alternos").Rows.Count = 0 Then
+        '    MsgBox("El Codigo " & CodigoAlterno & " es un Codigo Alternativo de " & DataSet.Tables("Alternos").Rows(0)("Cod_Producto"))
+        '    Me.CboCodigoProducto.Text = DataSet.Tables("Alternos").Rows(0)("Cod_Producto")
+        'Else
+        '    Me.TxtUbicacion.Text = ""
+        '    Me.TxtCtaInventario.Text = ""
+        '    Me.TxtNombreProducto.Text = ""
+        '    Me.CboTipoProducto.Text = ""
+        '    Me.CboLinea.Text = ""
+        '    Me.CboUnidad.Text = ""
+        '    Me.TxtPrecioCompra.Text = ""
+        '    Me.TxtDescuento.Text = ""
+        '    Me.CboExistencia.Text = ""
+        '    Me.TxtCtaCosto.Text = ""
+        '    Me.TxtPrecioVenta.Text = ""
+        '    Me.CboIva.Text = ""
+        '    Me.CboActivo.Text = ""
+        '    Me.TxtCuentaVenta.Text = ""
+        '    Me.TxtMinimo.Text = "0.00"
+        '    Me.TxtReorden.Text = "0.00"
+        '    CodComponente = 0
+        'End If
+
+            End If
+
+            'Me.TabControl.TabPages(3).PageVisible = False
+            'Me.TabControl.TabPages.Remove(Me.TabControl.TabPages(3))
+        'Me.TabControl.TabPages(3).Parent = Nothing
+
+
+            MiConexion.Close()
+            Quien = Nothing
 
     End Sub
 
@@ -2501,11 +2544,19 @@ Public Class FrmProductos
 
     End Sub
 
-    Private Sub TabControl_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TabControl.Click
+    Private Sub TabControl_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
     End Sub
 
     Private Sub Label5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label5.Click
+
+    End Sub
+
+    Private Sub Inventario_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Inventario.Click
+
+    End Sub
+
+    Private Sub GroupBox4_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox4.Enter
 
     End Sub
 End Class

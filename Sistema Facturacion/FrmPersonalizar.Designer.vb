@@ -175,6 +175,7 @@ Partial Class FrmPersonalizar
         Me.Button8 = New System.Windows.Forms.Button
         Me.BindingInteres = New System.Windows.Forms.BindingSource(Me.components)
         Me.BindingMetodo = New System.Windows.Forms.BindingSource(Me.components)
+        Me.ChkPedirCantEscaner = New System.Windows.Forms.CheckBox
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -280,6 +281,7 @@ Partial Class FrmPersonalizar
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.ChkPedirCantEscaner)
         Me.TabPage1.Controls.Add(Me.GroupBox13)
         Me.TabPage1.Controls.Add(Me.GroupBox12)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
@@ -1912,6 +1914,16 @@ Partial Class FrmPersonalizar
         Me.Button8.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.Button8.UseVisualStyleBackColor = True
         '
+        'ChkPedirCantEscaner
+        '
+        Me.ChkPedirCantEscaner.AutoSize = True
+        Me.ChkPedirCantEscaner.Location = New System.Drawing.Point(25, 219)
+        Me.ChkPedirCantEscaner.Name = "ChkPedirCantEscaner"
+        Me.ChkPedirCantEscaner.Size = New System.Drawing.Size(169, 17)
+        Me.ChkPedirCantEscaner.TabIndex = 14
+        Me.ChkPedirCantEscaner.Text = "Pedir Cantidad con el Escaner"
+        Me.ChkPedirCantEscaner.UseVisualStyleBackColor = True
+        '
         'FrmPersonalizar
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1932,6 +1944,7 @@ Partial Class FrmPersonalizar
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
+        Me.TabPage1.PerformLayout()
         Me.GroupBox13.ResumeLayout(False)
         Me.GroupBox13.PerformLayout()
         Me.GroupBox12.ResumeLayout(False)
@@ -2161,4 +2174,5 @@ Partial Class FrmPersonalizar
     Friend WithEvents ChkAuditoriaSegundoPlano As System.Windows.Forms.CheckBox
     Friend WithEvents Agregar As System.Windows.Forms.GroupBox
     Friend WithEvents BtnDetalleCompra As System.Windows.Forms.Button
+    Friend WithEvents ChkPedirCantEscaner As System.Windows.Forms.CheckBox
 End Class

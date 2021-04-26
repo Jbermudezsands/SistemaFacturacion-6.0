@@ -63,12 +63,6 @@
     <Reference Include="C1.Win.C1Thesaurus.2, Version=2.2.20073.78, Culture=neutral, PublicKeyToken=c644e6d97aec9e47, processorArchitecture=MSIL" />
     <Reference Include="C1.Win.C1TrueDBGrid.2, Version=2.0.20063.60825, Culture=neutral, PublicKeyToken=75ae3fb0e2b1e0da, processorArchitecture=MSIL" />
     <Reference Include="C1LicUpdater, Version=1.0.2314.28129, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Data3, Version=3.2.3.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4" />
-    <Reference Include="DevExpress.Utils3, Version=3.2.3.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4" />
-    <Reference Include="DevExpress.XtraEditors3, Version=3.2.3.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraNavBar3, Version=2.7.3.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraPivotGrid3, Version=1.2.3.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4" />
-    <Reference Include="DevExpress.XtraVerticalGrid3, Version=1.6.3.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -161,6 +155,18 @@
       <DependentUpon>FrmConductorPlanilla.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmConductorPlanilla.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmContratos.Designer.vb">
+      <DependentUpon>FrmContratos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmContratos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmContratosNuevos.Designer.vb">
+      <DependentUpon>FrmContratosNuevos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmContratosNuevos.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmCooperativa.designer.vb">
@@ -281,6 +287,12 @@
       <DependentUpon>FrmLotesInfo.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmLotesInfo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmNotificacion.Designer.vb">
+      <DependentUpon>FrmNotificacion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmNotificacion.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmNuevaSolicitud.Designer.vb">
@@ -1013,12 +1025,6 @@
     <Compile Include="FrmPreciosProductos.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MDIParent1.Designer.vb">
-      <DependentUpon>MDIParent1.vb</DependentUpon>
-    </Compile>
-    <Compile Include="MDIParent1.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Reportes\ArepCotizacionFoto.Designer.vb">
       <DependentUpon>ArepCotizacionFoto.vb</DependentUpon>
     </Compile>
@@ -1485,6 +1491,14 @@
       <SubType>Designer</SubType>
       <DependentUpon>FrmConductorPlanilla.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmContratos.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmContratos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmContratosNuevos.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmContratosNuevos.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmCooperativa.resx">
       <DependentUpon>FrmCooperativa.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1564,6 +1578,10 @@
     <EmbeddedResource Include="FrmLotesInfo.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmLotesInfo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmNotificacion.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmNotificacion.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmNuevaSolicitud.resx">
       <SubType>Designer</SubType>
@@ -1916,10 +1934,6 @@
     <EmbeddedResource Include="FrmPreciosProductos.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmPreciosProductos.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MDIParent1.resx">
-      <DependentUpon>MDIParent1.vb</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepActividadProducto.resx">
       <SubType>Designer</SubType>

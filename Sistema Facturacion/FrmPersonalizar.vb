@@ -126,6 +126,15 @@ Public Class FrmPersonalizar
                 End Select
             End If
 
+            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("PedirCantEscaner")) Then
+                Select Case DataSet.Tables("DatosEmpresa").Rows(0)("PedirCantEscaner")
+                    Case True
+                        Me.ChkPedirCantEscaner.Checked = True
+                    Case False
+                        Me.ChkPedirCantEscaner.Checked = False
+                End Select
+            End If
+
             If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("ConsecutivoFacturaManual")) Then
                 ConsecutivoManual = DataSet.Tables("DatosEmpresa").Rows(0)("ConsecutivoFacturaManual")
                 Select Case ConsecutivoManual
@@ -383,7 +392,7 @@ Public Class FrmPersonalizar
         Dim lineaFactura As Integer = 0, PorcientoTarjeta As Double = 0, CompraBodega As Integer = 0, FacturaBodega As Integer = 0, ImpresionPreview As Integer
         Dim FacturaSerie As Integer = 0, ConsecutivoReciboManual As Integer = 0
         Dim BloquearPrecios As Integer = 0, BloquearPreciosBajoCosto As Integer = 0, MostrarRetencion As Integer = 0, ConsecutivoReciboSerie As Integer = 0
-        Dim CalcularPropina As Integer = 0, ActivarLotes As Integer = 0
+        Dim CalcularPropina As Integer = 0, ActivarLotes As Integer = 0, PedirCantEscaner As Integer = 0
 
         If Me.TxtIncrementar.Text <> "" Then
             PorcientoTarjeta = Me.TxtIncrementar.Text
@@ -616,13 +625,18 @@ Public Class FrmPersonalizar
             ActivarLotes = 0
         End If
 
+        If Me.ChkPedirCantEscaner.Checked = True Then
+            PedirCantEscaner = 1
+        Else
+            PedirCantEscaner = 0
+        End If
 
         SqlDatos = "SELECT * FROM DatosEmpresa"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
         DataAdapter.Fill(DataSet, "DatosEmpresa")
         If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
             MiConexion.Open()
-            StrSqlUpdate = "UPDATE [DatosEmpresa] SET [MonedaFactura] = '" & Me.CboMonedaFactura.Text & "',[ModedaImprimeFactura] = '" & Me.CboImprimeFactura.Text & "',[MonedaCompra] = '" & Me.CboMonedaCompra.Text & "',[MonedaImprimeCompra] = '" & Me.CboImprimeCompra.Text & "',[IvaProducto] = '" & RespuestaIva & "',[ConsecutivoFacturaManual] = " & ConsecutivoManual & ",[Factura_Tarea] = " & FacturaTarea & ",[MetodoPagoDefecto] = '" & Metodo & "',[LineaFactura] = " & lineaFactura & ",[PorcientoTarjetaCredito] = " & PorcientoTarjeta & ",[ConsecutivoFacBodega] = " & FacturaBodega & ",[ConsecutivoComBodega] = " & CompraBodega & ",[ImprimirSinPreview] = " & ImpresionPreview & ",[ConsecutivoFacSerie] = " & FacturaSerie & ",[ConsecutivoReciboManual] = " & ConsecutivoReciboManual & ",[NumeroCopias] = " & Me.TxtCopias.Text & ",[BloquearBajoCosto] = " & BloquearPreciosBajoCosto & ",[BloquearPreciosFactura] = " & BloquearPrecios & " ,[MostrarRetencionFactura] = " & MostrarRetencion & ", [ConsecutivoReciboSerie] = " & ConsecutivoReciboSerie & " , [ConexionImpresionSQL] = '" & Me.CmbConexionImprime.Text & "',[CalcularPropina] = " & CalcularPropina & ", [PorcentajePropina] = '" & Me.TxtPropina.Text & "', [FacturaLotes] = " & ActivarLotes & "  "
+            StrSqlUpdate = "UPDATE [DatosEmpresa] SET [MonedaFactura] = '" & Me.CboMonedaFactura.Text & "',[ModedaImprimeFactura] = '" & Me.CboImprimeFactura.Text & "',[MonedaCompra] = '" & Me.CboMonedaCompra.Text & "',[MonedaImprimeCompra] = '" & Me.CboImprimeCompra.Text & "',[IvaProducto] = '" & RespuestaIva & "',[ConsecutivoFacturaManual] = " & ConsecutivoManual & ",[Factura_Tarea] = " & FacturaTarea & ",[MetodoPagoDefecto] = '" & Metodo & "',[LineaFactura] = " & lineaFactura & ",[PorcientoTarjetaCredito] = " & PorcientoTarjeta & ",[ConsecutivoFacBodega] = " & FacturaBodega & ",[ConsecutivoComBodega] = " & CompraBodega & ",[ImprimirSinPreview] = " & ImpresionPreview & ",[ConsecutivoFacSerie] = " & FacturaSerie & ",[ConsecutivoReciboManual] = " & ConsecutivoReciboManual & ",[NumeroCopias] = " & Me.TxtCopias.Text & ",[BloquearBajoCosto] = " & BloquearPreciosBajoCosto & ",[BloquearPreciosFactura] = " & BloquearPrecios & " ,[MostrarRetencionFactura] = " & MostrarRetencion & ", [ConsecutivoReciboSerie] = " & ConsecutivoReciboSerie & " , [ConexionImpresionSQL] = '" & Me.CmbConexionImprime.Text & "',[CalcularPropina] = " & CalcularPropina & ", [PorcentajePropina] = '" & Me.TxtPropina.Text & "', [FacturaLotes] = " & ActivarLotes & ", [PedirCantEscaner] = " & PedirCantEscaner & "  "
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
             MiConexion.Close()

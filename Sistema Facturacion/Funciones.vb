@@ -2,19 +2,20 @@ Imports System.Data.SqlClient
 Imports System.Threading
 
 Module Funciones
-    Public Function ConsecutivoTranformacion() As String
-        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
-        Dim SQlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
-        SQlString = ""
-        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-        DataAdapter.Fill(DataSet, "Consecutivo")
-        If DataSet.Tables("Consecutivo").Rows.Count <> 0 Then
+    'Public Function ConsecutivoTranformacion() As String
+    '    Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+    '    Dim SQlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
-        End If
+    '    SQlString = ""
+    '    DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+    '    DataAdapter.Fill(DataSet, "Consecutivo")
+    '    If DataSet.Tables("Consecutivo").Rows.Count <> 0 Then
+
+    '    End If
 
 
-    End Function
+    'End Function
 
     Public Function CalcularRetencion() As Double
         Dim Registros As Double, iPosicion As Double, NumeroCompra As String, MontoPagado As Double, MontoCredito As Double
@@ -2273,7 +2274,7 @@ Module Funciones
                     Case 29 : If Permiso = "NoEliminar" Then Label.Enabled = False
                     Case 30 : If Permiso = "NoCambiarBodega" Then Label.Enabled = False
                 End Select
-            ElseIf TypeOf Label Is DevExpress.XtraTab.XtraTabPage Then
+            ElseIf TypeOf Label Is TabPage Then 'DevExpress.XtraTab.XtraTabPage
                 ObtenerContenedores(Label, Permiso)
             ElseIf TypeOf Label Is GroupBox Then
                 ObtenerContenedores(Label, Permiso)
@@ -2425,7 +2426,7 @@ Module Funciones
                                 End Select
                             ElseIf TypeOf Label Is GroupBox Then
                                 ObtenerContenedores(Label, Permiso)
-                            ElseIf TypeOf Label Is DevExpress.XtraTab.XtraTabControl Then
+                            ElseIf TypeOf Label Is TabControl Then 'DevExpress.XtraTab.XtraTabControl
                                 ObtenerContenedores(Label, Permiso)
                             End If
 
@@ -2463,7 +2464,7 @@ Module Funciones
                                 End Select
                             ElseIf TypeOf Label Is GroupBox Then
                                 ObtenerContenedores(Label, Permiso)
-                            ElseIf TypeOf Label Is DevExpress.XtraTab.XtraTabControl Then
+                            ElseIf TypeOf Label Is TabControl Then
                                 ObtenerContenedores(Label, Permiso)
                             End If
 
@@ -12502,7 +12503,7 @@ Module Funciones
 
         '////////////////////////////////////BUSCO EL TOTAL DE LA DEVOLUCION DE LAS  FACTURAS//////////////////////////////////////////////////////////////////////
         SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad, SUM(Detalle_Facturas.Cantidad*Detalle_Facturas.Costo_Unitario) AS Importe, Facturas.Tipo_Factura FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " & _
-                      "WHERE (Facturas.Fecha_Factura < CONVERT(DATETIME, '" & FechaIni & "', 102)) AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') GROUP BY Facturas.Tipo_Factura HAVING (Facturas.Tipo_Factura = 'Devolucion de Venta')"
+                      "WHERE (Facturas.Fecha_Factura < CONVERT(DATETIME, '" & Format(FechaIni2, "yyyy-MM-dd") & "', 102)) AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') GROUP BY Facturas.Tipo_Factura HAVING (Facturas.Tipo_Factura = 'Devolucion de Venta')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
         DataAdapter.Fill(DataSet, "DevolucionFacturas")
         If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then

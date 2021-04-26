@@ -47,7 +47,7 @@ Partial Class SplashScreen1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(836, 645)
+        Me.ClientSize = New System.Drawing.Size(839, 645)
         Me.ControlBox = False
         Me.Controls.Add(Me.PictureBox1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle

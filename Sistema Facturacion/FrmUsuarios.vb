@@ -181,6 +181,10 @@ Public Class FrmUsuarios
                 Me.CboCodigoBodega.Text = DataSet.Tables("Usuario").Rows(0)("Bodega")
             End If
 
+            If Not IsDBNull(DataSet.Tables("Usuario").Rows(0)("RecibeNotificacion")) Then
+                Me.ChkNotificacion.Checked = DataSet.Tables("Usuario").Rows(0)("RecibeNotificacion")
+            End If
+
             If Not IsDBNull(DataSet.Tables("Usuario").Rows(0)("TipoFactura")) Then
                 Me.CboTipoProducto.Text = DataSet.Tables("Usuario").Rows(0)("TipoFactura")
             End If
@@ -227,6 +231,7 @@ Public Class FrmUsuarios
         Dim strusuario As String, SqlUsuarios As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim Notificacion As Boolean
 
 
         If Not Me.TxtContraseña.Text = Me.TxtConfirmar.Text Then
@@ -245,6 +250,14 @@ Public Class FrmUsuarios
 
         End If
 
+        If Me.ChkNotificacion.Checked = True Then
+            Notificacion = True
+        Else
+            Notificacion = False
+        End If
+
+
+
         'If Not IsNumeric(Me.CboNivel.Text) Then
         '    MsgBox("El Campo Nivel Tiene que ser Numerico", MsgBoxStyle.Critical, "Sistema de Facturacion")
         '    Exit Sub
@@ -257,7 +270,7 @@ Public Class FrmUsuarios
             MiConexion.Close()
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
 
-            StrSqlUpdate = "UPDATE [Usuarios] SET [Contraseña] = '" & Me.TxtContraseña.Text & "',[Nivel] = '" & Me.CboNivel.Text & "',[Bodega]= '" & Me.CboCodigoBodega.Text & "',[TipoFactura]= '" & Me.CboTipoProducto.Text & "',[CodVendedor]= '" & Me.CboCodigoVendedor.Text & "',[CodCliente]= '" & Me.CboCodigoCliente.Text & "',[SerieFactura]= '" & Me.CmbSerie.Text & "',[BodegaCompra]= '" & Me.CboCodigoBodegaCompra.Text & "', [TipoCompra]= '" & Me.CboTipoCompra.Text & "', [CodProveedor]= '" & Me.CboProveedor.Text & "'   " & _
+            StrSqlUpdate = "UPDATE [Usuarios] SET [RecibeNotificacion] = '" & Notificacion & "', [Contraseña] = '" & Me.TxtContraseña.Text & "',[Nivel] = '" & Me.CboNivel.Text & "',[Bodega]= '" & Me.CboCodigoBodega.Text & "',[TipoFactura]= '" & Me.CboTipoProducto.Text & "',[CodVendedor]= '" & Me.CboCodigoVendedor.Text & "',[CodCliente]= '" & Me.CboCodigoCliente.Text & "',[SerieFactura]= '" & Me.CmbSerie.Text & "',[BodegaCompra]= '" & Me.CboCodigoBodegaCompra.Text & "', [TipoCompra]= '" & Me.CboTipoCompra.Text & "', [CodProveedor]= '" & Me.CboProveedor.Text & "'   " & _
                            "WHERE [Usuario] = '" & Me.CboUsuario.Text & "' "
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -268,8 +281,8 @@ Public Class FrmUsuarios
             MiConexion.Close()
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
             'Nivel = Me.CboNivel.Text
-            StrSqlUpdate = "INSERT INTO [Usuarios] ([Usuario],[Contraseña],[Nivel],[Bodega],[TipoFactura],[CodVendedor],[CodCliente],[SerieFactura],[BodegaCompra],[TipoCompra],[CodProveedor]) " & _
-                           "VALUES('" & Me.CboUsuario.Text & "','" & Me.TxtContraseña.Text & "','" & Me.CboNivel.Text & "','" & Me.CboCodigoBodega.Text & "','" & Me.CboTipoProducto.Text & "','" & Me.CboCodigoVendedor.Text & "','" & Me.CboCodigoCliente.Text & "','" & Me.CmbSerie.Text & "','" & Me.CboCodigoBodegaCompra.Text & "','" & Me.CboTipoCompra.Text & "' ,'" & Me.CboProveedor.Text & "')"
+            StrSqlUpdate = "INSERT INTO [Usuarios] ([Usuario],[RecibeNotificacion],[Contraseña],[Nivel],[Bodega],[TipoFactura],[CodVendedor],[CodCliente],[SerieFactura],[BodegaCompra],[TipoCompra],[CodProveedor]) " & _
+                           "VALUES('" & Me.CboUsuario.Text & "','" & Notificacion & "','" & Me.TxtContraseña.Text & "','" & Me.CboNivel.Text & "','" & Me.CboCodigoBodega.Text & "','" & Me.CboTipoProducto.Text & "','" & Me.CboCodigoVendedor.Text & "','" & Me.CboCodigoCliente.Text & "','" & Me.CmbSerie.Text & "','" & Me.CboCodigoBodegaCompra.Text & "','" & Me.CboTipoCompra.Text & "' ,'" & Me.CboProveedor.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery

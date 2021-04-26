@@ -8,7 +8,7 @@ Public Class FrmFacturas
     Public MiConexion As New SqlClient.SqlConnection(Conexion), CodigoIva As String, CantidadAnterior As Double, PrecioAnterior As Double, ConsecutivoFacturaManual As Boolean = False, FacturaTarea As Boolean = False, ConsecutivoFacturaSerie As Boolean = False, FacturaLotes As Boolean = False, SalirFactura As Boolean = True
     Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder, CambioCliente As Boolean
     Private oHebraCliente As Thread, SaldoClienteH As Double, LimiteCredito As Double, MonedaLimiteCredito As String, BloqueoLimiteCredito As Boolean = False
-    Private CodigoCliente As String, FechaFin As Date, Moneda As String
+    Private CodigoCliente As String, FechaFin As Date, Moneda As String, PedirCantEscaner As Boolean
 
     Public Sub CalcularSaldoCliente()
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -1463,6 +1463,7 @@ Public Class FrmFacturas
             FacturaTarea = DataSet.Tables("DatosEmpresa").Rows(0)("Factura_Tarea")
             FacturaLotes = DataSet.Tables("DatosEmpresa").Rows(0)("Factura_Tarea")
             ConsecutivoFacturaSerie = DataSet.Tables("DatosEmpresa").Rows(0)("ConsecutivoFacSerie")
+            PedirCantEscaner = DataSet.Tables("DatosEmpresa").Rows(0)("PedirCantEscaner")
 
 
             If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("MostrarRetencionFactura")) Then
@@ -4689,6 +4690,8 @@ Public Class FrmFacturas
                     End If
 
             End Select
+
+
 
             'ActualizaMETODOFactura()
 
@@ -8175,9 +8178,17 @@ Public Class FrmFacturas
 
                 Select Case Me.TrueDBGridComponentes.Col
                     Case 0
+                        Dim Posicion As Double
                         If Me.TrueDBGridComponentes.Columns(0).Text <> "" Then
                             Me.TrueDBGridComponentes.Columns(2).Text = 1
                             Me.TrueDBGridComponentes.Col = 2
+
+                            If PedirCantEscaner = False Then
+                                '///////////////////////////////////////SI NO REQUIERE ESPESIFICAR CANTIDAD PASO A LA SIGUIENTE LINEA //////////////////////
+                                Posicion = Me.TrueDBGridComponentes.Row
+                                Me.TrueDBGridComponentes.Row = Posicion + 1
+                                Me.TrueDBGridComponentes.Col = 0
+                            End If
                         End If
 
                     Case 2

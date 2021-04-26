@@ -3,7 +3,7 @@ Module Variables
     Public Acceso As String = "Administrador", GIdDetalle As Double, MontoEntrada As Double, MontoSalida As Double, ImporteDevFactura As Double = 0
     Public UsuarioBodega As String = "Ninguna", UsuarioTipoSerie As String = "Ninguna", UsuarioTipoFactura As String = "Ninguna", UsuarioVendedor As String = "Ninguna", UsuarioCliente As String = "Ninguna"
     Public ExistenciaBodega As Double = 0, MontoInicialD As Double = 0, MontoEntradaD As Double = 0, MontoSalidaD As Double = 0
-    Public NombreUsuario As String = "Desconocido"
+    Public NombreUsuario As String = "Desconocido", RecibeNotificacion As Boolean = False
     Public NombreCliente As String = "Clientes"
     Public NombreCompañia As String, Columna As Double, IncrementoTarjeta As Double = 0, DiasMaxMora As Double = 0
     Public CostoPromedioDolar As Double, TotalUnidades As Double, StringMoneda As String

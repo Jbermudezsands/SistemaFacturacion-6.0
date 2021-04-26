@@ -201,7 +201,6 @@ Partial Class TransformacionNueva
         Me.CboCodigoBodega2.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CboCodigoBodega2.EditorForeColor = System.Drawing.SystemColors.WindowText
         Me.CboCodigoBodega2.EditorHeight = 15
-        Me.CboCodigoBodega2.Enabled = False
         Me.CboCodigoBodega2.Images.Add(CType(resources.GetObject("CboCodigoBodega2.Images"), System.Drawing.Image))
         Me.CboCodigoBodega2.ItemHeight = 15
         Me.CboCodigoBodega2.Location = New System.Drawing.Point(768, 19)
@@ -243,7 +242,6 @@ Partial Class TransformacionNueva
         Me.CboCodigoBodega.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CboCodigoBodega.EditorForeColor = System.Drawing.SystemColors.WindowText
         Me.CboCodigoBodega.EditorHeight = 15
-        Me.CboCodigoBodega.Enabled = False
         Me.CboCodigoBodega.Images.Add(CType(resources.GetObject("CboCodigoBodega.Images"), System.Drawing.Image))
         Me.CboCodigoBodega.ItemHeight = 15
         Me.CboCodigoBodega.Location = New System.Drawing.Point(90, 21)

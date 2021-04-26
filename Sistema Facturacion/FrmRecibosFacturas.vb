@@ -373,6 +373,7 @@ Public Class FrmRecibosFacturas
             MontoCredito = DataSet.Tables("ConsultaNota").Rows(iPosicion)("Monto")
             MonedaFactura = DataSet.Tables("ConsultaNota").Rows(iPosicion)("MonedaNota")
 
+            '////////////////////////////////BUSCO UN RECIBO PARA ESTA NOTA DE DEBITO ///////////////////////////////////////////////
             SqlString = "SELECT SUM(MontoPagado) AS MontoPagado FROM DetalleRecibo WHERE (Numero_Nota = '" & NumeroFactura & "')"
             DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
             DataAdapter.Fill(DataSet, "Saldo")
@@ -381,6 +382,7 @@ Public Class FrmRecibosFacturas
             If DataSet.Tables("Saldo").Rows.Count <> 0 Then
                 If Not IsDBNull(DataSet.Tables("Saldo").Rows(0)("MontoPagado")) Then
                     Saldo = MontoCredito - DataSet.Tables("Saldo").Rows(0)("MontoPagado")
+                    MontoCredito = Saldo
                 End If
             Else
                 Saldo = MontoCredito
