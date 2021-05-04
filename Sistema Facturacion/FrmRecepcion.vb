@@ -394,7 +394,7 @@ Public Class FrmRecepcion
         Fecha = Format(CDate(Me.DTPFecha.Text), "yyyy-MM-dd")
 
 
-        SqlString = "SELECT  id_Eventos, NumeroRecepcion, Fecha, TipoRecepcion, Cod_Productos, Descripcion_Producto, Codigo_Beams, Cantidad, Unidad_Medida, Calidad, Estado, Precio, PesoKg, PesoNetoKg, PesoNetoKg * Precio as TotalPagar  FROM Detalle_Recepcion WHERE (NumeroRecepcion = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (TipoRecepcion = '" & Me.CboTipoRecepcion.Text & "')"
+        SqlString = "SELECT  id_Eventos, NumeroRecepcion, Fecha, TipoRecepcion, Cod_Productos, Descripcion_Producto, Codigo_Beams, Cantidad, Unidad_Medida, Calidad, Estado, Precio, PesoKg, PesoNetoKg, PesoNetoKg * Precio as TotalPagar, Merma, Tara  FROM Detalle_Recepcion WHERE (NumeroRecepcion = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (TipoRecepcion = '" & Me.CboTipoRecepcion.Text & "')"
 
         Sqldatos = "SELECT * FROM DatosEmpresa"
         DataAdapter = New SqlClient.SqlDataAdapter(Sqldatos, MiConexion)
@@ -1183,5 +1183,13 @@ Public Class FrmRecepcion
         Button10_Click(sender, e)
         My.Forms.FrmTara.ShowDialog()
         Button11_Click(sender, e)
+    End Sub
+
+    Private Sub TrueDBGridComponentes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.Click
+
+    End Sub
+
+    Private Sub TrueDBGridComponentes_ControlAdded(ByVal sender As Object, ByVal e As System.Windows.Forms.ControlEventArgs) Handles TrueDBGridComponentes.ControlAdded
+
     End Sub
 End Class

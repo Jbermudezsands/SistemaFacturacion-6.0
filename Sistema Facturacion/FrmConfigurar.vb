@@ -74,6 +74,7 @@ Public Class FrmConfigurar
     Private Sub CmdGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGrabar.Click
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SqlDatos As String
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Sincroniza As Boolean
+        Dim CharLogo As String, LogoImg As Image
 
         If Me.TxtNombreEmpresa.Text = "" Then
             MsgBox("Se Necesita el Nombre de la Empresa", MsgBoxStyle.Critical, "Sistema Facturacion")
@@ -101,6 +102,9 @@ Public Class FrmConfigurar
         Else
             Sincroniza = False
         End If
+
+        LogoImg = Me.ImgLogo.Image
+        CharLogo = bytesToString(ImagenToBytes(LogoImg))
 
         SqlDatos = "SELECT * FROM DatosEmpresa"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)

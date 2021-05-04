@@ -93,6 +93,8 @@ Partial Class FrmRecepcion
         Me.Label9 = New System.Windows.Forms.Label
         Me.TxtCedulaRecolector = New System.Windows.Forms.TextBox
         Me.Label10 = New System.Windows.Forms.Label
+        Me.TxtMerma = New System.Windows.Forms.TextBox
+        Me.Label7 = New System.Windows.Forms.Label
         Me.GroupBox1.SuspendLayout()
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboCodigoProducto, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1041,12 +1043,35 @@ Partial Class FrmRecepcion
         Me.Label10.TabIndex = 239
         Me.Label10.Text = "Nombre"
         '
+        'TxtMerma
+        '
+        Me.TxtMerma.AcceptsReturn = True
+        Me.TxtMerma.Enabled = False
+        Me.TxtMerma.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TxtMerma.Location = New System.Drawing.Point(738, 612)
+        Me.TxtMerma.Name = "TxtMerma"
+        Me.TxtMerma.Size = New System.Drawing.Size(105, 26)
+        Me.TxtMerma.TabIndex = 241
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
+        Me.Label7.Location = New System.Drawing.Point(747, 589)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(69, 20)
+        Me.Label7.TabIndex = 242
+        Me.Label7.Text = "MERMA"
+        '
         'FrmRecepcion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(27, Byte), Integer), CType(CType(94, Byte), Integer), CType(CType(32, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(1286, 682)
+        Me.Controls.Add(Me.Label7)
+        Me.Controls.Add(Me.TxtMerma)
         Me.Controls.Add(Me.GroupBoxRecolector)
         Me.Controls.Add(Me.CmdFacturar)
         Me.Controls.Add(Me.txtapellido)
@@ -1166,4 +1191,6 @@ Partial Class FrmRecepcion
     Friend WithEvents TxtTelefonoRecolector As System.Windows.Forms.TextBox
     Friend WithEvents ListBoxRecolector As System.Windows.Forms.ListBox
     Friend WithEvents BtnTara As C1.Win.C1Input.C1Button
+    Friend WithEvents TxtMerma As System.Windows.Forms.TextBox
+    Friend WithEvents Label7 As System.Windows.Forms.Label
 End Class

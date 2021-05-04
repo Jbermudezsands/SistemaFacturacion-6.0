@@ -1,7 +1,86 @@
 Imports System.Data.SqlClient
 Imports System.Threading
+Imports System.IO
 
 Module Funciones
+
+    Public Function bytesToString(ByVal arreglo As Byte()) As String
+        Dim salida As String = ""
+        Dim x As Integer = 0
+        'MsgBox("Tamaño del arreglo: " + arreglo.Length.ToString)
+        Try
+            For x = 0 To arreglo.Length - 1
+                salida += arreglo(x).ToString + ","
+            Next
+        Catch ex As Exception
+            MsgBox("No lo convertio a String por: " + ex.ToString)
+        End Try
+
+        Return salida
+    End Function
+
+    Public Function cargarImagen(ByVal RutaImagen As String) As String
+        Try
+
+            If RutaImagen <> "" Then
+
+                Dim largo As Integer = RutaImagen.Length
+                Dim imagen2 As String
+                imagen2 = CStr(Microsoft.VisualBasic.Mid(RTrim(RutaImagen), largo - 2, largo))
+                If imagen2 <> "gif" And imagen2 <> "bmp" And imagen2 <> "jpg" And imagen2 <> "jpeg" And imagen2 <> "GIF" And imagen2 <> "BMP" And imagen2 <> "JPG" And imagen2 <> "JPEG" Then
+                    imagen2 = CStr(Microsoft.VisualBasic.Mid(RTrim(RutaImagen), largo - 3, largo))
+                    If imagen2 <> "jpeg" And imagen2 <> "JPEG" And imagen2 <> "log1" Then
+                        MsgBox("Formato no valido") : Exit Function
+                        If imagen2 <> "log1" Then Exit Function
+                    End If
+
+                End If
+            End If
+        Catch ex As Exception
+
+        End Try
+
+        Return RutaImagen
+    End Function
+
+    Public Function ImagenToBytes(ByVal Imagen As Image) As Byte()
+        'si hay imagen
+        Dim arreglo As Byte() = Nothing
+        Try
+            If Not Imagen Is Nothing Then
+                'variable de datos binarios en stream(flujo)
+                Dim Bin As New MemoryStream
+                'convertir a bytes
+                Imagen.Save(Bin, Imaging.ImageFormat.Jpeg)
+                'retorna binario
+                arreglo = Bin.GetBuffer
+            Else
+                Return Nothing
+            End If
+        Catch ex As Exception
+            MsgBox("No convirtio a bytes por: " + ex.ToString)
+        End Try
+        Return arreglo
+    End Function
+
+    Public Function BytesToImagen(ByVal Imagen As Byte()) As Image
+        Try
+            'si hay imagen
+            If Not Imagen Is Nothing Then
+                'caturar array con memorystream hacia Bin
+                Dim Bin As New MemoryStream(Imagen)
+                'con el método FroStream de Image obtenemos imagen
+                Dim Resultado As Image = Image.FromStream(Bin)
+                'y la retornamos
+                Return Resultado
+            Else
+                Return Nothing
+            End If
+        Catch ex As Exception
+            Return Nothing
+        End Try
+
+    End Function
 
     'Public Function ConsecutivoTranformacion() As String
     '    Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -16,6 +95,28 @@ Module Funciones
 
 
     'End Function
+
+    Public Function PorcientoMermaProducto(ByVal CodigoProducto As String) As Double
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim SqlString As String, PMerma As Double
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+
+        SqlString = "SELECT  * FROM Productos  " & _
+        "WHERE  (Cod_Productos = '" & CodigoProducto & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Producto")
+        If DataSet.Tables("Producto").Rows.Count <> 0 Then
+            If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Merma")) Then
+                PMerma = DataSet.Tables("Producto").Rows(0)("Merma")
+            Else
+                PMerma = 0
+            End If
+        End If
+
+
+        PorcientoMermaProducto = PMerma
+
+    End Function
 
     Public Function CalcularRetencion() As Double
         Dim Registros As Double, iPosicion As Double, NumeroCompra As String, MontoPagado As Double, MontoCredito As Double
@@ -791,15 +892,17 @@ Module Funciones
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, i As Double, Total As Double
 
+        TotalMerma = 0
         Fecha = Format(FechaRecepcion, "yyyy-MM-dd")
         'SqlCompras = "SELECT  Cod_Productos, Descripcion_Producto, Codigo_Beams, Cantidad, Unidad_Medida,id_Eventos As Linea  FROM Detalle_Recepcion   WHERE (NumeroRecepcion = '" & NumeroRecepcion & "') AND (Fecha = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (TipoRecepcion = '" & TipoRecepcion & "') "
-        SqlCompras = "SELECT  id_Eventos As Linea, Cod_Productos, Descripcion_Producto, Calidad, Estado, Cantidad, PesoKg, Tara, PesoNetoLb, PesoNetoKg, QQ As Saco, Precio  FROM Detalle_Recepcion WHERE (NumeroRecepcion = '" & NumeroRecepcion & "') AND (Fecha = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (TipoRecepcion = '" & TipoRecepcion & "') "
+        SqlCompras = "SELECT  id_Eventos As Linea, Cod_Productos, Descripcion_Producto, Calidad, Estado, Cantidad, PesoKg, Tara, PesoNetoLb, PesoNetoKg, QQ As Saco, Precio, Merma  FROM Detalle_Recepcion WHERE (NumeroRecepcion = '" & NumeroRecepcion & "') AND (Fecha = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (TipoRecepcion = '" & TipoRecepcion & "') "
         DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
         DataAdapter.Fill(DataSet, "Recepcion")
         Registros = DataSet.Tables("Recepcion").Rows.Count
         i = 0
         Total = 0
         Do While Registros > i
+            TotalMerma = TotalMerma + DataSet.Tables("Recepcion").Rows(i)("Merma")
             Total = Total + DataSet.Tables("Recepcion").Rows(i)("PesoNetoKg")
             i = i + 1
         Loop
@@ -863,7 +966,7 @@ Module Funciones
 
 
 
-    Public Sub GrabaDetalleRecepcion(ByVal ConsecutivoRecepcion As String, ByVal CodigoProducto As String, ByVal Cantidad As Double, ByVal Linea As Double, ByVal Descripcion As String, ByVal Precio As Double, ByVal PesoKg As Double, ByVal TipoRecepcion As String, ByVal Tara As Double, ByVal PesoNetoKg As Double, ByVal QQ As Double)
+    Public Sub GrabaDetalleRecepcion(ByVal ConsecutivoRecepcion As String, ByVal CodigoProducto As String, ByVal Cantidad As Double, ByVal Linea As Double, ByVal Descripcion As String, ByVal Precio As Double, ByVal PesoKg As Double, ByVal TipoRecepcion As String, ByVal Tara As Double, ByVal PesoNetoKg As Double, ByVal QQ As Double, ByVal PorcientoMerma As Double, ByVal Merma As Double)
         Dim Sqldetalle As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim Fecha As String, MiConexion As New SqlClient.SqlConnection(Conexion), SqlUpdate As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, PesoNetoLb As Double
@@ -884,7 +987,7 @@ Module Funciones
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////EDITO EL DETALLE DE COMPRAS///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlUpdate = "UPDATE [Detalle_Recepcion] SET [Cod_Productos] = '" & CodigoProducto & "',[Descripcion_Producto] = '" & Descripcion & "',[Cantidad] = " & Cantidad & ",[PesoKg] = " & PesoKg & ", [Precio] = " & Precio & ", [Tara] = " & Tara & ", [PesoNetoLb] = " & PesoNetoLb & ", [PesoNetoKg] = " & PesoNetoKg & " , [QQ] = " & QQ & " " & _
+            SqlUpdate = "UPDATE [Detalle_Recepcion] SET [Cod_Productos] = '" & CodigoProducto & "',[Descripcion_Producto] = '" & Descripcion & "',[Cantidad] = " & Cantidad & ",[PesoKg] = " & PesoKg & ", [Precio] = " & Precio & ", [Tara] = " & Tara & ", [PesoNetoLb] = " & PesoNetoLb & ", [PesoNetoKg] = " & PesoNetoKg & " , [QQ] = " & QQ & ", [Porcentaje_Merma] = " & PorcientoMerma & ", [Merma] = " & Merma & " " & _
                         "WHERE (id_Eventos = " & Linea & ") AND (NumeroRecepcion = '" & ConsecutivoRecepcion & "') AND (Fecha = CONVERT(DATETIME, '" & Format(CDate(Fecha), "yyyy-MM-dd") & "', 102)) AND (TipoRecepcion = '" & TipoRecepcion & "') "  'AND (Cod_Productos = '" & CodigoProducto & "')
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
@@ -893,8 +996,8 @@ Module Funciones
 
         Else
 
-            SqlUpdate = "INSERT INTO [Detalle_Recepcion] ([id_Eventos],[NumeroRecepcion],[Fecha],[TipoRecepcion],[Cod_Productos],[Descripcion_Producto],[Cantidad],[PesoKg],[Precio],[Tara],[PesoNetoLb],[PesoNetoKg],[QQ]) " & _
-                        "VALUES (" & Linea & " ,'" & ConsecutivoRecepcion & "','" & Format(CDate(Fecha), "dd/MM/yyyy") & "','" & My.Forms.FrmRecepcion.CboTipoRecepcion.Text & "','" & CodigoProducto & "','" & Descripcion & "'," & Cantidad & "," & PesoKg & ", " & Precio & ", " & Tara & ", " & PesoNetoLb & ", " & PesoNetoKg & ", " & QQ & ")"
+            SqlUpdate = "INSERT INTO [Detalle_Recepcion] ([id_Eventos],[NumeroRecepcion],[Fecha],[TipoRecepcion],[Cod_Productos],[Descripcion_Producto],[Cantidad],[PesoKg],[Precio],[Tara],[PesoNetoLb],[PesoNetoKg],[QQ],[Porcentaje_Merma],[Merma]) " & _
+                        "VALUES (" & Linea & " ,'" & ConsecutivoRecepcion & "','" & Format(CDate(Fecha), "dd/MM/yyyy") & "','" & My.Forms.FrmRecepcion.CboTipoRecepcion.Text & "','" & CodigoProducto & "','" & Descripcion & "'," & Cantidad & "," & PesoKg & ", " & Precio & ", " & Tara & ", " & PesoNetoLb & ", " & PesoNetoKg & ", " & QQ & ", " & PorcientoMerma & ", " & Merma & ")"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -954,6 +1057,7 @@ Module Funciones
         Dim HumedadxDefecto As Double = 0, HumedadReal As Double = 0, Consecutivo As Double, NumeroRecibo As String, Cadena As String, CadenaDiv() As String
         Dim CodLugarAcopio As Double, Fecha As Date
         Dim Factor As Double = 0, IdEsdoFisico As Double = 0, IdCalidad As Double = 0, IdTipoLugarAcopio As Double = 0
+        Dim Merma As Double, PorcientoMerma As Double
 
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1034,6 +1138,8 @@ Module Funciones
         Cantidad = Peso
         Descripcion = FrmRecepcion.CboCodigoProducto.Columns(1).Text
 
+
+
         'If FrmRecepcion.CboCategoria.Text <> "" Then
         '    Calidad = FrmRecepcion.CboCategoria.Text
         'End If
@@ -1091,6 +1197,8 @@ Module Funciones
         PesoKg = Cantidad
         Cantidad = Format((Cantidad / 46) * 100, "##,##0.00")
 
+        PorcientoMerma = PorcientoMermaProducto(CodigoProducto)
+        Merma = PesoKg * PorcientoMerma
 
         '////////////////////////////////////BUSCO EL ESTADO FISICO ///////////////////////////////////////////////////
 
@@ -1152,10 +1260,10 @@ Module Funciones
         '    End Select
         'End If
 
-        PesoNetoKg = Format((PesoKg - Tara), "##,##0.0000")
+        PesoNetoKg = Format((PesoKg - Tara - Merma), "##,##0.0000")
         PesoNetoLb = Format((PesoNetoKg / 46) * 100, "##,##0.0000")
 
-        GrabaDetalleRecepcion(NumeroRecepcion, CodigoProducto, Cantidad, Linea, Descripcion, Precio, PesoKg, FrmRecepcion.CboTipoRecepcion.Text, Tara, PesoNetoKg, QQ)
+        GrabaDetalleRecepcion(NumeroRecepcion, CodigoProducto, Cantidad, Linea, Descripcion, Precio, PesoKg, FrmRecepcion.CboTipoRecepcion.Text, Tara, PesoNetoKg, QQ, PorcientoMerma, Merma)
         ActualizaDetalleRecepcion(NumeroRecepcion, FrmRecepcion.CboTipoRecepcion.Text)
 
 
@@ -1183,7 +1291,7 @@ Module Funciones
 
 
         FrmRecepcion.txtsubtotal.Text = TotalRecepcion(FrmRecepcion.TxtNumeroEnsamble.Text, FrmRecepcion.DTPFecha.Text, FrmRecepcion.CboTipoRecepcion.Text)
-
+        FrmRecepcion.TxtMerma.Text = Format(TotalMerma, "##,##0.00")
 
         ''////////////////////////////////////////////BUSCO LA RELACION ENTRE CALIDAD /////////////////////////////////////
         'SqlString = "SELECT  EstadoFisico, Codigo, Descripcion, HumedadInicial, HumedadFinal, HumedadXDefecto  FROM EstadoFisico WHERE (Descripcion = '" & FrmRecepcion.CboEstado.Text & "')"

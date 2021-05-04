@@ -104,6 +104,15 @@ Partial Public Class ArepBitacoraRecepcion
         Me.Label36 = New DataDynamics.ActiveReports.Label
         Me.Label38 = New DataDynamics.ActiveReports.Label
         Me.TextBox12 = New DataDynamics.ActiveReports.TextBox
+        Me.Label35 = New DataDynamics.ActiveReports.Label
+        Me.TextBox2 = New DataDynamics.ActiveReports.TextBox
+        Me.Label42 = New DataDynamics.ActiveReports.Label
+        Me.Label43 = New DataDynamics.ActiveReports.Label
+        Me.TextBox3 = New DataDynamics.ActiveReports.TextBox
+        Me.Label44 = New DataDynamics.ActiveReports.Label
+        Me.Label45 = New DataDynamics.ActiveReports.Label
+        Me.TextBox13 = New DataDynamics.ActiveReports.TextBox
+        Me.Label46 = New DataDynamics.ActiveReports.Label
         CType(Me.lblOrderNum, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.lblOrderDate, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ImgLogo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -181,6 +190,15 @@ Partial Public Class ArepBitacoraRecepcion
         CType(Me.Label36, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label38, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox12, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label35, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TextBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label42, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label43, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TextBox3, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label44, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label45, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TextBox13, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label46, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         '
         'PageHeader1
@@ -1668,8 +1686,8 @@ Partial Public Class ArepBitacoraRecepcion
         '
         'GroupFooter1
         '
-        Me.GroupFooter1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.lblSubTotals, Me.TextBox6, Me.Label36, Me.Label38, Me.TextBox12})
-        Me.GroupFooter1.Height = 0.5208333!
+        Me.GroupFooter1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.lblSubTotals, Me.TextBox6, Me.Label36, Me.Label38, Me.TextBox12, Me.Label35, Me.TextBox2, Me.Label42, Me.Label43, Me.TextBox3, Me.Label44, Me.Label45, Me.TextBox13, Me.Label46})
+        Me.GroupFooter1.Height = 1.166667!
         Me.GroupFooter1.Name = "GroupFooter1"
         '
         'lblSubTotals
@@ -1688,7 +1706,7 @@ Partial Public Class ArepBitacoraRecepcion
         Me.lblSubTotals.Name = "lblSubTotals"
         Me.lblSubTotals.Style = "color: #000040; text-align: right; font-weight: bold; background-color: White; fo" & _
             "nt-size: 8.5pt; "
-        Me.lblSubTotals.Text = "Peso  Bruto"
+        Me.lblSubTotals.Text = "Peso  Bruto:"
         Me.lblSubTotals.Top = 0.0!
         Me.lblSubTotals.Width = 0.8125!
         '
@@ -1702,7 +1720,7 @@ Partial Public Class ArepBitacoraRecepcion
         Me.TextBox6.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox6.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox6.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.TextBox6.DataField = "PesoNetoKg"
+        Me.TextBox6.DataField = "PesoKg"
         Me.TextBox6.Height = 0.1875!
         Me.TextBox6.Left = 1.3125!
         Me.TextBox6.Name = "TextBox6"
@@ -1746,12 +1764,12 @@ Partial Public Class ArepBitacoraRecepcion
         Me.Label38.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label38.Height = 0.1875!
         Me.Label38.HyperLink = Nothing
-        Me.Label38.Left = 0.525!
+        Me.Label38.Left = 0.5!
         Me.Label38.Name = "Label38"
         Me.Label38.Style = "color: #000040; text-align: right; font-weight: bold; background-color: White; fo" & _
             "nt-size: 8.5pt; "
         Me.Label38.Text = "Total Pagar"
-        Me.Label38.Top = 0.225!
+        Me.Label38.Top = 0.9375!
         Me.Label38.Width = 0.8125!
         '
         'TextBox12
@@ -1766,7 +1784,7 @@ Partial Public Class ArepBitacoraRecepcion
         Me.TextBox12.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox12.DataField = "TotalPagar"
         Me.TextBox12.Height = 0.1875!
-        Me.TextBox12.Left = 1.325!
+        Me.TextBox12.Left = 1.3125!
         Me.TextBox12.Name = "TextBox12"
         Me.TextBox12.Style = "ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 9pt; font-famil" & _
             "y: Arial; "
@@ -1774,8 +1792,194 @@ Partial Public Class ArepBitacoraRecepcion
         Me.TextBox12.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox12.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
         Me.TextBox12.Text = Nothing
-        Me.TextBox12.Top = 0.225!
+        Me.TextBox12.Top = 0.9375!
         Me.TextBox12.Width = 0.75!
+        '
+        'Label35
+        '
+        Me.Label35.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label35.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label35.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label35.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label35.Border.RightColor = System.Drawing.Color.Black
+        Me.Label35.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label35.Border.TopColor = System.Drawing.Color.Black
+        Me.Label35.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label35.Height = 0.1875!
+        Me.Label35.HyperLink = Nothing
+        Me.Label35.Left = 0.5!
+        Me.Label35.Name = "Label35"
+        Me.Label35.Style = "color: #000040; text-align: right; font-weight: bold; background-color: White; fo" & _
+            "nt-size: 8.5pt; "
+        Me.Label35.Text = "Merma:"
+        Me.Label35.Top = 0.375!
+        Me.Label35.Width = 0.8125!
+        '
+        'TextBox2
+        '
+        Me.TextBox2.Border.BottomColor = System.Drawing.Color.Black
+        Me.TextBox2.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox2.Border.LeftColor = System.Drawing.Color.Black
+        Me.TextBox2.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox2.Border.RightColor = System.Drawing.Color.Black
+        Me.TextBox2.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox2.Border.TopColor = System.Drawing.Color.Black
+        Me.TextBox2.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox2.DataField = "Merma"
+        Me.TextBox2.Height = 0.1875!
+        Me.TextBox2.Left = 1.3125!
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.Style = "ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 9pt; font-famil" & _
+            "y: Arial; "
+        Me.TextBox2.SummaryGroup = "GroupHeader1"
+        Me.TextBox2.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
+        Me.TextBox2.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
+        Me.TextBox2.Text = Nothing
+        Me.TextBox2.Top = 0.375!
+        Me.TextBox2.Width = 0.75!
+        '
+        'Label42
+        '
+        Me.Label42.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label42.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label42.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label42.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label42.Border.RightColor = System.Drawing.Color.Black
+        Me.Label42.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label42.Border.TopColor = System.Drawing.Color.Black
+        Me.Label42.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label42.Height = 0.1875!
+        Me.Label42.HyperLink = Nothing
+        Me.Label42.Left = 2.125!
+        Me.Label42.Name = "Label42"
+        Me.Label42.Style = "ddo-char-set: 0; font-weight: bold; font-size: 9pt; "
+        Me.Label42.Text = "Kg"
+        Me.Label42.Top = 0.375!
+        Me.Label42.Width = 0.3125!
+        '
+        'Label43
+        '
+        Me.Label43.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label43.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label43.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label43.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label43.Border.RightColor = System.Drawing.Color.Black
+        Me.Label43.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label43.Border.TopColor = System.Drawing.Color.Black
+        Me.Label43.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label43.Height = 0.1875!
+        Me.Label43.HyperLink = Nothing
+        Me.Label43.Left = 0.5!
+        Me.Label43.Name = "Label43"
+        Me.Label43.Style = "color: #000040; text-align: right; font-weight: bold; background-color: White; fo" & _
+            "nt-size: 8.5pt; "
+        Me.Label43.Text = "Neto:"
+        Me.Label43.Top = 0.5625!
+        Me.Label43.Width = 0.8125!
+        '
+        'TextBox3
+        '
+        Me.TextBox3.Border.BottomColor = System.Drawing.Color.Black
+        Me.TextBox3.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox3.Border.LeftColor = System.Drawing.Color.Black
+        Me.TextBox3.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox3.Border.RightColor = System.Drawing.Color.Black
+        Me.TextBox3.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox3.Border.TopColor = System.Drawing.Color.Black
+        Me.TextBox3.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox3.DataField = "PesoNetoKg"
+        Me.TextBox3.Height = 0.1875!
+        Me.TextBox3.Left = 1.3125!
+        Me.TextBox3.Name = "TextBox3"
+        Me.TextBox3.Style = "ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 9pt; font-famil" & _
+            "y: Arial; "
+        Me.TextBox3.SummaryGroup = "GroupHeader1"
+        Me.TextBox3.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
+        Me.TextBox3.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
+        Me.TextBox3.Text = Nothing
+        Me.TextBox3.Top = 0.5625!
+        Me.TextBox3.Width = 0.75!
+        '
+        'Label44
+        '
+        Me.Label44.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label44.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label44.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label44.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label44.Border.RightColor = System.Drawing.Color.Black
+        Me.Label44.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label44.Border.TopColor = System.Drawing.Color.Black
+        Me.Label44.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label44.Height = 0.1875!
+        Me.Label44.HyperLink = Nothing
+        Me.Label44.Left = 2.125!
+        Me.Label44.Name = "Label44"
+        Me.Label44.Style = "ddo-char-set: 0; font-weight: bold; font-size: 9pt; "
+        Me.Label44.Text = "Kg"
+        Me.Label44.Top = 0.5625!
+        Me.Label44.Width = 0.3125!
+        '
+        'Label45
+        '
+        Me.Label45.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label45.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label45.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label45.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label45.Border.RightColor = System.Drawing.Color.Black
+        Me.Label45.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label45.Border.TopColor = System.Drawing.Color.Black
+        Me.Label45.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label45.Height = 0.1875!
+        Me.Label45.HyperLink = Nothing
+        Me.Label45.Left = 0.5!
+        Me.Label45.Name = "Label45"
+        Me.Label45.Style = "color: #000040; text-align: right; font-weight: bold; background-color: White; fo" & _
+            "nt-size: 8.5pt; "
+        Me.Label45.Text = "Tara:"
+        Me.Label45.Top = 0.1875!
+        Me.Label45.Width = 0.8125!
+        '
+        'TextBox13
+        '
+        Me.TextBox13.Border.BottomColor = System.Drawing.Color.Black
+        Me.TextBox13.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox13.Border.LeftColor = System.Drawing.Color.Black
+        Me.TextBox13.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox13.Border.RightColor = System.Drawing.Color.Black
+        Me.TextBox13.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox13.Border.TopColor = System.Drawing.Color.Black
+        Me.TextBox13.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox13.DataField = "Tara"
+        Me.TextBox13.Height = 0.1875!
+        Me.TextBox13.Left = 1.3125!
+        Me.TextBox13.Name = "TextBox13"
+        Me.TextBox13.Style = "ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 9pt; font-famil" & _
+            "y: Arial; "
+        Me.TextBox13.SummaryGroup = "GroupHeader1"
+        Me.TextBox13.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
+        Me.TextBox13.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
+        Me.TextBox13.Text = Nothing
+        Me.TextBox13.Top = 0.1875!
+        Me.TextBox13.Width = 0.75!
+        '
+        'Label46
+        '
+        Me.Label46.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label46.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label46.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label46.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label46.Border.RightColor = System.Drawing.Color.Black
+        Me.Label46.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label46.Border.TopColor = System.Drawing.Color.Black
+        Me.Label46.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label46.Height = 0.1875!
+        Me.Label46.HyperLink = Nothing
+        Me.Label46.Left = 2.125!
+        Me.Label46.Name = "Label46"
+        Me.Label46.Style = "ddo-char-set: 0; font-weight: bold; font-size: 9pt; "
+        Me.Label46.Text = "Kg"
+        Me.Label46.Top = 0.1875!
+        Me.Label46.Width = 0.3125!
         '
         'ArepBitacoraRecepcion
         '
@@ -1881,6 +2085,15 @@ Partial Public Class ArepBitacoraRecepcion
         CType(Me.Label36, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label38, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox12, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label35, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TextBox2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label42, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label43, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TextBox3, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label44, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label45, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TextBox13, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label46, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
 
     End Sub
@@ -1966,4 +2179,13 @@ Partial Public Class ArepBitacoraRecepcion
     Friend WithEvents LblCodRecolector As DataDynamics.ActiveReports.Label
     Friend WithEvents LblNombreRecolector As DataDynamics.ActiveReports.Label
     Friend WithEvents LblCedulaRecolector As DataDynamics.ActiveReports.Label
+    Private WithEvents Label35 As DataDynamics.ActiveReports.Label
+    Friend WithEvents TextBox2 As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents Label42 As DataDynamics.ActiveReports.Label
+    Private WithEvents Label43 As DataDynamics.ActiveReports.Label
+    Friend WithEvents TextBox3 As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents Label44 As DataDynamics.ActiveReports.Label
+    Private WithEvents Label45 As DataDynamics.ActiveReports.Label
+    Friend WithEvents TextBox13 As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents Label46 As DataDynamics.ActiveReports.Label
 End Class

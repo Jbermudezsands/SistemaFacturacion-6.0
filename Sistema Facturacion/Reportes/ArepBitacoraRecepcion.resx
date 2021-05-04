@@ -124,8 +124,8 @@
     <value>True</value>
   </metadata>
   <data name="OleDBDataSource1.SQL" xml:space="preserve">
-    <value>SELECT        id_Eventos, NumeroRecepcion, Fecha, TipoRecepcion, Cod_Productos, Descripcion_Producto, Codigo_Beams, Cantidad, Unidad_Medida, Calidad, Estado, Precio, PesoKg, PesoNetoKg, Calidad_Cafe, PesoKg * Precio AS TotalPagar
-FROM            Detalle_Recepcion
+    <value>SELECT        id_Eventos, NumeroRecepcion, Fecha, TipoRecepcion, Cod_Productos, Descripcion_Producto, Codigo_Beams, Cantidad, Unidad_Medida, Calidad, Estado, Precio  PesoKg, PesoNetoKg, Calidad_Cafe, PesoNetoKg * Precio AS TotalPagar
+, Merma, Tara FROM            Detalle_Recepcion
 WHERE        (NumeroRecepcion = N'00266') AND (Fecha = CONVERT(DATETIME, '2013-10-12 00:00:00', 102)) AND (TipoRecepcion = N'Recepcion')</value>
   </data>
 </root>
