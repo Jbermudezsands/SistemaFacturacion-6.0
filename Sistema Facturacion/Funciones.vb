@@ -42,10 +42,19 @@ Module Funciones
 
         Return RutaImagen
     End Function
+    Public Function Imagen_A_Bytes(ByVal ruta As String) As Byte()
+        Dim foto As New FileStream(ruta, FileMode.OpenOrCreate, FileAccess.ReadWrite)
+        Dim arreglo(0 To foto.Length - 1) As Byte
+        Dim reader As New BinaryReader(foto)
+        arreglo = reader.ReadBytes(Convert.ToInt32(foto.Length))
+        Return arreglo
+    End Function
+
 
     Public Function ImagenToBytes(ByVal Imagen As Image) As Byte()
         'si hay imagen
         Dim arreglo As Byte() = Nothing
+        Dim foto As New FileStream(FrmConfigurar.TxtRutaLogo.Text, FileMode.OpenOrCreate, FileAccess.ReadWrite)
         Try
             If Not Imagen Is Nothing Then
                 'variable de datos binarios en stream(flujo)
@@ -80,6 +89,44 @@ Module Funciones
             Return Nothing
         End Try
 
+    End Function
+
+    Function consultaByte(ByVal CharLogo As String) As Byte()
+
+        Dim resultado As String = ""
+        Dim x As Integer = 0
+        Dim arreglo As Byte() = Nothing
+        Dim arregloTexto()
+
+
+        Try
+            'enunciado = New SqlCommand("select foto from Imagenes where Id_Foto='" & identificacion & "'", conexiones)
+            'respuesta = enunciado.ExecuteReader()
+
+            'While respuesta.Read
+            '    resultado = respuesta.Item("foto")
+            'End While
+
+            'Llena un arreglo de Texto con los datos de la consulta separados por coma"'
+            arregloTexto = CharLogo.Split(",")
+
+            'Redimenciona el tamaño del arreglo de bytes'
+            ReDim arreglo(arregloTexto.Length - 1)
+
+            'Recorre el arreglo para llenar el arreglo de Bytes con el arreglo de la consulta'
+
+            For x = 0 To arregloTexto.Length - 1
+                If arregloTexto(x).Equals("") = False Then
+                    arreglo(x) = arregloTexto(x)
+                End If
+            Next
+
+
+        Catch ex As Exception
+
+        End Try
+
+        Return arreglo
     End Function
 
     'Public Function ConsecutivoTranformacion() As String
