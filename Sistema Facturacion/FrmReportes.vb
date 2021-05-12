@@ -1722,6 +1722,7 @@ Public Class FrmReportes
                 Me.ListBox.Items.Add("Reporte Vendedor x Clientes x Facturas")
                 Me.ListBox.Items.Add("Reporte de Ventas x Endoso al Credito")
                 Me.ListBox.Items.Add("Reporte de Ventas Exentas")
+                Me.ListBox.Items.Add("Reporte de Ordenes de Compra")
 
             Case "Reporte Cuentas x Cobrar"
                 Me.ListBox.Items.Add("Reporte de Saldo de Clientes")
@@ -1989,6 +1990,36 @@ Public Class FrmReportes
         Fecha2 = Me.DTPFechaFin.Value
         My.Application.DoEvents()
         Select Case Me.ListBox.Text
+
+            Case "Reporte de Ordenes de Compra"
+                Dim ArepReporteOrdenCompra As New ArepReporteOrdenCompra, Sqlstring As String
+                Dim DvProductos As DataView
+
+                If Dir(RutaLogo) <> "" Then
+                    ArepReporteOrdenCompra.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                End If
+                ArepReporteOrdenCompra.LblTitulo.Text = NombreEmpresa
+                ArepReporteOrdenCompra.LblDireccion.Text = DireccionEmpresa
+                ArepReporteOrdenCompra.LblRuc.Text = Ruc
+
+
+                If Me.CboProveedores.Text = "" And Me.CboProveedores2.Text = "" Then
+                    Sqlstring = "SELECT Detalle_Compras.Numero_Compra, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cod_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario, Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe, Detalle_Compras.TasaCambio, Detalle_Compras.id_Detalle_Transferencia, Detalle_Compras.Costo_Unitario, Detalle_Compras.Numero_Lote, Detalle_Compras.Fecha_Vence, Proveedor.Nombre_Proveedor, Proveedor.Cod_Proveedor FROM  Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra INNER JOIN  Proveedor ON Compras.Cod_Proveedor = Proveedor.Cod_Proveedor   " & _
+                                                                  "WHERE (Compras.Tipo_Compra = 'Orden de Compra') AND (Detalle_Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(Me.DTPFechaIni.Value, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Me.DTPFechaFin.Value, "yyyy-MM-dd") & "', 102)) ORDER BY Proveedor.Cod_Proveedor, Detalle_Compras.Fecha_Compra"
+                Else
+                    Sqlstring = "SELECT Detalle_Compras.Numero_Compra, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cod_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario, Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe, Detalle_Compras.TasaCambio, Detalle_Compras.id_Detalle_Transferencia, Detalle_Compras.Costo_Unitario, Detalle_Compras.Numero_Lote, Detalle_Compras.Fecha_Vence, Proveedor.Nombre_Proveedor, Proveedor.Cod_Proveedor FROM  Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra INNER JOIN  Proveedor ON Compras.Cod_Proveedor = Proveedor.Cod_Proveedor   " & _
+                                               "WHERE (Compras.Tipo_Compra = 'Orden de Compra') AND (Proveedor.Cod_Proveedor BETWEEN '" & Me.CboProveedores.Text & "' AND '" & Me.CboProveedores2.Text & "') AND (Detalle_Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(Me.DTPFechaIni.Value, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Me.DTPFechaFin.Value, "yyyy-MM-dd") & "', 102)) ORDER BY Proveedor.Cod_Proveedor, Detalle_Compras.Fecha_Compra"
+                End If
+               
+                SQL.ConnectionString = Conexion
+                SQL.SQL = Sqlstring
+
+                Dim ViewerForm As New FrmViewer()
+                ViewerForm.arvMain.Document = ArepReporteOrdenCompra.Document
+                My.Application.DoEvents()
+                ArepReporteOrdenCompra.DataSource = SQL
+                ArepReporteOrdenCompra.Run(False)
+                ViewerForm.Show()
 
             Case "Estado de Cuentas x Proveedor"
 
@@ -2406,29 +2437,29 @@ Public Class FrmReportes
 
 
 
-            Me.ProgressBar1.Visible = False
+                Me.ProgressBar1.Visible = False
 
 
-            DvProductos = New DataView(DataSet.Tables("TotalVentas"))
-            DvProductos.Sort = "Cod_Cliente,Fecha"
-            ArepEstadoCuentasProveedores.DataSource = DvProductos
+                DvProductos = New DataView(DataSet.Tables("TotalVentas"))
+                DvProductos.Sort = "Cod_Cliente,Fecha"
+                ArepEstadoCuentasProveedores.DataSource = DvProductos
 
-            ArepEstadoCuentasProveedores.TipoReporte = "Proveedor"
+                ArepEstadoCuentasProveedores.TipoReporte = "Proveedor"
 
-            Dim ViewerForm As New FrmViewer()
-            ViewerForm.arvMain.Document = ArepEstadoCuentasProveedores.Document
-            My.Application.DoEvents()
-            ArepEstadoCuentasProveedores.LblDesde.Text = "Desde " & Format(Me.DTPFechaIni.Value, "dd/MM/yyyy") & "   Hasta   " & Format(Me.DTPFechaFin.Value, "dd/MM/yyyy")
-            ArepEstadoCuentasProveedores.TxtSaldoInicial.Text = Format(SaldoInicial, "##,##0.00")
-            ArepEstadoCuentasProveedores.LblImpreso.Text = "Impreso: " & Format(Now, "Long Date")
-            ArepEstadoCuentasProveedores.DataSource = DataSet.Tables("TotalVentas")
-            ArepEstadoCuentasProveedores.Run(False)
+                Dim ViewerForm As New FrmViewer()
+                ViewerForm.arvMain.Document = ArepEstadoCuentasProveedores.Document
+                My.Application.DoEvents()
+                ArepEstadoCuentasProveedores.LblDesde.Text = "Desde " & Format(Me.DTPFechaIni.Value, "dd/MM/yyyy") & "   Hasta   " & Format(Me.DTPFechaFin.Value, "dd/MM/yyyy")
+                ArepEstadoCuentasProveedores.TxtSaldoInicial.Text = Format(SaldoInicial, "##,##0.00")
+                ArepEstadoCuentasProveedores.LblImpreso.Text = "Impreso: " & Format(Now, "Long Date")
+                ArepEstadoCuentasProveedores.DataSource = DataSet.Tables("TotalVentas")
+                ArepEstadoCuentasProveedores.Run(False)
 
-            ViewerForm.Show()
+                ViewerForm.Show()
 
-            Me.Label1.Visible = True
-            Me.DTPFechaIni.Visible = True
-            Me.GroupVendedor.Visible = True
+                Me.Label1.Visible = True
+                Me.DTPFechaIni.Visible = True
+                Me.GroupVendedor.Visible = True
 
 
             Case "Reporte de Saldo de Proveedores"
@@ -13249,6 +13280,11 @@ Public Class FrmReportes
         Me.ChkAgrupadoBodega.Visible = False
 
         Select Case ListBox.Text
+
+            Case "Reporte de Ordenes de Compra"
+                Me.GroupBox1.Visible = True
+                Me.GroupProveedores.Location = New Point(280, 123)
+                Me.GroupProveedores.Visible = True
 
             Case "Reporte de Historico de Saldo Proveedores"
                 Me.GroupBox1.Visible = True

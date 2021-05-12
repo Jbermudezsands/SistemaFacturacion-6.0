@@ -61,19 +61,27 @@ Public Class FrmFacturas
 
             My.Application.DoEvents()
 
-
+            TasaCambio = BuscaTasaCambio(DataSet.Tables("Clientes").Rows(i)("Fecha_Factura"))
 
             If Moneda = "Cordobas" Then
                 If DataSet.Tables("Clientes").Rows(i)("MonedaFactura") = "Cordobas" Then
                     TasaCambio = 1
                 Else
-                    TasaCambio = BuscaTasaCambio(DataSet.Tables("Clientes").Rows(i)("Fecha_Factura"))
+                    If TasaCambio <> 0 Then
+                        TasaCambio = BuscaTasaCambio(DataSet.Tables("Clientes").Rows(i)("Fecha_Factura"))
+                    Else
+                        TasaCambio = 1
+                    End If
                 End If
             Else
                 If DataSet.Tables("Clientes").Rows(i)("MonedaFactura") = "Dolares" Then
                     TasaCambio = 1
                 Else
-                    TasaCambio = 1 / BuscaTasaCambio(DataSet.Tables("Clientes").Rows(i)("Fecha_Factura"))
+                    If TasaCambio <> 0 Then
+                        TasaCambio = 1 / BuscaTasaCambio(DataSet.Tables("Clientes").Rows(i)("Fecha_Factura"))
+                    Else
+                        TasaCambio = 1
+                    End If
                 End If
             End If
 
@@ -284,6 +292,11 @@ Public Class FrmFacturas
             If Format(Saldo, "##,##0.00") = "0.00" Then
                 Dias = 0
             End If
+
+            If Dias < 0 Then
+                Dias = 0
+            End If
+
             MontoMora = Dias * Saldo * TasaInteres
             Total = Saldo + MontoMora
 

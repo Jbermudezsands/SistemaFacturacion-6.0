@@ -1,6 +1,8 @@
 Imports System.Data.SqlClient
 Imports System.Threading
 Imports System.IO
+Imports System.Drawing.Imaging
+
 
 Module Funciones
 
@@ -55,12 +57,17 @@ Module Funciones
         'si hay imagen
         Dim arreglo As Byte() = Nothing
         Dim foto As New FileStream(FrmConfigurar.TxtRutaLogo.Text, FileMode.OpenOrCreate, FileAccess.ReadWrite)
+        Dim eps As EncoderParameters = New EncoderParameters(1)
+        eps.Param(0) = New EncoderParameter(Encoder.Quality, 50)
+        Dim ici As ImageCodecInfo = GetEncoderInfo("image/jpeg")
+
         Try
             If Not Imagen Is Nothing Then
                 'variable de datos binarios en stream(flujo)
                 Dim Bin As New MemoryStream
                 'convertir a bytes
-                Imagen.Save(Bin, Imaging.ImageFormat.Jpeg)
+                'Imagen.Save(Bin, Imaging.ImageFormat.Jpeg)
+                Imagen.Save(Bin, ici, eps)
                 'retorna binario
                 arreglo = Bin.GetBuffer
             Else
@@ -71,6 +78,18 @@ Module Funciones
         End Try
         Return arreglo
     End Function
+    Public Function GetEncoderInfo(ByVal mimeType As String) As ImageCodecInfo
+        Dim j As Integer
+        Dim encoders As ImageCodecInfo()
+        encoders = ImageCodecInfo.GetImageEncoders()
+        For j = 0 To encoders.Length
+            If encoders(j).MimeType = mimeType Then
+                Return encoders(j)
+            End If
+        Next j
+        Return Nothing
+    End Function
+
 
     Public Function BytesToImagen(ByVal Imagen As Byte()) As Image
         Try
@@ -3430,12 +3449,14 @@ Module Funciones
 
 
 
-            '(Saldo)= -1.#INF Then
-            '           Saldo = 0
-            '       End If
+            'if (Saldo)= -1.#INF Then
+            '    Saldo = 0
+            'End If
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
+
+
             SQlUpdate = "UPDATE [Facturas] SET [MontoCredito] = " & Saldo * TasaCambio & " WHERE (Numero_Factura = '" & NumeroFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = 'Factura')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SQlUpdate, MiConexion)
@@ -10337,6 +10358,7 @@ Module Funciones
         'If TasaCambio = 0 Then
         '    TasaCambio = 1
         'End If
+
 
         BuscaTasaCambio = TasaCambio
     End Function

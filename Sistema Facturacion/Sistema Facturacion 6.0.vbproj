@@ -763,6 +763,12 @@
     <Compile Include="Reportes\ArepReporteIRProductor.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\ArepReporteOrdenCompra.Designer.vb">
+      <DependentUpon>ArepReporteOrdenCompra.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepReporteOrdenCompra.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\ArepResumenAlcaldias.Designer.vb">
       <DependentUpon>ArepResumenAlcaldias.vb</DependentUpon>
     </Compile>
@@ -2110,6 +2116,10 @@
     <EmbeddedResource Include="Reportes\ArepReporteIRProductor.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ArepReporteIRProductor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepReporteOrdenCompra.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepReporteOrdenCompra.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepReporteVentas.resx">
       <SubType>Designer</SubType>

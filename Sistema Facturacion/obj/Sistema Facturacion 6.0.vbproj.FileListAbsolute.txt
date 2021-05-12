@@ -538,3 +538,4 @@ D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\C1.C1Preview.2.
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\C1.Win.C1Preview.2.xml
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\Interop.MSDASC.dll
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\af-ZA\Sistema Facturacion 6.0.resources.dll
+D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepReporteOrdenCompra.resources

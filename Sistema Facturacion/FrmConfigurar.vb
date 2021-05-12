@@ -114,8 +114,8 @@ Public Class FrmConfigurar
         End If
 
         LogoImg = Me.ImgLogo.Image
-        'CharLogo = bytesToString(ImagenToBytes(LogoImg))
-        CharLogo = bytesToString(Imagen_A_Bytes(Me.TxtRutaLogo.Text))
+        CharLogo = bytesToString(ImagenToBytes(LogoImg))
+        'CharLogo = bytesToString(Imagen_A_Bytes(Me.TxtRutaLogo.Text))
 
         SqlDatos = "SELECT * FROM DatosEmpresa"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)

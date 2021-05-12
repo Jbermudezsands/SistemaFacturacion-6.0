@@ -192,7 +192,7 @@ Partial Class FrmFacturas
         'TxtPagado
         '
         Me.TxtPagado.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtPagado.Location = New System.Drawing.Point(494, 466)
+        Me.TxtPagado.Location = New System.Drawing.Point(493, 467)
         Me.TxtPagado.Name = "TxtPagado"
         Me.TxtPagado.ReadOnly = True
         Me.TxtPagado.Size = New System.Drawing.Size(60, 20)
@@ -203,7 +203,7 @@ Partial Class FrmFacturas
         '
         Me.Label10.AutoSize = True
         Me.Label10.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Label10.Location = New System.Drawing.Point(446, 469)
+        Me.Label10.Location = New System.Drawing.Point(445, 470)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(56, 13)
         Me.Label10.TabIndex = 177
@@ -314,7 +314,7 @@ Partial Class FrmFacturas
         'TxtIva
         '
         Me.TxtIva.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtIva.Location = New System.Drawing.Point(280, 466)
+        Me.TxtIva.Location = New System.Drawing.Point(306, 467)
         Me.TxtIva.Name = "TxtIva"
         Me.TxtIva.ReadOnly = True
         Me.TxtIva.Size = New System.Drawing.Size(60, 20)
@@ -325,7 +325,7 @@ Partial Class FrmFacturas
         '
         Me.LblIVA.AutoSize = True
         Me.LblIVA.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.LblIVA.Location = New System.Drawing.Point(251, 469)
+        Me.LblIVA.Location = New System.Drawing.Point(258, 470)
         Me.LblIVA.Name = "LblIVA"
         Me.LblIVA.Size = New System.Drawing.Size(42, 13)
         Me.LblIVA.TabIndex = 167
@@ -728,7 +728,7 @@ Partial Class FrmFacturas
         'TxtDescuento
         '
         Me.TxtDescuento.ForeColor = System.Drawing.Color.Black
-        Me.TxtDescuento.Location = New System.Drawing.Point(61, 44)
+        Me.TxtDescuento.Location = New System.Drawing.Point(64, 30)
         Me.TxtDescuento.Name = "TxtDescuento"
         Me.TxtDescuento.Size = New System.Drawing.Size(67, 20)
         Me.TxtDescuento.TabIndex = 199
@@ -739,7 +739,7 @@ Partial Class FrmFacturas
         '
         Me.Label14.AutoSize = True
         Me.Label14.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Label14.Location = New System.Drawing.Point(6, 46)
+        Me.Label14.Location = New System.Drawing.Point(9, 32)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(68, 13)
         Me.Label14.TabIndex = 198

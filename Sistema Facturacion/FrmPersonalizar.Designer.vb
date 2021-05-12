@@ -26,6 +26,7 @@ Partial Class FrmPersonalizar
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.ChkPedirCantEscaner = New System.Windows.Forms.CheckBox
         Me.GroupBox13 = New System.Windows.Forms.GroupBox
         Me.Button7 = New System.Windows.Forms.Button
         Me.Button4 = New System.Windows.Forms.Button
@@ -175,7 +176,6 @@ Partial Class FrmPersonalizar
         Me.Button8 = New System.Windows.Forms.Button
         Me.BindingInteres = New System.Windows.Forms.BindingSource(Me.components)
         Me.BindingMetodo = New System.Windows.Forms.BindingSource(Me.components)
-        Me.ChkPedirCantEscaner = New System.Windows.Forms.CheckBox
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -291,6 +291,16 @@ Partial Class FrmPersonalizar
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Configura"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'ChkPedirCantEscaner
+        '
+        Me.ChkPedirCantEscaner.AutoSize = True
+        Me.ChkPedirCantEscaner.Location = New System.Drawing.Point(25, 219)
+        Me.ChkPedirCantEscaner.Name = "ChkPedirCantEscaner"
+        Me.ChkPedirCantEscaner.Size = New System.Drawing.Size(169, 17)
+        Me.ChkPedirCantEscaner.TabIndex = 14
+        Me.ChkPedirCantEscaner.Text = "Pedir Cantidad con el Escaner"
+        Me.ChkPedirCantEscaner.UseVisualStyleBackColor = True
         '
         'GroupBox13
         '
@@ -1913,16 +1923,6 @@ Partial Class FrmPersonalizar
         Me.Button8.Text = "Salir"
         Me.Button8.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.Button8.UseVisualStyleBackColor = True
-        '
-        'ChkPedirCantEscaner
-        '
-        Me.ChkPedirCantEscaner.AutoSize = True
-        Me.ChkPedirCantEscaner.Location = New System.Drawing.Point(25, 219)
-        Me.ChkPedirCantEscaner.Name = "ChkPedirCantEscaner"
-        Me.ChkPedirCantEscaner.Size = New System.Drawing.Size(169, 17)
-        Me.ChkPedirCantEscaner.TabIndex = 14
-        Me.ChkPedirCantEscaner.Text = "Pedir Cantidad con el Escaner"
-        Me.ChkPedirCantEscaner.UseVisualStyleBackColor = True
         '
         'FrmPersonalizar
         '
