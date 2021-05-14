@@ -176,6 +176,7 @@ Partial Class MDIMain
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
         Me.TxtUsuario = New System.Windows.Forms.TextBox
+        Me.RibbonButton18 = New C1.Win.C1Ribbon.RibbonButton
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1157,6 +1158,7 @@ Partial Class MDIMain
         Me.RibbonGroup12.Items.Add(Me.RibbonConductor)
         Me.RibbonGroup12.Items.Add(Me.RibbonVehiculo)
         Me.RibbonGroup12.Items.Add(Me.RibbonButton2)
+        Me.RibbonGroup12.Items.Add(Me.RibbonButton18)
         Me.RibbonGroup12.Items.Add(Me.RibbonButton3)
         Me.RibbonGroup12.Items.Add(Me.RibbonButton17)
         Me.RibbonGroup12.Text = "Catalogo"
@@ -1410,6 +1412,14 @@ Partial Class MDIMain
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
         '
+        'RibbonButton18
+        '
+        Me.RibbonButton18.ID = "RibbonButton18"
+        Me.RibbonButton18.LargeImage = CType(resources.GetObject("RibbonButton18.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton18.SmallImage = CType(resources.GetObject("RibbonButton18.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton18.Text = "Evacuaciones"
+        Me.RibbonButton18.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
         'MDIMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1586,5 +1596,6 @@ Partial Class MDIMain
     Friend WithEvents RibbonGroup16 As C1.Win.C1Ribbon.RibbonGroup
     Friend WithEvents RibbonButton16 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton17 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButton18 As C1.Win.C1Ribbon.RibbonButton
 
 End Class
