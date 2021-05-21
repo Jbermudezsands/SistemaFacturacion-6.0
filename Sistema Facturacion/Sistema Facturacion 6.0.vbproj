@@ -1426,6 +1426,12 @@
     <Compile Include="FrmPagosFacturas.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmEvacuaciones.Designer.vb">
+      <DependentUpon>FrmEvacuaciones.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmEvacuaciones.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SplashScreen1.Designer.vb">
       <DependentUpon>SplashScreen1.vb</DependentUpon>
     </Compile>
@@ -1540,6 +1546,10 @@
     <EmbeddedResource Include="FrmEscolaridad.resx">
       <DependentUpon>FrmEscolaridad.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmEvacuaciones.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmEvacuaciones.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmFacturacionBascula.resx">
       <SubType>Designer</SubType>

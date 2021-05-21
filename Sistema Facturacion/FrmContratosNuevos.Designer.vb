@@ -49,6 +49,7 @@ Partial Class FrmContratosNuevos
         Me.Splitter1 = New System.Windows.Forms.Splitter
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.GroupBox5 = New System.Windows.Forms.GroupBox
+        Me.ChkContratoVariable2 = New System.Windows.Forms.CheckBox
         Me.CboCodigoBodega2 = New C1.Win.C1List.C1Combo
         Me.Label22 = New System.Windows.Forms.Label
         Me.ChkActivo2 = New System.Windows.Forms.CheckBox
@@ -68,6 +69,7 @@ Partial Class FrmContratosNuevos
         Me.CmbContrato2 = New System.Windows.Forms.ComboBox
         Me.Label17 = New System.Windows.Forms.Label
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.ChkContratoVariable = New System.Windows.Forms.CheckBox
         Me.CboCodigoBodega = New C1.Win.C1List.C1Combo
         Me.Label21 = New System.Windows.Forms.Label
         Me.ChkActivo = New System.Windows.Forms.CheckBox
@@ -93,8 +95,6 @@ Partial Class FrmContratosNuevos
         Me.TrueDBGridContrato2 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.GroupBox6 = New System.Windows.Forms.GroupBox
         Me.TrueDBGridContrato1 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.ChkContratoVariable = New System.Windows.Forms.CheckBox
-        Me.ChkContratoVariable2 = New System.Windows.Forms.CheckBox
         Me.GroupBox1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -429,6 +429,16 @@ Partial Class FrmContratosNuevos
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Servicio 2"
         '
+        'ChkContratoVariable2
+        '
+        Me.ChkContratoVariable2.AutoSize = True
+        Me.ChkContratoVariable2.Location = New System.Drawing.Point(161, 227)
+        Me.ChkContratoVariable2.Name = "ChkContratoVariable2"
+        Me.ChkContratoVariable2.Size = New System.Drawing.Size(64, 17)
+        Me.ChkContratoVariable2.TabIndex = 238
+        Me.ChkContratoVariable2.Text = "Variable"
+        Me.ChkContratoVariable2.UseVisualStyleBackColor = True
+        '
         'CboCodigoBodega2
         '
         Me.CboCodigoBodega2.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
@@ -638,6 +648,16 @@ Partial Class FrmContratosNuevos
         Me.GroupBox3.TabIndex = 0
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Servicio 1"
+        '
+        'ChkContratoVariable
+        '
+        Me.ChkContratoVariable.AutoSize = True
+        Me.ChkContratoVariable.Location = New System.Drawing.Point(169, 229)
+        Me.ChkContratoVariable.Name = "ChkContratoVariable"
+        Me.ChkContratoVariable.Size = New System.Drawing.Size(64, 17)
+        Me.ChkContratoVariable.TabIndex = 236
+        Me.ChkContratoVariable.Text = "Variable"
+        Me.ChkContratoVariable.UseVisualStyleBackColor = True
         '
         'CboCodigoBodega
         '
@@ -915,26 +935,6 @@ Partial Class FrmContratosNuevos
         Me.TrueDBGridContrato1.TabIndex = 165
         Me.TrueDBGridContrato1.Text = "C1TrueDBGrid1"
         Me.TrueDBGridContrato1.PropBag = resources.GetString("TrueDBGridContrato1.PropBag")
-        '
-        'ChkContratoVariable
-        '
-        Me.ChkContratoVariable.AutoSize = True
-        Me.ChkContratoVariable.Location = New System.Drawing.Point(169, 229)
-        Me.ChkContratoVariable.Name = "ChkContratoVariable"
-        Me.ChkContratoVariable.Size = New System.Drawing.Size(64, 17)
-        Me.ChkContratoVariable.TabIndex = 236
-        Me.ChkContratoVariable.Text = "Variable"
-        Me.ChkContratoVariable.UseVisualStyleBackColor = True
-        '
-        'ChkContratoVariable2
-        '
-        Me.ChkContratoVariable2.AutoSize = True
-        Me.ChkContratoVariable2.Location = New System.Drawing.Point(161, 227)
-        Me.ChkContratoVariable2.Name = "ChkContratoVariable2"
-        Me.ChkContratoVariable2.Size = New System.Drawing.Size(64, 17)
-        Me.ChkContratoVariable2.TabIndex = 238
-        Me.ChkContratoVariable2.Text = "Variable"
-        Me.ChkContratoVariable2.UseVisualStyleBackColor = True
         '
         'FrmContratosNuevos
         '

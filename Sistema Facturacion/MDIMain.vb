@@ -1253,4 +1253,9 @@ Public Class MDIMain
     Private Sub RibbonButton3_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton3.Click
 
     End Sub
+
+    Private Sub RibbonButton18_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton18.Click
+        My.Forms.FrmEvacuaciones.MdiParent = Me
+        My.Forms.FrmEvacuaciones.Show()
+    End Sub
 End Class

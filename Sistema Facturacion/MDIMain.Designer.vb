@@ -147,6 +147,7 @@ Partial Class MDIMain
         Me.RibbonConductor = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonVehiculo = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton2 = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonButton18 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton3 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton17 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonGroup16 = New C1.Win.C1Ribbon.RibbonGroup
@@ -176,7 +177,6 @@ Partial Class MDIMain
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
         Me.TxtUsuario = New System.Windows.Forms.TextBox
-        Me.RibbonButton18 = New C1.Win.C1Ribbon.RibbonButton
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1187,6 +1187,14 @@ Partial Class MDIMain
         Me.RibbonButton2.Text = "Contratos"
         Me.RibbonButton2.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
+        'RibbonButton18
+        '
+        Me.RibbonButton18.ID = "RibbonButton18"
+        Me.RibbonButton18.LargeImage = CType(resources.GetObject("RibbonButton18.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton18.SmallImage = CType(resources.GetObject("RibbonButton18.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton18.Text = "Evacuaciones"
+        Me.RibbonButton18.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
         'RibbonButton3
         '
         Me.RibbonButton3.ID = "RibbonButton3"
@@ -1411,14 +1419,6 @@ Partial Class MDIMain
         Me.TxtUsuario.TabIndex = 15
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
-        '
-        'RibbonButton18
-        '
-        Me.RibbonButton18.ID = "RibbonButton18"
-        Me.RibbonButton18.LargeImage = CType(resources.GetObject("RibbonButton18.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton18.SmallImage = CType(resources.GetObject("RibbonButton18.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton18.Text = "Evacuaciones"
-        Me.RibbonButton18.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'MDIMain
         '
