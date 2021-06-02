@@ -10980,7 +10980,7 @@ Module Funciones
         End If
 
         Existencia = Existencia + UnidadComprada - DevolucionCompra - UnidadFacturada - SalidaBodega + DevolucionFactura - TransferenciaEnviada + TransferenciaRecibida
-        BuscaExistenciaBodega = Existencia
+        BuscaExistenciaBodega = Format(Existencia, "####0.0000")
     End Function
     Public Function BuscaExistenciaBodegaLote(ByVal CodigoProducto As String, ByVal CodigoBodega As String, ByVal NumeroLote As String) As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)

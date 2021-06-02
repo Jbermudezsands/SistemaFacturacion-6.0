@@ -39,6 +39,14 @@ Public Class FrmEvacuaciones
         Next
 
 
+        Sqlstring = "SELECT idTipoContrato, TipoContrato, Activo FROM TipoContrato WHERE (Activo = 1)"
+        DataAdapter = New SqlClient.SqlDataAdapter(Sqlstring, MiConexion)
+        DataAdapter.Fill(DataSet, "TipoContrato")
+        If DataSet.Tables("TipoContrato").Rows.Count <> 0 Then
+            Me.CmbContrato1.Items.Add(DataSet.Tables("TipoContrato").Rows(0)("TipoContrato"))
+        End If
+
+
     End Sub
 
     Private Sub BtnSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSalir.Click

@@ -38,6 +38,9 @@ Partial Class FrmEvacuaciones
         Me.BtnActualizar = New System.Windows.Forms.Button
         Me.BtnVer = New System.Windows.Forms.Button
         Me.BtnSalir = New System.Windows.Forms.Button
+        Me.CmbContrato1 = New System.Windows.Forms.ComboBox
+        Me.Label5 = New System.Windows.Forms.Label
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -101,6 +104,9 @@ Partial Class FrmEvacuaciones
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.ProgressBar1)
+        Me.GroupBox1.Controls.Add(Me.CmbContrato1)
+        Me.GroupBox1.Controls.Add(Me.Label5)
         Me.GroupBox1.Controls.Add(Me.TxtNumNomina)
         Me.GroupBox1.Controls.Add(Me.Label7)
         Me.GroupBox1.Controls.Add(Me.Button1)
@@ -159,7 +165,7 @@ Partial Class FrmEvacuaciones
         Me.CmdBorraLinea.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.CmdBorraLinea.Location = New System.Drawing.Point(-4, -1)
         Me.CmdBorraLinea.Name = "CmdBorraLinea"
-        Me.CmdBorraLinea.Size = New System.Drawing.Size(1218, 60)
+        Me.CmdBorraLinea.Size = New System.Drawing.Size(1233, 60)
         Me.CmdBorraLinea.TabIndex = 258
         Me.CmdBorraLinea.TabStop = False
         '
@@ -169,11 +175,11 @@ Partial Class FrmEvacuaciones
         Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label9.Location = New System.Drawing.Point(392, 22)
+        Me.Label9.Location = New System.Drawing.Point(435, 24)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(138, 13)
+        Me.Label9.Size = New System.Drawing.Size(290, 13)
         Me.Label9.TabIndex = 260
-        Me.Label9.Text = "REGISTRO DE VIAJES"
+        Me.Label9.Text = "REGISTRO DE VIAJES CONTRATOS VARIABLES"
         '
         'BtnProcesar
         '
@@ -254,11 +260,36 @@ Partial Class FrmEvacuaciones
         Me.BtnSalir.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.BtnSalir.UseVisualStyleBackColor = True
         '
+        'CmbContrato1
+        '
+        Me.CmbContrato1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbContrato1.FormattingEnabled = True
+        Me.CmbContrato1.Location = New System.Drawing.Point(84, 51)
+        Me.CmbContrato1.Name = "CmbContrato1"
+        Me.CmbContrato1.Size = New System.Drawing.Size(121, 21)
+        Me.CmbContrato1.TabIndex = 261
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(9, 56)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(69, 13)
+        Me.Label5.TabIndex = 260
+        Me.Label5.Text = "Tipo Servicio"
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(269, 51)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(329, 23)
+        Me.ProgressBar1.TabIndex = 262
+        '
         'FrmEvacuaciones
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1241, 527)
+        Me.ClientSize = New System.Drawing.Size(1207, 527)
         Me.Controls.Add(Me.BtnProcesar)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button3)
@@ -301,4 +332,7 @@ Partial Class FrmEvacuaciones
     Friend WithEvents BtnActualizar As System.Windows.Forms.Button
     Friend WithEvents BtnVer As System.Windows.Forms.Button
     Friend WithEvents BtnSalir As System.Windows.Forms.Button
+    Friend WithEvents CmbContrato1 As System.Windows.Forms.ComboBox
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
 End Class
