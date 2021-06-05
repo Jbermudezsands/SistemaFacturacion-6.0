@@ -77,11 +77,11 @@ Partial Class FrmImportacion
         Me.TabPage3 = New System.Windows.Forms.TabPage
         Me.TabPage4 = New System.Windows.Forms.TabPage
         Me.TabPage5 = New System.Windows.Forms.TabPage
-        Me.TextBox2 = New System.Windows.Forms.TextBox
+        Me.TxtRutaContratos = New System.Windows.Forms.TextBox
         Me.Label8 = New System.Windows.Forms.Label
         Me.C1Button6 = New C1.Win.C1Input.C1Button
         Me.C1Button7 = New C1.Win.C1Input.C1Button
-        Me.C1TrueDBGrid1 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.TrueDBGridContratos = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -103,7 +103,7 @@ Partial Class FrmImportacion
         Me.TabPage3.SuspendLayout()
         Me.TabPage4.SuspendLayout()
         Me.TabPage5.SuspendLayout()
-        CType(Me.C1TrueDBGrid1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TrueDBGridContratos, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'PictureBox2
@@ -742,11 +742,11 @@ Partial Class FrmImportacion
         '
         'TabPage5
         '
-        Me.TabPage5.Controls.Add(Me.TextBox2)
+        Me.TabPage5.Controls.Add(Me.TxtRutaContratos)
         Me.TabPage5.Controls.Add(Me.Label8)
         Me.TabPage5.Controls.Add(Me.C1Button6)
         Me.TabPage5.Controls.Add(Me.C1Button7)
-        Me.TabPage5.Controls.Add(Me.C1TrueDBGrid1)
+        Me.TabPage5.Controls.Add(Me.TrueDBGridContratos)
         Me.TabPage5.Location = New System.Drawing.Point(4, 22)
         Me.TabPage5.Name = "TabPage5"
         Me.TabPage5.Padding = New System.Windows.Forms.Padding(3)
@@ -755,13 +755,13 @@ Partial Class FrmImportacion
         Me.TabPage5.Text = "Contratos"
         Me.TabPage5.UseVisualStyleBackColor = True
         '
-        'TextBox2
+        'TxtRutaContratos
         '
-        Me.TextBox2.Enabled = False
-        Me.TextBox2.Location = New System.Drawing.Point(6, 44)
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(667, 20)
-        Me.TextBox2.TabIndex = 132
+        Me.TxtRutaContratos.Enabled = False
+        Me.TxtRutaContratos.Location = New System.Drawing.Point(6, 44)
+        Me.TxtRutaContratos.Name = "TxtRutaContratos"
+        Me.TxtRutaContratos.Size = New System.Drawing.Size(667, 20)
+        Me.TxtRutaContratos.TabIndex = 132
         '
         'Label8
         '
@@ -800,23 +800,23 @@ Partial Class FrmImportacion
         Me.C1Button7.UseVisualStyleBackColor = True
         Me.C1Button7.VisualStyleBaseStyle = C1.Win.C1Input.VisualStyle.Office2007Blue
         '
-        'C1TrueDBGrid1
+        'TrueDBGridContratos
         '
-        Me.C1TrueDBGrid1.AllowUpdate = False
-        Me.C1TrueDBGrid1.AlternatingRows = True
-        Me.C1TrueDBGrid1.FilterBar = True
-        Me.C1TrueDBGrid1.GroupByCaption = "Drag a column header here to group by that column"
-        Me.C1TrueDBGrid1.Images.Add(CType(resources.GetObject("C1TrueDBGrid1.Images"), System.Drawing.Image))
-        Me.C1TrueDBGrid1.Location = New System.Drawing.Point(6, 91)
-        Me.C1TrueDBGrid1.Name = "C1TrueDBGrid1"
-        Me.C1TrueDBGrid1.PreviewInfo.Location = New System.Drawing.Point(0, 0)
-        Me.C1TrueDBGrid1.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.C1TrueDBGrid1.PreviewInfo.ZoomFactor = 75
-        Me.C1TrueDBGrid1.PrintInfo.PageSettings = CType(resources.GetObject("C1TrueDBGrid1.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.C1TrueDBGrid1.Size = New System.Drawing.Size(892, 267)
-        Me.C1TrueDBGrid1.TabIndex = 128
-        Me.C1TrueDBGrid1.Text = "C1TrueDBGrid1"
-        Me.C1TrueDBGrid1.PropBag = resources.GetString("C1TrueDBGrid1.PropBag")
+        Me.TrueDBGridContratos.AllowUpdate = False
+        Me.TrueDBGridContratos.AlternatingRows = True
+        Me.TrueDBGridContratos.FilterBar = True
+        Me.TrueDBGridContratos.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TrueDBGridContratos.Images.Add(CType(resources.GetObject("TrueDBGridContratos.Images"), System.Drawing.Image))
+        Me.TrueDBGridContratos.Location = New System.Drawing.Point(6, 91)
+        Me.TrueDBGridContratos.Name = "TrueDBGridContratos"
+        Me.TrueDBGridContratos.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TrueDBGridContratos.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TrueDBGridContratos.PreviewInfo.ZoomFactor = 75
+        Me.TrueDBGridContratos.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridContratos.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TrueDBGridContratos.Size = New System.Drawing.Size(892, 267)
+        Me.TrueDBGridContratos.TabIndex = 128
+        Me.TrueDBGridContratos.Text = "C1TrueDBGrid1"
+        Me.TrueDBGridContratos.PropBag = resources.GetString("TrueDBGridContratos.PropBag")
         '
         'FrmImportacion
         '
@@ -862,7 +862,7 @@ Partial Class FrmImportacion
         Me.TabPage4.ResumeLayout(False)
         Me.TabPage5.ResumeLayout(False)
         Me.TabPage5.PerformLayout()
-        CType(Me.C1TrueDBGrid1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TrueDBGridContratos, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -922,8 +922,8 @@ Partial Class FrmImportacion
     Friend WithEvents OptProveedores As System.Windows.Forms.RadioButton
     Friend WithEvents OptClientes As System.Windows.Forms.RadioButton
     Friend WithEvents TabPage5 As System.Windows.Forms.TabPage
-    Friend WithEvents C1TrueDBGrid1 As C1.Win.C1TrueDBGrid.C1TrueDBGrid
-    Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
+    Friend WithEvents TrueDBGridContratos As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents TxtRutaContratos As System.Windows.Forms.TextBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents C1Button6 As C1.Win.C1Input.C1Button
     Friend WithEvents C1Button7 As C1.Win.C1Input.C1Button

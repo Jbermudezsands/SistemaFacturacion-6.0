@@ -10538,7 +10538,7 @@ Module Funciones
         End If
 
         Existencia = Existencia + UnidadComprada - DevolucionCompra - UnidadFacturada + DevolucionFactura - TransferenciaEnviada + TransferenciaRecibida
-        BuscaExistencia = Existencia
+        BuscaExistencia = Format(Existencia, "####0.0000")
     End Function
     Public Function BuscaExistenciaBodegaBascula(ByVal CodigoProducto As String, ByVal CodigoBodega As String) As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -10759,7 +10759,7 @@ Module Funciones
         End If
 
         Existencia = Existencia + UnidadComprada - DevolucionCompra - UnidadFacturada - SalidaBodega + DevolucionFactura - TransferenciaEnviada + TransferenciaRecibida
-        BuscaExistenciaBodegaBascula = Existencia
+        BuscaExistenciaBodegaBascula = Format(Existencia, "####0.0000")
     End Function
     Public Function BuscaExistenciaBodega(ByVal CodigoProducto As String, ByVal CodigoBodega As String) As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -11098,7 +11098,7 @@ Module Funciones
 
 
         Existencia = UnidadComprada - DevolucionCompra - UnidadFacturada - SalidaBodega + DevolucionFactura - TransferenciaEnviada + TransferenciaRecibida
-        BuscaExistenciaBodegaLote = Existencia
+        BuscaExistenciaBodegaLote = Format(Existencia, "####0.0000")
     End Function
 
     Public Function BuscaExistenciaLoteTotal(ByVal CodigoProducto As String, ByVal NombreLote As String, ByVal CodigoBodega As String) As Double
@@ -11223,7 +11223,7 @@ Module Funciones
 
 
         Existencia = Existencia + UnidadComprada - DevolucionCompra - UnidadFacturada - SalidaBodega + DevolucionFactura - TransferenciaEnviada + TransferenciaRecibida
-        BuscaExistenciaLoteTotal = Existencia
+        BuscaExistenciaLoteTotal = Format(Existencia, "####0.0000")
     End Function
 
     Public Function BuscaExistenciaLote(ByVal CodigoProducto As String, ByVal CodigoBodega As String) As Double
@@ -11331,7 +11331,7 @@ Module Funciones
 
 
         Existencia = Existencia + UnidadComprada - DevolucionCompra - UnidadFacturada - SalidaBodega + DevolucionFactura - TransferenciaEnviada + TransferenciaRecibida
-        BuscaExistenciaLote = Existencia
+        BuscaExistenciaLote = Format(Existencia, "####0.0000")
     End Function
 
 
@@ -11368,7 +11368,7 @@ Module Funciones
         End If
 
 
-        BuscaCompraAcumulada = UnidadComprada + DevolucionFactura
+        BuscaCompraAcumulada = Format(UnidadComprada + DevolucionFactura, "####0.0000")
 
 
     End Function
@@ -11437,9 +11437,9 @@ Module Funciones
         End If
 
 
-        BuscaCompraBodega = UnidadComprada + DevolucionFactura + UnidadTransferencia
-        MontoEntrada = ImporteCompra + ImporteTransferencia + ImporteVenta
-        MontoEntradaD = ImporteCompraD + ImporteTransferenciaD + ImporteVentaD
+        BuscaCompraBodega = Format(UnidadComprada + DevolucionFactura + UnidadTransferencia, "####0.0000")
+        MontoEntrada = Format(ImporteCompra + ImporteTransferencia + ImporteVenta, "####0.0000")
+        MontoEntradaD = Format(ImporteCompraD + ImporteTransferenciaD + ImporteVentaD, "####0.0000")
 
     End Function
     Public Function BuscaInventarioInicialBodegaMov(ByVal CodigoProducto As String, ByVal FechaIni As String, ByVal FechaFin As String, ByVal CodBodega As String) As Double
@@ -11547,8 +11547,8 @@ Module Funciones
         End If
 
 
-        BuscaInventarioInicialBodegaMov = UnidadComprada + DevolucionFactura - UnidadVendida - SalidaBodega
-        MontoInicial = ImporteCompra + ImporteDevVenta - ImporteSalida - ImporteDevCompra - ImporteVenta
+        BuscaInventarioInicialBodegaMov = Format(UnidadComprada + DevolucionFactura - UnidadVendida - SalidaBodega, "####0.0000")
+        MontoInicial = Format(ImporteCompra + ImporteDevVenta - ImporteSalida - ImporteDevCompra - ImporteVenta, "####0.0000")
 
     End Function
 
@@ -11689,9 +11689,9 @@ Module Funciones
         End If
 
 
-        ConsultaInventarioInicialBodega = UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra
-        MontoInicial = ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada
-        MontoInicialD = ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD
+        ConsultaInventarioInicialBodega = Format(UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra, "####0.0000")
+        MontoInicial = Format(ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada, "####0.0000")
+        MontoInicialD = Format(ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD, "####0.0000")
 
     End Function
 
@@ -11840,9 +11840,9 @@ Module Funciones
         End If
 
 
-        BuscaInventarioInicialBodega = UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra
-        MontoInicial = ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada
-        MontoInicialD = ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD
+        BuscaInventarioInicialBodega = Format(UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra, "####0.0000")
+        MontoInicial = Format(ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada, "####0.0000")
+        MontoInicialD = Format(ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD, "####0.0000")
 
     End Function
     Public Function BuscaInventarioInicialProyectos(ByVal CodigoProyecto As String, ByVal FechaIni As String, ByVal CodBodega As String, ByVal CodBodega2 As String) As Double
@@ -11983,9 +11983,9 @@ Module Funciones
         'MontoInicial = ImporteCompra + ImporteDevVenta - ImporteSalida - ImporteDevCompra - ImporteVenta
         'MontoInicialD = ImporteCompraD + ImporteDevVentaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD
 
-        BuscaInventarioInicialProyectos = UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra
-        MontoInicial = ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada
-        MontoInicialD = ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD
+        BuscaInventarioInicialProyectos = Format(UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra, "####0.0000")
+        MontoInicial = Format(ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada, "####0.0000")
+        MontoInicialD = Format(ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD, "####0.0000")
 
 
     End Function
@@ -12154,9 +12154,9 @@ Module Funciones
         'MontoInicial = ImporteCompra + ImporteDevVenta - ImporteSalida - ImporteDevCompra - ImporteVenta
         'MontoInicialD = ImporteCompraD + ImporteDevVentaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD
 
-        BuscaInventarioInicialLote = UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra
-        MontoInicial = ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada
-        MontoInicialD = ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD
+        BuscaInventarioInicialLote = Format(UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra, "####0.0000")
+        MontoInicial = Format(ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada, "####0.0000")
+        MontoInicialD = Format(ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD, "####0.0000")
 
 
     End Function
@@ -12328,9 +12328,9 @@ Module Funciones
         'MontoInicial = ImporteCompra + ImporteDevVenta - ImporteSalida - ImporteDevCompra - ImporteVenta
         'MontoInicialD = ImporteCompraD + ImporteDevVentaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD
 
-        BuscaInventarioInicialEntreBodegaLote = UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra
-        MontoInicial = ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada
-        MontoInicialD = ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD
+        BuscaInventarioInicialEntreBodegaLote = Format(UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra, "####0.0000")
+        MontoInicial = Format(ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada, "####0.0000")
+        MontoInicialD = Format(ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD, "####0.0000")
 
 
     End Function
@@ -12478,9 +12478,9 @@ Module Funciones
         'MontoInicial = ImporteCompra + ImporteDevVenta - ImporteSalida - ImporteDevCompra - ImporteVenta
         'MontoInicialD = ImporteCompraD + ImporteDevVentaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD
 
-        BuscaInventarioInicialEntreBodega = UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra
-        MontoInicial = ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada
-        MontoInicialD = ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD
+        BuscaInventarioInicialEntreBodega = Format(UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra, "####0.0000")
+        MontoInicial = Format(ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada, "####0.0000")
+        MontoInicialD = Format(ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD, "####0.0000")
 
 
     End Function
@@ -12612,9 +12612,9 @@ Module Funciones
         End If
 
 
-        BuscaInventarioInicialProyectos = UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra
-        MontoInicial = ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada
-        MontoInicialD = ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD
+        BuscaInventarioInicialProyectos = Format(UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra, "####0.0000")
+        MontoInicial = Format(ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada, "####0.0000")
+        MontoInicialD = Format(ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD, "####0.0000")
 
     End Function
     Public Function BuscaInventarioInicial(ByVal CodigoProducto As String, ByVal FechaIni As String) As Double
@@ -12746,9 +12746,9 @@ Module Funciones
         End If
 
 
-        BuscaInventarioInicial = UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra
-        MontoInicial = ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada
-        MontoInicialD = ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD
+        BuscaInventarioInicial = Format(UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra, "####0.0000")
+        MontoInicial = Format(ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada, "####0.0000")
+        MontoInicialD = Format(ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD, "####0.0000")
 
     End Function
 
@@ -13028,9 +13028,9 @@ Module Funciones
         End If
 
 
-        BuscaVenta = UnidadComprada + DevolucionFactura + SalidaBodega + UnidadTransferencia
-        MontoSalida = ImporteCompra + ImporteDevFactura + ImporteSalida + ImporteTransferencia
-        MontoSalidaD = ImporteCompraD + ImporteDevFacturaD + ImporteSalidaD + ImporteTransferenciaD
+        BuscaVenta = Format(UnidadComprada + DevolucionFactura + SalidaBodega + UnidadTransferencia, "####0.0000")
+        MontoSalida = Format(ImporteCompra + ImporteDevFactura + ImporteSalida + ImporteTransferencia, "####0.0000")
+        MontoSalidaD = Format(ImporteCompraD + ImporteDevFacturaD + ImporteSalidaD + ImporteTransferenciaD, "####0.0000")
 
     End Function
     Public Function ExistenciaProductoFecha(ByVal CodigoProducto As String, ByVal FechaBusca As Date) As Double
@@ -13067,7 +13067,7 @@ Module Funciones
             iPosicionFila = iPosicionFila + 1
         Loop
 
-        ExistenciaProductoFecha = Existencia
+        ExistenciaProductoFecha = Format(Existencia, "####0.0000")
     End Function
     Public Function ExistenciaProducto(ByVal CodigoProducto As String) As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -13102,7 +13102,7 @@ Module Funciones
             iPosicionFila = iPosicionFila + 1
         Loop
 
-        ExistenciaProducto = Existencia
+        ExistenciaProducto = Format(Existencia, "####0.0000")
     End Function
     Public Function BuscaProducto(ByVal CodProducto As String, ByVal CodBodega As String) As Boolean
         Dim SqlBodega As String

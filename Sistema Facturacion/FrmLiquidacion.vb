@@ -431,9 +431,8 @@ Public Class FrmLiquidacion
         '/////////////////////////////SUMO LOS TOTALES /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        TotalGastos = CDbl(Me.TxtSeguro.Text) + CDbl(Me.TxtTransporte.Text) + CDbl(Me.TxtAlmacen.Text) + CDbl(Me.TxtFletes.Text) + CDbl(Me.TxtAgente.Text) + CDbl(Me.TxtFletesInternos.Text) + CDbl(Me.TxtCustodio.Text) + CDbl(Me.TxtGastosAduana.Text) + CDbl(Me.TxtOtrosGastos.Text)
-
-        GastosImpuestos = CDbl(Me.TxtSeguro.Text) + CDbl(Me.TxtFletes.Text) + CDbl(Me.TxtGastosAduana.Text)
+        TotalGastos = CDbl(Me.TxtSeguro.Text) + CDbl(Me.TxtTransporte.Text) + CDbl(Me.TxtAlmacen.Text) + CDbl(Me.TxtFletes.Text) + CDbl(Me.TxtAgente.Text) + CDbl(Me.TxtFletesInternos.Text) + CDbl(Me.TxtCustodio.Text) + CDbl(Me.TxtGastosAduana.Text) + CDbl(Me.TxtOtrosGastos.Text) + CDbl(Me.TxtTSI.Text) + CDbl(Me.TxtSSA.Text)
+        GastosImpuestos = CDbl(Me.TxtSeguro.Text) + CDbl(Me.TxtFletes.Text) + CDbl(Me.TxtGastosAduana.Text) + CDbl(Me.TxtTSI.Text) + CDbl(Me.TxtSSA.Text)
 
         PrecioCompra = 0
         FOB = 0
@@ -596,7 +595,7 @@ Public Class FrmLiquidacion
                 Tasacambio = 1
             End If
 
-            TotalGastos = CDbl(Me.TxtSeguro.Text) + CDbl(Me.TxtTransporte.Text) + CDbl(Me.TxtAlmacen.Text) + CDbl(Me.TxtFletes.Text) + CDbl(Me.TxtAgente.Text) + CDbl(Me.TxtFletesInternos.Text) + CDbl(Me.TxtCustodio.Text) + CDbl(Me.TxtGastosAduana.Text) + CDbl(Me.TxtOtrosGastos.Text)
+            TotalGastos = CDbl(Me.TxtSeguro.Text) + CDbl(Me.TxtTransporte.Text) + CDbl(Me.TxtAlmacen.Text) + CDbl(Me.TxtFletes.Text) + CDbl(Me.TxtAgente.Text) + CDbl(Me.TxtFletesInternos.Text) + CDbl(Me.TxtCustodio.Text) + CDbl(Me.TxtGastosAduana.Text) + CDbl(Me.TxtOtrosGastos.Text) + CDbl(Me.TxtTSI.Text) + CDbl(Me.TxtSSA.Text)
 
             If Me.CmbMoneda.Text = "Dolares" Then
                 If Me.CmbGastos.Text = "Cordobas" Then

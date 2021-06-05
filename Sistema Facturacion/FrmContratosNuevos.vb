@@ -528,7 +528,7 @@ Public Class FrmContratosNuevos
 
 
 
-        ConsecutivoCompra = BuscaConsecutivo("Transforma")
+        ConsecutivoCompra = BuscaConsecutivo("Numero_Contrato")
         NumeroCompra = Format(ConsecutivoCompra, "0000#")
         Me.LblNumeroContrato.Text = NumeroCompra
 
