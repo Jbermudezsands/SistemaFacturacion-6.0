@@ -3008,7 +3008,7 @@ Public Class FrmReportes
                 Dim oExcel As Object, oBook As Object, oSheet As Object, TestArray() As String = {"B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ"}
                 Dim MesArray() As String = {"Enero", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"}
 
-                Dim objExcel = New Microsoft.Office.Interop.Excel.Application, Moneda As String
+                Dim objExcel = New Microsoft.Office.Interop.Access.Dao.ReplicaTypeEnum, Moneda As String
 
 
                 SqlDatos = "SELECT * FROM DatosEmpresa"
@@ -3099,6 +3099,8 @@ Public Class FrmReportes
                 objExcel.ActiveSheet.Range("A5", "G5").HorizontalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
                 objExcel.ActiveSheet.Range("A5", "G5").VerticalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
                 objExcel.ActiveSheet.Range("A5", "G5").Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous
+
+
 
 
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)

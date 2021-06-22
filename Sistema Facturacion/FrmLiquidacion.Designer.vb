@@ -91,14 +91,14 @@ Partial Class FrmLiquidacion
         Me.Label19 = New System.Windows.Forms.Label
         Me.PictureBox3 = New System.Windows.Forms.PictureBox
         Me.GroupBox4 = New System.Windows.Forms.GroupBox
-        Me.TxtGastoImpuesto = New System.Windows.Forms.TextBox
-        Me.Label23 = New System.Windows.Forms.Label
-        Me.TxtTSI = New System.Windows.Forms.TextBox
-        Me.Label24 = New System.Windows.Forms.Label
+        Me.Label26 = New System.Windows.Forms.Label
+        Me.TxtSPI = New System.Windows.Forms.TextBox
         Me.TxtSSA = New System.Windows.Forms.TextBox
         Me.Label25 = New System.Windows.Forms.Label
-        Me.TxtSPI = New System.Windows.Forms.TextBox
-        Me.Label26 = New System.Windows.Forms.Label
+        Me.TxtTSI = New System.Windows.Forms.TextBox
+        Me.Label24 = New System.Windows.Forms.Label
+        Me.TxtGastoImpuesto = New System.Windows.Forms.TextBox
+        Me.Label23 = New System.Windows.Forms.Label
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -850,41 +850,23 @@ Partial Class FrmLiquidacion
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Boletin de Liquidacion"
         '
-        'TxtGastoImpuesto
+        'Label26
         '
-        Me.TxtGastoImpuesto.Location = New System.Drawing.Point(92, 24)
-        Me.TxtGastoImpuesto.Name = "TxtGastoImpuesto"
-        Me.TxtGastoImpuesto.Size = New System.Drawing.Size(58, 20)
-        Me.TxtGastoImpuesto.TabIndex = 29
-        Me.TxtGastoImpuesto.Text = "0.00"
-        Me.TxtGastoImpuesto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.Label26.AutoSize = True
+        Me.Label26.Location = New System.Drawing.Point(62, 98)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(28, 13)
+        Me.Label26.TabIndex = 35
+        Me.Label26.Text = "SPE"
         '
-        'Label23
+        'TxtSPI
         '
-        Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(10, 27)
-        Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(81, 13)
-        Me.Label23.TabIndex = 28
-        Me.Label23.Text = "Gasto Impuesto"
-        '
-        'TxtTSI
-        '
-        Me.TxtTSI.Location = New System.Drawing.Point(92, 71)
-        Me.TxtTSI.Name = "TxtTSI"
-        Me.TxtTSI.Size = New System.Drawing.Size(58, 20)
-        Me.TxtTSI.TabIndex = 31
-        Me.TxtTSI.Text = "0.00"
-        Me.TxtTSI.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'Label24
-        '
-        Me.Label24.AutoSize = True
-        Me.Label24.Location = New System.Drawing.Point(62, 74)
-        Me.Label24.Name = "Label24"
-        Me.Label24.Size = New System.Drawing.Size(24, 13)
-        Me.Label24.TabIndex = 30
-        Me.Label24.Text = "TSI"
+        Me.TxtSPI.Location = New System.Drawing.Point(92, 95)
+        Me.TxtSPI.Name = "TxtSPI"
+        Me.TxtSPI.Size = New System.Drawing.Size(58, 20)
+        Me.TxtSPI.TabIndex = 34
+        Me.TxtSPI.Text = "0.00"
+        Me.TxtSPI.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'TxtSSA
         '
@@ -904,23 +886,41 @@ Partial Class FrmLiquidacion
         Me.Label25.TabIndex = 32
         Me.Label25.Text = "SSA"
         '
-        'TxtSPI
+        'TxtTSI
         '
-        Me.TxtSPI.Location = New System.Drawing.Point(92, 95)
-        Me.TxtSPI.Name = "TxtSPI"
-        Me.TxtSPI.Size = New System.Drawing.Size(58, 20)
-        Me.TxtSPI.TabIndex = 34
-        Me.TxtSPI.Text = "0.00"
-        Me.TxtSPI.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.TxtTSI.Location = New System.Drawing.Point(92, 71)
+        Me.TxtTSI.Name = "TxtTSI"
+        Me.TxtTSI.Size = New System.Drawing.Size(58, 20)
+        Me.TxtTSI.TabIndex = 31
+        Me.TxtTSI.Text = "0.00"
+        Me.TxtTSI.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
-        'Label26
+        'Label24
         '
-        Me.Label26.AutoSize = True
-        Me.Label26.Location = New System.Drawing.Point(62, 98)
-        Me.Label26.Name = "Label26"
-        Me.Label26.Size = New System.Drawing.Size(28, 13)
-        Me.Label26.TabIndex = 35
-        Me.Label26.Text = "SPE"
+        Me.Label24.AutoSize = True
+        Me.Label24.Location = New System.Drawing.Point(62, 74)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(24, 13)
+        Me.Label24.TabIndex = 30
+        Me.Label24.Text = "TSI"
+        '
+        'TxtGastoImpuesto
+        '
+        Me.TxtGastoImpuesto.Location = New System.Drawing.Point(92, 24)
+        Me.TxtGastoImpuesto.Name = "TxtGastoImpuesto"
+        Me.TxtGastoImpuesto.Size = New System.Drawing.Size(58, 20)
+        Me.TxtGastoImpuesto.TabIndex = 29
+        Me.TxtGastoImpuesto.Text = "0.00"
+        Me.TxtGastoImpuesto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Location = New System.Drawing.Point(10, 27)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(81, 13)
+        Me.Label23.TabIndex = 28
+        Me.Label23.Text = "Gasto Impuesto"
         '
         'FrmLiquidacion
         '

@@ -22,6 +22,8 @@ Partial Class FrmRecepcion
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmRecepcion))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.ChkCaluloMermaOculto = New System.Windows.Forms.CheckBox
+        Me.ChkCalculoMerma = New System.Windows.Forms.CheckBox
         Me.BtnTara = New C1.Win.C1Input.C1Button
         Me.CmbTipoPesada = New System.Windows.Forms.ComboBox
         Me.C1Button2 = New C1.Win.C1Input.C1Button
@@ -115,6 +117,8 @@ Partial Class FrmRecepcion
         'GroupBox1
         '
         Me.GroupBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(27, Byte), Integer), CType(CType(94, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.GroupBox1.Controls.Add(Me.ChkCaluloMermaOculto)
+        Me.GroupBox1.Controls.Add(Me.ChkCalculoMerma)
         Me.GroupBox1.Controls.Add(Me.BtnTara)
         Me.GroupBox1.Controls.Add(Me.CmbTipoPesada)
         Me.GroupBox1.Controls.Add(Me.C1Button2)
@@ -131,10 +135,36 @@ Partial Class FrmRecepcion
         Me.GroupBox1.TabIndex = 225
         Me.GroupBox1.TabStop = False
         '
+        'ChkCaluloMermaOculto
+        '
+        Me.ChkCaluloMermaOculto.AutoSize = True
+        Me.ChkCaluloMermaOculto.Checked = True
+        Me.ChkCaluloMermaOculto.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.ChkCaluloMermaOculto.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ChkCaluloMermaOculto.ForeColor = System.Drawing.Color.White
+        Me.ChkCaluloMermaOculto.Location = New System.Drawing.Point(148, 140)
+        Me.ChkCaluloMermaOculto.Name = "ChkCaluloMermaOculto"
+        Me.ChkCaluloMermaOculto.Size = New System.Drawing.Size(135, 29)
+        Me.ChkCaluloMermaOculto.TabIndex = 251
+        Me.ChkCaluloMermaOculto.Text = "Reproceso"
+        Me.ChkCaluloMermaOculto.UseVisualStyleBackColor = True
+        '
+        'ChkCalculoMerma
+        '
+        Me.ChkCalculoMerma.AutoSize = True
+        Me.ChkCalculoMerma.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ChkCalculoMerma.ForeColor = System.Drawing.Color.White
+        Me.ChkCalculoMerma.Location = New System.Drawing.Point(305, 142)
+        Me.ChkCalculoMerma.Name = "ChkCalculoMerma"
+        Me.ChkCalculoMerma.Size = New System.Drawing.Size(182, 29)
+        Me.ChkCalculoMerma.TabIndex = 250
+        Me.ChkCalculoMerma.Text = "Calcular Merma"
+        Me.ChkCalculoMerma.UseVisualStyleBackColor = True
+        '
         'BtnTara
         '
         Me.BtnTara.Image = CType(resources.GetObject("BtnTara.Image"), System.Drawing.Image)
-        Me.BtnTara.Location = New System.Drawing.Point(480, 118)
+        Me.BtnTara.Location = New System.Drawing.Point(483, 75)
         Me.BtnTara.Name = "BtnTara"
         Me.BtnTara.Size = New System.Drawing.Size(39, 40)
         Me.BtnTara.TabIndex = 249
@@ -211,7 +241,7 @@ Partial Class FrmRecepcion
         Me.ChkTaraSaco.CheckState = System.Windows.Forms.CheckState.Checked
         Me.ChkTaraSaco.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ChkTaraSaco.ForeColor = System.Drawing.Color.White
-        Me.ChkTaraSaco.Location = New System.Drawing.Point(259, 126)
+        Me.ChkTaraSaco.Location = New System.Drawing.Point(305, 116)
         Me.ChkTaraSaco.Name = "ChkTaraSaco"
         Me.ChkTaraSaco.Size = New System.Drawing.Size(215, 29)
         Me.ChkTaraSaco.TabIndex = 239
@@ -1193,4 +1223,6 @@ Partial Class FrmRecepcion
     Friend WithEvents BtnTara As C1.Win.C1Input.C1Button
     Friend WithEvents TxtMerma As System.Windows.Forms.TextBox
     Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents ChkCalculoMerma As System.Windows.Forms.CheckBox
+    Friend WithEvents ChkCaluloMermaOculto As System.Windows.Forms.CheckBox
 End Class

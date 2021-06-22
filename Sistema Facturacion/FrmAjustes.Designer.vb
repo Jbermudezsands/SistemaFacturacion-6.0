@@ -19,7 +19,6 @@ Partial Class FrmAjustes
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmAjustes))
         Me.CboCodigoCliente = New C1.Win.C1List.C1Combo
         Me.LblCodigo = New System.Windows.Forms.Label
@@ -40,7 +39,6 @@ Partial Class FrmAjustes
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.ChkSseries = New System.Windows.Forms.CheckBox
         Me.CmbSerie = New C1.Win.C1List.C1Combo
-        Me.ListaImagenes = New System.Windows.Forms.ImageList(Me.components)
         CType(Me.CboCodigoCliente, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TxtMonto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
@@ -275,20 +273,6 @@ Partial Class FrmAjustes
         Me.CmbSerie.Visible = False
         Me.CmbSerie.PropBag = resources.GetString("CmbSerie.PropBag")
         '
-        'ListaImagenes
-        '
-        Me.ListaImagenes.ImageStream = CType(resources.GetObject("ListaImagenes.ImageStream"), System.Windows.Forms.ImageListStreamer)
-        Me.ListaImagenes.TransparentColor = System.Drawing.Color.Transparent
-        Me.ListaImagenes.Images.SetKeyName(0, "Circulo0.png")
-        Me.ListaImagenes.Images.SetKeyName(1, "Circulo1.png")
-        Me.ListaImagenes.Images.SetKeyName(2, "Circulo2.png")
-        Me.ListaImagenes.Images.SetKeyName(3, "Circulo3.png")
-        Me.ListaImagenes.Images.SetKeyName(4, "Circulo4.png")
-        Me.ListaImagenes.Images.SetKeyName(5, "Circulo5.png")
-        Me.ListaImagenes.Images.SetKeyName(6, "Circulo6.png")
-        Me.ListaImagenes.Images.SetKeyName(7, "Circulo7.png")
-        Me.ListaImagenes.Images.SetKeyName(8, "Circulo8.png")
-        '
         'FrmAjustes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -341,5 +325,4 @@ Partial Class FrmAjustes
     Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
     Friend WithEvents ChkSseries As System.Windows.Forms.CheckBox
     Friend WithEvents CmbSerie As C1.Win.C1List.C1Combo
-    Friend WithEvents ListaImagenes As System.Windows.Forms.ImageList
 End Class

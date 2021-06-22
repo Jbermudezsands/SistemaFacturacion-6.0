@@ -1032,13 +1032,26 @@ Module Funciones
 
 
 
-    Public Sub GrabaDetalleRecepcion(ByVal ConsecutivoRecepcion As String, ByVal CodigoProducto As String, ByVal Cantidad As Double, ByVal Linea As Double, ByVal Descripcion As String, ByVal Precio As Double, ByVal PesoKg As Double, ByVal TipoRecepcion As String, ByVal Tara As Double, ByVal PesoNetoKg As Double, ByVal QQ As Double, ByVal PorcientoMerma As Double, ByVal Merma As Double)
+    Public Sub GrabaDetalleRecepcion(ByVal ConsecutivoRecepcion As String, ByVal CodigoProducto As String, ByVal Cantidad As Double, ByVal Linea As Double, ByVal Descripcion As String, ByVal Precio As Double, ByVal PesoKg As Double, ByVal TipoRecepcion As String, ByVal Tara As Double, ByVal PesoNetoKg As Double, ByVal QQ As Double, ByVal PorcientoMerma As Double, ByVal Merma As Double, ByVal Merma2 As Double)
         Dim Sqldetalle As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim Fecha As String, MiConexion As New SqlClient.SqlConnection(Conexion), SqlUpdate As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, PesoNetoLb As Double
+        Dim PesoNetoKg2 As Double, PesoKg2 As Double, PesoNetoLb2 As Double
+
 
 
         PesoNetoLb = Format((PesoNetoKg / 46) * 100, "##,##0.0000")
+
+        If Merma2 <> 0 Then
+            PesoKg2 = PesoKg
+            PesoNetoKg2 = PesoNetoKg
+            PesoNetoLb2 = PesoNetoLb
+
+            PesoKg = PesoKg - Merma2
+
+        Else
+
+        End If
 
 
         Fecha = Format(CDate(FrmRecepcion.DTPFecha.Text), "yyyy-MM-dd")
@@ -1123,7 +1136,7 @@ Module Funciones
         Dim HumedadxDefecto As Double = 0, HumedadReal As Double = 0, Consecutivo As Double, NumeroRecibo As String, Cadena As String, CadenaDiv() As String
         Dim CodLugarAcopio As Double, Fecha As Date
         Dim Factor As Double = 0, IdEsdoFisico As Double = 0, IdCalidad As Double = 0, IdTipoLugarAcopio As Double = 0
-        Dim Merma As Double, PorcientoMerma As Double
+        Dim Merma As Double, PorcientoMerma As Double, MermaOculta As Double
 
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1266,6 +1279,16 @@ Module Funciones
         PorcientoMerma = PorcientoMermaProducto(CodigoProducto)
         Merma = PesoKg * PorcientoMerma
 
+        MermaOculta = 0
+        If My.Forms.FrmRecepcion.ChkCaluloMermaOculto.Checked = True Then
+            MermaOculta = Merma
+            Merma = 0
+        End If
+
+        If My.Forms.FrmRecepcion.ChkCalculoMerma.Checked = True Then
+            Merma = 0
+        End If
+
         '////////////////////////////////////BUSCO EL ESTADO FISICO ///////////////////////////////////////////////////
 
 
@@ -1329,7 +1352,7 @@ Module Funciones
         PesoNetoKg = Format((PesoKg - Tara - Merma), "##,##0.0000")
         PesoNetoLb = Format((PesoNetoKg / 46) * 100, "##,##0.0000")
 
-        GrabaDetalleRecepcion(NumeroRecepcion, CodigoProducto, Cantidad, Linea, Descripcion, Precio, PesoKg, FrmRecepcion.CboTipoRecepcion.Text, Tara, PesoNetoKg, QQ, PorcientoMerma, Merma)
+        GrabaDetalleRecepcion(NumeroRecepcion, CodigoProducto, Cantidad, Linea, Descripcion, Precio, PesoKg, FrmRecepcion.CboTipoRecepcion.Text, Tara, PesoNetoKg, QQ, PorcientoMerma, Merma, MermaOculta)
         ActualizaDetalleRecepcion(NumeroRecepcion, FrmRecepcion.CboTipoRecepcion.Text)
 
 

@@ -1185,11 +1185,17 @@ Public Class FrmRecepcion
         Button11_Click(sender, e)
     End Sub
 
-    Private Sub TrueDBGridComponentes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.Click
+
+    Private Sub ChkCaluloMermaOculto_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChkCaluloMermaOculto.CheckedChanged
+        If Me.ChkCaluloMermaOculto.Checked = True Then
+            Me.ChkCalculoMerma.Checked = False
+        End If
 
     End Sub
 
-    Private Sub TrueDBGridComponentes_ControlAdded(ByVal sender As Object, ByVal e As System.Windows.Forms.ControlEventArgs) Handles TrueDBGridComponentes.ControlAdded
-
+    Private Sub ChkCalculoMerma_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChkCalculoMerma.CheckedChanged
+        If Me.ChkCalculoMerma.Checked = True Then
+            Me.ChkCaluloMermaOculto.Checked = False
+        End If
     End Sub
 End Class

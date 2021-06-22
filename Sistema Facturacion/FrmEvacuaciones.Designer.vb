@@ -26,6 +26,9 @@ Partial Class FrmEvacuaciones
         Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker
         Me.Label3 = New System.Windows.Forms.Label
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
+        Me.CmbContrato1 = New System.Windows.Forms.ComboBox
+        Me.Label5 = New System.Windows.Forms.Label
         Me.TxtNumNomina = New System.Windows.Forms.TextBox
         Me.Label7 = New System.Windows.Forms.Label
         Me.Button1 = New System.Windows.Forms.Button
@@ -38,9 +41,6 @@ Partial Class FrmEvacuaciones
         Me.BtnActualizar = New System.Windows.Forms.Button
         Me.BtnVer = New System.Windows.Forms.Button
         Me.BtnSalir = New System.Windows.Forms.Button
-        Me.CmbContrato1 = New System.Windows.Forms.ComboBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -55,7 +55,7 @@ Partial Class FrmEvacuaciones
         Me.TDGridSolicitud.FilterBar = True
         Me.TDGridSolicitud.GroupByCaption = "Drag a column header here to group by that column"
         Me.TDGridSolicitud.Images.Add(CType(resources.GetObject("TDGridSolicitud.Images"), System.Drawing.Image))
-        Me.TDGridSolicitud.Location = New System.Drawing.Point(12, 171)
+        Me.TDGridSolicitud.Location = New System.Drawing.Point(12, 152)
         Me.TDGridSolicitud.Name = "TDGridSolicitud"
         Me.TDGridSolicitud.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TDGridSolicitud.PreviewInfo.Size = New System.Drawing.Size(0, 0)
@@ -116,9 +116,34 @@ Partial Class FrmEvacuaciones
         Me.GroupBox1.Controls.Add(Me.DTPFechaInicio)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 65)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(1072, 93)
+        Me.GroupBox1.Size = New System.Drawing.Size(1072, 86)
         Me.GroupBox1.TabIndex = 257
         Me.GroupBox1.TabStop = False
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(269, 51)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(329, 23)
+        Me.ProgressBar1.TabIndex = 262
+        '
+        'CmbContrato1
+        '
+        Me.CmbContrato1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbContrato1.FormattingEnabled = True
+        Me.CmbContrato1.Location = New System.Drawing.Point(84, 51)
+        Me.CmbContrato1.Name = "CmbContrato1"
+        Me.CmbContrato1.Size = New System.Drawing.Size(121, 21)
+        Me.CmbContrato1.TabIndex = 261
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(9, 56)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(69, 13)
+        Me.Label5.TabIndex = 260
+        Me.Label5.Text = "Tipo Servicio"
         '
         'TxtNumNomina
         '
@@ -187,7 +212,7 @@ Partial Class FrmEvacuaciones
         Me.BtnProcesar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnProcesar.Image = CType(resources.GetObject("BtnProcesar.Image"), System.Drawing.Image)
         Me.BtnProcesar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnProcesar.Location = New System.Drawing.Point(1090, 401)
+        Me.BtnProcesar.Location = New System.Drawing.Point(1090, 380)
         Me.BtnProcesar.Name = "BtnProcesar"
         Me.BtnProcesar.Size = New System.Drawing.Size(108, 56)
         Me.BtnProcesar.TabIndex = 266
@@ -200,7 +225,7 @@ Partial Class FrmEvacuaciones
         Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button2.Location = New System.Drawing.Point(1090, 171)
+        Me.Button2.Location = New System.Drawing.Point(1090, 150)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(108, 56)
         Me.Button2.TabIndex = 265
@@ -213,7 +238,7 @@ Partial Class FrmEvacuaciones
         Me.Button3.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
         Me.Button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button3.Location = New System.Drawing.Point(1090, 343)
+        Me.Button3.Location = New System.Drawing.Point(1090, 322)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(108, 56)
         Me.Button3.TabIndex = 264
@@ -226,7 +251,7 @@ Partial Class FrmEvacuaciones
         Me.BtnActualizar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnActualizar.Image = CType(resources.GetObject("BtnActualizar.Image"), System.Drawing.Image)
         Me.BtnActualizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnActualizar.Location = New System.Drawing.Point(1090, 286)
+        Me.BtnActualizar.Location = New System.Drawing.Point(1090, 265)
         Me.BtnActualizar.Name = "BtnActualizar"
         Me.BtnActualizar.Size = New System.Drawing.Size(108, 56)
         Me.BtnActualizar.TabIndex = 263
@@ -239,7 +264,7 @@ Partial Class FrmEvacuaciones
         Me.BtnVer.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnVer.Image = CType(resources.GetObject("BtnVer.Image"), System.Drawing.Image)
         Me.BtnVer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnVer.Location = New System.Drawing.Point(1090, 229)
+        Me.BtnVer.Location = New System.Drawing.Point(1090, 208)
         Me.BtnVer.Name = "BtnVer"
         Me.BtnVer.Size = New System.Drawing.Size(108, 56)
         Me.BtnVer.TabIndex = 262
@@ -252,7 +277,7 @@ Partial Class FrmEvacuaciones
         Me.BtnSalir.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnSalir.Image = CType(resources.GetObject("BtnSalir.Image"), System.Drawing.Image)
         Me.BtnSalir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnSalir.Location = New System.Drawing.Point(1088, 460)
+        Me.BtnSalir.Location = New System.Drawing.Point(1088, 439)
         Me.BtnSalir.Name = "BtnSalir"
         Me.BtnSalir.Size = New System.Drawing.Size(108, 56)
         Me.BtnSalir.TabIndex = 261
@@ -260,36 +285,11 @@ Partial Class FrmEvacuaciones
         Me.BtnSalir.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.BtnSalir.UseVisualStyleBackColor = True
         '
-        'CmbContrato1
-        '
-        Me.CmbContrato1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CmbContrato1.FormattingEnabled = True
-        Me.CmbContrato1.Location = New System.Drawing.Point(84, 51)
-        Me.CmbContrato1.Name = "CmbContrato1"
-        Me.CmbContrato1.Size = New System.Drawing.Size(121, 21)
-        Me.CmbContrato1.TabIndex = 261
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(9, 56)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(69, 13)
-        Me.Label5.TabIndex = 260
-        Me.Label5.Text = "Tipo Servicio"
-        '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Location = New System.Drawing.Point(269, 51)
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(329, 23)
-        Me.ProgressBar1.TabIndex = 262
-        '
         'FrmEvacuaciones
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1207, 527)
+        Me.ClientSize = New System.Drawing.Size(1207, 506)
         Me.Controls.Add(Me.BtnProcesar)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button3)

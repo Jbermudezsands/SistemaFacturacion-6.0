@@ -2724,6 +2724,7 @@ Public Class FrmCompras
         Dim TipoCompra As String = "Mercancia Recibida", Numero As String, Fecha As String
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, CodigoProyecto As String
 
+        Me.CmdFacturar.Enabled = True
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////

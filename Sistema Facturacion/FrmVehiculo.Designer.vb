@@ -92,7 +92,7 @@ Partial Class FrmVehiculo
         'LblNombre
         '
         Me.LblNombre.AutoSize = True
-        Me.LblNombre.Location = New System.Drawing.Point(15, 95)
+        Me.LblNombre.Location = New System.Drawing.Point(48, 96)
         Me.LblNombre.Name = "LblNombre"
         Me.LblNombre.Size = New System.Drawing.Size(37, 13)
         Me.LblNombre.TabIndex = 152
@@ -101,7 +101,7 @@ Partial Class FrmVehiculo
         'LblCodigo
         '
         Me.LblCodigo.AutoSize = True
-        Me.LblCodigo.Location = New System.Drawing.Point(19, 66)
+        Me.LblCodigo.Location = New System.Drawing.Point(51, 66)
         Me.LblCodigo.Name = "LblCodigo"
         Me.LblCodigo.Size = New System.Drawing.Size(34, 13)
         Me.LblCodigo.TabIndex = 151

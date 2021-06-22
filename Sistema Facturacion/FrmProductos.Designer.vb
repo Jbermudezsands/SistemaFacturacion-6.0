@@ -778,9 +778,9 @@ Partial Class FrmProductos
         Me.Label32.AutoSize = True
         Me.Label32.Location = New System.Drawing.Point(10, 287)
         Me.Label32.Name = "Label32"
-        Me.Label32.Size = New System.Drawing.Size(63, 13)
+        Me.Label32.Size = New System.Drawing.Size(74, 13)
         Me.Label32.TabIndex = 34
-        Me.Label32.Text = "Desperdicio"
+        Me.Label32.Text = "Desperdicio %"
         '
         'TxtMerma
         '
@@ -794,9 +794,9 @@ Partial Class FrmProductos
         Me.Label31.AutoSize = True
         Me.Label31.Location = New System.Drawing.Point(10, 264)
         Me.Label31.Name = "Label31"
-        Me.Label31.Size = New System.Drawing.Size(39, 13)
+        Me.Label31.Size = New System.Drawing.Size(50, 13)
         Me.Label31.TabIndex = 32
-        Me.Label31.Text = "Merma"
+        Me.Label31.Text = "Merma %"
         '
         'Label26
         '
