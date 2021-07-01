@@ -2000,7 +2000,7 @@ Public Class FrmReportes
                 Dim i As Double = 0, Registros As Double = 0, CantidadSaldo As Double, MontoSaldo As Double
                 Dim Contador As Double = 0, j As Double = 0
 
-                Dim objExcel = New Microsoft.Office.Interop.Access.Dao.ReplicaTypeEnum, Moneda As String
+                Dim objExcel = New Microsoft.Office.Interop.Excel.Application, Moneda As String
 
                 FechaIni = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
 
@@ -2059,7 +2059,12 @@ Public Class FrmReportes
                 MontoSaldo = 0
 
                 Do While DataSet.Tables("Movimientos").Rows.Count > i
+
+                    My.Application.DoEvents()
+
                     CodProductos = DataSet.Tables("Movimientos").Rows(i)("Cod_Productos")
+
+                    Me.Text = "Procesando el Producto: " & CodProductos
 
 
                     If Me.CmbRango1.Text = "" And Me.CmbRango2.Text = "" Then
@@ -2380,7 +2385,6 @@ Public Class FrmReportes
 
 
 
-
                 objExcel.Visible = True 'lo hacemos visible
                 objExcel.SheetsInNewWorkbook = 1 'decimos cuantas hojas queremos en el nuevo documento
                 objExcel.Workbooks.Add() ' añadimos el objeto al workbook
@@ -2435,6 +2439,14 @@ Public Class FrmReportes
                 objExcel.ActiveSheet.Range("A5", "H5").VerticalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
                 objExcel.ActiveSheet.Range("A5", "H5").Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous
 
+                objExcel.ActiveSheet.Range("A6", "H6").Interior.Color = RGB(180, 198, 231)
+                objExcel.ActiveSheet.range("A6", "H6").Font.Size = 12
+                objExcel.ActiveSheet.range("A6", "H6").Font.Bold = True
+                objExcel.ActiveSheet.range("A6", "H6").WrapText = True
+                objExcel.ActiveSheet.Range("A6", "H6").HorizontalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
+                objExcel.ActiveSheet.Range("A6", "H6").VerticalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
+                objExcel.ActiveSheet.Range("A6", "H6").Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous
+
 
                 Registros = DvDetalleProductos.Count
                 j = 0
@@ -2459,8 +2471,15 @@ Public Class FrmReportes
                     FechaFactura = DvDetalleProductos.Item(j)("Fecha_Factura")
                     CodBodega = DvDetalleProductos.Item(j)("Cod_Bodega")
                     Orden = DvDetalleProductos.Item(j)("Orden")
-                    Cantidad = DvDetalleProductos.Item(j)("Cantidad")
-                    Importe = DvDetalleProductos.Item(j)("Importe")
+                    If Not IsDBNull(DvDetalleProductos.Item(j)("Cantidad")) Then
+                        Cantidad = DvDetalleProductos.Item(j)("Cantidad")
+                    End If
+
+                    If Not IsDBNull(DvDetalleProductos.Item(j)("Importe")) Then
+                        Importe = DvDetalleProductos.Item(j)("Importe")
+                    End If
+
+
                     DescripcionProducto = DvDetalleProductos.Item(j)("Descripcion_Producto")
 
 
@@ -3542,7 +3561,7 @@ Public Class FrmReportes
                 Dim oExcel As Object, oBook As Object, oSheet As Object, TestArray() As String = {"B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ"}
                 Dim MesArray() As String = {"Enero", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"}
 
-                Dim objExcel = New Microsoft.Office.Interop.Access.Dao.ReplicaTypeEnum, Moneda As String
+                Dim objExcel = New Microsoft.Office.Interop.Excel.Application, Moneda As String
 
 
                 SqlDatos = "SELECT * FROM DatosEmpresa"
