@@ -540,5 +540,4 @@ D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\Interop.MSDASC.
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\af-ZA\Sistema Facturacion 6.0.resources.dll
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepReporteOrdenCompra.resources
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmEvacuaciones.resources
-D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\Microsoft.Office.Interop.Excel.dll
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmRegistroTransporte.resources

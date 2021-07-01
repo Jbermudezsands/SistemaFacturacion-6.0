@@ -1042,16 +1042,16 @@ Module Funciones
 
         PesoNetoLb = Format((PesoNetoKg / 46) * 100, "##,##0.0000")
 
-        If Merma2 <> 0 Then
-            PesoKg2 = PesoKg
-            PesoNetoKg2 = PesoNetoKg
-            PesoNetoLb2 = PesoNetoLb
+        'If Merma2 <> 0 Then
+        '    PesoKg2 = PesoKg
+        '    PesoNetoKg2 = PesoNetoKg
+        '    PesoNetoLb2 = PesoNetoLb
 
-            PesoKg = PesoKg - Merma2
+        '    PesoKg = PesoKg - Merma2
 
-        Else
+        'Else
 
-        End If
+        'End If
 
 
         Fecha = Format(CDate(FrmRecepcion.DTPFecha.Text), "yyyy-MM-dd")
@@ -1285,8 +1285,9 @@ Module Funciones
             Merma = 0
         End If
 
+
         If My.Forms.FrmRecepcion.ChkCalculoMerma.Checked = True Then
-            Merma = 0
+            MermaOculta = 0
         End If
 
         '////////////////////////////////////BUSCO EL ESTADO FISICO ///////////////////////////////////////////////////
@@ -1348,9 +1349,20 @@ Module Funciones
         '        Case "Oreado" : Tara = 0.23 * QQ
         '    End Select
         'End If
+        If My.Forms.FrmRecepcion.ChkCaluloMermaOculto.Checked = True Then
+            PesoKg = PesoKg - MermaOculta
+            Cantidad = Format((PesoKg / 46) * 100, "##,##0.0000")
+            PesoNetoKg = Format((PesoKg - Tara), "##,##0.0000")
+            PesoNetoLb = Format((PesoNetoKg / 46) * 100, "##,##0.0000")
+        ElseIf My.Forms.FrmRecepcion.ChkCalculoMerma.Checked = True Then
+            PesoNetoKg = Format((PesoKg - Tara - Merma), "##,##0.0000")
+            PesoNetoLb = Format((PesoNetoKg / 46) * 100, "##,##0.0000")
+        Else
+            PesoNetoKg = Format((PesoKg - Tara), "##,##0.0000")
+            PesoNetoLb = Format((PesoNetoKg / 46) * 100, "##,##0.0000")
+        End If
 
-        PesoNetoKg = Format((PesoKg - Tara - Merma), "##,##0.0000")
-        PesoNetoLb = Format((PesoNetoKg / 46) * 100, "##,##0.0000")
+
 
         GrabaDetalleRecepcion(NumeroRecepcion, CodigoProducto, Cantidad, Linea, Descripcion, Precio, PesoKg, FrmRecepcion.CboTipoRecepcion.Text, Tara, PesoNetoKg, QQ, PorcientoMerma, Merma, MermaOculta)
         ActualizaDetalleRecepcion(NumeroRecepcion, FrmRecepcion.CboTipoRecepcion.Text)
@@ -1431,7 +1443,7 @@ Module Funciones
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim Subtotal As Double, Lote As String, TipoProceso As String = "", idVehiculo As Double, CodConductor As String, TipoPesada As String
-        Dim Procesar As Double
+        Dim Procesar As Double, MermaOculta As Integer, Merma As Integer
 
 
         Dim DateFecha As DateTime = FrmRecepcion.DTPFecha.Text
@@ -1458,6 +1470,20 @@ Module Funciones
             Procesar = 0
         End If
 
+        If My.Forms.FrmRecepcion.ChkCaluloMermaOculto.Checked = True Then
+            MermaOculta = 1
+        Else
+            MermaOculta = 0
+        End If
+
+
+        If My.Forms.FrmRecepcion.ChkCalculoMerma.Checked = True Then
+            Merma = 1
+        Else
+            Merma = 0
+
+        End If
+
         MiConexion.Close()
 
         If FrmRecepcion.TxtNumeroEnsamble.Text = "-----0-----" Then
@@ -1465,8 +1491,8 @@ Module Funciones
             '////////////////////////////AGREGO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
 
-            SqlCompras = "INSERT INTO Recepcion ([NumeroRecepcion],[Fecha],[TipoRecepcion],[Cod_Proveedor],[Conductor] ,[Id_identificacion] ,[Id_Vehiculo],[Cod_Bodega],[Observaciones],[SubTotal],[Lote],[FechaHora],[Contabilizado],[TipoPesada],[NombreRecolector],[TelefonoRecolector],[CedulaRecolector]) " & _
-                         "VALUES ('" & ConsecutivoRecepcion & "','" & Format(CDate(Fecha), "dd/MM/yyyy") & "', '" & My.Forms.FrmRecepcion.CboTipoRecepcion.Text & "' ,'" & My.Forms.FrmRecepcion.CboCodigoProveedor.Columns(0).Text & "' ,'" & CodConductor & "' ,'" & My.Forms.FrmRecepcion.txtid.Text & "' ,'" & idVehiculo & "' ,'" & FrmRecepcion.CboCodigoBodega.Text & "' ,'" & FrmRecepcion.txtobservaciones.Text & "' ,'" & Subtotal & "' ,'" & Lote & "','" & Format(CDate(Fecha), "dd/MM/yyyy HH:mm:ss") & "', " & Procesar & ", '" & TipoPesada & "', '" & My.Forms.FrmRecepcion.TxtRecolector.Text & "', '" & My.Forms.FrmRecepcion.TxtTelefonoRecolector.Text & "', '" & My.Forms.FrmRecepcion.TxtCedulaRecolector.Text & "'  ) "
+            SqlCompras = "INSERT INTO Recepcion ([NumeroRecepcion],[Fecha],[TipoRecepcion],[Cod_Proveedor],[Conductor] ,[Id_identificacion] ,[Id_Vehiculo],[Cod_Bodega],[Observaciones],[SubTotal],[Lote],[FechaHora],[Contabilizado],[TipoPesada],[NombreRecolector],[TelefonoRecolector],[CedulaRecolector],[CalcularMermaOculta],[CalcularMerma]) " & _
+                         "VALUES ('" & ConsecutivoRecepcion & "','" & Format(CDate(Fecha), "dd/MM/yyyy") & "', '" & My.Forms.FrmRecepcion.CboTipoRecepcion.Text & "' ,'" & My.Forms.FrmRecepcion.CboCodigoProveedor.Columns(0).Text & "' ,'" & CodConductor & "' ,'" & My.Forms.FrmRecepcion.txtid.Text & "' ,'" & idVehiculo & "' ,'" & FrmRecepcion.CboCodigoBodega.Text & "' ,'" & FrmRecepcion.txtobservaciones.Text & "' ,'" & Subtotal & "' ,'" & Lote & "','" & Format(CDate(Fecha), "dd/MM/yyyy HH:mm:ss") & "', " & Procesar & ", '" & TipoPesada & "', '" & My.Forms.FrmRecepcion.TxtRecolector.Text & "', '" & My.Forms.FrmRecepcion.TxtTelefonoRecolector.Text & "', '" & My.Forms.FrmRecepcion.TxtCedulaRecolector.Text & "' , " & MermaOculta & ", " & Merma & ") "
 
             'SqlCompras = "INSERT INTO [Recepcion] ([NumeroRecepcion],[Fecha],[TipoRecepcion],[Cod_Proveedor],[Conductor],[Id_identificacion],[Id_Vehiculo],[Cod_Bodega],[Observaciones],[SubTotal],[Lote]) " & _
             '             "VALUES ('" & ConsecutivoRecepcion & "','" & Format(FrmRecepcion.DTPFecha.Value, "dd/MM/yyyy") & "','" & FrmRecepcion.CboTipoRecepcion.Text & "','" & FrmRecepcion.CboCodigoProveedor.Columns(0).Text & "','" & FrmRecepcion.CboConductor.Text & "', '" & FrmRecepcion.txtid.Text & "','" & FrmRecepcion.txtplaca.Text & "','" & FrmRecepcion.CboCodigoBodega.Columns(0).Text & "','" & FrmRecepcion.txtobservaciones.Text & "','" & Subtotal & "','" & Lote & "')"
@@ -1479,7 +1505,7 @@ Module Funciones
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "UPDATE [Recepcion] SET [Cod_Proveedor] = '" & FrmRecepcion.CboCodigoProveedor.Columns(0).Text & "',[Conductor] = '" & CodConductor & "',[Id_identificacion] ='" & FrmRecepcion.txtid.Text & "',[Id_Vehiculo] = '" & idVehiculo & "',[Observaciones] = '" & FrmRecepcion.txtobservaciones.Text & "',[SubTotal] = '" & Subtotal & "',[Lote] = '" & Lote & "', [Contabilizado] = " & Procesar & " ,[TipoPesada] = '" & TipoPesada & "',[NombreRecolector] = '" & My.Forms.FrmRecepcion.TxtRecolector.Text & "',[TelefonoRecolector] = '" & My.Forms.FrmRecepcion.TxtTelefonoRecolector.Text & "',[CedulaRecolector] = '" & My.Forms.FrmRecepcion.TxtCedulaRecolector.Text & "'  " & _
+            SqlCompras = "UPDATE [Recepcion] SET [Cod_Proveedor] = '" & FrmRecepcion.CboCodigoProveedor.Columns(0).Text & "',[Conductor] = '" & CodConductor & "',[Id_identificacion] ='" & FrmRecepcion.txtid.Text & "',[Id_Vehiculo] = '" & idVehiculo & "',[Observaciones] = '" & FrmRecepcion.txtobservaciones.Text & "',[SubTotal] = '" & Subtotal & "',[Lote] = '" & Lote & "', [Contabilizado] = " & Procesar & " ,[TipoPesada] = '" & TipoPesada & "',[NombreRecolector] = '" & My.Forms.FrmRecepcion.TxtRecolector.Text & "',[TelefonoRecolector] = '" & My.Forms.FrmRecepcion.TxtTelefonoRecolector.Text & "',[CedulaRecolector] = '" & My.Forms.FrmRecepcion.TxtCedulaRecolector.Text & "',[CalcularMermaOculta] = " & MermaOculta & " ,[CalcularMerma] = " & Merma & " " & _
                          "WHERE (NumeroRecepcion = '" & ConsecutivoRecepcion & "') AND (TipoRecepcion = '" & FrmRecepcion.CboTipoRecepcion.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)

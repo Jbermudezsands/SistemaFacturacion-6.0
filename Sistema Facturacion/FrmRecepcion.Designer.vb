@@ -206,6 +206,7 @@ Partial Class FrmRecepcion
         Me.CboCodigoBodega.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 20.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CboCodigoBodega.EditorForeColor = System.Drawing.SystemColors.WindowText
         Me.CboCodigoBodega.EditorHeight = 33
+        Me.CboCodigoBodega.Enabled = False
         Me.CboCodigoBodega.Images.Add(CType(resources.GetObject("CboCodigoBodega.Images"), System.Drawing.Image))
         Me.CboCodigoBodega.ItemHeight = 15
         Me.CboCodigoBodega.Location = New System.Drawing.Point(318, 80)

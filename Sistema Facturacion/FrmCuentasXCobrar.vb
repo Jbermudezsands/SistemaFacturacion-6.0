@@ -843,6 +843,7 @@ Public Class FrmCuentasXCobrar
         My.Forms.FrmRegistroDebito.TxtCodCliente.Text = Me.CboCodigoCliente.Text
         My.Forms.FrmRegistroDebito.Label1.Text = "NOTAS DE CREDITO"
         My.Forms.FrmRegistroDebito.ShowDialog()
+
     End Sub
 
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click

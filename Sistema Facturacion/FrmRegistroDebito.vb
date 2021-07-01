@@ -39,6 +39,19 @@ Public Class FrmRegistroDebito
         MiConexion.Close()
 
 
+        '//////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////CARGO LA SERIE PARA CADA USUARIO ////////////////////////////////////////
+        '////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlString = "SELECT Usuarios.* FROM Usuarios WHERE (Usuario = '" & NombreUsuario & "')"
+        MiConexion.Open()
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "DefaulUsuario")
+        If Not DataSet.Tables("DefaulUsuario").Rows.Count = 0 Then
+            Me.CmbSerie.Text = DataSet.Tables("DefaulUsuario").Rows(0)("SerieFactura")
+        End If
+        MiConexion.Close()
+
+
         SqlString = "SELECT * FROM DatosEmpresa"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "DatosEmpresa")
