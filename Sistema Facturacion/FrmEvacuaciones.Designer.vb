@@ -129,12 +129,14 @@ Partial Class FrmEvacuaciones
         '
         'CmbContrato1
         '
+        Me.CmbContrato1.DisplayMember = "TipoContrato"
         Me.CmbContrato1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CmbContrato1.FormattingEnabled = True
         Me.CmbContrato1.Location = New System.Drawing.Point(84, 51)
         Me.CmbContrato1.Name = "CmbContrato1"
         Me.CmbContrato1.Size = New System.Drawing.Size(121, 21)
         Me.CmbContrato1.TabIndex = 261
+        Me.CmbContrato1.ValueMember = "TipoContrato"
         '
         'Label5
         '
