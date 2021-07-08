@@ -1,5 +1,6 @@
 Public Class FrmRecepcion
     Public MiConexion As New SqlClient.SqlConnection(Conexion), Año As String, Mes As String, Dia As String, ConsecutivoFacturaSerie As Boolean = False, Numero_Recepcion As String, PesoBruto As Double = 0, Procesar As Boolean = False, Tara As Double
+    Public VentaAbierta As Boolean = False
     Delegate Sub delegado(ByVal data As String)
     Private Sub Siguiente()
         If Me.TrueDBGridComponentes.RowCount <> 0 Then
@@ -1197,5 +1198,10 @@ Public Class FrmRecepcion
         If Me.ChkCalculoMerma.Checked = True Then
             Me.ChkCaluloMermaOculto.Checked = False
         End If
+    End Sub
+
+    Private Sub C1Button6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles C1Button6.Click
+        Me.VentaAbierta = True
+        My.Forms.FrmMostrarPesadas.Show()
     End Sub
 End Class

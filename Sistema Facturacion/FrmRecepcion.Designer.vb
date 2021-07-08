@@ -40,6 +40,7 @@ Partial Class FrmRecepcion
         Me.DTPFecha = New System.Windows.Forms.Label
         Me.LblHora = New System.Windows.Forms.Label
         Me.GroupBox6 = New System.Windows.Forms.GroupBox
+        Me.C1Button3 = New C1.Win.C1Input.C1Button
         Me.Button14 = New System.Windows.Forms.Button
         Me.CboCodigoProveedor = New C1.Win.C1List.C1Combo
         Me.datosprov = New System.Windows.Forms.Label
@@ -87,6 +88,7 @@ Partial Class FrmRecepcion
         Me.txtapellido = New System.Windows.Forms.TextBox
         Me.CmdFacturar = New System.Windows.Forms.Button
         Me.GroupBoxRecolector = New System.Windows.Forms.GroupBox
+        Me.C1Button6 = New C1.Win.C1Input.C1Button
         Me.ListBoxRecolector = New System.Windows.Forms.ListBox
         Me.TxtTelefonoRecolector = New System.Windows.Forms.TextBox
         Me.Label8 = New System.Windows.Forms.Label
@@ -138,16 +140,15 @@ Partial Class FrmRecepcion
         'ChkCaluloMermaOculto
         '
         Me.ChkCaluloMermaOculto.AutoSize = True
-        Me.ChkCaluloMermaOculto.Checked = True
-        Me.ChkCaluloMermaOculto.CheckState = System.Windows.Forms.CheckState.Checked
         Me.ChkCaluloMermaOculto.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ChkCaluloMermaOculto.ForeColor = System.Drawing.Color.White
-        Me.ChkCaluloMermaOculto.Location = New System.Drawing.Point(148, 140)
+        Me.ChkCaluloMermaOculto.Location = New System.Drawing.Point(143, 115)
         Me.ChkCaluloMermaOculto.Name = "ChkCaluloMermaOculto"
         Me.ChkCaluloMermaOculto.Size = New System.Drawing.Size(135, 29)
         Me.ChkCaluloMermaOculto.TabIndex = 251
         Me.ChkCaluloMermaOculto.Text = "Reproceso"
         Me.ChkCaluloMermaOculto.UseVisualStyleBackColor = True
+        Me.ChkCaluloMermaOculto.Visible = False
         '
         'ChkCalculoMerma
         '
@@ -383,6 +384,7 @@ Partial Class FrmRecepcion
         'GroupBox6
         '
         Me.GroupBox6.BackColor = System.Drawing.Color.FromArgb(CType(CType(27, Byte), Integer), CType(CType(94, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.GroupBox6.Controls.Add(Me.C1Button3)
         Me.GroupBox6.Controls.Add(Me.Button14)
         Me.GroupBox6.Controls.Add(Me.CboCodigoProveedor)
         Me.GroupBox6.Controls.Add(Me.datosprov)
@@ -395,6 +397,16 @@ Partial Class FrmRecepcion
         Me.GroupBox6.Size = New System.Drawing.Size(528, 91)
         Me.GroupBox6.TabIndex = 222
         Me.GroupBox6.TabStop = False
+        '
+        'C1Button3
+        '
+        Me.C1Button3.Image = CType(resources.GetObject("C1Button3.Image"), System.Drawing.Image)
+        Me.C1Button3.Location = New System.Drawing.Point(404, 93)
+        Me.C1Button3.Name = "C1Button3"
+        Me.C1Button3.Size = New System.Drawing.Size(39, 40)
+        Me.C1Button3.TabIndex = 252
+        Me.C1Button3.UseVisualStyleBackColor = True
+        Me.C1Button3.Visible = False
         '
         'Button14
         '
@@ -983,6 +995,7 @@ Partial Class FrmRecepcion
         'GroupBoxRecolector
         '
         Me.GroupBoxRecolector.BackColor = System.Drawing.Color.FromArgb(CType(CType(27, Byte), Integer), CType(CType(94, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.GroupBoxRecolector.Controls.Add(Me.C1Button6)
         Me.GroupBoxRecolector.Controls.Add(Me.ListBoxRecolector)
         Me.GroupBoxRecolector.Controls.Add(Me.TxtTelefonoRecolector)
         Me.GroupBoxRecolector.Controls.Add(Me.Label8)
@@ -997,6 +1010,15 @@ Partial Class FrmRecepcion
         Me.GroupBoxRecolector.TabIndex = 240
         Me.GroupBoxRecolector.TabStop = False
         Me.GroupBoxRecolector.Visible = False
+        '
+        'C1Button6
+        '
+        Me.C1Button6.Image = CType(resources.GetObject("C1Button6.Image"), System.Drawing.Image)
+        Me.C1Button6.Location = New System.Drawing.Point(9, 123)
+        Me.C1Button6.Name = "C1Button6"
+        Me.C1Button6.Size = New System.Drawing.Size(37, 45)
+        Me.C1Button6.TabIndex = 251
+        Me.C1Button6.UseVisualStyleBackColor = True
         '
         'ListBoxRecolector
         '
@@ -1226,4 +1248,6 @@ Partial Class FrmRecepcion
     Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents ChkCalculoMerma As System.Windows.Forms.CheckBox
     Friend WithEvents ChkCaluloMermaOculto As System.Windows.Forms.CheckBox
+    Friend WithEvents C1Button3 As C1.Win.C1Input.C1Button
+    Friend WithEvents C1Button6 As C1.Win.C1Input.C1Button
 End Class

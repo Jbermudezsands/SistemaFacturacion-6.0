@@ -48,7 +48,7 @@ Public Class MDIMain
             NombreProducto = DataSet.Tables("Productos").Rows(Iposicion)("Descripcion_Producto")
             NombreBodega = DataSet.Tables("Productos").Rows(Iposicion)("Descripcion_Linea")
             CodBodega = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Linea")
-            Existencia = Format(BuscaInventarioInicial(CodProducto, FechaFin))
+            Existencia = Format(InventarioInicialMinimo(CodProducto, FechaFin))
             If Existencia <> 0 Then
                 If DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Descuento" And DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Servicio" Then
                     If DataSet.Tables("Productos").Rows(Iposicion)("Minimo") >= Existencia Then
