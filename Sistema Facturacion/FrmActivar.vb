@@ -147,14 +147,14 @@ Public Class FrmActivar
             '////////////////////////////AGREGO LA NOMINA LIQUIDACION //////////////////////////////////////////////////////////////
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            SqlString = "SELECT NominaLiquidacion.* FROM NominaLiquidacion WHERE(Activo = 1)"
+            SqlString = "SELECT LiquidacionLeche.* FROM LiquidacionLeche WHERE(Activo = 1)"
             DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
             DataAdapter.Fill(DataSet, "NominaLiquidacion")
             If DataSet.Tables("NominaLiquidacion").Rows.Count = 0 Then
                 ConsecutivoLiquida = BuscaConsecutivo("Liquidacion")
                 NumeroPlanillaLiquida = Format(ConsecutivoConductores, "0000#")
-                StrSqlUpdate = "INSERT INTO [NominaLiquidacion] ([NumPlanilla],[FechaInicial],[FechaFinal],[Año],[mes],[Periodo]) " & _
-                               "VALUES( '" & NumeroPlanillaLiquida & "', '" & Format(Me.DTPFechaIni.Value, "dd/MM/yyyy") & "','" & Format(Me.DTPFechaFin.Value, "dd/MM/yyyy") & "'," & Año & " ," & Mes & "," & Periodo & ")"
+                StrSqlUpdate = "INSERT INTO [LiquidacionLeche] ([NumeroLiquidacion],[FechaInicio],[FechaFin]) " & _
+                               "VALUES( '" & NumeroPlanillaLiquida & "', '" & Format(Me.DTPFechaIni.Value, "dd/MM/yyyy") & "','" & Format(Me.DTPFechaFin.Value, "dd/MM/yyyy") & "')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
                 iResultado = ComandoUpdate.ExecuteNonQuery

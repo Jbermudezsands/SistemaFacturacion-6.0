@@ -76,6 +76,12 @@ Partial Class FrmImportacion
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.TabPage3 = New System.Windows.Forms.TabPage
         Me.TabPage4 = New System.Windows.Forms.TabPage
+        Me.TabPage5 = New System.Windows.Forms.TabPage
+        Me.TxtRutaContratos = New System.Windows.Forms.TextBox
+        Me.Label8 = New System.Windows.Forms.Label
+        Me.C1Button6 = New C1.Win.C1Input.C1Button
+        Me.C1Button7 = New C1.Win.C1Input.C1Button
+        Me.TrueDBGridContratos = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -96,6 +102,8 @@ Partial Class FrmImportacion
         Me.TabPage2.SuspendLayout()
         Me.TabPage3.SuspendLayout()
         Me.TabPage4.SuspendLayout()
+        Me.TabPage5.SuspendLayout()
+        CType(Me.TrueDBGridContratos, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'PictureBox2
@@ -555,6 +563,7 @@ Partial Class FrmImportacion
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Controls.Add(Me.TabPage4)
+        Me.TabControl1.Controls.Add(Me.TabPage5)
         Me.TabControl1.Location = New System.Drawing.Point(9, 61)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
@@ -731,6 +740,84 @@ Partial Class FrmImportacion
         Me.TabPage4.Text = "Ctas x Cobrar"
         Me.TabPage4.UseVisualStyleBackColor = True
         '
+        'TabPage5
+        '
+        Me.TabPage5.Controls.Add(Me.TxtRutaContratos)
+        Me.TabPage5.Controls.Add(Me.Label8)
+        Me.TabPage5.Controls.Add(Me.C1Button6)
+        Me.TabPage5.Controls.Add(Me.C1Button7)
+        Me.TabPage5.Controls.Add(Me.TrueDBGridContratos)
+        Me.TabPage5.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage5.Name = "TabPage5"
+        Me.TabPage5.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage5.Size = New System.Drawing.Size(918, 366)
+        Me.TabPage5.TabIndex = 4
+        Me.TabPage5.Text = "Contratos"
+        Me.TabPage5.UseVisualStyleBackColor = True
+        '
+        'TxtRutaContratos
+        '
+        Me.TxtRutaContratos.Enabled = False
+        Me.TxtRutaContratos.Location = New System.Drawing.Point(6, 44)
+        Me.TxtRutaContratos.Name = "TxtRutaContratos"
+        Me.TxtRutaContratos.Size = New System.Drawing.Size(667, 20)
+        Me.TxtRutaContratos.TabIndex = 132
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(6, 28)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(89, 13)
+        Me.Label8.TabIndex = 131
+        Me.Label8.Text = "Ruta de Archivos"
+        '
+        'C1Button6
+        '
+        Me.C1Button6.Image = CType(resources.GetObject("C1Button6.Image"), System.Drawing.Image)
+        Me.C1Button6.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.C1Button6.Location = New System.Drawing.Point(773, 25)
+        Me.C1Button6.Name = "C1Button6"
+        Me.C1Button6.Size = New System.Drawing.Size(88, 48)
+        Me.C1Button6.TabIndex = 130
+        Me.C1Button6.Tag = "28"
+        Me.C1Button6.Text = "Procesar"
+        Me.C1Button6.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.C1Button6.UseVisualStyleBackColor = True
+        Me.C1Button6.VisualStyleBaseStyle = C1.Win.C1Input.VisualStyle.Office2007Blue
+        '
+        'C1Button7
+        '
+        Me.C1Button7.Image = CType(resources.GetObject("C1Button7.Image"), System.Drawing.Image)
+        Me.C1Button7.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.C1Button7.Location = New System.Drawing.Point(679, 25)
+        Me.C1Button7.Name = "C1Button7"
+        Me.C1Button7.Size = New System.Drawing.Size(88, 48)
+        Me.C1Button7.TabIndex = 129
+        Me.C1Button7.Tag = "25"
+        Me.C1Button7.Text = "Leer Archivo"
+        Me.C1Button7.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.C1Button7.UseVisualStyleBackColor = True
+        Me.C1Button7.VisualStyleBaseStyle = C1.Win.C1Input.VisualStyle.Office2007Blue
+        '
+        'TrueDBGridContratos
+        '
+        Me.TrueDBGridContratos.AllowUpdate = False
+        Me.TrueDBGridContratos.AlternatingRows = True
+        Me.TrueDBGridContratos.FilterBar = True
+        Me.TrueDBGridContratos.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TrueDBGridContratos.Images.Add(CType(resources.GetObject("TrueDBGridContratos.Images"), System.Drawing.Image))
+        Me.TrueDBGridContratos.Location = New System.Drawing.Point(6, 91)
+        Me.TrueDBGridContratos.Name = "TrueDBGridContratos"
+        Me.TrueDBGridContratos.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TrueDBGridContratos.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TrueDBGridContratos.PreviewInfo.ZoomFactor = 75
+        Me.TrueDBGridContratos.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridContratos.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TrueDBGridContratos.Size = New System.Drawing.Size(892, 267)
+        Me.TrueDBGridContratos.TabIndex = 128
+        Me.TrueDBGridContratos.Text = "C1TrueDBGrid1"
+        Me.TrueDBGridContratos.PropBag = resources.GetString("TrueDBGridContratos.PropBag")
+        '
         'FrmImportacion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -773,6 +860,9 @@ Partial Class FrmImportacion
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage3.ResumeLayout(False)
         Me.TabPage4.ResumeLayout(False)
+        Me.TabPage5.ResumeLayout(False)
+        Me.TabPage5.PerformLayout()
+        CType(Me.TrueDBGridContratos, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -831,4 +921,10 @@ Partial Class FrmImportacion
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
     Friend WithEvents OptProveedores As System.Windows.Forms.RadioButton
     Friend WithEvents OptClientes As System.Windows.Forms.RadioButton
+    Friend WithEvents TabPage5 As System.Windows.Forms.TabPage
+    Friend WithEvents TrueDBGridContratos As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents TxtRutaContratos As System.Windows.Forms.TextBox
+    Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents C1Button6 As C1.Win.C1Input.C1Button
+    Friend WithEvents C1Button7 As C1.Win.C1Input.C1Button
 End Class

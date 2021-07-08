@@ -379,6 +379,12 @@
     <Compile Include="FrmRegistroLicencia.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmRegistroTransporte.Designer.vb">
+      <DependentUpon>FrmRegistroTransporte.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmRegistroTransporte.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmRespaldar.Designer.vb">
       <DependentUpon>FrmRespaldar.vb</DependentUpon>
     </Compile>
@@ -1426,6 +1432,12 @@
     <Compile Include="FrmPagosFacturas.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmEvacuaciones.Designer.vb">
+      <DependentUpon>FrmEvacuaciones.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmEvacuaciones.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SplashScreen1.Designer.vb">
       <DependentUpon>SplashScreen1.vb</DependentUpon>
     </Compile>
@@ -1541,6 +1553,10 @@
       <DependentUpon>FrmEscolaridad.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmEvacuaciones.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmEvacuaciones.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmFacturacionBascula.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmFacturacionBascula.vb</DependentUpon>
@@ -1648,6 +1664,10 @@
     <EmbeddedResource Include="FrmRegistroLicencia.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmRegistroLicencia.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmRegistroTransporte.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmRegistroTransporte.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmRespaldar.resx">
       <SubType>Designer</SubType>
@@ -2417,6 +2437,14 @@
       <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
       <VersionMajor>2</VersionMajor>
       <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Access.Dao">
+      <Guid>{4AC9E1DA-5BAD-4AC7-86E3-24F4CDCECA28}</Guid>
+      <VersionMajor>12</VersionMajor>
+      <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>primary</WrapperTool>
       <Isolated>False</Isolated>

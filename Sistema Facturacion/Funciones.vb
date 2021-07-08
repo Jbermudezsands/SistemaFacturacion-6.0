@@ -1032,13 +1032,26 @@ Module Funciones
 
 
 
-    Public Sub GrabaDetalleRecepcion(ByVal ConsecutivoRecepcion As String, ByVal CodigoProducto As String, ByVal Cantidad As Double, ByVal Linea As Double, ByVal Descripcion As String, ByVal Precio As Double, ByVal PesoKg As Double, ByVal TipoRecepcion As String, ByVal Tara As Double, ByVal PesoNetoKg As Double, ByVal QQ As Double, ByVal PorcientoMerma As Double, ByVal Merma As Double)
+    Public Sub GrabaDetalleRecepcion(ByVal ConsecutivoRecepcion As String, ByVal CodigoProducto As String, ByVal Cantidad As Double, ByVal Linea As Double, ByVal Descripcion As String, ByVal Precio As Double, ByVal PesoKg As Double, ByVal TipoRecepcion As String, ByVal Tara As Double, ByVal PesoNetoKg As Double, ByVal QQ As Double, ByVal PorcientoMerma As Double, ByVal Merma As Double, ByVal Merma2 As Double)
         Dim Sqldetalle As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim Fecha As String, MiConexion As New SqlClient.SqlConnection(Conexion), SqlUpdate As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, PesoNetoLb As Double
+        Dim PesoNetoKg2 As Double, PesoKg2 As Double, PesoNetoLb2 As Double
+
 
 
         PesoNetoLb = Format((PesoNetoKg / 46) * 100, "##,##0.0000")
+
+        'If Merma2 <> 0 Then
+        '    PesoKg2 = PesoKg
+        '    PesoNetoKg2 = PesoNetoKg
+        '    PesoNetoLb2 = PesoNetoLb
+
+        '    PesoKg = PesoKg - Merma2
+
+        'Else
+
+        'End If
 
 
         Fecha = Format(CDate(FrmRecepcion.DTPFecha.Text), "yyyy-MM-dd")
@@ -1123,7 +1136,7 @@ Module Funciones
         Dim HumedadxDefecto As Double = 0, HumedadReal As Double = 0, Consecutivo As Double, NumeroRecibo As String, Cadena As String, CadenaDiv() As String
         Dim CodLugarAcopio As Double, Fecha As Date
         Dim Factor As Double = 0, IdEsdoFisico As Double = 0, IdCalidad As Double = 0, IdTipoLugarAcopio As Double = 0
-        Dim Merma As Double, PorcientoMerma As Double
+        Dim Merma As Double, PorcientoMerma As Double, MermaOculta As Double
 
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1266,6 +1279,17 @@ Module Funciones
         PorcientoMerma = PorcientoMermaProducto(CodigoProducto)
         Merma = PesoKg * PorcientoMerma
 
+        MermaOculta = 0
+        If My.Forms.FrmRecepcion.ChkCaluloMermaOculto.Checked = True Then
+            MermaOculta = Merma
+            Merma = 0
+        End If
+
+
+        If My.Forms.FrmRecepcion.ChkCalculoMerma.Checked = True Then
+            MermaOculta = 0
+        End If
+
         '////////////////////////////////////BUSCO EL ESTADO FISICO ///////////////////////////////////////////////////
 
 
@@ -1325,11 +1349,22 @@ Module Funciones
         '        Case "Oreado" : Tara = 0.23 * QQ
         '    End Select
         'End If
+        If My.Forms.FrmRecepcion.ChkCaluloMermaOculto.Checked = True Then
+            PesoKg = PesoKg - MermaOculta
+            Cantidad = Format((PesoKg / 46) * 100, "##,##0.0000")
+            PesoNetoKg = Format((PesoKg - Tara), "##,##0.0000")
+            PesoNetoLb = Format((PesoNetoKg / 46) * 100, "##,##0.0000")
+        ElseIf My.Forms.FrmRecepcion.ChkCalculoMerma.Checked = True Then
+            PesoNetoKg = Format((PesoKg - Tara - Merma), "##,##0.0000")
+            PesoNetoLb = Format((PesoNetoKg / 46) * 100, "##,##0.0000")
+        Else
+            PesoNetoKg = Format((PesoKg - Tara), "##,##0.0000")
+            PesoNetoLb = Format((PesoNetoKg / 46) * 100, "##,##0.0000")
+        End If
 
-        PesoNetoKg = Format((PesoKg - Tara - Merma), "##,##0.0000")
-        PesoNetoLb = Format((PesoNetoKg / 46) * 100, "##,##0.0000")
 
-        GrabaDetalleRecepcion(NumeroRecepcion, CodigoProducto, Cantidad, Linea, Descripcion, Precio, PesoKg, FrmRecepcion.CboTipoRecepcion.Text, Tara, PesoNetoKg, QQ, PorcientoMerma, Merma)
+
+        GrabaDetalleRecepcion(NumeroRecepcion, CodigoProducto, Cantidad, Linea, Descripcion, Precio, PesoKg, FrmRecepcion.CboTipoRecepcion.Text, Tara, PesoNetoKg, QQ, PorcientoMerma, Merma, MermaOculta)
         ActualizaDetalleRecepcion(NumeroRecepcion, FrmRecepcion.CboTipoRecepcion.Text)
 
 
@@ -1408,7 +1443,7 @@ Module Funciones
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim Subtotal As Double, Lote As String, TipoProceso As String = "", idVehiculo As Double, CodConductor As String, TipoPesada As String
-        Dim Procesar As Double
+        Dim Procesar As Double, MermaOculta As Integer, Merma As Integer
 
 
         Dim DateFecha As DateTime = FrmRecepcion.DTPFecha.Text
@@ -1435,6 +1470,20 @@ Module Funciones
             Procesar = 0
         End If
 
+        If My.Forms.FrmRecepcion.ChkCaluloMermaOculto.Checked = True Then
+            MermaOculta = 1
+        Else
+            MermaOculta = 0
+        End If
+
+
+        If My.Forms.FrmRecepcion.ChkCalculoMerma.Checked = True Then
+            Merma = 1
+        Else
+            Merma = 0
+
+        End If
+
         MiConexion.Close()
 
         If FrmRecepcion.TxtNumeroEnsamble.Text = "-----0-----" Then
@@ -1442,8 +1491,8 @@ Module Funciones
             '////////////////////////////AGREGO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
 
-            SqlCompras = "INSERT INTO Recepcion ([NumeroRecepcion],[Fecha],[TipoRecepcion],[Cod_Proveedor],[Conductor] ,[Id_identificacion] ,[Id_Vehiculo],[Cod_Bodega],[Observaciones],[SubTotal],[Lote],[FechaHora],[Contabilizado],[TipoPesada],[NombreRecolector],[TelefonoRecolector],[CedulaRecolector]) " & _
-                         "VALUES ('" & ConsecutivoRecepcion & "','" & Format(CDate(Fecha), "dd/MM/yyyy") & "', '" & My.Forms.FrmRecepcion.CboTipoRecepcion.Text & "' ,'" & My.Forms.FrmRecepcion.CboCodigoProveedor.Columns(0).Text & "' ,'" & CodConductor & "' ,'" & My.Forms.FrmRecepcion.txtid.Text & "' ,'" & idVehiculo & "' ,'" & FrmRecepcion.CboCodigoBodega.Text & "' ,'" & FrmRecepcion.txtobservaciones.Text & "' ,'" & Subtotal & "' ,'" & Lote & "','" & Format(CDate(Fecha), "dd/MM/yyyy HH:mm:ss") & "', " & Procesar & ", '" & TipoPesada & "', '" & My.Forms.FrmRecepcion.TxtRecolector.Text & "', '" & My.Forms.FrmRecepcion.TxtTelefonoRecolector.Text & "', '" & My.Forms.FrmRecepcion.TxtCedulaRecolector.Text & "'  ) "
+            SqlCompras = "INSERT INTO Recepcion ([NumeroRecepcion],[Fecha],[TipoRecepcion],[Cod_Proveedor],[Conductor] ,[Id_identificacion] ,[Id_Vehiculo],[Cod_Bodega],[Observaciones],[SubTotal],[Lote],[FechaHora],[Contabilizado],[TipoPesada],[NombreRecolector],[TelefonoRecolector],[CedulaRecolector],[CalcularMermaOculta],[CalcularMerma]) " & _
+                         "VALUES ('" & ConsecutivoRecepcion & "','" & Format(CDate(Fecha), "dd/MM/yyyy") & "', '" & My.Forms.FrmRecepcion.CboTipoRecepcion.Text & "' ,'" & My.Forms.FrmRecepcion.CboCodigoProveedor.Columns(0).Text & "' ,'" & CodConductor & "' ,'" & My.Forms.FrmRecepcion.txtid.Text & "' ,'" & idVehiculo & "' ,'" & FrmRecepcion.CboCodigoBodega.Text & "' ,'" & FrmRecepcion.txtobservaciones.Text & "' ,'" & Subtotal & "' ,'" & Lote & "','" & Format(CDate(Fecha), "dd/MM/yyyy HH:mm:ss") & "', " & Procesar & ", '" & TipoPesada & "', '" & My.Forms.FrmRecepcion.TxtRecolector.Text & "', '" & My.Forms.FrmRecepcion.TxtTelefonoRecolector.Text & "', '" & My.Forms.FrmRecepcion.TxtCedulaRecolector.Text & "' , " & MermaOculta & ", " & Merma & ") "
 
             'SqlCompras = "INSERT INTO [Recepcion] ([NumeroRecepcion],[Fecha],[TipoRecepcion],[Cod_Proveedor],[Conductor],[Id_identificacion],[Id_Vehiculo],[Cod_Bodega],[Observaciones],[SubTotal],[Lote]) " & _
             '             "VALUES ('" & ConsecutivoRecepcion & "','" & Format(FrmRecepcion.DTPFecha.Value, "dd/MM/yyyy") & "','" & FrmRecepcion.CboTipoRecepcion.Text & "','" & FrmRecepcion.CboCodigoProveedor.Columns(0).Text & "','" & FrmRecepcion.CboConductor.Text & "', '" & FrmRecepcion.txtid.Text & "','" & FrmRecepcion.txtplaca.Text & "','" & FrmRecepcion.CboCodigoBodega.Columns(0).Text & "','" & FrmRecepcion.txtobservaciones.Text & "','" & Subtotal & "','" & Lote & "')"
@@ -1456,7 +1505,7 @@ Module Funciones
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "UPDATE [Recepcion] SET [Cod_Proveedor] = '" & FrmRecepcion.CboCodigoProveedor.Columns(0).Text & "',[Conductor] = '" & CodConductor & "',[Id_identificacion] ='" & FrmRecepcion.txtid.Text & "',[Id_Vehiculo] = '" & idVehiculo & "',[Observaciones] = '" & FrmRecepcion.txtobservaciones.Text & "',[SubTotal] = '" & Subtotal & "',[Lote] = '" & Lote & "', [Contabilizado] = " & Procesar & " ,[TipoPesada] = '" & TipoPesada & "',[NombreRecolector] = '" & My.Forms.FrmRecepcion.TxtRecolector.Text & "',[TelefonoRecolector] = '" & My.Forms.FrmRecepcion.TxtTelefonoRecolector.Text & "',[CedulaRecolector] = '" & My.Forms.FrmRecepcion.TxtCedulaRecolector.Text & "'  " & _
+            SqlCompras = "UPDATE [Recepcion] SET [Cod_Proveedor] = '" & FrmRecepcion.CboCodigoProveedor.Columns(0).Text & "',[Conductor] = '" & CodConductor & "',[Id_identificacion] ='" & FrmRecepcion.txtid.Text & "',[Id_Vehiculo] = '" & idVehiculo & "',[Observaciones] = '" & FrmRecepcion.txtobservaciones.Text & "',[SubTotal] = '" & Subtotal & "',[Lote] = '" & Lote & "', [Contabilizado] = " & Procesar & " ,[TipoPesada] = '" & TipoPesada & "',[NombreRecolector] = '" & My.Forms.FrmRecepcion.TxtRecolector.Text & "',[TelefonoRecolector] = '" & My.Forms.FrmRecepcion.TxtTelefonoRecolector.Text & "',[CedulaRecolector] = '" & My.Forms.FrmRecepcion.TxtCedulaRecolector.Text & "',[CalcularMermaOculta] = " & MermaOculta & " ,[CalcularMerma] = " & Merma & " " & _
                          "WHERE (NumeroRecepcion = '" & ConsecutivoRecepcion & "') AND (TipoRecepcion = '" & FrmRecepcion.CboTipoRecepcion.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
@@ -10538,7 +10587,7 @@ Module Funciones
         End If
 
         Existencia = Existencia + UnidadComprada - DevolucionCompra - UnidadFacturada + DevolucionFactura - TransferenciaEnviada + TransferenciaRecibida
-        BuscaExistencia = Existencia
+        BuscaExistencia = Format(Existencia, "####0.0000")
     End Function
     Public Function BuscaExistenciaBodegaBascula(ByVal CodigoProducto As String, ByVal CodigoBodega As String) As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -10759,7 +10808,7 @@ Module Funciones
         End If
 
         Existencia = Existencia + UnidadComprada - DevolucionCompra - UnidadFacturada - SalidaBodega + DevolucionFactura - TransferenciaEnviada + TransferenciaRecibida
-        BuscaExistenciaBodegaBascula = Existencia
+        BuscaExistenciaBodegaBascula = Format(Existencia, "####0.0000")
     End Function
     Public Function BuscaExistenciaBodega(ByVal CodigoProducto As String, ByVal CodigoBodega As String) As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -10980,7 +11029,7 @@ Module Funciones
         End If
 
         Existencia = Existencia + UnidadComprada - DevolucionCompra - UnidadFacturada - SalidaBodega + DevolucionFactura - TransferenciaEnviada + TransferenciaRecibida
-        BuscaExistenciaBodega = Existencia
+        BuscaExistenciaBodega = Format(Existencia, "####0.0000")
     End Function
     Public Function BuscaExistenciaBodegaLote(ByVal CodigoProducto As String, ByVal CodigoBodega As String, ByVal NumeroLote As String) As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -11098,7 +11147,7 @@ Module Funciones
 
 
         Existencia = UnidadComprada - DevolucionCompra - UnidadFacturada - SalidaBodega + DevolucionFactura - TransferenciaEnviada + TransferenciaRecibida
-        BuscaExistenciaBodegaLote = Existencia
+        BuscaExistenciaBodegaLote = Format(Existencia, "####0.0000")
     End Function
 
     Public Function BuscaExistenciaLoteTotal(ByVal CodigoProducto As String, ByVal NombreLote As String, ByVal CodigoBodega As String) As Double
@@ -11223,7 +11272,7 @@ Module Funciones
 
 
         Existencia = Existencia + UnidadComprada - DevolucionCompra - UnidadFacturada - SalidaBodega + DevolucionFactura - TransferenciaEnviada + TransferenciaRecibida
-        BuscaExistenciaLoteTotal = Existencia
+        BuscaExistenciaLoteTotal = Format(Existencia, "####0.0000")
     End Function
 
     Public Function BuscaExistenciaLote(ByVal CodigoProducto As String, ByVal CodigoBodega As String) As Double
@@ -11331,7 +11380,7 @@ Module Funciones
 
 
         Existencia = Existencia + UnidadComprada - DevolucionCompra - UnidadFacturada - SalidaBodega + DevolucionFactura - TransferenciaEnviada + TransferenciaRecibida
-        BuscaExistenciaLote = Existencia
+        BuscaExistenciaLote = Format(Existencia, "####0.0000")
     End Function
 
 
@@ -11368,7 +11417,7 @@ Module Funciones
         End If
 
 
-        BuscaCompraAcumulada = UnidadComprada + DevolucionFactura
+        BuscaCompraAcumulada = Format(UnidadComprada + DevolucionFactura, "####0.0000")
 
 
     End Function
@@ -11437,9 +11486,9 @@ Module Funciones
         End If
 
 
-        BuscaCompraBodega = UnidadComprada + DevolucionFactura + UnidadTransferencia
-        MontoEntrada = ImporteCompra + ImporteTransferencia + ImporteVenta
-        MontoEntradaD = ImporteCompraD + ImporteTransferenciaD + ImporteVentaD
+        BuscaCompraBodega = Format(UnidadComprada + DevolucionFactura + UnidadTransferencia, "####0.0000")
+        MontoEntrada = Format(ImporteCompra + ImporteTransferencia + ImporteVenta, "####0.0000")
+        MontoEntradaD = Format(ImporteCompraD + ImporteTransferenciaD + ImporteVentaD, "####0.0000")
 
     End Function
     Public Function BuscaInventarioInicialBodegaMov(ByVal CodigoProducto As String, ByVal FechaIni As String, ByVal FechaFin As String, ByVal CodBodega As String) As Double
@@ -11547,8 +11596,8 @@ Module Funciones
         End If
 
 
-        BuscaInventarioInicialBodegaMov = UnidadComprada + DevolucionFactura - UnidadVendida - SalidaBodega
-        MontoInicial = ImporteCompra + ImporteDevVenta - ImporteSalida - ImporteDevCompra - ImporteVenta
+        BuscaInventarioInicialBodegaMov = Format(UnidadComprada + DevolucionFactura - UnidadVendida - SalidaBodega, "####0.0000")
+        MontoInicial = Format(ImporteCompra + ImporteDevVenta - ImporteSalida - ImporteDevCompra - ImporteVenta, "####0.0000")
 
     End Function
 
@@ -11689,9 +11738,9 @@ Module Funciones
         End If
 
 
-        ConsultaInventarioInicialBodega = UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra
-        MontoInicial = ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada
-        MontoInicialD = ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD
+        ConsultaInventarioInicialBodega = Format(UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra, "####0.0000")
+        MontoInicial = Format(ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada, "####0.0000")
+        MontoInicialD = Format(ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD, "####0.0000")
 
     End Function
 
@@ -11840,9 +11889,9 @@ Module Funciones
         End If
 
 
-        BuscaInventarioInicialBodega = UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra
-        MontoInicial = ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada
-        MontoInicialD = ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD
+        BuscaInventarioInicialBodega = Format(UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra, "####0.0000")
+        MontoInicial = Format(ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada, "####0.0000")
+        MontoInicialD = Format(ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD, "####0.0000")
 
     End Function
     Public Function BuscaInventarioInicialProyectos(ByVal CodigoProyecto As String, ByVal FechaIni As String, ByVal CodBodega As String, ByVal CodBodega2 As String) As Double
@@ -11983,9 +12032,9 @@ Module Funciones
         'MontoInicial = ImporteCompra + ImporteDevVenta - ImporteSalida - ImporteDevCompra - ImporteVenta
         'MontoInicialD = ImporteCompraD + ImporteDevVentaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD
 
-        BuscaInventarioInicialProyectos = UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra
-        MontoInicial = ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada
-        MontoInicialD = ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD
+        BuscaInventarioInicialProyectos = Format(UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra, "####0.0000")
+        MontoInicial = Format(ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada, "####0.0000")
+        MontoInicialD = Format(ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD, "####0.0000")
 
 
     End Function
@@ -12154,9 +12203,9 @@ Module Funciones
         'MontoInicial = ImporteCompra + ImporteDevVenta - ImporteSalida - ImporteDevCompra - ImporteVenta
         'MontoInicialD = ImporteCompraD + ImporteDevVentaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD
 
-        BuscaInventarioInicialLote = UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra
-        MontoInicial = ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada
-        MontoInicialD = ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD
+        BuscaInventarioInicialLote = Format(UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra, "####0.0000")
+        MontoInicial = Format(ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada, "####0.0000")
+        MontoInicialD = Format(ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD, "####0.0000")
 
 
     End Function
@@ -12328,9 +12377,9 @@ Module Funciones
         'MontoInicial = ImporteCompra + ImporteDevVenta - ImporteSalida - ImporteDevCompra - ImporteVenta
         'MontoInicialD = ImporteCompraD + ImporteDevVentaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD
 
-        BuscaInventarioInicialEntreBodegaLote = UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra
-        MontoInicial = ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada
-        MontoInicialD = ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD
+        BuscaInventarioInicialEntreBodegaLote = Format(UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra, "####0.0000")
+        MontoInicial = Format(ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada, "####0.0000")
+        MontoInicialD = Format(ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD, "####0.0000")
 
 
     End Function
@@ -12478,9 +12527,9 @@ Module Funciones
         'MontoInicial = ImporteCompra + ImporteDevVenta - ImporteSalida - ImporteDevCompra - ImporteVenta
         'MontoInicialD = ImporteCompraD + ImporteDevVentaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD
 
-        BuscaInventarioInicialEntreBodega = UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra
-        MontoInicial = ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada
-        MontoInicialD = ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD
+        BuscaInventarioInicialEntreBodega = Format(UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra, "####0.0000")
+        MontoInicial = Format(ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada, "####0.0000")
+        MontoInicialD = Format(ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD, "####0.0000")
 
 
     End Function
@@ -12612,9 +12661,9 @@ Module Funciones
         End If
 
 
-        BuscaInventarioInicialProyectos = UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra
-        MontoInicial = ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada
-        MontoInicialD = ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD
+        BuscaInventarioInicialProyectos = Format(UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra, "####0.0000")
+        MontoInicial = Format(ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada, "####0.0000")
+        MontoInicialD = Format(ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD, "####0.0000")
 
     End Function
     Public Function BuscaInventarioInicial(ByVal CodigoProducto As String, ByVal FechaIni As String) As Double
@@ -12746,9 +12795,9 @@ Module Funciones
         End If
 
 
-        BuscaInventarioInicial = UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra
-        MontoInicial = ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada
-        MontoInicialD = ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD
+        BuscaInventarioInicial = Format(UnidadComprada + DevolucionFactura + UnidadTransRecibida - UnidadVendida - SalidaBodega - UnidadTransEnviada - DevolucionCompra, "####0.0000")
+        MontoInicial = Format(ImporteCompra + ImporteDevVenta + ImporteTransRecibida - ImporteSalida - ImporteDevCompra - ImporteVenta - ImporteTransEnviada, "####0.0000")
+        MontoInicialD = Format(ImporteCompraD + ImporteDevVentaD + ImporteTransRecibidaD - ImporteSalidaD - ImporteDevCompraD - ImporteVentaD - ImporteTransEnviadaD, "####0.0000")
 
     End Function
 
@@ -13028,9 +13077,9 @@ Module Funciones
         End If
 
 
-        BuscaVenta = UnidadComprada + DevolucionFactura + SalidaBodega + UnidadTransferencia
-        MontoSalida = ImporteCompra + ImporteDevFactura + ImporteSalida + ImporteTransferencia
-        MontoSalidaD = ImporteCompraD + ImporteDevFacturaD + ImporteSalidaD + ImporteTransferenciaD
+        BuscaVenta = Format(UnidadComprada + DevolucionFactura + SalidaBodega + UnidadTransferencia, "####0.0000")
+        MontoSalida = Format(ImporteCompra + ImporteDevFactura + ImporteSalida + ImporteTransferencia, "####0.0000")
+        MontoSalidaD = Format(ImporteCompraD + ImporteDevFacturaD + ImporteSalidaD + ImporteTransferenciaD, "####0.0000")
 
     End Function
     Public Function ExistenciaProductoFecha(ByVal CodigoProducto As String, ByVal FechaBusca As Date) As Double
@@ -13067,7 +13116,7 @@ Module Funciones
             iPosicionFila = iPosicionFila + 1
         Loop
 
-        ExistenciaProductoFecha = Existencia
+        ExistenciaProductoFecha = Format(Existencia, "####0.0000")
     End Function
     Public Function ExistenciaProducto(ByVal CodigoProducto As String) As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -13102,7 +13151,7 @@ Module Funciones
             iPosicionFila = iPosicionFila + 1
         Loop
 
-        ExistenciaProducto = Existencia
+        ExistenciaProducto = Format(Existencia, "####0.0000")
     End Function
     Public Function BuscaProducto(ByVal CodProducto As String, ByVal CodBodega As String) As Boolean
         Dim SqlBodega As String

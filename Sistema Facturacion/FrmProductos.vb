@@ -328,6 +328,13 @@ Public Class FrmProductos
             CodRubro = Me.CboRubro.Columns(0).Text
         End If
 
+        If Not IsNumeric(Me.TxtMerma.Text) Then
+            Me.TxtMerma.Text = 0
+        End If
+
+        If Not IsNumeric(Me.TxtDesperdicio.Text) Then
+            Me.TxtDesperdicio.Text = 0
+        End If
 
 
         SQLProductos = "SELECT Productos.*  FROM Productos WHERE (Cod_Productos = '" & Me.CboCodigoProducto.Text & "') "

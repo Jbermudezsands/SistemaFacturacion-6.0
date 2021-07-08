@@ -1741,6 +1741,7 @@ Public Class FrmReportes
             Case "Reporte Excel"
                 Me.ListBox.Items.Add("Reporte de Ventas Productos x Mes")
                 Me.ListBox.Items.Add("Reporte de Ventas Excel")
+                Me.ListBox.Items.Add("Movimientos de Productos Excel")
 
             Case "Reporte Cuentas x Pagar"
                 Me.ListBox.Items.Add("Reporte de Saldo de Proveedores")
@@ -1990,6 +1991,558 @@ Public Class FrmReportes
         Fecha2 = Me.DTPFechaFin.Value
         My.Application.DoEvents()
         Select Case Me.ListBox.Text
+
+            Case "Movimientos de Productos Excel"
+                Dim SQLString As String, CodProductos As String = "", FechaIni As Date, FechaFin As Date
+                Dim CodBodega1 As String = "", CodBodega2 As String = ""
+                Dim ArepMovimientoProductos As New ArepDetalleMovimientoProducto
+                Dim oDataRow As DataRow, Inicial As Double
+                Dim i As Double = 0, Registros As Double = 0, CantidadSaldo As Double, MontoSaldo As Double
+                Dim Contador As Double = 0, j As Double = 0
+
+                Dim objExcel = New Microsoft.Office.Interop.Excel.Application, Moneda As String
+
+                FechaIni = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
+
+
+                '*******************************************************************************************************************************
+                '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
+                '*******************************************************************************************************************************
+                DataSet.Reset()
+                SQLString = "SELECT Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad AS Importe, Facturas.Cod_Bodega, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Cantidad As CantidadCompra, Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad AS ImporteCompra, Detalle_Facturas.Cantidad As CantidadSaldo, Detalle_Facturas.Cantidad AS ImporteSaldo, Detalle_Facturas.Cantidad AS Orden  FROM Detalle_Facturas INNER JOIN Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura WHERE (Detalle_Facturas.Tipo_Factura <> N'Cotizacion') AND (Detalle_Facturas.Cod_Producto = N'-110000000') AND (Facturas.Cod_Bodega BETWEEN '01' AND '02') ORDER BY Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Cod_Producto"
+                DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
+                DataAdapter.Fill(DataSet, "DetalleMovimientos")
+
+                If Dir(RutaLogo) <> "" Then
+                    ArepMovimientoProductos.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                End If
+
+                ArepMovimientoProductos.LblTitulo.Text = NombreEmpresa
+                ArepMovimientoProductos.LblDireccion.Text = DireccionEmpresa
+                ArepMovimientoProductos.LblRuc.Text = Ruc
+
+                SqlDatos = "SELECT  Cod_Productos, Descripcion_Producto FROM Productos "
+                If Me.CboCodProducto.Text = "" Then
+
+                    If Me.CboCodProducto2.Text = "" Then
+                        SqlDatos = SqlDatos & " ORDER BY Cod_Productos"
+                    Else
+                        SqlDatos = SqlDatos & " WHERE (Cod_Productos BETWEEN '" & CodigoInicio & "' AND '" & Me.CboCodProducto2.Text & "') ORDER BY Cod_Productos"
+                    End If
+                ElseIf Me.CboCodProducto2.Text = "" Then
+                    SqlDatos = SqlDatos & " WHERE (Cod_Productos BETWEEN '" & Me.CboCodProducto.Text & "' AND '" & CodigoFin & "') ORDER BY Cod_Productos"
+                Else
+                    SqlDatos = SqlDatos & " WHERE (Cod_Productos BETWEEN '" & Me.CboCodProducto.Text & "' AND '" & Me.CboCodProducto2.Text & "') ORDER BY Cod_Productos"
+                End If
+
+
+
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                DataAdapter.Fill(DataSet, "Movimientos")
+                Me.ProgressBar.Maximum = DataSet.Tables("Movimientos").Rows.Count
+                Me.ProgressBar.Minimum = 0
+                Me.ProgressBar.Value = 0
+                Me.ProgressBar.Visible = True
+
+
+                FechaIni = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
+                FechaFin = Format(Me.DTPFechaFin.Value, "yyyy-MM-dd")
+                CodBodega1 = Me.CmbRango1.Text
+                CodBodega2 = Me.CmbRango2.Text
+
+
+                TotalMontoFacturas = 0
+                TotalMontoCompras = 0
+                CantidadCompra = 0
+                CantidadSalida = 0
+                CantidadSaldo = 0
+                MontoSaldo = 0
+
+                Do While DataSet.Tables("Movimientos").Rows.Count > i
+
+                    My.Application.DoEvents()
+
+                    CodProductos = DataSet.Tables("Movimientos").Rows(i)("Cod_Productos")
+
+                    Me.Text = "Procesando el Producto: " & CodProductos
+
+
+                    If Me.CmbRango1.Text = "" And Me.CmbRango2.Text = "" Then
+                        'SQLString = "SELECT Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad AS Importe, Facturas.Cod_Bodega,Precio_Unitario FROM  Detalle_Facturas INNER JOIN Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " & _
+                        '            "WHERE (Detalle_Facturas.Tipo_Factura <> N'Cotizacion') AND (Detalle_Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Detalle_Facturas.Cod_Producto BETWEEN '" & CodProductos & "' AND '" & CodProductos & "')  ORDER BY Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Cod_Producto"  'AND (Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad <> 0)
+                        SQLString = "SELECT Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad AS Importe, Facturas.Cod_Bodega, Detalle_Facturas.Precio_Unitario FROM  Detalle_Facturas INNER JOIN  Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " & _
+                                     "WHERE (Detalle_Facturas.Tipo_Factura <> N'Cotizacion' AND Detalle_Facturas.Tipo_Factura <> N'Orden de Trabajo' AND Detalle_Facturas.Tipo_Factura <> 'Transferencia Enviada' AND Detalle_Facturas.Tipo_Factura <> 'Devolucion de Venta') AND (Detalle_Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Detalle_Facturas.Cod_Producto BETWEEN '" & CodProductos & "' AND '" & CodProductos & "')  ORDER BY Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Cod_Producto"
+                    Else
+                        'SQLString = "SELECT  Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad AS Importe, Facturas.Cod_Bodega,Precio_Unitario FROM Detalle_Facturas INNER JOIN Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " & _
+                        '            "WHERE (Detalle_Facturas.Tipo_Factura <> N'Cotizacion') AND (Detalle_Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Detalle_Facturas.Cod_Producto BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Facturas.Cod_Bodega BETWEEN '" & CodBodega1 & "' AND '" & CodBodega2 & "')  ORDER BY Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Cod_Producto"  'AND (Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad <> 0)
+
+                        SQLString = "SELECT Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad AS Importe, Facturas.Cod_Bodega, Detalle_Facturas.Precio_Unitario FROM  Detalle_Facturas INNER JOIN  Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " & _
+                                    "WHERE (Detalle_Facturas.Tipo_Factura <> N'Cotizacion' AND Detalle_Facturas.Tipo_Factura <> N'Orden de Trabajo' AND Detalle_Facturas.Tipo_Factura <> 'Transferencia Enviada' AND Detalle_Facturas.Tipo_Factura <> 'Devolucion de Venta') AND (Detalle_Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Detalle_Facturas.Cod_Producto BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Facturas.Cod_Bodega BETWEEN '" & CodBodega1 & "' AND '" & CodBodega2 & "') ORDER BY Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Cod_Producto"
+                    End If
+
+
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
+                    DataAdapter.Fill(DataSet, "Salidas")
+                    Me.ProgressBar1.Maximum = DataSet.Tables("Salidas").Rows.Count
+                    Me.ProgressBar1.Minimum = 0
+                    Me.ProgressBar1.Value = 0
+                    Me.ProgressBar1.Visible = True
+                    Registros = 0
+
+                    Do While DataSet.Tables("Salidas").Rows.Count > Registros
+
+                        oDataRow = DataSet.Tables("DetalleMovimientos").NewRow
+                        oDataRow("Numero_Factura") = DataSet.Tables("Salidas").Rows(Registros)("Numero_Factura")
+                        oDataRow("Fecha_Factura") = DataSet.Tables("Salidas").Rows(Registros)("Fecha_Factura")
+                        oDataRow("Tipo_Factura") = DataSet.Tables("Salidas").Rows(Registros)("Tipo_Factura")
+                        oDataRow("Cod_Producto") = DataSet.Tables("Salidas").Rows(Registros)("Cod_Producto")
+                        oDataRow("Descripcion_Producto") = DataSet.Tables("Salidas").Rows(Registros)("Descripcion_Producto")
+                        oDataRow("Cantidad") = DataSet.Tables("Salidas").Rows(Registros)("Cantidad")
+                        oDataRow("Importe") = DataSet.Tables("Salidas").Rows(Registros)("Importe")
+                        oDataRow("Orden") = 2
+                        oDataRow("Cod_Bodega") = DataSet.Tables("Salidas").Rows(Registros)("Cod_Bodega")
+                        DataSet.Tables("DetalleMovimientos").Rows.Add(oDataRow)
+
+                        Registros = Registros + 1
+                        Me.ProgressBar1.Value = Me.ProgressBar1.Value + 1
+                    Loop
+                    DataSet.Tables("Salidas").Reset()
+
+                    '-----------------------------------------------------------------------------------------------------------------
+                    '------------------------------TRANSFERENICA ENVIADA -------------------------------------------------------
+                    '----------------------------------------------------------------------------------------------------------
+                    If Me.CmbRango1.Text = "" And Me.CmbRango2.Text = "" Then
+                        SQLString = "SELECT Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad AS Importe, Facturas.Cod_Bodega, Detalle_Facturas.Precio_Unitario FROM  Detalle_Facturas INNER JOIN  Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " & _
+                                     "WHERE Detalle_Facturas.Tipo_Factura = 'Transferencia Enviada' AND (Detalle_Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Detalle_Facturas.Cod_Producto BETWEEN '" & CodProductos & "' AND '" & CodProductos & "')  AND (Facturas.TransferenciaProcesada = 1) ORDER BY Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Cod_Producto"
+                    Else
+                        SQLString = "SELECT Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad AS Importe, Facturas.Cod_Bodega, Detalle_Facturas.Precio_Unitario FROM  Detalle_Facturas INNER JOIN  Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " & _
+                                    "WHERE Detalle_Facturas.Tipo_Factura = 'Transferencia Enviada' AND (Detalle_Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Detalle_Facturas.Cod_Producto BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Facturas.Cod_Bodega BETWEEN '" & CodBodega1 & "' AND '" & CodBodega2 & "') AND (Facturas.TransferenciaProcesada = 1) ORDER BY Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Cod_Producto"
+                    End If
+
+
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
+                    DataAdapter.Fill(DataSet, "TransferenciaEnviada")
+                    Me.ProgressBar1.Maximum = DataSet.Tables("TransferenciaEnviada").Rows.Count
+                    Me.ProgressBar1.Minimum = 0
+                    Me.ProgressBar1.Value = 0
+                    Me.ProgressBar1.Visible = True
+                    Registros = 0
+
+                    Do While DataSet.Tables("TransferenciaEnviada").Rows.Count > Registros
+
+                        oDataRow = DataSet.Tables("DetalleMovimientos").NewRow
+                        oDataRow("Numero_Factura") = DataSet.Tables("TransferenciaEnviada").Rows(Registros)("Numero_Factura")
+                        oDataRow("Fecha_Factura") = DataSet.Tables("TransferenciaEnviada").Rows(Registros)("Fecha_Factura")
+                        oDataRow("Tipo_Factura") = DataSet.Tables("TransferenciaEnviada").Rows(Registros)("Tipo_Factura")
+                        oDataRow("Cod_Producto") = DataSet.Tables("TransferenciaEnviada").Rows(Registros)("Cod_Producto")
+                        oDataRow("Descripcion_Producto") = DataSet.Tables("TransferenciaEnviada").Rows(Registros)("Descripcion_Producto")
+                        oDataRow("Cantidad") = DataSet.Tables("TransferenciaEnviada").Rows(Registros)("Cantidad")
+                        oDataRow("Importe") = DataSet.Tables("TransferenciaEnviada").Rows(Registros)("Importe")
+                        oDataRow("Orden") = 2
+                        oDataRow("Cod_Bodega") = DataSet.Tables("TransferenciaEnviada").Rows(Registros)("Cod_Bodega")
+                        DataSet.Tables("DetalleMovimientos").Rows.Add(oDataRow)
+                        Registros = Registros + 1
+                        Me.ProgressBar1.Value = Me.ProgressBar1.Value + 1
+                    Loop
+                    DataSet.Tables("TransferenciaEnviada").Reset()
+
+
+
+                    '-----------------------------------------------------------------------------------------------------------------
+                    '------------------------------DEVOLUCION DE VENTAS -------------------------------------------------------
+                    '----------------------------------------------------------------------------------------------------------
+
+
+                    If Me.CmbRango1.Text = "" And Me.CmbRango2.Text = "" Then
+                        'SQLString = "SELECT Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad AS Importe, Facturas.Cod_Bodega,Precio_Unitario FROM  Detalle_Facturas INNER JOIN Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " & _
+                        '            "WHERE (Detalle_Facturas.Tipo_Factura <> N'Cotizacion') AND (Detalle_Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Detalle_Facturas.Cod_Producto BETWEEN '" & CodProductos & "' AND '" & CodProductos & "')  ORDER BY Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Cod_Producto"  'AND (Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad <> 0)
+                        SQLString = "SELECT Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad AS Importe, Facturas.Cod_Bodega, Detalle_Facturas.Precio_Unitario FROM  Detalle_Facturas INNER JOIN  Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " & _
+                                     "WHERE Detalle_Facturas.Tipo_Factura = 'Devolucion de Venta' AND (Detalle_Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Detalle_Facturas.Cod_Producto BETWEEN '" & CodProductos & "' AND '" & CodProductos & "')  ORDER BY Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Cod_Producto"
+                    Else
+                        'SQLString = "SELECT  Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad AS Importe, Facturas.Cod_Bodega,Precio_Unitario FROM Detalle_Facturas INNER JOIN Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " & _
+                        '            "WHERE (Detalle_Facturas.Tipo_Factura <> N'Cotizacion') AND (Detalle_Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Detalle_Facturas.Cod_Producto BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Facturas.Cod_Bodega BETWEEN '" & CodBodega1 & "' AND '" & CodBodega2 & "')  ORDER BY Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Cod_Producto"  'AND (Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad <> 0)
+
+                        SQLString = "SELECT Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad AS Importe, Facturas.Cod_Bodega, Detalle_Facturas.Precio_Unitario FROM  Detalle_Facturas INNER JOIN  Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " & _
+                                    "WHERE Detalle_Facturas.Tipo_Factura = 'Devolucion de Venta' AND (Detalle_Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Detalle_Facturas.Cod_Producto BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Facturas.Cod_Bodega BETWEEN '" & CodBodega1 & "' AND '" & CodBodega2 & "') ORDER BY Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Cod_Producto"
+                    End If
+
+
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
+                    DataAdapter.Fill(DataSet, "DevolucionVentas")
+                    Me.ProgressBar1.Maximum = DataSet.Tables("DevolucionVentas").Rows.Count
+                    Me.ProgressBar1.Minimum = 0
+                    Me.ProgressBar1.Value = 0
+                    Me.ProgressBar1.Visible = True
+                    Registros = 0
+
+                    Do While DataSet.Tables("DevolucionVentas").Rows.Count > Registros
+
+                        oDataRow = DataSet.Tables("DetalleMovimientos").NewRow
+                        oDataRow("Numero_Factura") = DataSet.Tables("DevolucionVentas").Rows(Registros)("Numero_Factura")
+                        oDataRow("Fecha_Factura") = DataSet.Tables("DevolucionVentas").Rows(Registros)("Fecha_Factura")
+                        oDataRow("Tipo_Factura") = DataSet.Tables("DevolucionVentas").Rows(Registros)("Tipo_Factura")
+                        oDataRow("Cod_Producto") = DataSet.Tables("DevolucionVentas").Rows(Registros)("Cod_Producto")
+                        oDataRow("Descripcion_Producto") = DataSet.Tables("DevolucionVentas").Rows(Registros)("Descripcion_Producto")
+                        oDataRow("CantidadCompra") = DataSet.Tables("DevolucionVentas").Rows(Registros)("Cantidad")
+                        oDataRow("ImporteCompra") = DataSet.Tables("DevolucionVentas").Rows(Registros)("Importe")
+                        oDataRow("Orden") = 1
+                        oDataRow("Cod_Bodega") = DataSet.Tables("DevolucionVentas").Rows(Registros)("Cod_Bodega")
+                        DataSet.Tables("DetalleMovimientos").Rows.Add(oDataRow)
+
+                        Registros = Registros + 1
+                        Me.ProgressBar1.Value = Me.ProgressBar1.Value + 1
+                    Loop
+                    DataSet.Tables("DevolucionVentas").Reset()
+
+
+                    '---------------------------------------------------------------------------------------------------
+                    '----------------------MOVIMIENTOS DE COMPRA -------------------------------------------------------
+                    '---------------------------------------------------------------------------------------------------
+
+
+                    If Me.CmbRango1.Text = "" And Me.CmbRango2.Text = "" Then
+
+                        If Me.OptCordobas.Checked = True Then
+                            'SQLString = "SELECT Detalle_Compras.Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cantidad, Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Numero_Compra, Compras.Cod_Bodega, CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto ELSE (Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto)* TasaCambio.MontoTasa END AS Importe FROM Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa  " & _
+                            '            "WHERE (Productos.Cod_Productos BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Detalle_Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Detalle_Compras.Tipo_Compra <> 'Orden de Compra' AND Detalle_Compras.Tipo_Compra <> 'Devolucion de Compra') ORDER BY Detalle_Compras.Fecha_Compra"
+                            SQLString = "SELECT Detalle_Compras.Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cantidad, Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Numero_Compra, Compras.Cod_Bodega, CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto ELSE (Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto)* TasaCambio.MontoTasa END AS Importe FROM Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa  " & _
+                                         "WHERE (Productos.Cod_Productos BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Detalle_Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Detalle_Compras.Tipo_Compra = 'Mercancia Recibida') ORDER BY Detalle_Compras.Fecha_Compra"
+                        Else
+                            'SQLString = "SELECT Detalle_Compras.Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cantidad, Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Numero_Compra, Compras.Cod_Bodega, CASE WHEN Compras.MonedaCompra = 'Dolares' THEN Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto ELSE (Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto)/ TasaCambio.MontoTasa END AS Importe FROM Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa  " & _
+                            '            "WHERE (Productos.Cod_Productos BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Detalle_Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102))  AND (Detalle_Compras.Tipo_Compra <> 'Orden de Compra' AND Detalle_Compras.Tipo_Compra <> 'Devolucion de Compra') ORDER BY Detalle_Compras.Fecha_Compra"
+                            SQLString = "SELECT Detalle_Compras.Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cantidad, Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Numero_Compra, Compras.Cod_Bodega, CASE WHEN Compras.MonedaCompra = 'Dolares' THEN Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto ELSE (Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto)/ TasaCambio.MontoTasa END AS Importe FROM Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa  " & _
+                                                         "WHERE (Productos.Cod_Productos BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Detalle_Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Detalle_Compras.Tipo_Compra = 'Mercancia Recibida') ORDER BY Detalle_Compras.Fecha_Compra"
+                        End If
+
+                    Else
+
+                        If Me.OptCordobas.Checked = True Then
+                            SQLString = "SELECT Detalle_Compras.Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cantidad, Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Numero_Compra, Compras.Cod_Bodega, CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto ELSE (Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto)* TasaCambio.MontoTasa END AS Importe FROM Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa  " & _
+                                        "WHERE (Productos.Cod_Productos BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Detalle_Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Compras.Cod_Bodega BETWEEN '" & CodBodega1 & "' AND '" & CodBodega2 & "') AND (Detalle_Compras.Tipo_Compra = 'Mercancia Recibida') ORDER BY Detalle_Compras.Fecha_Compra"
+                        Else
+                            SQLString = "SELECT Detalle_Compras.Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cantidad, Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Numero_Compra, Compras.Cod_Bodega, CASE WHEN Compras.MonedaCompra = 'Dolares' THEN Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto ELSE (Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto)/ TasaCambio.MontoTasa END AS Importe FROM Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa  " & _
+                                        "WHERE (Productos.Cod_Productos BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Detalle_Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Compras.Cod_Bodega BETWEEN '" & CodBodega1 & "' AND '" & CodBodega2 & "') AND (Detalle_Compras.Tipo_Compra = 'Mercancia Recibida') ORDER BY Detalle_Compras.Fecha_Compra"
+
+                        End If
+                    End If
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
+                    DataAdapter.Fill(DataSet, "Entradas")
+                    Me.ProgressBar1.Maximum = DataSet.Tables("Entradas").Rows.Count
+                    Me.ProgressBar1.Minimum = 0
+                    Me.ProgressBar1.Value = 0
+                    Me.ProgressBar1.Visible = True
+                    Registros = 0
+
+                    Do While DataSet.Tables("Entradas").Rows.Count > Registros
+
+                        oDataRow = DataSet.Tables("DetalleMovimientos").NewRow
+                        oDataRow("Numero_Factura") = DataSet.Tables("Entradas").Rows(Registros)("Numero_Compra")
+                        oDataRow("Fecha_Factura") = DataSet.Tables("Entradas").Rows(Registros)("Fecha_Compra")
+                        oDataRow("Tipo_Factura") = DataSet.Tables("Entradas").Rows(Registros)("Tipo_Compra")
+                        oDataRow("Cod_Producto") = DataSet.Tables("Entradas").Rows(Registros)("Cod_Productos")
+                        oDataRow("Descripcion_Producto") = DataSet.Tables("Entradas").Rows(Registros)("Descripcion_Producto")
+                        oDataRow("CantidadCompra") = DataSet.Tables("Entradas").Rows(Registros)("Cantidad")
+                        oDataRow("ImporteCompra") = DataSet.Tables("Entradas").Rows(Registros)("Importe")
+                        oDataRow("Orden") = 1
+                        oDataRow("Cod_Bodega") = DataSet.Tables("Entradas").Rows(Registros)("Cod_Bodega")
+                        DataSet.Tables("DetalleMovimientos").Rows.Add(oDataRow)
+
+                        Registros = Registros + 1
+                        Me.ProgressBar1.Value = Me.ProgressBar1.Value + 1
+                    Loop
+
+                    DataSet.Tables("Entradas").Reset()
+
+
+                    '---------------------------------------------------------------------------------------------------
+                    '----------------------TRANSFERENCIA RECIBIDA -------------------------------------------------------
+                    '---------------------------------------------------------------------------------------------------
+
+
+                    If Me.CmbRango1.Text = "" And Me.CmbRango2.Text = "" Then
+
+                        If Me.OptCordobas.Checked = True Then
+                            'SQLString = "SELECT Detalle_Compras.Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cantidad, Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Numero_Compra, Compras.Cod_Bodega, CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto ELSE (Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto)* TasaCambio.MontoTasa END AS Importe FROM Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa  " & _
+                            '            "WHERE (Productos.Cod_Productos BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Detalle_Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Detalle_Compras.Tipo_Compra <> 'Orden de Compra' AND Detalle_Compras.Tipo_Compra <> 'Devolucion de Compra') ORDER BY Detalle_Compras.Fecha_Compra"
+                            SQLString = "SELECT Detalle_Compras.Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cantidad, Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Numero_Compra, Compras.Cod_Bodega, CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto ELSE (Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto)* TasaCambio.MontoTasa END AS Importe FROM Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa  " & _
+                                         "WHERE (Productos.Cod_Productos BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Detalle_Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Detalle_Compras.Tipo_Compra = 'Transferencia Recibida')  AND (TransferenciaProcesada = 1) ORDER BY Detalle_Compras.Fecha_Compra"
+                        Else
+                            'SQLString = "SELECT Detalle_Compras.Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cantidad, Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Numero_Compra, Compras.Cod_Bodega, CASE WHEN Compras.MonedaCompra = 'Dolares' THEN Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto ELSE (Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto)/ TasaCambio.MontoTasa END AS Importe FROM Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa  " & _
+                            '            "WHERE (Productos.Cod_Productos BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Detalle_Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102))  AND (Detalle_Compras.Tipo_Compra <> 'Orden de Compra' AND Detalle_Compras.Tipo_Compra <> 'Devolucion de Compra') ORDER BY Detalle_Compras.Fecha_Compra"
+                            SQLString = "SELECT Detalle_Compras.Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cantidad, Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Numero_Compra, Compras.Cod_Bodega, CASE WHEN Compras.MonedaCompra = 'Dolares' THEN Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto ELSE (Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto)/ TasaCambio.MontoTasa END AS Importe FROM Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa  " & _
+                                                         "WHERE (Productos.Cod_Productos BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Detalle_Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Detalle_Compras.Tipo_Compra = 'Transferencia Recibida')  AND (TransferenciaProcesada = 1) ORDER BY Detalle_Compras.Fecha_Compra"
+                        End If
+
+                    Else
+
+                        If Me.OptCordobas.Checked = True Then
+                            SQLString = "SELECT Detalle_Compras.Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cantidad, Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Numero_Compra, Compras.Cod_Bodega, CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto ELSE (Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto)* TasaCambio.MontoTasa END AS Importe FROM Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa  " & _
+                                        "WHERE (Productos.Cod_Productos BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Detalle_Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Compras.Cod_Bodega BETWEEN '" & CodBodega1 & "' AND '" & CodBodega2 & "') AND   (TransferenciaProcesada = 1) ORDER BY Detalle_Compras.Fecha_Compra"
+                        Else
+                            SQLString = "SELECT Detalle_Compras.Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cantidad, Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Numero_Compra, Compras.Cod_Bodega, CASE WHEN Compras.MonedaCompra = 'Dolares' THEN Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto ELSE (Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto)/ TasaCambio.MontoTasa END AS Importe FROM Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa  " & _
+                                        "WHERE (Productos.Cod_Productos BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Detalle_Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Compras.Cod_Bodega BETWEEN '" & CodBodega1 & "' AND '" & CodBodega2 & "')   AND (TransferenciaProcesada = 1) ORDER BY Detalle_Compras.Fecha_Compra"
+
+                        End If
+                    End If
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
+                    DataAdapter.Fill(DataSet, "TransferenciaRecibida")
+                    Me.ProgressBar1.Maximum = DataSet.Tables("TransferenciaRecibida").Rows.Count
+                    Me.ProgressBar1.Minimum = 0
+                    Me.ProgressBar1.Value = 0
+                    Me.ProgressBar1.Visible = True
+                    Registros = 0
+
+                    Do While DataSet.Tables("TransferenciaRecibida").Rows.Count > Registros
+
+                        oDataRow = DataSet.Tables("DetalleMovimientos").NewRow
+                        oDataRow("Numero_Factura") = DataSet.Tables("TransferenciaRecibida").Rows(Registros)("Numero_Compra")
+                        oDataRow("Fecha_Factura") = DataSet.Tables("TransferenciaRecibida").Rows(Registros)("Fecha_Compra")
+                        oDataRow("Tipo_Factura") = DataSet.Tables("TransferenciaRecibida").Rows(Registros)("Tipo_Compra")
+                        oDataRow("Cod_Producto") = DataSet.Tables("TransferenciaRecibida").Rows(Registros)("Cod_Productos")
+                        oDataRow("Descripcion_Producto") = DataSet.Tables("TransferenciaRecibida").Rows(Registros)("Descripcion_Producto")
+                        oDataRow("CantidadCompra") = DataSet.Tables("TransferenciaRecibida").Rows(Registros)("Cantidad")
+                        oDataRow("ImporteCompra") = DataSet.Tables("TransferenciaRecibida").Rows(Registros)("Importe")
+                        oDataRow("Orden") = 1
+                        oDataRow("Cod_Bodega") = DataSet.Tables("TransferenciaRecibida").Rows(Registros)("Cod_Bodega")
+                        DataSet.Tables("DetalleMovimientos").Rows.Add(oDataRow)
+
+                        Registros = Registros + 1
+                        Me.ProgressBar1.Value = Me.ProgressBar1.Value + 1
+                    Loop
+
+                    DataSet.Tables("TransferenciaRecibida").Reset()
+
+
+                    '---------------------------------------------------------------------------------------------------
+                    '----------------------DEVOLUCION DE COMPRAS -------------------------------------------------------
+                    '---------------------------------------------------------------------------------------------------
+
+
+                    If Me.CmbRango1.Text = "" And Me.CmbRango2.Text = "" Then
+
+                        If Me.OptCordobas.Checked = True Then
+                            SQLString = "SELECT Detalle_Compras.Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cantidad, Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Numero_Compra, Compras.Cod_Bodega, CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto ELSE (Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto)* TasaCambio.MontoTasa END AS Importe FROM Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa  " & _
+                                         "WHERE (Productos.Cod_Productos BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Detalle_Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Detalle_Compras.Tipo_Compra = 'Devolucion de Compra') ORDER BY Detalle_Compras.Fecha_Compra"
+                        Else
+                            SQLString = "SELECT Detalle_Compras.Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cantidad, Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Numero_Compra, Compras.Cod_Bodega, CASE WHEN Compras.MonedaCompra = 'Dolares' THEN Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto ELSE (Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto)/ TasaCambio.MontoTasa END AS Importe FROM Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa  " & _
+                                                         "WHERE (Productos.Cod_Productos BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Detalle_Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Detalle_Compras.Tipo_Compra = 'Devolucion de Compra') ORDER BY Detalle_Compras.Fecha_Compra"
+                        End If
+
+                    Else
+
+                        If Me.OptCordobas.Checked = True Then
+                            SQLString = "SELECT Detalle_Compras.Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cantidad, Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Numero_Compra, Compras.Cod_Bodega, CASE WHEN Compras.MonedaCompra = 'Cordobas' THEN Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto ELSE (Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto)* TasaCambio.MontoTasa END AS Importe FROM Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa  " & _
+                                        "WHERE (Productos.Cod_Productos BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Detalle_Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Compras.Cod_Bodega BETWEEN '" & CodBodega1 & "' AND '" & CodBodega2 & "') AND (Detalle_Compras.Tipo_Compra = 'Devolucion de Compra') ORDER BY Detalle_Compras.Fecha_Compra"
+                        Else
+                            SQLString = "SELECT Detalle_Compras.Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cantidad, Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Numero_Compra, Compras.Cod_Bodega, CASE WHEN Compras.MonedaCompra = 'Dolares' THEN Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto ELSE (Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto)/ TasaCambio.MontoTasa END AS Importe FROM Detalle_Compras INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa  " & _
+                                        "WHERE (Productos.Cod_Productos BETWEEN '" & CodProductos & "' AND '" & CodProductos & "') AND (Detalle_Compras.Fecha_Compra BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Compras.Cod_Bodega BETWEEN '" & CodBodega1 & "' AND '" & CodBodega2 & "') AND (Detalle_Compras.Tipo_Compra = 'Devolucion de Compra') ORDER BY Detalle_Compras.Fecha_Compra"
+
+                        End If
+                    End If
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
+                    DataAdapter.Fill(DataSet, "DevolucionCompras")
+                    Me.ProgressBar1.Maximum = DataSet.Tables("DevolucionCompras").Rows.Count
+                    Me.ProgressBar1.Minimum = 0
+                    Me.ProgressBar1.Value = 0
+                    Me.ProgressBar1.Visible = True
+                    Registros = 0
+
+                    Do While DataSet.Tables("DevolucionCompras").Rows.Count > Registros
+
+                        oDataRow = DataSet.Tables("DetalleMovimientos").NewRow
+                        oDataRow("Numero_Factura") = DataSet.Tables("DevolucionCompras").Rows(Registros)("Numero_Compra")
+                        oDataRow("Fecha_Factura") = DataSet.Tables("DevolucionCompras").Rows(Registros)("Fecha_Compra")
+                        oDataRow("Tipo_Factura") = DataSet.Tables("DevolucionCompras").Rows(Registros)("Tipo_Compra")
+                        oDataRow("Cod_Producto") = DataSet.Tables("DevolucionCompras").Rows(Registros)("Cod_Productos")
+                        oDataRow("Descripcion_Producto") = DataSet.Tables("DevolucionCompras").Rows(Registros)("Descripcion_Producto")
+                        oDataRow("Cantidad") = DataSet.Tables("DevolucionCompras").Rows(Registros)("Cantidad")
+                        oDataRow("Importe") = DataSet.Tables("DevolucionCompras").Rows(Registros)("Importe")
+                        oDataRow("Orden") = 2
+                        oDataRow("Cod_Bodega") = DataSet.Tables("DevolucionCompras").Rows(Registros)("Cod_Bodega")
+                        DataSet.Tables("DetalleMovimientos").Rows.Add(oDataRow)
+
+                        Registros = Registros + 1
+                        Me.ProgressBar1.Value = Me.ProgressBar1.Value + 1
+                    Loop
+
+                    DataSet.Tables("DevolucionCompras").Reset()
+
+                    Me.ProgressBar.Value = Me.ProgressBar.Value + 1
+                    i = i + 1
+                Loop
+
+
+                Dim ViewerForm As New FrmViewer()
+
+                DvDetalleProductos = New DataView(DataSet.Tables("DetalleMovimientos"))
+                DvDetalleProductos.Sort = "Cod_Producto, Fecha_Factura, Orden"
+
+
+
+                objExcel.Visible = True 'lo hacemos visible
+                objExcel.SheetsInNewWorkbook = 1 'decimos cuantas hojas queremos en el nuevo documento
+                objExcel.Workbooks.Add() ' añadimos el objeto al workbook
+
+                'objExcel.ActiveSheet.Cells("A1") = "Factura No"
+
+                Moneda = "Cordobas"
+                If Me.OptCordobas.Checked = True Then
+                    Moneda = "Cordobas"
+                ElseIf Me.OptDolares.Checked = True Then
+                    Moneda = "Dolares"
+                End If
+
+                objExcel.ActiveSheet.Range("A1:G1").Merge()
+                objExcel.ActiveSheet.Range("A1").Value = NombreEmpresa
+                objExcel.ActiveSheet.Range("A2:G2").Merge()
+                objExcel.ActiveSheet.Range("A2").Value = DireccionEmpresa
+                objExcel.ActiveSheet.Range("A3:G3").Merge()
+                objExcel.ActiveSheet.Range("A3").Value = "DESDE:" & Format(Fecha1, "dd/MM/yyyy") & " HASTA:" & Format(Fecha2, "dd/MM/yyyy") & "     EXPRESADO EN " & Moneda
+
+                objExcel.ActiveSheet.Range("A5").Value = "Codigo Producto"
+                objExcel.ActiveSheet.Range("A6").Value = "Tipo"
+                objExcel.ActiveSheet.Range("B5").Value = "Descripcion Producto"
+                objExcel.ActiveSheet.Range("B6").Value = "Bodega"
+                objExcel.ActiveSheet.Range("C5").Value = "Fecha"
+                objExcel.ActiveSheet.Range("D5").Value = "Numero"
+                objExcel.ActiveSheet.Range("E5:F5").Merge()
+                objExcel.ActiveSheet.Range("E5").Value = "-----ENTRADA-----"
+                objExcel.ActiveSheet.Range("E6").Value = "Cantidad"
+                objExcel.ActiveSheet.Range("F6").Value = "Importe"
+                objExcel.ActiveSheet.Range("G5:H5").Merge()
+                objExcel.ActiveSheet.Range("G5").Value = "-----SALIDA-----"
+                objExcel.ActiveSheet.Range("G6").Value = "Cantidad"
+                objExcel.ActiveSheet.Range("H6").Value = "Importe"
+
+                'objExcel.ActiveSheet.Columns("A").ColumnWidth = 15.75
+                'objExcel.ActiveSheet.Columns("B").ColumnWidth = 83.86
+                'objExcel.ActiveSheet.Columns("C").ColumnWidth = 32.71
+                ''objExcel.ActiveSheet.Columns("D").ColumnWidth = 10.71
+                ''objExcel.ActiveSheet.Columns("E").ColumnWidth = 55.75
+                ''objExcel.ActiveSheet.Columns("D").ColumnWidth = 34.63
+                objExcel.ActiveSheet.Columns("E").NumberFormat = "##,##0.00"
+                objExcel.ActiveSheet.Columns("F").NumberFormat = "##,##0.00"
+                objExcel.ActiveSheet.Columns("G").NumberFormat = "##,##0.00"
+                objExcel.ActiveSheet.Columns("H").NumberFormat = "##,##0.00"
+
+                objExcel.ActiveSheet.Range("A5", "H5").Interior.Color = RGB(180, 198, 231)
+                objExcel.ActiveSheet.range("A5", "H5").Font.Size = 12
+                objExcel.ActiveSheet.range("A5", "H5").Font.Bold = True
+                objExcel.ActiveSheet.range("A5", "H5").WrapText = True
+                objExcel.ActiveSheet.Range("A5", "H5").HorizontalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
+                objExcel.ActiveSheet.Range("A5", "H5").VerticalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
+                objExcel.ActiveSheet.Range("A5", "H5").Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous
+
+                objExcel.ActiveSheet.Range("A6", "H6").Interior.Color = RGB(180, 198, 231)
+                objExcel.ActiveSheet.range("A6", "H6").Font.Size = 12
+                objExcel.ActiveSheet.range("A6", "H6").Font.Bold = True
+                objExcel.ActiveSheet.range("A6", "H6").WrapText = True
+                objExcel.ActiveSheet.Range("A6", "H6").HorizontalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
+                objExcel.ActiveSheet.Range("A6", "H6").VerticalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
+                objExcel.ActiveSheet.Range("A6", "H6").Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous
+
+
+                Registros = DvDetalleProductos.Count
+                j = 0
+                Contador = 7
+                Me.ProgressBar.Maximum = Registros
+                Me.ProgressBar.Minimum = 0
+                Me.ProgressBar.Value = 0
+                Me.ProgressBar.Visible = True
+
+                Dim Numero_Factura As String, CodigoProducto As String, TipoFactura As String, FechaFactura As Date, CodBodega As String, Orden As Double
+                Dim Cantidad As Double, Importe As Double, DescripcionProducto As String, CodigoProducto2 As String
+
+                j = 0
+                i = 7
+
+                Do While Registros > j
+                    My.Application.DoEvents()
+
+                    Numero_Factura = DvDetalleProductos.Item(j)("Numero_Factura")
+                    TipoFactura = DvDetalleProductos.Item(j)("Tipo_Factura")
+                    CodigoProducto = DvDetalleProductos.Item(j)("Cod_Producto")
+                    FechaFactura = DvDetalleProductos.Item(j)("Fecha_Factura")
+                    CodBodega = DvDetalleProductos.Item(j)("Cod_Bodega")
+                    Orden = DvDetalleProductos.Item(j)("Orden")
+                    If Not IsDBNull(DvDetalleProductos.Item(j)("Cantidad")) Then
+                        Cantidad = DvDetalleProductos.Item(j)("Cantidad")
+                    End If
+
+                    If Not IsDBNull(DvDetalleProductos.Item(j)("Importe")) Then
+                        Importe = DvDetalleProductos.Item(j)("Importe")
+                    End If
+
+
+                    DescripcionProducto = DvDetalleProductos.Item(j)("Descripcion_Producto")
+
+
+                    If i = 7 Then
+                        CodigoProducto2 = CodigoProducto
+                        objExcel.ActiveSheet.Range("A" & i).Value = CodigoProducto
+                        objExcel.ActiveSheet.Range("B" & i).Value = DescripcionProducto
+                        i = i + 1
+                        objExcel.ActiveSheet.Range("A" & i).Value = TipoFactura
+                        objExcel.ActiveSheet.Range("B" & i).Value = CodBodega
+                        objExcel.ActiveSheet.Range("C" & i).Value = Format(FechaFactura, "dd/MM/yyyy")
+                        objExcel.ActiveSheet.Range("D" & i).Value = Numero_Factura
+                        Select Case Orden
+                            Case 1
+                                objExcel.ActiveSheet.Range("E" & i).Value = Cantidad
+                                objExcel.ActiveSheet.Range("F" & i).Value = Importe
+
+                            Case 2
+                                objExcel.ActiveSheet.Range("G" & i).Value = Cantidad
+                                objExcel.ActiveSheet.Range("H" & i).Value = Importe
+
+                        End Select
+
+                    Else
+                        If CodigoProducto2 <> CodigoProducto Then
+                            objExcel.ActiveSheet.Range("A" & i).Value = CodigoProducto
+                            objExcel.ActiveSheet.Range("B" & i).Value = DescripcionProducto
+                            i = i + 1
+                        End If
+
+                        objExcel.ActiveSheet.Range("A" & i).Value = TipoFactura
+                        objExcel.ActiveSheet.Range("B" & i).Value = CodBodega
+                        objExcel.ActiveSheet.Range("C" & i).Value = Format(FechaFactura, "dd/MM/yyyy")
+                        objExcel.ActiveSheet.Range("D" & i).Value = Numero_Factura
+                        Select Case Orden
+                            Case 1
+                                objExcel.ActiveSheet.Range("E" & i).Value = Cantidad
+                                objExcel.ActiveSheet.Range("F" & i).Value = Importe
+
+                            Case 2
+                                objExcel.ActiveSheet.Range("G" & i).Value = Cantidad
+                                objExcel.ActiveSheet.Range("H" & i).Value = Importe
+
+                        End Select
+
+                        CodigoProducto2 = CodigoProducto
+
+                    End If
+
+
+
+                    Me.Text = "Procesando producto: " & CodigoProducto & " " & DescripcionProducto
+
+
+
+
+                    j = j + 1
+                    i = i + 1
+                    Me.ProgressBar.Value = Me.ProgressBar.Value + 1
+                Loop
+
+
+
 
             Case "Reporte de Ordenes de Compra"
                 Dim ArepReporteOrdenCompra As New ArepReporteOrdenCompra, Sqlstring As String
@@ -3099,6 +3652,8 @@ Public Class FrmReportes
                 objExcel.ActiveSheet.Range("A5", "G5").HorizontalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
                 objExcel.ActiveSheet.Range("A5", "G5").VerticalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
                 objExcel.ActiveSheet.Range("A5", "G5").Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous
+
+
 
 
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
@@ -13602,7 +14157,11 @@ Public Class FrmReportes
                 Me.GroupBoxProyectos.Visible = True
                 Me.GroupBoxProyectos.Location = New Point(280, 123)
                 Me.CmbAgrupado.Text = "Bodega"
-
+            Case "Movimientos de Productos Excel"
+                Me.GroupBox3.Visible = True
+                Me.CmbAgrupado.Text = "Bodega"
+                Me.GroupBoxProductos.Visible = True
+                Me.GroupBoxProductos.Location = New Point(280, 123)
             Case "Movimientos de Productos"
                 Me.GroupBox3.Visible = True
                 Me.CmbAgrupado.Text = "Bodega"

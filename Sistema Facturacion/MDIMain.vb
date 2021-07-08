@@ -588,6 +588,13 @@ Public Class MDIMain
 
     Private Sub MDIMain_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
         Demo(Now)
+
+        '/////////////////////////Cierro las herabas abiertas/////////////////
+        If Not (oHebraNotificacion Is Nothing) Then
+            If oHebraNotificacion.IsAlive Then
+                oHebraNotificacion.Abort()
+            End If
+        End If
     End Sub
 
     Private Sub FrmMDIMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -1245,5 +1252,10 @@ Public Class MDIMain
 
     Private Sub RibbonButton3_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton3.Click
 
+    End Sub
+
+    Private Sub RibbonButton18_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton18.Click
+        My.Forms.FrmEvacuaciones.MdiParent = Me
+        My.Forms.FrmEvacuaciones.Show()
     End Sub
 End Class
