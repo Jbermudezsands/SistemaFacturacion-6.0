@@ -1997,8 +1997,8 @@ Public Class FrmReportes
                 Dim CodBodega1 As String = "", CodBodega2 As String = ""
                 Dim ArepMovimientoProductos As New ArepDetalleMovimientoProducto
                 Dim oDataRow As DataRow, Inicial As Double
-                Dim i As Double = 0, Registros As Double = 0, CantidadSaldo As Double, MontoSaldo As Double, CantidadCompra As Double, ImporteCompra As Double
-                Dim Contador As Double = 0, j As Double = 0, Cantidad_Total As Double, Importe_Total As Double
+                Dim i As Double = 0, Registros As Double = 0, CantidadSaldo As Double, MontoSaldo As Double
+                Dim Contador As Double = 0, j As Double = 0
 
                 Dim objExcel = New Microsoft.Office.Interop.Excel.Application, Moneda As String
 
@@ -2013,13 +2013,13 @@ Public Class FrmReportes
                 DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
                 DataAdapter.Fill(DataSet, "DetalleMovimientos")
 
-                'If Dir(RutaLogo) <> "" Then
-                '    ArepMovimientoProductos.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                'End If
+                If Dir(RutaLogo) <> "" Then
+                    ArepMovimientoProductos.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                End If
 
-                'ArepMovimientoProductos.LblTitulo.Text = NombreEmpresa
-                'ArepMovimientoProductos.LblDireccion.Text = DireccionEmpresa
-                'ArepMovimientoProductos.LblRuc.Text = Ruc
+                ArepMovimientoProductos.LblTitulo.Text = NombreEmpresa
+                ArepMovimientoProductos.LblDireccion.Text = DireccionEmpresa
+                ArepMovimientoProductos.LblRuc.Text = Ruc
 
                 SqlDatos = "SELECT  Cod_Productos, Descripcion_Producto FROM Productos "
                 If Me.CboCodProducto.Text = "" Then
@@ -2060,14 +2060,11 @@ Public Class FrmReportes
 
                 Do While DataSet.Tables("Movimientos").Rows.Count > i
 
-                    CodProductos = DataSet.Tables("Movimientos").Rows(i)("Cod_Productos")
-                    Me.Text = "Procesando el Producto: " & CodProductos
-
                     My.Application.DoEvents()
 
-                    Cantidad_Total = 0
-                    Importe_Total = 0
+                    CodProductos = DataSet.Tables("Movimientos").Rows(i)("Cod_Productos")
 
+                    Me.Text = "Procesando el Producto: " & CodProductos
 
 
                     If Me.CmbRango1.Text = "" And Me.CmbRango2.Text = "" Then
@@ -2422,10 +2419,6 @@ Public Class FrmReportes
                 objExcel.ActiveSheet.Range("G5").Value = "-----SALIDA-----"
                 objExcel.ActiveSheet.Range("G6").Value = "Cantidad"
                 objExcel.ActiveSheet.Range("H6").Value = "Importe"
-                objExcel.ActiveSheet.Range("I5:J5").Merge()
-                objExcel.ActiveSheet.Range("I5").Value = "-----Movimiento-----"
-                objExcel.ActiveSheet.Range("I6").Value = "Cantidad"
-                objExcel.ActiveSheet.Range("J6").Value = "Importe"
 
                 'objExcel.ActiveSheet.Columns("A").ColumnWidth = 15.75
                 'objExcel.ActiveSheet.Columns("B").ColumnWidth = 83.86
@@ -2437,24 +2430,22 @@ Public Class FrmReportes
                 objExcel.ActiveSheet.Columns("F").NumberFormat = "##,##0.00"
                 objExcel.ActiveSheet.Columns("G").NumberFormat = "##,##0.00"
                 objExcel.ActiveSheet.Columns("H").NumberFormat = "##,##0.00"
-                objExcel.ActiveSheet.Columns("I").NumberFormat = "##,##0.00"
-                objExcel.ActiveSheet.Columns("J").NumberFormat = "##,##0.00"
 
-                objExcel.ActiveSheet.Range("A5", "J5").Interior.Color = RGB(180, 198, 231)
-                objExcel.ActiveSheet.range("A5", "J5").Font.Size = 12
-                objExcel.ActiveSheet.range("A5", "J5").Font.Bold = True
-                objExcel.ActiveSheet.range("A5", "J5").WrapText = True
-                objExcel.ActiveSheet.Range("A5", "J5").HorizontalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
-                objExcel.ActiveSheet.Range("A5", "J5").VerticalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
-                objExcel.ActiveSheet.Range("A5", "J5").Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous
+                objExcel.ActiveSheet.Range("A5", "H5").Interior.Color = RGB(180, 198, 231)
+                objExcel.ActiveSheet.range("A5", "H5").Font.Size = 12
+                objExcel.ActiveSheet.range("A5", "H5").Font.Bold = True
+                objExcel.ActiveSheet.range("A5", "H5").WrapText = True
+                objExcel.ActiveSheet.Range("A5", "H5").HorizontalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
+                objExcel.ActiveSheet.Range("A5", "H5").VerticalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
+                objExcel.ActiveSheet.Range("A5", "H5").Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous
 
-                objExcel.ActiveSheet.Range("A6", "J6").Interior.Color = RGB(180, 198, 231)
-                objExcel.ActiveSheet.range("A6", "J6").Font.Size = 12
-                objExcel.ActiveSheet.range("A6", "J6").Font.Bold = True
-                objExcel.ActiveSheet.range("A6", "J6").WrapText = True
-                objExcel.ActiveSheet.Range("A6", "J6").HorizontalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
-                objExcel.ActiveSheet.Range("A6", "J6").VerticalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
-                objExcel.ActiveSheet.Range("A6", "J6").Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous
+                objExcel.ActiveSheet.Range("A6", "H6").Interior.Color = RGB(180, 198, 231)
+                objExcel.ActiveSheet.range("A6", "H6").Font.Size = 12
+                objExcel.ActiveSheet.range("A6", "H6").Font.Bold = True
+                objExcel.ActiveSheet.range("A6", "H6").WrapText = True
+                objExcel.ActiveSheet.Range("A6", "H6").HorizontalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
+                objExcel.ActiveSheet.Range("A6", "H6").VerticalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
+                objExcel.ActiveSheet.Range("A6", "H6").Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous
 
 
                 Registros = DvDetalleProductos.Count
@@ -2467,7 +2458,6 @@ Public Class FrmReportes
 
                 Dim Numero_Factura As String, CodigoProducto As String, TipoFactura As String, FechaFactura As Date, CodBodega As String, Orden As Double
                 Dim Cantidad As Double, Importe As Double, DescripcionProducto As String, CodigoProducto2 As String
-                Dim CantidadIni As Double, MontoIni As Double
 
                 j = 0
                 i = 7
@@ -2481,31 +2471,13 @@ Public Class FrmReportes
                     FechaFactura = DvDetalleProductos.Item(j)("Fecha_Factura")
                     CodBodega = DvDetalleProductos.Item(j)("Cod_Bodega")
                     Orden = DvDetalleProductos.Item(j)("Orden")
-
                     If Not IsDBNull(DvDetalleProductos.Item(j)("Cantidad")) Then
                         Cantidad = DvDetalleProductos.Item(j)("Cantidad")
-                    Else
-                        Cantidad = 0
                     End If
 
                     If Not IsDBNull(DvDetalleProductos.Item(j)("Importe")) Then
                         Importe = DvDetalleProductos.Item(j)("Importe")
-                    Else
-                        Importe = 0
                     End If
-
-                    If Not IsDBNull(DvDetalleProductos.Item(j)("CantidadCompra")) Then
-                        CantidadCompra = DvDetalleProductos.Item(j)("CantidadCompra")
-                    Else
-                        CantidadCompra = 0
-                    End If
-
-                    If Not IsDBNull(DvDetalleProductos.Item(j)("ImporteCompra")) Then
-                        ImporteCompra = DvDetalleProductos.Item(j)("ImporteCompra")
-                    Else
-                        ImporteCompra = 0
-                    End If
-
 
 
                     DescripcionProducto = DvDetalleProductos.Item(j)("Descripcion_Producto")
@@ -2513,26 +2485,8 @@ Public Class FrmReportes
 
                     If i = 7 Then
                         CodigoProducto2 = CodigoProducto
-
-                        '////////////////////////////////BUSCO EL SALDO INICIAL //////////////////////////////////////////////////////////////////////////
-                        FechaIni = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
-                        If Me.CmbAgrupado.Text = "Bodega" Then
-                            CantidadIni = BuscaInventarioInicialEntreBodega(CodigoProducto, FechaIni, Me.CmbRango1.Text, Me.CmbRango2.Text)
-                            MontoIni = MontoInicial
-                        Else
-                            CantidadIni = BuscaInventarioInicial(CodigoProducto, FechaIni)
-                            MontoIni = MontoInicial
-                        End If
-
-                        Cantidad_Total = CantidadIni + CantidadCompra - Cantidad
-                        Importe_Total = MontoIni + ImporteCompra - Importe
-
                         objExcel.ActiveSheet.Range("A" & i).Value = CodigoProducto
                         objExcel.ActiveSheet.Range("B" & i).Value = DescripcionProducto
-                        objExcel.ActiveSheet.Range("H" & i).Value = "Saldo Inicial"
-                        objExcel.ActiveSheet.Range("I" & i).Value = CantidadIni
-                        objExcel.ActiveSheet.Range("J" & i).Value = MontoIni
-
                         i = i + 1
                         objExcel.ActiveSheet.Range("A" & i).Value = TipoFactura
                         objExcel.ActiveSheet.Range("B" & i).Value = CodBodega
@@ -2540,8 +2494,8 @@ Public Class FrmReportes
                         objExcel.ActiveSheet.Range("D" & i).Value = Numero_Factura
                         Select Case Orden
                             Case 1
-                                objExcel.ActiveSheet.Range("E" & i).Value = CantidadCompra
-                                objExcel.ActiveSheet.Range("F" & i).Value = ImporteCompra
+                                objExcel.ActiveSheet.Range("E" & i).Value = Cantidad
+                                objExcel.ActiveSheet.Range("F" & i).Value = Importe
 
                             Case 2
                                 objExcel.ActiveSheet.Range("G" & i).Value = Cantidad
@@ -2549,79 +2503,27 @@ Public Class FrmReportes
 
                         End Select
 
-                        objExcel.ActiveSheet.Range("I" & i).Value = Cantidad_Total
-                        objExcel.ActiveSheet.Range("J" & i).Value = Importe_Total
-
                     Else
                         If CodigoProducto2 <> CodigoProducto Then
-
-                            '////////////////////////////////BUSCO EL SALDO INICIAL //////////////////////////////////////////////////////////////////////////
-                            FechaIni = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
-                            If Me.CmbAgrupado.Text = "Bodega" Then
-                                CantidadIni = BuscaInventarioInicialEntreBodega(CodigoProducto, FechaIni, Me.CmbRango1.Text, Me.CmbRango2.Text)
-                                MontoIni = MontoInicial
-                            Else
-                                CantidadIni = BuscaInventarioInicial(CodigoProducto, FechaIni)
-                                MontoIni = MontoInicial
-                            End If
-
-                            Cantidad_Total = CantidadIni + CantidadCompra - Cantidad
-                            Importe_Total = MontoIni + ImporteCompra - Importe
-
                             objExcel.ActiveSheet.Range("A" & i).Value = CodigoProducto
                             objExcel.ActiveSheet.Range("B" & i).Value = DescripcionProducto
-                            objExcel.ActiveSheet.Range("H" & i).Value = "Saldo Inicial"
-                            objExcel.ActiveSheet.Range("I" & i).Value = CantidadIni
-                            objExcel.ActiveSheet.Range("J" & i).Value = MontoIni
                             i = i + 1
-
-                            objExcel.ActiveSheet.Range("A" & i).Value = TipoFactura
-                            objExcel.ActiveSheet.Range("B" & i).Value = CodBodega
-                            objExcel.ActiveSheet.Range("C" & i).Value = Format(FechaFactura, "dd/MM/yyyy")
-                            objExcel.ActiveSheet.Range("D" & i).Value = Numero_Factura
-                            Select Case Orden
-                                Case 1
-                                    objExcel.ActiveSheet.Range("E" & i).Value = CantidadCompra
-                                    objExcel.ActiveSheet.Range("F" & i).Value = ImporteCompra
-
-                                Case 2
-                                    objExcel.ActiveSheet.Range("G" & i).Value = Cantidad
-                                    objExcel.ActiveSheet.Range("H" & i).Value = Importe
-
-                            End Select
-
-                            objExcel.ActiveSheet.Range("I" & i).Value = Cantidad_Total
-                            objExcel.ActiveSheet.Range("J" & i).Value = Importe_Total
-
-                        Else
-
-                            Cantidad_Total = Cantidad_Total + CantidadCompra - Cantidad
-                            Importe_Total = Importe_Total + ImporteCompra - Importe
-
-                            objExcel.ActiveSheet.Range("A" & i).Value = TipoFactura
-                            objExcel.ActiveSheet.Range("B" & i).Value = CodBodega
-                            objExcel.ActiveSheet.Range("C" & i).Value = Format(FechaFactura, "dd/MM/yyyy")
-                            objExcel.ActiveSheet.Range("D" & i).Value = Numero_Factura
-                            Select Case Orden
-                                Case 1
-                                    objExcel.ActiveSheet.Range("E" & i).Value = CantidadCompra
-                                    objExcel.ActiveSheet.Range("F" & i).Value = ImporteCompra
-
-                                Case 2
-                                    objExcel.ActiveSheet.Range("G" & i).Value = Cantidad
-                                    objExcel.ActiveSheet.Range("H" & i).Value = Importe
-
-                            End Select
-
-                            objExcel.ActiveSheet.Range("I" & i).Value = Cantidad_Total
-                            objExcel.ActiveSheet.Range("J" & i).Value = Importe_Total
                         End If
 
+                        objExcel.ActiveSheet.Range("A" & i).Value = TipoFactura
+                        objExcel.ActiveSheet.Range("B" & i).Value = CodBodega
+                        objExcel.ActiveSheet.Range("C" & i).Value = Format(FechaFactura, "dd/MM/yyyy")
+                        objExcel.ActiveSheet.Range("D" & i).Value = Numero_Factura
+                        Select Case Orden
+                            Case 1
+                                objExcel.ActiveSheet.Range("E" & i).Value = Cantidad
+                                objExcel.ActiveSheet.Range("F" & i).Value = Importe
 
+                            Case 2
+                                objExcel.ActiveSheet.Range("G" & i).Value = Cantidad
+                                objExcel.ActiveSheet.Range("H" & i).Value = Importe
 
-
-
-
+                        End Select
 
                         CodigoProducto2 = CodigoProducto
 
@@ -14256,7 +14158,6 @@ Public Class FrmReportes
                 Me.GroupBoxProyectos.Location = New Point(280, 123)
                 Me.CmbAgrupado.Text = "Bodega"
             Case "Movimientos de Productos Excel"
-                Me.GroupBox1.Visible = True
                 Me.GroupBox3.Visible = True
                 Me.CmbAgrupado.Text = "Bodega"
                 Me.GroupBoxProductos.Visible = True
