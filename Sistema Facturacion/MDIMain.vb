@@ -873,6 +873,10 @@ Public Class MDIMain
                 End If
             End If
 
+            If Cadena2 = "SinLicencia" Then
+                Me.Close()
+            End If
+
             Dim Cadena As String = "", CadenaDiv() As String, Max As Double, InstanciaDiv() As String, Instancia As String = ""
 
             '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

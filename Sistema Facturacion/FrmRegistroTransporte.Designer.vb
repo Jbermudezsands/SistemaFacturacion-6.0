@@ -269,7 +269,7 @@ Partial Class FrmRegistroTransporte
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(392, 333)
+        Me.ClientSize = New System.Drawing.Size(392, 327)
         Me.Controls.Add(Me.LblTitulo)
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.PictureBox1)

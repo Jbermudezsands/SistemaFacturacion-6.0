@@ -767,4 +767,8 @@ Public Class FrmContratosNuevos
             MsgBox("Para borrar es necesario Grabar" & vbCrLf & ex.Message)
         End Try
     End Sub
+
+    Private Sub BtnOrdenCompra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnOrdenCompra.Click
+
+    End Sub
 End Class

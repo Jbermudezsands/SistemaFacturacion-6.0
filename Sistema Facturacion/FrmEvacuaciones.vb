@@ -7,6 +7,18 @@ Public Class FrmEvacuaciones
         Dim SqlCompras As String, TipoFactura As String
         Dim Dias As Double, SQlString As String, i As Double
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim IdTipoContrato As Integer
+
+        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '//////////////////////////////////7777BUSCO EL ID DEL CONTRATO PARA CONSULTARLO //////////////////////////////////////////////////////
+        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        IdTipoContrato = 0
+        SQlString = "SELECT  idTipoContrato, TipoContrato, Activo FROM TipoContrato WHERE  (TipoContrato = '" & Me.CmbContrato1.Text & "') AND (Activo = 1)"
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapter.Fill(DataSet, "TipoContrato")
+        If DataSet.Tables("TipoContrato").Rows.Count <> 0 Then
+            IdTipoContrato = DataSet.Tables("TipoContrato").Rows(0)("idTipoContrato")
+        End If
 
         Me.DTPFechaInicio.Value = DateSerial(Now.Year, Now.Month, 1)
         Me.DTPFechaFin.Value = DateSerial(Now.Year, Now.Month + 1, 0)
@@ -26,7 +38,7 @@ Public Class FrmEvacuaciones
         Next
 
 
-        SQlString = SQlString & " FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN TipoContrato ON Contratos.IdContrato1 = TipoContrato.idTipoContrato INNER JOIN TipoContrato AS TipoContrato_1 ON Contratos.IdContrato2 = TipoContrato_1.idTipoContrato  WHERE (NOT (CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END IS NULL))"
+        SQlString = SQlString & " FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN TipoContrato ON Contratos.IdContrato1 = TipoContrato.idTipoContrato INNER JOIN TipoContrato AS TipoContrato_1 ON Contratos.IdContrato2 = TipoContrato_1.idTipoContrato  WHERE (NOT (CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END IS NULL)) AND (TipoContrato.idTipoContrato = " & IdTipoContrato & ") OR (TipoContrato_1.idTipoContrato = " & IdTipoContrato & ")"
 
         ds.Tables("DetalleRegistros").Reset()
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
