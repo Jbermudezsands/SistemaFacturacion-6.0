@@ -19,13 +19,13 @@ Public Class FrmRegistroTransporte
         DataAdapter.Fill(DataSet, "Placa")
         Me.CboPlaca.DataSource = DataSet.Tables("Placa")
 
-        sqlString = "SELECT  TipoContrato FROM TipoContrato WHERE(Activo = 1)"
+
+        sqlString = "SELECT  DISTINCT   CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN dbo.TipoContrato.TipoContrato ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN TipoContrato_1.TipoContrato  END END AS TipoContrato FROM  Contratos INNER JOIN  Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN  TipoContrato ON Contratos.IdContrato1 = TipoContrato.idTipoContrato INNER JOIN   TipoContrato AS TipoContrato_1 ON Contratos.IdContrato2 = TipoContrato_1.idTipoContrato WHERE  (NOT (CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END IS NULL))"
         DataAdapter = New SqlClient.SqlDataAdapter(sqlString, MiConexion)
         DataAdapter.Fill(DataSet, "TipoContrato")
-        Me.CboPlaca.DataSource = DataSet.Tables("TipoContrato")
-
-
-
+        If DataSet.Tables("TipoContrato").Rows.Count <> 0 Then
+            Me.CmbContrato1.DataSource = DataSet.Tables("TipoContrato")
+        End If
 
 
 
@@ -43,7 +43,7 @@ Public Class FrmRegistroTransporte
 
     End Sub
 
-    Private Sub CboCodigoConductor_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboCodigoConductor.TextChanged
+    Private Sub CboCodigoConductor_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim sqlString As String, ComandoUpdate As New SqlClient.SqlCommand
 

@@ -26,18 +26,13 @@ Partial Class FrmEvacuaciones
         Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker
         Me.Label3 = New System.Windows.Forms.Label
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.CmbContrato1 = New System.Windows.Forms.ComboBox
         Me.Label5 = New System.Windows.Forms.Label
-        Me.TxtNumNomina = New System.Windows.Forms.TextBox
-        Me.Label7 = New System.Windows.Forms.Label
         Me.Button1 = New System.Windows.Forms.Button
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.CmdBorraLinea = New System.Windows.Forms.PictureBox
         Me.Label9 = New System.Windows.Forms.Label
-        Me.BtnProcesar = New System.Windows.Forms.Button
         Me.Button2 = New System.Windows.Forms.Button
-        Me.Button3 = New System.Windows.Forms.Button
         Me.BtnActualizar = New System.Windows.Forms.Button
         Me.BtnVer = New System.Windows.Forms.Button
         Me.BtnSalir = New System.Windows.Forms.Button
@@ -61,7 +56,7 @@ Partial Class FrmEvacuaciones
         Me.TDGridSolicitud.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TDGridSolicitud.PreviewInfo.ZoomFactor = 75
         Me.TDGridSolicitud.PrintInfo.PageSettings = CType(resources.GetObject("TDGridSolicitud.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TDGridSolicitud.Size = New System.Drawing.Size(1135, 346)
+        Me.TDGridSolicitud.Size = New System.Drawing.Size(1158, 346)
         Me.TDGridSolicitud.TabIndex = 251
         Me.TDGridSolicitud.Text = "C1TrueDBGrid1"
         Me.TDGridSolicitud.PropBag = resources.GetString("TDGridSolicitud.PropBag")
@@ -104,11 +99,8 @@ Partial Class FrmEvacuaciones
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.ProgressBar1)
         Me.GroupBox1.Controls.Add(Me.CmbContrato1)
         Me.GroupBox1.Controls.Add(Me.Label5)
-        Me.GroupBox1.Controls.Add(Me.TxtNumNomina)
-        Me.GroupBox1.Controls.Add(Me.Label7)
         Me.GroupBox1.Controls.Add(Me.Button1)
         Me.GroupBox1.Controls.Add(Me.DTPFechaFin)
         Me.GroupBox1.Controls.Add(Me.Label2)
@@ -116,16 +108,9 @@ Partial Class FrmEvacuaciones
         Me.GroupBox1.Controls.Add(Me.DTPFechaInicio)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 65)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(1072, 86)
+        Me.GroupBox1.Size = New System.Drawing.Size(1269, 86)
         Me.GroupBox1.TabIndex = 257
         Me.GroupBox1.TabStop = False
-        '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Location = New System.Drawing.Point(269, 51)
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(329, 23)
-        Me.ProgressBar1.TabIndex = 262
         '
         'CmbContrato1
         '
@@ -147,29 +132,10 @@ Partial Class FrmEvacuaciones
         Me.Label5.TabIndex = 260
         Me.Label5.Text = "Tipo Servicio"
         '
-        'TxtNumNomina
-        '
-        Me.TxtNumNomina.Enabled = False
-        Me.TxtNumNomina.Location = New System.Drawing.Point(498, 23)
-        Me.TxtNumNomina.Name = "TxtNumNomina"
-        Me.TxtNumNomina.Size = New System.Drawing.Size(100, 20)
-        Me.TxtNumNomina.TabIndex = 259
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.ForeColor = System.Drawing.SystemColors.Desktop
-        Me.Label7.Location = New System.Drawing.Point(403, 27)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(91, 16)
-        Me.Label7.TabIndex = 258
-        Me.Label7.Text = "No.Registro"
-        '
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(870, 14)
+        Me.Button1.Location = New System.Drawing.Point(962, 12)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(196, 68)
         Me.Button1.TabIndex = 257
@@ -192,7 +158,7 @@ Partial Class FrmEvacuaciones
         Me.CmdBorraLinea.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.CmdBorraLinea.Location = New System.Drawing.Point(-4, -1)
         Me.CmdBorraLinea.Name = "CmdBorraLinea"
-        Me.CmdBorraLinea.Size = New System.Drawing.Size(1275, 60)
+        Me.CmdBorraLinea.Size = New System.Drawing.Size(1328, 60)
         Me.CmdBorraLinea.TabIndex = 258
         Me.CmdBorraLinea.TabStop = False
         '
@@ -208,26 +174,12 @@ Partial Class FrmEvacuaciones
         Me.Label9.TabIndex = 260
         Me.Label9.Text = "REGISTRO DE VIAJES CONTRATOS VARIABLES"
         '
-        'BtnProcesar
-        '
-        Me.BtnProcesar.AccessibleDescription = ""
-        Me.BtnProcesar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnProcesar.Image = CType(resources.GetObject("BtnProcesar.Image"), System.Drawing.Image)
-        Me.BtnProcesar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnProcesar.Location = New System.Drawing.Point(1155, 382)
-        Me.BtnProcesar.Name = "BtnProcesar"
-        Me.BtnProcesar.Size = New System.Drawing.Size(108, 56)
-        Me.BtnProcesar.TabIndex = 266
-        Me.BtnProcesar.Text = "Procesar"
-        Me.BtnProcesar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.BtnProcesar.UseVisualStyleBackColor = True
-        '
         'Button2
         '
         Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button2.Location = New System.Drawing.Point(1155, 152)
+        Me.Button2.Location = New System.Drawing.Point(1178, 152)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(108, 56)
         Me.Button2.TabIndex = 265
@@ -235,25 +187,12 @@ Partial Class FrmEvacuaciones
         Me.Button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button2.UseVisualStyleBackColor = True
         '
-        'Button3
-        '
-        Me.Button3.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
-        Me.Button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button3.Location = New System.Drawing.Point(1155, 324)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(108, 56)
-        Me.Button3.TabIndex = 264
-        Me.Button3.Text = "Anular"
-        Me.Button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button3.UseVisualStyleBackColor = True
-        '
         'BtnActualizar
         '
         Me.BtnActualizar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnActualizar.Image = CType(resources.GetObject("BtnActualizar.Image"), System.Drawing.Image)
         Me.BtnActualizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnActualizar.Location = New System.Drawing.Point(1155, 267)
+        Me.BtnActualizar.Location = New System.Drawing.Point(1178, 267)
         Me.BtnActualizar.Name = "BtnActualizar"
         Me.BtnActualizar.Size = New System.Drawing.Size(108, 56)
         Me.BtnActualizar.TabIndex = 263
@@ -266,7 +205,7 @@ Partial Class FrmEvacuaciones
         Me.BtnVer.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnVer.Image = CType(resources.GetObject("BtnVer.Image"), System.Drawing.Image)
         Me.BtnVer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnVer.Location = New System.Drawing.Point(1155, 210)
+        Me.BtnVer.Location = New System.Drawing.Point(1178, 210)
         Me.BtnVer.Name = "BtnVer"
         Me.BtnVer.Size = New System.Drawing.Size(108, 56)
         Me.BtnVer.TabIndex = 262
@@ -279,7 +218,7 @@ Partial Class FrmEvacuaciones
         Me.BtnSalir.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnSalir.Image = CType(resources.GetObject("BtnSalir.Image"), System.Drawing.Image)
         Me.BtnSalir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnSalir.Location = New System.Drawing.Point(1153, 441)
+        Me.BtnSalir.Location = New System.Drawing.Point(1176, 441)
         Me.BtnSalir.Name = "BtnSalir"
         Me.BtnSalir.Size = New System.Drawing.Size(108, 56)
         Me.BtnSalir.TabIndex = 261
@@ -291,10 +230,8 @@ Partial Class FrmEvacuaciones
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1268, 506)
-        Me.Controls.Add(Me.BtnProcesar)
+        Me.ClientSize = New System.Drawing.Size(1293, 506)
         Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.BtnActualizar)
         Me.Controls.Add(Me.BtnVer)
         Me.Controls.Add(Me.BtnSalir)
@@ -326,15 +263,10 @@ Partial Class FrmEvacuaciones
     Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
     Friend WithEvents CmdBorraLinea As System.Windows.Forms.PictureBox
     Friend WithEvents Label9 As System.Windows.Forms.Label
-    Friend WithEvents TxtNumNomina As System.Windows.Forms.TextBox
-    Friend WithEvents Label7 As System.Windows.Forms.Label
-    Friend WithEvents BtnProcesar As System.Windows.Forms.Button
     Friend WithEvents Button2 As System.Windows.Forms.Button
-    Friend WithEvents Button3 As System.Windows.Forms.Button
     Friend WithEvents BtnActualizar As System.Windows.Forms.Button
     Friend WithEvents BtnVer As System.Windows.Forms.Button
     Friend WithEvents BtnSalir As System.Windows.Forms.Button
     Friend WithEvents CmbContrato1 As System.Windows.Forms.ComboBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
 End Class

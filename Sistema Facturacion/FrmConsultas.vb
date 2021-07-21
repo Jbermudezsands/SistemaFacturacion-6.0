@@ -1685,6 +1685,11 @@ Public Class FrmConsultas
 
         Me.Close()
     End Sub
+
+
+    Private Sub TrueDBGridConsultas_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridConsultas.DoubleClick
+        Button2_Click(sender, e)
+    End Sub
     Private Function getFilter() As String
         Dim col As C1.Win.C1TrueDBGrid.C1DataColumn
 
@@ -1701,13 +1706,10 @@ Public Class FrmConsultas
                 tmp = tmp & col.DataField & " LIKE '" & col.FilterText & "*'"
             End If
         Next col
+
         getFilter = tmp
 
     End Function
-
-    Private Sub TrueDBGridConsultas_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridConsultas.DoubleClick
-        Button2_Click(sender, e)
-    End Sub
 
 
     Private Sub TrueDBGridConsultas_FilterChange(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridConsultas.FilterChange
@@ -1743,4 +1745,6 @@ Public Class FrmConsultas
             Button2_Click(sender, e)
         End If
     End Sub
+
+
 End Class

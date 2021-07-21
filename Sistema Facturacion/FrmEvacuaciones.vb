@@ -7,7 +7,8 @@ Public Class FrmEvacuaciones
         Dim SqlCompras As String, TipoFactura As String
         Dim Dias As Double, SQlString As String, i As Double
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim IdTipoContrato As Integer
+        Dim IdTipoContrato As Integer, Registros As Double, j As Double
+        Dim Total As Double = 0
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////////////7777BUSCO EL ID DEL CONTRATO PARA CONSULTARLO //////////////////////////////////////////////////////
@@ -28,38 +29,56 @@ Public Class FrmEvacuaciones
         For i = 1 To Dias
 
             If i = 1 Then
-                'SQlString = "SELECT Nombre_Cliente, Cod_Cliente As '" & i & "' "
                 SQlString = "SELECT CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END AS Nombres, Contratos.Contrato_Variable, Contratos.Contrato_Variable2, dbo.Clientes.Cod_Cliente As '" & i & "' "
-
-
             Else
                 SQlString = SQlString & ",dbo.Clientes.Cod_Cliente As  '" & i & "' "
             End If
         Next
 
 
-        SQlString = SQlString & " FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN TipoContrato ON Contratos.IdContrato1 = TipoContrato.idTipoContrato INNER JOIN TipoContrato AS TipoContrato_1 ON Contratos.IdContrato2 = TipoContrato_1.idTipoContrato  WHERE (NOT (CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END IS NULL)) AND (TipoContrato.idTipoContrato = " & IdTipoContrato & ") OR (TipoContrato_1.idTipoContrato = " & IdTipoContrato & ")"
+        SQlString = SQlString & ",dbo.Clientes.Cod_Cliente As Total FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN TipoContrato ON Contratos.IdContrato1 = TipoContrato.idTipoContrato INNER JOIN TipoContrato AS TipoContrato_1 ON Contratos.IdContrato2 = TipoContrato_1.idTipoContrato  WHERE (NOT (CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END IS NULL)) AND (TipoContrato.idTipoContrato = " & IdTipoContrato & ") OR (TipoContrato_1.idTipoContrato = " & IdTipoContrato & ")"
 
         ds.Tables("DetalleRegistros").Reset()
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlCompras = "SELECT  CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END AS Nombres, Contratos.Contrato_Variable, Contratos.Contrato_Variable2 FROM Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN TipoContrato ON Contratos.IdContrato1 = TipoContrato.idTipoContrato INNER JOIN TipoContrato AS TipoContrato_1 ON Contratos.IdContrato2 = TipoContrato_1.idTipoContrato  " & _
-                     "WHERE (NOT (CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END IS NULL))"
+        'SqlCompras = "SELECT  CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END AS Nombres, Contratos.Contrato_Variable, Contratos.Contrato_Variable2 FROM Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN TipoContrato ON Contratos.IdContrato1 = TipoContrato.idTipoContrato INNER JOIN TipoContrato AS TipoContrato_1 ON Contratos.IdContrato2 = TipoContrato_1.idTipoContrato  " & _
+        '             "WHERE (NOT (CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END IS NULL))"
         ds = New DataSet
         da = New SqlDataAdapter(SQlString, MiConexion)
         CmdBuilder = New SqlCommandBuilder(da)
         da.Fill(ds, "DetalleRegistros")
+
+
+
+        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////////////////RECORRO EL DATASET PARA LLENARLO //////////////////////////////////////////////////
+        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        Registros = ds.Tables("DetalleRegistros").Rows.Count
+        j = 0
+        Do While Registros > j
+
+            Total = 0
+            For i = 1 To Dias
+                ds.Tables("DetalleRegistros").Rows(j)(i.ToString) = i
+                Total = Total + ds.Tables("DetalleRegistros").Rows(j)(i.ToString)
+            Next
+            ds.Tables("DetalleRegistros").Rows(j)("Total") = Total
+
+            j = j + 1
+        Loop
+
         Me.TDGridSolicitud.DataSource = ds.Tables("DetalleRegistros")
         Me.TDGridSolicitud.Splits(0).DisplayColumns(0).Width = 200
         Me.TDGridSolicitud.Splits(0).DisplayColumns("Contrato_Variable").Visible = False
         Me.TDGridSolicitud.Splits(0).DisplayColumns("Contrato_Variable2").Visible = False
 
-
         For i = 1 To Dias
-            Me.TDGridSolicitud.Splits(0).DisplayColumns(i.ToString).Width = 30
-        Next
+            Me.TDGridSolicitud.Splits(0).DisplayColumns(i.ToString).Width = 25
+            Me.TDGridSolicitud.Splits(0).DisplayColumns("Total").Width = 40
 
+
+        Next
 
     End Sub
 
@@ -84,7 +103,7 @@ Public Class FrmEvacuaciones
 
         Next
 
-        SQlString = SQlString & " FROM Clientes WHERE (Cod_Cliente = '-10000000')"
+        SQlString = SQlString & ",Cod_Cliente As Total FROM Clientes WHERE (Cod_Cliente = '-10000000')"
 
 
         ds = New DataSet
@@ -119,14 +138,10 @@ Public Class FrmEvacuaciones
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-
+        My.Forms.FrmRegistroTransporte.Show()
     End Sub
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         ActualizarGridInsertRow()
-
-
-
-
     End Sub
 End Class

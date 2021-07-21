@@ -19,6 +19,7 @@ Partial Class FrmListaSolicitud
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmListaSolicitud))
         Me.TDGridSolicitud = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
@@ -33,10 +34,12 @@ Partial Class FrmListaSolicitud
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.OptSinProcesar = New System.Windows.Forms.RadioButton
         Me.OptTodos = New System.Windows.Forms.RadioButton
+        Me.BindingConsultas = New System.Windows.Forms.BindingSource(Me.components)
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
+        CType(Me.BindingConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TDGridSolicitud
@@ -226,6 +229,7 @@ Partial Class FrmListaSolicitud
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        CType(Me.BindingConsultas, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -243,4 +247,5 @@ Partial Class FrmListaSolicitud
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents OptSinProcesar As System.Windows.Forms.RadioButton
     Friend WithEvents OptTodos As System.Windows.Forms.RadioButton
+    Friend WithEvents BindingConsultas As System.Windows.Forms.BindingSource
 End Class
