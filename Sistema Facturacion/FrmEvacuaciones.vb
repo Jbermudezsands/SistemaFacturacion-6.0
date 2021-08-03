@@ -60,6 +60,8 @@ Public Class FrmEvacuaciones
 
             Total = 0
             For i = 1 To Dias
+
+
                 ds.Tables("DetalleRegistros").Rows(j)(i.ToString) = i
                 Total = Total + ds.Tables("DetalleRegistros").Rows(j)(i.ToString)
             Next

@@ -28,9 +28,9 @@ Partial Class FrmRegistroTransporte
         Me.CboPlaca = New C1.Win.C1List.C1Combo
         Me.Label1 = New System.Windows.Forms.Label
         Me.Button1 = New System.Windows.Forms.Button
-        Me.TxtCodigoClientes = New System.Windows.Forms.TextBox
+        Me.TxtNumeroContrato = New System.Windows.Forms.TextBox
         Me.Label3 = New System.Windows.Forms.Label
-        Me.TextBox1 = New System.Windows.Forms.TextBox
+        Me.TxtNombreContrato = New System.Windows.Forms.TextBox
         Me.Button3 = New System.Windows.Forms.Button
         Me.ButtonGrabar = New System.Windows.Forms.Button
         Me.Button8 = New System.Windows.Forms.Button
@@ -100,6 +100,7 @@ Partial Class FrmRegistroTransporte
         Me.CboPlaca.ColumnFooterHeight = 17
         Me.CboPlaca.ContentHeight = 15
         Me.CboPlaca.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboPlaca.DisplayMember = "Placa"
         Me.CboPlaca.EditorBackColor = System.Drawing.SystemColors.Window
         Me.CboPlaca.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CboPlaca.EditorForeColor = System.Drawing.SystemColors.WindowText
@@ -137,12 +138,12 @@ Partial Class FrmRegistroTransporte
         Me.Button1.TabIndex = 286
         Me.Button1.UseVisualStyleBackColor = True
         '
-        'TxtCodigoClientes
+        'TxtNumeroContrato
         '
-        Me.TxtCodigoClientes.Location = New System.Drawing.Point(101, 191)
-        Me.TxtCodigoClientes.Name = "TxtCodigoClientes"
-        Me.TxtCodigoClientes.Size = New System.Drawing.Size(152, 20)
-        Me.TxtCodigoClientes.TabIndex = 287
+        Me.TxtNumeroContrato.Location = New System.Drawing.Point(101, 191)
+        Me.TxtNumeroContrato.Name = "TxtNumeroContrato"
+        Me.TxtNumeroContrato.Size = New System.Drawing.Size(152, 20)
+        Me.TxtNumeroContrato.TabIndex = 287
         '
         'Label3
         '
@@ -153,12 +154,13 @@ Partial Class FrmRegistroTransporte
         Me.Label3.TabIndex = 289
         Me.Label3.Text = "Numero Contrato"
         '
-        'TextBox1
+        'TxtNombreContrato
         '
-        Me.TextBox1.Location = New System.Drawing.Point(101, 217)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(251, 20)
-        Me.TextBox1.TabIndex = 290
+        Me.TxtNombreContrato.Enabled = False
+        Me.TxtNombreContrato.Location = New System.Drawing.Point(101, 217)
+        Me.TxtNombreContrato.Name = "TxtNombreContrato"
+        Me.TxtNombreContrato.Size = New System.Drawing.Size(251, 20)
+        Me.TxtNombreContrato.TabIndex = 290
         '
         'Button3
         '
@@ -281,9 +283,9 @@ Partial Class FrmRegistroTransporte
         Me.Controls.Add(Me.ButtonGrabar)
         Me.Controls.Add(Me.Button8)
         Me.Controls.Add(Me.Button3)
-        Me.Controls.Add(Me.TextBox1)
+        Me.Controls.Add(Me.TxtNombreContrato)
         Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.TxtCodigoClientes)
+        Me.Controls.Add(Me.TxtNumeroContrato)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.CboPlaca)
         Me.Controls.Add(Me.Label1)
@@ -293,6 +295,7 @@ Partial Class FrmRegistroTransporte
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.DTPFecha)
         Me.Name = "FrmRegistroTransporte"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "FrmRegistroTransporte"
         CType(Me.CboPlaca, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
@@ -310,9 +313,9 @@ Partial Class FrmRegistroTransporte
     Friend WithEvents CboPlaca As C1.Win.C1List.C1Combo
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Button1 As System.Windows.Forms.Button
-    Friend WithEvents TxtCodigoClientes As System.Windows.Forms.TextBox
+    Friend WithEvents TxtNumeroContrato As System.Windows.Forms.TextBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
+    Friend WithEvents TxtNombreContrato As System.Windows.Forms.TextBox
     Friend WithEvents Button3 As System.Windows.Forms.Button
     Friend WithEvents ButtonGrabar As System.Windows.Forms.Button
     Friend WithEvents Button8 As System.Windows.Forms.Button
