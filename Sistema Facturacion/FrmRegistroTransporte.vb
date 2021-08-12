@@ -101,6 +101,28 @@ Public Class FrmRegistroTransporte
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim SqlString As String, ComandoUpdate As New SqlClient.SqlCommand, idVehiculo As Double, idContrato As Double
 
+        If Me.CboCodigoConductor.Text = "" Then
+            MsgBox("Seleccione un Conductor", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.CboPlaca.Text = "" Then
+            MsgBox("Seleccione un Vehiculo", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.TxtNumeroContrato.Text = "" Then
+            MsgBox("Seleccione un contrato Valido", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.TxtNombreContrato.Text = "" Then
+            MsgBox("Seleccione un contrato Valido", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+
+
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////CONSULTO EL CODIGO DEL CLIENTE////////////////////////////////////////////////////////////////////
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -141,7 +163,14 @@ Public Class FrmRegistroTransporte
 
 
 
-        GrabarRegistroEvacuaciones(Me.TxtNombreContrato.Text, Me.DTPFecha.Value, CodigoCliente, IdConductor, idVehiculo, idContrato, False, True, False)
+        GrabarRegistroEvacuaciones(Me.TxtNumeroContrato.Text, Me.DTPFecha.Value, CodigoCliente, IdConductor, idVehiculo, idContrato, False, True, False, True)
+
+        Me.CboPlaca.Text = ""
+        Me.CboCodigoConductor.Text = ""
+        Me.TxtNombreContrato.Text = ""
+        Me.TxtNumeroContrato.Text = ""
+
+
     End Sub
 
     Private Sub TxtNumeroContrato_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtNumeroContrato.TextChanged

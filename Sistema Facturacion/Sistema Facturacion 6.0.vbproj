@@ -211,6 +211,12 @@
     <Compile Include="FrmDepartamentos.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmDetalleEvacuaciones.Designer.vb">
+      <DependentUpon>FrmDetalleEvacuaciones.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmDetalleEvacuaciones.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmDetalleLote.Designer.vb">
       <DependentUpon>FrmDetalleLote.vb</DependentUpon>
     </Compile>
@@ -1556,6 +1562,10 @@
     <EmbeddedResource Include="FrmDepartamentos.resx">
       <DependentUpon>FrmDepartamentos.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmDetalleEvacuaciones.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmDetalleEvacuaciones.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmDetalleLote.resx">
       <SubType>Designer</SubType>
