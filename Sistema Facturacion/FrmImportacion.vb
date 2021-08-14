@@ -398,7 +398,7 @@ Public Class FrmImportacion
 
     Private Sub C1Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles C1Button3.Click
         Dim iPosicionFila As Double = 0, Codigo As String = "", Nombres As String = "", Apellidos As String = "", Telefono As String = "", CtaContable As String = "", Ruc As String = ""
-        Dim Direccion As String = "", Sql As String
+        Dim Direccion As String = "", Sql As String, Numero_Cedula As String = ""
         Dim DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         '////////////////////////////////BUSCO LA PRIMER LINEA DE PRODUCTOS ///////////////////////////////////////////////
@@ -449,14 +449,18 @@ Public Class FrmImportacion
                     Ruc = MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("RUC")
                 End If
 
+                If Not IsDBNull(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("CEDULA")) Then
+                    Numero_Cedula = MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("CEDULA")
+                End If
+
                 '/////////////////////////////BUSCO SI EXISTE EL PRODUCTO EN EL INVENTARIO /////////////////////////////////////////////////////////////
                 Sql = "SELECT  *   FROM Clientes WHERE  (Cod_Cliente = '" & Codigo & "')"
                 DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
                 DataAdapter.Fill(DataSet, "Clientes")
                 If DataSet.Tables("Clientes").Rows.Count = 0 Then
                     MiConexion.Close()
-                    StrSqlUpdate = "INSERT INTO [Clientes] ([Cod_Cliente],[Nombre_Cliente],[Apellido_Cliente],[Direccion_Cliente],[Telefono],[Cod_Cuenta_Cliente],[RUC]) " & _
-                                   "VALUES ('" & Codigo & "' ,'" & Nombres & "','" & Apellidos & "','" & Direccion & "','" & Telefono & "','" & CtaContable & "' ,'" & Ruc & "')"
+                    StrSqlUpdate = "INSERT INTO [Clientes] ([Cod_Cliente],[Nombre_Cliente],[Apellido_Cliente],[Direccion_Cliente],[Telefono],[Cod_Cuenta_Cliente],[RUC],[Cedula]) " & _
+                                   "VALUES ('" & Codigo & "' ,'" & Nombres & "','" & Apellidos & "','" & Direccion & "','" & Telefono & "','" & CtaContable & "' ,'" & Ruc & "','" & Numero_Cedula & "')"
                     MiConexion.Open()
                     ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
                     iResultado = ComandoUpdate.ExecuteNonQuery

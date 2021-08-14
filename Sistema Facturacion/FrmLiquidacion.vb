@@ -43,7 +43,7 @@ Public Class FrmLiquidacion
 
     Private Sub FrmLiquidacion_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SqlImpuestos As String
-        Dim SqlString As String
+        Dim SqlString As String, SqlDatos As String, FacturaLotes As Double
 
 
         Me.CmbImpuesto.Text = "Dolares"
@@ -161,11 +161,28 @@ Public Class FrmLiquidacion
 
         Me.DTPFecha.Value = Now
 
+        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////MONEDA FACTURA//////////////////////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+        SqlDatos = "SELECT * FROM DatosEmpresa"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+        DataAdapter.Fill(DataSet, "DatosEmpresa")
+        If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+            FacturaLotes = DataSet.Tables("DatosEmpresa").Rows(0)("Factura_Tarea")
+        End If
 
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////////////CARGO EL DETALLE DE LIQUIDACION/////////////////////////////////////////////////////////////////
         ''//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlString = "SELECT Detalle_Liquidacion.Cod_Producto, Productos.Descripcion_Producto, Detalle_Liquidacion.Cantidad, Detalle_Liquidacion.Precio_Compra,Detalle_Liquidacion.FOB, Detalle_Liquidacion.Gasto_Compra,Detalle_Liquidacion.Gasto_Impuesto, Detalle_Liquidacion.Precio_Costo FROM Detalle_Liquidacion INNER JOIN Productos ON Detalle_Liquidacion.Cod_Producto = Productos.Cod_Productos  WHERE (Detalle_Liquidacion.Numero_Liquidacion = N'-1')"
+        If FacturaLotes = True Then
+            SqlString = "SELECT Detalle_Liquidacion.Cod_Producto, Productos.Descripcion_Producto, Detalle_Liquidacion.Cantidad, Detalle_Liquidacion.Precio_Compra,Detalle_Liquidacion.FOB, Detalle_Liquidacion.Gasto_Compra,Detalle_Liquidacion.Gasto_Impuesto, Detalle_Liquidacion.Precio_Costo FROM Detalle_Liquidacion INNER JOIN Productos ON Detalle_Liquidacion.Cod_Producto = Productos.Cod_Productos  WHERE (Detalle_Liquidacion.Numero_Liquidacion = N'-1')"
+        Else
+            SqlString = "SELECT Detalle_Liquidacion.Cod_Producto, Productos.Descripcion_Producto, Detalle_Facturas.CodTarea, Detalle_Liquidacion.Cantidad, Detalle_Liquidacion.Precio_Compra,Detalle_Liquidacion.FOB, Detalle_Liquidacion.Gasto_Compra,Detalle_Liquidacion.Gasto_Impuesto, Detalle_Liquidacion.Precio_Costo FROM Detalle_Liquidacion INNER JOIN Productos ON Detalle_Liquidacion.Cod_Producto = Productos.Cod_Productos  WHERE (Detalle_Liquidacion.Numero_Liquidacion = N'-1')"
+        End If
+
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "DetalleCompra")
         Me.BindingDetalle.DataSource = DataSet.Tables("DetalleCompra")
