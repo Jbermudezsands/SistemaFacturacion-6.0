@@ -455,7 +455,7 @@ Public Class FrmInventarioFisico
                 Cantidad = DataSet.Tables("DetalleCompras").Rows(Iposicion)("Cantidad")
                 Importe = DataSet.Tables("DetalleCompras").Rows(Iposicion)("Importe")
 
-                GrabaDetalleCompraLiquidacion(NumeroCompra, CodProductos, PrecioCompra, 0, PrecioCompra, Importe, Cantidad, "Cordobas", FechaConteo)
+                GrabaDetalleCompraLiquidacion(NumeroCompra, CodProductos, PrecioCompra, 0, PrecioCompra, Importe, Cantidad, "Cordobas", FechaConteo, "0000", "01/01/1900")
                 ActualizaExistencia(CodProductos)
 
 

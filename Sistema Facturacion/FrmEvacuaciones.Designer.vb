@@ -36,10 +36,18 @@ Partial Class FrmEvacuaciones
         Me.BtnActualizar = New System.Windows.Forms.Button
         Me.BtnVer = New System.Windows.Forms.Button
         Me.BtnSalir = New System.Windows.Forms.Button
+        Me.TabControl1 = New System.Windows.Forms.TabControl
+        Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.TabPage2 = New System.Windows.Forms.TabPage
+        Me.C1TrueDBGrid1 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CmdBorraLinea, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabControl1.SuspendLayout()
+        Me.TabPage1.SuspendLayout()
+        Me.TabPage2.SuspendLayout()
+        CType(Me.C1TrueDBGrid1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TDGridSolicitud
@@ -50,13 +58,13 @@ Partial Class FrmEvacuaciones
         Me.TDGridSolicitud.FilterBar = True
         Me.TDGridSolicitud.GroupByCaption = "Drag a column header here to group by that column"
         Me.TDGridSolicitud.Images.Add(CType(resources.GetObject("TDGridSolicitud.Images"), System.Drawing.Image))
-        Me.TDGridSolicitud.Location = New System.Drawing.Point(12, 152)
+        Me.TDGridSolicitud.Location = New System.Drawing.Point(6, 12)
         Me.TDGridSolicitud.Name = "TDGridSolicitud"
         Me.TDGridSolicitud.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TDGridSolicitud.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TDGridSolicitud.PreviewInfo.ZoomFactor = 75
         Me.TDGridSolicitud.PrintInfo.PageSettings = CType(resources.GetObject("TDGridSolicitud.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TDGridSolicitud.Size = New System.Drawing.Size(1158, 346)
+        Me.TDGridSolicitud.Size = New System.Drawing.Size(1112, 303)
         Me.TDGridSolicitud.TabIndex = 251
         Me.TDGridSolicitud.Text = "C1TrueDBGrid1"
         Me.TDGridSolicitud.PropBag = resources.GetString("TDGridSolicitud.PropBag")
@@ -179,7 +187,7 @@ Partial Class FrmEvacuaciones
         Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button2.Location = New System.Drawing.Point(1178, 152)
+        Me.Button2.Location = New System.Drawing.Point(1124, 27)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(108, 56)
         Me.Button2.TabIndex = 265
@@ -192,7 +200,7 @@ Partial Class FrmEvacuaciones
         Me.BtnActualizar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnActualizar.Image = CType(resources.GetObject("BtnActualizar.Image"), System.Drawing.Image)
         Me.BtnActualizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnActualizar.Location = New System.Drawing.Point(1178, 267)
+        Me.BtnActualizar.Location = New System.Drawing.Point(1124, 151)
         Me.BtnActualizar.Name = "BtnActualizar"
         Me.BtnActualizar.Size = New System.Drawing.Size(108, 56)
         Me.BtnActualizar.TabIndex = 263
@@ -205,7 +213,7 @@ Partial Class FrmEvacuaciones
         Me.BtnVer.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnVer.Image = CType(resources.GetObject("BtnVer.Image"), System.Drawing.Image)
         Me.BtnVer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnVer.Location = New System.Drawing.Point(1178, 210)
+        Me.BtnVer.Location = New System.Drawing.Point(1124, 89)
         Me.BtnVer.Name = "BtnVer"
         Me.BtnVer.Size = New System.Drawing.Size(108, 56)
         Me.BtnVer.TabIndex = 262
@@ -218,7 +226,7 @@ Partial Class FrmEvacuaciones
         Me.BtnSalir.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnSalir.Image = CType(resources.GetObject("BtnSalir.Image"), System.Drawing.Image)
         Me.BtnSalir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnSalir.Location = New System.Drawing.Point(1176, 441)
+        Me.BtnSalir.Location = New System.Drawing.Point(1124, 259)
         Me.BtnSalir.Name = "BtnSalir"
         Me.BtnSalir.Size = New System.Drawing.Size(108, 56)
         Me.BtnSalir.TabIndex = 261
@@ -226,20 +234,71 @@ Partial Class FrmEvacuaciones
         Me.BtnSalir.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.BtnSalir.UseVisualStyleBackColor = True
         '
+        'TabControl1
+        '
+        Me.TabControl1.Controls.Add(Me.TabPage1)
+        Me.TabControl1.Controls.Add(Me.TabPage2)
+        Me.TabControl1.Location = New System.Drawing.Point(12, 157)
+        Me.TabControl1.Name = "TabControl1"
+        Me.TabControl1.SelectedIndex = 0
+        Me.TabControl1.Size = New System.Drawing.Size(1255, 354)
+        Me.TabControl1.TabIndex = 266
+        '
+        'TabPage1
+        '
+        Me.TabPage1.Controls.Add(Me.TDGridSolicitud)
+        Me.TabPage1.Controls.Add(Me.BtnSalir)
+        Me.TabPage1.Controls.Add(Me.BtnActualizar)
+        Me.TabPage1.Controls.Add(Me.Button2)
+        Me.TabPage1.Controls.Add(Me.BtnVer)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage1.Size = New System.Drawing.Size(1247, 328)
+        Me.TabPage1.TabIndex = 0
+        Me.TabPage1.Text = "Evacuaciones"
+        Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'TabPage2
+        '
+        Me.TabPage2.Controls.Add(Me.C1TrueDBGrid1)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Size = New System.Drawing.Size(1247, 328)
+        Me.TabPage2.TabIndex = 1
+        Me.TabPage2.Text = "Facturacion"
+        Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'C1TrueDBGrid1
+        '
+        Me.C1TrueDBGrid1.AllowUpdate = False
+        Me.C1TrueDBGrid1.AlternatingRows = True
+        Me.C1TrueDBGrid1.Caption = "Listado de Clientes x Dias"
+        Me.C1TrueDBGrid1.FilterBar = True
+        Me.C1TrueDBGrid1.GroupByCaption = "Drag a column header here to group by that column"
+        Me.C1TrueDBGrid1.Images.Add(CType(resources.GetObject("C1TrueDBGrid1.Images"), System.Drawing.Image))
+        Me.C1TrueDBGrid1.Location = New System.Drawing.Point(10, 13)
+        Me.C1TrueDBGrid1.Name = "C1TrueDBGrid1"
+        Me.C1TrueDBGrid1.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.C1TrueDBGrid1.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.C1TrueDBGrid1.PreviewInfo.ZoomFactor = 75
+        Me.C1TrueDBGrid1.PrintInfo.PageSettings = CType(resources.GetObject("C1TrueDBGrid1.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.C1TrueDBGrid1.Size = New System.Drawing.Size(1112, 303)
+        Me.C1TrueDBGrid1.TabIndex = 252
+        Me.C1TrueDBGrid1.Text = "C1TrueDBGrid1"
+        Me.C1TrueDBGrid1.PropBag = resources.GetString("C1TrueDBGrid1.PropBag")
+        '
         'FrmEvacuaciones
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1293, 506)
-        Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.BtnActualizar)
-        Me.Controls.Add(Me.BtnVer)
-        Me.Controls.Add(Me.BtnSalir)
+        Me.ClientSize = New System.Drawing.Size(1277, 506)
+        Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.CmdBorraLinea)
         Me.Controls.Add(Me.GroupBox1)
-        Me.Controls.Add(Me.TDGridSolicitud)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "FrmEvacuaciones"
@@ -249,6 +308,10 @@ Partial Class FrmEvacuaciones
         Me.GroupBox1.PerformLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CmdBorraLinea, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabControl1.ResumeLayout(False)
+        Me.TabPage1.ResumeLayout(False)
+        Me.TabPage2.ResumeLayout(False)
+        CType(Me.C1TrueDBGrid1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -269,4 +332,8 @@ Partial Class FrmEvacuaciones
     Friend WithEvents BtnSalir As System.Windows.Forms.Button
     Friend WithEvents CmbContrato1 As System.Windows.Forms.ComboBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
+    Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
+    Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
+    Friend WithEvents C1TrueDBGrid1 As C1.Win.C1TrueDBGrid.C1TrueDBGrid
 End Class

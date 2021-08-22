@@ -695,7 +695,7 @@ Public Class FrmEnsamble
         End If
 
 
-        GrabaDetalleCompraLiquidacion(NumeroCompra, CodProductos, PrecioCompra, 0, PrecioCompra, Importe, Cantidad, "Cordobas", Fecha)
+        GrabaDetalleCompraLiquidacion(NumeroCompra, CodProductos, PrecioCompra, 0, PrecioCompra, Importe, Cantidad, "Cordobas", Fecha, "0000", "01/01/1900")
         ActualizaExistencia(CodProductos)
         ActulizacionCompraEnsamble(NumeroCompra, "Mercancia Recibida", Fecha, True)
 
@@ -938,7 +938,7 @@ Public Class FrmEnsamble
 
                     'PrecioVenta = UltimoPrecioVenta(CodProductos)
 
-                    GrabaDetalleCompraLiquidacion(NumeroCompra, CodProductos, PrecioCompra, 0, PrecioCompra, Importe, Cantidad, "Cordobas", Fecha)
+                GrabaDetalleCompraLiquidacion(NumeroCompra, CodProductos, PrecioCompra, 0, PrecioCompra, Importe, Cantidad, "Cordobas", Fecha, "0000", "01/01/1900")
                     ActualizaExistencia(CodProductos)
 
 

@@ -1,6 +1,7 @@
 Public Class FrmRegistroTransporte
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
-    Public IdConductor As String, CodigoCliente As String
+    Public IdConductor As String, CodigoCliente As String, Nuevo As Boolean = True
+    Public FechaRegistro As Date, NombreConductor As String, NumeroContrato As String, Placa As String
 
 
 
@@ -8,13 +9,14 @@ Public Class FrmRegistroTransporte
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim sqlString As String, ComandoUpdate As New SqlClient.SqlCommand
 
+
         Me.DTPFecha.Value = Format(Now, "dd/MM/yyyy")
 
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////CARGO LOS CONDUCTORES////////////////////////////////////////////////////////////////////
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         sqlString = "SELECT Codigo, Nombre, Cedula, Licencia, Activo, ListaNegra, RazonListaNegra FROM Conductor WHERE (Activo = 1)"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter = New SqlClient.SqlDataAdapter(sqlString, MiConexion)
         DataAdapter.Fill(DataSet, "Conductor")
         Me.CboCodigoConductor.DataSource = DataSet.Tables("Conductor")
 
@@ -31,6 +33,15 @@ Public Class FrmRegistroTransporte
             Me.CmbContrato1.DataSource = DataSet.Tables("TipoContrato")
         End If
 
+
+        If Nuevo = False Then
+
+            Me.DTPFecha.Value = Format(FechaRegistro, "dd/MM/yyyy")
+            Me.CboCodigoConductor.Text = Me.NombreConductor
+            Me.CboPlaca.Text = Me.Placa
+            Me.TxtNumeroContrato.Text = Me.NumeroContrato
+
+        End If
 
 
     End Sub

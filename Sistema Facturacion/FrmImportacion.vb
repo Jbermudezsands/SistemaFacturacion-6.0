@@ -294,7 +294,7 @@ Public Class FrmImportacion
 
 
                 If PrecioUnitario <> 0 And Cantidad <> 0 Then
-                    GrabaDetalleCompraLiquidacion(NumeroCompra, CodProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, "Cordobas", Me.DTPFecha.Value)
+                    GrabaDetalleCompraLiquidacion(NumeroCompra, CodProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, "Cordobas", Me.DTPFecha.Value, "0000", "01/01/1900")
 
                     Select Case TipoCompra
                         Case "Mercancia Recibida"
@@ -1079,7 +1079,7 @@ Public Class FrmImportacion
 
 
                 If PrecioUnitario <> 0 And Cantidad <> 0 Then
-                    GrabaDetalleCompraLiquidacion(NumeroCompra, CodProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, "Cordobas", Me.DTPFecha.Value)
+                    GrabaDetalleCompraLiquidacion(NumeroCompra, CodProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, "Cordobas", Me.DTPFecha.Value, "0000", "01/01/1900")
 
                     Select Case TipoCompra
                         Case "Mercancia Recibida"

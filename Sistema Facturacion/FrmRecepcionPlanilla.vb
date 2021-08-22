@@ -1265,7 +1265,7 @@ Public Class FrmRecepcionPlanilla
             PrecioNeto = Me.BindingDetalle.Item(iPosicion)("Precio_Neto")
             Importe = Me.BindingDetalle.Item(iPosicion)("Importe")
             Cantidad = Me.BindingDetalle.Item(iPosicion)("Cantidad")
-            GrabaDetalleCompraLiquidacion(NumeroCompra, CodigoProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, Me.TxtMonedaFactura.Text, Me.DTPFecha.Value)
+            GrabaDetalleCompraLiquidacion(NumeroCompra, CodigoProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, Me.TxtMonedaFactura.Text, Me.DTPFecha.Value, "0000", "01/01/1900")
 
             'ExistenciasCostos(CodigoProducto, Cantidad, PrecioUnitario, "Mercancia Recibida", Me.CboCodigoBodega.Text)
 

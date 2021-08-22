@@ -192,7 +192,6 @@ Partial Class FrmLiquidacion
         'TrueDBGridComponentes
         '
         Me.TrueDBGridComponentes.AllowAddNew = True
-        Me.TrueDBGridComponentes.AllowDelete = True
         Me.TrueDBGridComponentes.AlternatingRows = True
         Me.TrueDBGridComponentes.Caption = "Listado de Productos"
         Me.TrueDBGridComponentes.GroupByCaption = "Drag a column header here to group by that column"

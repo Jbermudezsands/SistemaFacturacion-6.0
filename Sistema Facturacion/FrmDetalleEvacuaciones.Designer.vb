@@ -21,6 +21,7 @@ Partial Class FrmDetalleEvacuaciones
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmDetalleEvacuaciones))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.LblTipoServicio = New System.Windows.Forms.Label
         Me.LblCliente = New System.Windows.Forms.Label
         Me.Label5 = New System.Windows.Forms.Label
         Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker
@@ -31,7 +32,6 @@ Partial Class FrmDetalleEvacuaciones
         Me.BtnVer = New System.Windows.Forms.Button
         Me.Button3 = New System.Windows.Forms.Button
         Me.BtnSalir = New System.Windows.Forms.Button
-        Me.LblTipoServicio = New System.Windows.Forms.Label
         Me.GroupBox1.SuspendLayout()
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -51,6 +51,14 @@ Partial Class FrmDetalleEvacuaciones
         Me.GroupBox1.Size = New System.Drawing.Size(637, 86)
         Me.GroupBox1.TabIndex = 258
         Me.GroupBox1.TabStop = False
+        '
+        'LblTipoServicio
+        '
+        Me.LblTipoServicio.AutoSize = True
+        Me.LblTipoServicio.Location = New System.Drawing.Point(83, 56)
+        Me.LblTipoServicio.Name = "LblTipoServicio"
+        Me.LblTipoServicio.Size = New System.Drawing.Size(0, 13)
+        Me.LblTipoServicio.TabIndex = 263
         '
         'LblCliente
         '
@@ -162,14 +170,6 @@ Partial Class FrmDetalleEvacuaciones
         Me.BtnSalir.Text = "Salir"
         Me.BtnSalir.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.BtnSalir.UseVisualStyleBackColor = True
-        '
-        'LblTipoServicio
-        '
-        Me.LblTipoServicio.AutoSize = True
-        Me.LblTipoServicio.Location = New System.Drawing.Point(83, 56)
-        Me.LblTipoServicio.Name = "LblTipoServicio"
-        Me.LblTipoServicio.Size = New System.Drawing.Size(0, 13)
-        Me.LblTipoServicio.TabIndex = 263
         '
         'FrmDetalleEvacuaciones
         '
