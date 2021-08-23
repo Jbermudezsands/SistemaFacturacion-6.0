@@ -47,6 +47,11 @@ Public Class FrmDetalleEvacuaciones
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, CodigoCliente As String = ""
         Dim ComandoUpdate As New SqlClient.SqlCommand, idVehiculo As Double, idContrato As Double, IdConductor As Double
 
+        If MsgBox("Esta Seguro de Anular el registro", MsgBoxStyle.YesNo, "Zeus Facturacion") = MsgBoxResult.No Then
+            Exit Sub
+        End If
+
+
         Numero_Registro = Me.TDGridSolicitud.Columns("Numero_Registro").Text
         Fecha = Me.TDGridSolicitud.Columns("Fecha_Registro").Text
 
@@ -65,6 +70,6 @@ Public Class FrmDetalleEvacuaciones
 
         End If
 
-        GrabarRegistroEvacuaciones(NumeroContrato, Fecha, CodigoCliente, IdConductor, idVehiculo, idContrato, False, True, False, True)
+        GrabarRegistroEvacuaciones(NumeroContrato, Fecha, CodigoCliente, IdConductor, idVehiculo, idContrato, True, True, False, True)
     End Sub
 End Class

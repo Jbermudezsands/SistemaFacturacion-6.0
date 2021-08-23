@@ -35,7 +35,7 @@ Module Funciones
         'If Not DataSet.Tables("Evacuaciones").Rows.Count = 0 Then
         If Nuevo = False Then
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-            StrSqlUpdate = "UPDATE [Registro_Transporte_Detalle]  SET [Cod_Cliente] = '" & Cod_Cliente & "' ,[Id_Conductor] = " & idConductor & " ,[Id_Vehiculo] = " & idVehiculo & " ,[Activo] = " & Activar & " ,[Anulado] = " & Anular & "  ,[Procesado] = " & Procesar & " ,[idTipoContrato] = " & idContrato & ",[Numero_Contrato] = " & Numero_Contrato & "   WHERE (Numero_Contrato = " & Numero_Contrato & ") AND (idTipoContrato = " & idContrato & ") AND (Fecha_Registro = CONVERT(DATETIME, '" & Format(Fecha_Registro, "yyyy-MM-dd") & "', 102))"
+            StrSqlUpdate = "UPDATE [Registro_Transporte_Detalle]  SET [Cod_Cliente] = '" & Cod_Cliente & "' ,[Id_Conductor] = '" & idConductor & "' ,[Id_Vehiculo] = '" & idVehiculo & "' ,[Activo] = " & Activar & " ,[Anulado] = " & Anular & "  ,[Procesado] = " & Procesar & " ,[idTipoContrato] = " & idContrato & ",[Numero_Contrato] = " & Numero_Contrato & "   WHERE (Numero_Contrato = " & Numero_Contrato & ") AND (idTipoContrato = " & idContrato & ") AND (Fecha_Registro = CONVERT(DATETIME, '" & Format(Fecha_Registro, "yyyy-MM-dd") & "', 102))"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -44,7 +44,7 @@ Module Funciones
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
             StrSqlUpdate = "INSERT INTO Registro_Transporte_Detalle ([Fecha_Registro],[Cod_Cliente],[Id_Conductor],[Id_Vehiculo],[Activo],[Anulado],[Procesado],[idTipoContrato],[Numero_Contrato]) " & _
-                           "VALUES (CONVERT(DATETIME, '" & Format(Fecha_Registro, "yyyy-MM-dd") & "', 102) ,'" & Cod_Cliente & "' ," & idConductor & " , " & idVehiculo & "," & Activar & ", " & Anular & " , " & Procesar & " ," & idContrato & "," & Numero_Contrato & ")"
+                           "VALUES (CONVERT(DATETIME, '" & Format(Fecha_Registro, "yyyy-MM-dd") & "', 102) ,'" & Cod_Cliente & "' ,'" & idConductor & "' , '" & idVehiculo & "'," & Activar & ", " & Anular & " , " & Procesar & " ," & idContrato & "," & Numero_Contrato & ")"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery

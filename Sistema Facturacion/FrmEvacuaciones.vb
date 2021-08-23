@@ -96,8 +96,6 @@ Public Class FrmEvacuaciones
         For i = 1 To Dias
             Me.TDGridSolicitud.Splits(0).DisplayColumns(i.ToString).Width = 25
             Me.TDGridSolicitud.Splits(0).DisplayColumns("Total").Width = 40
-
-
         Next
 
     End Sub
@@ -162,6 +160,10 @@ Public Class FrmEvacuaciones
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+        Dim Iposicion As Double
+
+        Iposicion = Me.TDGridSolicitud.Row
+        My.Forms.FrmRegistroTransporte.NumeroContrato = Me.TDGridSolicitud.Item(Iposicion)("Numero_Contrato")
         My.Forms.FrmRegistroTransporte.Nuevo = True
         My.Forms.FrmRegistroTransporte.Show()
     End Sub
@@ -204,7 +206,90 @@ Public Class FrmEvacuaciones
 
     End Sub
 
-    Private Sub BtnActualizar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnActualizar.Click
+
+    Private Sub BtnSalirFacturacion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSalirFacturacion.Click
+        Me.Close()
+    End Sub
+
+    Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
+        Dim objExcel = New Microsoft.Office.Interop.Excel.Application
+        Dim SqlDatos As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim NombreEmpresa As String, DireccionEmpresa As String, RutaLogo As String
+        Dim Dias As Double, i As Double
+
+        SqlDatos = "SELECT * FROM DatosEmpresa"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+        DataAdapter.Fill(DataSet, "DatosEmpresa")
+
+        If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+
+
+            NombreEmpresa = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+            DireccionEmpresa = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+
+            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")) Then
+                Ruc = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
+            End If
+            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
+                RutaLogo = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
+            End If
+        End If
+
+        objExcel.Visible = True 'lo hacemos visible
+        objExcel.SheetsInNewWorkbook = 1 'decimos cuantas hojas queremos en el nuevo documento
+        objExcel.Workbooks.Add() ' añadimos el objeto al workbook
+
+        'objExcel.ActiveSheet.Cells("A1") = "Factura No"
+
+
+        objExcel.ActiveSheet.Range("A1:G1").Merge()
+        objExcel.ActiveSheet.Range("A1").Value = NombreEmpresa
+        objExcel.ActiveSheet.Range("A2:G2").Merge()
+        objExcel.ActiveSheet.Range("A2").Value = DireccionEmpresa
+        objExcel.ActiveSheet.Range("A3:G3").Merge()
+        objExcel.ActiveSheet.Range("A3").Value = "DESDE:" & Format(Me.DTPFechaInicio.Value, "dd/MM/yyyy") & " HASTA:" & Format(Me.DTPFechaFin.Value, "dd/MM/yyyy") & " "
+
+        For i = 1 To Dias
+            Me.TDGridSolicitud.Splits(0).DisplayColumns(i.ToString).Width = 25
+            Me.TDGridSolicitud.Splits(0).DisplayColumns("Total").Width = 40
+        Next
+
+        objExcel.ActiveSheet.Range("A5").Value = "Nombre"
+        objExcel.ActiveSheet.Range("B5").Value = "1"
+        objExcel.ActiveSheet.Range("C5").Value = "2"
+        objExcel.ActiveSheet.Range("D5").Value = "3"
+        objExcel.ActiveSheet.Range("E5").Value = "4"
+        objExcel.ActiveSheet.Range("E5").Value = "5"
+        objExcel.ActiveSheet.Range("F5").Value = "6"
+        objExcel.ActiveSheet.Range("G5").Value = "7"
+        objExcel.ActiveSheet.Range("G5").Value = "8"
+        objExcel.ActiveSheet.Range("H5").Value = "9"
+        objExcel.ActiveSheet.Range("I5").Value = "10"
+        objExcel.ActiveSheet.Range("J5").Value = "11"
+        objExcel.ActiveSheet.Range("K5").Value = "12"
+        objExcel.ActiveSheet.Range("L5").Value = "13"
+        objExcel.ActiveSheet.Range("M5").Value = "14"
+        objExcel.ActiveSheet.Range("N5").Value = "15"
+        objExcel.ActiveSheet.Range("O5").Value = "16"
+        objExcel.ActiveSheet.Range("P5").Value = "17"
+        objExcel.ActiveSheet.Range("R5").Value = "18"
+        objExcel.ActiveSheet.Range("S5").Value = "19"
+        objExcel.ActiveSheet.Range("T5").Value = "20"
+        objExcel.ActiveSheet.Range("U5").Value = "21"
+        objExcel.ActiveSheet.Range("W5").Value = "22"
+        objExcel.ActiveSheet.Range("X5").Value = "23"
+        objExcel.ActiveSheet.Range("Y5").Value = "24"
+        objExcel.ActiveSheet.Range("Z5").Value = "25"
+        objExcel.ActiveSheet.Range("AA5").Value = "26"
+        objExcel.ActiveSheet.Range("AB5").Value = "27"
+        objExcel.ActiveSheet.Range("AC5").Value = "28"
+        objExcel.ActiveSheet.Range("AD5").Value = "29"
+        objExcel.ActiveSheet.Range("AE5").Value = "30"
+        objExcel.ActiveSheet.Range("AF5").Value = "31"
+        objExcel.ActiveSheet.Range("AF5").Value = "Total"
+
+
 
     End Sub
 End Class

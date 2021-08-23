@@ -1,6 +1,6 @@
 Public Class FrmRegistroTransporte
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
-    Public IdConductor As String, CodigoCliente As String, Nuevo As Boolean = True
+    Public IdConductor As String, CodigoCliente As String, Nuevo As Boolean = True, Procesado As Boolean = False
     Public FechaRegistro As Date, NombreConductor As String, NumeroContrato As String, Placa As String
 
 
@@ -15,12 +15,12 @@ Public Class FrmRegistroTransporte
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////CARGO LOS CONDUCTORES////////////////////////////////////////////////////////////////////
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        sqlString = "SELECT Codigo, Nombre, Cedula, Licencia, Activo, ListaNegra, RazonListaNegra FROM Conductor WHERE (Activo = 1)"
+        sqlString = "SELECT Codigo, Nombre, Cedula, Licencia, Activo, ListaNegra, RazonListaNegra FROM Conductor WHERE (Activo = 1) and (Evacuaciones = 1)"
         DataAdapter = New SqlClient.SqlDataAdapter(sqlString, MiConexion)
         DataAdapter.Fill(DataSet, "Conductor")
         Me.CboCodigoConductor.DataSource = DataSet.Tables("Conductor")
 
-        sqlString = "SELECT Placa, Marca, TipoVehiculo FROM Vehiculo "
+        sqlString = "SELECT Placa, Marca, TipoVehiculo FROM Vehiculo WHERE (Activo = 1) And (Evacuaciones = 1)"
         DataAdapter = New SqlClient.SqlDataAdapter(sqlString, MiConexion)
         DataAdapter.Fill(DataSet, "Placa")
         Me.CboPlaca.DataSource = DataSet.Tables("Placa")
@@ -33,12 +33,23 @@ Public Class FrmRegistroTransporte
             Me.CmbContrato1.DataSource = DataSet.Tables("TipoContrato")
         End If
 
+        If Procesado = True Then
+            Me.DTPFecha.Enabled = False
+            Me.CboCodigoConductor.Enabled = False
+            Me.CboPlaca.Enabled = False
+            Me.TxtNumeroContrato.Enabled = False
+
+        End If
+
 
         If Nuevo = False Then
 
             Me.DTPFecha.Value = Format(FechaRegistro, "dd/MM/yyyy")
             Me.CboCodigoConductor.Text = Me.NombreConductor
             Me.CboPlaca.Text = Me.Placa
+            Me.TxtNumeroContrato.Text = Me.NumeroContrato
+
+        Else
             Me.TxtNumeroContrato.Text = Me.NumeroContrato
 
         End If

@@ -38,7 +38,17 @@ Partial Class FrmEvacuaciones
         Me.BtnSalir = New System.Windows.Forms.Button
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.Button4 = New System.Windows.Forms.Button
         Me.TabPage2 = New System.Windows.Forms.TabPage
+        Me.BtnSalirFacturacion = New System.Windows.Forms.Button
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox
+        Me.Label1 = New System.Windows.Forms.Label
+        Me.Button3 = New System.Windows.Forms.Button
+        Me.DateTimePicker1 = New System.Windows.Forms.DateTimePicker
+        Me.Label4 = New System.Windows.Forms.Label
+        Me.Label6 = New System.Windows.Forms.Label
+        Me.DateTimePicker2 = New System.Windows.Forms.DateTimePicker
         Me.C1TrueDBGrid1 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -47,6 +57,7 @@ Partial Class FrmEvacuaciones
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
         CType(Me.C1TrueDBGrid1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -58,7 +69,7 @@ Partial Class FrmEvacuaciones
         Me.TDGridSolicitud.FilterBar = True
         Me.TDGridSolicitud.GroupByCaption = "Drag a column header here to group by that column"
         Me.TDGridSolicitud.Images.Add(CType(resources.GetObject("TDGridSolicitud.Images"), System.Drawing.Image))
-        Me.TDGridSolicitud.Location = New System.Drawing.Point(6, 12)
+        Me.TDGridSolicitud.Location = New System.Drawing.Point(6, 104)
         Me.TDGridSolicitud.Name = "TDGridSolicitud"
         Me.TDGridSolicitud.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TDGridSolicitud.PreviewInfo.Size = New System.Drawing.Size(0, 0)
@@ -114,9 +125,9 @@ Partial Class FrmEvacuaciones
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.Label3)
         Me.GroupBox1.Controls.Add(Me.DTPFechaInicio)
-        Me.GroupBox1.Location = New System.Drawing.Point(12, 65)
+        Me.GroupBox1.Location = New System.Drawing.Point(6, 12)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(1269, 86)
+        Me.GroupBox1.Size = New System.Drawing.Size(1226, 86)
         Me.GroupBox1.TabIndex = 257
         Me.GroupBox1.TabStop = False
         '
@@ -143,7 +154,7 @@ Partial Class FrmEvacuaciones
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(962, 12)
+        Me.Button1.Location = New System.Drawing.Point(916, 12)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(196, 68)
         Me.Button1.TabIndex = 257
@@ -187,7 +198,7 @@ Partial Class FrmEvacuaciones
         Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button2.Location = New System.Drawing.Point(1124, 27)
+        Me.Button2.Location = New System.Drawing.Point(1124, 104)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(108, 56)
         Me.Button2.TabIndex = 265
@@ -200,7 +211,7 @@ Partial Class FrmEvacuaciones
         Me.BtnActualizar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnActualizar.Image = CType(resources.GetObject("BtnActualizar.Image"), System.Drawing.Image)
         Me.BtnActualizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnActualizar.Location = New System.Drawing.Point(1124, 151)
+        Me.BtnActualizar.Location = New System.Drawing.Point(1124, 228)
         Me.BtnActualizar.Name = "BtnActualizar"
         Me.BtnActualizar.Size = New System.Drawing.Size(108, 56)
         Me.BtnActualizar.TabIndex = 263
@@ -213,7 +224,7 @@ Partial Class FrmEvacuaciones
         Me.BtnVer.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnVer.Image = CType(resources.GetObject("BtnVer.Image"), System.Drawing.Image)
         Me.BtnVer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnVer.Location = New System.Drawing.Point(1124, 89)
+        Me.BtnVer.Location = New System.Drawing.Point(1124, 167)
         Me.BtnVer.Name = "BtnVer"
         Me.BtnVer.Size = New System.Drawing.Size(108, 56)
         Me.BtnVer.TabIndex = 262
@@ -226,7 +237,7 @@ Partial Class FrmEvacuaciones
         Me.BtnSalir.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnSalir.Image = CType(resources.GetObject("BtnSalir.Image"), System.Drawing.Image)
         Me.BtnSalir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnSalir.Location = New System.Drawing.Point(1124, 259)
+        Me.BtnSalir.Location = New System.Drawing.Point(1124, 351)
         Me.BtnSalir.Name = "BtnSalir"
         Me.BtnSalir.Size = New System.Drawing.Size(108, 56)
         Me.BtnSalir.TabIndex = 261
@@ -238,37 +249,148 @@ Partial Class FrmEvacuaciones
         '
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Location = New System.Drawing.Point(12, 157)
+        Me.TabControl1.Location = New System.Drawing.Point(10, 65)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1255, 354)
+        Me.TabControl1.Size = New System.Drawing.Size(1255, 439)
         Me.TabControl1.TabIndex = 266
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.Button4)
         Me.TabPage1.Controls.Add(Me.TDGridSolicitud)
         Me.TabPage1.Controls.Add(Me.BtnSalir)
         Me.TabPage1.Controls.Add(Me.BtnActualizar)
         Me.TabPage1.Controls.Add(Me.Button2)
+        Me.TabPage1.Controls.Add(Me.GroupBox1)
         Me.TabPage1.Controls.Add(Me.BtnVer)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(1247, 328)
+        Me.TabPage1.Size = New System.Drawing.Size(1247, 413)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Evacuaciones"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
+        'Button4
+        '
+        Me.Button4.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
+        Me.Button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button4.Location = New System.Drawing.Point(1124, 289)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(108, 56)
+        Me.Button4.TabIndex = 266
+        Me.Button4.Text = "Excel"
+        Me.Button4.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button4.UseVisualStyleBackColor = True
+        '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.BtnSalirFacturacion)
+        Me.TabPage2.Controls.Add(Me.GroupBox2)
         Me.TabPage2.Controls.Add(Me.C1TrueDBGrid1)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(1247, 328)
+        Me.TabPage2.Size = New System.Drawing.Size(1247, 413)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Facturacion"
         Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'BtnSalirFacturacion
+        '
+        Me.BtnSalirFacturacion.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnSalirFacturacion.Image = CType(resources.GetObject("BtnSalirFacturacion.Image"), System.Drawing.Image)
+        Me.BtnSalirFacturacion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.BtnSalirFacturacion.Location = New System.Drawing.Point(1124, 351)
+        Me.BtnSalirFacturacion.Name = "BtnSalirFacturacion"
+        Me.BtnSalirFacturacion.Size = New System.Drawing.Size(108, 56)
+        Me.BtnSalirFacturacion.TabIndex = 262
+        Me.BtnSalirFacturacion.Text = "Salir"
+        Me.BtnSalirFacturacion.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnSalirFacturacion.UseVisualStyleBackColor = True
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.ComboBox1)
+        Me.GroupBox2.Controls.Add(Me.Label1)
+        Me.GroupBox2.Controls.Add(Me.Button3)
+        Me.GroupBox2.Controls.Add(Me.DateTimePicker1)
+        Me.GroupBox2.Controls.Add(Me.Label4)
+        Me.GroupBox2.Controls.Add(Me.Label6)
+        Me.GroupBox2.Controls.Add(Me.DateTimePicker2)
+        Me.GroupBox2.Location = New System.Drawing.Point(6, 12)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(1226, 86)
+        Me.GroupBox2.TabIndex = 258
+        Me.GroupBox2.TabStop = False
+        '
+        'ComboBox1
+        '
+        Me.ComboBox1.DisplayMember = "TipoContrato"
+        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox1.FormattingEnabled = True
+        Me.ComboBox1.Location = New System.Drawing.Point(84, 51)
+        Me.ComboBox1.Name = "ComboBox1"
+        Me.ComboBox1.Size = New System.Drawing.Size(121, 21)
+        Me.ComboBox1.TabIndex = 261
+        Me.ComboBox1.ValueMember = "TipoContrato"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(9, 56)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(69, 13)
+        Me.Label1.TabIndex = 260
+        Me.Label1.Text = "Tipo Servicio"
+        '
+        'Button3
+        '
+        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
+        Me.Button3.Location = New System.Drawing.Point(916, 12)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(196, 68)
+        Me.Button3.TabIndex = 257
+        Me.Button3.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.Button3.UseVisualStyleBackColor = True
+        '
+        'DateTimePicker1
+        '
+        Me.DateTimePicker1.CustomFormat = ""
+        Me.DateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DateTimePicker1.Location = New System.Drawing.Point(269, 21)
+        Me.DateTimePicker1.Name = "DateTimePicker1"
+        Me.DateTimePicker1.Size = New System.Drawing.Size(104, 20)
+        Me.DateTimePicker1.TabIndex = 256
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(12, 23)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(65, 13)
+        Me.Label4.TabIndex = 253
+        Me.Label4.Text = "Fecha Inicio"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(209, 24)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(54, 13)
+        Me.Label6.TabIndex = 255
+        Me.Label6.Text = "Fecha Fin"
+        '
+        'DateTimePicker2
+        '
+        Me.DateTimePicker2.CustomFormat = ""
+        Me.DateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DateTimePicker2.Location = New System.Drawing.Point(83, 20)
+        Me.DateTimePicker2.Name = "DateTimePicker2"
+        Me.DateTimePicker2.Size = New System.Drawing.Size(104, 20)
+        Me.DateTimePicker2.TabIndex = 254
         '
         'C1TrueDBGrid1
         '
@@ -278,7 +400,7 @@ Partial Class FrmEvacuaciones
         Me.C1TrueDBGrid1.FilterBar = True
         Me.C1TrueDBGrid1.GroupByCaption = "Drag a column header here to group by that column"
         Me.C1TrueDBGrid1.Images.Add(CType(resources.GetObject("C1TrueDBGrid1.Images"), System.Drawing.Image))
-        Me.C1TrueDBGrid1.Location = New System.Drawing.Point(10, 13)
+        Me.C1TrueDBGrid1.Location = New System.Drawing.Point(6, 104)
         Me.C1TrueDBGrid1.Name = "C1TrueDBGrid1"
         Me.C1TrueDBGrid1.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.C1TrueDBGrid1.PreviewInfo.Size = New System.Drawing.Size(0, 0)
@@ -298,7 +420,6 @@ Partial Class FrmEvacuaciones
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.CmdBorraLinea)
-        Me.Controls.Add(Me.GroupBox1)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "FrmEvacuaciones"
@@ -311,6 +432,8 @@ Partial Class FrmEvacuaciones
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage2.ResumeLayout(False)
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
         CType(Me.C1TrueDBGrid1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -336,4 +459,14 @@ Partial Class FrmEvacuaciones
     Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
     Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
     Friend WithEvents C1TrueDBGrid1 As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents BtnSalirFacturacion As System.Windows.Forms.Button
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents Button3 As System.Windows.Forms.Button
+    Friend WithEvents DateTimePicker1 As System.Windows.Forms.DateTimePicker
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents DateTimePicker2 As System.Windows.Forms.DateTimePicker
+    Friend WithEvents Button4 As System.Windows.Forms.Button
 End Class
