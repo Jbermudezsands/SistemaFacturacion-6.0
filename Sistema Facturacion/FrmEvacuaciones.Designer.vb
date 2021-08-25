@@ -42,14 +42,17 @@ Partial Class FrmEvacuaciones
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.BtnSalirFacturacion = New System.Windows.Forms.Button
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.ComboBox1 = New System.Windows.Forms.ComboBox
+        Me.CmbContrato2 = New System.Windows.Forms.ComboBox
         Me.Label1 = New System.Windows.Forms.Label
         Me.Button3 = New System.Windows.Forms.Button
-        Me.DateTimePicker1 = New System.Windows.Forms.DateTimePicker
+        Me.DtpFechaFinFact = New System.Windows.Forms.DateTimePicker
         Me.Label4 = New System.Windows.Forms.Label
         Me.Label6 = New System.Windows.Forms.Label
-        Me.DateTimePicker2 = New System.Windows.Forms.DateTimePicker
-        Me.C1TrueDBGrid1 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.DtpFechaIniFact = New System.Windows.Forms.DateTimePicker
+        Me.TDGridFacturacion = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.BtnProcesar = New System.Windows.Forms.Button
+        Me.ProgressBarFact = New System.Windows.Forms.ProgressBar
+        Me.ProgressBar = New System.Windows.Forms.ProgressBar
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -58,7 +61,7 @@ Partial Class FrmEvacuaciones
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
-        CType(Me.C1TrueDBGrid1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TDGridFacturacion, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TDGridSolicitud
@@ -118,6 +121,7 @@ Partial Class FrmEvacuaciones
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.ProgressBar)
         Me.GroupBox1.Controls.Add(Me.CmbContrato1)
         Me.GroupBox1.Controls.Add(Me.Label5)
         Me.GroupBox1.Controls.Add(Me.Button1)
@@ -287,9 +291,10 @@ Partial Class FrmEvacuaciones
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.BtnProcesar)
         Me.TabPage2.Controls.Add(Me.BtnSalirFacturacion)
         Me.TabPage2.Controls.Add(Me.GroupBox2)
-        Me.TabPage2.Controls.Add(Me.C1TrueDBGrid1)
+        Me.TabPage2.Controls.Add(Me.TDGridFacturacion)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
@@ -313,29 +318,30 @@ Partial Class FrmEvacuaciones
         '
         'GroupBox2
         '
-        Me.GroupBox2.Controls.Add(Me.ComboBox1)
+        Me.GroupBox2.Controls.Add(Me.ProgressBarFact)
+        Me.GroupBox2.Controls.Add(Me.CmbContrato2)
         Me.GroupBox2.Controls.Add(Me.Label1)
         Me.GroupBox2.Controls.Add(Me.Button3)
-        Me.GroupBox2.Controls.Add(Me.DateTimePicker1)
+        Me.GroupBox2.Controls.Add(Me.DtpFechaFinFact)
         Me.GroupBox2.Controls.Add(Me.Label4)
         Me.GroupBox2.Controls.Add(Me.Label6)
-        Me.GroupBox2.Controls.Add(Me.DateTimePicker2)
+        Me.GroupBox2.Controls.Add(Me.DtpFechaIniFact)
         Me.GroupBox2.Location = New System.Drawing.Point(6, 12)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(1226, 86)
         Me.GroupBox2.TabIndex = 258
         Me.GroupBox2.TabStop = False
         '
-        'ComboBox1
+        'CmbContrato2
         '
-        Me.ComboBox1.DisplayMember = "TipoContrato"
-        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Location = New System.Drawing.Point(84, 51)
-        Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(121, 21)
-        Me.ComboBox1.TabIndex = 261
-        Me.ComboBox1.ValueMember = "TipoContrato"
+        Me.CmbContrato2.DisplayMember = "TipoContrato"
+        Me.CmbContrato2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbContrato2.FormattingEnabled = True
+        Me.CmbContrato2.Location = New System.Drawing.Point(84, 51)
+        Me.CmbContrato2.Name = "CmbContrato2"
+        Me.CmbContrato2.Size = New System.Drawing.Size(121, 21)
+        Me.CmbContrato2.TabIndex = 261
+        Me.CmbContrato2.ValueMember = "TipoContrato"
         '
         'Label1
         '
@@ -356,14 +362,14 @@ Partial Class FrmEvacuaciones
         Me.Button3.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.Button3.UseVisualStyleBackColor = True
         '
-        'DateTimePicker1
+        'DtpFechaFinFact
         '
-        Me.DateTimePicker1.CustomFormat = ""
-        Me.DateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DateTimePicker1.Location = New System.Drawing.Point(269, 21)
-        Me.DateTimePicker1.Name = "DateTimePicker1"
-        Me.DateTimePicker1.Size = New System.Drawing.Size(104, 20)
-        Me.DateTimePicker1.TabIndex = 256
+        Me.DtpFechaFinFact.CustomFormat = ""
+        Me.DtpFechaFinFact.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DtpFechaFinFact.Location = New System.Drawing.Point(269, 21)
+        Me.DtpFechaFinFact.Name = "DtpFechaFinFact"
+        Me.DtpFechaFinFact.Size = New System.Drawing.Size(104, 20)
+        Me.DtpFechaFinFact.TabIndex = 256
         '
         'Label4
         '
@@ -383,33 +389,60 @@ Partial Class FrmEvacuaciones
         Me.Label6.TabIndex = 255
         Me.Label6.Text = "Fecha Fin"
         '
-        'DateTimePicker2
+        'DtpFechaIniFact
         '
-        Me.DateTimePicker2.CustomFormat = ""
-        Me.DateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DateTimePicker2.Location = New System.Drawing.Point(83, 20)
-        Me.DateTimePicker2.Name = "DateTimePicker2"
-        Me.DateTimePicker2.Size = New System.Drawing.Size(104, 20)
-        Me.DateTimePicker2.TabIndex = 254
+        Me.DtpFechaIniFact.CustomFormat = ""
+        Me.DtpFechaIniFact.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DtpFechaIniFact.Location = New System.Drawing.Point(83, 20)
+        Me.DtpFechaIniFact.Name = "DtpFechaIniFact"
+        Me.DtpFechaIniFact.Size = New System.Drawing.Size(104, 20)
+        Me.DtpFechaIniFact.TabIndex = 254
         '
-        'C1TrueDBGrid1
+        'TDGridFacturacion
         '
-        Me.C1TrueDBGrid1.AllowUpdate = False
-        Me.C1TrueDBGrid1.AlternatingRows = True
-        Me.C1TrueDBGrid1.Caption = "Listado de Clientes x Dias"
-        Me.C1TrueDBGrid1.FilterBar = True
-        Me.C1TrueDBGrid1.GroupByCaption = "Drag a column header here to group by that column"
-        Me.C1TrueDBGrid1.Images.Add(CType(resources.GetObject("C1TrueDBGrid1.Images"), System.Drawing.Image))
-        Me.C1TrueDBGrid1.Location = New System.Drawing.Point(6, 104)
-        Me.C1TrueDBGrid1.Name = "C1TrueDBGrid1"
-        Me.C1TrueDBGrid1.PreviewInfo.Location = New System.Drawing.Point(0, 0)
-        Me.C1TrueDBGrid1.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.C1TrueDBGrid1.PreviewInfo.ZoomFactor = 75
-        Me.C1TrueDBGrid1.PrintInfo.PageSettings = CType(resources.GetObject("C1TrueDBGrid1.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.C1TrueDBGrid1.Size = New System.Drawing.Size(1112, 303)
-        Me.C1TrueDBGrid1.TabIndex = 252
-        Me.C1TrueDBGrid1.Text = "C1TrueDBGrid1"
-        Me.C1TrueDBGrid1.PropBag = resources.GetString("C1TrueDBGrid1.PropBag")
+        Me.TDGridFacturacion.AllowUpdate = False
+        Me.TDGridFacturacion.AlternatingRows = True
+        Me.TDGridFacturacion.Caption = "Listado de Clientes x Dias"
+        Me.TDGridFacturacion.FilterBar = True
+        Me.TDGridFacturacion.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TDGridFacturacion.Images.Add(CType(resources.GetObject("TDGridFacturacion.Images"), System.Drawing.Image))
+        Me.TDGridFacturacion.Location = New System.Drawing.Point(6, 104)
+        Me.TDGridFacturacion.Name = "TDGridFacturacion"
+        Me.TDGridFacturacion.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TDGridFacturacion.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TDGridFacturacion.PreviewInfo.ZoomFactor = 75
+        Me.TDGridFacturacion.PrintInfo.PageSettings = CType(resources.GetObject("C1TrueDBGrid1.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TDGridFacturacion.Size = New System.Drawing.Size(1112, 303)
+        Me.TDGridFacturacion.TabIndex = 252
+        Me.TDGridFacturacion.Text = "C1TrueDBGrid1"
+        Me.TDGridFacturacion.PropBag = resources.GetString("TDGridFacturacion.PropBag")
+        '
+        'BtnProcesar
+        '
+        Me.BtnProcesar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnProcesar.Image = CType(resources.GetObject("BtnProcesar.Image"), System.Drawing.Image)
+        Me.BtnProcesar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.BtnProcesar.Location = New System.Drawing.Point(1124, 104)
+        Me.BtnProcesar.Name = "BtnProcesar"
+        Me.BtnProcesar.Size = New System.Drawing.Size(114, 56)
+        Me.BtnProcesar.TabIndex = 267
+        Me.BtnProcesar.Text = "Facturar"
+        Me.BtnProcesar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnProcesar.UseVisualStyleBackColor = True
+        '
+        'ProgressBarFact
+        '
+        Me.ProgressBarFact.Location = New System.Drawing.Point(269, 47)
+        Me.ProgressBarFact.Name = "ProgressBarFact"
+        Me.ProgressBarFact.Size = New System.Drawing.Size(629, 23)
+        Me.ProgressBarFact.TabIndex = 262
+        '
+        'ProgressBar
+        '
+        Me.ProgressBar.Location = New System.Drawing.Point(269, 51)
+        Me.ProgressBar.Name = "ProgressBar"
+        Me.ProgressBar.Size = New System.Drawing.Size(629, 23)
+        Me.ProgressBar.TabIndex = 263
         '
         'FrmEvacuaciones
         '
@@ -434,7 +467,7 @@ Partial Class FrmEvacuaciones
         Me.TabPage2.ResumeLayout(False)
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
-        CType(Me.C1TrueDBGrid1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TDGridFacturacion, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -458,15 +491,18 @@ Partial Class FrmEvacuaciones
     Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
     Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
     Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
-    Friend WithEvents C1TrueDBGrid1 As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents TDGridFacturacion As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents BtnSalirFacturacion As System.Windows.Forms.Button
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
-    Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
+    Friend WithEvents CmbContrato2 As System.Windows.Forms.ComboBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Button3 As System.Windows.Forms.Button
-    Friend WithEvents DateTimePicker1 As System.Windows.Forms.DateTimePicker
+    Friend WithEvents DtpFechaFinFact As System.Windows.Forms.DateTimePicker
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents DateTimePicker2 As System.Windows.Forms.DateTimePicker
+    Friend WithEvents DtpFechaIniFact As System.Windows.Forms.DateTimePicker
     Friend WithEvents Button4 As System.Windows.Forms.Button
+    Friend WithEvents BtnProcesar As System.Windows.Forms.Button
+    Friend WithEvents ProgressBar As System.Windows.Forms.ProgressBar
+    Friend WithEvents ProgressBarFact As System.Windows.Forms.ProgressBar
 End Class

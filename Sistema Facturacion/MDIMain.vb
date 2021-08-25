@@ -1124,7 +1124,7 @@ Public Class MDIMain
         My.Forms.FrmInventarioFisico.MdiParent = Me
         My.Forms.FrmInventarioFisico.Show()
 
-        '
+
     End Sub
 
     Private Sub RibbonButton5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton5.Click
