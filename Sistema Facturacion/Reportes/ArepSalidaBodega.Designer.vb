@@ -743,14 +743,14 @@ Partial Public Class ArepSalidaBodega
         Me.LblDireccion.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblDireccion.Border.TopColor = System.Drawing.Color.Black
         Me.LblDireccion.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblDireccion.Height = 0.2105263!
+        Me.LblDireccion.Height = 0.375!
         Me.LblDireccion.HyperLink = Nothing
-        Me.LblDireccion.Left = 1.789474!
+        Me.LblDireccion.Left = 1.75!
         Me.LblDireccion.Name = "LblDireccion"
         Me.LblDireccion.Style = "ddo-char-set: 0; font-style: italic; font-size: 8.25pt; "
         Me.LblDireccion.Text = ""
-        Me.LblDireccion.Top = 0.368421!
-        Me.LblDireccion.Width = 2.894737!
+        Me.LblDireccion.Top = 0.375!
+        Me.LblDireccion.Width = 3.25!
         '
         'LblRuc
         '
@@ -764,11 +764,11 @@ Partial Public Class ArepSalidaBodega
         Me.LblRuc.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblRuc.Height = 0.2105263!
         Me.LblRuc.HyperLink = Nothing
-        Me.LblRuc.Left = 1.789474!
+        Me.LblRuc.Left = 1.75!
         Me.LblRuc.Name = "LblRuc"
         Me.LblRuc.Style = "ddo-char-set: 0; font-style: italic; font-size: 8.25pt; "
         Me.LblRuc.Text = ""
-        Me.LblRuc.Top = 0.5789474!
+        Me.LblRuc.Top = 0.75!
         Me.LblRuc.Width = 2.052632!
         '
         'PageFooter1

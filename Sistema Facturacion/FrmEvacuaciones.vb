@@ -9,7 +9,7 @@ Public Class FrmEvacuaciones
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim IdTipoContrato As Integer, Registros As Double, j As Double
         Dim Total As Double = 0, FechaConsulta As Date, FechaIni As Date, FechaFin As Date, NumeroContrato As Double, CodigoCliente As String
-        Dim Acumulado As Double = 0
+        Dim Acumulado As Double = 0, Periodo As Double = 0
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////////////7777BUSCO EL ID DEL CONTRATO PARA CONSULTARLO //////////////////////////////////////////////////////
@@ -26,7 +26,7 @@ Public Class FrmEvacuaciones
 
 
 
-        dsFact.Tables("Facturacion").Reset()
+        dsFact.Tables("Facturacion").Clear()
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,34 +47,51 @@ Public Class FrmEvacuaciones
 
             NumeroContrato = dsFact.Tables("Facturacion").Rows(j)("Numero_Contrato")
             CodigoCliente = dsFact.Tables("Facturacion").Rows(j)("Cod_Cliente")
+            Total = 0
 
             '//////////////////////////BUSCOS LAS EVACUACIONES ACUMULADAS ///////////////////////////////////////////////////////////////////
-
+            Acumulado = 0
             SQlString = "SELECT COUNT(Numero_Contrato) AS Cont FROM Registro_Transporte_Detalle WHERE (Fecha_Registro < CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102)) AND (Cod_Cliente = '" & CodigoCliente & "') AND (idTipoContrato = " & IdTipoContrato & ") AND (Numero_Contrato = " & NumeroContrato & ") AND (Procesado = 0)"
             DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
             DataAdapter.Fill(DataSet, "Acumulado")
-            If DataSet.Tables("Acumulado").Rows.Count <> 0 Then
-                Acumulado = DataSet.Tables("Acumulado").Rows(0)("Cont")
-            End If
+            i = 0
+            Do While Not DataSet.Tables("Acumulado").Rows.Count > i
+                Acumulado = Acumulado + 1
+                i = i + 1
+            Loop
             DataSet.Tables("Acumulado").Reset()
 
-            SQlString = "SELECT COUNT(Numero_Contrato) AS Cont FROM Registro_Transporte_Detalle WHERE (Fecha_Registro < CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102)) AND (Cod_Cliente = '" & CodigoCliente & "') AND (idTipoContrato = " & IdTipoContrato & ") AND (Numero_Contrato = " & NumeroContrato & ") AND (Procesado = 0)"
+            Periodo = 0
+            'SQlString = "SELECT COUNT(Numero_Contrato) AS Cont FROM Registro_Transporte_Detalle WHERE (Fecha_Registro BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Cod_Cliente = '" & CodigoCliente & "') AND (idTipoContrato = " & IdTipoContrato & ") AND (Numero_Contrato = " & NumeroContrato & ") AND (Procesado = 0)"
+            SQlString = "SELECT  Numero_Contrato AS Cont, Fecha_Registro FROM Registro_Transporte_Detalle WHERE  (Fecha_Registro BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Cod_Cliente = '" & CodigoCliente & "') AND (idTipoContrato = " & IdTipoContrato & ") AND (Numero_Contrato = " & NumeroContrato & ") AND (Procesado = 0)"
             DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
             DataAdapter.Fill(DataSet, "Periodo")
-            If DataSet.Tables("Periodo").Rows.Count <> 0 Then
-                Acumulado = DataSet.Tables("Periodo").Rows(0)("Cont")
-            End If
+            i = 0
+            Do While DataSet.Tables("Periodo").Rows.Count > i
+                Periodo = Periodo + 1
+                i = i + 1
+            Loop
             DataSet.Tables("Periodo").Reset()
 
 
+
+            Total = Acumulado + Periodo
+
+            dsFact.Tables("Facturacion").Rows(j)("Acumulado") = Acumulado
+            dsFact.Tables("Facturacion").Rows(j)("Periodo") = Periodo
+            dsFact.Tables("Facturacion").Rows(j)("Total") = Total
 
 
 
             j = j + 1
         Loop
 
-        Me.TDGridFacturacion.DataSource = ds.Tables("Facturacion")
+        Me.TDGridFacturacion.DataSource = Me.dsFact.Tables("Facturacion")
         Me.TDGridFacturacion.Splits(0).DisplayColumns("Nombres").Width = 200
+        Me.TDGridFacturacion.Splits(0).DisplayColumns("Nombres").Locked = True
+        Me.TDGridFacturacion.Splits(0).DisplayColumns("Acumulado").Locked = True
+        Me.TDGridFacturacion.Splits(0).DisplayColumns("Periodo").Locked = True
+        Me.TDGridFacturacion.Splits(0).DisplayColumns("Total").Locked = True
         Me.TDGridFacturacion.Splits(0).DisplayColumns("Numero_Contrato").Visible = False
         Me.TDGridFacturacion.Splits(0).DisplayColumns("Cod_Cliente").Visible = False
         Me.TDGridFacturacion.Splits(0).DisplayColumns("Contrato_Variable").Visible = False
@@ -149,7 +166,7 @@ Public Class FrmEvacuaciones
                 Cant = 0
                 FechaConsulta = DateSerial(FechaIni.Year, FechaFin.Month, i)
 
-                SQlString = "SELECT COUNT(Numero_Contrato) AS Cont FROM Registro_Transporte_Detalle WHERE (Fecha_Registro = CONVERT(DATETIME, '" & Format(FechaConsulta, "yyyy-MM-dd") & "', 102)) AND (Cod_Cliente = '" & CodigoCliente & "') AND (idTipoContrato = " & IdTipoContrato & ") AND (Numero_Contrato = " & NumeroContrato & ")"
+                SQlString = "SELECT COUNT(Numero_Contrato) AS Cont FROM Registro_Transporte_Detalle WHERE (Fecha_Registro = CONVERT(DATETIME, '" & Format(FechaConsulta, "yyyy-MM-dd") & "', 102)) AND (Cod_Cliente = '" & CodigoCliente & "') AND (idTipoContrato = " & IdTipoContrato & ") AND (Numero_Contrato = " & NumeroContrato & ") AND (Anulado = 0)"
                 DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
                 DataAdapter.Fill(DataSet, "Contador")
                 If DataSet.Tables("Contador").Rows.Count <> 0 Then
@@ -183,8 +200,6 @@ Public Class FrmEvacuaciones
     End Sub
 
 
-
-
     Private Sub FrmEvacuaciones_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim Dias As Double, SQlString As String, i As Double
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -192,7 +207,7 @@ Public Class FrmEvacuaciones
         Me.DTPFechaInicio.Value = DateSerial(Now.Year, Now.Month, 1)
         Me.DTPFechaFin.Value = DateSerial(Now.Year, Now.Month + 1, 0)
 
-        Me.DTPFechaInicio.Value = DateSerial(Now.Year, Now.Month, 1)
+        Me.DtpFechaIniFact.Value = DateSerial(Now.Year, Now.Month, 1)
         Me.DtpFechaFinFact.Value = DateSerial(Now.Year, Now.Month + 1, 0)
 
         Dias = DateDiff(DateInterval.Day, Me.DTPFechaInicio.Value, Me.DTPFechaFin.Value) + 1
@@ -248,6 +263,10 @@ Public Class FrmEvacuaciones
         Me.TDGridFacturacion.Splits(0).DisplayColumns("Contrato_Variable").Visible = False
         Me.TDGridFacturacion.Splits(0).DisplayColumns("Contrato_Variable2").Visible = False
 
+
+
+
+
     End Sub
 
     Private Sub BtnSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSalir.Click
@@ -283,11 +302,16 @@ Public Class FrmEvacuaciones
         DataAdapter = New SqlClient.SqlDataAdapter(SQlstring, MiConexion)
         DataAdapter.Fill(DataSet, "DetalleRegistros")
 
+        My.Forms.FrmDetalleEvacuaciones.CodigoCliente = CodigoCliente
+        My.Forms.FrmDetalleEvacuaciones.FechaIni = Me.DTPFechaInicio.Value
+        My.Forms.FrmDetalleEvacuaciones.FechaFin = Me.DTPFechaFin.Value
+
 
         My.Forms.FrmDetalleEvacuaciones.DTPFechaInicio.Value = Me.DTPFechaInicio.Value
         My.Forms.FrmDetalleEvacuaciones.DTPFechaFin.Value = Me.DTPFechaFin.Value
         My.Forms.FrmDetalleEvacuaciones.LblTipoServicio.Text = Me.CmbContrato1.Text
         My.Forms.FrmDetalleEvacuaciones.LblCliente.Text = Me.TDGridSolicitud.Columns("Nombres").Text
+
 
 
         My.Forms.FrmDetalleEvacuaciones.TDGridSolicitud.DataSource = DataSet.Tables("DetalleRegistros")

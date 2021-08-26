@@ -1,9 +1,37 @@
 Public Class FrmDetalleEvacuaciones
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
+    Public CodigoCliente As String, FechaIni As Date, FechaFin As Date
 
     Private Sub BtnSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSalir.Click
         Me.Close()
     End Sub
+    Public Sub ActualizaGridDetalle(ByVal CodigoCliente As String, ByVal FechaInicial As Date, ByVal FechaFinal As Date)
+        Dim SQlstring As String
+        Dim DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet
+
+        CodigoCliente = Me.TDGridSolicitud.Columns("Cod_Cliente").Text
+
+        SQlstring = "SELECT  Registro_Transporte_Detalle.Numero_Registro, Registro_Transporte_Detalle.Fecha_Registro, Conductor.Nombre, Conductor.Licencia, Vehiculo.Placa, Vehiculo.Marca, Registro_Transporte_Detalle.Cod_Cliente, Registro_Transporte_Detalle.Id_Conductor, Registro_Transporte_Detalle.Id_Vehiculo, Registro_Transporte_Detalle.Activo, Registro_Transporte_Detalle.Anulado, Registro_Transporte_Detalle.Procesado, Registro_Transporte_Detalle.idTipoContrato, Registro_Transporte_Detalle.Numero_Contrato, Conductor.Codigo FROM Registro_Transporte_Detalle LEFT OUTER JOIN Conductor ON Registro_Transporte_Detalle.Id_Conductor = Conductor.Codigo LEFT OUTER JOIN Vehiculo ON Registro_Transporte_Detalle.Id_Vehiculo = Vehiculo.IdVehiculo  " & _
+                    "WHERE (Registro_Transporte_Detalle.Cod_Cliente = '" & CodigoCliente & "') AND (Registro_Transporte_Detalle.Fecha_Registro BETWEEN CONVERT(DATETIME, '" & Format(FechaInicial, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFinal, "yyyy-MM-dd") & "', 102)) AND (Registro_Transporte_Detalle.Anulado = 0)"
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlstring, MiConexion)
+        DataAdapter.Fill(DataSet, "DetalleRegistros")
+
+
+        Me.TDGridSolicitud.DataSource = DataSet.Tables("DetalleRegistros")
+        Me.TDGridSolicitud.Splits(0).DisplayColumns("Numero_Registro").Visible = False
+        Me.TDGridSolicitud.Splits(0).DisplayColumns("Cod_Cliente").Visible = False
+        Me.TDGridSolicitud.Splits(0).DisplayColumns("Id_Conductor").Visible = False
+        Me.TDGridSolicitud.Splits(0).DisplayColumns("Id_Vehiculo").Visible = False
+        Me.TDGridSolicitud.Splits(0).DisplayColumns("Activo").Visible = False
+        Me.TDGridSolicitud.Splits(0).DisplayColumns("Procesado").Visible = False
+        Me.TDGridSolicitud.Splits(0).DisplayColumns("Anulado").Visible = False
+        Me.TDGridSolicitud.Splits(0).DisplayColumns("idTipoContrato").Visible = False
+        Me.TDGridSolicitud.Splits(0).DisplayColumns("Numero_Contrato").Visible = False
+        Me.TDGridSolicitud.Splits(0).DisplayColumns("Codigo").Visible = False
+
+    End Sub
+
+
 
     Private Sub BtnVer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnVer.Click
         Dim Fecha As Date, Numero_Registro As Double, SQLString As String
@@ -70,6 +98,8 @@ Public Class FrmDetalleEvacuaciones
 
         End If
 
-        GrabarRegistroEvacuaciones(NumeroContrato, Fecha, CodigoCliente, IdConductor, idVehiculo, idContrato, True, True, False, True)
+        GrabarRegistroEvacuaciones(NumeroContrato, Fecha, CodigoCliente, IdConductor, idVehiculo, idContrato, True, False, False, False)
+
+        ActualizaGridDetalle(Me.CodigoCliente, Me.FechaIni, Me.FechaFin)
     End Sub
 End Class

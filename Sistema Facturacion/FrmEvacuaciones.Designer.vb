@@ -26,6 +26,7 @@ Partial Class FrmEvacuaciones
         Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker
         Me.Label3 = New System.Windows.Forms.Label
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.ProgressBar = New System.Windows.Forms.ProgressBar
         Me.CmbContrato1 = New System.Windows.Forms.ComboBox
         Me.Label5 = New System.Windows.Forms.Label
         Me.Button1 = New System.Windows.Forms.Button
@@ -40,8 +41,10 @@ Partial Class FrmEvacuaciones
         Me.TabPage1 = New System.Windows.Forms.TabPage
         Me.Button4 = New System.Windows.Forms.Button
         Me.TabPage2 = New System.Windows.Forms.TabPage
+        Me.BtnProcesar = New System.Windows.Forms.Button
         Me.BtnSalirFacturacion = New System.Windows.Forms.Button
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.ProgressBarFact = New System.Windows.Forms.ProgressBar
         Me.CmbContrato2 = New System.Windows.Forms.ComboBox
         Me.Label1 = New System.Windows.Forms.Label
         Me.Button3 = New System.Windows.Forms.Button
@@ -50,9 +53,6 @@ Partial Class FrmEvacuaciones
         Me.Label6 = New System.Windows.Forms.Label
         Me.DtpFechaIniFact = New System.Windows.Forms.DateTimePicker
         Me.TDGridFacturacion = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.BtnProcesar = New System.Windows.Forms.Button
-        Me.ProgressBarFact = New System.Windows.Forms.ProgressBar
-        Me.ProgressBar = New System.Windows.Forms.ProgressBar
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -134,6 +134,13 @@ Partial Class FrmEvacuaciones
         Me.GroupBox1.Size = New System.Drawing.Size(1226, 86)
         Me.GroupBox1.TabIndex = 257
         Me.GroupBox1.TabStop = False
+        '
+        'ProgressBar
+        '
+        Me.ProgressBar.Location = New System.Drawing.Point(269, 51)
+        Me.ProgressBar.Name = "ProgressBar"
+        Me.ProgressBar.Size = New System.Drawing.Size(629, 23)
+        Me.ProgressBar.TabIndex = 263
         '
         'CmbContrato1
         '
@@ -303,6 +310,19 @@ Partial Class FrmEvacuaciones
         Me.TabPage2.Text = "Facturacion"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
+        'BtnProcesar
+        '
+        Me.BtnProcesar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnProcesar.Image = CType(resources.GetObject("BtnProcesar.Image"), System.Drawing.Image)
+        Me.BtnProcesar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.BtnProcesar.Location = New System.Drawing.Point(1124, 104)
+        Me.BtnProcesar.Name = "BtnProcesar"
+        Me.BtnProcesar.Size = New System.Drawing.Size(114, 56)
+        Me.BtnProcesar.TabIndex = 267
+        Me.BtnProcesar.Text = "Facturar"
+        Me.BtnProcesar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnProcesar.UseVisualStyleBackColor = True
+        '
         'BtnSalirFacturacion
         '
         Me.BtnSalirFacturacion.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -331,6 +351,13 @@ Partial Class FrmEvacuaciones
         Me.GroupBox2.Size = New System.Drawing.Size(1226, 86)
         Me.GroupBox2.TabIndex = 258
         Me.GroupBox2.TabStop = False
+        '
+        'ProgressBarFact
+        '
+        Me.ProgressBarFact.Location = New System.Drawing.Point(269, 47)
+        Me.ProgressBarFact.Name = "ProgressBarFact"
+        Me.ProgressBarFact.Size = New System.Drawing.Size(629, 23)
+        Me.ProgressBarFact.TabIndex = 262
         '
         'CmbContrato2
         '
@@ -400,7 +427,6 @@ Partial Class FrmEvacuaciones
         '
         'TDGridFacturacion
         '
-        Me.TDGridFacturacion.AllowUpdate = False
         Me.TDGridFacturacion.AlternatingRows = True
         Me.TDGridFacturacion.Caption = "Listado de Clientes x Dias"
         Me.TDGridFacturacion.FilterBar = True
@@ -411,38 +437,11 @@ Partial Class FrmEvacuaciones
         Me.TDGridFacturacion.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TDGridFacturacion.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TDGridFacturacion.PreviewInfo.ZoomFactor = 75
-        Me.TDGridFacturacion.PrintInfo.PageSettings = CType(resources.GetObject("C1TrueDBGrid1.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TDGridFacturacion.PrintInfo.PageSettings = CType(resources.GetObject("TDGridFacturacion.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
         Me.TDGridFacturacion.Size = New System.Drawing.Size(1112, 303)
         Me.TDGridFacturacion.TabIndex = 252
         Me.TDGridFacturacion.Text = "C1TrueDBGrid1"
         Me.TDGridFacturacion.PropBag = resources.GetString("TDGridFacturacion.PropBag")
-        '
-        'BtnProcesar
-        '
-        Me.BtnProcesar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnProcesar.Image = CType(resources.GetObject("BtnProcesar.Image"), System.Drawing.Image)
-        Me.BtnProcesar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnProcesar.Location = New System.Drawing.Point(1124, 104)
-        Me.BtnProcesar.Name = "BtnProcesar"
-        Me.BtnProcesar.Size = New System.Drawing.Size(114, 56)
-        Me.BtnProcesar.TabIndex = 267
-        Me.BtnProcesar.Text = "Facturar"
-        Me.BtnProcesar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.BtnProcesar.UseVisualStyleBackColor = True
-        '
-        'ProgressBarFact
-        '
-        Me.ProgressBarFact.Location = New System.Drawing.Point(269, 47)
-        Me.ProgressBarFact.Name = "ProgressBarFact"
-        Me.ProgressBarFact.Size = New System.Drawing.Size(629, 23)
-        Me.ProgressBarFact.TabIndex = 262
-        '
-        'ProgressBar
-        '
-        Me.ProgressBar.Location = New System.Drawing.Point(269, 51)
-        Me.ProgressBar.Name = "ProgressBar"
-        Me.ProgressBar.Size = New System.Drawing.Size(629, 23)
-        Me.ProgressBar.TabIndex = 263
         '
         'FrmEvacuaciones
         '
