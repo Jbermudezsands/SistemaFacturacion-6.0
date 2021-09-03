@@ -896,6 +896,10 @@ Public Class FrmLiquidacion
             End If
 
             TotalGastos = CDbl(Me.TxtSeguro.Text) + CDbl(Me.TxtTransporte.Text) + CDbl(Me.TxtAlmacen.Text) + CDbl(Me.TxtFletes.Text) + CDbl(Me.TxtAgente.Text) + CDbl(Me.TxtFletesInternos.Text) + CDbl(Me.TxtCustodio.Text) + CDbl(Me.TxtGastosAduana.Text) + CDbl(Me.TxtOtrosGastos.Text) + CDbl(Me.TxtTSI.Text) + CDbl(Me.TxtSSA.Text)
+            GastosImpuestos = CDbl(Me.TxtSeguro.Text) + CDbl(Me.TxtFletes.Text) + CDbl(Me.TxtGastosAduana.Text) + CDbl(Me.TxtTSI.Text) + CDbl(Me.TxtSSA.Text)
+
+            FOB = Me.BindingDetalle.Item(IposicionFila)("FOB")
+            Porciento = (FOB / TotalFOB)
 
             If Me.CmbMoneda.Text = "Dolares" Then
                 If Me.CmbGastos.Text = "Cordobas" Then
@@ -927,7 +931,7 @@ Public Class FrmLiquidacion
 
             Me.TrueDBGridComponentes.Item(IposicionFila)("Precio_Costo") = PrecioCompra
             Me.TrueDBGridComponentes.Item(IposicionFila)("Gasto_Compra") = TotalGastos * Porciento
-            Me.TrueDBGridComponentes.Item(IposicionFila)("Gasto_Impuesto") = TotalImpuestos
+            Me.TrueDBGridComponentes.Item(IposicionFila)("Gasto_Impuesto") = TotalImpuestos * Porciento
 
             'Me.BindingDetalle.Item(IposicionFila)("Precio_Costo") = PrecioCompra
             'Me.BindingDetalle.Item(IposicionFila)("Gasto_Compra") = TotalGastos * Porciento

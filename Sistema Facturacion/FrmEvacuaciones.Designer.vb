@@ -44,6 +44,7 @@ Partial Class FrmEvacuaciones
         Me.BtnProcesar = New System.Windows.Forms.Button
         Me.BtnSalirFacturacion = New System.Windows.Forms.Button
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.ProgressBarSy = New System.Windows.Forms.ProgressBar
         Me.ProgressBarFact = New System.Windows.Forms.ProgressBar
         Me.CmbContrato2 = New System.Windows.Forms.ComboBox
         Me.Label1 = New System.Windows.Forms.Label
@@ -53,6 +54,7 @@ Partial Class FrmEvacuaciones
         Me.Label6 = New System.Windows.Forms.Label
         Me.DtpFechaIniFact = New System.Windows.Forms.DateTimePicker
         Me.TDGridFacturacion = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.ProgressBarMini = New System.Windows.Forms.ProgressBar
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -87,7 +89,7 @@ Partial Class FrmEvacuaciones
         '
         Me.DTPFechaInicio.CustomFormat = ""
         Me.DTPFechaInicio.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DTPFechaInicio.Location = New System.Drawing.Point(83, 20)
+        Me.DTPFechaInicio.Location = New System.Drawing.Point(83, 9)
         Me.DTPFechaInicio.Name = "DTPFechaInicio"
         Me.DTPFechaInicio.Size = New System.Drawing.Size(104, 20)
         Me.DTPFechaInicio.TabIndex = 254
@@ -95,7 +97,7 @@ Partial Class FrmEvacuaciones
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(12, 23)
+        Me.Label2.Location = New System.Drawing.Point(12, 12)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(65, 13)
         Me.Label2.TabIndex = 253
@@ -105,7 +107,7 @@ Partial Class FrmEvacuaciones
         '
         Me.DTPFechaFin.CustomFormat = ""
         Me.DTPFechaFin.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DTPFechaFin.Location = New System.Drawing.Point(269, 21)
+        Me.DTPFechaFin.Location = New System.Drawing.Point(269, 10)
         Me.DTPFechaFin.Name = "DTPFechaFin"
         Me.DTPFechaFin.Size = New System.Drawing.Size(104, 20)
         Me.DTPFechaFin.TabIndex = 256
@@ -113,7 +115,7 @@ Partial Class FrmEvacuaciones
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(209, 24)
+        Me.Label3.Location = New System.Drawing.Point(209, 13)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(54, 13)
         Me.Label3.TabIndex = 255
@@ -121,6 +123,7 @@ Partial Class FrmEvacuaciones
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.ProgressBarMini)
         Me.GroupBox1.Controls.Add(Me.ProgressBar)
         Me.GroupBox1.Controls.Add(Me.CmbContrato1)
         Me.GroupBox1.Controls.Add(Me.Label5)
@@ -137,7 +140,7 @@ Partial Class FrmEvacuaciones
         '
         'ProgressBar
         '
-        Me.ProgressBar.Location = New System.Drawing.Point(269, 51)
+        Me.ProgressBar.Location = New System.Drawing.Point(269, 34)
         Me.ProgressBar.Name = "ProgressBar"
         Me.ProgressBar.Size = New System.Drawing.Size(629, 23)
         Me.ProgressBar.TabIndex = 263
@@ -338,6 +341,7 @@ Partial Class FrmEvacuaciones
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.ProgressBarSy)
         Me.GroupBox2.Controls.Add(Me.ProgressBarFact)
         Me.GroupBox2.Controls.Add(Me.CmbContrato2)
         Me.GroupBox2.Controls.Add(Me.Label1)
@@ -352,9 +356,16 @@ Partial Class FrmEvacuaciones
         Me.GroupBox2.TabIndex = 258
         Me.GroupBox2.TabStop = False
         '
+        'ProgressBarSy
+        '
+        Me.ProgressBarSy.Location = New System.Drawing.Point(526, 65)
+        Me.ProgressBarSy.Name = "ProgressBarSy"
+        Me.ProgressBarSy.Size = New System.Drawing.Size(372, 10)
+        Me.ProgressBarSy.TabIndex = 263
+        '
         'ProgressBarFact
         '
-        Me.ProgressBarFact.Location = New System.Drawing.Point(269, 47)
+        Me.ProgressBarFact.Location = New System.Drawing.Point(269, 36)
         Me.ProgressBarFact.Name = "ProgressBarFact"
         Me.ProgressBarFact.Size = New System.Drawing.Size(629, 23)
         Me.ProgressBarFact.TabIndex = 262
@@ -393,7 +404,7 @@ Partial Class FrmEvacuaciones
         '
         Me.DtpFechaFinFact.CustomFormat = ""
         Me.DtpFechaFinFact.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DtpFechaFinFact.Location = New System.Drawing.Point(269, 21)
+        Me.DtpFechaFinFact.Location = New System.Drawing.Point(269, 12)
         Me.DtpFechaFinFact.Name = "DtpFechaFinFact"
         Me.DtpFechaFinFact.Size = New System.Drawing.Size(104, 20)
         Me.DtpFechaFinFact.TabIndex = 256
@@ -401,7 +412,7 @@ Partial Class FrmEvacuaciones
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(12, 23)
+        Me.Label4.Location = New System.Drawing.Point(12, 14)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(65, 13)
         Me.Label4.TabIndex = 253
@@ -410,7 +421,7 @@ Partial Class FrmEvacuaciones
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(209, 24)
+        Me.Label6.Location = New System.Drawing.Point(209, 15)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(54, 13)
         Me.Label6.TabIndex = 255
@@ -420,7 +431,7 @@ Partial Class FrmEvacuaciones
         '
         Me.DtpFechaIniFact.CustomFormat = ""
         Me.DtpFechaIniFact.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DtpFechaIniFact.Location = New System.Drawing.Point(83, 20)
+        Me.DtpFechaIniFact.Location = New System.Drawing.Point(83, 11)
         Me.DtpFechaIniFact.Name = "DtpFechaIniFact"
         Me.DtpFechaIniFact.Size = New System.Drawing.Size(104, 20)
         Me.DtpFechaIniFact.TabIndex = 254
@@ -442,6 +453,13 @@ Partial Class FrmEvacuaciones
         Me.TDGridFacturacion.TabIndex = 252
         Me.TDGridFacturacion.Text = "C1TrueDBGrid1"
         Me.TDGridFacturacion.PropBag = resources.GetString("TDGridFacturacion.PropBag")
+        '
+        'ProgressBarMini
+        '
+        Me.ProgressBarMini.Location = New System.Drawing.Point(269, 67)
+        Me.ProgressBarMini.Name = "ProgressBarMini"
+        Me.ProgressBarMini.Size = New System.Drawing.Size(372, 10)
+        Me.ProgressBarMini.TabIndex = 264
         '
         'FrmEvacuaciones
         '
@@ -504,4 +522,6 @@ Partial Class FrmEvacuaciones
     Friend WithEvents BtnProcesar As System.Windows.Forms.Button
     Friend WithEvents ProgressBar As System.Windows.Forms.ProgressBar
     Friend WithEvents ProgressBarFact As System.Windows.Forms.ProgressBar
+    Friend WithEvents ProgressBarSy As System.Windows.Forms.ProgressBar
+    Friend WithEvents ProgressBarMini As System.Windows.Forms.ProgressBar
 End Class

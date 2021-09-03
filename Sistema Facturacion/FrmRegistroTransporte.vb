@@ -185,7 +185,7 @@ Public Class FrmRegistroTransporte
 
 
 
-        GrabarRegistroEvacuaciones(Me.TxtNumeroContrato.Text, Me.DTPFecha.Value, CodigoCliente, IdConductor, idVehiculo, idContrato, False, True, False, True)
+        GrabarRegistroEvacuaciones(Me.TxtNumeroContrato.Text, Me.DTPFecha.Value, CodigoCliente, IdConductor, idVehiculo, idContrato, False, True, False, Nuevo)
 
         Me.CboPlaca.Text = ""
         Me.CboCodigoConductor.Text = ""

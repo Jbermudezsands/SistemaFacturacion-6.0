@@ -540,6 +540,7 @@ Partial Class FrmContratosNuevos
         Me.TxtPrecioUnitario2.Name = "TxtPrecioUnitario2"
         Me.TxtPrecioUnitario2.Size = New System.Drawing.Size(122, 20)
         Me.TxtPrecioUnitario2.TabIndex = 227
+        Me.TxtPrecioUnitario2.Text = "0.00"
         '
         'Label12
         '
@@ -593,6 +594,7 @@ Partial Class FrmContratosNuevos
         Me.CmbFrecuencia2.Name = "CmbFrecuencia2"
         Me.CmbFrecuencia2.Size = New System.Drawing.Size(121, 21)
         Me.CmbFrecuencia2.TabIndex = 166
+        Me.CmbFrecuencia2.Text = "4"
         '
         'Label15
         '
@@ -759,6 +761,7 @@ Partial Class FrmContratosNuevos
         Me.TxtPrecioUnitario1.Name = "TxtPrecioUnitario1"
         Me.TxtPrecioUnitario1.Size = New System.Drawing.Size(122, 20)
         Me.TxtPrecioUnitario1.TabIndex = 227
+        Me.TxtPrecioUnitario1.Tag = "0.00"
         '
         'Label9
         '
@@ -812,6 +815,7 @@ Partial Class FrmContratosNuevos
         Me.CmbFrecuencia1.Name = "CmbFrecuencia1"
         Me.CmbFrecuencia1.Size = New System.Drawing.Size(121, 21)
         Me.CmbFrecuencia1.TabIndex = 166
+        Me.CmbFrecuencia1.Text = "4"
         '
         'Label6
         '

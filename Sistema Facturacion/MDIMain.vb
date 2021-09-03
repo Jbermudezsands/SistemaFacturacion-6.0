@@ -607,6 +607,7 @@ Public Class MDIMain
         TasaCambio = BuscaTasaCambio(Now)
 
         Me.Text = "Nombre Compañia: " & NombreCompañia
+        Me.RibbonLabel2.Text = "Nombre Compañia: " & NombreCompañia
 
         '/////////////////////////Cierro las herabas abiertas/////////////////
         If Not (oHebraNotificacion Is Nothing) Then

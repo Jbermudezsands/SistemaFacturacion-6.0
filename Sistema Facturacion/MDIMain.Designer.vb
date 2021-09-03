@@ -177,6 +177,7 @@ Partial Class MDIMain
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
         Me.TxtUsuario = New System.Windows.Forms.TextBox
+        Me.RibbonLabel2 = New C1.Win.C1Ribbon.RibbonLabel
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1394,6 +1395,7 @@ Partial Class MDIMain
         'C1StatusBar1
         '
         Me.C1StatusBar1.LeftPaneItems.Add(Me.DocumentModifiedLabel)
+        Me.C1StatusBar1.LeftPaneItems.Add(Me.RibbonLabel2)
         Me.C1StatusBar1.Location = New System.Drawing.Point(0, 493)
         Me.C1StatusBar1.Name = "C1StatusBar1"
         Me.C1StatusBar1.RightPaneItems.Add(Me.RibbonLabel1)
@@ -1419,6 +1421,11 @@ Partial Class MDIMain
         Me.TxtUsuario.TabIndex = 15
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
+        '
+        'RibbonLabel2
+        '
+        Me.RibbonLabel2.ID = "RibbonLabel2"
+        Me.RibbonLabel2.Text = "Zeus Facturacion"
         '
         'MDIMain
         '
@@ -1597,5 +1604,6 @@ Partial Class MDIMain
     Friend WithEvents RibbonButton16 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton17 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton18 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonLabel2 As C1.Win.C1Ribbon.RibbonLabel
 
 End Class

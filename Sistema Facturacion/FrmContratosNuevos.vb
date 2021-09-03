@@ -527,10 +527,19 @@ Public Class FrmContratosNuevos
         End If
 
 
+        If Me.TxtPrecioUnitario1.Text = "" Then
+            Me.TxtPrecioUnitario1.Text = "0.00"
+        End If
 
-        ConsecutivoCompra = BuscaConsecutivo("Numero_Contrato")
-        NumeroCompra = Format(ConsecutivoCompra, "0000#")
-        Me.LblNumeroContrato.Text = NumeroCompra
+        If Me.TxtPrecioUnitario2.Text = "" Then
+            Me.TxtPrecioUnitario2.Text = "0.00"
+        End If
+
+        If Nuevo = False Then
+            ConsecutivoCompra = BuscaConsecutivo("Numero_Contrato")
+            NumeroCompra = Format(ConsecutivoCompra, "0000#")
+            Me.LblNumeroContrato.Text = NumeroCompra
+        End If
 
 
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -548,6 +557,17 @@ Public Class FrmContratosNuevos
         DataAdapter.Fill(DataSet, "Contrato2")
         If Not DataSet.Tables("Contrato2").Rows.Count = 0 Then
             IdContrato2 = DataSet.Tables("Contrato2").Rows(0)("idTipoContrato")
+        End If
+
+        If IdContrato2 = 0 Then
+            IdContrato2 = IdContrato1
+        End If
+
+        If IdContrato1 = 0 Then
+            If IdContrato2 = 0 Then
+                MsgBox("Es Necesario Seleccionar un Tipo de Contrato", MsgBoxStyle.Critical, "Zeus Facturacion")
+                Exit Sub
+            End If
         End If
 
 
