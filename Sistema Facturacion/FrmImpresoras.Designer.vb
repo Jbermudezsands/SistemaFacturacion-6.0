@@ -21,7 +21,9 @@ Partial Class FrmImpresoras
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmImpresoras))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.Label3 = New System.Windows.Forms.Label
         Me.Label1 = New System.Windows.Forms.Label
+        Me.CmbImpresorasRecibo = New System.Windows.Forms.ComboBox
         Me.CmbImpresorasRemision = New System.Windows.Forms.ComboBox
         Me.Button1 = New System.Windows.Forms.Button
         Me.PrintDialog1 = New System.Windows.Forms.PrintDialog
@@ -29,8 +31,6 @@ Partial Class FrmImpresoras
         Me.BtnSalir = New System.Windows.Forms.Button
         Me.BtnGuardarRem = New System.Windows.Forms.Button
         Me.BtnGuardar = New System.Windows.Forms.Button
-        Me.CmbImpresorasRecibo = New System.Windows.Forms.ComboBox
-        Me.Label3 = New System.Windows.Forms.Label
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -47,14 +47,31 @@ Partial Class FrmImpresoras
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Listado de Impresoras"
         '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(15, 80)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(90, 13)
+        Me.Label3.TabIndex = 3
+        Me.Label3.Text = "Impresora Recibo"
+        '
         'Label1
         '
         Me.Label1.AutoSize = True
         Me.Label1.Location = New System.Drawing.Point(15, 26)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(99, 13)
+        Me.Label1.Size = New System.Drawing.Size(92, 13)
         Me.Label1.TabIndex = 3
-        Me.Label1.Text = "Impresora Remision"
+        Me.Label1.Text = "Impresora Factura"
+        '
+        'CmbImpresorasRecibo
+        '
+        Me.CmbImpresorasRecibo.FormattingEnabled = True
+        Me.CmbImpresorasRecibo.Location = New System.Drawing.Point(10, 96)
+        Me.CmbImpresorasRecibo.Name = "CmbImpresorasRecibo"
+        Me.CmbImpresorasRecibo.Size = New System.Drawing.Size(351, 21)
+        Me.CmbImpresorasRecibo.TabIndex = 2
         '
         'CmbImpresorasRemision
         '
@@ -122,23 +139,6 @@ Partial Class FrmImpresoras
         Me.BtnGuardar.Text = "Guardar"
         Me.BtnGuardar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.BtnGuardar.UseVisualStyleBackColor = True
-        '
-        'CmbImpresorasRecibo
-        '
-        Me.CmbImpresorasRecibo.FormattingEnabled = True
-        Me.CmbImpresorasRecibo.Location = New System.Drawing.Point(10, 96)
-        Me.CmbImpresorasRecibo.Name = "CmbImpresorasRecibo"
-        Me.CmbImpresorasRecibo.Size = New System.Drawing.Size(351, 21)
-        Me.CmbImpresorasRecibo.TabIndex = 2
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(15, 80)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(90, 13)
-        Me.Label3.TabIndex = 3
-        Me.Label3.Text = "Impresora Recibo"
         '
         'FrmImpresoras
         '

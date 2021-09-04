@@ -5,6 +5,180 @@ Imports System.Drawing.Imaging
 
 Module Funciones
 
+    Public Function Establecer_Impresora(ByVal NamePrinter As String) As Boolean
+        On Error GoTo errSub
+
+        'Variable de referencia  
+        Dim obj_Impresora As Object
+
+        'Creamos la referencia  
+        obj_Impresora = CreateObject("WScript.Network")
+        obj_Impresora.setdefaultprinter(NamePrinter)
+
+        obj_Impresora = Nothing
+
+        'La función devuelve true y se cambió con éxito  
+        Establecer_Impresora = True
+        'MsgBox("La impresora se cambió correctamente", vbInformation)
+        Exit Function
+
+
+        'Error al cambiar la impresora  
+errSub:
+        If Err.Number = 0 Then Exit Function
+        Establecer_Impresora = False
+        MsgBox("error: " & Err.Number & Chr(13) & "Description: " & Err.Description)
+        On Error GoTo 0
+    End Function
+    Public Function BuscaImpresora(ByVal Modulo As String) As String
+        Dim sLine As String = "", Ruta As String
+        Dim arrText As New ArrayList(), CadenaDiv() As String, Max As Double
+        Dim ModuloArchivo As String, RutaTemp As String
+        Dim RutaBD As String = My.Application.Info.DirectoryPath & "\Impresoras.dll", ConexionImpresora As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source= " & RutaBD & " "
+        Dim DataSet As New DataSet
+
+        Dim SqlString As String = "SELECT  Impresoras.*  FROM Impresoras WHERE (((Impresoras.TipoImpresora)='" & Modulo & "'))"
+        Dim MiConexionImpresora As New OleDb.OleDbConnection(ConexionImpresora)
+        Dim DataAdapterImpresora As New OleDb.OleDbDataAdapter(SqlString, MiConexionImpresora)
+
+
+        MiConexionImpresora.Open()
+        DataAdapterImpresora.Fill(DataSet, "Impresoras")
+        MiConexionImpresora.Close()
+
+
+        If DataSet.Tables("Impresoras").Rows.Count <> 0 Then
+            BuscaImpresora = DataSet.Tables("Impresoras").Rows(0)("Impresora")
+        Else
+            BuscaImpresora = "Ninguno"
+        End If
+
+
+
+
+
+
+        'Ruta = My.Application.Info.DirectoryPath & "\Impresoras.txt"
+        'If Dir(Ruta) <> "" Then
+        '    Dim objReader As New StreamReader(Ruta)
+
+        '    Do
+        '        sLine = objReader.ReadLine()
+        '        If Not sLine Is Nothing Then
+        '            arrText.Add(sLine)
+
+        '            CadenaDiv = sLine.Split(">")
+        '            Max = UBound(CadenaDiv)
+
+        '            If Max >= 1 Then
+        '                ModuloArchivo = CadenaDiv(0)
+        '                If ModuloArchivo = Modulo Then
+        '                    BuscaImpresora = CadenaDiv(1)
+        '                    Exit Function
+        '                End If
+        '            End If
+
+        '        End If
+        '    Loop Until sLine Is Nothing
+        '    objReader.Close()
+        'Else
+
+        '    '//////////////////////////SI NO EXISTE CREO EL ARCHIVO ///////////////////////
+        '    'RutaTemp = My.Application.Info.DirectoryPath & "\ImpresorasTmp.txt"
+        '    Dim sw As New System.IO.StreamWriter(Ruta)
+        '    sw.WriteLine("Remision>HpTemp")
+        '    sw.WriteLine("Tickets>HpTemp")
+        '    sw.Close()
+
+        '    'MsgBox("No Existe el Archivo Localidad", MsgBoxStyle.Critical, "Impresoras")
+        'End If
+
+
+
+    End Function
+    Public Function GuardaImpresora(ByVal Modulo As String, ByVal Impresora As String) As String
+        Dim sLine As String = "", Ruta As String, RutaTemp As String, RutaOld As String
+        Dim arrText As New ArrayList(), CadenaDiv() As String, Max As Double
+        Dim ModuloArchivo As String, StrSqlUpdate As String
+
+
+
+        Dim SqlString As String = "SELECT  Impresoras.*  FROM Impresoras WHERE (((Impresoras.TipoImpresora)='" & Modulo & "'))"
+        Dim MiConexionImpresora As New OleDb.OleDbConnection(My.Forms.FrmImpresoras.ConexionImpresora)
+        Dim DataAdapterImpresora As New OleDb.OleDbDataAdapter(SqlString, MiConexionImpresora), DataSet As New DataSet
+        Dim ComandoUpdate As New OleDb.OleDbCommand, iResultado As Integer
+
+        MiConexionImpresora.Open()
+        DataAdapterImpresora.Fill(DataSet, "Impresoras")
+        MiConexionImpresora.Close()
+
+
+        If DataSet.Tables("Impresoras").Rows.Count <> 0 Then
+            MiConexionImpresora.Open()
+            StrSqlUpdate = "UPDATE [Impresoras] SET [Impresora] = '" & Impresora & "' WHERE (((Impresoras.TipoImpresora)='" & Modulo & "'))"
+            ComandoUpdate = New OleDb.OleDbCommand(StrSqlUpdate, MiConexionImpresora)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexionImpresora.Close()
+        End If
+
+
+
+
+
+
+        'Ruta = My.Application.Info.DirectoryPath & "\Impresoras.txt"
+        'RutaTemp = My.Application.Info.DirectoryPath & "\ImpresorasTmp.txt"
+        'RutaOld = My.Application.Info.DirectoryPath & "\ImpresorasOld.txt"
+
+
+
+        'If Dir(Ruta) <> "" Then
+        '    File.Copy(Ruta, RutaOld, True)
+
+        '    Dim objReader As New StreamReader(RutaOld)
+        '    Dim sw As New System.IO.StreamWriter(RutaTemp)
+
+
+        '    Do
+
+
+        '        sLine = objReader.ReadLine()
+
+
+        '        If Not sLine Is Nothing Then
+        '            arrText.Add(sLine)
+
+        '            CadenaDiv = sLine.Split(">")
+        '            Max = UBound(CadenaDiv)
+
+        '            If Max >= 1 Then
+        '                ModuloArchivo = CadenaDiv(0)
+        '                If ModuloArchivo = Modulo Then
+        '                    CadenaDiv(1) = Impresora
+        '                End If
+        '            End If
+
+
+        '            sw.WriteLine(String.Join(">", CadenaDiv))
+
+        '        End If
+        '    Loop Until sLine Is Nothing
+
+        '    objReader.Close()
+        '    sw.Close()
+
+
+        '    'File.Delete(Ruta)
+        '    'File.Move(RutaTemp, Ruta)
+        '    File.Copy(RutaTemp, Ruta, True)
+
+
+        'Else
+        '    MsgBox("No Existe el Archivo Impresoras", MsgBoxStyle.Critical, "Impresoras")
+        'End If
+
+    End Function
+
     Public Sub GrabarRegistroEvacuaciones(ByVal Numero_Contrato As Double, ByVal Fecha_Registro As Date, ByVal Cod_Cliente As String, ByVal idConductor As String, ByVal idVehiculo As Double, ByVal idContrato As Double, ByVal Anulado As Boolean, ByVal Activo As Boolean, ByVal Procesado As Boolean, ByVal Nuevo As Boolean)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer

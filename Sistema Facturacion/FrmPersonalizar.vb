@@ -1573,4 +1573,8 @@ Public Class FrmPersonalizar
         My.Forms.FrmCompras.EsSolicitud = False
         My.Forms.FrmCompras.Show()
     End Sub
+
+    Private Sub Button14_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button14.Click
+        My.Forms.FrmImpresoras.ShowDialog()
+    End Sub
 End Class
