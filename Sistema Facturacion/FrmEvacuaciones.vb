@@ -634,4 +634,69 @@ Public Class FrmEvacuaciones
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
         Me.ActualizarGridInsertRowFact()
     End Sub
+
+    Private Sub Button5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click
+        Dim objExcel = New Microsoft.Office.Interop.Excel.Application
+        Dim SqlDatos As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim NombreEmpresa As String, DireccionEmpresa As String, RutaLogo As String, RUC As String
+        Dim Dias As Double, i As Double, j As Double, Reg As Double, H As Double, Totales() As Double, Total As Double = 0
+
+        SqlDatos = "SELECT * FROM DatosEmpresa"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+        DataAdapter.Fill(DataSet, "DatosEmpresa")
+
+        If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+
+
+            NombreEmpresa = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+            DireccionEmpresa = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+
+            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")) Then
+                RUC = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
+            End If
+            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
+                RutaLogo = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
+            End If
+        End If
+
+        objExcel.Visible = True 'lo hacemos visible
+        objExcel.SheetsInNewWorkbook = 1 'decimos cuantas hojas queremos en el nuevo documento
+        objExcel.Workbooks.Add() ' añadimos el objeto al workbook
+
+
+        objExcel.ActiveSheet.Range("A1:G1").Merge()
+        objExcel.ActiveSheet.Range("A1").Value = NombreEmpresa
+        objExcel.ActiveSheet.Range("A2:G2").Merge()
+        objExcel.ActiveSheet.Range("A2").Value = DireccionEmpresa
+        objExcel.ActiveSheet.Range("A3:G3").Merge()
+        objExcel.ActiveSheet.Range("A3").Value = "DESDE:" & Format(Me.DtpFechaIniFact.Value, "dd/MM/yyyy") & " HASTA:" & Format(Me.DtpFechaFinFact.Value, "dd/MM/yyyy") & " "
+
+        objExcel.ActiveSheet.Range("A5").Value = "Acumulado"
+        objExcel.ActiveSheet.Range("B5").Value = "Periodo"
+        objExcel.ActiveSheet.Range("C5").Value = "Total"
+        objExcel.ActiveSheet.Range("D5").Value = "Fechas"
+
+        objExcel.ActiveSheet.Range("A5", "D5").HorizontalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
+        objExcel.ActiveSheet.Range("A5", "D5").Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous
+        objExcel.ActiveSheet.Range("A5", "D5").Interior.Color = RGB(217, 217, 217)
+        objExcel.ActiveSheet.Columns("A").ColumnWidth = 66
+        objExcel.ActiveSheet.Columns("A:D").ColumnWidth = 30
+
+        Dias = DateDiff(DateInterval.Day, Me.DtpFechaIniFact.Value, Me.DtpFechaFinFact.Value) + 1
+        Reg = dsFact.Tables("Facturacion").Rows.Count - 1
+
+        H = 6
+        i = 0
+        Do While Reg > i
+
+
+            objExcel.ActiveSheet.Range("A" & H).Value = dsFact.Tables("Facturacion").Rows(i)("Nombres")
+
+
+            H = H + 1
+            i = i + 1
+        Loop
+
+    End Sub
 End Class

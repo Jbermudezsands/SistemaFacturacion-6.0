@@ -175,9 +175,9 @@ Partial Class MDIMain
         Me.RibbonButton13 = New C1.Win.C1Ribbon.RibbonButton
         Me.C1StatusBar1 = New C1.Win.C1Ribbon.C1StatusBar
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
+        Me.RibbonLabel2 = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
         Me.TxtUsuario = New System.Windows.Forms.TextBox
-        Me.RibbonLabel2 = New C1.Win.C1Ribbon.RibbonLabel
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1408,10 +1408,15 @@ Partial Class MDIMain
         Me.DocumentModifiedLabel.ID = "DocumentModifiedLabel"
         Me.DocumentModifiedLabel.SmallImage = CType(resources.GetObject("DocumentModifiedLabel.SmallImage"), System.Drawing.Image)
         '
+        'RibbonLabel2
+        '
+        Me.RibbonLabel2.ID = "RibbonLabel2"
+        Me.RibbonLabel2.Text = "Zeus Facturacion"
+        '
         'RibbonLabel1
         '
         Me.RibbonLabel1.ID = "RibbonLabel1"
-        Me.RibbonLabel1.Text = "Version 6.83"
+        Me.RibbonLabel1.Text = "Version 6.84"
         '
         'TxtUsuario
         '
@@ -1421,11 +1426,6 @@ Partial Class MDIMain
         Me.TxtUsuario.TabIndex = 15
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
-        '
-        'RibbonLabel2
-        '
-        Me.RibbonLabel2.ID = "RibbonLabel2"
-        Me.RibbonLabel2.Text = "Zeus Facturacion"
         '
         'MDIMain
         '

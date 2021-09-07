@@ -5,7 +5,7 @@ Public Class FrmImportacion
     Public MiDataSet As New DataSet()
     Public MiEnlazador As New BindingSource
     Public ConexionExcel As String
-    Public RutaBD As String
+    Public RutaBD As String, FacturaTarea As Boolean = False
 
     Private Sub FrmImportacion_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
         Bloqueo(Me, Acceso, "Importacion")
@@ -19,6 +19,17 @@ Public Class FrmImportacion
 
         Try
 
+            SqlString = "SELECT * FROM DatosEmpresa"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            DataAdapter.Fill(DataSet, "DatosEmpresa")
+            If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                FacturaTarea = DataSet.Tables("DatosEmpresa").Rows(0)("Factura_Tarea")
+            Else
+                FacturaTarea = False
+            End If
+
+
+            Me.ChkLotes.Checked = FacturaTarea
 
             Me.OpenFileDialog.Filter = "Excel 2003 (*.xls)|*.xls"
             '"Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
@@ -898,6 +909,7 @@ Public Class FrmImportacion
         Dim CodProveedor As String = "", Nombres As String = "", Apellidos As String = ""
         Dim CodigoProducto As String = "", PrecioUnitario As Double, Descuento As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double
         Dim SubTotal As Double, IVA As Double, NetoPagar As Double, TasaIva As Double = 0, CodRubro As String = "", PVtaDolar As Double = 0, PVtaCordobas As Double
+        Dim FVencimiento As Date, LOTE As String = "0000", NumeroLote As String = "0000"
 
         'Try
 
@@ -965,6 +977,33 @@ Public Class FrmImportacion
                 PVtaCordobas = Format(CDbl(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("PVTACOR")), "##,##0.00")
             Else
                 PVtaCordobas = 0
+            End If
+
+            If Me.FacturaTarea = True Then
+                If Not IsDBNull(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("FVENCIMIENTO")) Then
+                    FVencimiento = MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("FVENCIMIENTO")
+                    If Not IsDBNull(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("LOTE")) Then
+                        LOTE = MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("LOTE")
+
+                        If Len(LOTE) > 20 Then
+                            NumeroLote = Mid(LOTE, 1, 20)
+                        Else
+                            NumeroLote = LOTE
+                        End If
+
+                        '///////////////////////////AGREGO EL LOTE ////////////////////////////////////////
+                        NuevoLote(NumeroLote, FVencimiento, LOTE)
+                    Else
+                        LOTE = "0000"
+                        NumeroLote = "0000"
+                    End If
+
+                Else
+                    FVencimiento = "01/01/1900"
+                End If
+
+
+
             End If
 
             Descripcion = Replace(Descripcion, "'", "")
@@ -1079,7 +1118,16 @@ Public Class FrmImportacion
 
 
                 If PrecioUnitario <> 0 And Cantidad <> 0 Then
-                    GrabaDetalleCompraLiquidacion(NumeroCompra, CodProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, "Cordobas", Me.DTPFecha.Value, "0000", "01/01/1900")
+
+                    If Me.FacturaTarea = True Then
+                        GrabaDetalleCompraLiquidacion(NumeroCompra, CodProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, "Cordobas", Me.DTPFecha.Value, NumeroLote, FVencimiento)
+
+                    Else
+                        GrabaDetalleCompraLiquidacion(NumeroCompra, CodProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, "Cordobas", Me.DTPFecha.Value, "0000", "01/01/1900")
+                    End If
+
+
+
 
                     Select Case TipoCompra
                         Case "Mercancia Recibida"

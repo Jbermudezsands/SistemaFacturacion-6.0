@@ -5,6 +5,41 @@ Imports System.Drawing.Imaging
 
 Module Funciones
 
+    Public Sub NuevoLote(ByVal NumeroLote As String, ByVal FechaVence As Date, ByVal NombreLote As String)
+        Dim SqlClientes As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim Respuesta As Double
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+
+        SqlClientes = "SELECT * FROM Lote WHERE  (Numero_Lote = '" & NumeroLote & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlClientes, MiConexion)
+        DataAdapter.Fill(DataSet, "Clientes")
+        If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
+            Respuesta = MsgBox("El Lote Existe, ¿Desea Modificarlo?" & NombreLote, MsgBoxStyle.YesNo, "Zeus Facturacion")
+            If Respuesta = 7 Then
+                Exit Sub
+            End If
+
+            '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
+            StrSqlUpdate = "UPDATE [Lote]  SET [Nombre_Lote] =  '" & NombreLote & "' ,[FechaVence] = '" & Format(FechaVence, "dd/MM/yyyy") & "'  WHERE (Numero_Lote = '" & NumeroLote & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+        Else
+
+            '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
+            StrSqlUpdate = "INSERT INTO [Lote] ([Numero_Lote],[Nombre_Lote],[FechaVence]) VALUES ('" & NumeroLote & "' ,'" & NombreLote & "' ,'" & Format(FechaVence, "dd/MM/yyyy") & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+        End If
+    End Sub
+
+
     Public Function Establecer_Impresora(ByVal NamePrinter As String) As Boolean
         On Error GoTo errSub
 

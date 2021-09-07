@@ -26,6 +26,7 @@ Partial Class FrmEvacuaciones
         Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker
         Me.Label3 = New System.Windows.Forms.Label
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.ProgressBarMini = New System.Windows.Forms.ProgressBar
         Me.ProgressBar = New System.Windows.Forms.ProgressBar
         Me.CmbContrato1 = New System.Windows.Forms.ComboBox
         Me.Label5 = New System.Windows.Forms.Label
@@ -54,7 +55,7 @@ Partial Class FrmEvacuaciones
         Me.Label6 = New System.Windows.Forms.Label
         Me.DtpFechaIniFact = New System.Windows.Forms.DateTimePicker
         Me.TDGridFacturacion = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.ProgressBarMini = New System.Windows.Forms.ProgressBar
+        Me.Button5 = New System.Windows.Forms.Button
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -137,6 +138,13 @@ Partial Class FrmEvacuaciones
         Me.GroupBox1.Size = New System.Drawing.Size(1226, 86)
         Me.GroupBox1.TabIndex = 257
         Me.GroupBox1.TabStop = False
+        '
+        'ProgressBarMini
+        '
+        Me.ProgressBarMini.Location = New System.Drawing.Point(269, 67)
+        Me.ProgressBarMini.Name = "ProgressBarMini"
+        Me.ProgressBarMini.Size = New System.Drawing.Size(372, 10)
+        Me.ProgressBarMini.TabIndex = 264
         '
         'ProgressBar
         '
@@ -301,6 +309,7 @@ Partial Class FrmEvacuaciones
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.Button5)
         Me.TabPage2.Controls.Add(Me.BtnProcesar)
         Me.TabPage2.Controls.Add(Me.BtnSalirFacturacion)
         Me.TabPage2.Controls.Add(Me.GroupBox2)
@@ -320,7 +329,7 @@ Partial Class FrmEvacuaciones
         Me.BtnProcesar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.BtnProcesar.Location = New System.Drawing.Point(1124, 104)
         Me.BtnProcesar.Name = "BtnProcesar"
-        Me.BtnProcesar.Size = New System.Drawing.Size(114, 56)
+        Me.BtnProcesar.Size = New System.Drawing.Size(108, 56)
         Me.BtnProcesar.TabIndex = 267
         Me.BtnProcesar.Text = "Facturar"
         Me.BtnProcesar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -454,12 +463,18 @@ Partial Class FrmEvacuaciones
         Me.TDGridFacturacion.Text = "C1TrueDBGrid1"
         Me.TDGridFacturacion.PropBag = resources.GetString("TDGridFacturacion.PropBag")
         '
-        'ProgressBarMini
+        'Button5
         '
-        Me.ProgressBarMini.Location = New System.Drawing.Point(269, 67)
-        Me.ProgressBarMini.Name = "ProgressBarMini"
-        Me.ProgressBarMini.Size = New System.Drawing.Size(372, 10)
-        Me.ProgressBarMini.TabIndex = 264
+        Me.Button5.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
+        Me.Button5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button5.Location = New System.Drawing.Point(1124, 166)
+        Me.Button5.Name = "Button5"
+        Me.Button5.Size = New System.Drawing.Size(108, 56)
+        Me.Button5.TabIndex = 268
+        Me.Button5.Text = "Excel"
+        Me.Button5.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button5.UseVisualStyleBackColor = True
         '
         'FrmEvacuaciones
         '
@@ -524,4 +539,5 @@ Partial Class FrmEvacuaciones
     Friend WithEvents ProgressBarFact As System.Windows.Forms.ProgressBar
     Friend WithEvents ProgressBarSy As System.Windows.Forms.ProgressBar
     Friend WithEvents ProgressBarMini As System.Windows.Forms.ProgressBar
+    Friend WithEvents Button5 As System.Windows.Forms.Button
 End Class
