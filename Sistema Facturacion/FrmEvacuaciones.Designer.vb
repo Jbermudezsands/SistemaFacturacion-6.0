@@ -42,6 +42,7 @@ Partial Class FrmEvacuaciones
         Me.TabPage1 = New System.Windows.Forms.TabPage
         Me.Button4 = New System.Windows.Forms.Button
         Me.TabPage2 = New System.Windows.Forms.TabPage
+        Me.Button5 = New System.Windows.Forms.Button
         Me.BtnProcesar = New System.Windows.Forms.Button
         Me.BtnSalirFacturacion = New System.Windows.Forms.Button
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
@@ -55,7 +56,6 @@ Partial Class FrmEvacuaciones
         Me.Label6 = New System.Windows.Forms.Label
         Me.DtpFechaIniFact = New System.Windows.Forms.DateTimePicker
         Me.TDGridFacturacion = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.Button5 = New System.Windows.Forms.Button
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -322,6 +322,19 @@ Partial Class FrmEvacuaciones
         Me.TabPage2.Text = "Facturacion"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
+        'Button5
+        '
+        Me.Button5.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
+        Me.Button5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button5.Location = New System.Drawing.Point(1124, 166)
+        Me.Button5.Name = "Button5"
+        Me.Button5.Size = New System.Drawing.Size(108, 56)
+        Me.Button5.TabIndex = 268
+        Me.Button5.Text = "Excel"
+        Me.Button5.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button5.UseVisualStyleBackColor = True
+        '
         'BtnProcesar
         '
         Me.BtnProcesar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -462,19 +475,6 @@ Partial Class FrmEvacuaciones
         Me.TDGridFacturacion.TabIndex = 252
         Me.TDGridFacturacion.Text = "C1TrueDBGrid1"
         Me.TDGridFacturacion.PropBag = resources.GetString("TDGridFacturacion.PropBag")
-        '
-        'Button5
-        '
-        Me.Button5.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
-        Me.Button5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button5.Location = New System.Drawing.Point(1124, 166)
-        Me.Button5.Name = "Button5"
-        Me.Button5.Size = New System.Drawing.Size(108, 56)
-        Me.Button5.TabIndex = 268
-        Me.Button5.Text = "Excel"
-        Me.Button5.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button5.UseVisualStyleBackColor = True
         '
         'FrmEvacuaciones
         '

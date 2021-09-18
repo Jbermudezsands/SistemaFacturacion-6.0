@@ -4,7 +4,138 @@ Imports System.IO
 Imports System.Drawing.Imaging
 
 Module Funciones
+    Public Function GenerarNumeroFacturaBascula(ByVal ConsecutivoFacturaManual As Boolean, ByVal TipoFactura As String) As String
+        Dim ConsecutivoFactura As Double, SqlConsecutivo As String
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, FacturaBodega As Boolean = False, CompraBodega As Boolean = False
+        Dim NumeroFactura As String, FacturaSerie As Boolean = False, SqlString As String, Numero As Double = 0
+        Dim CadenaDiv() As String
 
+
+        '/////////////////////////////////////////////////////////////////////////////////////////
+        '///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
+        '////////////////////////////////////////////////////////////////////////////////////////
+        SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
+        DataAdapter.Fill(DataSet, "Configuracion")
+        If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
+            If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) Then
+                FacturaBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) Then
+                CompraBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacSerie")) Then
+                FacturaSerie = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacSerie")
+            End If
+
+        End If
+
+        '////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+        Select Case TipoFactura
+            Case "Cotizacion"
+                If FacturaSerie = False Then
+                    ConsecutivoFactura = BuscaConsecutivo("Cotizacion")
+                Else
+                    ConsecutivoFactura = BuscaConsecutivoSerie("Cotizacion", FrmFacturas.CmbSerie.Text)
+                End If
+            Case "Factura"
+                If ConsecutivoFacturaManual = False Then
+                    If FacturaSerie = False Then
+                        ConsecutivoFactura = BuscaConsecutivo("Factura")
+                    Else
+                        ConsecutivoFactura = BuscaConsecutivoSerie("Factura", FrmFacturas.CmbSerie.Text)
+                    End If
+                Else
+                    FrmConsecutivos.ShowDialog()
+                    If FrmConsecutivos.TxtConsecutivo.Text <> "-----0-----" Then
+                        ConsecutivoFactura = FrmConsecutivos.NumeroFactura
+                    Else
+                        ConsecutivoFactura = -1
+                    End If
+                End If
+            Case "Devolucion de Venta"
+                If FacturaSerie = False Then
+                    ConsecutivoFactura = BuscaConsecutivo("DevFactura")
+                Else
+                    ConsecutivoFactura = BuscaConsecutivoSerie("DevFactura", "M")   ' FrmFacturas.CmbSerie.Text
+                End If
+            Case "Transferencia Enviada"
+                If FacturaSerie = False Then
+                    ConsecutivoFactura = BuscaConsecutivo("Transferencia_Enviada")
+                Else
+                    ConsecutivoFactura = BuscaConsecutivoSerie("Transferencia_Enviada", "M") 'FrmFacturas.CmbSerie.Text
+                End If
+            Case "Salida Bodega"
+                If FacturaSerie = False Then
+                    ConsecutivoFactura = BuscaConsecutivo("SalidaBodega")
+                Else
+                    ConsecutivoFactura = BuscaConsecutivoSerie("SalidaBodega", "M") 'FrmFacturas.CmbSerie.Text
+                End If
+
+        End Select
+
+        If ConsecutivoFactura <> -1 Then
+            If FacturaBodega = True Then
+                NumeroFactura = "01" & "-" & Format(ConsecutivoFactura, "0000#") 'FrmFacturas.CboCodigoBodega.Columns(0).Text
+            ElseIf FacturaSerie = True Then
+                NumeroFactura = "M" & Format(ConsecutivoFactura, "0000#")  'FrmFacturas.CmbSerie.Text
+                FrmFacturas.CmbSerie.Enabled = False
+            Else
+                NumeroFactura = Format(ConsecutivoFactura, "0000#")
+            End If
+
+        Else
+            NumeroFactura = "-----0-----"
+        End If
+
+        '----------------------------------------------------------------------------------------------------------------------------------------
+        '-----------------------------VERIFICO QUE EL CONSECUTIVO NO EXISTE EN LAS FACTURAS GRABADAS--------------------------------------------
+        '----------------------------------------------------------------------------------------------------------------------------------------
+        SqlString = "SELECT  *  FROM Facturas WHERE (Numero_Factura = '" & NumeroFactura & "') AND (Tipo_Factura = '" & TipoFactura & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Consulta")
+        If DataSet.Tables("Consulta").Rows.Count <> 0 Then
+            '-------------------------SI EXISTE ESTA FACTURA GRABADA, ENTONCES RECOMIENDO EL SIGUIENTE SEGUN LA FACTURACION ------------------------------
+
+            If FacturaBodega = True Then
+                CadenaDiv = NumeroFactura.Split("-")
+                SqlString = "SELECT  *  FROM Facturas WHERE (Tipo_Factura = '" & TipoFactura & "') AND (Numero_Factura LIKE '" & CadenaDiv(0) & "%') ORDER BY Numero_Factura DESC"
+            ElseIf FacturaSerie = True Then
+                SqlString = "SELECT  *  FROM Facturas WHERE (Tipo_Factura = '" & TipoFactura & "') AND (Numero_Factura LIKE '" & My.Forms.FrmFacturas.CmbSerie.Text & "%') ORDER BY Numero_Factura DESC"
+            Else
+                SqlString = "SELECT  *  FROM Facturas WHERE (Tipo_Factura = '" & TipoFactura & "') ORDER BY Numero_Factura DESC"
+            End If
+
+
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            DataAdapter.Fill(DataSet, "Facturas")
+            If DataSet.Tables("Facturas").Rows.Count <> 0 Then
+                NumeroFactura = DataSet.Tables("Facturas").Rows(0)("Numero_Factura")
+                Numero = Mid(NumeroFactura, Len("M") + 1, Len(NumeroFactura)) 'My.Forms.FrmFacturas.CmbSerie.Text
+                ConsecutivoFactura = Numero + 1
+            End If
+
+
+            If FacturaBodega = True Then
+                NumeroFactura = "01" & "-" & Format(ConsecutivoFactura, "0000#") 'FrmFacturas.CboCodigoBodega.Columns(0).Text
+            ElseIf FacturaSerie = True Then
+                NumeroFactura = "M" & Format(ConsecutivoFactura, "0000#") 'FrmFacturas.CmbSerie.Text
+                FrmFacturas.CmbSerie.Enabled = False
+            Else
+                NumeroFactura = Format(ConsecutivoFactura, "0000#")
+            End If
+        End If
+
+
+        GenerarNumeroFacturaBascula = NumeroFactura
+
+
+    End Function
     Public Sub NuevoLote(ByVal NumeroLote As String, ByVal FechaVence As Date, ByVal NombreLote As String)
         Dim SqlClientes As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer

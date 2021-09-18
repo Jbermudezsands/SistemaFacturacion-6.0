@@ -1,6 +1,7 @@
 Imports System.Data.SqlClient
 Imports System.Threading
 Imports System.IO
+Imports System.Drawing.Printing
 
 
 Public Class FrmFacturas
@@ -3276,6 +3277,20 @@ Public Class FrmFacturas
             Select Case Me.CboTipoProducto.Text
                 Case "Factura"
 
+                    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    '///////////////////////////////////SELECCIONO LA IMPRESORA CONFIGURADA PARA LAS FACTURAS /////////////
+                    '///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    Dim pd As New PrintDocument
+                    Dim ImpresoraFactura As String
+                    Dim s_Default_Printer As String = pd.PrinterSettings.PrinterName
+
+                    Impresora_Defecto = s_Default_Printer
+                    ImpresoraFactura = BuscaImpresora("Factura")
+                    Establecer_Impresora(ImpresoraFactura)
+
+
+
+
                     TipoImpresion = Me.CboTipoProducto.Text
 
                     If Me.CmbSerie.Visible = True Then
@@ -3305,6 +3320,7 @@ Public Class FrmFacturas
                                 ArepFacturaMediaPagina.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
 
                                 Dim ViewerForm As New FrmViewer()
+                                ViewerForm.s_Default_Printer = s_Default_Printer
                                 ViewerForm.arvMain.Document = ArepFacturaMediaPagina.Document
                                 ViewerForm.Show()
 
@@ -3330,6 +3346,7 @@ Public Class FrmFacturas
                                 ArepFacturasTareas.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
 
                                 Dim ViewerForm As New FrmViewer()
+                                ViewerForm.s_Default_Printer = s_Default_Printer
                                 ViewerForm.arvMain.Document = ArepFacturasTareas.Document
                                 'ViewerForm.Show()
 
@@ -3357,6 +3374,7 @@ Public Class FrmFacturas
                                 ArepFacturas2.LblLetras.Text = Letras(CDbl(Me.TxtSubTotal.Text) + CDbl(Me.TxtIva.Text), Me.TxtMonedaFactura.Text)
 
                                 Dim ViewerForm As New FrmViewer()
+                                ViewerForm.s_Default_Printer = s_Default_Printer
                                 ViewerForm.arvMain.Document = ArepFacturas2.Document
                                 ViewerForm.Show()
 
@@ -3420,6 +3438,7 @@ Public Class FrmFacturas
 
                                 If Me.CboReferencia.Text = "Orden de Trabajo" Then
                                     Dim ViewerForm As New FrmViewer()
+                                    ViewerForm.s_Default_Printer = s_Default_Printer
                                     ViewerForm.arvMain.Document = ArepOrdenTrabajo.Document
 
                                     'ViewerForm.Show()
@@ -3435,6 +3454,7 @@ Public Class FrmFacturas
 
                                 Else
                                     Dim ViewerForm As New FrmViewer()
+                                    ViewerForm.s_Default_Printer = s_Default_Printer
                                     ViewerForm.arvMain.Document = ArepFacturasTiras.Document
 
                                     'ViewerForm.Show()
@@ -3468,6 +3488,7 @@ Public Class FrmFacturas
                                 ArepFacturas.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
 
                                 Dim ViewerForm As New FrmViewer()
+                                ViewerForm.s_Default_Printer = s_Default_Printer
                                 ViewerForm.arvMain.Document = ArepFacturas.Document
                                 ViewerForm.Show()
 
@@ -3514,6 +3535,8 @@ Public Class FrmFacturas
 
                         End Select
                     End If
+
+                    'Establecer_Impresora(Impresora_Defecto)
 
                 Case "Cotizacion"
                     TipoImpresion = Me.CboTipoProducto.Text

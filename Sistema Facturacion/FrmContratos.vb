@@ -5,7 +5,6 @@ Public Class FrmContratos
         My.Forms.FrmContratosNuevos.LblNumeroContrato.Text = ""
         My.Forms.FrmContratosNuevos.Nuevo = True
         My.Forms.FrmContratosNuevos.ShowDialog()
-
     End Sub
 
     Private Sub BtnSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSalir.Click

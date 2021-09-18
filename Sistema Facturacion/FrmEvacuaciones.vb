@@ -5,7 +5,7 @@ Public Class FrmEvacuaciones
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder
     Public dsFact As New DataSet, daFact As New SqlClient.SqlDataAdapter, CmdBuilderFact As New SqlCommandBuilder
-    Public CadenaFechaFact As String, CadenaFechaAcum As String
+    Public CadenaFechaFact As String, CadenaFechaAcum As String, ConsecutivoFacturaManual As Boolean = False
 
     Public Sub ActualizarGridInsertRowFact()
         Dim SqlCompras As String, TipoFactura As String
@@ -166,7 +166,7 @@ Public Class FrmEvacuaciones
         For i = 1 To Dias
 
             If i = 1 Then
-                SQlString = "SELECT CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END AS Nombres, Contratos.Contrato_Variable, Contratos.Contrato_Variable2, dbo.Clientes.Cod_Cliente As '" & i & "' "
+                SQlString = "SELECT CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + '   ' + Clientes.Direccion_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + '   ' + Clientes.Direccion_Cliente END END AS Nombres, Contratos.Contrato_Variable, Contratos.Contrato_Variable2, dbo.Clientes.Cod_Cliente As '" & i & "' "
             Else
                 SQlString = SQlString & ",dbo.Clientes.Cod_Cliente As  '" & i & "' "
             End If
@@ -672,31 +672,149 @@ Public Class FrmEvacuaciones
         objExcel.ActiveSheet.Range("A3:G3").Merge()
         objExcel.ActiveSheet.Range("A3").Value = "DESDE:" & Format(Me.DtpFechaIniFact.Value, "dd/MM/yyyy") & " HASTA:" & Format(Me.DtpFechaFinFact.Value, "dd/MM/yyyy") & " "
 
-        objExcel.ActiveSheet.Range("A5").Value = "Acumulado"
-        objExcel.ActiveSheet.Range("B5").Value = "Periodo"
-        objExcel.ActiveSheet.Range("C5").Value = "Total"
-        objExcel.ActiveSheet.Range("D5").Value = "Fechas"
+        objExcel.ActiveSheet.Range("A5").Value = "Nombre Cliente"
+        objExcel.ActiveSheet.Range("B5").Value = "Acumulado"
+        objExcel.ActiveSheet.Range("C5").Value = "Periodo"
+        objExcel.ActiveSheet.Range("D5").Value = "Total"
+        objExcel.ActiveSheet.Range("E5").Value = "Fechas"
 
-        objExcel.ActiveSheet.Range("A5", "D5").HorizontalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
-        objExcel.ActiveSheet.Range("A5", "D5").Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous
-        objExcel.ActiveSheet.Range("A5", "D5").Interior.Color = RGB(217, 217, 217)
+        objExcel.ActiveSheet.Range("A5", "E5").HorizontalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
+        objExcel.ActiveSheet.Range("A5", "E5").Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous
+        objExcel.ActiveSheet.Range("A5", "E5").Interior.Color = RGB(217, 217, 217)
         objExcel.ActiveSheet.Columns("A").ColumnWidth = 66
-        objExcel.ActiveSheet.Columns("A:D").ColumnWidth = 30
+        objExcel.ActiveSheet.Columns("B:E").ColumnWidth = 20
 
         Dias = DateDiff(DateInterval.Day, Me.DtpFechaIniFact.Value, Me.DtpFechaFinFact.Value) + 1
         Reg = dsFact.Tables("Facturacion").Rows.Count - 1
+        ReDim Totales(5)
 
         H = 6
         i = 0
         Do While Reg > i
 
 
+
             objExcel.ActiveSheet.Range("A" & H).Value = dsFact.Tables("Facturacion").Rows(i)("Nombres")
+            objExcel.ActiveSheet.Range("B" & H).Value = dsFact.Tables("Facturacion").Rows(i)("Acumulado")
+            objExcel.ActiveSheet.Range("C" & H).Value = dsFact.Tables("Facturacion").Rows(i)("Periodo")
+            objExcel.ActiveSheet.Range("D" & H).Value = dsFact.Tables("Facturacion").Rows(i)("Total")
+            objExcel.ActiveSheet.Range("E" & H).Value = dsFact.Tables("Facturacion").Rows(i)("Fechas")
 
 
             H = H + 1
             i = i + 1
         Loop
+
+    End Sub
+
+    Private Sub BtnProcesar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnProcesar.Click
+        Dim ConsecutivoFactura As Double, NumeroFactura As String, iPosicion As Double, Registros As Double, Fecha As Date, Sql As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, FechaSalida As Date, Posicion As Double, NumeroRecepcion As String, TipoRecepcion As String
+        Dim FechaFactura As Date, CodigoCliente As String, CodigoBodega As String, SubTotal As Double, Pagado As Double, CodProductos As String, NombreProductos As String, PrecioCompra As Double, Cantidad As Double, Importe As Double
+        Dim Respuesta As Double, NumeroContrato As Double, Precio As Double, DiasFacturar As Double, Descripcion As String
+        Dim StrSqlUpdate As String, iResultado As Integer, SqlString As String, Cont As Double, j As Double, Moneda As String
+        Dim ComandoUpdate As New SqlClient.SqlCommand, i As Double
+
+        Respuesta = MsgBox("Esta Seguro de Generar la Factura a ", MsgBoxStyle.YesNo, "Zeus Facturacion")
+        If Respuesta = 7 Then
+            Exit Sub
+        End If
+
+
+
+
+
+        '///////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////////////////////GRABO EL DETALLE DE LA FACTURA ////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Registros = dsFact.Tables("Facturacion").Rows.Count
+        i = 0
+
+        Me.ProgressBarFact.Minimum = 0
+        Me.ProgressBarFact.Maximum = Registros
+        Me.ProgressBarFact.Value = 0
+
+        Do While Registros > i
+
+            '/////////////VALIDO SI LA FACTURA ESTA SELECCIONADA //////////////////////////////////////
+
+
+
+            If dsFact.Tables("Facturacion").Rows(i)("Facturar") = True Then
+                Descripcion = "Facturacion " & dsFact.Tables("Facturacion").Rows(i)("Fechas")
+                NumeroContrato = dsFact.Tables("Facturacion").Rows(i)("Numero_Contrato")
+                SqlString = "SELECT Contratos.*, Contratos.CodBodega1 AS Expr1, Contratos.CodBodega2 AS Expr2, Clientes.Nombre_Cliente FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente WHERE (Numero_Contrato = " & NumeroContrato & ")"
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                DataAdapter.Fill(DataSet, "Contrato")
+                If DataSet.Tables("Contrato").Rows.Count <> 0 Then
+                    Moneda = DataSet.Tables("Contrato").Rows(0)("Moneda")
+                    DiasFacturar = DataSet.Tables("Contrato").Rows(0)("DiasFactura1")
+                    CodigoBodega = DataSet.Tables("Contrato").Rows(0)("CodBodega1")
+                    FechaSalida = Me.DtpFechaFinFact.Value
+                    FechaFactura = DiasFacturar & "/" & FechaSalida.Month & "/" & FechaSalida.Year
+                    NombreCliente = DataSet.Tables("Contrato").Rows(0)("Nombre_Cliente")
+                End If
+                DataSet.Tables("Contrato").Reset()
+
+                '////////////////////////////////////////////////////////////////////////////////////////////////////
+                '/////////////////////////////GRABO EL ENCABEZADO DE LA SALIDA DE BODEGA /////////////////////////////////////////////
+                '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+
+                CodigoCliente = dsFact.Tables("Facturacion").Rows(i)("Cod_Cliente")
+
+                Quien = "NumeroFacturas"
+                NumeroFactura = GenerarNumeroFacturaBascula(ConsecutivoFacturaManual, "Factura")
+                GrabaEncabezadoFacturas(NumeroFactura, FechaFactura, "Factura", CodigoCliente, CodigoBodega, NombreCliente, NombreCliente, FechaFactura, SubTotal, 0, SubTotal, SubTotal, Moneda, "Procesado por Evacuaciones  ")
+
+
+
+                SqlString = "SELECT DetalleTipoCotrato.IdDetalleTipoContrato, DetalleTipoCotrato.IdTipoContrato, DetalleTipoCotrato.NumeroContrato, DetalleTipoCotrato.Cod_Productos, DetalleTipoCotrato.Descripcion_Producto, DetalleTipoCotrato.Cantidad, Contratos.Numero_Contrato, Contratos.Precio_Unitario, Contratos.DiasFactura1, Contratos.Moneda, Contratos.Exonerado, Contratos.Retencion1, Contratos.Retencion2, Contratos.Moneda2, Contratos.Frecuencia2 FROM DetalleTipoCotrato INNER JOIN Contratos ON DetalleTipoCotrato.NumeroContrato = Contratos.Numero_Contrato  " & _
+                            "WHERE (DetalleTipoCotrato.NumeroContrato = " & NumeroContrato & ") " 'AND (DetalleTipoCotrato.IdTipoContrato = 3)
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                DataAdapter.Fill(DataSet, "Productos")
+                Cont = DataSet.Tables("Productos").Rows.Count
+                j = 0
+
+                Do While Cont > j
+
+                    If Not IsDBNull(DataSet.Tables("Productos").Rows(j)("Precio_Unitario")) Then
+                        PrecioCompra = DataSet.Tables("Productos").Rows(j)("Precio_Unitario")
+                    Else
+                        PrecioCompra = 0
+                    End If
+
+                    If Not IsDBNull(DataSet.Tables("Productos").Rows(j)("Cantidad")) Then
+                        Cantidad = DataSet.Tables("Productos").Rows(j)("Cantidad")
+                    Else
+                        Cantidad = 0
+                    End If
+
+                    CodProductos = DataSet.Tables("Productos").Rows(iPosicion)("Cod_Productos")
+                    NombreProductos = Descripcion
+                    Importe = Cantidad * PrecioCompra
+
+                    GrabaDetalleFacturaSalida(NumeroFactura, CodProductos, NombreProductos, PrecioCompra, 0, PrecioCompra, Importe, Cantidad, Moneda, FechaFactura, "Factura", PrecioCompra)
+                    j = j + 1
+                Loop
+
+                DataSet.Tables("Productos").Reset()
+
+                '
+                'NombreProductos = DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Descripcion_Producto")
+                'PrecioCompra = DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Precio")
+                'Cantidad = DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("PesoNetoKg")
+                Importe = 0
+
+
+            End If
+
+            i = i + 1
+        Loop
+
+    End Sub
+
+    Private Sub CmbContrato2_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmbContrato2.SelectedIndexChanged
 
     End Sub
 End Class

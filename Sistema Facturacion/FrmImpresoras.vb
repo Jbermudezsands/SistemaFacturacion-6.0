@@ -47,9 +47,9 @@ Public Class FrmImpresoras
         Dim ModuloArchivo As String, i As Double
 
 
-        GuardaImpresora("Remision", Me.CmbImpresorasRemision.Text)
+        GuardaImpresora("Factura", Me.CmbImpresorasRemision.Text)
 
-        GuardaImpresora("Tickets", Me.CmbImpresorasRecibo.Text)
+        GuardaImpresora("Recibo", Me.CmbImpresorasRecibo.Text)
 
 
 

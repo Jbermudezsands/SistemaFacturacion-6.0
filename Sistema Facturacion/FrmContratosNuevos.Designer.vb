@@ -49,6 +49,8 @@ Partial Class FrmContratosNuevos
         Me.Splitter1 = New System.Windows.Forms.Splitter
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.GroupBox5 = New System.Windows.Forms.GroupBox
+        Me.Label24 = New System.Windows.Forms.Label
+        Me.TxtDireccionCotrato2 = New System.Windows.Forms.TextBox
         Me.ChkContratoVariable2 = New System.Windows.Forms.CheckBox
         Me.CboCodigoBodega2 = New C1.Win.C1List.C1Combo
         Me.Label22 = New System.Windows.Forms.Label
@@ -69,6 +71,8 @@ Partial Class FrmContratosNuevos
         Me.CmbContrato2 = New System.Windows.Forms.ComboBox
         Me.Label17 = New System.Windows.Forms.Label
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.Label23 = New System.Windows.Forms.Label
+        Me.TxtDireccionContrato = New System.Windows.Forms.TextBox
         Me.ChkContratoVariable = New System.Windows.Forms.CheckBox
         Me.CboCodigoBodega = New C1.Win.C1List.C1Combo
         Me.Label21 = New System.Windows.Forms.Label
@@ -403,6 +407,8 @@ Partial Class FrmContratosNuevos
         '
         'GroupBox5
         '
+        Me.GroupBox5.Controls.Add(Me.Label24)
+        Me.GroupBox5.Controls.Add(Me.TxtDireccionCotrato2)
         Me.GroupBox5.Controls.Add(Me.ChkContratoVariable2)
         Me.GroupBox5.Controls.Add(Me.CboCodigoBodega2)
         Me.GroupBox5.Controls.Add(Me.Label22)
@@ -422,17 +428,36 @@ Partial Class FrmContratosNuevos
         Me.GroupBox5.Controls.Add(Me.Label15)
         Me.GroupBox5.Controls.Add(Me.CmbContrato2)
         Me.GroupBox5.Controls.Add(Me.Label17)
-        Me.GroupBox5.Location = New System.Drawing.Point(332, 24)
+        Me.GroupBox5.Location = New System.Drawing.Point(328, 10)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(297, 283)
+        Me.GroupBox5.Size = New System.Drawing.Size(297, 301)
         Me.GroupBox5.TabIndex = 1
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Servicio 2"
         '
+        'Label24
+        '
+        Me.Label24.AutoSize = True
+        Me.Label24.Location = New System.Drawing.Point(37, 226)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(52, 13)
+        Me.Label24.TabIndex = 240
+        Me.Label24.Text = "Direccion"
+        '
+        'TxtDireccionCotrato2
+        '
+        Me.TxtDireccionCotrato2.Location = New System.Drawing.Point(97, 223)
+        Me.TxtDireccionCotrato2.MaxLength = 250
+        Me.TxtDireccionCotrato2.Multiline = True
+        Me.TxtDireccionCotrato2.Name = "TxtDireccionCotrato2"
+        Me.TxtDireccionCotrato2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.TxtDireccionCotrato2.Size = New System.Drawing.Size(181, 47)
+        Me.TxtDireccionCotrato2.TabIndex = 239
+        '
         'ChkContratoVariable2
         '
         Me.ChkContratoVariable2.AutoSize = True
-        Me.ChkContratoVariable2.Location = New System.Drawing.Point(161, 227)
+        Me.ChkContratoVariable2.Location = New System.Drawing.Point(156, 276)
         Me.ChkContratoVariable2.Name = "ChkContratoVariable2"
         Me.ChkContratoVariable2.Size = New System.Drawing.Size(64, 17)
         Me.ChkContratoVariable2.TabIndex = 238
@@ -481,7 +506,7 @@ Partial Class FrmContratosNuevos
         'ChkActivo2
         '
         Me.ChkActivo2.AutoSize = True
-        Me.ChkActivo2.Location = New System.Drawing.Point(69, 227)
+        Me.ChkActivo2.Location = New System.Drawing.Point(64, 276)
         Me.ChkActivo2.Name = "ChkActivo2"
         Me.ChkActivo2.Size = New System.Drawing.Size(56, 17)
         Me.ChkActivo2.TabIndex = 233
@@ -527,7 +552,7 @@ Partial Class FrmContratosNuevos
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(14, 83)
+        Me.Label11.Location = New System.Drawing.Point(42, 86)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(46, 13)
         Me.Label11.TabIndex = 228
@@ -599,7 +624,7 @@ Partial Class FrmContratosNuevos
         'Label15
         '
         Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(14, 56)
+        Me.Label15.Location = New System.Drawing.Point(29, 54)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(60, 13)
         Me.Label15.TabIndex = 165
@@ -617,7 +642,7 @@ Partial Class FrmContratosNuevos
         'Label17
         '
         Me.Label17.AutoSize = True
-        Me.Label17.Location = New System.Drawing.Point(14, 30)
+        Me.Label17.Location = New System.Drawing.Point(20, 28)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(69, 13)
         Me.Label17.TabIndex = 163
@@ -625,6 +650,8 @@ Partial Class FrmContratosNuevos
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.Label23)
+        Me.GroupBox3.Controls.Add(Me.TxtDireccionContrato)
         Me.GroupBox3.Controls.Add(Me.ChkContratoVariable)
         Me.GroupBox3.Controls.Add(Me.CboCodigoBodega)
         Me.GroupBox3.Controls.Add(Me.Label21)
@@ -644,17 +671,36 @@ Partial Class FrmContratosNuevos
         Me.GroupBox3.Controls.Add(Me.Label6)
         Me.GroupBox3.Controls.Add(Me.CmbContrato1)
         Me.GroupBox3.Controls.Add(Me.Label5)
-        Me.GroupBox3.Location = New System.Drawing.Point(17, 22)
+        Me.GroupBox3.Location = New System.Drawing.Point(25, 10)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(297, 283)
+        Me.GroupBox3.Size = New System.Drawing.Size(297, 299)
         Me.GroupBox3.TabIndex = 0
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Servicio 1"
         '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Location = New System.Drawing.Point(36, 226)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(52, 13)
+        Me.Label23.TabIndex = 238
+        Me.Label23.Text = "Direccion"
+        '
+        'TxtDireccionContrato
+        '
+        Me.TxtDireccionContrato.Location = New System.Drawing.Point(97, 223)
+        Me.TxtDireccionContrato.MaxLength = 250
+        Me.TxtDireccionContrato.Multiline = True
+        Me.TxtDireccionContrato.Name = "TxtDireccionContrato"
+        Me.TxtDireccionContrato.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.TxtDireccionContrato.Size = New System.Drawing.Size(181, 47)
+        Me.TxtDireccionContrato.TabIndex = 237
+        '
         'ChkContratoVariable
         '
         Me.ChkContratoVariable.AutoSize = True
-        Me.ChkContratoVariable.Location = New System.Drawing.Point(169, 229)
+        Me.ChkContratoVariable.Location = New System.Drawing.Point(169, 276)
         Me.ChkContratoVariable.Name = "ChkContratoVariable"
         Me.ChkContratoVariable.Size = New System.Drawing.Size(64, 17)
         Me.ChkContratoVariable.TabIndex = 236
@@ -703,7 +749,7 @@ Partial Class FrmContratosNuevos
         'ChkActivo
         '
         Me.ChkActivo.AutoSize = True
-        Me.ChkActivo.Location = New System.Drawing.Point(72, 229)
+        Me.ChkActivo.Location = New System.Drawing.Point(72, 276)
         Me.ChkActivo.Name = "ChkActivo"
         Me.ChkActivo.Size = New System.Drawing.Size(56, 17)
         Me.ChkActivo.TabIndex = 233
@@ -722,7 +768,7 @@ Partial Class FrmContratosNuevos
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(17, 204)
+        Me.Label2.Location = New System.Drawing.Point(16, 204)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(74, 13)
         Me.Label2.TabIndex = 231
@@ -749,7 +795,7 @@ Partial Class FrmContratosNuevos
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(14, 83)
+        Me.Label10.Location = New System.Drawing.Point(42, 81)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(46, 13)
         Me.Label10.TabIndex = 228
@@ -820,7 +866,7 @@ Partial Class FrmContratosNuevos
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(14, 56)
+        Me.Label6.Location = New System.Drawing.Point(28, 54)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(60, 13)
         Me.Label6.TabIndex = 165
@@ -838,7 +884,7 @@ Partial Class FrmContratosNuevos
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(14, 30)
+        Me.Label5.Location = New System.Drawing.Point(19, 28)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(69, 13)
         Me.Label5.TabIndex = 163
@@ -890,7 +936,7 @@ Partial Class FrmContratosNuevos
         Me.GroupBox7.Size = New System.Drawing.Size(490, 138)
         Me.GroupBox7.TabIndex = 163
         Me.GroupBox7.TabStop = False
-        Me.GroupBox7.Text = "Detalle Contrato 1"
+        Me.GroupBox7.Text = "Detalle Facturacion Contrato 2"
         '
         'TrueDBGridContrato2
         '
@@ -919,7 +965,7 @@ Partial Class FrmContratosNuevos
         Me.GroupBox6.Size = New System.Drawing.Size(487, 143)
         Me.GroupBox6.TabIndex = 162
         Me.GroupBox6.TabStop = False
-        Me.GroupBox6.Text = "Detalle Contrato 1"
+        Me.GroupBox6.Text = "Detalle Facturacion"
         '
         'TrueDBGridContrato1
         '
@@ -1049,4 +1095,8 @@ Partial Class FrmContratosNuevos
     Friend WithEvents BtnBorrarLineaCont1 As System.Windows.Forms.Button
     Friend WithEvents ChkContratoVariable2 As System.Windows.Forms.CheckBox
     Friend WithEvents ChkContratoVariable As System.Windows.Forms.CheckBox
+    Friend WithEvents Label24 As System.Windows.Forms.Label
+    Friend WithEvents TxtDireccionCotrato2 As System.Windows.Forms.TextBox
+    Friend WithEvents Label23 As System.Windows.Forms.Label
+    Friend WithEvents TxtDireccionContrato As System.Windows.Forms.TextBox
 End Class
