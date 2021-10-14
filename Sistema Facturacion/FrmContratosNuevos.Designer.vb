@@ -48,6 +48,33 @@ Partial Class FrmContratosNuevos
         Me.Label1 = New System.Windows.Forms.Label
         Me.Splitter1 = New System.Windows.Forms.Splitter
         Me.TabPage2 = New System.Windows.Forms.TabPage
+        Me.CmdAjustes = New System.Windows.Forms.Button
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.Label23 = New System.Windows.Forms.Label
+        Me.LblNuevo = New System.Windows.Forms.Label
+        Me.TxtDireccionContrato = New System.Windows.Forms.TextBox
+        Me.Button2 = New System.Windows.Forms.Button
+        Me.ChkContratoVariable = New System.Windows.Forms.CheckBox
+        Me.CboCodigoBodega = New C1.Win.C1List.C1Combo
+        Me.Label21 = New System.Windows.Forms.Label
+        Me.ChkActivo = New System.Windows.Forms.CheckBox
+        Me.Label18 = New System.Windows.Forms.Label
+        Me.Label2 = New System.Windows.Forms.Label
+        Me.TxtNumero1 = New System.Windows.Forms.NumericUpDown
+        Me.CmbMoneda1 = New System.Windows.Forms.ComboBox
+        Me.Label10 = New System.Windows.Forms.Label
+        Me.TxtPrecioUnitario1 = New System.Windows.Forms.TextBox
+        Me.Label9 = New System.Windows.Forms.Label
+        Me.DtpFinContrato1 = New System.Windows.Forms.DateTimePicker
+        Me.Label8 = New System.Windows.Forms.Label
+        Me.DtpInicioContrato1 = New System.Windows.Forms.DateTimePicker
+        Me.Label7 = New System.Windows.Forms.Label
+        Me.CmbFrecuencia1 = New System.Windows.Forms.ComboBox
+        Me.Label6 = New System.Windows.Forms.Label
+        Me.CmbContrato1 = New System.Windows.Forms.ComboBox
+        Me.Label5 = New System.Windows.Forms.Label
+        Me.CmdEliminar = New System.Windows.Forms.Button
+        Me.TDBGridTipoContrato = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.GroupBox5 = New System.Windows.Forms.GroupBox
         Me.Label24 = New System.Windows.Forms.Label
         Me.TxtDireccionCotrato2 = New System.Windows.Forms.TextBox
@@ -70,28 +97,6 @@ Partial Class FrmContratosNuevos
         Me.Label15 = New System.Windows.Forms.Label
         Me.CmbContrato2 = New System.Windows.Forms.ComboBox
         Me.Label17 = New System.Windows.Forms.Label
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox
-        Me.Label23 = New System.Windows.Forms.Label
-        Me.TxtDireccionContrato = New System.Windows.Forms.TextBox
-        Me.ChkContratoVariable = New System.Windows.Forms.CheckBox
-        Me.CboCodigoBodega = New C1.Win.C1List.C1Combo
-        Me.Label21 = New System.Windows.Forms.Label
-        Me.ChkActivo = New System.Windows.Forms.CheckBox
-        Me.Label18 = New System.Windows.Forms.Label
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.TxtNumero1 = New System.Windows.Forms.NumericUpDown
-        Me.CmbMoneda1 = New System.Windows.Forms.ComboBox
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.TxtPrecioUnitario1 = New System.Windows.Forms.TextBox
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.DtpFinContrato1 = New System.Windows.Forms.DateTimePicker
-        Me.Label8 = New System.Windows.Forms.Label
-        Me.DtpInicioContrato1 = New System.Windows.Forms.DateTimePicker
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.CmbFrecuencia1 = New System.Windows.Forms.ComboBox
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.CmbContrato1 = New System.Windows.Forms.ComboBox
-        Me.Label5 = New System.Windows.Forms.Label
         Me.TabPage3 = New System.Windows.Forms.TabPage
         Me.BtnBorrarLineaCont2 = New System.Windows.Forms.Button
         Me.BtnBorrarLineaCont1 = New System.Windows.Forms.Button
@@ -105,12 +110,13 @@ Partial Class FrmContratosNuevos
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.TabPage2.SuspendLayout()
-        Me.GroupBox5.SuspendLayout()
-        CType(Me.CboCodigoBodega2, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.TxtNumero2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TxtNumero1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TDBGridTipoContrato, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox5.SuspendLayout()
+        CType(Me.CboCodigoBodega2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TxtNumero2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage3.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
         CType(Me.TrueDBGridContrato2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -396,14 +402,327 @@ Partial Class FrmContratosNuevos
         'TabPage2
         '
         Me.TabPage2.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.TabPage2.Controls.Add(Me.GroupBox5)
+        Me.TabPage2.Controls.Add(Me.CmdAjustes)
         Me.TabPage2.Controls.Add(Me.GroupBox3)
+        Me.TabPage2.Controls.Add(Me.CmdEliminar)
+        Me.TabPage2.Controls.Add(Me.TDBGridTipoContrato)
+        Me.TabPage2.Controls.Add(Me.GroupBox5)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage2.Size = New System.Drawing.Size(687, 326)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Contrato"
+        '
+        'CmdAjustes
+        '
+        Me.CmdAjustes.Image = CType(resources.GetObject("CmdAjustes.Image"), System.Drawing.Image)
+        Me.CmdAjustes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.CmdAjustes.Location = New System.Drawing.Point(6, 165)
+        Me.CmdAjustes.Name = "CmdAjustes"
+        Me.CmdAjustes.Size = New System.Drawing.Size(75, 34)
+        Me.CmdAjustes.TabIndex = 191
+        Me.CmdAjustes.Tag = "28"
+        Me.CmdAjustes.Text = "Nuevo"
+        Me.CmdAjustes.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.CmdAjustes.UseVisualStyleBackColor = True
+        '
+        'GroupBox3
+        '
+        Me.GroupBox3.Controls.Add(Me.Label23)
+        Me.GroupBox3.Controls.Add(Me.LblNuevo)
+        Me.GroupBox3.Controls.Add(Me.TxtDireccionContrato)
+        Me.GroupBox3.Controls.Add(Me.Button2)
+        Me.GroupBox3.Controls.Add(Me.ChkContratoVariable)
+        Me.GroupBox3.Controls.Add(Me.CboCodigoBodega)
+        Me.GroupBox3.Controls.Add(Me.Label21)
+        Me.GroupBox3.Controls.Add(Me.ChkActivo)
+        Me.GroupBox3.Controls.Add(Me.Label18)
+        Me.GroupBox3.Controls.Add(Me.Label2)
+        Me.GroupBox3.Controls.Add(Me.TxtNumero1)
+        Me.GroupBox3.Controls.Add(Me.CmbMoneda1)
+        Me.GroupBox3.Controls.Add(Me.Label10)
+        Me.GroupBox3.Controls.Add(Me.TxtPrecioUnitario1)
+        Me.GroupBox3.Controls.Add(Me.Label9)
+        Me.GroupBox3.Controls.Add(Me.DtpFinContrato1)
+        Me.GroupBox3.Controls.Add(Me.Label8)
+        Me.GroupBox3.Controls.Add(Me.DtpInicioContrato1)
+        Me.GroupBox3.Controls.Add(Me.Label7)
+        Me.GroupBox3.Controls.Add(Me.CmbFrecuencia1)
+        Me.GroupBox3.Controls.Add(Me.Label6)
+        Me.GroupBox3.Controls.Add(Me.CmbContrato1)
+        Me.GroupBox3.Controls.Add(Me.Label5)
+        Me.GroupBox3.Location = New System.Drawing.Point(384, 12)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(297, 304)
+        Me.GroupBox3.TabIndex = 0
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Servicio 1"
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Location = New System.Drawing.Point(36, 196)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(52, 13)
+        Me.Label23.TabIndex = 239
+        Me.Label23.Text = "Direccion"
+        '
+        'LblNuevo
+        '
+        Me.LblNuevo.AutoSize = True
+        Me.LblNuevo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblNuevo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.LblNuevo.Location = New System.Drawing.Point(230, 19)
+        Me.LblNuevo.Name = "LblNuevo"
+        Me.LblNuevo.Size = New System.Drawing.Size(0, 13)
+        Me.LblNuevo.TabIndex = 238
+        '
+        'TxtDireccionContrato
+        '
+        Me.TxtDireccionContrato.Location = New System.Drawing.Point(97, 193)
+        Me.TxtDireccionContrato.MaxLength = 250
+        Me.TxtDireccionContrato.Multiline = True
+        Me.TxtDireccionContrato.Name = "TxtDireccionContrato"
+        Me.TxtDireccionContrato.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.TxtDireccionContrato.Size = New System.Drawing.Size(181, 47)
+        Me.TxtDireccionContrato.TabIndex = 237
+        '
+        'Button2
+        '
+        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
+        Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button2.Location = New System.Drawing.Point(6, 264)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(75, 34)
+        Me.Button2.TabIndex = 189
+        Me.Button2.Text = "Guardar"
+        Me.Button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button2.UseVisualStyleBackColor = True
+        '
+        'ChkContratoVariable
+        '
+        Me.ChkContratoVariable.AutoSize = True
+        Me.ChkContratoVariable.Location = New System.Drawing.Point(169, 243)
+        Me.ChkContratoVariable.Name = "ChkContratoVariable"
+        Me.ChkContratoVariable.Size = New System.Drawing.Size(64, 17)
+        Me.ChkContratoVariable.TabIndex = 236
+        Me.ChkContratoVariable.Text = "Variable"
+        Me.ChkContratoVariable.UseVisualStyleBackColor = True
+        '
+        'CboCodigoBodega
+        '
+        Me.CboCodigoBodega.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboCodigoBodega.Caption = ""
+        Me.CboCodigoBodega.CaptionHeight = 17
+        Me.CboCodigoBodega.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboCodigoBodega.ColumnCaptionHeight = 17
+        Me.CboCodigoBodega.ColumnFooterHeight = 17
+        Me.CboCodigoBodega.ComboStyle = C1.Win.C1List.ComboStyleEnum.DropdownList
+        Me.CboCodigoBodega.ContentHeight = 15
+        Me.CboCodigoBodega.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboCodigoBodega.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboCodigoBodega.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboCodigoBodega.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboCodigoBodega.EditorHeight = 15
+        Me.CboCodigoBodega.Images.Add(CType(resources.GetObject("CboCodigoBodega.Images"), System.Drawing.Image))
+        Me.CboCodigoBodega.ItemHeight = 15
+        Me.CboCodigoBodega.Location = New System.Drawing.Point(98, 149)
+        Me.CboCodigoBodega.MatchEntryTimeout = CType(2000, Long)
+        Me.CboCodigoBodega.MaxDropDownItems = CType(5, Short)
+        Me.CboCodigoBodega.MaxLength = 32767
+        Me.CboCodigoBodega.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboCodigoBodega.Name = "CboCodigoBodega"
+        Me.CboCodigoBodega.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboCodigoBodega.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboCodigoBodega.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboCodigoBodega.Size = New System.Drawing.Size(122, 21)
+        Me.CboCodigoBodega.TabIndex = 235
+        Me.CboCodigoBodega.PropBag = resources.GetString("CboCodigoBodega.PropBag")
+        '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.Location = New System.Drawing.Point(44, 154)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(44, 13)
+        Me.Label21.TabIndex = 234
+        Me.Label21.Text = "Bodega"
+        '
+        'ChkActivo
+        '
+        Me.ChkActivo.AutoSize = True
+        Me.ChkActivo.Location = New System.Drawing.Point(72, 243)
+        Me.ChkActivo.Name = "ChkActivo"
+        Me.ChkActivo.Size = New System.Drawing.Size(56, 17)
+        Me.ChkActivo.TabIndex = 233
+        Me.ChkActivo.Text = "Activo"
+        Me.ChkActivo.UseVisualStyleBackColor = True
+        '
+        'Label18
+        '
+        Me.Label18.AutoSize = True
+        Me.Label18.Location = New System.Drawing.Point(166, 175)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(68, 13)
+        Me.Label18.TabIndex = 232
+        Me.Label18.Text = "de cada mes"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(16, 175)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(74, 13)
+        Me.Label2.TabIndex = 231
+        Me.Label2.Text = "Dia a Facturar"
+        '
+        'TxtNumero1
+        '
+        Me.TxtNumero1.Location = New System.Drawing.Point(97, 171)
+        Me.TxtNumero1.Name = "TxtNumero1"
+        Me.TxtNumero1.Size = New System.Drawing.Size(63, 20)
+        Me.TxtNumero1.TabIndex = 230
+        Me.TxtNumero1.Value = New Decimal(New Integer() {5, 0, 0, 0})
+        '
+        'CmbMoneda1
+        '
+        Me.CmbMoneda1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbMoneda1.FormattingEnabled = True
+        Me.CmbMoneda1.Items.AddRange(New Object() {"Cordobas", "Dolares"})
+        Me.CmbMoneda1.Location = New System.Drawing.Point(99, 60)
+        Me.CmbMoneda1.Name = "CmbMoneda1"
+        Me.CmbMoneda1.Size = New System.Drawing.Size(121, 21)
+        Me.CmbMoneda1.TabIndex = 229
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(42, 63)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(46, 13)
+        Me.Label10.TabIndex = 228
+        Me.Label10.Text = "Moneda"
+        '
+        'TxtPrecioUnitario1
+        '
+        Me.TxtPrecioUnitario1.Location = New System.Drawing.Point(98, 127)
+        Me.TxtPrecioUnitario1.Name = "TxtPrecioUnitario1"
+        Me.TxtPrecioUnitario1.Size = New System.Drawing.Size(122, 20)
+        Me.TxtPrecioUnitario1.TabIndex = 227
+        Me.TxtPrecioUnitario1.Tag = "0.00"
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(14, 128)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(74, 13)
+        Me.Label9.TabIndex = 171
+        Me.Label9.Text = "Precio Untario"
+        '
+        'DtpFinContrato1
+        '
+        Me.DtpFinContrato1.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DtpFinContrato1.Location = New System.Drawing.Point(97, 105)
+        Me.DtpFinContrato1.Name = "DtpFinContrato1"
+        Me.DtpFinContrato1.Size = New System.Drawing.Size(123, 20)
+        Me.DtpFinContrato1.TabIndex = 170
+        Me.DtpFinContrato1.Value = New Date(2021, 3, 6, 9, 40, 39, 0)
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(25, 111)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(64, 13)
+        Me.Label8.TabIndex = 169
+        Me.Label8.Text = "Fin Contrato"
+        '
+        'DtpInicioContrato1
+        '
+        Me.DtpInicioContrato1.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DtpInicioContrato1.Location = New System.Drawing.Point(97, 83)
+        Me.DtpInicioContrato1.Name = "DtpInicioContrato1"
+        Me.DtpInicioContrato1.Size = New System.Drawing.Size(123, 20)
+        Me.DtpInicioContrato1.TabIndex = 168
+        Me.DtpInicioContrato1.Value = New Date(2021, 3, 6, 9, 40, 39, 0)
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(14, 89)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(75, 13)
+        Me.Label7.TabIndex = 167
+        Me.Label7.Text = "Inicio Contrato"
+        '
+        'CmbFrecuencia1
+        '
+        Me.CmbFrecuencia1.FormattingEnabled = True
+        Me.CmbFrecuencia1.Location = New System.Drawing.Point(99, 37)
+        Me.CmbFrecuencia1.Name = "CmbFrecuencia1"
+        Me.CmbFrecuencia1.Size = New System.Drawing.Size(121, 21)
+        Me.CmbFrecuencia1.TabIndex = 166
+        Me.CmbFrecuencia1.Text = "4"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(28, 40)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(60, 13)
+        Me.Label6.TabIndex = 165
+        Me.Label6.Text = "Frecuencia"
+        '
+        'CmbContrato1
+        '
+        Me.CmbContrato1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbContrato1.FormattingEnabled = True
+        Me.CmbContrato1.Location = New System.Drawing.Point(99, 14)
+        Me.CmbContrato1.Name = "CmbContrato1"
+        Me.CmbContrato1.Size = New System.Drawing.Size(121, 21)
+        Me.CmbContrato1.TabIndex = 164
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(19, 17)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(69, 13)
+        Me.Label5.TabIndex = 163
+        Me.Label5.Text = "Tipo Servicio"
+        '
+        'CmdEliminar
+        '
+        Me.CmdEliminar.Image = CType(resources.GetObject("CmdEliminar.Image"), System.Drawing.Image)
+        Me.CmdEliminar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.CmdEliminar.Location = New System.Drawing.Point(166, 165)
+        Me.CmdEliminar.Name = "CmdEliminar"
+        Me.CmdEliminar.Size = New System.Drawing.Size(75, 34)
+        Me.CmdEliminar.TabIndex = 190
+        Me.CmdEliminar.Text = "Eliminar"
+        Me.CmdEliminar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.CmdEliminar.UseVisualStyleBackColor = True
+        '
+        'TDBGridTipoContrato
+        '
+        Me.TDBGridTipoContrato.AllowUpdate = False
+        Me.TDBGridTipoContrato.AlternatingRows = True
+        Me.TDBGridTipoContrato.Caption = "Listado de Productos"
+        Me.TDBGridTipoContrato.DirectionAfterEnter = C1.Win.C1TrueDBGrid.DirectionAfterEnterEnum.MoveNone
+        Me.TDBGridTipoContrato.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TDBGridTipoContrato.Images.Add(CType(resources.GetObject("TDBGridTipoContrato.Images"), System.Drawing.Image))
+        Me.TDBGridTipoContrato.Location = New System.Drawing.Point(6, 12)
+        Me.TDBGridTipoContrato.Name = "TDBGridTipoContrato"
+        Me.TDBGridTipoContrato.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TDBGridTipoContrato.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TDBGridTipoContrato.PreviewInfo.ZoomFactor = 75
+        Me.TDBGridTipoContrato.PrintInfo.PageSettings = CType(resources.GetObject("TDBGridTipoContrato.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TDBGridTipoContrato.Size = New System.Drawing.Size(372, 149)
+        Me.TDBGridTipoContrato.TabIndex = 166
+        Me.TDBGridTipoContrato.Text = "C1TrueDBGrid1"
+        Me.TDBGridTipoContrato.PropBag = resources.GetString("TDBGridTipoContrato.PropBag")
         '
         'GroupBox5
         '
@@ -428,17 +747,18 @@ Partial Class FrmContratosNuevos
         Me.GroupBox5.Controls.Add(Me.Label15)
         Me.GroupBox5.Controls.Add(Me.CmbContrato2)
         Me.GroupBox5.Controls.Add(Me.Label17)
-        Me.GroupBox5.Location = New System.Drawing.Point(328, 10)
+        Me.GroupBox5.Location = New System.Drawing.Point(611, 270)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(297, 301)
+        Me.GroupBox5.Size = New System.Drawing.Size(70, 41)
         Me.GroupBox5.TabIndex = 1
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Servicio 2"
+        Me.GroupBox5.Visible = False
         '
         'Label24
         '
         Me.Label24.AutoSize = True
-        Me.Label24.Location = New System.Drawing.Point(37, 226)
+        Me.Label24.Location = New System.Drawing.Point(37, 195)
         Me.Label24.Name = "Label24"
         Me.Label24.Size = New System.Drawing.Size(52, 13)
         Me.Label24.TabIndex = 240
@@ -648,248 +968,6 @@ Partial Class FrmContratosNuevos
         Me.Label17.TabIndex = 163
         Me.Label17.Text = "Tipo Servicio"
         '
-        'GroupBox3
-        '
-        Me.GroupBox3.Controls.Add(Me.Label23)
-        Me.GroupBox3.Controls.Add(Me.TxtDireccionContrato)
-        Me.GroupBox3.Controls.Add(Me.ChkContratoVariable)
-        Me.GroupBox3.Controls.Add(Me.CboCodigoBodega)
-        Me.GroupBox3.Controls.Add(Me.Label21)
-        Me.GroupBox3.Controls.Add(Me.ChkActivo)
-        Me.GroupBox3.Controls.Add(Me.Label18)
-        Me.GroupBox3.Controls.Add(Me.Label2)
-        Me.GroupBox3.Controls.Add(Me.TxtNumero1)
-        Me.GroupBox3.Controls.Add(Me.CmbMoneda1)
-        Me.GroupBox3.Controls.Add(Me.Label10)
-        Me.GroupBox3.Controls.Add(Me.TxtPrecioUnitario1)
-        Me.GroupBox3.Controls.Add(Me.Label9)
-        Me.GroupBox3.Controls.Add(Me.DtpFinContrato1)
-        Me.GroupBox3.Controls.Add(Me.Label8)
-        Me.GroupBox3.Controls.Add(Me.DtpInicioContrato1)
-        Me.GroupBox3.Controls.Add(Me.Label7)
-        Me.GroupBox3.Controls.Add(Me.CmbFrecuencia1)
-        Me.GroupBox3.Controls.Add(Me.Label6)
-        Me.GroupBox3.Controls.Add(Me.CmbContrato1)
-        Me.GroupBox3.Controls.Add(Me.Label5)
-        Me.GroupBox3.Location = New System.Drawing.Point(25, 10)
-        Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(297, 299)
-        Me.GroupBox3.TabIndex = 0
-        Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Text = "Servicio 1"
-        '
-        'Label23
-        '
-        Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(36, 226)
-        Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(52, 13)
-        Me.Label23.TabIndex = 238
-        Me.Label23.Text = "Direccion"
-        '
-        'TxtDireccionContrato
-        '
-        Me.TxtDireccionContrato.Location = New System.Drawing.Point(97, 223)
-        Me.TxtDireccionContrato.MaxLength = 250
-        Me.TxtDireccionContrato.Multiline = True
-        Me.TxtDireccionContrato.Name = "TxtDireccionContrato"
-        Me.TxtDireccionContrato.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TxtDireccionContrato.Size = New System.Drawing.Size(181, 47)
-        Me.TxtDireccionContrato.TabIndex = 237
-        '
-        'ChkContratoVariable
-        '
-        Me.ChkContratoVariable.AutoSize = True
-        Me.ChkContratoVariable.Location = New System.Drawing.Point(169, 276)
-        Me.ChkContratoVariable.Name = "ChkContratoVariable"
-        Me.ChkContratoVariable.Size = New System.Drawing.Size(64, 17)
-        Me.ChkContratoVariable.TabIndex = 236
-        Me.ChkContratoVariable.Text = "Variable"
-        Me.ChkContratoVariable.UseVisualStyleBackColor = True
-        '
-        'CboCodigoBodega
-        '
-        Me.CboCodigoBodega.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
-        Me.CboCodigoBodega.Caption = ""
-        Me.CboCodigoBodega.CaptionHeight = 17
-        Me.CboCodigoBodega.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
-        Me.CboCodigoBodega.ColumnCaptionHeight = 17
-        Me.CboCodigoBodega.ColumnFooterHeight = 17
-        Me.CboCodigoBodega.ComboStyle = C1.Win.C1List.ComboStyleEnum.DropdownList
-        Me.CboCodigoBodega.ContentHeight = 15
-        Me.CboCodigoBodega.DeadAreaBackColor = System.Drawing.Color.Empty
-        Me.CboCodigoBodega.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CboCodigoBodega.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CboCodigoBodega.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CboCodigoBodega.EditorHeight = 15
-        Me.CboCodigoBodega.Images.Add(CType(resources.GetObject("CboCodigoBodega.Images"), System.Drawing.Image))
-        Me.CboCodigoBodega.ItemHeight = 15
-        Me.CboCodigoBodega.Location = New System.Drawing.Point(98, 177)
-        Me.CboCodigoBodega.MatchEntryTimeout = CType(2000, Long)
-        Me.CboCodigoBodega.MaxDropDownItems = CType(5, Short)
-        Me.CboCodigoBodega.MaxLength = 32767
-        Me.CboCodigoBodega.MouseCursor = System.Windows.Forms.Cursors.Default
-        Me.CboCodigoBodega.Name = "CboCodigoBodega"
-        Me.CboCodigoBodega.RowDivider.Color = System.Drawing.Color.DarkGray
-        Me.CboCodigoBodega.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
-        Me.CboCodigoBodega.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboCodigoBodega.Size = New System.Drawing.Size(122, 21)
-        Me.CboCodigoBodega.TabIndex = 235
-        Me.CboCodigoBodega.PropBag = resources.GetString("CboCodigoBodega.PropBag")
-        '
-        'Label21
-        '
-        Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(44, 182)
-        Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(44, 13)
-        Me.Label21.TabIndex = 234
-        Me.Label21.Text = "Bodega"
-        '
-        'ChkActivo
-        '
-        Me.ChkActivo.AutoSize = True
-        Me.ChkActivo.Location = New System.Drawing.Point(72, 276)
-        Me.ChkActivo.Name = "ChkActivo"
-        Me.ChkActivo.Size = New System.Drawing.Size(56, 17)
-        Me.ChkActivo.TabIndex = 233
-        Me.ChkActivo.Text = "Activo"
-        Me.ChkActivo.UseVisualStyleBackColor = True
-        '
-        'Label18
-        '
-        Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(166, 206)
-        Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(68, 13)
-        Me.Label18.TabIndex = 232
-        Me.Label18.Text = "de cada mes"
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(16, 204)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(74, 13)
-        Me.Label2.TabIndex = 231
-        Me.Label2.Text = "Dia a Facturar"
-        '
-        'TxtNumero1
-        '
-        Me.TxtNumero1.Location = New System.Drawing.Point(97, 200)
-        Me.TxtNumero1.Name = "TxtNumero1"
-        Me.TxtNumero1.Size = New System.Drawing.Size(63, 20)
-        Me.TxtNumero1.TabIndex = 230
-        Me.TxtNumero1.Value = New Decimal(New Integer() {5, 0, 0, 0})
-        '
-        'CmbMoneda1
-        '
-        Me.CmbMoneda1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CmbMoneda1.FormattingEnabled = True
-        Me.CmbMoneda1.Items.AddRange(New Object() {"Cordobas", "Dolares"})
-        Me.CmbMoneda1.Location = New System.Drawing.Point(99, 78)
-        Me.CmbMoneda1.Name = "CmbMoneda1"
-        Me.CmbMoneda1.Size = New System.Drawing.Size(121, 21)
-        Me.CmbMoneda1.TabIndex = 229
-        '
-        'Label10
-        '
-        Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(42, 81)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(46, 13)
-        Me.Label10.TabIndex = 228
-        Me.Label10.Text = "Moneda"
-        '
-        'TxtPrecioUnitario1
-        '
-        Me.TxtPrecioUnitario1.Location = New System.Drawing.Point(98, 154)
-        Me.TxtPrecioUnitario1.Name = "TxtPrecioUnitario1"
-        Me.TxtPrecioUnitario1.Size = New System.Drawing.Size(122, 20)
-        Me.TxtPrecioUnitario1.TabIndex = 227
-        Me.TxtPrecioUnitario1.Tag = "0.00"
-        '
-        'Label9
-        '
-        Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(14, 155)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(74, 13)
-        Me.Label9.TabIndex = 171
-        Me.Label9.Text = "Precio Untario"
-        '
-        'DtpFinContrato1
-        '
-        Me.DtpFinContrato1.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DtpFinContrato1.Location = New System.Drawing.Point(97, 129)
-        Me.DtpFinContrato1.Name = "DtpFinContrato1"
-        Me.DtpFinContrato1.Size = New System.Drawing.Size(123, 20)
-        Me.DtpFinContrato1.TabIndex = 170
-        Me.DtpFinContrato1.Value = New Date(2021, 3, 6, 9, 40, 39, 0)
-        '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(25, 135)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(64, 13)
-        Me.Label8.TabIndex = 169
-        Me.Label8.Text = "Fin Contrato"
-        '
-        'DtpInicioContrato1
-        '
-        Me.DtpInicioContrato1.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DtpInicioContrato1.Location = New System.Drawing.Point(97, 105)
-        Me.DtpInicioContrato1.Name = "DtpInicioContrato1"
-        Me.DtpInicioContrato1.Size = New System.Drawing.Size(123, 20)
-        Me.DtpInicioContrato1.TabIndex = 168
-        Me.DtpInicioContrato1.Value = New Date(2021, 3, 6, 9, 40, 39, 0)
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(14, 111)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(75, 13)
-        Me.Label7.TabIndex = 167
-        Me.Label7.Text = "Inicio Contrato"
-        '
-        'CmbFrecuencia1
-        '
-        Me.CmbFrecuencia1.FormattingEnabled = True
-        Me.CmbFrecuencia1.Location = New System.Drawing.Point(99, 51)
-        Me.CmbFrecuencia1.Name = "CmbFrecuencia1"
-        Me.CmbFrecuencia1.Size = New System.Drawing.Size(121, 21)
-        Me.CmbFrecuencia1.TabIndex = 166
-        Me.CmbFrecuencia1.Text = "4"
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(28, 54)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(60, 13)
-        Me.Label6.TabIndex = 165
-        Me.Label6.Text = "Frecuencia"
-        '
-        'CmbContrato1
-        '
-        Me.CmbContrato1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CmbContrato1.FormattingEnabled = True
-        Me.CmbContrato1.Location = New System.Drawing.Point(99, 25)
-        Me.CmbContrato1.Name = "CmbContrato1"
-        Me.CmbContrato1.Size = New System.Drawing.Size(121, 21)
-        Me.CmbContrato1.TabIndex = 164
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(19, 28)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(69, 13)
-        Me.Label5.TabIndex = 163
-        Me.Label5.Text = "Tipo Servicio"
-        '
         'TabPage3
         '
         Me.TabPage3.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
@@ -1004,14 +1082,15 @@ Partial Class FrmContratosNuevos
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
-        Me.GroupBox5.ResumeLayout(False)
-        Me.GroupBox5.PerformLayout()
-        CType(Me.CboCodigoBodega2, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.TxtNumero2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TxtNumero1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TDBGridTipoContrato, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox5.ResumeLayout(False)
+        Me.GroupBox5.PerformLayout()
+        CType(Me.CboCodigoBodega2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TxtNumero2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage3.ResumeLayout(False)
         Me.GroupBox7.ResumeLayout(False)
         CType(Me.TrueDBGridContrato2, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1097,6 +1176,11 @@ Partial Class FrmContratosNuevos
     Friend WithEvents ChkContratoVariable As System.Windows.Forms.CheckBox
     Friend WithEvents Label24 As System.Windows.Forms.Label
     Friend WithEvents TxtDireccionCotrato2 As System.Windows.Forms.TextBox
-    Friend WithEvents Label23 As System.Windows.Forms.Label
     Friend WithEvents TxtDireccionContrato As System.Windows.Forms.TextBox
+    Friend WithEvents TDBGridTipoContrato As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents CmdEliminar As System.Windows.Forms.Button
+    Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents CmdAjustes As System.Windows.Forms.Button
+    Friend WithEvents LblNuevo As System.Windows.Forms.Label
+    Friend WithEvents Label23 As System.Windows.Forms.Label
 End Class

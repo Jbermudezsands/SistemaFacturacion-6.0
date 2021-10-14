@@ -9524,8 +9524,21 @@ Public Class FrmFacturas
                 '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-                Select Case Me.CboTipoProducto.Text
-                    Case "Factura"
+            Select Case Me.CboTipoProducto.Text
+
+                Case "Factura"
+
+                    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    '///////////////////////////////////SELECCIONO LA IMPRESORA CONFIGURADA PARA LAS FACTURAS /////////////
+                    '///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    Dim pd As New PrintDocument
+                    Dim ImpresoraFactura As String
+                    Dim s_Default_Printer As String = pd.PrinterSettings.PrinterName
+
+                    Impresora_Defecto = s_Default_Printer
+                    ImpresoraFactura = BuscaImpresora("Factura")
+                    Establecer_Impresora(ImpresoraFactura)
+
 
                     TipoImpresion = Me.CboTipoProducto.Text
 
@@ -9675,53 +9688,53 @@ Public Class FrmFacturas
 
 
 
-                    Case "Cotizacion"
-                        TipoImpresion = Me.CboTipoProducto.Text
-                        SqlString = "SELECT  *  FROM Impresion WHERE (Impresion = '" & TipoImpresion & " ')"
-                        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-                        DataAdapter.Fill(DataSet, "Coordenadas")
-                        If Not DataSet.Tables("Coordenadas").Rows.Count = 0 Then
-                            Select Case DataSet.Tables("Coordenadas").Rows(0)("Configuracion")
-                                Case "Papel en Blanco"
-                                    SQL.ConnectionString = Conexion
-                                    SQL.SQL = SQlDetalle
-                                    ArepFacturas.DataSource = SQL
-                                    ArepFacturas.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
-                                    ArepFacturas.TxtMetodo.Visible = False
+                Case "Cotizacion"
+                    TipoImpresion = Me.CboTipoProducto.Text
+                    SqlString = "SELECT  *  FROM Impresion WHERE (Impresion = '" & TipoImpresion & " ')"
+                    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                    DataAdapter.Fill(DataSet, "Coordenadas")
+                    If Not DataSet.Tables("Coordenadas").Rows.Count = 0 Then
+                        Select Case DataSet.Tables("Coordenadas").Rows(0)("Configuracion")
+                            Case "Papel en Blanco"
+                                SQL.ConnectionString = Conexion
+                                SQL.SQL = SQlDetalle
+                                ArepFacturas.DataSource = SQL
+                                ArepFacturas.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+                                ArepFacturas.TxtMetodo.Visible = False
 
-                                    Dim ViewerForm As New FrmViewer()
-                                    ViewerForm.arvMain.Document = ArepFacturas.Document
-                                    ViewerForm.Show()
-                                    ArepFacturas.Run(True)
-                                Case "Cotizacion con Fotos"
-                                    SQL.ConnectionString = Conexion
-                                    SQL.SQL = SQlDetalle
-                                    ArepCotizacionFoto.DataSource = SQL
-                                    ArepCotizacionFoto.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
-                                    ArepCotizacionFoto.TxtMetodo.Visible = False
+                                Dim ViewerForm As New FrmViewer()
+                                ViewerForm.arvMain.Document = ArepFacturas.Document
+                                ViewerForm.Show()
+                                ArepFacturas.Run(True)
+                            Case "Cotizacion con Fotos"
+                                SQL.ConnectionString = Conexion
+                                SQL.SQL = SQlDetalle
+                                ArepCotizacionFoto.DataSource = SQL
+                                ArepCotizacionFoto.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+                                ArepCotizacionFoto.TxtMetodo.Visible = False
 
-                                    Dim ViewerForm As New FrmViewer()
-                                    ViewerForm.arvMain.Document = ArepCotizacionFoto.Document
-                                    ViewerForm.Show()
-                                    ArepCotizacionFoto.Run(True)
-
-
-                            End Select
-                        End If
+                                Dim ViewerForm As New FrmViewer()
+                                ViewerForm.arvMain.Document = ArepCotizacionFoto.Document
+                                ViewerForm.Show()
+                                ArepCotizacionFoto.Run(True)
 
 
-                    Case Else
-                        SQL.ConnectionString = Conexion
-                        SQL.SQL = SQlDetalle
-                        ArepFacturas.DataSource = SQL
-                        ArepFacturas.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
-                        Dim ViewerForm As New FrmViewer()
-                        ViewerForm.arvMain.Document = ArepFacturas.Document
-                        ViewerForm.Show()
-                        ArepFacturas.Run(False)
-                        'ArepFacturas.Run(False)
-                        'ArepFacturas.Show()
-                End Select
+                        End Select
+                    End If
+
+
+                Case Else
+                    SQL.ConnectionString = Conexion
+                    SQL.SQL = SQlDetalle
+                    ArepFacturas.DataSource = SQL
+                    ArepFacturas.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+                    Dim ViewerForm As New FrmViewer()
+                    ViewerForm.arvMain.Document = ArepFacturas.Document
+                    ViewerForm.Show()
+                    ArepFacturas.Run(False)
+                    'ArepFacturas.Run(False)
+                    'ArepFacturas.Show()
+            End Select
 
 
                 '//////////////////////////////////////////////////////////////////////////////////////////////
@@ -10805,6 +10818,17 @@ Public Class FrmFacturas
 
             Select Case Me.CboTipoProducto.Text
                 Case "Factura"
+
+                    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    '///////////////////////////////////SELECCIONO LA IMPRESORA CONFIGURADA PARA LAS FACTURAS /////////////
+                    '///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    Dim pd As New PrintDocument
+                    Dim ImpresoraFactura As String
+                    Dim s_Default_Printer As String = pd.PrinterSettings.PrinterName
+
+                    Impresora_Defecto = s_Default_Printer
+                    ImpresoraFactura = BuscaImpresora("Factura")
+                    Establecer_Impresora(ImpresoraFactura)
 
                     TipoImpresion = Me.CboTipoProducto.Text
 

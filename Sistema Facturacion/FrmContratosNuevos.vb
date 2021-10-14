@@ -3,9 +3,41 @@ Imports System.Data.SqlClient
 
 Public Class FrmContratosNuevos
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
-    Public NumeroContrato As Double, Nuevo As Boolean, CodigoProducto As String
+    Public NumeroContrato As Double, Nuevo As Boolean, CodigoProducto As String, Agregar As Boolean = False, idDetalleContrato As Double = 0
     Public dsContrato1 As New DataSet, daContrato1 As New SqlClient.SqlDataAdapter, CmdBuilder1 As New SqlCommandBuilder
     Public dsContrato2 As New DataSet, daContrato2 As New SqlClient.SqlDataAdapter, CmdBuilder2 As New SqlCommandBuilder
+    Public dsDetalleContrato As New DataSet, daDetalleContrato As New SqlClient.SqlDataAdapter, CmdBuilderDetalle As New SqlCommandBuilder
+    Public Sub GuardarDetalleContrato(ByVal idDetalleContrato As Double, ByVal Numero_Contrato As Double, ByVal IdContrato As Double, ByVal Tipo_Servicios As String, ByVal Frecuencia As Double, ByVal Inicio_Contrato As Date, ByVal Fin_Contrato As Date, ByVal Precio_Unitario As Double, ByVal Moneda As String, ByVal Activo As Boolean, ByVal Anulado As Boolean, ByVal Retencion1 As Boolean, ByVal Retencion2 As Boolean, ByVal Referencia As String, ByVal DiasFactura As Double, ByVal CodBodega As String, ByVal Contrato_Variable As Boolean, ByVal Direccion As String)
+        Dim SQLClientes As String
+        Dim DataAdapter As New SqlClient.SqlDataAdapter, Dataset As New DataSet
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+
+
+        SQLClientes = "SELECT Detalle_Contratos.*  FROM Detalle_Contratos WHERE (IdDetalleContrato = " & idDetalleContrato & ") AND (Numero_Contrato = " & NumeroContrato & ")"
+        DataAdapter = New SqlClient.SqlDataAdapter(SQLClientes, MiConexion)
+        DataAdapter.Fill(Dataset, "Clientes")
+        If Not Dataset.Tables("Clientes").Rows.Count = 0 Then
+            '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
+            StrSqlUpdate = "UPDATE [Detalle_Contratos] SET [Numero_Contrato] = " & NumeroContrato & " ,[IdContrato] = " & IdContrato & " ,[Tipo_Servicios] =  '" & Tipo_Servicios & "' ,[Frecuencia] = '" & Frecuencia & "' ,[Inicio_Contrato] = '" & Format(Inicio_Contrato, "dd/MM/yyyy") & "' ,[Fin_Contrato] =  '" & Format(Fin_Contrato, "dd/MM/yyyy") & "' ,[Precio_Unitario] = " & Precio_Unitario & " ,[Moneda] = '" & Moneda & "' ,[Activo] = '" & Activo & "' ,[Anulado] = '" & Anulado & "' ,[Retencion1] = '" & Retencion1 & "' ,[Retencion2] = '" & Retencion2 & "' ,[Referencia] = '" & Referencia & "' ,[DiasFactura] = " & DiasFactura & " ,[CodBodega] = '" & CodBodega & "' ,[Contrato_Variable] = '" & Contrato_Variable & "' ,[Direccion] = '" & Direccion & "' WHERE (IdDetalleContrato = " & idDetalleContrato & ") AND (Numero_Contrato = " & NumeroContrato & ")"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+        Else
+            '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
+            StrSqlUpdate = "INSERT INTO [Detalle_Contratos] ([Numero_Contrato],[IdContrato],[Tipo_Servicios],[Frecuencia],[Inicio_Contrato],[Fin_Contrato],[Precio_Unitario] ,[Moneda] ,[Activo],[Anulado] ,[Retencion1],[Retencion2],[Exonerado] ,[Referencia] ,[DiasFactura],[CodBodega],[Contrato_Variable],[Direccion]) " & _
+                           "VALUES (" & NumeroContrato & " ," & IdContrato & " ,'" & Tipo_Servicios & "','" & Frecuencia & "' ,'" & Format(Inicio_Contrato, "dd/MM/yyyy") & "' ,'" & Format(Fin_Contrato, "dd/MM/yyyy") & "' ," & Precio_Unitario & " ,'" & Moneda & "' ,'" & Activo & "' ,'" & Anulado & "' ,'" & Retencion1 & "' ,'" & Retencion2 & "' ,'" & Referencia & "' ," & DiasFactura & " , '" & CodBodega & "' ,'" & Contrato_Variable & "' ,'" & Direccion & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+        End If
+    End Sub
+
+
+
     Public Sub InsertarRowGridContrato1()
         Dim oTabla As DataTable, iPosicion As Double, CodigoProducto As String
 
@@ -205,6 +237,9 @@ Public Class FrmContratosNuevos
                 Me.TxtObservaciones.Text = DataSet.Tables("Contrato").Rows(0)("Observaciones")
             End If
 
+            If Not IsDBNull(DataSet.Tables("Contrato").Rows(0)("Frecuencia")) Then
+                Me.CboReferencia.Text = DataSet.Tables("Contrato").Rows(0)("Frecuencia")
+            End If
 
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '//////////////////////////////CONSULTO EL DETALLE DE LOS CONTRATOS /////////////////////////////////
@@ -212,97 +247,108 @@ Public Class FrmContratosNuevos
             SqlString = "SELECT  TOP (2)  IdDetalleContrato, Numero_Contrato, IdContrato, Tipo_Servicios, Frecuencia, Inicio_Contrato, Fin_Contrato, Precio_Unitario, Moneda, Activo, Anulado, Retencion1, Retencion2, Exonerado, Referencia, DiasFactura, CodBodega, Contrato_Variable, Direccion FROM Detalle_Contratos WHERE (Numero_Contrato = " & NumeroContrato & ") "
             DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
             DataAdapter.Fill(DataSet, "DetalleContrato")
-            Cont = DataSet.Tables("DetalleContrato").Rows.Count
-            Do While Cont > i
 
-                If i = 1 Then
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("Activo")) Then
-                        Me.ChkActivo.Checked = DataSet.Tables("Contrato").Rows(i)("Activo")
-                    End If
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("Exonerado")) Then
-                        Me.ChkExonerado.Checked = DataSet.Tables("Contrato").Rows(i)("Exonerado")
-                    End If
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("Tipo_Servicios1")) Then
-                        Me.CmbContrato1.Text = DataSet.Tables("Contrato").Rows(i)("Tipo_Servicios1")
-                    End If
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("Frecuencia")) Then
-                        Me.CmbFrecuencia1.Text = DataSet.Tables("Contrato").Rows(i)("Frecuencia")
-                    End If
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("Moneda")) Then
-                        Me.CmbMoneda1.Text = DataSet.Tables("Contrato").Rows(i)("Moneda")
-                    End If
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("Inicio_Contrato")) Then
-                        Me.DtpInicioContrato1.Text = DataSet.Tables("Contrato").Rows(i)("Inicio_Contrato")
-                    End If
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("Fin_Contrato")) Then
-                        Me.DtpFinContrato1.Value = DataSet.Tables("Contrato").Rows(i)("Fin_Contrato")
-                    End If
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("Precio_Unitario")) Then
-                        Me.TxtPrecioUnitario1.Text = DataSet.Tables("Contrato").Rows(i)("Precio_Unitario")
-                    End If
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("DiasFactura1")) Then
-                        Me.TxtNumero1.Value = DataSet.Tables("Contrato").Rows(i)("DiasFactura1")
-                    End If
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("CodBodega1")) Then
-                        Me.CboCodigoBodega.Text = DataSet.Tables("Contrato").Rows(i)("CodBodega1")
-                    End If
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("Contrato_Variable")) Then
-                        Me.ChkContratoVariable.Checked = DataSet.Tables("Contrato").Rows(i)("Contrato_Variable")
-                    End If
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("Direccion")) Then
-                        Me.TxtDireccionContrato.Text = DataSet.Tables("Contrato").Rows(i)("Direccion")
-                    End If
+            dsDetalleContrato = New DataSet
+            daDetalleContrato = New SqlDataAdapter(SqlString, MiConexion)
+            CmdBuilderDetalle = New SqlCommandBuilder(daDetalleContrato)
+            daDetalleContrato.Fill(dsDetalleContrato, "DetalleContrato")
+            Me.TDBGridTipoContrato.DataSource = dsContrato1.Tables("DetalleContrato")
+            'Cont = DataSet.Tables("DetalleContrato").Rows.Count
+            'Do While Cont > i
 
-                ElseIf i = 2 Then
+            '    If i = 1 Then
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("Activo")) Then
+            '            Me.ChkActivo.Checked = DataSet.Tables("DetalleContrato").Rows(i)("Activo")
+            '        End If
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("Exonerado")) Then
+            '            Me.ChkExonerado.Checked = DataSet.Tables("DetalleContrato").Rows(i)("Exonerado")
+            '        End If
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("Tipo_Servicios1")) Then
+            '            Me.CmbContrato1.Text = DataSet.Tables("DetalleContrato").Rows(i)("Tipo_Servicios1")
+            '        End If
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("Frecuencia")) Then
+            '            Me.CmbFrecuencia1.Text = DataSet.Tables("DetalleContrato").Rows(i)("Frecuencia")
+            '        End If
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("Moneda")) Then
+            '            Me.CmbMoneda1.Text = DataSet.Tables("DetalleContrato").Rows(i)("Moneda")
+            '        End If
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("Inicio_Contrato")) Then
+            '            Me.DtpInicioContrato1.Text = DataSet.Tables("DetalleContrato").Rows(i)("Inicio_Contrato")
+            '        End If
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("Fin_Contrato")) Then
+            '            Me.DtpFinContrato1.Value = DataSet.Tables("DetalleContrato").Rows(i)("Fin_Contrato")
+            '        End If
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("Precio_Unitario")) Then
+            '            Me.TxtPrecioUnitario1.Text = DataSet.Tables("DetalleContrato").Rows(i)("Precio_Unitario")
+            '        End If
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("DiasFactura1")) Then
+            '            Me.TxtNumero1.Value = DataSet.Tables("DetalleContrato").Rows(i)("DiasFactura1")
+            '        End If
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("CodBodega1")) Then
+            '            Me.CboCodigoBodega.Text = DataSet.Tables("DetalleContrato").Rows(i)("CodBodega1")
+            '        End If
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("Contrato_Variable")) Then
+            '            Me.ChkContratoVariable.Checked = DataSet.Tables("DetalleContrato").Rows(i)("Contrato_Variable")
+            '        End If
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("Direccion")) Then
+            '            Me.TxtDireccionContrato.Text = DataSet.Tables("DetalleContrato").Rows(i)("Direccion")
+            '        End If
 
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("Frecuencia2")) Then
-                        Me.CmbFrecuencia2.Text = DataSet.Tables("Contrato").Rows(i)("Frecuencia2")
-                    End If
+            '    ElseIf i = 2 Then
 
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("Moneda2")) Then
-                        Me.CmbMoneda2.Text = DataSet.Tables("Contrato").Rows(i)("Moneda2")
-                    End If
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("Frecuencia2")) Then
+            '            Me.CmbFrecuencia2.Text = DataSet.Tables("DetalleContrato").Rows(i)("Frecuencia2")
+            '        End If
 
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("Inicio_Contrato2")) Then
-                        Me.DtpInicioContrato2.Text = DataSet.Tables("Contrato").Rows(i)("Inicio_Contrato2")
-                    End If
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("Fin_Contrato2")) Then
-                        Me.DtpFinContrato2.Value = DataSet.Tables("Contrato").Rows(i)("Fin_Contrato2")
-                    End If
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("Moneda2")) Then
+            '            Me.CmbMoneda2.Text = DataSet.Tables("DetalleContrato").Rows(i)("Moneda2")
+            '        End If
 
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("Precio_Unitario2")) Then
-                        Me.TxtPrecioUnitario2.Text = DataSet.Tables("Contrato").Rows(i)("Precio_Unitario2")
-                    End If
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("Activo2")) Then
-                        Me.ChkActivo2.Checked = DataSet.Tables("Contrato").Rows(i)("Activo2")
-                    End If
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("Inicio_Contrato2")) Then
+            '            Me.DtpInicioContrato2.Text = DataSet.Tables("DetalleContrato").Rows(i)("Inicio_Contrato2")
+            '        End If
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("Fin_Contrato2")) Then
+            '            Me.DtpFinContrato2.Value = DataSet.Tables("DetalleContrato").Rows(i)("Fin_Contrato2")
+            '        End If
 
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("DiasFactura2")) Then
-                        Me.TxtNumero2.Value = DataSet.Tables("Contrato").Rows(i)("DiasFactura2")
-                    End If
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("Precio_Unitario2")) Then
+            '            Me.TxtPrecioUnitario2.Text = DataSet.Tables("DetalleContrato").Rows(i)("Precio_Unitario2")
+            '        End If
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("Activo2")) Then
+            '            Me.ChkActivo2.Checked = DataSet.Tables("DetalleContrato").Rows(i)("Activo2")
+            '        End If
 
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("CodBodega2")) Then
-                        Me.CboCodigoBodega2.Text = DataSet.Tables("Contrato").Rows(i)("CodBodega2")
-                    End If
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("DiasFactura2")) Then
+            '            Me.TxtNumero2.Value = DataSet.Tables("DetalleContrato").Rows(i)("DiasFactura2")
+            '        End If
 
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("Contrato_Variable2")) Then
-                        Me.ChkContratoVariable2.Checked = DataSet.Tables("Contrato").Rows(i)("Contrato_Variable2")
-                    End If
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("CodBodega2")) Then
+            '            Me.CboCodigoBodega2.Text = DataSet.Tables("DetalleContrato").Rows(i)("CodBodega2")
+            '        End If
 
-                    If Not IsDBNull(DataSet.Tables("Contrato").Rows(i)("Direccion2")) Then
-                        Me.TxtDireccionCotrato2.Text = DataSet.Tables("Contrato").Rows(i)("Direccion2")
-                    End If
-                End If
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("Contrato_Variable2")) Then
+            '            Me.ChkContratoVariable2.Checked = DataSet.Tables("DetalleContrato").Rows(i)("Contrato_Variable2")
+            '        End If
 
-
-
-
+            '        If Not IsDBNull(DataSet.Tables("DetalleContrato").Rows(i)("Direccion2")) Then
+            '            Me.TxtDireccionCotrato2.Text = DataSet.Tables("DetalleContrato").Rows(i)("Direccion2")
+            '        End If
+            '    End If
 
 
 
 
-                i = i + 1
-            Loop
+
+
+
+
+            '    i = i + 1
+            'Loop
+
+
+
+
+
 
             DataSet.Tables("DetalleContrato").Reset()
 
@@ -576,8 +622,8 @@ Public Class FrmContratosNuevos
 
         If Nuevo = False Then
             ConsecutivoCompra = BuscaConsecutivo("Numero_Contrato")
-            NumeroCompra = Format(ConsecutivoCompra, "0000#")
-            Me.LblNumeroContrato.Text = NumeroCompra
+            NumeroContrato = Format(ConsecutivoCompra, "0000#")
+            Me.LblNumeroContrato.Text = NumeroContrato
         End If
 
 
@@ -634,6 +680,7 @@ Public Class FrmContratosNuevos
 
         End If
 
+
         LimpiaContrato()
 
 
@@ -669,7 +716,7 @@ Public Class FrmContratosNuevos
 
     Private Sub TrueDBGridComponentes_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridContrato1.ButtonClick
 
-        Quien = "CodigoProductosFactura"
+        Quien = "CodigoProductosContratos"
         My.Forms.FrmConsultas.ShowDialog()
         If My.Forms.FrmConsultas.Codigo = "-----0-----" Then
             Exit Sub
@@ -828,6 +875,138 @@ Public Class FrmContratosNuevos
     End Sub
 
     Private Sub BtnOrdenCompra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnOrdenCompra.Click
+
+    End Sub
+
+    Private Sub LblNumeroContrato_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles LblNumeroContrato.Click
+
+    End Sub
+
+    Private Sub TabPage1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TabPage1.Click
+
+    End Sub
+
+    Private Sub CmdAjustes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdAjustes.Click
+        Me.LblNuevo.Text = "NUEVO"
+        Me.Agregar = True
+    End Sub
+
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+        Dim SqlString As String, DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet
+        Dim idContrato1 As Double, idContrato2 As Double
+        If Me.Agregar = True Then
+            Button7_Click(sender, e)
+
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '/////////////////////////////////////BUSCO EL ID DE LOS TIPOS DE CONTRATOS ////////////////////////////////////
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            SqlString = "SELECT idTipoContrato, TipoContrato, Activo FROM TipoContrato WHERE (TipoContrato = '" & Me.CmbContrato1.Text & "')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            DataAdapter.Fill(DataSet, "Contrato")
+            If Not DataSet.Tables("Contrato").Rows.Count = 0 Then
+                IdContrato1 = DataSet.Tables("Contrato").Rows(0)("idTipoContrato")
+            End If
+
+            SqlString = "SELECT idTipoContrato, TipoContrato, Activo FROM TipoContrato WHERE (TipoContrato = '" & Me.CmbContrato2.Text & "')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            DataAdapter.Fill(DataSet, "Contrato2")
+            If Not DataSet.Tables("Contrato2").Rows.Count = 0 Then
+                IdContrato2 = DataSet.Tables("Contrato2").Rows(0)("idTipoContrato")
+            End If
+
+            If IdContrato2 = 0 Then
+                IdContrato2 = IdContrato1
+            End If
+
+
+            GuardarDetalleContrato(0, NumeroContrato, idContrato1, Me.CmbContrato1.Text, Me.CmbFrecuencia1.Text, Me.DtpInicioContrato1.Value, Me.DtpFinContrato1.Value, Me.TxtPrecioUnitario1.Text, Me.CmbMoneda1.Text, Me.ChkActivo.Checked, False, False, False, Me.CmbFrecuencia1.Text, Me.TxtNumero1.Value, Me.CboCodigoBodega.Text, Me.ChkContratoVariable.Checked, Me.TxtDireccionContrato.Text)
+
+        End If
+    End Sub
+
+    Private Sub TDBGridTipoContrato_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TDBGridTipoContrato.Click
+
+    End Sub
+
+    Private Sub TDBGridTipoContrato_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles TDBGridTipoContrato.DoubleClick
+        Me.LblNuevo.Text = "EDITAR"
+        Me.Agregar = False
+
+        Dim SQLClientes As String
+        Dim DataAdapter As New SqlClient.SqlDataAdapter, Dataset As New DataSet
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+
+        If Me.TDBGridTipoContrato.RowCount <> 0 Then
+
+            idDetalleContrato = Me.TDBGridTipoContrato.Columns("IdDetalleTipoContrato").Text
+            NumeroContrato = Me.TDBGridTipoContrato.Columns("NumeroContrato").Text
+
+
+            SQLClientes = "SELECT Detalle_Contratos.*  FROM Detalle_Contratos WHERE (IdDetalleContrato = " & idDetalleContrato & ") AND (Numero_Contrato = " & NumeroContrato & ")"
+            DataAdapter = New SqlClient.SqlDataAdapter(SQLClientes, MiConexion)
+            DataAdapter.Fill(Dataset, "DetalleContrato")
+            If Not Dataset.Tables("DetalleContrato").Rows.Count = 0 Then
+
+                If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Activo")) Then
+                    Me.ChkActivo.Checked = Dataset.Tables("DetalleContrato").Rows(0)("Activo")
+                End If
+                If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Exonerado")) Then
+                    Me.ChkExonerado.Checked = Dataset.Tables("DetalleContrato").Rows(0)("Exonerado")
+                End If
+                If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Tipo_Servicios1")) Then
+                    Me.CmbContrato1.Text = Dataset.Tables("DetalleContrato").Rows(0)("Tipo_Servicios1")
+                End If
+                If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Frecuencia")) Then
+                    Me.CmbFrecuencia1.Text = Dataset.Tables("DetalleContrato").Rows(0)("Frecuencia")
+                End If
+                If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Moneda")) Then
+                    Me.CmbMoneda1.Text = Dataset.Tables("DetalleContrato").Rows(0)("Moneda")
+                End If
+                If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Inicio_Contrato")) Then
+                    Me.DtpInicioContrato1.Text = Dataset.Tables("DetalleContrato").Rows(0)("Inicio_Contrato")
+                End If
+                If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Fin_Contrato")) Then
+                    Me.DtpFinContrato1.Value = Dataset.Tables("DetalleContrato").Rows(0)("Fin_Contrato")
+                End If
+                If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Precio_Unitario")) Then
+                    Me.TxtPrecioUnitario1.Text = Dataset.Tables("DetalleContrato").Rows(0)("Precio_Unitario")
+                End If
+                If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("DiasFactura1")) Then
+                    Me.TxtNumero1.Value = Dataset.Tables("DetalleContrato").Rows(0)("DiasFactura1")
+                End If
+                If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("CodBodega1")) Then
+                    Me.CboCodigoBodega.Text = Dataset.Tables("DetalleContrato").Rows(0)("CodBodega1")
+                End If
+                If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Contrato_Variable")) Then
+                    Me.ChkContratoVariable.Checked = Dataset.Tables("DetalleContrato").Rows(0)("Contrato_Variable")
+                End If
+                If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Direccion")) Then
+                    Me.TxtDireccionContrato.Text = Dataset.Tables("DetalleContrato").Rows(0)("Direccion")
+                End If
+
+
+            Else
+
+                Me.CmbContrato1.Text = ""
+                Me.CmbContrato2.Text = ""
+                Me.CmbFrecuencia1.Text = ""
+                Me.CmbFrecuencia2.Text = ""
+                Me.CmbMoneda1.Text = ""
+                Me.CmbMoneda2.Text = ""
+                Me.DtpInicioContrato1.Text = Now
+                Me.DtpFinContrato1.Value = Now
+                Me.DtpInicioContrato2.Text = Now
+                Me.DtpFinContrato2.Value = Now
+                Me.TxtPrecioUnitario1.Text = ""
+                Me.TxtPrecioUnitario2.Text = ""
+
+                Me.TxtDireccionCotrato2.Text = ""
+                Me.TxtDireccionContrato.Text = ""
+
+
+            End If
+
+        End If
 
     End Sub
 End Class

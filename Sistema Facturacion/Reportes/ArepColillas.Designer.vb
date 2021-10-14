@@ -1620,10 +1620,10 @@ Partial Public Class ArepColillas
             "al Catalog=SistemaFacturacionMulukuku;Data Source=JUANBERMUDEZ-PC\SQL2014"
         OleDBDataSource1.SQL = resources.GetString("OleDBDataSource1.SQL")
         Me.DataSource = OleDBDataSource1
-        Me.PageSettings.Margins.Bottom = 0.5!
-        Me.PageSettings.Margins.Left = 0.7!
-        Me.PageSettings.Margins.Right = 0.2!
-        Me.PageSettings.Margins.Top = 0.5!
+        Me.PageSettings.Margins.Bottom = 0.1!
+        Me.PageSettings.Margins.Left = 0.1!
+        Me.PageSettings.Margins.Right = 0.1!
+        Me.PageSettings.Margins.Top = 0.1!
         Me.PageSettings.PaperHeight = 11.0!
         Me.PageSettings.PaperWidth = 8.5!
         Me.PrintWidth = 7.604167!

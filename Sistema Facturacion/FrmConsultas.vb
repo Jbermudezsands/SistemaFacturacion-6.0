@@ -29,6 +29,42 @@ Public Class FrmConsultas
             Dim DataAdapter As New SqlClient.SqlDataAdapter, SQlProductos As String
 
             Select Case Quien
+                Case "CodigoProductosContratos"
+                    Dim CodigoBodega As String = ""
+
+                    Me.Size = New System.Drawing.Size(988, 424)
+                    Me.Location = New Point(160, 160)
+
+                    Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
+                    Me.ButtonSalir.Location = New Point(880, 305)
+
+                    'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Precio_Lista, Existencia_Unidades,Cod_Iva FROM Productos"
+                    SQlProductos = "SELECT DISTINCT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, Productos.Precio_Lista, DetalleBodegas.Existencia, Productos.Cod_Iva FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos WHERE (Productos.Activo = 'Activo') ORDER BY Productos.Cod_Productos"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    MiConexion.Open()
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Codigo"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(0).Width = 70
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 170
+                    Me.TrueDBGridConsultas.Columns(2).Caption = "Tipo"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(2).Width = 65
+                    Me.TrueDBGridConsultas.Columns(3).Caption = "Precio $"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(3).Width = 65
+                    Me.TrueDBGridConsultas.Columns(3).NumberFormat = "##,##0.00"
+                    Me.TrueDBGridConsultas.Columns(4).Caption = "Existencia"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(4).Width = 65
+                    Me.TrueDBGridConsultas.Columns(4).NumberFormat = "##,##0.00"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(5).Visible = False
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 620
+
+                    MiConexion.Close()
                 Case "Contrato"
                     Dim CodigoBodega As String = ""
 
@@ -1337,6 +1373,12 @@ Public Class FrmConsultas
         TipoProducto = ""
 
         Select Case Quien
+            Case "CodigoProductosContratos"
+                Posicion = Me.BindingConsultas.Position
+                Codigo = Me.BindingConsultas.Item(Posicion)("Cod_Productos")
+                Descripcion = Me.BindingConsultas.Item(Posicion)("Descripcion_Producto")
+                Precio = Me.BindingConsultas.Item(Posicion)("Precio_Lista")
+                CodIva = Me.BindingConsultas.Item(Posicion)("Cod_Iva")
             Case "Contrato"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("Numero_Contrato")
