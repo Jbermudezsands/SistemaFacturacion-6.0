@@ -7899,7 +7899,8 @@ errSub:
                 TasaCambio = BuscaTasaCambio(FrmCompras.DTPFecha.Value)
 
                 If TasaCambio = 0 Then
-                    MsgBox("la Tasa de Cambio es Cero", MsgBoxStyle.Critical, "Zeus Facturacion")
+                    MsgBox("la Tasa de Cambio es Cero, Temporalmente se agrega la Tasa Cambio igual a 1 ", MsgBoxStyle.Critical, "Zeus Facturacion")
+                    TasaCambio = 1
                 End If
 
                 If (Existencia + CantidadCompra) <> 0 Then
@@ -7916,7 +7917,7 @@ errSub:
                 ExistenciaTotal = Existencia + CantidadCompra
 
 
-
+                MiConexion.Close()
                 '///////////////////////////////////////ACTUALIZO LA EXISTENCIA DE PRODUCTOS////////////////////////////////////////////////////////////////
                 SqlUpdate = "UPDATE [Productos] SET [Existencia_Unidades] = " & ExistenciaTotal & ",[Costo_Promedio] = " & CostoPromedio & " ,[Costo_Promedio_Dolar] = " & CostoPromedioDolar & ", [Ultimo_Precio_Compra] = " & PrecioCompra & " ,[Existencia_Dinero] = " & ExistenciaTotal * CostoPromedio & ",[Existencia_DineroDolar] = " & ExistenciaTotal * CostoPromedioDolar & " " & _
                             "WHERE (Cod_Productos = '" & CodigoProductos & "')"
