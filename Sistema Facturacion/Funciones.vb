@@ -5294,10 +5294,27 @@ errSub:
         ImporteD = 0
         Do While Iposicion < DataSet.Tables("Compras").Rows.Count
             MonedaCompra = DataSet.Tables("Compras").Rows(Iposicion)("MonedaCompra")
-            PrecioUnitario = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Precio_Neto"))
-            CantidadCompras = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Cantidad")) + CantidadCompras
-            Importe = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Importe"))
-            ImporteD = Trim(DataSet.Tables("Compras").Rows(Iposicion)("ImporteD"))
+            If Not IsDBNull(DataSet.Tables("Compras").Rows(Iposicion)("Precio_Neto")) Then
+                PrecioUnitario = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Precio_Neto"))
+            Else
+                PrecioUnitario = 0
+            End If
+            If Not IsDBNull(DataSet.Tables("Compras").Rows(Iposicion)("Cantidad")) Then
+                CantidadCompras = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Cantidad")) + CantidadCompras
+            Else
+                CantidadCompras = 0
+            End If
+            If Not IsDBNull(DataSet.Tables("Compras").Rows(Iposicion)("Importe")) Then
+                Importe = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Importe"))
+            Else
+                Importe = 0
+            End If
+            If Not IsDBNull(DataSet.Tables("Compras").Rows(Iposicion)("ImporteD")) Then
+                ImporteD = Trim(DataSet.Tables("Compras").Rows(Iposicion)("ImporteD"))
+            Else
+                ImporteD = 0
+            End If
+
             TotalCompras = TotalCompras + Importe
             TotalComprasD = TotalComprasD + ImporteD
             Iposicion = Iposicion + 1
