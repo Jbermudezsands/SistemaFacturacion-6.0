@@ -36,23 +36,23 @@ Public Class FrmConfigurar
                     End If
                 End If
 
-                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("CharLogo")) Then
-                    myImagenConsulta = BytesToImagen(consultaByte(DataSet.Tables("DatosEmpresa").Rows(0)("CharLogo")))
-                    ImgLogo.Image = myImagenConsulta
-                End If
-
-                'If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
-                '    Me.TxtRutaLogo.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
-
-                '    ImgLogo.ImageLocation = Me.TxtRutaLogo.Text
-                '    MyRuta = Dir(Me.TxtRutaLogo.Text)
-                '    If MyRuta <> "" Then
-                '        ImgLogo.Load()
-                '    Else
-                '        MsgBox("No Existe imagen para esta ruta", MsgBoxStyle.Critical, "Zeus Facturacion")
-                '        Exit Sub
-                '    End If
+                'If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("CharLogo")) Then
+                '    myImagenConsulta = BytesToImagen(consultaByte(DataSet.Tables("DatosEmpresa").Rows(0)("CharLogo")))
+                '    ImgLogo.Image = myImagenConsulta
                 'End If
+
+                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
+                    Me.TxtRutaLogo.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
+
+                    ImgLogo.ImageLocation = Me.TxtRutaLogo.Text
+                    MyRuta = Dir(Me.TxtRutaLogo.Text)
+                    If MyRuta <> "" Then
+                        ImgLogo.Load()
+                    Else
+                        MsgBox("No Existe imagen para esta ruta", MsgBoxStyle.Critical, "Zeus Facturacion")
+                        Exit Sub
+                    End If
+                End If
 
 
 

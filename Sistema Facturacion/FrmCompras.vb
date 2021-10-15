@@ -2724,12 +2724,23 @@ Public Class FrmCompras
         Dim CodigoProducto As String, PrecioUnitario As Double, Descuento As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double
         Dim TipoCompra As String = "Mercancia Recibida", Numero As String, Fecha As String
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, CodigoProyecto As String
+        Dim Fecha_Vence As Date, Fecha_Hora As Date
 
         Me.CmdFacturar.Enabled = True
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+
+        Fecha_Compra = Format(Now, "dd/MM/yyyy")
+        Fecha_Vence = Format(Now, "dd/MM/yyyy")
+        Fecha_Hora = Now
+
+        My.Forms.FrmFecha.ShowDialog()
+        Fecha_Compra = Format(My.Forms.FrmFecha.DTPFechaRequerido.Value, "dd/MM/yyyy")
+        Me.DTPFecha.Value = Fecha_Compra
+
+
 
         Select Case TipoCompra
             Case "Orden de Compra"
@@ -2755,6 +2766,8 @@ Public Class FrmCompras
         If Not Me.CboProyecto.Text = "" Then
             CodigoProyecto = Me.CboProyecto.Columns(0).Text
         End If
+
+
 
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -333,11 +333,17 @@ Public Class FrmNuevaSolicitud
     End Sub
 
     Private Sub TrueDBGridComponentes_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.AfterUpdate
-        Dim Fecha_Solicitud As Date
+        Dim Fecha_Solicitud As Date, CodigoProyecto As String
 
         Fecha_Solicitud = CDate(Me.DTPFecha.Text + " " + Me.LblHora.Text)
 
-        GrabarSolicitud(Me.TxtNumeroEnsamble.Text, Fecha_Solicitud, Me.CboGerencia.Text, Me.CboDepartamento.Text, Me.CboRubro.Text, Me.TxtConcepto.Text, "Grabado", Me.CboCodigoBodega.Text, Me.DTPFechaRequerido.Value, Me.CboProyecto.Columns(0).Text, False)
+        If Not Me.CboProyecto.Text = "" Then
+            CodigoProyecto = Me.CboProyecto.Columns(0).Text
+        Else
+            CodigoProyecto = ""
+        End If
+
+        GrabarSolicitud(Me.TxtNumeroEnsamble.Text, Fecha_Solicitud, Me.CboGerencia.Text, Me.CboDepartamento.Text, Me.CboRubro.Text, Me.TxtConcepto.Text, "Grabado", Me.CboCodigoBodega.Text, Me.DTPFechaRequerido.Value, CodigoProyecto, False)
 
         InsertarRowGrid()
 
@@ -735,10 +741,16 @@ Public Class FrmNuevaSolicitud
     End Sub
 
     Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
-        Dim Fecha_Solicitud As Date
+        Dim Fecha_Solicitud As Date, CodigoProyecto As String
+
+        If Not Me.CboProyecto.Text = "" Then
+            CodigoProyecto = Me.CboProyecto.Columns(0).Text
+        Else
+            CodigoProyecto = ""
+        End If
 
         Fecha_Solicitud = CDate(Me.DTPFecha.Text + " " + Me.LblHora.Text)
-        GrabarSolicitud(Me.TxtNumeroEnsamble.Text, Fecha_Solicitud, Me.CboGerencia.Text, Me.CboDepartamento.Text, Me.CboRubro.Text, Me.TxtConcepto.Text, "Grabado", Me.CboCodigoBodega.Text, Me.DTPFechaRequerido.Value, Me.CboProyecto.Columns(0).Text, True)
+        GrabarSolicitud(Me.TxtNumeroEnsamble.Text, Fecha_Solicitud, Me.CboGerencia.Text, Me.CboDepartamento.Text, Me.CboRubro.Text, Me.TxtConcepto.Text, "Grabado", Me.CboCodigoBodega.Text, Me.DTPFechaRequerido.Value, CodigoProyecto, True)
         Me.Close()
 
     End Sub

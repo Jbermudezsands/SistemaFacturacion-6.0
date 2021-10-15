@@ -25,6 +25,7 @@ Public Class FrmListaSolicitud
             SqlString = "SELECT DISTINCT Solicitud_Compra.Numero_Solicitud, Solicitud_Compra.Fecha_Solicitud, Solicitud_Compra.Fecha_Requerido, Solicitud_Compra.Departamento_Solicitante, Solicitud_Compra.Gerencia_Solicitante, Solicitud_Compra.Estado_Solicitud, Solicitud_Compra.Concepto FROM Detalle_Solicitud INNER JOIN Solicitud_Compra ON Detalle_Solicitud.Numero_Solicitud = Solicitud_Compra.Numero_Solicitud  WHERE (Detalle_Solicitud.Activo = 1) AND (Solicitud_Compra.Estado_Solicitud <> 'Anulado') AND (Solicitud_Compra.Estado_Solicitud <> 'Procesado')"
         End If
         MiConexion.Open()
+        DataSetGlobal.Reset()
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSetGlobal, "Lista")
         Me.BindingConsultas.DataSource = DataSetGlobal.Tables("Lista")

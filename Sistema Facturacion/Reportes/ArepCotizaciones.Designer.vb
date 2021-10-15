@@ -319,8 +319,8 @@ Partial Public Class ArepCotizaciones
         Me.Label18.HyperLink = Nothing
         Me.Label18.Left = 7.0625!
         Me.Label18.Name = "Label18"
-        Me.Label18.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" & _
-            "ont-size: 8.5pt; "
+        Me.Label18.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: normal; backgro" & _
+            "und-color: White; font-size: 9pt; font-family: Microsoft Sans Serif; "
         Me.Label18.Text = "Total"
         Me.Label18.Top = 2.6875!
         Me.Label18.Width = 0.9473686!
@@ -339,8 +339,8 @@ Partial Public Class ArepCotizaciones
         Me.Label22.HyperLink = Nothing
         Me.Label22.Left = 1.1875!
         Me.Label22.Name = "Label22"
-        Me.Label22.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" & _
-            "ont-size: 8.5pt; "
+        Me.Label22.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: normal; backgro" & _
+            "und-color: White; font-size: 9pt; font-family: Microsoft Sans Serif; "
         Me.Label22.Text = "DESCRIPCION"
         Me.Label22.Top = 2.6875!
         Me.Label22.Width = 4.375!
@@ -359,8 +359,8 @@ Partial Public Class ArepCotizaciones
         Me.Label23.HyperLink = Nothing
         Me.Label23.Left = 5.5625!
         Me.Label23.Name = "Label23"
-        Me.Label23.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
-            "d-color: White; font-size: 8.25pt; "
+        Me.Label23.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: normal; backgro" & _
+            "und-color: White; font-size: 9pt; font-family: Microsoft Sans Serif; "
         Me.Label23.Text = "CANT"
         Me.Label23.Top = 2.6875!
         Me.Label23.Width = 0.6315788!
@@ -379,8 +379,8 @@ Partial Public Class ArepCotizaciones
         Me.Label15.HyperLink = Nothing
         Me.Label15.Left = 6.1875!
         Me.Label15.Name = "Label15"
-        Me.Label15.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" & _
-            "ont-size: 8.5pt; "
+        Me.Label15.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: normal; backgro" & _
+            "und-color: White; font-size: 9pt; font-family: Microsoft Sans Serif; "
         Me.Label15.Text = "Precio Unit"
         Me.Label15.Top = 2.6875!
         Me.Label15.Width = 0.8421051!
@@ -399,8 +399,8 @@ Partial Public Class ArepCotizaciones
         Me.Label21.HyperLink = Nothing
         Me.Label21.Left = 0.125!
         Me.Label21.Name = "Label21"
-        Me.Label21.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" & _
-            "ont-size: 8.5pt; "
+        Me.Label21.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: normal; backgro" & _
+            "und-color: White; font-size: 9pt; font-family: Microsoft Sans Serif; "
         Me.Label21.Text = "Codigo"
         Me.Label21.Top = 2.6875!
         Me.Label21.Width = 1.0625!
@@ -636,7 +636,7 @@ Partial Public Class ArepCotizaciones
         Me.TextBox1.Height = 0.1875!
         Me.TextBox1.Left = 0.125!
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Style = "ddo-char-set: 0; font-size: 8.25pt; "
+        Me.TextBox1.Style = "ddo-char-set: 0; font-size: 9.75pt; "
         Me.TextBox1.Text = Nothing
         Me.TextBox1.Top = 0.0!
         Me.TextBox1.Width = 1.0625!
@@ -655,10 +655,10 @@ Partial Public Class ArepCotizaciones
         Me.TextBox2.Height = 0.1875!
         Me.TextBox2.Left = 1.1875!
         Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Style = "ddo-char-set: 0; font-size: 8.25pt; "
+        Me.TextBox2.Style = "ddo-char-set: 0; font-size: 9.75pt; "
         Me.TextBox2.Text = Nothing
         Me.TextBox2.Top = 0.0!
-        Me.TextBox2.Width = 4.4375!
+        Me.TextBox2.Width = 4.375!
         '
         'TextBox3
         '
@@ -671,13 +671,13 @@ Partial Public Class ArepCotizaciones
         Me.TextBox3.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox3.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox3.DataField = "Cantidad"
-        Me.TextBox3.Height = 0.2105263!
-        Me.TextBox3.Left = 5.631578!
+        Me.TextBox3.Height = 0.1875!
+        Me.TextBox3.Left = 5.5625!
         Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
+        Me.TextBox3.Style = "ddo-char-set: 0; text-align: center; font-size: 9.75pt; "
         Me.TextBox3.Text = Nothing
         Me.TextBox3.Top = 0.0!
-        Me.TextBox3.Width = 0.6315789!
+        Me.TextBox3.Width = 0.625!
         '
         'TextBox4
         '
@@ -691,10 +691,10 @@ Partial Public Class ArepCotizaciones
         Me.TextBox4.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox4.DataField = "Precio_Unitario"
         Me.TextBox4.Height = 0.2105263!
-        Me.TextBox4.Left = 6.263157!
+        Me.TextBox4.Left = 6.1875!
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.OutputFormat = resources.GetString("TextBox4.OutputFormat")
-        Me.TextBox4.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
+        Me.TextBox4.Style = "ddo-char-set: 0; text-align: right; font-size: 9.75pt; "
         Me.TextBox4.Text = Nothing
         Me.TextBox4.Top = 0.0!
         Me.TextBox4.Width = 0.8421053!
@@ -711,10 +711,10 @@ Partial Public Class ArepCotizaciones
         Me.TextBox7.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox7.DataField = "Importe"
         Me.TextBox7.Height = 0.2105263!
-        Me.TextBox7.Left = 7.105263!
+        Me.TextBox7.Left = 7.0625!
         Me.TextBox7.Name = "TextBox7"
         Me.TextBox7.OutputFormat = resources.GetString("TextBox7.OutputFormat")
-        Me.TextBox7.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
+        Me.TextBox7.Style = "ddo-char-set: 0; text-align: right; font-size: 9.75pt; "
         Me.TextBox7.Text = Nothing
         Me.TextBox7.Top = 0.0!
         Me.TextBox7.Width = 0.9473686!
@@ -749,7 +749,7 @@ Partial Public Class ArepCotizaciones
         Me.LblTotal.HyperLink = Nothing
         Me.LblTotal.Left = 7.157894!
         Me.LblTotal.Name = "LblTotal"
-        Me.LblTotal.Style = "ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 8.25pt; "
+        Me.LblTotal.Style = "ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 9.75pt; "
         Me.LblTotal.Text = ""
         Me.LblTotal.Top = 0.4210526!
         Me.LblTotal.Width = 0.875!
@@ -768,7 +768,7 @@ Partial Public Class ArepCotizaciones
         Me.LblSubTotal.HyperLink = Nothing
         Me.LblSubTotal.Left = 7.157894!
         Me.LblSubTotal.Name = "LblSubTotal"
-        Me.LblSubTotal.Style = "ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 8.25pt; "
+        Me.LblSubTotal.Style = "ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 9.75pt; "
         Me.LblSubTotal.Text = ""
         Me.LblSubTotal.Top = 0.0!
         Me.LblSubTotal.Width = 0.875!
@@ -787,8 +787,8 @@ Partial Public Class ArepCotizaciones
         Me.lblFreight.HyperLink = Nothing
         Me.lblFreight.Left = 6.052631!
         Me.lblFreight.Name = "lblFreight"
-        Me.lblFreight.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" & _
-            "ont-size: 8.5pt; "
+        Me.lblFreight.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
+            "d-color: White; font-size: 9.75pt; "
         Me.lblFreight.Text = "IVA"
         Me.lblFreight.Top = 0.2105263!
         Me.lblFreight.Width = 1.125!
@@ -807,7 +807,7 @@ Partial Public Class ArepCotizaciones
         Me.LblIva.HyperLink = Nothing
         Me.LblIva.Left = 7.157894!
         Me.LblIva.Name = "LblIva"
-        Me.LblIva.Style = "ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 8.25pt; "
+        Me.LblIva.Style = "ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 9.75pt; "
         Me.LblIva.Text = ""
         Me.LblIva.Top = 0.2105263!
         Me.LblIva.Width = 0.875!
@@ -826,8 +826,8 @@ Partial Public Class ArepCotizaciones
         Me.lblGrandTotal.HyperLink = Nothing
         Me.lblGrandTotal.Left = 6.052631!
         Me.lblGrandTotal.Name = "lblGrandTotal"
-        Me.lblGrandTotal.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" & _
-            "ont-size: 8.5pt; "
+        Me.lblGrandTotal.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
+            "d-color: White; font-size: 9.75pt; "
         Me.lblGrandTotal.Text = "Total"
         Me.lblGrandTotal.Top = 0.4210526!
         Me.lblGrandTotal.Width = 1.125!
@@ -846,8 +846,8 @@ Partial Public Class ArepCotizaciones
         Me.lblSubTotals.HyperLink = Nothing
         Me.lblSubTotals.Left = 6.052631!
         Me.lblSubTotals.Name = "lblSubTotals"
-        Me.lblSubTotals.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" & _
-            "ont-size: 8.5pt; "
+        Me.lblSubTotals.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
+            "d-color: White; font-size: 9.75pt; "
         Me.lblSubTotals.Text = "Sub Total "
         Me.lblSubTotals.Top = 0.0!
         Me.lblSubTotals.Width = 1.125!
@@ -866,7 +866,7 @@ Partial Public Class ArepCotizaciones
         Me.LblNotas.HyperLink = Nothing
         Me.LblNotas.Left = 0.1875!
         Me.LblNotas.Name = "LblNotas"
-        Me.LblNotas.Style = "ddo-char-set: 0; font-size: 6pt; "
+        Me.LblNotas.Style = "ddo-char-set: 0; font-size: 9.75pt; "
         Me.LblNotas.Text = ""
         Me.LblNotas.Top = 1.0!
         Me.LblNotas.Width = 5.1875!
@@ -921,12 +921,12 @@ Partial Public Class ArepCotizaciones
         Me.LblVendedor.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblVendedor.Height = 0.1875!
         Me.LblVendedor.HyperLink = Nothing
-        Me.LblVendedor.Left = 5.9375!
+        Me.LblVendedor.Left = 6.0!
         Me.LblVendedor.Name = "LblVendedor"
-        Me.LblVendedor.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
+        Me.LblVendedor.Style = "ddo-char-set: 0; text-align: center; font-size: 9.75pt; "
         Me.LblVendedor.Text = ""
         Me.LblVendedor.Top = 1.0!
-        Me.LblVendedor.Width = 2.0625!
+        Me.LblVendedor.Width = 2.0!
         '
         'Label4
         '
@@ -942,10 +942,10 @@ Partial Public Class ArepCotizaciones
         Me.Label4.HyperLink = Nothing
         Me.Label4.Left = 5.4375!
         Me.Label4.Name = "Label4"
-        Me.Label4.Style = ""
+        Me.Label4.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.Label4.Text = "Vendedor"
         Me.Label4.Top = 1.0!
-        Me.Label4.Width = 0.6875!
+        Me.Label4.Width = 0.5625!
         '
         'LblFechaVence
         '
@@ -959,12 +959,12 @@ Partial Public Class ArepCotizaciones
         Me.LblFechaVence.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblFechaVence.Height = 0.1875!
         Me.LblFechaVence.HyperLink = Nothing
-        Me.LblFechaVence.Left = 5.9375!
+        Me.LblFechaVence.Left = 6.0!
         Me.LblFechaVence.Name = "LblFechaVence"
-        Me.LblFechaVence.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
+        Me.LblFechaVence.Style = "ddo-char-set: 0; text-align: center; font-size: 9.75pt; "
         Me.LblFechaVence.Text = ""
         Me.LblFechaVence.Top = 1.4375!
-        Me.LblFechaVence.Width = 2.0625!
+        Me.LblFechaVence.Width = 2.0!
         '
         'Label5
         '
@@ -980,10 +980,10 @@ Partial Public Class ArepCotizaciones
         Me.Label5.HyperLink = Nothing
         Me.Label5.Left = 5.4375!
         Me.Label5.Name = "Label5"
-        Me.Label5.Style = ""
+        Me.Label5.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.Label5.Text = "Validez"
         Me.Label5.Top = 1.4375!
-        Me.Label5.Width = 0.6875!
+        Me.Label5.Width = 0.5625!
         '
         'Label6
         '
@@ -1002,7 +1002,7 @@ Partial Public Class ArepCotizaciones
         Me.Label6.Style = ""
         Me.Label6.Text = "Esperando que la presente Proforma sea de su agrado, aprovechamos la Ocasión para" & _
             " saludarle y agradecer su preferencia."
-        Me.Label6.Top = 2.375!
+        Me.Label6.Top = 2.4375!
         Me.Label6.Width = 7.842105!
         '
         'Label8
@@ -1057,10 +1057,10 @@ Partial Public Class ArepCotizaciones
         Me.Label2.HyperLink = Nothing
         Me.Label2.Left = 5.4375!
         Me.Label2.Name = "Label2"
-        Me.Label2.Style = ""
+        Me.Label2.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.Label2.Text = "Correo"
         Me.Label2.Top = 1.1875!
-        Me.Label2.Width = 0.6875!
+        Me.Label2.Width = 0.5625!
         '
         'LblCorreo
         '
@@ -1074,12 +1074,12 @@ Partial Public Class ArepCotizaciones
         Me.LblCorreo.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblCorreo.Height = 0.1875!
         Me.LblCorreo.HyperLink = Nothing
-        Me.LblCorreo.Left = 5.9375!
+        Me.LblCorreo.Left = 6.0!
         Me.LblCorreo.Name = "LblCorreo"
-        Me.LblCorreo.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
+        Me.LblCorreo.Style = "ddo-char-set: 0; text-align: center; font-size: 9.75pt; "
         Me.LblCorreo.Text = ""
         Me.LblCorreo.Top = 1.1875!
-        Me.LblCorreo.Width = 2.0625!
+        Me.LblCorreo.Width = 2.0!
         '
         'LblLetras
         '
@@ -1095,7 +1095,7 @@ Partial Public Class ArepCotizaciones
         Me.LblLetras.HyperLink = Nothing
         Me.LblLetras.Left = 0.0625!
         Me.LblLetras.Name = "LblLetras"
-        Me.LblLetras.Style = "ddo-char-set: 0; font-size: 8.25pt; "
+        Me.LblLetras.Style = "ddo-char-set: 0; font-size: 9pt; "
         Me.LblLetras.Text = ""
         Me.LblLetras.Top = 0.4375!
         Me.LblLetras.Width = 5.875!
@@ -1112,12 +1112,12 @@ Partial Public Class ArepCotizaciones
         Me.LblTelefonoVendedor.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblTelefonoVendedor.Height = 0.1875!
         Me.LblTelefonoVendedor.HyperLink = Nothing
-        Me.LblTelefonoVendedor.Left = 5.9375!
+        Me.LblTelefonoVendedor.Left = 6.0!
         Me.LblTelefonoVendedor.Name = "LblTelefonoVendedor"
-        Me.LblTelefonoVendedor.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
+        Me.LblTelefonoVendedor.Style = "ddo-char-set: 0; text-align: center; font-size: 9.75pt; "
         Me.LblTelefonoVendedor.Text = ""
         Me.LblTelefonoVendedor.Top = 1.6875!
-        Me.LblTelefonoVendedor.Width = 2.0625!
+        Me.LblTelefonoVendedor.Width = 2.0!
         '
         'Label14
         '
@@ -1133,10 +1133,10 @@ Partial Public Class ArepCotizaciones
         Me.Label14.HyperLink = Nothing
         Me.Label14.Left = 5.4375!
         Me.Label14.Name = "Label14"
-        Me.Label14.Style = ""
+        Me.Label14.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.Label14.Text = "Telefono:"
         Me.Label14.Top = 1.6875!
-        Me.Label14.Width = 0.6875!
+        Me.Label14.Width = 0.5625!
         '
         'ArepCotizaciones
         '
