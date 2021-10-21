@@ -1404,13 +1404,13 @@ Public Class FrmProductos
 
         If System.IO.File.Exists(RutaDestino) = True Then
             System.IO.File.Delete(RutaDestino)
-            'System.IO.File.Copy(RutaOrigen, RutaDestino)
-            NuevoBitmap.Save(RutaDestino, NuevoBitmap.RawFormat)
+            System.IO.File.Copy(RutaOrigen, RutaDestino)
+            'NuevoBitmap.Save(RutaDestino, NuevoBitmap.RawFormat)
             fs.Close()
             fs = Nothing
         Else
-            'System.IO.File.Copy(RutaOrigen, RutaDestino)
-            NuevoBitmap.Save(RutaDestino, NuevoBitmap.RawFormat)
+            System.IO.File.Copy(RutaOrigen, RutaDestino)
+            'NuevoBitmap.Save(RutaDestino, NuevoBitmap.RawFormat)
             fs.Close()
             fs = Nothing
         End If

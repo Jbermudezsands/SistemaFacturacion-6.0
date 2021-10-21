@@ -52,6 +52,7 @@ Public Class FrmLineaProductos
         Else
             Me.TxtNombre.Text = ""
             Me.TxtRuta.Text = ""
+            Me.ImgFoto.Image = Nothing
         End If
 
         Me.ImgFoto.Image = Nothing
@@ -222,22 +223,26 @@ Public Class FrmLineaProductos
         Me.ImgFoto.ImageLocation = RutaOrigen
         'If Dir(RutaCompartida, FileAttribute.Directory) <> "" Then
         If System.IO.Directory.Exists(RutaCompartida) = True Then
-            RutaDestino = RutaCompartida & "\L" & Trim(Me.CboCodigoLinea.Text) & ".jpg"
+            RutaDestino = RutaCompartida & "\L" & Trim(Me.CboCodigoLinea.Text) & ".jpg"   'RutaCompartida & "\L" & Trim(Me.CboCodigoLinea.Text) & ".jpg"
         Else
-            RutaDestino = My.Application.Info.DirectoryPath & "\Fotos\L\" & Trim(Me.CboCodigoLinea.Text) & ".jpg"
+            RutaDestino = My.Application.Info.DirectoryPath & "\Fotos\L" & Trim(Me.CboCodigoLinea.Text) & ".jpg"  'My.Application.Info.DirectoryPath & "\Fotos\L\" & Trim(Me.CboCodigoLinea.Text) & ".jpg"
         End If
 
         If System.IO.File.Exists(RutaDestino) = True Then
             System.IO.File.Delete(RutaDestino)
-            'System.IO.File.Copy(RutaOrigen, RutaDestino)
+            System.IO.File.Copy(RutaOrigen, RutaDestino)
             Me.TxtRuta.Text = RutaDestino
-            NuevoBitmap.Save(RutaDestino, NuevoBitmap.RawFormat)
+            'NuevoBitmap.Save(RutaDestino, NuevoBitmap.RawFormat)
+            CmdGrabar_Click(sender, e)
+            Me.ImgFoto.Image = Nothing
             fs.Close()
             fs = Nothing
         Else
-            'System.IO.File.Copy(RutaOrigen, RutaDestino)
+            System.IO.File.Copy(RutaOrigen, RutaDestino)
             Me.TxtRuta.Text = RutaDestino
-            NuevoBitmap.Save(RutaDestino, NuevoBitmap.RawFormat)
+            'NuevoBitmap.Save(RutaDestino, NuevoBitmap.RawFormat)
+            CmdGrabar_Click(sender, e)
+            Me.ImgFoto.Image = Nothing
             fs.Close()
             fs = Nothing
         End If
