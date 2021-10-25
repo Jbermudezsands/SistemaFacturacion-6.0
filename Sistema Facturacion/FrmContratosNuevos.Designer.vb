@@ -63,13 +63,12 @@ Partial Class FrmContratosNuevos
         Me.TxtNumero1 = New System.Windows.Forms.NumericUpDown
         Me.CmbMoneda1 = New System.Windows.Forms.ComboBox
         Me.Label10 = New System.Windows.Forms.Label
-        Me.TxtPrecioUnitario1 = New System.Windows.Forms.TextBox
+        Me.TxtPrecioUnitario = New System.Windows.Forms.TextBox
         Me.Label9 = New System.Windows.Forms.Label
         Me.DtpFinContrato1 = New System.Windows.Forms.DateTimePicker
         Me.Label8 = New System.Windows.Forms.Label
         Me.DtpInicioContrato1 = New System.Windows.Forms.DateTimePicker
         Me.Label7 = New System.Windows.Forms.Label
-        Me.CmbFrecuencia1 = New System.Windows.Forms.ComboBox
         Me.Label6 = New System.Windows.Forms.Label
         Me.CmbContrato1 = New System.Windows.Forms.ComboBox
         Me.Label5 = New System.Windows.Forms.Label
@@ -104,6 +103,7 @@ Partial Class FrmContratosNuevos
         Me.TrueDBGridContrato2 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.GroupBox6 = New System.Windows.Forms.GroupBox
         Me.TrueDBGridContrato1 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.TxtFrecuencia = New System.Windows.Forms.TextBox
         Me.GroupBox1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -429,6 +429,7 @@ Partial Class FrmContratosNuevos
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.TxtFrecuencia)
         Me.GroupBox3.Controls.Add(Me.Label23)
         Me.GroupBox3.Controls.Add(Me.LblNuevo)
         Me.GroupBox3.Controls.Add(Me.TxtDireccionContrato)
@@ -442,13 +443,12 @@ Partial Class FrmContratosNuevos
         Me.GroupBox3.Controls.Add(Me.TxtNumero1)
         Me.GroupBox3.Controls.Add(Me.CmbMoneda1)
         Me.GroupBox3.Controls.Add(Me.Label10)
-        Me.GroupBox3.Controls.Add(Me.TxtPrecioUnitario1)
+        Me.GroupBox3.Controls.Add(Me.TxtPrecioUnitario)
         Me.GroupBox3.Controls.Add(Me.Label9)
         Me.GroupBox3.Controls.Add(Me.DtpFinContrato1)
         Me.GroupBox3.Controls.Add(Me.Label8)
         Me.GroupBox3.Controls.Add(Me.DtpInicioContrato1)
         Me.GroupBox3.Controls.Add(Me.Label7)
-        Me.GroupBox3.Controls.Add(Me.CmbFrecuencia1)
         Me.GroupBox3.Controls.Add(Me.Label6)
         Me.GroupBox3.Controls.Add(Me.CmbContrato1)
         Me.GroupBox3.Controls.Add(Me.Label5)
@@ -604,13 +604,13 @@ Partial Class FrmContratosNuevos
         Me.Label10.TabIndex = 228
         Me.Label10.Text = "Moneda"
         '
-        'TxtPrecioUnitario1
+        'TxtPrecioUnitario
         '
-        Me.TxtPrecioUnitario1.Location = New System.Drawing.Point(98, 127)
-        Me.TxtPrecioUnitario1.Name = "TxtPrecioUnitario1"
-        Me.TxtPrecioUnitario1.Size = New System.Drawing.Size(122, 20)
-        Me.TxtPrecioUnitario1.TabIndex = 227
-        Me.TxtPrecioUnitario1.Tag = "0.00"
+        Me.TxtPrecioUnitario.Location = New System.Drawing.Point(98, 127)
+        Me.TxtPrecioUnitario.Name = "TxtPrecioUnitario"
+        Me.TxtPrecioUnitario.Size = New System.Drawing.Size(122, 20)
+        Me.TxtPrecioUnitario.TabIndex = 227
+        Me.TxtPrecioUnitario.Tag = "0.00"
         '
         'Label9
         '
@@ -656,15 +656,6 @@ Partial Class FrmContratosNuevos
         Me.Label7.Size = New System.Drawing.Size(75, 13)
         Me.Label7.TabIndex = 167
         Me.Label7.Text = "Inicio Contrato"
-        '
-        'CmbFrecuencia1
-        '
-        Me.CmbFrecuencia1.FormattingEnabled = True
-        Me.CmbFrecuencia1.Location = New System.Drawing.Point(99, 37)
-        Me.CmbFrecuencia1.Name = "CmbFrecuencia1"
-        Me.CmbFrecuencia1.Size = New System.Drawing.Size(121, 21)
-        Me.CmbFrecuencia1.TabIndex = 166
-        Me.CmbFrecuencia1.Text = "4"
         '
         'Label6
         '
@@ -1064,6 +1055,13 @@ Partial Class FrmContratosNuevos
         Me.TrueDBGridContrato1.Text = "C1TrueDBGrid1"
         Me.TrueDBGridContrato1.PropBag = resources.GetString("TrueDBGridContrato1.PropBag")
         '
+        'TxtFrecuencia
+        '
+        Me.TxtFrecuencia.Location = New System.Drawing.Point(99, 38)
+        Me.TxtFrecuencia.Name = "TxtFrecuencia"
+        Me.TxtFrecuencia.Size = New System.Drawing.Size(121, 20)
+        Me.TxtFrecuencia.TabIndex = 240
+        '
         'FrmContratosNuevos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1132,14 +1130,13 @@ Partial Class FrmContratosNuevos
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents DtpInicioContrato1 As System.Windows.Forms.DateTimePicker
     Friend WithEvents Label7 As System.Windows.Forms.Label
-    Friend WithEvents CmbFrecuencia1 As System.Windows.Forms.ComboBox
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents DtpFinContrato1 As System.Windows.Forms.DateTimePicker
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents CmbMoneda1 As System.Windows.Forms.ComboBox
     Friend WithEvents Label10 As System.Windows.Forms.Label
-    Friend WithEvents TxtPrecioUnitario1 As System.Windows.Forms.TextBox
+    Friend WithEvents TxtPrecioUnitario As System.Windows.Forms.TextBox
     Friend WithEvents GroupBox5 As System.Windows.Forms.GroupBox
     Friend WithEvents CmbMoneda2 As System.Windows.Forms.ComboBox
     Friend WithEvents Label11 As System.Windows.Forms.Label
@@ -1183,4 +1180,5 @@ Partial Class FrmContratosNuevos
     Friend WithEvents CmdAjustes As System.Windows.Forms.Button
     Friend WithEvents LblNuevo As System.Windows.Forms.Label
     Friend WithEvents Label23 As System.Windows.Forms.Label
+    Friend WithEvents TxtFrecuencia As System.Windows.Forms.TextBox
 End Class

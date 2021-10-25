@@ -185,7 +185,7 @@ Public Class FrmContratosNuevos
 
         Me.CmbContrato1.Text = ""
         Me.CmbContrato2.Text = ""
-        Me.CmbFrecuencia1.Text = ""
+        Me.TxtFrecuencia.Text = ""
         Me.CmbFrecuencia2.Text = ""
         Me.CmbMoneda1.Text = ""
         Me.CmbMoneda2.Text = ""
@@ -193,7 +193,7 @@ Public Class FrmContratosNuevos
         Me.DtpFinContrato1.Value = Now
         Me.DtpInicioContrato2.Text = Now
         Me.DtpFinContrato2.Value = Now
-        Me.TxtPrecioUnitario1.Text = ""
+        Me.TxtPrecioUnitario.Text = ""
         Me.TxtPrecioUnitario2.Text = ""
 
         Me.TxtDireccionCotrato2.Text = ""
@@ -606,14 +606,14 @@ Public Class FrmContratosNuevos
             Exit Sub
         End If
 
-        If Me.TxtPrecioUnitario1.Text = "" Then
+        If Me.TxtPrecioUnitario.Text = "" Then
             MsgBox("Es necesario Seleccionar el precio unitario", MsgBoxStyle.Exclamation, "Zeus Facturacion")
             Exit Sub
         End If
 
 
-        If Me.TxtPrecioUnitario1.Text = "" Then
-            Me.TxtPrecioUnitario1.Text = "0.00"
+        If Me.TxtPrecioUnitario.Text = "" Then
+            Me.TxtPrecioUnitario.Text = "0.00"
         End If
 
         If Me.TxtPrecioUnitario2.Text = "" Then
@@ -663,7 +663,7 @@ Public Class FrmContratosNuevos
         DataAdapter.Fill(DataSet, "Clientes")
         If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-            StrSqlUpdate = "UPDATE [Contratos]    SET [Cod_Cliente] = '" & Me.TxtCodigoClientes.Text & "',[Tipo_Servicios1] = '" & Me.CmbContrato1.Text & "' ,[Tipo_Servicios2] = '" & Me.CmbContrato2.Text & "' ,[Frecuencia] = '" & Me.CmbFrecuencia1.Text & "' ,[Inicio_Contrato] = '" & Format(Me.DtpInicioContrato1.Value, "dd/MM/yyyy") & "' ,[Fin_Contrato] = '" & Format(Me.DtpFinContrato1.Value, "dd/MM/yyyy") & "' ,[Contacto_Administrativo] =  '" & Me.TxtContactoAdmon.Text & "' ,[Contacto_Operativo] =  '" & Me.TxtContactoOperativo.Text & "' ,[Precio_Unitario] = " & Me.TxtPrecioUnitario1.Text & " ,[Moneda] = '" & Me.CmbMoneda1.Text & "' ,[Activo] = " & ContratoActivo & " ,[Activo2] = " & ContratoActivo2 & "  ,[Exonerado] = " & Exonerado & " ,[Referencia] =  '" & Me.CboReferencia.Text & "'  ,[Observaciones] =  '" & Me.TxtObservaciones.Text & "' ,[Precio_Unitario2] =  '" & Me.TxtPrecioUnitario1.Text & "' ,[Inicio_Contrato2] = '" & Format(Me.DtpInicioContrato2.Value, "dd/MM/yyyy") & "' ,[Fin_Contrato2] = '" & Format(Me.DtpFinContrato2.Value, "dd/MM/yyyy") & "' ,[Moneda2] = '" & Me.CmbMoneda1.Text & "' ,[Frecuencia2] = '" & Me.CmbFrecuencia2.Text & "' ,[IdContrato1] = " & IdContrato1 & " ,[IdContrato2] = " & IdContrato2 & ",[DiasFactura1] = " & Me.TxtNumero1.Value & " ,[DiasFactura2] = " & Me.TxtNumero2.Value & ",[CodBodega1] = '" & Me.CboCodigoBodega.Text & "',[CodBodega2] = '" & Me.CboCodigoBodega2.Text & "' ,[Contrato_Variable] = '" & ContratoVariable & "' ,[Contrato_Variable2] = '" & ContratoVariable2 & "', [Direccion] = '" & Me.TxtDireccionContrato.Text & "' ,[Direccion2] = '" & Me.TxtDireccionCotrato2.Text & "'    WHERE (Numero_Contrato = " & NumeroContrato & ") AND (Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
+            StrSqlUpdate = "UPDATE [Contratos]    SET [Cod_Cliente] = '" & Me.TxtCodigoClientes.Text & "',[Tipo_Servicios1] = '" & Me.CmbContrato1.Text & "' ,[Tipo_Servicios2] = '" & Me.CmbContrato2.Text & "' ,[Frecuencia] = '" & Me.TxtFrecuencia.Text & "' ,[Inicio_Contrato] = '" & Format(Me.DtpInicioContrato1.Value, "dd/MM/yyyy") & "' ,[Fin_Contrato] = '" & Format(Me.DtpFinContrato1.Value, "dd/MM/yyyy") & "' ,[Contacto_Administrativo] =  '" & Me.TxtContactoAdmon.Text & "' ,[Contacto_Operativo] =  '" & Me.TxtContactoOperativo.Text & "' ,[Precio_Unitario] = " & Me.TxtPrecioUnitario.Text & " ,[Moneda] = '" & Me.CmbMoneda1.Text & "' ,[Activo] = " & ContratoActivo & " ,[Activo2] = " & ContratoActivo2 & "  ,[Exonerado] = " & Exonerado & " ,[Referencia] =  '" & Me.CboReferencia.Text & "'  ,[Observaciones] =  '" & Me.TxtObservaciones.Text & "' ,[Precio_Unitario2] =  '" & Me.TxtPrecioUnitario.Text & "' ,[Inicio_Contrato2] = '" & Format(Me.DtpInicioContrato2.Value, "dd/MM/yyyy") & "' ,[Fin_Contrato2] = '" & Format(Me.DtpFinContrato2.Value, "dd/MM/yyyy") & "' ,[Moneda2] = '" & Me.CmbMoneda1.Text & "' ,[Frecuencia2] = '" & Me.CmbFrecuencia2.Text & "' ,[IdContrato1] = " & IdContrato1 & " ,[IdContrato2] = " & IdContrato2 & ",[DiasFactura1] = " & Me.TxtNumero1.Value & " ,[DiasFactura2] = " & Me.TxtNumero2.Value & ",[CodBodega1] = '" & Me.CboCodigoBodega.Text & "',[CodBodega2] = '" & Me.CboCodigoBodega2.Text & "' ,[Contrato_Variable] = '" & ContratoVariable & "' ,[Contrato_Variable2] = '" & ContratoVariable2 & "', [Direccion] = '" & Me.TxtDireccionContrato.Text & "' ,[Direccion2] = '" & Me.TxtDireccionCotrato2.Text & "'    WHERE (Numero_Contrato = " & NumeroContrato & ") AND (Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -672,7 +672,7 @@ Public Class FrmContratosNuevos
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
             StrSqlUpdate = "INSERT INTO [Contratos] ([Cod_Cliente],[Tipo_Servicios1],[Tipo_Servicios2],[Frecuencia],[Inicio_Contrato],[Fin_Contrato] ,[Contacto_Administrativo] ,[Contacto_Operativo],[Precio_Unitario] ,[Moneda],[Activo],[Activo2],[Anulado],[Retencion1],[Retencion2],[Exonerado],[Referencia],[Observaciones],[Precio_Unitario2],[Inicio_Contrato2],[Fin_Contrato2] ,[Moneda2] ,[Frecuencia2] ,[IdContrato1],[IdContrato2],[DiasFactura1],[DiasFactura2],[CodBodega1],[CodBodega2],[Contrato_Variable],[Contrato_Variable2]) " & _
-                           "VALUES ('" & Me.TxtCodigoClientes.Text & "','" & Me.CmbContrato1.Text & "' ,'" & Me.CmbContrato2.Text & "' ,'" & Me.CmbFrecuencia1.Text & "' ,'" & Format(Me.DtpInicioContrato1.Value, "dd/MM/yyyy") & "' ,'" & Format(Me.DtpFinContrato1.Value, "dd/MM/yyyy") & "' , '" & Me.TxtContactoAdmon.Text & "' , '" & Me.TxtContactoOperativo.Text & "' , " & Me.TxtPrecioUnitario1.Text & " , '" & Me.CmbMoneda1.Text & "' ," & ContratoActivo & "," & ContratoActivo2 & ",0,0,0, " & Exonerado & ", '" & Me.CboReferencia.Text & "' ,'" & Me.TxtObservaciones.Text & "' , " & Me.TxtPrecioUnitario2.Text & " ,'" & Format(Me.DtpInicioContrato2.Value, "dd/MM/yyyy") & "' ,'" & Format(Me.DtpFinContrato2.Value, "dd/MM/yyyy") & "' ,'" & Me.CmbMoneda1.Text & "' ,'" & Me.CmbFrecuencia2.Text & "'  , " & IdContrato1 & " ," & IdContrato2 & ", " & Me.TxtNumero1.Value & " ," & Me.TxtNumero2.Value & ",'" & Me.CboCodigoBodega.Text & "','" & Me.CboCodigoBodega2.Text & "','" & ContratoVariable & "','" & ContratoVariable2 & "')"
+                           "VALUES ('" & Me.TxtCodigoClientes.Text & "','" & Me.CmbContrato1.Text & "' ,'" & Me.CmbContrato2.Text & "' ,'" & Me.TxtFrecuencia.Text & "' ,'" & Format(Me.DtpInicioContrato1.Value, "dd/MM/yyyy") & "' ,'" & Format(Me.DtpFinContrato1.Value, "dd/MM/yyyy") & "' , '" & Me.TxtContactoAdmon.Text & "' , '" & Me.TxtContactoOperativo.Text & "' , " & Me.TxtPrecioUnitario.Text & " , '" & Me.CmbMoneda1.Text & "' ," & ContratoActivo & "," & ContratoActivo2 & ",0,0,0, " & Exonerado & ", '" & Me.CboReferencia.Text & "' ,'" & Me.TxtObservaciones.Text & "' , " & Me.TxtPrecioUnitario2.Text & " ,'" & Format(Me.DtpInicioContrato2.Value, "dd/MM/yyyy") & "' ,'" & Format(Me.DtpFinContrato2.Value, "dd/MM/yyyy") & "' ,'" & Me.CmbMoneda1.Text & "' ,'" & Me.CmbFrecuencia2.Text & "'  , " & IdContrato1 & " ," & IdContrato2 & ", " & Me.TxtNumero1.Value & " ," & Me.TxtNumero2.Value & ",'" & Me.CboCodigoBodega.Text & "','" & Me.CboCodigoBodega2.Text & "','" & ContratoVariable & "','" & ContratoVariable2 & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -918,8 +918,17 @@ Public Class FrmContratosNuevos
                 IdContrato2 = IdContrato1
             End If
 
+            If Me.TxtFrecuencia.Text = "" Then
+                Me.TxtFrecuencia.Text = 1
+            End If
 
-            GuardarDetalleContrato(0, NumeroContrato, idContrato1, Me.CmbContrato1.Text, Me.CmbFrecuencia1.Text, Me.DtpInicioContrato1.Value, Me.DtpFinContrato1.Value, Me.TxtPrecioUnitario1.Text, Me.CmbMoneda1.Text, Me.ChkActivo.Checked, False, False, False, Me.CmbFrecuencia1.Text, Me.TxtNumero1.Value, Me.CboCodigoBodega.Text, Me.ChkContratoVariable.Checked, Me.TxtDireccionContrato.Text)
+            If Me.TxtPrecioUnitario.Text = "" Then
+                Me.TxtPrecioUnitario.Text = 1
+            End If
+
+
+
+            GuardarDetalleContrato(0, NumeroContrato, idContrato1, Me.CmbContrato1.Text, Me.TxtFrecuencia.Text, Me.DtpInicioContrato1.Value, Me.DtpFinContrato1.Value, Me.TxtPrecioUnitario.Text, Me.CmbMoneda1.Text, Me.ChkActivo.Checked, False, False, False, Me.TxtFrecuencia.Text, Me.TxtNumero1.Value, Me.CboCodigoBodega.Text, Me.ChkContratoVariable.Checked, Me.TxtDireccionContrato.Text)
 
         End If
     End Sub
@@ -957,7 +966,7 @@ Public Class FrmContratosNuevos
                     Me.CmbContrato1.Text = Dataset.Tables("DetalleContrato").Rows(0)("Tipo_Servicios1")
                 End If
                 If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Frecuencia")) Then
-                    Me.CmbFrecuencia1.Text = Dataset.Tables("DetalleContrato").Rows(0)("Frecuencia")
+                    Me.TxtFrecuencia.Text = Dataset.Tables("DetalleContrato").Rows(0)("Frecuencia")
                 End If
                 If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Moneda")) Then
                     Me.CmbMoneda1.Text = Dataset.Tables("DetalleContrato").Rows(0)("Moneda")
@@ -969,7 +978,7 @@ Public Class FrmContratosNuevos
                     Me.DtpFinContrato1.Value = Dataset.Tables("DetalleContrato").Rows(0)("Fin_Contrato")
                 End If
                 If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Precio_Unitario")) Then
-                    Me.TxtPrecioUnitario1.Text = Dataset.Tables("DetalleContrato").Rows(0)("Precio_Unitario")
+                    Me.TxtPrecioUnitario.Text = Dataset.Tables("DetalleContrato").Rows(0)("Precio_Unitario")
                 End If
                 If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("DiasFactura1")) Then
                     Me.TxtNumero1.Value = Dataset.Tables("DetalleContrato").Rows(0)("DiasFactura1")
@@ -989,7 +998,7 @@ Public Class FrmContratosNuevos
 
                 Me.CmbContrato1.Text = ""
                 Me.CmbContrato2.Text = ""
-                Me.CmbFrecuencia1.Text = ""
+                Me.TxtFrecuencia.Text = ""
                 Me.CmbFrecuencia2.Text = ""
                 Me.CmbMoneda1.Text = ""
                 Me.CmbMoneda2.Text = ""
@@ -997,7 +1006,7 @@ Public Class FrmContratosNuevos
                 Me.DtpFinContrato1.Value = Now
                 Me.DtpInicioContrato2.Text = Now
                 Me.DtpFinContrato2.Value = Now
-                Me.TxtPrecioUnitario1.Text = ""
+                Me.TxtPrecioUnitario.Text = ""
                 Me.TxtPrecioUnitario2.Text = ""
 
                 Me.TxtDireccionCotrato2.Text = ""
