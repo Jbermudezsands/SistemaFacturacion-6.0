@@ -629,9 +629,19 @@ Public Class FrmContratosNuevos
         End If
 
         If Nuevo = True Then
-            ConsecutivoCompra = BuscaConsecutivo("Numero_Contrato")
-            NumeroContrato = Format(ConsecutivoCompra, "0000#")
-            Me.LblNumeroContrato.Text = NumeroContrato
+            '///////////////////////////////////////BUSCO SI TIENE NUMERO DE CONTRATO /////////////////
+            SQLClientes = "SELECT  Contratos.* FROM Contratos WHERE (Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "') AND (Activo = 1)"
+            DataAdapter = New SqlClient.SqlDataAdapter(SQLClientes, MiConexion)
+            DataAdapter.Fill(DataSet, "BuscoContrato")
+            If Not DataSet.Tables("BuscoContrato").Rows.Count = 0 Then
+                NumeroContrato = DataSet.Tables("BuscoContrato").Rows(0)("Numero_Contrato")
+            Else
+                ConsecutivoCompra = BuscaConsecutivo("Numero_Contrato")
+                NumeroContrato = Format(ConsecutivoCompra, "0000#")
+            End If
+
+            Me.LblNumeroContrato.Text = Format(NumeroContrato, "0000#")
+
         End If
 
 
@@ -897,6 +907,7 @@ Public Class FrmContratosNuevos
     Private Sub CmdAjustes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdAjustes.Click
         Me.LblNuevo.Text = "NUEVO"
         Me.Agregar = True
+        Me.Button2.Enabled = True
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
@@ -941,6 +952,44 @@ Public Class FrmContratosNuevos
             LimpiaContrato()
 
             MsgBox("Registro Guardado!!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+
+        Else
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '/////////////////////////////////////BUSCO EL ID DE LOS TIPOS DE CONTRATOS ////////////////////////////////////
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            SqlString = "SELECT idTipoContrato, TipoContrato, Activo FROM TipoContrato WHERE (TipoContrato = '" & Me.CmbContrato1.Text & "')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            DataAdapter.Fill(DataSet, "Contrato")
+            If Not DataSet.Tables("Contrato").Rows.Count = 0 Then
+                idContrato1 = DataSet.Tables("Contrato").Rows(0)("idTipoContrato")
+            End If
+
+            SqlString = "SELECT idTipoContrato, TipoContrato, Activo FROM TipoContrato WHERE (TipoContrato = '" & Me.CmbContrato2.Text & "')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            DataAdapter.Fill(DataSet, "Contrato2")
+            If Not DataSet.Tables("Contrato2").Rows.Count = 0 Then
+                idContrato2 = DataSet.Tables("Contrato2").Rows(0)("idTipoContrato")
+            End If
+
+            If idContrato2 = 0 Then
+                idContrato2 = idContrato1
+            End If
+
+            If Me.TxtFrecuencia.Text = "" Then
+                Me.TxtFrecuencia.Text = 1
+            End If
+
+            If Me.TxtPrecioUnitario.Text = "" Then
+                Me.TxtPrecioUnitario.Text = 1
+            End If
+
+
+
+            GuardarDetalleContrato(idDetalleContrato, NumeroContrato, idContrato1, Me.CmbContrato1.Text, Me.TxtFrecuencia.Text, Me.DtpInicioContrato1.Value, Me.DtpFinContrato1.Value, Me.TxtPrecioUnitario.Text, Me.CmbMoneda1.Text, Me.ChkActivo.Checked, False, False, False, Me.TxtFrecuencia.Text, Me.TxtNumero1.Value, Me.CboCodigoBodega.Text, Me.ChkContratoVariable.Checked, Me.TxtDireccionContrato.Text)
+
+            LimpiaContrato()
+
+            MsgBox("Registro Modificado!!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
         End If
     End Sub
 
@@ -1003,6 +1052,8 @@ Public Class FrmContratosNuevos
                 If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Direccion")) Then
                     Me.TxtDireccionContrato.Text = Dataset.Tables("DetalleContrato").Rows(0)("Direccion")
                 End If
+
+                Me.Button2.Enabled = True
 
 
             Else

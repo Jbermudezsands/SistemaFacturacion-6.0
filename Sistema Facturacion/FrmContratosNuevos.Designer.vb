@@ -497,6 +497,7 @@ Partial Class FrmContratosNuevos
         '
         'Button2
         '
+        Me.Button2.Enabled = False
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.Button2.Location = New System.Drawing.Point(6, 264)
