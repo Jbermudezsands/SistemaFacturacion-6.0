@@ -50,6 +50,7 @@ Partial Class FrmContratosNuevos
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.CmdAjustes = New System.Windows.Forms.Button
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.TxtFrecuencia = New System.Windows.Forms.TextBox
         Me.Label23 = New System.Windows.Forms.Label
         Me.LblNuevo = New System.Windows.Forms.Label
         Me.TxtDireccionContrato = New System.Windows.Forms.TextBox
@@ -103,7 +104,6 @@ Partial Class FrmContratosNuevos
         Me.TrueDBGridContrato2 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.GroupBox6 = New System.Windows.Forms.GroupBox
         Me.TrueDBGridContrato1 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.TxtFrecuencia = New System.Windows.Forms.TextBox
         Me.GroupBox1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -458,6 +458,13 @@ Partial Class FrmContratosNuevos
         Me.GroupBox3.TabIndex = 0
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Servicio 1"
+        '
+        'TxtFrecuencia
+        '
+        Me.TxtFrecuencia.Location = New System.Drawing.Point(99, 38)
+        Me.TxtFrecuencia.Name = "TxtFrecuencia"
+        Me.TxtFrecuencia.Size = New System.Drawing.Size(121, 20)
+        Me.TxtFrecuencia.TabIndex = 240
         '
         'Label23
         '
@@ -1054,13 +1061,6 @@ Partial Class FrmContratosNuevos
         Me.TrueDBGridContrato1.TabIndex = 165
         Me.TrueDBGridContrato1.Text = "C1TrueDBGrid1"
         Me.TrueDBGridContrato1.PropBag = resources.GetString("TrueDBGridContrato1.PropBag")
-        '
-        'TxtFrecuencia
-        '
-        Me.TxtFrecuencia.Location = New System.Drawing.Point(99, 38)
-        Me.TxtFrecuencia.Name = "TxtFrecuencia"
-        Me.TxtFrecuencia.Size = New System.Drawing.Size(121, 20)
-        Me.TxtFrecuencia.TabIndex = 240
         '
         'FrmContratosNuevos
         '

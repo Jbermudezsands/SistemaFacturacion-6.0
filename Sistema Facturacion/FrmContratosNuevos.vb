@@ -27,7 +27,7 @@ Public Class FrmContratosNuevos
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
             StrSqlUpdate = "INSERT INTO [Detalle_Contratos] ([Numero_Contrato],[IdContrato],[Tipo_Servicios],[Frecuencia],[Inicio_Contrato],[Fin_Contrato],[Precio_Unitario] ,[Moneda] ,[Activo],[Anulado] ,[Retencion1],[Retencion2],[Exonerado] ,[Referencia] ,[DiasFactura],[CodBodega],[Contrato_Variable],[Direccion]) " & _
-                           "VALUES (" & NumeroContrato & " ," & IdContrato & " ,'" & Tipo_Servicios & "','" & Frecuencia & "' ,'" & Format(Inicio_Contrato, "dd/MM/yyyy") & "' ,'" & Format(Fin_Contrato, "dd/MM/yyyy") & "' ," & Precio_Unitario & " ,'" & Moneda & "' ,'" & Activo & "' ,'" & Anulado & "' ,'" & Retencion1 & "' ,'" & Retencion2 & "' ,'" & Referencia & "' ," & DiasFactura & " , '" & CodBodega & "' ,'" & Contrato_Variable & "' ,'" & Direccion & "')"
+                           "VALUES (" & NumeroContrato & " ," & IdContrato & " ,'" & Tipo_Servicios & "','" & Frecuencia & "' ,'" & Format(Inicio_Contrato, "dd/MM/yyyy") & "' , '" & Format(Fin_Contrato, "dd/MM/yyyy") & "', " & Precio_Unitario & " ,'" & Moneda & "' ,'" & Activo & "' ,'" & Anulado & "' ,'" & Retencion1 & "' ,'" & Retencion2 & "' ,0,'" & Referencia & "' ," & DiasFactura & " , '" & CodBodega & "' ,'" & Contrato_Variable & "' ,'" & Direccion & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -432,8 +432,8 @@ Public Class FrmContratosNuevos
     Private Sub TxtCodigoClientes_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtCodigoClientes.TextChanged
 
         Dim SqlProveedor As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim DiasCredito As Double = 0, CausaIva As Boolean
-        Dim SqlString As String = ""
+        Dim DiasCredito As Double = 0, CausaIva As Boolean, SQlString As String
+
 
         Try
 
@@ -473,6 +473,14 @@ Public Class FrmContratosNuevos
                 If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("DiasCredito")) Then
                     DiasCredito = DataSet.Tables("Clientes").Rows(0)("DiasCredito")
                 End If
+
+
+                SQlString = "SELECT  Contratos.Numero_Contrato, Detalle_Contratos.Tipo_Servicios, Detalle_Contratos.Frecuencia, Detalle_Contratos.Inicio_Contrato, Detalle_Contratos.Fin_Contrato, Detalle_Contratos.IdDetalleContrato FROM Contratos INNER JOIN Detalle_Contratos ON Contratos.Numero_Contrato = Detalle_Contratos.Numero_Contrato  " & _
+                            "WHERE  (Contratos.Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
+                DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+                DataAdapter.Fill(DataSet, "DetalleContratos")
+                Me.TDBGridTipoContrato.DataSource = DataSet.Tables("DetalleContratos")
+
 
 
 
@@ -620,7 +628,7 @@ Public Class FrmContratosNuevos
             Me.TxtPrecioUnitario2.Text = "0.00"
         End If
 
-        If Nuevo = False Then
+        If Nuevo = True Then
             ConsecutivoCompra = BuscaConsecutivo("Numero_Contrato")
             NumeroContrato = Format(ConsecutivoCompra, "0000#")
             Me.LblNumeroContrato.Text = NumeroContrato
@@ -681,7 +689,7 @@ Public Class FrmContratosNuevos
         End If
 
 
-        LimpiaContrato()
+        'LimpiaContrato()
 
 
         Bitacora(Now, NombreUsuario, "Clientes", "Grabo contrato nuevo: ")
@@ -930,6 +938,9 @@ Public Class FrmContratosNuevos
 
             GuardarDetalleContrato(0, NumeroContrato, idContrato1, Me.CmbContrato1.Text, Me.TxtFrecuencia.Text, Me.DtpInicioContrato1.Value, Me.DtpFinContrato1.Value, Me.TxtPrecioUnitario.Text, Me.CmbMoneda1.Text, Me.ChkActivo.Checked, False, False, False, Me.TxtFrecuencia.Text, Me.TxtNumero1.Value, Me.CboCodigoBodega.Text, Me.ChkContratoVariable.Checked, Me.TxtDireccionContrato.Text)
 
+            LimpiaContrato()
+
+            MsgBox("Registro Guardado!!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
         End If
     End Sub
 
@@ -947,8 +958,8 @@ Public Class FrmContratosNuevos
 
         If Me.TDBGridTipoContrato.RowCount <> 0 Then
 
-            idDetalleContrato = Me.TDBGridTipoContrato.Columns("IdDetalleTipoContrato").Text
-            NumeroContrato = Me.TDBGridTipoContrato.Columns("NumeroContrato").Text
+            idDetalleContrato = Me.TDBGridTipoContrato.Columns("IdDetalleContrato").Text
+            NumeroContrato = Me.TDBGridTipoContrato.Columns("Numero_Contrato").Text
 
 
             SQLClientes = "SELECT Detalle_Contratos.*  FROM Detalle_Contratos WHERE (IdDetalleContrato = " & idDetalleContrato & ") AND (Numero_Contrato = " & NumeroContrato & ")"
