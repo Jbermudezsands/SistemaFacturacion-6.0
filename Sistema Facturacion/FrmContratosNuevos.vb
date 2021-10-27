@@ -7,6 +7,75 @@ Public Class FrmContratosNuevos
     Public dsContrato1 As New DataSet, daContrato1 As New SqlClient.SqlDataAdapter, CmdBuilder1 As New SqlCommandBuilder
     Public dsContrato2 As New DataSet, daContrato2 As New SqlClient.SqlDataAdapter, CmdBuilder2 As New SqlCommandBuilder
     Public dsDetalleContrato As New DataSet, daDetalleContrato As New SqlClient.SqlDataAdapter, CmdBuilderDetalle As New SqlCommandBuilder
+
+    Public Sub CargarContratos()
+
+        Dim SqlProveedor As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim DiasCredito As Double = 0, CausaIva As Boolean, SQlString As String
+
+        SqlProveedor = "SELECT  * FROM Clientes  WHERE (Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "') AND (Activo = 1)"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+        DataAdapter.Fill(DataSet, "Clientes")
+        If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
+
+
+            Me.TxtNombres.Text = DataSet.Tables("Clientes").Rows(0)("Nombre_Cliente")
+
+            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("CausaIva")) Then
+                CausaIva = DataSet.Tables("Clientes").Rows(0)("CausaIva")
+            End If
+
+            If CausaIva = True Then
+                Me.ChkExonerado.Checked = False
+            Else
+                Me.ChkExonerado.Checked = True
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Apellido_Cliente")) Then
+                Me.TxtApellidos.Text = DataSet.Tables("Clientes").Rows(0)("Apellido_Cliente")
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Direccion_Cliente")) Then
+                Me.TxtDireccion.Text = DataSet.Tables("Clientes").Rows(0)("Direccion_Cliente")
+            End If
+            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Telefono")) Then
+                Me.TxtTelefono.Text = DataSet.Tables("Clientes").Rows(0)("Telefono")
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("DiasCredito")) Then
+                DiasCredito = DataSet.Tables("Clientes").Rows(0)("DiasCredito")
+            End If
+
+
+
+
+            SQlString = "SELECT  Contratos.Numero_Contrato, Detalle_Contratos.Tipo_Servicios, Detalle_Contratos.Frecuencia, Detalle_Contratos.Inicio_Contrato, Detalle_Contratos.Fin_Contrato, Detalle_Contratos.IdDetalleContrato FROM Contratos INNER JOIN Detalle_Contratos ON Contratos.Numero_Contrato = Detalle_Contratos.Numero_Contrato  " & _
+                        "WHERE  (Contratos.Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+            DataAdapter.Fill(DataSet, "DetalleContratos")
+
+
+
+
+            If DataSet.Tables("DetalleContratos").Rows.Count <> 0 Then
+                Me.TDBGridTipoContrato.DataSource = DataSet.Tables("DetalleContratos")
+                Me.LblNumeroContrato.Text = DataSet.Tables("DetalleContratos").Rows(0)("Numero_Contrato")
+            End If
+
+
+        Else
+
+            Me.TxtNombres.Text = ""
+            Me.TxtApellidos.Text = ""
+            Me.TxtDireccion.Text = ""
+            Me.TxtTelefono.Text = ""
+
+        End If
+
+
+    End Sub
+
+
     Public Sub GuardarDetalleContrato(ByVal idDetalleContrato As Double, ByVal Numero_Contrato As Double, ByVal IdContrato As Double, ByVal Tipo_Servicios As String, ByVal Frecuencia As Double, ByVal Inicio_Contrato As Date, ByVal Fin_Contrato As Date, ByVal Precio_Unitario As Double, ByVal Moneda As String, ByVal Activo As Boolean, ByVal Anulado As Boolean, ByVal Retencion1 As Boolean, ByVal Retencion2 As Boolean, ByVal Referencia As String, ByVal DiasFactura As Double, ByVal CodBodega As String, ByVal Contrato_Variable As Boolean, ByVal Direccion As String)
         Dim SQLClientes As String
         Dim DataAdapter As New SqlClient.SqlDataAdapter, Dataset As New DataSet
@@ -208,7 +277,7 @@ Public Class FrmContratosNuevos
 
     End Sub
 
-    Private Sub CargarContrato(ByVal NumeroContrato As String)
+    Private Sub CargarContratoDetalle(ByVal NumeroContrato As String)
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim IdTipoContrato1 As Double, IdTipoContrato2 As Double, Cont As Double, i As Double = 0
 
@@ -241,10 +310,17 @@ Public Class FrmContratosNuevos
                 Me.CboReferencia.Text = DataSet.Tables("Contrato").Rows(0)("Frecuencia")
             End If
 
+            'SqlString = "SELECT  Contratos.Numero_Contrato, Detalle_Contratos.Tipo_Servicios, Detalle_Contratos.Frecuencia, Detalle_Contratos.Inicio_Contrato, Detalle_Contratos.Fin_Contrato, Detalle_Contratos.IdDetalleContrato FROM Contratos INNER JOIN Detalle_Contratos ON Contratos.Numero_Contrato = Detalle_Contratos.Numero_Contrato  " & _
+            '"WHERE  (Contratos.Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
+            'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            'DataAdapter.Fill(DataSet, "DetalleContratos")
+
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '//////////////////////////////CONSULTO EL DETALLE DE LOS CONTRATOS /////////////////////////////////
             '////////////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlString = "SELECT  TOP (2)  IdDetalleContrato, Numero_Contrato, IdContrato, Tipo_Servicios, Frecuencia, Inicio_Contrato, Fin_Contrato, Precio_Unitario, Moneda, Activo, Anulado, Retencion1, Retencion2, Exonerado, Referencia, DiasFactura, CodBodega, Contrato_Variable, Direccion FROM Detalle_Contratos WHERE (Numero_Contrato = " & NumeroContrato & ") "
+            'SqlString = "SELECT  TOP (2)  IdDetalleContrato, Numero_Contrato, IdContrato, Tipo_Servicios, Frecuencia, Inicio_Contrato, Fin_Contrato, Precio_Unitario, Moneda, Activo, Anulado, Retencion1, Retencion2, Exonerado, Referencia, DiasFactura, CodBodega, Contrato_Variable, Direccion FROM Detalle_Contratos WHERE (Numero_Contrato = " & NumeroContrato & ") "
+            SqlString = "SELECT  Contratos.Numero_Contrato, Detalle_Contratos.Tipo_Servicios, Detalle_Contratos.Frecuencia, Detalle_Contratos.Inicio_Contrato, Detalle_Contratos.Fin_Contrato, Detalle_Contratos.IdDetalleContrato FROM Contratos INNER JOIN Detalle_Contratos ON Contratos.Numero_Contrato = Detalle_Contratos.Numero_Contrato  " & _
+                        "WHERE  (Contratos.Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
             DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
             DataAdapter.Fill(DataSet, "DetalleContrato")
 
@@ -427,73 +503,21 @@ Public Class FrmContratosNuevos
         If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
             Me.TxtCodigoClientes.Text = My.Forms.FrmConsultas.Codigo
         End If
+
+        CargarContratos()
+
+
+
     End Sub
 
     Private Sub TxtCodigoClientes_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtCodigoClientes.TextChanged
 
-        Dim SqlProveedor As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim DiasCredito As Double = 0, CausaIva As Boolean, SQlString As String
 
 
         Try
 
-
-
-            SqlProveedor = "SELECT  * FROM Clientes  WHERE (Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "') AND (Activo = 1)"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-            DataAdapter.Fill(DataSet, "Clientes")
-            If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
-
-
-                Me.TxtNombres.Text = DataSet.Tables("Clientes").Rows(0)("Nombre_Cliente")
-
-
-
-                If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("CausaIva")) Then
-                    CausaIva = DataSet.Tables("Clientes").Rows(0)("CausaIva")
-                End If
-
-                If CausaIva = True Then
-                    Me.ChkExonerado.Checked = False
-                Else
-                    Me.ChkExonerado.Checked = True
-                End If
-
-                If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Apellido_Cliente")) Then
-                    Me.TxtApellidos.Text = DataSet.Tables("Clientes").Rows(0)("Apellido_Cliente")
-                End If
-
-                If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Direccion_Cliente")) Then
-                    Me.TxtDireccion.Text = DataSet.Tables("Clientes").Rows(0)("Direccion_Cliente")
-                End If
-                If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Telefono")) Then
-                    Me.TxtTelefono.Text = DataSet.Tables("Clientes").Rows(0)("Telefono")
-                End If
-
-                If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("DiasCredito")) Then
-                    DiasCredito = DataSet.Tables("Clientes").Rows(0)("DiasCredito")
-                End If
-
-
-                SQlString = "SELECT  Contratos.Numero_Contrato, Detalle_Contratos.Tipo_Servicios, Detalle_Contratos.Frecuencia, Detalle_Contratos.Inicio_Contrato, Detalle_Contratos.Fin_Contrato, Detalle_Contratos.IdDetalleContrato FROM Contratos INNER JOIN Detalle_Contratos ON Contratos.Numero_Contrato = Detalle_Contratos.Numero_Contrato  " & _
-                            "WHERE  (Contratos.Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
-                DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-                DataAdapter.Fill(DataSet, "DetalleContratos")
-                Me.TDBGridTipoContrato.DataSource = DataSet.Tables("DetalleContratos")
-
-
-
-
-
-            Else
-
-                Me.TxtNombres.Text = ""
-                Me.TxtApellidos.Text = ""
-                Me.TxtDireccion.Text = ""
-                Me.TxtTelefono.Text = ""
-
-            End If
-
+            Me.LblNumeroContrato.Text = ""
+            CargarContratos()
 
 
         Catch ex As Exception
@@ -556,7 +580,7 @@ Public Class FrmContratosNuevos
             'End If
 
             If Nuevo = False Then
-                CargarContrato(NumeroContrato)
+                CargarContratos()
             End If
 
 
@@ -908,6 +932,7 @@ Public Class FrmContratosNuevos
         Me.LblNuevo.Text = "NUEVO"
         Me.Agregar = True
         Me.Button2.Enabled = True
+        Me.Button7.Enabled = False
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
@@ -951,6 +976,8 @@ Public Class FrmContratosNuevos
 
             LimpiaContrato()
 
+            Me.Button7.Enabled = True
+
             MsgBox("Registro Guardado!!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
 
         Else
@@ -988,6 +1015,8 @@ Public Class FrmContratosNuevos
             GuardarDetalleContrato(idDetalleContrato, NumeroContrato, idContrato1, Me.CmbContrato1.Text, Me.TxtFrecuencia.Text, Me.DtpInicioContrato1.Value, Me.DtpFinContrato1.Value, Me.TxtPrecioUnitario.Text, Me.CmbMoneda1.Text, Me.ChkActivo.Checked, False, False, False, Me.TxtFrecuencia.Text, Me.TxtNumero1.Value, Me.CboCodigoBodega.Text, Me.ChkContratoVariable.Checked, Me.TxtDireccionContrato.Text)
 
             LimpiaContrato()
+
+            Me.Button7.Enabled = True
 
             MsgBox("Registro Modificado!!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
         End If
