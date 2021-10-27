@@ -151,6 +151,8 @@ Public Class FrmProductos
 
         Me.OpenFileDialog1.Filter = "Image Files (*.jpg)|*.jpg"
 
+        Me.TabControl.SelectedTab = Generales
+
         '//////////////////////////////////BUSCO LOS DATOS DE LA EMPRESA PARA IMPRIMIRLOS///////////////////////////////////
         SqlDatos = "SELECT * FROM DatosEmpresa"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)

@@ -245,7 +245,7 @@ Public Class FrmContratosNuevos
 
 
         Me.TxtCodigoClientes.Text = ""
-        Me.CboReferencia.Text = ""
+        Me.CboReferencia.Text = "4"
         Me.TxtContactoAdmon.Text = ""
         Me.TxtContactoOperativo.Text = ""
         Me.TxtObservaciones.Text = ""
@@ -269,6 +269,17 @@ Public Class FrmContratosNuevos
         Me.TxtDireccionContrato.Text = ""
 
 
+        Me.LblNuevo.Text = ""
+        Me.GroupBox3.Enabled = False
+        Me.GroupBox6.Enabled = False
+        Me.GroupBox7.Enabled = False
+        Me.Button2.Enabled = False
+
+
+
+        Me.dsDetalleContrato.Reset()
+        Me.dsContrato1.Reset()
+        Me.dsContrato2.Reset()
 
 
 
@@ -328,7 +339,7 @@ Public Class FrmContratosNuevos
             daDetalleContrato = New SqlDataAdapter(SqlString, MiConexion)
             CmdBuilderDetalle = New SqlCommandBuilder(daDetalleContrato)
             daDetalleContrato.Fill(dsDetalleContrato, "DetalleContrato")
-            Me.TDBGridTipoContrato.DataSource = dsContrato1.Tables("DetalleContrato")
+            Me.TDBGridTipoContrato.DataSource = dsDetalleContrato.Tables("DetalleContrato")
             'Cont = DataSet.Tables("DetalleContrato").Rows.Count
             'Do While Cont > i
 
@@ -435,42 +446,42 @@ Public Class FrmContratosNuevos
             '///////////////////////////////CARGO EL DETALLE CONTRATO1////////////////////////////////////////////////////////////////
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            SqlString = "SELECT  idTipoContrato, TipoContrato, Activo FROM TipoContrato WHERE (TipoContrato LIKE '" & Me.CmbContrato1.Text & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-            DataAdapter.Fill(DataSet, "TContrato1")
-            If Not DataSet.Tables("TContrato1").Rows.Count = 0 Then
-                IdTipoContrato1 = DataSet.Tables("TContrato1").Rows(0)("idTipoContrato")
-            End If
+            'SqlString = "SELECT  idTipoContrato, TipoContrato, Activo FROM TipoContrato WHERE (TipoContrato LIKE '" & Me.CmbContrato1.Text & "')"
+            'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            'DataAdapter.Fill(DataSet, "TContrato1")
+            'If Not DataSet.Tables("TContrato1").Rows.Count = 0 Then
+            '    IdTipoContrato1 = DataSet.Tables("TContrato1").Rows(0)("idTipoContrato")
+            'End If
 
-            SqlString = "SELECT IdDetalleTipoContrato, IdTipoContrato, NumeroContrato, Cod_Productos, Descripcion_Producto, Cantidad FROM DetalleTipoCotrato WHERE (IdTipoContrato = " & IdTipoContrato1 & ") AND (NumeroContrato = " & NumeroContrato & ")"
-            dsContrato1 = New DataSet
-            daContrato1 = New SqlDataAdapter(SqlString, MiConexion)
-            CmdBuilder1 = New SqlCommandBuilder(daContrato1)
-            daContrato1.Fill(dsContrato1, "DetalleContrato1")
-            Me.TrueDBGridContrato1.DataSource = dsContrato1.Tables("DetalleContrato1")
-            Me.TrueDBGridContrato1.Splits.Item(0).DisplayColumns("IdDetalleTipoContrato").Visible = False
-            Me.TrueDBGridContrato1.Splits.Item(0).DisplayColumns("IdTipoContrato").Visible = False
-            Me.TrueDBGridContrato1.Splits.Item(0).DisplayColumns("NumeroContrato").Visible = False
-            Me.TrueDBGridContrato1.Columns("Cod_Productos").Caption = "Codigo"
-            Me.TrueDBGridContrato1.Splits.Item(0).DisplayColumns("Cod_Productos").Button = True
-            Me.TrueDBGridContrato1.Splits.Item(0).DisplayColumns("Cod_Productos").Width = 74
-            Me.TrueDBGridContrato1.Columns("Descripcion_Producto").Caption = "Descripcion"
-            Me.TrueDBGridContrato1.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 259
-            Me.TrueDBGridContrato1.Columns("Cantidad").Caption = "Cantidad"
-            Me.TrueDBGridContrato1.Splits.Item(0).DisplayColumns("Cantidad").Width = 64
+            'SqlString = "SELECT IdDetalleTipoContrato, IdTipoContrato, NumeroContrato, Cod_Productos, Descripcion_Producto, Cantidad FROM DetalleTipoCotrato WHERE (IdTipoContrato = " & IdTipoContrato1 & ") AND (NumeroContrato = " & NumeroContrato & ")"
+            'dsContrato1 = New DataSet
+            'daContrato1 = New SqlDataAdapter(SqlString, MiConexion)
+            'CmdBuilder1 = New SqlCommandBuilder(daContrato1)
+            'daContrato1.Fill(dsContrato1, "DetalleContrato1")
+            'Me.TrueDBGridContrato1.DataSource = dsContrato1.Tables("DetalleContrato1")
+            'Me.TrueDBGridContrato1.Splits.Item(0).DisplayColumns("IdDetalleTipoContrato").Visible = False
+            'Me.TrueDBGridContrato1.Splits.Item(0).DisplayColumns("IdTipoContrato").Visible = False
+            'Me.TrueDBGridContrato1.Splits.Item(0).DisplayColumns("NumeroContrato").Visible = False
+            'Me.TrueDBGridContrato1.Columns("Cod_Productos").Caption = "Codigo"
+            'Me.TrueDBGridContrato1.Splits.Item(0).DisplayColumns("Cod_Productos").Button = True
+            'Me.TrueDBGridContrato1.Splits.Item(0).DisplayColumns("Cod_Productos").Width = 74
+            'Me.TrueDBGridContrato1.Columns("Descripcion_Producto").Caption = "Descripcion"
+            'Me.TrueDBGridContrato1.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 259
+            'Me.TrueDBGridContrato1.Columns("Cantidad").Caption = "Cantidad"
+            'Me.TrueDBGridContrato1.Splits.Item(0).DisplayColumns("Cantidad").Width = 64
 
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             '///////////////////////////////CARGO EL DETALLE CONTRATO2////////////////////////////////////////////////////////////////
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            SqlString = "SELECT  idTipoContrato, TipoContrato, Activo FROM TipoContrato WHERE (TipoContrato LIKE '" & Me.CmbContrato2.Text & "')"
+            SqlString = "SELECT  idTipoContrato, TipoContrato, Activo FROM TipoContrato WHERE (TipoContrato LIKE '" & Me.CmbContrato1.Text & "')"
             DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
             DataAdapter.Fill(DataSet, "TContrato2")
             If Not DataSet.Tables("TContrato2").Rows.Count = 0 Then
                 IdTipoContrato2 = DataSet.Tables("TContrato2").Rows(0)("idTipoContrato")
             End If
 
-            SqlString = "SELECT IdDetalleTipoContrato, IdTipoContrato, NumeroContrato, Cod_Productos, Descripcion_Producto, Cantidad FROM DetalleTipoCotrato WHERE (IdTipoContrato = " & IdTipoContrato2 & ") AND (NumeroContrato = " & NumeroContrato & ")"
+            SqlString = "SELECT IdDetalleTipoContrato, IdTipoContrato, NumeroContrato, Cod_Productos, Descripcion_Producto, Cantidad FROM DetalleTipoCotrato WHERE (IdTipoContrato = " & IdTipoContrato2 & ") AND (NumeroContrato = '-10000')"
             dsContrato2 = New DataSet
             daContrato2 = New SqlDataAdapter(SqlString, MiConexion)
             CmdBuilder2 = New SqlCommandBuilder(daContrato2)
@@ -537,6 +548,8 @@ Public Class FrmContratosNuevos
 
         Try
 
+            Me.TabControl1.SelectedTab = TabPage1
+
             SqlProveedor = "SELECT idTipoContrato, TipoContrato, Activo FROM TipoContrato WHERE (Activo = 1)"
             DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
             DataAdapter.Fill(DataSet, "TipoContrato")
@@ -579,8 +592,10 @@ Public Class FrmContratosNuevos
             '    Me.CmbContrato2.Text = DataSet.Tables("TipoContrato").Rows(0)("TipoContrato")
             'End If
 
-            If Nuevo = False Then
-                CargarContratos()
+            If Nuevo = True Then
+                LimpiaContrato()
+            Else
+                CargarContratoDetalle(NumeroContrato)
             End If
 
 
@@ -713,8 +728,8 @@ Public Class FrmContratosNuevos
 
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Contratos] ([Cod_Cliente],[Tipo_Servicios1],[Tipo_Servicios2],[Frecuencia],[Inicio_Contrato],[Fin_Contrato] ,[Contacto_Administrativo] ,[Contacto_Operativo],[Precio_Unitario] ,[Moneda],[Activo],[Activo2],[Anulado],[Retencion1],[Retencion2],[Exonerado],[Referencia],[Observaciones],[Precio_Unitario2],[Inicio_Contrato2],[Fin_Contrato2] ,[Moneda2] ,[Frecuencia2] ,[IdContrato1],[IdContrato2],[DiasFactura1],[DiasFactura2],[CodBodega1],[CodBodega2],[Contrato_Variable],[Contrato_Variable2]) " & _
-                           "VALUES ('" & Me.TxtCodigoClientes.Text & "','" & Me.CmbContrato1.Text & "' ,'" & Me.CmbContrato2.Text & "' ,'" & Me.TxtFrecuencia.Text & "' ,'" & Format(Me.DtpInicioContrato1.Value, "dd/MM/yyyy") & "' ,'" & Format(Me.DtpFinContrato1.Value, "dd/MM/yyyy") & "' , '" & Me.TxtContactoAdmon.Text & "' , '" & Me.TxtContactoOperativo.Text & "' , " & Me.TxtPrecioUnitario.Text & " , '" & Me.CmbMoneda1.Text & "' ," & ContratoActivo & "," & ContratoActivo2 & ",0,0,0, " & Exonerado & ", '" & Me.CboReferencia.Text & "' ,'" & Me.TxtObservaciones.Text & "' , " & Me.TxtPrecioUnitario2.Text & " ,'" & Format(Me.DtpInicioContrato2.Value, "dd/MM/yyyy") & "' ,'" & Format(Me.DtpFinContrato2.Value, "dd/MM/yyyy") & "' ,'" & Me.CmbMoneda1.Text & "' ,'" & Me.CmbFrecuencia2.Text & "'  , " & IdContrato1 & " ," & IdContrato2 & ", " & Me.TxtNumero1.Value & " ," & Me.TxtNumero2.Value & ",'" & Me.CboCodigoBodega.Text & "','" & Me.CboCodigoBodega2.Text & "','" & ContratoVariable & "','" & ContratoVariable2 & "')"
+            StrSqlUpdate = "INSERT INTO [Contratos] ([Numero_Contrato],[Cod_Cliente],[Tipo_Servicios1],[Tipo_Servicios2],[Frecuencia],[Inicio_Contrato],[Fin_Contrato] ,[Contacto_Administrativo] ,[Contacto_Operativo],[Precio_Unitario] ,[Moneda],[Activo],[Activo2],[Anulado],[Retencion1],[Retencion2],[Exonerado],[Referencia],[Observaciones],[Precio_Unitario2],[Inicio_Contrato2],[Fin_Contrato2] ,[Moneda2] ,[Frecuencia2] ,[IdContrato1],[IdContrato2],[DiasFactura1],[DiasFactura2],[CodBodega1],[CodBodega2],[Contrato_Variable],[Contrato_Variable2]) " & _
+                           "VALUES (" & NumeroContrato & ", '" & Me.TxtCodigoClientes.Text & "','" & Me.CmbContrato1.Text & "' ,'" & Me.CmbContrato2.Text & "' ,'" & Me.TxtFrecuencia.Text & "' ,'" & Format(Me.DtpInicioContrato1.Value, "dd/MM/yyyy") & "' ,'" & Format(Me.DtpFinContrato1.Value, "dd/MM/yyyy") & "' , '" & Me.TxtContactoAdmon.Text & "' , '" & Me.TxtContactoOperativo.Text & "' , " & Me.TxtPrecioUnitario.Text & " , '" & Me.CmbMoneda1.Text & "' ," & ContratoActivo & "," & ContratoActivo2 & ",0,0,0, " & Exonerado & ", '" & Me.CboReferencia.Text & "' ,'" & Me.TxtObservaciones.Text & "' , " & Me.TxtPrecioUnitario2.Text & " ,'" & Format(Me.DtpInicioContrato2.Value, "dd/MM/yyyy") & "' ,'" & Format(Me.DtpFinContrato2.Value, "dd/MM/yyyy") & "' ,'" & Me.CmbMoneda1.Text & "' ,'" & Me.CmbFrecuencia2.Text & "'  , " & IdContrato1 & " ," & IdContrato2 & ", " & Me.TxtNumero1.Value & " ," & Me.TxtNumero2.Value & ",'" & Me.CboCodigoBodega.Text & "','" & Me.CboCodigoBodega2.Text & "','" & ContratoVariable & "','" & ContratoVariable2 & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -729,16 +744,16 @@ Public Class FrmContratosNuevos
         Bitacora(Now, NombreUsuario, "Clientes", "Grabo contrato nuevo: ")
     End Sub
 
-    Private Sub TrueDBGridContrato1_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridContrato1.AfterUpdate
+    Private Sub TrueDBGridContrato1_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs)
 
         Me.InsertarRowGridContrato1()
     End Sub
 
-    Private Sub TrueDBGridContrato1_BeforeClose(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TrueDBGridContrato1.BeforeClose
+    Private Sub TrueDBGridContrato1_BeforeClose(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs)
 
     End Sub
 
-    Private Sub TrueDBGridContrato1_BeforeColEdit(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.BeforeColEditEventArgs) Handles TrueDBGridContrato1.BeforeColEdit
+    Private Sub TrueDBGridContrato1_BeforeColEdit(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.BeforeColEditEventArgs)
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim IdTipoContrato As Double
 
@@ -756,7 +771,7 @@ Public Class FrmContratosNuevos
 
     End Sub
 
-    Private Sub TrueDBGridComponentes_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridContrato1.ButtonClick
+    Private Sub TrueDBGridComponentes_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs)
 
         Quien = "CodigoProductosContratos"
         My.Forms.FrmConsultas.ShowDialog()
@@ -770,24 +785,30 @@ Public Class FrmContratosNuevos
         Me.TrueDBGridContrato1.Col = 3
     End Sub
 
-    Private Sub TrueDBGridComponentes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridContrato1.Click
+    Private Sub TrueDBGridComponentes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
     End Sub
 
     Private Sub TrueDBGridContrato2_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridContrato2.AfterUpdate
+        Me.TrueDBGridContrato2.Columns("IdTipoContrato").Text = Me.idDetalleContrato
+        Me.TrueDBGridContrato2.Columns("NumeroContrato").Text = NumeroContrato
         Me.InsertarRowGridContrato2()
     End Sub
 
     Private Sub TrueDBGridContrato2_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridContrato2.ButtonClick
-        Quien = "CodigoProductos"
+        Quien = "CodigoProductosContratos"
         My.Forms.FrmConsultas.ShowDialog()
         If My.Forms.FrmConsultas.Codigo = "-----0-----" Then
             Exit Sub
         End If
 
         CodigoProducto = My.Forms.FrmConsultas.Codigo
+        Me.TrueDBGridContrato2.Columns("IdTipoContrato").Text = Me.idDetalleContrato
+        Me.TrueDBGridContrato2.Columns("NumeroContrato").Text = NumeroContrato
         Me.TrueDBGridContrato2.Columns("Cod_Productos").Text = My.Forms.FrmConsultas.Codigo
         Me.TrueDBGridContrato2.Columns("Descripcion_Producto").Text = My.Forms.FrmConsultas.Descripcion
+        Me.TrueDBGridContrato2.Columns("Cantidad").Text = 1
+        Me.TrueDBGridContrato2.Row = Me.TrueDBGridContrato2.Row + 1
         Me.TrueDBGridContrato2.Col = 3
     End Sub
 
@@ -812,7 +833,7 @@ Public Class FrmContratosNuevos
     End Sub
 
 
-    Private Sub BtnBorrarLineaCont1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnBorrarLineaCont1.Click
+    Private Sub BtnBorrarLineaCont1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Dim Resultado As Double, CodProducto As String, iPosicion As Double, PrecioUnitario As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double
         Dim idDetalle As Double, NombreProducto As String, Descuento As Double
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -929,10 +950,31 @@ Public Class FrmContratosNuevos
     End Sub
 
     Private Sub CmdAjustes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdAjustes.Click
+        Dim SqlString As String
+
         Me.LblNuevo.Text = "NUEVO"
         Me.Agregar = True
         Me.Button2.Enabled = True
         Me.Button7.Enabled = False
+        Me.GroupBox3.Enabled = True
+
+        dsContrato2.Tables("DetalleContrato2").Reset()
+        SqlString = "SELECT  IdDetalleTipoContrato, IdTipoContrato, NumeroContrato, Cod_Productos, Descripcion_Producto, Cantidad FROM DetalleTipoCotrato WHERE  (IdTipoContrato = " & Me.idDetalleContrato & ") AND (NumeroContrato = '-10000')"
+        dsContrato2 = New DataSet
+        daContrato2 = New SqlDataAdapter(SqlString, MiConexion)
+        CmdBuilder2 = New SqlCommandBuilder(daContrato2)
+        daContrato2.Fill(dsContrato2, "DetalleContrato2")
+        Me.TrueDBGridContrato2.DataSource = dsContrato2.Tables("DetalleContrato2")
+        Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("IdDetalleTipoContrato").Visible = False
+        Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("IdTipoContrato").Visible = False
+        Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("NumeroContrato").Visible = False
+        Me.TrueDBGridContrato2.Columns("Cod_Productos").Caption = "Codigo"
+        Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("Cod_Productos").Button = True
+        Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("Cod_Productos").Width = 74
+        Me.TrueDBGridContrato2.Columns("Descripcion_Producto").Caption = "Descripcion"
+        Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 259
+        Me.TrueDBGridContrato2.Columns("Cantidad").Caption = "Cantidad"
+        Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("Cantidad").Width = 64
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
@@ -1032,7 +1074,7 @@ Public Class FrmContratosNuevos
 
         Dim SQLClientes As String
         Dim DataAdapter As New SqlClient.SqlDataAdapter, Dataset As New DataSet
-        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, SqlString As String
 
         If Me.TDBGridTipoContrato.RowCount <> 0 Then
 
@@ -1051,8 +1093,8 @@ Public Class FrmContratosNuevos
                 If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Exonerado")) Then
                     Me.ChkExonerado.Checked = Dataset.Tables("DetalleContrato").Rows(0)("Exonerado")
                 End If
-                If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Tipo_Servicios1")) Then
-                    Me.CmbContrato1.Text = Dataset.Tables("DetalleContrato").Rows(0)("Tipo_Servicios1")
+                If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Tipo_Servicios")) Then
+                    Me.CmbContrato1.Text = Dataset.Tables("DetalleContrato").Rows(0)("Tipo_Servicios")
                 End If
                 If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Frecuencia")) Then
                     Me.TxtFrecuencia.Text = Dataset.Tables("DetalleContrato").Rows(0)("Frecuencia")
@@ -1069,11 +1111,11 @@ Public Class FrmContratosNuevos
                 If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Precio_Unitario")) Then
                     Me.TxtPrecioUnitario.Text = Dataset.Tables("DetalleContrato").Rows(0)("Precio_Unitario")
                 End If
-                If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("DiasFactura1")) Then
-                    Me.TxtNumero1.Value = Dataset.Tables("DetalleContrato").Rows(0)("DiasFactura1")
+                If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("DiasFactura")) Then
+                    Me.TxtNumero1.Value = Dataset.Tables("DetalleContrato").Rows(0)("DiasFactura")
                 End If
-                If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("CodBodega1")) Then
-                    Me.CboCodigoBodega.Text = Dataset.Tables("DetalleContrato").Rows(0)("CodBodega1")
+                If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("CodBodega")) Then
+                    Me.CboCodigoBodega.Text = Dataset.Tables("DetalleContrato").Rows(0)("CodBodega")
                 End If
                 If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Contrato_Variable")) Then
                     Me.ChkContratoVariable.Checked = Dataset.Tables("DetalleContrato").Rows(0)("Contrato_Variable")
@@ -1084,6 +1126,27 @@ Public Class FrmContratosNuevos
 
                 Me.Button2.Enabled = True
 
+                Me.GroupBox3.Enabled = True
+                Me.GroupBox6.Enabled = True
+                Me.GroupBox7.Enabled = True
+
+                dsContrato2.Tables("DetalleContrato2").Reset()
+                SqlString = "SELECT  IdDetalleTipoContrato, IdTipoContrato, NumeroContrato, Cod_Productos, Descripcion_Producto, Cantidad FROM DetalleTipoCotrato WHERE  (IdTipoContrato = " & Me.idDetalleContrato & ") AND (NumeroContrato = " & Me.NumeroContrato & ")"
+                dsContrato2 = New DataSet
+                daContrato2 = New SqlDataAdapter(SqlString, MiConexion)
+                CmdBuilder2 = New SqlCommandBuilder(daContrato2)
+                daContrato2.Fill(dsContrato2, "DetalleContrato2")
+                Me.TrueDBGridContrato2.DataSource = dsContrato2.Tables("DetalleContrato2")
+                Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("IdDetalleTipoContrato").Visible = False
+                Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("IdTipoContrato").Visible = False
+                Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("NumeroContrato").Visible = False
+                Me.TrueDBGridContrato2.Columns("Cod_Productos").Caption = "Codigo"
+                Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("Cod_Productos").Button = True
+                Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("Cod_Productos").Width = 74
+                Me.TrueDBGridContrato2.Columns("Descripcion_Producto").Caption = "Descripcion"
+                Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 259
+                Me.TrueDBGridContrato2.Columns("Cantidad").Caption = "Cantidad"
+                Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("Cantidad").Width = 64
 
             Else
 
@@ -1103,10 +1166,69 @@ Public Class FrmContratosNuevos
                 Me.TxtDireccionCotrato2.Text = ""
                 Me.TxtDireccionContrato.Text = ""
 
+                Me.GroupBox3.Enabled = False
+                Me.GroupBox6.Enabled = True
+
 
             End If
 
         End If
+
+    End Sub
+
+    Private Sub TrueDBGridContrato1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridContrato1.Click
+
+    End Sub
+
+    Private Sub BtnBorrarLineaCont1_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnBorrarLineaCont1.Click
+
+    End Sub
+
+    Private Sub CmdEliminar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdEliminar.Click
+        Dim Resultado As String, SQLProveedor As String
+        Dim Dataset As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+
+        idDetalleContrato = Me.TDBGridTipoContrato.Columns("IdDetalleContrato").Text
+        NumeroContrato = Me.TDBGridTipoContrato.Columns("Numero_Contrato").Text
+
+
+        Resultado = MsgBox("¿Esta Seguro de Eliminar el Contrato?", MsgBoxStyle.OkCancel, "Sistema de Facturacion")
+
+        If Not Resultado = "1" Then
+            Exit Sub
+        End If
+
+
+        SQLProveedor = "SELECT  IdDetalleContrato, Numero_Contrato, IdContrato, Tipo_Servicios, Frecuencia, Inicio_Contrato, Fin_Contrato, Precio_Unitario, Moneda, Activo, Anulado, Retencion1, Retencion2, Exonerado, Referencia, DiasFactura, CodBodega, Contrato_Variable, Direccion  FROM Detalle_Contratos  WHERE  (Numero_Contrato = " & Me.NumeroContrato & ") AND (IdDetalleContrato = " & Me.idDetalleContrato & ")"
+        DataAdapter = New SqlClient.SqlDataAdapter(SQLProveedor, MiConexion)
+        DataAdapter.Fill(Dataset, "Contratos")
+        If Not Dataset.Tables("Contratos").Rows.Count = 0 Then
+            '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
+
+
+            StrSqlUpdate = "DELETE FROM [Detalle_Contratos] WHERE  (Numero_Contrato = " & Me.NumeroContrato & ") AND (IdDetalleContrato = " & Me.idDetalleContrato & ")"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+            '////////////////////////////////////////////////////////////////////////
+            '//////////////////BORRO EL DETALLE DE LA FACTURACION PARA EL CONTRATO ////////////////
+
+            StrSqlUpdate = "DELETE FROM [DetalleTipoCotrato] WHERE  (NumeroContrato = " & Me.NumeroContrato & ") AND (IdTipoContrato = " & Me.idDetalleContrato & ")"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+
+
+        End If
+
+        Me.LimpiaContrato()
+
+
 
     End Sub
 End Class

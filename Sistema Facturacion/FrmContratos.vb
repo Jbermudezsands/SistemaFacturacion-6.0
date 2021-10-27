@@ -12,26 +12,31 @@ Public Class FrmContratos
     End Sub
 
     Private Sub FrmContratos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Cargar_listaContrattos(Me.OptActivo.Checked, Me.OptAnulado.Checked)
+        Cargar_listaContrattos(Me.OptActivo.Checked, Me.OptAnulado.Checked, Me.OptTodos.Checked)
     End Sub
 
 
-    Public Sub Cargar_listaContrattos(ByVal Activo As Boolean, ByVal Anulado As Boolean)
+    Public Sub Cargar_listaContrattos(ByVal Activo As Boolean, ByVal Anulado As Boolean, ByVal Todos As Boolean)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim SQlClientes As String = ""
+
+
+
+
 
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////////////BUSCO EL ID DE LOS TIPOS DE CONTRATOS ////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////
         If Activo = True Then
             SQlClientes = "SELECT Contratos.Numero_Contrato, Contratos.Cod_Cliente, Clientes.Cod_Cliente, Contratos.Frecuencia, Contratos.Inicio_Contrato, Contratos.Fin_Contrato, Contratos.Moneda, Contratos.Activo, Contratos.Anulado FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente WHERE (Contratos.Activo = 1)"
-
-        ElseIf Activo = False Then
-            SQlClientes = "SELECT Contratos.Numero_Contrato, Contratos.Cod_Cliente, Clientes.Cod_Cliente, Contratos.Frecuencia, Contratos.Inicio_Contrato, Contratos.Fin_Contrato, Contratos.Moneda, Contratos.Activo, Contratos.Anulado FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente WHERE (Contratos.Activo = 0)"
+            'ElseIf Activo = False Then
+            '    SQlClientes = "SELECT Contratos.Numero_Contrato, Contratos.Cod_Cliente, Clientes.Cod_Cliente, Contratos.Frecuencia, Contratos.Inicio_Contrato, Contratos.Fin_Contrato, Contratos.Moneda, Contratos.Activo, Contratos.Anulado FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente WHERE (Contratos.Activo = 0)"
         ElseIf Anulado = True Then
             SQlClientes = "SELECT Contratos.Numero_Contrato, Contratos.Cod_Cliente, Clientes.Cod_Cliente, Contratos.Frecuencia, Contratos.Inicio_Contrato, Contratos.Fin_Contrato, Contratos.Moneda, Contratos.Activo, Contratos.Anulado FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente WHERE (Contratos.Anulado = 1)"
-        ElseIf Anulado = False Then
-            SQlClientes = "SELECT Contratos.Numero_Contrato, Contratos.Cod_Cliente, Clientes.Cod_Cliente, Contratos.Frecuencia, Contratos.Inicio_Contrato, Contratos.Fin_Contrato, Contratos.Moneda, Contratos.Activo, Contratos.Anulado FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente WHERE (Contratos.Anulado = 0)"
+            'ElseIf Anulado = False Then
+            '    SQlClientes = "SELECT Contratos.Numero_Contrato, Contratos.Cod_Cliente, Clientes.Cod_Cliente, Contratos.Frecuencia, Contratos.Inicio_Contrato, Contratos.Fin_Contrato, Contratos.Moneda, Contratos.Activo, Contratos.Anulado FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente WHERE (Contratos.Anulado = 0)"
+        ElseIf Todos = True Then
+            SQlClientes = "SELECT Contratos.Numero_Contrato, Contratos.Cod_Cliente, Clientes.Cod_Cliente, Contratos.Frecuencia, Contratos.Inicio_Contrato, Contratos.Fin_Contrato, Contratos.Moneda, Contratos.Activo, Contratos.Anulado FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente "
         End If
 
         DataAdapter = New SqlClient.SqlDataAdapter(SQlClientes, MiConexion)
@@ -49,7 +54,7 @@ Public Class FrmContratos
     End Sub
 
     Private Sub BtnActualizar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnActualizar.Click
-        Cargar_listaContrattos(Me.OptActivo.Checked, Me.OptAnulado.Checked)
+        Cargar_listaContrattos(Me.OptActivo.Checked, Me.OptAnulado.Checked, Me.OptTodos.Checked)
     End Sub
 
     Private Sub BtnVer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnVer.Click
@@ -84,7 +89,7 @@ Public Class FrmContratos
         iResultado = ComandoUpdate.ExecuteNonQuery
         MiConexion.Close()
 
-        Cargar_listaContrattos(Me.OptActivo.Checked, Me.OptAnulado.Checked)
+        Cargar_listaContrattos(Me.OptActivo.Checked, Me.OptAnulado.Checked, Me.OptTodos.Checked)
 
     End Sub
 
