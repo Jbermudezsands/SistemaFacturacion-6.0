@@ -48,9 +48,9 @@ Partial Class FrmContratosNuevos
         Me.Label1 = New System.Windows.Forms.Label
         Me.Splitter1 = New System.Windows.Forms.Splitter
         Me.TabPage2 = New System.Windows.Forms.TabPage
-        Me.GroupBox6 = New System.Windows.Forms.GroupBox
-        Me.BtnBorrarLineaCont1 = New System.Windows.Forms.Button
-        Me.TrueDBGridContrato1 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.GroupBox7 = New System.Windows.Forms.GroupBox
+        Me.BtnBorrarLineaCont2 = New System.Windows.Forms.Button
+        Me.TrueDBGridContrato2 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.CmdAjustes = New System.Windows.Forms.Button
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
         Me.TxtFrecuencia = New System.Windows.Forms.TextBox
@@ -100,18 +100,18 @@ Partial Class FrmContratosNuevos
         Me.Label15 = New System.Windows.Forms.Label
         Me.CmbContrato2 = New System.Windows.Forms.ComboBox
         Me.Label17 = New System.Windows.Forms.Label
-        Me.BtnBorrarLineaCont2 = New System.Windows.Forms.Button
-        Me.GroupBox7 = New System.Windows.Forms.GroupBox
-        Me.TrueDBGridContrato2 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.TabPage3 = New System.Windows.Forms.TabPage
+        Me.GroupBox6 = New System.Windows.Forms.GroupBox
+        Me.BtnBorrarLineaCont1 = New System.Windows.Forms.Button
+        Me.TrueDBGridContrato1 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.GroupBox1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.TabPage2.SuspendLayout()
-        Me.GroupBox6.SuspendLayout()
-        CType(Me.TrueDBGridContrato1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox7.SuspendLayout()
+        CType(Me.TrueDBGridContrato2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TxtNumero1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -119,8 +119,8 @@ Partial Class FrmContratosNuevos
         Me.GroupBox5.SuspendLayout()
         CType(Me.CboCodigoBodega2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TxtNumero2, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox7.SuspendLayout()
-        CType(Me.TrueDBGridContrato2, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox6.SuspendLayout()
+        CType(Me.TrueDBGridContrato1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox1
@@ -414,48 +414,47 @@ Partial Class FrmContratosNuevos
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Contrato"
         '
-        'GroupBox6
+        'GroupBox7
         '
-        Me.GroupBox6.Controls.Add(Me.BtnBorrarLineaCont1)
-        Me.GroupBox6.Controls.Add(Me.TrueDBGridContrato1)
-        Me.GroupBox6.Location = New System.Drawing.Point(418, 422)
-        Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(487, 143)
-        Me.GroupBox6.TabIndex = 192
-        Me.GroupBox6.TabStop = False
-        Me.GroupBox6.Text = "Detalle Facturacion"
-        Me.GroupBox6.Visible = False
+        Me.GroupBox7.Controls.Add(Me.BtnBorrarLineaCont2)
+        Me.GroupBox7.Controls.Add(Me.TrueDBGridContrato2)
+        Me.GroupBox7.Location = New System.Drawing.Point(6, 190)
+        Me.GroupBox7.Name = "GroupBox7"
+        Me.GroupBox7.Size = New System.Drawing.Size(490, 156)
+        Me.GroupBox7.TabIndex = 163
+        Me.GroupBox7.TabStop = False
+        Me.GroupBox7.Text = "Detalle Facturacion Contrato"
         '
-        'BtnBorrarLineaCont1
+        'BtnBorrarLineaCont2
         '
-        Me.BtnBorrarLineaCont1.Image = CType(resources.GetObject("BtnBorrarLineaCont1.Image"), System.Drawing.Image)
-        Me.BtnBorrarLineaCont1.ImageAlign = System.Drawing.ContentAlignment.BottomLeft
-        Me.BtnBorrarLineaCont1.Location = New System.Drawing.Point(374, 120)
-        Me.BtnBorrarLineaCont1.Name = "BtnBorrarLineaCont1"
-        Me.BtnBorrarLineaCont1.Size = New System.Drawing.Size(94, 23)
-        Me.BtnBorrarLineaCont1.TabIndex = 208
-        Me.BtnBorrarLineaCont1.Text = "Borrar Linea"
-        Me.BtnBorrarLineaCont1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.BtnBorrarLineaCont1.UseVisualStyleBackColor = True
+        Me.BtnBorrarLineaCont2.Image = CType(resources.GetObject("BtnBorrarLineaCont2.Image"), System.Drawing.Image)
+        Me.BtnBorrarLineaCont2.ImageAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.BtnBorrarLineaCont2.Location = New System.Drawing.Point(377, 133)
+        Me.BtnBorrarLineaCont2.Name = "BtnBorrarLineaCont2"
+        Me.BtnBorrarLineaCont2.Size = New System.Drawing.Size(94, 23)
+        Me.BtnBorrarLineaCont2.TabIndex = 208
+        Me.BtnBorrarLineaCont2.Text = "Borrar Linea"
+        Me.BtnBorrarLineaCont2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnBorrarLineaCont2.UseVisualStyleBackColor = True
         '
-        'TrueDBGridContrato1
+        'TrueDBGridContrato2
         '
-        Me.TrueDBGridContrato1.AllowAddNew = True
-        Me.TrueDBGridContrato1.AlternatingRows = True
-        Me.TrueDBGridContrato1.Caption = "Listado de Productos"
-        Me.TrueDBGridContrato1.DirectionAfterEnter = C1.Win.C1TrueDBGrid.DirectionAfterEnterEnum.MoveNone
-        Me.TrueDBGridContrato1.GroupByCaption = "Drag a column header here to group by that column"
-        Me.TrueDBGridContrato1.Images.Add(CType(resources.GetObject("TrueDBGridContrato1.Images"), System.Drawing.Image))
-        Me.TrueDBGridContrato1.Location = New System.Drawing.Point(8, 18)
-        Me.TrueDBGridContrato1.Name = "TrueDBGridContrato1"
-        Me.TrueDBGridContrato1.PreviewInfo.Location = New System.Drawing.Point(0, 0)
-        Me.TrueDBGridContrato1.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TrueDBGridContrato1.PreviewInfo.ZoomFactor = 75
-        Me.TrueDBGridContrato1.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridContrato1.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TrueDBGridContrato1.Size = New System.Drawing.Size(460, 100)
-        Me.TrueDBGridContrato1.TabIndex = 165
-        Me.TrueDBGridContrato1.Text = "C1TrueDBGrid1"
-        Me.TrueDBGridContrato1.PropBag = resources.GetString("TrueDBGridContrato1.PropBag")
+        Me.TrueDBGridContrato2.AllowAddNew = True
+        Me.TrueDBGridContrato2.AlternatingRows = True
+        Me.TrueDBGridContrato2.Caption = "Listado de Productos"
+        Me.TrueDBGridContrato2.DirectionAfterEnter = C1.Win.C1TrueDBGrid.DirectionAfterEnterEnum.MoveNone
+        Me.TrueDBGridContrato2.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TrueDBGridContrato2.Images.Add(CType(resources.GetObject("TrueDBGridContrato2.Images"), System.Drawing.Image))
+        Me.TrueDBGridContrato2.Location = New System.Drawing.Point(6, 29)
+        Me.TrueDBGridContrato2.Name = "TrueDBGridContrato2"
+        Me.TrueDBGridContrato2.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TrueDBGridContrato2.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TrueDBGridContrato2.PreviewInfo.ZoomFactor = 75
+        Me.TrueDBGridContrato2.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridContrato2.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TrueDBGridContrato2.Size = New System.Drawing.Size(465, 100)
+        Me.TrueDBGridContrato2.TabIndex = 165
+        Me.TrueDBGridContrato2.Text = "C1TrueDBGrid1"
+        Me.TrueDBGridContrato2.PropBag = resources.GetString("TrueDBGridContrato2.PropBag")
         '
         'CmdAjustes
         '
@@ -1010,48 +1009,6 @@ Partial Class FrmContratosNuevos
         Me.Label17.TabIndex = 163
         Me.Label17.Text = "Tipo Servicio"
         '
-        'BtnBorrarLineaCont2
-        '
-        Me.BtnBorrarLineaCont2.Image = CType(resources.GetObject("BtnBorrarLineaCont2.Image"), System.Drawing.Image)
-        Me.BtnBorrarLineaCont2.ImageAlign = System.Drawing.ContentAlignment.BottomLeft
-        Me.BtnBorrarLineaCont2.Location = New System.Drawing.Point(377, 133)
-        Me.BtnBorrarLineaCont2.Name = "BtnBorrarLineaCont2"
-        Me.BtnBorrarLineaCont2.Size = New System.Drawing.Size(94, 23)
-        Me.BtnBorrarLineaCont2.TabIndex = 208
-        Me.BtnBorrarLineaCont2.Text = "Borrar Linea"
-        Me.BtnBorrarLineaCont2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.BtnBorrarLineaCont2.UseVisualStyleBackColor = True
-        '
-        'GroupBox7
-        '
-        Me.GroupBox7.Controls.Add(Me.BtnBorrarLineaCont2)
-        Me.GroupBox7.Controls.Add(Me.TrueDBGridContrato2)
-        Me.GroupBox7.Location = New System.Drawing.Point(6, 190)
-        Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(490, 156)
-        Me.GroupBox7.TabIndex = 163
-        Me.GroupBox7.TabStop = False
-        Me.GroupBox7.Text = "Detalle Facturacion Contrato"
-        '
-        'TrueDBGridContrato2
-        '
-        Me.TrueDBGridContrato2.AllowAddNew = True
-        Me.TrueDBGridContrato2.AlternatingRows = True
-        Me.TrueDBGridContrato2.Caption = "Listado de Productos"
-        Me.TrueDBGridContrato2.DirectionAfterEnter = C1.Win.C1TrueDBGrid.DirectionAfterEnterEnum.MoveNone
-        Me.TrueDBGridContrato2.GroupByCaption = "Drag a column header here to group by that column"
-        Me.TrueDBGridContrato2.Images.Add(CType(resources.GetObject("TrueDBGridContrato2.Images"), System.Drawing.Image))
-        Me.TrueDBGridContrato2.Location = New System.Drawing.Point(6, 29)
-        Me.TrueDBGridContrato2.Name = "TrueDBGridContrato2"
-        Me.TrueDBGridContrato2.PreviewInfo.Location = New System.Drawing.Point(0, 0)
-        Me.TrueDBGridContrato2.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TrueDBGridContrato2.PreviewInfo.ZoomFactor = 75
-        Me.TrueDBGridContrato2.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridContrato2.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TrueDBGridContrato2.Size = New System.Drawing.Size(465, 100)
-        Me.TrueDBGridContrato2.TabIndex = 165
-        Me.TrueDBGridContrato2.Text = "C1TrueDBGrid1"
-        Me.TrueDBGridContrato2.PropBag = resources.GetString("TrueDBGridContrato2.PropBag")
-        '
         'TabPage3
         '
         Me.TabPage3.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
@@ -1061,6 +1018,49 @@ Partial Class FrmContratosNuevos
         Me.TabPage3.Size = New System.Drawing.Size(855, 352)
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Detalle"
+        '
+        'GroupBox6
+        '
+        Me.GroupBox6.Controls.Add(Me.BtnBorrarLineaCont1)
+        Me.GroupBox6.Controls.Add(Me.TrueDBGridContrato1)
+        Me.GroupBox6.Location = New System.Drawing.Point(418, 422)
+        Me.GroupBox6.Name = "GroupBox6"
+        Me.GroupBox6.Size = New System.Drawing.Size(487, 143)
+        Me.GroupBox6.TabIndex = 192
+        Me.GroupBox6.TabStop = False
+        Me.GroupBox6.Text = "Detalle Facturacion"
+        Me.GroupBox6.Visible = False
+        '
+        'BtnBorrarLineaCont1
+        '
+        Me.BtnBorrarLineaCont1.Image = CType(resources.GetObject("BtnBorrarLineaCont1.Image"), System.Drawing.Image)
+        Me.BtnBorrarLineaCont1.ImageAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.BtnBorrarLineaCont1.Location = New System.Drawing.Point(374, 120)
+        Me.BtnBorrarLineaCont1.Name = "BtnBorrarLineaCont1"
+        Me.BtnBorrarLineaCont1.Size = New System.Drawing.Size(94, 23)
+        Me.BtnBorrarLineaCont1.TabIndex = 208
+        Me.BtnBorrarLineaCont1.Text = "Borrar Linea"
+        Me.BtnBorrarLineaCont1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnBorrarLineaCont1.UseVisualStyleBackColor = True
+        '
+        'TrueDBGridContrato1
+        '
+        Me.TrueDBGridContrato1.AllowAddNew = True
+        Me.TrueDBGridContrato1.AlternatingRows = True
+        Me.TrueDBGridContrato1.Caption = "Listado de Productos"
+        Me.TrueDBGridContrato1.DirectionAfterEnter = C1.Win.C1TrueDBGrid.DirectionAfterEnterEnum.MoveNone
+        Me.TrueDBGridContrato1.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TrueDBGridContrato1.Images.Add(CType(resources.GetObject("TrueDBGridContrato1.Images"), System.Drawing.Image))
+        Me.TrueDBGridContrato1.Location = New System.Drawing.Point(8, 18)
+        Me.TrueDBGridContrato1.Name = "TrueDBGridContrato1"
+        Me.TrueDBGridContrato1.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TrueDBGridContrato1.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TrueDBGridContrato1.PreviewInfo.ZoomFactor = 75
+        Me.TrueDBGridContrato1.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridContrato1.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TrueDBGridContrato1.Size = New System.Drawing.Size(460, 100)
+        Me.TrueDBGridContrato1.TabIndex = 165
+        Me.TrueDBGridContrato1.Text = "C1TrueDBGrid1"
+        Me.TrueDBGridContrato1.PropBag = resources.GetString("TrueDBGridContrato1.PropBag")
         '
         'FrmContratosNuevos
         '
@@ -1081,8 +1081,8 @@ Partial Class FrmContratosNuevos
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
-        Me.GroupBox6.ResumeLayout(False)
-        CType(Me.TrueDBGridContrato1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox7.ResumeLayout(False)
+        CType(Me.TrueDBGridContrato2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1092,8 +1092,8 @@ Partial Class FrmContratosNuevos
         Me.GroupBox5.PerformLayout()
         CType(Me.CboCodigoBodega2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TxtNumero2, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox7.ResumeLayout(False)
-        CType(Me.TrueDBGridContrato2, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox6.ResumeLayout(False)
+        CType(Me.TrueDBGridContrato1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub

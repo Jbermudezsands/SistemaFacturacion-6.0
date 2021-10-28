@@ -219,7 +219,7 @@ Public Class FrmContratosNuevos
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////////////CARGO EL DETALLE////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlString = "SELECT IdDetalleTipoContrato, IdTipoContrato, NumeroContrato, Cod_Productos, Descripcion_Producto, Cantidad FROM DetalleTipoCotrato WHERE (IdTipoContrato = " & IdTipoContrato & ") AND (NumeroContrato = " & NumeroContrato & ")"
+        SqlString = "SELECT IdDetalleTipoContrato, IdTipoContrato, NumeroContrato, Cod_Productos, Descripcion_Producto, Cantidad FROM DetalleTipoCotrato WHERE (IdTipoContrato = " & Me.idDetalleContrato & ") AND (NumeroContrato = " & NumeroContrato & ")"
         dsContrato2 = New DataSet
         daContrato2 = New SqlDataAdapter(SqlString, MiConexion)
         CmdBuilder2 = New SqlCommandBuilder(daContrato2)
@@ -251,10 +251,9 @@ Public Class FrmContratosNuevos
         Me.TxtObservaciones.Text = ""
         Me.ChkActivo.Checked = False
         Me.ChkExonerado.Checked = False
-
         Me.CmbContrato1.Text = ""
         Me.CmbContrato2.Text = ""
-        Me.TxtFrecuencia.Text = ""
+        Me.TxtFrecuencia.Text = "4"
         Me.CmbFrecuencia2.Text = ""
         Me.CmbMoneda1.Text = ""
         Me.CmbMoneda2.Text = ""
@@ -282,7 +281,33 @@ Public Class FrmContratosNuevos
         Me.dsContrato2.Reset()
 
 
+        SqlString = "SELECT  IdDetalleTipoContrato, IdTipoContrato, NumeroContrato, Cod_Productos, Descripcion_Producto, Cantidad FROM DetalleTipoCotrato WHERE  (IdTipoContrato = " & Me.idDetalleContrato & ") AND (NumeroContrato = '-10000')"
+        dsContrato2 = New DataSet
+        daContrato2 = New SqlDataAdapter(SqlString, MiConexion)
+        CmdBuilder2 = New SqlCommandBuilder(daContrato2)
+        daContrato2.Fill(dsContrato2, "DetalleContrato2")
+        Me.TrueDBGridContrato2.DataSource = dsContrato2.Tables("DetalleContrato2")
+        Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("IdDetalleTipoContrato").Visible = False
+        Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("IdTipoContrato").Visible = False
+        Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("NumeroContrato").Visible = False
+        Me.TrueDBGridContrato2.Columns("Cod_Productos").Caption = "Codigo"
+        Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("Cod_Productos").Button = True
+        Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("Cod_Productos").Width = 74
+        Me.TrueDBGridContrato2.Columns("Descripcion_Producto").Caption = "Descripcion"
+        Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 259
+        Me.TrueDBGridContrato2.Columns("Cantidad").Caption = "Cantidad"
+        Me.TrueDBGridContrato2.Splits.Item(0).DisplayColumns("Cantidad").Width = 64
 
+        SqlString = "SELECT  Contratos.Numero_Contrato, Detalle_Contratos.Tipo_Servicios, Detalle_Contratos.Frecuencia, Detalle_Contratos.Inicio_Contrato, Detalle_Contratos.Fin_Contrato, Detalle_Contratos.IdDetalleContrato FROM Contratos INNER JOIN Detalle_Contratos ON Contratos.Numero_Contrato = Detalle_Contratos.Numero_Contrato  " & _
+            "WHERE  (Contratos.Cod_Cliente = '-10000')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "DetalleContrato")
+
+        dsDetalleContrato = New DataSet
+        daDetalleContrato = New SqlDataAdapter(SqlString, MiConexion)
+        CmdBuilderDetalle = New SqlCommandBuilder(daDetalleContrato)
+        daDetalleContrato.Fill(dsDetalleContrato, "DetalleContrato")
+        Me.TDBGridTipoContrato.DataSource = dsDetalleContrato.Tables("DetalleContrato")
 
 
 
@@ -810,6 +835,7 @@ Public Class FrmContratosNuevos
         Me.TrueDBGridContrato2.Columns("Cantidad").Text = 1
         Me.TrueDBGridContrato2.Row = Me.TrueDBGridContrato2.Row + 1
         Me.TrueDBGridContrato2.Col = 3
+
     End Sub
 
     Private Sub TrueDBGridContrato2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridContrato2.Click
@@ -823,7 +849,7 @@ Public Class FrmContratosNuevos
             IdTipoContrato = DataSet.Tables("TContrato").Rows(0)("idTipoContrato")
         End If
 
-        Me.TrueDBGridContrato2.Columns("IdTipoContrato").Text = IdTipoContrato
+        Me.TrueDBGridContrato2.Columns("IdTipoContrato").Text = idDetalleContrato
         Me.TrueDBGridContrato2.Columns("NumeroContrato").Text = NumeroContrato
 
     End Sub
@@ -958,7 +984,7 @@ Public Class FrmContratosNuevos
         Me.Button7.Enabled = False
         Me.GroupBox3.Enabled = True
 
-        dsContrato2.Tables("DetalleContrato2").Reset()
+        'dsContrato2.Tables("DetalleContrato2").Reset()
         SqlString = "SELECT  IdDetalleTipoContrato, IdTipoContrato, NumeroContrato, Cod_Productos, Descripcion_Producto, Cantidad FROM DetalleTipoCotrato WHERE  (IdTipoContrato = " & Me.idDetalleContrato & ") AND (NumeroContrato = '-10000')"
         dsContrato2 = New DataSet
         daContrato2 = New SqlDataAdapter(SqlString, MiConexion)

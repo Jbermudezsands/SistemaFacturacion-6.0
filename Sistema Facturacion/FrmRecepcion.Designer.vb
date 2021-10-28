@@ -161,6 +161,7 @@ Partial Class FrmRecepcion
         Me.ChkCalculoMerma.TabIndex = 250
         Me.ChkCalculoMerma.Text = "Calcular Merma"
         Me.ChkCalculoMerma.UseVisualStyleBackColor = True
+        Me.ChkCalculoMerma.Visible = False
         '
         'BtnTara
         '

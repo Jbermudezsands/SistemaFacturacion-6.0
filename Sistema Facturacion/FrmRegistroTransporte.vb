@@ -1,7 +1,7 @@
 Public Class FrmRegistroTransporte
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Public IdConductor As String, CodigoCliente As String, Nuevo As Boolean = True, Procesado As Boolean = False
-    Public FechaRegistro As Date, NombreConductor As String, NumeroContrato As String, Placa As String
+    Public FechaRegistro As Date, NombreConductor As String, NumeroContrato As String, Placa As String, idDetalleContrato As Double
 
 
 
@@ -185,7 +185,7 @@ Public Class FrmRegistroTransporte
 
 
 
-        GrabarRegistroEvacuaciones(Me.TxtNumeroContrato.Text, Me.DTPFecha.Value, CodigoCliente, IdConductor, idVehiculo, idContrato, False, True, False, Nuevo)
+        GrabarRegistroEvacuaciones(Me.TxtNumeroContrato.Text, Me.DTPFecha.Value, CodigoCliente, IdConductor, idVehiculo, Me.idDetalleContrato, False, True, False, Nuevo)
 
         Me.CboPlaca.Text = ""
         Me.CboCodigoConductor.Text = ""
