@@ -48,6 +48,7 @@ Partial Class FrmContratosNuevos
         Me.Label1 = New System.Windows.Forms.Label
         Me.Splitter1 = New System.Windows.Forms.Splitter
         Me.TabPage2 = New System.Windows.Forms.TabPage
+        Me.ChkUnificar = New System.Windows.Forms.CheckBox
         Me.GroupBox7 = New System.Windows.Forms.GroupBox
         Me.BtnBorrarLineaCont2 = New System.Windows.Forms.Button
         Me.TrueDBGridContrato2 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
@@ -104,7 +105,6 @@ Partial Class FrmContratosNuevos
         Me.GroupBox6 = New System.Windows.Forms.GroupBox
         Me.BtnBorrarLineaCont1 = New System.Windows.Forms.Button
         Me.TrueDBGridContrato1 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.ChkUnificar = New System.Windows.Forms.CheckBox
         Me.GroupBox1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -415,6 +415,16 @@ Partial Class FrmContratosNuevos
         Me.TabPage2.Size = New System.Drawing.Size(855, 352)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Contrato"
+        '
+        'ChkUnificar
+        '
+        Me.ChkUnificar.AutoSize = True
+        Me.ChkUnificar.Location = New System.Drawing.Point(268, 157)
+        Me.ChkUnificar.Name = "ChkUnificar"
+        Me.ChkUnificar.Size = New System.Drawing.Size(177, 17)
+        Me.ChkUnificar.TabIndex = 234
+        Me.ChkUnificar.Text = "Unificar Ubicaciones al Facturar"
+        Me.ChkUnificar.UseVisualStyleBackColor = True
         '
         'GroupBox7
         '
@@ -1063,16 +1073,6 @@ Partial Class FrmContratosNuevos
         Me.TrueDBGridContrato1.TabIndex = 165
         Me.TrueDBGridContrato1.Text = "C1TrueDBGrid1"
         Me.TrueDBGridContrato1.PropBag = resources.GetString("TrueDBGridContrato1.PropBag")
-        '
-        'ChkUnificar
-        '
-        Me.ChkUnificar.AutoSize = True
-        Me.ChkUnificar.Location = New System.Drawing.Point(268, 157)
-        Me.ChkUnificar.Name = "ChkUnificar"
-        Me.ChkUnificar.Size = New System.Drawing.Size(177, 17)
-        Me.ChkUnificar.TabIndex = 234
-        Me.ChkUnificar.Text = "Unificar Ubicaciones al Facturar"
-        Me.ChkUnificar.UseVisualStyleBackColor = True
         '
         'FrmContratosNuevos
         '
