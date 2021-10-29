@@ -144,7 +144,7 @@ Public Class FrmEvacuaciones
         Dim Dias As Double, SQlString As String, i As Double
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim IdTipoContrato As Integer, Registros As Double, j As Double
-        Dim Total As Double = 0, FechaConsulta As Date, FechaIni As Date, FechaFin As Date, NumeroContrato As Double, CodigoCliente As String
+        Dim Total As Double = 0, FechaConsulta As Date, FechaIni As Date, FechaFin As Date, NumeroContrato As Double, CodigoCliente As String, IdDetalleContrato As Double
         Dim Cant As Double = 0
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -204,6 +204,7 @@ Public Class FrmEvacuaciones
 
             NumeroContrato = ds.Tables("DetalleRegistros").Rows(j)("Numero_Contrato")
             CodigoCliente = ds.Tables("DetalleRegistros").Rows(j)("Cod_Cliente")
+            IdDetalleContrato = ds.Tables("DetalleRegistros").Rows(j)("IdDetalleContrato")
 
             Total = 0
 
@@ -214,7 +215,7 @@ Public Class FrmEvacuaciones
                 Cant = 0
                 FechaConsulta = DateSerial(FechaIni.Year, FechaFin.Month, i)
 
-                SQlString = "SELECT COUNT(Numero_Contrato) AS Cont FROM Registro_Transporte_Detalle WHERE (Fecha_Registro = CONVERT(DATETIME, '" & Format(FechaConsulta, "yyyy-MM-dd") & "', 102)) AND (Cod_Cliente = '" & CodigoCliente & "') AND (idTipoContrato = " & IdTipoContrato & ") AND (Numero_Contrato = " & NumeroContrato & ") AND (Anulado = 0)"
+                SQlString = "SELECT COUNT(Numero_Contrato) AS Cont FROM Registro_Transporte_Detalle WHERE (Fecha_Registro = CONVERT(DATETIME, '" & Format(FechaConsulta, "yyyy-MM-dd") & "', 102)) AND (Cod_Cliente = '" & CodigoCliente & "') AND (idTipoContrato = " & IdDetalleContrato & ") AND (Numero_Contrato = " & NumeroContrato & ") AND (Anulado = 0)"
                 DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
                 DataAdapter.Fill(DataSet, "Contador")
                 If DataSet.Tables("Contador").Rows.Count <> 0 Then
@@ -333,6 +334,7 @@ Public Class FrmEvacuaciones
         Dim Iposicion As Double
 
         Iposicion = Me.TDGridSolicitud.Row
+        My.Forms.FrmRegistroTransporte.idDetalleContrato = Me.TDGridSolicitud.Item(Iposicion)("IdDetalleContrato")
         My.Forms.FrmRegistroTransporte.NumeroContrato = Me.TDGridSolicitud.Item(Iposicion)("Numero_Contrato")
         My.Forms.FrmRegistroTransporte.Nuevo = True
         My.Forms.FrmRegistroTransporte.Show()

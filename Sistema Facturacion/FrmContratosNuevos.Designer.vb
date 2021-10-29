@@ -104,6 +104,7 @@ Partial Class FrmContratosNuevos
         Me.GroupBox6 = New System.Windows.Forms.GroupBox
         Me.BtnBorrarLineaCont1 = New System.Windows.Forms.Button
         Me.TrueDBGridContrato1 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.ChkUnificar = New System.Windows.Forms.CheckBox
         Me.GroupBox1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -401,6 +402,7 @@ Partial Class FrmContratosNuevos
         'TabPage2
         '
         Me.TabPage2.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.TabPage2.Controls.Add(Me.ChkUnificar)
         Me.TabPage2.Controls.Add(Me.GroupBox7)
         Me.TabPage2.Controls.Add(Me.CmdAjustes)
         Me.TabPage2.Controls.Add(Me.GroupBox3)
@@ -1062,6 +1064,16 @@ Partial Class FrmContratosNuevos
         Me.TrueDBGridContrato1.Text = "C1TrueDBGrid1"
         Me.TrueDBGridContrato1.PropBag = resources.GetString("TrueDBGridContrato1.PropBag")
         '
+        'ChkUnificar
+        '
+        Me.ChkUnificar.AutoSize = True
+        Me.ChkUnificar.Location = New System.Drawing.Point(268, 157)
+        Me.ChkUnificar.Name = "ChkUnificar"
+        Me.ChkUnificar.Size = New System.Drawing.Size(177, 17)
+        Me.ChkUnificar.TabIndex = 234
+        Me.ChkUnificar.Text = "Unificar Ubicaciones al Facturar"
+        Me.ChkUnificar.UseVisualStyleBackColor = True
+        '
         'FrmContratosNuevos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1081,6 +1093,7 @@ Partial Class FrmContratosNuevos
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
+        Me.TabPage2.PerformLayout()
         Me.GroupBox7.ResumeLayout(False)
         CType(Me.TrueDBGridContrato2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
@@ -1181,4 +1194,5 @@ Partial Class FrmContratosNuevos
     Friend WithEvents TrueDBGridContrato1 As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents BtnBorrarLineaCont1 As System.Windows.Forms.Button
     Friend WithEvents TabPage3 As System.Windows.Forms.TabPage
+    Friend WithEvents ChkUnificar As System.Windows.Forms.CheckBox
 End Class

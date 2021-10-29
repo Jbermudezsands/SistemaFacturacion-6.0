@@ -48,18 +48,16 @@ Public Class FrmContratosNuevos
 
 
 
-
-            SQlString = "SELECT  Contratos.Numero_Contrato, Detalle_Contratos.Tipo_Servicios, Detalle_Contratos.Frecuencia, Detalle_Contratos.Inicio_Contrato, Detalle_Contratos.Fin_Contrato, Detalle_Contratos.IdDetalleContrato FROM Contratos INNER JOIN Detalle_Contratos ON Contratos.Numero_Contrato = Detalle_Contratos.Numero_Contrato  " & _
+            SQlString = "SELECT  Contratos.Numero_Contrato, Contratos.UnificarFacturas, Detalle_Contratos.Tipo_Servicios, Detalle_Contratos.Frecuencia, Detalle_Contratos.Inicio_Contrato, Detalle_Contratos.Fin_Contrato, Detalle_Contratos.IdDetalleContrato FROM Contratos INNER JOIN Detalle_Contratos ON Contratos.Numero_Contrato = Detalle_Contratos.Numero_Contrato  " & _
                         "WHERE  (Contratos.Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
             DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
             DataAdapter.Fill(DataSet, "DetalleContratos")
 
 
-
-
             If DataSet.Tables("DetalleContratos").Rows.Count <> 0 Then
                 Me.TDBGridTipoContrato.DataSource = DataSet.Tables("DetalleContratos")
                 Me.LblNumeroContrato.Text = DataSet.Tables("DetalleContratos").Rows(0)("Numero_Contrato")
+                Me.ChkUnificar.Checked = DataSet.Tables("DetalleContratos").Rows(0)("UnificarFacturas")
             End If
 
 
@@ -673,15 +671,15 @@ Public Class FrmContratosNuevos
         End If
 
 
-        If Me.CmbContrato1.Text = "" Then
-            MsgBox("Es necesario seleccionar el tipo de contrato", MsgBoxStyle.Exclamation, "Zeus Facturacion")
-            Exit Sub
-        End If
+        'If Me.CmbContrato1.Text = "" Then
+        '    MsgBox("Es necesario seleccionar el tipo de contrato", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+        '    Exit Sub
+        'End If
 
-        If Me.TxtPrecioUnitario.Text = "" Then
-            MsgBox("Es necesario Seleccionar el precio unitario", MsgBoxStyle.Exclamation, "Zeus Facturacion")
-            Exit Sub
-        End If
+        'If Me.TxtPrecioUnitario.Text = "" Then
+        '    MsgBox("Es necesario Seleccionar el precio unitario", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+        '    Exit Sub
+        'End If
 
 
         If Me.TxtPrecioUnitario.Text = "" Then
@@ -730,12 +728,12 @@ Public Class FrmContratosNuevos
             IdContrato2 = IdContrato1
         End If
 
-        If IdContrato1 = 0 Then
-            If IdContrato2 = 0 Then
-                MsgBox("Es Necesario Seleccionar un Tipo de Contrato", MsgBoxStyle.Critical, "Zeus Facturacion")
-                Exit Sub
-            End If
-        End If
+        'If IdContrato1 = 0 Then
+        '    If IdContrato2 = 0 Then
+        '        MsgBox("Es Necesario Seleccionar un Tipo de Contrato", MsgBoxStyle.Critical, "Zeus Facturacion")
+        '        Exit Sub
+        '    End If
+        'End If
 
 
 
@@ -753,8 +751,8 @@ Public Class FrmContratosNuevos
 
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Contratos] ([Numero_Contrato],[Cod_Cliente],[Tipo_Servicios1],[Tipo_Servicios2],[Frecuencia],[Inicio_Contrato],[Fin_Contrato] ,[Contacto_Administrativo] ,[Contacto_Operativo],[Precio_Unitario] ,[Moneda],[Activo],[Activo2],[Anulado],[Retencion1],[Retencion2],[Exonerado],[Referencia],[Observaciones],[Precio_Unitario2],[Inicio_Contrato2],[Fin_Contrato2] ,[Moneda2] ,[Frecuencia2] ,[IdContrato1],[IdContrato2],[DiasFactura1],[DiasFactura2],[CodBodega1],[CodBodega2],[Contrato_Variable],[Contrato_Variable2]) " & _
-                           "VALUES (" & NumeroContrato & ", '" & Me.TxtCodigoClientes.Text & "','" & Me.CmbContrato1.Text & "' ,'" & Me.CmbContrato2.Text & "' ,'" & Me.TxtFrecuencia.Text & "' ,'" & Format(Me.DtpInicioContrato1.Value, "dd/MM/yyyy") & "' ,'" & Format(Me.DtpFinContrato1.Value, "dd/MM/yyyy") & "' , '" & Me.TxtContactoAdmon.Text & "' , '" & Me.TxtContactoOperativo.Text & "' , " & Me.TxtPrecioUnitario.Text & " , '" & Me.CmbMoneda1.Text & "' ," & ContratoActivo & "," & ContratoActivo2 & ",0,0,0, " & Exonerado & ", '" & Me.CboReferencia.Text & "' ,'" & Me.TxtObservaciones.Text & "' , " & Me.TxtPrecioUnitario2.Text & " ,'" & Format(Me.DtpInicioContrato2.Value, "dd/MM/yyyy") & "' ,'" & Format(Me.DtpFinContrato2.Value, "dd/MM/yyyy") & "' ,'" & Me.CmbMoneda1.Text & "' ,'" & Me.CmbFrecuencia2.Text & "'  , " & IdContrato1 & " ," & IdContrato2 & ", " & Me.TxtNumero1.Value & " ," & Me.TxtNumero2.Value & ",'" & Me.CboCodigoBodega.Text & "','" & Me.CboCodigoBodega2.Text & "','" & ContratoVariable & "','" & ContratoVariable2 & "')"
+            StrSqlUpdate = "INSERT INTO [Contratos] ([Numero_Contrato],[Cod_Cliente],[Tipo_Servicios1],[Tipo_Servicios2],[Frecuencia],[Inicio_Contrato],[Fin_Contrato] ,[Contacto_Administrativo] ,[Contacto_Operativo],[Precio_Unitario] ,[Moneda],[Activo],[Activo2],[Anulado],[Retencion1],[Retencion2],[Exonerado],[Referencia],[Observaciones],[Precio_Unitario2],[Inicio_Contrato2],[Fin_Contrato2] ,[Moneda2] ,[Frecuencia2] ,[IdContrato1],[IdContrato2],[DiasFactura1],[DiasFactura2],[CodBodega1],[CodBodega2],[Contrato_Variable],[Contrato_Variable2],[UnificarFacturas]) " & _
+                           "VALUES (" & NumeroContrato & ", '" & Me.TxtCodigoClientes.Text & "','" & Me.CmbContrato1.Text & "' ,'" & Me.CmbContrato2.Text & "' ,'" & Me.TxtFrecuencia.Text & "' ,'" & Format(Me.DtpInicioContrato1.Value, "dd/MM/yyyy") & "' ,'" & Format(Me.DtpFinContrato1.Value, "dd/MM/yyyy") & "' , '" & Me.TxtContactoAdmon.Text & "' , '" & Me.TxtContactoOperativo.Text & "' , " & Me.TxtPrecioUnitario.Text & " , '" & Me.CmbMoneda1.Text & "' ," & ContratoActivo & "," & ContratoActivo2 & ",0,0,0, " & Exonerado & ", '" & Me.CboReferencia.Text & "' ,'" & Me.TxtObservaciones.Text & "' , " & Me.TxtPrecioUnitario2.Text & " ,'" & Format(Me.DtpInicioContrato2.Value, "dd/MM/yyyy") & "' ,'" & Format(Me.DtpFinContrato2.Value, "dd/MM/yyyy") & "' ,'" & Me.CmbMoneda1.Text & "' ,'" & Me.CmbFrecuencia2.Text & "'  , " & IdContrato1 & " ," & IdContrato2 & ", " & Me.TxtNumero1.Value & " ," & Me.TxtNumero2.Value & ",'" & Me.CboCodigoBodega.Text & "','" & Me.CboCodigoBodega2.Text & "','" & ContratoVariable & "','" & ContratoVariable2 & "', ," & Me.ChkUnificar.Checked & ")"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
