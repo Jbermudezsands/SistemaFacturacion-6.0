@@ -12,10 +12,15 @@ Public Class FrmVehiculo
 
 
         '////////////////////////////////////////////////BUSCO DATOS DEL CONDUCTOR ///////////////////////////////////
-        SqlString = "SELECT  Placa, Marca, TipoVehiculo, Activo FROM Vehiculo WHERE (Placa = '" & Me.CboPlaca.Text & "')"
+        SqlString = "SELECT  Placa, Marca, TipoVehiculo, Activo, Evacuaciones FROM Vehiculo WHERE (Placa = '" & Me.CboPlaca.Text & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "Datos")
         If Not DataSet.Tables("Datos").Rows.Count = 0 Then
+
+            If Not IsDBNull(DataSet.Tables("Datos").Rows(0)("Evacuaciones")) Then
+                Me.ChkVehiculoEvacuaciones.Checked = DataSet.Tables("Datos").Rows(0)("Evacuaciones")
+            End If
+
             If Not IsDBNull(DataSet.Tables("Datos").Rows(0)("Marca")) Then
                 Me.TxtMarca.Text = DataSet.Tables("Datos").Rows(0)("Marca")
             End If
@@ -75,7 +80,7 @@ Public Class FrmVehiculo
         'End If
         'Me.CboPlaca.Columns(0).Caption = "Placa"
 
-
+        Me.ChkVehiculoEvacuaciones.Checked = False
         Me.CboPlaca.Text = ""
         Me.TxtMarca.Text = ""
         Me.CboTipo.Text = ""
@@ -89,22 +94,27 @@ Public Class FrmVehiculo
     Private Sub CmdGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGrabar.Click
         Dim SQLString As String, Activo As Double
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Evacuaciones As Integer
 
+        If Me.ChkVehiculoEvacuaciones.Checked = True Then
+            Evacuaciones = 1
+        Else
+            Evacuaciones = 0
+        End If
 
-        SQLString = "SELECT  Placa, Marca, TipoVehiculo, Activo FROM Vehiculo WHERE (Activo = 1) AND (Placa = '" & Me.CboPlaca.Text & "')"
+        If Me.CboActivo.Text = "Activo" Then
+            Activo = 1
+        Else
+            Activo = 0
+        End If
+
+        SQLString = "SELECT  Placa, Marca, TipoVehiculo, Activo, Evacuaciones FROM Vehiculo WHERE (Activo = 1) AND (Placa = '" & Me.CboPlaca.Text & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
         DataAdapter.Fill(DataSet, "Clientes")
         If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
 
-            If Me.CboActivo.Text = "Activo" Then
-                Activo = 1
-            Else
-                Activo = 0
-            End If
-
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-            StrSqlUpdate = "UPDATE [Vehiculo]  SET [Marca] = '" & Me.TxtMarca.Text & "',[TipoVehiculo] = '" & Me.CboTipo.Text & "' ,[Activo] = " & Activo & "  WHERE (Activo = 1) AND (Placa = '" & Me.CboPlaca.Text & "')"
+            StrSqlUpdate = "UPDATE [Vehiculo]  SET [Marca] = '" & Me.TxtMarca.Text & "',[TipoVehiculo] = '" & Me.CboTipo.Text & "' ,[Activo] = " & Activo & ",[Evacuaciones] = " & Evacuaciones & "  WHERE (Activo = 1) AND (Placa = '" & Me.CboPlaca.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -112,7 +122,7 @@ Public Class FrmVehiculo
 
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Vehiculo] ([Placa],[Marca],[TipoVehiculo],[Activo]) VALUES ('" & Me.CboPlaca.Text & "' ,'" & Me.TxtMarca.Text & "' ,'" & Me.CboTipo.Text & "', " & Activo & ") "
+            StrSqlUpdate = "INSERT INTO [Vehiculo] ([Placa],[Marca],[TipoVehiculo],[Activo],[Evacuaciones]) VALUES ('" & Me.CboPlaca.Text & "' ,'" & Me.TxtMarca.Text & "' ,'" & Me.CboTipo.Text & "', " & Activo & ", " & Evacuaciones & ") "
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery

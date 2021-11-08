@@ -13,7 +13,7 @@ Public Class FrmEvacuaciones
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim IdTipoContrato As Integer, Registros As Double, j As Double
         Dim Total As Double = 0, FechaConsulta As Date, FechaIni As Date, FechaFin As Date, NumeroContrato As Double, CodigoCliente As String
-        Dim Acumulado As Double = 0, Periodo As Double = 0, fechaRegistro As Date
+        Dim Acumulado As Double = 0, Periodo As Double = 0, fechaRegistro As Date, IdDetalleContrato As Double
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////////////7777BUSCO EL ID DEL CONTRATO PARA CONSULTARLO //////////////////////////////////////////////////////
@@ -34,7 +34,7 @@ Public Class FrmEvacuaciones
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SQlString = "SELECT CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END AS Nombres, Contratos.Contrato_Variable, Contratos.Contrato_Variable2, Clientes.Cod_Cliente AS Acumulado, Clientes.Cod_Cliente AS Periodo, Clientes.Cod_Cliente AS Total, Contratos.Numero_Contrato, Contratos.Cod_Cliente, Contratos.Observaciones As Fechas, Clientes.InventarioFisico As Facturar FROM Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN TipoContrato ON Contratos.IdContrato1 = TipoContrato.idTipoContrato INNER JOIN TipoContrato AS TipoContrato_1 ON Contratos.IdContrato2 = TipoContrato_1.idTipoContrato  WHERE (NOT (CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END IS NULL)) AND (TipoContrato.idTipoContrato = " & IdTipoContrato & ") OR (TipoContrato_1.idTipoContrato = " & IdTipoContrato & ")"
+        SQlString = "SELECT CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END AS Nombres, Contratos.Contrato_Variable, Contratos.Contrato_Variable2, Clientes.Cod_Cliente AS Acumulado, Clientes.Cod_Cliente AS Periodo, Clientes.Cod_Cliente AS Total, Contratos.Numero_Contrato, Contratos.Cod_Cliente, Contratos.Observaciones As Fechas, Clientes.InventarioFisico As Facturar, Detalle_Contratos.IdDetalleContrato FROM Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN TipoContrato ON Contratos.IdContrato1 = TipoContrato.idTipoContrato INNER JOIN Detalle_Contratos ON Contratos.Numero_Contrato = Detalle_Contratos.Numero_Contrato  WHERE (NOT (CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END IS NULL)) AND (TipoContrato.idTipoContrato = " & IdTipoContrato & ") "
         daFact = New SqlDataAdapter(SQlString, MiConexion)
         CmdBuilderFact = New SqlCommandBuilder(daFact)
         daFact.Fill(dsFact, "Facturacion")
@@ -56,13 +56,14 @@ Public Class FrmEvacuaciones
 
             NumeroContrato = dsFact.Tables("Facturacion").Rows(j)("Numero_Contrato")
             CodigoCliente = dsFact.Tables("Facturacion").Rows(j)("Cod_Cliente")
+            IdDetalleContrato = dsFact.Tables("Facturacion").Rows(j)("IdDetalleContrato")
             Total = 0
             Me.CadenaFechaFact = ""
 
             '//////////////////////////BUSCOS LAS EVACUACIONES ACUMULADAS ///////////////////////////////////////////////////////////////////
             Acumulado = 0
             'SQlString = "SELECT COUNT(Numero_Contrato) AS Cont FROM Registro_Transporte_Detalle WHERE (Fecha_Registro < CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102)) AND (Cod_Cliente = '" & CodigoCliente & "') AND (idTipoContrato = " & IdTipoContrato & ") AND (Numero_Contrato = " & NumeroContrato & ") AND (Procesado = 0)"
-            SQlString = "SELECT Numero_Contrato AS Cont, Fecha_Registro  FROM Registro_Transporte_Detalle WHERE (Fecha_Registro < CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102)) AND (Cod_Cliente = '" & CodigoCliente & "') AND (idTipoContrato = " & IdTipoContrato & ") AND (Numero_Contrato = " & NumeroContrato & ") AND (Procesado = 0) AND (Anulado = 0)"
+            SQlString = "SELECT Numero_Contrato AS Cont, Fecha_Registro  FROM Registro_Transporte_Detalle WHERE (Fecha_Registro < CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102)) AND (Cod_Cliente = '" & CodigoCliente & "') AND (idTipoContrato = " & IdDetalleContrato & ") AND (Numero_Contrato = " & NumeroContrato & ") AND (Procesado = 0) AND (Anulado = 0)"
             DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
             DataAdapter.Fill(DataSet, "Acumulado")
             i = 0
@@ -87,7 +88,7 @@ Public Class FrmEvacuaciones
 
             Periodo = 0
             'SQlString = "SELECT COUNT(Numero_Contrato) AS Cont FROM Registro_Transporte_Detalle WHERE (Fecha_Registro BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Cod_Cliente = '" & CodigoCliente & "') AND (idTipoContrato = " & IdTipoContrato & ") AND (Numero_Contrato = " & NumeroContrato & ") AND (Procesado = 0)"
-            SQlString = "SELECT  Numero_Contrato AS Cont, Fecha_Registro FROM Registro_Transporte_Detalle WHERE  (Fecha_Registro BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Cod_Cliente = '" & CodigoCliente & "') AND (idTipoContrato = " & IdTipoContrato & ") AND (Numero_Contrato = " & NumeroContrato & ") AND (Procesado = 0) AND (Anulado = 0)"
+            SQlString = "SELECT  Numero_Contrato AS Cont, Fecha_Registro FROM Registro_Transporte_Detalle WHERE  (Fecha_Registro BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Cod_Cliente = '" & CodigoCliente & "') AND (idTipoContrato = " & IdDetalleContrato & ") AND (Numero_Contrato = " & NumeroContrato & ") AND (Procesado = 0) AND (Anulado = 0)"
             DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
             DataAdapter.Fill(DataSet, "Periodo")
             i = 0

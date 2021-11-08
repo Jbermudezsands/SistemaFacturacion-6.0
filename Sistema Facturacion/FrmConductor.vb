@@ -17,6 +17,7 @@ Public Class FrmConductor
         'End If
         'Me.CboCodigoConductor.Columns(0).Caption = "Codigo"
 
+        Me.ChkConductores.Checked = False
         Me.TxtCedula.Text = ""
         Me.TxtLicencia.Text = ""
         Me.TxtMotivo.Text = ""
@@ -66,7 +67,7 @@ Public Class FrmConductor
         '//////////////////////////CARGO LOS CONDUCTORES////////////////////////////////////////////////////////////////////
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         Codigo = Me.CboCodigoConductor.Text
-        SqlString = "SELECT Codigo, Nombre, Cedula, Licencia, Activo, ListaNegra, RazonListaNegra FROM Conductor WHERE (Codigo = '" & Codigo & "')"
+        SqlString = "SELECT Codigo, Nombre, Cedula, Licencia, Activo, ListaNegra, RazonListaNegra, Evacuaciones FROM Conductor WHERE (Codigo = '" & Codigo & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "Conductor")
         If Not DataSet.Tables("Conductor").Rows.Count = 0 Then
@@ -102,6 +103,11 @@ Public Class FrmConductor
                 End If
             End If
 
+
+            If Not IsDBNull(DataSet.Tables("Conductor").Rows(0)("Evacuaciones")) Then
+                Me.ChkConductores.Checked = DataSet.Tables("Conductor").Rows(0)("Evacuaciones")
+            End If
+
         End If
         Me.CboCodigoConductor.Columns(0).Caption = "Codigo"
 
@@ -117,7 +123,7 @@ Public Class FrmConductor
         Dim SQLString As String, Activo As Double
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-        Dim ListaNegra As Double
+        Dim ListaNegra As Double, Evacuaciones As Double
 
 
         If Me.CboActivo.Text = "Activo" Then
@@ -132,6 +138,12 @@ Public Class FrmConductor
             ListaNegra = 0
         End If
 
+        If Me.ChkConductores.Checked = True Then
+            Evacuaciones = 1
+        Else
+            Evacuaciones = 0
+        End If
+
         MiConexion.Close()
 
         SQLString = "SELECT  Codigo, Nombre, Cedula, Activo FROM Conductor WHERE (Codigo = '" & Me.CboCodigoConductor.Text & "')"
@@ -140,7 +152,7 @@ Public Class FrmConductor
         If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
 
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-            StrSqlUpdate = "UPDATE [Conductor]  SET [Nombre] = '" & Me.TxtNombre.Text & "',[Cedula] = '" & Me.TxtCedula.Text & "',[Licencia] = '" & Me.TxtLicencia.Text & "'  ,[Activo] = " & Activo & ",[ListaNegra] = " & ListaNegra & ",[RazonListaNegra]= '" & Me.TxtMotivo.Text & "' ,[Cuenta_Contable]= '" & Me.TxtCtaxPagar.Text & "'  WHERE (Activo = 1) AND (Codigo = '" & Me.CboCodigoConductor.Text & "')"
+            StrSqlUpdate = "UPDATE [Conductor]  SET [Nombre] = '" & Me.TxtNombre.Text & "',[Cedula] = '" & Me.TxtCedula.Text & "',[Licencia] = '" & Me.TxtLicencia.Text & "'  ,[Activo] = " & Activo & ",[ListaNegra] = " & ListaNegra & ",[RazonListaNegra]= '" & Me.TxtMotivo.Text & "' ,[Cuenta_Contable]= '" & Me.TxtCtaxPagar.Text & "',[Evacuaciones]= " & Evacuaciones & "  WHERE (Activo = 1) AND (Codigo = '" & Me.CboCodigoConductor.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -148,7 +160,7 @@ Public Class FrmConductor
 
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Conductor] ([Codigo],[Nombre],[Cedula],[Licencia],[ListaNegra],[RazonListaNegra],[Activo],[Cuenta_Contable]) VALUES ('" & Me.CboCodigoConductor.Text & "' ,'" & Me.TxtNombre.Text & "' ,'" & Me.TxtCedula.Text & "', '" & Me.TxtLicencia.Text & "', " & ListaNegra & ", '" & Me.TxtMotivo.Text & "', " & Activo & ", '" & Me.TxtCtaxPagar.Text & "') "
+            StrSqlUpdate = "INSERT INTO [Conductor] ([Codigo],[Nombre],[Cedula],[Licencia],[ListaNegra],[RazonListaNegra],[Activo],[Cuenta_Contable],[Evacuaciones]) VALUES ('" & Me.CboCodigoConductor.Text & "' ,'" & Me.TxtNombre.Text & "' ,'" & Me.TxtCedula.Text & "', '" & Me.TxtLicencia.Text & "', " & ListaNegra & ", '" & Me.TxtMotivo.Text & "', " & Activo & ", '" & Me.TxtCtaxPagar.Text & "', " & Evacuaciones & ") "
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
