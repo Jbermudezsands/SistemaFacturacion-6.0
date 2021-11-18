@@ -3554,11 +3554,11 @@ Public Class FrmCompras
         If Me.BindingDetalle.Count <> 0 Then
             My.Forms.FrmSeries.Tipo = Me.CboTipoProducto.Text
             Posicion = Me.BindingDetalle.Position
-            My.Forms.FrmSeries.CodigoProducto = Me.BindingDetalle.Item(Posicion)("Cod_Productos")
+            My.Forms.FrmSeries.CodigoProducto = Me.BindingDetalle.Item(Posicion)("Cod_Producto")
             My.Forms.FrmSeries.NombreProducto = Me.BindingDetalle.Item(Posicion)("Descripcion_Producto")
             My.Forms.FrmSeries.Numero = Me.TxtNumeroEnsamble.Text
             My.Forms.FrmSeries.Fecha = Me.DTPFecha.Value
-            My.Forms.FrmSeries.Text = Me.BindingDetalle.Item(Posicion)("Cod_Productos") + " " + Me.BindingDetalle.Item(Posicion)("Descripcion_Producto")
+            My.Forms.FrmSeries.Text = Me.BindingDetalle.Item(Posicion)("Cod_Producto") + " " + Me.BindingDetalle.Item(Posicion)("Descripcion_Producto")
             My.Forms.FrmSeries.ShowDialog()
         End If
     End Sub

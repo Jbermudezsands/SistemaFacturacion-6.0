@@ -27,8 +27,8 @@ Public Class FrmImpresoras
         ' selecciona la impresora predeterminada 
         Me.CmbImpresorasRemision.Text = s_Default_Printer
 
-        Me.CmbImpresorasRemision.Text = BuscaImpresora("Remision")
-        Me.CmbImpresorasRecibo.Text = BuscaImpresora("Tickets")
+        Me.CmbImpresorasRemision.Text = BuscaImpresora("Factura")
+        Me.CmbImpresorasRecibo.Text = BuscaImpresora("Recibo")
 
     End Sub
 

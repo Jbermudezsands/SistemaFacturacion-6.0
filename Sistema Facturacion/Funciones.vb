@@ -4469,7 +4469,7 @@ errSub:
         End If
     End Function
 
-    Public Sub GrabaSeries(ByVal Numero As String, ByVal FechaSerie As Date, ByVal Tipo As String, ByVal Id As Double, ByVal CodigoProducto As String, ByVal NumeroSerie As String)
+    Public Sub GrabaSeries(ByVal Numero As String, ByVal FechaSerie As Date, ByVal Tipo As String, ByVal Id As Double, ByVal CodigoProducto As String, ByVal NumeroSerie As String, ByVal NumeroSerie2 As String, ByVal NumeroSerie3 As String, ByVal NumeroSerie4 As String)
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Fecha As String
         Dim SqlString As String, MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -5846,10 +5846,18 @@ errSub:
         ImporteD = 0
         Do While Iposicion < DataSet.Tables("Compras").Rows.Count
             MonedaCompra = DataSet.Tables("Compras").Rows(Iposicion)("MonedaCompra")
-            PrecioUnitario = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Precio_Neto"))
-            CantidadCompras = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Cantidad")) + CantidadCompras
-            Importe = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Importe"))
-            ImporteD = Trim(DataSet.Tables("Compras").Rows(Iposicion)("ImporteD"))
+            If Not IsDBNull(DataSet.Tables("Compras").Rows(Iposicion)("Precio_Neto")) Then
+                PrecioUnitario = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Precio_Neto"))
+            End If
+            If Not IsDBNull(DataSet.Tables("Compras").Rows(Iposicion)("Cantidad")) Then
+                CantidadCompras = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Cantidad")) + CantidadCompras
+            End If
+            If Not IsDBNull(DataSet.Tables("Compras").Rows(Iposicion)("Importe")) Then
+                Importe = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Importe"))
+            End If
+            If Not IsDBNull(DataSet.Tables("Compras").Rows(Iposicion)("ImporteD")) Then
+                ImporteD = Trim(DataSet.Tables("Compras").Rows(Iposicion)("ImporteD"))
+            End If
             TotalCompras = TotalCompras + Importe
             TotalComprasD = TotalComprasD + ImporteD
             Iposicion = Iposicion + 1
@@ -11859,9 +11867,16 @@ errSub:
         DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
         DataAdapter.Fill(DataSet, "Compras")
         If DataSet.Tables("Compras").Rows.Count <> 0 Then
-            UnidadComprada = DataSet.Tables("Compras").Rows(0)("Cantidad")
-            ImporteCompra = DataSet.Tables("Compras").Rows(0)("Importe")
-            ImporteCompraD = DataSet.Tables("Compras").Rows(0)("ImporteD")
+            If Not IsDBNull(DataSet.Tables("Compras").Rows(0)("Cantidad")) Then
+                UnidadComprada = DataSet.Tables("Compras").Rows(0)("Cantidad")
+            End If
+            If Not IsDBNull(DataSet.Tables("Compras").Rows(0)("Importe")) Then
+                ImporteCompra = DataSet.Tables("Compras").Rows(0)("Importe")
+            End If
+
+            If Not IsDBNull(DataSet.Tables("Compras").Rows(0)("ImporteD")) Then
+                ImporteCompraD = DataSet.Tables("Compras").Rows(0)("ImporteD")
+            End If
         End If
 
         SqlConsulta = "SELECT SUM(Detalle_Compras.Cantidad) AS Cantidad, SUM(Detalle_Compras.Precio_Neto * TasaCambio.MontoTasa) AS Precio_Neto, SUM(Detalle_Compras.Precio_Neto * Detalle_Compras.Cantidad * TasaCambio.MontoTasa) AS Importe, SUM(Detalle_Compras.Precio_Neto * Detalle_Compras.Cantidad) AS ImporteD,Compras.MonedaCompra AS Moneda FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa  " & _

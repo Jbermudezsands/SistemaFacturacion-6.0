@@ -7870,7 +7870,8 @@ Public Class FrmFacturas
             Dim CodigoProducto As String, PrecioUnitario As Double, Descuento As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double
             Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, SqlCompras As String, Fecha As String, IdDetalle As Double
             Dim Descripcion_Producto As String, TipoFactura As String, FacturaBodega As Boolean = False, FacturaSerie As Boolean = False, CompraBodega As Boolean = False
-            Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Existencia As Double
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Existencia As Double
+        Dim NumeroCotizacion As String, Fecha_Factura As Date
         Dim ExistenciaNegativa As String, SqlDatos As String, CostoUnitario As Double = 0
 
         'Try
@@ -7891,18 +7892,18 @@ Public Class FrmFacturas
         End If
 
 
-        Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
-        '//////////////////////////////////////////////////////////////////////////////////////////////
-        '////////////////////////////EDITO EL ENCABEZADO DE LA FACTURA///////////////////////////////////
-        '/////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'False' " & _
-                     "WHERE  (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
-        MiConexion.Open()
-        ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
-        iResultado = ComandoUpdate.ExecuteNonQuery
-        MiConexion.Close()
+        ' ''Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
+        '' ''//////////////////////////////////////////////////////////////////////////////////////////////
+        '' ''////////////////////////////EDITO EL ENCABEZADO DE LA FACTURA///////////////////////////////////
+        '' ''/////////////////////////////////////////////////////////////////////////////////////////////////
+        ' ''SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'False' " & _
+        ' ''             "WHERE  (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
+        ' ''MiConexion.Open()
+        ' ''ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
+        ' ''iResultado = ComandoUpdate.ExecuteNonQuery
+        ' ''MiConexion.Close()
 
-
+        NumeroCotizacion = Me.TxtNumeroEnsamble.Text
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
@@ -7962,19 +7963,51 @@ Public Class FrmFacturas
         '    NumeroFactura = Format(ConsecutivoFactura, "0000#")
         'End If
 
-        NumeroFactura = GenerarNumeroFactura(ConsecutivoFacturaManual, Me.CboTipoProducto.Text)
+
+        'NumeroFactura = GenerarNumeroFactura(ConsecutivoFacturaManual, Me.CboTipoProducto.Text)
+        NumeroFactura = GenerarNumeroFactura(True, Me.CboTipoProducto.Text)
+
+
+        Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
+        '//////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////////////////EDITO EL ENCABEZADO DE LA COTIZACION///////////////////////////////////
+        '/////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'False', [Nuestra_Referencia] = '" & NumeroFactura & "' " & _
+                     "WHERE  (Numero_Factura = '" & NumeroCotizacion & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = 'Cotizacion')"
+        MiConexion.Open()
+        ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
+        iResultado = ComandoUpdate.ExecuteNonQuery
+        MiConexion.Close()
 
         Quien = "NumeroFacturas"
         'Me.TxtNumeroEnsamble.Text = "-----0-----"
 
-
-
         '////////////////////////////////////////////////////////////////////////////////////////////////////
-        '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
+        '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+
+        Fecha_Factura = Format(Now, "dd/MM/yyyy")
+
+        My.Forms.FrmFecha.ShowDialog()
+        Fecha_Factura = Format(My.Forms.FrmFecha.DTPFechaRequerido.Value, "dd/MM/yyyy")
+        Me.DTPFecha.Value = Fecha_Factura
+        Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
+        '////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////////GRABO EL ENCABEZADO DE LA FACTURA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
         GrabaFacturas(NumeroFactura)
         Quien = "NumeroFacturas"
         Me.TxtNumeroEnsamble.Text = NumeroFactura
+
+        '//////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////////////////EDITO EL ENCABEZADO DE LA FACTURA///////////////////////////////////
+        '/////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlCompras = "UPDATE [Facturas]  SET [Nuestra_Referencia] = '" & NumeroCotizacion & "' " & _
+                     "WHERE  (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
+        MiConexion.Open()
+        ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
+        iResultado = ComandoUpdate.ExecuteNonQuery
+        MiConexion.Close()
 
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -8012,7 +8045,11 @@ Public Class FrmFacturas
             End If
             PrecioNeto = Me.BindingDetalle.Item(iPosicion)("Precio_Neto")
             Importe = Me.BindingDetalle.Item(iPosicion)("Importe")
-            Cantidad = Me.BindingDetalle.Item(iPosicion)("Cantidad")
+            If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Cantidad")) Then
+                Cantidad = Me.BindingDetalle.Item(iPosicion)("Cantidad")
+            Else
+                Cantidad = 0
+            End If
             Descripcion_Producto = Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto")
 
             If Existencia < Cantidad Then

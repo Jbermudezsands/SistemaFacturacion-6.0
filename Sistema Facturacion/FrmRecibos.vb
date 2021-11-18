@@ -885,12 +885,12 @@ Public Class FrmRecibos
                 '///////////////////////////////////SELECCIONO LA IMPRESORA CONFIGURADA PARA LOS RECIBOS /////////////
                 '///////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 Dim pd As New PrintDocument
-                Dim ImpresoraFactura As String
+                Dim ImpresoraRecibo As String
                 Dim s_Default_Printer As String = pd.PrinterSettings.PrinterName
 
                 Impresora_Defecto = s_Default_Printer
-                ImpresoraFactura = BuscaImpresora("Factura")
-                Establecer_Impresora(ImpresoraFactura)
+                ImpresoraRecibo = BuscaImpresora("Recibo")
+                Establecer_Impresora(ImpresoraRecibo)
 
 
                 'TipoImpresion = Me.TxtTipoRecibo.Text
@@ -911,7 +911,7 @@ Public Class FrmRecibos
                             'ArepPagoClientes.Run(False)
                             ArepReciboTira2.Run(False)
 
-                            Establecer_Impresora(Impresora_Defecto)
+                            'Establecer_Impresora(Impresora_Defecto)
 
                         Case "Tira de Papel"
                             'SQL.ConnectionString = Conexion
@@ -924,7 +924,7 @@ Public Class FrmRecibos
                             'ArepPagoClientes.Run(False)
                             ArepReciboTira.Run(False)
 
-                            Establecer_Impresora(Impresora_Defecto)
+                            'Establecer_Impresora(Impresora_Defecto)
                         Case "Papel en Blanco"
                             'SQL.ConnectionString = Conexion
                             'SQL.SQL = SQlPagos
@@ -935,7 +935,7 @@ Public Class FrmRecibos
                             ViewerForm.Show()
                             ArepPagoClientes.Run(False)
 
-                            Establecer_Impresora(Impresora_Defecto)
+                            'Establecer_Impresora(Impresora_Defecto)
 
                         Case "Papel en Blanco Standard"
                             'SQL.ConnectionString = Conexion
@@ -949,7 +949,7 @@ Public Class FrmRecibos
                             'ArepPagoClientes.Run(False)
                             ArepRecibos2.Run(False)
 
-                            Establecer_Impresora(Impresora_Defecto)
+                            'Establecer_Impresora(Impresora_Defecto)
 
                         Case "Personalizado"
 

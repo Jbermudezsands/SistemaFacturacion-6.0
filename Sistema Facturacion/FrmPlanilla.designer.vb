@@ -41,6 +41,9 @@ Partial Class FrmPlanilla
         Me.Deducciones = New System.Windows.Forms.TabPage
         Me.TDGridDeducciones = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.Configuracion = New System.Windows.Forms.TabPage
+        Me.Button3 = New System.Windows.Forms.Button
+        Me.TxtNuevoPrecio = New System.Windows.Forms.TextBox
+        Me.Label16 = New System.Windows.Forms.Label
         Me.Button1 = New System.Windows.Forms.Button
         Me.TDGridDeducciones2 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
@@ -325,6 +328,9 @@ Partial Class FrmPlanilla
         '
         'Configuracion
         '
+        Me.Configuracion.Controls.Add(Me.Button3)
+        Me.Configuracion.Controls.Add(Me.TxtNuevoPrecio)
+        Me.Configuracion.Controls.Add(Me.Label16)
         Me.Configuracion.Controls.Add(Me.Button1)
         Me.Configuracion.Controls.Add(Me.TDGridDeducciones2)
         Me.Configuracion.Controls.Add(Me.GroupBox2)
@@ -334,6 +340,35 @@ Partial Class FrmPlanilla
         Me.Configuracion.TabIndex = 2
         Me.Configuracion.Text = "Configuracion"
         Me.Configuracion.UseVisualStyleBackColor = True
+        '
+        'Button3
+        '
+        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
+        Me.Button3.ImageAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.Button3.Location = New System.Drawing.Point(332, 212)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(77, 23)
+        Me.Button3.TabIndex = 206
+        Me.Button3.Text = "Cambiar"
+        Me.Button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button3.UseVisualStyleBackColor = True
+        '
+        'TxtNuevoPrecio
+        '
+        Me.TxtNuevoPrecio.Location = New System.Drawing.Point(283, 214)
+        Me.TxtNuevoPrecio.Name = "TxtNuevoPrecio"
+        Me.TxtNuevoPrecio.Size = New System.Drawing.Size(43, 20)
+        Me.TxtNuevoPrecio.TabIndex = 174
+        Me.TxtNuevoPrecio.Text = "0"
+        '
+        'Label16
+        '
+        Me.Label16.AutoSize = True
+        Me.Label16.Location = New System.Drawing.Point(169, 216)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(108, 13)
+        Me.Label16.TabIndex = 173
+        Me.Label16.Text = "Nuevo Precio Planilla"
         '
         'Button1
         '
@@ -688,6 +723,7 @@ Partial Class FrmPlanilla
         Me.Deducciones.ResumeLayout(False)
         CType(Me.TDGridDeducciones, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Configuracion.ResumeLayout(False)
+        Me.Configuracion.PerformLayout()
         CType(Me.TDGridDeducciones2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
@@ -748,4 +784,7 @@ Partial Class FrmPlanilla
     Friend WithEvents Label14 As System.Windows.Forms.Label
     Friend WithEvents TxtPrecioDomingo As System.Windows.Forms.TextBox
     Friend WithEvents Label15 As System.Windows.Forms.Label
+    Friend WithEvents TxtNuevoPrecio As System.Windows.Forms.TextBox
+    Friend WithEvents Label16 As System.Windows.Forms.Label
+    Friend WithEvents Button3 As System.Windows.Forms.Button
 End Class

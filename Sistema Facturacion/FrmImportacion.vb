@@ -938,7 +938,9 @@ Public Class FrmImportacion
             If Not IsDBNull(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("DESCRIPCION")) Then
                 Descripcion = MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("DESCRIPCION")
             End If
-            CodBodega = MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("BODEGA")
+            If Not IsDBNull(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("BODEGA")) Then
+                CodBodega = MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("BODEGA")
+            End If
             If Not IsDBNull(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("UM")) Then
                 UnidadMedida = MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("UM")
             Else
@@ -1105,14 +1107,14 @@ Public Class FrmImportacion
 
 
                 If Not IsDBNull(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("PUNITARIO")) Then
-                    PrecioUnitario = MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("PUNITARIO")
+                    PrecioUnitario = Format(Val(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("PUNITARIO")), "##,##0.00")
                 End If
                 Descuento = 0
                 If Not IsDBNull(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("CANTIDAD")) Then
-                    Cantidad = MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("CANTIDAD")
+                    Cantidad = Format(Val(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("CANTIDAD")), "##,##0.00")
                 End If
                 If Not IsDBNull(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("PUNITARIO")) Then
-                    PrecioNeto = MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("PUNITARIO")
+                    PrecioNeto = Format(Val(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("PUNITARIO")), "##,##0.00")
                 End If
                 Importe = Cantidad * PrecioUnitario
 

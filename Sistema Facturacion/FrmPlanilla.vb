@@ -469,7 +469,7 @@ Public Class FrmPlanilla
 
 
             If Not IsDBNull(DataSet.Tables("Productor").Rows(iPosicion)("Precio")) Then
-                PrecioUnitario = DataSet.Tables("Productor").Rows(iPosicion)("Precio")
+                PrecioUnitario = Format(DataSet.Tables("Productor").Rows(iPosicion)("Precio"), "0.0000")
 
                 PrecioLunes = PrecioUnitario
                 PrecioMartes = PrecioUnitario
@@ -650,6 +650,10 @@ Public Class FrmPlanilla
 
                 Contador = Fecha.DayOfWeek
 
+                If CodProductor = "0710" Then
+                    CodProductor = "0710"
+                End If
+
                 Select Case Contador
                     Case 1
                         If PLunes > Cantidad Then
@@ -657,7 +661,7 @@ Public Class FrmPlanilla
                             ROC1 = 0
                         End If
                         CantLunes = Cantidad
-                        MontoLunes = Cantidad * PrecioLunes
+                        MontoLunes = Cantidad * Format(PrecioLunes, "##,##0.00")
                         ROC1 = NCompra
                     Case 2
                         If PMartes > Cantidad Then
@@ -665,7 +669,7 @@ Public Class FrmPlanilla
                             ROC2 = 0
                         End If
                         CantMartes = Cantidad
-                        MontoMartes = Cantidad * PrecioMartes
+                        MontoMartes = Cantidad * Format(PrecioMartes, "##,##0.00")
                         ROC2 = NCompra
                     Case 3
                         If PMiercoles > Cantidad Then
@@ -673,7 +677,7 @@ Public Class FrmPlanilla
                             ROC3 = 0
                         End If
                         CantMiercoles = Cantidad
-                        MontoMiercoles = Cantidad * PrecioMiercoles
+                        MontoMiercoles = Cantidad * Format(PrecioMiercoles, "##,##0.00")
                         ROC3 = NCompra
                     Case 4
                         If PJueves > Cantidad Then
@@ -681,7 +685,7 @@ Public Class FrmPlanilla
                             ROC4 = 0
                         End If
                         CantJueves = Cantidad
-                        MontoJueves = Cantidad * PrecioJueves
+                        MontoJueves = Cantidad * Format(PrecioJueves, "##,##0.00")
                         ROC4 = NCompra
                     Case 5
                         If PViernes > Cantidad Then
@@ -689,7 +693,7 @@ Public Class FrmPlanilla
                             ROC5 = 0
                         End If
                         CantViernes = Cantidad
-                        MontoViernes = Cantidad * PrecioViernes
+                        MontoViernes = Cantidad * Format(PrecioViernes, "##,##0.00")
                         ROC5 = NCompra
                     Case 6
                         If PSabado > Cantidad Then
@@ -697,7 +701,7 @@ Public Class FrmPlanilla
                             ROC6 = 0
                         End If
                         CantSabado = Cantidad
-                        MontoSabado = Cantidad * PrecioSabado
+                        MontoSabado = Cantidad * Format(PrecioSabado, "##,##0.00")
                         ROC6 = NCompra
                     Case 0
                         If PDomingo > Cantidad Then
@@ -706,13 +710,11 @@ Public Class FrmPlanilla
                         End If
 
                         CantDomingo = Cantidad
-                        MontoDomingo = Cantidad * PrecioDomingo
+                        MontoDomingo = Cantidad * Format(PrecioDomingo, "##,##0.00")
                         ROC7 = NCompra
                 End Select
 
-                If CodProductor = "0101" Then
-                    CodProductor = "0101"
-                End If
+
 
                 CantidadTotal = CantidadTotal + Cantidad
                 IngresoBruto = MontoLunes + MontoMartes + MontoMiercoles + MontoJueves + MontoViernes + MontoSabado + MontoDomingo
@@ -1806,6 +1808,65 @@ Public Class FrmPlanilla
     End Sub
 
     Private Sub TxtNumNomina_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtNumNomina.TextChanged
+
+    End Sub
+
+    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+        Dim SqlString As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim iPosicion As Double, Registros As Double, CodProductor As String
+        Dim precio As Double
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim Nombres As String
+
+
+
+        If Not IsNumeric(Me.TxtNuevoPrecio.Text) Then
+            MsgBox("Digite un precio, para Calcular", MsgBoxStyle.Critical, "Zeus Acopio")
+            Exit Sub
+        End If
+
+
+        If Me.CboTipoPlanilla.Text = "" Then
+            MsgBox("Seleccione la Nomina, para Calcular", MsgBoxStyle.Critical, "Zeus Acopio")
+            Exit Sub
+        End If
+
+        precio = Format(CDbl(Me.TxtNuevoPrecio.Text), "##,##0.00")
+
+        '/////////////////////////////////////////CARGO LOS PRODUCTORES ACTIVOS/////////////////////////////////////////
+
+        SqlString = "SELECT * FROM Productor WHERE (TipoProductor = 'Productor') AND (Activo = 1) AND (CodTipoNomina = '" & Me.CboTipoPlanilla.Text & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Productor")
+        MiConexion.Close()
+
+        iPosicion = 0
+        Me.ProgressBar.Visible = True
+        Me.ProgressBar.Minimum = 0
+        Me.ProgressBar.Visible = True
+        Me.ProgressBar.Value = 0
+        Registros = DataSet.Tables("Productor").Rows.Count
+        Me.ProgressBar.Maximum = Registros
+        Do While iPosicion < Registros
+            My.Application.DoEvents()
+            CodProductor = DataSet.Tables("Productor").Rows(iPosicion)("CodProductor")
+
+            Nombres = DataSet.Tables("Productor").Rows(iPosicion)("NombreProductor") + " " + DataSet.Tables("Productor").Rows(iPosicion)("ApellidoProductor")
+            Me.LblProcesando.Text = "ACTUALIZANDO PRODUCTOR: " & CodProductor & " " & Nombres
+
+            '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
+            StrSqlUpdate = "UPDATE [Productor] SET [Precio] = " & precio & "  WHERE  (CodProductor = '" & CodProductor & "') AND (TipoProductor = 'Productor')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+
+            iPosicion = iPosicion + 1
+            Me.ProgressBar.Value = Me.ProgressBar.Value + 1
+        Loop
+
 
     End Sub
 End Class

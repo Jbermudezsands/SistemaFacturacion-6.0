@@ -984,7 +984,7 @@ Partial Class FrmFacturas
         Me.CmdProcesar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CmdProcesar.Image = CType(resources.GetObject("CmdProcesar.Image"), System.Drawing.Image)
         Me.CmdProcesar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdProcesar.Location = New System.Drawing.Point(74, 159)
+        Me.CmdProcesar.Location = New System.Drawing.Point(76, 158)
         Me.CmdProcesar.Name = "CmdProcesar"
         Me.CmdProcesar.Size = New System.Drawing.Size(65, 66)
         Me.CmdProcesar.TabIndex = 208
@@ -1160,7 +1160,7 @@ Partial Class FrmFacturas
         Me.BtnSalida.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnSalida.Image = CType(resources.GetObject("BtnSalida.Image"), System.Drawing.Image)
         Me.BtnSalida.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.BtnSalida.Location = New System.Drawing.Point(78, 87)
+        Me.BtnSalida.Location = New System.Drawing.Point(107, 86)
         Me.BtnSalida.Name = "BtnSalida"
         Me.BtnSalida.Size = New System.Drawing.Size(62, 66)
         Me.BtnSalida.TabIndex = 210
