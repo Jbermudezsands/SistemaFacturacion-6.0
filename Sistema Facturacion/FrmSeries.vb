@@ -1,13 +1,14 @@
 Public Class FrmSeries
     Public Tipo As String, Numero As String, Fecha As Date, CodigoProducto As String, NombreProducto As String, Cantidad As Double
     Public MiConexion As New SqlClient.SqlConnection(Conexion), DataSet As New DataSet
+    Public NumeroSerie(3) As String
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         Me.Close()
     End Sub
 
     Private Sub FrmSeries_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dim SQlString As String, NumeroSerie As String
+        Dim SQlString As String, NumeroSerie As String, NumeroSerie2 As String, NumeroSerie3 As String, NumeroSerie4 As String
         Dim DataAdapter As New SqlClient.SqlDataAdapter
         Dim oDataRow As DataRow, i As Double
 
@@ -51,10 +52,15 @@ Public Class FrmSeries
         For i = 1 To Cantidad
             oDataRow = DataSet.Tables("Series").NewRow
             oDataRow("Id_Series") = i
-            NumeroSerie = BuscaSerie(Me.Numero, Me.Fecha, Me.Tipo, i, Me.CodigoProducto)
+            NumeroSerie = BuscaSerie(Me.Numero, Me.Fecha, Me.Tipo, i, Me.CodigoProducto, "NSeries")
             oDataRow("NSeries") = NumeroSerie
+            oDataRow("NSeries2") = BuscaSerie(Me.Numero, Me.Fecha, Me.Tipo, i, Me.CodigoProducto, "NSeries2")
+            oDataRow("NSeries3") = BuscaSerie(Me.Numero, Me.Fecha, Me.Tipo, i, Me.CodigoProducto, "NSeries3")
+            oDataRow("NSeries4") = BuscaSerie(Me.Numero, Me.Fecha, Me.Tipo, i, Me.CodigoProducto, "NSeries4")
             DataSet.Tables("Series").Rows.Add(oDataRow)
         Next
+
+
 
         Me.BindingDetalle.DataSource = DataSet.Tables("Series")
         Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
@@ -63,11 +69,14 @@ Public Class FrmSeries
         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Locked = True
         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
         Me.TrueDBGridComponentes.Columns(0).Caption = "Linea"
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("NSeries").Width = 209
-        Me.TrueDBGridComponentes.Columns(1).Caption = BuscarNombreSerie("NSeries")
-        Me.TrueDBGridComponentes.Columns(2).Caption = BuscarNombreSerie("NSeries2")
-        Me.TrueDBGridComponentes.Columns(3).Caption = BuscarNombreSerie("NSeries3")
-        Me.TrueDBGridComponentes.Columns(4).Caption = BuscarNombreSerie("NSeries4")
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("NSeries").Width = 100
+        Me.TrueDBGridComponentes.Columns("NSeries").Caption = BuscarNombreSerie("NSeries")
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("NSeries2").Width = 100
+        Me.TrueDBGridComponentes.Columns("NSeries2").Caption = BuscarNombreSerie("NSeries2")
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("NSeries3").Width = 100
+        Me.TrueDBGridComponentes.Columns("NSeries3").Caption = BuscarNombreSerie("NSeries3")
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("NSeries4").Width = 100
+        Me.TrueDBGridComponentes.Columns("NSeries4").Caption = BuscarNombreSerie("NSeries4")
 
     End Sub
     Public Function BuscarNombreSerie(ByVal CampoBuscar As String) As String
@@ -77,32 +86,32 @@ Public Class FrmSeries
 
         SQlString = "SELECT TOP (1) NombreSerie1, NombreSerie2, NombreSerie3, NombreSerie4 FROM Detalle_ComprasSeriesNombre"
         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-        DataAdapter.Fill(DataSet, "Series")
-        If DataSet.Tables("Series").Rows.Count <> 0 Then
+        DataAdapter.Fill(DataSetBuscar, "Series")
+        If DataSetBuscar.Tables("Series").Rows.Count <> 0 Then
             Select Case CampoBuscar
                 Case "NSeries"
-                    If Not IsDBNull(DataSet.Tables("Series").Rows(0)("NumeroSerie1")) Then
-                        BuscarNombreSerie = DataSet.Tables("Series").Rows(0)("NumeroSerie1")
+                    If Not IsDBNull(DataSetBuscar.Tables("Series").Rows(0)("NombreSerie1")) Then
+                        BuscarNombreSerie = DataSetBuscar.Tables("Series").Rows(0)("NombreSerie1")
                     Else
                         BuscarNombreSerie = "Numero Serie1"
                     End If
                 Case "NSeries2"
-                    If Not IsDBNull(DataSet.Tables("Series").Rows(0)("NumeroSerie2")) Then
-                        BuscarNombreSerie = DataSet.Tables("Series").Rows(0)("NumeroSerie2")
+                    If Not IsDBNull(DataSetBuscar.Tables("Series").Rows(0)("NombreSerie2")) Then
+                        BuscarNombreSerie = DataSetBuscar.Tables("Series").Rows(0)("NombreSerie2")
                     Else
                         BuscarNombreSerie = "Numero Serie2"
                     End If
 
                 Case "NSeries3"
-                    If Not IsDBNull(DataSet.Tables("Series").Rows(0)("NumeroSerie3")) Then
-                        BuscarNombreSerie = DataSet.Tables("Series").Rows(0)("NumeroSerie3")
+                    If Not IsDBNull(DataSetBuscar.Tables("Series").Rows(0)("NombreSerie3")) Then
+                        BuscarNombreSerie = DataSetBuscar.Tables("Series").Rows(0)("NombreSerie3")
                     Else
                         BuscarNombreSerie = "Numero Serie3"
                     End If
 
                 Case "NSeries4"
-                    If Not IsDBNull(DataSet.Tables("Series").Rows(0)("NumeroSerie4")) Then
-                        BuscarNombreSerie = DataSet.Tables("Series").Rows(0)("NumeroSerie4")
+                    If Not IsDBNull(DataSetBuscar.Tables("Series").Rows(0)("NombreSerie4")) Then
+                        BuscarNombreSerie = DataSetBuscar.Tables("Series").Rows(0)("NombreSerie4")
                     Else
                         BuscarNombreSerie = "Numero Serie4"
                     End If
@@ -181,8 +190,13 @@ Public Class FrmSeries
             End If
             'Posicion = DataSet.Tables("Series").Rows.IndexOf(Filas(0))
 
-            Me.TrueDBGridComponentes.Col = 1
-            Me.TrueDBGridComponentes.Row = Me.TrueDBGridComponentes.Row + 1
+            If Me.TrueDBGridComponentes.Col = 4 Then
+                Me.TrueDBGridComponentes.Col = 1
+                Me.TrueDBGridComponentes.Row = Me.TrueDBGridComponentes.Row + 1
+            Else
+                Me.TrueDBGridComponentes.Col = Me.TrueDBGridComponentes.Col + 1
+            End If
+
         End If
     End Sub
 
@@ -207,10 +221,34 @@ Public Class FrmSeries
 
             CodigoProducto = Me.CodigoProducto
             If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("NSeries")) Then
-                Serie(0) = Me.BindingDetalle.Item(iPosicion)("NSeries")
-                Serie(1) = Me.BindingDetalle.Item(iPosicion)("NSeries2")
-                Serie(2) = Me.BindingDetalle.Item(iPosicion)("NSeries3")
-                Serie(3) = Me.BindingDetalle.Item(iPosicion)("NSeries4")
+
+                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("NSeries")) Then
+                    Serie(0) = Me.BindingDetalle.Item(iPosicion)("NSeries")
+                Else
+                    Serie(0) = ""
+                End If
+
+
+                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("NSeries2")) Then
+                    Serie(1) = Me.BindingDetalle.Item(iPosicion)("NSeries2")
+                Else
+                    Serie(1) = ""
+                End If
+
+                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("NSeries3")) Then
+                    Serie(2) = Me.BindingDetalle.Item(iPosicion)("NSeries3")
+                Else
+                    Serie(2) = ""
+                End If
+
+                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("NSeries4")) Then
+                    Serie(3) = Me.BindingDetalle.Item(iPosicion)("NSeries4")
+                Else
+                    Serie(3) = ""
+                End If
+
+
+
 
                 If Serie(0).ToString <> "" Then
                     GrabaSeries(Me.Numero, Me.Fecha, Me.Tipo, id, CodigoProducto, Serie(0).ToString, Serie(1).ToString, Serie(2).ToString, Serie(3).ToString)

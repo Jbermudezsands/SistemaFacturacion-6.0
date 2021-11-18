@@ -1276,7 +1276,7 @@ Public Class FrmCompras
                 Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
                 Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 259
                 'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
-                Me.TrueDBGridComponentes.Columns(2).Caption = "Ordenado"
+                Me.TrueDBGridComponentes.Columns(2).Caption = "Cantidad"
                 Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 64
                 Me.TrueDBGridComponentes.Columns(3).Caption = "Precio Unit"
                 Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
@@ -1317,7 +1317,7 @@ Public Class FrmCompras
                 Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
                 Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 259
                 'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
-                Me.TrueDBGridComponentes.Columns(2).Caption = "Ordenado"
+                Me.TrueDBGridComponentes.Columns(2).Caption = "Cantidad"
                 Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 64
                 Me.TrueDBGridComponentes.Columns(3).Caption = "Precio Unit"
                 Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
@@ -3558,6 +3558,7 @@ Public Class FrmCompras
             My.Forms.FrmSeries.NombreProducto = Me.BindingDetalle.Item(Posicion)("Descripcion_Producto")
             My.Forms.FrmSeries.Numero = Me.TxtNumeroEnsamble.Text
             My.Forms.FrmSeries.Fecha = Me.DTPFecha.Value
+            My.Forms.FrmSeries.Cantidad = Me.BindingDetalle.Item(Posicion)("Cantidad")
             My.Forms.FrmSeries.Text = Me.BindingDetalle.Item(Posicion)("Cod_Producto") + " " + Me.BindingDetalle.Item(Posicion)("Descripcion_Producto")
             My.Forms.FrmSeries.ShowDialog()
         End If

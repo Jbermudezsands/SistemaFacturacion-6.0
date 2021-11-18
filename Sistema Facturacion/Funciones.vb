@@ -4400,35 +4400,35 @@ errSub:
 
         Select Case FrmSeries.Tipo
             Case "Transferencia Enviada"
-                SqlString = "SELECT Id_Series, NSeries FROM Detalle_ComprasSeries WHERE (Numero_Compra = N'-1000000')"
+                SqlString = "SELECT Id_Series, NSeries, NSeries2, NSeries3, NSeries4 FROM Detalle_ComprasSeries WHERE (Numero_Compra = N'-1000000')"
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 DataAdapter.Fill(DataSet, "Series")
             Case "Devolucion de Compra"
-                SqlString = "SELECT Id_Series, NSeries FROM Detalle_ComprasSeries WHERE (Numero_Compra = N'-1000000')"
+                SqlString = "SELECT Id_Series, NSeries, NSeries2, NSeries3, NSeries4 FROM Detalle_ComprasSeries WHERE (Numero_Compra = N'-1000000')"
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 DataAdapter.Fill(DataSet, "Series")
             Case "Mercancia Recibida"
-                SqlString = "SELECT Id_Series, NSeries FROM Detalle_ComprasSeries WHERE (Numero_Compra = N'-1000000')"
+                SqlString = "SELECT Id_Series, NSeries, NSeries2, NSeries3, NSeries4 FROM Detalle_ComprasSeries WHERE (Numero_Compra = N'-1000000')"
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 DataAdapter.Fill(DataSet, "Series")
             Case "Factura"
-                SqlString = "SELECT Id_Series, NSeries FROM Detalle_ComprasSeries WHERE (Numero_Compra = N'-1000000')"
+                SqlString = "SELECT Id_Series, NSeries, NSeries2, NSeries3, NSeries4 FROM Detalle_ComprasSeries WHERE (Numero_Compra = N'-1000000')"
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 DataAdapter.Fill(DataSet, "Series")
             Case "Devolucion de Venta"
-                SqlString = "SELECT Id_Series, NSeries FROM Detalle_ComprasSeries WHERE (Numero_Compra = N'-1000000')"
+                SqlString = "SELECT Id_Series, NSeries, NSeries2, NSeries3, NSeries4 FROM Detalle_ComprasSeries WHERE (Numero_Compra = N'-1000000')"
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 DataAdapter.Fill(DataSet, "Series")
             Case "Salida Bodega"
-                SqlString = "SELECT Id_Series, NSeries FROM Detalle_ComprasSeries WHERE (Numero_Compra = N'-1000000')"
+                SqlString = "SELECT Id_Series, NSeries, NSeries2, NSeries3, NSeries4 FROM Detalle_ComprasSeries WHERE (Numero_Compra = N'-1000000')"
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 DataAdapter.Fill(DataSet, "Series")
             Case "Ensamble Recibido"
-                SqlString = "SELECT Id_Series, NSeries FROM Detalle_ComprasSeries WHERE (Numero_Compra = N'-1000000')"
+                SqlString = "SELECT Id_Series, NSeries, NSeries2, NSeries3, NSeries4 FROM Detalle_ComprasSeries WHERE (Numero_Compra = N'-1000000')"
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 DataAdapter.Fill(DataSet, "Series")
             Case "Deshacer Ensamble"
-                SqlString = "SELECT Id_Series, NSeries FROM Detalle_ComprasSeries WHERE (Numero_Compra = N'-1000000')"
+                SqlString = "SELECT Id_Series, NSeries, NSeries2, NSeries3, NSeries4 FROM Detalle_ComprasSeries WHERE (Numero_Compra = N'-1000000')"
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 DataAdapter.Fill(DataSet, "Series")
         End Select
@@ -4436,8 +4436,11 @@ errSub:
         For i = 1 To 100
             oDataRow = DataSet.Tables("Series").NewRow
             oDataRow("Id_Series") = i
-            NumeroSerie = BuscaSerie(FrmSeries.Numero, FrmSeries.Fecha, FrmSeries.Tipo, i, FrmSeries.CodigoProducto)
+            NumeroSerie = BuscaSerie(FrmSeries.Numero, FrmSeries.Fecha, FrmSeries.Tipo, i, FrmSeries.CodigoProducto, "NSeries")
             oDataRow("NSeries") = NumeroSerie
+            oDataRow("NSeries2") = BuscaSerie(FrmSeries.Numero, FrmSeries.Fecha, FrmSeries.Tipo, i, FrmSeries.CodigoProducto, "NSeries2")
+            oDataRow("NSeries3") = BuscaSerie(FrmSeries.Numero, FrmSeries.Fecha, FrmSeries.Tipo, i, FrmSeries.CodigoProducto, "NSeries3")
+            oDataRow("NSeries4") = BuscaSerie(FrmSeries.Numero, FrmSeries.Fecha, FrmSeries.Tipo, i, FrmSeries.CodigoProducto, "NSeries4")
             DataSet.Tables("Series").Rows.Add(oDataRow)
         Next
         FrmSeries.BindingDetalle.DataSource = DataSet.Tables("Series")
@@ -4453,7 +4456,7 @@ errSub:
 
 
 
-    Public Function BuscaSerie(ByVal Numero As String, ByVal FechaSerie As Date, ByVal Tipo As String, ByVal Id As Double, ByVal CodigoProducto As String) As String
+    Public Function BuscaSerie(ByVal Numero As String, ByVal FechaSerie As Date, ByVal Tipo As String, ByVal Id As Double, ByVal CodigoProducto As String, ByVal Campo As String) As String
         Dim ComandoUpdate As New SqlClient.SqlCommand, Fecha As String
         Dim SqlString As String, MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -4465,7 +4468,7 @@ errSub:
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "NotaDebito")
         If DataSet.Tables("NotaDebito").Rows.Count <> 0 Then
-            BuscaSerie = DataSet.Tables("NotaDebito").Rows(0)("NSeries")
+            BuscaSerie = DataSet.Tables("NotaDebito").Rows(0)(Campo)
         End If
     End Function
 
@@ -4484,8 +4487,8 @@ errSub:
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////AGREGO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "INSERT INTO [Detalle_ComprasSeries] ([Id_Series],[Numero_Compra],[Fecha_Compra],[Tipo_Compra],[Cod_Producto],[NSeries]) " & _
-                         "VALUES (" & Id & ",'" & Numero & "','" & Format(FechaSerie, "dd/MM/yyyy") & "','" & Tipo & "','" & CodigoProducto & "','" & NumeroSerie & "')"
+            SqlCompras = "INSERT INTO [Detalle_ComprasSeries] ([Id_Series],[Numero_Compra],[Fecha_Compra],[Tipo_Compra],[Cod_Producto],[NSeries],[NSeries2],[NSeries3],[NSeries4]) " & _
+                         "VALUES (" & Id & ",'" & Numero & "','" & Format(FechaSerie, "dd/MM/yyyy") & "','" & Tipo & "','" & CodigoProducto & "','" & NumeroSerie & "','" & NumeroSerie2 & "','" & NumeroSerie3 & "','" & NumeroSerie4 & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -4495,7 +4498,7 @@ errSub:
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "UPDATE [Detalle_ComprasSeries] SET [NSeries] = '" & NumeroSerie & "' WHERE (Numero_Compra = '" & Numero & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Compra = '" & Tipo & "') AND (Id_Series = " & Id & ") AND (Cod_Producto = '" & CodigoProducto & "')"
+            SqlCompras = "UPDATE [Detalle_ComprasSeries] SET [NSeries] = '" & NumeroSerie & "', [NSeries2] = '" & NumeroSerie2 & "', [NSeries3] = '" & NumeroSerie3 & "', [NSeries4] = '" & NumeroSerie4 & "' WHERE (Numero_Compra = '" & Numero & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Compra = '" & Tipo & "') AND (Id_Series = " & Id & ") AND (Cod_Producto = '" & CodigoProducto & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
