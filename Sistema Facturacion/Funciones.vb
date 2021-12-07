@@ -1672,7 +1672,7 @@ errSub:
         Cantidad = Format((Cantidad / 46) * 100, "##,##0.00")
 
         PorcientoMerma = PorcientoMermaProducto(CodigoProducto)
-        Merma = PesoKg * PorcientoMerma
+        Merma = PesoKg * (PorcientoMerma / 100)
 
         MermaOculta = 0
         If My.Forms.FrmRecepcion.ChkCaluloMermaOculto.Checked = True Then

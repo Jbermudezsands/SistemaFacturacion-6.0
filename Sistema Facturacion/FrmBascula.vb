@@ -83,6 +83,7 @@ Public Class FrmBascula
     Sub mostar(ByVal d As String)
         Dim Posicion As Double
         Dim Cadena As String, Pesada As Double, PesoEntero As Double, PesoDecimal As Double
+        Dim PorcientoMerma As Double, CodigoProducto As String
 
         'Cadena = Mid(d, 7, Len(d))
         'Pesada = CDbl(Cadena)
@@ -105,7 +106,6 @@ Public Class FrmBascula
 
         '    Pesada = PesoEntero + PesoDecimal
         'End If
-
 
         'Posicion = Me.BindingDetalle.Position
         Posicion = Me.TrueDBGridComponentes.Row

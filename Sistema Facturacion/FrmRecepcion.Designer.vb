@@ -153,6 +153,8 @@ Partial Class FrmRecepcion
         'ChkCalculoMerma
         '
         Me.ChkCalculoMerma.AutoSize = True
+        Me.ChkCalculoMerma.Checked = True
+        Me.ChkCalculoMerma.CheckState = System.Windows.Forms.CheckState.Checked
         Me.ChkCalculoMerma.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ChkCalculoMerma.ForeColor = System.Drawing.Color.White
         Me.ChkCalculoMerma.Location = New System.Drawing.Point(305, 142)
@@ -1117,6 +1119,7 @@ Partial Class FrmRecepcion
         Me.Label7.Size = New System.Drawing.Size(69, 20)
         Me.Label7.TabIndex = 242
         Me.Label7.Text = "MERMA"
+        Me.Label7.Visible = False
         '
         'FrmRecepcion
         '
