@@ -1577,4 +1577,12 @@ Public Class FrmPersonalizar
     Private Sub Button14_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button14.Click
         My.Forms.FrmImpresoras.ShowDialog()
     End Sub
+
+    Private Sub Button13_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button13.Click
+        Dim SqlString As String
+
+
+
+
+    End Sub
 End Class

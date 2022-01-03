@@ -445,6 +445,12 @@
     <Compile Include="FrmTeclado.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmTransferirHistorial.Designer.vb">
+      <DependentUpon>FrmTransferirHistorial.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmTransferirHistorial.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmTransformacion.Designer.vb">
       <DependentUpon>FrmTransformacion.vb</DependentUpon>
     </Compile>
@@ -1738,6 +1744,10 @@
     <EmbeddedResource Include="FrmTeclado.resx">
       <DependentUpon>FrmTeclado.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmTransferirHistorial.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmTransferirHistorial.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmTransformacion.resx">
       <SubType>Designer</SubType>
