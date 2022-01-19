@@ -282,7 +282,7 @@ Public Class FrmImportacion
                     '////////////////////////////////////////////////////////////////////////////////////////////////////
                     '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
                     '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-                    GrabaEncabezadoCompras(NumeroCompra, Me.DTPFecha.Value, "Mercancia Recibida", CodProveedor, CodBodega, Nombres, Apellidos, Me.DTPFecha.Value, Val(0), Val(0), Val(0), Val(0), "Cordobas", "Procesando por la importacion", "")
+                    GrabaEncabezadoCompras(NumeroCompra, Me.DTPFecha.Value, "Mercancia Recibida", CodProveedor, CodBodega, Nombres, Apellidos, Me.DTPFecha.Value, Val(0), Val(0), Val(0), Val(0), "Cordobas", "Procesando por la importacion", "", False)
                 End If
 
 
@@ -1097,7 +1097,7 @@ Public Class FrmImportacion
                     '////////////////////////////////////////////////////////////////////////////////////////////////////
                     '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
                     '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-                    GrabaEncabezadoCompras(NumeroCompra, Me.DTPFecha.Value, "Mercancia Recibida", CodProveedor, CodBodega, Nombres, Apellidos, Me.DTPFecha.Value, Val(0), Val(0), Val(0), Val(0), "Cordobas", "Procesando por la importacion", "")
+                    GrabaEncabezadoCompras(NumeroCompra, Me.DTPFecha.Value, "Mercancia Recibida", CodProveedor, CodBodega, Nombres, Apellidos, Me.DTPFecha.Value, Val(0), Val(0), Val(0), Val(0), "Cordobas", "Procesando por la importacion", "", False)
                 End If
 
 

@@ -1026,7 +1026,7 @@ Public Class FrmRecepcion
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-        GrabaEncabezadoCompras(NumeroCompra, CDate(Me.DTPFecha.Text), "Mercancia Recibida", Me.CboCodigoProveedor.Text, Me.CboCodigoBodega.Text, Me.txtnombre.Text, "-", CDate(Me.DTPFecha.Text), 0, 0, 0, 0, "Cordobas", "Procesado por Bascula " & Me.TxtNumeroEnsamble.Text, "")
+        GrabaEncabezadoCompras(NumeroCompra, CDate(Me.DTPFecha.Text), "Mercancia Recibida", Me.CboCodigoProveedor.Text, Me.CboCodigoBodega.Text, Me.txtnombre.Text, "-", CDate(Me.DTPFecha.Text), 0, 0, 0, 0, "Cordobas", "Procesado por Bascula " & Me.TxtNumeroEnsamble.Text, "", False)
 
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -179,7 +179,7 @@ Public Class FrmTransformacion
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////
-        GrabaEncabezadoCompras(NumeroCompra, CDate(Fecha), "Mercancia Recibida", CodProveedor, CodBodegaDestino, NombreProveedor, "-", CDate(Fecha), 0, 0, 0, 0, "Cordobas", "Procesado por Transformacion " & NumeroTransforma, "")
+        GrabaEncabezadoCompras(NumeroCompra, CDate(Fecha), "Mercancia Recibida", CodProveedor, CodBodegaDestino, NombreProveedor, "-", CDate(Fecha), 0, 0, 0, 0, "Cordobas", "Procesado por Transformacion " & NumeroTransforma, "", False)
 
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -431,7 +431,7 @@ Public Class FrmInventarioFisico
                 If Iposicion = 0 Then
                     ConsecutivoCompra = BuscaConsecutivo("Compra")
                     NumeroCompra = Format(ConsecutivoCompra, "0000#")
-                    GrabaEncabezadoCompras(NumeroCompra, FechaConteo, "Mercancia Recibida", CodProveedor, Me.CboCodigoBodega.Text, NombreCliente, NombreCliente, FechaConteo, Val(0), 0, Val(0), Val(0), "Cordobas", "Procesado por Inventario Fisico  ", "")
+                    GrabaEncabezadoCompras(NumeroCompra, FechaConteo, "Mercancia Recibida", CodProveedor, Me.CboCodigoBodega.Text, NombreCliente, NombreCliente, FechaConteo, Val(0), 0, Val(0), Val(0), "Cordobas", "Procesado por Inventario Fisico  ", "", False)
                 End If
 
                 CodProductos = DataSet.Tables("DetalleCompras").Rows(Iposicion)("Cod_Producto")
@@ -793,7 +793,7 @@ Public Class FrmInventarioFisico
                 '////////////////////////////////////////////////////////////////////////////////////////////////////
                 '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
                 '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-                GrabaEncabezadoCompras(NumeroCompra, Me.DTPFechaLote.Value, "Mercancia Recibida", CodProveedor, CodBodega, Nombres, Apellidos, Me.DTPFechaLote.Value, Val(0), Val(0), Val(0), Val(0), "Cordobas", "Procesando por la importacion", "")
+                GrabaEncabezadoCompras(NumeroCompra, Me.DTPFechaLote.Value, "Mercancia Recibida", CodProveedor, CodBodega, Nombres, Apellidos, Me.DTPFechaLote.Value, Val(0), Val(0), Val(0), Val(0), "Cordobas", "Procesando por la importacion", "", False)
             End If
 
 

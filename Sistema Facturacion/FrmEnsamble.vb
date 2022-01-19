@@ -673,7 +673,7 @@ Public Class FrmEnsamble
         If IposicionFila = 0 Then
             ConsecutivoCompra = BuscaConsecutivo("Compra")
             NumeroCompra = Format(ConsecutivoCompra, "0000#")
-            GrabaEncabezadoCompras(NumeroCompra, Fecha, "Mercancia Recibida", CodProveedor, Me.CboCodigoBodega.Text, NombreCliente, NombreCliente, Fecha, Val(0), 0, Val(0), Val(0), "Cordobas", "Procesado por Ensamble " & ConsecutivoEnsamble, CodigoProyecto)
+            GrabaEncabezadoCompras(NumeroCompra, Fecha, "Mercancia Recibida", CodProveedor, Me.CboCodigoBodega.Text, NombreCliente, NombreCliente, Fecha, Val(0), 0, Val(0), Val(0), "Cordobas", "Procesado por Ensamble " & ConsecutivoEnsamble, CodigoProyecto, False)
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
@@ -871,7 +871,7 @@ Public Class FrmEnsamble
                     If IposicionFila = 0 Then
                         ConsecutivoCompra = BuscaConsecutivo("Compra")
                         NumeroCompra = Format(ConsecutivoCompra, "0000#")
-                    GrabaEncabezadoCompras(NumeroCompra, Fecha, "Mercancia Recibida", CodProveedor, Me.CboCodigoBodega.Text, NombreCliente, NombreCliente, Fecha, Val(0), 0, Val(0), Val(0), "Cordobas", "Procesado por DesEnsamble " & ConsecutivoEnsamble, CodigoProyecto)
+                    GrabaEncabezadoCompras(NumeroCompra, Fecha, "Mercancia Recibida", CodProveedor, Me.CboCodigoBodega.Text, NombreCliente, NombreCliente, Fecha, Val(0), 0, Val(0), Val(0), "Cordobas", "Procesado por DesEnsamble " & ConsecutivoEnsamble, CodigoProyecto, False)
                     End If
 
                     CodProductos = DataSet.Tables("ListaProductos").Rows(IposicionFila)("CodProducto")

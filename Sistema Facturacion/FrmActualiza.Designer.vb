@@ -129,7 +129,7 @@ Partial Class FrmActualiza
         Me.OptTransformacion = New System.Windows.Forms.RadioButton
         Me.OptPagos = New System.Windows.Forms.RadioButton
         Me.OptCompras = New System.Windows.Forms.RadioButton
-        Me.Label23 = New System.Windows.Forms.Label
+        Me.LblNumero = New System.Windows.Forms.Label
         Me.TxtNumero = New System.Windows.Forms.TextBox
         Me.BtnEliminar = New System.Windows.Forms.Button
         Me.BtnActivar = New System.Windows.Forms.Button
@@ -1189,7 +1189,7 @@ Partial Class FrmActualiza
         Me.TabPage8.Controls.Add(Me.BtnActivar)
         Me.TabPage8.Controls.Add(Me.BtnEliminar)
         Me.TabPage8.Controls.Add(Me.TxtNumero)
-        Me.TabPage8.Controls.Add(Me.Label23)
+        Me.TabPage8.Controls.Add(Me.LblNumero)
         Me.TabPage8.Controls.Add(Me.GroupBox10)
         Me.TabPage8.Location = New System.Drawing.Point(4, 22)
         Me.TabPage8.Name = "TabPage8"
@@ -1265,19 +1265,19 @@ Partial Class FrmActualiza
         Me.OptCompras.Text = "Compras"
         Me.OptCompras.UseVisualStyleBackColor = True
         '
-        'Label23
+        'LblNumero
         '
-        Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(149, 25)
-        Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(47, 13)
-        Me.Label23.TabIndex = 1
-        Me.Label23.Text = "Numero:"
+        Me.LblNumero.AutoSize = True
+        Me.LblNumero.Location = New System.Drawing.Point(149, 25)
+        Me.LblNumero.Name = "LblNumero"
+        Me.LblNumero.Size = New System.Drawing.Size(47, 13)
+        Me.LblNumero.TabIndex = 1
+        Me.LblNumero.Text = "Numero:"
         '
         'TxtNumero
         '
         Me.TxtNumero.AcceptsReturn = True
-        Me.TxtNumero.Location = New System.Drawing.Point(203, 25)
+        Me.TxtNumero.Location = New System.Drawing.Point(227, 25)
         Me.TxtNumero.Name = "TxtNumero"
         Me.TxtNumero.Size = New System.Drawing.Size(100, 20)
         Me.TxtNumero.TabIndex = 2
@@ -1312,7 +1312,7 @@ Partial Class FrmActualiza
         'Button21
         '
         Me.Button21.Image = CType(resources.GetObject("Button21.Image"), System.Drawing.Image)
-        Me.Button21.Location = New System.Drawing.Point(309, 19)
+        Me.Button21.Location = New System.Drawing.Point(333, 19)
         Me.Button21.Name = "Button21"
         Me.Button21.Size = New System.Drawing.Size(29, 30)
         Me.Button21.TabIndex = 173
@@ -1503,7 +1503,7 @@ Partial Class FrmActualiza
     Friend WithEvents OptFacturas As System.Windows.Forms.RadioButton
     Friend WithEvents OptCompras As System.Windows.Forms.RadioButton
     Friend WithEvents OptPagos As System.Windows.Forms.RadioButton
-    Friend WithEvents Label23 As System.Windows.Forms.Label
+    Friend WithEvents LblNumero As System.Windows.Forms.Label
     Friend WithEvents TxtNumero As System.Windows.Forms.TextBox
     Friend WithEvents BtnEliminar As System.Windows.Forms.Button
     Friend WithEvents BtnActivar As System.Windows.Forms.Button

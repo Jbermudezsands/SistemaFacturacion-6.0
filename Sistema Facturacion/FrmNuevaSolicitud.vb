@@ -130,7 +130,7 @@ Public Class FrmNuevaSolicitud
  
 
     End Sub
-    Public Sub GrabarSolicitud(ByVal Numero_Solicitud As String, ByVal Fecha_Solicitud As Date, ByVal Gerencia_Solicitante As String, ByVal Departamento As String, ByVal Cod_Rubro As String, ByVal Concepto As String, ByVal Estado_Solicitud As String, ByVal Codigo_Bodega As String, ByVal Fecha_Requerido As Date, ByVal CodigoProyecto As String, ByVal Actualizar As Boolean)
+    Public Sub GrabarSolicitud(ByVal Numero_Solicitud As String, ByVal Fecha_Solicitud As Date, ByVal Gerencia_Solicitante As String, ByVal Departamento As String, ByVal Cod_Rubro As String, ByVal Concepto As String, ByVal Estado_Solicitud As String, ByVal Codigo_Bodega As String, ByVal Fecha_Requerido As Date, ByVal CodigoProyecto As String, ByVal Actualizar As Boolean, ByVal SolicitudxCta As Boolean)
         Dim SQLClientes As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
@@ -144,7 +144,7 @@ Public Class FrmNuevaSolicitud
         If Not DataSet.Tables("Solicitud").Rows.Count = 0 Then
             If Actualizar = True Then
                 '//////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-                StrSqlUpdate = "UPDATE [Solicitud_Compra] SET [Gerencia_Solicitante] = '" & Gerencia_Solicitante & "',[Departamento_Solicitante] = '" & Departamento & "' ,[Codigo_Rubro] = '" & Cod_Rubro & "',[Concepto] = '" & Concepto & "' ,[Estado_Solicitud] = '" & Estado_Solicitud & "',[Cod_Bodega] = '" & Codigo_Bodega & "', [Fecha_Requerido] = '" & Fecha_Requerido & "'  WHERE (Numero_Solicitud = '" & Numero_Solicitud & "')"
+                StrSqlUpdate = "UPDATE [Solicitud_Compra] SET [Gerencia_Solicitante] = '" & Gerencia_Solicitante & "',[Departamento_Solicitante] = '" & Departamento & "' ,[Codigo_Rubro] = '" & Cod_Rubro & "',[Concepto] = '" & Concepto & "' ,[Estado_Solicitud] = '" & Estado_Solicitud & "',[Cod_Bodega] = '" & Codigo_Bodega & "', [Fecha_Requerido] = '" & Fecha_Requerido & "', [Solcitud_Cta_Contable] = '" & SolicitudxCta & "'  WHERE (Numero_Solicitud = '" & Numero_Solicitud & "')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
                 iResultado = ComandoUpdate.ExecuteNonQuery
@@ -153,8 +153,8 @@ Public Class FrmNuevaSolicitud
 
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Solicitud_Compra] ([Numero_Solicitud],[Fecha_Solicitud],[Fecha_Hora_Solicitud] ,[Gerencia_Solicitante],[Departamento_Solicitante],[Codigo_Rubro],[Concepto] ,[Estado_Solicitud] ,[Cod_Bodega], [Fecha_Requerido], [CodigoProyecto]) " & _
-                           "VALUES ('" & Numero_Solicitud & "', CONVERT(DATETIME, '" & Format(Fecha_Solicitud, "yyyy-MM-dd") & "', 102)  ,CONVERT(DATETIME, '" & Format(Fecha_Solicitud, "yyyy-MM-dd HH:mm:ss") & "', 102) , '" & Gerencia_Solicitante & "', '" & Departamento & "' ,'" & Cod_Rubro & "' ,'" & Concepto & "','" & Estado_Solicitud & "' ,'" & Codigo_Bodega & "', CONVERT(DATETIME, '" & Format(Fecha_Requerido, "yyyy-MM-dd") & "', 102), '" & CodigoProyecto & "')"
+            StrSqlUpdate = "INSERT INTO [Solicitud_Compra] ([Numero_Solicitud],[Fecha_Solicitud],[Fecha_Hora_Solicitud] ,[Gerencia_Solicitante],[Departamento_Solicitante],[Codigo_Rubro],[Concepto] ,[Estado_Solicitud] ,[Cod_Bodega], [Fecha_Requerido], [CodigoProyecto], [Solcitud_Cta_Contable]) " & _
+                           "VALUES ('" & Numero_Solicitud & "', CONVERT(DATETIME, '" & Format(Fecha_Solicitud, "yyyy-MM-dd") & "', 102)  ,CONVERT(DATETIME, '" & Format(Fecha_Solicitud, "yyyy-MM-dd HH:mm:ss") & "', 102) , '" & Gerencia_Solicitante & "', '" & Departamento & "' ,'" & Cod_Rubro & "' ,'" & Concepto & "','" & Estado_Solicitud & "' ,'" & Codigo_Bodega & "', CONVERT(DATETIME, '" & Format(Fecha_Requerido, "yyyy-MM-dd") & "', 102), '" & CodigoProyecto & "' , '" & SolicitudxCta & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -343,7 +343,7 @@ Public Class FrmNuevaSolicitud
             CodigoProyecto = ""
         End If
 
-        GrabarSolicitud(Me.TxtNumeroEnsamble.Text, Fecha_Solicitud, Me.CboGerencia.Text, Me.CboDepartamento.Text, Me.CboRubro.Text, Me.TxtConcepto.Text, "Grabado", Me.CboCodigoBodega.Text, Me.DTPFechaRequerido.Value, CodigoProyecto, False)
+        GrabarSolicitud(Me.TxtNumeroEnsamble.Text, Fecha_Solicitud, Me.CboGerencia.Text, Me.CboDepartamento.Text, Me.CboRubro.Text, Me.TxtConcepto.Text, "Grabado", Me.CboCodigoBodega.Text, Me.DTPFechaRequerido.Value, CodigoProyecto, False, Me.ChkSolcitudxCta.Checked)
 
         InsertarRowGrid()
 
@@ -541,7 +541,7 @@ Public Class FrmNuevaSolicitud
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////CARGO LAS SOLICUTIDS////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        Sql = "SELECT  Numero_Solicitud, Fecha_Solicitud, Fecha_Hora_Solicitud, Gerencia_Solicitante, Departamento_Solicitante, Codigo_Rubro, Concepto, Estado_Solicitud,  Cod_Bodega, CodigoProyecto, Fecha_Requerido FROM Solicitud_Compra " & _
+        Sql = "SELECT  Numero_Solicitud, Fecha_Solicitud, Fecha_Hora_Solicitud, Gerencia_Solicitante, Departamento_Solicitante, Codigo_Rubro, Concepto, Estado_Solicitud,  Cod_Bodega, CodigoProyecto, Fecha_Requerido, Solcitud_Cta_Contable  FROM Solicitud_Compra " & _
               "WHERE  (Numero_Solicitud = '" & Me.TxtNumeroEnsamble.Text & "')"
         MiConexion.Open()
         DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
@@ -591,7 +591,7 @@ Public Class FrmNuevaSolicitud
             Me.CboProyecto.DataSource = DataSet.Tables("Proyectos")
 
 
-
+            Me.ChkSolcitudxCta.Checked = DataSet.Tables("Gerencia").Rows(0)("Solcitud_Cta_Contable")
             Me.CboGerencia.Text = DataSet.Tables("Gerencia").Rows(0)("Gerencia_Solicitante")
             Me.CboDepartamento.Text = DataSet.Tables("Gerencia").Rows(0)("Departamento_Solicitante")
             Me.DTPFecha.Text = DataSet.Tables("Gerencia").Rows(0)("Fecha_Solicitud")
@@ -750,7 +750,7 @@ Public Class FrmNuevaSolicitud
         End If
 
         Fecha_Solicitud = CDate(Me.DTPFecha.Text + " " + Me.LblHora.Text)
-        GrabarSolicitud(Me.TxtNumeroEnsamble.Text, Fecha_Solicitud, Me.CboGerencia.Text, Me.CboDepartamento.Text, Me.CboRubro.Text, Me.TxtConcepto.Text, "Grabado", Me.CboCodigoBodega.Text, Me.DTPFechaRequerido.Value, CodigoProyecto, True)
+        GrabarSolicitud(Me.TxtNumeroEnsamble.Text, Fecha_Solicitud, Me.CboGerencia.Text, Me.CboDepartamento.Text, Me.CboRubro.Text, Me.TxtConcepto.Text, "Grabado", Me.CboCodigoBodega.Text, Me.DTPFechaRequerido.Value, CodigoProyecto, True, Me.ChkSolcitudxCta.Checked)
         Me.Close()
 
     End Sub
@@ -820,7 +820,11 @@ Public Class FrmNuevaSolicitud
             Apellidos = DataSet.Tables("Proveedor").Rows(0)("Nombre_Proveedor")
 
             '//////////////////////////////////GRABO LOS ENCABEZADOS ///////////////////////////////////////////////////////////////////////
-            GrabaEncabezadoCompras(NumeroCompra, Fecha_Compra, "Orden de Compra", CodigoProveedor, Me.CboCodigoBodega.Text, Nombres, Apellidos, Fecha_Compra, Val(0), Val(0), Val(0), Val(0), "Cordobas", "Procesado por la Solicitud de Compra " & Me.TxtNumeroEnsamble.Text, CodigoProyecto)
+            If Me.ChkSolcitudxCta.Checked = False Then
+                GrabaEncabezadoCompras(NumeroCompra, Fecha_Compra, "Orden de Compra", CodigoProveedor, Me.CboCodigoBodega.Text, Nombres, Apellidos, Fecha_Compra, Val(0), Val(0), Val(0), Val(0), "Cordobas", "Procesado por la Solicitud de Compra " & Me.TxtNumeroEnsamble.Text, CodigoProyecto, Me.ChkSolcitudxCta.Checked)
+            Else
+                GrabaEncabezadoCompras(NumeroCompra, Fecha_Compra, "Orden de Compra", CodigoProveedor, Me.CboCodigoBodega.Text, Nombres, Apellidos, Fecha_Compra, Val(0), Val(0), Val(0), Val(0), "Cordobas", "Procesado por la Solicitud de Compra " & Me.TxtNumeroEnsamble.Text, CodigoProyecto, Me.ChkSolcitudxCta.Checked)
+            End If
 
 
             Registros = Me.TrueDBGridComponentes.RowCount

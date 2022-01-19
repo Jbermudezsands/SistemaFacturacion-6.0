@@ -1411,14 +1411,18 @@ Public Class FrmActualiza
     End Sub
 
     Private Sub OptClientes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptClientes.CheckedChanged
-        Me.BtnEliminar.Enabled = True
-        Me.BtnActivar.Enabled = False
-        Me.BtnModificar.Enabled = False
-        Me.BtnAnular.Enabled = False
+        If Me.OptClientes.Checked = True Then
+            Me.LblNumero.Text = "Codigo Clientes"
+            Me.BtnEliminar.Enabled = True
+            Me.BtnActivar.Enabled = False
+            Me.BtnModificar.Enabled = False
+            Me.BtnAnular.Enabled = False
+        End If
     End Sub
 
     Private Sub OptFacturas_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptFacturas.CheckedChanged
         If Me.OptFacturas.Checked = True Then
+            Me.LblNumero.Text = "Numero Factura"
             Me.BtnEliminar.Enabled = True
             Me.BtnActivar.Enabled = True
             Me.BtnModificar.Enabled = False
@@ -1431,16 +1435,20 @@ Public Class FrmActualiza
     Private Sub OptRecibos_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptRecibos.CheckedChanged
 
         If Me.OptRecibos.Checked = True Then
+            Me.LblNumero.Text = "Numero Recibo"
             Me.BtnEliminar.Enabled = True
             Me.BtnActivar.Enabled = False
             Me.BtnModificar.Enabled = False
             Me.BtnAnular.Enabled = True
         End If
+
+
     End Sub
 
     Private Sub OptTransformacion_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptTransformacion.CheckedChanged
 
         If Me.OptTransformacion.Checked = True Then
+            Me.LblNumero.Text = "Numero Transformacion"
             Me.BtnEliminar.Enabled = True
             Me.BtnActivar.Enabled = False
             Me.BtnModificar.Enabled = False
@@ -1452,6 +1460,7 @@ Public Class FrmActualiza
     Private Sub OptPagos_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptPagos.CheckedChanged
 
         If Me.OptPagos.Checked = True Then
+            Me.LblNumero.Text = "Numero Pago Proveedores"
             Me.BtnEliminar.Enabled = True
             Me.BtnActivar.Enabled = False
             Me.BtnModificar.Enabled = False
@@ -1462,6 +1471,7 @@ Public Class FrmActualiza
     Private Sub OptCompras_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptCompras.CheckedChanged
 
         If Me.OptCompras.Checked = True Then
+            Me.LblNumero.Text = "Numero Compra"
             Me.BtnEliminar.Enabled = True
             Me.BtnActivar.Enabled = True
             Me.BtnModificar.Enabled = True
