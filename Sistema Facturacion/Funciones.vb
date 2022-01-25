@@ -15,6 +15,45 @@ Module Funciones
 
 
     End Sub
+    Public Function CuentaGastosProducto(ByVal CodigoProducto As String) As String
+        Dim Sql As String
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion), DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim MiconexionContabilidad As New SqlClient.SqlConnection(ConexionContabilidad)
+        Dim CuentaCosto As String
+
+        '/////////////////////////BUSCO LA CUENTA DE COSTO DEL PRODUCTO ////////////////////////
+        Sql = "SELECT Productos.*  FROM Productos WHERE (Cod_Productos = '" & CodigoProducto & "') "
+        DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+        DataAdapter.Fill(DataSet, "Producto")
+
+        If DataSet.Tables("Producto").Rows.Count <> 0 Then
+            If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Cod_Cuenta_Costo")) Then
+                CuentaCosto = DataSet.Tables("Producto").Rows(0)("Cod_Cuenta_Costo")
+
+                '////////////////////////////////BUSCO LA CUENTA CONTABLE////////////////////////
+                Sql = "SELECT Cuentas.* FROM Cuentas WHERE  (CodCuentas = '" & CuentaCosto & "')"
+                DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiconexionContabilidad)
+                DataAdapter.Fill(DataSet, "Cuenta")
+                If DataSet.Tables("Cuenta").Rows.Count <> 0 Then
+                    CuentaCosto = DataSet.Tables("Cuenta").Rows(0)("CodCuentas") + "," + DataSet.Tables("Cuenta").Rows(0)("DescripcionCuentas")
+                    CuentaGastosProducto = CuentaCosto
+                Else
+                    CuentaGastosProducto = CuentaCosto + ", No Existe"
+                End If
+
+            Else
+                CuentaGastosProducto = "1111, No Existe"
+
+            End If
+        Else
+            CuentaGastosProducto = "1111, No Existe"
+        End If
+
+
+
+
+    End Function
+
 
     Public Function GenerarNumeroFacturaBascula(ByVal ConsecutivoFacturaManual As Boolean, ByVal TipoFactura As String) As String
         Dim ConsecutivoFactura As Double, SqlConsecutivo As String
@@ -2897,12 +2936,49 @@ errSub:
         For Each Label As Control In Parent.Controls
             If TypeOf Label Is Button Then
                 Select Case Label.Tag
-                    Case 25 : If Permiso = "NoGrabar" Then Label.Enabled = False
-                    Case 26 : If Permiso = "NoAnular" Then Label.Enabled = False
-                    Case 27 : If Permiso = "NoImprimir" Then Label.Enabled = False
-                    Case 28 : If Permiso = "NoProcesar" Then Label.Enabled = False
-                    Case 29 : If Permiso = "NoEliminar" Then Label.Enabled = False
-                    Case 30 : If Permiso = "NoCambiarBodega" Then Label.Enabled = False
+                    Case 25
+                        If Permiso = "NoGrabar" Then
+                            Label.Enabled = False
+                        ElseIf Permiso = "Grabar" Then
+                            Label.Enabled = True
+                        End If
+
+                    Case 26
+                        If Permiso = "NoAnular" Then
+                            Label.Enabled = False
+                        ElseIf Permiso = "Anular" Then
+                            Label.Enabled = True
+                        End If
+
+
+                    Case 27
+                        If Permiso = "NoImprimir" Then
+                            Label.Enabled = False
+                        ElseIf Permiso = "Imprimir" Then
+                            Label.Enabled = True
+                        End If
+
+                    Case 28
+                        If Permiso = "NoProcesar" Then
+                            Label.Enabled = False
+                        ElseIf Permiso = "Procesar" Then
+                            Label.Enabled = True
+                        End If
+
+                    Case 29
+                        If Permiso = "NoEliminar" Then
+                            Label.Enabled = False
+                        ElseIf Permiso = "Eliminar" Then
+                            Label.Enabled = True
+                        End If
+
+                    Case 30
+                        If Permiso = "NoCambiarBodega" Then
+                            Label.Enabled = False
+                        ElseIf Permiso = "CambiarBodega" Then
+                            Label.Enabled = True
+                        End If
+
                 End Select
             ElseIf TypeOf Label Is TabPage Then 'DevExpress.XtraTab.XtraTabPage
                 ObtenerContenedores(Label, Permiso)
@@ -7420,7 +7496,66 @@ errSub:
         End If
 
     End Sub
+    Public Sub GrabaDetalleCompraCuenta(ByVal ConsecutivoCompra As String, ByVal CuentaContable As String, ByVal DescripcionCuenta As String, ByVal PrecioUnitario As Double, ByVal Descuento As Double, ByVal PrecioNeto As Double, ByVal Importe As Double, ByVal Cantidad As Double, ByVal Numero_Lote As String, ByVal Fecha_Lote As Date, ByVal CodProducto As String, ByVal Fecha_Compra As Date, ByVal Moneda_Compra As String, ByVal Tipo_Compra As String)
+        Dim Sqldetalle As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, TasaCambio As String
+        Dim Fecha As String, MiConexion As New SqlClient.SqlConnection(Conexion), SqlUpdate As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, MonedaCompra As String, MonedaProducto As String
 
+
+        MonedaCompra = Moneda_Compra
+        MonedaProducto = "Cordobas"
+        TasaCambio = 0
+
+
+
+        If MonedaCompra = "Cordobas" Then
+            If MonedaProducto = "Cordobas" Then
+                TasaCambio = 1
+            Else
+                If BuscaTasaCambio(Fecha_Compra) <> 0 Then
+                    TasaCambio = (1 / BuscaTasaCambio(Fecha_Compra))
+                End If
+            End If
+        ElseIf MonedaCompra = "Dolares" Then
+            If MonedaProducto = "Cordobas" Then
+                TasaCambio = BuscaTasaCambio(Fecha_Compra)
+            Else
+                TasaCambio = 1
+            End If
+        End If
+
+
+        Fecha = Format(Fecha_Compra, "yyyy-MM-dd")
+
+        Sqldetalle = "SELECT *  FROM Detalle_Compras WHERE (Numero_Compra = '" & ConsecutivoCompra & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Compra = '" & Tipo_Compra & "') AND (Cod_Producto = '" & CodProducto & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(Sqldetalle, MiConexion)
+        DataAdapter.Fill(DataSet, "DetalleCompra")
+        If Not DataSet.Tables("DetalleCompra").Rows.Count = 0 Then
+            '//////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////////EDITO EL DETALLE DE COMPRAS///////////////////////////////////
+            '/////////////////////////////////////////////////////////////////////////////////////////////////
+            SqlUpdate = "UPDATE [Detalle_Compras] SET [Cantidad] = " & Cantidad & " ,[Precio_Unitario] = " & PrecioUnitario & ",[Descuento] = " & Descuento & " ,[Precio_Neto] = " & PrecioNeto & ",[Importe] = " & Importe & ",[TasaCambio] = " & TasaCambio & ",[Numero_Lote] = '" & Numero_Lote & "' ,[Fecha_Vence] = " & Format(Fecha_Lote, "dd/MM/yyyy") & " " & _
+                        "WHERE (Numero_Compra = '" & ConsecutivoCompra & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Compra = '" & Tipo_Compra & "') AND (Cod_Producto = '" & CuentaContable & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+            Bitacora(Now, NombreUsuario, "Compras", "Modifico Producto: " & CuentaContable & " " & FrmCompras.CboTipoProducto.Text & " No." & ConsecutivoCompra)
+
+        Else
+
+            SqlUpdate = "INSERT INTO [Detalle_Compras] ([Numero_Compra],[Fecha_Compra],[Tipo_Compra],[Cod_Producto],[Cantidad],[Precio_Unitario],[Descuento],[Precio_Neto],[Importe],[TasaCambio],[Numero_Lote],[Fecha_Vence],[Descripcion_Producto])" & _
+            "VALUES ('" & ConsecutivoCompra & "','" & Format(Fecha_Compra, "dd/MM/yyyy") & "','" & Tipo_Compra & "','" & CuentaContable & "' ," & Cantidad & "," & PrecioUnitario & "," & Descuento & " ," & PrecioNeto & "," & Importe & "," & TasaCambio & ",'" & Numero_Lote & "','" & Format(Fecha_Lote, "dd/MM/yyyy") & "', '" & DescripcionCuenta & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+            Bitacora(Now, NombreUsuario, "Compras", "Agrego Producto: " & CuentaContable & " " & FrmCompras.CboTipoProducto.Text & " No." & ConsecutivoCompra)
+        End If
+
+    End Sub
 
 
     Public Sub GrabaDetalleCompra(ByVal ConsecutivoCompra As String, ByVal CodProducto As String, ByVal PrecioUnitario As Double, ByVal Descuento As Double, ByVal PrecioNeto As Double, ByVal Importe As Double, ByVal Cantidad As Double, ByVal Numero_Lote As String, ByVal Fecha_Lote As Date, ByVal DescripcionProducto As String)
@@ -7942,7 +8077,7 @@ errSub:
 
                 MiConexion.Close()
                 '///////////////////////////////////////ACTUALIZO LA EXISTENCIA DE PRODUCTOS////////////////////////////////////////////////////////////////
-                SqlUpdate = "UPDATE [Productos] SET [Existencia_Unidades] = " & ExistenciaTotal & ",[Costo_Promedio] = " & CostoPromedio & " ,[Costo_Promedio_Dolar] = " & CostoPromedioDolar & ", [Ultimo_Precio_Compra] = " & PrecioCompra & " ,[Existencia_Dinero] = " & ExistenciaTotal * CostoPromedio & ",[Existencia_DineroDolar] = " & ExistenciaTotal * CostoPromedioDolar & " " & _
+                SqlUpdate = "UPDATE [Productos] SET [Existencia_Unidades] = " & ExistenciaTotal & ",[Costo_Promedio] = " & Format(CostoPromedio, "##,##0.00000") & " ,[Costo_Promedio_Dolar] = " & Format(CostoPromedioDolar, "##,##0.00") & ", [Ultimo_Precio_Compra] = " & Format(PrecioCompra, "##,##0.00") & " ,[Existencia_Dinero] = " & ExistenciaTotal * CostoPromedio & ",[Existencia_DineroDolar] = " & ExistenciaTotal * CostoPromedioDolar & " " & _
                             "WHERE (Cod_Productos = '" & CodigoProductos & "')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
