@@ -547,3 +547,4 @@ D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Factura
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmImpresoras.resources
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmImprime.resources
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmTransferirHistorial.resources
+D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmSerieFactura.resources

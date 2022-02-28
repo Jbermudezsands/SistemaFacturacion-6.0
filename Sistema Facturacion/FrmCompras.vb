@@ -2856,13 +2856,14 @@ Public Class FrmCompras
 
 
             'ExistenciasCostos(CodigoProducto, Cantidad, PrecioUnitario, "Mercancia Recibida", Me.CboCodigoBodega.Text)
+            If Me.ChkSolcitudxCta.Checked = False Then
+                Select Case TipoCompra
+                    Case "Mercancia Recibida"
+                        ExistenciasCostos(CodigoProducto, Cantidad, PrecioNeto, TipoCompra, Me.CboCodigoBodega.Text)
+                        CostoBodega(CodigoProducto, Cantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text, Fecha_Compra)
 
-            Select Case TipoCompra
-                Case "Mercancia Recibida"
-                    ExistenciasCostos(CodigoProducto, Cantidad, PrecioNeto, TipoCompra, Me.CboCodigoBodega.Text)
-                    CostoBodega(CodigoProducto, Cantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text, Fecha_Compra)
-
-            End Select
+                End Select
+            End If
 
             CodigoProducto = 0
             PrecioUnitario = 0

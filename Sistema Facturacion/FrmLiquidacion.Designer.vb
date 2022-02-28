@@ -92,13 +92,16 @@ Partial Class FrmLiquidacion
         Me.PictureBox3 = New System.Windows.Forms.PictureBox
         Me.GroupBox4 = New System.Windows.Forms.GroupBox
         Me.Label26 = New System.Windows.Forms.Label
-        Me.TxtSPI = New System.Windows.Forms.TextBox
+        Me.TxtSPE = New System.Windows.Forms.TextBox
         Me.TxtSSA = New System.Windows.Forms.TextBox
         Me.Label25 = New System.Windows.Forms.Label
         Me.TxtTSI = New System.Windows.Forms.TextBox
         Me.Label24 = New System.Windows.Forms.Label
         Me.TxtGastoImpuesto = New System.Windows.Forms.TextBox
         Me.Label23 = New System.Windows.Forms.Label
+        Me.ChkProrratearPeso = New System.Windows.Forms.CheckBox
+        Me.TxtTotalPeso = New System.Windows.Forms.TextBox
+        Me.Label27 = New System.Windows.Forms.Label
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -118,7 +121,7 @@ Partial Class FrmLiquidacion
         Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label9.Location = New System.Drawing.Point(331, 18)
+        Me.Label9.Location = New System.Drawing.Point(400, 22)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(211, 20)
         Me.Label9.TabIndex = 166
@@ -140,14 +143,14 @@ Partial Class FrmLiquidacion
         Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox1.Location = New System.Drawing.Point(-4, 0)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(945, 60)
+        Me.PictureBox1.Size = New System.Drawing.Size(1073, 60)
         Me.PictureBox1.TabIndex = 164
         Me.PictureBox1.TabStop = False
         '
         'Button6
         '
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
-        Me.Button6.Location = New System.Drawing.Point(681, 66)
+        Me.Button6.Location = New System.Drawing.Point(789, 66)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(37, 32)
         Me.Button6.TabIndex = 6
@@ -156,7 +159,7 @@ Partial Class FrmLiquidacion
         'TxtNumeroEnsamble
         '
         Me.TxtNumeroEnsamble.Enabled = False
-        Me.TxtNumeroEnsamble.Location = New System.Drawing.Point(599, 70)
+        Me.TxtNumeroEnsamble.Location = New System.Drawing.Point(707, 70)
         Me.TxtNumeroEnsamble.Name = "TxtNumeroEnsamble"
         Me.TxtNumeroEnsamble.Size = New System.Drawing.Size(76, 20)
         Me.TxtNumeroEnsamble.TabIndex = 168
@@ -165,7 +168,7 @@ Partial Class FrmLiquidacion
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(549, 73)
+        Me.Label3.Location = New System.Drawing.Point(657, 73)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(44, 13)
         Me.Label3.TabIndex = 167
@@ -175,7 +178,7 @@ Partial Class FrmLiquidacion
         '
         Me.DTPFecha.CustomFormat = ""
         Me.DTPFecha.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DTPFecha.Location = New System.Drawing.Point(599, 102)
+        Me.DTPFecha.Location = New System.Drawing.Point(707, 102)
         Me.DTPFecha.Name = "DTPFecha"
         Me.DTPFecha.Size = New System.Drawing.Size(104, 20)
         Me.DTPFecha.TabIndex = 7
@@ -183,7 +186,7 @@ Partial Class FrmLiquidacion
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(556, 106)
+        Me.Label2.Location = New System.Drawing.Point(664, 106)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(37, 13)
         Me.Label2.TabIndex = 170
@@ -196,13 +199,13 @@ Partial Class FrmLiquidacion
         Me.TrueDBGridComponentes.Caption = "Listado de Productos"
         Me.TrueDBGridComponentes.GroupByCaption = "Drag a column header here to group by that column"
         Me.TrueDBGridComponentes.Images.Add(CType(resources.GetObject("TrueDBGridComponentes.Images"), System.Drawing.Image))
-        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(6, 173)
+        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(12, 153)
         Me.TrueDBGridComponentes.Name = "TrueDBGridComponentes"
         Me.TrueDBGridComponentes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75
         Me.TrueDBGridComponentes.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridComponentes.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TrueDBGridComponentes.Size = New System.Drawing.Size(731, 153)
+        Me.TrueDBGridComponentes.Size = New System.Drawing.Size(863, 153)
         Me.TrueDBGridComponentes.TabIndex = 172
         Me.TrueDBGridComponentes.Text = "C1TrueDBGrid1"
         Me.TrueDBGridComponentes.PropBag = resources.GetString("TrueDBGridComponentes.PropBag")
@@ -269,7 +272,7 @@ Partial Class FrmLiquidacion
         Me.GroupBox1.Controls.Add(Me.CmdNuevo)
         Me.GroupBox1.Controls.Add(Me.Button2)
         Me.GroupBox1.Controls.Add(Me.ButtonAgregar)
-        Me.GroupBox1.Location = New System.Drawing.Point(754, 171)
+        Me.GroupBox1.Location = New System.Drawing.Point(875, 169)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(172, 319)
         Me.GroupBox1.TabIndex = 193
@@ -391,7 +394,7 @@ Partial Class FrmLiquidacion
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(278, 329)
+        Me.Label1.Location = New System.Drawing.Point(462, 331)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(91, 16)
         Me.Label1.TabIndex = 194
@@ -400,7 +403,7 @@ Partial Class FrmLiquidacion
         'TxtTotalFob
         '
         Me.TxtTotalFob.Enabled = False
-        Me.TxtTotalFob.Location = New System.Drawing.Point(376, 329)
+        Me.TxtTotalFob.Location = New System.Drawing.Point(552, 331)
         Me.TxtTotalFob.Name = "TxtTotalFob"
         Me.TxtTotalFob.Size = New System.Drawing.Size(100, 20)
         Me.TxtTotalFob.TabIndex = 195
@@ -422,7 +425,7 @@ Partial Class FrmLiquidacion
         '
         Me.TxtTotalCosto.AcceptsReturn = True
         Me.TxtTotalCosto.Enabled = False
-        Me.TxtTotalCosto.Location = New System.Drawing.Point(614, 329)
+        Me.TxtTotalCosto.Location = New System.Drawing.Point(770, 332)
         Me.TxtTotalCosto.Name = "TxtTotalCosto"
         Me.TxtTotalCosto.Size = New System.Drawing.Size(100, 20)
         Me.TxtTotalCosto.TabIndex = 198
@@ -432,7 +435,7 @@ Partial Class FrmLiquidacion
         '
         Me.Label4.AutoSize = True
         Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(498, 329)
+        Me.Label4.Location = New System.Drawing.Point(654, 332)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(113, 16)
         Me.Label4.TabIndex = 197
@@ -630,7 +633,7 @@ Partial Class FrmLiquidacion
         'Button7
         '
         Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
-        Me.Button7.Location = New System.Drawing.Point(681, 129)
+        Me.Button7.Location = New System.Drawing.Point(789, 129)
         Me.Button7.Name = "Button7"
         Me.Button7.Size = New System.Drawing.Size(37, 38)
         Me.Button7.TabIndex = 203
@@ -652,7 +655,7 @@ Partial Class FrmLiquidacion
         Me.CboCodigoBodega.EditorHeight = 15
         Me.CboCodigoBodega.Images.Add(CType(resources.GetObject("CboCodigoBodega.Images"), System.Drawing.Image))
         Me.CboCodigoBodega.ItemHeight = 15
-        Me.CboCodigoBodega.Location = New System.Drawing.Point(552, 137)
+        Me.CboCodigoBodega.Location = New System.Drawing.Point(660, 137)
         Me.CboCodigoBodega.MatchEntryTimeout = CType(2000, Long)
         Me.CboCodigoBodega.MaxDropDownItems = CType(5, Short)
         Me.CboCodigoBodega.MaxLength = 32767
@@ -668,7 +671,7 @@ Partial Class FrmLiquidacion
         'Label20
         '
         Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(498, 137)
+        Me.Label20.Location = New System.Drawing.Point(606, 137)
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(44, 13)
         Me.Label20.TabIndex = 201
@@ -677,7 +680,7 @@ Partial Class FrmLiquidacion
         'Label21
         '
         Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(349, 68)
+        Me.Label21.Location = New System.Drawing.Point(457, 68)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(103, 13)
         Me.Label21.TabIndex = 204
@@ -687,7 +690,7 @@ Partial Class FrmLiquidacion
         '
         Me.CmbMoneda.FormattingEnabled = True
         Me.CmbMoneda.Items.AddRange(New Object() {"Cordobas", "Dolares"})
-        Me.CmbMoneda.Location = New System.Drawing.Point(453, 65)
+        Me.CmbMoneda.Location = New System.Drawing.Point(561, 65)
         Me.CmbMoneda.Name = "CmbMoneda"
         Me.CmbMoneda.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.CmbMoneda.Size = New System.Drawing.Size(86, 21)
@@ -697,7 +700,7 @@ Partial Class FrmLiquidacion
         '
         Me.CmbImpuesto.FormattingEnabled = True
         Me.CmbImpuesto.Items.AddRange(New Object() {"Cordobas", "Dolares"})
-        Me.CmbImpuesto.Location = New System.Drawing.Point(452, 88)
+        Me.CmbImpuesto.Location = New System.Drawing.Point(560, 88)
         Me.CmbImpuesto.Name = "CmbImpuesto"
         Me.CmbImpuesto.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.CmbImpuesto.Size = New System.Drawing.Size(86, 21)
@@ -706,7 +709,7 @@ Partial Class FrmLiquidacion
         'Label22
         '
         Me.Label22.AutoSize = True
-        Me.Label22.Location = New System.Drawing.Point(350, 113)
+        Me.Label22.Location = New System.Drawing.Point(458, 113)
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(82, 13)
         Me.Label22.TabIndex = 206
@@ -718,7 +721,7 @@ Partial Class FrmLiquidacion
         Me.TDGridImpuestos.Caption = "Listado de Impuestos"
         Me.TDGridImpuestos.GroupByCaption = "Drag a column header here to group by that column"
         Me.TDGridImpuestos.Images.Add(CType(resources.GetObject("TDGridImpuestos.Images"), System.Drawing.Image))
-        Me.TDGridImpuestos.Location = New System.Drawing.Point(535, 360)
+        Me.TDGridImpuestos.Location = New System.Drawing.Point(609, 358)
         Me.TDGridImpuestos.Name = "TDGridImpuestos"
         Me.TDGridImpuestos.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TDGridImpuestos.PreviewInfo.Size = New System.Drawing.Size(0, 0)
@@ -731,7 +734,7 @@ Partial Class FrmLiquidacion
         '
         'TxtTasaCambio
         '
-        Me.TxtTasaCambio.Location = New System.Drawing.Point(426, 134)
+        Me.TxtTasaCambio.Location = New System.Drawing.Point(534, 134)
         Me.TxtTasaCambio.Name = "TxtTasaCambio"
         Me.TxtTasaCambio.Size = New System.Drawing.Size(66, 20)
         Me.TxtTasaCambio.TabIndex = 211
@@ -740,7 +743,7 @@ Partial Class FrmLiquidacion
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(348, 137)
+        Me.Label8.Location = New System.Drawing.Point(456, 137)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(71, 13)
         Me.Label8.TabIndex = 210
@@ -750,7 +753,7 @@ Partial Class FrmLiquidacion
         '
         Me.CmbGastos.FormattingEnabled = True
         Me.CmbGastos.Items.AddRange(New Object() {"Cordobas", "Dolares"})
-        Me.CmbGastos.Location = New System.Drawing.Point(452, 111)
+        Me.CmbGastos.Location = New System.Drawing.Point(560, 111)
         Me.CmbGastos.Name = "CmbGastos"
         Me.CmbGastos.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.CmbGastos.Size = New System.Drawing.Size(86, 21)
@@ -759,7 +762,7 @@ Partial Class FrmLiquidacion
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(349, 90)
+        Me.Label16.Location = New System.Drawing.Point(457, 90)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(97, 13)
         Me.Label16.TabIndex = 212
@@ -825,7 +828,7 @@ Partial Class FrmLiquidacion
         'PictureBox3
         '
         Me.PictureBox3.Image = CType(resources.GetObject("PictureBox3.Image"), System.Drawing.Image)
-        Me.PictureBox3.Location = New System.Drawing.Point(754, 68)
+        Me.PictureBox3.Location = New System.Drawing.Point(875, 66)
         Me.PictureBox3.Name = "PictureBox3"
         Me.PictureBox3.Size = New System.Drawing.Size(164, 99)
         Me.PictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -835,14 +838,14 @@ Partial Class FrmLiquidacion
         'GroupBox4
         '
         Me.GroupBox4.Controls.Add(Me.Label26)
-        Me.GroupBox4.Controls.Add(Me.TxtSPI)
+        Me.GroupBox4.Controls.Add(Me.TxtSPE)
         Me.GroupBox4.Controls.Add(Me.TxtSSA)
         Me.GroupBox4.Controls.Add(Me.Label25)
         Me.GroupBox4.Controls.Add(Me.TxtTSI)
         Me.GroupBox4.Controls.Add(Me.Label24)
         Me.GroupBox4.Controls.Add(Me.TxtGastoImpuesto)
         Me.GroupBox4.Controls.Add(Me.Label23)
-        Me.GroupBox4.Location = New System.Drawing.Point(353, 360)
+        Me.GroupBox4.Location = New System.Drawing.Point(375, 360)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(176, 133)
         Me.GroupBox4.TabIndex = 221
@@ -858,14 +861,14 @@ Partial Class FrmLiquidacion
         Me.Label26.TabIndex = 35
         Me.Label26.Text = "SPE"
         '
-        'TxtSPI
+        'TxtSPE
         '
-        Me.TxtSPI.Location = New System.Drawing.Point(92, 95)
-        Me.TxtSPI.Name = "TxtSPI"
-        Me.TxtSPI.Size = New System.Drawing.Size(58, 20)
-        Me.TxtSPI.TabIndex = 34
-        Me.TxtSPI.Text = "0.00"
-        Me.TxtSPI.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.TxtSPE.Location = New System.Drawing.Point(92, 95)
+        Me.TxtSPE.Name = "TxtSPE"
+        Me.TxtSPE.Size = New System.Drawing.Size(58, 20)
+        Me.TxtSPE.TabIndex = 34
+        Me.TxtSPE.Text = "0.00"
+        Me.TxtSPE.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'TxtSSA
         '
@@ -921,11 +924,43 @@ Partial Class FrmLiquidacion
         Me.Label23.TabIndex = 28
         Me.Label23.Text = "Gasto Impuesto"
         '
+        'ChkProrratearPeso
+        '
+        Me.ChkProrratearPeso.AutoSize = True
+        Me.ChkProrratearPeso.Location = New System.Drawing.Point(121, 331)
+        Me.ChkProrratearPeso.Name = "ChkProrratearPeso"
+        Me.ChkProrratearPeso.Size = New System.Drawing.Size(117, 17)
+        Me.ChkProrratearPeso.TabIndex = 222
+        Me.ChkProrratearPeso.Text = "Prorratear por Peso"
+        Me.ChkProrratearPeso.UseVisualStyleBackColor = True
+        '
+        'TxtTotalPeso
+        '
+        Me.TxtTotalPeso.Enabled = False
+        Me.TxtTotalPeso.Location = New System.Drawing.Point(352, 330)
+        Me.TxtTotalPeso.Name = "TxtTotalPeso"
+        Me.TxtTotalPeso.Size = New System.Drawing.Size(100, 20)
+        Me.TxtTotalPeso.TabIndex = 224
+        Me.TxtTotalPeso.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label27
+        '
+        Me.Label27.AutoSize = True
+        Me.Label27.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label27.Location = New System.Drawing.Point(251, 330)
+        Me.Label27.Name = "Label27"
+        Me.Label27.Size = New System.Drawing.Size(102, 16)
+        Me.Label27.TabIndex = 223
+        Me.Label27.Text = "TOTAL PESO"
+        '
         'FrmLiquidacion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(934, 500)
+        Me.ClientSize = New System.Drawing.Size(1059, 500)
+        Me.Controls.Add(Me.TxtTotalPeso)
+        Me.Controls.Add(Me.Label27)
+        Me.Controls.Add(Me.ChkProrratearPeso)
         Me.Controls.Add(Me.GroupBox4)
         Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.Procesar)
@@ -1064,5 +1099,8 @@ Partial Class FrmLiquidacion
     Friend WithEvents TxtGastoImpuesto As System.Windows.Forms.TextBox
     Friend WithEvents Label23 As System.Windows.Forms.Label
     Friend WithEvents Label26 As System.Windows.Forms.Label
-    Friend WithEvents TxtSPI As System.Windows.Forms.TextBox
+    Friend WithEvents TxtSPE As System.Windows.Forms.TextBox
+    Friend WithEvents ChkProrratearPeso As System.Windows.Forms.CheckBox
+    Friend WithEvents TxtTotalPeso As System.Windows.Forms.TextBox
+    Friend WithEvents Label27 As System.Windows.Forms.Label
 End Class

@@ -718,9 +718,9 @@ Public Class FrmPlanilla
 
                 CantidadTotal = CantidadTotal + Cantidad
                 IngresoBruto = MontoLunes + MontoMartes + MontoMiercoles + MontoJueves + MontoViernes + MontoSabado + MontoDomingo
-                MontoIr = PorcientoIr * IngresoBruto
-                MontoPolicia = PorcientoPolicia * CantidadTotal
-                MontoBolsa = PorcientoBolsa * IngresoBruto
+                MontoIr = Format(PorcientoIr * IngresoBruto, "####0.00")
+                MontoPolicia = Format(PorcientoPolicia * CantidadTotal, "####0.00")
+                MontoBolsa = Format(PorcientoBolsa * IngresoBruto, "####0.00")
 
                 '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 '/////////////////////////////////////////////////BUSCO LAS DEDUCCIONES/////////////////////////////////////////////////

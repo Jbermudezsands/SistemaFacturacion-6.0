@@ -8077,7 +8077,7 @@ errSub:
 
                 MiConexion.Close()
                 '///////////////////////////////////////ACTUALIZO LA EXISTENCIA DE PRODUCTOS////////////////////////////////////////////////////////////////
-                SqlUpdate = "UPDATE [Productos] SET [Existencia_Unidades] = " & ExistenciaTotal & ",[Costo_Promedio] = " & Format(CostoPromedio, "##,##0.00000") & " ,[Costo_Promedio_Dolar] = " & Format(CostoPromedioDolar, "##,##0.00") & ", [Ultimo_Precio_Compra] = " & Format(PrecioCompra, "##,##0.00") & " ,[Existencia_Dinero] = " & ExistenciaTotal * CostoPromedio & ",[Existencia_DineroDolar] = " & ExistenciaTotal * CostoPromedioDolar & " " & _
+                SqlUpdate = "UPDATE [Productos] SET [Existencia_Unidades] = " & ExistenciaTotal & ",[Costo_Promedio] = " & Format(CostoPromedio, "####0.00000") & " ,[Costo_Promedio_Dolar] = " & Format(CostoPromedioDolar, "####0.00") & ", [Ultimo_Precio_Compra] = " & Format(PrecioCompra, "####0.00") & " ,[Existencia_Dinero] = " & ExistenciaTotal * CostoPromedio & ",[Existencia_DineroDolar] = " & ExistenciaTotal * CostoPromedioDolar & " " & _
                             "WHERE (Cod_Productos = '" & CodigoProductos & "')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
@@ -13927,8 +13927,8 @@ errSub:
             '/////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////AGREGO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "INSERT INTO [Liquidacion] ([Numero_Liquidacion],[Fecha_Liquidacion],[Cod_Proveedor],[Nombre_Proveedor],[Apellido_Proveedor],[TotalFOB],[TotalCosto],[Seguro],[Transporte],[Almacen],[Fletes],[CodBodega],[MonedaLiquidacion],[MonedaImpuestos],[GtoAgenteAduana],[GtoCustodio],[GtoAduana],[GtoOtros],[GtoFletesInternos],[TasaCambio],[GtoImpuestos]) " & _
-                         "VALUES('" & ConsecutivoCompra & "','" & FrmLiquidacion.DTPFecha.Text & "','" & FrmLiquidacion.TxtCodigoProveedor.Text & "','" & FrmLiquidacion.TxtNombres.Text & "','" & FrmLiquidacion.TxtApellidos.Text & "'," & TotalFob & "," & TotalCosto & "," & CDbl(FrmLiquidacion.TxtSeguro.Text) & "," & CDbl(FrmLiquidacion.TxtTransporte.Text) & "," & CDbl(FrmLiquidacion.TxtAlmacen.Text) & "," & CDbl(FrmLiquidacion.TxtFletes.Text) & ",'" & FrmLiquidacion.CboCodigoBodega.Text & "','" & FrmLiquidacion.CmbMoneda.Text & "','" & FrmLiquidacion.CmbImpuesto.Text & "'," & CDbl(FrmLiquidacion.TxtAgente.Text) & "," & CDbl(FrmLiquidacion.TxtCustodio.Text) & "," & CDbl(FrmLiquidacion.TxtGastosAduana.Text) & "," & CDbl(FrmLiquidacion.TxtOtrosGastos.Text) & "," & CDbl(FrmLiquidacion.TxtFletesInternos.Text) & "," & CDbl(TasaCambio) & "," & CDbl(FrmLiquidacion.TxtGastoImpuesto.Text) & ")"
+            SqlCompras = "INSERT INTO [Liquidacion] ([Numero_Liquidacion],[Fecha_Liquidacion],[Cod_Proveedor],[Nombre_Proveedor],[Apellido_Proveedor],[TotalFOB],[TotalCosto],[Seguro],[Transporte],[Almacen],[Fletes],[CodBodega],[MonedaLiquidacion],[MonedaImpuestos],[GtoAgenteAduana],[GtoCustodio],[GtoAduana],[GtoOtros],[GtoFletesInternos],[TasaCambio],[GtoImpuestos],[Prorrateo_Peso],[TotalPeso]) " & _
+                         "VALUES('" & ConsecutivoCompra & "','" & FrmLiquidacion.DTPFecha.Text & "','" & FrmLiquidacion.TxtCodigoProveedor.Text & "','" & FrmLiquidacion.TxtNombres.Text & "','" & FrmLiquidacion.TxtApellidos.Text & "'," & TotalFob & "," & TotalCosto & "," & CDbl(FrmLiquidacion.TxtSeguro.Text) & "," & CDbl(FrmLiquidacion.TxtTransporte.Text) & "," & CDbl(FrmLiquidacion.TxtAlmacen.Text) & "," & CDbl(FrmLiquidacion.TxtFletes.Text) & ",'" & FrmLiquidacion.CboCodigoBodega.Text & "','" & FrmLiquidacion.CmbMoneda.Text & "','" & FrmLiquidacion.CmbImpuesto.Text & "'," & CDbl(FrmLiquidacion.TxtAgente.Text) & "," & CDbl(FrmLiquidacion.TxtCustodio.Text) & "," & CDbl(FrmLiquidacion.TxtGastosAduana.Text) & "," & CDbl(FrmLiquidacion.TxtOtrosGastos.Text) & "," & CDbl(FrmLiquidacion.TxtFletesInternos.Text) & "," & CDbl(TasaCambio) & "," & CDbl(FrmLiquidacion.TxtGastoImpuesto.Text) & " ,'" & FrmLiquidacion.ChkProrratearPeso.Checked & "', " & CDbl(FrmLiquidacion.TxtTotalPeso.Text) & ")"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -13938,11 +13938,9 @@ errSub:
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "UPDATE [Liquidacion]  SET [Cod_Proveedor] = '" & FrmLiquidacion.TxtCodigoProveedor.Text & "',[Nombre_Proveedor] = '" & FrmLiquidacion.TxtNombres.Text & "',[Apellido_Proveedor] = '" & FrmLiquidacion.TxtApellidos.Text & "',[TotalFOB] = " & TotalFob & ",[TotalCosto] = " & TotalCosto & ",[Seguro] = " & CDbl(FrmLiquidacion.TxtSeguro.Text) & ",[Transporte] = " & CDbl(FrmLiquidacion.TxtTransporte.Text) & ",[Almacen] = " & CDbl(FrmLiquidacion.TxtAlmacen.Text) & ",[Fletes] = " & CDbl(FrmLiquidacion.TxtFletes.Text) & ",[CodBodega] = '" & FrmLiquidacion.CboCodigoBodega.Text & "',[GtoAgenteAduana]= " & CDbl(FrmLiquidacion.TxtAgente.Text) & ",[GtoCustodio]= " & CDbl(FrmLiquidacion.TxtCustodio.Text) & ",[GtoAduana]= " & CDbl(FrmLiquidacion.TxtGastosAduana.Text) & ",[GtoOtros]= " & CDbl(FrmLiquidacion.TxtOtrosGastos.Text) & ",[GtoFletesInternos]= " & CDbl(FrmLiquidacion.TxtFletesInternos.Text) & ",[TasaCambio]= " & CDbl(FrmLiquidacion.TxtTasaCambio.Text) & " " & _
+            SqlCompras = "UPDATE [Liquidacion]  SET [Cod_Proveedor] = '" & FrmLiquidacion.TxtCodigoProveedor.Text & "',[Nombre_Proveedor] = '" & FrmLiquidacion.TxtNombres.Text & "',[Apellido_Proveedor] = '" & FrmLiquidacion.TxtApellidos.Text & "',[TotalFOB] = " & TotalFob & ",[TotalCosto] = " & TotalCosto & ",[Seguro] = " & CDbl(FrmLiquidacion.TxtSeguro.Text) & ",[Transporte] = " & CDbl(FrmLiquidacion.TxtTransporte.Text) & ",[Almacen] = " & CDbl(FrmLiquidacion.TxtAlmacen.Text) & ",[Fletes] = " & CDbl(FrmLiquidacion.TxtFletes.Text) & ",[CodBodega] = '" & FrmLiquidacion.CboCodigoBodega.Text & "',[GtoAgenteAduana]= " & CDbl(FrmLiquidacion.TxtAgente.Text) & ",[GtoCustodio]= " & CDbl(FrmLiquidacion.TxtCustodio.Text) & ",[GtoAduana]= " & CDbl(FrmLiquidacion.TxtGastosAduana.Text) & ",[GtoOtros]= " & CDbl(FrmLiquidacion.TxtOtrosGastos.Text) & ",[GtoFletesInternos]= " & CDbl(FrmLiquidacion.TxtFletesInternos.Text) & ",[TasaCambio]= " & CDbl(FrmLiquidacion.TxtTasaCambio.Text) & " ,[Prorrateo_Peso]= '" & FrmLiquidacion.ChkProrratearPeso.Checked & "', [TotalPeso]= " & CDbl(FrmLiquidacion.TxtTotalPeso.Text) & " " & _
                          ",[MonedaLiquidacion] = '" & FrmLiquidacion.CmbMoneda.Text & "',[MonedaImpuestos] = '" & FrmLiquidacion.CmbImpuesto.Text & "' " & _
                          " WHERE  (Fecha_Liquidacion = CONVERT(DATETIME, '" & Format(FrmLiquidacion.DTPFecha.Value, "yyyy-MM-dd") & "', 102)) AND (Numero_Liquidacion = '" & ConsecutivoCompra & "') "
-
-            '"WHERE (Numero_Liquidacion = '" & ConsecutivoCompra & "') AND (Fecha_Liquidacion = " & FrmLiquidacion.DTPFecha.Text & ")"
 
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
@@ -14251,8 +14249,10 @@ errSub:
         FrmLiquidacion.TxtSeguro.Text = ""
         FrmLiquidacion.TxtTransporte.Text = ""
         FrmLiquidacion.TxtAlmacen.Text = ""
-        FrmLiquidacion.TxtTotalCosto.Text = ""
-        FrmLiquidacion.TxtTotalFob.Text = ""
+        FrmLiquidacion.TxtTotalCosto.Text = "0"
+        FrmLiquidacion.TxtTotalFob.Text = "0"
+        FrmLiquidacion.TxtTotalPeso.Text = "0"
+        FrmLiquidacion.ChkProrratearPeso.Checked = False
 
 
         SqlDatos = "SELECT * FROM DatosEmpresa"
@@ -14267,41 +14267,46 @@ errSub:
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             '///////////////////////////////CARGO EL DETALLE DE LIQUIDACION/////////////////////////////////////////////////////////////////
             ''//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlString = "SELECT Detalle_Liquidacion.Cod_Producto, Detalle_Liquidacion.Descripcion_Producto, Detalle_Liquidacion.Cantidad, Detalle_Liquidacion.Precio_Compra,Detalle_Liquidacion.Descuento, Detalle_Liquidacion.FOB, Detalle_Liquidacion.Precio_Costo, Detalle_Liquidacion.Numero_Liquidacion, Detalle_Liquidacion.Fecha_Liquidacion, Detalle_Liquidacion.Id_Detalle_Liquidacion FROM Detalle_Liquidacion WHERE (Detalle_Liquidacion.Numero_Liquidacion = N'-1')"
+            SqlString = "SELECT Detalle_Liquidacion.Cod_Producto, Detalle_Liquidacion.Descripcion_Producto, Detalle_Liquidacion.Cantidad, Detalle_Liquidacion.Precio_Compra, Detalle_Liquidacion.Peso_Compra, Detalle_Liquidacion.FOB,  Detalle_Liquidacion.Gasto_Compra, Detalle_Liquidacion.Gasto_Impuesto, Detalle_Liquidacion.Precio_Costo, Detalle_Liquidacion.Numero_Liquidacion, Detalle_Liquidacion.Fecha_Liquidacion, Detalle_Liquidacion.Id_Detalle_Liquidacion FROM Detalle_Liquidacion WHERE (Detalle_Liquidacion.Numero_Liquidacion = N'-1')"
             FrmLiquidacion.ds = New DataSet
             FrmLiquidacion.da = New SqlDataAdapter(SqlString, MiConexion)
             FrmLiquidacion.CmdBuilder = New SqlCommandBuilder(FrmLiquidacion.da)
             FrmLiquidacion.da.Fill(FrmLiquidacion.ds, "DetalleCompra")
             FrmLiquidacion.BindingDetalle.DataSource = FrmLiquidacion.ds.Tables("DetalleCompra")
             FrmLiquidacion.TrueDBGridComponentes.DataSource = FrmLiquidacion.BindingDetalle
-            FrmLiquidacion.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
-            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
-            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
-            FrmLiquidacion.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
-            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 259
-            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
-            FrmLiquidacion.TrueDBGridComponentes.Columns(2).Caption = "Cantidad"
-            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 64
-            FrmLiquidacion.TrueDBGridComponentes.Columns(3).Caption = "Precio Comp"
-            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 70
-            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = False
-            FrmLiquidacion.TrueDBGridComponentes.Columns(3).NumberFormat = "##,##0.00"
-            FrmLiquidacion.TrueDBGridComponentes.Columns(4).Caption = "%Desc"
-            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 43
-            FrmLiquidacion.TrueDBGridComponentes.Columns(5).Caption = "FOB"
-            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Width = 65
-            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Locked = True
-            FrmLiquidacion.TrueDBGridComponentes.Columns(5).NumberFormat = "##,##0.00"
-            FrmLiquidacion.TrueDBGridComponentes.Columns(6).Caption = "Precio Costo"
-            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Width = 70
-            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Locked = True
-            FrmLiquidacion.TrueDBGridComponentes.Columns(6).NumberFormat = "##,##0.00"
+            FrmLiquidacion.TrueDBGridComponentes.Columns("Cod_Producto").Caption = "Codigo"
+            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Button = True
+            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Width = 74
+            FrmLiquidacion.TrueDBGridComponentes.Columns("Descripcion_Producto").Caption = "Descripcion"
+            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 259
+            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
+            FrmLiquidacion.TrueDBGridComponentes.Columns("Cantidad").Caption = "Cantidad"
+            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 64
+            FrmLiquidacion.TrueDBGridComponentes.Columns("Peso_Compra").Caption = "Peso"
+            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Peso_Compra").Width = 64
+            FrmLiquidacion.TrueDBGridComponentes.Columns("Precio_Compra").Caption = "Precio Comp"
+            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Compra").Width = 70
+            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Compra").Locked = False
+            'Me.TrueDBGridComponentes.Columns(3).NumberFormat = "##,##0.00"
+            FrmLiquidacion.TrueDBGridComponentes.Columns("FOB").Caption = "FOB"
+            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("FOB").Width = 65
+            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("FOB").Locked = True
+            FrmLiquidacion.TrueDBGridComponentes.Columns("Gasto_Compra").Caption = "Gastos"
+            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Gasto_Compra").Width = 65
+            'Me.TrueDBGridComponentes.Columns(5).NumberFormat = "##,##0.00"
+            FrmLiquidacion.TrueDBGridComponentes.Columns("Gasto_Impuesto").Caption = "Gtos Imptos"
+            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Gasto_Impuesto").Width = 65
+            'Me.TrueDBGridComponentes.Columns(6).NumberFormat = "##,##0.00"
+            FrmLiquidacion.TrueDBGridComponentes.Columns("Precio_Costo").Caption = "Precio Costo"
+            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Costo").Width = 70
+            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Costo").Locked = True
+            FrmLiquidacion.TrueDBGridComponentes.Columns("Precio_Costo").NumberFormat = "##,##0.00"
 
             FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Liquidacion").Visible = False
             FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Liquidacion").Visible = False
             FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Id_Detalle_Liquidacion").Visible = False
         Else
-            SqlString = "SELECT Detalle_Liquidacion.Cod_Producto, Detalle_Liquidacion.Descripcion_Producto, Detalle_Liquidacion.Cantidad, Detalle_Liquidacion.Precio_Compra,Detalle_Liquidacion.FOB, Detalle_Liquidacion.Gasto_Compra,Detalle_Liquidacion.Gasto_Impuesto, Detalle_Liquidacion.Precio_Costo, Detalle_Liquidacion.Numero_Lote, Detalle_Liquidacion.Fecha_Vence, Detalle_Liquidacion.Numero_Liquidacion, Detalle_Liquidacion.Fecha_Liquidacion, Detalle_Liquidacion.Id_Detalle_Liquidacion FROM Detalle_Liquidacion WHERE (Detalle_Liquidacion.Numero_Liquidacion = N'-1')"
+            SqlString = "SELECT Detalle_Liquidacion.Cod_Producto, Detalle_Liquidacion.Descripcion_Producto, Detalle_Liquidacion.Cantidad, Detalle_Liquidacion.Precio_Compra, Detalle_Liquidacion.Peso_Compra, Detalle_Liquidacion.FOB, Detalle_Liquidacion.Gasto_Compra,Detalle_Liquidacion.Gasto_Impuesto, Detalle_Liquidacion.Precio_Costo, Detalle_Liquidacion.Numero_Lote, Detalle_Liquidacion.Fecha_Vence, Detalle_Liquidacion.Numero_Liquidacion, Detalle_Liquidacion.Fecha_Liquidacion, Detalle_Liquidacion.Id_Detalle_Liquidacion FROM Detalle_Liquidacion WHERE (Detalle_Liquidacion.Numero_Liquidacion = N'-1')"
             FrmLiquidacion.ds = New DataSet
             FrmLiquidacion.da = New SqlDataAdapter(SqlString, MiConexion)
             FrmLiquidacion.CmdBuilder = New SqlCommandBuilder(FrmLiquidacion.da)
@@ -14322,6 +14327,8 @@ errSub:
             FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Width = 70
             FrmLiquidacion.TrueDBGridComponentes.Columns("Cantidad").Caption = "Cantidad"
             FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 64
+            FrmLiquidacion.TrueDBGridComponentes.Columns("Peso_Compra").Caption = "Peso"
+            FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Peso_Compra").Width = 64
             FrmLiquidacion.TrueDBGridComponentes.Columns("Precio_Compra").Caption = "Precio Comp"
             FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Compra").Width = 70
             FrmLiquidacion.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Compra").Locked = False

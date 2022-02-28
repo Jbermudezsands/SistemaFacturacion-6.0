@@ -536,7 +536,7 @@ Partial Class FrmPlanilla
         Me.TxtBolsa.Name = "TxtBolsa"
         Me.TxtBolsa.Size = New System.Drawing.Size(43, 20)
         Me.TxtBolsa.TabIndex = 7
-        Me.TxtBolsa.Text = "0.30"
+        Me.TxtBolsa.Text = "0.20"
         '
         'Label8
         '

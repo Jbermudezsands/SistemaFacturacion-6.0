@@ -433,6 +433,12 @@
     <Compile Include="FrmRutaDistribucion.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmSerieFactura.Designer.vb">
+      <DependentUpon>FrmSerieFactura.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmSerieFactura.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmTara.Designer.vb">
       <DependentUpon>FrmTara.vb</DependentUpon>
     </Compile>
@@ -1736,6 +1742,10 @@
     <EmbeddedResource Include="FrmRutaDistribucion.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmRutaDistribucion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSerieFactura.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmSerieFactura.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmTara.resx">
       <SubType>Designer</SubType>
