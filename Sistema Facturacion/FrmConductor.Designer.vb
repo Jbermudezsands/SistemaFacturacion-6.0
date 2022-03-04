@@ -45,6 +45,7 @@ Partial Class FrmConductor
         Me.Label5 = New System.Windows.Forms.Label
         Me.Button1 = New System.Windows.Forms.Button
         Me.Button2 = New System.Windows.Forms.Button
+        Me.ChkConductores = New System.Windows.Forms.CheckBox
         CType(Me.CboCodigoConductor, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -308,11 +309,22 @@ Partial Class FrmConductor
         Me.Button2.TabIndex = 280
         Me.Button2.UseVisualStyleBackColor = True
         '
+        'ChkConductores
+        '
+        Me.ChkConductores.AutoSize = True
+        Me.ChkConductores.Location = New System.Drawing.Point(241, 163)
+        Me.ChkConductores.Name = "ChkConductores"
+        Me.ChkConductores.Size = New System.Drawing.Size(146, 17)
+        Me.ChkConductores.TabIndex = 281
+        Me.ChkConductores.Text = "Conductor Evacuaciones"
+        Me.ChkConductores.UseVisualStyleBackColor = True
+        '
         'FrmConductor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(397, 399)
+        Me.Controls.Add(Me.ChkConductores)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.TxtCtaxPagar)
@@ -372,4 +384,5 @@ Partial Class FrmConductor
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents ChkConductores As System.Windows.Forms.CheckBox
 End Class

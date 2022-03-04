@@ -175,6 +175,7 @@ Partial Class MDIMain
         Me.RibbonButton13 = New C1.Win.C1Ribbon.RibbonButton
         Me.C1StatusBar1 = New C1.Win.C1Ribbon.C1StatusBar
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
+        Me.RibbonLabel2 = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
         Me.TxtUsuario = New System.Windows.Forms.TextBox
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
@@ -1394,6 +1395,7 @@ Partial Class MDIMain
         'C1StatusBar1
         '
         Me.C1StatusBar1.LeftPaneItems.Add(Me.DocumentModifiedLabel)
+        Me.C1StatusBar1.LeftPaneItems.Add(Me.RibbonLabel2)
         Me.C1StatusBar1.Location = New System.Drawing.Point(0, 493)
         Me.C1StatusBar1.Name = "C1StatusBar1"
         Me.C1StatusBar1.RightPaneItems.Add(Me.RibbonLabel1)
@@ -1406,10 +1408,15 @@ Partial Class MDIMain
         Me.DocumentModifiedLabel.ID = "DocumentModifiedLabel"
         Me.DocumentModifiedLabel.SmallImage = CType(resources.GetObject("DocumentModifiedLabel.SmallImage"), System.Drawing.Image)
         '
+        'RibbonLabel2
+        '
+        Me.RibbonLabel2.ID = "RibbonLabel2"
+        Me.RibbonLabel2.Text = "Zeus Facturacion"
+        '
         'RibbonLabel1
         '
         Me.RibbonLabel1.ID = "RibbonLabel1"
-        Me.RibbonLabel1.Text = "Version 6.76"
+        Me.RibbonLabel1.Text = "Version 6.88"
         '
         'TxtUsuario
         '
@@ -1597,5 +1604,6 @@ Partial Class MDIMain
     Friend WithEvents RibbonButton16 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton17 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton18 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonLabel2 As C1.Win.C1Ribbon.RibbonLabel
 
 End Class

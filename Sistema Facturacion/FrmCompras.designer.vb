@@ -91,6 +91,7 @@ Partial Class FrmCompras
         Me.DTPFechaHora = New System.Windows.Forms.DateTimePicker
         Me.GroupBox5 = New System.Windows.Forms.GroupBox
         Me.ChkAplicarCtasXPagar = New System.Windows.Forms.CheckBox
+        Me.ChkSolcitudxCta = New System.Windows.Forms.CheckBox
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -533,13 +534,13 @@ Partial Class FrmCompras
         Me.TrueDBGridMetodo.Caption = "Metodos de Pago"
         Me.TrueDBGridMetodo.GroupByCaption = "Drag a column header here to group by that column"
         Me.TrueDBGridMetodo.Images.Add(CType(resources.GetObject("TrueDBGridMetodo.Images"), System.Drawing.Image))
-        Me.TrueDBGridMetodo.Location = New System.Drawing.Point(477, 206)
+        Me.TrueDBGridMetodo.Location = New System.Drawing.Point(477, 222)
         Me.TrueDBGridMetodo.Name = "TrueDBGridMetodo"
         Me.TrueDBGridMetodo.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridMetodo.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TrueDBGridMetodo.PreviewInfo.ZoomFactor = 75
         Me.TrueDBGridMetodo.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridMetodo.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TrueDBGridMetodo.Size = New System.Drawing.Size(232, 84)
+        Me.TrueDBGridMetodo.Size = New System.Drawing.Size(232, 68)
         Me.TrueDBGridMetodo.TabIndex = 150
         Me.TrueDBGridMetodo.Text = "C1TrueDBGrid1"
         Me.TrueDBGridMetodo.Visible = False
@@ -867,11 +868,23 @@ Partial Class FrmCompras
         Me.ChkAplicarCtasXPagar.UseVisualStyleBackColor = True
         Me.ChkAplicarCtasXPagar.Visible = False
         '
+        'ChkSolcitudxCta
+        '
+        Me.ChkSolcitudxCta.AutoSize = True
+        Me.ChkSolcitudxCta.Location = New System.Drawing.Point(477, 199)
+        Me.ChkSolcitudxCta.Name = "ChkSolcitudxCta"
+        Me.ChkSolcitudxCta.Size = New System.Drawing.Size(138, 17)
+        Me.ChkSolcitudxCta.TabIndex = 268
+        Me.ChkSolcitudxCta.Text = "Solicitud x Cta Contable"
+        Me.ChkSolcitudxCta.UseVisualStyleBackColor = True
+        Me.ChkSolcitudxCta.Visible = False
+        '
         'FrmCompras
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(883, 502)
+        Me.Controls.Add(Me.ChkSolcitudxCta)
         Me.Controls.Add(Me.ChkAplicarCtasXPagar)
         Me.Controls.Add(Me.GroupBox5)
         Me.Controls.Add(Me.DTPFechaHora)
@@ -1006,4 +1019,5 @@ Partial Class FrmCompras
     Friend WithEvents DTPFechaHora As System.Windows.Forms.DateTimePicker
     Friend WithEvents GroupBox5 As System.Windows.Forms.GroupBox
     Friend WithEvents ChkAplicarCtasXPagar As System.Windows.Forms.CheckBox
+    Friend WithEvents ChkSolcitudxCta As System.Windows.Forms.CheckBox
 End Class

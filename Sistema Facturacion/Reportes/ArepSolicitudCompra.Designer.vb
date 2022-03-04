@@ -65,6 +65,7 @@ Partial Public Class ArepSolicitudCompra
         Me.Label12 = New DataDynamics.ActiveReports.Label
         Me.Label13 = New DataDynamics.ActiveReports.Label
         Me.Label14 = New DataDynamics.ActiveReports.Label
+        Me.ChkSolicitudCta = New DataDynamics.ActiveReports.CheckBox
         CType(Me.lblOrderNum, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ImgLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblEncabezado, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -108,11 +109,12 @@ Partial Public Class ArepSolicitudCompra
         CType(Me.Label12, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label13, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label14, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ChkSolicitudCta, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         '
         'PageHeader1
         '
-        Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.lblOrderNum, Me.ImgLogo, Me.LblEncabezado, Me.LblDireccion, Me.LblRuc, Me.LblOrden, Me.LblTipoCompra, Me.LblTelefonos, Me.Label1, Me.Label2, Me.Label3, Me.Label4, Me.Label5, Me.lblProductName, Me.Label8, Me.lblQty, Me.lblProductID, Me.TextBox4, Me.TextBox5, Me.TextBox6, Me.TextBox7, Me.Label15, Me.TextBox9, Me.Label16, Me.TxtProyecto, Me.TextBox11, Me.Label17, Me.Label18, Me.LblImpreso})
+        Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.lblOrderNum, Me.ImgLogo, Me.LblEncabezado, Me.LblDireccion, Me.LblRuc, Me.LblOrden, Me.LblTipoCompra, Me.LblTelefonos, Me.Label1, Me.Label2, Me.Label3, Me.Label4, Me.Label5, Me.lblProductName, Me.Label8, Me.lblQty, Me.lblProductID, Me.TextBox4, Me.TextBox5, Me.TextBox6, Me.TextBox7, Me.Label15, Me.TextBox9, Me.Label16, Me.TxtProyecto, Me.TextBox11, Me.Label17, Me.Label18, Me.LblImpreso, Me.ChkSolicitudCta})
         Me.PageHeader1.Height = 3.135417!
         Me.PageHeader1.Name = "PageHeader1"
         '
@@ -611,13 +613,13 @@ Partial Public Class ArepSolicitudCompra
         Me.TextBox11.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox11.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox11.DataField = "Concepto"
-        Me.TextBox11.Height = 0.375!
-        Me.TextBox11.Left = 1.575!
+        Me.TextBox11.Height = 0.4375!
+        Me.TextBox11.Left = 1.5625!
         Me.TextBox11.Name = "TextBox11"
         Me.TextBox11.Style = "ddo-char-set: 0; font-size: 9pt; "
         Me.TextBox11.Text = Nothing
-        Me.TextBox11.Top = 2.325!
-        Me.TextBox11.Width = 5.35!
+        Me.TextBox11.Top = 2.3125!
+        Me.TextBox11.Width = 5.5!
         '
         'Label17
         '
@@ -959,11 +961,30 @@ Partial Public Class ArepSolicitudCompra
         Me.Label14.Top = 0.7!
         Me.Label14.Width = 1.125!
         '
+        'ChkSolicitudCta
+        '
+        Me.ChkSolicitudCta.Border.BottomColor = System.Drawing.Color.Black
+        Me.ChkSolicitudCta.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.ChkSolicitudCta.Border.LeftColor = System.Drawing.Color.Black
+        Me.ChkSolicitudCta.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.ChkSolicitudCta.Border.RightColor = System.Drawing.Color.Black
+        Me.ChkSolicitudCta.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.ChkSolicitudCta.Border.TopColor = System.Drawing.Color.Black
+        Me.ChkSolicitudCta.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.ChkSolicitudCta.DataField = "Solcitud_Cta_Contable"
+        Me.ChkSolicitudCta.Height = 0.1875!
+        Me.ChkSolicitudCta.Left = 5.0!
+        Me.ChkSolicitudCta.Name = "ChkSolicitudCta"
+        Me.ChkSolicitudCta.Style = ""
+        Me.ChkSolicitudCta.Text = "Solicitud Cta Contable"
+        Me.ChkSolicitudCta.Top = 1.625!
+        Me.ChkSolicitudCta.Width = 1.8125!
+        '
         'ArepSolicitudCompra
         '
         Me.MasterReport = False
         OleDBDataSource1.ConnectionString = "Provider=SQLOLEDB.1;Password=P@ssword;Persist Security Info=True;User ID=sa;Initi" & _
-            "al Catalog=FacturacionManagua;Data Source=JUANBERMUDEZ-PC\SQL2014"
+            "al Catalog=SistemaFacturacionEmtrides;Data Source=JUANBERMUDEZ"
         OleDBDataSource1.SQL = resources.GetString("OleDBDataSource1.SQL")
         Me.DataSource = OleDBDataSource1
         Me.PageSettings.Margins.Bottom = 0.5!
@@ -1025,6 +1046,7 @@ Partial Public Class ArepSolicitudCompra
         CType(Me.Label12, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label13, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label14, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ChkSolicitudCta, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
 
     End Sub
@@ -1071,4 +1093,5 @@ Partial Public Class ArepSolicitudCompra
     Friend WithEvents CheckBox1 As DataDynamics.ActiveReports.CheckBox
     Friend WithEvents CheckBox2 As DataDynamics.ActiveReports.CheckBox
     Friend WithEvents LblImpreso As DataDynamics.ActiveReports.Label
+    Friend WithEvents ChkSolicitudCta As DataDynamics.ActiveReports.CheckBox
 End Class

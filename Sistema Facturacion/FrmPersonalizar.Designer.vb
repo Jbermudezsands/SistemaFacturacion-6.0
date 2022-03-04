@@ -157,6 +157,7 @@ Partial Class FrmPersonalizar
         Me.OptBloquearPrecioBajoCosto = New System.Windows.Forms.RadioButton
         Me.OptBloquearPrecio = New System.Windows.Forms.RadioButton
         Me.TabPage6 = New System.Windows.Forms.TabPage
+        Me.Button14 = New System.Windows.Forms.Button
         Me.TxtCopias = New System.Windows.Forms.TextBox
         Me.Label5 = New System.Windows.Forms.Label
         Me.ChkFacturaPreview = New System.Windows.Forms.CheckBox
@@ -1697,6 +1698,7 @@ Partial Class FrmPersonalizar
         '
         'TabPage6
         '
+        Me.TabPage6.Controls.Add(Me.Button14)
         Me.TabPage6.Controls.Add(Me.TxtCopias)
         Me.TabPage6.Controls.Add(Me.Label5)
         Me.TabPage6.Controls.Add(Me.ChkFacturaPreview)
@@ -1709,9 +1711,21 @@ Partial Class FrmPersonalizar
         Me.TabPage6.Text = "Impresion"
         Me.TabPage6.UseVisualStyleBackColor = True
         '
+        'Button14
+        '
+        Me.Button14.Image = CType(resources.GetObject("Button14.Image"), System.Drawing.Image)
+        Me.Button14.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.Button14.Location = New System.Drawing.Point(419, 165)
+        Me.Button14.Name = "Button14"
+        Me.Button14.Size = New System.Drawing.Size(78, 68)
+        Me.Button14.TabIndex = 240
+        Me.Button14.Text = "Impresoras"
+        Me.Button14.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.Button14.UseVisualStyleBackColor = True
+        '
         'TxtCopias
         '
-        Me.TxtCopias.Location = New System.Drawing.Point(299, 204)
+        Me.TxtCopias.Location = New System.Drawing.Point(276, 184)
         Me.TxtCopias.Name = "TxtCopias"
         Me.TxtCopias.Size = New System.Drawing.Size(31, 20)
         Me.TxtCopias.TabIndex = 4
@@ -1720,7 +1734,7 @@ Partial Class FrmPersonalizar
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(206, 207)
+        Me.Label5.Location = New System.Drawing.Point(183, 192)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(87, 13)
         Me.Label5.TabIndex = 3
@@ -1729,7 +1743,7 @@ Partial Class FrmPersonalizar
         'ChkFacturaPreview
         '
         Me.ChkFacturaPreview.AutoSize = True
-        Me.ChkFacturaPreview.Location = New System.Drawing.Point(206, 182)
+        Me.ChkFacturaPreview.Location = New System.Drawing.Point(186, 161)
         Me.ChkFacturaPreview.Name = "ChkFacturaPreview"
         Me.ChkFacturaPreview.Size = New System.Drawing.Size(137, 17)
         Me.ChkFacturaPreview.TabIndex = 2
@@ -1748,7 +1762,7 @@ Partial Class FrmPersonalizar
         Me.GroupBox14.Controls.Add(Me.CmdConfigurar)
         Me.GroupBox14.Controls.Add(Me.OptPersonalizado)
         Me.GroupBox14.Controls.Add(Me.OptPapelBlanco)
-        Me.GroupBox14.Location = New System.Drawing.Point(190, 16)
+        Me.GroupBox14.Location = New System.Drawing.Point(186, 10)
         Me.GroupBox14.Name = "GroupBox14"
         Me.GroupBox14.Size = New System.Drawing.Size(242, 145)
         Me.GroupBox14.TabIndex = 1
@@ -2175,4 +2189,5 @@ Partial Class FrmPersonalizar
     Friend WithEvents Agregar As System.Windows.Forms.GroupBox
     Friend WithEvents BtnDetalleCompra As System.Windows.Forms.Button
     Friend WithEvents ChkPedirCantEscaner As System.Windows.Forms.CheckBox
+    Friend WithEvents Button14 As System.Windows.Forms.Button
 End Class

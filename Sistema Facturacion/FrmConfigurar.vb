@@ -36,23 +36,23 @@ Public Class FrmConfigurar
                     End If
                 End If
 
-                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("CharLogo")) Then
-                    myImagenConsulta = BytesToImagen(consultaByte(DataSet.Tables("DatosEmpresa").Rows(0)("CharLogo")))
-                    ImgLogo.Image = myImagenConsulta
-                End If
-
-                'If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
-                '    Me.TxtRutaLogo.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
-
-                '    ImgLogo.ImageLocation = Me.TxtRutaLogo.Text
-                '    MyRuta = Dir(Me.TxtRutaLogo.Text)
-                '    If MyRuta <> "" Then
-                '        ImgLogo.Load()
-                '    Else
-                '        MsgBox("No Existe imagen para esta ruta", MsgBoxStyle.Critical, "Zeus Facturacion")
-                '        Exit Sub
-                '    End If
+                'If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("CharLogo")) Then
+                '    myImagenConsulta = BytesToImagen(consultaByte(DataSet.Tables("DatosEmpresa").Rows(0)("CharLogo")))
+                '    ImgLogo.Image = myImagenConsulta
                 'End If
+
+                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
+                    Me.TxtRutaLogo.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
+
+                    ImgLogo.ImageLocation = Me.TxtRutaLogo.Text
+                    MyRuta = Dir(Me.TxtRutaLogo.Text)
+                    If MyRuta <> "" Then
+                        ImgLogo.Load()
+                    Else
+                        MsgBox("No Existe imagen para esta ruta", MsgBoxStyle.Critical, "Zeus Facturacion")
+                        Exit Sub
+                    End If
+                End If
 
 
 
@@ -113,8 +113,8 @@ Public Class FrmConfigurar
             Sincroniza = False
         End If
 
-        LogoImg = Me.ImgLogo.Image
-        CharLogo = bytesToString(ImagenToBytes(LogoImg))
+        'LogoImg = Me.ImgLogo.Image
+        ''CharLogo = bytesToString(ImagenToBytes(LogoImg))
         'CharLogo = bytesToString(Imagen_A_Bytes(Me.TxtRutaLogo.Text))
 
         SqlDatos = "SELECT * FROM DatosEmpresa"
@@ -122,7 +122,7 @@ Public Class FrmConfigurar
         DataAdapter.Fill(DataSet, "DatosEmpresa")
         If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
             MiConexion.Open()
-            StrSqlUpdate = "UPDATE [DatosEmpresa] SET [Nombre_Empresa] = '" & Me.TxtNombreEmpresa.Text & "',[Direccion_Empresa] = '" & Me.TxtDireccion.Text & "',[Numero_Ruc] = '" & Me.TxtRuc.Text & "',[Telefono] = '" & Me.TxtTelefono.Text & "',[Ruta_Logo] = '" & Me.TxtRutaLogo.Text & "',[RutaCompartida] = '" & Me.TxtRutaCompartida.Text & "', [Conexion_Contabilidad] = '" & Me.TxtConexion.Text & "',[SincronizarTasa] = '" & Sincroniza & "',[CharLogo] = '" & CharLogo & "'"
+            StrSqlUpdate = "UPDATE [DatosEmpresa] SET [Nombre_Empresa] = '" & Me.TxtNombreEmpresa.Text & "',[Direccion_Empresa] = '" & Me.TxtDireccion.Text & "',[Numero_Ruc] = '" & Me.TxtRuc.Text & "',[Telefono] = '" & Me.TxtTelefono.Text & "',[Ruta_Logo] = '" & Me.TxtRutaLogo.Text & "',[RutaCompartida] = '" & Me.TxtRutaCompartida.Text & "', [Conexion_Contabilidad] = '" & Me.TxtConexion.Text & "',[SincronizarTasa] = '" & Sincroniza & "' "  ',[CharLogo] = '" & CharLogo & "'
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
             MiConexion.Close()
@@ -175,8 +175,8 @@ Public Class FrmConfigurar
         RutaBD = OpenFileDialog.FileName
         Me.TxtRutaLogo.Text = RutaBD
         If Not Me.TxtRutaLogo.Text = "OpenFileDialog1" Then
-            'ImgLogo.ImageLocation = Me.TxtRutaLogo.Text
-            ImgLogo.ImageLocation = cargarImagen(Me.TxtRutaLogo.Text)
+            ImgLogo.ImageLocation = Me.TxtRutaLogo.Text
+            'ImgLogo.ImageLocation = cargarImagen(Me.TxtRutaLogo.Text)
             ImgLogo.Load()
         Else
 

@@ -1,10 +1,10 @@
 Imports System.Data.SqlClient
+Imports System.Drawing.Printing
 
 Public Class FrmRecibos
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder
-    Public ConsecutivoReciboSerie As Boolean = False
-
+    Public ConsecutivoReciboSerie As Boolean = False, Impresora_Defecto As String
 
     Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
         Me.Close()
@@ -866,6 +866,9 @@ Public Class FrmRecibos
         '////////////////////////////////VERIFICO QUE TIPO DE IMPRESION ESTA CONFIGURADA/////////////////////////////////////////////////////////
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+
         TipoImpresion = Me.TxtTipoRecibo.Text
 
         If Me.CmbSerie.Visible = True Then
@@ -877,6 +880,19 @@ Public Class FrmRecibos
 
         Select Case Me.TxtTipoRecibo.Text
             Case "Recibos de Caja"
+
+                '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                '///////////////////////////////////SELECCIONO LA IMPRESORA CONFIGURADA PARA LOS RECIBOS /////////////
+                '///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                Dim pd As New PrintDocument
+                Dim ImpresoraRecibo As String
+                Dim s_Default_Printer As String = pd.PrinterSettings.PrinterName
+
+                Impresora_Defecto = s_Default_Printer
+                ImpresoraRecibo = BuscaImpresora("Recibo")
+                Establecer_Impresora(ImpresoraRecibo)
+
+
                 'TipoImpresion = Me.TxtTipoRecibo.Text
                 SQlString = "SELECT  *  FROM Impresion WHERE (Impresion = '" & TipoImpresion & " ')"
                 DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
@@ -894,6 +910,9 @@ Public Class FrmRecibos
                             ViewerForm.Show()
                             'ArepPagoClientes.Run(False)
                             ArepReciboTira2.Run(False)
+
+                            'Establecer_Impresora(Impresora_Defecto)
+
                         Case "Tira de Papel"
                             'SQL.ConnectionString = Conexion
                             'SQL.SQL = SQlPagos
@@ -904,6 +923,8 @@ Public Class FrmRecibos
                             ViewerForm.Show()
                             'ArepPagoClientes.Run(False)
                             ArepReciboTira.Run(False)
+
+                            'Establecer_Impresora(Impresora_Defecto)
                         Case "Papel en Blanco"
                             'SQL.ConnectionString = Conexion
                             'SQL.SQL = SQlPagos
@@ -914,6 +935,7 @@ Public Class FrmRecibos
                             ViewerForm.Show()
                             ArepPagoClientes.Run(False)
 
+                            'Establecer_Impresora(Impresora_Defecto)
 
                         Case "Papel en Blanco Standard"
                             'SQL.ConnectionString = Conexion
@@ -926,6 +948,8 @@ Public Class FrmRecibos
                             ViewerForm.Show()
                             'ArepPagoClientes.Run(False)
                             ArepRecibos2.Run(False)
+
+                            'Establecer_Impresora(Impresora_Defecto)
 
                         Case "Personalizado"
 

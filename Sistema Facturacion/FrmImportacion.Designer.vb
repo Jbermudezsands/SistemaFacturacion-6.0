@@ -63,6 +63,7 @@ Partial Class FrmImportacion
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.ChkLotes = New System.Windows.Forms.CheckBox
         Me.FrameTipo = New System.Windows.Forms.GroupBox
         Me.OptActualizaInv = New System.Windows.Forms.RadioButton
         Me.OptInventarioIni = New System.Windows.Forms.RadioButton
@@ -584,6 +585,7 @@ Partial Class FrmImportacion
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.ChkLotes)
         Me.GroupBox1.Controls.Add(Me.FrameTipo)
         Me.GroupBox1.Controls.Add(Me.ChkProductos)
         Me.GroupBox1.Controls.Add(Me.DTPFecha)
@@ -598,6 +600,17 @@ Partial Class FrmImportacion
         Me.GroupBox1.TabIndex = 11
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Opciones de Importacion"
+        '
+        'ChkLotes
+        '
+        Me.ChkLotes.AutoSize = True
+        Me.ChkLotes.Enabled = False
+        Me.ChkLotes.Location = New System.Drawing.Point(387, 50)
+        Me.ChkLotes.Name = "ChkLotes"
+        Me.ChkLotes.Size = New System.Drawing.Size(114, 17)
+        Me.ChkLotes.TabIndex = 125
+        Me.ChkLotes.Text = "Importar con Lotes"
+        Me.ChkLotes.UseVisualStyleBackColor = True
         '
         'FrameTipo
         '
@@ -664,7 +677,7 @@ Partial Class FrmImportacion
         'TxtRuta
         '
         Me.TxtRuta.Enabled = False
-        Me.TxtRuta.Location = New System.Drawing.Point(386, 33)
+        Me.TxtRuta.Location = New System.Drawing.Point(386, 27)
         Me.TxtRuta.Name = "TxtRuta"
         Me.TxtRuta.Size = New System.Drawing.Size(286, 20)
         Me.TxtRuta.TabIndex = 110
@@ -672,7 +685,7 @@ Partial Class FrmImportacion
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(393, 14)
+        Me.Label2.Location = New System.Drawing.Point(393, 8)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(103, 13)
         Me.Label2.TabIndex = 109
@@ -927,4 +940,5 @@ Partial Class FrmImportacion
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents C1Button6 As C1.Win.C1Input.C1Button
     Friend WithEvents C1Button7 As C1.Win.C1Input.C1Button
+    Friend WithEvents ChkLotes As System.Windows.Forms.CheckBox
 End Class

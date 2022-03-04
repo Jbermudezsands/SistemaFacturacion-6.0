@@ -179,7 +179,7 @@ Public Class FrmTransformacion
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////
-        GrabaEncabezadoCompras(NumeroCompra, CDate(Fecha), "Mercancia Recibida", CodProveedor, CodBodegaDestino, NombreProveedor, "-", CDate(Fecha), 0, 0, 0, 0, "Cordobas", "Procesado por Transformacion " & NumeroTransforma, "")
+        GrabaEncabezadoCompras(NumeroCompra, CDate(Fecha), "Mercancia Recibida", CodProveedor, CodBodegaDestino, NombreProveedor, "-", CDate(Fecha), 0, 0, 0, 0, "Cordobas", "Procesado por Transformacion " & NumeroTransforma, "", False)
 
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -222,7 +222,7 @@ Public Class FrmTransformacion
             PrecioNeto = PrecioUnitario * Cantidad
             Importe = PrecioCosto - Descuento
 
-            GrabaDetalleCompraLiquidacion(NumeroCompra, CodigoProducto, PrecioUnitario, Descuento, PrecioUnitario, Importe, Cantidad, "Cordobas", CDate(Fecha))
+            GrabaDetalleCompraLiquidacion(NumeroCompra, CodigoProducto, PrecioUnitario, Descuento, PrecioUnitario, Importe, Cantidad, "Cordobas", CDate(Fecha), "0000", "01/01/1900")
             ExistenciasCostos(CodigoProducto, Cantidad, PrecioUnitario, "Mercancia Recibida", CodBodegaOrigen)
 
 

@@ -34,6 +34,7 @@ Partial Class FrmContratos
         Me.Button3 = New System.Windows.Forms.Button
         Me.ProgressBar = New System.Windows.Forms.ProgressBar
         Me.BtnProcesar = New System.Windows.Forms.Button
+        Me.OptTodos = New System.Windows.Forms.RadioButton
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -145,18 +146,19 @@ Partial Class FrmContratos
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.OptTodos)
         Me.GroupBox1.Controls.Add(Me.OptAnulado)
         Me.GroupBox1.Controls.Add(Me.OptActivo)
-        Me.GroupBox1.Location = New System.Drawing.Point(778, 415)
+        Me.GroupBox1.Location = New System.Drawing.Point(698, 415)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(199, 38)
+        Me.GroupBox1.Size = New System.Drawing.Size(279, 38)
         Me.GroupBox1.TabIndex = 266
         Me.GroupBox1.TabStop = False
         '
         'OptAnulado
         '
         Me.OptAnulado.AutoSize = True
-        Me.OptAnulado.Location = New System.Drawing.Point(108, 15)
+        Me.OptAnulado.Location = New System.Drawing.Point(92, 13)
         Me.OptAnulado.Name = "OptAnulado"
         Me.OptAnulado.Size = New System.Drawing.Size(69, 17)
         Me.OptAnulado.TabIndex = 2
@@ -167,11 +169,10 @@ Partial Class FrmContratos
         '
         Me.OptActivo.AutoSize = True
         Me.OptActivo.Checked = True
-        Me.OptActivo.Location = New System.Drawing.Point(18, 15)
+        Me.OptActivo.Location = New System.Drawing.Point(6, 13)
         Me.OptActivo.Name = "OptActivo"
         Me.OptActivo.Size = New System.Drawing.Size(60, 17)
         Me.OptActivo.TabIndex = 1
-        Me.OptActivo.TabStop = True
         Me.OptActivo.Text = "Activos"
         Me.OptActivo.UseVisualStyleBackColor = True
         '
@@ -192,7 +193,7 @@ Partial Class FrmContratos
         '
         Me.ProgressBar.Location = New System.Drawing.Point(12, 422)
         Me.ProgressBar.Name = "ProgressBar"
-        Me.ProgressBar.Size = New System.Drawing.Size(735, 23)
+        Me.ProgressBar.Size = New System.Drawing.Size(663, 23)
         Me.ProgressBar.TabIndex = 268
         '
         'BtnProcesar
@@ -207,6 +208,16 @@ Partial Class FrmContratos
         Me.BtnProcesar.Text = "Facturar"
         Me.BtnProcesar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.BtnProcesar.UseVisualStyleBackColor = True
+        '
+        'OptTodos
+        '
+        Me.OptTodos.AutoSize = True
+        Me.OptTodos.Location = New System.Drawing.Point(186, 13)
+        Me.OptTodos.Name = "OptTodos"
+        Me.OptTodos.Size = New System.Drawing.Size(55, 17)
+        Me.OptTodos.TabIndex = 3
+        Me.OptTodos.Text = "Todos"
+        Me.OptTodos.UseVisualStyleBackColor = True
         '
         'FrmContratos
         '
@@ -253,4 +264,5 @@ Partial Class FrmContratos
     Friend WithEvents Button3 As System.Windows.Forms.Button
     Friend WithEvents ProgressBar As System.Windows.Forms.ProgressBar
     Friend WithEvents BtnProcesar As System.Windows.Forms.Button
+    Friend WithEvents OptTodos As System.Windows.Forms.RadioButton
 End Class

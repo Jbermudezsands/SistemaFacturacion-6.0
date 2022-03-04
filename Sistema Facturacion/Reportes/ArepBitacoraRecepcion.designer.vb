@@ -1813,6 +1813,7 @@ Partial Public Class ArepBitacoraRecepcion
             "nt-size: 8.5pt; "
         Me.Label35.Text = "Merma:"
         Me.Label35.Top = 0.375!
+        Me.Label35.Visible = False
         Me.Label35.Width = 0.8125!
         '
         'TextBox2
@@ -1836,6 +1837,7 @@ Partial Public Class ArepBitacoraRecepcion
         Me.TextBox2.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
         Me.TextBox2.Text = Nothing
         Me.TextBox2.Top = 0.375!
+        Me.TextBox2.Visible = False
         Me.TextBox2.Width = 0.75!
         '
         'Label42
@@ -1855,6 +1857,7 @@ Partial Public Class ArepBitacoraRecepcion
         Me.Label42.Style = "ddo-char-set: 0; font-weight: bold; font-size: 9pt; "
         Me.Label42.Text = "Kg"
         Me.Label42.Top = 0.375!
+        Me.Label42.Visible = False
         Me.Label42.Width = 0.3125!
         '
         'Label43

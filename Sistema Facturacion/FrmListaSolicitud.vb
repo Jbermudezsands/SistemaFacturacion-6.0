@@ -1,6 +1,7 @@
 Public Class FrmListaSolicitud
     Public Nuevo As Boolean = False
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
+    Public DataSetGlobal As New DataSet
 
     Private Sub BtnSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSalir.Click
         Me.Close()
@@ -24,9 +25,11 @@ Public Class FrmListaSolicitud
             SqlString = "SELECT DISTINCT Solicitud_Compra.Numero_Solicitud, Solicitud_Compra.Fecha_Solicitud, Solicitud_Compra.Fecha_Requerido, Solicitud_Compra.Departamento_Solicitante, Solicitud_Compra.Gerencia_Solicitante, Solicitud_Compra.Estado_Solicitud, Solicitud_Compra.Concepto FROM Detalle_Solicitud INNER JOIN Solicitud_Compra ON Detalle_Solicitud.Numero_Solicitud = Solicitud_Compra.Numero_Solicitud  WHERE (Detalle_Solicitud.Activo = 1) AND (Solicitud_Compra.Estado_Solicitud <> 'Anulado') AND (Solicitud_Compra.Estado_Solicitud <> 'Procesado')"
         End If
         MiConexion.Open()
+        DataSetGlobal.Reset()
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "Lista")
-        Me.TDGridSolicitud.DataSource = DataSet.Tables("Lista")
+        DataAdapter.Fill(DataSetGlobal, "Lista")
+        Me.BindingConsultas.DataSource = DataSetGlobal.Tables("Lista")
+        Me.TDGridSolicitud.DataSource = Me.BindingConsultas
 
         Me.TDGridSolicitud.Columns("Numero_Solicitud").Caption = "Num Solictud"
         Me.TDGridSolicitud.Splits.Item(0).DisplayColumns("Numero_Solicitud").Width = 80
@@ -121,6 +124,47 @@ Public Class FrmListaSolicitud
 
         Autorizar_Solicitud()
         Me.BtnActualizar_Click(sender, e)
+    End Sub
+    Private Function getFilter() As String
+        Dim col As C1.Win.C1TrueDBGrid.C1DataColumn
+
+        Dim tmp As String = ""
+        Dim n As Integer
+
+        For Each col In Me.TDGridSolicitud.Columns
+
+            If Trim(col.FilterText) <> "" Then
+                n = n + 1
+                If n > 1 Then
+                    tmp = tmp & " AND "
+                End If
+                tmp = tmp & col.DataField & " LIKE '" & col.FilterText & "*'"
+            End If
+        Next col
+
+        getFilter = tmp
+
+    End Function
+
+    Private Sub TDGridSolicitud_FilterChange(ByVal sender As Object, ByVal e As System.EventArgs) Handles TDGridSolicitud.FilterChange
+        Dim sb As New System.Text.StringBuilder()
+        Dim dc As C1.Win.C1TrueDBGrid.C1DataColumn
+
+
+
+        For Each dc In Me.TDGridSolicitud.Columns
+            If dc.FilterText.Length > 0 Then
+                If sb.Length > 0 Then
+                    sb.Append(" AND ")
+                End If
+                sb.Append((dc.DataField + " LIKE " + "'%" + dc.FilterText + "%'"))
+            End If
+        Next dc
+
+
+        Me.DataSetGlobal.Tables("Lista").DefaultView.RowFilter = sb.ToString()
+
+
     End Sub
 
     Private Sub TDGridSolicitud_RowColChange(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.RowColChangeEventArgs) Handles TDGridSolicitud.RowColChange

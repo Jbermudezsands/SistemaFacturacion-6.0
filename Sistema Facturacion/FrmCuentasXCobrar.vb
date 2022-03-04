@@ -181,7 +181,6 @@ Public Class FrmCuentasXCobrar
             NumeroNota = ""
             j = 0
             MontoNota = 0
-            TotalMontoNotaDB = 0
             Do While Registros2 > j
 
                 TipoNota = DataSet.Tables("NotaDB").Rows(j)("Tipo")
@@ -214,8 +213,8 @@ Public Class FrmCuentasXCobrar
                 Else
                     NumeroNota = NumeroNota & "," & DataSet.Tables("NotaDB").Rows(j)("Numero_Nota")
                 End If
-                MontoNota = DataSet.Tables("NotaDB").Rows(j)("Monto") * TasaCambioRecibo
-                TotalMontoNotaDB = TotalMontoNotaDB + MontoNota
+                MontoNota = MontoNota + DataSet.Tables("NotaDB").Rows(j)("Monto") * TasaCambioRecibo
+
                 j = j + 1
             Loop
 
@@ -232,7 +231,6 @@ Public Class FrmCuentasXCobrar
             NumeroNotaCR = ""
             j = 0
             MontoNotaCR = 0
-            TotalMontoNotaCR = 0
             Do While Registros2 > j
 
                 TipoNota = DataSet.Tables("NotaCR").Rows(j)("Tipo")
@@ -265,9 +263,9 @@ Public Class FrmCuentasXCobrar
                 Else
                     NumeroNotaCR = NumeroNotaCR & "," & DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
                 End If
-                MontoNotaCR = DataSet.Tables("NotaCR").Rows(j)("Monto") * TasaCambioRecibo
+                MontoNotaCR = MontoNotaCR + DataSet.Tables("NotaCR").Rows(j)("Monto") * TasaCambioRecibo
                 'MontoNotaCR +
-                TotalMontoNotaCR = TotalMontoNotaCR + MontoNotaCR
+
                 j = j + 1
             Loop
             DataSet.Tables("NotaCR").Reset()
@@ -379,7 +377,7 @@ Public Class FrmCuentasXCobrar
 
 
             Dias = DateDiff(DateInterval.Day, FechaVence, Me.DTPFechaFin.Value)
-            Saldo = MontoFactura - MontoRecibo + TotalMontoNotaDB - TotalMontoNotaCR - MontoMetodoFactura
+            Saldo = MontoFactura - MontoRecibo + MontoNota - MontoNotaCR - MontoMetodoFactura
             If Format(Saldo, "##,##0.00") = "0.00" Then
                 Dias = 0
             End If
@@ -404,7 +402,7 @@ Public Class FrmCuentasXCobrar
             oDataRow("Monto") = Format(MontoFactura, "##,##0.00")
             oDataRow("FechaVence") = DataSet.Tables("Clientes").Rows(i)("Fecha_Vencimiento")
             oDataRow("Abono") = Format(MontoRecibo + MontoMetodoFactura, "##,##0.00")
-            oDataRow("MontoNota") = Format(TotalMontoNotaDB - TotalMontoNotaCR, "##,##0.00")
+            oDataRow("MontoNota") = Format(MontoNota - MontoNotaCR, "##,##0.00")
             oDataRow("Saldo") = Format(Saldo, "##,##0.00")
             oDataRow("Moratorio") = Format(MontoMora, "##,##0.00")
             oDataRow("Dias") = Dias
@@ -426,6 +424,8 @@ Public Class FrmCuentasXCobrar
             TotalFactura = TotalFactura + Saldo
             TotalAbonos = TotalAbonos + MontoRecibo
             TotalCargos = TotalCargos + MontoFactura
+            TotalMontoNotaCR = TotalMontoNotaCR + MontoNotaCR
+            TotalMontoNotaDB = TotalMontoNotaDB + MontoNota
             TotalMora = TotalMora + MontoMora
             DataSet.Tables("DatosCliente").Reset()
             DataSet.Tables("Recibos").Reset()
@@ -475,7 +475,7 @@ Public Class FrmCuentasXCobrar
                 NumeroNota = DataSet.Tables("NotaDB").Rows(j)("Numero_Nota")
             End If
             MontoNota = DataSet.Tables("NotaDB").Rows(j)("Monto") * TasaCambioRecibo
-            TotalMontoNotaDB = TotalMontoNotaDB + MontoNota
+            'TotalMontoNotaDB = TotalMontoNotaDB + MontoNota
 
             Dim Abono As Double = 0, AbonoNota As Double = 0
 
@@ -523,7 +523,8 @@ Public Class FrmCuentasXCobrar
             DatasetReporte.Tables("TotalVentas").Rows.Add(oDataRow)
 
 
-            TotalFactura = TotalFactura + MontoNota
+            'TotalFactura = TotalFactura + MontoNota
+            TotalMontoNotaDB = TotalMontoNotaDB + MontoNota
 
             j = j + 1
         Loop
@@ -573,7 +574,7 @@ Public Class FrmCuentasXCobrar
                 NumeroNotaCR = DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
             End If
             MontoNotaCR = DataSet.Tables("NotaCR").Rows(j)("Monto") * TasaCambioRecibo
-            TotalMontoNotaCR = TotalMontoNotaCR + MontoNotaCR
+            'TotalMontoNotaCR = TotalMontoNotaCR + MontoNotaCR
 
             'MontoNotaCR +
 
@@ -661,7 +662,7 @@ Public Class FrmCuentasXCobrar
             j = j + 1
         Loop
 
-
+        TotalFactura = TotalCargos - TotalAbonos + TotalMora + TotalMontoNotaDB - TotalMontoNotaCR
 
         Me.TxtCargos.Text = Format(TotalCargos, "##,##0.00")
         Me.TxtAbonos.Text = Format(TotalAbonos, "##,##0.00")

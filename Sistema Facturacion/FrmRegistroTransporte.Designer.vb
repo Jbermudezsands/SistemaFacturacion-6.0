@@ -20,39 +20,30 @@ Partial Class FrmRegistroTransporte
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmRegistroTransporte))
-        Me.CmbContrato1 = New System.Windows.Forms.ComboBox
         Me.Label5 = New System.Windows.Forms.Label
         Me.Label2 = New System.Windows.Forms.Label
         Me.DTPFecha = New System.Windows.Forms.DateTimePicker
         Me.Button2 = New System.Windows.Forms.Button
-        Me.CboCodigoConductor = New C1.Win.C1List.C1Combo
         Me.LblCodigo = New System.Windows.Forms.Label
         Me.CboPlaca = New C1.Win.C1List.C1Combo
         Me.Label1 = New System.Windows.Forms.Label
         Me.Button1 = New System.Windows.Forms.Button
-        Me.TxtCodigoClientes = New System.Windows.Forms.TextBox
+        Me.TxtNumeroContrato = New System.Windows.Forms.TextBox
         Me.Label3 = New System.Windows.Forms.Label
-        Me.TextBox1 = New System.Windows.Forms.TextBox
+        Me.TxtNombreContrato = New System.Windows.Forms.TextBox
         Me.Button3 = New System.Windows.Forms.Button
         Me.ButtonGrabar = New System.Windows.Forms.Button
         Me.Button8 = New System.Windows.Forms.Button
         Me.LblTitulo = New System.Windows.Forms.Label
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        CType(Me.CboCodigoConductor, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.CmbContrato1 = New System.Windows.Forms.ComboBox
+        Me.CboCodigoConductor = New C1.Win.C1List.C1Combo
         CType(Me.CboPlaca, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.CboCodigoConductor, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'CmbContrato1
-        '
-        Me.CmbContrato1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CmbContrato1.FormattingEnabled = True
-        Me.CmbContrato1.Location = New System.Drawing.Point(101, 107)
-        Me.CmbContrato1.Name = "CmbContrato1"
-        Me.CmbContrato1.Size = New System.Drawing.Size(121, 21)
-        Me.CmbContrato1.TabIndex = 265
         '
         'Label5
         '
@@ -90,35 +81,6 @@ Partial Class FrmRegistroTransporte
         Me.Button2.TabIndex = 283
         Me.Button2.UseVisualStyleBackColor = True
         '
-        'CboCodigoConductor
-        '
-        Me.CboCodigoConductor.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
-        Me.CboCodigoConductor.Caption = ""
-        Me.CboCodigoConductor.CaptionHeight = 17
-        Me.CboCodigoConductor.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
-        Me.CboCodigoConductor.ColumnCaptionHeight = 17
-        Me.CboCodigoConductor.ColumnFooterHeight = 17
-        Me.CboCodigoConductor.ContentHeight = 15
-        Me.CboCodigoConductor.DeadAreaBackColor = System.Drawing.Color.Empty
-        Me.CboCodigoConductor.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CboCodigoConductor.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CboCodigoConductor.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CboCodigoConductor.EditorHeight = 15
-        Me.CboCodigoConductor.Images.Add(CType(resources.GetObject("CboCodigoConductor.Images"), System.Drawing.Image))
-        Me.CboCodigoConductor.ItemHeight = 15
-        Me.CboCodigoConductor.Location = New System.Drawing.Point(100, 134)
-        Me.CboCodigoConductor.MatchEntryTimeout = CType(2000, Long)
-        Me.CboCodigoConductor.MaxDropDownItems = CType(5, Short)
-        Me.CboCodigoConductor.MaxLength = 32767
-        Me.CboCodigoConductor.MouseCursor = System.Windows.Forms.Cursors.Default
-        Me.CboCodigoConductor.Name = "CboCodigoConductor"
-        Me.CboCodigoConductor.RowDivider.Color = System.Drawing.Color.DarkGray
-        Me.CboCodigoConductor.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
-        Me.CboCodigoConductor.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboCodigoConductor.Size = New System.Drawing.Size(209, 21)
-        Me.CboCodigoConductor.TabIndex = 281
-        Me.CboCodigoConductor.PropBag = resources.GetString("CboCodigoConductor.PropBag")
-        '
         'LblCodigo
         '
         Me.LblCodigo.AutoSize = True
@@ -138,6 +100,7 @@ Partial Class FrmRegistroTransporte
         Me.CboPlaca.ColumnFooterHeight = 17
         Me.CboPlaca.ContentHeight = 15
         Me.CboPlaca.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboPlaca.DisplayMember = "Placa"
         Me.CboPlaca.EditorBackColor = System.Drawing.SystemColors.Window
         Me.CboPlaca.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CboPlaca.EditorForeColor = System.Drawing.SystemColors.WindowText
@@ -175,12 +138,12 @@ Partial Class FrmRegistroTransporte
         Me.Button1.TabIndex = 286
         Me.Button1.UseVisualStyleBackColor = True
         '
-        'TxtCodigoClientes
+        'TxtNumeroContrato
         '
-        Me.TxtCodigoClientes.Location = New System.Drawing.Point(101, 191)
-        Me.TxtCodigoClientes.Name = "TxtCodigoClientes"
-        Me.TxtCodigoClientes.Size = New System.Drawing.Size(152, 20)
-        Me.TxtCodigoClientes.TabIndex = 287
+        Me.TxtNumeroContrato.Location = New System.Drawing.Point(101, 191)
+        Me.TxtNumeroContrato.Name = "TxtNumeroContrato"
+        Me.TxtNumeroContrato.Size = New System.Drawing.Size(152, 20)
+        Me.TxtNumeroContrato.TabIndex = 287
         '
         'Label3
         '
@@ -191,12 +154,13 @@ Partial Class FrmRegistroTransporte
         Me.Label3.TabIndex = 289
         Me.Label3.Text = "Numero Contrato"
         '
-        'TextBox1
+        'TxtNombreContrato
         '
-        Me.TextBox1.Location = New System.Drawing.Point(101, 217)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(251, 20)
-        Me.TextBox1.TabIndex = 290
+        Me.TxtNombreContrato.Enabled = False
+        Me.TxtNombreContrato.Location = New System.Drawing.Point(101, 217)
+        Me.TxtNombreContrato.Name = "TxtNombreContrato"
+        Me.TxtNombreContrato.Size = New System.Drawing.Size(251, 20)
+        Me.TxtNombreContrato.TabIndex = 290
         '
         'Button3
         '
@@ -265,57 +229,99 @@ Partial Class FrmRegistroTransporte
         Me.PictureBox1.TabIndex = 294
         Me.PictureBox1.TabStop = False
         '
+        'CmbContrato1
+        '
+        Me.CmbContrato1.DisplayMember = "TipoContrato"
+        Me.CmbContrato1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbContrato1.FormattingEnabled = True
+        Me.CmbContrato1.Location = New System.Drawing.Point(100, 107)
+        Me.CmbContrato1.Name = "CmbContrato1"
+        Me.CmbContrato1.Size = New System.Drawing.Size(121, 21)
+        Me.CmbContrato1.TabIndex = 297
+        Me.CmbContrato1.ValueMember = "TipoContrato"
+        '
+        'CboCodigoConductor
+        '
+        Me.CboCodigoConductor.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboCodigoConductor.Caption = ""
+        Me.CboCodigoConductor.CaptionHeight = 17
+        Me.CboCodigoConductor.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboCodigoConductor.ColumnCaptionHeight = 17
+        Me.CboCodigoConductor.ColumnFooterHeight = 17
+        Me.CboCodigoConductor.ContentHeight = 15
+        Me.CboCodigoConductor.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboCodigoConductor.DisplayMember = "Nombre"
+        Me.CboCodigoConductor.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboCodigoConductor.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboCodigoConductor.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboCodigoConductor.EditorHeight = 15
+        Me.CboCodigoConductor.Images.Add(CType(resources.GetObject("CboCodigoConductor.Images"), System.Drawing.Image))
+        Me.CboCodigoConductor.ItemHeight = 15
+        Me.CboCodigoConductor.Location = New System.Drawing.Point(100, 137)
+        Me.CboCodigoConductor.MatchEntryTimeout = CType(2000, Long)
+        Me.CboCodigoConductor.MaxDropDownItems = CType(5, Short)
+        Me.CboCodigoConductor.MaxLength = 32767
+        Me.CboCodigoConductor.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboCodigoConductor.Name = "CboCodigoConductor"
+        Me.CboCodigoConductor.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboCodigoConductor.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboCodigoConductor.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboCodigoConductor.Size = New System.Drawing.Size(209, 21)
+        Me.CboCodigoConductor.TabIndex = 298
+        Me.CboCodigoConductor.PropBag = resources.GetString("CboCodigoConductor.PropBag")
+        '
         'FrmRegistroTransporte
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(392, 333)
+        Me.ClientSize = New System.Drawing.Size(392, 327)
+        Me.Controls.Add(Me.CboCodigoConductor)
+        Me.Controls.Add(Me.CmbContrato1)
         Me.Controls.Add(Me.LblTitulo)
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.ButtonGrabar)
         Me.Controls.Add(Me.Button8)
         Me.Controls.Add(Me.Button3)
-        Me.Controls.Add(Me.TextBox1)
+        Me.Controls.Add(Me.TxtNombreContrato)
         Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.TxtCodigoClientes)
+        Me.Controls.Add(Me.TxtNumeroContrato)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.CboPlaca)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.CboCodigoConductor)
         Me.Controls.Add(Me.LblCodigo)
-        Me.Controls.Add(Me.CmbContrato1)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.DTPFecha)
         Me.Name = "FrmRegistroTransporte"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "FrmRegistroTransporte"
-        CType(Me.CboCodigoConductor, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboPlaca, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.CboCodigoConductor, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents CmbContrato1 As System.Windows.Forms.ComboBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents DTPFecha As System.Windows.Forms.DateTimePicker
     Friend WithEvents Button2 As System.Windows.Forms.Button
-    Friend WithEvents CboCodigoConductor As C1.Win.C1List.C1Combo
     Friend WithEvents LblCodigo As System.Windows.Forms.Label
     Friend WithEvents CboPlaca As C1.Win.C1List.C1Combo
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Button1 As System.Windows.Forms.Button
-    Friend WithEvents TxtCodigoClientes As System.Windows.Forms.TextBox
+    Friend WithEvents TxtNumeroContrato As System.Windows.Forms.TextBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
+    Friend WithEvents TxtNombreContrato As System.Windows.Forms.TextBox
     Friend WithEvents Button3 As System.Windows.Forms.Button
     Friend WithEvents ButtonGrabar As System.Windows.Forms.Button
     Friend WithEvents Button8 As System.Windows.Forms.Button
     Friend WithEvents LblTitulo As System.Windows.Forms.Label
     Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents CmbContrato1 As System.Windows.Forms.ComboBox
+    Friend WithEvents CboCodigoConductor As C1.Win.C1List.C1Combo
 End Class

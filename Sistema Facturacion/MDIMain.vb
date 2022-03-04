@@ -48,7 +48,7 @@ Public Class MDIMain
             NombreProducto = DataSet.Tables("Productos").Rows(Iposicion)("Descripcion_Producto")
             NombreBodega = DataSet.Tables("Productos").Rows(Iposicion)("Descripcion_Linea")
             CodBodega = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Linea")
-            Existencia = Format(BuscaInventarioInicial(CodProducto, FechaFin))
+            Existencia = Format(InventarioInicialMinimo(CodProducto, FechaFin))
             If Existencia <> 0 Then
                 If DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Descuento" And DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Servicio" Then
                     If DataSet.Tables("Productos").Rows(Iposicion)("Minimo") >= Existencia Then
@@ -607,6 +607,7 @@ Public Class MDIMain
         TasaCambio = BuscaTasaCambio(Now)
 
         Me.Text = "Nombre Compañia: " & NombreCompañia
+        Me.RibbonLabel2.Text = "Nombre Compañia: " & NombreCompañia
 
         '/////////////////////////Cierro las herabas abiertas/////////////////
         If Not (oHebraNotificacion Is Nothing) Then
@@ -873,6 +874,10 @@ Public Class MDIMain
                 End If
             End If
 
+            If Cadena2 = "SinLicencia" Then
+                Me.Close()
+            End If
+
             Dim Cadena As String = "", CadenaDiv() As String, Max As Double, InstanciaDiv() As String, Instancia As String = ""
 
             '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1120,7 +1125,7 @@ Public Class MDIMain
         My.Forms.FrmInventarioFisico.MdiParent = Me
         My.Forms.FrmInventarioFisico.Show()
 
-        '
+
     End Sub
 
     Private Sub RibbonButton5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton5.Click

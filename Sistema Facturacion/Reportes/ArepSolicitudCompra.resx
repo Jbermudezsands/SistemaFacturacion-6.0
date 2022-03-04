@@ -130,8 +130,8 @@
     <value>SELECT        Detalle_Solicitud.Cod_Producto, Detalle_Solicitud.Descripcion_Producto, Detalle_Solicitud.Cantidad, Detalle_Solicitud.Autorizado, Detalle_Solicitud.Comprado, 
                          Detalle_Solicitud.Numero_Solicitud, Detalle_Solicitud.Id_DetalleSolicitud, Detalle_Solicitud.Orden_Compra, Solicitud_Compra.Fecha_Solicitud, 
                          Solicitud_Compra.Gerencia_Solicitante, Solicitud_Compra.Departamento_Solicitante, Solicitud_Compra.Codigo_Rubro, Solicitud_Compra.Concepto, 
-                         Solicitud_Compra.Cod_Bodega, Solicitud_Compra.Fecha_Requerido, Solicitud_Compra.CodigoProyecto, Productos.Cod_Productos, Productos.Unidad_Medida
-FROM            Detalle_Solicitud INNER JOIN
+                         Solicitud_Compra.Cod_Bodega, Solicitud_Compra.Fecha_Requerido, Solicitud_Compra.CodigoProyecto, Productos.Cod_Productos, Productos.Unidad_Medida,
+  Solicitud_Compra.Solcitud_Cta_Contable FROM            Detalle_Solicitud INNER JOIN
                          Solicitud_Compra ON Detalle_Solicitud.Numero_Solicitud = Solicitud_Compra.Numero_Solicitud INNER JOIN
                          Productos ON Detalle_Solicitud.Cod_Producto = Productos.Cod_Productos
 WHERE        (Detalle_Solicitud.Orden_Compra IS NULL) AND (Detalle_Solicitud.Numero_Solicitud = N'00047')</value>

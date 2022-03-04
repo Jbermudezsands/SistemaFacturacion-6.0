@@ -277,6 +277,8 @@ Public Class FrmActualiza
 
     Private Sub FrmActualiza_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         'Me.DTPFechaFin.Value = Now
+
+        Me.TabControl1.SelectedTab = Me.TabPage2
     End Sub
 
     Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
@@ -1298,7 +1300,24 @@ Public Class FrmActualiza
             ComandoUpdate = New SqlClient.SqlCommand(SQlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
             MiConexion.Close()
+
+            MsgBox("Se necesita Ajustar los Costos", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+
+            Me.TxtDesdeCosto.Text = Me.TxtCodigoInicio.Text
+            Me.TxtHastaCosto.Text = Me.TxtCodigoInicio.Text
+
+            Me.TabControl1.SelectedTab = Me.TabPage5
+
         End If
+
+        MsgBox("Se necesita Ajustar los Costos para cada Producto", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+
+        Me.TxtDesdeCosto.Text = Me.TxtCodigoInicio.Text
+        Me.TxtHastaCosto.Text = Me.TxtCodigoInicio.Text
+
+        Me.TabControl1.SelectedTab = Me.TabPage5
+
+
 
 
     End Sub
@@ -1389,5 +1408,74 @@ Public Class FrmActualiza
         '        Me.ProgressBar.Value = iPosicionFila
         '    Loop
         'End If
+    End Sub
+
+    Private Sub OptClientes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptClientes.CheckedChanged
+        If Me.OptClientes.Checked = True Then
+            Me.LblNumero.Text = "Codigo Clientes"
+            Me.BtnEliminar.Enabled = True
+            Me.BtnActivar.Enabled = False
+            Me.BtnModificar.Enabled = False
+            Me.BtnAnular.Enabled = False
+        End If
+    End Sub
+
+    Private Sub OptFacturas_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptFacturas.CheckedChanged
+        If Me.OptFacturas.Checked = True Then
+            Me.LblNumero.Text = "Numero Factura"
+            Me.BtnEliminar.Enabled = True
+            Me.BtnActivar.Enabled = True
+            Me.BtnModificar.Enabled = False
+            Me.BtnAnular.Enabled = True
+        End If
+
+
+    End Sub
+
+    Private Sub OptRecibos_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptRecibos.CheckedChanged
+
+        If Me.OptRecibos.Checked = True Then
+            Me.LblNumero.Text = "Numero Recibo"
+            Me.BtnEliminar.Enabled = True
+            Me.BtnActivar.Enabled = False
+            Me.BtnModificar.Enabled = False
+            Me.BtnAnular.Enabled = True
+        End If
+
+
+    End Sub
+
+    Private Sub OptTransformacion_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptTransformacion.CheckedChanged
+
+        If Me.OptTransformacion.Checked = True Then
+            Me.LblNumero.Text = "Numero Transformacion"
+            Me.BtnEliminar.Enabled = True
+            Me.BtnActivar.Enabled = False
+            Me.BtnModificar.Enabled = False
+            Me.BtnAnular.Enabled = True
+        End If
+
+    End Sub
+
+    Private Sub OptPagos_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptPagos.CheckedChanged
+
+        If Me.OptPagos.Checked = True Then
+            Me.LblNumero.Text = "Numero Pago Proveedores"
+            Me.BtnEliminar.Enabled = True
+            Me.BtnActivar.Enabled = False
+            Me.BtnModificar.Enabled = False
+            Me.BtnAnular.Enabled = True
+        End If
+    End Sub
+
+    Private Sub OptCompras_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptCompras.CheckedChanged
+
+        If Me.OptCompras.Checked = True Then
+            Me.LblNumero.Text = "Numero Compra"
+            Me.BtnEliminar.Enabled = True
+            Me.BtnActivar.Enabled = True
+            Me.BtnModificar.Enabled = True
+            Me.BtnAnular.Enabled = True
+        End If
     End Sub
 End Class

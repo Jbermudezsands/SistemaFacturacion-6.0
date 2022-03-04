@@ -35,6 +35,7 @@ Partial Class FrmVehiculo
         Me.CboActivo = New System.Windows.Forms.ComboBox
         Me.CboPlaca = New C1.Win.C1List.C1Combo
         Me.CboTipo = New C1.Win.C1List.C1Combo
+        Me.ChkVehiculoEvacuaciones = New System.Windows.Forms.CheckBox
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboPlaca, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -235,11 +236,22 @@ Partial Class FrmVehiculo
         Me.CboTipo.TabIndex = 254
         Me.CboTipo.PropBag = resources.GetString("CboTipo.PropBag")
         '
+        'ChkVehiculoEvacuaciones
+        '
+        Me.ChkVehiculoEvacuaciones.AutoSize = True
+        Me.ChkVehiculoEvacuaciones.Location = New System.Drawing.Point(103, 179)
+        Me.ChkVehiculoEvacuaciones.Name = "ChkVehiculoEvacuaciones"
+        Me.ChkVehiculoEvacuaciones.Size = New System.Drawing.Size(138, 17)
+        Me.ChkVehiculoEvacuaciones.TabIndex = 282
+        Me.ChkVehiculoEvacuaciones.Text = "Vehiculo Evacuaciones"
+        Me.ChkVehiculoEvacuaciones.UseVisualStyleBackColor = True
+        '
         'FrmVehiculo
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(400, 281)
+        Me.Controls.Add(Me.ChkVehiculoEvacuaciones)
         Me.Controls.Add(Me.CboTipo)
         Me.Controls.Add(Me.CboActivo)
         Me.Controls.Add(Me.CmdGrabar)
@@ -282,4 +294,5 @@ Partial Class FrmVehiculo
     Friend WithEvents CboActivo As System.Windows.Forms.ComboBox
     Friend WithEvents CboPlaca As C1.Win.C1List.C1Combo
     Friend WithEvents CboTipo As C1.Win.C1List.C1Combo
+    Friend WithEvents ChkVehiculoEvacuaciones As System.Windows.Forms.CheckBox
 End Class

@@ -56,6 +56,7 @@ Partial Class FrmNuevaSolicitud
         Me.C1Button4 = New C1.Win.C1Input.C1Button
         Me.CboProyecto = New C1.Win.C1List.C1Combo
         Me.Label12 = New System.Windows.Forms.Label
+        Me.ChkSolcitudxCta = New System.Windows.Forms.CheckBox
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Grupo.SuspendLayout()
@@ -489,11 +490,22 @@ Partial Class FrmNuevaSolicitud
         Me.Label12.TabIndex = 264
         Me.Label12.Text = "Proyecto"
         '
+        'ChkSolcitudxCta
+        '
+        Me.ChkSolcitudxCta.AutoSize = True
+        Me.ChkSolcitudxCta.Location = New System.Drawing.Point(482, 265)
+        Me.ChkSolcitudxCta.Name = "ChkSolcitudxCta"
+        Me.ChkSolcitudxCta.Size = New System.Drawing.Size(138, 17)
+        Me.ChkSolcitudxCta.TabIndex = 267
+        Me.ChkSolcitudxCta.Text = "Solicitud x Cta Contable"
+        Me.ChkSolcitudxCta.UseVisualStyleBackColor = True
+        '
         'FrmNuevaSolicitud
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(774, 528)
+        Me.Controls.Add(Me.ChkSolcitudxCta)
         Me.Controls.Add(Me.C1Button4)
         Me.Controls.Add(Me.CboProyecto)
         Me.Controls.Add(Me.Label12)
@@ -569,4 +581,5 @@ Partial Class FrmNuevaSolicitud
     Friend WithEvents C1Button4 As C1.Win.C1Input.C1Button
     Friend WithEvents CboProyecto As C1.Win.C1List.C1Combo
     Friend WithEvents Label12 As System.Windows.Forms.Label
+    Friend WithEvents ChkSolcitudxCta As System.Windows.Forms.CheckBox
 End Class

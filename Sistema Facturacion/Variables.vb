@@ -14,5 +14,5 @@ Module Variables
     Public EditarFactura As Boolean = True, CodigoProducto() As String, Mensaje As String
     Public CambioFechaRespuesta As Boolean = False, FechaFacturacion As Date, RefNotaDebito As String
     Public iAño As Integer, FechaGuardar As Date, UsuarioBodegaCompra As String, UsuarioTipoCompra As String, UsuarioProveedor As String
-    Public DatasetDetalle As New DataSet, TaraRecepcion As Double, LiberarCompras As Boolean, TotalMerma As Double
+    Public DatasetDetalle As New DataSet, TaraRecepcion As Double, LiberarCompras As Boolean, TotalMerma As Double, MontoInicialMinimo As Double, MontoInicialDMinimo As Double
 End Module

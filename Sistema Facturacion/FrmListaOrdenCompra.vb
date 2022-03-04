@@ -5,7 +5,7 @@ Public Class FrmListaOrdenCompra
         Dim SqlString As String, DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet
 
         SqlString = "SELECT  Compras.Numero_Compra, Compras.Fecha_Compra, Compras.MonedaCompra, Compras.Nombre_Proveedor, Detalle_Solicitud.Numero_Solicitud, Compras.Estatus, Compras.FechaHora FROM Compras LEFT OUTER JOIN Detalle_Solicitud ON Compras.Numero_Compra = Detalle_Solicitud.Orden_Compra  " & _
-                    "WHERE (Compras.Tipo_Compra = 'Orden de Compra') AND (Compras.Cancelado = 0)"
+                    "WHERE (Compras.Tipo_Compra = 'Orden de Compra') AND (Compras.Cancelado = 0) ORDER BY Compras.Estatus DESC, Compras.Fecha_Compra DESC, Compras.Numero_Compra"
         MiConexion.Open()
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "Lista")
@@ -54,15 +54,21 @@ Public Class FrmListaOrdenCompra
         Fecha_Compra = Me.TDGridSolicitud.Columns("Fecha_Compra").Text
         Fecha_Hora = Me.TDGridSolicitud.Columns("FechaHora").Text
 
-        '//////////////////////////////////////////CARGO LA ORDEN DE COMPRA EN EL MODULO DE COMPRAS //////////////
+        My.Forms.FrmCompras.Fecha_Compra = Fecha_Compra
+        My.Forms.FrmCompras.FechaHoraCompra = Fecha_Hora
+        My.Forms.FrmCompras.NumeroCompra = NumeroCompra
+
         My.Forms.FrmCompras.EsSolicitud = True
-        My.Forms.FrmCompras.CboTipoProducto.Enabled = False
-        My.Forms.FrmCompras.GroupBox1.Enabled = False
-        My.Forms.FrmCompras.GroupBox5.Enabled = False
-        My.Forms.FrmCompras.CargarCompra(Fecha_Compra, Fecha_Hora, NumeroCompra, "Orden de Compra")
+        '//////////////////////////////////////////CARGO LA ORDEN DE COMPRA EN EL MODULO DE COMPRAS //////////////
+        'My.Forms.FrmCompras.CboTipoProducto.Enabled = False
+        'My.Forms.FrmCompras.GroupBox1.Enabled = False
+        'My.Forms.FrmCompras.GroupBox5.Enabled = False
+
         My.Forms.FrmCompras.TrueDBGridComponentes.Enabled = False
+        'My.Forms.FrmCompras.CargarCompra(Fecha_Compra, Fecha_Hora, NumeroCompra, "Orden de Compra")
         My.Forms.FrmCompras.ShowDialog()
         My.Forms.FrmCompras.EsSolicitud = False
+
     End Sub
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
