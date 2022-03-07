@@ -178,6 +178,10 @@ Partial Class MDIMain
         Me.RibbonLabel2 = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
         Me.TxtUsuario = New System.Windows.Forms.TextBox
+        Me.RibbonTab7 = New C1.Win.C1Ribbon.RibbonTab
+        Me.RibbonGroup17 = New C1.Win.C1Ribbon.RibbonGroup
+        Me.RibbonButton19 = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonButton21 = New C1.Win.C1Ribbon.RibbonButton
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -209,6 +213,7 @@ Partial Class MDIMain
         Me.c1Ribbon1.Tabs.Add(Me.RibbonTab4)
         Me.c1Ribbon1.Tabs.Add(Me.RibbonTab5)
         Me.c1Ribbon1.Tabs.Add(Me.RibbonTab6)
+        Me.c1Ribbon1.Tabs.Add(Me.RibbonTab7)
         '
         'RibbonApplicationMenu1
         '
@@ -1427,6 +1432,35 @@ Partial Class MDIMain
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
         '
+        'RibbonTab7
+        '
+        Me.RibbonTab7.Groups.Add(Me.RibbonGroup17)
+        Me.RibbonTab7.ID = "RibbonTab7"
+        Me.RibbonTab7.Text = "Clinica"
+        '
+        'RibbonGroup17
+        '
+        Me.RibbonGroup17.ID = "RibbonGroup17"
+        Me.RibbonGroup17.Items.Add(Me.RibbonButton19)
+        Me.RibbonGroup17.Items.Add(Me.RibbonButton21)
+        Me.RibbonGroup17.Text = "Group"
+        '
+        'RibbonButton19
+        '
+        Me.RibbonButton19.ID = "RibbonButton19"
+        Me.RibbonButton19.LargeImage = CType(resources.GetObject("RibbonButton19.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton19.SmallImage = CType(resources.GetObject("RibbonButton19.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton19.Text = "Expediente"
+        Me.RibbonButton19.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonButton21
+        '
+        Me.RibbonButton21.ID = "RibbonButton21"
+        Me.RibbonButton21.LargeImage = CType(resources.GetObject("RibbonButton21.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton21.SmallImage = CType(resources.GetObject("RibbonButton21.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton21.Text = "Admision"
+        Me.RibbonButton21.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
         'MDIMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1605,5 +1639,9 @@ Partial Class MDIMain
     Friend WithEvents RibbonButton17 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton18 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonLabel2 As C1.Win.C1Ribbon.RibbonLabel
+    Friend WithEvents RibbonTab7 As C1.Win.C1Ribbon.RibbonTab
+    Friend WithEvents RibbonGroup17 As C1.Win.C1Ribbon.RibbonGroup
+    Friend WithEvents RibbonButton19 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButton21 As C1.Win.C1Ribbon.RibbonButton
 
 End Class
