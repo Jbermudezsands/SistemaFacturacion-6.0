@@ -229,6 +229,12 @@
     <Compile Include="FrmEscolaridad.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmExpediente.Designer.vb">
+      <DependentUpon>FrmExpediente.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmExpediente.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmFacturacionBascula.Designer.vb">
       <DependentUpon>FrmFacturacionBascula.vb</DependentUpon>
     </Compile>
@@ -1602,6 +1608,10 @@
     <EmbeddedResource Include="FrmEvacuaciones.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmEvacuaciones.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmExpediente.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmExpediente.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmFacturacionBascula.resx">
       <SubType>Designer</SubType>

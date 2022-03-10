@@ -187,8 +187,8 @@ Partial Class MDIMain
         Me.RibbonButton28 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton29 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton30 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton32 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton31 = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonButton32 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton33 = New C1.Win.C1Ribbon.RibbonButton
         Me.C1StatusBar1 = New C1.Win.C1Ribbon.C1StatusBar
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
@@ -1529,14 +1529,6 @@ Partial Class MDIMain
         Me.RibbonButton30.Text = "Departamentos"
         Me.RibbonButton30.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
-        'RibbonButton32
-        '
-        Me.RibbonButton32.ID = "RibbonButton32"
-        Me.RibbonButton32.LargeImage = CType(resources.GetObject("RibbonButton32.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton32.SmallImage = CType(resources.GetObject("RibbonButton32.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton32.Text = "Comarcas"
-        Me.RibbonButton32.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
-        '
         'RibbonButton31
         '
         Me.RibbonButton31.ID = "RibbonButton31"
@@ -1545,11 +1537,21 @@ Partial Class MDIMain
         Me.RibbonButton31.Text = "Municipios"
         Me.RibbonButton31.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
+        'RibbonButton32
+        '
+        Me.RibbonButton32.ID = "RibbonButton32"
+        Me.RibbonButton32.LargeImage = CType(resources.GetObject("RibbonButton32.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton32.SmallImage = CType(resources.GetObject("RibbonButton32.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton32.Text = "Comarcas"
+        Me.RibbonButton32.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
         'RibbonButton33
         '
         Me.RibbonButton33.ID = "RibbonButton33"
+        Me.RibbonButton33.LargeImage = CType(resources.GetObject("RibbonButton33.LargeImage"), System.Drawing.Image)
         Me.RibbonButton33.SmallImage = CType(resources.GetObject("RibbonButton33.SmallImage"), System.Drawing.Image)
         Me.RibbonButton33.Text = "Consultorios"
+        Me.RibbonButton33.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'C1StatusBar1
         '
