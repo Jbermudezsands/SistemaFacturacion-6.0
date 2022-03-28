@@ -91,12 +91,6 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form4.Designer.vb">
-      <DependentUpon>Form4.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Form4.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="FrmAccesos.Designer.vb">
       <DependentUpon>FrmAccesos.vb</DependentUpon>
     </Compile>
@@ -139,6 +133,12 @@
     <Compile Include="FrmBascula.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmComarca.Designer.vb">
+      <DependentUpon>FrmComarca.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmComarca.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmCompañiaEndoso.Designer.vb">
       <DependentUpon>FrmCompañiaEndoso.vb</DependentUpon>
     </Compile>
@@ -155,6 +155,12 @@
       <DependentUpon>FrmConductorPlanilla.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmConductorPlanilla.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmConsultorio.Designer.vb">
+      <DependentUpon>FrmConsultorio.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmConsultorio.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmContratos.Designer.vb">
@@ -221,6 +227,18 @@
       <DependentUpon>FrmDetalleLote.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmDetalleLote.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmDoctores.Designer.vb">
+      <DependentUpon>FrmDoctores.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmDoctores.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmEnfermeras.Designer.vb">
+      <DependentUpon>FrmEnfermeras.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmEnfermeras.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmEscolaridad.designer.vb">
@@ -317,6 +335,12 @@
       <DependentUpon>FrmMostrarPesadas.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmMostrarPesadas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMunicipio.Designer.vb">
+      <DependentUpon>FrmMunicipio.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmMunicipio.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmNotificacion.Designer.vb">
@@ -1513,10 +1537,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Form4.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>Form4.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FrmAccesos.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmAccesos.vb</DependentUpon>
@@ -1545,6 +1565,10 @@
       <DependentUpon>FrmBascula.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmComarca.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmComarca.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmCompañiaEndoso.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmCompañiaEndoso.vb</DependentUpon>
@@ -1556,6 +1580,10 @@
     <EmbeddedResource Include="FrmConductorPlanilla.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmConductorPlanilla.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmConsultorio.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmConsultorio.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmContratos.resx">
       <SubType>Designer</SubType>
@@ -1600,6 +1628,14 @@
     <EmbeddedResource Include="FrmDetalleLote.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmDetalleLote.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmDoctores.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmDoctores.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmEnfermeras.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmEnfermeras.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmEscolaridad.resx">
       <DependentUpon>FrmEscolaridad.vb</DependentUpon>
@@ -1668,6 +1704,10 @@
     <EmbeddedResource Include="FrmMostrarPesadas.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmMostrarPesadas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMunicipio.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmMunicipio.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmNotificacion.resx">
       <SubType>Designer</SubType>

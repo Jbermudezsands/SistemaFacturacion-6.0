@@ -175,21 +175,21 @@ Partial Class MDIMain
         Me.RibbonButton13 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonTab7 = New C1.Win.C1Ribbon.RibbonTab
         Me.RibbonGroup17 = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonButton19 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton21 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton22 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton25 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton26 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton23 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton24 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton27 = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonExpediente = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonAdmision = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonPreConsultas = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonConsultas = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonMedicamentos = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonExamenes = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonHospitalizacion = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonQuirofano = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonGroup18 = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonButton28 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton29 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton30 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton31 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton32 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton33 = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonDoctores = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonEnfermeras = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonDepartamentos = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonMunicipios = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonComarca = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonConsultorio = New C1.Win.C1Ribbon.RibbonButton
         Me.C1StatusBar1 = New C1.Win.C1Ribbon.C1StatusBar
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel2 = New C1.Win.C1Ribbon.RibbonLabel
@@ -1420,138 +1420,139 @@ Partial Class MDIMain
         'RibbonGroup17
         '
         Me.RibbonGroup17.ID = "RibbonGroup17"
-        Me.RibbonGroup17.Items.Add(Me.RibbonButton19)
-        Me.RibbonGroup17.Items.Add(Me.RibbonButton21)
-        Me.RibbonGroup17.Items.Add(Me.RibbonButton22)
-        Me.RibbonGroup17.Items.Add(Me.RibbonButton25)
-        Me.RibbonGroup17.Items.Add(Me.RibbonButton26)
-        Me.RibbonGroup17.Items.Add(Me.RibbonButton23)
-        Me.RibbonGroup17.Items.Add(Me.RibbonButton24)
-        Me.RibbonGroup17.Items.Add(Me.RibbonButton27)
+        Me.RibbonGroup17.Items.Add(Me.RibbonExpediente)
+        Me.RibbonGroup17.Items.Add(Me.RibbonAdmision)
+        Me.RibbonGroup17.Items.Add(Me.RibbonPreConsultas)
+        Me.RibbonGroup17.Items.Add(Me.RibbonConsultas)
+        Me.RibbonGroup17.Items.Add(Me.RibbonMedicamentos)
+        Me.RibbonGroup17.Items.Add(Me.RibbonExamenes)
+        Me.RibbonGroup17.Items.Add(Me.RibbonHospitalizacion)
+        Me.RibbonGroup17.Items.Add(Me.RibbonQuirofano)
         Me.RibbonGroup17.Text = "Procesos"
         '
-        'RibbonButton19
+        'RibbonExpediente
         '
-        Me.RibbonButton19.ID = "RibbonButton19"
-        Me.RibbonButton19.LargeImage = CType(resources.GetObject("RibbonButton19.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton19.SmallImage = CType(resources.GetObject("RibbonButton19.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton19.Text = "Expediente"
-        Me.RibbonButton19.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        Me.RibbonExpediente.ID = "RibbonExpediente"
+        Me.RibbonExpediente.LargeImage = CType(resources.GetObject("RibbonExpediente.LargeImage"), System.Drawing.Image)
+        Me.RibbonExpediente.SmallImage = CType(resources.GetObject("RibbonExpediente.SmallImage"), System.Drawing.Image)
+        Me.RibbonExpediente.Text = "Expediente"
+        Me.RibbonExpediente.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
-        'RibbonButton21
+        'RibbonAdmision
         '
-        Me.RibbonButton21.ID = "RibbonButton21"
-        Me.RibbonButton21.LargeImage = CType(resources.GetObject("RibbonButton21.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton21.SmallImage = CType(resources.GetObject("RibbonButton21.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton21.Text = "Admision"
-        Me.RibbonButton21.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        Me.RibbonAdmision.ID = "RibbonAdmision"
+        Me.RibbonAdmision.LargeImage = CType(resources.GetObject("RibbonAdmision.LargeImage"), System.Drawing.Image)
+        Me.RibbonAdmision.SmallImage = CType(resources.GetObject("RibbonAdmision.SmallImage"), System.Drawing.Image)
+        Me.RibbonAdmision.Text = "Admision"
+        Me.RibbonAdmision.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
-        'RibbonButton22
+        'RibbonPreConsultas
         '
-        Me.RibbonButton22.ID = "RibbonButton22"
-        Me.RibbonButton22.LargeImage = CType(resources.GetObject("RibbonButton22.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton22.SmallImage = CType(resources.GetObject("RibbonButton22.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton22.Text = "PreConsultas"
-        Me.RibbonButton22.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        Me.RibbonPreConsultas.ID = "RibbonPreConsultas"
+        Me.RibbonPreConsultas.LargeImage = CType(resources.GetObject("RibbonPreConsultas.LargeImage"), System.Drawing.Image)
+        Me.RibbonPreConsultas.SmallImage = CType(resources.GetObject("RibbonPreConsultas.SmallImage"), System.Drawing.Image)
+        Me.RibbonPreConsultas.Text = "PreConsultas"
+        Me.RibbonPreConsultas.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
-        'RibbonButton25
+        'RibbonConsultas
         '
-        Me.RibbonButton25.ID = "RibbonButton25"
-        Me.RibbonButton25.LargeImage = CType(resources.GetObject("RibbonButton25.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton25.SmallImage = CType(resources.GetObject("RibbonButton25.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton25.Text = "Consultas"
-        Me.RibbonButton25.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        Me.RibbonConsultas.ID = "RibbonConsultas"
+        Me.RibbonConsultas.LargeImage = CType(resources.GetObject("RibbonConsultas.LargeImage"), System.Drawing.Image)
+        Me.RibbonConsultas.SmallImage = CType(resources.GetObject("RibbonConsultas.SmallImage"), System.Drawing.Image)
+        Me.RibbonConsultas.Text = "Consultas"
+        Me.RibbonConsultas.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
-        'RibbonButton26
+        'RibbonMedicamentos
         '
-        Me.RibbonButton26.ID = "RibbonButton26"
-        Me.RibbonButton26.LargeImage = CType(resources.GetObject("RibbonButton26.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton26.SmallImage = CType(resources.GetObject("RibbonButton26.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton26.Text = "Medicamentos"
-        Me.RibbonButton26.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        Me.RibbonMedicamentos.ID = "RibbonMedicamentos"
+        Me.RibbonMedicamentos.LargeImage = CType(resources.GetObject("RibbonMedicamentos.LargeImage"), System.Drawing.Image)
+        Me.RibbonMedicamentos.SmallImage = CType(resources.GetObject("RibbonMedicamentos.SmallImage"), System.Drawing.Image)
+        Me.RibbonMedicamentos.Text = "Medicamentos"
+        Me.RibbonMedicamentos.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
-        'RibbonButton23
+        'RibbonExamenes
         '
-        Me.RibbonButton23.ID = "RibbonButton23"
-        Me.RibbonButton23.LargeImage = CType(resources.GetObject("RibbonButton23.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton23.SmallImage = CType(resources.GetObject("RibbonButton23.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton23.Text = "Examenes"
-        Me.RibbonButton23.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        Me.RibbonExamenes.ID = "RibbonExamenes"
+        Me.RibbonExamenes.LargeImage = CType(resources.GetObject("RibbonExamenes.LargeImage"), System.Drawing.Image)
+        Me.RibbonExamenes.SmallImage = CType(resources.GetObject("RibbonExamenes.SmallImage"), System.Drawing.Image)
+        Me.RibbonExamenes.Text = "Examenes"
+        Me.RibbonExamenes.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
-        'RibbonButton24
+        'RibbonHospitalizacion
         '
-        Me.RibbonButton24.ID = "RibbonButton24"
-        Me.RibbonButton24.LargeImage = CType(resources.GetObject("RibbonButton24.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton24.SmallImage = CType(resources.GetObject("RibbonButton24.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton24.Text = "Hospitalizacion"
-        Me.RibbonButton24.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        Me.RibbonHospitalizacion.ID = "RibbonHospitalizacion"
+        Me.RibbonHospitalizacion.LargeImage = CType(resources.GetObject("RibbonHospitalizacion.LargeImage"), System.Drawing.Image)
+        Me.RibbonHospitalizacion.SmallImage = CType(resources.GetObject("RibbonHospitalizacion.SmallImage"), System.Drawing.Image)
+        Me.RibbonHospitalizacion.Text = "Hospitalizacion"
+        Me.RibbonHospitalizacion.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
-        'RibbonButton27
+        'RibbonQuirofano
         '
-        Me.RibbonButton27.ID = "RibbonButton27"
-        Me.RibbonButton27.LargeImage = CType(resources.GetObject("RibbonButton27.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton27.SmallImage = CType(resources.GetObject("RibbonButton27.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton27.Text = "Quirofano"
-        Me.RibbonButton27.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        Me.RibbonQuirofano.ID = "RibbonQuirofano"
+        Me.RibbonQuirofano.LargeImage = CType(resources.GetObject("RibbonQuirofano.LargeImage"), System.Drawing.Image)
+        Me.RibbonQuirofano.SmallImage = CType(resources.GetObject("RibbonQuirofano.SmallImage"), System.Drawing.Image)
+        Me.RibbonQuirofano.Text = "Quirofano"
+        Me.RibbonQuirofano.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'RibbonGroup18
         '
         Me.RibbonGroup18.ID = "RibbonGroup18"
-        Me.RibbonGroup18.Items.Add(Me.RibbonButton28)
-        Me.RibbonGroup18.Items.Add(Me.RibbonButton29)
-        Me.RibbonGroup18.Items.Add(Me.RibbonButton30)
-        Me.RibbonGroup18.Items.Add(Me.RibbonButton31)
-        Me.RibbonGroup18.Items.Add(Me.RibbonButton32)
-        Me.RibbonGroup18.Items.Add(Me.RibbonButton33)
+        Me.RibbonGroup18.Items.Add(Me.RibbonDoctores)
+        Me.RibbonGroup18.Items.Add(Me.RibbonEnfermeras)
+        Me.RibbonGroup18.Items.Add(Me.RibbonDepartamentos)
+        Me.RibbonGroup18.Items.Add(Me.RibbonMunicipios)
+        Me.RibbonGroup18.Items.Add(Me.RibbonComarca)
+        Me.RibbonGroup18.Items.Add(Me.RibbonConsultorio)
         Me.RibbonGroup18.Text = "Catalogo"
         '
-        'RibbonButton28
+        'RibbonDoctores
         '
-        Me.RibbonButton28.ID = "RibbonButton28"
-        Me.RibbonButton28.LargeImage = CType(resources.GetObject("RibbonButton28.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton28.SmallImage = CType(resources.GetObject("RibbonButton28.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton28.Text = "Doctores"
-        Me.RibbonButton28.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        Me.RibbonDoctores.ID = "RibbonDoctores"
+        Me.RibbonDoctores.LargeImage = CType(resources.GetObject("RibbonDoctores.LargeImage"), System.Drawing.Image)
+        Me.RibbonDoctores.SmallImage = CType(resources.GetObject("RibbonDoctores.SmallImage"), System.Drawing.Image)
+        Me.RibbonDoctores.Text = "Doctores"
+        Me.RibbonDoctores.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
-        'RibbonButton29
+        'RibbonEnfermeras
         '
-        Me.RibbonButton29.ID = "RibbonButton29"
-        Me.RibbonButton29.LargeImage = CType(resources.GetObject("RibbonButton29.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton29.SmallImage = CType(resources.GetObject("RibbonButton29.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton29.Text = "Enfermeras"
-        Me.RibbonButton29.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        Me.RibbonEnfermeras.AllowSelection = True
+        Me.RibbonEnfermeras.ID = "RibbonEnfermeras"
+        Me.RibbonEnfermeras.LargeImage = CType(resources.GetObject("RibbonEnfermeras.LargeImage"), System.Drawing.Image)
+        Me.RibbonEnfermeras.SmallImage = CType(resources.GetObject("RibbonEnfermeras.SmallImage"), System.Drawing.Image)
+        Me.RibbonEnfermeras.Text = "Enfermeras"
+        Me.RibbonEnfermeras.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
-        'RibbonButton30
+        'RibbonDepartamentos
         '
-        Me.RibbonButton30.ID = "RibbonButton30"
-        Me.RibbonButton30.LargeImage = CType(resources.GetObject("RibbonButton30.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton30.SmallImage = CType(resources.GetObject("RibbonButton30.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton30.Text = "Departamentos"
-        Me.RibbonButton30.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        Me.RibbonDepartamentos.ID = "RibbonDepartamentos"
+        Me.RibbonDepartamentos.LargeImage = CType(resources.GetObject("RibbonDepartamentos.LargeImage"), System.Drawing.Image)
+        Me.RibbonDepartamentos.SmallImage = CType(resources.GetObject("RibbonDepartamentos.SmallImage"), System.Drawing.Image)
+        Me.RibbonDepartamentos.Text = "Departamentos"
+        Me.RibbonDepartamentos.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
-        'RibbonButton31
+        'RibbonMunicipios
         '
-        Me.RibbonButton31.ID = "RibbonButton31"
-        Me.RibbonButton31.LargeImage = CType(resources.GetObject("RibbonButton31.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton31.SmallImage = CType(resources.GetObject("RibbonButton31.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton31.Text = "Municipios"
-        Me.RibbonButton31.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        Me.RibbonMunicipios.ID = "RibbonMunicipios"
+        Me.RibbonMunicipios.LargeImage = CType(resources.GetObject("RibbonMunicipios.LargeImage"), System.Drawing.Image)
+        Me.RibbonMunicipios.SmallImage = CType(resources.GetObject("RibbonMunicipios.SmallImage"), System.Drawing.Image)
+        Me.RibbonMunicipios.Text = "Municipios"
+        Me.RibbonMunicipios.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
-        'RibbonButton32
+        'RibbonComarca
         '
-        Me.RibbonButton32.ID = "RibbonButton32"
-        Me.RibbonButton32.LargeImage = CType(resources.GetObject("RibbonButton32.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton32.SmallImage = CType(resources.GetObject("RibbonButton32.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton32.Text = "Comarcas"
-        Me.RibbonButton32.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        Me.RibbonComarca.ID = "RibbonComarca"
+        Me.RibbonComarca.LargeImage = CType(resources.GetObject("RibbonComarca.LargeImage"), System.Drawing.Image)
+        Me.RibbonComarca.SmallImage = CType(resources.GetObject("RibbonComarca.SmallImage"), System.Drawing.Image)
+        Me.RibbonComarca.Text = "Comarcas"
+        Me.RibbonComarca.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
-        'RibbonButton33
+        'RibbonConsultorio
         '
-        Me.RibbonButton33.ID = "RibbonButton33"
-        Me.RibbonButton33.LargeImage = CType(resources.GetObject("RibbonButton33.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton33.SmallImage = CType(resources.GetObject("RibbonButton33.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton33.Text = "Consultorios"
-        Me.RibbonButton33.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        Me.RibbonConsultorio.ID = "RibbonConsultorio"
+        Me.RibbonConsultorio.LargeImage = CType(resources.GetObject("RibbonConsultorio.LargeImage"), System.Drawing.Image)
+        Me.RibbonConsultorio.SmallImage = CType(resources.GetObject("RibbonConsultorio.SmallImage"), System.Drawing.Image)
+        Me.RibbonConsultorio.Text = "Consultorios"
+        Me.RibbonConsultorio.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'C1StatusBar1
         '
@@ -1768,20 +1769,20 @@ Partial Class MDIMain
     Friend WithEvents RibbonLabel2 As C1.Win.C1Ribbon.RibbonLabel
     Friend WithEvents RibbonTab7 As C1.Win.C1Ribbon.RibbonTab
     Friend WithEvents RibbonGroup17 As C1.Win.C1Ribbon.RibbonGroup
-    Friend WithEvents RibbonButton19 As C1.Win.C1Ribbon.RibbonButton
-    Friend WithEvents RibbonButton21 As C1.Win.C1Ribbon.RibbonButton
-    Friend WithEvents RibbonButton22 As C1.Win.C1Ribbon.RibbonButton
-    Friend WithEvents RibbonButton23 As C1.Win.C1Ribbon.RibbonButton
-    Friend WithEvents RibbonButton24 As C1.Win.C1Ribbon.RibbonButton
-    Friend WithEvents RibbonButton25 As C1.Win.C1Ribbon.RibbonButton
-    Friend WithEvents RibbonButton26 As C1.Win.C1Ribbon.RibbonButton
-    Friend WithEvents RibbonButton27 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonExpediente As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonAdmision As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonPreConsultas As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonExamenes As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonHospitalizacion As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonConsultas As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonMedicamentos As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonQuirofano As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonGroup18 As C1.Win.C1Ribbon.RibbonGroup
-    Friend WithEvents RibbonButton28 As C1.Win.C1Ribbon.RibbonButton
-    Friend WithEvents RibbonButton29 As C1.Win.C1Ribbon.RibbonButton
-    Friend WithEvents RibbonButton30 As C1.Win.C1Ribbon.RibbonButton
-    Friend WithEvents RibbonButton32 As C1.Win.C1Ribbon.RibbonButton
-    Friend WithEvents RibbonButton31 As C1.Win.C1Ribbon.RibbonButton
-    Friend WithEvents RibbonButton33 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonDoctores As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonEnfermeras As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonDepartamentos As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonComarca As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonMunicipios As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonConsultorio As C1.Win.C1Ribbon.RibbonButton
 
 End Class

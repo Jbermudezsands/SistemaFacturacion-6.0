@@ -1264,7 +1264,39 @@ Public Class MDIMain
         My.Forms.FrmEvacuaciones.Show()
     End Sub
 
-    Private Sub RibbonButton24_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton24.Click
 
+    Private Sub RibbonButton19_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonExpediente.Click
+        My.Forms.FrmExpediente.MdiParent = Me
+        My.Forms.FrmExpediente.Show()
+    End Sub
+
+    Private Sub RibbonDepartamentos_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonDepartamentos.Click
+        My.Forms.FrmDepartamentos.MdiParent = Me
+        My.Forms.FrmDepartamentos.Show()
+    End Sub
+
+    Private Sub RibbonDoctores_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonDoctores.Click
+        My.Forms.FrmDoctores.MdiParent = Me
+        My.Forms.FrmDoctores.Show()
+    End Sub
+
+    Private Sub RibbonEnfermeras_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonEnfermeras.Click
+        My.Forms.FrmEnfermeras.MdiParent = Me
+        My.Forms.FrmEnfermeras.Show()
+    End Sub
+
+    Private Sub RibbonMunicipios_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonMunicipios.Click
+        My.Forms.FrmMunicipio.MdiParent = Me
+        My.Forms.FrmMunicipio.Show()
+    End Sub
+
+    Private Sub RibbonComarca_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonComarca.Click
+        My.Forms.FrmComarca.MdiParent = Me
+        My.Forms.FrmComarca.Show()
+    End Sub
+
+    Private Sub RibbonConsultorio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonConsultorio.Click
+        My.Forms.FrmConsultorio.MdiParent = Me
+        My.Forms.FrmConsultorio.Show()
     End Sub
 End Class

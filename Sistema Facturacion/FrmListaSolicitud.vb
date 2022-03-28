@@ -138,7 +138,7 @@ Public Class FrmListaSolicitud
                 If n > 1 Then
                     tmp = tmp & " AND "
                 End If
-                tmp = tmp & col.DataField & " LIKE '" & col.FilterText & "*'"
+                tmp = tmp & col.DataField & " LIKE '*" & col.FilterText & "*'"
             End If
         Next col
 
@@ -162,7 +162,8 @@ Public Class FrmListaSolicitud
         Next dc
 
 
-        Me.DataSetGlobal.Tables("Lista").DefaultView.RowFilter = sb.ToString()
+        Me.DataSetGlobal.Tables("Lista").DefaultView.RowFilter = getFilter()  'sb.ToString()
+
 
 
     End Sub

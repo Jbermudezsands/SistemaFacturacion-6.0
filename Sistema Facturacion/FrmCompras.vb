@@ -2937,15 +2937,6 @@ Public Class FrmCompras
         Me.CmdFacturar.Enabled = False
 
     End Sub
-
-    Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-    End Sub
-
-    Private Sub TrueDBGridComponentes_ContextMenuChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.ContextMenuChanged
-
-    End Sub
-
     Private Sub OptExsonerado_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptExsonerado.CheckedChanged
         ActualizaMETODOcOMPRA()
     End Sub
@@ -3671,6 +3662,10 @@ Public Class FrmCompras
     End Sub
 
     Private Sub TrueDBGridComponentes_ControlAdded(ByVal sender As Object, ByVal e As System.Windows.Forms.ControlEventArgs) Handles TrueDBGridComponentes.ControlAdded
+
+    End Sub
+
+    Private Sub TrueDBGridComponentes_ChangeUICues(ByVal sender As Object, ByVal e As System.Windows.Forms.UICuesEventArgs) Handles TrueDBGridComponentes.ChangeUICues
 
     End Sub
 End Class

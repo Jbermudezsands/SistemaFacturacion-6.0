@@ -1,9 +1,9 @@
 Public Class FrmConsultas
     Public DataSet As New DataSet, TipoEnsamble As String, CodIva As String, TipoCompra As String, CodCajero As String, Nombres As String, Apellidos As String
-    Public MiConexion As New SqlClient.SqlConnection(Conexion), Codigo As String, Descripcion As String, TipoProducto As String, CodComponente As Double, Precio As Double
+    Public MiConexion As New SqlClient.SqlConnection(Conexion), Codigo As String, Descripcion As String, Descripcion2 As String, TipoProducto As String, CodComponente As Double, Precio As Double
     Public MiconexionContabilidad As New SqlClient.SqlConnection(ConexionContabilidad), Cantidad As Double, CodProducto As String, Fecha As Date, FechaHora As Date, Nombre_Recolector As String, Telefono_Recolector As String, Cecula_Recolector As String
     Public DescripcionImpuestos As String, TasaImpuestos As Double, TipoImpuesto As String, CodigoCliente As String, Tipo As String, CodigoProveedor As String, NumFactura As String, Conductor As String, CodProveedor As String
-    Public CodBodega As String, TipoContrato As String
+    Public CodBodega As String, TipoContrato As String, Codigo_Departamento As String
 
     Private Sub C1TrueDBGrid1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
@@ -29,6 +29,150 @@ Public Class FrmConsultas
             Dim DataAdapter As New SqlClient.SqlDataAdapter, SQlProductos As String
 
             Select Case Quien
+                Case "Comarca"
+                    Dim CodigoBodega As String = ""
+
+                    Me.Size = New System.Drawing.Size(988, 424)
+                    Me.Location = New Point(160, 160)
+
+                    Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
+                    Me.ButtonSalir.Location = New Point(880, 305)
+
+                    'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Precio_Lista, Existencia_Unidades,Cod_Iva FROM Productos"
+                    SQlProductos = "SELECT        Municipio.IdMunicipio, Municipio.Cod_Departamento, Municipio.Nombre_Municipio As NombreComarca, Municipio.Tipo, Municipio_1.Nombre_Municipio AS NombreMunicipio FROM  Municipio INNER JOIN  Municipio AS Municipio_1 ON Municipio.Cod_Departamento = Municipio_1.IdMunicipio WHERE (Municipio.Tipo = 'Comarca') AND (Municipio_1.Tipo = 'Municipio')"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    MiConexion.Open()
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Cod_Departamento").Visible = False
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("NombreMunicipio").Visible = False
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Tipo").Visible = False
+                    Me.TrueDBGridConsultas.Columns("IdMunicipio").Caption = "Codigo"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("IdMunicipio").Width = 70
+                    Me.TrueDBGridConsultas.Columns("NombreMunicipio").Caption = "Descripcion"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("NombreComarca").Width = 300
+
+
+                    MiConexion.Close()
+
+                Case "Municipio"
+                    Dim CodigoBodega As String = ""
+
+                    Me.Size = New System.Drawing.Size(988, 424)
+                    Me.Location = New Point(160, 160)
+
+                    Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
+                    Me.ButtonSalir.Location = New Point(880, 305)
+
+                    'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Precio_Lista, Existencia_Unidades,Cod_Iva FROM Productos"
+                    SQlProductos = "SELECT       Municipio.IdMunicipio, Municipio.Cod_Departamento, Municipio.Nombre_Municipio, Municipio.Tipo, Departamentos.Nombre_Departamento FROM  Municipio INNER JOIN Departamentos ON Municipio.Cod_Departamento = Departamentos.Cod_Departamento WHERE  (Municipio.Tipo = 'Municipio')"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    MiConexion.Open()
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Nombre_Departamento").Visible = False
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Cod_Departamento").Visible = False
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Tipo").Visible = False
+                    Me.TrueDBGridConsultas.Columns("IdMunicipio").Caption = "Codigo"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("IdMunicipio").Width = 70
+                    Me.TrueDBGridConsultas.Columns("Nombre_Municipio").Caption = "Descripcion"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Nombre_Municipio").Width = 300
+
+
+                    MiConexion.Close()
+                Case "CodigoDepartamento"
+                    Dim CodigoBodega As String = ""
+
+                    'Me.Size = New System.Drawing.Size(988, 424)
+                    'Me.Location = New Point(160, 160)
+
+                    Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
+                    Me.ButtonSalir.Location = New Point(880, 305)
+
+                    'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Precio_Lista, Existencia_Unidades,Cod_Iva FROM Productos"
+                    SQlProductos = "SELECT Departamentos.* FROM Departamentos"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    MiConexion.Open()
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Codigo"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(0).Width = 70
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 100
+
+
+                    MiConexion.Close()
+
+                Case "Enfermeras"
+                    Dim CodigoBodega As String = ""
+
+                    Me.Size = New System.Drawing.Size(988, 424)
+                    Me.Location = New Point(160, 160)
+
+                    Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
+                    Me.ButtonSalir.Location = New Point(880, 305)
+
+                    'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Precio_Lista, Existencia_Unidades,Cod_Iva FROM Productos"
+                    SQlProductos = "SELECT Doctores.* FROM Doctores WHERE (Tipo='Enfermera')"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    MiConexion.Open()
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Codigo"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(0).Width = 70
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 170
+
+
+                    MiConexion.Close()
+                Case "Doctores"
+                    Dim CodigoBodega As String = ""
+
+                    Me.Size = New System.Drawing.Size(988, 424)
+                    Me.Location = New Point(160, 160)
+
+                    Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
+                    Me.ButtonSalir.Location = New Point(880, 305)
+
+                    'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Precio_Lista, Existencia_Unidades,Cod_Iva FROM Productos"
+                    SQlProductos = "SELECT Doctores.* FROM Doctores WHERE (Tipo='Doctor')"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    MiConexion.Open()
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Codigo"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(0).Width = 70
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 170
+
+
+                    MiConexion.Close()
+
                 Case "CodigoProductosContratos"
                     Dim CodigoBodega As String = ""
 
@@ -1373,6 +1517,27 @@ Public Class FrmConsultas
         TipoProducto = ""
 
         Select Case Quien
+            Case "Comarca"
+                Posicion = Me.BindingConsultas.Position
+                Codigo = Me.BindingConsultas.Item(Posicion)("IdMunicipio")
+                Descripcion = Me.BindingConsultas.Item(Posicion)("NombreComarca")
+                Codigo_Departamento = Me.BindingConsultas.Item(Posicion)("Cod_Departamento")
+                Descripcion2 = Me.BindingConsultas.Item(Posicion)("NombreMunicipio")
+            Case "Municipio"
+                Posicion = Me.BindingConsultas.Position
+                Codigo = Me.BindingConsultas.Item(Posicion)("IdMunicipio")
+                Descripcion = Me.BindingConsultas.Item(Posicion)("Nombre_Municipio")
+                Codigo_Departamento = Me.BindingConsultas.Item(Posicion)("Cod_Departamento")
+                Descripcion2 = Me.BindingConsultas.Item(Posicion)("Nombre_Departamento")
+            Case "CodigoDepartamento"
+                Posicion = Me.BindingConsultas.Position
+                Codigo = Me.BindingConsultas.Item(Posicion)("Cod_Departamento")
+            Case "Enfermeras"
+                Posicion = Me.BindingConsultas.Position
+                Codigo = Me.BindingConsultas.Item(Posicion)("Codigo_Minsa")
+            Case "Doctores"
+                Posicion = Me.BindingConsultas.Position
+                Codigo = Me.BindingConsultas.Item(Posicion)("Codigo_Minsa")
             Case "CodigoProductosContratos"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("Cod_Productos")
@@ -1803,15 +1968,6 @@ Public Class FrmConsultas
 
     End Sub
 
-
-    Private Sub TrueDBGridConsultas_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridConsultas.Click
-
-    End Sub
-
-    Private Sub TrueDBGridConsultas_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TrueDBGridConsultas.KeyPress
-
-    End Sub
-
     Private Sub TrueDBGridConsultas_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TrueDBGridConsultas.KeyDown
         If e.KeyCode = Keys.Enter Then
             Button2_Click(sender, e)
@@ -1819,4 +1975,7 @@ Public Class FrmConsultas
     End Sub
 
 
+    Private Sub TrueDBGridConsultas_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridConsultas.Click
+
+    End Sub
 End Class
