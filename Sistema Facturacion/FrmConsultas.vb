@@ -3,11 +3,7 @@ Public Class FrmConsultas
     Public MiConexion As New SqlClient.SqlConnection(Conexion), Codigo As String, Descripcion As String, Descripcion2 As String, TipoProducto As String, CodComponente As Double, Precio As Double
     Public MiconexionContabilidad As New SqlClient.SqlConnection(ConexionContabilidad), Cantidad As Double, CodProducto As String, Fecha As Date, FechaHora As Date, Nombre_Recolector As String, Telefono_Recolector As String, Cecula_Recolector As String
     Public DescripcionImpuestos As String, TasaImpuestos As Double, TipoImpuesto As String, CodigoCliente As String, Tipo As String, CodigoProveedor As String, NumFactura As String, Conductor As String, CodProveedor As String
-    Public CodBodega As String, TipoContrato As String, Codigo_Departamento As String
-
-    Private Sub C1TrueDBGrid1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-    End Sub
+    Public CodBodega As String, TipoContrato As String, Codigo_Departamento As String, Codigo_Minsa As String, IdConsulta As Double
 
     Private Sub FrmConsultas_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
@@ -29,6 +25,34 @@ Public Class FrmConsultas
             Dim DataAdapter As New SqlClient.SqlDataAdapter, SQlProductos As String
 
             Select Case Quien
+                Case "Consultorio"
+                    Dim CodigoBodega As String = ""
+
+                    Me.Size = New System.Drawing.Size(988, 424)
+                    Me.Location = New Point(160, 160)
+
+                    Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
+                    Me.ButtonSalir.Location = New Point(880, 305)
+
+                    SQlProductos = "SELECT  Consultorio.IdConsultorio, Consultorio.Nombre_Consultorio, Consultorio.Codigo_Minsa, Doctores.Nombre_Doctor + ' ' + Doctores.Apellido_Doctor AS Nombres FROM  Consultorio INNER JOIN  Doctores ON Consultorio.Codigo_Minsa = Doctores.Codigo_Minsa"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    MiConexion.Open()
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+                    Me.TrueDBGridConsultas.Columns("IdConsultorio").Caption = "Codigo"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("IdConsultorio").Width = 70
+                    Me.TrueDBGridConsultas.Columns("Nombre_Consultorio").Caption = "Descripcion"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Nombre_Consultorio").Width = 200
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Nombres").Width = 300
+
+
+                    MiConexion.Close()
+
                 Case "Comarca"
                     Dim CodigoBodega As String = ""
 
@@ -1517,6 +1541,12 @@ Public Class FrmConsultas
         TipoProducto = ""
 
         Select Case Quien
+            Case "Consultorio"
+                Posicion = Me.BindingConsultas.Position
+                IdConsulta = Me.BindingConsultas.Item(Posicion)("IdConsultorio")
+                Descripcion = Me.BindingConsultas.Item(Posicion)("Nombre_Consultorio")
+                Codigo_Minsa = Me.BindingConsultas.Item(Posicion)("Codigo_Minsa")
+                Descripcion2 = Me.BindingConsultas.Item(Posicion)("Nombres")
             Case "Comarca"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("IdMunicipio")
@@ -1535,9 +1565,11 @@ Public Class FrmConsultas
             Case "Enfermeras"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("Codigo_Minsa")
+                Descripcion = Me.BindingConsultas.Item(Posicion)("Nombre_Doctor") & " " & Me.BindingConsultas.Item(Posicion)("Apellido_Doctor")
             Case "Doctores"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("Codigo_Minsa")
+                Descripcion = Me.BindingConsultas.Item(Posicion)("Nombre_Doctor") & " " & Me.BindingConsultas.Item(Posicion)("Apellido_Doctor")
             Case "CodigoProductosContratos"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("Cod_Productos")

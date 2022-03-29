@@ -23,7 +23,7 @@ Partial Class FrmConsultorio
         Me.Button1 = New System.Windows.Forms.Button
         Me.LblIdConsultorio = New System.Windows.Forms.Label
         Me.Button3 = New System.Windows.Forms.Button
-        Me.CboCodigoLinea = New C1.Win.C1List.C1Combo
+        Me.CboCodigoDoctor = New C1.Win.C1List.C1Combo
         Me.CmdGrabar = New System.Windows.Forms.Button
         Me.ButtonBorrar = New System.Windows.Forms.Button
         Me.CmdNuevo = New System.Windows.Forms.Button
@@ -34,7 +34,7 @@ Partial Class FrmConsultorio
         Me.Label9 = New System.Windows.Forms.Label
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        CType(Me.CboCodigoLinea, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.CboCodigoDoctor, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -42,7 +42,7 @@ Partial Class FrmConsultorio
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(218, 71)
+        Me.Button1.Location = New System.Drawing.Point(305, 67)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(29, 30)
         Me.Button1.TabIndex = 338
@@ -52,7 +52,7 @@ Partial Class FrmConsultorio
         '
         Me.LblIdConsultorio.AutoSize = True
         Me.LblIdConsultorio.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.LblIdConsultorio.Location = New System.Drawing.Point(86, 77)
+        Me.LblIdConsultorio.Location = New System.Drawing.Point(19, 162)
         Me.LblIdConsultorio.Name = "LblIdConsultorio"
         Me.LblIdConsultorio.Size = New System.Drawing.Size(0, 13)
         Me.LblIdConsultorio.TabIndex = 337
@@ -60,49 +60,49 @@ Partial Class FrmConsultorio
         'Button3
         '
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
-        Me.Button3.Location = New System.Drawing.Point(303, 97)
+        Me.Button3.Location = New System.Drawing.Point(304, 100)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(29, 30)
         Me.Button3.TabIndex = 335
         Me.Button3.UseVisualStyleBackColor = True
         '
-        'CboCodigoLinea
+        'CboCodigoDoctor
         '
-        Me.CboCodigoLinea.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
-        Me.CboCodigoLinea.Caption = ""
-        Me.CboCodigoLinea.CaptionHeight = 17
-        Me.CboCodigoLinea.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
-        Me.CboCodigoLinea.ColumnCaptionHeight = 17
-        Me.CboCodigoLinea.ColumnFooterHeight = 17
-        Me.CboCodigoLinea.ComboStyle = C1.Win.C1List.ComboStyleEnum.DropdownList
-        Me.CboCodigoLinea.ContentHeight = 15
-        Me.CboCodigoLinea.DeadAreaBackColor = System.Drawing.Color.Empty
-        Me.CboCodigoLinea.DisplayMember = "Nombres"
-        Me.CboCodigoLinea.DropDownWidth = 300
-        Me.CboCodigoLinea.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CboCodigoLinea.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CboCodigoLinea.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CboCodigoLinea.EditorHeight = 15
-        Me.CboCodigoLinea.Images.Add(CType(resources.GetObject("CboCodigoLinea.Images"), System.Drawing.Image))
-        Me.CboCodigoLinea.ItemHeight = 15
-        Me.CboCodigoLinea.Location = New System.Drawing.Point(88, 103)
-        Me.CboCodigoLinea.MatchEntryTimeout = CType(2000, Long)
-        Me.CboCodigoLinea.MaxDropDownItems = CType(5, Short)
-        Me.CboCodigoLinea.MaxLength = 32767
-        Me.CboCodigoLinea.MouseCursor = System.Windows.Forms.Cursors.Default
-        Me.CboCodigoLinea.Name = "CboCodigoLinea"
-        Me.CboCodigoLinea.RowDivider.Color = System.Drawing.Color.DarkGray
-        Me.CboCodigoLinea.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
-        Me.CboCodigoLinea.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboCodigoLinea.Size = New System.Drawing.Size(209, 21)
-        Me.CboCodigoLinea.TabIndex = 324
-        Me.CboCodigoLinea.PropBag = resources.GetString("CboCodigoLinea.PropBag")
+        Me.CboCodigoDoctor.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboCodigoDoctor.Caption = ""
+        Me.CboCodigoDoctor.CaptionHeight = 17
+        Me.CboCodigoDoctor.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboCodigoDoctor.ColumnCaptionHeight = 17
+        Me.CboCodigoDoctor.ColumnFooterHeight = 17
+        Me.CboCodigoDoctor.ComboStyle = C1.Win.C1List.ComboStyleEnum.DropdownList
+        Me.CboCodigoDoctor.ContentHeight = 15
+        Me.CboCodigoDoctor.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboCodigoDoctor.DisplayMember = "Nombres"
+        Me.CboCodigoDoctor.DropDownWidth = 300
+        Me.CboCodigoDoctor.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboCodigoDoctor.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboCodigoDoctor.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboCodigoDoctor.EditorHeight = 15
+        Me.CboCodigoDoctor.Images.Add(CType(resources.GetObject("CboCodigoDoctor.Images"), System.Drawing.Image))
+        Me.CboCodigoDoctor.ItemHeight = 15
+        Me.CboCodigoDoctor.Location = New System.Drawing.Point(88, 103)
+        Me.CboCodigoDoctor.MatchEntryTimeout = CType(2000, Long)
+        Me.CboCodigoDoctor.MaxDropDownItems = CType(5, Short)
+        Me.CboCodigoDoctor.MaxLength = 32767
+        Me.CboCodigoDoctor.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboCodigoDoctor.Name = "CboCodigoDoctor"
+        Me.CboCodigoDoctor.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboCodigoDoctor.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboCodigoDoctor.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboCodigoDoctor.Size = New System.Drawing.Size(209, 21)
+        Me.CboCodigoDoctor.TabIndex = 324
+        Me.CboCodigoDoctor.PropBag = resources.GetString("CboCodigoDoctor.PropBag")
         '
         'CmdGrabar
         '
         Me.CmdGrabar.Image = CType(resources.GetObject("CmdGrabar.Image"), System.Drawing.Image)
         Me.CmdGrabar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdGrabar.Location = New System.Drawing.Point(88, 192)
+        Me.CmdGrabar.Location = New System.Drawing.Point(90, 136)
         Me.CmdGrabar.Name = "CmdGrabar"
         Me.CmdGrabar.Size = New System.Drawing.Size(78, 68)
         Me.CmdGrabar.TabIndex = 327
@@ -114,7 +114,7 @@ Partial Class FrmConsultorio
         '
         Me.ButtonBorrar.Image = CType(resources.GetObject("ButtonBorrar.Image"), System.Drawing.Image)
         Me.ButtonBorrar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonBorrar.Location = New System.Drawing.Point(172, 192)
+        Me.ButtonBorrar.Location = New System.Drawing.Point(174, 136)
         Me.ButtonBorrar.Name = "ButtonBorrar"
         Me.ButtonBorrar.Size = New System.Drawing.Size(75, 67)
         Me.ButtonBorrar.TabIndex = 328
@@ -126,7 +126,7 @@ Partial Class FrmConsultorio
         '
         Me.CmdNuevo.Image = CType(resources.GetObject("CmdNuevo.Image"), System.Drawing.Image)
         Me.CmdNuevo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdNuevo.Location = New System.Drawing.Point(7, 192)
+        Me.CmdNuevo.Location = New System.Drawing.Point(9, 136)
         Me.CmdNuevo.Name = "CmdNuevo"
         Me.CmdNuevo.Size = New System.Drawing.Size(75, 67)
         Me.CmdNuevo.TabIndex = 326
@@ -139,7 +139,7 @@ Partial Class FrmConsultorio
         Me.Button8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
         Me.Button8.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button8.Location = New System.Drawing.Point(268, 192)
+        Me.Button8.Location = New System.Drawing.Point(270, 136)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(75, 66)
         Me.Button8.TabIndex = 329
@@ -149,15 +149,15 @@ Partial Class FrmConsultorio
         '
         'TxtNombre
         '
-        Me.TxtNombre.Location = New System.Drawing.Point(88, 130)
+        Me.TxtNombre.Location = New System.Drawing.Point(88, 77)
         Me.TxtNombre.Name = "TxtNombre"
-        Me.TxtNombre.Size = New System.Drawing.Size(252, 20)
+        Me.TxtNombre.Size = New System.Drawing.Size(209, 20)
         Me.TxtNombre.TabIndex = 325
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(19, 130)
+        Me.Label2.Location = New System.Drawing.Point(19, 77)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(59, 13)
         Me.Label2.TabIndex = 334
@@ -208,11 +208,11 @@ Partial Class FrmConsultorio
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(357, 261)
+        Me.ClientSize = New System.Drawing.Size(357, 206)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.LblIdConsultorio)
         Me.Controls.Add(Me.Button3)
-        Me.Controls.Add(Me.CboCodigoLinea)
+        Me.Controls.Add(Me.CboCodigoDoctor)
         Me.Controls.Add(Me.CmdGrabar)
         Me.Controls.Add(Me.ButtonBorrar)
         Me.Controls.Add(Me.CmdNuevo)
@@ -225,7 +225,7 @@ Partial Class FrmConsultorio
         Me.Controls.Add(Me.PictureBox1)
         Me.Name = "FrmConsultorio"
         Me.Text = "FrmConsultorio"
-        CType(Me.CboCodigoLinea, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.CboCodigoDoctor, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
@@ -235,7 +235,7 @@ Partial Class FrmConsultorio
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents LblIdConsultorio As System.Windows.Forms.Label
     Friend WithEvents Button3 As System.Windows.Forms.Button
-    Friend WithEvents CboCodigoLinea As C1.Win.C1List.C1Combo
+    Friend WithEvents CboCodigoDoctor As C1.Win.C1List.C1Combo
     Friend WithEvents CmdGrabar As System.Windows.Forms.Button
     Friend WithEvents ButtonBorrar As System.Windows.Forms.Button
     Friend WithEvents CmdNuevo As System.Windows.Forms.Button

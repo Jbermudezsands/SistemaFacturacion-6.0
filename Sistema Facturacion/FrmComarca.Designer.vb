@@ -43,7 +43,7 @@ Partial Class FrmComarca
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(219, 69)
+        Me.Button1.Location = New System.Drawing.Point(304, 65)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(29, 30)
         Me.Button1.TabIndex = 323
@@ -53,19 +53,21 @@ Partial Class FrmComarca
         '
         Me.LblIdMunicipio.AutoSize = True
         Me.LblIdMunicipio.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.LblIdMunicipio.Location = New System.Drawing.Point(87, 75)
+        Me.LblIdMunicipio.Location = New System.Drawing.Point(230, 113)
         Me.LblIdMunicipio.Name = "LblIdMunicipio"
         Me.LblIdMunicipio.Size = New System.Drawing.Size(0, 13)
         Me.LblIdMunicipio.TabIndex = 322
+        Me.LblIdMunicipio.Visible = False
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(17, 78)
+        Me.Label3.Location = New System.Drawing.Point(6, 62)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(61, 13)
         Me.Label3.TabIndex = 321
         Me.Label3.Text = "Id Comarca"
+        Me.Label3.Visible = False
         '
         'Button3
         '
@@ -112,7 +114,7 @@ Partial Class FrmComarca
         '
         Me.CmdGrabar.Image = CType(resources.GetObject("CmdGrabar.Image"), System.Drawing.Image)
         Me.CmdGrabar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdGrabar.Location = New System.Drawing.Point(89, 190)
+        Me.CmdGrabar.Location = New System.Drawing.Point(92, 135)
         Me.CmdGrabar.Name = "CmdGrabar"
         Me.CmdGrabar.Size = New System.Drawing.Size(78, 68)
         Me.CmdGrabar.TabIndex = 312
@@ -124,7 +126,7 @@ Partial Class FrmComarca
         '
         Me.ButtonBorrar.Image = CType(resources.GetObject("ButtonBorrar.Image"), System.Drawing.Image)
         Me.ButtonBorrar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonBorrar.Location = New System.Drawing.Point(173, 190)
+        Me.ButtonBorrar.Location = New System.Drawing.Point(176, 135)
         Me.ButtonBorrar.Name = "ButtonBorrar"
         Me.ButtonBorrar.Size = New System.Drawing.Size(75, 67)
         Me.ButtonBorrar.TabIndex = 313
@@ -136,7 +138,7 @@ Partial Class FrmComarca
         '
         Me.CmdNuevo.Image = CType(resources.GetObject("CmdNuevo.Image"), System.Drawing.Image)
         Me.CmdNuevo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdNuevo.Location = New System.Drawing.Point(8, 190)
+        Me.CmdNuevo.Location = New System.Drawing.Point(11, 135)
         Me.CmdNuevo.Name = "CmdNuevo"
         Me.CmdNuevo.Size = New System.Drawing.Size(75, 67)
         Me.CmdNuevo.TabIndex = 311
@@ -149,7 +151,7 @@ Partial Class FrmComarca
         Me.Button8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
         Me.Button8.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button8.Location = New System.Drawing.Point(269, 190)
+        Me.Button8.Location = New System.Drawing.Point(272, 135)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(75, 66)
         Me.Button8.TabIndex = 314
@@ -159,15 +161,15 @@ Partial Class FrmComarca
         '
         'TxtNombre
         '
-        Me.TxtNombre.Location = New System.Drawing.Point(89, 128)
+        Me.TxtNombre.Location = New System.Drawing.Point(89, 75)
         Me.TxtNombre.Name = "TxtNombre"
-        Me.TxtNombre.Size = New System.Drawing.Size(252, 20)
+        Me.TxtNombre.Size = New System.Drawing.Size(209, 20)
         Me.TxtNombre.TabIndex = 310
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(20, 128)
+        Me.Label2.Location = New System.Drawing.Point(20, 82)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(63, 13)
         Me.Label2.TabIndex = 319
@@ -218,7 +220,7 @@ Partial Class FrmComarca
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(363, 261)
+        Me.ClientSize = New System.Drawing.Size(363, 208)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.LblIdMunicipio)
         Me.Controls.Add(Me.Label3)

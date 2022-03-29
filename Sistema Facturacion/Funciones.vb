@@ -4,8 +4,74 @@ Imports System.IO
 Imports System.Drawing.Imaging
 
 Module Funciones
+    Public Sub Grabar_Consultorio(ByVal IdConsultorio As Double, ByVal Codigo_Minsa As String, ByVal Nombre_Consultorio As String)
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim SQLstring As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+
+        Try
 
 
+
+            If Codigo_Minsa = "" Then
+                MsgBox("Se necesita el codigo del doctor", MsgBoxStyle.Critical, "Sistema de Facturacion")
+                Exit Sub
+            End If
+
+            If Nombre_Consultorio = "" Then
+                MsgBox("Se necesita el codigo del consultorio", MsgBoxStyle.Critical, "Sistema de Facturacion")
+                Exit Sub
+            End If
+
+            SQLstring = "SELECT  IdConsultorio, Codigo_Minsa, Nombre_Consultorio  FROM Consultorio WHERE (IdConsultorio = " & IdConsultorio & ")"
+            DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
+            DataAdapter.Fill(DataSet, "Consultorio")
+            If Not DataSet.Tables("Consultorio").Rows.Count = 0 Then
+                '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
+                StrSqlUpdate = "UPDATE [Consultorio] SET [Codigo_Minsa] = '" & Codigo_Minsa & "' ,[Nombre_Consultorio] = '" & Nombre_Consultorio & "'  WHERE (IdConsultorio = " & IdConsultorio & ")"
+                MiConexion.Open()
+                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                iResultado = ComandoUpdate.ExecuteNonQuery
+                MiConexion.Close()
+
+            Else
+                '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
+                StrSqlUpdate = "INSERT INTO [Consultorio] ([Codigo_Minsa],[Nombre_Consultorio]) VALUES ('" & Codigo_Minsa & "','" & Nombre_Consultorio & "')"
+                MiConexion.Open()
+                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                iResultado = ComandoUpdate.ExecuteNonQuery
+                MiConexion.Close()
+
+            End If
+
+
+
+        Catch ex As Exception
+            MsgBox(Err.Number)
+        End Try
+
+    End Sub
+    Public Sub Eliminar_Consultorio(ByVal idConsultorio As Double)
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim SQLstring As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+
+        SQLstring = "SELECT dbo.Consultorio.* FROM dbo.Consultorio WHERE (IdConsultorio = '" & idConsultorio & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
+        DataAdapter.Fill(DataSet, "Consultorio")
+        If Not DataSet.Tables("Consultorio").Rows.Count = 0 Then
+            '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
+            StrSqlUpdate = "DELETE FROM [Consultorio]  WHERE (IdConsultorio = '" & idConsultorio & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+        End If
+
+    End Sub
     Public Sub Eliminar_Municipios(ByVal idMunicipios As Double, ByVal Tipo As String)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQLstring As String
