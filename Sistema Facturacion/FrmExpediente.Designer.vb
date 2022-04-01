@@ -26,6 +26,10 @@ Partial Class FrmExpediente
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.CboComarca = New System.Windows.Forms.ComboBox
+        Me.Label21 = New System.Windows.Forms.Label
+        Me.DtpFechaNacimiento = New System.Windows.Forms.DateTimePicker
+        Me.Label20 = New System.Windows.Forms.Label
         Me.Button1 = New System.Windows.Forms.Button
         Me.CboUnidadSalud = New System.Windows.Forms.ComboBox
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
@@ -138,6 +142,10 @@ Partial Class FrmExpediente
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.CboComarca)
+        Me.GroupBox1.Controls.Add(Me.Label21)
+        Me.GroupBox1.Controls.Add(Me.DtpFechaNacimiento)
+        Me.GroupBox1.Controls.Add(Me.Label20)
         Me.GroupBox1.Controls.Add(Me.Button1)
         Me.GroupBox1.Controls.Add(Me.CboUnidadSalud)
         Me.GroupBox1.Controls.Add(Me.GroupBox2)
@@ -184,6 +192,41 @@ Partial Class FrmExpediente
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "  "
         '
+        'CboComarca
+        '
+        Me.CboComarca.FormattingEnabled = True
+        Me.CboComarca.Items.AddRange(New Object() {"Soloter@", "Casad@", "Acompañad@", "Viud@", "Divorciad@", "Ignorad@"})
+        Me.CboComarca.Location = New System.Drawing.Point(620, 167)
+        Me.CboComarca.Name = "CboComarca"
+        Me.CboComarca.Size = New System.Drawing.Size(139, 21)
+        Me.CboComarca.TabIndex = 230
+        '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.Location = New System.Drawing.Point(563, 169)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(52, 13)
+        Me.Label21.TabIndex = 229
+        Me.Label21.Text = "Comarca:"
+        '
+        'DtpFechaNacimiento
+        '
+        Me.DtpFechaNacimiento.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DtpFechaNacimiento.Location = New System.Drawing.Point(285, 96)
+        Me.DtpFechaNacimiento.Name = "DtpFechaNacimiento"
+        Me.DtpFechaNacimiento.Size = New System.Drawing.Size(123, 20)
+        Me.DtpFechaNacimiento.TabIndex = 227
+        '
+        'Label20
+        '
+        Me.Label20.AutoSize = True
+        Me.Label20.Location = New System.Drawing.Point(186, 100)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(96, 13)
+        Me.Label20.TabIndex = 228
+        Me.Label20.Text = "Fecha Nacimiento:"
+        '
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
@@ -200,7 +243,7 @@ Partial Class FrmExpediente
         '
         Me.CboUnidadSalud.FormattingEnabled = True
         Me.CboUnidadSalud.Items.AddRange(New Object() {"Soloter@", "Casad@", "Acompañad@", "Viud@", "Divorciad@", "Ignorad@"})
-        Me.CboUnidadSalud.Location = New System.Drawing.Point(625, 62)
+        Me.CboUnidadSalud.Location = New System.Drawing.Point(620, 45)
         Me.CboUnidadSalud.Name = "CboUnidadSalud"
         Me.CboUnidadSalud.Size = New System.Drawing.Size(168, 21)
         Me.CboUnidadSalud.TabIndex = 13
@@ -273,7 +316,7 @@ Partial Class FrmExpediente
         'DtpFecha
         '
         Me.DtpFecha.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DtpFecha.Location = New System.Drawing.Point(626, 37)
+        Me.DtpFecha.Location = New System.Drawing.Point(285, 119)
         Me.DtpFecha.Name = "DtpFecha"
         Me.DtpFecha.Size = New System.Drawing.Size(123, 20)
         Me.DtpFecha.TabIndex = 12
@@ -281,7 +324,7 @@ Partial Class FrmExpediente
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(538, 41)
+        Me.Label16.Location = New System.Drawing.Point(197, 123)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(83, 13)
         Me.Label16.TabIndex = 223
@@ -291,7 +334,7 @@ Partial Class FrmExpediente
         '
         Me.CboOcupacion.FormattingEnabled = True
         Me.CboOcupacion.Items.AddRange(New Object() {"Soloter@", "Casad@", "Acompañad@", "Viud@", "Divorciad@", "Ignorad@"})
-        Me.CboOcupacion.Location = New System.Drawing.Point(285, 145)
+        Me.CboOcupacion.Location = New System.Drawing.Point(285, 192)
         Me.CboOcupacion.Name = "CboOcupacion"
         Me.CboOcupacion.Size = New System.Drawing.Size(168, 21)
         Me.CboOcupacion.TabIndex = 9
@@ -300,15 +343,15 @@ Partial Class FrmExpediente
         '
         Me.CboMunicipio.FormattingEnabled = True
         Me.CboMunicipio.Items.AddRange(New Object() {"Soloter@", "Casad@", "Acompañad@", "Viud@", "Divorciad@", "Ignorad@"})
-        Me.CboMunicipio.Location = New System.Drawing.Point(625, 160)
+        Me.CboMunicipio.Location = New System.Drawing.Point(620, 143)
         Me.CboMunicipio.Name = "CboMunicipio"
-        Me.CboMunicipio.Size = New System.Drawing.Size(124, 21)
+        Me.CboMunicipio.Size = New System.Drawing.Size(139, 21)
         Me.CboMunicipio.TabIndex = 17
         '
         'Label15
         '
         Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(568, 164)
+        Me.Label15.Location = New System.Drawing.Point(563, 147)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(55, 13)
         Me.Label15.TabIndex = 220
@@ -318,15 +361,15 @@ Partial Class FrmExpediente
         '
         Me.CboLocalidad.FormattingEnabled = True
         Me.CboLocalidad.Items.AddRange(New Object() {"Soloter@", "Casad@", "Acompañad@", "Viud@", "Divorciad@", "Ignorad@"})
-        Me.CboLocalidad.Location = New System.Drawing.Point(625, 136)
+        Me.CboLocalidad.Location = New System.Drawing.Point(620, 119)
         Me.CboLocalidad.Name = "CboLocalidad"
-        Me.CboLocalidad.Size = New System.Drawing.Size(124, 21)
+        Me.CboLocalidad.Size = New System.Drawing.Size(139, 21)
         Me.CboLocalidad.TabIndex = 16
         '
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(565, 139)
+        Me.Label14.Location = New System.Drawing.Point(560, 122)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(58, 13)
         Me.Label14.TabIndex = 218
@@ -335,7 +378,7 @@ Partial Class FrmExpediente
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(218, 148)
+        Me.Label13.Location = New System.Drawing.Point(218, 195)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(62, 13)
         Me.Label13.TabIndex = 216
@@ -345,7 +388,7 @@ Partial Class FrmExpediente
         '
         Me.CboEscolaridad.FormattingEnabled = True
         Me.CboEscolaridad.Items.AddRange(New Object() {"Primaria", "Secundaria", "Superior", "Ninguna"})
-        Me.CboEscolaridad.Location = New System.Drawing.Point(430, 121)
+        Me.CboEscolaridad.Location = New System.Drawing.Point(430, 168)
         Me.CboEscolaridad.Name = "CboEscolaridad"
         Me.CboEscolaridad.Size = New System.Drawing.Size(73, 21)
         Me.CboEscolaridad.TabIndex = 8
@@ -353,7 +396,7 @@ Partial Class FrmExpediente
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(366, 124)
+        Me.Label12.Location = New System.Drawing.Point(365, 171)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(65, 13)
         Me.Label12.TabIndex = 214
@@ -362,7 +405,7 @@ Partial Class FrmExpediente
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(533, 64)
+        Me.Label11.Location = New System.Drawing.Point(528, 47)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(89, 13)
         Me.Label11.TabIndex = 212
@@ -372,7 +415,7 @@ Partial Class FrmExpediente
         '
         Me.CboEstadoCivil.FormattingEnabled = True
         Me.CboEstadoCivil.Items.AddRange(New Object() {"Soloter@", "Casad@", "Acompañad@", "Viud@", "Divorciad@", "Ignorad@"})
-        Me.CboEstadoCivil.Location = New System.Drawing.Point(285, 121)
+        Me.CboEstadoCivil.Location = New System.Drawing.Point(285, 168)
         Me.CboEstadoCivil.Name = "CboEstadoCivil"
         Me.CboEstadoCivil.Size = New System.Drawing.Size(73, 21)
         Me.CboEstadoCivil.TabIndex = 7
@@ -380,7 +423,7 @@ Partial Class FrmExpediente
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(215, 124)
+        Me.Label5.Location = New System.Drawing.Point(215, 171)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(65, 13)
         Me.Label5.TabIndex = 210
@@ -390,7 +433,7 @@ Partial Class FrmExpediente
         '
         Me.CboSexo.FormattingEnabled = True
         Me.CboSexo.Items.AddRange(New Object() {"Masculino", "Femenino"})
-        Me.CboSexo.Location = New System.Drawing.Point(430, 94)
+        Me.CboSexo.Location = New System.Drawing.Point(430, 143)
         Me.CboSexo.Name = "CboSexo"
         Me.CboSexo.Size = New System.Drawing.Size(73, 21)
         Me.CboSexo.TabIndex = 6
@@ -398,7 +441,7 @@ Partial Class FrmExpediente
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(395, 98)
+        Me.Label10.Location = New System.Drawing.Point(395, 147)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(34, 13)
         Me.Label10.TabIndex = 208
@@ -406,17 +449,17 @@ Partial Class FrmExpediente
         '
         'TxtDireccion
         '
-        Me.TxtDireccion.Location = New System.Drawing.Point(285, 197)
+        Me.TxtDireccion.Location = New System.Drawing.Point(285, 241)
         Me.TxtDireccion.Multiline = True
         Me.TxtDireccion.Name = "TxtDireccion"
         Me.TxtDireccion.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TxtDireccion.Size = New System.Drawing.Size(218, 84)
+        Me.TxtDireccion.Size = New System.Drawing.Size(218, 62)
         Me.TxtDireccion.TabIndex = 11
         '
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(227, 200)
+        Me.Label9.Location = New System.Drawing.Point(224, 240)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(55, 13)
         Me.Label9.TabIndex = 206
@@ -424,7 +467,7 @@ Partial Class FrmExpediente
         '
         'TxtTelefono
         '
-        Me.TxtTelefono.Location = New System.Drawing.Point(285, 171)
+        Me.TxtTelefono.Location = New System.Drawing.Point(285, 218)
         Me.TxtTelefono.Name = "TxtTelefono"
         Me.TxtTelefono.Size = New System.Drawing.Size(168, 20)
         Me.TxtTelefono.TabIndex = 10
@@ -432,7 +475,7 @@ Partial Class FrmExpediente
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(227, 174)
+        Me.Label8.Location = New System.Drawing.Point(227, 221)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(52, 13)
         Me.Label8.TabIndex = 204
@@ -440,7 +483,7 @@ Partial Class FrmExpediente
         '
         'TxtNombreMadre
         '
-        Me.TxtNombreMadre.Location = New System.Drawing.Point(625, 113)
+        Me.TxtNombreMadre.Location = New System.Drawing.Point(620, 96)
         Me.TxtNombreMadre.Name = "TxtNombreMadre"
         Me.TxtNombreMadre.Size = New System.Drawing.Size(168, 20)
         Me.TxtNombreMadre.TabIndex = 15
@@ -448,7 +491,7 @@ Partial Class FrmExpediente
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(538, 116)
+        Me.Label7.Location = New System.Drawing.Point(533, 99)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(85, 13)
         Me.Label7.TabIndex = 202
@@ -456,7 +499,7 @@ Partial Class FrmExpediente
         '
         'TxtNombrePadre
         '
-        Me.TxtNombrePadre.Location = New System.Drawing.Point(625, 88)
+        Me.TxtNombrePadre.Location = New System.Drawing.Point(620, 71)
         Me.TxtNombrePadre.Name = "TxtNombrePadre"
         Me.TxtNombrePadre.Size = New System.Drawing.Size(168, 20)
         Me.TxtNombrePadre.TabIndex = 14
@@ -464,7 +507,7 @@ Partial Class FrmExpediente
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(538, 91)
+        Me.Label6.Location = New System.Drawing.Point(533, 74)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(83, 13)
         Me.Label6.TabIndex = 200
@@ -472,7 +515,7 @@ Partial Class FrmExpediente
         '
         'TxtEdad
         '
-        Me.TxtEdad.Location = New System.Drawing.Point(285, 97)
+        Me.TxtEdad.Location = New System.Drawing.Point(285, 145)
         Me.TxtEdad.Name = "TxtEdad"
         Me.TxtEdad.Size = New System.Drawing.Size(50, 20)
         Me.TxtEdad.TabIndex = 5
@@ -480,7 +523,7 @@ Partial Class FrmExpediente
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(244, 100)
+        Me.Label4.Location = New System.Drawing.Point(244, 148)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(35, 13)
         Me.Label4.TabIndex = 197
@@ -665,4 +708,8 @@ Partial Class FrmExpediente
     Friend WithEvents Label19 As System.Windows.Forms.Label
     Friend WithEvents CboUnidadSalud As System.Windows.Forms.ComboBox
     Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents DtpFechaNacimiento As System.Windows.Forms.DateTimePicker
+    Friend WithEvents Label20 As System.Windows.Forms.Label
+    Friend WithEvents CboComarca As System.Windows.Forms.ComboBox
+    Friend WithEvents Label21 As System.Windows.Forms.Label
 End Class

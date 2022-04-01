@@ -4,7 +4,8 @@ Imports System.IO
 Imports System.Drawing.Imaging
 
 Module Funciones
-    Public Sub Grabar_Consultorio(ByVal IdConsultorio As Double, ByVal Codigo_Minsa As String, ByVal Nombre_Consultorio As String)
+
+    Public Sub Grabar_Expediente(ByVal Numero_Expediente As String, ByVal Nombres As String, ByVal Apellidos As String, ByVal Edad As Double, ByVal Sexo As String, ByVal Estado_Civil As String, ByVal Escolaridad As String, ByVal Ocupacion As String, ByVal Telefono As Double, ByVal Direccion As String, ByVal FechaIngreso As Date, ByVal Unidad_Salud As String, ByVal Nombre_Padre As String, ByVal Nombre_Madre As String, ByVal IdLocalidad As Double, ByVal IdMunicipio As Double, ByVal Nombre_Emergencia As String, ByVal Telefono_Emergencia As Double, ByVal Direccion_Emergencia As String, ByVal Fecha_Nacimiento As Date)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQLstring As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -12,6 +13,48 @@ Module Funciones
 
         Try
 
+            If Numero_Expediente = "" Then
+                MsgBox("Se necesita el codigo del Expediente", MsgBoxStyle.Critical, "Sistema de Facturacion")
+                Exit Sub
+                SQLstring = "SELECT Expediente.*  FROM Expediente WHERE (Numero_Expediente = '" & Numero_Expediente & "')"
+            End If
+
+
+
+            DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
+            DataAdapter.Fill(DataSet, "Expediente")
+            If Not DataSet.Tables("Consultorio").Rows.Count = 0 Then
+                '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
+                StrSqlUpdate = "UPDATE [Expediente]  SET [Numero_Expediente] = '" & Numero_Expediente & "',[Nombres] = '" & Nombres & "',[Apellidos] = '" & Apellidos & "' ,[Edad] = " & Edad & " ,[Sexo] = '" & Sexo & "',[Estado_Civil] = '" & Estado_Civil & "' ,[Escolaridad] = '" & Escolaridad & "',[Ocupacion] = '" & Ocupacion & "',[Telefono] = '" & Telefono & "',[Direccion] = '" & Direccion & "' ,[Fecha_Ingreso] = '" & Format(FechaIngreso, "yyyy-MM-dd") & "' ,[Unidad_Salud] = '" & Unidad_Salud & "' ,[Nombre_Padre] = '" & Nombre_Padre & "'  ,[Nombre_Madre] = '" & Nombre_Madre & "' ,[IdLocalidad] = '" & IdLocalidad & "' ,[IdMunicipio] = '" & IdMunicipio & "' ,[Nombre_Emergencia] = '" & Nombre_Emergencia & "' ,[Telefono_Emergencia] = '" & Telefono_Emergencia & "',[Direccion_Emergencia] = '" & Direccion_Emergencia & "',[Fecha_Nacimiennto] = '" & Format(Fecha_Nacimiento, "yyyy-MM-dd") & "'  WHERE (Numero_Expediente = '" & Numero_Expediente & "')"
+                MiConexion.Open()
+                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                iResultado = ComandoUpdate.ExecuteNonQuery
+                MiConexion.Close()
+
+            Else
+                '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
+                StrSqlUpdate = "INSERT INTO [Expediente] ([Numero_Expediente],[Nombres],[Apellidos],[Edad],[Sexo],[Estado_Civil],[Escolaridad],[Ocupacion],[Telefono],[Direccion],[Fecha_Ingreso],[Unidad_Salud],[Nombre_Padre],[Nombre_Madre],[IdLocalidad],[IdMunicipio],[Nombre_Emergencia],[Telefono_Emergencia],[Direccion_Emergencia],[Fecha_Nacimiennto]) VALUES  ('" & Numero_Expediente & "' ,'" & Nombres & "' ,'" & Apellidos & "' ,'" & Edad & "' ,'" & Sexo & "' , '" & Estado_Civil & "' ,'" & Escolaridad & "' ,'" & Ocupacion & "','" & Telefono & "' ,'" & Direccion & "' ,'" & Format(FechaIngreso, "yyyy-MM-dd") & "' , '" & Unidad_Salud & "' , '" & Nombre_Padre & "' ,'" & Nombre_Madre & "' ," & IdLocalidad & "  , '" & IdMunicipio & "' ,'" & Nombre_Emergencia & "' ,'" & Telefono_Emergencia & "' , '" & Direccion_Emergencia & "','" & Format(Fecha_Nacimiento, "yyyy-MM-dd") & "')"
+                MiConexion.Open()
+                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                iResultado = ComandoUpdate.ExecuteNonQuery
+                MiConexion.Close()
+
+            End If
+
+
+
+        Catch ex As Exception
+            MsgBox(Err.Number)
+        End Try
+
+    End Sub
+    Public Sub Grabar_Consultorio(ByVal IdConsultorio As Double, ByVal Codigo_Minsa As String, ByVal Nombre_Consultorio As String)
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim SQLstring As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+
+        Try
 
 
             If Codigo_Minsa = "" Then

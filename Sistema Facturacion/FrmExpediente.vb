@@ -1,5 +1,138 @@
 Public Class FrmExpediente
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
+    Public Sub Limpiar_Expediente()
+
+        Me.TxtLetra.Text = ""
+        Me.TxtCodigo.Text = ""
+        Me.TxtNombres.Text = ""
+        Me.TxtApellidos.Text = ""
+        Me.TxtEdad.Text = ""
+        Me.CboSexo.Text = ""
+        Me.DtpFecha.Value = Format(Now, "dd/MM/yyyy")
+        Me.CboEstadoCivil.Text = ""
+        Me.CboEscolaridad.Text = ""
+        Me.CboOcupacion.Text = ""
+        Me.TxtTelefono.Text = ""
+        Me.TxtDireccion.Text = ""
+        Me.DtpFecha.Value = Format(Now, "dd/MM/yyyy"
+        Me.CboUnidadSalud.Text = ""
+        Me.TxtNombrePadre.Text = ""
+        Me.TxtNombreMadre.Text = ""
+        Me.CboLocalidad.Text = ""
+        Me.CboComarca.Text = ""
+        Me.CboMunicipio.Text = ""
+        Me.CboLocalidad.Text = ""
+
+        Me.TxtNombreEmergencia.Text = ""
+        Me.TxtTelefonoEmergencia.Text = ""
+        Me.TxtDireccionEmergencia.Text = ""
+    End Sub
+
+    Public Sub Cargar_Expediente(ByVal Numero_Expediente As String)
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim SQLstring As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim NumeroExpediente As String, Num() As String
+
+        Try
+
+            If Numero_Expediente = "" Then
+                MsgBox("Se necesita el Numeero del Expediente", MsgBoxStyle.Critical, "Sistema de Facturacion")
+                Exit Sub
+                SQLstring = "SELECT Expediente.*, Departamentos.Nombre_Departamento, Municipio.Nombre_Municipio, Municipio_1.Nombre_Municipio AS Comarca FROM  Expediente INNER JOIN Departamentos ON Expediente.IdLocalidad = Departamentos.Cod_Departamento INNER JOIN Municipio ON Expediente.IdMunicipio = Municipio.IdMunicipio INNER JOIN Municipio AS Municipio_1 ON Expediente.IdComarca = Municipio_1.IdMunicipio  " & _
+                            "WHERE (Expediente.Numero_Expediente = '" & Numero_Expediente & "') AND (Municipio.Tipo = 'Municipio') AND (Municipio_1.Tipo = 'Comarca')"
+            End If
+
+
+
+            DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
+            DataAdapter.Fill(DataSet, "Expediente")
+            If Not DataSet.Tables("Expediente").Rows.Count = 0 Then
+
+                Numero_Expediente = DataSet.Tables("Expediente").Rows(0)("Numero_Expediente")
+                Num = NumeroExpediente.Split("-")
+                NumeroExpediente = Num(0) & "-" & Format(CDbl(Num(1)) + 1, "00000#")
+                Me.TxtLetra.Text = Num(0)
+                Me.TxtCodigo.Text = Format(CDbl(Num(1)) + 1, "00000#")
+
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Nombres")) Then
+                    Me.TxtNombres.Text = DataSet.Tables("Expediente").Rows(0)("Nombres")
+                End If
+
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Apellidos")) Then
+                    Me.TxtApellidos.Text = DataSet.Tables("Expediente").Rows(0)("Apellidos")
+                End If
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Edad")) Then
+                    Me.TxtEdad.Text = DataSet.Tables("Expediente").Rows(0)("Edad")
+                End If
+
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Sexo")) Then
+                    Me.CboSexo.Text = DataSet.Tables("Expediente").Rows(0)("Sexo")
+                End If
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Fecha_Nacimiennto")) Then
+                    Me.DtpFecha.Value = DataSet.Tables("Expediente").Rows(0)("Fecha_Nacimiennto")
+                End If
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Estado_Civil")) Then
+                    Me.CboEstadoCivil.Text = DataSet.Tables("Expediente").Rows(0)("Estado_Civil")
+                End If
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Escolaridad")) Then
+                    Me.CboEscolaridad.Text = DataSet.Tables("Expediente").Rows(0)("Escolaridad")
+                End If
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Ocupacion")) Then
+                    Me.CboOcupacion.Text = DataSet.Tables("Expediente").Rows(0)("Ocupacion")
+                End If
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Telefono")) Then
+                    Me.TxtTelefono.Text = DataSet.Tables("Expediente").Rows(0)("Telefono")
+                End If
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Direccion")) Then
+                    Me.TxtDireccion.Text = DataSet.Tables("Expediente").Rows(0)("Direccion")
+                End If
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Direccion")) Then
+                    Me.DtpFecha.Value = DataSet.Tables("Expediente").Rows(0)("Fecha_Ingreso")
+                End If
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Unidad_Salud")) Then
+                    Me.CboUnidadSalud.Text = DataSet.Tables("Expediente").Rows(0)("Unidad_Salud")
+                End If
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Nombre_Padre")) Then
+                    Me.TxtNombrePadre.Text = DataSet.Tables("Expediente").Rows(0)("Nombre_Padre")
+                End If
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Nombre_Padre")) Then
+                    Me.TxtNombreMadre.Text = DataSet.Tables("Expediente").Rows(0)("Nombre_Madre")
+                End If
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Nombre_Madre")) Then
+                    Me.CboLocalidad.Text = DataSet.Tables("Expediente").Rows(0)("Nombre_Madre")
+                End If
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Comarca")) Then
+                    Me.CboComarca.Text = DataSet.Tables("Expediente").Rows(0)("Comarca")
+                End If
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Municipio")) Then
+                    Me.CboMunicipio.Text = DataSet.Tables("Expediente").Rows(0)("Municipio")
+                End If
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Nombre_Departamento")) Then
+                    Me.CboLocalidad.Text = DataSet.Tables("Expediente").Rows(0)("Nombre_Departamento")
+                End If
+
+
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Nombre_Emergencia")) Then
+                    Me.TxtNombreEmergencia.Text = DataSet.Tables("Expediente").Rows(0)("Nombre_Emergencia")
+                End If
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Nombre_Emergencia")) Then
+                    Me.TxtTelefonoEmergencia.Text = DataSet.Tables("Expediente").Rows(0)("Telefono_Emergencia")
+                End If
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Direccion_Emergencia")) Then
+                    Me.TxtDireccionEmergencia.Text = DataSet.Tables("Expediente").Rows(0)("Direccion_Emergencia")
+                End If
+            Else
+                Limpiar_Expediente()
+            End If
+
+
+        Catch ex As Exception
+            MsgBox(Err.Number)
+        End Try
+    End Sub
+
 
     Public Sub GenerarExpediente()
         Dim Serie As String, Numero As Double, NumeroExpediente As String, NumeroExpedienteG As String
@@ -139,38 +272,6 @@ Public Class FrmExpediente
 
     End Sub
 
-    Private Sub TextBox2_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtCodigo.TextChanged
-
-    End Sub
-
-    Private Sub TextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtLetra.TextChanged
-
-    End Sub
-
-    Private Sub Label1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label1.Click
-
-    End Sub
-
-    Private Sub TextBox6_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtNombrePadre.TextChanged
-
-    End Sub
-
-    Private Sub GroupBox1_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox1.Enter
-
-    End Sub
-
-    Private Sub Label5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label5.Click
-
-    End Sub
-
-    Private Sub FrmExpediente_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
-    End Sub
-
-    Private Sub CmdGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGuardar.Click
-
-    End Sub
-
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         GenerarExpediente()
     End Sub
@@ -181,5 +282,19 @@ Public Class FrmExpediente
             GenerarExpediente()
         End If
 
+    End Sub
+
+    Private Sub FrmExpediente_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+    End Sub
+
+    Private Sub BtnConsultar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnConsultar.Click
+
+    End Sub
+
+    Private Sub CmdGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGuardar.Click
+        Dim Numero_Expediente As String
+        Numero_Expediente = Me.TxtLetra.Text & "-" & Me.TxtCodigo.Text
+        Grabar_Expediente(Numero_Expediente,me.TxtNombres.Text , me.TxtApellidos.Text , me.TxtEdad.Text , me.CboSexo.Text , me.CboEstadoCivil.Text , me.CboEscolaridad.Text , me.CboOcupacion.Text , me.TxtTelefono.Text, me.TxtDireccion.Text, me.DtpFecha.Value, me.CboUnidadSalud.Text , me.TxtNombrePadre.Text , me.TxtNombreMadre.Text , 
     End Sub
 End Class
