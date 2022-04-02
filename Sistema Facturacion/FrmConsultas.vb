@@ -639,7 +639,7 @@ Public Class FrmConsultas
                     Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
                     Me.ButtonSalir.Location = New Point(880, 305)
 
-                    SQlProductos = "SELECT DISTINCT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos WHERE (DetalleBodegas.Cod_Bodegas = '" & CodigoBodega & "') AND (Productos.Activo = N'Activo') ORDER BY Productos.Cod_Productos"
+                    SQlProductos = "SELECT DISTINCT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, Productos.Unidad_Medida, Productos.Existencia_Unidades FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos WHERE (DetalleBodegas.Cod_Bodegas = '" & CodigoBodega & "') AND (Productos.Activo = N'Activo') ORDER BY Productos.Cod_Productos"
                     Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
@@ -655,7 +655,7 @@ Public Class FrmConsultas
                     Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 170
                     Me.TrueDBGridConsultas.Columns(2).Caption = "Tipo"
                     Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(2).Width = 65
-
+                    Me.TrueDBGridConsultas.Columns("Existencia_Unidades").Caption = "Existencia"
                     MiConexion.Close()
 
                 Case "CodigoProductosFactura"

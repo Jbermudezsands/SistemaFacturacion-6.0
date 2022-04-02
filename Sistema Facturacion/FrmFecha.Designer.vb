@@ -59,13 +59,12 @@ Partial Class FrmFecha
         Me.Button2.TabIndex = 254
         Me.Button2.Text = "Salir"
         Me.Button2.UseVisualStyleBackColor = True
-        Me.Button2.Visible = False
         '
         'FrmFecha
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(209, 120)
+        Me.ClientSize = New System.Drawing.Size(209, 119)
         Me.ControlBox = False
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
