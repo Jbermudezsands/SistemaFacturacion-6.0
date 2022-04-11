@@ -194,8 +194,9 @@ Partial Class FrmExpediente
         '
         'CboComarca
         '
+        Me.CboComarca.DisplayMember = "Nombre_Municipio"
+        Me.CboComarca.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboComarca.FormattingEnabled = True
-        Me.CboComarca.Items.AddRange(New Object() {"Soloter@", "Casad@", "Acompañad@", "Viud@", "Divorciad@", "Ignorad@"})
         Me.CboComarca.Location = New System.Drawing.Point(620, 167)
         Me.CboComarca.Name = "CboComarca"
         Me.CboComarca.Size = New System.Drawing.Size(139, 21)
@@ -242,7 +243,6 @@ Partial Class FrmExpediente
         'CboUnidadSalud
         '
         Me.CboUnidadSalud.FormattingEnabled = True
-        Me.CboUnidadSalud.Items.AddRange(New Object() {"Soloter@", "Casad@", "Acompañad@", "Viud@", "Divorciad@", "Ignorad@"})
         Me.CboUnidadSalud.Location = New System.Drawing.Point(620, 45)
         Me.CboUnidadSalud.Name = "CboUnidadSalud"
         Me.CboUnidadSalud.Size = New System.Drawing.Size(168, 21)
@@ -333,7 +333,6 @@ Partial Class FrmExpediente
         'CboOcupacion
         '
         Me.CboOcupacion.FormattingEnabled = True
-        Me.CboOcupacion.Items.AddRange(New Object() {"Soloter@", "Casad@", "Acompañad@", "Viud@", "Divorciad@", "Ignorad@"})
         Me.CboOcupacion.Location = New System.Drawing.Point(285, 192)
         Me.CboOcupacion.Name = "CboOcupacion"
         Me.CboOcupacion.Size = New System.Drawing.Size(168, 21)
@@ -341,8 +340,9 @@ Partial Class FrmExpediente
         '
         'CboMunicipio
         '
+        Me.CboMunicipio.DisplayMember = "Nombre_Municipio"
+        Me.CboMunicipio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboMunicipio.FormattingEnabled = True
-        Me.CboMunicipio.Items.AddRange(New Object() {"Soloter@", "Casad@", "Acompañad@", "Viud@", "Divorciad@", "Ignorad@"})
         Me.CboMunicipio.Location = New System.Drawing.Point(620, 143)
         Me.CboMunicipio.Name = "CboMunicipio"
         Me.CboMunicipio.Size = New System.Drawing.Size(139, 21)
@@ -359,8 +359,9 @@ Partial Class FrmExpediente
         '
         'CboLocalidad
         '
+        Me.CboLocalidad.DisplayMember = "Nombre_Departamento"
+        Me.CboLocalidad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboLocalidad.FormattingEnabled = True
-        Me.CboLocalidad.Items.AddRange(New Object() {"Soloter@", "Casad@", "Acompañad@", "Viud@", "Divorciad@", "Ignorad@"})
         Me.CboLocalidad.Location = New System.Drawing.Point(620, 119)
         Me.CboLocalidad.Name = "CboLocalidad"
         Me.CboLocalidad.Size = New System.Drawing.Size(139, 21)
