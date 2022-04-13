@@ -16,16 +16,16 @@ Module Funciones
             If Numero_Expediente = "" Then
                 MsgBox("Se necesita el codigo del Expediente", MsgBoxStyle.Critical, "Sistema de Facturacion")
                 Exit Sub
-                SQLstring = "SELECT Expediente.*  FROM Expediente WHERE (Numero_Expediente = '" & Numero_Expediente & "')"
+
             End If
 
-
+            SQLstring = "SELECT Expediente.*  FROM Expediente WHERE (Numero_Expediente = '" & Numero_Expediente & "')"
 
             DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
             DataAdapter.Fill(DataSet, "Expediente")
-            If Not DataSet.Tables("Consultorio").Rows.Count = 0 Then
+            If Not DataSet.Tables("Expediente").Rows.Count = 0 Then
                 '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-                StrSqlUpdate = "UPDATE [Expediente]  SET [Numero_Expediente] = '" & Numero_Expediente & "',[Nombres] = '" & Nombres & "',[Apellidos] = '" & Apellidos & "' ,[Edad] = " & Edad & " ,[Sexo] = '" & Sexo & "',[Estado_Civil] = '" & Estado_Civil & "' ,[Escolaridad] = '" & Escolaridad & "',[Ocupacion] = '" & Ocupacion & "',[Telefono] = '" & Telefono & "',[Direccion] = '" & Direccion & "' ,[Fecha_Ingreso] = '" & Format(FechaIngreso, "yyyy-MM-dd") & "' ,[Unidad_Salud] = '" & Unidad_Salud & "' ,[Nombre_Padre] = '" & Nombre_Padre & "'  ,[Nombre_Madre] = '" & Nombre_Madre & "' ,[IdLocalidad] = '" & CodDepartamento & "' ,[IdMunicipio] = " & IdMunicipio & ",[IdComarca] = " & idComarca & " ,[Nombre_Emergencia] = '" & Nombre_Emergencia & "' ,[Telefono_Emergencia] = '" & Telefono_Emergencia & "',[Direccion_Emergencia] = '" & Direccion_Emergencia & "',[Fecha_Nacimiennto] = '" & Format(Fecha_Nacimiento, "yyyy-MM-dd") & "'  WHERE (Numero_Expediente = '" & Numero_Expediente & "')"
+                StrSqlUpdate = "UPDATE [Expediente]  SET [Numero_Expediente] = '" & Numero_Expediente & "',[Nombres] = '" & Nombres & "',[Apellidos] = '" & Apellidos & "' ,[Edad] = " & Edad & " ,[Sexo] = '" & Sexo & "',[Estado_Civil] = '" & Estado_Civil & "' ,[Escolaridad] = '" & Escolaridad & "',[Ocupacion] = '" & Ocupacion & "',[Telefono] = '" & Telefono & "',[Direccion] = '" & Direccion & "' ,[Fecha_Ingreso] = CONVERT(DATETIME, '" & Format(FechaIngreso, "yyyy-MM-dd") & "', 102) ,[Unidad_Salud] = '" & Unidad_Salud & "' ,[Nombre_Padre] = '" & Nombre_Padre & "'  ,[Nombre_Madre] = '" & Nombre_Madre & "' ,[IdLocalidad] = '" & CodDepartamento & "' ,[IdMunicipio] = " & IdMunicipio & ",[IdComarca] = " & idComarca & " ,[Nombre_Emergencia] = '" & Nombre_Emergencia & "' ,[Telefono_Emergencia] = '" & Telefono_Emergencia & "',[Direccion_Emergencia] = '" & Direccion_Emergencia & "',[Fecha_Nacimiennto] = CONVERT(DATETIME, '" & Format(Fecha_Nacimiento, "yyyy-MM-dd") & "', 102))  WHERE (Numero_Expediente = '" & Numero_Expediente & "')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
                 iResultado = ComandoUpdate.ExecuteNonQuery
@@ -33,7 +33,7 @@ Module Funciones
 
             Else
                 '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-                StrSqlUpdate = "INSERT INTO [Expediente] ([Numero_Expediente],[Nombres],[Apellidos],[Edad],[Sexo],[Estado_Civil],[Escolaridad],[Ocupacion],[Telefono],[Direccion],[Fecha_Ingreso],[Unidad_Salud],[Nombre_Padre],[Nombre_Madre],[IdLocalidad],[IdMunicipio],[IdComarca],[Nombre_Emergencia],[Telefono_Emergencia],[Direccion_Emergencia],[Fecha_Nacimiennto]) VALUES  ('" & Numero_Expediente & "' ,'" & Nombres & "' ,'" & Apellidos & "' ,'" & Edad & "' ,'" & Sexo & "' , '" & Estado_Civil & "' ,'" & Escolaridad & "' ,'" & Ocupacion & "','" & Telefono & "' ,'" & Direccion & "' ,'" & Format(FechaIngreso, "yyyy-MM-dd") & "' , '" & Unidad_Salud & "' , '" & Nombre_Padre & "' ,'" & Nombre_Madre & "' ,'" & CodDepartamento & "'  , " & IdMunicipio & " ," & idComarca & ", '" & Nombre_Emergencia & "' ,'" & Telefono_Emergencia & "' , '" & Direccion_Emergencia & "','" & Format(Fecha_Nacimiento, "yyyy-MM-dd") & "')"
+                StrSqlUpdate = "INSERT INTO [Expediente] ([Numero_Expediente],[Nombres],[Apellidos],[Edad],[Sexo],[Estado_Civil],[Escolaridad],[Ocupacion],[Telefono],[Direccion],[Fecha_Ingreso],[Unidad_Salud],[Nombre_Padre],[Nombre_Madre],[IdLocalidad],[IdMunicipio],[IdComarca],[Nombre_Emergencia],[Telefono_Emergencia],[Direccion_Emergencia],[Fecha_Nacimiennto]) VALUES  ('" & Numero_Expediente & "' ,'" & Nombres & "' ,'" & Apellidos & "' ,'" & Edad & "' ,'" & Sexo & "' , '" & Estado_Civil & "' ,'" & Escolaridad & "' ,'" & Ocupacion & "','" & Telefono & "' ,'" & Direccion & "' , CONVERT(DATETIME, '" & Format(FechaIngreso, "yyyy-MM-dd") & "', 102) , '" & Unidad_Salud & "' , '" & Nombre_Padre & "' ,'" & Nombre_Madre & "' ,'" & CodDepartamento & "'  , " & IdMunicipio & " ," & idComarca & ", '" & Nombre_Emergencia & "' ,'" & Telefono_Emergencia & "' , '" & Direccion_Emergencia & "',CONVERT(DATETIME, '" & Format(Fecha_Nacimiento, "yyyy-MM-dd") & "', 102))"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
                 iResultado = ComandoUpdate.ExecuteNonQuery

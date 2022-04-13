@@ -14,12 +14,6 @@ Public Class FrmExpediente
     End Function
 
 
-
-
-
-
-
-
     Public Sub Limpiar_Expediente()
 
         Me.TxtLetra.Text = ""
@@ -53,18 +47,18 @@ Public Class FrmExpediente
         Dim SQLstring As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-        Dim NumeroExpediente As String, Num() As String
+        Dim NumeroExpediente As String, Num(2) As String
+        Dim ds As New DataSet
 
         Try
 
             If Numero_Expediente = "" Then
                 MsgBox("Se necesita el Numeero del Expediente", MsgBoxStyle.Critical, "Sistema de Facturacion")
                 Exit Sub
-                SQLstring = "SELECT Expediente.*, Departamentos.Nombre_Departamento, Municipio.Nombre_Municipio, Municipio_1.Nombre_Municipio AS Comarca FROM  Expediente INNER JOIN Departamentos ON Expediente.IdLocalidad = Departamentos.Cod_Departamento INNER JOIN Municipio ON Expediente.IdMunicipio = Municipio.IdMunicipio INNER JOIN Municipio AS Municipio_1 ON Expediente.IdComarca = Municipio_1.IdMunicipio  " & _
-                            "WHERE (Expediente.Numero_Expediente = '" & Numero_Expediente & "') AND (Municipio.Tipo = 'Municipio') AND (Municipio_1.Tipo = 'Comarca')"
+ 
             End If
 
-
+            SQLstring = "SELECT  Expediente.* FROM Expediente WHERE (Numero_Expediente = '" & Numero_Expediente & "')"
 
             DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
             DataAdapter.Fill(DataSet, "Expediente")
@@ -123,25 +117,49 @@ Public Class FrmExpediente
                 If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Nombre_Madre")) Then
                     Me.CboLocalidad.Text = DataSet.Tables("Expediente").Rows(0)("Nombre_Madre")
                 End If
-                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Comarca")) Then
-                    Me.CboComarca.Text = DataSet.Tables("Expediente").Rows(0)("Comarca")
-                End If
-                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Municipio")) Then
-                    Me.CboMunicipio.Text = DataSet.Tables("Expediente").Rows(0)("Municipio")
-                End If
-                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Nombre_Departamento")) Then
-                    Me.CboLocalidad.Text = DataSet.Tables("Expediente").Rows(0)("Nombre_Departamento")
-                End If
-
 
                 If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Nombre_Emergencia")) Then
                     Me.TxtNombreEmergencia.Text = DataSet.Tables("Expediente").Rows(0)("Nombre_Emergencia")
                 End If
-                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Nombre_Emergencia")) Then
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Telefono_Emergencia")) Then
                     Me.TxtTelefonoEmergencia.Text = DataSet.Tables("Expediente").Rows(0)("Telefono_Emergencia")
                 End If
                 If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Direccion_Emergencia")) Then
                     Me.TxtDireccionEmergencia.Text = DataSet.Tables("Expediente").Rows(0)("Direccion_Emergencia")
+                End If
+
+                Dim CodDepartamento As String, IdMunicipio As Double, IdComarca As Double
+
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("IdComarca")) Then
+                    IdComarca = DataSet.Tables("Expediente").Rows(0)("IdComarca")
+
+                    SQLstring = "SELECT IdMunicipio, Cod_Departamento, Nombre_Municipio FROM Municipio WHERE (IdMunicipio = '" & IdComarca & "') AND (Tipo = 'Comarca')"
+                    ds = Me.BuscaConsulta(SQLstring, "Comarca").Copy
+                    If ds.Tables("Comarca").Rows.Count <> 0 Then
+                        Me.CboComarca.Text = ds.Tables("Comarca").Rows(0)("Nombre_Municipio")
+                    End If
+
+                End If
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("IdMunicipio")) Then
+                    IdMunicipio = DataSet.Tables("Expediente").Rows(0)("IdMunicipio")
+
+                    SQLstring = "SELECT IdMunicipio, Cod_Departamento, Nombre_Municipio FROM Municipio WHERE (IdMunicipio = '" & IdMunicipio & "') AND (Tipo = 'Municipio')"
+                    ds = Me.BuscaConsulta(SQLstring, "Municipio").Copy
+                    If ds.Tables("Municipio").Rows.Count <> 0 Then
+                        Me.CboMunicipio.Text = ds.Tables("Municipio").Rows(0)("Nombre_Municipio")
+                    End If
+
+                End If
+
+                If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("IdLocalidad")) Then
+                    CodDepartamento = DataSet.Tables("Expediente").Rows(0)("IdLocalidad")
+
+                    SQLstring = "SELECT Cod_Departamento, Nombre_Departamento FROM Departamentos WHERE (Cod_Departamento = '" & CodDepartamento & "')"
+                    ds = Me.BuscaConsulta(SQLstring, "Departamento").Copy
+                    If ds.Tables("Departamento").Rows.Count <> 0 Then
+                        Me.CboLocalidad.Text = ds.Tables("Departamento").Rows(0)("Nombre_Departamento")
+                    End If
+
                 End If
             Else
                 Limpiar_Expediente()
@@ -333,7 +351,11 @@ Public Class FrmExpediente
     End Sub
 
     Private Sub BtnConsultar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnConsultar.Click
-
+        Quien = "Expediente"
+        My.Forms.FrmConsultas.ShowDialog()
+        If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
+            Cargar_Expediente(My.Forms.FrmConsultas.Codigo)
+        End If
     End Sub
 
     Private Sub CmdGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGuardar.Click
@@ -363,6 +385,8 @@ Public Class FrmExpediente
 
 
         Grabar_Expediente(Numero_Expediente, Me.TxtNombres.Text, Me.TxtApellidos.Text, Me.TxtEdad.Text, Me.CboSexo.Text, Me.CboEstadoCivil.Text, Me.CboEscolaridad.Text, Me.CboOcupacion.Text, Me.TxtTelefono.Text, Me.TxtDireccion.Text, Me.DtpFecha.Value, Me.CboUnidadSalud.Text, Me.TxtNombrePadre.Text, Me.TxtNombreMadre.Text, CodDepartamento, idMunicipio, IdComarca, Me.TxtNombreEmergencia.Text, Me.TxtTelefonoEmergencia.Text, Me.TxtDireccionEmergencia.Text, Me.DtpFechaNacimiento.Value)
+
+        Limpiar_Expediente()
     End Sub
 
     Private Sub DtpFechaNacimiento_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DtpFechaNacimiento.ValueChanged
