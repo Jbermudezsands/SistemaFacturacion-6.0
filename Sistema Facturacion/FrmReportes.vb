@@ -4075,6 +4075,10 @@ Public Class FrmReportes
                         FechaVence = DataSet.Tables("Clientes").Rows(i)("Fecha_Vencimiento")
                         Me.Text = "Procesando Cliente: " & CodigoCliente & " Factura No " & NumeroFactura
 
+                        If NumeroFactura = "M00343" Then
+                            NumeroFactura = "M00343"
+                        End If
+
                         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         '//////////////////////////////////////BUSCO SI EXISTEN RECIBOS PARA LA FACTURA //////////////////////////////////////////////////////
                         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -4100,9 +4104,18 @@ Public Class FrmReportes
                                 If DataSet.Tables("Recibos").Rows(j)("MonedaRecibo") = "Dolares" Then
                                     TasaCambioRecibo = 1
                                 Else
-                                    TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("Recibos").Rows(j)("Fecha_Recibo"))
+                                    TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("Recibos").Rows(j)("Fecha_Recibo"))
+                                    If TasaCambioRecibo <> 0 Then
+                                        TasaCambioRecibo = 1 / TasaCambioRecibo
+                                    End If
+
                                 End If
                             End If
+
+                            If TasaCambio = 0 Then
+                                MsgBox("Tasa Cambio Cero!!! Fecha Recibo" & DataSet.Tables("Recibos").Rows(j)("Fecha_Recibo"), MsgBoxStyle.Critical)
+                            End If
+
                             If NumeroRecibo = "" Then
                                 NumeroRecibo = DataSet.Tables("Recibos").Rows(j)("CodReciboPago")
                             Else
@@ -4144,7 +4157,10 @@ Public Class FrmReportes
                                     If DataSet.Tables("NotaDB").Rows(j)("MonedaNota") = "Dolares" Then
                                         TasaCambioRecibo = 1
                                     Else
-                                        TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                                        TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("Recibos").Rows(j)("Fecha_Nota"))
+                                        If TasaCambioRecibo <> 0 Then
+                                            TasaCambioRecibo = 1 / TasaCambioRecibo
+                                        End If
                                     End If
                                 Else
                                     TasaCambioRecibo = 0
@@ -4152,15 +4168,18 @@ Public Class FrmReportes
 
                             End If
 
+                            If TasaCambio = 0 Then
+                                MsgBox("Tasa Cambio Cero!!! Fecha NB" & DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"), MsgBoxStyle.Critical)
+                            End If
 
-                                If NumeroNota = "" Then
-                                    NumeroNota = DataSet.Tables("NotaDB").Rows(j)("Numero_Nota")
-                                Else
-                                    NumeroNota = NumeroNota & "," & DataSet.Tables("NotaDB").Rows(j)("Numero_Nota")
-                                End If
-                                MontoNota = MontoNota + DataSet.Tables("NotaDB").Rows(j)("Monto") * TasaCambioRecibo
-                                TotalMontoNotaDB = TotalMontoNotaDB + MontoNota
-                                j = j + 1
+                            If NumeroNota = "" Then
+                                NumeroNota = DataSet.Tables("NotaDB").Rows(j)("Numero_Nota")
+                            Else
+                                NumeroNota = NumeroNota & "," & DataSet.Tables("NotaDB").Rows(j)("Numero_Nota")
+                            End If
+                            MontoNota = MontoNota + DataSet.Tables("NotaDB").Rows(j)("Monto") * TasaCambioRecibo
+                            TotalMontoNotaDB = TotalMontoNotaDB + MontoNota
+                            j = j + 1
                         Loop
 
                         DataSet.Tables("NotaDB").Reset()
@@ -4195,7 +4214,12 @@ Public Class FrmReportes
                                     If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Dolares" Then
                                         TasaCambioRecibo = 1
                                     Else
-                                        TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+
+                                        TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                                        If TasaCambioRecibo <> 0 Then
+                                            TasaCambioRecibo = 1 / TasaCambio
+                                        End If
+
                                     End If
                                 Else
                                     TasaCambioRecibo = 0
@@ -4203,14 +4227,20 @@ Public Class FrmReportes
 
                             End If
 
-                                If NumeroNotaCR = "" Then
-                                    NumeroNotaCR = DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
-                                Else
-                                    NumeroNotaCR = NumeroNotaCR & "," & DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
-                                End If
-                                MontoNotaCR = MontoNotaCR + DataSet.Tables("NotaCR").Rows(j)("Monto") * TasaCambioRecibo
-                                TotalMontoNotaCR = TotalMontoNotaCR + MontoNotaCR
-                                j = j + 1
+
+                            If TasaCambio = 0 Then
+                                MsgBox("Tasa Cambio Cero!!! Fecha NC" & DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"), MsgBoxStyle.Critical)
+                            End If
+
+                            If NumeroNotaCR = "" Then
+                                NumeroNotaCR = DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
+                            Else
+                                NumeroNotaCR = NumeroNotaCR & "," & DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
+                            End If
+
+                            MontoNotaCR = MontoNotaCR + DataSet.Tables("NotaCR").Rows(j)("Monto") * TasaCambioRecibo
+                            TotalMontoNotaCR = TotalMontoNotaCR + MontoNotaCR
+                            j = j + 1
                         Loop
                         DataSet.Tables("NotaCR").Reset()
 
@@ -4232,8 +4262,16 @@ Public Class FrmReportes
                                 If DataSet.Tables("MetodoFactura").Rows(0)("Moneda") = "Dolares" Then
                                     TasaCambioRecibo = 1
                                 Else
-                                    TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("MetodoFactura").Rows(0)("Fecha_Factura"))
+                                    TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                                    If TasaCambioRecibo <> 0 Then
+                                        TasaCambioRecibo = 1 / TasaCambio
+                                    End If
                                 End If
+                            End If
+
+
+                            If TasaCambio = 0 Then
+                                MsgBox("Tasa Cambio Cero!!! Fecha Metodo Factura" & DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"), MsgBoxStyle.Critical)
                             End If
 
                             MontoMetodoFactura = DataSet.Tables("MetodoFactura").Rows(0)("Monto") * TasaCambioRecibo
@@ -4315,6 +4353,7 @@ Public Class FrmReportes
                             Else
                                 oDataRow("NotaDebito") = "NC:" & NumeroNotaCR & " NB:" & NumeroNota
                             End If
+
                             oDataRow("Monto") = Format(MontoFactura, "##,##0.00")
                             oDataRow("FechaVence") = DataSet.Tables("Clientes").Rows(i)("Fecha_Vencimiento")
                             oDataRow("Abono") = Format(MontoRecibo + MontoMetodoFactura, "##,##0.00")

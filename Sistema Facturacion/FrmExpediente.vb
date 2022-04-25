@@ -1,5 +1,6 @@
 Public Class FrmExpediente
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
+    Public Existe As Boolean = False
     Public Function BuscaConsulta(ByVal Sqlstring As String, ByVal Nombre As String) As DataSet
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
@@ -178,6 +179,7 @@ Public Class FrmExpediente
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, i As Double
 
 
+
         If Me.TxtLetra.Text <> "" Then
             If Not IsNumeric(Me.TxtLetra.Text) Then
                 Serie = Me.TxtLetra.Text
@@ -198,7 +200,19 @@ Public Class FrmExpediente
             Numero = 1
         End If
 
-        NumeroExpediente = Serie & "-" & Format(Numero, "00000#")
+        '/////////////////////////////////////BUSCO SI EXISTE EL NOMBRE /////////////////////////////////////
+        SqlString = "SELECT Expediente.* FROM Expediente WHERE (Nombres LIKE '%" & Me.TxtNombres.Text & "%') AND (Apellidos LIKE '%" & Me.TxtApellidos.Text & "%')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Expediente")
+        If DataSet.Tables("Expediente").Rows.Count = 0 Then
+            NumeroExpediente = Serie & "-" & Format(Numero, "00000#")
+            Existe = False
+        Else
+            NumeroExpediente = DataSet.Tables("Expediente").Rows(0)("Numero_Expediente")
+            Existe = True
+        End If
+
+
         Num = NumeroExpediente.Split("-")
         Me.TxtLetra.Text = Num(0)
         Me.TxtCodigo.Text = Num(1)
@@ -260,45 +274,52 @@ Public Class FrmExpediente
 
         Else
 
-            '/////////////////////////////////////////////////////////////////////////////////////
-            '//////////////////////////////BUSCO EL SIGUIENTE //////////////////
-            '////////////////////////////7////////////////////////////////////////////////////////
-            SqlString = "SELECT  Expediente.* FROM Expediente WHERE (Numero_Expediente like  '%" & Serie & "%') ORDER BY Numero_Expediente"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-            DataAdapter.Fill(DataSet, "Siguiente")
-            i = 0
+            If Existe = False Then
 
-            '/////////////////RECORRO PARA BUCAR EL SIGUIENTE DISPONIBLE
-            Do While DataSet.Tables("Siguiente").Rows.Count > i
-                If i = 0 Then
-                    NumeroExpedienteG = DataSet.Tables("Siguiente").Rows(0)("Numero_Expediente")
-                Else
-                    Num = NumeroExpedienteG.Split("-")
-                    NumeroExpediente = Num(0) & "-" & Format(CDbl(Num(1)) + 1, "00000#")
 
-                    If NumeroExpediente <> DataSet.Tables("Siguiente").Rows(i)("Numero_Expediente") Then
-                        Num = NumeroExpediente.Split("-")
-                        Me.TxtLetra.Text = Num(0)
-                        Me.TxtCodigo.Text = Num(1)
-                        Exit Do
+                '/////////////////////////////////////////////////////////////////////////////////////
+                '//////////////////////////////BUSCO EL SIGUIENTE //////////////////
+                '////////////////////////////7////////////////////////////////////////////////////////
+                SqlString = "SELECT  Expediente.* FROM Expediente WHERE (Numero_Expediente like  '%" & Serie & "%') ORDER BY Numero_Expediente"
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                DataAdapter.Fill(DataSet, "Siguiente")
+                i = 0
+
+                '/////////////////RECORRO PARA BUCAR EL SIGUIENTE DISPONIBLE
+                Do While DataSet.Tables("Siguiente").Rows.Count > i
+                    If i = 0 Then
+                        NumeroExpedienteG = DataSet.Tables("Siguiente").Rows(0)("Numero_Expediente")
                     Else
-                        NumeroExpedienteG = DataSet.Tables("Siguiente").Rows(i)("Numero_Expediente")
+                        Num = NumeroExpedienteG.Split("-")
+                        NumeroExpediente = Num(0) & "-" & Format(CDbl(Num(1)) + 1, "00000#")
+
+                        If NumeroExpediente <> DataSet.Tables("Siguiente").Rows(i)("Numero_Expediente") Then
+                            Num = NumeroExpediente.Split("-")
+                            Me.TxtLetra.Text = Num(0)
+                            Me.TxtCodigo.Text = Num(1)
+                            Exit Do
+                        Else
+                            NumeroExpedienteG = DataSet.Tables("Siguiente").Rows(i)("Numero_Expediente")
+                        End If
                     End If
-                End If
 
 
-                i = i + 1
+                    i = i + 1
 
-                If DataSet.Tables("Siguiente").Rows.Count = i Then
-                    Num = NumeroExpedienteG.Split("-")
-                    NumeroExpediente = Num(0) & "-" & Format(CDbl(Num(1)) + 1, "00000#")
-                    Me.TxtLetra.Text = Num(0)
-                    Me.TxtCodigo.Text = Format(CDbl(Num(1)) + 1, "00000#")
-                    Exit Do
+                    If DataSet.Tables("Siguiente").Rows.Count = i Then
+                        Num = NumeroExpedienteG.Split("-")
+                        NumeroExpediente = Num(0) & "-" & Format(CDbl(Num(1)) + 1, "00000#")
+                        Me.TxtLetra.Text = Num(0)
+                        Me.TxtCodigo.Text = Format(CDbl(Num(1)) + 1, "00000#")
+                        Exit Do
 
-                End If
-            Loop
+                    End If
+                Loop
 
+            Else
+
+
+            End If
 
 
         End If
@@ -311,14 +332,35 @@ Public Class FrmExpediente
     End Sub
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
-        GenerarExpediente()
+        Dim Numero_Exp As String
+
+
+
+        If Me.TxtApellidos.Text <> "" Then
+
+            Me.TxtLetra.Text = Mid(Me.TxtApellidos.Text, 1, 1)
+            GenerarExpediente()
+            Numero_Exp = Me.TxtLetra.Text & "-" & Me.TxtCodigo.Text
+            If Me.Existe = True Then
+                Me.Cargar_Expediente(Numero_Exp)
+            End If
+
+        End If
     End Sub
 
     Private Sub TxtApellidos_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtApellidos.TextChanged
-        If Me.TxtApellidos.Text <> "" Then
-            Me.TxtLetra.Text = Mid(Me.TxtApellidos.Text, 1, 1)
-            GenerarExpediente()
-        End If
+        Dim SqlString As String
+        Dim ds As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+
+
+        'If Me.TxtApellidos.Text <> "" Then
+
+        '    Me.TxtLetra.Text = Mid(Me.TxtApellidos.Text, 1, 1)
+        '    GenerarExpediente()
+        '    If Me.Existe = True Then
+
+        '    End If
+        'End If
 
     End Sub
 

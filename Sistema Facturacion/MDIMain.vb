@@ -746,14 +746,22 @@ Public Class MDIMain
                 ElseIf Trim(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) = "Bascula" Then
                     Me.RibbonTab5.Visible = True
                     Me.RibbonTab6.Visible = False
+                    Me.RibbonTab7.Visible = False
 
                 ElseIf Trim(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) = "Planilla" Then
                     Me.RibbonTab5.Visible = False
                     Me.RibbonTab6.Visible = True
+                    Me.RibbonTab7.Visible = False
 
                 ElseIf Trim(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) = "Facturacion" Then
                     Me.RibbonTab5.Visible = False
                     Me.RibbonTab6.Visible = False
+                    Me.RibbonTab7.Visible = False
+
+                ElseIf Trim(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) = "Clinica" Then
+                    Me.RibbonTab5.Visible = False
+                    Me.RibbonTab6.Visible = False
+                    Me.RibbonTab7.Visible = True
 
                 End If
 
@@ -1298,5 +1306,9 @@ Public Class MDIMain
     Private Sub RibbonConsultorio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonConsultorio.Click
         My.Forms.FrmConsultorio.MdiParent = Me
         My.Forms.FrmConsultorio.Show()
+    End Sub
+
+    Private Sub c1Ribbon1_RibbonEvent(ByVal sender As System.Object, ByVal e As C1.Win.C1Ribbon.RibbonEventArgs) Handles c1Ribbon1.RibbonEvent
+
     End Sub
 End Class

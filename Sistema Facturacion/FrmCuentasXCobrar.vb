@@ -190,7 +190,14 @@ Public Class FrmCuentasXCobrar
                         If DataSet.Tables("NotaDB").Rows(j)("MonedaNota") = "Cordobas" Then
                             TasaCambioRecibo = 1
                         Else
-                            TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+
+                            TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                            If TasaCambioRecibo <> 0 Then
+                                TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                            Else
+                                MsgBox("No Existe Tasa de cambios!!! Fecha NB " & DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                            End If
+
                         End If
                     Else
                         TasaCambioRecibo = 0
@@ -250,10 +257,19 @@ Public Class FrmCuentasXCobrar
                         If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Dolares" Then
                             TasaCambioRecibo = 1
                         Else
-                            TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+
+
+                            TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                            If TasaCambioRecibo <> 0 Then
+                                TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                            Else
+                                MsgBox("No Existe Tasa de cambios!!! Fecha NC " & DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                            End If
+
+
                         End If
                     Else
-                        TasaCambioRecibo = 0
+                            TasaCambioRecibo = 0
                     End If
                 End If
 

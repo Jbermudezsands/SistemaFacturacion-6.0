@@ -16,11 +16,10 @@ Module Funciones
             If Numero_Expediente = "" Then
                 MsgBox("Se necesita el codigo del Expediente", MsgBoxStyle.Critical, "Sistema de Facturacion")
                 Exit Sub
-
             End If
 
-            SQLstring = "SELECT Expediente.*  FROM Expediente WHERE (Numero_Expediente = '" & Numero_Expediente & "')"
 
+            SQLstring = "SELECT Expediente.*  FROM Expediente WHERE (Numero_Expediente = '" & Numero_Expediente & "')"
             DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
             DataAdapter.Fill(DataSet, "Expediente")
             If Not DataSet.Tables("Expediente").Rows.Count = 0 Then
