@@ -40,6 +40,7 @@ Partial Class FrmCuentasXCobrar
         Me.AnularNotasDeDebitoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.AnularNotasDeCreditoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.AjustarDiferencialCambiarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.AsignarFacturaALaNotaDeCreditoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.ProgressBar = New System.Windows.Forms.ProgressBar
@@ -247,33 +248,39 @@ Partial Class FrmCuentasXCobrar
         '
         'ContextMenuStripGrid
         '
-        Me.ContextMenuStripGrid.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AsignarFacturaAlReciboToolStripMenuItem, Me.AnularNotasDeDebitoToolStripMenuItem, Me.AnularNotasDeCreditoToolStripMenuItem, Me.AjustarDiferencialCambiarioToolStripMenuItem})
+        Me.ContextMenuStripGrid.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AsignarFacturaAlReciboToolStripMenuItem, Me.AnularNotasDeDebitoToolStripMenuItem, Me.AnularNotasDeCreditoToolStripMenuItem, Me.AjustarDiferencialCambiarioToolStripMenuItem, Me.AsignarFacturaALaNotaDeCreditoToolStripMenuItem})
         Me.ContextMenuStripGrid.Name = "ContextMenuStripGrid"
-        Me.ContextMenuStripGrid.Size = New System.Drawing.Size(229, 92)
+        Me.ContextMenuStripGrid.Size = New System.Drawing.Size(249, 136)
         '
         'AsignarFacturaAlReciboToolStripMenuItem
         '
         Me.AsignarFacturaAlReciboToolStripMenuItem.Name = "AsignarFacturaAlReciboToolStripMenuItem"
-        Me.AsignarFacturaAlReciboToolStripMenuItem.Size = New System.Drawing.Size(228, 22)
+        Me.AsignarFacturaAlReciboToolStripMenuItem.Size = New System.Drawing.Size(264, 22)
         Me.AsignarFacturaAlReciboToolStripMenuItem.Text = "Asignar Factura al Recibo"
         '
         'AnularNotasDeDebitoToolStripMenuItem
         '
         Me.AnularNotasDeDebitoToolStripMenuItem.Name = "AnularNotasDeDebitoToolStripMenuItem"
-        Me.AnularNotasDeDebitoToolStripMenuItem.Size = New System.Drawing.Size(228, 22)
+        Me.AnularNotasDeDebitoToolStripMenuItem.Size = New System.Drawing.Size(264, 22)
         Me.AnularNotasDeDebitoToolStripMenuItem.Text = "Crear Recibo"
         '
         'AnularNotasDeCreditoToolStripMenuItem
         '
         Me.AnularNotasDeCreditoToolStripMenuItem.Name = "AnularNotasDeCreditoToolStripMenuItem"
-        Me.AnularNotasDeCreditoToolStripMenuItem.Size = New System.Drawing.Size(228, 22)
+        Me.AnularNotasDeCreditoToolStripMenuItem.Size = New System.Drawing.Size(264, 22)
         Me.AnularNotasDeCreditoToolStripMenuItem.Text = "Anular Notas de Credito"
         '
         'AjustarDiferencialCambiarioToolStripMenuItem
         '
         Me.AjustarDiferencialCambiarioToolStripMenuItem.Name = "AjustarDiferencialCambiarioToolStripMenuItem"
-        Me.AjustarDiferencialCambiarioToolStripMenuItem.Size = New System.Drawing.Size(228, 22)
+        Me.AjustarDiferencialCambiarioToolStripMenuItem.Size = New System.Drawing.Size(264, 22)
         Me.AjustarDiferencialCambiarioToolStripMenuItem.Text = "Ajustar Diferencial Cambiario"
+        '
+        'AsignarFacturaALaNotaDeCreditoToolStripMenuItem
+        '
+        Me.AsignarFacturaALaNotaDeCreditoToolStripMenuItem.Name = "AsignarFacturaALaNotaDeCreditoToolStripMenuItem"
+        Me.AsignarFacturaALaNotaDeCreditoToolStripMenuItem.Size = New System.Drawing.Size(248, 22)
+        Me.AsignarFacturaALaNotaDeCreditoToolStripMenuItem.Text = "Asignar Factura a la Nota Credito"
         '
         'PictureBox2
         '
@@ -561,4 +568,5 @@ Partial Class FrmCuentasXCobrar
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents AjustarDiferencialCambiarioToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents CmdAjustes As System.Windows.Forms.Button
+    Friend WithEvents AsignarFacturaALaNotaDeCreditoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

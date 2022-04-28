@@ -884,11 +884,13 @@ Public Class FrmCuentasXCobrar
 
                     Me.ContextMenuStripGrid.Items(2).Visible = False
                     Me.ContextMenuStripGrid.Items(3).Visible = False
+                    Me.ContextMenuStripGrid.Items(4).Visible = False
 
                 Case 3
                     Me.ContextMenuStripGrid.Items(0).Visible = False
                     Me.ContextMenuStripGrid.Items(1).Visible = False
                     Me.ContextMenuStripGrid.Items(3).Visible = True
+                    Me.ContextMenuStripGrid.Items(4).Visible = True
                     Me.ContextMenuStripGrid.Items(2).Visible = True
 
                 Case Else
@@ -896,6 +898,7 @@ Public Class FrmCuentasXCobrar
                     Me.ContextMenuStripGrid.Items(1).Visible = False
                     Me.ContextMenuStripGrid.Items(2).Visible = False
                     Me.ContextMenuStripGrid.Items(3).Visible = False
+                    Me.ContextMenuStripGrid.Items(4).Visible = False
 
             End Select
 
@@ -1112,5 +1115,23 @@ Public Class FrmCuentasXCobrar
         FrmAjustes.DTPFechaIni.Value = Format(Now, "dd/MM/yyyy")
         FrmAjustes.DTPFechaFin.Value = Format(Now, "dd/MM/yyyy")
         FrmAjustes.ShowDialog()
+    End Sub
+
+    Private Sub AsignarFacturaALaNotaDeCreditoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AsignarFacturaALaNotaDeCreditoToolStripMenuItem.Click
+        Dim Saldo As Double
+
+        Saldo = Me.TDGridImpuestos.Columns("Saldo").Text
+
+        If Saldo > 0 Then
+            FrmAgregarNotaCredito.Numero_Factura = Me.TDGridImpuestos.Columns(1).Text
+            FrmAgregarNotaCredito.Fecha_Factura = Me.TDGridImpuestos.Columns(0).Text
+            FrmAgregarNotaCredito.MontoFactura = Me.TDGridImpuestos.Columns("Saldo").Text
+
+            FrmAgregarNotaCredito.ShowDialog()
+
+        Else
+            MsgBox("La Factura no tiene Saldo Pendiente", MsgBoxStyle.Critical, "Zeus Facturacion")
+        End If
+
     End Sub
 End Class
