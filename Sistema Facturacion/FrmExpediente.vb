@@ -444,4 +444,8 @@ Public Class FrmExpediente
     Private Sub CmdCerrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdCerrar.Click
         Me.Close()
     End Sub
+
+    Private Sub CmdEliminar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdEliminar.Click
+
+    End Sub
 End Class
