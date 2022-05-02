@@ -726,7 +726,8 @@ Public Class FrmImportacion
             End If
 
             GrabaNotaDebito(NumeroNota, Me.DtpFechaCtasXCobrar.Text, CodTipoNota, Saldo, Me.LblMoneda.Text, CodCliente, NombreCliente, "Importacion desde Excel", True, False, False)
-            GrabaDetalleNotaDebito(NumeroNota, Me.DtpFechaCtasXCobrar.Text, CodTipoNota, NombreNota, "0000", Saldo)
+            InsertarDetalleNotaDebito(NumeroNota, Me.DtpFechaCtasXCobrar.Text, CodTipoNota, NombreNota, "0000", Saldo)
+            'GrabaDetalleNotaDebito(NumeroNota, Me.DtpFechaCtasXCobrar.Text, CodTipoNota, NombreNota, "0000", Saldo)
 
             Me.Text = "Procesando " & iPosicionFila & " de " & MiDataSet.Tables("DatosExcelCtasXCob").Rows.Count & " " & NombreCliente
             iPosicionFila = iPosicionFila + 1

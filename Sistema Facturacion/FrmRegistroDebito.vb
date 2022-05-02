@@ -198,7 +198,8 @@ Public Class FrmRegistroDebito
 
         Me.TxtNumeroEnsamble.Text = NumeroNota
         GrabaNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, Me.TxtMonto.Text, Me.LblMoneda.Text, Me.TxtCodCliente.Text, Me.LblNombre.Text, Me.TxtObservaciones.Text, True, False, TipoCuenta)
-        GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, Me.TxtDescripcion.Text, Me.LblFactura.Text, Me.TxtMonto.Text)
+        InsertarDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, Me.TxtDescripcion.Text, Me.LblFactura.Text, Me.TxtMonto.Text)
+        'GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, Me.TxtDescripcion.Text, Me.LblFactura.Text, Me.TxtMonto.Text)
         My.Forms.FrmCuentasXCobrar.CmdGrabar.PerformClick()
         MsgBox("Se ha Grabado con Exito!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
         Me.Close()
@@ -287,7 +288,8 @@ Public Class FrmRegistroDebito
 
         NumeroNota = Me.TxtNumeroEnsamble.Text
         GrabaNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, Monto, Me.LblMoneda.Text, Me.TxtCodCliente.Text, NombreCliente, Me.TxtObservaciones.Text, False, True, False)
-        GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, NombreCliente, Me.LblFactura.Text, Monto)
+        InsertarDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, NombreCliente, Me.LblFactura.Text, Monto)
+        'GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, NombreCliente, Me.LblFactura.Text, Monto)
         My.Forms.FrmCuentasXCobrar.CmdGrabar.PerformClick()
         MsgBox("Se ha Anulado con Exito!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
         Me.Close()

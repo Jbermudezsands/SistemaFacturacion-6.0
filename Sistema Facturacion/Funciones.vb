@@ -7118,14 +7118,14 @@ errSub:
         FrmCompras.TxtPagado.Text = Format(Monto, "##,##0.00")
         FrmCompras.TxtNetoPagar.Text = Format(Neto, "##,##0.00")
     End Sub
-    Public Sub GrabaDetalleNotaDebito(ByVal ConsecutivoNotaDebito As String, ByVal FechaNota As Date, ByVal TipoNota As String, ByVal Descripcion As String, ByVal NumeroFactura As String, ByVal Monto As Double)
+    Public Sub GrabaDetalleNotaDebito(ByVal ConsecutivoNotaDebito As String, ByVal FechaNota As Date, ByVal TipoNota As String, ByVal Descripcion As String, ByVal NumeroFactura As String, ByVal Monto As Double, ByVal idDetalleNota As Double)
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Fecha As String
         Dim SqlString As String, MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
         Fecha = Format(FechaNota, "yyyy-MM-dd")
 
-        SqlString = "SELECT * FROM Detalle_Nota WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Nota = '" & TipoNota & "')"
+        SqlString = "SELECT * FROM Detalle_Nota WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Nota = '" & TipoNota & "') AND (id_Detalle_Nota = '" & idDetalleNota & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "NotaDebito")
         If DataSet.Tables("NotaDebito").Rows.Count = 0 Then
@@ -7151,7 +7151,26 @@ errSub:
             MiConexion.Close()
         End If
     End Sub
+    Public Sub InsertarDetalleNotaDebito(ByVal ConsecutivoNotaDebito As String, ByVal FechaNota As Date, ByVal TipoNota As String, ByVal Descripcion As String, ByVal NumeroFactura As String, ByVal Monto As Double)
+        Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Fecha As String
+        Dim SqlString As String, MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
+        Fecha = Format(FechaNota, "yyyy-MM-dd")
+
+
+        '//////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////////////////AGREGO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
+        '/////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlCompras = "INSERT INTO [Detalle_Nota] ([Numero_Nota],[Fecha_Nota],[Tipo_Nota],[Descripcion],[Numero_Factura],[Monto]) " & _
+                     "VALUES ('" & ConsecutivoNotaDebito & "','" & Format(FechaNota, "dd/MM/yyyy") & "','" & TipoNota & "','" & Descripcion & "','" & NumeroFactura & "'," & Monto & ")"
+        MiConexion.Open()
+        ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
+        iResultado = ComandoUpdate.ExecuteNonQuery
+        MiConexion.Close()
+
+
+    End Sub
     Public Sub GrabaNotaDebito(ByVal ConsecutivoNotaDebito As String, ByVal FechaNota As Date, ByVal TipoNota As String, ByVal CuentaContable As String, ByVal Moneda As String, ByVal CodigoCliente As String, ByVal NombreCliente As String, ByVal Observaciones As String, ByVal Activo As Boolean, ByVal Contabilizado As Boolean, ByVal TipoCuenta As Boolean)
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Fecha As String
         Dim SqlString As String, MiConexion As New SqlClient.SqlConnection(Conexion)

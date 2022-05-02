@@ -203,7 +203,8 @@ Public Class FrmProcesarPlantilla
                         Fecha = Format(FrmPlantillas.DTPFecha.Value, "yyyy-MM-dd")
 
                         If FrmPlantillas.CboTipoProducto.Text = "Nota Debito Clientes" Then
-                            GrabaDetalleNotaDebito(NumeroFactura, Fecha, CodigoNota, Descripcion_Producto & "*** " & TextMes & " ***", "0000", Neto)
+                            InsertarDetalleNotaDebito(NumeroFactura, Fecha, CodigoNota, Descripcion_Producto & "*** " & TextMes & " ***", "0000", Neto)
+                            'GrabaDetalleNotaDebito(NumeroFactura, Fecha, CodigoNota, Descripcion_Producto & "*** " & TextMes & " ***", "0000", Neto)
                         Else
                             GrabaDetalleFacturaPlantilla(NumeroFactura, CodigoProducto, Descripcion_Producto & "*** " & TextMes & " ***", PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CDate(Fecha))
                         End If
@@ -334,7 +335,8 @@ Public Class FrmProcesarPlantilla
                         'GrabaDetalleFacturaPlantilla(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CDate(Fecha))
 
                         If FrmPlantillas.CboTipoProducto.Text = "Nota Debito Clientes" Then
-                            GrabaDetalleNotaDebito(NumeroFactura, Fecha, CodigoNota, Descripcion_Producto & "*** " & TextMes & " ***", "0000", Neto)
+                            InsertarDetalleNotaDebito(NumeroFactura, Fecha, CodigoNota, Descripcion_Producto & "*** " & TextMes & " ***", "0000", Neto)
+                            'GrabaDetalleNotaDebito(NumeroFactura, Fecha, CodigoNota, Descripcion_Producto & "*** " & TextMes & " ***", "0000", Neto)
                         Else
                             GrabaDetalleFacturaPlantilla(NumeroFactura, CodigoProducto, Descripcion_Producto & "*** " & TextMes & " ***", PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CDate(Fecha))
                         End If

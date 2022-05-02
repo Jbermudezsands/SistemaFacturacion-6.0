@@ -29,7 +29,16 @@ Partial Class FrmAgregarNotaCredito
         Me.Label5 = New System.Windows.Forms.Label
         Me.Button8 = New System.Windows.Forms.Button
         Me.Button7 = New System.Windows.Forms.Button
+        Me.Button1 = New System.Windows.Forms.Button
+        Me.TDGridImpuestos = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.LblNumeroNota = New System.Windows.Forms.Label
+        Me.Label2 = New System.Windows.Forms.Label
+        Me.LblMontoNota = New System.Windows.Forms.Label
+        Me.Label3 = New System.Windows.Forms.Label
         Me.GroupBox3.SuspendLayout()
+        CType(Me.TDGridImpuestos, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox3
@@ -125,15 +134,104 @@ Partial Class FrmAgregarNotaCredito
         Me.Button7.Name = "Button7"
         Me.Button7.Size = New System.Drawing.Size(75, 34)
         Me.Button7.TabIndex = 226
-        Me.Button7.Text = "Crear Recibo"
+        Me.Button7.Text = "        Insertar     Nota"
         Me.Button7.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button7.UseVisualStyleBackColor = True
+        '
+        'Button1
+        '
+        Me.Button1.Image = Global.Sistema_Facturacion.My.Resources.Resources.Unpinned
+        Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button1.Location = New System.Drawing.Point(12, 111)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(97, 27)
+        Me.Button1.TabIndex = 228
+        Me.Button1.Text = "Seleccionar"
+        Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'TDGridImpuestos
+        '
+        Me.TDGridImpuestos.AllowUpdate = False
+        Me.TDGridImpuestos.AlternatingRows = True
+        Me.TDGridImpuestos.Caption = "Listado de Impuestos para Liquidacion de Productos"
+        Me.TDGridImpuestos.FilterBar = True
+        Me.TDGridImpuestos.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TDGridImpuestos.Images.Add(CType(resources.GetObject("TDGridImpuestos.Images"), System.Drawing.Image))
+        Me.TDGridImpuestos.Location = New System.Drawing.Point(6, 159)
+        Me.TDGridImpuestos.Name = "TDGridImpuestos"
+        Me.TDGridImpuestos.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TDGridImpuestos.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TDGridImpuestos.PreviewInfo.ZoomFactor = 75
+        Me.TDGridImpuestos.PrintInfo.PageSettings = CType(resources.GetObject("TDGridImpuestos.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TDGridImpuestos.Size = New System.Drawing.Size(902, 208)
+        Me.TDGridImpuestos.TabIndex = 229
+        Me.TDGridImpuestos.Text = "C1TrueDBGrid1"
+        Me.TDGridImpuestos.Visible = False
+        Me.TDGridImpuestos.PropBag = resources.GetString("TDGridImpuestos.PropBag")
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.LblMontoNota)
+        Me.GroupBox1.Controls.Add(Me.Label3)
+        Me.GroupBox1.Controls.Add(Me.LblNumeroNota)
+        Me.GroupBox1.Controls.Add(Me.Label2)
+        Me.GroupBox1.Location = New System.Drawing.Point(6, 145)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(596, 222)
+        Me.GroupBox1.TabIndex = 230
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Nota de Credito"
+        '
+        'LblNumeroNota
+        '
+        Me.LblNumeroNota.AutoSize = True
+        Me.LblNumeroNota.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblNumeroNota.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.LblNumeroNota.Location = New System.Drawing.Point(124, 34)
+        Me.LblNumeroNota.Name = "LblNumeroNota"
+        Me.LblNumeroNota.Size = New System.Drawing.Size(103, 25)
+        Me.LblNumeroNota.TabIndex = 227
+        Me.LblNumeroNota.Text = "0000883"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(15, 41)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(103, 16)
+        Me.Label2.TabIndex = 226
+        Me.Label2.Text = "Numero Nota:"
+        '
+        'LblMontoNota
+        '
+        Me.LblMontoNota.AutoSize = True
+        Me.LblMontoNota.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblMontoNota.Location = New System.Drawing.Point(365, 41)
+        Me.LblMontoNota.Name = "LblMontoNota"
+        Me.LblMontoNota.Size = New System.Drawing.Size(36, 16)
+        Me.LblMontoNota.TabIndex = 229
+        Me.LblMontoNota.Text = "0.00"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(252, 41)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(106, 16)
+        Me.Label3.TabIndex = 228
+        Me.Label3.Text = "Monto Factura"
         '
         'FrmAgregarNotaCredito
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(598, 261)
+        Me.ClientSize = New System.Drawing.Size(841, 379)
+        Me.Controls.Add(Me.GroupBox1)
+        Me.Controls.Add(Me.TDGridImpuestos)
+        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Button8)
         Me.Controls.Add(Me.Button7)
         Me.Controls.Add(Me.GroupBox3)
@@ -141,6 +239,9 @@ Partial Class FrmAgregarNotaCredito
         Me.Text = "FrmAgregarNotaCredito"
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
+        CType(Me.TDGridImpuestos, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -153,4 +254,11 @@ Partial Class FrmAgregarNotaCredito
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents Button8 As System.Windows.Forms.Button
     Friend WithEvents Button7 As System.Windows.Forms.Button
+    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents TDGridImpuestos As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents LblNumeroNota As System.Windows.Forms.Label
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents LblMontoNota As System.Windows.Forms.Label
+    Friend WithEvents Label3 As System.Windows.Forms.Label
 End Class

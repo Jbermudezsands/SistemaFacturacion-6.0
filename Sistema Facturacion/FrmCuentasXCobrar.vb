@@ -3,7 +3,7 @@ Imports System.Math
 Public Class FrmCuentasXCobrar
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Public NombreEmpresa As String, DireccionEmpresa As String, Ruc As String, RutaLogo As String, MostrarImagen As Boolean = False
-    Public DatasetReporte As New DataSet
+    Public DatasetReporte As New DataSet, ds As New DataSet
 
     Private Sub FrmCuentasXCobrar_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
         Bloqueo(Me, Acceso, "Ctas x Cobrar")
@@ -676,7 +676,6 @@ Public Class FrmCuentasXCobrar
         Me.CmdAjustes.Enabled = True
 
 
-
         Me.TDGridImpuestos.DataSource = DatasetReporte.Tables("TotalVentas")
         Me.TDGridImpuestos.Columns(0).Caption = "Fecha"
         Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(0).Width = 73
@@ -1123,9 +1122,21 @@ Public Class FrmCuentasXCobrar
         Saldo = Me.TDGridImpuestos.Columns("Saldo").Text
 
         If Saldo > 0 Then
+
+            FrmAgregarNotaCredito.ds.Reset()
+            FrmAgregarNotaCredito.ds = DatasetReporte.Copy
+
             FrmAgregarNotaCredito.Numero_Factura = Me.TDGridImpuestos.Columns(1).Text
             FrmAgregarNotaCredito.Fecha_Factura = Me.TDGridImpuestos.Columns(0).Text
             FrmAgregarNotaCredito.MontoFactura = Me.TDGridImpuestos.Columns("Saldo").Text
+            FrmAgregarNotaCredito.TxtMontoRecibo.Text = Me.TDGridImpuestos.Columns("Saldo").Text
+
+            If Me.OptCordobas.Checked = True Then
+                FrmAgregarNotaCredito.MonedaEstado = "Cordobas"
+            ElseIf Me.OptDolares.Checked = True Then
+                FrmAgregarNotaCredito.MonedaEstado = "Dolares"
+            End If
+
 
             FrmAgregarNotaCredito.ShowDialog()
 
