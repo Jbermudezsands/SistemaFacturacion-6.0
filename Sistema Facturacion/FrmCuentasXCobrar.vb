@@ -1140,6 +1140,8 @@ Public Class FrmCuentasXCobrar
 
             FrmAgregarNotaCredito.ShowDialog()
 
+            CmdGrabar_Click(sender, e)
+
         Else
             MsgBox("La Factura no tiene Saldo Pendiente", MsgBoxStyle.Critical, "Zeus Facturacion")
         End If

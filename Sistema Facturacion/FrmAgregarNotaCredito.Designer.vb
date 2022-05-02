@@ -32,10 +32,10 @@ Partial Class FrmAgregarNotaCredito
         Me.Button1 = New System.Windows.Forms.Button
         Me.TDGridImpuestos = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.LblNumeroNota = New System.Windows.Forms.Label
-        Me.Label2 = New System.Windows.Forms.Label
         Me.LblMontoNota = New System.Windows.Forms.Label
         Me.Label3 = New System.Windows.Forms.Label
+        Me.LblNumeroNota = New System.Windows.Forms.Label
+        Me.Label2 = New System.Windows.Forms.Label
         Me.GroupBox3.SuspendLayout()
         CType(Me.TDGridImpuestos, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -178,10 +178,29 @@ Partial Class FrmAgregarNotaCredito
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Location = New System.Drawing.Point(6, 145)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(596, 222)
+        Me.GroupBox1.Size = New System.Drawing.Size(584, 112)
         Me.GroupBox1.TabIndex = 230
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Nota de Credito"
+        '
+        'LblMontoNota
+        '
+        Me.LblMontoNota.AutoSize = True
+        Me.LblMontoNota.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblMontoNota.Location = New System.Drawing.Point(365, 41)
+        Me.LblMontoNota.Name = "LblMontoNota"
+        Me.LblMontoNota.Size = New System.Drawing.Size(0, 16)
+        Me.LblMontoNota.TabIndex = 229
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(240, 41)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(106, 16)
+        Me.Label3.TabIndex = 228
+        Me.Label3.Text = "Monto Factura"
         '
         'LblNumeroNota
         '
@@ -190,45 +209,24 @@ Partial Class FrmAgregarNotaCredito
         Me.LblNumeroNota.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.LblNumeroNota.Location = New System.Drawing.Point(124, 34)
         Me.LblNumeroNota.Name = "LblNumeroNota"
-        Me.LblNumeroNota.Size = New System.Drawing.Size(103, 25)
+        Me.LblNumeroNota.Size = New System.Drawing.Size(0, 25)
         Me.LblNumeroNota.TabIndex = 227
-        Me.LblNumeroNota.Text = "0000883"
         '
         'Label2
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(15, 41)
+        Me.Label2.Location = New System.Drawing.Point(6, 41)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(103, 16)
         Me.Label2.TabIndex = 226
         Me.Label2.Text = "Numero Nota:"
         '
-        'LblMontoNota
-        '
-        Me.LblMontoNota.AutoSize = True
-        Me.LblMontoNota.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LblMontoNota.Location = New System.Drawing.Point(365, 41)
-        Me.LblMontoNota.Name = "LblMontoNota"
-        Me.LblMontoNota.Size = New System.Drawing.Size(36, 16)
-        Me.LblMontoNota.TabIndex = 229
-        Me.LblMontoNota.Text = "0.00"
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(252, 41)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(106, 16)
-        Me.Label3.TabIndex = 228
-        Me.Label3.Text = "Monto Factura"
-        '
         'FrmAgregarNotaCredito
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(841, 379)
+        Me.ClientSize = New System.Drawing.Size(593, 312)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.TDGridImpuestos)
         Me.Controls.Add(Me.Button1)

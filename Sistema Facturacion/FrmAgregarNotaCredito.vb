@@ -7,13 +7,17 @@ Public Class FrmAgregarNotaCredito
     Private Sub FrmAgregarNotaCredito_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.LblNumeroFactura.Text = Numero_Factura
         Me.LblMontoFactura.Text = MontoFactura
+        Me.TxtMontoRecibo.Text = MontoFactura
+
+        Me.LblNumeroNota.Text = ""
+        Me.LblMontoNota.Text = ""
     End Sub
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
 
         Me.TDGridImpuestos.Visible = True
         Me.GroupBox1.Visible = False
-        Me.Width = 935
+        Me.Size = New Size(935, 420)
 
 
         Me.TDGridImpuestos.DataSource = ds.Tables("TotalVentas")
@@ -74,7 +78,9 @@ Public Class FrmAgregarNotaCredito
 
         Me.TDGridImpuestos.Visible = False
         Me.GroupBox1.Visible = True
-        Me.Width = 616
+
+
+        Me.Size = New Size(609, 351)
     End Sub
 
     Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
@@ -114,7 +120,7 @@ Public Class FrmAgregarNotaCredito
                             Exit Sub
                         End If
 
-                        Monto = Monto - MontoNota
+                        MontoAplicar = MontoNota - Monto
                     Else
                         TasaCambio = BuscaTasaCambio(FechaNota)
                         If TasaCambio <> 0 Then
@@ -127,8 +133,9 @@ Public Class FrmAgregarNotaCredito
                             Exit Sub
                         End If
 
-                        MontoNota = Format((MontoNota / TasaCambio), "##,##0.00")
-                        Monto = Monto - MontoNota
+
+                        Monto = Format((Monto * TasaCambio), "##,##0.00")
+                        MontoAplicar = MontoNota - Monto
 
                     End If
                 Else
@@ -157,7 +164,7 @@ Public Class FrmAgregarNotaCredito
                             Exit Sub
                         End If
 
-                        Monto = Monto - MontoNota
+                        MontoAplicar = MontoNota - Monto
                     End If
 
 
@@ -172,8 +179,12 @@ Public Class FrmAgregarNotaCredito
             GrabaDetalleNotaDebito(Numero_Nota, DataSet.Tables("Consulta").Rows(0)("Fecha_Nota"), DataSet.Tables("Consulta").Rows(0)("Tipo_Nota"), DataSet.Tables("Consulta").Rows(0)("Descripcion"), Me.LblNumeroFactura.Text, MontoAplicar, IdDetalleNota)
         End If
 
+        Me.Close()
 
 
+    End Sub
 
+    Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
+        Me.Close()
     End Sub
 End Class

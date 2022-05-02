@@ -7144,7 +7144,7 @@ errSub:
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "UPDATE [Detalle_Nota]  SET [Tipo_Nota] = '" & TipoNota & "' ,[Descripcion] = '" & Descripcion & "',[Monto] =" & Monto & "  WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Nota = '" & TipoNota & "')"
+            SqlCompras = "UPDATE [Detalle_Nota]  SET [Tipo_Nota] = '" & TipoNota & "' ,[Descripcion] = '" & Descripcion & "',[Monto] =" & Monto & "  WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Nota = '" & TipoNota & "') AND (id_Detalle_Nota = '" & idDetalleNota & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
