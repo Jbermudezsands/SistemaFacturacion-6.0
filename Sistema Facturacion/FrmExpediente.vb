@@ -65,7 +65,7 @@ Public Class FrmExpediente
             If Not DataSet.Tables("Expediente").Rows.Count = 0 Then
 
                 Numero_Expediente = DataSet.Tables("Expediente").Rows(0)("Numero_Expediente")
-                Num = NumeroExpediente.Split("-")
+                Num = Numero_Expediente.Split("-")
                 NumeroExpediente = Num(0) & "-" & Format(CDbl(Num(1)) + 1, "00000#")
                 Me.TxtLetra.Text = Num(0)
                 Me.TxtCodigo.Text = Format(CDbl(Num(1)) + 1, "00000#")
