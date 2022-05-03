@@ -332,6 +332,7 @@ Partial Class FrmExpediente
         '
         'CboOcupacion
         '
+        Me.CboOcupacion.DisplayMember = "Ocupacion"
         Me.CboOcupacion.FormattingEnabled = True
         Me.CboOcupacion.Location = New System.Drawing.Point(285, 192)
         Me.CboOcupacion.Name = "CboOcupacion"
