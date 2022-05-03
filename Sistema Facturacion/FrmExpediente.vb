@@ -48,7 +48,7 @@ Public Class FrmExpediente
         Dim SQLstring As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-        Dim NumeroExpediente As String, Num(2) As String
+        Dim NumeroExpediente As String, Num(2) As String, RutaOrigen As String
         Dim ds As New DataSet
 
         Try
@@ -66,10 +66,10 @@ Public Class FrmExpediente
             If Not DataSet.Tables("Expediente").Rows.Count = 0 Then
 
                 Numero_Expediente = DataSet.Tables("Expediente").Rows(0)("Numero_Expediente")
-                Num = NumeroExpediente.Split("-")
+                Num = Numero_Expediente.Split("-")
                 NumeroExpediente = Num(0) & "-" & Format(CDbl(Num(1)) + 1, "00000#")
                 Me.TxtLetra.Text = Num(0)
-                Me.TxtCodigo.Text = Format(CDbl(Num(1)) + 1, "00000#")
+                Me.TxtCodigo.Text = Format(CDbl(Num(1)), "00000#")
 
                 If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("Nombres")) Then
                     Me.TxtNombres.Text = DataSet.Tables("Expediente").Rows(0)("Nombres")
@@ -162,6 +162,12 @@ Public Class FrmExpediente
                     End If
 
                 End If
+
+                RutaOrigen = My.Application.Info.DirectoryPath & "\Fotos\E" & Numero_Expediente & ".bmp"
+                If System.IO.File.Exists(RutaOrigen) = True Then
+                    Me.ImgFoto.ImageLocation = RutaOrigen
+                End If
+
             Else
                 Limpiar_Expediente()
             End If
@@ -485,5 +491,46 @@ Public Class FrmExpediente
 
     Private Sub CmdCerrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdCerrar.Click
         Me.Close()
+    End Sub
+
+    Private Sub CmdAgregarFoto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdAgregarFoto.Click
+        Dim RutaOrigen As String = "", RutaDestino As String, Numero_Exp As String
+
+        Numero_Exp = Me.TxtLetra.Text & "-" & Me.TxtCodigo.Text
+        Me.OpenFileDialog1.ShowDialog()
+        RutaOrigen = Me.OpenFileDialog1.FileName.ToString()
+        If RutaOrigen = "OpenFileDialog1" Then
+            Exit Sub
+        End If
+        Me.ImgFoto.ImageLocation = RutaOrigen
+        RutaDestino = My.Application.Info.DirectoryPath & "\Fotos\E" & Numero_Exp & ".bmp"
+        If System.IO.File.Exists(RutaDestino) = True Then
+            System.IO.File.Delete(RutaDestino)
+            System.IO.File.Copy(RutaOrigen, RutaDestino)
+        Else
+            System.IO.File.Copy(RutaOrigen, RutaDestino)
+        End If
+    End Sub
+
+    Private Sub CmdQuitarFoto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdQuitarFoto.Click
+        Dim RutaOrigen As String, Resultado As Double, Numero_Exp As String
+
+        Resultado = MsgBox("¿Esta Seguro de Eliminar la Foto?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
+
+        If Not Resultado = "6" Then
+            Exit Sub
+        End If
+
+        Numero_Exp = Me.TxtLetra.Text & "-" & Me.TxtCodigo.Text
+
+        RutaOrigen = My.Application.Info.DirectoryPath & "\Fotos\E" & Numero_Exp & ".bmp"
+        If System.IO.File.Exists(RutaOrigen) = True Then
+            System.IO.File.Delete(RutaOrigen)
+            ImgFoto.ImageLocation = ""
+            ImgFoto.Refresh()
+        Else
+            MsgBox("El archivo no Existe", MsgBoxStyle.Critical, "Sistema de Facturacion")
+            Exit Sub
+        End If
     End Sub
 End Class

@@ -67,7 +67,7 @@ Partial Class FrmExpediente
         Me.CmdQuitarFoto = New System.Windows.Forms.Button
         Me.CmdAgregarFoto = New System.Windows.Forms.Button
         Me.BtnConsultar = New System.Windows.Forms.Button
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.ImgFoto = New System.Windows.Forms.PictureBox
         Me.Label1 = New System.Windows.Forms.Label
         Me.TxtApellidos = New System.Windows.Forms.TextBox
         Me.TxtLetra = New System.Windows.Forms.TextBox
@@ -76,11 +76,13 @@ Partial Class FrmExpediente
         Me.TxtNombres = New System.Windows.Forms.TextBox
         Me.Label2 = New System.Windows.Forms.Label
         Me.TabPage2 = New System.Windows.Forms.TabPage
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog
+        Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'CmdCerrar
@@ -177,7 +179,7 @@ Partial Class FrmExpediente
         Me.GroupBox1.Controls.Add(Me.CmdQuitarFoto)
         Me.GroupBox1.Controls.Add(Me.CmdAgregarFoto)
         Me.GroupBox1.Controls.Add(Me.BtnConsultar)
-        Me.GroupBox1.Controls.Add(Me.PictureBox1)
+        Me.GroupBox1.Controls.Add(Me.ImgFoto)
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Controls.Add(Me.TxtApellidos)
         Me.GroupBox1.Controls.Add(Me.TxtLetra)
@@ -564,13 +566,13 @@ Partial Class FrmExpediente
         Me.BtnConsultar.TabIndex = 165
         Me.BtnConsultar.UseVisualStyleBackColor = True
         '
-        'PictureBox1
+        'ImgFoto
         '
-        Me.PictureBox1.Location = New System.Drawing.Point(20, 19)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(154, 178)
-        Me.PictureBox1.TabIndex = 7
-        Me.PictureBox1.TabStop = False
+        Me.ImgFoto.Location = New System.Drawing.Point(20, 19)
+        Me.ImgFoto.Name = "ImgFoto"
+        Me.ImgFoto.Size = New System.Drawing.Size(154, 178)
+        Me.ImgFoto.TabIndex = 7
+        Me.ImgFoto.TabStop = False
         '
         'Label1
         '
@@ -637,6 +639,10 @@ Partial Class FrmExpediente
         Me.TabPage2.Text = "Admision"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
+        'OpenFileDialog1
+        '
+        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
+        '
         'FrmExpediente
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -654,7 +660,7 @@ Partial Class FrmExpediente
         Me.GroupBox1.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -672,7 +678,7 @@ Partial Class FrmExpediente
     Friend WithEvents TxtNombres As System.Windows.Forms.TextBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents ImgFoto As System.Windows.Forms.PictureBox
     Friend WithEvents BtnConsultar As System.Windows.Forms.Button
     Friend WithEvents CmdQuitarFoto As System.Windows.Forms.Button
     Friend WithEvents CmdAgregarFoto As System.Windows.Forms.Button
@@ -714,4 +720,6 @@ Partial Class FrmExpediente
     Friend WithEvents Label20 As System.Windows.Forms.Label
     Friend WithEvents CboComarca As System.Windows.Forms.ComboBox
     Friend WithEvents Label21 As System.Windows.Forms.Label
+    Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
 End Class
