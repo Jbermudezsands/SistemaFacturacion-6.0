@@ -41,6 +41,8 @@ Public Class FrmExpediente
         Me.TxtNombreEmergencia.Text = ""
         Me.TxtTelefonoEmergencia.Text = ""
         Me.TxtDireccionEmergencia.Text = ""
+
+        Me.ImgFoto.Image = My.Resources.NoDisponible
     End Sub
 
     Public Sub Cargar_Expediente(ByVal Numero_Expediente As String)
@@ -166,6 +168,8 @@ Public Class FrmExpediente
                 RutaOrigen = My.Application.Info.DirectoryPath & "\Fotos\E" & Numero_Expediente & ".bmp"
                 If System.IO.File.Exists(RutaOrigen) = True Then
                     Me.ImgFoto.ImageLocation = RutaOrigen
+                Else
+                    Me.ImgFoto.Image = My.Resources.NoDisponible
                 End If
 
             Else
@@ -395,6 +399,8 @@ Public Class FrmExpediente
             Me.CboUnidadSalud.DataSource = ds.Tables("Unidad_Salud")
             Me.CboUnidadSalud.Text = ds.Tables("Unidad_Salud").Rows(0)("Unidad_Salud")
         End If
+
+        Me.ImgFoto.Image = My.Resources.NoDisponible
 
     End Sub
 

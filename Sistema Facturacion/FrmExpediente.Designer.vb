@@ -26,6 +26,7 @@ Partial Class FrmExpediente
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.ImgFoto = New System.Windows.Forms.PictureBox
         Me.CboComarca = New System.Windows.Forms.ComboBox
         Me.Label21 = New System.Windows.Forms.Label
         Me.DtpFechaNacimiento = New System.Windows.Forms.DateTimePicker
@@ -67,7 +68,6 @@ Partial Class FrmExpediente
         Me.CmdQuitarFoto = New System.Windows.Forms.Button
         Me.CmdAgregarFoto = New System.Windows.Forms.Button
         Me.BtnConsultar = New System.Windows.Forms.Button
-        Me.ImgFoto = New System.Windows.Forms.PictureBox
         Me.Label1 = New System.Windows.Forms.Label
         Me.TxtApellidos = New System.Windows.Forms.TextBox
         Me.TxtLetra = New System.Windows.Forms.TextBox
@@ -78,11 +78,12 @@ Partial Class FrmExpediente
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog
+        Me.Button6 = New System.Windows.Forms.Button
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
         CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
         '
         'CmdCerrar
@@ -101,7 +102,7 @@ Partial Class FrmExpediente
         '
         Me.CmdGuardar.Image = CType(resources.GetObject("CmdGuardar.Image"), System.Drawing.Image)
         Me.CmdGuardar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.CmdGuardar.Location = New System.Drawing.Point(643, 375)
+        Me.CmdGuardar.Location = New System.Drawing.Point(580, 375)
         Me.CmdGuardar.Name = "CmdGuardar"
         Me.CmdGuardar.Size = New System.Drawing.Size(75, 34)
         Me.CmdGuardar.TabIndex = 23
@@ -113,7 +114,7 @@ Partial Class FrmExpediente
         '
         Me.CmdEliminar.Image = CType(resources.GetObject("CmdEliminar.Image"), System.Drawing.Image)
         Me.CmdEliminar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.CmdEliminar.Location = New System.Drawing.Point(739, 375)
+        Me.CmdEliminar.Location = New System.Drawing.Point(740, 375)
         Me.CmdEliminar.Name = "CmdEliminar"
         Me.CmdEliminar.Size = New System.Drawing.Size(75, 34)
         Me.CmdEliminar.TabIndex = 24
@@ -144,6 +145,7 @@ Partial Class FrmExpediente
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.ImgFoto)
         Me.GroupBox1.Controls.Add(Me.CboComarca)
         Me.GroupBox1.Controls.Add(Me.Label21)
         Me.GroupBox1.Controls.Add(Me.DtpFechaNacimiento)
@@ -179,7 +181,6 @@ Partial Class FrmExpediente
         Me.GroupBox1.Controls.Add(Me.CmdQuitarFoto)
         Me.GroupBox1.Controls.Add(Me.CmdAgregarFoto)
         Me.GroupBox1.Controls.Add(Me.BtnConsultar)
-        Me.GroupBox1.Controls.Add(Me.ImgFoto)
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Controls.Add(Me.TxtApellidos)
         Me.GroupBox1.Controls.Add(Me.TxtLetra)
@@ -193,6 +194,16 @@ Partial Class FrmExpediente
         Me.GroupBox1.TabIndex = 7
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "  "
+        '
+        'ImgFoto
+        '
+        Me.ImgFoto.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.ImgFoto.Location = New System.Drawing.Point(15, 19)
+        Me.ImgFoto.Name = "ImgFoto"
+        Me.ImgFoto.Size = New System.Drawing.Size(160, 178)
+        Me.ImgFoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.ImgFoto.TabIndex = 231
+        Me.ImgFoto.TabStop = False
         '
         'CboComarca
         '
@@ -566,14 +577,6 @@ Partial Class FrmExpediente
         Me.BtnConsultar.TabIndex = 165
         Me.BtnConsultar.UseVisualStyleBackColor = True
         '
-        'ImgFoto
-        '
-        Me.ImgFoto.Location = New System.Drawing.Point(20, 19)
-        Me.ImgFoto.Name = "ImgFoto"
-        Me.ImgFoto.Size = New System.Drawing.Size(154, 178)
-        Me.ImgFoto.TabIndex = 7
-        Me.ImgFoto.TabStop = False
-        '
         'Label1
         '
         Me.Label1.AutoSize = True
@@ -643,11 +646,24 @@ Partial Class FrmExpediente
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
         '
+        'Button6
+        '
+        Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
+        Me.Button6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button6.Location = New System.Drawing.Point(660, 375)
+        Me.Button6.Name = "Button6"
+        Me.Button6.Size = New System.Drawing.Size(75, 34)
+        Me.Button6.TabIndex = 173
+        Me.Button6.Text = "Imprimir"
+        Me.Button6.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button6.UseVisualStyleBackColor = True
+        '
         'FrmExpediente
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(917, 421)
+        Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.CmdCerrar)
         Me.Controls.Add(Me.CmdGuardar)
@@ -658,9 +674,9 @@ Partial Class FrmExpediente
         Me.TabPage1.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
-        CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -678,7 +694,6 @@ Partial Class FrmExpediente
     Friend WithEvents TxtNombres As System.Windows.Forms.TextBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents ImgFoto As System.Windows.Forms.PictureBox
     Friend WithEvents BtnConsultar As System.Windows.Forms.Button
     Friend WithEvents CmdQuitarFoto As System.Windows.Forms.Button
     Friend WithEvents CmdAgregarFoto As System.Windows.Forms.Button
@@ -722,4 +737,6 @@ Partial Class FrmExpediente
     Friend WithEvents Label21 As System.Windows.Forms.Label
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
+    Friend WithEvents ImgFoto As System.Windows.Forms.PictureBox
+    Friend WithEvents Button6 As System.Windows.Forms.Button
 End Class

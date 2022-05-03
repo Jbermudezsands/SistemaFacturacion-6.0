@@ -2542,6 +2542,8 @@
     <None Include="Resources\Barra7.png" />
     <None Include="Resources\Barra8.png" />
     <None Include="Resources\Barra9.png" />
+    <None Include="Resources\FotoNo.bmp" />
+    <None Include="Resources\NoDisponible.JPG" />
     <Content Include="Text Document.ico" />
   </ItemGroup>
   <ItemGroup>
