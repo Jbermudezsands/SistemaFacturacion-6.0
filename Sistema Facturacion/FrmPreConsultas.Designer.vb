@@ -21,6 +21,9 @@ Partial Class FrmPreConsultas
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmPreConsultas))
         Me.TrueDBGridConsultas = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.CmdCerrar = New System.Windows.Forms.Button
+        Me.CmdGuardar = New System.Windows.Forms.Button
+        Me.CmdEliminar = New System.Windows.Forms.Button
         CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -43,11 +46,50 @@ Partial Class FrmPreConsultas
         Me.TrueDBGridConsultas.Text = "C1TrueDBGrid1"
         Me.TrueDBGridConsultas.PropBag = resources.GetString("TrueDBGridConsultas.PropBag")
         '
+        'CmdCerrar
+        '
+        Me.CmdCerrar.Image = CType(resources.GetObject("CmdCerrar.Image"), System.Drawing.Image)
+        Me.CmdCerrar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.CmdCerrar.Location = New System.Drawing.Point(826, 402)
+        Me.CmdCerrar.Name = "CmdCerrar"
+        Me.CmdCerrar.Size = New System.Drawing.Size(75, 34)
+        Me.CmdCerrar.TabIndex = 243
+        Me.CmdCerrar.Text = "Cerrar"
+        Me.CmdCerrar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.CmdCerrar.UseVisualStyleBackColor = True
+        '
+        'CmdGuardar
+        '
+        Me.CmdGuardar.Image = CType(resources.GetObject("CmdGuardar.Image"), System.Drawing.Image)
+        Me.CmdGuardar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.CmdGuardar.Location = New System.Drawing.Point(826, 12)
+        Me.CmdGuardar.Name = "CmdGuardar"
+        Me.CmdGuardar.Size = New System.Drawing.Size(75, 34)
+        Me.CmdGuardar.TabIndex = 242
+        Me.CmdGuardar.Text = "Generar"
+        Me.CmdGuardar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.CmdGuardar.UseVisualStyleBackColor = True
+        '
+        'CmdEliminar
+        '
+        Me.CmdEliminar.Image = CType(resources.GetObject("CmdEliminar.Image"), System.Drawing.Image)
+        Me.CmdEliminar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.CmdEliminar.Location = New System.Drawing.Point(826, 52)
+        Me.CmdEliminar.Name = "CmdEliminar"
+        Me.CmdEliminar.Size = New System.Drawing.Size(75, 34)
+        Me.CmdEliminar.TabIndex = 244
+        Me.CmdEliminar.Text = "Eliminar"
+        Me.CmdEliminar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.CmdEliminar.UseVisualStyleBackColor = True
+        '
         'FrmPreConsultas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(938, 465)
+        Me.ClientSize = New System.Drawing.Size(916, 448)
+        Me.Controls.Add(Me.CmdEliminar)
+        Me.Controls.Add(Me.CmdCerrar)
+        Me.Controls.Add(Me.CmdGuardar)
         Me.Controls.Add(Me.TrueDBGridConsultas)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -58,4 +100,7 @@ Partial Class FrmPreConsultas
 
     End Sub
     Friend WithEvents TrueDBGridConsultas As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents CmdCerrar As System.Windows.Forms.Button
+    Friend WithEvents CmdGuardar As System.Windows.Forms.Button
+    Friend WithEvents CmdEliminar As System.Windows.Forms.Button
 End Class

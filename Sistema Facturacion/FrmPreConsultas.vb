@@ -23,4 +23,16 @@ Public Class FrmPreConsultas
         Me.TrueDBGridConsultas.Columns("Numero_Admision").Caption = "Preconsulta"
         Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Activo").Width = 70
     End Sub
+
+    Private Sub CmdGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGuardar.Click
+        Dim NumeroExpediente As String, NumeroAdmision As Double
+
+        NumeroExpediente = Me.TrueDBGridConsultas.Columns("Numero_Expediente").Text
+        My.Forms.FrmPreConsultasNuevas.TxtCodigo.Text = NumeroExpediente
+        My.Forms.FrmPreConsultasNuevas.Cargar_Expediente(NumeroExpediente)
+        My.Forms.FrmPreConsultasNuevas.ShowDialog()
+
+
+
+    End Sub
 End Class
