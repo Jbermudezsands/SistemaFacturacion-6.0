@@ -120,6 +120,8 @@ Partial Class FrmConsultas
         Me.Controls.Add(Me.TrueDBGridConsultas)
         Me.Controls.Add(Me.ButtonSalir)
         Me.Controls.Add(Me.Button2)
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "FrmConsultas"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Consultas"

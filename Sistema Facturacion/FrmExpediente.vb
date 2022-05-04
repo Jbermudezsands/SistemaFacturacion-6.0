@@ -1,21 +1,13 @@
 Public Class FrmExpediente
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Public Existe As Boolean = False
-    Public Function BuscaConsulta(ByVal Sqlstring As String, ByVal Nombre As String) As DataSet
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
-        DataAdapter = New SqlClient.SqlDataAdapter(Sqlstring, MiConexion)
-        DataAdapter.Fill(DataSet, Nombre)
-        If Not DataSet.Tables(Nombre).Rows.Count = 0 Then
-            BuscaConsulta = DataSet.Copy
-        End If
-
-        BuscaConsulta = DataSet.Copy
-
-    End Function
 
 
     Public Sub Limpiar_Expediente()
+
+        Dim SQLstring As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
         Me.TxtLetra.Text = ""
         Me.TxtCodigo.Text = ""
@@ -43,6 +35,21 @@ Public Class FrmExpediente
         Me.TxtDireccionEmergencia.Text = ""
 
         Me.ImgFoto.Image = My.Resources.NoDisponible
+
+        SQLstring = "SELECT  Admision.Numero_Expediente , Expediente.Nombres + ' ' + Expediente.Apellidos AS Nombres, Expediente.Telefono, Admision.Fecha_Hora, Admision.idAdminsion AS Numero_Admision, Admision.idPreconsultas AS Numero_Preconsulta, Admision.Activo FROM  Admision INNER JOIN Expediente ON Admision.Numero_Expediente = Expediente.Numero_Expediente  " & _
+            "WHERE  (Admision.Numero_Expediente = '-10000000')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
+        DataAdapter.Fill(DataSet, "Admision")
+        Me.TrueDBGridConsultas.DataSource = DataSet.Tables("Admision")
+        Me.TrueDBGridConsultas.Columns("Numero_Expediente").Caption = "Expediente"
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Numero_Expediente").Width = 70
+        Me.TrueDBGridConsultas.Columns("Nombres").Caption = "Nombre Paciente"
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Nombres").Width = 200
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Telefono").Width = 70
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Fecha_Hora").Width = 70
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Numero_Admision").Width = 70
+        Me.TrueDBGridConsultas.Columns("Numero_Admision").Caption = "Preconsulta"
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Activo").Width = 70
     End Sub
 
     Public Sub Cargar_Expediente(ByVal Numero_Expediente As String)
@@ -137,7 +144,7 @@ Public Class FrmExpediente
                     IdComarca = DataSet.Tables("Expediente").Rows(0)("IdComarca")
 
                     SQLstring = "SELECT IdMunicipio, Cod_Departamento, Nombre_Municipio FROM Municipio WHERE (IdMunicipio = '" & IdComarca & "') AND (Tipo = 'Comarca')"
-                    ds = Me.BuscaConsulta(SQLstring, "Comarca").Copy
+                    ds = BuscaConsulta(SQLstring, "Comarca").Copy
                     If ds.Tables("Comarca").Rows.Count <> 0 Then
                         Me.CboComarca.Text = ds.Tables("Comarca").Rows(0)("Nombre_Municipio")
                     End If
@@ -147,7 +154,7 @@ Public Class FrmExpediente
                     IdMunicipio = DataSet.Tables("Expediente").Rows(0)("IdMunicipio")
 
                     SQLstring = "SELECT IdMunicipio, Cod_Departamento, Nombre_Municipio FROM Municipio WHERE (IdMunicipio = '" & IdMunicipio & "') AND (Tipo = 'Municipio')"
-                    ds = Me.BuscaConsulta(SQLstring, "Municipio").Copy
+                    ds = BuscaConsulta(SQLstring, "Municipio").Copy
                     If ds.Tables("Municipio").Rows.Count <> 0 Then
                         Me.CboMunicipio.Text = ds.Tables("Municipio").Rows(0)("Nombre_Municipio")
                     End If
@@ -158,7 +165,7 @@ Public Class FrmExpediente
                     CodDepartamento = DataSet.Tables("Expediente").Rows(0)("IdLocalidad")
 
                     SQLstring = "SELECT Cod_Departamento, Nombre_Departamento FROM Departamentos WHERE (Cod_Departamento = '" & CodDepartamento & "')"
-                    ds = Me.BuscaConsulta(SQLstring, "Departamento").Copy
+                    ds = BuscaConsulta(SQLstring, "Departamento").Copy
                     If ds.Tables("Departamento").Rows.Count <> 0 Then
                         Me.CboLocalidad.Text = ds.Tables("Departamento").Rows(0)("Nombre_Departamento")
                     End If
@@ -171,6 +178,29 @@ Public Class FrmExpediente
                 Else
                     Me.ImgFoto.Image = My.Resources.NoDisponible
                 End If
+
+
+                '//////////////////////////////////////////////////////////////////////////////////////////////////
+                '/////////////////////CARGO LAS ADMISIONES PARA ESTE PACIENTE ///////////////////////////////////////
+                '///////////////////////////////////////////////////////////////////////////////////////////////////////
+                SQLstring = "SELECT  Admision.Numero_Expediente , Expediente.Nombres + ' ' + Expediente.Apellidos AS Nombres, Expediente.Telefono, Admision.Fecha_Hora, Admision.idAdminsion AS Numero_Admision, Admision.idPreconsultas AS Numero_Preconsulta, Admision.Activo FROM  Admision INNER JOIN Expediente ON Admision.Numero_Expediente = Expediente.Numero_Expediente  " & _
+                            "WHERE  (Admision.Numero_Expediente = '" & Numero_Expediente & "')"
+                DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
+                DataAdapter.Fill(DataSet, "Admision")
+                Me.TrueDBGridConsultas.DataSource = DataSet.Tables("Admision")
+
+                Me.TrueDBGridConsultas.Columns("Numero_Expediente").Caption = "Expediente"
+                Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Numero_Expediente").Width = 70
+                Me.TrueDBGridConsultas.Columns("Nombres").Caption = "Nombre Paciente"
+                Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Nombres").Width = 200
+                Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Telefono").Width = 70
+                Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Fecha_Hora").Width = 70
+                Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Numero_Admision").Width = 70
+                Me.TrueDBGridConsultas.Columns("Numero_Admision").Caption = "Preconsulta"
+                Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Activo").Width = 70
+
+
+
 
             Else
                 Limpiar_Expediente()
@@ -381,12 +411,12 @@ Public Class FrmExpediente
 
         '//////////////////////////BUSCO EL ID DE LA LOCALIDAD ////////////////////////////////////////////////
         SQlString = "SELECT Cod_Departamento, Nombre_Departamento FROM Departamentos "
-        ds = Me.BuscaConsulta(SQlString, "Departamento").Copy
+        ds = BuscaConsulta(SQlString, "Departamento").Copy
         Me.CboLocalidad.DataSource = ds.Tables("Departamento")
 
         '//////////////////////////BUSCO LA OCUPACION ////////////////////////////////////////////////
         SQlString = "SELECT DISTINCT Ocupacion FROM  Expediente"
-        ds = Me.BuscaConsulta(SQlString, "Ocupacion").Copy
+        ds = BuscaConsulta(SQlString, "Ocupacion").Copy
         If ds.Tables("Ocupacion").Rows.Count <> 0 Then
             Me.CboOcupacion.DataSource = ds.Tables("Ocupacion")
             Me.CboOcupacion.Text = ds.Tables("Ocupacion").Rows(0)("Ocupacion")
@@ -394,7 +424,7 @@ Public Class FrmExpediente
 
         '//////////////////////////UNIDAD DE SALUD ////////////////////////////////////////////////
         SQlString = "SELECT DISTINCT  Unidad_Salud FROM  Expediente"
-        ds = Me.BuscaConsulta(SQlString, "Unidad_Salud").Copy
+        ds = BuscaConsulta(SQlString, "Unidad_Salud").Copy
         If ds.Tables("Unidad_Salud").Rows.Count <> 0 Then
             Me.CboUnidadSalud.DataSource = ds.Tables("Unidad_Salud")
             Me.CboUnidadSalud.Text = ds.Tables("Unidad_Salud").Rows(0)("Unidad_Salud")
@@ -420,19 +450,19 @@ Public Class FrmExpediente
         Numero_Expediente = Me.TxtLetra.Text & "-" & Me.TxtCodigo.Text
         '//////////////////////////BUSCO EL ID DE LA LOCALIDAD ////////////////////////////////////////////////
         SQlString = "SELECT Cod_Departamento, Nombre_Departamento FROM Departamentos WHERE (Nombre_Departamento = '" & Me.CboLocalidad.Text & "')"
-        ds = Me.BuscaConsulta(SQlString, "Departamento").Copy
+        ds = BuscaConsulta(SQlString, "Departamento").Copy
         If ds.Tables("Departamento").Rows.Count <> 0 Then
             CodDepartamento = ds.Tables("Departamento").Rows(0)("Cod_Departamento")
         End If
 
         SQlString = "SELECT IdMunicipio, Cod_Departamento, Nombre_Municipio FROM Municipio WHERE (Nombre_Municipio = '" & Me.CboMunicipio.Text & "') AND (Tipo = 'Municipio')"
-        ds = Me.BuscaConsulta(SQlString, "Municipio").Copy
+        ds = BuscaConsulta(SQlString, "Municipio").Copy
         If ds.Tables("Municipio").Rows.Count <> 0 Then
             idMunicipio = ds.Tables("Municipio").Rows(0)("IdMunicipio")
         End If
 
         SQlString = "SELECT IdMunicipio, Cod_Departamento, Nombre_Municipio FROM Municipio WHERE (Nombre_Municipio = '" & Me.CboComarca.Text & "') AND (Tipo = 'Comarca')"
-        ds = Me.BuscaConsulta(SQlString, "Comarca").Copy
+        ds = BuscaConsulta(SQlString, "Comarca").Copy
         If ds.Tables("Comarca").Rows.Count <> 0 Then
             IdComarca = ds.Tables("Comarca").Rows(0)("IdMunicipio")
         End If
@@ -458,14 +488,14 @@ Public Class FrmExpediente
 
         '//////////////////////////BUSCO EL ID DE LA LOCALIDAD ////////////////////////////////////////////////
         Sqlstring = "SELECT Cod_Departamento, Nombre_Departamento FROM Departamentos WHERE (Nombre_Departamento = '" & Me.CboLocalidad.Text & "')"
-        ds = Me.BuscaConsulta(Sqlstring, "Departamento").Copy
+        ds = BuscaConsulta(Sqlstring, "Departamento").Copy
         If ds.Tables("Departamento").Rows.Count <> 0 Then
             CodDepartamento = ds.Tables("Departamento").Rows(0)("Cod_Departamento")
         End If
 
 
         Sqlstring = "SELECT IdMunicipio, Cod_Departamento, Nombre_Municipio FROM Municipio WHERE  (Tipo = 'Municipio') AND (Cod_Departamento = '" & CodDepartamento & "')"
-        ds = Me.BuscaConsulta(Sqlstring, "Municipio").Copy
+        ds = BuscaConsulta(Sqlstring, "Municipio").Copy
         Me.CboMunicipio.DataSource = ds.Tables("Municipio")
 
 
@@ -476,14 +506,14 @@ Public Class FrmExpediente
         Dim ds As New DataSet
 
         Sqlstring = "SELECT  IdMunicipio, Cod_Departamento, Nombre_Municipio FROM Municipio WHERE (Nombre_Municipio = '" & Me.CboMunicipio.Text & "') AND (Tipo = 'Municipio')"
-        ds = Me.BuscaConsulta(Sqlstring, "Consulta").Copy
+        ds = BuscaConsulta(Sqlstring, "Consulta").Copy
         If ds.Tables("Consulta").Rows.Count <> 0 Then
             IdMunicipio = ds.Tables("Consulta").Rows(0)("IdMunicipio")
         End If
 
 
         Sqlstring = "SELECT IdMunicipio, Cod_Departamento, Nombre_Municipio FROM Municipio WHERE  (Tipo = 'Comarca') AND (Cod_Departamento = '" & IdMunicipio & "')"
-        ds = Me.BuscaConsulta(Sqlstring, "Municipio").Copy
+        ds = BuscaConsulta(Sqlstring, "Municipio").Copy
         Me.CboComarca.DataSource = ds.Tables("Municipio")
 
 

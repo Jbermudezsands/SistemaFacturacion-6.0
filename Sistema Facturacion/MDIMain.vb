@@ -1308,7 +1308,14 @@ Public Class MDIMain
         My.Forms.FrmConsultorio.Show()
     End Sub
 
-    Private Sub c1Ribbon1_RibbonEvent(ByVal sender As System.Object, ByVal e As C1.Win.C1Ribbon.RibbonEventArgs) Handles c1Ribbon1.RibbonEvent
 
+    Private Sub RibbonAdmision_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonAdmision.Click
+        My.Forms.FrmAdmision.MdiParent = Me
+        My.Forms.FrmAdmision.Show()
+    End Sub
+
+    Private Sub RibbonPreConsultas_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonPreConsultas.Click
+        My.Forms.FrmPreConsultas.MdiParent = Me
+        My.Forms.FrmPreConsultas.Show()
     End Sub
 End Class

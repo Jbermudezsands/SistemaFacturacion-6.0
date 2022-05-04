@@ -109,6 +109,12 @@
     <Compile Include="FrmActivar.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmAdmision.Designer.vb">
+      <DependentUpon>FrmAdmision.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmAdmision.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmAjustarCostos.Designer.vb">
       <DependentUpon>FrmAjustarCostos.vb</DependentUpon>
     </Compile>
@@ -389,6 +395,12 @@
       <DependentUpon>frmPlanillaConductores.vb</DependentUpon>
     </Compile>
     <Compile Include="frmPlanillaConductores.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPreConsultas.Designer.vb">
+      <DependentUpon>FrmPreConsultas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPreConsultas.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmProductor.designer.vb">
@@ -1549,6 +1561,10 @@
       <DependentUpon>FrmActivar.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmAdmision.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmAdmision.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmAjustarCostos.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmAjustarCostos.vb</DependentUpon>
@@ -1744,6 +1760,10 @@
     <EmbeddedResource Include="frmPlanillaConductores.resx">
       <SubType>Designer</SubType>
       <DependentUpon>frmPlanillaConductores.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPreConsultas.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmPreConsultas.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmProductor.resx">
       <DependentUpon>FrmProductor.vb</DependentUpon>

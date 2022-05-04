@@ -79,11 +79,15 @@ Partial Class FrmExpediente
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog
         Me.Button6 = New System.Windows.Forms.Button
+        Me.TrueDBGridConsultas = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.Button2 = New System.Windows.Forms.Button
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
+        Me.TabPage2.SuspendLayout()
+        CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'CmdCerrar
@@ -634,6 +638,8 @@ Partial Class FrmExpediente
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.Button2)
+        Me.TabPage2.Controls.Add(Me.TrueDBGridConsultas)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
@@ -658,6 +664,37 @@ Partial Class FrmExpediente
         Me.Button6.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button6.UseVisualStyleBackColor = True
         '
+        'TrueDBGridConsultas
+        '
+        Me.TrueDBGridConsultas.AllowUpdate = False
+        Me.TrueDBGridConsultas.AlternatingRows = True
+        Me.TrueDBGridConsultas.Caption = "CONSULTAS"
+        Me.TrueDBGridConsultas.FilterBar = True
+        Me.TrueDBGridConsultas.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TrueDBGridConsultas.Images.Add(CType(resources.GetObject("TrueDBGridConsultas.Images"), System.Drawing.Image))
+        Me.TrueDBGridConsultas.Location = New System.Drawing.Point(18, 15)
+        Me.TrueDBGridConsultas.Name = "TrueDBGridConsultas"
+        Me.TrueDBGridConsultas.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TrueDBGridConsultas.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TrueDBGridConsultas.PreviewInfo.ZoomFactor = 75
+        Me.TrueDBGridConsultas.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridConsultas.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TrueDBGridConsultas.Size = New System.Drawing.Size(770, 296)
+        Me.TrueDBGridConsultas.TabIndex = 29
+        Me.TrueDBGridConsultas.Text = "C1TrueDBGrid1"
+        Me.TrueDBGridConsultas.PropBag = resources.GetString("TrueDBGridConsultas.PropBag")
+        '
+        'Button2
+        '
+        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
+        Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button2.Location = New System.Drawing.Point(794, 15)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(75, 34)
+        Me.Button2.TabIndex = 237
+        Me.Button2.Text = "Imprimir"
+        Me.Button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button2.UseVisualStyleBackColor = True
+        '
         'FrmExpediente
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -677,6 +714,8 @@ Partial Class FrmExpediente
         CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
+        Me.TabPage2.ResumeLayout(False)
+        CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -739,4 +778,6 @@ Partial Class FrmExpediente
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
     Friend WithEvents ImgFoto As System.Windows.Forms.PictureBox
     Friend WithEvents Button6 As System.Windows.Forms.Button
+    Friend WithEvents TrueDBGridConsultas As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents Button2 As System.Windows.Forms.Button
 End Class

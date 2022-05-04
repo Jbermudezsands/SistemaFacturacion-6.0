@@ -4,6 +4,63 @@ Imports System.IO
 Imports System.Drawing.Imaging
 
 Module Funciones
+    Public Sub Grabar_Admision(ByVal Numero_Expediente As String, ByVal Fecha_Hora As Date, ByVal Activo As Boolean, ByVal Procesado As Boolean, ByVal Cancelado As Boolean, ByVal idPreconsultas As Double)
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim SQLstring As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+
+        Try
+
+            If Numero_Expediente = "" Then
+                MsgBox("Se necesita el codigo del Expediente", MsgBoxStyle.Critical, "Sistema de Facturacion")
+                Exit Sub
+            End If
+
+            '////////////////////////////////7BUSCO QUE NO EXISTA UNA ADMISION PENDIENTE //////////////////////////////////////////
+
+            SQLstring = "SELECT  Admision.* FROM Admision WHERE  (Numero_Expediente = '" & Numero_Expediente & "') AND (Activo = 0)"
+            DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
+            DataAdapter.Fill(DataSet, "Expediente")
+            If Not DataSet.Tables("Expediente").Rows.Count = 0 Then
+                MsgBox("Existe una  Admision Activa para este Paciente!!!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+                Exit Sub
+            Else
+                '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
+                StrSqlUpdate = "INSERT INTO [Admision] ([Numero_Expediente],[Fecha_Hora],[Activo],[Procesado],[Cancelado],[idPreconsultas]) VALUES ('" & Numero_Expediente & "', CONVERT(DATETIME, '" & Format(FechaIngreso, "yyyy-MM-dd HH:mm:ss") & "', 102) , '" & Activo & "',  '" & Procesado & "', '" & Cancelado & "' ," & idPreconsultas & " )"
+                MiConexion.Open()
+                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                iResultado = ComandoUpdate.ExecuteNonQuery
+                MiConexion.Close()
+
+                MsgBox("Grabado con Exito !!!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+                Exit Sub
+
+            End If
+
+
+
+        Catch ex As Exception
+            MsgBox(Err.Number)
+        End Try
+
+    End Sub
+
+
+
+    Public Function BuscaConsulta(ByVal Sqlstring As String, ByVal Nombre As String) As DataSet
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+
+        DataAdapter = New SqlClient.SqlDataAdapter(Sqlstring, MiConexion)
+        DataAdapter.Fill(DataSet, Nombre)
+        If Not DataSet.Tables(Nombre).Rows.Count = 0 Then
+            BuscaConsulta = DataSet.Copy
+        End If
+
+        BuscaConsulta = DataSet.Copy
+
+    End Function
 
     Public Sub Grabar_Expediente(ByVal Numero_Expediente As String, ByVal Nombres As String, ByVal Apellidos As String, ByVal Edad As Double, ByVal Sexo As String, ByVal Estado_Civil As String, ByVal Escolaridad As String, ByVal Ocupacion As String, ByVal Telefono As Double, ByVal Direccion As String, ByVal FechaIngreso As Date, ByVal Unidad_Salud As String, ByVal Nombre_Padre As String, ByVal Nombre_Madre As String, ByVal CodDepartamento As String, ByVal IdMunicipio As Double, ByVal idComarca As Double, ByVal Nombre_Emergencia As String, ByVal Telefono_Emergencia As Double, ByVal Direccion_Emergencia As String, ByVal Fecha_Nacimiento As Date)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
