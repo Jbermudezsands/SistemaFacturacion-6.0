@@ -4,6 +4,63 @@ Imports System.IO
 Imports System.Drawing.Imaging
 
 Module Funciones
+    Public Sub Grabar_PreConsultas(ByVal Numero_Expediente As String, ByVal Fecha_Hora As Date, ByVal Activo As Boolean, ByVal Procesado As Boolean, ByVal Cancelado As Boolean, ByVal idAdmision As Double, ByVal Sistolica As Double, ByVal Diastolica As Double, ByVal Temperatura As Double, ByVal AzucarSangre As Double, ByVal IdConsultorio As Double)
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim SQLstring As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, idPreConsultas As Double
+
+        Try
+
+            If Numero_Expediente = "" Then
+                MsgBox("Se necesita el codigo del Expediente", MsgBoxStyle.Critical, "Sistema de Facturacion")
+                Exit Sub
+            End If
+
+            '////////////////////////////////7BUSCO QUE NO EXISTA UNA ADMISION PENDIENTE //////////////////////////////////////////
+
+            SQLstring = "SELECT  PreConsultas.* FROM PreConsultas WHERE  (Numero_Expediente = '" & Numero_Expediente & "') AND (Activo = 1)"
+            DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
+            DataAdapter.Fill(DataSet, "Expediente")
+            If Not DataSet.Tables("Expediente").Rows.Count = 0 Then
+                MsgBox("Existe una PreConsulta Activa para este Paciente!!!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+                Exit Sub
+            Else
+                '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
+                StrSqlUpdate = "INSERT INTO [PreConsultas] ([Numero_Expediente],[Fecha_Hora],[Activo],[Procesado],[Anulado],[idAdmision],[Sistolica],[Diastolica],[Temperatura],[Azucar_Sangre],[IdConsultorio]) VALUES ('" & Numero_Expediente & "', CONVERT(DATETIME, '" & Format(FechaIngreso, "yyyy-MM-dd HH:mm:ss") & "', 102) , '" & Activo & "',  '" & Procesado & "', '" & Cancelado & "' ," & idAdmision & ", " & Sistolica & ", " & Diastolica & ", " & Temperatura & ", " & AzucarSangre & ", " & IdConsultorio & ")"
+                MiConexion.Open()
+                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                iResultado = ComandoUpdate.ExecuteNonQuery
+                MiConexion.Close()
+
+                SQLstring = "SELECT PreConsultas.* FROM PreConsultas WHERE(idAdmision = " & idAdmision & ")"
+                DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
+                DataAdapter.Fill(DataSet, "Pre")
+                If Not DataSet.Tables("Pre").Rows.Count = 0 Then
+                    idPreConsultas = DataSet.Tables("Pre").Rows(0)("idPreConsulta")
+                End If
+
+                '///////////////////////////////ACTUALIZO LA TABLA DE ADMISION /////
+                StrSqlUpdate = "UPDATE [Admision] SET [Activo] = 0 ,[idPreconsultas] = " & idPreConsultas & "  WHERE (idAdminsion = " & idAdmision & ")"
+                MiConexion.Open()
+                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                iResultado = ComandoUpdate.ExecuteNonQuery
+                MiConexion.Close()
+
+
+                MsgBox("Grabado con Exito !!!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+                Exit Sub
+
+            End If
+
+
+
+        Catch ex As Exception
+            MsgBox(Err.Number)
+        End Try
+
+    End Sub
+
     Public Sub Grabar_Admision(ByVal Numero_Expediente As String, ByVal Fecha_Hora As Date, ByVal Activo As Boolean, ByVal Procesado As Boolean, ByVal Cancelado As Boolean, ByVal idPreconsultas As Double)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQLstring As String
@@ -19,7 +76,7 @@ Module Funciones
 
             '////////////////////////////////7BUSCO QUE NO EXISTA UNA ADMISION PENDIENTE //////////////////////////////////////////
 
-            SQLstring = "SELECT  Admision.* FROM Admision WHERE  (Numero_Expediente = '" & Numero_Expediente & "') AND (Activo = 0)"
+            SQLstring = "SELECT  Admision.* FROM Admision WHERE  (Numero_Expediente = '" & Numero_Expediente & "') AND (Activo = 1)"
             DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
             DataAdapter.Fill(DataSet, "Expediente")
             If Not DataSet.Tables("Expediente").Rows.Count = 0 Then

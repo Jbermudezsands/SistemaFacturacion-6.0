@@ -1318,4 +1318,9 @@ Public Class MDIMain
         My.Forms.FrmPreConsultas.MdiParent = Me
         My.Forms.FrmPreConsultas.Show()
     End Sub
+
+    Private Sub RibbonConsultas_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonConsultas.Click
+        My.Forms.FrmListadoConsultas.MdiParent = Me
+        My.Forms.FrmListadoConsultas.Show()
+    End Sub
 End Class

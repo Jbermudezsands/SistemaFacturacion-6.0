@@ -1747,7 +1747,7 @@ Public Class FrmCompras
         End If
 
         If Me.CboTipoProducto.Text = "Cuenta" Then
-            Me.GroupBox3.Enabled = False
+            Me.GroupBox3.Enabled = True
             Me.RadioButton1.Checked = True
             Me.ChkAplicarCtasXPagar.Visible = False
 

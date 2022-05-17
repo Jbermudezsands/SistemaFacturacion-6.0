@@ -1,5 +1,5 @@
 Public Class FrmPreConsultasNuevas
-    Public Numero_Expediente As String, Numero_Admision As Double
+    Public Numero_Expediente As String, Numero_Admision As Double, Hora_Admision As Date, Id_Consultorio As Double = 0
 
 
 
@@ -69,7 +69,7 @@ Public Class FrmPreConsultasNuevas
                     SQLstring = "SELECT Cod_Departamento, Nombre_Departamento FROM Departamentos WHERE (Cod_Departamento = '" & CodDepartamento & "')"
                     ds = BuscaConsulta(SQLstring, "Departamento").Copy
                     If ds.Tables("Departamento").Rows.Count <> 0 Then
-                        Me.TxtLocalidad.Text = ds.Tables("Departamento").Rows(0)("Nombre_Departamento")
+                        Me.TxtSistolica.Text = ds.Tables("Departamento").Rows(0)("Nombre_Departamento")
                     End If
 
                 End If
@@ -96,7 +96,7 @@ Public Class FrmPreConsultasNuevas
         Me.TxtCodigo.Text = ""
         Me.TxtNombres.Text = ""
         Me.TxtApellidos.Text = ""
-        Me.TxtLocalidad.Text = ""
+        Me.TxtSistolica.Text = ""
         Me.ImgFoto.Image = My.Resources.NoDisponible
     End Sub
 
@@ -109,6 +109,56 @@ Public Class FrmPreConsultasNuevas
     End Sub
 
     Private Sub FrmPreConsultasNuevas_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.DTPFecha.Text = Format(Now, "dd/MM/yyyy")
+    End Sub
 
+    Private Sub CmdGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGuardar.Click
+        Dim Hora As Date, idAdmision As Double
+
+        If Me.TxtCodigo.Text = "" Then
+            MsgBox("Es Necesario Digitar el Numero Expediente", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.TxtSistolica.Text = "" Then
+            MsgBox("Es Necesario Digitar la Sistolica", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.TxtDiastolica.Text = "" Then
+            MsgBox("Es Necesario Digitar la Diastolica", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.TxtTemperatura.Text = "" Then
+            MsgBox("Es Necesario Digitar la Temperatura", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.TxtAzucarSangre.Text = "" Then
+            MsgBox("Es Necesario Digitar el Azucar en Sangre", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.Id_Consultorio = 0 Then
+            MsgBox("Seleccione el Consultorio", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+
+        Hora = Format(CDate(Me.DTPFecha.Text), "dd/MM/yyyy") & " " & Me.LblHora.Text
+
+
+        Grabar_PreConsultas(Me.TxtCodigo.Text, Hora, True, False, False, Numero_Admision, Me.TxtSistolica.Text, Me.TxtDiastolica.Text, Me.TxtTemperatura.Text, Me.TxtAzucarSangre.Text, Me.Id_Consultorio)
+        My.Forms.FrmPreConsultas.Cargar_PreConsultas()
+        Limpiar_Expediente()
+    End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        Quien = "Consultorio"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.TxtNombre.Text = My.Forms.FrmConsultas.Descripcion2
+        Me.TxtConsultorio.Text = My.Forms.FrmConsultas.Descripcion
+        Me.Id_Consultorio = My.Forms.FrmConsultas.IdConsulta
     End Sub
 End Class

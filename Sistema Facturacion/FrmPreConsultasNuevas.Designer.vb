@@ -31,8 +31,7 @@ Partial Class FrmPreConsultasNuevas
         Me.CmdGuardar = New System.Windows.Forms.Button
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.TxtLocalidad = New System.Windows.Forms.TextBox
-        Me.Label14 = New System.Windows.Forms.Label
+        Me.Label4 = New System.Windows.Forms.Label
         Me.TxtHoraAdmision = New System.Windows.Forms.TextBox
         Me.Label11 = New System.Windows.Forms.Label
         Me.Label1 = New System.Windows.Forms.Label
@@ -41,14 +40,19 @@ Partial Class FrmPreConsultasNuevas
         Me.TxtCodigo = New System.Windows.Forms.TextBox
         Me.TxtNombres = New System.Windows.Forms.TextBox
         Me.Label2 = New System.Windows.Forms.Label
-        Me.Label4 = New System.Windows.Forms.Label
+        Me.TxtSistolica = New System.Windows.Forms.TextBox
+        Me.Label14 = New System.Windows.Forms.Label
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.TextBox2 = New System.Windows.Forms.TextBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.TextBox3 = New System.Windows.Forms.TextBox
-        Me.Label6 = New System.Windows.Forms.Label
+        Me.TxtAzucarSangre = New System.Windows.Forms.TextBox
         Me.Label7 = New System.Windows.Forms.Label
-        Me.TextBox4 = New System.Windows.Forms.TextBox
+        Me.TxtTemperatura = New System.Windows.Forms.TextBox
+        Me.Label6 = New System.Windows.Forms.Label
+        Me.TxtDiastolica = New System.Windows.Forms.TextBox
+        Me.Label5 = New System.Windows.Forms.Label
+        Me.Button1 = New System.Windows.Forms.Button
+        Me.TxtNombre = New System.Windows.Forms.TextBox
+        Me.Label8 = New System.Windows.Forms.Label
+        Me.TxtConsultorio = New System.Windows.Forms.TextBox
         Me.GroupBox9.SuspendLayout()
         CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -113,7 +117,7 @@ Partial Class FrmPreConsultasNuevas
         '
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
         Me.Button6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button6.Location = New System.Drawing.Point(281, 286)
+        Me.Button6.Location = New System.Drawing.Point(281, 299)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(75, 34)
         Me.Button6.TabIndex = 242
@@ -125,7 +129,7 @@ Partial Class FrmPreConsultasNuevas
         '
         Me.CmdCerrar.Image = CType(resources.GetObject("CmdCerrar.Image"), System.Drawing.Image)
         Me.CmdCerrar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.CmdCerrar.Location = New System.Drawing.Point(755, 286)
+        Me.CmdCerrar.Location = New System.Drawing.Point(755, 299)
         Me.CmdCerrar.Name = "CmdCerrar"
         Me.CmdCerrar.Size = New System.Drawing.Size(75, 34)
         Me.CmdCerrar.TabIndex = 241
@@ -137,7 +141,7 @@ Partial Class FrmPreConsultasNuevas
         '
         Me.CmdGuardar.Image = CType(resources.GetObject("CmdGuardar.Image"), System.Drawing.Image)
         Me.CmdGuardar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.CmdGuardar.Location = New System.Drawing.Point(200, 286)
+        Me.CmdGuardar.Location = New System.Drawing.Point(200, 299)
         Me.CmdGuardar.Name = "CmdGuardar"
         Me.CmdGuardar.Size = New System.Drawing.Size(75, 34)
         Me.CmdGuardar.TabIndex = 240
@@ -167,21 +171,14 @@ Partial Class FrmPreConsultasNuevas
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Datos Admision"
         '
-        'TxtLocalidad
+        'Label4
         '
-        Me.TxtLocalidad.Location = New System.Drawing.Point(94, 25)
-        Me.TxtLocalidad.Name = "TxtLocalidad"
-        Me.TxtLocalidad.Size = New System.Drawing.Size(52, 20)
-        Me.TxtLocalidad.TabIndex = 233
-        '
-        'Label14
-        '
-        Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(33, 28)
-        Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(46, 13)
-        Me.Label14.TabIndex = 230
-        Me.Label14.Text = "Sistolica"
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(72, 103)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(33, 13)
+        Me.Label4.TabIndex = 236
+        Me.Label4.Text = "Hora:"
         '
         'TxtHoraAdmision
         '
@@ -250,24 +247,31 @@ Partial Class FrmPreConsultasNuevas
         Me.Label2.TabIndex = 170
         Me.Label2.Text = "Nombres:"
         '
-        'Label4
+        'TxtSistolica
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(72, 103)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(33, 13)
-        Me.Label4.TabIndex = 236
-        Me.Label4.Text = "Hora:"
+        Me.TxtSistolica.Location = New System.Drawing.Point(94, 25)
+        Me.TxtSistolica.Name = "TxtSistolica"
+        Me.TxtSistolica.Size = New System.Drawing.Size(52, 20)
+        Me.TxtSistolica.TabIndex = 233
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(33, 28)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(46, 13)
+        Me.Label14.TabIndex = 230
+        Me.Label14.Text = "Sistolica"
         '
         'GroupBox2
         '
-        Me.GroupBox2.Controls.Add(Me.TextBox4)
+        Me.GroupBox2.Controls.Add(Me.TxtAzucarSangre)
         Me.GroupBox2.Controls.Add(Me.Label7)
-        Me.GroupBox2.Controls.Add(Me.TextBox3)
+        Me.GroupBox2.Controls.Add(Me.TxtTemperatura)
         Me.GroupBox2.Controls.Add(Me.Label6)
-        Me.GroupBox2.Controls.Add(Me.TextBox2)
+        Me.GroupBox2.Controls.Add(Me.TxtDiastolica)
         Me.GroupBox2.Controls.Add(Me.Label5)
-        Me.GroupBox2.Controls.Add(Me.TxtLocalidad)
+        Me.GroupBox2.Controls.Add(Me.TxtSistolica)
         Me.GroupBox2.Controls.Add(Me.Label14)
         Me.GroupBox2.Location = New System.Drawing.Point(551, 112)
         Me.GroupBox2.Name = "GroupBox2"
@@ -276,37 +280,12 @@ Partial Class FrmPreConsultasNuevas
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Pre Consulta"
         '
-        'TextBox2
+        'TxtAzucarSangre
         '
-        Me.TextBox2.Location = New System.Drawing.Point(209, 25)
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(52, 20)
-        Me.TextBox2.TabIndex = 235
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(155, 28)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(53, 13)
-        Me.Label5.TabIndex = 234
-        Me.Label5.Text = "Diastolica"
-        '
-        'TextBox3
-        '
-        Me.TextBox3.Location = New System.Drawing.Point(94, 51)
-        Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.Size = New System.Drawing.Size(52, 20)
-        Me.TextBox3.TabIndex = 237
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(12, 54)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(67, 13)
-        Me.Label6.TabIndex = 236
-        Me.Label6.Text = "Temperatura"
+        Me.TxtAzucarSangre.Location = New System.Drawing.Point(94, 78)
+        Me.TxtAzucarSangre.Name = "TxtAzucarSangre"
+        Me.TxtAzucarSangre.Size = New System.Drawing.Size(52, 20)
+        Me.TxtAzucarSangre.TabIndex = 239
         '
         'Label7
         '
@@ -317,18 +296,80 @@ Partial Class FrmPreConsultasNuevas
         Me.Label7.TabIndex = 238
         Me.Label7.Text = "Azucar Sangre"
         '
-        'TextBox4
+        'TxtTemperatura
         '
-        Me.TextBox4.Location = New System.Drawing.Point(94, 78)
-        Me.TextBox4.Name = "TextBox4"
-        Me.TextBox4.Size = New System.Drawing.Size(52, 20)
-        Me.TextBox4.TabIndex = 239
+        Me.TxtTemperatura.Location = New System.Drawing.Point(94, 51)
+        Me.TxtTemperatura.Name = "TxtTemperatura"
+        Me.TxtTemperatura.Size = New System.Drawing.Size(52, 20)
+        Me.TxtTemperatura.TabIndex = 237
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(12, 54)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(67, 13)
+        Me.Label6.TabIndex = 236
+        Me.Label6.Text = "Temperatura"
+        '
+        'TxtDiastolica
+        '
+        Me.TxtDiastolica.Location = New System.Drawing.Point(209, 25)
+        Me.TxtDiastolica.Name = "TxtDiastolica"
+        Me.TxtDiastolica.Size = New System.Drawing.Size(52, 20)
+        Me.TxtDiastolica.TabIndex = 235
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(155, 28)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(53, 13)
+        Me.Label5.TabIndex = 234
+        Me.Label5.Text = "Diastolica"
+        '
+        'Button1
+        '
+        Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
+        Me.Button1.Location = New System.Drawing.Point(481, 254)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(29, 30)
+        Me.Button1.TabIndex = 341
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'TxtNombre
+        '
+        Me.TxtNombre.Location = New System.Drawing.Point(550, 260)
+        Me.TxtNombre.Name = "TxtNombre"
+        Me.TxtNombre.Size = New System.Drawing.Size(285, 20)
+        Me.TxtNombre.TabIndex = 339
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(197, 260)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(59, 13)
+        Me.Label8.TabIndex = 340
+        Me.Label8.Text = "Consultorio"
+        '
+        'TxtConsultorio
+        '
+        Me.TxtConsultorio.Enabled = False
+        Me.TxtConsultorio.Location = New System.Drawing.Point(262, 257)
+        Me.TxtConsultorio.Name = "TxtConsultorio"
+        Me.TxtConsultorio.Size = New System.Drawing.Size(213, 20)
+        Me.TxtConsultorio.TabIndex = 342
         '
         'FrmPreConsultasNuevas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(847, 332)
+        Me.ClientSize = New System.Drawing.Size(847, 345)
+        Me.Controls.Add(Me.TxtConsultorio)
+        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.TxtNombre)
+        Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Button6)
@@ -348,6 +389,7 @@ Partial Class FrmPreConsultasNuevas
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents GroupBox9 As System.Windows.Forms.GroupBox
@@ -369,13 +411,17 @@ Partial Class FrmPreConsultasNuevas
     Friend WithEvents TxtCodigo As System.Windows.Forms.TextBox
     Friend WithEvents TxtNombres As System.Windows.Forms.TextBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents TxtLocalidad As System.Windows.Forms.TextBox
+    Friend WithEvents TxtSistolica As System.Windows.Forms.TextBox
     Friend WithEvents Label14 As System.Windows.Forms.Label
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
-    Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
+    Friend WithEvents TxtDiastolica As System.Windows.Forms.TextBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents TextBox4 As System.Windows.Forms.TextBox
+    Friend WithEvents TxtAzucarSangre As System.Windows.Forms.TextBox
     Friend WithEvents Label7 As System.Windows.Forms.Label
-    Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
+    Friend WithEvents TxtTemperatura As System.Windows.Forms.TextBox
     Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents TxtNombre As System.Windows.Forms.TextBox
+    Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents TxtConsultorio As System.Windows.Forms.TextBox
 End Class
