@@ -2048,14 +2048,14 @@ Partial Class FrmReportes
         'ListaImagenes
         '
         Me.ListaImagenes.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit
-        Me.ListaImagenes.ImageSize = New System.Drawing.Size(32, 32)
+        Me.ListaImagenes.ImageSize = New System.Drawing.Size(256, 256)
         Me.ListaImagenes.TransparentColor = System.Drawing.Color.Transparent
         '
         'FrmReportes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(886, 538)
+        Me.ClientSize = New System.Drawing.Size(864, 535)
         Me.ControlBox = False
         Me.Controls.Add(Me.Imagen)
         Me.Controls.Add(Me.GroupProveedores)

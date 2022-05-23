@@ -4585,6 +4585,7 @@ errSub:
 
         i = 0
         CostoPromedio = 0
+        CostoPromedioDolares = 0
         Cantidad = 0
         Do While i < (DataSet.Tables("Facturas").Rows.Count)
             CodProducto = DataSet.Tables("Facturas").Rows(i)("Cod_Producto")
@@ -4592,7 +4593,7 @@ errSub:
             'CostoPromedio = CostoPromedioKardex(CodProducto, FechaFactura) * Cantidad + CostoPromedio
             If Not IsDBNull(DataSet.Tables("Facturas").Rows(i)("Costo_Unitario")) Then
                 CostoPromedio = DataSet.Tables("Facturas").Rows(i)("Costo_Unitario") * Cantidad + CostoPromedio
-                CostoPromedioDolares = (CostoPromedio / TasaCambio) + CostoPromedioDolares
+                CostoPromedioDolares = (CostoPromedio / TasaCambio)
             End If
             i = i + 1
         Loop
