@@ -151,6 +151,39 @@
   <data name="Barra9" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Barra9.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="BarraN0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BarraN0.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BarraN1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BarraN1.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BarraN10" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BarraN10.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BarraN2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BarraN2.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BarraN3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BarraN3.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BarraN4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BarraN4.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BarraN5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BarraN5.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BarraN6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BarraN6.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BarraN7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BarraN7.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BarraN8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BarraN8.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BarraN9" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BarraN9.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="billing1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\billing1.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

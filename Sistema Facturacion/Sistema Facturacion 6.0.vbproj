@@ -2594,6 +2594,17 @@
     <None Include="Resources\Barra9.png" />
     <None Include="Resources\FotoNo.bmp" />
     <None Include="Resources\NoDisponible.JPG" />
+    <None Include="Resources\BarraN0.png" />
+    <None Include="Resources\BarraN1.png" />
+    <None Include="Resources\BarraN2.png" />
+    <None Include="Resources\BarraN10.png" />
+    <None Include="Resources\BarraN3.png" />
+    <None Include="Resources\BarraN4.png" />
+    <None Include="Resources\BarraN5.png" />
+    <None Include="Resources\BarraN6.png" />
+    <None Include="Resources\BarraN7.png" />
+    <None Include="Resources\BarraN8.png" />
+    <None Include="Resources\BarraN9.png" />
     <Content Include="Text Document.ico" />
   </ItemGroup>
   <ItemGroup>

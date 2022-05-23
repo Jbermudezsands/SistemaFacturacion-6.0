@@ -1956,6 +1956,22 @@ Public Class FrmReportes
                 RutaLogo = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
             End If
         End If
+
+        Me.ListaImagenes.Images.Add(0, My.Resources.Barra00)
+        Me.ListaImagenes.Images.Add(1, My.Resources.Barra1)
+        Me.ListaImagenes.Images.Add(2, My.Resources.Barra2)
+        Me.ListaImagenes.Images.Add(3, My.Resources.Barra3)
+        Me.ListaImagenes.Images.Add(4, My.Resources.Barra4)
+        Me.ListaImagenes.Images.Add(5, My.Resources.Barra5)
+        Me.ListaImagenes.Images.Add(6, My.Resources.Barra6)
+        Me.ListaImagenes.Images.Add(7, My.Resources.Barra7)
+        Me.ListaImagenes.Images.Add(8, My.Resources.Barra8)
+        Me.ListaImagenes.Images.Add(9, My.Resources.Barra9)
+        Me.ListaImagenes.Images.Add(10, My.Resources.Barra10)
+
+
+
+
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click

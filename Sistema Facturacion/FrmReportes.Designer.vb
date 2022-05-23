@@ -763,7 +763,7 @@ Partial Class FrmReportes
         '
         Me.Imagen.BackColor = System.Drawing.Color.White
         Me.Imagen.Image = CType(resources.GetObject("Imagen.Image"), System.Drawing.Image)
-        Me.Imagen.Location = New System.Drawing.Point(882, 550)
+        Me.Imagen.Location = New System.Drawing.Point(899, 539)
         Me.Imagen.Name = "Imagen"
         Me.Imagen.Size = New System.Drawing.Size(888, 350)
         Me.Imagen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
@@ -2047,25 +2047,15 @@ Partial Class FrmReportes
         '
         'ListaImagenes
         '
-        Me.ListaImagenes.ImageStream = CType(resources.GetObject("ListaImagenes.ImageStream"), System.Windows.Forms.ImageListStreamer)
+        Me.ListaImagenes.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit
+        Me.ListaImagenes.ImageSize = New System.Drawing.Size(32, 32)
         Me.ListaImagenes.TransparentColor = System.Drawing.Color.Transparent
-        Me.ListaImagenes.Images.SetKeyName(0, "BarraN0.png")
-        Me.ListaImagenes.Images.SetKeyName(1, "BarraN1.png")
-        Me.ListaImagenes.Images.SetKeyName(2, "BarraN2.png")
-        Me.ListaImagenes.Images.SetKeyName(3, "BarraN3.png")
-        Me.ListaImagenes.Images.SetKeyName(4, "BarraN4.png")
-        Me.ListaImagenes.Images.SetKeyName(5, "BarraN5.png")
-        Me.ListaImagenes.Images.SetKeyName(6, "BarraN6.png")
-        Me.ListaImagenes.Images.SetKeyName(7, "BarraN7.png")
-        Me.ListaImagenes.Images.SetKeyName(8, "BarraN8.png")
-        Me.ListaImagenes.Images.SetKeyName(9, "BarraN9.png")
-        Me.ListaImagenes.Images.SetKeyName(10, "BarraN10.png")
         '
         'FrmReportes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(859, 516)
+        Me.ClientSize = New System.Drawing.Size(886, 538)
         Me.ControlBox = False
         Me.Controls.Add(Me.Imagen)
         Me.Controls.Add(Me.GroupProveedores)
@@ -2294,4 +2284,5 @@ Partial Class FrmReportes
     Friend WithEvents BtnProveedor2 As System.Windows.Forms.Button
     Friend WithEvents ChkAgrupadoBodega As System.Windows.Forms.CheckBox
     Friend WithEvents ListaImagenes As System.Windows.Forms.ImageList
+    'Friend WithEvents ListaImagenes As System.Windows.Forms.ImageList
 End Class

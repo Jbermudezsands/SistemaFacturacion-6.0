@@ -80,4 +80,12 @@ Public Class FrmMunicipio
         Me.Actualizar_Municipios()
         Limpiar_Municipio()
     End Sub
+
+    Private Sub CboCodigoLinea_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboCodigoLinea.TextChanged
+
+    End Sub
+
+    Private Sub Label3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label3.Click
+
+    End Sub
 End Class

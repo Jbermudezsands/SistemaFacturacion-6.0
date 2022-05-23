@@ -56,6 +56,9 @@ Partial Class FrmConsultasMedicas
         Me.Label13 = New System.Windows.Forms.Label
         Me.TextBox3 = New System.Windows.Forms.TextBox
         Me.TabPage3 = New System.Windows.Forms.TabPage
+        Me.Button2 = New System.Windows.Forms.Button
+        Me.Button1 = New System.Windows.Forms.Button
+        Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.TabPage4 = New System.Windows.Forms.TabPage
         Me.GroupBox9 = New System.Windows.Forms.GroupBox
         Me.DTPFecha = New System.Windows.Forms.Label
@@ -65,18 +68,15 @@ Partial Class FrmConsultasMedicas
         Me.CmdGuardar = New System.Windows.Forms.Button
         Me.CmdCerrar = New System.Windows.Forms.Button
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.Button2 = New System.Windows.Forms.Button
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.TabPage3.SuspendLayout()
+        CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox9.SuspendLayout()
         CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -88,7 +88,7 @@ Partial Class FrmConsultasMedicas
         Me.TabControl1.Location = New System.Drawing.Point(212, 121)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(651, 252)
+        Me.TabControl1.Size = New System.Drawing.Size(660, 252)
         Me.TabControl1.TabIndex = 0
         '
         'TabPage1
@@ -104,7 +104,7 @@ Partial Class FrmConsultasMedicas
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(643, 226)
+        Me.TabPage1.Size = New System.Drawing.Size(652, 226)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Pre Consulta"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -370,7 +370,7 @@ Partial Class FrmConsultasMedicas
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(643, 226)
+        Me.TabPage2.Size = New System.Drawing.Size(652, 226)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Consulta"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -406,7 +406,7 @@ Partial Class FrmConsultasMedicas
         Me.TextBox3.Location = New System.Drawing.Point(6, 27)
         Me.TextBox3.Multiline = True
         Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.Size = New System.Drawing.Size(558, 78)
+        Me.TextBox3.Size = New System.Drawing.Size(553, 78)
         Me.TextBox3.TabIndex = 0
         '
         'TabPage3
@@ -417,17 +417,61 @@ Partial Class FrmConsultasMedicas
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage3.Size = New System.Drawing.Size(643, 226)
+        Me.TabPage3.Size = New System.Drawing.Size(652, 226)
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Medicamentos"
         Me.TabPage3.UseVisualStyleBackColor = True
+        '
+        'Button2
+        '
+        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
+        Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button2.Location = New System.Drawing.Point(548, 52)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(75, 34)
+        Me.Button2.TabIndex = 243
+        Me.Button2.Text = "Quitar"
+        Me.Button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button2.UseVisualStyleBackColor = True
+        '
+        'Button1
+        '
+        Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
+        Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button1.Location = New System.Drawing.Point(548, 12)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 34)
+        Me.Button1.TabIndex = 242
+        Me.Button1.Text = "Agregar"
+        Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'TrueDBGridComponentes
+        '
+        Me.TrueDBGridComponentes.AllowAddNew = True
+        Me.TrueDBGridComponentes.AlternatingRows = True
+        Me.TrueDBGridComponentes.Caption = "Listado de Productos"
+        Me.TrueDBGridComponentes.DirectionAfterEnter = C1.Win.C1TrueDBGrid.DirectionAfterEnterEnum.MoveNone
+        Me.TrueDBGridComponentes.Enabled = False
+        Me.TrueDBGridComponentes.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TrueDBGridComponentes.Images.Add(CType(resources.GetObject("TrueDBGridComponentes.Images"), System.Drawing.Image))
+        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(6, 12)
+        Me.TrueDBGridComponentes.Name = "TrueDBGridComponentes"
+        Me.TrueDBGridComponentes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75
+        Me.TrueDBGridComponentes.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridComponentes.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TrueDBGridComponentes.Size = New System.Drawing.Size(526, 167)
+        Me.TrueDBGridComponentes.TabIndex = 165
+        Me.TrueDBGridComponentes.Text = "C1TrueDBGrid1"
+        Me.TrueDBGridComponentes.PropBag = resources.GetString("TrueDBGridComponentes.PropBag")
         '
         'TabPage4
         '
         Me.TabPage4.Location = New System.Drawing.Point(4, 22)
         Me.TabPage4.Name = "TabPage4"
         Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage4.Size = New System.Drawing.Size(643, 226)
+        Me.TabPage4.Size = New System.Drawing.Size(652, 226)
         Me.TabPage4.TabIndex = 3
         Me.TabPage4.Text = "Examenes"
         Me.TabPage4.UseVisualStyleBackColor = True
@@ -490,11 +534,11 @@ Partial Class FrmConsultasMedicas
         '
         Me.CmdGuardar.Image = CType(resources.GetObject("CmdGuardar.Image"), System.Drawing.Image)
         Me.CmdGuardar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.CmdGuardar.Location = New System.Drawing.Point(878, 143)
+        Me.CmdGuardar.Location = New System.Drawing.Point(875, 143)
         Me.CmdGuardar.Name = "CmdGuardar"
-        Me.CmdGuardar.Size = New System.Drawing.Size(75, 34)
+        Me.CmdGuardar.Size = New System.Drawing.Size(82, 34)
         Me.CmdGuardar.TabIndex = 241
-        Me.CmdGuardar.Text = "Generar"
+        Me.CmdGuardar.Text = "Guardar"
         Me.CmdGuardar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.CmdGuardar.UseVisualStyleBackColor = True
         '
@@ -513,50 +557,6 @@ Partial Class FrmConsultasMedicas
         'Timer1
         '
         Me.Timer1.Enabled = True
-        '
-        'TrueDBGridComponentes
-        '
-        Me.TrueDBGridComponentes.AllowAddNew = True
-        Me.TrueDBGridComponentes.AlternatingRows = True
-        Me.TrueDBGridComponentes.Caption = "Listado de Productos"
-        Me.TrueDBGridComponentes.DirectionAfterEnter = C1.Win.C1TrueDBGrid.DirectionAfterEnterEnum.MoveNone
-        Me.TrueDBGridComponentes.Enabled = False
-        Me.TrueDBGridComponentes.GroupByCaption = "Drag a column header here to group by that column"
-        Me.TrueDBGridComponentes.Images.Add(CType(resources.GetObject("TrueDBGridComponentes.Images"), System.Drawing.Image))
-        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(6, 12)
-        Me.TrueDBGridComponentes.Name = "TrueDBGridComponentes"
-        Me.TrueDBGridComponentes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
-        Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75
-        Me.TrueDBGridComponentes.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridComponentes.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TrueDBGridComponentes.Size = New System.Drawing.Size(526, 167)
-        Me.TrueDBGridComponentes.TabIndex = 165
-        Me.TrueDBGridComponentes.Text = "C1TrueDBGrid1"
-        Me.TrueDBGridComponentes.PropBag = resources.GetString("TrueDBGridComponentes.PropBag")
-        '
-        'Button1
-        '
-        Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button1.Location = New System.Drawing.Point(548, 12)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 34)
-        Me.Button1.TabIndex = 242
-        Me.Button1.Text = "Agregar"
-        Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button1.UseVisualStyleBackColor = True
-        '
-        'Button2
-        '
-        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button2.Location = New System.Drawing.Point(548, 52)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(75, 34)
-        Me.Button2.TabIndex = 243
-        Me.Button2.Text = "Quitar"
-        Me.Button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button2.UseVisualStyleBackColor = True
         '
         'FrmConsultasMedicas
         '
@@ -582,10 +582,10 @@ Partial Class FrmConsultasMedicas
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage2.PerformLayout()
         Me.TabPage3.ResumeLayout(False)
+        CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox9.ResumeLayout(False)
         Me.GroupBox9.PerformLayout()
         CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
