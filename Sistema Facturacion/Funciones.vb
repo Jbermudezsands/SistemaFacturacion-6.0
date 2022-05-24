@@ -8,7 +8,7 @@ Module Funciones
 
     End Sub
 
-    Public Sub Grabar_PreConsultas(ByVal Numero_Expediente As String, ByVal Fecha_Hora As Date, ByVal Activo As Boolean, ByVal Procesado As Boolean, ByVal Cancelado As Boolean, ByVal idAdmision As Double, ByVal Sistolica As Double, ByVal Diastolica As Double, ByVal Temperatura As Double, ByVal AzucarSangre As Double, ByVal IdConsultorio As Double)
+    Public Sub Grabar_PreConsultas(ByVal Numero_Expediente As String, ByVal Fecha_Hora As Date, ByVal Activo As Boolean, ByVal Procesado As Boolean, ByVal Cancelado As Boolean, ByVal idAdmision As Double, ByVal Sistolica As Double, ByVal Diastolica As Double, ByVal Temperatura As Double, ByVal AzucarSangre As Double, ByVal IdConsultorio As Double, ByVal Peso As Double, ByVal Talla As Double)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQLstring As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -31,7 +31,7 @@ Module Funciones
                 Exit Sub
             Else
                 '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-                StrSqlUpdate = "INSERT INTO [PreConsultas] ([Numero_Expediente],[Fecha_Hora],[Activo],[Procesado],[Anulado],[idAdmision],[Sistolica],[Diastolica],[Temperatura],[Azucar_Sangre],[IdConsultorio]) VALUES ('" & Numero_Expediente & "', CONVERT(DATETIME, '" & Format(FechaIngreso, "yyyy-MM-dd HH:mm:ss") & "', 102) , '" & Activo & "',  '" & Procesado & "', '" & Cancelado & "' ," & idAdmision & ", " & Sistolica & ", " & Diastolica & ", " & Temperatura & ", " & AzucarSangre & ", " & IdConsultorio & ")"
+                StrSqlUpdate = "INSERT INTO [PreConsultas] ([Numero_Expediente],[Fecha_Hora],[Activo],[Procesado],[Anulado],[idAdmision],[Sistolica],[Diastolica],[Temperatura],[Azucar_Sangre],[IdConsultorio],[Peso],[Talla]) VALUES ('" & Numero_Expediente & "', CONVERT(DATETIME, '" & Format(FechaIngreso, "yyyy-MM-dd HH:mm:ss") & "', 102) , '" & Activo & "',  '" & Procesado & "', '" & Cancelado & "' ," & idAdmision & ", " & Sistolica & ", " & Diastolica & ", " & Temperatura & ", " & AzucarSangre & ", " & IdConsultorio & ", " & Peso & ", " & Talla & ")"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
                 iResultado = ComandoUpdate.ExecuteNonQuery

@@ -57,7 +57,7 @@ Public Class FrmComarca
     End Sub
 
     Private Sub CmdGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGrabar.Click
-        Grabar_Municipios(Me.CboCodigoLinea.Text, Me.TxtNombre.Text, "Comarca", Id_Comarca, True)
+        Grabar_Municipios(Me.CboCodigoLinea.Columns("IdMunicipio").Text, Me.TxtNombre.Text, "Comarca", Id_Comarca, True)
         Limpiar_Municipio()
     End Sub
 

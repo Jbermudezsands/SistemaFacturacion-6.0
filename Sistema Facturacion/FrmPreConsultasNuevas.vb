@@ -145,11 +145,19 @@ Public Class FrmPreConsultasNuevas
             Exit Sub
         End If
 
+        If Not IsNumeric(Me.TxtTalla.Text) Then
+            Me.TxtTalla.Text = 0
+        End If
+
+        If Not IsNumeric(Me.TxtPeso.Text) Then
+            Me.TxtPeso.Text = 0
+        End If
+
 
         Hora = Format(CDate(Me.DTPFecha.Text), "dd/MM/yyyy") & " " & Me.LblHora.Text
 
 
-        Grabar_PreConsultas(Me.TxtCodigo.Text, Hora, True, False, False, Numero_Admision, Me.TxtSistolica.Text, Me.TxtDiastolica.Text, Me.TxtTemperatura.Text, Me.TxtAzucarSangre.Text, Me.Id_Consultorio)
+        Grabar_PreConsultas(Me.TxtCodigo.Text, Hora, True, False, False, Numero_Admision, Me.TxtSistolica.Text, Me.TxtDiastolica.Text, Me.TxtTemperatura.Text, Me.TxtAzucarSangre.Text, Me.Id_Consultorio, Me.TxtTalla.Text, Me.TxtPeso.Text)
         My.Forms.FrmPreConsultas.Cargar_PreConsultas()
         Limpiar_Expediente()
     End Sub
@@ -160,5 +168,9 @@ Public Class FrmPreConsultasNuevas
         Me.TxtNombre.Text = My.Forms.FrmConsultas.Descripcion2
         Me.TxtConsultorio.Text = My.Forms.FrmConsultas.Descripcion
         Me.Id_Consultorio = My.Forms.FrmConsultas.IdConsulta
+    End Sub
+
+    Private Sub Label6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label6.Click
+
     End Sub
 End Class

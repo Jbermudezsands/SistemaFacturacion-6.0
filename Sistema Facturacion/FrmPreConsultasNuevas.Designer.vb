@@ -53,6 +53,10 @@ Partial Class FrmPreConsultasNuevas
         Me.TxtNombre = New System.Windows.Forms.TextBox
         Me.Label8 = New System.Windows.Forms.Label
         Me.TxtConsultorio = New System.Windows.Forms.TextBox
+        Me.TxtTalla = New System.Windows.Forms.TextBox
+        Me.Label9 = New System.Windows.Forms.Label
+        Me.TxtPeso = New System.Windows.Forms.TextBox
+        Me.Label10 = New System.Windows.Forms.Label
         Me.GroupBox9.SuspendLayout()
         CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -265,6 +269,10 @@ Partial Class FrmPreConsultasNuevas
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.TxtTalla)
+        Me.GroupBox2.Controls.Add(Me.Label9)
+        Me.GroupBox2.Controls.Add(Me.TxtPeso)
+        Me.GroupBox2.Controls.Add(Me.Label10)
         Me.GroupBox2.Controls.Add(Me.TxtAzucarSangre)
         Me.GroupBox2.Controls.Add(Me.Label7)
         Me.GroupBox2.Controls.Add(Me.TxtTemperatura)
@@ -282,7 +290,7 @@ Partial Class FrmPreConsultasNuevas
         '
         'TxtAzucarSangre
         '
-        Me.TxtAzucarSangre.Location = New System.Drawing.Point(94, 78)
+        Me.TxtAzucarSangre.Location = New System.Drawing.Point(209, 54)
         Me.TxtAzucarSangre.Name = "TxtAzucarSangre"
         Me.TxtAzucarSangre.Size = New System.Drawing.Size(52, 20)
         Me.TxtAzucarSangre.TabIndex = 239
@@ -290,11 +298,11 @@ Partial Class FrmPreConsultasNuevas
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(12, 81)
+        Me.Label7.Location = New System.Drawing.Point(162, 56)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(77, 13)
+        Me.Label7.Size = New System.Drawing.Size(46, 13)
         Me.Label7.TabIndex = 238
-        Me.Label7.Text = "Azucar Sangre"
+        Me.Label7.Text = "Glisemia"
         '
         'TxtTemperatura
         '
@@ -361,6 +369,39 @@ Partial Class FrmPreConsultasNuevas
         Me.TxtConsultorio.Size = New System.Drawing.Size(213, 20)
         Me.TxtConsultorio.TabIndex = 342
         '
+        'TxtTalla
+        '
+        Me.TxtTalla.Location = New System.Drawing.Point(209, 80)
+        Me.TxtTalla.Name = "TxtTalla"
+        Me.TxtTalla.Size = New System.Drawing.Size(52, 20)
+        Me.TxtTalla.TabIndex = 243
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(173, 83)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(30, 13)
+        Me.Label9.TabIndex = 242
+        Me.Label9.Text = "Talla"
+        '
+        'TxtPeso
+        '
+        Me.TxtPeso.Location = New System.Drawing.Point(94, 77)
+        Me.TxtPeso.Name = "TxtPeso"
+        Me.TxtPeso.Size = New System.Drawing.Size(52, 20)
+        Me.TxtPeso.TabIndex = 241
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(48, 82)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(31, 13)
+        Me.Label10.TabIndex = 240
+        Me.Label10.Tag = ""
+        Me.Label10.Text = "Peso"
+        '
         'FrmPreConsultasNuevas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -424,4 +465,8 @@ Partial Class FrmPreConsultasNuevas
     Friend WithEvents TxtNombre As System.Windows.Forms.TextBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents TxtConsultorio As System.Windows.Forms.TextBox
+    Friend WithEvents TxtTalla As System.Windows.Forms.TextBox
+    Friend WithEvents Label9 As System.Windows.Forms.Label
+    Friend WithEvents TxtPeso As System.Windows.Forms.TextBox
+    Friend WithEvents Label10 As System.Windows.Forms.Label
 End Class
