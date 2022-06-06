@@ -505,7 +505,6 @@ D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\Sistema Factura
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\Sistema Facturacion 6.xml
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\af-ZA\Sistema Facturacion 6.0.resources.dll
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\ARVSPackage.dll
-D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\C1.C1DataExtender.2.dll
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\C1.C1Excel.2.dll
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\C1.C1Flash.2.dll
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\C1.C1Preview.2.dll
