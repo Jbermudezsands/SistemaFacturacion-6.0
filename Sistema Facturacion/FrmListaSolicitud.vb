@@ -1,7 +1,7 @@
 Public Class FrmListaSolicitud
     Public Nuevo As Boolean = False
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
-    Public DataSet As New DataSet
+    Public DataSet As New DataSet, DataSetGlobal As New DataSet
 
     Private Sub BtnSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSalir.Click
         Me.Close()

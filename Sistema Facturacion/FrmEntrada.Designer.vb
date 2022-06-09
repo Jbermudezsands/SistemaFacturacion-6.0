@@ -37,6 +37,7 @@ Partial Class FrmEntrada
         Me.btnmin = New System.Windows.Forms.Button
         Me.lblHora = New System.Windows.Forms.Label
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.Label2 = New System.Windows.Forms.Label
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboUsuario, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -177,6 +178,7 @@ Partial Class FrmEntrada
         Me.Panel1.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Panel1.BackgroundImage = CType(resources.GetObject("Panel1.BackgroundImage"), System.Drawing.Image)
         Me.Panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Panel1.Controls.Add(Me.Label2)
         Me.Panel1.Controls.Add(Me.PictureBox3)
         Me.Panel1.Controls.Add(Me.lblFecha)
         Me.Panel1.Controls.Add(Me.btncerrar)
@@ -254,6 +256,17 @@ Partial Class FrmEntrada
         Me.Timer1.Enabled = True
         Me.Timer1.Interval = 1000
         '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.BackColor = System.Drawing.Color.Transparent
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(375, 197)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(44, 13)
+        Me.Label2.TabIndex = 29
+        Me.Label2.Text = "V.6.91"
+        '
         'FrmEntrada
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -300,4 +313,5 @@ Partial Class FrmEntrada
     Private WithEvents btnmin As System.Windows.Forms.Button
     Private WithEvents PictureBox3 As System.Windows.Forms.PictureBox
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
+    Friend WithEvents Label2 As System.Windows.Forms.Label
 End Class
