@@ -362,7 +362,8 @@ Public Class FrmRecibos
                         Consecutivo = BuscaConsecutivo("NotaCredito")
                         NumeroNota = Format(Consecutivo, "0000#")
                         GrabaNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, MontoIr, Me.TxtMonedaFactura.Text, Me.TxtCodigoClientes.Text, Me.TxtNombres.Text, Me.TxtObservaciones.Text, True, False, False)
-                        GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Recibos", NumeroCompra, MontoIr)
+                        InsertarDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Recibos", NumeroCompra, MontoIr)
+                        'GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Recibos", NumeroCompra, MontoIr)
                     End If
 
 
@@ -385,7 +386,8 @@ Public Class FrmRecibos
                         Consecutivo = BuscaConsecutivo("NotaCredito")
                         NumeroNota = Format(Consecutivo, "0000#")
                         GrabaNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, MontoIr, Me.TxtMonedaFactura.Text, Me.TxtCodigoClientes.Text, Me.TxtNombres.Text, Me.TxtObservaciones.Text, True, False, False)
-                        GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Recibos", NumeroCompra, MontoIr)
+                        InsertarDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Recibos", NumeroCompra, MontoIr)
+                        'GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Recibos", NumeroCompra, MontoIr)
                     End If
 
 

@@ -2783,7 +2783,9 @@ Public Class FrmCompras
         Fecha_Compra = Format(My.Forms.FrmFecha.DTPFechaRequerido.Value, "dd/MM/yyyy")
         Me.DTPFecha.Value = Fecha_Compra
 
-
+        If Quien = "Cancelar" Then
+            Exit Sub
+        End If
 
         Select Case TipoCompra
             Case "Orden de Compra"

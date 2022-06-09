@@ -9,12 +9,14 @@ Public Class FrmFecha
     End Sub
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        Quien = "Aceptar"
         FechaCompra = Me.DTPFechaRequerido.Value
         Me.Close()
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
         FechaCompra = Me.DTPFechaRequerido.Value
+        Quien = "Cancelar"
         Me.Close()
     End Sub
 End Class

@@ -60,7 +60,7 @@ Public Class FrmConsultas
                     Me.ButtonSalir.Location = New Point(880, 305)
 
                     SQlProductos = "SELECT  Consultorio.IdConsultorio, Consultorio.Nombre_Consultorio, Consultorio.Codigo_Minsa, Doctores.Nombre_Doctor + ' ' + Doctores.Apellido_Doctor AS Nombres FROM  Consultorio INNER JOIN  Doctores ON Consultorio.Codigo_Minsa = Doctores.Codigo_Minsa"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -89,7 +89,7 @@ Public Class FrmConsultas
 
                     'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Precio_Lista, Existencia_Unidades,Cod_Iva FROM Productos"
                     SQlProductos = "SELECT        Municipio.IdMunicipio, Municipio.Cod_Departamento, Municipio.Nombre_Municipio As NombreComarca, Municipio.Tipo, Municipio_1.Nombre_Municipio AS NombreMunicipio FROM  Municipio INNER JOIN  Municipio AS Municipio_1 ON Municipio.Cod_Departamento = Municipio_1.IdMunicipio WHERE (Municipio.Tipo = 'Comarca') AND (Municipio_1.Tipo = 'Municipio')"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -120,7 +120,7 @@ Public Class FrmConsultas
 
                     'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Precio_Lista, Existencia_Unidades,Cod_Iva FROM Productos"
                     SQlProductos = "SELECT       Municipio.IdMunicipio, Municipio.Cod_Departamento, Municipio.Nombre_Municipio, Municipio.Tipo, Departamentos.Nombre_Departamento FROM  Municipio INNER JOIN Departamentos ON Municipio.Cod_Departamento = Departamentos.Cod_Departamento WHERE  (Municipio.Tipo = 'Municipio')"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -150,7 +150,7 @@ Public Class FrmConsultas
 
                     'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Precio_Lista, Existencia_Unidades,Cod_Iva FROM Productos"
                     SQlProductos = "SELECT Departamentos.* FROM Departamentos"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -178,7 +178,7 @@ Public Class FrmConsultas
 
                     'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Precio_Lista, Existencia_Unidades,Cod_Iva FROM Productos"
                     SQlProductos = "SELECT Doctores.* FROM Doctores WHERE (Tipo='Enfermera')"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -205,7 +205,7 @@ Public Class FrmConsultas
 
                     'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Precio_Lista, Existencia_Unidades,Cod_Iva FROM Productos"
                     SQlProductos = "SELECT Doctores.* FROM Doctores WHERE (Tipo='Doctor')"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -233,7 +233,7 @@ Public Class FrmConsultas
 
                     'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Precio_Lista, Existencia_Unidades,Cod_Iva FROM Productos"
                     SQlProductos = "SELECT DISTINCT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, Productos.Precio_Lista, DetalleBodegas.Existencia, Productos.Cod_Iva FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos WHERE (Productos.Activo = 'Activo') ORDER BY Productos.Cod_Productos"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -269,7 +269,7 @@ Public Class FrmConsultas
                     Me.ButtonSalir.Location = New Point(880, 305)
 
                     SQlProductos = "SELECT  Contratos.Numero_Contrato, Clientes.Nombre_Cliente, TipoContrato_1.TipoContrato, TipoContrato.TipoContrato AS Contrato2 FROM  Contratos INNER JOIN  Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN TipoContrato ON Contratos.IdContrato1 = TipoContrato.idTipoContrato INNER JOIN TipoContrato AS TipoContrato_1 ON Contratos.IdContrato2 = TipoContrato_1.idTipoContrato WHERE  (Contratos.Contrato_Variable = 1) AND (TipoContrato_1.TipoContrato = '" & TipoContrato & "') AND (TipoContrato.TipoContrato = '" & TipoContrato & "') OR (Contratos.Contrato_Variable2 = 1)"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -296,7 +296,7 @@ Public Class FrmConsultas
 
                     'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Precio_Lista, Existencia_Unidades,Cod_Iva FROM Productos"
                     SQlProductos = "SELECT DISTINCT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, Productos.Precio_Lista, DetalleBodegas.Existencia, Productos.Cod_Iva FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos WHERE (DetalleBodegas.Cod_Bodegas = '" & CodBodega & "') AND (Productos.Activo = N'Activo') ORDER BY Productos.Cod_Productos"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -348,7 +348,7 @@ Public Class FrmConsultas
 
                 Case "CuentasContables"
                     SQlProductos = "SELECT CodCuentas , DescripcionCuentas As Descripcion, TipoCuenta FROM Cuentas "
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -362,7 +362,7 @@ Public Class FrmConsultas
 
                 Case "TipoNomina"
                     SQlProductos = "SELECT  CodTipoNomina, TipoNomina, PeriodoNomina FROM TipoNomina "
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -383,7 +383,7 @@ Public Class FrmConsultas
 
                 Case "CodigoProductosDetalle"
                     SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Costo_Promedio, Existencia_Unidades,Cod_Iva FROM Productos Where (Tipo_Producto <> 'Ensambles')"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -525,7 +525,7 @@ Public Class FrmConsultas
                     DataAdapter.Fill(DataSet, "Consultas")
                     Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
                     Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 700
                     MiConexion.Close()
@@ -565,7 +565,7 @@ Public Class FrmConsultas
                     DataAdapter.Fill(DataSet, "Consultas")
                     Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
                     Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(3).Visible = False
                     Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 700
@@ -623,7 +623,7 @@ Public Class FrmConsultas
                     'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Costo_Promedio, Existencia_Unidades,Cod_Iva FROM Productos Where (Tipo_Producto <> 'Ensambles')"
                     SQlProductos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, DetalleBodegas.Costo, DetalleBodegas.Existencia_Unidades, Productos.Cod_Iva FROM  Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos  " & _
                                    "WHERE (Productos.Tipo_Producto <> 'Ensambles') AND (DetalleBodegas.Cod_Bodegas = '" & CodigoBodega & "') ORDER BY Productos.Cod_Productos"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -679,7 +679,7 @@ Public Class FrmConsultas
 
                 Case "CodigoTipoPrecio"
                     SQlProductos = "SELECT  * FROM TipoPrecio"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -717,7 +717,7 @@ Public Class FrmConsultas
                     'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Precio_Venta, Existencia_Unidades,Cod_Iva FROM Productos "
                     CodigoBodega = FrmPlantillas.CboCodigoBodega.Text
                     SQlProductos = "SELECT DISTINCT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, Productos.Precio_Venta, DetalleBodegas.Existencia, Productos.Cod_Iva FROM  Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos WHERE (DetalleBodegas.Cod_Bodegas = '" & CodigoBodega & "') AND (Productos.Activo = N'Activo') ORDER BY Productos.Cod_Productos"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -756,7 +756,7 @@ Public Class FrmConsultas
 
                     'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Precio_Lista, Existencia_Unidades,Cod_Iva FROM Productos"
                     SQlProductos = "SELECT DISTINCT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, Productos.Precio_Lista, DetalleBodegas.Existencia, Productos.Cod_Iva FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos WHERE (DetalleBodegas.Cod_Bodegas = '" & CodigoBodega & "') AND (Productos.Activo = N'Activo') ORDER BY Productos.Cod_Productos"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -796,7 +796,7 @@ Public Class FrmConsultas
                     'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Precio_Venta, Existencia_Unidades,Cod_Iva FROM Productos "
                     CodigoBodega = FrmFacturas.CboCodigoBodega.Text
                     SQlProductos = "SELECT DISTINCT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, Productos.Precio_Venta, DetalleBodegas.Existencia, Productos.Cod_Iva FROM  Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos WHERE (DetalleBodegas.Cod_Bodegas = '" & CodigoBodega & "') AND (Productos.Activo = N'Activo') ORDER BY Productos.Cod_Productos"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -832,8 +832,8 @@ Public Class FrmConsultas
                     Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
                     Me.ButtonSalir.Location = New Point(880, 305)
 
-                    SQlProductos = "SELECT DISTINCT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos WHERE (DetalleBodegas.Cod_Bodegas = '" & CodigoBodega & "') AND (Productos.Activo = N'Activo') ORDER BY Productos.Cod_Productos"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    SQlProductos = "SELECT DISTINCT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, Productos.Unidad_Medida, Productos.Existencia_Unidades FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos WHERE (DetalleBodegas.Cod_Bodegas = '" & CodigoBodega & "') AND (Productos.Activo = N'Activo') ORDER BY Productos.Cod_Productos"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -848,7 +848,7 @@ Public Class FrmConsultas
                     Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 170
                     Me.TrueDBGridConsultas.Columns(2).Caption = "Tipo"
                     Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(2).Width = 65
-
+                    Me.TrueDBGridConsultas.Columns("Existencia_Unidades").Caption = "Existencia"
                     MiConexion.Close()
 
                 Case "CodigoProductosFactura"
@@ -863,7 +863,7 @@ Public Class FrmConsultas
 
                     'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Precio_Lista, Existencia_Unidades,Cod_Iva FROM Productos"
                     SQlProductos = "SELECT DISTINCT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, Productos.Precio_Lista, DetalleBodegas.Existencia, Productos.Cod_Iva FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos WHERE (DetalleBodegas.Cod_Bodegas = '" & CodigoBodega & "') AND (Productos.Activo = N'Activo') ORDER BY Productos.Cod_Productos"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1097,7 +1097,7 @@ Public Class FrmConsultas
                     'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Costo_Promedio, Existencia_Unidades,Cod_Iva FROM Productos Where (Tipo_Producto <> 'Ensambles')"
                     SQlProductos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, DetalleBodegas.Costo, DetalleBodegas.Existencia as Existencia_Unidades, Productos.Cod_Iva FROM  Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos  " & _
                                    "WHERE (Productos.Tipo_Producto <> 'Ensambles') AND (DetalleBodegas.Cod_Bodegas = '" & CodigoBodega & "') ORDER BY Productos.Cod_Productos"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1130,7 +1130,7 @@ Public Class FrmConsultas
                     'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Costo_Promedio, Existencia_Unidades,Cod_Iva FROM Productos Where (Tipo_Producto <> 'Ensambles')"
                     SQlProductos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, DetalleBodegas.Costo, DetalleBodegas.Existencia_Unidades, Productos.Cod_Iva FROM  Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos  " & _
                                    "WHERE (Productos.Tipo_Producto <> 'Ensambles') AND (DetalleBodegas.Cod_Bodegas = '" & CodigoBodega & "') ORDER BY Productos.Cod_Productos"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1175,7 +1175,7 @@ Public Class FrmConsultas
                     DataAdapter.Fill(DataSet, "Consultas")
                     Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
                     Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Fecha"
                     Me.TrueDBGridConsultas.Columns(2).Caption = "Tipo Ensamble"
                     Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(0).Width = 100
@@ -1197,7 +1197,7 @@ Public Class FrmConsultas
                     DataAdapter.Fill(DataSet, "Consultas")
                     Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
                     Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Fecha"
                     Me.TrueDBGridConsultas.Columns(2).Caption = "Tipo Ensamble"
                     Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(0).Width = 100
@@ -1212,7 +1212,7 @@ Public Class FrmConsultas
 
                 Case "CodigoProductosEnsamble"
                     SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, CodComponente FROM Productos WHERE (Tipo_Producto = 'Ensambles')"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
 
 
@@ -1226,7 +1226,7 @@ Public Class FrmConsultas
                     Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 220
                 Case "CodigoProductosComponente"
                     SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto FROM Productos WHERE (Cod_Productos <> '" & FrmProductos.CboCodigoProducto.Text & "')"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1239,7 +1239,7 @@ Public Class FrmConsultas
                     MiConexion.Close()
                 Case "CuentaPagarInteres"
                     SQlProductos = "SELECT CodCuentas , DescripcionCuentas As Descripcion, TipoCuenta FROM Cuentas WHERE (TipoCuenta = 'Cuentas x Pagar')"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1250,7 +1250,7 @@ Public Class FrmConsultas
                     Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
                 Case "CuentaCobrarInteres"
                     SQlProductos = "SELECT CodCuentas , DescripcionCuentas As Descripcion, TipoCuenta FROM Cuentas WHERE (TipoCuenta = 'Cuentas x Cobrar')"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1264,7 +1264,7 @@ Public Class FrmConsultas
 
                 Case "Cuenta"
                     SQlProductos = "SELECT CodCuentas , DescripcionCuentas As Descripcion, TipoCuenta FROM Cuentas "
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1278,7 +1278,7 @@ Public Class FrmConsultas
 
                 Case "Bodegas"
                     SQlProductos = "SELECT  * FROM   Bodegas"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1292,7 +1292,7 @@ Public Class FrmConsultas
 
                 Case "CodigoProducto"
                     SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto FROM Productos "
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1305,7 +1305,7 @@ Public Class FrmConsultas
                     MiConexion.Close()
                 Case "CuentaBancos"
                     SQlProductos = "SELECT CodCuentas , DescripcionCuentas As Descripcion, TipoCuenta FROM Cuentas WHERE (TipoCuenta = 'Bancos')"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1316,7 +1316,7 @@ Public Class FrmConsultas
                     Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
                 Case "CuentaCaja"
                     SQlProductos = "SELECT CodCuentas , DescripcionCuentas As Descripcion, TipoCuenta FROM Cuentas WHERE (TipoCuenta = 'Caja')"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1327,7 +1327,7 @@ Public Class FrmConsultas
                     Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
                 Case "CuentaGastoAjuste"
                     SQlProductos = "SELECT CodCuentas , DescripcionCuentas As Descripcion, TipoCuenta FROM Cuentas WHERE (TipoCuenta = 'Gastos')"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1338,7 +1338,7 @@ Public Class FrmConsultas
                     Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
                 Case "CuentaIngresoAjuste"
                     SQlProductos = "SELECT CodCuentas , DescripcionCuentas As Descripcion, TipoCuenta FROM Cuentas WHERE (TipoCuenta = 'Ingresos - Ventas')"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1349,7 +1349,7 @@ Public Class FrmConsultas
                     Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
                 Case "CuentaInventario"
                     SQlProductos = "SELECT CodCuentas , DescripcionCuentas As Descripcion, TipoCuenta FROM Cuentas WHERE (TipoCuenta = 'Inventario')"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1360,7 +1360,7 @@ Public Class FrmConsultas
                     Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
                 Case "CodigoVendedor"
                     SQlProductos = "SELECT Cod_Vendedor, Nombre_Vendedor AS Nombres, Apellido_Vendedor AS Apellidos FROM   Vendedores"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1373,7 +1373,7 @@ Public Class FrmConsultas
                     MiConexion.Close()
                 Case "CodigoImpuestos"
                     SQlProductos = "SELECT * FROM Impuestos"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1385,7 +1385,7 @@ Public Class FrmConsultas
 
                 Case "CodigoRubro"
                     SQlProductos = "SELECT  * FROM  Rubro"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1397,7 +1397,7 @@ Public Class FrmConsultas
 
                 Case "CodigoTarea"
                     SQlProductos = "SELECT  * FROM  Tareas"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1409,7 +1409,7 @@ Public Class FrmConsultas
 
                 Case "CodigoLinea"
                     SQlProductos = "SELECT Cod_Linea, Descripcion_Linea FROM Lineas"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1420,7 +1420,7 @@ Public Class FrmConsultas
                     Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
                 Case "CuentaGeneral"
                     SQlProductos = "SELECT CodCuentas , DescripcionCuentas As Descripcion, TipoCuenta FROM Cuentas "
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1431,7 +1431,7 @@ Public Class FrmConsultas
                     Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
                 Case "CuentaPagar"
                     SQlProductos = "SELECT CodCuentas , DescripcionCuentas As Descripcion, TipoCuenta FROM Cuentas WHERE (TipoCuenta = 'Cuentas x Pagar')"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1442,7 +1442,7 @@ Public Class FrmConsultas
                     Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
                 Case "CuentaCobrar"
                     SQlProductos = "SELECT CodCuentas , DescripcionCuentas As Descripcion, TipoCuenta FROM Cuentas WHERE (TipoCuenta = 'Cuentas x Cobrar')"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1455,7 +1455,7 @@ Public Class FrmConsultas
                     MiConexion.Close()
                 Case "CodigoProveedor"
                     SQlProductos = "SELECT Cod_Proveedor As Codigo, Nombre_Proveedor As Nombres, Apellido_Proveedor As Apellidos FROM Proveedor"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1483,7 +1483,7 @@ Public Class FrmConsultas
                     DataAdapter.Fill(DataSet, "Consultas")
                     Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
                     Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(3).Visible = False
                     Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 700
@@ -1492,7 +1492,7 @@ Public Class FrmConsultas
 
                 Case "CuentaInventario"
                     SQlProductos = "SELECT CodCuentas , DescripcionCuentas, TipoCuenta FROM Cuentas WHERE (TipoCuenta = 'Inventario')"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1506,7 +1506,7 @@ Public Class FrmConsultas
 
                 Case "CuentaCosto"
                     SQlProductos = "SELECT CodCuentas , DescripcionCuentas, TipoCuenta FROM Cuentas WHERE (TipoCuenta = 'Costos')"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1520,7 +1520,7 @@ Public Class FrmConsultas
 
                 Case "CuentaVentas"
                     SQlProductos = "SELECT CodCuentas , DescripcionCuentas, TipoCuenta FROM Cuentas WHERE (TipoCuenta = 'Ingresos - Ventas')"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "Còdigo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Cï¿½digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 

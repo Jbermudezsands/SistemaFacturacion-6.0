@@ -1,7 +1,7 @@
 Public Class FrmListaSolicitud
     Public Nuevo As Boolean = False
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
-    Public DataSetGlobal As New DataSet
+    Public DataSet As New DataSet
 
     Private Sub BtnSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSalir.Click
         Me.Close()
@@ -17,18 +17,19 @@ Public Class FrmListaSolicitud
     End Sub
 
     Public Sub BtnActualizar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnActualizar.Click
-        Dim SqlString As String, DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet
+        Dim SqlString As String, DataAdapter As New SqlClient.SqlDataAdapter
 
         If Me.OptTodos.Checked = True Then
             SqlString = "SELECT DISTINCT Solicitud_Compra.Numero_Solicitud, Solicitud_Compra.Fecha_Solicitud, Solicitud_Compra.Fecha_Requerido, Solicitud_Compra.Departamento_Solicitante, Solicitud_Compra.Gerencia_Solicitante, Solicitud_Compra.Estado_Solicitud, Solicitud_Compra.Concepto FROM Detalle_Solicitud INNER JOIN Solicitud_Compra ON Detalle_Solicitud.Numero_Solicitud = Solicitud_Compra.Numero_Solicitud  WHERE (Detalle_Solicitud.Activo = 1) AND (Solicitud_Compra.Estado_Solicitud <> 'Anulado')"
         ElseIf Me.OptSinProcesar.Checked = True Then
             SqlString = "SELECT DISTINCT Solicitud_Compra.Numero_Solicitud, Solicitud_Compra.Fecha_Solicitud, Solicitud_Compra.Fecha_Requerido, Solicitud_Compra.Departamento_Solicitante, Solicitud_Compra.Gerencia_Solicitante, Solicitud_Compra.Estado_Solicitud, Solicitud_Compra.Concepto FROM Detalle_Solicitud INNER JOIN Solicitud_Compra ON Detalle_Solicitud.Numero_Solicitud = Solicitud_Compra.Numero_Solicitud  WHERE (Detalle_Solicitud.Activo = 1) AND (Solicitud_Compra.Estado_Solicitud <> 'Anulado') AND (Solicitud_Compra.Estado_Solicitud <> 'Procesado')"
         End If
+
         MiConexion.Open()
-        DataSetGlobal.Reset()
+        DataSet.Reset()
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSetGlobal, "Lista")
-        Me.BindingConsultas.DataSource = DataSetGlobal.Tables("Lista")
+        DataAdapter.Fill(DataSet, "Lista")
+        Me.BindingConsultas.DataSource = DataSet.Tables("Lista")
         Me.TDGridSolicitud.DataSource = Me.BindingConsultas
 
         Me.TDGridSolicitud.Columns("Numero_Solicitud").Caption = "Num Solictud"
@@ -82,7 +83,7 @@ Public Class FrmListaSolicitud
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim NumSolicitud As String, Resultado As Double, iPosicion As Double
 
-        Resultado = MsgBox("¿Esta Seguro de Anular la Solicitud?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
+        Resultado = MsgBox("ï¿½Esta Seguro de Anular la Solicitud?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
 
         If Not Resultado = 6 Then
             Exit Sub
@@ -116,7 +117,7 @@ Public Class FrmListaSolicitud
     Private Sub CmdNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdNuevo.Click
         Dim Resultado As Double
 
-        Resultado = MsgBox("¿Esta Seguro de Autorizar la Solicitud?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
+        Resultado = MsgBox("ï¿½Esta Seguro de Autorizar la Solicitud?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
 
         If Not Resultado = 6 Then
             Exit Sub
@@ -147,19 +148,19 @@ Public Class FrmListaSolicitud
     End Function
 
     Private Sub TDGridSolicitud_FilterChange(ByVal sender As Object, ByVal e As System.EventArgs) Handles TDGridSolicitud.FilterChange
-        Dim sb As New System.Text.StringBuilder()
-        Dim dc As C1.Win.C1TrueDBGrid.C1DataColumn
+        'Dim sb As New System.Text.StringBuilder()
+        'Dim dc As C1.Win.C1TrueDBGrid.C1DataColumn
 
 
 
-        For Each dc In Me.TDGridSolicitud.Columns
-            If dc.FilterText.Length > 0 Then
-                If sb.Length > 0 Then
-                    sb.Append(" AND ")
-                End If
-                sb.Append((dc.DataField + " LIKE " + "'%" + dc.FilterText + "%'"))
-            End If
-        Next dc
+        'For Each dc In Me.TDGridSolicitud.Columns
+        '    If dc.FilterText.Length > 0 Then
+        '        If sb.Length > 0 Then
+        '            sb.Append(" AND ")
+        '        End If
+        '        sb.Append((dc.DataField + " LIKE " + "'%" + dc.FilterText + "%'"))
+        '    End If
+        'Next dc
 
 
         Me.DataSetGlobal.Tables("Lista").DefaultView.RowFilter = getFilter()  'sb.ToString()
