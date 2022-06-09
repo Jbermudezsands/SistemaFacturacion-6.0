@@ -4173,7 +4173,7 @@ Public Class FrmReportes
                                     If DataSet.Tables("NotaDB").Rows(j)("MonedaNota") = "Dolares" Then
                                         TasaCambioRecibo = 1
                                     Else
-                                        TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("Recibos").Rows(j)("Fecha_Nota"))
+                                        TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
                                         If TasaCambioRecibo <> 0 Then
                                             TasaCambioRecibo = 1 / TasaCambioRecibo
                                         End If
