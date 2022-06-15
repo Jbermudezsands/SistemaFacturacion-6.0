@@ -11,7 +11,7 @@ Module Variables
     Public TotalMontoFacturas As Double = 0, TotalCosto As Double, TotalMontoCompras As Double = 0, CambiarFechaFactura As Boolean = False, CambiaFechaRecibo As Boolean = False, CambiarFechaCompra As Boolean = False
     Public CodigoClienteNumero As Boolean = False, FechaIngreso As Date, CostoUnitarioB As Double = 0, FSubTotal As Double = 0, FIva As Double = 0
     Public CadenaRecibo As String, PrimerRegistroFactura As Boolean, PrimerRegistroCompra As Boolean
-    Public EditarFactura As Boolean = True, CodigoProducto() As String, Mensaje As String
+    Public EditarFactura As Boolean = True, CodigoProducto() As String, Mensaje As String, Version As String
     Public CambioFechaRespuesta As Boolean = False, FechaFacturacion As Date, RefNotaDebito As String, formOculto As Boolean = False
     Public iAño As Integer, FechaGuardar As Date, UsuarioBodegaCompra As String, UsuarioTipoCompra As String, UsuarioProveedor As String
     Public DatasetDetalle As New DataSet, TaraRecepcion As Double, LiberarCompras As Boolean, TotalMerma As Double, MontoInicialMinimo As Double, MontoInicialDMinimo As Double

@@ -4,6 +4,9 @@
 
     Private Sub FrmCompañias_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
+        Version = My.Application.Info.Version.ToString
+        Me.Text = "Listado de Compañias V." & Mid(Version, 1, Len(Version) - 2)
+
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click

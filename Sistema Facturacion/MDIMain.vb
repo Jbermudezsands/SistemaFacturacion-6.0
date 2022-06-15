@@ -616,7 +616,8 @@ Public Class MDIMain
             End If
         End If
 
-
+        Version = My.Application.Info.Version.ToString
+        RibbonLabel1.Text = "V." & Mid(Version, 1, Len(Version) - 2)
 
 
 

@@ -31,7 +31,7 @@ Partial Class FrmEntrada
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.CboUsuario = New C1.Win.C1List.C1Combo
         Me.Panel1 = New System.Windows.Forms.Panel
-        Me.Label2 = New System.Windows.Forms.Label
+        Me.LblVersion = New System.Windows.Forms.Label
         Me.PictureBox3 = New System.Windows.Forms.PictureBox
         Me.lblFecha = New System.Windows.Forms.Label
         Me.btncerrar = New System.Windows.Forms.Button
@@ -178,7 +178,7 @@ Partial Class FrmEntrada
         Me.Panel1.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Panel1.BackgroundImage = CType(resources.GetObject("Panel1.BackgroundImage"), System.Drawing.Image)
         Me.Panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Panel1.Controls.Add(Me.Label2)
+        Me.Panel1.Controls.Add(Me.LblVersion)
         Me.Panel1.Controls.Add(Me.PictureBox3)
         Me.Panel1.Controls.Add(Me.lblFecha)
         Me.Panel1.Controls.Add(Me.btncerrar)
@@ -192,16 +192,15 @@ Partial Class FrmEntrada
         Me.Panel1.Size = New System.Drawing.Size(437, 227)
         Me.Panel1.TabIndex = 22
         '
-        'Label2
+        'LblVersion
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.BackColor = System.Drawing.Color.Transparent
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(375, 197)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(44, 13)
-        Me.Label2.TabIndex = 29
-        Me.Label2.Text = "V.6.91"
+        Me.LblVersion.AutoSize = True
+        Me.LblVersion.BackColor = System.Drawing.Color.Transparent
+        Me.LblVersion.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblVersion.Location = New System.Drawing.Point(366, 173)
+        Me.LblVersion.Name = "LblVersion"
+        Me.LblVersion.Size = New System.Drawing.Size(0, 13)
+        Me.LblVersion.TabIndex = 29
         '
         'PictureBox3
         '
@@ -313,5 +312,5 @@ Partial Class FrmEntrada
     Private WithEvents btnmin As System.Windows.Forms.Button
     Private WithEvents PictureBox3 As System.Windows.Forms.PictureBox
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
-    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents LblVersion As System.Windows.Forms.Label
 End Class
