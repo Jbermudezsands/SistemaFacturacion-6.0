@@ -53,10 +53,21 @@ Partial Class FrmProveedores
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.TruDbGridHistoricosCompras = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.TabPage3 = New System.Windows.Forms.TabPage
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.BindingHistoricoCompras = New System.Windows.Forms.BindingSource(Me.components)
         Me.Button3 = New System.Windows.Forms.Button
         Me.CmbCodigo = New C1.Win.C1List.C1Combo
+        Me.Label10 = New System.Windows.Forms.Label
+        Me.BindingHistoricoCompras = New System.Windows.Forms.BindingSource(Me.components)
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.TxtDiasCredito = New System.Windows.Forms.NumericUpDown
+        Me.Label11 = New System.Windows.Forms.Label
+        Me.CboMonedaFactura = New System.Windows.Forms.ComboBox
+        Me.Label12 = New System.Windows.Forms.Label
+        Me.TextBox3 = New System.Windows.Forms.TextBox
+        Me.Label13 = New System.Windows.Forms.Label
+        Me.TextBox2 = New System.Windows.Forms.TextBox
+        Me.Label14 = New System.Windows.Forms.Label
+        Me.TxtLimite = New System.Windows.Forms.TextBox
+        Me.Label15 = New System.Windows.Forms.Label
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -65,8 +76,10 @@ Partial Class FrmProveedores
         Me.TabPage2.SuspendLayout()
         CType(Me.TruDbGridHistoricosCompras, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage3.SuspendLayout()
-        CType(Me.BindingHistoricoCompras, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CmbCodigo, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.BindingHistoricoCompras, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox1.SuspendLayout()
+        CType(Me.TxtDiasCredito, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'PictureBox1
@@ -413,6 +426,7 @@ Partial Class FrmProveedores
         '
         'TabPage3
         '
+        Me.TabPage3.Controls.Add(Me.GroupBox1)
         Me.TabPage3.Controls.Add(Me.Button3)
         Me.TabPage3.Controls.Add(Me.CmbCodigo)
         Me.TabPage3.Controls.Add(Me.Label10)
@@ -423,15 +437,6 @@ Partial Class FrmProveedores
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Informacion"
         Me.TabPage3.UseVisualStyleBackColor = True
-        '
-        'Label10
-        '
-        Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(13, 24)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(88, 13)
-        Me.Label10.TabIndex = 108
-        Me.Label10.Text = "Ruta Distribucion"
         '
         'Button3
         '
@@ -471,6 +476,120 @@ Partial Class FrmProveedores
         Me.CmbCodigo.TabIndex = 139
         Me.CmbCodigo.PropBag = resources.GetString("CmbCodigo.PropBag")
         '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(13, 24)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(88, 13)
+        Me.Label10.TabIndex = 108
+        Me.Label10.Text = "Ruta Distribucion"
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.TxtDiasCredito)
+        Me.GroupBox1.Controls.Add(Me.Label11)
+        Me.GroupBox1.Controls.Add(Me.CboMonedaFactura)
+        Me.GroupBox1.Controls.Add(Me.Label12)
+        Me.GroupBox1.Controls.Add(Me.TextBox3)
+        Me.GroupBox1.Controls.Add(Me.Label13)
+        Me.GroupBox1.Controls.Add(Me.TextBox2)
+        Me.GroupBox1.Controls.Add(Me.Label14)
+        Me.GroupBox1.Controls.Add(Me.TxtLimite)
+        Me.GroupBox1.Controls.Add(Me.Label15)
+        Me.GroupBox1.Location = New System.Drawing.Point(16, 74)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(347, 183)
+        Me.GroupBox1.TabIndex = 141
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Referencias Credito"
+        '
+        'TxtDiasCredito
+        '
+        Me.TxtDiasCredito.Location = New System.Drawing.Point(113, 133)
+        Me.TxtDiasCredito.Name = "TxtDiasCredito"
+        Me.TxtDiasCredito.Size = New System.Drawing.Size(108, 20)
+        Me.TxtDiasCredito.TabIndex = 145
+        Me.TxtDiasCredito.Value = New Decimal(New Integer() {30, 0, 0, 0})
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(11, 136)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(64, 13)
+        Me.Label11.TabIndex = 144
+        Me.Label11.Text = "Dias Credito"
+        '
+        'CboMonedaFactura
+        '
+        Me.CboMonedaFactura.FormattingEnabled = True
+        Me.CboMonedaFactura.Items.AddRange(New Object() {"Cordobas", "Dolares"})
+        Me.CboMonedaFactura.Location = New System.Drawing.Point(114, 28)
+        Me.CboMonedaFactura.Name = "CboMonedaFactura"
+        Me.CboMonedaFactura.Size = New System.Drawing.Size(107, 21)
+        Me.CboMonedaFactura.TabIndex = 143
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(16, 31)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(85, 13)
+        Me.Label12.TabIndex = 142
+        Me.Label12.Text = "Moneda Factura"
+        '
+        'TextBox3
+        '
+        Me.TextBox3.Enabled = False
+        Me.TextBox3.Location = New System.Drawing.Point(114, 107)
+        Me.TextBox3.Name = "TextBox3"
+        Me.TextBox3.Size = New System.Drawing.Size(107, 20)
+        Me.TextBox3.TabIndex = 141
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(12, 110)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(92, 13)
+        Me.Label13.TabIndex = 140
+        Me.Label13.Text = "Credito Disponible"
+        '
+        'TextBox2
+        '
+        Me.TextBox2.Enabled = False
+        Me.TextBox2.Location = New System.Drawing.Point(114, 81)
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.Size = New System.Drawing.Size(107, 20)
+        Me.TextBox2.TabIndex = 139
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(12, 84)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(96, 13)
+        Me.Label14.TabIndex = 138
+        Me.Label14.Text = "Credito Acumulado"
+        '
+        'TxtLimite
+        '
+        Me.TxtLimite.AcceptsReturn = True
+        Me.TxtLimite.Location = New System.Drawing.Point(114, 55)
+        Me.TxtLimite.Name = "TxtLimite"
+        Me.TxtLimite.Size = New System.Drawing.Size(107, 20)
+        Me.TxtLimite.TabIndex = 137
+        '
+        'Label15
+        '
+        Me.Label15.AutoSize = True
+        Me.Label15.Location = New System.Drawing.Point(12, 58)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(85, 13)
+        Me.Label15.TabIndex = 136
+        Me.Label15.Text = "Limite de Credito"
+        '
         'FrmProveedores
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -497,8 +616,11 @@ Partial Class FrmProveedores
         CType(Me.TruDbGridHistoricosCompras, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage3.ResumeLayout(False)
         Me.TabPage3.PerformLayout()
-        CType(Me.BindingHistoricoCompras, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CmbCodigo, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.BindingHistoricoCompras, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
+        CType(Me.TxtDiasCredito, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -539,4 +661,15 @@ Partial Class FrmProveedores
     Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents Button3 As System.Windows.Forms.Button
     Friend WithEvents CmbCodigo As C1.Win.C1List.C1Combo
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents TxtDiasCredito As System.Windows.Forms.NumericUpDown
+    Friend WithEvents Label11 As System.Windows.Forms.Label
+    Friend WithEvents CboMonedaFactura As System.Windows.Forms.ComboBox
+    Friend WithEvents Label12 As System.Windows.Forms.Label
+    Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
+    Friend WithEvents Label13 As System.Windows.Forms.Label
+    Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
+    Friend WithEvents Label14 As System.Windows.Forms.Label
+    Friend WithEvents TxtLimite As System.Windows.Forms.TextBox
+    Friend WithEvents Label15 As System.Windows.Forms.Label
 End Class
