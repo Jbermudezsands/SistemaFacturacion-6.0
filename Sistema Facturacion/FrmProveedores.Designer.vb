@@ -53,10 +53,6 @@ Partial Class FrmProveedores
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.TruDbGridHistoricosCompras = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.TabPage3 = New System.Windows.Forms.TabPage
-        Me.Button3 = New System.Windows.Forms.Button
-        Me.CmbCodigo = New C1.Win.C1List.C1Combo
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.BindingHistoricoCompras = New System.Windows.Forms.BindingSource(Me.components)
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.TxtDiasCredito = New System.Windows.Forms.NumericUpDown
         Me.Label11 = New System.Windows.Forms.Label
@@ -68,6 +64,10 @@ Partial Class FrmProveedores
         Me.Label14 = New System.Windows.Forms.Label
         Me.TxtLimite = New System.Windows.Forms.TextBox
         Me.Label15 = New System.Windows.Forms.Label
+        Me.Button3 = New System.Windows.Forms.Button
+        Me.CmbCodigo = New C1.Win.C1List.C1Combo
+        Me.Label10 = New System.Windows.Forms.Label
+        Me.BindingHistoricoCompras = New System.Windows.Forms.BindingSource(Me.components)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -76,10 +76,10 @@ Partial Class FrmProveedores
         Me.TabPage2.SuspendLayout()
         CType(Me.TruDbGridHistoricosCompras, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage3.SuspendLayout()
-        CType(Me.CmbCodigo, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.BindingHistoricoCompras, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         CType(Me.TxtDiasCredito, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.CmbCodigo, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.BindingHistoricoCompras, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'PictureBox1
@@ -438,53 +438,6 @@ Partial Class FrmProveedores
         Me.TabPage3.Text = "Informacion"
         Me.TabPage3.UseVisualStyleBackColor = True
         '
-        'Button3
-        '
-        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
-        Me.Button3.Location = New System.Drawing.Point(326, 14)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(37, 32)
-        Me.Button3.TabIndex = 140
-        Me.Button3.UseVisualStyleBackColor = True
-        '
-        'CmbCodigo
-        '
-        Me.CmbCodigo.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
-        Me.CmbCodigo.Caption = ""
-        Me.CmbCodigo.CaptionHeight = 17
-        Me.CmbCodigo.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
-        Me.CmbCodigo.ColumnCaptionHeight = 17
-        Me.CmbCodigo.ColumnFooterHeight = 17
-        Me.CmbCodigo.ContentHeight = 15
-        Me.CmbCodigo.DeadAreaBackColor = System.Drawing.Color.Empty
-        Me.CmbCodigo.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CmbCodigo.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CmbCodigo.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CmbCodigo.EditorHeight = 15
-        Me.CmbCodigo.Images.Add(CType(resources.GetObject("CmbCodigo.Images"), System.Drawing.Image))
-        Me.CmbCodigo.ItemHeight = 15
-        Me.CmbCodigo.Location = New System.Drawing.Point(129, 24)
-        Me.CmbCodigo.MatchEntryTimeout = CType(2000, Long)
-        Me.CmbCodigo.MaxDropDownItems = CType(5, Short)
-        Me.CmbCodigo.MaxLength = 32767
-        Me.CmbCodigo.MouseCursor = System.Windows.Forms.Cursors.Default
-        Me.CmbCodigo.Name = "CmbCodigo"
-        Me.CmbCodigo.RowDivider.Color = System.Drawing.Color.DarkGray
-        Me.CmbCodigo.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
-        Me.CmbCodigo.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CmbCodigo.Size = New System.Drawing.Size(175, 21)
-        Me.CmbCodigo.TabIndex = 139
-        Me.CmbCodigo.PropBag = resources.GetString("CmbCodigo.PropBag")
-        '
-        'Label10
-        '
-        Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(13, 24)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(88, 13)
-        Me.Label10.TabIndex = 108
-        Me.Label10.Text = "Ruta Distribucion"
-        '
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.TxtDiasCredito)
@@ -590,6 +543,53 @@ Partial Class FrmProveedores
         Me.Label15.TabIndex = 136
         Me.Label15.Text = "Limite de Credito"
         '
+        'Button3
+        '
+        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
+        Me.Button3.Location = New System.Drawing.Point(326, 14)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(37, 32)
+        Me.Button3.TabIndex = 140
+        Me.Button3.UseVisualStyleBackColor = True
+        '
+        'CmbCodigo
+        '
+        Me.CmbCodigo.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CmbCodigo.Caption = ""
+        Me.CmbCodigo.CaptionHeight = 17
+        Me.CmbCodigo.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CmbCodigo.ColumnCaptionHeight = 17
+        Me.CmbCodigo.ColumnFooterHeight = 17
+        Me.CmbCodigo.ContentHeight = 15
+        Me.CmbCodigo.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CmbCodigo.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CmbCodigo.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CmbCodigo.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CmbCodigo.EditorHeight = 15
+        Me.CmbCodigo.Images.Add(CType(resources.GetObject("CmbCodigo.Images"), System.Drawing.Image))
+        Me.CmbCodigo.ItemHeight = 15
+        Me.CmbCodigo.Location = New System.Drawing.Point(129, 24)
+        Me.CmbCodigo.MatchEntryTimeout = CType(2000, Long)
+        Me.CmbCodigo.MaxDropDownItems = CType(5, Short)
+        Me.CmbCodigo.MaxLength = 32767
+        Me.CmbCodigo.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CmbCodigo.Name = "CmbCodigo"
+        Me.CmbCodigo.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CmbCodigo.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CmbCodigo.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CmbCodigo.Size = New System.Drawing.Size(175, 21)
+        Me.CmbCodigo.TabIndex = 139
+        Me.CmbCodigo.PropBag = resources.GetString("CmbCodigo.PropBag")
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(13, 24)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(88, 13)
+        Me.Label10.TabIndex = 108
+        Me.Label10.Text = "Ruta Distribucion"
+        '
         'FrmProveedores
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -616,11 +616,11 @@ Partial Class FrmProveedores
         CType(Me.TruDbGridHistoricosCompras, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage3.ResumeLayout(False)
         Me.TabPage3.PerformLayout()
-        CType(Me.CmbCodigo, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.BindingHistoricoCompras, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         CType(Me.TxtDiasCredito, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.CmbCodigo, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.BindingHistoricoCompras, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
