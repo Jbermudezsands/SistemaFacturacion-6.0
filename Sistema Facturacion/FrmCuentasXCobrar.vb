@@ -123,8 +123,8 @@ Public Class FrmCuentasXCobrar
             FechaVence = DataSet.Tables("Clientes").Rows(i)("Fecha_Vencimiento")
             Me.Text = "Procesando Factura No " & NumeroFactura
 
-            If NumeroFactura = "J11203" Then
-                NumeroFactura = "J11203"
+            If NumeroFactura = "M36816" Then
+                NumeroFactura = "M36816"
             End If
 
             '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

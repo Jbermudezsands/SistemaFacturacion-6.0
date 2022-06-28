@@ -1742,6 +1742,7 @@ Public Class FrmReportes
                 Me.ListBox.Items.Add("Reporte de Ventas Productos x Mes")
                 Me.ListBox.Items.Add("Reporte de Ventas Excel")
                 Me.ListBox.Items.Add("Movimientos de Productos Excel")
+                Me.ListBox.Items.Add("Reporte PBI")
 
             Case "Reporte Cuentas x Pagar"
                 Me.ListBox.Items.Add("Reporte de Saldo de Proveedores")
@@ -4091,8 +4092,8 @@ Public Class FrmReportes
                         FechaVence = DataSet.Tables("Clientes").Rows(i)("Fecha_Vencimiento")
                         Me.Text = "Procesando Cliente: " & CodigoCliente & " Factura No " & NumeroFactura
 
-                        If NumeroFactura = "M00343" Then
-                            NumeroFactura = "M00343"
+                        If NumeroFactura = "M36816" Then
+                            NumeroFactura = "M36816"
                         End If
 
                         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -4312,7 +4313,7 @@ Public Class FrmReportes
                             End If
                         End If
 
-                        MontoFactura = (DataSet.Tables("Clientes").Rows(i)("SubTotal") + DataSet.Tables("Clientes").Rows(i)("IVA")) * TasaCambio
+                        MontoFactura = Format((DataSet.Tables("Clientes").Rows(i)("SubTotal") + DataSet.Tables("Clientes").Rows(i)("IVA")) * TasaCambio, "##,##0.00")
                         Dias = DateDiff(DateInterval.Day, FechaVence, Me.DTPFechaFin.Value)
                         Saldo = MontoFactura - MontoRecibo + MontoNota - MontoNotaCR - MontoMetodoFactura
                         If Format(Saldo, "##,##0.00") = "0.00" Then
