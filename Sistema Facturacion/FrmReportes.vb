@@ -1742,7 +1742,7 @@ Public Class FrmReportes
                 Me.ListBox.Items.Add("Reporte de Ventas Productos x Mes")
                 Me.ListBox.Items.Add("Reporte de Ventas Excel")
                 Me.ListBox.Items.Add("Movimientos de Productos Excel")
-                Me.ListBox.Items.Add("Reporte PBI")
+                Me.ListBox.Items.Add("Reporte PBI Excel")
 
             Case "Reporte Cuentas x Pagar"
                 Me.ListBox.Items.Add("Reporte de Saldo de Proveedores")
@@ -2008,6 +2008,157 @@ Public Class FrmReportes
         Fecha2 = Me.DTPFechaFin.Value
         My.Application.DoEvents()
         Select Case Me.ListBox.Text
+
+
+            Case "Reporte PBI Excel"
+                Dim SQLString As String, CodProductos As String = "", FechaIni As Date, FechaFin As Date
+                Dim oDataRow As DataRow, Inicial As Double, Registros As Double, Contador As Double, i As Double
+
+
+                Dim objExcel = New Microsoft.Office.Interop.Excel.Application, Moneda As String
+
+
+                FechaIni = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
+                FechaFin = Format(Me.DTPFechaFin.Value, "yyyy-MM-dd")
+
+                SQLString = "SELECT Clientes.Cod_Cliente, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.Tipo_Factura, Facturas.MonedaFactura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario, TasaCambio.MontoTasa, CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Detalle_Facturas.Importe ELSE Detalle_Facturas.Importe * ISNULL(TasaCambio.MontoTasa, 0) END AS ImporteC$, CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Detalle_Facturas.Importe ELSE Detalle_Facturas.Importe / ISNULL(TasaCambio.MontoTasa, 1) END AS Importe$, Facturas.Fecha_Vencimiento, DATEDIFF(day, Facturas.Fecha_Factura, Facturas.Fecha_Vencimiento) AS DiasCredito, Facturas.Exonerado FROM  Clientes INNER JOIN Facturas ON Clientes.Cod_Cliente = Facturas.Cod_Cliente INNER JOIN  Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura INNER JOIN  TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa " & _
+                            "WHERE  (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME,  '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) ORDER BY Facturas.Fecha_Factura"
+
+
+                '*******************************************************************************************************************************
+                '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
+                '*******************************************************************************************************************************
+                'DataSet.Reset()
+                'SQLString = "SELECT Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad AS Importe, Facturas.Cod_Bodega, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Cantidad As CantidadCompra, Detalle_Facturas.Costo_Unitario * Detalle_Facturas.Cantidad AS ImporteCompra, Detalle_Facturas.Cantidad As CantidadSaldo, Detalle_Facturas.Cantidad AS ImporteSaldo, Detalle_Facturas.Cantidad AS Orden  FROM Detalle_Facturas INNER JOIN Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura WHERE (Detalle_Facturas.Tipo_Factura <> N'Cotizacion') AND (Detalle_Facturas.Cod_Producto = N'-110000000') AND (Facturas.Cod_Bodega BETWEEN '01' AND '02') ORDER BY Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Cod_Producto"
+                'DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
+                'DataAdapter.Fill(DataSet, "DetalleMovimientos")
+
+                objExcel.Visible = True 'lo hacemos visible
+                objExcel.SheetsInNewWorkbook = 1 'decimos cuantas hojas queremos en el nuevo documento
+                objExcel.Workbooks.Add() ' añadimos el objeto al workbook
+
+
+
+                Moneda = "Cordobas"
+                If Me.OptCordobas.Checked = True Then
+                    Moneda = "Cordobas"
+                ElseIf Me.OptDolares.Checked = True Then
+                    Moneda = "Dolares"
+                End If
+
+                objExcel.ActiveSheet.Range("A1:G1").Merge()
+                objExcel.ActiveSheet.Range("A1").Value = NombreEmpresa
+                objExcel.ActiveSheet.Range("A2:G2").Merge()
+                objExcel.ActiveSheet.Range("A2").Value = DireccionEmpresa
+                objExcel.ActiveSheet.Range("A3:G3").Merge()
+                objExcel.ActiveSheet.Range("A3").Value = "DESDE:" & Format(Fecha1, "dd/MM/yyyy") & " HASTA:" & Format(Fecha2, "dd/MM/yyyy") & "     EXPRESADO EN " & Moneda
+
+
+                objExcel.ActiveSheet.Range("A5").Value = "Codigo Cliente"
+                objExcel.ActiveSheet.Range("B5").Value = "Nombre"
+                objExcel.ActiveSheet.Range("C5").Value = "Numero_Factura"
+                objExcel.ActiveSheet.Range("D5").Value = "Fecha_Factura"
+                objExcel.ActiveSheet.Range("E5").Value = "Tipo_Factura"
+                objExcel.ActiveSheet.Range("F5").Value = "Moneda_Factura"
+                'objExcel.ActiveSheet.Range("E5:F5").Merge()
+                objExcel.ActiveSheet.Range("G5").Value = "Cod_Producto"
+                objExcel.ActiveSheet.Range("H5").Value = "Descripcion_Producto"
+                'objExcel.ActiveSheet.Range("I5:H5").Merge()
+                objExcel.ActiveSheet.Range("J5").Value = "Cantidad"
+                objExcel.ActiveSheet.Range("K5").Value = "Precio_Unitario"
+                objExcel.ActiveSheet.Range("L5").Value = "Importe"
+                objExcel.ActiveSheet.Range("M5").Value = "Costo_Unitario"
+                objExcel.ActiveSheet.Range("N5").Value = "Monto_Tasa"
+                objExcel.ActiveSheet.Range("O5").Value = "ImporteC$"
+                objExcel.ActiveSheet.Range("P5").Value = "Importe$"
+                objExcel.ActiveSheet.Range("Q5").Value = "Fecha_Vence"
+                objExcel.ActiveSheet.Range("R5").Value = "Dias_Credito"
+                objExcel.ActiveSheet.Range("S5").Value = "Exonardo"
+
+                objExcel.ActiveSheet.Columns("J").NumberFormat = "##,##0.00"
+                objExcel.ActiveSheet.Columns("K").NumberFormat = "##,##0.00"
+                objExcel.ActiveSheet.Columns("L").NumberFormat = "##,##0.00"
+                objExcel.ActiveSheet.Columns("M").NumberFormat = "##,##0.00"
+                objExcel.ActiveSheet.Columns("N").NumberFormat = "##,##0.00"
+                objExcel.ActiveSheet.Columns("O").NumberFormat = "##,##0.00"
+                objExcel.ActiveSheet.Columns("P").NumberFormat = "##,##0.00"
+
+
+
+                objExcel.ActiveSheet.Range("A5", "S5").Interior.Color = RGB(180, 198, 231)
+                objExcel.ActiveSheet.range("A5", "S5").Font.Size = 12
+                objExcel.ActiveSheet.range("A5", "S5").Font.Bold = True
+                objExcel.ActiveSheet.range("A5", "S5").WrapText = True
+                objExcel.ActiveSheet.Range("A5", "S5").HorizontalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
+                objExcel.ActiveSheet.Range("A5", "S5").VerticalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
+                objExcel.ActiveSheet.Range("A5", "S5").Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous
+
+                objExcel.ActiveSheet.Range("A6", "S6").Interior.Color = RGB(180, 198, 231)
+                objExcel.ActiveSheet.range("A6", "S6").Font.Size = 12
+                objExcel.ActiveSheet.range("A6", "S6").Font.Bold = True
+                objExcel.ActiveSheet.range("A6", "S6").WrapText = True
+                objExcel.ActiveSheet.Range("A6", "S6").HorizontalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
+                objExcel.ActiveSheet.Range("A6", "S6").VerticalAlignment = Microsoft.Office.Interop.Excel.Constants.xlCenter
+                objExcel.ActiveSheet.Range("A6", "S6").Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous
+
+
+
+                DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
+                DataAdapter.Fill(DataSet, "Movimientos")
+                Registros = DataSet.Tables("Movimientos").Rows.Count
+                Me.ProgressBar.Maximum = Registros
+                Me.ProgressBar.Minimum = 0
+                Me.ProgressBar.Value = 0
+                Me.ProgressBar.Visible = True
+
+
+                Dim j As Double, CodigoCliente As String, Nombres As String, FechaFactura As String, TipoFactura As String
+
+                i = 0
+                j = 7
+
+                Do While Registros > i
+                    My.Application.DoEvents()
+
+                    CodigoCliente = DataSet.Tables("Movimientos").Rows(i)("Cod_Cliente")
+
+
+
+
+
+
+
+
+                    objExcel.ActiveSheet.Range("A" & j).Value = CodigoCliente
+                    objExcel.ActiveSheet.Range("B" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Nombres"))
+                    objExcel.ActiveSheet.Range("C" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Numero_Factura"))
+                    objExcel.ActiveSheet.Range("D" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Fecha_Factura"))
+                    objExcel.ActiveSheet.Range("E" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Tipo_Factura"))
+                    objExcel.ActiveSheet.Range("F" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("MonedaFactura"))
+
+                    objExcel.ActiveSheet.Range("G" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Cod_Producto"))
+                    objExcel.ActiveSheet.Range("H" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Descripcion_Producto"))
+                    objExcel.ActiveSheet.Range("I" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Cantidad"))
+                    objExcel.ActiveSheet.Range("J" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Precio_Unitario"))
+                    objExcel.ActiveSheet.Range("K" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Tipo_Factura"))
+                    objExcel.ActiveSheet.Range("L" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Importe"))
+
+                    objExcel.ActiveSheet.Range("M" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Costo_Unitario"))
+                    objExcel.ActiveSheet.Range("N" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("ImporteC$"))
+                    objExcel.ActiveSheet.Range("O" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Importe$"))
+                    objExcel.ActiveSheet.Range("P" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Fecha_Vencimiento"))
+                    objExcel.ActiveSheet.Range("Q" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("DiasCredito"))
+                    objExcel.ActiveSheet.Range("R" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Exonerado"))
+                    objExcel.ActiveSheet.Range("S" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Importe"))
+
+                    'Me.Text = "Procesando : " & CodigoProducto & " " & DescripcionProducto
+                    i = i + 1
+                    j = j + 1
+                    Me.ProgressBar.Value = Me.ProgressBar.Value + 1
+                Loop
+
+
+
 
             Case "Movimientos de Productos Excel"
                 Dim SQLString As String, CodProductos As String = "", FechaIni As Date, FechaFin As Date
@@ -13894,6 +14045,9 @@ Public Class FrmReportes
         Me.ChkAgrupadoBodega.Visible = False
 
         Select Case ListBox.Text
+
+            Case "Reporte PBI Excel"
+                Me.GroupBox1.Visible = True
 
             Case "Reporte de Ordenes de Compra"
                 Me.GroupBox1.Visible = True
