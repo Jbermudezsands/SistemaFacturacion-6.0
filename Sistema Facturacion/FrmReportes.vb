@@ -2064,16 +2064,16 @@ Public Class FrmReportes
                 objExcel.ActiveSheet.Range("G5").Value = "Cod_Producto"
                 objExcel.ActiveSheet.Range("H5").Value = "Descripcion_Producto"
                 'objExcel.ActiveSheet.Range("I5:H5").Merge()
-                objExcel.ActiveSheet.Range("J5").Value = "Cantidad"
-                objExcel.ActiveSheet.Range("K5").Value = "Precio_Unitario"
-                objExcel.ActiveSheet.Range("L5").Value = "Importe"
-                objExcel.ActiveSheet.Range("M5").Value = "Costo_Unitario"
-                objExcel.ActiveSheet.Range("N5").Value = "Monto_Tasa"
-                objExcel.ActiveSheet.Range("O5").Value = "ImporteC$"
-                objExcel.ActiveSheet.Range("P5").Value = "Importe$"
-                objExcel.ActiveSheet.Range("Q5").Value = "Fecha_Vence"
-                objExcel.ActiveSheet.Range("R5").Value = "Dias_Credito"
-                objExcel.ActiveSheet.Range("S5").Value = "Exonardo"
+                objExcel.ActiveSheet.Range("I5").Value = "Cantidad"
+                objExcel.ActiveSheet.Range("J5").Value = "Precio_Unitario"
+                objExcel.ActiveSheet.Range("K5").Value = "Importe"
+                objExcel.ActiveSheet.Range("L5").Value = "Costo_Unitario"
+                objExcel.ActiveSheet.Range("M5").Value = "Monto_Tasa"
+                objExcel.ActiveSheet.Range("N5").Value = "ImporteC$"
+                objExcel.ActiveSheet.Range("O5").Value = "Importe$"
+                objExcel.ActiveSheet.Range("P5").Value = "Fecha_Vence"
+                objExcel.ActiveSheet.Range("Q5").Value = "Dias_Credito"
+                objExcel.ActiveSheet.Range("R5").Value = "Exonardo"
 
                 objExcel.ActiveSheet.Columns("J").NumberFormat = "##,##0.00"
                 objExcel.ActiveSheet.Columns("K").NumberFormat = "##,##0.00"
@@ -2127,8 +2127,6 @@ Public Class FrmReportes
 
 
 
-
-
                     objExcel.ActiveSheet.Range("A" & j).Value = CodigoCliente
                     objExcel.ActiveSheet.Range("B" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Nombres"))
                     objExcel.ActiveSheet.Range("C" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Numero_Factura"))
@@ -2140,16 +2138,16 @@ Public Class FrmReportes
                     objExcel.ActiveSheet.Range("H" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Descripcion_Producto"))
                     objExcel.ActiveSheet.Range("I" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Cantidad"))
                     objExcel.ActiveSheet.Range("J" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Precio_Unitario"))
-                    objExcel.ActiveSheet.Range("K" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Tipo_Factura"))
                     objExcel.ActiveSheet.Range("L" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Importe"))
 
                     objExcel.ActiveSheet.Range("M" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Costo_Unitario"))
-                    objExcel.ActiveSheet.Range("N" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("ImporteC$"))
-                    objExcel.ActiveSheet.Range("O" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Importe$"))
-                    objExcel.ActiveSheet.Range("P" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Fecha_Vencimiento"))
-                    objExcel.ActiveSheet.Range("Q" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("DiasCredito"))
-                    objExcel.ActiveSheet.Range("R" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Exonerado"))
-                    objExcel.ActiveSheet.Range("S" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Importe"))
+                    objExcel.ActiveSheet.Range("N" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Monto_Tasa"))
+                    objExcel.ActiveSheet.Range("O" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("ImporteC$"))
+                    objExcel.ActiveSheet.Range("P" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Importe$"))
+                    objExcel.ActiveSheet.Range("Q" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Fecha_Vencimiento"))
+                    objExcel.ActiveSheet.Range("R" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("DiasCredito"))
+                    objExcel.ActiveSheet.Range("S" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Exonerado"))
+
 
                     'Me.Text = "Procesando : " & CodigoProducto & " " & DescripcionProducto
                     i = i + 1

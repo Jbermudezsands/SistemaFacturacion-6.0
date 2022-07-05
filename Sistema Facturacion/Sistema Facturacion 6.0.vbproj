@@ -1585,6 +1585,10 @@
       <DependentUpon>FrmActivar.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmAdmision.resx">
+      <DependentUpon>FrmAdmision.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmAjustarCostos.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmAjustarCostos.vb</DependentUpon>
