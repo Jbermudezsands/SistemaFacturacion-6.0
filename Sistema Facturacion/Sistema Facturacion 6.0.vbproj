@@ -691,6 +691,12 @@
     <Compile Include="Reportes\ArepExistenciaCostos.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\ArepExpediente.Designer.vb">
+      <DependentUpon>ArepExpediente.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepExpediente.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\ArepFacturaMedia.Designer.vb">
       <DependentUpon>ArepFacturaMedia.vb</DependentUpon>
     </Compile>
@@ -1996,6 +2002,10 @@
     <EmbeddedResource Include="Reportes\ArepExistenciaCostos.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ArepExistenciaCostos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepExpediente.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepExpediente.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepFacturaMedia.resx">
       <SubType>Designer</SubType>

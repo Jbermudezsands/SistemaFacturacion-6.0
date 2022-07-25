@@ -20,6 +20,7 @@ Partial Class FrmAdmision
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmAdmision))
         Me.ImgFoto = New System.Windows.Forms.PictureBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.TxtComarca = New System.Windows.Forms.TextBox
@@ -156,6 +157,7 @@ Partial Class FrmAdmision
         '
         'BtnConsultar
         '
+        Me.BtnConsultar.Image = CType(resources.GetObject("BtnConsultar.Image"), System.Drawing.Image)
         Me.BtnConsultar.Location = New System.Drawing.Point(229, 19)
         Me.BtnConsultar.Name = "BtnConsultar"
         Me.BtnConsultar.Size = New System.Drawing.Size(29, 30)
@@ -223,6 +225,7 @@ Partial Class FrmAdmision
         '
         'Button6
         '
+        Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
         Me.Button6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.Button6.Location = New System.Drawing.Point(525, 153)
         Me.Button6.Name = "Button6"
@@ -234,6 +237,7 @@ Partial Class FrmAdmision
         '
         'CmdCerrar
         '
+        Me.CmdCerrar.Image = CType(resources.GetObject("CmdCerrar.Image"), System.Drawing.Image)
         Me.CmdCerrar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.CmdCerrar.Location = New System.Drawing.Point(526, 281)
         Me.CmdCerrar.Name = "CmdCerrar"
@@ -245,7 +249,7 @@ Partial Class FrmAdmision
         '
         'CmdGuardar
         '
-        Me.CmdGuardar.Image = Global.Sistema_Facturacion.My.Resources.Resources.Unpinned
+        Me.CmdGuardar.Image = CType(resources.GetObject("CmdGuardar.Image"), System.Drawing.Image)
         Me.CmdGuardar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.CmdGuardar.Location = New System.Drawing.Point(526, 114)
         Me.CmdGuardar.Name = "CmdGuardar"

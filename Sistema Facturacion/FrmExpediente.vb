@@ -409,6 +409,12 @@ Public Class FrmExpediente
         Dim IdLocalidad As Double, IdMunicipio As Double
         Dim SQlString As String
 
+        Me.CboSexo.Text = "Masculino"
+        Me.CboEstadoCivil.Text = "Soloter@"
+        Me.CboEscolaridad.Text = "Primaria"
+
+
+
         '//////////////////////////BUSCO EL ID DE LA LOCALIDAD ////////////////////////////////////////////////
         SQlString = "SELECT Cod_Departamento, Nombre_Departamento FROM Departamentos "
         ds = BuscaConsulta(SQlString, "Departamento").Copy
@@ -466,6 +472,21 @@ Public Class FrmExpediente
         If ds.Tables("Comarca").Rows.Count <> 0 Then
             IdComarca = ds.Tables("Comarca").Rows(0)("IdMunicipio")
         End If
+
+        If Me.TxtEdad.Text = "" Then
+            Me.TxtEdad.Text = 0
+        End If
+
+        If Not IsNumeric(Me.TxtTelefono.Text) Then
+            Me.TxtTelefono.Text = "00000000"
+        End If
+
+        If Not IsNumeric(Me.TxtTelefonoEmergencia.Text) Then
+            Me.TxtTelefonoEmergencia.Text = "00000000"
+        End If
+
+
+
 
 
         Grabar_Expediente(Numero_Expediente, Me.TxtNombres.Text, Me.TxtApellidos.Text, Me.TxtEdad.Text, Me.CboSexo.Text, Me.CboEstadoCivil.Text, Me.CboEscolaridad.Text, Me.CboOcupacion.Text, Me.TxtTelefono.Text, Me.TxtDireccion.Text, Me.DtpFecha.Value, Me.CboUnidadSalud.Text, Me.TxtNombrePadre.Text, Me.TxtNombreMadre.Text, CodDepartamento, idMunicipio, IdComarca, Me.TxtNombreEmergencia.Text, Me.TxtTelefonoEmergencia.Text, Me.TxtDireccionEmergencia.Text, Me.DtpFechaNacimiento.Value)

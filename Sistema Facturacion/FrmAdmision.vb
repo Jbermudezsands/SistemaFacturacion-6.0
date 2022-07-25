@@ -118,6 +118,7 @@ Public Class FrmAdmision
 
     Private Sub FrmAdmision_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.DTPFecha.Text = Format(Now, "dd/MM/yyyy")
+        Me.ImgFoto.Image = My.Resources.NoDisponible
     End Sub
 
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick

@@ -8948,7 +8948,8 @@ errSub:
 
         Do While iPosicion < Registros
             If Not IsDBNull(FrmFacturas.BindingDetalle.Item(iPosicion)("Importe")) Then
-                Subtotal = Format(CDbl(FrmFacturas.BindingDetalle.Item(iPosicion)("Importe")) + Subtotal, "####0.00")
+                Subtotal = Format(CDbl(FrmFacturas.BindingDetalle.Item(iPosicion)("Importe")) + Subtotal, "####0.0000")
+                My.Forms.FrmFacturas.SubTotalGral = Subtotal
                 If Not IsDBNull(FrmFacturas.BindingDetalle.Item(iPosicion)("Cod_Producto")) Then
                     CodProducto = FrmFacturas.BindingDetalle.Item(iPosicion)("Cod_Producto")
                 Else
@@ -8967,6 +8968,7 @@ errSub:
                         TasaIva = DataSet.Tables("IVA").Rows(0)("Impuesto")
                     End If
                     Iva = Format(Iva + CDbl(FrmFacturas.BindingDetalle.Item(iPosicion)("Importe")) * Tasa, "####0.00000000")
+                    My.Forms.FrmFacturas.IvaGral = Iva
                     DataSet.Tables("IVA").Clear()
                 End If
                 DataSet.Tables("Productos").Clear()
@@ -9012,6 +9014,7 @@ errSub:
             'Iva = Subtotal * Tasa
         Else
             Iva = 0
+            FrmFacturas.IvaGral = 0
         End If
 
 
@@ -9113,14 +9116,19 @@ errSub:
 
         Descuento = CDbl(Val(FrmFacturas.TxtDescuento.Text))
 
+        Iva = Redondeo(Iva, 3)
 
         Neto = CDbl((Format(Subtotal + Iva, "####0.00"))) - Monto - Descuento + MontoPropina
-        FrmFacturas.TxtSubTotal.Text = Format(Subtotal, "##,##0.00")
-        FrmFacturas.TxtIva.Text = Format(Iva, "##,##0.00")
+        My.Forms.FrmFacturas.TxtSubTotal.Text = Format(Subtotal, "##,##0.000")
+        My.Forms.FrmFacturas.TxtIva.Text = Format(Iva, "##,##0.00")
         FrmFacturas.TxtPagado.Text = Format(Monto, "##,##0.00")
         FrmFacturas.TxtNetoPagar.Text = Format(Neto, "##,##0.00")
         FrmFacturas.TxtPropina.Text = Format(MontoPropina, "##,##0.00")
     End Sub
+    Public Function Redondeo(ByVal Numero, ByVal Decimales)
+        Redondeo = Int(Numero * 10 ^ Decimales + 1 / 2) / 10 ^ Decimales
+    End Function
+
 
     Public Sub LimpiarFacturas()
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -9755,26 +9763,26 @@ errSub:
             Fecha = Format(FrmFacturas.DTPFecha.Value, "yyyy-MM-dd")
 
 
-            If FrmFacturas.TxtSubTotal.Text <> "" Then
-                Subtotal = FrmFacturas.TxtSubTotal.Text
+            If My.Forms.FrmFacturas.SubTotalGral <> 0 Then
+                Subtotal = Redondeo(My.Forms.FrmFacturas.SubTotalGral, 4)
             Else
                 Subtotal = 0
             End If
 
-            If FrmFacturas.TxtIva.Text <> "" Then
-                Iva = FrmFacturas.TxtIva.Text
+            If My.Forms.FrmFacturas.IvaGral <> 0 Then
+                Iva = Redondeo(My.Forms.FrmFacturas.IvaGral, 4)
             Else
                 Iva = 0
             End If
 
-            If FrmFacturas.TxtPagado.Text <> "" Then
-                Pagado = FrmFacturas.TxtPagado.Text
+            If My.Forms.FrmFacturas.TxtPagado.Text <> "" Then
+                Pagado = My.Forms.FrmFacturas.TxtPagado.Text
             Else
                 Pagado = 0
             End If
 
-            If FrmFacturas.TxtNetoPagar.Text <> "" Then
-                Neto = FrmFacturas.TxtNetoPagar.Text
+            If My.Forms.FrmFacturas.TxtNetoPagar.Text <> "" Then
+                Neto = My.Forms.FrmFacturas.TxtNetoPagar.Text
             Else
                 Neto = 0
             End If
