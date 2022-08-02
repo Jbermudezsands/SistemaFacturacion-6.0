@@ -2141,7 +2141,7 @@ Public Class FrmReportes
                     objExcel.ActiveSheet.Range("L" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Importe"))
 
                     objExcel.ActiveSheet.Range("M" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Costo_Unitario"))
-                    objExcel.ActiveSheet.Range("N" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Monto_Tasa"))
+                    objExcel.ActiveSheet.Range("N" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("MontoTasa"))
                     objExcel.ActiveSheet.Range("O" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("ImporteC$"))
                     objExcel.ActiveSheet.Range("P" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Importe$"))
                     objExcel.ActiveSheet.Range("Q" & j).Value = CStr(DataSet.Tables("Movimientos").Rows(i)("Fecha_Vencimiento"))
