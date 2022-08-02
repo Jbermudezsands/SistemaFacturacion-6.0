@@ -27,7 +27,6 @@ Partial Class FrmVehiculo
         Me.TxtMarca = New System.Windows.Forms.TextBox
         Me.LblNombre = New System.Windows.Forms.Label
         Me.LblCodigo = New System.Windows.Forms.Label
-        Me.C1Button2 = New C1.Win.C1Input.C1Button
         Me.CmdGrabar = New System.Windows.Forms.Button
         Me.ButtonBorrar = New System.Windows.Forms.Button
         Me.CmdNuevo = New System.Windows.Forms.Button
@@ -36,6 +35,7 @@ Partial Class FrmVehiculo
         Me.CboPlaca = New C1.Win.C1List.C1Combo
         Me.CboTipo = New C1.Win.C1List.C1Combo
         Me.ChkVehiculoEvacuaciones = New System.Windows.Forms.CheckBox
+        Me.C1Button2 = New C1.Win.C1Input.C1Button
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboPlaca, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -107,15 +107,6 @@ Partial Class FrmVehiculo
         Me.LblCodigo.Size = New System.Drawing.Size(34, 13)
         Me.LblCodigo.TabIndex = 151
         Me.LblCodigo.Text = "Placa"
-        '
-        'C1Button2
-        '
-        Me.C1Button2.Image = CType(resources.GetObject("C1Button2.Image"), System.Drawing.Image)
-        Me.C1Button2.Location = New System.Drawing.Point(318, 66)
-        Me.C1Button2.Name = "C1Button2"
-        Me.C1Button2.Size = New System.Drawing.Size(39, 23)
-        Me.C1Button2.TabIndex = 248
-        Me.C1Button2.UseVisualStyleBackColor = True
         '
         'CmdGrabar
         '
@@ -246,11 +237,20 @@ Partial Class FrmVehiculo
         Me.ChkVehiculoEvacuaciones.Text = "Vehiculo Evacuaciones"
         Me.ChkVehiculoEvacuaciones.UseVisualStyleBackColor = True
         '
+        'C1Button2
+        '
+        Me.C1Button2.Image = CType(resources.GetObject("C1Button2.Image"), System.Drawing.Image)
+        Me.C1Button2.Location = New System.Drawing.Point(318, 66)
+        Me.C1Button2.Name = "C1Button2"
+        Me.C1Button2.Size = New System.Drawing.Size(39, 23)
+        Me.C1Button2.TabIndex = 248
+        Me.C1Button2.UseVisualStyleBackColor = True
+        '
         'FrmVehiculo
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(400, 281)
+        Me.ClientSize = New System.Drawing.Size(391, 281)
         Me.Controls.Add(Me.ChkVehiculoEvacuaciones)
         Me.Controls.Add(Me.CboTipo)
         Me.Controls.Add(Me.CboActivo)
@@ -286,7 +286,6 @@ Partial Class FrmVehiculo
     Friend WithEvents TxtMarca As System.Windows.Forms.TextBox
     Friend WithEvents LblNombre As System.Windows.Forms.Label
     Friend WithEvents LblCodigo As System.Windows.Forms.Label
-    Friend WithEvents C1Button2 As C1.Win.C1Input.C1Button
     Friend WithEvents CmdGrabar As System.Windows.Forms.Button
     Friend WithEvents ButtonBorrar As System.Windows.Forms.Button
     Friend WithEvents CmdNuevo As System.Windows.Forms.Button
@@ -295,4 +294,5 @@ Partial Class FrmVehiculo
     Friend WithEvents CboPlaca As C1.Win.C1List.C1Combo
     Friend WithEvents CboTipo As C1.Win.C1List.C1Combo
     Friend WithEvents ChkVehiculoEvacuaciones As System.Windows.Forms.CheckBox
+    Friend WithEvents C1Button2 As C1.Win.C1Input.C1Button
 End Class

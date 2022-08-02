@@ -71,19 +71,10 @@
 
                 Me.Hide()
                 If NombreCliente = "Alumnos" Then
-                    'My.Forms.MDIParent1.NavBarEnsamble.Visible = False
-                    'My.Forms.MDIParent1.NavBarPagos.Visible = False
-                    'My.Forms.MDIParent1.Vendedores.Visible = False
-                    'My.Forms.MDIParent1.NavBarLiquidacion.Visible = False
-                    'My.Forms.MDIParent1.NavBarTransferencias.Visible = False
-
-                    'My.Forms.MDIParent1.ShowDialog()
                     My.Forms.MDIMain.ShowDialog()
                 Else
                     My.Forms.MDIMain.Text = "Nombre Compañia: " & NombreCompañia
                     My.Forms.MDIMain.ShowDialog()
-                    'My.Forms.MDIParent1.Text = "Nombre Compañia: " & NombreCompañia
-                    'My.Forms.MDIParent1.ShowDialog()
 
                 End If
                 Me.Close()
