@@ -89,7 +89,7 @@ Public Class FrmConsultas
 
                     'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Precio_Lista, Existencia_Unidades,Cod_Iva FROM Productos"
                     SQlProductos = "SELECT        Municipio.IdMunicipio, Municipio.Cod_Departamento, Municipio.Nombre_Municipio As NombreComarca, Municipio.Tipo, Municipio_1.Nombre_Municipio AS NombreMunicipio FROM  Municipio INNER JOIN  Municipio AS Municipio_1 ON Municipio.Cod_Departamento = Municipio_1.IdMunicipio WHERE (Municipio.Tipo = 'Comarca') AND (Municipio_1.Tipo = 'Municipio')"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "C�digo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Codigo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 

@@ -4,9 +4,7 @@ Imports System.IO
 Imports System.Drawing.Imaging
 
 Module Funciones
-    Public Sub Grabar_Consultas()
-
-    End Sub
+    
 
     Public Sub Grabar_PreConsultas(ByVal Numero_Expediente As String, ByVal Fecha_Hora As Date, ByVal Activo As Boolean, ByVal Procesado As Boolean, ByVal Cancelado As Boolean, ByVal idAdmision As Double, ByVal Sistolica As Double, ByVal Diastolica As Double, ByVal Temperatura As Double, ByVal AzucarSangre As Double, ByVal IdConsultorio As Double, ByVal Peso As Double, ByVal Talla As Double)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)

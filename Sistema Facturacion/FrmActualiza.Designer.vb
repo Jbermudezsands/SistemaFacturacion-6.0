@@ -123,20 +123,24 @@ Partial Class FrmActualiza
         Me.TabPage7 = New System.Windows.Forms.TabPage
         Me.Button20 = New System.Windows.Forms.Button
         Me.TabPage8 = New System.Windows.Forms.TabPage
-        Me.GroupBox10 = New System.Windows.Forms.GroupBox
-        Me.OptFacturas = New System.Windows.Forms.RadioButton
-        Me.OptRecibos = New System.Windows.Forms.RadioButton
-        Me.OptTransformacion = New System.Windows.Forms.RadioButton
-        Me.OptPagos = New System.Windows.Forms.RadioButton
-        Me.OptCompras = New System.Windows.Forms.RadioButton
-        Me.LblNumero = New System.Windows.Forms.Label
-        Me.TxtNumero = New System.Windows.Forms.TextBox
-        Me.BtnEliminar = New System.Windows.Forms.Button
-        Me.BtnActivar = New System.Windows.Forms.Button
-        Me.BtnAnular = New System.Windows.Forms.Button
-        Me.Button21 = New System.Windows.Forms.Button
         Me.BtnModificar = New System.Windows.Forms.Button
+        Me.Button21 = New System.Windows.Forms.Button
+        Me.BtnAnular = New System.Windows.Forms.Button
+        Me.BtnActivar = New System.Windows.Forms.Button
+        Me.BtnEliminar = New System.Windows.Forms.Button
+        Me.TxtNumero = New System.Windows.Forms.TextBox
+        Me.LblNumero = New System.Windows.Forms.Label
+        Me.GroupBox10 = New System.Windows.Forms.GroupBox
         Me.OptClientes = New System.Windows.Forms.RadioButton
+        Me.OptCompras = New System.Windows.Forms.RadioButton
+        Me.OptPagos = New System.Windows.Forms.RadioButton
+        Me.OptTransformacion = New System.Windows.Forms.RadioButton
+        Me.OptRecibos = New System.Windows.Forms.RadioButton
+        Me.OptFacturas = New System.Windows.Forms.RadioButton
+        Me.TabPage9 = New System.Windows.Forms.TabPage
+        Me.Label23 = New System.Windows.Forms.Label
+        Me.CmdCerrar = New System.Windows.Forms.Button
+        Me.BtnIniciar = New System.Windows.Forms.Button
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -159,6 +163,7 @@ Partial Class FrmActualiza
         Me.TabPage7.SuspendLayout()
         Me.TabPage8.SuspendLayout()
         Me.GroupBox10.SuspendLayout()
+        Me.TabPage9.SuspendLayout()
         Me.SuspendLayout()
         '
         'PictureBox2
@@ -177,7 +182,7 @@ Partial Class FrmActualiza
         Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox1.Location = New System.Drawing.Point(0, -3)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(611, 60)
+        Me.PictureBox1.Size = New System.Drawing.Size(666, 60)
         Me.PictureBox1.TabIndex = 126
         Me.PictureBox1.TabStop = False
         '
@@ -313,7 +318,7 @@ Partial Class FrmActualiza
         Me.TabPage5.Controls.Add(Me.Label20)
         Me.TabPage5.Location = New System.Drawing.Point(4, 22)
         Me.TabPage5.Name = "TabPage5"
-        Me.TabPage5.Size = New System.Drawing.Size(510, 206)
+        Me.TabPage5.Size = New System.Drawing.Size(591, 206)
         Me.TabPage5.TabIndex = 4
         Me.TabPage5.Text = "Ajustar Costo"
         Me.TabPage5.UseVisualStyleBackColor = True
@@ -793,7 +798,7 @@ Partial Class FrmActualiza
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(510, 206)
+        Me.TabPage1.Size = New System.Drawing.Size(591, 206)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Sincronizar"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -957,10 +962,11 @@ Partial Class FrmActualiza
         Me.TabControl1.Controls.Add(Me.TabPage6)
         Me.TabControl1.Controls.Add(Me.TabPage7)
         Me.TabControl1.Controls.Add(Me.TabPage8)
+        Me.TabControl1.Controls.Add(Me.TabPage9)
         Me.TabControl1.Location = New System.Drawing.Point(12, 63)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(518, 232)
+        Me.TabControl1.Size = New System.Drawing.Size(599, 232)
         Me.TabControl1.TabIndex = 1
         '
         'TabPage4
@@ -1164,7 +1170,7 @@ Partial Class FrmActualiza
         Me.TabPage7.Location = New System.Drawing.Point(4, 22)
         Me.TabPage7.Name = "TabPage7"
         Me.TabPage7.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage7.Size = New System.Drawing.Size(510, 206)
+        Me.TabPage7.Size = New System.Drawing.Size(591, 206)
         Me.TabPage7.TabIndex = 7
         Me.TabPage7.Text = "Cierre"
         Me.TabPage7.UseVisualStyleBackColor = True
@@ -1194,10 +1200,72 @@ Partial Class FrmActualiza
         Me.TabPage8.Location = New System.Drawing.Point(4, 22)
         Me.TabPage8.Name = "TabPage8"
         Me.TabPage8.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage8.Size = New System.Drawing.Size(510, 206)
+        Me.TabPage8.Size = New System.Drawing.Size(591, 206)
         Me.TabPage8.TabIndex = 8
         Me.TabPage8.Text = "Auditoria"
         Me.TabPage8.UseVisualStyleBackColor = True
+        '
+        'BtnModificar
+        '
+        Me.BtnModificar.Location = New System.Drawing.Point(415, 101)
+        Me.BtnModificar.Name = "BtnModificar"
+        Me.BtnModificar.Size = New System.Drawing.Size(75, 23)
+        Me.BtnModificar.TabIndex = 174
+        Me.BtnModificar.Text = "Modificar"
+        Me.BtnModificar.UseVisualStyleBackColor = True
+        '
+        'Button21
+        '
+        Me.Button21.Image = CType(resources.GetObject("Button21.Image"), System.Drawing.Image)
+        Me.Button21.Location = New System.Drawing.Point(333, 19)
+        Me.Button21.Name = "Button21"
+        Me.Button21.Size = New System.Drawing.Size(29, 30)
+        Me.Button21.TabIndex = 173
+        Me.Button21.UseVisualStyleBackColor = True
+        '
+        'BtnAnular
+        '
+        Me.BtnAnular.Location = New System.Drawing.Point(415, 72)
+        Me.BtnAnular.Name = "BtnAnular"
+        Me.BtnAnular.Size = New System.Drawing.Size(75, 23)
+        Me.BtnAnular.TabIndex = 5
+        Me.BtnAnular.Text = "Anular"
+        Me.BtnAnular.UseVisualStyleBackColor = True
+        '
+        'BtnActivar
+        '
+        Me.BtnActivar.Location = New System.Drawing.Point(415, 43)
+        Me.BtnActivar.Name = "BtnActivar"
+        Me.BtnActivar.Size = New System.Drawing.Size(75, 23)
+        Me.BtnActivar.TabIndex = 4
+        Me.BtnActivar.Text = "Activar"
+        Me.BtnActivar.UseVisualStyleBackColor = True
+        '
+        'BtnEliminar
+        '
+        Me.BtnEliminar.Location = New System.Drawing.Point(415, 15)
+        Me.BtnEliminar.Name = "BtnEliminar"
+        Me.BtnEliminar.Size = New System.Drawing.Size(75, 23)
+        Me.BtnEliminar.TabIndex = 3
+        Me.BtnEliminar.Text = "Eliminar"
+        Me.BtnEliminar.UseVisualStyleBackColor = True
+        '
+        'TxtNumero
+        '
+        Me.TxtNumero.AcceptsReturn = True
+        Me.TxtNumero.Location = New System.Drawing.Point(227, 25)
+        Me.TxtNumero.Name = "TxtNumero"
+        Me.TxtNumero.Size = New System.Drawing.Size(100, 20)
+        Me.TxtNumero.TabIndex = 2
+        '
+        'LblNumero
+        '
+        Me.LblNumero.AutoSize = True
+        Me.LblNumero.Location = New System.Drawing.Point(149, 25)
+        Me.LblNumero.Name = "LblNumero"
+        Me.LblNumero.Size = New System.Drawing.Size(47, 13)
+        Me.LblNumero.TabIndex = 1
+        Me.LblNumero.Text = "Numero:"
         '
         'GroupBox10
         '
@@ -1213,6 +1281,56 @@ Partial Class FrmActualiza
         Me.GroupBox10.TabIndex = 0
         Me.GroupBox10.TabStop = False
         '
+        'OptClientes
+        '
+        Me.OptClientes.AutoSize = True
+        Me.OptClientes.Location = New System.Drawing.Point(8, 134)
+        Me.OptClientes.Name = "OptClientes"
+        Me.OptClientes.Size = New System.Drawing.Size(62, 17)
+        Me.OptClientes.TabIndex = 4
+        Me.OptClientes.Text = "Clientes"
+        Me.OptClientes.UseVisualStyleBackColor = True
+        '
+        'OptCompras
+        '
+        Me.OptCompras.AutoSize = True
+        Me.OptCompras.Location = New System.Drawing.Point(8, 111)
+        Me.OptCompras.Name = "OptCompras"
+        Me.OptCompras.Size = New System.Drawing.Size(66, 17)
+        Me.OptCompras.TabIndex = 3
+        Me.OptCompras.Text = "Compras"
+        Me.OptCompras.UseVisualStyleBackColor = True
+        '
+        'OptPagos
+        '
+        Me.OptPagos.AutoSize = True
+        Me.OptPagos.Location = New System.Drawing.Point(8, 88)
+        Me.OptPagos.Name = "OptPagos"
+        Me.OptPagos.Size = New System.Drawing.Size(55, 17)
+        Me.OptPagos.TabIndex = 2
+        Me.OptPagos.Text = "Pagos"
+        Me.OptPagos.UseVisualStyleBackColor = True
+        '
+        'OptTransformacion
+        '
+        Me.OptTransformacion.AutoSize = True
+        Me.OptTransformacion.Location = New System.Drawing.Point(7, 65)
+        Me.OptTransformacion.Name = "OptTransformacion"
+        Me.OptTransformacion.Size = New System.Drawing.Size(98, 17)
+        Me.OptTransformacion.TabIndex = 1
+        Me.OptTransformacion.Text = "Transformacion"
+        Me.OptTransformacion.UseVisualStyleBackColor = True
+        '
+        'OptRecibos
+        '
+        Me.OptRecibos.AutoSize = True
+        Me.OptRecibos.Location = New System.Drawing.Point(6, 43)
+        Me.OptRecibos.Name = "OptRecibos"
+        Me.OptRecibos.Size = New System.Drawing.Size(64, 17)
+        Me.OptRecibos.TabIndex = 1
+        Me.OptRecibos.Text = "Recibos"
+        Me.OptRecibos.UseVisualStyleBackColor = True
+        '
         'OptFacturas
         '
         Me.OptFacturas.AutoSize = True
@@ -1225,123 +1343,57 @@ Partial Class FrmActualiza
         Me.OptFacturas.Text = "Facturas"
         Me.OptFacturas.UseVisualStyleBackColor = True
         '
-        'OptRecibos
+        'TabPage9
         '
-        Me.OptRecibos.AutoSize = True
-        Me.OptRecibos.Location = New System.Drawing.Point(6, 43)
-        Me.OptRecibos.Name = "OptRecibos"
-        Me.OptRecibos.Size = New System.Drawing.Size(64, 17)
-        Me.OptRecibos.TabIndex = 1
-        Me.OptRecibos.Text = "Recibos"
-        Me.OptRecibos.UseVisualStyleBackColor = True
+        Me.TabPage9.Controls.Add(Me.CmdCerrar)
+        Me.TabPage9.Controls.Add(Me.BtnIniciar)
+        Me.TabPage9.Controls.Add(Me.Label23)
+        Me.TabPage9.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage9.Name = "TabPage9"
+        Me.TabPage9.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage9.Size = New System.Drawing.Size(591, 206)
+        Me.TabPage9.TabIndex = 9
+        Me.TabPage9.Text = "Segundo Plano"
+        Me.TabPage9.UseVisualStyleBackColor = True
         '
-        'OptTransformacion
+        'Label23
         '
-        Me.OptTransformacion.AutoSize = True
-        Me.OptTransformacion.Location = New System.Drawing.Point(7, 65)
-        Me.OptTransformacion.Name = "OptTransformacion"
-        Me.OptTransformacion.Size = New System.Drawing.Size(98, 17)
-        Me.OptTransformacion.TabIndex = 1
-        Me.OptTransformacion.Text = "Transformacion"
-        Me.OptTransformacion.UseVisualStyleBackColor = True
+        Me.Label23.AutoSize = True
+        Me.Label23.Location = New System.Drawing.Point(26, 28)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(86, 13)
+        Me.Label23.TabIndex = 6
+        Me.Label23.Text = "Activar Hilos PBI"
         '
-        'OptPagos
+        'CmdCerrar
         '
-        Me.OptPagos.AutoSize = True
-        Me.OptPagos.Location = New System.Drawing.Point(8, 88)
-        Me.OptPagos.Name = "OptPagos"
-        Me.OptPagos.Size = New System.Drawing.Size(55, 17)
-        Me.OptPagos.TabIndex = 2
-        Me.OptPagos.Text = "Pagos"
-        Me.OptPagos.UseVisualStyleBackColor = True
+        Me.CmdCerrar.Image = CType(resources.GetObject("CmdCerrar.Image"), System.Drawing.Image)
+        Me.CmdCerrar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.CmdCerrar.Location = New System.Drawing.Point(212, 17)
+        Me.CmdCerrar.Name = "CmdCerrar"
+        Me.CmdCerrar.Size = New System.Drawing.Size(75, 34)
+        Me.CmdCerrar.TabIndex = 237
+        Me.CmdCerrar.Text = "Cerrar"
+        Me.CmdCerrar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.CmdCerrar.UseVisualStyleBackColor = True
         '
-        'OptCompras
+        'BtnIniciar
         '
-        Me.OptCompras.AutoSize = True
-        Me.OptCompras.Location = New System.Drawing.Point(8, 111)
-        Me.OptCompras.Name = "OptCompras"
-        Me.OptCompras.Size = New System.Drawing.Size(66, 17)
-        Me.OptCompras.TabIndex = 3
-        Me.OptCompras.Text = "Compras"
-        Me.OptCompras.UseVisualStyleBackColor = True
-        '
-        'LblNumero
-        '
-        Me.LblNumero.AutoSize = True
-        Me.LblNumero.Location = New System.Drawing.Point(149, 25)
-        Me.LblNumero.Name = "LblNumero"
-        Me.LblNumero.Size = New System.Drawing.Size(47, 13)
-        Me.LblNumero.TabIndex = 1
-        Me.LblNumero.Text = "Numero:"
-        '
-        'TxtNumero
-        '
-        Me.TxtNumero.AcceptsReturn = True
-        Me.TxtNumero.Location = New System.Drawing.Point(227, 25)
-        Me.TxtNumero.Name = "TxtNumero"
-        Me.TxtNumero.Size = New System.Drawing.Size(100, 20)
-        Me.TxtNumero.TabIndex = 2
-        '
-        'BtnEliminar
-        '
-        Me.BtnEliminar.Location = New System.Drawing.Point(415, 15)
-        Me.BtnEliminar.Name = "BtnEliminar"
-        Me.BtnEliminar.Size = New System.Drawing.Size(75, 23)
-        Me.BtnEliminar.TabIndex = 3
-        Me.BtnEliminar.Text = "Eliminar"
-        Me.BtnEliminar.UseVisualStyleBackColor = True
-        '
-        'BtnActivar
-        '
-        Me.BtnActivar.Location = New System.Drawing.Point(415, 43)
-        Me.BtnActivar.Name = "BtnActivar"
-        Me.BtnActivar.Size = New System.Drawing.Size(75, 23)
-        Me.BtnActivar.TabIndex = 4
-        Me.BtnActivar.Text = "Activar"
-        Me.BtnActivar.UseVisualStyleBackColor = True
-        '
-        'BtnAnular
-        '
-        Me.BtnAnular.Location = New System.Drawing.Point(415, 72)
-        Me.BtnAnular.Name = "BtnAnular"
-        Me.BtnAnular.Size = New System.Drawing.Size(75, 23)
-        Me.BtnAnular.TabIndex = 5
-        Me.BtnAnular.Text = "Anular"
-        Me.BtnAnular.UseVisualStyleBackColor = True
-        '
-        'Button21
-        '
-        Me.Button21.Image = CType(resources.GetObject("Button21.Image"), System.Drawing.Image)
-        Me.Button21.Location = New System.Drawing.Point(333, 19)
-        Me.Button21.Name = "Button21"
-        Me.Button21.Size = New System.Drawing.Size(29, 30)
-        Me.Button21.TabIndex = 173
-        Me.Button21.UseVisualStyleBackColor = True
-        '
-        'BtnModificar
-        '
-        Me.BtnModificar.Location = New System.Drawing.Point(415, 101)
-        Me.BtnModificar.Name = "BtnModificar"
-        Me.BtnModificar.Size = New System.Drawing.Size(75, 23)
-        Me.BtnModificar.TabIndex = 174
-        Me.BtnModificar.Text = "Modificar"
-        Me.BtnModificar.UseVisualStyleBackColor = True
-        '
-        'OptClientes
-        '
-        Me.OptClientes.AutoSize = True
-        Me.OptClientes.Location = New System.Drawing.Point(8, 134)
-        Me.OptClientes.Name = "OptClientes"
-        Me.OptClientes.Size = New System.Drawing.Size(62, 17)
-        Me.OptClientes.TabIndex = 4
-        Me.OptClientes.Text = "Clientes"
-        Me.OptClientes.UseVisualStyleBackColor = True
+        Me.BtnIniciar.Image = CType(resources.GetObject("BtnIniciar.Image"), System.Drawing.Image)
+        Me.BtnIniciar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.BtnIniciar.Location = New System.Drawing.Point(123, 17)
+        Me.BtnIniciar.Name = "BtnIniciar"
+        Me.BtnIniciar.Size = New System.Drawing.Size(75, 34)
+        Me.BtnIniciar.TabIndex = 236
+        Me.BtnIniciar.Text = "Iniciar"
+        Me.BtnIniciar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnIniciar.UseVisualStyleBackColor = True
         '
         'FrmActualiza
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(535, 310)
+        Me.ClientSize = New System.Drawing.Size(616, 310)
         Me.Controls.Add(Me.GroupBox7)
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.Button15)
@@ -1390,6 +1442,8 @@ Partial Class FrmActualiza
         Me.TabPage8.PerformLayout()
         Me.GroupBox10.ResumeLayout(False)
         Me.GroupBox10.PerformLayout()
+        Me.TabPage9.ResumeLayout(False)
+        Me.TabPage9.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1511,4 +1565,8 @@ Partial Class FrmActualiza
     Friend WithEvents BtnModificar As System.Windows.Forms.Button
     Friend WithEvents Button21 As System.Windows.Forms.Button
     Friend WithEvents OptClientes As System.Windows.Forms.RadioButton
+    Friend WithEvents TabPage9 As System.Windows.Forms.TabPage
+    Friend WithEvents Label23 As System.Windows.Forms.Label
+    Friend WithEvents CmdCerrar As System.Windows.Forms.Button
+    Friend WithEvents BtnIniciar As System.Windows.Forms.Button
 End Class

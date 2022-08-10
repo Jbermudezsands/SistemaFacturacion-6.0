@@ -39,7 +39,8 @@ Public Class FrmComarca
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
         Quien = "Municipio"
         My.Forms.FrmConsultas.ShowDialog()
-        Me.CboCodigoLinea.Text = My.Forms.FrmConsultas.Codigo
+        'Me.CboCodigoLinea.Text = My.Forms.FrmConsultas.Codigo
+        Me.CboCodigoLinea.Text = My.Forms.FrmConsultas.Descripcion
     End Sub
 
     Private Sub FrmComarca_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
