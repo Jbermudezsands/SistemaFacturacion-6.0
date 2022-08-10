@@ -22,8 +22,6 @@ Partial Class frmDBBackup
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmDBBackup))
         Me.gbConnConfig = New System.Windows.Forms.GroupBox
         Me.lblConnStatus = New System.Windows.Forms.Label
         Me.pbConnStatus = New System.Windows.Forms.PictureBox
@@ -49,25 +47,9 @@ Partial Class frmDBBackup
         Me.Label7 = New System.Windows.Forms.Label
         Me.Label8 = New System.Windows.Forms.Label
         Me.Label9 = New System.Windows.Forms.Label
-        Me.GroupBox9 = New System.Windows.Forms.GroupBox
-        Me.DTPFecha = New System.Windows.Forms.Label
-        Me.LblHora = New System.Windows.Forms.Label
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.TDGridListado = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.Button4 = New System.Windows.Forms.Button
-        Me.BtnRespaldoAuto = New System.Windows.Forms.Button
-        Me.Button3 = New System.Windows.Forms.Button
-        Me.LblProgramacion = New System.Windows.Forms.Label
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.Label5 = New System.Windows.Forms.Label
         Me.gbConnConfig.SuspendLayout()
         CType(Me.pbConnStatus, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbDBInfo.SuspendLayout()
-        Me.GroupBox9.SuspendLayout()
-        CType(Me.TDGridListado, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'gbConnConfig
@@ -83,16 +65,16 @@ Partial Class frmDBBackup
         Me.gbConnConfig.Controls.Add(Me.Label3)
         Me.gbConnConfig.Controls.Add(Me.Label2)
         Me.gbConnConfig.Controls.Add(Me.Label1)
-        Me.gbConnConfig.Location = New System.Drawing.Point(536, 12)
+        Me.gbConnConfig.Location = New System.Drawing.Point(13, 12)
         Me.gbConnConfig.Name = "gbConnConfig"
-        Me.gbConnConfig.Size = New System.Drawing.Size(255, 268)
+        Me.gbConnConfig.Size = New System.Drawing.Size(255, 245)
         Me.gbConnConfig.TabIndex = 0
         Me.gbConnConfig.TabStop = False
         Me.gbConnConfig.Text = "Configuración de la conexión"
         '
         'lblConnStatus
         '
-        Me.lblConnStatus.Location = New System.Drawing.Point(14, 202)
+        Me.lblConnStatus.Location = New System.Drawing.Point(6, 202)
         Me.lblConnStatus.Name = "lblConnStatus"
         Me.lblConnStatus.Size = New System.Drawing.Size(235, 37)
         Me.lblConnStatus.TabIndex = 10
@@ -200,9 +182,9 @@ Partial Class frmDBBackup
         Me.gbDBInfo.Controls.Add(Me.Label7)
         Me.gbDBInfo.Controls.Add(Me.Label8)
         Me.gbDBInfo.Controls.Add(Me.Label9)
-        Me.gbDBInfo.Location = New System.Drawing.Point(797, 12)
+        Me.gbDBInfo.Location = New System.Drawing.Point(274, 12)
         Me.gbDBInfo.Name = "gbDBInfo"
-        Me.gbDBInfo.Size = New System.Drawing.Size(401, 268)
+        Me.gbDBInfo.Size = New System.Drawing.Size(308, 235)
         Me.gbDBInfo.TabIndex = 1
         Me.gbDBInfo.TabStop = False
         Me.gbDBInfo.Text = "Información de la base de datos y configuración del respaldo"
@@ -210,7 +192,7 @@ Partial Class frmDBBackup
         'btnBackup
         '
         Me.btnBackup.Enabled = False
-        Me.btnBackup.Location = New System.Drawing.Point(9, 211)
+        Me.btnBackup.Location = New System.Drawing.Point(6, 178)
         Me.btnBackup.Name = "btnBackup"
         Me.btnBackup.Size = New System.Drawing.Size(296, 51)
         Me.btnBackup.TabIndex = 17
@@ -220,16 +202,15 @@ Partial Class frmDBBackup
         'txtBackupName
         '
         Me.txtBackupName.Enabled = False
-        Me.txtBackupName.Location = New System.Drawing.Point(125, 153)
-        Me.txtBackupName.Multiline = True
+        Me.txtBackupName.Location = New System.Drawing.Point(125, 138)
         Me.txtBackupName.Name = "txtBackupName"
-        Me.txtBackupName.Size = New System.Drawing.Size(270, 33)
+        Me.txtBackupName.Size = New System.Drawing.Size(177, 20)
         Me.txtBackupName.TabIndex = 16
         '
         'Label17
         '
         Me.Label17.AutoSize = True
-        Me.Label17.Location = New System.Drawing.Point(6, 156)
+        Me.Label17.Location = New System.Drawing.Point(6, 141)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(102, 13)
         Me.Label17.TabIndex = 15
@@ -238,7 +219,7 @@ Partial Class frmDBBackup
         'btnSelectDir
         '
         Me.btnSelectDir.Enabled = False
-        Me.btnSelectDir.Location = New System.Drawing.Point(366, 109)
+        Me.btnSelectDir.Location = New System.Drawing.Point(273, 110)
         Me.btnSelectDir.Name = "btnSelectDir"
         Me.btnSelectDir.Size = New System.Drawing.Size(29, 20)
         Me.btnSelectDir.TabIndex = 14
@@ -248,10 +229,9 @@ Partial Class frmDBBackup
         'txtPath
         '
         Me.txtPath.Location = New System.Drawing.Point(125, 110)
-        Me.txtPath.Multiline = True
         Me.txtPath.Name = "txtPath"
         Me.txtPath.ReadOnly = True
-        Me.txtPath.Size = New System.Drawing.Size(235, 37)
+        Me.txtPath.Size = New System.Drawing.Size(177, 20)
         Me.txtPath.TabIndex = 12
         '
         'Label16
@@ -320,161 +300,11 @@ Partial Class frmDBBackup
         Me.Label9.TabIndex = 4
         Me.Label9.Text = "Nombre:"
         '
-        'GroupBox9
-        '
-        Me.GroupBox9.BackColor = System.Drawing.SystemColors.Control
-        Me.GroupBox9.Controls.Add(Me.DTPFecha)
-        Me.GroupBox9.Controls.Add(Me.LblHora)
-        Me.GroupBox9.Location = New System.Drawing.Point(8, 9)
-        Me.GroupBox9.Name = "GroupBox9"
-        Me.GroupBox9.Size = New System.Drawing.Size(522, 91)
-        Me.GroupBox9.TabIndex = 224
-        Me.GroupBox9.TabStop = False
-        Me.GroupBox9.Text = "CONTROL DE HORAS"
-        '
-        'DTPFecha
-        '
-        Me.DTPFecha.AutoSize = True
-        Me.DTPFecha.Font = New System.Drawing.Font("Microsoft Sans Serif", 21.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DTPFecha.ForeColor = System.Drawing.Color.Black
-        Me.DTPFecha.Location = New System.Drawing.Point(33, 38)
-        Me.DTPFecha.Name = "DTPFecha"
-        Me.DTPFecha.Size = New System.Drawing.Size(169, 33)
-        Me.DTPFecha.TabIndex = 182
-        Me.DTPFecha.Text = "20/10/2017"
-        '
-        'LblHora
-        '
-        Me.LblHora.AutoSize = True
-        Me.LblHora.Font = New System.Drawing.Font("Microsoft Sans Serif", 21.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LblHora.ForeColor = System.Drawing.Color.Black
-        Me.LblHora.Location = New System.Drawing.Point(208, 38)
-        Me.LblHora.Name = "LblHora"
-        Me.LblHora.Size = New System.Drawing.Size(205, 33)
-        Me.LblHora.TabIndex = 181
-        Me.LblHora.Text = "10:23:55 p.m."
-        '
-        'Timer1
-        '
-        Me.Timer1.Enabled = True
-        '
-        'TDGridListado
-        '
-        Me.TDGridListado.AllowUpdate = False
-        Me.TDGridListado.AlternatingRows = True
-        Me.TDGridListado.Caption = "Programacion Base de datos"
-        Me.TDGridListado.GroupByCaption = "Drag a column header here to group by that column"
-        Me.TDGridListado.Images.Add(CType(resources.GetObject("TDGridListado.Images"), System.Drawing.Image))
-        Me.TDGridListado.Location = New System.Drawing.Point(8, 106)
-        Me.TDGridListado.Name = "TDGridListado"
-        Me.TDGridListado.PreviewInfo.Location = New System.Drawing.Point(0, 0)
-        Me.TDGridListado.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TDGridListado.PreviewInfo.ZoomFactor = 75
-        Me.TDGridListado.PrintInfo.PageSettings = CType(resources.GetObject("TDGridListado.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TDGridListado.Size = New System.Drawing.Size(522, 261)
-        Me.TDGridListado.TabIndex = 225
-        Me.TDGridListado.Text = "C1TrueDBGrid1"
-        Me.TDGridListado.PropBag = resources.GetString("TDGridListado.PropBag")
-        '
-        'Button1
-        '
-        Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button1.Location = New System.Drawing.Point(8, 373)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(138, 48)
-        Me.Button1.TabIndex = 226
-        Me.Button1.Text = "CALENDARIO"
-        Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button1.UseVisualStyleBackColor = True
-        '
-        'Button2
-        '
-        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.Location = New System.Drawing.Point(392, 373)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(138, 48)
-        Me.Button2.TabIndex = 227
-        Me.Button2.UseVisualStyleBackColor = True
-        '
-        'Button4
-        '
-        Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
-        Me.Button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button4.Location = New System.Drawing.Point(152, 373)
-        Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(138, 48)
-        Me.Button4.TabIndex = 228
-        Me.Button4.Text = "ELIMINAR"
-        Me.Button4.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button4.UseVisualStyleBackColor = True
-        '
-        'BtnRespaldoAuto
-        '
-        Me.BtnRespaldoAuto.Enabled = False
-        Me.BtnRespaldoAuto.Location = New System.Drawing.Point(536, 372)
-        Me.BtnRespaldoAuto.Name = "BtnRespaldoAuto"
-        Me.BtnRespaldoAuto.Size = New System.Drawing.Size(296, 51)
-        Me.BtnRespaldoAuto.TabIndex = 229
-        Me.BtnRespaldoAuto.Text = "&Respaldar"
-        Me.BtnRespaldoAuto.UseVisualStyleBackColor = True
-        Me.BtnRespaldoAuto.Visible = False
-        '
-        'Button3
-        '
-        Me.Button3.Location = New System.Drawing.Point(536, 346)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(24, 21)
-        Me.Button3.TabIndex = 230
-        Me.Button3.Text = "..."
-        Me.Button3.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button3.UseVisualStyleBackColor = True
-        '
-        'LblProgramacion
-        '
-        Me.LblProgramacion.AutoSize = True
-        Me.LblProgramacion.Font = New System.Drawing.Font("Microsoft Sans Serif", 21.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LblProgramacion.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.LblProgramacion.Location = New System.Drawing.Point(539, 283)
-        Me.LblProgramacion.Name = "LblProgramacion"
-        Me.LblProgramacion.Size = New System.Drawing.Size(0, 33)
-        Me.LblProgramacion.TabIndex = 231
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.InitialImage = CType(resources.GetObject("PictureBox1.InitialImage"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(1025, 286)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(173, 132)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox1.TabIndex = 232
-        Me.PictureBox1.TabStop = False
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(1022, 421)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(146, 13)
-        Me.Label5.TabIndex = 233
-        Me.Label5.Text = "Telefono: 22793590   Ver.1.2"
-        '
         'frmDBBackup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1210, 437)
-        Me.Controls.Add(Me.Label5)
-        Me.Controls.Add(Me.PictureBox1)
-        Me.Controls.Add(Me.LblProgramacion)
-        Me.Controls.Add(Me.Button3)
-        Me.Controls.Add(Me.BtnRespaldoAuto)
-        Me.Controls.Add(Me.Button4)
-        Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.Button1)
-        Me.Controls.Add(Me.TDGridListado)
-        Me.Controls.Add(Me.GroupBox9)
+        Me.ClientSize = New System.Drawing.Size(595, 288)
         Me.Controls.Add(Me.gbDBInfo)
         Me.Controls.Add(Me.gbConnConfig)
         Me.Name = "frmDBBackup"
@@ -485,12 +315,7 @@ Partial Class frmDBBackup
         CType(Me.pbConnStatus, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gbDBInfo.ResumeLayout(False)
         Me.gbDBInfo.PerformLayout()
-        Me.GroupBox9.ResumeLayout(False)
-        Me.GroupBox9.PerformLayout()
-        CType(Me.TDGridListado, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
 
@@ -519,17 +344,4 @@ Partial Class frmDBBackup
     Friend WithEvents btnBackup As Button
     Friend WithEvents txtBackupName As TextBox
     Friend WithEvents Label17 As Label
-    Friend WithEvents GroupBox9 As System.Windows.Forms.GroupBox
-    Friend WithEvents DTPFecha As System.Windows.Forms.Label
-    Friend WithEvents LblHora As System.Windows.Forms.Label
-    Friend WithEvents Timer1 As System.Windows.Forms.Timer
-    Friend WithEvents TDGridListado As C1.Win.C1TrueDBGrid.C1TrueDBGrid
-    Friend WithEvents Button1 As System.Windows.Forms.Button
-    Friend WithEvents Button2 As System.Windows.Forms.Button
-    Friend WithEvents Button4 As System.Windows.Forms.Button
-    Friend WithEvents BtnRespaldoAuto As System.Windows.Forms.Button
-    Friend WithEvents Button3 As System.Windows.Forms.Button
-    Friend WithEvents LblProgramacion As System.Windows.Forms.Label
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents Label5 As System.Windows.Forms.Label
 End Class
