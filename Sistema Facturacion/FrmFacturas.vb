@@ -10,7 +10,47 @@ Public Class FrmFacturas
     Public MiConexion As New SqlClient.SqlConnection(Conexion), CodigoIva As String, CantidadAnterior As Double, PrecioAnterior As Double, ConsecutivoFacturaManual As Boolean = False, FacturaTarea As Boolean = False, ConsecutivoFacturaSerie As Boolean = False, FacturaLotes As Boolean = False, SalirFactura As Boolean = True
     Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder, CambioCliente As Boolean, Impresora_Defecto As String
     Private oHebraCliente As Thread, SaldoClienteH As Double, LimiteCredito As Double, MonedaLimiteCredito As String, BloqueoLimiteCredito As Boolean = False
-    Private CodigoCliente As String, FechaFin As Date, Moneda As String, PedirCantEscaner As Boolean
+    Private CodigoCliente As String, FechaFin As Date, Moneda As String, PedirCantEscaner As Boolean, Cantidad_Unidades As Double, PrecioUnt_Unidades As Double
+
+    Public Function ExisteUnidadMedida(ByVal Cod_Producto As String) As Boolean
+        Dim SqlString As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SQl As String
+
+        MiConexion.Close()
+
+        SqlString = "SELECT  * FROM UnidadMedidaProductos WHERE (Cod_Productos = '" & Cod_Producto & "') "
+        MiConexion.Open()
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Producto")
+        If Not DataSet.Tables("Producto").Rows.Count = 0 Then
+            ExisteUnidadMedida = True
+        Else
+            ExisteUnidadMedida = False
+        End If
+
+        MiConexion.Close()
+
+
+    End Function
+    Public Function UnidadMedidaDefecto(ByVal Cod_Producto As String) As String
+        Dim SqlString As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SQl As String
+
+        SqlString = "SELECT  Cod_Productos, Unidad_Medida, Cantidad_Unidades, Precio_Unitario, Unidad_Defecto   FROM UnidadMedidaProductos WHERE (Cod_Productos = '" & Cod_Producto & "') AND (Unidad_Defecto = 1)"
+        MiConexion.Open()
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Producto")
+        If Not DataSet.Tables("Producto").Rows.Count = 0 Then
+            UnidadMedidaDefecto = DataSet.Tables("Producto").Rows(0)("Unidad_Medida")
+        Else
+            UnidadMedidaDefecto = "00"
+        End If
+
+        MiConexion.Close()
+
+
+    End Function
+
 
     Public Sub CalcularSaldoCliente()
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -625,14 +665,10 @@ Public Class FrmFacturas
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            'SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM Detalle_Facturas   " & _
-            '                 "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura "
-            'Detalle_Facturas.id_Detalle_Factura
+
             SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura ,Detalle_Facturas.id_Detalle_Factura FROM Detalle_Facturas   " & _
                                                 "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND  (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura "
-            'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
-            'DataAdapter.Fill(DataSet, "DetalleFactura")
-            'Me.BindingDetalle.DataSource = DataSet.Tables("DetalleFactura")
+
             ds = New DataSet
             da = New SqlDataAdapter(SqlCompras, MiConexion)
             CmdBuilder = New SqlCommandBuilder(da)
@@ -5058,7 +5094,7 @@ Public Class FrmFacturas
         Dim TipoProducto As String = "Productos", TipoDescuento As String = "ImporteFijo", PrecioAnterior As Double = 0
         Dim PrecioDescDolar As Double, PrecioDescCordobas As Double, PorcientoDescuento As Double, CodigoBodega As String = ""
         Dim ExistenciaNegativa As String = "NO", Existencia As Double = 0, Cantidad2 As Double = 0, Categoria As String, Mensaje As String
-        Dim NumeroLote As String, ExistenciaLote As Double
+        Dim NumeroLote As String, ExistenciaLote As Double, UnidadMedida As String = ""
 
         Try
 
@@ -5189,497 +5225,525 @@ Public Class FrmFacturas
 
                             Me.TrueDBGridComponentes.Columns("CodTarea").Text = LoteDefecto(Me.TrueDBGridComponentes.Columns("Cod_Producto").Text, Me.CboCodigoBodega.Text)
 
+                            '////////////////////////////////////////////////////////////////////////////////////////////
+                            '////////////////////////////////////BUSCO SI EXISTE UNIDD DE MEDIDAS PARA FACTURAR ///
+                            '///////////////////////////////////////////////////////////////////////////////
+                            If Me.ExisteUnidadMedida(CodProducto) = True Then
+
+                                '¡/////////////////////////////////////////BUSCO UNIDAD MEDIDA DEFECTO /////////////////////////////////////
+                                SqlProveedor = "SELECT  Cod_Productos, Unidad_Medida, Cantidad_Unidades, Precio_Unitario, Unidad_Defecto   FROM UnidadMedidaProductos WHERE (Cod_Productos = '" & CodProducto & "') AND (Unidad_Defecto = 1)"
+                                MiConexion.Open()
+                                DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+                                DataAdapter.Fill(DataSet, "UnidadMedida")
+                                If Not DataSet.Tables("UnidadMedida").Rows.Count = 0 Then
+                                    Cantidad_Unidades = DataSet.Tables("UnidadMedida").Rows(0)("Cantidad_Unidades")
+                                    PrecioUnt_Unidades = DataSet.Tables("UnidadMedida").Rows(0)("Precio_Unitario")
+                                    If Cantidad_Unidades <> 0 Then
+                                        Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = PrecioUnt_Unidades / Cantidad_Unidades
+                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = Cantidad_Unidades
+                                    End If
+                                End If
+
+                                MiConexion.Close()
+
+                                DataSet.Tables("UnidadMedida").Clear()
+
+                            End If
+
+
+
+
 
 
                         Case 1
 
-                            ExistenciaLote = BuscaExistenciaBodegaLote(CodProducto, Me.CboCodigoBodega.Text, Me.TrueDBGridComponentes.Columns("CodTarea").Text)
+                                ExistenciaLote = BuscaExistenciaBodegaLote(CodProducto, Me.CboCodigoBodega.Text, Me.TrueDBGridComponentes.Columns("CodTarea").Text)
 
-                            If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
-                                If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
-                                    If ExistenciaNegativa <> "SI" Then
-                                        If Existencia > 0 Then
-                                            Cantidad = Existencia
-                                            If TipoProducto <> "Servicio" Then
-                                                If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = Existencia
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                                    If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
+                                        If ExistenciaNegativa <> "SI" Then
+                                            If Existencia > 0 Then
+                                                Cantidad = Existencia
+                                                If TipoProducto <> "Servicio" Then
+                                                    If TipoProducto <> "Descuento" Then
+                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = Existencia
+                                                        MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Else
+                                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                    End If
                                                 Else
                                                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                 End If
                                             Else
-                                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                Cantidad = 0
+                                                If TipoProducto <> "Servicio" Then
+                                                    If TipoProducto <> "Descuento" Then
+                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
+                                                        MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Else
+                                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                    End If
+                                                Else
+                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                End If
                                             End If
+
                                         Else
-                                            Cantidad = 0
-                                            If TipoProducto <> "Servicio" Then
-                                                If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
-                                                Else
-                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                End If
-                                            Else
+                                            If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
                                                 Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                             End If
-                                        End If
-
-                                    Else
-                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                        End If
-                                    End If
-                                Else
-                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                End If
-
-
-
-
-                            ElseIf ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
-                                If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
-
-                                    If ExistenciaNegativa <> "SI" Then
-                                        If ExistenciaLote > 0 Then
-                                            Cantidad = ExistenciaLote
-                                            If TipoProducto <> "Servicio" Then
-                                                If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaLote
-                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
-                                                Else
-                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                End If
-                                            Else
-                                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                            End If
-                                        Else
-                                            Cantidad = 0
-                                            If TipoProducto <> "Servicio" Then
-                                                If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
-                                                Else
-                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                End If
-                                            Else
-                                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                            End If
-
                                         End If
                                     Else
-                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                        End If
+                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                     End If
+
+
+
+
+                                ElseIf ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                                    If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
+
+                                        If ExistenciaNegativa <> "SI" Then
+                                            If ExistenciaLote > 0 Then
+                                                Cantidad = ExistenciaLote
+                                                If TipoProducto <> "Servicio" Then
+                                                    If TipoProducto <> "Descuento" Then
+                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaLote
+                                                        MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Else
+                                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                    End If
+                                                Else
+                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                End If
+                                            Else
+                                                Cantidad = 0
+                                                If TipoProducto <> "Servicio" Then
+                                                    If TipoProducto <> "Descuento" Then
+                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
+                                                        MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Else
+                                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                    End If
+                                                Else
+                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                End If
+
+                                            End If
+                                        Else
+                                            If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                            End If
+                                        End If
+                                    Else
+                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                    End If
+
                                 Else
-                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+
+
+                                    If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                    End If
                                 End If
 
-                            Else
-
-
-                                If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                End If
-                            End If
-
-                            Bitacora(Now, NombreUsuario, Me.CboTipoProducto.Text, "Se Modifica la cantidad de: " & CodProducto & "de " & Me.CboTipoProducto.Text & " No." & Me.TxtNumeroEnsamble.Text)
+                                Bitacora(Now, NombreUsuario, Me.CboTipoProducto.Text, "Se Modifica la cantidad de: " & CodProducto & "de " & Me.CboTipoProducto.Text & " No." & Me.TxtNumeroEnsamble.Text)
 
                         Case 2
 
 
-                            ExistenciaLote = BuscaExistenciaBodegaLote(CodProducto, Me.CboCodigoBodega.Text, Me.TrueDBGridComponentes.Columns("CodTarea").Text)
+                                ExistenciaLote = BuscaExistenciaBodegaLote(CodProducto, Me.CboCodigoBodega.Text, Me.TrueDBGridComponentes.Columns("CodTarea").Text)
 
-                            If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
-                                If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
-                                    If ExistenciaNegativa <> "SI" Then
-                                        If Existencia > 0 Then
-                                            Cantidad = Existencia
-                                            If TipoProducto <> "Servicio" Then
-                                                If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = Existencia
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                                    If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
+                                        If ExistenciaNegativa <> "SI" Then
+                                            If Existencia > 0 Then
+                                                Cantidad = Existencia
+                                                If TipoProducto <> "Servicio" Then
+                                                    If TipoProducto <> "Descuento" Then
+                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = Existencia
+                                                        MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Else
+                                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                    End If
                                                 Else
                                                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                 End If
                                             Else
-                                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                Cantidad = 0
+                                                If TipoProducto <> "Servicio" Then
+                                                    If TipoProducto <> "Descuento" Then
+                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
+                                                        MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Else
+                                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                    End If
+                                                Else
+                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                End If
                                             End If
+
                                         Else
-                                            Cantidad = 0
-                                            If TipoProducto <> "Servicio" Then
-                                                If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
-                                                Else
-                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                End If
-                                            Else
+                                            If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
                                                 Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                             End If
                                         End If
 
                                     Else
-                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                        End If
+                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                     End If
 
-                                Else
-                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                End If
 
-
-                            ElseIf ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
-                                If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
-                                    If ExistenciaNegativa <> "SI" Then
-                                        If ExistenciaLote > 0 Then
-                                            Cantidad = ExistenciaLote
-                                            If TipoProducto <> "Servicio" Then
-                                                If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaLote
-                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                ElseIf ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                                    If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
+                                        If ExistenciaNegativa <> "SI" Then
+                                            If ExistenciaLote > 0 Then
+                                                Cantidad = ExistenciaLote
+                                                If TipoProducto <> "Servicio" Then
+                                                    If TipoProducto <> "Descuento" Then
+                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaLote
+                                                        MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Else
+                                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                    End If
                                                 Else
                                                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                 End If
                                             Else
-                                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                Cantidad = 0
+                                                If TipoProducto <> "Servicio" Then
+                                                    If TipoProducto <> "Descuento" Then
+                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
+                                                        MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Else
+                                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                    End If
+                                                Else
+                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                End If
                                             End If
                                         Else
-                                            Cantidad = 0
-                                            If TipoProducto <> "Servicio" Then
-                                                If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
-                                                Else
-                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                End If
-                                            Else
+                                            If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
                                                 Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                             End If
                                         End If
                                     Else
-                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                        End If
+                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                     End If
-                                Else
-                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                End If
 
-                            Else
-                                If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                Else
+                                    If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                    End If
                                 End If
-                            End If
 
                         Case 3
 
 
-                            If Not IsNumeric(Me.TrueDBGridComponentes.Columns("Cantidad").Text) Then
-                                Exit Sub
-                            End If
-
-                            ExistenciaLote = BuscaExistenciaBodegaLote(CodProducto, Me.CboCodigoBodega.Text, Me.TrueDBGridComponentes.Columns("CodTarea").Text)
-                            If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
-                                If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
-                                    If ExistenciaNegativa <> "SI" Then
-                                        If Existencia > 0 Then
-                                            Cantidad = Existencia
-                                            If TipoProducto <> "Servicio" Then
-                                                If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = Existencia
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
-                                                Else
-                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                End If
-                                            Else
-                                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                            End If
-                                        Else
-                                            Cantidad = 0
-                                            If TipoProducto <> "Servicio" Then
-                                                If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
-                                                Else
-                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                End If
-                                            Else
-                                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                            End If
-                                        End If
-                                    Else
-                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                        End If
-                                    End If
-
-                                Else
-                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-
+                                If Not IsNumeric(Me.TrueDBGridComponentes.Columns("Cantidad").Text) Then
+                                    Exit Sub
                                 End If
 
-                            ElseIf ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
-                                If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
-                                    If ExistenciaNegativa <> "SI" Then
-                                        If ExistenciaLote > 0 Then
-                                            Cantidad = ExistenciaLote
-                                            If TipoProducto <> "Servicio" Then
-                                                If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaLote
-                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                ExistenciaLote = BuscaExistenciaBodegaLote(CodProducto, Me.CboCodigoBodega.Text, Me.TrueDBGridComponentes.Columns("CodTarea").Text)
+                                If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                                    If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
+                                        If ExistenciaNegativa <> "SI" Then
+                                            If Existencia > 0 Then
+                                                Cantidad = Existencia
+                                                If TipoProducto <> "Servicio" Then
+                                                    If TipoProducto <> "Descuento" Then
+                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = Existencia
+                                                        MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Else
+                                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                    End If
                                                 Else
                                                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                 End If
                                             Else
-                                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                Cantidad = 0
+                                                If TipoProducto <> "Servicio" Then
+                                                    If TipoProducto <> "Descuento" Then
+                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
+                                                        MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Else
+                                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                    End If
+                                                Else
+                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                End If
                                             End If
                                         Else
-                                            Cantidad = 0
-                                            If TipoProducto <> "Servicio" Then
-                                                If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                            If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                            End If
+                                        End If
+
+                                    Else
+                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+
+                                    End If
+
+                                ElseIf ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                                    If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
+                                        If ExistenciaNegativa <> "SI" Then
+                                            If ExistenciaLote > 0 Then
+                                                Cantidad = ExistenciaLote
+                                                If TipoProducto <> "Servicio" Then
+                                                    If TipoProducto <> "Descuento" Then
+                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaLote
+                                                        MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Else
+                                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                    End If
+                                                Else
+                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                End If
+                                            Else
+                                                Cantidad = 0
+                                                If TipoProducto <> "Servicio" Then
+                                                    If TipoProducto <> "Descuento" Then
+                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
+                                                        MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Else
+                                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                        End If
+                                                    End If
                                                 Else
                                                     If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
                                                         Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                     End If
                                                 End If
-                                            Else
-                                                If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                End If
+                                            End If
+                                        Else
+                                            If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                             End If
                                         End If
                                     Else
-                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                        End If
+                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                     End If
-                                Else
-                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                End If
 
-                            Else
-                                If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                Else
+                                    If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                    End If
                                 End If
-                            End If
                         Case 4
 
 
-                            If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
-                                If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
-                                    If ExistenciaNegativa <> "SI" Then
-                                        If Existencia > 0 Then
-                                            Cantidad = Existencia
-                                            If TipoProducto <> "Servicio" Then
-                                                If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = Existencia
-                                                    If Me.TrueDBGridComponentes.Columns("Descuento").Text <> "" Then
-                                                        Descuento = (CDbl(Me.TrueDBGridComponentes.Columns("Descuento").Text) / 100)
+                                If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                                    If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
+                                        If ExistenciaNegativa <> "SI" Then
+                                            If Existencia > 0 Then
+                                                Cantidad = Existencia
+                                                If TipoProducto <> "Servicio" Then
+                                                    If TipoProducto <> "Descuento" Then
+                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = Existencia
+                                                        If Me.TrueDBGridComponentes.Columns("Descuento").Text <> "" Then
+                                                            Descuento = (CDbl(Me.TrueDBGridComponentes.Columns("Descuento").Text) / 100)
+                                                        End If
+                                                        MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Else
+                                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                        End If
                                                     End If
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
                                                         Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                     End If
                                                 End If
                                             Else
-                                                If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                Cantidad = 0
+                                                Descuento = 0
+                                                If TipoProducto <> "Servicio" Then
+                                                    If TipoProducto <> "Descuento" Then
+                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
+                                                        Me.TrueDBGridComponentes.Columns("Descuento").Text = 0
+                                                        MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Else
+                                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                        End If
+                                                    End If
+                                                Else
+                                                    If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                    End If
                                                 End If
                                             End If
+
                                         Else
-                                            Cantidad = 0
-                                            Descuento = 0
-                                            If TipoProducto <> "Servicio" Then
-                                                If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                                    Me.TrueDBGridComponentes.Columns("Descuento").Text = 0
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
-                                                Else
-                                                    If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                    End If
-                                                End If
-                                            Else
-                                                If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                End If
+                                            If Me.TrueDBGridComponentes.Columns("Descuento").Text <> "" Then
+                                                Descuento = (CDbl(Me.TrueDBGridComponentes.Columns("Descuento").Text) / 100)
+                                            End If
+                                            If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                             End If
                                         End If
 
                                     Else
-                                        If Me.TrueDBGridComponentes.Columns("Descuento").Text <> "" Then
-                                            Descuento = (CDbl(Me.TrueDBGridComponentes.Columns("Descuento").Text) / 100)
-                                        End If
-                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                        End If
+                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                     End If
 
-                                Else
-                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                End If
 
-
-                            ElseIf ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
-                                If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
-                                    If ExistenciaNegativa <> "SI" Then
-                                        If ExistenciaLote > 0 Then
-                                            Cantidad = ExistenciaLote
-                                            If TipoProducto <> "Servicio" Then
-                                                If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaLote
-                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                ElseIf ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                                    If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
+                                        If ExistenciaNegativa <> "SI" Then
+                                            If ExistenciaLote > 0 Then
+                                                Cantidad = ExistenciaLote
+                                                If TipoProducto <> "Servicio" Then
+                                                    If TipoProducto <> "Descuento" Then
+                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaLote
+                                                        MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Else
+                                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                        End If
+                                                    End If
                                                 Else
                                                     If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
                                                         Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                     End If
                                                 End If
                                             Else
-                                                If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                Cantidad = 0
+                                                If TipoProducto <> "Servicio" Then
+                                                    If TipoProducto <> "Descuento" Then
+                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
+                                                        MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Else
+                                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                        End If
+                                                    End If
+                                                Else
+                                                    If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                    End If
                                                 End If
                                             End If
+
                                         Else
-                                            Cantidad = 0
-                                            If TipoProducto <> "Servicio" Then
-                                                If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
-                                                Else
-                                                    If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                    End If
-                                                End If
-                                            Else
-                                                If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                End If
+                                            If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                             End If
                                         End If
-
                                     Else
-                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                        End If
+                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                     End If
-                                Else
-                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                End If
 
-                            Else
-                                If Me.TrueDBGridComponentes.Columns("Descuento").Text <> "" Then
-                                    Descuento = (CDbl(Me.TrueDBGridComponentes.Columns("Descuento").Text) / 100)
+                                Else
+                                    If Me.TrueDBGridComponentes.Columns("Descuento").Text <> "" Then
+                                        Descuento = (CDbl(Me.TrueDBGridComponentes.Columns("Descuento").Text) / 100)
+                                    End If
+                                    If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                    End If
                                 End If
-                                If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                End If
-                            End If
 
 
 
                         Case 5
 
-                            If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
-                                If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
-                                    If ExistenciaNegativa <> "SI" Then
-                                        If Existencia > 0 Then
-                                            Cantidad = Existencia
-                                            If TipoProducto <> "Servicio" Then
-                                                If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = Existencia
-                                                    If Me.TrueDBGridComponentes.Columns("Descuento").Text <> "" Then
-                                                        Descuento = (CDbl(Me.TrueDBGridComponentes.Columns("Descuento").Text) / 100)
+                                If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                                    If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
+                                        If ExistenciaNegativa <> "SI" Then
+                                            If Existencia > 0 Then
+                                                Cantidad = Existencia
+                                                If TipoProducto <> "Servicio" Then
+                                                    If TipoProducto <> "Descuento" Then
+                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = Existencia
+                                                        If Me.TrueDBGridComponentes.Columns("Descuento").Text <> "" Then
+                                                            Descuento = (CDbl(Me.TrueDBGridComponentes.Columns("Descuento").Text) / 100)
+                                                        End If
+                                                        MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Else
+                                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                        End If
                                                     End If
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
                                                         Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                     End If
                                                 End If
                                             Else
-                                                If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                Cantidad = 0
+                                                Descuento = 0
+                                                If TipoProducto <> "Servicio" Then
+                                                    If TipoProducto <> "Descuento" Then
+                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
+                                                        Me.TrueDBGridComponentes.Columns("Descuento").Text = 0
+                                                        MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Else
+                                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                        End If
+                                                    End If
+                                                Else
+                                                    If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                    End If
                                                 End If
                                             End If
                                         Else
-                                            Cantidad = 0
-                                            Descuento = 0
-                                            If TipoProducto <> "Servicio" Then
-                                                If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                                    Me.TrueDBGridComponentes.Columns("Descuento").Text = 0
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
-                                                Else
-                                                    If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                    End If
-                                                End If
-                                            Else
-                                                If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                End If
+                                            If Me.TrueDBGridComponentes.Columns("Descuento").Text <> "" Then
+                                                Descuento = (CDbl(Me.TrueDBGridComponentes.Columns("Descuento").Text) / 100)
+                                            End If
+                                            If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                             End If
                                         End If
+
                                     Else
-                                        If Me.TrueDBGridComponentes.Columns("Descuento").Text <> "" Then
-                                            Descuento = (CDbl(Me.TrueDBGridComponentes.Columns("Descuento").Text) / 100)
-                                        End If
-                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                        End If
+                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+
                                     End If
 
-                                Else
-                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-
-                                End If
-
-                            ElseIf ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
-                                If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
-                                    If ExistenciaNegativa <> "SI" Then
-                                        If ExistenciaLote > 0 Then
-                                            Cantidad = ExistenciaLote
-                                            If TipoProducto <> "Servicio" Then
-                                                If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaLote
-                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                ElseIf ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                                    If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
+                                        If ExistenciaNegativa <> "SI" Then
+                                            If ExistenciaLote > 0 Then
+                                                Cantidad = ExistenciaLote
+                                                If TipoProducto <> "Servicio" Then
+                                                    If TipoProducto <> "Descuento" Then
+                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaLote
+                                                        MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Else
+                                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                                        End If
+                                                    End If
                                                 Else
                                                     If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
                                                         Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                     End If
                                                 End If
                                             Else
-                                                If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                End If
+                                                Cantidad = 0
+                                                Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
+                                                MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
                                             End If
                                         Else
-                                            Cantidad = 0
-                                            Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                            MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                            If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                            End If
                                         End If
                                     Else
-                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                        End If
+                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                     End If
                                 Else
-                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                End If
-                            Else
-                                If Me.TrueDBGridComponentes.Columns("Descuento").Text <> "" Then
-                                    Descuento = (CDbl(Me.TrueDBGridComponentes.Columns("Descuento").Text) / 100)
-                                End If
-                                If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                End If
+                                    If Me.TrueDBGridComponentes.Columns("Descuento").Text <> "" Then
+                                        Descuento = (CDbl(Me.TrueDBGridComponentes.Columns("Descuento").Text) / 100)
+                                    End If
+                                    If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                    End If
 
-                            End If
+                                End If
 
                     End Select
 
@@ -5772,6 +5836,30 @@ Public Class FrmFacturas
 
 
                             End If
+
+                            If Me.ExisteUnidadMedida(CodProducto) = True Then
+
+                                '¡/////////////////////////////////////////BUSCO UNIDAD MEDIDA DEFECTO /////////////////////////////////////
+                                SqlProveedor = "SELECT  Cod_Productos, Unidad_Medida, Cantidad_Unidades, Precio_Unitario, Unidad_Defecto   FROM UnidadMedidaProductos WHERE (Cod_Productos = '" & CodProducto & "') AND (Unidad_Defecto = 1)"
+                                MiConexion.Open()
+                                DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+                                DataAdapter.Fill(DataSet, "UnidadMedida")
+                                If Not DataSet.Tables("UnidadMedida").Rows.Count = 0 Then
+                                    Cantidad_Unidades = DataSet.Tables("UnidadMedida").Rows(0)("Cantidad_Unidades")
+                                    PrecioUnt_Unidades = DataSet.Tables("UnidadMedida").Rows(0)("Precio_Unitario")
+                                    If Cantidad_Unidades <> 0 Then
+                                        Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = PrecioUnt_Unidades / Cantidad_Unidades
+                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = Cantidad_Unidades
+                                    End If
+                                End If
+
+                                MiConexion.Close()
+
+                                DataSet.Tables("UnidadMedida").Clear()
+                            End If
+
+
+
                             DataSet.Tables("Productos").Clear()
 
 
@@ -7779,6 +7867,23 @@ Public Class FrmFacturas
 
                 Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = False
 
+                If Me.ExisteUnidadMedida(CodProducto) = True Then
+
+                    '¡/////////////////////////////////////////BUSCO UNIDAD MEDIDA DEFECTO /////////////////////////////////////
+                    SqlProveedor = "SELECT  Cod_Productos, Unidad_Medida, Cantidad_Unidades, Precio_Unitario, Unidad_Defecto   FROM UnidadMedidaProductos WHERE (Cod_Productos = '" & CodProducto & "') AND (Unidad_Defecto = 1)"
+                    MiConexion.Open()
+                    DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+                    DataAdapter.Fill(DataSet, "UnidadMedida")
+                    If Not DataSet.Tables("UnidadMedida").Rows.Count = 0 Then
+                        Cantidad_Unidades = DataSet.Tables("UnidadMedida").Rows(0)("Cantidad_Unidades")
+                        PrecioUnt_Unidades = DataSet.Tables("UnidadMedida").Rows(0)("Precio_Unitario")
+                        If Cantidad_Unidades <> 0 Then
+                            Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = PrecioUnt_Unidades / Cantidad_Unidades
+                            Me.TrueDBGridComponentes.Columns("Cantidad").Text = Cantidad_Unidades
+                        End If
+                    End If
+                End If
+
             Case 2
                 If FacturaTarea = True Then
                     Quien = "CodigoTarea"
@@ -8310,40 +8415,40 @@ Public Class FrmFacturas
                         End If
 
                     Case 2
-                            Dim Posicion As Double, CodigoBodega As String = "", ExistenciaNegativa As String = "NO", RespuestaIVA As String = "Sumando IVA del Producto"
-                            Dim CodImpuesto As String = "", Existencia As Double = 0, Tasa As Double = 0                         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                            '////////////////////////////////////////////BUSCO LA CONFIGURACION DEL PRECIO///////////////////////////////////////////////////
-                            '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                            SQl = "SELECT  * FROM DatosEmpresa"
-                            DataAdapter = New SqlClient.SqlDataAdapter(SQl, MiConexion)
-                            DataAdapter.Fill(DataSet, "DatosEmpresa")
-                            If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
-                                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")) Then
-                                    RespuestaIVA = DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")
-                                End If
+                        Dim Posicion As Double, CodigoBodega As String = "", ExistenciaNegativa As String = "NO", RespuestaIVA As String = "Sumando IVA del Producto"
+                        Dim CodImpuesto As String = "", Existencia As Double = 0, Tasa As Double = 0                         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        '////////////////////////////////////////////BUSCO LA CONFIGURACION DEL PRECIO///////////////////////////////////////////////////
+                        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        SQl = "SELECT  * FROM DatosEmpresa"
+                        DataAdapter = New SqlClient.SqlDataAdapter(SQl, MiConexion)
+                        DataAdapter.Fill(DataSet, "DatosEmpresa")
+                        If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
+                            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")) Then
+                                RespuestaIVA = DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")
                             End If
+                        End If
 
-                            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                            '////////////////////////////////BUSCO EL CODIGO DEL IMPUESTO PARA EL PRODUCTO///////////////////////////////////////////
-                            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                            CodProducto = Me.TrueDBGridComponentes.Columns(0).Text
-                            SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
-                            DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-                            DataAdapter.Fill(DataSet, "Productos")
-                            If DataSet.Tables("Productos").Rows.Count <> 0 Then
-                                CodImpuesto = DataSet.Tables("Productos").Rows(0)("Cod_Iva")
-                                TipoProducto = DataSet.Tables("Productos").Rows(0)("Tipo_Producto")
-                                TipoDescuento = DataSet.Tables("Productos").Rows(0)("Unidad_Medida")
-                                PrecioDescCordobas = DataSet.Tables("Productos").Rows(0)("Precio_Venta")
-                                PrecioDescDolar = DataSet.Tables("Productos").Rows(0)("Precio_Lista")
-                                ExistenciaNegativa = DataSet.Tables("Productos").Rows(0)("Existencia_Negativa")
-                            End If
+                        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        '////////////////////////////////BUSCO EL CODIGO DEL IMPUESTO PARA EL PRODUCTO///////////////////////////////////////////
+                        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        CodProducto = Me.TrueDBGridComponentes.Columns(0).Text
+                        SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
+                        DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+                        DataAdapter.Fill(DataSet, "Productos")
+                        If DataSet.Tables("Productos").Rows.Count <> 0 Then
+                            CodImpuesto = DataSet.Tables("Productos").Rows(0)("Cod_Iva")
+                            TipoProducto = DataSet.Tables("Productos").Rows(0)("Tipo_Producto")
+                            TipoDescuento = DataSet.Tables("Productos").Rows(0)("Unidad_Medida")
+                            PrecioDescCordobas = DataSet.Tables("Productos").Rows(0)("Precio_Venta")
+                            PrecioDescDolar = DataSet.Tables("Productos").Rows(0)("Precio_Lista")
+                            ExistenciaNegativa = DataSet.Tables("Productos").Rows(0)("Existencia_Negativa")
+                        End If
 
-                            'Existencia = ExistenciaProducto(CodProducto)
-                            CodigoBodega = Me.CboCodigoBodega.Text
-                            Existencia = BuscaExistenciaBodega(CodProducto, CodigoBodega)
-                            Descuento = 0
-                            Tasa = 0
+                        'Existencia = ExistenciaProducto(CodProducto)
+                        CodigoBodega = Me.CboCodigoBodega.Text
+                        Existencia = BuscaExistenciaBodega(CodProducto, CodigoBodega)
+                        Descuento = 0
+                        Tasa = 0
 
                         If Not IsNumeric(Me.TrueDBGridComponentes.Columns("Cantidad").Text) Then
                             Exit Sub
@@ -8421,124 +8526,146 @@ Public Class FrmFacturas
                         End If
 
 
+                        '////////////////////////////////////////////////////////////////////////////////////////////
+                        '////////////////////////////////////BUSCO SI EXISTE UNIDD DE MEDIDAS PARA FACTURAR ///
+                        '///////////////////////////////////////////////////////////////////////////////
+                        If Me.ExisteUnidadMedida(CodProducto) = True Then
+
+                            My.Forms.FrmUnidadesMedidas.Cod_Producto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
+                            My.Forms.FrmUnidadesMedidas.ShowDialog()
+                            Cantidad_Unidades = DataSet.Tables("UnidadMedida").Rows(0)("Cantidad_Unidades")
+                            PrecioUnt_Unidades = DataSet.Tables("UnidadMedida").Rows(0)("Precio_Unitario")
+                            If Cantidad_Unidades <> 0 Then
+                                Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = PrecioUnt_Unidades / Cantidad_Unidades
+                                Me.TrueDBGridComponentes.Columns("Cantidad").Text = Cantidad_Unidades
+                            End If
 
 
-                            Posicion = Me.TrueDBGridComponentes.Row
-                            Me.TrueDBGridComponentes.Row = Posicion + 1
-                            Me.TrueDBGridComponentes.Col = 0
+                            MiConexion.Close()
+
+                            DataSet.Tables("UnidadMedida").Clear()
+
+                        End If
+
+
+
+
+                        Posicion = Me.TrueDBGridComponentes.Row
+                        Me.TrueDBGridComponentes.Row = Posicion + 1
+                        Me.TrueDBGridComponentes.Col = 0
 
 
                     Case 3
-                            Dim Posicion As Double, CodigoBodega As String = "", ExistenciaNegativa As String = "NO", RespuestaIVA As String = "Sumando IVA del Producto"
-                            Dim CodImpuesto As String = "", Existencia As Double = 0, Tasa As Double = 0                         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                            '////////////////////////////////////////////BUSCO LA CONFIGURACION DEL PRECIO///////////////////////////////////////////////////
-                            '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                            SQl = "SELECT  * FROM DatosEmpresa"
-                            DataAdapter = New SqlClient.SqlDataAdapter(SQl, MiConexion)
-                            DataAdapter.Fill(DataSet, "DatosEmpresa")
-                            If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
-                                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")) Then
-                                    RespuestaIVA = DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")
-                                End If
+                        Dim Posicion As Double, CodigoBodega As String = "", ExistenciaNegativa As String = "NO", RespuestaIVA As String = "Sumando IVA del Producto"
+                        Dim CodImpuesto As String = "", Existencia As Double = 0, Tasa As Double = 0                         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        '////////////////////////////////////////////BUSCO LA CONFIGURACION DEL PRECIO///////////////////////////////////////////////////
+                        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        SQl = "SELECT  * FROM DatosEmpresa"
+                        DataAdapter = New SqlClient.SqlDataAdapter(SQl, MiConexion)
+                        DataAdapter.Fill(DataSet, "DatosEmpresa")
+                        If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
+                            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")) Then
+                                RespuestaIVA = DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")
                             End If
+                        End If
 
-                            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                            '////////////////////////////////BUSCO EL CODIGO DEL IMPUESTO PARA EL PRODUCTO///////////////////////////////////////////
-                            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                            CodProducto = Me.TrueDBGridComponentes.Columns(0).Text
-                            SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
-                            DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-                            DataAdapter.Fill(DataSet, "Productos")
-                            If DataSet.Tables("Productos").Rows.Count <> 0 Then
-                                CodImpuesto = DataSet.Tables("Productos").Rows(0)("Cod_Iva")
-                                TipoProducto = DataSet.Tables("Productos").Rows(0)("Tipo_Producto")
-                                TipoDescuento = DataSet.Tables("Productos").Rows(0)("Unidad_Medida")
-                                PrecioDescCordobas = DataSet.Tables("Productos").Rows(0)("Precio_Venta")
-                                PrecioDescDolar = DataSet.Tables("Productos").Rows(0)("Precio_Lista")
-                                ExistenciaNegativa = DataSet.Tables("Productos").Rows(0)("Existencia_Negativa")
-                            End If
+                        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        '////////////////////////////////BUSCO EL CODIGO DEL IMPUESTO PARA EL PRODUCTO///////////////////////////////////////////
+                        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        CodProducto = Me.TrueDBGridComponentes.Columns(0).Text
+                        SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
+                        DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+                        DataAdapter.Fill(DataSet, "Productos")
+                        If DataSet.Tables("Productos").Rows.Count <> 0 Then
+                            CodImpuesto = DataSet.Tables("Productos").Rows(0)("Cod_Iva")
+                            TipoProducto = DataSet.Tables("Productos").Rows(0)("Tipo_Producto")
+                            TipoDescuento = DataSet.Tables("Productos").Rows(0)("Unidad_Medida")
+                            PrecioDescCordobas = DataSet.Tables("Productos").Rows(0)("Precio_Venta")
+                            PrecioDescDolar = DataSet.Tables("Productos").Rows(0)("Precio_Lista")
+                            ExistenciaNegativa = DataSet.Tables("Productos").Rows(0)("Existencia_Negativa")
+                        End If
 
-                            'Existencia = ExistenciaProducto(CodProducto)
-                            CodigoBodega = Me.CboCodigoBodega.Text
-                            Existencia = BuscaExistenciaBodega(CodProducto, CodigoBodega)
-                            Descuento = 0
-                            Tasa = 0
+                        'Existencia = ExistenciaProducto(CodProducto)
+                        CodigoBodega = Me.CboCodigoBodega.Text
+                        Existencia = BuscaExistenciaBodega(CodProducto, CodigoBodega)
+                        Descuento = 0
+                        Tasa = 0
 
-                            If Not IsNumeric(Me.TrueDBGridComponentes.Columns(2).Text) Then
-                                Exit Sub
-                            End If
+                        If Not IsNumeric(Me.TrueDBGridComponentes.Columns(2).Text) Then
+                            Exit Sub
+                        End If
 
 
 
-                            If Existencia < Me.TrueDBGridComponentes.Columns(2).Text Then
-                                If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
-                                    If ExistenciaNegativa <> "SI" Then
-                                        If Existencia > 0 Then
-                                            Cantidad = Existencia
-                                            Me.TrueDBGridComponentes.Columns(2).Text = Existencia
-                                            MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
-                                        Else
-                                            Cantidad = 0
-                                            Me.TrueDBGridComponentes.Columns(2).Text = 0
-                                            MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
-                                        End If
+                        If Existencia < Me.TrueDBGridComponentes.Columns(2).Text Then
+                            If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
+                                If ExistenciaNegativa <> "SI" Then
+                                    If Existencia > 0 Then
+                                        Cantidad = Existencia
+                                        Me.TrueDBGridComponentes.Columns(2).Text = Existencia
+                                        MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
                                     Else
-                                        If Me.TrueDBGridComponentes.Columns(2).Text <> "" Then
-                                            Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
-                                        End If
+                                        Cantidad = 0
+                                        Me.TrueDBGridComponentes.Columns(2).Text = 0
+                                        MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
                                     End If
-
                                 Else
-                                    Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
-                                End If
-                            Else
-                                If Me.TrueDBGridComponentes.Columns(2).Text <> "" Then
-                                    Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
-                                End If
-                            End If
-
-                            If Me.ChkPorcientoTarjeta.Checked = True Then
-                                If Not Me.TrueDBGridComponentes.Columns(2).Text = "" Then
-                                    Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
-                                Else
-                                    Cantidad = 0
-                                End If
-
-                                Precio = Me.TrueDBGridComponentes.Columns(4).Text
-                                Precio = Format(Precio * (1 + (IncrementoTarjeta / 100)), "##,##0.00")
-                                Me.TrueDBGridComponentes.Columns(3).Text = Precio
-
-                                Categoria = CategoriaPrecio(Me.TrueDBGridComponentes.Columns(0).Text, Me.TrueDBGridComponentes.Columns(3).Text, Me.TxtMonedaFactura.Text)
-
-                                If Me.TrueDBGridComponentes.Columns(4).Text = "" Then
-                                    If Categoria <> "" Then
-                                        Me.TrueDBGridComponentes.Columns(4).Text = Categoria
-                                    Else
-                                        Me.TrueDBGridComponentes.Columns(4).Text = 0
+                                    If Me.TrueDBGridComponentes.Columns(2).Text <> "" Then
+                                        Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
                                     End If
                                 End If
 
-                                Me.TrueDBGridComponentes.Columns(5).Text = Cantidad * Precio
-                                Me.TrueDBGridComponentes.Columns(5).Text = Format(Cantidad * Precio, "##,##0.00")
                             Else
-                                If Not Me.TrueDBGridComponentes.Columns(2).Text = "" Then
-                                    Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
-                                Else
-                                    Cantidad = 0
-                                End If
-                                Precio = Me.TrueDBGridComponentes.Columns(3).Text
+                                Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
+                            End If
+                        Else
+                            If Me.TrueDBGridComponentes.Columns(2).Text <> "" Then
+                                Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
+                            End If
+                        End If
 
-                                If Me.TrueDBGridComponentes.Columns(3).Text = "" Then
-                                    Me.TrueDBGridComponentes.Columns(3).Text = 0
-                                End If
-                                Me.TrueDBGridComponentes.Columns(5).Text = Format(Cantidad * Precio, "##,##0.00")
-                                Me.TrueDBGridComponentes.Columns(6).Text = Format(Cantidad * Precio, "##,##0.00")
+                        If Me.ChkPorcientoTarjeta.Checked = True Then
+                            If Not Me.TrueDBGridComponentes.Columns(2).Text = "" Then
+                                Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
+                            Else
+                                Cantidad = 0
                             End If
 
+                            Precio = Me.TrueDBGridComponentes.Columns(4).Text
+                            Precio = Format(Precio * (1 + (IncrementoTarjeta / 100)), "##,##0.00")
+                            Me.TrueDBGridComponentes.Columns(3).Text = Precio
 
-                            Posicion = Me.TrueDBGridComponentes.Row
-                            Me.TrueDBGridComponentes.Row = Posicion + 1
-                            Me.TrueDBGridComponentes.Col = 0
+                            Categoria = CategoriaPrecio(Me.TrueDBGridComponentes.Columns(0).Text, Me.TrueDBGridComponentes.Columns(3).Text, Me.TxtMonedaFactura.Text)
+
+                            If Me.TrueDBGridComponentes.Columns(4).Text = "" Then
+                                If Categoria <> "" Then
+                                    Me.TrueDBGridComponentes.Columns(4).Text = Categoria
+                                Else
+                                    Me.TrueDBGridComponentes.Columns(4).Text = 0
+                                End If
+                            End If
+
+                            Me.TrueDBGridComponentes.Columns(5).Text = Cantidad * Precio
+                            Me.TrueDBGridComponentes.Columns(5).Text = Format(Cantidad * Precio, "##,##0.00")
+                        Else
+                            If Not Me.TrueDBGridComponentes.Columns(2).Text = "" Then
+                                Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
+                            Else
+                                Cantidad = 0
+                            End If
+                            Precio = Me.TrueDBGridComponentes.Columns(3).Text
+
+                            If Me.TrueDBGridComponentes.Columns(3).Text = "" Then
+                                Me.TrueDBGridComponentes.Columns(3).Text = 0
+                            End If
+                            Me.TrueDBGridComponentes.Columns(5).Text = Format(Cantidad * Precio, "##,##0.00")
+                            Me.TrueDBGridComponentes.Columns(6).Text = Format(Cantidad * Precio, "##,##0.00")
+                        End If
+
+
+                        Posicion = Me.TrueDBGridComponentes.Row
+                        Me.TrueDBGridComponentes.Row = Posicion + 1
+                        Me.TrueDBGridComponentes.Col = 0
 
 
 
@@ -8742,6 +8869,28 @@ Public Class FrmFacturas
                             End If
                             Me.TrueDBGridComponentes.Columns(2).Text = My.Forms.FrmConsultas.Codigo
                         End If
+
+                        '////////////////////////////////////////////////////////////////////////////////////////////
+                        '////////////////////////////////////BUSCO SI EXISTE UNIDD DE MEDIDAS PARA FACTURAR ///
+                        '///////////////////////////////////////////////////////////////////////////////
+                        If Me.ExisteUnidadMedida(CodProducto) = True Then
+
+                            My.Forms.FrmUnidadesMedidas.Cod_Producto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
+                            My.Forms.FrmUnidadesMedidas.ShowDialog()
+                            Cantidad_Unidades = DataSet.Tables("UnidadMedida").Rows(0)("Cantidad_Unidades")
+                            PrecioUnt_Unidades = DataSet.Tables("UnidadMedida").Rows(0)("Precio_Unitario")
+                            If Cantidad_Unidades <> 0 Then
+                                Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = PrecioUnt_Unidades / Cantidad_Unidades
+                                Me.TrueDBGridComponentes.Columns("Cantidad").Text = Cantidad_Unidades
+                            End If
+
+
+                            MiConexion.Close()
+
+                            DataSet.Tables("UnidadMedida").Clear()
+
+                        End If
+
 
 
                     Case Else
@@ -10171,14 +10320,6 @@ Public Class FrmFacturas
             End If
         End Sub
 
-
-    Private Sub TrueDBGridComponentes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.Click
-
-    End Sub
-
-    Private Sub FrmFacturas_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseUp
-
-    End Sub
 
     Private Sub OptRet2Porciento_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptRet2Porciento.CheckedChanged
         ActualizaMETODOFactura()
@@ -11794,5 +11935,9 @@ Public Class FrmFacturas
                 End If
             End If
         End If
+    End Sub
+
+    Private Sub TrueDBGridComponentes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.Click
+
     End Sub
 End Class

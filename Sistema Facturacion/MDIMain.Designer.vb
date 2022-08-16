@@ -195,6 +195,7 @@ Partial Class MDIMain
         Me.RibbonLabel2 = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
         Me.TxtUsuario = New System.Windows.Forms.TextBox
+        Me.RibbonButton19 = New C1.Win.C1Ribbon.RibbonButton
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -672,6 +673,7 @@ Partial Class MDIMain
         Me.RibbonGroup1.Items.Add(Me.RibbonTareas)
         Me.RibbonGroup1.Items.Add(Me.RibbonNotaDebitoCredito)
         Me.RibbonGroup1.Items.Add(Me.RibbonProyectos)
+        Me.RibbonGroup1.Items.Add(Me.RibbonButton19)
         Me.RibbonGroup1.Text = "Productos"
         '
         'RibbonProductos
@@ -1589,6 +1591,12 @@ Partial Class MDIMain
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
         '
+        'RibbonButton19
+        '
+        Me.RibbonButton19.ID = "RibbonButton19"
+        Me.RibbonButton19.SmallImage = CType(resources.GetObject("RibbonButton19.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton19.Text = "Unidad Medida"
+        '
         'MDIMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1784,5 +1792,6 @@ Partial Class MDIMain
     Friend WithEvents RibbonComarca As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonMunicipios As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonConsultorio As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButton19 As C1.Win.C1Ribbon.RibbonButton
 
 End Class

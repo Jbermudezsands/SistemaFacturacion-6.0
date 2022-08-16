@@ -152,6 +152,12 @@ Partial Class FrmProductos
         Me.Impuestos = New System.Windows.Forms.TabPage
         Me.Alternativos = New System.Windows.Forms.TabPage
         Me.Foto = New System.Windows.Forms.TabPage
+        Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.Button12 = New System.Windows.Forms.Button
+        Me.tdbGridUnidadMedida = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.C1TrueDBGrid1 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.Button13 = New System.Windows.Forms.Button
+        Me.Button14 = New System.Windows.Forms.Button
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         CType(Me.TxtAumento, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -194,6 +200,9 @@ Partial Class FrmProductos
         Me.Impuestos.SuspendLayout()
         Me.Alternativos.SuspendLayout()
         Me.Foto.SuspendLayout()
+        Me.TabPage1.SuspendLayout()
+        CType(Me.tdbGridUnidadMedida, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.C1TrueDBGrid1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox5
@@ -1177,7 +1186,7 @@ Partial Class FrmProductos
         Me.GroupBox14.Controls.Add(Me.CmdBorrarAlterno)
         Me.GroupBox14.Location = New System.Drawing.Point(543, 3)
         Me.GroupBox14.Name = "GroupBox14"
-        Me.GroupBox14.Size = New System.Drawing.Size(103, 271)
+        Me.GroupBox14.Size = New System.Drawing.Size(103, 166)
         Me.GroupBox14.TabIndex = 137
         Me.GroupBox14.TabStop = False
         Me.GroupBox14.Text = "Botones"
@@ -1186,7 +1195,7 @@ Partial Class FrmProductos
         '
         Me.CmdBorrarAlterno.Image = CType(resources.GetObject("CmdBorrarAlterno.Image"), System.Drawing.Image)
         Me.CmdBorrarAlterno.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdBorrarAlterno.Location = New System.Drawing.Point(12, 19)
+        Me.CmdBorrarAlterno.Location = New System.Drawing.Point(14, 18)
         Me.CmdBorrarAlterno.Name = "CmdBorrarAlterno"
         Me.CmdBorrarAlterno.Size = New System.Drawing.Size(75, 67)
         Me.CmdBorrarAlterno.TabIndex = 137
@@ -1199,7 +1208,7 @@ Partial Class FrmProductos
         Me.GroupBox13.Controls.Add(Me.TdGridAlternativos)
         Me.GroupBox13.Location = New System.Drawing.Point(5, 1)
         Me.GroupBox13.Name = "GroupBox13"
-        Me.GroupBox13.Size = New System.Drawing.Size(532, 271)
+        Me.GroupBox13.Size = New System.Drawing.Size(532, 300)
         Me.GroupBox13.TabIndex = 6
         Me.GroupBox13.TabStop = False
         Me.GroupBox13.Text = "Impuesto"
@@ -1219,7 +1228,7 @@ Partial Class FrmProductos
         Me.TdGridAlternativos.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TdGridAlternativos.PreviewInfo.ZoomFactor = 75
         Me.TdGridAlternativos.PrintInfo.PageSettings = CType(resources.GetObject("TdGridAlternativos.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TdGridAlternativos.Size = New System.Drawing.Size(526, 252)
+        Me.TdGridAlternativos.Size = New System.Drawing.Size(526, 281)
         Me.TdGridAlternativos.TabIndex = 129
         Me.TdGridAlternativos.Text = "C1TrueDBGrid1"
         Me.TdGridAlternativos.PropBag = resources.GetString("TdGridAlternativos.PropBag")
@@ -1496,6 +1505,7 @@ Partial Class FrmProductos
         Me.TabControl.Controls.Add(Me.Componentes)
         Me.TabControl.Controls.Add(Me.Impuestos)
         Me.TabControl.Controls.Add(Me.Alternativos)
+        Me.TabControl.Controls.Add(Me.TabPage1)
         Me.TabControl.Controls.Add(Me.Foto)
         Me.TabControl.Location = New System.Drawing.Point(12, 117)
         Me.TabControl.Name = "TabControl"
@@ -1590,6 +1600,96 @@ Partial Class FrmProductos
         Me.Foto.Text = "Foto"
         Me.Foto.UseVisualStyleBackColor = True
         '
+        'TabPage1
+        '
+        Me.TabPage1.Controls.Add(Me.Button14)
+        Me.TabPage1.Controls.Add(Me.Button13)
+        Me.TabPage1.Controls.Add(Me.C1TrueDBGrid1)
+        Me.TabPage1.Controls.Add(Me.Button12)
+        Me.TabPage1.Controls.Add(Me.tdbGridUnidadMedida)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage1.Size = New System.Drawing.Size(676, 324)
+        Me.TabPage1.TabIndex = 7
+        Me.TabPage1.Text = "Unidad Medida"
+        Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'Button12
+        '
+        Me.Button12.Image = CType(resources.GetObject("Button12.Image"), System.Drawing.Image)
+        Me.Button12.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.Button12.Location = New System.Drawing.Point(551, 15)
+        Me.Button12.Name = "Button12"
+        Me.Button12.Size = New System.Drawing.Size(75, 67)
+        Me.Button12.TabIndex = 141
+        Me.Button12.Text = "Quitar"
+        Me.Button12.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.Button12.UseVisualStyleBackColor = True
+        '
+        'tdbGridUnidadMedida
+        '
+        Me.tdbGridUnidadMedida.AllowAddNew = True
+        Me.tdbGridUnidadMedida.AlternatingRows = True
+        Me.tdbGridUnidadMedida.Caption = "Unidades de Medida"
+        Me.tdbGridUnidadMedida.FilterBar = True
+        Me.tdbGridUnidadMedida.GroupByCaption = "Drag a column header here to group by that column"
+        Me.tdbGridUnidadMedida.Images.Add(CType(resources.GetObject("tdbGridUnidadMedida.Images"), System.Drawing.Image))
+        Me.tdbGridUnidadMedida.Location = New System.Drawing.Point(6, 15)
+        Me.tdbGridUnidadMedida.Name = "tdbGridUnidadMedida"
+        Me.tdbGridUnidadMedida.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.tdbGridUnidadMedida.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.tdbGridUnidadMedida.PreviewInfo.ZoomFactor = 75
+        Me.tdbGridUnidadMedida.PrintInfo.PageSettings = CType(resources.GetObject("tdbGridUnidadMedida.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.tdbGridUnidadMedida.Size = New System.Drawing.Size(515, 128)
+        Me.tdbGridUnidadMedida.TabIndex = 140
+        Me.tdbGridUnidadMedida.Text = "C1TrueDBGrid1"
+        Me.tdbGridUnidadMedida.PropBag = resources.GetString("tdbGridUnidadMedida.PropBag")
+        '
+        'C1TrueDBGrid1
+        '
+        Me.C1TrueDBGrid1.AllowAddNew = True
+        Me.C1TrueDBGrid1.AlternatingRows = True
+        Me.C1TrueDBGrid1.Caption = "Unidad Medida Vrs Lista Precio"
+        Me.C1TrueDBGrid1.FilterBar = True
+        Me.C1TrueDBGrid1.FlatStyle = C1.Win.C1TrueDBGrid.FlatModeEnum.Standard
+        Me.C1TrueDBGrid1.GroupByCaption = "Drag a column header here to group by that column"
+        Me.C1TrueDBGrid1.Images.Add(CType(resources.GetObject("C1TrueDBGrid1.Images"), System.Drawing.Image))
+        Me.C1TrueDBGrid1.Location = New System.Drawing.Point(6, 161)
+        Me.C1TrueDBGrid1.Name = "C1TrueDBGrid1"
+        Me.C1TrueDBGrid1.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.C1TrueDBGrid1.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.C1TrueDBGrid1.PreviewInfo.ZoomFactor = 75
+        Me.C1TrueDBGrid1.PrintInfo.PageSettings = CType(resources.GetObject("C1TrueDBGrid1.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.C1TrueDBGrid1.Size = New System.Drawing.Size(515, 157)
+        Me.C1TrueDBGrid1.TabIndex = 142
+        Me.C1TrueDBGrid1.Text = "C1TrueDBGrid1"
+        Me.C1TrueDBGrid1.PropBag = resources.GetString("C1TrueDBGrid1.PropBag")
+        '
+        'Button13
+        '
+        Me.Button13.Image = CType(resources.GetObject("Button13.Image"), System.Drawing.Image)
+        Me.Button13.ImageAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.Button13.Location = New System.Drawing.Point(551, 161)
+        Me.Button13.Name = "Button13"
+        Me.Button13.Size = New System.Drawing.Size(98, 50)
+        Me.Button13.TabIndex = 143
+        Me.Button13.Text = "Agregar"
+        Me.Button13.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button13.UseVisualStyleBackColor = True
+        '
+        'Button14
+        '
+        Me.Button14.Image = CType(resources.GetObject("Button14.Image"), System.Drawing.Image)
+        Me.Button14.ImageAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.Button14.Location = New System.Drawing.Point(551, 217)
+        Me.Button14.Name = "Button14"
+        Me.Button14.Size = New System.Drawing.Size(98, 50)
+        Me.Button14.TabIndex = 144
+        Me.Button14.Text = "Quitar"
+        Me.Button14.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button14.UseVisualStyleBackColor = True
+        '
         'FrmProductos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1662,6 +1762,9 @@ Partial Class FrmProductos
         Me.Alternativos.ResumeLayout(False)
         Me.Foto.ResumeLayout(False)
         Me.Foto.PerformLayout()
+        Me.TabPage1.ResumeLayout(False)
+        CType(Me.tdbGridUnidadMedida, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.C1TrueDBGrid1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1797,5 +1900,11 @@ Partial Class FrmProductos
     Friend WithEvents Label32 As System.Windows.Forms.Label
     Friend WithEvents TxtMerma As System.Windows.Forms.TextBox
     Friend WithEvents Label31 As System.Windows.Forms.Label
+    Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
+    Friend WithEvents Button12 As System.Windows.Forms.Button
+    Friend WithEvents tdbGridUnidadMedida As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents C1TrueDBGrid1 As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents Button13 As System.Windows.Forms.Button
+    Friend WithEvents Button14 As System.Windows.Forms.Button
 
 End Class

@@ -529,6 +529,12 @@
     <Compile Include="FrmTransformacion.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmUnidadesMedidas.Designer.vb">
+      <DependentUpon>FrmUnidadesMedidas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmUnidadesMedidas.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MDIMain.Designer.vb">
       <DependentUpon>MDIMain.vb</DependentUpon>
     </Compile>
@@ -1874,6 +1880,10 @@
     <EmbeddedResource Include="FrmTransformacion.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmTransformacion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmUnidadesMedidas.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmUnidadesMedidas.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MDIMain.resx">
       <DependentUpon>MDIMain.vb</DependentUpon>

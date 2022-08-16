@@ -25,6 +25,28 @@ Public Class FrmConsultas
             Dim DataAdapter As New SqlClient.SqlDataAdapter, SQlProductos As String
 
             Select Case Quien
+                Case "UnidadMedida"
+                    Dim CodigoBodega As String = ""
+
+                    Me.Size = New System.Drawing.Size(988, 424)
+                    Me.Location = New Point(160, 160)
+
+                    Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
+                    Me.ButtonSalir.Location = New Point(880, 305)
+
+                    SQlProductos = "SELECT DISTINCT Unidad_Medida  FROM UnidadMedidaProductos WHERE (Unidad_Medida <> ' ') AND (Unidad_Medida <> '0') UNION SELECT DISTINCT Unidad_Medida FROM Productos WHERE  (Unidad_Medida <> ' ') AND (Unidad_Medida <> '0') ORDER BY Unidad_Medida"
+                    MiConexion.Open()
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+                    Me.TrueDBGridConsultas.Columns("Unidad_Medida").Caption = "Expediente"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Unidad_Medida").Width = 70
+
+                    MiConexion.Close()
+
                 Case "Expediente"
                     Dim CodigoBodega As String = ""
 
@@ -1566,6 +1588,9 @@ Public Class FrmConsultas
         TipoProducto = ""
 
         Select Case Quien
+            Case "UnidadMedida"
+                Posicion = Me.BindingConsultas.Position
+                Descripcion = Me.BindingConsultas.Item(Posicion)("Unidad_Medida")
             Case "Expediente"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("Numero_Expediente")
