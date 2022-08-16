@@ -2783,4 +2783,11 @@ Public Class FrmProductos
             MsgBox("Para borrar es necesario Grabar" & vbCrLf & ex.Message)
         End Try
     End Sub
+
+    Private Sub Button13_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button13.Click
+        My.Forms.FrmPreciosProductos.ValidarRegistros = True
+        My.Forms.FrmPreciosProductos.CodProducto = Me.CboCodigoProducto.Text
+        My.Forms.FrmPreciosProductos.NombreProducto = Me.TxtNombreProducto.Text
+        My.Forms.FrmPreciosProductos.ShowDialog()
+    End Sub
 End Class

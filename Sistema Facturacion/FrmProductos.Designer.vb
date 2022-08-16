@@ -157,7 +157,7 @@ Partial Class FrmProductos
         Me.tdbGridUnidadMedida = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.C1TrueDBGrid1 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.Button13 = New System.Windows.Forms.Button
-        Me.Button14 = New System.Windows.Forms.Button
+        Me.BtnQuitar = New System.Windows.Forms.Button
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         CType(Me.TxtAumento, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1602,7 +1602,7 @@ Partial Class FrmProductos
         '
         'TabPage1
         '
-        Me.TabPage1.Controls.Add(Me.Button14)
+        Me.TabPage1.Controls.Add(Me.BtnQuitar)
         Me.TabPage1.Controls.Add(Me.Button13)
         Me.TabPage1.Controls.Add(Me.C1TrueDBGrid1)
         Me.TabPage1.Controls.Add(Me.Button12)
@@ -1670,7 +1670,7 @@ Partial Class FrmProductos
         '
         Me.Button13.Image = CType(resources.GetObject("Button13.Image"), System.Drawing.Image)
         Me.Button13.ImageAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.Button13.Location = New System.Drawing.Point(551, 161)
+        Me.Button13.Location = New System.Drawing.Point(551, 167)
         Me.Button13.Name = "Button13"
         Me.Button13.Size = New System.Drawing.Size(98, 50)
         Me.Button13.TabIndex = 143
@@ -1678,17 +1678,17 @@ Partial Class FrmProductos
         Me.Button13.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button13.UseVisualStyleBackColor = True
         '
-        'Button14
+        'BtnQuitar
         '
-        Me.Button14.Image = CType(resources.GetObject("Button14.Image"), System.Drawing.Image)
-        Me.Button14.ImageAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.Button14.Location = New System.Drawing.Point(551, 217)
-        Me.Button14.Name = "Button14"
-        Me.Button14.Size = New System.Drawing.Size(98, 50)
-        Me.Button14.TabIndex = 144
-        Me.Button14.Text = "Quitar"
-        Me.Button14.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button14.UseVisualStyleBackColor = True
+        Me.BtnQuitar.Image = CType(resources.GetObject("BtnQuitar.Image"), System.Drawing.Image)
+        Me.BtnQuitar.ImageAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.BtnQuitar.Location = New System.Drawing.Point(551, 223)
+        Me.BtnQuitar.Name = "BtnQuitar"
+        Me.BtnQuitar.Size = New System.Drawing.Size(98, 50)
+        Me.BtnQuitar.TabIndex = 144
+        Me.BtnQuitar.Text = "Quitar"
+        Me.BtnQuitar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnQuitar.UseVisualStyleBackColor = True
         '
         'FrmProductos
         '
@@ -1905,6 +1905,6 @@ Partial Class FrmProductos
     Friend WithEvents tdbGridUnidadMedida As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents C1TrueDBGrid1 As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents Button13 As System.Windows.Forms.Button
-    Friend WithEvents Button14 As System.Windows.Forms.Button
+    Friend WithEvents BtnQuitar As System.Windows.Forms.Button
 
 End Class

@@ -108,7 +108,7 @@ Partial Class FrmPreciosProductos
         '
         Me.CmdPegar.Image = CType(resources.GetObject("CmdPegar.Image"), System.Drawing.Image)
         Me.CmdPegar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdPegar.Location = New System.Drawing.Point(7, 354)
+        Me.CmdPegar.Location = New System.Drawing.Point(8, 354)
         Me.CmdPegar.Name = "CmdPegar"
         Me.CmdPegar.Size = New System.Drawing.Size(75, 67)
         Me.CmdPegar.TabIndex = 142

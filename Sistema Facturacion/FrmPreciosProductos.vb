@@ -1,5 +1,5 @@
 Public Class FrmPreciosProductos
-    Public MiConexion As New SqlClient.SqlConnection(Conexion), CodProducto As String, NombreProducto As String, PrecioProducto As Double
+    Public MiConexion As New SqlClient.SqlConnection(Conexion), CodProducto As String, NombreProducto As String, PrecioProducto As Double, ValidarRegistros As Boolean = False
     Private Sub cmdAddDocente_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdAddDocente.Click
         Dim CodigoPrecio As String
         Dim SqlString As String
@@ -27,6 +27,9 @@ Public Class FrmPreciosProductos
             MiConexion.Close()
         End If
 
+
+
+
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,6 +45,17 @@ Public Class FrmPreciosProductos
         Me.TrueDBGridComponentes.Columns(2).Caption = "Precio $"
         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 70
         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Visible = False
+
+        If Me.ValidarRegistros = True Then
+            If DataSet.Tables("DetalleFactura").Rows.Count = 0 Then
+                Me.cmdAddDocente.Visible = True
+                Me.CmdPegar.Visible = False
+            Else
+                Me.cmdAddDocente.Visible = False
+                Me.CmdPegar.Visible = True
+
+            End If
+        End If
 
     End Sub
 
