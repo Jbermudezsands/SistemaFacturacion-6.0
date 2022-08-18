@@ -45,6 +45,7 @@ Public Class FrmConsultas
                     Me.TrueDBGridConsultas.Columns("Unidad_Medida").Caption = "Expediente"
                     Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Unidad_Medida").Width = 70
 
+
                     MiConexion.Close()
 
                 Case "Expediente"
@@ -1591,6 +1592,7 @@ Public Class FrmConsultas
             Case "UnidadMedida"
                 Posicion = Me.BindingConsultas.Position
                 Descripcion = Me.BindingConsultas.Item(Posicion)("Unidad_Medida")
+
             Case "Expediente"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("Numero_Expediente")

@@ -25,7 +25,18 @@ Public Class FrmProductos
 
 
     End Function
+    Private Sub ActualizaGridPrecios()
+        Dim SQLString As String, Id_UnidadMedida As Double
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
+        Id_UnidadMedida = Me.tdbGridUnidadMedida.Columns("idUnidadMedida").Text
+        SQLString = "SELECT  TipoPrecio.Tipo_Precio, Precios.Monto_Precio AS Costo, TipoPrecio.Porciento, Precios.Monto_Precio, Precios.Monto_PrecioDolar, Precios.PrecioDolar FROM  Precios INNER JOIN  TipoPrecio ON Precios.Cod_TipoPrecio = TipoPrecio.Cod_TipoPrecio  " & _
+                    "WHERE (Precios.Cod_Productos = '" & Me.TextBox.Text & "') AND (Precios.idUnidadMedida = " & Id_UnidadMedida & ")"
+        DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
+        DataAdapter.Fill(DataSet, "ListaPrecios")
+        Me.tdbGridUndMedidaVrsPrecio.DataSource = DataSet.Tables("ListaPrecios")
+
+    End Sub
 
 
 
@@ -87,13 +98,14 @@ Public Class FrmProductos
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlString = "SELECT Cod_Productos, Unidad_Medida, Cantidad_Unidades, Precio_Unitario, Unidad_Defecto FROM UnidadMedidaProductos WHERE  (Cod_Productos = '" & TextBox.Text & "') ORDER BY Unidad_Medida"
+        SqlString = "SELECT idUnidadMedida, Cod_Productos, Unidad_Medida, Cantidad_Unidades, Precio_Unitario, Unidad_Defecto FROM UnidadMedidaProductos WHERE  (Cod_Productos = '" & TextBox.Text & "') ORDER BY Unidad_Medida"
         ds = New DataSet
         da = New SqlDataAdapter(SqlString, MiConexion)
         CmdBuilder = New SqlCommandBuilder(da)
         da.Fill(ds, "UnidadMedida")
         Me.tdbGridUnidadMedida.DataSource = ds.Tables("DetalleIngresos")
         Me.tdbGridUnidadMedida.DataSource = ds.Tables("UnidadMedida")
+        Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("idUnidadMedida").Visible = False
         Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Cod_Productos").Visible = False
         Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Unidad_Medida").Width = 100
         Me.tdbGridUnidadMedida.Columns("Unidad_Medida").Caption = "Unidad Medida"
@@ -330,12 +342,13 @@ Public Class FrmProductos
         End If
 
 
-        SqlProductos = "SELECT Cod_Productos, Unidad_Medida, Cantidad_Unidades, Precio_Unitario, Unidad_Defecto FROM UnidadMedidaProductos WHERE  (Cod_Productos = '-10000') ORDER BY Unidad_Medida"
+        SqlProductos = "SELECT idUnidadMedida, Cod_Productos, Unidad_Medida, Cantidad_Unidades, Precio_Unitario, Unidad_Defecto FROM UnidadMedidaProductos WHERE  (Cod_Productos = '-10000') ORDER BY Unidad_Medida"
         ds = New DataSet
         da = New SqlDataAdapter(SqlProductos, MiConexion)
         CmdBuilder = New SqlCommandBuilder(da)
         da.Fill(ds, "UnidadMedida")
         Me.tdbGridUnidadMedida.DataSource = ds.Tables("UnidadMedida")
+        Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("idUnidadMedida").Visible = False
         Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Cod_Productos").Visible = False
         Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Unidad_Medida").Width = 100
         Me.tdbGridUnidadMedida.Columns("Unidad_Medida").Caption = "Unidad Medida"
@@ -2491,13 +2504,14 @@ Public Class FrmProductos
             '///////////////BUSCO LAS UNIDADES DE MEDIDA DE LA TABLA/////////////////////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////
 
-            SqlString = "SELECT Cod_Productos, Unidad_Medida, Cantidad_Unidades, Precio_Unitario, Unidad_Defecto FROM UnidadMedidaProductos WHERE (Cod_Productos = '" & CodigoProducto & "')"
+            SqlString = "SELECT idUnidadMedida, Cod_Productos, Unidad_Medida, Cantidad_Unidades, Precio_Unitario, Unidad_Defecto FROM UnidadMedidaProductos WHERE (Cod_Productos = '" & CodigoProducto & "')"
             DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
             ds = New DataSet
             da = New SqlDataAdapter(SqlString, MiConexion)
             CmdBuilder = New SqlCommandBuilder(da)
             da.Fill(ds, "UnidadMedida")
             Me.tdbGridUnidadMedida.DataSource = ds.Tables("UnidadMedida")
+            Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("idUnidadMedida").Visible = False
             Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Cod_Productos").Visible = False
             Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Unidad_Medida").Width = 100
             Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Unidad_Medida").Button = True
@@ -2701,32 +2715,6 @@ Public Class FrmProductos
         Me.tdbGridUnidadMedida.Columns("Cod_Productos").Text = Me.TextBox.Text
     End Sub
 
-    Private Sub TDGridImpuestos_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TDGridImpuestos.Click
-
-    End Sub
-
-    Private Sub tdbGridUnidadMedida_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs)
-        If Me.TextBox.Text = "" Then
-            MsgBox("Necesita Seleccionar un Producto", MsgBoxStyle.Critical, "Zeus Facturacion")
-            Exit Sub
-        End If
-
-        Quien = "UnidadMedida"
-        My.Forms.FrmConsultas.CodProducto = Me.TextBox.Text
-        My.Forms.FrmConsultas.ShowDialog()
-
-        If ExisteUnidadMedida(Me.TextBox.Text, My.Forms.FrmConsultas.Descripcion) = True Then
-            MsgBox("Esta unidad de Medida esta Asignada", MsgBoxStyle.Exclamation, "Zeus Facturacion")
-            Exit Sub
-        End If
-        Me.tdbGridUnidadMedida.Columns("Unidad_Medida").Text = My.Forms.FrmConsultas.Descripcion
-        Me.tdbGridUnidadMedida.Columns("Cod_Productos").Text = Me.TextBox.Text
-    End Sub
-
-
-    Private Sub tdbGridUnidadMedida_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-    End Sub
 
     Private Sub Button12_Click_3(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Dim Resultado As Double, CodProducto As String, iPosicion As Double, PrecioUnitario As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double
@@ -2788,6 +2776,53 @@ Public Class FrmProductos
         My.Forms.FrmPreciosProductos.ValidarRegistros = True
         My.Forms.FrmPreciosProductos.CodProducto = Me.CboCodigoProducto.Text
         My.Forms.FrmPreciosProductos.NombreProducto = Me.TxtNombreProducto.Text
+        My.Forms.FrmPreciosProductos.CmdPegar.Location = New Point(88, 354)
+        My.Forms.FrmPreciosProductos.CmdPegar.Visible = True
+        My.Forms.FrmPreciosProductos.cmdAddDocente.Visible = True
         My.Forms.FrmPreciosProductos.ShowDialog()
+
+
+    End Sub
+
+    Private Sub tdbGridUnidadMedida_AfterUpdate1(ByVal sender As Object, ByVal e As System.EventArgs) Handles tdbGridUnidadMedida.AfterUpdate
+        InsertarRowGridIngresos(Me.TextBox.Text, Me.tdbGridUnidadMedida.Columns("Unidad_Medida").Text)
+    End Sub
+
+
+    Private Sub tdbGridUnidadMedida_BeforeUpdate1(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles tdbGridUnidadMedida.BeforeUpdate
+        If Me.TextBox.Text = "" Then
+            MsgBox("Necesita Seleccionar un Producto", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        Me.tdbGridUnidadMedida.Columns("Cod_Productos").Text = Me.TextBox.Text
+    End Sub
+
+    Private Sub tdbGridUnidadMedida_ButtonClick1(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles tdbGridUnidadMedida.ButtonClick
+        If Me.TextBox.Text = "" Then
+            MsgBox("Necesita Seleccionar un Producto", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        Quien = "UnidadMedida"
+        My.Forms.FrmConsultas.CodProducto = Me.TextBox.Text
+        My.Forms.FrmConsultas.ShowDialog()
+
+        If ExisteUnidadMedida(Me.TextBox.Text, My.Forms.FrmConsultas.Descripcion) = True Then
+            MsgBox("Esta unidad de Medida esta Asignada", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        Me.tdbGridUnidadMedida.Columns("Unidad_Medida").Text = My.Forms.FrmConsultas.Descripcion
+        Me.tdbGridUnidadMedida.Columns("Cod_Productos").Text = Me.TextBox.Text
+        Me.tdbGridUnidadMedida.Columns("idUnidadMedida").Text = My.Forms.FrmConsultas.IdConsulta
+    End Sub
+
+    Private Sub tdbGridUnidadMedida_Change(ByVal sender As Object, ByVal e As System.EventArgs) Handles tdbGridUnidadMedida.Change
+
+    End Sub
+
+    Private Sub tdbGridUnidadMedida_Move(ByVal sender As Object, ByVal e As System.EventArgs) Handles tdbGridUnidadMedida.Move
+        'ActualizaGridPrecios()
     End Sub
 End Class

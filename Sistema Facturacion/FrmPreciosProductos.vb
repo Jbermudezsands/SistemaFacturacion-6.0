@@ -1,5 +1,7 @@
 Public Class FrmPreciosProductos
     Public MiConexion As New SqlClient.SqlConnection(Conexion), CodProducto As String, NombreProducto As String, PrecioProducto As Double, ValidarRegistros As Boolean = False
+    Public Cod_TipoPrecio As String
+
     Private Sub cmdAddDocente_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdAddDocente.Click
         Dim CodigoPrecio As String
         Dim SqlString As String
@@ -57,6 +59,12 @@ Public Class FrmPreciosProductos
             End If
         End If
 
+    End Sub
+
+    Private Sub FrmPreciosProductos_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+        Me.CmdPegar.Location = New Point(7, 354)
+        Me.CmdPegar.Visible = False
+        Me.cmdAddDocente.Visible = True
     End Sub
 
     Private Sub PreciosProductos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -177,6 +185,8 @@ Public Class FrmPreciosProductos
         Else
             PrecioProducto = Me.BindingDetalle.Item(Posicion)("Monto_PrecioDolar")
         End If
+
+        Me.Cod_TipoPrecio = Me.BindingDetalle.Item(Posicion)("Cod_TipoPrecio")
 
         Me.Close()
     End Sub
