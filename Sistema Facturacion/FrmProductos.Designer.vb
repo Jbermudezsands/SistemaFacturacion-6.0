@@ -1644,6 +1644,7 @@ Partial Class FrmProductos
         Me.tdbGridUndMedidaVrsPrecio.PrintInfo.PageSettings = CType(resources.GetObject("tdbGridUndMedidaVrsPrecio.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
         Me.tdbGridUndMedidaVrsPrecio.Size = New System.Drawing.Size(515, 157)
         Me.tdbGridUndMedidaVrsPrecio.TabIndex = 142
+        Me.tdbGridUndMedidaVrsPrecio.TabStop = False
         Me.tdbGridUndMedidaVrsPrecio.Text = "C1TrueDBGrid1"
         Me.tdbGridUndMedidaVrsPrecio.PropBag = resources.GetString("tdbGridUndMedidaVrsPrecio.PropBag")
         '
@@ -1664,6 +1665,7 @@ Partial Class FrmProductos
         Me.tdbGridUnidadMedida.AllowAddNew = True
         Me.tdbGridUnidadMedida.AlternatingRows = True
         Me.tdbGridUnidadMedida.Caption = "Unidades de Medida"
+        Me.tdbGridUnidadMedida.ChildGrid = Me.tdbGridUndMedidaVrsPrecio
         Me.tdbGridUnidadMedida.FilterBar = True
         Me.tdbGridUnidadMedida.GroupByCaption = "Drag a column header here to group by that column"
         Me.tdbGridUnidadMedida.Images.Add(CType(resources.GetObject("tdbGridUnidadMedida.Images"), System.Drawing.Image))

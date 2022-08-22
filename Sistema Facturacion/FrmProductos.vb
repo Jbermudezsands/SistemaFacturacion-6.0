@@ -7,6 +7,8 @@ Public Class FrmProductos
     Public MiConexionContabilidad As New SqlClient.SqlConnection(ConexionContabilidad)
     Public CodComponente As Double, RutaCompartida As String
     Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder
+    Dim _rowcol As Point = Point.Empty
+
     Public Function ExisteUnidadMedida(ByVal Cod_Producto As String, ByVal Unidad_Medida As String) As Boolean
         Dim SqlString As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SQl As String
@@ -2823,6 +2825,40 @@ Public Class FrmProductos
     End Sub
 
     Private Sub tdbGridUnidadMedida_Move(ByVal sender As Object, ByVal e As System.EventArgs) Handles tdbGridUnidadMedida.Move
-        'ActualizaGridPrecios()
+        '
+    End Sub
+
+    Private Sub tdbGridUnidadMedida_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tdbGridUnidadMedida.Click
+
+    End Sub
+
+
+    Private Sub tdbGridUndMedidaVrsPrecio_FetchCellTips(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.FetchCellTipsEventArgs) Handles tdbGridUndMedidaVrsPrecio.FetchCellTips
+        '// setting e.CellTip to an empty string disables the built-in celltip
+        Dim tdbgrid As C1.Win.C1TrueDBGrid.C1TrueDBGrid = sender, Msg As String
+        e.CellTip = String.Empty
+
+        '// now use supertooltip
+
+
+        '// save the current row and column index, we'll use this in MouseMove
+
+        Me._rowcol = New Point(e.ColIndex, e.Row)
+
+        'Msg = "Medida " & Me.tdbGridUndMedidaVrsPrecio_FetchCellTips.Columns(0).Text
+        'Me.c1SuperTooltip1.IsBalloon = True
+        'Me.c1SuperTooltip1.SetToolTip(tdbgrid, Msg)
+    End Sub
+
+    Private Sub tdbGridUndMedidaVrsPrecio_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles tdbGridUndMedidaVrsPrecio.MouseMove
+        Dim tdbgrid As C1.Win.C1TrueDBGrid.C1TrueDBGrid = sender
+        Dim p As Point, curRowCol As Point
+
+        p = tdbgrid.PointToClient(Control.MousePosition)
+        curRowCol = New Point(tdbgrid.ColContaining(p.X), tdbgrid.RowContaining(p.Y))
+    End Sub
+
+    Private Sub tdbGridUnidadMedida_BeforeOpen(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles tdbGridUnidadMedida.BeforeOpen
+        ActualizaGridPrecios()
     End Sub
 End Class
