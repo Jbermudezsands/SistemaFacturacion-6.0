@@ -8,6 +8,80 @@ Public Class FrmProductos
     Public CodComponente As Double, RutaCompartida As String
     Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder
     Dim _rowcol As Point = Point.Empty
+    Public Sub EliminarPreciosUnidadMedia(ByVal Cod_Productos As String, ByVal Cod_TipoPrecio As String, ByVal idUnidadMedida As Double)
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SQlString As String
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Id_UnidadMedida As Double
+        Dim SQlProductos As String, iPosicion As Double
+        Dim oDataRow As DataRow, oTablaBorrados As DataTable
+
+        iPosicion = Me.tdbGridUnidadMedida.Row
+
+        oDataRow = ds.Tables("UnidadMedida").Rows(iPosicion)
+        oDataRow.Delete()
+
+        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////Obtengo las filas borradas/////////////////////////////////////////////////////////////////////////////////
+        oTablaBorrados = ds.Tables("UnidadMedida").GetChanges(DataRowState.Deleted)
+        If Not IsNothing(oTablaBorrados) Then
+            '//////////////////SI NO TIENE REGISTROS EN BORRADOS ESTAN EN PANTALLA LOS CAMBIOS 77777777
+            da.Update(oTablaBorrados)
+        End If
+        ds.Tables("UnidadMedida").AcceptChanges()
+        da.Update(ds.Tables("UnidadMedida"))
+
+
+        '///////////////////////////////////////////////////////////////////////////////////////////////////
+        '//////////////////////////BORRO LOS PRECIOS ///////////////////////////////////////////////////////////////
+
+        Id_UnidadMedida = Me.tdbGridUnidadMedida.Columns("idUnidadMedida").Text
+        SQlString = "SELECT  TipoPrecio.Tipo_Precio, Precios.Monto_Precio AS Costo, TipoPrecio.Porciento, Precios.Monto_Precio, Precios.Monto_PrecioDolar, Precios.PrecioDolar FROM  Precios INNER JOIN  TipoPrecio ON Precios.Cod_TipoPrecio = TipoPrecio.Cod_TipoPrecio  " & _
+                    "WHERE (Precios.Cod_Productos = '" & Me.TextBox.Text & "') AND (Precios.idUnidadMedida = " & idUnidadMedida & ") AND (Precios.Cod_TipoPrecio = " & Cod_TipoPrecio & ")"
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapter.Fill(DataSet, "UnidadMedida")
+        If Not DataSet.Tables("UnidadMedida").Rows.Count = 0 Then
+            '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
+            StrSqlUpdate = "DELETE FROM Precios WHERE (Precios.Cod_Productos = '" & Cod_Productos & "') AND (Precios.idUnidadMedida = " & idUnidadMedida & ") AND (Precios.Cod_TipoPrecio = " & Cod_TipoPrecio & ")"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+        End If
+    End Sub
+
+
+
+    Public Sub InsertarPreciosUnidadMedida(ByVal Cod_Productos As String, ByVal Cod_TipoPrecio As String, ByVal idUnidadMedida As Double, ByVal Monto_Precio As Double, ByVal Monto_PrecioDolar As Double, ByVal CostoUnitario As Double)
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SQlString As String
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Id_UnidadMedida As Double
+        Dim SQlProductos As String
+
+
+        Id_UnidadMedida = Me.tdbGridUnidadMedida.Columns("idUnidadMedida").Text
+        SQlString = "SELECT  TipoPrecio.Tipo_Precio, Precios.Monto_Precio AS Costo, TipoPrecio.Porciento, Precios.Monto_Precio, Precios.Monto_PrecioDolar, Precios.PrecioDolar FROM  Precios INNER JOIN  TipoPrecio ON Precios.Cod_TipoPrecio = TipoPrecio.Cod_TipoPrecio  " & _
+                    "WHERE (Precios.Cod_Productos = '" & Me.TextBox.Text & "') AND (Precios.idUnidadMedida = " & Id_UnidadMedida & ") AND (Precios.Cod_TipoPrecio = " & Cod_TipoPrecio & ")"
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapter.Fill(DataSet, "UnidadMedida")
+        If Not DataSet.Tables("UnidadMedida").Rows.Count = 0 Then
+            '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
+            StrSqlUpdate = "UPDATE [Precios]   SET [Monto_Precio] = " & Monto_Precio & " ,[Monto_PrecioDolar] = " & Monto_PrecioDolar & "  ,[Costo_Unitario] = " & CostoUnitario & " " & _
+                            "WHERE (Precios.Cod_Productos = '" & Me.TextBox.Text & "') AND (Precios.idUnidadMedida = " & Id_UnidadMedida & ") AND (Precios.Cod_TipoPrecio = " & Cod_TipoPrecio & ")"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+        Else
+            MiConexion.Close()
+            '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
+            StrSqlUpdate = "INSERT INTO [Precios] ([Cod_Productos] ,[Cod_TipoPrecio] ,[idUnidadMedida],[Monto_Precio],[Monto_PrecioDolar],[Costo_Unitario]) " & _
+                           "VALUES('" & Cod_Productos & "' ,'" & Cod_TipoPrecio & "' , " & idUnidadMedida & " ," & Monto_Precio & " ," & Monto_Precio & " ," & CostoUnitario & ")"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+        End If
+    End Sub
+
 
     Public Function ExisteUnidadMedida(ByVal Cod_Producto As String, ByVal Unidad_Medida As String) As Boolean
         Dim SqlString As String
@@ -32,11 +106,22 @@ Public Class FrmProductos
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
         Id_UnidadMedida = Me.tdbGridUnidadMedida.Columns("idUnidadMedida").Text
-        SQLString = "SELECT  TipoPrecio.Tipo_Precio, Precios.Monto_Precio AS Costo, TipoPrecio.Porciento, Precios.Monto_Precio, Precios.Monto_PrecioDolar, Precios.PrecioDolar FROM  Precios INNER JOIN  TipoPrecio ON Precios.Cod_TipoPrecio = TipoPrecio.Cod_TipoPrecio  " & _
+        SQLString = "SELECT  TipoPrecio.Tipo_Precio, Precios.Costo_Unitario AS Costo, TipoPrecio.Porciento, Precios.Monto_Precio, Precios.Monto_PrecioDolar FROM  Precios INNER JOIN  TipoPrecio ON Precios.Cod_TipoPrecio = TipoPrecio.Cod_TipoPrecio  " & _
                     "WHERE (Precios.Cod_Productos = '" & Me.TextBox.Text & "') AND (Precios.idUnidadMedida = " & Id_UnidadMedida & ")"
         DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
         DataAdapter.Fill(DataSet, "ListaPrecios")
         Me.tdbGridUndMedidaVrsPrecio.DataSource = DataSet.Tables("ListaPrecios")
+
+        Me.tdbGridUndMedidaVrsPrecio.Splits.Item(0).DisplayColumns("Tipo_Precio").Width = 100
+        Me.tdbGridUndMedidaVrsPrecio.Columns("Tipo_Precio").Caption = "Tipo Precio"
+        Me.tdbGridUndMedidaVrsPrecio.Splits.Item(0).DisplayColumns("Costo").Width = 100
+        Me.tdbGridUndMedidaVrsPrecio.Columns("Costo").Caption = "Costo Unitario"
+        Me.tdbGridUndMedidaVrsPrecio.Splits.Item(0).DisplayColumns("Porciento").Width = 70
+        Me.tdbGridUndMedidaVrsPrecio.Columns("Porciento").Caption = "% Incremento"
+        Me.tdbGridUndMedidaVrsPrecio.Splits.Item(0).DisplayColumns("Monto_Precio").Width = 100
+        Me.tdbGridUndMedidaVrsPrecio.Columns("Monto_Precio").Caption = "Precio C$"
+        Me.tdbGridUndMedidaVrsPrecio.Splits.Item(0).DisplayColumns("Monto_PrecioDolar").Width = 100
+        Me.tdbGridUndMedidaVrsPrecio.Columns("Monto_PrecioDolar").Caption = "Precio $"
 
     End Sub
 
@@ -57,6 +142,7 @@ Public Class FrmProductos
 
     Public Sub InsertarRowGridIngresos(ByVal Cod_Productos As String, ByVal Unidad_Medida As String)
         Dim oTabla As DataTable, iPosicion As Double, CodigoProducto As String
+
 
         iPosicion = Me.tdbGridUnidadMedida.Row
 
@@ -100,7 +186,7 @@ Public Class FrmProductos
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlString = "SELECT idUnidadMedida, Cod_Productos, Unidad_Medida, Cantidad_Unidades, Precio_Unitario, Unidad_Defecto FROM UnidadMedidaProductos WHERE  (Cod_Productos = '" & TextBox.Text & "') ORDER BY Unidad_Medida"
+        SqlString = "SELECT idUnidadMedida, Cod_TipoPrecio, Cod_Productos, Unidad_Medida, Cantidad_Unidades, Precio_Unitario, Unidad_Defecto FROM UnidadMedidaProductos WHERE  (Cod_Productos = '" & TextBox.Text & "') ORDER BY Unidad_Medida"
         ds = New DataSet
         da = New SqlDataAdapter(SqlString, MiConexion)
         CmdBuilder = New SqlCommandBuilder(da)
@@ -109,6 +195,7 @@ Public Class FrmProductos
         Me.tdbGridUnidadMedida.DataSource = ds.Tables("UnidadMedida")
         Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("idUnidadMedida").Visible = False
         Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Cod_Productos").Visible = False
+        Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Cod_TipoPrecio").Visible = False
         Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Unidad_Medida").Width = 100
         Me.tdbGridUnidadMedida.Columns("Unidad_Medida").Caption = "Unidad Medida"
         Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Cantidad_Unidades").Width = 100
@@ -2246,23 +2333,25 @@ Public Class FrmProductos
                 End If
                 Me.CboUnidad.DisplayMember = "Unidad_Medida"
 
-                SqlString = "SELECT Cod_Productos, Unidad_Medida, Cantidad_Unidades, Precio_Unitario, Unidad_Defecto FROM UnidadMedidaProductos WHERE (Cod_Productos = '-10000')"
-                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-                ds = New DataSet
-                da = New SqlDataAdapter(SqlString, MiConexion)
-                CmdBuilder = New SqlCommandBuilder(da)
-                da.Fill(ds, "UnidadMedida")
-                Me.tdbGridUnidadMedida.DataSource = ds.Tables("UnidadMedida")
-                Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Cod_Productos").Visible = False
-                Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Unidad_Medida").Width = 100
-                Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Cantidad_Unidades").Button = True
-                Me.tdbGridUnidadMedida.Columns("Unidad_Medida").Caption = "Unidad Medida"
-                Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Cantidad_Unidades").Width = 100
-                Me.tdbGridUnidadMedida.Columns("Cantidad_Unidades").Caption = "Cant Unidades"
-                Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 100
-                Me.tdbGridUnidadMedida.Columns("Precio_Unitario").Caption = "Precio Unitario"
-                Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Unidad_Defecto").Width = 100
-                Me.tdbGridUnidadMedida.Columns("Unidad_Defecto").Caption = "Defecto"
+                'SqlString = "SELECT Cod_Productos, Unidad_Medida, Cantidad_Unidades, Precio_Unitario, Unidad_Defecto FROM UnidadMedidaProductos WHERE (Cod_Productos = '-10000')"
+                'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                'ds = New DataSet
+                'da = New SqlDataAdapter(SqlString, MiConexion)
+                'CmdBuilder = New SqlCommandBuilder(da)
+                'da.Fill(ds, "UnidadMedida")
+                'Me.tdbGridUnidadMedida.DataSource = ds.Tables("UnidadMedida")
+                'Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Cod_Productos").Visible = False
+                'Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Unidad_Medida").Width = 100
+                'Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Cantidad_Unidades").Button = True
+                'Me.tdbGridUnidadMedida.Columns("Unidad_Medida").Caption = "Unidad Medida"
+                'Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Cantidad_Unidades").Width = 100
+                'Me.tdbGridUnidadMedida.Columns("Cantidad_Unidades").Caption = "Cant Unidades"
+                'Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 100
+                'Me.tdbGridUnidadMedida.Columns("Precio_Unitario").Caption = "Precio Unitario"
+                'Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Unidad_Defecto").Width = 100
+                'Me.tdbGridUnidadMedida.Columns("Unidad_Defecto").Caption = "Defecto"
+
+                Me.ActualizarGridInsertRowIngresos()
 
                 Exit Sub
 
@@ -2506,25 +2595,26 @@ Public Class FrmProductos
             '///////////////BUSCO LAS UNIDADES DE MEDIDA DE LA TABLA/////////////////////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////
 
-            SqlString = "SELECT idUnidadMedida, Cod_Productos, Unidad_Medida, Cantidad_Unidades, Precio_Unitario, Unidad_Defecto FROM UnidadMedidaProductos WHERE (Cod_Productos = '" & CodigoProducto & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-            ds = New DataSet
-            da = New SqlDataAdapter(SqlString, MiConexion)
-            CmdBuilder = New SqlCommandBuilder(da)
-            da.Fill(ds, "UnidadMedida")
-            Me.tdbGridUnidadMedida.DataSource = ds.Tables("UnidadMedida")
-            Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("idUnidadMedida").Visible = False
-            Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Cod_Productos").Visible = False
-            Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Unidad_Medida").Width = 100
-            Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Unidad_Medida").Button = True
-            Me.tdbGridUnidadMedida.Columns("Unidad_Medida").Caption = "Unidad Medida"
-            Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Cantidad_Unidades").Width = 100
-            Me.tdbGridUnidadMedida.Columns("Cantidad_Unidades").Caption = "Cant Unidades"
-            Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 100
-            Me.tdbGridUnidadMedida.Columns("Precio_Unitario").Caption = "Precio Unitario"
-            Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Unidad_Defecto").Width = 100
-            Me.tdbGridUnidadMedida.Columns("Unidad_Defecto").Caption = "Defecto"
+            'SqlString = "SELECT idUnidadMedida, Cod_Productos, Unidad_Medida, Cantidad_Unidades, Precio_Unitario, Unidad_Defecto FROM UnidadMedidaProductos WHERE (Cod_Productos = '" & CodigoProducto & "')"
+            'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            'ds = New DataSet
+            'da = New SqlDataAdapter(SqlString, MiConexion)
+            'CmdBuilder = New SqlCommandBuilder(da)
+            'da.Fill(ds, "UnidadMedida")
+            'Me.tdbGridUnidadMedida.DataSource = ds.Tables("UnidadMedida")
+            'Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("idUnidadMedida").Visible = False
+            'Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Cod_Productos").Visible = False
+            'Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Unidad_Medida").Width = 100
+            'Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Unidad_Medida").Button = True
+            'Me.tdbGridUnidadMedida.Columns("Unidad_Medida").Caption = "Unidad Medida"
+            'Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Cantidad_Unidades").Width = 100
+            'Me.tdbGridUnidadMedida.Columns("Cantidad_Unidades").Caption = "Cant Unidades"
+            'Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 100
+            'Me.tdbGridUnidadMedida.Columns("Precio_Unitario").Caption = "Precio Unitario"
+            'Me.tdbGridUnidadMedida.Splits.Item(0).DisplayColumns("Unidad_Defecto").Width = 100
+            'Me.tdbGridUnidadMedida.Columns("Unidad_Defecto").Caption = "Defecto"
 
+            Me.ActualizarGridInsertRowIngresos()
 
             Me.TxtUbicacion.Text = DataSet.Tables("Producto").Rows(0)("Ubicacion")
             If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Cod_Cuenta_Inventario")) Then
@@ -2775,6 +2865,9 @@ Public Class FrmProductos
     End Sub
 
     Private Sub Button13_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button13.Click
+        Dim Cod_TipoPrecio As String, PrecioProducto As String, Id_UnidadMedida As Double, CostoPromedio As Double, CostoPromedioDolar As Double
+        Dim PrecioProductoDolar As Double
+
         My.Forms.FrmPreciosProductos.ValidarRegistros = True
         My.Forms.FrmPreciosProductos.CodProducto = Me.CboCodigoProducto.Text
         My.Forms.FrmPreciosProductos.NombreProducto = Me.TxtNombreProducto.Text
@@ -2783,6 +2876,26 @@ Public Class FrmProductos
         My.Forms.FrmPreciosProductos.cmdAddDocente.Visible = True
         My.Forms.FrmPreciosProductos.ShowDialog()
 
+
+        Cod_TipoPrecio = My.Forms.FrmPreciosProductos.Cod_TipoPrecio
+        PrecioProducto = My.Forms.FrmPreciosProductos.PrecioProducto
+        PrecioProductoDolar = My.Forms.FrmPreciosProductos.PrecioProductoDolar
+
+        Id_UnidadMedida = Me.tdbGridUnidadMedida.Columns("idUnidadMedida").Text
+        If Me.TxtCostoPromedio.Text <> "" Then
+            CostoPromedio = Me.TxtCostoPromedio.Text
+        Else
+            CostoPromedio = 0
+        End If
+
+        If Me.TxtCostoPromedioDolar.Text <> "" Then
+            CostoPromedioDolar = Me.TxtCostoPromedioDolar.Text
+        Else
+            CostoPromedioDolar = 0
+        End If
+
+        InsertarPreciosUnidadMedida(Me.TextBox.Text, Cod_TipoPrecio, Id_UnidadMedida, PrecioProducto, PrecioProductoDolar, CostoPromedio)
+        ActualizaGridPrecios()
 
     End Sub
 
@@ -2856,9 +2969,40 @@ Public Class FrmProductos
 
         p = tdbgrid.PointToClient(Control.MousePosition)
         curRowCol = New Point(tdbgrid.ColContaining(p.X), tdbgrid.RowContaining(p.Y))
+
+        Me.Button13.Location = New Point(tdbGridUndMedidaVrsPrecio.Location.X + 520, tdbGridUndMedidaVrsPrecio.Location.Y + 30)
+        Me.BtnQuitar.Location = New Point(tdbGridUndMedidaVrsPrecio.Location.X + 520, tdbGridUndMedidaVrsPrecio.Location.Y + 100)
+
     End Sub
 
     Private Sub tdbGridUnidadMedida_BeforeOpen(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles tdbGridUnidadMedida.BeforeOpen
         ActualizaGridPrecios()
+
+        Me.Button13.Visible = True
+        Me.BtnQuitar.Visible = True
+    End Sub
+
+    Private Sub tdbGridUnidadMedida_BeforeClose(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles tdbGridUnidadMedida.BeforeClose
+        Me.Button13.Visible = False
+        Me.BtnQuitar.Visible = False
+    End Sub
+
+    Private Sub Button12_Click_4(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+    End Sub
+
+    Private Sub BtnQuinarUnd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnQuinarUnd.Click
+        Dim Resultado As String, idUnidadMedida As Double, CodTipoPrecio As String
+        Resultado = MsgBox("¿Esta Seguro de Eliminar la Unidad de Medida?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
+        If Not Resultado = "6" Then
+            Exit Sub
+        End If
+
+        idUnidadMedida = Me.tdbGridUnidadMedida.Item(Me.tdbGridUnidadMedida.Row)("idUnidadMedida")
+        CodTipoPrecio = Me.tdbGridUnidadMedida.Item(Me.tdbGridUnidadMedida.Row)("Cod_TipoPrecio")
+
+
+
+        EliminarPreciosUnidadMedia(Me.TextBox.Text, CodTipoPrecio, idUnidadMedida)
     End Sub
 End Class

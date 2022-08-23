@@ -152,10 +152,10 @@ Partial Class FrmProductos
         Me.Impuestos = New System.Windows.Forms.TabPage
         Me.Alternativos = New System.Windows.Forms.TabPage
         Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.BtnQuinarUnd = New System.Windows.Forms.Button
         Me.BtnQuitar = New System.Windows.Forms.Button
         Me.Button13 = New System.Windows.Forms.Button
         Me.tdbGridUndMedidaVrsPrecio = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.Button12 = New System.Windows.Forms.Button
         Me.tdbGridUnidadMedida = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.Foto = New System.Windows.Forms.TabPage
         Me.GroupBox5.SuspendLayout()
@@ -1590,10 +1590,10 @@ Partial Class FrmProductos
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.BtnQuinarUnd)
         Me.TabPage1.Controls.Add(Me.BtnQuitar)
         Me.TabPage1.Controls.Add(Me.Button13)
         Me.TabPage1.Controls.Add(Me.tdbGridUndMedidaVrsPrecio)
-        Me.TabPage1.Controls.Add(Me.Button12)
         Me.TabPage1.Controls.Add(Me.tdbGridUnidadMedida)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
@@ -1602,6 +1602,18 @@ Partial Class FrmProductos
         Me.TabPage1.TabIndex = 7
         Me.TabPage1.Text = "Unidad Medida"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'BtnQuinarUnd
+        '
+        Me.BtnQuinarUnd.Image = CType(resources.GetObject("BtnQuinarUnd.Image"), System.Drawing.Image)
+        Me.BtnQuinarUnd.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnQuinarUnd.Location = New System.Drawing.Point(574, 15)
+        Me.BtnQuinarUnd.Name = "BtnQuinarUnd"
+        Me.BtnQuinarUnd.Size = New System.Drawing.Size(75, 67)
+        Me.BtnQuinarUnd.TabIndex = 145
+        Me.BtnQuinarUnd.Text = "Quitar"
+        Me.BtnQuinarUnd.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnQuinarUnd.UseVisualStyleBackColor = True
         '
         'BtnQuitar
         '
@@ -1614,6 +1626,7 @@ Partial Class FrmProductos
         Me.BtnQuitar.Text = "Quitar"
         Me.BtnQuitar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.BtnQuitar.UseVisualStyleBackColor = True
+        Me.BtnQuitar.Visible = False
         '
         'Button13
         '
@@ -1626,6 +1639,7 @@ Partial Class FrmProductos
         Me.Button13.Text = "Agregar"
         Me.Button13.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button13.UseVisualStyleBackColor = True
+        Me.Button13.Visible = False
         '
         'tdbGridUndMedidaVrsPrecio
         '
@@ -1636,29 +1650,17 @@ Partial Class FrmProductos
         Me.tdbGridUndMedidaVrsPrecio.FlatStyle = C1.Win.C1TrueDBGrid.FlatModeEnum.Standard
         Me.tdbGridUndMedidaVrsPrecio.GroupByCaption = "Drag a column header here to group by that column"
         Me.tdbGridUndMedidaVrsPrecio.Images.Add(CType(resources.GetObject("tdbGridUndMedidaVrsPrecio.Images"), System.Drawing.Image))
-        Me.tdbGridUndMedidaVrsPrecio.Location = New System.Drawing.Point(6, 161)
+        Me.tdbGridUndMedidaVrsPrecio.Location = New System.Drawing.Point(30, 130)
         Me.tdbGridUndMedidaVrsPrecio.Name = "tdbGridUndMedidaVrsPrecio"
         Me.tdbGridUndMedidaVrsPrecio.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.tdbGridUndMedidaVrsPrecio.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.tdbGridUndMedidaVrsPrecio.PreviewInfo.ZoomFactor = 75
         Me.tdbGridUndMedidaVrsPrecio.PrintInfo.PageSettings = CType(resources.GetObject("tdbGridUndMedidaVrsPrecio.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.tdbGridUndMedidaVrsPrecio.Size = New System.Drawing.Size(515, 157)
+        Me.tdbGridUndMedidaVrsPrecio.Size = New System.Drawing.Size(515, 118)
         Me.tdbGridUndMedidaVrsPrecio.TabIndex = 142
         Me.tdbGridUndMedidaVrsPrecio.TabStop = False
         Me.tdbGridUndMedidaVrsPrecio.Text = "C1TrueDBGrid1"
         Me.tdbGridUndMedidaVrsPrecio.PropBag = resources.GetString("tdbGridUndMedidaVrsPrecio.PropBag")
-        '
-        'Button12
-        '
-        Me.Button12.Image = CType(resources.GetObject("Button12.Image"), System.Drawing.Image)
-        Me.Button12.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button12.Location = New System.Drawing.Point(551, 15)
-        Me.Button12.Name = "Button12"
-        Me.Button12.Size = New System.Drawing.Size(75, 67)
-        Me.Button12.TabIndex = 141
-        Me.Button12.Text = "Quitar"
-        Me.Button12.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.Button12.UseVisualStyleBackColor = True
         '
         'tdbGridUnidadMedida
         '
@@ -1675,7 +1677,7 @@ Partial Class FrmProductos
         Me.tdbGridUnidadMedida.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.tdbGridUnidadMedida.PreviewInfo.ZoomFactor = 75
         Me.tdbGridUnidadMedida.PrintInfo.PageSettings = CType(resources.GetObject("tdbGridUnidadMedida.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.tdbGridUnidadMedida.Size = New System.Drawing.Size(515, 128)
+        Me.tdbGridUnidadMedida.Size = New System.Drawing.Size(539, 290)
         Me.tdbGridUnidadMedida.TabIndex = 140
         Me.tdbGridUnidadMedida.Text = "C1TrueDBGrid1"
         Me.tdbGridUnidadMedida.PropBag = resources.GetString("tdbGridUnidadMedida.PropBag")
@@ -1903,10 +1905,10 @@ Partial Class FrmProductos
     Friend WithEvents TxtMerma As System.Windows.Forms.TextBox
     Friend WithEvents Label31 As System.Windows.Forms.Label
     Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
-    Friend WithEvents Button12 As System.Windows.Forms.Button
     Friend WithEvents tdbGridUnidadMedida As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents tdbGridUndMedidaVrsPrecio As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents Button13 As System.Windows.Forms.Button
     Friend WithEvents BtnQuitar As System.Windows.Forms.Button
+    Friend WithEvents BtnQuinarUnd As System.Windows.Forms.Button
 
 End Class

@@ -1,6 +1,6 @@
 Public Class FrmPreciosProductos
     Public MiConexion As New SqlClient.SqlConnection(Conexion), CodProducto As String, NombreProducto As String, PrecioProducto As Double, ValidarRegistros As Boolean = False
-    Public Cod_TipoPrecio As String
+    Public Cod_TipoPrecio As String, PrecioProductoDolar As Double
 
     Private Sub cmdAddDocente_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdAddDocente.Click
         Dim CodigoPrecio As String
@@ -182,10 +182,13 @@ Public Class FrmPreciosProductos
         Posicion = Me.BindingDetalle.Position
         If FrmFacturas.TxtMonedaFactura.Text = "Cordobas" Then
             PrecioProducto = Me.BindingDetalle.Item(Posicion)("Monto_Precio")
+
         Else
             PrecioProducto = Me.BindingDetalle.Item(Posicion)("Monto_PrecioDolar")
         End If
 
+
+        Me.PrecioProductoDolar = Me.BindingDetalle.Item(Posicion)("Monto_PrecioDolar")
         Me.Cod_TipoPrecio = Me.BindingDetalle.Item(Posicion)("Cod_TipoPrecio")
 
         Me.Close()
