@@ -1,6 +1,6 @@
 Public Class FrmPreciosProductos
     Public MiConexion As New SqlClient.SqlConnection(Conexion), CodProducto As String, NombreProducto As String, PrecioProducto As Double, ValidarRegistros As Boolean = False
-    Public Cod_TipoPrecio As String, PrecioProductoDolar As Double
+    Public Cod_TipoPrecio As String, PrecioProductoDolar As Double, IdUnidadMedida As Double
 
     Private Sub cmdAddDocente_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdAddDocente.Click
         Dim CodigoPrecio As String
@@ -12,17 +12,22 @@ Public Class FrmPreciosProductos
 
         Quien = "CodigoTipoPrecio"
         My.Forms.FrmConsultas.ShowDialog()
-        CodigoPrecio = My.Forms.FrmConsultas.Codigo
 
-        SqlString = "SELECT Cod_Productos, Cod_TipoPrecio, Monto_Precio, Monto_PrecioDolar FROM Precios WHERE (Cod_Productos = '" & CodProducto & "') AND (Cod_TipoPrecio = '" & CodigoPrecio & "')"
+        If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
+            CodigoPrecio = My.Forms.FrmConsultas.Codigo
+        Else
+            Exit Sub
+        End If
+
+        SqlString = "SELECT Cod_Productos, Cod_TipoPrecio, Monto_Precio, Monto_PrecioDolar FROM Precios WHERE (Cod_Productos = '" & CodProducto & "') AND (Cod_TipoPrecio = '" & CodigoPrecio & "') AND (idUnidadMedida = '" & IdUnidadMedida & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "Impuestos")
         If DataSet.Tables("Impuestos").Rows.Count <> 0 Then
             MsgBox("Este Precio ya fue asignado para este producto", MsgBoxStyle.Critical, "Zeus Facturacion")
             Exit Sub
         Else
-            StrSqlUpdate = "INSERT INTO [Precios] ([Cod_Productos] ,[Cod_TipoPrecio] ,[Monto_Precio] ,[Monto_PrecioDolar]) " & _
-                           "VALUES('" & CodProducto & "','" & CodigoPrecio & "',0,0)"
+            StrSqlUpdate = "INSERT INTO [Precios] ([Cod_Productos] ,[Cod_TipoPrecio] ,[idUnidadMedida],[Monto_Precio] ,[Monto_PrecioDolar]) " & _
+                           "VALUES('" & CodProducto & "','" & CodigoPrecio & "', " & IdUnidadMedida & ", 0,0)"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -59,6 +64,8 @@ Public Class FrmPreciosProductos
             End If
         End If
 
+        ActualizarGridPrecios()
+
     End Sub
 
     Private Sub FrmPreciosProductos_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
@@ -66,8 +73,7 @@ Public Class FrmPreciosProductos
         Me.CmdPegar.Visible = False
         Me.cmdAddDocente.Visible = True
     End Sub
-
-    Private Sub PreciosProductos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub ActualizarGridPrecios()
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim oDataRow As DataRow, Iposicion As Double, FechaFin As Date
         Dim CostoUnitario As Double, PrecioVenta As Double, Incremento As Double, TasaCambio As Double, Porciento As Double, PrecioVentaDolar As Double
@@ -83,8 +89,8 @@ Public Class FrmPreciosProductos
         '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         '++++++++++++++++++++++CONSULTO SI EL TIPO DE PRECIO ES PORCENTUAL +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        SqlString = "SELECT  TipoPrecio.Tipo_Precio AS Descripcion, Precios.Monto_Precio, Precios.Monto_PrecioDolar, TipoPrecio.Cod_TipoPrecio, TipoPrecio.PrecioPorcentual, TipoPrecio.Porciento FROM Precios INNER JOIN  TipoPrecio ON Precios.Cod_TipoPrecio = TipoPrecio.Cod_TipoPrecio " & _
-                    "WHERE (Precios.Cod_Productos = '" & CodProducto & "')"
+        SqlString = "SELECT  DISTINCT TipoPrecio.Tipo_Precio AS Descripcion, Precios.Monto_Precio, Precios.Monto_PrecioDolar, TipoPrecio.Cod_TipoPrecio, TipoPrecio.PrecioPorcentual, TipoPrecio.Porciento FROM Precios INNER JOIN  TipoPrecio ON Precios.Cod_TipoPrecio = TipoPrecio.Cod_TipoPrecio " & _
+                    "WHERE (Precios.Cod_Productos = '" & CodProducto & "') AND (Precios.idUnidadMedida = '" & IdUnidadMedida & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "PreciosFactura")
         Iposicion = 0
@@ -121,9 +127,7 @@ Public Class FrmPreciosProductos
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        'SqlString = "SELECT TipoPrecio.Tipo_Precio AS Descripcion, Precios.Monto_Precio, Precios.Monto_PrecioDolar, TipoPrecio.Cod_TipoPrecio FROM  Precios INNER JOIN TipoPrecio ON Precios.Cod_TipoPrecio = TipoPrecio.Cod_TipoPrecio WHERE (Precios.Cod_Productos = '" & CodProducto & "')"
-        'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        'DataAdapter.Fill(DataSet, "DetalleFactura")
+
         Me.BindingDetalle.DataSource = DataSet.Tables("Precios")
         Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
         Me.TrueDBGridComponentes.Columns(0).Caption = "Descripcion Precio"
@@ -135,6 +139,12 @@ Public Class FrmPreciosProductos
         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 70
         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Visible = False
 
+    End Sub
+
+
+
+    Private Sub PreciosProductos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        ActualizarGridPrecios()
     End Sub
 
     Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click

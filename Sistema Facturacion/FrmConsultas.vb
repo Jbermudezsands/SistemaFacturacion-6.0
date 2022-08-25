@@ -646,8 +646,7 @@ Public Class FrmConsultas
                     'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Costo_Promedio, Existencia_Unidades,Cod_Iva FROM Productos Where (Tipo_Producto <> 'Ensambles')"
                     SQlProductos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, DetalleBodegas.Costo, DetalleBodegas.Existencia_Unidades, Productos.Cod_Iva FROM  Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos  " & _
                                    "WHERE (Productos.Tipo_Producto <> 'Ensambles') AND (DetalleBodegas.Cod_Bodegas = '" & CodigoBodega & "') ORDER BY Productos.Cod_Productos"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "C�digo"
-                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+
                     MiConexion.Open()
 
                     DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
@@ -701,9 +700,7 @@ Public Class FrmConsultas
 
 
                 Case "CodigoTipoPrecio"
-                    SQlProductos = "SELECT  * FROM TipoPrecio"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "C�digo"
-                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    SQlProductos = "SELECT  Cod_TipoPrecio, Tipo_Precio, Porciento, PrecioPorcentual FROM TipoPrecio"
                     MiConexion.Open()
 
                     DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
@@ -711,6 +708,9 @@ Public Class FrmConsultas
                     DataAdapter.Fill(DataSet, "Consultas")
                     Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
                     Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Codigo"
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
 
                     MiConexion.Close()
 

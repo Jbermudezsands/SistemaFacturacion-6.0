@@ -1643,7 +1643,7 @@ Partial Class FrmProductos
         '
         'tdbGridUndMedidaVrsPrecio
         '
-        Me.tdbGridUndMedidaVrsPrecio.AllowAddNew = True
+        Me.tdbGridUndMedidaVrsPrecio.AllowUpdate = False
         Me.tdbGridUndMedidaVrsPrecio.AlternatingRows = True
         Me.tdbGridUndMedidaVrsPrecio.Caption = "Unidad Medida Vrs Lista Precio"
         Me.tdbGridUndMedidaVrsPrecio.FilterBar = True
