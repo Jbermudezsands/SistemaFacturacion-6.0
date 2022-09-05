@@ -53,9 +53,10 @@ Partial Class FrmPreciosProductos
         '
         'ButtonBorrar
         '
+        Me.ButtonBorrar.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonBorrar.Image = CType(resources.GetObject("ButtonBorrar.Image"), System.Drawing.Image)
         Me.ButtonBorrar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonBorrar.Location = New System.Drawing.Point(197, 353)
+        Me.ButtonBorrar.Location = New System.Drawing.Point(183, 353)
         Me.ButtonBorrar.Name = "ButtonBorrar"
         Me.ButtonBorrar.Size = New System.Drawing.Size(75, 67)
         Me.ButtonBorrar.TabIndex = 138
@@ -65,10 +66,11 @@ Partial Class FrmPreciosProductos
         '
         'Button8
         '
+        Me.Button8.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
         Me.Button8.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button8.Location = New System.Drawing.Point(278, 354)
+        Me.Button8.Location = New System.Drawing.Point(264, 354)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(75, 66)
         Me.Button8.TabIndex = 139
@@ -79,6 +81,8 @@ Partial Class FrmPreciosProductos
         'TrueDBGridComponentes
         '
         Me.TrueDBGridComponentes.AlternatingRows = True
+        Me.TrueDBGridComponentes.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TrueDBGridComponentes.Caption = "Precios Asignados"
         Me.TrueDBGridComponentes.FilterBar = True
         Me.TrueDBGridComponentes.GroupByCaption = "Drag a column header here to group by that column"
@@ -89,7 +93,7 @@ Partial Class FrmPreciosProductos
         Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75
         Me.TrueDBGridComponentes.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridComponentes.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TrueDBGridComponentes.Size = New System.Drawing.Size(345, 222)
+        Me.TrueDBGridComponentes.Size = New System.Drawing.Size(331, 222)
         Me.TrueDBGridComponentes.TabIndex = 137
         Me.TrueDBGridComponentes.Text = "C1TrueDBGrid1"
         Me.TrueDBGridComponentes.PropBag = resources.GetString("TrueDBGridComponentes.PropBag")
@@ -119,11 +123,12 @@ Partial Class FrmPreciosProductos
         '
         'Label9
         '
+        Me.Label9.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.Label9.AutoSize = True
         Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label9.Location = New System.Drawing.Point(117, 23)
+        Me.Label9.Location = New System.Drawing.Point(110, 23)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(121, 13)
         Me.Label9.TabIndex = 166
@@ -142,10 +147,12 @@ Partial Class FrmPreciosProductos
         '
         'PictureBox1
         '
+        Me.PictureBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox1.Location = New System.Drawing.Point(-4, -2)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(749, 60)
+        Me.PictureBox1.Size = New System.Drawing.Size(356, 60)
         Me.PictureBox1.TabIndex = 164
         Me.PictureBox1.TabStop = False
         '
@@ -153,7 +160,7 @@ Partial Class FrmPreciosProductos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(358, 430)
+        Me.ClientSize = New System.Drawing.Size(344, 430)
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.PictureBox1)
@@ -163,6 +170,8 @@ Partial Class FrmPreciosProductos
         Me.Controls.Add(Me.ButtonBorrar)
         Me.Controls.Add(Me.Button8)
         Me.Controls.Add(Me.TrueDBGridComponentes)
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "FrmPreciosProductos"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "PreciosProductos"

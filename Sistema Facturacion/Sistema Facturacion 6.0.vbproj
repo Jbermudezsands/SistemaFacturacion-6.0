@@ -415,6 +415,12 @@
     <Compile Include="frmPlanillaConductores.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmPreciosFacturacion.Designer.vb">
+      <DependentUpon>FrmPreciosFacturacion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPreciosFacturacion.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmPreConsultas.Designer.vb">
       <DependentUpon>FrmPreConsultas.vb</DependentUpon>
     </Compile>
@@ -1804,6 +1810,10 @@
     <EmbeddedResource Include="frmPlanillaConductores.resx">
       <SubType>Designer</SubType>
       <DependentUpon>frmPlanillaConductores.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPreciosFacturacion.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmPreciosFacturacion.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmPreConsultas.resx">
       <SubType>Designer</SubType>

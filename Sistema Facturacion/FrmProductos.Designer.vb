@@ -152,6 +152,7 @@ Partial Class FrmProductos
         Me.Impuestos = New System.Windows.Forms.TabPage
         Me.Alternativos = New System.Windows.Forms.TabPage
         Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.BtnActualizar = New System.Windows.Forms.Button
         Me.BtnQuinarUnd = New System.Windows.Forms.Button
         Me.BtnQuitar = New System.Windows.Forms.Button
         Me.Button13 = New System.Windows.Forms.Button
@@ -1590,6 +1591,7 @@ Partial Class FrmProductos
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.BtnActualizar)
         Me.TabPage1.Controls.Add(Me.BtnQuinarUnd)
         Me.TabPage1.Controls.Add(Me.BtnQuitar)
         Me.TabPage1.Controls.Add(Me.Button13)
@@ -1603,16 +1605,30 @@ Partial Class FrmProductos
         Me.TabPage1.Text = "Unidad Medida"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
+        'BtnActualizar
+        '
+        Me.BtnActualizar.Enabled = False
+        Me.BtnActualizar.Image = CType(resources.GetObject("BtnActualizar.Image"), System.Drawing.Image)
+        Me.BtnActualizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.BtnActualizar.Location = New System.Drawing.Point(551, 64)
+        Me.BtnActualizar.Name = "BtnActualizar"
+        Me.BtnActualizar.Size = New System.Drawing.Size(98, 39)
+        Me.BtnActualizar.TabIndex = 179
+        Me.BtnActualizar.Tag = "28"
+        Me.BtnActualizar.Text = "Actualizar"
+        Me.BtnActualizar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnActualizar.UseVisualStyleBackColor = True
+        '
         'BtnQuinarUnd
         '
         Me.BtnQuinarUnd.Image = CType(resources.GetObject("BtnQuinarUnd.Image"), System.Drawing.Image)
-        Me.BtnQuinarUnd.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.BtnQuinarUnd.Location = New System.Drawing.Point(574, 15)
+        Me.BtnQuinarUnd.ImageAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.BtnQuinarUnd.Location = New System.Drawing.Point(551, 15)
         Me.BtnQuinarUnd.Name = "BtnQuinarUnd"
-        Me.BtnQuinarUnd.Size = New System.Drawing.Size(75, 67)
+        Me.BtnQuinarUnd.Size = New System.Drawing.Size(98, 43)
         Me.BtnQuinarUnd.TabIndex = 145
         Me.BtnQuinarUnd.Text = "Quitar"
-        Me.BtnQuinarUnd.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnQuinarUnd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.BtnQuinarUnd.UseVisualStyleBackColor = True
         '
         'BtnQuitar
@@ -1643,7 +1659,6 @@ Partial Class FrmProductos
         '
         'tdbGridUndMedidaVrsPrecio
         '
-        Me.tdbGridUndMedidaVrsPrecio.AllowUpdate = False
         Me.tdbGridUndMedidaVrsPrecio.AlternatingRows = True
         Me.tdbGridUndMedidaVrsPrecio.Caption = "Unidad Medida Vrs Lista Precio"
         Me.tdbGridUndMedidaVrsPrecio.FilterBar = True
@@ -1910,5 +1925,6 @@ Partial Class FrmProductos
     Friend WithEvents Button13 As System.Windows.Forms.Button
     Friend WithEvents BtnQuitar As System.Windows.Forms.Button
     Friend WithEvents BtnQuinarUnd As System.Windows.Forms.Button
+    Friend WithEvents BtnActualizar As System.Windows.Forms.Button
 
 End Class

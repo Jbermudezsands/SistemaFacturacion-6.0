@@ -4,7 +4,137 @@ Imports System.IO
 Imports System.Drawing.Imaging
 
 Module Funciones
-    
+    Public Sub AjustarPrecios(ByVal Codigo_Producto As String, ByVal Costo_Unitario As Double, ByVal Costo_UnitarioD As Double)
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim SqlSring As String, Cont As Double, i As Double = 0, Porciento As Double, Incremento As Double
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim Id_UnidadMedida As Double, Cod_TipoPrecio As String = "", NuevoPrecio As Double = 0, NuevoPrecioDolar As Double = 0
+
+
+
+
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////////////////////////ACTUALIZO LOS PRECIOS DE LA TABLA PRECIOS ///////////////////////////////////////////////
+        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlSring = "SELECT Precios.Cod_Productos, Precios.Cod_TipoPrecio, Precios.idUnidadMedida, Precios.Monto_Precio, Precios.Monto_PrecioDolar, Precios.PrecioDolar, Precios.Costo_Unitario, Precios.Porciento, TipoPrecio.PrecioPorcentual FROM  Precios INNER JOIN  TipoPrecio ON Precios.Cod_TipoPrecio = TipoPrecio.Cod_TipoPrecio WHERE(TipoPrecio.PrecioPorcentual = 1) AND (Precios.Cod_Productos = '" & Codigo_Producto & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlSring, MiConexion)
+        DataAdapter.Fill(DataSet, "Precios")
+        Cont = DataSet.Tables("Precios").Rows.Count
+        i = 0
+        Do While Cont > i
+            If Not IsDBNull(DataSet.Tables("Precios").Rows(i)("Porciento")) Then
+                Porciento = DataSet.Tables("Precios").Rows(i)("Porciento")
+            Else
+                Porciento = 0
+            End If
+
+            Porciento = Porciento / 100
+            Incremento = 1 + Porciento
+
+            Id_UnidadMedida = DataSet.Tables("Precios").Rows(i)("idUnidadMedida")
+            Cod_TipoPrecio = DataSet.Tables("Precios").Rows(i)("Cod_TipoPrecio")
+
+            NuevoPrecio = Format(Costo_Unitario * Incremento, "####0.00")
+            NuevoPrecioDolar = Format(Costo_UnitarioD * Incremento, "####0.00")
+
+
+            MiConexion.Close()
+
+            SqlSring = "SELECT  TipoPrecio.Tipo_Precio, Precios.Monto_Precio AS Costo, TipoPrecio.Porciento, Precios.Monto_Precio, Precios.Monto_PrecioDolar, Precios.PrecioDolar FROM  Precios INNER JOIN  TipoPrecio ON Precios.Cod_TipoPrecio = TipoPrecio.Cod_TipoPrecio  " & _
+                        "WHERE (Precios.Cod_Productos = '" & Codigo_Producto & "') AND (Precios.idUnidadMedida = " & Id_UnidadMedida & ") AND (Precios.Cod_TipoPrecio = " & Cod_TipoPrecio & ")"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlSring, MiConexion)
+            DataAdapter.Fill(DataSet, "UnidadMedida")
+            If Not DataSet.Tables("UnidadMedida").Rows.Count = 0 Then
+                '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
+                MiConexion.Close()
+                StrSqlUpdate = "UPDATE [Precios]   SET [Monto_Precio] = " & NuevoPrecio & ", [Monto_PrecioDolar] = " & NuevoPrecioDolar & ", [Costo_Unitario] = " & Costo_Unitario & " " & _
+                                "WHERE (Precios.Cod_Productos = '" & Codigo_Producto & "') AND (Precios.idUnidadMedida = " & Id_UnidadMedida & ") AND (Precios.Cod_TipoPrecio = " & Cod_TipoPrecio & ")"
+                MiConexion.Open()
+                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                iResultado = ComandoUpdate.ExecuteNonQuery
+                MiConexion.Close()
+
+            End If
+
+            i = i + 1
+        Loop
+
+
+
+
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////////////////////////ACTUALIZO LOS PRECIOS DE LA TABLA UNIDAD DE MEDIDA ///////////////////////////////////////////////
+        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlSring = "SELECT idUnidadMedida, Cod_Productos, Unidad_Medida, Cod_TipoPrecio, Cantidad_Unidades, Precio_Unitario, Unidad_Defecto, Precio_Unitario_Dolar, Porciento  FROM UnidadMedidaProductos WHERE (Cod_Productos = '" & Codigo_Producto & "') "
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlSring, MiConexion)
+        DataAdapter.Fill(DataSet, "PreciosuUND")
+        Cont = DataSet.Tables("PreciosuUND").Rows.Count
+        i = 0
+        Do While Cont > i
+
+
+            If Not IsDBNull(DataSet.Tables("PreciosuUND").Rows(i)("Porciento")) Then
+                Porciento = DataSet.Tables("PreciosuUND").Rows(i)("Porciento")
+            Else
+                Porciento = 0
+            End If
+
+            Porciento = Porciento / 100
+            Incremento = 1 + Porciento
+
+            Id_UnidadMedida = DataSet.Tables("PreciosuUND").Rows(i)("idUnidadMedida")
+            'Cod_TipoPrecio = DataSet.Tables("PreciosuUND").Rows(i)("Cod_TipoPrecio")
+
+            NuevoPrecio = Format(Costo_Unitario * Incremento, "####0.00")
+            NuevoPrecioDolar = Format(Costo_UnitarioD * Incremento, "####0.00")
+
+
+
+
+            '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
+            MiConexion.Close()
+            StrSqlUpdate = "UPDATE [UnidadMedidaProductos]   SET [Precio_Unitario] = " & NuevoPrecio & ", [Precio_Unitario_Dolar] = " & NuevoPrecioDolar & " " & _
+                            "WHERE (Cod_Productos = '" & Codigo_Producto & "') AND (idUnidadMedida = " & Id_UnidadMedida & ") "
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+
+            i = i + 1
+        Loop
+
+
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////////////////////////ACTUALIZO LOS PRECIOS DEL PRODUCTO ///////////////////////////////////////////////
+        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlSring = "SELECT  Productos.*  FROM Productos WHERE (Cod_Productos = '" & Codigo_Producto & "') "
+        DataSet = BuscaConsulta(SqlSring, "Producto").Copy
+        If DataSet.Tables("Producto").Rows.Count <> 0 Then
+
+            If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Porcentaje_Aumento")) Then
+                Porciento = DataSet.Tables("Producto").Rows(0)("Porcentaje_Aumento")
+            Else
+                Porciento = 0
+            End If
+
+            Porciento = Porciento / 100
+            Incremento = 1 + Porciento
+
+            NuevoPrecio = Format(Costo_Unitario * Incremento, "####0.00")
+            NuevoPrecioDolar = Format(Costo_UnitarioD * Incremento, "####0.00")
+
+            SqlSring = "UPDATE Productos  SET [Precio_Venta] = " & NuevoPrecio & ", [Precio_Lista] = " & NuevoPrecioDolar & "  WHERE (Cod_Productos = '" & Codigo_Producto & "') "
+            UpDateConsulta(SqlSring)
+
+        End If
+
+
+
+
+
+    End Sub
 
     Public Sub Grabar_PreConsultas(ByVal Numero_Expediente As String, ByVal Fecha_Hora As Date, ByVal Activo As Boolean, ByVal Procesado As Boolean, ByVal Cancelado As Boolean, ByVal idAdmision As Double, ByVal Sistolica As Double, ByVal Diastolica As Double, ByVal Temperatura As Double, ByVal AzucarSangre As Double, ByVal IdConsultorio As Double, ByVal Peso As Double, ByVal Talla As Double)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -103,6 +233,16 @@ Module Funciones
             MsgBox(Err.Number)
         End Try
 
+    End Sub
+    Public Sub UpDateConsulta(ByVal StrSqlUpdate As String)
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+
+        MiConexion.Close()
+        MiConexion.Open()
+        ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+        iResultado = ComandoUpdate.ExecuteNonQuery
+        MiConexion.Close()
     End Sub
 
 
@@ -9192,7 +9332,7 @@ errSub:
             'DataAdapter.Fill(DataSet, "DetalleFactura")
             'FrmFacturas.BindingDetalle.DataSource = DataSet.Tables("DetalleFactura")
 
-            SqlString = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.CodTarea, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura, Detalle_Facturas.id_Detalle_Factura FROM Detalle_Facturas WHERE (Detalle_Facturas.Numero_Factura = N'-1')"
+            SqlString = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.CodTarea, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura, Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Cod_TipoPrecio, Detalle_Facturas.idUnidadMedida, Detalle_Facturas.Unidad_Medida FROM Detalle_Facturas WHERE (Detalle_Facturas.Numero_Factura = N'-1')"
             'SqlString = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM Detalle_Facturas INNER JOIN  Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos WHERE (Detalle_Facturas.Numero_Factura = N'-1')"
             'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
             'DataAdapter.Fill(DataSet, "DetalleFactura")
@@ -9229,8 +9369,9 @@ errSub:
             FrmFacturas.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Factura").Visible = False
             FrmFacturas.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Factura").Visible = False
             FrmFacturas.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Factura").Visible = False
-            'FrmFacturas.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Visible = False
-            'FrmFacturas.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = False
+            FrmFacturas.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_TipoPrecio").Visible = False
+            FrmFacturas.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("idUnidadMedida").Visible = False
+            FrmFacturas.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Unidad_Medida").Visible = False
 
         Else
             '///////////////////////////////////////BUSCO EL DETALLE DE LA FACTURA///////////////////////////////////////////////////////
@@ -9238,7 +9379,7 @@ errSub:
             '    "WHERE (Detalle_Facturas.Numero_Factura = '-0001')  ORDER BY id_Detalle_Factura"
             'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
             'DataAdapter.Fill(DataSet, "DetalleFacturas")
-            SqlString = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura, Detalle_Facturas.id_Detalle_Factura FROM Detalle_Facturas WHERE (Detalle_Facturas.Numero_Factura = N'-1')"
+            SqlString = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura, Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Cod_TipoPrecio, Detalle_Facturas.idUnidadMedida, Detalle_Facturas.Unidad_Medida   FROM Detalle_Facturas WHERE (Detalle_Facturas.Numero_Factura = N'-1')"
             'SqlString = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM Detalle_Facturas INNER JOIN  Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos WHERE (Detalle_Facturas.Numero_Factura = N'-1')"
             'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
             'DataAdapter.Fill(DataSet, "DetalleFactura")
@@ -9273,6 +9414,9 @@ errSub:
             FrmFacturas.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Factura").Visible = False
             FrmFacturas.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Factura").Visible = False
             FrmFacturas.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Factura").Visible = False
+            FrmFacturas.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_TipoPrecio").Visible = False
+            FrmFacturas.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("idUnidadMedida").Visible = False
+            FrmFacturas.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Unidad_Medida").Visible = False
 
         End If
 

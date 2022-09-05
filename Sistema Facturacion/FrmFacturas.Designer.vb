@@ -110,6 +110,7 @@ Partial Class FrmFacturas
         Me.BtnSalida = New System.Windows.Forms.Button
         Me.Button5 = New System.Windows.Forms.Button
         Me.PictureBox3 = New System.Windows.Forms.PictureBox
+        Me.tdbGridUndMedidaVrsPrecio = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrueDBGridMetodo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
@@ -128,6 +129,7 @@ Partial Class FrmFacturas
         CType(Me.BindingDetalle, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox5.SuspendLayout()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.tdbGridUndMedidaVrsPrecio, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Button9
@@ -1194,11 +1196,32 @@ Partial Class FrmFacturas
         Me.PictureBox3.TabIndex = 227
         Me.PictureBox3.TabStop = False
         '
+        'tdbGridUndMedidaVrsPrecio
+        '
+        Me.tdbGridUndMedidaVrsPrecio.AlternatingRows = True
+        Me.tdbGridUndMedidaVrsPrecio.Caption = "Unidad Medida Vrs Lista Precio"
+        Me.tdbGridUndMedidaVrsPrecio.FilterBar = True
+        Me.tdbGridUndMedidaVrsPrecio.FlatStyle = C1.Win.C1TrueDBGrid.FlatModeEnum.Standard
+        Me.tdbGridUndMedidaVrsPrecio.GroupByCaption = "Drag a column header here to group by that column"
+        Me.tdbGridUndMedidaVrsPrecio.Images.Add(CType(resources.GetObject("tdbGridUndMedidaVrsPrecio.Images"), System.Drawing.Image))
+        Me.tdbGridUndMedidaVrsPrecio.Location = New System.Drawing.Point(125, 356)
+        Me.tdbGridUndMedidaVrsPrecio.Name = "tdbGridUndMedidaVrsPrecio"
+        Me.tdbGridUndMedidaVrsPrecio.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.tdbGridUndMedidaVrsPrecio.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.tdbGridUndMedidaVrsPrecio.PreviewInfo.ZoomFactor = 75
+        Me.tdbGridUndMedidaVrsPrecio.PrintInfo.PageSettings = CType(resources.GetObject("tdbGridUndMedidaVrsPrecio.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.tdbGridUndMedidaVrsPrecio.Size = New System.Drawing.Size(515, 118)
+        Me.tdbGridUndMedidaVrsPrecio.TabIndex = 228
+        Me.tdbGridUndMedidaVrsPrecio.TabStop = False
+        Me.tdbGridUndMedidaVrsPrecio.Text = "C1TrueDBGrid1"
+        Me.tdbGridUndMedidaVrsPrecio.PropBag = resources.GetString("tdbGridUndMedidaVrsPrecio.PropBag")
+        '
         'FrmFacturas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(899, 499)
+        Me.Controls.Add(Me.tdbGridUndMedidaVrsPrecio)
         Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.GroupBox5)
         Me.Controls.Add(Me.DTPFechaHora)
@@ -1275,6 +1298,7 @@ Partial Class FrmFacturas
         CType(Me.BindingDetalle, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox5.ResumeLayout(False)
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.tdbGridUndMedidaVrsPrecio, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1368,4 +1392,5 @@ Partial Class FrmFacturas
     Friend WithEvents TxtNumeroFactura As System.Windows.Forms.TextBox
     Friend WithEvents BtnFacturas As C1.Win.C1Input.C1Button
     Friend WithEvents ChkAplicarCtaXCobrar As System.Windows.Forms.CheckBox
+    Friend WithEvents tdbGridUndMedidaVrsPrecio As C1.Win.C1TrueDBGrid.C1TrueDBGrid
 End Class

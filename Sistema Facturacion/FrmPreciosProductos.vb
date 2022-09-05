@@ -1,6 +1,6 @@
 Public Class FrmPreciosProductos
     Public MiConexion As New SqlClient.SqlConnection(Conexion), CodProducto As String, NombreProducto As String, PrecioProducto As Double, ValidarRegistros As Boolean = False
-    Public Cod_TipoPrecio As String, PrecioProductoDolar As Double, IdUnidadMedida As Double
+    Public Cod_TipoPrecio As String, PrecioProductoDolar As Double, IdUnidadMedida As Double, Porciento As Double
 
     Private Sub cmdAddDocente_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdAddDocente.Click
         Dim CodigoPrecio As String
@@ -82,7 +82,7 @@ Public Class FrmPreciosProductos
         '*******************************************************************************************************************************
         '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
         '******************************************************************************************************************************
-        SqlString = "SELECT TipoPrecio.Tipo_Precio AS Descripcion, Precios.Monto_Precio, Precios.Monto_PrecioDolar, TipoPrecio.Cod_TipoPrecio FROM  Precios INNER JOIN TipoPrecio ON Precios.Cod_TipoPrecio = TipoPrecio.Cod_TipoPrecio WHERE (Precios.Cod_Productos = '-10000000')"
+        SqlString = "SELECT TipoPrecio.Tipo_Precio AS Descripcion, Precios.Monto_Precio, Precios.Monto_PrecioDolar, TipoPrecio.Cod_TipoPrecio, Precios.Porciento FROM  Precios INNER JOIN TipoPrecio ON Precios.Cod_TipoPrecio = TipoPrecio.Cod_TipoPrecio WHERE (Precios.Cod_Productos = '-10000000')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "Precios")
 
@@ -117,6 +117,7 @@ Public Class FrmPreciosProductos
             oDataRow("Monto_Precio") = PrecioVenta
             oDataRow("Monto_PrecioDolar") = PrecioVentaDolar
             oDataRow("Cod_TipoPrecio") = DataSet.Tables("PreciosFactura").Rows(Iposicion)("Cod_TipoPrecio")
+            oDataRow("Porciento") = DataSet.Tables("PreciosFactura").Rows(Iposicion)("Porciento")
             DataSet.Tables("Precios").Rows.Add(oDataRow)
             Iposicion = Iposicion + 1
         Loop
@@ -130,14 +131,15 @@ Public Class FrmPreciosProductos
 
         Me.BindingDetalle.DataSource = DataSet.Tables("Precios")
         Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
-        Me.TrueDBGridComponentes.Columns(0).Caption = "Descripcion Precio"
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 140
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Locked = True
-        Me.TrueDBGridComponentes.Columns(1).Caption = "Precio C$"
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 70
-        Me.TrueDBGridComponentes.Columns(2).Caption = "Precio $"
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 70
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Visible = False
+        Me.TrueDBGridComponentes.Columns("Descripcion").Caption = "Descripcion Precio"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion").Width = 140
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion").Locked = True
+        Me.TrueDBGridComponentes.Columns("Monto_Precio").Caption = "Precio C$"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Monto_Precio").Width = 70
+        Me.TrueDBGridComponentes.Columns("Monto_PrecioDolar").Caption = "Precio $"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Monto_PrecioDolar").Width = 70
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_TipoPrecio").Visible = False
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Porciento").Visible = False
 
     End Sub
 
@@ -197,7 +199,7 @@ Public Class FrmPreciosProductos
             PrecioProducto = Me.BindingDetalle.Item(Posicion)("Monto_PrecioDolar")
         End If
 
-
+        Me.Porciento = Me.BindingDetalle.Item(Posicion)("Porciento")
         Me.PrecioProductoDolar = Me.BindingDetalle.Item(Posicion)("Monto_PrecioDolar")
         Me.Cod_TipoPrecio = Me.BindingDetalle.Item(Posicion)("Cod_TipoPrecio")
 

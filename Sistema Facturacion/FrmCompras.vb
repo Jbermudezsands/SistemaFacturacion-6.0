@@ -6,6 +6,22 @@ Public Class FrmCompras
     Public NumeroLote As String = "SINLOTE", FechaLote As Date = "01/01/1900", MiconexionContabilidad As New SqlClient.SqlConnection(ConexionContabilidad)
     Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder, EsSolicitud As Boolean = False
     Public Fecha_Compra As Date, FechaHoraCompra As Date, NumeroCompra As String, TipoCompra As String, Impresora_Defecto As String
+    Public Function CostoUnitarioPrecio(ByVal Codigo_Producto As String) As Double
+        Dim SqlString As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+
+        SqlString = "SELECT Cod_Productos, Cod_TipoPrecio, idUnidadMedida, Monto_Precio, Monto_PrecioDolar, PrecioDolar, Costo_Unitario FROM Precios WHERE (Cod_Productos = '" & Codigo_Producto & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Precios")
+        If Not DataSet.Tables("Precios").Rows.Count = 0 Then
+            CostoUnitarioPrecio = DataSet.Tables("Precios").Rows(0)("Costo_Unitario")
+        End If
+
+    End Function
+
+
+
+
 
     Public Sub CargarCompra(ByVal FechaCompra As Date, ByVal FechaHoraCompra As Date, ByVal NumeroCompra As String, ByVal TipoCompra As String)
         Dim SqlDatos As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SqlString As String
@@ -368,6 +384,7 @@ Public Class FrmCompras
         Dim ConsecutivoCompra As Double, iPosicion As Double, Registros As Double, NumeroCompra As String
         Dim CodigoProducto As String, PrecioUnitario As Double, Descuento As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double
         Dim FacturaBodega As Boolean = False, CompraBodega As Boolean = False, SqlConsecutivo As String
+        Dim CostoProducto As Double, CostoProductoD As Double
         'Dim DiferenciaCantidad As Double, DiferenciaPrecio As Double
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -455,10 +472,10 @@ Public Class FrmCompras
         If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")) Then
             PrecioUnitario = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
         End If
-        If Me.TrueDBGridComponentes.Columns(3).Text <> "" Then
-            PrecioUnitario = Me.TrueDBGridComponentes.Columns(3).Text
+        If Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text <> "" Then
+            PrecioUnitario = Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text
         Else
-            Me.TrueDBGridComponentes.Columns(3).Text = 0
+            Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = 0
         End If
         If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descuento")) Then
             Descuento = Me.BindingDetalle.Item(iPosicion)("Descuento")
@@ -474,6 +491,63 @@ Public Class FrmCompras
             Cantidad = Me.BindingDetalle.Item(iPosicion)("Cantidad")
             Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
         End If
+
+
+
+        Select Case e.ColIndex
+            Case 2
+
+                '///////////////////////////////////////////////////////////////////////////////////////
+                '/////////////////////BUSCO VARIACION DE LOS COSTOS PARA SUGERIR AJUSTE DE PRECIOS /////
+                '////////////////////////////////////////////////////////////////////////////////////////////
+                CostoProducto = CostoPromedio(Me.TrueDBGridComponentes.Item(Me.TrueDBGridComponentes.Row)("Cod_Producto"))
+                CostoProductoD = CostoPromedioDolar
+
+                If Me.TxtMonedaFactura.Text = "Cordobas" Then
+                    If CostoProducto <> CostoUnitarioPrecio(Me.TrueDBGridComponentes.Item(Me.TrueDBGridComponentes.Row)("Cod_Producto")) Then
+                        If MsgBox("¡¡Existe Diferencia de Costo!! ¿Desea ajustar Precios?", MsgBoxStyle.YesNo, "Zeus Facturacion") = MsgBoxResult.Yes Then
+                            AjustarPrecios(Me.TrueDBGridComponentes.Item(Me.TrueDBGridComponentes.Row)("Cod_Producto"), CostoProducto, CostoProductoD)
+                            MsgBox("¡¡Cambio Correcto!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+                        End If
+                    End If
+
+                ElseIf Me.TxtMonedaFactura.Text = "Dolares" Then
+                    If CostoProductoD <> CostoUnitarioPrecio(Me.TrueDBGridComponentes.Item(Me.TrueDBGridComponentes.Row)("Cod_Producto")) Then
+                        If MsgBox("¡¡Existe Diferencia de Costo!! ¿Desea ajustar Precios?", MsgBoxStyle.YesNo, "Zeus Facturacion") = MsgBoxResult.Yes Then
+                            AjustarPrecios(Me.TrueDBGridComponentes.Item(Me.TrueDBGridComponentes.Row)("Cod_Producto"), CostoProducto, CostoProductoD)
+                            MsgBox("¡¡Cambio Correcto!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+                        End If
+                    End If
+
+                End If
+
+            Case 3
+
+                '///////////////////////////////////////////////////////////////////////////////////////
+                '/////////////////////BUSCO VARIACION DE LOS COSTOS PARA SUGERIR AJUSTE DE PRECIOS /////
+                '////////////////////////////////////////////////////////////////////////////////////////////
+                CostoProducto = CostoPromedio(Me.TrueDBGridComponentes.Item(Me.TrueDBGridComponentes.Row)("Cod_Producto"))
+                CostoProductoD = CostoPromedioDolar
+
+                If Me.TxtMonedaFactura.Text = "Cordobas" Then
+                    If CostoProducto <> CostoUnitarioPrecio(Me.TrueDBGridComponentes.Item(Me.TrueDBGridComponentes.Row)("Cod_Producto")) Then
+                        If MsgBox("¡¡Existe Diferencia de Costo!! ¿Desea ajustar Precios?", MsgBoxStyle.YesNo, "Zeus Facturacion") = MsgBoxResult.Yes Then
+                            AjustarPrecios(Me.TrueDBGridComponentes.Item(Me.TrueDBGridComponentes.Row)("Cod_Producto"), CostoProducto, CostoProductoD)
+                            MsgBox("¡¡Cambio Correcto!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+                        End If
+                    End If
+
+                ElseIf Me.TxtMonedaFactura.Text = "Dolares" Then
+                    If CostoProductoD <> CostoUnitarioPrecio(Me.TrueDBGridComponentes.Item(Me.TrueDBGridComponentes.Row)("Cod_Producto")) Then
+                        If MsgBox("¡¡Existe Diferencia de Costo!! ¿Desea ajustar Precios?", MsgBoxStyle.YesNo, "Zeus Facturacion") = MsgBoxResult.Yes Then
+                            AjustarPrecios(Me.TrueDBGridComponentes.Item(Me.TrueDBGridComponentes.Row)("Cod_Producto"), CostoProducto, CostoProductoD)
+                            MsgBox("¡¡Cambio Correcto!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+                        End If
+                    End If
+
+                End If
+
+        End Select
 
 
         'Select Case e.ColIndex
@@ -616,7 +690,7 @@ Public Class FrmCompras
         Dim CodProducto As String, CodImpuesto As String
         Dim TipoProducto As String = "Productos", TipoDescuento As String = "ImporteFijo"
         Dim PrecioDescDolar As Double, PrecioDescCordobas As Double, PorcientoDescuento As Double
-        Dim iPosicion As Double
+
 
         CodProducto = Me.TrueDBGridComponentes.Columns(0).Text
         'If TieneMovimientos(CodProducto, Me.DTPFechaHora.Value) = True Then
@@ -718,6 +792,7 @@ Public Class FrmCompras
                 If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                 End If
+
             Case 4
 
                 If Me.TrueDBGridComponentes.Columns(4).Text <> "" Then
@@ -3657,17 +3732,15 @@ Public Class FrmCompras
     End Sub
 
 
-
-
     Private Sub TrueDBGridComponentes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.Click
 
     End Sub
 
-    Private Sub TrueDBGridComponentes_ControlAdded(ByVal sender As Object, ByVal e As System.Windows.Forms.ControlEventArgs) Handles TrueDBGridComponentes.ControlAdded
+    Private Sub TrueDBGridComponentes_ControlRemoved(ByVal sender As Object, ByVal e As System.Windows.Forms.ControlEventArgs) Handles TrueDBGridComponentes.ControlRemoved
 
     End Sub
 
-    Private Sub TrueDBGridComponentes_ChangeUICues(ByVal sender As Object, ByVal e As System.Windows.Forms.UICuesEventArgs) Handles TrueDBGridComponentes.ChangeUICues
+    Private Sub TrueDBGridComponentes_AfterSort(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.FilterEventArgs) Handles TrueDBGridComponentes.AfterSort
 
     End Sub
 End Class
