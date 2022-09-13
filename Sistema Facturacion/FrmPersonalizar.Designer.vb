@@ -38,7 +38,7 @@ Partial Class FrmPersonalizar
         Me.CboMonedaCompra = New System.Windows.Forms.ComboBox
         Me.Label4 = New System.Windows.Forms.Label
         Me.GroupBox12 = New System.Windows.Forms.GroupBox
-        Me.ChkFacturaTarea = New System.Windows.Forms.CheckBox
+        Me.ChkFacturarLotes = New System.Windows.Forms.CheckBox
         Me.ChkConsecutivoFactura = New System.Windows.Forms.CheckBox
         Me.GroupBox15 = New System.Windows.Forms.GroupBox
         Me.OptIvaSuma = New System.Windows.Forms.RadioButton
@@ -177,6 +177,7 @@ Partial Class FrmPersonalizar
         Me.Button8 = New System.Windows.Forms.Button
         Me.BindingInteres = New System.Windows.Forms.BindingSource(Me.components)
         Me.BindingMetodo = New System.Windows.Forms.BindingSource(Me.components)
+        Me.ChkFacturarUnidadMedida = New System.Windows.Forms.CheckBox
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -282,6 +283,7 @@ Partial Class FrmPersonalizar
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.ChkFacturarLotes)
         Me.TabPage1.Controls.Add(Me.ChkPedirCantEscaner)
         Me.TabPage1.Controls.Add(Me.GroupBox13)
         Me.TabPage1.Controls.Add(Me.GroupBox12)
@@ -407,7 +409,7 @@ Partial Class FrmPersonalizar
         '
         'GroupBox12
         '
-        Me.GroupBox12.Controls.Add(Me.ChkFacturaTarea)
+        Me.GroupBox12.Controls.Add(Me.ChkFacturarUnidadMedida)
         Me.GroupBox12.Controls.Add(Me.ChkConsecutivoFactura)
         Me.GroupBox12.Controls.Add(Me.GroupBox15)
         Me.GroupBox12.Controls.Add(Me.CboImprimeFactura)
@@ -421,15 +423,15 @@ Partial Class FrmPersonalizar
         Me.GroupBox12.TabStop = False
         Me.GroupBox12.Text = "Configuracion Monedas Facturas"
         '
-        'ChkFacturaTarea
+        'ChkFacturarLotes
         '
-        Me.ChkFacturaTarea.AutoSize = True
-        Me.ChkFacturaTarea.Location = New System.Drawing.Point(232, 84)
-        Me.ChkFacturaTarea.Name = "ChkFacturaTarea"
-        Me.ChkFacturaTarea.Size = New System.Drawing.Size(115, 17)
-        Me.ChkFacturaTarea.TabIndex = 14
-        Me.ChkFacturaTarea.Text = "Facturar con Lotes"
-        Me.ChkFacturaTarea.UseVisualStyleBackColor = True
+        Me.ChkFacturarLotes.AutoSize = True
+        Me.ChkFacturarLotes.Location = New System.Drawing.Point(257, 219)
+        Me.ChkFacturarLotes.Name = "ChkFacturarLotes"
+        Me.ChkFacturarLotes.Size = New System.Drawing.Size(115, 17)
+        Me.ChkFacturarLotes.TabIndex = 14
+        Me.ChkFacturarLotes.Text = "Facturar con Lotes"
+        Me.ChkFacturarLotes.UseVisualStyleBackColor = True
         '
         'ChkConsecutivoFactura
         '
@@ -1938,6 +1940,16 @@ Partial Class FrmPersonalizar
         Me.Button8.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.Button8.UseVisualStyleBackColor = True
         '
+        'ChkFacturarUnidadMedida
+        '
+        Me.ChkFacturarUnidadMedida.AutoSize = True
+        Me.ChkFacturarUnidadMedida.Location = New System.Drawing.Point(226, 84)
+        Me.ChkFacturarUnidadMedida.Name = "ChkFacturarUnidadMedida"
+        Me.ChkFacturarUnidadMedida.Size = New System.Drawing.Size(161, 17)
+        Me.ChkFacturarUnidadMedida.TabIndex = 118
+        Me.ChkFacturarUnidadMedida.Text = "Facturar con Unidad Medida"
+        Me.ChkFacturarUnidadMedida.UseVisualStyleBackColor = True
+        '
         'FrmPersonalizar
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2132,7 +2144,7 @@ Partial Class FrmPersonalizar
     Friend WithEvents OptIvaSuma As System.Windows.Forms.RadioButton
     Friend WithEvents OptIva1 As System.Windows.Forms.RadioButton
     Friend WithEvents ChkConsecutivoFactura As System.Windows.Forms.CheckBox
-    Friend WithEvents ChkFacturaTarea As System.Windows.Forms.CheckBox
+    Friend WithEvents ChkFacturarLotes As System.Windows.Forms.CheckBox
     Friend WithEvents ChkEfectivo As System.Windows.Forms.CheckBox
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents ProgressBar As System.Windows.Forms.ProgressBar
@@ -2190,4 +2202,5 @@ Partial Class FrmPersonalizar
     Friend WithEvents BtnDetalleCompra As System.Windows.Forms.Button
     Friend WithEvents ChkPedirCantEscaner As System.Windows.Forms.CheckBox
     Friend WithEvents Button14 As System.Windows.Forms.Button
+    Friend WithEvents ChkFacturarUnidadMedida As System.Windows.Forms.CheckBox
 End Class

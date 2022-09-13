@@ -98,7 +98,7 @@ Partial Class FrmPreciosFacturacion
         '
         'tdbGridUnidadMedida
         '
-        Me.tdbGridUnidadMedida.AllowAddNew = True
+        Me.tdbGridUnidadMedida.AllowUpdate = False
         Me.tdbGridUnidadMedida.AlternatingRows = True
         Me.tdbGridUnidadMedida.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)

@@ -11,6 +11,207 @@ Public Class FrmFacturas
     Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder, CambioCliente As Boolean, Impresora_Defecto As String
     Private oHebraCliente As Thread, SaldoClienteH As Double, LimiteCredito As Double, MonedaLimiteCredito As String, BloqueoLimiteCredito As Boolean = False
     Private CodigoCliente As String, FechaFin As Date, Moneda As String, PedirCantEscaner As Boolean, Cantidad_Unidades As Double, PrecioUnt_Unidades As Double, PrecioUnt_UnidadesDolar As Double
+    Public dsUnidad As New DataSet, daUnidad As New SqlClient.SqlDataAdapter, CmdBuilderUnidad As New SqlCommandBuilder
+    Public Sub ActualizaGridUnidadMedida(ByVal IdDetalleFactura As Double)
+        Dim SqlCompras As String
+
+        SqlCompras = "SELECT  UnidadMedidaProductos.Unidad_Medida AS UndMedida, Detalle_Facturas.Unidad_Medida, Detalle_Facturas.Cantidad_Medida, Detalle_Facturas.Precio_Unitario_Medida, Detalle_Facturas.Importe_Medida, Detalle_Facturas.id_Detalle_Factura, UnidadMedidaProductos.Cantidad_Unidades FROM Detalle_Facturas INNER JOIN UnidadMedidaProductos ON Detalle_Facturas.idUnidadMedida = UnidadMedidaProductos.idUnidadMedida  WHERE  (id_Detalle_Factura = " & IdDetalleFactura & "  )"
+        dsUnidad = New DataSet
+        daUnidad = New SqlDataAdapter(SqlCompras, MiConexion)
+        CmdBuilderUnidad = New SqlCommandBuilder(daUnidad)
+        daUnidad.Fill(dsUnidad, "DetalleUnidad")
+        Me.tdbGridUndMedidaVrsPrecio.DataSource = dsUnidad.Tables("DetalleUnidad")
+        Me.tdbGridUndMedidaVrsPrecio.Splits.Item(0).DisplayColumns("UndMedida").Locked = True
+        Me.tdbGridUndMedidaVrsPrecio.Splits.Item(0).DisplayColumns("UndMedida").Width = 80
+        Me.tdbGridUndMedidaVrsPrecio.Columns("UndMedida").Caption = "Und Medida"
+
+        Me.tdbGridUndMedidaVrsPrecio.Splits.Item(0).DisplayColumns("Cantidad_Medida").Width = 80
+        Me.tdbGridUndMedidaVrsPrecio.Columns("Cantidad_Medida").Caption = "Cantidad"
+
+        Me.tdbGridUndMedidaVrsPrecio.Splits.Item(0).DisplayColumns("Unidad_Medida").Locked = True
+        Me.tdbGridUndMedidaVrsPrecio.Splits.Item(0).DisplayColumns("Unidad_Medida").Width = 80
+        Me.tdbGridUndMedidaVrsPrecio.Columns("Unidad_Medida").Caption = "Tipo Precio"
+
+        Me.tdbGridUndMedidaVrsPrecio.Splits.Item(0).DisplayColumns("Precio_Unitario_Medida").Locked = True
+        Me.tdbGridUndMedidaVrsPrecio.Splits.Item(0).DisplayColumns("Precio_Unitario_Medida").Width = 80
+        Me.tdbGridUndMedidaVrsPrecio.Columns("Precio_Unitario_Medida").Caption = "Precio Unit"
+
+        Me.tdbGridUndMedidaVrsPrecio.Splits.Item(0).DisplayColumns("Importe_Medida").Locked = True
+        Me.tdbGridUndMedidaVrsPrecio.Splits.Item(0).DisplayColumns("Importe_Medida").Width = 80
+        Me.tdbGridUndMedidaVrsPrecio.Columns("Importe_Medida").Caption = "Importe"
+
+        Me.tdbGridUndMedidaVrsPrecio.Splits.Item(0).DisplayColumns("Cantidad_Unidades").Visible = False
+        Me.tdbGridUndMedidaVrsPrecio.Splits.Item(0).DisplayColumns("id_Detalle_Factura").Visible = False
+
+
+    End Sub
+
+    Public Sub ActualizaGridDetalleFactura(ByVal Numero_Factura As String, ByVal TipoFactura As String, ByVal FacturasTareas As Boolean, ByVal FacturasLotes As Boolean)
+        Dim SqlCompras As String
+
+        If FacturasTareas = True Then
+            ds.Tables("DetalleFactura").Reset()
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            'SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM Detalle_Facturas   " & _
+            '                 "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura "
+            'Detalle_Facturas.id_Detalle_Factura
+            SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura ,Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Cod_TipoPrecio, Detalle_Facturas.idUnidadMedida,Detalle_Facturas.Unidad_Medida, Detalle_Facturas.Precio_Unitario_Medida, Detalle_Facturas.Importe_Medida, Detalle_Facturas.Cantidad_Medida FROM Detalle_Facturas   " & _
+                                                "WHERE (Detalle_Facturas.Numero_Factura = '" & Numero_Factura & "') AND  (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura "
+            'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
+            'DataAdapter.Fill(DataSet, "DetalleFactura")
+            'Me.BindingDetalle.DataSource = DataSet.Tables("DetalleFactura")
+            ds = New DataSet
+            da = New SqlDataAdapter(SqlCompras, MiConexion)
+            CmdBuilder = New SqlCommandBuilder(da)
+            da.Fill(ds, "DetalleFactura")
+            Me.BindingDetalle.DataSource = ds.Tables("DetalleFactura")
+
+            Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
+            Me.TrueDBGridComponentes.Columns("Cod_Producto").Caption = "Codigo"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Button = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Width = 63
+            Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Caption = "Descripcion"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 227
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
+            Me.TrueDBGridComponentes.Columns("CodTarea").Caption = "Tarea"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Width = 54
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Button = True
+            Me.TrueDBGridComponentes.Columns("Cantidad").Caption = "Cantidad"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 54
+            Me.TrueDBGridComponentes.Columns("Precio_Unitario").Caption = "Precio Unit"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 62
+            Me.TrueDBGridComponentes.Columns("Descuento").Caption = "%Desc"
+            Me.TrueDBGridComponentes.Columns("Descuento").DefaultValue = 0
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Width = 43
+            Me.TrueDBGridComponentes.Columns("Precio_Neto").Caption = "Precio Neto"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Width = 65
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Locked = True
+            Me.TrueDBGridComponentes.Columns("Importe").Caption = "Importe"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Width = 61
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Costo_Unitario").Locked = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Costo_Unitario").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Factura").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Factura").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Factura").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_TipoPrecio").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Factura").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_TipoPrecio").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("idUnidadMedida").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Unidad_Medida").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad_Medida").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario_Medida").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe_Medida").Visible = False
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Visible = False
+            ''Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = False
+
+
+
+        ElseIf FacturasLotes = True Then
+
+            ds.Tables("DetalleFactura").Reset()
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            'SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM Detalle_Facturas   " & _
+            '                 "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura "
+            'Detalle_Facturas.id_Detalle_Factura
+            SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura, Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Cod_TipoPrecio, Detalle_Facturas.idUnidadMedida,Detalle_Facturas.Unidad_Medida, Detalle_Facturas.Precio_Unitario_Medida, Detalle_Facturas.Importe_Medida, Detalle_Facturas.Cantidad_Medida FROM Detalle_Facturas   " & _
+                                                "WHERE (Detalle_Facturas.Numero_Factura = '" & Numero_Factura & "') AND  (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura "
+            'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
+            'DataAdapter.Fill(DataSet, "DetalleFactura")
+            'Me.BindingDetalle.DataSource = DataSet.Tables("DetalleFactura")
+            ds = New DataSet
+            da = New SqlDataAdapter(SqlCompras, MiConexion)
+            CmdBuilder = New SqlCommandBuilder(da)
+            da.Fill(ds, "DetalleFactura")
+            Me.BindingDetalle.DataSource = ds.Tables("DetalleFactura")
+
+            Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Button = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Width = 63
+            Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Caption = "Descripcion"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 227
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
+            Me.TrueDBGridComponentes.Columns("CodTarea").Caption = "Tarea"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Width = 54
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Button = True
+            Me.TrueDBGridComponentes.Columns("Cantidad").Caption = "Cantidad"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 54
+            Me.TrueDBGridComponentes.Columns("Precio_Unitario").Caption = "Precio Unit"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 62
+            Me.TrueDBGridComponentes.Columns("Descuento").Caption = "%Desc"
+            Me.TrueDBGridComponentes.Columns("Descuento").DefaultValue = 0
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Width = 43
+            Me.TrueDBGridComponentes.Columns("Precio_Neto").Caption = "Precio Neto"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Width = 65
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Locked = True
+            Me.TrueDBGridComponentes.Columns("Importe").Caption = "Importe"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Width = 61
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Costo_Unitario").Locked = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Costo_Unitario").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Factura").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Factura").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Factura").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Factura").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_TipoPrecio").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("idUnidadMedida").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Unidad_Medida").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad_Medida").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario_Medida").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe_Medida").Visible = False
+        Else
+            '///////////////////////////////////////BUSCO EL DETALLE DE LA FACTURA///////////////////////////////////////////////////////
+            'Detalle_Facturas.id_Detalle_Factura
+            SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura, Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Cod_TipoPrecio, Detalle_Facturas.idUnidadMedida,Detalle_Facturas.Unidad_Medida, Detalle_Facturas.Precio_Unitario_Medida, Detalle_Facturas.Importe_Medida, Detalle_Facturas.Cantidad_Medida FROM  Detalle_Facturas " & _
+                         "WHERE (Detalle_Facturas.Numero_Factura = '" & Numero_Factura & "') AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura"
+            'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
+            'SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM  Detalle_Facturas " & _
+            '    "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura"
+            'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
+            'DataAdapter.Fill(DataSet, "DetalleFacturas")
+            'Me.BindingDetalle.DataSource = DataSet.Tables("DetalleFacturas")
+            ds = New DataSet
+            da = New SqlDataAdapter(SqlCompras, MiConexion)
+            CmdBuilder = New SqlCommandBuilder(da)
+            da.Fill(ds, "DetalleFactura")
+            Me.BindingDetalle.DataSource = ds.Tables("DetalleFactura")
+
+            Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
+            Me.TrueDBGridComponentes.Columns("Cod_Producto").Caption = "Codigo"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Button = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Width = 74
+            Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 259
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
+            Me.TrueDBGridComponentes.Columns("Cantidad").Caption = "Cantidad"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 64
+            Me.TrueDBGridComponentes.Columns("Precio_Unitario").Caption = "Precio Unit"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 62
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Locked = False
+            Me.TrueDBGridComponentes.Columns("Descuento").Caption = "%Desc"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Width = 43
+            Me.TrueDBGridComponentes.Columns("Precio_Neto").Caption = "Precio Neto"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Width = 65
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Locked = True
+            Me.TrueDBGridComponentes.Columns("Importe").Caption = "Importe"
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Width = 61
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Locked = True
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Costo_Unitario").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Factura").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Factura").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Factura").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Factura").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_TipoPrecio").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("idUnidadMedida").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Unidad_Medida").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad_Medida").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario_Medida").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe_Medida").Visible = False
+
+        End If
+    End Sub
 
     Public Function ExisteUnidadMedida(ByVal Cod_Producto As String) As Boolean
         Dim SqlString As String
@@ -1534,6 +1735,8 @@ Public Class FrmFacturas
 
             If MostrarGridUnidad = True Then
                 Me.TrueDBGridComponentes.ChildGrid = Me.tdbGridUndMedidaVrsPrecio
+            Else
+                Me.tdbGridUndMedidaVrsPrecio.Visible = False
             End If
 
 
@@ -1571,150 +1774,152 @@ Public Class FrmFacturas
 
         End If
 
-        If FacturaTarea = True Then
+        'If FacturaTarea = True Then
 
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            'Detalle_Facturas.id_Detalle_Factura
-            SqlString = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto,Detalle_Facturas.CodTarea, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura, Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Cod_TipoPrecio, Detalle_Facturas.idUnidadMedida,Detalle_Facturas.Unidad_Medida   FROM Detalle_Facturas WHERE (Detalle_Facturas.Numero_Factura = N'-1')"
-            'SqlString = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM Detalle_Facturas INNER JOIN  Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos WHERE (Detalle_Facturas.Numero_Factura = N'-1')"
-            'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-            'DataAdapter.Fill(DataSet, "DetalleFactura")
-            ds = New DataSet
-            da = New SqlDataAdapter(SqlString, MiConexion)
-            CmdBuilder = New SqlCommandBuilder(da)
-            da.Fill(ds, "DetalleFactura")
-            Me.BindingDetalle.DataSource = ds.Tables("DetalleFactura")
-            'Me.BindingDetalle.DataSource = DataSet.Tables("DetalleFactura")
-            Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
-            Me.TrueDBGridComponentes.Columns("Cod_Producto").Caption = "Codigo"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Button = True
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Width = 63
-            Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Caption = "Descripcion"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 227
-            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
-            Me.TrueDBGridComponentes.Columns("CodTarea").Caption = "Tarea"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Width = 54
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Button = True
-            Me.TrueDBGridComponentes.Columns("Cantidad").Caption = "Cantidad"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 54
-            Me.TrueDBGridComponentes.Columns("Precio_Unitario").Caption = "Precio Unit"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 62
-            Me.TrueDBGridComponentes.Columns("Descuento").Caption = "%Desc"
-            Me.TrueDBGridComponentes.Columns("Descuento").DefaultValue = 0
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Width = 43
-            Me.TrueDBGridComponentes.Columns("Precio_Neto").Caption = "Precio Neto"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Width = 65
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Locked = True
-            Me.TrueDBGridComponentes.Columns("Importe").Caption = "Importe"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Width = 61
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Costo_Unitario").Locked = True
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Costo_Unitario").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Factura").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Factura").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Factura").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Factura").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_TipoPrecio").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("idUnidadMedida").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Unidad_Medida").Visible = False
-            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = False
+        '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '    '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
+        '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '    'Detalle_Facturas.id_Detalle_Factura
+        '    SqlString = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto,Detalle_Facturas.CodTarea, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura, Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Cod_TipoPrecio, Detalle_Facturas.idUnidadMedida,Detalle_Facturas.Unidad_Medida   FROM Detalle_Facturas WHERE (Detalle_Facturas.Numero_Factura = N'-1')"
+        '    'SqlString = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM Detalle_Facturas INNER JOIN  Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos WHERE (Detalle_Facturas.Numero_Factura = N'-1')"
+        '    'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        '    'DataAdapter.Fill(DataSet, "DetalleFactura")
+        '    ds = New DataSet
+        '    da = New SqlDataAdapter(SqlString, MiConexion)
+        '    CmdBuilder = New SqlCommandBuilder(da)
+        '    da.Fill(ds, "DetalleFactura")
+        '    Me.BindingDetalle.DataSource = ds.Tables("DetalleFactura")
+        '    'Me.BindingDetalle.DataSource = DataSet.Tables("DetalleFactura")
+        '    Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
+        '    Me.TrueDBGridComponentes.Columns("Cod_Producto").Caption = "Codigo"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Button = True
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Width = 63
+        '    Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Caption = "Descripcion"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 227
+        '    'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
+        '    Me.TrueDBGridComponentes.Columns("CodTarea").Caption = "Tarea"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Width = 54
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Button = True
+        '    Me.TrueDBGridComponentes.Columns("Cantidad").Caption = "Cantidad"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 54
+        '    Me.TrueDBGridComponentes.Columns("Precio_Unitario").Caption = "Precio Unit"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 62
+        '    Me.TrueDBGridComponentes.Columns("Descuento").Caption = "%Desc"
+        '    Me.TrueDBGridComponentes.Columns("Descuento").DefaultValue = 0
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Width = 43
+        '    Me.TrueDBGridComponentes.Columns("Precio_Neto").Caption = "Precio Neto"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Width = 65
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Locked = True
+        '    Me.TrueDBGridComponentes.Columns("Importe").Caption = "Importe"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Width = 61
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Costo_Unitario").Locked = True
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Costo_Unitario").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Factura").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Factura").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Factura").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Factura").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_TipoPrecio").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("idUnidadMedida").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Unidad_Medida").Visible = False
+        '    'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = False
 
-        ElseIf FacturaLotes = True Then
+        'ElseIf FacturaLotes = True Then
 
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            'Detalle_Facturas.id_Detalle_Factura
-            SqlString = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto,Detalle_Facturas.CodTarea, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura, Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Cod_TipoPrecio, Detalle_Facturas.idUnidadMedida,Detalle_Facturas.Unidad_Medida FROM Detalle_Facturas WHERE (Detalle_Facturas.Numero_Factura = N'-1')"
-            'SqlString = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM Detalle_Facturas INNER JOIN  Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos WHERE (Detalle_Facturas.Numero_Factura = N'-1')"
-            'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-            'DataAdapter.Fill(DataSet, "DetalleFactura")
-            ds = New DataSet
-            da = New SqlDataAdapter(SqlString, MiConexion)
-            CmdBuilder = New SqlCommandBuilder(da)
-            da.Fill(ds, "DetalleFactura")
-            Me.BindingDetalle.DataSource = ds.Tables("DetalleFactura")
-            'Me.BindingDetalle.DataSource = DataSet.Tables("DetalleFactura")
-            Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
-            Me.TrueDBGridComponentes.Columns("Cod_Producto").Caption = "Codigo"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Button = True
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Width = 63
-            Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Caption = "Descripcion"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 227
-            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
-            Me.TrueDBGridComponentes.Columns("CodTarea").Caption = "Tarea"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Width = 54
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Button = True
-            Me.TrueDBGridComponentes.Columns("Cantidad").Caption = "Cantidad"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 54
-            Me.TrueDBGridComponentes.Columns("Precio_Unitario").Caption = "Precio Unit"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 62
-            Me.TrueDBGridComponentes.Columns("Descuento").Caption = "%Desc"
-            Me.TrueDBGridComponentes.Columns("Descuento").DefaultValue = 0
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Width = 43
-            Me.TrueDBGridComponentes.Columns("Precio_Neto").Caption = "Precio Neto"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Width = 65
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Locked = True
-            Me.TrueDBGridComponentes.Columns("Importe").Caption = "Importe"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Width = 61
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Costo_Unitario").Locked = True
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Costo_Unitario").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Factura").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Factura").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Factura").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Visible = True
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Factura").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_TipoPrecio").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("idUnidadMedida").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Unidad_Medida").Visible = False
+        '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '    '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
+        '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '    'Detalle_Facturas.id_Detalle_Factura
+        '    SqlString = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto,Detalle_Facturas.CodTarea, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura, Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Cod_TipoPrecio, Detalle_Facturas.idUnidadMedida,Detalle_Facturas.Unidad_Medida FROM Detalle_Facturas WHERE (Detalle_Facturas.Numero_Factura = N'-1')"
+        '    'SqlString = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM Detalle_Facturas INNER JOIN  Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos WHERE (Detalle_Facturas.Numero_Factura = N'-1')"
+        '    'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        '    'DataAdapter.Fill(DataSet, "DetalleFactura")
+        '    ds = New DataSet
+        '    da = New SqlDataAdapter(SqlString, MiConexion)
+        '    CmdBuilder = New SqlCommandBuilder(da)
+        '    da.Fill(ds, "DetalleFactura")
+        '    Me.BindingDetalle.DataSource = ds.Tables("DetalleFactura")
+        '    'Me.BindingDetalle.DataSource = DataSet.Tables("DetalleFactura")
+        '    Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
+        '    Me.TrueDBGridComponentes.Columns("Cod_Producto").Caption = "Codigo"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Button = True
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Width = 63
+        '    Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Caption = "Descripcion"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 227
+        '    'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
+        '    Me.TrueDBGridComponentes.Columns("CodTarea").Caption = "Tarea"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Width = 54
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Button = True
+        '    Me.TrueDBGridComponentes.Columns("Cantidad").Caption = "Cantidad"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 54
+        '    Me.TrueDBGridComponentes.Columns("Precio_Unitario").Caption = "Precio Unit"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 62
+        '    Me.TrueDBGridComponentes.Columns("Descuento").Caption = "%Desc"
+        '    Me.TrueDBGridComponentes.Columns("Descuento").DefaultValue = 0
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Width = 43
+        '    Me.TrueDBGridComponentes.Columns("Precio_Neto").Caption = "Precio Neto"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Width = 65
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Locked = True
+        '    Me.TrueDBGridComponentes.Columns("Importe").Caption = "Importe"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Width = 61
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Costo_Unitario").Locked = True
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Costo_Unitario").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Factura").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Factura").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Factura").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Visible = True
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Factura").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_TipoPrecio").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("idUnidadMedida").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Unidad_Medida").Visible = False
 
 
-        Else
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            'Detalle_Facturas.id_Detalle_Factura
-            SqlString = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura, Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Cod_TipoPrecio, Detalle_Facturas.idUnidadMedida,Detalle_Facturas.Unidad_Medida FROM Detalle_Facturas WHERE (Detalle_Facturas.Numero_Factura = N'-1')"
-            'SqlString = "SELECT Detalle_Facturas.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario FROM Detalle_Facturas INNER JOIN  Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos WHERE (Detalle_Facturas.Numero_Factura = N'-1')"
-            'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-            'DataAdapter.Fill(DataSet, "DetalleFactura")
-            ds = New DataSet
-            da = New SqlDataAdapter(SqlString, MiConexion)
-            CmdBuilder = New SqlCommandBuilder(da)
-            da.Fill(ds, "DetalleFactura")
-            Me.BindingDetalle.DataSource = ds.Tables("DetalleFactura")
-            'Me.BindingDetalle.DataSource = DataSet.Tables("DetalleFactura")
-            Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
-            Me.TrueDBGridComponentes.Columns("Cod_Producto").Caption = "Codigo"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Button = True
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Width = 74
-            Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 259
-            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
-            Me.TrueDBGridComponentes.Columns("Cantidad").Caption = "Cantidad"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 64
-            Me.TrueDBGridComponentes.Columns("Precio_Unitario").Caption = "Precio Unit"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 62
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Locked = False
-            Me.TrueDBGridComponentes.Columns("Descuento").Caption = "%Desc"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Width = 43
-            Me.TrueDBGridComponentes.Columns("Precio_Neto").Caption = "Precio Neto"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Width = 65
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Locked = True
-            Me.TrueDBGridComponentes.Columns("Importe").Caption = "Importe"
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Width = 61
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Locked = True
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Costo_Unitario").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Factura").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Factura").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Factura").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Factura").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_TipoPrecio").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("idUnidadMedida").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Unidad_Medida").Visible = False
+        'Else
+        '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '    '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
+        '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '    'Detalle_Facturas.id_Detalle_Factura
+        '    SqlString = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura, Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Cod_TipoPrecio, Detalle_Facturas.idUnidadMedida,Detalle_Facturas.Unidad_Medida FROM Detalle_Facturas WHERE (Detalle_Facturas.Numero_Factura = N'-1')"
+        '    'SqlString = "SELECT Detalle_Facturas.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario FROM Detalle_Facturas INNER JOIN  Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos WHERE (Detalle_Facturas.Numero_Factura = N'-1')"
+        '    'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        '    'DataAdapter.Fill(DataSet, "DetalleFactura")
+        '    ds = New DataSet
+        '    da = New SqlDataAdapter(SqlString, MiConexion)
+        '    CmdBuilder = New SqlCommandBuilder(da)
+        '    da.Fill(ds, "DetalleFactura")
+        '    Me.BindingDetalle.DataSource = ds.Tables("DetalleFactura")
+        '    'Me.BindingDetalle.DataSource = DataSet.Tables("DetalleFactura")
+        '    Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
+        '    Me.TrueDBGridComponentes.Columns("Cod_Producto").Caption = "Codigo"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Button = True
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Width = 74
+        '    Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 259
+        '    'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
+        '    Me.TrueDBGridComponentes.Columns("Cantidad").Caption = "Cantidad"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 64
+        '    Me.TrueDBGridComponentes.Columns("Precio_Unitario").Caption = "Precio Unit"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 62
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Locked = False
+        '    Me.TrueDBGridComponentes.Columns("Descuento").Caption = "%Desc"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Width = 43
+        '    Me.TrueDBGridComponentes.Columns("Precio_Neto").Caption = "Precio Neto"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Width = 65
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Locked = True
+        '    Me.TrueDBGridComponentes.Columns("Importe").Caption = "Importe"
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Width = 61
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Locked = True
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Costo_Unitario").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Factura").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Factura").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Factura").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Factura").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_TipoPrecio").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("idUnidadMedida").Visible = False
+        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Unidad_Medida").Visible = False
 
-        End If
+        'End If
+
+        Me.ActualizaGridDetalleFactura("-1000", Me.CboTipoProducto.Text, FacturaTarea, FacturaLotes)
 
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////////////BUSCO SI TIENE REFERENCIAS GUARDADAS/////////////////////////////////////////////////////////////////
@@ -4164,160 +4369,8 @@ Public Class FrmFacturas
                 End If
 
 
+                Me.ActualizaGridDetalleFactura(Me.TxtNumeroEnsamble.Text, TipoFactura, FacturaTarea, FacturaLotes)
 
-                If FacturaTarea = True Then
-                    ds.Tables("DetalleFactura").Reset()
-                    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
-                    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    'SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM Detalle_Facturas   " & _
-                    '                 "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura "
-                    'Detalle_Facturas.id_Detalle_Factura
-                    SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura ,Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Cod_TipoPrecio, Detalle_Facturas.idUnidadMedida,Detalle_Facturas.Unidad_Medida FROM Detalle_Facturas   " & _
-                                                        "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND  (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura "
-                    'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
-                    'DataAdapter.Fill(DataSet, "DetalleFactura")
-                    'Me.BindingDetalle.DataSource = DataSet.Tables("DetalleFactura")
-                    ds = New DataSet
-                    da = New SqlDataAdapter(SqlCompras, MiConexion)
-                    CmdBuilder = New SqlCommandBuilder(da)
-                    da.Fill(ds, "DetalleFactura")
-                    Me.BindingDetalle.DataSource = ds.Tables("DetalleFactura")
-
-                    Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
-                    Me.TrueDBGridComponentes.Columns("Cod_Producto").Caption = "Codigo"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Button = True
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Width = 63
-                    Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Caption = "Descripcion"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 227
-                    'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
-                    Me.TrueDBGridComponentes.Columns("CodTarea").Caption = "Tarea"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Width = 54
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Button = True
-                    Me.TrueDBGridComponentes.Columns("Cantidad").Caption = "Cantidad"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 54
-                    Me.TrueDBGridComponentes.Columns("Precio_Unitario").Caption = "Precio Unit"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 62
-                    Me.TrueDBGridComponentes.Columns("Descuento").Caption = "%Desc"
-                    Me.TrueDBGridComponentes.Columns("Descuento").DefaultValue = 0
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Width = 43
-                    Me.TrueDBGridComponentes.Columns("Precio_Neto").Caption = "Precio Neto"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Width = 65
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Locked = True
-                    Me.TrueDBGridComponentes.Columns("Importe").Caption = "Importe"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Width = 61
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Costo_Unitario").Locked = True
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Costo_Unitario").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Factura").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Factura").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Factura").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_TipoPrecio").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Factura").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_TipoPrecio").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("idUnidadMedida").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Unidad_Medida").Visible = False
-                    'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Visible = False
-                    ''Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = False
-
-
-
-                ElseIf FacturaLotes = True Then
-
-                    ds.Tables("DetalleFactura").Reset()
-                    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
-                    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    'SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM Detalle_Facturas   " & _
-                    '                 "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura "
-                    'Detalle_Facturas.id_Detalle_Factura
-                    SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura, Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Cod_TipoPrecio, Detalle_Facturas.idUnidadMedida,Detalle_Facturas.Unidad_Medida FROM Detalle_Facturas   " & _
-                                                        "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND  (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura "
-                    'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
-                    'DataAdapter.Fill(DataSet, "DetalleFactura")
-                    'Me.BindingDetalle.DataSource = DataSet.Tables("DetalleFactura")
-                    ds = New DataSet
-                    da = New SqlDataAdapter(SqlCompras, MiConexion)
-                    CmdBuilder = New SqlCommandBuilder(da)
-                    da.Fill(ds, "DetalleFactura")
-                    Me.BindingDetalle.DataSource = ds.Tables("DetalleFactura")
-
-                    Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Button = True
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Width = 63
-                    Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Caption = "Descripcion"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 227
-                    'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
-                    Me.TrueDBGridComponentes.Columns("CodTarea").Caption = "Tarea"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Width = 54
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Button = True
-                    Me.TrueDBGridComponentes.Columns("Cantidad").Caption = "Cantidad"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 54
-                    Me.TrueDBGridComponentes.Columns("Precio_Unitario").Caption = "Precio Unit"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 62
-                    Me.TrueDBGridComponentes.Columns("Descuento").Caption = "%Desc"
-                    Me.TrueDBGridComponentes.Columns("Descuento").DefaultValue = 0
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Width = 43
-                    Me.TrueDBGridComponentes.Columns("Precio_Neto").Caption = "Precio Neto"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Width = 65
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Locked = True
-                    Me.TrueDBGridComponentes.Columns("Importe").Caption = "Importe"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Width = 61
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Costo_Unitario").Locked = True
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Costo_Unitario").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Factura").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Factura").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Factura").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Factura").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_TipoPrecio").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("idUnidadMedida").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Unidad_Medida").Visible = False
-                Else
-                    '///////////////////////////////////////BUSCO EL DETALLE DE LA FACTURA///////////////////////////////////////////////////////
-                    'Detalle_Facturas.id_Detalle_Factura
-                    SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura, Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Cod_TipoPrecio, Detalle_Facturas.idUnidadMedida,Detalle_Facturas.Unidad_Medida FROM  Detalle_Facturas " & _
-                                 "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura"
-                    'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
-                    'SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM  Detalle_Facturas " & _
-                    '    "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura"
-                    'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
-                    'DataAdapter.Fill(DataSet, "DetalleFacturas")
-                    'Me.BindingDetalle.DataSource = DataSet.Tables("DetalleFacturas")
-                    ds = New DataSet
-                    da = New SqlDataAdapter(SqlCompras, MiConexion)
-                    CmdBuilder = New SqlCommandBuilder(da)
-                    da.Fill(ds, "DetalleFactura")
-                    Me.BindingDetalle.DataSource = ds.Tables("DetalleFactura")
-
-                    Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
-                    Me.TrueDBGridComponentes.Columns("Cod_Producto").Caption = "Codigo"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Button = True
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Width = 74
-                    Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 259
-                    'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
-                    Me.TrueDBGridComponentes.Columns("Cantidad").Caption = "Cantidad"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 64
-                    Me.TrueDBGridComponentes.Columns("Precio_Unitario").Caption = "Precio Unit"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 62
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Locked = False
-                    Me.TrueDBGridComponentes.Columns("Descuento").Caption = "%Desc"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Width = 43
-                    Me.TrueDBGridComponentes.Columns("Precio_Neto").Caption = "Precio Neto"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Width = 65
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Locked = True
-                    Me.TrueDBGridComponentes.Columns("Importe").Caption = "Importe"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Width = 61
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Locked = True
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Costo_Unitario").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Factura").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Factura").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Factura").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Factura").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_TipoPrecio").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("idUnidadMedida").Visible = False
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Unidad_Medida").Visible = False
-
-                End If
 
                 '////////////////////////////ACTUALIZO TODO POR CUALQUIER CAMBIO /////////////////////////////////
                 ActualizaMETODOFactura()
@@ -8586,21 +8639,69 @@ Public Class FrmFacturas
                         '////////////////////////////////////////////////////////////////////////////////////////////
                         '////////////////////////////////////BUSCO SI EXISTE UNIDD DE MEDIDAS PARA FACTURAR ///
                         '///////////////////////////////////////////////////////////////////////////////
-                        If Me.ExisteUnidadMedida(CodProducto) = True Then
+                        'If Me.ExisteUnidadMedida(CodProducto) = True Then
 
-                            My.Forms.FrmUnidadesMedidas.Cod_Producto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
-                            My.Forms.FrmUnidadesMedidas.ShowDialog()
-                            Cantidad_Unidades = DataSet.Tables("UnidadMedida").Rows(0)("Cantidad_Unidades")
-                            PrecioUnt_Unidades = DataSet.Tables("UnidadMedida").Rows(0)("Precio_Unitario")
-                            If Cantidad_Unidades <> 0 Then
-                                Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = PrecioUnt_Unidades / Cantidad_Unidades
-                                Me.TrueDBGridComponentes.Columns("Cantidad").Text = Cantidad_Unidades
+                        '    My.Forms.FrmUnidadesMedidas.Cod_Producto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
+                        '    My.Forms.FrmUnidadesMedidas.ShowDialog()
+                        '    Cantidad_Unidades = DataSet.Tables("UnidadMedida").Rows(0)("Cantidad_Unidades")
+                        '    PrecioUnt_Unidades = DataSet.Tables("UnidadMedida").Rows(0)("Precio_Unitario")
+                        '    If Cantidad_Unidades <> 0 Then
+                        '        Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = PrecioUnt_Unidades / Cantidad_Unidades
+                        '        Me.TrueDBGridComponentes.Columns("Cantidad").Text = Cantidad_Unidades
+                        '    End If
+
+
+                        '    MiConexion.Close()
+
+                        '    DataSet.Tables("UnidadMedida").Clear()
+
+                        'End If
+
+                        '////////////////////////////////////////////////////////////////////////////////////////////
+                        '////////////////////////////////////BUSCO SI EXISTE UNIDD DE MEDIDAS PARA FACTURAR ///
+                        '///////////////////////////////////////////////////////////////////////////////
+                        If Me.ExisteUnidadMedida(Me.TrueDBGridComponentes.Item(Me.TrueDBGridComponentes.Row)("Cod_Producto")) = True Then
+
+                            My.Forms.FrmPreciosFacturacion.CodProducto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
+                            My.Forms.FrmPreciosFacturacion.NombreProducto = Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text
+                            My.Forms.FrmPreciosFacturacion.tdbGridUnidadMedida.AllowAddNew = C1.Win.C1TrueDBGrid.AddNewModeEnum.NoAddNew
+                            My.Forms.FrmPreciosFacturacion.ShowDialog()
+
+
+                            Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = Format(My.Forms.FrmPreciosFacturacion.PrecioProducto, "##,##0.00")
+
+                            If Me.TxtMonedaFactura.Text = "Cordobas" Then
+                                PrecioProducto = My.Forms.FrmPreciosFacturacion.PrecioProducto
+                            ElseIf Me.TxtMonedaFactura.Text = "Dolares" Then
+                                PrecioProducto = My.Forms.FrmPreciosFacturacion.PrecioProductoDolar
                             End If
 
 
-                            MiConexion.Close()
+                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                            If Val(Me.TrueDBGridComponentes.Columns("Descuento").Text) = 0 Then
+                                Descuento = 0
+                            Else
+                                Descuento = Me.TrueDBGridComponentes.Columns(0).Text
+                            End If
+                            PrecioNeto = PrecioProducto * (1 - (Descuento / 100))
+                            Total = Cantidad * PrecioNeto
 
-                            DataSet.Tables("UnidadMedida").Clear()
+                            Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = Format(PrecioNeto, "##,##0.00")
+                            Me.TrueDBGridComponentes.Columns("Importe").Text = (Format(Total, "##,##0.00"))
+                            Me.TrueDBGridComponentes.Columns("Cod_TipoPrecio").Text = My.Forms.FrmPreciosFacturacion.Cod_TipoPrecio
+                            Me.TrueDBGridComponentes.Columns("idUnidadMedida").Text = My.Forms.FrmPreciosFacturacion.IdUnidadMedida
+                            Me.TrueDBGridComponentes.Columns("Unidad_Medida").Text = My.Forms.FrmPreciosFacturacion.DescripcionUnidadMedida
+                            Me.TrueDBGridComponentes.Columns("Cantidad").Text = My.Forms.FrmPreciosFacturacion.Cantidad
+
+                            Me.TrueDBGridComponentes.Columns("Cantidad_Medida").Text = My.Forms.FrmPreciosFacturacion.Cantidad_Unidad
+
+                            If Me.TxtMonedaFactura.Text = "Cordobas" Then
+                                Me.TrueDBGridComponentes.Columns("Precio_Unitario_Medida").Text = My.Forms.FrmPreciosFacturacion.Precio_Cordobas_Unidad
+                                Me.TrueDBGridComponentes.Columns("Importe_Medida").Text = My.Forms.FrmPreciosFacturacion.Precio_Cordobas_Unidad * My.Forms.FrmPreciosFacturacion.Cantidad_Unidad
+                            ElseIf Me.TxtMonedaFactura.Text = "Dolares" Then
+                                Me.TrueDBGridComponentes.Columns("Precio_Unitario_Medida").Text = My.Forms.FrmPreciosFacturacion.Precio_Dolar_Unidad
+                                Me.TrueDBGridComponentes.Columns("Importe_Medida").Text = My.Forms.FrmPreciosFacturacion.Precio_Cordobas_Unidad * My.Forms.FrmPreciosFacturacion.Cantidad_Unidad
+                            End If
 
                         End If
 
@@ -8934,6 +9035,7 @@ Public Class FrmFacturas
 
                             My.Forms.FrmPreciosFacturacion.CodProducto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
                             My.Forms.FrmPreciosFacturacion.NombreProducto = Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text
+                            My.Forms.FrmPreciosFacturacion.tdbGridUnidadMedida.AllowAddNew = C1.Win.C1TrueDBGrid.AddNewModeEnum.NoAddNew
                             My.Forms.FrmPreciosFacturacion.ShowDialog()
 
 
@@ -8961,6 +9063,16 @@ Public Class FrmFacturas
                             Me.TrueDBGridComponentes.Columns("idUnidadMedida").Text = My.Forms.FrmPreciosFacturacion.IdUnidadMedida
                             Me.TrueDBGridComponentes.Columns("Unidad_Medida").Text = My.Forms.FrmPreciosFacturacion.DescripcionUnidadMedida
                             Me.TrueDBGridComponentes.Columns("Cantidad").Text = My.Forms.FrmPreciosFacturacion.Cantidad
+                            Me.TrueDBGridComponentes.Columns("Cantidad_Medida").Text = My.Forms.FrmPreciosFacturacion.Cantidad_Unidad
+
+                            If Me.TxtMonedaFactura.Text = "Cordobas" Then
+                                Me.TrueDBGridComponentes.Columns("Precio_Unitario_Medida").Text = My.Forms.FrmPreciosFacturacion.Precio_Cordobas_Unidad
+                                Me.TrueDBGridComponentes.Columns("Importe_Medida").Text = My.Forms.FrmPreciosFacturacion.Precio_Cordobas_Unidad * My.Forms.FrmPreciosFacturacion.Cantidad_Unidad
+                            ElseIf Me.TxtMonedaFactura.Text = "Dolares" Then
+                                Me.TrueDBGridComponentes.Columns("Precio_Unitario_Medida").Text = My.Forms.FrmPreciosFacturacion.Precio_Dolar_Unidad
+                                Me.TrueDBGridComponentes.Columns("Importe_Medida").Text = My.Forms.FrmPreciosFacturacion.Precio_Cordobas_Unidad * My.Forms.FrmPreciosFacturacion.Cantidad_Unidad
+                            End If
+
 
                         End If
 
@@ -9003,12 +9115,23 @@ Public Class FrmFacturas
                         Me.TrueDBGridComponentes.Columns("idUnidadMedida").Text = My.Forms.FrmPreciosFacturacion.IdUnidadMedida
                         Me.TrueDBGridComponentes.Columns("Unidad_Medida").Text = My.Forms.FrmPreciosFacturacion.DescripcionUnidadMedida
                         Me.TrueDBGridComponentes.Columns("Cantidad").Text = My.Forms.FrmPreciosFacturacion.Cantidad
+                        Me.TrueDBGridComponentes.Columns("Cantidad_Medida").Text = My.Forms.FrmPreciosFacturacion.Cantidad_Unidad
+
+                        If Me.TxtMonedaFactura.Text = "Cordobas" Then
+                            Me.TrueDBGridComponentes.Columns("Precio_Unitario_Medida").Text = My.Forms.FrmPreciosFacturacion.Precio_Cordobas_Unidad
+                            Me.TrueDBGridComponentes.Columns("Importe_Medida").Text = My.Forms.FrmPreciosFacturacion.Precio_Cordobas_Unidad * My.Forms.FrmPreciosFacturacion.Cantidad_Unidad
+                        ElseIf Me.TxtMonedaFactura.Text = "Dolares" Then
+                            Me.TrueDBGridComponentes.Columns("Precio_Unitario_Medida").Text = My.Forms.FrmPreciosFacturacion.Precio_Dolar_Unidad
+                            Me.TrueDBGridComponentes.Columns("Importe_Medida").Text = My.Forms.FrmPreciosFacturacion.Precio_Cordobas_Unidad * My.Forms.FrmPreciosFacturacion.Cantidad_Unidad
+                        End If
+
+
 
                         'My.Forms.FrmPreciosProductos.CodProducto = Me.CboCodigoProducto.Text
                         'My.Forms.FrmPreciosProductos.NombreProducto = Me.TxtNombreProducto.Text
                 End Select
         End Select
-        End Sub
+    End Sub
 
     Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
 
@@ -12023,11 +12146,189 @@ Public Class FrmFacturas
         End If
     End Sub
 
+    Private Sub TrueDBGridComponentes_BeforeOpen(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TrueDBGridComponentes.BeforeOpen
+        ActualizaGridUnidadMedida(Me.TrueDBGridComponentes.Columns("id_Detalle_Factura").Text)
+    End Sub
+
+    Private Sub tdbGridUndMedidaVrsPrecio_AfterColUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles tdbGridUndMedidaVrsPrecio.AfterColUpdate
+        Dim Cantidad As Double, PrecioUnitarioUnd As Double, Cantidad_Unidades As Double, PrecioUnitario As Double, CantTotal As Double, Descuento As Double
+        Dim Importe As Double, SubTotal As Double
+
+        Cantidad = Me.tdbGridUndMedidaVrsPrecio.Columns("Cantidad_Medida").Text
+        PrecioUnitarioUnd = Me.tdbGridUndMedidaVrsPrecio.Columns("Precio_Unitario_Medida").Text
+        Cantidad_Unidades = Me.tdbGridUndMedidaVrsPrecio.Columns("Cantidad_Unidades").Text
+        CantTotal = Cantidad * Cantidad_Unidades
+
+        Me.tdbGridUndMedidaVrsPrecio.Columns("Importe_Medida").Text = Format(Cantidad * PrecioUnitarioUnd, "##,##0.00")
+        Me.TrueDBGridComponentes.Columns("Cantidad").Text = CantTotal
+        PrecioUnitario = Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text
+        Descuento = (CDbl(Me.TrueDBGridComponentes.Columns("Descuento").Text) / 100)
+        SubTotal = PrecioUnitario * CantTotal
+        Importe = SubTotal * (1 - Descuento)
+
+        Me.TrueDBGridComponentes.Columns("Importe").Text = Format(Importe, "##,##0.00")
+        Me.TrueDBGridComponentes.Columns("Cantidad_Medida").Text = Cantidad
+        Me.TrueDBGridComponentes.Columns("Precio_Unitario_Medida").Text = PrecioUnitarioUnd
+        Me.TrueDBGridComponentes.Columns("Importe_Medida").Text = Format(Cantidad * PrecioUnitarioUnd, "##,##0.00")
+
+
+        ActualizaMETODOFactura()
+
+    End Sub
+
+
+    Private Sub tdbGridUndMedidaVrsPrecio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tdbGridUndMedidaVrsPrecio.Click
+
+    End Sub
+
     Private Sub TrueDBGridComponentes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.Click
 
     End Sub
 
-    Private Sub TrueDBGridComponentes_AfterColUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridComponentes.AfterColUpdate
+    Private Sub tdbGridUndMedidaVrsPrecio_ContextMenuStripChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tdbGridUndMedidaVrsPrecio.ContextMenuStripChanged
 
+    End Sub
+
+    Private Sub tdbGridUndMedidaVrsPrecio_Invalidated(ByVal sender As Object, ByVal e As System.Windows.Forms.InvalidateEventArgs) Handles tdbGridUndMedidaVrsPrecio.Invalidated
+
+    End Sub
+
+    Private Sub tdbGridUndMedidaVrsPrecio_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles tdbGridUndMedidaVrsPrecio.KeyDown
+        Dim PrecioProducto As Double, Cantidad As Double, Descuento As Double, PrecioNeto As Double, Total As Double
+        Dim PrecioUnitarioUnd As Double, CantTotal As Double
+
+        Select Case e.KeyCode
+            Case Keys.Enter
+                '////////////////////////////////////////////////////////////////////////////////////////////
+                '////////////////////////////////////BUSCO SI EXISTE UNIDD DE MEDIDAS PARA FACTURAR ///
+                '///////////////////////////////////////////////////////////////////////////////
+                If Me.ExisteUnidadMedida(Me.TrueDBGridComponentes.Item(Me.TrueDBGridComponentes.Row)("Cod_Producto")) = True Then
+
+                    My.Forms.FrmPreciosFacturacion.CodProducto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
+                    My.Forms.FrmPreciosFacturacion.NombreProducto = Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text
+                    My.Forms.FrmPreciosFacturacion.tdbGridUnidadMedida.AllowAddNew = C1.Win.C1TrueDBGrid.AddNewModeEnum.NoAddNew
+                    My.Forms.FrmPreciosFacturacion.ShowDialog()
+
+
+
+
+                    If Me.TxtMonedaFactura.Text = "Cordobas" Then
+                        PrecioProducto = My.Forms.FrmPreciosFacturacion.PrecioProducto
+                    ElseIf Me.TxtMonedaFactura.Text = "Dolares" Then
+                        PrecioProducto = My.Forms.FrmPreciosFacturacion.PrecioProductoDolar
+                    End If
+
+                    Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = Format(PrecioProducto, "##,##0.00")
+
+                    Cantidad = My.Forms.FrmPreciosFacturacion.Cantidad
+                    If Val(Me.TrueDBGridComponentes.Columns("Descuento").Text) = 0 Then
+                        Descuento = 0
+                    Else
+                        Descuento = Me.TrueDBGridComponentes.Columns(0).Text
+                    End If
+                    PrecioNeto = PrecioProducto * (1 - (Descuento / 100))
+                    Total = Cantidad * PrecioNeto
+
+                    Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = Format(PrecioNeto, "##,##0.00")
+                    Me.TrueDBGridComponentes.Columns("Importe").Text = (Format(Total, "##,##0.00"))
+                    Me.TrueDBGridComponentes.Columns("Cod_TipoPrecio").Text = My.Forms.FrmPreciosFacturacion.Cod_TipoPrecio
+                    Me.TrueDBGridComponentes.Columns("idUnidadMedida").Text = My.Forms.FrmPreciosFacturacion.IdUnidadMedida
+                    Me.TrueDBGridComponentes.Columns("Unidad_Medida").Text = My.Forms.FrmPreciosFacturacion.DescripcionUnidadMedida
+                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = My.Forms.FrmPreciosFacturacion.Cantidad
+                    Me.TrueDBGridComponentes.Columns("Cantidad_Medida").Text = My.Forms.FrmPreciosFacturacion.Cantidad_Unidad
+
+                    If Me.TxtMonedaFactura.Text = "Cordobas" Then
+                        Me.TrueDBGridComponentes.Columns("Precio_Unitario_Medida").Text = My.Forms.FrmPreciosFacturacion.Precio_Cordobas_Unidad
+                        Me.TrueDBGridComponentes.Columns("Importe_Medida").Text = My.Forms.FrmPreciosFacturacion.Precio_Cordobas_Unidad * My.Forms.FrmPreciosFacturacion.Cantidad_Unidad
+                        PrecioUnitarioUnd = My.Forms.FrmPreciosFacturacion.Precio_Cordobas_Unidad
+                    ElseIf Me.TxtMonedaFactura.Text = "Dolares" Then
+                        Me.TrueDBGridComponentes.Columns("Precio_Unitario_Medida").Text = My.Forms.FrmPreciosFacturacion.Precio_Dolar_Unidad
+                        Me.TrueDBGridComponentes.Columns("Importe_Medida").Text = My.Forms.FrmPreciosFacturacion.Precio_Dolar_Unidad * My.Forms.FrmPreciosFacturacion.Cantidad_Unidad
+                        PrecioUnitarioUnd = My.Forms.FrmPreciosFacturacion.Precio_Dolar_Unidad
+                    End If
+
+                End If
+
+
+
+                Cantidad = My.Forms.FrmPreciosFacturacion.Cantidad_Unidad
+
+                Cantidad_Unidades = My.Forms.FrmPreciosFacturacion.Cantidad
+                CantTotal = Cantidad * Cantidad_Unidades
+
+                Me.tdbGridUndMedidaVrsPrecio.Columns("Cantidad_Medida").Text = Cantidad
+                Me.tdbGridUndMedidaVrsPrecio.Columns("Unidad_Medida").Text = My.Forms.FrmPreciosFacturacion.DescripcionUnidadMedida
+                Me.tdbGridUndMedidaVrsPrecio.Columns("UndMedida").Text = My.Forms.FrmPreciosFacturacion.DescripcionUnidadMedida2
+                Me.tdbGridUndMedidaVrsPrecio.Columns("Precio_Unitario_Medida").Text = PrecioUnitarioUnd
+                Me.tdbGridUndMedidaVrsPrecio.Columns("Importe_Medida").Text = Format(Cantidad * PrecioUnitarioUnd, "##,##0.00")
+
+                ActualizaMETODOFactura()
+
+
+
+            Case Keys.F2
+                '////////////////////////////////////////////////////////////////////////////////////////////
+                '////////////////////////////////////BUSCO SI EXISTE UNIDD DE MEDIDAS PARA FACTURAR ///
+                '///////////////////////////////////////////////////////////////////////////////
+                If Me.ExisteUnidadMedida(Me.TrueDBGridComponentes.Item(Me.TrueDBGridComponentes.Row)("Cod_Producto")) = True Then
+
+                    My.Forms.FrmPreciosFacturacion.CodProducto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
+                    My.Forms.FrmPreciosFacturacion.NombreProducto = Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text
+                    My.Forms.FrmPreciosFacturacion.tdbGridUnidadMedida.AllowAddNew = C1.Win.C1TrueDBGrid.AddNewModeEnum.NoAddNew
+                    My.Forms.FrmPreciosFacturacion.ShowDialog()
+
+
+                    Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = Format(My.Forms.FrmPreciosFacturacion.PrecioProducto, "##,##0.00")
+
+                    If Me.TxtMonedaFactura.Text = "Cordobas" Then
+                        PrecioProducto = My.Forms.FrmPreciosFacturacion.PrecioProducto
+                    ElseIf Me.TxtMonedaFactura.Text = "Dolares" Then
+                        PrecioProducto = My.Forms.FrmPreciosFacturacion.PrecioProductoDolar
+                    End If
+
+
+                    Cantidad = My.Forms.FrmPreciosFacturacion.Cantidad
+                    If Val(Me.TrueDBGridComponentes.Columns("Descuento").Text) = 0 Then
+                        Descuento = 0
+                    Else
+                        Descuento = Me.TrueDBGridComponentes.Columns(0).Text
+                    End If
+                    PrecioNeto = PrecioProducto * (1 - (Descuento / 100))
+                    Total = Cantidad * PrecioNeto
+
+                    Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = Format(PrecioNeto, "##,##0.00")
+                    Me.TrueDBGridComponentes.Columns("Importe").Text = (Format(Total, "##,##0.00"))
+                    Me.TrueDBGridComponentes.Columns("Cod_TipoPrecio").Text = My.Forms.FrmPreciosFacturacion.Cod_TipoPrecio
+                    Me.TrueDBGridComponentes.Columns("idUnidadMedida").Text = My.Forms.FrmPreciosFacturacion.IdUnidadMedida
+                    Me.TrueDBGridComponentes.Columns("Unidad_Medida").Text = My.Forms.FrmPreciosFacturacion.DescripcionUnidadMedida
+                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = My.Forms.FrmPreciosFacturacion.Cantidad
+                    Me.TrueDBGridComponentes.Columns("Cantidad_Medida").Text = My.Forms.FrmPreciosFacturacion.Cantidad_Unidad
+
+                    If Me.TxtMonedaFactura.Text = "Cordobas" Then
+                        Me.TrueDBGridComponentes.Columns("Precio_Unitario_Medida").Text = My.Forms.FrmPreciosFacturacion.Precio_Cordobas_Unidad
+                        Me.TrueDBGridComponentes.Columns("Importe_Medida").Text = My.Forms.FrmPreciosFacturacion.Precio_Cordobas_Unidad * My.Forms.FrmPreciosFacturacion.Cantidad_Unidad
+                        PrecioUnitarioUnd = My.Forms.FrmPreciosFacturacion.Precio_Cordobas_Unidad
+                    ElseIf Me.TxtMonedaFactura.Text = "Dolares" Then
+                        Me.TrueDBGridComponentes.Columns("Precio_Unitario_Medida").Text = My.Forms.FrmPreciosFacturacion.Precio_Dolar_Unidad
+                        Me.TrueDBGridComponentes.Columns("Importe_Medida").Text = My.Forms.FrmPreciosFacturacion.Precio_Dolar_Unidad * My.Forms.FrmPreciosFacturacion.Cantidad_Unidad
+                        PrecioUnitarioUnd = My.Forms.FrmPreciosFacturacion.Precio_Dolar_Unidad
+                    End If
+
+                End If
+
+
+
+                Cantidad = My.Forms.FrmPreciosFacturacion.Cantidad_Unidad
+
+                Cantidad_Unidades = Me.tdbGridUndMedidaVrsPrecio.Columns("Cantidad_Unidades").Text
+                CantTotal = Cantidad * Cantidad_Unidades
+
+                Me.tdbGridUndMedidaVrsPrecio.Columns("Cantidad_Medida").Text = Cantidad
+                Me.tdbGridUndMedidaVrsPrecio.Columns("Unidad_Medida").Text = My.Forms.FrmPreciosFacturacion.DescripcionUnidadMedida
+                Me.tdbGridUndMedidaVrsPrecio.Columns("Importe_Medida").Text = Format(Cantidad * PrecioUnitarioUnd, "##,##0.00")
+
+                ActualizaMETODOFactura()
+
+        End Select
     End Sub
 End Class

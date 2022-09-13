@@ -4,15 +4,17 @@ Imports System.Data.SqlClient
 
 Public Class FrmPreciosFacturacion
     Public MiConexion As New SqlClient.SqlConnection(Conexion), CodProducto As String, NombreProducto As String, PrecioProducto As Double, ValidarRegistros As Boolean = False
-    Public Cod_TipoPrecio As String, PrecioProductoDolar As Double, IdUnidadMedida As Double, GridOpen As Boolean = False, DescripcionUnidadMedida As String, Cantidad As Double
-    Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder
+    Public Cod_TipoPrecio As String, PrecioProductoDolar As Double, IdUnidadMedida As Double, GridOpen As Boolean = False, DescripcionUnidadMedida As String, Cantidad As Double, DescripcionUnidadMedida2 As String
+    Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder, Cantidad_Unidad As Double, Importe_Unidad As Double, Precio_Dolar_Unidad As Double, Precio_Cordobas_Unidad As Double
     Private Sub ActualizaGridPrecios()
         Dim SQLString As String, Id_UnidadMedida As Double
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
         Id_UnidadMedida = Me.tdbGridUnidadMedida.Columns("idUnidadMedida").Text
-        SQLString = "SELECT  TipoPrecio.Tipo_Precio, Precios.Monto_Precio, Precios.Monto_PrecioDolar, Precios.Cod_TipoPrecio,  Precios.idUnidadMedida FROM  Precios INNER JOIN  TipoPrecio ON Precios.Cod_TipoPrecio = TipoPrecio.Cod_TipoPrecio  " & _
-                    "WHERE (Precios.Cod_Productos = '" & CodProducto & "') AND (Precios.idUnidadMedida = " & Id_UnidadMedida & ")"
+        'SQLString = "SELECT  TipoPrecio.Tipo_Precio, Precios.Monto_Precio, Precios.Monto_PrecioDolar, Precios.Cod_TipoPrecio,  Precios.idUnidadMedida FROM  Precios INNER JOIN  TipoPrecio ON Precios.Cod_TipoPrecio = TipoPrecio.Cod_TipoPrecio  " & _
+        '            "WHERE (Precios.Cod_Productos = '" & CodProducto & "') AND (Precios.idUnidadMedida = " & Id_UnidadMedida & ")"
+        SQLString = "SELECT  TipoPrecio.Tipo_Precio, Precios.Monto_Precio * UnidadMedidaProductos.Cantidad_Unidades AS Monto_Precio, Precios.Monto_PrecioDolar * UnidadMedidaProductos.Cantidad_Unidades AS Monto_PrecioDolar, Precios.Cod_TipoPrecio, Precios.idUnidadMedida, UnidadMedidaProductos.Cantidad_Unidades FROM Precios INNER JOIN TipoPrecio ON Precios.Cod_TipoPrecio = TipoPrecio.Cod_TipoPrecio INNER JOIN UnidadMedidaProductos ON Precios.idUnidadMedida = UnidadMedidaProductos.idUnidadMedida  " & _
+                    "WHERE  (Precios.Cod_Productos = '" & CodProducto & "') AND (Precios.idUnidadMedida = " & Id_UnidadMedida & ")"
         DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
         DataAdapter.Fill(DataSet, "ListaPrecios")
         Me.tdbGridUndMedidaVrsPrecio.DataSource = DataSet.Tables("ListaPrecios")
@@ -81,36 +83,52 @@ Public Class FrmPreciosFacturacion
 
 
     Private Sub CmdPegar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdPegar.Click
-        Dim Cantidad_Unidad As Double
+
 
         If Me.TxtCantidad.Text = "" Then
             Cantidad = 0
+            Me.TxtCantidad.Text = 0
         Else
             Cantidad = Me.TxtCantidad.Text
         End If
 
         Cantidad_Unidad = Me.tdbGridUnidadMedida.Item(Me.tdbGridUnidadMedida.Row)("Cantidad_Unidades")
+        DescripcionUnidadMedida2 = Me.tdbGridUnidadMedida.Item(Me.tdbGridUnidadMedida.Row)("Unidad_Medida")
+
         Me.Cantidad = Cantidad_Unidad * Cantidad
 
         If Me.GridOpen = False Then
 
-            PrecioProducto = Me.tdbGridUnidadMedida.Item(Me.tdbGridUnidadMedida.Row)("Precio_Unitario")
-            PrecioProductoDolar = Me.tdbGridUnidadMedida.Item(Me.tdbGridUnidadMedida.Row)("Precio_Unitario_Dolar")
+            If Cantidad_Unidad <> 0 Then
+                PrecioProducto = Me.tdbGridUnidadMedida.Item(Me.tdbGridUnidadMedida.Row)("Precio_Unitario") / Cantidad_Unidad
+                PrecioProductoDolar = Me.tdbGridUnidadMedida.Item(Me.tdbGridUnidadMedida.Row)("Precio_Unitario_Dolar") / Cantidad_Unidad
+                Cantidad_Unidad = Me.TxtCantidad.Text
+            End If
             IdUnidadMedida = Me.tdbGridUnidadMedida.Item(Me.tdbGridUnidadMedida.Row)("idUnidadMedida")
+            Me.Precio_Cordobas_Unidad = Me.tdbGridUnidadMedida.Item(Me.tdbGridUnidadMedida.Row)("Precio_Unitario")
+            Me.Precio_Dolar_Unidad = Me.tdbGridUnidadMedida.Item(Me.tdbGridUnidadMedida.Row)("Precio_Unitario_Dolar")
 
-
+            DescripcionUnidadMedida = "Precio Lista"
+            Cod_TipoPrecio = "00"
 
         Else
 
             DescripcionUnidadMedida = Me.tdbGridUndMedidaVrsPrecio.Item(Me.tdbGridUndMedidaVrsPrecio.Row)("Tipo_Precio")
-            PrecioProducto = Me.tdbGridUndMedidaVrsPrecio.Item(Me.tdbGridUndMedidaVrsPrecio.Row)("Monto_Precio")
-            PrecioProductoDolar = Me.tdbGridUndMedidaVrsPrecio.Item(Me.tdbGridUndMedidaVrsPrecio.Row)("Monto_PrecioDolar")
             IdUnidadMedida = Me.tdbGridUndMedidaVrsPrecio.Item(Me.tdbGridUndMedidaVrsPrecio.Row)("idUnidadMedida")
             Cod_TipoPrecio = Me.tdbGridUndMedidaVrsPrecio.Item(Me.tdbGridUndMedidaVrsPrecio.Row)("Cod_TipoPrecio")
 
-        End If
+            If Cantidad_Unidad <> 0 Then
+                PrecioProducto = Me.tdbGridUndMedidaVrsPrecio.Item(Me.tdbGridUndMedidaVrsPrecio.Row)("Monto_Precio") / Cantidad_Unidad
+                PrecioProductoDolar = Me.tdbGridUndMedidaVrsPrecio.Item(Me.tdbGridUndMedidaVrsPrecio.Row)("Monto_PrecioDolar") / Cantidad_Unidad
+                Cantidad_Unidad = Me.TxtCantidad.Text
+            End If
 
-        Me.Close()
+            Me.Precio_Cordobas_Unidad = Me.tdbGridUndMedidaVrsPrecio.Item(Me.tdbGridUndMedidaVrsPrecio.Row)("Monto_Precio")
+            Me.Precio_Dolar_Unidad = Me.tdbGridUndMedidaVrsPrecio.Item(Me.tdbGridUndMedidaVrsPrecio.Row)("Monto_PrecioDolar")
+
+            End If
+
+            Me.Close()
     End Sub
 
     Private Sub tdbGridUnidadMedida_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tdbGridUnidadMedida.Click
