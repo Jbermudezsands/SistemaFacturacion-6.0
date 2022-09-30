@@ -4063,17 +4063,20 @@ Public Class FrmFacturas
                     Me.CboProyecto.Text = ""
                 End If
 
-                If DataSet.Tables("Facturas").Rows(0)("Exonerado") = "True" Then
-                    Me.OptExsonerado.Checked = True
-                Else
-                    Me.OptExsonerado.Checked = False
-                End If
+
 
                 If FacturaContado = True Then
                     Me.RadioButton2.Checked = True
                 Else
                     Me.RadioButton1.Checked = True
                 End If
+
+                If DataSet.Tables("Facturas").Rows(0)("Exonerado") = "True" Then
+                    Me.OptExsonerado.Checked = True
+                Else
+                    Me.OptExsonerado.Checked = False
+                End If
+
 
                 If Not IsDBNull(DataSet.Tables("Facturas").Rows(0)("Retener1Porciento")) Then
                     If DataSet.Tables("Facturas").Rows(0)("Retener1Porciento") = "True" Then
@@ -8249,7 +8252,7 @@ Public Class FrmFacturas
             '    iPosicion = iPosicion + 1
             'Loop
 
-            ActualizaMETODOFactura()
+        ActualizaMETODOFactura()
         End Sub
 
         Private Sub TrueDBGridComponentes_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TrueDBGridComponentes.KeyDown

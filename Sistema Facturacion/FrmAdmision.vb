@@ -1,5 +1,24 @@
 Public Class FrmAdmision
     Public PNumero_Expediente As String
+    Public Sub Imprimir_Admision(ByVal IdAdmision As Double)
+        Dim SQL As New DataDynamics.ActiveReports.DataSources.SqlDBDataSource, SqlString As String
+        Dim ArepAdmision As New ArepAdmision, Sqldatos As String, RutaLogo As String
+
+        SqlString = "SELECT   Admision.idAdminsion, Admision.Numero_Expediente, Admision.Fecha_Hora, Admision.Activo, Admision.Procesado, Admision.Cancelado, Admision.idPreconsultas, Expediente.Nombres + ' ' + Expediente.Apellidos AS Nombres FROM Admision INNER JOIN  Expediente ON Admision.Numero_Expediente = Expediente.Numero_Expediente "
+
+        SQL.ConnectionString = Conexion
+        SQL.SQL = SqlString
+
+        Bitacora(Now, NombreUsuario, "Admision", "Se Imprimio la Admision: " & IdAdmision)
+
+        Dim ViewerForm As New FrmViewer()
+        ViewerForm.arvMain.Document = ArepAdmision.Document
+        My.Application.DoEvents()
+        ArepAdmision.DataSource = SQL
+        ArepAdmision.Run(False)
+        ViewerForm.Show()
+
+    End Sub
 
     Public Sub Cargar_Expediente(ByVal Numero_Expediente As String)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -18,9 +37,9 @@ Public Class FrmAdmision
 
             End If
 
-            SQLstring = "SELECT  Expediente.* FROM Expediente WHERE (Numero_Expediente = '" & Numero_Expediente & "')"
+            SqlString = "SELECT  Expediente.* FROM Expediente WHERE (Numero_Expediente = '" & Numero_Expediente & "')"
 
-            DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
             DataAdapter.Fill(DataSet, "Expediente")
             If Not DataSet.Tables("Expediente").Rows.Count = 0 Then
 
@@ -43,8 +62,8 @@ Public Class FrmAdmision
                 If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("IdComarca")) Then
                     IdComarca = DataSet.Tables("Expediente").Rows(0)("IdComarca")
 
-                    SQLstring = "SELECT IdMunicipio, Cod_Departamento, Nombre_Municipio FROM Municipio WHERE (IdMunicipio = '" & IdComarca & "') AND (Tipo = 'Comarca')"
-                    ds = BuscaConsulta(SQLstring, "Comarca").Copy
+                    SqlString = "SELECT IdMunicipio, Cod_Departamento, Nombre_Municipio FROM Municipio WHERE (IdMunicipio = '" & IdComarca & "') AND (Tipo = 'Comarca')"
+                    ds = BuscaConsulta(SqlString, "Comarca").Copy
                     If ds.Tables("Comarca").Rows.Count <> 0 Then
                         Me.TxtComarca.Text = ds.Tables("Comarca").Rows(0)("Nombre_Municipio")
                     End If
@@ -53,8 +72,8 @@ Public Class FrmAdmision
                 If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("IdMunicipio")) Then
                     IdMunicipio = DataSet.Tables("Expediente").Rows(0)("IdMunicipio")
 
-                    SQLstring = "SELECT IdMunicipio, Cod_Departamento, Nombre_Municipio FROM Municipio WHERE (IdMunicipio = '" & IdMunicipio & "') AND (Tipo = 'Municipio')"
-                    ds = BuscaConsulta(SQLstring, "Municipio").Copy
+                    SqlString = "SELECT IdMunicipio, Cod_Departamento, Nombre_Municipio FROM Municipio WHERE (IdMunicipio = '" & IdMunicipio & "') AND (Tipo = 'Municipio')"
+                    ds = BuscaConsulta(SqlString, "Municipio").Copy
                     If ds.Tables("Municipio").Rows.Count <> 0 Then
                         Me.TxtMunicipio.Text = ds.Tables("Municipio").Rows(0)("Nombre_Municipio")
                     End If
@@ -64,8 +83,8 @@ Public Class FrmAdmision
                 If Not IsDBNull(DataSet.Tables("Expediente").Rows(0)("IdLocalidad")) Then
                     CodDepartamento = DataSet.Tables("Expediente").Rows(0)("IdLocalidad")
 
-                    SQLstring = "SELECT Cod_Departamento, Nombre_Departamento FROM Departamentos WHERE (Cod_Departamento = '" & CodDepartamento & "')"
-                    ds = BuscaConsulta(SQLstring, "Departamento").Copy
+                    SqlString = "SELECT Cod_Departamento, Nombre_Departamento FROM Departamentos WHERE (Cod_Departamento = '" & CodDepartamento & "')"
+                    ds = BuscaConsulta(SqlString, "Departamento").Copy
                     If ds.Tables("Departamento").Rows.Count <> 0 Then
                         Me.TxtLocalidad.Text = ds.Tables("Departamento").Rows(0)("Nombre_Departamento")
                     End If
@@ -140,6 +159,12 @@ Public Class FrmAdmision
     End Sub
 
     Private Sub GroupBox1_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox1.Enter
+
+    End Sub
+
+    Private Sub Button6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
+
+
 
     End Sub
 End Class

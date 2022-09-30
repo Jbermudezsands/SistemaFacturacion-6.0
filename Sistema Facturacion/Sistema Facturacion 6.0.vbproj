@@ -571,6 +571,12 @@
     <Compile Include="FrmProyectos.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Reportes\ArepAdmision.Designer.vb">
+      <DependentUpon>ArepAdmision.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepAdmision.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\ArepBitacoraRecepcion.designer.vb">
       <DependentUpon>ArepBitacoraRecepcion.vb</DependentUpon>
     </Compile>
@@ -1918,6 +1924,10 @@
     <EmbeddedResource Include="FrmProyectos.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmProyectos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepAdmision.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepAdmision.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepBitacoraRecepcion.resx">
       <DependentUpon>ArepBitacoraRecepcion.vb</DependentUpon>
