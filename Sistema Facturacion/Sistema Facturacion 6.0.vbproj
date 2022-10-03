@@ -817,6 +817,12 @@
     <Compile Include="Reportes\ArepPrecioVrsCosto.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\ArepPreConsultas.Designer.vb">
+      <DependentUpon>ArepPreConsultas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepPreConsultas.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\ArepProductosBajoMinimo.Designer.vb">
       <DependentUpon>ArepProductosBajoMinimo.vb</DependentUpon>
     </Compile>
@@ -2284,6 +2290,10 @@
     <EmbeddedResource Include="Reportes\ArepPrecioVrsCosto.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ArepPrecioVrsCosto.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepPreConsultas.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepPreConsultas.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepProductosBajoMinimo.resx">
       <SubType>Designer</SubType>

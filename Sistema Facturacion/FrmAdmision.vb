@@ -1,24 +1,6 @@
 Public Class FrmAdmision
     Public PNumero_Expediente As String
-    Public Sub Imprimir_Admision(ByVal IdAdmision As Double)
-        Dim SQL As New DataDynamics.ActiveReports.DataSources.SqlDBDataSource, SqlString As String
-        Dim ArepAdmision As New ArepAdmision, Sqldatos As String, RutaLogo As String
 
-        SqlString = "SELECT   Admision.idAdminsion, Admision.Numero_Expediente, Admision.Fecha_Hora, Admision.Activo, Admision.Procesado, Admision.Cancelado, Admision.idPreconsultas, Expediente.Nombres + ' ' + Expediente.Apellidos AS Nombres FROM Admision INNER JOIN  Expediente ON Admision.Numero_Expediente = Expediente.Numero_Expediente "
-
-        SQL.ConnectionString = Conexion
-        SQL.SQL = SqlString
-
-        Bitacora(Now, NombreUsuario, "Admision", "Se Imprimio la Admision: " & IdAdmision)
-
-        Dim ViewerForm As New FrmViewer()
-        ViewerForm.arvMain.Document = ArepAdmision.Document
-        My.Application.DoEvents()
-        ArepAdmision.DataSource = SQL
-        ArepAdmision.Run(False)
-        ViewerForm.Show()
-
-    End Sub
 
     Public Sub Cargar_Expediente(ByVal Numero_Expediente As String)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -163,8 +145,27 @@ Public Class FrmAdmision
     End Sub
 
     Private Sub Button6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
+        Dim Sqlstring As String, ExpedienteNo As String = Me.TxtLetra.Text & "-" & Me.TxtCodigo.Text, ds As New DataSet
+        Dim IdAdmision As Double
 
+        Dim Hora As Date
 
+        If PNumero_Expediente = "" Then
+            MsgBox("Es necesario un Numero Expediente", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        Hora = Format(CDate(Me.DTPFecha.Text), "dd/MM/yyyy") & " " & Me.LblHora.Text
+        Grabar_Admision(PNumero_Expediente, Hora, True, False, False, 0)
+
+        Sqlstring = "SELECT  Admision.* FROM Admision WHERE  (Numero_Expediente = '" & ExpedienteNo & "') AND (Activo = 1)"
+        ds = BuscaConsulta(Sqlstring, "Admision").Copy
+        If ds.Tables("Admision").Rows.Count <> 0 Then
+            IdAdmision = ds.Tables("Admision").Rows(0)("idAdminsion")
+        End If
+
+        Imprimir_Admision(IdAdmision)
+        Limpiar_Expediente()
 
     End Sub
 End Class

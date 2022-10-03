@@ -173,4 +173,53 @@ Public Class FrmPreConsultasNuevas
     Private Sub Label6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label6.Click
 
     End Sub
+
+    Private Sub Button6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
+        Dim Hora As Date, idAdmision As Double
+
+        If Me.TxtCodigo.Text = "" Then
+            MsgBox("Es Necesario Digitar el Numero Expediente", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.TxtSistolica.Text = "" Then
+            MsgBox("Es Necesario Digitar la Sistolica", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.TxtDiastolica.Text = "" Then
+            MsgBox("Es Necesario Digitar la Diastolica", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.TxtTemperatura.Text = "" Then
+            MsgBox("Es Necesario Digitar la Temperatura", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.TxtAzucarSangre.Text = "" Then
+            MsgBox("Es Necesario Digitar el Azucar en Sangre", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.Id_Consultorio = 0 Then
+            MsgBox("Seleccione el Consultorio", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Not IsNumeric(Me.TxtTalla.Text) Then
+            Me.TxtTalla.Text = 0
+        End If
+
+        If Not IsNumeric(Me.TxtPeso.Text) Then
+            Me.TxtPeso.Text = 0
+        End If
+
+
+        Hora = Format(CDate(Me.DTPFecha.Text), "dd/MM/yyyy") & " " & Me.LblHora.Text
+
+
+        Grabar_PreConsultas(Me.TxtCodigo.Text, Hora, True, False, False, Numero_Admision, Me.TxtSistolica.Text, Me.TxtDiastolica.Text, Me.TxtTemperatura.Text, Me.TxtAzucarSangre.Text, Me.Id_Consultorio, Me.TxtTalla.Text, Me.TxtPeso.Text)
+        My.Forms.FrmPreConsultas.Cargar_PreConsultas()
+    End Sub
 End Class

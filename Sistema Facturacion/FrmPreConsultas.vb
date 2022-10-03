@@ -47,4 +47,22 @@ Public Class FrmPreConsultas
     Private Sub CmdCerrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdCerrar.Click
         Me.Close()
     End Sub
+
+    Private Sub Button6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
+        Dim Sqlstring As String, ExpedienteNo As String, ds As New DataSet
+        Dim IdAdmision As Double
+        Dim Hora As Date
+
+        ExpedienteNo = Me.TrueDBGridConsultas.Columns("Numero_Expediente").Text
+        Hora = Me.TrueDBGridConsultas.Columns("Fecha_Hora").Text
+
+        Sqlstring = "SELECT  Admision.* FROM Admision WHERE  (Numero_Expediente = '" & ExpedienteNo & "') AND (Activo = 1) ORDER BY Admision.idAdminsion DESC"
+        ds = BuscaConsulta(Sqlstring, "Admision").Copy
+        If ds.Tables("Admision").Rows.Count <> 0 Then
+            IdAdmision = ds.Tables("Admision").Rows(0)("idAdminsion")
+        End If
+
+        Imprimir_Admision(IdAdmision)
+
+    End Sub
 End Class

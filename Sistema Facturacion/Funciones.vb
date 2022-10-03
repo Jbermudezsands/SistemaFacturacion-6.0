@@ -4,7 +4,44 @@ Imports System.IO
 Imports System.Drawing.Imaging
 
 Module Funciones
-    
+    Public Sub Imprimir_PreConsulta(ByVal Numero_Expediente As String)
+        Dim SQL As New DataDynamics.ActiveReports.DataSources.SqlDBDataSource, SqlString As String
+        Dim ArpPreconsulta As New ArepPreConsultas, Sqldatos As String, RutaLogo As String, ds As New DataSet
+
+
+        SqlString = "SELECT  * FROM   PreConsultas INNER JOIN  Expediente ON PreConsultas.Numero_Expediente = Expediente.Numero_Expediente WHERE (PreConsultas.Numero_Expediente = N'G-000001') AND (PreConsultas.Activo = 1) "
+        SQL.ConnectionString = Conexion
+        SQL.SQL = SqlString
+
+        Bitacora(Now, NombreUsuario, "Admision", "Se Imprimio la preconsulta: " & IdAdmision)
+
+        Dim ViewerForm As New FrmViewer()
+        ViewerForm.arvMain.Document = ArpPreconsulta.Document
+        My.Application.DoEvents()
+        ArpPreconsulta.DataSource = SQL
+        ArpPreconsulta.Run(False)
+        ViewerForm.Show()
+
+    End Sub
+    Public Sub Imprimir_Admision(ByVal IdAdmision As Double)
+        Dim SQL As New DataDynamics.ActiveReports.DataSources.SqlDBDataSource, SqlString As String
+        Dim ArepAdmision As New ArepAdmision, Sqldatos As String, RutaLogo As String, ds As New DataSet
+
+
+        SqlString = "SELECT   Admision.idAdminsion, Admision.Numero_Expediente, Admision.Fecha_Hora, Admision.Activo, Admision.Procesado, Admision.Cancelado, Admision.idPreconsultas, Expediente.Nombres + ' ' + Expediente.Apellidos AS Nombres FROM Admision INNER JOIN  Expediente ON Admision.Numero_Expediente = Expediente.Numero_Expediente WHERE  (Admision.idAdminsion = " & IdAdmision & ")"
+        SQL.ConnectionString = Conexion
+        SQL.SQL = SqlString
+
+        Bitacora(Now, NombreUsuario, "Admision", "Se Imprimio la Admision: " & IdAdmision)
+
+        Dim ViewerForm As New FrmViewer()
+        ViewerForm.arvMain.Document = ArepAdmision.Document
+        My.Application.DoEvents()
+        ArepAdmision.DataSource = SQL
+        ArepAdmision.Run(False)
+        ViewerForm.Show()
+
+    End Sub
 
     Public Sub Grabar_PreConsultas(ByVal Numero_Expediente As String, ByVal Fecha_Hora As Date, ByVal Activo As Boolean, ByVal Procesado As Boolean, ByVal Cancelado As Boolean, ByVal idAdmision As Double, ByVal Sistolica As Double, ByVal Diastolica As Double, ByVal Temperatura As Double, ByVal AzucarSangre As Double, ByVal IdConsultorio As Double, ByVal Peso As Double, ByVal Talla As Double)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)

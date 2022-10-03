@@ -2091,8 +2091,7 @@ Partial Class FrmReportes
         Me.Controls.Add(Me.ChkAgrupadoBodega)
         Me.Name = "FrmReportes"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" & _
-            "+"
+        Me.Text = "Reportes"
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)

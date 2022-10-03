@@ -27,6 +27,7 @@ Partial Class FrmPreConsultas
         Me.Label1 = New System.Windows.Forms.Label
         Me.PictureBox3 = New System.Windows.Forms.PictureBox
         Me.PictureBox4 = New System.Windows.Forms.PictureBox
+        Me.Button6 = New System.Windows.Forms.Button
         CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -79,7 +80,7 @@ Partial Class FrmPreConsultas
         '
         Me.CmdEliminar.Image = CType(resources.GetObject("CmdEliminar.Image"), System.Drawing.Image)
         Me.CmdEliminar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.CmdEliminar.Location = New System.Drawing.Point(826, 109)
+        Me.CmdEliminar.Location = New System.Drawing.Point(829, 149)
         Me.CmdEliminar.Name = "CmdEliminar"
         Me.CmdEliminar.Size = New System.Drawing.Size(75, 34)
         Me.CmdEliminar.TabIndex = 244
@@ -119,11 +120,24 @@ Partial Class FrmPreConsultas
         Me.PictureBox4.TabIndex = 251
         Me.PictureBox4.TabStop = False
         '
+        'Button6
+        '
+        Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
+        Me.Button6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button6.Location = New System.Drawing.Point(828, 107)
+        Me.Button6.Name = "Button6"
+        Me.Button6.Size = New System.Drawing.Size(75, 34)
+        Me.Button6.TabIndex = 254
+        Me.Button6.Text = "Imprimir"
+        Me.Button6.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button6.UseVisualStyleBackColor = True
+        '
         'FrmPreConsultas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(916, 448)
+        Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.PictureBox4)
@@ -149,4 +163,5 @@ Partial Class FrmPreConsultas
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents PictureBox3 As System.Windows.Forms.PictureBox
     Friend WithEvents PictureBox4 As System.Windows.Forms.PictureBox
+    Friend WithEvents Button6 As System.Windows.Forms.Button
 End Class
