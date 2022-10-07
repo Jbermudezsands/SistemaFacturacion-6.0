@@ -1324,4 +1324,9 @@ Public Class MDIMain
         My.Forms.FrmListadoConsultas.MdiParent = Me
         My.Forms.FrmListadoConsultas.Show()
     End Sub
+
+    Private Sub RibbonButton171_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton171.Click
+        My.Forms.FrmTransformacion.MdiParent = Me
+        My.Forms.FrmTransformacion.Show()
+    End Sub
 End Class

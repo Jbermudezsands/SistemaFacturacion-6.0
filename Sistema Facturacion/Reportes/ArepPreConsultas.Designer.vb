@@ -19,17 +19,17 @@ Partial Public Class ArepPreConsultas
     Private Sub InitializeComponent()
         Dim resources As System.Resources.ResourceManager = New System.Resources.ResourceManager(GetType(ArepPreConsultas))
         Me.PageHeader1 = New DataDynamics.ActiveReports.PageHeader
-        Me.Detail1 = New DataDynamics.ActiveReports.Detail
-        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
         Me.TxtIdPreConsulta = New DataDynamics.ActiveReports.TextBox
         Me.TextBox2 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox3 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox4 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox5 = New DataDynamics.ActiveReports.TextBox
         Me.TxtImpreso = New DataDynamics.ActiveReports.TextBox
+        Me.Detail1 = New DataDynamics.ActiveReports.Detail
+        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
         Me.ReportHeader1 = New DataDynamics.ActiveReports.ReportHeader
-        Me.ReportFooter1 = New DataDynamics.ActiveReports.ReportFooter
         Me.LblTitulo = New DataDynamics.ActiveReports.Label
+        Me.ReportFooter1 = New DataDynamics.ActiveReports.ReportFooter
         CType(Me.TxtIdPreConsulta, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -44,17 +44,6 @@ Partial Public Class ArepPreConsultas
         Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TxtIdPreConsulta, Me.TextBox2, Me.TextBox3, Me.TextBox4, Me.TextBox5, Me.TxtImpreso})
         Me.PageHeader1.Height = 1.697917!
         Me.PageHeader1.Name = "PageHeader1"
-        '
-        'Detail1
-        '
-        Me.Detail1.ColumnSpacing = 0.0!
-        Me.Detail1.Height = 0.0!
-        Me.Detail1.Name = "Detail1"
-        '
-        'PageFooter1
-        '
-        Me.PageFooter1.Height = 0.25!
-        Me.PageFooter1.Name = "PageFooter1"
         '
         'TxtIdPreConsulta
         '
@@ -171,16 +160,22 @@ Partial Public Class ArepPreConsultas
         Me.TxtImpreso.Top = 1.375!
         Me.TxtImpreso.Width = 2.1875!
         '
+        'Detail1
+        '
+        Me.Detail1.ColumnSpacing = 0.0!
+        Me.Detail1.Height = 0.0!
+        Me.Detail1.Name = "Detail1"
+        '
+        'PageFooter1
+        '
+        Me.PageFooter1.Height = 0.25!
+        Me.PageFooter1.Name = "PageFooter1"
+        '
         'ReportHeader1
         '
         Me.ReportHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.LblTitulo})
         Me.ReportHeader1.Height = 0.3125!
         Me.ReportHeader1.Name = "ReportHeader1"
-        '
-        'ReportFooter1
-        '
-        Me.ReportFooter1.Height = 0.25!
-        Me.ReportFooter1.Name = "ReportFooter1"
         '
         'LblTitulo
         '
@@ -200,6 +195,11 @@ Partial Public Class ArepPreConsultas
         Me.LblTitulo.Text = "Systems And Solutions"
         Me.LblTitulo.Top = 0.0!
         Me.LblTitulo.Width = 2.1875!
+        '
+        'ReportFooter1
+        '
+        Me.ReportFooter1.Height = 0.25!
+        Me.ReportFooter1.Name = "ReportFooter1"
         '
         'ArepPreConsultas
         '

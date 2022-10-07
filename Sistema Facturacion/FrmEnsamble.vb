@@ -14,6 +14,7 @@ Public Class FrmEnsamble
 
         Me.DTPFecha.Value = Format(Now, "dd/MM/yyyy")
 
+
         SQLString = "SELECT  * FROM   Bodegas"
         MiConexion.Open()
         DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)

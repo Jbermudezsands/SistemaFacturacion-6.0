@@ -195,6 +195,7 @@ Partial Class MDIMain
         Me.RibbonLabel2 = New C1.Win.C1Ribbon.RibbonLabel
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
         Me.TxtUsuario = New System.Windows.Forms.TextBox
+        Me.RibbonButton171 = New C1.Win.C1Ribbon.RibbonButton
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1258,6 +1259,7 @@ Partial Class MDIMain
         Me.RibbonGroup13.Items.Add(Me.RibbonButton11)
         Me.RibbonGroup13.Items.Add(Me.RibbonButton61)
         Me.RibbonGroup13.Items.Add(Me.RibbonButton14)
+        Me.RibbonGroup13.Items.Add(Me.RibbonButton171)
         Me.RibbonGroup13.Text = "Registros"
         '
         'RibbonProductor
@@ -1589,6 +1591,14 @@ Partial Class MDIMain
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
         '
+        'RibbonButton171
+        '
+        Me.RibbonButton171.ID = "RibbonButton171"
+        Me.RibbonButton171.LargeImage = CType(resources.GetObject("RibbonButton171.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton171.SmallImage = CType(resources.GetObject("RibbonButton171.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton171.Text = "Transforma"
+        Me.RibbonButton171.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
         'MDIMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1784,5 +1794,6 @@ Partial Class MDIMain
     Friend WithEvents RibbonComarca As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonMunicipios As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonConsultorio As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButton171 As C1.Win.C1Ribbon.RibbonButton
 
 End Class

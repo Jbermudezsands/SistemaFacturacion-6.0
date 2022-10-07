@@ -9,11 +9,11 @@ Module Funciones
         Dim ArpPreconsulta As New ArepPreConsultas, Sqldatos As String, RutaLogo As String, ds As New DataSet
 
 
-        SqlString = "SELECT  * FROM   PreConsultas INNER JOIN  Expediente ON PreConsultas.Numero_Expediente = Expediente.Numero_Expediente WHERE (PreConsultas.Numero_Expediente = N'G-000001') AND (PreConsultas.Activo = 1) "
+        SqlString = "SELECT  * FROM   PreConsultas INNER JOIN  Expediente ON PreConsultas.Numero_Expediente = Expediente.Numero_Expediente WHERE (PreConsultas.Numero_Expediente = '" & Numero_Expediente & "') AND (PreConsultas.Activo = 1) "
         SQL.ConnectionString = Conexion
         SQL.SQL = SqlString
 
-        Bitacora(Now, NombreUsuario, "Admision", "Se Imprimio la preconsulta: " & IdAdmision)
+        Bitacora(Now, NombreUsuario, "Admision", "Se Imprimio la preconsulta expediente: " & Numero_Expediente)
 
         Dim ViewerForm As New FrmViewer()
         ViewerForm.arvMain.Document = ArpPreconsulta.Document

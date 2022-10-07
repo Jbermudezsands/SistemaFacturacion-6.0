@@ -296,7 +296,7 @@ Public Class FrmConsultas
 
                     'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Precio_Lista, Existencia_Unidades,Cod_Iva FROM Productos"
                     SQlProductos = "SELECT DISTINCT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, Productos.Precio_Lista, DetalleBodegas.Existencia, Productos.Cod_Iva FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos WHERE (DetalleBodegas.Cod_Bodegas = '" & CodBodega & "') AND (Productos.Activo = N'Activo') ORDER BY Productos.Cod_Productos"
-                    Me.TrueDBGridConsultas.Columns(0).Caption = "C�digo"
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Codigo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 

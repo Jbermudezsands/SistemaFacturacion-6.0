@@ -20,7 +20,7 @@ Public Class FrmFacturas
         Dim MontoFactura As Double, FechaFactura As Date, Dias As Double, TasaInteres As Double, MontoMora As Double, Total As Double
         Dim Registros2 As Double, j As Double, TasaCambioRecibo As Double, TotalFactura As Double = 0, TotalAbonos As Double = 0, TotalCargos As Double = 0
         Dim TotalMora As Double = 0, FechaVence As Date, NumeroNota As String = "", MontoNota As Double = 0, NumeroNotaCR As String = "", MontoNotaCR As Double = 0, TotalMontoNotaCR As Double = 0, TotalMontoNotaDB As Double = 0
-        Dim MontoMetodoFactura As Double = 0, TipoNota As String = ""
+        Dim MontoMetodoFactura As Double = 0, TipoNota As String = "", TasaCmbio As Double
         'oDataRow As DataRow, 
 
 
@@ -115,17 +115,22 @@ Public Class FrmFacturas
 
             Do While Registros2 > j
 
+
+                TasaCambio = BuscaTasaCambio(DataSet.Tables("Recibos").Rows(j)("Fecha_Recibo"))
+
                 If Moneda = "Cordobas" Then
                     If DataSet.Tables("Recibos").Rows(j)("MonedaRecibo") = "Cordobas" Then
                         TasaCambioRecibo = 1
                     Else
-                        TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("Recibos").Rows(j)("Fecha_Recibo"))
+                        TasaCambioRecibo = TasaCambio
                     End If
                 Else
                     If DataSet.Tables("Recibos").Rows(j)("MonedaRecibo") = "Dolares" Then
                         TasaCambioRecibo = 1
+                    ElseIf TasaCambio <> 0 Then
+                        TasaCambioRecibo = 1 / TasaCambio
                     Else
-                        TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("Recibos").Rows(j)("Fecha_Recibo"))
+                        TasaCambioRecibo = 1
                     End If
                 End If
                 If NumeroRecibo = "" Then
@@ -154,13 +159,16 @@ Public Class FrmFacturas
             Do While Registros2 > j
 
                 TipoNota = DataSet.Tables("NotaDB").Rows(j)("Tipo")
+                TasaCambio = BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
 
                 If Moneda = "Cordobas" Then
                     If TipoNota <> "Debito Clientes Dif $" Then
                         If DataSet.Tables("NotaDB").Rows(j)("MonedaNota") = "Cordobas" Then
                             TasaCambioRecibo = 1
+                        ElseIf TasaCambio <> 0 Then
+                            TasaCambioRecibo = TasaCambio
                         Else
-                            TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                            TasaCambioRecibo = 1
                         End If
                     Else
                         TasaCambioRecibo = 0
@@ -169,8 +177,10 @@ Public Class FrmFacturas
                     If TipoNota <> "Debito Clientes Dif C$" Then
                         If DataSet.Tables("NotaDB").Rows(j)("MonedaNota") = "Dolares" Then
                             TasaCambioRecibo = 1
+                        ElseIf TasaCambio <> 0 Then
+                            TasaCambioRecibo = 1 / TasaCambio
                         Else
-                            TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                            TasaCambioRecibo = 1
                         End If
                     Else
                         TasaCambioRecibo = 0
@@ -205,13 +215,16 @@ Public Class FrmFacturas
             Do While Registros2 > j
 
                 TipoNota = DataSet.Tables("NotaCR").Rows(j)("Tipo")
+                TasaCambio = BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
 
                 If Moneda = "Cordobas" Then
                     If TipoNota <> "Credito Clientes Dif $" Then
                         If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Cordobas" Then
                             TasaCambioRecibo = 1
+                        ElseIf TasaCambio <> 0 Then
+                            TasaCambioRecibo = TasaCambio
                         Else
-                            TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                            TasaCambioRecibo = 1
                         End If
                     Else
                         TasaCambioRecibo = 0
@@ -220,8 +233,10 @@ Public Class FrmFacturas
                     If TipoNota <> "Credito Clientes Dif C$" Then
                         If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Dolares" Then
                             TasaCambioRecibo = 1
+                        ElseIf TasaCambio <> 0 Then
+                            TasaCambioRecibo = 1 / TasaCambio
                         Else
-                            TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                            TasaCambioRecibo = 1
                         End If
                     Else
                         TasaCambioRecibo = 0
@@ -249,17 +264,24 @@ Public Class FrmFacturas
             DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
             DataAdapter.Fill(DataSet, "MetodoFactura")
             If DataSet.Tables("MetodoFactura").Rows.Count <> 0 Then
+
+                TasaCambio = BuscaTasaCambio(DataSet.Tables("MetodoFactura").Rows(0)("Fecha_Factura"))
+
                 If Moneda = "Cordobas" Then
                     If DataSet.Tables("MetodoFactura").Rows(0)("Moneda") = "Cordobas" Then
                         TasaCambioRecibo = 1
+                    ElseIf TasaCambio <> 0 Then
+                        TasaCambioRecibo = TasaCambio
                     Else
-                        TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("MetodoFactura").Rows(0)("Fecha_Factura"))
+                        TasaCambioRecibo = 1
                     End If
                 Else
                     If DataSet.Tables("MetodoFactura").Rows(0)("Moneda") = "Dolares" Then
                         TasaCambioRecibo = 1
+                    ElseIf TasaCambio <> 0 Then
+                        TasaCambioRecibo = 1 / TasaCambio
                     Else
-                        TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("MetodoFactura").Rows(0)("Fecha_Factura"))
+                        TasaCambioRecibo = 1
                     End If
                 End If
 

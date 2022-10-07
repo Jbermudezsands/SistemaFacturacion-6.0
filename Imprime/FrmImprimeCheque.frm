@@ -1154,10 +1154,10 @@ Descuento = 0
                         Printer.Print Simbolo & " " & Format(SubTotal, "##,##0.00")
                         Printer.RightToLeft = True
                         
-                        Printer.CurrentX = Val(X16) '135
-                        Printer.CurrentY = Val(Y20) '288
-                        Printer.Print "SubTotal"
-                        Printer.RightToLeft = True
+'                        Printer.CurrentX = Val(X16) '135
+'                        Printer.CurrentY = Val(Y20) '288
+'                        Printer.Print "SubTotal"
+'                        Printer.RightToLeft = True
                       End If
                       
                       If X21 <> 0 Or Y21 <> 0 Then
@@ -1166,10 +1166,10 @@ Descuento = 0
                         Printer.Print Simbolo & " " & Format(IVA, "##,##0.00")
                         Printer.RightToLeft = True
                         
-                        Printer.CurrentX = Val(X16) '135
-                        Printer.CurrentY = Val(Y21) '288
-                        Printer.Print "IVA"
-                        Printer.RightToLeft = True
+'                        Printer.CurrentX = Val(X16) '135
+'                        Printer.CurrentY = Val(Y21) '288
+'                        Printer.Print "IVA"
+'                        Printer.RightToLeft = True
                       End If
                     
                       If X22 <> 0 Or Y22 <> 0 Then
