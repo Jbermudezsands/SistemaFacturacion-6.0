@@ -49,4 +49,8 @@ Public Class FrmListadoConsultas
         My.Forms.FrmConsultasMedicas.Cargar_Expediente(NumeroExpediente)
         My.Forms.FrmConsultasMedicas.ShowDialog()
     End Sub
+
+    Private Sub CmdCerrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdCerrar.Click
+        Me.Close()
+    End Sub
 End Class

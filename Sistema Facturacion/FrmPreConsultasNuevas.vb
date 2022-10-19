@@ -221,5 +221,6 @@ Public Class FrmPreConsultasNuevas
 
         Grabar_PreConsultas(Me.TxtCodigo.Text, Hora, True, False, False, Numero_Admision, Me.TxtSistolica.Text, Me.TxtDiastolica.Text, Me.TxtTemperatura.Text, Me.TxtAzucarSangre.Text, Me.Id_Consultorio, Me.TxtTalla.Text, Me.TxtPeso.Text)
         My.Forms.FrmPreConsultas.Cargar_PreConsultas()
+        Imprimir_PreConsulta("Q-000001")
     End Sub
 End Class

@@ -10,6 +10,7 @@ Module Funciones
 
 
         SqlString = "SELECT  * FROM   PreConsultas INNER JOIN  Expediente ON PreConsultas.Numero_Expediente = Expediente.Numero_Expediente WHERE (PreConsultas.Numero_Expediente = '" & Numero_Expediente & "') AND (PreConsultas.Activo = 1) "
+        SqlString = "SELECT *, Doctores.Tipo, Doctores.Nombre_Doctor + ' ' + Doctores.Apellido_Doctor AS NombreDoctor FROM  PreConsultas INNER JOIN  Expediente ON PreConsultas.Numero_Expediente = Expediente.Numero_Expediente INNER JOIN Consultorio ON PreConsultas.IdConsultorio = Consultorio.IdConsultorio INNER JOIN Doctores ON Consultorio.Codigo_Minsa = Doctores.Codigo_Minsa "
         SQL.ConnectionString = Conexion
         SQL.SQL = SqlString
 
@@ -42,6 +43,47 @@ Module Funciones
         ViewerForm.Show()
 
     End Sub
+    Public Sub Grabar_ConsultasMedicas(ByVal Numero_Expediente As String, ByVal Fecha_Inicio As Date, ByVal Fecha_Fin As Date, ByVal Sintomas As String, ByVal Diagnostico As String, ByVal idPreconsultas As Double)
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim SQLstring As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim ds As New DataSet
+
+
+        If Numero_Expediente = "" Then
+            MsgBox("Se necesita el codigo del Expediente", MsgBoxStyle.Critical, "Sistema de Facturacion")
+            Exit Sub
+        End If
+
+        SQLstring = "SELECT Expediente.*, PreConsultas.*, Doctores.Nombre_Doctor + ' ' + Doctores.Apellido_Doctor AS Nombre_Doctor, Consultorio.Nombre_Consultorio FROM  Expediente INNER JOIN PreConsultas ON Expediente.Numero_Expediente = PreConsultas.Numero_Expediente INNER JOIN Consultorio ON PreConsultas.IdConsultorio = Consultorio.IdConsultorio INNER JOIN Doctores ON Consultorio.Codigo_Minsa = Doctores.Codigo_Minsa WHERE (Expediente.Numero_Expediente = '" & Numero_Expediente & "') AND (PreConsultas.Activo = 'True')"
+        ds = BuscaConsulta(SQLstring, "PreConsulta").Copy
+        If ds.Tables("PreConsulta").Rows.Count <> 0 Then
+            MsgBox("Existe una  Consulta Activa para este Paciente!!!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+            Exit Sub
+        Else
+            '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
+            StrSqlUpdate = "INSERT INTO [Consulta] ([Numero_Expediente],[Fecha_Hora_Inicio] ,[Fecha_Hora_Fin],[Sintomas],[Diagnostico],[idPreConsulta]) VALUES('" & Numero_Expediente & "' , CONVERT(DATETIME, '" & Format(Fecha_Inicio, "yyyy-MM-dd HH:mm:ss") & "', 102)  , CONVERT(DATETIME, '" & Format(Fecha_Fin, "yyyy-MM-dd HH:mm:ss") & "', 102) ,'" & Sintomas & "' ,'" & Diagnostico & "' ," & idPreconsultas & ")"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+            SQLstring = "SELECT Consulta.* FROM PreConsultas WHERE(idAdmision = " & idPreconsultas & ")"
+            DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
+            DataAdapter.Fill(DataSet, "Pre")
+            If Not DataSet.Tables("Pre").Rows.Count = 0 Then
+                idPreconsultas = DataSet.Tables("Pre").Rows(0)("idPreConsulta")
+            End If
+
+            MsgBox("Grabado con Exito !!!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+            Exit Sub
+
+
+        End If
+
+    End Sub
+
 
     Public Sub Grabar_PreConsultas(ByVal Numero_Expediente As String, ByVal Fecha_Hora As Date, ByVal Activo As Boolean, ByVal Procesado As Boolean, ByVal Cancelado As Boolean, ByVal idAdmision As Double, ByVal Sistolica As Double, ByVal Diastolica As Double, ByVal Temperatura As Double, ByVal AzucarSangre As Double, ByVal IdConsultorio As Double, ByVal Peso As Double, ByVal Talla As Double)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -66,18 +108,12 @@ Module Funciones
                 Exit Sub
             Else
                 '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-                StrSqlUpdate = "INSERT INTO [PreConsultas] ([Numero_Expediente],[Fecha_Hora],[Activo],[Procesado],[Anulado],[idAdmision],[Sistolica],[Diastolica],[Temperatura],[Azucar_Sangre],[IdConsultorio],[Peso],[Talla]) VALUES ('" & Numero_Expediente & "', CONVERT(DATETIME, '" & Format(FechaIngreso, "yyyy-MM-dd HH:mm:ss") & "', 102) , '" & Activo & "',  '" & Procesado & "', '" & Cancelado & "' ," & idAdmision & ", " & Sistolica & ", " & Diastolica & ", " & Temperatura & ", " & AzucarSangre & ", " & IdConsultorio & ", " & Peso & ", " & Talla & ")"
+                StrSqlUpdate = "INSERT INTO [PreConsultas] ([Numero_Expediente],[Fecha_Hora],[Activo],[Procesado],[Anulado],[idAdmision],[Sistolica],[Diastolica],[Temperatura],[Azucar_Sangre],[IdConsultorio],[Peso],[Talla]) VALUES ('" & Numero_Expediente & "', CONVERT(DATETIME, '" & Format(FechaIngreso, "yyyy-MM-dd HH:mm:ss") & "', 102) , '" & Activo & "',  '" & Procesado & "', '" & Cancelado & "' ," & idPreconsulta & ", " & Sistolica & ", " & Diastolica & ", " & Temperatura & ", " & AzucarSangre & ", " & IdConsultorio & ", " & Peso & ", " & Talla & ")"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
                 iResultado = ComandoUpdate.ExecuteNonQuery
                 MiConexion.Close()
 
-                SQLstring = "SELECT PreConsultas.* FROM PreConsultas WHERE(idAdmision = " & idAdmision & ")"
-                DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
-                DataAdapter.Fill(DataSet, "Pre")
-                If Not DataSet.Tables("Pre").Rows.Count = 0 Then
-                    idPreConsultas = DataSet.Tables("Pre").Rows(0)("idPreConsulta")
-                End If
 
                 '///////////////////////////////ACTUALIZO LA TABLA DE ADMISION /////
                 StrSqlUpdate = "UPDATE [Admision] SET [Activo] = 0 ,[idPreconsultas] = " & idPreConsultas & "  WHERE (idAdminsion = " & idAdmision & ")"

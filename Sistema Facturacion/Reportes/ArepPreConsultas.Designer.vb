@@ -17,7 +17,8 @@ Partial Public Class ArepPreConsultas
     Private WithEvents PageFooter1 As DataDynamics.ActiveReports.PageFooter
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.Resources.ResourceManager = New System.Resources.ResourceManager(GetType(ArepPreConsultas))
+        Dim OleDBDataSource1 As DataDynamics.ActiveReports.DataSources.OleDBDataSource = New DataDynamics.ActiveReports.DataSources.OleDBDataSource
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ArepPreConsultas))
         Me.PageHeader1 = New DataDynamics.ActiveReports.PageHeader
         Me.TxtIdPreConsulta = New DataDynamics.ActiveReports.TextBox
         Me.TextBox2 = New DataDynamics.ActiveReports.TextBox
@@ -25,6 +26,10 @@ Partial Public Class ArepPreConsultas
         Me.TextBox4 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox5 = New DataDynamics.ActiveReports.TextBox
         Me.TxtImpreso = New DataDynamics.ActiveReports.TextBox
+        Me.TextBox1 = New DataDynamics.ActiveReports.TextBox
+        Me.TextBox6 = New DataDynamics.ActiveReports.TextBox
+        Me.TextBox7 = New DataDynamics.ActiveReports.TextBox
+        Me.TextBox8 = New DataDynamics.ActiveReports.TextBox
         Me.Detail1 = New DataDynamics.ActiveReports.Detail
         Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
         Me.ReportHeader1 = New DataDynamics.ActiveReports.ReportHeader
@@ -36,13 +41,17 @@ Partial Public Class ArepPreConsultas
         CType(Me.TextBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TxtImpreso, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TextBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TextBox6, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TextBox7, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TextBox8, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblTitulo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         '
         'PageHeader1
         '
-        Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TxtIdPreConsulta, Me.TextBox2, Me.TextBox3, Me.TextBox4, Me.TextBox5, Me.TxtImpreso})
-        Me.PageHeader1.Height = 1.697917!
+        Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TxtIdPreConsulta, Me.TextBox2, Me.TextBox3, Me.TextBox4, Me.TextBox5, Me.TxtImpreso, Me.TextBox1, Me.TextBox6, Me.TextBox7, Me.TextBox8})
+        Me.PageHeader1.Height = 2.604167!
         Me.PageHeader1.Name = "PageHeader1"
         '
         'TxtIdPreConsulta
@@ -55,7 +64,7 @@ Partial Public Class ArepPreConsultas
         Me.TxtIdPreConsulta.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TxtIdPreConsulta.Border.TopColor = System.Drawing.Color.Black
         Me.TxtIdPreConsulta.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.TxtIdPreConsulta.DataField = "idAdminsion"
+        Me.TxtIdPreConsulta.DataField = "idPreConsulta"
         Me.TxtIdPreConsulta.Height = 0.3125!
         Me.TxtIdPreConsulta.Left = 0.0625!
         Me.TxtIdPreConsulta.Name = "TxtIdPreConsulta"
@@ -157,8 +166,82 @@ Partial Public Class ArepPreConsultas
         Me.TxtImpreso.OutputFormat = resources.GetString("TxtImpreso.OutputFormat")
         Me.TxtImpreso.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TxtImpreso.Text = Nothing
-        Me.TxtImpreso.Top = 1.375!
+        Me.TxtImpreso.Top = 2.3125!
         Me.TxtImpreso.Width = 2.1875!
+        '
+        'TextBox1
+        '
+        Me.TextBox1.Border.BottomColor = System.Drawing.Color.Black
+        Me.TextBox1.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox1.Border.LeftColor = System.Drawing.Color.Black
+        Me.TextBox1.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox1.Border.RightColor = System.Drawing.Color.Black
+        Me.TextBox1.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox1.Border.TopColor = System.Drawing.Color.Black
+        Me.TextBox1.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox1.Height = 0.1875!
+        Me.TextBox1.Left = 0.0625!
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Style = "ddo-char-set: 0; font-size: 9pt; "
+        Me.TextBox1.Text = "Consultorio:"
+        Me.TextBox1.Top = 1.25!
+        Me.TextBox1.Width = 0.8125!
+        '
+        'TextBox6
+        '
+        Me.TextBox6.Border.BottomColor = System.Drawing.Color.Black
+        Me.TextBox6.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox6.Border.LeftColor = System.Drawing.Color.Black
+        Me.TextBox6.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox6.Border.RightColor = System.Drawing.Color.Black
+        Me.TextBox6.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox6.Border.TopColor = System.Drawing.Color.Black
+        Me.TextBox6.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox6.DataField = "NombreDoctor"
+        Me.TextBox6.Height = 0.1875!
+        Me.TextBox6.Left = 0.0!
+        Me.TextBox6.Name = "TextBox6"
+        Me.TextBox6.Style = "ddo-char-set: 0; font-size: 8.25pt; "
+        Me.TextBox6.Text = Nothing
+        Me.TextBox6.Top = 2.0!
+        Me.TextBox6.Width = 2.125!
+        '
+        'TextBox7
+        '
+        Me.TextBox7.Border.BottomColor = System.Drawing.Color.Black
+        Me.TextBox7.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox7.Border.LeftColor = System.Drawing.Color.Black
+        Me.TextBox7.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox7.Border.RightColor = System.Drawing.Color.Black
+        Me.TextBox7.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox7.Border.TopColor = System.Drawing.Color.Black
+        Me.TextBox7.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox7.DataField = "Nombre_Consultorio"
+        Me.TextBox7.Height = 0.1875!
+        Me.TextBox7.Left = 0.0!
+        Me.TextBox7.Name = "TextBox7"
+        Me.TextBox7.Style = "ddo-char-set: 0; font-size: 8.25pt; "
+        Me.TextBox7.Text = Nothing
+        Me.TextBox7.Top = 1.4375!
+        Me.TextBox7.Width = 2.125!
+        '
+        'TextBox8
+        '
+        Me.TextBox8.Border.BottomColor = System.Drawing.Color.Black
+        Me.TextBox8.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox8.Border.LeftColor = System.Drawing.Color.Black
+        Me.TextBox8.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox8.Border.RightColor = System.Drawing.Color.Black
+        Me.TextBox8.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox8.Border.TopColor = System.Drawing.Color.Black
+        Me.TextBox8.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TextBox8.Height = 0.1875!
+        Me.TextBox8.Left = 0.0!
+        Me.TextBox8.Name = "TextBox8"
+        Me.TextBox8.Style = "ddo-char-set: 0; font-size: 9pt; "
+        Me.TextBox8.Text = "Medico:"
+        Me.TextBox8.Top = 1.8125!
+        Me.TextBox8.Width = 0.8125!
         '
         'Detail1
         '
@@ -168,13 +251,13 @@ Partial Public Class ArepPreConsultas
         '
         'PageFooter1
         '
-        Me.PageFooter1.Height = 0.25!
+        Me.PageFooter1.Height = 0.01041667!
         Me.PageFooter1.Name = "PageFooter1"
         '
         'ReportHeader1
         '
         Me.ReportHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.LblTitulo})
-        Me.ReportHeader1.Height = 0.3125!
+        Me.ReportHeader1.Height = 0.5729167!
         Me.ReportHeader1.Name = "ReportHeader1"
         '
         'LblTitulo
@@ -204,6 +287,14 @@ Partial Public Class ArepPreConsultas
         'ArepPreConsultas
         '
         Me.MasterReport = False
+        OleDBDataSource1.ConnectionString = "Provider=SQLOLEDB.1;Password=P@ssword;Persist Security Info=True;User ID=sa;Initi" & _
+            "al Catalog=SistemaFacturacionMaternoInfantil;Data Source=JUANBERMUDEZ\SQL2019"
+        OleDBDataSource1.SQL = resources.GetString("OleDBDataSource1.SQL")
+        Me.DataSource = OleDBDataSource1
+        Me.PageSettings.Margins.Bottom = 0.1!
+        Me.PageSettings.Margins.Left = 0.3!
+        Me.PageSettings.Margins.Right = 0.3!
+        Me.PageSettings.Margins.Top = 0.1!
         Me.PageSettings.PaperHeight = 11.0!
         Me.PageSettings.PaperWidth = 8.5!
         Me.PrintWidth = 2.239583!
@@ -224,6 +315,10 @@ Partial Public Class ArepPreConsultas
         CType(Me.TextBox4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TxtImpreso, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TextBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TextBox6, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TextBox7, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TextBox8, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LblTitulo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
 
@@ -237,4 +332,8 @@ Partial Public Class ArepPreConsultas
     Friend WithEvents ReportHeader1 As DataDynamics.ActiveReports.ReportHeader
     Friend WithEvents ReportFooter1 As DataDynamics.ActiveReports.ReportFooter
     Friend WithEvents LblTitulo As DataDynamics.ActiveReports.Label
+    Friend WithEvents TextBox1 As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents TextBox6 As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents TextBox7 As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents TextBox8 As DataDynamics.ActiveReports.TextBox
 End Class 

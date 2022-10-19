@@ -1,4 +1,6 @@
 Public Class FrmConsultasMedicas
+    Public IdPreConsultas As Double
+
     Public Sub Cargar_Expediente(ByVal Numero_Expediente As String)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQLstring As String
@@ -16,13 +18,14 @@ Public Class FrmConsultasMedicas
 
             End If
 
-            SQLstring = "SELECT Expediente.*, PreConsultas.*, Doctores.Nombre_Doctor + ' ' + Doctores.Apellido_Doctor AS Nombre_Doctor, Consultorio.Nombre_Consultorio FROM  Expediente INNER JOIN PreConsultas ON Expediente.Numero_Expediente = PreConsultas.Numero_Expediente INNER JOIN Consultorio ON PreConsultas.IdConsultorio = Consultorio.IdConsultorio INNER JOIN Doctores ON Consultorio.Codigo_Minsa = Doctores.Codigo_Minsa WHERE (Expediente.Numero_Expediente = '" & Numero_Expediente & "') "
+            SQLstring = "SELECT Expediente.*, PreConsultas.*, Doctores.Nombre_Doctor + ' ' + Doctores.Apellido_Doctor AS Nombre_Doctor, Consultorio.Nombre_Consultorio FROM  Expediente INNER JOIN PreConsultas ON Expediente.Numero_Expediente = PreConsultas.Numero_Expediente INNER JOIN Consultorio ON PreConsultas.IdConsultorio = Consultorio.IdConsultorio INNER JOIN Doctores ON Consultorio.Codigo_Minsa = Doctores.Codigo_Minsa WHERE (Expediente.Numero_Expediente = '" & Numero_Expediente & "') AND (PreConsultas.Activo = 'True')"
             DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
             DataAdapter.Fill(DataSet, "Expediente")
             If Not DataSet.Tables("Expediente").Rows.Count = 0 Then
 
 
                 Numero_Expediente = DataSet.Tables("Expediente").Rows(0)("Numero_Expediente")
+                Me.IdPreConsultas = DataSet.Tables("Expediente").Rows(0)("idPreConsulta")
                 'Num = Numero_Expediente.Split("-")
                 'NumeroExpediente = Num(0) & "-" & Format(CDbl(Num(1)) + 1, "00000#")
 
@@ -64,7 +67,7 @@ Public Class FrmConsultasMedicas
                     Me.TxtNombre_Doctor.Text = DataSet.Tables("Expediente").Rows(0)("Nombre_Doctor")
                 End If
 
-                Hora = Format(CDate(Me.DTPFecha.Text), "dd/MM/yyyy") & " " & Me.LblHora.Text
+                Hora = CDate(Format(CDate(Me.DTPFecha.Text), "dd/MM/yyyy") & " " & Me.LblHora.Text)
 
                 Me.TxtHora_Inicio_Consulta.Text = Hora
 
@@ -98,6 +101,7 @@ Public Class FrmConsultasMedicas
         End Try
     End Sub
 
+
     Public Sub Limpiar_Expediente()
         Me.TxtCodigo.Text = ""
         Me.TxtNombres.Text = ""
@@ -130,5 +134,9 @@ Public Class FrmConsultasMedicas
         Quien = "CodigoProductosComponente"
         My.Forms.FrmConsultas.ShowDialog()
 
+    End Sub
+
+    Private Sub CmdCerrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdCerrar.Click
+        Me.Close()
     End Sub
 End Class

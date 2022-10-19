@@ -126,4 +126,17 @@
   <metadata name="$this.TrayLargeIcon" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <data name="OleDBDataSource1.SQL" xml:space="preserve">
+    <value>SELECT        PreConsultas.idPreConsulta, PreConsultas.Numero_Expediente, PreConsultas.Fecha_Hora, PreConsultas.Sistolica, PreConsultas.Diastolica, PreConsultas.Temperatura, PreConsultas.Azucar_Sangre, PreConsultas.Activo, 
+                         PreConsultas.Procesado, PreConsultas.Anulado, PreConsultas.idAdmision, PreConsultas.iIdConsultas, PreConsultas.IdConsultorio, PreConsultas.Peso, PreConsultas.Talla, Expediente.Numero_Expediente AS Expr1, 
+                         Expediente.Nombres, Expediente.Apellidos, Expediente.Edad, Expediente.Sexo, Expediente.Estado_Civil, Expediente.Escolaridad, Expediente.Ocupacion, Expediente.Telefono, Expediente.Direccion, Expediente.Fecha_Ingreso, 
+                         Expediente.Unidad_Salud, Expediente.Nombre_Padre, Expediente.Nombre_Madre, Expediente.IdLocalidad, Expediente.IdMunicipio, Expediente.Nombre_Emergencia, Expediente.Telefono_Emergencia, 
+                         Expediente.Direccion_Emergencia, Expediente.Numero_Cedula, Expediente.Fecha_Nacimiennto, Expediente.IdComarca, Consultorio.IdConsultorio AS Expr2, Consultorio.Codigo_Minsa, Consultorio.Nombre_Consultorio, 
+                         Doctores.Codigo_Minsa AS Expr3, Doctores.Nombre_Doctor, Doctores.Apellido_Doctor, Doctores.Telefono_Doctor, Doctores.Correo_Doctor, Doctores.Especialidad_Doctor, Doctores.Direccion_Doctor, Doctores.Activo AS Expr4, 
+                         Doctores.Tipo, Doctores.Nombre_Doctor + ' ' + Doctores.Apellido_Doctor AS NombreDoctor
+FROM            PreConsultas INNER JOIN
+                         Expediente ON PreConsultas.Numero_Expediente = Expediente.Numero_Expediente INNER JOIN
+                         Consultorio ON PreConsultas.IdConsultorio = Consultorio.IdConsultorio INNER JOIN
+                         Doctores ON Consultorio.Codigo_Minsa = Doctores.Codigo_Minsa</value>
+  </data>
 </root>
