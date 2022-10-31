@@ -52,9 +52,9 @@ Partial Class FrmConsultasMedicas
         Me.Label2 = New System.Windows.Forms.Label
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.Label15 = New System.Windows.Forms.Label
-        Me.TextBox4 = New System.Windows.Forms.TextBox
+        Me.TxtDiagnostico = New System.Windows.Forms.TextBox
         Me.Label13 = New System.Windows.Forms.Label
-        Me.TextBox3 = New System.Windows.Forms.TextBox
+        Me.TxtSintomas = New System.Windows.Forms.TextBox
         Me.TabPage3 = New System.Windows.Forms.TabPage
         Me.Button2 = New System.Windows.Forms.Button
         Me.Button1 = New System.Windows.Forms.Button
@@ -68,6 +68,7 @@ Partial Class FrmConsultasMedicas
         Me.CmdGuardar = New System.Windows.Forms.Button
         Me.CmdCerrar = New System.Windows.Forms.Button
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.BindingDetalle = New System.Windows.Forms.BindingSource(Me.components)
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -77,6 +78,7 @@ Partial Class FrmConsultasMedicas
         CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox9.SuspendLayout()
         CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.BindingDetalle, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -364,9 +366,9 @@ Partial Class FrmConsultasMedicas
         'TabPage2
         '
         Me.TabPage2.Controls.Add(Me.Label15)
-        Me.TabPage2.Controls.Add(Me.TextBox4)
+        Me.TabPage2.Controls.Add(Me.TxtDiagnostico)
         Me.TabPage2.Controls.Add(Me.Label13)
-        Me.TabPage2.Controls.Add(Me.TextBox3)
+        Me.TabPage2.Controls.Add(Me.TxtSintomas)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
@@ -384,13 +386,13 @@ Partial Class FrmConsultasMedicas
         Me.Label15.TabIndex = 233
         Me.Label15.Text = "Diagnostico"
         '
-        'TextBox4
+        'TxtDiagnostico
         '
-        Me.TextBox4.Location = New System.Drawing.Point(6, 135)
-        Me.TextBox4.Multiline = True
-        Me.TextBox4.Name = "TextBox4"
-        Me.TextBox4.Size = New System.Drawing.Size(558, 78)
-        Me.TextBox4.TabIndex = 232
+        Me.TxtDiagnostico.Location = New System.Drawing.Point(6, 135)
+        Me.TxtDiagnostico.Multiline = True
+        Me.TxtDiagnostico.Name = "TxtDiagnostico"
+        Me.TxtDiagnostico.Size = New System.Drawing.Size(558, 78)
+        Me.TxtDiagnostico.TabIndex = 232
         '
         'Label13
         '
@@ -401,13 +403,13 @@ Partial Class FrmConsultasMedicas
         Me.Label13.TabIndex = 231
         Me.Label13.Text = "Sintomas"
         '
-        'TextBox3
+        'TxtSintomas
         '
-        Me.TextBox3.Location = New System.Drawing.Point(6, 27)
-        Me.TextBox3.Multiline = True
-        Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.Size = New System.Drawing.Size(553, 78)
-        Me.TextBox3.TabIndex = 0
+        Me.TxtSintomas.Location = New System.Drawing.Point(6, 27)
+        Me.TxtSintomas.Multiline = True
+        Me.TxtSintomas.Name = "TxtSintomas"
+        Me.TxtSintomas.Size = New System.Drawing.Size(553, 78)
+        Me.TxtSintomas.TabIndex = 0
         '
         'TabPage3
         '
@@ -586,6 +588,7 @@ Partial Class FrmConsultasMedicas
         Me.GroupBox9.ResumeLayout(False)
         Me.GroupBox9.PerformLayout()
         CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.BindingDetalle, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -624,9 +627,9 @@ Partial Class FrmConsultasMedicas
     Friend WithEvents TxtHoraPreConsulta As System.Windows.Forms.TextBox
     Friend WithEvents Label12 As System.Windows.Forms.Label
     Friend WithEvents TxtHora_Inicio_Consulta As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
+    Friend WithEvents TxtSintomas As System.Windows.Forms.TextBox
     Friend WithEvents Label15 As System.Windows.Forms.Label
-    Friend WithEvents TextBox4 As System.Windows.Forms.TextBox
+    Friend WithEvents TxtDiagnostico As System.Windows.Forms.TextBox
     Friend WithEvents Label13 As System.Windows.Forms.Label
     Friend WithEvents TabPage3 As System.Windows.Forms.TabPage
     Friend WithEvents TabPage4 As System.Windows.Forms.TabPage
@@ -636,4 +639,5 @@ Partial Class FrmConsultasMedicas
     Friend WithEvents TrueDBGridComponentes As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents Button2 As System.Windows.Forms.Button
     Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents BindingDetalle As System.Windows.Forms.BindingSource
 End Class

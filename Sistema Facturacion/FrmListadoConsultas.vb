@@ -30,6 +30,8 @@ Public Class FrmListadoConsultas
         Me.TxtNombre.Text = My.Forms.FrmConsultas.Descripcion2
         Me.TxtConsultorio.Text = My.Forms.FrmConsultas.Descripcion
         Me.Id_Consultorio = My.Forms.FrmConsultas.IdConsulta
+
+        Cargar_PreConsultas()
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click

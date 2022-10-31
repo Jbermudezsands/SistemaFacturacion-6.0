@@ -48,7 +48,7 @@ Module Funciones
         Dim SQLstring As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-        Dim ds As New DataSet
+        Dim ds As New DataSet, idConsultas As Double
 
 
         If Numero_Expediente = "" Then
@@ -56,25 +56,40 @@ Module Funciones
             Exit Sub
         End If
 
-        SQLstring = "SELECT Expediente.*, PreConsultas.*, Doctores.Nombre_Doctor + ' ' + Doctores.Apellido_Doctor AS Nombre_Doctor, Consultorio.Nombre_Consultorio FROM  Expediente INNER JOIN PreConsultas ON Expediente.Numero_Expediente = PreConsultas.Numero_Expediente INNER JOIN Consultorio ON PreConsultas.IdConsultorio = Consultorio.IdConsultorio INNER JOIN Doctores ON Consultorio.Codigo_Minsa = Doctores.Codigo_Minsa WHERE (Expediente.Numero_Expediente = '" & Numero_Expediente & "') AND (PreConsultas.Activo = 'True')"
+
+        SQLstring = "SELECT IdConsulta, Numero_Expediente, Fecha_Hora_Inicio, Fecha_Hora_Fin, Sintomas, Diagnostico, idPreConsulta, Activo FROM Consulta WHERE   (Activo = 'True') AND (Numero_Expediente ='" & Numero_Expediente & "')"
         ds = BuscaConsulta(SQLstring, "PreConsulta").Copy
         If ds.Tables("PreConsulta").Rows.Count <> 0 Then
             MsgBox("Existe una  Consulta Activa para este Paciente!!!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
             Exit Sub
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Consulta] ([Numero_Expediente],[Fecha_Hora_Inicio] ,[Fecha_Hora_Fin],[Sintomas],[Diagnostico],[idPreConsulta]) VALUES('" & Numero_Expediente & "' , CONVERT(DATETIME, '" & Format(Fecha_Inicio, "yyyy-MM-dd HH:mm:ss") & "', 102)  , CONVERT(DATETIME, '" & Format(Fecha_Fin, "yyyy-MM-dd HH:mm:ss") & "', 102) ,'" & Sintomas & "' ,'" & Diagnostico & "' ," & idPreconsultas & ")"
+            StrSqlUpdate = "INSERT INTO [Consulta] ([Numero_Expediente],[Fecha_Hora_Inicio] ,[Fecha_Hora_Fin],[Sintomas],[Diagnostico],[idPreConsulta]) VALUES('" & Numero_Expediente & "' , CONVERT(DATETIME, '" & Format(CDate(Fecha_Inicio), "yyyy-MM-dd HH:mm:ss") & "', 102)  , CONVERT(DATETIME, '" & Format(Fecha_Fin, "yyyy-MM-dd HH:mm:ss") & "', 102) ,'" & Sintomas & "' ,'" & Diagnostico & "' ," & idPreconsultas & ")"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
             MiConexion.Close()
 
-            SQLstring = "SELECT Consulta.* FROM PreConsultas WHERE(idAdmision = " & idPreconsultas & ")"
-            DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
-            DataAdapter.Fill(DataSet, "Pre")
-            If Not DataSet.Tables("Pre").Rows.Count = 0 Then
-                idPreconsultas = DataSet.Tables("Pre").Rows(0)("idPreConsulta")
+            idConsultas = 0
+            '//////////////////////////BUSCO EL ID DE LA CONSULTA MEDICA //////////////////////////////////////////////
+            SQLstring = "SELECT Consulta.* FROM Consulta WHERE (Expediente.Numero_Expediente = '" & Numero_Expediente & "') AND (idPreConsulta = '" & idPreconsultas & "') ORDER BY IdConsulta DESC"
+            ds = BuscaConsulta(SQLstring, "Consulta").Copy
+            If ds.Tables("Consulta").Rows.Count <> 0 Then
+                idConsultas = DataSet.Tables("Consulta").Rows(0)("IdConsulta")
             End If
+
+
+            '///////////////////////////////ACTUALIZO LA TABLA DE PRECONSULTA/////
+            StrSqlUpdate = "UPDATE [PreConsultas] SET [iIdConsultas] = " & idConsultas & "  WHERE (idPreConsulta = " & idPreconsultas & ")"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+            My.Forms.FrmConsultasMedicas.InsertarRowGrid()
+
+
+
 
             MsgBox("Grabado con Exito !!!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
             Exit Sub
@@ -90,6 +105,7 @@ Module Funciones
         Dim SQLstring As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, idPreConsultas As Double
+        Dim i As Double
 
         Try
 
@@ -108,11 +124,21 @@ Module Funciones
                 Exit Sub
             Else
                 '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-                StrSqlUpdate = "INSERT INTO [PreConsultas] ([Numero_Expediente],[Fecha_Hora],[Activo],[Procesado],[Anulado],[idAdmision],[Sistolica],[Diastolica],[Temperatura],[Azucar_Sangre],[IdConsultorio],[Peso],[Talla]) VALUES ('" & Numero_Expediente & "', CONVERT(DATETIME, '" & Format(FechaIngreso, "yyyy-MM-dd HH:mm:ss") & "', 102) , '" & Activo & "',  '" & Procesado & "', '" & Cancelado & "' ," & idPreconsulta & ", " & Sistolica & ", " & Diastolica & ", " & Temperatura & ", " & AzucarSangre & ", " & IdConsultorio & ", " & Peso & ", " & Talla & ")"
+                StrSqlUpdate = "INSERT INTO [PreConsultas] ([Numero_Expediente],[Fecha_Hora],[Activo],[Procesado],[Anulado],[idAdmision],[Sistolica],[Diastolica],[Temperatura],[Azucar_Sangre],[IdConsultorio],[Peso],[Talla]) VALUES ('" & Numero_Expediente & "', CONVERT(DATETIME, '" & Format(FechaIngreso, "yyyy-MM-dd HH:mm:ss") & "', 102) , '" & Activo & "',  '" & Procesado & "', '" & Cancelado & "' ," & idAdmision & ", " & Sistolica & ", " & Diastolica & ", " & Temperatura & ", " & AzucarSangre & ", " & IdConsultorio & ", " & Peso & ", " & Talla & ")"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
                 iResultado = ComandoUpdate.ExecuteNonQuery
                 MiConexion.Close()
+
+                '////////////////////BUSCO EL ID DE LA PRECONSULTA GRABADA 
+                SQLstring = "SELECT  PreConsultas.* FROM PreConsultas WHERE  (Numero_Expediente = '" & Numero_Expediente & "') AND (Activo = 1) ORDER BY idPreConsulta"
+                DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
+                DataAdapter.Fill(DataSet, "Consulta")
+                idPreConsultas = 0
+                If Not DataSet.Tables("Consulta").Rows.Count = 0 Then
+                    i = DataSet.Tables("Consulta").Rows.Count - 1
+                    idPreConsultas = DataSet.Tables("Consulta").Rows(i)("idPreConsulta")
+                End If
 
 
                 '///////////////////////////////ACTUALIZO LA TABLA DE ADMISION /////

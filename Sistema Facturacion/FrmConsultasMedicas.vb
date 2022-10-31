@@ -1,5 +1,68 @@
+Imports System.Data.SqlClient
+
 Public Class FrmConsultasMedicas
-    Public IdPreConsultas As Double
+    Public MiConexion As New SqlClient.SqlConnection(Conexion)
+    Public IdPreConsultas As Double, HoraInicio As String
+    Public dsMedicamento As New DataSet, daMedicamento As New SqlClient.SqlDataAdapter, CmdBuilderMedicamento As New SqlCommandBuilder
+    Public Sub InsertarRowGrid()
+        Dim oTabla As DataTable, iPosicion As Double, idConsulta As String
+
+        iPosicion = Me.TrueDBGridComponentes.Row
+        idConsulta = Me.TrueDBGridComponentes.Columns("idConsulta").Text
+
+        CmdBuilderMedicamento.RefreshSchema()
+        oTabla = dsMedicamento.Tables("DetalleCompra").GetChanges(DataRowState.Added)
+        If Not IsNothing(oTabla) Then
+            '//////////////////SI  TIENE REGISTROS NUEVOS 
+            daMedicamento.Update(oTabla)
+            dsMedicamento.Tables("DetalleCompra").AcceptChanges()
+            daMedicamento.Update(dsMedicamento.Tables("DetalleCompra"))
+
+
+
+            Me.TrueDBGridComponentes.Row = iPosicion
+
+        Else
+            oTabla = dsMedicamento.Tables("DetalleCompra").GetChanges(DataRowState.Modified)
+            If Not IsNothing(oTabla) Then
+                daMedicamento.Update(oTabla)
+                dsMedicamento.Tables("DetalleCompra").AcceptChanges()
+                daMedicamento.Update(dsMedicamento.Tables("DetalleCompra"))
+            End If
+        End If
+
+        ActualizarGridInsertRow(idConsulta)
+
+
+
+    End Sub
+    Public Sub ActualizarGridInsertRow(ByVal idConsulta As Double)
+        Dim SqlCompras As String, TipoCompra As String
+
+        dsMedicamento.Tables("DetalleCompra").Reset()
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlCompras = "SELECT  Cod_Productos, Descripcion, Cantidad, IdConsulta, idMedicamentos FROM Medicamentos_Consulta  WHERE(IdConsulta = " & idConsulta & ")"
+        dsMedicamento = New DataSet
+        daMedicamento = New SqlDataAdapter(SqlCompras, MiConexion)
+        CmdBuilderMedicamento = New SqlCommandBuilder(daMedicamento)
+        daMedicamento.Fill(dsMedicamento, "DetalleCompra")
+        Me.BindingDetalle.DataSource = dsMedicamento.Tables("DetalleCompra")
+        Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
+        Me.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
+        Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 259
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
+        Me.TrueDBGridComponentes.Columns(2).Caption = "Cantidad"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Visible = False
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Visible = False
+
+
+    End Sub
+
 
     Public Sub Cargar_Expediente(ByVal Numero_Expediente As String)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -15,8 +78,9 @@ Public Class FrmConsultasMedicas
             If Numero_Expediente = "" Then
                 MsgBox("Se necesita el Numeero del Expediente", MsgBoxStyle.Critical, "Sistema de Facturacion")
                 Exit Sub
-
             End If
+
+            IdPreConsultas = 0
 
             SQLstring = "SELECT Expediente.*, PreConsultas.*, Doctores.Nombre_Doctor + ' ' + Doctores.Apellido_Doctor AS Nombre_Doctor, Consultorio.Nombre_Consultorio FROM  Expediente INNER JOIN PreConsultas ON Expediente.Numero_Expediente = PreConsultas.Numero_Expediente INNER JOIN Consultorio ON PreConsultas.IdConsultorio = Consultorio.IdConsultorio INNER JOIN Doctores ON Consultorio.Codigo_Minsa = Doctores.Codigo_Minsa WHERE (Expediente.Numero_Expediente = '" & Numero_Expediente & "') AND (PreConsultas.Activo = 'True')"
             DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
@@ -28,6 +92,8 @@ Public Class FrmConsultasMedicas
                 Me.IdPreConsultas = DataSet.Tables("Expediente").Rows(0)("idPreConsulta")
                 'Num = Numero_Expediente.Split("-")
                 'NumeroExpediente = Num(0) & "-" & Format(CDbl(Num(1)) + 1, "00000#")
+
+
 
                 Me.TxtCodigo.Text = Numero_Expediente
 
@@ -67,9 +133,9 @@ Public Class FrmConsultasMedicas
                     Me.TxtNombre_Doctor.Text = DataSet.Tables("Expediente").Rows(0)("Nombre_Doctor")
                 End If
 
-                Hora = CDate(Format(CDate(Me.DTPFecha.Text), "dd/MM/yyyy") & " " & Me.LblHora.Text)
+                Me.TxtHora_Inicio_Consulta.Text = Format(CDate(Me.DTPFecha.Text), "dd/MM/yyyy") & " " & Me.LblHora.Text
+                HoraInicio = Me.DTPFecha.Text & " " & Me.LblHora.Text
 
-                Me.TxtHora_Inicio_Consulta.Text = Hora
 
 
 
@@ -121,18 +187,51 @@ Public Class FrmConsultasMedicas
     End Sub
 
     Private Sub CmdGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGuardar.Click
+        Dim idConsultas As Double, SQLstring As String, ds As New DataSet, Hora As Date
+
+
+
+        Grabar_ConsultasMedicas(Me.TxtCodigo.Text, Format(CDate(Me.HoraInicio), "dd/MM/yyyy HH:mm:ss"), Now, Me.TxtSintomas.Text, Me.TxtDiagnostico.Text, IdPreConsultas)
 
 
     End Sub
 
     Private Sub FrmConsultasMedicas_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.DTPFecha.Text = Format(Now, "dd/MM/yyyy")
+        Dim SqlCompras As String
+
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlCompras = "SELECT  Cod_Productos, Descripcion, Cantidad, IdConsulta, idMedicamentos FROM Medicamentos_Consulta  WHERE(IdConsulta = -1000)"
+        dsMedicamento = New DataSet
+        daMedicamento = New SqlDataAdapter(SqlCompras, MiConexion)
+        CmdBuilderMedicamento = New SqlCommandBuilder(daMedicamento)
+        daMedicamento.Fill(dsMedicamento, "DetalleCompra")
+        Me.BindingDetalle.DataSource = dsMedicamento.Tables("DetalleCompra")
+        Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
+        Me.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
+        Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 259
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
+        Me.TrueDBGridComponentes.Columns(2).Caption = "Cantidad"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Visible = False
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Visible = False
+
     End Sub
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
 
         Quien = "CodigoProductosComponente"
         My.Forms.FrmConsultas.ShowDialog()
+
+        Me.TrueDBGridComponentes.Columns(0).Text = My.Forms.FrmConsultas.Codigo
+        Me.TrueDBGridComponentes.Columns(1).Text = My.Forms.FrmConsultas.Descripcion
+        Me.TrueDBGridComponentes.Columns(2).Text = 1
+        Me.TrueDBGridComponentes.Row = Me.TrueDBGridComponentes.Row + 1
+
 
     End Sub
 
