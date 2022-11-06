@@ -43,12 +43,12 @@ Module Funciones
         ViewerForm.Show()
 
     End Sub
-    Public Sub Grabar_ConsultasMedicas(ByVal Numero_Expediente As String, ByVal Fecha_Inicio As Date, ByVal Fecha_Fin As Date, ByVal Sintomas As String, ByVal Diagnostico As String, ByVal idPreconsultas As Double)
+    Public Sub Grabar_ConsultasMedicas(ByVal Numero_Expediente As String, ByVal Fecha_Inicio As Date, ByVal Fecha_Fin As Date, ByVal Sintomas As String, ByVal Diagnostico As String, ByVal idPreconsultas As Double, ByVal idDoctor As Double, ByVal IdConsultorio As Double)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQLstring As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-        Dim ds As New DataSet, idConsultas As Double
+        Dim ds As New DataSet, idConsultas As Double, i As Double, Cont As Double
 
 
         If Numero_Expediente = "" Then
@@ -64,7 +64,7 @@ Module Funciones
             Exit Sub
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Consulta] ([Numero_Expediente],[Fecha_Hora_Inicio] ,[Fecha_Hora_Fin],[Sintomas],[Diagnostico],[idPreConsulta]) VALUES('" & Numero_Expediente & "' , CONVERT(DATETIME, '" & Format(CDate(Fecha_Inicio), "yyyy-MM-dd HH:mm:ss") & "', 102)  , CONVERT(DATETIME, '" & Format(Fecha_Fin, "yyyy-MM-dd HH:mm:ss") & "', 102) ,'" & Sintomas & "' ,'" & Diagnostico & "' ," & idPreconsultas & ")"
+            StrSqlUpdate = "INSERT INTO [Consulta] ([Numero_Expediente],[Fecha_Hora_Inicio] ,[Fecha_Hora_Fin],[Sintomas],[Diagnostico],[idPreConsulta],[IdDoctor_CodigoMinsa],[IdConsultorio]) VALUES('" & Numero_Expediente & "' , CONVERT(DATETIME, '" & Format(Fecha_Inicio, "dd/MM/yyyy HH:mm:ss") & "', 102)  , CONVERT(DATETIME, '" & Format(Fecha_Fin, "dd/MM/yyyy HH:mm:ss") & "', 102) ,'" & Sintomas & "' ,'" & Diagnostico & "' ," & idPreconsultas & "," & idDoctor & "," & IdConsultorio & ")"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -72,21 +72,30 @@ Module Funciones
 
             idConsultas = 0
             '//////////////////////////BUSCO EL ID DE LA CONSULTA MEDICA //////////////////////////////////////////////
-            SQLstring = "SELECT Consulta.* FROM Consulta WHERE (Expediente.Numero_Expediente = '" & Numero_Expediente & "') AND (idPreConsulta = '" & idPreconsultas & "') ORDER BY IdConsulta DESC"
+            SQLstring = "SELECT Consulta.* FROM Consulta WHERE (Numero_Expediente = '" & Numero_Expediente & "') AND (idPreConsulta = '" & idPreconsultas & "') ORDER BY IdConsulta DESC"
             ds = BuscaConsulta(SQLstring, "Consulta").Copy
             If ds.Tables("Consulta").Rows.Count <> 0 Then
-                idConsultas = DataSet.Tables("Consulta").Rows(0)("IdConsulta")
+                idConsultas = ds.Tables("Consulta").Rows(0)("IdConsulta")
             End If
 
 
             '///////////////////////////////ACTUALIZO LA TABLA DE PRECONSULTA/////
-            StrSqlUpdate = "UPDATE [PreConsultas] SET [iIdConsultas] = " & idConsultas & "  WHERE (idPreConsulta = " & idPreconsultas & ")"
+            StrSqlUpdate = "UPDATE [PreConsultas] SET [iIdConsultas] = " & idConsultas & ", [Activo] = 'False'  WHERE (idPreConsulta = " & idPreconsultas & ")"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
             MiConexion.Close()
 
-            My.Forms.FrmConsultasMedicas.InsertarRowGrid()
+            '//////////////////////////////GRABO LOS PRODUCTOS DE LA CONSULTA /////////////////////////////////////////////
+            Cont = My.Forms.FrmConsultasMedicas.TrueDBGridComponentes.RowCount
+            If Cont > 0 Then
+
+                For i = 0 To Cont - 1
+                    My.Forms.FrmConsultasMedicas.TrueDBGridComponentes.Item(i)("IdConsulta") = idConsultas
+                Next
+
+                My.Forms.FrmConsultasMedicas.InsertarRowGrid()
+            End If
 
 
 

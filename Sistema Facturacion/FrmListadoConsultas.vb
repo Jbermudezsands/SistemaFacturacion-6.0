@@ -1,5 +1,5 @@
 Public Class FrmListadoConsultas
-    Public Id_Consultorio As Double
+    Public Id_Consultorio As Double, Id_Doctor As Double
     Dim MiConexion As New SqlClient.SqlConnection(Conexion)
     Public Sub Cargar_PreConsultas()
         Dim SQLstring As String
@@ -30,6 +30,7 @@ Public Class FrmListadoConsultas
         Me.TxtNombre.Text = My.Forms.FrmConsultas.Descripcion2
         Me.TxtConsultorio.Text = My.Forms.FrmConsultas.Descripcion
         Me.Id_Consultorio = My.Forms.FrmConsultas.IdConsulta
+        Me.Id_Doctor = My.Forms.FrmConsultas.Codigo_Minsa
 
         Cargar_PreConsultas()
     End Sub
@@ -46,6 +47,8 @@ Public Class FrmListadoConsultas
         Dim NumeroExpediente As String, NumeroAdmision As Double
 
         NumeroExpediente = Me.TrueDBGridConsultas.Columns("Numero_Expediente").Text
+        My.Forms.FrmConsultasMedicas.IdConsultorio = Me.Id_Consultorio
+        My.Forms.FrmConsultasMedicas.IdDoctor = Me.Id_Doctor
         My.Forms.FrmConsultasMedicas.TxtCodigo.Text = NumeroExpediente
         My.Forms.FrmConsultasMedicas.TxtHoraAdmision.Text = Me.TrueDBGridConsultas.Columns("Fecha_Hora").Text
         My.Forms.FrmConsultasMedicas.Cargar_Expediente(NumeroExpediente)

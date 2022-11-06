@@ -2,7 +2,7 @@ Imports System.Data.SqlClient
 
 Public Class FrmConsultasMedicas
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
-    Public IdPreConsultas As Double, HoraInicio As String
+    Public IdPreConsultas As Double, HoraInicio As Date, IdConsultorio As Double, IdDoctor As Double
     Public dsMedicamento As New DataSet, daMedicamento As New SqlClient.SqlDataAdapter, CmdBuilderMedicamento As New SqlCommandBuilder
     Public Sub InsertarRowGrid()
         Dim oTabla As DataTable, iPosicion As Double, idConsulta As String
@@ -31,7 +31,7 @@ Public Class FrmConsultasMedicas
             End If
         End If
 
-        ActualizarGridInsertRow(idConsulta)
+        'ActualizarGridInsertRow(idConsulta)
 
 
 
@@ -133,8 +133,9 @@ Public Class FrmConsultasMedicas
                     Me.TxtNombre_Doctor.Text = DataSet.Tables("Expediente").Rows(0)("Nombre_Doctor")
                 End If
 
-                Me.TxtHora_Inicio_Consulta.Text = Format(CDate(Me.DTPFecha.Text), "dd/MM/yyyy") & " " & Me.LblHora.Text
-                HoraInicio = Me.DTPFecha.Text & " " & Me.LblHora.Text
+                HoraInicio = (Now)
+                Me.TxtHora_Inicio_Consulta.Text = Format(CDate(HoraInicio), "dd/MM/yyyy hh:mm:ss tt")
+
 
 
 
@@ -191,7 +192,7 @@ Public Class FrmConsultasMedicas
 
 
 
-        Grabar_ConsultasMedicas(Me.TxtCodigo.Text, Format(CDate(Me.HoraInicio), "dd/MM/yyyy HH:mm:ss"), Now, Me.TxtSintomas.Text, Me.TxtDiagnostico.Text, IdPreConsultas)
+        Grabar_ConsultasMedicas(Me.TxtCodigo.Text, Me.HoraInicio, Now, Me.TxtSintomas.Text, Me.TxtDiagnostico.Text, IdPreConsultas, IdDoctor, IdConsultorio)
 
 
     End Sub
@@ -203,7 +204,7 @@ Public Class FrmConsultasMedicas
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlCompras = "SELECT  Cod_Productos, Descripcion, Cantidad, IdConsulta, idMedicamentos FROM Medicamentos_Consulta  WHERE(IdConsulta = -1000)"
+        SqlCompras = "SELECT  Cod_Productos, Descripcion, Cantidad, IdConsulta FROM Medicamentos_Consulta  WHERE(IdConsulta = -1000)"
         dsMedicamento = New DataSet
         daMedicamento = New SqlDataAdapter(SqlCompras, MiConexion)
         CmdBuilderMedicamento = New SqlCommandBuilder(daMedicamento)
@@ -218,7 +219,7 @@ Public Class FrmConsultasMedicas
         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
         Me.TrueDBGridComponentes.Columns(2).Caption = "Cantidad"
         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Visible = False
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Visible = False
+        'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Visible = False
 
     End Sub
 
