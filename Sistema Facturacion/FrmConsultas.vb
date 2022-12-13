@@ -25,6 +25,25 @@ Public Class FrmConsultas
             Dim DataAdapter As New SqlClient.SqlDataAdapter, SQlProductos As String
 
             Select Case Quien
+                Case "TipoExamen"
+
+                    Me.Size = New System.Drawing.Size(988, 424)
+                    Me.Location = New Point(160, 160)
+                    SQlProductos = "SELECT TipoExamen, IdTipoExamen FROM  TipoExamen"
+
+                    MiConexion.Open()
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+                    Me.TrueDBGridConsultas.Columns("TipoExamen").Caption = "Tipo de Examen"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("TipoExamen").Width = 300
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("IdTipoExamen").Visible = False
+
+                    MiConexion.Close()
+
                 Case "Expediente"
                     Dim CodigoBodega As String = ""
 
@@ -1566,6 +1585,10 @@ Public Class FrmConsultas
         TipoProducto = ""
 
         Select Case Quien
+            Case "TipoExamen"
+                Posicion = Me.BindingConsultas.Position
+                IdConsulta = Me.BindingConsultas.Item(Posicion)("IdTipoExamen")
+                Descripcion = Me.BindingConsultas.Item(Posicion)("TipoExamen")
             Case "Expediente"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("Numero_Expediente")

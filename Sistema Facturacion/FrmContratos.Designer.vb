@@ -29,12 +29,12 @@ Partial Class FrmContratos
         Me.BtnVer = New System.Windows.Forms.Button
         Me.BtnSalir = New System.Windows.Forms.Button
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.OptTodos = New System.Windows.Forms.RadioButton
         Me.OptAnulado = New System.Windows.Forms.RadioButton
         Me.OptActivo = New System.Windows.Forms.RadioButton
         Me.Button3 = New System.Windows.Forms.Button
         Me.ProgressBar = New System.Windows.Forms.ProgressBar
         Me.BtnProcesar = New System.Windows.Forms.Button
-        Me.OptTodos = New System.Windows.Forms.RadioButton
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -45,7 +45,7 @@ Partial Class FrmContratos
         '
         Me.TDGridSolicitud.AllowUpdate = False
         Me.TDGridSolicitud.AlternatingRows = True
-        Me.TDGridSolicitud.Caption = "Listado de Transformacion de productos"
+        Me.TDGridSolicitud.Caption = "Listado de Contratos"
         Me.TDGridSolicitud.FilterBar = True
         Me.TDGridSolicitud.GroupByCaption = "Drag a column header here to group by that column"
         Me.TDGridSolicitud.Images.Add(CType(resources.GetObject("TDGridSolicitud.Images"), System.Drawing.Image))
@@ -155,6 +155,16 @@ Partial Class FrmContratos
         Me.GroupBox1.TabIndex = 266
         Me.GroupBox1.TabStop = False
         '
+        'OptTodos
+        '
+        Me.OptTodos.AutoSize = True
+        Me.OptTodos.Location = New System.Drawing.Point(186, 13)
+        Me.OptTodos.Name = "OptTodos"
+        Me.OptTodos.Size = New System.Drawing.Size(55, 17)
+        Me.OptTodos.TabIndex = 3
+        Me.OptTodos.Text = "Todos"
+        Me.OptTodos.UseVisualStyleBackColor = True
+        '
         'OptAnulado
         '
         Me.OptAnulado.AutoSize = True
@@ -173,6 +183,7 @@ Partial Class FrmContratos
         Me.OptActivo.Name = "OptActivo"
         Me.OptActivo.Size = New System.Drawing.Size(60, 17)
         Me.OptActivo.TabIndex = 1
+        Me.OptActivo.TabStop = True
         Me.OptActivo.Text = "Activos"
         Me.OptActivo.UseVisualStyleBackColor = True
         '
@@ -208,16 +219,6 @@ Partial Class FrmContratos
         Me.BtnProcesar.Text = "Facturar"
         Me.BtnProcesar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.BtnProcesar.UseVisualStyleBackColor = True
-        '
-        'OptTodos
-        '
-        Me.OptTodos.AutoSize = True
-        Me.OptTodos.Location = New System.Drawing.Point(186, 13)
-        Me.OptTodos.Name = "OptTodos"
-        Me.OptTodos.Size = New System.Drawing.Size(55, 17)
-        Me.OptTodos.TabIndex = 3
-        Me.OptTodos.Text = "Todos"
-        Me.OptTodos.UseVisualStyleBackColor = True
         '
         'FrmContratos
         '

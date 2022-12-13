@@ -48,6 +48,10 @@ Partial Public Class ArpEnsamble
         Me.TextBox3 = New DataDynamics.ActiveReports.TextBox
         Me.TextBox4 = New DataDynamics.ActiveReports.TextBox
         Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
+        Me.Label11 = New DataDynamics.ActiveReports.Label
+        Me.TxtBodegaOrigen = New DataDynamics.ActiveReports.TextBox
+        Me.Label12 = New DataDynamics.ActiveReports.Label
+        Me.TxtBodegaDestino = New DataDynamics.ActiveReports.TextBox
         CType(Me.LblEncabezado1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ImgLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblDireccion1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -74,12 +78,16 @@ Partial Public Class ArpEnsamble
         CType(Me.TextBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox4, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label11, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TxtBodegaOrigen, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label12, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TxtBodegaDestino, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         '
         'PageHeader1
         '
-        Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.LblEncabezado1, Me.ImgLogo, Me.LblDireccion1, Me.LblDireccion2, Me.LblTipoEnsamble, Me.Label3, Me.Label1, Me.Label2, Me.LblCodProducto, Me.Label4, Me.Label5, Me.TxtCodigo, Me.Label6, Me.TxtDescripcion, Me.Label7, Me.TxtCantidad, Me.Label8, Me.TxtTipoEnsamble, Me.TxtFecha, Me.Label9, Me.TxtNumero, Me.Label10})
-        Me.PageHeader1.Height = 2.364583!
+        Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.LblEncabezado1, Me.ImgLogo, Me.LblDireccion1, Me.LblDireccion2, Me.LblTipoEnsamble, Me.Label3, Me.Label1, Me.Label2, Me.LblCodProducto, Me.Label4, Me.Label5, Me.TxtCodigo, Me.Label6, Me.TxtDescripcion, Me.Label7, Me.TxtCantidad, Me.Label8, Me.TxtTipoEnsamble, Me.TxtFecha, Me.Label9, Me.TxtNumero, Me.Label10, Me.Label11, Me.TxtBodegaOrigen, Me.Label12, Me.TxtBodegaDestino})
+        Me.PageHeader1.Height = 2.6875!
         Me.PageHeader1.Name = "PageHeader1"
         '
         'LblEncabezado1
@@ -196,7 +204,7 @@ Partial Public Class ArpEnsamble
         Me.Label3.Style = "ddo-char-set: 0; text-align: center; font-weight: bold; background-color: #C0C0FF" & _
             "; font-size: 9pt; "
         Me.Label3.Text = "Desecho"
-        Me.Label3.Top = 2.125!
+        Me.Label3.Top = 2.5!
         Me.Label3.Width = 1.0!
         '
         'Label1
@@ -215,7 +223,7 @@ Partial Public Class ArpEnsamble
         Me.Label1.Name = "Label1"
         Me.Label1.Style = "ddo-char-set: 0; font-weight: bold; background-color: #C0C0FF; font-size: 9pt; "
         Me.Label1.Text = "Descripcion"
-        Me.Label1.Top = 2.125!
+        Me.Label1.Top = 2.5!
         Me.Label1.Width = 3.6875!
         '
         'Label2
@@ -235,7 +243,7 @@ Partial Public Class ArpEnsamble
         Me.Label2.Style = "ddo-char-set: 0; text-align: center; font-weight: bold; background-color: #C0C0FF" & _
             "; font-size: 9pt; "
         Me.Label2.Text = "Requerido"
-        Me.Label2.Top = 2.125!
+        Me.Label2.Top = 2.5!
         Me.Label2.Width = 1.0!
         '
         'LblCodProducto
@@ -254,7 +262,7 @@ Partial Public Class ArpEnsamble
         Me.LblCodProducto.Name = "LblCodProducto"
         Me.LblCodProducto.Style = "ddo-char-set: 0; font-weight: bold; background-color: #C0C0FF; font-size: 9pt; "
         Me.LblCodProducto.Text = "Componente"
-        Me.LblCodProducto.Top = 2.125!
+        Me.LblCodProducto.Top = 2.5!
         Me.LblCodProducto.Width = 1.0!
         '
         'Label4
@@ -273,7 +281,7 @@ Partial Public Class ArpEnsamble
         Me.Label4.Name = "Label4"
         Me.Label4.Style = "text-align: center; background-color: #C0C0FF; "
         Me.Label4.Text = "Lista de Componentes para Ensamble"
-        Me.Label4.Top = 1.9375!
+        Me.Label4.Top = 2.3125!
         Me.Label4.Width = 6.6875!
         '
         'Label5
@@ -586,6 +594,80 @@ Partial Public Class ArpEnsamble
         Me.PageFooter1.Height = 0.15625!
         Me.PageFooter1.Name = "PageFooter1"
         '
+        'Label11
+        '
+        Me.Label11.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label11.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label11.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label11.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label11.Border.RightColor = System.Drawing.Color.Black
+        Me.Label11.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label11.Border.TopColor = System.Drawing.Color.Black
+        Me.Label11.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label11.Height = 0.1875!
+        Me.Label11.HyperLink = Nothing
+        Me.Label11.Left = 0.375!
+        Me.Label11.Name = "Label11"
+        Me.Label11.Style = "ddo-char-set: 0; font-weight: bold; font-size: 9.75pt; "
+        Me.Label11.Text = "Bodega Origen:"
+        Me.Label11.Top = 2.0!
+        Me.Label11.Width = 1.0625!
+        '
+        'TxtBodegaOrigen
+        '
+        Me.TxtBodegaOrigen.Border.BottomColor = System.Drawing.Color.Black
+        Me.TxtBodegaOrigen.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TxtBodegaOrigen.Border.LeftColor = System.Drawing.Color.Black
+        Me.TxtBodegaOrigen.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TxtBodegaOrigen.Border.RightColor = System.Drawing.Color.Black
+        Me.TxtBodegaOrigen.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TxtBodegaOrigen.Border.TopColor = System.Drawing.Color.Black
+        Me.TxtBodegaOrigen.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TxtBodegaOrigen.Height = 0.1875!
+        Me.TxtBodegaOrigen.Left = 1.4375!
+        Me.TxtBodegaOrigen.Name = "TxtBodegaOrigen"
+        Me.TxtBodegaOrigen.Style = ""
+        Me.TxtBodegaOrigen.Text = Nothing
+        Me.TxtBodegaOrigen.Top = 2.0!
+        Me.TxtBodegaOrigen.Width = 1.25!
+        '
+        'Label12
+        '
+        Me.Label12.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label12.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label12.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label12.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label12.Border.RightColor = System.Drawing.Color.Black
+        Me.Label12.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label12.Border.TopColor = System.Drawing.Color.Black
+        Me.Label12.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label12.Height = 0.1875!
+        Me.Label12.HyperLink = Nothing
+        Me.Label12.Left = 3.25!
+        Me.Label12.Name = "Label12"
+        Me.Label12.Style = "ddo-char-set: 0; font-weight: bold; font-size: 9.75pt; "
+        Me.Label12.Text = "Bodega Destino:"
+        Me.Label12.Top = 2.0!
+        Me.Label12.Width = 1.1875!
+        '
+        'TxtBodegaDestino
+        '
+        Me.TxtBodegaDestino.Border.BottomColor = System.Drawing.Color.Black
+        Me.TxtBodegaDestino.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TxtBodegaDestino.Border.LeftColor = System.Drawing.Color.Black
+        Me.TxtBodegaDestino.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TxtBodegaDestino.Border.RightColor = System.Drawing.Color.Black
+        Me.TxtBodegaDestino.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TxtBodegaDestino.Border.TopColor = System.Drawing.Color.Black
+        Me.TxtBodegaDestino.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TxtBodegaDestino.Height = 0.1875!
+        Me.TxtBodegaDestino.Left = 4.4375!
+        Me.TxtBodegaDestino.Name = "TxtBodegaDestino"
+        Me.TxtBodegaDestino.Style = ""
+        Me.TxtBodegaDestino.Text = Nothing
+        Me.TxtBodegaDestino.Top = 2.0!
+        Me.TxtBodegaDestino.Width = 1.25!
+        '
         'ArpEnsamble
         '
         Me.MasterReport = False
@@ -637,6 +719,10 @@ Partial Public Class ArpEnsamble
         CType(Me.TextBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox4, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label11, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TxtBodegaOrigen, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label12, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TxtBodegaDestino, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
 
     End Sub
@@ -666,4 +752,8 @@ Partial Public Class ArpEnsamble
     Friend WithEvents Label9 As DataDynamics.ActiveReports.Label
     Friend WithEvents TxtNumero As DataDynamics.ActiveReports.TextBox
     Friend WithEvents Label10 As DataDynamics.ActiveReports.Label
+    Friend WithEvents Label11 As DataDynamics.ActiveReports.Label
+    Friend WithEvents TxtBodegaOrigen As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents Label12 As DataDynamics.ActiveReports.Label
+    Friend WithEvents TxtBodegaDestino As DataDynamics.ActiveReports.TextBox
 End Class

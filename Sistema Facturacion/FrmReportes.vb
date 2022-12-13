@@ -4242,8 +4242,8 @@ Public Class FrmReportes
                         MontoFactura = Format((DataSet.Tables("Clientes").Rows(i)("SubTotal") + DataSet.Tables("Clientes").Rows(i)("IVA")) * TasaCambio, "##,##0.00")
                         Me.Text = "Procesando Cliente: " & CodigoCliente & " Factura No " & NumeroFactura
 
-                        If NumeroFactura = "M06457" Then
-                            NumeroFactura = "M06457"
+                        If NumeroFactura = "M31917" Then
+                            NumeroFactura = "M31917"
                         End If
 
                         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -4289,7 +4289,7 @@ Public Class FrmReportes
                                 NumeroRecibo = NumeroRecibo & "," & DataSet.Tables("Recibos").Rows(j)("CodReciboPago")
                             End If
 
-                            MontoRecibo = MontoRecibo + DataSet.Tables("Recibos").Rows(j)("MontoPagado") * TasaCambioRecibo
+                            MontoRecibo = MontoRecibo + Val(Format(DataSet.Tables("Recibos").Rows(j)("MontoPagado"), "##0.0000")) * TasaCambioRecibo
 
                             j = j + 1
                         Loop

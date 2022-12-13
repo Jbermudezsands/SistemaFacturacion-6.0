@@ -60,6 +60,9 @@ Partial Class FrmConsultasMedicas
         Me.Button1 = New System.Windows.Forms.Button
         Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.TabPage4 = New System.Windows.Forms.TabPage
+        Me.Button3 = New System.Windows.Forms.Button
+        Me.Button4 = New System.Windows.Forms.Button
+        Me.TdGridExamenes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.GroupBox9 = New System.Windows.Forms.GroupBox
         Me.DTPFecha = New System.Windows.Forms.Label
         Me.LblHora = New System.Windows.Forms.Label
@@ -69,6 +72,8 @@ Partial Class FrmConsultasMedicas
         Me.CmdCerrar = New System.Windows.Forms.Button
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.BindingDetalle = New System.Windows.Forms.BindingSource(Me.components)
+        Me.BindingExamenes = New System.Windows.Forms.BindingSource(Me.components)
+        Me.Button6 = New System.Windows.Forms.Button
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -76,9 +81,12 @@ Partial Class FrmConsultasMedicas
         Me.TabPage2.SuspendLayout()
         Me.TabPage3.SuspendLayout()
         CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage4.SuspendLayout()
+        CType(Me.TdGridExamenes, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox9.SuspendLayout()
         CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.BindingDetalle, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.BindingExamenes, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -454,7 +462,6 @@ Partial Class FrmConsultasMedicas
         Me.TrueDBGridComponentes.AlternatingRows = True
         Me.TrueDBGridComponentes.Caption = "Listado de Productos"
         Me.TrueDBGridComponentes.DirectionAfterEnter = C1.Win.C1TrueDBGrid.DirectionAfterEnterEnum.MoveNone
-        Me.TrueDBGridComponentes.Enabled = False
         Me.TrueDBGridComponentes.GroupByCaption = "Drag a column header here to group by that column"
         Me.TrueDBGridComponentes.Images.Add(CType(resources.GetObject("TrueDBGridComponentes.Images"), System.Drawing.Image))
         Me.TrueDBGridComponentes.Location = New System.Drawing.Point(6, 12)
@@ -470,6 +477,9 @@ Partial Class FrmConsultasMedicas
         '
         'TabPage4
         '
+        Me.TabPage4.Controls.Add(Me.Button3)
+        Me.TabPage4.Controls.Add(Me.Button4)
+        Me.TabPage4.Controls.Add(Me.TdGridExamenes)
         Me.TabPage4.Location = New System.Drawing.Point(4, 22)
         Me.TabPage4.Name = "TabPage4"
         Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
@@ -477,6 +487,49 @@ Partial Class FrmConsultasMedicas
         Me.TabPage4.TabIndex = 3
         Me.TabPage4.Text = "Examenes"
         Me.TabPage4.UseVisualStyleBackColor = True
+        '
+        'Button3
+        '
+        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
+        Me.Button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button3.Location = New System.Drawing.Point(538, 53)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(75, 34)
+        Me.Button3.TabIndex = 246
+        Me.Button3.Text = "Quitar"
+        Me.Button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button3.UseVisualStyleBackColor = True
+        '
+        'Button4
+        '
+        Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
+        Me.Button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button4.Location = New System.Drawing.Point(538, 13)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(75, 34)
+        Me.Button4.TabIndex = 245
+        Me.Button4.Text = "Agregar"
+        Me.Button4.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button4.UseVisualStyleBackColor = True
+        '
+        'TdGridExamenes
+        '
+        Me.TdGridExamenes.AllowAddNew = True
+        Me.TdGridExamenes.AlternatingRows = True
+        Me.TdGridExamenes.Caption = "Listado de Productos"
+        Me.TdGridExamenes.DirectionAfterEnter = C1.Win.C1TrueDBGrid.DirectionAfterEnterEnum.MoveNone
+        Me.TdGridExamenes.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TdGridExamenes.Images.Add(CType(resources.GetObject("TdGridExamenes.Images"), System.Drawing.Image))
+        Me.TdGridExamenes.Location = New System.Drawing.Point(6, 13)
+        Me.TdGridExamenes.Name = "TdGridExamenes"
+        Me.TdGridExamenes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TdGridExamenes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TdGridExamenes.PreviewInfo.ZoomFactor = 75
+        Me.TdGridExamenes.PrintInfo.PageSettings = CType(resources.GetObject("TdGridExamenes.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TdGridExamenes.Size = New System.Drawing.Size(526, 167)
+        Me.TdGridExamenes.TabIndex = 244
+        Me.TdGridExamenes.Text = "C1TrueDBGrid1"
+        Me.TdGridExamenes.PropBag = resources.GetString("TdGridExamenes.PropBag")
         '
         'GroupBox9
         '
@@ -560,11 +613,24 @@ Partial Class FrmConsultasMedicas
         '
         Me.Timer1.Enabled = True
         '
+        'Button6
+        '
+        Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
+        Me.Button6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button6.Location = New System.Drawing.Point(875, 183)
+        Me.Button6.Name = "Button6"
+        Me.Button6.Size = New System.Drawing.Size(82, 34)
+        Me.Button6.TabIndex = 352
+        Me.Button6.Text = "Imprimir"
+        Me.Button6.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button6.UseVisualStyleBackColor = True
+        '
         'FrmConsultasMedicas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(959, 426)
+        Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.CmdCerrar)
         Me.Controls.Add(Me.CmdGuardar)
         Me.Controls.Add(Me.ImgFoto)
@@ -585,10 +651,13 @@ Partial Class FrmConsultasMedicas
         Me.TabPage2.PerformLayout()
         Me.TabPage3.ResumeLayout(False)
         CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage4.ResumeLayout(False)
+        CType(Me.TdGridExamenes, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox9.ResumeLayout(False)
         Me.GroupBox9.PerformLayout()
         CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.BindingDetalle, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.BindingExamenes, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -640,4 +709,9 @@ Partial Class FrmConsultasMedicas
     Friend WithEvents Button2 As System.Windows.Forms.Button
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents BindingDetalle As System.Windows.Forms.BindingSource
+    Friend WithEvents Button3 As System.Windows.Forms.Button
+    Friend WithEvents Button4 As System.Windows.Forms.Button
+    Friend WithEvents TdGridExamenes As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents BindingExamenes As System.Windows.Forms.BindingSource
+    Friend WithEvents Button6 As System.Windows.Forms.Button
 End Class

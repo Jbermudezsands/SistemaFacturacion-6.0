@@ -19,6 +19,7 @@ Partial Class FrmMedicamentos
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmMedicamentos))
         Me.Label1 = New System.Windows.Forms.Label
         Me.PictureBox3 = New System.Windows.Forms.PictureBox
@@ -26,10 +27,12 @@ Partial Class FrmMedicamentos
         Me.CmdEliminar = New System.Windows.Forms.Button
         Me.CmdCerrar = New System.Windows.Forms.Button
         Me.CmdGuardar = New System.Windows.Forms.Button
-        Me.TrueDBGridConsultas = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.TDGridMedicamentos = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.BindingDetalle = New System.Windows.Forms.BindingSource(Me.components)
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TDGridMedicamentos, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.BindingDetalle, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label1
@@ -38,7 +41,7 @@ Partial Class FrmMedicamentos
         Me.Label1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label1.Location = New System.Drawing.Point(345, 27)
+        Me.Label1.Location = New System.Drawing.Point(470, 24)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(199, 18)
         Me.Label1.TabIndex = 366
@@ -60,7 +63,7 @@ Partial Class FrmMedicamentos
         Me.PictureBox4.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox4.Location = New System.Drawing.Point(-2, 1)
         Me.PictureBox4.Name = "PictureBox4"
-        Me.PictureBox4.Size = New System.Drawing.Size(929, 60)
+        Me.PictureBox4.Size = New System.Drawing.Size(1134, 60)
         Me.PictureBox4.TabIndex = 364
         Me.PictureBox4.TabStop = False
         '
@@ -68,9 +71,9 @@ Partial Class FrmMedicamentos
         '
         Me.CmdEliminar.Image = CType(resources.GetObject("CmdEliminar.Image"), System.Drawing.Image)
         Me.CmdEliminar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.CmdEliminar.Location = New System.Drawing.Point(827, 104)
+        Me.CmdEliminar.Location = New System.Drawing.Point(1047, 104)
         Me.CmdEliminar.Name = "CmdEliminar"
-        Me.CmdEliminar.Size = New System.Drawing.Size(75, 34)
+        Me.CmdEliminar.Size = New System.Drawing.Size(82, 34)
         Me.CmdEliminar.TabIndex = 363
         Me.CmdEliminar.Text = "Eliminar"
         Me.CmdEliminar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -80,7 +83,7 @@ Partial Class FrmMedicamentos
         '
         Me.CmdCerrar.Image = CType(resources.GetObject("CmdCerrar.Image"), System.Drawing.Image)
         Me.CmdCerrar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.CmdCerrar.Location = New System.Drawing.Point(827, 411)
+        Me.CmdCerrar.Location = New System.Drawing.Point(1054, 408)
         Me.CmdCerrar.Name = "CmdCerrar"
         Me.CmdCerrar.Size = New System.Drawing.Size(75, 34)
         Me.CmdCerrar.TabIndex = 362
@@ -92,50 +95,51 @@ Partial Class FrmMedicamentos
         '
         Me.CmdGuardar.Image = CType(resources.GetObject("CmdGuardar.Image"), System.Drawing.Image)
         Me.CmdGuardar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.CmdGuardar.Location = New System.Drawing.Point(827, 67)
+        Me.CmdGuardar.Location = New System.Drawing.Point(1047, 67)
         Me.CmdGuardar.Name = "CmdGuardar"
-        Me.CmdGuardar.Size = New System.Drawing.Size(75, 34)
+        Me.CmdGuardar.Size = New System.Drawing.Size(82, 34)
         Me.CmdGuardar.TabIndex = 361
-        Me.CmdGuardar.Text = "Generar"
+        Me.CmdGuardar.Text = "Facturar"
         Me.CmdGuardar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.CmdGuardar.UseVisualStyleBackColor = True
         '
-        'TrueDBGridConsultas
+        'TDGridMedicamentos
         '
-        Me.TrueDBGridConsultas.AllowUpdate = False
-        Me.TrueDBGridConsultas.AlternatingRows = True
-        Me.TrueDBGridConsultas.Caption = "LISTADO DE PRE-CONSULTAS"
-        Me.TrueDBGridConsultas.FilterBar = True
-        Me.TrueDBGridConsultas.GroupByCaption = "Drag a column header here to group by that column"
-        Me.TrueDBGridConsultas.Images.Add(CType(resources.GetObject("TrueDBGridConsultas.Images"), System.Drawing.Image))
-        Me.TrueDBGridConsultas.Location = New System.Drawing.Point(13, 67)
-        Me.TrueDBGridConsultas.Name = "TrueDBGridConsultas"
-        Me.TrueDBGridConsultas.PreviewInfo.Location = New System.Drawing.Point(0, 0)
-        Me.TrueDBGridConsultas.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TrueDBGridConsultas.PreviewInfo.ZoomFactor = 75
-        Me.TrueDBGridConsultas.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridConsultas.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TrueDBGridConsultas.Size = New System.Drawing.Size(808, 378)
-        Me.TrueDBGridConsultas.TabIndex = 360
-        Me.TrueDBGridConsultas.Text = "C1TrueDBGrid1"
-        Me.TrueDBGridConsultas.PropBag = resources.GetString("TrueDBGridConsultas.PropBag")
+        Me.TDGridMedicamentos.AllowUpdate = False
+        Me.TDGridMedicamentos.AlternatingRows = True
+        Me.TDGridMedicamentos.Caption = "LISTADO DE PRE-CONSULTAS"
+        Me.TDGridMedicamentos.FilterBar = True
+        Me.TDGridMedicamentos.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TDGridMedicamentos.Images.Add(CType(resources.GetObject("TDGridMedicamentos.Images"), System.Drawing.Image))
+        Me.TDGridMedicamentos.Location = New System.Drawing.Point(13, 67)
+        Me.TDGridMedicamentos.Name = "TDGridMedicamentos"
+        Me.TDGridMedicamentos.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TDGridMedicamentos.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TDGridMedicamentos.PreviewInfo.ZoomFactor = 75
+        Me.TDGridMedicamentos.PrintInfo.PageSettings = CType(resources.GetObject("TDGridMedicamentos.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TDGridMedicamentos.Size = New System.Drawing.Size(1028, 378)
+        Me.TDGridMedicamentos.TabIndex = 360
+        Me.TDGridMedicamentos.Text = "C1TrueDBGrid1"
+        Me.TDGridMedicamentos.PropBag = resources.GetString("TDGridMedicamentos.PropBag")
         '
         'FrmMedicamentos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(918, 454)
+        Me.ClientSize = New System.Drawing.Size(1141, 454)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.PictureBox4)
         Me.Controls.Add(Me.CmdEliminar)
         Me.Controls.Add(Me.CmdCerrar)
         Me.Controls.Add(Me.CmdGuardar)
-        Me.Controls.Add(Me.TrueDBGridConsultas)
+        Me.Controls.Add(Me.TDGridMedicamentos)
         Me.Name = "FrmMedicamentos"
         Me.Text = "FrmMedicamentos"
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TDGridMedicamentos, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.BindingDetalle, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -146,5 +150,6 @@ Partial Class FrmMedicamentos
     Friend WithEvents CmdEliminar As System.Windows.Forms.Button
     Friend WithEvents CmdCerrar As System.Windows.Forms.Button
     Friend WithEvents CmdGuardar As System.Windows.Forms.Button
-    Friend WithEvents TrueDBGridConsultas As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents TDGridMedicamentos As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents BindingDetalle As System.Windows.Forms.BindingSource
 End Class

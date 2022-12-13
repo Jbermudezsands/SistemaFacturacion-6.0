@@ -91,6 +91,7 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
     <Compile Include="FrmAccesos.Designer.vb">
       <DependentUpon>FrmAccesos.vb</DependentUpon>
     </Compile>
@@ -263,6 +264,12 @@
       <DependentUpon>FrmEscolaridad.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmEscolaridad.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmExamenes.Designer.vb">
+      <DependentUpon>FrmExamenes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmExamenes.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmExpediente.Designer.vb">
@@ -455,6 +462,12 @@
       <DependentUpon>FrmQQ.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmQQ.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmQuirofano.Designer.vb">
+      <DependentUpon>FrmQuirofano.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmQuirofano.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmRecepcion.Designer.vb">
@@ -863,6 +876,12 @@
       <DependentUpon>ArepRecepcion.vb</DependentUpon>
     </Compile>
     <Compile Include="Reportes\ArepRecepcion.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\ArepRecetaMedica.Designer.vb">
+      <DependentUpon>ArepRecetaMedica.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepRecetaMedica.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reportes\ArepRecibo2.Designer.vb">
@@ -1713,6 +1732,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>FrmEvacuaciones.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmExamenes.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmExamenes.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmExpediente.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmExpediente.vb</DependentUpon>
@@ -1844,6 +1867,10 @@
     <EmbeddedResource Include="FrmQQ.resx">
       <DependentUpon>FrmQQ.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmQuirofano.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmQuirofano.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmRecepcion.resx">
       <SubType>Designer</SubType>
@@ -2328,6 +2355,10 @@
     <EmbeddedResource Include="Reportes\ArepRecepcion.resx">
       <DependentUpon>ArepRecepcion.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepRecetaMedica.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepRecetaMedica.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepRecibo2.resx">
       <SubType>Designer</SubType>

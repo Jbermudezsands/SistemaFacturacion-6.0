@@ -4,6 +4,27 @@ Imports System.IO
 Imports System.Drawing.Imaging
 
 Module Funciones
+    Public Sub Imprimir_Receta(ByVal Numero_Expediente As String, ByVal IdConsulta As Double)
+        Dim SQL As New DataDynamics.ActiveReports.DataSources.SqlDBDataSource, SqlString As String
+        Dim ArepRecetaMedica As New ArepRecetaMedica, Sqldatos As String, RutaLogo As String, ds As New DataSet
+
+
+        SqlString = "SELECT Consulta.Numero_Expediente, Consulta.Fecha_Hora_Inicio, Consulta.Sintomas, Consulta.Diagnostico, Doctores.Codigo_Minsa, Doctores.Nombre_Doctor + ' ' + Doctores.Apellido_Doctor AS Nombre_Doctor,  Expediente.Nombres + ' ' + Expediente.Apellidos AS Nombre_Paciente, Consultorio.Nombre_Consultorio, Medicamentos_Consulta.Cod_Productos, Medicamentos_Consulta.Descripcion, Medicamentos_Consulta.Cantidad, Medicamentos_Consulta.Receta, Consulta.Fecha_Hora_Fin, Consulta.IdConsulta FROM Consulta INNER JOIN Doctores ON Consulta.IdDoctor_CodigoMinsa = Doctores.Codigo_Minsa INNER JOIN Expediente ON Consulta.Numero_Expediente = Expediente.Numero_Expediente INNER JOIN Consultorio ON Consulta.IdConsultorio = Consultorio.IdConsultorio INNER JOIN Medicamentos_Consulta ON Consulta.IdConsulta = Medicamentos_Consulta.IdConsulta  WHERE(Consulta.IdConsulta = " & IdConsulta & ")"
+        SQL.ConnectionString = Conexion
+        SQL.SQL = SqlString
+
+        Bitacora(Now, NombreUsuario, "Admision", "Se Imprimio la preconsulta expediente: " & Numero_Expediente)
+
+        Dim ViewerForm As New FrmViewer()
+        ViewerForm.arvMain.Document = ArepRecetaMedica.Document
+        My.Application.DoEvents()
+        ArepRecetaMedica.DataSource = SQL
+        ArepRecetaMedica.Run(False)
+        ViewerForm.Show()
+
+    End Sub
+
+
     Public Sub Imprimir_PreConsulta(ByVal Numero_Expediente As String)
         Dim SQL As New DataDynamics.ActiveReports.DataSources.SqlDBDataSource, SqlString As String
         Dim ArpPreconsulta As New ArepPreConsultas, Sqldatos As String, RutaLogo As String, ds As New DataSet
@@ -45,7 +66,7 @@ Module Funciones
     End Sub
     Public Sub Grabar_ConsultasMedicas(ByVal Numero_Expediente As String, ByVal Fecha_Inicio As Date, ByVal Fecha_Fin As Date, ByVal Sintomas As String, ByVal Diagnostico As String, ByVal idPreconsultas As Double, ByVal idDoctor As Double, ByVal IdConsultorio As Double)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
-        Dim SQLstring As String
+        Dim SQLstring As String, IdTipoExamen As Double, Descripcion As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim ds As New DataSet, idConsultas As Double, i As Double, Cont As Double
@@ -64,7 +85,7 @@ Module Funciones
             Exit Sub
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Consulta] ([Numero_Expediente],[Fecha_Hora_Inicio] ,[Fecha_Hora_Fin],[Sintomas],[Diagnostico],[idPreConsulta],[IdDoctor_CodigoMinsa],[IdConsultorio]) VALUES('" & Numero_Expediente & "' , CONVERT(DATETIME, '" & Format(Fecha_Inicio, "dd/MM/yyyy HH:mm:ss") & "', 102)  , CONVERT(DATETIME, '" & Format(Fecha_Fin, "dd/MM/yyyy HH:mm:ss") & "', 102) ,'" & Sintomas & "' ,'" & Diagnostico & "' ," & idPreconsultas & "," & idDoctor & "," & IdConsultorio & ")"
+            StrSqlUpdate = "INSERT INTO [Consulta] ([Numero_Expediente],[Fecha_Hora_Inicio] ,[Fecha_Hora_Fin],[Sintomas],[Diagnostico],[idPreConsulta],[IdDoctor_CodigoMinsa],[IdConsultorio]) VALUES('" & Numero_Expediente & "' , '" & Format(Fecha_Inicio, "dd/MM/yyyy HH:mm:ss") & "'  , '" & Format(Fecha_Fin, "dd/MM/yyyy HH:mm:ss") & "' ,'" & Sintomas & "' ,'" & Diagnostico & "' ," & idPreconsultas & "," & idDoctor & "," & IdConsultorio & ")"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -97,6 +118,26 @@ Module Funciones
                 My.Forms.FrmConsultasMedicas.InsertarRowGrid()
             End If
 
+
+            '/////////////////////////////GRABO LOS EXAMANES /////////////////////////////////////////////
+            Cont = My.Forms.FrmConsultasMedicas.TdGridExamenes.RowCount
+            If Cont > 0 Then
+
+                For i = 0 To Cont - 1
+                    My.Forms.FrmConsultasMedicas.TdGridExamenes.Item(i)("IdConsulta") = idConsultas
+                    IdTipoExamen = My.Forms.FrmConsultasMedicas.TdGridExamenes.Columns("IdTipoExamen").Text
+                    Descripcion = My.Forms.FrmConsultasMedicas.TdGridExamenes.Columns("Descripcion").Text
+
+                    '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
+                    StrSqlUpdate = "INSERT INTO [TipoExamen_Consulta]  ([IdConsulta],[IdTipoExamen],[Descripcion],[Facturado],[Activo],[Pagado]) VALUES (" & idConsultas & " ," & IdTipoExamen & " ,'" & Descripcion & "' ,0,1,0)"
+                    MiConexion.Open()
+                    ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                    iResultado = ComandoUpdate.ExecuteNonQuery
+                    MiConexion.Close()
+                Next
+
+
+            End If
 
 
 
@@ -512,7 +553,7 @@ Module Funciones
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, FacturaBodega As Boolean = False, CompraBodega As Boolean = False
         Dim NumeroFactura As String, FacturaSerie As Boolean = False, SqlString As String, Numero As Double = 0
-        Dim CadenaDiv() As String
+        Dim CadenaDiv() As String, Serie As String
 
 
         '/////////////////////////////////////////////////////////////////////////////////////////
@@ -536,6 +577,14 @@ Module Funciones
 
         End If
 
+        Serie = "M"
+        SqlString = "SELECT DISTINCT Serie FROM ConsecutivoSerie ORDER BY Serie DESC"
+        DataAdapter = New SqlClient.SqlDataAdapter(Sqlstring, MiConexion)
+        DataAdapter.Fill(DataSet, "ConsecutivoSerie")
+        If Not DataSet.Tables("ConsecutivoSerie").Rows.Count = 0 Then
+            Serie = DataSet.Tables("ConsecutivoSerie").Rows(0)("Serie")
+        End If
+
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
@@ -544,14 +593,14 @@ Module Funciones
                 If FacturaSerie = False Then
                     ConsecutivoFactura = BuscaConsecutivo("Cotizacion")
                 Else
-                    ConsecutivoFactura = BuscaConsecutivoSerie("Cotizacion", FrmFacturas.CmbSerie.Text)
+                    ConsecutivoFactura = BuscaConsecutivoSerie("Cotizacion", Serie)
                 End If
             Case "Factura"
                 If ConsecutivoFacturaManual = False Then
                     If FacturaSerie = False Then
                         ConsecutivoFactura = BuscaConsecutivo("Factura")
                     Else
-                        ConsecutivoFactura = BuscaConsecutivoSerie("Factura", FrmFacturas.CmbSerie.Text)
+                        ConsecutivoFactura = BuscaConsecutivoSerie("Factura", Serie)
                     End If
                 Else
                     FrmConsecutivos.ShowDialog()

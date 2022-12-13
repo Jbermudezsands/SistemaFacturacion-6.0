@@ -1329,4 +1329,19 @@ Public Class MDIMain
         My.Forms.FrmTransformacion.MdiParent = Me
         My.Forms.FrmTransformacion.Show()
     End Sub
+
+    Private Sub RibbonMedicamentos_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonMedicamentos.Click
+        My.Forms.FrmMedicamentos.MdiParent = Me
+        My.Forms.FrmMedicamentos.Show()
+    End Sub
+
+    Private Sub RibbonQuirofano_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonQuirofano.Click
+        My.Forms.FrmQuirofano.MdiParent = Me
+        My.Forms.FrmQuirofano.Show()
+    End Sub
+
+    Private Sub RibbonExamenes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonExamenes.Click
+        My.Forms.FrmExamenes.MdiParent = Me
+        My.Forms.FrmExamenes.Show()
+    End Sub
 End Class

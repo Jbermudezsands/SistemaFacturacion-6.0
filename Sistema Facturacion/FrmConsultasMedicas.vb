@@ -4,6 +4,108 @@ Public Class FrmConsultasMedicas
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Public IdPreConsultas As Double, HoraInicio As Date, IdConsultorio As Double, IdDoctor As Double
     Public dsMedicamento As New DataSet, daMedicamento As New SqlClient.SqlDataAdapter, CmdBuilderMedicamento As New SqlCommandBuilder
+    Public dsExamen As New DataSet, daExamen As New SqlClient.SqlDataAdapter, CmdBuilderExamen As New SqlCommandBuilder
+
+    Public Sub Cargar_Grid()
+
+
+        Dim SqlCompras As String, DataSet As New DataSet
+
+        Me.DTPFecha.Text = Format(Now, "dd/MM/yyyy")
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlCompras = "SELECT  Cod_Productos, Descripcion, Cantidad, IdConsulta FROM Medicamentos_Consulta  WHERE(IdConsulta = -1000)"
+        dsMedicamento = New DataSet
+        daMedicamento = New SqlDataAdapter(SqlCompras, MiConexion)
+        CmdBuilderMedicamento = New SqlCommandBuilder(daMedicamento)
+        daMedicamento.Fill(dsMedicamento, "DetalleCompra")
+        Me.BindingDetalle.DataSource = dsMedicamento.Tables("DetalleCompra")
+        Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
+        Me.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
+        Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 259
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
+        Me.TrueDBGridComponentes.Columns(2).Caption = "Cantidad"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Visible = False
+
+
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlCompras = "SELECT Descripcion, IdConsulta, IdTipoExamen, Facturado, Activo, Pagado  FROM TipoExamen_Consulta WHERE (IdConsulta = -100)"
+        dsExamen = New DataSet
+        daExamen = New SqlDataAdapter(SqlCompras, MiConexion)
+        CmdBuilderExamen = New SqlCommandBuilder(daMedicamento)
+        daExamen.Fill(dsExamen, "Examen")
+        Me.BindingExamenes.DataSource = dsExamen.Tables("Examen")
+        Me.TdGridExamenes.DataSource = Me.BindingExamenes
+        Me.TdGridExamenes.Columns("Descripcion").Caption = "Descripcion"
+        Me.TdGridExamenes.Splits.Item(0).DisplayColumns("Descripcion").Width = 259
+        Me.TdGridExamenes.Splits.Item(0).DisplayColumns("IdConsulta").Visible = False
+        Me.TdGridExamenes.Splits.Item(0).DisplayColumns("IdTipoExamen").Visible = False
+        Me.TdGridExamenes.Splits.Item(0).DisplayColumns("Pagado").Visible = False
+
+
+    End Sub
+    Public Sub InsertarRowGridExamen()
+        Dim oTabla As DataTable, iPosicion As Double, idConsulta As String
+
+        iPosicion = Me.TdGridExamenes.Row
+        idConsulta = Me.TdGridExamenes.Columns("IdConsulta").Text
+
+        CmdBuilderExamen.RefreshSchema()
+        oTabla = dsExamen.Tables("Examen").GetChanges(DataRowState.Added)
+        If Not IsNothing(oTabla) Then
+            '//////////////////SI  TIENE REGISTROS NUEVOS 
+            daExamen.Update(oTabla)
+            dsExamen.Tables("Examen").AcceptChanges()
+            daExamen.Update(dsExamen.Tables("Examen"))
+
+            Me.TdGridExamenes.Row = iPosicion
+
+        Else
+            oTabla = dsExamen.Tables("Examen").GetChanges(DataRowState.Modified)
+            If Not IsNothing(oTabla) Then
+                daExamen.Update(oTabla)
+                dsExamen.Tables("Examen").AcceptChanges()
+                daExamen.Update(dsExamen.Tables("Examen"))
+            End If
+        End If
+
+        'ActualizarGridInsertRow(idConsulta)
+
+    End Sub
+    Public Sub ActualizarGridInsertRowExamen(ByVal idConsulta As Double)
+        Dim SqlCompras As String, TipoCompra As String
+
+        dsExamen.Tables("Examen").Reset()
+
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlCompras = "SELECT Descripcion, IdConsulta, IdTipoExamen, Facturado, Activo, Pagado  FROM TipoExamen_Consulta WHERE(IdConsulta = " & idConsulta & ")"
+        dsExamen = New DataSet
+        daExamen = New SqlDataAdapter(SqlCompras, MiConexion)
+        CmdBuilderExamen = New SqlCommandBuilder(daMedicamento)
+        daExamen.Fill(dsExamen, "Examen")
+        Me.BindingExamenes.DataSource = dsExamen.Tables("Examen")
+        Me.TdGridExamenes.DataSource = Me.BindingExamenes
+        Me.TdGridExamenes.Columns(0).Caption = "Codigo"
+        Me.TdGridExamenes.Splits.Item(0).DisplayColumns(0).Width = 74
+        Me.TdGridExamenes.Columns(1).Caption = "Descripcion"
+        Me.TdGridExamenes.Splits.Item(0).DisplayColumns(1).Width = 259
+        Me.TdGridExamenes.Splits.Item(0).DisplayColumns(1).Locked = True
+        Me.TdGridExamenes.Columns(2).Caption = "Cantidad"
+        Me.TdGridExamenes.Splits.Item(0).DisplayColumns("IdConsulta").Visible = False
+        Me.TdGridExamenes.Splits.Item(0).DisplayColumns("IdTipoExamen").Visible = False
+        Me.TdGridExamenes.Splits.Item(0).DisplayColumns("Pagado").Visible = False
+
+
+    End Sub
+
+
     Public Sub InsertarRowGrid()
         Dim oTabla As DataTable, iPosicion As Double, idConsulta As String
 
@@ -194,33 +296,12 @@ Public Class FrmConsultasMedicas
 
         Grabar_ConsultasMedicas(Me.TxtCodigo.Text, Me.HoraInicio, Now, Me.TxtSintomas.Text, Me.TxtDiagnostico.Text, IdPreConsultas, IdDoctor, IdConsultorio)
 
+        Me.Close()
 
     End Sub
 
     Private Sub FrmConsultasMedicas_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.DTPFecha.Text = Format(Now, "dd/MM/yyyy")
-        Dim SqlCompras As String
-
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlCompras = "SELECT  Cod_Productos, Descripcion, Cantidad, IdConsulta FROM Medicamentos_Consulta  WHERE(IdConsulta = -1000)"
-        dsMedicamento = New DataSet
-        daMedicamento = New SqlDataAdapter(SqlCompras, MiConexion)
-        CmdBuilderMedicamento = New SqlCommandBuilder(daMedicamento)
-        daMedicamento.Fill(dsMedicamento, "DetalleCompra")
-        Me.BindingDetalle.DataSource = dsMedicamento.Tables("DetalleCompra")
-        Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
-        Me.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
-        Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 259
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
-        Me.TrueDBGridComponentes.Columns(2).Caption = "Cantidad"
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Visible = False
-        'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Visible = False
-
+        Cargar_Grid()
     End Sub
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
@@ -238,5 +319,78 @@ Public Class FrmConsultasMedicas
 
     Private Sub CmdCerrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdCerrar.Click
         Me.Close()
+    End Sub
+
+    Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
+        Dim IdTipoExamen As Double, Descripcion_Examen As String
+
+        Quien = "TipoExamen"
+        My.Forms.FrmConsultas.ShowDialog()
+
+        IdTipoExamen = My.Forms.FrmConsultas.IdConsulta
+        Descripcion_Examen = My.Forms.FrmConsultas.Descripcion
+
+        Me.TdGridExamenes.Columns("IdTipoExamen").Text = IdTipoExamen
+        Me.TdGridExamenes.Columns("Descripcion").Text = Descripcion_Examen
+        Me.TdGridExamenes.Columns("Facturado").Text = 1
+        Me.TdGridExamenes.Columns("Activo").Text = 1
+        Me.TdGridExamenes.Row = Me.TdGridExamenes.Row + 1
+
+    End Sub
+
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+        Dim FechaFactura As String, oDataRow As DataRow, oTablaBorrados As DataTable
+        Dim Resultado As Double, iPosicion As Double
+
+        Resultado = MsgBox("¿Esta Seguro de Eliminar la Linea?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
+
+        If Not Resultado = "6" Then
+            Exit Sub
+        End If
+
+        iPosicion = Me.BindingDetalle.Position
+
+        If Me.BindingDetalle.Count <> 0 Then
+
+            '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////////////////////////BORRO EL REGISTRO SELECCIONADO CARGANDOLO EN DATAROW ///////////////////////////
+            '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            oDataRow = dsMedicamento.Tables("DetalleCompra").Rows(iPosicion)
+            oDataRow.Delete()
+
+            '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////Obtengo las filas borradas/////////////////////////////////////////////////////////////////////////////////
+            'oTablaBorrados = dsMedicamento.Tables("DetalleCompra").GetChanges(DataRowState.Deleted)
+            'If Not IsNothing(oTablaBorrados) Then
+            '    '//////////////////SI NO TIENE REGISTROS EN BORRADOS ESTAN EN PANTALLA LOS CAMBIOS 77777777
+            '    daMedicamento.Update(oTablaBorrados)
+            'End If
+            'dsMedicamento.Tables("DetalleCompra").AcceptChanges()
+            'daMedicamento.Update(dsMedicamento.Tables("DetalleCompra"))
+
+        End If
+
+
+    End Sub
+
+    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+        Me.TdGridExamenes.Delete()
+    End Sub
+
+    Private Sub Button6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
+        Dim Sqlstring As String, ExpedienteNo As String, ds As New DataSet
+        Dim IdAdmision As Double
+        Dim Hora As Date
+
+
+
+        Sqlstring = "SELECT  Consulta.* FROM Consulta WHERE  (Numero_Expediente = '" & ExpedienteNo & "') AND (Activo = 1) ORDER BY idConsulta DESC"
+        ds = BuscaConsulta(Sqlstring, "Admision").Copy
+        If ds.Tables("Admision").Rows.Count <> 0 Then
+            IdAdmision = ds.Tables("Admision").Rows(0)("idAdminsion")
+        End If
+
+        'Imprimir_Receta()
+
     End Sub
 End Class

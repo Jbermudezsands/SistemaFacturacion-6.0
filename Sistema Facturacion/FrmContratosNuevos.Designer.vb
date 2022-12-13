@@ -101,7 +101,6 @@ Partial Class FrmContratosNuevos
         Me.Label15 = New System.Windows.Forms.Label
         Me.CmbContrato2 = New System.Windows.Forms.ComboBox
         Me.Label17 = New System.Windows.Forms.Label
-        Me.TabPage3 = New System.Windows.Forms.TabPage
         Me.GroupBox6 = New System.Windows.Forms.GroupBox
         Me.BtnBorrarLineaCont1 = New System.Windows.Forms.Button
         Me.TrueDBGridContrato1 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
@@ -179,7 +178,6 @@ Partial Class FrmContratosNuevos
         '
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Location = New System.Drawing.Point(12, 3)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
@@ -436,6 +434,7 @@ Partial Class FrmContratosNuevos
         Me.GroupBox7.TabIndex = 163
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "Detalle Facturacion Contrato"
+        Me.GroupBox7.Visible = False
         '
         'BtnBorrarLineaCont2
         '
@@ -1021,16 +1020,6 @@ Partial Class FrmContratosNuevos
         Me.Label17.TabIndex = 163
         Me.Label17.Text = "Tipo Servicio"
         '
-        'TabPage3
-        '
-        Me.TabPage3.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.TabPage3.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage3.Size = New System.Drawing.Size(855, 352)
-        Me.TabPage3.TabIndex = 2
-        Me.TabPage3.Text = "Detalle"
-        '
         'GroupBox6
         '
         Me.GroupBox6.Controls.Add(Me.BtnBorrarLineaCont1)
@@ -1193,6 +1182,5 @@ Partial Class FrmContratosNuevos
     Friend WithEvents GroupBox6 As System.Windows.Forms.GroupBox
     Friend WithEvents TrueDBGridContrato1 As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents BtnBorrarLineaCont1 As System.Windows.Forms.Button
-    Friend WithEvents TabPage3 As System.Windows.Forms.TabPage
     Friend WithEvents ChkUnificar As System.Windows.Forms.CheckBox
 End Class

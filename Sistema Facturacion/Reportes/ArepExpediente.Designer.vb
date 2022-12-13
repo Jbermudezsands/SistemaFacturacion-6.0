@@ -20,8 +20,6 @@ Partial Public Class ArepExpediente
         Dim OleDBDataSource1 As DataDynamics.ActiveReports.DataSources.OleDBDataSource = New DataDynamics.ActiveReports.DataSources.OleDBDataSource
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ArepExpediente))
         Me.PageHeader1 = New DataDynamics.ActiveReports.PageHeader
-        Me.Detail1 = New DataDynamics.ActiveReports.Detail
-        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
         Me.ImgLogo = New DataDynamics.ActiveReports.Picture
         Me.LblTitulo = New DataDynamics.ActiveReports.Label
         Me.LblDireccion = New DataDynamics.ActiveReports.Label
@@ -31,6 +29,7 @@ Partial Public Class ArepExpediente
         Me.Label1 = New DataDynamics.ActiveReports.Label
         Me.LblImpreso = New DataDynamics.ActiveReports.Label
         Me.LblMoneda = New DataDynamics.ActiveReports.Label
+        Me.Detail1 = New DataDynamics.ActiveReports.Detail
         Me.Picture1 = New DataDynamics.ActiveReports.Picture
         Me.Label2 = New DataDynamics.ActiveReports.Label
         Me.TextBox2 = New DataDynamics.ActiveReports.TextBox
@@ -39,6 +38,7 @@ Partial Public Class ArepExpediente
         Me.Label5 = New DataDynamics.ActiveReports.Label
         Me.TextBox4 = New DataDynamics.ActiveReports.TextBox
         Me.Label6 = New DataDynamics.ActiveReports.Label
+        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
         CType(Me.ImgLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblTitulo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblDireccion, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -63,18 +63,6 @@ Partial Public Class ArepExpediente
         Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.ImgLogo, Me.LblTitulo, Me.LblDireccion, Me.LblRuc, Me.TextBox1, Me.Label3, Me.Label1, Me.LblImpreso, Me.LblMoneda})
         Me.PageHeader1.Height = 1.510417!
         Me.PageHeader1.Name = "PageHeader1"
-        '
-        'Detail1
-        '
-        Me.Detail1.ColumnSpacing = 0.0!
-        Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.Picture1, Me.Label2, Me.TextBox2, Me.Label4, Me.TextBox3, Me.Label5, Me.TextBox4, Me.Label6})
-        Me.Detail1.Height = 3.052083!
-        Me.Detail1.Name = "Detail1"
-        '
-        'PageFooter1
-        '
-        Me.PageFooter1.Height = 0.25!
-        Me.PageFooter1.Name = "PageFooter1"
         '
         'ImgLogo
         '
@@ -250,6 +238,13 @@ Partial Public Class ArepExpediente
         Me.LblMoneda.Top = 1.0!
         Me.LblMoneda.Width = 7.475!
         '
+        'Detail1
+        '
+        Me.Detail1.ColumnSpacing = 0.0!
+        Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.Picture1, Me.Label2, Me.TextBox2, Me.Label4, Me.TextBox3, Me.Label5, Me.TextBox4, Me.Label6})
+        Me.Detail1.Height = 3.052083!
+        Me.Detail1.Name = "Detail1"
+        '
         'Picture1
         '
         Me.Picture1.Border.BottomColor = System.Drawing.Color.Black
@@ -341,6 +336,7 @@ Partial Public Class ArepExpediente
         Me.TextBox3.Left = 2.625!
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.Style = "ddo-char-set: 0; font-size: 8.25pt; "
+        Me.TextBox3.Text = Nothing
         Me.TextBox3.Top = 0.5!
         Me.TextBox3.Width = 1.875!
         '
@@ -378,6 +374,7 @@ Partial Public Class ArepExpediente
         Me.TextBox4.Left = 2.625!
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.Style = "ddo-char-set: 0; font-size: 8.25pt; "
+        Me.TextBox4.Text = Nothing
         Me.TextBox4.Top = 0.75!
         Me.TextBox4.Width = 1.875!
         '
@@ -400,6 +397,11 @@ Partial Public Class ArepExpediente
         Me.Label6.Top = 1.0!
         Me.Label6.Width = 1.0625!
         '
+        'PageFooter1
+        '
+        Me.PageFooter1.Height = 0.25!
+        Me.PageFooter1.Name = "PageFooter1"
+        '
         'ArepExpediente
         '
         Me.MasterReport = False
@@ -409,7 +411,7 @@ Partial Public Class ArepExpediente
         Me.DataSource = OleDBDataSource1
         Me.PageSettings.PaperHeight = 11.0!
         Me.PageSettings.PaperWidth = 8.5!
-        Me.PrintWidth = 8.333333!
+        Me.PrintWidth = 7.604167!
         Me.Sections.Add(Me.PageHeader1)
         Me.Sections.Add(Me.Detail1)
         Me.Sections.Add(Me.PageFooter1)
