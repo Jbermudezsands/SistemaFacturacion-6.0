@@ -637,7 +637,34 @@ Public Class FrmEnsamble
                                 Importe = Cantidad * PrecioCompra
                                 TImporte = TImporte + Importe
 
+
                         End Select
+
+                    ElseIf DataSet.Tables("Servicio").Rows(0)("Tipo_Producto") = "Insumos" Then
+
+                        StringMoneda = ""
+                        'PrecioCompra = UltimoPrecioCompra(CodProductos) * TasaCambioCompara(Fecha, StringMoneda, "Cordobas")
+                        Cantidad = DataSet.Tables("ListaProductos").Rows(IposicionFila)("Cantidad_Ensamble")
+                        PrecioCompra = CostoPromedioKardex(CodProductos, Fecha)
+                        '///////////SI EL COSTO ES CERO PERO SE DESCARGAR, SIGNIFICA FACTURACION EN NEGATIVO ///////////
+                        If Cantidad <> 0 Then
+                            If PrecioCompra = 0 Then
+                                SqlString = "SELECT Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.TasaCambio, Detalle_Facturas.CodTarea, Detalle_Facturas.Costo_Unitario, Detalle_Facturas.Costo_Unitario / TasaCambio.MontoTasa AS Costo_UnitarioDolar FROM Detalle_Facturas INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa  " & _
+                                            "WHERE (Detalle_Facturas.Cod_Producto = '" & CodProductos & "') AND (Detalle_Facturas.Costo_Unitario <> 0) AND (Detalle_Facturas.Fecha_Factura <= CONVERT(DATETIME,'" & Format(Fecha, "yyyy-MM-dd") & "', 102)) ORDER BY Detalle_Facturas.Fecha_Factura"
+                                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                                DataAdapter.Fill(DataSet, "UltimoCosto")
+                                If DataSet.Tables("UltimoCosto").Rows.Count <> 0 Then
+                                    Registros = DataSet.Tables("UltimoCosto").Rows.Count
+                                    PrecioCompra = DataSet.Tables("UltimoCosto").Rows(Registros - 1)("Costo_Unitario")
+                                End If
+                                DataSet.Tables("UltimoCosto").Reset()
+
+                            End If
+                        End If
+
+                        TPrecioUnitario = TPrecioUnitario + PrecioCompra
+                        Importe = Cantidad * PrecioCompra
+                        TImporte = TImporte + Importe
 
                     End If
 
