@@ -113,6 +113,10 @@ Public Class FrmInventarioFisico
 
 
                 DescripcionProducto = Replace(Trim(DataSet.Tables("ListaProductos").Rows(iPosicionFila)("Descripcion_Producto")), "'", " ")
+
+                Me.Text = "Procesando el Producto: " & CodProductos & " " & DescripcionProducto
+                My.Application.DoEvents()
+
                 If Not IsDBNull(DataSet.Tables("ListaProductos").Rows(iPosicionFila)("Existencia")) Then
                     'Existencia = Trim(DataSet.Tables("ListaProductos").Rows(iPosicionFila)("Existencia_Unidades"))
                     Existencia = BuscaExistenciaBodega(CodProductos, CodBodega)
@@ -671,7 +675,7 @@ Public Class FrmInventarioFisico
         MiConexionExcel.Close()
     End Sub
 
-    Private Sub C1Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles C1Button1.Click
+    Private Sub C1Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnProcesarInvenario.Click
         Dim Sql As String
         Dim DataAdapter = New SqlClient.SqlDataAdapter
         Dim CodProveedor As String
@@ -860,5 +864,54 @@ Public Class FrmInventarioFisico
         My.Forms.FrmBascula.TxtTipoRemision.Text = "Repesaje"
         My.Forms.FrmBascula.TipoPesada = "Repesaje"
         My.Forms.FrmBascula.Show()
+    End Sub
+
+    Private Sub RadioButton4_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptInventarioInicial.CheckedChanged
+        If Me.OptInventarioInicial.Checked = True Then
+            Me.BtnProcesarInvenario.Visible = True
+            Me.BtnProcesarAjuste.Visible = False
+        Else
+            Me.BtnProcesarInvenario.Visible = False
+            Me.BtnProcesarAjuste.Visible = True
+        End If
+    End Sub
+
+    Private Sub RadioButton1_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptAjusteInventario.CheckedChanged
+        If Me.OptInventarioInicial.Checked = True Then
+            Me.BtnProcesarInvenario.Visible = True
+            Me.BtnProcesarAjuste.Visible = False
+        ElseIf Me.OptAjusteInventario.Checked = True Then
+            Me.BtnProcesarInvenario.Visible = False
+            Me.BtnProcesarAjuste.Visible = True
+        End If
+    End Sub
+
+    Private Sub BtnProcesarAjuste_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnProcesarAjuste.Click
+        If Me.CmdIniciar.Enabled = False Then
+            MsgBox("Existe un Registro de Inventario Iniciado", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.TDBGridLotes.RowCount <= 0 Then
+            MsgBox("Necesito cargar el Archivo de Lotes", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        Me.CmdIniciar.Enabled = False
+        Me.Button1.Enabled = False
+
+
+        '''''''''''''''''''''////////////////////INICIO EL PROCESO DE INVENTARIO FISICO //////////////////////////////////////
+        Me.CmdIniciar_Click(sender, e)
+
+        '///////////////////////////////////proceso el inventario fisicon ////////////////////////////////////
+        Me.Button1_Click(sender, e)
+
+
+        Me.C1Button1_Click(sender, e)
+
+        Me.CmdIniciar.Enabled = True
+        Me.Button1.Enabled = True
+
     End Sub
 End Class

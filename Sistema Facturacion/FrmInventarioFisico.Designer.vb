@@ -41,13 +41,15 @@ Partial Class FrmInventarioFisico
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.TDBGridLotes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.BtnProcesarAjuste = New C1.Win.C1Input.C1Button
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
-        Me.RadioButton4 = New System.Windows.Forms.RadioButton
+        Me.OptAjusteInventario = New System.Windows.Forms.RadioButton
+        Me.OptInventarioInicial = New System.Windows.Forms.RadioButton
         Me.DTPFechaLote = New System.Windows.Forms.DateTimePicker
         Me.Label5 = New System.Windows.Forms.Label
         Me.TextBox1 = New System.Windows.Forms.TextBox
         Me.Label6 = New System.Windows.Forms.Label
-        Me.C1Button1 = New C1.Win.C1Input.C1Button
+        Me.BtnProcesarInvenario = New C1.Win.C1Input.C1Button
         Me.C1Button3 = New C1.Win.C1Input.C1Button
         Me.FrameTipo = New System.Windows.Forms.GroupBox
         Me.OptActualizaInv = New System.Windows.Forms.RadioButton
@@ -309,12 +311,13 @@ Partial Class FrmInventarioFisico
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.BtnProcesarAjuste)
         Me.GroupBox2.Controls.Add(Me.GroupBox3)
         Me.GroupBox2.Controls.Add(Me.DTPFechaLote)
         Me.GroupBox2.Controls.Add(Me.Label5)
         Me.GroupBox2.Controls.Add(Me.TextBox1)
         Me.GroupBox2.Controls.Add(Me.Label6)
-        Me.GroupBox2.Controls.Add(Me.C1Button1)
+        Me.GroupBox2.Controls.Add(Me.BtnProcesarInvenario)
         Me.GroupBox2.Controls.Add(Me.C1Button3)
         Me.GroupBox2.Location = New System.Drawing.Point(6, 6)
         Me.GroupBox2.Name = "GroupBox2"
@@ -323,9 +326,24 @@ Partial Class FrmInventarioFisico
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Opciones de Importacion"
         '
+        'BtnProcesarAjuste
+        '
+        Me.BtnProcesarAjuste.Image = CType(resources.GetObject("BtnProcesarAjuste.Image"), System.Drawing.Image)
+        Me.BtnProcesarAjuste.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnProcesarAjuste.Location = New System.Drawing.Point(619, 12)
+        Me.BtnProcesarAjuste.Name = "BtnProcesarAjuste"
+        Me.BtnProcesarAjuste.Size = New System.Drawing.Size(88, 48)
+        Me.BtnProcesarAjuste.TabIndex = 231
+        Me.BtnProcesarAjuste.Tag = "28"
+        Me.BtnProcesarAjuste.Text = "Procesar"
+        Me.BtnProcesarAjuste.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnProcesarAjuste.UseVisualStyleBackColor = True
+        Me.BtnProcesarAjuste.VisualStyleBaseStyle = C1.Win.C1Input.VisualStyle.Office2007Blue
+        '
         'GroupBox3
         '
-        Me.GroupBox3.Controls.Add(Me.RadioButton4)
+        Me.GroupBox3.Controls.Add(Me.OptAjusteInventario)
+        Me.GroupBox3.Controls.Add(Me.OptInventarioInicial)
         Me.GroupBox3.Location = New System.Drawing.Point(222, 0)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(158, 71)
@@ -333,17 +351,27 @@ Partial Class FrmInventarioFisico
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Tipo Importacion"
         '
-        'RadioButton4
+        'OptAjusteInventario
         '
-        Me.RadioButton4.AutoSize = True
-        Me.RadioButton4.Checked = True
-        Me.RadioButton4.Location = New System.Drawing.Point(17, 20)
-        Me.RadioButton4.Name = "RadioButton4"
-        Me.RadioButton4.Size = New System.Drawing.Size(102, 17)
-        Me.RadioButton4.TabIndex = 125
-        Me.RadioButton4.TabStop = True
-        Me.RadioButton4.Text = "Inventario Inicial"
-        Me.RadioButton4.UseVisualStyleBackColor = True
+        Me.OptAjusteInventario.AutoSize = True
+        Me.OptAjusteInventario.Location = New System.Drawing.Point(17, 43)
+        Me.OptAjusteInventario.Name = "OptAjusteInventario"
+        Me.OptAjusteInventario.Size = New System.Drawing.Size(119, 17)
+        Me.OptAjusteInventario.TabIndex = 126
+        Me.OptAjusteInventario.Text = "Ajuste de Inventario"
+        Me.OptAjusteInventario.UseVisualStyleBackColor = True
+        '
+        'OptInventarioInicial
+        '
+        Me.OptInventarioInicial.AutoSize = True
+        Me.OptInventarioInicial.Checked = True
+        Me.OptInventarioInicial.Location = New System.Drawing.Point(17, 20)
+        Me.OptInventarioInicial.Name = "OptInventarioInicial"
+        Me.OptInventarioInicial.Size = New System.Drawing.Size(102, 17)
+        Me.OptInventarioInicial.TabIndex = 125
+        Me.OptInventarioInicial.TabStop = True
+        Me.OptInventarioInicial.Text = "Inventario Inicial"
+        Me.OptInventarioInicial.UseVisualStyleBackColor = True
         '
         'DTPFechaLote
         '
@@ -380,19 +408,19 @@ Partial Class FrmInventarioFisico
         Me.Label6.TabIndex = 109
         Me.Label6.Text = "Ruta Base de Datos"
         '
-        'C1Button1
+        'BtnProcesarInvenario
         '
-        Me.C1Button1.Image = CType(resources.GetObject("C1Button1.Image"), System.Drawing.Image)
-        Me.C1Button1.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.C1Button1.Location = New System.Drawing.Point(619, 12)
-        Me.C1Button1.Name = "C1Button1"
-        Me.C1Button1.Size = New System.Drawing.Size(88, 48)
-        Me.C1Button1.TabIndex = 108
-        Me.C1Button1.Tag = "28"
-        Me.C1Button1.Text = "Procesar"
-        Me.C1Button1.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.C1Button1.UseVisualStyleBackColor = True
-        Me.C1Button1.VisualStyleBaseStyle = C1.Win.C1Input.VisualStyle.Office2007Blue
+        Me.BtnProcesarInvenario.Image = CType(resources.GetObject("BtnProcesarInvenario.Image"), System.Drawing.Image)
+        Me.BtnProcesarInvenario.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnProcesarInvenario.Location = New System.Drawing.Point(619, 12)
+        Me.BtnProcesarInvenario.Name = "BtnProcesarInvenario"
+        Me.BtnProcesarInvenario.Size = New System.Drawing.Size(88, 48)
+        Me.BtnProcesarInvenario.TabIndex = 108
+        Me.BtnProcesarInvenario.Tag = "28"
+        Me.BtnProcesarInvenario.Text = "Procesar"
+        Me.BtnProcesarInvenario.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnProcesarInvenario.UseVisualStyleBackColor = True
+        Me.BtnProcesarInvenario.VisualStyleBaseStyle = C1.Win.C1Input.VisualStyle.Office2007Blue
         '
         'C1Button3
         '
@@ -603,14 +631,16 @@ Partial Class FrmInventarioFisico
     Friend WithEvents CmdLeer As C1.Win.C1Input.C1Button
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
-    Friend WithEvents RadioButton4 As System.Windows.Forms.RadioButton
+    Friend WithEvents OptInventarioInicial As System.Windows.Forms.RadioButton
     Friend WithEvents DTPFechaLote As System.Windows.Forms.DateTimePicker
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
     Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents C1Button1 As C1.Win.C1Input.C1Button
+    Friend WithEvents BtnProcesarInvenario As C1.Win.C1Input.C1Button
     Friend WithEvents C1Button3 As C1.Win.C1Input.C1Button
     Friend WithEvents TDBGridLotes As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents OpenFileDialog As System.Windows.Forms.OpenFileDialog
     Friend WithEvents CmdNuevo As System.Windows.Forms.Button
+    Friend WithEvents OptAjusteInventario As System.Windows.Forms.RadioButton
+    Friend WithEvents BtnProcesarAjuste As C1.Win.C1Input.C1Button
 End Class

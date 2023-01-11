@@ -1344,4 +1344,9 @@ Public Class MDIMain
         My.Forms.FrmExamenes.MdiParent = Me
         My.Forms.FrmExamenes.Show()
     End Sub
+
+    Private Sub RibbonProcRecepcion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonProcRecepcion.Click
+        My.Forms.FrmProcesarRecLeche.MdiParent = Me
+        My.Forms.FrmProcesarRecLeche.Show()
+    End Sub
 End Class

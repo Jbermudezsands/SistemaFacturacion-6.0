@@ -440,6 +440,12 @@
     <Compile Include="FrmPreConsultasNuevas.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmProcesarRecLeche.Designer.vb">
+      <DependentUpon>FrmProcesarRecLeche.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmProcesarRecLeche.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmProductor.designer.vb">
       <DependentUpon>FrmProductor.vb</DependentUpon>
     </Compile>
@@ -1851,6 +1857,10 @@
     <EmbeddedResource Include="FrmPreConsultasNuevas.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmPreConsultasNuevas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmProcesarRecLeche.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmProcesarRecLeche.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmProductor.resx">
       <DependentUpon>FrmProductor.vb</DependentUpon>

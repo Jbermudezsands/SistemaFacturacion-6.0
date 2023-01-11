@@ -159,6 +159,7 @@ Partial Class MDIMain
         Me.RibbonButton61 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton14 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton171 = New C1.Win.C1Ribbon.RibbonButton
+        Me.RibbonProcRecepcion = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonGroup14 = New C1.Win.C1Ribbon.RibbonGroup
         Me.RibbonButton111 = New C1.Win.C1Ribbon.RibbonButton
         Me.RibbonButton12 = New C1.Win.C1Ribbon.RibbonButton
@@ -1260,6 +1261,7 @@ Partial Class MDIMain
         Me.RibbonGroup13.Items.Add(Me.RibbonButton61)
         Me.RibbonGroup13.Items.Add(Me.RibbonButton14)
         Me.RibbonGroup13.Items.Add(Me.RibbonButton171)
+        Me.RibbonGroup13.Items.Add(Me.RibbonProcRecepcion)
         Me.RibbonGroup13.Text = "Registros"
         '
         'RibbonProductor
@@ -1300,6 +1302,14 @@ Partial Class MDIMain
         Me.RibbonButton171.SmallImage = CType(resources.GetObject("RibbonButton171.SmallImage"), System.Drawing.Image)
         Me.RibbonButton171.Text = "Transforma"
         Me.RibbonButton171.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonProcRecepcion
+        '
+        Me.RibbonProcRecepcion.ID = "RibbonProcRecepcion"
+        Me.RibbonProcRecepcion.LargeImage = CType(resources.GetObject("RibbonProcRecepcion.LargeImage"), System.Drawing.Image)
+        Me.RibbonProcRecepcion.SmallImage = CType(resources.GetObject("RibbonProcRecepcion.SmallImage"), System.Drawing.Image)
+        Me.RibbonProcRecepcion.Text = "Procesar Recepcion"
+        Me.RibbonProcRecepcion.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'RibbonGroup14
         '
@@ -1795,5 +1805,6 @@ Partial Class MDIMain
     Friend WithEvents RibbonMunicipios As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonConsultorio As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton171 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonProcRecepcion As C1.Win.C1Ribbon.RibbonButton
 
 End Class

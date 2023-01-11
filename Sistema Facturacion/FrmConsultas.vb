@@ -1975,6 +1975,7 @@ Public Class FrmConsultas
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("Codigo")
                 Descripcion = Me.BindingConsultas.Item(Posicion)("Nombres")
+
                 TipoProducto = Me.BindingConsultas.Item(Posicion)("Apellidos")
 
             Case "CodigoProductos"
