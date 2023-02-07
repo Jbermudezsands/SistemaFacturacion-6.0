@@ -41,6 +41,7 @@ Partial Class FrmInventarioFisico
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.TDBGridLotes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.BtnProcesarLote = New C1.Win.C1Input.C1Button
         Me.BtnProcesarAjuste = New C1.Win.C1Input.C1Button
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
         Me.OptAjusteInventario = New System.Windows.Forms.RadioButton
@@ -94,7 +95,7 @@ Partial Class FrmInventarioFisico
         Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label9.Location = New System.Drawing.Point(237, 19)
+        Me.Label9.Location = New System.Drawing.Point(316, 22)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(229, 13)
         Me.Label9.TabIndex = 116
@@ -311,6 +312,7 @@ Partial Class FrmInventarioFisico
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.BtnProcesarLote)
         Me.GroupBox2.Controls.Add(Me.BtnProcesarAjuste)
         Me.GroupBox2.Controls.Add(Me.GroupBox3)
         Me.GroupBox2.Controls.Add(Me.DTPFechaLote)
@@ -326,6 +328,21 @@ Partial Class FrmInventarioFisico
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Opciones de Importacion"
         '
+        'BtnProcesarLote
+        '
+        Me.BtnProcesarLote.Image = CType(resources.GetObject("BtnProcesarLote.Image"), System.Drawing.Image)
+        Me.BtnProcesarLote.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnProcesarLote.Location = New System.Drawing.Point(525, 12)
+        Me.BtnProcesarLote.Name = "BtnProcesarLote"
+        Me.BtnProcesarLote.Size = New System.Drawing.Size(88, 48)
+        Me.BtnProcesarLote.TabIndex = 232
+        Me.BtnProcesarLote.Tag = "28"
+        Me.BtnProcesarLote.Text = "Procesar"
+        Me.BtnProcesarLote.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnProcesarLote.UseVisualStyleBackColor = True
+        Me.BtnProcesarLote.Visible = False
+        Me.BtnProcesarLote.VisualStyleBaseStyle = C1.Win.C1Input.VisualStyle.Office2007Blue
+        '
         'BtnProcesarAjuste
         '
         Me.BtnProcesarAjuste.Image = CType(resources.GetObject("BtnProcesarAjuste.Image"), System.Drawing.Image)
@@ -335,7 +352,7 @@ Partial Class FrmInventarioFisico
         Me.BtnProcesarAjuste.Size = New System.Drawing.Size(88, 48)
         Me.BtnProcesarAjuste.TabIndex = 231
         Me.BtnProcesarAjuste.Tag = "28"
-        Me.BtnProcesarAjuste.Text = "Procesar"
+        Me.BtnProcesarAjuste.Text = "Cargar"
         Me.BtnProcesarAjuste.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.BtnProcesarAjuste.UseVisualStyleBackColor = True
         Me.BtnProcesarAjuste.VisualStyleBaseStyle = C1.Win.C1Input.VisualStyle.Office2007Blue
@@ -581,7 +598,7 @@ Partial Class FrmInventarioFisico
         Me.MaximizeBox = False
         Me.Name = "FrmInventarioFisico"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "FrmInventarioFisico"
+        Me.Text = "Inventario Fisico"
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.BindingInventario, System.ComponentModel.ISupportInitialize).EndInit()
@@ -643,4 +660,5 @@ Partial Class FrmInventarioFisico
     Friend WithEvents CmdNuevo As System.Windows.Forms.Button
     Friend WithEvents OptAjusteInventario As System.Windows.Forms.RadioButton
     Friend WithEvents BtnProcesarAjuste As C1.Win.C1Input.C1Button
+    Friend WithEvents BtnProcesarLote As C1.Win.C1Input.C1Button
 End Class

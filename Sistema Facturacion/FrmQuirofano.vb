@@ -1,6 +1,6 @@
 Public Class FrmQuirofano
 
-    Public Sub Grabar_RegistroQuirofano(ByVal Numero_Expediente As String, ByVal Fecha_Inicio As Date, ByVal Fecha_Fin As Date, ByVal Activo As Boolean)
+    Public Sub Grabar_RegistroQuirofano(ByVal Numero_Expediente As String, ByVal Fecha_Inicio As Date, ByVal Fecha_Fin As Date, ByVal Activo As Boolean, ByVal IdDoctor As String, ByVal Diagnostico As String, ByVal Prontuario As String, ByVal Anestecista As String, ByVal Ayudante As String)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQLstring As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -29,7 +29,7 @@ Public Class FrmQuirofano
             Me.BtnIngreso.Visible = False
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Quirofano] ([Numero_Expediente],[Fecha_Hora_Inicio],[Fecha_Hora_Fin],[Activo]) VALUES ('" & Numero_Expediente & "'  ,'" & Format(Fecha_Inicio, "dd/MM/yyyy HH:mm:ss") & "' ,'" & Format(Fecha_Inicio, "dd/MM/yyyy HH:mm:ss") & "',1)"
+            StrSqlUpdate = "INSERT INTO [Quirofano] ([Numero_Expediente],[Fecha_Hora_Inicio],[Fecha_Hora_Fin],[Activo],[IdDoctor_CodigoMinsa],[Diagnostico],[Prontuario],[Anestecista_CodigoMinsa],[Ayudante_CodigoMinsa],[Tecnico_Quirofano],[Tipo_Cirugia]) VALUES ('" & Numero_Expediente & "'  ,'" & Format(Fecha_Inicio, "dd/MM/yyyy HH:mm:ss") & "' ,'" & Format(Fecha_Inicio, "dd/MM/yyyy HH:mm:ss") & "',1, '" & IdDoctor & "', '" & Diagnostico & "', '" & Prontuario & "',  '" & Anestecista & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -185,14 +185,14 @@ Public Class FrmQuirofano
         Dim Numero_Expediente As String
 
         Numero_Expediente = Me.TxtLetra.Text & "-" & Me.TxtCodigo.Text
-        Grabar_RegistroQuirofano(Numero_Expediente, Now, Now, True)
+        Grabar_RegistroQuirofano(Numero_Expediente, Now, Now, True, Me.txtIdCirujano.Text, Me.TxtSintomas.Text, Me.TxtDiagnostico.Text, Me.txtIdAnestecista.Text, Me.txtIdDoctorAyudante.Text)
     End Sub
 
     Private Sub BtnSalida_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSalida.Click
         Dim Numero_Expediente As String
 
         Numero_Expediente = Me.TxtLetra.Text & "-" & Me.TxtCodigo.Text
-        Grabar_RegistroQuirofano(Numero_Expediente, Now, Now, True)
+        Grabar_RegistroQuirofano(Numero_Expediente, Now, Now, True, Me.txtIdCirujano.Text, Me.TxtSintomas.Text, Me.TxtDiagnostico.Text, Me.txtIdAnestecista.Text, Me.txtIdDoctorAyudante.Text)
     End Sub
 
     Private Sub FrmQuirofano_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load

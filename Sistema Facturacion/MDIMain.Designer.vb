@@ -1622,7 +1622,7 @@ Partial Class MDIMain
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.IsMdiContainer = True
         Me.Name = "MDIMain"
-        Me.Text = "Zeus Facturacion"
+        Me.Text = "1"
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).EndInit()

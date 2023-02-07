@@ -243,7 +243,9 @@ Public Class FrmEnsamble
         Me.TxtCantidad.Text = FrmConsultas.Cantidad
         Me.TxtNumeroEnsamble.Text = FrmConsultas.Codigo
         If FrmConsultas.Codigo <> "-----0-----" Then
-            CodReciboEnsamble = FrmConsultas.Codigo
+            If FrmConsultas.Codigo <> "" Then
+                CodReciboEnsamble = FrmConsultas.Codigo
+            End If
 
         End If
         Me.DTPFecha.Value = FrmConsultas.Fecha
@@ -597,7 +599,7 @@ Public Class FrmEnsamble
                         If Cantidad <> 0 Then
                             If PrecioCompra = 0 Then
                                 SqlString = "SELECT Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.TasaCambio, Detalle_Facturas.CodTarea, Detalle_Facturas.Costo_Unitario, Detalle_Facturas.Costo_Unitario / TasaCambio.MontoTasa AS Costo_UnitarioDolar FROM Detalle_Facturas INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa  " & _
-                                            "WHERE (Detalle_Facturas.Cod_Producto = '" & CodProductos & "') AND (Detalle_Facturas.Costo_Unitario <> 0) AND (Detalle_Facturas.Fecha_Factura <= CONVERT(DATETIME,'" & Format(Fecha, "yyyy-MM-dd") & "', 102)) ORDER BY Detalle_Facturas.Fecha_Factura"
+                                            "WHERE (Detalle_Facturas.Cod_Producto = '" & CodProductos & "') AND (Detalle_Facturas.Costo_Unitario <> 0) AND (Detalle_Facturas.Fecha_Factura <= CONVERT(DATETIME,'" & Fecha & "', 102)) ORDER BY Detalle_Facturas.Fecha_Factura"
                                 DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                                 DataAdapter.Fill(DataSet, "UltimoCosto")
                                 If DataSet.Tables("UltimoCosto").Rows.Count <> 0 Then
@@ -650,7 +652,7 @@ Public Class FrmEnsamble
                         If Cantidad <> 0 Then
                             If PrecioCompra = 0 Then
                                 SqlString = "SELECT Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.TasaCambio, Detalle_Facturas.CodTarea, Detalle_Facturas.Costo_Unitario, Detalle_Facturas.Costo_Unitario / TasaCambio.MontoTasa AS Costo_UnitarioDolar FROM Detalle_Facturas INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa  " & _
-                                            "WHERE (Detalle_Facturas.Cod_Producto = '" & CodProductos & "') AND (Detalle_Facturas.Costo_Unitario <> 0) AND (Detalle_Facturas.Fecha_Factura <= CONVERT(DATETIME,'" & Format(Fecha, "yyyy-MM-dd") & "', 102)) ORDER BY Detalle_Facturas.Fecha_Factura"
+                                            "WHERE (Detalle_Facturas.Cod_Producto = '" & CodProductos & "') AND (Detalle_Facturas.Costo_Unitario <> 0) AND (Detalle_Facturas.Fecha_Factura <= CONVERT(DATETIME,'" & Fecha & "', 102)) ORDER BY Detalle_Facturas.Fecha_Factura"
                                 DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                                 DataAdapter.Fill(DataSet, "UltimoCosto")
                                 If DataSet.Tables("UltimoCosto").Rows.Count <> 0 Then
@@ -816,7 +818,7 @@ Public Class FrmEnsamble
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////INACTIVO LA ORDEN DE ENSAMBLE///////////////////////////////////////////////
         StrSqlUpdate = "UPDATE [Ensamble] SET [Activo]= 0 " & _
-                       "WHERE (Cod_ReciboEnsamble = " & Me.TxtNumeroEnsamble.Text & ") AND (Fecha_Ensamble = CONVERT(DATETIME, '" & Me.DTPFecha.Value & "', 102)) AND (Tipo_Ensamble = '" & Me.CboTipoProducto.Text & "')"
+                       "WHERE (Cod_ReciboEnsamble = " & Me.TxtNumeroEnsamble.Text & ") AND (Fecha_Ensamble = CONVERT(DATETIME, '" & Format(Me.DTPFecha.Value, "yyyy-MM-dd") & "', 102)) AND (Tipo_Ensamble = '" & Me.CboTipoProducto.Text & "')"
 
         MiConexion.Open()
         ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)

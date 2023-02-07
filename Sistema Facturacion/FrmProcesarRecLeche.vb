@@ -11,7 +11,7 @@ Public Class FrmProcesarRecLeche
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim SqlString As String, iPosicion2 As Double, Cantidad As Double, Registros2 As Double, NRecepcion As Double
         Dim PrecioUnitario As Double = 0, PrecioNeto As Double = 0, Importe As Double = 0, CodBodega As String = "", CodProveedor As String, CodProducto As String = ""
-        Dim ConsecutivoCompra As Double, NumeroCompra As String, iPosicion As Double, Registros As Double
+        Dim ConsecutivoCompra As Double, NumeroCompra As String, iPosicion As Double, Registros As Double, CodigoBodega As String
         Dim Fecha As String, NombreProductor As String = "", ApellidoProductor As String = ""
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
 
@@ -42,6 +42,7 @@ Public Class FrmProcesarRecLeche
             PrecioUnitario = DataSet.Tables("Recepciones").Rows(iPosicion2)("Precio_Unitario")
             PrecioNeto = DataSet.Tables("Recepciones").Rows(iPosicion2)("Precio_Unitario")
             Importe = DataSet.Tables("Recepciones").Rows(iPosicion2)("Importe")
+            CodigoBodega = DataSet.Tables("Recepciones").Rows(iPosicion2)("Cod_Bodega")
 
             ConsecutivoCompra = BuscaConsecutivo("Compra")
             NumeroCompra = Format(ConsecutivoCompra, "0000#")
@@ -64,7 +65,7 @@ Public Class FrmProcesarRecLeche
             '////////////////////////////////////////////////////////////////////////////////////////////////////
             '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-            GrabaEncabezadoCompras(NumeroCompra, CDate(Me.DTPFechaFin.Text), "Mercancia Recibida", CodProveedor, CodBodega, NombreProductor, "-", CDate(Me.DTPFechaFin.Text), Importe, 0, 0, Importe, "Cordobas", "Procesado por Planilla de Leche", "", False)
+            GrabaEncabezadoCompras(NumeroCompra, CDate(Me.DTPFechaFin.Text), "Mercancia Recibida", CodProveedor, CodigoBodega, NombreProductor, "-", CDate(Me.DTPFechaFin.Text), Importe, 0, 0, Importe, "Cordobas", "Procesado por Planilla de Leche", "", False)
 
             '////////////////////////////////////////////////////////////////////////////////////////////////////
             '/////////////////////////////GRABO EL DETALLE DE LA COMPRA /////////////////////////////////////////////

@@ -2146,7 +2146,7 @@ Public Class FrmFacturas
                     Else
                         CodTarea = 0
                     End If
-                    GrabaDetalleFacturaLotes(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CodTarea, FechaVence)
+                    GrabaDetalleFacturaLotes(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CodTarea, FechaVence, Me.CboTipoProducto.Text)
 
                 Else
                     GrabaDetalleFactura(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CostoUnitario)
@@ -2397,7 +2397,7 @@ Public Class FrmFacturas
                     Else
                         CodTarea = 0
                     End If
-                    GrabaDetalleFacturaLotes(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CodTarea, FechaVence)
+                    GrabaDetalleFacturaLotes(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CodTarea, FechaVence, Me.CboTipoProducto.Text)
 
                 Else
                     GrabaDetalleFactura(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CostoUnitario)
