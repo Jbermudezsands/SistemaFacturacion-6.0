@@ -1,6 +1,95 @@
+Imports System.Data.SqlClient
+
 Public Class FrmQuirofano
 
-    Public Sub Grabar_RegistroQuirofano(ByVal Numero_Expediente As String, ByVal Fecha_Inicio As Date, ByVal Fecha_Fin As Date, ByVal Activo As Boolean, ByVal IdDoctor As String, ByVal Diagnostico As String, ByVal Prontuario As String, ByVal Anestecista As String, ByVal Ayudante As String)
+    Public dsMedicamento As New DataSet, daMedicamento As New SqlClient.SqlDataAdapter, CmdBuilderMedicamento As New SqlCommandBuilder
+    Public Sub InsertarRowGrid()
+        Dim oTabla As DataTable, iPosicion As Double, idConsulta As String
+
+        iPosicion = Me.TrueDBGridComponentes.Row
+        idConsulta = Me.TrueDBGridComponentes.Columns("idConsulta").Text
+
+        CmdBuilderMedicamento.RefreshSchema()
+        oTabla = dsMedicamento.Tables("DetalleCompra").GetChanges(DataRowState.Added)
+        If Not IsNothing(oTabla) Then
+            '//////////////////SI  TIENE REGISTROS NUEVOS 
+            daMedicamento.Update(oTabla)
+            dsMedicamento.Tables("DetalleCompra").AcceptChanges()
+            daMedicamento.Update(dsMedicamento.Tables("DetalleCompra"))
+
+
+
+            Me.TrueDBGridComponentes.Row = iPosicion
+
+        Else
+            oTabla = dsMedicamento.Tables("DetalleCompra").GetChanges(DataRowState.Modified)
+            If Not IsNothing(oTabla) Then
+                daMedicamento.Update(oTabla)
+                dsMedicamento.Tables("DetalleCompra").AcceptChanges()
+                daMedicamento.Update(dsMedicamento.Tables("DetalleCompra"))
+            End If
+        End If
+
+        'ActualizarGridInsertRow(idConsulta)
+
+
+
+    End Sub
+    Public Sub Cargar_Grid()
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim SqlCompras As String, DataSet As New DataSet
+
+        Me.DTPFecha.Text = Format(Now, "dd/MM/yyyy")
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlCompras = "SELECT  Cod_Productos, Descripcion, Cantidad, IdConsulta FROM Medicamentos_Quirofano  WHERE(IdConsulta = -1000)"
+        dsMedicamento = New DataSet
+        daMedicamento = New SqlDataAdapter(SqlCompras, MiConexion)
+        CmdBuilderMedicamento = New SqlCommandBuilder(daMedicamento)
+        daMedicamento.Fill(dsMedicamento, "DetalleCompra")
+        Me.BindingDetalle.DataSource = dsMedicamento.Tables("DetalleCompra")
+        Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
+        Me.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
+        Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 259
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
+        Me.TrueDBGridComponentes.Columns(2).Caption = "Cantidad"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Visible = False
+
+    End Sub
+
+
+    Function Buscar_Medico(ByVal Codigo_Medico As String) As String
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim SqlString As String, Nombres As String, Apellidos As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+
+
+        If Codigo_Medico <> "" Then
+            SqlString = "SELECT dbo.Doctores.* FROM dbo.Doctores WHERE (Codigo_Minsa = '" & Codigo_Medico & "') AND (Tipo = 'Doctor')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            DataAdapter.Fill(DataSet, "Doctores")
+            If Not DataSet.Tables("Doctores").Rows.Count = 0 Then
+
+                If Not IsDBNull(DataSet.Tables("Doctores").Rows(0)("Nombre_Doctor")) Then
+                    Nombres = DataSet.Tables("Doctores").Rows(0)("Nombre_Doctor")
+                End If
+                If Not IsDBNull(DataSet.Tables("Doctores").Rows(0)("Apellido_Doctor")) Then
+                    Apellidos = DataSet.Tables("Doctores").Rows(0)("Apellido_Doctor")
+                End If
+
+            End If
+
+            Buscar_Medico = Nombres & " " & Apellidos
+
+        End If
+
+    End Function
+
+
+    Public Sub Grabar_RegistroQuirofano(ByVal Numero_Expediente As String, ByVal Fecha_Inicio As Date, ByVal Fecha_Fin As Date, ByVal Activo As Boolean, ByVal IdDoctor As String, ByVal Diagnostico As String, ByVal Prontuario As String, ByVal idAnestecista As String, ByVal idAyudante As String, ByVal idTecnico As String, ByVal TipoCirugia As String)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQLstring As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -29,7 +118,7 @@ Public Class FrmQuirofano
             Me.BtnIngreso.Visible = False
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Quirofano] ([Numero_Expediente],[Fecha_Hora_Inicio],[Fecha_Hora_Fin],[Activo],[IdDoctor_CodigoMinsa],[Diagnostico],[Prontuario],[Anestecista_CodigoMinsa],[Ayudante_CodigoMinsa],[Tecnico_Quirofano],[Tipo_Cirugia]) VALUES ('" & Numero_Expediente & "'  ,'" & Format(Fecha_Inicio, "dd/MM/yyyy HH:mm:ss") & "' ,'" & Format(Fecha_Inicio, "dd/MM/yyyy HH:mm:ss") & "',1, '" & IdDoctor & "', '" & Diagnostico & "', '" & Prontuario & "',  '" & Anestecista & "')"
+            StrSqlUpdate = "INSERT INTO [Quirofano] ([Numero_Expediente],[Fecha_Hora_Inicio],[Fecha_Hora_Fin],[Activo],[IdDoctor_CodigoMinsa],[Diagnostico],[Prontuario],[Anestecista_CodigoMinsa],[Ayudante_CodigoMinsa],[Tecnico_Quirofano],[Tipo_Cirugia]) VALUES ('" & Numero_Expediente & "'  ,'" & Format(Fecha_Inicio, "dd/MM/yyyy HH:mm:ss") & "' ,'" & Format(Fecha_Inicio, "dd/MM/yyyy HH:mm:ss") & "',1, '" & IdDoctor & "', '" & Diagnostico & "', '" & Prontuario & "',  '" & idAnestecista & "',  '" & idAyudante & "',  '" & idTecnico & "',  '" & TipoCirugia & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -84,6 +173,14 @@ Public Class FrmQuirofano
 
             End If
 
+            '///////////////////lleno el combo 7777777777777777777777777777
+            SQLstring = "SELECT DISTINCT Tipo_Cirugia FROM Quirofano"
+            DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
+            DataAdapter.Fill(DataSet, "TipoCirugia")
+            If Not DataSet.Tables("TipoCirugia").Rows.Count = 0 Then
+                Me.CboTipoCirugia.DataSource = DataSet.Tables("TipoCirugia")
+            End If
+
             SQLstring = "SELECT  Expediente.* FROM Expediente WHERE (Numero_Expediente = '" & Numero_Expediente & "')"
 
             DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
@@ -114,6 +211,7 @@ Public Class FrmQuirofano
                     Me.TxtDireccionEmergencia.Text = DataSet.Tables("Expediente").Rows(0)("Direccion_Emergencia")
                 End If
 
+
                 Dim CodDepartamento As String, IdMunicipio As Double, IdComarca As Double
 
 
@@ -142,6 +240,41 @@ Public Class FrmQuirofano
 
                         Me.DTPFecha.Text = Format(Fecha, "dd/MM/yyyy")
                         Me.LblHora.Text = Format(Fecha, "hh:mm:ss tt")
+
+
+                        If Not IsDBNull(ds.Tables("PreConsulta").Rows(0)("IdDoctor_CodigoMinsa")) Then
+                            Me.txtIdCirujano.Text = ds.Tables("PreConsulta").Rows(0)("IdDoctor_CodigoMinsa")
+                            Me.txtNombreCirujano.Text = Buscar_Medico(Me.txtIdCirujano.Text)
+                        End If
+
+                        If Not IsDBNull(ds.Tables("PreConsulta").Rows(0)("Anestecista_CodigoMinsa")) Then
+                            Me.txtIdAnestecista.Text = ds.Tables("PreConsulta").Rows(0)("Anestecista_CodigoMinsa")
+                            Me.txtNombreAnestecista.Text = Buscar_Medico(Me.txtIdAnestecista.Text)
+                        End If
+
+                        If Not IsDBNull(ds.Tables("PreConsulta").Rows(0)("Ayudante_CodigoMinsa")) Then
+                            Me.txtIdDoctorAyudante.Text = ds.Tables("PreConsulta").Rows(0)("Ayudante_CodigoMinsa")
+                            Me.txtNombreAyudante.Text = Buscar_Medico(Me.txtIdDoctorAyudante.Text)
+                        End If
+
+                        If Not IsDBNull(ds.Tables("PreConsulta").Rows(0)("Tecnico_Quirofano")) Then
+                            Me.txtTecnico.Text = ds.Tables("PreConsulta").Rows(0)("Tecnico_Quirofano")
+                            Me.txtNombreTecnico.Text = Buscar_Medico(Me.txtTecnico.Text)
+                        End If
+
+                        If Not IsDBNull(ds.Tables("PreConsulta").Rows(0)("Tipo_Cirugia")) Then
+                            Me.CboTipoCirugia.Text = ds.Tables("PreConsulta").Rows(0)("Tipo_Cirugia")
+                        End If
+
+                        If Not IsDBNull(ds.Tables("PreConsulta").Rows(0)("Prontuario")) Then
+                            Me.txtProntuario.Text = ds.Tables("PreConsulta").Rows(0)("Prontuario")
+                        End If
+
+                        If Not IsDBNull(ds.Tables("PreConsulta").Rows(0)("Diagnostico")) Then
+                            Me.TxtDiagnostico.Text = ds.Tables("PreConsulta").Rows(0)("Diagnostico")
+                        End If
+
+
                     End If
                 Else
                     Me.Timer1.Enabled = True
@@ -185,17 +318,105 @@ Public Class FrmQuirofano
         Dim Numero_Expediente As String
 
         Numero_Expediente = Me.TxtLetra.Text & "-" & Me.TxtCodigo.Text
-        Grabar_RegistroQuirofano(Numero_Expediente, Now, Now, True, Me.txtIdCirujano.Text, Me.TxtSintomas.Text, Me.TxtDiagnostico.Text, Me.txtIdAnestecista.Text, Me.txtIdDoctorAyudante.Text)
+        Grabar_RegistroQuirofano(Numero_Expediente, Now, Now, True, Me.txtIdCirujano.Text, Me.txtProntuario.Text, Me.TxtDiagnostico.Text, Me.txtIdAnestecista.Text, Me.txtIdDoctorAyudante.Text, Me.txtTecnico.Text, Me.CboTipoCirugia.Text)
     End Sub
 
     Private Sub BtnSalida_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSalida.Click
         Dim Numero_Expediente As String
 
         Numero_Expediente = Me.TxtLetra.Text & "-" & Me.TxtCodigo.Text
-        Grabar_RegistroQuirofano(Numero_Expediente, Now, Now, True, Me.txtIdCirujano.Text, Me.TxtSintomas.Text, Me.TxtDiagnostico.Text, Me.txtIdAnestecista.Text, Me.txtIdDoctorAyudante.Text)
+        Grabar_RegistroQuirofano(Numero_Expediente, Now, Now, True, Me.txtIdCirujano.Text, Me.txtProntuario.Text, Me.TxtDiagnostico.Text, Me.txtIdAnestecista.Text, Me.txtIdDoctorAyudante.Text, Me.txtTecnico.Text, Me.CboTipoCirugia.Text)
     End Sub
 
     Private Sub FrmQuirofano_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.DTPFecha.Text = Format(Now, "dd/MM/yyyy")
+        Me.LblFecha2.Text = Format(Now, "dd/MM/yyyy")
+
+        Cargar_Grid()
+
+    End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        Quien = "Doctores"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.txtIdCirujano.Text = My.Forms.FrmConsultas.Codigo
+        Me.txtNombreCirujano.Text = My.Forms.FrmConsultas.Descripcion
+
+    End Sub
+
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+        Quien = "Doctores"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.txtIdAnestecista.Text = My.Forms.FrmConsultas.Codigo
+        Me.txtNombreAnestecista.Text = My.Forms.FrmConsultas.Descripcion
+
+
+    End Sub
+
+    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+        Quien = "Doctores"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.txtIdDoctorAyudante.Text = My.Forms.FrmConsultas.Codigo
+        Me.txtNombreAyudante.Text = My.Forms.FrmConsultas.Descripcion
+
+    End Sub
+
+    Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
+        Quien = "Doctores"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.txtTecnico.Text = My.Forms.FrmConsultas.Codigo
+        Me.txtNombreTecnico.Text = My.Forms.FrmConsultas.Descripcion
+    End Sub
+
+    Private Sub TxtLetra_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtLetra.TextChanged
+
+    End Sub
+
+    Private Sub TxtCodigo_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtCodigo.TextChanged
+
+    End Sub
+
+    Private Sub Button6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
+        Quien = "CodigoProductosComponente"
+        My.Forms.FrmConsultas.ShowDialog()
+
+        Me.TrueDBGridComponentes.Columns(0).Text = My.Forms.FrmConsultas.Codigo
+        Me.TrueDBGridComponentes.Columns(1).Text = My.Forms.FrmConsultas.Descripcion
+        Me.TrueDBGridComponentes.Columns(2).Text = 1
+        Me.TrueDBGridComponentes.Row = Me.TrueDBGridComponentes.Row + 1
+    End Sub
+
+    Private Sub Button5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click
+        Dim FechaFactura As String, oDataRow As DataRow, oTablaBorrados As DataTable
+        Dim Resultado As Double, iPosicion As Double
+
+        Resultado = MsgBox("¿Esta Seguro de Eliminar la Linea?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
+
+        If Not Resultado = "6" Then
+            Exit Sub
+        End If
+
+        iPosicion = Me.BindingDetalle.Position
+
+        If Me.BindingDetalle.Count <> 0 Then
+
+            '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////////////////////////BORRO EL REGISTRO SELECCIONADO CARGANDOLO EN DATAROW ///////////////////////////
+            '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            oDataRow = dsMedicamento.Tables("DetalleCompra").Rows(iPosicion)
+            oDataRow.Delete()
+
+            '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////Obtengo las filas borradas/////////////////////////////////////////////////////////////////////////////////
+            'oTablaBorrados = dsMedicamento.Tables("DetalleCompra").GetChanges(DataRowState.Deleted)
+            'If Not IsNothing(oTablaBorrados) Then
+            '    '//////////////////SI NO TIENE REGISTROS EN BORRADOS ESTAN EN PANTALLA LOS CAMBIOS 77777777
+            '    daMedicamento.Update(oTablaBorrados)
+            'End If
+            'dsMedicamento.Tables("DetalleCompra").AcceptChanges()
+            'daMedicamento.Update(dsMedicamento.Tables("DetalleCompra"))
+
+        End If
 
     End Sub
 End Class

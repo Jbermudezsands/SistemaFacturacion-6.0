@@ -290,6 +290,12 @@
     <Compile Include="FrmFecha.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmHospitalizacion.Designer.vb">
+      <DependentUpon>FrmHospitalizacion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmHospitalizacion.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmImpresoras.designer.vb">
       <DependentUpon>FrmImpresoras.vb</DependentUpon>
     </Compile>
@@ -1753,6 +1759,10 @@
     <EmbeddedResource Include="FrmFecha.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmFecha.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmHospitalizacion.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmHospitalizacion.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmImpresoras.resx">
       <DependentUpon>FrmImpresoras.vb</DependentUpon>

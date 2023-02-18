@@ -29,6 +29,7 @@ Partial Class FrmExamenes
         Me.CmdGuardar = New System.Windows.Forms.Button
         Me.TDGridMedicamentos = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
         Me.BindingDetalle = New System.Windows.Forms.BindingSource(Me.components)
+        Me.CmdResultados = New System.Windows.Forms.Button
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TDGridMedicamentos, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -71,9 +72,9 @@ Partial Class FrmExamenes
         '
         Me.CmdEliminar.Image = CType(resources.GetObject("CmdEliminar.Image"), System.Drawing.Image)
         Me.CmdEliminar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.CmdEliminar.Location = New System.Drawing.Point(1050, 109)
+        Me.CmdEliminar.Location = New System.Drawing.Point(1050, 169)
         Me.CmdEliminar.Name = "CmdEliminar"
-        Me.CmdEliminar.Size = New System.Drawing.Size(82, 34)
+        Me.CmdEliminar.Size = New System.Drawing.Size(91, 34)
         Me.CmdEliminar.TabIndex = 370
         Me.CmdEliminar.Text = "Eliminar"
         Me.CmdEliminar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -95,9 +96,9 @@ Partial Class FrmExamenes
         '
         Me.CmdGuardar.Image = CType(resources.GetObject("CmdGuardar.Image"), System.Drawing.Image)
         Me.CmdGuardar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.CmdGuardar.Location = New System.Drawing.Point(1050, 69)
+        Me.CmdGuardar.Location = New System.Drawing.Point(1050, 129)
         Me.CmdGuardar.Name = "CmdGuardar"
-        Me.CmdGuardar.Size = New System.Drawing.Size(82, 34)
+        Me.CmdGuardar.Size = New System.Drawing.Size(91, 34)
         Me.CmdGuardar.TabIndex = 368
         Me.CmdGuardar.Text = "Facturar"
         Me.CmdGuardar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -122,11 +123,24 @@ Partial Class FrmExamenes
         Me.TDGridMedicamentos.Text = "C1TrueDBGrid1"
         Me.TDGridMedicamentos.PropBag = resources.GetString("TDGridMedicamentos.PropBag")
         '
+        'CmdResultados
+        '
+        Me.CmdResultados.Image = CType(resources.GetObject("CmdResultados.Image"), System.Drawing.Image)
+        Me.CmdResultados.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.CmdResultados.Location = New System.Drawing.Point(1050, 69)
+        Me.CmdResultados.Name = "CmdResultados"
+        Me.CmdResultados.Size = New System.Drawing.Size(91, 34)
+        Me.CmdResultados.TabIndex = 374
+        Me.CmdResultados.Text = "Resultado"
+        Me.CmdResultados.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.CmdResultados.UseVisualStyleBackColor = True
+        '
         'FrmExamenes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1144, 451)
+        Me.Controls.Add(Me.CmdResultados)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.PictureBox4)
@@ -152,4 +166,5 @@ Partial Class FrmExamenes
     Friend WithEvents CmdGuardar As System.Windows.Forms.Button
     Friend WithEvents TDGridMedicamentos As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents BindingDetalle As System.Windows.Forms.BindingSource
+    Friend WithEvents CmdResultados As System.Windows.Forms.Button
 End Class

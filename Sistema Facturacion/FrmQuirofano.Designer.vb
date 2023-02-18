@@ -37,7 +37,7 @@ Partial Class FrmQuirofano
         Me.LblHora = New System.Windows.Forms.Label
         Me.lbldatosre = New System.Windows.Forms.Label
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.Label4 = New System.Windows.Forms.Label
+        Me.LblFecha2 = New System.Windows.Forms.Label
         Me.LblHora2 = New System.Windows.Forms.Label
         Me.Label6 = New System.Windows.Forms.Label
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
@@ -53,29 +53,35 @@ Partial Class FrmQuirofano
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.Generales = New System.Windows.Forms.TabPage
         Me.Personal = New System.Windows.Forms.TabPage
-        Me.CboCodigoProducto = New C1.Win.C1List.C1Combo
+        Me.CboTipoCirugia = New C1.Win.C1List.C1Combo
         Me.Label10 = New System.Windows.Forms.Label
         Me.txtTecnico = New System.Windows.Forms.TextBox
-        Me.TextBox6 = New System.Windows.Forms.TextBox
+        Me.txtNombreTecnico = New System.Windows.Forms.TextBox
         Me.Button4 = New System.Windows.Forms.Button
         Me.Label9 = New System.Windows.Forms.Label
         Me.txtIdDoctorAyudante = New System.Windows.Forms.TextBox
-        Me.TextBox4 = New System.Windows.Forms.TextBox
+        Me.txtNombreAyudante = New System.Windows.Forms.TextBox
         Me.Button3 = New System.Windows.Forms.Button
         Me.Label7 = New System.Windows.Forms.Label
         Me.txtIdAnestecista = New System.Windows.Forms.TextBox
-        Me.TextBox2 = New System.Windows.Forms.TextBox
+        Me.txtNombreAnestecista = New System.Windows.Forms.TextBox
         Me.Button2 = New System.Windows.Forms.Button
         Me.Label5 = New System.Windows.Forms.Label
         Me.txtIdCirujano = New System.Windows.Forms.TextBox
-        Me.txtCirujano = New System.Windows.Forms.TextBox
+        Me.txtNombreCirujano = New System.Windows.Forms.TextBox
         Me.Button1 = New System.Windows.Forms.Button
         Me.Label8 = New System.Windows.Forms.Label
         Me.TabPage1 = New System.Windows.Forms.TabPage
         Me.Label15 = New System.Windows.Forms.Label
-        Me.TxtSintomas = New System.Windows.Forms.TextBox
+        Me.txtProntuario = New System.Windows.Forms.TextBox
         Me.TxtDiagnostico = New System.Windows.Forms.TextBox
         Me.Label13 = New System.Windows.Forms.Label
+        Me.TabPage2 = New System.Windows.Forms.TabPage
+        Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.Button5 = New System.Windows.Forms.Button
+        Me.Button6 = New System.Windows.Forms.Button
+        Me.BindingDetalle = New System.Windows.Forms.BindingSource(Me.components)
+        Me.PictureBox3 = New System.Windows.Forms.PictureBox
         CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox9.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -83,8 +89,12 @@ Partial Class FrmQuirofano
         Me.TabControl1.SuspendLayout()
         Me.Generales.SuspendLayout()
         Me.Personal.SuspendLayout()
-        CType(Me.CboCodigoProducto, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.CboTipoCirugia, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage1.SuspendLayout()
+        Me.TabPage2.SuspendLayout()
+        CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.BindingDetalle, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'ImgFoto
@@ -190,9 +200,9 @@ Partial Class FrmQuirofano
         Me.GroupBox9.Controls.Add(Me.DTPFecha)
         Me.GroupBox9.Controls.Add(Me.LblHora)
         Me.GroupBox9.Controls.Add(Me.lbldatosre)
-        Me.GroupBox9.Location = New System.Drawing.Point(662, 12)
+        Me.GroupBox9.Location = New System.Drawing.Point(676, 12)
         Me.GroupBox9.Name = "GroupBox9"
-        Me.GroupBox9.Size = New System.Drawing.Size(419, 91)
+        Me.GroupBox9.Size = New System.Drawing.Size(405, 91)
         Me.GroupBox9.TabIndex = 243
         Me.GroupBox9.TabStop = False
         '
@@ -201,7 +211,7 @@ Partial Class FrmQuirofano
         Me.DTPFecha.AutoSize = True
         Me.DTPFecha.Font = New System.Drawing.Font("Microsoft Sans Serif", 21.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.DTPFecha.ForeColor = System.Drawing.Color.Green
-        Me.DTPFecha.Location = New System.Drawing.Point(33, 38)
+        Me.DTPFecha.Location = New System.Drawing.Point(25, 38)
         Me.DTPFecha.Name = "DTPFecha"
         Me.DTPFecha.Size = New System.Drawing.Size(169, 33)
         Me.DTPFecha.TabIndex = 182
@@ -212,7 +222,7 @@ Partial Class FrmQuirofano
         Me.LblHora.AutoSize = True
         Me.LblHora.Font = New System.Drawing.Font("Microsoft Sans Serif", 21.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblHora.ForeColor = System.Drawing.Color.Green
-        Me.LblHora.Location = New System.Drawing.Point(208, 38)
+        Me.LblHora.Location = New System.Drawing.Point(194, 38)
         Me.LblHora.Name = "LblHora"
         Me.LblHora.Size = New System.Drawing.Size(205, 33)
         Me.LblHora.TabIndex = 181
@@ -231,32 +241,32 @@ Partial Class FrmQuirofano
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.Label4)
+        Me.GroupBox1.Controls.Add(Me.LblFecha2)
         Me.GroupBox1.Controls.Add(Me.LblHora2)
         Me.GroupBox1.Controls.Add(Me.Label6)
-        Me.GroupBox1.Location = New System.Drawing.Point(662, 109)
+        Me.GroupBox1.Location = New System.Drawing.Point(676, 109)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(419, 91)
+        Me.GroupBox1.Size = New System.Drawing.Size(405, 91)
         Me.GroupBox1.TabIndex = 244
         Me.GroupBox1.TabStop = False
         '
-        'Label4
+        'LblFecha2
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 21.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.ForeColor = System.Drawing.Color.Navy
-        Me.Label4.Location = New System.Drawing.Point(33, 38)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(169, 33)
-        Me.Label4.TabIndex = 182
-        Me.Label4.Text = "20/10/2017"
+        Me.LblFecha2.AutoSize = True
+        Me.LblFecha2.Font = New System.Drawing.Font("Microsoft Sans Serif", 21.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblFecha2.ForeColor = System.Drawing.Color.Navy
+        Me.LblFecha2.Location = New System.Drawing.Point(25, 38)
+        Me.LblFecha2.Name = "LblFecha2"
+        Me.LblFecha2.Size = New System.Drawing.Size(169, 33)
+        Me.LblFecha2.TabIndex = 182
+        Me.LblFecha2.Text = "20/10/2017"
         '
         'LblHora2
         '
         Me.LblHora2.AutoSize = True
         Me.LblHora2.Font = New System.Drawing.Font("Microsoft Sans Serif", 21.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblHora2.ForeColor = System.Drawing.Color.Navy
-        Me.LblHora2.Location = New System.Drawing.Point(208, 38)
+        Me.LblHora2.Location = New System.Drawing.Point(194, 38)
         Me.LblHora2.Name = "LblHora2"
         Me.LblHora2.Size = New System.Drawing.Size(205, 33)
         Me.LblHora2.TabIndex = 181
@@ -363,10 +373,11 @@ Partial Class FrmQuirofano
         Me.TabControl1.Controls.Add(Me.Generales)
         Me.TabControl1.Controls.Add(Me.Personal)
         Me.TabControl1.Controls.Add(Me.TabPage1)
+        Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Location = New System.Drawing.Point(197, 22)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(450, 285)
+        Me.TabControl1.Size = New System.Drawing.Size(473, 285)
         Me.TabControl1.TabIndex = 247
         '
         'Generales
@@ -385,69 +396,69 @@ Partial Class FrmQuirofano
         Me.Generales.Location = New System.Drawing.Point(4, 22)
         Me.Generales.Name = "Generales"
         Me.Generales.Padding = New System.Windows.Forms.Padding(3)
-        Me.Generales.Size = New System.Drawing.Size(442, 259)
+        Me.Generales.Size = New System.Drawing.Size(465, 259)
         Me.Generales.TabIndex = 0
         Me.Generales.Text = "Paciente"
         Me.Generales.UseVisualStyleBackColor = True
         '
         'Personal
         '
-        Me.Personal.Controls.Add(Me.CboCodigoProducto)
+        Me.Personal.Controls.Add(Me.CboTipoCirugia)
         Me.Personal.Controls.Add(Me.Label10)
         Me.Personal.Controls.Add(Me.txtTecnico)
-        Me.Personal.Controls.Add(Me.TextBox6)
+        Me.Personal.Controls.Add(Me.txtNombreTecnico)
         Me.Personal.Controls.Add(Me.Button4)
         Me.Personal.Controls.Add(Me.Label9)
         Me.Personal.Controls.Add(Me.txtIdDoctorAyudante)
-        Me.Personal.Controls.Add(Me.TextBox4)
+        Me.Personal.Controls.Add(Me.txtNombreAyudante)
         Me.Personal.Controls.Add(Me.Button3)
         Me.Personal.Controls.Add(Me.Label7)
         Me.Personal.Controls.Add(Me.txtIdAnestecista)
-        Me.Personal.Controls.Add(Me.TextBox2)
+        Me.Personal.Controls.Add(Me.txtNombreAnestecista)
         Me.Personal.Controls.Add(Me.Button2)
         Me.Personal.Controls.Add(Me.Label5)
         Me.Personal.Controls.Add(Me.txtIdCirujano)
-        Me.Personal.Controls.Add(Me.txtCirujano)
+        Me.Personal.Controls.Add(Me.txtNombreCirujano)
         Me.Personal.Controls.Add(Me.Button1)
         Me.Personal.Controls.Add(Me.Label8)
         Me.Personal.Location = New System.Drawing.Point(4, 22)
         Me.Personal.Name = "Personal"
         Me.Personal.Padding = New System.Windows.Forms.Padding(3)
-        Me.Personal.Size = New System.Drawing.Size(442, 259)
+        Me.Personal.Size = New System.Drawing.Size(465, 259)
         Me.Personal.TabIndex = 1
         Me.Personal.Text = "Medicos"
         Me.Personal.UseVisualStyleBackColor = True
         '
-        'CboCodigoProducto
+        'CboTipoCirugia
         '
-        Me.CboCodigoProducto.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
-        Me.CboCodigoProducto.Caption = ""
-        Me.CboCodigoProducto.CaptionHeight = 17
-        Me.CboCodigoProducto.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
-        Me.CboCodigoProducto.ColumnCaptionHeight = 17
-        Me.CboCodigoProducto.ColumnFooterHeight = 17
-        Me.CboCodigoProducto.ContentHeight = 15
-        Me.CboCodigoProducto.DeadAreaBackColor = System.Drawing.Color.Empty
-        Me.CboCodigoProducto.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
-        Me.CboCodigoProducto.DropDownWidth = 500
-        Me.CboCodigoProducto.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CboCodigoProducto.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CboCodigoProducto.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CboCodigoProducto.EditorHeight = 15
-        Me.CboCodigoProducto.Images.Add(CType(resources.GetObject("CboCodigoProducto.Images"), System.Drawing.Image))
-        Me.CboCodigoProducto.ItemHeight = 15
-        Me.CboCodigoProducto.Location = New System.Drawing.Point(84, 13)
-        Me.CboCodigoProducto.MatchEntryTimeout = CType(2000, Long)
-        Me.CboCodigoProducto.MaxDropDownItems = CType(5, Short)
-        Me.CboCodigoProducto.MaxLength = 32767
-        Me.CboCodigoProducto.MouseCursor = System.Windows.Forms.Cursors.Default
-        Me.CboCodigoProducto.Name = "CboCodigoProducto"
-        Me.CboCodigoProducto.RowDivider.Color = System.Drawing.Color.DarkGray
-        Me.CboCodigoProducto.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
-        Me.CboCodigoProducto.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboCodigoProducto.Size = New System.Drawing.Size(158, 21)
-        Me.CboCodigoProducto.TabIndex = 360
-        Me.CboCodigoProducto.PropBag = resources.GetString("CboCodigoProducto.PropBag")
+        Me.CboTipoCirugia.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboTipoCirugia.Caption = ""
+        Me.CboTipoCirugia.CaptionHeight = 17
+        Me.CboTipoCirugia.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboTipoCirugia.ColumnCaptionHeight = 17
+        Me.CboTipoCirugia.ColumnFooterHeight = 17
+        Me.CboTipoCirugia.ContentHeight = 15
+        Me.CboTipoCirugia.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboTipoCirugia.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
+        Me.CboTipoCirugia.DropDownWidth = 500
+        Me.CboTipoCirugia.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboTipoCirugia.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboTipoCirugia.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboTipoCirugia.EditorHeight = 15
+        Me.CboTipoCirugia.Images.Add(CType(resources.GetObject("CboTipoCirugia.Images"), System.Drawing.Image))
+        Me.CboTipoCirugia.ItemHeight = 15
+        Me.CboTipoCirugia.Location = New System.Drawing.Point(84, 13)
+        Me.CboTipoCirugia.MatchEntryTimeout = CType(2000, Long)
+        Me.CboTipoCirugia.MaxDropDownItems = CType(5, Short)
+        Me.CboTipoCirugia.MaxLength = 32767
+        Me.CboTipoCirugia.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboTipoCirugia.Name = "CboTipoCirugia"
+        Me.CboTipoCirugia.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboTipoCirugia.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboTipoCirugia.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboTipoCirugia.Size = New System.Drawing.Size(158, 21)
+        Me.CboTipoCirugia.TabIndex = 360
+        Me.CboTipoCirugia.PropBag = resources.GetString("CboTipoCirugia.PropBag")
         '
         'Label10
         '
@@ -465,13 +476,13 @@ Partial Class FrmQuirofano
         Me.txtTecnico.Size = New System.Drawing.Size(77, 20)
         Me.txtTecnico.TabIndex = 358
         '
-        'TextBox6
+        'txtNombreTecnico
         '
-        Me.TextBox6.Enabled = False
-        Me.TextBox6.Location = New System.Drawing.Point(84, 126)
-        Me.TextBox6.Name = "TextBox6"
-        Me.TextBox6.Size = New System.Drawing.Size(213, 20)
-        Me.TextBox6.TabIndex = 357
+        Me.txtNombreTecnico.Enabled = False
+        Me.txtNombreTecnico.Location = New System.Drawing.Point(84, 126)
+        Me.txtNombreTecnico.Name = "txtNombreTecnico"
+        Me.txtNombreTecnico.Size = New System.Drawing.Size(213, 20)
+        Me.txtNombreTecnico.TabIndex = 357
         '
         'Button4
         '
@@ -498,13 +509,13 @@ Partial Class FrmQuirofano
         Me.txtIdDoctorAyudante.Size = New System.Drawing.Size(77, 20)
         Me.txtIdDoctorAyudante.TabIndex = 354
         '
-        'TextBox4
+        'txtNombreAyudante
         '
-        Me.TextBox4.Enabled = False
-        Me.TextBox4.Location = New System.Drawing.Point(84, 96)
-        Me.TextBox4.Name = "TextBox4"
-        Me.TextBox4.Size = New System.Drawing.Size(213, 20)
-        Me.TextBox4.TabIndex = 353
+        Me.txtNombreAyudante.Enabled = False
+        Me.txtNombreAyudante.Location = New System.Drawing.Point(84, 96)
+        Me.txtNombreAyudante.Name = "txtNombreAyudante"
+        Me.txtNombreAyudante.Size = New System.Drawing.Size(213, 20)
+        Me.txtNombreAyudante.TabIndex = 353
         '
         'Button3
         '
@@ -531,13 +542,13 @@ Partial Class FrmQuirofano
         Me.txtIdAnestecista.Size = New System.Drawing.Size(77, 20)
         Me.txtIdAnestecista.TabIndex = 350
         '
-        'TextBox2
+        'txtNombreAnestecista
         '
-        Me.TextBox2.Enabled = False
-        Me.TextBox2.Location = New System.Drawing.Point(84, 66)
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(213, 20)
-        Me.TextBox2.TabIndex = 349
+        Me.txtNombreAnestecista.Enabled = False
+        Me.txtNombreAnestecista.Location = New System.Drawing.Point(84, 66)
+        Me.txtNombreAnestecista.Name = "txtNombreAnestecista"
+        Me.txtNombreAnestecista.Size = New System.Drawing.Size(213, 20)
+        Me.txtNombreAnestecista.TabIndex = 349
         '
         'Button2
         '
@@ -564,18 +575,18 @@ Partial Class FrmQuirofano
         Me.txtIdCirujano.Size = New System.Drawing.Size(77, 20)
         Me.txtIdCirujano.TabIndex = 346
         '
-        'txtCirujano
+        'txtNombreCirujano
         '
-        Me.txtCirujano.Enabled = False
-        Me.txtCirujano.Location = New System.Drawing.Point(84, 40)
-        Me.txtCirujano.Name = "txtCirujano"
-        Me.txtCirujano.Size = New System.Drawing.Size(213, 20)
-        Me.txtCirujano.TabIndex = 345
+        Me.txtNombreCirujano.Enabled = False
+        Me.txtNombreCirujano.Location = New System.Drawing.Point(84, 40)
+        Me.txtNombreCirujano.Name = "txtNombreCirujano"
+        Me.txtNombreCirujano.Size = New System.Drawing.Size(213, 20)
+        Me.txtNombreCirujano.TabIndex = 345
         '
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(303, 37)
+        Me.Button1.Location = New System.Drawing.Point(303, 35)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(29, 30)
         Me.Button1.TabIndex = 344
@@ -593,13 +604,13 @@ Partial Class FrmQuirofano
         'TabPage1
         '
         Me.TabPage1.Controls.Add(Me.Label15)
-        Me.TabPage1.Controls.Add(Me.TxtSintomas)
+        Me.TabPage1.Controls.Add(Me.txtProntuario)
         Me.TabPage1.Controls.Add(Me.TxtDiagnostico)
         Me.TabPage1.Controls.Add(Me.Label13)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(442, 259)
+        Me.TabPage1.Size = New System.Drawing.Size(465, 259)
         Me.TabPage1.TabIndex = 2
         Me.TabPage1.Text = "Consulta"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -613,13 +624,13 @@ Partial Class FrmQuirofano
         Me.Label15.TabIndex = 251
         Me.Label15.Text = "Diagnostico"
         '
-        'TxtSintomas
+        'txtProntuario
         '
-        Me.TxtSintomas.Location = New System.Drawing.Point(6, 22)
-        Me.TxtSintomas.Multiline = True
-        Me.TxtSintomas.Name = "TxtSintomas"
-        Me.TxtSintomas.Size = New System.Drawing.Size(419, 78)
-        Me.TxtSintomas.TabIndex = 248
+        Me.txtProntuario.Location = New System.Drawing.Point(6, 22)
+        Me.txtProntuario.Multiline = True
+        Me.txtProntuario.Name = "txtProntuario"
+        Me.txtProntuario.Size = New System.Drawing.Size(419, 78)
+        Me.txtProntuario.TabIndex = 248
         '
         'TxtDiagnostico
         '
@@ -634,15 +645,82 @@ Partial Class FrmQuirofano
         Me.Label13.AutoSize = True
         Me.Label13.Location = New System.Drawing.Point(6, 6)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(50, 13)
+        Me.Label13.Size = New System.Drawing.Size(55, 13)
         Me.Label13.TabIndex = 249
-        Me.Label13.Text = "Sintomas"
+        Me.Label13.Text = "Prontuario"
+        '
+        'TabPage2
+        '
+        Me.TabPage2.Controls.Add(Me.TrueDBGridComponentes)
+        Me.TabPage2.Controls.Add(Me.Button5)
+        Me.TabPage2.Controls.Add(Me.Button6)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Size = New System.Drawing.Size(465, 259)
+        Me.TabPage2.TabIndex = 3
+        Me.TabPage2.Text = "Medicamentos"
+        Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'TrueDBGridComponentes
+        '
+        Me.TrueDBGridComponentes.AllowAddNew = True
+        Me.TrueDBGridComponentes.AlternatingRows = True
+        Me.TrueDBGridComponentes.Caption = "Listado de Productos"
+        Me.TrueDBGridComponentes.DirectionAfterEnter = C1.Win.C1TrueDBGrid.DirectionAfterEnterEnum.MoveNone
+        Me.TrueDBGridComponentes.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TrueDBGridComponentes.Images.Add(CType(resources.GetObject("TrueDBGridComponentes.Images"), System.Drawing.Image))
+        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(8, 6)
+        Me.TrueDBGridComponentes.Name = "TrueDBGridComponentes"
+        Me.TrueDBGridComponentes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75
+        Me.TrueDBGridComponentes.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridComponentes.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TrueDBGridComponentes.Size = New System.Drawing.Size(449, 167)
+        Me.TrueDBGridComponentes.TabIndex = 249
+        Me.TrueDBGridComponentes.Text = "C1TrueDBGrid1"
+        Me.TrueDBGridComponentes.PropBag = resources.GetString("TrueDBGridComponentes.PropBag")
+        '
+        'Button5
+        '
+        Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
+        Me.Button5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button5.Location = New System.Drawing.Point(380, 179)
+        Me.Button5.Name = "Button5"
+        Me.Button5.Size = New System.Drawing.Size(75, 34)
+        Me.Button5.TabIndex = 248
+        Me.Button5.Text = "Quitar"
+        Me.Button5.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button5.UseVisualStyleBackColor = True
+        '
+        'Button6
+        '
+        Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
+        Me.Button6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button6.Location = New System.Drawing.Point(299, 179)
+        Me.Button6.Name = "Button6"
+        Me.Button6.Size = New System.Drawing.Size(75, 34)
+        Me.Button6.TabIndex = 247
+        Me.Button6.Text = "Agregar"
+        Me.Button6.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button6.UseVisualStyleBackColor = True
+        '
+        'PictureBox3
+        '
+        Me.PictureBox3.Image = CType(resources.GetObject("PictureBox3.Image"), System.Drawing.Image)
+        Me.PictureBox3.Location = New System.Drawing.Point(826, 208)
+        Me.PictureBox3.Name = "PictureBox3"
+        Me.PictureBox3.Size = New System.Drawing.Size(164, 110)
+        Me.PictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox3.TabIndex = 254
+        Me.PictureBox3.TabStop = False
         '
         'FrmQuirofano
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1094, 376)
+        Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.CmdCerrar)
         Me.Controls.Add(Me.GroupBox1)
@@ -662,9 +740,13 @@ Partial Class FrmQuirofano
         Me.Generales.PerformLayout()
         Me.Personal.ResumeLayout(False)
         Me.Personal.PerformLayout()
-        CType(Me.CboCodigoProducto, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.CboTipoCirugia, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
+        Me.TabPage2.ResumeLayout(False)
+        CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.BindingDetalle, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -684,7 +766,7 @@ Partial Class FrmQuirofano
     Friend WithEvents LblHora As System.Windows.Forms.Label
     Friend WithEvents lbldatosre As System.Windows.Forms.Label
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents LblFecha2 As System.Windows.Forms.Label
     Friend WithEvents LblHora2 As System.Windows.Forms.Label
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
@@ -700,27 +782,33 @@ Partial Class FrmQuirofano
     Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
     Friend WithEvents Generales As System.Windows.Forms.TabPage
     Friend WithEvents Personal As System.Windows.Forms.TabPage
-    Friend WithEvents txtCirujano As System.Windows.Forms.TextBox
+    Friend WithEvents txtNombreCirujano As System.Windows.Forms.TextBox
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents txtIdCirujano As System.Windows.Forms.TextBox
     Friend WithEvents txtIdAnestecista As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
+    Friend WithEvents txtNombreAnestecista As System.Windows.Forms.TextBox
     Friend WithEvents Button2 As System.Windows.Forms.Button
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents txtTecnico As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox6 As System.Windows.Forms.TextBox
+    Friend WithEvents txtNombreTecnico As System.Windows.Forms.TextBox
     Friend WithEvents Button4 As System.Windows.Forms.Button
     Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents txtIdDoctorAyudante As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox4 As System.Windows.Forms.TextBox
+    Friend WithEvents txtNombreAyudante As System.Windows.Forms.TextBox
     Friend WithEvents Button3 As System.Windows.Forms.Button
     Friend WithEvents Label7 As System.Windows.Forms.Label
-    Friend WithEvents CboCodigoProducto As C1.Win.C1List.C1Combo
+    Friend WithEvents CboTipoCirugia As C1.Win.C1List.C1Combo
     Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
     Friend WithEvents Label15 As System.Windows.Forms.Label
-    Friend WithEvents TxtSintomas As System.Windows.Forms.TextBox
+    Friend WithEvents txtProntuario As System.Windows.Forms.TextBox
     Friend WithEvents TxtDiagnostico As System.Windows.Forms.TextBox
     Friend WithEvents Label13 As System.Windows.Forms.Label
+    Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
+    Friend WithEvents Button5 As System.Windows.Forms.Button
+    Friend WithEvents Button6 As System.Windows.Forms.Button
+    Friend WithEvents TrueDBGridComponentes As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents BindingDetalle As System.Windows.Forms.BindingSource
+    Friend WithEvents PictureBox3 As System.Windows.Forms.PictureBox
 End Class

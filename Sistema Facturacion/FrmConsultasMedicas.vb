@@ -104,8 +104,6 @@ Public Class FrmConsultasMedicas
 
 
     End Sub
-
-
     Public Sub InsertarRowGrid()
         Dim oTabla As DataTable, iPosicion As Double, idConsulta As String
 
@@ -138,6 +136,8 @@ Public Class FrmConsultasMedicas
 
 
     End Sub
+
+
     Public Sub ActualizarGridInsertRow(ByVal idConsulta As Double)
         Dim SqlCompras As String, TipoCompra As String
 
@@ -391,6 +391,18 @@ Public Class FrmConsultasMedicas
         End If
 
         'Imprimir_Receta()
+
+    End Sub
+
+    Private Sub TdGridExamenes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TdGridExamenes.Click
+
+    End Sub
+
+    Private Sub TrueDBGridComponentes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.Click
+
+    End Sub
+
+    Private Sub TxtCodigo_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtCodigo.TextChanged
 
     End Sub
 End Class
