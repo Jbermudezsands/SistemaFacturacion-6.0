@@ -42,7 +42,6 @@ Partial Class FrmHospitalizacion
         Me.BtnConsultar = New System.Windows.Forms.Button
         Me.Personal = New System.Windows.Forms.TabPage
         Me.CboTipoCirugia = New C1.Win.C1List.C1Combo
-        Me.Label10 = New System.Windows.Forms.Label
         Me.txtTecnico = New System.Windows.Forms.TextBox
         Me.txtNombreTecnico = New System.Windows.Forms.TextBox
         Me.Button4 = New System.Windows.Forms.Button
@@ -82,6 +81,7 @@ Partial Class FrmHospitalizacion
         Me.BindingDetalle = New System.Windows.Forms.BindingSource(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
+        Me.CmdGuardar = New System.Windows.Forms.Button
         Me.TabControl1.SuspendLayout()
         Me.Generales.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -286,7 +286,6 @@ Partial Class FrmHospitalizacion
         'Personal
         '
         Me.Personal.Controls.Add(Me.CboTipoCirugia)
-        Me.Personal.Controls.Add(Me.Label10)
         Me.Personal.Controls.Add(Me.txtTecnico)
         Me.Personal.Controls.Add(Me.txtNombreTecnico)
         Me.Personal.Controls.Add(Me.Button4)
@@ -339,17 +338,9 @@ Partial Class FrmHospitalizacion
         Me.CboTipoCirugia.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
         Me.CboTipoCirugia.RowSubDividerColor = System.Drawing.Color.DarkGray
         Me.CboTipoCirugia.Size = New System.Drawing.Size(158, 21)
-        Me.CboTipoCirugia.TabIndex = 360
+        Me.CboTipoCirugia.TabIndex = 362
+        Me.CboTipoCirugia.Visible = False
         Me.CboTipoCirugia.PropBag = resources.GetString("CboTipoCirugia.PropBag")
-        '
-        'Label10
-        '
-        Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(6, 16)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(63, 13)
-        Me.Label10.TabIndex = 359
-        Me.Label10.Text = "Tipo Cirugia"
         '
         'txtTecnico
         '
@@ -380,9 +371,9 @@ Partial Class FrmHospitalizacion
         Me.Label9.AutoSize = True
         Me.Label9.Location = New System.Drawing.Point(25, 128)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(46, 13)
+        Me.Label9.Size = New System.Drawing.Size(55, 13)
         Me.Label9.TabIndex = 355
-        Me.Label9.Text = "Tecnico"
+        Me.Label9.Text = "Enfermera"
         '
         'txtIdDoctorAyudante
         '
@@ -411,11 +402,11 @@ Partial Class FrmHospitalizacion
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(19, 99)
+        Me.Label7.Location = New System.Drawing.Point(23, 98)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(52, 13)
+        Me.Label7.Size = New System.Drawing.Size(55, 13)
         Me.Label7.TabIndex = 351
-        Me.Label7.Text = "Ayudante"
+        Me.Label7.Text = "Enfermera"
         '
         'txtIdAnestecista
         '
@@ -444,11 +435,11 @@ Partial Class FrmHospitalizacion
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(9, 73)
+        Me.Label5.Location = New System.Drawing.Point(23, 72)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(62, 13)
+        Me.Label5.Size = New System.Drawing.Size(55, 13)
         Me.Label5.TabIndex = 347
-        Me.Label5.Text = "Anestecista"
+        Me.Label5.Text = "Enfermera"
         '
         'txtIdCirujano
         '
@@ -477,11 +468,11 @@ Partial Class FrmHospitalizacion
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(26, 42)
+        Me.Label8.Location = New System.Drawing.Point(36, 42)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(45, 13)
+        Me.Label8.Size = New System.Drawing.Size(42, 13)
         Me.Label8.TabIndex = 343
-        Me.Label8.Text = "Cirujano"
+        Me.Label8.Text = "Doctor "
         '
         'TabPage1
         '
@@ -527,12 +518,13 @@ Partial Class FrmHospitalizacion
         Me.Label13.AutoSize = True
         Me.Label13.Location = New System.Drawing.Point(6, 6)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(55, 13)
+        Me.Label13.Size = New System.Drawing.Size(50, 13)
         Me.Label13.TabIndex = 249
-        Me.Label13.Text = "Prontuario"
+        Me.Label13.Text = "Sintomas"
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.CmdGuardar)
         Me.TabPage2.Controls.Add(Me.TrueDBGridComponentes)
         Me.TabPage2.Controls.Add(Me.Button5)
         Me.TabPage2.Controls.Add(Me.Button6)
@@ -715,6 +707,18 @@ Partial Class FrmHospitalizacion
         '
         Me.Timer2.Enabled = True
         '
+        'CmdGuardar
+        '
+        Me.CmdGuardar.Image = CType(resources.GetObject("CmdGuardar.Image"), System.Drawing.Image)
+        Me.CmdGuardar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.CmdGuardar.Location = New System.Drawing.Point(6, 179)
+        Me.CmdGuardar.Name = "CmdGuardar"
+        Me.CmdGuardar.Size = New System.Drawing.Size(82, 34)
+        Me.CmdGuardar.TabIndex = 363
+        Me.CmdGuardar.Text = "Facturar"
+        Me.CmdGuardar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.CmdGuardar.UseVisualStyleBackColor = True
+        '
         'FrmHospitalizacion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -770,8 +774,6 @@ Partial Class FrmHospitalizacion
     Friend WithEvents TxtApellidos As System.Windows.Forms.TextBox
     Friend WithEvents BtnConsultar As System.Windows.Forms.Button
     Friend WithEvents Personal As System.Windows.Forms.TabPage
-    Friend WithEvents CboTipoCirugia As C1.Win.C1List.C1Combo
-    Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents txtTecnico As System.Windows.Forms.TextBox
     Friend WithEvents txtNombreTecnico As System.Windows.Forms.TextBox
     Friend WithEvents Button4 As System.Windows.Forms.Button
@@ -811,4 +813,6 @@ Partial Class FrmHospitalizacion
     Friend WithEvents BindingDetalle As System.Windows.Forms.BindingSource
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
     Friend WithEvents Timer2 As System.Windows.Forms.Timer
+    Friend WithEvents CboTipoCirugia As C1.Win.C1List.C1Combo
+    Friend WithEvents CmdGuardar As System.Windows.Forms.Button
 End Class

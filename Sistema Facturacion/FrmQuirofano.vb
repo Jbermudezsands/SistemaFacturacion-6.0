@@ -88,7 +88,6 @@ Public Class FrmQuirofano
 
     End Function
 
-
     Public Sub Grabar_RegistroQuirofano(ByVal Numero_Expediente As String, ByVal Fecha_Inicio As Date, ByVal Fecha_Fin As Date, ByVal Activo As Boolean, ByVal IdDoctor As String, ByVal Diagnostico As String, ByVal Prontuario As String, ByVal idAnestecista As String, ByVal idAyudante As String, ByVal idTecnico As String, ByVal TipoCirugia As String)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQLstring As String
@@ -133,6 +132,7 @@ Public Class FrmQuirofano
         MsgBox("Registro Completo", MsgBoxStyle.Exclamation, "Zeus Facturacion")
 
     End Sub
+    
     Public Sub Limpiar_Expediente()
 
         Dim SQLstring As String
@@ -227,7 +227,7 @@ Public Class FrmQuirofano
                 '//////////////////////VALIDO EL USO DEL QUIROFANO /////////////////////////////
                 '////////////////////////////////////////////////////////////////////////////////
 
-                SQLstring = "SELECT  Quirofano.*  FROM Quirofano WHERE (Numero_Expediente = '" & Numero_Expediente & "') AND (Activo = 1)"
+                SQLstring = "SELECT  Quirofano.*  FROM Quirofano WHERE (Numero_Expediente = '" & Numero_Expediente & "') AND (Activo = 1) "
                 ds = BuscaConsulta(SQLstring, "PreConsulta").Copy
                 If ds.Tables("PreConsulta").Rows.Count <> 0 Then
                     Me.Timer1.Enabled = False
@@ -331,6 +331,7 @@ Public Class FrmQuirofano
     Private Sub FrmQuirofano_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.DTPFecha.Text = Format(Now, "dd/MM/yyyy")
         Me.LblFecha2.Text = Format(Now, "dd/MM/yyyy")
+        Me.CboTipoCirugia.Text = "Hospitalizacion"
 
         Cargar_Grid()
 

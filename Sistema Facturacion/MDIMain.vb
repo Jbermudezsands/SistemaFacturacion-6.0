@@ -1349,4 +1349,9 @@ Public Class MDIMain
         My.Forms.FrmProcesarRecLeche.MdiParent = Me
         My.Forms.FrmProcesarRecLeche.Show()
     End Sub
+
+    Private Sub RibbonHospitalizacion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonHospitalizacion.Click
+        My.Forms.FrmHospitalizacion.MdiParent = Me
+        My.Forms.FrmHospitalizacion.Show()
+    End Sub
 End Class

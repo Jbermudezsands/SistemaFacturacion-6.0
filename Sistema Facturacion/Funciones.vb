@@ -4,6 +4,8 @@ Imports System.IO
 Imports System.Drawing.Imaging
 
 Module Funciones
+    
+
     Public Sub Imprimir_Receta(ByVal Numero_Expediente As String, ByVal IdConsulta As Double)
         Dim SQL As New DataDynamics.ActiveReports.DataSources.SqlDBDataSource, SqlString As String
         Dim ArepRecetaMedica As New ArepRecetaMedica, Sqldatos As String, RutaLogo As String, ds As New DataSet

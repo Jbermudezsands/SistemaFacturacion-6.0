@@ -82,6 +82,7 @@ Partial Class FrmQuirofano
         Me.Button6 = New System.Windows.Forms.Button
         Me.BindingDetalle = New System.Windows.Forms.BindingSource(Me.components)
         Me.PictureBox3 = New System.Windows.Forms.PictureBox
+        Me.CmdGuardar = New System.Windows.Forms.Button
         CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox9.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -651,6 +652,7 @@ Partial Class FrmQuirofano
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.CmdGuardar)
         Me.TabPage2.Controls.Add(Me.TrueDBGridComponentes)
         Me.TabPage2.Controls.Add(Me.Button5)
         Me.TabPage2.Controls.Add(Me.Button6)
@@ -714,6 +716,18 @@ Partial Class FrmQuirofano
         Me.PictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox3.TabIndex = 254
         Me.PictureBox3.TabStop = False
+        '
+        'CmdGuardar
+        '
+        Me.CmdGuardar.Image = CType(resources.GetObject("CmdGuardar.Image"), System.Drawing.Image)
+        Me.CmdGuardar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.CmdGuardar.Location = New System.Drawing.Point(8, 179)
+        Me.CmdGuardar.Name = "CmdGuardar"
+        Me.CmdGuardar.Size = New System.Drawing.Size(82, 34)
+        Me.CmdGuardar.TabIndex = 362
+        Me.CmdGuardar.Text = "Facturar"
+        Me.CmdGuardar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.CmdGuardar.UseVisualStyleBackColor = True
         '
         'FrmQuirofano
         '
@@ -811,4 +825,5 @@ Partial Class FrmQuirofano
     Friend WithEvents TrueDBGridComponentes As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents BindingDetalle As System.Windows.Forms.BindingSource
     Friend WithEvents PictureBox3 As System.Windows.Forms.PictureBox
+    Friend WithEvents CmdGuardar As System.Windows.Forms.Button
 End Class
