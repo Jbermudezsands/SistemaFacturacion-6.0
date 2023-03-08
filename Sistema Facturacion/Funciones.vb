@@ -7622,14 +7622,17 @@ errSub:
         FrmCompras.TxtPagado.Text = Format(Monto, "##,##0.00")
         FrmCompras.TxtNetoPagar.Text = Format(Neto, "##,##0.00")
     End Sub
-    Public Sub GrabaDetalleNotaDebito(ByVal ConsecutivoNotaDebito As String, ByVal FechaNota As Date, ByVal TipoNota As String, ByVal Descripcion As String, ByVal NumeroFactura As String, ByVal Monto As Double, ByVal idDetalleNota As Double)
+
+    Public Sub AnularDetalleNotaDebito(ByVal ConsecutivoNotaDebito As String, ByVal FechaNota As Date, ByVal TipoNota As String, ByVal Descripcion As String, ByVal NumeroFactura As String, ByVal Monto As Double)
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Fecha As String
         Dim SqlString As String, MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
         Fecha = Format(FechaNota, "yyyy-MM-dd")
 
-        SqlString = "SELECT * FROM Detalle_Nota WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Nota = '" & TipoNota & "') AND (id_Detalle_Nota = '" & idDetalleNota & "')"
+        'SqlString = "SELECT Detalle_Nota.*, NotaDebito.Tipo FROM Detalle_Nota INNER JOIN  NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB WHERE (Detalle_Nota.Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Detalle_Nota.Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (NotaDebito.Tipo  LIKE '%" & TipoNota & "%')"
+        SqlString = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Monto,  NotaDebito.Tipo FROM  Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB  " & _
+                    "WHERE (Detalle_Nota.Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Detalle_Nota.Tipo_Nota = '" & TipoNota & "') AND (Detalle_Nota.Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102))"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "NotaDebito")
         If DataSet.Tables("NotaDebito").Rows.Count = 0 Then
@@ -7645,6 +7648,47 @@ errSub:
             MiConexion.Close()
 
         Else
+            '//////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
+            '/////////////////////////////////////////////////////////////////////////////////////////////////
+            SqlCompras = "UPDATE [Detalle_Nota]  SET [Tipo_Nota] = '" & TipoNota & "' ,[Descripcion] = '" & Descripcion & "',[Monto] =" & Monto & "  WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Nota = '" & TipoNota & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+        End If
+    End Sub
+
+
+    Public Sub GrabaDetalleNotaDebito(ByVal ConsecutivoNotaDebito As String, ByVal FechaNota As Date, ByVal TipoNota As String, ByVal Descripcion As String, ByVal NumeroFactura As String, ByVal Monto As Double)
+        Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Fecha As String
+        Dim SqlString As String, MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, idDetalleNota As Double
+
+        Fecha = Format(FechaNota, "yyyy-MM-dd")
+
+        'SqlString = "SELECT * FROM Detalle_Nota WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Nota = '" & TipoNota & "') AND (id_Detalle_Nota = '" & idDetalleNota & "')"
+        SqlString = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Monto,  NotaDebito.Tipo FROM  Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB  " & _
+                    "WHERE (Detalle_Nota.Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Detalle_Nota.Tipo_Nota = '" & TipoNota & "') AND (Detalle_Nota.Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102))"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "NotaDebito")
+        If DataSet.Tables("NotaDebito").Rows.Count = 0 Then
+
+
+
+            '//////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////////AGREGO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
+            '/////////////////////////////////////////////////////////////////////////////////////////////////
+            SqlCompras = "INSERT INTO [Detalle_Nota] ([Numero_Nota],[Fecha_Nota],[Tipo_Nota],[Descripcion],[Numero_Factura],[Monto]) " & _
+                         "VALUES ('" & ConsecutivoNotaDebito & "','" & Format(FechaNota, "dd/MM/yyyy") & "','" & TipoNota & "','" & Descripcion & "','" & NumeroFactura & "'," & Monto & ")"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+        Else
+
+            idDetalleNota = DataSet.Tables("NotaDebito").Rows(0)("id_Detalle_Nota")
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
@@ -14871,8 +14915,8 @@ errSub:
         FrmLiquidacion.ChkProrratearPeso.Checked = False
 
 
-        SqlDatos = "SELECT * FROM DatosEmpresa"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+        SQlDatos = "SELECT * FROM DatosEmpresa"
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlDatos, MiConexion)
         DataAdapter.Fill(DataSet, "DatosEmpresa")
         If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
             FacturaLotes = DataSet.Tables("DatosEmpresa").Rows(0)("Factura_Tarea")

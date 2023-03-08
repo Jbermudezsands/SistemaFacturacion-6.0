@@ -11,7 +11,8 @@
     <RootNamespace>Sistema_Facturacion</RootNamespace>
     <AssemblyName>Sistema Facturacion 6.0</AssemblyName>
     <MyType>WindowsForms</MyType>
-    <ApplicationIcon>Resources\billing1.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

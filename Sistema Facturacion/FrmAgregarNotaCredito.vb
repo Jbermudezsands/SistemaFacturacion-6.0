@@ -176,7 +176,7 @@ Public Class FrmAgregarNotaCredito
 
 
             InsertarDetalleNotaDebito(Numero_Nota, DataSet.Tables("Consulta").Rows(0)("Fecha_Nota"), DataSet.Tables("Consulta").Rows(0)("Tipo_Nota"), DataSet.Tables("Consulta").Rows(0)("Descripcion"), Me.LblNumeroFactura.Text, Monto)
-            GrabaDetalleNotaDebito(Numero_Nota, DataSet.Tables("Consulta").Rows(0)("Fecha_Nota"), DataSet.Tables("Consulta").Rows(0)("Tipo_Nota"), DataSet.Tables("Consulta").Rows(0)("Descripcion"), Me.LblNumeroFactura.Text, MontoAplicar, IdDetalleNota)
+            GrabaDetalleNotaDebito(Numero_Nota, DataSet.Tables("Consulta").Rows(0)("Fecha_Nota"), DataSet.Tables("Consulta").Rows(0)("Tipo_Nota"), DataSet.Tables("Consulta").Rows(0)("Descripcion"), Me.LblNumeroFactura.Text, MontoAplicar)
         End If
 
         Me.Close()

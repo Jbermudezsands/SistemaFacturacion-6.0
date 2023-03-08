@@ -460,7 +460,7 @@ Private Sub Form_Load()
 Dim Ruta As String
 
 FacturaSerie = False
-Me.Skin1.ApplySkin hWnd
+'Me.Skin1.ApplySkin hWnd
 
 Me.SmartButton1.BackColor = RGB(216, 228, 248)
 Me.SmartButton2.BackColor = RGB(216, 228, 248)
