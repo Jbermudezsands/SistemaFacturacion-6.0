@@ -11,8 +11,7 @@
     <RootNamespace>Sistema_Facturacion</RootNamespace>
     <AssemblyName>Sistema Facturacion 6.0</AssemblyName>
     <MyType>WindowsForms</MyType>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>Resources\billing1.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -265,6 +264,12 @@
       <DependentUpon>FrmEscolaridad.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmEscolaridad.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmExamen.Designer.vb">
+      <DependentUpon>FrmExamen.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmExamen.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmExamenes.Designer.vb">
@@ -1744,6 +1749,10 @@
     <EmbeddedResource Include="FrmEvacuaciones.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmEvacuaciones.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmExamen.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmExamen.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmExamenes.resx">
       <SubType>Designer</SubType>

@@ -4236,15 +4236,19 @@ Public Class FrmReportes
                             End If
                         End If
 
+
+
                         NumeroFactura = DataSet.Tables("Clientes").Rows(i)("Numero_Factura")
                         FechaFactura = DataSet.Tables("Clientes").Rows(i)("Fecha_Factura")
                         FechaVence = DataSet.Tables("Clientes").Rows(i)("Fecha_Vencimiento")
                         MontoFactura = Format((DataSet.Tables("Clientes").Rows(i)("SubTotal") + DataSet.Tables("Clientes").Rows(i)("IVA")) * TasaCambio, "##,##0.00")
                         Me.Text = "Procesando Cliente: " & CodigoCliente & " Factura No " & NumeroFactura
 
-                        If NumeroFactura = "M31917" Then
-                            NumeroFactura = "M31917"
+                        If NumeroFactura = "M41833" Then
+                            NumeroFactura = "M41833"
                         End If
+
+
 
                         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         '//////////////////////////////////////BUSCO SI EXISTEN RECIBOS PARA LA FACTURA //////////////////////////////////////////////////////
@@ -4434,7 +4438,7 @@ Public Class FrmReportes
                                 If DataSet.Tables("MetodoFactura").Rows(0)("Moneda") = "Dolares" Then
                                     TasaCambioRecibo = 1
                                 Else
-                                    TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                                    TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("MetodoFactura").Rows(0)("Fecha_Factura"))
                                     If TasaCambioRecibo <> 0 Then
                                         TasaCambioRecibo = 1 / TasaCambio
                                     End If
@@ -4468,6 +4472,16 @@ Public Class FrmReportes
                             End If
                         End If
 
+                        If NumeroFactura = "M41833" Then
+                            NumeroFactura = "M41833"
+                        End If
+
+                        '/////////////////////////////REDONDEO ////////////////////////////////////////
+                        MontoFactura = Format(MontoFactura, "##0.00")
+                        MontoRecibo = Format(MontoRecibo, "##0.00")
+                        TotalMontoNotaDB = Format(TotalMontoNotaDB, "##0.00")
+                        TotalMontoNotaCR = Format(TotalMontoNotaCR, "##0.00")
+                        MontoMetodoFactura = Format(MontoMetodoFactura, "##0.00")
 
                         Dias = DateDiff(DateInterval.Day, FechaVence, Me.DTPFechaFin.Value)
                         Saldo = MontoFactura - MontoRecibo + TotalMontoNotaDB - TotalMontoNotaCR - MontoMetodoFactura

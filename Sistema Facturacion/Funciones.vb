@@ -127,8 +127,8 @@ Module Funciones
 
                 For i = 0 To Cont - 1
                     My.Forms.FrmConsultasMedicas.TdGridExamenes.Item(i)("IdConsulta") = idConsultas
-                    IdTipoExamen = My.Forms.FrmConsultasMedicas.TdGridExamenes.Columns("IdTipoExamen").Text
-                    Descripcion = My.Forms.FrmConsultasMedicas.TdGridExamenes.Columns("Descripcion").Text
+                    IdTipoExamen = My.Forms.FrmConsultasMedicas.TdGridExamenes.Item(i)("IdTipoExamen").ToString
+                    Descripcion = My.Forms.FrmConsultasMedicas.TdGridExamenes.Item(i)("Descripcion").ToString
 
                     '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
                     StrSqlUpdate = "INSERT INTO [TipoExamen_Consulta]  ([IdConsulta],[IdTipoExamen],[Descripcion],[Facturado],[Activo],[Pagado]) VALUES (" & idConsultas & " ," & IdTipoExamen & " ,'" & Descripcion & "' ,0,1,0)"
@@ -4477,7 +4477,9 @@ errSub:
                 If MonedaSaldo = "Dolares" Then
                     TasaCambio = 1
                 Else
-                    TasaCambio = 1 / BuscaTasaCambio(FechaFactura)
+                    If BuscaTasaCambio(FechaFactura) <> 0 Then
+                        TasaCambio = 1 / BuscaTasaCambio(FechaFactura)
+                    End If
                 End If
             End If
 
@@ -4491,6 +4493,10 @@ errSub:
             '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
 
+            If TasaCambio = 0 Then
+                MsgBox("No Existe Tasa Cambio fecha:" & Format(CDate(Fecha), "dd/MM/yyyy"), MsgBoxStyle.Critical, "Zeus Facturacion")
+                Exit Sub
+            End If
 
             SQlUpdate = "UPDATE [Facturas] SET [MontoCredito] = " & Saldo * TasaCambio & " WHERE (Numero_Factura = '" & NumeroFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = 'Factura')"
             MiConexion.Open()
