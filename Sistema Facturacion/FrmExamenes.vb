@@ -33,7 +33,7 @@ Public Class FrmExamenes
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlCompras = "SELECT Expediente.Numero_Expediente, TipoExamen_Consulta.Descripcion, Expediente.Nombres + ' ' + Expediente.Apellidos AS Nombre_Paciente, Consultorio.Nombre_Consultorio, Doctores.Nombre_Doctor + ' ' + Doctores.Apellido_Doctor AS Nombre_Doctor, Consulta.Activo, TipoExamen_Consulta.Facturado, Consulta.IdConsulta FROM Consulta INNER JOIN  Doctores ON Consulta.IdDoctor_CodigoMinsa = Doctores.Codigo_Minsa INNER JOIN Consultorio ON Consulta.IdConsultorio = Consultorio.IdConsultorio INNER JOIN Expediente ON Consulta.Numero_Expediente = Expediente.Numero_Expediente INNER JOIN TipoExamen_Consulta ON Consulta.IdConsulta = TipoExamen_Consulta.IdConsulta  WHERE(Consulta.Activo = 1) AND (TipoExamen_Consulta.Facturado = 0)"
+        SqlCompras = "SELECT Expediente.Numero_Expediente, TipoExamen_Consulta.Descripcion, Expediente.Nombres + ' ' + Expediente.Apellidos AS Nombre_Paciente, Consultorio.Nombre_Consultorio, Doctores.Nombre_Doctor + ' ' + Doctores.Apellido_Doctor AS Nombre_Doctor, Consulta.Activo, TipoExamen_Consulta.Facturado, Consulta.IdConsulta, TipoExamen_Consulta.IdTipoExamen FROM Consulta INNER JOIN  Doctores ON Consulta.IdDoctor_CodigoMinsa = Doctores.Codigo_Minsa INNER JOIN Consultorio ON Consulta.IdConsultorio = Consultorio.IdConsultorio INNER JOIN Expediente ON Consulta.Numero_Expediente = Expediente.Numero_Expediente INNER JOIN TipoExamen_Consulta ON Consulta.IdConsulta = TipoExamen_Consulta.IdConsulta  WHERE(Consulta.Activo = 1) AND (TipoExamen_Consulta.Facturado = 0)"
         dsMedicamento = New DataSet
         daMedicamento = New SqlDataAdapter(SqlCompras, MiConexion)
         CmdBuilderMedicamento = New SqlCommandBuilder(daMedicamento)
@@ -208,5 +208,23 @@ Public Class FrmExamenes
         MsgBox("Se ha Procesado la Factura  No." & NumeroFactura, MsgBoxStyle.Information, "Zeus Facturacion")
 
 
+    End Sub
+
+    Private Sub CmdResultados_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdResultados.Click
+        Dim NumeroExpediente As String, Id_TipoExamen As Double, Descripcion As String
+
+        NumeroExpediente = Me.TDGridMedicamentos.Columns("Numero_Expediente").Text
+        Id_TipoExamen = Me.TDGridMedicamentos.Columns("IdTipoExamen").Text
+        Descripcion = Me.TDGridMedicamentos.Columns("Descripcion").Text
+
+        My.Forms.FrmExamen.Show()
+        My.Forms.FrmExamen.BloquearCampos(Descripcion)
+
+        'My.Forms.FrmConsultasMedicas.IdConsultorio = Me.Id_Consultorio
+        'My.Forms.FrmConsultasMedicas.IdDoctor = Me.Id_Doctor
+        'My.Forms.FrmConsultasMedicas.TxtCodigo.Text = NumeroExpediente
+        'My.Forms.FrmConsultasMedicas.TxtHoraAdmision.Text = Me.TrueDBGridConsultas.Columns("Fecha_Hora").Text
+        'My.Forms.FrmConsultasMedicas.Cargar_Expediente(NumeroExpediente)
+        'My.Forms.FrmConsultasMedicas.ShowDialog()
     End Sub
 End Class

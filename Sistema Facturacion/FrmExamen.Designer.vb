@@ -140,7 +140,7 @@ Partial Class FrmExamen
         Me.txtTromboplast = New System.Windows.Forms.TextBox
         Me.Label66 = New System.Windows.Forms.Label
         Me.Label45 = New System.Windows.Forms.Label
-        Me.txttxtColesterol_Total2 = New System.Windows.Forms.TextBox
+        Me.txtColesterol_Total2 = New System.Windows.Forms.TextBox
         Me.txtProtombina = New System.Windows.Forms.TextBox
         Me.txtBilirrubina = New System.Windows.Forms.TextBox
         Me.Label46 = New System.Windows.Forms.Label
@@ -273,6 +273,8 @@ Partial Class FrmExamen
         Me.Label120 = New System.Windows.Forms.Label
         Me.Label121 = New System.Windows.Forms.Label
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.CboTipoExamen = New C1.Win.C1List.C1Combo
+        Me.Label132 = New System.Windows.Forms.Label
         Me.BtnSalir = New System.Windows.Forms.Button
         Me.BtnGrabar = New System.Windows.Forms.Button
         Me.Label130 = New System.Windows.Forms.Label
@@ -284,8 +286,6 @@ Partial Class FrmExamen
         Me.txtNumero_Expediente = New System.Windows.Forms.TextBox
         Me.TxtNombres = New System.Windows.Forms.TextBox
         Me.Label2 = New System.Windows.Forms.Label
-        Me.Label132 = New System.Windows.Forms.Label
-        Me.CboTipoExamen = New C1.Win.C1List.C1Combo
         Me.TabControlHeces.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
@@ -1070,7 +1070,7 @@ Partial Class FrmExamen
         Me.TabPage2.Controls.Add(Me.txtTromboplast)
         Me.TabPage2.Controls.Add(Me.Label66)
         Me.TabPage2.Controls.Add(Me.Label45)
-        Me.TabPage2.Controls.Add(Me.txttxtColesterol_Total2)
+        Me.TabPage2.Controls.Add(Me.txtColesterol_Total2)
         Me.TabPage2.Controls.Add(Me.txtProtombina)
         Me.TabPage2.Controls.Add(Me.txtBilirrubina)
         Me.TabPage2.Controls.Add(Me.Label46)
@@ -1456,12 +1456,12 @@ Partial Class FrmExamen
         Me.Label45.TabIndex = 272
         Me.Label45.Text = "T.Tromboplast"
         '
-        'txttxtColesterol_Total2
+        'txtColesterol_Total2
         '
-        Me.txttxtColesterol_Total2.Location = New System.Drawing.Point(603, 94)
-        Me.txttxtColesterol_Total2.Name = "txttxtColesterol_Total2"
-        Me.txttxtColesterol_Total2.Size = New System.Drawing.Size(40, 20)
-        Me.txttxtColesterol_Total2.TabIndex = 299
+        Me.txtColesterol_Total2.Location = New System.Drawing.Point(603, 94)
+        Me.txtColesterol_Total2.Name = "txtColesterol_Total2"
+        Me.txtColesterol_Total2.Size = New System.Drawing.Size(40, 20)
+        Me.txtColesterol_Total2.TabIndex = 299
         '
         'txtProtombina
         '
@@ -2656,6 +2656,46 @@ Partial Class FrmExamen
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Datos Admision"
         '
+        'CboTipoExamen
+        '
+        Me.CboTipoExamen.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboTipoExamen.Caption = ""
+        Me.CboTipoExamen.CaptionHeight = 17
+        Me.CboTipoExamen.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboTipoExamen.ColumnCaptionHeight = 17
+        Me.CboTipoExamen.ColumnFooterHeight = 17
+        Me.CboTipoExamen.ContentHeight = 15
+        Me.CboTipoExamen.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboTipoExamen.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
+        Me.CboTipoExamen.DropDownWidth = 500
+        Me.CboTipoExamen.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboTipoExamen.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboTipoExamen.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboTipoExamen.EditorHeight = 15
+        Me.CboTipoExamen.Images.Add(CType(resources.GetObject("CboTipoExamen.Images"), System.Drawing.Image))
+        Me.CboTipoExamen.ItemHeight = 15
+        Me.CboTipoExamen.Location = New System.Drawing.Point(456, 52)
+        Me.CboTipoExamen.MatchEntryTimeout = CType(2000, Long)
+        Me.CboTipoExamen.MaxDropDownItems = CType(5, Short)
+        Me.CboTipoExamen.MaxLength = 32767
+        Me.CboTipoExamen.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboTipoExamen.Name = "CboTipoExamen"
+        Me.CboTipoExamen.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboTipoExamen.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboTipoExamen.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboTipoExamen.Size = New System.Drawing.Size(158, 21)
+        Me.CboTipoExamen.TabIndex = 246
+        Me.CboTipoExamen.PropBag = resources.GetString("CboTipoExamen.PropBag")
+        '
+        'Label132
+        '
+        Me.Label132.AutoSize = True
+        Me.Label132.Location = New System.Drawing.Point(384, 56)
+        Me.Label132.Name = "Label132"
+        Me.Label132.Size = New System.Drawing.Size(69, 13)
+        Me.Label132.TabIndex = 248
+        Me.Label132.Text = "Tipo Examen"
+        '
         'BtnSalir
         '
         Me.BtnSalir.Location = New System.Drawing.Point(646, 96)
@@ -2749,46 +2789,6 @@ Partial Class FrmExamen
         Me.Label2.Size = New System.Drawing.Size(52, 13)
         Me.Label2.TabIndex = 170
         Me.Label2.Text = "Nombres:"
-        '
-        'Label132
-        '
-        Me.Label132.AutoSize = True
-        Me.Label132.Location = New System.Drawing.Point(384, 56)
-        Me.Label132.Name = "Label132"
-        Me.Label132.Size = New System.Drawing.Size(69, 13)
-        Me.Label132.TabIndex = 248
-        Me.Label132.Text = "Tipo Examen"
-        '
-        'CboTipoExamen
-        '
-        Me.CboTipoExamen.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
-        Me.CboTipoExamen.Caption = ""
-        Me.CboTipoExamen.CaptionHeight = 17
-        Me.CboTipoExamen.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
-        Me.CboTipoExamen.ColumnCaptionHeight = 17
-        Me.CboTipoExamen.ColumnFooterHeight = 17
-        Me.CboTipoExamen.ContentHeight = 15
-        Me.CboTipoExamen.DeadAreaBackColor = System.Drawing.Color.Empty
-        Me.CboTipoExamen.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
-        Me.CboTipoExamen.DropDownWidth = 500
-        Me.CboTipoExamen.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CboTipoExamen.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CboTipoExamen.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CboTipoExamen.EditorHeight = 15
-        Me.CboTipoExamen.Images.Add(CType(resources.GetObject("CboTipoExamen.Images"), System.Drawing.Image))
-        Me.CboTipoExamen.ItemHeight = 15
-        Me.CboTipoExamen.Location = New System.Drawing.Point(456, 52)
-        Me.CboTipoExamen.MatchEntryTimeout = CType(2000, Long)
-        Me.CboTipoExamen.MaxDropDownItems = CType(5, Short)
-        Me.CboTipoExamen.MaxLength = 32767
-        Me.CboTipoExamen.MouseCursor = System.Windows.Forms.Cursors.Default
-        Me.CboTipoExamen.Name = "CboTipoExamen"
-        Me.CboTipoExamen.RowDivider.Color = System.Drawing.Color.DarkGray
-        Me.CboTipoExamen.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
-        Me.CboTipoExamen.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboTipoExamen.Size = New System.Drawing.Size(158, 21)
-        Me.CboTipoExamen.TabIndex = 246
-        Me.CboTipoExamen.PropBag = resources.GetString("CboTipoExamen.PropBag")
         '
         'FrmExamen
         '
@@ -2962,7 +2962,7 @@ Partial Class FrmExamen
     Friend WithEvents txtBilirrubinaDirecto As System.Windows.Forms.TextBox
     Friend WithEvents Label72 As System.Windows.Forms.Label
     Friend WithEvents Label66 As System.Windows.Forms.Label
-    Friend WithEvents txttxtColesterol_Total2 As System.Windows.Forms.TextBox
+    Friend WithEvents txtColesterol_Total2 As System.Windows.Forms.TextBox
     Friend WithEvents txtBilirrubina As System.Windows.Forms.TextBox
     Friend WithEvents Label71 As System.Windows.Forms.Label
     Friend WithEvents Label67 As System.Windows.Forms.Label

@@ -1,3 +1,6 @@
+Imports System.IO
+
+
 Public Class FrmConfigurar
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
@@ -184,7 +187,7 @@ Public Class FrmConfigurar
         End If
     End Sub
 
- 
+
 
     Private Sub CmdRutaCompartida_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdRutaCompartida.Click
         Dim RutaBD As String

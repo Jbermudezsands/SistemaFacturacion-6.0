@@ -608,6 +608,7 @@
     <Compile Include="FrmProyectos.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Modulos\Conversion.vb" />
     <Compile Include="Reportes\ArepAdmision.Designer.vb">
       <DependentUpon>ArepAdmision.vb</DependentUpon>
     </Compile>
@@ -2716,11 +2717,11 @@
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="ADODB">
-      <Guid>{EF53050B-882E-4776-B643-EDA472E8E3F2}</Guid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>7</VersionMinor>
+      <Guid>{B691E011-1797-432E-907A-4D8C69339129}</Guid>
+      <VersionMajor>6</VersionMajor>
+      <VersionMinor>1</VersionMinor>
       <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
+      <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
     </COMReference>
     <COMReference Include="Microsoft.Office.Core">
