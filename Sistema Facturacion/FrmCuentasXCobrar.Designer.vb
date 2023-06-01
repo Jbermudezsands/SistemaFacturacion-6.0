@@ -19,48 +19,49 @@ Partial Class FrmCuentasXCobrar
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmCuentasXCobrar))
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.LblNombres = New System.Windows.Forms.Label
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.OptDolares = New System.Windows.Forms.RadioButton
-        Me.OptCordobas = New System.Windows.Forms.RadioButton
-        Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.CboCodigoCliente = New C1.Win.C1List.C1Combo
-        Me.LblCodigo = New System.Windows.Forms.Label
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.CmdGrabar = New System.Windows.Forms.Button
-        Me.DTPFechaIni = New System.Windows.Forms.DateTimePicker
-        Me.TDGridImpuestos = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.LblNombres = New System.Windows.Forms.Label()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.OptDolares = New System.Windows.Forms.RadioButton()
+        Me.OptCordobas = New System.Windows.Forms.RadioButton()
+        Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.CboCodigoCliente = New C1.Win.C1List.C1Combo()
+        Me.LblCodigo = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.CmdGrabar = New System.Windows.Forms.Button()
+        Me.DTPFechaIni = New System.Windows.Forms.DateTimePicker()
+        Me.TDGridImpuestos = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
         Me.ContextMenuStripGrid = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.AsignarFacturaAlReciboToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.AnularNotasDeDebitoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.AnularNotasDeCreditoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.AjustarDiferencialCambiarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.AsignarFacturaALaNotaDeCreditoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.ProgressBar = New System.Windows.Forms.ProgressBar
-        Me.Button6 = New System.Windows.Forms.Button
-        Me.Button5 = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.Button3 = New System.Windows.Forms.Button
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox
-        Me.TxtNB = New System.Windows.Forms.TextBox
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.TxtMora = New System.Windows.Forms.TextBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.TxtSaldoFinal = New System.Windows.Forms.TextBox
-        Me.TxtAbonos = New System.Windows.Forms.TextBox
-        Me.TxtCargos = New System.Windows.Forms.TextBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.CmdAjustes = New System.Windows.Forms.Button
+        Me.AsignarFacturaAlReciboToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AnularNotasDeDebitoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AnularNotasDeCreditoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AjustarDiferencialCambiarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AsignarFacturaALaNotaDeCreditoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.ProgressBar = New System.Windows.Forms.ProgressBar()
+        Me.Button6 = New System.Windows.Forms.Button()
+        Me.Button5 = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.Button3 = New System.Windows.Forms.Button()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.TxtNB = New System.Windows.Forms.TextBox()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.TxtMora = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.TxtSaldoFinal = New System.Windows.Forms.TextBox()
+        Me.TxtAbonos = New System.Windows.Forms.TextBox()
+        Me.TxtCargos = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.CmdAjustes = New System.Windows.Forms.Button()
+        Me.Button4 = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         CType(Me.CboCodigoCliente, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -239,7 +240,7 @@ Partial Class FrmCuentasXCobrar
         Me.TDGridImpuestos.Name = "TDGridImpuestos"
         Me.TDGridImpuestos.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TDGridImpuestos.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TDGridImpuestos.PreviewInfo.ZoomFactor = 75
+        Me.TDGridImpuestos.PreviewInfo.ZoomFactor = 75.0R
         Me.TDGridImpuestos.PrintInfo.PageSettings = CType(resources.GetObject("TDGridImpuestos.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
         Me.TDGridImpuestos.Size = New System.Drawing.Size(902, 208)
         Me.TDGridImpuestos.TabIndex = 130
@@ -494,11 +495,25 @@ Partial Class FrmCuentasXCobrar
         Me.CmdAjustes.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.CmdAjustes.UseVisualStyleBackColor = True
         '
+        'Button4
+        '
+        Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
+        Me.Button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button4.Location = New System.Drawing.Point(838, 69)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(75, 34)
+        Me.Button4.TabIndex = 187
+        Me.Button4.Tag = "28"
+        Me.Button4.Text = "Ajustes Total"
+        Me.Button4.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button4.UseVisualStyleBackColor = True
+        '
         'FrmCuentasXCobrar
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(925, 452)
+        Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.CmdAjustes)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.Button3)
@@ -569,4 +584,5 @@ Partial Class FrmCuentasXCobrar
     Friend WithEvents AjustarDiferencialCambiarioToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents CmdAjustes As System.Windows.Forms.Button
     Friend WithEvents AsignarFacturaALaNotaDeCreditoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents Button4 As Button
 End Class

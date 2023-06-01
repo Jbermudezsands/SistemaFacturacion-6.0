@@ -20,25 +20,25 @@ Partial Class FrmAjustes
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmAjustes))
-        Me.CboCodigoCliente = New C1.Win.C1List.C1Combo
-        Me.LblCodigo = New System.Windows.Forms.Label
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.TxtNombre = New System.Windows.Forms.TextBox
-        Me.LblNombre = New System.Windows.Forms.Label
-        Me.DTPFechaIni = New System.Windows.Forms.DateTimePicker
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.TxtMonto = New System.Windows.Forms.NumericUpDown
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.OptDolares = New System.Windows.Forms.RadioButton
-        Me.OptCordobas = New System.Windows.Forms.RadioButton
-        Me.Button4 = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
-        Me.ChkSseries = New System.Windows.Forms.CheckBox
-        Me.CmbSerie = New C1.Win.C1List.C1Combo
+        Me.CboCodigoCliente = New C1.Win.C1List.C1Combo()
+        Me.LblCodigo = New System.Windows.Forms.Label()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.TxtNombre = New System.Windows.Forms.TextBox()
+        Me.LblNombre = New System.Windows.Forms.Label()
+        Me.DTPFechaIni = New System.Windows.Forms.DateTimePicker()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.TxtMonto = New System.Windows.Forms.NumericUpDown()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.OptDolares = New System.Windows.Forms.RadioButton()
+        Me.OptCordobas = New System.Windows.Forms.RadioButton()
+        Me.Button4 = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.ChkSseries = New System.Windows.Forms.CheckBox()
+        Me.CmbSerie = New C1.Win.C1List.C1Combo()
         CType(Me.CboCodigoCliente, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TxtMonto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()

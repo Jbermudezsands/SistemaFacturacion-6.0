@@ -2,22 +2,174 @@
 <doc>
 <assembly>
 <name>
-SistemaFacturacion6.0
+Sistema Facturacion 6.0
 </name>
 </assembly>
 <members>
+<member name="T:Sistema_Facturacion.My.Resources.Resources">
+<summary>
+  Clase de recurso fuertemente tipado, para buscar cadenas traducidas, etc.
+</summary>
+</member>
 <member name="P:Sistema_Facturacion.My.Resources.Resources.ResourceManager">
-	<summary>
+<summary>
   Devuelve la instancia de ResourceManager almacenada en caché utilizada por esta clase.
 </summary>
-</member><member name="P:Sistema_Facturacion.My.Resources.Resources.Culture">
-	<summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.Culture">
+<summary>
   Reemplaza la propiedad CurrentUICulture del subproceso actual para todas las
-  búsquedas de recursos mediante esta clase de recurso con establecimiento inflexible de tipos.
+  búsquedas de recursos mediante esta clase de recurso fuertemente tipado.
 </summary>
-</member><member name="T:Sistema_Facturacion.My.Resources.Resources">
-	<summary>
-  Clase de recurso con establecimiento inflexible de tipos, para buscar cadenas traducidas, etc.
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.Barra00">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.Barra1">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.Barra10">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.Barra2">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.Barra3">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.Barra4">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.Barra5">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.Barra6">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.Barra7">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.Barra8">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.Barra9">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.BarraN0">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.BarraN1">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.BarraN10">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.BarraN2">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.BarraN3">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.BarraN4">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.BarraN5">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.BarraN6">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.BarraN7">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.BarraN8">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.BarraN9">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.billing1">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Icon similar a (Icono).
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.billing11">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.light_green">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.light_red">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.light_yellow">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.NoDisponible">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.Pinned">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.Unpinned">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
 </summary>
 </member>
 </members>

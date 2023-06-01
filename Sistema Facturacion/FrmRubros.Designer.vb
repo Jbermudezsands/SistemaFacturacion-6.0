@@ -20,24 +20,24 @@ Partial Class FrmRubros
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmRubros))
-        Me.TabControl1 = New System.Windows.Forms.TabControl
-        Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.TextBox1 = New System.Windows.Forms.TextBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.CboCodigoCliente = New C1.Win.C1List.C1Combo
-        Me.TxtNombre = New System.Windows.Forms.TextBox
-        Me.LblNombre = New System.Windows.Forms.Label
-        Me.Button6 = New System.Windows.Forms.Button
-        Me.LblCodigo = New System.Windows.Forms.Label
-        Me.CmdGrabar = New System.Windows.Forms.Button
-        Me.ButtonBorrar = New System.Windows.Forms.Button
-        Me.CmdNuevo = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.LblTitulo = New System.Windows.Forms.Label
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.PictureBox3 = New System.Windows.Forms.PictureBox
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.CboCodigoCliente = New C1.Win.C1List.C1Combo()
+        Me.TxtNombre = New System.Windows.Forms.TextBox()
+        Me.LblNombre = New System.Windows.Forms.Label()
+        Me.Button6 = New System.Windows.Forms.Button()
+        Me.LblCodigo = New System.Windows.Forms.Label()
+        Me.CmdGrabar = New System.Windows.Forms.Button()
+        Me.ButtonBorrar = New System.Windows.Forms.Button()
+        Me.CmdNuevo = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.LblTitulo = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         CType(Me.CboCodigoCliente, System.ComponentModel.ISupportInitialize).BeginInit()
