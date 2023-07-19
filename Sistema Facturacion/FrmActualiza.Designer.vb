@@ -20,127 +20,132 @@ Partial Class FrmActualiza
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmActualiza))
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.PictureBox3 = New System.Windows.Forms.PictureBox
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.Button7 = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.TextBox1 = New System.Windows.Forms.TextBox
-        Me.Label11 = New System.Windows.Forms.Label
-        Me.TextBox2 = New System.Windows.Forms.TextBox
-        Me.Label12 = New System.Windows.Forms.Label
-        Me.Button9 = New System.Windows.Forms.Button
-        Me.Button10 = New System.Windows.Forms.Button
-        Me.TextBox3 = New System.Windows.Forms.TextBox
-        Me.Label15 = New System.Windows.Forms.Label
-        Me.TextBox4 = New System.Windows.Forms.TextBox
-        Me.Label16 = New System.Windows.Forms.Label
-        Me.TabPage5 = New System.Windows.Forms.TabPage
-        Me.CmdCostear = New System.Windows.Forms.Button
-        Me.ProgressBar4 = New System.Windows.Forms.ProgressBar
-        Me.GroupBox6 = New System.Windows.Forms.GroupBox
-        Me.Button13 = New System.Windows.Forms.Button
-        Me.Button14 = New System.Windows.Forms.Button
-        Me.TxtHastaCosto = New System.Windows.Forms.TextBox
-        Me.Label13 = New System.Windows.Forms.Label
-        Me.TxtDesdeCosto = New System.Windows.Forms.TextBox
-        Me.Label19 = New System.Windows.Forms.Label
-        Me.ProgressBar5 = New System.Windows.Forms.ProgressBar
-        Me.Label20 = New System.Windows.Forms.Label
-        Me.GroupBox7 = New System.Windows.Forms.GroupBox
-        Me.OptPromedio = New System.Windows.Forms.RadioButton
-        Me.ChkBodega = New System.Windows.Forms.CheckBox
-        Me.OptUltimoPrecio = New System.Windows.Forms.RadioButton
-        Me.Button15 = New System.Windows.Forms.Button
-        Me.TabPage3 = New System.Windows.Forms.TabPage
-        Me.LblProcesos = New System.Windows.Forms.Label
-        Me.ProgressBar3 = New System.Windows.Forms.ProgressBar
-        Me.GroupBox4 = New System.Windows.Forms.GroupBox
-        Me.Button11 = New System.Windows.Forms.Button
-        Me.Button12 = New System.Windows.Forms.Button
-        Me.TxtHastaInventario = New System.Windows.Forms.TextBox
-        Me.Label17 = New System.Windows.Forms.Label
-        Me.TxtDesdeInventario = New System.Windows.Forms.TextBox
-        Me.Label18 = New System.Windows.Forms.Label
-        Me.Button6 = New System.Windows.Forms.Button
-        Me.ProgressBar2 = New System.Windows.Forms.ProgressBar
-        Me.Label14 = New System.Windows.Forms.Label
-        Me.TabPage2 = New System.Windows.Forms.TabPage
-        Me.Button5 = New System.Windows.Forms.Button
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.TxtPorciento = New System.Windows.Forms.TextBox
-        Me.RadioButton3 = New System.Windows.Forms.RadioButton
-        Me.RadioButton2 = New System.Windows.Forms.RadioButton
-        Me.RadioButton1 = New System.Windows.Forms.RadioButton
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.Button3 = New System.Windows.Forms.Button
-        Me.Button4 = New System.Windows.Forms.Button
-        Me.TxtHastaProducto = New System.Windows.Forms.TextBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.TxtDesdeProducto = New System.Windows.Forms.TextBox
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.Label8 = New System.Windows.Forms.Label
-        Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.GroupBox5 = New System.Windows.Forms.GroupBox
-        Me.OptInventario = New System.Windows.Forms.RadioButton
-        Me.OptCuentasPagar = New System.Windows.Forms.RadioButton
-        Me.OptCuentasCobrar = New System.Windows.Forms.RadioButton
-        Me.CmdIniciar = New System.Windows.Forms.Button
-        Me.ProgressBar = New System.Windows.Forms.ProgressBar
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.TxtHasta = New System.Windows.Forms.TextBox
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.TxtDesde = New System.Windows.Forms.TextBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.TabControl1 = New System.Windows.Forms.TabControl
-        Me.TabPage4 = New System.Windows.Forms.TabPage
-        Me.ProgressBarFactura = New System.Windows.Forms.ProgressBar
-        Me.ProgressBar6 = New System.Windows.Forms.ProgressBar
-        Me.Button16 = New System.Windows.Forms.Button
-        Me.GroupBox8 = New System.Windows.Forms.GroupBox
-        Me.OptVerificarCompras = New System.Windows.Forms.RadioButton
-        Me.OptImporteFacturas = New System.Windows.Forms.RadioButton
-        Me.TabPage6 = New System.Windows.Forms.TabPage
-        Me.ChkEliminarOrigen = New System.Windows.Forms.CheckBox
-        Me.Button17 = New System.Windows.Forms.Button
-        Me.ProgressBar7 = New System.Windows.Forms.ProgressBar
-        Me.GroupBox9 = New System.Windows.Forms.GroupBox
-        Me.Button18 = New System.Windows.Forms.Button
-        Me.Button19 = New System.Windows.Forms.Button
-        Me.TxtCodigoFin = New System.Windows.Forms.TextBox
-        Me.Label21 = New System.Windows.Forms.Label
-        Me.TxtCodigoInicio = New System.Windows.Forms.TextBox
-        Me.Label22 = New System.Windows.Forms.Label
-        Me.ProgressBar8 = New System.Windows.Forms.ProgressBar
-        Me.TabPage7 = New System.Windows.Forms.TabPage
-        Me.Button20 = New System.Windows.Forms.Button
-        Me.TabPage8 = New System.Windows.Forms.TabPage
-        Me.BtnModificar = New System.Windows.Forms.Button
-        Me.Button21 = New System.Windows.Forms.Button
-        Me.BtnAnular = New System.Windows.Forms.Button
-        Me.BtnActivar = New System.Windows.Forms.Button
-        Me.BtnEliminar = New System.Windows.Forms.Button
-        Me.TxtNumero = New System.Windows.Forms.TextBox
-        Me.LblNumero = New System.Windows.Forms.Label
-        Me.GroupBox10 = New System.Windows.Forms.GroupBox
-        Me.OptClientes = New System.Windows.Forms.RadioButton
-        Me.OptCompras = New System.Windows.Forms.RadioButton
-        Me.OptPagos = New System.Windows.Forms.RadioButton
-        Me.OptTransformacion = New System.Windows.Forms.RadioButton
-        Me.OptRecibos = New System.Windows.Forms.RadioButton
-        Me.OptFacturas = New System.Windows.Forms.RadioButton
-        Me.TabPage9 = New System.Windows.Forms.TabPage
-        Me.Label23 = New System.Windows.Forms.Label
-        Me.CmdCerrar = New System.Windows.Forms.Button
-        Me.BtnIniciar = New System.Windows.Forms.Button
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.Button7 = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.TextBox2 = New System.Windows.Forms.TextBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.Button9 = New System.Windows.Forms.Button()
+        Me.Button10 = New System.Windows.Forms.Button()
+        Me.TextBox3 = New System.Windows.Forms.TextBox()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.TextBox4 = New System.Windows.Forms.TextBox()
+        Me.Label16 = New System.Windows.Forms.Label()
+        Me.TabPage5 = New System.Windows.Forms.TabPage()
+        Me.CmdCostear = New System.Windows.Forms.Button()
+        Me.ProgressBar4 = New System.Windows.Forms.ProgressBar()
+        Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.Button13 = New System.Windows.Forms.Button()
+        Me.Button14 = New System.Windows.Forms.Button()
+        Me.TxtHastaCosto = New System.Windows.Forms.TextBox()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.TxtDesdeCosto = New System.Windows.Forms.TextBox()
+        Me.Label19 = New System.Windows.Forms.Label()
+        Me.ProgressBar5 = New System.Windows.Forms.ProgressBar()
+        Me.Label20 = New System.Windows.Forms.Label()
+        Me.GroupBox7 = New System.Windows.Forms.GroupBox()
+        Me.OptPromedio = New System.Windows.Forms.RadioButton()
+        Me.ChkBodega = New System.Windows.Forms.CheckBox()
+        Me.OptUltimoPrecio = New System.Windows.Forms.RadioButton()
+        Me.Button15 = New System.Windows.Forms.Button()
+        Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.LblProcesos = New System.Windows.Forms.Label()
+        Me.ProgressBar3 = New System.Windows.Forms.ProgressBar()
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.Button11 = New System.Windows.Forms.Button()
+        Me.Button12 = New System.Windows.Forms.Button()
+        Me.TxtHastaInventario = New System.Windows.Forms.TextBox()
+        Me.Label17 = New System.Windows.Forms.Label()
+        Me.TxtDesdeInventario = New System.Windows.Forms.TextBox()
+        Me.Label18 = New System.Windows.Forms.Label()
+        Me.Button6 = New System.Windows.Forms.Button()
+        Me.ProgressBar2 = New System.Windows.Forms.ProgressBar()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Button5 = New System.Windows.Forms.Button()
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.TxtPorciento = New System.Windows.Forms.TextBox()
+        Me.RadioButton3 = New System.Windows.Forms.RadioButton()
+        Me.RadioButton2 = New System.Windows.Forms.RadioButton()
+        Me.RadioButton1 = New System.Windows.Forms.RadioButton()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.Button3 = New System.Windows.Forms.Button()
+        Me.Button4 = New System.Windows.Forms.Button()
+        Me.TxtHastaProducto = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.TxtDesdeProducto = New System.Windows.Forms.TextBox()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.OptInventario = New System.Windows.Forms.RadioButton()
+        Me.OptCuentasPagar = New System.Windows.Forms.RadioButton()
+        Me.OptCuentasCobrar = New System.Windows.Forms.RadioButton()
+        Me.CmdIniciar = New System.Windows.Forms.Button()
+        Me.ProgressBar = New System.Windows.Forms.ProgressBar()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.TxtHasta = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.TxtDesde = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.TabPage4 = New System.Windows.Forms.TabPage()
+        Me.ProgressBarFactura = New System.Windows.Forms.ProgressBar()
+        Me.ProgressBar6 = New System.Windows.Forms.ProgressBar()
+        Me.Button16 = New System.Windows.Forms.Button()
+        Me.GroupBox8 = New System.Windows.Forms.GroupBox()
+        Me.OptVerificarCompras = New System.Windows.Forms.RadioButton()
+        Me.OptImporteFacturas = New System.Windows.Forms.RadioButton()
+        Me.TabPage6 = New System.Windows.Forms.TabPage()
+        Me.ChkEliminarOrigen = New System.Windows.Forms.CheckBox()
+        Me.Button17 = New System.Windows.Forms.Button()
+        Me.ProgressBar7 = New System.Windows.Forms.ProgressBar()
+        Me.GroupBox9 = New System.Windows.Forms.GroupBox()
+        Me.Button18 = New System.Windows.Forms.Button()
+        Me.Button19 = New System.Windows.Forms.Button()
+        Me.TxtCodigoFin = New System.Windows.Forms.TextBox()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.TxtCodigoInicio = New System.Windows.Forms.TextBox()
+        Me.Label22 = New System.Windows.Forms.Label()
+        Me.ProgressBar8 = New System.Windows.Forms.ProgressBar()
+        Me.TabPage7 = New System.Windows.Forms.TabPage()
+        Me.Button20 = New System.Windows.Forms.Button()
+        Me.TabPage8 = New System.Windows.Forms.TabPage()
+        Me.BtnModificar = New System.Windows.Forms.Button()
+        Me.Button21 = New System.Windows.Forms.Button()
+        Me.BtnAnular = New System.Windows.Forms.Button()
+        Me.BtnActivar = New System.Windows.Forms.Button()
+        Me.BtnEliminar = New System.Windows.Forms.Button()
+        Me.TxtNumero = New System.Windows.Forms.TextBox()
+        Me.LblNumero = New System.Windows.Forms.Label()
+        Me.GroupBox10 = New System.Windows.Forms.GroupBox()
+        Me.OptClientes = New System.Windows.Forms.RadioButton()
+        Me.OptCompras = New System.Windows.Forms.RadioButton()
+        Me.OptPagos = New System.Windows.Forms.RadioButton()
+        Me.OptTransformacion = New System.Windows.Forms.RadioButton()
+        Me.OptRecibos = New System.Windows.Forms.RadioButton()
+        Me.OptFacturas = New System.Windows.Forms.RadioButton()
+        Me.TabPage9 = New System.Windows.Forms.TabPage()
+        Me.CmdCerrar = New System.Windows.Forms.Button()
+        Me.BtnIniciar = New System.Windows.Forms.Button()
+        Me.Label23 = New System.Windows.Forms.Label()
+        Me.Button22 = New System.Windows.Forms.Button()
+        Me.GroupBox11 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox12 = New System.Windows.Forms.GroupBox()
+        Me.OptDolares = New System.Windows.Forms.RadioButton()
+        Me.OptCordobas = New System.Windows.Forms.RadioButton()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -164,6 +169,8 @@ Partial Class FrmActualiza
         Me.TabPage8.SuspendLayout()
         Me.GroupBox10.SuspendLayout()
         Me.TabPage9.SuspendLayout()
+        Me.GroupBox11.SuspendLayout()
+        Me.GroupBox12.SuspendLayout()
         Me.SuspendLayout()
         '
         'PictureBox2
@@ -182,7 +189,7 @@ Partial Class FrmActualiza
         Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox1.Location = New System.Drawing.Point(0, -3)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(666, 60)
+        Me.PictureBox1.Size = New System.Drawing.Size(733, 60)
         Me.PictureBox1.TabIndex = 126
         Me.PictureBox1.TabStop = False
         '
@@ -203,7 +210,7 @@ Partial Class FrmActualiza
         Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label9.Location = New System.Drawing.Point(177, 19)
+        Me.Label9.Location = New System.Drawing.Point(283, 22)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(152, 13)
         Me.Label9.TabIndex = 129
@@ -318,7 +325,7 @@ Partial Class FrmActualiza
         Me.TabPage5.Controls.Add(Me.Label20)
         Me.TabPage5.Location = New System.Drawing.Point(4, 22)
         Me.TabPage5.Name = "TabPage5"
-        Me.TabPage5.Size = New System.Drawing.Size(591, 206)
+        Me.TabPage5.Size = New System.Drawing.Size(697, 206)
         Me.TabPage5.TabIndex = 4
         Me.TabPage5.Text = "Ajustar Costo"
         Me.TabPage5.UseVisualStyleBackColor = True
@@ -492,7 +499,7 @@ Partial Class FrmActualiza
         Me.TabPage3.Controls.Add(Me.Label14)
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
         Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Size = New System.Drawing.Size(510, 206)
+        Me.TabPage3.Size = New System.Drawing.Size(697, 206)
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Actualizar Inv"
         Me.TabPage3.UseVisualStyleBackColor = True
@@ -616,7 +623,7 @@ Partial Class FrmActualiza
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(510, 206)
+        Me.TabPage2.Size = New System.Drawing.Size(697, 206)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Ajustar Precio"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -798,7 +805,7 @@ Partial Class FrmActualiza
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(591, 206)
+        Me.TabPage1.Size = New System.Drawing.Size(607, 206)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Sincronizar"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -949,8 +956,8 @@ Partial Class FrmActualiza
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(459, 13)
         Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Esta Opcion Sincroniza las Cuentas del Sistema Contable y las Agrega a los client" & _
-            "es del Sistema"
+        Me.Label1.Text = "Esta Opcion Sincroniza las Cuentas del Sistema Contable y las Agrega a los client" &
+    "es del Sistema"
         '
         'TabControl1
         '
@@ -966,11 +973,12 @@ Partial Class FrmActualiza
         Me.TabControl1.Location = New System.Drawing.Point(12, 63)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(599, 232)
+        Me.TabControl1.Size = New System.Drawing.Size(615, 232)
         Me.TabControl1.TabIndex = 1
         '
         'TabPage4
         '
+        Me.TabPage4.Controls.Add(Me.GroupBox11)
         Me.TabPage4.Controls.Add(Me.ProgressBarFactura)
         Me.TabPage4.Controls.Add(Me.ProgressBar6)
         Me.TabPage4.Controls.Add(Me.Button16)
@@ -978,7 +986,7 @@ Partial Class FrmActualiza
         Me.TabPage4.Location = New System.Drawing.Point(4, 22)
         Me.TabPage4.Name = "TabPage4"
         Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage4.Size = New System.Drawing.Size(510, 206)
+        Me.TabPage4.Size = New System.Drawing.Size(697, 206)
         Me.TabPage4.TabIndex = 5
         Me.TabPage4.Text = "Calculos"
         Me.TabPage4.UseVisualStyleBackColor = True
@@ -1056,7 +1064,7 @@ Partial Class FrmActualiza
         Me.TabPage6.Location = New System.Drawing.Point(4, 22)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(510, 206)
+        Me.TabPage6.Size = New System.Drawing.Size(697, 206)
         Me.TabPage6.TabIndex = 6
         Me.TabPage6.Text = "Reemplazo"
         Me.TabPage6.UseVisualStyleBackColor = True
@@ -1170,7 +1178,7 @@ Partial Class FrmActualiza
         Me.TabPage7.Location = New System.Drawing.Point(4, 22)
         Me.TabPage7.Name = "TabPage7"
         Me.TabPage7.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage7.Size = New System.Drawing.Size(591, 206)
+        Me.TabPage7.Size = New System.Drawing.Size(697, 206)
         Me.TabPage7.TabIndex = 7
         Me.TabPage7.Text = "Cierre"
         Me.TabPage7.UseVisualStyleBackColor = True
@@ -1200,7 +1208,7 @@ Partial Class FrmActualiza
         Me.TabPage8.Location = New System.Drawing.Point(4, 22)
         Me.TabPage8.Name = "TabPage8"
         Me.TabPage8.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage8.Size = New System.Drawing.Size(591, 206)
+        Me.TabPage8.Size = New System.Drawing.Size(620, 206)
         Me.TabPage8.TabIndex = 8
         Me.TabPage8.Text = "Auditoria"
         Me.TabPage8.UseVisualStyleBackColor = True
@@ -1351,19 +1359,10 @@ Partial Class FrmActualiza
         Me.TabPage9.Location = New System.Drawing.Point(4, 22)
         Me.TabPage9.Name = "TabPage9"
         Me.TabPage9.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage9.Size = New System.Drawing.Size(591, 206)
+        Me.TabPage9.Size = New System.Drawing.Size(697, 206)
         Me.TabPage9.TabIndex = 9
         Me.TabPage9.Text = "Segundo Plano"
         Me.TabPage9.UseVisualStyleBackColor = True
-        '
-        'Label23
-        '
-        Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(26, 28)
-        Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(86, 13)
-        Me.Label23.TabIndex = 6
-        Me.Label23.Text = "Activar Hilos PBI"
         '
         'CmdCerrar
         '
@@ -1389,11 +1388,76 @@ Partial Class FrmActualiza
         Me.BtnIniciar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.BtnIniciar.UseVisualStyleBackColor = True
         '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Location = New System.Drawing.Point(26, 28)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(86, 13)
+        Me.Label23.TabIndex = 6
+        Me.Label23.Text = "Activar Hilos PBI"
+        '
+        'Button22
+        '
+        Me.Button22.Image = CType(resources.GetObject("Button22.Image"), System.Drawing.Image)
+        Me.Button22.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button22.Location = New System.Drawing.Point(9, 20)
+        Me.Button22.Name = "Button22"
+        Me.Button22.Size = New System.Drawing.Size(75, 34)
+        Me.Button22.TabIndex = 188
+        Me.Button22.Tag = "28"
+        Me.Button22.Text = "Ajustes Total"
+        Me.Button22.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button22.UseVisualStyleBackColor = True
+        '
+        'GroupBox11
+        '
+        Me.GroupBox11.Controls.Add(Me.GroupBox12)
+        Me.GroupBox11.Controls.Add(Me.Button22)
+        Me.GroupBox11.Location = New System.Drawing.Point(270, 6)
+        Me.GroupBox11.Name = "GroupBox11"
+        Me.GroupBox11.Size = New System.Drawing.Size(191, 107)
+        Me.GroupBox11.TabIndex = 189
+        Me.GroupBox11.TabStop = False
+        Me.GroupBox11.Text = "Cuentas x Cobrar"
+        '
+        'GroupBox12
+        '
+        Me.GroupBox12.Controls.Add(Me.OptDolares)
+        Me.GroupBox12.Controls.Add(Me.OptCordobas)
+        Me.GroupBox12.Location = New System.Drawing.Point(6, 60)
+        Me.GroupBox12.Name = "GroupBox12"
+        Me.GroupBox12.Size = New System.Drawing.Size(171, 32)
+        Me.GroupBox12.TabIndex = 202
+        Me.GroupBox12.TabStop = False
+        '
+        'OptDolares
+        '
+        Me.OptDolares.AutoSize = True
+        Me.OptDolares.Location = New System.Drawing.Point(95, 8)
+        Me.OptDolares.Name = "OptDolares"
+        Me.OptDolares.Size = New System.Drawing.Size(61, 17)
+        Me.OptDolares.TabIndex = 1
+        Me.OptDolares.Text = "Dolares"
+        Me.OptDolares.UseVisualStyleBackColor = True
+        '
+        'OptCordobas
+        '
+        Me.OptCordobas.AutoSize = True
+        Me.OptCordobas.Checked = True
+        Me.OptCordobas.Location = New System.Drawing.Point(15, 9)
+        Me.OptCordobas.Name = "OptCordobas"
+        Me.OptCordobas.Size = New System.Drawing.Size(70, 17)
+        Me.OptCordobas.TabIndex = 0
+        Me.OptCordobas.TabStop = True
+        Me.OptCordobas.Text = "Cordobas"
+        Me.OptCordobas.UseVisualStyleBackColor = True
+        '
         'FrmActualiza
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(616, 310)
+        Me.ClientSize = New System.Drawing.Size(632, 310)
         Me.Controls.Add(Me.GroupBox7)
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.Button15)
@@ -1444,6 +1508,9 @@ Partial Class FrmActualiza
         Me.GroupBox10.PerformLayout()
         Me.TabPage9.ResumeLayout(False)
         Me.TabPage9.PerformLayout()
+        Me.GroupBox11.ResumeLayout(False)
+        Me.GroupBox12.ResumeLayout(False)
+        Me.GroupBox12.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1569,4 +1636,9 @@ Partial Class FrmActualiza
     Friend WithEvents Label23 As System.Windows.Forms.Label
     Friend WithEvents CmdCerrar As System.Windows.Forms.Button
     Friend WithEvents BtnIniciar As System.Windows.Forms.Button
+    Friend WithEvents GroupBox11 As GroupBox
+    Friend WithEvents Button22 As Button
+    Friend WithEvents GroupBox12 As GroupBox
+    Friend WithEvents OptDolares As RadioButton
+    Friend WithEvents OptCordobas As RadioButton
 End Class

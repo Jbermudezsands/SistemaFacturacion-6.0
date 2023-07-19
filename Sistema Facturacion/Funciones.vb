@@ -6,6 +6,53 @@ Imports System.Math
 
 
 Module Funciones
+    Public Function Consecutivo_Examen() As String
+        Dim Dataset As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim Sqlstring As String
+
+        Sqlstring = "SELECT  id_Numero_Examen, IdTipoExamen FROM Examenes ORDER BY id_Numero_Examen DESC "
+        Dataset = FillConsultaSQL(Sqlstring, "Consulta")
+        If Not Dataset.Tables("Consulta").Rows.Count <> 0 Then
+
+        End If
+
+    End Function
+    Public Function dvConsultaSQL(SqlString As String, Orden As String) As DataView
+        Dim dv As DataView
+        Dim DatasetReporte As New DataSet
+
+        DatasetReporte = FillConsultaSQL(SqlString, "Consulta").Copy
+        dv = New DataView(DatasetReporte.Tables("Consulta"))
+        dv.Sort = Orden
+    End Function
+    Public Function dvCtasxCobrar(CodigoCliente As String, OptCordobas As Boolean, FechaFin As Date, Proceso As String, ExcluirCero As Boolean, Ordenar As String) As DataView
+        Dim dv As DataView, Filtro As String, MontoMayor As Double = 0
+        Dim DatasetReporte As New DataSet
+
+
+
+        DatasetReporte = FillDataSetCtaxCobrar(CodigoCliente, OptCordobas, FechaFin, Proceso).Copy()
+
+        If ExcluirCero = True Then
+            Filtro = "Fecha_Factura <= '" & Format(FechaFin, "yyyy-MM-dd") & "' AND Total > " & MontoMayor & " "
+        Else
+            Filtro = "Fecha_Factura <= '" & Format(FechaFin, "yyyy-MM-dd") & "'  "
+        End If
+
+
+        dv = New DataView(DatasetReporte.Tables("TotalVentas"))
+
+        Select Case Ordenar
+            Case "Cliente" : dv.Sort = "Cod_Cliente"
+        End Select
+
+        dv.RowFilter = Filtro
+
+        Return dv
+
+    End Function
+
+
     Public Function FillDataSetCtaxCobrar(CodigoCliente As String, OptCordobas As Boolean, FechaFin As Date, Proceso As String) As DataSet
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQlString As String, NumeroFactura As String, NumeroRecibo As String = "", MontoRecibo As Double
@@ -27,17 +74,48 @@ Module Funciones
         '*******************************************************************************************************************************
         DataSet.Reset()
         DatasetReporte.Reset()
-        SQlString = "SELECT Facturas.Fecha_Factura, Facturas.Numero_Factura, Facturas.MetodoPago As Numero_Recibo, Facturas.Numero_Factura As NotaDebito, Facturas.SubTotal As MontoNota, Facturas.SubTotal As Monto, Facturas.Fecha_Factura As FechaVence, Facturas.IVA As Abono, Facturas.SubTotal AS Saldo, Facturas.SubTotal As Moratorio, Facturas.SubTotal As Dias, Facturas.SubTotal AS Total  FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " &
+        SQlString = "SELECT Facturas.Fecha_Factura, Facturas.Numero_Factura, Facturas.MetodoPago As Numero_Recibo, Facturas.Numero_Factura As NotaDebito, Facturas.SubTotal As MontoNota, Facturas.SubTotal As Monto, Facturas.Fecha_Factura As FechaVence, Facturas.IVA As Abono, Facturas.SubTotal AS Saldo, Facturas.SubTotal As Moratorio, Facturas.SubTotal As Dias, Facturas.SubTotal AS Total, Facturas.Cod_Cliente, Facturas.Nombre_Cliente  FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " &
                     "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.MetodoPago = 'Credito') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '01/01/1900', 102) AND CONVERT(DATETIME, '01/01/1900', 102)) ORDER BY Facturas.Fecha_Factura, Facturas.Numero_Factura"
         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
         DataAdapter.Fill(DatasetReporte, "TotalVentas")
+
+        If Proceso = "ReporteCtasxCobrar" Then
+            If FrmReportes.CmbClientes.Text = "" And FrmReportes.CmbClientes2.Text = "" Then
+                If FrmReportes.CboCodDepartamentoIni.Text = "" And FrmReportes.CboCodDepartamentoFin.Text = "" Then
+                    If FrmReportes.CmbVendedores.Text = "" And FrmReportes.CmbVendedores2.Text = "" Then
+                        SQlString = "SELECT *  FROM Facturas WHERE (Tipo_Factura = 'Factura') AND (Nombre_Cliente <> N'******CANCELADO') AND (Fecha_Factura <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102))"
+                    Else
+                        SQlString = "SELECT *  FROM Facturas WHERE (Tipo_Factura = 'Factura') AND (Nombre_Cliente <> N'******CANCELADO') AND (Fecha_Factura <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Cod_Vendedor BETWEEN '" & FrmReportes.CmbVendedores.Text & "' AND '" & FrmReportes.CmbVendedores2.Text & "')"
+                    End If
+                Else
+                    If FrmReportes.CmbVendedores.Text = "" And FrmReportes.CmbVendedores2.Text = "" Then
+                        SQlString = "SELECT  Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.Tipo_Factura, Facturas.MonedaFactura, Facturas.Cod_Cliente, Facturas.Cod_Bodega, Facturas.Cod_Vendedor, Facturas.Cod_Cajero, Facturas.Nombre_Cliente, Facturas.Apellido_Cliente, Facturas.Direccion_Cliente, Facturas.Telefono_Cliente, Facturas.Fecha_Vencimiento, Facturas.Observaciones, Facturas.Fecha_Envio, Facturas.Via_Envarque, Facturas.Descuento, Facturas.Fecha_Descuento, Facturas.Su_Referencia, Facturas.Nuestra_Referencia, Facturas.SubTotal, Facturas.IVA, Facturas.Pagado, Facturas.NetoPagar, Facturas.MontoCredito, Facturas.Contabilizado, Facturas.Activo, Facturas.Cancelado, Facturas.MetodoPago, Facturas.Exonerado, Facturas.Descuentos, Facturas.Marca, Facturas.FechaPago, Facturas.TransferenciaProcesada, Facturas.MonedaImprime, Facturas.CodigoProyecto, Facturas.Retener1Porciento, Facturas.Retener2Porciento, Facturas.MontoRetencion1Porciento, Facturas.MontoRetencion2Porciento, Facturas.Referencia, Facturas.Propina, Facturas.CalculaPropina, Facturas.FechaHora, Facturas.TipoProductor, Facturas.AplicarCtasXCobrar, Clientes.Departamento  FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Nombre_Cliente <> N'******CANCELADO') AND (Facturas.Fecha_Factura <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Clientes.Municipio BETWEEN  '" & FrmReportes.CboCodDepartamentoIni.Text & "' AND '" & FrmReportes.CboCodDepartamentoFin.Text & "')"
+                    Else
+                        SQlString = "SELECT  Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.Tipo_Factura, Facturas.MonedaFactura, Facturas.Cod_Cliente, Facturas.Cod_Bodega, Facturas.Cod_Vendedor, Facturas.Cod_Cajero, Facturas.Nombre_Cliente, Facturas.Apellido_Cliente, Facturas.Direccion_Cliente, Facturas.Telefono_Cliente, Facturas.Fecha_Vencimiento, Facturas.Observaciones, Facturas.Fecha_Envio, Facturas.Via_Envarque, Facturas.Descuento, Facturas.Fecha_Descuento, Facturas.Su_Referencia, Facturas.Nuestra_Referencia, Facturas.SubTotal, Facturas.IVA, Facturas.Pagado, Facturas.NetoPagar, Facturas.MontoCredito, Facturas.Contabilizado, Facturas.Activo, Facturas.Cancelado, Facturas.MetodoPago, Facturas.Exonerado, Facturas.Descuentos, Facturas.Marca, Facturas.FechaPago, Facturas.TransferenciaProcesada, Facturas.MonedaImprime, Facturas.CodigoProyecto, Facturas.Retener1Porciento, Facturas.Retener2Porciento, Facturas.MontoRetencion1Porciento, Facturas.MontoRetencion2Porciento, Facturas.Referencia, Facturas.Propina, Facturas.CalculaPropina, Facturas.FechaHora, Facturas.TipoProductor, Facturas.AplicarCtasXCobrar, Clientes.Departamento  FROM  Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente WHERE  (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Nombre_Cliente <> N'******CANCELADO') AND (Facturas.Fecha_Factura <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Facturas.Cod_Vendedor BETWEEN '" & FrmReportes.CmbVendedores.Text & "' AND '" & FrmReportes.CmbVendedores2.Text & "') AND (Clientes.Municipio BETWEEN  '" & FrmReportes.CboCodDepartamentoIni.Text & "' AND '" & FrmReportes.CboCodDepartamentoFin.Text & "')"
+
+                    End If
+                End If
+            ElseIf FrmReportes.CboCodDepartamentoIni.Text = "" And FrmReportes.CboCodDepartamentoFin.Text = "" Then
+                SQlString = "SELECT *  FROM Facturas WHERE (Tipo_Factura = 'Factura') AND (Cod_Cliente BETWEEN '" & FrmReportes.CmbClientes.Text & "' AND '" & FrmReportes.CmbClientes2.Text & "') AND (Nombre_Cliente <> N'******CANCELADO') AND (Fecha_Factura <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102))"
+
+            Else
+
+                SQlString = "SELECT  Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.Tipo_Factura, Facturas.MonedaFactura, Facturas.Cod_Cliente, Facturas.Cod_Bodega, Facturas.Cod_Vendedor, Facturas.Cod_Cajero, Facturas.Nombre_Cliente, Facturas.Apellido_Cliente, Facturas.Direccion_Cliente, Facturas.Telefono_Cliente, Facturas.Fecha_Vencimiento, Facturas.Observaciones, Facturas.Fecha_Envio, Facturas.Via_Envarque, Facturas.Descuento, Facturas.Fecha_Descuento, Facturas.Su_Referencia, Facturas.Nuestra_Referencia, Facturas.SubTotal, Facturas.IVA, Facturas.Pagado, Facturas.NetoPagar, Facturas.MontoCredito, Facturas.Contabilizado, Facturas.Activo, Facturas.Cancelado, Facturas.MetodoPago, Facturas.Exonerado, Facturas.Descuentos, Facturas.Marca, Facturas.FechaPago, Facturas.TransferenciaProcesada, Facturas.MonedaImprime, Facturas.CodigoProyecto, Facturas.Retener1Porciento, Facturas.Retener2Porciento, Facturas.MontoRetencion1Porciento, Facturas.MontoRetencion2Porciento, Facturas.Referencia, Facturas.Propina, Facturas.CalculaPropina, Facturas.FechaHora, Facturas.TipoProductor, Facturas.AplicarCtasXCobrar, Clientes.Departamento FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " &
+                            "WHERE  (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Cod_Cliente BETWEEN '" & FrmReportes.CmbClientes.Text & "' AND '" & FrmReportes.CmbClientes2.Text & "') AND (Facturas.Nombre_Cliente <> N'******CANCELADO') AND (Facturas.Fecha_Factura <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) And (Clientes.Departamento BETWEEN '" & FrmReportes.CboCodDepartamentoIni.Text & "' AND '" & FrmReportes.CboCodDepartamentoFin.Text & "') "
+
+            End If
+
+        Else
+            SQlString = "SELECT *  FROM Facturas WHERE (Tipo_Factura = 'Factura') AND (Cod_Cliente = '" & CodigoCliente & "') AND (Nombre_Cliente <> N'******CANCELADO') AND (Fecha_Factura <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102))"
+        End If
+
+
 
 
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////AGREGO LA CONSULTA PARA TODAS LAS FACTURAS DE CREDITO //////////////////////////////////////////////////////
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        'SQlString = "SELECT *  FROM Facturas WHERE (MetodoPago = 'Credito') AND (Tipo_Factura = 'Factura') AND (Cod_Cliente = '" & CodigoCliente & "') AND (Nombre_Cliente <> N'******CANCELADO') AND (Fecha_Factura <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102))"
-        SQlString = "SELECT *  FROM Facturas WHERE (Tipo_Factura = 'Factura') AND (Cod_Cliente = '" & CodigoCliente & "') AND (Nombre_Cliente <> N'******CANCELADO') AND (Fecha_Factura <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102))"
+
         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
         DataAdapter.Fill(DataSet, "Clientes")
         Registros = DataSet.Tables("Clientes").Rows.Count
@@ -61,14 +139,24 @@ Module Funciones
                 FrmCuentasXCobrar.ProgressBar.Visible = True
                 FrmCuentasXCobrar.ProgressBar.Value = 0
                 FrmCuentasXCobrar.ProgressBar.Maximum = DataSet.Tables("Clientes").Rows.Count
+
+            Case "ReporteCtasxCobrar"
+                FrmReportes.ProgressBar.Minimum = 0
+                FrmReportes.ProgressBar.Visible = True
+                FrmReportes.ProgressBar.Value = 0
+                FrmReportes.ProgressBar.Maximum = DataSet.Tables("Clientes").Rows.Count
         End Select
 
+
+        NombreCliente = ""
 
 
 
         Do While Registros > i
             NumeroRecibo = ""
             MontoRecibo = 0
+            NombreCliente = DataSet.Tables("Clientes").Rows(i)("Nombre_Cliente")
+            CodigoCliente = DataSet.Tables("Clientes").Rows(i)("Cod_Cliente")
 
             My.Application.DoEvents()
 
@@ -91,8 +179,8 @@ Module Funciones
             FechaFactura = DataSet.Tables("Clientes").Rows(i)("Fecha_Factura")
             FechaVence = DataSet.Tables("Clientes").Rows(i)("Fecha_Vencimiento")
 
-            If NumeroFactura = "J10516" Then
-                NumeroFactura = "J10516"
+            If NumeroFactura = "M02925" Then
+                NumeroFactura = "M02925"
             End If
 
             Select Case Proceso
@@ -100,7 +188,8 @@ Module Funciones
                     FrmAjustarTodos.Text = "Procesando Cliente: " & CodigoCliente & " Factura " & NumeroFactura & " Fecha: " & FechaFactura
                 Case "CtasxCobrar"
                     FrmCuentasXCobrar.Text = "Procesando Cliente: " & CodigoCliente & "      Factura: " & NumeroFactura & "      Fecha: " & FechaFactura
-
+                Case "ReporteCtasxCobrar"
+                    FrmReportes.Text = "Procesando Cliente: " & CodigoCliente & "      Factura: " & NumeroFactura & "      Fecha: " & FechaFactura
             End Select
 
 
@@ -369,6 +458,9 @@ Module Funciones
             TotalMontoNotaCR = Format(TotalMontoNotaCR, "####0.00")
             MontoMetodoFactura = Format(MontoMetodoFactura, "####0.00")
 
+            If NumeroFactura = "M02925" Then
+                NumeroFactura = "M02925"
+            End If
 
             Dias = DateDiff(DateInterval.Day, FechaVence, FechaFin)
             Saldo = MontoFactura - MontoRecibo + MontoNota - MontoNotaCR - MontoMetodoFactura
@@ -401,6 +493,8 @@ Module Funciones
             oDataRow("Moratorio") = Format(MontoMora, "##,##0.00")
             oDataRow("Dias") = Dias
             oDataRow("Total") = Format(Total, "##,##0.00")
+            oDataRow("Cod_Cliente") = DataSet.Tables("Clientes").Rows(i)("Cod_Cliente")
+            oDataRow("Nombre_Cliente") = DataSet.Tables("Clientes").Rows(i)("Nombre_Cliente")
             DatasetReporte.Tables("TotalVentas").Rows.Add(oDataRow)
 
             If OptCordobas = True Then
@@ -419,6 +513,8 @@ Module Funciones
                     FrmAjustarTodos.ProgressBar.Value = FrmAjustarTodos.ProgressBar.Value + 1
                 Case "CtasxCobrar"
                     FrmCuentasXCobrar.ProgressBar.Value = FrmCuentasXCobrar.ProgressBar.Value + 1
+                Case "ReporteCtasxCobrar"
+                    FrmReportes.ProgressBar.Value = FrmReportes.ProgressBar.Value + 1
 
             End Select
             'Me.ProgressBar.Value = i
@@ -522,6 +618,8 @@ Module Funciones
             oDataRow("Moratorio") = "0"
             oDataRow("Dias") = Dias
             oDataRow("Total") = Format(MontoNota - Abono, "##,##0.00")
+            oDataRow("Cod_Cliente") = CodigoCliente
+            oDataRow("Nombre_Cliente") = NombreCliente
             DatasetReporte.Tables("TotalVentas").Rows.Add(oDataRow)
 
 
@@ -599,6 +697,8 @@ Module Funciones
             oDataRow("Moratorio") = "0"
             oDataRow("Dias") = Dias
             oDataRow("Total") = Format(-1 * MontoNotaCR, "##,##0.00")
+            oDataRow("Cod_Cliente") = CodigoCliente
+            oDataRow("Nombre_Cliente") = NombreCliente
             DatasetReporte.Tables("TotalVentas").Rows.Add(oDataRow)
 
             TotalFactura = TotalFactura - MontoNotaCR
@@ -657,6 +757,8 @@ Module Funciones
             oDataRow("Moratorio") = "0"
             oDataRow("Dias") = Dias
             oDataRow("Total") = Format(-1 * MontoRecibo, "##,##0.00")
+            oDataRow("Cod_Cliente") = CodigoCliente
+            oDataRow("Nombre_Cliente") = NombreCliente
             DatasetReporte.Tables("TotalVentas").Rows.Add(oDataRow)
 
             TotalAbonos = TotalAbonos + MontoRecibo
@@ -1359,6 +1461,17 @@ Module Funciones
         End Try
 
     End Sub
+    Public Function FillConsultaSQL(SQlString As String, Nombre As String) As DataSet
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim Dataset As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+
+
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapter.Fill(Dataset, Nombre)
+
+        Return Dataset
+
+    End Function
 
 
     Public Sub EjecutarConsulta(ByVal SqlString As String)
@@ -1812,20 +1925,6 @@ errSub:
     End Sub
 
 
-    Public Function bytesToString(ByVal arreglo As Byte()) As String
-        Dim salida As String = ""
-        Dim x As Integer = 0
-        'MsgBox("Tamaño del arreglo: " + arreglo.Length.ToString)
-        Try
-            For x = 0 To arreglo.Length - 1
-                salida += arreglo(x).ToString + ","
-            Next
-        Catch ex As Exception
-            MsgBox("No lo convertio a String por: " + ex.ToString)
-        End Try
-
-        Return salida
-    End Function
 
     Public Function cargarImagen(ByVal RutaImagen As String) As String
         Try
@@ -1850,40 +1949,7 @@ errSub:
 
         Return RutaImagen
     End Function
-    Public Function Imagen_A_Bytes(ByVal ruta As String) As Byte()
-        Dim foto As New FileStream(ruta, FileMode.OpenOrCreate, FileAccess.ReadWrite)
-        Dim arreglo(0 To foto.Length - 1) As Byte
-        Dim reader As New BinaryReader(foto)
-        arreglo = reader.ReadBytes(Convert.ToInt32(foto.Length))
-        Return arreglo
-    End Function
 
-
-    Public Function ImagenToBytes(ByVal Imagen As Image) As Byte()
-        'si hay imagen
-        Dim arreglo As Byte() = Nothing
-        Dim foto As New FileStream(FrmConfigurar.TxtRutaLogo.Text, FileMode.OpenOrCreate, FileAccess.ReadWrite)
-        Dim eps As EncoderParameters = New EncoderParameters(1)
-        eps.Param(0) = New EncoderParameter(Encoder.Quality, 50)
-        Dim ici As ImageCodecInfo = GetEncoderInfo("image/jpeg")
-
-        Try
-            If Not Imagen Is Nothing Then
-                'variable de datos binarios en stream(flujo)
-                Dim Bin As New MemoryStream
-                'convertir a bytes
-                'Imagen.Save(Bin, Imaging.ImageFormat.Jpeg)
-                Imagen.Save(Bin, ici, eps)
-                'retorna binario
-                arreglo = Bin.GetBuffer
-            Else
-                Return Nothing
-            End If
-        Catch ex As Exception
-            MsgBox("No convirtio a bytes por: " + ex.ToString)
-        End Try
-        Return arreglo
-    End Function
     Public Function GetEncoderInfo(ByVal mimeType As String) As ImageCodecInfo
         Dim j As Integer
         Dim encoders As ImageCodecInfo()
@@ -1897,62 +1963,7 @@ errSub:
     End Function
 
 
-    Public Function BytesToImagen(ByVal Imagen As Byte()) As Image
-        Try
-            'si hay imagen
-            If Not Imagen Is Nothing Then
-                'caturar array con memorystream hacia Bin
-                Dim Bin As New MemoryStream(Imagen)
-                'con el método FroStream de Image obtenemos imagen
-                Dim Resultado As Image = Image.FromStream(Bin)
-                'y la retornamos
-                Return Resultado
-            Else
-                Return Nothing
-            End If
-        Catch ex As Exception
-            Return Nothing
-        End Try
 
-    End Function
-
-    Function consultaByte(ByVal CharLogo As String) As Byte()
-
-        Dim resultado As String = ""
-        Dim x As Integer = 0
-        Dim arreglo As Byte() = Nothing
-        Dim arregloTexto()
-
-
-        Try
-            'enunciado = New SqlCommand("select foto from Imagenes where Id_Foto='" & identificacion & "'", conexiones)
-            'respuesta = enunciado.ExecuteReader()
-
-            'While respuesta.Read
-            '    resultado = respuesta.Item("foto")
-            'End While
-
-            'Llena un arreglo de Texto con los datos de la consulta separados por coma"'
-            arregloTexto = CharLogo.Split(",")
-
-            'Redimenciona el tamaño del arreglo de bytes'
-            ReDim arreglo(arregloTexto.Length - 1)
-
-            'Recorre el arreglo para llenar el arreglo de Bytes con el arreglo de la consulta'
-
-            For x = 0 To arregloTexto.Length - 1
-                If arregloTexto(x).Equals("") = False Then
-                    arreglo(x) = arregloTexto(x)
-                End If
-            Next
-
-
-        Catch ex As Exception
-
-        End Try
-
-        Return arreglo
-    End Function
 
     'Public Function ConsecutivoTranformacion() As String
     '    Dim MiConexion As New SqlClient.SqlConnection(Conexion)

@@ -63,7 +63,12 @@
         DataAdapter.Fill(DataSet, "Clientes")
         If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
             Me.CboCodigoDesde.DataSource = DataSet.Tables("Clientes")
-            Me.CboCodigoHasta.DataSource = DataSet.Tables("Clientes")
+        End If
+
+        DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
+        DataAdapter.Fill(DataSet, "Clientes2")
+        If Not DataSet.Tables("Clientes2").Rows.Count = 0 Then
+            Me.CboCodigoHasta.DataSource = DataSet.Tables("Clientes2")
         End If
     End Sub
 End Class

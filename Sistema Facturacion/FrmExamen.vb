@@ -1,6 +1,7 @@
 Public Class FrmExamen
     Public TipoExamen As String
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
+    Public Numero_Expediente As String, id_Expediente As Double
 
     Public Sub Cargar_Combo()
         Dim DataSet As New DataSet, DataAdapterProductos As New SqlClient.SqlDataAdapter, SqlProductos As String
@@ -16,7 +17,7 @@ Public Class FrmExamen
         'Me.CboTipoExamen.Splits.Item(0).DisplayColumns(1).Width = 350
     End Sub
 
-    Public Sub Cargar_Examen(ByVal TipoExamen As String, ByVal Numero_Expediente As String, ByVal Id_Numero_Examen As Double, ByVal Fecha As Date)
+    Public Sub Cargar_Examen(ByVal Numero_Expediente As String, ByVal Id_Numero_Examen As Double, ByVal Fecha As Date)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim TotalCosto As Double, TotalFob As Double, TasaCambio As Double, Id_Tipo_Examen As Double
@@ -44,7 +45,7 @@ Public Class FrmExamen
 
 
         'SqlCompras = "SELECT Examenes.* FROM(Examenes) WHERE (id_Numero_Examen = " & Id_Numero_Examen & ") AND (IdTipoExamen = " & Id_Tipo_Examen & ") AND (Numero_Expediente = '" & Numero_Expediente & "')"
-        SqlCompras = "SELECT    * FROM Examenes INNER JOIN Expediente ON Examenes.Numero_Expediente = Expediente.Numero_Expediente INNER JOIN TipoExamen ON Examenes.IdTipoExamen = TipoExamen.IdTipoExamen  " & _
+        SqlCompras = "SELECT    * FROM Examenes INNER JOIN Expediente ON Examenes.Numero_Expediente = Expediente.Numero_Expediente INNER JOIN TipoExamen ON Examenes.IdTipoExamen = TipoExamen.IdTipoExamen  " &
                      "WHERE (Examenes.IdTipoExamen = " & Id_Numero_Examen & ") AND (Examenes.Numero_Expediente = '" & Numero_Expediente & "') AND (Examenes.Fecha_Examen = CONVERT(DATETIME, '" & Format(Fecha, "yyyy-MM-dd") & "', 102))"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
         DataAdapter.Fill(DataSet, "Examen")
@@ -57,6 +58,7 @@ Public Class FrmExamen
                     Me.txtColesterol_HDL.Text = DataSet.Tables("Examen").Rows(0)("Colesterol_HDL")
                     Me.txtColesterol_LDL.Text = DataSet.Tables("Examen").Rows(0)("Colesterol_LDL")
                     Me.txtRiesgo_Coronario.Text = DataSet.Tables("Examen").Rows(0)("Riesgo_Coronario")
+
 
                 Case "Extamen Heces"
                     Me.TxtConsitencia.Text = DataSet.Tables("Examen").Rows(0)("Consistencia")
@@ -386,6 +388,7 @@ Public Class FrmExamen
                 ActivarOrina = False
                 ActivarElectrolitos = False
                 ActivarPerfilRenal = False
+                Me.TabControlHeces.SelectedTab = TabPage2
 
             Case "Extamen Heces"
                 ActivoPerfil = False
@@ -396,6 +399,7 @@ Public Class FrmExamen
                 ActivarOrina = False
                 ActivarElectrolitos = False
                 ActivarPerfilRenal = False
+                Me.TabControlHeces.SelectedTab = TabPage1
 
             Case "Examen Biometria Hematica"
                 ActivoPerfil = False
@@ -406,6 +410,7 @@ Public Class FrmExamen
                 ActivarOrina = False
                 ActivarElectrolitos = False
                 ActivarPerfilRenal = False
+                Me.TabControlHeces.SelectedTab = TabPage2
 
             Case "Examen Hemoglobina"
                 ActivoPerfil = False
@@ -416,6 +421,7 @@ Public Class FrmExamen
                 ActivarOrina = False
                 ActivarElectrolitos = False
                 ActivarPerfilRenal = False
+                Me.TabControlHeces.SelectedTab = TabPage2
 
             Case "Examen Quimica Sanguinea"
                 ActivoPerfil = False
@@ -426,6 +432,7 @@ Public Class FrmExamen
                 ActivarOrina = False
                 ActivarElectrolitos = False
                 ActivarPerfilRenal = False
+                Me.TabControlHeces.SelectedTab = TabPage2
 
             Case "Examen Orina"
                 ActivoPerfil = False
@@ -436,6 +443,7 @@ Public Class FrmExamen
                 ActivarOrina = True
                 ActivarElectrolitos = False
                 ActivarPerfilRenal = False
+                Me.TabControlHeces.SelectedTab = TabPage3
 
             Case "Examen Electrolitos Sericos"
                 ActivoPerfil = False
@@ -446,6 +454,7 @@ Public Class FrmExamen
                 ActivarOrina = False
                 ActivarElectrolitos = True
                 ActivarPerfilRenal = False
+                Me.TabControlHeces.SelectedTab = TabPage4
 
             Case "Examen Perfil Renal"
                 ActivoPerfil = False
@@ -456,6 +465,7 @@ Public Class FrmExamen
                 ActivarOrina = False
                 ActivarElectrolitos = False
                 ActivarPerfilRenal = True
+                Me.TabControlHeces.SelectedTab = TabPage4
 
         End Select
 
@@ -643,7 +653,7 @@ Public Class FrmExamen
                     Me.txtColesterol_LDL.Text = DataSet.Tables("Examen").Rows(0)("Colesterol_LDL")
                     Me.txtRiesgo_Coronario.Text = DataSet.Tables("Examen").Rows(0)("Riesgo_Coronario")
 
- 
+
 
                 Case "Extamen Heces"
                     Me.TxtConsitencia.Text = DataSet.Tables("Examen").Rows(0)("Consistencia")
@@ -802,5 +812,9 @@ Public Class FrmExamen
 
     Private Sub BtnSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSalir.Click
         Me.Close()
+    End Sub
+
+    Private Sub BtnGrabar_Click(sender As Object, e As EventArgs) Handles BtnGrabar.Click
+        InsertarActualizarExamen(Me.CboTipoExamen.Text, txtNumero_Expediente.Text, CboTipoExamen.Text, DtpFecheExamen.Value)
     End Sub
 End Class

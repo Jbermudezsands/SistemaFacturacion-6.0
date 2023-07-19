@@ -56,6 +56,7 @@ Partial Class FrmAjustarTodos
         Me.ChkSseries.AutoSize = True
         Me.ChkSseries.Checked = True
         Me.ChkSseries.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.ChkSseries.Enabled = False
         Me.ChkSseries.Location = New System.Drawing.Point(295, 104)
         Me.ChkSseries.Name = "ChkSseries"
         Me.ChkSseries.Size = New System.Drawing.Size(135, 17)
@@ -82,7 +83,7 @@ Partial Class FrmAjustarTodos
         Me.CmbSerie.EditorHeight = 15
         Me.CmbSerie.Images.Add(CType(resources.GetObject("CmbSerie.Images"), System.Drawing.Image))
         Me.CmbSerie.ItemHeight = 15
-        Me.CmbSerie.Location = New System.Drawing.Point(226, 100)
+        Me.CmbSerie.Location = New System.Drawing.Point(431, 33)
         Me.CmbSerie.MatchEntryTimeout = CType(2000, Long)
         Me.CmbSerie.MaxDropDownItems = CType(5, Short)
         Me.CmbSerie.MaxLength = 32767
@@ -100,7 +101,7 @@ Partial Class FrmAjustarTodos
         '
         Me.ProgressBar.Location = New System.Drawing.Point(89, 160)
         Me.ProgressBar.Name = "ProgressBar"
-        Me.ProgressBar.Size = New System.Drawing.Size(260, 14)
+        Me.ProgressBar.Size = New System.Drawing.Size(349, 14)
         Me.ProgressBar.TabIndex = 232
         '
         'Button4
@@ -120,7 +121,7 @@ Partial Class FrmAjustarTodos
         '
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
         Me.Button8.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button8.Location = New System.Drawing.Point(355, 156)
+        Me.Button8.Location = New System.Drawing.Point(444, 156)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(75, 34)
         Me.Button8.TabIndex = 230
@@ -198,7 +199,7 @@ Partial Class FrmAjustarTodos
         'Button2
         '
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.Location = New System.Drawing.Point(185, 2)
+        Me.Button2.Location = New System.Drawing.Point(210, 2)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(29, 30)
         Me.Button2.TabIndex = 220
@@ -229,7 +230,7 @@ Partial Class FrmAjustarTodos
         Me.CboCodigoDesde.RowDivider.Color = System.Drawing.Color.DarkGray
         Me.CboCodigoDesde.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
         Me.CboCodigoDesde.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboCodigoDesde.Size = New System.Drawing.Size(77, 21)
+        Me.CboCodigoDesde.Size = New System.Drawing.Size(102, 21)
         Me.CboCodigoDesde.TabIndex = 218
         Me.CboCodigoDesde.PropBag = resources.GetString("CboCodigoDesde.PropBag")
         '
@@ -245,7 +246,7 @@ Partial Class FrmAjustarTodos
         'FrmAjusteRango
         '
         Me.FrmAjusteRango.Image = CType(resources.GetObject("FrmAjusteRango.Image"), System.Drawing.Image)
-        Me.FrmAjusteRango.Location = New System.Drawing.Point(403, 5)
+        Me.FrmAjusteRango.Location = New System.Drawing.Point(480, 2)
         Me.FrmAjusteRango.Name = "FrmAjusteRango"
         Me.FrmAjusteRango.Size = New System.Drawing.Size(29, 30)
         Me.FrmAjusteRango.TabIndex = 237
@@ -267,7 +268,7 @@ Partial Class FrmAjustarTodos
         Me.CboCodigoHasta.EditorHeight = 15
         Me.CboCodigoHasta.Images.Add(CType(resources.GetObject("CboCodigoHasta.Images"), System.Drawing.Image))
         Me.CboCodigoHasta.ItemHeight = 15
-        Me.CboCodigoHasta.Location = New System.Drawing.Point(320, 12)
+        Me.CboCodigoHasta.Location = New System.Drawing.Point(372, 6)
         Me.CboCodigoHasta.MatchEntryTimeout = CType(2000, Long)
         Me.CboCodigoHasta.MaxDropDownItems = CType(5, Short)
         Me.CboCodigoHasta.MaxLength = 32767
@@ -276,14 +277,14 @@ Partial Class FrmAjustarTodos
         Me.CboCodigoHasta.RowDivider.Color = System.Drawing.Color.DarkGray
         Me.CboCodigoHasta.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
         Me.CboCodigoHasta.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboCodigoHasta.Size = New System.Drawing.Size(77, 21)
+        Me.CboCodigoHasta.Size = New System.Drawing.Size(102, 21)
         Me.CboCodigoHasta.TabIndex = 235
         Me.CboCodigoHasta.PropBag = resources.GetString("CboCodigoHasta.PropBag")
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(240, 14)
+        Me.Label3.Location = New System.Drawing.Point(292, 9)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(74, 13)
         Me.Label3.TabIndex = 236
@@ -311,14 +312,14 @@ Partial Class FrmAjustarTodos
         '
         Me.ProgressBar1.Location = New System.Drawing.Point(12, 131)
         Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(418, 23)
+        Me.ProgressBar1.Size = New System.Drawing.Size(507, 23)
         Me.ProgressBar1.TabIndex = 240
         '
         'FrmAjustarTodos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(442, 195)
+        Me.ClientSize = New System.Drawing.Size(531, 195)
         Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.DTPFechaInicio)
         Me.Controls.Add(Me.Label4)
@@ -338,6 +339,8 @@ Partial Class FrmAjustarTodos
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.CboCodigoDesde)
         Me.Controls.Add(Me.LblCodigo)
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "FrmAjustarTodos"
         Me.Text = "Ajustar Todos"
         CType(Me.CmbSerie, System.ComponentModel.ISupportInitialize).EndInit()

@@ -39,6 +39,9 @@
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="ActiveReports.Chart, Version=5.2.1331.2, Culture=neutral, PublicKeyToken=cc4967777c49a3ff, processorArchitecture=MSIL" />
@@ -100,6 +103,12 @@
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include=".Designer.vb">
       <DependentUpon>FrmAjustarTodos.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmListadoRecibos.Designer.vb">
+      <DependentUpon>FrmListadoRecibos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmListadoRecibos.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmAjustarTodos.vb">
@@ -343,6 +352,12 @@
       <DependentUpon>FrmListadoConsultas.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmListadoConsultas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmListadoHistorico.Designer.vb">
+      <DependentUpon>FrmListadoHistorico.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmListadoHistorico.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmListadoNominas.Designer.vb">
@@ -1649,6 +1664,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FrmListadoRecibos.resx">
+      <DependentUpon>FrmListadoRecibos.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmAjustarTodos.resx">
       <DependentUpon>FrmAjustarTodos.vb</DependentUpon>
     </EmbeddedResource>
@@ -1811,6 +1829,9 @@
     <EmbeddedResource Include="FrmListadoConsultas.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmListadoConsultas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmListadoHistorico.resx">
+      <DependentUpon>FrmListadoHistorico.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmListadoNominas.resx">
       <SubType>Designer</SubType>
@@ -2675,6 +2696,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="ClassDiagram1.cd" />
+    <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>

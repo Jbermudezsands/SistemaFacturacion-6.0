@@ -1350,6 +1350,16 @@ Public Class MDIMain
         My.Forms.FrmProcesarRecLeche.Show()
     End Sub
 
+    Private Sub RibbonHistoricoDebitoCredito_Click(sender As Object, e As EventArgs) Handles RibbonHistoricoDebitoCredito.Click
+        My.Forms.FrmListadoHistorico.MdiParent = Me
+        My.Forms.FrmListadoHistorico.Show()
+    End Sub
+
+    Private Sub RibbonButton19_Click_1(sender As Object, e As EventArgs) Handles RibbonButton19.Click
+        My.Forms.FrmListadoRecibo.MdiParent = Me
+        My.Forms.FrmListadoRecibo.Show()
+    End Sub
+
     Private Sub RibbonHospitalizacion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonHospitalizacion.Click
         My.Forms.FrmHospitalizacion.MdiParent = Me
         My.Forms.FrmHospitalizacion.Show()

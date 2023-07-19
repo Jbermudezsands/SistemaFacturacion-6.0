@@ -34,7 +34,7 @@ Public Class FrmExamenes
         '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         SqlCompras = "SELECT Expediente.Numero_Expediente, TipoExamen_Consulta.Descripcion, Expediente.Nombres + ' ' + Expediente.Apellidos AS Nombre_Paciente, Consultorio.Nombre_Consultorio, Doctores.Nombre_Doctor + ' ' + Doctores.Apellido_Doctor AS Nombre_Doctor, Consulta.Activo, TipoExamen_Consulta.Facturado, Consulta.IdConsulta, TipoExamen_Consulta.IdTipoExamen FROM Consulta INNER JOIN  Doctores ON Consulta.IdDoctor_CodigoMinsa = Doctores.Codigo_Minsa INNER JOIN Consultorio ON Consulta.IdConsultorio = Consultorio.IdConsultorio INNER JOIN Expediente ON Consulta.Numero_Expediente = Expediente.Numero_Expediente INNER JOIN TipoExamen_Consulta ON Consulta.IdConsulta = TipoExamen_Consulta.IdConsulta  WHERE(Consulta.Activo = 1) AND (TipoExamen_Consulta.Facturado = 0)"
-        dsMedicamento = New DataSet
+        'dsMedicamento = New DataSet
         daMedicamento = New SqlDataAdapter(SqlCompras, MiConexion)
         CmdBuilderMedicamento = New SqlCommandBuilder(daMedicamento)
         daMedicamento.Fill(dsMedicamento, "DetalleCompra")
@@ -217,7 +217,11 @@ Public Class FrmExamenes
         Id_TipoExamen = Me.TDGridMedicamentos.Columns("IdTipoExamen").Text
         Descripcion = Me.TDGridMedicamentos.Columns("Descripcion").Text
 
+
+        My.Forms.FrmExamen.Cargar_Examen(NumeroExpediente, Id_TipoExamen, Now)
         My.Forms.FrmExamen.Show()
+        My.Forms.FrmExamen.txtNumero_Expediente.Text = NumeroExpediente
+        My.Forms.FrmExamen.CboTipoExamen.Text = Id_TipoExamen
         My.Forms.FrmExamen.BloquearCampos(Descripcion)
 
         'My.Forms.FrmConsultasMedicas.IdConsultorio = Me.Id_Consultorio

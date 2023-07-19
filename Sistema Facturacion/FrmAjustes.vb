@@ -67,8 +67,9 @@ Public Class FrmAjustes
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, NumeroFactura As String
         Dim NumeroNota As String, Consecutivoconserie As Boolean = True, TipoCuenta As Boolean, idDetalleNota As Double
 
-        Filtro = "Fecha_Factura >= '" & Format(Me.DTPFechaIni.Value, "yyyy-MM-dd") & "' AND Fecha_Factura <= '" & Format(Me.DTPFechaFin.Value, "yyyy-MM-dd") & "' AND Total <= " & Me.TxtMonto.Value & " "
-        dv = New DataView(FrmCuentasXCobrar.DatasetReporte.Tables("TotalVentas"))
+        Filtro = "Fecha_Factura >= '" & Format(Me.DTPFechaIni.Value, "yyyy-MM-dd") & "' AND Fecha_Factura <= '" & Format(Me.DTPFechaFin.Value, "yyyy-MM-dd") & "' AND Total <= " & Me.TxtMonto.Text & " "
+        'dvAjustes = New DataView(FrmCuentasXCobrar.DatasetReporte.Tables("TotalVentas"))
+        dv = My.Forms.FrmCuentasXCobrar.dv
         dv.RowFilter = Filtro
         Registros = dv.Count
         i = 0

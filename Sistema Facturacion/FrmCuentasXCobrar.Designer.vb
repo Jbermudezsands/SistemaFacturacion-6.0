@@ -22,6 +22,7 @@ Partial Class FrmCuentasXCobrar
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmCuentasXCobrar))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.ChkRegistrosCero = New System.Windows.Forms.CheckBox()
         Me.LblNombres = New System.Windows.Forms.Label()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.OptDolares = New System.Windows.Forms.RadioButton()
@@ -30,9 +31,9 @@ Partial Class FrmCuentasXCobrar
         Me.Label6 = New System.Windows.Forms.Label()
         Me.CboCodigoCliente = New C1.Win.C1List.C1Combo()
         Me.LblCodigo = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.CmdGrabar = New System.Windows.Forms.Button()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.DTPFechaIni = New System.Windows.Forms.DateTimePicker()
         Me.TDGridImpuestos = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
         Me.ContextMenuStripGrid = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -74,13 +75,13 @@ Partial Class FrmCuentasXCobrar
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.ChkRegistrosCero)
         Me.GroupBox1.Controls.Add(Me.LblNombres)
         Me.GroupBox1.Controls.Add(Me.GroupBox2)
         Me.GroupBox1.Controls.Add(Me.DTPFechaFin)
         Me.GroupBox1.Controls.Add(Me.Label6)
         Me.GroupBox1.Controls.Add(Me.CboCodigoCliente)
         Me.GroupBox1.Controls.Add(Me.LblCodigo)
-        Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.Button2)
         Me.GroupBox1.Controls.Add(Me.CmdGrabar)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 63)
@@ -88,6 +89,18 @@ Partial Class FrmCuentasXCobrar
         Me.GroupBox1.Size = New System.Drawing.Size(461, 131)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
+        '
+        'ChkRegistrosCero
+        '
+        Me.ChkRegistrosCero.AutoSize = True
+        Me.ChkRegistrosCero.Checked = True
+        Me.ChkRegistrosCero.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.ChkRegistrosCero.Location = New System.Drawing.Point(108, 106)
+        Me.ChkRegistrosCero.Name = "ChkRegistrosCero"
+        Me.ChkRegistrosCero.Size = New System.Drawing.Size(144, 17)
+        Me.ChkRegistrosCero.TabIndex = 203
+        Me.ChkRegistrosCero.Text = "Excluir Registros en Cero"
+        Me.ChkRegistrosCero.UseVisualStyleBackColor = True
         '
         'LblNombres
         '
@@ -101,7 +114,7 @@ Partial Class FrmCuentasXCobrar
         '
         Me.GroupBox2.Controls.Add(Me.OptDolares)
         Me.GroupBox2.Controls.Add(Me.OptCordobas)
-        Me.GroupBox2.Location = New System.Drawing.Point(109, 89)
+        Me.GroupBox2.Location = New System.Drawing.Point(42, 68)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(171, 32)
         Me.GroupBox2.TabIndex = 201
@@ -133,7 +146,7 @@ Partial Class FrmCuentasXCobrar
         '
         Me.DTPFechaFin.CustomFormat = ""
         Me.DTPFechaFin.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DTPFechaFin.Location = New System.Drawing.Point(175, 70)
+        Me.DTPFechaFin.Location = New System.Drawing.Point(108, 49)
         Me.DTPFechaFin.Name = "DTPFechaFin"
         Me.DTPFechaFin.Size = New System.Drawing.Size(104, 20)
         Me.DTPFechaFin.TabIndex = 186
@@ -141,7 +154,7 @@ Partial Class FrmCuentasXCobrar
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(105, 72)
+        Me.Label6.Location = New System.Drawing.Point(38, 51)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(54, 13)
         Me.Label6.TabIndex = 185
@@ -185,16 +198,6 @@ Partial Class FrmCuentasXCobrar
         Me.LblCodigo.TabIndex = 183
         Me.LblCodigo.Text = "Codigo Clientes"
         '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(252, 124)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(65, 13)
-        Me.Label2.TabIndex = 131
-        Me.Label2.Text = "Fecha Inicio"
-        Me.Label2.Visible = False
-        '
         'Button2
         '
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
@@ -216,6 +219,16 @@ Partial Class FrmCuentasXCobrar
         Me.CmdGrabar.Text = "Consultar"
         Me.CmdGrabar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.CmdGrabar.UseVisualStyleBackColor = True
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(263, 196)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(65, 13)
+        Me.Label2.TabIndex = 131
+        Me.Label2.Text = "Fecha Inicio"
+        Me.Label2.Visible = False
         '
         'DTPFechaIni
         '
@@ -507,6 +520,7 @@ Partial Class FrmCuentasXCobrar
         Me.Button4.Text = "Ajustes Total"
         Me.Button4.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button4.UseVisualStyleBackColor = True
+        Me.Button4.Visible = False
         '
         'FrmCuentasXCobrar
         '
@@ -518,6 +532,7 @@ Partial Class FrmCuentasXCobrar
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Button8)
         Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.Button5)
@@ -542,6 +557,7 @@ Partial Class FrmCuentasXCobrar
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
@@ -585,4 +601,5 @@ Partial Class FrmCuentasXCobrar
     Friend WithEvents CmdAjustes As System.Windows.Forms.Button
     Friend WithEvents AsignarFacturaALaNotaDeCreditoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Button4 As Button
+    Friend WithEvents ChkRegistrosCero As CheckBox
 End Class

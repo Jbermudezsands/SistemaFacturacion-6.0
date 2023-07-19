@@ -143,9 +143,6 @@
   <data name="&gt;&gt;CmdCerrar.Name" xml:space="preserve">
     <value>CmdCerrar</value>
   </data>
-  <data name="&gt;&gt;Label10.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
   <assembly alias="C1.Win.C1TrueDBGrid.2" name="C1.Win.C1TrueDBGrid.2, Version=2.0.20063.60825, Culture=neutral, PublicKeyToken=75ae3fb0e2b1e0da" />
   <data name="resource.Style1" type="C1.Win.C1TrueDBGrid.LineStyleEnum, C1.Win.C1TrueDBGrid.2">
     <value>Single</value>
@@ -183,6 +180,9 @@
   </data>
   <data name="Label12.Text" xml:space="preserve">
     <value>Precio Jueves</value>
+  </data>
+  <data name="Deducciones.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1006, 257</value>
   </data>
   <data name="&gt;&gt;Label5.ZOrder" xml:space="preserve">
     <value>17</value>
@@ -238,9 +238,6 @@
   <data name="&gt;&gt;Label12.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="TxtPrecioMiercoles.Text" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="TxtPrecioSabado.TabIndex" type="System.Int32, mscorlib">
     <value>185</value>
   </data>
@@ -271,20 +268,14 @@
   <data name="TDGridDeducciones.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 6</value>
   </data>
-  <data name="&gt;&gt;Label15.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;Label5.Parent" xml:space="preserve">
     <value>GroupBox2</value>
   </data>
   <data name="ProgressBar2.Location" type="System.Drawing.Point, System.Drawing">
     <value>759, 427</value>
   </data>
-  <data name="TxtDeduccionPolicia.Location" type="System.Drawing.Point, System.Drawing">
-    <value>93, 62</value>
-  </data>
-  <data name="Label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>268, 13</value>
+  <data name="&gt;&gt;TxtIR.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="TxtDeduccionPolicia.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 20</value>
@@ -312,9 +303,6 @@
   </data>
   <data name="CmdCalcular.Text" xml:space="preserve">
     <value>Calcular</value>
-  </data>
-  <data name="TDGridIngresos.PrintInfo.ShowSelection" type="System.Boolean, mscorlib">
-    <value>True</value>
   </data>
   <data name="&gt;&gt;Label9.ZOrder" xml:space="preserve">
     <value>9</value>
@@ -347,11 +335,11 @@
   <data name="&gt;&gt;LblTotalPlanilla.Name" xml:space="preserve">
     <value>LblTotalPlanilla</value>
   </data>
-  <data name="Label6.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="TxtPrecioMiercoles.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
+  </data>
+  <data name="&gt;&gt;Label10.Parent" xml:space="preserve">
+    <value>GroupBox2</value>
   </data>
   <data name="Label11.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -361,6 +349,9 @@
   </data>
   <data name="&gt;&gt;Button2.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="CboTipoPlanilla.Size" type="System.Drawing.Size, System.Drawing">
+    <value>223, 21</value>
   </data>
   <data name="&gt;&gt;Label4.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -373,9 +364,6 @@
   </data>
   <data name="TDGridIngresos.PrintInfo.MaxRowHeight" type="System.Int32, mscorlib">
     <value>30</value>
-  </data>
-  <data name="CmdBorraLinea.TabIndex" type="System.Int32, mscorlib">
-    <value>185</value>
   </data>
   <data name="Label9.Text" xml:space="preserve">
     <value>REGISTROS DE PLANILLAS CONDUCTORES</value>
@@ -416,12 +404,6 @@
   <data name="TDGridIngresos.PreviewInfo.ToolBars" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;TabControl1.Name" xml:space="preserve">
-    <value>TabControl1</value>
-  </data>
-  <data name="&gt;&gt;Label3.Name" xml:space="preserve">
-    <value>Label3</value>
-  </data>
   <data name="&gt;&gt;TDGridIngresos.Parent" xml:space="preserve">
     <value>Ingresos</value>
   </data>
@@ -431,10 +413,13 @@
   <data name="TxtPrecioJueves.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 20</value>
   </data>
-  <data name="&gt;&gt;LblProcesando.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="TxtDeduccionPolicia.Location" type="System.Drawing.Point, System.Drawing">
+    <value>93, 62</value>
   </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
+  <data name="TDGridDeducciones.Text" xml:space="preserve">
+    <value>C1TrueDBGrid1</value>
+  </data>
+  <data name="&gt;&gt;DTPFechaFin.Parent" xml:space="preserve">
     <value>GroupBox1</value>
   </data>
   <data name="&gt;&gt;CmdNomina.Name" xml:space="preserve">
@@ -442,9 +427,6 @@
   </data>
   <data name="CmdNomina.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
-  </data>
-  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 13</value>
   </data>
   <data name="&gt;&gt;Ingresos.Parent" xml:space="preserve">
     <value>TabControl1</value>
@@ -461,11 +443,11 @@
   <data name="CmdCerrar.TabIndex" type="System.Int32, mscorlib">
     <value>193</value>
   </data>
+  <data name="Label9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>268, 13</value>
+  </data>
   <data name="Label5.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;LblTotalPlanilla.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
   </data>
   <data name="PictureBox2.TabIndex" type="System.Int32, mscorlib">
     <value>186</value>
@@ -475,6 +457,9 @@
   </data>
   <data name="TDGridDeducciones.PrintInfo.PageHeader" xml:space="preserve">
     <value />
+  </data>
+  <data name="TDGridDeducciones.PrintInfo.PageHeaderHeight" type="System.Int32, mscorlib">
+    <value>30</value>
   </data>
   <data name="TxtPrecioLunes.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 20</value>
@@ -543,14 +528,14 @@
   <data name="TxtPrecioMartes.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="&gt;&gt;TxtPrecioDomingo.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="&gt;&gt;GroupBox1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;TDGridIngresos.Name" xml:space="preserve">
     <value>TDGridIngresos</value>
+  </data>
+  <data name="&gt;&gt;Label6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="TxtPrecioViernes.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -572,6 +557,9 @@
   </data>
   <data name="TxtNumNomina.TabIndex" type="System.Int32, mscorlib">
     <value>183</value>
+  </data>
+  <data name="TDGridDeducciones.PreviewInfo.ToolBars" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="&gt;&gt;TxtPrecioMiercoles.Parent" xml:space="preserve">
     <value>GroupBox2</value>
@@ -633,8 +621,8 @@
   <data name="Label14.Text" xml:space="preserve">
     <value>Precio Sabado</value>
   </data>
-  <data name="&gt;&gt;TxtIR.ZOrder" xml:space="preserve">
-    <value>18</value>
+  <data name="TabControl1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 109</value>
   </data>
   <data name="&gt;&gt;Button1.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -647,6 +635,9 @@
   </data>
   <data name="TxtIR.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
+  </data>
+  <data name="&gt;&gt;CmdNomina.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="CmdCerrar.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>BottomCenter</value>
@@ -672,11 +663,14 @@
   <data name="Label13.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 13</value>
   </data>
+  <data name="TxtIR.Text" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="&gt;&gt;ProgressBar2.Type" xml:space="preserve">
     <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;DTPFechaIni.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="TxtDeduccionPolicia.Text" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="Label6.Location" type="System.Drawing.Point, System.Drawing">
     <value>23, 89</value>
@@ -686,9 +680,6 @@
   </data>
   <data name="&gt;&gt;PictureBox2.Type" xml:space="preserve">
     <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Ingresos.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
   </data>
   <data name="TDGridDeducciones.PrintInfo.RepeatSplitHeaders" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -714,258 +705,8 @@
   <data name="TDGridIngresos.Caption" xml:space="preserve">
     <value>Listado de Nominas</value>
   </data>
-  <data name="CboTipoPlanilla.Location" type="System.Drawing.Point, System.Drawing">
-    <value>120, 19</value>
-  </data>
-  <data name="TxtDeduccionPolicia.Text" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="TDGridIngresos.TabIndex" type="System.Int32, mscorlib">
-    <value>170</value>
-  </data>
-  <data name="&gt;&gt;ProgressBar.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="Ingresos.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="Label8.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;TxtIR.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Label13.Location" type="System.Drawing.Point, System.Drawing">
-    <value>17, 181</value>
-  </data>
-  <data name="&gt;&gt;GroupBox2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Configuracion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1006, 257</value>
-  </data>
-  <data name="Label7.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;Label2.Name" xml:space="preserve">
-    <value>Label2</value>
-  </data>
-  <data name="TxtBolsa.Location" type="System.Drawing.Point, System.Drawing">
-    <value>93, 39</value>
-  </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
-  </data>
-  <assembly alias="C1.Win.C1List.2" name="C1.Win.C1List.2, Version=2.1.20073.132, Culture=neutral, PublicKeyToken=6b24f8f981dbd7bc" />
-  <data name="resource.Style2" type="C1.Win.C1List.LineStyleEnum, C1.Win.C1List.2">
-    <value>None</value>
-  </data>
-  <data name="TDGridIngresos.PrintInfo.RepeatSplitHeaders" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="ProgressBar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>417, 398</value>
-  </data>
-  <data name="&gt;&gt;Deducciones.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="PictureBox2.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
-    <value>StretchImage</value>
-  </data>
-  <data name="&gt;&gt;TDGridIngresos.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="TDGridDeducciones.PrintInfo.OwnerDrawPageHeader" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="Configuracion.Text" xml:space="preserve">
-    <value>Configuracion</value>
-  </data>
-  <data name="TDGridIngresos.PreviewInfo.AllowSizing" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="TDGridDeducciones.FilterBar" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="Label12.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="Deducciones.Text" xml:space="preserve">
-    <value>Deducciones</value>
-  </data>
-  <data name="LblTotalPlanilla.Size" type="System.Drawing.Size, System.Drawing">
-    <value>25, 24</value>
-  </data>
-  <data name="&gt;&gt;TxtPrecioSabado.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;TxtNumNomina.Name" xml:space="preserve">
-    <value>TxtNumNomina</value>
-  </data>
-  <data name="&gt;&gt;GroupBox2.Parent" xml:space="preserve">
-    <value>Configuracion</value>
-  </data>
-  <data name="&gt;&gt;Label10.Parent" xml:space="preserve">
-    <value>GroupBox2</value>
-  </data>
-  <data name="TDGridDeducciones.PrintInfo.RepeatGridHeader" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;TxtBolsa.Name" xml:space="preserve">
-    <value>TxtBolsa</value>
-  </data>
-  <data name="&gt;&gt;TxtIR.Name" xml:space="preserve">
-    <value>TxtIR</value>
-  </data>
-  <data name="Label10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 13</value>
-  </data>
-  <data name="TxtPrecioJueves.Text" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="Ingresos.Text" xml:space="preserve">
-    <value>Ingresos</value>
-  </data>
-  <data name="Button2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>BottomCenter</value>
-  </data>
-  <data name="Label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 13</value>
-  </data>
-  <data name="Label9.TabIndex" type="System.Int32, mscorlib">
-    <value>187</value>
-  </data>
-  <data name="CmdNomina.TabIndex" type="System.Int32, mscorlib">
-    <value>190</value>
-  </data>
-  <data name="TxtPrecioJueves.Location" type="System.Drawing.Point, System.Drawing">
-    <value>92, 154</value>
-  </data>
-  <data name="Button2.Text" xml:space="preserve">
-    <value>Imp Colillas</value>
-  </data>
-  <data name="TxtPrecioMartes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 20</value>
-  </data>
-  <data name="TDGridDeducciones.PrintInfo.ShowOptionsDialog" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="TxtPrecioSabado.Text" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="Label11.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;ProgressBar2.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="TxtBolsa.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 20</value>
-  </data>
-  <data name="Button2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>166, 394</value>
-  </data>
-  <data name="TxtBolsa.Text" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="Label7.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 9.75pt, style=Bold</value>
-  </data>
-  <data name="Label3.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 13</value>
-  </data>
-  <data name="&gt;&gt;TxtNumNomina.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="GroupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 56</value>
-  </data>
-  <data name="CmdNomina.Location" type="System.Drawing.Point, System.Drawing">
-    <value>85, 394</value>
-  </data>
-  <data name="Label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>354, 25</value>
-  </data>
-  <data name="TxtPrecioViernes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 20</value>
-  </data>
-  <data name="TDGridDeducciones.PreviewInfo.UIStrings.Content" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>AAEAAAD/////AQAAAAAAAAARAQAAAAAAAAAL</value>
-  </data>
-  <data name="TDGridIngresos.Size" type="System.Drawing.Size, System.Drawing">
-    <value>964, 229</value>
-  </data>
-  <data name="&gt;&gt;Label7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Label14.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="Button1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="TDGridIngresos.PrintInfo.ShowProgressForm" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;TxtPrecioDomingo.Name" xml:space="preserve">
-    <value>TxtPrecioDomingo</value>
-  </data>
-  <data name="&gt;&gt;Ingresos.Name" xml:space="preserve">
-    <value>Ingresos</value>
-  </data>
-  <data name="TxtNumNomina.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 20</value>
-  </data>
-  <data name="&gt;&gt;CmdCalcular.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TxtNumNomina.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;TxtPrecioDomingo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="TDGridDeducciones.AlternatingRows" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="LblProcesando.Size" type="System.Drawing.Size, System.Drawing">
-    <value>323, 16</value>
-  </data>
-  <data name="&gt;&gt;Label12.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="GroupBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 5</value>
-  </data>
-  <data name="&gt;&gt;TxtPrecioViernes.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="CmdCerrar.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="DTPFechaFin.TabIndex" type="System.Int32, mscorlib">
-    <value>178</value>
-  </data>
-  <data name="Label2.TabIndex" type="System.Int32, mscorlib">
-    <value>176</value>
-  </data>
-  <data name="TxtPrecioMiercoles.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 20</value>
-  </data>
-  <data name="Label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 13</value>
-  </data>
-  <data name="TDGridIngresos.PrintInfo.PageHeaderHeight" type="System.Int32, mscorlib">
-    <value>30</value>
-  </data>
-  <data name="resource.Color" type="System.Drawing.Color, System.Drawing">
-    <value>DarkGray</value>
-  </data>
-  <data name="Label9.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="LblProcesando.TabIndex" type="System.Int32, mscorlib">
+    <value>195</value>
   </data>
   <data name="CmdNomina.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1048,6 +789,241 @@
         iOqw8ENUh4UfnsD8FyKwrt96TwwzAAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="&gt;&gt;ProgressBar.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="Ingresos.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="Deducciones.Text" xml:space="preserve">
+    <value>Deducciones</value>
+  </data>
+  <data name="Label13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 181</value>
+  </data>
+  <data name="&gt;&gt;GroupBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Configuracion.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1006, 257</value>
+  </data>
+  <data name="Label7.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;Label2.Name" xml:space="preserve">
+    <value>Label2</value>
+  </data>
+  <data name="TxtBolsa.Location" type="System.Drawing.Point, System.Drawing">
+    <value>93, 39</value>
+  </data>
+  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
+    <value>Label1</value>
+  </data>
+  <assembly alias="C1.Win.C1List.2" name="C1.Win.C1List.2, Version=2.1.20073.132, Culture=neutral, PublicKeyToken=6b24f8f981dbd7bc" />
+  <data name="resource.Style2" type="C1.Win.C1List.LineStyleEnum, C1.Win.C1List.2">
+    <value>None</value>
+  </data>
+  <data name="TDGridIngresos.PrintInfo.RepeatSplitHeaders" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="ProgressBar.Location" type="System.Drawing.Point, System.Drawing">
+    <value>417, 398</value>
+  </data>
+  <data name="&gt;&gt;Deducciones.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="PictureBox2.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>StretchImage</value>
+  </data>
+  <data name="&gt;&gt;TDGridIngresos.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="Configuracion.Text" xml:space="preserve">
+    <value>Configuracion</value>
+  </data>
+  <data name="TDGridIngresos.PreviewInfo.AllowSizing" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="TDGridDeducciones.FilterBar" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Label12.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="LblTotalPlanilla.Size" type="System.Drawing.Size, System.Drawing">
+    <value>25, 24</value>
+  </data>
+  <data name="&gt;&gt;TxtPrecioSabado.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;TxtNumNomina.Name" xml:space="preserve">
+    <value>TxtNumNomina</value>
+  </data>
+  <data name="&gt;&gt;GroupBox2.Parent" xml:space="preserve">
+    <value>Configuracion</value>
+  </data>
+  <data name="TDGridIngresos.PrintInfo.ShowSelection" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;TxtBolsa.Name" xml:space="preserve">
+    <value>TxtBolsa</value>
+  </data>
+  <data name="&gt;&gt;TxtIR.Name" xml:space="preserve">
+    <value>TxtIR</value>
+  </data>
+  <data name="Label10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 13</value>
+  </data>
+  <data name="TxtPrecioJueves.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="Ingresos.Text" xml:space="preserve">
+    <value>Ingresos</value>
+  </data>
+  <data name="Label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 13</value>
+  </data>
+  <data name="Label9.TabIndex" type="System.Int32, mscorlib">
+    <value>187</value>
+  </data>
+  <data name="CmdNomina.TabIndex" type="System.Int32, mscorlib">
+    <value>190</value>
+  </data>
+  <data name="TxtPrecioJueves.Location" type="System.Drawing.Point, System.Drawing">
+    <value>92, 154</value>
+  </data>
+  <data name="TxtPrecioMartes.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 20</value>
+  </data>
+  <data name="TDGridDeducciones.PrintInfo.ShowOptionsDialog" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="TxtPrecioSabado.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="Label11.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="TxtBolsa.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 20</value>
+  </data>
+  <data name="Button2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>166, 394</value>
+  </data>
+  <data name="Label7.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9.75pt, style=Bold</value>
+  </data>
+  <data name="Label3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>71, 13</value>
+  </data>
+  <data name="&gt;&gt;TxtNumNomina.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label13.Parent" xml:space="preserve">
+    <value>GroupBox2</value>
+  </data>
+  <data name="GroupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 56</value>
+  </data>
+  <data name="CmdNomina.Location" type="System.Drawing.Point, System.Drawing">
+    <value>85, 394</value>
+  </data>
+  <data name="Label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>354, 25</value>
+  </data>
+  <data name="TxtPrecioViernes.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 20</value>
+  </data>
+  <data name="TDGridDeducciones.PreviewInfo.UIStrings.Content" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>AAEAAAD/////AQAAAAAAAAARAQAAAAAAAAAL</value>
+  </data>
+  <data name="&gt;&gt;Label7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Label14.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Button1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="TDGridIngresos.PrintInfo.ShowProgressForm" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="TDGridIngresos.PrintInfo.PageFooter" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;TxtPrecioDomingo.Name" xml:space="preserve">
+    <value>TxtPrecioDomingo</value>
+  </data>
+  <data name="&gt;&gt;Ingresos.Name" xml:space="preserve">
+    <value>Ingresos</value>
+  </data>
+  <data name="TDGridIngresos.PreviewInfo.Caption" xml:space="preserve">
+    <value>PrintPreview Window</value>
+  </data>
+  <data name="GroupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>980, 51</value>
+  </data>
+  <data name="&gt;&gt;CmdCalcular.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label7.Name" xml:space="preserve">
+    <value>Label7</value>
+  </data>
+  <data name="&gt;&gt;TxtNumNomina.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;TxtPrecioDomingo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TDGridDeducciones.AlternatingRows" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="LblProcesando.Size" type="System.Drawing.Size, System.Drawing">
+    <value>323, 16</value>
+  </data>
+  <data name="&gt;&gt;Label12.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="GroupBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 5</value>
+  </data>
+  <data name="&gt;&gt;TxtPrecioViernes.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="CmdCerrar.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="DTPFechaFin.TabIndex" type="System.Int32, mscorlib">
+    <value>178</value>
+  </data>
+  <data name="Label2.TabIndex" type="System.Int32, mscorlib">
+    <value>176</value>
+  </data>
+  <data name="TxtPrecioMiercoles.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 20</value>
+  </data>
+  <data name="Label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 13</value>
+  </data>
+  <data name="TDGridIngresos.PrintInfo.PageHeaderHeight" type="System.Int32, mscorlib">
+    <value>30</value>
+  </data>
+  <data name="resource.Color" type="System.Drawing.Color, System.Drawing">
+    <value>DarkGray</value>
+  </data>
+  <data name="&gt;&gt;TxtIR.ZOrder" xml:space="preserve">
+    <value>18</value>
+  </data>
+  <data name="Label9.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="&gt;&gt;TxtDeduccionPolicia.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -1081,14 +1057,14 @@
   <data name="TDGridIngresos.PrintInfo.PageHeader" xml:space="preserve">
     <value />
   </data>
-  <data name="TDGridIngresos.PreviewInfo.Caption" xml:space="preserve">
-    <value>PrintPreview Window</value>
+  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
+    <value>GroupBox1</value>
   </data>
   <data name="TDGridDeducciones.PrintInfo.PageFooterHeight" type="System.Int32, mscorlib">
     <value>30</value>
   </data>
-  <data name="GroupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>980, 51</value>
+  <data name="TxtBolsa.Text" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;Deducciones.Parent" xml:space="preserve">
     <value>TabControl1</value>
@@ -1198,11 +1174,11 @@
   <data name="TDGridIngresos.PrintInfo.OwnerDrawPageHeader" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1025, 471</value>
+  <data name="TxtNumNomina.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
-  <data name="TabControl1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 109</value>
+  <data name="Ingresos.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
   </data>
   <data name="TxtNumNomina.Location" type="System.Drawing.Point, System.Drawing">
     <value>866, 22</value>
@@ -1225,8 +1201,8 @@
   <data name="Label11.Text" xml:space="preserve">
     <value>Precio Miercoles</value>
   </data>
-  <data name="TDGridIngresos.PrintInfo.PageFooter" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;Label3.Name" xml:space="preserve">
+    <value>Label3</value>
   </data>
   <data name="LblProcesando.Location" type="System.Drawing.Point, System.Drawing">
     <value>430, 427</value>
@@ -1411,8 +1387,8 @@
   <data name="&gt;&gt;Deducciones.Name" xml:space="preserve">
     <value>Deducciones</value>
   </data>
-  <data name="Label7.TabIndex" type="System.Int32, mscorlib">
-    <value>182</value>
+  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 13</value>
   </data>
   <data name="&gt;&gt;BindingDeducciones2.Type" xml:space="preserve">
     <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1530,17 +1506,11 @@
   <data name="&gt;&gt;Label12.Parent" xml:space="preserve">
     <value>GroupBox2</value>
   </data>
-  <data name="&gt;&gt;CmdSalir.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="&gt;&gt;DTPFechaIni.Parent" xml:space="preserve">
     <value>GroupBox1</value>
   </data>
   <data name="&gt;&gt;CmdCerrar.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TxtPrecioSabado.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Label1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1554,14 +1524,17 @@
   <data name="CboTipoPlanilla.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="&gt;&gt;Label6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="Label6.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="&gt;&gt;Label14.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="&gt;&gt;Label11.Parent" xml:space="preserve">
     <value>GroupBox2</value>
+  </data>
+  <data name="&gt;&gt;Label11.Name" xml:space="preserve">
+    <value>Label11</value>
   </data>
   <data name="&gt;&gt;Label14.Name" xml:space="preserve">
     <value>Label14</value>
@@ -1572,8 +1545,8 @@
   <data name="&gt;&gt;TabControl1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;Label13.Parent" xml:space="preserve">
-    <value>GroupBox2</value>
+  <data name="&gt;&gt;CmdSalir.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="TxtPrecioMartes.Text" xml:space="preserve">
     <value>0</value>
@@ -1605,8 +1578,8 @@
   <data name="Label15.TabIndex" type="System.Int32, mscorlib">
     <value>186</value>
   </data>
-  <data name="&gt;&gt;PictureBox2.Name" xml:space="preserve">
-    <value>PictureBox2</value>
+  <data name="Button2.TabIndex" type="System.Int32, mscorlib">
+    <value>197</value>
   </data>
   <data name="&gt;&gt;Label6.Name" xml:space="preserve">
     <value>Label6</value>
@@ -1623,8 +1596,8 @@
   <data name="Button2.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="&gt;&gt;Deducciones.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;LblTotalPlanilla.Parent" xml:space="preserve">
+    <value>GroupBox1</value>
   </data>
   <data name="&gt;&gt;GroupBox1.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1634,9 +1607,6 @@
   </data>
   <data name="Label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>69, 13</value>
-  </data>
-  <data name="&gt;&gt;TxtIR.Parent" xml:space="preserve">
-    <value>GroupBox2</value>
   </data>
   <data name="Label5.Location" type="System.Drawing.Point, System.Drawing">
     <value>14, 65</value>
@@ -1665,14 +1635,14 @@
   <data name="Label4.Text" xml:space="preserve">
     <value>% IR</value>
   </data>
-  <data name="&gt;&gt;Label7.Name" xml:space="preserve">
-    <value>Label7</value>
+  <data name="Button2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomCenter</value>
   </data>
   <data name="Label12.Location" type="System.Drawing.Point, System.Drawing">
     <value>18, 157</value>
   </data>
-  <data name="&gt;&gt;TxtNumNomina.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
+  <data name="TxtNumNomina.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 20</value>
   </data>
   <data name="LblTotalPlanilla.Location" type="System.Drawing.Point, System.Drawing">
     <value>545, 48</value>
@@ -1680,14 +1650,17 @@
   <data name="&gt;&gt;TxtPrecioViernes.Parent" xml:space="preserve">
     <value>GroupBox2</value>
   </data>
-  <data name="Deducciones.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1006, 257</value>
+  <data name="&gt;&gt;Label15.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;TxtPrecioLunes.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Label11.Location" type="System.Drawing.Point, System.Drawing">
     <value>7, 134</value>
+  </data>
+  <data name="Label13.Text" xml:space="preserve">
+    <value>Precio Viernes</value>
   </data>
   <data name="TDGridDeducciones.PrintInfo.PageSettings" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
@@ -1718,11 +1691,20 @@
         ZAAAAGQAAAAAAAAAAABZQAAAAAAAAFlAAAAAAAAAWUAAAAAAAABZQAs=
 </value>
   </data>
-  <data name="&gt;&gt;DTPFechaFin.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
+  <data name="Label1.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;ProgressBar2.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;Label3.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="CmdCalcular.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 76</value>
+  </data>
+  <data name="TDGridIngresos.PrintInfo.PrintHorizontalSplits" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="DTPFechaFin.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1733,14 +1715,14 @@
   <data name="&gt;&gt;Label4.Parent" xml:space="preserve">
     <value>GroupBox2</value>
   </data>
+  <data name="&gt;&gt;TxtDeduccionPolicia.ZOrder" xml:space="preserve">
+    <value>16</value>
+  </data>
   <data name="&gt;&gt;TxtPrecioJueves.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
   <data name="&gt;&gt;TxtPrecioMartes.ZOrder" xml:space="preserve">
     <value>10</value>
-  </data>
-  <data name="&gt;&gt;TxtPrecioMartes.Parent" xml:space="preserve">
-    <value>GroupBox2</value>
   </data>
   <data name="TxtPrecioMiercoles.Location" type="System.Drawing.Point, System.Drawing">
     <value>92, 131</value>
@@ -1760,11 +1742,11 @@
   <data name="Label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;CmdSalir.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="Label7.TabIndex" type="System.Int32, mscorlib">
+    <value>182</value>
   </data>
-  <data name="Label1.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="&gt;&gt;TxtPrecioMartes.Parent" xml:space="preserve">
+    <value>GroupBox2</value>
   </data>
   <data name="TDGridDeducciones.PrintInfo.MaxRowHeight" type="System.Int32, mscorlib">
     <value>30</value>
@@ -1802,11 +1784,11 @@
   <data name="&gt;&gt;Label8.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
-  <data name="&gt;&gt;TxtPrecioDomingo.Parent" xml:space="preserve">
-    <value>GroupBox2</value>
+  <data name="&gt;&gt;PictureBox2.Name" xml:space="preserve">
+    <value>PictureBox2</value>
   </data>
-  <data name="TDGridIngresos.PrintInfo.PrintHorizontalSplits" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="CmdBorraLinea.TabIndex" type="System.Int32, mscorlib">
+    <value>185</value>
   </data>
   <data name="Label2.Text" xml:space="preserve">
     <value>Inicio Periodo</value>
@@ -1820,20 +1802,20 @@
   <data name="&gt;&gt;ProgressBar2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="Button2.TabIndex" type="System.Int32, mscorlib">
-    <value>197</value>
+  <data name="CboTipoPlanilla.Location" type="System.Drawing.Point, System.Drawing">
+    <value>120, 19</value>
   </data>
-  <data name="&gt;&gt;Label11.Name" xml:space="preserve">
-    <value>Label11</value>
+  <data name="Label8.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
-  <data name="LblProcesando.TabIndex" type="System.Int32, mscorlib">
-    <value>195</value>
+  <data name="&gt;&gt;TxtPrecioSabado.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="CmdCerrar.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopCenter</value>
   </data>
-  <data name="Label4.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;Label10.ZOrder" xml:space="preserve">
+    <value>11</value>
   </data>
   <data name="&gt;&gt;Label15.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -1865,8 +1847,8 @@
   <data name="Label8.Text" xml:space="preserve">
     <value>% Bolsa</value>
   </data>
-  <data name="Label3.TabIndex" type="System.Int32, mscorlib">
-    <value>177</value>
+  <data name="TDGridDeducciones.PrintInfo.RepeatGridHeader" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="CmdNomina.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>BottomCenter</value>
@@ -1877,11 +1859,11 @@
   <data name="&gt;&gt;ProgressBar.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="TDGridDeducciones.PreviewInfo.ToolBars" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>1025, 471</value>
   </data>
-  <data name="CboTipoPlanilla.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 21</value>
+  <data name="&gt;&gt;TxtNumNomina.Parent" xml:space="preserve">
+    <value>GroupBox1</value>
   </data>
   <data name="TDGridDeducciones.GroupByCaption" xml:space="preserve">
     <value>Drag a column header here to group by that column</value>
@@ -1910,8 +1892,8 @@
   <data name="LblTotalPlanilla.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;Label8.Parent" xml:space="preserve">
-    <value>GroupBox2</value>
+  <data name="&gt;&gt;TxtPrecioDomingo.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;GroupBox1.Name" xml:space="preserve">
     <value>GroupBox1</value>
@@ -2033,29 +2015,32 @@
   <data name="TDGridDeducciones.PreviewInfo.AllowSizing" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;CmdNomina.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="Button2.Text" xml:space="preserve">
+    <value>Imp Colillas</value>
   </data>
   <data name="LblProcesando.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="TDGridDeducciones.PrintInfo.PageHeaderHeight" type="System.Int32, mscorlib">
-    <value>30</value>
+  <data name="&gt;&gt;DTPFechaIni.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;PictureBox2.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
-  <data name="TxtIR.Text" xml:space="preserve">
-    <value>1</value>
+  <data name="TDGridIngresos.Size" type="System.Drawing.Size, System.Drawing">
+    <value>964, 229</value>
   </data>
   <data name="ProgressBar2.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="&gt;&gt;TxtDeduccionPolicia.ZOrder" xml:space="preserve">
-    <value>16</value>
+  <data name="&gt;&gt;TxtPrecioDomingo.Parent" xml:space="preserve">
+    <value>GroupBox2</value>
   </data>
-  <data name="Label13.Text" xml:space="preserve">
-    <value>Precio Viernes</value>
+  <data name="TDGridDeducciones.PrintInfo.OwnerDrawPageHeader" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="TxtPrecioMiercoles.Text" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;Label5.Name" xml:space="preserve">
     <value>Label5</value>
@@ -2072,11 +2057,14 @@
   <data name="&gt;&gt;Label2.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;Label8.Parent" xml:space="preserve">
+    <value>GroupBox2</value>
+  </data>
   <data name="Label8.Size" type="System.Drawing.Size, System.Drawing">
     <value>44, 13</value>
   </data>
-  <data name="CmdCalcular.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 76</value>
+  <data name="&gt;&gt;TabControl1.Name" xml:space="preserve">
+    <value>TabControl1</value>
   </data>
   <data name="&gt;&gt;TxtPrecioLunes.Parent" xml:space="preserve">
     <value>GroupBox2</value>
@@ -2122,11 +2110,14 @@
   <data name="TDGridDeducciones.Size" type="System.Drawing.Size, System.Drawing">
     <value>994, 229</value>
   </data>
-  <data name="TDGridDeducciones.Text" xml:space="preserve">
-    <value>C1TrueDBGrid1</value>
+  <data name="TDGridIngresos.TabIndex" type="System.Int32, mscorlib">
+    <value>170</value>
   </data>
   <data name="&gt;&gt;TxtBolsa.ZOrder" xml:space="preserve">
     <value>12</value>
+  </data>
+  <data name="&gt;&gt;CmdSalir.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;CmdCalcular.Name" xml:space="preserve">
     <value>CmdCalcular</value>
@@ -2146,14 +2137,23 @@
   <data name="&gt;&gt;LblTotalPlanilla.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;Deducciones.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="&gt;&gt;GroupBox1.ZOrder" xml:space="preserve">
     <value>12</value>
+  </data>
+  <data name="Label3.TabIndex" type="System.Int32, mscorlib">
+    <value>177</value>
   </data>
   <data name="LblProcesando.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 9.75pt</value>
   </data>
   <data name="&gt;&gt;CmdCerrar.ZOrder" xml:space="preserve">
     <value>4</value>
+  </data>
+  <data name="&gt;&gt;LblProcesando.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;LblProcesando.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -2164,8 +2164,8 @@
   <data name="&gt;&gt;Configuracion.Name" xml:space="preserve">
     <value>Configuracion</value>
   </data>
-  <data name="TxtNumNomina.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="&gt;&gt;TxtIR.Parent" xml:space="preserve">
+    <value>GroupBox2</value>
   </data>
   <data name="TxtPrecioDomingo.TabIndex" type="System.Int32, mscorlib">
     <value>187</value>
