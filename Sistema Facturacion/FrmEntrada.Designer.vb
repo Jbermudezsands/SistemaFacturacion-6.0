@@ -19,24 +19,24 @@ Partial Class FrmEntrada
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmEntrada))
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.cmdEntrar = New System.Windows.Forms.Button
-        Me.txtPassword = New System.Windows.Forms.TextBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.CboUsuario = New C1.Win.C1List.C1Combo
-        Me.Panel1 = New System.Windows.Forms.Panel
-        Me.LblVersion = New System.Windows.Forms.Label
-        Me.PictureBox3 = New System.Windows.Forms.PictureBox
-        Me.lblFecha = New System.Windows.Forms.Label
-        Me.btncerrar = New System.Windows.Forms.Button
-        Me.btnmin = New System.Windows.Forms.Button
-        Me.lblHora = New System.Windows.Forms.Label
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.cmdEntrar = New System.Windows.Forms.Button()
+        Me.txtPassword = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.CboUsuario = New C1.Win.C1List.C1Combo()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.LblVersion = New System.Windows.Forms.Label()
+        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
+        Me.lblFecha = New System.Windows.Forms.Label()
+        Me.btncerrar = New System.Windows.Forms.Button()
+        Me.btnmin = New System.Windows.Forms.Button()
+        Me.lblHora = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
