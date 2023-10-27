@@ -841,6 +841,10 @@ Public Class FrmEnsamble
 
     End Sub
 
+    Private Sub GroupBox2_Enter(sender As Object, e As EventArgs) Handles GroupBox2.Enter
+
+    End Sub
+
     Private Sub CmdDesahacer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdDesahacer.Click
         Dim ConsecutivoEnsamble As Double, Fecha As String, SQlEnsamble As String
         Dim DataAdapter = New SqlClient.SqlDataAdapter, DataSet As New DataSet, IposicionFila As Double = 0
@@ -857,30 +861,30 @@ Public Class FrmEnsamble
         ConsecutivoEnsamble = Me.TxtNumeroEnsamble.Text
         Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
 
-            '////////////////////BUSCO EL CLIENTE PARA INVENTARIO //////////////////////////////////////
-            SqlString = "SELECT  * FROM Clientes WHERE(InventarioFisico = 1)"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-            DataAdapter.Fill(DataSet, "ConsultasCliente")
-            If DataSet.Tables("ConsultasCliente").Rows.Count <> 0 Then
-                CodCliente = DataSet.Tables("ConsultasCliente").Rows(0)("Cod_Cliente")
-                NombreCliente = DataSet.Tables("ConsultasCliente").Rows(0)("Nombre_Cliente")
-            Else
-                MsgBox("Seleccione una Cuenta cliente para Ajustes de Inventario", MsgBoxStyle.Critical, "Zeus Facturacion")
-                Exit Sub
-            End If
+        '////////////////////BUSCO EL CLIENTE PARA INVENTARIO //////////////////////////////////////
+        SqlString = "SELECT  * FROM Clientes WHERE(InventarioFisico = 1)"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "ConsultasCliente")
+        If DataSet.Tables("ConsultasCliente").Rows.Count <> 0 Then
+            CodCliente = DataSet.Tables("ConsultasCliente").Rows(0)("Cod_Cliente")
+            NombreCliente = DataSet.Tables("ConsultasCliente").Rows(0)("Nombre_Cliente")
+        Else
+            MsgBox("Seleccione una Cuenta cliente para Ajustes de Inventario", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
 
 
-            '////////////////////BUSCO EL CLIENTE PARA INVENTARIO //////////////////////////////////////
-            SqlString = "SELECT  * FROM Proveedor  WHERE(InventarioFisico = 1)"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-            DataAdapter.Fill(DataSet, "ConsultasProveedor")
-            If DataSet.Tables("ConsultasProveedor").Rows.Count <> 0 Then
-                CodProveedor = DataSet.Tables("ConsultasProveedor").Rows(0)("Cod_Proveedor")
-                NombreProveedor = DataSet.Tables("ConsultasProveedor").Rows(0)("Nombre_Proveedor")
-            Else
-                MsgBox("Seleccione una Cuenta Proveedor para Ajustes de Inventario", MsgBoxStyle.Critical, "Zeus Facturacion")
-                Exit Sub
-            End If
+        '////////////////////BUSCO EL CLIENTE PARA INVENTARIO //////////////////////////////////////
+        SqlString = "SELECT  * FROM Proveedor  WHERE(InventarioFisico = 1)"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "ConsultasProveedor")
+        If DataSet.Tables("ConsultasProveedor").Rows.Count <> 0 Then
+            CodProveedor = DataSet.Tables("ConsultasProveedor").Rows(0)("Cod_Proveedor")
+            NombreProveedor = DataSet.Tables("ConsultasProveedor").Rows(0)("Nombre_Proveedor")
+        Else
+            MsgBox("Seleccione una Cuenta Proveedor para Ajustes de Inventario", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
 
 
 
@@ -892,42 +896,42 @@ Public Class FrmEnsamble
 
 
 
-            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            '/////////////////////////////////CARGO LOS PRODUCTOS///////////////////////////////////////////////////////////////////7
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            SQlEnsamble = "SELECT  Detalle_Ensamble.Cod_ReciboEnsamble, Detalle_Ensamble.Fecha_Ensamble, Detalle_Ensamble.Tipo_Ensamble, Detalle_Ensamble.CodProducto,Productos.Descripcion_Producto, Detalle_Ensamble.Cantidad_Ensamble, Detalle_Ensamble.Valor_Ensamble, Detalle_Ensamble.Desecho, Detalle_Ensamble.Valor_Desecho FROM  Detalle_Ensamble INNER JOIN Productos ON Detalle_Ensamble.CodProducto = Productos.Cod_Productos  " & _
+        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////////////CARGO LOS PRODUCTOS///////////////////////////////////////////////////////////////////7
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SQlEnsamble = "SELECT  Detalle_Ensamble.Cod_ReciboEnsamble, Detalle_Ensamble.Fecha_Ensamble, Detalle_Ensamble.Tipo_Ensamble, Detalle_Ensamble.CodProducto,Productos.Descripcion_Producto, Detalle_Ensamble.Cantidad_Ensamble, Detalle_Ensamble.Valor_Ensamble, Detalle_Ensamble.Desecho, Detalle_Ensamble.Valor_Desecho FROM  Detalle_Ensamble INNER JOIN Productos ON Detalle_Ensamble.CodProducto = Productos.Cod_Productos  " &
                   "WHERE (Detalle_Ensamble.Cod_ReciboEnsamble = " & ConsecutivoEnsamble & ") AND (Detalle_Ensamble.Fecha_Ensamble = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Ensamble.Tipo_Ensamble = '" & Me.CboTipoProducto.Text & "') "
 
-            MiConexion.Open()
-            DataAdapter = New SqlClient.SqlDataAdapter(SQlEnsamble, MiConexion)
-            DataAdapter.Fill(DataSet, "ListaProductos")
+        MiConexion.Open()
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlEnsamble, MiConexion)
+        DataAdapter.Fill(DataSet, "ListaProductos")
         MiConexion.Close()
 
-            If Not DataSet.Tables("ListaProductos").Rows.Count = 0 Then
-                IposicionFila = 0
-                TPrecioUnitario = 0
+        If Not DataSet.Tables("ListaProductos").Rows.Count = 0 Then
+            IposicionFila = 0
+            TPrecioUnitario = 0
             TImporte = 0
 
-                Do While IposicionFila < (DataSet.Tables("ListaProductos").Rows.Count)
+            Do While IposicionFila < (DataSet.Tables("ListaProductos").Rows.Count)
 
-                    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    '//////////////////////////////////////////////////////GENERO LA COMPRA PARA ENTRADA DE INVENTARIO //////////////////////////////////////
-                    '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    If IposicionFila = 0 Then
-                        ConsecutivoCompra = BuscaConsecutivo("Compra")
-                        NumeroCompra = Format(ConsecutivoCompra, "0000#")
+                '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                '//////////////////////////////////////////////////////GENERO LA COMPRA PARA ENTRADA DE INVENTARIO //////////////////////////////////////
+                '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                If IposicionFila = 0 Then
+                    ConsecutivoCompra = BuscaConsecutivo("Compra")
+                    NumeroCompra = Format(ConsecutivoCompra, "0000#")
                     GrabaEncabezadoCompras(NumeroCompra, Fecha, "Mercancia Recibida", CodProveedor, Me.CboCodigoBodega.Text, NombreCliente, NombreCliente, Fecha, Val(0), 0, Val(0), Val(0), "Cordobas", "Procesado por DesEnsamble " & ConsecutivoEnsamble, CodigoProyecto, False)
-                    End If
+                End If
 
-                    CodProductos = DataSet.Tables("ListaProductos").Rows(IposicionFila)("CodProducto")
+                CodProductos = DataSet.Tables("ListaProductos").Rows(IposicionFila)("CodProducto")
 
-                    '//////////////////////////////BUSCO SI EL PRODUCTO ES SERVICIO PARA BUSCAR EL COSTO //////////////////////////////////////////////////////
-                    SQlEnsamble = "SELECT  * FROM Productos WHERE (Tipo_Producto = 'Servicio') AND (Activo = Activo) AND (Cod_Productos = '" & CodProductos & "')"
-                    MiConexion.Open()
-                    DataAdapter = New SqlClient.SqlDataAdapter(SQlEnsamble, MiConexion)
-                    DataAdapter.Fill(DataSet, "Servicio")
-                    MiConexion.Close()
-                    If DataSet.Tables("Servicio").Rows.Count = 0 Then
+                '//////////////////////////////BUSCO SI EL PRODUCTO ES SERVICIO PARA BUSCAR EL COSTO //////////////////////////////////////////////////////
+                SQlEnsamble = "SELECT  * FROM Productos WHERE (Tipo_Producto = 'Servicio') AND (Activo = Activo) AND (Cod_Productos = '" & CodProductos & "')"
+                MiConexion.Open()
+                DataAdapter = New SqlClient.SqlDataAdapter(SQlEnsamble, MiConexion)
+                DataAdapter.Fill(DataSet, "Servicio")
+                MiConexion.Close()
+                If DataSet.Tables("Servicio").Rows.Count = 0 Then
                     'PrecioCompra = UltimoPrecioCompra(CodProductos)
 
                     Cantidad = DataSet.Tables("ListaProductos").Rows(IposicionFila)("Cantidad_Ensamble")
@@ -936,7 +940,7 @@ Public Class FrmEnsamble
                     '///////////SI EL COSTO ES CERO PERO SE DESCARGAR, SIGNIFICA FACTURACION EN NEGATIVO ///////////
                     If Cantidad <> 0 Then
                         If PrecioCompra = 0 Then
-                            SqlString = "SELECT Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.TasaCambio, Detalle_Facturas.CodTarea, Detalle_Facturas.Costo_Unitario, Detalle_Facturas.Costo_Unitario / TasaCambio.MontoTasa AS Costo_UnitarioDolar FROM Detalle_Facturas INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa  " & _
+                            SqlString = "SELECT Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.TasaCambio, Detalle_Facturas.CodTarea, Detalle_Facturas.Costo_Unitario, Detalle_Facturas.Costo_Unitario / TasaCambio.MontoTasa AS Costo_UnitarioDolar FROM Detalle_Facturas INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa  " &
                                         "WHERE (Detalle_Facturas.Cod_Producto = '" & CodProductos & "') AND (Detalle_Facturas.Costo_Unitario <> 0) AND (Detalle_Facturas.Fecha_Factura <= CONVERT(DATETIME,'" & Format(Fecha, "yyyy-MM-dd") & "', 102)) ORDER BY Detalle_Facturas.Fecha_Factura"
                             DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                             DataAdapter.Fill(DataSet, "UltimoCosto")
@@ -949,47 +953,47 @@ Public Class FrmEnsamble
                         End If
                     End If
 
-                        Importe = Cantidad * PrecioCompra
-                        TImporte = TImporte + Importe
-                    Else
-                        TipoServicio = DataSet.Tables("Servicio").Rows(0)("Unidad_Medida")
-                        Select Case TipoServicio
-                            Case "ImporteFijo"
-                                Cantidad = 1
-                                PrecioCompra = DataSet.Tables("Servicio").Rows(0)("Precio_Venta")
-                                TPrecioUnitario = TPrecioUnitario + PrecioCompra
-                                Importe = Cantidad * PrecioCompra
-                                TImporte = TImporte + Importe
-                            Case "Unidades/Fracciones"
-                                Cantidad = DataSet.Tables("ListaProductos").Rows(IposicionFila)("Cantidad_Ensamble")
-                                PrecioCompra = DataSet.Tables("Servicio").Rows(0)("Precio_Venta")
-                                TPrecioUnitario = TPrecioUnitario + PrecioCompra
-                                Importe = Cantidad * PrecioCompra
-                                TImporte = TImporte + Importe
-                            Case "SubTotal"
-                                Cantidad = 1
-                                TasaCompra = DataSet.Tables("Servicio").Rows(0)("Precio_Venta")
-                                PrecioCompra = TImporte * (TasaCompra / 100)
-                                TPrecioUnitario = TPrecioUnitario + PrecioCompra
-                                Importe = Cantidad * PrecioCompra
-                                TImporte = TImporte + Importe
+                    Importe = Cantidad * PrecioCompra
+                    TImporte = TImporte + Importe
+                Else
+                    TipoServicio = DataSet.Tables("Servicio").Rows(0)("Unidad_Medida")
+                    Select Case TipoServicio
+                        Case "ImporteFijo"
+                            Cantidad = 1
+                            PrecioCompra = DataSet.Tables("Servicio").Rows(0)("Precio_Venta")
+                            TPrecioUnitario = TPrecioUnitario + PrecioCompra
+                            Importe = Cantidad * PrecioCompra
+                            TImporte = TImporte + Importe
+                        Case "Unidades/Fracciones"
+                            Cantidad = DataSet.Tables("ListaProductos").Rows(IposicionFila)("Cantidad_Ensamble")
+                            PrecioCompra = DataSet.Tables("Servicio").Rows(0)("Precio_Venta")
+                            TPrecioUnitario = TPrecioUnitario + PrecioCompra
+                            Importe = Cantidad * PrecioCompra
+                            TImporte = TImporte + Importe
+                        Case "SubTotal"
+                            Cantidad = 1
+                            TasaCompra = DataSet.Tables("Servicio").Rows(0)("Precio_Venta")
+                            PrecioCompra = TImporte * (TasaCompra / 100)
+                            TPrecioUnitario = TPrecioUnitario + PrecioCompra
+                            Importe = Cantidad * PrecioCompra
+                            TImporte = TImporte + Importe
 
-                        End Select
-
-
+                    End Select
 
 
-                    End If
 
-                    'PrecioVenta = UltimoPrecioVenta(CodProductos)
+
+                End If
+
+                'PrecioVenta = UltimoPrecioVenta(CodProductos)
 
                 GrabaDetalleCompraLiquidacion(NumeroCompra, CodProductos, PrecioCompra, 0, PrecioCompra, Importe, Cantidad, "Cordobas", Fecha, "0000", "01/01/1900")
-                    ActualizaExistencia(CodProductos)
+                ActualizaExistencia(CodProductos)
 
 
-                    IposicionFila = IposicionFila + 1
-                Loop
-            End If
+                IposicionFila = IposicionFila + 1
+            Loop
+        End If
 
         ActulizacionCompra(NumeroCompra, "Mercancia Recibida", Fecha, True)
 
@@ -1010,41 +1014,41 @@ Public Class FrmEnsamble
 
 
 
-            IposicionFila = 0
-            NumeroCompra = 0
-            CodProductos = Me.TxtCodigo.Text
-            Cantidad = Me.TxtCantidad.Text
-            PrecioCompra = TImporte / Cantidad
-            Importe = Cantidad * PrecioCompra
+        IposicionFila = 0
+        NumeroCompra = 0
+        CodProductos = Me.TxtCodigo.Text
+        Cantidad = Me.TxtCantidad.Text
+        PrecioCompra = TImporte / Cantidad
+        Importe = Cantidad * PrecioCompra
 
-            '////////////////////////////////////////////////////////////////////////////////////////////////////
-            '/////////////////////////////GRABO EL ENCABEZADO DE LA SALIDA DE BODEGA /////////////////////////////////////////////
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-            If IposicionFila = 0 Then
-                ConsecutivoFactura = BuscaConsecutivo("SalidaBodega")
-                NumeroFactura = Format(ConsecutivoFactura, "0000#")
-                GrabaEncabezadoFacturas(NumeroFactura, Fecha, "Salida Bodega", CodCliente, Me.CboCodigoBodega.Text, NombreCliente, NombreCliente, Fecha, Val(0), 0, Val(0), Val(0), "Cordobas", "Procesado por DesEnsamble " & ConsecutivoEnsamble)
-            End If
+        '////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////////GRABO EL ENCABEZADO DE LA SALIDA DE BODEGA /////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+        If IposicionFila = 0 Then
+            ConsecutivoFactura = BuscaConsecutivo("SalidaBodega")
+            NumeroFactura = Format(ConsecutivoFactura, "0000#")
+            GrabaEncabezadoFacturas(NumeroFactura, Fecha, "Salida Bodega", CodCliente, Me.CboCodigoBodega.Text, NombreCliente, NombreCliente, Fecha, Val(0), 0, Val(0), Val(0), "Cordobas", "Procesado por DesEnsamble " & ConsecutivoEnsamble)
+        End If
 
-            NombreProductos = DataSet.Tables("ListaProductos").Rows(IposicionFila)("Descripcion_Producto")
+        NombreProductos = DataSet.Tables("ListaProductos").Rows(IposicionFila)("Descripcion_Producto")
         GrabaDetalleFacturaSalida(NumeroFactura, CodProductos, NombreProductos, PrecioCompra, 0, PrecioCompra, Importe, Cantidad, "Cordobas", Fecha, "Salida Bodega", PrecioCompra)
-            ActualizaExistencia(CodProductos)
-            ActulizacionFactura(NumeroFactura, "Salida Bodega", Fecha, True)
+        ActualizaExistencia(CodProductos)
+        ActulizacionFactura(NumeroFactura, "Salida Bodega", Fecha, True)
 
-            MiConexion.Close()
-            '////////////////////////////////////////////////////////////////////////////////////////////////////
-            '/////////////////////SI NO EXISTE EL ENSAMBLE LO AGREGO///////////////////////////////////////////////
-            StrSqlUpdate = "UPDATE [Ensamble] SET [Activo]= 0 " & _
+        MiConexion.Close()
+        '////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////SI NO EXISTE EL ENSAMBLE LO AGREGO///////////////////////////////////////////////
+        StrSqlUpdate = "UPDATE [Ensamble] SET [Activo]= 0 " &
                            "WHERE (Cod_ReciboEnsamble = " & ConsecutivoEnsamble & ") AND (Fecha_Ensamble = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Ensamble = '" & Me.CboTipoProducto.Text & "')"
 
-            MiConexion.Open()
-            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-            iResultado = ComandoUpdate.ExecuteNonQuery
-            MiConexion.Close()
+        MiConexion.Open()
+        ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+        iResultado = ComandoUpdate.ExecuteNonQuery
+        MiConexion.Close()
 
 
-            LimpiaEnsamble()
-            MsgBox("Proceso Terminado", MsgBoxStyle.Information, "Zeus Facturacion")
+        LimpiaEnsamble()
+        MsgBox("Proceso Terminado", MsgBoxStyle.Information, "Zeus Facturacion")
     End Sub
 
     Private Sub CmdGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGrabar.Click

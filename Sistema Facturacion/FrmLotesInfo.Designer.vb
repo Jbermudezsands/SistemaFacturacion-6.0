@@ -19,25 +19,25 @@ Partial Class FrmLotesInfo
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmLotesInfo))
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.ChkActivo = New System.Windows.Forms.CheckBox
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.DTPFechaLote = New System.Windows.Forms.DateTimePicker
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.LblApellido = New System.Windows.Forms.Label
-        Me.CboLotes = New C1.Win.C1List.C1Combo
-        Me.TxtNombre = New System.Windows.Forms.TextBox
-        Me.LblNombre = New System.Windows.Forms.Label
-        Me.TDBGridLotes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.Button3 = New System.Windows.Forms.Button
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.ChkActivo = New System.Windows.Forms.CheckBox()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.DTPFechaLote = New System.Windows.Forms.DateTimePicker()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.LblApellido = New System.Windows.Forms.Label()
+        Me.CboLotes = New C1.Win.C1List.C1Combo()
+        Me.TxtNombre = New System.Windows.Forms.TextBox()
+        Me.LblNombre = New System.Windows.Forms.Label()
+        Me.TDBGridLotes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.Button3 = New System.Windows.Forms.Button()
         Me.BindingDetalle = New System.Windows.Forms.BindingSource(Me.components)
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
-        Me.TxtNumeroLote = New System.Windows.Forms.TextBox
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.TxtNumeroLote = New System.Windows.Forms.TextBox()
         Me.GroupBox1.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboLotes, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -179,7 +179,7 @@ Partial Class FrmLotesInfo
         Me.TDBGridLotes.Name = "TDBGridLotes"
         Me.TDBGridLotes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TDBGridLotes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TDBGridLotes.PreviewInfo.ZoomFactor = 75
+        Me.TDBGridLotes.PreviewInfo.ZoomFactor = 75.0R
         Me.TDBGridLotes.PrintInfo.PageSettings = CType(resources.GetObject("TDBGridLotes.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
         Me.TDBGridLotes.Size = New System.Drawing.Size(756, 288)
         Me.TDBGridLotes.TabIndex = 212

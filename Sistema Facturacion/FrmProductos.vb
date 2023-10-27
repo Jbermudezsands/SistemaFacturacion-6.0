@@ -1642,20 +1642,24 @@ Public Class FrmProductos
             DataAdapter = New SqlClient.SqlDataAdapter(SQLComponentes, MiConexion)
             DataAdapter.Fill(Dataset, "ConsecutivoComponente")
             If Not Dataset.Tables("ConsecutivoComponente").Rows.Count = 0 Then
-                CodComponente = Dataset.Tables("ConsecutivoComponente").Rows(0)("Componente") + 1
+                If Not IsDBNull(Dataset.Tables("ConsecutivoComponente").Rows(0)("Componente")) Then
+                    CodComponente = Dataset.Tables("ConsecutivoComponente").Rows(0)("Componente") + 1
+                Else
+                    CodComponente = 1
+                End If
 
                 '//////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 '////////////////////////////ACTUALIZO EL CONSECUTIVO///////////////////////////////////////////////////
                 '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 MiConexion.Close()
-                SQLProductos = "UPDATE [Consecutivos]  SET [Componente] = " & CodComponente & ""
-                MiConexion.Open()
-                ComandoUpdate = New SqlClient.SqlCommand(SQLProductos, MiConexion)
-                iResultado = ComandoUpdate.ExecuteNonQuery
-                MiConexion.Close()
+                    SQLProductos = "UPDATE [Consecutivos]  SET [Componente] = " & CodComponente & ""
+                    MiConexion.Open()
+                    ComandoUpdate = New SqlClient.SqlCommand(SQLProductos, MiConexion)
+                    iResultado = ComandoUpdate.ExecuteNonQuery
+                    MiConexion.Close()
 
+                End If
             End If
-        End If
 
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '////////////////////////////Agrego el Componente al Producto///////////////////////////////////////////////////

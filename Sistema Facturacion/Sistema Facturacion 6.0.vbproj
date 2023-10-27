@@ -901,6 +901,12 @@
     <Compile Include="Reportes\ArepProductosVendidos.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\ArepProductoVencimiento.Designer.vb">
+      <DependentUpon>ArepProductoVencimiento.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepProductoVencimiento.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\ArepProductoVendedor.Designer.vb">
       <DependentUpon>ArepProductoVendedor.vb</DependentUpon>
     </Compile>
@@ -2408,6 +2414,9 @@
     <EmbeddedResource Include="Reportes\ArepProductosVendidos.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ArepProductosVendidos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepProductoVencimiento.resx">
+      <DependentUpon>ArepProductoVencimiento.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepProductoVendedor.resx">
       <SubType>Designer</SubType>

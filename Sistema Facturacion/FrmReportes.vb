@@ -1723,6 +1723,7 @@ Public Class FrmReportes
                 Me.ListBox.Items.Add("Reporte de Ventas x Endoso al Credito")
                 Me.ListBox.Items.Add("Reporte de Ventas Exentas")
                 Me.ListBox.Items.Add("Reporte de Ordenes de Compra")
+                Me.ListBox.Items.Add("Reporte de Lotes vencidos")
 
             Case "Reporte Cuentas x Cobrar"
                 Me.ListBox.Items.Add("Reporte de Saldo de Clientes")
@@ -2008,6 +2009,71 @@ Public Class FrmReportes
         Fecha2 = Me.DTPFechaFin.Value
         My.Application.DoEvents()
         Select Case Me.ListBox.Text
+
+            Case "Reporte de Lotes vencidos"
+                Dim SQLString As String, CodProductos As String = "", FechaIni As Date, FechaFin As Date
+                Dim oDataRow As DataRow, Inicial As Double, Registros As Double, Contador As Double, i As Double
+                Dim CodigoProducto As String, CodigoBodega As String, NumeroLote As String, ExistenciaLote As Double = 0
+                Dim DvConsulta As New DataView, ArepProductoVencimiento As New ArepProductoVencimiento
+
+
+                FechaIni = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
+                FechaFin = Format(Me.DTPFechaFin.Value, "yyyy-MM-dd")
+
+                '*******************************************************************************************************************************
+                '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
+                '*******************************************************************************************************************************
+                DataSet.Reset()
+                SQLString = "SELECT DISTINCT Detalle_Compras.Cod_Producto, Productos.Descripcion_Producto, Lote.Numero_Lote, Lote.FechaVence, Lote.Activo, Detalle_Compras.Cantidad, Compras.Cod_Bodega FROM  Lote INNER JOIN  Detalle_Compras ON Lote.Numero_Lote = Detalle_Compras.Numero_Lote INNER JOIN  Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN  Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  WHERE (Lote.Activo = 1) AND (DATEDIFF(Day, Lote.FechaVence, '2023-08-07') <= - 1000)"
+                'SQLString = "SELECT DISTINCT Detalle_Compras.Cod_Producto, Productos.Descripcion_Producto, Lote.Numero_Lote, Lote.FechaVence, Lote.Activo, Detalle_Compras.Cantidad, Compras.Cod_Bodega FROM  Lote INNER JOIN  Detalle_Compras ON Lote.Numero_Lote = Detalle_Compras.Numero_Lote INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos WHERE(Lote.Activo = 1) And (DateDiff(Day, Lote.FechaVence, '" & Format(Me.DTPFechaFin.Value, "yyyy-MM-dd") & "') <= -1000)"
+                DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
+                DataAdapter.Fill(DataSet, "DetalleMovimientos")
+
+
+                SQLString = "SELECT DISTINCT Detalle_Compras.Cod_Producto, Productos.Descripcion_Producto, Lote.Numero_Lote, Lote.FechaVence, { fn NOW() } AS Fecha, DATEDIFF(day, Lote.FechaVence, { fn NOW() }) AS Dias, Lote.Activo, Compras.Cod_Bodega FROM Lote INNER JOIN Detalle_Compras ON Lote.Numero_Lote = Detalle_Compras.Numero_Lote INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra WHERE(Lote.Activo = 1) And (DateDiff(Day, Lote.FechaVence, '" & Format(Me.DTPFechaFin.Value, "yyyy-MM-dd") & "') > 0) And (DateDiff(Day, Lote.FechaVence, '" & Format(Me.DTPFechaFin.Value, "yyyy-MM-dd") & "') <= 60)"
+
+                DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
+                DataAdapter.Fill(DataSet, "Salidas")
+                Me.ProgressBar1.Maximum = DataSet.Tables("Salidas").Rows.Count
+                Me.ProgressBar1.Minimum = 0
+                Me.ProgressBar1.Value = 0
+                Me.ProgressBar1.Visible = True
+                Registros = 0
+
+                Do While DataSet.Tables("Salidas").Rows.Count > Registros
+
+                    CodigoProducto = DataSet.Tables("Salidas").Rows(Registros)("Cod_Producto")
+                    NumeroLote = DataSet.Tables("Salidas").Rows(Registros)("Numero_Lote")
+                    CodigoBodega = DataSet.Tables("Salidas").Rows(Registros)("Cod_Bodega")
+
+                    Me.Text = "Procesando el Lote No:" & NumeroLote
+
+                    My.Application.DoEvents()
+
+                    ExistenciaLote = BuscaExistenciaBodegaLote(CodigoProducto, CodigoBodega, NumeroLote)
+
+                    oDataRow = DataSet.Tables("DetalleMovimientos").NewRow
+                    oDataRow("Cod_Producto") = DataSet.Tables("Salidas").Rows(Registros)("Cod_Producto")
+                    oDataRow("Descripcion_Producto") = DataSet.Tables("Salidas").Rows(Registros)("Descripcion_Producto")
+                    oDataRow("Numero_Lote") = DataSet.Tables("Salidas").Rows(Registros)("Numero_Lote")
+                    oDataRow("FechaVence") = DataSet.Tables("Salidas").Rows(Registros)("FechaVence")
+                    oDataRow("Cod_Bodega") = DataSet.Tables("Salidas").Rows(Registros)("Cod_Bodega")
+                    oDataRow("Cantidad") = ExistenciaLote
+                    DataSet.Tables("DetalleMovimientos").Rows.Add(oDataRow)
+
+                    Registros = Registros + 1
+                    Me.ProgressBar1.Value = Me.ProgressBar1.Value + 1
+                Loop
+                DataSet.Tables("Salidas").Reset()
+
+
+
+                DvConsulta = New DataView(DataSet.Tables("DetalleMovimientos"))
+                DvConsulta.Sort = "Cod_Producto"
+
+                ArepProductoVencimiento.DataSource = DvConsulta
+                ArepProductoVencimiento.Show()
+
 
 
             Case "Reporte PBI Excel"
