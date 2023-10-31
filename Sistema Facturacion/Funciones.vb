@@ -1874,7 +1874,7 @@ errSub:
 
     End Function
 
-    Public Sub GrabarRegistroEvacuaciones(ByVal Numero_Contrato As Double, ByVal Fecha_Registro As Date, ByVal Cod_Cliente As String, ByVal idConductor As String, ByVal idVehiculo As Double, ByVal idContrato As Double, ByVal Anulado As Boolean, ByVal Activo As Boolean, ByVal Procesado As Boolean, ByVal Nuevo As Boolean)
+    Public Sub GrabarRegistroEvacuaciones(ByVal Numero_Contrato As Double, ByVal Fecha_Registro As Date, ByVal Cod_Cliente As String, ByVal idConductor As String, ByVal idVehiculo As Double, ByVal idContrato As Double, ByVal Anulado As Boolean, ByVal Activo As Boolean, ByVal Procesado As Boolean, ByVal Nuevo As Boolean, Num_Cont_Evacuado As String, Num_Cont_Colocado As String)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim Activar As Integer, Anular As Integer, Procesar As Integer
@@ -1904,7 +1904,7 @@ errSub:
         'If Not DataSet.Tables("Evacuaciones").Rows.Count = 0 Then
         If Nuevo = False Then
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-            StrSqlUpdate = "UPDATE [Registro_Transporte_Detalle]  SET [Cod_Cliente] = '" & Cod_Cliente & "' ,[Id_Conductor] = '" & idConductor & "' ,[Id_Vehiculo] = '" & idVehiculo & "' ,[Activo] = " & Activar & " ,[Anulado] = " & Anular & "  ,[Procesado] = " & Procesar & " ,[idTipoContrato] = " & idContrato & ",[Numero_Contrato] = " & Numero_Contrato & "   WHERE (Numero_Contrato = " & Numero_Contrato & ") AND (idTipoContrato = " & idContrato & ") AND (Fecha_Registro = CONVERT(DATETIME, '" & Format(Fecha_Registro, "yyyy-MM-dd") & "', 102))"
+            StrSqlUpdate = "UPDATE [Registro_Transporte_Detalle]  SET [Cod_Cliente] = '" & Cod_Cliente & "' ,[Id_Conductor] = '" & idConductor & "' ,[Id_Vehiculo] = '" & idVehiculo & "' ,[Activo] = " & Activar & " ,[Anulado] = " & Anular & "  ,[Procesado] = " & Procesar & " ,[idTipoContrato] = " & idContrato & ",[Numero_Contrato] = " & Numero_Contrato & ",[Num_Cont_Evacuado] = " & Num_Cont_Evacuado & ",[Num_Cont_Colocado] = " & Num_Cont_Colocado & "   WHERE (Numero_Contrato = " & Numero_Contrato & ") AND (idTipoContrato = " & idContrato & ") AND (Fecha_Registro = CONVERT(DATETIME, '" & Format(Fecha_Registro, "yyyy-MM-dd") & "', 102))"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -1912,8 +1912,8 @@ errSub:
 
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO Registro_Transporte_Detalle ([Fecha_Registro],[Cod_Cliente],[Id_Conductor],[Id_Vehiculo],[Activo],[Anulado],[Procesado],[idTipoContrato],[Numero_Contrato]) " &
-                           "VALUES (CONVERT(DATETIME, '" & Format(Fecha_Registro, "yyyy-MM-dd") & "', 102) ,'" & Cod_Cliente & "' ,'" & idConductor & "' , '" & idVehiculo & "'," & Activar & ", " & Anular & " , " & Procesar & " ," & idContrato & "," & Numero_Contrato & ")"
+            StrSqlUpdate = "INSERT INTO Registro_Transporte_Detalle ([Fecha_Registro],[Cod_Cliente],[Id_Conductor],[Id_Vehiculo],[Activo],[Anulado],[Procesado],[idTipoContrato],[Numero_Contrato],[Num_Cont_Evacuado],[Num_Cont_Colocado]) " &
+                           "VALUES (CONVERT(DATETIME, '" & Format(Fecha_Registro, "yyyy-MM-dd") & "', 102) ,'" & Cod_Cliente & "' ,'" & idConductor & "' , '" & idVehiculo & "'," & Activar & ", " & Anular & " , " & Procesar & " ," & idContrato & "," & Numero_Contrato & ", '" & Num_Cont_Evacuado & "', '" & Num_Cont_Colocado & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -3435,7 +3435,7 @@ errSub:
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim TipoFactura As String, Excento As Boolean = False, NumeroFactura As String, FechaFactura As Date
         Dim SubTotal As Double, Iva As Double, SubTotal2 As Double, Iva2 As Double
-        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
 
         '/////////////////////////////////////BUSCO EL TOTAL DE LAS FACTURAS PARA ESTE MES /////////////////////////////////////////////////
         FechaIni = DateSerial(Year(Fecha), Month(Fecha), 1)
@@ -4067,9 +4067,9 @@ errSub:
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQlString As String, iPosicion As Double = 0
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim oDataRow As DataRow, i As Double, Registro As Double = 0
+        Dim Registro As Double = 0
         Dim ExistenciaLote As Double, FechaVence As Date, NumeroLote As String
-        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim ComandoUpdate As New SqlClient.SqlCommand
 
 
         SQlString = "SELECT     MAX(Detalle_Compras.Cod_Producto) AS Cod_Producto, Detalle_Compras.Numero_Lote, Lote.FechaVence FROM Detalle_Compras INNER JOIN Lote ON Detalle_Compras.Numero_Lote = Lote.Numero_Lote WHERE  (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Lote.Activo = 1) GROUP BY Detalle_Compras.Numero_Lote, Lote.FechaVence  HAVING(Not (Detalle_Compras.Numero_Lote Is NULL)) ORDER BY Lote.FechaVence"
@@ -4757,7 +4757,7 @@ errSub:
     End Function
 
     Public Function ValidarFacturaEnRecibo(ByVal CodigoCliente As String, ByVal NumeroFactura As String, ByVal MontoRecibo As Double, ByVal Moneda As String) As Double
-        Dim SqlString As String, Iposicion As Double
+        Dim SqlString As String
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim ComandoUpdate As New SqlClient.SqlCommand
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -5029,7 +5029,7 @@ errSub:
 
     Public Function PerteneceProductoBodega(ByVal CodigoBodega As String, ByVal CodigoProducto As String) As Boolean
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Existencia As Double
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim SqlDatos As String
 
         '---------------------------LEER DATOS EMPRESA ------------------------
@@ -8580,7 +8580,7 @@ errSub:
     End Sub
     Public Sub InsertarDetalleNotaDebito(ByVal ConsecutivoNotaDebito As String, ByVal FechaNota As Date, ByVal TipoNota As String, ByVal Descripcion As String, ByVal NumeroFactura As String, ByVal Monto As Double)
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Fecha As String
-        Dim SqlString As String, MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
         Fecha = Format(FechaNota, "yyyy-MM-dd")
@@ -11225,7 +11225,7 @@ errSub:
 
     Public Sub ActualizaMETODOPagosProveedores(ByVal MonedaRecibo As String)
         Dim Metodo As String, iPosicion As Double, Registros As Double, Monto As Double
-        Dim Subtotal As Double, TipoMetodo As String, SQlMetodo As String, SQLTasa As String, Fecha As String
+        Dim Subtotal As Double, TipoMetodo As String, SQlMetodo As String, Fecha As String
         Dim MiConexion As New SqlClient.SqlConnection(Conexion), Descuento As Double, Moneda As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, TasaCambio As Double
 
@@ -13052,8 +13052,8 @@ errSub:
     End Function
     Public Function BuscaExistenciaBodegaLote(ByVal CodigoProducto As String, ByVal CodigoBodega As String, ByVal NumeroLote As String) As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Fecha As String, UnidadComprada As Double
-        Dim SQlInventarioFisico As String, TasaCambio As Double, Existencia As Double = 0, SqlConsulta As String, DevolucionCompra As Double = 0
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, UnidadComprada As Double
+        Dim TasaCambio As Double, Existencia As Double = 0, SqlConsulta As String, DevolucionCompra As Double = 0
         Dim UnidadFacturada As Double = 0, DevolucionFactura As Double = 0, TransferenciaEnviada As Double = 0, TransferenciaRecibida As Double = 0
         Dim SalidaBodega As Double = 0, CostoVenta As Double = 0, ImporteFactura As Double = 0
         Dim ImporteCompra As Double, ImporteDevCompra As Double = 0, ImporteVenta As Double = 0, ImporteSalida As Double = 0
@@ -14970,7 +14970,6 @@ errSub:
         Dim Existencia As Double = 0, SqlConsulta As String, DevolucionCompra As Double = 0
         Dim UnidadFacturada As Double = 0, DevolucionFactura As Double = 0, UnidadTransferencia As Double, ImporteTransferencia As Double, ImporteTransferenciaD As Double
         Dim CostoPromedio As Double = 0, ImporteCompraD As Double = 0, ImporteVentaD As Double = 0
-        Dim FechaIni2 As Date
 
 
         'CostoPromedio = CostoPromedioKardexBodega(CodigoProducto, FechaCompraFin, CodBodega)
@@ -15567,7 +15566,7 @@ errSub:
         Dim Sqldetalle As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, TasaCambio As String
         Dim Fecha As String, MiConexion As New SqlClient.SqlConnection(Conexion), SqlUpdate As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, MonedaCompra As String, MonedaProducto As String
-        Dim Descripcion As String
+        Dim Descripcion As String = ""
 
         MonedaCompra = Moneda
         MonedaProducto = "Cordobas"
@@ -15906,7 +15905,7 @@ errSub:
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim Subtotal As Double, Iva As Double, Neto As Double, Pagado As Double, Descuento As Double, Exonerado As Boolean
-        Dim MonedaFactura As String = My.Forms.FrmFacturas.TxtMonedaFactura.Text, ClienteSeleccionado As String, SqlString As String
+        Dim MonedaFactura As String = My.Forms.FrmFacturas.TxtMonedaFactura.Text, ClienteSeleccionado As String
 
         Try
 

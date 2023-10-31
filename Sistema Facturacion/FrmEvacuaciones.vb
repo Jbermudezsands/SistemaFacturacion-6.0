@@ -8,13 +8,13 @@ Public Class FrmEvacuaciones
     Public CadenaFechaFact As String, CadenaFechaAcum As String, ConsecutivoFacturaManual As Boolean = False
 
     Public Sub ActualizarGridInsertRowFact()
-        Dim SqlCompras As String, TipoFactura As String
+
         Dim Dias As Double, SQlString As String, i As Double
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim IdTipoContrato As Integer, Registros As Double, j As Double
-        Dim Total As Double = 0, FechaConsulta As Date, FechaIni As Date, FechaFin As Date, NumeroContrato As Double, CodigoCliente As String
+        Dim Total As Double = 0, FechaIni As Date, FechaFin As Date, NumeroContrato As Double, CodigoCliente As String
         Dim Acumulado As Double = 0, Periodo As Double = 0, fechaRegistro As Date, IdDetalleContrato As Double, Unificar As Boolean
-        Dim Criterios As String, Buscar_Fila() As DataRow, Iposicion As Double, Posicion As Double
+        Dim Criterios As String, Buscar_Fila() As DataRow, Posicion As Double
         Dim oDataRow As DataRow
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////

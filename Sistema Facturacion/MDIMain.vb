@@ -1360,6 +1360,11 @@ Public Class MDIMain
         My.Forms.FrmListadoRecibo.Show()
     End Sub
 
+    Private Sub RibbonButton21_Click(sender As Object, e As EventArgs) Handles RibbonButton21.Click
+        My.Forms.FrmContenedores.MdiParent = Me
+        My.Forms.FrmContenedores.Show()
+    End Sub
+
     Private Sub RibbonHospitalizacion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonHospitalizacion.Click
         My.Forms.FrmHospitalizacion.MdiParent = Me
         My.Forms.FrmHospitalizacion.Show()

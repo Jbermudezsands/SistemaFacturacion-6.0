@@ -105,6 +105,12 @@
       <DependentUpon>FrmAjustarTodos.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmContenedores.Designer.vb">
+      <DependentUpon>FrmContenedores.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmContenedores.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmListadoRecibos.Designer.vb">
       <DependentUpon>FrmListadoRecibos.vb</DependentUpon>
     </Compile>
@@ -1670,6 +1676,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FrmContenedores.resx">
+      <DependentUpon>FrmContenedores.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmListadoRecibos.resx">
       <DependentUpon>FrmListadoRecibos.vb</DependentUpon>
     </EmbeddedResource>

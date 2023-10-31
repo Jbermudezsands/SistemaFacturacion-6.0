@@ -123,6 +123,16 @@ Public Class FrmRegistroTransporte
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim SqlString As String, ComandoUpdate As New SqlClient.SqlCommand, idVehiculo As Double, idContrato As Double
 
+        If Me.TxtContenedorColocado.Text = "" Then
+            MsgBox("Debe digitar el Numero Contenedor Colocado", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.TxtContenedorEvacuado.Text = "" Then
+            MsgBox("Debe digitar el Numero Contenedor Evacuado", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
         If Me.CboCodigoConductor.Text = "" Then
             MsgBox("Seleccione un Conductor", MsgBoxStyle.Critical, "Zeus Facturacion")
             Exit Sub
@@ -185,7 +195,7 @@ Public Class FrmRegistroTransporte
 
 
 
-        GrabarRegistroEvacuaciones(Me.TxtNumeroContrato.Text, Me.DTPFecha.Value, CodigoCliente, IdConductor, idVehiculo, Me.idDetalleContrato, False, True, False, Nuevo)
+        GrabarRegistroEvacuaciones(Me.TxtNumeroContrato.Text, Me.DTPFecha.Value, CodigoCliente, IdConductor, idVehiculo, Me.idDetalleContrato, False, True, False, Nuevo, TxtContenedorEvacuado.Text, TxtContenedorColocado.Text)
 
         Me.CboPlaca.Text = ""
         Me.CboCodigoConductor.Text = ""

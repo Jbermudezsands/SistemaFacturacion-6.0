@@ -844,7 +844,6 @@ Public Class FrmActualiza
         Dim StrSQLUpdate As String, ComandoUpdate As New SqlClient.SqlCommand
         Dim iResultado As Integer
         Dim Contador As Double = 0, j As Double = 0
-        Dim CodigoBodega As String
         Dim Cantidad As Double, Precio As Double, Codigo As String, Numero As String, SqlString As String, FactCont As Double, i As Double
         Dim NumeroFactura As String, FechaFactura As Date, TipoFactura As String, TasaImpuesto As Double, ImpuestoFact As Double, SubTotalFact As Double, Exonerado As Boolean
 

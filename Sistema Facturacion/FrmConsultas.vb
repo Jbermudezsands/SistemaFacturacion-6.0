@@ -25,6 +25,26 @@ Public Class FrmConsultas
             Dim DataAdapter As New SqlClient.SqlDataAdapter, SQlProductos As String
 
             Select Case Quien
+                Case "Contenedores"
+
+                    Me.Size = New System.Drawing.Size(988, 424)
+                    Me.Location = New Point(160, 160)
+                    SQlProductos = "SELECT Codigo_Contenedor, Nombre_Contenedor, Activo FROM  Contenedor"
+
+                    MiConexion.Open()
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+                    Me.TrueDBGridConsultas.Columns("Codigo_Contenedor").Caption = "Codigo"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Nombre_Contenedor").Width = 300
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Activo").Visible = False
+
+                    MiConexion.Close()
+
+
                 Case "TipoExamen"
 
                     Me.Size = New System.Drawing.Size(988, 424)
@@ -471,7 +491,7 @@ Public Class FrmConsultas
                     Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 150
 
                 Case "Repesaje"
-                    SQlProductos = "SELECT Recepcion.NumeroRecepcion, Recepcion.Fecha, Proveedor.Nombre_Proveedor + ' ' + Proveedor.Apellido_Proveedor AS Nombres, Conductor, Proveedor.Cod_Proveedor,Recepcion.TipoRecepcion FROM Recepcion INNER JOIN Proveedor ON Recepcion.Cod_Proveedor = Proveedor.Cod_Proveedor " & _
+                    SQlProductos = "SELECT Recepcion.NumeroRecepcion, Recepcion.Fecha, Proveedor.Nombre_Proveedor + ' ' + Proveedor.Apellido_Proveedor AS Nombres, Conductor, Proveedor.Cod_Proveedor,Recepcion.TipoRecepcion FROM Recepcion INNER JOIN Proveedor ON Recepcion.Cod_Proveedor = Proveedor.Cod_Proveedor " &
                                    "WHERE(Recepcion.Cancelar = 0) AND (TipoRecepcion = '" & FrmRecepcion.CboTipoRecepcion.Text & "') ORDER BY Recepcion.NumeroRecepcion"
                     MiConexion.Open()
 
@@ -492,7 +512,7 @@ Public Class FrmConsultas
                 Case "SalidaBascula"
                     'SQlProductos = "SELECT Recepcion.NumeroRecepcion, Recepcion.Fecha, Proveedor.Nombre_Proveedor + ' ' + Proveedor.Apellido_Proveedor AS Nombres, Conductor, Proveedor.Cod_Proveedor,Recepcion.TipoRecepcion FROM Recepcion INNER JOIN Proveedor ON Recepcion.Cod_Proveedor = Proveedor.Cod_Proveedor " & _
                     '               "WHERE(Recepcion.Cancelar = 0) AND (TipoRecepcion = '" & FrmRecepcion.CboTipoRecepcion.Text & "') ORDER BY Recepcion.NumeroRecepcion"
-                    SQlProductos = "SELECT Recepcion.NumeroRecepcion, Recepcion.Fecha, Clientes.Cod_Cliente, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, Conductor.Nombre AS Conductor, Conductor.Cedula, Recepcion.TipoRecepcion FROM Recepcion INNER JOIN Clientes ON Recepcion.Cod_Proveedor = Clientes.Cod_Cliente INNER JOIN Conductor ON Recepcion.Conductor = Conductor.Codigo  " & _
+                    SQlProductos = "SELECT Recepcion.NumeroRecepcion, Recepcion.Fecha, Clientes.Cod_Cliente, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, Conductor.Nombre AS Conductor, Conductor.Cedula, Recepcion.TipoRecepcion FROM Recepcion INNER JOIN Clientes ON Recepcion.Cod_Proveedor = Clientes.Cod_Cliente INNER JOIN Conductor ON Recepcion.Conductor = Conductor.Codigo  " &
                                    "WHERE (Recepcion.Cancelar = 0) AND (Recepcion.TipoRecepcion =  '" & FrmRecepcion.CboTipoRecepcion.Text & "') ORDER BY Recepcion.NumeroRecepcion"
                     MiConexion.Open()
 
@@ -511,7 +531,7 @@ Public Class FrmConsultas
                     'Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(4).Visible = False
 
                 Case "Recepcion"
-                    SQlProductos = "SELECT Recepcion.NumeroRecepcion, Recepcion.Fecha, Proveedor.Nombre_Proveedor + ' ' + Proveedor.Apellido_Proveedor AS Nombres, Conductor, Proveedor.Cod_Proveedor,Recepcion.TipoRecepcion FROM Recepcion INNER JOIN Proveedor ON Recepcion.Cod_Proveedor = Proveedor.Cod_Proveedor " & _
+                    SQlProductos = "SELECT Recepcion.NumeroRecepcion, Recepcion.Fecha, Proveedor.Nombre_Proveedor + ' ' + Proveedor.Apellido_Proveedor AS Nombres, Conductor, Proveedor.Cod_Proveedor,Recepcion.TipoRecepcion FROM Recepcion INNER JOIN Proveedor ON Recepcion.Cod_Proveedor = Proveedor.Cod_Proveedor " &
                                    "WHERE(Recepcion.Cancelar = 0) AND (TipoRecepcion = '" & FrmRecepcion.CboTipoRecepcion.Text & "') ORDER BY Recepcion.NumeroRecepcion"
                     MiConexion.Open()
 
@@ -640,7 +660,7 @@ Public Class FrmConsultas
 
 
                     'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Costo_Promedio, Existencia_Unidades,Cod_Iva FROM Productos Where (Tipo_Producto <> 'Ensambles')"
-                    SQlProductos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, DetalleBodegas.Costo, DetalleBodegas.Existencia_Unidades, Productos.Cod_Iva FROM  Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos  " & _
+                    SQlProductos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, DetalleBodegas.Costo, DetalleBodegas.Existencia_Unidades, Productos.Cod_Iva FROM  Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos  " &
                                    "WHERE (Productos.Tipo_Producto <> 'Ensambles') AND (DetalleBodegas.Cod_Bodegas = '" & CodigoBodega & "') ORDER BY Productos.Cod_Productos"
                     Me.TrueDBGridConsultas.Columns(0).Caption = "C�digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
@@ -1114,7 +1134,7 @@ Public Class FrmConsultas
 
 
                     'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Costo_Promedio, Existencia_Unidades,Cod_Iva FROM Productos Where (Tipo_Producto <> 'Ensambles')"
-                    SQlProductos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, DetalleBodegas.Costo, DetalleBodegas.Existencia as Existencia_Unidades, Productos.Cod_Iva FROM  Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos  " & _
+                    SQlProductos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, DetalleBodegas.Costo, DetalleBodegas.Existencia as Existencia_Unidades, Productos.Cod_Iva FROM  Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos  " &
                                    "WHERE (Productos.Tipo_Producto <> 'Ensambles') AND (DetalleBodegas.Cod_Bodegas = '" & CodigoBodega & "') ORDER BY Productos.Cod_Productos"
                     Me.TrueDBGridConsultas.Columns(0).Caption = "C�digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
@@ -1147,7 +1167,7 @@ Public Class FrmConsultas
 
 
                     'SQlProductos = "SELECT Cod_Productos, Descripcion_Producto, Tipo_Producto,Costo_Promedio, Existencia_Unidades,Cod_Iva FROM Productos Where (Tipo_Producto <> 'Ensambles')"
-                    SQlProductos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, DetalleBodegas.Costo, DetalleBodegas.Existencia_Unidades, Productos.Cod_Iva FROM  Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos  " & _
+                    SQlProductos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, DetalleBodegas.Costo, DetalleBodegas.Existencia_Unidades, Productos.Cod_Iva FROM  Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos  " &
                                    "WHERE (Productos.Tipo_Producto <> 'Ensambles') AND (DetalleBodegas.Cod_Bodegas = '" & CodigoBodega & "') ORDER BY Productos.Cod_Productos"
                     Me.TrueDBGridConsultas.Columns(0).Caption = "C�digo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
@@ -1585,6 +1605,10 @@ Public Class FrmConsultas
         TipoProducto = ""
 
         Select Case Quien
+            Case "Contenedores"
+                Posicion = Me.BindingConsultas.Position
+                Codigo = Me.BindingConsultas.Item(Posicion)("Codigo_Contenedor")
+                Descripcion = Me.BindingConsultas.Item(Posicion)("Nombre_Contenedor")
             Case "TipoExamen"
                 Posicion = Me.BindingConsultas.Position
                 IdConsulta = Me.BindingConsultas.Item(Posicion)("IdTipoExamen")

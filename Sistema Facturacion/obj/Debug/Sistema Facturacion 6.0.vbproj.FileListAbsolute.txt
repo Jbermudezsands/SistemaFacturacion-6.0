@@ -327,3 +327,4 @@ D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Factura
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmListadoHistorico.resources
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmListadoRecibo.resources
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepProductoVencimiento.resources
+D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmContenedores.resources

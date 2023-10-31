@@ -149,6 +149,7 @@ Partial Class MDIMain
         Me.RibbonConductor = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonVehiculo = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonButton2 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton21 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonButton18 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonButton3 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonButton17 = New C1.Win.C1Ribbon.RibbonButton()
@@ -1199,6 +1200,7 @@ Partial Class MDIMain
         Me.RibbonGroup12.Items.Add(Me.RibbonConductor)
         Me.RibbonGroup12.Items.Add(Me.RibbonVehiculo)
         Me.RibbonGroup12.Items.Add(Me.RibbonButton2)
+        Me.RibbonGroup12.Items.Add(Me.RibbonButton21)
         Me.RibbonGroup12.Items.Add(Me.RibbonButton18)
         Me.RibbonGroup12.Items.Add(Me.RibbonButton3)
         Me.RibbonGroup12.Items.Add(Me.RibbonButton17)
@@ -1227,6 +1229,14 @@ Partial Class MDIMain
         Me.RibbonButton2.SmallImage = CType(resources.GetObject("RibbonButton2.SmallImage"), System.Drawing.Image)
         Me.RibbonButton2.Text = "Contratos"
         Me.RibbonButton2.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonButton21
+        '
+        Me.RibbonButton21.ID = "RibbonButton21"
+        Me.RibbonButton21.LargeImage = CType(resources.GetObject("RibbonButton21.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton21.SmallImage = CType(resources.GetObject("RibbonButton21.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton21.Text = "Contenedor"
+        Me.RibbonButton21.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'RibbonButton18
         '
@@ -1828,4 +1838,5 @@ Partial Class MDIMain
     Friend WithEvents RibbonProcRecepcion As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonHistoricoDebitoCredito As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton19 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButton21 As C1.Win.C1Ribbon.RibbonButton
 End Class

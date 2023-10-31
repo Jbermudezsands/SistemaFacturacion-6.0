@@ -19,38 +19,38 @@ Partial Class FrmTransferencias
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmTransferencias))
-        Me.CmdGrabar = New System.Windows.Forms.Button
-        Me.ButtonBorrar = New System.Windows.Forms.Button
-        Me.CmdNuevo = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.CboCodigoBodega2 = New C1.Win.C1List.C1Combo
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.CboCodigoBodega = New C1.Win.C1List.C1Combo
-        Me.Label11 = New System.Windows.Forms.Label
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.CboTipoProducto = New System.Windows.Forms.ComboBox
-        Me.Button6 = New System.Windows.Forms.Button
-        Me.TxtNumeroEnsamble = New System.Windows.Forms.TextBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.DTPFecha = New System.Windows.Forms.DateTimePicker
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.TxtObservaciones = New System.Windows.Forms.TextBox
-        Me.GroupBox4 = New System.Windows.Forms.GroupBox
+        Me.CmdGrabar = New System.Windows.Forms.Button()
+        Me.ButtonBorrar = New System.Windows.Forms.Button()
+        Me.CmdNuevo = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.CboCodigoBodega2 = New C1.Win.C1List.C1Combo()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.CboCodigoBodega = New C1.Win.C1List.C1Combo()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.CboTipoProducto = New System.Windows.Forms.ComboBox()
+        Me.Button6 = New System.Windows.Forms.Button()
+        Me.TxtNumeroEnsamble = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.DTPFecha = New System.Windows.Forms.DateTimePicker()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.TxtObservaciones = New System.Windows.Forms.TextBox()
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.BindingDetalle = New System.Windows.Forms.BindingSource(Me.components)
-        Me.TxtTotalCosto = New System.Windows.Forms.TextBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.Button4 = New System.Windows.Forms.Button
-        Me.C1Button2 = New C1.Win.C1Input.C1Button
-        Me.C1Button3 = New C1.Win.C1Input.C1Button
+        Me.TxtTotalCosto = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Button4 = New System.Windows.Forms.Button()
+        Me.C1Button2 = New C1.Win.C1Input.C1Button()
+        Me.C1Button3 = New C1.Win.C1Input.C1Button()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -334,7 +334,7 @@ Partial Class FrmTransferencias
         Me.TrueDBGridComponentes.Name = "TrueDBGridComponentes"
         Me.TrueDBGridComponentes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75
+        Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75.0R
         Me.TrueDBGridComponentes.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridComponentes.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
         Me.TrueDBGridComponentes.Size = New System.Drawing.Size(641, 193)
         Me.TrueDBGridComponentes.TabIndex = 165
