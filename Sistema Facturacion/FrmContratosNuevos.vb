@@ -7,7 +7,19 @@ Public Class FrmContratosNuevos
     Public dsContrato1 As New DataSet, daContrato1 As New SqlClient.SqlDataAdapter, CmdBuilder1 As New SqlCommandBuilder
     Public dsContrato2 As New DataSet, daContrato2 As New SqlClient.SqlDataAdapter, CmdBuilder2 As New SqlCommandBuilder
     Public dsDetalleContrato As New DataSet, daDetalleContrato As New SqlClient.SqlDataAdapter, CmdBuilderDetalle As New SqlCommandBuilder
+    Public Sub Limpiar_DetalleContratos()
 
+        Me.CmbContrato1.Text = ""
+        Me.TxtFrecuencia.Text = ""
+        Me.CmbMoneda1.Text = ""
+        Me.DtpInicioContrato1.Value = Format(Now, "dd/MM/yyyy")
+        Me.DtpFinContrato1.Value = Format(Now, "dd/MM/yyyy")
+        Me.TxtPrecioUnitario.Text = ""
+        Me.TxtNumero1.Value = 5
+        Me.TxtDireccionContrato.Text = ""
+        Me.TxtNombreComercial.Text = ""
+
+    End Sub
     Public Sub CargarContratos()
 
         Dim SqlProveedor As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -239,9 +251,6 @@ Public Class FrmContratosNuevos
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
 
-
-
-        Me.TxtCodigoClientes.Text = ""
         Me.CboReferencia.Text = "4"
         Me.TxtContactoAdmon.Text = ""
         Me.TxtContactoOperativo.Text = ""
@@ -1100,6 +1109,8 @@ Public Class FrmContratosNuevos
     End Sub
 
     Private Sub TDBGridTipoContrato_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles TDBGridTipoContrato.DoubleClick
+        Limpiar_DetalleContratos()
+
         Me.LblNuevo.Text = "EDITAR"
         Me.Agregar = False
 
@@ -1153,6 +1164,10 @@ Public Class FrmContratosNuevos
                 End If
                 If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Direccion")) Then
                     Me.TxtDireccionContrato.Text = Dataset.Tables("DetalleContrato").Rows(0)("Direccion")
+                End If
+
+                If Not IsDBNull(Dataset.Tables("DetalleContrato").Rows(0)("Nombre_Comercial")) Then
+                    Me.TxtNombreComercial.Text = Dataset.Tables("DetalleContrato").Rows(0)("Nombre_Comercial")
                 End If
 
                 Me.Button2.Enabled = True

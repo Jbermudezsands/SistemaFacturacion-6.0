@@ -509,7 +509,7 @@ Partial Class FrmContratosNuevos
         Me.GroupBox3.Controls.Add(Me.Label6)
         Me.GroupBox3.Controls.Add(Me.CmbContrato1)
         Me.GroupBox3.Controls.Add(Me.Label5)
-        Me.GroupBox3.Location = New System.Drawing.Point(552, 7)
+        Me.GroupBox3.Location = New System.Drawing.Point(548, 7)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(297, 335)
         Me.GroupBox3.TabIndex = 0

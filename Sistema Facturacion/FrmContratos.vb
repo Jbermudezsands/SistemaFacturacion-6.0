@@ -28,15 +28,15 @@ Public Class FrmContratos
         '/////////////////////////////////////BUSCO EL ID DE LOS TIPOS DE CONTRATOS ////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////
         If Activo = True Then
-            SQlClientes = "SELECT Contratos.Numero_Contrato, Contratos.Cod_Cliente, Clientes.Cod_Cliente, Contratos.Frecuencia, Contratos.Inicio_Contrato, Contratos.Fin_Contrato, Contratos.Moneda, Contratos.Activo, Contratos.Anulado FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente WHERE (Contratos.Activo = 1)"
+            SQlClientes = "SELECT Contratos.Numero_Contrato, Contratos.Cod_Cliente, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, Contratos.Inicio_Contrato, Contratos.Fin_Contrato,  Contratos.Activo, Contratos.Anulado FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente WHERE (Contratos.Activo = 1)"
             'ElseIf Activo = False Then
             '    SQlClientes = "SELECT Contratos.Numero_Contrato, Contratos.Cod_Cliente, Clientes.Cod_Cliente, Contratos.Frecuencia, Contratos.Inicio_Contrato, Contratos.Fin_Contrato, Contratos.Moneda, Contratos.Activo, Contratos.Anulado FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente WHERE (Contratos.Activo = 0)"
         ElseIf Anulado = True Then
-            SQlClientes = "SELECT Contratos.Numero_Contrato, Contratos.Cod_Cliente, Clientes.Cod_Cliente, Contratos.Frecuencia, Contratos.Inicio_Contrato, Contratos.Fin_Contrato, Contratos.Moneda, Contratos.Activo, Contratos.Anulado FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente WHERE (Contratos.Anulado = 1)"
+            SQlClientes = "SELECT Contratos.Numero_Contrato, Contratos.Cod_Cliente, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, Contratos.Inicio_Contrato, Contratos.Fin_Contrato,  Contratos.Activo, Contratos.Anulado FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente WHERE (Contratos.Anulado = 1)"
             'ElseIf Anulado = False Then
             '    SQlClientes = "SELECT Contratos.Numero_Contrato, Contratos.Cod_Cliente, Clientes.Cod_Cliente, Contratos.Frecuencia, Contratos.Inicio_Contrato, Contratos.Fin_Contrato, Contratos.Moneda, Contratos.Activo, Contratos.Anulado FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente WHERE (Contratos.Anulado = 0)"
         ElseIf Todos = True Then
-            SQlClientes = "SELECT Contratos.Numero_Contrato, Contratos.Cod_Cliente, Clientes.Cod_Cliente, Contratos.Frecuencia, Contratos.Inicio_Contrato, Contratos.Fin_Contrato, Contratos.Moneda, Contratos.Activo, Contratos.Anulado FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente "
+            SQlClientes = "SELECT Contratos.Numero_Contrato, Contratos.Cod_Cliente, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nombres, Contratos.Inicio_Contrato, Contratos.Fin_Contrato, Contratos.Activo, Contratos.Anulado FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente "
         End If
 
         DataAdapter = New SqlClient.SqlDataAdapter(SQlClientes, MiConexion)
@@ -46,9 +46,7 @@ Public Class FrmContratos
         Me.TDGridSolicitud.Columns("Numero_Contrato").Caption = "Numero Contrato"
         Me.TDGridSolicitud.Splits.Item(0).DisplayColumns("Cod_Cliente").Width = 80
         Me.TDGridSolicitud.Columns("Cod_Cliente").Caption = "Codigo Cliente"
-
-
-
+        Me.TDGridSolicitud.Splits.Item(0).DisplayColumns("Nombres").Width = 300
 
 
     End Sub

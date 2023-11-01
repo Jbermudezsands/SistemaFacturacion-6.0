@@ -212,7 +212,7 @@ Public Class FrmEvacuaciones
         For i = 1 To Dias
 
             If i = 1 Then
-                SQlString = "SELECT CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + '   ' + Detalle_Contratos.Direccion ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + '   ' + Detalle_Contratos.Direccion END END AS Nombres, Contratos.Contrato_Variable, Contratos.Contrato_Variable2, dbo.Clientes.Cod_Cliente As '" & i & "' "
+                SQlString = "SELECT CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN CASE WHEN Detalle_Contratos.Nombre_Comercial IS NULL THEN Clientes.Nombre_Cliente + '   ' + Detalle_Contratos.Direccion ELSE Detalle_Contratos.Nombre_Comercial + '   ' + Detalle_Contratos.Direccion END ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN CASE WHEN Detalle_Contratos.Nombre_Comercial IS NULL THEN Clientes.Nombre_Cliente + '   ' + Detalle_Contratos.Direccion ELSE Detalle_Contratos.Nombre_Comercial + '   ' + Detalle_Contratos.Direccion END END END AS Nombres, Contratos.Contrato_Variable, Contratos.Contrato_Variable2, dbo.Clientes.Cod_Cliente As '" & i & "' "
             Else
                 SQlString = SQlString & ",dbo.Clientes.Cod_Cliente As  '" & i & "' "
             End If
@@ -398,7 +398,7 @@ Public Class FrmEvacuaciones
 
         CodigoCliente = Me.TDGridSolicitud.Columns("Cod_Cliente").Text
 
-        SQlstring = "SELECT  Registro_Transporte_Detalle.Numero_Registro, Registro_Transporte_Detalle.Fecha_Registro, Conductor.Nombre, Conductor.Licencia, Vehiculo.Placa, Vehiculo.Marca, Registro_Transporte_Detalle.Cod_Cliente, Registro_Transporte_Detalle.Id_Conductor, Registro_Transporte_Detalle.Id_Vehiculo, Registro_Transporte_Detalle.Activo, Registro_Transporte_Detalle.Anulado, Registro_Transporte_Detalle.Procesado, Registro_Transporte_Detalle.idTipoContrato, Registro_Transporte_Detalle.Numero_Contrato, Conductor.Codigo FROM Registro_Transporte_Detalle LEFT OUTER JOIN Conductor ON Registro_Transporte_Detalle.Id_Conductor = Conductor.Codigo LEFT OUTER JOIN Vehiculo ON Registro_Transporte_Detalle.Id_Vehiculo = Vehiculo.IdVehiculo  " & _
+        SQlstring = "SELECT  Registro_Transporte_Detalle.Numero_Registro, Registro_Transporte_Detalle.Fecha_Registro, Conductor.Nombre, Conductor.Licencia, Vehiculo.Placa, Vehiculo.Marca, Registro_Transporte_Detalle.Cod_Cliente, Registro_Transporte_Detalle.Id_Conductor, Registro_Transporte_Detalle.Id_Vehiculo, Registro_Transporte_Detalle.Activo, Registro_Transporte_Detalle.Anulado, Registro_Transporte_Detalle.Procesado, Registro_Transporte_Detalle.idTipoContrato, Registro_Transporte_Detalle.Numero_Contrato, Conductor.Codigo, Registro_Transporte_Detalle.Num_Cont_Evacuado, Registro_Transporte_Detalle.Num_Cont_Colocado FROM Registro_Transporte_Detalle LEFT OUTER JOIN Conductor ON Registro_Transporte_Detalle.Id_Conductor = Conductor.Codigo LEFT OUTER JOIN Vehiculo ON Registro_Transporte_Detalle.Id_Vehiculo = Vehiculo.IdVehiculo  " &
                     "WHERE (Registro_Transporte_Detalle.Cod_Cliente = '" & CodigoCliente & "') AND (Registro_Transporte_Detalle.Fecha_Registro BETWEEN CONVERT(DATETIME, '" & Format(Me.DTPFechaInicio.Value, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Me.DTPFechaFin.Value, "yyyy-MM-dd") & "', 102)) AND (Registro_Transporte_Detalle.Anulado = 0)"
         DataAdapter = New SqlClient.SqlDataAdapter(SQlstring, MiConexion)
         DataAdapter.Fill(DataSet, "DetalleRegistros")
@@ -413,8 +413,6 @@ Public Class FrmEvacuaciones
         My.Forms.FrmDetalleEvacuaciones.LblTipoServicio.Text = Me.CmbContrato1.Text
         My.Forms.FrmDetalleEvacuaciones.LblCliente.Text = Me.TDGridSolicitud.Columns("Nombres").Text
 
-
-
         My.Forms.FrmDetalleEvacuaciones.TDGridSolicitud.DataSource = DataSet.Tables("DetalleRegistros")
         My.Forms.FrmDetalleEvacuaciones.TDGridSolicitud.Splits(0).DisplayColumns("Numero_Registro").Visible = False
         My.Forms.FrmDetalleEvacuaciones.TDGridSolicitud.Splits(0).DisplayColumns("Cod_Cliente").Visible = False
@@ -426,6 +424,9 @@ Public Class FrmEvacuaciones
         My.Forms.FrmDetalleEvacuaciones.TDGridSolicitud.Splits(0).DisplayColumns("idTipoContrato").Visible = False
         My.Forms.FrmDetalleEvacuaciones.TDGridSolicitud.Splits(0).DisplayColumns("Numero_Contrato").Visible = False
         My.Forms.FrmDetalleEvacuaciones.TDGridSolicitud.Splits(0).DisplayColumns("Codigo").Visible = False
+        My.Forms.FrmDetalleEvacuaciones.TDGridSolicitud.Splits(0).DisplayColumns("Marca").Visible = False
+        My.Forms.FrmDetalleEvacuaciones.TDGridSolicitud.Columns("Num_Cont_Evacuado").Caption = "Cont Evacuado"
+        My.Forms.FrmDetalleEvacuaciones.TDGridSolicitud.Columns("Num_Cont_Colocado").Caption = "Cont Colocado"
         My.Forms.FrmDetalleEvacuaciones.ShowDialog()
 
     End Sub
