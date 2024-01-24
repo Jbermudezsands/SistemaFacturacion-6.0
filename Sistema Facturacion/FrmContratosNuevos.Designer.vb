@@ -54,6 +54,8 @@ Partial Class FrmContratosNuevos
         Me.TrueDBGridContrato2 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
         Me.CmdAjustes = New System.Windows.Forms.Button()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.TxtNombreComercial = New System.Windows.Forms.TextBox()
+        Me.Label25 = New System.Windows.Forms.Label()
         Me.TxtFrecuencia = New System.Windows.Forms.TextBox()
         Me.Label23 = New System.Windows.Forms.Label()
         Me.LblNuevo = New System.Windows.Forms.Label()
@@ -104,8 +106,6 @@ Partial Class FrmContratosNuevos
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.BtnBorrarLineaCont1 = New System.Windows.Forms.Button()
         Me.TrueDBGridContrato1 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
-        Me.TxtNombreComercial = New System.Windows.Forms.TextBox()
-        Me.Label25 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -515,6 +515,23 @@ Partial Class FrmContratosNuevos
         Me.GroupBox3.TabIndex = 0
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Servicio 1"
+        '
+        'TxtNombreComercial
+        '
+        Me.TxtNombreComercial.Location = New System.Drawing.Point(99, 242)
+        Me.TxtNombreComercial.Name = "TxtNombreComercial"
+        Me.TxtNombreComercial.Size = New System.Drawing.Size(182, 20)
+        Me.TxtNombreComercial.TabIndex = 242
+        Me.TxtNombreComercial.Tag = "0.00"
+        '
+        'Label25
+        '
+        Me.Label25.AutoSize = True
+        Me.Label25.Location = New System.Drawing.Point(7, 245)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(93, 13)
+        Me.Label25.TabIndex = 241
+        Me.Label25.Text = "Nombre Comercial"
         '
         'TxtFrecuencia
         '
@@ -1066,23 +1083,6 @@ Partial Class FrmContratosNuevos
         Me.TrueDBGridContrato1.TabIndex = 165
         Me.TrueDBGridContrato1.Text = "C1TrueDBGrid1"
         Me.TrueDBGridContrato1.PropBag = resources.GetString("TrueDBGridContrato1.PropBag")
-        '
-        'TxtNombreComercial
-        '
-        Me.TxtNombreComercial.Location = New System.Drawing.Point(99, 242)
-        Me.TxtNombreComercial.Name = "TxtNombreComercial"
-        Me.TxtNombreComercial.Size = New System.Drawing.Size(182, 20)
-        Me.TxtNombreComercial.TabIndex = 242
-        Me.TxtNombreComercial.Tag = "0.00"
-        '
-        'Label25
-        '
-        Me.Label25.AutoSize = True
-        Me.Label25.Location = New System.Drawing.Point(7, 245)
-        Me.Label25.Name = "Label25"
-        Me.Label25.Size = New System.Drawing.Size(93, 13)
-        Me.Label25.TabIndex = 241
-        Me.Label25.Text = "Nombre Comercial"
         '
         'FrmContratosNuevos
         '

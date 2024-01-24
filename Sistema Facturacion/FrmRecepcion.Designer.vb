@@ -973,7 +973,7 @@ Partial Class FrmRecepcion
         'txtapellido
         '
         Me.txtapellido.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtapellido.Location = New System.Drawing.Point(1046, 574)
+        Me.txtapellido.Location = New System.Drawing.Point(849, 546)
         Me.txtapellido.Name = "txtapellido"
         Me.txtapellido.Size = New System.Drawing.Size(338, 24)
         Me.txtapellido.TabIndex = 185

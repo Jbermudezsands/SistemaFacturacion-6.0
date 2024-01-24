@@ -2,7 +2,55 @@ Public Class FrmRegistroTransporte
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Public IdConductor As String, CodigoCliente As String, Nuevo As Boolean = True, Procesado As Boolean = False
     Public FechaRegistro As Date, NombreConductor As String, NumeroContrato As String, Placa As String, idDetalleContrato As Double
+    Public Function Contenedor_Colocado(Numero_Contenedor As String, Fecha As Date) As Boolean
+        Dim SqlString As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
+        '//////////////////////////BUSCO SI EL CONTENEDOR ESTA COLOCADO /////////////////////////////////////
+        SqlString = "SELECT Registro_Transporte_Detalle.* FROM Registro_Transporte_Detalle WHERE  (Fecha_Registro <= CONVERT(DATETIME, '" & Format(Fecha, "yyyy-MM-dd") & "', 102)) AND (Num_Cont_Colocado = '" & Numero_Contenedor & "') ORDER BY Fecha_Registro DESC"
+        DataSet = FillConsultaSQL(SqlString, "ContenedorColocado").Copy
+        If DataSet.Tables("ContenedorColocado").Rows.Count <> 0 Then
+            Return True
+        Else
+            Return False
+        End If
+
+    End Function
+    Public Function Contenedor_Evacuado(Numero_Contenedor As String, Fecha As Date) As Boolean
+        Dim SqlString As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+
+        '//////////////////////////BUSCO SI EL CONTENEDOR ESTA COLOCADO /////////////////////////////////////
+        SqlString = "SELECT Registro_Transporte_Detalle.* FROM Registro_Transporte_Detalle WHERE  (Fecha_Registro => CONVERT(DATETIME, '" & Format(Fecha, "yyyy-MM-dd") & "', 102)) AND (Num_Cont_Evacuado = '" & Numero_Contenedor & "') ORDER BY Fecha_Registro DESC"
+        DataSet = FillConsultaSQL(SqlString, "ContenedorEvacuado").Copy
+        If DataSet.Tables("ContenedorEvacuado").Rows.Count = 0 Then
+            Return False
+        Else
+            Return True
+        End If
+
+    End Function
+    Public Sub Estado_Contenedor(Numero_Contenedor As String, Fecha As Date)
+        Dim ContenedorColocado As Boolean = False, ContenedorEvacuado As Boolean = False
+
+        ContenedorColocado = Contenedor_Colocado(Numero_Contenedor, Fecha)
+
+        If ContenedorColocado = False Then
+            '///////////verifica si fue evacuado ///////////////
+            ContenedorEvacuado = Contenedor_Evacuado(Numero_Contenedor, Fecha)
+            If ContenedorEvacuado = True Then
+                EjecutarConsulta("UPDATE Contenedor SET Colocado = 0  WHERE dbo.Contenedor.Codigo_Contenedor ='" & Numero_Contenedor & "' ")
+            Else
+                EjecutarConsulta("UPDATE Contenedor SET Colocado = 1  WHERE dbo.Contenedor.Codigo_Contenedor ='" & Numero_Contenedor & "' ")
+            End If
+
+        Else
+
+            EjecutarConsulta("UPDATE Contenedor SET Colocado = 1  WHERE dbo.Contenedor.Codigo_Contenedor ='" & Numero_Contenedor & "' ")
+
+        End If
+
+    End Sub
 
 
     Private Sub FrmRegistroTransporte_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
