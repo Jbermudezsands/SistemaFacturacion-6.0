@@ -948,7 +948,7 @@ Public Class FrmActualiza
                 DataAdapter.Fill(DataSet, "Proveedores")
                 If Not DataSet.Tables("Proveedores").Rows.Count = 0 Then
                     '///////////SIsEXISTE EL USUARIO LO ACTUALIZO////////////////
-                    StrSQLUpdate = "UPDATE Facturas  SET [SubTotal] = " & Format(SubTotalFact, "##,##0.00") & " ,[IVA] = " & Format(ImpuestoFact, "##,##0.00") & "  WHERE (Numero_Factura = '" & NumeroFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Format(FechaFactura, "yyyy-MM-dd") & "', 102)) AND (Tipo_Factura = '" & TipoFactura & "')"
+                    StrSQLUpdate = "UPDATE Facturas  SET [SubTotal] = " & Format(SubTotalFact, "####0.00") & " ,[IVA] = " & Format(ImpuestoFact, "####0.00") & ", [NetoPagar] = " & Format(ImpuestoFact + SubTotalFact, "####0.00") & "  WHERE (Numero_Factura = '" & NumeroFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Format(FechaFactura, "yyyy-MM-dd") & "', 102)) AND (Tipo_Factura = '" & TipoFactura & "')"
                     MiConexion.Open()
                     ComandoUpdate = New SqlClient.SqlCommand(StrSQLUpdate, MiConexion)
                     iResultado = ComandoUpdate.ExecuteNonQuery

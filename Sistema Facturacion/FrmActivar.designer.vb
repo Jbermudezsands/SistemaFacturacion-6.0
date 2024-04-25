@@ -19,23 +19,23 @@ Partial Class FrmActivar
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmActivar))
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.PictureBox3 = New System.Windows.Forms.PictureBox
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
         Me.BindingNominas = New System.Windows.Forms.BindingSource(Me.components)
-        Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.CboPeriodo = New C1.Win.C1List.C1Combo
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.DTPFechaIni = New System.Windows.Forms.DateTimePicker
-        Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.CmdNuevo = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
+        Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.CboPeriodo = New C1.Win.C1List.C1Combo()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.DTPFechaIni = New System.Windows.Forms.DateTimePicker()
+        Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.CmdNuevo = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -98,7 +98,7 @@ Partial Class FrmActivar
         Me.TrueDBGridComponentes.Name = "TrueDBGridComponentes"
         Me.TrueDBGridComponentes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75
+        Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75.0R
         Me.TrueDBGridComponentes.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridComponentes.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
         Me.TrueDBGridComponentes.Size = New System.Drawing.Size(453, 123)
         Me.TrueDBGridComponentes.TabIndex = 168

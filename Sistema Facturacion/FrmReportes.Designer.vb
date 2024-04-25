@@ -240,7 +240,7 @@ Partial Class FrmReportes
         Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button2.Location = New System.Drawing.Point(13, 413)
+        Me.Button2.Location = New System.Drawing.Point(12, 413)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(75, 66)
         Me.Button2.TabIndex = 189
