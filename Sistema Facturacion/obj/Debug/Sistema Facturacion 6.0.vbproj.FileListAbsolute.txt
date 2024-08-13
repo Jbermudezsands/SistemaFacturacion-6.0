@@ -315,10 +315,7 @@ D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\C1.Win.C1Input.
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\C1.Win.C1List.2.xml
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\C1.Win.C1Preview.2.xml
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\C1.Win.C1Ribbon.2.xml
-D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\EnvDTE.xml
-D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\VSLangProj.xml
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\Extensibility.xml
-D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\EnvDTE80.xml
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\Interop.ADODB.dll
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\Interop.MSDASC.dll
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\af-ZA\Sistema Facturacion 6.0.resources.dll
