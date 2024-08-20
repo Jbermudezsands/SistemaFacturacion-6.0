@@ -1595,6 +1595,7 @@ Public Class FrmReportes
 
         Me.DTPFechaFin.Value = Now
         Me.DTPFechaIni.Value = Now
+        Me.DTPFechaVence.Value = DateAdd(DateInterval.Month, 3, Now)
 
         Select Case Quien
             Case "Reporte Bascula"
@@ -2131,9 +2132,10 @@ Public Class FrmReportes
                 DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
                 DataAdapter.Fill(DataSet, "DetalleMovimientos")
 
-                'SQLString = "SELECT DISTINCT Detalle_Compras.Cod_Producto, Productos.Descripcion_Producto, Lote.Numero_Lote, Lote.FechaVence, Lote.Activo, Detalle_Compras.Cantidad, Compras.Cod_Bodega, DATEDIFF(Day, Lote.FechaVence, '13/08/2024 15:44:36') AS Dias FROM Lote INNER JOIN Detalle_Compras ON Lote.Numero_Lote = Detalle_Compras.Numero_Lote INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  WHERE  (DATEDIFF(Day, Lote.FechaVence, CONVERT(DATETIME, '" & Format("dd/MM/yyyy", Now) & "', 102)) >= - 90) AND (Lote.Activo = 1) ORDER BY Lote.FechaVence"
 
-                SQLString = "SELECT DISTINCT Detalle_Compras.Cod_Producto, Productos.Descripcion_Producto, Lote.Numero_Lote, Lote.FechaVence, { fn NOW() } AS Fecha, DATEDIFF(day, Lote.FechaVence, { fn NOW() }) AS Dias, Lote.Activo, Compras.Cod_Bodega FROM Lote INNER JOIN Detalle_Compras ON Lote.Numero_Lote = Detalle_Compras.Numero_Lote INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra WHERE(Lote.Activo = 1) And (DateDiff(Day, Lote.FechaVence, '" & Format(Me.DTPFechaFin.Value, "yyyy-MM-dd") & "') > 0) And (DateDiff(Day, Lote.FechaVence, '" & Format(Me.DTPFechaFin.Value, "yyyy-MM-dd") & "') <= 60)"
+                SQLString = "SELECT DISTINCT Detalle_Compras.Cod_Producto, Productos.Descripcion_Producto, Lote.Numero_Lote, Lote.FechaVence, Lote.Activo, Detalle_Compras.Cantidad, Compras.Cod_Bodega, DATEDIFF(Day, Lote.FechaVence, '" & Format(Me.DTPFechaIni.Value, "yyyy-MM-dd") & "') AS Dias FROM Lote INNER JOIN Detalle_Compras ON Lote.Numero_Lote = Detalle_Compras.Numero_Lote INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  WHERE  (DATEDIFF(Day, Lote.FechaVence, CONVERT(DATETIME, '" & Format(Me.DTPFechaIni.Value, "yyyy-MM-dd") & "', 102)) >= - 90) AND (Lote.Activo = 1) ORDER BY Lote.FechaVence"
+
+                'SQLString = "SELECT DISTINCT Detalle_Compras.Cod_Producto, Productos.Descripcion_Producto, Lote.Numero_Lote, Lote.FechaVence, { fn NOW() } AS Fecha, DATEDIFF(day, Lote.FechaVence, { fn NOW() }) AS Dias, Lote.Activo, Compras.Cod_Bodega FROM Lote INNER JOIN Detalle_Compras ON Lote.Numero_Lote = Detalle_Compras.Numero_Lote INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra WHERE(Lote.Activo = 1) And (DateDiff(Day, Lote.FechaVence, '" & Format(Me.DTPFechaFin.Value, "yyyy-MM-dd") & "') > 0) And (DateDiff(Day, Lote.FechaVence, '" & Format(Me.DTPFechaFin.Value, "yyyy-MM-dd") & "') <= 60)"
 
                 DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
                 DataAdapter.Fill(DataSet, "Salidas")
@@ -13629,6 +13631,13 @@ Public Class FrmReportes
         Me.ChkAgrupadoBodega.Visible = False
 
         Select Case ListBox.Text
+            Case "Reporte de Lotes vencidos"
+
+                Me.GroupBoxFechaVence.Visible = True
+                Me.GroupBoxFechaVence.Location = New Point(280, 200)
+                Me.GroupBoxLinea.Location = New Point(280, 123)
+                Me.GroupBoxLinea.Visible = True
+
             Case "Reporte Solicitud de Compra"
                 Me.GroupBox1.Visible = True
 

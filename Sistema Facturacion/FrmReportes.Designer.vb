@@ -145,6 +145,9 @@ Partial Class FrmReportes
         Me.Label32 = New System.Windows.Forms.Label()
         Me.ChkAgrupadoBodega = New System.Windows.Forms.CheckBox()
         Me.ListaImagenes = New System.Windows.Forms.ImageList(Me.components)
+        Me.GroupBoxFechaVence = New System.Windows.Forms.GroupBox()
+        Me.DTPFechaVence = New System.Windows.Forms.DateTimePicker()
+        Me.Label33 = New System.Windows.Forms.Label()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -193,6 +196,7 @@ Partial Class FrmReportes
         Me.GroupProveedores.SuspendLayout()
         CType(Me.CboProveedores2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboProveedores, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBoxFechaVence.SuspendLayout()
         Me.SuspendLayout()
         '
         'LblTitulo
@@ -1157,7 +1161,7 @@ Partial Class FrmReportes
         Me.GroupBoxLinea.Controls.Add(Me.Label17)
         Me.GroupBoxLinea.Controls.Add(Me.CboCodigoLinea)
         Me.GroupBoxLinea.Controls.Add(Me.Label18)
-        Me.GroupBoxLinea.Location = New System.Drawing.Point(1183, 22)
+        Me.GroupBoxLinea.Location = New System.Drawing.Point(1193, 22)
         Me.GroupBoxLinea.Name = "GroupBoxLinea"
         Me.GroupBoxLinea.Size = New System.Drawing.Size(278, 85)
         Me.GroupBoxLinea.TabIndex = 203
@@ -1861,7 +1865,7 @@ Partial Class FrmReportes
         Me.GroupBoxAño.Controls.Add(Me.CboMes)
         Me.GroupBoxAño.Controls.Add(Me.Label29)
         Me.GroupBoxAño.Controls.Add(Me.Label30)
-        Me.GroupBoxAño.Location = New System.Drawing.Point(902, 468)
+        Me.GroupBoxAño.Location = New System.Drawing.Point(904, 471)
         Me.GroupBoxAño.Name = "GroupBoxAño"
         Me.GroupBoxAño.Size = New System.Drawing.Size(352, 52)
         Me.GroupBoxAño.TabIndex = 215
@@ -2051,13 +2055,43 @@ Partial Class FrmReportes
         Me.ListaImagenes.ImageSize = New System.Drawing.Size(256, 256)
         Me.ListaImagenes.TransparentColor = System.Drawing.Color.Transparent
         '
+        'GroupBoxFechaVence
+        '
+        Me.GroupBoxFechaVence.Controls.Add(Me.DTPFechaVence)
+        Me.GroupBoxFechaVence.Controls.Add(Me.Label33)
+        Me.GroupBoxFechaVence.Location = New System.Drawing.Point(847, 497)
+        Me.GroupBoxFechaVence.Name = "GroupBoxFechaVence"
+        Me.GroupBoxFechaVence.Size = New System.Drawing.Size(352, 52)
+        Me.GroupBoxFechaVence.TabIndex = 218
+        Me.GroupBoxFechaVence.TabStop = False
+        Me.GroupBoxFechaVence.Text = "Fecha Vence"
+        '
+        'DTPFechaVence
+        '
+        Me.DTPFechaVence.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DTPFechaVence.Location = New System.Drawing.Point(121, 16)
+        Me.DTPFechaVence.Name = "DTPFechaVence"
+        Me.DTPFechaVence.Size = New System.Drawing.Size(97, 20)
+        Me.DTPFechaVence.TabIndex = 3
+        '
+        'Label33
+        '
+        Me.Label33.AutoSize = True
+        Me.Label33.Location = New System.Drawing.Point(21, 20)
+        Me.Label33.Name = "Label33"
+        Me.Label33.Size = New System.Drawing.Size(94, 13)
+        Me.Label33.TabIndex = 2
+        Me.Label33.Text = "Fecha Max Vence"
+        '
         'FrmReportes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(864, 535)
+        Me.ClientSize = New System.Drawing.Size(884, 535)
         Me.ControlBox = False
+        Me.Controls.Add(Me.GroupBoxFechaVence)
         Me.Controls.Add(Me.Imagen)
+        Me.Controls.Add(Me.GroupBoxLinea)
         Me.Controls.Add(Me.GroupProveedores)
         Me.Controls.Add(Me.GroupBoxLote)
         Me.Controls.Add(Me.ChkFacturasCero)
@@ -2081,7 +2115,6 @@ Partial Class FrmReportes
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.ListBox)
         Me.Controls.Add(Me.GroupBoxNotas)
-        Me.Controls.Add(Me.GroupBoxLinea)
         Me.Controls.Add(Me.GroupBoxTipo)
         Me.Controls.Add(Me.ChkTransferencias)
         Me.Controls.Add(Me.ChkProductosCero)
@@ -2155,6 +2188,8 @@ Partial Class FrmReportes
         Me.GroupProveedores.PerformLayout()
         CType(Me.CboProveedores2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboProveedores, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBoxFechaVence.ResumeLayout(False)
+        Me.GroupBoxFechaVence.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2284,5 +2319,8 @@ Partial Class FrmReportes
     Friend WithEvents BtnProveedor2 As System.Windows.Forms.Button
     Friend WithEvents ChkAgrupadoBodega As System.Windows.Forms.CheckBox
     Friend WithEvents ListaImagenes As System.Windows.Forms.ImageList
+    Friend WithEvents GroupBoxFechaVence As GroupBox
+    Friend WithEvents DTPFechaVence As DateTimePicker
+    Friend WithEvents Label33 As Label
     'Friend WithEvents ListaImagenes As System.Windows.Forms.ImageList
 End Class
