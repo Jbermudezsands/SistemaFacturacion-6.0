@@ -1,4 +1,7 @@
+
 Public Class FrmCopia
+
+
     Public TipoCopia As String, Contador As Double = 0
 
     Private Sub FrmCopia_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load

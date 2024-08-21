@@ -20,91 +20,92 @@ Partial Class FrmContratosNuevos
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmContratosNuevos))
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.BtnOrdenCompra = New System.Windows.Forms.Button
-        Me.Button9 = New System.Windows.Forms.Button
-        Me.Button7 = New System.Windows.Forms.Button
-        Me.TabControl1 = New System.Windows.Forms.TabControl
-        Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.GroupBox4 = New System.Windows.Forms.GroupBox
-        Me.TxtObservaciones = New System.Windows.Forms.TextBox
-        Me.TxtContactoOperativo = New System.Windows.Forms.TextBox
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.TxtContactoAdmon = New System.Windows.Forms.TextBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.Label16 = New System.Windows.Forms.Label
-        Me.CboReferencia = New System.Windows.Forms.ComboBox
-        Me.OptRet2Porciento = New System.Windows.Forms.CheckBox
-        Me.OptRet1Porciento = New System.Windows.Forms.CheckBox
-        Me.ChkExonerado = New System.Windows.Forms.CheckBox
-        Me.TxtTelefono = New System.Windows.Forms.TextBox
-        Me.TxtDireccion = New System.Windows.Forms.TextBox
-        Me.TxtApellidos = New System.Windows.Forms.TextBox
-        Me.TxtNombres = New System.Windows.Forms.TextBox
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.TxtCodigoClientes = New System.Windows.Forms.TextBox
-        Me.LblNumeroContrato = New System.Windows.Forms.Label
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.Splitter1 = New System.Windows.Forms.Splitter
-        Me.TabPage2 = New System.Windows.Forms.TabPage
-        Me.ChkUnificar = New System.Windows.Forms.CheckBox
-        Me.GroupBox7 = New System.Windows.Forms.GroupBox
-        Me.BtnBorrarLineaCont2 = New System.Windows.Forms.Button
-        Me.TrueDBGridContrato2 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.CmdAjustes = New System.Windows.Forms.Button
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox
-        Me.TxtFrecuencia = New System.Windows.Forms.TextBox
-        Me.Label23 = New System.Windows.Forms.Label
-        Me.LblNuevo = New System.Windows.Forms.Label
-        Me.TxtDireccionContrato = New System.Windows.Forms.TextBox
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.ChkContratoVariable = New System.Windows.Forms.CheckBox
-        Me.CboCodigoBodega = New C1.Win.C1List.C1Combo
-        Me.Label21 = New System.Windows.Forms.Label
-        Me.ChkActivo = New System.Windows.Forms.CheckBox
-        Me.Label18 = New System.Windows.Forms.Label
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.TxtNumero1 = New System.Windows.Forms.NumericUpDown
-        Me.CmbMoneda1 = New System.Windows.Forms.ComboBox
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.TxtPrecioUnitario = New System.Windows.Forms.TextBox
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.DtpFinContrato1 = New System.Windows.Forms.DateTimePicker
-        Me.Label8 = New System.Windows.Forms.Label
-        Me.DtpInicioContrato1 = New System.Windows.Forms.DateTimePicker
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.CmbContrato1 = New System.Windows.Forms.ComboBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.CmdEliminar = New System.Windows.Forms.Button
-        Me.TDBGridTipoContrato = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.GroupBox5 = New System.Windows.Forms.GroupBox
-        Me.Label24 = New System.Windows.Forms.Label
-        Me.TxtDireccionCotrato2 = New System.Windows.Forms.TextBox
-        Me.ChkContratoVariable2 = New System.Windows.Forms.CheckBox
-        Me.CboCodigoBodega2 = New C1.Win.C1List.C1Combo
-        Me.Label22 = New System.Windows.Forms.Label
-        Me.ChkActivo2 = New System.Windows.Forms.CheckBox
-        Me.Label19 = New System.Windows.Forms.Label
-        Me.Label20 = New System.Windows.Forms.Label
-        Me.TxtNumero2 = New System.Windows.Forms.NumericUpDown
-        Me.CmbMoneda2 = New System.Windows.Forms.ComboBox
-        Me.Label11 = New System.Windows.Forms.Label
-        Me.TxtPrecioUnitario2 = New System.Windows.Forms.TextBox
-        Me.Label12 = New System.Windows.Forms.Label
-        Me.DtpFinContrato2 = New System.Windows.Forms.DateTimePicker
-        Me.Label13 = New System.Windows.Forms.Label
-        Me.DtpInicioContrato2 = New System.Windows.Forms.DateTimePicker
-        Me.Label14 = New System.Windows.Forms.Label
-        Me.CmbFrecuencia2 = New System.Windows.Forms.ComboBox
-        Me.Label15 = New System.Windows.Forms.Label
-        Me.CmbContrato2 = New System.Windows.Forms.ComboBox
-        Me.Label17 = New System.Windows.Forms.Label
-        Me.TabPage3 = New System.Windows.Forms.TabPage
-        Me.GroupBox6 = New System.Windows.Forms.GroupBox
-        Me.BtnBorrarLineaCont1 = New System.Windows.Forms.Button
-        Me.TrueDBGridContrato1 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.BtnOrdenCompra = New System.Windows.Forms.Button()
+        Me.Button9 = New System.Windows.Forms.Button()
+        Me.Button7 = New System.Windows.Forms.Button()
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.TxtObservaciones = New System.Windows.Forms.TextBox()
+        Me.TxtContactoOperativo = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.TxtContactoAdmon = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.Label16 = New System.Windows.Forms.Label()
+        Me.CboReferencia = New System.Windows.Forms.ComboBox()
+        Me.OptRet2Porciento = New System.Windows.Forms.CheckBox()
+        Me.OptRet1Porciento = New System.Windows.Forms.CheckBox()
+        Me.ChkExonerado = New System.Windows.Forms.CheckBox()
+        Me.TxtTelefono = New System.Windows.Forms.TextBox()
+        Me.TxtDireccion = New System.Windows.Forms.TextBox()
+        Me.TxtApellidos = New System.Windows.Forms.TextBox()
+        Me.TxtNombres = New System.Windows.Forms.TextBox()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.TxtCodigoClientes = New System.Windows.Forms.TextBox()
+        Me.LblNumeroContrato = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Splitter1 = New System.Windows.Forms.Splitter()
+        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.ChkUnificar = New System.Windows.Forms.CheckBox()
+        Me.GroupBox7 = New System.Windows.Forms.GroupBox()
+        Me.BtnBorrarLineaCont2 = New System.Windows.Forms.Button()
+        Me.TrueDBGridContrato2 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
+        Me.CmdAjustes = New System.Windows.Forms.Button()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.TxtNombreComercial = New System.Windows.Forms.TextBox()
+        Me.Label25 = New System.Windows.Forms.Label()
+        Me.TxtFrecuencia = New System.Windows.Forms.TextBox()
+        Me.Label23 = New System.Windows.Forms.Label()
+        Me.LblNuevo = New System.Windows.Forms.Label()
+        Me.TxtDireccionContrato = New System.Windows.Forms.TextBox()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.ChkContratoVariable = New System.Windows.Forms.CheckBox()
+        Me.CboCodigoBodega = New C1.Win.C1List.C1Combo()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.ChkActivo = New System.Windows.Forms.CheckBox()
+        Me.Label18 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.TxtNumero1 = New System.Windows.Forms.NumericUpDown()
+        Me.CmbMoneda1 = New System.Windows.Forms.ComboBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.TxtPrecioUnitario = New System.Windows.Forms.TextBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.DtpFinContrato1 = New System.Windows.Forms.DateTimePicker()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.DtpInicioContrato1 = New System.Windows.Forms.DateTimePicker()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.CmbContrato1 = New System.Windows.Forms.ComboBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.CmdEliminar = New System.Windows.Forms.Button()
+        Me.TDBGridTipoContrato = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
+        Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.Label24 = New System.Windows.Forms.Label()
+        Me.TxtDireccionCotrato2 = New System.Windows.Forms.TextBox()
+        Me.ChkContratoVariable2 = New System.Windows.Forms.CheckBox()
+        Me.CboCodigoBodega2 = New C1.Win.C1List.C1Combo()
+        Me.Label22 = New System.Windows.Forms.Label()
+        Me.ChkActivo2 = New System.Windows.Forms.CheckBox()
+        Me.Label19 = New System.Windows.Forms.Label()
+        Me.Label20 = New System.Windows.Forms.Label()
+        Me.TxtNumero2 = New System.Windows.Forms.NumericUpDown()
+        Me.CmbMoneda2 = New System.Windows.Forms.ComboBox()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.TxtPrecioUnitario2 = New System.Windows.Forms.TextBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.DtpFinContrato2 = New System.Windows.Forms.DateTimePicker()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.DtpInicioContrato2 = New System.Windows.Forms.DateTimePicker()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.CmbFrecuencia2 = New System.Windows.Forms.ComboBox()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.CmbContrato2 = New System.Windows.Forms.ComboBox()
+        Me.Label17 = New System.Windows.Forms.Label()
+        Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.BtnBorrarLineaCont1 = New System.Windows.Forms.Button()
+        Me.TrueDBGridContrato1 = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
         Me.GroupBox1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -179,7 +180,6 @@ Partial Class FrmContratosNuevos
         '
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Location = New System.Drawing.Point(12, 3)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
@@ -436,6 +436,7 @@ Partial Class FrmContratosNuevos
         Me.GroupBox7.TabIndex = 163
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "Detalle Facturacion Contrato"
+        Me.GroupBox7.Visible = False
         '
         'BtnBorrarLineaCont2
         '
@@ -461,7 +462,7 @@ Partial Class FrmContratosNuevos
         Me.TrueDBGridContrato2.Name = "TrueDBGridContrato2"
         Me.TrueDBGridContrato2.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridContrato2.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TrueDBGridContrato2.PreviewInfo.ZoomFactor = 75
+        Me.TrueDBGridContrato2.PreviewInfo.ZoomFactor = 75.0R
         Me.TrueDBGridContrato2.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridContrato2.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
         Me.TrueDBGridContrato2.Size = New System.Drawing.Size(465, 100)
         Me.TrueDBGridContrato2.TabIndex = 165
@@ -483,6 +484,8 @@ Partial Class FrmContratosNuevos
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.TxtNombreComercial)
+        Me.GroupBox3.Controls.Add(Me.Label25)
         Me.GroupBox3.Controls.Add(Me.TxtFrecuencia)
         Me.GroupBox3.Controls.Add(Me.Label23)
         Me.GroupBox3.Controls.Add(Me.LblNuevo)
@@ -506,16 +509,33 @@ Partial Class FrmContratosNuevos
         Me.GroupBox3.Controls.Add(Me.Label6)
         Me.GroupBox3.Controls.Add(Me.CmbContrato1)
         Me.GroupBox3.Controls.Add(Me.Label5)
-        Me.GroupBox3.Location = New System.Drawing.Point(552, 7)
+        Me.GroupBox3.Location = New System.Drawing.Point(548, 7)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(297, 304)
+        Me.GroupBox3.Size = New System.Drawing.Size(297, 335)
         Me.GroupBox3.TabIndex = 0
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Servicio 1"
         '
+        'TxtNombreComercial
+        '
+        Me.TxtNombreComercial.Location = New System.Drawing.Point(99, 242)
+        Me.TxtNombreComercial.Name = "TxtNombreComercial"
+        Me.TxtNombreComercial.Size = New System.Drawing.Size(182, 20)
+        Me.TxtNombreComercial.TabIndex = 242
+        Me.TxtNombreComercial.Tag = "0.00"
+        '
+        'Label25
+        '
+        Me.Label25.AutoSize = True
+        Me.Label25.Location = New System.Drawing.Point(7, 245)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(93, 13)
+        Me.Label25.TabIndex = 241
+        Me.Label25.Text = "Nombre Comercial"
+        '
         'TxtFrecuencia
         '
-        Me.TxtFrecuencia.Location = New System.Drawing.Point(99, 38)
+        Me.TxtFrecuencia.Location = New System.Drawing.Point(102, 38)
         Me.TxtFrecuencia.Name = "TxtFrecuencia"
         Me.TxtFrecuencia.Size = New System.Drawing.Size(121, 20)
         Me.TxtFrecuencia.TabIndex = 240
@@ -534,14 +554,14 @@ Partial Class FrmContratosNuevos
         Me.LblNuevo.AutoSize = True
         Me.LblNuevo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblNuevo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.LblNuevo.Location = New System.Drawing.Point(230, 19)
+        Me.LblNuevo.Location = New System.Drawing.Point(233, 19)
         Me.LblNuevo.Name = "LblNuevo"
         Me.LblNuevo.Size = New System.Drawing.Size(0, 13)
         Me.LblNuevo.TabIndex = 238
         '
         'TxtDireccionContrato
         '
-        Me.TxtDireccionContrato.Location = New System.Drawing.Point(97, 193)
+        Me.TxtDireccionContrato.Location = New System.Drawing.Point(100, 193)
         Me.TxtDireccionContrato.MaxLength = 250
         Me.TxtDireccionContrato.Multiline = True
         Me.TxtDireccionContrato.Name = "TxtDireccionContrato"
@@ -554,7 +574,7 @@ Partial Class FrmContratosNuevos
         Me.Button2.Enabled = False
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button2.Location = New System.Drawing.Point(6, 264)
+        Me.Button2.Location = New System.Drawing.Point(7, 296)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(75, 34)
         Me.Button2.TabIndex = 189
@@ -565,7 +585,7 @@ Partial Class FrmContratosNuevos
         'ChkContratoVariable
         '
         Me.ChkContratoVariable.AutoSize = True
-        Me.ChkContratoVariable.Location = New System.Drawing.Point(169, 243)
+        Me.ChkContratoVariable.Location = New System.Drawing.Point(169, 276)
         Me.ChkContratoVariable.Name = "ChkContratoVariable"
         Me.ChkContratoVariable.Size = New System.Drawing.Size(64, 17)
         Me.ChkContratoVariable.TabIndex = 236
@@ -589,7 +609,7 @@ Partial Class FrmContratosNuevos
         Me.CboCodigoBodega.EditorHeight = 15
         Me.CboCodigoBodega.Images.Add(CType(resources.GetObject("CboCodigoBodega.Images"), System.Drawing.Image))
         Me.CboCodigoBodega.ItemHeight = 15
-        Me.CboCodigoBodega.Location = New System.Drawing.Point(98, 149)
+        Me.CboCodigoBodega.Location = New System.Drawing.Point(101, 149)
         Me.CboCodigoBodega.MatchEntryTimeout = CType(2000, Long)
         Me.CboCodigoBodega.MaxDropDownItems = CType(5, Short)
         Me.CboCodigoBodega.MaxLength = 32767
@@ -614,7 +634,7 @@ Partial Class FrmContratosNuevos
         'ChkActivo
         '
         Me.ChkActivo.AutoSize = True
-        Me.ChkActivo.Location = New System.Drawing.Point(72, 243)
+        Me.ChkActivo.Location = New System.Drawing.Point(72, 276)
         Me.ChkActivo.Name = "ChkActivo"
         Me.ChkActivo.Size = New System.Drawing.Size(56, 17)
         Me.ChkActivo.TabIndex = 233
@@ -624,7 +644,7 @@ Partial Class FrmContratosNuevos
         'Label18
         '
         Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(166, 175)
+        Me.Label18.Location = New System.Drawing.Point(169, 175)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(68, 13)
         Me.Label18.TabIndex = 232
@@ -641,7 +661,7 @@ Partial Class FrmContratosNuevos
         '
         'TxtNumero1
         '
-        Me.TxtNumero1.Location = New System.Drawing.Point(97, 171)
+        Me.TxtNumero1.Location = New System.Drawing.Point(100, 171)
         Me.TxtNumero1.Name = "TxtNumero1"
         Me.TxtNumero1.Size = New System.Drawing.Size(63, 20)
         Me.TxtNumero1.TabIndex = 230
@@ -652,7 +672,7 @@ Partial Class FrmContratosNuevos
         Me.CmbMoneda1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CmbMoneda1.FormattingEnabled = True
         Me.CmbMoneda1.Items.AddRange(New Object() {"Cordobas", "Dolares"})
-        Me.CmbMoneda1.Location = New System.Drawing.Point(99, 60)
+        Me.CmbMoneda1.Location = New System.Drawing.Point(102, 60)
         Me.CmbMoneda1.Name = "CmbMoneda1"
         Me.CmbMoneda1.Size = New System.Drawing.Size(121, 21)
         Me.CmbMoneda1.TabIndex = 229
@@ -668,7 +688,7 @@ Partial Class FrmContratosNuevos
         '
         'TxtPrecioUnitario
         '
-        Me.TxtPrecioUnitario.Location = New System.Drawing.Point(98, 127)
+        Me.TxtPrecioUnitario.Location = New System.Drawing.Point(101, 127)
         Me.TxtPrecioUnitario.Name = "TxtPrecioUnitario"
         Me.TxtPrecioUnitario.Size = New System.Drawing.Size(122, 20)
         Me.TxtPrecioUnitario.TabIndex = 227
@@ -686,7 +706,7 @@ Partial Class FrmContratosNuevos
         'DtpFinContrato1
         '
         Me.DtpFinContrato1.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DtpFinContrato1.Location = New System.Drawing.Point(97, 105)
+        Me.DtpFinContrato1.Location = New System.Drawing.Point(100, 105)
         Me.DtpFinContrato1.Name = "DtpFinContrato1"
         Me.DtpFinContrato1.Size = New System.Drawing.Size(123, 20)
         Me.DtpFinContrato1.TabIndex = 170
@@ -704,7 +724,7 @@ Partial Class FrmContratosNuevos
         'DtpInicioContrato1
         '
         Me.DtpInicioContrato1.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DtpInicioContrato1.Location = New System.Drawing.Point(97, 83)
+        Me.DtpInicioContrato1.Location = New System.Drawing.Point(100, 83)
         Me.DtpInicioContrato1.Name = "DtpInicioContrato1"
         Me.DtpInicioContrato1.Size = New System.Drawing.Size(123, 20)
         Me.DtpInicioContrato1.TabIndex = 168
@@ -732,7 +752,7 @@ Partial Class FrmContratosNuevos
         '
         Me.CmbContrato1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CmbContrato1.FormattingEnabled = True
-        Me.CmbContrato1.Location = New System.Drawing.Point(99, 14)
+        Me.CmbContrato1.Location = New System.Drawing.Point(102, 14)
         Me.CmbContrato1.Name = "CmbContrato1"
         Me.CmbContrato1.Size = New System.Drawing.Size(121, 21)
         Me.CmbContrato1.TabIndex = 164
@@ -770,7 +790,7 @@ Partial Class FrmContratosNuevos
         Me.TDBGridTipoContrato.Name = "TDBGridTipoContrato"
         Me.TDBGridTipoContrato.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TDBGridTipoContrato.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TDBGridTipoContrato.PreviewInfo.ZoomFactor = 75
+        Me.TDBGridTipoContrato.PreviewInfo.ZoomFactor = 75.0R
         Me.TDBGridTipoContrato.PrintInfo.PageSettings = CType(resources.GetObject("TDBGridTipoContrato.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
         Me.TDBGridTipoContrato.Size = New System.Drawing.Size(487, 136)
         Me.TDBGridTipoContrato.TabIndex = 166
@@ -1021,16 +1041,6 @@ Partial Class FrmContratosNuevos
         Me.Label17.TabIndex = 163
         Me.Label17.Text = "Tipo Servicio"
         '
-        'TabPage3
-        '
-        Me.TabPage3.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.TabPage3.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage3.Size = New System.Drawing.Size(855, 352)
-        Me.TabPage3.TabIndex = 2
-        Me.TabPage3.Text = "Detalle"
-        '
         'GroupBox6
         '
         Me.GroupBox6.Controls.Add(Me.BtnBorrarLineaCont1)
@@ -1067,7 +1077,7 @@ Partial Class FrmContratosNuevos
         Me.TrueDBGridContrato1.Name = "TrueDBGridContrato1"
         Me.TrueDBGridContrato1.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridContrato1.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TrueDBGridContrato1.PreviewInfo.ZoomFactor = 75
+        Me.TrueDBGridContrato1.PreviewInfo.ZoomFactor = 75.0R
         Me.TrueDBGridContrato1.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridContrato1.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
         Me.TrueDBGridContrato1.Size = New System.Drawing.Size(460, 100)
         Me.TrueDBGridContrato1.TabIndex = 165
@@ -1193,6 +1203,7 @@ Partial Class FrmContratosNuevos
     Friend WithEvents GroupBox6 As System.Windows.Forms.GroupBox
     Friend WithEvents TrueDBGridContrato1 As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents BtnBorrarLineaCont1 As System.Windows.Forms.Button
-    Friend WithEvents TabPage3 As System.Windows.Forms.TabPage
     Friend WithEvents ChkUnificar As System.Windows.Forms.CheckBox
+    Friend WithEvents TxtNombreComercial As TextBox
+    Friend WithEvents Label25 As Label
 End Class

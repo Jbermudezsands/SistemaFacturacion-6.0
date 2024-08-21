@@ -1747,7 +1747,7 @@ Public Class FrmCompras
         End If
 
         If Me.CboTipoProducto.Text = "Cuenta" Then
-            Me.GroupBox3.Enabled = False
+            Me.GroupBox3.Enabled = True
             Me.RadioButton1.Checked = True
             Me.ChkAplicarCtasXPagar.Visible = False
 
@@ -2783,7 +2783,9 @@ Public Class FrmCompras
         Fecha_Compra = Format(My.Forms.FrmFecha.DTPFechaRequerido.Value, "dd/MM/yyyy")
         Me.DTPFecha.Value = Fecha_Compra
 
-
+        If Quien = "Cancelar" Then
+            Exit Sub
+        End If
 
         Select Case TipoCompra
             Case "Orden de Compra"
@@ -2937,15 +2939,6 @@ Public Class FrmCompras
         Me.CmdFacturar.Enabled = False
 
     End Sub
-
-    Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-    End Sub
-
-    Private Sub TrueDBGridComponentes_ContextMenuChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.ContextMenuChanged
-
-    End Sub
-
     Private Sub OptExsonerado_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptExsonerado.CheckedChanged
         ActualizaMETODOcOMPRA()
     End Sub
@@ -3671,6 +3664,10 @@ Public Class FrmCompras
     End Sub
 
     Private Sub TrueDBGridComponentes_ControlAdded(ByVal sender As Object, ByVal e As System.Windows.Forms.ControlEventArgs) Handles TrueDBGridComponentes.ControlAdded
+
+    End Sub
+
+    Private Sub TrueDBGridComponentes_ChangeUICues(ByVal sender As Object, ByVal e As System.Windows.Forms.UICuesEventArgs) Handles TrueDBGridComponentes.ChangeUICues
 
     End Sub
 End Class

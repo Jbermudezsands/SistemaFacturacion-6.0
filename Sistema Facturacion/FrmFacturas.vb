@@ -6,6 +6,7 @@ Imports System.Drawing.Printing
 
 Public Class FrmFacturas
     Inherits System.Windows.Forms.Form
+    Public SubTotalGral As Double, IvaGral As Double, NetoGral As Double
     Public MiConexion As New SqlClient.SqlConnection(Conexion), CodigoIva As String, CantidadAnterior As Double, PrecioAnterior As Double, ConsecutivoFacturaManual As Boolean = False, FacturaTarea As Boolean = False, ConsecutivoFacturaSerie As Boolean = False, FacturaLotes As Boolean = False, SalirFactura As Boolean = True
     Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder, CambioCliente As Boolean, Impresora_Defecto As String
     Private oHebraCliente As Thread, SaldoClienteH As Double, LimiteCredito As Double, MonedaLimiteCredito As String, BloqueoLimiteCredito As Boolean = False
@@ -19,7 +20,7 @@ Public Class FrmFacturas
         Dim MontoFactura As Double, FechaFactura As Date, Dias As Double, TasaInteres As Double, MontoMora As Double, Total As Double
         Dim Registros2 As Double, j As Double, TasaCambioRecibo As Double, TotalFactura As Double = 0, TotalAbonos As Double = 0, TotalCargos As Double = 0
         Dim TotalMora As Double = 0, FechaVence As Date, NumeroNota As String = "", MontoNota As Double = 0, NumeroNotaCR As String = "", MontoNotaCR As Double = 0, TotalMontoNotaCR As Double = 0, TotalMontoNotaDB As Double = 0
-        Dim MontoMetodoFactura As Double = 0, TipoNota As String = ""
+        Dim MontoMetodoFactura As Double = 0, TipoNota As String = "", TasaCmbio As Double
         'oDataRow As DataRow, 
 
 
@@ -114,17 +115,22 @@ Public Class FrmFacturas
 
             Do While Registros2 > j
 
+
+                TasaCambio = BuscaTasaCambio(DataSet.Tables("Recibos").Rows(j)("Fecha_Recibo"))
+
                 If Moneda = "Cordobas" Then
                     If DataSet.Tables("Recibos").Rows(j)("MonedaRecibo") = "Cordobas" Then
                         TasaCambioRecibo = 1
                     Else
-                        TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("Recibos").Rows(j)("Fecha_Recibo"))
+                        TasaCambioRecibo = TasaCambio
                     End If
                 Else
                     If DataSet.Tables("Recibos").Rows(j)("MonedaRecibo") = "Dolares" Then
                         TasaCambioRecibo = 1
+                    ElseIf TasaCambio <> 0 Then
+                        TasaCambioRecibo = 1 / TasaCambio
                     Else
-                        TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("Recibos").Rows(j)("Fecha_Recibo"))
+                        TasaCambioRecibo = 1
                     End If
                 End If
                 If NumeroRecibo = "" Then
@@ -153,13 +159,16 @@ Public Class FrmFacturas
             Do While Registros2 > j
 
                 TipoNota = DataSet.Tables("NotaDB").Rows(j)("Tipo")
+                TasaCambio = BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
 
                 If Moneda = "Cordobas" Then
                     If TipoNota <> "Debito Clientes Dif $" Then
                         If DataSet.Tables("NotaDB").Rows(j)("MonedaNota") = "Cordobas" Then
                             TasaCambioRecibo = 1
+                        ElseIf TasaCambio <> 0 Then
+                            TasaCambioRecibo = TasaCambio
                         Else
-                            TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                            TasaCambioRecibo = 1
                         End If
                     Else
                         TasaCambioRecibo = 0
@@ -168,8 +177,10 @@ Public Class FrmFacturas
                     If TipoNota <> "Debito Clientes Dif C$" Then
                         If DataSet.Tables("NotaDB").Rows(j)("MonedaNota") = "Dolares" Then
                             TasaCambioRecibo = 1
+                        ElseIf TasaCambio <> 0 Then
+                            TasaCambioRecibo = 1 / TasaCambio
                         Else
-                            TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                            TasaCambioRecibo = 1
                         End If
                     Else
                         TasaCambioRecibo = 0
@@ -204,13 +215,16 @@ Public Class FrmFacturas
             Do While Registros2 > j
 
                 TipoNota = DataSet.Tables("NotaCR").Rows(j)("Tipo")
+                TasaCambio = BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
 
                 If Moneda = "Cordobas" Then
                     If TipoNota <> "Credito Clientes Dif $" Then
                         If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Cordobas" Then
                             TasaCambioRecibo = 1
+                        ElseIf TasaCambio <> 0 Then
+                            TasaCambioRecibo = TasaCambio
                         Else
-                            TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                            TasaCambioRecibo = 1
                         End If
                     Else
                         TasaCambioRecibo = 0
@@ -219,8 +233,10 @@ Public Class FrmFacturas
                     If TipoNota <> "Credito Clientes Dif C$" Then
                         If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Dolares" Then
                             TasaCambioRecibo = 1
+                        ElseIf TasaCambio <> 0 Then
+                            TasaCambioRecibo = 1 / TasaCambio
                         Else
-                            TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                            TasaCambioRecibo = 1
                         End If
                     Else
                         TasaCambioRecibo = 0
@@ -248,17 +264,24 @@ Public Class FrmFacturas
             DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
             DataAdapter.Fill(DataSet, "MetodoFactura")
             If DataSet.Tables("MetodoFactura").Rows.Count <> 0 Then
+
+                TasaCambio = BuscaTasaCambio(DataSet.Tables("MetodoFactura").Rows(0)("Fecha_Factura"))
+
                 If Moneda = "Cordobas" Then
                     If DataSet.Tables("MetodoFactura").Rows(0)("Moneda") = "Cordobas" Then
                         TasaCambioRecibo = 1
+                    ElseIf TasaCambio <> 0 Then
+                        TasaCambioRecibo = TasaCambio
                     Else
-                        TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("MetodoFactura").Rows(0)("Fecha_Factura"))
+                        TasaCambioRecibo = 1
                     End If
                 Else
                     If DataSet.Tables("MetodoFactura").Rows(0)("Moneda") = "Dolares" Then
                         TasaCambioRecibo = 1
+                    ElseIf TasaCambio <> 0 Then
+                        TasaCambioRecibo = 1 / TasaCambio
                     Else
-                        TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("MetodoFactura").Rows(0)("Fecha_Factura"))
+                        TasaCambioRecibo = 1
                     End If
                 End If
 
@@ -1055,7 +1078,7 @@ Public Class FrmFacturas
                         oDataRow = DataSet.Tables("MetodoPago").NewRow
                         oDataRow("NombrePago") = DataSet.Tables("Metodo").Rows(0)("NombrePago")
                         If Me.TxtNetoPagar.Text <> "" Then
-                            oDataRow("Monto") = Me.TxtNetoPagar.Text
+                        oDataRow("Monto") = Redondeo(Me.SubTotalGral + Me.IvaGral, 3)
                         Else
                             oDataRow("Monto") = 0
                         End If
@@ -2123,7 +2146,7 @@ Public Class FrmFacturas
                     Else
                         CodTarea = 0
                     End If
-                    GrabaDetalleFacturaLotes(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CodTarea, FechaVence)
+                    GrabaDetalleFacturaLotes(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CodTarea, FechaVence, Me.CboTipoProducto.Text)
 
                 Else
                     GrabaDetalleFactura(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CostoUnitario)
@@ -2374,7 +2397,7 @@ Public Class FrmFacturas
                     Else
                         CodTarea = 0
                     End If
-                    GrabaDetalleFacturaLotes(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CodTarea, FechaVence)
+                    GrabaDetalleFacturaLotes(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CodTarea, FechaVence, Me.CboTipoProducto.Text)
 
                 Else
                     GrabaDetalleFactura(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CostoUnitario)
@@ -2468,7 +2491,8 @@ Public Class FrmFacturas
             Consecutivo = BuscaConsecutivo("NotaCredito")
             NumeroNota = Format(Consecutivo, "0000#")
             GrabaNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, MontoIr, Me.TxtMonedaFactura.Text, Me.TxtCodigoClientes.Text, Me.TxtNombres.Text, Me.TxtObservaciones.Text, True, False, False)
-            GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Factura", Me.TxtNumeroEnsamble.Text, MontoIr)
+            'GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Factura", Me.TxtNumeroEnsamble.Text, MontoIr)
+            InsertarDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Acutomaticamente por Factura", Me.TxtNumeroEnsamble.Text, MontoIr)
         End If
 
         If Me.OptRet2Porciento.Checked = True Then
@@ -2498,7 +2522,8 @@ Public Class FrmFacturas
             NumeroNota = Format(Consecutivo, "0000#")
 
             GrabaNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, MontoIr, Me.TxtMonedaFactura.Text, Me.TxtCodigoClientes.Text, Me.TxtNombres.Text, Me.TxtObservaciones.Text, True, False, False)
-            GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Factura", Me.TxtNumeroEnsamble.Text, MontoIr)
+            InsertarDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Acutomaticamente por Factura", Me.TxtNumeroEnsamble.Text, MontoIr)
+            'GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Factura", Me.TxtNumeroEnsamble.Text, MontoIr)
         End If
 
 
@@ -3103,16 +3128,16 @@ Public Class FrmFacturas
             'End If
 
 
-            If Val(Me.TxtSubTotal.Text) <> 0 Then
+            If Val(Me.SubTotalGral) <> 0 Then
                 'ArepCotizaciones.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
-                ArepFacturas.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
-                ArepFacturas2.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
-                ArepFacturasTiras.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
-                ArepOrdenTrabajo.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
-                ArepSalidaBodega.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
-                ArepFacturasTiras.LblPropina.Text = Format(CDbl(Me.TxtPropina.Text) * TasaCambio, "##,##0.00")
-                ArepFacturaMediaPagina.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
-                ArepFacturasTareas.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+                ArepFacturas.LblSubTotal.Text = Format(CDbl(Me.SubTotalGral) * TasaCambio, "##,##0.00")
+                ArepFacturas2.LblSubTotal.Text = Format(CDbl(Me.SubTotalGral) * TasaCambio, "##,##0.00")
+                ArepFacturasTiras.LblSubTotal.Text = Format(CDbl(Me.SubTotalGral) * TasaCambio, "##,##0.00")
+                ArepOrdenTrabajo.LblSubTotal.Text = Format(CDbl(Me.SubTotalGral) * TasaCambio, "##,##0.00")
+                ArepSalidaBodega.LblSubTotal.Text = Format(CDbl(Me.SubTotalGral) * TasaCambio, "##,##0.00")
+                ArepFacturasTiras.LblPropina.Text = Format(CDbl(Me.SubTotalGral) * TasaCambio, "##,##0.00")
+                ArepFacturaMediaPagina.LblSubTotal.Text = Format(CDbl(Me.SubTotalGral) * TasaCambio, "##,##0.00")
+                ArepFacturasTareas.LblSubTotal.Text = Format(CDbl(Me.SubTotalGral) * TasaCambio, "##,##0.00")
 
             Else
                 'ArepCotizaciones.LblSubTotal.Text = "0.00"
@@ -3126,15 +3151,15 @@ Public Class FrmFacturas
                 ArepFacturasTareas.LblSubTotal.Text = "0.00"
             End If
 
-            If Val(Me.TxtIva.Text) <> 0 Then
+            If Val(Me.IvaGral) <> 0 Then
                 'ArepCotizaciones.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
-                ArepFacturas.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
-                ArepFacturas2.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
-                ArepFacturasTiras.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
-                ArepOrdenTrabajo.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
-                ArepSalidaBodega.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
-                ArepFacturaMediaPagina.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
-                ArepFacturasTareas.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+                ArepFacturas.LblIva.Text = Format(CDbl(Me.IvaGral) * TasaCambio, "##,##0.00")
+                ArepFacturas2.LblIva.Text = Format(CDbl(Me.IvaGral) * TasaCambio, "##,##0.00")
+                ArepFacturasTiras.LblIva.Text = Format(CDbl(Me.IvaGral) * TasaCambio, "##,##0.00")
+                ArepOrdenTrabajo.LblIva.Text = Format(CDbl(Me.IvaGral) * TasaCambio, "##,##0.00")
+                ArepSalidaBodega.LblIva.Text = Format(CDbl(Me.IvaGral) * TasaCambio, "##,##0.00")
+                ArepFacturaMediaPagina.LblIva.Text = Format(CDbl(Me.IvaGral) * TasaCambio, "##,##0.00")
+                ArepFacturasTareas.LblIva.Text = Format(CDbl(Me.IvaGral) * TasaCambio, "##,##0.00")
             Else
                 'ArepCotizaciones.LblIva.Text = "0.00"
                 ArepFacturas.LblIva.Text = "0.00"
@@ -3163,13 +3188,13 @@ Public Class FrmFacturas
 
             If Val(Me.TxtNetoPagar.Text) <> 0 Then
                 'ArepCotizaciones.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
-                ArepFacturas.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
-                ArepFacturas2.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
-                ArepFacturasTiras.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
-                ArepOrdenTrabajo.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
-                ArepSalidaBodega.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
-                ArepFacturaMediaPagina.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
-                ArepFacturasTareas.LblPagado.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+                ArepFacturas.LblTotal.Text = Format(CDbl(Me.SubTotalGral + Me.IvaGral) * TasaCambio, "##,##0.00")
+                ArepFacturas2.LblTotal.Text = Format(CDbl(Me.SubTotalGral + Me.IvaGral) * TasaCambio, "##,##0.00")
+                ArepFacturasTiras.LblTotal.Text = Format(CDbl(Me.SubTotalGral + Me.IvaGral) * TasaCambio, "##,##0.00")
+                ArepOrdenTrabajo.LblTotal.Text = Format(CDbl(Me.SubTotalGral + Me.IvaGral) * TasaCambio, "##,##0.00")
+                ArepSalidaBodega.LblTotal.Text = Format(CDbl(Me.SubTotalGral + Me.IvaGral) * TasaCambio, "##,##0.00")
+                ArepFacturaMediaPagina.LblTotal.Text = Format(CDbl(Me.SubTotalGral + Me.IvaGral) * TasaCambio, "##,##0.00")
+                ArepFacturasTareas.LblPagado.Text = Format(CDbl(Me.SubTotalGral + Me.IvaGral) * TasaCambio, "##,##0.00")
             Else
                 'ArepCotizaciones.LblTotal.Text = "0.00"
                 ArepFacturas.LblTotal.Text = "0.00"
@@ -3194,10 +3219,10 @@ Public Class FrmFacturas
             End If
 
 
-            ArepFacturasTiras.LblTotal1.Text = Format((CDbl(Me.TxtIva.Text) + CDbl(Me.TxtSubTotal.Text) + CDbl(Me.TxtPropina.Text)) * TasaCambio, "##,##0.00")
-            ArepOrdenTrabajo.LblTotal1.Text = Format((CDbl(Me.TxtIva.Text) + CDbl(Me.TxtSubTotal.Text)) * TasaCambio, "##,##0.00")
-            ArepSalidaBodega.LblTotal.Text = Format((CDbl(Me.TxtIva.Text) + CDbl(Me.TxtSubTotal.Text)) * TasaCambio, "##,##0.00")
-            ArepFacturasTareas.LblTotal.Text = Format((CDbl(Me.TxtIva.Text) + CDbl(Me.TxtSubTotal.Text)) * TasaCambio, "##,##0.00")
+            ArepFacturasTiras.LblTotal1.Text = Format((CDbl(Me.IvaGral) + CDbl(Me.SubTotalGral) + CDbl(Me.TxtPropina.Text)) * TasaCambio, "##,##0.00")
+            ArepOrdenTrabajo.LblTotal1.Text = Format((CDbl(Me.IvaGral) + CDbl(Me.SubTotalGral)) * TasaCambio, "##,##0.00")
+            ArepSalidaBodega.LblTotal.Text = Format((CDbl(Me.IvaGral) + CDbl(Me.SubTotalGral)) * TasaCambio, "##,##0.00")
+            ArepFacturasTareas.LblTotal.Text = Format((CDbl(Me.IvaGral) + CDbl(Me.SubTotalGral)) * TasaCambio, "##,##0.00")
 
 
 
@@ -4060,17 +4085,20 @@ Public Class FrmFacturas
                     Me.CboProyecto.Text = ""
                 End If
 
-                If DataSet.Tables("Facturas").Rows(0)("Exonerado") = "True" Then
-                    Me.OptExsonerado.Checked = True
-                Else
-                    Me.OptExsonerado.Checked = False
-                End If
+
 
                 If FacturaContado = True Then
                     Me.RadioButton2.Checked = True
                 Else
                     Me.RadioButton1.Checked = True
                 End If
+
+                If DataSet.Tables("Facturas").Rows(0)("Exonerado") = "True" Then
+                    Me.OptExsonerado.Checked = True
+                Else
+                    Me.OptExsonerado.Checked = False
+                End If
+
 
                 If Not IsDBNull(DataSet.Tables("Facturas").Rows(0)("Retener1Porciento")) Then
                     If DataSet.Tables("Facturas").Rows(0)("Retener1Porciento") = "True" Then
@@ -7867,7 +7895,7 @@ Public Class FrmFacturas
 
 
                 End If
-                End If
+            End If
         End If
         End Sub
 
@@ -8246,7 +8274,7 @@ Public Class FrmFacturas
             '    iPosicion = iPosicion + 1
             'Loop
 
-            ActualizaMETODOFactura()
+        ActualizaMETODOFactura()
         End Sub
 
         Private Sub TrueDBGridComponentes_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TrueDBGridComponentes.KeyDown

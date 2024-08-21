@@ -19,49 +19,52 @@ Partial Class FrmEnsamble
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmEnsamble))
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.CboCodigoBodega = New C1.Win.C1List.C1Combo
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.CboTipoProducto = New System.Windows.Forms.ComboBox
-        Me.Button6 = New System.Windows.Forms.Button
-        Me.TxtNumeroEnsamble = New System.Windows.Forms.TextBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.DTPFecha = New System.Windows.Forms.DateTimePicker
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.LblUnidadMedida = New System.Windows.Forms.Label
-        Me.TxtRendimiento = New System.Windows.Forms.TextBox
-        Me.Label30 = New System.Windows.Forms.Label
-        Me.C1Button2 = New C1.Win.C1Input.C1Button
-        Me.TxtNumero = New System.Windows.Forms.TextBox
-        Me.CmdAgregarProducto = New System.Windows.Forms.Button
-        Me.TxtCantidad = New System.Windows.Forms.TextBox
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.TxtDescripcion = New System.Windows.Forms.TextBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.TxtCodigo = New System.Windows.Forms.TextBox
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.CmdEnsambles = New System.Windows.Forms.Button
-        Me.ButtonBorrar = New System.Windows.Forms.Button
-        Me.ButtonAgregar = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.CmdProcesar = New System.Windows.Forms.Button
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.CmdNuevo = New System.Windows.Forms.Button
-        Me.CmdOrden = New System.Windows.Forms.Button
-        Me.CmdDesahacer = New System.Windows.Forms.Button
-        Me.CmdGrabar = New System.Windows.Forms.Button
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.CboBodegaDestino = New C1.Win.C1List.C1Combo()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.CboCodigoBodega = New C1.Win.C1List.C1Combo()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.CboTipoProducto = New System.Windows.Forms.ComboBox()
+        Me.Button6 = New System.Windows.Forms.Button()
+        Me.TxtNumeroEnsamble = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.DTPFecha = New System.Windows.Forms.DateTimePicker()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.LblUnidadMedida = New System.Windows.Forms.Label()
+        Me.TxtRendimiento = New System.Windows.Forms.TextBox()
+        Me.Label30 = New System.Windows.Forms.Label()
+        Me.C1Button2 = New C1.Win.C1Input.C1Button()
+        Me.TxtNumero = New System.Windows.Forms.TextBox()
+        Me.CmdAgregarProducto = New System.Windows.Forms.Button()
+        Me.TxtCantidad = New System.Windows.Forms.TextBox()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.TxtDescripcion = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.TxtCodigo = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
+        Me.CmdEnsambles = New System.Windows.Forms.Button()
+        Me.ButtonBorrar = New System.Windows.Forms.Button()
+        Me.ButtonAgregar = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.CmdProcesar = New System.Windows.Forms.Button()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.CmdNuevo = New System.Windows.Forms.Button()
+        Me.CmdOrden = New System.Windows.Forms.Button()
+        Me.CmdDesahacer = New System.Windows.Forms.Button()
+        Me.CmdGrabar = New System.Windows.Forms.Button()
         Me.BindingComponentes = New System.Windows.Forms.BindingSource(Me.components)
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox
-        Me.PictureBox3 = New System.Windows.Forms.PictureBox
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
         Me.GroupBox1.SuspendLayout()
+        CType(Me.CboBodegaDestino, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -74,6 +77,8 @@ Partial Class FrmEnsamble
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.CboBodegaDestino)
+        Me.GroupBox1.Controls.Add(Me.Label8)
         Me.GroupBox1.Controls.Add(Me.CboCodigoBodega)
         Me.GroupBox1.Controls.Add(Me.Label7)
         Me.GroupBox1.Controls.Add(Me.CboTipoProducto)
@@ -88,6 +93,45 @@ Partial Class FrmEnsamble
         Me.GroupBox1.Size = New System.Drawing.Size(545, 70)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
+        '
+        'CboBodegaDestino
+        '
+        Me.CboBodegaDestino.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboBodegaDestino.Caption = ""
+        Me.CboBodegaDestino.CaptionHeight = 17
+        Me.CboBodegaDestino.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboBodegaDestino.ColumnCaptionHeight = 17
+        Me.CboBodegaDestino.ColumnFooterHeight = 17
+        Me.CboBodegaDestino.ComboStyle = C1.Win.C1List.ComboStyleEnum.DropdownList
+        Me.CboBodegaDestino.ContentHeight = 15
+        Me.CboBodegaDestino.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboBodegaDestino.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboBodegaDestino.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboBodegaDestino.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboBodegaDestino.EditorHeight = 15
+        Me.CboBodegaDestino.Images.Add(CType(resources.GetObject("CboBodegaDestino.Images"), System.Drawing.Image))
+        Me.CboBodegaDestino.ItemHeight = 15
+        Me.CboBodegaDestino.Location = New System.Drawing.Point(358, 43)
+        Me.CboBodegaDestino.MatchEntryTimeout = CType(2000, Long)
+        Me.CboBodegaDestino.MaxDropDownItems = CType(5, Short)
+        Me.CboBodegaDestino.MaxLength = 32767
+        Me.CboBodegaDestino.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboBodegaDestino.Name = "CboBodegaDestino"
+        Me.CboBodegaDestino.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboBodegaDestino.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboBodegaDestino.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboBodegaDestino.Size = New System.Drawing.Size(115, 21)
+        Me.CboBodegaDestino.TabIndex = 140
+        Me.CboBodegaDestino.PropBag = resources.GetString("CboBodegaDestino.PropBag")
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(273, 46)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(83, 13)
+        Me.Label8.TabIndex = 139
+        Me.Label8.Text = "Bodega Destino"
         '
         'CboCodigoBodega
         '
@@ -106,7 +150,7 @@ Partial Class FrmEnsamble
         Me.CboCodigoBodega.EditorHeight = 15
         Me.CboCodigoBodega.Images.Add(CType(resources.GetObject("CboCodigoBodega.Images"), System.Drawing.Image))
         Me.CboCodigoBodega.ItemHeight = 15
-        Me.CboCodigoBodega.Location = New System.Drawing.Point(227, 40)
+        Me.CboCodigoBodega.Location = New System.Drawing.Point(106, 43)
         Me.CboCodigoBodega.MatchEntryTimeout = CType(2000, Long)
         Me.CboCodigoBodega.MaxDropDownItems = CType(5, Short)
         Me.CboCodigoBodega.MaxLength = 32767
@@ -115,18 +159,18 @@ Partial Class FrmEnsamble
         Me.CboCodigoBodega.RowDivider.Color = System.Drawing.Color.DarkGray
         Me.CboCodigoBodega.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
         Me.CboCodigoBodega.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboCodigoBodega.Size = New System.Drawing.Size(198, 21)
+        Me.CboCodigoBodega.Size = New System.Drawing.Size(115, 21)
         Me.CboCodigoBodega.TabIndex = 138
         Me.CboCodigoBodega.PropBag = resources.GetString("CboCodigoBodega.PropBag")
         '
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(177, 40)
+        Me.Label7.Location = New System.Drawing.Point(23, 45)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(44, 13)
+        Me.Label7.Size = New System.Drawing.Size(78, 13)
         Me.Label7.TabIndex = 137
-        Me.Label7.Text = "Bodega"
+        Me.Label7.Text = "Bodega Origen"
         '
         'CboTipoProducto
         '
@@ -368,7 +412,7 @@ Partial Class FrmEnsamble
         Me.TrueDBGridComponentes.Name = "TrueDBGridComponentes"
         Me.TrueDBGridComponentes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75
+        Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75.0R
         Me.TrueDBGridComponentes.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridComponentes.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
         Me.TrueDBGridComponentes.Size = New System.Drawing.Size(514, 167)
         Me.TrueDBGridComponentes.TabIndex = 131
@@ -407,7 +451,7 @@ Partial Class FrmEnsamble
         '
         Me.ButtonAgregar.Image = CType(resources.GetObject("ButtonAgregar.Image"), System.Drawing.Image)
         Me.ButtonAgregar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonAgregar.Location = New System.Drawing.Point(390, 534)
+        Me.ButtonAgregar.Location = New System.Drawing.Point(376, 465)
         Me.ButtonAgregar.Name = "ButtonAgregar"
         Me.ButtonAgregar.Size = New System.Drawing.Size(75, 67)
         Me.ButtonAgregar.TabIndex = 118
@@ -539,7 +583,7 @@ Partial Class FrmEnsamble
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(729, 448)
+        Me.ClientSize = New System.Drawing.Size(737, 451)
         Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.ButtonAgregar)
@@ -555,6 +599,7 @@ Partial Class FrmEnsamble
         Me.Text = "Control de Ensambles"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        CType(Me.CboBodegaDestino, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -608,4 +653,6 @@ Partial Class FrmEnsamble
     Friend WithEvents Label30 As System.Windows.Forms.Label
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
     Friend WithEvents PictureBox3 As System.Windows.Forms.PictureBox
+    Friend WithEvents CboBodegaDestino As C1.Win.C1List.C1Combo
+    Friend WithEvents Label8 As System.Windows.Forms.Label
 End Class

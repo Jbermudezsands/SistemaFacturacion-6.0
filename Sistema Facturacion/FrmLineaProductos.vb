@@ -40,41 +40,51 @@ Public Class FrmLineaProductos
     Private Sub CboCodigoLinea_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboCodigoLinea.TextChanged
         Dim SQL As String = "SELECT dbo.Lineas.* FROM dbo.Lineas WHERE (Cod_Linea = '" & Me.CboCodigoLinea.Text & "')"
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter(SQL, MiConexion)
-        Dim RutaOrigen As String
+        Dim RutaOrigen As String, Foto As String
+        Dim myImagenConsulta As Image
+
         DataAdapter.Fill(DataSet, "LineaProductos")
         If Not DataSet.Tables("LineaProductos").Rows.Count = 0 Then
             If Not IsDBNull(DataSet.Tables("LineaProductos").Rows(0)("Descripcion_Linea")) Then
                 Me.TxtNombre.Text = DataSet.Tables("LineaProductos").Rows(0)("Descripcion_Linea")
             End If
-            If Not IsDBNull(DataSet.Tables("LineaProductos").Rows(0)("RutaImagen")) Then
-                Me.TxtRuta.Text = DataSet.Tables("LineaProductos").Rows(0)("RutaImagen")
+            'If Not IsDBNull(DataSet.Tables("LineaProductos").Rows(0)("RutaImagen")) Then
+            '    Me.TxtRuta.Text = DataSet.Tables("LineaProductos").Rows(0)("RutaImagen")
+            'End If
+
+            If Not IsDBNull(DataSet.Tables("LineaProductos").Rows(0)("Foto")) Then
+                Foto = DataSet.Tables("LineaProductos").Rows(0)("Foto")
+                myImagenConsulta = BytesToImagen(StringtoByte(Foto))
+                Me.ImgFoto.Image = myImagenConsulta
+            Else
+                Me.ImgFoto.Image = My.Resources.NoDisponible
             End If
         Else
             Me.TxtNombre.Text = ""
             Me.TxtRuta.Text = ""
-            Me.ImgFoto.Image = Nothing
+            Me.ImgFoto.Image = My.Resources.NoDisponible
         End If
 
-        Me.ImgFoto.Image = Nothing
+        'Me.ImgFoto.Image = Nothing
 
-        If System.IO.Directory.Exists(RutaCompartida) = True Then
-            RutaOrigen = RutaCompartida & "\L" & Trim(Me.CboCodigoLinea.Text) & ".jpg"
-            If Dir(RutaOrigen) <> "" Then
-                Me.ImgFoto.ImageLocation = RutaOrigen
-            Else
-                RutaOrigen = My.Application.Info.DirectoryPath & "\Fotos\L" & Me.CboCodigoLinea.Text & ".jpg"
-                If System.IO.File.Exists(RutaOrigen) = True Then
-                    Me.ImgFoto.ImageLocation = RutaOrigen
-                End If
-            End If
-        Else
-            RutaOrigen = My.Application.Info.DirectoryPath & "\Fotos\L" & Me.CboCodigoLinea.Text & ".jpg"
-            If System.IO.File.Exists(RutaOrigen) = True Then
-                Me.ImgFoto.ImageLocation = RutaOrigen
-            End If
-        End If
+        'If System.IO.Directory.Exists(RutaCompartida) = True Then
+        '    RutaOrigen = RutaCompartida & "\L" & Trim(Me.CboCodigoLinea.Text) & ".jpg"
+        '    If Dir(RutaOrigen) <> "" Then
+        '        Me.ImgFoto.ImageLocation = RutaOrigen
+        '    Else
+        '        RutaOrigen = My.Application.Info.DirectoryPath & "\Fotos\L" & Me.CboCodigoLinea.Text & ".jpg"
+        '        If System.IO.File.Exists(RutaOrigen) = True Then
+        '            Me.ImgFoto.ImageLocation = RutaOrigen
+        '        End If
+        '    End If
+        'Else
+        '    RutaOrigen = My.Application.Info.DirectoryPath & "\Fotos\L" & Me.CboCodigoLinea.Text & ".jpg"
+        '    If System.IO.File.Exists(RutaOrigen) = True Then
+        '        Me.ImgFoto.ImageLocation = RutaOrigen
+        '    End If
+        'End If
 
-        Me.TxtRuta.Text = RutaOrigen
+        'Me.TxtRuta.Text = RutaOrigen
 
     End Sub
 
@@ -82,7 +92,7 @@ Public Class FrmLineaProductos
 
         Dim SQLProveedor As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Foto As String
 
         'Try
 
@@ -97,12 +107,14 @@ Public Class FrmLineaProductos
             Exit Sub
         End If
 
+        Foto = bytesToString(ImagenToBytes(Me.ImgFoto.Image))
+
         SQLProveedor = "SELECT dbo.Lineas.* FROM dbo.Lineas WHERE (Cod_Linea = '" & Me.CboCodigoLinea.Text & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SQLProveedor, MiConexion)
         DataAdapter.Fill(DataSet, "LineaProductos")
         If Not DataSet.Tables("LineaProductos").Rows.Count = 0 Then
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-            StrSqlUpdate = "UPDATE [Lineas] SET [Descripcion_Linea] = '" & Me.TxtNombre.Text & "', [RutaImagen] = '" & Me.TxtRuta.Text & "' WHERE (Cod_Linea = '" & Me.CboCodigoLinea.Text & "')"
+            StrSqlUpdate = "UPDATE [Lineas] SET [Descripcion_Linea] = '" & Me.TxtNombre.Text & "', [RutaImagen] = '" & Me.TxtRuta.Text & "', [Foto] = '" & Foto & "' WHERE (Cod_Linea = '" & Me.CboCodigoLinea.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -110,7 +122,7 @@ Public Class FrmLineaProductos
 
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Lineas] ([Cod_Linea] ,[Descripcion_Linea],[RutaImagen]) " & _
+            StrSqlUpdate = "INSERT INTO [Lineas] ([Cod_Linea] ,[Descripcion_Linea],[RutaImagen]) " &
                            "VALUES('" & Me.CboCodigoLinea.Text & "','" & Me.TxtNombre.Text & "','" & Me.TxtRuta.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -205,47 +217,50 @@ Public Class FrmLineaProductos
         End If
 
         '--------------------------------------VERIFICO EL ANCHO Y ALTO PARA CAMBIARLO -------------------------------
-        Dim fs As FileStream = New FileStream(RutaOrigen, FileMode.Open, FileAccess.Read, FileShare.Read)
-        Dim LaImagen As System.Drawing.Image
-        LaImagen = System.Drawing.Image.FromStream(fs)
-        'este calculo es para que la foto no pierda proporciones
-        'alto = Math.Floor((100 / LaImagen.Width) * LaImagen.Height)
-        alto = 52
-        Dim NuevoBitmap As Bitmap = New Bitmap(ancho, alto)
-        Dim Graficos As Graphics = Graphics.FromImage(NuevoBitmap)
-        Graficos.CompositingQuality = Drawing2D.CompositingQuality.HighQuality
-        Graficos.SmoothingMode = Drawing2D.SmoothingMode.HighQuality
-        Graficos.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-        Dim Rectangulo As Rectangle = New Rectangle(0, 0, ancho, alto)
-        Graficos.DrawImage(LaImagen, Rectangulo)
+        'Dim fs As FileStream = New FileStream(RutaOrigen, FileMode.Open, FileAccess.Read, FileShare.Read)
+        'Dim LaImagen As System.Drawing.Image
+        'LaImagen = System.Drawing.Image.FromStream(fs)
+        ''este calculo es para que la foto no pierda proporciones
+        ''alto = Math.Floor((100 / LaImagen.Width) * LaImagen.Height)
+        'alto = 52
+        'Dim NuevoBitmap As Bitmap = New Bitmap(ancho, alto)
+        'Dim Graficos As Graphics = Graphics.FromImage(NuevoBitmap)
+        'Graficos.CompositingQuality = Drawing2D.CompositingQuality.HighQuality
+        'Graficos.SmoothingMode = Drawing2D.SmoothingMode.HighQuality
+        'Graficos.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+        'Dim Rectangulo As Rectangle = New Rectangle(0, 0, ancho, alto)
+        'Graficos.DrawImage(LaImagen, Rectangulo)
 
 
-        Me.ImgFoto.ImageLocation = RutaOrigen
+        'Me.ImgFoto.ImageLocation = RutaOrigen
         'If Dir(RutaCompartida, FileAttribute.Directory) <> "" Then
-        If System.IO.Directory.Exists(RutaCompartida) = True Then
-            RutaDestino = RutaCompartida & "\L" & Trim(Me.CboCodigoLinea.Text) & ".jpg"   'RutaCompartida & "\L" & Trim(Me.CboCodigoLinea.Text) & ".jpg"
-        Else
-            RutaDestino = My.Application.Info.DirectoryPath & "\Fotos\L" & Trim(Me.CboCodigoLinea.Text) & ".jpg"  'My.Application.Info.DirectoryPath & "\Fotos\L\" & Trim(Me.CboCodigoLinea.Text) & ".jpg"
-        End If
+        'If System.IO.Directory.Exists(RutaCompartida) = True Then
+        '    RutaDestino = RutaCompartida & "\L" & Trim(Me.CboCodigoLinea.Text) & ".jpg"   'RutaCompartida & "\L" & Trim(Me.CboCodigoLinea.Text) & ".jpg"
+        'Else
+        '    RutaDestino = My.Application.Info.DirectoryPath & "\Fotos\L" & Trim(Me.CboCodigoLinea.Text) & ".jpg"  'My.Application.Info.DirectoryPath & "\Fotos\L\" & Trim(Me.CboCodigoLinea.Text) & ".jpg"
+        'End If
 
-        If System.IO.File.Exists(RutaDestino) = True Then
-            System.IO.File.Delete(RutaDestino)
-            System.IO.File.Copy(RutaOrigen, RutaDestino)
-            Me.TxtRuta.Text = RutaDestino
-            'NuevoBitmap.Save(RutaDestino, NuevoBitmap.RawFormat)
-            CmdGrabar_Click(sender, e)
-            Me.ImgFoto.Image = Nothing
-            fs.Close()
-            fs = Nothing
-        Else
-            System.IO.File.Copy(RutaOrigen, RutaDestino)
-            Me.TxtRuta.Text = RutaDestino
-            'NuevoBitmap.Save(RutaDestino, NuevoBitmap.RawFormat)
-            CmdGrabar_Click(sender, e)
-            Me.ImgFoto.Image = Nothing
-            fs.Close()
-            fs = Nothing
-        End If
+        'If System.IO.File.Exists(RutaDestino) = True Then
+        '    System.IO.File.Delete(RutaDestino)
+        '    System.IO.File.Copy(RutaOrigen, RutaDestino)
+        '    Me.TxtRuta.Text = RutaDestino
+        '    'NuevoBitmap.Save(RutaDestino, NuevoBitmap.RawFormat)
+        '    CmdGrabar_Click(sender, e)
+        '    Me.ImgFoto.Image = Nothing
+        '    fs.Close()
+        '    fs = Nothing
+        'Else
+        '    System.IO.File.Copy(RutaOrigen, RutaDestino)
+        '    Me.TxtRuta.Text = RutaDestino
+        '    'NuevoBitmap.Save(RutaDestino, NuevoBitmap.RawFormat)
+        '    CmdGrabar_Click(sender, e)
+        '    Me.ImgFoto.Image = Nothing
+        '    fs.Close()
+        '    fs = Nothing
+        'End If
+
+        Me.ImgFoto.Image = CambiarTamañoImage(Image.FromFile(RutaOrigen))
+        'CmdGrabar_Click(sender, e)
     End Sub
 
     Private Sub CmdBorrarFoto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdBorrarFoto.Click

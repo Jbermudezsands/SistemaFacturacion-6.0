@@ -20,31 +20,31 @@ Partial Class FrmTipoPrecios
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmTipoPrecios))
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.PictureBox3 = New System.Windows.Forms.PictureBox
-        Me.TabControl1 = New System.Windows.Forms.TabControl
-        Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.TxtCategoria = New System.Windows.Forms.TextBox
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.LblPorciento = New System.Windows.Forms.Label
-        Me.TxtPorciento = New System.Windows.Forms.TextBox
-        Me.OptQuitar = New System.Windows.Forms.RadioButton
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.OptAplicar = New System.Windows.Forms.RadioButton
-        Me.CmdPrecios = New System.Windows.Forms.Button
-        Me.CboCodigoCliente = New C1.Win.C1List.C1Combo
-        Me.TxtNombre = New System.Windows.Forms.TextBox
-        Me.LblNombre = New System.Windows.Forms.Label
-        Me.LblCodigo = New System.Windows.Forms.Label
-        Me.CmdGrabar = New System.Windows.Forms.Button
-        Me.ButtonBorrar = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.LblTitulo = New System.Windows.Forms.Label
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.Opt2 = New System.Windows.Forms.RadioButton
-        Me.Opt1 = New System.Windows.Forms.RadioButton
-        Me.LblProducto = New System.Windows.Forms.Label
-        Me.ProgressBar = New System.Windows.Forms.ProgressBar
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.TxtCategoria = New System.Windows.Forms.TextBox()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.LblPorciento = New System.Windows.Forms.Label()
+        Me.TxtPorciento = New System.Windows.Forms.TextBox()
+        Me.OptQuitar = New System.Windows.Forms.RadioButton()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.OptAplicar = New System.Windows.Forms.RadioButton()
+        Me.CmdPrecios = New System.Windows.Forms.Button()
+        Me.CboCodigoCliente = New C1.Win.C1List.C1Combo()
+        Me.TxtNombre = New System.Windows.Forms.TextBox()
+        Me.LblNombre = New System.Windows.Forms.Label()
+        Me.LblCodigo = New System.Windows.Forms.Label()
+        Me.CmdGrabar = New System.Windows.Forms.Button()
+        Me.ButtonBorrar = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.LblTitulo = New System.Windows.Forms.Label()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.Opt2 = New System.Windows.Forms.RadioButton()
+        Me.Opt1 = New System.Windows.Forms.RadioButton()
+        Me.LblProducto = New System.Windows.Forms.Label()
+        Me.ProgressBar = New System.Windows.Forms.ProgressBar()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()

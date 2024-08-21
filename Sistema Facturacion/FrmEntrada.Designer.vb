@@ -19,23 +19,24 @@ Partial Class FrmEntrada
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmEntrada))
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.cmdEntrar = New System.Windows.Forms.Button
-        Me.txtPassword = New System.Windows.Forms.TextBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.CboUsuario = New C1.Win.C1List.C1Combo
-        Me.Panel1 = New System.Windows.Forms.Panel
-        Me.PictureBox3 = New System.Windows.Forms.PictureBox
-        Me.lblFecha = New System.Windows.Forms.Label
-        Me.btncerrar = New System.Windows.Forms.Button
-        Me.btnmin = New System.Windows.Forms.Button
-        Me.lblHora = New System.Windows.Forms.Label
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.cmdEntrar = New System.Windows.Forms.Button()
+        Me.txtPassword = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.CboUsuario = New C1.Win.C1List.C1Combo()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.LblVersion = New System.Windows.Forms.Label()
+        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
+        Me.lblFecha = New System.Windows.Forms.Label()
+        Me.btncerrar = New System.Windows.Forms.Button()
+        Me.btnmin = New System.Windows.Forms.Button()
+        Me.lblHora = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -177,6 +178,7 @@ Partial Class FrmEntrada
         Me.Panel1.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Panel1.BackgroundImage = CType(resources.GetObject("Panel1.BackgroundImage"), System.Drawing.Image)
         Me.Panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Panel1.Controls.Add(Me.LblVersion)
         Me.Panel1.Controls.Add(Me.PictureBox3)
         Me.Panel1.Controls.Add(Me.lblFecha)
         Me.Panel1.Controls.Add(Me.btncerrar)
@@ -189,6 +191,16 @@ Partial Class FrmEntrada
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(437, 227)
         Me.Panel1.TabIndex = 22
+        '
+        'LblVersion
+        '
+        Me.LblVersion.AutoSize = True
+        Me.LblVersion.BackColor = System.Drawing.Color.Transparent
+        Me.LblVersion.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblVersion.Location = New System.Drawing.Point(366, 173)
+        Me.LblVersion.Name = "LblVersion"
+        Me.LblVersion.Size = New System.Drawing.Size(0, 13)
+        Me.LblVersion.TabIndex = 29
         '
         'PictureBox3
         '
@@ -300,4 +312,5 @@ Partial Class FrmEntrada
     Private WithEvents btnmin As System.Windows.Forms.Button
     Private WithEvents PictureBox3 As System.Windows.Forms.PictureBox
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
+    Friend WithEvents LblVersion As System.Windows.Forms.Label
 End Class

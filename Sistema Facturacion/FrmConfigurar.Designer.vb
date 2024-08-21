@@ -128,7 +128,7 @@ Partial Class FrmConfigurar
         '
         'TxtRutaLogo
         '
-        Me.TxtRutaLogo.Location = New System.Drawing.Point(127, 255)
+        Me.TxtRutaLogo.Location = New System.Drawing.Point(127, 247)
         Me.TxtRutaLogo.Name = "TxtRutaLogo"
         Me.TxtRutaLogo.Size = New System.Drawing.Size(351, 20)
         Me.TxtRutaLogo.TabIndex = 9
@@ -136,7 +136,7 @@ Partial Class FrmConfigurar
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(64, 258)
+        Me.Label5.Location = New System.Drawing.Point(64, 250)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(57, 13)
         Me.Label5.TabIndex = 10
@@ -144,7 +144,7 @@ Partial Class FrmConfigurar
         '
         'TxtConexion
         '
-        Me.TxtConexion.Location = New System.Drawing.Point(127, 313)
+        Me.TxtConexion.Location = New System.Drawing.Point(127, 305)
         Me.TxtConexion.Multiline = True
         Me.TxtConexion.Name = "TxtConexion"
         Me.TxtConexion.Size = New System.Drawing.Size(397, 61)
@@ -153,7 +153,7 @@ Partial Class FrmConfigurar
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(25, 320)
+        Me.Label6.Location = New System.Drawing.Point(25, 312)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(96, 13)
         Me.Label6.TabIndex = 60
@@ -163,7 +163,7 @@ Partial Class FrmConfigurar
         '
         Me.CmdGrabar.Image = CType(resources.GetObject("CmdGrabar.Image"), System.Drawing.Image)
         Me.CmdGrabar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdGrabar.Location = New System.Drawing.Point(368, 380)
+        Me.CmdGrabar.Location = New System.Drawing.Point(368, 371)
         Me.CmdGrabar.Name = "CmdGrabar"
         Me.CmdGrabar.Size = New System.Drawing.Size(78, 68)
         Me.CmdGrabar.TabIndex = 61
@@ -175,7 +175,7 @@ Partial Class FrmConfigurar
         'Button2
         '
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.Location = New System.Drawing.Point(448, 380)
+        Me.Button2.Location = New System.Drawing.Point(448, 371)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(78, 68)
         Me.Button2.TabIndex = 62
@@ -190,7 +190,7 @@ Partial Class FrmConfigurar
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(84, 336)
+        Me.Button1.Location = New System.Drawing.Point(84, 328)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(37, 38)
         Me.Button1.TabIndex = 63
@@ -231,7 +231,7 @@ Partial Class FrmConfigurar
         'ChkSincroniza
         '
         Me.ChkSincroniza.AutoSize = True
-        Me.ChkSincroniza.Location = New System.Drawing.Point(20, 382)
+        Me.ChkSincroniza.Location = New System.Drawing.Point(20, 373)
         Me.ChkSincroniza.Name = "ChkSincroniza"
         Me.ChkSincroniza.Size = New System.Drawing.Size(264, 17)
         Me.ChkSincroniza.TabIndex = 67
@@ -241,7 +241,7 @@ Partial Class FrmConfigurar
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(35, 284)
+        Me.Label7.Location = New System.Drawing.Point(35, 276)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(86, 13)
         Me.Label7.TabIndex = 69
@@ -249,7 +249,7 @@ Partial Class FrmConfigurar
         '
         'TxtRutaCompartida
         '
-        Me.TxtRutaCompartida.Location = New System.Drawing.Point(127, 281)
+        Me.TxtRutaCompartida.Location = New System.Drawing.Point(127, 273)
         Me.TxtRutaCompartida.Name = "TxtRutaCompartida"
         Me.TxtRutaCompartida.Size = New System.Drawing.Size(351, 20)
         Me.TxtRutaCompartida.TabIndex = 68
@@ -257,7 +257,7 @@ Partial Class FrmConfigurar
         'CmdRutoLogo
         '
         Me.CmdRutoLogo.Image = CType(resources.GetObject("CmdRutoLogo.Image"), System.Drawing.Image)
-        Me.CmdRutoLogo.Location = New System.Drawing.Point(484, 247)
+        Me.CmdRutoLogo.Location = New System.Drawing.Point(484, 237)
         Me.CmdRutoLogo.Name = "CmdRutoLogo"
         Me.CmdRutoLogo.Size = New System.Drawing.Size(29, 30)
         Me.CmdRutoLogo.TabIndex = 171
@@ -266,7 +266,7 @@ Partial Class FrmConfigurar
         'CmdRutaCompartida
         '
         Me.CmdRutaCompartida.Image = CType(resources.GetObject("CmdRutaCompartida.Image"), System.Drawing.Image)
-        Me.CmdRutaCompartida.Location = New System.Drawing.Point(484, 278)
+        Me.CmdRutaCompartida.Location = New System.Drawing.Point(484, 268)
         Me.CmdRutaCompartida.Name = "CmdRutaCompartida"
         Me.CmdRutaCompartida.Size = New System.Drawing.Size(29, 30)
         Me.CmdRutaCompartida.TabIndex = 172
@@ -276,7 +276,7 @@ Partial Class FrmConfigurar
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(536, 462)
+        Me.ClientSize = New System.Drawing.Size(536, 445)
         Me.Controls.Add(Me.CmdRutaCompartida)
         Me.Controls.Add(Me.CmdRutoLogo)
         Me.Controls.Add(Me.Label7)

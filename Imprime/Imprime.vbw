@@ -1,1 +1,5 @@
-Module1 = 66, 87, 1027, 391, C
+FrmImprime = 44, 58, 781, 518, , 22, 29, 759, 489, C
+Module1 = 66, 87, 1027, 391, 
+cls_NumEnglishWord = 88, 116, 842, 444, 
+cls_NumSpanishWord = 22, 29, 776, 357, 
+mod_Sahred = 66, 87, 783, 507, 

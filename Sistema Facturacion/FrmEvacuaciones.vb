@@ -8,12 +8,14 @@ Public Class FrmEvacuaciones
     Public CadenaFechaFact As String, CadenaFechaAcum As String, ConsecutivoFacturaManual As Boolean = False
 
     Public Sub ActualizarGridInsertRowFact()
-        Dim SqlCompras As String, TipoFactura As String
+
         Dim Dias As Double, SQlString As String, i As Double
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim IdTipoContrato As Integer, Registros As Double, j As Double
-        Dim Total As Double = 0, FechaConsulta As Date, FechaIni As Date, FechaFin As Date, NumeroContrato As Double, CodigoCliente As String
-        Dim Acumulado As Double = 0, Periodo As Double = 0, fechaRegistro As Date, IdDetalleContrato As Double
+        Dim Total As Double = 0, FechaIni As Date, FechaFin As Date, NumeroContrato As Double, CodigoCliente As String
+        Dim Acumulado As Double = 0, Periodo As Double = 0, fechaRegistro As Date, IdDetalleContrato As Double, Unificar As Boolean
+        Dim Criterios As String, Buscar_Fila() As DataRow, Posicion As Double
+        Dim oDataRow As DataRow
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////////////7777BUSCO EL ID DEL CONTRATO PARA CONSULTARLO //////////////////////////////////////////////////////
@@ -28,16 +30,18 @@ Public Class FrmEvacuaciones
 
         Dias = DateDiff(DateInterval.Day, Me.DtpFechaIniFact.Value, Me.DtpFechaFinFact.Value) + 1
 
-
-
         dsFact.Tables("Facturacion").Clear()
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SQlString = "SELECT CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END AS Nombres, Contratos.Contrato_Variable, Contratos.Contrato_Variable2, Clientes.Cod_Cliente AS Acumulado, Clientes.Cod_Cliente AS Periodo, Clientes.Cod_Cliente AS Total, Contratos.Numero_Contrato, Contratos.Cod_Cliente, Contratos.Observaciones As Fechas, Clientes.InventarioFisico As Facturar, Detalle_Contratos.IdDetalleContrato FROM Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN TipoContrato ON Contratos.IdContrato1 = TipoContrato.idTipoContrato INNER JOIN Detalle_Contratos ON Contratos.Numero_Contrato = Detalle_Contratos.Numero_Contrato  WHERE (NOT (CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END IS NULL)) AND (TipoContrato.idTipoContrato = " & IdTipoContrato & ") "
+        SQlString = "SELECT CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END AS Nombres, Contratos.Contrato_Variable, Contratos.Contrato_Variable2, Clientes.Cod_Cliente AS Acumulado, Clientes.Cod_Cliente AS Periodo, Clientes.Cod_Cliente AS Total, Contratos.Numero_Contrato, Contratos.Cod_Cliente, Contratos.Observaciones As Fechas, Clientes.InventarioFisico As Facturar, Detalle_Contratos.IdDetalleContrato, Contratos.UnificarFacturas, TipoContrato.idTipoContrato FROM Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN TipoContrato ON Contratos.IdContrato1 = TipoContrato.idTipoContrato INNER JOIN Detalle_Contratos ON Contratos.Numero_Contrato = Detalle_Contratos.Numero_Contrato  WHERE (NOT (CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END IS NULL)) AND (TipoContrato.idTipoContrato = " & IdTipoContrato & ") ORDER BY Nombres"
         daFact = New SqlDataAdapter(SQlString, MiConexion)
         CmdBuilderFact = New SqlCommandBuilder(daFact)
         daFact.Fill(dsFact, "Facturacion")
+
+        '//////////////////////ESTA CONSULTA NUNCA TENDRA REGISTROS, ES PARA UNIFICAR FACTURAS
+        SQlString = "SELECT CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END AS Nombres, Contratos.Contrato_Variable, Contratos.Contrato_Variable2, Clientes.Cod_Cliente AS Acumulado, Clientes.Cod_Cliente AS Periodo, Clientes.Cod_Cliente AS Total, Contratos.Numero_Contrato, Contratos.Cod_Cliente, Contratos.Observaciones As Fechas, Clientes.InventarioFisico As Facturar, Detalle_Contratos.IdDetalleContrato, Contratos.UnificarFacturas, TipoContrato.idTipoContrato FROM Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN TipoContrato ON Contratos.IdContrato1 = TipoContrato.idTipoContrato INNER JOIN Detalle_Contratos ON Contratos.Numero_Contrato = Detalle_Contratos.Numero_Contrato  WHERE (NOT (CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END IS NULL)) AND (TipoContrato.idTipoContrato = -10000) ORDER BY Nombres"
+        DataSet = BuscaConsulta(SQlString, "Facturacion").Copy
 
 
         '///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,7 +58,9 @@ Public Class FrmEvacuaciones
 
         Do While Registros > j
 
+
             NumeroContrato = dsFact.Tables("Facturacion").Rows(j)("Numero_Contrato")
+            Unificar = dsFact.Tables("Facturacion").Rows(j)("UnificarFacturas")
             CodigoCliente = dsFact.Tables("Facturacion").Rows(j)("Cod_Cliente")
             IdDetalleContrato = dsFact.Tables("Facturacion").Rows(j)("IdDetalleContrato")
             Total = 0
@@ -121,22 +127,61 @@ Public Class FrmEvacuaciones
             dsFact.Tables("Facturacion").Rows(j)("Fechas") = Me.CadenaFechaFact
 
 
+            Criterios = "Numero_Contrato= " & NumeroContrato & " AND UnificarFacturas= 'True'"
+            Buscar_Fila = DataSet.Tables("Facturacion").Select(Criterios)
+            If Buscar_Fila.Length > 0 Then
+                Posicion = DataSet.Tables("Facturacion").Rows.IndexOf(Buscar_Fila(0))
+                DataSet.Tables("Facturacion").Rows(Posicion)("Acumulado") = Val(DataSet.Tables("Facturacion").Rows(Posicion)("Acumulado")) + Val(dsFact.Tables("Facturacion").Rows(j)("Acumulado"))
+                DataSet.Tables("Facturacion").Rows(Posicion)("Periodo") = Val(DataSet.Tables("Facturacion").Rows(Posicion)("Periodo")) + Val(dsFact.Tables("Facturacion").Rows(j)("Periodo"))
+                DataSet.Tables("Facturacion").Rows(Posicion)("Total") = Val(DataSet.Tables("Facturacion").Rows(Posicion)("Total")) + Val(dsFact.Tables("Facturacion").Rows(j)("Total"))
+                DataSet.Tables("Facturacion").Rows(Posicion)("Fechas") = DataSet.Tables("Facturacion").Rows(Posicion)("Fechas") & " " & dsFact.Tables("Facturacion").Rows(j)("Fechas")
+
+            Else
+
+                oDataRow = DataSet.Tables("Facturacion").NewRow
+                oDataRow("Nombres") = dsFact.Tables("Facturacion").Rows(j)("Nombres")
+                oDataRow("Contrato_Variable") = dsFact.Tables("Facturacion").Rows(j)("Contrato_Variable")
+                oDataRow("Contrato_Variable2") = dsFact.Tables("Facturacion").Rows(j)("Contrato_Variable2")
+                oDataRow("Acumulado") = dsFact.Tables("Facturacion").Rows(j)("Acumulado")
+                oDataRow("Periodo") = dsFact.Tables("Facturacion").Rows(j)("Periodo")
+                oDataRow("Total") = dsFact.Tables("Facturacion").Rows(j)("Total")
+                oDataRow("Fechas") = dsFact.Tables("Facturacion").Rows(j)("Fechas")
+                oDataRow("Numero_Contrato") = dsFact.Tables("Facturacion").Rows(j)("Numero_Contrato")
+                oDataRow("Cod_Cliente") = dsFact.Tables("Facturacion").Rows(j)("Cod_Cliente")
+                oDataRow("Facturar") = dsFact.Tables("Facturacion").Rows(j)("Facturar")
+                oDataRow("IdDetalleContrato") = dsFact.Tables("Facturacion").Rows(j)("IdDetalleContrato")
+                oDataRow("idTipoContrato") = dsFact.Tables("Facturacion").Rows(j)("idTipoContrato")
+                oDataRow("UnificarFacturas") = dsFact.Tables("Facturacion").Rows(j)("UnificarFacturas")
+                DataSet.Tables("Facturacion").Rows.Add(oDataRow)
+
+            End If
+
+
 
             j = j + 1
             Me.ProgressBarFact.Value = Me.ProgressBarFact.Value + 1
         Loop
 
-        Me.TDGridFacturacion.DataSource = Me.dsFact.Tables("Facturacion")
-        Me.TDGridFacturacion.Splits(0).DisplayColumns("Nombres").Width = 200
+        Me.TDGridFacturacion.DataSource = DataSet.Tables("Facturacion")    'Me.dsFact.Tables("Facturacion")
+        Me.TDGridFacturacion.Splits(0).DisplayColumns("Nombres").Width = 300
         Me.TDGridFacturacion.Splits(0).DisplayColumns("Nombres").Locked = True
         Me.TDGridFacturacion.Splits(0).DisplayColumns("Fechas").Locked = False
         Me.TDGridFacturacion.Splits(0).DisplayColumns("Acumulado").Locked = True
         Me.TDGridFacturacion.Splits(0).DisplayColumns("Periodo").Locked = True
         Me.TDGridFacturacion.Splits(0).DisplayColumns("Total").Locked = True
+        Me.TDGridFacturacion.Splits(0).DisplayColumns("Fechas").Locked = True
+        Me.TDGridFacturacion.Splits(0).DisplayColumns("Fechas").Width = 200
+        Me.TDGridFacturacion.Splits(0).DisplayColumns("UnificarFacturas").Locked = True
         Me.TDGridFacturacion.Splits(0).DisplayColumns("Numero_Contrato").Visible = False
         Me.TDGridFacturacion.Splits(0).DisplayColumns("Cod_Cliente").Visible = False
         Me.TDGridFacturacion.Splits(0).DisplayColumns("Contrato_Variable").Visible = False
         Me.TDGridFacturacion.Splits(0).DisplayColumns("Contrato_Variable2").Visible = False
+        Me.TDGridFacturacion.Splits(0).DisplayColumns("IdDetalleContrato").Visible = False
+        Me.TDGridFacturacion.Splits(0).DisplayColumns("idTipoContrato").Visible = False
+
+        Me.dsFact.Tables("Facturacion").Reset()
+        Me.dsFact = DataSet.Copy
+
 
 
     End Sub
@@ -167,14 +212,14 @@ Public Class FrmEvacuaciones
         For i = 1 To Dias
 
             If i = 1 Then
-                SQlString = "SELECT CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + '   ' + Detalle_Contratos.Direccion ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + '   ' + Detalle_Contratos.Direccion END END AS Nombres, Contratos.Contrato_Variable, Contratos.Contrato_Variable2, dbo.Clientes.Cod_Cliente As '" & i & "' "
+                SQlString = "SELECT CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN CASE WHEN Detalle_Contratos.Nombre_Comercial IS NULL THEN Clientes.Nombre_Cliente + '   ' + Detalle_Contratos.Direccion ELSE Detalle_Contratos.Nombre_Comercial + '   ' + Detalle_Contratos.Direccion END ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN CASE WHEN Detalle_Contratos.Nombre_Comercial IS NULL THEN Clientes.Nombre_Cliente + '   ' + Detalle_Contratos.Direccion ELSE Detalle_Contratos.Nombre_Comercial + '   ' + Detalle_Contratos.Direccion END END END AS Nombres, Contratos.Contrato_Variable, Contratos.Contrato_Variable2, dbo.Clientes.Cod_Cliente As '" & i & "' "
             Else
                 SQlString = SQlString & ",dbo.Clientes.Cod_Cliente As  '" & i & "' "
             End If
         Next
 
 
-        SQlString = SQlString & ",dbo.Clientes.Cod_Cliente As Total, Contratos.Numero_Contrato, Contratos.Cod_Cliente, Detalle_Contratos.IdDetalleContrato FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN TipoContrato ON Contratos.IdContrato1 = TipoContrato.idTipoContrato INNER JOIN Detalle_Contratos ON Contratos.Numero_Contrato = Detalle_Contratos.Numero_Contrato  WHERE (NOT (CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END IS NULL)) AND (TipoContrato.idTipoContrato = " & IdTipoContrato & ") "
+        SQlString = SQlString & ",dbo.Clientes.Cod_Cliente As Total, Contratos.Numero_Contrato, Contratos.Cod_Cliente, Detalle_Contratos.IdDetalleContrato FROM  Contratos INNER JOIN Clientes ON Contratos.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN TipoContrato ON Contratos.IdContrato1 = TipoContrato.idTipoContrato INNER JOIN Detalle_Contratos ON Contratos.Numero_Contrato = Detalle_Contratos.Numero_Contrato  WHERE (NOT (CASE WHEN dbo.Contratos.Contrato_Variable = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente ELSE CASE WHEN dbo.Contratos.Contrato_Variable2 = 1 THEN Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente END END IS NULL)) AND (TipoContrato.idTipoContrato = " & IdTipoContrato & ") ORDER BY Contratos.Cod_Cliente, Nombres"
 
         ds.Tables("DetalleRegistros").Reset()
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -235,7 +280,7 @@ Public Class FrmEvacuaciones
         Loop
 
         Me.TDGridSolicitud.DataSource = ds.Tables("DetalleRegistros")
-        Me.TDGridSolicitud.Splits(0).DisplayColumns(0).Width = 200
+        Me.TDGridSolicitud.Splits(0).DisplayColumns(0).Width = 240
         Me.TDGridSolicitud.Splits(0).DisplayColumns("Contrato_Variable").Visible = False
         Me.TDGridSolicitud.Splits(0).DisplayColumns("Contrato_Variable2").Visible = False
         Me.TDGridSolicitud.Splits(0).DisplayColumns("Numero_Contrato").Visible = False
@@ -353,7 +398,7 @@ Public Class FrmEvacuaciones
 
         CodigoCliente = Me.TDGridSolicitud.Columns("Cod_Cliente").Text
 
-        SQlstring = "SELECT  Registro_Transporte_Detalle.Numero_Registro, Registro_Transporte_Detalle.Fecha_Registro, Conductor.Nombre, Conductor.Licencia, Vehiculo.Placa, Vehiculo.Marca, Registro_Transporte_Detalle.Cod_Cliente, Registro_Transporte_Detalle.Id_Conductor, Registro_Transporte_Detalle.Id_Vehiculo, Registro_Transporte_Detalle.Activo, Registro_Transporte_Detalle.Anulado, Registro_Transporte_Detalle.Procesado, Registro_Transporte_Detalle.idTipoContrato, Registro_Transporte_Detalle.Numero_Contrato, Conductor.Codigo FROM Registro_Transporte_Detalle LEFT OUTER JOIN Conductor ON Registro_Transporte_Detalle.Id_Conductor = Conductor.Codigo LEFT OUTER JOIN Vehiculo ON Registro_Transporte_Detalle.Id_Vehiculo = Vehiculo.IdVehiculo  " & _
+        SQlstring = "SELECT  Registro_Transporte_Detalle.Numero_Registro, Registro_Transporte_Detalle.Fecha_Registro, Conductor.Nombre, Conductor.Licencia, Vehiculo.Placa, Vehiculo.Marca, Registro_Transporte_Detalle.Cod_Cliente, Registro_Transporte_Detalle.Id_Conductor, Registro_Transporte_Detalle.Id_Vehiculo, Registro_Transporte_Detalle.Activo, Registro_Transporte_Detalle.Anulado, Registro_Transporte_Detalle.Procesado, Registro_Transporte_Detalle.idTipoContrato, Registro_Transporte_Detalle.Numero_Contrato, Conductor.Codigo, Registro_Transporte_Detalle.Num_Cont_Evacuado, Registro_Transporte_Detalle.Num_Cont_Colocado FROM Registro_Transporte_Detalle LEFT OUTER JOIN Conductor ON Registro_Transporte_Detalle.Id_Conductor = Conductor.Codigo LEFT OUTER JOIN Vehiculo ON Registro_Transporte_Detalle.Id_Vehiculo = Vehiculo.IdVehiculo  " &
                     "WHERE (Registro_Transporte_Detalle.Cod_Cliente = '" & CodigoCliente & "') AND (Registro_Transporte_Detalle.Fecha_Registro BETWEEN CONVERT(DATETIME, '" & Format(Me.DTPFechaInicio.Value, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Me.DTPFechaFin.Value, "yyyy-MM-dd") & "', 102)) AND (Registro_Transporte_Detalle.Anulado = 0)"
         DataAdapter = New SqlClient.SqlDataAdapter(SQlstring, MiConexion)
         DataAdapter.Fill(DataSet, "DetalleRegistros")
@@ -368,8 +413,6 @@ Public Class FrmEvacuaciones
         My.Forms.FrmDetalleEvacuaciones.LblTipoServicio.Text = Me.CmbContrato1.Text
         My.Forms.FrmDetalleEvacuaciones.LblCliente.Text = Me.TDGridSolicitud.Columns("Nombres").Text
 
-
-
         My.Forms.FrmDetalleEvacuaciones.TDGridSolicitud.DataSource = DataSet.Tables("DetalleRegistros")
         My.Forms.FrmDetalleEvacuaciones.TDGridSolicitud.Splits(0).DisplayColumns("Numero_Registro").Visible = False
         My.Forms.FrmDetalleEvacuaciones.TDGridSolicitud.Splits(0).DisplayColumns("Cod_Cliente").Visible = False
@@ -381,6 +424,9 @@ Public Class FrmEvacuaciones
         My.Forms.FrmDetalleEvacuaciones.TDGridSolicitud.Splits(0).DisplayColumns("idTipoContrato").Visible = False
         My.Forms.FrmDetalleEvacuaciones.TDGridSolicitud.Splits(0).DisplayColumns("Numero_Contrato").Visible = False
         My.Forms.FrmDetalleEvacuaciones.TDGridSolicitud.Splits(0).DisplayColumns("Codigo").Visible = False
+        My.Forms.FrmDetalleEvacuaciones.TDGridSolicitud.Splits(0).DisplayColumns("Marca").Visible = False
+        My.Forms.FrmDetalleEvacuaciones.TDGridSolicitud.Columns("Num_Cont_Evacuado").Caption = "Cont Evacuado"
+        My.Forms.FrmDetalleEvacuaciones.TDGridSolicitud.Columns("Num_Cont_Colocado").Caption = "Cont Colocado"
         My.Forms.FrmDetalleEvacuaciones.ShowDialog()
 
     End Sub

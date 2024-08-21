@@ -185,7 +185,7 @@ Partial Class FrmDepartamentos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(354, 232)
+        Me.ClientSize = New System.Drawing.Size(353, 232)
         Me.Controls.Add(Me.CboCodigoLinea)
         Me.Controls.Add(Me.CmdGrabar)
         Me.Controls.Add(Me.ButtonBorrar)

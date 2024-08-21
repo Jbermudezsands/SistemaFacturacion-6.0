@@ -20,27 +20,26 @@ Partial Class FrmAjustes
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmAjustes))
-        Me.CboCodigoCliente = New C1.Win.C1List.C1Combo
-        Me.LblCodigo = New System.Windows.Forms.Label
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.TxtNombre = New System.Windows.Forms.TextBox
-        Me.LblNombre = New System.Windows.Forms.Label
-        Me.DTPFechaIni = New System.Windows.Forms.DateTimePicker
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.TxtMonto = New System.Windows.Forms.NumericUpDown
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.OptDolares = New System.Windows.Forms.RadioButton
-        Me.OptCordobas = New System.Windows.Forms.RadioButton
-        Me.Button4 = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
-        Me.ChkSseries = New System.Windows.Forms.CheckBox
-        Me.CmbSerie = New C1.Win.C1List.C1Combo
+        Me.CboCodigoCliente = New C1.Win.C1List.C1Combo()
+        Me.LblCodigo = New System.Windows.Forms.Label()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.TxtNombre = New System.Windows.Forms.TextBox()
+        Me.LblNombre = New System.Windows.Forms.Label()
+        Me.DTPFechaIni = New System.Windows.Forms.DateTimePicker()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.OptDolares = New System.Windows.Forms.RadioButton()
+        Me.OptCordobas = New System.Windows.Forms.RadioButton()
+        Me.Button4 = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.ChkSseries = New System.Windows.Forms.CheckBox()
+        Me.CmbSerie = New C1.Win.C1List.C1Combo()
+        Me.TxtMonto = New System.Windows.Forms.TextBox()
         CType(Me.CboCodigoCliente, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.TxtMonto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
         CType(Me.CmbSerie, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -156,13 +155,6 @@ Partial Class FrmAjustes
         Me.Label2.TabIndex = 192
         Me.Label2.Text = "Saldo Menor"
         '
-        'TxtMonto
-        '
-        Me.TxtMonto.Location = New System.Drawing.Point(101, 123)
-        Me.TxtMonto.Name = "TxtMonto"
-        Me.TxtMonto.Size = New System.Drawing.Size(104, 20)
-        Me.TxtMonto.TabIndex = 193
-        '
         'GroupBox2
         '
         Me.GroupBox2.Controls.Add(Me.OptDolares)
@@ -273,18 +265,25 @@ Partial Class FrmAjustes
         Me.CmbSerie.Visible = False
         Me.CmbSerie.PropBag = resources.GetString("CmbSerie.PropBag")
         '
+        'TxtMonto
+        '
+        Me.TxtMonto.Location = New System.Drawing.Point(101, 126)
+        Me.TxtMonto.Name = "TxtMonto"
+        Me.TxtMonto.Size = New System.Drawing.Size(104, 20)
+        Me.TxtMonto.TabIndex = 218
+        '
         'FrmAjustes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(406, 216)
+        Me.Controls.Add(Me.TxtMonto)
         Me.Controls.Add(Me.ChkSseries)
         Me.Controls.Add(Me.CmbSerie)
         Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.Button8)
         Me.Controls.Add(Me.GroupBox2)
-        Me.Controls.Add(Me.TxtMonto)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.DTPFechaFin)
         Me.Controls.Add(Me.Label1)
@@ -298,7 +297,6 @@ Partial Class FrmAjustes
         Me.Name = "FrmAjustes"
         Me.Text = "FrmAjustes"
         CType(Me.CboCodigoCliente, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.TxtMonto, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         CType(Me.CmbSerie, System.ComponentModel.ISupportInitialize).EndInit()
@@ -316,7 +314,6 @@ Partial Class FrmAjustes
     Friend WithEvents DTPFechaFin As System.Windows.Forms.DateTimePicker
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents TxtMonto As System.Windows.Forms.NumericUpDown
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
     Friend WithEvents OptDolares As System.Windows.Forms.RadioButton
     Friend WithEvents OptCordobas As System.Windows.Forms.RadioButton
@@ -325,4 +322,5 @@ Partial Class FrmAjustes
     Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
     Friend WithEvents ChkSseries As System.Windows.Forms.CheckBox
     Friend WithEvents CmbSerie As C1.Win.C1List.C1Combo
+    Friend WithEvents TxtMonto As TextBox
 End Class

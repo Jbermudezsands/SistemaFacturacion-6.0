@@ -4,6 +4,9 @@
 
     Private Sub FrmCompañias_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
+        Version = My.Application.Info.Version.ToString
+        Me.Text = "Listado de Compañias V." & Mid(Version, 1, Len(Version) - 2)
+
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
@@ -68,19 +71,10 @@
 
                 Me.Hide()
                 If NombreCliente = "Alumnos" Then
-                    'My.Forms.MDIParent1.NavBarEnsamble.Visible = False
-                    'My.Forms.MDIParent1.NavBarPagos.Visible = False
-                    'My.Forms.MDIParent1.Vendedores.Visible = False
-                    'My.Forms.MDIParent1.NavBarLiquidacion.Visible = False
-                    'My.Forms.MDIParent1.NavBarTransferencias.Visible = False
-
-                    'My.Forms.MDIParent1.ShowDialog()
                     My.Forms.MDIMain.ShowDialog()
                 Else
                     My.Forms.MDIMain.Text = "Nombre Compañia: " & NombreCompañia
                     My.Forms.MDIMain.ShowDialog()
-                    'My.Forms.MDIParent1.Text = "Nombre Compañia: " & NombreCompañia
-                    'My.Forms.MDIParent1.ShowDialog()
 
                 End If
                 Me.Close()

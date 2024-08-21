@@ -113,7 +113,7 @@ Public Class FrmActualiza
 
                     Else
                         '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-                        StrSqlUpdate = "INSERT INTO [Clientes] ([Cod_Cliente],[Nombre_Cliente],[Apellido_Cliente],[Direccion_Cliente],[Telefono],[RUC],[Cod_Cuenta_Cliente]) " & _
+                        StrSqlUpdate = "INSERT INTO [Clientes] ([Cod_Cliente],[Nombre_Cliente],[Apellido_Cliente],[Direccion_Cliente],[Telefono],[RUC],[Cod_Cuenta_Cliente]) " &
                         "VALUES('" & CodCuenta & "','" & NombreCliente & "','" & ApellidoCliente & "','" & DireccionCliente & "','" & TelefonoCliente & "','" & RUCCliente & "','" & CodCuenta & "')"
 
 
@@ -144,7 +144,7 @@ Public Class FrmActualiza
 
                     Else
                         '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-                        StrSqlUpdate = "INSERT INTO [Proveedor] ([Cod_Proveedor],[Nombre_Proveedor],[Apellido_Proveedor],[Direccion_Proveedor],[Telefono],[Cod_Cuenta_Proveedor],[Cod_Cuenta_Pagar]) " & _
+                        StrSqlUpdate = "INSERT INTO [Proveedor] ([Cod_Proveedor],[Nombre_Proveedor],[Apellido_Proveedor],[Direccion_Proveedor],[Telefono],[Cod_Cuenta_Proveedor],[Cod_Cuenta_Pagar]) " &
                                        "VALUES('" & CodCuenta & "','" & NombreCliente & "','" & ApellidoCliente & "','" & DireccionCliente & "','" & TelefonoCliente & "','" & CodCuenta & "','" & CodCuenta & "')"
 
 
@@ -223,7 +223,7 @@ Public Class FrmActualiza
 
                     Else
                         '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-                        StrSqlUpdate = "INSERT INTO [Productos] ([Cod_Productos],[Descripcion_Producto],[Ubicacion],[Cod_Linea],[Tipo_Producto],[Cod_Cuenta_Inventario],[Cod_Cuenta_Costo],[Cod_Cuenta_Ventas],[Unidad_Medida],[Precio_Venta],[Precio_Lista],[Descuento],[Existencia_Negativa],[Cod_Iva],[Activo],[Minimo],[Reorden],[Nota],[Cod_Cuenta_GastoAjuste],[Cod_Cuenta_IngresoAjuste],[CodComponente]) " & _
+                        StrSqlUpdate = "INSERT INTO [Productos] ([Cod_Productos],[Descripcion_Producto],[Ubicacion],[Cod_Linea],[Tipo_Producto],[Cod_Cuenta_Inventario],[Cod_Cuenta_Costo],[Cod_Cuenta_Ventas],[Unidad_Medida],[Precio_Venta],[Precio_Lista],[Descuento],[Existencia_Negativa],[Cod_Iva],[Activo],[Minimo],[Reorden],[Nota],[Cod_Cuenta_GastoAjuste],[Cod_Cuenta_IngresoAjuste],[CodComponente]) " &
                                        "VALUES('" & CodCuenta & "','" & DescripcionCuenta & "','Ninguna','" & CodLinea & "','Productos' ,'" & CodCuenta & "','" & CodCuentaCosto & "','" & CodCuentaVentas & "','UNIDAD','0','0','0','NO','" & CodIva & "','Activo','0' ,'0','Nota:','" & CodCuentaCosto & "','" & CodCuentaVentas & "','0')"
                         MiConexion.Open()
                         ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -244,7 +244,7 @@ Public Class FrmActualiza
                     If Dataset.Tables("Bodegas").Rows.Count = 0 Then
 
                         '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-                        StrSqlUpdate = "INSERT INTO [DetalleBodegas] ([Cod_Bodegas],[Cod_Productos],[Existencia]) " & _
+                        StrSqlUpdate = "INSERT INTO [DetalleBodegas] ([Cod_Bodegas],[Cod_Productos],[Existencia]) " &
                                        "VALUES ('" & CodBodega & "','" & CodCuenta & "','0')"
                         MiConexion.Open()
                         ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -438,7 +438,7 @@ Public Class FrmActualiza
                 '///////////////BUSCO LAS BODEGAS DEL PRODUCTO/////////////////////////////////////////////////
                 '/////////////////////////////////////////////////////////////////////////////////////////////
 
-                SQLstring = "SELECT  DetalleBodegas.Cod_Bodegas, Bodegas.Nombre_Bodega,DetalleBodegas.Existencia FROM DetalleBodegas INNER JOIN Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  " & _
+                SQLstring = "SELECT  DetalleBodegas.Cod_Bodegas, Bodegas.Nombre_Bodega,DetalleBodegas.Existencia FROM DetalleBodegas INNER JOIN Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  " &
                             "WHERE (DetalleBodegas.Cod_Productos = '" & CodProductos & "')"
                 DataAdapter = New SqlClient.SqlDataAdapter(SQLstring, MiConexion)
                 DataAdapter.Fill(DataSet, "Bodegas")
@@ -642,134 +642,134 @@ Public Class FrmActualiza
                     '    DataSet.Tables("Compras").Reset()
 
 
-                    End If
+                End If
 
 
 
-                    '//////////////////////////////////////////////////////////////////////////////////////////////
-                    '///////////////BUSCO EL PRODUCTO/////////////////////////////////////////////////
-                    '/////////////////////////////////////////////////////////////////////////////////////////////
+                '//////////////////////////////////////////////////////////////////////////////////////////////
+                '///////////////BUSCO EL PRODUCTO/////////////////////////////////////////////////
+                '/////////////////////////////////////////////////////////////////////////////////////////////
 
-                    SQLProductos = "SELECT Productos.*  FROM Productos WHERE (Cod_Productos = '" & CodProductos & "') "
-                    DataAdapter = New SqlClient.SqlDataAdapter(SQLProductos, MiConexion)
-                    DataAdapter.Fill(DataSet, "Proveedores")
-                    If Not DataSet.Tables("Proveedores").Rows.Count = 0 Then
-                        '///////////SIsEXISTE EL USUARIO LO ACTUALIZO////////////////
-                        StrSQLUpdate = "UPDATE [Productos] SET [Costo_Promedio] = '" & Math.Abs(PrecioCosto) & "',[Costo_Promedio_Dolar] = '" & Math.Abs(PrecioCostoDolar) & "' WHERE (Cod_Productos = '" & CodProductos & "')"
-                        MiConexion.Open()
-                        ComandoUpdate = New SqlClient.SqlCommand(StrSQLUpdate, MiConexion)
-                        iResultado = ComandoUpdate.ExecuteNonQuery
-                        MiConexion.Close()
-                        Contador = Contador + 1
+                SQLProductos = "SELECT Productos.*  FROM Productos WHERE (Cod_Productos = '" & CodProductos & "') "
+                DataAdapter = New SqlClient.SqlDataAdapter(SQLProductos, MiConexion)
+                DataAdapter.Fill(DataSet, "Proveedores")
+                If Not DataSet.Tables("Proveedores").Rows.Count = 0 Then
+                    '///////////SIsEXISTE EL USUARIO LO ACTUALIZO////////////////
+                    StrSQLUpdate = "UPDATE [Productos] SET [Costo_Promedio] = '" & Math.Abs(PrecioCosto) & "',[Costo_Promedio_Dolar] = '" & Math.Abs(PrecioCostoDolar) & "' WHERE (Cod_Productos = '" & CodProductos & "')"
+                    MiConexion.Open()
+                    ComandoUpdate = New SqlClient.SqlCommand(StrSQLUpdate, MiConexion)
+                    iResultado = ComandoUpdate.ExecuteNonQuery
+                    MiConexion.Close()
+                    Contador = Contador + 1
 
-                    End If
+                End If
 
-                    '*******************************************************************************************
-                    '/////////////////////////ACTUALIZADO POR BODEGA //////////////////////////////////////////
-                    '*******************************************************************************************
-                    If Me.ChkBodega.Checked = True Then
+                '*******************************************************************************************
+                '/////////////////////////ACTUALIZADO POR BODEGA //////////////////////////////////////////
+                '*******************************************************************************************
+                If Me.ChkBodega.Checked = True Then
 
 
 
-                        SqlSTring = "SELECT  DetalleBodegas.Cod_Bodegas, Bodegas.Nombre_Bodega,DetalleBodegas.Existencia FROM DetalleBodegas INNER JOIN Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  " & _
+                    SqlSTring = "SELECT  DetalleBodegas.Cod_Bodegas, Bodegas.Nombre_Bodega,DetalleBodegas.Existencia FROM DetalleBodegas INNER JOIN Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  " &
                                     "WHERE (DetalleBodegas.Cod_Productos = '" & CodProductos & "')"
-                        DataAdapter = New SqlClient.SqlDataAdapter(SqlSTring, MiConexion)
-                        DataAdapter.Fill(DataSet, "Bodegas")
+                    DataAdapter = New SqlClient.SqlDataAdapter(SqlSTring, MiConexion)
+                    DataAdapter.Fill(DataSet, "Bodegas")
 
-                        '//////////////////////////////////////////////////////////////////////////////////////////////////////
-                        '////////////////////////BUSCO LA EXISTENCIA DE ESTE PRODUCTO PARA CADA BODEGA//////////////////////////
-                        '/////////////////////////////////////////////////////////////////////////////////////////////////////////
-                        Existencia = 0
-                        i = 0
-                        Me.ProgressBar4.Minimum = 0
-                        Me.ProgressBar4.Visible = True
-                        Me.ProgressBar4.Value = 0
-                        Me.ProgressBar4.Maximum = DataSet.Tables("Bodegas").Rows.Count
-                        Do While i < (DataSet.Tables("Bodegas").Rows.Count)
-                            My.Application.DoEvents()
-                            CodigoBodega = DataSet.Tables("Bodegas").Rows(i)("Cod_Bodegas")
+                    '//////////////////////////////////////////////////////////////////////////////////////////////////////
+                    '////////////////////////BUSCO LA EXISTENCIA DE ESTE PRODUCTO PARA CADA BODEGA//////////////////////////
+                    '/////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    Existencia = 0
+                    i = 0
+                    Me.ProgressBar4.Minimum = 0
+                    Me.ProgressBar4.Visible = True
+                    Me.ProgressBar4.Value = 0
+                    Me.ProgressBar4.Maximum = DataSet.Tables("Bodegas").Rows.Count
+                    Do While i < (DataSet.Tables("Bodegas").Rows.Count)
+                        My.Application.DoEvents()
+                        CodigoBodega = DataSet.Tables("Bodegas").Rows(i)("Cod_Bodegas")
 
-                            'ExistenciaBodega = BuscaExistenciaBodega(CodProductos, CodigoBodega)
-                            'Existencia = Existencia + ExistenciaBodega
+                        'ExistenciaBodega = BuscaExistenciaBodega(CodProductos, CodigoBodega)
+                        'Existencia = Existencia + ExistenciaBodega
 
-                            If Me.OptUltimoPrecio.Checked = True Then
+                        If Me.OptUltimoPrecio.Checked = True Then
 
-                                '//////////////////////////////////////////////BUSCO LA ULTIMA COMPRA //////////////////////////////
-                                SqlSTring = "SELECT  * FROM  Detalle_Compras INNER JOIN  Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra WHERE  (Compras.Cod_Bodega = '" & CodigoBodega & "') AND (Detalle_Compras.Cod_Producto = '" & CodProductos & "')"
-                                DataAdapter = New SqlClient.SqlDataAdapter(SqlSTring, MiConexion)
-                                DataAdapter.Fill(DataSet, "UltCompra")
-                                j = DataSet.Tables("UltCompra").Rows.Count - 1
-                                If DataSet.Tables("UltCompra").Rows.Count <> 0 Then
-                                    MonedaCompra = DataSet.Tables("UltCompra").Rows(j)("MonedaCompra")
-                                    If MonedaCompra = "Cordobas" Then
-                                        PrecioCosto = Trim(DataSet.Tables("UltCompra").Rows(j)("Precio_Unitario"))
-                                        FechaCompra = Trim(DataSet.Tables("UltCompra").Rows(j)("Fecha_Compra"))
-                                        TasaCambio = BuscaTasaCambio(FechaCompra)
-                                        If TasaCambio = 0 Then
-                                            MsgBox("TASA DE CAMBIO CERO,", MsgBoxStyle.Critical, "Zeus Facturacion ")
+                            '//////////////////////////////////////////////BUSCO LA ULTIMA COMPRA //////////////////////////////
+                            SqlSTring = "SELECT  * FROM  Detalle_Compras INNER JOIN  Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra WHERE  (Compras.Cod_Bodega = '" & CodigoBodega & "') AND (Detalle_Compras.Cod_Producto = '" & CodProductos & "')"
+                            DataAdapter = New SqlClient.SqlDataAdapter(SqlSTring, MiConexion)
+                            DataAdapter.Fill(DataSet, "UltCompra")
+                            j = DataSet.Tables("UltCompra").Rows.Count - 1
+                            If DataSet.Tables("UltCompra").Rows.Count <> 0 Then
+                                MonedaCompra = DataSet.Tables("UltCompra").Rows(j)("MonedaCompra")
+                                If MonedaCompra = "Cordobas" Then
+                                    PrecioCosto = Trim(DataSet.Tables("UltCompra").Rows(j)("Precio_Unitario"))
+                                    FechaCompra = Trim(DataSet.Tables("UltCompra").Rows(j)("Fecha_Compra"))
+                                    TasaCambio = BuscaTasaCambio(FechaCompra)
+                                    If TasaCambio = 0 Then
+                                        MsgBox("TASA DE CAMBIO CERO,", MsgBoxStyle.Critical, "Zeus Facturacion ")
 
-                                        Else
-                                            PrecioCostoDolar = (PrecioCosto / TasaCambio)
-                                        End If
                                     Else
-                                        PrecioCostoDolar = Trim(DataSet.Tables("UltCompra").Rows(j)("Precio_Unitario"))
-                                        FechaCompra = Trim(DataSet.Tables("UltCompra").Rows(j)("Fecha_Compra"))
-                                        TasaCambio = BuscaTasaCambio(FechaCompra)
-                                        If TasaCambio = 0 Then
-                                            MsgBox("TASA DE CAMBIO CERO,", MsgBoxStyle.Critical, "Zeus Facturacion ")
-                                        Else
-                                            PrecioCosto = (PrecioCosto * TasaCambio)
-                                        End If
+                                        PrecioCostoDolar = (PrecioCosto / TasaCambio)
                                     End If
-
-                                    DataSet.Tables("UltCompra").Reset()
-                                    MiConexion.Close()
-
-
-
-                                    '///////////ACTUALIZO LA EXISTENCIA PARA CADA BODEGA ////////////////////////////////////////
-                                    StrSQLUpdate = "UPDATE [DetalleBodegas]  SET [Costo] = '" & Math.Abs(PrecioCosto) & "',[CostoDolar] = '" & Math.Abs(PrecioCostoDolar) & "'  WHERE (Cod_Productos = '" & CodProductos & "') AND (Cod_Bodegas = '" & CodigoBodega & "')"
-                                    MiConexion.Open()
-                                    ComandoUpdate = New SqlClient.SqlCommand(StrSQLUpdate, MiConexion)
-                                    iResultado = ComandoUpdate.ExecuteNonQuery
-                                    MiConexion.Close()
+                                Else
+                                    PrecioCostoDolar = Trim(DataSet.Tables("UltCompra").Rows(j)("Precio_Unitario"))
+                                    FechaCompra = Trim(DataSet.Tables("UltCompra").Rows(j)("Fecha_Compra"))
+                                    TasaCambio = BuscaTasaCambio(FechaCompra)
+                                    If TasaCambio = 0 Then
+                                        MsgBox("TASA DE CAMBIO CERO,", MsgBoxStyle.Critical, "Zeus Facturacion ")
+                                    Else
+                                        PrecioCosto = (PrecioCosto * TasaCambio)
+                                    End If
                                 End If
 
-                            ElseIf Me.OptPromedio.Checked = True Then
+                                DataSet.Tables("UltCompra").Reset()
+                                MiConexion.Close()
 
-                                SqlCompras = "SELECT MAX(Detalle_Compras.Numero_Compra) AS Numero_Compra, MAX(Detalle_Compras.Fecha_Compra) AS Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cod_Producto, SUM(Detalle_Compras.Cantidad) AS Cantidad, SUM(Detalle_Compras.Precio_Unitario) AS Precio_Unitario, SUM(Detalle_Compras.Descuento) AS Descuento, SUM(Detalle_Compras.Precio_Neto) AS Precio_Neto, Compras.MonedaCompra, SUM(Detalle_Compras.Precio_Unitario * Detalle_Compras.Cantidad) AS Importe FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra GROUP BY Detalle_Compras.Tipo_Compra, Detalle_Compras.Cod_Producto, Compras.MonedaCompra HAVING (Detalle_Compras.Cod_Producto = '" & CodProductos & "') AND (Detalle_Compras.Tipo_Compra = 'Mercancia Recibida')"
-                                DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
-                                DataAdapter.Fill(DataSet, "Compras")
-                                Registros = DataSet.Tables("Compras").Rows.Count - 1
-                                Iposicion = 0
-                                TotalImporte = 0
-                                Iposicion = 0
-                                Cantidad = 0
-                                Do While Iposicion < DataSet.Tables("Compras").Rows.Count
-                                    MonedaCompra = DataSet.Tables("Compras").Rows(Iposicion)("MonedaCompra")
-                                    If MonedaCompra = "Cordobas" Then
-                                        PrecioUnitario = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Precio_Unitario"))
-                                        Cantidad = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Cantidad")) + Cantidad
-                                        Importe = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Importe"))
-                                        TotalImporte = TotalImporte + Importe
-                                        FechaCompra = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Fecha_Compra"))
-                                        TasaCambio = BuscaTasaCambio(FechaCompra)
-                                        If TasaCambio = 0 Then
-                                            MsgBox("TASA DE CAMBIO CERO,", MsgBoxStyle.Critical, "Zeus Facturacion ")
 
-                                        Else
-                                            PrecioCostoDolar = (PrecioCosto / TasaCambio)
-                                        End If
+
+                                '///////////ACTUALIZO LA EXISTENCIA PARA CADA BODEGA ////////////////////////////////////////
+                                StrSQLUpdate = "UPDATE [DetalleBodegas]  SET [Costo] = '" & Math.Abs(PrecioCosto) & "',[CostoDolar] = '" & Math.Abs(PrecioCostoDolar) & "'  WHERE (Cod_Productos = '" & CodProductos & "') AND (Cod_Bodegas = '" & CodigoBodega & "')"
+                                MiConexion.Open()
+                                ComandoUpdate = New SqlClient.SqlCommand(StrSQLUpdate, MiConexion)
+                                iResultado = ComandoUpdate.ExecuteNonQuery
+                                MiConexion.Close()
+                            End If
+
+                        ElseIf Me.OptPromedio.Checked = True Then
+
+                            SqlCompras = "SELECT MAX(Detalle_Compras.Numero_Compra) AS Numero_Compra, MAX(Detalle_Compras.Fecha_Compra) AS Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cod_Producto, SUM(Detalle_Compras.Cantidad) AS Cantidad, SUM(Detalle_Compras.Precio_Unitario) AS Precio_Unitario, SUM(Detalle_Compras.Descuento) AS Descuento, SUM(Detalle_Compras.Precio_Neto) AS Precio_Neto, Compras.MonedaCompra, SUM(Detalle_Compras.Precio_Unitario * Detalle_Compras.Cantidad) AS Importe FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra GROUP BY Detalle_Compras.Tipo_Compra, Detalle_Compras.Cod_Producto, Compras.MonedaCompra HAVING (Detalle_Compras.Cod_Producto = '" & CodProductos & "') AND (Detalle_Compras.Tipo_Compra = 'Mercancia Recibida')"
+                            DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
+                            DataAdapter.Fill(DataSet, "Compras")
+                            Registros = DataSet.Tables("Compras").Rows.Count - 1
+                            Iposicion = 0
+                            TotalImporte = 0
+                            Iposicion = 0
+                            Cantidad = 0
+                            Do While Iposicion < DataSet.Tables("Compras").Rows.Count
+                                MonedaCompra = DataSet.Tables("Compras").Rows(Iposicion)("MonedaCompra")
+                                If MonedaCompra = "Cordobas" Then
+                                    PrecioUnitario = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Precio_Unitario"))
+                                    Cantidad = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Cantidad")) + Cantidad
+                                    Importe = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Importe"))
+                                    TotalImporte = TotalImporte + Importe
+                                    FechaCompra = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Fecha_Compra"))
+                                    TasaCambio = BuscaTasaCambio(FechaCompra)
+                                    If TasaCambio = 0 Then
+                                        MsgBox("TASA DE CAMBIO CERO,", MsgBoxStyle.Critical, "Zeus Facturacion ")
+
                                     Else
-                                        PrecioUnitario = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Precio_Unitario"))
-                                        Cantidad = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Cantidad")) + Cantidad
-                                        Importe = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Importe"))
-                                        FechaCompra = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Fecha_Compra"))
-                                        If TasaCambio = 0 Then
-                                            MsgBox("TASA DE CAMBIO CERO,", MsgBoxStyle.Critical, "Zeus Facturacion ")
-                                        Else
-                                            TotalImporte = (Importe * TasaCambio) + TotalImporte
-                                        End If
+                                        PrecioCostoDolar = (PrecioCosto / TasaCambio)
+                                    End If
+                                Else
+                                    PrecioUnitario = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Precio_Unitario"))
+                                    Cantidad = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Cantidad")) + Cantidad
+                                    Importe = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Importe"))
+                                    FechaCompra = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Fecha_Compra"))
+                                    If TasaCambio = 0 Then
+                                        MsgBox("TASA DE CAMBIO CERO,", MsgBoxStyle.Critical, "Zeus Facturacion ")
+                                    Else
+                                        TotalImporte = (Importe * TasaCambio) + TotalImporte
+                                    End If
 
                                 End If
 
@@ -787,37 +787,37 @@ Public Class FrmActualiza
                                 'PrecioCosto = Format(TotalImporte / Cantidad, "##,##0.00")
                                 'PrecioCostoDolar = Format((PrecioCosto / TasaCambio), "##,##0.00")
 
-                                    DataSet.Tables("Compras").Reset()
+                                DataSet.Tables("Compras").Reset()
 
 
-                                    '///////////ACTUALIZO LA EXISTENCIA PARA CADA BODEGA ////////////////////////////////////////
-                                    StrSQLUpdate = "UPDATE [DetalleBodegas]  SET [Costo] = '" & Math.Abs(PrecioCosto) & "',[CostoDolar] = '" & Math.Abs(PrecioCostoDolar) & "'  WHERE (Cod_Productos = '" & CodProductos & "') AND (Cod_Bodegas = '" & CodigoBodega & "')"
-                                    MiConexion.Open()
-                                    ComandoUpdate = New SqlClient.SqlCommand(StrSQLUpdate, MiConexion)
-                                    iResultado = ComandoUpdate.ExecuteNonQuery
-                                    MiConexion.Close()
+                                '///////////ACTUALIZO LA EXISTENCIA PARA CADA BODEGA ////////////////////////////////////////
+                                StrSQLUpdate = "UPDATE [DetalleBodegas]  SET [Costo] = '" & Math.Abs(PrecioCosto) & "',[CostoDolar] = '" & Math.Abs(PrecioCostoDolar) & "'  WHERE (Cod_Productos = '" & CodProductos & "') AND (Cod_Bodegas = '" & CodigoBodega & "')"
+                                MiConexion.Open()
+                                ComandoUpdate = New SqlClient.SqlCommand(StrSQLUpdate, MiConexion)
+                                iResultado = ComandoUpdate.ExecuteNonQuery
+                                MiConexion.Close()
 
-                                    Iposicion = Iposicion + 1
+                                Iposicion = Iposicion + 1
 
-                                Loop
-
-
-                            End If
-                            i = i + 1
-                            Me.ProgressBar4.Value = i
-                        Loop
+                            Loop
 
 
-
-                    End If
+                        End If
+                        i = i + 1
+                        Me.ProgressBar4.Value = i
+                    Loop
 
 
 
+                End If
 
 
 
-                    iPosicionFila = iPosicionFila + 1
-                    Me.ProgressBar5.Value = iPosicionFila
+
+
+
+                iPosicionFila = iPosicionFila + 1
+                Me.ProgressBar5.Value = iPosicionFila
 
             Loop
         End If
@@ -844,7 +844,6 @@ Public Class FrmActualiza
         Dim StrSQLUpdate As String, ComandoUpdate As New SqlClient.SqlCommand
         Dim iResultado As Integer
         Dim Contador As Double = 0, j As Double = 0
-        Dim CodigoBodega As String
         Dim Cantidad As Double, Precio As Double, Codigo As String, Numero As String, SqlString As String, FactCont As Double, i As Double
         Dim NumeroFactura As String, FechaFactura As Date, TipoFactura As String, TasaImpuesto As Double, ImpuestoFact As Double, SubTotalFact As Double, Exonerado As Boolean
 
@@ -873,7 +872,7 @@ Public Class FrmActualiza
 
 
                 'SQLProductos = "SELECT  *  FROM Detalle_Facturas "
-                SQLProductos = "SELECT     * FROM  Detalle_Facturas INNER JOIN Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN  Impuestos ON Productos.Cod_Iva = Impuestos.Cod_Iva " & _
+                SQLProductos = "SELECT     * FROM  Detalle_Facturas INNER JOIN Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos INNER JOIN  Impuestos ON Productos.Cod_Iva = Impuestos.Cod_Iva " &
                                "WHERE  (Detalle_Facturas.Numero_Factura = '" & NumeroFactura & "') AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME,  '" & Format(FechaFactura, "yyyy-MM-dd") & "', 102)) "
 
                 DataAdapter = New SqlClient.SqlDataAdapter(SQLProductos, MiConexion)
@@ -949,7 +948,7 @@ Public Class FrmActualiza
                 DataAdapter.Fill(DataSet, "Proveedores")
                 If Not DataSet.Tables("Proveedores").Rows.Count = 0 Then
                     '///////////SIsEXISTE EL USUARIO LO ACTUALIZO////////////////
-                    StrSQLUpdate = "UPDATE Facturas  SET [SubTotal] = " & Format(SubTotalFact, "##,##0.00") & " ,[IVA] = " & Format(ImpuestoFact, "##,##0.00") & "  WHERE (Numero_Factura = '" & NumeroFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Format(FechaFactura, "yyyy-MM-dd") & "', 102)) AND (Tipo_Factura = '" & TipoFactura & "')"
+                    StrSQLUpdate = "UPDATE Facturas  SET [SubTotal] = " & Format(SubTotalFact, "####0.00") & " ,[IVA] = " & Format(ImpuestoFact, "####0.00") & ", [NetoPagar] = " & Format(ImpuestoFact + SubTotalFact, "####0.00") & "  WHERE (Numero_Factura = '" & NumeroFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Format(FechaFactura, "yyyy-MM-dd") & "', 102)) AND (Tipo_Factura = '" & TipoFactura & "')"
                     MiConexion.Open()
                     ComandoUpdate = New SqlClient.SqlCommand(StrSQLUpdate, MiConexion)
                     iResultado = ComandoUpdate.ExecuteNonQuery
@@ -995,7 +994,7 @@ Public Class FrmActualiza
     Private Sub CmdCostear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdCostear.Click
         Dim iPosicionFila As Double, PrecioCostoDolar As Double, NumeroFactura As String = "", TipoSalida As String = "", FechaCompra As Date
         Dim DataSet As New DataSet, SQLProductos As String, PrecioCosto As Double, iPosicionFila2 As Double = 0, iPosicionFila3 As Double = 0
-        Dim DataAdapter As New SqlClient.SqlDataAdapter, RegistrosMaximos As Double, SqlSTring As String,  ComandoUpdate As New SqlClient.SqlCommand
+        Dim DataAdapter As New SqlClient.SqlDataAdapter, RegistrosMaximos As Double, SqlSTring As String, ComandoUpdate As New SqlClient.SqlCommand
         Dim CodProductos As String, DescripcionProducto As String, Contador As Double = 0, j As Double = 0, iResultado As Integer
         Dim Cantidad As Double = 0, Registros As Double = 0, PrecioUnitario As Double = 0, StrSQLUpdate As String
 
@@ -1044,7 +1043,7 @@ Public Class FrmActualiza
                 '//////////////////////////////////////////////////////////////////////////////////////////////
                 '///////////////BUSCO LAS BODEGAS DEL PRODUCTO/////////////////////////////////////////////////
                 '////////////////////////////////////////////////////////////////////////////////////////////
-                SqlSTring = "SELECT  DetalleBodegas.Cod_Bodegas, Bodegas.Nombre_Bodega,DetalleBodegas.Existencia FROM DetalleBodegas INNER JOIN Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  " & _
+                SqlSTring = "SELECT  DetalleBodegas.Cod_Bodegas, Bodegas.Nombre_Bodega,DetalleBodegas.Existencia FROM DetalleBodegas INNER JOIN Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  " &
                             "WHERE (DetalleBodegas.Cod_Productos = '" & CodProductos & "')"
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlSTring, MiConexion)
                 DataAdapter.Fill(DataSet, "Bodegas")
@@ -1107,7 +1106,7 @@ Public Class FrmActualiza
                     '///////////SI EL COSTO ES CERO PERO SE DESCARGAR, SIGNIFICA FACTURACION EN NEGATIVO ///////////
                     If Cantidad <> 0 Then
                         If PrecioCosto = 0 Then
-                            SqlSTring = "SELECT Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.TasaCambio, Detalle_Facturas.CodTarea, Detalle_Facturas.Costo_Unitario, Detalle_Facturas.Costo_Unitario / TasaCambio.MontoTasa AS Costo_UnitarioDolar FROM Detalle_Facturas INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa  " & _
+                            SqlSTring = "SELECT Detalle_Facturas.id_Detalle_Factura, Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.TasaCambio, Detalle_Facturas.CodTarea, Detalle_Facturas.Costo_Unitario, Detalle_Facturas.Costo_Unitario / TasaCambio.MontoTasa AS Costo_UnitarioDolar FROM Detalle_Facturas INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa  " &
                                         "WHERE (Detalle_Facturas.Cod_Producto = '" & CodProductos & "') AND (Detalle_Facturas.Costo_Unitario <> 0) AND (Detalle_Facturas.Fecha_Factura <= CONVERT(DATETIME,'" & Format(FechaCompra, "yyyy-MM-dd") & "', 102)) ORDER BY Detalle_Facturas.Fecha_Factura"
                             DataAdapter = New SqlClient.SqlDataAdapter(SqlSTring, MiConexion)
                             DataAdapter.Fill(DataSet, "UltimoCosto")
@@ -1181,7 +1180,7 @@ Public Class FrmActualiza
                 Me.ProgressBar5.Value = iPosicionFila
             Loop
 
-        'DataSet.Tables("ListaProductos").Reset()
+            'DataSet.Tables("ListaProductos").Reset()
 
         End If
 
@@ -1477,5 +1476,16 @@ Public Class FrmActualiza
             Me.BtnModificar.Enabled = True
             Me.BtnAnular.Enabled = True
         End If
+    End Sub
+
+    Private Sub Button22_Click_1(sender As Object, e As EventArgs) Handles Button22.Click
+        If Me.OptCordobas.Checked = True Then
+            FrmAjustarTodos.OptCordobas.Checked = True
+        Else
+            FrmAjustarTodos.OptDolares.Checked = True
+        End If
+
+        FrmAjustarTodos.DTPFechaFin.Value = Format(Now, "dd/MM/yyyy")
+        FrmAjustarTodos.ShowDialog()
     End Sub
 End Class

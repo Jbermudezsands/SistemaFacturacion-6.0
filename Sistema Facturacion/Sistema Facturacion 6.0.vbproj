@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="Current">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -12,6 +12,12 @@
     <AssemblyName>Sistema Facturacion 6.0</AssemblyName>
     <MyType>WindowsForms</MyType>
     <ApplicationIcon>Resources\billing1.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <ApplicationRevision>0</ApplicationRevision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,7 +26,7 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>Sistema Facturacion 6.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -30,8 +36,11 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>Sistema Facturacion 6.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
@@ -91,10 +100,24 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form4.Designer.vb">
-      <DependentUpon>Form4.vb</DependentUpon>
+    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include=".Designer.vb">
+      <DependentUpon>FrmAjustarTodos.vb</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form4.vb">
+    <Compile Include="FrmContenedores.Designer.vb">
+      <DependentUpon>FrmContenedores.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmContenedores.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmListadoRecibos.Designer.vb">
+      <DependentUpon>FrmListadoRecibos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmListadoRecibos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAjustarTodos.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmAccesos.Designer.vb">
@@ -113,6 +136,18 @@
       <DependentUpon>FrmActivar.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmActivar.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAdmision.Designer.vb">
+      <DependentUpon>FrmAdmision.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmAdmision.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAgregarNotaCredito.Designer.vb">
+      <DependentUpon>FrmAgregarNotaCredito.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmAgregarNotaCredito.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmAjustarCostos.Designer.vb">
@@ -139,6 +174,12 @@
     <Compile Include="FrmBascula.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmComarca.Designer.vb">
+      <DependentUpon>FrmComarca.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmComarca.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmCompañiaEndoso.Designer.vb">
       <DependentUpon>FrmCompañiaEndoso.vb</DependentUpon>
     </Compile>
@@ -155,6 +196,18 @@
       <DependentUpon>FrmConductorPlanilla.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmConductorPlanilla.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmConsultasMedicas.Designer.vb">
+      <DependentUpon>FrmConsultasMedicas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmConsultasMedicas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmConsultorio.Designer.vb">
+      <DependentUpon>FrmConsultorio.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmConsultorio.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmContratos.Designer.vb">
@@ -223,10 +276,40 @@
     <Compile Include="FrmDetalleLote.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmDoctores.Designer.vb">
+      <DependentUpon>FrmDoctores.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmDoctores.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmEnfermeras.Designer.vb">
+      <DependentUpon>FrmEnfermeras.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmEnfermeras.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmEscolaridad.designer.vb">
       <DependentUpon>FrmEscolaridad.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmEscolaridad.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmExamen.Designer.vb">
+      <DependentUpon>FrmExamen.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmExamen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmExamenes.Designer.vb">
+      <DependentUpon>FrmExamenes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmExamenes.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmExpediente.Designer.vb">
+      <DependentUpon>FrmExpediente.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmExpediente.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmFacturacionBascula.Designer.vb">
@@ -239,6 +322,12 @@
       <DependentUpon>FrmFecha.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmFecha.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmHospitalizacion.Designer.vb">
+      <DependentUpon>FrmHospitalizacion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmHospitalizacion.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmImpresoras.designer.vb">
@@ -263,6 +352,18 @@
       <DependentUpon>FrmLiquidacionLeche.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmLiquidacionLeche.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmListadoConsultas.Designer.vb">
+      <DependentUpon>FrmListadoConsultas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmListadoConsultas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmListadoHistorico.Designer.vb">
+      <DependentUpon>FrmListadoHistorico.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmListadoHistorico.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmListadoNominas.Designer.vb">
@@ -307,10 +408,22 @@
     <Compile Include="FrmLotesInfo.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmMedicamentos.Designer.vb">
+      <DependentUpon>FrmMedicamentos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmMedicamentos.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmMostrarPesadas.Designer.vb">
       <DependentUpon>FrmMostrarPesadas.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmMostrarPesadas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMunicipio.Designer.vb">
+      <DependentUpon>FrmMunicipio.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmMunicipio.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmNotificacion.Designer.vb">
@@ -361,6 +474,24 @@
     <Compile Include="frmPlanillaConductores.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmPreConsultas.Designer.vb">
+      <DependentUpon>FrmPreConsultas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPreConsultas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPreConsultasNuevas.Designer.vb">
+      <DependentUpon>FrmPreConsultasNuevas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPreConsultasNuevas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmProcesarRecLeche.Designer.vb">
+      <DependentUpon>FrmProcesarRecLeche.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmProcesarRecLeche.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmProductor.designer.vb">
       <DependentUpon>FrmProductor.vb</DependentUpon>
     </Compile>
@@ -383,6 +514,12 @@
       <DependentUpon>FrmQQ.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmQQ.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmQuirofano.Designer.vb">
+      <DependentUpon>FrmQuirofano.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmQuirofano.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmRecepcion.Designer.vb">
@@ -505,6 +642,13 @@
     <Compile Include="FrmProyectos.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Modulos\Conversion.vb" />
+    <Compile Include="Reportes\ArepAdmision.Designer.vb">
+      <DependentUpon>ArepAdmision.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepAdmision.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\ArepBitacoraRecepcion.designer.vb">
       <DependentUpon>ArepBitacoraRecepcion.vb</DependentUpon>
     </Compile>
@@ -625,6 +769,12 @@
     <Compile Include="Reportes\ArepExistenciaCostos.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\ArepExpediente.Designer.vb">
+      <DependentUpon>ArepExpediente.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepExpediente.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\ArepFacturaMedia.Designer.vb">
       <DependentUpon>ArepFacturaMedia.vb</DependentUpon>
     </Compile>
@@ -739,6 +889,12 @@
     <Compile Include="Reportes\ArepPrecioVrsCosto.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\ArepPreConsultas.Designer.vb">
+      <DependentUpon>ArepPreConsultas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepPreConsultas.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\ArepProductosBajoMinimo.Designer.vb">
       <DependentUpon>ArepProductosBajoMinimo.vb</DependentUpon>
     </Compile>
@@ -749,6 +905,12 @@
       <DependentUpon>ArepProductosVendidos.vb</DependentUpon>
     </Compile>
     <Compile Include="Reportes\ArepProductosVendidos.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\ArepProductoVencimiento.Designer.vb">
+      <DependentUpon>ArepProductoVencimiento.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepProductoVencimiento.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reportes\ArepProductoVendedor.Designer.vb">
@@ -773,6 +935,12 @@
       <DependentUpon>ArepRecepcion.vb</DependentUpon>
     </Compile>
     <Compile Include="Reportes\ArepRecepcion.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\ArepRecetaMedica.Designer.vb">
+      <DependentUpon>ArepRecetaMedica.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepRecetaMedica.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reportes\ArepRecibo2.Designer.vb">
@@ -1361,6 +1529,7 @@
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -1507,9 +1676,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Form4.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>Form4.vb</DependentUpon>
+    <EmbeddedResource Include="FrmContenedores.resx">
+      <DependentUpon>FrmContenedores.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmListadoRecibos.resx">
+      <DependentUpon>FrmListadoRecibos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmAjustarTodos.resx">
+      <DependentUpon>FrmAjustarTodos.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmAccesos.resx">
       <SubType>Designer</SubType>
@@ -1521,6 +1695,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmActivar.resx">
       <DependentUpon>FrmActivar.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmAdmision.resx">
+      <DependentUpon>FrmAdmision.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmAjustarCostos.resx">
@@ -1539,6 +1717,10 @@
       <DependentUpon>FrmBascula.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmComarca.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmComarca.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmCompañiaEndoso.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmCompañiaEndoso.vb</DependentUpon>
@@ -1550,6 +1732,14 @@
     <EmbeddedResource Include="FrmConductorPlanilla.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmConductorPlanilla.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmConsultasMedicas.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmConsultasMedicas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmConsultorio.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmConsultorio.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmContratos.resx">
       <SubType>Designer</SubType>
@@ -1595,6 +1785,14 @@
       <SubType>Designer</SubType>
       <DependentUpon>FrmDetalleLote.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmDoctores.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmDoctores.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmEnfermeras.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmEnfermeras.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmEscolaridad.resx">
       <DependentUpon>FrmEscolaridad.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1603,6 +1801,18 @@
       <SubType>Designer</SubType>
       <DependentUpon>FrmEvacuaciones.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmExamen.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmExamen.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmExamenes.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmExamenes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmExpediente.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmExpediente.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmFacturacionBascula.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmFacturacionBascula.vb</DependentUpon>
@@ -1610,6 +1820,10 @@
     <EmbeddedResource Include="FrmFecha.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmFecha.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmHospitalizacion.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmHospitalizacion.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmImpresoras.resx">
       <DependentUpon>FrmImpresoras.vb</DependentUpon>
@@ -1626,6 +1840,13 @@
     <EmbeddedResource Include="FrmLiquidacionLeche.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmLiquidacionLeche.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmListadoConsultas.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmListadoConsultas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmListadoHistorico.resx">
+      <DependentUpon>FrmListadoHistorico.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmListadoNominas.resx">
       <SubType>Designer</SubType>
@@ -1655,9 +1876,17 @@
       <SubType>Designer</SubType>
       <DependentUpon>FrmLotesInfo.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmMedicamentos.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmMedicamentos.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmMostrarPesadas.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmMostrarPesadas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMunicipio.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmMunicipio.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmNotificacion.resx">
       <SubType>Designer</SubType>
@@ -1695,6 +1924,18 @@
       <SubType>Designer</SubType>
       <DependentUpon>frmPlanillaConductores.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmPreConsultas.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmPreConsultas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPreConsultasNuevas.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmPreConsultasNuevas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmProcesarRecLeche.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmProcesarRecLeche.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmProductor.resx">
       <DependentUpon>FrmProductor.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1710,6 +1951,10 @@
     <EmbeddedResource Include="FrmQQ.resx">
       <DependentUpon>FrmQQ.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmQuirofano.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrmQuirofano.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmRecepcion.resx">
       <SubType>Designer</SubType>
@@ -1807,6 +2052,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>FrmProyectos.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepAdmision.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepAdmision.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepBitacoraRecepcion.resx">
       <DependentUpon>ArepBitacoraRecepcion.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1890,6 +2139,10 @@
     <EmbeddedResource Include="Reportes\ArepExistenciaCostos.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ArepExistenciaCostos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepExpediente.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepExpediente.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepFacturaMedia.resx">
       <SubType>Designer</SubType>
@@ -2159,6 +2412,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>ArepPrecioVrsCosto.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepPreConsultas.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepPreConsultas.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepProductosBajoMinimo.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ArepProductosBajoMinimo.vb</DependentUpon>
@@ -2166,6 +2423,9 @@
     <EmbeddedResource Include="Reportes\ArepProductosVendidos.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ArepProductosVendidos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepProductoVencimiento.resx">
+      <DependentUpon>ArepProductoVencimiento.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepProductoVendedor.resx">
       <SubType>Designer</SubType>
@@ -2182,6 +2442,10 @@
     <EmbeddedResource Include="Reportes\ArepRecepcion.resx">
       <DependentUpon>ArepRecepcion.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepRecetaMedica.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepRecetaMedica.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepRecibo2.resx">
       <SubType>Designer</SubType>
@@ -2450,6 +2714,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="ClassDiagram1.cd" />
+    <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -2492,15 +2757,28 @@
     <None Include="Resources\Barra7.png" />
     <None Include="Resources\Barra8.png" />
     <None Include="Resources\Barra9.png" />
+    <None Include="Resources\FotoNo.bmp" />
+    <None Include="Resources\NoDisponible.JPG" />
+    <None Include="Resources\BarraN0.png" />
+    <None Include="Resources\BarraN1.png" />
+    <None Include="Resources\BarraN2.png" />
+    <None Include="Resources\BarraN10.png" />
+    <None Include="Resources\BarraN3.png" />
+    <None Include="Resources\BarraN4.png" />
+    <None Include="Resources\BarraN5.png" />
+    <None Include="Resources\BarraN6.png" />
+    <None Include="Resources\BarraN7.png" />
+    <None Include="Resources\BarraN8.png" />
+    <None Include="Resources\BarraN9.png" />
     <Content Include="Text Document.ico" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="ADODB">
-      <Guid>{EF53050B-882E-4776-B643-EDA472E8E3F2}</Guid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>7</VersionMinor>
+      <Guid>{B691E011-1797-432E-907A-4D8C69339129}</Guid>
+      <VersionMajor>6</VersionMajor>
+      <VersionMinor>1</VersionMinor>
       <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
+      <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
     </COMReference>
     <COMReference Include="Microsoft.Office.Core">

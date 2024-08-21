@@ -2,12 +2,14 @@ Public Class FrmServicios
 
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Public MiConexionContabilidad As New SqlClient.SqlConnection(ConexionContabilidad)
+    Public ConvertirMonto As String
     Private Sub OptImporteFijo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptImporteFijo.CheckedChanged
         If Me.OptImporteFijo.Checked = True Then
             Me.LblDescripcion.Text = "Importe Fijo C$"
             Me.LblDescripcion2.Text = "Importe Fijo $"
             Me.LblDescripcion2.Visible = True
             Me.TxtPrecioDolar.Visible = True
+            ConvertirMonto = "Todos"
         End If
     End Sub
 
@@ -15,8 +17,10 @@ Public Class FrmServicios
         If Me.OptUnidades.Checked = True Then
             Me.LblDescripcion.Text = "Precio Unitario C$"
             Me.LblDescripcion2.Text = "Precio Unitario $"
+
             Me.LblDescripcion2.Visible = True
             Me.TxtPrecioDolar.Visible = True
+            ConvertirMonto = "Todos"
         End If
     End Sub
 
@@ -25,6 +29,7 @@ Public Class FrmServicios
             Me.LblDescripcion.Text = "Porciento"
             Me.LblDescripcion2.Visible = False
             Me.TxtPrecioDolar.Visible = False
+            ConvertirMonto = "Todos"
         End If
     End Sub
 
@@ -59,7 +64,7 @@ Public Class FrmServicios
         Me.CboIva.DataSource = DataSet.Tables("Impuestos")
         Me.CboIva.DisplayMember = "Descripcion_Iva"
 
-        Sql = "SELECT  * FROM  Rubro"
+        sql = "SELECT  * FROM  Rubro"
         DataAdapterProductos = New SqlClient.SqlDataAdapter(sql, MiConexion)
         DataAdapterProductos.Fill(DataSet, "Rubros")
         If Not DataSet.Tables("Rubros").Rows.Count = 0 Then
@@ -144,7 +149,7 @@ Public Class FrmServicios
 
                 MiConexion.Close()
                 '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-                StrSqlUpdate = "INSERT INTO [Productos] ([Cod_Productos],[Descripcion_Producto],[Ubicacion],[Tipo_Producto],[Cod_Cuenta_Costo],[Cod_Cuenta_Ventas],[Unidad_Medida],[Precio_Venta],[Precio_Lista],[Descuento],[Existencia_Negativa],[Cod_Iva],[Activo],[Minimo],[Reorden],[Nota],[Cod_Cuenta_GastoAjuste],[Cod_Cuenta_IngresoAjuste],[CodComponente],[Cod_Rubro]) " & _
+                StrSqlUpdate = "INSERT INTO [Productos] ([Cod_Productos],[Descripcion_Producto],[Ubicacion],[Tipo_Producto],[Cod_Cuenta_Costo],[Cod_Cuenta_Ventas],[Unidad_Medida],[Precio_Venta],[Precio_Lista],[Descuento],[Existencia_Negativa],[Cod_Iva],[Activo],[Minimo],[Reorden],[Nota],[Cod_Cuenta_GastoAjuste],[Cod_Cuenta_IngresoAjuste],[CodComponente],[Cod_Rubro]) " &
                                "VALUES('" & CodProducto & "','" & Me.TxtNombreProducto.Text & "','Servicio','" & TipoProducto & "' ,'" & Me.TxtCtaCosto.Text & "','" & Me.TxtCuentaVenta.Text & "','" & UnidadMedida & "','" & Me.TxtPrecioCordobas.Text & "','" & Me.TxtPrecioDolar.Text & "','0','SI','" & Me.CboIva.Text & "','" & Me.CboActivo.Text & "','0' ,'0','Nota:','" & Me.TxtCtaCosto.Text & "','" & Me.TxtCuentaVenta.Text & "','0','" & Me.CboRubro.Text & "')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -161,7 +166,7 @@ Public Class FrmServicios
             DataAdapter = New SqlClient.SqlDataAdapter(SQLProductos, MiConexion)
             DataAdapter.Fill(DataSet, "Bodegas")
             Do While Iposicion < DataSet.Tables("Bodegas").Rows.Count
-                CodBodega = DataSet.Tables("Bodegas").Rows(Iposicion)("Cod_Bodega")
+                Codbodega = DataSet.Tables("Bodegas").Rows(Iposicion)("Cod_Bodega")
 
                 '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 '/////////////////////////////////////BUSCO SI EXISTE EN LAS BODEGAS DETALLES///////////////////////////////////////////////////////
@@ -171,7 +176,7 @@ Public Class FrmServicios
                 DataAdapter.Fill(DataSet, "DetalleBodegas")
                 If DataSet.Tables("DetalleBodegas").Rows.Count = 0 Then
                     MiConexion.Open()
-                    StrSqlUpdate = "INSERT INTO [DetalleBodegas] ([Cod_Bodegas],[Cod_Productos]) " & _
+                    StrSqlUpdate = "INSERT INTO [DetalleBodegas] ([Cod_Bodegas],[Cod_Productos]) " &
                                    "VALUES('" & Codbodega & "','" & CodProducto & "') "
                     ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
                     iResultado = ComandoUpdate.ExecuteNonQuery
@@ -181,7 +186,7 @@ Public Class FrmServicios
                 Iposicion = Iposicion + 1
             Loop
 
-                Me.CboCodigoProducto.Text = ""
+            Me.CboCodigoProducto.Text = ""
 
         Catch ex As Exception
             MsgBox(ex.ToString)
@@ -204,9 +209,11 @@ Public Class FrmServicios
     Private Sub TxtPrecioCordobas_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtPrecioCordobas.TextChanged
         Dim TasaCambio As Double
 
-        TasaCambio = BuscaTasaCambio(Format(Now, "dd/MM/yyyy"))
-
-        Me.TxtPrecioDolar.Text = Format(CDbl(Val(Me.TxtPrecioCordobas.Text)) / TasaCambio, "####0.00")
+        If ConvertirMonto = "Todos" Or ConvertirMonto = "Dolar" Then
+            TasaCambio = BuscaTasaCambio(Format(Now, "dd/MM/yyyy"))
+            Me.TxtPrecioDolar.Text = Format(CDbl(Val(Me.TxtPrecioCordobas.Text)) / TasaCambio, "####0.00")
+            ConvertirMonto = "Dolar"
+        End If
     End Sub
 
     Private Sub CboCodigoProducto_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboCodigoProducto.TextChanged
@@ -339,8 +346,10 @@ Public Class FrmServicios
     Private Sub TxtPrecioDolar_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtPrecioDolar.TextChanged
         Dim TasaCambio As Double
 
-        TasaCambio = BuscaTasaCambio(Format(Now, "dd/MM/yyyy"))
-
-        Me.TxtPrecioCordobas.Text = Format(CDbl(Val(Me.TxtPrecioDolar.Text)) * TasaCambio, "####0.00")
+        If ConvertirMonto = "Todos" Or ConvertirMonto = "Cordobas" Then
+            TasaCambio = BuscaTasaCambio(Format(Now, "dd/MM/yyyy"))
+            Me.TxtPrecioCordobas.Text = Format(CDbl(Val(Me.TxtPrecioDolar.Text)) * TasaCambio, "####0.00")
+            ConvertirMonto = "Cordobas"
+        End If
     End Sub
 End Class

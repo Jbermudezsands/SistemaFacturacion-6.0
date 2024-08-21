@@ -291,7 +291,7 @@ Public Class FrmProductos
         Dim SQLProductos As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-        Dim CodBodega As String = "", CodRubro As String = "", Iposicion = 0
+        Dim CodBodega As String = "", CodRubro As String = "", Iposicion = 0, Foto As String
         'Try
 
 
@@ -338,13 +338,14 @@ Public Class FrmProductos
             Me.TxtDesperdicio.Text = 0
         End If
 
+        Foto = bytesToString(ImagenToBytes(Me.ImgFoto.Image))
 
         SQLProductos = "SELECT Productos.*  FROM Productos WHERE (Cod_Productos = '" & Me.CboCodigoProducto.Text & "') "
         DataAdapter = New SqlClient.SqlDataAdapter(SQLProductos, MiConexion)
         DataAdapter.Fill(DataSet, "Proveedores")
         If Not DataSet.Tables("Proveedores").Rows.Count = 0 Then
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-            StrSqlUpdate = "UPDATE [Productos] SET [Descripcion_Producto] = '" & Me.TxtNombreProducto.Text & "',[Ubicacion] = '" & Me.TxtUbicacion.Text & "',[Cod_Linea] = '" & Me.CboLinea.Columns(0).Text & "',[Tipo_Producto] = '" & Me.CboTipoProducto.Text & "',[Cod_Cuenta_Inventario] = '" & Me.TxtCtaInventario.Text & "' ,[Cod_Cuenta_Costo] = '" & Me.TxtCtaCosto.Text & "',[Cod_Cuenta_Ventas] = '" & Me.TxtCuentaVenta.Text & "',[Unidad_Medida] = '" & Me.CboUnidad.Text & "',[Precio_Venta] = '" & CDbl(Me.TxtPrecioVenta.Text) & "',[Precio_Lista] = '" & CDbl(Me.TxtPrecioCompra.Text) & "',[Descuento] = '" & Me.TxtDescuento.Text & "',[Existencia_Negativa] = '" & Me.CboExistencia.Text & "',[Cod_Iva] = '" & Me.CboIva.Text & "' ,[Activo] = '" & Me.CboActivo.Text & "' ,[Minimo] = '" & Me.TxtMinimo.Text & "' ,[Reorden] = '" & Me.TxtReorden.Text & "',[Nota] = '" & Me.TxtNota.Text & "',[Cod_Cuenta_GastoAjuste]= '" & Me.TxtGastoAjuste.Text & "',[Cod_Cuenta_IngresoAjuste]= '" & Me.TxtIngresoAjuste.Text & "',[CodComponente]= " & CodComponente & ",[Cod_Rubro]= '" & CodRubro & "', [Porcentaje_Aumento]= " & Me.TxtAumento.Value & ",  [Rendimiento]= " & Me.TxtRendimiento.Text & " ,[Merma]= " & Me.TxtMerma.Text & " ,  [Desperdicio]= " & Me.TxtDesperdicio.Text & "    WHERE (Cod_Productos = '" & Me.CboCodigoProducto.Text & "')"
+            StrSqlUpdate = "UPDATE [Productos] SET [Descripcion_Producto] = '" & Me.TxtNombreProducto.Text & "',[Ubicacion] = '" & Me.TxtUbicacion.Text & "',[Cod_Linea] = '" & Me.CboLinea.Columns(0).Text & "',[Tipo_Producto] = '" & Me.CboTipoProducto.Text & "',[Cod_Cuenta_Inventario] = '" & Me.TxtCtaInventario.Text & "' ,[Cod_Cuenta_Costo] = '" & Me.TxtCtaCosto.Text & "',[Cod_Cuenta_Ventas] = '" & Me.TxtCuentaVenta.Text & "',[Unidad_Medida] = '" & Me.CboUnidad.Text & "',[Precio_Venta] = '" & CDbl(Me.TxtPrecioVenta.Text) & "',[Precio_Lista] = '" & CDbl(Me.TxtPrecioCompra.Text) & "',[Descuento] = '" & Me.TxtDescuento.Text & "',[Existencia_Negativa] = '" & Me.CboExistencia.Text & "',[Cod_Iva] = '" & Me.CboIva.Text & "' ,[Activo] = '" & Me.CboActivo.Text & "' ,[Minimo] = '" & Me.TxtMinimo.Text & "' ,[Reorden] = '" & Me.TxtReorden.Text & "',[Nota] = '" & Me.TxtNota.Text & "',[Cod_Cuenta_GastoAjuste]= '" & Me.TxtGastoAjuste.Text & "',[Cod_Cuenta_IngresoAjuste]= '" & Me.TxtIngresoAjuste.Text & "',[CodComponente]= " & CodComponente & ",[Cod_Rubro]= '" & CodRubro & "', [Porcentaje_Aumento]= " & Me.TxtAumento.Value & ",  [Rendimiento]= " & Me.TxtRendimiento.Text & " ,[Merma]= " & Me.TxtMerma.Text & " ,  [Desperdicio]= " & Me.TxtDesperdicio.Text & ", [Foto]= '" & Foto & "'    WHERE (Cod_Productos = '" & Me.CboCodigoProducto.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -353,8 +354,8 @@ Public Class FrmProductos
         Else
             MiConexion.Close()
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Productos] ([Cod_Productos],[Descripcion_Producto],[Ubicacion],[Cod_Linea],[Tipo_Producto],[Cod_Cuenta_Inventario],[Cod_Cuenta_Costo],[Cod_Cuenta_Ventas],[Unidad_Medida],[Precio_Venta],[Precio_Lista],[Descuento],[Existencia_Negativa],[Cod_Iva],[Activo],[Minimo],[Reorden],[Nota],[Cod_Cuenta_GastoAjuste],[Cod_Cuenta_IngresoAjuste],[CodComponente],[Cod_Rubro],[Porcentaje_Aumento],[Rendimiento],[Merma],[Desperdicio]) " & _
-                           "VALUES('" & Me.CboCodigoProducto.Text & "','" & Me.TxtNombreProducto.Text & "','" & Me.TxtUbicacion.Text & "','" & Me.CboLinea.Columns(0).Text & "','" & Me.CboTipoProducto.Text & "' ,'" & Me.TxtCtaInventario.Text & "','" & Me.TxtCtaCosto.Text & "','" & Me.TxtCuentaVenta.Text & "','" & Me.CboUnidad.Text & "','" & CDbl(Me.TxtPrecioVenta.Text) & "','" & CDbl(Me.TxtPrecioCompra.Text) & "','" & Me.TxtDescuento.Text & "','" & Me.CboExistencia.Text & "','" & Me.CboIva.Text & "','" & Me.CboActivo.Text & "','" & Me.TxtMinimo.Text & "' ,'" & Me.TxtReorden.Text & "','" & Me.TxtNota.Text & "','" & Me.TxtGastoAjuste.Text & "','" & Me.TxtIngresoAjuste.Text & "'," & CodComponente & ",'" & CodRubro & "'," & Me.TxtAumento.Value & "," & Me.TxtRendimiento.Text & ", " & Me.TxtMerma.Text & " ," & Me.TxtDesperdicio.Text & ")"
+            StrSqlUpdate = "INSERT INTO [Productos] ([Cod_Productos],[Descripcion_Producto],[Ubicacion],[Cod_Linea],[Tipo_Producto],[Cod_Cuenta_Inventario],[Cod_Cuenta_Costo],[Cod_Cuenta_Ventas],[Unidad_Medida],[Precio_Venta],[Precio_Lista],[Descuento],[Existencia_Negativa],[Cod_Iva],[Activo],[Minimo],[Reorden],[Nota],[Cod_Cuenta_GastoAjuste],[Cod_Cuenta_IngresoAjuste],[CodComponente],[Cod_Rubro],[Porcentaje_Aumento],[Rendimiento],[Merma],[Desperdicio],[Foto]) " &
+                           "VALUES('" & Me.CboCodigoProducto.Text & "','" & Me.TxtNombreProducto.Text & "','" & Me.TxtUbicacion.Text & "','" & Me.CboLinea.Columns(0).Text & "','" & Me.CboTipoProducto.Text & "' ,'" & Me.TxtCtaInventario.Text & "','" & Me.TxtCtaCosto.Text & "','" & Me.TxtCuentaVenta.Text & "','" & Me.CboUnidad.Text & "','" & CDbl(Me.TxtPrecioVenta.Text) & "','" & CDbl(Me.TxtPrecioCompra.Text) & "','" & Me.TxtDescuento.Text & "','" & Me.CboExistencia.Text & "','" & Me.CboIva.Text & "','" & Me.CboActivo.Text & "','" & Me.TxtMinimo.Text & "' ,'" & Me.TxtReorden.Text & "','" & Me.TxtNota.Text & "','" & Me.TxtGastoAjuste.Text & "','" & Me.TxtIngresoAjuste.Text & "'," & CodComponente & ",'" & CodRubro & "'," & Me.TxtAumento.Value & "," & Me.TxtRendimiento.Text & ", " & Me.TxtMerma.Text & " ," & Me.TxtDesperdicio.Text & ", '" & Foto & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -1378,44 +1379,46 @@ Public Class FrmProductos
             Exit Sub
         End If
 
-        '--------------------------------------VERIFICO EL ANCHO Y ALTO PARA CAMBIARLO -------------------------------
-        Dim fs As FileStream = New FileStream(RutaOrigen, FileMode.Open, FileAccess.Read, FileShare.Read)
-        Dim LaImagen As System.Drawing.Image
-        LaImagen = System.Drawing.Image.FromStream(fs)
-        'este calculo es para que la foto no pierda proporciones
-        'alto = Math.Floor((100 / LaImagen.Width) * LaImagen.Height)
-        alto = 52
-        Dim NuevoBitmap As Bitmap = New Bitmap(ancho, alto)
-        Dim Graficos As Graphics = Graphics.FromImage(NuevoBitmap)
-        Graficos.CompositingQuality = Drawing2D.CompositingQuality.HighQuality
-        Graficos.SmoothingMode = Drawing2D.SmoothingMode.HighQuality
-        Graficos.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-        Dim Rectangulo As Rectangle = New Rectangle(0, 0, ancho, alto)
-        Graficos.DrawImage(LaImagen, Rectangulo)
+        Me.ImgFoto.Image = CambiarTamañoImage(Image.FromFile(RutaOrigen))
+
+        ''--------------------------------------VERIFICO EL ANCHO Y ALTO PARA CAMBIARLO -------------------------------
+        'Dim fs As FileStream = New FileStream(RutaOrigen, FileMode.Open, FileAccess.Read, FileShare.Read)
+        'Dim LaImagen As System.Drawing.Image
+        'LaImagen = System.Drawing.Image.FromStream(fs)
+        ''este calculo es para que la foto no pierda proporciones
+        ''alto = Math.Floor((100 / LaImagen.Width) * LaImagen.Height)
+        'alto = 52
+        'Dim NuevoBitmap As Bitmap = New Bitmap(ancho, alto)
+        'Dim Graficos As Graphics = Graphics.FromImage(NuevoBitmap)
+        'Graficos.CompositingQuality = Drawing2D.CompositingQuality.HighQuality
+        'Graficos.SmoothingMode = Drawing2D.SmoothingMode.HighQuality
+        'Graficos.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+        'Dim Rectangulo As Rectangle = New Rectangle(0, 0, ancho, alto)
+        'Graficos.DrawImage(LaImagen, Rectangulo)
 
 
 
-        Me.ImgFoto.ImageLocation = RutaOrigen
-        If System.IO.Directory.Exists(RutaCompartida) = True Then
-            RutaDestino = RutaCompartida & "\" & Trim(Me.CboCodigoProducto.Text) & ".jpg"
-        Else
-            RutaDestino = My.Application.Info.DirectoryPath & "\Fotos\" & Trim(Me.CboCodigoProducto.Text) & ".jpg"
-        End If
+        'Me.ImgFoto.ImageLocation = RutaOrigen
+        'If System.IO.Directory.Exists(RutaCompartida) = True Then
+        '    RutaDestino = RutaCompartida & "\" & Trim(Me.CboCodigoProducto.Text) & ".jpg"
+        'Else
+        '    RutaDestino = My.Application.Info.DirectoryPath & "\Fotos\" & Trim(Me.CboCodigoProducto.Text) & ".jpg"
+        'End If
 
 
 
-        If System.IO.File.Exists(RutaDestino) = True Then
-            System.IO.File.Delete(RutaDestino)
-            System.IO.File.Copy(RutaOrigen, RutaDestino)
-            'NuevoBitmap.Save(RutaDestino, NuevoBitmap.RawFormat)
-            fs.Close()
-            fs = Nothing
-        Else
-            System.IO.File.Copy(RutaOrigen, RutaDestino)
-            'NuevoBitmap.Save(RutaDestino, NuevoBitmap.RawFormat)
-            fs.Close()
-            fs = Nothing
-        End If
+        'If System.IO.File.Exists(RutaDestino) = True Then
+        '    System.IO.File.Delete(RutaDestino)
+        '    System.IO.File.Copy(RutaOrigen, RutaDestino)
+        '    'NuevoBitmap.Save(RutaDestino, NuevoBitmap.RawFormat)
+        '    fs.Close()
+        '    fs = Nothing
+        'Else
+        '    System.IO.File.Copy(RutaOrigen, RutaDestino)
+        '    'NuevoBitmap.Save(RutaDestino, NuevoBitmap.RawFormat)
+        '    fs.Close()
+        '    fs = Nothing
+        'End If
 
     End Sub
 
@@ -1639,20 +1642,24 @@ Public Class FrmProductos
             DataAdapter = New SqlClient.SqlDataAdapter(SQLComponentes, MiConexion)
             DataAdapter.Fill(Dataset, "ConsecutivoComponente")
             If Not Dataset.Tables("ConsecutivoComponente").Rows.Count = 0 Then
-                CodComponente = Dataset.Tables("ConsecutivoComponente").Rows(0)("Componente") + 1
+                If Not IsDBNull(Dataset.Tables("ConsecutivoComponente").Rows(0)("Componente")) Then
+                    CodComponente = Dataset.Tables("ConsecutivoComponente").Rows(0)("Componente") + 1
+                Else
+                    CodComponente = 1
+                End If
 
                 '//////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 '////////////////////////////ACTUALIZO EL CONSECUTIVO///////////////////////////////////////////////////
                 '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 MiConexion.Close()
-                SQLProductos = "UPDATE [Consecutivos]  SET [Componente] = " & CodComponente & ""
-                MiConexion.Open()
-                ComandoUpdate = New SqlClient.SqlCommand(SQLProductos, MiConexion)
-                iResultado = ComandoUpdate.ExecuteNonQuery
-                MiConexion.Close()
+                    SQLProductos = "UPDATE [Consecutivos]  SET [Componente] = " & CodComponente & ""
+                    MiConexion.Open()
+                    ComandoUpdate = New SqlClient.SqlCommand(SQLProductos, MiConexion)
+                    iResultado = ComandoUpdate.ExecuteNonQuery
+                    MiConexion.Close()
 
+                End If
             End If
-        End If
 
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '////////////////////////////Agrego el Componente al Producto///////////////////////////////////////////////////
@@ -2013,7 +2020,8 @@ Public Class FrmProductos
         Dim ExistenciaValores As Double, ExistenciaValoresDolar As Double, CodRubro As String, ExistenciaBodega As Double
         Dim StrSQLUpdate As String, ComandoUpdate As New SqlClient.SqlCommand
         Dim iResultado As Integer, CostoProducto As Double = 0, CostoProductoD As Double = 0
-        Dim DataAdapterProductos As New SqlClient.SqlDataAdapter, SqlProductos As String
+        Dim DataAdapterProductos As New SqlClient.SqlDataAdapter, SqlProductos As String, Foto As String
+        Dim myImagenConsulta As Image
 
         SQl = "SELECT Productos.*  FROM Productos WHERE (Cod_Productos = '" & TextBox.Text & "') "
         MiConexion.Close()
@@ -2050,6 +2058,7 @@ Public Class FrmProductos
                 Me.TxtCuentaVenta.Text = ""
                 Me.TxtMinimo.Text = "0.00"
                 Me.TxtReorden.Text = "0.00"
+                Me.ImgFoto.Image = My.Resources.NoDisponible
                 CodComponente = 0
 
                 'If Me.CboCodigoProducto.Text = "" Then
@@ -2208,6 +2217,16 @@ Public Class FrmProductos
                 Me.TxtDesperdicio.Text = DataSet.Tables("Producto").Rows(0)("Desperdicio")
             Else
                 Me.TxtDesperdicio.Text = "0.00"
+            End If
+
+
+
+            If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Foto")) Then
+                Foto = DataSet.Tables("Producto").Rows(0)("Foto")
+                myImagenConsulta = BytesToImagen(StringtoByte(Foto))
+                Me.ImgFoto.Image = myImagenConsulta
+            Else
+                Me.ImgFoto.Image = My.Resources.NoDisponible
             End If
 
             CostoProducto = CostoPromedio(CodigoProducto)
@@ -2424,27 +2443,27 @@ Public Class FrmProductos
             Me.CboIva.Text = DataSet.Tables("Impuesto").Rows(0)("Descripcion_Iva")
         End If
 
-        RutaOrigen = RutaCompartida & "\" & Trim(Me.CboCodigoProducto.Text) & ".jpg"
-
-        'If Dir(RutaCompartida, FileAttribute.Directory) <> "" Then
-        If System.IO.Directory.Exists(RutaCompartida) = True Then
             RutaOrigen = RutaCompartida & "\" & Trim(Me.CboCodigoProducto.Text) & ".jpg"
-            If Dir(RutaOrigen) <> "" Then
-                Me.ImgFoto.ImageLocation = RutaOrigen
-            Else
-                RutaOrigen = My.Application.Info.DirectoryPath & "\Fotos\" & Me.CboCodigoProducto.Text & ".jpg"
-                If System.IO.File.Exists(RutaOrigen) = True Then
-                    Me.ImgFoto.ImageLocation = RutaOrigen
-                End If
-            End If
-        Else
-            RutaOrigen = My.Application.Info.DirectoryPath & "\Fotos\" & Me.CboCodigoProducto.Text & ".jpg"
-            If System.IO.File.Exists(RutaOrigen) = True Then
-                Me.ImgFoto.ImageLocation = RutaOrigen
-            End If
-        End If
 
-        MiConexion.Close()
+            ''If Dir(RutaCompartida, FileAttribute.Directory) <> "" Then
+            'If System.IO.Directory.Exists(RutaCompartida) = True Then
+            '    RutaOrigen = RutaCompartida & "\" & Trim(Me.CboCodigoProducto.Text) & ".jpg"
+            '    If Dir(RutaOrigen) <> "" Then
+            '        Me.ImgFoto.ImageLocation = RutaOrigen
+            '    Else
+            '        RutaOrigen = My.Application.Info.DirectoryPath & "\Fotos\" & Me.CboCodigoProducto.Text & ".jpg"
+            '        If System.IO.File.Exists(RutaOrigen) = True Then
+            '            Me.ImgFoto.ImageLocation = RutaOrigen
+            '        End If
+            '    End If
+            'Else
+            '    RutaOrigen = My.Application.Info.DirectoryPath & "\Fotos\" & Me.CboCodigoProducto.Text & ".jpg"
+            '    If System.IO.File.Exists(RutaOrigen) = True Then
+            '        Me.ImgFoto.ImageLocation = RutaOrigen
+            '    End If
+            'End If
+
+            MiConexion.Close()
 
         Exit Sub
         'Else

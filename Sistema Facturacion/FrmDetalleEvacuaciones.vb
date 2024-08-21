@@ -74,6 +74,7 @@ Public Class FrmDetalleEvacuaciones
         Dim Numero_Registro As String, Fecha As Date, SqlString As String, NumeroContrato As String = ""
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, CodigoCliente As String = ""
         Dim ComandoUpdate As New SqlClient.SqlCommand, idVehiculo As Double, idContrato As Double, IdConductor As Double
+        Dim Contenedor_Colocado As String = "", Contenedor_Evacuado As String = ""
 
         If MsgBox("Esta Seguro de Anular el registro", MsgBoxStyle.YesNo, "Zeus Facturacion") = MsgBoxResult.No Then
             Exit Sub
@@ -83,7 +84,7 @@ Public Class FrmDetalleEvacuaciones
         Numero_Registro = Me.TDGridSolicitud.Columns("Numero_Registro").Text
         Fecha = Me.TDGridSolicitud.Columns("Fecha_Registro").Text
 
-        SQLString = "SELECT  Registro_Transporte_Detalle.Numero_Registro, Registro_Transporte_Detalle.Fecha_Registro, Conductor.Nombre, Conductor.Licencia, Vehiculo.Placa, Vehiculo.Marca, Registro_Transporte_Detalle.Cod_Cliente, Registro_Transporte_Detalle.Id_Conductor, Registro_Transporte_Detalle.Id_Vehiculo, Registro_Transporte_Detalle.Activo, Registro_Transporte_Detalle.Anulado, Registro_Transporte_Detalle.Procesado, Registro_Transporte_Detalle.idTipoContrato, Registro_Transporte_Detalle.Numero_Contrato, Conductor.Codigo FROM  Registro_Transporte_Detalle INNER JOIN Conductor ON Registro_Transporte_Detalle.Id_Conductor = Conductor.Codigo INNER JOIN Vehiculo ON Registro_Transporte_Detalle.Id_Vehiculo = Vehiculo.IdVehiculo  " & _
+        SqlString = "SELECT  Registro_Transporte_Detalle.Numero_Registro, Registro_Transporte_Detalle.Fecha_Registro, Conductor.Nombre, Conductor.Licencia, Vehiculo.Placa, Vehiculo.Marca, Registro_Transporte_Detalle.Cod_Cliente, Registro_Transporte_Detalle.Id_Conductor, Registro_Transporte_Detalle.Id_Vehiculo, Registro_Transporte_Detalle.Activo, Registro_Transporte_Detalle.Num_Cont_Evacuado,Registro_Transporte_Detalle.Num_Cont_Colocado, Registro_Transporte_Detalle.Anulado, Registro_Transporte_Detalle.Procesado, Registro_Transporte_Detalle.idTipoContrato, Registro_Transporte_Detalle.Numero_Contrato, Conductor.Codigo FROM  Registro_Transporte_Detalle INNER JOIN Conductor ON Registro_Transporte_Detalle.Id_Conductor = Conductor.Codigo INNER JOIN Vehiculo ON Registro_Transporte_Detalle.Id_Vehiculo = Vehiculo.IdVehiculo  " &
             "WHERE (Registro_Transporte_Detalle.Numero_Registro = " & Numero_Registro & ") AND (Registro_Transporte_Detalle.Fecha_Registro BETWEEN CONVERT(DATETIME, '" & Format(Fecha, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(Fecha, "yyyy-MM-dd") & "', 102)) AND (Registro_Transporte_Detalle.Anulado = 0)"
         DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
         DataAdapter.Fill(DataSet, "DetalleRegistros")
@@ -95,10 +96,19 @@ Public Class FrmDetalleEvacuaciones
             IdConductor = DataSet.Tables("DetalleRegistros").Rows(0)("Id_Conductor")
             idVehiculo = DataSet.Tables("DetalleRegistros").Rows(0)("Id_Vehiculo")
             idContrato = DataSet.Tables("DetalleRegistros").Rows(0)("idTipoContrato")
+            If Not IsDBNull(DataSet.Tables("DetalleRegistros").Rows(0)("Num_Cont_Colocado")) Then
+                Contenedor_Colocado = DataSet.Tables("DetalleRegistros").Rows(0)("Num_Cont_Colocado")
+            End If
+
+            If Not IsDBNull(DataSet.Tables("DetalleRegistros").Rows(0)("Num_Cont_Evacuado")) Then
+                Contenedor_Evacuado = DataSet.Tables("DetalleRegistros").Rows(0)("Num_Cont_Evacuado")
+            End If
+
+
 
         End If
 
-        GrabarRegistroEvacuaciones(NumeroContrato, Fecha, CodigoCliente, IdConductor, idVehiculo, idContrato, True, False, False, False)
+        GrabarRegistroEvacuaciones(NumeroContrato, Fecha, CodigoCliente, IdConductor, idVehiculo, idContrato, True, False, False, False, Contenedor_Evacuado, Contenedor_Colocado)
 
         ActualizaGridDetalle(Me.CodigoCliente, Me.FechaIni, Me.FechaFin)
     End Sub

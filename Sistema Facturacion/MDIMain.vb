@@ -616,7 +616,8 @@ Public Class MDIMain
             End If
         End If
 
-
+        Version = My.Application.Info.Version.ToString
+        RibbonLabel1.Text = "V." & Mid(Version, 1, Len(Version) - 2)
 
 
 
@@ -746,14 +747,22 @@ Public Class MDIMain
                 ElseIf Trim(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) = "Bascula" Then
                     Me.RibbonTab5.Visible = True
                     Me.RibbonTab6.Visible = False
+                    Me.RibbonTab7.Visible = False
 
                 ElseIf Trim(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) = "Planilla" Then
                     Me.RibbonTab5.Visible = False
                     Me.RibbonTab6.Visible = True
+                    Me.RibbonTab7.Visible = False
 
                 ElseIf Trim(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) = "Facturacion" Then
                     Me.RibbonTab5.Visible = False
                     Me.RibbonTab6.Visible = False
+                    Me.RibbonTab7.Visible = False
+
+                ElseIf Trim(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) = "Clinica" Then
+                    Me.RibbonTab5.Visible = False
+                    Me.RibbonTab6.Visible = False
+                    Me.RibbonTab7.Visible = True
 
                 End If
 
@@ -1262,5 +1271,102 @@ Public Class MDIMain
     Private Sub RibbonButton18_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton18.Click
         My.Forms.FrmEvacuaciones.MdiParent = Me
         My.Forms.FrmEvacuaciones.Show()
+    End Sub
+
+
+    Private Sub RibbonButton19_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonExpediente.Click
+        My.Forms.FrmExpediente.MdiParent = Me
+        My.Forms.FrmExpediente.Show()
+    End Sub
+
+    Private Sub RibbonDepartamentos_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonDepartamentos.Click
+        My.Forms.FrmDepartamentos.MdiParent = Me
+        My.Forms.FrmDepartamentos.Show()
+    End Sub
+
+    Private Sub RibbonDoctores_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonDoctores.Click
+        My.Forms.FrmDoctores.MdiParent = Me
+        My.Forms.FrmDoctores.Show()
+    End Sub
+
+    Private Sub RibbonEnfermeras_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonEnfermeras.Click
+        My.Forms.FrmEnfermeras.MdiParent = Me
+        My.Forms.FrmEnfermeras.Show()
+    End Sub
+
+    Private Sub RibbonMunicipios_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonMunicipios.Click
+        My.Forms.FrmMunicipio.MdiParent = Me
+        My.Forms.FrmMunicipio.Show()
+    End Sub
+
+    Private Sub RibbonComarca_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonComarca.Click
+        My.Forms.FrmComarca.MdiParent = Me
+        My.Forms.FrmComarca.Show()
+    End Sub
+
+    Private Sub RibbonConsultorio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonConsultorio.Click
+        My.Forms.FrmConsultorio.MdiParent = Me
+        My.Forms.FrmConsultorio.Show()
+    End Sub
+
+
+    Private Sub RibbonAdmision_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonAdmision.Click
+        My.Forms.FrmAdmision.MdiParent = Me
+        My.Forms.FrmAdmision.Show()
+    End Sub
+
+    Private Sub RibbonPreConsultas_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonPreConsultas.Click
+        My.Forms.FrmPreConsultas.MdiParent = Me
+        My.Forms.FrmPreConsultas.Show()
+    End Sub
+
+    Private Sub RibbonConsultas_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonConsultas.Click
+        My.Forms.FrmListadoConsultas.MdiParent = Me
+        My.Forms.FrmListadoConsultas.Show()
+    End Sub
+
+    Private Sub RibbonButton171_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonButton171.Click
+        My.Forms.FrmTransformacion.MdiParent = Me
+        My.Forms.FrmTransformacion.Show()
+    End Sub
+
+    Private Sub RibbonMedicamentos_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonMedicamentos.Click
+        My.Forms.FrmMedicamentos.MdiParent = Me
+        My.Forms.FrmMedicamentos.Show()
+    End Sub
+
+    Private Sub RibbonQuirofano_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonQuirofano.Click
+        My.Forms.FrmQuirofano.MdiParent = Me
+        My.Forms.FrmQuirofano.Show()
+    End Sub
+
+    Private Sub RibbonExamenes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonExamenes.Click
+        My.Forms.FrmExamenes.MdiParent = Me
+        My.Forms.FrmExamenes.Show()
+    End Sub
+
+    Private Sub RibbonProcRecepcion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonProcRecepcion.Click
+        My.Forms.FrmProcesarRecLeche.MdiParent = Me
+        My.Forms.FrmProcesarRecLeche.Show()
+    End Sub
+
+    Private Sub RibbonHistoricoDebitoCredito_Click(sender As Object, e As EventArgs) Handles RibbonHistoricoDebitoCredito.Click
+        My.Forms.FrmListadoHistorico.MdiParent = Me
+        My.Forms.FrmListadoHistorico.Show()
+    End Sub
+
+    Private Sub RibbonButton19_Click_1(sender As Object, e As EventArgs) Handles RibbonButton19.Click
+        My.Forms.FrmListadoRecibo.MdiParent = Me
+        My.Forms.FrmListadoRecibo.Show()
+    End Sub
+
+    Private Sub RibbonButton21_Click(sender As Object, e As EventArgs) Handles RibbonButton21.Click
+        My.Forms.FrmContenedores.MdiParent = Me
+        My.Forms.FrmContenedores.Show()
+    End Sub
+
+    Private Sub RibbonHospitalizacion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonHospitalizacion.Click
+        My.Forms.FrmHospitalizacion.MdiParent = Me
+        My.Forms.FrmHospitalizacion.Show()
     End Sub
 End Class

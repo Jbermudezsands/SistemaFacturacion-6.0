@@ -21,164 +21,186 @@ Partial Class MDIMain
     Private Sub InitializeComponent()
         Dim ListadoCompañia As C1.Win.C1Ribbon.RibbonButton
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MDIMain))
-        Me.c1Ribbon1 = New C1.Win.C1Ribbon.C1Ribbon
-        Me.RibbonApplicationMenu1 = New C1.Win.C1Ribbon.RibbonApplicationMenu
-        Me.ExitButton = New C1.Win.C1Ribbon.RibbonButton
-        Me.MenuUsuarios = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonPerfiles1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonUsuarioActual = New C1.Win.C1Ribbon.RibbonButton
-        Me.SaveDocumentAsButton = New C1.Win.C1Ribbon.RibbonSplitButton
-        Me.CrearCompañia = New C1.Win.C1Ribbon.RibbonButton
-        Me.BorrarCompañia = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonConfigToolBar1 = New C1.Win.C1Ribbon.RibbonConfigToolBar
-        Me.RibbonStyleMenu = New C1.Win.C1Ribbon.RibbonMenu
-        Me.ribbonToggleGroup2 = New C1.Win.C1Ribbon.RibbonToggleGroup
-        Me.Office2007BlueStyleButton = New C1.Win.C1Ribbon.RibbonToggleButton
-        Me.Office2007SilverStyleButton = New C1.Win.C1Ribbon.RibbonToggleButton
-        Me.Office2007BlackStyleButton = New C1.Win.C1Ribbon.RibbonToggleButton
-        Me.F1HelpButton = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonQat1 = New C1.Win.C1Ribbon.RibbonQat
-        Me.UndoButton = New C1.Win.C1Ribbon.RibbonButton
-        Me.RedoButton = New C1.Win.C1Ribbon.RibbonButton
-        Me.HomeTab = New C1.Win.C1Ribbon.RibbonTab
-        Me.ClipboardGroup = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonFacturacion1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonCompras1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonSeparator5 = New C1.Win.C1Ribbon.RibbonSeparator
-        Me.RibbonLiquidacion1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonTransferencia1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonSeparator6 = New C1.Win.C1Ribbon.RibbonSeparator
-        Me.RibbonCtasXCobrar1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonRecibos1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.FontGroup = New C1.Win.C1Ribbon.RibbonGroup
-        Me.ribbonToolBar1 = New C1.Win.C1Ribbon.RibbonToolBar
-        Me.ribbonToolBar2 = New C1.Win.C1Ribbon.RibbonToolBar
-        Me.ribbonSeparator1 = New C1.Win.C1Ribbon.RibbonSeparator
-        Me.RibbonClietes1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonProductos1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonServicios1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonSeparator7 = New C1.Win.C1Ribbon.RibbonSeparator
-        Me.RibbonTasaCambio1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.ParagraphGroup = New C1.Win.C1Ribbon.RibbonGroup
-        Me.ribbonToolBar3 = New C1.Win.C1Ribbon.RibbonToolBar
-        Me.ribbonToolBar4 = New C1.Win.C1Ribbon.RibbonToolBar
-        Me.ribbonToggleGroup1 = New C1.Win.C1Ribbon.RibbonToggleGroup
-        Me.RibbonHistoricoFactura1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonHistoricoCompras1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonGroup7 = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonUsuarios1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonConfigurar1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonActualizacion1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButtonRespaldar1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonGroup10 = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonSalir = New C1.Win.C1Ribbon.RibbonButton
-        Me.ViewTab = New C1.Win.C1Ribbon.RibbonTab
-        Me.ViewZoomGroup = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonClietes = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonProveedores = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonVendedores = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonImpuestos = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonTasaCambio = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonCajeros = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton6 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonGroup1 = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonProductos = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonLineaProductos = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonServicios = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonRubros = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonBodegas = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonTiposPrecios = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonTareas = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonNotaDebitoCredito = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonProyectos = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonTab1 = New C1.Win.C1Ribbon.RibbonTab
-        Me.RibbonGroup2 = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonFacturacion = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonCompras = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonEnsamble = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonLiquidacion = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonTransferencia = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonInventarioFisico = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton7 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton8 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonGroup3 = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonPagos = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonRecibos = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonArqueo = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonCtasxCobrar = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonCtasXPagar = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonTab2 = New C1.Win.C1Ribbon.RibbonTab
-        Me.RibbonGroup4 = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonHistoricoFactura = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonHistoricoCompras = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonPlantillaVtasCompras = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonTab3 = New C1.Win.C1Ribbon.RibbonTab
-        Me.RibbonGroup5 = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonExportar = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonImportar = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonGroup8 = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonUsuarios = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonPerfiles = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButtonRespaldar = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonGroup9 = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonConfigurar = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonPersonalizar = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonActualizacion = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonAjustes = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonRevalorizar1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonTab4 = New C1.Win.C1Ribbon.RibbonTab
-        Me.RibbonGroup6 = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonReporteGenerales = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonReporteVentasCompras = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonReporteInventario = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonReporteCtasXCob = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonReporteCtasXCob1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonReporteGraficos = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonReporteGraficos1 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonTab5 = New C1.Win.C1Ribbon.RibbonTab
-        Me.RibbonGroup11 = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonRecepcion = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonSalidaBascula = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton4 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonSeparator4 = New C1.Win.C1Ribbon.RibbonSeparator
-        Me.RibbonButton5 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonGroup12 = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonConductor = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonVehiculo = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton2 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton18 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton3 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton17 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonGroup16 = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonButton16 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonTab6 = New C1.Win.C1Ribbon.RibbonTab
-        Me.RibbonGroup13 = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonProductor = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton11 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton61 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton14 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonGroup14 = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonButton111 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton12 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton10 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonSeparator2 = New C1.Win.C1Ribbon.RibbonSeparator
-        Me.RibbonButton15 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonGroup15 = New C1.Win.C1Ribbon.RibbonGroup
-        Me.RibbonButton20 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButtonDepartamento = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButtonCooperativa = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButtonRuta = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonButton9 = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonListaNomina = New C1.Win.C1Ribbon.RibbonButton
-        Me.RibbonSeparator3 = New C1.Win.C1Ribbon.RibbonSeparator
-        Me.RibbonButton13 = New C1.Win.C1Ribbon.RibbonButton
-        Me.C1StatusBar1 = New C1.Win.C1Ribbon.C1StatusBar
-        Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel
-        Me.RibbonLabel2 = New C1.Win.C1Ribbon.RibbonLabel
-        Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel
-        Me.TxtUsuario = New System.Windows.Forms.TextBox
-        ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton
+        Me.c1Ribbon1 = New C1.Win.C1Ribbon.C1Ribbon()
+        Me.RibbonApplicationMenu1 = New C1.Win.C1Ribbon.RibbonApplicationMenu()
+        Me.ExitButton = New C1.Win.C1Ribbon.RibbonButton()
+        Me.MenuUsuarios = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonPerfiles1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonUsuarioActual = New C1.Win.C1Ribbon.RibbonButton()
+        Me.SaveDocumentAsButton = New C1.Win.C1Ribbon.RibbonSplitButton()
+        Me.CrearCompañia = New C1.Win.C1Ribbon.RibbonButton()
+        Me.BorrarCompañia = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonConfigToolBar1 = New C1.Win.C1Ribbon.RibbonConfigToolBar()
+        Me.RibbonStyleMenu = New C1.Win.C1Ribbon.RibbonMenu()
+        Me.ribbonToggleGroup2 = New C1.Win.C1Ribbon.RibbonToggleGroup()
+        Me.Office2007BlueStyleButton = New C1.Win.C1Ribbon.RibbonToggleButton()
+        Me.Office2007SilverStyleButton = New C1.Win.C1Ribbon.RibbonToggleButton()
+        Me.Office2007BlackStyleButton = New C1.Win.C1Ribbon.RibbonToggleButton()
+        Me.F1HelpButton = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonQat1 = New C1.Win.C1Ribbon.RibbonQat()
+        Me.UndoButton = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RedoButton = New C1.Win.C1Ribbon.RibbonButton()
+        Me.HomeTab = New C1.Win.C1Ribbon.RibbonTab()
+        Me.ClipboardGroup = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonFacturacion1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonCompras1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonSeparator5 = New C1.Win.C1Ribbon.RibbonSeparator()
+        Me.RibbonLiquidacion1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonTransferencia1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonSeparator6 = New C1.Win.C1Ribbon.RibbonSeparator()
+        Me.RibbonCtasXCobrar1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonRecibos1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.FontGroup = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.ribbonToolBar1 = New C1.Win.C1Ribbon.RibbonToolBar()
+        Me.ribbonToolBar2 = New C1.Win.C1Ribbon.RibbonToolBar()
+        Me.ribbonSeparator1 = New C1.Win.C1Ribbon.RibbonSeparator()
+        Me.RibbonClietes1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonProductos1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonServicios1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonSeparator7 = New C1.Win.C1Ribbon.RibbonSeparator()
+        Me.RibbonTasaCambio1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.ParagraphGroup = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.ribbonToolBar3 = New C1.Win.C1Ribbon.RibbonToolBar()
+        Me.ribbonToolBar4 = New C1.Win.C1Ribbon.RibbonToolBar()
+        Me.ribbonToggleGroup1 = New C1.Win.C1Ribbon.RibbonToggleGroup()
+        Me.RibbonHistoricoFactura1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonHistoricoCompras1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonGroup7 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonUsuarios1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonConfigurar1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonActualizacion1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButtonRespaldar1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonGroup10 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonSalir = New C1.Win.C1Ribbon.RibbonButton()
+        Me.ViewTab = New C1.Win.C1Ribbon.RibbonTab()
+        Me.ViewZoomGroup = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonClietes = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonProveedores = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonVendedores = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonImpuestos = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonTasaCambio = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonCajeros = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton6 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonGroup1 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonProductos = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonLineaProductos = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonServicios = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonRubros = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonBodegas = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonTiposPrecios = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonTareas = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonNotaDebitoCredito = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonProyectos = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonTab1 = New C1.Win.C1Ribbon.RibbonTab()
+        Me.RibbonGroup2 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonFacturacion = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonCompras = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonEnsamble = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonLiquidacion = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonTransferencia = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonInventarioFisico = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton7 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton8 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonGroup3 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonPagos = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonRecibos = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonArqueo = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonCtasxCobrar = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonCtasXPagar = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonTab2 = New C1.Win.C1Ribbon.RibbonTab()
+        Me.RibbonGroup4 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonHistoricoFactura = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonHistoricoCompras = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonPlantillaVtasCompras = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonHistoricoDebitoCredito = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton19 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonTab3 = New C1.Win.C1Ribbon.RibbonTab()
+        Me.RibbonGroup5 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonExportar = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonImportar = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonGroup8 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonUsuarios = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonPerfiles = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButtonRespaldar = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonGroup9 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonConfigurar = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonPersonalizar = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonActualizacion = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonAjustes = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonRevalorizar1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonTab4 = New C1.Win.C1Ribbon.RibbonTab()
+        Me.RibbonGroup6 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonReporteGenerales = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonReporteVentasCompras = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonReporteInventario = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonReporteCtasXCob = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonReporteCtasXCob1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonReporteGraficos = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonReporteGraficos1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonTab5 = New C1.Win.C1Ribbon.RibbonTab()
+        Me.RibbonGroup11 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonRecepcion = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonSalidaBascula = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton4 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonSeparator4 = New C1.Win.C1Ribbon.RibbonSeparator()
+        Me.RibbonButton5 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonGroup12 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonConductor = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonVehiculo = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton2 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton21 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton18 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton3 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton17 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonGroup16 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonButton16 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonTab6 = New C1.Win.C1Ribbon.RibbonTab()
+        Me.RibbonGroup13 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonProductor = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton11 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton61 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton14 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton171 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonProcRecepcion = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonGroup14 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonButton111 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton12 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton10 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonSeparator2 = New C1.Win.C1Ribbon.RibbonSeparator()
+        Me.RibbonButton15 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonGroup15 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonButton20 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButtonDepartamento = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButtonCooperativa = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButtonRuta = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton9 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonListaNomina = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonSeparator3 = New C1.Win.C1Ribbon.RibbonSeparator()
+        Me.RibbonButton13 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonTab7 = New C1.Win.C1Ribbon.RibbonTab()
+        Me.RibbonGroup17 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonExpediente = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonAdmision = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonPreConsultas = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonConsultas = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonMedicamentos = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonExamenes = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonHospitalizacion = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonQuirofano = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonGroup18 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonDoctores = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonEnfermeras = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonDepartamentos = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonMunicipios = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonComarca = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonConsultorio = New C1.Win.C1Ribbon.RibbonButton()
+        Me.C1StatusBar1 = New C1.Win.C1Ribbon.C1StatusBar()
+        Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel()
+        Me.RibbonLabel2 = New C1.Win.C1Ribbon.RibbonLabel()
+        Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel()
+        Me.TxtUsuario = New System.Windows.Forms.TextBox()
+        ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton()
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -209,6 +231,7 @@ Partial Class MDIMain
         Me.c1Ribbon1.Tabs.Add(Me.RibbonTab4)
         Me.c1Ribbon1.Tabs.Add(Me.RibbonTab5)
         Me.c1Ribbon1.Tabs.Add(Me.RibbonTab6)
+        Me.c1Ribbon1.Tabs.Add(Me.RibbonTab7)
         '
         'RibbonApplicationMenu1
         '
@@ -886,6 +909,8 @@ Partial Class MDIMain
         Me.RibbonGroup4.Items.Add(Me.RibbonHistoricoFactura)
         Me.RibbonGroup4.Items.Add(Me.RibbonHistoricoCompras)
         Me.RibbonGroup4.Items.Add(Me.RibbonPlantillaVtasCompras)
+        Me.RibbonGroup4.Items.Add(Me.RibbonHistoricoDebitoCredito)
+        Me.RibbonGroup4.Items.Add(Me.RibbonButton19)
         Me.RibbonGroup4.Text = "Historicos"
         '
         'RibbonHistoricoFactura
@@ -911,6 +936,22 @@ Partial Class MDIMain
         Me.RibbonPlantillaVtasCompras.SmallImage = CType(resources.GetObject("RibbonPlantillaVtasCompras.SmallImage"), System.Drawing.Image)
         Me.RibbonPlantillaVtasCompras.Text = "Plantilla-Vtas/Compras"
         Me.RibbonPlantillaVtasCompras.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonHistoricoDebitoCredito
+        '
+        Me.RibbonHistoricoDebitoCredito.ID = "RibbonHistoricoDebitoCredito"
+        Me.RibbonHistoricoDebitoCredito.LargeImage = CType(resources.GetObject("RibbonHistoricoDebitoCredito.LargeImage"), System.Drawing.Image)
+        Me.RibbonHistoricoDebitoCredito.SmallImage = CType(resources.GetObject("RibbonHistoricoDebitoCredito.SmallImage"), System.Drawing.Image)
+        Me.RibbonHistoricoDebitoCredito.Text = "Debito/Credito"
+        Me.RibbonHistoricoDebitoCredito.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonButton19
+        '
+        Me.RibbonButton19.ID = "RibbonButton19"
+        Me.RibbonButton19.LargeImage = CType(resources.GetObject("RibbonButton19.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton19.SmallImage = CType(resources.GetObject("RibbonButton19.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton19.Text = "Recibos-Caja"
+        Me.RibbonButton19.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'RibbonTab3
         '
@@ -1159,6 +1200,7 @@ Partial Class MDIMain
         Me.RibbonGroup12.Items.Add(Me.RibbonConductor)
         Me.RibbonGroup12.Items.Add(Me.RibbonVehiculo)
         Me.RibbonGroup12.Items.Add(Me.RibbonButton2)
+        Me.RibbonGroup12.Items.Add(Me.RibbonButton21)
         Me.RibbonGroup12.Items.Add(Me.RibbonButton18)
         Me.RibbonGroup12.Items.Add(Me.RibbonButton3)
         Me.RibbonGroup12.Items.Add(Me.RibbonButton17)
@@ -1187,6 +1229,14 @@ Partial Class MDIMain
         Me.RibbonButton2.SmallImage = CType(resources.GetObject("RibbonButton2.SmallImage"), System.Drawing.Image)
         Me.RibbonButton2.Text = "Contratos"
         Me.RibbonButton2.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonButton21
+        '
+        Me.RibbonButton21.ID = "RibbonButton21"
+        Me.RibbonButton21.LargeImage = CType(resources.GetObject("RibbonButton21.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton21.SmallImage = CType(resources.GetObject("RibbonButton21.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton21.Text = "Contenedor"
+        Me.RibbonButton21.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'RibbonButton18
         '
@@ -1240,6 +1290,8 @@ Partial Class MDIMain
         Me.RibbonGroup13.Items.Add(Me.RibbonButton11)
         Me.RibbonGroup13.Items.Add(Me.RibbonButton61)
         Me.RibbonGroup13.Items.Add(Me.RibbonButton14)
+        Me.RibbonGroup13.Items.Add(Me.RibbonButton171)
+        Me.RibbonGroup13.Items.Add(Me.RibbonProcRecepcion)
         Me.RibbonGroup13.Text = "Registros"
         '
         'RibbonProductor
@@ -1272,6 +1324,22 @@ Partial Class MDIMain
         Me.RibbonButton14.SmallImage = CType(resources.GetObject("RibbonButton14.SmallImage"), System.Drawing.Image)
         Me.RibbonButton14.Text = "Transportista"
         Me.RibbonButton14.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonButton171
+        '
+        Me.RibbonButton171.ID = "RibbonButton171"
+        Me.RibbonButton171.LargeImage = CType(resources.GetObject("RibbonButton171.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton171.SmallImage = CType(resources.GetObject("RibbonButton171.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton171.Text = "Transforma"
+        Me.RibbonButton171.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonProcRecepcion
+        '
+        Me.RibbonProcRecepcion.ID = "RibbonProcRecepcion"
+        Me.RibbonProcRecepcion.LargeImage = CType(resources.GetObject("RibbonProcRecepcion.LargeImage"), System.Drawing.Image)
+        Me.RibbonProcRecepcion.SmallImage = CType(resources.GetObject("RibbonProcRecepcion.SmallImage"), System.Drawing.Image)
+        Me.RibbonProcRecepcion.Text = "Procesar Recepcion"
+        Me.RibbonProcRecepcion.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'RibbonGroup14
         '
@@ -1392,6 +1460,150 @@ Partial Class MDIMain
         Me.RibbonButton13.Text = "Reportes"
         Me.RibbonButton13.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
+        'RibbonTab7
+        '
+        Me.RibbonTab7.Groups.Add(Me.RibbonGroup17)
+        Me.RibbonTab7.Groups.Add(Me.RibbonGroup18)
+        Me.RibbonTab7.ID = "RibbonTab7"
+        Me.RibbonTab7.Text = "Clinica"
+        '
+        'RibbonGroup17
+        '
+        Me.RibbonGroup17.ID = "RibbonGroup17"
+        Me.RibbonGroup17.Items.Add(Me.RibbonExpediente)
+        Me.RibbonGroup17.Items.Add(Me.RibbonAdmision)
+        Me.RibbonGroup17.Items.Add(Me.RibbonPreConsultas)
+        Me.RibbonGroup17.Items.Add(Me.RibbonConsultas)
+        Me.RibbonGroup17.Items.Add(Me.RibbonMedicamentos)
+        Me.RibbonGroup17.Items.Add(Me.RibbonExamenes)
+        Me.RibbonGroup17.Items.Add(Me.RibbonHospitalizacion)
+        Me.RibbonGroup17.Items.Add(Me.RibbonQuirofano)
+        Me.RibbonGroup17.Text = "Procesos"
+        '
+        'RibbonExpediente
+        '
+        Me.RibbonExpediente.ID = "RibbonExpediente"
+        Me.RibbonExpediente.LargeImage = CType(resources.GetObject("RibbonExpediente.LargeImage"), System.Drawing.Image)
+        Me.RibbonExpediente.SmallImage = CType(resources.GetObject("RibbonExpediente.SmallImage"), System.Drawing.Image)
+        Me.RibbonExpediente.Text = "Expediente"
+        Me.RibbonExpediente.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonAdmision
+        '
+        Me.RibbonAdmision.ID = "RibbonAdmision"
+        Me.RibbonAdmision.LargeImage = CType(resources.GetObject("RibbonAdmision.LargeImage"), System.Drawing.Image)
+        Me.RibbonAdmision.SmallImage = CType(resources.GetObject("RibbonAdmision.SmallImage"), System.Drawing.Image)
+        Me.RibbonAdmision.Text = "Admision"
+        Me.RibbonAdmision.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonPreConsultas
+        '
+        Me.RibbonPreConsultas.ID = "RibbonPreConsultas"
+        Me.RibbonPreConsultas.LargeImage = CType(resources.GetObject("RibbonPreConsultas.LargeImage"), System.Drawing.Image)
+        Me.RibbonPreConsultas.SmallImage = CType(resources.GetObject("RibbonPreConsultas.SmallImage"), System.Drawing.Image)
+        Me.RibbonPreConsultas.Text = "PreConsultas"
+        Me.RibbonPreConsultas.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonConsultas
+        '
+        Me.RibbonConsultas.ID = "RibbonConsultas"
+        Me.RibbonConsultas.LargeImage = CType(resources.GetObject("RibbonConsultas.LargeImage"), System.Drawing.Image)
+        Me.RibbonConsultas.SmallImage = CType(resources.GetObject("RibbonConsultas.SmallImage"), System.Drawing.Image)
+        Me.RibbonConsultas.Text = "Consultas"
+        Me.RibbonConsultas.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonMedicamentos
+        '
+        Me.RibbonMedicamentos.ID = "RibbonMedicamentos"
+        Me.RibbonMedicamentos.LargeImage = CType(resources.GetObject("RibbonMedicamentos.LargeImage"), System.Drawing.Image)
+        Me.RibbonMedicamentos.SmallImage = CType(resources.GetObject("RibbonMedicamentos.SmallImage"), System.Drawing.Image)
+        Me.RibbonMedicamentos.Text = "Medicamentos"
+        Me.RibbonMedicamentos.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonExamenes
+        '
+        Me.RibbonExamenes.ID = "RibbonExamenes"
+        Me.RibbonExamenes.LargeImage = CType(resources.GetObject("RibbonExamenes.LargeImage"), System.Drawing.Image)
+        Me.RibbonExamenes.SmallImage = CType(resources.GetObject("RibbonExamenes.SmallImage"), System.Drawing.Image)
+        Me.RibbonExamenes.Text = "Examenes"
+        Me.RibbonExamenes.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonHospitalizacion
+        '
+        Me.RibbonHospitalizacion.ID = "RibbonHospitalizacion"
+        Me.RibbonHospitalizacion.LargeImage = CType(resources.GetObject("RibbonHospitalizacion.LargeImage"), System.Drawing.Image)
+        Me.RibbonHospitalizacion.SmallImage = CType(resources.GetObject("RibbonHospitalizacion.SmallImage"), System.Drawing.Image)
+        Me.RibbonHospitalizacion.Text = "Hospitalizacion"
+        Me.RibbonHospitalizacion.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonQuirofano
+        '
+        Me.RibbonQuirofano.ID = "RibbonQuirofano"
+        Me.RibbonQuirofano.LargeImage = CType(resources.GetObject("RibbonQuirofano.LargeImage"), System.Drawing.Image)
+        Me.RibbonQuirofano.SmallImage = CType(resources.GetObject("RibbonQuirofano.SmallImage"), System.Drawing.Image)
+        Me.RibbonQuirofano.Text = "Quirofano"
+        Me.RibbonQuirofano.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonGroup18
+        '
+        Me.RibbonGroup18.ID = "RibbonGroup18"
+        Me.RibbonGroup18.Items.Add(Me.RibbonDoctores)
+        Me.RibbonGroup18.Items.Add(Me.RibbonEnfermeras)
+        Me.RibbonGroup18.Items.Add(Me.RibbonDepartamentos)
+        Me.RibbonGroup18.Items.Add(Me.RibbonMunicipios)
+        Me.RibbonGroup18.Items.Add(Me.RibbonComarca)
+        Me.RibbonGroup18.Items.Add(Me.RibbonConsultorio)
+        Me.RibbonGroup18.Text = "Catalogo"
+        '
+        'RibbonDoctores
+        '
+        Me.RibbonDoctores.ID = "RibbonDoctores"
+        Me.RibbonDoctores.LargeImage = CType(resources.GetObject("RibbonDoctores.LargeImage"), System.Drawing.Image)
+        Me.RibbonDoctores.SmallImage = CType(resources.GetObject("RibbonDoctores.SmallImage"), System.Drawing.Image)
+        Me.RibbonDoctores.Text = "Doctores"
+        Me.RibbonDoctores.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonEnfermeras
+        '
+        Me.RibbonEnfermeras.AllowSelection = True
+        Me.RibbonEnfermeras.ID = "RibbonEnfermeras"
+        Me.RibbonEnfermeras.LargeImage = CType(resources.GetObject("RibbonEnfermeras.LargeImage"), System.Drawing.Image)
+        Me.RibbonEnfermeras.SmallImage = CType(resources.GetObject("RibbonEnfermeras.SmallImage"), System.Drawing.Image)
+        Me.RibbonEnfermeras.Text = "Enfermeras"
+        Me.RibbonEnfermeras.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonDepartamentos
+        '
+        Me.RibbonDepartamentos.ID = "RibbonDepartamentos"
+        Me.RibbonDepartamentos.LargeImage = CType(resources.GetObject("RibbonDepartamentos.LargeImage"), System.Drawing.Image)
+        Me.RibbonDepartamentos.SmallImage = CType(resources.GetObject("RibbonDepartamentos.SmallImage"), System.Drawing.Image)
+        Me.RibbonDepartamentos.Text = "Departamentos"
+        Me.RibbonDepartamentos.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonMunicipios
+        '
+        Me.RibbonMunicipios.ID = "RibbonMunicipios"
+        Me.RibbonMunicipios.LargeImage = CType(resources.GetObject("RibbonMunicipios.LargeImage"), System.Drawing.Image)
+        Me.RibbonMunicipios.SmallImage = CType(resources.GetObject("RibbonMunicipios.SmallImage"), System.Drawing.Image)
+        Me.RibbonMunicipios.Text = "Municipios"
+        Me.RibbonMunicipios.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonComarca
+        '
+        Me.RibbonComarca.ID = "RibbonComarca"
+        Me.RibbonComarca.LargeImage = CType(resources.GetObject("RibbonComarca.LargeImage"), System.Drawing.Image)
+        Me.RibbonComarca.SmallImage = CType(resources.GetObject("RibbonComarca.SmallImage"), System.Drawing.Image)
+        Me.RibbonComarca.Text = "Comarcas"
+        Me.RibbonComarca.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonConsultorio
+        '
+        Me.RibbonConsultorio.ID = "RibbonConsultorio"
+        Me.RibbonConsultorio.LargeImage = CType(resources.GetObject("RibbonConsultorio.LargeImage"), System.Drawing.Image)
+        Me.RibbonConsultorio.SmallImage = CType(resources.GetObject("RibbonConsultorio.SmallImage"), System.Drawing.Image)
+        Me.RibbonConsultorio.Text = "Consultorios"
+        Me.RibbonConsultorio.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
         'C1StatusBar1
         '
         Me.C1StatusBar1.LeftPaneItems.Add(Me.DocumentModifiedLabel)
@@ -1416,7 +1628,7 @@ Partial Class MDIMain
         'RibbonLabel1
         '
         Me.RibbonLabel1.ID = "RibbonLabel1"
-        Me.RibbonLabel1.Text = "Version 6.88"
+        Me.RibbonLabel1.Text = "Version 6.91"
         '
         'TxtUsuario
         '
@@ -1440,7 +1652,7 @@ Partial Class MDIMain
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.IsMdiContainer = True
         Me.Name = "MDIMain"
-        Me.Text = "Zeus Facturacion"
+        Me.Text = "1"
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1605,5 +1817,26 @@ Partial Class MDIMain
     Friend WithEvents RibbonButton17 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton18 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonLabel2 As C1.Win.C1Ribbon.RibbonLabel
-
+    Friend WithEvents RibbonTab7 As C1.Win.C1Ribbon.RibbonTab
+    Friend WithEvents RibbonGroup17 As C1.Win.C1Ribbon.RibbonGroup
+    Friend WithEvents RibbonExpediente As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonAdmision As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonPreConsultas As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonExamenes As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonHospitalizacion As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonConsultas As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonMedicamentos As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonQuirofano As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonGroup18 As C1.Win.C1Ribbon.RibbonGroup
+    Friend WithEvents RibbonDoctores As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonEnfermeras As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonDepartamentos As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonComarca As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonMunicipios As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonConsultorio As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButton171 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonProcRecepcion As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonHistoricoDebitoCredito As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButton19 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButton21 As C1.Win.C1Ribbon.RibbonButton
 End Class

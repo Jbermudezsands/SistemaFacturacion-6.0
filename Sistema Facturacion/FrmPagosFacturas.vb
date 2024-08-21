@@ -317,7 +317,9 @@ Public Class FrmPagosFacturas
             NombrePago = Me.BindingMetodo.Item(iPosicion)("NombrePago")
             'FechaFactura = Me.BindingFacturas.Item(iPosicion)("Fecha_Factura")
             TipoFactura = Me.BindingFacturas.Item(iPosicionCompras)("Tipo_Compra")
-            NumeroFactura = Me.BindingFacturas.Item(iPosicionCompras)("Numero_Factura")
+            If Not IsDBNull(Me.BindingFacturas.Item(iPosicionCompras)("Numero_Factura")) Then
+                NumeroFactura = Me.BindingFacturas.Item(iPosicionCompras)("Numero_Factura")
+            End If
             NumeroCompra = Me.BindingFacturas.Item(iPosicionCompras)("Numero_Compra")
 
             If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")) Then
@@ -423,7 +425,11 @@ Public Class FrmPagosFacturas
                 If MontoMetodo <> 0 Then
 
                     TipoFactura = Me.BindingFacturas.Item(iPosicionCompras)("Tipo_Compra")
-                    NumeroFactura = Me.BindingFacturas.Item(iPosicionCompras)("Numero_Factura")
+                    If Not IsDBNull(Me.BindingFacturas.Item(iPosicionCompras)("Numero_Factura")) Then
+                        NumeroFactura = Me.BindingFacturas.Item(iPosicionCompras)("Numero_Factura")
+                    Else
+                        NumeroFactura = 0
+                    End If
                     NumeroCompra = Me.BindingFacturas.Item(iPosicionCompras)("Numero_Compra")
                     FechaFactura = Me.BindingFacturas.Item(iPosicionCompras)("Fecha_Compra")
                     If Not IsDBNull(Me.BindingFacturas.Item(iPosicionCompras)("MontoPagado")) Then
@@ -436,7 +442,9 @@ Public Class FrmPagosFacturas
                     End If
                     SaldoFacturaFinal = Me.BindingFacturas.Item(iPosicionCompras)("Saldo")
 
-                    NumeroFactura = Me.BindingFacturas.Item(iPosicionCompras)("Numero_Factura")
+                    If Not IsDBNull(Me.BindingFacturas.Item(iPosicionCompras)("Numero_Factura")) Then
+                        NumeroFactura = Me.BindingFacturas.Item(iPosicionCompras)("Numero_Factura")
+                    End If
 
                     '///////////////////////////////BUSCO LACONFIGURACION DEL RECIBO /////////////////////////////////
                     SQlString = "SELECT  * FROM DatosEmpresa"

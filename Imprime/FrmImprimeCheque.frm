@@ -460,7 +460,7 @@ Private Sub Form_Load()
 Dim Ruta As String
 
 FacturaSerie = False
-Me.Skin1.ApplySkin hWnd
+'Me.Skin1.ApplySkin hWnd
 
 Me.SmartButton1.BackColor = RGB(216, 228, 248)
 Me.SmartButton2.BackColor = RGB(216, 228, 248)
@@ -869,7 +869,7 @@ Descuento = 0
                                   Cadena = Me.DtaConsulta.Recordset("Cod_Producto")
                                 End If
                                 
-                                If Len(Cadena) > 15 Then
+                                If Len(Cadena) > 10 Then
                                  Cadena = Trim(Cadena)
                                 End If
                                 Printer.Print Cadena
@@ -1084,7 +1084,7 @@ Descuento = 0
                         If MonedaImprime = "Dolares" Then
         '                    MontoDolar = Me.AdoEncabezado.Recordset("NetoPagar") / TasaCambio
                             SubTotal = Format(Val(Me.AdoEncabezado.Recordset("SubTotal")) / TasaCambio, "##,##0.00")
-                            IVA = Format(Val(Me.AdoEncabezado.Recordset("IVA")), "##,##0.00") / TasaCambio
+                            IVA = Format(Val(Me.AdoEncabezado.Recordset("IVA")) / TasaCambio, "##,##0.00")
                             Pagado = Format(Val(Me.AdoEncabezado.Recordset("Pagado")) / TasaCambio, "##,##0.00")
 '                            NetoPagar = Format(Val(Me.AdoEncabezado.Recordset("NetoPagar")) / TasaCambio, "##,##0.00")
                             NetoPagar = SubTotal + IVA
@@ -1098,7 +1098,7 @@ Descuento = 0
                         If MonedaImprime = "Cordobas" Then
         '                    MontoDolar = Me.AdoEncabezado.Recordset("NetoPagar") * TasaCambio
                             SubTotal = Format(Val(Me.AdoEncabezado.Recordset("SubTotal")) * TasaCambio, "##,##0.00")
-                            IVA = Format(Val(Me.AdoEncabezado.Recordset("IVA")), "##,##0.00") * TasaCambio
+                            IVA = Format(Val(Me.AdoEncabezado.Recordset("IVA")) * TasaCambio, "##,##0.00")
                             Pagado = Format(Val(Me.AdoEncabezado.Recordset("Pagado")) * TasaCambio, "##,##0.00")
 '                            NetoPagar = Format(Val(Me.AdoEncabezado.Recordset("NetoPagar")) * TasaCambio, "##,##0.00")
                              NetoPagar = SubTotal + IVA
@@ -1154,10 +1154,10 @@ Descuento = 0
                         Printer.Print Simbolo & " " & Format(SubTotal, "##,##0.00")
                         Printer.RightToLeft = True
                         
-                        Printer.CurrentX = Val(X16) '135
-                        Printer.CurrentY = Val(Y20) '288
-                        Printer.Print "SubTotal"
-                        Printer.RightToLeft = True
+'                        Printer.CurrentX = Val(X16) '135
+'                        Printer.CurrentY = Val(Y20) '288
+'                        Printer.Print "SubTotal"
+'                        Printer.RightToLeft = True
                       End If
                       
                       If X21 <> 0 Or Y21 <> 0 Then
@@ -1166,10 +1166,10 @@ Descuento = 0
                         Printer.Print Simbolo & " " & Format(IVA, "##,##0.00")
                         Printer.RightToLeft = True
                         
-                        Printer.CurrentX = Val(X16) '135
-                        Printer.CurrentY = Val(Y21) '288
-                        Printer.Print "IVA"
-                        Printer.RightToLeft = True
+'                        Printer.CurrentX = Val(X16) '135
+'                        Printer.CurrentY = Val(Y21) '288
+'                        Printer.Print "IVA"
+'                        Printer.RightToLeft = True
                       End If
                     
                       If X22 <> 0 Or Y22 <> 0 Then

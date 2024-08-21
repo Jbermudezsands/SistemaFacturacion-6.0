@@ -19,132 +19,135 @@ Partial Class FrmReportes
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmReportes))
-        Me.LblTitulo = New System.Windows.Forms.Label
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.ListBox = New System.Windows.Forms.ListBox
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.DTPFechaIni = New System.Windows.Forms.DateTimePicker
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.PictureBox3 = New System.Windows.Forms.PictureBox
-        Me.CodigoProducto2X = New C1.Win.C1List.C1Combo
-        Me.CboCodProducto = New C1.Win.C1List.C1Combo
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox
-        Me.CmbRango2 = New C1.Win.C1List.C1Combo
-        Me.Button4 = New System.Windows.Forms.Button
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.CmbRango1 = New C1.Win.C1List.C1Combo
-        Me.Button3 = New System.Windows.Forms.Button
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.CmbAgrupado = New System.Windows.Forms.ComboBox
+        Me.LblTitulo = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.ListBox = New System.Windows.Forms.ListBox()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.DTPFechaIni = New System.Windows.Forms.DateTimePicker()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
+        Me.CodigoProducto2X = New C1.Win.C1List.C1Combo()
+        Me.CboCodProducto = New C1.Win.C1List.C1Combo()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.CmbRango2 = New C1.Win.C1List.C1Combo()
+        Me.Button4 = New System.Windows.Forms.Button()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.CmbRango1 = New C1.Win.C1List.C1Combo()
+        Me.Button3 = New System.Windows.Forms.Button()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.CmbAgrupado = New System.Windows.Forms.ComboBox()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.LblProcesando = New System.Windows.Forms.Label
-        Me.GroupClientes = New System.Windows.Forms.GroupBox
-        Me.Button6 = New System.Windows.Forms.Button
-        Me.Button7 = New System.Windows.Forms.Button
-        Me.CmbClientes2 = New C1.Win.C1List.C1Combo
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.CmbClientes = New C1.Win.C1List.C1Combo
-        Me.Label8 = New System.Windows.Forms.Label
-        Me.GroupVendedor = New System.Windows.Forms.GroupBox
-        Me.CmdClientes2 = New System.Windows.Forms.Button
-        Me.CmdClientes1 = New System.Windows.Forms.Button
-        Me.CmbVendedores2 = New C1.Win.C1List.C1Combo
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.CmbVendedores = New C1.Win.C1List.C1Combo
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.Imagen = New System.Windows.Forms.PictureBox
-        Me.ProgressBar = New System.Windows.Forms.ProgressBar
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.OptDolares = New System.Windows.Forms.RadioButton
-        Me.OptCordobas = New System.Windows.Forms.RadioButton
-        Me.C1Combo1 = New C1.Win.C1List.C1Combo
-        Me.C1Combo2 = New C1.Win.C1List.C1Combo
-        Me.Label11 = New System.Windows.Forms.Label
-        Me.Label12 = New System.Windows.Forms.Label
-        Me.GroupBoxProductos = New System.Windows.Forms.GroupBox
-        Me.Button5 = New System.Windows.Forms.Button
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.CboCodProducto2 = New C1.Win.C1List.C1Combo
-        Me.Label13 = New System.Windows.Forms.Label
-        Me.Label14 = New System.Windows.Forms.Label
-        Me.CboProducto = New C1.Win.C1List.C1Combo
-        Me.C1Combo3 = New C1.Win.C1List.C1Combo
-        Me.GroupBoxNotas = New System.Windows.Forms.GroupBox
-        Me.Button9 = New System.Windows.Forms.Button
-        Me.Button10 = New System.Windows.Forms.Button
-        Me.CmbNotas2 = New C1.Win.C1List.C1Combo
-        Me.Label15 = New System.Windows.Forms.Label
-        Me.CmbNotas = New C1.Win.C1List.C1Combo
-        Me.Label16 = New System.Windows.Forms.Label
-        Me.GroupBoxLinea = New System.Windows.Forms.GroupBox
-        Me.Button11 = New System.Windows.Forms.Button
-        Me.Button12 = New System.Windows.Forms.Button
-        Me.CboCodigoLinea2 = New C1.Win.C1List.C1Combo
-        Me.Label17 = New System.Windows.Forms.Label
-        Me.CboCodigoLinea = New C1.Win.C1List.C1Combo
-        Me.Label18 = New System.Windows.Forms.Label
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
-        Me.GroupBoxTipo = New System.Windows.Forms.GroupBox
-        Me.CmbTipoHasta = New C1.Win.C1List.C1Combo
-        Me.Label19 = New System.Windows.Forms.Label
-        Me.CmbTipoDesde = New C1.Win.C1List.C1Combo
-        Me.Label20 = New System.Windows.Forms.Label
-        Me.ChkResumen = New System.Windows.Forms.CheckBox
-        Me.GroupBoxProyectos = New System.Windows.Forms.GroupBox
-        Me.Button13 = New System.Windows.Forms.Button
-        Me.Button14 = New System.Windows.Forms.Button
-        Me.CboCodProyecto2 = New C1.Win.C1List.C1Combo
-        Me.Label21 = New System.Windows.Forms.Label
-        Me.CboCodProyecto = New C1.Win.C1List.C1Combo
-        Me.Label22 = New System.Windows.Forms.Label
-        Me.ChkProductosCero = New System.Windows.Forms.CheckBox
-        Me.ChkAgrupVtas = New System.Windows.Forms.CheckBox
-        Me.ChkTransferencias = New System.Windows.Forms.CheckBox
-        Me.GroupBoxDepartamento = New System.Windows.Forms.GroupBox
-        Me.Button15 = New System.Windows.Forms.Button
-        Me.Button16 = New System.Windows.Forms.Button
-        Me.CboCodDepartamentoFin = New C1.Win.C1List.C1Combo
-        Me.Label23 = New System.Windows.Forms.Label
-        Me.CboCodDepartamentoIni = New C1.Win.C1List.C1Combo
-        Me.Label24 = New System.Windows.Forms.Label
-        Me.GroupBoxMunicipio = New System.Windows.Forms.GroupBox
-        Me.Button17 = New System.Windows.Forms.Button
-        Me.Button18 = New System.Windows.Forms.Button
-        Me.CboMunicipio2 = New C1.Win.C1List.C1Combo
-        Me.Label25 = New System.Windows.Forms.Label
-        Me.CboMunicipioIni = New C1.Win.C1List.C1Combo
-        Me.Label26 = New System.Windows.Forms.Label
-        Me.ChkFacturasCero = New System.Windows.Forms.CheckBox
-        Me.GroupBoxLote = New System.Windows.Forms.GroupBox
-        Me.CboLoteFin = New C1.Win.C1List.C1Combo
-        Me.Label27 = New System.Windows.Forms.Label
-        Me.CboLoteIni = New C1.Win.C1List.C1Combo
-        Me.Label28 = New System.Windows.Forms.Label
-        Me.GroupBoxAño = New System.Windows.Forms.GroupBox
-        Me.CboAño = New System.Windows.Forms.ComboBox
-        Me.CboMes = New System.Windows.Forms.ComboBox
-        Me.Label29 = New System.Windows.Forms.Label
-        Me.Label30 = New System.Windows.Forms.Label
-        Me.GroupProveedores = New System.Windows.Forms.GroupBox
-        Me.BtnProveedor1 = New System.Windows.Forms.Button
-        Me.BtnProveedor2 = New System.Windows.Forms.Button
-        Me.BtnProveedorHasta = New System.Windows.Forms.Button
-        Me.BtnProveedorDesde = New System.Windows.Forms.Button
-        Me.CboProveedores2 = New C1.Win.C1List.C1Combo
-        Me.Label31 = New System.Windows.Forms.Label
-        Me.CboProveedores = New C1.Win.C1List.C1Combo
-        Me.Label32 = New System.Windows.Forms.Label
-        Me.ChkAgrupadoBodega = New System.Windows.Forms.CheckBox
+        Me.LblProcesando = New System.Windows.Forms.Label()
+        Me.GroupClientes = New System.Windows.Forms.GroupBox()
+        Me.Button6 = New System.Windows.Forms.Button()
+        Me.Button7 = New System.Windows.Forms.Button()
+        Me.CmbClientes2 = New C1.Win.C1List.C1Combo()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.CmbClientes = New C1.Win.C1List.C1Combo()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.GroupVendedor = New System.Windows.Forms.GroupBox()
+        Me.CmdClientes2 = New System.Windows.Forms.Button()
+        Me.CmdClientes1 = New System.Windows.Forms.Button()
+        Me.CmbVendedores2 = New C1.Win.C1List.C1Combo()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.CmbVendedores = New C1.Win.C1List.C1Combo()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.Imagen = New System.Windows.Forms.PictureBox()
+        Me.ProgressBar = New System.Windows.Forms.ProgressBar()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.OptDolares = New System.Windows.Forms.RadioButton()
+        Me.OptCordobas = New System.Windows.Forms.RadioButton()
+        Me.C1Combo1 = New C1.Win.C1List.C1Combo()
+        Me.C1Combo2 = New C1.Win.C1List.C1Combo()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.GroupBoxProductos = New System.Windows.Forms.GroupBox()
+        Me.Button5 = New System.Windows.Forms.Button()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.CboCodProducto2 = New C1.Win.C1List.C1Combo()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.CboProducto = New C1.Win.C1List.C1Combo()
+        Me.C1Combo3 = New C1.Win.C1List.C1Combo()
+        Me.GroupBoxNotas = New System.Windows.Forms.GroupBox()
+        Me.Button9 = New System.Windows.Forms.Button()
+        Me.Button10 = New System.Windows.Forms.Button()
+        Me.CmbNotas2 = New C1.Win.C1List.C1Combo()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.CmbNotas = New C1.Win.C1List.C1Combo()
+        Me.Label16 = New System.Windows.Forms.Label()
+        Me.GroupBoxLinea = New System.Windows.Forms.GroupBox()
+        Me.Button11 = New System.Windows.Forms.Button()
+        Me.Button12 = New System.Windows.Forms.Button()
+        Me.CboCodigoLinea2 = New C1.Win.C1List.C1Combo()
+        Me.Label17 = New System.Windows.Forms.Label()
+        Me.CboCodigoLinea = New C1.Win.C1List.C1Combo()
+        Me.Label18 = New System.Windows.Forms.Label()
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.GroupBoxTipo = New System.Windows.Forms.GroupBox()
+        Me.CmbTipoHasta = New C1.Win.C1List.C1Combo()
+        Me.Label19 = New System.Windows.Forms.Label()
+        Me.CmbTipoDesde = New C1.Win.C1List.C1Combo()
+        Me.Label20 = New System.Windows.Forms.Label()
+        Me.ChkResumen = New System.Windows.Forms.CheckBox()
+        Me.GroupBoxProyectos = New System.Windows.Forms.GroupBox()
+        Me.Button13 = New System.Windows.Forms.Button()
+        Me.Button14 = New System.Windows.Forms.Button()
+        Me.CboCodProyecto2 = New C1.Win.C1List.C1Combo()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.CboCodProyecto = New C1.Win.C1List.C1Combo()
+        Me.Label22 = New System.Windows.Forms.Label()
+        Me.ChkProductosCero = New System.Windows.Forms.CheckBox()
+        Me.ChkAgrupVtas = New System.Windows.Forms.CheckBox()
+        Me.ChkTransferencias = New System.Windows.Forms.CheckBox()
+        Me.GroupBoxDepartamento = New System.Windows.Forms.GroupBox()
+        Me.Button15 = New System.Windows.Forms.Button()
+        Me.Button16 = New System.Windows.Forms.Button()
+        Me.CboCodDepartamentoFin = New C1.Win.C1List.C1Combo()
+        Me.Label23 = New System.Windows.Forms.Label()
+        Me.CboCodDepartamentoIni = New C1.Win.C1List.C1Combo()
+        Me.Label24 = New System.Windows.Forms.Label()
+        Me.GroupBoxMunicipio = New System.Windows.Forms.GroupBox()
+        Me.Button17 = New System.Windows.Forms.Button()
+        Me.Button18 = New System.Windows.Forms.Button()
+        Me.CboMunicipio2 = New C1.Win.C1List.C1Combo()
+        Me.Label25 = New System.Windows.Forms.Label()
+        Me.CboMunicipioIni = New C1.Win.C1List.C1Combo()
+        Me.Label26 = New System.Windows.Forms.Label()
+        Me.ChkFacturasCero = New System.Windows.Forms.CheckBox()
+        Me.GroupBoxLote = New System.Windows.Forms.GroupBox()
+        Me.CboLoteFin = New C1.Win.C1List.C1Combo()
+        Me.Label27 = New System.Windows.Forms.Label()
+        Me.CboLoteIni = New C1.Win.C1List.C1Combo()
+        Me.Label28 = New System.Windows.Forms.Label()
+        Me.GroupBoxAño = New System.Windows.Forms.GroupBox()
+        Me.CboAño = New System.Windows.Forms.ComboBox()
+        Me.CboMes = New System.Windows.Forms.ComboBox()
+        Me.Label29 = New System.Windows.Forms.Label()
+        Me.Label30 = New System.Windows.Forms.Label()
+        Me.GroupProveedores = New System.Windows.Forms.GroupBox()
+        Me.BtnProveedor1 = New System.Windows.Forms.Button()
+        Me.BtnProveedor2 = New System.Windows.Forms.Button()
+        Me.BtnProveedorHasta = New System.Windows.Forms.Button()
+        Me.BtnProveedorDesde = New System.Windows.Forms.Button()
+        Me.CboProveedores2 = New C1.Win.C1List.C1Combo()
+        Me.Label31 = New System.Windows.Forms.Label()
+        Me.CboProveedores = New C1.Win.C1List.C1Combo()
+        Me.Label32 = New System.Windows.Forms.Label()
+        Me.ChkAgrupadoBodega = New System.Windows.Forms.CheckBox()
         Me.ListaImagenes = New System.Windows.Forms.ImageList(Me.components)
+        Me.GroupBoxFechaVence = New System.Windows.Forms.GroupBox()
+        Me.DTPFechaVence = New System.Windows.Forms.DateTimePicker()
+        Me.Label33 = New System.Windows.Forms.Label()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -193,6 +196,7 @@ Partial Class FrmReportes
         Me.GroupProveedores.SuspendLayout()
         CType(Me.CboProveedores2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboProveedores, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBoxFechaVence.SuspendLayout()
         Me.SuspendLayout()
         '
         'LblTitulo
@@ -240,7 +244,7 @@ Partial Class FrmReportes
         Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button2.Location = New System.Drawing.Point(13, 414)
+        Me.Button2.Location = New System.Drawing.Point(12, 413)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(75, 66)
         Me.Button2.TabIndex = 189
@@ -763,7 +767,7 @@ Partial Class FrmReportes
         '
         Me.Imagen.BackColor = System.Drawing.Color.White
         Me.Imagen.Image = CType(resources.GetObject("Imagen.Image"), System.Drawing.Image)
-        Me.Imagen.Location = New System.Drawing.Point(882, 550)
+        Me.Imagen.Location = New System.Drawing.Point(899, 539)
         Me.Imagen.Name = "Imagen"
         Me.Imagen.Size = New System.Drawing.Size(888, 350)
         Me.Imagen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
@@ -1157,7 +1161,7 @@ Partial Class FrmReportes
         Me.GroupBoxLinea.Controls.Add(Me.Label17)
         Me.GroupBoxLinea.Controls.Add(Me.CboCodigoLinea)
         Me.GroupBoxLinea.Controls.Add(Me.Label18)
-        Me.GroupBoxLinea.Location = New System.Drawing.Point(1183, 22)
+        Me.GroupBoxLinea.Location = New System.Drawing.Point(1193, 22)
         Me.GroupBoxLinea.Name = "GroupBoxLinea"
         Me.GroupBoxLinea.Size = New System.Drawing.Size(278, 85)
         Me.GroupBoxLinea.TabIndex = 203
@@ -1861,7 +1865,7 @@ Partial Class FrmReportes
         Me.GroupBoxAño.Controls.Add(Me.CboMes)
         Me.GroupBoxAño.Controls.Add(Me.Label29)
         Me.GroupBoxAño.Controls.Add(Me.Label30)
-        Me.GroupBoxAño.Location = New System.Drawing.Point(902, 468)
+        Me.GroupBoxAño.Location = New System.Drawing.Point(904, 471)
         Me.GroupBoxAño.Name = "GroupBoxAño"
         Me.GroupBoxAño.Size = New System.Drawing.Size(352, 52)
         Me.GroupBoxAño.TabIndex = 215
@@ -2047,27 +2051,46 @@ Partial Class FrmReportes
         '
         'ListaImagenes
         '
-        Me.ListaImagenes.ImageStream = CType(resources.GetObject("ListaImagenes.ImageStream"), System.Windows.Forms.ImageListStreamer)
+        Me.ListaImagenes.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit
+        Me.ListaImagenes.ImageSize = New System.Drawing.Size(256, 256)
         Me.ListaImagenes.TransparentColor = System.Drawing.Color.Transparent
-        Me.ListaImagenes.Images.SetKeyName(0, "BarraN0.png")
-        Me.ListaImagenes.Images.SetKeyName(1, "BarraN1.png")
-        Me.ListaImagenes.Images.SetKeyName(2, "BarraN2.png")
-        Me.ListaImagenes.Images.SetKeyName(3, "BarraN3.png")
-        Me.ListaImagenes.Images.SetKeyName(4, "BarraN4.png")
-        Me.ListaImagenes.Images.SetKeyName(5, "BarraN5.png")
-        Me.ListaImagenes.Images.SetKeyName(6, "BarraN6.png")
-        Me.ListaImagenes.Images.SetKeyName(7, "BarraN7.png")
-        Me.ListaImagenes.Images.SetKeyName(8, "BarraN8.png")
-        Me.ListaImagenes.Images.SetKeyName(9, "BarraN9.png")
-        Me.ListaImagenes.Images.SetKeyName(10, "BarraN10.png")
+        '
+        'GroupBoxFechaVence
+        '
+        Me.GroupBoxFechaVence.Controls.Add(Me.DTPFechaVence)
+        Me.GroupBoxFechaVence.Controls.Add(Me.Label33)
+        Me.GroupBoxFechaVence.Location = New System.Drawing.Point(896, 539)
+        Me.GroupBoxFechaVence.Name = "GroupBoxFechaVence"
+        Me.GroupBoxFechaVence.Size = New System.Drawing.Size(352, 52)
+        Me.GroupBoxFechaVence.TabIndex = 218
+        Me.GroupBoxFechaVence.TabStop = False
+        Me.GroupBoxFechaVence.Text = "Fecha Vence"
+        '
+        'DTPFechaVence
+        '
+        Me.DTPFechaVence.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DTPFechaVence.Location = New System.Drawing.Point(121, 16)
+        Me.DTPFechaVence.Name = "DTPFechaVence"
+        Me.DTPFechaVence.Size = New System.Drawing.Size(97, 20)
+        Me.DTPFechaVence.TabIndex = 3
+        '
+        'Label33
+        '
+        Me.Label33.AutoSize = True
+        Me.Label33.Location = New System.Drawing.Point(21, 20)
+        Me.Label33.Name = "Label33"
+        Me.Label33.Size = New System.Drawing.Size(94, 13)
+        Me.Label33.TabIndex = 2
+        Me.Label33.Text = "Fecha Max Vence"
         '
         'FrmReportes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(859, 516)
+        Me.ClientSize = New System.Drawing.Size(884, 509)
         Me.ControlBox = False
         Me.Controls.Add(Me.Imagen)
+        Me.Controls.Add(Me.GroupBoxLinea)
         Me.Controls.Add(Me.GroupProveedores)
         Me.Controls.Add(Me.GroupBoxLote)
         Me.Controls.Add(Me.ChkFacturasCero)
@@ -2091,7 +2114,6 @@ Partial Class FrmReportes
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.ListBox)
         Me.Controls.Add(Me.GroupBoxNotas)
-        Me.Controls.Add(Me.GroupBoxLinea)
         Me.Controls.Add(Me.GroupBoxTipo)
         Me.Controls.Add(Me.ChkTransferencias)
         Me.Controls.Add(Me.ChkProductosCero)
@@ -2099,6 +2121,7 @@ Partial Class FrmReportes
         Me.Controls.Add(Me.GroupBoxDepartamento)
         Me.Controls.Add(Me.GroupBoxAño)
         Me.Controls.Add(Me.ChkAgrupadoBodega)
+        Me.Controls.Add(Me.GroupBoxFechaVence)
         Me.Name = "FrmReportes"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Reportes"
@@ -2165,6 +2188,8 @@ Partial Class FrmReportes
         Me.GroupProveedores.PerformLayout()
         CType(Me.CboProveedores2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboProveedores, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBoxFechaVence.ResumeLayout(False)
+        Me.GroupBoxFechaVence.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2294,4 +2319,8 @@ Partial Class FrmReportes
     Friend WithEvents BtnProveedor2 As System.Windows.Forms.Button
     Friend WithEvents ChkAgrupadoBodega As System.Windows.Forms.CheckBox
     Friend WithEvents ListaImagenes As System.Windows.Forms.ImageList
+    Friend WithEvents GroupBoxFechaVence As GroupBox
+    Friend WithEvents DTPFechaVence As DateTimePicker
+    Friend WithEvents Label33 As Label
+    'Friend WithEvents ListaImagenes As System.Windows.Forms.ImageList
 End Class

@@ -437,11 +437,29 @@ Public Class FrmNuevaSolicitud
     End Sub
 
     Private Sub TrueDBGridComponentes_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridComponentes.ButtonClick
+        Dim i As Double, CodigoProducto As String
         Quien = "CodigoProductosSolicitud"
         My.Forms.FrmConsultas.ShowDialog()
 
         If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
-            Me.TrueDBGridComponentes.Columns("Cod_Producto").Text = My.Forms.FrmConsultas.Codigo
+
+            CodigoProducto = My.Forms.FrmConsultas.Codigo
+            '/////////////////////////////////////////////////////////////////////////////////
+            '///////////////////////RECORRO EL GRID PARA BUSCAR CODIGO REPETIDOS ///////////////
+            '/////////////////////////////////////////////////////////////////////////////////////////
+            i = 0
+            Do While Me.TrueDBGridComponentes.RowCount > i
+                If Me.TrueDBGridComponentes.Item(i)("Cod_Producto") = CodigoProducto Then
+                    MsgBox("Ya Existe este producto en la Solicitud", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+                    Exit Sub
+                End If
+
+                i = i + 1
+            Loop
+
+
+
+            Me.TrueDBGridComponentes.Columns("Cod_Producto").Text = CodigoProducto
             Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = My.Forms.FrmConsultas.Descripcion
             Me.TrueDBGridComponentes.Columns("Cantidad").Text = 1
             Me.TrueDBGridComponentes.Columns("Autorizado").Text = 0
@@ -654,7 +672,11 @@ Public Class FrmNuevaSolicitud
             ElseIf Estatus = "Grabado" Then
                 Me.BtnAutorizar.Visible = True
                 Me.BtnOrdenCompra.Visible = False
+                Me.Button7.Enabled = True
                 Me.TrueDBGridComponentes.Enabled = True
+                Me.TrueDBGridComponentes.AllowAddNew = True
+                Me.Button3.Enabled = True
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Button = True
                 Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Comprado").Width = 60
                 Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Comprado").Locked = True
                 Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Comprado").Visible = False
@@ -955,7 +977,7 @@ Public Class FrmNuevaSolicitud
         ArepSolicitudCompra.TxtProyecto.Text = Me.CboProyecto.Text
 
         SqlDetalle = "SELECT Detalle_Solicitud.Cod_Producto, Detalle_Solicitud.Descripcion_Producto, Detalle_Solicitud.Cantidad, Detalle_Solicitud.Autorizado, Detalle_Solicitud.Comprado, Detalle_Solicitud.Numero_Solicitud, Detalle_Solicitud.Id_DetalleSolicitud, Detalle_Solicitud.Orden_Compra, Solicitud_Compra.Fecha_Solicitud, Solicitud_Compra.Gerencia_Solicitante, Solicitud_Compra.Departamento_Solicitante, Solicitud_Compra.Codigo_Rubro, Solicitud_Compra.Concepto, Solicitud_Compra.Cod_Bodega, Solicitud_Compra.Fecha_Requerido, Solicitud_Compra.CodigoProyecto, Productos.Cod_Productos, Productos.Unidad_Medida, Solicitud_Compra.Solcitud_Cta_Contable FROM Detalle_Solicitud INNER JOIN Solicitud_Compra ON Detalle_Solicitud.Numero_Solicitud = Solicitud_Compra.Numero_Solicitud INNER JOIN Productos ON Detalle_Solicitud.Cod_Producto = Productos.Cod_Productos  " & _
-                     "WHERE (Detalle_Solicitud.Orden_Compra IS NULL) AND (Detalle_Solicitud.Numero_Solicitud = '" & NumeroSolicitud & "')"
+                     "WHERE (Detalle_Solicitud.Numero_Solicitud = '" & NumeroSolicitud & "')"   '(Detalle_Solicitud.Orden_Compra IS NULL) AND 
 
         Sql.ConnectionString = Conexion
         Sql.SQL = SQlDetalle

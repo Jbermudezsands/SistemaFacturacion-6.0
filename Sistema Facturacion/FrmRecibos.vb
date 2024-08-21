@@ -134,6 +134,41 @@ Public Class FrmRecibos
     Private Sub FrmRecibos_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
         Bloqueo(Me, Acceso, "Recibo de Caja")
     End Sub
+    Public Sub Bloquear_Botones(Bloquear As Boolean)
+        If Bloquear = True Then
+            Me.CmdNuevo.Enabled = False
+            Me.Button2.Enabled = False
+            Me.ButtonAgregar.Enabled = False
+            Me.Button1.Enabled = False
+            Me.TrueDBGridComponentes.Enabled = False
+            Me.GroupBox2.Enabled = False
+            Me.GroupBox1.Enabled = False
+            Me.TDBGridDetalle.Enabled = False
+            Me.CmbSerie.Enabled = False
+            Me.TxtMonedaFactura.Enabled = False
+            Me.CboCajero.Enabled = False
+            Me.ButtonBorrar.Enabled = False
+            Me.OptRet1Porciento.Enabled = False
+            Me.OptRet2Porciento.Enabled = False
+
+        Else
+            Me.CmdNuevo.Enabled = True
+            Me.Button2.Enabled = True
+            Me.ButtonAgregar.Enabled = True
+            Me.Button1.Enabled = True
+            Me.TrueDBGridComponentes.Enabled = True
+            Me.GroupBox2.Enabled = True
+            Me.GroupBox1.Enabled = True
+            Me.TDBGridDetalle.Enabled = True
+            Me.CboCajero.Enabled = True
+            Me.ButtonBorrar.Enabled = True
+            Me.OptRet1Porciento.Enabled = True
+            Me.OptRet2Porciento.Enabled = True
+        End If
+
+
+    End Sub
+
 
     Private Sub FrmRecibos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -301,17 +336,17 @@ Public Class FrmRecibos
     End Sub
 
     Private Sub ButtonAgregar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAgregar.Click
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SqlDatos As String, Monto As Double
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Monto As Double
         Dim ConsecutivoPago As Double, NumeroCompra As String, Registros As Double, iPosicion As Double, Cadena As String
-        Dim NumeroRecibo As String, MontoPagado As Double, MontoCredito As Double, Descuento As Double, NombrePago As String = ""
-        Dim ArepPagoClientes As New ArepPagoClientes, RutaLogo As String, NumeroTarjeta As String, FechaVenceTarjeta As String
+        Dim NumeroRecibo As String, MontoPagado As Double, MontoCredito As Double, NombrePago As String = ""
+        Dim ArepPagoClientes As New ArepPagoClientes, NumeroTarjeta As String, FechaVenceTarjeta As String
         Dim SQL As New DataDynamics.ActiveReports.DataSources.SqlDBDataSource, SQlPagos As String, Descripcion As String = "", FechaVence As Date
-        Dim SQlString As String, TipoImpresion As String, RutaBD As String, ArepRecibos2 As New ArepRecibo2
-        Dim ConexionAccess As String, iResultado As Integer, ArepReciboTira As New ArepReciboTira, ArepReciboTira2 As New ArepReciboCajaTira
+        Dim SQlString As String, ArepRecibos2 As New ArepRecibo2
+        Dim iResultado As Integer, ArepReciboTira As New ArepReciboTira, ArepReciboTira2 As New ArepReciboCajaTira
         Dim ComandoUpdate As New SqlClient.SqlCommand, SqlConsecutivo As String, ConsecutivoManual As Boolean = False
         Dim Saldo As Double = 0, Retencion1 As Double = 0, Retencion2 As Double = 0, NumeroNota As String = "", Consecutivo As Double = 0
         Dim ReciboSerie As Boolean = False, idDetalle As Double = -1
-        Dim oDataRow As DataRow, i As Double
+
 
 
         If ds.Tables("DetalleRecibo").Rows.Count = 0 Then
@@ -362,7 +397,8 @@ Public Class FrmRecibos
                         Consecutivo = BuscaConsecutivo("NotaCredito")
                         NumeroNota = Format(Consecutivo, "0000#")
                         GrabaNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, MontoIr, Me.TxtMonedaFactura.Text, Me.TxtCodigoClientes.Text, Me.TxtNombres.Text, Me.TxtObservaciones.Text, True, False, False)
-                        GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Recibos", NumeroCompra, MontoIr)
+                        InsertarDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Recibos", NumeroCompra, MontoIr)
+                        'GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Recibos", NumeroCompra, MontoIr)
                     End If
 
 
@@ -385,7 +421,8 @@ Public Class FrmRecibos
                         Consecutivo = BuscaConsecutivo("NotaCredito")
                         NumeroNota = Format(Consecutivo, "0000#")
                         GrabaNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, MontoIr, Me.TxtMonedaFactura.Text, Me.TxtCodigoClientes.Text, Me.TxtNombres.Text, Me.TxtObservaciones.Text, True, False, False)
-                        GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Recibos", NumeroCompra, MontoIr)
+                        InsertarDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Recibos", NumeroCompra, MontoIr)
+                        'GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Recibos", NumeroCompra, MontoIr)
                     End If
 
 
@@ -660,7 +697,25 @@ Public Class FrmRecibos
         '    iPosicion = iPosicion + 1
         'Loop
 
-        ArepPagoClientes.TxtMetodo.Text = NombrePago & " $" & Monto
+        Imprimir_Recibo(NumeroRecibo, TxtCodigoClientes.Text)
+        LimpiaRecibo()
+
+
+    End Sub
+    Public Sub Imprimir_Recibo(NumeroRecibo As String, Cod_Cliente As String)
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SqlDatos As String
+        Dim MontoPagado As Double, MontoCredito As Double, Descuento As Double, NombrePago As String = ""
+        Dim ArepPagoClientes As New ArepPagoClientes, RutaLogo As String
+        Dim SQL As New DataDynamics.ActiveReports.DataSources.SqlDBDataSource, SQlPagos As String, Descripcion As String = ""
+        Dim SQlString As String, TipoImpresion As String, RutaBD As String, ArepRecibos2 As New ArepRecibo2
+        Dim ConexionAccess As String, iResultado As Integer, ArepReciboTira As New ArepReciboTira, ArepReciboTira2 As New ArepReciboCajaTira
+        Dim ComandoUpdate As New SqlClient.SqlCommand, ConsecutivoManual As Boolean = False
+        Dim Saldo As Double = 0, Retencion1 As Double = 0, Retencion2 As Double = 0, NumeroNota As String = "", Consecutivo As Double = 0
+        Dim ReciboSerie As Boolean = False, idDetalle As Double = -1
+        Dim oDataRow As DataRow, i As Double
+
+
+
 
         SqlDatos = "SELECT * FROM DatosEmpresa"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
@@ -738,6 +793,12 @@ Public Class FrmRecibos
             If Not IsDBNull(DataSet.Tables("BuscaConcepto").Rows(0)("Descripcion")) Then
                 ArepRecibos2.TxtConcepto.Text = DataSet.Tables("BuscaConcepto").Rows(0)("Descripcion")
             End If
+
+            If Not IsDBNull(DataSet.Tables("BuscaConcepto").Rows(0)("NombrePago")) Then
+                If Not IsDBNull(DataSet.Tables("BuscaConcepto").Rows(0)("MontoPagado")) Then
+                    ArepPagoClientes.TxtMetodo.Text = DataSet.Tables("BuscaConcepto").Rows(0)("NombrePago") & " $" & DataSet.Tables("BuscaConcepto").Rows(0)("MontoPagado")
+                End If
+            End If
         End If
 
 
@@ -745,14 +806,14 @@ Public Class FrmRecibos
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////ESTA CONSULTA NUNCA TENDRA REGISTROS /////////////////////////////////////////////////////////
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SQlPagos = "SELECT DISTINCT Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.MontoCredito+DetalleRecibo.MontoPagado as MontoCredito,DetalleRecibo.MontoPagado, Facturas.MontoCredito AS Saldo, DetalleRecibo.Descripcion, DetalleRecibo.NombrePago FROM Facturas LEFT OUTER JOIN DetalleRecibo ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura  " & _
+        SQlPagos = "SELECT DISTINCT Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.MontoCredito+DetalleRecibo.MontoPagado as MontoCredito,DetalleRecibo.MontoPagado, Facturas.MontoCredito AS Saldo, DetalleRecibo.Descripcion, DetalleRecibo.NombrePago FROM Facturas LEFT OUTER JOIN DetalleRecibo ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura  " &
                    "WHERE (Facturas.Cod_Cliente = '-100000') AND (Facturas.Tipo_Factura = 'Factura') AND (DetalleRecibo.CodReciboPago = '" & NumeroRecibo & "') ORDER BY Facturas.Numero_Factura DESC"
         MiConexion.Open()
         DataAdapter = New SqlClient.SqlDataAdapter(SQlPagos, MiConexion)
         DataAdapter.Fill(DataSet, "ReciboPago")
 
-        SQlString = "SELECT DISTINCT DetalleRecibo.MontoPagado, DetalleRecibo.Descripcion, DetalleRecibo.NombrePago, DetalleRecibo.Numero_Nota, DetalleRecibo.Numero_Factura, Recibo.Cod_Cliente FROM  DetalleRecibo INNER JOIN  Recibo ON DetalleRecibo.CodReciboPago = Recibo.CodReciboPago AND DetalleRecibo.Fecha_Recibo = Recibo.Fecha_Recibo  " & _
-                    "WHERE (DetalleRecibo.CodReciboPago = '" & NumeroRecibo & "') AND (Recibo.Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
+        SQlString = "SELECT DISTINCT DetalleRecibo.MontoPagado, DetalleRecibo.Descripcion, DetalleRecibo.NombrePago, DetalleRecibo.Numero_Nota, DetalleRecibo.Numero_Factura, Recibo.Cod_Cliente FROM  DetalleRecibo INNER JOIN  Recibo ON DetalleRecibo.CodReciboPago = Recibo.CodReciboPago AND DetalleRecibo.Fecha_Recibo = Recibo.Fecha_Recibo  " &
+                    "WHERE (DetalleRecibo.CodReciboPago = '" & NumeroRecibo & "') AND (Recibo.Cod_Cliente = '" & Cod_Cliente & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
         DataAdapter.Fill(DataSet, "Recibos")
         MiConexion.Close()
@@ -767,8 +828,8 @@ Public Class FrmRecibos
             ''''''''''''''''''''''''''''''''''''''''''''''VERIFICO SI ES FACTURA ///////////////////////////////////////////////////////////////
             If Mid(DataSet.Tables("Recibos").Rows(i)("Numero_Factura"), 1, 2) <> "NB" Then
                 '//////////////////////////SI ES NB ES NOTA DE DEBITO /////////////////////////////////////
-                SQlString = "SELECT DISTINCT Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.MontoCredito+DetalleRecibo.MontoPagado as MontoCredito,DetalleRecibo.MontoPagado, Facturas.MontoCredito AS Saldo, DetalleRecibo.Descripcion, DetalleRecibo.NombrePago FROM Facturas LEFT OUTER JOIN DetalleRecibo ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura  " & _
-                                  "WHERE (Facturas.Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "') AND (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Numero_Factura = '" & NumeroFactura & "') ORDER BY Facturas.Numero_Factura DESC"
+                SQlString = "SELECT DISTINCT Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.MontoCredito+DetalleRecibo.MontoPagado as MontoCredito,DetalleRecibo.MontoPagado, Facturas.MontoCredito AS Saldo, DetalleRecibo.Descripcion, DetalleRecibo.NombrePago FROM Facturas LEFT OUTER JOIN DetalleRecibo ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura  " &
+                                  "WHERE (Facturas.Cod_Cliente = '" & Cod_Cliente & "') AND (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Numero_Factura = '" & NumeroFactura & "') ORDER BY Facturas.Numero_Factura DESC"
                 DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
                 DataAdapter.Fill(DataSet, "Consulta")
                 MiConexion.Close()
@@ -783,8 +844,8 @@ Public Class FrmRecibos
 
                 NumeroNota = Mid(DataSet.Tables("Recibos").Rows(i)("Numero_Factura"), 3, Len(DataSet.Tables("Recibos").Rows(i)("Numero_Factura")))
 
-                SQlString = "SELECT  Detalle_Nota.Numero_Factura, Detalle_Nota.Fecha_Nota, Detalle_Nota.Monto, Detalle_Nota.Numero_Nota, IndiceNota.MonedaNota, IndiceNota.Cod_Cliente,  IndiceNota.Nombre_Cliente, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Tipo_Nota, NotaDebito.Tipo FROM Detalle_Nota INNER JOIN  IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND  Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB " & _
-                            "WHERE (Detalle_Nota.Numero_Factura = N'0000') AND (IndiceNota.Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "') AND (NotaDebito.Tipo = 'Debito Clientes') AND   (Detalle_Nota.Numero_Nota = '" & NumeroNota & "')"
+                SQlString = "SELECT  Detalle_Nota.Numero_Factura, Detalle_Nota.Fecha_Nota, Detalle_Nota.Monto, Detalle_Nota.Numero_Nota, IndiceNota.MonedaNota, IndiceNota.Cod_Cliente,  IndiceNota.Nombre_Cliente, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Tipo_Nota, NotaDebito.Tipo FROM Detalle_Nota INNER JOIN  IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND  Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB " &
+                            "WHERE (Detalle_Nota.Numero_Factura = N'0000') AND (IndiceNota.Cod_Cliente = '" & Cod_Cliente & "') AND (NotaDebito.Tipo = 'Debito Clientes') AND   (Detalle_Nota.Numero_Nota = '" & NumeroNota & "')"
                 DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
                 DataAdapter.Fill(DataSet, "Consulta")
                 MiConexion.Close()
@@ -831,7 +892,7 @@ Public Class FrmRecibos
 
         '/////////////////////////////////////////////CONSULTO LOSDATOS DE LOS CLIENTES //////////////////////////////////////////////
 
-        SQlString = "SELECT  Clientes.*  FROM Clientes WHERE  (Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
+        SQlString = "SELECT  Clientes.*  FROM Clientes WHERE  (Cod_Cliente = '" & Cod_Cliente & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
         DataAdapter.Fill(DataSet, "Clientes")
         If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
@@ -991,10 +1052,8 @@ Public Class FrmRecibos
                 End If
         End Select
 
-        LimpiaRecibo()
-
-
     End Sub
+
 
 
     Private Sub TrueDBGridMetodo_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridMetodo.DoubleClick
@@ -1262,14 +1321,13 @@ Public Class FrmRecibos
     Private Sub TxtSubTotal_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtSubTotal.TextChanged
 
     End Sub
-
-    Private Sub TxtNumeroEnsamble_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtNumeroEnsamble.TextChanged
-        Dim SqlCompras As String, Fecha As String, SqlString As String
+    Public Sub Cargar_Recibos(Numero_Recibo As String, FechaRecibo As Date)
+        Dim SqlCompras As String, SqlString As String, Fecha As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
-        If Me.TxtNumeroEnsamble.Text <> "-----0-----" Then
-            Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
-            SqlCompras = "SELECT Recibo.* FROM Recibo WHERE (CodReciboPago = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Recibo = CONVERT(DATETIME, '" & Fecha & "', 102))"
+        If Numero_Recibo <> "-----0-----" Then
+            Fecha = Format(FechaRecibo, "yyyy-MM-dd")
+            SqlCompras = "SELECT Recibo.* FROM Recibo WHERE (CodReciboPago = '" & Numero_Recibo & "') AND (Fecha_Recibo = CONVERT(DATETIME, '" & Fecha & "', 102))"
             DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
             DataAdapter.Fill(DataSet, "Recibos")
             If Not DataSet.Tables("Recibos").Rows.Count = 0 Then
@@ -1289,7 +1347,7 @@ Public Class FrmRecibos
 
 
 
-                SqlString = "SELECT NombrePago, Descripcion, Numero_Factura, MontoPagado,NumeroTarjeta,FechaVence,MontoFactura,AplicaFactura,SaldoFactura, idDetalleRecibo, CodReciboPago, Fecha_Recibo FROM DetalleRecibo WHERE (CodReciboPago = '" & Me.TxtNumeroEnsamble.Text & "') "
+                SqlString = "SELECT NombrePago, Descripcion, Numero_Factura, MontoPagado,NumeroTarjeta,FechaVence,MontoFactura,AplicaFactura,SaldoFactura, idDetalleRecibo, CodReciboPago, Fecha_Recibo FROM DetalleRecibo WHERE (CodReciboPago = '" & Numero_Recibo & "') "
                 'SqlString = "SELECT NombrePago, Descripcion, Numero_Factura, MontoPagado,NumeroTarjeta,FechaVence,MontoFactura,AplicaFactura,SaldoFactura, idDetalleRecibo, CodReciboPago, Fecha_Recibo FROM DetalleRecibo WHERE (CodReciboPago = '-1') AND (Fecha_Recibo = CONVERT(DATETIME, '2010-01-01 00:00:00', 102))"
                 ds = New DataSet
                 da = New SqlDataAdapter(SqlString, MiConexion)
@@ -1317,7 +1375,9 @@ Public Class FrmRecibos
 
             End If
         End If
-
+    End Sub
+    Private Sub TxtNumeroEnsamble_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtNumeroEnsamble.TextChanged
+        Cargar_Recibos(TxtNumeroEnsamble.Text, DTPFecha.Value)
     End Sub
 
     Private Sub ButtonBorrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBorrar.Click

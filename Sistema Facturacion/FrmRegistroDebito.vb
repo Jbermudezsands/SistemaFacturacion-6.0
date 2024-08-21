@@ -8,6 +8,37 @@ Public Class FrmRegistroDebito
         Dim SqlString As String = ""
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
+
+        If Quien = "Historico" Then
+            Me.Button1.Enabled = False
+            Me.Button2.Enabled = False
+            Me.Button4.Enabled = False
+            Me.Button3.Enabled = False
+            Me.CmbSerie.Enabled = False
+            Me.DTPFecha.Enabled = False
+            ChkFactura.Enabled = False
+            ChkSseries.Enabled = False
+            ChkTipoCuenta.Enabled = False
+            TxtMonto.Enabled = False
+            TxtDescripcion.Enabled = False
+            CmbCodigo.Enabled = False
+            TxtObservaciones.Enabled = False
+        Else
+            Me.Button1.Enabled = True
+            Me.Button2.Enabled = True
+            Me.Button4.Enabled = True
+            Me.Button3.Enabled = True
+            Me.CmbSerie.Enabled = True
+            Me.DTPFecha.Enabled = True
+            ChkFactura.Enabled = True
+            ChkSseries.Enabled = True
+            ChkTipoCuenta.Enabled = True
+            TxtMonto.Enabled = True
+            TxtDescripcion.Enabled = True
+            CmbCodigo.Enabled = True
+            TxtObservaciones.Enabled = True
+        End If
+
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////CARGO LOS DATOS DEL CLIENTE////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -171,16 +202,16 @@ Public Class FrmRegistroDebito
             End If
 
 
-                '///////////////////////////////BUSCO el tipo de la Nota de Credito o Debito ///////////////////////////////////
-                SQlstring = "SELECT  *  FROM NotaDebito WHERE (CodigoNB = '" & Me.CmbCodigo.Text & "')"
-                DataAdapter = New SqlClient.SqlDataAdapter(SQlstring, MiConexion)
-                DataAdapter.Fill(DataSet, "Clientes")
-                If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
-                    'TipoNota = DataSet.Tables("Clientes").Rows(0)("Tipo")
-                End If
+            '///////////////////////////////BUSCO el tipo de la Nota de Credito o Debito ///////////////////////////////////
+            SQlstring = "SELECT  *  FROM NotaDebito WHERE (CodigoNB = '" & Me.CmbCodigo.Text & "')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SQlstring, MiConexion)
+            DataAdapter.Fill(DataSet, "Clientes")
+            If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
+                'TipoNota = DataSet.Tables("Clientes").Rows(0)("Tipo")
+            End If
 
         Else
-                NumeroNota = Me.TxtNumeroEnsamble.Text
+            NumeroNota = Me.TxtNumeroEnsamble.Text
         End If
 
         If Me.LblFactura.Text = "" Then
@@ -198,6 +229,7 @@ Public Class FrmRegistroDebito
 
         Me.TxtNumeroEnsamble.Text = NumeroNota
         GrabaNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, Me.TxtMonto.Text, Me.LblMoneda.Text, Me.TxtCodCliente.Text, Me.LblNombre.Text, Me.TxtObservaciones.Text, True, False, TipoCuenta)
+        'InsertarDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, Me.TxtDescripcion.Text, Me.LblFactura.Text, Me.TxtMonto.Text)
         GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, Me.TxtDescripcion.Text, Me.LblFactura.Text, Me.TxtMonto.Text)
         My.Forms.FrmCuentasXCobrar.CmdGrabar.PerformClick()
         MsgBox("Se ha Grabado con Exito!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
@@ -205,11 +237,8 @@ Public Class FrmRegistroDebito
     End Sub
 
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
-        Dim SqlString As String, Monto As Double
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Moneda As String = "", TasaCambio As Double
-        Dim Fecha As String
 
-
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Moneda As String = ""
 
         If TipoNota = "Debito Proveedores" Or TipoNota = "Credito Proveedores" Then
             My.Forms.FrmConsultas.CodigoCliente = My.Forms.FrmCuentasXPagar.CboCodigoProveedor.Text
@@ -224,56 +253,62 @@ Public Class FrmRegistroDebito
         If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
             Me.DTPFecha.Value = My.Forms.FrmConsultas.Fecha
             Me.TxtNumeroEnsamble.Text = My.Forms.FrmConsultas.Codigo
-
-            Fecha = Format(CDate(Me.DTPFecha.Text), "yyyy-MM-dd")
-            SqlString = "SELECT  IndiceNota.Numero_Nota, IndiceNota.Fecha_Nota, IndiceNota.Tipo_Nota, IndiceNota.MonedaNota, IndiceNota.Cod_Cliente, IndiceNota.Nombre_Cliente, IndiceNota.Observaciones, IndiceNota.Activo, IndiceNota.Contabilizado, NotaDebito.Tipo FROM  IndiceNota INNER JOIN NotaDebito ON IndiceNota.Tipo_Nota = NotaDebito.CodigoNB WHERE (IndiceNota.Numero_Nota = '" & Me.TxtNumeroEnsamble.Text & "') AND (IndiceNota.Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (NotaDebito.Tipo LIKE '%" & TipoNota & "%')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-            DataAdapter.Fill(DataSet, "NotaDebito")
-            If Not DataSet.Tables("NotaDebito").Rows.Count = 0 Then
-                Moneda = DataSet.Tables("NotaDebito").Rows(0)("MonedaNota")
-                Me.LblMoneda.Text = DataSet.Tables("NotaDebito").Rows(0)("MonedaNota")
-                Me.TxtObservaciones.Text = DataSet.Tables("NotaDebito").Rows(0)("Observaciones")
-            End If
-
-            TasaCambio = BuscaTasaCambio(Me.DTPFecha.Text)
-
-
-            SqlString = "SELECT Detalle_Nota.*, NotaDebito.Tipo FROM Detalle_Nota INNER JOIN  NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB WHERE (Detalle_Nota.Numero_Nota = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Nota.Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (NotaDebito.Tipo  LIKE '%" & TipoNota & "%')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-            DataAdapter.Fill(DataSet, "DetalleNotaDebito")
-            If Not DataSet.Tables("DetalleNotaDebito").Rows.Count = 0 Then
-                Me.CmbCodigo.Text = DataSet.Tables("DetalleNotaDebito").Rows(0)("Tipo_Nota")
-                Me.TxtDescripcion.Text = DataSet.Tables("DetalleNotaDebito").Rows(0)("Descripcion")
-                Me.LblFactura.Text = DataSet.Tables("DetalleNotaDebito").Rows(0)("Numero_Factura")
-                NumeroFactura = DataSet.Tables("DetalleNotaDebito").Rows(0)("Numero_Factura")
-                Monto = DataSet.Tables("DetalleNotaDebito").Rows(0)("Monto")
-            End If
-
-            If Me.LblFactura.Text = "0000" Then
-                Me.ChkFactura.Checked = True
-            Else
-                Me.ChkFactura.Checked = False
-            End If
-
-            If My.Forms.FrmCuentasXCobrar.OptCordobas.Checked = True Then
-                Me.LblMoneda.Text = My.Forms.FrmCuentasXCobrar.OptCordobas.Text
-                If Moneda = "Cordobas" Then
-                    Me.TxtMonto.Text = Format(Monto, "##,##0.00")
-                Else
-                    Me.TxtMonto.Text = Format(Monto * TasaCambio, "##,##0.00")
-                End If
-            Else
-                Me.LblMoneda.Text = My.Forms.FrmCuentasXCobrar.OptDolares.Text
-                If Moneda = "Dolares" Then
-                    Me.TxtMonto.Text = Format(Monto, "##,##0.00")
-                Else
-                    Me.TxtMonto.Text = Format(Monto / TasaCambio, "##,##0.00")
-                End If
-            End If
+            Cargar_Nota_Debito(DTPFecha.Value, TxtNumeroEnsamble.Text, TipoNota)
         End If
     End Sub
 
- 
+    Public Sub Cargar_Nota_Debito(FechaConsulta As Date, Numero_Nota As String, Tipo_Nota As String)
+        Dim SqlString As String, Monto As Double
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Moneda As String = "", TasaCambio As Double
+        Dim Fecha As String
+
+
+        Fecha = Format(CDate(FechaConsulta), "yyyy-MM-dd")
+        SqlString = "SELECT  IndiceNota.Numero_Nota, IndiceNota.Fecha_Nota, IndiceNota.Tipo_Nota, IndiceNota.MonedaNota, IndiceNota.Cod_Cliente, IndiceNota.Nombre_Cliente, IndiceNota.Observaciones, IndiceNota.Activo, IndiceNota.Contabilizado, NotaDebito.Tipo FROM  IndiceNota INNER JOIN NotaDebito ON IndiceNota.Tipo_Nota = NotaDebito.CodigoNB WHERE (IndiceNota.Numero_Nota = '" & Me.TxtNumeroEnsamble.Text & "') AND (IndiceNota.Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (NotaDebito.Tipo LIKE '%" & Tipo_Nota & "%')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "NotaDebito")
+        If Not DataSet.Tables("NotaDebito").Rows.Count = 0 Then
+            Moneda = DataSet.Tables("NotaDebito").Rows(0)("MonedaNota")
+            Me.LblMoneda.Text = DataSet.Tables("NotaDebito").Rows(0)("MonedaNota")
+            Me.TxtObservaciones.Text = DataSet.Tables("NotaDebito").Rows(0)("Observaciones")
+        End If
+
+        TasaCambio = BuscaTasaCambio(Me.DTPFecha.Text)
+
+
+        SqlString = "SELECT Detalle_Nota.*, NotaDebito.Tipo FROM Detalle_Nota INNER JOIN  NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB WHERE (Detalle_Nota.Numero_Nota = '" & Numero_Nota & "') AND (Detalle_Nota.Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (NotaDebito.Tipo  LIKE '%" & Tipo_Nota & "%')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "DetalleNotaDebito")
+        If Not DataSet.Tables("DetalleNotaDebito").Rows.Count = 0 Then
+            Me.CmbCodigo.Text = DataSet.Tables("DetalleNotaDebito").Rows(0)("Tipo_Nota")
+            Me.TxtDescripcion.Text = DataSet.Tables("DetalleNotaDebito").Rows(0)("Descripcion")
+            Me.LblFactura.Text = DataSet.Tables("DetalleNotaDebito").Rows(0)("Numero_Factura")
+            NumeroFactura = DataSet.Tables("DetalleNotaDebito").Rows(0)("Numero_Factura")
+            Monto = DataSet.Tables("DetalleNotaDebito").Rows(0)("Monto")
+        End If
+
+        If Me.LblFactura.Text = "0000" Then
+            Me.ChkFactura.Checked = True
+        Else
+            Me.ChkFactura.Checked = False
+        End If
+
+        If My.Forms.FrmCuentasXCobrar.OptCordobas.Checked = True Then
+            Me.LblMoneda.Text = My.Forms.FrmCuentasXCobrar.OptCordobas.Text
+            If Moneda = "Cordobas" Then
+                Me.TxtMonto.Text = Format(Monto, "##,##0.00")
+            Else
+                Me.TxtMonto.Text = Format(Monto * TasaCambio, "##,##0.00")
+            End If
+        Else
+            Me.LblMoneda.Text = My.Forms.FrmCuentasXCobrar.OptDolares.Text
+            If Moneda = "Dolares" Then
+                Me.TxtMonto.Text = Format(Monto, "##,##0.00")
+            Else
+                Me.TxtMonto.Text = Format(Monto / TasaCambio, "##,##0.00")
+            End If
+        End If
+    End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
         Dim NumeroNota As String, Monto As Double = 0, NombreCliente = "*******ANULADO*******"
@@ -287,7 +322,12 @@ Public Class FrmRegistroDebito
 
         NumeroNota = Me.TxtNumeroEnsamble.Text
         GrabaNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, Monto, Me.LblMoneda.Text, Me.TxtCodCliente.Text, NombreCliente, Me.TxtObservaciones.Text, False, True, False)
-        GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, NombreCliente, Me.LblFactura.Text, Monto)
+        AnularDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, NombreCliente, Me.LblFactura.Text, 0)
+        'InsertarDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, NombreCliente, Me.LblFactura.Text, Monto)
+        'GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, NombreCliente, Me.LblFactura.Text, Monto)
+
+
+
         My.Forms.FrmCuentasXCobrar.CmdGrabar.PerformClick()
         MsgBox("Se ha Anulado con Exito!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
         Me.Close()
@@ -362,7 +402,7 @@ Public Class FrmRegistroDebito
 
                     Button1_Click(sender, e)
 
-                    SqlDatos = "SELECT     Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Monto, IndiceNota.MonedaNota, IndiceNota.Cod_Cliente, IndiceNota.Nombre_Cliente, IndiceNota.Observaciones, Clientes.RUC,NotaDebito.Tipo FROM  Detalle_Nota INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota INNER JOIN Clientes ON IndiceNota.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN NotaDebito ON IndiceNota.Tipo_Nota = NotaDebito.CodigoNB  " & _
+                    SqlDatos = "SELECT     Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Monto, IndiceNota.MonedaNota, IndiceNota.Cod_Cliente, IndiceNota.Nombre_Cliente, IndiceNota.Observaciones, Clientes.RUC,NotaDebito.Tipo FROM  Detalle_Nota INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota INNER JOIN Clientes ON IndiceNota.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN NotaDebito ON IndiceNota.Tipo_Nota = NotaDebito.CodigoNB  " &
                                "WHERE  (Detalle_Nota.Numero_Nota = '" & NumeroNota & "') AND (Detalle_Nota.Fecha_Nota = CONVERT(DATETIME, '" & FechaNota & "', 102)) AND (Detalle_Nota.Tipo_Nota = '" & Me.CmbCodigo.Text & "')"
 
                     SQL.ConnectionString = Conexion
@@ -491,33 +531,33 @@ Public Class FrmRegistroDebito
                 End If
 
             Case "Notas Debito"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-                    DataAdapter.Fill(DataSet, "Coordenadas")
-                    If Not DataSet.Tables("Coordenadas").Rows.Count = 0 Then
-                        CarateresLinea = DataSet.Tables("Coordenadas").Rows(0)("CaracteresLineas")
-                        X1 = DataSet.Tables("Coordenadas").Rows(0)("X1")
-                        Y1 = DataSet.Tables("Coordenadas").Rows(0)("Y1")
-                        X2 = DataSet.Tables("Coordenadas").Rows(0)("X2")
-                        Y2 = DataSet.Tables("Coordenadas").Rows(0)("Y2")
-                        X3 = DataSet.Tables("Coordenadas").Rows(0)("X3")
-                        Y3 = DataSet.Tables("Coordenadas").Rows(0)("Y3")
-                        X4 = DataSet.Tables("Coordenadas").Rows(0)("X4")
-                        Y4 = DataSet.Tables("Coordenadas").Rows(0)("Y4")
-                        X5 = DataSet.Tables("Coordenadas").Rows(0)("X5")
-                        Y5 = DataSet.Tables("Coordenadas").Rows(0)("Y5")
-                        X6 = DataSet.Tables("Coordenadas").Rows(0)("X6")
-                        Y6 = DataSet.Tables("Coordenadas").Rows(0)("Y6")
-                        X7 = DataSet.Tables("Coordenadas").Rows(0)("X7")
-                        Y7 = DataSet.Tables("Coordenadas").Rows(0)("Y7")
-                        X8 = DataSet.Tables("Coordenadas").Rows(0)("X8")
-                        Y8 = DataSet.Tables("Coordenadas").Rows(0)("Y8")
-                        X9 = DataSet.Tables("Coordenadas").Rows(0)("X9")
-                        Y9 = DataSet.Tables("Coordenadas").Rows(0)("Y9")
-                        X10 = DataSet.Tables("Coordenadas").Rows(0)("X10")
-                        Y10 = DataSet.Tables("Coordenadas").Rows(0)("Y10")
-                        X11 = DataSet.Tables("Coordenadas").Rows(0)("X11")
-                        Y11 = DataSet.Tables("Coordenadas").Rows(0)("Y11")
-                        X28 = DataSet.Tables("Coordenadas").Rows(0)("X28")
+                DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+                DataAdapter.Fill(DataSet, "Coordenadas")
+                If Not DataSet.Tables("Coordenadas").Rows.Count = 0 Then
+                    CarateresLinea = DataSet.Tables("Coordenadas").Rows(0)("CaracteresLineas")
+                    X1 = DataSet.Tables("Coordenadas").Rows(0)("X1")
+                    Y1 = DataSet.Tables("Coordenadas").Rows(0)("Y1")
+                    X2 = DataSet.Tables("Coordenadas").Rows(0)("X2")
+                    Y2 = DataSet.Tables("Coordenadas").Rows(0)("Y2")
+                    X3 = DataSet.Tables("Coordenadas").Rows(0)("X3")
+                    Y3 = DataSet.Tables("Coordenadas").Rows(0)("Y3")
+                    X4 = DataSet.Tables("Coordenadas").Rows(0)("X4")
+                    Y4 = DataSet.Tables("Coordenadas").Rows(0)("Y4")
+                    X5 = DataSet.Tables("Coordenadas").Rows(0)("X5")
+                    Y5 = DataSet.Tables("Coordenadas").Rows(0)("Y5")
+                    X6 = DataSet.Tables("Coordenadas").Rows(0)("X6")
+                    Y6 = DataSet.Tables("Coordenadas").Rows(0)("Y6")
+                    X7 = DataSet.Tables("Coordenadas").Rows(0)("X7")
+                    Y7 = DataSet.Tables("Coordenadas").Rows(0)("Y7")
+                    X8 = DataSet.Tables("Coordenadas").Rows(0)("X8")
+                    Y8 = DataSet.Tables("Coordenadas").Rows(0)("Y8")
+                    X9 = DataSet.Tables("Coordenadas").Rows(0)("X9")
+                    Y9 = DataSet.Tables("Coordenadas").Rows(0)("Y9")
+                    X10 = DataSet.Tables("Coordenadas").Rows(0)("X10")
+                    Y10 = DataSet.Tables("Coordenadas").Rows(0)("Y10")
+                    X11 = DataSet.Tables("Coordenadas").Rows(0)("X11")
+                    Y11 = DataSet.Tables("Coordenadas").Rows(0)("Y11")
+                    X28 = DataSet.Tables("Coordenadas").Rows(0)("X28")
                     Y28 = DataSet.Tables("Coordenadas").Rows(0)("Y28")
                     If Not IsDBNull(DataSet.Tables("Coordenadas").Rows(0)("CaracteresObservacion")) Then
                         CaracteresObservacion = DataSet.Tables("Coordenadas").Rows(0)("CaracteresObservacion")

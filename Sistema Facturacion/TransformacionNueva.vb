@@ -232,7 +232,7 @@ Public Class TransformacionNueva
     End Sub
     Public Sub CargarPantalla()
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim Procesado As Boolean = True, SqlDatos As String
+        Dim Procesado As Boolean = True
 
 
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -287,7 +287,7 @@ Public Class TransformacionNueva
 
     Public Sub LimpiarPantalla()
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim Procesado As Boolean = True, SqlDatos As String
+        Dim Procesado As Boolean = True
 
         Me.DTPFecha.Value = Format(Now, "dd/MM/yyyy")
         Me.TxtNumeroEnsamble.Text = "-----0-----"
@@ -440,7 +440,7 @@ Public Class TransformacionNueva
     End Sub
 
     Private Sub TrueDBGridOrigen_BeforeUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TrueDBGridOrigen.BeforeUpdate
-        Dim ConsecutivoCompra As Double, SqlConsecutivo As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim ConsecutivoCompra As Double, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim NumeroCompra As String
 
 
@@ -534,7 +534,7 @@ Public Class TransformacionNueva
 
     Private Sub TrueDBGridOrigen_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridOrigen.ButtonClick
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim SqlString As String, CodigoProducto As String
+        Dim CodigoProducto As String
 
         Quien = "CodigoProductosBodega"
         My.Forms.FrmConsultas.CodBodega = Me.CboCodigoBodega.Text
@@ -616,7 +616,7 @@ Public Class TransformacionNueva
     End Sub
 
     Private Sub TrueDBGridDestino_BeforeUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TrueDBGridDestino.BeforeUpdate
-        Dim ConsecutivoCompra As Double, SqlConsecutivo As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim ConsecutivoCompra As Double, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim NumeroCompra As String
 
 
@@ -769,8 +769,8 @@ Public Class TransformacionNueva
 
     Private Sub CmdGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGrabar.Click
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-        Dim Fecha As String, Resultado As Double, Numero As String
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SQlProductos As String, IposicionFila As Double
+        Dim Fecha As String, Numero As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
         MiConexion.Close()
         Numero = Me.TxtNumeroEnsamble.Text

@@ -19,57 +19,57 @@ Partial Class frmPlanillaConductores
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmPlanillaConductores))
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.ProgressBar2 = New System.Windows.Forms.ProgressBar
-        Me.LblProcesando = New System.Windows.Forms.Label
-        Me.ProgressBar = New System.Windows.Forms.ProgressBar
-        Me.CmdCerrar = New System.Windows.Forms.Button
-        Me.CmdSalir = New System.Windows.Forms.Button
-        Me.CmdNomina = New System.Windows.Forms.Button
-        Me.TabControl1 = New System.Windows.Forms.TabControl
-        Me.Ingresos = New System.Windows.Forms.TabPage
-        Me.TDGridIngresos = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.Deducciones = New System.Windows.Forms.TabPage
-        Me.TDGridDeducciones = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.Configuracion = New System.Windows.Forms.TabPage
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.TxtPrecioDomingo = New System.Windows.Forms.TextBox
-        Me.Label15 = New System.Windows.Forms.Label
-        Me.TxtPrecioSabado = New System.Windows.Forms.TextBox
-        Me.Label14 = New System.Windows.Forms.Label
-        Me.TxtPrecioViernes = New System.Windows.Forms.TextBox
-        Me.Label13 = New System.Windows.Forms.Label
-        Me.TxtPrecioJueves = New System.Windows.Forms.TextBox
-        Me.Label12 = New System.Windows.Forms.Label
-        Me.TxtPrecioMiercoles = New System.Windows.Forms.TextBox
-        Me.Label11 = New System.Windows.Forms.Label
-        Me.TxtPrecioMartes = New System.Windows.Forms.TextBox
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.TxtBolsa = New System.Windows.Forms.TextBox
-        Me.Label8 = New System.Windows.Forms.Label
-        Me.TxtPrecioLunes = New System.Windows.Forms.TextBox
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.TxtDeduccionPolicia = New System.Windows.Forms.TextBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.TxtIR = New System.Windows.Forms.TextBox
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.CmdCalcular = New System.Windows.Forms.Button
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.CmdBorraLinea = New System.Windows.Forms.PictureBox
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.TxtNumNomina = New System.Windows.Forms.TextBox
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.LblTotalPlanilla = New System.Windows.Forms.Label
-        Me.DTPFechaIni = New System.Windows.Forms.DateTimePicker
-        Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.CboTipoPlanilla = New C1.Win.C1List.C1Combo
-        Me.Label1 = New System.Windows.Forms.Label
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.ProgressBar2 = New System.Windows.Forms.ProgressBar()
+        Me.LblProcesando = New System.Windows.Forms.Label()
+        Me.ProgressBar = New System.Windows.Forms.ProgressBar()
+        Me.CmdCerrar = New System.Windows.Forms.Button()
+        Me.CmdSalir = New System.Windows.Forms.Button()
+        Me.CmdNomina = New System.Windows.Forms.Button()
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.Ingresos = New System.Windows.Forms.TabPage()
+        Me.TDGridIngresos = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
+        Me.Deducciones = New System.Windows.Forms.TabPage()
+        Me.TDGridDeducciones = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
+        Me.Configuracion = New System.Windows.Forms.TabPage()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.TxtPrecioDomingo = New System.Windows.Forms.TextBox()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.TxtPrecioSabado = New System.Windows.Forms.TextBox()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.TxtPrecioViernes = New System.Windows.Forms.TextBox()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.TxtPrecioJueves = New System.Windows.Forms.TextBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.TxtPrecioMiercoles = New System.Windows.Forms.TextBox()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.TxtPrecioMartes = New System.Windows.Forms.TextBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.TxtBolsa = New System.Windows.Forms.TextBox()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.TxtPrecioLunes = New System.Windows.Forms.TextBox()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.TxtDeduccionPolicia = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.TxtIR = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.CmdCalcular = New System.Windows.Forms.Button()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.CmdBorraLinea = New System.Windows.Forms.PictureBox()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.TxtNumNomina = New System.Windows.Forms.TextBox()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.LblTotalPlanilla = New System.Windows.Forms.Label()
+        Me.DTPFechaIni = New System.Windows.Forms.DateTimePicker()
+        Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.CboTipoPlanilla = New C1.Win.C1List.C1Combo()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.BindingDeducciones2 = New System.Windows.Forms.BindingSource(Me.components)
         Me.TabControl1.SuspendLayout()
         Me.Ingresos.SuspendLayout()
@@ -87,118 +87,72 @@ Partial Class frmPlanillaConductores
         '
         'Button2
         '
-        Me.Button2.AccessibleDescription = Nothing
-        Me.Button2.AccessibleName = Nothing
         resources.ApplyResources(Me.Button2, "Button2")
-        Me.Button2.BackgroundImage = Nothing
-        Me.Button2.Font = Nothing
         Me.Button2.Name = "Button2"
         Me.Button2.UseVisualStyleBackColor = True
         '
         'ProgressBar2
         '
-        Me.ProgressBar2.AccessibleDescription = Nothing
-        Me.ProgressBar2.AccessibleName = Nothing
         resources.ApplyResources(Me.ProgressBar2, "ProgressBar2")
-        Me.ProgressBar2.BackgroundImage = Nothing
-        Me.ProgressBar2.Font = Nothing
         Me.ProgressBar2.Name = "ProgressBar2"
         '
         'LblProcesando
         '
-        Me.LblProcesando.AccessibleDescription = Nothing
-        Me.LblProcesando.AccessibleName = Nothing
         resources.ApplyResources(Me.LblProcesando, "LblProcesando")
         Me.LblProcesando.ForeColor = System.Drawing.SystemColors.ActiveCaption
         Me.LblProcesando.Name = "LblProcesando"
         '
         'ProgressBar
         '
-        Me.ProgressBar.AccessibleDescription = Nothing
-        Me.ProgressBar.AccessibleName = Nothing
         resources.ApplyResources(Me.ProgressBar, "ProgressBar")
-        Me.ProgressBar.BackgroundImage = Nothing
-        Me.ProgressBar.Font = Nothing
         Me.ProgressBar.Name = "ProgressBar"
         '
         'CmdCerrar
         '
-        Me.CmdCerrar.AccessibleDescription = Nothing
-        Me.CmdCerrar.AccessibleName = Nothing
         resources.ApplyResources(Me.CmdCerrar, "CmdCerrar")
-        Me.CmdCerrar.BackgroundImage = Nothing
-        Me.CmdCerrar.Font = Nothing
         Me.CmdCerrar.Name = "CmdCerrar"
         Me.CmdCerrar.UseVisualStyleBackColor = True
         '
         'CmdSalir
         '
-        Me.CmdSalir.AccessibleDescription = Nothing
-        Me.CmdSalir.AccessibleName = Nothing
         resources.ApplyResources(Me.CmdSalir, "CmdSalir")
-        Me.CmdSalir.BackgroundImage = Nothing
-        Me.CmdSalir.Font = Nothing
         Me.CmdSalir.Name = "CmdSalir"
         Me.CmdSalir.UseVisualStyleBackColor = True
         '
         'CmdNomina
         '
-        Me.CmdNomina.AccessibleDescription = Nothing
-        Me.CmdNomina.AccessibleName = Nothing
         resources.ApplyResources(Me.CmdNomina, "CmdNomina")
-        Me.CmdNomina.BackgroundImage = Nothing
-        Me.CmdNomina.Font = Nothing
         Me.CmdNomina.Name = "CmdNomina"
         Me.CmdNomina.UseVisualStyleBackColor = True
         '
         'TabControl1
         '
-        Me.TabControl1.AccessibleDescription = Nothing
-        Me.TabControl1.AccessibleName = Nothing
         resources.ApplyResources(Me.TabControl1, "TabControl1")
-        Me.TabControl1.BackgroundImage = Nothing
         Me.TabControl1.Controls.Add(Me.Ingresos)
         Me.TabControl1.Controls.Add(Me.Deducciones)
         Me.TabControl1.Controls.Add(Me.Configuracion)
-        Me.TabControl1.Font = Nothing
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         '
         'Ingresos
         '
-        Me.Ingresos.AccessibleDescription = Nothing
-        Me.Ingresos.AccessibleName = Nothing
         resources.ApplyResources(Me.Ingresos, "Ingresos")
-        Me.Ingresos.BackgroundImage = Nothing
         Me.Ingresos.Controls.Add(Me.TDGridIngresos)
-        Me.Ingresos.Font = Nothing
         Me.Ingresos.Name = "Ingresos"
         Me.Ingresos.UseVisualStyleBackColor = True
         '
         'TDGridIngresos
         '
-        Me.TDGridIngresos.AccessibleDescription = Nothing
-        Me.TDGridIngresos.AccessibleName = Nothing
         resources.ApplyResources(Me.TDGridIngresos, "TDGridIngresos")
-        Me.TDGridIngresos.BackgroundImage = Nothing
-        Me.TDGridIngresos.ChildGrid = Nothing
-        Me.TDGridIngresos.Font = Nothing
         Me.TDGridIngresos.Images.Add(CType(resources.GetObject("TDGridIngresos.Images"), System.Drawing.Image))
         Me.TDGridIngresos.Name = "TDGridIngresos"
-        Me.TDGridIngresos.PictureAddnewRow = Nothing
-        Me.TDGridIngresos.PictureCurrentRow = Nothing
-        Me.TDGridIngresos.PictureFilterBar = Nothing
-        Me.TDGridIngresos.PictureFooterRow = Nothing
-        Me.TDGridIngresos.PictureHeaderRow = Nothing
-        Me.TDGridIngresos.PictureModifiedRow = Nothing
-        Me.TDGridIngresos.PictureStandardRow = Nothing
         Me.TDGridIngresos.PreviewInfo.AllowSizing = CType(resources.GetObject("TDGridIngresos.PreviewInfo.AllowSizing"), Boolean)
         Me.TDGridIngresos.PreviewInfo.Caption = resources.GetString("TDGridIngresos.PreviewInfo.Caption")
         Me.TDGridIngresos.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TDGridIngresos.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TDGridIngresos.PreviewInfo.ToolBars = CType(resources.GetObject("TDGridIngresos.PreviewInfo.ToolBars"), Boolean)
         Me.TDGridIngresos.PreviewInfo.UIStrings.Content = CType(resources.GetObject("TDGridIngresos.PreviewInfo.UIStrings.Content"), String())
-        Me.TDGridIngresos.PreviewInfo.ZoomFactor = 75
+        Me.TDGridIngresos.PreviewInfo.ZoomFactor = 75.0R
         Me.TDGridIngresos.PrintInfo.MaxRowHeight = CType(resources.GetObject("TDGridIngresos.PrintInfo.MaxRowHeight"), Integer)
         Me.TDGridIngresos.PrintInfo.OneFormPerPage = CType(resources.GetObject("TDGridIngresos.PrintInfo.OneFormPerPage"), Boolean)
         Me.TDGridIngresos.PrintInfo.OwnerDrawPageFooter = CType(resources.GetObject("TDGridIngresos.PrintInfo.OwnerDrawPageFooter"), Boolean)
@@ -224,39 +178,23 @@ Partial Class frmPlanillaConductores
         '
         'Deducciones
         '
-        Me.Deducciones.AccessibleDescription = Nothing
-        Me.Deducciones.AccessibleName = Nothing
         resources.ApplyResources(Me.Deducciones, "Deducciones")
-        Me.Deducciones.BackgroundImage = Nothing
         Me.Deducciones.Controls.Add(Me.TDGridDeducciones)
-        Me.Deducciones.Font = Nothing
         Me.Deducciones.Name = "Deducciones"
         Me.Deducciones.UseVisualStyleBackColor = True
         '
         'TDGridDeducciones
         '
-        Me.TDGridDeducciones.AccessibleDescription = Nothing
-        Me.TDGridDeducciones.AccessibleName = Nothing
         resources.ApplyResources(Me.TDGridDeducciones, "TDGridDeducciones")
-        Me.TDGridDeducciones.BackgroundImage = Nothing
-        Me.TDGridDeducciones.ChildGrid = Nothing
-        Me.TDGridDeducciones.Font = Nothing
         Me.TDGridDeducciones.Images.Add(CType(resources.GetObject("TDGridDeducciones.Images"), System.Drawing.Image))
         Me.TDGridDeducciones.Name = "TDGridDeducciones"
-        Me.TDGridDeducciones.PictureAddnewRow = Nothing
-        Me.TDGridDeducciones.PictureCurrentRow = Nothing
-        Me.TDGridDeducciones.PictureFilterBar = Nothing
-        Me.TDGridDeducciones.PictureFooterRow = Nothing
-        Me.TDGridDeducciones.PictureHeaderRow = Nothing
-        Me.TDGridDeducciones.PictureModifiedRow = Nothing
-        Me.TDGridDeducciones.PictureStandardRow = Nothing
         Me.TDGridDeducciones.PreviewInfo.AllowSizing = CType(resources.GetObject("TDGridDeducciones.PreviewInfo.AllowSizing"), Boolean)
         Me.TDGridDeducciones.PreviewInfo.Caption = resources.GetString("TDGridDeducciones.PreviewInfo.Caption")
         Me.TDGridDeducciones.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TDGridDeducciones.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TDGridDeducciones.PreviewInfo.ToolBars = CType(resources.GetObject("TDGridDeducciones.PreviewInfo.ToolBars"), Boolean)
         Me.TDGridDeducciones.PreviewInfo.UIStrings.Content = CType(resources.GetObject("TDGridDeducciones.PreviewInfo.UIStrings.Content"), String())
-        Me.TDGridDeducciones.PreviewInfo.ZoomFactor = 75
+        Me.TDGridDeducciones.PreviewInfo.ZoomFactor = 75.0R
         Me.TDGridDeducciones.PrintInfo.MaxRowHeight = CType(resources.GetObject("TDGridDeducciones.PrintInfo.MaxRowHeight"), Integer)
         Me.TDGridDeducciones.PrintInfo.OneFormPerPage = CType(resources.GetObject("TDGridDeducciones.PrintInfo.OneFormPerPage"), Boolean)
         Me.TDGridDeducciones.PrintInfo.OwnerDrawPageFooter = CType(resources.GetObject("TDGridDeducciones.PrintInfo.OwnerDrawPageFooter"), Boolean)
@@ -282,32 +220,21 @@ Partial Class frmPlanillaConductores
         '
         'Configuracion
         '
-        Me.Configuracion.AccessibleDescription = Nothing
-        Me.Configuracion.AccessibleName = Nothing
         resources.ApplyResources(Me.Configuracion, "Configuracion")
-        Me.Configuracion.BackgroundImage = Nothing
         Me.Configuracion.Controls.Add(Me.Button1)
         Me.Configuracion.Controls.Add(Me.GroupBox2)
-        Me.Configuracion.Font = Nothing
         Me.Configuracion.Name = "Configuracion"
         Me.Configuracion.UseVisualStyleBackColor = True
         '
         'Button1
         '
-        Me.Button1.AccessibleDescription = Nothing
-        Me.Button1.AccessibleName = Nothing
         resources.ApplyResources(Me.Button1, "Button1")
-        Me.Button1.BackgroundImage = Nothing
-        Me.Button1.Font = Nothing
         Me.Button1.Name = "Button1"
         Me.Button1.UseVisualStyleBackColor = True
         '
         'GroupBox2
         '
-        Me.GroupBox2.AccessibleDescription = Nothing
-        Me.GroupBox2.AccessibleName = Nothing
         resources.ApplyResources(Me.GroupBox2, "GroupBox2")
-        Me.GroupBox2.BackgroundImage = Nothing
         Me.GroupBox2.Controls.Add(Me.TxtPrecioDomingo)
         Me.GroupBox2.Controls.Add(Me.Label15)
         Me.GroupBox2.Controls.Add(Me.TxtPrecioSabado)
@@ -328,194 +255,117 @@ Partial Class frmPlanillaConductores
         Me.GroupBox2.Controls.Add(Me.Label5)
         Me.GroupBox2.Controls.Add(Me.TxtIR)
         Me.GroupBox2.Controls.Add(Me.Label4)
-        Me.GroupBox2.Font = Nothing
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.TabStop = False
         '
         'TxtPrecioDomingo
         '
-        Me.TxtPrecioDomingo.AccessibleDescription = Nothing
-        Me.TxtPrecioDomingo.AccessibleName = Nothing
         resources.ApplyResources(Me.TxtPrecioDomingo, "TxtPrecioDomingo")
-        Me.TxtPrecioDomingo.BackgroundImage = Nothing
-        Me.TxtPrecioDomingo.Font = Nothing
         Me.TxtPrecioDomingo.Name = "TxtPrecioDomingo"
         '
         'Label15
         '
-        Me.Label15.AccessibleDescription = Nothing
-        Me.Label15.AccessibleName = Nothing
         resources.ApplyResources(Me.Label15, "Label15")
-        Me.Label15.Font = Nothing
         Me.Label15.Name = "Label15"
         '
         'TxtPrecioSabado
         '
-        Me.TxtPrecioSabado.AccessibleDescription = Nothing
-        Me.TxtPrecioSabado.AccessibleName = Nothing
         resources.ApplyResources(Me.TxtPrecioSabado, "TxtPrecioSabado")
-        Me.TxtPrecioSabado.BackgroundImage = Nothing
-        Me.TxtPrecioSabado.Font = Nothing
         Me.TxtPrecioSabado.Name = "TxtPrecioSabado"
         '
         'Label14
         '
-        Me.Label14.AccessibleDescription = Nothing
-        Me.Label14.AccessibleName = Nothing
         resources.ApplyResources(Me.Label14, "Label14")
-        Me.Label14.Font = Nothing
         Me.Label14.Name = "Label14"
         '
         'TxtPrecioViernes
         '
-        Me.TxtPrecioViernes.AccessibleDescription = Nothing
-        Me.TxtPrecioViernes.AccessibleName = Nothing
         resources.ApplyResources(Me.TxtPrecioViernes, "TxtPrecioViernes")
-        Me.TxtPrecioViernes.BackgroundImage = Nothing
-        Me.TxtPrecioViernes.Font = Nothing
         Me.TxtPrecioViernes.Name = "TxtPrecioViernes"
         '
         'Label13
         '
-        Me.Label13.AccessibleDescription = Nothing
-        Me.Label13.AccessibleName = Nothing
         resources.ApplyResources(Me.Label13, "Label13")
-        Me.Label13.Font = Nothing
         Me.Label13.Name = "Label13"
         '
         'TxtPrecioJueves
         '
-        Me.TxtPrecioJueves.AccessibleDescription = Nothing
-        Me.TxtPrecioJueves.AccessibleName = Nothing
         resources.ApplyResources(Me.TxtPrecioJueves, "TxtPrecioJueves")
-        Me.TxtPrecioJueves.BackgroundImage = Nothing
-        Me.TxtPrecioJueves.Font = Nothing
         Me.TxtPrecioJueves.Name = "TxtPrecioJueves"
         '
         'Label12
         '
-        Me.Label12.AccessibleDescription = Nothing
-        Me.Label12.AccessibleName = Nothing
         resources.ApplyResources(Me.Label12, "Label12")
-        Me.Label12.Font = Nothing
         Me.Label12.Name = "Label12"
         '
         'TxtPrecioMiercoles
         '
-        Me.TxtPrecioMiercoles.AccessibleDescription = Nothing
-        Me.TxtPrecioMiercoles.AccessibleName = Nothing
         resources.ApplyResources(Me.TxtPrecioMiercoles, "TxtPrecioMiercoles")
-        Me.TxtPrecioMiercoles.BackgroundImage = Nothing
-        Me.TxtPrecioMiercoles.Font = Nothing
         Me.TxtPrecioMiercoles.Name = "TxtPrecioMiercoles"
         '
         'Label11
         '
-        Me.Label11.AccessibleDescription = Nothing
-        Me.Label11.AccessibleName = Nothing
         resources.ApplyResources(Me.Label11, "Label11")
-        Me.Label11.Font = Nothing
         Me.Label11.Name = "Label11"
         '
         'TxtPrecioMartes
         '
-        Me.TxtPrecioMartes.AccessibleDescription = Nothing
-        Me.TxtPrecioMartes.AccessibleName = Nothing
         resources.ApplyResources(Me.TxtPrecioMartes, "TxtPrecioMartes")
-        Me.TxtPrecioMartes.BackgroundImage = Nothing
-        Me.TxtPrecioMartes.Font = Nothing
         Me.TxtPrecioMartes.Name = "TxtPrecioMartes"
         '
         'Label10
         '
-        Me.Label10.AccessibleDescription = Nothing
-        Me.Label10.AccessibleName = Nothing
         resources.ApplyResources(Me.Label10, "Label10")
-        Me.Label10.Font = Nothing
         Me.Label10.Name = "Label10"
         '
         'TxtBolsa
         '
-        Me.TxtBolsa.AccessibleDescription = Nothing
-        Me.TxtBolsa.AccessibleName = Nothing
         resources.ApplyResources(Me.TxtBolsa, "TxtBolsa")
-        Me.TxtBolsa.BackgroundImage = Nothing
-        Me.TxtBolsa.Font = Nothing
         Me.TxtBolsa.Name = "TxtBolsa"
         '
         'Label8
         '
-        Me.Label8.AccessibleDescription = Nothing
-        Me.Label8.AccessibleName = Nothing
         resources.ApplyResources(Me.Label8, "Label8")
-        Me.Label8.Font = Nothing
         Me.Label8.Name = "Label8"
         '
         'TxtPrecioLunes
         '
-        Me.TxtPrecioLunes.AccessibleDescription = Nothing
-        Me.TxtPrecioLunes.AccessibleName = Nothing
         resources.ApplyResources(Me.TxtPrecioLunes, "TxtPrecioLunes")
-        Me.TxtPrecioLunes.BackgroundImage = Nothing
-        Me.TxtPrecioLunes.Font = Nothing
         Me.TxtPrecioLunes.Name = "TxtPrecioLunes"
         '
         'Label6
         '
-        Me.Label6.AccessibleDescription = Nothing
-        Me.Label6.AccessibleName = Nothing
         resources.ApplyResources(Me.Label6, "Label6")
-        Me.Label6.Font = Nothing
         Me.Label6.Name = "Label6"
         '
         'TxtDeduccionPolicia
         '
-        Me.TxtDeduccionPolicia.AccessibleDescription = Nothing
-        Me.TxtDeduccionPolicia.AccessibleName = Nothing
         resources.ApplyResources(Me.TxtDeduccionPolicia, "TxtDeduccionPolicia")
-        Me.TxtDeduccionPolicia.BackgroundImage = Nothing
-        Me.TxtDeduccionPolicia.Font = Nothing
         Me.TxtDeduccionPolicia.Name = "TxtDeduccionPolicia"
         '
         'Label5
         '
-        Me.Label5.AccessibleDescription = Nothing
-        Me.Label5.AccessibleName = Nothing
         resources.ApplyResources(Me.Label5, "Label5")
-        Me.Label5.Font = Nothing
         Me.Label5.Name = "Label5"
         '
         'TxtIR
         '
-        Me.TxtIR.AccessibleDescription = Nothing
-        Me.TxtIR.AccessibleName = Nothing
         resources.ApplyResources(Me.TxtIR, "TxtIR")
-        Me.TxtIR.BackgroundImage = Nothing
-        Me.TxtIR.Font = Nothing
         Me.TxtIR.Name = "TxtIR"
         '
         'Label4
         '
-        Me.Label4.AccessibleDescription = Nothing
-        Me.Label4.AccessibleName = Nothing
         resources.ApplyResources(Me.Label4, "Label4")
-        Me.Label4.Font = Nothing
         Me.Label4.Name = "Label4"
         '
         'CmdCalcular
         '
-        Me.CmdCalcular.AccessibleDescription = Nothing
-        Me.CmdCalcular.AccessibleName = Nothing
         resources.ApplyResources(Me.CmdCalcular, "CmdCalcular")
-        Me.CmdCalcular.BackgroundImage = Nothing
-        Me.CmdCalcular.Font = Nothing
         Me.CmdCalcular.Name = "CmdCalcular"
         Me.CmdCalcular.UseVisualStyleBackColor = True
         '
         'Label9
         '
-        Me.Label9.AccessibleDescription = Nothing
-        Me.Label9.AccessibleName = Nothing
         resources.ApplyResources(Me.Label9, "Label9")
         Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
@@ -523,34 +373,21 @@ Partial Class frmPlanillaConductores
         '
         'PictureBox2
         '
-        Me.PictureBox2.AccessibleDescription = Nothing
-        Me.PictureBox2.AccessibleName = Nothing
         resources.ApplyResources(Me.PictureBox2, "PictureBox2")
         Me.PictureBox2.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
-        Me.PictureBox2.BackgroundImage = Nothing
-        Me.PictureBox2.Font = Nothing
-        Me.PictureBox2.ImageLocation = Nothing
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.TabStop = False
         '
         'CmdBorraLinea
         '
-        Me.CmdBorraLinea.AccessibleDescription = Nothing
-        Me.CmdBorraLinea.AccessibleName = Nothing
         resources.ApplyResources(Me.CmdBorraLinea, "CmdBorraLinea")
         Me.CmdBorraLinea.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
-        Me.CmdBorraLinea.BackgroundImage = Nothing
-        Me.CmdBorraLinea.Font = Nothing
-        Me.CmdBorraLinea.ImageLocation = Nothing
         Me.CmdBorraLinea.Name = "CmdBorraLinea"
         Me.CmdBorraLinea.TabStop = False
         '
         'GroupBox1
         '
-        Me.GroupBox1.AccessibleDescription = Nothing
-        Me.GroupBox1.AccessibleName = Nothing
         resources.ApplyResources(Me.GroupBox1, "GroupBox1")
-        Me.GroupBox1.BackgroundImage = Nothing
         Me.GroupBox1.Controls.Add(Me.TxtNumNomina)
         Me.GroupBox1.Controls.Add(Me.Label7)
         Me.GroupBox1.Controls.Add(Me.LblTotalPlanilla)
@@ -560,82 +397,52 @@ Partial Class frmPlanillaConductores
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.CboTipoPlanilla)
         Me.GroupBox1.Controls.Add(Me.Label1)
-        Me.GroupBox1.Font = Nothing
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.TabStop = False
         '
         'TxtNumNomina
         '
-        Me.TxtNumNomina.AccessibleDescription = Nothing
-        Me.TxtNumNomina.AccessibleName = Nothing
         resources.ApplyResources(Me.TxtNumNomina, "TxtNumNomina")
-        Me.TxtNumNomina.BackgroundImage = Nothing
-        Me.TxtNumNomina.Font = Nothing
         Me.TxtNumNomina.Name = "TxtNumNomina"
         '
         'Label7
         '
-        Me.Label7.AccessibleDescription = Nothing
-        Me.Label7.AccessibleName = Nothing
         resources.ApplyResources(Me.Label7, "Label7")
         Me.Label7.ForeColor = System.Drawing.SystemColors.Desktop
         Me.Label7.Name = "Label7"
         '
         'LblTotalPlanilla
         '
-        Me.LblTotalPlanilla.AccessibleDescription = Nothing
-        Me.LblTotalPlanilla.AccessibleName = Nothing
         resources.ApplyResources(Me.LblTotalPlanilla, "LblTotalPlanilla")
         Me.LblTotalPlanilla.ForeColor = System.Drawing.SystemColors.ActiveCaption
         Me.LblTotalPlanilla.Name = "LblTotalPlanilla"
         '
         'DTPFechaIni
         '
-        Me.DTPFechaIni.AccessibleDescription = Nothing
-        Me.DTPFechaIni.AccessibleName = Nothing
         resources.ApplyResources(Me.DTPFechaIni, "DTPFechaIni")
-        Me.DTPFechaIni.BackgroundImage = Nothing
-        Me.DTPFechaIni.CalendarFont = Nothing
-        Me.DTPFechaIni.CustomFormat = Nothing
-        Me.DTPFechaIni.Font = Nothing
         Me.DTPFechaIni.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.DTPFechaIni.Name = "DTPFechaIni"
         '
         'DTPFechaFin
         '
-        Me.DTPFechaFin.AccessibleDescription = Nothing
-        Me.DTPFechaFin.AccessibleName = Nothing
         resources.ApplyResources(Me.DTPFechaFin, "DTPFechaFin")
-        Me.DTPFechaFin.BackgroundImage = Nothing
-        Me.DTPFechaFin.CalendarFont = Nothing
-        Me.DTPFechaFin.CustomFormat = Nothing
-        Me.DTPFechaFin.Font = Nothing
         Me.DTPFechaFin.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.DTPFechaFin.Name = "DTPFechaFin"
         '
         'Label3
         '
-        Me.Label3.AccessibleDescription = Nothing
-        Me.Label3.AccessibleName = Nothing
         resources.ApplyResources(Me.Label3, "Label3")
-        Me.Label3.Font = Nothing
         Me.Label3.Name = "Label3"
         '
         'Label2
         '
-        Me.Label2.AccessibleDescription = Nothing
-        Me.Label2.AccessibleName = Nothing
         resources.ApplyResources(Me.Label2, "Label2")
-        Me.Label2.Font = Nothing
         Me.Label2.Name = "Label2"
         '
         'CboTipoPlanilla
         '
-        Me.CboTipoPlanilla.AccessibleDescription = Nothing
-        Me.CboTipoPlanilla.AccessibleName = Nothing
-        Me.CboTipoPlanilla.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
         resources.ApplyResources(Me.CboTipoPlanilla, "CboTipoPlanilla")
-        Me.CboTipoPlanilla.BackgroundImage = Nothing
+        Me.CboTipoPlanilla.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
         Me.CboTipoPlanilla.Caption = ""
         Me.CboTipoPlanilla.CaptionHeight = 17
         Me.CboTipoPlanilla.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
@@ -647,7 +454,6 @@ Partial Class frmPlanillaConductores
         Me.CboTipoPlanilla.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CboTipoPlanilla.EditorForeColor = System.Drawing.SystemColors.WindowText
         Me.CboTipoPlanilla.EditorHeight = 15
-        Me.CboTipoPlanilla.Font = Nothing
         Me.CboTipoPlanilla.Images.Add(CType(resources.GetObject("CboTipoPlanilla.Images"), System.Drawing.Image))
         Me.CboTipoPlanilla.ItemHeight = 15
         Me.CboTipoPlanilla.MatchEntryTimeout = CType(2000, Long)
@@ -662,19 +468,13 @@ Partial Class frmPlanillaConductores
         '
         'Label1
         '
-        Me.Label1.AccessibleDescription = Nothing
-        Me.Label1.AccessibleName = Nothing
         resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.Font = Nothing
         Me.Label1.Name = "Label1"
         '
         'frmPlanillaConductores
         '
-        Me.AccessibleDescription = Nothing
-        Me.AccessibleName = Nothing
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackgroundImage = Nothing
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.ProgressBar2)
         Me.Controls.Add(Me.LblProcesando)
@@ -688,8 +488,6 @@ Partial Class frmPlanillaConductores
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.CmdBorraLinea)
         Me.Controls.Add(Me.GroupBox1)
-        Me.Font = Nothing
-        Me.Icon = Nothing
         Me.Name = "frmPlanillaConductores"
         Me.TabControl1.ResumeLayout(False)
         Me.Ingresos.ResumeLayout(False)

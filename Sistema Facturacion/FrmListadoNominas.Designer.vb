@@ -20,14 +20,14 @@ Partial Class FrmListadoNominas
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmListadoNominas))
-        Me.TDGridListadoNomina = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.CmdBorraLinea = New System.Windows.Forms.PictureBox
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.CmdColillas = New System.Windows.Forms.Button
-        Me.CmdNomina = New System.Windows.Forms.Button
-        Me.CmdSalir = New System.Windows.Forms.Button
+        Me.TDGridListadoNomina = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.CmdBorraLinea = New System.Windows.Forms.PictureBox()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.CmdColillas = New System.Windows.Forms.Button()
+        Me.CmdNomina = New System.Windows.Forms.Button()
+        Me.CmdSalir = New System.Windows.Forms.Button()
         CType(Me.TDGridListadoNomina, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CmdBorraLinea, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -44,8 +44,8 @@ Partial Class FrmListadoNominas
         Me.TDGridListadoNomina.Name = "TDGridListadoNomina"
         Me.TDGridListadoNomina.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TDGridListadoNomina.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TDGridListadoNomina.PreviewInfo.ZoomFactor = 75
-        Me.TDGridListadoNomina.PrintInfo.PageSettings = CType(resources.GetObject("TDGridIngresos.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TDGridListadoNomina.PreviewInfo.ZoomFactor = 75.0R
+        Me.TDGridListadoNomina.PrintInfo.PageSettings = CType(resources.GetObject("TDGridListadoNomina.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
         Me.TDGridListadoNomina.Size = New System.Drawing.Size(787, 305)
         Me.TDGridListadoNomina.TabIndex = 171
         Me.TDGridListadoNomina.Text = "C1TrueDBGrid1"
