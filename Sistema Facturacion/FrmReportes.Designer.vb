@@ -2059,7 +2059,7 @@ Partial Class FrmReportes
         '
         Me.GroupBoxFechaVence.Controls.Add(Me.DTPFechaVence)
         Me.GroupBoxFechaVence.Controls.Add(Me.Label33)
-        Me.GroupBoxFechaVence.Location = New System.Drawing.Point(847, 497)
+        Me.GroupBoxFechaVence.Location = New System.Drawing.Point(896, 539)
         Me.GroupBoxFechaVence.Name = "GroupBoxFechaVence"
         Me.GroupBoxFechaVence.Size = New System.Drawing.Size(352, 52)
         Me.GroupBoxFechaVence.TabIndex = 218
@@ -2087,9 +2087,8 @@ Partial Class FrmReportes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(884, 535)
+        Me.ClientSize = New System.Drawing.Size(884, 509)
         Me.ControlBox = False
-        Me.Controls.Add(Me.GroupBoxFechaVence)
         Me.Controls.Add(Me.Imagen)
         Me.Controls.Add(Me.GroupBoxLinea)
         Me.Controls.Add(Me.GroupProveedores)
@@ -2122,6 +2121,7 @@ Partial Class FrmReportes
         Me.Controls.Add(Me.GroupBoxDepartamento)
         Me.Controls.Add(Me.GroupBoxAño)
         Me.Controls.Add(Me.ChkAgrupadoBodega)
+        Me.Controls.Add(Me.GroupBoxFechaVence)
         Me.Name = "FrmReportes"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Reportes"
