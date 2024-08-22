@@ -2087,10 +2087,9 @@ Partial Class FrmReportes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(884, 509)
+        Me.ClientSize = New System.Drawing.Size(885, 504)
         Me.ControlBox = False
         Me.Controls.Add(Me.Imagen)
-        Me.Controls.Add(Me.GroupBoxLinea)
         Me.Controls.Add(Me.GroupProveedores)
         Me.Controls.Add(Me.GroupBoxLote)
         Me.Controls.Add(Me.ChkFacturasCero)
@@ -2122,6 +2121,7 @@ Partial Class FrmReportes
         Me.Controls.Add(Me.GroupBoxAño)
         Me.Controls.Add(Me.ChkAgrupadoBodega)
         Me.Controls.Add(Me.GroupBoxFechaVence)
+        Me.Controls.Add(Me.GroupBoxLinea)
         Me.Name = "FrmReportes"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Reportes"

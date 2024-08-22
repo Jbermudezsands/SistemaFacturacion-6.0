@@ -648,10 +648,7 @@ Public Class FrmRecepcion
 
         Dim escribeport3 As New delegado(AddressOf Me.mostar)
 
-
-
         s = sp.ReadLine
-
 
         If Len(s) = 19 Then
             If Mid(s, 1, 5) <> "GROSS" Then
@@ -670,11 +667,9 @@ Public Class FrmRecepcion
         If Len(s) > 5 Then
             s = SoloNumeros(s)
 
-
             If s = "2263-5025" Then  ''''SOBRE PASA EL " Then  SOLO EMTRIDES---
                 Exit Sub
             End If
-
 
             If s <> "" Then
                 Me.Invoke(escribeport3, s)

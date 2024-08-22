@@ -267,15 +267,6 @@ D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\Sistema Factura
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\Sistema Facturacion 6.0.pdb
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\Sistema Facturacion 6.xml
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\af-ZA\Sistema Facturacion 6.0.resources.dll
-D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\ActiveReports.Chart.dll
-D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\ActiveReports.Design3.dll
-D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\ActiveReports.HtmlExport.dll
-D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\ActiveReports.Interop.dll
-D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\ActiveReports.PdfExport.dll
-D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\ActiveReports.Viewer3.dll
-D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\ActiveReports.XlsExport.dll
-D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\ActiveReports3.dll
-D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\ARVSPackage.dll
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\C1.C1DataExtender.2.dll
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\C1.C1Excel.2.dll
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\C1.C1Flash.2.dll
@@ -319,9 +310,9 @@ D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\Extensibility.x
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\Interop.ADODB.dll
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\Interop.MSDASC.dll
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\af-ZA\Sistema Facturacion 6.0.resources.dll
-D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema Facturacion 6.0.vbproj.CopyComplete
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmAjustarTodos.resources
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmListadoHistorico.resources
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmListadoRecibo.resources
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepProductoVencimiento.resources
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmContenedores.resources
+D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema .BEEB2A59.Up2Date

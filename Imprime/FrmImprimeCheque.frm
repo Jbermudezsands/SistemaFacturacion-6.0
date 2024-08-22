@@ -1,20 +1,20 @@
 VERSION 5.00
-Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "MSADODC.OCX"
+Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "MSAdoDc.ocx"
 Object = "{74848F95-A02A-4286-AF0C-A3C755E4A5B3}#1.0#0"; "actskn43.ocx"
 Begin VB.Form FrmImprime 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Imprimiendo..."
-   ClientHeight    =   2160
+   ClientHeight    =   2220
    ClientLeft      =   45
    ClientTop       =   435
-   ClientWidth     =   2745
+   ClientWidth     =   3030
    Icon            =   "FrmImprimeCheque.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2160
-   ScaleWidth      =   2745
+   ScaleHeight     =   2220
+   ScaleWidth      =   3030
    StartUpPosition =   1  'CenterOwner
    Begin ACTIVESKINLibCtl.SkinLabel SkinLabel2 
       Height          =   255
@@ -281,7 +281,7 @@ Begin VB.Form FrmImprime
    End
    Begin VB.Frame Frame2 
       BackColor       =   &H00FFC0C0&
-      Caption         =   "Consecutivo Factura"
+      Caption         =   "Consecutivo Factura V1.15"
       Height          =   1335
       Left            =   120
       TabIndex        =   0
@@ -460,7 +460,7 @@ Private Sub Form_Load()
 Dim Ruta As String
 
 FacturaSerie = False
-'Me.Skin1.ApplySkin hWnd
+Me.Skin1.ApplySkin hWnd
 
 Me.SmartButton1.BackColor = RGB(216, 228, 248)
 Me.SmartButton2.BackColor = RGB(216, 228, 248)
@@ -550,7 +550,7 @@ End Sub
 Private Sub SmartButton1_Click()
 Dim Fechas1 As String, Fechas2 As String
 Dim CodigoCuenta As String, Concepto As String
-Dim x, y, H, V, Page As Integer, Dia As String, Mes As String, Año As String
+Dim X, Y, H, V, Page As Integer, Dia As String, Mes As String, Año As String
 Dim i, j As Integer, Fechass As Date, Fecha As String
 Dim TotalDebito, TotalCredito, Totalpag As Double
 Dim SubTotal, Total, IGV As Double, Cadena As String
