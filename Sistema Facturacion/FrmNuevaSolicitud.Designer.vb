@@ -19,44 +19,44 @@ Partial Class FrmNuevaSolicitud
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmNuevaSolicitud))
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.LblTitulo = New System.Windows.Forms.Label
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.lbldatosre = New System.Windows.Forms.Label
-        Me.Grupo = New System.Windows.Forms.GroupBox
-        Me.TxtNumeroEnsamble = New System.Windows.Forms.TextBox
-        Me.DtpHoraManual = New System.Windows.Forms.DateTimePicker
-        Me.DTPFecha = New System.Windows.Forms.Label
-        Me.LblHora = New System.Windows.Forms.Label
-        Me.CboDepartamento = New System.Windows.Forms.ComboBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.DTPFechaRequerido = New System.Windows.Forms.DateTimePicker
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.TxtConcepto = New System.Windows.Forms.TextBox
-        Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.Button7 = New System.Windows.Forms.Button
-        Me.Button12 = New System.Windows.Forms.Button
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.BtnOrdenCompra = New System.Windows.Forms.Button
-        Me.BtnAutorizar = New System.Windows.Forms.Button
-        Me.Button9 = New System.Windows.Forms.Button
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.LblTitulo = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.lbldatosre = New System.Windows.Forms.Label()
+        Me.Grupo = New System.Windows.Forms.GroupBox()
+        Me.TxtNumeroEnsamble = New System.Windows.Forms.TextBox()
+        Me.DtpHoraManual = New System.Windows.Forms.DateTimePicker()
+        Me.DTPFecha = New System.Windows.Forms.Label()
+        Me.LblHora = New System.Windows.Forms.Label()
+        Me.CboDepartamento = New System.Windows.Forms.ComboBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.DTPFechaRequerido = New System.Windows.Forms.DateTimePicker()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.TxtConcepto = New System.Windows.Forms.TextBox()
+        Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
+        Me.Button7 = New System.Windows.Forms.Button()
+        Me.Button12 = New System.Windows.Forms.Button()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.BtnOrdenCompra = New System.Windows.Forms.Button()
+        Me.BtnAutorizar = New System.Windows.Forms.Button()
+        Me.Button9 = New System.Windows.Forms.Button()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.BindingDetalle = New System.Windows.Forms.BindingSource(Me.components)
-        Me.Button3 = New System.Windows.Forms.Button
-        Me.CboCodigoBodega = New C1.Win.C1List.C1Combo
-        Me.Label11 = New System.Windows.Forms.Label
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.CboRubro = New C1.Win.C1List.C1Combo
+        Me.Button3 = New System.Windows.Forms.Button()
+        Me.CboCodigoBodega = New C1.Win.C1List.C1Combo()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.CboRubro = New C1.Win.C1List.C1Combo()
         Me.ImageList = New System.Windows.Forms.ImageList(Me.components)
-        Me.CboGerencia = New System.Windows.Forms.ComboBox
-        Me.C1Button4 = New C1.Win.C1Input.C1Button
-        Me.CboProyecto = New C1.Win.C1List.C1Combo
-        Me.Label12 = New System.Windows.Forms.Label
-        Me.ChkSolcitudxCta = New System.Windows.Forms.CheckBox
+        Me.CboGerencia = New System.Windows.Forms.ComboBox()
+        Me.C1Button4 = New C1.Win.C1Input.C1Button()
+        Me.CboProyecto = New C1.Win.C1List.C1Combo()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.ChkSolcitudxCta = New System.Windows.Forms.CheckBox()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Grupo.SuspendLayout()
@@ -243,7 +243,7 @@ Partial Class FrmNuevaSolicitud
         Me.TrueDBGridComponentes.Name = "TrueDBGridComponentes"
         Me.TrueDBGridComponentes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75
+        Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75.0R
         Me.TrueDBGridComponentes.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridComponentes.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
         Me.TrueDBGridComponentes.Size = New System.Drawing.Size(617, 167)
         Me.TrueDBGridComponentes.TabIndex = 254

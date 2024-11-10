@@ -822,6 +822,10 @@ Public Class FrmNuevaSolicitud
         My.Forms.FrmFecha.ShowDialog()
         Fecha_Compra = Format(My.Forms.FrmFecha.DTPFechaRequerido.Value, "dd/MM/yyyy")
 
+        If Quien = "Cancelar" Then
+            Exit Sub
+        End If
+
         ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
         NumeroCompra = Format(ConsecutivoCompra, "0000#")
 

@@ -9186,7 +9186,7 @@ errSub:
         MiConexion.Close()
 
 
-        My.Forms.FrmCompras.ds.Tables("DetalleCompra").Reset()
+        'My.Forms.FrmCompras.ds.Tables("DetalleCompra").Reset()
 
         If My.Forms.FrmCompras.FacturaTarea = True Then
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
