@@ -179,8 +179,8 @@ Module Funciones
             FechaFactura = DataSet.Tables("Clientes").Rows(i)("Fecha_Factura")
             FechaVence = DataSet.Tables("Clientes").Rows(i)("Fecha_Vencimiento")
 
-            If NumeroFactura = "M02925" Then
-                NumeroFactura = "M02925"
+            If NumeroFactura = "83151" Then
+                NumeroFactura = "83151"
             End If
 
             Select Case Proceso
@@ -263,7 +263,7 @@ Module Funciones
 
                             TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
                             If TasaCambioRecibo <> 0 Then
-                                TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                                'TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
                             Else
                                 MsgBox("No Existe Tasa de cambios!!! Fecha NB " & DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
                             End If
@@ -12829,6 +12829,7 @@ errSub:
         Existencia = Existencia + UnidadComprada - DevolucionCompra - UnidadFacturada - SalidaBodega + DevolucionFactura - TransferenciaEnviada + TransferenciaRecibida
         BuscaExistenciaBodegaBascula = Format(Existencia, "####0.0000")
     End Function
+
     Public Function BuscaExistenciaBodega(ByVal CodigoProducto As String, ByVal CodigoBodega As String) As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Fecha As String, UnidadComprada As Double

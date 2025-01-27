@@ -13,6 +13,7 @@ Public Class FrmTasaCambio
 
         SQLTasa = "SELECT * FROM  TasaCambio"
         Me.TrueDBGridConsultas.Columns(0).Caption = "Fecha Tasa"
+        Me.TrueDBGridConsultas.Columns(0).NumberFormat = "dd/MM/yyyy"
         Me.TrueDBGridConsultas.Columns(1).Caption = "Monto Tasa"
         MiConexion.Open()
 
@@ -21,6 +22,8 @@ Public Class FrmTasaCambio
         DataAdapter.Fill(DataSet, "Consultas")
         Me.BindingTasa.DataSource = DataSet.Tables("Consultas")
         Me.TrueDBGridConsultas.DataSource = Me.BindingTasa
+
+
     End Sub
 
     Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click

@@ -19,16 +19,16 @@ Partial Class FrmTasaCambio
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmTasaCambio))
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.TrueDBGridConsultas = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.TrueDBGridConsultas = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
         Me.BindingTasa = New System.Windows.Forms.BindingSource(Me.components)
-        Me.ButtonBorrar = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.cmdAddDocente = New System.Windows.Forms.Button
+        Me.ButtonBorrar = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.cmdAddDocente = New System.Windows.Forms.Button()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -79,7 +79,7 @@ Partial Class FrmTasaCambio
         Me.TrueDBGridConsultas.Name = "TrueDBGridConsultas"
         Me.TrueDBGridConsultas.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridConsultas.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TrueDBGridConsultas.PreviewInfo.ZoomFactor = 75
+        Me.TrueDBGridConsultas.PreviewInfo.ZoomFactor = 75.0R
         Me.TrueDBGridConsultas.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridConsultas.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
         Me.TrueDBGridConsultas.Size = New System.Drawing.Size(311, 222)
         Me.TrueDBGridConsultas.TabIndex = 128
