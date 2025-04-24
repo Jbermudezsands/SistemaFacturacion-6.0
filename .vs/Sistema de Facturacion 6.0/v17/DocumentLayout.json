@@ -3,15 +3,11 @@
   "WorkspaceRootPath": "D:\\Sistemas\\SistemaFacturacion-6.0\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|d:\\sistemas\\sistemafacturacion-6.0\\sistema facturacion\\reportes\\arepnotadebito.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
-      "RelativeMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|solutionrelative:sistema facturacion\\reportes\\arepnotadebito.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|d:\\sistemas\\sistemafacturacion-6.0\\sistema facturacion\\reportes\\arepnotasdebitocredito.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "AbsoluteMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|D:\\Sistemas\\SistemaFacturacion-6.0\\sistema facturacion\\reportes\\arepnotasdebitocredito.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
       "RelativeMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|solutionrelative:sistema facturacion\\reportes\\arepnotasdebitocredito.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|d:\\sistemas\\sistemafacturacion-6.0\\sistema facturacion\\frmfacturas.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "AbsoluteMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|D:\\Sistemas\\SistemaFacturacion-6.0\\sistema facturacion\\frmfacturas.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
       "RelativeMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|solutionrelative:sistema facturacion\\frmfacturas.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
     },
     {
@@ -67,18 +63,6 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "ArepNotaDebito.vb [Dise\u00F1o]",
-              "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\Reportes\\ArepNotaDebito.vb",
-              "RelativeDocumentMoniker": "Sistema Facturacion\\Reportes\\ArepNotaDebito.vb",
-              "ToolTip": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\Reportes\\ArepNotaDebito.vb [Dise\u00F1o]",
-              "RelativeToolTip": "Sistema Facturacion\\Reportes\\ArepNotaDebito.vb [Dise\u00F1o]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
-              "WhenOpened": "2025-04-24T12:41:32.961Z",
-              "EditorCaption": " [Dise\u00F1o]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "ArepNotasDebitoCredito.vb [Dise\u00F1o]",
               "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\Reportes\\ArepNotasDebitoCredito.vb",
               "RelativeDocumentMoniker": "Sistema Facturacion\\Reportes\\ArepNotasDebitoCredito.vb",
@@ -90,7 +74,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "FrmProductos.vb",
               "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmProductos.vb",
               "RelativeDocumentMoniker": "Sistema Facturacion\\FrmProductos.vb",
@@ -102,7 +86,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "FrmProductos.vb [Dise\u00F1o]",
               "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmProductos.vb",
               "RelativeDocumentMoniker": "Sistema Facturacion\\FrmProductos.vb",
@@ -113,7 +97,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "FrmFacturas.vb",
               "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmFacturas.vb",
               "RelativeDocumentMoniker": "Sistema Facturacion\\FrmFacturas.vb",
@@ -121,12 +105,11 @@
               "RelativeToolTip": "Sistema Facturacion\\FrmFacturas.vb",
               "ViewState": "AgIAANcAAAAAAAAAAAAAwOsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
-              "WhenOpened": "2025-03-18T21:49:43.475Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-18T21:49:43.475Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 7,
               "Title": "FrmFacturas.vb [Dise\u00F1o]",
               "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmFacturas.vb",
               "RelativeDocumentMoniker": "Sistema Facturacion\\FrmFacturas.vb",
@@ -137,7 +120,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "Funciones.vb",
               "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\Funciones.vb",
               "RelativeDocumentMoniker": "Sistema Facturacion\\Funciones.vb",
@@ -149,7 +132,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 5,
               "Title": "FrmReportes.vb",
               "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmReportes.vb",
               "RelativeDocumentMoniker": "Sistema Facturacion\\FrmReportes.vb",
@@ -161,7 +144,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 6,
               "Title": "FrmReportes.vb [Dise\u00F1o]",
               "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmReportes.vb",
               "RelativeDocumentMoniker": "Sistema Facturacion\\FrmReportes.vb",
@@ -172,7 +155,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 8,
               "Title": "FrmActualiza.vb",
               "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmActualiza.vb",
               "RelativeDocumentMoniker": "Sistema Facturacion\\FrmActualiza.vb",
@@ -184,7 +167,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 9,
               "Title": "FrmLotesFactura.vb",
               "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmLotesFactura.vb",
               "RelativeDocumentMoniker": "Sistema Facturacion\\FrmLotesFactura.vb",
@@ -196,7 +179,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 10,
               "Title": "FrmFacturasHistoricos.vb",
               "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmFacturasHistoricos.vb",
               "RelativeDocumentMoniker": "Sistema Facturacion\\FrmFacturasHistoricos.vb",
