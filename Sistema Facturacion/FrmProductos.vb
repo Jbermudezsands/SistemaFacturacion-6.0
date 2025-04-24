@@ -11,11 +11,33 @@ Public Class FrmProductos
     Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
         Me.Close()
     End Sub
-
+    Public Class Argumentos_ConsultaExistencia
+        Public Costo_Producto As Double
+        Public Existencia_Bodega As Double
+        Public Costo_ProductoD As Double
+        Public Codigo_Producto As String
+        Public Codigo_Bodega As String
+    End Class
     Public Class ArgumentTypeProducto
         Public CodigoBodega As String
         Public CodigoProducto As String
+        Public CostoProducto As Double
+        Public CostoProductoD As Double
     End Class
+    Public Sub Actualizar_Existencia(Args As Argumentos_ConsultaExistencia)
+        Dim StrSQLUpdate As String, ComandoUpdate As New SqlClient.SqlCommand
+        Dim iResultado As Integer
+
+        MiConexion.Close()
+
+        '///////////ACTUALIZO LA EXISTENCIA PARA CADA BODEGA ////////////////////////////////////////
+        StrSQLUpdate = "UPDATE [DetalleBodegas]  SET [Existencia] = " & Args.Existencia_Bodega & ", [Costo] = " & Args.Costo_Producto & "  WHERE (Cod_Productos = '" & Args.Codigo_Producto & "') AND (Cod_Bodegas = '" & Args.Codigo_Bodega & "')"
+        MiConexion.Open()
+        ComandoUpdate = New SqlClient.SqlCommand(StrSQLUpdate, MiConexion)
+        iResultado = ComandoUpdate.ExecuteNonQuery
+        MiConexion.Close()
+    End Sub
+
 
     Private Sub backgroundWorker1_DoWork(
     ByVal sender As Object,
@@ -24,15 +46,16 @@ Public Class FrmProductos
         Dim worker As BackgroundWorker =
             CType(sender, BackgroundWorker)
         Dim Args As ArgumentTypeProducto = e.Argument
-        Dim CodigoProducto As String, CodigoBodega As String
+        Dim CodigoProducto As String, CodigoBodega As String, CostoProducto As Double, CostoProductoD As Double
 
         CodigoProducto = Args.CodigoProducto
         CodigoBodega = Args.CodigoBodega
-
+        CostoProducto = Args.CostoProducto
+        CostoProductoD = Args.CostoProductoD
 
         worker.WorkerReportsProgress = True
         worker.WorkerSupportsCancellation = True
-        e.Result = BuscaExistenciaBodegaWoker(CodigoProducto, CodigoBodega, worker, e)
+        e.Result = BuscaExistenciaBodegaWoker(CodigoProducto, CodigoBodega, CostoProductoD, CostoProducto, worker, e)
 
     End Sub
     Private Sub backgroundWorker1_RunWorkerCompleted(
@@ -40,23 +63,52 @@ Public Class FrmProductos
     Handles backgroundWorker1.RunWorkerCompleted
 
 
+        Dim Argumentos As New Argumentos_ConsultaExistencia
+        Dim ExistenciaValores As Double, ExistenciaValoresDolar As Double
+
+
         If (e.Error IsNot Nothing) Then
             Bitacora(Now, NombreUsuario, "Productos", "Error " & e.Error.Message)
         ElseIf e.Cancelled Then
             Bitacora(Now, NombreUsuario, "Productos", "Hilo Cancelado")
         Else
+            Argumentos = e.Result
 
-        End If
+            ExistenciaWorker = Argumentos.Existencia_Bodega + ExistenciaWorker
 
+            Actualizar_Existencia(Argumentos)
+
+
+            Me.TxtExistenciaUnidades.Text = Format(ExistenciaWorker, "##,##0.00")
+            ExistenciaValores = Math.Abs(ExistenciaWorker * Argumentos.Costo_Producto)
+            Me.TxtExistenciaValores.Text = Format(ExistenciaValores, "##,##0.00")
+            If Argumentos.Costo_ProductoD <> 0 Then
+                ExistenciaValoresDolar = Math.Abs(ExistenciaWorker * Argumentos.Costo_ProductoD)
+            End If
+            Me.TxtExistenciaValoresD.Text = Format(ExistenciaValoresDolar, "##,##0.000")
+            If Argumentos.Costo_Producto <> 0 Then
+                Me.TxtCostoPromedio.Text = Format(Argumentos.Costo_Producto, "##,##0.0000")
+            End If
+            If Argumentos.Costo_ProductoD <> 0 Then
+                    Me.TxtCostoPromedioDolar.Text = Format(Argumentos.Costo_ProductoD, "##,##0.000")
+                End If
+            End If
     End Sub
-    Public Function BuscaExistenciaBodegaWoker(ByVal CodigoProducto As String, ByVal CodigoBodega As String, ByVal worker As BackgroundWorker, ByVal e As DoWorkEventArgs) As Double
+    Public Function BuscaExistenciaBodegaWoker(ByVal CodigoProducto As String, ByVal CodigoBodega As String, CostoProductoD As Double, CostoProducto As Double, ByVal worker As BackgroundWorker, ByVal e As DoWorkEventArgs) As Argumentos_ConsultaExistencia
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Fecha As String, UnidadComprada As Double
         Dim SQlInventarioFisico As String, TasaCambio As Double, Existencia As Double = 0, SqlConsulta As String, DevolucionCompra As Double = 0
         Dim UnidadFacturada As Double = 0, DevolucionFactura As Double = 0, TransferenciaEnviada As Double = 0, TransferenciaRecibida As Double = 0
         Dim SalidaBodega As Double = 0, CostoVenta As Double = 0, ImporteFactura As Double = 0
         Dim ImporteCompra As Double, ImporteDevCompra As Double = 0, ImporteVenta As Double = 0, ImporteSalida As Double = 0
-        Dim ImporteDevFactura As Double = 0
+        Dim ImporteDevFactura As Double = 0, Argumentos As New Argumentos_ConsultaExistencia
+
+        Argumentos.Codigo_Producto = 0
+        Argumentos.Codigo_Bodega = 0
+        Argumentos.Costo_Producto = 0
+        Argumentos.Existencia_Bodega = 0
+        Argumentos.Costo_ProductoD = 0
+
 
         If worker.CancellationPending Then
             e.Cancel = True
@@ -69,7 +121,8 @@ Public Class FrmProductos
 
             '///////////////////////////BUSCO LA EXISTENCIA SEGUN EL ULTIMO INVENTARIO FISICO////////////////////////////////////////
 
-            CostoVenta = CostoPromedio(CodigoProducto)
+            'CostoVenta = CostoPromedio(CodigoProducto)
+
 
             TasaCambio = 0
             SQlInventarioFisico = "SELECT * FROM InventarioFisico WHERE (Cod_Producto = '" & CodigoProducto & "') AND (Activo = 0) AND (CodBodega = '" & CodigoBodega & "') ORDER BY Fecha_Conteo DESC"
@@ -107,7 +160,7 @@ Public Class FrmProductos
                 If DataSet.Tables("Facturas").Rows.Count <> 0 Then
                     If Not IsDBNull(DataSet.Tables("Facturas").Rows(0)("Cantidad")) Then
                         UnidadFacturada = DataSet.Tables("Facturas").Rows(0)("Cantidad")
-                        ImporteVenta = DataSet.Tables("Facturas").Rows(0)("Cantidad") * CostoVenta
+                        'ImporteVenta = DataSet.Tables("Facturas").Rows(0)("Cantidad") * CostoVenta
                     Else
                         UnidadFacturada = 0
                         ImporteVenta = 0
@@ -273,10 +326,21 @@ Public Class FrmProductos
             End If
 
             Existencia = Existencia + UnidadComprada - DevolucionCompra - UnidadFacturada - SalidaBodega + DevolucionFactura - TransferenciaEnviada + TransferenciaRecibida
-            BuscaExistenciaBodegaWoker = Format(Existencia, "####0.0000")
+
+            Argumentos.Codigo_Producto = CodigoProducto
+            Argumentos.Codigo_Bodega = CodigoBodega
+            Argumentos.Costo_Producto = CostoProducto
+            Argumentos.Existencia_Bodega = Existencia
+            Argumentos.Costo_ProductoD = CostoProductoD
+
+
+            'BuscaExistenciaBodegaWoker = Format(Existencia, "####0.0000")
+            BuscaExistenciaBodegaWoker = Argumentos
 
         End If
     End Function
+
+
 
 
     Private Sub Button6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -2292,6 +2356,8 @@ Public Class FrmProductos
         Dim DataAdapterProductos As New SqlClient.SqlDataAdapter, SqlProductos As String, Foto As String
         Dim myImagenConsulta As Image
 
+        ExistenciaWorker = 0
+
         SQl = "SELECT Productos.*  FROM Productos WHERE (Cod_Productos = '" & TextBox.Text & "') "
         MiConexion.Close()
         MiConexion.Open()
@@ -2395,7 +2461,7 @@ Public Class FrmProductos
                     Me.CboRubro.Text = DataSet.Tables("Rubros").Rows(0)("Nombre_Rubro")
                 End If
 
-                '/////////////////////////////////////////UNIDAD DE MEDIDA /////////////////////////////////////////////////////////////
+                ''/////////////////////////////////////////UNIDAD DE MEDIDA /////////////////////////////////////////////////////////////
                 SqlProductos = "SELECT DISTINCT Unidad_Medida  FROM Productos WHERE  (Unidad_Medida <> ' ') ORDER BY Unidad_Medida"
                 DataAdapterProductos = New SqlClient.SqlDataAdapter(SqlProductos, MiConexion)
                 DataAdapterProductos.Fill(DataSet, "UNIDAD")
@@ -2416,6 +2482,20 @@ Public Class FrmProductos
 
             If CodigoProducto = "26188" Then
                 CodigoProducto = "26188"
+            End If
+
+            '////////BUSCO LA LINEA DEL PRODUCTO//////////
+            If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Cod_Linea")) Then
+                CodLinea = DataSet.Tables("Producto").Rows(0)("Cod_Linea")
+
+                SqlLinea = "SELECT  * FROM Lineas WHERE (Cod_Linea = '" & CodLinea & "')"
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlLinea, MiConexion)
+                DataAdapter.Fill(DataSet, "LineaProducto")
+                If Not DataSet.Tables("LineaProducto").Rows.Count = 0 Then
+                    Me.CboLinea.Text = DataSet.Tables("LineaProducto").Rows(0)("Descripcion_Linea")
+                End If
+            Else
+                CodLinea = ""
             End If
 
             'SQl = "SELECT Productos.*  FROM Productos WHERE (Cod_Productos = '" & CodigoProducto & "') "
@@ -2442,6 +2522,36 @@ Public Class FrmProductos
             Me.TxtCostoPromedioDolar.Text = Format(DataSet.Tables("Producto").Rows(0)("Costo_Promedio_Dolar"), "##,##0.000")
             If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Porcentaje_Aumento")) Then
                 Me.TxtAumento.Value = Format(DataSet.Tables("Producto").Rows(0)("Porcentaje_Aumento"), "##,##0.00")
+            End If
+
+            Me.TxtUbicacion.Text = DataSet.Tables("Producto").Rows(0)("Ubicacion")
+            If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Cod_Cuenta_Inventario")) Then
+                Me.TxtCtaInventario.Text = DataSet.Tables("Producto").Rows(0)("Cod_Cuenta_Inventario")
+            End If
+
+
+            '////////BUSCO EL RUBRO DEL PRODUCTO//////////
+            If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Cod_Rubro")) Then
+                CodRubro = DataSet.Tables("Producto").Rows(0)("Cod_Rubro")
+
+                SqlLinea = "SELECT  * FROM Rubro WHERE (Codigo_Rubro = '" & CodRubro & "')"
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlLinea, MiConexion)
+                DataAdapter.Fill(DataSet, "Rubro")
+                If Not DataSet.Tables("Rubro").Rows.Count = 0 Then
+                    Me.CboRubro.Text = DataSet.Tables("Rubro").Rows(0)("Nombre_Rubro")
+                End If
+            Else
+                CodRubro = ""
+            End If
+
+
+            '////////BUSCO EL IMPUESTO DEL PRODUCTO///////////////////////
+            CodImpuesto = DataSet.Tables("Producto").Rows(0)("Cod_Iva")
+            SqlImpuesto = "SELECT * FROM Impuestos WHERE (Cod_Iva = '" & CodImpuesto & "')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlImpuesto, MiConexion)
+            DataAdapter.Fill(DataSet, "Impuesto")
+            If Not DataSet.Tables("Impuesto").Rows.Count = 0 Then
+                Me.CboIva.Text = DataSet.Tables("Impuesto").Rows(0)("Descripcion_Iva")
             End If
 
 
@@ -2498,10 +2608,24 @@ Public Class FrmProductos
                 Me.ImgFoto.Image = My.Resources.NoDisponible
             End If
 
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////BUSCO LA EXISTENCIA DE ESTE PRODUCTO PARA CADA BODEGA//////////////////////////
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////
+            'Dim workerCosto As BackgroundWorker
+            'Dim argsCosto As ArgumentTypeProducto = New ArgumentTypeProducto
+
+
+            'workerCosto = New BackgroundWorker()
+            'AddHandler workerCosto.DoWork, AddressOf backgroundWorker1_DoWork
+            'AddHandler workerCosto.RunWorkerCompleted, AddressOf backgroundWorker1_RunWorkerCompleted
+            'workerCosto.RunWorkerAsync(argsCosto)
+
             CostoProducto = CostoPromedio(CodigoProducto)
             CostoProductoD = CostoPromedioDolar
 
-
+            'argsCosto.CodigoBodega = "01"
+            'argsCosto.CodigoProducto = CodigoProducto
+            'argsCosto.CostoProducto = CostoProducto
 
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '///////////////BUSCO LAS BODEGAS DEL PRODUCTO/////////////////////////////////////////////////
@@ -2526,29 +2650,29 @@ Public Class FrmProductos
 
                 args.CodigoBodega = CodigoBodega
                 args.CodigoProducto = CodigoProducto
+                args.CostoProducto = CostoProducto
+                args.CostoProductoD = CostoProductoD
 
                 worker = New BackgroundWorker()
                 AddHandler worker.DoWork, AddressOf backgroundWorker1_DoWork
                 AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorker1_RunWorkerCompleted
                 worker.RunWorkerAsync(args)
 
-
-                ExistenciaBodega = BuscaExistenciaBodega(CodigoProducto, CodigoBodega)
+                'ExistenciaBodega = BuscaExistenciaBodega(CodigoProducto, CodigoBodega)
                 'ExistenciaBodega = BuscaExistenciaBodegaLote(CodigoProducto, CodigoBodega)
-                Existencia = Existencia + ExistenciaBodega
-                MiConexion.Close()
+                'Existencia = Existencia + ExistenciaBodega
+                'MiConexion.Close()
 
-                '///////////ACTUALIZO LA EXISTENCIA PARA CADA BODEGA ////////////////////////////////////////
-                StrSQLUpdate = "UPDATE [DetalleBodegas]  SET [Existencia] = '" & ExistenciaBodega & "', [Costo] = '" & CostoProducto & "'  WHERE (Cod_Productos = '" & CodigoProducto & "') AND (Cod_Bodegas = '" & CodigoBodega & "')"
-                MiConexion.Open()
-                ComandoUpdate = New SqlClient.SqlCommand(StrSQLUpdate, MiConexion)
-                iResultado = ComandoUpdate.ExecuteNonQuery
-                MiConexion.Close()
+                ''///////////ACTUALIZO LA EXISTENCIA PARA CADA BODEGA ////////////////////////////////////////
+                'StrSQLUpdate = "UPDATE [DetalleBodegas]  SET [Existencia] = '" & ExistenciaBodega & "', [Costo] = '" & CostoProducto & "'  WHERE (Cod_Productos = '" & CodigoProducto & "') AND (Cod_Bodegas = '" & CodigoBodega & "')"
+                'MiConexion.Open()
+                'ComandoUpdate = New SqlClient.SqlCommand(StrSQLUpdate, MiConexion)
+                'iResultado = ComandoUpdate.ExecuteNonQuery
+                'MiConexion.Close()
 
 
                 iPosicionFila = iPosicionFila + 1
             Loop
-
 
 
             DataSet.Tables("Bodegas").Reset()
@@ -2668,57 +2792,18 @@ Public Class FrmProductos
             'Ventas = Format(BuscaVenta(CodigoProducto, FechaIni, FechaFin), "####0.00")
             'Inicial = Format(BuscaInventarioInicial(CodigoProducto, FechaIni), "####0.00")
 
-            Me.TxtUbicacion.Text = DataSet.Tables("Producto").Rows(0)("Ubicacion")
-            If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Cod_Cuenta_Inventario")) Then
-                Me.TxtCtaInventario.Text = DataSet.Tables("Producto").Rows(0)("Cod_Cuenta_Inventario")
-            End If
-            Me.TxtExistenciaUnidades.Text = Format(Existencia, "##,##0.00")
-            ExistenciaValores = Math.Abs(Existencia * CostoProducto)
-            Me.TxtExistenciaValores.Text = Format(ExistenciaValores, "##,##0.00")
-            ExistenciaValoresDolar = Math.Abs(Existencia * CostoProductoD)
-            Me.TxtExistenciaValoresD.Text = Format(ExistenciaValoresDolar, "##,##0.000")
-            'Me.TxtCostoPromedio.Text = Format(DataSet.Tables("Producto").Rows(0)("Costo_Promedio"), "##,##0.0000")
-            Me.TxtCostoPromedio.Text = Format(CostoProducto, "##,##0.000")
-            Me.TxtCostoPromedioDolar.Text = Format(CostoProductoD, "##,##0.000")
-
-            '////////BUSCO LA LINEA DEL PRODUCTO//////////
-            If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Cod_Linea")) Then
-                CodLinea = DataSet.Tables("Producto").Rows(0)("Cod_Linea")
-            Else
-                CodLinea = ""
-            End If
-            SqlLinea = "SELECT  * FROM Lineas WHERE (Cod_Linea = '" & CodLinea & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlLinea, MiConexion)
-            DataAdapter.Fill(DataSet, "LineaProducto")
-            If Not DataSet.Tables("LineaProducto").Rows.Count = 0 Then
-                Me.CboLinea.Text = DataSet.Tables("LineaProducto").Rows(0)("Descripcion_Linea")
-            End If
 
 
-            '////////BUSCO EL RUBRO DEL PRODUCTO//////////
-            If Not IsDBNull(DataSet.Tables("Producto").Rows(0)("Cod_Rubro")) Then
-                CodRubro = DataSet.Tables("Producto").Rows(0)("Cod_Rubro")
-            Else
-                CodRubro = ""
-            End If
-            SqlLinea = "SELECT  * FROM Rubro WHERE (Codigo_Rubro = '" & CodRubro & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlLinea, MiConexion)
-            DataAdapter.Fill(DataSet, "Rubro")
-            If Not DataSet.Tables("Rubro").Rows.Count = 0 Then
-                Me.CboRubro.Text = DataSet.Tables("Rubro").Rows(0)("Nombre_Rubro")
-            End If
+            'Me.TxtExistenciaUnidades.Text = Format(Existencia, "##,##0.00")
+            'ExistenciaValores = Math.Abs(Existencia * CostoProducto)
+            'Me.TxtExistenciaValores.Text = Format(ExistenciaValores, "##,##0.00")
+            'ExistenciaValoresDolar = Math.Abs(Existencia * CostoProductoD)
+            ''Me.TxtExistenciaValoresD.Text = Format(ExistenciaValoresDolar, "##,##0.000")
+            ''Me.TxtCostoPromedio.Text = Format(DataSet.Tables("Producto").Rows(0)("Costo_Promedio"), "##,##0.0000")
+            'Me.TxtCostoPromedio.Text = Format(CostoProducto, "##,##0.000")
+            'Me.TxtCostoPromedioDolar.Text = Format(CostoProductoD, "##,##0.000")
 
 
-
-
-            '////////BUSCO EL IMPUESTO DEL PRODUCTO///////////////////////
-            CodImpuesto = DataSet.Tables("Producto").Rows(0)("Cod_Iva")
-            SqlImpuesto = "SELECT * FROM Impuestos WHERE (Cod_Iva = '" & CodImpuesto & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlImpuesto, MiConexion)
-            DataAdapter.Fill(DataSet, "Impuesto")
-            If Not DataSet.Tables("Impuesto").Rows.Count = 0 Then
-                Me.CboIva.Text = DataSet.Tables("Impuesto").Rows(0)("Descripcion_Iva")
-            End If
             RutaOrigen = RutaCompartida & "\" & Trim(Me.CboCodigoProducto.Text) & ".jpg"
 
             ''If Dir(RutaCompartida, FileAttribute.Directory) <> "" Then
@@ -2781,6 +2866,9 @@ Public Class FrmProductos
 
         MiConexion.Close()
         Quien = Nothing
+
+
+
     End Sub
     Private Sub Button12_Click_2(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGenerar.Click
         Dim SqlDatos As String = "", CodLinea As String

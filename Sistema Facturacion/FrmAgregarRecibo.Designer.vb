@@ -20,36 +20,36 @@ Partial Class FrmAgregarRecibo
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmAgregarRecibo))
-        Me.PictureBox3 = New System.Windows.Forms.PictureBox
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.Label15 = New System.Windows.Forms.Label
-        Me.LblNombreCliente = New System.Windows.Forms.Label
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.ChkRet2Porciento = New System.Windows.Forms.CheckBox
-        Me.ChkRet1Porciento = New System.Windows.Forms.CheckBox
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.CboMetodoPago = New C1.Win.C1List.C1Combo
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.CmbSerie = New C1.Win.C1List.C1Combo
-        Me.TxtNumeroEnsamble = New System.Windows.Forms.TextBox
-        Me.LblNumero = New System.Windows.Forms.Label
-        Me.DTPFecha = New System.Windows.Forms.DateTimePicker
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox
-        Me.TxtMontoRecibo = New System.Windows.Forms.TextBox
-        Me.LblRetencion2 = New System.Windows.Forms.Label
-        Me.LblRetencion1 = New System.Windows.Forms.Label
-        Me.Label14 = New System.Windows.Forms.Label
-        Me.Label12 = New System.Windows.Forms.Label
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.LblMontoFactura = New System.Windows.Forms.Label
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.LblNumeroFactura = New System.Windows.Forms.Label
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.Button7 = New System.Windows.Forms.Button
+        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.LblNombreCliente = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.ChkRet2Porciento = New System.Windows.Forms.CheckBox()
+        Me.ChkRet1Porciento = New System.Windows.Forms.CheckBox()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.CboMetodoPago = New C1.Win.C1List.C1Combo()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.CmbSerie = New C1.Win.C1List.C1Combo()
+        Me.TxtNumeroEnsamble = New System.Windows.Forms.TextBox()
+        Me.LblNumero = New System.Windows.Forms.Label()
+        Me.DTPFecha = New System.Windows.Forms.DateTimePicker()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.TxtMontoRecibo = New System.Windows.Forms.TextBox()
+        Me.LblRetencion2 = New System.Windows.Forms.Label()
+        Me.LblRetencion1 = New System.Windows.Forms.Label()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.LblMontoFactura = New System.Windows.Forms.Label()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.LblNumeroFactura = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.Button7 = New System.Windows.Forms.Button()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -322,7 +322,7 @@ Partial Class FrmAgregarRecibo
         Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label14.Location = New System.Drawing.Point(265, 73)
         Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(103, 16)
+        Me.Label14.Size = New System.Drawing.Size(102, 16)
         Me.Label14.TabIndex = 232
         Me.Label14.Text = "Retencion 2%"
         '
@@ -332,7 +332,7 @@ Partial Class FrmAgregarRecibo
         Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label12.Location = New System.Drawing.Point(266, 49)
         Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(103, 16)
+        Me.Label12.Size = New System.Drawing.Size(102, 16)
         Me.Label12.TabIndex = 230
         Me.Label12.Text = "Retencion 1%"
         '
@@ -342,7 +342,7 @@ Partial Class FrmAgregarRecibo
         Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label10.Location = New System.Drawing.Point(266, 25)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(104, 16)
+        Me.Label10.Size = New System.Drawing.Size(103, 16)
         Me.Label10.TabIndex = 228
         Me.Label10.Text = "Monto Recibo"
         '
@@ -352,7 +352,7 @@ Partial Class FrmAgregarRecibo
         Me.LblMontoFactura.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblMontoFactura.Location = New System.Drawing.Point(122, 66)
         Me.LblMontoFactura.Name = "LblMontoFactura"
-        Me.LblMontoFactura.Size = New System.Drawing.Size(84, 16)
+        Me.LblMontoFactura.Size = New System.Drawing.Size(83, 16)
         Me.LblMontoFactura.TabIndex = 227
         Me.LblMontoFactura.Text = "5000000.00"
         '
@@ -362,7 +362,7 @@ Partial Class FrmAgregarRecibo
         Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label7.Location = New System.Drawing.Point(9, 66)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(106, 16)
+        Me.Label7.Size = New System.Drawing.Size(105, 16)
         Me.Label7.TabIndex = 226
         Me.Label7.Text = "Monto Factura"
         '
@@ -383,7 +383,7 @@ Partial Class FrmAgregarRecibo
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.Location = New System.Drawing.Point(9, 25)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(88, 16)
+        Me.Label5.Size = New System.Drawing.Size(87, 16)
         Me.Label5.TabIndex = 224
         Me.Label5.Text = "Factura No:"
         '

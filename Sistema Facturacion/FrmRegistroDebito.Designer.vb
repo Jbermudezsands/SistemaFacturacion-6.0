@@ -125,7 +125,7 @@ Partial Class FrmRegistroDebito
         Me.Label4.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.Label4.Location = New System.Drawing.Point(330, 22)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(34, 16)
+        Me.Label4.Size = New System.Drawing.Size(33, 16)
         Me.Label4.TabIndex = 137
         Me.Label4.Text = "NO."
         '

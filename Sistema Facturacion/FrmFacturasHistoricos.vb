@@ -384,12 +384,100 @@ Public Class FrmFacturasHistoricos
 
             NumeroFactura = Format(ConsecutivoFactura, "0000#")
 
+            Dim TablaFactura As TablaFactura = New TablaFactura
+
+            TablaFactura.Numero_Factura = NumeroFactura
+            TablaFactura.Fecha_Factura = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+            TablaFactura.Tipo_Factura = CboTipoProducto.Text
+            TablaFactura.Fecha_Vencimiento = Format(DTVencimiento.Value, "dd/MM/yyyy")
+            TablaFactura.Moneda_Factura = TxtMonedaFactura.Text
+            TablaFactura.Moneda_Imprime = TxtMonedaImprime.Text
+            TablaFactura.Cod_Cliente = TxtCodigoClientes.Text
+            TablaFactura.Cod_Vendedor = CboCodigoVendedor.Text
+            TablaFactura.CodBodega1 = CboCodigoBodega.Text
+            TablaFactura.Cod_Cajero = CboCajero.Text
+            TablaFactura.Nombre_Cliente = TxtNombres.Text
+            TablaFactura.Apellido_Cliente = TxtApellidos.Text
+            TablaFactura.Direccion_Cliente = TxtDireccion.Text
+            TablaFactura.Telefono_Cliente = TxtTelefono.Text
+            TablaFactura.Fecha_Envio = Format(DTVencimiento.Value, "dd/MM/yyyy")
+            TablaFactura.Via_Envarque = ""
+            'TablaFactura.SuReferencia1 = CboReferencia.Text
+            TablaFactura.Nuestra_Referencia = ""
+            'TablaFactura.Codigo_Proyecto = CboProyecto.Text
+
+
+
+
+            If My.Forms.FrmFacturas.SubTotalGral <> 0 Then
+                TablaFactura.Sub_Total = Redondeo(TxtSubTotal.Text, 4)
+            Else
+                TablaFactura.Sub_Total = 0
+            End If
+
+            If My.Forms.FrmFacturas.IvaGral <> 0 Then
+                TablaFactura.IVA_Factura = Redondeo(TxtIva.Text, 4)
+            Else
+                TablaFactura.IVA_Factura = 0
+            End If
+
+            If My.Forms.FrmFacturas.TxtPagado.Text <> "" Then
+                TablaFactura.Pagado_Factura = TxtPagado.Text
+            Else
+                TablaFactura.Pagado_Factura = 0
+            End If
+
+            If My.Forms.FrmFacturas.TxtNetoPagar.Text <> "" Then
+                TablaFactura.Neto_Pagar = TxtNetoPagar.Text
+            Else
+                TablaFactura.Neto_Pagar = 0
+            End If
+
+            If RadioButton1.Checked = True Then
+                TablaFactura.Metodo_Pago = "Credito"
+            Else
+                TablaFactura.Metodo_Pago = "Contado"
+            End If
+
+            If OptExsonerado.Checked = True Then
+                TablaFactura.Exonerado_Factura = 1
+            Else
+                TablaFactura.Exonerado_Factura = 0
+            End If
+
+            'If OptRet1Porciento.Checked = True Then
+            '    TablaFactura.MontoRetencion1_Porciento = TablaFactura.Sub_Total * 0.01
+            '    TablaFactura.Retener1_Porciento = 1
+            'Else
+            '    TablaFactura.MontoRetencion1_Porciento = 0
+            '    TablaFactura.Retener1_Porciento = 0
+            'End If
+
+            'If OptRet2Porciento.Checked = True Then
+            '    TablaFactura.MontoRetencion2_Porciento = TablaFactura.Sub_Total * 0.02
+            '    TablaFactura.Retener2_Porciento = 1
+            'Else
+            '    TablaFactura.MontoRetencion2_Porciento = 0
+            '    TablaFactura.Retener2_Porciento = 0
+            'End If
+
+
+            'If Not CboProyecto.Text = "" Then
+            '    TablaFactura.Codigo_Proyecto = CboProyecto.Columns(0).Text
+            'End If
+
+            'If CboReferencia.Text <> "" Then
+            '    TablaFactura.Referencia_Factura = CboReferencia.Text
+            'End If
+
+            TablaFactura.Fecha_Hora = Format(DTPFecha.Value, "dd/MM/yyyy") & " " & Format(Now, "HH:mm")
+            TablaFactura.Descuentos_Factura = CDbl(Val(TxtDescuento.Text))
 
 
             '////////////////////////////////////////////////////////////////////////////////////////////////////
             '/////////////////////////////GRABO EL ENCABEZADO DE LA FACTURA /////////////////////////////////////////////
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-            GrabaFacturas(NumeroFactura)
+            GrabaFacturas(TablaFactura)
 
 
             '////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1208,11 +1296,100 @@ Public Class FrmFacturasHistoricos
 
             NumeroFactura = Format(ConsecutivoFactura, "0000#")
 
+            Dim TablaFactura As TablaFactura = New TablaFactura
+
+            TablaFactura.Numero_Factura = NumeroFactura
+            TablaFactura.Fecha_Factura = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+            TablaFactura.Tipo_Factura = CboTipoProducto.Text
+            TablaFactura.Fecha_Vencimiento = Format(DTVencimiento.Value, "dd/MM/yyyy")
+            TablaFactura.Moneda_Factura = TxtMonedaFactura.Text
+            TablaFactura.Moneda_Imprime = TxtMonedaImprime.Text
+            TablaFactura.Cod_Cliente = TxtCodigoClientes.Text
+            TablaFactura.Cod_Vendedor = CboCodigoVendedor.Text
+            TablaFactura.CodBodega1 = CboCodigoBodega.Text
+            TablaFactura.Cod_Cajero = CboCajero.Text
+            TablaFactura.Nombre_Cliente = TxtNombres.Text
+            TablaFactura.Apellido_Cliente = TxtApellidos.Text
+            TablaFactura.Direccion_Cliente = TxtDireccion.Text
+            TablaFactura.Telefono_Cliente = TxtTelefono.Text
+            TablaFactura.Fecha_Envio = Format(DTVencimiento.Value, "dd/MM/yyyy")
+            TablaFactura.Via_Envarque = ""
+            'TablaFactura.SuReferencia1 = CboReferencia.Text
+            TablaFactura.Nuestra_Referencia = ""
+            'TablaFactura.Codigo_Proyecto = CboProyecto.Text
+
+
+
+
+            If My.Forms.FrmFacturas.SubTotalGral <> 0 Then
+                TablaFactura.Sub_Total = Redondeo(TxtSubTotal.Text, 4)
+            Else
+                TablaFactura.Sub_Total = 0
+            End If
+
+            If My.Forms.FrmFacturas.IvaGral <> 0 Then
+                TablaFactura.IVA_Factura = Redondeo(My.Forms.FrmFacturas.IvaGral, 4)
+            Else
+                TablaFactura.IVA_Factura = 0
+            End If
+
+            If My.Forms.FrmFacturas.TxtPagado.Text <> "" Then
+                TablaFactura.Pagado_Factura = My.Forms.FrmFacturas.TxtPagado.Text
+            Else
+                TablaFactura.Pagado_Factura = 0
+            End If
+
+            If My.Forms.FrmFacturas.TxtNetoPagar.Text <> "" Then
+                TablaFactura.Neto_Pagar = My.Forms.FrmFacturas.TxtNetoPagar.Text
+            Else
+                TablaFactura.Neto_Pagar = 0
+            End If
+
+            If RadioButton1.Checked = True Then
+                TablaFactura.Metodo_Pago = "Credito"
+            Else
+                TablaFactura.Metodo_Pago = "Contado"
+            End If
+
+            If OptExsonerado.Checked = True Then
+                TablaFactura.Exonerado_Factura = 1
+            Else
+                TablaFactura.Exonerado_Factura = 0
+            End If
+
+            'If OptRet1Porciento.Checked = True Then
+            '    TablaFactura.MontoRetencion1_Porciento = TablaFactura.Sub_Total * 0.01
+            '    TablaFactura.Retener1_Porciento = 1
+            'Else
+            '    TablaFactura.MontoRetencion1_Porciento = 0
+            '    TablaFactura.Retener1_Porciento = 0
+            'End If
+
+            'If OptRet2Porciento.Checked = True Then
+            '    TablaFactura.MontoRetencion2_Porciento = TablaFactura.Sub_Total * 0.02
+            '    TablaFactura.Retener2_Porciento = 1
+            'Else
+            '    TablaFactura.MontoRetencion2_Porciento = 0
+            '    TablaFactura.Retener2_Porciento = 0
+            'End If
+
+
+            'If Not CboProyecto.Text = "" Then
+            '    TablaFactura.Codigo_Proyecto = CboProyecto.Columns(0).Text
+            'End If
+
+            'If CboReferencia.Text <> "" Then
+            '    TablaFactura.Referencia_Factura = CboReferencia.Text
+            'End If
+
+            TablaFactura.Fecha_Hora = Format(My.Forms.FrmFacturas.DTPFecha.Value, "dd/MM/yyyy") & " " & Format(Now, "HH:mm")
+            TablaFactura.Descuentos_Factura = CDbl(Val(TxtDescuento.Text))
+
 
             '////////////////////////////////////////////////////////////////////////////////////////////////////
             '/////////////////////////////GRABO EL ENCABEZADO DE LA FACTURA /////////////////////////////////////////////
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-            GrabaFacturas(NumeroFactura)
+            GrabaFacturas(TablaFactura)
 
             If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
                 Quien = "NumeroFacturas"
@@ -1709,10 +1886,74 @@ Public Class FrmFacturasHistoricos
             Quien = "NumeroFacturas"
             Me.TxtNumeroEnsamble.Text = "-----0-----"
 
+            Dim TablaFactura As TablaFactura = New TablaFactura
+
+            TablaFactura.Numero_Factura = NumeroFactura
+            TablaFactura.Fecha_Factura = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+            TablaFactura.Tipo_Factura = CboTipoProducto.Text
+            TablaFactura.Fecha_Vencimiento = Format(DTVencimiento.Value, "dd/MM/yyyy")
+            TablaFactura.Moneda_Factura = TxtMonedaFactura.Text
+            TablaFactura.Moneda_Imprime = TxtMonedaImprime.Text
+            TablaFactura.Cod_Cliente = TxtCodigoClientes.Text
+            TablaFactura.Cod_Vendedor = CboCodigoVendedor.Text
+            TablaFactura.CodBodega1 = CboCodigoBodega.Text
+            TablaFactura.Cod_Cajero = CboCajero.Text
+            TablaFactura.Nombre_Cliente = TxtNombres.Text
+            TablaFactura.Apellido_Cliente = TxtApellidos.Text
+            TablaFactura.Direccion_Cliente = TxtDireccion.Text
+            TablaFactura.Telefono_Cliente = TxtTelefono.Text
+            TablaFactura.Fecha_Envio = Format(DTVencimiento.Value, "dd/MM/yyyy")
+            TablaFactura.Via_Envarque = ""
+            'TablaFactura.SuReferencia1 = CboReferencia.Text
+            TablaFactura.Nuestra_Referencia = ""
+            'TablaFactura.Codigo_Proyecto = CboProyecto.Text
+
+
+
+
+            If My.Forms.FrmFacturas.SubTotalGral <> 0 Then
+                TablaFactura.Sub_Total = Redondeo(TxtSubTotal.Text, 4)
+            Else
+                TablaFactura.Sub_Total = 0
+            End If
+
+            If My.Forms.FrmFacturas.IvaGral <> 0 Then
+                TablaFactura.IVA_Factura = Redondeo(My.Forms.FrmFacturas.IvaGral, 4)
+            Else
+                TablaFactura.IVA_Factura = 0
+            End If
+
+            If My.Forms.FrmFacturas.TxtPagado.Text <> "" Then
+                TablaFactura.Pagado_Factura = My.Forms.FrmFacturas.TxtPagado.Text
+            Else
+                TablaFactura.Pagado_Factura = 0
+            End If
+
+            If My.Forms.FrmFacturas.TxtNetoPagar.Text <> "" Then
+                TablaFactura.Neto_Pagar = My.Forms.FrmFacturas.TxtNetoPagar.Text
+            Else
+                TablaFactura.Neto_Pagar = 0
+            End If
+
+            If RadioButton1.Checked = True Then
+                TablaFactura.Metodo_Pago = "Credito"
+            Else
+                TablaFactura.Metodo_Pago = "Contado"
+            End If
+
+            If OptExsonerado.Checked = True Then
+                TablaFactura.Exonerado_Factura = 1
+            Else
+                TablaFactura.Exonerado_Factura = 0
+            End If
+
+            TablaFactura.Fecha_Hora = Format(My.Forms.FrmFacturas.DTPFecha.Value, "dd/MM/yyyy") & " " & Format(Now, "HH:mm")
+            TablaFactura.Descuentos_Factura = CDbl(Val(TxtDescuento.Text))
+
             '////////////////////////////////////////////////////////////////////////////////////////////////////
             '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-            GrabaFacturas(NumeroFactura)
+            GrabaFacturas(TablaFactura)
             Quien = "NumeroFacturas"
             Me.TxtNumeroEnsamble.Text = NumeroFactura
 

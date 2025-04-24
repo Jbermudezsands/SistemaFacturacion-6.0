@@ -17,42 +17,42 @@ Partial Public Class ArepNotaDebito
     Private WithEvents PageFooter1 As DataDynamics.ActiveReports.PageFooter
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim OleDBDataSource1 As DataDynamics.ActiveReports.DataSources.OleDBDataSource = New DataDynamics.ActiveReports.DataSources.OleDBDataSource
+        Dim OleDBDataSource1 As DataDynamics.ActiveReports.DataSources.OleDBDataSource = New DataDynamics.ActiveReports.DataSources.OleDBDataSource()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ArepNotaDebito))
-        Me.PageHeader1 = New DataDynamics.ActiveReports.PageHeader
-        Me.ImgLogo = New DataDynamics.ActiveReports.Picture
-        Me.LblTitulo = New DataDynamics.ActiveReports.Label
-        Me.LblDireccion = New DataDynamics.ActiveReports.Label
-        Me.Shape1 = New DataDynamics.ActiveReports.Shape
-        Me.Label4 = New DataDynamics.ActiveReports.Label
-        Me.Label1 = New DataDynamics.ActiveReports.Label
-        Me.Label2 = New DataDynamics.ActiveReports.Label
-        Me.Shape2 = New DataDynamics.ActiveReports.Shape
-        Me.TextBox1 = New DataDynamics.ActiveReports.TextBox
-        Me.Label3 = New DataDynamics.ActiveReports.Label
-        Me.Label5 = New DataDynamics.ActiveReports.Label
-        Me.Label6 = New DataDynamics.ActiveReports.Label
-        Me.Label7 = New DataDynamics.ActiveReports.Label
-        Me.Label8 = New DataDynamics.ActiveReports.Label
-        Me.Label9 = New DataDynamics.ActiveReports.Label
-        Me.Label10 = New DataDynamics.ActiveReports.Label
-        Me.TextBox2 = New DataDynamics.ActiveReports.TextBox
-        Me.LblRuc = New DataDynamics.ActiveReports.Label
-        Me.TextBox3 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox4 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox5 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox6 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox7 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox8 = New DataDynamics.ActiveReports.TextBox
-        Me.Label11 = New DataDynamics.ActiveReports.Label
-        Me.TextBox9 = New DataDynamics.ActiveReports.TextBox
-        Me.TxtObservaciones = New DataDynamics.ActiveReports.TextBox
-        Me.Label12 = New DataDynamics.ActiveReports.Label
-        Me.Label13 = New DataDynamics.ActiveReports.Label
-        Me.Label14 = New DataDynamics.ActiveReports.Label
-        Me.Label15 = New DataDynamics.ActiveReports.Label
-        Me.Detail1 = New DataDynamics.ActiveReports.Detail
-        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
+        Me.PageHeader1 = New DataDynamics.ActiveReports.PageHeader()
+        Me.ImgLogo = New DataDynamics.ActiveReports.Picture()
+        Me.LblTitulo = New DataDynamics.ActiveReports.Label()
+        Me.LblDireccion = New DataDynamics.ActiveReports.Label()
+        Me.Shape1 = New DataDynamics.ActiveReports.Shape()
+        Me.Label4 = New DataDynamics.ActiveReports.Label()
+        Me.Label1 = New DataDynamics.ActiveReports.Label()
+        Me.Label2 = New DataDynamics.ActiveReports.Label()
+        Me.Shape2 = New DataDynamics.ActiveReports.Shape()
+        Me.TextBox1 = New DataDynamics.ActiveReports.TextBox()
+        Me.Label3 = New DataDynamics.ActiveReports.Label()
+        Me.Label5 = New DataDynamics.ActiveReports.Label()
+        Me.Label6 = New DataDynamics.ActiveReports.Label()
+        Me.Label7 = New DataDynamics.ActiveReports.Label()
+        Me.Label8 = New DataDynamics.ActiveReports.Label()
+        Me.Label9 = New DataDynamics.ActiveReports.Label()
+        Me.Label10 = New DataDynamics.ActiveReports.Label()
+        Me.TextBox2 = New DataDynamics.ActiveReports.TextBox()
+        Me.LblRuc = New DataDynamics.ActiveReports.Label()
+        Me.TextBox3 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox4 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox5 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox6 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox7 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox8 = New DataDynamics.ActiveReports.TextBox()
+        Me.Label11 = New DataDynamics.ActiveReports.Label()
+        Me.TextBox9 = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtObservaciones = New DataDynamics.ActiveReports.TextBox()
+        Me.Label12 = New DataDynamics.ActiveReports.Label()
+        Me.Label13 = New DataDynamics.ActiveReports.Label()
+        Me.Label14 = New DataDynamics.ActiveReports.Label()
+        Me.Label15 = New DataDynamics.ActiveReports.Label()
+        Me.Detail1 = New DataDynamics.ActiveReports.Detail()
+        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter()
         CType(Me.ImgLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblTitulo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblDireccion, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -104,7 +104,7 @@ Partial Public Class ArepNotaDebito
         Me.ImgLogo.Image = Nothing
         Me.ImgLogo.ImageData = Nothing
         Me.ImgLogo.Left = 0.0625!
-        Me.ImgLogo.LineWeight = 0.0!
+        Me.ImgLogo.LineWeight = 0!
         Me.ImgLogo.Name = "ImgLogo"
         Me.ImgLogo.SizeMode = DataDynamics.ActiveReports.SizeModes.Stretch
         Me.ImgLogo.Top = 0.0625!
@@ -181,8 +181,8 @@ Partial Public Class ArepNotaDebito
         Me.Label4.HyperLink = Nothing
         Me.Label4.Left = 4.0625!
         Me.Label4.Name = "Label4"
-        Me.Label4.Style = "color: Navy; ddo-char-set: 0; text-align: center; font-weight: bold; font-size: 1" & _
-            "4.25pt; "
+        Me.Label4.Style = "color: Navy; ddo-char-set: 0; text-align: center; font-weight: bold; font-size: 1" &
+    "4.25pt; "
         Me.Label4.Text = ""
         Me.Label4.Top = 0.5625!
         Me.Label4.Width = 3.0!
@@ -201,8 +201,8 @@ Partial Public Class ArepNotaDebito
         Me.Label1.HyperLink = Nothing
         Me.Label1.Left = 4.0625!
         Me.Label1.Name = "Label1"
-        Me.Label1.Style = "color: Maroon; ddo-char-set: 0; text-align: center; font-weight: bold; font-size:" & _
-            " 12pt; font-family: Arial Black; "
+        Me.Label1.Style = "color: Maroon; ddo-char-set: 0; text-align: center; font-weight: bold; font-size:" &
+    " 12pt; font-family: Arial Black; "
         Me.Label1.Text = "NO."
         Me.Label1.Top = 1.125!
         Me.Label1.Width = 0.75!
@@ -222,8 +222,8 @@ Partial Public Class ArepNotaDebito
         Me.Label2.HyperLink = Nothing
         Me.Label2.Left = 4.8125!
         Me.Label2.Name = "Label2"
-        Me.Label2.Style = "ddo-char-set: 0; text-align: center; font-weight: bold; font-size: 14.25pt; font-" & _
-            "family: Arial Black; "
+        Me.Label2.Style = "ddo-char-set: 0; text-align: center; font-weight: bold; font-size: 14.25pt; font-" &
+    "family: Arial Black; "
         Me.Label2.Text = ""
         Me.Label2.Top = 1.125!
         Me.Label2.Width = 2.25!
@@ -335,8 +335,8 @@ Partial Public Class ArepNotaDebito
         Me.Label7.HyperLink = Nothing
         Me.Label7.Left = 4.0625!
         Me.Label7.Name = "Label7"
-        Me.Label7.Style = "color: Navy; ddo-char-set: 0; text-align: center; font-weight: bold; font-size: 9" & _
-            ".75pt; "
+        Me.Label7.Style = "color: Navy; ddo-char-set: 0; text-align: center; font-weight: bold; font-size: 9" &
+    ".75pt; "
         Me.Label7.Text = ""
         Me.Label7.Top = 0.8125!
         Me.Label7.Width = 3.0!
@@ -661,7 +661,7 @@ Partial Public Class ArepNotaDebito
         Me.Label14.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label14.Height = 0.1875!
         Me.Label14.HyperLink = Nothing
-        Me.Label14.Left = 2.875!
+        Me.Label14.Left = 5.5625!
         Me.Label14.Name = "Label14"
         Me.Label14.Style = "text-align: center; "
         Me.Label14.Text = "Preparado"
@@ -680,29 +680,30 @@ Partial Public Class ArepNotaDebito
         Me.Label15.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label15.Height = 0.1875!
         Me.Label15.HyperLink = Nothing
-        Me.Label15.Left = 5.625!
+        Me.Label15.Left = 2.8125!
         Me.Label15.Name = "Label15"
         Me.Label15.Style = "text-align: center; "
         Me.Label15.Text = "Recibido"
         Me.Label15.Top = 4.6875!
+        Me.Label15.Visible = False
         Me.Label15.Width = 1.5625!
         '
         'Detail1
         '
-        Me.Detail1.ColumnSpacing = 0.0!
+        Me.Detail1.ColumnSpacing = 0!
         Me.Detail1.Height = 0.01041667!
         Me.Detail1.Name = "Detail1"
         '
         'PageFooter1
         '
-        Me.PageFooter1.Height = 0.0!
+        Me.PageFooter1.Height = 0!
         Me.PageFooter1.Name = "PageFooter1"
         '
         'ArepNotaDebito
         '
         Me.MasterReport = False
-        OleDBDataSource1.ConnectionString = "Provider=SQLOLEDB.1;Password=P@ssword;Persist Security Info=True;User ID=sa;Initi" & _
-            "al Catalog=SistemaFacturacionDISTELSA;Data Source=JUAN\SQL2005"
+        OleDBDataSource1.ConnectionString = "Provider=SQLOLEDB.1;Password=P@ssword;Persist Security Info=True;User ID=sa;Initi" &
+    "al Catalog=SistemaFacturacionDISTELSA;Data Source=JUAN\SQL2005"
         OleDBDataSource1.SQL = resources.GetString("OleDBDataSource1.SQL")
         Me.DataSource = OleDBDataSource1
         Me.PageSettings.Margins.Bottom = 0.2!
@@ -715,11 +716,11 @@ Partial Public Class ArepNotaDebito
         Me.Sections.Add(Me.PageHeader1)
         Me.Sections.Add(Me.Detail1)
         Me.Sections.Add(Me.PageFooter1)
-        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Arial; font-style: normal; text-decoration: none; font-weight: norma" & _
-                    "l; font-size: 10pt; color: Black; ddo-char-set: 204; ", "Normal"))
+        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Arial; font-style: normal; text-decoration: none; font-weight: norma" &
+            "l; font-size: 10pt; color: Black; ddo-char-set: 204; ", "Normal"))
         Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-size: 16pt; font-weight: bold; ", "Heading1", "Normal"))
-        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Times New Roman; font-size: 14pt; font-weight: bold; font-style: ita" & _
-                    "lic; ", "Heading2", "Normal"))
+        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Times New Roman; font-size: 14pt; font-weight: bold; font-style: ita" &
+            "lic; ", "Heading2", "Normal"))
         Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-size: 13pt; font-weight: bold; ", "Heading3", "Normal"))
         CType(Me.ImgLogo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LblTitulo, System.ComponentModel.ISupportInitialize).EndInit()

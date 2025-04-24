@@ -15,4 +15,7 @@ Module Variables
     Public CambioFechaRespuesta As Boolean = False, FechaFacturacion As Date, RefNotaDebito As String, formOculto As Boolean = False
     Public iAño As Integer, FechaGuardar As Date, UsuarioBodegaCompra As String, UsuarioTipoCompra As String, UsuarioProveedor As String
     Public DatasetDetalle As New DataSet, TaraRecepcion As Double, LiberarCompras As Boolean, TotalMerma As Double, MontoInicialMinimo As Double, MontoInicialDMinimo As Double
+    Public ExistenciaWorker As Double = 0, LoteFacturaWorker As String
+
+
 End Module

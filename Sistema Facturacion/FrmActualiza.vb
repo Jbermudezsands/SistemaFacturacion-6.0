@@ -1,3 +1,7 @@
+Imports System.Data.Common
+Imports System.Data.SqlTypes
+Imports GrapeCity.DD
+
 Public Class FrmActualiza
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Public MiconexionContabilidad As New SqlClient.SqlConnection(ConexionContabilidad)
@@ -1487,5 +1491,70 @@ Public Class FrmActualiza
 
         FrmAjustarTodos.DTPFechaFin.Value = Format(Now, "dd/MM/yyyy")
         FrmAjustarTodos.ShowDialog()
+    End Sub
+
+    Private Sub Button23_Click(sender As Object, e As EventArgs) Handles Button23.Click
+        Dim DataSet As New DataSet, SqlString As String = ""
+        Dim DataAdapter As New SqlClient.SqlDataAdapter
+        Dim Cont As Double = 0, i As Double = 0, NumeroFactura As String = "", FechaNota As Date
+        Dim CodClienteFactura As String = "", CodClienteNota As String, TipoNota As String = ""
+        Dim NombreCliente As String = "", StrSQLUpdate As String, NumeroNota As String, Moneda As String = "", Observaciones As String, Descripcion As String = "", Monto As Double = 0
+        Dim ComandoUpdate As New SqlClient.SqlCommand
+        Dim iResultado As Integer
+
+        SqlString = "SELECT  Detalle_Nota.id_Detalle_Nota, IndiceNota.Numero_Nota AS NUMERONOTAIndice, Detalle_Nota.Numero_Nota, IndiceNota.Fecha_Nota AS FECHANOTAIndice, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Monto, IndiceNota.Cod_Cliente, IndiceNota.Tipo_Nota AS Tipo_NotaIndice, Facturas.Cod_Cliente AS Cod_ClienteFactura, Facturas.Fecha_Factura, Facturas.Nombre_Cliente, IndiceNota.MonedaNota, IndiceNota.Nombre_Cliente, IndiceNota.Observaciones FROM  Detalle_Nota INNER JOIN  IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota <> IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota INNER JOIN Facturas ON Detalle_Nota.Numero_Factura = Facturas.Numero_Factura  WHERE (IndiceNota.Tipo_Nota <> N'008') AND (Detalle_Nota.Descripcion <> N'*******ANULADO*******') AND (IndiceNota.Nombre_Cliente <> N'*******ANULADO*******') ORDER BY NUMERONOTAIndice, Tipo_NotaIndice"
+        'SqlString = "SELECT Detalle_Nota.id_Detalle_Nota, IndiceNota.Numero_Nota AS NUMERONOTAIndice, Detalle_Nota.Numero_Nota, IndiceNota.Fecha_Nota AS FECHANOTAIndice, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Monto, IndiceNota.Cod_Cliente, IndiceNota.Tipo_Nota AS Tipo_NotaIndice, Facturas.Cod_Cliente AS Cod_ClienteFactura, Facturas.Fecha_Factura, Facturas.Nombre_Cliente, IndiceNota.MonedaNota, IndiceNota.Nombre_Cliente AS Expr1, IndiceNota.Observaciones FROM Detalle_Nota INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota <> IndiceNota.Fecha_Nota INNER JOIN Facturas ON Detalle_Nota.Numero_Factura = Facturas.Numero_Factura  ORDER BY NUMERONOTAIndice"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Notas")
+        Cont = DataSet.Tables("Notas").Rows.Count
+        i = 0
+        Me.ProgressBarFactura.Value = 0
+        Me.ProgressBarFactura.Minimum = 0
+        Me.ProgressBarFactura.Maximum = Cont
+        Me.ProgressBarFactura.Visible = True
+
+        Do While Cont > i
+            My.Application.DoEvents()
+            NumeroFactura = DataSet.Tables("Notas").Rows(i)("Numero_Factura")
+            CodClienteNota = DataSet.Tables("Notas").Rows(i)("Cod_Cliente")
+            CodClienteFactura = DataSet.Tables("Notas").Rows(i)("Cod_ClienteFactura")
+            FechaNota = DataSet.Tables("Notas").Rows(i)("Fecha_Nota")
+            TipoNota = DataSet.Tables("Notas").Rows(i)("Tipo_Nota")
+            NombreCliente = DataSet.Tables("Notas").Rows(i)("Nombre_Cliente")
+            NumeroNota = DataSet.Tables("Notas").Rows(i)("Numero_Nota")
+            Moneda = DataSet.Tables("Notas").Rows(i)("MonedaNota")
+            Observaciones = DataSet.Tables("Notas").Rows(i)("Observaciones")
+            Descripcion = DataSet.Tables("Notas").Rows(i)("Descripcion")
+            Monto = DataSet.Tables("Notas").Rows(i)("Monto")
+
+            Me.Text = "Procesando Nota: " & NumeroNota
+
+            '////////////////Actualizo el indice ////////////////////
+            '///////////BORRO INDICE NOTA ////////////////
+            StrSQLUpdate = "DELETE FROM [dbo].[IndiceNota]  WHERE (Numero_Nota = '" & NumeroNota & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSQLUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+            '//////////////BORRO EL DETALLE NOTA //////////////
+            StrSQLUpdate = "DELETE FROM [dbo].[Detalle_Nota]  WHERE (Numero_Nota = '" & NumeroNota & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSQLUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+            GrabaNotaDebito(NumeroNota, FechaNota, TipoNota, "1111", Moneda, CodClienteFactura, NombreCliente, Observaciones, True, False, False)
+            GrabaDetalleNotaDebito(NumeroNota, FechaNota, TipoNota, Descripcion, NumeroFactura, Monto)
+
+
+            Me.ProgressBarFactura.Value = ProgressBarFactura.Value + 1
+            i = i + 1
+        Loop
+
+
+
+
+
     End Sub
 End Class

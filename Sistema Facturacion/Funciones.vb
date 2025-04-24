@@ -3,9 +3,25 @@ Imports System.Threading
 Imports System.IO
 Imports System.Drawing.Imaging
 Imports System.Math
-
+Imports Sistema_Facturacion.FrmFacturas
+Imports System.ComponentModel
 
 Module Funciones
+    Public Sub ActualizaExistencia_Lote(NumeroLote As String, Existencia As Double)
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer = 0
+        Dim StrSqlUpdate As String
+
+        MiConexion.Close()
+        StrSqlUpdate = "UPDATE [Lote] SET [Existencia] = " & Existencia & " WHERE (Numero_Lote = '" & NumeroLote & "')"
+        MiConexion.Open()
+        ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+        iResultado = ComandoUpdate.ExecuteNonQuery
+        MiConexion.Close()
+
+    End Sub
+
+
     Public Function Consecutivo_Examen() As String
         Dim Dataset As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim Sqlstring As String
@@ -51,7 +67,78 @@ Module Funciones
         Return dv
 
     End Function
+    Public Function LlenarEstadoCtaXCobrar(CodigoCliente As String, OptCordobas As Boolean, FechaIni As Date, FechaFin As Date) As DataSet
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim oDataRow As DataRow, SqlString As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim Registros As Double, i As Double, Moneda As String, MontoFactura As Double, Balance As Double = 0
 
+        If OptCordobas = True Then
+            Moneda = "Cordobas"
+        Else
+            Moneda = "Dolares"
+        End If
+
+        '*******************************************************************************************************************************
+        '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
+        '*******************************************************************************************************************************
+        DataSet.Reset()
+        SqlString = "SELECT Clientes.Cod_Cliente, Clientes.Nombre_Cliente, Facturas.Fecha_Factura AS Fecha, Facturas.Numero_Factura AS Numero, Facturas.Tipo_Factura AS TipoDocumento, Clientes.Nombre_Cliente AS Concepto, Facturas.NetoPagar AS SaldoInicial, Facturas.IVA AS Debito, Facturas.NetoPagar AS Credito, Facturas.NetoPagar AS Balance FROM  Clientes INNER JOIN Facturas ON Clientes.Cod_Cliente = Facturas.Cod_Cliente WHERE  (Clientes.Cod_Cliente = N'-1000000')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "TotalVentas")
+
+        If CodigoCliente = "" Then
+            Exit Function
+        End If
+
+        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////AGREGO LA CONSULTA PARA TODAS LAS FACTURAS DE CREDITO //////////////////////////////////////////////////////
+        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlString = "SELECT Clientes.Apellido_Cliente,Facturas.Tipo_Factura,Facturas.Numero_Factura,Facturas.Fecha_Factura,CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Facturas.SubTotal * TasaCambio.MontoTasa ELSE Facturas.SubTotal END AS ImporteCordobas, CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Facturas.SubTotal / TasaCambio.MontoTasa ELSE Facturas.SubTotal END AS ImporteDolares, CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN Facturas.IVA * TasaCambio.MontoTasa ELSE Facturas.IVA END AS IvaCordobas, CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN Facturas.IVA / TasaCambio.MontoTasa ELSE Facturas.IVA END AS IvaDolares, CASE WHEN Facturas.MonedaFactura = 'Dolares' THEN (Facturas.SubTotal + Facturas.IVA) * TasaCambio.MontoTasa ELSE (Facturas.SubTotal + Facturas.IVA) END AS NetoCordobas, CASE WHEN Facturas.MonedaFactura = 'Cordobas' THEN (Facturas.SubTotal + Facturas.IVA) / TasaCambio.MontoTasa ELSE (Facturas.SubTotal + Facturas.IVA) END AS NetoDolares FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN  TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa  " &
+                    "WHERE (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(FechaIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Facturas.Tipo_Factura = 'Factura') AND (Clientes.Cod_Cliente = '" & CodigoCliente & "') AND (Facturas.Nombre_Cliente <> N'******CANCELADO')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Facturas")
+
+
+        Registros = DataSet.Tables("Facturas").Rows.Count
+        i = 0
+        Balance = 0
+        Do While Registros > i
+
+
+
+            My.Application.DoEvents()
+            If Moneda = "Cordobas" Then
+                MontoFactura = DataSet.Tables("Facturas").Rows(i)("NetoCordobas")
+            Else
+                MontoFactura = DataSet.Tables("Facturas").Rows(i)("NetoDolares")
+            End If
+
+            'If Format(MontoFactura + Balance, "##,##0.00") <> "0.00" Then
+            oDataRow = DataSet.Tables("TotalVentas").NewRow
+            oDataRow("Cod_Cliente") = DataSet.Tables("Productos").Rows(i)("Cod_Cliente")
+            oDataRow("Nombre_Cliente") = DataSet.Tables("Productos").Rows(i)("Nombre_Cliente")
+            oDataRow("SaldoInicial") = Balance
+            oDataRow("Fecha") = DataSet.Tables("Facturas").Rows(i)("Fecha_Factura")
+            oDataRow("Numero") = DataSet.Tables("Facturas").Rows(i)("Numero_Factura")
+            oDataRow("TipoDocumento") = DataSet.Tables("Facturas").Rows(i)("Tipo_Factura")
+            oDataRow("Concepto") = "Venta"
+            oDataRow("Debito") = MontoFactura
+            oDataRow("Credito") = 0
+            oDataRow("Balance") = Balance + MontoFactura
+            DataSet.Tables("TotalVentas").Rows.Add(oDataRow)
+            'End If
+            Balance = Balance + MontoFactura
+
+
+
+            i = i + 1
+        Loop
+        DataSet.Tables("Facturas").Reset()
+
+
+
+    End Function
 
     Public Function FillDataSetCtaxCobrar(CodigoCliente As String, OptCordobas As Boolean, FechaFin As Date, Proceso As String) As DataSet
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -179,8 +266,8 @@ Module Funciones
             FechaFactura = DataSet.Tables("Clientes").Rows(i)("Fecha_Factura")
             FechaVence = DataSet.Tables("Clientes").Rows(i)("Fecha_Vencimiento")
 
-            If NumeroFactura = "83151" Then
-                NumeroFactura = "83151"
+            If NumeroFactura = "42668" Then
+                NumeroFactura = "42668"
             End If
 
             Select Case Proceso
@@ -5416,6 +5503,7 @@ errSub:
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, FacturaBodega As Boolean = False, CompraBodega As Boolean = False
         Dim NumeroFactura As String, FacturaSerie As Boolean = False, SqlString As String, Numero As Double = 0
+        Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, SQlUpdate As String
         Dim CadenaDiv() As String
 
 
@@ -5441,7 +5529,7 @@ errSub:
         End If
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
-        '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
+        '/////////////////////////////BUSCO EL CONSECUTIVO DE LA FACTURA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
 
         If FrmFacturas.TxtNumeroEnsamble.Text = "-----0-----" Then
@@ -5535,6 +5623,11 @@ errSub:
                     NumeroFactura = DataSet.Tables("Facturas").Rows(0)("Numero_Factura")
                     Numero = Mid(NumeroFactura, Len(My.Forms.FrmFacturas.CmbSerie.Text) + 1, Len(NumeroFactura))
                     ConsecutivoFactura = Numero + 1
+
+                    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    '////////////////////////////ACTUALIZO EL CONSECUTIVO///////////////////////////////////////////////////
+                    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 End If
 
 
@@ -8625,6 +8718,7 @@ errSub:
         Fecha = Format(FechaNota, "yyyy-MM-dd")
 
         SqlString = "SELECT  *  FROM IndiceNota WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Tipo_Nota = '" & TipoNota & "') AND (Fecha_Nota = CONVERT(DATETIME, '" & Format(FechaNota, "yyyy-MM-dd") & "', 102))"
+
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "NotaDebito")
         If DataSet.Tables("NotaDebito").Rows.Count = 0 Then
@@ -10253,6 +10347,7 @@ errSub:
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "MetodoPago")
         FrmFacturas.BindingMetodo.DataSource = DataSet.Tables("MetodoPago")
+        FrmFacturas.dsMetodo = DataSet.Copy
         FrmFacturas.TrueDBGridMetodo.DataSource = FrmFacturas.BindingMetodo
         FrmFacturas.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(1).Width = 110
         FrmFacturas.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(1).Width = 70
@@ -10393,7 +10488,9 @@ errSub:
                     DataSet.Tables("MetodoPago").Rows.Add(oDataRow)
 
                     FrmFacturas.BindingMetodo.DataSource = DataSet.Tables("MetodoPago")
+                    FrmFacturas.dsMetodo = DataSet.Copy
                     FrmFacturas.TrueDBGridMetodo.DataSource = FrmFacturas.BindingMetodo
+
                     FrmFacturas.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(1).Width = 110
                     FrmFacturas.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(1).Width = 70
                     FrmFacturas.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(0).Button = True
@@ -10818,14 +10915,10 @@ errSub:
     End Sub
 
 
-    Public Sub GrabaFacturas(ByVal ConsecutivoFactura As String)
+    Public Sub GrabaFacturas(Factura As TablaFactura)
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-        Dim Fecha As String, MetodoPago As String
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim Subtotal As Double, Iva As Double, Neto As Double, Pagado As Double, Descuento As Double, Exonerado As Boolean
-        Dim MonedaFactura As String = My.Forms.FrmFacturas.TxtMonedaFactura.Text
-        Dim MonedaImprime As String = My.Forms.FrmFacturas.TxtMonedaImprime.Text, CodigoProyecto As String
         Dim SqlDetalle As String, MontoRetencion1Porciento As Double = 0, MontoRetencion2Porciento As Double = 0, Retener1 As Boolean, Retener2 As Boolean
         Dim Referencia As String = "", FechaHora As Date
 
@@ -10834,73 +10927,73 @@ errSub:
 
 
 
-            Fecha = Format(FrmFacturas.DTPFecha.Value, "yyyy-MM-dd")
+            'Fecha = Format(FrmFacturas.DTPFecha.Value, "yyyy-MM-dd")
 
 
-            If My.Forms.FrmFacturas.SubTotalGral <> 0 Then
-                Subtotal = Redondeo(My.Forms.FrmFacturas.SubTotalGral, 4)
-            Else
-                Subtotal = 0
-            End If
+            'If My.Forms.FrmFacturas.SubTotalGral <> 0 Then
+            '    Subtotal = Redondeo(My.Forms.FrmFacturas.SubTotalGral, 4)
+            'Else
+            '    Subtotal = 0
+            'End If
 
-            If My.Forms.FrmFacturas.IvaGral <> 0 Then
-                Iva = Redondeo(My.Forms.FrmFacturas.IvaGral, 4)
-            Else
-                Iva = 0
-            End If
+            'If My.Forms.FrmFacturas.IvaGral <> 0 Then
+            '    Iva = Redondeo(My.Forms.FrmFacturas.IvaGral, 4)
+            'Else
+            '    Iva = 0
+            'End If
 
-            If My.Forms.FrmFacturas.TxtPagado.Text <> "" Then
-                Pagado = My.Forms.FrmFacturas.TxtPagado.Text
-            Else
-                Pagado = 0
-            End If
+            'If My.Forms.FrmFacturas.TxtPagado.Text <> "" Then
+            '    Pagado = My.Forms.FrmFacturas.TxtPagado.Text
+            'Else
+            '    Pagado = 0
+            'End If
 
-            If My.Forms.FrmFacturas.TxtNetoPagar.Text <> "" Then
-                Neto = My.Forms.FrmFacturas.TxtNetoPagar.Text
-            Else
-                Neto = 0
-            End If
+            'If My.Forms.FrmFacturas.TxtNetoPagar.Text <> "" Then
+            '    Neto = My.Forms.FrmFacturas.TxtNetoPagar.Text
+            'Else
+            '    Neto = 0
+            'End If
 
-            If FrmFacturas.RadioButton1.Checked = True Then
-                MetodoPago = "Credito"
-            Else
-                MetodoPago = "Contado"
-            End If
+            'If FrmFacturas.RadioButton1.Checked = True Then
+            '    MetodoPago = "Credito"
+            'Else
+            '    MetodoPago = "Contado"
+            'End If
 
-            If FrmFacturas.OptExsonerado.Checked = True Then
-                Exonerado = True
-            Else
-                Exonerado = False
-            End If
+            'If FrmFacturas.OptExsonerado.Checked = True Then
+            '    Exonerado = True
+            'Else
+            '    Exonerado = False
+            'End If
 
-            If FrmFacturas.OptRet1Porciento.Checked = True Then
-                MontoRetencion1Porciento = Subtotal * 0.01
-                Retener1 = True
-            Else
-                MontoRetencion1Porciento = 0
-                Retener1 = False
-            End If
+            'If FrmFacturas.OptRet1Porciento.Checked = True Then
+            '    MontoRetencion1Porciento = Subtotal * 0.01
+            '    Retener1 = True
+            'Else
+            '    MontoRetencion1Porciento = 0
+            '    Retener1 = False
+            'End If
 
-            If FrmFacturas.OptRet2Porciento.Checked = True Then
-                MontoRetencion2Porciento = Subtotal * 0.02
-                Retener2 = True
-            Else
-                MontoRetencion2Porciento = 0
-                Retener2 = False
-            End If
+            'If FrmFacturas.OptRet2Porciento.Checked = True Then
+            '    MontoRetencion2Porciento = Subtotal * 0.02
+            '    Retener2 = True
+            'Else
+            '    MontoRetencion2Porciento = 0
+            '    Retener2 = False
+            'End If
 
-            CodigoProyecto = ""
-            If Not FrmFacturas.CboProyecto.Text = "" Then
-                CodigoProyecto = FrmFacturas.CboProyecto.Columns(0).Text
-            End If
+            'CodigoProyecto = ""
+            'If Not FrmFacturas.CboProyecto.Text = "" Then
+            '    CodigoProyecto = FrmFacturas.CboProyecto.Columns(0).Text
+            'End If
 
-            If FrmFacturas.CboReferencia.Text <> "" Then
-                Referencia = FrmFacturas.CboReferencia.Text
-            End If
+            'If FrmFacturas.CboReferencia.Text <> "" Then
+            '    Referencia = FrmFacturas.CboReferencia.Text
+            'End If
 
             CambiarFechaFactura = False
 
-            If ExisteFactura(Fecha, ConsecutivoFactura, FrmFacturas.CboTipoProducto.Text) = "ExisteFacturaDifFecha" Then
+            If ExisteFactura(Factura.Fecha_Factura, Factura.Numero_Factura, Factura.Tipo_Factura) = "ExisteFacturaDifFecha" Then
 
                 If MsgBox("Existe Diferencia de Fechas, ¿Desea Grabar este Cambio?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
 
@@ -10910,7 +11003,7 @@ errSub:
                     '///////////////////////////////////BORRO EL METODO DE FACTURA /////////////////////////////////////////////
                     '/////////////////////////////////////////////
                     MiConexion.Close()
-                    SqlCompras = "DELETE FROM [Detalle_MetodoFacturas] WHERE  (Numero_Factura = '" & ConsecutivoFactura & "') AND (Tipo_Factura = '" & FrmFacturas.CboTipoProducto.Text & "')"
+                    SqlCompras = "DELETE FROM [Detalle_MetodoFacturas] WHERE  (Numero_Factura = '" & Factura.Numero_Factura & "') AND (Tipo_Factura = '" & Factura.Tipo_Factura & "')"
                     MiConexion.Open()
                     ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
                     iResultado = ComandoUpdate.ExecuteNonQuery
@@ -10920,7 +11013,7 @@ errSub:
                     '///////////////////////////////////BORRO EL DETALLE DE FACTURA /////////////////////////////////////////////
                     '/////////////////////////////////////////////
                     MiConexion.Close()
-                    SqlCompras = "DELETE FROM [Detalle_Facturas] WHERE  (Numero_Factura = '" & ConsecutivoFactura & "') AND (Tipo_Factura = '" & FrmFacturas.CboTipoProducto.Text & "')"
+                    SqlCompras = "DELETE FROM [Detalle_Facturas] WHERE  (Numero_Factura = '" & Factura.Numero_Factura & "') AND (Tipo_Factura = '" & Factura.Tipo_Factura & "')"
                     MiConexion.Open()
                     ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
                     iResultado = ComandoUpdate.ExecuteNonQuery
@@ -10930,7 +11023,7 @@ errSub:
                     '///////////////////////////////////BORRO LA FACTURA /////////////////////////////////////////////
                     '/////////////////////////////////////////////
                     MiConexion.Close()
-                    SqlCompras = "DELETE FROM [Facturas] WHERE  (Numero_Factura = '" & ConsecutivoFactura & "') AND (Tipo_Factura = '" & FrmFacturas.CboTipoProducto.Text & "')"
+                    SqlCompras = "DELETE FROM [Facturas] WHERE  (Numero_Factura = '" & Factura.Numero_Factura & "') AND (Tipo_Factura = '" & Factura.Tipo_Factura & "')"
                     MiConexion.Open()
                     ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
                     iResultado = ComandoUpdate.ExecuteNonQuery
@@ -10940,7 +11033,7 @@ errSub:
                     CambiarFechaFactura = False
                     CambioFechaRespuesta = False
 
-                    FrmFacturas.DTPFecha.Value = FechaFacturacion
+                    My.Forms.FrmFacturas.DTPFecha.Value = FechaFacturacion
 
                 End If
 
@@ -10948,14 +11041,17 @@ errSub:
             End If
 
 
-            FechaHora = FrmFacturas.DTPFecha.Value & " " & Format(Now, "HH:mm")
 
-            Descuento = CDbl(Val(FrmFacturas.TxtDescuento.Text))
+            'FechaHora = Format(My.Forms.FrmFacturas.DTPFecha.Value, "dd/MM/yyyy") & " " & Format(Now, "HH:mm")
+            'Descuento = CDbl(Val(FrmFacturas.TxtDescuento.Text))
+
+            'FechaHora = Factura.Fecha_Hora
+            'Descuento = Factura.Descuentos_Factura
 
             MiConexion.Close()
 
             'SqlDetalle = "SELECT Facturas.* FROM Facturas WHERE  (Numero_Factura = '" & ConsecutivoFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & FrmFacturas.CboTipoProducto.Text & "')"
-            SqlDetalle = "SELECT Facturas.* FROM Facturas WHERE  (Numero_Factura = '" & ConsecutivoFactura & "') AND (Tipo_Factura = '" & FrmFacturas.CboTipoProducto.Text & "')"
+            SqlDetalle = "SELECT Facturas.* FROM Facturas WHERE  (Numero_Factura = '" & Factura.Numero_Factura & "') AND (Tipo_Factura = '" & Factura.Tipo_Factura & "')"
             DataAdapter = New SqlClient.SqlDataAdapter(SqlDetalle, MiConexion)
             DataAdapter.Fill(DataSet, "DetalleFactura")
             If DataSet.Tables("DetalleFactura").Rows.Count = 0 Then
@@ -10965,7 +11061,7 @@ errSub:
                 '/////////////////////////////////////////////////////////////////////////////////////////////////
                 MiConexion.Close()
                 SqlCompras = "INSERT INTO [Facturas] ([Numero_Factura] ,[Fecha_Factura],[Tipo_Factura],[Cod_Cliente],[Cod_Vendedor],[Cod_Bodega],[Cod_Cajero],[Nombre_Cliente],[Apellido_Cliente],[Direccion_Cliente],[Telefono_Cliente],[Fecha_Vencimiento],[Observaciones],[SubTotal],[IVA],[Pagado],[NetoPagar],[MontoCredito],[MetodoPago],[Descuentos],[Exonerado],[MonedaFactura],[MonedaImprime],[CodigoProyecto],[Retener1Porciento],[Retener2Porciento],[Referencia],[FechaHora]) " &
-                "VALUES ('" & ConsecutivoFactura & "','" & FrmFacturas.DTPFecha.Value & "','" & FrmFacturas.CboTipoProducto.Text & "','" & FrmFacturas.TxtCodigoClientes.Text & "','" & FrmFacturas.CboCodigoVendedor.Text & "','" & FrmFacturas.CboCodigoBodega.Text & "','" & FrmFacturas.CboCajero.Text & "' , '" & FrmFacturas.TxtNombres.Text & "','" & FrmFacturas.TxtApellidos.Text & "','" & FrmFacturas.TxtDireccion.Text & "','" & FrmFacturas.TxtTelefono.Text & "','" & FrmFacturas.DTVencimiento.Value & "','" & FrmFacturas.TxtObservaciones.Text & "'," & Subtotal & "," & Iva & "," & Pagado & "," & Neto & "," & Neto & ",'" & MetodoPago & "'," & Descuento & ",'" & Exonerado & "','" & MonedaFactura & "','" & MonedaImprime & "','" & CodigoProyecto & "','" & Retener1 & "','" & Retener2 & "','" & Referencia & "','" & Format(FechaHora, "dd/MM/yyyy HH:mm") & "')"
+                "VALUES ('" & Factura.Numero_Factura & "','" & Factura.Fecha_Factura & "','" & Factura.Tipo_Factura & "','" & Factura.Cod_Cliente & "','" & Factura.Cod_Vendedor & "','" & Factura.CodBodega1 & "','" & Factura.Cod_Cajero & "' , '" & Factura.Nombre_Cliente & "','" & Trim(Factura.Apellido_Cliente) & "','" & Factura.Direccion_Cliente & "','" & Factura.Telefono_Cliente & "','" & Factura.Fecha_Vencimiento & "','" & Factura.Observaciones_Factura & "'," & Factura.Sub_Total & "," & Factura.IVA_Factura & "," & Factura.Pagado_Factura & "," & Factura.Neto_Pagar & "," & Factura.Neto_Pagar & ",'" & Factura.Metodo_Pago & "'," & Factura.Descuentos_Factura & ",'" & Factura.Exonerado_Factura & "','" & Factura.Moneda_Factura & "','" & Factura.Moneda_Imprime & "','" & Factura.Codigo_Proyecto & "','" & Factura.Retener1_Porciento & "','" & Factura.Retener2_Porciento & "','" & Factura.Referencia_Factura & "','" & Format(Factura.Fecha_Hora, "dd/MM/yyyy HH:mm") & "')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
                 iResultado = ComandoUpdate.ExecuteNonQuery
@@ -10975,8 +11071,8 @@ errSub:
                 '//////////////////////////////////////////////////////////////////////////////////////////////
                 '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
                 '/////////////////////////////////////////////////////////////////////////////////////////////////
-                SqlCompras = "UPDATE [Facturas]  SET [Cod_Vendedor]='" & FrmFacturas.CboCodigoVendedor.Text & "' , [Cod_Cajero] = '" & FrmFacturas.CboCajero.Text & "',[Cod_Cliente] = '" & FrmFacturas.TxtCodigoClientes.Text & "',[Nombre_Cliente] = '" & FrmFacturas.TxtNombres.Text & "',[Apellido_Cliente] = '" & FrmFacturas.TxtApellidos.Text & "',[Direccion_Cliente] = '" & FrmFacturas.TxtDireccion.Text & "',[Telefono_Cliente] = '" & FrmFacturas.TxtTelefono.Text & "',[Fecha_Vencimiento] = '" & FrmFacturas.DTVencimiento.Value & "' ,[Observaciones] = '" & FrmFacturas.TxtObservaciones.Text & "',[SubTotal] = " & Subtotal & ",[IVA] = " & Iva & ",[Pagado] = " & Pagado & ",[NetoPagar] = " & Neto & ",[MontoCredito] = " & Neto & ",[MetodoPago] = '" & MetodoPago & "',[Descuentos]= " & Descuento & ",[Exonerado]= '" & Exonerado & "',[MonedaFactura]= '" & MonedaFactura & "',[MonedaImprime]= '" & MonedaImprime & "',[CodigoProyecto]= '" & CodigoProyecto & "',[Retener1Porciento]= '" & Retener1 & "',[Retener2Porciento]= '" & Retener2 & "',[Referencia]= '" & Referencia & "'  " &
-                             "WHERE  (Numero_Factura = '" & ConsecutivoFactura & "') AND (Tipo_Factura = '" & My.Forms.FrmFacturas.CboTipoProducto.Text & "')"
+                SqlCompras = "UPDATE [Facturas]  SET [Cod_Vendedor]='" & Factura.Cod_Vendedor & "' , [Cod_Cajero] = '" & Factura.Cod_Cajero & "',[Cod_Cliente] = '" & Factura.Cod_Cliente & "',[Nombre_Cliente] = '" & Factura.Nombre_Cliente & "',[Apellido_Cliente] = '" & Factura.Apellido_Cliente & "',[Direccion_Cliente] = '" & Factura.Direccion_Cliente & "',[Telefono_Cliente] = '" & Factura.Telefono_Cliente & "',[Fecha_Vencimiento] = '" & Factura.Fecha_Vencimiento & "' ,[Observaciones] = '" & Factura.Observaciones_Factura & "',[SubTotal] = " & Factura.Sub_Total & ",[IVA] = " & Factura.IVA_Factura & ",[Pagado] = " & Factura.Pagado_Factura & ",[NetoPagar] = " & Factura.Neto_Pagar & ",[MontoCredito] = " & Factura.Monto_Credito & ",[MetodoPago] = '" & Factura.Metodo_Pago & "',[Descuentos]= " & Factura.Descuentos_Factura & ",[Exonerado]= '" & Factura.Exonerado_Factura & "',[MonedaFactura]= '" & Factura.Moneda_Factura & "',[MonedaImprime]= '" & Factura.Moneda_Imprime & "',[CodigoProyecto]= '" & Factura.Codigo_Proyecto & "',[Retener1Porciento]= '" & Factura.Retener1_Porciento & "',[Retener2Porciento]= '" & Factura.Retener2_Porciento & "',[Referencia]= '" & Factura.Referencia_Factura & "'  " &
+                             "WHERE  (Numero_Factura = '" & Factura.Numero_Factura & "') AND (Tipo_Factura = '" & Factura.Tipo_Factura & "')"
                 'SqlCompras = "UPDATE [Facturas]  SET [Cod_Vendedor]='" & FrmFacturas.CboCodigoVendedor.Text & "' , [Cod_Cajero] = '" & FrmFacturas.CboCajero.Text & "',[Cod_Cliente] = '" & FrmFacturas.TxtCodigoClientes.Text & "',[Nombre_Cliente] = '" & FrmFacturas.TxtNombres.Text & "',[Apellido_Cliente] = '" & FrmFacturas.TxtApellidos.Text & "',[Direccion_Cliente] = '" & FrmFacturas.TxtDireccion.Text & "',[Telefono_Cliente] = '" & FrmFacturas.TxtTelefono.Text & "',[Fecha_Vencimiento] = '" & FrmFacturas.DTVencimiento.Value & "' ,[Observaciones] = '" & FrmFacturas.TxtObservaciones.Text & "',[SubTotal] = " & Subtotal & ",[IVA] = " & Iva & ",[Pagado] = " & Pagado & ",[NetoPagar] = " & Neto & ",[MontoCredito] = " & Neto & ",[MetodoPago] = '" & MetodoPago & "',[Descuentos]= " & Descuento & ",[Exonerado]= '" & Exonerado & "',[MonedaFactura]= '" & MonedaFactura & "',[MonedaImprime]= '" & MonedaImprime & "',[CodigoProyecto]= '" & CodigoProyecto & "',[Retener1Porciento]= '" & Retener1 & "',[Retener2Porciento]= '" & Retener2 & "',[Referencia]= '" & Referencia & "'  " & _
                 '             "WHERE  (Numero_Factura = '" & ConsecutivoFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & FrmFacturas.CboTipoProducto.Text & "')"
                 MiConexion.Open()

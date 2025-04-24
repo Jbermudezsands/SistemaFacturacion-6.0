@@ -105,6 +105,10 @@
       <DependentUpon>FrmAjustarTodos.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Clases\Tablas\TablaDetalleFactura.vb" />
+    <Compile Include="Clases\Tablas\TablaDetalle_MetodoFacturas.vb" />
+    <Compile Include="Clases\Tablas\TablaFactura.vb" />
+    <Compile Include="Clases\Consultas\Lote.vb" />
     <Compile Include="FrmContenedores.Designer.vb">
       <DependentUpon>FrmContenedores.vb</DependentUpon>
     </Compile>

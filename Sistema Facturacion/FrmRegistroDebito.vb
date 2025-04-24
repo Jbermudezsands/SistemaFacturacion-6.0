@@ -234,11 +234,16 @@ Public Class FrmRegistroDebito
         My.Forms.FrmCuentasXCobrar.CmdGrabar.PerformClick()
         MsgBox("Se ha Grabado con Exito!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
         Me.Close()
+
+        Me.DTPFecha.Enabled = True
     End Sub
 
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
 
+
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Moneda As String = ""
+
+        Me.DTPFecha.Enabled = False
 
         If TipoNota = "Debito Proveedores" Or TipoNota = "Credito Proveedores" Then
             My.Forms.FrmConsultas.CodigoCliente = My.Forms.FrmCuentasXPagar.CboCodigoProveedor.Text

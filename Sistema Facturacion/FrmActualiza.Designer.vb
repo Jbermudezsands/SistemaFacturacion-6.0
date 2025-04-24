@@ -102,6 +102,11 @@ Partial Class FrmActualiza
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage4 = New System.Windows.Forms.TabPage()
+        Me.GroupBox11 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox12 = New System.Windows.Forms.GroupBox()
+        Me.OptDolares = New System.Windows.Forms.RadioButton()
+        Me.OptCordobas = New System.Windows.Forms.RadioButton()
+        Me.Button22 = New System.Windows.Forms.Button()
         Me.ProgressBarFactura = New System.Windows.Forms.ProgressBar()
         Me.ProgressBar6 = New System.Windows.Forms.ProgressBar()
         Me.Button16 = New System.Windows.Forms.Button()
@@ -141,11 +146,7 @@ Partial Class FrmActualiza
         Me.CmdCerrar = New System.Windows.Forms.Button()
         Me.BtnIniciar = New System.Windows.Forms.Button()
         Me.Label23 = New System.Windows.Forms.Label()
-        Me.Button22 = New System.Windows.Forms.Button()
-        Me.GroupBox11 = New System.Windows.Forms.GroupBox()
-        Me.GroupBox12 = New System.Windows.Forms.GroupBox()
-        Me.OptDolares = New System.Windows.Forms.RadioButton()
-        Me.OptCordobas = New System.Windows.Forms.RadioButton()
+        Me.Button23 = New System.Windows.Forms.Button()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -162,6 +163,8 @@ Partial Class FrmActualiza
         Me.GroupBox1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage4.SuspendLayout()
+        Me.GroupBox11.SuspendLayout()
+        Me.GroupBox12.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
         Me.TabPage6.SuspendLayout()
         Me.GroupBox9.SuspendLayout()
@@ -169,8 +172,6 @@ Partial Class FrmActualiza
         Me.TabPage8.SuspendLayout()
         Me.GroupBox10.SuspendLayout()
         Me.TabPage9.SuspendLayout()
-        Me.GroupBox11.SuspendLayout()
-        Me.GroupBox12.SuspendLayout()
         Me.SuspendLayout()
         '
         'PictureBox2
@@ -325,7 +326,7 @@ Partial Class FrmActualiza
         Me.TabPage5.Controls.Add(Me.Label20)
         Me.TabPage5.Location = New System.Drawing.Point(4, 22)
         Me.TabPage5.Name = "TabPage5"
-        Me.TabPage5.Size = New System.Drawing.Size(697, 206)
+        Me.TabPage5.Size = New System.Drawing.Size(607, 206)
         Me.TabPage5.TabIndex = 4
         Me.TabPage5.Text = "Ajustar Costo"
         Me.TabPage5.UseVisualStyleBackColor = True
@@ -499,7 +500,7 @@ Partial Class FrmActualiza
         Me.TabPage3.Controls.Add(Me.Label14)
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
         Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Size = New System.Drawing.Size(697, 206)
+        Me.TabPage3.Size = New System.Drawing.Size(607, 206)
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Actualizar Inv"
         Me.TabPage3.UseVisualStyleBackColor = True
@@ -623,7 +624,7 @@ Partial Class FrmActualiza
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(697, 206)
+        Me.TabPage2.Size = New System.Drawing.Size(607, 206)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Ajustar Precio"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -978,6 +979,7 @@ Partial Class FrmActualiza
         '
         'TabPage4
         '
+        Me.TabPage4.Controls.Add(Me.Button23)
         Me.TabPage4.Controls.Add(Me.GroupBox11)
         Me.TabPage4.Controls.Add(Me.ProgressBarFactura)
         Me.TabPage4.Controls.Add(Me.ProgressBar6)
@@ -986,10 +988,66 @@ Partial Class FrmActualiza
         Me.TabPage4.Location = New System.Drawing.Point(4, 22)
         Me.TabPage4.Name = "TabPage4"
         Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage4.Size = New System.Drawing.Size(697, 206)
+        Me.TabPage4.Size = New System.Drawing.Size(607, 206)
         Me.TabPage4.TabIndex = 5
         Me.TabPage4.Text = "Calculos"
         Me.TabPage4.UseVisualStyleBackColor = True
+        '
+        'GroupBox11
+        '
+        Me.GroupBox11.Controls.Add(Me.GroupBox12)
+        Me.GroupBox11.Controls.Add(Me.Button22)
+        Me.GroupBox11.Location = New System.Drawing.Point(270, 6)
+        Me.GroupBox11.Name = "GroupBox11"
+        Me.GroupBox11.Size = New System.Drawing.Size(191, 107)
+        Me.GroupBox11.TabIndex = 189
+        Me.GroupBox11.TabStop = False
+        Me.GroupBox11.Text = "Cuentas x Cobrar"
+        '
+        'GroupBox12
+        '
+        Me.GroupBox12.Controls.Add(Me.OptDolares)
+        Me.GroupBox12.Controls.Add(Me.OptCordobas)
+        Me.GroupBox12.Location = New System.Drawing.Point(6, 60)
+        Me.GroupBox12.Name = "GroupBox12"
+        Me.GroupBox12.Size = New System.Drawing.Size(171, 32)
+        Me.GroupBox12.TabIndex = 202
+        Me.GroupBox12.TabStop = False
+        '
+        'OptDolares
+        '
+        Me.OptDolares.AutoSize = True
+        Me.OptDolares.Location = New System.Drawing.Point(95, 8)
+        Me.OptDolares.Name = "OptDolares"
+        Me.OptDolares.Size = New System.Drawing.Size(61, 17)
+        Me.OptDolares.TabIndex = 1
+        Me.OptDolares.Text = "Dolares"
+        Me.OptDolares.UseVisualStyleBackColor = True
+        '
+        'OptCordobas
+        '
+        Me.OptCordobas.AutoSize = True
+        Me.OptCordobas.Checked = True
+        Me.OptCordobas.Location = New System.Drawing.Point(15, 9)
+        Me.OptCordobas.Name = "OptCordobas"
+        Me.OptCordobas.Size = New System.Drawing.Size(70, 17)
+        Me.OptCordobas.TabIndex = 0
+        Me.OptCordobas.TabStop = True
+        Me.OptCordobas.Text = "Cordobas"
+        Me.OptCordobas.UseVisualStyleBackColor = True
+        '
+        'Button22
+        '
+        Me.Button22.Image = CType(resources.GetObject("Button22.Image"), System.Drawing.Image)
+        Me.Button22.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button22.Location = New System.Drawing.Point(9, 20)
+        Me.Button22.Name = "Button22"
+        Me.Button22.Size = New System.Drawing.Size(75, 34)
+        Me.Button22.TabIndex = 188
+        Me.Button22.Tag = "28"
+        Me.Button22.Text = "Ajustes Total"
+        Me.Button22.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button22.UseVisualStyleBackColor = True
         '
         'ProgressBarFactura
         '
@@ -1064,7 +1122,7 @@ Partial Class FrmActualiza
         Me.TabPage6.Location = New System.Drawing.Point(4, 22)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(697, 206)
+        Me.TabPage6.Size = New System.Drawing.Size(607, 206)
         Me.TabPage6.TabIndex = 6
         Me.TabPage6.Text = "Reemplazo"
         Me.TabPage6.UseVisualStyleBackColor = True
@@ -1178,7 +1236,7 @@ Partial Class FrmActualiza
         Me.TabPage7.Location = New System.Drawing.Point(4, 22)
         Me.TabPage7.Name = "TabPage7"
         Me.TabPage7.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage7.Size = New System.Drawing.Size(697, 206)
+        Me.TabPage7.Size = New System.Drawing.Size(607, 206)
         Me.TabPage7.TabIndex = 7
         Me.TabPage7.Text = "Cierre"
         Me.TabPage7.UseVisualStyleBackColor = True
@@ -1208,7 +1266,7 @@ Partial Class FrmActualiza
         Me.TabPage8.Location = New System.Drawing.Point(4, 22)
         Me.TabPage8.Name = "TabPage8"
         Me.TabPage8.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage8.Size = New System.Drawing.Size(620, 206)
+        Me.TabPage8.Size = New System.Drawing.Size(607, 206)
         Me.TabPage8.TabIndex = 8
         Me.TabPage8.Text = "Auditoria"
         Me.TabPage8.UseVisualStyleBackColor = True
@@ -1359,7 +1417,7 @@ Partial Class FrmActualiza
         Me.TabPage9.Location = New System.Drawing.Point(4, 22)
         Me.TabPage9.Name = "TabPage9"
         Me.TabPage9.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage9.Size = New System.Drawing.Size(697, 206)
+        Me.TabPage9.Size = New System.Drawing.Size(607, 206)
         Me.TabPage9.TabIndex = 9
         Me.TabPage9.Text = "Segundo Plano"
         Me.TabPage9.UseVisualStyleBackColor = True
@@ -1397,61 +1455,18 @@ Partial Class FrmActualiza
         Me.Label23.TabIndex = 6
         Me.Label23.Text = "Activar Hilos PBI"
         '
-        'Button22
+        'Button23
         '
-        Me.Button22.Image = CType(resources.GetObject("Button22.Image"), System.Drawing.Image)
-        Me.Button22.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button22.Location = New System.Drawing.Point(9, 20)
-        Me.Button22.Name = "Button22"
-        Me.Button22.Size = New System.Drawing.Size(75, 34)
-        Me.Button22.TabIndex = 188
-        Me.Button22.Tag = "28"
-        Me.Button22.Text = "Ajustes Total"
-        Me.Button22.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button22.UseVisualStyleBackColor = True
-        '
-        'GroupBox11
-        '
-        Me.GroupBox11.Controls.Add(Me.GroupBox12)
-        Me.GroupBox11.Controls.Add(Me.Button22)
-        Me.GroupBox11.Location = New System.Drawing.Point(270, 6)
-        Me.GroupBox11.Name = "GroupBox11"
-        Me.GroupBox11.Size = New System.Drawing.Size(191, 107)
-        Me.GroupBox11.TabIndex = 189
-        Me.GroupBox11.TabStop = False
-        Me.GroupBox11.Text = "Cuentas x Cobrar"
-        '
-        'GroupBox12
-        '
-        Me.GroupBox12.Controls.Add(Me.OptDolares)
-        Me.GroupBox12.Controls.Add(Me.OptCordobas)
-        Me.GroupBox12.Location = New System.Drawing.Point(6, 60)
-        Me.GroupBox12.Name = "GroupBox12"
-        Me.GroupBox12.Size = New System.Drawing.Size(171, 32)
-        Me.GroupBox12.TabIndex = 202
-        Me.GroupBox12.TabStop = False
-        '
-        'OptDolares
-        '
-        Me.OptDolares.AutoSize = True
-        Me.OptDolares.Location = New System.Drawing.Point(95, 8)
-        Me.OptDolares.Name = "OptDolares"
-        Me.OptDolares.Size = New System.Drawing.Size(61, 17)
-        Me.OptDolares.TabIndex = 1
-        Me.OptDolares.Text = "Dolares"
-        Me.OptDolares.UseVisualStyleBackColor = True
-        '
-        'OptCordobas
-        '
-        Me.OptCordobas.AutoSize = True
-        Me.OptCordobas.Checked = True
-        Me.OptCordobas.Location = New System.Drawing.Point(15, 9)
-        Me.OptCordobas.Name = "OptCordobas"
-        Me.OptCordobas.Size = New System.Drawing.Size(70, 17)
-        Me.OptCordobas.TabIndex = 0
-        Me.OptCordobas.TabStop = True
-        Me.OptCordobas.Text = "Cordobas"
-        Me.OptCordobas.UseVisualStyleBackColor = True
+        Me.Button23.Image = Global.Sistema_Facturacion.My.Resources.Resources.Unpinned
+        Me.Button23.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button23.Location = New System.Drawing.Point(467, 17)
+        Me.Button23.Name = "Button23"
+        Me.Button23.Size = New System.Drawing.Size(66, 34)
+        Me.Button23.TabIndex = 203
+        Me.Button23.Tag = "28"
+        Me.Button23.Text = "Auditar Notas"
+        Me.Button23.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button23.UseVisualStyleBackColor = True
         '
         'FrmActualiza
         '
@@ -1495,6 +1510,9 @@ Partial Class FrmActualiza
         Me.GroupBox1.PerformLayout()
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage4.ResumeLayout(False)
+        Me.GroupBox11.ResumeLayout(False)
+        Me.GroupBox12.ResumeLayout(False)
+        Me.GroupBox12.PerformLayout()
         Me.GroupBox8.ResumeLayout(False)
         Me.GroupBox8.PerformLayout()
         Me.TabPage6.ResumeLayout(False)
@@ -1508,9 +1526,6 @@ Partial Class FrmActualiza
         Me.GroupBox10.PerformLayout()
         Me.TabPage9.ResumeLayout(False)
         Me.TabPage9.PerformLayout()
-        Me.GroupBox11.ResumeLayout(False)
-        Me.GroupBox12.ResumeLayout(False)
-        Me.GroupBox12.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1641,4 +1656,5 @@ Partial Class FrmActualiza
     Friend WithEvents GroupBox12 As GroupBox
     Friend WithEvents OptDolares As RadioButton
     Friend WithEvents OptCordobas As RadioButton
+    Friend WithEvents Button23 As Button
 End Class

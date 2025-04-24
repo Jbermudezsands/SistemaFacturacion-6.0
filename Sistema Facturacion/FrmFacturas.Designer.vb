@@ -1,9 +1,9 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class FrmFacturas
     Inherits System.Windows.Forms.Form
 
     'Form reemplaza a Dispose para limpiar la lista de componentes.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         If disposing AndAlso components IsNot Nothing Then
             components.Dispose()
@@ -17,7 +17,7 @@ Partial Class FrmFacturas
     'NOTA: el Diseñador de Windows Forms necesita el siguiente procedimiento
     'Se puede modificar usando el Diseñador de Windows Forms.  
     'No lo modifique con el editor de código.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmFacturas))
@@ -361,7 +361,7 @@ Partial Class FrmFacturas
         Me.TrueDBGridComponentes.Enabled = False
         Me.TrueDBGridComponentes.GroupByCaption = "Drag a column header here to group by that column"
         Me.TrueDBGridComponentes.Images.Add(CType(resources.GetObject("TrueDBGridComponentes.Images"), System.Drawing.Image))
-        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(22, 294)
+        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(22, 290)
         Me.TrueDBGridComponentes.Name = "TrueDBGridComponentes"
         Me.TrueDBGridComponentes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
@@ -450,7 +450,7 @@ Partial Class FrmFacturas
         '
         'TxtNumeroFactura
         '
-        Me.TxtNumeroFactura.Location = New System.Drawing.Point(78, 126)
+        Me.TxtNumeroFactura.Location = New System.Drawing.Point(86, 127)
         Me.TxtNumeroFactura.Name = "TxtNumeroFactura"
         Me.TxtNumeroFactura.Size = New System.Drawing.Size(100, 20)
         Me.TxtNumeroFactura.TabIndex = 226
@@ -964,7 +964,7 @@ Partial Class FrmFacturas
         '
         Me.TxtMonedaImprime.FormattingEnabled = True
         Me.TxtMonedaImprime.Items.AddRange(New Object() {"Cordobas", "Dolares"})
-        Me.TxtMonedaImprime.Location = New System.Drawing.Point(22, 267)
+        Me.TxtMonedaImprime.Location = New System.Drawing.Point(26, 267)
         Me.TxtMonedaImprime.Name = "TxtMonedaImprime"
         Me.TxtMonedaImprime.Size = New System.Drawing.Size(78, 21)
         Me.TxtMonedaImprime.TabIndex = 206
