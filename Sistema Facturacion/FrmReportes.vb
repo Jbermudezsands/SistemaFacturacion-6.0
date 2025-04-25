@@ -11319,6 +11319,8 @@ Public Class FrmReportes
                 ViewerForm.arvMain.Document = ArepSaldoClientes.Document
                 My.Application.DoEvents()
                 ArepSaldoClientes.LblImpreso.Text = "Impreso: " & Format(Now, "Long Date")
+                ArepSaldoClientes.FechaInicio = DTPFechaIni.Value
+                ArepSaldoClientes.FechaFin = DTPFechaFin.Value
                 ArepSaldoClientes.DataSource = DataSet.Tables("TotalVentas")
                 ArepSaldoClientes.Run(False)
                 ViewerForm.Show()
