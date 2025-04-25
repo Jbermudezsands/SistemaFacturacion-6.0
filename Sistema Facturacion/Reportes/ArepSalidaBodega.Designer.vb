@@ -16,55 +16,55 @@ Partial Public Class ArepSalidaBodega
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.Resources.ResourceManager = New System.Resources.ResourceManager(GetType(ArepSalidaBodega))
-        Me.Detail1 = New DataDynamics.ActiveReports.Detail
-        Me.TextBox1 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox2 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox3 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox4 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox6 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox7 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox5 = New DataDynamics.ActiveReports.TextBox
-        Me.PageHeader1 = New DataDynamics.ActiveReports.PageHeader
-        Me.ImgLogo = New DataDynamics.ActiveReports.Picture
-        Me.LblEncabezado = New DataDynamics.ActiveReports.Label
-        Me.LblTipoCompra = New DataDynamics.ActiveReports.Label
-        Me.LblOrden = New DataDynamics.ActiveReports.Label
-        Me.lblOrderDate = New DataDynamics.ActiveReports.Label
-        Me.lblOrderNum = New DataDynamics.ActiveReports.Label
-        Me.LblFechaOrden = New DataDynamics.ActiveReports.Label
-        Me.Label1 = New DataDynamics.ActiveReports.Label
-        Me.LblCodProveedor = New DataDynamics.ActiveReports.Label
-        Me.LblNombres = New DataDynamics.ActiveReports.Label
-        Me.LblBodegas = New DataDynamics.ActiveReports.Label
-        Me.Label10 = New DataDynamics.ActiveReports.Label
-        Me.Label22 = New DataDynamics.ActiveReports.Label
-        Me.lblProductName = New DataDynamics.ActiveReports.Label
-        Me.lblQty = New DataDynamics.ActiveReports.Label
-        Me.lblTotals = New DataDynamics.ActiveReports.Label
-        Me.Label2 = New DataDynamics.ActiveReports.Label
-        Me.Label12 = New DataDynamics.ActiveReports.Label
-        Me.Label13 = New DataDynamics.ActiveReports.Label
-        Me.Label14 = New DataDynamics.ActiveReports.Label
-        Me.Label15 = New DataDynamics.ActiveReports.Label
-        Me.Label3 = New DataDynamics.ActiveReports.Label
-        Me.Label4 = New DataDynamics.ActiveReports.Label
-        Me.Label5 = New DataDynamics.ActiveReports.Label
-        Me.LblDireccion = New DataDynamics.ActiveReports.Label
-        Me.LblRuc = New DataDynamics.ActiveReports.Label
-        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
-        Me.GroupHeader1 = New DataDynamics.ActiveReports.GroupHeader
-        Me.GroupFooter1 = New DataDynamics.ActiveReports.GroupFooter
-        Me.LblNotas = New DataDynamics.ActiveReports.Label
-        Me.Label7 = New DataDynamics.ActiveReports.Label
-        Me.lblFreight = New DataDynamics.ActiveReports.Label
-        Me.lblSubTotals = New DataDynamics.ActiveReports.Label
-        Me.lblGrandTotal = New DataDynamics.ActiveReports.Label
-        Me.LblSubTotal = New DataDynamics.ActiveReports.Label
-        Me.LblIva = New DataDynamics.ActiveReports.Label
-        Me.LblTotal = New DataDynamics.ActiveReports.Label
-        Me.Label6 = New DataDynamics.ActiveReports.Label
-        Me.Label8 = New DataDynamics.ActiveReports.Label
-        Me.Label9 = New DataDynamics.ActiveReports.Label
+        Me.Detail1 = New DataDynamics.ActiveReports.Detail()
+        Me.TextBox1 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox2 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox3 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox4 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox6 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox7 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox5 = New DataDynamics.ActiveReports.TextBox()
+        Me.PageHeader1 = New DataDynamics.ActiveReports.PageHeader()
+        Me.ImgLogo = New DataDynamics.ActiveReports.Picture()
+        Me.LblEncabezado = New DataDynamics.ActiveReports.Label()
+        Me.LblTipoCompra = New DataDynamics.ActiveReports.Label()
+        Me.LblOrden = New DataDynamics.ActiveReports.Label()
+        Me.lblOrderDate = New DataDynamics.ActiveReports.Label()
+        Me.lblOrderNum = New DataDynamics.ActiveReports.Label()
+        Me.LblFechaOrden = New DataDynamics.ActiveReports.Label()
+        Me.Label1 = New DataDynamics.ActiveReports.Label()
+        Me.LblCodProveedor = New DataDynamics.ActiveReports.Label()
+        Me.LblNombres = New DataDynamics.ActiveReports.Label()
+        Me.LblBodegas = New DataDynamics.ActiveReports.Label()
+        Me.Label10 = New DataDynamics.ActiveReports.Label()
+        Me.Label22 = New DataDynamics.ActiveReports.Label()
+        Me.lblProductName = New DataDynamics.ActiveReports.Label()
+        Me.lblQty = New DataDynamics.ActiveReports.Label()
+        Me.lblTotals = New DataDynamics.ActiveReports.Label()
+        Me.Label2 = New DataDynamics.ActiveReports.Label()
+        Me.Label12 = New DataDynamics.ActiveReports.Label()
+        Me.Label13 = New DataDynamics.ActiveReports.Label()
+        Me.Label14 = New DataDynamics.ActiveReports.Label()
+        Me.Label15 = New DataDynamics.ActiveReports.Label()
+        Me.Label3 = New DataDynamics.ActiveReports.Label()
+        Me.Label4 = New DataDynamics.ActiveReports.Label()
+        Me.Label5 = New DataDynamics.ActiveReports.Label()
+        Me.LblDireccion = New DataDynamics.ActiveReports.Label()
+        Me.LblRuc = New DataDynamics.ActiveReports.Label()
+        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter()
+        Me.GroupHeader1 = New DataDynamics.ActiveReports.GroupHeader()
+        Me.GroupFooter1 = New DataDynamics.ActiveReports.GroupFooter()
+        Me.LblNotas = New DataDynamics.ActiveReports.Label()
+        Me.Label7 = New DataDynamics.ActiveReports.Label()
+        Me.lblFreight = New DataDynamics.ActiveReports.Label()
+        Me.lblSubTotals = New DataDynamics.ActiveReports.Label()
+        Me.lblGrandTotal = New DataDynamics.ActiveReports.Label()
+        Me.LblSubTotal = New DataDynamics.ActiveReports.Label()
+        Me.LblIva = New DataDynamics.ActiveReports.Label()
+        Me.LblTotal = New DataDynamics.ActiveReports.Label()
+        Me.Label6 = New DataDynamics.ActiveReports.Label()
+        Me.Label8 = New DataDynamics.ActiveReports.Label()
+        Me.Label9 = New DataDynamics.ActiveReports.Label()
         CType(Me.TextBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -113,7 +113,7 @@ Partial Public Class ArepSalidaBodega
         '
         'Detail1
         '
-        Me.Detail1.ColumnSpacing = 0.0!
+        Me.Detail1.ColumnSpacing = 0!
         Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TextBox1, Me.TextBox2, Me.TextBox3, Me.TextBox4, Me.TextBox6, Me.TextBox7, Me.TextBox5})
         Me.Detail1.Height = 0.2291667!
         Me.Detail1.Name = "Detail1"
@@ -134,7 +134,7 @@ Partial Public Class ArepSalidaBodega
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox1.Text = Nothing
-        Me.TextBox1.Top = 0.0!
+        Me.TextBox1.Top = 0!
         Me.TextBox1.Width = 0.6842105!
         '
         'TextBox2
@@ -148,13 +148,13 @@ Partial Public Class ArepSalidaBodega
         Me.TextBox2.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox2.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox2.DataField = "Descripcion_Producto"
-        Me.TextBox2.Height = 0.2105263!
-        Me.TextBox2.Left = 1.315789!
+        Me.TextBox2.Height = 0.1875!
+        Me.TextBox2.Left = 1.3125!
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox2.Text = Nothing
-        Me.TextBox2.Top = 0.0!
-        Me.TextBox2.Width = 2.578947!
+        Me.TextBox2.Top = 0!
+        Me.TextBox2.Width = 2.5!
         '
         'TextBox3
         '
@@ -167,13 +167,13 @@ Partial Public Class ArepSalidaBodega
         Me.TextBox3.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox3.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox3.DataField = "Cantidad"
-        Me.TextBox3.Height = 0.2105263!
-        Me.TextBox3.Left = 3.894737!
+        Me.TextBox3.Height = 0.1875!
+        Me.TextBox3.Left = 3.8125!
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
         Me.TextBox3.Text = Nothing
-        Me.TextBox3.Top = 0.0!
-        Me.TextBox3.Width = 0.5263159!
+        Me.TextBox3.Top = 0!
+        Me.TextBox3.Width = 0.375!
         '
         'TextBox4
         '
@@ -186,14 +186,14 @@ Partial Public Class ArepSalidaBodega
         Me.TextBox4.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox4.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox4.DataField = "Precio_Unitario"
-        Me.TextBox4.Height = 0.2105263!
-        Me.TextBox4.Left = 4.421052!
+        Me.TextBox4.Height = 0.1875!
+        Me.TextBox4.Left = 4.1875!
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.OutputFormat = resources.GetString("TextBox4.OutputFormat")
         Me.TextBox4.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox4.Text = Nothing
-        Me.TextBox4.Top = 0.0!
-        Me.TextBox4.Width = 0.7368422!
+        Me.TextBox4.Top = 0!
+        Me.TextBox4.Width = 0.875!
         '
         'TextBox6
         '
@@ -206,14 +206,14 @@ Partial Public Class ArepSalidaBodega
         Me.TextBox6.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox6.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox6.DataField = "Precio_Neto"
-        Me.TextBox6.Height = 0.2105263!
-        Me.TextBox6.Left = 5.157895!
+        Me.TextBox6.Height = 0.1875!
+        Me.TextBox6.Left = 5.0625!
         Me.TextBox6.Name = "TextBox6"
         Me.TextBox6.OutputFormat = resources.GetString("TextBox6.OutputFormat")
         Me.TextBox6.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox6.Text = Nothing
-        Me.TextBox6.Top = 0.0!
-        Me.TextBox6.Width = 0.8421053!
+        Me.TextBox6.Top = 0!
+        Me.TextBox6.Width = 0.875!
         '
         'TextBox7
         '
@@ -226,14 +226,14 @@ Partial Public Class ArepSalidaBodega
         Me.TextBox7.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox7.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox7.DataField = "Importe"
-        Me.TextBox7.Height = 0.2105263!
-        Me.TextBox7.Left = 6.0!
+        Me.TextBox7.Height = 0.1875!
+        Me.TextBox7.Left = 5.9375!
         Me.TextBox7.Name = "TextBox7"
         Me.TextBox7.OutputFormat = resources.GetString("TextBox7.OutputFormat")
         Me.TextBox7.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox7.Text = Nothing
-        Me.TextBox7.Top = 0.0!
-        Me.TextBox7.Width = 0.7368419!
+        Me.TextBox7.Top = 0!
+        Me.TextBox7.Width = 0.8125!
         '
         'TextBox5
         '
@@ -251,7 +251,7 @@ Partial Public Class ArepSalidaBodega
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox5.Text = Nothing
-        Me.TextBox5.Top = 0.0!
+        Me.TextBox5.Top = 0!
         Me.TextBox5.Width = 0.5263157!
         '
         'PageHeader1
@@ -273,11 +273,11 @@ Partial Public Class ArepSalidaBodega
         Me.ImgLogo.Height = 1.105263!
         Me.ImgLogo.Image = Nothing
         Me.ImgLogo.ImageData = Nothing
-        Me.ImgLogo.Left = 0.0!
-        Me.ImgLogo.LineWeight = 0.0!
+        Me.ImgLogo.Left = 0!
+        Me.ImgLogo.LineWeight = 0!
         Me.ImgLogo.Name = "ImgLogo"
         Me.ImgLogo.SizeMode = DataDynamics.ActiveReports.SizeModes.Stretch
-        Me.ImgLogo.Top = 0.0!
+        Me.ImgLogo.Top = 0!
         Me.ImgLogo.Width = 1.736842!
         '
         'LblEncabezado
@@ -294,10 +294,10 @@ Partial Public Class ArepSalidaBodega
         Me.LblEncabezado.HyperLink = Nothing
         Me.LblEncabezado.Left = 1.789474!
         Me.LblEncabezado.Name = "LblEncabezado"
-        Me.LblEncabezado.Style = "color: #404040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
-            "d-color: White; font-size: 15.75pt; "
+        Me.LblEncabezado.Style = "color: #404040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" &
+    "d-color: White; font-size: 15.75pt; "
         Me.LblEncabezado.Text = ""
-        Me.LblEncabezado.Top = 0.0!
+        Me.LblEncabezado.Top = 0!
         Me.LblEncabezado.Width = 3.210526!
         '
         'LblTipoCompra
@@ -314,10 +314,10 @@ Partial Public Class ArepSalidaBodega
         Me.LblTipoCompra.HyperLink = Nothing
         Me.LblTipoCompra.Left = 5.0625!
         Me.LblTipoCompra.Name = "LblTipoCompra"
-        Me.LblTipoCompra.Style = "color: #404040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
-            "d-color: White; font-size: 14.25pt; "
+        Me.LblTipoCompra.Style = "color: #404040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" &
+    "d-color: White; font-size: 14.25pt; "
         Me.LblTipoCompra.Text = "Salida de Bodeba"
-        Me.LblTipoCompra.Top = 0.0!
+        Me.LblTipoCompra.Top = 0!
         Me.LblTipoCompra.Width = 1.5625!
         '
         'LblOrden
@@ -410,8 +410,8 @@ Partial Public Class ArepSalidaBodega
         Me.Label1.HyperLink = Nothing
         Me.Label1.Left = 0.1052632!
         Me.Label1.Name = "Label1"
-        Me.Label1.Style = "color: #000040; ddo-char-set: 0; text-align: left; font-weight: bold; background-" & _
-            "color: White; font-size: 8.25pt; "
+        Me.Label1.Style = "color: #000040; ddo-char-set: 0; text-align: left; font-weight: bold; background-" &
+    "color: White; font-size: 8.25pt; "
         Me.Label1.Text = "A:"
         Me.Label1.Top = 1.210526!
         Me.Label1.Width = 3.0!
@@ -487,8 +487,8 @@ Partial Public Class ArepSalidaBodega
         Me.Label10.HyperLink = Nothing
         Me.Label10.Left = 5.210526!
         Me.Label10.Name = "Label10"
-        Me.Label10.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" & _
-            "ont-size: 8.5pt; "
+        Me.Label10.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" &
+    "ont-size: 8.5pt; "
         Me.Label10.Text = "Bodegas"
         Me.Label10.Top = 1.210526!
         Me.Label10.Width = 1.473684!
@@ -507,8 +507,8 @@ Partial Public Class ArepSalidaBodega
         Me.Label22.HyperLink = Nothing
         Me.Label22.Left = 1.210526!
         Me.Label22.Name = "Label22"
-        Me.Label22.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" & _
-            "ont-size: 8.5pt; "
+        Me.Label22.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" &
+    "ont-size: 8.5pt; "
         Me.Label22.Text = "Nombre Producto"
         Me.Label22.Top = 1.947368!
         Me.Label22.Width = 2.6875!
@@ -527,8 +527,8 @@ Partial Public Class ArepSalidaBodega
         Me.lblProductName.HyperLink = Nothing
         Me.lblProductName.Left = 1.210526!
         Me.lblProductName.Name = "lblProductName"
-        Me.lblProductName.Style = "color: Black; text-align: center; font-weight: bold; background-color: White; fon" & _
-            "t-size: 8.5pt; "
+        Me.lblProductName.Style = "color: Black; text-align: center; font-weight: bold; background-color: White; fon" &
+    "t-size: 8.5pt; "
         Me.lblProductName.Text = "Nombre Producto"
         Me.lblProductName.Top = 1.947368!
         Me.lblProductName.Width = 2.6875!
@@ -547,8 +547,8 @@ Partial Public Class ArepSalidaBodega
         Me.lblQty.HyperLink = Nothing
         Me.lblQty.Left = 3.894737!
         Me.lblQty.Name = "lblQty"
-        Me.lblQty.Style = "color: Black; ddo-char-set: 0; text-align: center; font-weight: bold; background-" & _
-            "color: White; font-size: 8.25pt; "
+        Me.lblQty.Style = "color: Black; ddo-char-set: 0; text-align: center; font-weight: bold; background-" &
+    "color: White; font-size: 8.25pt; "
         Me.lblQty.Text = "Qty"
         Me.lblQty.Top = 1.947368!
         Me.lblQty.Width = 0.5!
@@ -565,13 +565,13 @@ Partial Public Class ArepSalidaBodega
         Me.lblTotals.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.lblTotals.Height = 0.1875!
         Me.lblTotals.HyperLink = Nothing
-        Me.lblTotals.Left = 6.0!
+        Me.lblTotals.Left = 5.9375!
         Me.lblTotals.Name = "lblTotals"
-        Me.lblTotals.Style = "color: Black; text-align: center; font-weight: bold; background-color: White; fon" & _
-            "t-size: 8.5pt; "
+        Me.lblTotals.Style = "color: Black; text-align: center; font-weight: bold; background-color: White; fon" &
+    "t-size: 8.5pt; "
         Me.lblTotals.Text = "Total"
-        Me.lblTotals.Top = 1.947368!
-        Me.lblTotals.Width = 0.75!
+        Me.lblTotals.Top = 1.9375!
+        Me.lblTotals.Width = 0.8125!
         '
         'Label2
         '
@@ -585,13 +585,13 @@ Partial Public Class ArepSalidaBodega
         Me.Label2.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label2.Height = 0.1875!
         Me.Label2.HyperLink = Nothing
-        Me.Label2.Left = 5.157895!
+        Me.Label2.Left = 5.0625!
         Me.Label2.Name = "Label2"
-        Me.Label2.Style = "color: Black; text-align: center; font-weight: bold; background-color: White; fon" & _
-            "t-size: 8.5pt; "
-        Me.Label2.Text = "Precio Neto"
-        Me.Label2.Top = 1.947368!
-        Me.Label2.Width = 0.8125!
+        Me.Label2.Style = "color: Black; text-align: center; font-weight: bold; background-color: White; fon" &
+    "t-size: 8.5pt; "
+        Me.Label2.Text = "Costo Neto"
+        Me.Label2.Top = 1.9375!
+        Me.Label2.Width = 0.88!
         '
         'Label12
         '
@@ -607,8 +607,8 @@ Partial Public Class ArepSalidaBodega
         Me.Label12.HyperLink = Nothing
         Me.Label12.Left = 0.1052632!
         Me.Label12.Name = "Label12"
-        Me.Label12.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" & _
-            "ont-size: 8.5pt; "
+        Me.Label12.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" &
+    "ont-size: 8.5pt; "
         Me.Label12.Text = "Codigo"
         Me.Label12.Top = 1.947368!
         Me.Label12.Width = 0.6875!
@@ -625,13 +625,13 @@ Partial Public Class ArepSalidaBodega
         Me.Label13.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label13.Height = 0.1875!
         Me.Label13.HyperLink = Nothing
-        Me.Label13.Left = 1.315789!
+        Me.Label13.Left = 1.3125!
         Me.Label13.Name = "Label13"
-        Me.Label13.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" & _
-            "ont-size: 8.5pt; "
+        Me.Label13.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" &
+    "ont-size: 8.5pt; "
         Me.Label13.Text = "Nombre Producto"
-        Me.Label13.Top = 1.947368!
-        Me.Label13.Width = 2.6875!
+        Me.Label13.Top = 1.9375!
+        Me.Label13.Width = 2.5!
         '
         'Label14
         '
@@ -643,15 +643,15 @@ Partial Public Class ArepSalidaBodega
         Me.Label14.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label14.Border.TopColor = System.Drawing.Color.Black
         Me.Label14.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
-        Me.Label14.Height = 0.1875!
+        Me.Label14.Height = 0.19!
         Me.Label14.HyperLink = Nothing
-        Me.Label14.Left = 3.894737!
+        Me.Label14.Left = 3.8125!
         Me.Label14.Name = "Label14"
-        Me.Label14.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
-            "d-color: White; font-size: 8.25pt; "
+        Me.Label14.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" &
+    "d-color: White; font-size: 8.25pt; "
         Me.Label14.Text = "Qty"
-        Me.Label14.Top = 1.947368!
-        Me.Label14.Width = 0.5!
+        Me.Label14.Top = 1.9375!
+        Me.Label14.Width = 0.4!
         '
         'Label15
         '
@@ -665,13 +665,13 @@ Partial Public Class ArepSalidaBodega
         Me.Label15.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.Label15.Height = 0.1875!
         Me.Label15.HyperLink = Nothing
-        Me.Label15.Left = 4.421052!
+        Me.Label15.Left = 4.1875!
         Me.Label15.Name = "Label15"
-        Me.Label15.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" & _
-            "ont-size: 8.5pt; "
-        Me.Label15.Text = "Precio Unit"
-        Me.Label15.Top = 1.947368!
-        Me.Label15.Width = 0.75!
+        Me.Label15.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" &
+    "ont-size: 8.5pt; "
+        Me.Label15.Text = "Costo Unit"
+        Me.Label15.Top = 1.9375!
+        Me.Label15.Width = 0.875!
         '
         'Label3
         '
@@ -687,8 +687,8 @@ Partial Public Class ArepSalidaBodega
         Me.Label3.HyperLink = Nothing
         Me.Label3.Left = 0.7894737!
         Me.Label3.Name = "Label3"
-        Me.Label3.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
-            "d-color: White; font-size: 8.25pt; "
+        Me.Label3.Style = "color: #000040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" &
+    "d-color: White; font-size: 8.25pt; "
         Me.Label3.Text = "UND"
         Me.Label3.Top = 1.947368!
         Me.Label3.Width = 0.5!
@@ -707,8 +707,8 @@ Partial Public Class ArepSalidaBodega
         Me.Label4.HyperLink = Nothing
         Me.Label4.Left = 3.105263!
         Me.Label4.Name = "Label4"
-        Me.Label4.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" & _
-            "ont-size: 8.5pt; "
+        Me.Label4.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" &
+    "ont-size: 8.5pt; "
         Me.Label4.Text = "Su Referencia"
         Me.Label4.Top = 1.210526!
         Me.Label4.Width = 1.052631!
@@ -727,8 +727,8 @@ Partial Public Class ArepSalidaBodega
         Me.Label5.HyperLink = Nothing
         Me.Label5.Left = 4.157895!
         Me.Label5.Name = "Label5"
-        Me.Label5.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" & _
-            "ont-size: 8.5pt; "
+        Me.Label5.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" &
+    "ont-size: 8.5pt; "
         Me.Label5.Text = "Nuestra Ref"
         Me.Label5.Top = 1.210526!
         Me.Label5.Width = 1.052631!
@@ -778,7 +778,7 @@ Partial Public Class ArepSalidaBodega
         '
         'GroupHeader1
         '
-        Me.GroupHeader1.Height = 0.0!
+        Me.GroupHeader1.Height = 0!
         Me.GroupHeader1.Name = "GroupHeader1"
         '
         'GroupFooter1
@@ -803,7 +803,7 @@ Partial Public Class ArepSalidaBodega
         Me.LblNotas.Name = "LblNotas"
         Me.LblNotas.Style = ""
         Me.LblNotas.Text = ""
-        Me.LblNotas.Top = 0.0!
+        Me.LblNotas.Top = 0!
         Me.LblNotas.Width = 3.473684!
         '
         'Label7
@@ -818,12 +818,12 @@ Partial Public Class ArepSalidaBodega
         Me.Label7.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label7.Height = 0.1875!
         Me.Label7.HyperLink = Nothing
-        Me.Label7.Left = 0.0!
+        Me.Label7.Left = 0!
         Me.Label7.Name = "Label7"
-        Me.Label7.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" & _
-            "ont-size: 8.5pt; "
+        Me.Label7.Style = "color: #000040; text-align: center; font-weight: bold; background-color: White; f" &
+    "ont-size: 8.5pt; "
         Me.Label7.Text = "Observaciones"
-        Me.Label7.Top = 0.0!
+        Me.Label7.Top = 0!
         Me.Label7.Width = 1.0625!
         '
         'lblFreight
@@ -840,8 +840,8 @@ Partial Public Class ArepSalidaBodega
         Me.lblFreight.HyperLink = Nothing
         Me.lblFreight.Left = 4.736842!
         Me.lblFreight.Name = "lblFreight"
-        Me.lblFreight.Style = "color: #000040; text-align: right; font-weight: bold; background-color: White; fo" & _
-            "nt-size: 8.5pt; "
+        Me.lblFreight.Style = "color: #000040; text-align: right; font-weight: bold; background-color: White; fo" &
+    "nt-size: 8.5pt; "
         Me.lblFreight.Text = "TOTAL IVA"
         Me.lblFreight.Top = 0.2631579!
         Me.lblFreight.Width = 1.125!
@@ -860,8 +860,8 @@ Partial Public Class ArepSalidaBodega
         Me.lblSubTotals.HyperLink = Nothing
         Me.lblSubTotals.Left = 4.736842!
         Me.lblSubTotals.Name = "lblSubTotals"
-        Me.lblSubTotals.Style = "color: #000040; text-align: right; font-weight: bold; background-color: White; fo" & _
-            "nt-size: 8.5pt; "
+        Me.lblSubTotals.Style = "color: #000040; text-align: right; font-weight: bold; background-color: White; fo" &
+    "nt-size: 8.5pt; "
         Me.lblSubTotals.Text = "SUB TOTAL"
         Me.lblSubTotals.Top = 0.05263158!
         Me.lblSubTotals.Width = 1.125!
@@ -880,8 +880,8 @@ Partial Public Class ArepSalidaBodega
         Me.lblGrandTotal.HyperLink = Nothing
         Me.lblGrandTotal.Left = 4.736842!
         Me.lblGrandTotal.Name = "lblGrandTotal"
-        Me.lblGrandTotal.Style = "color: #000040; text-align: right; font-weight: bold; background-color: White; fo" & _
-            "nt-size: 8.5pt; "
+        Me.lblGrandTotal.Style = "color: #000040; text-align: right; font-weight: bold; background-color: White; fo" &
+    "nt-size: 8.5pt; "
         Me.lblGrandTotal.Text = "TOTAL"
         Me.lblGrandTotal.Top = 0.4736842!
         Me.lblGrandTotal.Width = 1.125!
@@ -898,11 +898,11 @@ Partial Public Class ArepSalidaBodega
         Me.LblSubTotal.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblSubTotal.Height = 0.1875!
         Me.LblSubTotal.HyperLink = Nothing
-        Me.LblSubTotal.Left = 5.842105!
+        Me.LblSubTotal.Left = 5.875!
         Me.LblSubTotal.Name = "LblSubTotal"
         Me.LblSubTotal.Style = "ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 9.75pt; "
         Me.LblSubTotal.Text = ""
-        Me.LblSubTotal.Top = 0.05263158!
+        Me.LblSubTotal.Top = 0.0625!
         Me.LblSubTotal.Width = 0.875!
         '
         'LblIva
@@ -917,11 +917,11 @@ Partial Public Class ArepSalidaBodega
         Me.LblIva.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblIva.Height = 0.1875!
         Me.LblIva.HyperLink = Nothing
-        Me.LblIva.Left = 5.842105!
+        Me.LblIva.Left = 5.875!
         Me.LblIva.Name = "LblIva"
         Me.LblIva.Style = "ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 9.75pt; "
         Me.LblIva.Text = ""
-        Me.LblIva.Top = 0.2631579!
+        Me.LblIva.Top = 0.25!
         Me.LblIva.Width = 0.875!
         '
         'LblTotal
@@ -936,11 +936,11 @@ Partial Public Class ArepSalidaBodega
         Me.LblTotal.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblTotal.Height = 0.1875!
         Me.LblTotal.HyperLink = Nothing
-        Me.LblTotal.Left = 5.842105!
+        Me.LblTotal.Left = 5.875!
         Me.LblTotal.Name = "LblTotal"
         Me.LblTotal.Style = "ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 9.75pt; "
         Me.LblTotal.Text = ""
-        Me.LblTotal.Top = 0.4736842!
+        Me.LblTotal.Top = 0.4375!
         Me.LblTotal.Width = 0.875!
         '
         'Label6
@@ -1009,17 +1009,17 @@ Partial Public Class ArepSalidaBodega
         Me.PageSettings.Margins.Top = 0.2!
         Me.PageSettings.PaperHeight = 11.0!
         Me.PageSettings.PaperWidth = 8.5!
-        Me.PrintWidth = 6.803728!
+        Me.PrintWidth = 6.9375!
         Me.Sections.Add(Me.PageHeader1)
         Me.Sections.Add(Me.GroupHeader1)
         Me.Sections.Add(Me.Detail1)
         Me.Sections.Add(Me.GroupFooter1)
         Me.Sections.Add(Me.PageFooter1)
-        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Arial; font-style: normal; text-decoration: none; font-weight: norma" & _
-                    "l; font-size: 10pt; color: Black; ", "Normal"))
+        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Arial; font-style: normal; text-decoration: none; font-weight: norma" &
+            "l; font-size: 10pt; color: Black; ", "Normal"))
         Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-size: 16pt; font-weight: bold; ", "Heading1", "Normal"))
-        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Times New Roman; font-size: 14pt; font-weight: bold; font-style: ita" & _
-                    "lic; ", "Heading2", "Normal"))
+        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Times New Roman; font-size: 14pt; font-weight: bold; font-style: ita" &
+            "lic; ", "Heading2", "Normal"))
         Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-size: 13pt; font-weight: bold; ", "Heading3", "Normal"))
         CType(Me.TextBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox2, System.ComponentModel.ISupportInitialize).EndInit()
