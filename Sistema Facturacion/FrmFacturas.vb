@@ -7736,8 +7736,8 @@ Handles backgroundWorkerLote.RunWorkerCompleted
 
 
                         Case 1
-
-                            If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                            'Existencia
+                            If ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
                                     If ExistenciaNegativa <> "SI" Then
                                         If Existencia > 0 Then
@@ -7839,8 +7839,8 @@ Handles backgroundWorkerLote.RunWorkerCompleted
 
                         Case 2
 
-
-                            If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                            'Existencia
+                            If ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
                                     If ExistenciaNegativa <> "SI" Then
                                         If Existencia > 0 Then
@@ -7942,8 +7942,8 @@ Handles backgroundWorkerLote.RunWorkerCompleted
 
 
                         Case 3
-
-                            If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                            'Existencia
+                            If ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
                                     If ExistenciaNegativa <> "SI" Then
                                         If Existencia > 0 Then
@@ -8036,7 +8036,8 @@ Handles backgroundWorkerLote.RunWorkerCompleted
                             End If
                         Case 4
 
-                            If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                            'Existencia
+                            If ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
                                     If ExistenciaNegativa <> "SI" Then
                                         If Existencia > 0 Then
@@ -8148,7 +8149,8 @@ Handles backgroundWorkerLote.RunWorkerCompleted
 
                         Case 5
 
-                            If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                            'Existencia
+                            If ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
                                     If ExistenciaNegativa <> "SI" Then
                                         If Existencia > 0 Then
@@ -8261,6 +8263,7 @@ Handles backgroundWorkerLote.RunWorkerCompleted
                     End Select
 
                 Else
+
                     Existencia = BuscaExistenciaBodega(CodProducto, CodigoBodega)
 
                     Select Case Cols

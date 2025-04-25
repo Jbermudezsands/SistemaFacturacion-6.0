@@ -10547,6 +10547,9 @@ errSub:
         Fecha = Format(FrmFacturas.DTPFecha.Value, "yyyy-MM-dd")
         FechaVencimiento = Format(CDate(FechaVence), "dd/MM/yyyy")
 
+        If ConsecutivoFactura = "-----0-----" Then
+            Exit Sub
+        End If
 
         Sqldetalle = "SELECT *  FROM Detalle_MetodoFacturas WHERE (Numero_Factura = '" & ConsecutivoFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & FrmFacturas.CboTipoProducto.Text & "') AND (NombrePago = '" & NombrePago & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(Sqldetalle, MiConexion)

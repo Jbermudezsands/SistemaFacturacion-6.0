@@ -1,7 +1,10 @@
 Imports DataDynamics.ActiveReports 
 Imports DataDynamics.ActiveReports.Document 
 
-Public Class ArepSaldoClientes 
+Public Class ArepSaldoClientes
+
+    Public FechaInicio As Date, FechaFin As Date
+
 
     Private Sub Detail1_Format(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Detail1.Format
         Dim Saldo As Double = 0, MontoCredito As Double = 0, MontoPagado As Double = 0
@@ -20,7 +23,8 @@ Public Class ArepSaldoClientes
     End Sub
 
     Private Sub PageHeader1_Format(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PageHeader1.Format
-
+        Me.Label4.Text = "Saldo al " & Format(FechaInicio, "dd/MM/yyyy")
+        Me.Label6.Text = "Saldo Hasta " & Format(FechaFin, "dd/MM/yyyy")
     End Sub
 
     Private Sub PageFooter1_Format(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PageFooter1.Format
