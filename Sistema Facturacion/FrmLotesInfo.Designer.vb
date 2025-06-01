@@ -138,7 +138,7 @@ Partial Class FrmLotesInfo
         Me.CboLotes.EditorHeight = 15
         Me.CboLotes.Images.Add(CType(resources.GetObject("CboLotes.Images"), System.Drawing.Image))
         Me.CboLotes.ItemHeight = 15
-        Me.CboLotes.Location = New System.Drawing.Point(115, 17)
+        Me.CboLotes.Location = New System.Drawing.Point(115, 16)
         Me.CboLotes.MatchEntryTimeout = CType(2000, Long)
         Me.CboLotes.MaxDropDownItems = CType(5, Short)
         Me.CboLotes.MaxLength = 32767

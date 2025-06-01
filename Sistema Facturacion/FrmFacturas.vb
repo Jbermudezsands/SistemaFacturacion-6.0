@@ -960,7 +960,6 @@ Handles backgroundWorkerLote.RunWorkerCompleted
         End If
 
     End Sub
-
     Public Sub InsertarRegistrosWorker(Factura As TablaFactura, ByVal worker As BackgroundWorker, ByVal e As DoWorkEventArgs)
 
         Dim cod As String = "1"
