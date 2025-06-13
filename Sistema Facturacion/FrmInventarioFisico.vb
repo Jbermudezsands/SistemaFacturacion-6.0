@@ -1525,6 +1525,7 @@ Public Class FrmInventarioFisico
         Dim TotalExistenciaLote As Double = 0, Existencia As Double = 0, ExistenciaLoteExcel As Double = 0
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, oDataRow As DataRow, sql As String
         Dim StrSQLUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, FechaConteo As String, Fecha As String, iResultado As Integer
+        Dim args As ReporteExistenciaLote = New ReporteExistenciaLote, result As ReporteExistenciaLote = New ReporteExistenciaLote
 
         If Me.CboCodigoBodega.Text = "" Then
             MsgBox("Seleccione una bodega", MsgBoxStyle.Critical, "Zeus Facturacion")
@@ -1611,6 +1612,12 @@ Public Class FrmInventarioFisico
 
             NumeroLote = DvLoteProductos.Item(i)("LOTE")
 
+            args.Codigo_Bodega = CodigoBodega
+            args.Codigo_Producto = CodigoProduto
+            args.Descripcion_Producto = Descripcion
+            args.Numero_Lote = NumeroLote
+
+
             'If TotalExistenciaLote <> 0 Then
             '    If NumeroLote <> "" Then
             '        If NumeroLote <> DvLoteProductos.Item(i)("LOTE") Then
@@ -1622,8 +1629,8 @@ Public Class FrmInventarioFisico
             '    End If
             'End If
 
-            ExistenciaLote = BuscaExistenciaBodegaLote(CodigoProduto, CodigoBodega, NumeroLote)
-
+            result = BuscaExistenciaBodegaLote(args)
+            ExistenciaLote = result.Existencia_Lote
             TotalExistenciaLote = ExistenciaLote + TotalExistenciaLote
 
             'sql = "SELECT  *  FROM InventarioFisico WHERE (Cod_Producto = '" & CodigoProduto & "') AND (Fecha_Conteo = CONVERT(DATETIME, '" & FechaConteo & "', 102)) AND (Activo = 0) AND (CodBodega = '" & Me.CboCodigoBodega.Text & "') AND (Numero_Lote = '" & NumeroLote & "') ORDER BY Cod_Producto"

@@ -67,7 +67,7 @@ Public Class FrmLotesInfo
     Private Sub TxtNumeroLote_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtNumeroLote.TextChanged
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim SqlString As String = "", NumeroLote As String, iPosicion As Double, CodigoBodega As String, FechaVence As Date, ExistenciaLote As Double
-        Dim CodigoProducto As String, DescripcionProducto As String
+        Dim CodigoProducto As String, DescripcionProducto As String, args As ReporteExistenciaLote = New ReporteExistenciaLote, result As ReporteExistenciaLote = New ReporteExistenciaLote
         Dim oDataRow As DataRow, i As Double, Registro As Double = 0
 
 
@@ -127,11 +127,18 @@ Public Class FrmLotesInfo
 
 
 
+
                 If Not IsDBNull(DataSet.Tables("LotesDetalle").Rows(iPosicion)("FechaVence")) Then
                     FechaVence = DataSet.Tables("LotesDetalle").Rows(iPosicion)("FechaVence")
                 End If
 
-                ExistenciaLote = BuscaExistenciaBodegaLote(CodigoProducto, CodigoBodega, NumeroLote)
+                args.Codigo_Producto = CodigoProducto
+                args.Descripcion_Producto = DescripcionProducto
+                args.Codigo_Bodega = CodigoBodega
+                args.Numero_Lote = NumeroLote
+
+                result = BuscaExistenciaBodegaLote(args)
+                ExistenciaLote = result.Existencia_Lote
 
                 oDataRow = DataSet.Tables("ExistenciaLotes").NewRow
                 oDataRow("Numero_Lote") = NumeroLote

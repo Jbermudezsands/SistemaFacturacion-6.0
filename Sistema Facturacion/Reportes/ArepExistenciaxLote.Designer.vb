@@ -17,33 +17,33 @@ Partial Public Class ArepExistenciaxLote
     Private WithEvents PageFooter1 As DataDynamics.ActiveReports.PageFooter
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim OleDBDataSource1 As DataDynamics.ActiveReports.DataSources.OleDBDataSource = New DataDynamics.ActiveReports.DataSources.OleDBDataSource
+        Dim OleDBDataSource1 As DataDynamics.ActiveReports.DataSources.OleDBDataSource = New DataDynamics.ActiveReports.DataSources.OleDBDataSource()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ArepExistenciaxLote))
-        Me.PageHeader1 = New DataDynamics.ActiveReports.PageHeader
-        Me.LblTitulo = New DataDynamics.ActiveReports.Label
-        Me.LblDireccion = New DataDynamics.ActiveReports.Label
-        Me.LblRuc = New DataDynamics.ActiveReports.Label
-        Me.TextBox1 = New DataDynamics.ActiveReports.TextBox
-        Me.Label3 = New DataDynamics.ActiveReports.Label
-        Me.Label1 = New DataDynamics.ActiveReports.Label
-        Me.Line1 = New DataDynamics.ActiveReports.Line
-        Me.Line2 = New DataDynamics.ActiveReports.Line
-        Me.Label5 = New DataDynamics.ActiveReports.Label
-        Me.Label2 = New DataDynamics.ActiveReports.Label
-        Me.Label17 = New DataDynamics.ActiveReports.Label
-        Me.ImgLogo = New DataDynamics.ActiveReports.Picture
-        Me.Label4 = New DataDynamics.ActiveReports.Label
-        Me.Label6 = New DataDynamics.ActiveReports.Label
-        Me.Label7 = New DataDynamics.ActiveReports.Label
-        Me.Detail1 = New DataDynamics.ActiveReports.Detail
-        Me.TxtCodProducto = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox2 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox3 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox4 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox5 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox6 = New DataDynamics.ActiveReports.TextBox
-        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
-        Me.LblRango = New DataDynamics.ActiveReports.Label
+        Me.PageHeader1 = New DataDynamics.ActiveReports.PageHeader()
+        Me.LblTitulo = New DataDynamics.ActiveReports.Label()
+        Me.LblDireccion = New DataDynamics.ActiveReports.Label()
+        Me.LblRuc = New DataDynamics.ActiveReports.Label()
+        Me.TextBox1 = New DataDynamics.ActiveReports.TextBox()
+        Me.Label3 = New DataDynamics.ActiveReports.Label()
+        Me.Label1 = New DataDynamics.ActiveReports.Label()
+        Me.Line1 = New DataDynamics.ActiveReports.Line()
+        Me.Line2 = New DataDynamics.ActiveReports.Line()
+        Me.Label5 = New DataDynamics.ActiveReports.Label()
+        Me.Label2 = New DataDynamics.ActiveReports.Label()
+        Me.Label17 = New DataDynamics.ActiveReports.Label()
+        Me.ImgLogo = New DataDynamics.ActiveReports.Picture()
+        Me.Label4 = New DataDynamics.ActiveReports.Label()
+        Me.Label6 = New DataDynamics.ActiveReports.Label()
+        Me.Label7 = New DataDynamics.ActiveReports.Label()
+        Me.LblRango = New DataDynamics.ActiveReports.Label()
+        Me.Detail1 = New DataDynamics.ActiveReports.Detail()
+        Me.TxtCodProducto = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox2 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox3 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox4 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox5 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox6 = New DataDynamics.ActiveReports.TextBox()
+        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter()
         CType(Me.LblTitulo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblDireccion, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblRuc, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -57,13 +57,13 @@ Partial Public Class ArepExistenciaxLote
         CType(Me.Label4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label7, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LblRango, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TxtCodProducto, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox6, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.LblRango, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         '
         'PageHeader1
@@ -88,7 +88,7 @@ Partial Public Class ArepExistenciaxLote
         Me.LblTitulo.Name = "LblTitulo"
         Me.LblTitulo.Style = "ddo-char-set: 0; text-align: center; font-weight: bold; font-size: 14.25pt; "
         Me.LblTitulo.Text = "SYSTEMS AND SOLUTIONS"
-        Me.LblTitulo.Top = 0.0!
+        Me.LblTitulo.Top = 0!
         Me.LblTitulo.Width = 7.5!
         '
         'LblDireccion
@@ -197,13 +197,13 @@ Partial Public Class ArepExistenciaxLote
         Me.Line1.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Line1.Border.TopColor = System.Drawing.Color.Black
         Me.Line1.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Line1.Height = 0.0!
-        Me.Line1.Left = 0.0!
+        Me.Line1.Height = 0!
+        Me.Line1.Left = 0!
         Me.Line1.LineWeight = 1.0!
         Me.Line1.Name = "Line1"
         Me.Line1.Top = 1.25!
         Me.Line1.Width = 7.875!
-        Me.Line1.X1 = 0.0!
+        Me.Line1.X1 = 0!
         Me.Line1.X2 = 7.875!
         Me.Line1.Y1 = 1.25!
         Me.Line1.Y2 = 1.25!
@@ -218,13 +218,13 @@ Partial Public Class ArepExistenciaxLote
         Me.Line2.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Line2.Border.TopColor = System.Drawing.Color.Black
         Me.Line2.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Line2.Height = 0.0!
-        Me.Line2.Left = 0.0!
+        Me.Line2.Height = 0!
+        Me.Line2.Left = 0!
         Me.Line2.LineWeight = 1.0!
         Me.Line2.Name = "Line2"
         Me.Line2.Top = 1.55!
         Me.Line2.Width = 7.875!
-        Me.Line2.X1 = 0.0!
+        Me.Line2.X1 = 0!
         Me.Line2.X2 = 7.875!
         Me.Line2.Y1 = 1.55!
         Me.Line2.Y2 = 1.55!
@@ -283,7 +283,7 @@ Partial Public Class ArepExistenciaxLote
         Me.Label17.Name = "Label17"
         Me.Label17.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
         Me.Label17.Text = "Bodega"
-        Me.Label17.Top = 1.325!
+        Me.Label17.Top = 1.3125!
         Me.Label17.Width = 0.6875!
         '
         'ImgLogo
@@ -300,10 +300,10 @@ Partial Public Class ArepExistenciaxLote
         Me.ImgLogo.Image = Nothing
         Me.ImgLogo.ImageData = Nothing
         Me.ImgLogo.Left = 0.0625!
-        Me.ImgLogo.LineWeight = 0.0!
+        Me.ImgLogo.LineWeight = 0!
         Me.ImgLogo.Name = "ImgLogo"
         Me.ImgLogo.SizeMode = DataDynamics.ActiveReports.SizeModes.Stretch
-        Me.ImgLogo.Top = 0.0!
+        Me.ImgLogo.Top = 0!
         Me.ImgLogo.Width = 1.6875!
         '
         'Label4
@@ -363,9 +363,28 @@ Partial Public Class ArepExistenciaxLote
         Me.Label7.Top = 1.325!
         Me.Label7.Width = 1.1!
         '
+        'LblRango
+        '
+        Me.LblRango.Border.BottomColor = System.Drawing.Color.Black
+        Me.LblRango.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblRango.Border.LeftColor = System.Drawing.Color.Black
+        Me.LblRango.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblRango.Border.RightColor = System.Drawing.Color.Black
+        Me.LblRango.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblRango.Border.TopColor = System.Drawing.Color.Black
+        Me.LblRango.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblRango.Height = 0.175!
+        Me.LblRango.HyperLink = Nothing
+        Me.LblRango.Left = 0.125!
+        Me.LblRango.Name = "LblRango"
+        Me.LblRango.Style = "ddo-char-set: 0; text-align: left; font-size: 9pt; "
+        Me.LblRango.Text = "Desde el 01-09-2018 hasta 30-09-2018"
+        Me.LblRango.Top = 1.0625!
+        Me.LblRango.Width = 5.975!
+        '
         'Detail1
         '
-        Me.Detail1.ColumnSpacing = 0.0!
+        Me.Detail1.ColumnSpacing = 0!
         Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TxtCodProducto, Me.TextBox2, Me.TextBox3, Me.TextBox4, Me.TextBox5, Me.TextBox6})
         Me.Detail1.Height = 0.2291667!
         Me.Detail1.Name = "Detail1"
@@ -386,7 +405,7 @@ Partial Public Class ArepExistenciaxLote
         Me.TxtCodProducto.Name = "TxtCodProducto"
         Me.TxtCodProducto.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TxtCodProducto.Text = Nothing
-        Me.TxtCodProducto.Top = 0.0!
+        Me.TxtCodProducto.Top = 0!
         Me.TxtCodProducto.Width = 1.3!
         '
         'TextBox2
@@ -405,7 +424,7 @@ Partial Public Class ArepExistenciaxLote
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox2.Text = Nothing
-        Me.TextBox2.Top = 0.0!
+        Me.TextBox2.Top = 0!
         Me.TextBox2.Width = 2.3!
         '
         'TextBox3
@@ -424,7 +443,7 @@ Partial Public Class ArepExistenciaxLote
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox3.Text = Nothing
-        Me.TextBox3.Top = 0.0!
+        Me.TextBox3.Top = 0!
         Me.TextBox3.Width = 0.6750002!
         '
         'TextBox4
@@ -443,7 +462,7 @@ Partial Public Class ArepExistenciaxLote
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox4.Text = Nothing
-        Me.TextBox4.Top = 0.0!
+        Me.TextBox4.Top = 0!
         Me.TextBox4.Width = 1.275!
         '
         'TextBox5
@@ -462,7 +481,7 @@ Partial Public Class ArepExistenciaxLote
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox5.Text = Nothing
-        Me.TextBox5.Top = 0.0!
+        Me.TextBox5.Top = 0!
         Me.TextBox5.Width = 1.15!
         '
         'TextBox6
@@ -482,7 +501,7 @@ Partial Public Class ArepExistenciaxLote
         Me.TextBox6.OutputFormat = resources.GetString("TextBox6.OutputFormat")
         Me.TextBox6.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox6.Text = Nothing
-        Me.TextBox6.Top = 0.0!
+        Me.TextBox6.Top = 0!
         Me.TextBox6.Width = 1.05!
         '
         'PageFooter1
@@ -490,30 +509,11 @@ Partial Public Class ArepExistenciaxLote
         Me.PageFooter1.Height = 0.25!
         Me.PageFooter1.Name = "PageFooter1"
         '
-        'LblRango
-        '
-        Me.LblRango.Border.BottomColor = System.Drawing.Color.Black
-        Me.LblRango.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblRango.Border.LeftColor = System.Drawing.Color.Black
-        Me.LblRango.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblRango.Border.RightColor = System.Drawing.Color.Black
-        Me.LblRango.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblRango.Border.TopColor = System.Drawing.Color.Black
-        Me.LblRango.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblRango.Height = 0.175!
-        Me.LblRango.HyperLink = Nothing
-        Me.LblRango.Left = 0.125!
-        Me.LblRango.Name = "LblRango"
-        Me.LblRango.Style = "ddo-char-set: 0; text-align: left; font-size: 9pt; "
-        Me.LblRango.Text = "Desde el 01-09-2018 hasta 30-09-2018"
-        Me.LblRango.Top = 1.05!
-        Me.LblRango.Width = 5.975!
-        '
         'ArepExistenciaxLote
         '
         Me.MasterReport = False
-        OleDBDataSource1.ConnectionString = "Provider=SQLOLEDB.1;Password=P@ssword;Persist Security Info=True;User ID=sa;Initi" & _
-            "al Catalog=SistemaFacturacionRevetsa;Data Source=JUANBERMUDEZ\SQL2005"
+        OleDBDataSource1.ConnectionString = "Provider=SQLOLEDB.1;Password=P@ssword;Persist Security Info=True;User ID=sa;Initi" &
+    "al Catalog=SistemaFacturacionRevetsa;Data Source=JUANBERMUDEZ\SQL2005"
         OleDBDataSource1.SQL = resources.GetString("OleDBDataSource1.SQL")
         Me.DataSource = OleDBDataSource1
         Me.PageSettings.Margins.Bottom = 0.2!
@@ -526,11 +526,11 @@ Partial Public Class ArepExistenciaxLote
         Me.Sections.Add(Me.PageHeader1)
         Me.Sections.Add(Me.Detail1)
         Me.Sections.Add(Me.PageFooter1)
-        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Arial; font-style: normal; text-decoration: none; font-weight: norma" & _
-                    "l; font-size: 10pt; color: Black; ", "Normal"))
+        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Arial; font-style: normal; text-decoration: none; font-weight: norma" &
+            "l; font-size: 10pt; color: Black; ", "Normal"))
         Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-size: 16pt; font-weight: bold; ", "Heading1", "Normal"))
-        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Times New Roman; font-size: 14pt; font-weight: bold; font-style: ita" & _
-                    "lic; ", "Heading2", "Normal"))
+        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Times New Roman; font-size: 14pt; font-weight: bold; font-style: ita" &
+            "lic; ", "Heading2", "Normal"))
         Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-size: 13pt; font-weight: bold; ", "Heading3", "Normal"))
         CType(Me.LblTitulo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LblDireccion, System.ComponentModel.ISupportInitialize).EndInit()
@@ -545,13 +545,13 @@ Partial Public Class ArepExistenciaxLote
         CType(Me.Label4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label6, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label7, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LblRango, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TxtCodProducto, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox6, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.LblRango, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
 
     End Sub

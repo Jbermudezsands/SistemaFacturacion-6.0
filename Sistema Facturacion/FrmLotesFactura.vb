@@ -242,7 +242,7 @@ Handles backgroundWorkerLote2.RunWorkerCompleted
         Dim oDataRow As DataRow, i As Double, Registro As Double = 0
         Dim ExistenciaLote As Double, FechaVence As Date
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-
+        Dim Args As ReporteExistenciaLote = New ReporteExistenciaLote, result As ReporteExistenciaLote = New ReporteExistenciaLote
 
         SQlString = "SELECT     MAX(Detalle_Compras.Cod_Producto) AS Cod_Producto, Detalle_Compras.Numero_Lote, Lote.FechaVence FROM Detalle_Compras INNER JOIN Lote ON Detalle_Compras.Numero_Lote = Lote.Numero_Lote WHERE  (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Lote.Activo = 1) GROUP BY Detalle_Compras.Numero_Lote, Lote.FechaVence  HAVING(Not (Detalle_Compras.Numero_Lote Is NULL))"
         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
@@ -258,7 +258,12 @@ Handles backgroundWorkerLote2.RunWorkerCompleted
                 FechaVence = DataSet.Tables("Lotes").Rows(iPosicion)("FechaVence")
             End If
 
-            ExistenciaLote = BuscaExistenciaBodegaLote(CodigoProducto, CodigoBodega, NumeroLote)
+            Args.Codigo_Bodega = CodigoBodega
+            Args.Codigo_Producto = CodigoProducto
+            Args.Numero_Lote = NumeroLote
+
+            result = BuscaExistenciaBodegaLote(Args)
+            ExistenciaLote = result.Existencia_Lote
 
             '//////////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////SI LA EXISTENCIA DEL LOTE ES CERO LO INACTIVO ///////////////////////////////

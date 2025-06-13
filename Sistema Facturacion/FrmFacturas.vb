@@ -6438,7 +6438,7 @@ Handles backgroundWorkerLote.RunWorkerCompleted
         Dim TipoProducto As String = "Productos", TipoDescuento As String = "ImporteFijo", PrecioAnterior As Double = 0
         Dim PrecioDescDolar As Double, PrecioDescCordobas As Double, PorcientoDescuento As Double, CodigoBodega As String = ""
         Dim ExistenciaNegativa As String = "NO", Existencia As Double = 0, Cantidad2 As Double = 0, Categoria As String, Mensaje As String
-        Dim NumeroLote As String, ExistenciaLote As Double
+        Dim NumeroLote As String, ExistenciaLote As Double, Args As ReporteExistenciaLote = New ReporteExistenciaLote, resul As ReporteExistenciaLote = New ReporteExistenciaLote
 
         Try
 
@@ -6503,6 +6503,10 @@ Handles backgroundWorkerLote.RunWorkerCompleted
                 Existencia = BuscaInventarioInicialBodega(CodProducto, DateAdd(DateInterval.Day, 1, Me.DTPFecha.Value), CodigoBodega)
                 Descuento = 0
                 Tasa = 0
+
+                Args.Codigo_Bodega = CodigoBodega
+                Args.Codigo_Producto = CodProducto
+                Args.Numero_Lote = Me.TrueDBGridComponentes.Columns("CodTarea").Text
 
                 'Me.TrueDBGridComponentes.Columns(8).Text = CostoPromedioKardexBodega(CodProducto, Me.DTPFecha.Value, Me.CboCodigoBodega.Text)
 
@@ -6574,7 +6578,8 @@ Handles backgroundWorkerLote.RunWorkerCompleted
 
                         Case 1
 
-                            ExistenciaLote = BuscaExistenciaBodegaLote(CodProducto, Me.CboCodigoBodega.Text, Me.TrueDBGridComponentes.Columns("CodTarea").Text)
+                            resul = BuscaExistenciaBodegaLote(Args)
+                            ExistenciaLote = resul.Existencia_Lote
 
                             If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
@@ -6669,7 +6674,8 @@ Handles backgroundWorkerLote.RunWorkerCompleted
                         Case 2
 
 
-                            ExistenciaLote = BuscaExistenciaBodegaLote(CodProducto, Me.CboCodigoBodega.Text, Me.TrueDBGridComponentes.Columns("CodTarea").Text)
+                            resul = BuscaExistenciaBodegaLote(Args)
+                            ExistenciaLote = resul.Existencia_Lote
 
                             If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
@@ -6761,7 +6767,8 @@ Handles backgroundWorkerLote.RunWorkerCompleted
                                 Exit Sub
                             End If
 
-                            ExistenciaLote = BuscaExistenciaBodegaLote(CodProducto, Me.CboCodigoBodega.Text, Me.TrueDBGridComponentes.Columns("CodTarea").Text)
+                            resul = BuscaExistenciaBodegaLote(Args)
+                            ExistenciaLote = resul.Existencia_Lote
                             If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
                                     If ExistenciaNegativa <> "SI" Then
@@ -7714,8 +7721,8 @@ Handles backgroundWorkerLote.RunWorkerCompleted
                 DataSet.Reset()
 
                 If FacturaTarea = True Then
-                    ExistenciaLote = BuscaExistenciaBodegaLote(Me.TrueDBGridComponentes.Columns("Cod_Producto").Text, Me.CboCodigoBodega.Text, Me.TrueDBGridComponentes.Columns("CodTarea").Text)
-
+                    resul = BuscaExistenciaBodegaLote(Args)
+                    ExistenciaLote = resul.Existencia_Lote
                     Select Case Cols
                         Case 0
 
