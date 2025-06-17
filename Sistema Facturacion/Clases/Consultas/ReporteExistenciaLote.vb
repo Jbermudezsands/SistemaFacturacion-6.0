@@ -5,6 +5,7 @@
     Private CodigoBodega As String
     Private CodigoLinea As String
     Private ExistenciaLote As String
+    Private FechaVence As Date
 
 
     Public Property Numero_Lote As String
@@ -58,6 +59,15 @@
         End Get
         Set(value As String)
             ExistenciaLote = value
+        End Set
+    End Property
+
+    Public Property Fecha_Vence As Date
+        Get
+            Return FechaVence
+        End Get
+        Set(value As Date)
+            FechaVence = value
         End Set
     End Property
 End Class
