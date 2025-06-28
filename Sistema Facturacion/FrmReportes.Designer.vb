@@ -411,7 +411,7 @@ Partial Class FrmReportes
         Me.GroupBox3.Controls.Add(Me.Button3)
         Me.GroupBox3.Controls.Add(Me.Label5)
         Me.GroupBox3.Controls.Add(Me.CmbAgrupado)
-        Me.GroupBox3.Location = New System.Drawing.Point(281, 274)
+        Me.GroupBox3.Location = New System.Drawing.Point(280, 285)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(352, 84)
         Me.GroupBox3.TabIndex = 193
@@ -1511,7 +1511,7 @@ Partial Class FrmReportes
         'ChkAgrupVtas
         '
         Me.ChkAgrupVtas.AutoSize = True
-        Me.ChkAgrupVtas.Location = New System.Drawing.Point(488, 366)
+        Me.ChkAgrupVtas.Location = New System.Drawing.Point(474, 375)
         Me.ChkAgrupVtas.Name = "ChkAgrupVtas"
         Me.ChkAgrupVtas.Size = New System.Drawing.Size(139, 17)
         Me.ChkAgrupVtas.TabIndex = 209
@@ -1758,7 +1758,7 @@ Partial Class FrmReportes
         'ChkFacturasCero
         '
         Me.ChkFacturasCero.AutoSize = True
-        Me.ChkFacturasCero.Location = New System.Drawing.Point(488, 386)
+        Me.ChkFacturasCero.Location = New System.Drawing.Point(474, 396)
         Me.ChkFacturasCero.Name = "ChkFacturasCero"
         Me.ChkFacturasCero.Size = New System.Drawing.Size(144, 17)
         Me.ChkFacturasCero.TabIndex = 213
@@ -2041,7 +2041,7 @@ Partial Class FrmReportes
         'ChkAgrupadoBodega
         '
         Me.ChkAgrupadoBodega.AutoSize = True
-        Me.ChkAgrupadoBodega.Location = New System.Drawing.Point(652, 383)
+        Me.ChkAgrupadoBodega.Location = New System.Drawing.Point(634, 396)
         Me.ChkAgrupadoBodega.Name = "ChkAgrupadoBodega"
         Me.ChkAgrupadoBodega.Size = New System.Drawing.Size(130, 17)
         Me.ChkAgrupadoBodega.TabIndex = 217
@@ -2087,7 +2087,7 @@ Partial Class FrmReportes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(885, 504)
+        Me.ClientSize = New System.Drawing.Size(865, 504)
         Me.ControlBox = False
         Me.Controls.Add(Me.Imagen)
         Me.Controls.Add(Me.GroupProveedores)

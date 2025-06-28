@@ -16,6 +16,6 @@ Module Variables
     Public iAño As Integer, FechaGuardar As Date, UsuarioBodegaCompra As String, UsuarioTipoCompra As String, UsuarioProveedor As String
     Public DatasetDetalle As New DataSet, TaraRecepcion As Double, LiberarCompras As Boolean, TotalMerma As Double, MontoInicialMinimo As Double, MontoInicialDMinimo As Double
     Public ExistenciaWorker As Double = 0, LoteFacturaWorker As String
-
+    Public TipoReporte As String, Agrupado As String
 
 End Module

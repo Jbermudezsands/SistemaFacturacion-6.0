@@ -13279,6 +13279,9 @@ errSub:
         Result.Codigo_Bodega = Args.Codigo_Bodega
         Result.Numero_Lote = Args.Numero_Lote
         Result.Existencia_Lote = Existencia
+        Result.Fecha_Vence = Args.Fecha_Vence
+        Result.Tipo_Reporte = Args.Tipo_Reporte
+        Result.Agrupado_Reporte = Args.Agrupado_Reporte
 
 
 
@@ -13519,7 +13522,7 @@ errSub:
         BuscaExistenciaLote = Format(Existencia, "####0.0000")
     End Function
 
-    Public Function BuscaExistenciaLineaLote(ByVal CodigoProducto As String, ByVal CodigoLinea As String, ByVal NumeroLote As String) As ReporteExistenciaLote
+    Public Function BuscaExistenciaLineaLote(Args As ReporteExistenciaLote) As ReporteExistenciaLote
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, UnidadComprada As Double
         Dim TasaCambio As Double, Existencia As Double = 0, SqlConsulta As String, DevolucionCompra As Double = 0
@@ -13527,6 +13530,11 @@ errSub:
         Dim SalidaBodega As Double = 0, CostoVenta As Double = 0, ImporteFactura As Double = 0
         Dim ImporteCompra As Double, ImporteDevCompra As Double = 0, ImporteVenta As Double = 0, ImporteSalida As Double = 0
         Dim ImporteDevFactura As Double = 0, result As ReporteExistenciaLote = New ReporteExistenciaLote
+        Dim CodigoProducto As String, NumeroLote As String, CodigoLinea As String
+
+        CodigoProducto = Args.Codigo_Producto
+        NumeroLote = Args.Numero_Lote
+        CodigoLinea = Args.Codigo_Linea
 
         '///////////////////////////FORMULA DE COMPRA PROMEDIO////////////////////////////////////////////////////////////////
         ' CostoPromedio= ((Existencia*Costo)+(PrecioCompra*CantidadCompra))/(Existencia+CantidadComprada)
@@ -13643,6 +13651,10 @@ errSub:
         result.Codigo_Linea = CodigoLinea
         result.Numero_Lote = NumeroLote
         result.Existencia_Lote = Existencia
+        result.Fecha_Vence = Args.Fecha_Vence
+        result.Tipo_Reporte = Args.Tipo_Reporte
+        result.Agrupado_Reporte = Args.Agrupado_Reporte
+        result.Descripcion_Producto = Args.Descripcion_Producto
 
         BuscaExistenciaLineaLote = result
         'BuscaExistenciaLineaLote = Format(Existencia, "####0.0000")

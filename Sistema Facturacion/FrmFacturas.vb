@@ -2539,6 +2539,7 @@ Handles backgroundWorkerLote.RunWorkerCompleted
             Me.TrueDBGridComponentes.Columns("Descuento").Caption = "%Desc"
             Me.TrueDBGridComponentes.Columns("Descuento").DefaultValue = 0
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Width = 43
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Locked = True
             Me.TrueDBGridComponentes.Columns("Precio_Neto").Caption = "Precio Neto"
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Width = 65
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Locked = True
