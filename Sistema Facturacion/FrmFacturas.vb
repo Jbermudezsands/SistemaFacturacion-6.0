@@ -614,8 +614,8 @@ Handles backgroundWorkerLote.DoWork
 
             worker.WorkerReportsProgress = True
             worker.WorkerSupportsCancellation = True
-            'e.Result = BuscaExistenciaBodegaWoker(CodigoProducto, CodigoBodega, CostoProductoD, CostoProducto, worker, e)
-            e.Result = BuscaExistenciaBodegaLoteWorker(CodigoProducto, CodigoBodega, NumeroLote, fechaVence, worker, e)
+            'e.Result = BuscaExistenciaBodegaLoteWorker(CodigoProducto, CodigoBodega, NumeroLote, fechaVence, worker, e)
+            e.Result = BuscaExistenciaDetalleLoteWorker(args, worker, e)
         End If
     End Sub
     Private Sub backgroundWorkerLote_RunWorkerCompleted(
@@ -646,12 +646,12 @@ Handles backgroundWorkerLote.RunWorkerCompleted
 
             If ExistenciaLote <= 0 Then
 
-                MiConexion.Close()
-                StrSqlUpdate = "UPDATE [Lote] SET [Activo] = 0, [Existencia] = " & ExistenciaLote & " WHERE (Numero_Lote = '" & NumeroLote & "')"
-                MiConexion.Open()
-                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-                iResulteado = ComandoUpdate.ExecuteNonQuery
-                MiConexion.Close()
+                'MiConexion.Close()
+                'StrSqlUpdate = "UPDATE [Lote] SET [Activo] = 0, [Existencia] = " & ExistenciaLote & " WHERE (Numero_Lote = '" & NumeroLote & "')"
+                'MiConexion.Open()
+                'ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                'iResulteado = ComandoUpdate.ExecuteNonQuery
+                'MiConexion.Close()
 
             ElseIf ExistenciaLote > 0 Then
 
@@ -664,12 +664,12 @@ Handles backgroundWorkerLote.RunWorkerCompleted
                 End If
 
                 '/////////////////COMO ESTA ORGANIZADO DE MAYOR A MENOR CANCELO EL PROCESO EN CUANTO ENCUNTRO EL PRIMERO
-                MiConexion.Close()
-                StrSqlUpdate = "UPDATE [Lote] SET [Activo]= 1, [Existencia] = " & ExistenciaLote & " WHERE (Numero_Lote = '" & NumeroLote & "')"
-                MiConexion.Open()
-                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-                iResulteado = ComandoUpdate.ExecuteNonQuery
-                MiConexion.Close()
+                'MiConexion.Close()
+                'StrSqlUpdate = "UPDATE [Lote] SET [Activo]= 1, [Existencia] = " & ExistenciaLote & " WHERE (Numero_Lote = '" & NumeroLote & "')"
+                'MiConexion.Open()
+                'ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                'iResulteado = ComandoUpdate.ExecuteNonQuery
+                'MiConexion.Close()
 
 
 
@@ -684,6 +684,44 @@ Handles backgroundWorkerLote.RunWorkerCompleted
             backgroundWorkerLote.CancelAsync()
         End If
     End Sub
+
+    Public Function BuscaExistenciaDetalleLoteWorker(Args As ClaseLote, ByVal worker As BackgroundWorker, ByVal e As DoWorkEventArgs) As ClaseLote
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim Existencia As Double = 0, SqlConsulta As String, DevolucionCompra As Double = 0
+        Dim UnidadFacturada As Double = 0, DevolucionFactura As Double = 0, TransferenciaEnviada As Double = 0, TransferenciaRecibida As Double = 0
+        Dim SalidaBodega As Double = 0, CostoVenta As Double = 0, ImporteFactura As Double = 0
+        Dim ImporteDevCompra As Double = 0, ImporteVenta As Double = 0, ImporteSalida As Double = 0
+        Dim ImporteDevFactura As Double = 0, Argumentos As ClaseLote = New ClaseLote
+
+        Existencia = 0
+        If worker.CancellationPending Then
+            e.Cancel = True
+            Exit Function
+        Else
+            '//////////////////////////////////BUSCO EL TOTAL DE LAS COMPRAS////////////////////////////////////////////////////////////////////
+            SqlConsulta = "SELECT id_Detalle_Lote, Numero_Lote, Fecha, Tipo_Documento, Numero_Documento, FechaVence, Codigo_Producto, Cantidad, Disponible, Codigo_Bodega FROM Detalle_Lote WHERE  (Numero_Lote = '" & Args.NumeroLote & "') AND (Codigo_Producto = '" & Args.CodigoProducto & "') AND (Codigo_Bodega = '" & Args.CodigoBodega & "') "
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+            DataAdapter.Fill(DataSet, "Compras")
+            If DataSet.Tables("Compras").Rows.Count <> 0 Then
+                Existencia = DataSet.Tables("Compras").Rows(0)("Disponible")
+            End If
+
+        End If
+
+
+        Argumentos.Existencia = Existencia
+        Argumentos.CodigoProducto = Args.CodigoProducto
+        Argumentos.CodigoBodega = Args.CodigoBodega
+        Argumentos.NumeroLote = Args.NumeroLote
+        Argumentos.FechaVence = Args.FechaVence
+
+        Return Argumentos
+
+
+
+    End Function
+
     Public Function BuscaExistenciaBodegaLoteWorker(ByVal CodigoProducto As String, ByVal CodigoBodega As String, ByVal NumeroLote As String, FechaVence As Date, ByVal worker As BackgroundWorker, ByVal e As DoWorkEventArgs) As ClaseLote
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, UnidadComprada As Double
@@ -8953,6 +8991,7 @@ Handles backgroundWorkerLote.RunWorkerCompleted
                     Else
                         Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = My.Forms.FrmConsultas.Precio
                     End If
+
                 Else
                     CodProducto = My.Forms.FrmConsultas.Codigo
 

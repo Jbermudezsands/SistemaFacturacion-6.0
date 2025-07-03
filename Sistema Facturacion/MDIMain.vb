@@ -69,11 +69,11 @@ Handles backgroundWorkerLote.RunWorkerCompleted
 
             If ExistenciaLote <= 0 Then
 
-                UpdateExistenciaLote(ExistenciaLote, NumeroLote, 0)
+                UpdateExistenciaLote(ExistenciaLote, NumeroLote)
 
             ElseIf ExistenciaLote > 0 Then
 
-                UpdateExistenciaLote(ExistenciaLote, NumeroLote, 1)
+                UpdateExistenciaLote(ExistenciaLote, NumeroLote)
 
             End If
 
@@ -222,33 +222,133 @@ Handles backgroundWorkerLote.RunWorkerCompleted
 
 
     Public Sub BusquedaProductosLotes()
-        Dim SQlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim i As Double, Cont As Double, CodigoProducto As String, CodigoBodega As String
-
+        Dim SQlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, NumeroLote As String
+        Dim i As Double, Cont As Double, Cont2 As Double = 0, CodigoProducto As String, CodigoBodega As String
+        Dim j As Double, Result As Boolean = False, ActivarLote As Boolean = False, FechaVence As Date
+        Dim MiConexionTemp As New SqlClient.SqlConnection(Conexion & ";Connection Timeout=30")
         ''*******************************************************************************************************************************
         ''/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
         ''*******************************************************************************************************************************
         DataSetHebra.Reset()
         SQlString = "SELECT Numero_Lote, FechaVence, Cantidad as Existencia, Numero_Lote As Codigo_Producto,Numero_Lote As Nombre_Producto, Numero_Lote As Codigo_Bodega   FROM Detalle_Lote WHERE (Numero_Documento = '-1000000000') "
-        DataAdapterHebra = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapterHebra = New SqlClient.SqlDataAdapter(SQlString, MiConexionTemp)
         DataAdapterHebra.Fill(DataSetHebra, "ExistenciaLotes")
 
 
-        SQlString = "SELECT DISTINCT Productos.Cod_Productos, DetalleBodegas.Cod_Bodegas, Productos.Activo FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos WHERE (DetalleBodegas.Cod_Bodegas <> ' ') AND (Productos.Activo = Productos.Activo) AND (Tipo_Producto <> 'Descuento') ORDER BY Productos.Cod_Productos, DetalleBodegas.Cod_Bodegas "
-        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-        DataAdapter.Fill(DataSet, "Productos")
-        Cont = DataSet.Tables("Productos").Rows.Count
-        i = 0
+        '///////////////////////VERIFICO SI LOS LOTES TIENEN PRODUCTOS //////////////////////////
+        SQlString = "SELECT Numero_Lote, Nombre_Lote, FechaVence, Activo, Existencia FROM Lote WHERE (Numero_Lote <> N' ') ORDER BY FechaVence DESC "
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexionTemp)
+        DataAdapter.Fill(DataSet, "Lotes")
+        Cont2 = DataSet.Tables("Lotes").Rows.Count
+        j = 0
 
-        Do While Cont > i
-            CodigoProducto = DataSet.Tables("Productos").Rows(i)("Cod_Productos")
-            CodigoBodega = DataSet.Tables("Productos").Rows(i)("Cod_Bodegas")
-            'LoteDefectoWorker(CodigoProducto, CodigoBodega)
-            LoteDefecto(CodigoProducto, CodigoBodega)
-            i = i + 1
+
+        Do While Cont2 > j
+
+            My.Application.DoEvents()
+
+            '///////////////////////BUSCO LOS PRODUCTOS PARA ESTE LOTE /////////////////////////
+            NumeroLote = DataSet.Tables("Lotes").Rows(j)("Numero_Lote")
+            FechaVence = DataSet.Tables("Lotes").Rows(j)("FechaVence")
+
+            SQlString = "SELECT DISTINCT Detalle_Compras.Cod_Producto AS Cod_Productos, Detalle_Compras.Numero_Lote, Lote.FechaVence, Productos.Descripcion_Producto, Compras.Cod_Bodega FROM Detalle_Compras INNER JOIN Lote ON Detalle_Compras.Numero_Lote = Lote.Numero_Lote INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  " &
+                        "WHERE  (Detalle_Compras.Numero_Lote = '" & NumeroLote & "')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexionTemp)
+            DataAdapter.Fill(DataSet, "Productos")
+            Cont = DataSet.Tables("Productos").Rows.Count
+            i = 0
+
+            If NumeroLote = "F-24575" Then
+                NumeroLote = "F-24575"
+            End If
+
+
+            Do While Cont > i
+                My.Application.DoEvents()
+
+                CodigoProducto = DataSet.Tables("Productos").Rows(i)("Cod_Productos")
+                CodigoBodega = DataSet.Tables("Productos").Rows(i)("Cod_Bodega")
+                Result = LoteHilos(CodigoProducto, CodigoBodega, NumeroLote, FechaVence)
+
+                If Result = True Then
+                    ActivarLote = True
+                End If
+                i = i + 1
+            Loop
+
+            If MiConexionTemp.State = ConnectionState.Open Then
+                MiConexionTemp.Close()
+            End If
+            DataSet.Tables("Productos").Reset()
+
+            '////////////////////////////SI EXISTEN PRODUCTOS CON EXISTENCIAS ////////////////////////////
+            '/////////////////////////////////ACTIVO EL LOTE PROCESADO ////////////////////////////////////
+            If Cont > 0 Then
+                If NumeroLote <> "SIN LOTE" Then
+                    If ActivarLote = False Then
+                        UpdateActivarLoteHilos(NumeroLote, 0)
+                    ElseIf ActivarLote = True Then
+                        UpdateActivarLoteHilos(NumeroLote, 1)
+                    End If
+                End If
+            End If
+
+            ActivarLote = False
+            j = j + 1
         Loop
 
+        DataSet.Tables("Lotes").Reset()
+
+
+
     End Sub
+    Public Function LoteHilos(ByVal CodigoProducto As String, ByVal CodigoBodega As String, NumeroLote As String, FechaVence As Date) As Boolean
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim SQlString As String, iPosicion As Double = 0
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim Registro As Double = 0, FechaActual As Date = Format(Now, "dd/MM/yyyy")
+        Dim Existencia As Boolean = False
+
+        Dim ExistenciaLote As Double
+
+        'SQlString = "SELECT  MAX(Detalle_Compras.Cod_Producto) AS Cod_Producto, Detalle_Compras.Numero_Lote, Lote.FechaVence, DATEDIFF(day, Lote.FechaVence, '" & Format(FechaActual, "dd/MM/yyyy") & "') AS Dia FROM  Detalle_Compras INNER JOIN Lote ON Detalle_Compras.Numero_Lote = Lote.Numero_Lote WHERE (Detalle_Compras.Numero_Lote = '" & NumeroLote & "') AND (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') GROUP BY Detalle_Compras.Numero_Lote, Lote.FechaVence HAVING (NOT (Detalle_Compras.Numero_Lote IS NULL)) ORDER BY Lote.FechaVence"   'Todos los lotes Activos e inactivos
+        'DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        'DataAdapter.Fill(DataSet, "Lotes")
+        'iPosicion = 0
+        'FechaVenceLote = Format(Now, "dd/MM/yyyy")
+
+        'Do While DataSet.Tables("Lotes").Rows.Count > iPosicion
+
+
+        My.Application.DoEvents()
+
+            Dim args As Lote = New Lote
+
+        'NumeroLote = DataSet.Tables("Lotes").Rows(iPosicion)("Numero_Lote")
+        'FechaVence = DataSet.Tables("Lotes").Rows(iPosicion)("FechaVence")
+
+        args = BuscaExistenciaBodegaLote(CodigoProducto, CodigoBodega, NumeroLote, FechaVence)
+        UpdateDetalleLoteHilos(args)
+
+        ExistenciaLote = args.Existencia_Lote
+        NumeroLote = args.Numero_Lote
+
+
+        If ExistenciaLote <= 0 Then
+            Existencia = False
+        ElseIf ExistenciaLote > 0 Then
+            Existencia = True
+        End If
+
+
+
+        '    iPosicion = iPosicion + 1
+        'Loop
+
+        Return Existencia
+
+    End Function
+
 
     Public Function LoteDefecto(ByVal CodigoProducto As String, ByVal CodigoBodega As String)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -292,9 +392,9 @@ Handles backgroundWorkerLote.RunWorkerCompleted
             DataSetHebra.Tables("ExistenciaLotes").Rows.Add(oDataRow)
 
             If ExistenciaLote <= 0 Then
-                UpdateExistenciaLote(ExistenciaLote, NumeroLote, 0)
+                UpdateExistenciaLote(ExistenciaLote, NumeroLote)
             ElseIf ExistenciaLote > 0 Then
-                UpdateExistenciaLote(ExistenciaLote, NumeroLote, 1)
+                UpdateExistenciaLote(ExistenciaLote, NumeroLote)
             End If
 
 
@@ -436,9 +536,67 @@ Handles backgroundWorkerLote.RunWorkerCompleted
 
 
     End Function
+    Private Sub UpdateDetalleLoteHilos(args As Lote)
+        Dim ComandoUpdate As New SqlClient.SqlCommand, StrSqlUpdate As String = "", iResulteado As Integer
+        Dim MiConexionHilos As New SqlClient.SqlConnection(Conexion & ";Connection Timeout=30")
+        Dim Sqlstring As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
 
-    Private Sub UpdateExistenciaLote(ExistenciaLote As Double, NumeroLote As String, Activar As Integer)
+        If args.Numero_Lote = "SIN LOTE" Then
+            Exit Sub
+        End If
+
+        Sqlstring = "SELECT *  FROM Detalle_Lote  WHERE  (Numero_Lote = '" & args.Numero_Lote & "') AND (Codigo_Bodega = '" & args.Codigo_Bodega & "') AND (Codigo_Producto = '" & args.Codigo_Producto & "') "
+        DataAdapter = New SqlClient.SqlDataAdapter(Sqlstring, MiConexionHilos)
+        DataAdapter.Fill(DataSet, "DetalleLote")
+
+        If DataSet.Tables("DetalleLote").Rows.Count <> 0 Then
+            StrSqlUpdate = "UPDATE [Detalle_Lote] SET [Disponible] = " & args.Existencia_Lote & " , [Fecha] = CONVERT(DATETIME, '" & Format(Now, "yyyy-MM-dd") & "', 102)  WHERE  (Numero_Lote = '" & args.Numero_Lote & "') AND (Codigo_Bodega = '" & args.Codigo_Bodega & "') AND (Codigo_Producto = '" & args.Codigo_Producto & "') "
+        ElseIf args.Existencia_Lote > 0 Then
+            StrSqlUpdate = "INSERT INTO [Detalle_Lote] ([Numero_Lote],[FechaVence],[Codigo_Producto],[Disponible],[Codigo_Bodega],[Fecha],[Tipo_Documento],[Numero_Documento]) VALUES ('" & args.Numero_Lote & "',CONVERT(DATETIME, '" & Format(args.Fecha_Vence, "yyyy-MM-dd") & "', 102),'" & args.Codigo_Producto & "'," & args.Existencia_Lote & ",'" & args.Codigo_Bodega & "', CONVERT(DATETIME, '" & Format(Now, "yyyy-MM-dd") & "', 102), '" & args.Numero_Lote & "', '" & args.Numero_Lote & "') "
+        End If
+
+        If StrSqlUpdate = "" Then
+            Exit Sub
+        End If
+
+        ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexionHilos)
+
+        If MiConexionHilos.State = ConnectionState.Closed Then
+            MiConexionHilos.Open()
+            iResulteado = ComandoUpdate.ExecuteNonQuery
+        Else
+            iResulteado = ComandoUpdate.ExecuteNonQuery
+            MiConexionHilos.Close()
+        End If
+
+    End Sub
+
+
+
+    Private Sub UpdateActivarLoteHilos(NumeroLote As String, Activar As Integer)
+        Dim ComandoUpdate As New SqlClient.SqlCommand, StrSqlUpdate As String, iResulteado As Integer
+        Dim MiConexionHilos As New SqlClient.SqlConnection(Conexion & ";Connection Timeout=30")
+
+        If NumeroLote = "SIN LOTE" Then
+            Exit Sub
+        End If
+
+        StrSqlUpdate = "UPDATE [Lote] SET [Activo] = " & Activar & " WHERE (Numero_Lote = '" & NumeroLote & "')"
+        ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexionHilos)
+
+        If MiConexionHilos.State = ConnectionState.Closed Then
+            MiConexionHilos.Open()
+            iResulteado = ComandoUpdate.ExecuteNonQuery
+        Else
+            iResulteado = ComandoUpdate.ExecuteNonQuery
+            MiConexionHilos.Close()
+        End If
+
+    End Sub
+
+    Private Sub UpdateExistenciaLote(ExistenciaLote As Double, NumeroLote As String)
         Dim ComandoUpdate As New SqlClient.SqlCommand, StrSqlUpdate As String, iResulteado As Integer
         Dim MiConexionHilos As New SqlClient.SqlConnection(Conexion)
 
@@ -446,7 +604,7 @@ Handles backgroundWorkerLote.RunWorkerCompleted
             Exit Sub
         End If
 
-        StrSqlUpdate = "UPDATE [Lote] SET [Activo] = " & Activar & ", [Existencia] = " & ExistenciaLote & " WHERE (Numero_Lote = '" & NumeroLote & "')"
+        StrSqlUpdate = "UPDATE [Lote] SET [Existencia] = " & ExistenciaLote & " WHERE (Numero_Lote = '" & NumeroLote & "')"
         ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexionHilos)
 
         If MiConexionHilos.State = ConnectionState.Closed Then

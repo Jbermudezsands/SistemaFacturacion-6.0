@@ -200,6 +200,7 @@ Partial Class MDIMain
         Me.RibbonLabel2 = New C1.Win.C1Ribbon.RibbonLabel()
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel()
         Me.TxtUsuario = New System.Windows.Forms.TextBox()
+        Me.RibbonSeparator8 = New C1.Win.C1Ribbon.RibbonSeparator()
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton()
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1608,6 +1609,7 @@ Partial Class MDIMain
         '
         Me.C1StatusBar1.LeftPaneItems.Add(Me.DocumentModifiedLabel)
         Me.C1StatusBar1.LeftPaneItems.Add(Me.RibbonLabel2)
+        Me.C1StatusBar1.LeftPaneItems.Add(Me.RibbonSeparator8)
         Me.C1StatusBar1.Location = New System.Drawing.Point(0, 493)
         Me.C1StatusBar1.Name = "C1StatusBar1"
         Me.C1StatusBar1.RightPaneItems.Add(Me.RibbonLabel1)
@@ -1638,6 +1640,10 @@ Partial Class MDIMain
         Me.TxtUsuario.TabIndex = 15
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
+        '
+        'RibbonSeparator8
+        '
+        Me.RibbonSeparator8.ID = "RibbonSeparator8"
         '
         'MDIMain
         '
@@ -1839,4 +1845,5 @@ Partial Class MDIMain
     Friend WithEvents RibbonHistoricoDebitoCredito As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton19 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton21 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonSeparator8 As C1.Win.C1Ribbon.RibbonSeparator
 End Class
