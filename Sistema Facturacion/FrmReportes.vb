@@ -12010,7 +12010,7 @@ Handles backgroundWorkerReportes.RunWorkerCompleted
                 ''*******************************************************************************************************************************
                 ''/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
                 ''*******************************************************************************************************************************
-                SqlString = "SELECT Numero_Lote, FechaVence, Cantidad as Existencia, Numero_Lote As Codigo_Producto,Numero_Lote As Nombre_Producto, Numero_Lote As Codigo_Bodega, Numero_Lote As Codigo_Linea   FROM Detalle_Lote WHERE (Numero_Documento = '-1000000000') "
+                SqlString = "SELECT Numero_Lote, FechaVence, Cantidad as Existencia, Codigo_Producto, Numero_Lote As Nombre_Producto, Codigo_Bodega, Numero_Lote As Codigo_Linea   FROM Detalle_Lote WHERE (Numero_Documento = '-1000000000') "
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 DataAdapter.Fill(DataSetReportes, "ExistenciaLotes")
 
@@ -12070,6 +12070,7 @@ Handles backgroundWorkerReportes.RunWorkerCompleted
                 Do While DataSet.Tables("LotesDetalle").Rows.Count > iPosicion
                     Dim worker As BackgroundWorker
                     Dim args As ReporteExistenciaLote = New ReporteExistenciaLote
+                    Dim Resultado As ReporteExistenciaLote = New ReporteExistenciaLote
 
 
                     My.Application.DoEvents()
@@ -12105,332 +12106,334 @@ Handles backgroundWorkerReportes.RunWorkerCompleted
 
                     If CmbAgrupado.Text = "Bodega" Then
 
-                        worker = New BackgroundWorker()
-                        AddHandler worker.DoWork, AddressOf backgroundWorkerReportes_DoWork
-                        AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerReportes_RunWorkerCompleted
-                        worker.RunWorkerAsync(args)
-
-                        'ExistenciaLote = BuscaExistenciaBodegaLote(CodigoProducto, CodigoBodega, NumeroLote)
-
-
-                        'If Me.ChkAgrupVtas.Checked = True Then
-                        '    If ExistenciaLote < 0 Then
-                        '        '///////////////////////////////////SI LA EXISTENCIA ES MENOR A CERO GUARDO ESTE REGISTRO /////////////////////////////////////
-                        '        Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Codigo_Producto= '" & CodigoProducto & "'"
-                        '    Else
-                        '        Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
-                        '    End If
-
-
-                        '    'Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
-                        '    Buscar_Fila = DataSet.Tables("ExistenciaLotes").Select(Criterios)
-
-                        '    If Buscar_Fila.Length > 0 Then
-                        '        Posicion = DataSet.Tables("ExistenciaLotes").Rows.IndexOf(Buscar_Fila(0))
-                        '        CodigoProductoAnterior = DataSet.Tables("ExistenciaLotes").Rows(Posicion)("Codigo_Producto")
-                        '        ExistenciaAnterior = DataSet.Tables("ExistenciaLotes").Rows(Posicion)("Existencia")
-                        '        If CodigoProducto = CodigoProductoAnterior Then
-                        '            If ExistenciaAnterior > ExistenciaLote Then
-                        '                ExistenciaLote = ExistenciaAnterior - Abs(ExistenciaLote)
-                        '            Else
-                        '                ExistenciaLote = 0
-                        '            End If
-                        '        End If
-
-                        '        DataSet.Tables("ExistenciaLotes").Rows(Posicion)("Existencia") = ExistenciaLote
-
-                        '        ExistenciaAnterior = 0
-                        '        CodigoProductoAnterior = ""
-
-                        '    ElseIf ExistenciaLote > 0 Then
-
-                        '        If CodigoProducto = CodigoProductoAnterior Then
-                        '            If ExistenciaLote > ExistenciaAnterior Then
-                        '                ExistenciaLote = ExistenciaLote - Abs(ExistenciaAnterior)
-                        '            Else
-                        '                ExistenciaLote = 0
-                        '            End If
-                        '        End If
-
-                        '        If ExistenciaLote > 0 Then
-                        '            oDataRow = DataSet.Tables("ExistenciaLotes").NewRow
-                        '            oDataRow("Numero_Lote") = NumeroLote
-                        '            oDataRow("FechaVence") = Format(FechaVence, "dd/MM/yyyy")
-                        '            oDataRow("Existencia") = ExistenciaLote
-                        '            oDataRow("Codigo_Producto") = CodigoProducto
-                        '            oDataRow("Nombre_Producto") = DescripcionProducto
-                        '            oDataRow("Codigo_Bodega") = CodigoBodega
-                        '            oDataRow("Codigo_Linea") = CodigoLinea
-                        '            DataSet.Tables("ExistenciaLotes").Rows.Add(oDataRow)
-                        '        End If
-
-                        '        ExistenciaAnterior = 0
-                        '        CodigoProductoAnterior = ""
-
-                        '    ElseIf ExistenciaLote < 0 Then
-                        '        ExistenciaAnterior = ExistenciaLote
-                        '        CodigoProductoAnterior = CodigoProducto
-
-                        '    End If
-
-                        'Else
-
-                        '    Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
-                        '    Buscar_Fila = DataSet.Tables("ExistenciaLotes").Select(Criterios)
-
-                        '    If Buscar_Fila.Length = 0 Then
-                        '        oDataRow = DataSet.Tables("ExistenciaLotes").NewRow
-                        '        oDataRow("Numero_Lote") = NumeroLote
-                        '        oDataRow("FechaVence") = Format(FechaVence, "dd/MM/yyyy")
-                        '        oDataRow("Existencia") = ExistenciaLote
-                        '        oDataRow("Codigo_Producto") = CodigoProducto
-                        '        oDataRow("Nombre_Producto") = DescripcionProducto
-                        '        oDataRow("Codigo_Bodega") = CodigoBodega
-                        '        oDataRow("Codigo_Linea") = CodigoLinea
-                        '        DataSet.Tables("ExistenciaLotes").Rows.Add(oDataRow)
-                        '    End If
-                        'End If
-
-                        'If Me.ChkAgrupVtas.Checked = True Then
-                        '    If ExistenciaLote < 0 Then
-                        '        '///////////////////////////////////SI LA EXISTENCIA ES MENOR A CERO GUARDO ESTE REGISTRO /////////////////////////////////////
-                        '        Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Codigo_Producto= '" & CodigoProducto & "'"
-                        '    Else
-                        '        Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
-                        '    End If
-
-
-                        '    'Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
-                        '    Buscar_Fila = DataSet.Tables("ExistenciaLotes").Select(Criterios)
-
-                        '    If Buscar_Fila.Length > 0 Then
-                        '        Posicion = DataSet.Tables("ExistenciaLotes").Rows.IndexOf(Buscar_Fila(0))
-                        '        CodigoProductoAnterior = DataSet.Tables("ExistenciaLotes").Rows(Posicion)("Codigo_Producto")
-                        '        ExistenciaAnterior = DataSet.Tables("ExistenciaLotes").Rows(Posicion)("Existencia")
-                        '        If CodigoProducto = CodigoProductoAnterior Then
-                        '            If ExistenciaAnterior > ExistenciaLote Then
-                        '                ExistenciaLote = ExistenciaAnterior - Abs(ExistenciaLote)
-                        '            Else
-                        '                ExistenciaLote = 0
-                        '            End If
-                        '        End If
-
-                        '        DataSet.Tables("ExistenciaLotes").Rows(Posicion)("Existencia") = ExistenciaLote
-
-                        '        ExistenciaAnterior = 0
-                        '        CodigoProductoAnterior = ""
-
-                        '    ElseIf ExistenciaLote > 0 Then
-
-                        '        If CodigoProducto = CodigoProductoAnterior Then
-                        '            If ExistenciaLote > ExistenciaAnterior Then
-                        '                ExistenciaLote = ExistenciaLote - Abs(ExistenciaAnterior)
-                        '            Else
-                        '                ExistenciaLote = 0
-                        '            End If
-                        '        End If
-
-                        '        If ExistenciaLote > 0 Then
-                        '            oDataRow = DataSet.Tables("ExistenciaLotes").NewRow
-                        '            oDataRow("Numero_Lote") = NumeroLote
-                        '            oDataRow("FechaVence") = Format(FechaVence, "dd/MM/yyyy")
-                        '            oDataRow("Existencia") = ExistenciaLote
-                        '            oDataRow("Codigo_Producto") = CodigoProducto
-                        '            oDataRow("Nombre_Producto") = DescripcionProducto
-                        '            oDataRow("Codigo_Bodega") = CodigoBodega
-                        '            DataSet.Tables("ExistenciaLotes").Rows.Add(oDataRow)
-                        '        End If
-
-                        '        ExistenciaAnterior = 0
-                        '        CodigoProductoAnterior = ""
-
-                        '    ElseIf ExistenciaLote < 0 Then
-                        '        ExistenciaAnterior = ExistenciaLote
-                        '        CodigoProductoAnterior = CodigoProducto
-
-                        '    End If
-
-                        'Else
-
-                        '    Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
-                        '    Buscar_Fila = DataSet.Tables("ExistenciaLotes").Select(Criterios)
-
-                        '    If Buscar_Fila.Length = 0 Then
-                        '        oDataRow = DataSet.Tables("ExistenciaLotes").NewRow
-                        '        oDataRow("Numero_Lote") = NumeroLote
-                        '        oDataRow("FechaVence") = Format(FechaVence, "dd/MM/yyyy")
-                        '        oDataRow("Existencia") = ExistenciaLote
-                        '        oDataRow("Codigo_Producto") = CodigoProducto
-                        '        oDataRow("Nombre_Producto") = DescripcionProducto
-                        '        oDataRow("Codigo_Bodega") = CodigoBodega
-                        '        DataSet.Tables("ExistenciaLotes").Rows.Add(oDataRow)
-                        '    End If
-                        'End If
-
-                    Else
-
-                        worker = New BackgroundWorker()
-                        AddHandler worker.DoWork, AddressOf backgroundWorkerReportes_DoWork
-                        AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerReportes_RunWorkerCompleted
-                        worker.RunWorkerAsync(args)
-
-                        'ExistenciaLote = BuscaExistenciaLineaLote(CodigoProducto, CodigoLinea, NumeroLote)
-
-                        'If Me.ChkAgrupVtas.Checked = True Then
-                        '    If ExistenciaLote < 0 Then
-                        '        '///////////////////////////////////SI LA EXISTENCIA ES MENOR A CERO GUARDO ESTE REGISTRO /////////////////////////////////////
-                        '        Criterios = "Codigo_Linea= '" & CodigoLinea & "' And Codigo_Producto= '" & CodigoProducto & "'"
-                        '    Else
-                        '        Criterios = "Codigo_Linea= '" & CodigoLinea & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
-                        '    End If
-
-
-                        '    'Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
-                        '    Buscar_Fila = DataSet.Tables("ExistenciaLotes").Select(Criterios)
-
-                        '    If Buscar_Fila.Length > 0 Then
-                        '        Posicion = DataSet.Tables("ExistenciaLotes").Rows.IndexOf(Buscar_Fila(0))
-                        '        CodigoProductoAnterior = DataSet.Tables("ExistenciaLotes").Rows(Posicion)("Codigo_Producto")
-                        '        ExistenciaAnterior = DataSet.Tables("ExistenciaLotes").Rows(Posicion)("Existencia")
-                        '        If CodigoProducto = CodigoProductoAnterior Then
-                        '            If ExistenciaAnterior > ExistenciaLote Then
-                        '                ExistenciaLote = ExistenciaAnterior - Abs(ExistenciaLote)
-                        '            Else
-                        '                ExistenciaLote = 0
-                        '            End If
-                        '        End If
-
-                        '        DataSet.Tables("ExistenciaLotes").Rows(Posicion)("Existencia") = ExistenciaLote
-
-                        '        ExistenciaAnterior = 0
-                        '        CodigoProductoAnterior = ""
-
-                        '    ElseIf ExistenciaLote > 0 Then
-
-                        '        If CodigoProducto = CodigoProductoAnterior Then
-                        '            If ExistenciaLote > ExistenciaAnterior Then
-                        '                ExistenciaLote = ExistenciaLote - Abs(ExistenciaAnterior)
-                        '            Else
-                        '                ExistenciaLote = 0
-                        '            End If
-                        '        End If
-
-                        '        If ExistenciaLote > 0 Then
-                        '            oDataRow = DataSet.Tables("ExistenciaLotes").NewRow
-                        '            oDataRow("Numero_Lote") = NumeroLote
-                        '            oDataRow("FechaVence") = Format(FechaVence, "dd/MM/yyyy")
-                        '            oDataRow("Existencia") = ExistenciaLote
-                        '            oDataRow("Codigo_Producto") = CodigoProducto
-                        '            oDataRow("Nombre_Producto") = DescripcionProducto
-                        '            oDataRow("Codigo_Bodega") = CodigoBodega
-                        '            oDataRow("Codigo_Linea") = CodigoLinea
-                        '            DataSet.Tables("ExistenciaLotes").Rows.Add(oDataRow)
-                        '        End If
-
-                        '        ExistenciaAnterior = 0
-                        '        CodigoProductoAnterior = ""
-
-                        '    ElseIf ExistenciaLote < 0 Then
-                        '        ExistenciaAnterior = ExistenciaLote
-                        '        CodigoProductoAnterior = CodigoProducto
-
-                        '    End If
-
-                        'Else
-
-                        '    Criterios = "Codigo_Linea= '" & CodigoBodega & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
-                        '    Buscar_Fila = DataSet.Tables("ExistenciaLotes").Select(Criterios)
-
-                        '    If Buscar_Fila.Length = 0 Then
-                        '        oDataRow = DataSet.Tables("ExistenciaLotes").NewRow
-                        '        oDataRow("Numero_Lote") = NumeroLote
-                        '        oDataRow("FechaVence") = Format(FechaVence, "dd/MM/yyyy")
-                        '        oDataRow("Existencia") = ExistenciaLote
-                        '        oDataRow("Codigo_Producto") = CodigoProducto
-                        '        oDataRow("Nombre_Producto") = DescripcionProducto
-                        '        oDataRow("Codigo_Bodega") = CodigoBodega
-                        '        oDataRow("Codigo_Linea") = CodigoLinea
-                        '        DataSet.Tables("ExistenciaLotes").Rows.Add(oDataRow)
-                        '    End If
-                        'End If
-
-                        'If Me.ChkAgrupVtas.Checked = True Then
-                        '    If ExistenciaLote < 0 Then
-                        '        '///////////////////////////////////SI LA EXISTENCIA ES MENOR A CERO GUARDO ESTE REGISTRO /////////////////////////////////////
-                        '        Criterios = "Codigo_Linea= '" & CodigoLinea & "' And Codigo_Producto= '" & CodigoProducto & "'"
-                        '    Else
-                        '        Criterios = "Codigo_Linea= '" & CodigoLinea & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
-                        '    End If
-
-
-                        '    'Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
-                        '    Buscar_Fila = DataSet.Tables("ExistenciaLotes").Select(Criterios)
-
-                        '    If Buscar_Fila.Length > 0 Then
-                        '        Posicion = DataSet.Tables("ExistenciaLotes").Rows.IndexOf(Buscar_Fila(0))
-                        '        CodigoProductoAnterior = DataSet.Tables("ExistenciaLotes").Rows(Posicion)("Codigo_Producto")
-                        '        ExistenciaAnterior = DataSet.Tables("ExistenciaLotes").Rows(Posicion)("Existencia")
-                        '        If CodigoProducto = CodigoProductoAnterior Then
-                        '            If ExistenciaAnterior > ExistenciaLote Then
-                        '                ExistenciaLote = ExistenciaAnterior - Abs(ExistenciaLote)
-                        '            Else
-                        '                ExistenciaLote = 0
-                        '            End If
-                        '        End If
-
-                        '        DataSet.Tables("ExistenciaLotes").Rows(Posicion)("Existencia") = ExistenciaLote
-
-                        '        ExistenciaAnterior = 0
-                        '        CodigoProductoAnterior = ""
-
-                        '    ElseIf ExistenciaLote > 0 Then
-
-                        '        If CodigoProducto = CodigoProductoAnterior Then
-                        '            If ExistenciaLote > ExistenciaAnterior Then
-                        '                ExistenciaLote = ExistenciaLote - Abs(ExistenciaAnterior)
-                        '            Else
-                        '                ExistenciaLote = 0
-                        '            End If
-                        '        End If
-
-                        '        If ExistenciaLote > 0 Then
-                        '            oDataRow = DataSet.Tables("ExistenciaLotes").NewRow
-                        '            oDataRow("Numero_Lote") = NumeroLote
-                        '            oDataRow("FechaVence") = Format(FechaVence, "dd/MM/yyyy")
-                        '            oDataRow("Existencia") = ExistenciaLote
-                        '            oDataRow("Codigo_Producto") = CodigoProducto
-                        '            oDataRow("Nombre_Producto") = DescripcionProducto
-                        '            oDataRow("Codigo_Bodega") = CodigoBodega
-                        '            oDataRow("Codigo_Linea") = CodigoLinea
-                        '            DataSet.Tables("ExistenciaLotes").Rows.Add(oDataRow)
-                        '        End If
-
-                        '        ExistenciaAnterior = 0
-                        '        CodigoProductoAnterior = ""
-
-                        '    ElseIf ExistenciaLote < 0 Then
-                        '        ExistenciaAnterior = ExistenciaLote
-                        '        CodigoProductoAnterior = CodigoProducto
-
-                        '    End If
-
-                        'Else
-
-                        '    Criterios = "Codigo_Linea= '" & CodigoLinea & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
-                        '    Buscar_Fila = DataSet.Tables("ExistenciaLotes").Select(Criterios)
-
-                        '    If Buscar_Fila.Length = 0 Then
-                        '        oDataRow = DataSet.Tables("ExistenciaLotes").NewRow
-                        '        oDataRow("Numero_Lote") = NumeroLote
-                        '        oDataRow("FechaVence") = Format(FechaVence, "dd/MM/yyyy")
-                        '        oDataRow("Existencia") = ExistenciaLote
-                        '        oDataRow("Codigo_Producto") = CodigoProducto
-                        '        oDataRow("Nombre_Producto") = DescripcionProducto
-                        '        oDataRow("Codigo_Bodega") = CodigoBodega
-                        '        oDataRow("Codigo_Linea") = CodigoLinea
-                        '        DataSet.Tables("ExistenciaLotes").Rows.Add(oDataRow)
-                        '    End If
-                        'End If
+                        'worker = New BackgroundWorker()
+                        'AddHandler worker.DoWork, AddressOf backgroundWorkerReportes_DoWork
+                        'AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerReportes_RunWorkerCompleted
+                        'worker.RunWorkerAsync(args)
+
+                        resultado = BuscaExistenciaBodegaLote(args)
+                        ExistenciaLote = resultado.Existencia_Lote
+
+                        If Me.ChkAgrupVtas.Checked = True Then
+                            If ExistenciaLote < 0 Then
+                                '///////////////////////////////////SI LA EXISTENCIA ES MENOR A CERO GUARDO ESTE REGISTRO /////////////////////////////////////
+                                Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Codigo_Producto= '" & CodigoProducto & "'"
+                            Else
+                                Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
+                            End If
+
+
+                            'Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
+                            Buscar_Fila = DataSetReportes.Tables("ExistenciaLotes").Select(Criterios)
+
+                            If Buscar_Fila.Length > 0 Then
+                                Posicion = DataSetReportes.Tables("ExistenciaLotes").Rows.IndexOf(Buscar_Fila(0))
+                                CodigoProductoAnterior = DataSetReportes.Tables("ExistenciaLotes").Rows(Posicion)("Codigo_Producto")
+                                ExistenciaAnterior = DataSetReportes.Tables("ExistenciaLotes").Rows(Posicion)("Existencia")
+                                If CodigoProducto = CodigoProductoAnterior Then
+                                    If ExistenciaAnterior > ExistenciaLote Then
+                                        ExistenciaLote = ExistenciaAnterior - Abs(ExistenciaLote)
+                                    Else
+                                        ExistenciaLote = 0
+                                    End If
+                                End If
+
+                                DataSetReportes.Tables("ExistenciaLotes").Rows(Posicion)("Existencia") = ExistenciaLote
+
+                                ExistenciaAnterior = 0
+                                CodigoProductoAnterior = ""
+
+                            ElseIf ExistenciaLote > 0 Then
+
+                                If CodigoProducto = CodigoProductoAnterior Then
+                                    If ExistenciaLote > ExistenciaAnterior Then
+                                        ExistenciaLote = ExistenciaLote - Abs(ExistenciaAnterior)
+                                    Else
+                                        ExistenciaLote = 0
+                                    End If
+                                End If
+
+                                If ExistenciaLote > 0 Then
+                                    oDataRow = DataSetReportes.Tables("ExistenciaLotes").NewRow
+                                    oDataRow("Numero_Lote") = NumeroLote
+                                    oDataRow("FechaVence") = Format(FechaVence, "dd/MM/yyyy")
+                                    oDataRow("Existencia") = ExistenciaLote
+                                    oDataRow("Codigo_Producto") = CodigoProducto
+                                    oDataRow("Nombre_Producto") = DescripcionProducto
+                                    oDataRow("Codigo_Bodega") = CodigoBodega
+                                    oDataRow("Codigo_Linea") = CodigoLinea
+                                    DataSetReportes.Tables("ExistenciaLotes").Rows.Add(oDataRow)
+                                End If
+
+                                ExistenciaAnterior = 0
+                                CodigoProductoAnterior = ""
+
+                            ElseIf ExistenciaLote < 0 Then
+                                ExistenciaAnterior = ExistenciaLote
+                                CodigoProductoAnterior = CodigoProducto
+
+                            End If
+
+                        Else
+
+                            Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
+                            Buscar_Fila = DataSetReportes.Tables("ExistenciaLotes").Select(Criterios)
+
+                            If Buscar_Fila.Length = 0 Then
+                                oDataRow = DataSetReportes.Tables("ExistenciaLotes").NewRow
+                                oDataRow("Numero_Lote") = NumeroLote
+                                oDataRow("FechaVence") = Format(FechaVence, "dd/MM/yyyy")
+                                oDataRow("Existencia") = ExistenciaLote
+                                oDataRow("Codigo_Producto") = CodigoProducto
+                                oDataRow("Nombre_Producto") = DescripcionProducto
+                                oDataRow("Codigo_Bodega") = CodigoBodega
+                                oDataRow("Codigo_Linea") = CodigoLinea
+                                DataSetReportes.Tables("ExistenciaLotes").Rows.Add(oDataRow)
+                            End If
+                        End If
+
+                        If Me.ChkAgrupVtas.Checked = True Then
+                            If ExistenciaLote < 0 Then
+                                '///////////////////////////////////SI LA EXISTENCIA ES MENOR A CERO GUARDO ESTE REGISTRO /////////////////////////////////////
+                                Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Codigo_Producto= '" & CodigoProducto & "'"
+                            Else
+                                Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
+                            End If
+
+
+                            'Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
+                            Buscar_Fila = DataSetReportes.Tables("ExistenciaLotes").Select(Criterios)
+
+                            If Buscar_Fila.Length > 0 Then
+                                Posicion = DataSetReportes.Tables("ExistenciaLotes").Rows.IndexOf(Buscar_Fila(0))
+                                CodigoProductoAnterior = DataSetReportes.Tables("ExistenciaLotes").Rows(Posicion)("Codigo_Producto")
+                                ExistenciaAnterior = DataSetReportes.Tables("ExistenciaLotes").Rows(Posicion)("Existencia")
+                                If CodigoProducto = CodigoProductoAnterior Then
+                                    If ExistenciaAnterior > ExistenciaLote Then
+                                        ExistenciaLote = ExistenciaAnterior - Abs(ExistenciaLote)
+                                    Else
+                                        ExistenciaLote = 0
+                                    End If
+                                End If
+
+                                DataSetReportes.Tables("ExistenciaLotes").Rows(Posicion)("Existencia") = ExistenciaLote
+
+                                ExistenciaAnterior = 0
+                                CodigoProductoAnterior = ""
+
+                            ElseIf ExistenciaLote > 0 Then
+
+                                If CodigoProducto = CodigoProductoAnterior Then
+                                    If ExistenciaLote > ExistenciaAnterior Then
+                                        ExistenciaLote = ExistenciaLote - Abs(ExistenciaAnterior)
+                                    Else
+                                        ExistenciaLote = 0
+                                    End If
+                                End If
+
+                                If ExistenciaLote > 0 Then
+                                    oDataRow = DataSetReportes.Tables("ExistenciaLotes").NewRow
+                                    oDataRow("Numero_Lote") = NumeroLote
+                                    oDataRow("FechaVence") = Format(FechaVence, "dd/MM/yyyy")
+                                    oDataRow("Existencia") = ExistenciaLote
+                                    oDataRow("Codigo_Producto") = CodigoProducto
+                                    oDataRow("Nombre_Producto") = DescripcionProducto
+                                    oDataRow("Codigo_Bodega") = CodigoBodega
+                                    DataSetReportes.Tables("ExistenciaLotes").Rows.Add(oDataRow)
+                                End If
+
+                                ExistenciaAnterior = 0
+                                CodigoProductoAnterior = ""
+
+                            ElseIf ExistenciaLote < 0 Then
+                                ExistenciaAnterior = ExistenciaLote
+                                CodigoProductoAnterior = CodigoProducto
+
+                            End If
+
+                        Else
+
+                            Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
+                            Buscar_Fila = DataSetReportes.Tables("ExistenciaLotes").Select(Criterios)
+
+                            If Buscar_Fila.Length = 0 Then
+                                oDataRow = DataSetReportes.Tables("ExistenciaLotes").NewRow
+                                oDataRow("Numero_Lote") = NumeroLote
+                                oDataRow("FechaVence") = Format(FechaVence, "dd/MM/yyyy")
+                                oDataRow("Existencia") = ExistenciaLote
+                                oDataRow("Codigo_Producto") = CodigoProducto
+                                oDataRow("Nombre_Producto") = DescripcionProducto
+                                oDataRow("Codigo_Bodega") = CodigoBodega
+                                DataSetReportes.Tables("ExistenciaLotes").Rows.Add(oDataRow)
+                            End If
+                        End If
+
+                    ElseIf CmbAgrupado.Text = "Linea" Then
+
+                        'worker = New BackgroundWorker()
+                        'AddHandler worker.DoWork, AddressOf backgroundWorkerReportes_DoWork
+                        'AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerReportes_RunWorkerCompleted
+                        'worker.RunWorkerAsync(args)
+
+                        Resultado = BuscaExistenciaLineaLote(args)
+
+                        ExistenciaLote = Resultado.Existencia_Lote
+
+                        If Me.ChkAgrupVtas.Checked = True Then
+                            If ExistenciaLote < 0 Then
+                                '///////////////////////////////////SI LA EXISTENCIA ES MENOR A CERO GUARDO ESTE REGISTRO /////////////////////////////////////
+                                Criterios = "Codigo_Linea= '" & CodigoLinea & "' And Codigo_Producto= '" & CodigoProducto & "'"
+                            Else
+                                Criterios = "Codigo_Linea= '" & CodigoLinea & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
+                            End If
+
+
+                            'Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
+                            Buscar_Fila = DataSetReportes.Tables("ExistenciaLotes").Select(Criterios)
+
+                            If Buscar_Fila.Length > 0 Then
+                                Posicion = DataSetReportes.Tables("ExistenciaLotes").Rows.IndexOf(Buscar_Fila(0))
+                                CodigoProductoAnterior = DataSetReportes.Tables("ExistenciaLotes").Rows(Posicion)("Codigo_Producto")
+                                ExistenciaAnterior = DataSetReportes.Tables("ExistenciaLotes").Rows(Posicion)("Existencia")
+                                If CodigoProducto = CodigoProductoAnterior Then
+                                    If ExistenciaAnterior > ExistenciaLote Then
+                                        ExistenciaLote = ExistenciaAnterior - Abs(ExistenciaLote)
+                                    Else
+                                        ExistenciaLote = 0
+                                    End If
+                                End If
+
+                                DataSetReportes.Tables("ExistenciaLotes").Rows(Posicion)("Existencia") = ExistenciaLote
+
+                                ExistenciaAnterior = 0
+                                CodigoProductoAnterior = ""
+
+                            ElseIf ExistenciaLote > 0 Then
+
+                                If CodigoProducto = CodigoProductoAnterior Then
+                                    If ExistenciaLote > ExistenciaAnterior Then
+                                        ExistenciaLote = ExistenciaLote - Abs(ExistenciaAnterior)
+                                    Else
+                                        ExistenciaLote = 0
+                                    End If
+                                End If
+
+                                If ExistenciaLote > 0 Then
+                                    oDataRow = DataSetReportes.Tables("ExistenciaLotes").NewRow
+                                    oDataRow("Numero_Lote") = NumeroLote
+                                    oDataRow("FechaVence") = Format(FechaVence, "dd/MM/yyyy")
+                                    oDataRow("Existencia") = ExistenciaLote
+                                    oDataRow("Codigo_Producto") = CodigoProducto
+                                    oDataRow("Nombre_Producto") = DescripcionProducto
+                                    oDataRow("Codigo_Bodega") = CodigoBodega
+                                    oDataRow("Codigo_Linea") = CodigoLinea
+                                    DataSetReportes.Tables("ExistenciaLotes").Rows.Add(oDataRow)
+                                End If
+
+                                ExistenciaAnterior = 0
+                                CodigoProductoAnterior = ""
+
+                            ElseIf ExistenciaLote < 0 Then
+                                ExistenciaAnterior = ExistenciaLote
+                                CodigoProductoAnterior = CodigoProducto
+
+                            End If
+
+                        Else
+
+                            Criterios = "Codigo_Linea= '" & CodigoLinea & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
+                            Buscar_Fila = DataSetReportes.Tables("ExistenciaLotes").Select(Criterios)
+
+                            If Buscar_Fila.Length = 0 Then
+                                oDataRow = DataSetReportes.Tables("ExistenciaLotes").NewRow
+                                oDataRow("Numero_Lote") = NumeroLote
+                                oDataRow("FechaVence") = Format(FechaVence, "dd/MM/yyyy")
+                                oDataRow("Existencia") = ExistenciaLote
+                                oDataRow("Codigo_Producto") = CodigoProducto
+                                oDataRow("Nombre_Producto") = DescripcionProducto
+                                oDataRow("Codigo_Bodega") = CodigoBodega
+                                oDataRow("Codigo_Linea") = CodigoLinea
+                                DataSetReportes.Tables("ExistenciaLotes").Rows.Add(oDataRow)
+                            End If
+                        End If
+
+                        If Me.ChkAgrupVtas.Checked = True Then
+                            If ExistenciaLote < 0 Then
+                                '///////////////////////////////////SI LA EXISTENCIA ES MENOR A CERO GUARDO ESTE REGISTRO /////////////////////////////////////
+                                Criterios = "Codigo_Linea= '" & CodigoLinea & "' And Codigo_Producto= '" & CodigoProducto & "'"
+                            Else
+                                Criterios = "Codigo_Linea= '" & CodigoLinea & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
+                            End If
+
+
+                            'Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
+                            Buscar_Fila = DataSetReportes.Tables("ExistenciaLotes").Select(Criterios)
+
+                            If Buscar_Fila.Length > 0 Then
+                                Posicion = DataSetReportes.Tables("ExistenciaLotes").Rows.IndexOf(Buscar_Fila(0))
+                                CodigoProductoAnterior = DataSetReportes.Tables("ExistenciaLotes").Rows(Posicion)("Codigo_Producto")
+                                ExistenciaAnterior = DataSetReportes.Tables("ExistenciaLotes").Rows(Posicion)("Existencia")
+                                If CodigoProducto = CodigoProductoAnterior Then
+                                    If ExistenciaAnterior > ExistenciaLote Then
+                                        ExistenciaLote = ExistenciaAnterior - Abs(ExistenciaLote)
+                                    Else
+                                        ExistenciaLote = 0
+                                    End If
+                                End If
+
+                                DataSetReportes.Tables("ExistenciaLotes").Rows(Posicion)("Existencia") = ExistenciaLote
+
+                                ExistenciaAnterior = 0
+                                CodigoProductoAnterior = ""
+
+                            ElseIf ExistenciaLote > 0 Then
+
+                                If CodigoProducto = CodigoProductoAnterior Then
+                                    If ExistenciaLote > ExistenciaAnterior Then
+                                        ExistenciaLote = ExistenciaLote - Abs(ExistenciaAnterior)
+                                    Else
+                                        ExistenciaLote = 0
+                                    End If
+                                End If
+
+                                If ExistenciaLote > 0 Then
+                                    oDataRow = DataSetReportes.Tables("ExistenciaLotes").NewRow
+                                    oDataRow("Numero_Lote") = NumeroLote
+                                    oDataRow("FechaVence") = Format(FechaVence, "dd/MM/yyyy")
+                                    oDataRow("Existencia") = ExistenciaLote
+                                    oDataRow("Codigo_Producto") = CodigoProducto
+                                    oDataRow("Nombre_Producto") = DescripcionProducto
+                                    oDataRow("Codigo_Bodega") = CodigoBodega
+                                    oDataRow("Codigo_Linea") = CodigoLinea
+                                    DataSetReportes.Tables("ExistenciaLotes").Rows.Add(oDataRow)
+                                End If
+
+                                ExistenciaAnterior = 0
+                                CodigoProductoAnterior = ""
+
+                            ElseIf ExistenciaLote < 0 Then
+                                ExistenciaAnterior = ExistenciaLote
+                                CodigoProductoAnterior = CodigoProducto
+
+                            End If
+
+                        Else
+
+                            Criterios = "Codigo_Linea= '" & CodigoLinea & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
+                            Buscar_Fila = DataSetReportes.Tables("ExistenciaLotes").Select(Criterios)
+
+                            If Buscar_Fila.Length = 0 Then
+                                oDataRow = DataSetReportes.Tables("ExistenciaLotes").NewRow
+                                oDataRow("Numero_Lote") = NumeroLote
+                                oDataRow("FechaVence") = Format(FechaVence, "dd/MM/yyyy")
+                                oDataRow("Existencia") = ExistenciaLote
+                                oDataRow("Codigo_Producto") = CodigoProducto
+                                oDataRow("Nombre_Producto") = DescripcionProducto
+                                oDataRow("Codigo_Bodega") = CodigoBodega
+                                oDataRow("Codigo_Linea") = CodigoLinea
+                                DataSetReportes.Tables("ExistenciaLotes").Rows.Add(oDataRow)
+                            End If
+                        End If
 
                     End If
 
@@ -12439,35 +12442,36 @@ Handles backgroundWorkerReportes.RunWorkerCompleted
                     iPosicion = iPosicion + 1
                 Loop
 
-                'If iPosicion = Cont Then
 
-                '    Dim ViewerForm As New FrmViewer()
+                If iPosicion = Cont Then
 
-                '    If CmbAgrupado.Text = "Bodega" Then
-                '        DvDetalleProductos = New DataView(DataSetReportes.Tables("ExistenciaLotes"))
-                '        DvDetalleProductos.Sort = "Codigo_Bodega, Codigo_Producto, FechaVence"
-                '        ArepExistenciaxLote.LblRango.Text = "Desde " & FechaIni & " Hasta " & FechaFin
-                '        ArepExistenciaxLote.TextBox3.DataField = "Codigo_Bodega"
-                '        ArepExistenciaxLote.Label17.Text = "Bodega"
+                    Dim ViewerForm As New FrmViewer()
 
-                '    Else
+                    If CmbAgrupado.Text = "Bodega" Then
+                        DvDetalleProductos = New DataView(DataSetReportes.Tables("ExistenciaLotes"))
+                        DvDetalleProductos.Sort = "Codigo_Bodega, Codigo_Producto, FechaVence"
+                        ArepExistenciaxLote.LblRango.Text = "Desde " & FechaIni & " Hasta " & FechaFin
+                        ArepExistenciaxLote.TextBox3.DataField = "Codigo_Bodega"
+                        ArepExistenciaxLote.Label17.Text = "Bodega"
 
-                '        DvDetalleProductos = New DataView(DataSetReportes.Tables("ExistenciaLotes"))
-                '        DvDetalleProductos.Sort = "Codigo_Linea, Codigo_Producto, FechaVence"
-                '        ArepExistenciaxLote.LblRango.Text = "Desde " & FechaIni & " Hasta " & FechaFin
-                '        ArepExistenciaxLote.TextBox3.DataField = "Cod_Linea"
-                '        ArepExistenciaxLote.Label17.Text = "Linea"
+                    Else
 
-                '    End If
+                        DvDetalleProductos = New DataView(DataSetReportes.Tables("ExistenciaLotes"))
+                        DvDetalleProductos.Sort = "Codigo_Linea, Codigo_Producto, FechaVence"
+                        ArepExistenciaxLote.LblRango.Text = "Desde " & FechaIni & " Hasta " & FechaFin
+                        ArepExistenciaxLote.TextBox3.DataField = "Cod_Linea"
+                        ArepExistenciaxLote.Label17.Text = "Linea"
 
-                '    ViewerForm.arvMain.Document = ArepExistenciaxLote.Document
-                '    My.Application.DoEvents()
-                '    'ArepMovimientoProductos.DataSource = SQL
-                '    ArepExistenciaxLote.DataSource = DvDetalleProductos
-                '    ArepExistenciaxLote.Run(False)
-                '    ViewerForm.Show()
+                    End If
 
-                'End If
+                    ViewerForm.arvMain.Document = ArepExistenciaxLote.Document
+                    My.Application.DoEvents()
+                    'ArepMovimientoProductos.DataSource = SQL
+                    ArepExistenciaxLote.DataSource = DvDetalleProductos
+                    ArepExistenciaxLote.Run(False)
+                    ViewerForm.Show()
+
+                End If
 
 
             Case "Movimientos de Productos"
