@@ -291,6 +291,7 @@ Public Class FrmFacturas
         TablaFactura.Referencia_Factura = TablaFacturaPublica.Referencia_Factura
         TablaFactura.Fecha_Hora = TablaFacturaPublica.Fecha_Hora
         TablaFactura.Descuentos_Factura = TablaFacturaPublica.Descuentos_Factura
+        TablaFactura.Observaciones_Factura = TablaFacturaPublica.Observaciones_Factura
 
 
         dsDetalle = ds.Copy
@@ -3245,6 +3246,7 @@ Handles backgroundWorkerLote.RunWorkerCompleted
         TablaFacturaPublica.SuReferencia1 = CboReferencia.Text
         TablaFacturaPublica.Nuestra_Referencia = ""
         TablaFacturaPublica.Codigo_Proyecto = CboProyecto.Text
+        TablaFacturaPublica.Observaciones_Factura = Me.TxtObservaciones.Text
 
         If My.Forms.FrmFacturas.SubTotalGral <> 0 Then
             TablaFacturaPublica.Sub_Total = Redondeo(My.Forms.FrmFacturas.SubTotalGral, 4)
@@ -3998,6 +4000,7 @@ Handles backgroundWorkerLote.RunWorkerCompleted
                 TablaFactura.SuReferencia1 = CboReferencia.Text
                 TablaFactura.Nuestra_Referencia = ""
                 TablaFactura.Codigo_Proyecto = CboProyecto.Text
+                TablaFactura.Observaciones_Factura = Me.TxtObservaciones.Text
 
 
 
@@ -6545,14 +6548,16 @@ Handles backgroundWorkerLote.RunWorkerCompleted
 
                 Args.Codigo_Bodega = CodigoBodega
                 Args.Codigo_Producto = CodProducto
-                Args.Numero_Lote = Me.TrueDBGridComponentes.Columns("CodTarea").Text
+
 
                 'Me.TrueDBGridComponentes.Columns(8).Text = CostoPromedioKardexBodega(CodProducto, Me.DTPFecha.Value, Me.CboCodigoBodega.Text)
 
                 If FacturaTarea = True Then
                     Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Locked = False
+                    Args.Numero_Lote = Me.TrueDBGridComponentes.Columns("CodTarea").Text
                 Else
                     Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Locked = False
+
                 End If
                 DataSet.Reset()
 
