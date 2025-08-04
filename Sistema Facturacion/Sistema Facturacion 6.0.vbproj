@@ -116,6 +116,12 @@
     <Compile Include="FrmContenedores.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmContratosProveedores.Designer.vb">
+      <DependentUpon>FrmContratosProveedores.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmContratosProveedores.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmListadoRecibos.Designer.vb">
       <DependentUpon>FrmListadoRecibos.vb</DependentUpon>
     </Compile>
@@ -1683,6 +1689,9 @@
   <ItemGroup>
     <EmbeddedResource Include="FrmContenedores.resx">
       <DependentUpon>FrmContenedores.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmContratosProveedores.resx">
+      <DependentUpon>FrmContratosProveedores.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmListadoRecibos.resx">
       <DependentUpon>FrmListadoRecibos.vb</DependentUpon>

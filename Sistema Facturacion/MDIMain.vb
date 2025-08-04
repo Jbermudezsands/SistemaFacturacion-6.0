@@ -2031,6 +2031,26 @@ Handles backgroundWorkerLote.RunWorkerCompleted
         My.Forms.FrmListadoRecibo.Show()
     End Sub
 
+    Private Sub RibbonButton71_Click(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub RibbonSolicitud_Click(sender As Object, e As EventArgs) Handles RibbonSolicitud.Click
+        My.Forms.FrmListaSolicitud.MdiParent = Me
+        My.Forms.FrmListaSolicitud.Show()
+    End Sub
+
+    Private Sub RibbonOrdenCompra_Click(sender As Object, e As EventArgs) Handles RibbonOrdenCompra.Click
+        My.Forms.FrmListaOrdenCompra.MdiParent = Me
+        My.Forms.FrmListaOrdenCompra.Show()
+    End Sub
+
+    Private Sub RibbonCompras2_Click(sender As Object, e As EventArgs) Handles RibbonCompras2.Click
+        My.Forms.FrmCompras.MdiParent = Me
+        My.Forms.FrmCompras.EsSolicitud = False
+        My.Forms.FrmCompras.Show()
+    End Sub
+
     Private Sub RibbonButton21_Click(sender As Object, e As EventArgs) Handles RibbonButton21.Click
         My.Forms.FrmContenedores.MdiParent = Me
         My.Forms.FrmContenedores.Show()

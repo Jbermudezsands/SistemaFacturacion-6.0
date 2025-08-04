@@ -138,6 +138,13 @@ Partial Class MDIMain
         Me.RibbonReporteCtasXCob1 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonReporteGraficos = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonReporteGraficos1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonTab8 = New C1.Win.C1Ribbon.RibbonTab()
+        Me.RibbonGroup20 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonContratosProveedores = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonGroup19 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonSolicitud = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonOrdenCompra = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonCompras2 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonTab5 = New C1.Win.C1Ribbon.RibbonTab()
         Me.RibbonGroup11 = New C1.Win.C1Ribbon.RibbonGroup()
         Me.RibbonRecepcion = New C1.Win.C1Ribbon.RibbonButton()
@@ -198,9 +205,10 @@ Partial Class MDIMain
         Me.C1StatusBar1 = New C1.Win.C1Ribbon.C1StatusBar()
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel()
         Me.RibbonLabel2 = New C1.Win.C1Ribbon.RibbonLabel()
+        Me.RibbonSeparator8 = New C1.Win.C1Ribbon.RibbonSeparator()
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel()
         Me.TxtUsuario = New System.Windows.Forms.TextBox()
-        Me.RibbonSeparator8 = New C1.Win.C1Ribbon.RibbonSeparator()
+        Me.RibbonProveedores1 = New C1.Win.C1Ribbon.RibbonButton()
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton()
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -230,6 +238,7 @@ Partial Class MDIMain
         Me.c1Ribbon1.Tabs.Add(Me.RibbonTab2)
         Me.c1Ribbon1.Tabs.Add(Me.RibbonTab3)
         Me.c1Ribbon1.Tabs.Add(Me.RibbonTab4)
+        Me.c1Ribbon1.Tabs.Add(Me.RibbonTab8)
         Me.c1Ribbon1.Tabs.Add(Me.RibbonTab5)
         Me.c1Ribbon1.Tabs.Add(Me.RibbonTab6)
         Me.c1Ribbon1.Tabs.Add(Me.RibbonTab7)
@@ -1141,6 +1150,60 @@ Partial Class MDIMain
         Me.RibbonReporteGraficos1.Text = "Reporte/Excel"
         Me.RibbonReporteGraficos1.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
+        'RibbonTab8
+        '
+        Me.RibbonTab8.Groups.Add(Me.RibbonGroup20)
+        Me.RibbonTab8.Groups.Add(Me.RibbonGroup19)
+        Me.RibbonTab8.ID = "RibbonTab8"
+        Me.RibbonTab8.Text = "Compras"
+        '
+        'RibbonGroup20
+        '
+        Me.RibbonGroup20.ID = "RibbonGroup20"
+        Me.RibbonGroup20.Items.Add(Me.RibbonProveedores1)
+        Me.RibbonGroup20.Items.Add(Me.RibbonContratosProveedores)
+        Me.RibbonGroup20.Text = "Catalogo"
+        '
+        'RibbonContratosProveedores
+        '
+        Me.RibbonContratosProveedores.ID = "RibbonContratosProveedores"
+        Me.RibbonContratosProveedores.LargeImage = CType(resources.GetObject("RibbonContratosProveedores.LargeImage"), System.Drawing.Image)
+        Me.RibbonContratosProveedores.SmallImage = CType(resources.GetObject("RibbonContratosProveedores.SmallImage"), System.Drawing.Image)
+        Me.RibbonContratosProveedores.Text = "Contratos"
+        Me.RibbonContratosProveedores.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonGroup19
+        '
+        Me.RibbonGroup19.ID = "RibbonGroup19"
+        Me.RibbonGroup19.Items.Add(Me.RibbonSolicitud)
+        Me.RibbonGroup19.Items.Add(Me.RibbonOrdenCompra)
+        Me.RibbonGroup19.Items.Add(Me.RibbonCompras2)
+        Me.RibbonGroup19.Text = "Procesos "
+        '
+        'RibbonSolicitud
+        '
+        Me.RibbonSolicitud.ID = "RibbonSolicitud"
+        Me.RibbonSolicitud.LargeImage = CType(resources.GetObject("RibbonSolicitud.LargeImage"), System.Drawing.Image)
+        Me.RibbonSolicitud.SmallImage = CType(resources.GetObject("RibbonSolicitud.SmallImage"), System.Drawing.Image)
+        Me.RibbonSolicitud.Text = "Solicitud"
+        Me.RibbonSolicitud.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonOrdenCompra
+        '
+        Me.RibbonOrdenCompra.ID = "RibbonOrdenCompra"
+        Me.RibbonOrdenCompra.LargeImage = CType(resources.GetObject("RibbonOrdenCompra.LargeImage"), System.Drawing.Image)
+        Me.RibbonOrdenCompra.SmallImage = CType(resources.GetObject("RibbonOrdenCompra.SmallImage"), System.Drawing.Image)
+        Me.RibbonOrdenCompra.Text = "Orden-Compra"
+        Me.RibbonOrdenCompra.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonCompras2
+        '
+        Me.RibbonCompras2.ID = "RibbonCompras2"
+        Me.RibbonCompras2.LargeImage = CType(resources.GetObject("RibbonCompras2.LargeImage"), System.Drawing.Image)
+        Me.RibbonCompras2.SmallImage = CType(resources.GetObject("RibbonCompras2.SmallImage"), System.Drawing.Image)
+        Me.RibbonCompras2.Text = "Compras"
+        Me.RibbonCompras2.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
         'RibbonTab5
         '
         Me.RibbonTab5.Groups.Add(Me.RibbonGroup11)
@@ -1627,6 +1690,10 @@ Partial Class MDIMain
         Me.RibbonLabel2.ID = "RibbonLabel2"
         Me.RibbonLabel2.Text = "Zeus Facturacion"
         '
+        'RibbonSeparator8
+        '
+        Me.RibbonSeparator8.ID = "RibbonSeparator8"
+        '
         'RibbonLabel1
         '
         Me.RibbonLabel1.ID = "RibbonLabel1"
@@ -1641,9 +1708,13 @@ Partial Class MDIMain
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
         '
-        'RibbonSeparator8
+        'RibbonProveedores1
         '
-        Me.RibbonSeparator8.ID = "RibbonSeparator8"
+        Me.RibbonProveedores1.ID = "RibbonProveedores1"
+        Me.RibbonProveedores1.LargeImage = CType(resources.GetObject("RibbonProveedores1.LargeImage"), System.Drawing.Image)
+        Me.RibbonProveedores1.SmallImage = CType(resources.GetObject("RibbonProveedores1.SmallImage"), System.Drawing.Image)
+        Me.RibbonProveedores1.Text = "Proveedores"
+        Me.RibbonProveedores1.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'MDIMain
         '
@@ -1846,4 +1917,12 @@ Partial Class MDIMain
     Friend WithEvents RibbonButton19 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton21 As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonSeparator8 As C1.Win.C1Ribbon.RibbonSeparator
+    Friend WithEvents RibbonTab8 As C1.Win.C1Ribbon.RibbonTab
+    Friend WithEvents RibbonGroup19 As C1.Win.C1Ribbon.RibbonGroup
+    Friend WithEvents RibbonOrdenCompra As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonCompras2 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonGroup20 As C1.Win.C1Ribbon.RibbonGroup
+    Friend WithEvents RibbonSolicitud As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonContratosProveedores As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonProveedores1 As C1.Win.C1Ribbon.RibbonButton
 End Class
