@@ -102,6 +102,7 @@ Partial Class MDIMain
         Me.RibbonButton1 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonButton7 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonButton8 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButtonEntrega = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonGroup3 = New C1.Win.C1Ribbon.RibbonGroup()
         Me.RibbonPagos = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonRecibos = New C1.Win.C1Ribbon.RibbonButton()
@@ -140,6 +141,7 @@ Partial Class MDIMain
         Me.RibbonReporteGraficos1 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonTab8 = New C1.Win.C1Ribbon.RibbonTab()
         Me.RibbonGroup20 = New C1.Win.C1Ribbon.RibbonGroup()
+        Me.RibbonProveedores1 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonContratosProveedores = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonGroup19 = New C1.Win.C1Ribbon.RibbonGroup()
         Me.RibbonSolicitud = New C1.Win.C1Ribbon.RibbonButton()
@@ -208,7 +210,9 @@ Partial Class MDIMain
         Me.RibbonSeparator8 = New C1.Win.C1Ribbon.RibbonSeparator()
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel()
         Me.TxtUsuario = New System.Windows.Forms.TextBox()
-        Me.RibbonProveedores1 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonLabelSPlano = New C1.Win.C1Ribbon.RibbonLabel()
+        Me.LabelSPlano = New System.Windows.Forms.Label()
+        Me.txtSPlano = New System.Windows.Forms.TextBox()
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton()
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -781,6 +785,7 @@ Partial Class MDIMain
         Me.RibbonGroup2.Items.Add(Me.RibbonButton1)
         Me.RibbonGroup2.Items.Add(Me.RibbonButton7)
         Me.RibbonGroup2.Items.Add(Me.RibbonButton8)
+        Me.RibbonGroup2.Items.Add(Me.RibbonButtonEntrega)
         Me.RibbonGroup2.Text = "Principales"
         '
         'RibbonFacturacion
@@ -854,6 +859,14 @@ Partial Class MDIMain
         Me.RibbonButton8.SmallImage = CType(resources.GetObject("RibbonButton8.SmallImage"), System.Drawing.Image)
         Me.RibbonButton8.Text = "Orden-Compra"
         Me.RibbonButton8.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonButtonEntrega
+        '
+        Me.RibbonButtonEntrega.ID = "RibbonButtonEntrega"
+        Me.RibbonButtonEntrega.LargeImage = CType(resources.GetObject("RibbonButtonEntrega.LargeImage"), System.Drawing.Image)
+        Me.RibbonButtonEntrega.SmallImage = CType(resources.GetObject("RibbonButtonEntrega.SmallImage"), System.Drawing.Image)
+        Me.RibbonButtonEntrega.Text = "Entrega"
+        Me.RibbonButtonEntrega.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'RibbonGroup3
         '
@@ -1163,6 +1176,14 @@ Partial Class MDIMain
         Me.RibbonGroup20.Items.Add(Me.RibbonProveedores1)
         Me.RibbonGroup20.Items.Add(Me.RibbonContratosProveedores)
         Me.RibbonGroup20.Text = "Catalogo"
+        '
+        'RibbonProveedores1
+        '
+        Me.RibbonProveedores1.ID = "RibbonProveedores1"
+        Me.RibbonProveedores1.LargeImage = CType(resources.GetObject("RibbonProveedores1.LargeImage"), System.Drawing.Image)
+        Me.RibbonProveedores1.SmallImage = CType(resources.GetObject("RibbonProveedores1.SmallImage"), System.Drawing.Image)
+        Me.RibbonProveedores1.Text = "Proveedores"
+        Me.RibbonProveedores1.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'RibbonContratosProveedores
         '
@@ -1673,7 +1694,8 @@ Partial Class MDIMain
         Me.C1StatusBar1.LeftPaneItems.Add(Me.DocumentModifiedLabel)
         Me.C1StatusBar1.LeftPaneItems.Add(Me.RibbonLabel2)
         Me.C1StatusBar1.LeftPaneItems.Add(Me.RibbonSeparator8)
-        Me.C1StatusBar1.Location = New System.Drawing.Point(0, 493)
+        Me.C1StatusBar1.LeftPaneItems.Add(Me.RibbonLabelSPlano)
+        Me.C1StatusBar1.Location = New System.Drawing.Point(0, 435)
         Me.C1StatusBar1.Name = "C1StatusBar1"
         Me.C1StatusBar1.RightPaneItems.Add(Me.RibbonLabel1)
         Me.C1StatusBar1.RightPaneWidth = 100
@@ -1708,20 +1730,37 @@ Partial Class MDIMain
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
         '
-        'RibbonProveedores1
+        'RibbonLabelSPlano
         '
-        Me.RibbonProveedores1.ID = "RibbonProveedores1"
-        Me.RibbonProveedores1.LargeImage = CType(resources.GetObject("RibbonProveedores1.LargeImage"), System.Drawing.Image)
-        Me.RibbonProveedores1.SmallImage = CType(resources.GetObject("RibbonProveedores1.SmallImage"), System.Drawing.Image)
-        Me.RibbonProveedores1.Text = "Proveedores"
-        Me.RibbonProveedores1.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        Me.RibbonLabelSPlano.ID = "RibbonLabelSPlano"
+        Me.RibbonLabelSPlano.ToolTip = "" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
+        '
+        'LabelSPlano
+        '
+        Me.LabelSPlano.AutoSize = True
+        Me.LabelSPlano.Location = New System.Drawing.Point(553, 220)
+        Me.LabelSPlano.Name = "LabelSPlano"
+        Me.LabelSPlano.Size = New System.Drawing.Size(39, 13)
+        Me.LabelSPlano.TabIndex = 17
+        Me.LabelSPlano.Text = "Label1"
+        Me.LabelSPlano.Visible = False
+        '
+        'txtSPlano
+        '
+        Me.txtSPlano.Location = New System.Drawing.Point(512, 213)
+        Me.txtSPlano.Name = "txtSPlano"
+        Me.txtSPlano.Size = New System.Drawing.Size(100, 20)
+        Me.txtSPlano.TabIndex = 18
+        Me.txtSPlano.Visible = False
         '
         'MDIMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), System.Drawing.Image)
-        Me.ClientSize = New System.Drawing.Size(1213, 515)
+        Me.ClientSize = New System.Drawing.Size(1213, 457)
+        Me.Controls.Add(Me.txtSPlano)
+        Me.Controls.Add(Me.LabelSPlano)
         Me.Controls.Add(Me.TxtUsuario)
         Me.Controls.Add(Me.C1StatusBar1)
         Me.Controls.Add(Me.c1Ribbon1)
@@ -1925,4 +1964,8 @@ Partial Class MDIMain
     Friend WithEvents RibbonSolicitud As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonContratosProveedores As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonProveedores1 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButtonEntrega As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonLabelSPlano As C1.Win.C1Ribbon.RibbonLabel
+    Friend WithEvents LabelSPlano As Label
+    Friend WithEvents txtSPlano As TextBox
 End Class

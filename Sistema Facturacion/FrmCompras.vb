@@ -503,6 +503,8 @@ Public Class FrmCompras
     Private Sub TrueDBGridComponentes_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.AfterUpdate
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim SqlProveedor As String, CodProducto As String, iPosicion As Double = 0, CodigoProducto As String, Registros As Double
+        Dim NumeroLote As String, FechaVence As String
+
         'Dim CodigoProducto As String, PrecioUnitario As Double, Descuento As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double
         'Dim NumeroCompra As String, ConsecutivoCompra As Double, Registros As Double, iPosicion As Double
         'Dim DiferenciaCantidad As Double, DiferenciaPrecio As Double, SQLString As String, TipoProducto As String = "", TipoDescuento As String, PrecioDescCordobas As Double, PrecioDescDolar
@@ -540,10 +542,18 @@ Public Class FrmCompras
 
         InsertarRowGrid()
 
+
+
         Registros = Me.BindingDetalle.Count
         iPosicion = Me.BindingDetalle.Position
         CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
+        NumeroLote = Me.BindingDetalle.Item(iPosicion)("Numero_Lote")
+        FechaVence = Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")
         ActualizaDetalleBodega(Me.CboCodigoBodega.Text, CodigoProducto)
+        ActualizaExistenciaLotexProducto(NumeroLote, Me.CboCodigoBodega.Text, CodigoProducto, FechaVence)
+
+
+
 
         Bitacora(Now, NombreUsuario, "Compras", "Modifico Producto: " & CodigoProducto)
         Me.TrueDBGridComponentes.Col = 0
@@ -1889,7 +1899,7 @@ Public Class FrmCompras
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = True
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Lote").Visible = True
 
         ElseIf Me.CboTipoProducto.Text = "Orden de Compra" Then

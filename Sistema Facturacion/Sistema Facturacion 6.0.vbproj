@@ -106,20 +106,34 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Clases\Consultas\ReporteExistenciaLote.vb" />
+    <Compile Include="Clases\Tablas\TablaContrato_Proveedor.vb" />
     <Compile Include="Clases\Tablas\TablaDetalleFactura.vb" />
     <Compile Include="Clases\Tablas\TablaDetalle_MetodoFacturas.vb" />
     <Compile Include="Clases\Tablas\TablaFactura.vb" />
     <Compile Include="Clases\Consultas\Lote.vb" />
+    <Compile Include="Clases\Tablas\TablaLotexProducto.vb" />
     <Compile Include="FrmContenedores.Designer.vb">
       <DependentUpon>FrmContenedores.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmContenedores.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FrmContratosProveedores.Designer.vb">
-      <DependentUpon>FrmContratosProveedores.vb</DependentUpon>
+    <Compile Include="FrmContratosProveedor.Designer.vb">
+      <DependentUpon>FrmContratosProveedor.vb</DependentUpon>
     </Compile>
-    <Compile Include="FrmContratosProveedores.vb">
+    <Compile Include="FrmContratosProveedor.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmContratosProveedoresLista.Designer.vb">
+      <DependentUpon>FrmContratosProveedoresLista.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmContratosProveedoresLista.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmEntregaBodega.Designer.vb">
+      <DependentUpon>FrmEntregaBodega.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmEntregaBodega.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmListadoRecibos.Designer.vb">
@@ -1690,8 +1704,14 @@
     <EmbeddedResource Include="FrmContenedores.resx">
       <DependentUpon>FrmContenedores.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FrmContratosProveedores.resx">
-      <DependentUpon>FrmContratosProveedores.vb</DependentUpon>
+    <EmbeddedResource Include="FrmContratosProveedor.resx">
+      <DependentUpon>FrmContratosProveedor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmContratosProveedoresLista.resx">
+      <DependentUpon>FrmContratosProveedoresLista.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmEntregaBodega.resx">
+      <DependentUpon>FrmEntregaBodega.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmListadoRecibos.resx">
       <DependentUpon>FrmListadoRecibos.vb</DependentUpon>
