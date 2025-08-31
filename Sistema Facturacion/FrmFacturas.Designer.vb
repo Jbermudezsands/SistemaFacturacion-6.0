@@ -707,7 +707,7 @@ Partial Class FrmFacturas
         Me.CmdNuevo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
         Me.CmdNuevo.Location = New System.Drawing.Point(9, 14)
         Me.CmdNuevo.Name = "CmdNuevo"
-        Me.CmdNuevo.Size = New System.Drawing.Size(62, 66)
+        Me.CmdNuevo.Size = New System.Drawing.Size(62, 68)
         Me.CmdNuevo.TabIndex = 189
         Me.CmdNuevo.Text = "Nuevo"
         Me.CmdNuevo.TextAlign = System.Drawing.ContentAlignment.BottomCenter
@@ -774,7 +774,7 @@ Partial Class FrmFacturas
         '
         Me.ButtonBorrar.Image = CType(resources.GetObject("ButtonBorrar.Image"), System.Drawing.Image)
         Me.ButtonBorrar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonBorrar.Location = New System.Drawing.Point(9, 87)
+        Me.ButtonBorrar.Location = New System.Drawing.Point(6, 91)
         Me.ButtonBorrar.Name = "ButtonBorrar"
         Me.ButtonBorrar.Size = New System.Drawing.Size(62, 66)
         Me.ButtonBorrar.TabIndex = 186
@@ -1160,7 +1160,7 @@ Partial Class FrmFacturas
         Me.BtnSalida.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnSalida.Image = CType(resources.GetObject("BtnSalida.Image"), System.Drawing.Image)
         Me.BtnSalida.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.BtnSalida.Location = New System.Drawing.Point(78, 86)
+        Me.BtnSalida.Location = New System.Drawing.Point(77, 87)
         Me.BtnSalida.Name = "BtnSalida"
         Me.BtnSalida.Size = New System.Drawing.Size(62, 66)
         Me.BtnSalida.TabIndex = 210
@@ -1189,7 +1189,7 @@ Partial Class FrmFacturas
         Me.PictureBox3.Image = CType(resources.GetObject("PictureBox3.Image"), System.Drawing.Image)
         Me.PictureBox3.Location = New System.Drawing.Point(343, 112)
         Me.PictureBox3.Name = "PictureBox3"
-        Me.PictureBox3.Size = New System.Drawing.Size(126, 96)
+        Me.PictureBox3.Size = New System.Drawing.Size(105, 96)
         Me.PictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox3.TabIndex = 227
         Me.PictureBox3.TabStop = False
@@ -1198,7 +1198,7 @@ Partial Class FrmFacturas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(899, 499)
+        Me.ClientSize = New System.Drawing.Size(888, 499)
         Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.GroupBox5)
         Me.Controls.Add(Me.DTPFechaHora)

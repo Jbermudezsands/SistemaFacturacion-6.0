@@ -6,6 +6,9 @@
     Private CodigoLinea As String
     Private ExistenciaLote As String
     Private FechaVence As Date
+    Private TipoReporte As String
+    Private Agrupado As String
+
 
 
     Public Property Numero_Lote As String
@@ -68,6 +71,24 @@
         End Get
         Set(value As Date)
             FechaVence = value
+        End Set
+    End Property
+
+    Public Property Tipo_Reporte As String
+        Get
+            Return TipoReporte
+        End Get
+        Set(value As String)
+            TipoReporte = value
+        End Set
+    End Property
+
+    Public Property Agrupado_Reporte As String
+        Get
+            Return Agrupado
+        End Get
+        Set(value As String)
+            Agrupado = value
         End Set
     End Property
 End Class

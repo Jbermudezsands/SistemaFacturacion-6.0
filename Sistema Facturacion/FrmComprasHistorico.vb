@@ -45,6 +45,7 @@ Public Class FrmComprasHistorico
         Dim ConsecutivoCompra As Double, iPosicion As Double, Registros As Double, NumeroCompra As String
         Dim CodigoProducto As String, PrecioUnitario As Double, Descuento As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double
         Dim DiferenciaCantidad As Double, DiferenciaPrecio As Double, NumeroLote As String, FechaLote As Date, DescripcionProducto As String
+        Dim Compras As TablaCompras = New TablaCompras
 
         If Me.CboCodigoBodega.Text = "" Then
             MsgBox("Es necesario que seleccione el tipo de Compra", MsgBoxStyle.Critical, "Sistema Facturacion")
@@ -104,12 +105,96 @@ Public Class FrmComprasHistorico
         End If
 
         NumeroCompra = Format(ConsecutivoCompra, "0000#")
+
+        Compras.Numero_Compra = NumeroCompra
+        Compras.Fecha_Compra = Format(DTPFecha.Value, "yyyy-MM-dd")
+        Compras.Tipo_Compra = CboTipoProducto.Text
+        Compras.Cod_Bodega = CboCodigoBodega.Text
+        Compras.Moneda_Compra = TxtMonedaFactura.Text
+        Compras.Cod_Proveedor = TxtCodigoProveedor.Text
+        Compras.Nombre_Proveedor = TxtNombres.Text
+        Compras.Apellido_Proveedor = TxtApellidos.Text
+        Compras.Direccion_Proveedor = TxtDireccion.Text
+        Compras.Telefono_Proveedor = TxtTelefono.Text
+        Compras.Fecha_Vencimiento = DTVencimiento.Value
+        Compras.Observaciones_Cómpra = TxtObservaciones.Text
+        Compras.Descuento_Compra = 0
+        Compras.Fecha_Descuento = Now
+        Compras.Sub_Total = TxtSubTotal.Text
+        Compras.IVA = TxtIva.Text
+        Compras.Pagado_Compra = TxtPagado.Text
+        Compras.Neto_Pagar = TxtNetoPagar.Text
+        Compras.Monto_Credito = TxtNetoPagar.Text
+        Compras.Contabilizado_Compra = 0
+        Compras.Activo_Compra = 1
+        Compras.Cancelado_Compra = 0
+        If OptExsonerado.Checked = True Then
+            Compras.Exonerado_Compra = 1
+        Else
+            Compras.Exonerado_Compra = 0
+        End If
+        If TxtReferencia.Text <> "" Then
+            Compras.Su_Referencia = TxtReferencia.Text
+        End If
+
+        If CboReferencia.Text <> "" Then
+            Compras.Referencia_Compra = CboReferencia.Text
+        End If
+        Compras.Transferencia_Procesada = 0
+        Compras.Marca_Compra = 1
+        Compras.Codigo_Proyecto = ""
+        If Not CboProyecto.Text = "" Then
+            Compras.Codigo_Proyecto = CboProyecto.Columns(0).Text
+        End If
+        Compras.Nuestra_Referencia = CboReferencia.Text
+        Compras.Fecha_Hora = DTPFecha.Value & " " & Format(Now, "HH:mm")
+        Compras.Tipo_Productor = ""
+        Compras.Estatus_Compra = "Grabado"
+        Compras.Numero_Solicitud = 0
+        Compras.Numero_Orden = 0
+        Compras.Solcitud_CtaContable = 0
+
+        If TxtSubTotal.Text <> "" Then
+            Compras.Sub_Total = TxtSubTotal.Text
+        Else
+            Compras.Sub_Total = 0
+        End If
+
+        If TxtIva.Text <> "" Then
+            Compras.IVA = TxtIva.Text
+        Else
+            Compras.IVA = 0
+        End If
+
+        If TxtPagado.Text <> "" Then
+            Compras.Pagado_Compra = TxtPagado.Text
+        Else
+            Compras.Pagado_Compra = 0
+        End If
+
+        If TxtNetoPagar.Text <> "" Then
+            Compras.Neto_Pagar = TxtNetoPagar.Text
+        Else
+            Compras.Neto_Pagar = 0
+        End If
+
+        If OptExsonerado.Checked = True Then
+            Compras.Exonerado_Compra = 1
+        Else
+            Compras.Exonerado_Compra = 0
+        End If
+
+        If ChkAplicarCtasXPagar.Checked = True Then
+            Compras.Aplicar_CtasXPagar = 1
+        Else
+            Compras.Aplicar_CtasXPagar = 0
+        End If
         ActualizaMETODOcOMPRA()
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-        GrabaCompras(NumeroCompra)
+        GrabaCompras(Compras)
 
         If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
             Quien = "NumeroCompras"
@@ -665,7 +750,7 @@ Public Class FrmComprasHistorico
     Private Sub ButtonAgregar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAgregar.Click
         Dim ConsecutivoCompra As Double, iPosicion As Double, Registros As Double, NumeroCompra As String
         Dim NombrePago As String, Monto As Double, NumeroTarjeta As String, FechaVenceTarjeta As String
-
+        Dim Compras As TablaCompras = New TablaCompras
 
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -694,12 +779,95 @@ Public Class FrmComprasHistorico
 
         NumeroCompra = Format(ConsecutivoCompra, "0000#")
 
+        Compras.Numero_Compra = NumeroCompra
+        Compras.Fecha_Compra = Format(DTPFecha.Value, "yyyy-MM-dd")
+        Compras.Tipo_Compra = CboTipoProducto.Text
+        Compras.Cod_Bodega = CboCodigoBodega.Text
+        Compras.Moneda_Compra = TxtMonedaFactura.Text
+        Compras.Cod_Proveedor = TxtCodigoProveedor.Text
+        Compras.Nombre_Proveedor = TxtNombres.Text
+        Compras.Apellido_Proveedor = TxtApellidos.Text
+        Compras.Direccion_Proveedor = TxtDireccion.Text
+        Compras.Telefono_Proveedor = TxtTelefono.Text
+        Compras.Fecha_Vencimiento = DTVencimiento.Value
+        Compras.Observaciones_Cómpra = TxtObservaciones.Text
+        Compras.Descuento_Compra = 0
+        Compras.Fecha_Descuento = Now
+        Compras.Sub_Total = TxtSubTotal.Text
+        Compras.IVA = TxtIva.Text
+        Compras.Pagado_Compra = TxtPagado.Text
+        Compras.Neto_Pagar = TxtNetoPagar.Text
+        Compras.Monto_Credito = TxtNetoPagar.Text
+        Compras.Contabilizado_Compra = 0
+        Compras.Activo_Compra = 1
+        Compras.Cancelado_Compra = 0
+        If OptExsonerado.Checked = True Then
+            Compras.Exonerado_Compra = 1
+        Else
+            Compras.Exonerado_Compra = 0
+        End If
+        If TxtReferencia.Text <> "" Then
+            Compras.Su_Referencia = TxtReferencia.Text
+        End If
+
+        If CboReferencia.Text <> "" Then
+            Compras.Referencia_Compra = CboReferencia.Text
+        End If
+        Compras.Transferencia_Procesada = 0
+        Compras.Marca_Compra = 1
+        Compras.Codigo_Proyecto = ""
+        If Not CboProyecto.Text = "" Then
+            Compras.Codigo_Proyecto = CboProyecto.Columns(0).Text
+        End If
+        Compras.Nuestra_Referencia = CboReferencia.Text
+        Compras.Fecha_Hora = DTPFecha.Value & " " & Format(Now, "HH:mm")
+        Compras.Tipo_Productor = ""
+        Compras.Estatus_Compra = "Grabado"
+        Compras.Numero_Solicitud = 0
+        Compras.Numero_Orden = 0
+        Compras.Solcitud_CtaContable = 0
+
+        If TxtSubTotal.Text <> "" Then
+            Compras.Sub_Total = TxtSubTotal.Text
+        Else
+            Compras.Sub_Total = 0
+        End If
+
+        If TxtIva.Text <> "" Then
+            Compras.IVA = TxtIva.Text
+        Else
+            Compras.IVA = 0
+        End If
+
+        If TxtPagado.Text <> "" Then
+            Compras.Pagado_Compra = TxtPagado.Text
+        Else
+            Compras.Pagado_Compra = 0
+        End If
+
+        If TxtNetoPagar.Text <> "" Then
+            Compras.Neto_Pagar = TxtNetoPagar.Text
+        Else
+            Compras.Neto_Pagar = 0
+        End If
+
+        If OptExsonerado.Checked = True Then
+            Compras.Exonerado_Compra = 1
+        Else
+            Compras.Exonerado_Compra = 0
+        End If
+
+        If ChkAplicarCtasXPagar.Checked = True Then
+            Compras.Aplicar_CtasXPagar = 1
+        Else
+            Compras.Aplicar_CtasXPagar = 0
+        End If
 
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-        GrabaCompras(NumeroCompra)
+        GrabaCompras(Compras)
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL DETALLE DE LA COMPRA /////////////////////////////////////////////

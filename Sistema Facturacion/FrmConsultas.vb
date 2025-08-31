@@ -261,7 +261,7 @@ Public Class FrmConsultas
 
                     MiConexion.Close()
 
-                Case "CodigoProductosContratos"
+                Case "CodigoProductosFactura" '"CodigoProductosContratos"
                     Dim CodigoBodega As String = ""
 
                     Me.Size = New System.Drawing.Size(988, 424)

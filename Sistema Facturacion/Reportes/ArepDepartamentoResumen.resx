@@ -112,21 +112,39 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="$this.TrayLargeIcon" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="TextBox3.OutputFormat" xml:space="preserve">
+    <value>#,##0.00</value>
+  </data>
+  <data name="TextBox4.OutputFormat" xml:space="preserve">
+    <value>#,##0.00</value>
+  </data>
+  <data name="TextBox5.OutputFormat" xml:space="preserve">
+    <value>#,##0.00</value>
+  </data>
+  <data name="TextBox6.OutputFormat" xml:space="preserve">
+    <value>#,##0.00</value>
+  </data>
+  <data name="TextBox7.OutputFormat" xml:space="preserve">
+    <value>#,##0.00</value>
+  </data>
+  <data name="TextBox8.OutputFormat" xml:space="preserve">
+    <value>#,##0.00</value>
+  </data>
+  <metadata name="$this.TrayLargeIcon" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="OleDBDataSource1.SQL" xml:space="preserve">
-    <value>SELECT     Facturas.Fecha_Factura, Facturas.Numero_Factura, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nomibres, Facturas.SubTotal, Facturas.IVA, 
-                      Facturas.Descuento, Facturas.MetodoPago, Facturas.Cod_Bodega, Facturas.SubTotal + Facturas.IVA AS Total, Clientes.Municipio
-FROM         Facturas INNER JOIN
-                      Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente
-WHERE     (Facturas.Tipo_Factura = N'Factura') AND (Facturas.MetodoPago = N'Credito') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '2011-01-10 00:00:00', 
-                      102) AND CONVERT(DATETIME, '2011-10-30 00:00:00', 102))
+    <value>SELECT        Facturas.Fecha_Factura, Facturas.Numero_Factura, Clientes.Nombre_Cliente + ' ' + Clientes.Apellido_Cliente AS Nomibres, Facturas.SubTotal, Facturas.IVA, Facturas.Descuento, Facturas.MetodoPago, Facturas.Cod_Bodega, 
+                         Facturas.SubTotal + Facturas.IVA AS Total, Clientes.Municipio, Bodegas.Cod_Bodega AS Expr1, Bodegas.Nombre_Bodega
+FROM            Facturas INNER JOIN
+                         Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente INNER JOIN
+                         Bodegas ON Facturas.Cod_Bodega = Bodegas.Cod_Bodega
+WHERE        (Facturas.Tipo_Factura = N'Factura') AND (Facturas.MetodoPago = N'Credito') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '2011-01-10 00:00:00', 102) AND CONVERT(DATETIME, '2011-10-30 00:00:00', 102))
 ORDER BY Facturas.Cod_Bodega, Facturas.Fecha_Factura, Facturas.Numero_Factura</value>
   </data>
 </root>

@@ -148,8 +148,10 @@ Public Class FrmRegistroDebito
 
     Private Sub TxtMonto_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TxtMonto.LostFocus
         Dim Monto As Double
-        Monto = Me.TxtMonto.Text
-        Me.TxtMonto.Text = Format(Monto, "##,##0.00")
+        If TxtMonto.Text <> "" Then
+            Monto = Me.TxtMonto.Text
+            Me.TxtMonto.Text = Format(Monto, "##,##0.00")
+        End If
     End Sub
 
     Private Sub TxtMonto_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtMonto.TextChanged

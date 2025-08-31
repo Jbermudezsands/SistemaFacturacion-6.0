@@ -7,6 +7,146 @@ Imports Sistema_Facturacion.FrmFacturas
 Imports System.ComponentModel
 
 Module Funciones
+    Public Sub ActualizaExistenciaLotexProducto(NumeroLote As String, CodigoBodega As String, CodigoProducto As String, FechaVence As Date)
+        Dim Args As Lote = New Lote, Result As Lote = New Lote
+        Dim TablaxLote As TablaLotexProducto = New TablaLotexProducto
+
+        '////////////////////////Busco la Existencia del Lote para este producto ////////
+        Args.Numero_Lote = NumeroLote
+        Args.Codigo_Producto = CodigoProducto
+        Args.Codigo_Bodega = CodigoBodega
+        Args.Existencia_Lote = 0
+        Args.Fecha_Vence = FechaVence
+
+        Result = BuscaExistenciaxLotexProdxBod(Args)
+
+
+        TablaxLote.Cod_Bodega_LoteProducto = Result.Codigo_Bodega
+        TablaxLote.Cod_Productos_LoteProducto = Result.Codigo_Producto
+        TablaxLote.Activo_LoteProducto = 1
+        TablaxLote.Fecha_Vence_LoteProducto = FechaVence
+        TablaxLote.Numero_Lote_Producto = Result.Numero_Lote
+        TablaxLote.Existencia_LoteProducto = Result.Existencia_Lote
+
+        UpdateLotexProducto(TablaxLote)
+
+    End Sub
+
+    Public Function BuscaExistenciaxLotexProdxBod(Args As Lote) As Lote
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim Existencia As Double = 0, SqlConsulta As String, DevolucionCompra As Double = 0
+        Dim UnidadFacturada As Double = 0, DevolucionFactura As Double = 0, TransferenciaEnviada As Double = 0, TransferenciaRecibida As Double = 0
+        Dim SalidaBodega As Double = 0, CostoVenta As Double = 0, ImporteFactura As Double = 0
+        Dim ImporteDevCompra As Double = 0, ImporteVenta As Double = 0, ImporteSalida As Double = 0
+        Dim ImporteDevFactura As Double = 0, Argumentos As Lote = New Lote
+        Dim UnidadComprada As Double
+
+        Existencia = 0
+
+        If Args.Numero_Lote = "F-25162" Then
+            Args.Numero_Lote = "F-25162"
+        End If
+
+        '//////////////////////////////////BUSCO EL TOTAL DE LAS COMPRAS////////////////////////////////////////////////////////////////////
+        SqlConsulta = "SELECT SUM(Detalle_Compras.Cantidad) AS Cantidad, SUM(Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto) AS Importe  FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  " &
+                      "WHERE (Detalle_Compras.Cod_Producto = '" & Args.Codigo_Producto & "') AND (Compras.Cod_Bodega = '" & Args.Codigo_Bodega & "') AND (Detalle_Compras.Numero_Lote = '" & Args.Numero_Lote & "')  GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Mercancia Recibida') "
+
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        DataAdapter.Fill(DataSet, "Compras")
+        If DataSet.Tables("Compras").Rows.Count <> 0 Then
+            UnidadComprada = DataSet.Tables("Compras").Rows(0)("Cantidad")
+            ImporteCompra = DataSet.Tables("Compras").Rows(0)("Importe")
+        End If
+
+
+        '//////////////////////////////////BUSCO EL TOTAL DE LAS DEVOLUCION DE COMPRAS////////////////////////////////////////////////////////////////////
+        SqlConsulta = "SELECT  SUM(Detalle_Compras.Cantidad) AS Cantidad,SUM(Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto) AS Importe FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra WHERE (Detalle_Compras.Cod_Producto = '" & Args.Codigo_Producto & "') AND (Compras.Cod_Bodega = '" & Args.Codigo_Bodega & "') AND (Detalle_Compras.Numero_Lote = '" & Args.Numero_Lote & "') GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Devolucion de Compra')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        DataAdapter.Fill(DataSet, "DevolucionCompras")
+        If DataSet.Tables("DevolucionCompras").Rows.Count <> 0 Then
+            DevolucionCompra = DataSet.Tables("DevolucionCompras").Rows(0)("Cantidad")
+            ImporteDevCompra = DataSet.Tables("DevolucionCompras").Rows(0)("Importe")
+        End If
+
+        '////////////////////////////////////BUSCO EL TOTAL DE LAS FACTURAS//////////////////////////////////////////////////////////////////////
+        SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
+                      "WHERE (Detalle_Facturas.Tipo_Factura = 'Factura') AND (Detalle_Facturas.Cod_Producto = '" & Args.Codigo_Producto & "') AND (Facturas.Cod_Bodega =  '" & Args.Codigo_Bodega & "') AND (Detalle_Facturas.CodTarea = '" & Args.Numero_Lote & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        DataAdapter.Fill(DataSet, "Facturas")
+        If DataSet.Tables("Facturas").Rows.Count <> 0 Then
+            If Not IsDBNull(DataSet.Tables("Facturas").Rows(0)("Cantidad")) Then
+                UnidadFacturada = DataSet.Tables("Facturas").Rows(0)("Cantidad")
+                ImporteVenta = DataSet.Tables("Facturas").Rows(0)("Cantidad") * CostoVenta
+            Else
+                UnidadFacturada = 0
+                ImporteVenta = 0
+            End If
+        End If
+
+        '////////////////////////////////////BUSCO EL TOTAL DE LA SALIDA DE BODEGA//////////////////////////////////////////////////////////////////////
+        SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
+                      "WHERE (Detalle_Facturas.Tipo_Factura = 'Salida Bodega') AND (Detalle_Facturas.Cod_Producto = '" & Args.Codigo_Producto & "') AND (Facturas.Cod_Bodega =  '" & Args.Codigo_Bodega & "') AND (Detalle_Facturas.CodTarea = '" & Args.Numero_Lote & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        DataAdapter.Fill(DataSet, "SalidaBodega")
+        If DataSet.Tables("SalidaBodega").Rows.Count <> 0 Then
+            If Not IsDBNull(DataSet.Tables("SalidaBodega").Rows(0)("Cantidad")) Then
+                SalidaBodega = DataSet.Tables("SalidaBodega").Rows(0)("Cantidad")
+            Else
+                SalidaBodega = 0
+            End If
+        End If
+
+        DataSet.Reset()
+        '////////////////////////////////////BUSCO EL TOTAL DE LA DEVOLUCION DE LAS  FACTURAS//////////////////////////////////////////////////////////////////////
+        SqlConsulta = "SELECT     SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " &
+                      "WHERE  (Detalle_Facturas.Tipo_Factura = 'Devolucion de Venta') AND (Detalle_Facturas.Cod_Producto =  '" & Args.Codigo_Producto & "') AND (Facturas.Cod_Bodega = '" & Args.Codigo_Bodega & "') AND (Detalle_Facturas.CodTarea = '" & Args.Numero_Lote & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        DataAdapter.Fill(DataSet, "DevolucionFacturas")
+        If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then
+            If Not IsDBNull(DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")) Then
+                DevolucionFactura = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")
+                ImporteDevFactura = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad") * CostoVenta
+            End If
+        End If
+
+        DataSet.Reset()
+        '////////////////////////////////////BUSCO EL TOTAL DE TRANSFERENCIAS ENVIADAS  //////////////////////////////////////////////////////////////////////
+        SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
+                      "WHERE (Detalle_Facturas.Tipo_Factura = 'Transferencia Enviada') AND (Detalle_Facturas.Cod_Producto = '" & Args.Codigo_Producto & "') AND (Facturas.Su_Referencia = '" & Args.Codigo_Bodega & "') AND (Facturas.TransferenciaProcesada = 1) AND (Detalle_Facturas.CodTarea = '" & Args.Numero_Lote & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        DataAdapter.Fill(DataSet, "DevolucionFacturas")
+        If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then
+            If Not IsDBNull(DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")) Then
+                TransferenciaEnviada = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")
+            End If
+        End If
+
+        DataSet.Reset()
+        '////////////////////////////////////BUSCO EL TOTAL DE TRANSFERENCIAS RECIBIDAS  //////////////////////////////////////////////////////////////////////
+        SqlConsulta = "SELECT     SUM(Detalle_Compras.Cantidad) AS Cantidad FROM Compras INNER JOIN Detalle_Compras ON Compras.Numero_Compra = Detalle_Compras.Numero_Compra AND Compras.Fecha_Compra = Detalle_Compras.Fecha_Compra AND Compras.Tipo_Compra = Detalle_Compras.Tipo_Compra " &
+                      "WHERE (Compras.TransferenciaProcesada = 1) AND (Compras.Cod_Bodega = '" & Args.Codigo_Bodega & "') AND (Detalle_Compras.Cod_Producto = '" & Args.Codigo_Producto & "') AND (Compras.Tipo_Compra = 'Transferencia Recibida') AND (Detalle_Compras.Numero_Lote = '" & Args.Numero_Lote & "') "
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        DataAdapter.Fill(DataSet, "TransferenciasRecibidas")
+        If DataSet.Tables("TransferenciasRecibidas").Rows.Count <> 0 Then
+            If Not IsDBNull(DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")) Then
+                TransferenciaRecibida = DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")
+            End If
+        End If
+
+        Existencia = UnidadComprada - DevolucionCompra - UnidadFacturada - SalidaBodega + DevolucionFactura - TransferenciaEnviada + TransferenciaRecibida
+        Argumentos.Existencia_Lote = Existencia
+        Argumentos.Codigo_Producto = Args.Codigo_Producto
+        Argumentos.Codigo_Bodega = Args.Codigo_Bodega
+        Argumentos.Numero_Lote = Args.Numero_Lote
+        Argumentos.Fecha_Vence = Args.Fecha_Vence
+
+
+        Return Argumentos
+
+
+    End Function
+
     Public Sub ActualizaExistencia_Lote(NumeroLote As String, Existencia As Double)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer = 0
@@ -1264,7 +1404,6 @@ Module Funciones
         End Try
 
     End Sub
-
     Public Sub Grabar_Admision(ByVal Numero_Expediente As String, ByVal Fecha_Hora As Date, ByVal Activo As Boolean, ByVal Procesado As Boolean, ByVal Cancelado As Boolean, ByVal idPreconsultas As Double)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQLstring As String
@@ -1306,9 +1445,6 @@ Module Funciones
         End Try
 
     End Sub
-
-
-
     Public Function BuscaConsulta(ByVal Sqlstring As String, ByVal Nombre As String) As DataSet
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -1322,7 +1458,6 @@ Module Funciones
         BuscaConsulta = DataSet.Copy
 
     End Function
-
     Public Sub Grabar_Expediente(ByVal Numero_Expediente As String, ByVal Nombres As String, ByVal Apellidos As String, ByVal Edad As Double, ByVal Sexo As String, ByVal Estado_Civil As String, ByVal Escolaridad As String, ByVal Ocupacion As String, ByVal Telefono As Double, ByVal Direccion As String, ByVal FechaIngreso As Date, ByVal Unidad_Salud As String, ByVal Nombre_Padre As String, ByVal Nombre_Madre As String, ByVal CodDepartamento As String, ByVal IdMunicipio As Double, ByVal idComarca As Double, ByVal Nombre_Emergencia As String, ByVal Telefono_Emergencia As Double, ByVal Direccion_Emergencia As String, ByVal Fecha_Nacimiento As Date)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQLstring As String
@@ -1452,7 +1587,6 @@ Module Funciones
         End If
 
     End Sub
-
     Public Sub Grabar_Municipios(ByVal CodigoDepartamento As String, ByVal NombreMunicipio As String, ByVal Tipo As String, ByVal IdMunicipio As Integer, ByVal Activo As Boolean)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQLstring As String
@@ -1500,7 +1634,6 @@ Module Funciones
         End Try
 
     End Sub
-
     Public Sub Grabar_Doctores(ByVal CodigoMinsa As String, ByVal Nombres As String, ByVal Apellidos As String, ByVal Telefono As String, ByVal Correo As String, ByVal Especialidad As String, ByVal Direccion As String, ByVal Tipo As String, ByVal Activo As Boolean)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQLstring As String
@@ -2340,8 +2473,6 @@ errSub:
         End If
 
     End Sub
-
-
 
     Public Sub GrabaDetalleRecepcionPlanilla(ByVal ConsecutivoCompra As String, ByVal CodProducto As String, ByVal PrecioUnitario As Double, ByVal Descuento As Double, ByVal PrecioNeto As Double, ByVal Importe As Double, ByVal Cantidad As Double)
         Dim Sqldetalle As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, TasaCambio As String
@@ -4148,9 +4279,48 @@ errSub:
         'oHebraCliente.Abort()
 
     End Sub
+    Public Sub UpdateLotexProducto(tablaLotexProducto As TablaLotexProducto)
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim SQlString As String, iPosicion As Double = 0, StrSqlUpdate As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim Activo As Integer
+
+        If tablaLotexProducto.Activo_LoteProducto = True Then
+            Activo = 1
+        Else
+            Activo = 0
+        End If
 
 
-    Public Function LoteDefecto(ByVal CodigoProducto As String, ByVal CodigoBodega As String) As String
+
+
+
+        SQlString = "SELECT Cod_Productos, Numero_Lote, Cod_Bodega, Existencia, Fecha_Vence, Activo FROM LotexProducto WHERE (Cod_Productos = '" & tablaLotexProducto.Cod_Productos_LoteProducto & "') AND (Numero_Lote = '" & tablaLotexProducto.Numero_Lote_Producto & "') AND (Cod_Bodega = '" & tablaLotexProducto.Cod_Bodega_LoteProducto & "') "
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Lotes")
+        If DataSet.Tables("Lotes").Rows.Count <> 0 Then
+            MiConexion.Close()
+            StrSqlUpdate = "UPDATE LotexProducto SET [Cod_Productos] =  '" & tablaLotexProducto.Cod_Productos_LoteProducto & "',[Numero_Lote] = '" & tablaLotexProducto.Numero_Lote_Producto & "',[Cod_Bodega] = '" & tablaLotexProducto.Cod_Bodega_LoteProducto & "' ,[Existencia] = " & tablaLotexProducto.Existencia_LoteProducto & " ,[Fecha_Vence] = '" & tablaLotexProducto.Fecha_Vence_LoteProducto & "' ,[Activo] = " & Activo & "  WHERE (Cod_Productos = '" & tablaLotexProducto.Cod_Productos_LoteProducto & "') AND (Numero_Lote = '" & tablaLotexProducto.Numero_Lote_Producto & "') AND (Cod_Bodega = '" & tablaLotexProducto.Cod_Bodega_LoteProducto & "') "
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+        Else
+            MiConexion.Close()
+            StrSqlUpdate = "INSERT INTO LotexProducto ([Cod_Productos],[Numero_Lote],[Cod_Bodega],[Existencia],[Fecha_Vence],[Activo]) VALUES ('" & tablaLotexProducto.Cod_Productos_LoteProducto & "','" & tablaLotexProducto.Numero_Lote_Producto & "','" & tablaLotexProducto.Cod_Bodega_LoteProducto & "'," & tablaLotexProducto.Existencia_LoteProducto & " ,'" & tablaLotexProducto.Fecha_Vence_LoteProducto & "' ," & Activo & ") "
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+        End If
+
+
+
+
+    End Sub
+
+    Public Function LoteDefecto(ByVal CodigoProducto As String, ByVal CodigoBodega As String, FechaFiltro As Date) As String
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQlString As String, iPosicion As Double = 0
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -4159,7 +4329,8 @@ errSub:
         Dim ComandoUpdate As New SqlClient.SqlCommand
 
 
-        SQlString = "SELECT     MAX(Detalle_Compras.Cod_Producto) AS Cod_Producto, Detalle_Compras.Numero_Lote, Lote.FechaVence FROM Detalle_Compras INNER JOIN Lote ON Detalle_Compras.Numero_Lote = Lote.Numero_Lote WHERE  (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Lote.Activo = 1) GROUP BY Detalle_Compras.Numero_Lote, Lote.FechaVence  HAVING(Not (Detalle_Compras.Numero_Lote Is NULL)) ORDER BY Lote.FechaVence"
+        'SQlString = "Select     MAX(Detalle_Compras.Cod_Producto) As Cod_Producto, Detalle_Compras.Numero_Lote, Lote.FechaVence FROM Detalle_Compras INNER JOIN Lote On Detalle_Compras.Numero_Lote = Lote.Numero_Lote WHERE  (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Lote.Activo = 1) GROUP BY Detalle_Compras.Numero_Lote, Lote.FechaVence  HAVING(Not (Detalle_Compras.Numero_Lote Is NULL)) ORDER BY Lote.FechaVence"
+        SQlString = "SELECT  MAX(Detalle_Compras.Cod_Producto) AS Cod_Producto, Detalle_Compras.Numero_Lote, Lote.FechaVence FROM Detalle_Compras INNER JOIN Lote ON Detalle_Compras.Numero_Lote = Lote.Numero_Lote WHERE  (Lote.Activo = 1) AND (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Lote.FechaVence >= CONVERT(DATETIME, '" & Format(FechaFiltro, "yyyy-MM-dd") & "', 102)) GROUP BY Detalle_Compras.Numero_Lote, Lote.FechaVence HAVING (NOT (Detalle_Compras.Numero_Lote IS NULL)) ORDER BY Lote.FechaVence"
         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
         DataAdapter.Fill(DataSet, "Lotes")
         iPosicion = 0
@@ -8752,7 +8923,7 @@ errSub:
     End Sub
 
 
-    Public Sub GrabaCompras(ByVal ConsecutivoCompra As String)
+    Public Sub GrabaCompras(Compras As TablaCompras)
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim Fecha As String, MonedaCompra As String
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -8767,64 +8938,7 @@ errSub:
         '**********************************************************************************************************************
         ActualizaMETODOcOMPRA()
 
-        If FrmCompras.CboReferencia.Text <> "" Then
-            Referencia = FrmCompras.CboReferencia.Text
-        End If
-
-
-
-        MonedaCompra = FrmCompras.TxtMonedaFactura.Text
-        CodigoProyecto = ""
-        If Not FrmCompras.CboProyecto.Text = "" Then
-            CodigoProyecto = FrmCompras.CboProyecto.Columns(0).Text
-        End If
-
-        Fecha = Format(FrmCompras.DTPFecha.Value, "yyyy-MM-dd")
-
-        If FrmCompras.TxtSubTotal.Text <> "" Then
-            Subtotal = FrmCompras.TxtSubTotal.Text
-        Else
-            Subtotal = 0
-        End If
-
-        If FrmCompras.TxtReferencia.Text <> "" Then
-            SuReferencia = FrmCompras.TxtReferencia.Text
-        End If
-
-        If FrmCompras.TxtIva.Text <> "" Then
-            Iva = FrmCompras.TxtIva.Text
-        Else
-            Iva = 0
-        End If
-
-        If FrmCompras.TxtPagado.Text <> "" Then
-            Pagado = FrmCompras.TxtPagado.Text
-        Else
-            Pagado = 0
-        End If
-
-        If FrmCompras.TxtNetoPagar.Text <> "" Then
-            Neto = FrmCompras.TxtNetoPagar.Text
-        Else
-            Neto = 0
-        End If
-
-        If FrmCompras.OptExsonerado.Checked = True Then
-            Exonerado = 1
-        Else
-            Exonerado = 0
-        End If
-
-        If FrmCompras.ChkAplicarCtasXPagar.Checked = True Then
-            AplicarCtasXPagar = 1
-        Else
-            AplicarCtasXPagar = 0
-        End If
-
         MiConexion.Close()
-
-        FechaHora = FrmCompras.DTPFecha.Value & " " & Format(Now, "HH:mm")
-
 
         CambiarFechaCompra = False
 
@@ -8868,18 +8982,18 @@ errSub:
         'End If
 
 
-        SqlCompras = "SELECT Compras.* FROM Compras WHERE  (Numero_Compra = '" & ConsecutivoCompra & "') AND (Tipo_Compra = '" & FrmCompras.CboTipoProducto.Text & "')"
+        SqlCompras = "SELECT Compras.* FROM Compras WHERE  (Numero_Compra = '" & Compras.Numero_Compra & "') AND (Tipo_Compra = '" & Compras.Tipo_Compra & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
         DataAdapter.Fill(DataSet, "DetalleCompra")
         If DataSet.Tables("DetalleCompra").Rows.Count = 0 Then
 
-            FrmCompras.DTPFechaHora.Value = FechaHora
+            'FrmCompras.DTPFechaHora.Value = FechaHora
             'If FrmCompras.TxtNumeroEnsamble.Text = "-----0-----" Then
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////AGREGO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
             SqlCompras = "INSERT INTO [Compras] ([Numero_Compra] ,[Fecha_Compra],[Tipo_Compra],[Cod_Proveedor],[Cod_Bodega],[Nombre_Proveedor],[Apellido_Proveedor],[Direccion_Proveedor],[Telefono_Proveedor],[Fecha_Vencimiento],[Observaciones],[SubTotal],[IVA],[Pagado],[NetoPagar],[MontoCredito],[MonedaCompra],[Exonerado],[Su_Referencia],[CodigoProyecto],[Referencia],[FechaHora],[AplicarCtasXPagar]) " &
-            "VALUES ('" & ConsecutivoCompra & "','" & FrmCompras.DTPFecha.Value & "','" & FrmCompras.CboTipoProducto.Text & "','" & FrmCompras.TxtCodigoProveedor.Text & "','" & FrmCompras.CboCodigoBodega.Text & "' , '" & FrmCompras.TxtNombres.Text & "','" & FrmCompras.TxtApellidos.Text & "','" & FrmCompras.TxtDireccion.Text & "','" & FrmCompras.TxtTelefono.Text & "','" & FrmCompras.DTVencimiento.Value & "','" & FrmCompras.TxtObservaciones.Text & "'," & Subtotal & "," & Iva & "," & Pagado & "," & Neto & "," & Neto & ",'" & MonedaCompra & "'," & Exonerado & ",'" & SuReferencia & "','" & CodigoProyecto & "','" & Referencia & "','" & Format(FechaHora, "dd/MM/yyyy HH:mm") & "', '" & AplicarCtasXPagar & "')"
+            "VALUES ('" & Compras.Numero_Compra & "','" & Compras.Fecha_Compra & "','" & Compras.Tipo_Compra & "','" & Compras.Cod_Proveedor & "','" & Compras.Cod_Bodega & "' , '" & Compras.Nombre_Proveedor & "','" & Compras.Apellido_Proveedor & "','" & Compras.Direccion_Proveedor & "','" & Compras.Telefono_Proveedor & "','" & Compras.Fecha_Vencimiento & "','" & Compras.Observaciones_Cómpra & "'," & Compras.Sub_Total & "," & Compras.IVA & "," & Compras.Pagado_Compra & "," & Compras.Neto_Pagar & "," & Compras.Neto_Pagar & ",'" & Compras.Moneda_Compra & "'," & Compras.Exonerado_Compra & ",'" & Compras.Su_Referencia & "','" & Compras.Codigo_Proyecto & "','" & Compras.Referencia_Compra & "','" & Format(Compras.Fecha_Hora, "dd/MM/yyyy HH:mm") & "', '" & Compras.Aplicar_CtasXPagar & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -8889,8 +9003,8 @@ errSub:
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "UPDATE [Compras]  SET [Cod_Proveedor] = '" & FrmCompras.TxtCodigoProveedor.Text & "',[Nombre_Proveedor] = '" & FrmCompras.TxtNombres.Text & "',[Apellido_Proveedor] = '" & FrmCompras.TxtApellidos.Text & "',[Direccion_Proveedor] = '" & FrmCompras.TxtDireccion.Text & "',[Telefono_Proveedor] = '" & FrmCompras.TxtTelefono.Text & "',[Cod_Bodega]='" & FrmCompras.CboCodigoBodega.Text & "',[Fecha_Vencimiento] = '" & FrmCompras.DTVencimiento.Value & "' ,[Observaciones] = '" & FrmCompras.TxtObservaciones.Text & "',[SubTotal] = " & Subtotal & ",[IVA] = " & Iva & ",[Pagado] = " & Pagado & ",[NetoPagar] = " & Neto & ",[MontoCredito] = " & Neto & ",[MonedaCompra] = '" & MonedaCompra & "',[Exonerado] = " & Exonerado & ",[Su_Referencia] = '" & SuReferencia & "',[CodigoProyecto] = '" & CodigoProyecto & "',[Referencia] = '" & Referencia & "', [AplicarCtasXPagar] = '" & AplicarCtasXPagar & "'  " &
-                         "WHERE  (Numero_Compra = '" & ConsecutivoCompra & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Compra = '" & FrmCompras.CboTipoProducto.Text & "')"
+            SqlCompras = "UPDATE [Compras]  SET [Cod_Proveedor] = '" & Compras.Cod_Proveedor & "',[Nombre_Proveedor] = '" & Compras.Nombre_Proveedor & "',[Apellido_Proveedor] = '" & Compras.Apellido_Proveedor & "',[Direccion_Proveedor] = '" & Compras.Direccion_Proveedor & "',[Telefono_Proveedor] = '" & Compras.Telefono_Proveedor & "',[Cod_Bodega]='" & Compras.Cod_Bodega & "',[Fecha_Vencimiento] = '" & Compras.Fecha_Vencimiento & "' ,[Observaciones] = '" & Compras.Observaciones_Cómpra & "',[SubTotal] = " & Compras.Sub_Total & ",[IVA] = " & Compras.IVA & ",[Pagado] = " & Compras.Pagado_Compra & ",[NetoPagar] = " & Compras.Neto_Pagar & ",[MontoCredito] = " & Compras.Neto_Pagar & ",[MonedaCompra] = '" & Compras.Moneda_Compra & "',[Exonerado] = " & Compras.Exonerado_Compra & ",[Su_Referencia] = '" & Compras.Su_Referencia & "',[CodigoProyecto] = '" & Compras.Codigo_Proyecto & "',[Referencia] = '" & Compras.Referencia_Compra & "', [AplicarCtasXPagar] = '" & Compras.Aplicar_CtasXPagar & "'  " &
+                         "WHERE  (Numero_Compra = '" & Compras.Numero_Compra & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Format(Compras.Fecha_Compra, "yyyy-MM-dd") & "', 102)) AND (Tipo_Compra = '" & Compras.Tipo_Compra & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -13279,6 +13393,9 @@ errSub:
         Result.Codigo_Bodega = Args.Codigo_Bodega
         Result.Numero_Lote = Args.Numero_Lote
         Result.Existencia_Lote = Existencia
+        Result.Fecha_Vence = Args.Fecha_Vence
+        Result.Tipo_Reporte = Args.Tipo_Reporte
+        Result.Agrupado_Reporte = Args.Agrupado_Reporte
 
 
 
@@ -13519,7 +13636,7 @@ errSub:
         BuscaExistenciaLote = Format(Existencia, "####0.0000")
     End Function
 
-    Public Function BuscaExistenciaLineaLote(ByVal CodigoProducto As String, ByVal CodigoLinea As String, ByVal NumeroLote As String) As ReporteExistenciaLote
+    Public Function BuscaExistenciaLineaLote(Args As ReporteExistenciaLote) As ReporteExistenciaLote
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, UnidadComprada As Double
         Dim TasaCambio As Double, Existencia As Double = 0, SqlConsulta As String, DevolucionCompra As Double = 0
@@ -13527,6 +13644,11 @@ errSub:
         Dim SalidaBodega As Double = 0, CostoVenta As Double = 0, ImporteFactura As Double = 0
         Dim ImporteCompra As Double, ImporteDevCompra As Double = 0, ImporteVenta As Double = 0, ImporteSalida As Double = 0
         Dim ImporteDevFactura As Double = 0, result As ReporteExistenciaLote = New ReporteExistenciaLote
+        Dim CodigoProducto As String, NumeroLote As String, CodigoLinea As String
+
+        CodigoProducto = Args.Codigo_Producto
+        NumeroLote = Args.Numero_Lote
+        CodigoLinea = Args.Codigo_Linea
 
         '///////////////////////////FORMULA DE COMPRA PROMEDIO////////////////////////////////////////////////////////////////
         ' CostoPromedio= ((Existencia*Costo)+(PrecioCompra*CantidadCompra))/(Existencia+CantidadComprada)
@@ -13643,6 +13765,10 @@ errSub:
         result.Codigo_Linea = CodigoLinea
         result.Numero_Lote = NumeroLote
         result.Existencia_Lote = Existencia
+        result.Fecha_Vence = Args.Fecha_Vence
+        result.Tipo_Reporte = Args.Tipo_Reporte
+        result.Agrupado_Reporte = Args.Agrupado_Reporte
+        result.Descripcion_Producto = Args.Descripcion_Producto
 
         BuscaExistenciaLineaLote = result
         'BuscaExistenciaLineaLote = Format(Existencia, "####0.0000")
@@ -13747,7 +13873,7 @@ errSub:
 
         '////////////////////////////////////BUSCO EL TOTAL DE LA DEVOLUCION DE LAS  FACTURAS//////////////////////////////////////////////////////////////////////
         SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad, SUM(Detalle_Facturas.Precio_Neto) AS Precio_Neto, SUM(Detalle_Facturas.Cantidad * Detalle_Facturas.Costo_Unitario) AS Importe, SUM(Detalle_Facturas.Cantidad * Detalle_Facturas.Costo_Unitario / TasaCambio.MontoTasa) AS ImporteD, Facturas.Tipo_Factura FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura INNER JOIN TasaCambio ON Facturas.Fecha_Factura = TasaCambio.FechaTasa  " &
-                      "WHERE (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(FechaCompraIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaCompraFin, "yyyy-MM-dd") & "', 102)) AND (Facturas.Cod_Bodega = '" & CodBodega & "') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') GROUP BY Facturas.Tipo_Factura, TasaCambio.MontoTasa HAVING (Facturas.Tipo_Factura = N'Devolucion de Venta')"
+                      "WHERE (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '" & Format(FechaCompraIni, "yyyy-MM-dd") & "', 102) AND CONVERT(DATETIME, '" & Format(FechaCompraFin, "yyyy-MM-dd") & "', 102)) AND (Facturas.Cod_Bodega = '" & CodBodega & "') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') GROUP BY Facturas.Tipo_Factura, TasaCambio.MontoTasa HAVING (Facturas.Tipo_Factura = 'Devolucion de Venta')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
         DataAdapter.Fill(DataSet, "DevolucionFacturas")
         If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then

@@ -460,8 +460,9 @@ Public Class FrmProductos
         DataAdapterProductos.Fill(DataSet, "ListaProductos")
         If Not DataSet.Tables("ListaProductos").Rows.Count = 0 Then
             Me.CboCodigoProducto.DataSource = DataSet.Tables("ListaProductos")
+            Me.CboCodigoProducto.Splits.Item(0).DisplayColumns(1).Width = 350
         End If
-        Me.CboCodigoProducto.Splits.Item(0).DisplayColumns(1).Width = 350
+
 
         DataAdapterProductos = New SqlClient.SqlDataAdapter(SqlLinea, MiConexion)
         DataAdapterProductos.Fill(DataSet, "LineaProductos")
@@ -543,8 +544,9 @@ Public Class FrmProductos
         DataAdapterProductos.Fill(DataSet, "ListaProductos")
         If Not DataSet.Tables("ListaProductos").Rows.Count = 0 Then
             Me.CboCodigoProducto.DataSource = DataSet.Tables("ListaProductos")
+            Me.CboCodigoProducto.Splits.Item(0).DisplayColumns(1).Width = 350
         End If
-        Me.CboCodigoProducto.Splits.Item(0).DisplayColumns(1).Width = 350
+
 
         DataAdapterProductos = New SqlClient.SqlDataAdapter(SqlLinea, MiConexion)
         DataAdapterProductos.Fill(DataSet, "LineaProductos")
@@ -585,7 +587,7 @@ Public Class FrmProductos
         End If
         Me.CboUnidad.DisplayMember = "Unidad_Medida"
 
-        Me.CboCodigoProducto.Splits.Item(0).DisplayColumns(1).Width = 350
+        'Me.CboCodigoProducto.Splits.Item(0).DisplayColumns(1).Width = 350
 
     End Sub
 

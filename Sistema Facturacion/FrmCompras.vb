@@ -1,11 +1,932 @@
+Imports System.ComponentModel
+Imports System.Data.Common
 Imports System.Data.SqlClient
+Imports System.Data.SqlTypes
+Imports System.Net
 Imports System.Threading
+Imports Microsoft.Win32
+Imports Sistema_Facturacion.FrmFacturas
 
 Public Class FrmCompras
     Public MiConexion As New SqlClient.SqlConnection(Conexion), CodigoIva As String, CantidadAnterior As Double, PrecioAnterior As Double, FacturaTarea As Boolean = False
     Public NumeroLote As String = "SINLOTE", FechaLote As Date = "01/01/1900", MiconexionContabilidad As New SqlClient.SqlConnection(ConexionContabilidad)
     Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder, EsSolicitud As Boolean = False
     Public Fecha_Compra As Date, FechaHoraCompra As Date, NumeroCompra As String, TipoCompra As String, Impresora_Defecto As String
+    Public WithEvents backgroundWorkerInsertar As System.ComponentModel.BackgroundWorker
+    Public WithEvents backgroundWorkerGrabar As System.ComponentModel.BackgroundWorker
+    Public WithEvents backgroundWorkerAgregarEncabezado As System.ComponentModel.BackgroundWorker
+    Public Delegate Sub delegadoGridRegistros(Compras As TablaCompras)
+    Public ConexionExcel As String, MiConexionExcel As New OleDb.OleDbConnection, DataAdapterExcel As New OleDb.OleDbDataAdapter
+    Public RutaBD As String, MiDataSet As New DataSet()
+
+    Public Sub LimpiarGridImporacion()
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim SqlString As String
+
+        DataSet.Reset()
+        SqlString = "SELECT Cod_Producto, Descripcion_Producto, Cantidad, Precio_Unitario, Importe, Numero_Lote, Fecha_Vence, Precio_Neto FROM Detalle_Compras WHERE (Numero_Compra = N'-10000') "
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "DetalleCompra")
+
+        Me.TrueDBGridConsultas.DataSource = DataSet.Tables("DetalleCompra")
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Cod_Producto").Width = 75
+        Me.TrueDBGridConsultas.Columns("Cod_Producto").Caption = "CodProducto"
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Cod_Producto").Locked = True
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 180
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Cantidad").Width = 60
+        Me.TrueDBGridConsultas.Columns("Cantidad").NumberFormat = "##,##0.00"
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 75
+        Me.TrueDBGridConsultas.Columns("Precio_Unitario").Caption = "PrecioUnitario"
+        Me.TrueDBGridConsultas.Columns("Precio_Unitario").NumberFormat = "##,##0.00"
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Precio_Neto").Width = 75
+        Me.TrueDBGridConsultas.Columns("Precio_Neto").Caption = "Precio_Neto"
+        Me.TrueDBGridConsultas.Columns("Precio_Neto").NumberFormat = "##,##0.00"
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Precio_Neto").Locked = True
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Importe").Width = 75
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Importe").Locked = True
+        Me.TrueDBGridConsultas.Columns("Importe").NumberFormat = "##,##0.00"
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Numero_Lote").Width = 70
+        Me.TrueDBGridConsultas.Columns("Numero_Lote").Caption = "Numero Lote"
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Fecha_Vence").Width = 75
+        Me.TrueDBGridConsultas.Columns("Fecha_Vence").Caption = "FechaVence"
+
+        Me.LblTotalRegistros.Text = "Total Registros: "
+
+        Me.ProgressBar.Minimum = 0
+        Me.ProgressBar.Maximum = 0
+        Me.ProgressBar.Value = 0
+        Me.ProgressBar.Visible = False
+    End Sub
+
+    '//////////////////////////////////PROCESOS INSERTAR REGISTROS CON HILOS ////////////////////////////////
+    Private Sub backgroundWorkerInsertar_DoWork(
+ByVal sender As Object,
+ByVal e As DoWorkEventArgs) _
+Handles backgroundWorkerInsertar.DoWork
+        Dim worker As BackgroundWorker =
+        CType(sender, BackgroundWorker)
+
+        Dim args As TablaCompras = e.Argument
+
+        If worker.CancellationPending Then
+            e.Cancel = True
+            Exit Sub
+        Else
+
+            worker.WorkerReportsProgress = True
+            worker.WorkerSupportsCancellation = True
+            InsertarRegistrosWorker(args, worker, e)
+        End If
+    End Sub
+    Private Sub backgroundWorkerInsertar_RunWorkerCompleted(
+ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs) _
+Handles backgroundWorkerInsertar.RunWorkerCompleted
+
+        If (e.Error IsNot Nothing) Then
+            Bitacora(Now, NombreUsuario, "Productos", "Error " & e.Error.Message)
+        ElseIf e.Cancelled Then
+            Bitacora(Now, NombreUsuario, "Productos", "Hilo Cancelado")
+        Else
+
+            If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+                Quien = "NumeroCompras"
+                Me.TxtNumeroEnsamble.Text = NumeroCompra
+                Bitacora(Now, NombreUsuario, "Compras", "Agrego Una Compra: " & Me.TxtNumeroEnsamble.Text)
+            End If
+
+        End If
+
+    End Sub
+    Public Sub InsertarRowGrid_Hilos(Compras As TablaCompras)
+        Dim oTabla As DataTable, iPosicion As Double, CodigoProducto As String
+
+        iPosicion = Me.TrueDBGridComponentes.Row
+        CodigoProducto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
+
+        CmdBuilder.RefreshSchema()
+        oTabla = ds.Tables("DetalleCompra").GetChanges(DataRowState.Added)
+        If Not IsNothing(oTabla) Then
+            '//////////////////SI  TIENE REGISTROS NUEVOS 
+            da.Update(oTabla)
+            ds.Tables("DetalleCompra").AcceptChanges()
+            da.Update(ds.Tables("DetalleCompra"))
+
+            Me.TrueDBGridComponentes.Row = iPosicion
+
+        Else
+            oTabla = ds.Tables("DetalleCompra").GetChanges(DataRowState.Modified)
+            If Not IsNothing(oTabla) Then
+                da.Update(oTabla)
+                ds.Tables("DetalleCompra").AcceptChanges()
+                da.Update(ds.Tables("DetalleCompra"))
+            End If
+        End If
+
+        ActualizarGridInsertRow_Hilos(Compras)
+        ActualizaDetalleBodega(Compras.Cod_Bodega, CodigoProducto)
+
+
+    End Sub
+    Public Sub ActualizarGridInsertRow_Hilos(Compras As TablaCompras)
+        Dim SqlCompras As String, TipoCompra As String
+
+        If Me.TrueDBGridComponentes.InvokeRequired Then
+            Dim delegadoGrid As New delegadoGridRegistros(AddressOf ActualizarGridInsertRow_Hilos)
+            TrueDBGridComponentes.Invoke(delegadoGrid, New Object() {Compras})
+            My.Application.DoEvents()
+        Else
+
+            TipoCompra = Compras.Tipo_Compra
+            If FacturaTarea = True Then
+                ds.Tables("DetalleCompra").Reset()
+                '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
+                '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                SqlCompras = "SELECT  Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario, Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, Detalle_Compras.Numero_Lote,Detalle_Compras.Fecha_Vence, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra FROM  Detalle_Compras  " &
+                             "WHERE (Detalle_Compras.Numero_Compra = '" & Compras.Numero_Compra & "') AND (Detalle_Compras.Tipo_Compra = '" & TipoCompra & "') ORDER BY Detalle_Compras.id_Detalle_Compra"
+                ds = New DataSet
+                da = New SqlDataAdapter(SqlCompras, MiConexion)
+                CmdBuilder = New SqlCommandBuilder(da)
+                da.Fill(ds, "DetalleCompra")
+                Me.BindingDetalle.DataSource = ds.Tables("DetalleCompra")
+                Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
+                Me.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
+                Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 259
+                'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
+                Me.TrueDBGridComponentes.Columns(2).Caption = "Ordenado"
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 64
+                Me.TrueDBGridComponentes.Columns(3).Caption = "Precio Unit"
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = False
+                Me.TrueDBGridComponentes.Columns(4).Caption = "%Desc"
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 43
+                Me.TrueDBGridComponentes.Columns(5).Caption = "Precio Neto"
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Width = 65
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Locked = True
+                Me.TrueDBGridComponentes.Columns(6).Caption = "Importe"
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Width = 61
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Locked = True
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(7).Visible = False
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(8).Button = True
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("TasaCambio").Visible = False
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
+            Else
+                ds.Tables("DetalleCompra").Reset()
+                '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
+                SqlCompras = "SELECT Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario,Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra FROM  Detalle_Compras " &
+                              "WHERE (Detalle_Compras.Numero_Compra = '" & Compras.Numero_Compra & "') AND (Detalle_Compras.Tipo_Compra = '" & TipoCompra & "') ORDER BY Detalle_Compras.id_Detalle_Compra"
+                'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
+                'DataAdapter.Fill(DataSet, "DetalleCompras")
+                'Me.BindingDetalle.DataSource = DataSet.Tables("DetalleCompras")
+                ds = New DataSet
+                da = New SqlDataAdapter(SqlCompras, MiConexion)
+                CmdBuilder = New SqlCommandBuilder(da)
+                da.Fill(ds, "DetalleCompra")
+                Me.BindingDetalle.DataSource = ds.Tables("DetalleCompra")
+                Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
+                Me.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
+                Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 259
+                'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
+                Me.TrueDBGridComponentes.Columns(2).Caption = "Ordenado"
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 64
+                Me.TrueDBGridComponentes.Columns(3).Caption = "Precio Unit"
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = False
+                Me.TrueDBGridComponentes.Columns(4).Caption = "%Desc"
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 43
+                Me.TrueDBGridComponentes.Columns(5).Caption = "Precio Neto"
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Width = 65
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Locked = True
+                Me.TrueDBGridComponentes.Columns(6).Caption = "Importe"
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Width = 61
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Locked = True
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(7).Visible = False
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("TasaCambio").Visible = False
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
+                Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
+            End If
+
+        End If
+    End Sub
+
+    '////////////////////////////////////PROCESOS GRABAR COMPRAS CON HILOS //////////////
+    Private Sub backgroundWorkerGrabar_DoWork(
+ByVal sender As Object,
+ByVal e As DoWorkEventArgs) _
+Handles backgroundWorkerGrabar.DoWork
+        Dim worker As BackgroundWorker =
+        CType(sender, BackgroundWorker)
+
+        Dim args As TablaCompras = e.Argument
+
+        If worker.CancellationPending Then
+            e.Cancel = True
+            Exit Sub
+        Else
+
+            worker.WorkerReportsProgress = True
+            worker.WorkerSupportsCancellation = True
+            AgregarComprasWorker(args, worker, e)
+        End If
+    End Sub
+    Private Sub backgroundWorkerGrabar_RunWorkerCompleted(
+ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs) _
+Handles backgroundWorkerGrabar.RunWorkerCompleted
+
+        If (e.Error IsNot Nothing) Then
+            Bitacora(Now, NombreUsuario, "Compras", "Error " & e.Error.Message)
+        ElseIf e.Cancelled Then
+            Bitacora(Now, NombreUsuario, "Compras", "Hilo Cancelado")
+        Else
+
+
+
+        End If
+
+    End Sub
+
+    Private Sub backgroundWorkerAgregarEncabezado_DoWork(
+ByVal sender As Object,
+ByVal e As DoWorkEventArgs) _
+Handles backgroundWorkerAgregarEncabezado.DoWork
+        Dim worker As BackgroundWorker =
+        CType(sender, BackgroundWorker)
+
+        Dim args As TablaCompras = e.Argument
+
+        If worker.CancellationPending Then
+            e.Cancel = True
+            Exit Sub
+        Else
+
+            worker.WorkerReportsProgress = True
+            worker.WorkerSupportsCancellation = True
+            GrabaCompras(args)
+        End If
+    End Sub
+    Private Sub backgroundWorkerAgregarEncabezado_RunWorkerCompleted(
+ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs) _
+Handles backgroundWorkerAgregarEncabezado.RunWorkerCompleted
+
+        If (e.Error IsNot Nothing) Then
+            Bitacora(Now, NombreUsuario, "Compras", "Error " & e.Error.Message)
+        ElseIf e.Cancelled Then
+            Bitacora(Now, NombreUsuario, "Compras", "Hilo Cancelado")
+        Else
+
+
+
+        End If
+
+    End Sub
+
+
+    Public Sub InsertarRegistrosWorker(Compra As TablaCompras, ByVal worker As BackgroundWorker, ByVal e As DoWorkEventArgs)
+
+
+        '////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////////GRABO EL ENCABEZADO DE LA FACTURA /////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+        GrabaCompras(Compra)
+
+        '////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////////GRABO EL DETALLE DE FACTURA /////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+        'InsertarRowGrid()
+
+        InsertarRowGrid_Hilos(Compra)
+
+
+    End Sub
+    Public Sub AgregarComprasWorker(compras As TablaCompras, worker As BackgroundWorker, e As DoWorkEventArgs)
+        Dim dsDetalle As DataSet, dsMetodoPago As New DataSet, DtMetodo As New DataTable
+        Dim Registros As Double, iPosicion As Double, Monto As Double, NombrePago As String, NumeroTarjeta As String, FechaVenceTarjeta As Date
+        Dim TablaDetalleCompras As TablaDetalleCompras = New TablaDetalleCompras
+
+        dsDetalle = ds.Copy
+        DtMetodo = Me.BindingMetodo.DataSource
+        dsMetodoPago.Tables.Add(DtMetodo.Copy)
+
+        LimpiarCompras()
+
+
+        '///////////////////////////////////////////////////////////////////////////
+        '//////////////////////////////GRABO LOS ENCABEZADO DE COMPRAS /////////////
+        '//////////////////////////////////////////////////////////////////////////
+        GrabaCompras(compras)
+
+
+        '////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////////GRABO EL DETALLE DE LA FACTURA /////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+
+        Registros = dsDetalle.Tables("DetalleCompra").Rows.Count
+        iPosicion = 0
+        Monto = 0
+
+        Do While iPosicion < Registros
+
+            My.Application.DoEvents()
+
+            TablaDetalleCompras.Numero_Compra = compras.Numero_Compra
+            TablaDetalleCompras.Cod_Producto = dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Cod_Producto")
+            TablaDetalleCompras.Fecha_Compra = compras.Fecha_Compra
+            TablaDetalleCompras.Tipo_Compra = compras.Tipo_Compra
+
+            TablaDetalleCompras.Descripcion_Producto = dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Descripcion_Producto")
+
+            If Not IsDBNull(dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("id_Detalle_Compra")) Then
+                TablaDetalleCompras.IdDetalleCompra = dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("id_Detalle_Compra")
+            Else
+                TablaDetalleCompras.IdDetalleCompra = -1
+            End If
+
+
+            If Not IsDBNull(dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Precio_Unitario")) Then
+                TablaDetalleCompras.Precio_Unitario = dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Precio_Unitario")
+            Else
+                TablaDetalleCompras.Precio_Unitario = 0
+            End If
+
+            If Not IsDBNull(dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Descuento")) Then
+                TablaDetalleCompras.Descuento = dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Descuento")
+            Else
+                TablaDetalleCompras.Descuento = 0
+            End If
+
+            If Not IsDBNull(dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Precio_Neto")) Then
+                TablaDetalleCompras.Precio_Neto = dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Precio_Neto")
+            Else
+                TablaDetalleCompras.Precio_Neto = 0
+            End If
+
+            If Not IsDBNull(dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Importe")) Then
+                TablaDetalleCompras.Importe = dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Importe")
+            Else
+                TablaDetalleCompras.Importe = 0
+            End If
+
+            If Not IsDBNull(dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Cantidad")) Then
+                TablaDetalleCompras.Cantidad = dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Cantidad")
+            Else
+                TablaDetalleCompras.Cantidad = 0
+            End If
+
+            If Not IsDBNull(dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Numero_Lote")) Then
+                TablaDetalleCompras.Numero_Lote = dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Numero_Lote")
+            Else
+                TablaDetalleCompras.Numero_Lote = "SINLOTE"
+            End If
+
+            If Not IsDBNull(dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Fecha_Vence")) Then
+                If dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Fecha_Vence") = "0" Then
+                    TablaDetalleCompras.Fecha_Vence = "01/01/1900"
+                Else
+                    TablaDetalleCompras.Fecha_Vence = Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")
+                End If
+
+            Else
+                TablaDetalleCompras.Fecha_Vence = "01/01/1900"
+
+            End If
+
+            If CambiarFechaCompra = True Then
+
+                GrabaDetalleCompra(NumeroCompra, TablaDetalleCompras.Cod_Producto, TablaDetalleCompras.Precio_Unitario, TablaDetalleCompras.Descuento, TablaDetalleCompras.Precio_Neto, TablaDetalleCompras.Importe, TablaDetalleCompras.Cantidad, TablaDetalleCompras.Numero_Lote, TablaDetalleCompras.Fecha_Vence, TablaDetalleCompras.Descripcion_Producto)
+
+                Select Case compras.Tipo_Compra
+                    Case "Mercancia Recibida"
+                        ExistenciasCostos(TablaDetalleCompras.Cod_Producto, TablaDetalleCompras.Cantidad, TablaDetalleCompras.Precio_Neto, compras.Tipo_Compra, compras.Cod_Bodega)
+                End Select
+
+            ElseIf compras.Tipo_Compra = "Cuenta" Then
+
+                GrabaDetalleCompra(NumeroCompra, TablaDetalleCompras.Cod_Producto, TablaDetalleCompras.Precio_Unitario, TablaDetalleCompras.Descuento, TablaDetalleCompras.Precio_Neto, TablaDetalleCompras.Importe, TablaDetalleCompras.Cantidad, TablaDetalleCompras.Numero_Lote, TablaDetalleCompras.Fecha_Vence, TablaDetalleCompras.Descripcion_Producto)
+
+                Select Case compras.Tipo_Compra
+                    Case "Mercancia Recibida"
+                        ExistenciasCostos(TablaDetalleCompras.Cod_Producto, TablaDetalleCompras.Cantidad, TablaDetalleCompras.Precio_Neto, compras.Tipo_Compra, compras.Cod_Bodega)
+                End Select
+
+
+            ElseIf compras.Tipo_Compra = "Cuenta DB" Then
+
+                GrabaDetalleCompra(NumeroCompra, TablaDetalleCompras.Cod_Producto, TablaDetalleCompras.Precio_Unitario, TablaDetalleCompras.Descuento, TablaDetalleCompras.Precio_Neto, TablaDetalleCompras.Importe, TablaDetalleCompras.Cantidad, TablaDetalleCompras.Numero_Lote, TablaDetalleCompras.Fecha_Vence, TablaDetalleCompras.Descripcion_Producto)
+
+                Select Case compras.Tipo_Compra
+                    Case "Mercancia Recibida"
+                        ExistenciasCostos(TablaDetalleCompras.Cod_Producto, TablaDetalleCompras.Cantidad, TablaDetalleCompras.Precio_Neto, compras.Tipo_Compra, compras.Cod_Bodega)
+                End Select
+
+            End If
+
+
+
+            iPosicion = iPosicion + 1
+        Loop
+
+
+        '////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////////GRABO LOS METODOS DE PAGO /////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+
+        Registros = dsMetodoPago.Tables("MetodoPago").Rows.Count
+        iPosicion = 0
+        Monto = 0
+        Do While iPosicion < Registros
+            My.Application.DoEvents()
+            If Not IsDBNull(dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("NombrePago")) Then
+                NombrePago = dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("NombrePago")
+                Monto = dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("Monto") '+ Monto
+                If Not IsDBNull(dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("NumeroTarjeta")) Then
+                    NumeroTarjeta = dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("NumeroTarjeta")
+                Else
+                    NumeroTarjeta = 0
+                End If
+                If Not IsDBNull(dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("FechaVence")) Then
+                    FechaVenceTarjeta = dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("FechaVence")
+                Else
+                    FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
+                End If
+
+                GrabaMetodoDetalleCompra(NumeroCompra, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta)
+
+            End If
+            iPosicion = iPosicion + 1
+        Loop
+
+        Bitacora(Now, NombreUsuario, compras.Tipo_Compra, "Grabo la Compra: " & compras.Numero_Compra)
+
+        'GrabaMetodoDetalleCompra(NumeroCompra, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta)
+
+
+
+    End Sub
+    Public Sub AgregarEncabezado()
+        Dim cod As String = "1", Compras As TablaCompras = New TablaCompras
+        Dim ConsecutivoCompra As Double, SqlConsecutivo As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim FacturaBodega As Boolean = False, CompraBodega As Boolean = False
+
+
+
+        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+            Select Case Me.CboTipoProducto.Text
+                Case "Orden de Compra"
+                    ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
+                Case "Mercancia Recibida"
+                    ConsecutivoCompra = BuscaConsecutivo("Compra")
+                Case "Devolucion de Compra"
+                    ConsecutivoCompra = BuscaConsecutivo("DevCompra")
+                Case "Transferencia Recibida"
+                    ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
+                Case "Cuenta"
+                    ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+                Case "Cuenta DB"
+                    ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
+            End Select
+
+            '/////////////////////////////////////////////////////////////////////////////////////////
+            '///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
+            '////////////////////////////////////////////////////////////////////////////////////////
+            SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
+            DataAdapter.Fill(DataSet, "Configuracion")
+            If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
+                If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) Then
+                    FacturaBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")
+                End If
+
+                If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) Then
+                    CompraBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")
+                End If
+
+            End If
+
+            If CompraBodega = True Then
+                NumeroCompra = Me.CboCodigoBodega.Columns(0).Text & "-" & Format(ConsecutivoCompra, "0000#")
+            Else
+                NumeroCompra = Format(ConsecutivoCompra, "0000#")
+            End If
+        Else
+            'ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
+            'NumeroCompra = Format(ConsecutivoCompra, "0000#")
+            NumeroCompra = Me.TxtNumeroEnsamble.Text
+        End If
+
+        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+            Quien = "NumeroCompras"
+            Me.TxtNumeroEnsamble.Text = NumeroCompra
+            Bitacora(Now, NombreUsuario, "Compras", "Agrego Una Compra: " & Me.TxtNumeroEnsamble.Text)
+        End If
+
+
+        Compras.Numero_Compra = NumeroCompra
+        Compras.Fecha_Compra = Format(DTPFecha.Value, "yyyy-MM-dd")
+        Compras.Tipo_Compra = CboTipoProducto.Text
+        Compras.Cod_Bodega = CboCodigoBodega.Text
+        Compras.Moneda_Compra = TxtMonedaFactura.Text
+        Compras.Cod_Proveedor = TxtCodigoProveedor.Text
+        Compras.Nombre_Proveedor = TxtNombres.Text
+        Compras.Apellido_Proveedor = TxtApellidos.Text
+        Compras.Direccion_Proveedor = TxtDireccion.Text
+        Compras.Telefono_Proveedor = TxtTelefono.Text
+        Compras.Fecha_Vencimiento = DTVencimiento.Value
+        Compras.Observaciones_Cómpra = TxtObservaciones.Text
+        Compras.Descuento_Compra = 0
+        Compras.Fecha_Descuento = Now
+        Compras.Sub_Total = TxtSubTotal.Text
+        Compras.IVA = TxtIva.Text
+        Compras.Pagado_Compra = TxtPagado.Text
+        Compras.Neto_Pagar = TxtNetoPagar.Text
+        Compras.Monto_Credito = TxtNetoPagar.Text
+        Compras.Contabilizado_Compra = 0
+        Compras.Activo_Compra = 1
+        Compras.Cancelado_Compra = 0
+        If OptExsonerado.Checked = True Then
+            Compras.Exonerado_Compra = 1
+        Else
+            Compras.Exonerado_Compra = 0
+        End If
+        If TxtReferencia.Text <> "" Then
+            Compras.Su_Referencia = TxtReferencia.Text
+        End If
+
+        If CboReferencia.Text <> "" Then
+            Compras.Referencia_Compra = CboReferencia.Text
+        End If
+        Compras.Transferencia_Procesada = 0
+        Compras.Marca_Compra = 1
+        Compras.Codigo_Proyecto = ""
+        If Not CboProyecto.Text = "" Then
+            Compras.Codigo_Proyecto = CboProyecto.Columns(0).Text
+        End If
+        Compras.Nuestra_Referencia = CboReferencia.Text
+        Compras.Fecha_Hora = DTPFecha.Value & " " & Format(Now, "HH:mm")
+        Compras.Tipo_Productor = ""
+        Compras.Estatus_Compra = "Grabado"
+        Compras.Numero_Solicitud = 0
+        Compras.Numero_Orden = 0
+        Compras.Solcitud_CtaContable = 0
+
+        If TxtSubTotal.Text <> "" Then
+            Compras.Sub_Total = TxtSubTotal.Text
+        Else
+            Compras.Sub_Total = 0
+        End If
+
+        If TxtIva.Text <> "" Then
+            Compras.IVA = TxtIva.Text
+        Else
+            Compras.IVA = 0
+        End If
+
+        If TxtPagado.Text <> "" Then
+            Compras.Pagado_Compra = TxtPagado.Text
+        Else
+            Compras.Pagado_Compra = 0
+        End If
+
+        If TxtNetoPagar.Text <> "" Then
+            Compras.Neto_Pagar = TxtNetoPagar.Text
+        Else
+            Compras.Neto_Pagar = 0
+        End If
+
+        If OptExsonerado.Checked = True Then
+            Compras.Exonerado_Compra = 1
+        Else
+            Compras.Exonerado_Compra = 0
+        End If
+
+        If ChkAplicarCtasXPagar.Checked = True Then
+            Compras.Aplicar_CtasXPagar = 1
+        Else
+            Compras.Aplicar_CtasXPagar = 0
+        End If
+
+
+        Dim worker As BackgroundWorker
+        worker = New BackgroundWorker()
+        AddHandler worker.DoWork, AddressOf backgroundWorkerAgregarEncabezado_DoWork
+        AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerAgregarEncabezado_RunWorkerCompleted
+        worker.RunWorkerAsync(Compras)
+
+    End Sub
+
+    Public Sub AgregarCompras()
+        Dim cod As String = "1", Compras As TablaCompras = New TablaCompras
+        Dim ConsecutivoCompra As Double, SqlConsecutivo As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim FacturaBodega As Boolean = False, CompraBodega As Boolean = False
+
+
+        ActualizaMETODOcOMPRA()
+
+        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+            Select Case Me.CboTipoProducto.Text
+                Case "Orden de Compra"
+                    ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
+                Case "Mercancia Recibida"
+                    ConsecutivoCompra = BuscaConsecutivo("Compra")
+                Case "Devolucion de Compra"
+                    ConsecutivoCompra = BuscaConsecutivo("DevCompra")
+                Case "Transferencia Recibida"
+                    ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
+                Case "Cuenta"
+                    ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+                Case "Cuenta DB"
+                    ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
+            End Select
+
+            '/////////////////////////////////////////////////////////////////////////////////////////
+            '///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
+            '////////////////////////////////////////////////////////////////////////////////////////
+            SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
+            DataAdapter.Fill(DataSet, "Configuracion")
+            If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
+                If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) Then
+                    FacturaBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")
+                End If
+
+                If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) Then
+                    CompraBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")
+                End If
+
+            End If
+
+            If CompraBodega = True Then
+                NumeroCompra = Me.CboCodigoBodega.Columns(0).Text & "-" & Format(ConsecutivoCompra, "0000#")
+            Else
+                NumeroCompra = Format(ConsecutivoCompra, "0000#")
+            End If
+        Else
+            'ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
+            'NumeroCompra = Format(ConsecutivoCompra, "0000#")
+            NumeroCompra = Me.TxtNumeroEnsamble.Text
+        End If
+
+        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+            Quien = "NumeroCompras"
+            Me.TxtNumeroEnsamble.Text = NumeroCompra
+            Bitacora(Now, NombreUsuario, "Compras", "Agrego Una Compra: " & Me.TxtNumeroEnsamble.Text)
+        End If
+
+        Compras.Numero_Compra = NumeroCompra
+        Compras.Fecha_Compra = Format(DTPFecha.Value, "yyyy-MM-dd")
+        Compras.Tipo_Compra = CboTipoProducto.Text
+        Compras.Cod_Bodega = CboCodigoBodega.Text
+        Compras.Moneda_Compra = TxtMonedaFactura.Text
+        Compras.Cod_Proveedor = TxtCodigoProveedor.Text
+        Compras.Nombre_Proveedor = TxtNombres.Text
+        Compras.Apellido_Proveedor = TxtApellidos.Text
+        Compras.Direccion_Proveedor = TxtDireccion.Text
+        Compras.Telefono_Proveedor = TxtTelefono.Text
+        Compras.Fecha_Vencimiento = DTVencimiento.Value
+        Compras.Observaciones_Cómpra = TxtObservaciones.Text
+        Compras.Descuento_Compra = 0
+        Compras.Fecha_Descuento = Now
+        Compras.Sub_Total = TxtSubTotal.Text
+        Compras.IVA = TxtIva.Text
+        Compras.Pagado_Compra = TxtPagado.Text
+        Compras.Neto_Pagar = TxtNetoPagar.Text
+        Compras.Monto_Credito = TxtNetoPagar.Text
+        Compras.Contabilizado_Compra = 0
+        Compras.Activo_Compra = 1
+        Compras.Cancelado_Compra = 0
+        If OptExsonerado.Checked = True Then
+            Compras.Exonerado_Compra = 1
+        Else
+            Compras.Exonerado_Compra = 0
+        End If
+        If TxtReferencia.Text <> "" Then
+            Compras.Su_Referencia = TxtReferencia.Text
+        End If
+
+        If CboReferencia.Text <> "" Then
+            Compras.Referencia_Compra = CboReferencia.Text
+        End If
+        Compras.Transferencia_Procesada = 0
+        Compras.Marca_Compra = 1
+        Compras.Codigo_Proyecto = ""
+        If Not CboProyecto.Text = "" Then
+            Compras.Codigo_Proyecto = CboProyecto.Columns(0).Text
+        End If
+        Compras.Nuestra_Referencia = CboReferencia.Text
+        Compras.Fecha_Hora = DTPFecha.Value & " " & Format(Now, "HH:mm")
+        Compras.Tipo_Productor = ""
+        Compras.Estatus_Compra = "Grabado"
+        Compras.Numero_Solicitud = 0
+        Compras.Numero_Orden = 0
+        Compras.Solcitud_CtaContable = 0
+
+        If TxtSubTotal.Text <> "" Then
+            Compras.Sub_Total = TxtSubTotal.Text
+        Else
+            Compras.Sub_Total = 0
+        End If
+
+        If TxtIva.Text <> "" Then
+            Compras.IVA = TxtIva.Text
+        Else
+            Compras.IVA = 0
+        End If
+
+        If TxtPagado.Text <> "" Then
+            Compras.Pagado_Compra = TxtPagado.Text
+        Else
+            Compras.Pagado_Compra = 0
+        End If
+
+        If TxtNetoPagar.Text <> "" Then
+            Compras.Neto_Pagar = TxtNetoPagar.Text
+        Else
+            Compras.Neto_Pagar = 0
+        End If
+
+        If OptExsonerado.Checked = True Then
+            Compras.Exonerado_Compra = 1
+        Else
+            Compras.Exonerado_Compra = 0
+        End If
+
+        If ChkAplicarCtasXPagar.Checked = True Then
+            Compras.Aplicar_CtasXPagar = 1
+        Else
+            Compras.Aplicar_CtasXPagar = 0
+        End If
+
+
+        Dim worker As BackgroundWorker
+        worker = New BackgroundWorker()
+        AddHandler worker.DoWork, AddressOf backgroundWorkerGrabar_DoWork
+        AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerGrabar_RunWorkerCompleted
+        worker.RunWorkerAsync(Compras)
+
+
+    End Sub
+    Public Sub Guardar_Registros_Row()
+        Dim cod As String = "1", Compras As TablaCompras = New TablaCompras
+        Dim ConsecutivoCompra As Double, SqlConsecutivo As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim FacturaBodega As Boolean = False, CompraBodega As Boolean = False
+        Dim worker As BackgroundWorker
+        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+            Select Case Me.CboTipoProducto.Text
+                Case "Orden de Compra"
+                    ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
+                Case "Mercancia Recibida"
+                    ConsecutivoCompra = BuscaConsecutivo("Compra")
+                Case "Devolucion de Compra"
+                    ConsecutivoCompra = BuscaConsecutivo("DevCompra")
+                Case "Transferencia Recibida"
+                    ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
+                Case "Cuenta"
+                    ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+                Case "Cuenta DB"
+                    ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
+            End Select
+
+            '/////////////////////////////////////////////////////////////////////////////////////////
+            '///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
+            '////////////////////////////////////////////////////////////////////////////////////////
+            SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
+            DataAdapter.Fill(DataSet, "Configuracion")
+            If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
+                If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) Then
+                    FacturaBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")
+                End If
+
+                If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) Then
+                    CompraBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")
+                End If
+
+            End If
+
+            If CompraBodega = True Then
+                NumeroCompra = Me.CboCodigoBodega.Columns(0).Text & "-" & Format(ConsecutivoCompra, "0000#")
+            Else
+                NumeroCompra = Format(ConsecutivoCompra, "0000#")
+            End If
+        Else
+            'ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
+            'NumeroCompra = Format(ConsecutivoCompra, "0000#")
+            NumeroCompra = Me.TxtNumeroEnsamble.Text
+        End If
+
+        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+            Quien = "NumeroCompras"
+            Me.TxtNumeroEnsamble.Text = NumeroCompra
+            Bitacora(Now, NombreUsuario, "Compras", "Agrego Una Compra: " & Me.TxtNumeroEnsamble.Text)
+        End If
+
+        Compras.Numero_Compra = NumeroCompra
+        Compras.Fecha_Compra = Format(DTPFecha.Value, "yyyy-MM-dd")
+        Compras.Tipo_Compra = CboTipoProducto.Text
+        Compras.Cod_Bodega = CboCodigoBodega.Text
+        Compras.Moneda_Compra = TxtMonedaFactura.Text
+        Compras.Cod_Proveedor = TxtCodigoProveedor.Text
+        Compras.Nombre_Proveedor = TxtNombres.Text
+        Compras.Apellido_Proveedor = TxtApellidos.Text
+        Compras.Direccion_Proveedor = TxtDireccion.Text
+        Compras.Telefono_Proveedor = TxtTelefono.Text
+        Compras.Fecha_Vencimiento = DTVencimiento.Value
+        Compras.Observaciones_Cómpra = TxtObservaciones.Text
+        Compras.Descuento_Compra = 0
+        Compras.Fecha_Descuento = Now
+        Compras.Sub_Total = TxtSubTotal.Text
+        Compras.IVA = TxtIva.Text
+        Compras.Pagado_Compra = TxtPagado.Text
+        Compras.Neto_Pagar = TxtNetoPagar.Text
+        Compras.Monto_Credito = TxtNetoPagar.Text
+        Compras.Contabilizado_Compra = 0
+        Compras.Activo_Compra = 1
+        Compras.Cancelado_Compra = 0
+        If OptExsonerado.Checked = True Then
+            Compras.Exonerado_Compra = 1
+        Else
+            Compras.Exonerado_Compra = 0
+        End If
+        If TxtReferencia.Text <> "" Then
+            Compras.Su_Referencia = TxtReferencia.Text
+        End If
+
+        If CboReferencia.Text <> "" Then
+            Compras.Referencia_Compra = CboReferencia.Text
+        End If
+        Compras.Transferencia_Procesada = 0
+        Compras.Marca_Compra = 1
+        Compras.Codigo_Proyecto = ""
+        If Not CboProyecto.Text = "" Then
+            Compras.Codigo_Proyecto = CboProyecto.Columns(0).Text
+        End If
+        Compras.Nuestra_Referencia = CboReferencia.Text
+        Compras.Fecha_Hora = DTPFecha.Value & " " & Format(Now, "HH:mm")
+        Compras.Tipo_Productor = ""
+        Compras.Estatus_Compra = "Grabado"
+        Compras.Numero_Solicitud = 0
+        Compras.Numero_Orden = 0
+        Compras.Solcitud_CtaContable = 0
+
+        If TxtSubTotal.Text <> "" Then
+            Compras.Sub_Total = TxtSubTotal.Text
+        Else
+            Compras.Sub_Total = 0
+        End If
+
+        If TxtIva.Text <> "" Then
+            Compras.IVA = TxtIva.Text
+        Else
+            Compras.IVA = 0
+        End If
+
+        If TxtPagado.Text <> "" Then
+            Compras.Pagado_Compra = TxtPagado.Text
+        Else
+            Compras.Pagado_Compra = 0
+        End If
+
+        If TxtNetoPagar.Text <> "" Then
+            Compras.Neto_Pagar = TxtNetoPagar.Text
+        Else
+            Compras.Neto_Pagar = 0
+        End If
+
+        If OptExsonerado.Checked = True Then
+            Compras.Exonerado_Compra = 1
+        Else
+            Compras.Exonerado_Compra = 0
+        End If
+
+        If ChkAplicarCtasXPagar.Checked = True Then
+            Compras.Aplicar_CtasXPagar = 1
+        Else
+            Compras.Aplicar_CtasXPagar = 0
+        End If
+
+        MiConexion.Close()
+
+        worker = New BackgroundWorker()
+        AddHandler worker.DoWork, AddressOf backgroundWorkerInsertar_DoWork
+        AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerInsertar_RunWorkerCompleted
+        worker.RunWorkerAsync(Compras)
+
+
+    End Sub
+
+
 
     Public Sub CargarCompra(ByVal FechaCompra As Date, ByVal FechaHoraCompra As Date, ByVal NumeroCompra As String, ByVal TipoCompra As String)
         Dim SqlDatos As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SqlString As String
@@ -16,7 +937,6 @@ Public Class FrmCompras
         If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
             FacturaTarea = DataSet.Tables("DatosEmpresa").Rows(0)("Factura_Tarea")
         End If
-
 
 
         'If FacturaTarea = True Then
@@ -163,7 +1083,7 @@ Public Class FrmCompras
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "SELECT  Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario, Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, Detalle_Compras.Numero_Lote,Detalle_Compras.Fecha_Vence, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra FROM  Detalle_Compras  " & _
+            SqlCompras = "SELECT  Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario, Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, Detalle_Compras.Numero_Lote,Detalle_Compras.Fecha_Vence, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra FROM  Detalle_Compras  " &
                         "WHERE (Detalle_Compras.Numero_Compra = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Compras.Tipo_Compra = '" & TipoCompra & "') ORDER BY Detalle_Compras.id_Detalle_Compra"
             'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
             'DataAdapter.Fill(DataSet, "DetalleCompra")
@@ -203,7 +1123,7 @@ Public Class FrmCompras
         Else
             ds.Tables("DetalleCompra").Reset()
             '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
-            SqlCompras = "SELECT Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario,Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra FROM  Detalle_Compras " & _
+            SqlCompras = "SELECT Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario,Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra FROM  Detalle_Compras " &
                          "WHERE (Detalle_Compras.Numero_Compra = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Compras.Tipo_Compra = '" & TipoCompra & "') ORDER BY Detalle_Compras.id_Detalle_Compra"
             'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
             'DataAdapter.Fill(DataSet, "DetalleCompras")
@@ -370,71 +1290,70 @@ Public Class FrmCompras
         Dim FacturaBodega As Boolean = False, CompraBodega As Boolean = False, SqlConsecutivo As String
         'Dim DiferenciaCantidad As Double, DiferenciaPrecio As Double
 
+        '////////////////////Comentario 25/08/2025
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
-            Select Case Me.CboTipoProducto.Text
-                Case "Orden de Compra"
-                    ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
-                Case "Mercancia Recibida"
-                    ConsecutivoCompra = BuscaConsecutivo("Compra")
-                Case "Devolucion de Compra"
-                    ConsecutivoCompra = BuscaConsecutivo("DevCompra")
-                Case "Transferencia Recibida"
-                    ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
-                Case "Cuenta"
-                    'ConsecutivoCompra = BuscaConsecutivo("Cuenta")
-                    ConsecutivoCompra = BuscaConsecutivo("Compra")
-                Case "Cuenta DB"
-                    'ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
-                    ConsecutivoCompra = BuscaConsecutivo("Compra")
-            End Select
+        'If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+        '    Select Case Me.CboTipoProducto.Text
+        '        Case "Orden de Compra"
+        '            ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
+        '        Case "Mercancia Recibida"
+        '            ConsecutivoCompra = BuscaConsecutivo("Compra")
+        '        Case "Devolucion de Compra"
+        '            ConsecutivoCompra = BuscaConsecutivo("DevCompra")
+        '        Case "Transferencia Recibida"
+        '            ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
+        '        Case "Cuenta"
+        '            'ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+        '            ConsecutivoCompra = BuscaConsecutivo("Compra")
+        '        Case "Cuenta DB"
+        '            'ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
+        '            ConsecutivoCompra = BuscaConsecutivo("Compra")
+        '    End Select
 
-            '/////////////////////////////////////////////////////////////////////////////////////////
-            '///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
-            '////////////////////////////////////////////////////////////////////////////////////////
-            SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
-            DataAdapter.Fill(DataSet, "Configuracion")
-            If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
-                If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) Then
-                    FacturaBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")
-                End If
+        '    '/////////////////////////////////////////////////////////////////////////////////////////
+        '    '///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
+        '    '////////////////////////////////////////////////////////////////////////////////////////
+        '    SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
+        '    DataAdapter.Fill(DataSet, "Configuracion")
+        '    If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
+        '        If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) Then
+        '            FacturaBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")
+        '        End If
 
-                If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) Then
-                    CompraBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")
-                End If
+        '        If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) Then
+        '            CompraBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")
+        '        End If
 
-            End If
+        '    End If
 
-            If CompraBodega = True Then
-                NumeroCompra = Me.CboCodigoBodega.Columns(0).Text & "-" & Format(ConsecutivoCompra, "0000#")
-            Else
-                NumeroCompra = Format(ConsecutivoCompra, "0000#")
-            End If
-        Else
-            'ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
-            'NumeroCompra = Format(ConsecutivoCompra, "0000#")
-            NumeroCompra = Me.TxtNumeroEnsamble.Text
-        End If
-
-
-
-
+        '    If CompraBodega = True Then
+        '        NumeroCompra = Me.CboCodigoBodega.Columns(0).Text & "-" & Format(ConsecutivoCompra, "0000#")
+        '    Else
+        '        NumeroCompra = Format(ConsecutivoCompra, "0000#")
+        '    End If
+        'Else
+        '    'ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
+        '    'NumeroCompra = Format(ConsecutivoCompra, "0000#")
+        '    NumeroCompra = Me.TxtNumeroEnsamble.Text
+        'End If
 
 
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-        GrabaCompras(NumeroCompra)
 
-        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
-            Quien = "NumeroCompras"
-            Me.TxtNumeroEnsamble.Text = NumeroCompra
-            Bitacora(Now, NombreUsuario, "Compras", "Agrego Una Compra: " & Me.TxtNumeroEnsamble.Text)
-        End If
+        '//////////Comentario 25/08/2025
+        'GrabaCompras(NumeroCompra)
+
+        'If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+        '    Quien = "NumeroCompras"
+        '    Me.TxtNumeroEnsamble.Text = NumeroCompra
+        '    Bitacora(Now, NombreUsuario, "Compras", "Agrego Una Compra: " & Me.TxtNumeroEnsamble.Text)
+        'End If
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL DETALLE DE LA COMPRA /////////////////////////////////////////////
@@ -502,7 +1421,9 @@ Public Class FrmCompras
 
     Private Sub TrueDBGridComponentes_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.AfterUpdate
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim SqlProveedor As String, CodProducto As String, iPosicion As Double = 0, CodigoProducto As String, Registros As Double
+        Dim iPosicion As Double = 0, CodigoProducto As String, Registros As Double
+        Dim NumeroLote As String, FechaVence As String
+
         'Dim CodigoProducto As String, PrecioUnitario As Double, Descuento As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double
         'Dim NumeroCompra As String, ConsecutivoCompra As Double, Registros As Double, iPosicion As Double
         'Dim DiferenciaCantidad As Double, DiferenciaPrecio As Double, SQLString As String, TipoProducto As String = "", TipoDescuento As String, PrecioDescCordobas As Double, PrecioDescDolar
@@ -517,25 +1438,27 @@ Public Class FrmCompras
             Exit Sub
         Else
 
-            SqlProveedor = "SELECT  * FROM Proveedor  WHERE (Cod_Proveedor = '" & Me.TxtCodigoProveedor.Text & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-            DataAdapter.Fill(DataSet, "Proveedor")
-            If DataSet.Tables("Proveedor").Rows.Count = 0 Then
-                Exit Sub
-            End If
+            '///////////////22/08/2025 Desactivo la consulta para aumentar velocidad
+            'SqlProveedor = "SELECT  * FROM Proveedor  WHERE (Cod_Proveedor = '" & Me.TxtCodigoProveedor.Text & "')"
+            'DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+            'DataAdapter.Fill(DataSet, "Proveedor")
+            'If DataSet.Tables("Proveedor").Rows.Count = 0 Then
+            '    Exit Sub
+            'End If
         End If
 
 
         If Me.TrueDBGridComponentes.Columns(0).Text = "" Then
             Exit Sub
         Else
-            CodProducto = Me.TrueDBGridComponentes.Columns(0).Text
-            SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-            DataAdapter.Fill(DataSet, "Productos")
-            If DataSet.Tables("Productos").Rows.Count = 0 Then
-                Exit Sub
-            End If
+            '///////////////////22/08/2025  desactivo por velocidad
+            'CodProducto = Me.TrueDBGridComponentes.Columns(0).Text
+            'SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
+            'DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+            'DataAdapter.Fill(DataSet, "Productos")
+            'If DataSet.Tables("Productos").Rows.Count = 0 Then
+            '    Exit Sub
+            'End If
         End If
 
         InsertarRowGrid()
@@ -543,7 +1466,18 @@ Public Class FrmCompras
         Registros = Me.BindingDetalle.Count
         iPosicion = Me.BindingDetalle.Position
         CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
-        ActualizaDetalleBodega(Me.CboCodigoBodega.Text, CodigoProducto)
+
+        'ActualizaDetalleBodega(Me.CboCodigoBodega.Text, CodigoProducto)
+
+        If FacturaTarea = True Then
+            NumeroLote = Me.BindingDetalle.Item(iPosicion)("Numero_Lote")
+            FechaVence = Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")
+            ActualizaExistenciaLotexProducto(NumeroLote, Me.CboCodigoBodega.Text, CodigoProducto, FechaVence)
+        End If
+
+
+
+
 
         Bitacora(Now, NombreUsuario, "Compras", "Modifico Producto: " & CodigoProducto)
         Me.TrueDBGridComponentes.Col = 0
@@ -666,7 +1600,7 @@ Public Class FrmCompras
                         CodProducto = Me.TrueDBGridComponentes.Columns(0).Text
 
                         If PerteneceProductoBodega(Me.CboCodigoBodega.Text, Me.TrueDBGridComponentes.Columns(0).Text) = False Then
-                            Mensaje = "No Pertenece el Producto a esta Bodega" & Chr(13) & _
+                            Mensaje = "No Pertenece el Producto a esta Bodega" & Chr(13) &
                                       "Precio ESC Para Salir"
                             MsgBox(Mensaje, MsgBoxStyle.Critical, "Zeus Facturacion")
                             e.Cancel = True
@@ -1206,6 +2140,8 @@ Public Class FrmCompras
         Quien = ""
         LiberarCompras = False
         EsSolicitud = False
+        Me.GroupBoxImportar.Visible = False
+        Me.GroupBoxImportar.Location = New Point(905, 73)
     End Sub
 
     Private Sub FrmCompras_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -1318,10 +2254,10 @@ Public Class FrmCompras
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Locked = True
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(7).Visible = False
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(8).Button = True
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("TasaCambio").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("TasaCambio").Visible = False
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
+            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
 
         Else
 
@@ -1443,280 +2379,282 @@ Public Class FrmCompras
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, DescripcionProducto As String
 
 
-        '////////////////////////////////////////////////////////////////////////////////////////////////////
-        '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
-            Select Case Me.CboTipoProducto.Text
-                Case "Orden de Compra"
-                    ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
-                Case "Mercancia Recibida"
-                    ConsecutivoCompra = BuscaConsecutivo("Compra")
-                Case "Devolucion de Compra"
-                    ConsecutivoCompra = BuscaConsecutivo("DevCompra")
-                Case "Transferencia Recibida"
-                    ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
-                Case "Cuenta"
-                    'ConsecutivoCompra = BuscaConsecutivo("Cuenta")
-                    ConsecutivoCompra = BuscaConsecutivo("Compra")
-                Case "Cuenta DB"
-                    'ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
-                    ConsecutivoCompra = BuscaConsecutivo("Compra")
-            End Select
+        ''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
+        ''//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+        'If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+        '    Select Case Me.CboTipoProducto.Text
+        '        Case "Orden de Compra"
+        '            ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
+        '        Case "Mercancia Recibida"
+        '            ConsecutivoCompra = BuscaConsecutivo("Compra")
+        '        Case "Devolucion de Compra"
+        '            ConsecutivoCompra = BuscaConsecutivo("DevCompra")
+        '        Case "Transferencia Recibida"
+        '            ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
+        '        Case "Cuenta"
+        '            'ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+        '            ConsecutivoCompra = BuscaConsecutivo("Compra")
+        '        Case "Cuenta DB"
+        '            'ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
+        '            ConsecutivoCompra = BuscaConsecutivo("Compra")
+        '    End Select
 
-            '/////////////////////////////////////////////////////////////////////////////////////////
-            '///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
-            '////////////////////////////////////////////////////////////////////////////////////////
-            SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
-            DataAdapter.Fill(DataSet, "Configuracion")
-            If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
-                If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) Then
-                    FacturaBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")
-                End If
+        '    '/////////////////////////////////////////////////////////////////////////////////////////
+        '    '///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
+        '    '////////////////////////////////////////////////////////////////////////////////////////
+        '    SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
+        '    DataAdapter.Fill(DataSet, "Configuracion")
+        '    If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
+        '        If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) Then
+        '            FacturaBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")
+        '        End If
 
-                If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) Then
-                    CompraBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")
-                End If
+        '        If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) Then
+        '            CompraBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")
+        '        End If
 
-            End If
+        '    End If
 
-            If CompraBodega = True Then
-                NumeroCompra = Me.CboCodigoBodega.Columns(0).Text & "-" & Format(ConsecutivoCompra, "0000#")
-            Else
-                NumeroCompra = Format(ConsecutivoCompra, "0000#")
-            End If
-        Else
-            'ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
-            'NumeroCompra = Format(ConsecutivoCompra, "0000#")
-            NumeroCompra = Me.TxtNumeroEnsamble.Text
+        '    If CompraBodega = True Then
+        '        NumeroCompra = Me.CboCodigoBodega.Columns(0).Text & "-" & Format(ConsecutivoCompra, "0000#")
+        '    Else
+        '        NumeroCompra = Format(ConsecutivoCompra, "0000#")
+        '    End If
+        'Else
+        '    'ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
+        '    'NumeroCompra = Format(ConsecutivoCompra, "0000#")
+        '    NumeroCompra = Me.TxtNumeroEnsamble.Text
 
-        End If
+        'End If
 
 
 
-        ActualizaMETODOcOMPRA()
+        'ActualizaMETODOcOMPRA()
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
         CambiarFechaCompra = False
-        GrabaCompras(NumeroCompra)
+        'GrabaCompras(NumeroCompra)
+
+        AgregarCompras()
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL DETALLE DE LA COMPRA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
 
-        If CambiarFechaCompra = True Then
-            Dim CodigoProducto As String, PrecioUnitario As Double, Descuento As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double, idDetalle As Double
+        'If CambiarFechaCompra = True Then
+        '    Dim CodigoProducto As String, PrecioUnitario As Double, Descuento As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double, idDetalle As Double
 
-            Me.BindingDetalle.MoveFirst()
-            Registros = Me.BindingDetalle.Count
-            iPosicion = 0
-
-
-
-            Do While iPosicion < Registros
-                CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
-                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto")) Then
-                    DescripcionProducto = Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto")
-                End If
-
-                PrecioUnitario = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
-                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descuento")) Then
-                    Descuento = Me.BindingDetalle.Item(iPosicion)("Descuento")
-                End If
-                PrecioNeto = Me.BindingDetalle.Item(iPosicion)("Precio_Neto")
-                Importe = Me.BindingDetalle.Item(iPosicion)("Importe")
-                Cantidad = Me.BindingDetalle.Item(iPosicion)("Cantidad")
-
-                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Numero_Lote")) Then
-                    NumeroLote = Me.BindingDetalle.Item(iPosicion)("Numero_Lote")
-                Else
-                    NumeroLote = "SINLOTE"
-                End If
-                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")) Then
-                    FechaLote = Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")
-                Else
-                    FechaLote = "01/01/1900"
-                End If
-
-
-                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("id_Detalle_Compra")) Then
-                    idDetalle = Me.BindingDetalle.Item(iPosicion)("id_Detalle_Compra")
-                Else
-                    idDetalle = -1
-                End If
-
-
-                GrabaDetalleCompra(NumeroCompra, CodigoProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, NumeroLote, FechaLote, DescripcionProducto)
-
-                Select Case Me.CboTipoProducto.Text
-                    Case "Mercancia Recibida"
-                        ExistenciasCostos(CodigoProducto, Cantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
-                End Select
-
-                CodigoProducto = 0
-                PrecioUnitario = 0
-                Descuento = 0
-                PrecioNeto = 0
-                Importe = 0
-                Cantidad = 0
-
-                iPosicion = iPosicion + 1
-            Loop
-        ElseIf Me.CboTipoProducto.Text = "Cuenta" Then
-
-            Dim CodigoProducto As String, PrecioUnitario As Double, Descuento As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double, idDetalle As Double
-
-            Me.BindingDetalle.MoveFirst()
-            Registros = Me.BindingDetalle.Count
-            iPosicion = 0
+        '    Me.BindingDetalle.MoveFirst()
+        '    Registros = Me.BindingDetalle.Count
+        '    iPosicion = 0
 
 
 
-            Do While iPosicion < Registros
-                CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
-                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto")) Then
-                    DescripcionProducto = Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto")
-                End If
-                PrecioUnitario = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
-                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descuento")) Then
-                    Descuento = Me.BindingDetalle.Item(iPosicion)("Descuento")
-                End If
-                PrecioNeto = Me.BindingDetalle.Item(iPosicion)("Precio_Neto")
-                Importe = Me.BindingDetalle.Item(iPosicion)("Importe")
-                Cantidad = Me.BindingDetalle.Item(iPosicion)("Cantidad")
+        '    Do While iPosicion < Registros
+        '        CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
+        '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto")) Then
+        '            DescripcionProducto = Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto")
+        '        End If
 
-                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Numero_Lote")) Then
-                    NumeroLote = Me.BindingDetalle.Item(iPosicion)("Numero_Lote")
-                Else
-                    NumeroLote = "SINLOTE"
-                End If
-                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")) Then
-                    If Me.BindingDetalle.Item(iPosicion)("Fecha_Vence") = "0" Then
-                        FechaLote = "01/01/1900"
-                    Else
-                        FechaLote = Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")
-                    End If
+        '        PrecioUnitario = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
+        '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descuento")) Then
+        '            Descuento = Me.BindingDetalle.Item(iPosicion)("Descuento")
+        '        End If
+        '        PrecioNeto = Me.BindingDetalle.Item(iPosicion)("Precio_Neto")
+        '        Importe = Me.BindingDetalle.Item(iPosicion)("Importe")
+        '        Cantidad = Me.BindingDetalle.Item(iPosicion)("Cantidad")
 
-                Else
-                    FechaLote = "01/01/1900"
-                End If
+        '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Numero_Lote")) Then
+        '            NumeroLote = Me.BindingDetalle.Item(iPosicion)("Numero_Lote")
+        '        Else
+        '            NumeroLote = "SINLOTE"
+        '        End If
+        '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")) Then
+        '            FechaLote = Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")
+        '        Else
+        '            FechaLote = "01/01/1900"
+        '        End If
 
 
-                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("id_Detalle_Compra")) Then
-                    idDetalle = Me.BindingDetalle.Item(iPosicion)("id_Detalle_Compra")
-                Else
-                    idDetalle = -1
-                End If
+        '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("id_Detalle_Compra")) Then
+        '            idDetalle = Me.BindingDetalle.Item(iPosicion)("id_Detalle_Compra")
+        '        Else
+        '            idDetalle = -1
+        '        End If
 
 
-                GrabaDetalleCompra(NumeroCompra, CodigoProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, NumeroLote, FechaLote, DescripcionProducto)
+        '        GrabaDetalleCompra(NumeroCompra, CodigoProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, NumeroLote, FechaLote, DescripcionProducto)
 
-                Select Case Me.CboTipoProducto.Text
-                    Case "Mercancia Recibida"
-                        ExistenciasCostos(CodigoProducto, Cantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
-                End Select
+        '        Select Case Me.CboTipoProducto.Text
+        '            Case "Mercancia Recibida"
+        '                ExistenciasCostos(CodigoProducto, Cantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
+        '        End Select
 
-                CodigoProducto = 0
-                PrecioUnitario = 0
-                Descuento = 0
-                PrecioNeto = 0
-                Importe = 0
-                Cantidad = 0
+        '        CodigoProducto = 0
+        '        PrecioUnitario = 0
+        '        Descuento = 0
+        '        PrecioNeto = 0
+        '        Importe = 0
+        '        Cantidad = 0
 
-                iPosicion = iPosicion + 1
-            Loop
+        '        iPosicion = iPosicion + 1
+        '    Loop
+        'ElseIf Me.CboTipoProducto.Text = "Cuenta" Then
 
-        ElseIf Me.CboTipoProducto.Text = "Cuenta DB" Then
+        '    Dim CodigoProducto As String, PrecioUnitario As Double, Descuento As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double, idDetalle As Double
 
-            Dim CodigoProducto As String, PrecioUnitario As Double, Descuento As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double, idDetalle As Double
-
-            Me.BindingDetalle.MoveFirst()
-            Registros = Me.BindingDetalle.Count
-            iPosicion = 0
+        '    Me.BindingDetalle.MoveFirst()
+        '    Registros = Me.BindingDetalle.Count
+        '    iPosicion = 0
 
 
 
-            Do While iPosicion < Registros
-                CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
-                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto")) Then
-                    DescripcionProducto = Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto")
-                End If
-                PrecioUnitario = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
-                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descuento")) Then
-                    Descuento = Me.BindingDetalle.Item(iPosicion)("Descuento")
-                End If
-                PrecioNeto = Me.BindingDetalle.Item(iPosicion)("Precio_Neto")
-                Importe = Me.BindingDetalle.Item(iPosicion)("Importe")
-                Cantidad = Me.BindingDetalle.Item(iPosicion)("Cantidad")
+        '    Do While iPosicion < Registros
+        '        CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
+        '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto")) Then
+        '            DescripcionProducto = Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto")
+        '        End If
+        '        PrecioUnitario = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
+        '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descuento")) Then
+        '            Descuento = Me.BindingDetalle.Item(iPosicion)("Descuento")
+        '        End If
+        '        PrecioNeto = Me.BindingDetalle.Item(iPosicion)("Precio_Neto")
+        '        Importe = Me.BindingDetalle.Item(iPosicion)("Importe")
+        '        Cantidad = Me.BindingDetalle.Item(iPosicion)("Cantidad")
 
-                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Numero_Lote")) Then
-                    NumeroLote = Me.BindingDetalle.Item(iPosicion)("Numero_Lote")
-                Else
-                    NumeroLote = "SINLOTE"
-                End If
-                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")) Then
-                    FechaLote = Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")
-                Else
-                    FechaLote = "01/01/1900"
-                End If
+        '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Numero_Lote")) Then
+        '            NumeroLote = Me.BindingDetalle.Item(iPosicion)("Numero_Lote")
+        '        Else
+        '            NumeroLote = "SINLOTE"
+        '        End If
+        '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")) Then
+        '            If Me.BindingDetalle.Item(iPosicion)("Fecha_Vence") = "0" Then
+        '                FechaLote = "01/01/1900"
+        '            Else
+        '                FechaLote = Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")
+        '            End If
 
-
-                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("id_Detalle_Compra")) Then
-                    idDetalle = Me.BindingDetalle.Item(iPosicion)("id_Detalle_Compra")
-                Else
-                    idDetalle = -1
-                End If
+        '        Else
+        '            FechaLote = "01/01/1900"
+        '        End If
 
 
-                GrabaDetalleCompra(NumeroCompra, CodigoProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, NumeroLote, FechaLote, DescripcionProducto)
-
-                Select Case Me.CboTipoProducto.Text
-                    Case "Mercancia Recibida"
-                        ExistenciasCostos(CodigoProducto, Cantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
-                End Select
-
-                CodigoProducto = 0
-                PrecioUnitario = 0
-                Descuento = 0
-                PrecioNeto = 0
-                Importe = 0
-                Cantidad = 0
-
-                iPosicion = iPosicion + 1
-            Loop
+        '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("id_Detalle_Compra")) Then
+        '            idDetalle = Me.BindingDetalle.Item(iPosicion)("id_Detalle_Compra")
+        '        Else
+        '            idDetalle = -1
+        '        End If
 
 
-        End If
+        '        GrabaDetalleCompra(NumeroCompra, CodigoProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, NumeroLote, FechaLote, DescripcionProducto)
+
+        '        Select Case Me.CboTipoProducto.Text
+        '            Case "Mercancia Recibida"
+        '                ExistenciasCostos(CodigoProducto, Cantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
+        '        End Select
+
+        '        CodigoProducto = 0
+        '        PrecioUnitario = 0
+        '        Descuento = 0
+        '        PrecioNeto = 0
+        '        Importe = 0
+        '        Cantidad = 0
+
+        '        iPosicion = iPosicion + 1
+        '    Loop
+
+        'ElseIf Me.CboTipoProducto.Text = "Cuenta DB" Then
+
+        '    Dim CodigoProducto As String, PrecioUnitario As Double, Descuento As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double, idDetalle As Double
+
+        '    Me.BindingDetalle.MoveFirst()
+        '    Registros = Me.BindingDetalle.Count
+        '    iPosicion = 0
+
+
+
+        '    Do While iPosicion < Registros
+        '        CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
+        '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto")) Then
+        '            DescripcionProducto = Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto")
+        '        End If
+        '        PrecioUnitario = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
+        '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descuento")) Then
+        '            Descuento = Me.BindingDetalle.Item(iPosicion)("Descuento")
+        '        End If
+        '        PrecioNeto = Me.BindingDetalle.Item(iPosicion)("Precio_Neto")
+        '        Importe = Me.BindingDetalle.Item(iPosicion)("Importe")
+        '        Cantidad = Me.BindingDetalle.Item(iPosicion)("Cantidad")
+
+        '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Numero_Lote")) Then
+        '            NumeroLote = Me.BindingDetalle.Item(iPosicion)("Numero_Lote")
+        '        Else
+        '            NumeroLote = "SINLOTE"
+        '        End If
+        '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")) Then
+        '            FechaLote = Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")
+        '        Else
+        '            FechaLote = "01/01/1900"
+        '        End If
+
+
+        '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("id_Detalle_Compra")) Then
+        '            idDetalle = Me.BindingDetalle.Item(iPosicion)("id_Detalle_Compra")
+        '        Else
+        '            idDetalle = -1
+        '        End If
+
+
+        '        GrabaDetalleCompra(NumeroCompra, CodigoProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, NumeroLote, FechaLote, DescripcionProducto)
+
+        '        Select Case Me.CboTipoProducto.Text
+        '            Case "Mercancia Recibida"
+        '                ExistenciasCostos(CodigoProducto, Cantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
+        '        End Select
+
+        '        CodigoProducto = 0
+        '        PrecioUnitario = 0
+        '        Descuento = 0
+        '        PrecioNeto = 0
+        '        Importe = 0
+        '        Cantidad = 0
+
+        '        iPosicion = iPosicion + 1
+        '    Loop
+
+
+        'End If
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO LOS METODOS DE PAGO /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
 
-        Me.BindingMetodo.MoveFirst()
-        Registros = Me.BindingMetodo.Count
-        iPosicion = 0
-        Monto = 0
-        Do While iPosicion < Registros
-            NombrePago = Me.BindingMetodo.Item(iPosicion)("NombrePago")
-            Monto = Me.BindingMetodo.Item(iPosicion)("Monto") + Monto
-            If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")) Then
-                NumeroTarjeta = Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")
-            Else
-                NumeroTarjeta = 0
-            End If
-            If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("FechaVence")) Then
-                FechaVenceTarjeta = Me.BindingMetodo.Item(iPosicion)("FechaVence")
-            Else
-                FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
-            End If
+        'Me.BindingMetodo.MoveFirst()
+        'Registros = Me.BindingMetodo.Count
+        'iPosicion = 0
+        'Monto = 0
+        'Do While iPosicion < Registros
+        '    NombrePago = Me.BindingMetodo.Item(iPosicion)("NombrePago")
+        '    Monto = Me.BindingMetodo.Item(iPosicion)("Monto") + Monto
+        '    If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")) Then
+        '        NumeroTarjeta = Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")
+        '    Else
+        '        NumeroTarjeta = 0
+        '    End If
+        '    If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("FechaVence")) Then
+        '        FechaVenceTarjeta = Me.BindingMetodo.Item(iPosicion)("FechaVence")
+        '    Else
+        '        FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
+        '    End If
 
-            GrabaMetodoDetalleCompra(NumeroCompra, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta)
-            iPosicion = iPosicion + 1
-        Loop
-        Bitacora(Now, NombreUsuario, Me.CboTipoProducto.Text, "Grabar la Compra: " & Me.TxtNumeroEnsamble.Text)
+        '    GrabaMetodoDetalleCompra(NumeroCompra, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta)
+        '    iPosicion = iPosicion + 1
+        'Loop
+        'Bitacora(Now, NombreUsuario, Me.CboTipoProducto.Text, "Grabar la Compra: " & Me.TxtNumeroEnsamble.Text)
 
         MsgBox("Se ha grabado con Exito!!!", MsgBoxStyle.Exclamation, "Sistema Facturacion")
 
@@ -1889,7 +2827,7 @@ Public Class FrmCompras
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
-            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = True
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Lote").Visible = True
 
         ElseIf Me.CboTipoProducto.Text = "Orden de Compra" Then
@@ -2107,7 +3045,7 @@ Public Class FrmCompras
                         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
                         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                        SqlCompras = "SELECT  Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario, Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, Detalle_Compras.Numero_Lote,Detalle_Compras.Fecha_Vence, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra FROM  Detalle_Compras  " & _
+                        SqlCompras = "SELECT  Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario, Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, Detalle_Compras.Numero_Lote,Detalle_Compras.Fecha_Vence, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra FROM  Detalle_Compras  " &
                                     "WHERE (Detalle_Compras.Numero_Compra = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Compras.Tipo_Compra = '" & TipoCompra & "') ORDER BY Detalle_Compras.id_Detalle_Compra"
                         'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
                         'DataAdapter.Fill(DataSet, "DetalleCompra")
@@ -2150,7 +3088,7 @@ Public Class FrmCompras
                         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
                         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                        SqlCompras = "SELECT  Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario, Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, Detalle_Compras.Numero_Lote,Detalle_Compras.Fecha_Vence, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra FROM  Detalle_Compras  " & _
+                        SqlCompras = "SELECT  Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario, Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, Detalle_Compras.Numero_Lote,Detalle_Compras.Fecha_Vence, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra FROM  Detalle_Compras  " &
                                     "WHERE (Detalle_Compras.Numero_Compra = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Compras.Tipo_Compra = '" & TipoCompra & "') ORDER BY Detalle_Compras.id_Detalle_Compra"
                         'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
                         'DataAdapter.Fill(DataSet, "DetalleCompra")
@@ -2199,7 +3137,7 @@ Public Class FrmCompras
                     Else
                         ds.Tables("DetalleCompra").Reset()
                         '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
-                        SqlCompras = "SELECT Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario,Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra FROM  Detalle_Compras " & _
+                        SqlCompras = "SELECT Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario,Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra FROM  Detalle_Compras " &
                                      "WHERE (Detalle_Compras.Numero_Compra = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Compras.Tipo_Compra = '" & TipoCompra & "') ORDER BY Detalle_Compras.id_Detalle_Compra"
                         'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
                         'DataAdapter.Fill(DataSet, "DetalleCompras")
@@ -2242,7 +3180,7 @@ Public Class FrmCompras
                     End If
 
                     '//////////////////////////////////////BUSCO LOS METODOS DE PAGOS///////////////////////////////////////////////////////////////////////////////////
-                    SqlCompras = "SELECT  NombrePago, Monto, NumeroTarjeta, FechaVence  FROM Detalle_MetodoCompras " & _
+                    SqlCompras = "SELECT  NombrePago, Monto, NumeroTarjeta, FechaVence  FROM Detalle_MetodoCompras " &
                                  "WHERE (Detalle_MetodoCompras.Numero_Compra = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_MetodoCompras.Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_MetodoCompras.Tipo_Compra = '" & TipoCompra & "') "
                     DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
                     DataAdapter.Fill(DataSet, "MetodoPago")
@@ -2390,11 +3328,11 @@ Public Class FrmCompras
         '//////////////////////////////////////////////////////////////////////////////////////////////
         '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
         '/////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlCompras = "UPDATE [Compras]  SET [Activo] = 'False',[Nombre_Proveedor] = '******CANCELADO',[Apellido_Proveedor] = '******',[SubTotal]=0,[IVA]=0,[Pagado]=0,[NetoPagar]=0 " & _
+        SqlCompras = "UPDATE [Compras]  SET [Activo] = 'False',[Nombre_Proveedor] = '******CANCELADO',[Apellido_Proveedor] = '******',[SubTotal]=0,[IVA]=0,[Pagado]=0,[NetoPagar]=0 " &
                      "WHERE  (Numero_Compra = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Compra = '" & Me.CboTipoProducto.Text & "')"
         EjecutarConsulta(SqlCompras)
 
-        SqlCompras = "UPDATE [Detalle_Compras]  SET [Cantidad] = 0,[Precio_Unitario] = 0,[Descuento] = 0,[Precio_Neto] = 0 ,[Importe] = 0 " & _
+        SqlCompras = "UPDATE [Detalle_Compras]  SET [Cantidad] = 0,[Precio_Unitario] = 0,[Descuento] = 0,[Precio_Neto] = 0 ,[Importe] = 0 " &
                              "WHERE  (Numero_Compra = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Compra = '" & Me.CboTipoProducto.Text & "') "
         EjecutarConsulta(SqlCompras)
 
@@ -2432,7 +3370,7 @@ Public Class FrmCompras
                 ExistenciaBodega = BuscaExistenciaBodega(CodigoProducto, Me.CboCodigoBodega.Text)
 
                 '////////////////////////////////////////////ACTUALIZO LA EXISTENCIA DE LA BODEGA////////////////////////////////////////////////////////
-                SqlCompras = "UPDATE [DetalleBodegas] SET [Existencia] = " & ExistenciaBodega & " " & _
+                SqlCompras = "UPDATE [DetalleBodegas] SET [Existencia] = " & ExistenciaBodega & " " &
                             "WHERE (Cod_Bodegas = '" & Me.CboCodigoBodega.Text & "') AND (Cod_Productos = '" & CodigoProducto & "') "
                 EjecutarConsulta(SqlCompras)
 
@@ -2464,92 +3402,93 @@ Public Class FrmCompras
 
         If PermiteEditar(Acceso, Me.CboTipoProducto.Text) = True Then
 
-            '////////////////////////////////////////////////////////////////////////////////////////////////////
-            '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-            If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
-                Select Case Me.CboTipoProducto.Text
-                    Case "Orden de Compra"
-                        ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
-                    Case "Mercancia Recibida"
-                        ConsecutivoCompra = BuscaConsecutivo("Compra")
-                    Case "Devolucion de Compra"
-                        ConsecutivoCompra = BuscaConsecutivo("DevCompra")
-                    Case "Transferencia Recibida"
-                        ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
-                    Case "Cuenta"
-                        'ConsecutivoCompra = BuscaConsecutivo("Cuenta")
-                        ConsecutivoCompra = BuscaConsecutivo("Compra")
-                    Case "Cuenta DB"
-                        'ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
-                        ConsecutivoCompra = BuscaConsecutivo("Compra")
+            '26/08/2025
+            ''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
+            ''//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+            'If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+            '    Select Case Me.CboTipoProducto.Text
+            '        Case "Orden de Compra"
+            '            ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
+            '        Case "Mercancia Recibida"
+            '            ConsecutivoCompra = BuscaConsecutivo("Compra")
+            '        Case "Devolucion de Compra"
+            '            ConsecutivoCompra = BuscaConsecutivo("DevCompra")
+            '        Case "Transferencia Recibida"
+            '            ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
+            '        Case "Cuenta"
+            '            'ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+            '            ConsecutivoCompra = BuscaConsecutivo("Compra")
+            '        Case "Cuenta DB"
+            '            'ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
+            '            ConsecutivoCompra = BuscaConsecutivo("Compra")
 
-                End Select
+            '    End Select
 
-                '/////////////////////////////////////////////////////////////////////////////////////////
-                '///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
-                '////////////////////////////////////////////////////////////////////////////////////////
-                SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
-                DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
-                DataAdapter.Fill(DataSet, "Configuracion")
-                If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
-                    If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) Then
-                        FacturaBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")
-                    End If
+            '    '/////////////////////////////////////////////////////////////////////////////////////////
+            '    '///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
+            '    '////////////////////////////////////////////////////////////////////////////////////////
+            '    SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
+            '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
+            '    DataAdapter.Fill(DataSet, "Configuracion")
+            '    If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
+            '        If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) Then
+            '            FacturaBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")
+            '        End If
 
-                    If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) = True Then
-                        CompraBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")
-                    End If
+            '        If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) = True Then
+            '            CompraBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")
+            '        End If
 
-                End If
+            '    End If
 
-                If CompraBodega = True Then
-                    NumeroCompra = Me.CboCodigoBodega.Columns(0).Text & "-" & Format(ConsecutivoCompra, "0000#")
-                Else
-                    NumeroCompra = Format(ConsecutivoCompra, "0000#")
-                End If
-            Else
-                'ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
-                'NumeroCompra = Format(ConsecutivoCompra, "0000#")
-                NumeroCompra = Me.TxtNumeroEnsamble.Text
+            '    If CompraBodega = True Then
+            '        NumeroCompra = Me.CboCodigoBodega.Columns(0).Text & "-" & Format(ConsecutivoCompra, "0000#")
+            '    Else
+            '        NumeroCompra = Format(ConsecutivoCompra, "0000#")
+            '    End If
+            'Else
+            '    'ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
+            '    'NumeroCompra = Format(ConsecutivoCompra, "0000#")
+            '    NumeroCompra = Me.TxtNumeroEnsamble.Text
 
-            End If
-
-
-
+            'End If
 
 
 
-            '////////////////////////////////////////////////////////////////////////////////////////////////////
-            '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-            GrabaCompras(NumeroCompra)
+            AgregarCompras()
 
-            '////////////////////////////////////////////////////////////////////////////////////////////////////
-            '/////////////////////////////GRABO LOS METODOS DE PAGO /////////////////////////////////////////////
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+            '26/08/2025
+            '    '////////////////////////////////////////////////////////////////////////////////////////////////////
+            '    '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
+            '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+            '    GrabaCompras(NumeroCompra)
 
-            Me.BindingMetodo.MoveFirst()
-            Registros = Me.BindingMetodo.Count
-            iPosicion = 0
-            Monto = 0
-            Do While iPosicion < Registros
-                NombrePago = Me.BindingMetodo.Item(iPosicion)("NombrePago")
-                Monto = Me.BindingMetodo.Item(iPosicion)("Monto") + Monto
-                If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")) Then
-                    NumeroTarjeta = Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")
-                Else
-                    NumeroTarjeta = 0
-                End If
-                If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("FechaVence")) Then
-                    FechaVenceTarjeta = Me.BindingMetodo.Item(iPosicion)("FechaVence")
-                Else
-                    FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
-                End If
+            '    '////////////////////////////////////////////////////////////////////////////////////////////////////
+            '    '/////////////////////////////GRABO LOS METODOS DE PAGO /////////////////////////////////////////////
+            '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
 
-                GrabaMetodoDetalleCompra(NumeroCompra, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta)
-                iPosicion = iPosicion + 1
-            Loop
+            '    Me.BindingMetodo.MoveFirst()
+            '    Registros = Me.BindingMetodo.Count
+            '    iPosicion = 0
+            '    Monto = 0
+            '    Do While iPosicion < Registros
+            '        NombrePago = Me.BindingMetodo.Item(iPosicion)("NombrePago")
+            '        Monto = Me.BindingMetodo.Item(iPosicion)("Monto") + Monto
+            '        If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")) Then
+            '            NumeroTarjeta = Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")
+            '        Else
+            '            NumeroTarjeta = 0
+            '        End If
+            '        If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("FechaVence")) Then
+            '            FechaVenceTarjeta = Me.BindingMetodo.Item(iPosicion)("FechaVence")
+            '        Else
+            '            FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
+            '        End If
+
+            '        GrabaMetodoDetalleCompra(NumeroCompra, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta)
+            '        iPosicion = iPosicion + 1
+            '    Loop
 
 
         End If
@@ -2656,7 +3595,7 @@ Public Class FrmCompras
         If MonedaFactura = "Cordobas" Then
             If MonedaImprime = "Cordobas" Then
                 '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
-                SQlDetalle = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario,Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe, Productos.Unidad_Medida FROM  Productos INNER JOIN Detalle_Compras ON Productos.Cod_Productos = Detalle_Compras.Cod_Producto " & _
+                SQlDetalle = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario,Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe, Productos.Unidad_Medida FROM  Productos INNER JOIN Detalle_Compras ON Productos.Cod_Productos = Detalle_Compras.Cod_Producto " &
                     "WHERE (Detalle_Compras.Numero_Compra = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Compras.Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Compras.Tipo_Compra = '" & Me.CboTipoProducto.Text & "')"
 
                 ArepCompras.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text), "##,##0.00")
@@ -2664,7 +3603,7 @@ Public Class FrmCompras
                 ArepCompras.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text), "##,##0.00")
                 ArepCompras.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text), "##,##0.00")
             ElseIf MonedaImprime = "Dolares" Then
-                SQlDetalle = "SELECT  Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Cantidad,Detalle_Compras.Precio_Unitario * (1 / TasaCambio.MontoTasa) AS Precio_Unitario, Detalle_Compras.Descuento * (1 / TasaCambio.MontoTasa) AS Descuento, Detalle_Compras.Precio_Neto * (1 / TasaCambio.MontoTasa) AS Precio_Neto, Detalle_Compras.Importe * (1 / TasaCambio.MontoTasa) AS Importe, Productos.Unidad_Medida FROM Productos INNER JOIN Detalle_Compras ON Productos.Cod_Productos = Detalle_Compras.Cod_Producto INNER JOIN TasaCambio ON Detalle_Compras.Fecha_Compra = TasaCambio.FechaTasa  " & _
+                SQlDetalle = "SELECT  Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Cantidad,Detalle_Compras.Precio_Unitario * (1 / TasaCambio.MontoTasa) AS Precio_Unitario, Detalle_Compras.Descuento * (1 / TasaCambio.MontoTasa) AS Descuento, Detalle_Compras.Precio_Neto * (1 / TasaCambio.MontoTasa) AS Precio_Neto, Detalle_Compras.Importe * (1 / TasaCambio.MontoTasa) AS Importe, Productos.Unidad_Medida FROM Productos INNER JOIN Detalle_Compras ON Productos.Cod_Productos = Detalle_Compras.Cod_Producto INNER JOIN TasaCambio ON Detalle_Compras.Fecha_Compra = TasaCambio.FechaTasa  " &
                              "WHERE (Detalle_Compras.Numero_Compra = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Compras.Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Compras.Tipo_Compra = '" & Me.CboTipoProducto.Text & "')"
                 ArepCompras.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) / TasaCambio, "##,##0.00")
                 ArepCompras.LblIva.Text = Format(CDbl(Me.TxtIva.Text) / TasaCambio, "##,##0.00")
@@ -2674,14 +3613,14 @@ Public Class FrmCompras
         ElseIf MonedaFactura = "Dolares" Then
             If MonedaImprime = "Dolares" Then
                 '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
-                SQlDetalle = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario,Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe, Productos.Unidad_Medida FROM  Productos INNER JOIN Detalle_Compras ON Productos.Cod_Productos = Detalle_Compras.Cod_Producto " & _
+                SQlDetalle = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario,Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe, Productos.Unidad_Medida FROM  Productos INNER JOIN Detalle_Compras ON Productos.Cod_Productos = Detalle_Compras.Cod_Producto " &
                     "WHERE (Detalle_Compras.Numero_Compra = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Compras.Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Compras.Tipo_Compra = '" & Me.CboTipoProducto.Text & "')"
                 ArepCompras.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text), "##,##0.00")
                 ArepCompras.LblIva.Text = Format(CDbl(Me.TxtIva.Text), "##,##0.00")
                 ArepCompras.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text), "##,##0.00")
                 ArepCompras.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text), "##,##0.00")
             ElseIf MonedaImprime = "Cordobas" Then
-                SQlDetalle = "SELECT  Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Cantidad,Detalle_Compras.Precio_Unitario * TasaCambio.MontoTasa AS Precio_Unitario, Detalle_Compras.Descuento *  TasaCambio.MontoTasa AS Descuento, Detalle_Compras.Precio_Neto * TasaCambio.MontoTasa AS Precio_Neto, Detalle_Compras.Importe * TasaCambio.MontoTasa AS Importe, Productos.Unidad_Medida FROM Productos INNER JOIN Detalle_Compras ON Productos.Cod_Productos = Detalle_Compras.Cod_Producto INNER JOIN TasaCambio ON Detalle_Compras.Fecha_Compra = TasaCambio.FechaTasa  " & _
+                SQlDetalle = "SELECT  Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Compras.Cantidad,Detalle_Compras.Precio_Unitario * TasaCambio.MontoTasa AS Precio_Unitario, Detalle_Compras.Descuento *  TasaCambio.MontoTasa AS Descuento, Detalle_Compras.Precio_Neto * TasaCambio.MontoTasa AS Precio_Neto, Detalle_Compras.Importe * TasaCambio.MontoTasa AS Importe, Productos.Unidad_Medida FROM Productos INNER JOIN Detalle_Compras ON Productos.Cod_Productos = Detalle_Compras.Cod_Producto INNER JOIN TasaCambio ON Detalle_Compras.Fecha_Compra = TasaCambio.FechaTasa  " &
                             "WHERE (Detalle_Compras.Numero_Compra = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Compras.Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Compras.Tipo_Compra = '" & Me.CboTipoProducto.Text & "')"
                 ArepCompras.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
                 ArepCompras.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
@@ -2909,7 +3848,7 @@ Public Class FrmCompras
         '//////////////////////////////////////////////////////////////////////////////////////////////
         '////////////////////////////EDITO EL ENCABEZADO DE LA ORDEN DE COMPRA///////////////////////////////////
         '/////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlCompras = "UPDATE [Compras]  SET [Activo] = 'False',[Estatus]= 'Comprado' " & _
+        SqlCompras = "UPDATE [Compras]  SET [Activo] = 'False',[Estatus]= 'Comprado' " &
                      "WHERE  (Numero_Compra = '" & Numero & "')  AND  (Tipo_Compra = 'Orden de Compra')"
         MiConexion.Open()
         ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
@@ -2923,7 +3862,7 @@ Public Class FrmCompras
         '/////////////////////////////////////////////////////////////////////////////////////////////////
         'Numero = NumeroCompra
         Fecha = Format(CDate(Me.DTPFecha.Value), "yyyy-MM-dd")
-        SqlCompras = "UPDATE [Compras]  SET [Numero_Orden] = '" & Numero & "' " & _
+        SqlCompras = "UPDATE [Compras]  SET [Numero_Orden] = '" & Numero & "' " &
                      "WHERE  (Numero_Compra = '" & NumeroCompra & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Compra = 'Mercancia Recibida')"
         MiConexion.Open()
         ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
@@ -2941,6 +3880,236 @@ Public Class FrmCompras
     End Sub
     Private Sub OptExsonerado_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptExsonerado.CheckedChanged
         ActualizaMETODOcOMPRA()
+    End Sub
+
+    Private Sub BtnCargar_Click(sender As Object, e As EventArgs) Handles BtnCargar.Click
+        Dim Cont As Double = Me.TrueDBGridConsultas.RowCount, i As Double
+        Dim Compra As TablaDetalleCompras = New TablaDetalleCompras
+
+        AgregarEncabezado()
+
+        Me.ProgressBar.Minimum = 0
+        Me.ProgressBar.Maximum = Cont
+        Me.ProgressBar.Value = 0
+        Me.ProgressBar.Visible = True
+        Do While Cont > i
+            Compra.Cod_Producto = Me.TrueDBGridConsultas.Item(i)("Cod_Producto")
+            Compra.Descripcion_Producto = Me.TrueDBGridConsultas.Item(i)("Descripcion_Producto")
+            Compra.Cantidad = Me.TrueDBGridConsultas.Item(i)("Cantidad")
+            Compra.Precio_Unitario = Me.TrueDBGridConsultas.Item(i)("Precio_Unitario")
+            Compra.Precio_Neto = Me.TrueDBGridConsultas.Item(i)("Precio_Neto")
+            Compra.Importe = Me.TrueDBGridConsultas.Item(i)("Importe")
+            Compra.Numero_Lote = Me.TrueDBGridConsultas.Item(i)("Numero_Lote")
+            Compra.Fecha_Vence = Me.TrueDBGridConsultas.Item(i)("Fecha_Vence")
+
+            'GrabaDetalleCompraLiquidacion(NumeroCompra, Compra.Cod_Producto, Compra.Precio_Unitario, 0, Compra.Precio_Neto, Compra.Importe, Compra.Cantidad, Me.TxtMonedaFactura.Text, Me.DTPFecha.Value, Compra.Numero_Lote, Compra.Fecha_Vence)
+            'ExistenciasCostos(Compra.Cod_Producto, Compra.Cantidad, Compra.Precio_Unitario, "Mercancia Recibida", Me.CboCodigoBodega.Text)
+
+
+            Me.ProgressBar.Value = Me.ProgressBar.Value + 1
+            i = i + 1
+        Loop
+
+
+    End Sub
+
+    Private Sub BtnQuitar_Click(sender As Object, e As EventArgs) Handles BtnQuitar.Click
+        Dim Cont As Double
+        Me.TrueDBGridConsultas.Delete()
+        Cont = Me.TrueDBGridConsultas.RowCount
+        Me.LblTotalRegistros.Text = "Total Registros: " & Cont
+    End Sub
+
+    Private Sub TrueDBGridConsultas_Click(sender As Object, e As EventArgs) Handles TrueDBGridConsultas.Click
+
+    End Sub
+
+    Private Sub Button14_Click(sender As Object, e As EventArgs) Handles BtnCancelar.Click
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SqlString As String
+
+        LimpiarGridImporacion()
+
+        Me.GroupBoxImportar.Visible = False
+    End Sub
+
+    Private Sub Button10_Click_1(sender As Object, e As EventArgs) Handles Button10.Click
+        If Me.CboTipoProducto.Text = "" Then
+            MsgBox("Seleccione el Tipo Compra", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.TxtCodigoProveedor.Text = "" Then
+            MsgBox("Seleccione el Proveedor", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.CboCodigoBodega.Text = "" Then
+            MsgBox("Es necesario que seleccione la  Bodega", MsgBoxStyle.Critical, "Sistema Facturacion")
+            Exit Sub
+        End If
+
+        LimpiarGridImporacion()
+
+        Me.GroupBoxImportar.Location = New Point(3, 66)
+        Me.GroupBoxImportar.Visible = True
+    End Sub
+
+    Private Sub Button11_Click(sender As Object, e As EventArgs) Handles BtnAbrir.Click
+        Dim Cont As Double, i As Double, oDataRow As DataRow, Registros As Double = 0
+        Dim commandbuilder As New OleDb.OleDbCommandBuilder(Me.DataAdapterExcel)
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SqlString As String
+        Dim Compras As TablaDetalleCompras = New TablaDetalleCompras, Agregar As Boolean = True
+        '*******************************************************************************************************************************
+        '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
+        '*******************************************************************************************************************************
+        DataSet.Reset()
+        SqlString = "SELECT Cod_Producto, Descripcion_Producto, Cantidad, Precio_Unitario, Importe, Numero_Lote, Fecha_Compra As Fecha_Vence, Precio_Neto FROM Detalle_Compras WHERE (Numero_Compra = N'-10000') "
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "DetalleCompra")
+
+        MiDataSet.Reset()
+
+        Me.OpenFileDialog.ShowDialog()
+        RutaBD = OpenFileDialog.FileName
+        'ConexionExcel = "DRIVER=Microsoft Excel Driver (*.xls);" & "DBQ=" & RutaBD
+        ConexionExcel = "Provider=Microsoft.Jet.OLEDB.4.0;Extended Properties = 'Excel 4.0'; Data Source= " & RutaBD & " "
+        MiConexionExcel = New OleDb.OleDbConnection(ConexionExcel)
+        DataAdapterExcel = New OleDb.OleDbDataAdapter("SELECT * FROM [Hoja1$]", MiConexionExcel)
+
+        MiConexionExcel.Open()
+        DataAdapterExcel.Fill(MiDataSet, "DatosExcel")
+        Cont = MiDataSet.Tables("DatosExcel").Rows.Count
+        i = 0
+
+        Do While Cont > i
+            Agregar = True
+
+            If Not IsDBNull(MiDataSet.Tables("DatosExcel").Rows(i)("CodigoProducto")) Then
+
+                Compras.Cod_Producto = MiDataSet.Tables("DatosExcel").Rows(i)("CodigoProducto")
+                '/////////////////CONSULTO SI EL PRODUCTO EXISTE ////////////
+                SqlString = "SELECT Productos.* FROM Productos WHERE (Cod_Productos = '" & Compras.Cod_Producto & "')"
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                DataAdapter.Fill(DataSet, "ConsultaProducto")
+                'DataSet = FillConsultaSQL(SqlString, "ConsultaProducto").Copy
+                If DataSet.Tables("ConsultaProducto").Rows.Count <> 0 Then
+                    Compras.Descripcion_Producto = DataSet.Tables("ConsultaProducto").Rows(0)("Descripcion_Producto")
+                    If Not IsDBNull(MiDataSet.Tables("DatosExcel").Rows(i)("Cantidad")) Then
+                        Compras.Cantidad = MiDataSet.Tables("DatosExcel").Rows(i)("Cantidad")
+                    Else
+                        Compras.Cantidad = 0
+                    End If
+                    If Not IsDBNull(MiDataSet.Tables("DatosExcel").Rows(i)("PrecioUnitario")) Then
+                        Compras.Precio_Unitario = MiDataSet.Tables("DatosExcel").Rows(i)("PrecioUnitario")
+                        Compras.Precio_Neto = MiDataSet.Tables("DatosExcel").Rows(i)("PrecioUnitario")
+                    Else
+                        Compras.Precio_Unitario = 0
+                        Compras.Precio_Neto = 0
+                    End If
+
+                    DataSet.Tables("ConsultaProducto").Reset()
+
+                    Compras.Importe = Compras.Cantidad * Compras.Precio_Unitario
+
+                    If Not IsDBNull(MiDataSet.Tables("DatosExcel").Rows(i)("NumeroLote")) Then
+                        Compras.Numero_Lote = MiDataSet.Tables("DatosExcel").Rows(i)("NumeroLote")
+
+                        '//////////////////////CONSULTO EL NUMERO DE LOTE /////////////
+                        SqlString = "SELECT Numero_Lote, Nombre_Lote, FechaVence, Activo, Existencia FROM Lote WHERE (Numero_Lote = '" & Compras.Numero_Lote & "') "
+                        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                        DataAdapter.Fill(DataSet, "ConsultaLote")
+                        'DataSet = FillConsultaSQL(SqlString, "ConsultaLote").Copy
+                        If DataSet.Tables("ConsultaLote").Rows.Count <> 0 Then
+                            '/////////////////////VERIFICO SI EL LOTE ESTA ACTIVO 
+                            If DataSet.Tables("ConsultaLote").Rows(0)("Activo") = True Then
+                                If Not IsDBNull(DataSet.Tables("ConsultaLote").Rows(0)("FechaVence")) Then
+                                    Agregar = True
+                                    Compras.Fecha_Vence = DataSet.Tables("ConsultaLote").Rows(0)("FechaVence")
+                                Else
+                                    Compras.Fecha_Vence = "01/01/1900"
+                                End If
+                            Else
+                                Agregar = False
+                                TxtError.Text = Me.TxtError.Text & " El Lote: " & Compras.Numero_Lote & " Esta Inactivo"
+                            End If
+
+
+                        Else
+                            Agregar = True
+                            Compras.Numero_Lote = "SINLOTE"
+                            Compras.Fecha_Vence = "01/01/1900"
+                        End If
+
+                        DataSet.Tables("ConsultaLote").Reset()
+                    Else
+                        Compras.Numero_Lote = "SINLOTE"
+                        Compras.Fecha_Vence = "01/01/1900"
+
+                    End If
+
+
+                Else
+                    Agregar = False
+                    Me.TxtError.Text = Me.TxtError.Text & " El Codigo Producto no Existe :" & Compras.Cod_Producto
+                End If
+
+
+            Else
+                Agregar = False
+                Me.TxtError.Text = Me.TxtError.Text & " Codigo Producto Nulo, Registro: " & i
+
+            End If
+
+            '///////////SI Cumple con los valores lo agrego 
+            If Agregar = True Then
+                Registros = Registros + 1
+                oDataRow = DataSet.Tables("DetalleCompra").NewRow
+                oDataRow("Cod_Producto") = Compras.Cod_Producto
+                oDataRow("Descripcion_Producto") = Compras.Descripcion_Producto
+                oDataRow("Cantidad") = Compras.Cantidad
+                oDataRow("Precio_Unitario") = Compras.Precio_Unitario
+                oDataRow("Precio_Neto") = Compras.Precio_Neto
+                oDataRow("Importe") = Compras.Importe
+                oDataRow("Numero_Lote") = Compras.Numero_Lote
+                oDataRow("Fecha_Vence") = Compras.Fecha_Vence
+                DataSet.Tables("DetalleCompra").Rows.Add(oDataRow)
+            End If
+
+
+
+
+            i = i + 1
+        Loop
+
+
+        Me.TrueDBGridConsultas.DataSource = DataSet.Tables("DetalleCompra")
+
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Cod_Producto").Width = 75
+        Me.TrueDBGridConsultas.Columns("Cod_Producto").Caption = "CodProducto"
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Cod_Producto").Locked = True
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 180
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Cantidad").Width = 60
+        Me.TrueDBGridConsultas.Columns("Cantidad").NumberFormat = "##,##0.00"
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 75
+        Me.TrueDBGridConsultas.Columns("Precio_Unitario").Caption = "PrecioUnitario"
+        Me.TrueDBGridConsultas.Columns("Precio_Unitario").NumberFormat = "##,##0.00"
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Precio_Neto").Width = 75
+        Me.TrueDBGridConsultas.Columns("Precio_Neto").Caption = "Precio_Neto"
+        Me.TrueDBGridConsultas.Columns("Precio_Neto").NumberFormat = "##,##0.00"
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Precio_Neto").Locked = True
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Importe").Width = 75
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Importe").Locked = True
+        Me.TrueDBGridConsultas.Columns("Importe").NumberFormat = "##,##0.00"
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Numero_Lote").Width = 70
+        Me.TrueDBGridConsultas.Columns("Numero_Lote").Caption = "Numero Lote"
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Fecha_Vence").Width = 75
+        Me.TrueDBGridConsultas.Columns("Fecha_Vence").Caption = "FechaVence"
+
+
+
+        Me.LblTotalRegistros.Text = "Total Registros: " & DataSet.Tables("DetalleCompra").Rows.Count
+        MiConexionExcel.Close()
     End Sub
 
     Private Sub Button4_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
@@ -3035,37 +4204,40 @@ Public Class FrmCompras
 
         ActualizaMETODOcOMPRA()
 
-        '////////////////////////////////////////////////////////////////////////////////////////////////////
-        '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
-            Select Case Me.CboTipoProducto.Text
-                Case "Orden de Compra"
-                    ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
-                Case "Mercancia Recibida"
-                    ConsecutivoCompra = BuscaConsecutivo("Compra")
-                Case "Devolucion de Compra"
-                    ConsecutivoCompra = BuscaConsecutivo("DevCompra")
-                Case "Transferencia Recibida"
-                    ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
-                Case "Cuenta"
-                    'ConsecutivoCompra = BuscaConsecutivo("Cuenta")
-                    ConsecutivoCompra = BuscaConsecutivo("Compra")
-                Case "Cuenta DB"
-                    'ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
-                    ConsecutivoCompra = BuscaConsecutivo("Compra")
-            End Select
-        Else
-            ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
-        End If
+        '25/08/2025
+        ''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
+        ''//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+        'If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+        '    Select Case Me.CboTipoProducto.Text
+        '        Case "Orden de Compra"
+        '            ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
+        '        Case "Mercancia Recibida"
+        '            ConsecutivoCompra = BuscaConsecutivo("Compra")
+        '        Case "Devolucion de Compra"
+        '            ConsecutivoCompra = BuscaConsecutivo("DevCompra")
+        '        Case "Transferencia Recibida"
+        '            ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
+        '        Case "Cuenta"
+        '            'ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+        '            ConsecutivoCompra = BuscaConsecutivo("Compra")
+        '        Case "Cuenta DB"
+        '            'ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
+        '            ConsecutivoCompra = BuscaConsecutivo("Compra")
+        '    End Select
+        'Else
+        '    ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
+        'End If
 
-        '///////////////////////////////////////////////////////GRABO LOS CAMBIOS EN LA COMPRA /////////////////////////////////////////////
-        NumeroCompra = Format(ConsecutivoCompra, "0000#")
+        ''///////////////////////////////////////////////////////GRABO LOS CAMBIOS EN LA COMPRA /////////////////////////////////////////////
+        'NumeroCompra = Format(ConsecutivoCompra, "0000#")
 
-        '////////////////////////////////////////////////////////////////////////////////////////////////////
-        '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-        GrabaCompras(NumeroCompra)
+        ''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
+        ''//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+        'GrabaCompras(NumeroCompra)
+
+        AgregarCompras()
 
         ReDim CodigoProducto(1)
         CodigoProducto(0) = CodProducto
@@ -3179,47 +4351,61 @@ Public Class FrmCompras
 
         If PermiteEditar(Acceso, Me.CboTipoProducto.Text) = True Then
 
+
             '////////////////////////////////////////////////////////////////////////////////////////////////////
             '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
             If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
-                Select Case Me.CboTipoProducto.Text
-                    Case "Orden de Compra"
-                        ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
-                    Case "Mercancia Recibida"
-                        ConsecutivoCompra = BuscaConsecutivo("Compra")
-                    Case "Devolucion de Compra"
-                        ConsecutivoCompra = BuscaConsecutivo("DevCompra")
-                    Case "Transferencia Recibida"
-                        ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
-                    Case "Cuenta"
-                        ConsecutivoCompra = BuscaConsecutivo("Cuenta")
-                    Case "Cuenta DB"
-                        ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
-                End Select
 
-                '/////////////////////////////////////////////////////////////////////////////////////////
-                '///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
-                '////////////////////////////////////////////////////////////////////////////////////////
-                SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
-                DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
-                DataAdapter.Fill(DataSet, "Configuracion")
-                If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
-                    If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) Then
-                        FacturaBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")
-                    End If
+                AgregarEncabezado()
 
-                    If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) Then
-                        CompraBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")
-                    End If
+                '//////////////COMENTARIO 29/08/2025
+                'Select Case Me.CboTipoProducto.Text
+                '    Case "Orden de Compra"
+                '        ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
+                '    Case "Mercancia Recibida"
+                '        ConsecutivoCompra = BuscaConsecutivo("Compra")
+                '    Case "Devolucion de Compra"
+                '        ConsecutivoCompra = BuscaConsecutivo("DevCompra")
+                '    Case "Transferencia Recibida"
+                '        ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
+                '    Case "Cuenta"
+                '        ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+                '    Case "Cuenta DB"
+                '        ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
+                'End Select
 
-                End If
+                ''/////////////////////////////////////////////////////////////////////////////////////////
+                ''///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
+                ''////////////////////////////////////////////////////////////////////////////////////////
+                'SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
+                'DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
+                'DataAdapter.Fill(DataSet, "Configuracion")
+                'If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
+                '    If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) Then
+                '        FacturaBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")
+                '    End If
 
-                If CompraBodega = True Then
-                    NumeroCompra = Me.CboCodigoBodega.Columns(0).Text & "-" & Format(ConsecutivoCompra, "0000#")
-                Else
-                    NumeroCompra = Format(ConsecutivoCompra, "0000#")
-                End If
+                '    If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) Then
+                '        CompraBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")
+                '    End If
+
+                'End If
+
+                'If CompraBodega = True Then
+                '    NumeroCompra = Me.CboCodigoBodega.Columns(0).Text & "-" & Format(ConsecutivoCompra, "0000#")
+                'Else
+                '    NumeroCompra = Format(ConsecutivoCompra, "0000#")
+                'End If
+
+                'Quien = "NumeroCompras"
+                'Me.TxtNumeroEnsamble.Text = NumeroCompra
+
+                ''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
+                ''//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+                'GrabaCompras(NumeroCompra)
+                NumeroCompra = Me.TxtNumeroEnsamble.Text
             Else
                 'ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
                 'NumeroCompra = Format(ConsecutivoCompra, "0000#")
@@ -3230,15 +4416,12 @@ Public Class FrmCompras
             ActualizaMETODOcOMPRA()
 
 
-            ''////////////////////////////////////////////////////////////////////////////////////////////////////
-            ''/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
-            ''//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-            GrabaCompras(NumeroCompra)
 
-            If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
-                Quien = "NumeroCompras"
-                Me.TxtNumeroEnsamble.Text = NumeroCompra
-            End If
+
+            'If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+            '    Quien = "NumeroCompras"
+            '    Me.TxtNumeroEnsamble.Text = NumeroCompra
+            'End If
 
             ''////////////////////////////////////////////////////////////////////////////////////////////////////
             ''/////////////////////////////GRABO EL DETALLE DE LA COMPRA /////////////////////////////////////////////
@@ -3346,7 +4529,7 @@ Public Class FrmCompras
         Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, SqlCompras As String, TasaCambio As Double
         Dim NumeroCompra As String, MonedaFactura As String = Me.TxtMonedaFactura.Text, MonedaImprime As String = Me.TxtMonedaImprime.Text
         Dim ConsecutivoCompra As Double, Respuesta As Double, SqlConsecutivo As String, FacturaBodega As Boolean = False, CompraBodega As Boolean = False
-
+        Dim Compras As TablaCompras = New TablaCompras
         'ConsecutivoCompra As Double
 
         Respuesta = MsgBox("Esta seguro de Procesar la " & Me.CboTipoProducto.Text & " " & Me.TxtNumeroEnsamble.Text, MsgBoxStyle.YesNo, "Zeus Facturacion")
@@ -3354,91 +4537,93 @@ Public Class FrmCompras
             Exit Sub
         End If
 
+        AgregarCompras()
 
-        '////////////////////////////////////////////////////////////////////////////////////////////////////
-        '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
-            Select Case Me.CboTipoProducto.Text
-                Case "Orden de Compra"
-                    ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
-                Case "Mercancia Recibida"
-                    ConsecutivoCompra = BuscaConsecutivo("Compra")
-                Case "Devolucion de Compra"
-                    ConsecutivoCompra = BuscaConsecutivo("DevCompra")
-                Case "Transferencia Recibida"
-                    ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
-                Case "Cuenta"
-                    'ConsecutivoCompra = BuscaConsecutivo("Cuenta")
-                    ConsecutivoCompra = BuscaConsecutivo("Compra")
-                Case "Cuenta DB"
-                    'ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
-                    ConsecutivoCompra = BuscaConsecutivo("Compra")
-            End Select
+        '28/08/2025
+        ''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
+        ''//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+        'If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+        '    Select Case Me.CboTipoProducto.Text
+        '        Case "Orden de Compra"
+        '            ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
+        '        Case "Mercancia Recibida"
+        '            ConsecutivoCompra = BuscaConsecutivo("Compra")
+        '        Case "Devolucion de Compra"
+        '            ConsecutivoCompra = BuscaConsecutivo("DevCompra")
+        '        Case "Transferencia Recibida"
+        '            ConsecutivoCompra = BuscaConsecutivo("Transferecia_Recibida")
+        '        Case "Cuenta"
+        '            'ConsecutivoCompra = BuscaConsecutivo("Cuenta")
+        '            ConsecutivoCompra = BuscaConsecutivo("Compra")
+        '        Case "Cuenta DB"
+        '            'ConsecutivoCompra = BuscaConsecutivo("Cuenta_CR")
+        '            ConsecutivoCompra = BuscaConsecutivo("Compra")
+        '    End Select
 
-            '/////////////////////////////////////////////////////////////////////////////////////////
-            '///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
-            '////////////////////////////////////////////////////////////////////////////////////////
-            SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
-            DataAdapter.Fill(DataSet, "Configuracion")
-            If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
-                If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) Then
-                    FacturaBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")
-                End If
+        '    '/////////////////////////////////////////////////////////////////////////////////////////
+        '    '///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
+        '    '////////////////////////////////////////////////////////////////////////////////////////
+        '    SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
+        '    DataAdapter.Fill(DataSet, "Configuracion")
+        '    If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
+        '        If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) Then
+        '            FacturaBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")
+        '        End If
 
-                If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) Then
-                    CompraBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")
-                End If
+        '        If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) Then
+        '            CompraBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")
+        '        End If
 
-            End If
+        '    End If
 
-            If CompraBodega = True Then
-                NumeroCompra = Me.CboCodigoBodega.Columns(0).Text & "-" & Format(ConsecutivoCompra, "0000#")
-            Else
-                NumeroCompra = Format(ConsecutivoCompra, "0000#")
-            End If
-        Else
-            'ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
-            'NumeroCompra = Format(ConsecutivoCompra, "0000#")
-            NumeroCompra = Me.TxtNumeroEnsamble.Text
+        '    If CompraBodega = True Then
+        '        NumeroCompra = Me.CboCodigoBodega.Columns(0).Text & "-" & Format(ConsecutivoCompra, "0000#")
+        '    Else
+        '        NumeroCompra = Format(ConsecutivoCompra, "0000#")
+        '    End If
+        'Else
+        '    'ConsecutivoCompra = Me.TxtNumeroEnsamble.Text
+        '    'NumeroCompra = Format(ConsecutivoCompra, "0000#")
+        '    NumeroCompra = Me.TxtNumeroEnsamble.Text
 
-        End If
-
-
-
+        'End If
 
 
-        '////////////////////////////////////////////////////////////////////////////////////////////////////
-        '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-        GrabaCompras(NumeroCompra)
+
+
+
+        ''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
+        ''//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+        'GrabaCompras(NumeroCompra)
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO LOS METODOS DE PAGO /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
 
-        Me.BindingMetodo.MoveFirst()
-        Registros = Me.BindingMetodo.Count
-        iPosicion = 0
-        Monto = 0
-        Do While iPosicion < Registros
-            NombrePago = Me.BindingMetodo.Item(iPosicion)("NombrePago")
-            Monto = Me.BindingMetodo.Item(iPosicion)("Monto") + Monto
-            If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")) Then
-                NumeroTarjeta = Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")
-            Else
-                NumeroTarjeta = 0
-            End If
-            If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("FechaVence")) Then
-                FechaVenceTarjeta = Me.BindingMetodo.Item(iPosicion)("FechaVence")
-            Else
-                FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
-            End If
+        'Me.BindingMetodo.MoveFirst()
+        'Registros = Me.BindingMetodo.Count
+        'iPosicion = 0
+        'Monto = 0
+        'Do While iPosicion < Registros
+        '    NombrePago = Me.BindingMetodo.Item(iPosicion)("NombrePago")
+        '    Monto = Me.BindingMetodo.Item(iPosicion)("Monto") + Monto
+        '    If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")) Then
+        '        NumeroTarjeta = Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")
+        '    Else
+        '        NumeroTarjeta = 0
+        '    End If
+        '    If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("FechaVence")) Then
+        '        FechaVenceTarjeta = Me.BindingMetodo.Item(iPosicion)("FechaVence")
+        '    Else
+        '        FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
+        '    End If
 
-            GrabaMetodoDetalleCompra(NumeroCompra, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta)
-            iPosicion = iPosicion + 1
-        Loop
+        '    GrabaMetodoDetalleCompra(NumeroCompra, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta)
+        '    iPosicion = iPosicion + 1
+        'Loop
 
 
         Bitacora(Now, NombreUsuario, Me.CboTipoProducto.Text, "Grabar la Compra: " & Me.TxtNumeroEnsamble.Text)
@@ -3656,9 +4841,6 @@ Public Class FrmCompras
         My.Forms.FrmAjustarCostos.ShowDialog()
     End Sub
 
-
-
-
     Private Sub TrueDBGridComponentes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.Click
 
     End Sub
@@ -3668,6 +4850,36 @@ Public Class FrmCompras
     End Sub
 
     Private Sub TrueDBGridComponentes_ChangeUICues(ByVal sender As Object, ByVal e As System.Windows.Forms.UICuesEventArgs) Handles TrueDBGridComponentes.ChangeUICues
+
+    End Sub
+
+    Private Sub TrueDBGridConsultas_BeforeColUpdate(sender As Object, e As C1.Win.C1TrueDBGrid.BeforeColUpdateEventArgs) Handles TrueDBGridConsultas.BeforeColUpdate
+        Dim Cantidad As Double = 0, PrecioUnitario As Double = 0, Importe As Double = 0
+
+        If Not IsNumeric(Me.TrueDBGridConsultas.Columns("Cantidad").Text) Then
+            MsgBox("Cantidad digitada no es numerica", vbCritical, "Zeus Facturacion")
+            e.Cancel = True
+            Exit Sub
+        End If
+
+        If Not IsNumeric(Me.TrueDBGridConsultas.Columns("Precio_Unitario").Text) Then
+            MsgBox("Cantidad digitada no es numerica", vbCritical, "Zeus Facturacion")
+            e.Cancel = True
+            Exit Sub
+        End If
+
+
+
+
+        Cantidad = Me.TrueDBGridConsultas.Columns("Cantidad").Text
+                PrecioUnitario = Me.TrueDBGridConsultas.Columns("Precio_Unitario").Text
+                Importe = Cantidad * PrecioUnitario
+        Me.TrueDBGridConsultas.Columns("Precio_Neto").Text = PrecioUnitario
+        Me.TrueDBGridConsultas.Columns("Importe").Text = Format(Importe, "##,##0.0000")
+
+    End Sub
+
+    Private Sub TrueDBGridConsultas_BindingContextChanged(sender As Object, e As EventArgs) Handles TrueDBGridConsultas.BindingContextChanged
 
     End Sub
 End Class
