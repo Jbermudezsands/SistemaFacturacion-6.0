@@ -208,11 +208,17 @@ Partial Class MDIMain
         Me.DocumentModifiedLabel = New C1.Win.C1Ribbon.RibbonLabel()
         Me.RibbonLabel2 = New C1.Win.C1Ribbon.RibbonLabel()
         Me.RibbonSeparator8 = New C1.Win.C1Ribbon.RibbonSeparator()
+        Me.RibbonLabelSPlano = New C1.Win.C1Ribbon.RibbonLabel()
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel()
         Me.TxtUsuario = New System.Windows.Forms.TextBox()
-        Me.RibbonLabelSPlano = New C1.Win.C1Ribbon.RibbonLabel()
         Me.LabelSPlano = New System.Windows.Forms.Label()
         Me.txtSPlano = New System.Windows.Forms.TextBox()
+        Me.RibbonSeparator9 = New C1.Win.C1Ribbon.RibbonSeparator()
+        Me.RibbonLabelSPlano2 = New C1.Win.C1Ribbon.RibbonLabel()
+        Me.RibbonSeparator10 = New C1.Win.C1Ribbon.RibbonSeparator()
+        Me.RibbonLabelSPlano3 = New C1.Win.C1Ribbon.RibbonLabel()
+        Me.txtSPlano2 = New System.Windows.Forms.TextBox()
+        Me.txtSPlano3 = New System.Windows.Forms.TextBox()
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton()
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1695,6 +1701,10 @@ Partial Class MDIMain
         Me.C1StatusBar1.LeftPaneItems.Add(Me.RibbonLabel2)
         Me.C1StatusBar1.LeftPaneItems.Add(Me.RibbonSeparator8)
         Me.C1StatusBar1.LeftPaneItems.Add(Me.RibbonLabelSPlano)
+        Me.C1StatusBar1.LeftPaneItems.Add(Me.RibbonSeparator9)
+        Me.C1StatusBar1.LeftPaneItems.Add(Me.RibbonLabelSPlano2)
+        Me.C1StatusBar1.LeftPaneItems.Add(Me.RibbonSeparator10)
+        Me.C1StatusBar1.LeftPaneItems.Add(Me.RibbonLabelSPlano3)
         Me.C1StatusBar1.Location = New System.Drawing.Point(0, 435)
         Me.C1StatusBar1.Name = "C1StatusBar1"
         Me.C1StatusBar1.RightPaneItems.Add(Me.RibbonLabel1)
@@ -1716,6 +1726,11 @@ Partial Class MDIMain
         '
         Me.RibbonSeparator8.ID = "RibbonSeparator8"
         '
+        'RibbonLabelSPlano
+        '
+        Me.RibbonLabelSPlano.ID = "RibbonLabelSPlano"
+        Me.RibbonLabelSPlano.ToolTip = "" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
+        '
         'RibbonLabel1
         '
         Me.RibbonLabel1.ID = "RibbonLabel1"
@@ -1729,11 +1744,6 @@ Partial Class MDIMain
         Me.TxtUsuario.TabIndex = 15
         Me.TxtUsuario.Text = "Desconocido"
         Me.TxtUsuario.Visible = False
-        '
-        'RibbonLabelSPlano
-        '
-        Me.RibbonLabelSPlano.ID = "RibbonLabelSPlano"
-        Me.RibbonLabelSPlano.ToolTip = "" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
         '
         'LabelSPlano
         '
@@ -1753,12 +1763,46 @@ Partial Class MDIMain
         Me.txtSPlano.TabIndex = 18
         Me.txtSPlano.Visible = False
         '
+        'RibbonSeparator9
+        '
+        Me.RibbonSeparator9.ID = "RibbonSeparator9"
+        '
+        'RibbonLabelSPlano2
+        '
+        Me.RibbonLabelSPlano2.ID = "RibbonLabelSPlano2"
+        '
+        'RibbonSeparator10
+        '
+        Me.RibbonSeparator10.ID = "RibbonSeparator10"
+        '
+        'RibbonLabelSPlano3
+        '
+        Me.RibbonLabelSPlano3.ID = "RibbonLabelSPlano3"
+        '
+        'txtSPlano2
+        '
+        Me.txtSPlano2.Location = New System.Drawing.Point(512, 187)
+        Me.txtSPlano2.Name = "txtSPlano2"
+        Me.txtSPlano2.Size = New System.Drawing.Size(100, 20)
+        Me.txtSPlano2.TabIndex = 20
+        Me.txtSPlano2.Visible = False
+        '
+        'txtSPlano3
+        '
+        Me.txtSPlano3.Location = New System.Drawing.Point(512, 273)
+        Me.txtSPlano3.Name = "txtSPlano3"
+        Me.txtSPlano3.Size = New System.Drawing.Size(100, 20)
+        Me.txtSPlano3.TabIndex = 21
+        Me.txtSPlano3.Visible = False
+        '
         'MDIMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), System.Drawing.Image)
         Me.ClientSize = New System.Drawing.Size(1213, 457)
+        Me.Controls.Add(Me.txtSPlano3)
+        Me.Controls.Add(Me.txtSPlano2)
         Me.Controls.Add(Me.txtSPlano)
         Me.Controls.Add(Me.LabelSPlano)
         Me.Controls.Add(Me.TxtUsuario)
@@ -1968,4 +2012,10 @@ Partial Class MDIMain
     Friend WithEvents RibbonLabelSPlano As C1.Win.C1Ribbon.RibbonLabel
     Friend WithEvents LabelSPlano As Label
     Friend WithEvents txtSPlano As TextBox
+    Friend WithEvents RibbonSeparator9 As C1.Win.C1Ribbon.RibbonSeparator
+    Friend WithEvents RibbonLabelSPlano2 As C1.Win.C1Ribbon.RibbonLabel
+    Friend WithEvents RibbonSeparator10 As C1.Win.C1Ribbon.RibbonSeparator
+    Friend WithEvents RibbonLabelSPlano3 As C1.Win.C1Ribbon.RibbonLabel
+    Friend WithEvents txtSPlano2 As TextBox
+    Friend WithEvents txtSPlano3 As TextBox
 End Class

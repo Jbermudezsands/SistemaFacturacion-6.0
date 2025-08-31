@@ -876,6 +876,7 @@ Public Class FrmImportacion
     End Sub
 
     Private Sub CmdLeer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdLeer.Click
+
         '(Me.MiAdaptador)
         Me.OpenFileDialog.ShowDialog()
         RutaBD = OpenFileDialog.FileName

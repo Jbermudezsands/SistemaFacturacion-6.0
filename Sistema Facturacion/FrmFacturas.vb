@@ -239,6 +239,7 @@ Public Class FrmFacturas
 
     End Sub
 
+
     Public Sub AgregarFactura()
 
         Dim iPosicion As Double, Registros As Double, NumeroFactura As String
@@ -1005,7 +1006,7 @@ Handles backgroundWorkerLote.RunWorkerCompleted
     Private Sub backgroundWorkerInsertar_DoWork(
 ByVal sender As Object,
 ByVal e As DoWorkEventArgs) _
-Handles backgroundWorkerLote.DoWork
+Handles backgroundWorkerInsertar.DoWork
         Dim worker As BackgroundWorker =
         CType(sender, BackgroundWorker)
 
@@ -1029,7 +1030,7 @@ Handles backgroundWorkerLote.DoWork
     End Sub
     Private Sub backgroundWorkerInsertar_RunWorkerCompleted(
 ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs) _
-Handles backgroundWorkerLote.RunWorkerCompleted
+Handles backgroundWorkerInsertar.RunWorkerCompleted
         Dim Argumentos As New ClaseFactura
         Dim ComandoUpdate As New SqlClient.SqlCommand, StrSqlUpdate As String, iResulteado As Integer
 
@@ -1090,6 +1091,7 @@ Handles backgroundWorkerLote.RunWorkerCompleted
         End If
 
     End Sub
+
     Public Sub InsertarRegistrosWorker(Factura As TablaFactura, ByVal worker As BackgroundWorker, ByVal e As DoWorkEventArgs)
 
         Dim cod As String = "1"
@@ -6169,21 +6171,16 @@ Handles backgroundWorkerLote.RunWorkerCompleted
 
         'Try
 
-
-
         If Me.CboTipoProducto.Text = "" Then
             MsgBox("Tiene que Seleccionar el Tipo", MsgBoxStyle.Critical, "Zeus Facturacion")
             Exit Sub
 
         End If
 
-
-
         If Me.CboCodigoBodega.Text = "" Then
             MsgBox("Es necesario que seleccione el tipo de Factura", MsgBoxStyle.Critical, "Sistema Facturacion")
             Exit Sub
         End If
-
 
         If Me.TxtCodigoClientes.Text = "" Then
             Exit Sub
@@ -6305,8 +6302,6 @@ Handles backgroundWorkerLote.RunWorkerCompleted
         TablaFactura.SuReferencia1 = CboReferencia.Text
         TablaFactura.Nuestra_Referencia = ""
         TablaFactura.Codigo_Proyecto = CboProyecto.Text
-
-
 
 
         If My.Forms.FrmFacturas.SubTotalGral <> 0 Then
@@ -8939,18 +8934,6 @@ Handles backgroundWorkerLote.RunWorkerCompleted
                     End If
                 End If
 
-
-                'CodTarea = Me.TrueDBGridComponentes.Columns("CodTarea").Text
-                ''///////////////////////////////////////////BUSCO EL COSTO PROMEDIO PARA LA BODEGA ////////////////////////////////////////
-                'SqlString = "SELECT    * FROM Tareas WHERE (CodigoTarea = '" & CodTarea & "')"
-                'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-                'DataAdapter.Fill(DataSet, "Tarea")
-                'If DataSet.Tables("Tarea").Rows.Count = 0 Then
-                '    'MsgBox("el Codigo de Tarea no Existe!!!", MsgBoxStyle.Critical, "Zeus Facturacion")
-                '    'e.Cancel = True
-                'End If
-                'DataSet.Tables("Tarea").Reset()
-
             End If
 
             Me.TrueDBGridComponentes.Columns("Numero_Factura").Text = Me.TxtNumeroEnsamble.Text
@@ -9000,6 +8983,7 @@ Handles backgroundWorkerLote.RunWorkerCompleted
                 Me.BindingDetalle.Item(iPosicion)("Precio_Neto") = Format(PrecioNeto, "##,##0.0000")
                 Me.BindingDetalle.Item(iPosicion)("Importe") = Format(PrecioNeto * Cantidad, "##,##0.0000")
             End If
+
 
 
 

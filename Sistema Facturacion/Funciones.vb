@@ -1404,7 +1404,6 @@ Module Funciones
         End Try
 
     End Sub
-
     Public Sub Grabar_Admision(ByVal Numero_Expediente As String, ByVal Fecha_Hora As Date, ByVal Activo As Boolean, ByVal Procesado As Boolean, ByVal Cancelado As Boolean, ByVal idPreconsultas As Double)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQLstring As String
@@ -1446,9 +1445,6 @@ Module Funciones
         End Try
 
     End Sub
-
-
-
     Public Function BuscaConsulta(ByVal Sqlstring As String, ByVal Nombre As String) As DataSet
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -1462,7 +1458,6 @@ Module Funciones
         BuscaConsulta = DataSet.Copy
 
     End Function
-
     Public Sub Grabar_Expediente(ByVal Numero_Expediente As String, ByVal Nombres As String, ByVal Apellidos As String, ByVal Edad As Double, ByVal Sexo As String, ByVal Estado_Civil As String, ByVal Escolaridad As String, ByVal Ocupacion As String, ByVal Telefono As Double, ByVal Direccion As String, ByVal FechaIngreso As Date, ByVal Unidad_Salud As String, ByVal Nombre_Padre As String, ByVal Nombre_Madre As String, ByVal CodDepartamento As String, ByVal IdMunicipio As Double, ByVal idComarca As Double, ByVal Nombre_Emergencia As String, ByVal Telefono_Emergencia As Double, ByVal Direccion_Emergencia As String, ByVal Fecha_Nacimiento As Date)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQLstring As String
@@ -1592,7 +1587,6 @@ Module Funciones
         End If
 
     End Sub
-
     Public Sub Grabar_Municipios(ByVal CodigoDepartamento As String, ByVal NombreMunicipio As String, ByVal Tipo As String, ByVal IdMunicipio As Integer, ByVal Activo As Boolean)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQLstring As String
@@ -1640,7 +1634,6 @@ Module Funciones
         End Try
 
     End Sub
-
     Public Sub Grabar_Doctores(ByVal CodigoMinsa As String, ByVal Nombres As String, ByVal Apellidos As String, ByVal Telefono As String, ByVal Correo As String, ByVal Especialidad As String, ByVal Direccion As String, ByVal Tipo As String, ByVal Activo As Boolean)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQLstring As String
@@ -2480,8 +2473,6 @@ errSub:
         End If
 
     End Sub
-
-
 
     Public Sub GrabaDetalleRecepcionPlanilla(ByVal ConsecutivoCompra As String, ByVal CodProducto As String, ByVal PrecioUnitario As Double, ByVal Descuento As Double, ByVal PrecioNeto As Double, ByVal Importe As Double, ByVal Cantidad As Double)
         Dim Sqldetalle As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, TasaCambio As String
@@ -8932,7 +8923,7 @@ errSub:
     End Sub
 
 
-    Public Sub GrabaCompras(ByVal ConsecutivoCompra As String)
+    Public Sub GrabaCompras(Compras As TablaCompras)
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim Fecha As String, MonedaCompra As String
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -8947,64 +8938,7 @@ errSub:
         '**********************************************************************************************************************
         ActualizaMETODOcOMPRA()
 
-        If FrmCompras.CboReferencia.Text <> "" Then
-            Referencia = FrmCompras.CboReferencia.Text
-        End If
-
-
-
-        MonedaCompra = FrmCompras.TxtMonedaFactura.Text
-        CodigoProyecto = ""
-        If Not FrmCompras.CboProyecto.Text = "" Then
-            CodigoProyecto = FrmCompras.CboProyecto.Columns(0).Text
-        End If
-
-        Fecha = Format(FrmCompras.DTPFecha.Value, "yyyy-MM-dd")
-
-        If FrmCompras.TxtSubTotal.Text <> "" Then
-            Subtotal = FrmCompras.TxtSubTotal.Text
-        Else
-            Subtotal = 0
-        End If
-
-        If FrmCompras.TxtReferencia.Text <> "" Then
-            SuReferencia = FrmCompras.TxtReferencia.Text
-        End If
-
-        If FrmCompras.TxtIva.Text <> "" Then
-            Iva = FrmCompras.TxtIva.Text
-        Else
-            Iva = 0
-        End If
-
-        If FrmCompras.TxtPagado.Text <> "" Then
-            Pagado = FrmCompras.TxtPagado.Text
-        Else
-            Pagado = 0
-        End If
-
-        If FrmCompras.TxtNetoPagar.Text <> "" Then
-            Neto = FrmCompras.TxtNetoPagar.Text
-        Else
-            Neto = 0
-        End If
-
-        If FrmCompras.OptExsonerado.Checked = True Then
-            Exonerado = 1
-        Else
-            Exonerado = 0
-        End If
-
-        If FrmCompras.ChkAplicarCtasXPagar.Checked = True Then
-            AplicarCtasXPagar = 1
-        Else
-            AplicarCtasXPagar = 0
-        End If
-
         MiConexion.Close()
-
-        FechaHora = FrmCompras.DTPFecha.Value & " " & Format(Now, "HH:mm")
-
 
         CambiarFechaCompra = False
 
@@ -9048,18 +8982,18 @@ errSub:
         'End If
 
 
-        SqlCompras = "SELECT Compras.* FROM Compras WHERE  (Numero_Compra = '" & ConsecutivoCompra & "') AND (Tipo_Compra = '" & FrmCompras.CboTipoProducto.Text & "')"
+        SqlCompras = "SELECT Compras.* FROM Compras WHERE  (Numero_Compra = '" & Compras.Numero_Compra & "') AND (Tipo_Compra = '" & Compras.Tipo_Compra & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
         DataAdapter.Fill(DataSet, "DetalleCompra")
         If DataSet.Tables("DetalleCompra").Rows.Count = 0 Then
 
-            FrmCompras.DTPFechaHora.Value = FechaHora
+            'FrmCompras.DTPFechaHora.Value = FechaHora
             'If FrmCompras.TxtNumeroEnsamble.Text = "-----0-----" Then
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////AGREGO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
             SqlCompras = "INSERT INTO [Compras] ([Numero_Compra] ,[Fecha_Compra],[Tipo_Compra],[Cod_Proveedor],[Cod_Bodega],[Nombre_Proveedor],[Apellido_Proveedor],[Direccion_Proveedor],[Telefono_Proveedor],[Fecha_Vencimiento],[Observaciones],[SubTotal],[IVA],[Pagado],[NetoPagar],[MontoCredito],[MonedaCompra],[Exonerado],[Su_Referencia],[CodigoProyecto],[Referencia],[FechaHora],[AplicarCtasXPagar]) " &
-            "VALUES ('" & ConsecutivoCompra & "','" & FrmCompras.DTPFecha.Value & "','" & FrmCompras.CboTipoProducto.Text & "','" & FrmCompras.TxtCodigoProveedor.Text & "','" & FrmCompras.CboCodigoBodega.Text & "' , '" & FrmCompras.TxtNombres.Text & "','" & FrmCompras.TxtApellidos.Text & "','" & FrmCompras.TxtDireccion.Text & "','" & FrmCompras.TxtTelefono.Text & "','" & FrmCompras.DTVencimiento.Value & "','" & FrmCompras.TxtObservaciones.Text & "'," & Subtotal & "," & Iva & "," & Pagado & "," & Neto & "," & Neto & ",'" & MonedaCompra & "'," & Exonerado & ",'" & SuReferencia & "','" & CodigoProyecto & "','" & Referencia & "','" & Format(FechaHora, "dd/MM/yyyy HH:mm") & "', '" & AplicarCtasXPagar & "')"
+            "VALUES ('" & Compras.Numero_Compra & "','" & Compras.Fecha_Compra & "','" & Compras.Tipo_Compra & "','" & Compras.Cod_Proveedor & "','" & Compras.Cod_Bodega & "' , '" & Compras.Nombre_Proveedor & "','" & Compras.Apellido_Proveedor & "','" & Compras.Direccion_Proveedor & "','" & Compras.Telefono_Proveedor & "','" & Compras.Fecha_Vencimiento & "','" & Compras.Observaciones_Cómpra & "'," & Compras.Sub_Total & "," & Compras.IVA & "," & Compras.Pagado_Compra & "," & Compras.Neto_Pagar & "," & Compras.Neto_Pagar & ",'" & Compras.Moneda_Compra & "'," & Compras.Exonerado_Compra & ",'" & Compras.Su_Referencia & "','" & Compras.Codigo_Proyecto & "','" & Compras.Referencia_Compra & "','" & Format(Compras.Fecha_Hora, "dd/MM/yyyy HH:mm") & "', '" & Compras.Aplicar_CtasXPagar & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -9069,8 +9003,8 @@ errSub:
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "UPDATE [Compras]  SET [Cod_Proveedor] = '" & FrmCompras.TxtCodigoProveedor.Text & "',[Nombre_Proveedor] = '" & FrmCompras.TxtNombres.Text & "',[Apellido_Proveedor] = '" & FrmCompras.TxtApellidos.Text & "',[Direccion_Proveedor] = '" & FrmCompras.TxtDireccion.Text & "',[Telefono_Proveedor] = '" & FrmCompras.TxtTelefono.Text & "',[Cod_Bodega]='" & FrmCompras.CboCodigoBodega.Text & "',[Fecha_Vencimiento] = '" & FrmCompras.DTVencimiento.Value & "' ,[Observaciones] = '" & FrmCompras.TxtObservaciones.Text & "',[SubTotal] = " & Subtotal & ",[IVA] = " & Iva & ",[Pagado] = " & Pagado & ",[NetoPagar] = " & Neto & ",[MontoCredito] = " & Neto & ",[MonedaCompra] = '" & MonedaCompra & "',[Exonerado] = " & Exonerado & ",[Su_Referencia] = '" & SuReferencia & "',[CodigoProyecto] = '" & CodigoProyecto & "',[Referencia] = '" & Referencia & "', [AplicarCtasXPagar] = '" & AplicarCtasXPagar & "'  " &
-                         "WHERE  (Numero_Compra = '" & ConsecutivoCompra & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Compra = '" & FrmCompras.CboTipoProducto.Text & "')"
+            SqlCompras = "UPDATE [Compras]  SET [Cod_Proveedor] = '" & Compras.Cod_Proveedor & "',[Nombre_Proveedor] = '" & Compras.Nombre_Proveedor & "',[Apellido_Proveedor] = '" & Compras.Apellido_Proveedor & "',[Direccion_Proveedor] = '" & Compras.Direccion_Proveedor & "',[Telefono_Proveedor] = '" & Compras.Telefono_Proveedor & "',[Cod_Bodega]='" & Compras.Cod_Bodega & "',[Fecha_Vencimiento] = '" & Compras.Fecha_Vencimiento & "' ,[Observaciones] = '" & Compras.Observaciones_Cómpra & "',[SubTotal] = " & Compras.Sub_Total & ",[IVA] = " & Compras.IVA & ",[Pagado] = " & Compras.Pagado_Compra & ",[NetoPagar] = " & Compras.Neto_Pagar & ",[MontoCredito] = " & Compras.Neto_Pagar & ",[MonedaCompra] = '" & Compras.Moneda_Compra & "',[Exonerado] = " & Compras.Exonerado_Compra & ",[Su_Referencia] = '" & Compras.Su_Referencia & "',[CodigoProyecto] = '" & Compras.Codigo_Proyecto & "',[Referencia] = '" & Compras.Referencia_Compra & "', [AplicarCtasXPagar] = '" & Compras.Aplicar_CtasXPagar & "'  " &
+                         "WHERE  (Numero_Compra = '" & Compras.Numero_Compra & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Format(Compras.Fecha_Compra, "yyyy-MM-dd") & "', 102)) AND (Tipo_Compra = '" & Compras.Tipo_Compra & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery

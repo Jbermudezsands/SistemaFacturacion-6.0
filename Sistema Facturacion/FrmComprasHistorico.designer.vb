@@ -75,6 +75,14 @@ Partial Class FrmComprasHistorico
         Me.TxtMonedaImprime = New System.Windows.Forms.TextBox()
         Me.CmdFacturar = New System.Windows.Forms.Button()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.OptExsonerado = New System.Windows.Forms.CheckBox()
+        Me.TxtReferencia = New System.Windows.Forms.TextBox()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.Label16 = New System.Windows.Forms.Label()
+        Me.CboReferencia = New System.Windows.Forms.ComboBox()
+        Me.CboProyecto = New C1.Win.C1List.C1Combo()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.ChkAplicarCtasXPagar = New System.Windows.Forms.CheckBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -88,6 +96,7 @@ Partial Class FrmComprasHistorico
         CType(Me.BindingMetodo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.BindingDetalle, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox5.SuspendLayout()
+        CType(Me.CboProyecto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox1
@@ -194,7 +203,7 @@ Partial Class FrmComprasHistorico
         '
         Me.CmdTransferencias.Image = CType(resources.GetObject("CmdTransferencias.Image"), System.Drawing.Image)
         Me.CmdTransferencias.ImageAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.CmdTransferencias.Location = New System.Drawing.Point(234, 274)
+        Me.CmdTransferencias.Location = New System.Drawing.Point(790, 69)
         Me.CmdTransferencias.Name = "CmdTransferencias"
         Me.CmdTransferencias.Size = New System.Drawing.Size(93, 32)
         Me.CmdTransferencias.TabIndex = 148
@@ -211,6 +220,7 @@ Partial Class FrmComprasHistorico
         Me.GroupBox2.Controls.Add(Me.TxtApellidos)
         Me.GroupBox2.Controls.Add(Me.TxtNombres)
         Me.GroupBox2.Controls.Add(Me.Button1)
+        Me.GroupBox2.Controls.Add(Me.OptExsonerado)
         Me.GroupBox2.Controls.Add(Me.TxtCodigoProveedor)
         Me.GroupBox2.Location = New System.Drawing.Point(12, 120)
         Me.GroupBox2.Name = "GroupBox2"
@@ -233,7 +243,7 @@ Partial Class FrmComprasHistorico
         Me.TxtTelefono.Enabled = False
         Me.TxtTelefono.Location = New System.Drawing.Point(12, 123)
         Me.TxtTelefono.Name = "TxtTelefono"
-        Me.TxtTelefono.Size = New System.Drawing.Size(256, 20)
+        Me.TxtTelefono.Size = New System.Drawing.Size(166, 20)
         Me.TxtTelefono.TabIndex = 132
         '
         'TxtDireccion
@@ -404,7 +414,7 @@ Partial Class FrmComprasHistorico
         '
         Me.ButtonBorrar.Enabled = False
         Me.ButtonBorrar.Image = CType(resources.GetObject("ButtonBorrar.Image"), System.Drawing.Image)
-        Me.ButtonBorrar.Location = New System.Drawing.Point(6, 19)
+        Me.ButtonBorrar.Location = New System.Drawing.Point(6, 18)
         Me.ButtonBorrar.Name = "ButtonBorrar"
         Me.ButtonBorrar.Size = New System.Drawing.Size(75, 67)
         Me.ButtonBorrar.TabIndex = 142
@@ -443,7 +453,7 @@ Partial Class FrmComprasHistorico
         Me.GroupBox3.Controls.Add(Me.RadioButton2)
         Me.GroupBox3.Controls.Add(Me.RadioButton1)
         Me.GroupBox3.FlatStyle = System.Windows.Forms.FlatStyle.System
-        Me.GroupBox3.Location = New System.Drawing.Point(335, 233)
+        Me.GroupBox3.Location = New System.Drawing.Point(335, 224)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(138, 45)
         Me.GroupBox3.TabIndex = 145
@@ -534,7 +544,7 @@ Partial Class FrmComprasHistorico
         'PictureBox3
         '
         Me.PictureBox3.Image = CType(resources.GetObject("PictureBox3.Image"), System.Drawing.Image)
-        Me.PictureBox3.Location = New System.Drawing.Point(335, 132)
+        Me.PictureBox3.Location = New System.Drawing.Point(335, 124)
         Me.PictureBox3.Name = "PictureBox3"
         Me.PictureBox3.Size = New System.Drawing.Size(123, 95)
         Me.PictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -583,7 +593,7 @@ Partial Class FrmComprasHistorico
         '
         Me.Button7.Enabled = False
         Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
-        Me.Button7.Location = New System.Drawing.Point(660, 155)
+        Me.Button7.Location = New System.Drawing.Point(660, 147)
         Me.Button7.Name = "Button7"
         Me.Button7.Size = New System.Drawing.Size(37, 38)
         Me.Button7.TabIndex = 156
@@ -664,11 +674,115 @@ Partial Class FrmComprasHistorico
         Me.GroupBox5.TabIndex = 202
         Me.GroupBox5.TabStop = False
         '
+        'OptExsonerado
+        '
+        Me.OptExsonerado.AutoSize = True
+        Me.OptExsonerado.Location = New System.Drawing.Point(234, 126)
+        Me.OptExsonerado.Name = "OptExsonerado"
+        Me.OptExsonerado.Size = New System.Drawing.Size(77, 17)
+        Me.OptExsonerado.TabIndex = 203
+        Me.OptExsonerado.Text = "Exonerado"
+        Me.OptExsonerado.UseVisualStyleBackColor = True
+        '
+        'TxtReferencia
+        '
+        Me.TxtReferencia.AcceptsReturn = True
+        Me.TxtReferencia.Location = New System.Drawing.Point(407, 275)
+        Me.TxtReferencia.Name = "TxtReferencia"
+        Me.TxtReferencia.Size = New System.Drawing.Size(67, 20)
+        Me.TxtReferencia.TabIndex = 208
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(340, 278)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(68, 13)
+        Me.Label7.TabIndex = 207
+        Me.Label7.Text = "Num Factura"
+        '
+        'Label16
+        '
+        Me.Label16.AutoSize = True
+        Me.Label16.Location = New System.Drawing.Point(15, 278)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(59, 13)
+        Me.Label16.TabIndex = 228
+        Me.Label16.Text = "Referencia"
+        '
+        'CboReferencia
+        '
+        Me.CboReferencia.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboReferencia.FormattingEnabled = True
+        Me.CboReferencia.Location = New System.Drawing.Point(74, 275)
+        Me.CboReferencia.Name = "CboReferencia"
+        Me.CboReferencia.Size = New System.Drawing.Size(116, 21)
+        Me.CboReferencia.TabIndex = 227
+        '
+        'CboProyecto
+        '
+        Me.CboProyecto.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboProyecto.Caption = ""
+        Me.CboProyecto.CaptionHeight = 17
+        Me.CboProyecto.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboProyecto.ColumnCaptionHeight = 17
+        Me.CboProyecto.ColumnFooterHeight = 17
+        Me.CboProyecto.ContentHeight = 15
+        Me.CboProyecto.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboProyecto.DisplayMember = "NombreProyectos"
+        Me.CboProyecto.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
+        Me.CboProyecto.DropDownWidth = 300
+        Me.CboProyecto.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboProyecto.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboProyecto.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboProyecto.EditorHeight = 15
+        Me.CboProyecto.Images.Add(CType(resources.GetObject("CboProyecto.Images"), System.Drawing.Image))
+        Me.CboProyecto.ItemHeight = 15
+        Me.CboProyecto.Location = New System.Drawing.Point(517, 179)
+        Me.CboProyecto.MatchEntryTimeout = CType(2000, Long)
+        Me.CboProyecto.MaxDropDownItems = CType(5, Short)
+        Me.CboProyecto.MaxLength = 32767
+        Me.CboProyecto.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboProyecto.Name = "CboProyecto"
+        Me.CboProyecto.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboProyecto.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboProyecto.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboProyecto.Size = New System.Drawing.Size(137, 21)
+        Me.CboProyecto.TabIndex = 230
+        Me.CboProyecto.PropBag = resources.GetString("CboProyecto.PropBag")
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(467, 183)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(49, 13)
+        Me.Label12.TabIndex = 229
+        Me.Label12.Text = "Proyecto"
+        '
+        'ChkAplicarCtasXPagar
+        '
+        Me.ChkAplicarCtasXPagar.AutoSize = True
+        Me.ChkAplicarCtasXPagar.Location = New System.Drawing.Point(200, 275)
+        Me.ChkAplicarCtasXPagar.Name = "ChkAplicarCtasXPagar"
+        Me.ChkAplicarCtasXPagar.Size = New System.Drawing.Size(123, 17)
+        Me.ChkAplicarCtasXPagar.TabIndex = 231
+        Me.ChkAplicarCtasXPagar.Text = "Aplicar Ctas X Pagar"
+        Me.ChkAplicarCtasXPagar.UseVisualStyleBackColor = True
+        Me.ChkAplicarCtasXPagar.Visible = False
+        '
         'FrmComprasHistorico
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(905, 512)
+        Me.Controls.Add(Me.ChkAplicarCtasXPagar)
+        Me.Controls.Add(Me.CboProyecto)
+        Me.Controls.Add(Me.Label12)
+        Me.Controls.Add(Me.Label16)
+        Me.Controls.Add(Me.CboReferencia)
+        Me.Controls.Add(Me.TxtReferencia)
+        Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.GroupBox5)
         Me.Controls.Add(Me.CmdFacturar)
         Me.Controls.Add(Me.CmdTransferencias)
@@ -721,6 +835,7 @@ Partial Class FrmComprasHistorico
         CType(Me.BindingMetodo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.BindingDetalle, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox5.ResumeLayout(False)
+        CType(Me.CboProyecto, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -779,4 +894,12 @@ Partial Class FrmComprasHistorico
     Friend WithEvents TxtMonedaImprime As System.Windows.Forms.TextBox
     Friend WithEvents CmdFacturar As System.Windows.Forms.Button
     Friend WithEvents GroupBox5 As System.Windows.Forms.GroupBox
+    Friend WithEvents OptExsonerado As CheckBox
+    Friend WithEvents TxtReferencia As TextBox
+    Friend WithEvents Label7 As Label
+    Friend WithEvents Label16 As Label
+    Friend WithEvents CboReferencia As ComboBox
+    Friend WithEvents CboProyecto As C1.Win.C1List.C1Combo
+    Friend WithEvents Label12 As Label
+    Friend WithEvents ChkAplicarCtasXPagar As CheckBox
 End Class
