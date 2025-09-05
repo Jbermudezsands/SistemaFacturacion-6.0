@@ -15,6 +15,8 @@ Public Class FrmCompras
     Public WithEvents backgroundWorkerInsertar As System.ComponentModel.BackgroundWorker
     Public WithEvents backgroundWorkerGrabar As System.ComponentModel.BackgroundWorker
     Public WithEvents backgroundWorkerAgregarEncabezado As System.ComponentModel.BackgroundWorker
+    Public WithEvents backgroundWorkerExistenciaCosto As System.ComponentModel.BackgroundWorker
+    Public WithEvents backgroundWorkerExistenciaLotexProducto As System.ComponentModel.BackgroundWorker
     Public Delegate Sub delegadoGridRegistros(Compras As TablaCompras)
     Public ConexionExcel As String, MiConexionExcel As New OleDb.OleDbConnection, DataAdapterExcel As New OleDb.OleDbDataAdapter
     Public RutaBD As String, MiDataSet As New DataSet()
@@ -290,6 +292,75 @@ Handles backgroundWorkerAgregarEncabezado.RunWorkerCompleted
 
     End Sub
 
+    '////////////////////////////////EXISTENCIA COSTO EN PRODUCTO CON HILOS ////////////////////////////////////////
+    Private Sub backgroundWorkerExistenciaCosto_DoWork(
+ByVal sender As Object,
+ByVal e As DoWorkEventArgs) _
+Handles backgroundWorkerExistenciaCosto.DoWork
+        Dim worker As BackgroundWorker =
+        CType(sender, BackgroundWorker)
+
+        Dim args As TablaDetalleCompras = e.Argument
+
+        If worker.CancellationPending Then
+            e.Cancel = True
+            Exit Sub
+        Else
+
+            worker.WorkerReportsProgress = True
+            worker.WorkerSupportsCancellation = True
+            ExistenciasCostos(args.Cod_Producto, args.Cantidad, args.Precio_Unitario, args.Tipo_Compra, args.Cod_Bodega)
+        End If
+    End Sub
+    Private Sub backgroundWorkerExistenciaCosto_RunWorkerCompleted(
+ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs) _
+Handles backgroundWorkerExistenciaCosto.RunWorkerCompleted
+
+        If (e.Error IsNot Nothing) Then
+            Bitacora(Now, NombreUsuario, "Productos", "Error " & e.Error.Message)
+        ElseIf e.Cancelled Then
+            Bitacora(Now, NombreUsuario, "Productos", "Hilo Cancelado")
+        Else
+
+
+        End If
+
+    End Sub
+
+    '//////////////////////////////////ExistenciaLotexProducto CON HILOS //////////////
+    Private Sub backgroundWorkerExistenciaLotexProducto_DoWork(
+ByVal sender As Object,
+ByVal e As DoWorkEventArgs) _
+Handles backgroundWorkerExistenciaLotexProducto.DoWork
+        Dim worker As BackgroundWorker =
+        CType(sender, BackgroundWorker)
+
+        Dim args As TablaLotexProducto = e.Argument
+
+        If worker.CancellationPending Then
+            e.Cancel = True
+            Exit Sub
+        Else
+
+            worker.WorkerReportsProgress = True
+            worker.WorkerSupportsCancellation = True
+            ActualizaExistenciaLotexProducto(args.Numero_Lote_Producto, args.Cod_Bodega_LoteProducto, args.Cod_Productos_LoteProducto, args.Fecha_Vence_LoteProducto)
+        End If
+    End Sub
+    Private Sub backgroundWorkerExistenciaLotexProducto_RunWorkerCompleted(
+ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs) _
+Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
+
+        If (e.Error IsNot Nothing) Then
+            Bitacora(Now, NombreUsuario, "Productos", "Error " & e.Error.Message)
+        ElseIf e.Cancelled Then
+            Bitacora(Now, NombreUsuario, "Productos", "Hilo Cancelado")
+        Else
+
+
+        End If
+
+    End Sub
 
     Public Sub InsertarRegistrosWorker(Compra As TablaCompras, ByVal worker As BackgroundWorker, ByVal e As DoWorkEventArgs)
 
@@ -320,9 +391,9 @@ Handles backgroundWorkerAgregarEncabezado.RunWorkerCompleted
         LimpiarCompras()
 
 
-        '///////////////////////////////////////////////////////////////////////////
-        '//////////////////////////////GRABO LOS ENCABEZADO DE COMPRAS /////////////
-        '//////////////////////////////////////////////////////////////////////////
+        ''///////////////////////////////////////////////////////////////////////////
+        ''//////////////////////////////GRABO LOS ENCABEZADO DE COMPRAS /////////////
+        ''//////////////////////////////////////////////////////////////////////////
         GrabaCompras(compras)
 
 
@@ -545,11 +616,29 @@ Handles backgroundWorkerAgregarEncabezado.RunWorkerCompleted
         Compras.Observaciones_Cómpra = TxtObservaciones.Text
         Compras.Descuento_Compra = 0
         Compras.Fecha_Descuento = Now
-        Compras.Sub_Total = TxtSubTotal.Text
-        Compras.IVA = TxtIva.Text
-        Compras.Pagado_Compra = TxtPagado.Text
-        Compras.Neto_Pagar = TxtNetoPagar.Text
-        Compras.Monto_Credito = TxtNetoPagar.Text
+        If Me.TxtSubTotal.Text <> "" Then
+            Compras.Sub_Total = TxtSubTotal.Text
+        Else
+            Compras.Sub_Total = 0
+        End If
+        If Me.TxtIva.Text <> "" Then
+            Compras.IVA = TxtIva.Text
+        Else
+            Compras.IVA = 0
+        End If
+        If Me.TxtPagado.Text <> "" Then
+            Compras.Pagado_Compra = TxtPagado.Text
+        Else
+            Compras.Pagado_Compra = 0
+        End If
+        If Me.TxtNetoPagar.Text <> "" Then
+            Compras.Neto_Pagar = TxtNetoPagar.Text
+            Compras.Monto_Credito = TxtNetoPagar.Text
+        Else
+            Compras.Neto_Pagar = 0
+            Compras.Monto_Credito = 0
+        End If
+
         Compras.Contabilizado_Compra = 0
         Compras.Activo_Compra = 1
         Compras.Cancelado_Compra = 0
@@ -629,7 +718,7 @@ Handles backgroundWorkerAgregarEncabezado.RunWorkerCompleted
         Dim ConsecutivoCompra As Double, SqlConsecutivo As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim FacturaBodega As Boolean = False, CompraBodega As Boolean = False
-
+        Dim dsDetalle As DataSet, dsMetodoPago As New DataSet, DtMetodo As New DataTable
 
         ActualizaMETODOcOMPRA()
 
@@ -773,6 +862,20 @@ Handles backgroundWorkerAgregarEncabezado.RunWorkerCompleted
         AddHandler worker.DoWork, AddressOf backgroundWorkerGrabar_DoWork
         AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerGrabar_RunWorkerCompleted
         worker.RunWorkerAsync(Compras)
+
+        MsgBox("Se ha grabado con Exito!!!", MsgBoxStyle.Exclamation, "Sistema Facturacion")
+
+        If Me.TxtNumeroEnsamble.Text <> "-----0-----" Then
+            Select Case Me.CboTipoProducto.Text
+                Case "Orden de Compra"
+                    Me.CmdFacturar.Enabled = True
+                Case Else
+                    LimpiarCompras()
+            End Select
+        End If
+
+        Me.Button7.Enabled = True
+        Me.CboCodigoBodega.Enabled = True
 
 
     End Sub
@@ -1472,11 +1575,35 @@ Handles backgroundWorkerAgregarEncabezado.RunWorkerCompleted
         If FacturaTarea = True Then
             NumeroLote = Me.BindingDetalle.Item(iPosicion)("Numero_Lote")
             FechaVence = Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")
-            ActualizaExistenciaLotexProducto(NumeroLote, Me.CboCodigoBodega.Text, CodigoProducto, FechaVence)
+
+            '///////////////////////////EXISTENCIA COSTO LA PROCESO EN SEGUNDO PLANO ///////////
+            '//////////////////////////PROCESO MUY LARGO ///////////////////////
+            Dim worker As BackgroundWorker, WorkerLote As BackgroundWorker, Detalle As TablaDetalleCompras = New TablaDetalleCompras
+            Dim Lote As TablaLotexProducto = New TablaLotexProducto
+            worker = New BackgroundWorker()
+            WorkerLote = New BackgroundWorker()
+
+            Detalle.Cod_Producto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
+            Detalle.Cantidad = Me.BindingDetalle.Item(iPosicion)("Cantidad")
+            Detalle.Precio_Unitario = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
+            Detalle.Tipo_Compra = Me.CboTipoProducto.Text
+            Detalle.Cod_Bodega = Me.CboCodigoBodega.Text
+
+            AddHandler worker.DoWork, AddressOf backgroundWorkerExistenciaCosto_DoWork
+            AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerExistenciaCosto_RunWorkerCompleted
+            worker.RunWorkerAsync(Detalle)
+
+            Lote.Numero_Lote_Producto = NumeroLote
+            Lote.Cod_Bodega_LoteProducto = Me.CboCodigoBodega.Text
+            Lote.Cod_Productos_LoteProducto = CodigoProducto
+            Lote.Fecha_Vence_LoteProducto = FechaVence
+
+            AddHandler WorkerLote.DoWork, AddressOf backgroundWorkerExistenciaLotexProducto_DoWork
+            AddHandler WorkerLote.RunWorkerCompleted, AddressOf backgroundWorkerExistenciaLotexProducto_RunWorkerCompleted
+            WorkerLote.RunWorkerAsync(Lote)
+
+            'ActualizaExistenciaLotexProducto(NumeroLote, Me.CboCodigoBodega.Text, CodigoProducto, FechaVence)
         End If
-
-
-
 
 
         Bitacora(Now, NombreUsuario, "Compras", "Modifico Producto: " & CodigoProducto)
@@ -2379,6 +2506,8 @@ Handles backgroundWorkerAgregarEncabezado.RunWorkerCompleted
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, DescripcionProducto As String
 
 
+        AgregarCompras()
+
         ''////////////////////////////////////////////////////////////////////////////////////////////////////
         ''/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
         ''//////////////////////////////////////////////////////////////////////////////////////////////////////////7
@@ -2439,7 +2568,7 @@ Handles backgroundWorkerAgregarEncabezado.RunWorkerCompleted
         CambiarFechaCompra = False
         'GrabaCompras(NumeroCompra)
 
-        AgregarCompras()
+
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL DETALLE DE LA COMPRA /////////////////////////////////////////////
@@ -2656,19 +2785,19 @@ Handles backgroundWorkerAgregarEncabezado.RunWorkerCompleted
         'Loop
         'Bitacora(Now, NombreUsuario, Me.CboTipoProducto.Text, "Grabar la Compra: " & Me.TxtNumeroEnsamble.Text)
 
-        MsgBox("Se ha grabado con Exito!!!", MsgBoxStyle.Exclamation, "Sistema Facturacion")
+        'MsgBox("Se ha grabado con Exito!!!", MsgBoxStyle.Exclamation, "Sistema Facturacion")
 
-        If Me.TxtNumeroEnsamble.Text <> "-----0-----" Then
-            Select Case Me.CboTipoProducto.Text
-                Case "Orden de Compra"
-                    Me.CmdFacturar.Enabled = True
-                Case Else
-                    LimpiarCompras()
-            End Select
-        End If
+        'If Me.TxtNumeroEnsamble.Text <> "-----0-----" Then
+        '    Select Case Me.CboTipoProducto.Text
+        '        Case "Orden de Compra"
+        '            Me.CmdFacturar.Enabled = True
+        '        Case Else
+        '            LimpiarCompras()
+        '    End Select
+        'End If
 
-        Me.Button7.Enabled = True
-        Me.CboCodigoBodega.Enabled = True
+        'Me.Button7.Enabled = True
+        'Me.CboCodigoBodega.Enabled = True
 
 
 
@@ -3883,16 +4012,48 @@ Handles backgroundWorkerAgregarEncabezado.RunWorkerCompleted
     End Sub
 
     Private Sub BtnCargar_Click(sender As Object, e As EventArgs) Handles BtnCargar.Click
-        Dim Cont As Double = Me.TrueDBGridConsultas.RowCount, i As Double
-        Dim Compra As TablaDetalleCompras = New TablaDetalleCompras
+        Dim Cont As Double = Me.TrueDBGridConsultas.RowCount, i As Double, NumeroCompra As String
+        Dim Compra As TablaDetalleCompras = New TablaDetalleCompras, ConsecutivoCompra As Double = 0
+        Dim Encabezado As TablaCompras = New TablaCompras
 
-        AgregarEncabezado()
+        If Me.CboTipoProducto.Text = "" Then
+            MsgBox("Seleccione el Tipo Compra", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+
+        ConsecutivoCompra = BuscaConsecutivo("Compra")
+        NumeroCompra = Format(ConsecutivoCompra, "0000#")
+
+        Encabezado.Numero_Compra = NumeroCompra
+        Encabezado.Tipo_Compra = Me.CboTipoProducto.Text
+        Encabezado.Cod_Proveedor = Me.CboCodigoBodega.Text
+        Encabezado.Nombre_Proveedor = Me.TxtNombres.Text
+        Encabezado.Apellido_Proveedor = Me.TxtApellidos.Text
+        Encabezado.Cod_Bodega = Me.CboCodigoBodega.Text
+        Encabezado.Fecha_Compra = Me.DTPFecha.Value
+        Encabezado.Sub_Total = Val(Me.TxtSubTotal.Text)
+        Encabezado.IVA = Val(Me.TxtIva.Text)
+        Encabezado.Neto_Pagar = Encabezado.Sub_Total + Encabezado.IVA
+        Encabezado.Monto_Credito = Encabezado.Neto_Pagar
+        Encabezado.Pagado_Compra = 0
+        Encabezado.Moneda_Compra = Me.TxtMonedaFactura.Text
+        Encabezado.Fecha_Vencimiento = Me.DTVencimiento.Value
+
+
+
+        '////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7v
+        GrabaEncabezadoCompras(NumeroCompra, Encabezado.Fecha_Compra, Encabezado.Tipo_Compra, Encabezado.Cod_Proveedor, Encabezado.Cod_Bodega, Encabezado.Nombre_Proveedor, Encabezado.Apellido_Proveedor, Encabezado.Fecha_Vencimiento, Encabezado.Sub_Total, Encabezado.IVA, Encabezado.Pagado_Compra, Encabezado.Neto_Pagar, Encabezado.Moneda_Compra, "Procesado por Importacion Compra " & Encabezado.Numero_Compra, "", False)
+
 
         Me.ProgressBar.Minimum = 0
         Me.ProgressBar.Maximum = Cont
         Me.ProgressBar.Value = 0
         Me.ProgressBar.Visible = True
         Do While Cont > i
+            Compra.Numero_Compra = NumeroCompra
             Compra.Cod_Producto = Me.TrueDBGridConsultas.Item(i)("Cod_Producto")
             Compra.Descripcion_Producto = Me.TrueDBGridConsultas.Item(i)("Descripcion_Producto")
             Compra.Cantidad = Me.TrueDBGridConsultas.Item(i)("Cantidad")
@@ -3901,14 +4062,34 @@ Handles backgroundWorkerAgregarEncabezado.RunWorkerCompleted
             Compra.Importe = Me.TrueDBGridConsultas.Item(i)("Importe")
             Compra.Numero_Lote = Me.TrueDBGridConsultas.Item(i)("Numero_Lote")
             Compra.Fecha_Vence = Me.TrueDBGridConsultas.Item(i)("Fecha_Vence")
+            Compra.Cod_Bodega = Me.CboCodigoBodega.Text
+            Compra.Tipo_Compra = "Mercancia Recibida"
 
-            'GrabaDetalleCompraLiquidacion(NumeroCompra, Compra.Cod_Producto, Compra.Precio_Unitario, 0, Compra.Precio_Neto, Compra.Importe, Compra.Cantidad, Me.TxtMonedaFactura.Text, Me.DTPFecha.Value, Compra.Numero_Lote, Compra.Fecha_Vence)
-            'ExistenciasCostos(Compra.Cod_Producto, Compra.Cantidad, Compra.Precio_Unitario, "Mercancia Recibida", Me.CboCodigoBodega.Text)
+
+            GrabaDetalleCompraLiquidacion(Compra.Numero_Compra, Compra.Cod_Producto, Compra.Precio_Unitario, 0, Compra.Precio_Neto, Compra.Importe, Compra.Cantidad, Me.TxtMonedaFactura.Text, Me.DTPFecha.Value, Compra.Numero_Lote, Compra.Fecha_Vence)
+
+            '///////////////////////////EXISTENCIA COSTO LA PROCESO EN SEGUNDO PLANO ///////////
+            '//////////////////////////PROCESO MUY LARGO ///////////////////////
+            Dim worker As BackgroundWorker
+            worker = New BackgroundWorker()
+            AddHandler worker.DoWork, AddressOf backgroundWorkerExistenciaCosto_DoWork
+            AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerExistenciaCosto_RunWorkerCompleted
+            worker.RunWorkerAsync(Compra)
+
+
 
 
             Me.ProgressBar.Value = Me.ProgressBar.Value + 1
             i = i + 1
         Loop
+
+
+        '/////////////////////////////////////AHORA CARGO LAS COMPRAS ///////////
+        Me.CboTipoProducto.Text = Encabezado.Tipo_Compra
+        Me.DTPFecha.Value = Encabezado.Fecha_Compra
+        Me.TxtNumeroEnsamble.Text = Encabezado.Numero_Compra
+
+        Button14_Click(sender, e)
 
 
     End Sub

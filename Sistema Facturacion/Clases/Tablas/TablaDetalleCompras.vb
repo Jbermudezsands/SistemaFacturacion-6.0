@@ -14,7 +14,9 @@
 	Private CostoUnitario As Double
 	Private NumeroLote As String
 	Private FechaVence As String
-	Private DescripcionProducto As String
+    Private DescripcionProducto As String
+    Private CodigoBodega As String
+
 
     Public Property Numero_Compra As String
         Get
@@ -157,6 +159,15 @@
         End Get
         Set(value As Double)
             id_Detalle_Compra = value
+        End Set
+    End Property
+
+    Public Property Cod_Bodega As String
+        Get
+            Return CodigoBodega
+        End Get
+        Set(value As String)
+            CodigoBodega = value
         End Set
     End Property
 End Class

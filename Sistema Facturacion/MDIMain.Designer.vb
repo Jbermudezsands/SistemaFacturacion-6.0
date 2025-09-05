@@ -209,14 +209,14 @@ Partial Class MDIMain
         Me.RibbonLabel2 = New C1.Win.C1Ribbon.RibbonLabel()
         Me.RibbonSeparator8 = New C1.Win.C1Ribbon.RibbonSeparator()
         Me.RibbonLabelSPlano = New C1.Win.C1Ribbon.RibbonLabel()
-        Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel()
-        Me.TxtUsuario = New System.Windows.Forms.TextBox()
-        Me.LabelSPlano = New System.Windows.Forms.Label()
-        Me.txtSPlano = New System.Windows.Forms.TextBox()
         Me.RibbonSeparator9 = New C1.Win.C1Ribbon.RibbonSeparator()
         Me.RibbonLabelSPlano2 = New C1.Win.C1Ribbon.RibbonLabel()
         Me.RibbonSeparator10 = New C1.Win.C1Ribbon.RibbonSeparator()
         Me.RibbonLabelSPlano3 = New C1.Win.C1Ribbon.RibbonLabel()
+        Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel()
+        Me.TxtUsuario = New System.Windows.Forms.TextBox()
+        Me.LabelSPlano = New System.Windows.Forms.Label()
+        Me.txtSPlano = New System.Windows.Forms.TextBox()
         Me.txtSPlano2 = New System.Windows.Forms.TextBox()
         Me.txtSPlano3 = New System.Windows.Forms.TextBox()
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton()
@@ -1731,6 +1731,22 @@ Partial Class MDIMain
         Me.RibbonLabelSPlano.ID = "RibbonLabelSPlano"
         Me.RibbonLabelSPlano.ToolTip = "" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
         '
+        'RibbonSeparator9
+        '
+        Me.RibbonSeparator9.ID = "RibbonSeparator9"
+        '
+        'RibbonLabelSPlano2
+        '
+        Me.RibbonLabelSPlano2.ID = "RibbonLabelSPlano2"
+        '
+        'RibbonSeparator10
+        '
+        Me.RibbonSeparator10.ID = "RibbonSeparator10"
+        '
+        'RibbonLabelSPlano3
+        '
+        Me.RibbonLabelSPlano3.ID = "RibbonLabelSPlano3"
+        '
         'RibbonLabel1
         '
         Me.RibbonLabel1.ID = "RibbonLabel1"
@@ -1738,7 +1754,7 @@ Partial Class MDIMain
         '
         'TxtUsuario
         '
-        Me.TxtUsuario.Location = New System.Drawing.Point(556, 247)
+        Me.TxtUsuario.Location = New System.Drawing.Point(512, 315)
         Me.TxtUsuario.Name = "TxtUsuario"
         Me.TxtUsuario.Size = New System.Drawing.Size(100, 20)
         Me.TxtUsuario.TabIndex = 15
@@ -1757,31 +1773,15 @@ Partial Class MDIMain
         '
         'txtSPlano
         '
-        Me.txtSPlano.Location = New System.Drawing.Point(512, 213)
+        Me.txtSPlano.Location = New System.Drawing.Point(512, 187)
         Me.txtSPlano.Name = "txtSPlano"
         Me.txtSPlano.Size = New System.Drawing.Size(100, 20)
         Me.txtSPlano.TabIndex = 18
         Me.txtSPlano.Visible = False
         '
-        'RibbonSeparator9
-        '
-        Me.RibbonSeparator9.ID = "RibbonSeparator9"
-        '
-        'RibbonLabelSPlano2
-        '
-        Me.RibbonLabelSPlano2.ID = "RibbonLabelSPlano2"
-        '
-        'RibbonSeparator10
-        '
-        Me.RibbonSeparator10.ID = "RibbonSeparator10"
-        '
-        'RibbonLabelSPlano3
-        '
-        Me.RibbonLabelSPlano3.ID = "RibbonLabelSPlano3"
-        '
         'txtSPlano2
         '
-        Me.txtSPlano2.Location = New System.Drawing.Point(512, 187)
+        Me.txtSPlano2.Location = New System.Drawing.Point(512, 213)
         Me.txtSPlano2.Name = "txtSPlano2"
         Me.txtSPlano2.Size = New System.Drawing.Size(100, 20)
         Me.txtSPlano2.TabIndex = 20
@@ -1789,7 +1789,7 @@ Partial Class MDIMain
         '
         'txtSPlano3
         '
-        Me.txtSPlano3.Location = New System.Drawing.Point(512, 273)
+        Me.txtSPlano3.Location = New System.Drawing.Point(512, 239)
         Me.txtSPlano3.Name = "txtSPlano3"
         Me.txtSPlano3.Size = New System.Drawing.Size(100, 20)
         Me.txtSPlano3.TabIndex = 21

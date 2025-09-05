@@ -14,6 +14,7 @@ Public Class FrmFacturas
     Public WithEvents backgroundWorkerLote As System.ComponentModel.BackgroundWorker
     Public WithEvents backgroundWorkerInsertar As System.ComponentModel.BackgroundWorker
     Public WithEvents backgroundWorkerGrabar As System.ComponentModel.BackgroundWorker
+
     Public Delegate Sub delegadoListbox()
     Public Delegate Sub delegadoGridRegistros(Factura As TablaFactura)
     Public TablaFacturaPublica As TablaFactura
@@ -690,6 +691,7 @@ Handles backgroundWorkerLote.RunWorkerCompleted
         End If
     End Sub
 
+
     Public Function BuscaExistenciaDetalleLoteWorker(Args As ClaseLote, ByVal worker As BackgroundWorker, ByVal e As DoWorkEventArgs) As ClaseLote
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -957,8 +959,8 @@ Handles backgroundWorkerLote.RunWorkerCompleted
         Dim ComandoUpdate As New SqlClient.SqlCommand, StrSqlUpdate As String, iResulteado As Integer
 
 
-        'SQlString = "SELECT  MAX(Detalle_Compras.Cod_Producto) AS Cod_Producto, Detalle_Compras.Numero_Lote, Lote.FechaVence FROM Detalle_Compras INNER JOIN Lote ON Detalle_Compras.Numero_Lote = Lote.Numero_Lote WHERE  (Lote.Activo = 1) AND (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Lote.FechaVence >= CONVERT(DATETIME, '" & Format(FechaFiltro, "yyyy-MM-dd") & "', 102)) GROUP BY Detalle_Compras.Numero_Lote, Lote.FechaVence HAVING (NOT (Detalle_Compras.Numero_Lote IS NULL)) ORDER BY Lote.FechaVence"
-        SQlString = "SELECT  Cod_Productos, Numero_Lote, Cod_Bodega, Existencia, Fecha_Vence, Activo FROM LotexProducto WHERE (Activo = 1) AND (Existencia > 0) AND (Fecha_Vence >= CONVERT(DATETIME, '" & Format(FechaFiltro, "yyyy-MM-dd") & "', 102)) AND (Cod_Productos = '" & CodigoProducto & "')"
+        SQlString = "SELECT  MAX(Detalle_Compras.Cod_Producto) AS Cod_Producto, Detalle_Compras.Numero_Lote, Lote.FechaVence as Fecha_Vence FROM Detalle_Compras INNER JOIN Lote ON Detalle_Compras.Numero_Lote = Lote.Numero_Lote WHERE  (Lote.Activo = 1) AND (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Lote.FechaVence >= CONVERT(DATETIME, '" & Format(FechaFiltro, "yyyy-MM-dd") & "', 102)) GROUP BY Detalle_Compras.Numero_Lote, Lote.FechaVence HAVING (NOT (Detalle_Compras.Numero_Lote IS NULL)) ORDER BY Lote.FechaVence"
+        'SQlString = "SELECT  Cod_Productos, Numero_Lote, Cod_Bodega, Existencia, Fecha_Vence, Activo FROM LotexProducto WHERE (Activo = 1) AND (Existencia > 0) AND (Fecha_Vence >= CONVERT(DATETIME, '" & Format(FechaFiltro, "yyyy-MM-dd") & "', 102)) AND (Cod_Productos = '" & CodigoProducto & "')"
 
         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
         DataAdapter.Fill(DataSet, "Lotes")
@@ -5752,7 +5754,6 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                     Else
                         CodProducto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
 
-
                         SqlString = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
                         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                         DataAdapter.Fill(DataSet, "Productos")
@@ -5767,7 +5768,15 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                             If Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text = "" Then
                                 CostoUnitario = CostoPromedioKardex(CodProducto, Me.DTPFecha.Value)
-                                ActualizaCostoPromedio(CodProducto)
+
+                                Dim worker As BackgroundWorker, Lotes As Lote = New Lote
+                                worker = New BackgroundWorker()
+                                AddHandler worker.DoWork, AddressOf backgroundWorkerGrabar_DoWork
+                                AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerGrabar_RunWorkerCompleted
+                                Lotes.Codigo_Producto = CodProducto
+                                worker.RunWorkerAsync()
+
+                                'ActualizaCostoPromedio(CodProducto)
                             Else
                                 CostoUnitario = Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text
                             End If
@@ -7851,6 +7860,8 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                 DataSet.Reset()
 
                 If FacturaTarea = True Then
+
+
                     resul = BuscaExistenciaBodegaLote(Args)
                     ExistenciaLote = resul.Existencia_Lote
                     Select Case Cols
@@ -9036,32 +9047,29 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                 Me.TrueDBGridComponentes.Columns("Cod_Producto").Text = My.Forms.FrmConsultas.Codigo
                 Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = My.Forms.FrmConsultas.Descripcion
-
+                CodProducto = My.Forms.FrmConsultas.Codigo
 
                 'CostoUnitario = CostoPromedio(CodProducto)
 
                 If FacturaTarea = True Then
 
-
-
                     Me.TrueDBGridComponentes.Columns("Cod_Producto").Text = My.Forms.FrmConsultas.Codigo
                     Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = My.Forms.FrmConsultas.Descripcion
 
-                    '////////////////INICIO EL PROCESO DE LOS HILOS //////////////
-                    Me.TrueDBGridComponentes.Col = 2
-                    Me.TrueDBGridComponentes.Columns("CodTarea").Text = LoteDefectoWorker(My.Forms.FrmConsultas.Codigo, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
-                    My.Application.DoEvents()
 
-                    CodProducto = My.Forms.FrmConsultas.Codigo
                     If Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text = "" Then
                         CostoUnitario = CostoPromedioKardex(CodProducto, Me.DTPFecha.Value)
                     Else
                         CostoUnitario = Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text
                     End If
 
+                    '////////////////INICIO EL PROCESO DE LOS HILOS //////////////
+                    Me.TrueDBGridComponentes.Col = 2
+                    Me.TrueDBGridComponentes.Columns("CodTarea").Text = LoteDefectoWorker(My.Forms.FrmConsultas.Codigo, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
+                    My.Application.DoEvents()
+
 
                     Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text = CostoUnitario
-
 
 
                     '////////////////////////////BUSCO UN LOTE PARA DEFINIRLO /////////////////////////////

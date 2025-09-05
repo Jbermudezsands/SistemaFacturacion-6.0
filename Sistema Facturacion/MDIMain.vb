@@ -15,10 +15,50 @@ Public Class MDIMain
     Public MiConexion As New SqlClient.SqlConnection(Conexion), ProductoMinimo As Boolean = False
     Public oHebraNotificacion As Thread
     Public oHebraLotes As Thread
+    Public WithEvents backgroundWorkerActualizaCostoPromedio As System.ComponentModel.BackgroundWorker
     Public WithEvents backgroundWorkerLote As System.ComponentModel.BackgroundWorker
     Public FechaVenceLote As Date
     Public DataSetHebra As New DataSet, DataAdapterHebra As New SqlClient.SqlDataAdapter
     Public Delegate Sub delegadoRibbonLabel(Datos As String)
+    '/////////////////////////HILO ACTUALIZAR EXISTENCIA COSTO /////////////////////
+    Private Sub backgroundWorkerActualizaCostoPromedio_DoWork(
+ByVal sender As Object,
+ByVal e As DoWorkEventArgs) _
+Handles backgroundWorkerActualizaCostoPromedio.DoWork
+        Dim worker As BackgroundWorker =
+        CType(sender, BackgroundWorker)
+
+        If worker.CancellationPending Then
+            e.Cancel = True
+            Exit Sub
+        Else
+
+            Dim args As Lote = e.Argument
+
+            worker.WorkerReportsProgress = True
+            worker.WorkerSupportsCancellation = True
+            'e.Result = BuscaExistenciaBodegaWoker(CodigoProducto, CodigoBodega, CostoProductoD, CostoProducto, worker, e)
+            ActualizaCostoPromedio(args.Codigo_Producto)
+        End If
+    End Sub
+    Private Sub backgroundWorkerActualizaCostoPromedio_RunWorkerCompleted(
+ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs) _
+Handles backgroundWorkerActualizaCostoPromedio.RunWorkerCompleted
+
+        If (e.Error IsNot Nothing) Then
+            Bitacora(Now, NombreUsuario, "Productos", "Error " & e.Error.Message)
+        ElseIf e.Cancelled Then
+            Bitacora(Now, NombreUsuario, "Productos", "Hilo Cancelado")
+        Else
+
+            Dim Args As Lote = e.Result
+
+            Me.txtSPlano2.Text = "SP ActCosto " & Args.Codigo_Producto
+
+        End If
+
+    End Sub
+
 
     Public Function RibbonLabel_Hilos(data As String) As String
 
@@ -2095,6 +2135,10 @@ Handles backgroundWorkerLote.RunWorkerCompleted
 
     Private Sub txtSPlano_TextChanged(sender As Object, e As EventArgs) Handles txtSPlano.TextChanged
         Me.RibbonLabelSPlano.Text = txtSPlano.Text
+    End Sub
+
+    Private Sub txtSPlano2_TextChanged(sender As Object, e As EventArgs) Handles txtSPlano2.TextChanged
+        Me.RibbonLabelSPlano2.Text = Me.txtSPlano2.Text
     End Sub
 
     Private Sub RibbonButton21_Click(sender As Object, e As EventArgs) Handles RibbonButton21.Click

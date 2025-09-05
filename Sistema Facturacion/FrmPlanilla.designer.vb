@@ -123,7 +123,7 @@ Partial Class FrmPlanilla
         Me.Label7.ForeColor = System.Drawing.SystemColors.Desktop
         Me.Label7.Location = New System.Drawing.Point(771, 26)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(89, 16)
+        Me.Label7.Size = New System.Drawing.Size(88, 16)
         Me.Label7.TabIndex = 182
         Me.Label7.Text = "No. Nomina"
         '
@@ -664,7 +664,7 @@ Partial Class FrmPlanilla
         Me.LblProcesando.ForeColor = System.Drawing.SystemColors.ActiveCaption
         Me.LblProcesando.Location = New System.Drawing.Point(438, 425)
         Me.LblProcesando.Name = "LblProcesando"
-        Me.LblProcesando.Size = New System.Drawing.Size(323, 16)
+        Me.LblProcesando.Size = New System.Drawing.Size(322, 16)
         Me.LblProcesando.TabIndex = 181
         Me.LblProcesando.Text = "Calculando  00001 JUAN BERMUDEZ HERNANDEZ"
         '
