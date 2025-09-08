@@ -2141,6 +2141,11 @@ Handles backgroundWorkerLote.RunWorkerCompleted
         Me.RibbonLabelSPlano2.Text = Me.txtSPlano2.Text
     End Sub
 
+    Private Sub RibbonContratosProveedores_Click(sender As Object, e As EventArgs) Handles RibbonContratosProveedores.Click
+        FrmContratosProveedoresLista.MdiParent = Me
+        FrmContratosProveedoresLista.Show()
+    End Sub
+
     Private Sub RibbonButton21_Click(sender As Object, e As EventArgs) Handles RibbonButton21.Click
         My.Forms.FrmContenedores.MdiParent = Me
         My.Forms.FrmContenedores.Show()

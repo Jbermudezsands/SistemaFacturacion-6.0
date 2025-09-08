@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class FrmContratosProveedor
     Inherits System.Windows.Forms.Form
 
     'Form reemplaza a Dispose para limpiar la lista de componentes.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,77 +20,87 @@ Partial Class FrmContratosProveedor
     'NOTA: el Diseñador de Windows Forms necesita el siguiente procedimiento
     'Se puede modificar usando el Diseñador de Windows Forms.  
     'No lo modifique con el editor de código.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmContratosProveedor))
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.Label20 = New System.Windows.Forms.Label()
-        Me.ComboBox5 = New System.Windows.Forms.ComboBox()
+        Me.CmbEstado = New System.Windows.Forms.ComboBox()
         Me.Label14 = New System.Windows.Forms.Label()
-        Me.TextBox5 = New System.Windows.Forms.TextBox()
-        Me.ComboBox4 = New System.Windows.Forms.ComboBox()
-        Me.TextBox4 = New System.Windows.Forms.TextBox()
+        Me.TxtComentarios = New System.Windows.Forms.TextBox()
+        Me.CmbDiasResolucion = New System.Windows.Forms.ComboBox()
+        Me.TxtDiasResolucion = New System.Windows.Forms.TextBox()
         Me.Label12 = New System.Windows.Forms.Label()
-        Me.ComboBox3 = New System.Windows.Forms.ComboBox()
-        Me.TextBox3 = New System.Windows.Forms.TextBox()
+        Me.CmbDiasRespuesta = New System.Windows.Forms.ComboBox()
+        Me.TxtDiasRespuesta = New System.Windows.Forms.TextBox()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
-        Me.TextBox2 = New System.Windows.Forms.TextBox()
-        Me.ComboBox2 = New System.Windows.Forms.ComboBox()
+        Me.txtModelo = New System.Windows.Forms.TextBox()
+        Me.CmbTipoContrato = New System.Windows.Forms.ComboBox()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
-        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
+        Me.CmbTipoServicio = New System.Windows.Forms.ComboBox()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.CmdEliminar = New System.Windows.Forms.Button()
         Me.CmdGuardar = New System.Windows.Forms.Button()
         Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
-        Me.MaskedTextBox13 = New System.Windows.Forms.MaskedTextBox()
-        Me.MaskedTextBox14 = New System.Windows.Forms.MaskedTextBox()
-        Me.MaskedTextBox11 = New System.Windows.Forms.MaskedTextBox()
-        Me.MaskedTextBox12 = New System.Windows.Forms.MaskedTextBox()
-        Me.MaskedTextBox9 = New System.Windows.Forms.MaskedTextBox()
-        Me.MaskedTextBox10 = New System.Windows.Forms.MaskedTextBox()
-        Me.MaskedTextBox7 = New System.Windows.Forms.MaskedTextBox()
-        Me.MaskedTextBox8 = New System.Windows.Forms.MaskedTextBox()
-        Me.MaskedTextBox5 = New System.Windows.Forms.MaskedTextBox()
-        Me.MaskedTextBox6 = New System.Windows.Forms.MaskedTextBox()
-        Me.MaskedTextBox3 = New System.Windows.Forms.MaskedTextBox()
-        Me.MaskedTextBox4 = New System.Windows.Forms.MaskedTextBox()
+        Me.TxtDomingoFin = New System.Windows.Forms.MaskedTextBox()
+        Me.TxtDomingoInicio = New System.Windows.Forms.MaskedTextBox()
+        Me.TxtSabadoFin = New System.Windows.Forms.MaskedTextBox()
+        Me.TxtSabadoInicio = New System.Windows.Forms.MaskedTextBox()
+        Me.TxtViernesFin = New System.Windows.Forms.MaskedTextBox()
+        Me.TxtViernesInicio = New System.Windows.Forms.MaskedTextBox()
+        Me.TxtJuevesFin = New System.Windows.Forms.MaskedTextBox()
+        Me.TxtJuevesInicio = New System.Windows.Forms.MaskedTextBox()
+        Me.TxtMiercolesFin = New System.Windows.Forms.MaskedTextBox()
+        Me.TxtMiercolesInicio = New System.Windows.Forms.MaskedTextBox()
+        Me.TxtMartesFin = New System.Windows.Forms.MaskedTextBox()
+        Me.TxtMartesInicio = New System.Windows.Forms.MaskedTextBox()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.Label9 = New System.Windows.Forms.Label()
-        Me.MaskedTextBox2 = New System.Windows.Forms.MaskedTextBox()
-        Me.MaskedTextBox1 = New System.Windows.Forms.MaskedTextBox()
-        Me.CheckBox7 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox6 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox5 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox4 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox3 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox2 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
+        Me.TxtLunesFin = New System.Windows.Forms.MaskedTextBox()
+        Me.TxtLunesInicio = New System.Windows.Forms.MaskedTextBox()
+        Me.ChkDomingo = New System.Windows.Forms.CheckBox()
+        Me.ChkSabado = New System.Windows.Forms.CheckBox()
+        Me.ChkViernes = New System.Windows.Forms.CheckBox()
+        Me.ChkJueves = New System.Windows.Forms.CheckBox()
+        Me.ChkMiercoles = New System.Windows.Forms.CheckBox()
+        Me.ChkMartes = New System.Windows.Forms.CheckBox()
+        Me.ChkLunes = New System.Windows.Forms.CheckBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.Label19 = New System.Windows.Forms.Label()
         Me.Button3 = New System.Windows.Forms.Button()
-        Me.DtpFinContrato1 = New System.Windows.Forms.DateTimePicker()
-        Me.DtpInicioContrato1 = New System.Windows.Forms.DateTimePicker()
+        Me.DtpFinContrato = New System.Windows.Forms.DateTimePicker()
+        Me.DtpInicioContrato = New System.Windows.Forms.DateTimePicker()
         Me.Label18 = New System.Windows.Forms.Label()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.TxtDescripcion = New System.Windows.Forms.TextBox()
         Me.Label17 = New System.Windows.Forms.Label()
         Me.CboCodigoProveedor = New C1.Win.C1List.C1Combo()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
-        Me.TxtHoraAdmision = New System.Windows.Forms.TextBox()
+        Me.TxtTelefono = New System.Windows.Forms.TextBox()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.TxtApellidos = New System.Windows.Forms.TextBox()
+        Me.TxtContacto = New System.Windows.Forms.TextBox()
         Me.Label3 = New System.Windows.Forms.Label()
-        Me.TxtCodigo = New System.Windows.Forms.TextBox()
+        Me.TxtNumeroContrato = New System.Windows.Forms.TextBox()
         Me.TxtNombres = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Button8 = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
+        Me.GroupBoxImportar = New System.Windows.Forms.GroupBox()
+        Me.ProgressBar = New System.Windows.Forms.ProgressBar()
+        Me.LblTotalRegistros = New System.Windows.Forms.Label()
+        Me.TxtError = New System.Windows.Forms.TextBox()
+        Me.BtnCancelar = New System.Windows.Forms.Button()
+        Me.BtnQuitar = New System.Windows.Forms.Button()
+        Me.BtnCargar = New System.Windows.Forms.Button()
+        Me.BtnAbrir = New System.Windows.Forms.Button()
+        Me.TrueDBGridConsultas = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
+        Me.Button4 = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
@@ -98,6 +108,8 @@ Partial Class FrmContratosProveedor
         Me.TabPage3.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         CType(Me.CboCodigoProveedor, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBoxImportar.SuspendLayout()
+        CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -105,7 +117,7 @@ Partial Class FrmContratosProveedor
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.TabPage3)
-        Me.TabControl1.Location = New System.Drawing.Point(12, 180)
+        Me.TabControl1.Location = New System.Drawing.Point(12, 176)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(776, 246)
@@ -114,21 +126,21 @@ Partial Class FrmContratosProveedor
         'TabPage1
         '
         Me.TabPage1.Controls.Add(Me.Label20)
-        Me.TabPage1.Controls.Add(Me.ComboBox5)
+        Me.TabPage1.Controls.Add(Me.CmbEstado)
         Me.TabPage1.Controls.Add(Me.Label14)
-        Me.TabPage1.Controls.Add(Me.TextBox5)
-        Me.TabPage1.Controls.Add(Me.ComboBox4)
-        Me.TabPage1.Controls.Add(Me.TextBox4)
+        Me.TabPage1.Controls.Add(Me.TxtComentarios)
+        Me.TabPage1.Controls.Add(Me.CmbDiasResolucion)
+        Me.TabPage1.Controls.Add(Me.TxtDiasResolucion)
         Me.TabPage1.Controls.Add(Me.Label12)
-        Me.TabPage1.Controls.Add(Me.ComboBox3)
-        Me.TabPage1.Controls.Add(Me.TextBox3)
+        Me.TabPage1.Controls.Add(Me.CmbDiasRespuesta)
+        Me.TabPage1.Controls.Add(Me.TxtDiasRespuesta)
         Me.TabPage1.Controls.Add(Me.Label8)
         Me.TabPage1.Controls.Add(Me.Label7)
-        Me.TabPage1.Controls.Add(Me.TextBox2)
-        Me.TabPage1.Controls.Add(Me.ComboBox2)
+        Me.TabPage1.Controls.Add(Me.txtModelo)
+        Me.TabPage1.Controls.Add(Me.CmbTipoContrato)
         Me.TabPage1.Controls.Add(Me.Label6)
         Me.TabPage1.Controls.Add(Me.Label5)
-        Me.TabPage1.Controls.Add(Me.ComboBox1)
+        Me.TabPage1.Controls.Add(Me.CmbTipoServicio)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
@@ -146,15 +158,15 @@ Partial Class FrmContratosProveedor
         Me.Label20.TabIndex = 261
         Me.Label20.Text = "Estado:"
         '
-        'ComboBox5
+        'CmbEstado
         '
-        Me.ComboBox5.FormattingEnabled = True
-        Me.ComboBox5.Items.AddRange(New Object() {"Autorizado", "Bloqueado", "Borrador", "Cancelado"})
-        Me.ComboBox5.Location = New System.Drawing.Point(116, 147)
-        Me.ComboBox5.Name = "ComboBox5"
-        Me.ComboBox5.Size = New System.Drawing.Size(121, 21)
-        Me.ComboBox5.TabIndex = 260
-        Me.ComboBox5.Text = "Autorizado"
+        Me.CmbEstado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbEstado.FormattingEnabled = True
+        Me.CmbEstado.Items.AddRange(New Object() {"Autorizado", "Bloqueado", "Borrador", "Cancelado"})
+        Me.CmbEstado.Location = New System.Drawing.Point(116, 147)
+        Me.CmbEstado.Name = "CmbEstado"
+        Me.CmbEstado.Size = New System.Drawing.Size(121, 21)
+        Me.CmbEstado.TabIndex = 260
         '
         'Label14
         '
@@ -165,31 +177,30 @@ Partial Class FrmContratosProveedor
         Me.Label14.TabIndex = 259
         Me.Label14.Text = "Comentarios:"
         '
-        'TextBox5
+        'TxtComentarios
         '
-        Me.TextBox5.Location = New System.Drawing.Point(319, 35)
-        Me.TextBox5.Multiline = True
-        Me.TextBox5.Name = "TextBox5"
-        Me.TextBox5.Size = New System.Drawing.Size(416, 122)
-        Me.TextBox5.TabIndex = 258
+        Me.TxtComentarios.Location = New System.Drawing.Point(319, 35)
+        Me.TxtComentarios.Multiline = True
+        Me.TxtComentarios.Name = "TxtComentarios"
+        Me.TxtComentarios.Size = New System.Drawing.Size(416, 122)
+        Me.TxtComentarios.TabIndex = 258
         '
-        'ComboBox4
+        'CmbDiasResolucion
         '
-        Me.ComboBox4.FormattingEnabled = True
-        Me.ComboBox4.Items.AddRange(New Object() {"Dias", "Horas", "Minutos"})
-        Me.ComboBox4.Location = New System.Drawing.Point(164, 120)
-        Me.ComboBox4.Name = "ComboBox4"
-        Me.ComboBox4.Size = New System.Drawing.Size(73, 21)
-        Me.ComboBox4.TabIndex = 257
-        Me.ComboBox4.Text = "Dias"
+        Me.CmbDiasResolucion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbDiasResolucion.FormattingEnabled = True
+        Me.CmbDiasResolucion.Items.AddRange(New Object() {"Dias", "Horas", "Minutos"})
+        Me.CmbDiasResolucion.Location = New System.Drawing.Point(164, 120)
+        Me.CmbDiasResolucion.Name = "CmbDiasResolucion"
+        Me.CmbDiasResolucion.Size = New System.Drawing.Size(73, 21)
+        Me.CmbDiasResolucion.TabIndex = 257
         '
-        'TextBox4
+        'TxtDiasResolucion
         '
-        Me.TextBox4.Enabled = False
-        Me.TextBox4.Location = New System.Drawing.Point(116, 121)
-        Me.TextBox4.Name = "TextBox4"
-        Me.TextBox4.Size = New System.Drawing.Size(42, 20)
-        Me.TextBox4.TabIndex = 256
+        Me.TxtDiasResolucion.Location = New System.Drawing.Point(116, 121)
+        Me.TxtDiasResolucion.Name = "TxtDiasResolucion"
+        Me.TxtDiasResolucion.Size = New System.Drawing.Size(42, 20)
+        Me.TxtDiasResolucion.TabIndex = 256
         '
         'Label12
         '
@@ -200,23 +211,22 @@ Partial Class FrmContratosProveedor
         Me.Label12.TabIndex = 255
         Me.Label12.Text = "Tiempo Resolucion:"
         '
-        'ComboBox3
+        'CmbDiasRespuesta
         '
-        Me.ComboBox3.FormattingEnabled = True
-        Me.ComboBox3.Items.AddRange(New Object() {"Dias", "Horas", "Minutos"})
-        Me.ComboBox3.Location = New System.Drawing.Point(164, 94)
-        Me.ComboBox3.Name = "ComboBox3"
-        Me.ComboBox3.Size = New System.Drawing.Size(73, 21)
-        Me.ComboBox3.TabIndex = 254
-        Me.ComboBox3.Text = "Dias"
+        Me.CmbDiasRespuesta.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbDiasRespuesta.FormattingEnabled = True
+        Me.CmbDiasRespuesta.Items.AddRange(New Object() {"Dias", "Horas", "Minutos"})
+        Me.CmbDiasRespuesta.Location = New System.Drawing.Point(164, 94)
+        Me.CmbDiasRespuesta.Name = "CmbDiasRespuesta"
+        Me.CmbDiasRespuesta.Size = New System.Drawing.Size(73, 21)
+        Me.CmbDiasRespuesta.TabIndex = 254
         '
-        'TextBox3
+        'TxtDiasRespuesta
         '
-        Me.TextBox3.Enabled = False
-        Me.TextBox3.Location = New System.Drawing.Point(116, 95)
-        Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.Size = New System.Drawing.Size(42, 20)
-        Me.TextBox3.TabIndex = 253
+        Me.TxtDiasRespuesta.Location = New System.Drawing.Point(116, 95)
+        Me.TxtDiasRespuesta.Name = "TxtDiasRespuesta"
+        Me.TxtDiasRespuesta.Size = New System.Drawing.Size(42, 20)
+        Me.TxtDiasRespuesta.TabIndex = 253
         '
         'Label8
         '
@@ -236,23 +246,22 @@ Partial Class FrmContratosProveedor
         Me.Label7.TabIndex = 251
         Me.Label7.Text = "Modelo:"
         '
-        'TextBox2
+        'txtModelo
         '
-        Me.TextBox2.Enabled = False
-        Me.TextBox2.Location = New System.Drawing.Point(116, 70)
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(123, 20)
-        Me.TextBox2.TabIndex = 250
+        Me.txtModelo.Location = New System.Drawing.Point(116, 70)
+        Me.txtModelo.Name = "txtModelo"
+        Me.txtModelo.Size = New System.Drawing.Size(123, 20)
+        Me.txtModelo.TabIndex = 250
         '
-        'ComboBox2
+        'CmbTipoContrato
         '
-        Me.ComboBox2.FormattingEnabled = True
-        Me.ComboBox2.Items.AddRange(New Object() {"Suministros", "Servicios", "Bienes"})
-        Me.ComboBox2.Location = New System.Drawing.Point(116, 44)
-        Me.ComboBox2.Name = "ComboBox2"
-        Me.ComboBox2.Size = New System.Drawing.Size(121, 21)
-        Me.ComboBox2.TabIndex = 249
-        Me.ComboBox2.Text = "Socio de Negocios"
+        Me.CmbTipoContrato.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbTipoContrato.FormattingEnabled = True
+        Me.CmbTipoContrato.Items.AddRange(New Object() {"Suministros", "Servicios", "Bienes"})
+        Me.CmbTipoContrato.Location = New System.Drawing.Point(116, 44)
+        Me.CmbTipoContrato.Name = "CmbTipoContrato"
+        Me.CmbTipoContrato.Size = New System.Drawing.Size(121, 21)
+        Me.CmbTipoContrato.TabIndex = 249
         '
         'Label6
         '
@@ -272,18 +281,19 @@ Partial Class FrmContratosProveedor
         Me.Label5.TabIndex = 247
         Me.Label5.Text = "Tipo de Servicio:"
         '
-        'ComboBox1
+        'CmbTipoServicio
         '
-        Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Items.AddRange(New Object() {"Regular", "Garantia"})
-        Me.ComboBox1.Location = New System.Drawing.Point(116, 19)
-        Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(121, 21)
-        Me.ComboBox1.TabIndex = 246
-        Me.ComboBox1.Text = "Regular"
+        Me.CmbTipoServicio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbTipoServicio.FormattingEnabled = True
+        Me.CmbTipoServicio.Items.AddRange(New Object() {"Regular", "Garantia"})
+        Me.CmbTipoServicio.Location = New System.Drawing.Point(116, 19)
+        Me.CmbTipoServicio.Name = "CmbTipoServicio"
+        Me.CmbTipoServicio.Size = New System.Drawing.Size(121, 21)
+        Me.CmbTipoServicio.TabIndex = 246
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.Button4)
         Me.TabPage2.Controls.Add(Me.CmdEliminar)
         Me.TabPage2.Controls.Add(Me.CmdGuardar)
         Me.TabPage2.Controls.Add(Me.TrueDBGridComponentes)
@@ -299,7 +309,7 @@ Partial Class FrmContratosProveedor
         '
         Me.CmdEliminar.Image = CType(resources.GetObject("CmdEliminar.Image"), System.Drawing.Image)
         Me.CmdEliminar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.CmdEliminar.Location = New System.Drawing.Point(668, 55)
+        Me.CmdEliminar.Location = New System.Drawing.Point(668, 167)
         Me.CmdEliminar.Name = "CmdEliminar"
         Me.CmdEliminar.Size = New System.Drawing.Size(82, 34)
         Me.CmdEliminar.TabIndex = 364
@@ -339,29 +349,29 @@ Partial Class FrmContratosProveedor
         '
         'TabPage3
         '
-        Me.TabPage3.Controls.Add(Me.MaskedTextBox13)
-        Me.TabPage3.Controls.Add(Me.MaskedTextBox14)
-        Me.TabPage3.Controls.Add(Me.MaskedTextBox11)
-        Me.TabPage3.Controls.Add(Me.MaskedTextBox12)
-        Me.TabPage3.Controls.Add(Me.MaskedTextBox9)
-        Me.TabPage3.Controls.Add(Me.MaskedTextBox10)
-        Me.TabPage3.Controls.Add(Me.MaskedTextBox7)
-        Me.TabPage3.Controls.Add(Me.MaskedTextBox8)
-        Me.TabPage3.Controls.Add(Me.MaskedTextBox5)
-        Me.TabPage3.Controls.Add(Me.MaskedTextBox6)
-        Me.TabPage3.Controls.Add(Me.MaskedTextBox3)
-        Me.TabPage3.Controls.Add(Me.MaskedTextBox4)
+        Me.TabPage3.Controls.Add(Me.TxtDomingoFin)
+        Me.TabPage3.Controls.Add(Me.TxtDomingoInicio)
+        Me.TabPage3.Controls.Add(Me.TxtSabadoFin)
+        Me.TabPage3.Controls.Add(Me.TxtSabadoInicio)
+        Me.TabPage3.Controls.Add(Me.TxtViernesFin)
+        Me.TabPage3.Controls.Add(Me.TxtViernesInicio)
+        Me.TabPage3.Controls.Add(Me.TxtJuevesFin)
+        Me.TabPage3.Controls.Add(Me.TxtJuevesInicio)
+        Me.TabPage3.Controls.Add(Me.TxtMiercolesFin)
+        Me.TabPage3.Controls.Add(Me.TxtMiercolesInicio)
+        Me.TabPage3.Controls.Add(Me.TxtMartesFin)
+        Me.TabPage3.Controls.Add(Me.TxtMartesInicio)
         Me.TabPage3.Controls.Add(Me.Label10)
         Me.TabPage3.Controls.Add(Me.Label9)
-        Me.TabPage3.Controls.Add(Me.MaskedTextBox2)
-        Me.TabPage3.Controls.Add(Me.MaskedTextBox1)
-        Me.TabPage3.Controls.Add(Me.CheckBox7)
-        Me.TabPage3.Controls.Add(Me.CheckBox6)
-        Me.TabPage3.Controls.Add(Me.CheckBox5)
-        Me.TabPage3.Controls.Add(Me.CheckBox4)
-        Me.TabPage3.Controls.Add(Me.CheckBox3)
-        Me.TabPage3.Controls.Add(Me.CheckBox2)
-        Me.TabPage3.Controls.Add(Me.CheckBox1)
+        Me.TabPage3.Controls.Add(Me.TxtLunesFin)
+        Me.TabPage3.Controls.Add(Me.TxtLunesInicio)
+        Me.TabPage3.Controls.Add(Me.ChkDomingo)
+        Me.TabPage3.Controls.Add(Me.ChkSabado)
+        Me.TabPage3.Controls.Add(Me.ChkViernes)
+        Me.TabPage3.Controls.Add(Me.ChkJueves)
+        Me.TabPage3.Controls.Add(Me.ChkMiercoles)
+        Me.TabPage3.Controls.Add(Me.ChkMartes)
+        Me.TabPage3.Controls.Add(Me.ChkLunes)
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
@@ -370,113 +380,113 @@ Partial Class FrmContratosProveedor
         Me.TabPage3.Text = "Cobertura"
         Me.TabPage3.UseVisualStyleBackColor = True
         '
-        'MaskedTextBox13
+        'TxtDomingoFin
         '
-        Me.MaskedTextBox13.Location = New System.Drawing.Point(184, 169)
-        Me.MaskedTextBox13.Mask = "00:00"
-        Me.MaskedTextBox13.Name = "MaskedTextBox13"
-        Me.MaskedTextBox13.Size = New System.Drawing.Size(50, 20)
-        Me.MaskedTextBox13.TabIndex = 266
-        Me.MaskedTextBox13.ValidatingType = GetType(Date)
+        Me.TxtDomingoFin.Location = New System.Drawing.Point(184, 169)
+        Me.TxtDomingoFin.Mask = "00:00"
+        Me.TxtDomingoFin.Name = "TxtDomingoFin"
+        Me.TxtDomingoFin.Size = New System.Drawing.Size(50, 20)
+        Me.TxtDomingoFin.TabIndex = 266
+        Me.TxtDomingoFin.ValidatingType = GetType(Date)
         '
-        'MaskedTextBox14
+        'TxtDomingoInicio
         '
-        Me.MaskedTextBox14.Location = New System.Drawing.Point(116, 169)
-        Me.MaskedTextBox14.Mask = "00:00"
-        Me.MaskedTextBox14.Name = "MaskedTextBox14"
-        Me.MaskedTextBox14.Size = New System.Drawing.Size(50, 20)
-        Me.MaskedTextBox14.TabIndex = 265
-        Me.MaskedTextBox14.ValidatingType = GetType(Date)
+        Me.TxtDomingoInicio.Location = New System.Drawing.Point(116, 169)
+        Me.TxtDomingoInicio.Mask = "00:00"
+        Me.TxtDomingoInicio.Name = "TxtDomingoInicio"
+        Me.TxtDomingoInicio.Size = New System.Drawing.Size(50, 20)
+        Me.TxtDomingoInicio.TabIndex = 265
+        Me.TxtDomingoInicio.ValidatingType = GetType(Date)
         '
-        'MaskedTextBox11
+        'TxtSabadoFin
         '
-        Me.MaskedTextBox11.Location = New System.Drawing.Point(184, 146)
-        Me.MaskedTextBox11.Mask = "00:00"
-        Me.MaskedTextBox11.Name = "MaskedTextBox11"
-        Me.MaskedTextBox11.Size = New System.Drawing.Size(50, 20)
-        Me.MaskedTextBox11.TabIndex = 264
-        Me.MaskedTextBox11.ValidatingType = GetType(Date)
+        Me.TxtSabadoFin.Location = New System.Drawing.Point(184, 146)
+        Me.TxtSabadoFin.Mask = "00:00"
+        Me.TxtSabadoFin.Name = "TxtSabadoFin"
+        Me.TxtSabadoFin.Size = New System.Drawing.Size(50, 20)
+        Me.TxtSabadoFin.TabIndex = 264
+        Me.TxtSabadoFin.ValidatingType = GetType(Date)
         '
-        'MaskedTextBox12
+        'TxtSabadoInicio
         '
-        Me.MaskedTextBox12.Location = New System.Drawing.Point(116, 146)
-        Me.MaskedTextBox12.Mask = "00:00"
-        Me.MaskedTextBox12.Name = "MaskedTextBox12"
-        Me.MaskedTextBox12.Size = New System.Drawing.Size(50, 20)
-        Me.MaskedTextBox12.TabIndex = 263
-        Me.MaskedTextBox12.ValidatingType = GetType(Date)
+        Me.TxtSabadoInicio.Location = New System.Drawing.Point(116, 146)
+        Me.TxtSabadoInicio.Mask = "00:00"
+        Me.TxtSabadoInicio.Name = "TxtSabadoInicio"
+        Me.TxtSabadoInicio.Size = New System.Drawing.Size(50, 20)
+        Me.TxtSabadoInicio.TabIndex = 263
+        Me.TxtSabadoInicio.ValidatingType = GetType(Date)
         '
-        'MaskedTextBox9
+        'TxtViernesFin
         '
-        Me.MaskedTextBox9.Location = New System.Drawing.Point(185, 123)
-        Me.MaskedTextBox9.Mask = "00:00"
-        Me.MaskedTextBox9.Name = "MaskedTextBox9"
-        Me.MaskedTextBox9.Size = New System.Drawing.Size(50, 20)
-        Me.MaskedTextBox9.TabIndex = 262
-        Me.MaskedTextBox9.ValidatingType = GetType(Date)
+        Me.TxtViernesFin.Location = New System.Drawing.Point(185, 123)
+        Me.TxtViernesFin.Mask = "00:00"
+        Me.TxtViernesFin.Name = "TxtViernesFin"
+        Me.TxtViernesFin.Size = New System.Drawing.Size(50, 20)
+        Me.TxtViernesFin.TabIndex = 262
+        Me.TxtViernesFin.ValidatingType = GetType(Date)
         '
-        'MaskedTextBox10
+        'TxtViernesInicio
         '
-        Me.MaskedTextBox10.Location = New System.Drawing.Point(117, 123)
-        Me.MaskedTextBox10.Mask = "00:00"
-        Me.MaskedTextBox10.Name = "MaskedTextBox10"
-        Me.MaskedTextBox10.Size = New System.Drawing.Size(50, 20)
-        Me.MaskedTextBox10.TabIndex = 261
-        Me.MaskedTextBox10.ValidatingType = GetType(Date)
+        Me.TxtViernesInicio.Location = New System.Drawing.Point(117, 123)
+        Me.TxtViernesInicio.Mask = "00:00"
+        Me.TxtViernesInicio.Name = "TxtViernesInicio"
+        Me.TxtViernesInicio.Size = New System.Drawing.Size(50, 20)
+        Me.TxtViernesInicio.TabIndex = 261
+        Me.TxtViernesInicio.ValidatingType = GetType(Date)
         '
-        'MaskedTextBox7
+        'TxtJuevesFin
         '
-        Me.MaskedTextBox7.Location = New System.Drawing.Point(184, 100)
-        Me.MaskedTextBox7.Mask = "00:00"
-        Me.MaskedTextBox7.Name = "MaskedTextBox7"
-        Me.MaskedTextBox7.Size = New System.Drawing.Size(50, 20)
-        Me.MaskedTextBox7.TabIndex = 260
-        Me.MaskedTextBox7.ValidatingType = GetType(Date)
+        Me.TxtJuevesFin.Location = New System.Drawing.Point(184, 100)
+        Me.TxtJuevesFin.Mask = "00:00"
+        Me.TxtJuevesFin.Name = "TxtJuevesFin"
+        Me.TxtJuevesFin.Size = New System.Drawing.Size(50, 20)
+        Me.TxtJuevesFin.TabIndex = 260
+        Me.TxtJuevesFin.ValidatingType = GetType(Date)
         '
-        'MaskedTextBox8
+        'TxtJuevesInicio
         '
-        Me.MaskedTextBox8.Location = New System.Drawing.Point(116, 100)
-        Me.MaskedTextBox8.Mask = "00:00"
-        Me.MaskedTextBox8.Name = "MaskedTextBox8"
-        Me.MaskedTextBox8.Size = New System.Drawing.Size(50, 20)
-        Me.MaskedTextBox8.TabIndex = 259
-        Me.MaskedTextBox8.ValidatingType = GetType(Date)
+        Me.TxtJuevesInicio.Location = New System.Drawing.Point(116, 100)
+        Me.TxtJuevesInicio.Mask = "00:00"
+        Me.TxtJuevesInicio.Name = "TxtJuevesInicio"
+        Me.TxtJuevesInicio.Size = New System.Drawing.Size(50, 20)
+        Me.TxtJuevesInicio.TabIndex = 259
+        Me.TxtJuevesInicio.ValidatingType = GetType(Date)
         '
-        'MaskedTextBox5
+        'TxtMiercolesFin
         '
-        Me.MaskedTextBox5.Location = New System.Drawing.Point(184, 77)
-        Me.MaskedTextBox5.Mask = "00:00"
-        Me.MaskedTextBox5.Name = "MaskedTextBox5"
-        Me.MaskedTextBox5.Size = New System.Drawing.Size(50, 20)
-        Me.MaskedTextBox5.TabIndex = 258
-        Me.MaskedTextBox5.ValidatingType = GetType(Date)
+        Me.TxtMiercolesFin.Location = New System.Drawing.Point(184, 77)
+        Me.TxtMiercolesFin.Mask = "00:00"
+        Me.TxtMiercolesFin.Name = "TxtMiercolesFin"
+        Me.TxtMiercolesFin.Size = New System.Drawing.Size(50, 20)
+        Me.TxtMiercolesFin.TabIndex = 258
+        Me.TxtMiercolesFin.ValidatingType = GetType(Date)
         '
-        'MaskedTextBox6
+        'TxtMiercolesInicio
         '
-        Me.MaskedTextBox6.Location = New System.Drawing.Point(116, 77)
-        Me.MaskedTextBox6.Mask = "00:00"
-        Me.MaskedTextBox6.Name = "MaskedTextBox6"
-        Me.MaskedTextBox6.Size = New System.Drawing.Size(50, 20)
-        Me.MaskedTextBox6.TabIndex = 257
-        Me.MaskedTextBox6.ValidatingType = GetType(Date)
+        Me.TxtMiercolesInicio.Location = New System.Drawing.Point(116, 77)
+        Me.TxtMiercolesInicio.Mask = "00:00"
+        Me.TxtMiercolesInicio.Name = "TxtMiercolesInicio"
+        Me.TxtMiercolesInicio.Size = New System.Drawing.Size(50, 20)
+        Me.TxtMiercolesInicio.TabIndex = 257
+        Me.TxtMiercolesInicio.ValidatingType = GetType(Date)
         '
-        'MaskedTextBox3
+        'TxtMartesFin
         '
-        Me.MaskedTextBox3.Location = New System.Drawing.Point(184, 52)
-        Me.MaskedTextBox3.Mask = "00:00"
-        Me.MaskedTextBox3.Name = "MaskedTextBox3"
-        Me.MaskedTextBox3.Size = New System.Drawing.Size(50, 20)
-        Me.MaskedTextBox3.TabIndex = 256
-        Me.MaskedTextBox3.ValidatingType = GetType(Date)
+        Me.TxtMartesFin.Location = New System.Drawing.Point(184, 52)
+        Me.TxtMartesFin.Mask = "00:00"
+        Me.TxtMartesFin.Name = "TxtMartesFin"
+        Me.TxtMartesFin.Size = New System.Drawing.Size(50, 20)
+        Me.TxtMartesFin.TabIndex = 256
+        Me.TxtMartesFin.ValidatingType = GetType(Date)
         '
-        'MaskedTextBox4
+        'TxtMartesInicio
         '
-        Me.MaskedTextBox4.Location = New System.Drawing.Point(116, 52)
-        Me.MaskedTextBox4.Mask = "00:00"
-        Me.MaskedTextBox4.Name = "MaskedTextBox4"
-        Me.MaskedTextBox4.Size = New System.Drawing.Size(50, 20)
-        Me.MaskedTextBox4.TabIndex = 255
-        Me.MaskedTextBox4.ValidatingType = GetType(Date)
+        Me.TxtMartesInicio.Location = New System.Drawing.Point(116, 52)
+        Me.TxtMartesInicio.Mask = "00:00"
+        Me.TxtMartesInicio.Name = "TxtMartesInicio"
+        Me.TxtMartesInicio.Size = New System.Drawing.Size(50, 20)
+        Me.TxtMartesInicio.TabIndex = 255
+        Me.TxtMartesInicio.ValidatingType = GetType(Date)
         '
         'Label10
         '
@@ -496,112 +506,112 @@ Partial Class FrmContratosProveedor
         Me.Label9.TabIndex = 253
         Me.Label9.Text = "Hora Inicio"
         '
-        'MaskedTextBox2
+        'TxtLunesFin
         '
-        Me.MaskedTextBox2.Location = New System.Drawing.Point(185, 28)
-        Me.MaskedTextBox2.Mask = "00:00"
-        Me.MaskedTextBox2.Name = "MaskedTextBox2"
-        Me.MaskedTextBox2.Size = New System.Drawing.Size(50, 20)
-        Me.MaskedTextBox2.TabIndex = 252
-        Me.MaskedTextBox2.ValidatingType = GetType(Date)
+        Me.TxtLunesFin.Location = New System.Drawing.Point(185, 28)
+        Me.TxtLunesFin.Mask = "00:00"
+        Me.TxtLunesFin.Name = "TxtLunesFin"
+        Me.TxtLunesFin.Size = New System.Drawing.Size(50, 20)
+        Me.TxtLunesFin.TabIndex = 252
+        Me.TxtLunesFin.ValidatingType = GetType(Date)
         '
-        'MaskedTextBox1
+        'TxtLunesInicio
         '
-        Me.MaskedTextBox1.Location = New System.Drawing.Point(117, 28)
-        Me.MaskedTextBox1.Mask = "00:00"
-        Me.MaskedTextBox1.Name = "MaskedTextBox1"
-        Me.MaskedTextBox1.Size = New System.Drawing.Size(50, 20)
-        Me.MaskedTextBox1.TabIndex = 251
-        Me.MaskedTextBox1.ValidatingType = GetType(Date)
+        Me.TxtLunesInicio.Location = New System.Drawing.Point(117, 28)
+        Me.TxtLunesInicio.Mask = "00:00"
+        Me.TxtLunesInicio.Name = "TxtLunesInicio"
+        Me.TxtLunesInicio.Size = New System.Drawing.Size(50, 20)
+        Me.TxtLunesInicio.TabIndex = 251
+        Me.TxtLunesInicio.ValidatingType = GetType(Date)
         '
-        'CheckBox7
+        'ChkDomingo
         '
-        Me.CheckBox7.AutoSize = True
-        Me.CheckBox7.Location = New System.Drawing.Point(33, 172)
-        Me.CheckBox7.Name = "CheckBox7"
-        Me.CheckBox7.Size = New System.Drawing.Size(68, 17)
-        Me.CheckBox7.TabIndex = 250
-        Me.CheckBox7.Text = "Domingo"
-        Me.CheckBox7.UseVisualStyleBackColor = True
+        Me.ChkDomingo.AutoSize = True
+        Me.ChkDomingo.Location = New System.Drawing.Point(33, 172)
+        Me.ChkDomingo.Name = "ChkDomingo"
+        Me.ChkDomingo.Size = New System.Drawing.Size(68, 17)
+        Me.ChkDomingo.TabIndex = 250
+        Me.ChkDomingo.Text = "Domingo"
+        Me.ChkDomingo.UseVisualStyleBackColor = True
         '
-        'CheckBox6
+        'ChkSabado
         '
-        Me.CheckBox6.AutoSize = True
-        Me.CheckBox6.Location = New System.Drawing.Point(33, 149)
-        Me.CheckBox6.Name = "CheckBox6"
-        Me.CheckBox6.Size = New System.Drawing.Size(63, 17)
-        Me.CheckBox6.TabIndex = 249
-        Me.CheckBox6.Text = "Sabado"
-        Me.CheckBox6.UseVisualStyleBackColor = True
+        Me.ChkSabado.AutoSize = True
+        Me.ChkSabado.Location = New System.Drawing.Point(33, 149)
+        Me.ChkSabado.Name = "ChkSabado"
+        Me.ChkSabado.Size = New System.Drawing.Size(63, 17)
+        Me.ChkSabado.TabIndex = 249
+        Me.ChkSabado.Text = "Sabado"
+        Me.ChkSabado.UseVisualStyleBackColor = True
         '
-        'CheckBox5
+        'ChkViernes
         '
-        Me.CheckBox5.AutoSize = True
-        Me.CheckBox5.Location = New System.Drawing.Point(33, 126)
-        Me.CheckBox5.Name = "CheckBox5"
-        Me.CheckBox5.Size = New System.Drawing.Size(61, 17)
-        Me.CheckBox5.TabIndex = 248
-        Me.CheckBox5.Text = "Viernes"
-        Me.CheckBox5.UseVisualStyleBackColor = True
+        Me.ChkViernes.AutoSize = True
+        Me.ChkViernes.Location = New System.Drawing.Point(33, 126)
+        Me.ChkViernes.Name = "ChkViernes"
+        Me.ChkViernes.Size = New System.Drawing.Size(61, 17)
+        Me.ChkViernes.TabIndex = 248
+        Me.ChkViernes.Text = "Viernes"
+        Me.ChkViernes.UseVisualStyleBackColor = True
         '
-        'CheckBox4
+        'ChkJueves
         '
-        Me.CheckBox4.AutoSize = True
-        Me.CheckBox4.Location = New System.Drawing.Point(33, 103)
-        Me.CheckBox4.Name = "CheckBox4"
-        Me.CheckBox4.Size = New System.Drawing.Size(60, 17)
-        Me.CheckBox4.TabIndex = 247
-        Me.CheckBox4.Text = "Jueves"
-        Me.CheckBox4.UseVisualStyleBackColor = True
+        Me.ChkJueves.AutoSize = True
+        Me.ChkJueves.Location = New System.Drawing.Point(33, 103)
+        Me.ChkJueves.Name = "ChkJueves"
+        Me.ChkJueves.Size = New System.Drawing.Size(60, 17)
+        Me.ChkJueves.TabIndex = 247
+        Me.ChkJueves.Text = "Jueves"
+        Me.ChkJueves.UseVisualStyleBackColor = True
         '
-        'CheckBox3
+        'ChkMiercoles
         '
-        Me.CheckBox3.AutoSize = True
-        Me.CheckBox3.Location = New System.Drawing.Point(33, 80)
-        Me.CheckBox3.Name = "CheckBox3"
-        Me.CheckBox3.Size = New System.Drawing.Size(71, 17)
-        Me.CheckBox3.TabIndex = 246
-        Me.CheckBox3.Text = "Miercoles"
-        Me.CheckBox3.UseVisualStyleBackColor = True
+        Me.ChkMiercoles.AutoSize = True
+        Me.ChkMiercoles.Location = New System.Drawing.Point(33, 80)
+        Me.ChkMiercoles.Name = "ChkMiercoles"
+        Me.ChkMiercoles.Size = New System.Drawing.Size(71, 17)
+        Me.ChkMiercoles.TabIndex = 246
+        Me.ChkMiercoles.Text = "Miercoles"
+        Me.ChkMiercoles.UseVisualStyleBackColor = True
         '
-        'CheckBox2
+        'ChkMartes
         '
-        Me.CheckBox2.AutoSize = True
-        Me.CheckBox2.Location = New System.Drawing.Point(33, 57)
-        Me.CheckBox2.Name = "CheckBox2"
-        Me.CheckBox2.Size = New System.Drawing.Size(58, 17)
-        Me.CheckBox2.TabIndex = 245
-        Me.CheckBox2.Text = "Martes"
-        Me.CheckBox2.UseVisualStyleBackColor = True
+        Me.ChkMartes.AutoSize = True
+        Me.ChkMartes.Location = New System.Drawing.Point(33, 57)
+        Me.ChkMartes.Name = "ChkMartes"
+        Me.ChkMartes.Size = New System.Drawing.Size(58, 17)
+        Me.ChkMartes.TabIndex = 245
+        Me.ChkMartes.Text = "Martes"
+        Me.ChkMartes.UseVisualStyleBackColor = True
         '
-        'CheckBox1
+        'ChkLunes
         '
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Location = New System.Drawing.Point(33, 34)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(55, 17)
-        Me.CheckBox1.TabIndex = 244
-        Me.CheckBox1.Text = "Lunes"
-        Me.CheckBox1.UseVisualStyleBackColor = True
+        Me.ChkLunes.AutoSize = True
+        Me.ChkLunes.Location = New System.Drawing.Point(33, 34)
+        Me.ChkLunes.Name = "ChkLunes"
+        Me.ChkLunes.Size = New System.Drawing.Size(55, 17)
+        Me.ChkLunes.TabIndex = 244
+        Me.ChkLunes.Text = "Lunes"
+        Me.ChkLunes.UseVisualStyleBackColor = True
         '
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.Label19)
         Me.GroupBox1.Controls.Add(Me.Button3)
-        Me.GroupBox1.Controls.Add(Me.DtpFinContrato1)
-        Me.GroupBox1.Controls.Add(Me.DtpInicioContrato1)
+        Me.GroupBox1.Controls.Add(Me.DtpFinContrato)
+        Me.GroupBox1.Controls.Add(Me.DtpInicioContrato)
         Me.GroupBox1.Controls.Add(Me.Label18)
-        Me.GroupBox1.Controls.Add(Me.TextBox1)
+        Me.GroupBox1.Controls.Add(Me.TxtDescripcion)
         Me.GroupBox1.Controls.Add(Me.Label17)
         Me.GroupBox1.Controls.Add(Me.CboCodigoProveedor)
         Me.GroupBox1.Controls.Add(Me.Label16)
         Me.GroupBox1.Controls.Add(Me.Label4)
-        Me.GroupBox1.Controls.Add(Me.TxtHoraAdmision)
+        Me.GroupBox1.Controls.Add(Me.TxtTelefono)
         Me.GroupBox1.Controls.Add(Me.Label11)
         Me.GroupBox1.Controls.Add(Me.Label1)
-        Me.GroupBox1.Controls.Add(Me.TxtApellidos)
+        Me.GroupBox1.Controls.Add(Me.TxtContacto)
         Me.GroupBox1.Controls.Add(Me.Label3)
-        Me.GroupBox1.Controls.Add(Me.TxtCodigo)
+        Me.GroupBox1.Controls.Add(Me.TxtNumeroContrato)
         Me.GroupBox1.Controls.Add(Me.TxtNombres)
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
@@ -629,23 +639,23 @@ Partial Class FrmContratosProveedor
         Me.Button3.TabIndex = 339
         Me.Button3.UseVisualStyleBackColor = True
         '
-        'DtpFinContrato1
+        'DtpFinContrato
         '
-        Me.DtpFinContrato1.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DtpFinContrato1.Location = New System.Drawing.Point(507, 71)
-        Me.DtpFinContrato1.Name = "DtpFinContrato1"
-        Me.DtpFinContrato1.Size = New System.Drawing.Size(123, 20)
-        Me.DtpFinContrato1.TabIndex = 244
-        Me.DtpFinContrato1.Value = New Date(2021, 3, 6, 9, 40, 39, 0)
+        Me.DtpFinContrato.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DtpFinContrato.Location = New System.Drawing.Point(507, 71)
+        Me.DtpFinContrato.Name = "DtpFinContrato"
+        Me.DtpFinContrato.Size = New System.Drawing.Size(123, 20)
+        Me.DtpFinContrato.TabIndex = 244
+        Me.DtpFinContrato.Value = New Date(2021, 3, 6, 9, 40, 39, 0)
         '
-        'DtpInicioContrato1
+        'DtpInicioContrato
         '
-        Me.DtpInicioContrato1.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DtpInicioContrato1.Location = New System.Drawing.Point(507, 49)
-        Me.DtpInicioContrato1.Name = "DtpInicioContrato1"
-        Me.DtpInicioContrato1.Size = New System.Drawing.Size(123, 20)
-        Me.DtpInicioContrato1.TabIndex = 243
-        Me.DtpInicioContrato1.Value = New Date(2021, 3, 6, 9, 40, 39, 0)
+        Me.DtpInicioContrato.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DtpInicioContrato.Location = New System.Drawing.Point(507, 49)
+        Me.DtpInicioContrato.Name = "DtpInicioContrato"
+        Me.DtpInicioContrato.Size = New System.Drawing.Size(123, 20)
+        Me.DtpInicioContrato.TabIndex = 243
+        Me.DtpInicioContrato.Value = New Date(2021, 3, 6, 9, 40, 39, 0)
         '
         'Label18
         '
@@ -656,13 +666,12 @@ Partial Class FrmContratosProveedor
         Me.Label18.TabIndex = 242
         Me.Label18.Text = "Fecha Inicio:"
         '
-        'TextBox1
+        'TxtDescripcion
         '
-        Me.TextBox1.Enabled = False
-        Me.TextBox1.Location = New System.Drawing.Point(111, 128)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(572, 20)
-        Me.TextBox1.TabIndex = 241
+        Me.TxtDescripcion.Location = New System.Drawing.Point(111, 128)
+        Me.TxtDescripcion.Name = "TxtDescripcion"
+        Me.TxtDescripcion.Size = New System.Drawing.Size(572, 20)
+        Me.TxtDescripcion.TabIndex = 241
         '
         'Label17
         '
@@ -720,13 +729,12 @@ Partial Class FrmContratosProveedor
         Me.Label4.TabIndex = 236
         Me.Label4.Text = "Telefono:"
         '
-        'TxtHoraAdmision
+        'TxtTelefono
         '
-        Me.TxtHoraAdmision.Enabled = False
-        Me.TxtHoraAdmision.Location = New System.Drawing.Point(111, 102)
-        Me.TxtHoraAdmision.Name = "TxtHoraAdmision"
-        Me.TxtHoraAdmision.Size = New System.Drawing.Size(209, 20)
-        Me.TxtHoraAdmision.TabIndex = 215
+        Me.TxtTelefono.Location = New System.Drawing.Point(111, 102)
+        Me.TxtTelefono.Name = "TxtTelefono"
+        Me.TxtTelefono.Size = New System.Drawing.Size(209, 20)
+        Me.TxtTelefono.TabIndex = 215
         '
         'Label11
         '
@@ -745,13 +753,12 @@ Partial Class FrmContratosProveedor
         Me.Label1.TabIndex = 166
         Me.Label1.Text = "Numero Contrato:"
         '
-        'TxtApellidos
+        'TxtContacto
         '
-        Me.TxtApellidos.Enabled = False
-        Me.TxtApellidos.Location = New System.Drawing.Point(111, 76)
-        Me.TxtApellidos.Name = "TxtApellidos"
-        Me.TxtApellidos.Size = New System.Drawing.Size(209, 20)
-        Me.TxtApellidos.TabIndex = 171
+        Me.TxtContacto.Location = New System.Drawing.Point(111, 76)
+        Me.TxtContacto.Name = "TxtContacto"
+        Me.TxtContacto.Size = New System.Drawing.Size(209, 20)
+        Me.TxtContacto.TabIndex = 171
         '
         'Label3
         '
@@ -762,13 +769,14 @@ Partial Class FrmContratosProveedor
         Me.Label3.TabIndex = 172
         Me.Label3.Text = "Contacto:"
         '
-        'TxtCodigo
+        'TxtNumeroContrato
         '
-        Me.TxtCodigo.Enabled = False
-        Me.TxtCodigo.Location = New System.Drawing.Point(507, 26)
-        Me.TxtCodigo.Name = "TxtCodigo"
-        Me.TxtCodigo.Size = New System.Drawing.Size(123, 20)
-        Me.TxtCodigo.TabIndex = 168
+        Me.TxtNumeroContrato.Enabled = False
+        Me.TxtNumeroContrato.Location = New System.Drawing.Point(507, 26)
+        Me.TxtNumeroContrato.Name = "TxtNumeroContrato"
+        Me.TxtNumeroContrato.Size = New System.Drawing.Size(123, 20)
+        Me.TxtNumeroContrato.TabIndex = 168
+        Me.TxtNumeroContrato.Text = "-----0-----"
         '
         'TxtNombres
         '
@@ -823,11 +831,140 @@ Partial Class FrmContratosProveedor
         Me.Button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button2.UseVisualStyleBackColor = True
         '
+        'GroupBoxImportar
+        '
+        Me.GroupBoxImportar.Controls.Add(Me.ProgressBar)
+        Me.GroupBoxImportar.Controls.Add(Me.LblTotalRegistros)
+        Me.GroupBoxImportar.Controls.Add(Me.TxtError)
+        Me.GroupBoxImportar.Controls.Add(Me.BtnCancelar)
+        Me.GroupBoxImportar.Controls.Add(Me.BtnQuitar)
+        Me.GroupBoxImportar.Controls.Add(Me.BtnCargar)
+        Me.GroupBoxImportar.Controls.Add(Me.BtnAbrir)
+        Me.GroupBoxImportar.Controls.Add(Me.TrueDBGridConsultas)
+        Me.GroupBoxImportar.Location = New System.Drawing.Point(897, 23)
+        Me.GroupBoxImportar.Name = "GroupBoxImportar"
+        Me.GroupBoxImportar.Size = New System.Drawing.Size(887, 429)
+        Me.GroupBoxImportar.TabIndex = 365
+        Me.GroupBoxImportar.TabStop = False
+        Me.GroupBoxImportar.Text = "Importacion de Compras"
+        '
+        'ProgressBar
+        '
+        Me.ProgressBar.Location = New System.Drawing.Point(8, 398)
+        Me.ProgressBar.Name = "ProgressBar"
+        Me.ProgressBar.Size = New System.Drawing.Size(538, 20)
+        Me.ProgressBar.TabIndex = 215
+        Me.ProgressBar.Visible = False
+        '
+        'LblTotalRegistros
+        '
+        Me.LblTotalRegistros.AutoSize = True
+        Me.LblTotalRegistros.Location = New System.Drawing.Point(552, 403)
+        Me.LblTotalRegistros.Name = "LblTotalRegistros"
+        Me.LblTotalRegistros.Size = New System.Drawing.Size(81, 13)
+        Me.LblTotalRegistros.TabIndex = 214
+        Me.LblTotalRegistros.Text = "Total Registros "
+        '
+        'TxtError
+        '
+        Me.TxtError.Location = New System.Drawing.Point(775, 234)
+        Me.TxtError.Multiline = True
+        Me.TxtError.Name = "TxtError"
+        Me.TxtError.Size = New System.Drawing.Size(86, 88)
+        Me.TxtError.TabIndex = 213
+        '
+        'BtnCancelar
+        '
+        Me.BtnCancelar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnCancelar.Image = CType(resources.GetObject("BtnCancelar.Image"), System.Drawing.Image)
+        Me.BtnCancelar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnCancelar.Location = New System.Drawing.Point(788, 336)
+        Me.BtnCancelar.Name = "BtnCancelar"
+        Me.BtnCancelar.Size = New System.Drawing.Size(72, 66)
+        Me.BtnCancelar.TabIndex = 212
+        Me.BtnCancelar.Tag = "27"
+        Me.BtnCancelar.Text = "Cancelar"
+        Me.BtnCancelar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnCancelar.UseVisualStyleBackColor = True
+        '
+        'BtnQuitar
+        '
+        Me.BtnQuitar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnQuitar.Image = CType(resources.GetObject("BtnQuitar.Image"), System.Drawing.Image)
+        Me.BtnQuitar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnQuitar.Location = New System.Drawing.Point(790, 161)
+        Me.BtnQuitar.Name = "BtnQuitar"
+        Me.BtnQuitar.Size = New System.Drawing.Size(70, 66)
+        Me.BtnQuitar.TabIndex = 211
+        Me.BtnQuitar.Tag = "27"
+        Me.BtnQuitar.Text = "Quitar"
+        Me.BtnQuitar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnQuitar.UseVisualStyleBackColor = True
+        '
+        'BtnCargar
+        '
+        Me.BtnCargar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnCargar.Image = CType(resources.GetObject("BtnCargar.Image"), System.Drawing.Image)
+        Me.BtnCargar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnCargar.Location = New System.Drawing.Point(788, 87)
+        Me.BtnCargar.Name = "BtnCargar"
+        Me.BtnCargar.Size = New System.Drawing.Size(70, 66)
+        Me.BtnCargar.TabIndex = 210
+        Me.BtnCargar.Tag = "27"
+        Me.BtnCargar.Text = "Cargar"
+        Me.BtnCargar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnCargar.UseVisualStyleBackColor = True
+        '
+        'BtnAbrir
+        '
+        Me.BtnAbrir.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnAbrir.Image = CType(resources.GetObject("BtnAbrir.Image"), System.Drawing.Image)
+        Me.BtnAbrir.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnAbrir.Location = New System.Drawing.Point(788, 19)
+        Me.BtnAbrir.Name = "BtnAbrir"
+        Me.BtnAbrir.Size = New System.Drawing.Size(70, 66)
+        Me.BtnAbrir.TabIndex = 209
+        Me.BtnAbrir.Tag = "27"
+        Me.BtnAbrir.Text = "Abrir"
+        Me.BtnAbrir.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnAbrir.UseVisualStyleBackColor = True
+        '
+        'TrueDBGridConsultas
+        '
+        Me.TrueDBGridConsultas.AlternatingRows = True
+        Me.TrueDBGridConsultas.Caption = "Listado de Productos"
+        Me.TrueDBGridConsultas.FilterBar = True
+        Me.TrueDBGridConsultas.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TrueDBGridConsultas.Images.Add(CType(resources.GetObject("TrueDBGridConsultas.Images"), System.Drawing.Image))
+        Me.TrueDBGridConsultas.Location = New System.Drawing.Point(6, 25)
+        Me.TrueDBGridConsultas.Name = "TrueDBGridConsultas"
+        Me.TrueDBGridConsultas.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TrueDBGridConsultas.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TrueDBGridConsultas.PreviewInfo.ZoomFactor = 75.0R
+        Me.TrueDBGridConsultas.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridConsultas.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TrueDBGridConsultas.Size = New System.Drawing.Size(763, 367)
+        Me.TrueDBGridConsultas.TabIndex = 134
+        Me.TrueDBGridConsultas.Text = "C1TrueDBGrid1"
+        Me.TrueDBGridConsultas.PropBag = resources.GetString("TrueDBGridConsultas.PropBag")
+        '
+        'Button4
+        '
+        Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
+        Me.Button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button4.Location = New System.Drawing.Point(668, 51)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(82, 34)
+        Me.Button4.TabIndex = 365
+        Me.Button4.Text = "Importar"
+        Me.Button4.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button4.UseVisualStyleBackColor = True
+        '
         'FrmContratosProveedor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(903, 450)
+        Me.Controls.Add(Me.GroupBoxImportar)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button8)
@@ -845,6 +982,9 @@ Partial Class FrmContratosProveedor
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         CType(Me.CboCodigoProveedor, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBoxImportar.ResumeLayout(False)
+        Me.GroupBoxImportar.PerformLayout()
+        CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -853,68 +993,78 @@ Partial Class FrmContratosProveedor
     Friend WithEvents TabPage1 As TabPage
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents Label4 As Label
-    Friend WithEvents TxtHoraAdmision As TextBox
+    Friend WithEvents TxtTelefono As TextBox
     Friend WithEvents Label11 As Label
     Friend WithEvents Label1 As Label
-    Friend WithEvents TxtApellidos As TextBox
+    Friend WithEvents TxtContacto As TextBox
     Friend WithEvents Label3 As Label
-    Friend WithEvents TxtCodigo As TextBox
+    Friend WithEvents TxtNumeroContrato As TextBox
     Friend WithEvents TxtNombres As TextBox
     Friend WithEvents Label2 As Label
     Friend WithEvents TabPage2 As TabPage
     Friend WithEvents TabPage3 As TabPage
     Friend WithEvents Label16 As Label
     Friend WithEvents CboCodigoProveedor As C1.Win.C1List.C1Combo
-    Friend WithEvents TextBox1 As TextBox
+    Friend WithEvents TxtDescripcion As TextBox
     Friend WithEvents Label17 As Label
     Friend WithEvents Label18 As Label
-    Friend WithEvents DtpFinContrato1 As DateTimePicker
-    Friend WithEvents DtpInicioContrato1 As DateTimePicker
+    Friend WithEvents DtpFinContrato As DateTimePicker
+    Friend WithEvents DtpInicioContrato As DateTimePicker
     Friend WithEvents Label5 As Label
-    Friend WithEvents ComboBox1 As ComboBox
+    Friend WithEvents CmbTipoServicio As ComboBox
     Friend WithEvents Label19 As Label
     Friend WithEvents Button3 As Button
-    Friend WithEvents ComboBox2 As ComboBox
+    Friend WithEvents CmbTipoContrato As ComboBox
     Friend WithEvents Label6 As Label
     Friend WithEvents Label7 As Label
-    Friend WithEvents TextBox2 As TextBox
-    Friend WithEvents ComboBox3 As ComboBox
-    Friend WithEvents TextBox3 As TextBox
+    Friend WithEvents CmbDiasRespuesta As ComboBox
+    Friend WithEvents TxtDiasRespuesta As TextBox
     Friend WithEvents Label8 As Label
-    Friend WithEvents CheckBox6 As CheckBox
-    Friend WithEvents CheckBox5 As CheckBox
-    Friend WithEvents CheckBox4 As CheckBox
-    Friend WithEvents CheckBox3 As CheckBox
-    Friend WithEvents CheckBox2 As CheckBox
-    Friend WithEvents CheckBox1 As CheckBox
-    Friend WithEvents MaskedTextBox13 As MaskedTextBox
-    Friend WithEvents MaskedTextBox14 As MaskedTextBox
-    Friend WithEvents MaskedTextBox11 As MaskedTextBox
-    Friend WithEvents MaskedTextBox12 As MaskedTextBox
-    Friend WithEvents MaskedTextBox9 As MaskedTextBox
-    Friend WithEvents MaskedTextBox10 As MaskedTextBox
-    Friend WithEvents MaskedTextBox7 As MaskedTextBox
-    Friend WithEvents MaskedTextBox8 As MaskedTextBox
-    Friend WithEvents MaskedTextBox5 As MaskedTextBox
-    Friend WithEvents MaskedTextBox6 As MaskedTextBox
-    Friend WithEvents MaskedTextBox3 As MaskedTextBox
-    Friend WithEvents MaskedTextBox4 As MaskedTextBox
+    Friend WithEvents ChkSabado As CheckBox
+    Friend WithEvents ChkViernes As CheckBox
+    Friend WithEvents ChkJueves As CheckBox
+    Friend WithEvents ChkMiercoles As CheckBox
+    Friend WithEvents ChkMartes As CheckBox
+    Friend WithEvents ChkLunes As CheckBox
+    Friend WithEvents TxtDomingoFin As MaskedTextBox
+    Friend WithEvents TxtDomingoInicio As MaskedTextBox
+    Friend WithEvents TxtSabadoFin As MaskedTextBox
+    Friend WithEvents TxtSabadoInicio As MaskedTextBox
+    Friend WithEvents TxtViernesFin As MaskedTextBox
+    Friend WithEvents TxtViernesInicio As MaskedTextBox
+    Friend WithEvents TxtJuevesFin As MaskedTextBox
+    Friend WithEvents TxtJuevesInicio As MaskedTextBox
+    Friend WithEvents TxtMiercolesFin As MaskedTextBox
+    Friend WithEvents TxtMiercolesInicio As MaskedTextBox
+    Friend WithEvents TxtMartesFin As MaskedTextBox
+    Friend WithEvents TxtMartesInicio As MaskedTextBox
     Friend WithEvents Label10 As Label
     Friend WithEvents Label9 As Label
-    Friend WithEvents MaskedTextBox2 As MaskedTextBox
-    Friend WithEvents MaskedTextBox1 As MaskedTextBox
-    Friend WithEvents CheckBox7 As CheckBox
+    Friend WithEvents TxtLunesFin As MaskedTextBox
+    Friend WithEvents TxtLunesInicio As MaskedTextBox
+    Friend WithEvents ChkDomingo As CheckBox
     Friend WithEvents Label14 As Label
-    Friend WithEvents TextBox5 As TextBox
-    Friend WithEvents ComboBox4 As ComboBox
-    Friend WithEvents TextBox4 As TextBox
+    Friend WithEvents TxtComentarios As TextBox
+    Friend WithEvents CmbDiasResolucion As ComboBox
+    Friend WithEvents TxtDiasResolucion As TextBox
     Friend WithEvents Label12 As Label
     Friend WithEvents Label20 As Label
-    Friend WithEvents ComboBox5 As ComboBox
+    Friend WithEvents CmbEstado As ComboBox
     Friend WithEvents TrueDBGridComponentes As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents CmdGuardar As Button
     Friend WithEvents CmdEliminar As Button
     Friend WithEvents Button8 As Button
     Friend WithEvents Button1 As Button
     Friend WithEvents Button2 As Button
+    Friend WithEvents txtModelo As TextBox
+    Friend WithEvents GroupBoxImportar As GroupBox
+    Friend WithEvents ProgressBar As ProgressBar
+    Friend WithEvents LblTotalRegistros As Label
+    Friend WithEvents TxtError As TextBox
+    Friend WithEvents BtnCancelar As Button
+    Friend WithEvents BtnQuitar As Button
+    Friend WithEvents BtnCargar As Button
+    Friend WithEvents BtnAbrir As Button
+    Friend WithEvents TrueDBGridConsultas As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents Button4 As Button
 End Class

@@ -1,372 +1,372 @@
 ﻿Public Class TablaContrato_Proveedor
-	Private Numero_Contrato As Double
-	Private Codigo_Proveedor As String
-	Private Contacto_Proveedor As String
-	Private Telefono_Contacto As String
-	Private Descripcion As String
-	Private Fecha_Inicio As Date
-	Private Fecha_Fin As Date
-	Private Tipo_Servicio As String
-	Private Tipo_Contrato As String
-	Private Modelo As String
-	Private Num_Respuesta As Double
-	Private Num_Resolucion As Double
-	Private Tiempo_Respuesta As Double
-	Private Tiempo_Resolucion As Double
-	Private Estado As String
-	Private Comentarios As String
-	Private Cobertura_Lunes As Boolean
-	Private Cobertura_Martes As Boolean
-	Private Cobertura_Miercoles As Boolean
-	Private Cobertura_Jueves As Boolean
-	Private Cobertura_Viernes As Boolean
-	Private Cobertura_Sabado As Boolean
-	Private Cobertura_Domingo As Boolean
-	Private Lunes_Inicio As Date
-	Private Lunes_Fin As Date
-	Private Martes_Inicio As Date
-	Private Martes_Fin As Date
-	Private Miercoles_Inicio As Date
-	Private Miercoles_Fin As Date
-	Private Jueves_Inicio As Date
-	Private Jueves_Fin As Date
-	Private Viernes_Inicio As Date
-	Private Viernes_Fin As Date
-	Private Sabado_Inicio As Date
-	Private Sabado_Fin As Date
-	Private Domingo_Inicio As Date
-	Private Domingo_Fin As Date
+    Private Numero_Contrato_Proveedor As String
+    Private Codigo_Proveedor_Contrato As String
+    Private Contacto_Proveedor_Contrato As String
+    Private Telefono_Contacto_Contrato As String
+    Private Descripcion_Contrato As String
+    Private FechaInicio As Date
+    Private FechaFin As Date
+    Private TipoServicio As String
+    Private TipoContrato As String
+    Private Modelo_Contrato As String
+    Private NumRespuesta As Double
+    Private NumResolucion As Double
+    Private TiempoRespuesta As String
+    Private TiempoResolucion As String
+    Private EstadoContrato As String
+    Private Comentarios_Contrato As String
+    Private CoberturaLunes As Integer
+    Private CoberturaMartes As Integer
+    Private CoberturaMiercoles As Integer
+    Private CoberturaJueves As Integer
+    Private CoberturaViernes As Integer
+    Private CoberturaSabado As Integer
+    Private CoberturaDomingo As Integer
+    Private LunesInicio As Date
+    Private LunesFin As Date
+    Private MartesInicio As Date
+    Private MartesFin As Date
+    Private MiercolesInicio As Date
+    Private MiercolesFin As Date
+    Private JuevesInicio As Date
+    Private JuevesFin As Date
+    Private ViernesInicio As Date
+    Private ViernesFin As Date
+    Private SabadoInicio As Date
+    Private SabadoFin As Date
+    Private DomingoInicio As Date
+    Private DomingoFin As Date
 
-    Public Property Numero_Contrato_Proveedor As Double
+    Public Property Numero_Contrato As String
         Get
-            Return Numero_Contrato
+            Return Numero_Contrato_Proveedor
+        End Get
+        Set(value As String)
+            Numero_Contrato_Proveedor = value
+        End Set
+    End Property
+
+    Public Property Codigo_Proveedor As String
+        Get
+            Return Codigo_Proveedor_Contrato
+        End Get
+        Set(value As String)
+            Codigo_Proveedor_Contrato = value
+        End Set
+    End Property
+
+    Public Property Contacto_Proveedor As String
+        Get
+            Return Contacto_Proveedor_Contrato
+        End Get
+        Set(value As String)
+            Contacto_Proveedor_Contrato = value
+        End Set
+    End Property
+
+    Public Property Telefono_Contacto As String
+        Get
+            Return Telefono_Contacto_Contrato
+        End Get
+        Set(value As String)
+            Telefono_Contacto_Contrato = value
+        End Set
+    End Property
+
+    Public Property Descripcion As String
+        Get
+            Return Descripcion_Contrato
+        End Get
+        Set(value As String)
+            Descripcion_Contrato = value
+        End Set
+    End Property
+
+    Public Property Fecha_Inicio As Date
+        Get
+            Return FechaInicio
+        End Get
+        Set(value As Date)
+            FechaInicio = value
+        End Set
+    End Property
+
+    Public Property Fecha_Fin As Date
+        Get
+            Return FechaFin
+        End Get
+        Set(value As Date)
+            FechaFin = value
+        End Set
+    End Property
+
+    Public Property Tipo_Servicio As String
+        Get
+            Return TipoServicio
+        End Get
+        Set(value As String)
+            TipoServicio = value
+        End Set
+    End Property
+
+    Public Property Tipo_Contrato As String
+        Get
+            Return TipoContrato
+        End Get
+        Set(value As String)
+            TipoContrato = value
+        End Set
+    End Property
+
+    Public Property ModeloContrato As String
+        Get
+            Return Modelo_Contrato
+        End Get
+        Set(value As String)
+            Modelo_Contrato = value
+        End Set
+    End Property
+
+    Public Property Num_Respuesta As Double
+        Get
+            Return NumRespuesta
         End Get
         Set(value As Double)
-            Numero_Contrato = value
+            NumRespuesta = value
         End Set
     End Property
 
-    Public Property Codigo_Proveedor_Contrato As String
+    Public Property Num_Resolucion As Double
         Get
-            Return Codigo_Proveedor
-        End Get
-        Set(value As String)
-            Codigo_Proveedor = value
-        End Set
-    End Property
-
-    Public Property Contacto_Proveedor_Contrato As String
-        Get
-            Return Contacto_Proveedor
-        End Get
-        Set(value As String)
-            Contacto_Proveedor = value
-        End Set
-    End Property
-
-    Public Property Telefono_Contacto_Contrato As String
-        Get
-            Return Telefono_Contacto
-        End Get
-        Set(value As String)
-            Telefono_Contacto = value
-        End Set
-    End Property
-
-    Public Property Descripcion_Contrato As String
-        Get
-            Return Descripcion
-        End Get
-        Set(value As String)
-            Descripcion = value
-        End Set
-    End Property
-
-    Public Property Fecha_Inicio_Contrato As Date
-        Get
-            Return Fecha_Inicio
-        End Get
-        Set(value As Date)
-            Fecha_Inicio = value
-        End Set
-    End Property
-
-    Public Property Fecha_Fin_Contrato As Date
-        Get
-            Return Fecha_Fin
-        End Get
-        Set(value As Date)
-            Fecha_Fin = value
-        End Set
-    End Property
-
-    Public Property Tipo_Servicio_Contrato As String
-        Get
-            Return Tipo_Servicio
-        End Get
-        Set(value As String)
-            Tipo_Servicio = value
-        End Set
-    End Property
-
-    Public Property Tipo_Contrato_Contrato As String
-        Get
-            Return Tipo_Contrato
-        End Get
-        Set(value As String)
-            Tipo_Contrato = value
-        End Set
-    End Property
-
-    Public Property Modelo_Contrato As String
-        Get
-            Return Modelo
-        End Get
-        Set(value As String)
-            Modelo = value
-        End Set
-    End Property
-
-    Public Property Num_Respuesta_Contrato As Double
-        Get
-            Return Num_Respuesta
+            Return NumResolucion
         End Get
         Set(value As Double)
-            Num_Respuesta = value
+            NumResolucion = value
         End Set
     End Property
 
-    Public Property Num_Resolucion_Contrato As Double
+    Public Property Tiempo_Respuesta As String
         Get
-            Return Num_Resolucion
-        End Get
-        Set(value As Double)
-            Num_Resolucion = value
-        End Set
-    End Property
-
-    Public Property Tiempo_Respuesta_Contrato As Double
-        Get
-            Return Tiempo_Respuesta
-        End Get
-        Set(value As Double)
-            Tiempo_Respuesta = value
-        End Set
-    End Property
-
-    Public Property Tiempo_Resolucion_Contrato As Double
-        Get
-            Return Tiempo_Resolucion
-        End Get
-        Set(value As Double)
-            Tiempo_Resolucion = value
-        End Set
-    End Property
-
-    Public Property Estado_Contrato As String
-        Get
-            Return Estado
+            Return TiempoRespuesta
         End Get
         Set(value As String)
-            Estado = value
+            TiempoRespuesta = value
         End Set
     End Property
 
-    Public Property Comentarios_Contrato As String
+    Public Property Tiempo_Resolucion As String
         Get
-            Return Comentarios
+            Return TiempoResolucion
         End Get
         Set(value As String)
-            Comentarios = value
+            TiempoResolucion = value
         End Set
     End Property
 
-    Public Property Cobertura_Lunes_Contrato As Boolean
+    Public Property Estado As String
         Get
-            Return Cobertura_Lunes
+            Return EstadoContrato
         End Get
-        Set(value As Boolean)
-            Cobertura_Lunes = value
+        Set(value As String)
+            EstadoContrato = value
         End Set
     End Property
 
-    Public Property Cobertura_Martes_Contrato As Boolean
+    Public Property Comentarios As String
         Get
-            Return Cobertura_Martes
+            Return Comentarios_Contrato
         End Get
-        Set(value As Boolean)
-            Cobertura_Martes = value
+        Set(value As String)
+            Comentarios_Contrato = value
         End Set
     End Property
 
-    Public Property Cobertura_Miercoles_Contrato As Boolean
+    Public Property Cobertura_Lunes As Integer
         Get
-            Return Cobertura_Miercoles
+            Return CoberturaLunes
         End Get
-        Set(value As Boolean)
-            Cobertura_Miercoles = value
+        Set(value As Integer)
+            CoberturaLunes = value
         End Set
     End Property
 
-    Public Property Cobertura_Jueves_Contrato As Boolean
+    Public Property Cobertura_Martes As Integer
         Get
-            Return Cobertura_Jueves
+            Return CoberturaMartes
         End Get
-        Set(value As Boolean)
-            Cobertura_Jueves = value
+        Set(value As Integer)
+            CoberturaMartes = value
         End Set
     End Property
 
-    Public Property Cobertura_Viernes_Contrato As Boolean
+    Public Property Cobertura_Miercoles As Integer
         Get
-            Return Cobertura_Viernes
+            Return CoberturaMiercoles
         End Get
-        Set(value As Boolean)
-            Cobertura_Viernes = value
+        Set(value As Integer)
+            CoberturaMiercoles = value
         End Set
     End Property
 
-    Public Property Cobertura_Sabado_Contrato As Boolean
+    Public Property Cobertura_Jueves As Integer
         Get
-            Return Cobertura_Sabado
+            Return CoberturaJueves
         End Get
-        Set(value As Boolean)
-            Cobertura_Sabado = value
+        Set(value As Integer)
+            CoberturaJueves = value
         End Set
     End Property
 
-    Public Property Cobertura_Domingo_Contrato As Boolean
+    Public Property Cobertura_Viernes As Integer
         Get
-            Return Cobertura_Domingo
+            Return CoberturaViernes
         End Get
-        Set(value As Boolean)
-            Cobertura_Domingo = value
+        Set(value As Integer)
+            CoberturaViernes = value
         End Set
     End Property
 
-    Public Property Lunes_Inicio_Contrato As Date
+    Public Property Cobertura_Sabado As Integer
         Get
-            Return Lunes_Inicio
+            Return CoberturaSabado
         End Get
-        Set(value As Date)
-            Lunes_Inicio = value
+        Set(value As Integer)
+            CoberturaSabado = value
         End Set
     End Property
 
-    Public Property Lunes_Fin_Contrato As Date
+    Public Property Cobertura_Domingo As Integer
         Get
-            Return Lunes_Fin
+            Return CoberturaDomingo
         End Get
-        Set(value As Date)
-            Lunes_Fin = value
+        Set(value As Integer)
+            CoberturaDomingo = value
         End Set
     End Property
 
-    Public Property Martes_Inicio_Contrato As Date
+    Public Property Lunes_Inicio As Date
         Get
-            Return Martes_Inicio
-        End Get
-        Set(value As Date)
-            Martes_Inicio = value
-        End Set
-    End Property
-
-    Public Property Martes_Fin_Contrato As Date
-        Get
-            Return Martes_Fin
+            Return LunesInicio
         End Get
         Set(value As Date)
-            Martes_Fin = value
+            LunesInicio = value
         End Set
     End Property
 
-    Public Property Miercoles_Inicio_Contrato As Date
+    Public Property Lunes_Fin As Date
         Get
-            Return Miercoles_Inicio
+            Return LunesFin
         End Get
         Set(value As Date)
-            Miercoles_Inicio = value
+            LunesFin = value
         End Set
     End Property
 
-    Public Property Miercoles_Fin_Contrato As Date
+    Public Property Martes_Inicio As Date
         Get
-            Return Miercoles_Fin
+            Return MartesInicio
         End Get
         Set(value As Date)
-            Miercoles_Fin = value
+            MartesInicio = value
         End Set
     End Property
 
-    Public Property Jueves_Inicio_Contrato As Date
+    Public Property Martes_Fin As Date
         Get
-            Return Jueves_Inicio
+            Return MartesFin
         End Get
         Set(value As Date)
-            Jueves_Inicio = value
+            MartesFin = value
         End Set
     End Property
 
-    Public Property Jueves_Fin_Contrato As Date
+    Public Property Miercoles_Inicio As Date
         Get
-            Return Jueves_Fin
+            Return MiercolesInicio
         End Get
         Set(value As Date)
-            Jueves_Fin = value
+            MiercolesInicio = value
         End Set
     End Property
 
-    Public Property Viernes_Inicio_Contrato As Date
+    Public Property Miercoles_Fin As Date
         Get
-            Return Viernes_Inicio
+            Return MiercolesFin
         End Get
         Set(value As Date)
-            Viernes_Inicio = value
+            MiercolesFin = value
         End Set
     End Property
 
-    Public Property Viernes_Fin_Contrato As Date
+    Public Property Jueves_Inicio As Date
         Get
-            Return Viernes_Fin
+            Return JuevesInicio
         End Get
         Set(value As Date)
-            Viernes_Fin = value
+            JuevesInicio = value
         End Set
     End Property
 
-    Public Property Sabado_Inicio_Contrato As Date
+    Public Property Jueves_Fin As Date
         Get
-            Return Sabado_Inicio
+            Return JuevesFin
         End Get
         Set(value As Date)
-            Sabado_Inicio = value
+            JuevesFin = value
         End Set
     End Property
 
-    Public Property Sabado_Fin_Contrato As Date
+    Public Property Viernes_Inicio As Date
         Get
-            Return Sabado_Fin
+            Return ViernesInicio
         End Get
         Set(value As Date)
-            Sabado_Fin = value
+            ViernesInicio = value
         End Set
     End Property
 
-    Public Property Domingo_Inicio_Contrato As Date
+    Public Property Viernes_Fin As Date
         Get
-            Return Domingo_Inicio
+            Return ViernesFin
         End Get
         Set(value As Date)
-            Domingo_Inicio = value
+            ViernesFin = value
         End Set
     End Property
 
-    Public Property Domingo_Fin_Contrato As Date
+    Public Property Sabado_Inicio As Date
         Get
-            Return Domingo_Fin
+            Return SabadoInicio
         End Get
         Set(value As Date)
-            Domingo_Fin = value
+            SabadoInicio = value
+        End Set
+    End Property
+
+    Public Property Sabado_Fin As Date
+        Get
+            Return SabadoFin
+        End Get
+        Set(value As Date)
+            SabadoFin = value
+        End Set
+    End Property
+
+    Public Property Domingo_Inicio As Date
+        Get
+            Return DomingoInicio
+        End Get
+        Set(value As Date)
+            DomingoInicio = value
+        End Set
+    End Property
+
+    Public Property Domingo_Fin As Date
+        Get
+            Return DomingoFin
+        End Get
+        Set(value As Date)
+            DomingoFin = value
         End Set
     End Property
 End Class

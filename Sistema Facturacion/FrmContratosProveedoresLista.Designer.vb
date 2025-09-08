@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class FrmContratosProveedoresLista
     Inherits System.Windows.Forms.Form
 
     'Form reemplaza a Dispose para limpiar la lista de componentes.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class FrmContratosProveedoresLista
     'NOTA: el Diseñador de Windows Forms necesita el siguiente procedimiento
     'Se puede modificar usando el Diseñador de Windows Forms.  
     'No lo modifique con el editor de código.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmContratosProveedoresLista))
         Me.Label9 = New System.Windows.Forms.Label()
@@ -31,7 +31,9 @@ Partial Class FrmContratosProveedoresLista
         Me.BtnImprimir = New System.Windows.Forms.Button()
         Me.CmdCerrar = New System.Windows.Forms.Button()
         Me.BtnVisualizar = New System.Windows.Forms.Button()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.BtnContratoNuevo = New System.Windows.Forms.Button()
+        Me.CmbEstado = New System.Windows.Forms.ComboBox()
+        Me.BtnConsultar = New System.Windows.Forms.Button()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CmdBorraLinea, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TDGridListadoNomina, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -91,9 +93,9 @@ Partial Class FrmContratosProveedoresLista
         '
         Me.BtnAnular.Image = CType(resources.GetObject("BtnAnular.Image"), System.Drawing.Image)
         Me.BtnAnular.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnAnular.Location = New System.Drawing.Point(858, 220)
+        Me.BtnAnular.Location = New System.Drawing.Point(849, 180)
         Me.BtnAnular.Name = "BtnAnular"
-        Me.BtnAnular.Size = New System.Drawing.Size(87, 34)
+        Me.BtnAnular.Size = New System.Drawing.Size(104, 48)
         Me.BtnAnular.TabIndex = 367
         Me.BtnAnular.Text = "Anular"
         Me.BtnAnular.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -104,9 +106,9 @@ Partial Class FrmContratosProveedoresLista
         '
         Me.BtnImprimir.Image = CType(resources.GetObject("BtnImprimir.Image"), System.Drawing.Image)
         Me.BtnImprimir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnImprimir.Location = New System.Drawing.Point(858, 152)
+        Me.BtnImprimir.Location = New System.Drawing.Point(849, 234)
         Me.BtnImprimir.Name = "BtnImprimir"
-        Me.BtnImprimir.Size = New System.Drawing.Size(87, 36)
+        Me.BtnImprimir.Size = New System.Drawing.Size(105, 47)
         Me.BtnImprimir.TabIndex = 366
         Me.BtnImprimir.Text = "Imprimir"
         Me.BtnImprimir.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -116,9 +118,9 @@ Partial Class FrmContratosProveedoresLista
         '
         Me.CmdCerrar.Image = CType(resources.GetObject("CmdCerrar.Image"), System.Drawing.Image)
         Me.CmdCerrar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.CmdCerrar.Location = New System.Drawing.Point(858, 404)
+        Me.CmdCerrar.Location = New System.Drawing.Point(847, 391)
         Me.CmdCerrar.Name = "CmdCerrar"
-        Me.CmdCerrar.Size = New System.Drawing.Size(87, 34)
+        Me.CmdCerrar.Size = New System.Drawing.Size(104, 47)
         Me.CmdCerrar.TabIndex = 365
         Me.CmdCerrar.Text = "Cerrar"
         Me.CmdCerrar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -128,32 +130,56 @@ Partial Class FrmContratosProveedoresLista
         '
         Me.BtnVisualizar.Image = CType(resources.GetObject("BtnVisualizar.Image"), System.Drawing.Image)
         Me.BtnVisualizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnVisualizar.Location = New System.Drawing.Point(858, 72)
+        Me.BtnVisualizar.Location = New System.Drawing.Point(848, 126)
         Me.BtnVisualizar.Name = "BtnVisualizar"
-        Me.BtnVisualizar.Size = New System.Drawing.Size(87, 34)
+        Me.BtnVisualizar.Size = New System.Drawing.Size(105, 48)
         Me.BtnVisualizar.TabIndex = 364
         Me.BtnVisualizar.Text = "Visualizar"
         Me.BtnVisualizar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.BtnVisualizar.UseVisualStyleBackColor = True
         '
-        'Button1
+        'BtnContratoNuevo
         '
-        Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button1.Location = New System.Drawing.Point(858, 112)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(87, 34)
-        Me.Button1.TabIndex = 368
-        Me.Button1.Text = "Nuevo"
-        Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.BtnContratoNuevo.Image = CType(resources.GetObject("BtnContratoNuevo.Image"), System.Drawing.Image)
+        Me.BtnContratoNuevo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.BtnContratoNuevo.Location = New System.Drawing.Point(846, 72)
+        Me.BtnContratoNuevo.Name = "BtnContratoNuevo"
+        Me.BtnContratoNuevo.Size = New System.Drawing.Size(105, 48)
+        Me.BtnContratoNuevo.TabIndex = 368
+        Me.BtnContratoNuevo.Text = "Nuevo"
+        Me.BtnContratoNuevo.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnContratoNuevo.UseVisualStyleBackColor = True
+        '
+        'CmbEstado
+        '
+        Me.CmbEstado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbEstado.FormattingEnabled = True
+        Me.CmbEstado.Items.AddRange(New Object() {"Autorizado", "Bloqueado", "Borrador", "Cancelado"})
+        Me.CmbEstado.Location = New System.Drawing.Point(849, 350)
+        Me.CmbEstado.Name = "CmbEstado"
+        Me.CmbEstado.Size = New System.Drawing.Size(104, 21)
+        Me.CmbEstado.TabIndex = 369
+        '
+        'BtnConsultar
+        '
+        Me.BtnConsultar.Image = CType(resources.GetObject("BtnConsultar.Image"), System.Drawing.Image)
+        Me.BtnConsultar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.BtnConsultar.Location = New System.Drawing.Point(849, 296)
+        Me.BtnConsultar.Name = "BtnConsultar"
+        Me.BtnConsultar.Size = New System.Drawing.Size(105, 48)
+        Me.BtnConsultar.TabIndex = 370
+        Me.BtnConsultar.Text = "Consultar"
+        Me.BtnConsultar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnConsultar.UseVisualStyleBackColor = True
         '
         'FrmContratosProveedoresLista
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(957, 450)
-        Me.Controls.Add(Me.Button1)
+        Me.ClientSize = New System.Drawing.Size(963, 489)
+        Me.Controls.Add(Me.BtnConsultar)
+        Me.Controls.Add(Me.CmbEstado)
+        Me.Controls.Add(Me.BtnContratoNuevo)
         Me.Controls.Add(Me.BtnAnular)
         Me.Controls.Add(Me.BtnImprimir)
         Me.Controls.Add(Me.CmdCerrar)
@@ -182,5 +208,7 @@ Partial Class FrmContratosProveedoresLista
     Friend WithEvents BtnImprimir As Button
     Friend WithEvents CmdCerrar As Button
     Friend WithEvents BtnVisualizar As Button
-    Friend WithEvents Button1 As Button
+    Friend WithEvents BtnContratoNuevo As Button
+    Friend WithEvents CmbEstado As ComboBox
+    Friend WithEvents BtnConsultar As Button
 End Class

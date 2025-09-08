@@ -20,21 +20,21 @@ Partial Class FrmContratos
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmContratos))
-        Me.TDGridSolicitud = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.BtnActualizar = New System.Windows.Forms.Button
-        Me.BtnVer = New System.Windows.Forms.Button
-        Me.BtnSalir = New System.Windows.Forms.Button
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.OptTodos = New System.Windows.Forms.RadioButton
-        Me.OptAnulado = New System.Windows.Forms.RadioButton
-        Me.OptActivo = New System.Windows.Forms.RadioButton
-        Me.Button3 = New System.Windows.Forms.Button
-        Me.ProgressBar = New System.Windows.Forms.ProgressBar
-        Me.BtnProcesar = New System.Windows.Forms.Button
+        Me.TDGridSolicitud = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.BtnActualizar = New System.Windows.Forms.Button()
+        Me.BtnVer = New System.Windows.Forms.Button()
+        Me.BtnSalir = New System.Windows.Forms.Button()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.OptTodos = New System.Windows.Forms.RadioButton()
+        Me.OptAnulado = New System.Windows.Forms.RadioButton()
+        Me.OptActivo = New System.Windows.Forms.RadioButton()
+        Me.Button3 = New System.Windows.Forms.Button()
+        Me.ProgressBar = New System.Windows.Forms.ProgressBar()
+        Me.BtnProcesar = New System.Windows.Forms.Button()
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -53,7 +53,7 @@ Partial Class FrmContratos
         Me.TDGridSolicitud.Name = "TDGridSolicitud"
         Me.TDGridSolicitud.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TDGridSolicitud.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TDGridSolicitud.PreviewInfo.ZoomFactor = 75
+        Me.TDGridSolicitud.PreviewInfo.ZoomFactor = 75.0R
         Me.TDGridSolicitud.PrintInfo.PageSettings = CType(resources.GetObject("TDGridSolicitud.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
         Me.TDGridSolicitud.Size = New System.Drawing.Size(965, 335)
         Me.TDGridSolicitud.TabIndex = 250
@@ -99,7 +99,7 @@ Partial Class FrmContratos
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.Button2.Location = New System.Drawing.Point(986, 75)
         Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(126, 56)
+        Me.Button2.Size = New System.Drawing.Size(125, 56)
         Me.Button2.TabIndex = 265
         Me.Button2.Text = "Nuevo"
         Me.Button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -125,9 +125,9 @@ Partial Class FrmContratos
         Me.BtnVer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.BtnVer.Location = New System.Drawing.Point(986, 133)
         Me.BtnVer.Name = "BtnVer"
-        Me.BtnVer.Size = New System.Drawing.Size(126, 56)
+        Me.BtnVer.Size = New System.Drawing.Size(125, 56)
         Me.BtnVer.TabIndex = 262
-        Me.BtnVer.Text = "Ver"
+        Me.BtnVer.Text = "Abrir"
         Me.BtnVer.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.BtnVer.UseVisualStyleBackColor = True
         '
