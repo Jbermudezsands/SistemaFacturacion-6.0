@@ -2275,6 +2275,9 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim SqlDatos As String
 
+        Me.MinimumSize = Size
+        Me.MaximumSize = Size
+
         Me.DTPFecha.Value = Format(Now, "dd/MM/yyyy")
         Me.DTVencimiento.Value = Format(Now, "dd/MM/yyyy")
         Me.DTPFechaHora.Value = Format(Now, "dd/MM/yyyy HH:mm")
@@ -3266,7 +3269,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
                     Else
                         ds.Tables("DetalleCompra").Reset()
                         '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
-                        SqlCompras = "SELECT Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario,Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra FROM  Detalle_Compras " &
+                        SqlCompras = "SELECT Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario,Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra, Detalle_Compras.Numero_Lote,Detalle_Compras.Fecha_Vence FROM  Detalle_Compras " &
                                      "WHERE (Detalle_Compras.Numero_Compra = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Compras.Tipo_Compra = '" & TipoCompra & "') ORDER BY Detalle_Compras.id_Detalle_Compra"
                         'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
                         'DataAdapter.Fill(DataSet, "DetalleCompras")
@@ -3305,6 +3308,8 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
                         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
                         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
                         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Compra").Visible = False
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = False
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Lote").Visible = False
 
                     End If
 

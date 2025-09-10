@@ -34,6 +34,9 @@
     End Sub
 
     Private Sub FrmContratosProveedoresLista_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.MinimumSize = Size
+        Me.MaximumSize = Size
+
         Me.CmbEstado.Text = "Autorizado"
         Cargar_Grid()
     End Sub

@@ -5,6 +5,7 @@ Public Class FrmContratosProveedor
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Public Numero_Contrato As String
 
+
     Private Sub TextBox2_TextChanged(sender As Object, e As EventArgs) Handles txtModelo.TextChanged
 
     End Sub
@@ -108,7 +109,7 @@ Public Class FrmContratosProveedor
 
     Private Sub CboCodigoProveedor_TextChanged(sender As Object, e As EventArgs) Handles CboCodigoProveedor.TextChanged
         Dim SqlProveedor As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim SqlString As String
+        Dim SqlString As String = ""
 
         'SqlProveedor = "SELECT  * FROM Proveedor  WHERE (Cod_Proveedor = '" & Me.CboCodigoProveedor.Text & "')"
         SqlProveedor = "SELECT  Proveedor.Cod_Proveedor, Proveedor.Nombre_Proveedor, Contrato_Proveedor.Telefono_Contacto, Proveedor.Direccion_Proveedor, Contrato_Proveedor.Contacto_Proveedor FROM  Contrato_Proveedor RIGHT OUTER JOIN Proveedor ON Contrato_Proveedor.Codigo_Proveedor = Proveedor.Cod_Proveedor WHERE (Proveedor.Cod_Proveedor <> N'' AND Proveedor.Cod_Proveedor = '" & Me.CboCodigoProveedor.Text & "')"
@@ -131,6 +132,8 @@ Public Class FrmContratosProveedor
     End Sub
 
     Private Sub FrmContratosProveedor_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.MinimumSize = Size
+        Me.MaximumSize = Size
         Limpiar_Contrato()
 
         Cargar_Contrato(Numero_Contrato)
@@ -145,52 +148,8 @@ Public Class FrmContratosProveedor
             Exit Sub
         End If
 
-        If Me.TxtNumeroContrato.Text = "-----0-----" Then
-            Numero_Contrato = Format(BuscaConsecutivo("Numero_Contrato_Proveedor"), "0000#")
-            Me.TxtNumeroContrato.Text = Numero_Contrato
-        Else
-            Numero_Contrato = Me.TxtNumeroContrato.Text
-        End If
-
-        Contrato.Numero_Contrato = Numero_Contrato
-        Contrato.Codigo_Proveedor = Me.CboCodigoProveedor.Text
-        Contrato.Contacto_Proveedor = Me.TxtContacto.Text
-        Contrato.Telefono_Contacto = Me.TxtTelefono.Text
-        Contrato.Descripcion = Me.TxtDescripcion.Text
-        Contrato.Fecha_Inicio = Me.DtpInicioContrato.Value
-        Contrato.Fecha_Fin = Me.DtpInicioContrato.Value
-        Contrato.Tipo_Servicio = CmbTipoServicio.Text
-        Contrato.Tipo_Contrato = CmbTipoContrato.Text
-        Contrato.ModeloContrato = txtModelo.Text
-        Contrato.Num_Respuesta = TxtDiasRespuesta.Text
-        Contrato.Num_Resolucion = TxtDiasResolucion.Text
-        Contrato.Tiempo_Respuesta = CmbDiasRespuesta.Text
-        Contrato.Tiempo_Resolucion = CmbDiasResolucion.Text
-        Contrato.Estado = CmbEstado.Text
-        Contrato.Comentarios = TxtComentarios.Text
-        Contrato.Cobertura_Lunes = ChkLunes.Checked
-        Contrato.Cobertura_Martes = ChkMartes.Checked
-        Contrato.Cobertura_Miercoles = ChkMiercoles.Checked
-        Contrato.Cobertura_Jueves = ChkJueves.Checked
-        Contrato.Cobertura_Viernes = ChkViernes.Checked
-        Contrato.Cobertura_Sabado = ChkSabado.Checked
-        Contrato.Cobertura_Domingo = ChkDomingo.Checked
-        Contrato.Lunes_Inicio = TxtLunesInicio.Text
-        Contrato.Lunes_Fin = TxtLunesFin.Text
-        Contrato.Martes_Inicio = TxtMartesInicio.Text
-        Contrato.Martes_Fin = TxtMartesFin.Text
-        Contrato.Miercoles_Inicio = TxtMiercolesInicio.Text
-        Contrato.Miercoles_Fin = TxtMiercolesFin.Text
-        Contrato.Jueves_Inicio = TxtJuevesInicio.Text
-        Contrato.Jueves_Fin = TxtJuevesFin.Text
-        Contrato.Viernes_Inicio = TxtViernesInicio.Text
-        Contrato.Viernes_Fin = TxtViernesFin.Text
-        Contrato.Sabado_Inicio = TxtSabadoInicio.Text
-        Contrato.Sabado_Fin = TxtSabadoFin.Text
-        Contrato.Domingo_Inicio = TxtDomingoInicio.Text
-        Contrato.Domingo_Fin = TxtDomingoFin.Text
-
-        Gravar_Contrato_Proveedor(Contrato)
+        '///////////Grabo el encabezado del contrato ///////////
+        Numero_Contrato = GrabarEncabezado()
         Limpiar_Contrato()
 
     End Sub
@@ -225,5 +184,213 @@ Public Class FrmContratosProveedor
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
         Me.Close()
+    End Sub
+
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        Me.GroupBoxImportar.Location = New Point(12, 12)
+        Me.GroupBoxImportar.Visible = True
+    End Sub
+
+    Private Sub BtnAbrir_Click(sender As Object, e As EventArgs) Handles BtnAbrir.Click
+        Dim RutaBD As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SqlString As String
+        Dim Cont As Double, i As Double, oDataRow As DataRow, Registros As Double = 0
+        Dim ConexionExcel As String, MiConexionExcel As New OleDb.OleDbConnection, DataAdapterExcel As New OleDb.OleDbDataAdapter
+        Dim DetalleProductos As TablaDetalle_Contratos_Productos = New TablaDetalle_Contratos_Productos
+        Dim Producto As TablaProductos = New TablaProductos
+
+        Me.OpenFileDialog.ShowDialog()
+        RutaBD = OpenFileDialog.FileName
+
+        '*******************************************************************************************************************************
+        '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
+        '*******************************************************************************************************************************
+        DataSet.Reset()
+        SqlString = "SELECT Cod_Productos, Descripcion_Productos, Cantidad, Precio_Unitario FROM Detalle_Contratos_Productos  WHERE  (Numero_Contrato = N'-10000') "
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "DetalleCompra")
+
+        ConexionExcel = "Provider=Microsoft.Jet.OLEDB.4.0;Extended Properties = 'Excel 4.0'; Data Source= " & RutaBD & " "
+        MiConexionExcel = New OleDb.OleDbConnection(ConexionExcel)
+        DataAdapterExcel = New OleDb.OleDbDataAdapter("SELECT * FROM [Hoja1$]", MiConexionExcel)
+        DataAdapterExcel.Fill(DataSet, "ConsultaExcel")
+        Cont = DataSet.Tables("ConsultaExcel").Rows.Count
+        i = 0
+        Me.ProgressBar.Minimum = 0
+        Me.ProgressBar.Maximum = Cont
+        Me.ProgressBar.Value = 0
+        Me.ProgressBar.Visible = True
+        Do While Cont > i
+            If Not IsDBNull(DataSet.Tables("ConsultaExcel").Rows(i)("CodigoProducto")) Then
+                DetalleProductos.Cod_Productos = DataSet.Tables("ConsultaExcel").Rows(i)("CodigoProducto")
+                Producto = Buscar_Productos(DetalleProductos.Cod_Productos)
+                If Producto IsNot Nothing Then
+                    DetalleProductos.Descripcion_Productos = Producto.Descripcion_Producto
+                    DetalleProductos.Cantidad = DataSet.Tables("ConsultaExcel").Rows(i)("Cantidad")
+                    DetalleProductos.Precio_Unitario = DataSet.Tables("ConsultaExcel").Rows(i)("PrecioUnitario")
+
+                    oDataRow = DataSet.Tables("DetalleCompra").NewRow
+                    oDataRow("Cod_Productos") = DetalleProductos.Cod_Productos
+                    oDataRow("Descripcion_Productos") = DetalleProductos.Descripcion_Productos
+                    oDataRow("Cantidad") = DetalleProductos.Cantidad
+                    oDataRow("Precio_Unitario") = DetalleProductos.Precio_Unitario
+                    DataSet.Tables("DetalleCompra").Rows.Add(oDataRow)
+                Else
+                    Me.TxtError.Text = Me.TxtError.Text & "El produto no Existe:" & DetalleProductos.Cod_Productos
+                End If
+
+            Else
+                Me.TxtError.Text = Me.TxtError.Text & "Campo producto en blanco"
+            End If
+
+
+            Me.ProgressBar.Value = Me.ProgressBar.Value + 1
+            i = i + 1
+        Loop
+
+        Me.TrueDBGridConsultas.DataSource = DataSet.Tables("DetalleCompra")
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Cod_Productos").Width = 100
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Descripcion_Productos").Width = 434
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Cantidad").Width = 64
+        Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 100
+    End Sub
+
+    Private Sub BtnCancelar_Click(sender As Object, e As EventArgs) Handles BtnCancelar.Click
+        Me.GroupBoxImportar.Location = New Point(952, 12)
+        Me.GroupBoxImportar.Visible = True
+    End Sub
+
+    Private Sub BtnQuitar_Click(sender As Object, e As EventArgs) Handles BtnQuitar.Click
+        Dim Cont As Double
+        Me.TrueDBGridConsultas.Delete()
+        Cont = Me.TrueDBGridConsultas.RowCount
+        Me.LblTotalRegistros.Text = "Total Registros: " & Cont
+    End Sub
+    Public Function GrabarEncabezado() As String
+        Dim contrato As TablaContrato_Proveedor = New TablaContrato_Proveedor
+
+
+        If Me.TxtNumeroContrato.Text = "-----0-----" Then
+            Numero_Contrato = Format(BuscaConsecutivo("Numero_Contrato_Proveedor"), "0000#")
+            Me.TxtNumeroContrato.Text = Numero_Contrato
+        Else
+            Numero_Contrato = Me.TxtNumeroContrato.Text
+        End If
+
+        contrato.Numero_Contrato = Numero_Contrato
+        If Me.CboCodigoProveedor.Text <> "" Then
+            contrato.Codigo_Proveedor = Me.CboCodigoProveedor.Text
+        End If
+        If Me.TxtContacto.Text <> "" Then
+            contrato.Contacto_Proveedor = Me.TxtContacto.Text
+        End If
+        If Me.TxtTelefono.Text <> "" Then
+            contrato.Telefono_Contacto = Me.TxtTelefono.Text
+        End If
+        If Me.TxtDescripcion.Text <> "" Then
+            contrato.Descripcion = Me.TxtDescripcion.Text
+        End If
+        contrato.Fecha_Inicio = Me.DtpInicioContrato.Value
+        contrato.Fecha_Fin = Me.DtpInicioContrato.Value
+        contrato.Tipo_Servicio = CmbTipoServicio.Text
+        contrato.Tipo_Contrato = CmbTipoContrato.Text
+        If txtModelo.Text <> "" Then
+            contrato.ModeloContrato = txtModelo.Text
+        End If
+        If TxtDiasRespuesta.Text <> "" Then
+            contrato.Num_Respuesta = TxtDiasRespuesta.Text
+        End If
+        If TxtDiasResolucion.Text <> "" Then
+            contrato.Num_Resolucion = TxtDiasResolucion.Text
+        End If
+        contrato.Tiempo_Respuesta = CmbDiasRespuesta.Text
+        contrato.Tiempo_Resolucion = CmbDiasResolucion.Text
+        contrato.Estado = CmbEstado.Text
+        If TxtComentarios.Text <> "" Then
+            contrato.Comentarios = TxtComentarios.Text
+        End If
+        contrato.Cobertura_Lunes = ChkLunes.Checked
+        contrato.Cobertura_Martes = ChkMartes.Checked
+        contrato.Cobertura_Miercoles = ChkMiercoles.Checked
+        contrato.Cobertura_Jueves = ChkJueves.Checked
+        contrato.Cobertura_Viernes = ChkViernes.Checked
+        contrato.Cobertura_Sabado = ChkSabado.Checked
+        contrato.Cobertura_Domingo = ChkDomingo.Checked
+        If TxtLunesInicio.Text <> "  :" Then
+            contrato.Lunes_Inicio = TxtLunesInicio.Text
+        End If
+        If TxtLunesFin.Text <> "  :" Then
+            contrato.Lunes_Fin = TxtLunesFin.Text
+        End If
+        If TxtMartesInicio.Text <> "  :" Then
+            contrato.Martes_Inicio = TxtMartesInicio.Text
+        End If
+        If TxtMartesFin.Text <> "  :" Then
+            contrato.Martes_Fin = TxtMartesFin.Text
+        End If
+        If TxtMiercolesInicio.Text <> "  :" Then
+            contrato.Miercoles_Inicio = TxtMiercolesInicio.Text
+        End If
+        If TxtMiercolesFin.Text <> "  :" Then
+            contrato.Miercoles_Fin = TxtMiercolesFin.Text
+        End If
+        If TxtJuevesInicio.Text <> "  :" Then
+            contrato.Jueves_Inicio = TxtJuevesInicio.Text
+        End If
+        If TxtJuevesFin.Text <> "  :" Then
+            contrato.Jueves_Fin = TxtJuevesFin.Text
+        End If
+        If TxtViernesInicio.Text <> "  :" Then
+            contrato.Viernes_Inicio = TxtViernesInicio.Text
+        End If
+        If TxtViernesFin.Text <> "  :" Then
+            contrato.Viernes_Fin = TxtViernesFin.Text
+        End If
+        If TxtSabadoInicio.Text <> "  :" Then
+            contrato.Sabado_Inicio = TxtSabadoInicio.Text
+        End If
+        If TxtSabadoFin.Text <> "  :" Then
+            contrato.Sabado_Fin = TxtSabadoFin.Text
+        End If
+        If TxtDomingoInicio.Text <> "  :" Then
+            contrato.Domingo_Inicio = TxtDomingoInicio.Text
+        End If
+        If TxtDomingoFin.Text <> "  :" Then
+            contrato.Domingo_Fin = TxtDomingoFin.Text
+        End If
+
+        Gravar_Contrato_Proveedor(contrato)
+
+        Return Numero_Contrato
+
+    End Function
+    Private Sub BtnCargar_Click(sender As Object, e As EventArgs) Handles BtnCargar.Click
+        Dim Cont As Double = Me.TrueDBGridConsultas.RowCount, i As Double = 0
+        Dim DetalleContrato As TablaDetalle_Contratos_Productos = New TablaDetalle_Contratos_Productos
+        Dim Numero_Contrato As String
+
+
+        '///////////Grabo el encabezado del contrato ///////////
+        Numero_Contrato = GrabarEncabezado()
+
+        Me.ProgressBar.Minimum = 0
+        Me.ProgressBar.Maximum = Cont
+        Me.ProgressBar.Visible = True
+        Me.ProgressBar.Value = 0
+
+        Do While Cont > i
+            DetalleContrato.Numero_Contrato = Numero_Contrato
+            DetalleContrato.Tipo_Contrato = "Proveedores"
+            DetalleContrato.Cod_Productos = Me.TrueDBGridConsultas.Item(i)("Cod_Productos")
+            DetalleContrato.Descripcion_Productos = Me.TrueDBGridConsultas.Item(i)("Descripcion_Productos")
+            DetalleContrato.Cantidad = Me.TrueDBGridConsultas.Item(i)("Cantidad")
+            DetalleContrato.Precio_Unitario = Me.TrueDBGridConsultas.Item(i)("Precio_Unitario")
+
+            Grabar_Detalle_ContratoProveedor(DetalleContrato)
+
+            Me.ProgressBar.Value = Me.ProgressBar.Value + 1
+            i = i + 1
+        Loop
+
     End Sub
 End Class

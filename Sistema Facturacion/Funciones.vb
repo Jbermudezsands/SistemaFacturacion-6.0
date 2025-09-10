@@ -7,6 +7,40 @@ Imports Sistema_Facturacion.FrmFacturas
 Imports System.ComponentModel
 
 Module Funciones
+    Public Sub Grabar_Detalle_ContratoProveedor(Detalle As TablaDetalle_Contratos_Productos)
+        Dim Contrato As TablaContrato_Proveedor = New TablaContrato_Proveedor
+        Dim SqlString As String, Dataset As New DataSet
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer = 0, StrSqlUpdate As String
+
+        SqlString = "SELECT  * FROM  Detalle_Contratos_Productos WHERE (Numero_Contrato = '" & Detalle.Numero_Contrato & "') AND (Tipo_Contrato = '" & Detalle.Tipo_Contrato & "') AND (Cod_Productos = '" & Detalle.Cod_Productos & "')"
+        Dataset = FillConsultaSQL(Sqlstring, "Consulta")
+        If Dataset.Tables("Consulta").Rows.Count = 0 Then
+
+            StrSqlUpdate = "INSERT INTO [Detalle_Contratos_Productos] ([Numero_Contrato],[Tipo_Contrato],[Cod_Productos],[Descripcion_Productos],[Cantidad] ,[Precio_Unitario]) " &
+                           "VALUES ('" & Detalle.Numero_Contrato & "','" & Detalle.Tipo_Contrato & "','" & Detalle.Cod_Productos & "','" & Detalle.Descripcion_Productos & "','" & Detalle.Cantidad & "','" & Detalle.Precio_Unitario & "') "
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+            Bitacora(Now, NombreUsuario, "Detalle Contrato Proveedores", "Grabo Contrato Nuevo: " & Contrato.Numero_Contrato)
+
+        Else
+
+            StrSqlUpdate = "UPDATE [Detalle_Contratos_Productos] SET [Numero_Contrato] = '" & Detalle.Numero_Contrato & "',[Tipo_Contrato] = '" & Detalle.Tipo_Contrato & "' ,[Cod_Productos] = '" & Detalle.Cod_Productos & "',[Descripcion_Productos] = '" & Detalle.Descripcion_Productos & "' ,[Cantidad] = '" & Detalle.Cantidad & "',[Precio_Unitario] = '" & Detalle.Precio_Unitario & "'  WHERE (Numero_Contrato = '" & Detalle.Numero_Contrato & "') AND (Tipo_Contrato = '" & Detalle.Tipo_Contrato & "') AND (Cod_Productos = '" & Detalle.Cod_Productos & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+            Bitacora(Now, NombreUsuario, "Detalle producto Proveedores", "Modifico Contrato: " & Contrato.Numero_Contrato)
+
+
+        End If
+    End Sub
+
+
     Public Function Cargar_Contrato_Proveedor(Numero_Contrato As String) As TablaContrato_Proveedor
         Dim Contrato As TablaContrato_Proveedor = New TablaContrato_Proveedor
         Dim SqlString As String, Dataset As New DataSet
@@ -68,9 +102,9 @@ Module Funciones
         Dim Dataset As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim Sqlstring As String, StrSqlUpdate As String
 
-        Sqlstring = "SELECT  * FROM  Contrato_Proveedor WHERE (Numero_Contrato = '" & Contrato.Numero_Contrato & "') "
+        Sqlstring = "SELECT  * FROM  Detalle_Contratos_Productos WHERE (Numero_Contrato = '" & Contrato.Numero_Contrato & "') "
         Dataset = FillConsultaSQL(Sqlstring, "Consulta")
-        If Not Dataset.Tables("Consulta").Rows.Count <> 0 Then
+        If Dataset.Tables("Consulta").Rows.Count <> 0 Then
             StrSqlUpdate = "INSERT INTO [Contrato_Proveedor] ([Numero_Contrato],[Codigo_Proveedor],[Contacto_Proveedor],[Telefono_Contacto],[Descripcion],[Fecha_Inicio],[Fecha_Fin],[Tipo_Servicio],[Tipo_Contrato],[Modelo],[Num_Respuesta],[Num_Resolucion],[Tiempo_Respuesta],[Tiempo_Resolucion],[Estado],[Comentarios],[Cobertura_Lunes],[Cobertura_Martes],[Cobertura_Miercoles],[Cobertura_Jueves],[Cobertura_Viernes],[Cobertura_Sabado],[Cobertura_Domingo],[Lunes_Inicio],[Lunes_Fin],[Martes_Inicio],[Martes_Fin],[Miercoles_Inicio],[Miercoles_Fin],[Jueves_Inicio],[Jueves_Fin],[Viernes_Inicio],[Viernes_Fin],[Sabado_Inicio],[Sabado_Fin],[Domingo_Inicio],[Domingo_Fin]) " &
                         "VALUES ('" & Contrato.Numero_Contrato & "','" & Contrato.Codigo_Proveedor & "','" & Contrato.Contacto_Proveedor & "','" & Contrato.Telefono_Contacto & "','" & Contrato.Descripcion & "','" & Contrato.Fecha_Inicio & "','" & Contrato.Fecha_Fin & "','" & Contrato.Tipo_Servicio & "','" & Contrato.Tipo_Contrato & "','" & Contrato.ModeloContrato & "','" & Contrato.Num_Respuesta & "'," & Contrato.Num_Resolucion & ",'" & Contrato.Tiempo_Respuesta & "','" & Contrato.Tiempo_Resolucion & "','" & Contrato.Estado & "','" & Contrato.Comentarios & "'," & Contrato.Cobertura_Lunes & "," & Contrato.Cobertura_Martes & "," & Contrato.Cobertura_Miercoles & "," & Contrato.Cobertura_Jueves & "," & Contrato.Cobertura_Viernes & "," & Contrato.Cobertura_Sabado & "," & Contrato.Cobertura_Domingo & " ,'" & Contrato.Lunes_Inicio & "','" & Contrato.Lunes_Fin & "','" & Contrato.Martes_Inicio & "','" & Contrato.Martes_Fin & "','" & Contrato.Miercoles_Inicio & "','" & Contrato.Miercoles_Fin & "','" & Contrato.Jueves_Inicio & "','" & Contrato.Jueves_Fin & "','" & Contrato.Viernes_Inicio & "','" & Contrato.Viernes_Fin & "','" & Contrato.Sabado_Inicio & "','" & Contrato.Sabado_Fin & "','" & Contrato.Domingo_Inicio & "','" & Contrato.Domingo_Fin & "') "
             MiConexion.Open()
@@ -81,6 +115,7 @@ Module Funciones
             Bitacora(Now, NombreUsuario, "Contrato Proveedores", "Grabo Contrato Nuevo: " & Contrato.Numero_Contrato)
 
         Else
+            MiConexion.Open()
             StrSqlUpdate = "UPDATE [Contrato_Proveedor] SET [Codigo_Proveedor] = '" & Contrato.Codigo_Proveedor & "',[Contacto_Proveedor] = '" & Contrato.Contacto_Proveedor & "',[Telefono_Contacto] = '" & Contrato.Telefono_Contacto & "',[Descripcion] = '" & Contrato.Descripcion & "',[Fecha_Inicio] = '" & Contrato.Fecha_Inicio & "',[Fecha_Fin] = '" & Contrato.Fecha_Fin & "',[Tipo_Servicio] = '" & Contrato.Tipo_Servicio & "',[Tipo_Contrato] = '" & Contrato.Tipo_Contrato & "',[Modelo] = '" & Contrato.ModeloContrato & "',[Num_Respuesta] = " & Contrato.Num_Respuesta & ",[Num_Resolucion] = " & Contrato.Num_Resolucion & ",[Tiempo_Respuesta] = '" & Contrato.Tiempo_Respuesta & "' ,[Tiempo_Resolucion] = '" & Contrato.Tiempo_Resolucion & "',[Estado] = '" & Contrato.Estado & "',[Comentarios] ='" & Contrato.Comentarios & "',[Cobertura_Lunes] = " & Contrato.Cobertura_Lunes & ",[Cobertura_Martes] = " & Contrato.Cobertura_Martes & ",[Cobertura_Miercoles] = " & Contrato.Cobertura_Miercoles & ",[Cobertura_Jueves] = " & Contrato.Cobertura_Jueves & ",[Cobertura_Viernes] = " & Contrato.Cobertura_Viernes & ",[Cobertura_Sabado] = " & Contrato.Cobertura_Sabado & ",[Cobertura_Domingo] = " & Contrato.Cobertura_Domingo & ",[Lunes_Inicio] = '" & Contrato.Lunes_Inicio & "',[Lunes_Fin] = '" & Contrato.Lunes_Fin & "',[Martes_Inicio] = '" & Contrato.Martes_Inicio & "',[Martes_Fin] = '" & Contrato.Martes_Fin & "',[Miercoles_Inicio] = '" & Contrato.Miercoles_Inicio & "',[Miercoles_Fin] = '" & Contrato.Miercoles_Fin & "',[Jueves_Inicio] = '" & Contrato.Jueves_Inicio & "',[Jueves_Fin] = '" & Contrato.Miercoles_Fin & "',[Viernes_Inicio] = '" & Contrato.Viernes_Inicio & "',[Viernes_Fin] = '" & Contrato.Viernes_Fin & "',[Sabado_Inicio] = '" & Contrato.Sabado_Inicio & "',[Sabado_Fin] = '" & Contrato.Sabado_Fin & "',[Domingo_Inicio] = '" & Contrato.Domingo_Inicio & "',[Domingo_Fin] = '" & Contrato.Domingo_Fin & "' " &
                             "WHERE (Numero_Contrato = '" & Contrato.Numero_Contrato & "') "
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -15787,6 +15822,70 @@ errSub:
         Else
             BuscaProducto = False
         End If
+
+    End Function
+    Public Function Buscar_Productos(Codigo_Producto As String) As TablaProductos
+        Dim SqlBodega As String
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim Producto As TablaProductos = New TablaProductos
+
+
+        DataSet.Tables.Clear()
+        SqlBodega = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & Codigo_Producto & "') "
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlBodega, MiConexion)
+        DataAdapter.Fill(DataSet, "Productos")
+        If DataSet.Tables("Productos").Rows.Count <> 0 Then
+            Producto.Cod_Productos = Codigo_Producto
+            Producto.Tipo_Producto = DataSet.Tables("Productos").Rows(0)("Tipo_Producto")
+            Producto.Descripcion_Producto = DataSet.Tables("Productos").Rows(0)("Descripcion_Producto")
+            Producto.Ubicacion = DataSet.Tables("Productos").Rows(0)("Ubicacion")
+            Producto.Cod_Linea = DataSet.Tables("Productos").Rows(0)("Cod_Linea")
+            Producto.Cod_Cuenta_Inventario = DataSet.Tables("Productos").Rows(0)("Cod_Cuenta_Inventario")
+            Producto.Cod_Cuenta_Costo = DataSet.Tables("Productos").Rows(0)("Cod_Cuenta_Costo")
+
+            Producto.Cod_Cuenta_Ventas = DataSet.Tables("Productos").Rows(0)("Cod_Cuenta_Ventas")
+            Producto.Cod_Cuenta_GastoAjuste = DataSet.Tables("Productos").Rows(0)("Cod_Cuenta_GastoAjuste")
+            Producto.Cod_Cuenta_IngresoAjuste = DataSet.Tables("Productos").Rows(0)("Cod_Cuenta_IngresoAjuste")
+            Producto.Unidad_Medida = DataSet.Tables("Productos").Rows(0)("Unidad_Medida")
+            Producto.Precio_Venta = DataSet.Tables("Productos").Rows(0)("Precio_Venta")
+            Producto.Precio_Lista = DataSet.Tables("Productos").Rows(0)("Precio_Lista")
+            Producto.Descuento = DataSet.Tables("Productos").Rows(0)("Descuento")
+
+            Producto.Existencia_Negativa = DataSet.Tables("Productos").Rows(0)("Existencia_Negativa")
+            Producto.Cod_Iva = DataSet.Tables("Productos").Rows(0)("Cod_Iva")
+            Producto.Activo = DataSet.Tables("Productos").Rows(0)("Activo")
+            Producto.Costo_Promedio = DataSet.Tables("Productos").Rows(0)("Costo_Promedio")
+            Producto.Costo_Promedio_Dolar = DataSet.Tables("Productos").Rows(0)("Costo_Promedio_Dolar")
+            Producto.Ultimo_Precio_Venta = DataSet.Tables("Productos").Rows(0)("Ultimo_Precio_Venta")
+            Producto.Ultimo_Precio_Compra = DataSet.Tables("Productos").Rows(0)("Ultimo_Precio_Compra")
+
+            Producto.Existencia_Dinero = DataSet.Tables("Productos").Rows(0)("Existencia_Dinero")
+            Producto.Existencia_Unidades = DataSet.Tables("Productos").Rows(0)("Existencia_Unidades")
+            Producto.Existencia_DineroDolar = DataSet.Tables("Productos").Rows(0)("Existencia_DineroDolar")
+            Producto.Minimo = DataSet.Tables("Productos").Rows(0)("Minimo")
+            Producto.Reorden = DataSet.Tables("Productos").Rows(0)("Reorden")
+            Producto.Nota = DataSet.Tables("Productos").Rows(0)("Nota")
+            Producto.CodComponente = DataSet.Tables("Productos").Rows(0)("CodComponente")
+
+            Producto.Cod_Rubro = DataSet.Tables("Productos").Rows(0)("Cod_Rubro")
+            Producto.Porcentaje_Aumento = DataSet.Tables("Productos").Rows(0)("Porcentaje_Aumento")
+            Producto.Rendimiento = DataSet.Tables("Productos").Rows(0)("Rendimiento")
+            If Not IsDBNull(DataSet.Tables("Productos").Rows(0)("Merma")) Then
+                Producto.Merma = DataSet.Tables("Productos").Rows(0)("Merma")
+            End If
+            If Not IsDBNull(DataSet.Tables("Productos").Rows(0)("Desperdicio")) Then
+                Producto.Desperdicio = DataSet.Tables("Productos").Rows(0)("Desperdicio")
+            End If
+            If Not IsDBNull(DataSet.Tables("Productos").Rows(0)("Foto")) Then
+                Producto.Foto = DataSet.Tables("Productos").Rows(0)("Foto")
+            End If
+        Else
+            Producto = Nothing
+
+        End If
+
+        Return Producto
 
     End Function
     Public Function BuscaProductoIdFactura(ByVal NumeroFactura As String, ByVal FechaFactura As Date, ByVal TipoFactura As String, ByVal CodigoProducto As String, ByVal Cantidad As Double) As Double

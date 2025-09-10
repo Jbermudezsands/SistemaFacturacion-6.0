@@ -42,6 +42,7 @@ Partial Class FrmContratosProveedor
         Me.Label5 = New System.Windows.Forms.Label()
         Me.CmbTipoServicio = New System.Windows.Forms.ComboBox()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Button4 = New System.Windows.Forms.Button()
         Me.CmdEliminar = New System.Windows.Forms.Button()
         Me.CmdGuardar = New System.Windows.Forms.Button()
         Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
@@ -100,7 +101,7 @@ Partial Class FrmContratosProveedor
         Me.BtnCargar = New System.Windows.Forms.Button()
         Me.BtnAbrir = New System.Windows.Forms.Button()
         Me.TrueDBGridConsultas = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
-        Me.Button4 = New System.Windows.Forms.Button()
+        Me.OpenFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
@@ -304,6 +305,18 @@ Partial Class FrmContratosProveedor
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Articulos"
         Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'Button4
+        '
+        Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
+        Me.Button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button4.Location = New System.Drawing.Point(668, 51)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(82, 34)
+        Me.Button4.TabIndex = 365
+        Me.Button4.Text = "Importar"
+        Me.Button4.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button4.UseVisualStyleBackColor = True
         '
         'CmdEliminar
         '
@@ -841,7 +854,7 @@ Partial Class FrmContratosProveedor
         Me.GroupBoxImportar.Controls.Add(Me.BtnCargar)
         Me.GroupBoxImportar.Controls.Add(Me.BtnAbrir)
         Me.GroupBoxImportar.Controls.Add(Me.TrueDBGridConsultas)
-        Me.GroupBoxImportar.Location = New System.Drawing.Point(897, 23)
+        Me.GroupBoxImportar.Location = New System.Drawing.Point(961, 12)
         Me.GroupBoxImportar.Name = "GroupBoxImportar"
         Me.GroupBoxImportar.Size = New System.Drawing.Size(887, 429)
         Me.GroupBoxImportar.TabIndex = 365
@@ -947,29 +960,19 @@ Partial Class FrmContratosProveedor
         Me.TrueDBGridConsultas.Text = "C1TrueDBGrid1"
         Me.TrueDBGridConsultas.PropBag = resources.GetString("TrueDBGridConsultas.PropBag")
         '
-        'Button4
-        '
-        Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
-        Me.Button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button4.Location = New System.Drawing.Point(668, 51)
-        Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(82, 34)
-        Me.Button4.TabIndex = 365
-        Me.Button4.Text = "Importar"
-        Me.Button4.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button4.UseVisualStyleBackColor = True
-        '
         'FrmContratosProveedor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(903, 450)
+        Me.ClientSize = New System.Drawing.Size(897, 450)
         Me.Controls.Add(Me.GroupBoxImportar)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button8)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.GroupBox1)
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "FrmContratosProveedor"
         Me.Text = "Contrato de Servicios Proveedor"
         Me.TabControl1.ResumeLayout(False)
@@ -1067,4 +1070,5 @@ Partial Class FrmContratosProveedor
     Friend WithEvents BtnAbrir As Button
     Friend WithEvents TrueDBGridConsultas As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents Button4 As Button
+    Friend WithEvents OpenFileDialog As OpenFileDialog
 End Class

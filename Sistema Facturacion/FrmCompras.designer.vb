@@ -917,7 +917,7 @@ Partial Class FrmCompras
         Me.GroupBoxImportar.Controls.Add(Me.BtnCargar)
         Me.GroupBoxImportar.Controls.Add(Me.BtnAbrir)
         Me.GroupBoxImportar.Controls.Add(Me.TrueDBGridConsultas)
-        Me.GroupBoxImportar.Location = New System.Drawing.Point(944, 12)
+        Me.GroupBoxImportar.Location = New System.Drawing.Point(906, 102)
         Me.GroupBoxImportar.Name = "GroupBoxImportar"
         Me.GroupBoxImportar.Size = New System.Drawing.Size(872, 429)
         Me.GroupBoxImportar.TabIndex = 270
@@ -1027,7 +1027,7 @@ Partial Class FrmCompras
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(884, 502)
+        Me.ClientSize = New System.Drawing.Size(889, 502)
         Me.Controls.Add(Me.GroupBoxImportar)
         Me.Controls.Add(Me.ChkSolcitudxCta)
         Me.Controls.Add(Me.ChkAplicarCtasXPagar)

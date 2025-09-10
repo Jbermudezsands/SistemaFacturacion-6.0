@@ -111,11 +111,13 @@
     <Compile Include="Clases\Tablas\TablaContrato_Proveedor.vb" />
     <Compile Include="Clases\Tablas\TablaDetalleCompras.vb" />
     <Compile Include="Clases\Tablas\TablaDetalleFactura.vb" />
+    <Compile Include="Clases\Tablas\TablaDetalle_Contratos_Productos.vb" />
     <Compile Include="Clases\Tablas\TablaDetalle_MetodoCompras.vb" />
     <Compile Include="Clases\Tablas\TablaDetalle_MetodoFacturas.vb" />
     <Compile Include="Clases\Tablas\TablaFactura.vb" />
     <Compile Include="Clases\Consultas\Lote.vb" />
     <Compile Include="Clases\Tablas\TablaLotexProducto.vb" />
+    <Compile Include="Clases\Tablas\TablaProductos.vb" />
     <Compile Include="FrmContenedores.Designer.vb">
       <DependentUpon>FrmContenedores.vb</DependentUpon>
     </Compile>

@@ -4,7 +4,7 @@ Public Class FrmListaOrdenCompra
     Private Sub BtnActualizar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnActualizar.Click
         Dim SqlString As String, DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet
 
-        SqlString = "SELECT  Compras.Numero_Compra, Compras.Fecha_Compra, Compras.MonedaCompra, Compras.Nombre_Proveedor, Detalle_Solicitud.Numero_Solicitud, Compras.Estatus, Compras.FechaHora FROM Compras LEFT OUTER JOIN Detalle_Solicitud ON Compras.Numero_Compra = Detalle_Solicitud.Orden_Compra  " & _
+        SqlString = "SELECT  DISTINCT Compras.Numero_Compra, Compras.Fecha_Compra, Compras.MonedaCompra, Compras.Nombre_Proveedor, Detalle_Solicitud.Numero_Solicitud, Compras.Estatus, Compras.FechaHora FROM Compras LEFT OUTER JOIN Detalle_Solicitud ON Compras.Numero_Compra = Detalle_Solicitud.Orden_Compra  " &
                     "WHERE (Compras.Tipo_Compra = 'Orden de Compra') AND (Compras.Cancelado = 0) ORDER BY Compras.Estatus DESC, Compras.Fecha_Compra DESC, Compras.Numero_Compra"
         MiConexion.Open()
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
