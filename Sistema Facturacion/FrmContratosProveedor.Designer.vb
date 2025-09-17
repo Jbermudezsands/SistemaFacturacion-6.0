@@ -24,7 +24,7 @@ Partial Class FrmContratosProveedor
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmContratosProveedor))
         Me.TabControl1 = New System.Windows.Forms.TabControl()
-        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.Generales = New System.Windows.Forms.TabPage()
         Me.Label20 = New System.Windows.Forms.Label()
         Me.CmbEstado = New System.Windows.Forms.ComboBox()
         Me.Label14 = New System.Windows.Forms.Label()
@@ -41,12 +41,12 @@ Partial Class FrmContratosProveedor
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.CmbTipoServicio = New System.Windows.Forms.ComboBox()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Articulos = New System.Windows.Forms.TabPage()
         Me.Button4 = New System.Windows.Forms.Button()
         Me.CmdEliminar = New System.Windows.Forms.Button()
         Me.CmdGuardar = New System.Windows.Forms.Button()
         Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
-        Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.Cobertura = New System.Windows.Forms.TabPage()
         Me.TxtDomingoFin = New System.Windows.Forms.MaskedTextBox()
         Me.TxtDomingoInicio = New System.Windows.Forms.MaskedTextBox()
         Me.TxtSabadoFin = New System.Windows.Forms.MaskedTextBox()
@@ -103,10 +103,10 @@ Partial Class FrmContratosProveedor
         Me.TrueDBGridConsultas = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
         Me.OpenFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.TabControl1.SuspendLayout()
-        Me.TabPage1.SuspendLayout()
-        Me.TabPage2.SuspendLayout()
+        Me.Generales.SuspendLayout()
+        Me.Articulos.SuspendLayout()
         CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.TabPage3.SuspendLayout()
+        Me.Cobertura.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         CType(Me.CboCodigoProveedor, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBoxImportar.SuspendLayout()
@@ -115,40 +115,40 @@ Partial Class FrmContratosProveedor
         '
         'TabControl1
         '
-        Me.TabControl1.Controls.Add(Me.TabPage1)
-        Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Controls.Add(Me.TabPage3)
+        Me.TabControl1.Controls.Add(Me.Generales)
+        Me.TabControl1.Controls.Add(Me.Articulos)
+        Me.TabControl1.Controls.Add(Me.Cobertura)
         Me.TabControl1.Location = New System.Drawing.Point(12, 176)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(776, 246)
         Me.TabControl1.TabIndex = 1
         '
-        'TabPage1
+        'Generales
         '
-        Me.TabPage1.Controls.Add(Me.Label20)
-        Me.TabPage1.Controls.Add(Me.CmbEstado)
-        Me.TabPage1.Controls.Add(Me.Label14)
-        Me.TabPage1.Controls.Add(Me.TxtComentarios)
-        Me.TabPage1.Controls.Add(Me.CmbDiasResolucion)
-        Me.TabPage1.Controls.Add(Me.TxtDiasResolucion)
-        Me.TabPage1.Controls.Add(Me.Label12)
-        Me.TabPage1.Controls.Add(Me.CmbDiasRespuesta)
-        Me.TabPage1.Controls.Add(Me.TxtDiasRespuesta)
-        Me.TabPage1.Controls.Add(Me.Label8)
-        Me.TabPage1.Controls.Add(Me.Label7)
-        Me.TabPage1.Controls.Add(Me.txtModelo)
-        Me.TabPage1.Controls.Add(Me.CmbTipoContrato)
-        Me.TabPage1.Controls.Add(Me.Label6)
-        Me.TabPage1.Controls.Add(Me.Label5)
-        Me.TabPage1.Controls.Add(Me.CmbTipoServicio)
-        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(768, 220)
-        Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "Dato Generales"
-        Me.TabPage1.UseVisualStyleBackColor = True
+        Me.Generales.Controls.Add(Me.Label20)
+        Me.Generales.Controls.Add(Me.CmbEstado)
+        Me.Generales.Controls.Add(Me.Label14)
+        Me.Generales.Controls.Add(Me.TxtComentarios)
+        Me.Generales.Controls.Add(Me.CmbDiasResolucion)
+        Me.Generales.Controls.Add(Me.TxtDiasResolucion)
+        Me.Generales.Controls.Add(Me.Label12)
+        Me.Generales.Controls.Add(Me.CmbDiasRespuesta)
+        Me.Generales.Controls.Add(Me.TxtDiasRespuesta)
+        Me.Generales.Controls.Add(Me.Label8)
+        Me.Generales.Controls.Add(Me.Label7)
+        Me.Generales.Controls.Add(Me.txtModelo)
+        Me.Generales.Controls.Add(Me.CmbTipoContrato)
+        Me.Generales.Controls.Add(Me.Label6)
+        Me.Generales.Controls.Add(Me.Label5)
+        Me.Generales.Controls.Add(Me.CmbTipoServicio)
+        Me.Generales.Location = New System.Drawing.Point(4, 22)
+        Me.Generales.Name = "Generales"
+        Me.Generales.Padding = New System.Windows.Forms.Padding(3)
+        Me.Generales.Size = New System.Drawing.Size(768, 220)
+        Me.Generales.TabIndex = 0
+        Me.Generales.Text = "Dato Generales"
+        Me.Generales.UseVisualStyleBackColor = True
         '
         'Label20
         '
@@ -292,19 +292,19 @@ Partial Class FrmContratosProveedor
         Me.CmbTipoServicio.Size = New System.Drawing.Size(121, 21)
         Me.CmbTipoServicio.TabIndex = 246
         '
-        'TabPage2
+        'Articulos
         '
-        Me.TabPage2.Controls.Add(Me.Button4)
-        Me.TabPage2.Controls.Add(Me.CmdEliminar)
-        Me.TabPage2.Controls.Add(Me.CmdGuardar)
-        Me.TabPage2.Controls.Add(Me.TrueDBGridComponentes)
-        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(768, 220)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Articulos"
-        Me.TabPage2.UseVisualStyleBackColor = True
+        Me.Articulos.Controls.Add(Me.Button4)
+        Me.Articulos.Controls.Add(Me.CmdEliminar)
+        Me.Articulos.Controls.Add(Me.CmdGuardar)
+        Me.Articulos.Controls.Add(Me.TrueDBGridComponentes)
+        Me.Articulos.Location = New System.Drawing.Point(4, 22)
+        Me.Articulos.Name = "Articulos"
+        Me.Articulos.Padding = New System.Windows.Forms.Padding(3)
+        Me.Articulos.Size = New System.Drawing.Size(768, 220)
+        Me.Articulos.TabIndex = 1
+        Me.Articulos.Text = "Articulos"
+        Me.Articulos.UseVisualStyleBackColor = True
         '
         'Button4
         '
@@ -360,38 +360,38 @@ Partial Class FrmContratosProveedor
         Me.TrueDBGridComponentes.Text = "C1TrueDBGrid1"
         Me.TrueDBGridComponentes.PropBag = resources.GetString("TrueDBGridComponentes.PropBag")
         '
-        'TabPage3
+        'Cobertura
         '
-        Me.TabPage3.Controls.Add(Me.TxtDomingoFin)
-        Me.TabPage3.Controls.Add(Me.TxtDomingoInicio)
-        Me.TabPage3.Controls.Add(Me.TxtSabadoFin)
-        Me.TabPage3.Controls.Add(Me.TxtSabadoInicio)
-        Me.TabPage3.Controls.Add(Me.TxtViernesFin)
-        Me.TabPage3.Controls.Add(Me.TxtViernesInicio)
-        Me.TabPage3.Controls.Add(Me.TxtJuevesFin)
-        Me.TabPage3.Controls.Add(Me.TxtJuevesInicio)
-        Me.TabPage3.Controls.Add(Me.TxtMiercolesFin)
-        Me.TabPage3.Controls.Add(Me.TxtMiercolesInicio)
-        Me.TabPage3.Controls.Add(Me.TxtMartesFin)
-        Me.TabPage3.Controls.Add(Me.TxtMartesInicio)
-        Me.TabPage3.Controls.Add(Me.Label10)
-        Me.TabPage3.Controls.Add(Me.Label9)
-        Me.TabPage3.Controls.Add(Me.TxtLunesFin)
-        Me.TabPage3.Controls.Add(Me.TxtLunesInicio)
-        Me.TabPage3.Controls.Add(Me.ChkDomingo)
-        Me.TabPage3.Controls.Add(Me.ChkSabado)
-        Me.TabPage3.Controls.Add(Me.ChkViernes)
-        Me.TabPage3.Controls.Add(Me.ChkJueves)
-        Me.TabPage3.Controls.Add(Me.ChkMiercoles)
-        Me.TabPage3.Controls.Add(Me.ChkMartes)
-        Me.TabPage3.Controls.Add(Me.ChkLunes)
-        Me.TabPage3.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage3.Size = New System.Drawing.Size(768, 220)
-        Me.TabPage3.TabIndex = 2
-        Me.TabPage3.Text = "Cobertura"
-        Me.TabPage3.UseVisualStyleBackColor = True
+        Me.Cobertura.Controls.Add(Me.TxtDomingoFin)
+        Me.Cobertura.Controls.Add(Me.TxtDomingoInicio)
+        Me.Cobertura.Controls.Add(Me.TxtSabadoFin)
+        Me.Cobertura.Controls.Add(Me.TxtSabadoInicio)
+        Me.Cobertura.Controls.Add(Me.TxtViernesFin)
+        Me.Cobertura.Controls.Add(Me.TxtViernesInicio)
+        Me.Cobertura.Controls.Add(Me.TxtJuevesFin)
+        Me.Cobertura.Controls.Add(Me.TxtJuevesInicio)
+        Me.Cobertura.Controls.Add(Me.TxtMiercolesFin)
+        Me.Cobertura.Controls.Add(Me.TxtMiercolesInicio)
+        Me.Cobertura.Controls.Add(Me.TxtMartesFin)
+        Me.Cobertura.Controls.Add(Me.TxtMartesInicio)
+        Me.Cobertura.Controls.Add(Me.Label10)
+        Me.Cobertura.Controls.Add(Me.Label9)
+        Me.Cobertura.Controls.Add(Me.TxtLunesFin)
+        Me.Cobertura.Controls.Add(Me.TxtLunesInicio)
+        Me.Cobertura.Controls.Add(Me.ChkDomingo)
+        Me.Cobertura.Controls.Add(Me.ChkSabado)
+        Me.Cobertura.Controls.Add(Me.ChkViernes)
+        Me.Cobertura.Controls.Add(Me.ChkJueves)
+        Me.Cobertura.Controls.Add(Me.ChkMiercoles)
+        Me.Cobertura.Controls.Add(Me.ChkMartes)
+        Me.Cobertura.Controls.Add(Me.ChkLunes)
+        Me.Cobertura.Location = New System.Drawing.Point(4, 22)
+        Me.Cobertura.Name = "Cobertura"
+        Me.Cobertura.Padding = New System.Windows.Forms.Padding(3)
+        Me.Cobertura.Size = New System.Drawing.Size(768, 220)
+        Me.Cobertura.TabIndex = 2
+        Me.Cobertura.Text = "Cobertura"
+        Me.Cobertura.UseVisualStyleBackColor = True
         '
         'TxtDomingoFin
         '
@@ -854,7 +854,7 @@ Partial Class FrmContratosProveedor
         Me.GroupBoxImportar.Controls.Add(Me.BtnCargar)
         Me.GroupBoxImportar.Controls.Add(Me.BtnAbrir)
         Me.GroupBoxImportar.Controls.Add(Me.TrueDBGridConsultas)
-        Me.GroupBoxImportar.Location = New System.Drawing.Point(961, 12)
+        Me.GroupBoxImportar.Location = New System.Drawing.Point(940, 12)
         Me.GroupBoxImportar.Name = "GroupBoxImportar"
         Me.GroupBoxImportar.Size = New System.Drawing.Size(887, 429)
         Me.GroupBoxImportar.TabIndex = 365
@@ -976,12 +976,12 @@ Partial Class FrmContratosProveedor
         Me.Name = "FrmContratosProveedor"
         Me.Text = "Contrato de Servicios Proveedor"
         Me.TabControl1.ResumeLayout(False)
-        Me.TabPage1.ResumeLayout(False)
-        Me.TabPage1.PerformLayout()
-        Me.TabPage2.ResumeLayout(False)
+        Me.Generales.ResumeLayout(False)
+        Me.Generales.PerformLayout()
+        Me.Articulos.ResumeLayout(False)
         CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.TabPage3.ResumeLayout(False)
-        Me.TabPage3.PerformLayout()
+        Me.Cobertura.ResumeLayout(False)
+        Me.Cobertura.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         CType(Me.CboCodigoProveedor, System.ComponentModel.ISupportInitialize).EndInit()
@@ -993,7 +993,7 @@ Partial Class FrmContratosProveedor
     End Sub
 
     Friend WithEvents TabControl1 As TabControl
-    Friend WithEvents TabPage1 As TabPage
+    Friend WithEvents Generales As TabPage
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents Label4 As Label
     Friend WithEvents TxtTelefono As TextBox
@@ -1004,8 +1004,8 @@ Partial Class FrmContratosProveedor
     Friend WithEvents TxtNumeroContrato As TextBox
     Friend WithEvents TxtNombres As TextBox
     Friend WithEvents Label2 As Label
-    Friend WithEvents TabPage2 As TabPage
-    Friend WithEvents TabPage3 As TabPage
+    Friend WithEvents Articulos As TabPage
+    Friend WithEvents Cobertura As TabPage
     Friend WithEvents Label16 As Label
     Friend WithEvents CboCodigoProveedor As C1.Win.C1List.C1Combo
     Friend WithEvents TxtDescripcion As TextBox

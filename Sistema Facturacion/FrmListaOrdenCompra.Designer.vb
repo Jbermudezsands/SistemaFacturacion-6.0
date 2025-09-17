@@ -20,15 +20,15 @@ Partial Class FrmListaOrdenCompra
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmListaOrdenCompra))
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.BtnActualizar = New System.Windows.Forms.Button
-        Me.BtnVer = New System.Windows.Forms.Button
-        Me.BtnSalir = New System.Windows.Forms.Button
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.TDGridSolicitud = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.BtnActualizar = New System.Windows.Forms.Button()
+        Me.BtnVer = New System.Windows.Forms.Button()
+        Me.BtnSalir = New System.Windows.Forms.Button()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.TDGridSolicitud = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -41,7 +41,7 @@ Partial Class FrmListaOrdenCompra
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.Button2.Location = New System.Drawing.Point(817, 64)
         Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(114, 56)
+        Me.Button2.Size = New System.Drawing.Size(121, 56)
         Me.Button2.TabIndex = 257
         Me.Button2.Text = "Nuevo"
         Me.Button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -67,7 +67,7 @@ Partial Class FrmListaOrdenCompra
         Me.BtnActualizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.BtnActualizar.Location = New System.Drawing.Point(817, 181)
         Me.BtnActualizar.Name = "BtnActualizar"
-        Me.BtnActualizar.Size = New System.Drawing.Size(114, 56)
+        Me.BtnActualizar.Size = New System.Drawing.Size(121, 56)
         Me.BtnActualizar.TabIndex = 254
         Me.BtnActualizar.Text = "Actualiza"
         Me.BtnActualizar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -80,7 +80,7 @@ Partial Class FrmListaOrdenCompra
         Me.BtnVer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.BtnVer.Location = New System.Drawing.Point(817, 122)
         Me.BtnVer.Name = "BtnVer"
-        Me.BtnVer.Size = New System.Drawing.Size(114, 56)
+        Me.BtnVer.Size = New System.Drawing.Size(121, 56)
         Me.BtnVer.TabIndex = 253
         Me.BtnVer.Text = "Ver"
         Me.BtnVer.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -143,7 +143,7 @@ Partial Class FrmListaOrdenCompra
         Me.TDGridSolicitud.Name = "TDGridSolicitud"
         Me.TDGridSolicitud.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TDGridSolicitud.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TDGridSolicitud.PreviewInfo.ZoomFactor = 75
+        Me.TDGridSolicitud.PreviewInfo.ZoomFactor = 75.0R
         Me.TDGridSolicitud.PrintInfo.PageSettings = CType(resources.GetObject("TDGridSolicitud.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
         Me.TDGridSolicitud.Size = New System.Drawing.Size(801, 360)
         Me.TDGridSolicitud.TabIndex = 248
@@ -154,7 +154,7 @@ Partial Class FrmListaOrdenCompra
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(937, 439)
+        Me.ClientSize = New System.Drawing.Size(942, 439)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.BtnActualizar)

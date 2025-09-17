@@ -28,16 +28,16 @@ Partial Class FrmContenedores
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.ChkActivo = New System.Windows.Forms.CheckBox()
+        Me.CmdPrecios = New System.Windows.Forms.Button()
         Me.CboCodigoContenedor = New C1.Win.C1List.C1Combo()
         Me.TxtNombre = New System.Windows.Forms.TextBox()
         Me.LblNombre = New System.Windows.Forms.Label()
         Me.LblCodigo = New System.Windows.Forms.Label()
-        Me.CmdPrecios = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.CmdGrabar = New System.Windows.Forms.Button()
         Me.ButtonBorrar = New System.Windows.Forms.Button()
         Me.Button8 = New System.Windows.Forms.Button()
-        Me.ChkActivo = New System.Windows.Forms.CheckBox()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -102,6 +102,25 @@ Partial Class FrmContenedores
         Me.TabPage1.Text = "Registro Contenedores"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
+        'ChkActivo
+        '
+        Me.ChkActivo.AutoSize = True
+        Me.ChkActivo.Location = New System.Drawing.Point(122, 81)
+        Me.ChkActivo.Name = "ChkActivo"
+        Me.ChkActivo.Size = New System.Drawing.Size(56, 17)
+        Me.ChkActivo.TabIndex = 172
+        Me.ChkActivo.Text = "Activo"
+        Me.ChkActivo.UseVisualStyleBackColor = True
+        '
+        'CmdPrecios
+        '
+        Me.CmdPrecios.Image = CType(resources.GetObject("CmdPrecios.Image"), System.Drawing.Image)
+        Me.CmdPrecios.Location = New System.Drawing.Point(337, 18)
+        Me.CmdPrecios.Name = "CmdPrecios"
+        Me.CmdPrecios.Size = New System.Drawing.Size(29, 30)
+        Me.CmdPrecios.TabIndex = 171
+        Me.CmdPrecios.UseVisualStyleBackColor = True
+        '
         'CboCodigoContenedor
         '
         Me.CboCodigoContenedor.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
@@ -156,15 +175,6 @@ Partial Class FrmContenedores
         Me.LblCodigo.TabIndex = 128
         Me.LblCodigo.Text = "Codigo Contendor"
         '
-        'CmdPrecios
-        '
-        Me.CmdPrecios.Image = CType(resources.GetObject("CmdPrecios.Image"), System.Drawing.Image)
-        Me.CmdPrecios.Location = New System.Drawing.Point(337, 18)
-        Me.CmdPrecios.Name = "CmdPrecios"
-        Me.CmdPrecios.Size = New System.Drawing.Size(29, 30)
-        Me.CmdPrecios.TabIndex = 171
-        Me.CmdPrecios.UseVisualStyleBackColor = True
-        '
         'Button2
         '
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
@@ -215,16 +225,6 @@ Partial Class FrmContenedores
         Me.Button8.Text = "Salir"
         Me.Button8.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.Button8.UseVisualStyleBackColor = True
-        '
-        'ChkActivo
-        '
-        Me.ChkActivo.AutoSize = True
-        Me.ChkActivo.Location = New System.Drawing.Point(122, 81)
-        Me.ChkActivo.Name = "ChkActivo"
-        Me.ChkActivo.Size = New System.Drawing.Size(56, 17)
-        Me.ChkActivo.TabIndex = 172
-        Me.ChkActivo.Text = "Activo"
-        Me.ChkActivo.UseVisualStyleBackColor = True
         '
         'FrmContenedores
         '

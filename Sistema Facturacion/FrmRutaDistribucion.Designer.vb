@@ -20,26 +20,26 @@ Partial Class FrmRutaDistribucion
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmRutaDistribucion))
-        Me.TabControl1 = New System.Windows.Forms.TabControl
-        Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.CmbTurno = New System.Windows.Forms.ComboBox
-        Me.Label15 = New System.Windows.Forms.Label
-        Me.TxtGrado = New System.Windows.Forms.TextBox
-        Me.Label14 = New System.Windows.Forms.Label
-        Me.TxtAño = New System.Windows.Forms.TextBox
-        Me.Label13 = New System.Windows.Forms.Label
-        Me.CmbCodigo = New C1.Win.C1List.C1Combo
-        Me.TxtDescripcion = New System.Windows.Forms.TextBox
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.Label16 = New System.Windows.Forms.Label
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.PictureBox3 = New System.Windows.Forms.PictureBox
-        Me.PictureBox4 = New System.Windows.Forms.PictureBox
-        Me.CmdGrabar = New System.Windows.Forms.Button
-        Me.ButtonBorrar = New System.Windows.Forms.Button
-        Me.CmdNuevo = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.CmbTurno = New System.Windows.Forms.ComboBox()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.TxtGrado = New System.Windows.Forms.TextBox()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.TxtAño = New System.Windows.Forms.TextBox()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.CmbCodigo = New C1.Win.C1List.C1Combo()
+        Me.TxtDescripcion = New System.Windows.Forms.TextBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.Label16 = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox4 = New System.Windows.Forms.PictureBox()
+        Me.CmdGrabar = New System.Windows.Forms.Button()
+        Me.ButtonBorrar = New System.Windows.Forms.Button()
+        Me.CmdNuevo = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         CType(Me.CmbCodigo, System.ComponentModel.ISupportInitialize).BeginInit()

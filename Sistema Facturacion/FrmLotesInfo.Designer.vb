@@ -194,7 +194,7 @@ Partial Class FrmLotesInfo
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(94, 47)
         Me.Button1.TabIndex = 214
-        Me.Button1.Text = "Editar"
+        Me.Button1.Text = "Grabar"
         Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button1.UseVisualStyleBackColor = True
         '

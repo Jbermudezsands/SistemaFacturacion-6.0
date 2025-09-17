@@ -26,7 +26,10 @@
 
 
     Private Sub BtnContratoNuevo_Click(sender As Object, e As EventArgs) Handles BtnContratoNuevo.Click
+        FrmContratosProveedor.Numero_Contrato = "-----0-----"
         FrmContratosProveedor.ShowDialog()
+
+        Cargar_Grid()
     End Sub
 
     Private Sub CmdCerrar_Click(sender As Object, e As EventArgs) Handles CmdCerrar.Click
@@ -51,10 +54,22 @@
         My.Forms.FrmContratosProveedor.Numero_Contrato = Numero_Contrato
         My.Forms.FrmContratosProveedor.ShowDialog()
 
+        Cargar_Grid()
 
     End Sub
 
     Private Sub BtnConsultar_Click(sender As Object, e As EventArgs) Handles BtnConsultar.Click
+        Cargar_Grid()
+    End Sub
+
+    Private Sub BtnAnular_Click(sender As Object, e As EventArgs) Handles BtnAnular.Click
+        Dim Numero_Contrato As String
+        If Me.TDGridListadoNomina.Columns("Numero_Contrato").Text = "" Then
+            Exit Sub
+        End If
+
+        Numero_Contrato = Me.TDGridListadoNomina.Columns("Numero_Contrato").Text
+        UpdateEstadoContrato(Numero_Contrato, "Cancelado")
         Cargar_Grid()
     End Sub
 End Class

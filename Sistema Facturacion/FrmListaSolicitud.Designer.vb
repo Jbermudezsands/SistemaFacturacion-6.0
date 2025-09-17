@@ -19,21 +19,21 @@ Partial Class FrmListaSolicitud
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmListaSolicitud))
-        Me.TDGridSolicitud = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.BtnActualizar = New System.Windows.Forms.Button
-        Me.BtnVer = New System.Windows.Forms.Button
-        Me.BtnSalir = New System.Windows.Forms.Button
-        Me.CmdNuevo = New System.Windows.Forms.Button
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.OptSinProcesar = New System.Windows.Forms.RadioButton
-        Me.OptTodos = New System.Windows.Forms.RadioButton
+        Me.TDGridSolicitud = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.BtnActualizar = New System.Windows.Forms.Button()
+        Me.BtnVer = New System.Windows.Forms.Button()
+        Me.BtnSalir = New System.Windows.Forms.Button()
+        Me.CmdNuevo = New System.Windows.Forms.Button()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.OptSinProcesar = New System.Windows.Forms.RadioButton()
+        Me.OptTodos = New System.Windows.Forms.RadioButton()
         Me.BindingConsultas = New System.Windows.Forms.BindingSource(Me.components)
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -54,7 +54,7 @@ Partial Class FrmListaSolicitud
         Me.TDGridSolicitud.Name = "TDGridSolicitud"
         Me.TDGridSolicitud.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TDGridSolicitud.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TDGridSolicitud.PreviewInfo.ZoomFactor = 75
+        Me.TDGridSolicitud.PreviewInfo.ZoomFactor = 75.0R
         Me.TDGridSolicitud.PrintInfo.PageSettings = CType(resources.GetObject("TDGridSolicitud.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
         Me.TDGridSolicitud.Size = New System.Drawing.Size(965, 360)
         Me.TDGridSolicitud.TabIndex = 131
@@ -98,9 +98,9 @@ Partial Class FrmListaSolicitud
         Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
         Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button1.Location = New System.Drawing.Point(986, 303)
+        Me.Button1.Location = New System.Drawing.Point(980, 303)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(114, 56)
+        Me.Button1.Size = New System.Drawing.Size(126, 56)
         Me.Button1.TabIndex = 245
         Me.Button1.Text = "Anular"
         Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -111,9 +111,9 @@ Partial Class FrmListaSolicitud
         Me.BtnActualizar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnActualizar.Image = CType(resources.GetObject("BtnActualizar.Image"), System.Drawing.Image)
         Me.BtnActualizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnActualizar.Location = New System.Drawing.Point(986, 181)
+        Me.BtnActualizar.Location = New System.Drawing.Point(980, 181)
         Me.BtnActualizar.Name = "BtnActualizar"
-        Me.BtnActualizar.Size = New System.Drawing.Size(114, 56)
+        Me.BtnActualizar.Size = New System.Drawing.Size(126, 56)
         Me.BtnActualizar.TabIndex = 244
         Me.BtnActualizar.Text = "Actualiza"
         Me.BtnActualizar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -124,9 +124,9 @@ Partial Class FrmListaSolicitud
         Me.BtnVer.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnVer.Image = CType(resources.GetObject("BtnVer.Image"), System.Drawing.Image)
         Me.BtnVer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnVer.Location = New System.Drawing.Point(986, 122)
+        Me.BtnVer.Location = New System.Drawing.Point(980, 123)
         Me.BtnVer.Name = "BtnVer"
-        Me.BtnVer.Size = New System.Drawing.Size(114, 56)
+        Me.BtnVer.Size = New System.Drawing.Size(126, 56)
         Me.BtnVer.TabIndex = 243
         Me.BtnVer.Text = "Ver"
         Me.BtnVer.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -137,9 +137,9 @@ Partial Class FrmListaSolicitud
         Me.BtnSalir.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnSalir.Image = CType(resources.GetObject("BtnSalir.Image"), System.Drawing.Image)
         Me.BtnSalir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnSalir.Location = New System.Drawing.Point(986, 368)
+        Me.BtnSalir.Location = New System.Drawing.Point(980, 368)
         Me.BtnSalir.Name = "BtnSalir"
-        Me.BtnSalir.Size = New System.Drawing.Size(114, 56)
+        Me.BtnSalir.Size = New System.Drawing.Size(126, 56)
         Me.BtnSalir.TabIndex = 242
         Me.BtnSalir.Text = "Salir"
         Me.BtnSalir.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -150,9 +150,9 @@ Partial Class FrmListaSolicitud
         Me.CmdNuevo.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CmdNuevo.Image = CType(resources.GetObject("CmdNuevo.Image"), System.Drawing.Image)
         Me.CmdNuevo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.CmdNuevo.Location = New System.Drawing.Point(986, 243)
+        Me.CmdNuevo.Location = New System.Drawing.Point(980, 243)
         Me.CmdNuevo.Name = "CmdNuevo"
-        Me.CmdNuevo.Size = New System.Drawing.Size(114, 54)
+        Me.CmdNuevo.Size = New System.Drawing.Size(126, 54)
         Me.CmdNuevo.TabIndex = 246
         Me.CmdNuevo.Text = "Autorizar"
         Me.CmdNuevo.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -163,9 +163,9 @@ Partial Class FrmListaSolicitud
         Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button2.Location = New System.Drawing.Point(986, 64)
+        Me.Button2.Location = New System.Drawing.Point(980, 64)
         Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(114, 56)
+        Me.Button2.Size = New System.Drawing.Size(126, 56)
         Me.Button2.TabIndex = 247
         Me.Button2.Text = "Nuevo"
         Me.Button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight

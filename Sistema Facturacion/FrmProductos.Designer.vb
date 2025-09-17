@@ -1,9 +1,9 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class FrmProductos
     Inherits System.Windows.Forms.Form
 
     'Form reemplaza a Dispose para limpiar la lista de componentes.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         If disposing AndAlso components IsNot Nothing Then
             components.Dispose()
@@ -17,7 +17,7 @@ Partial Class FrmProductos
     'NOTA: el Diseñador de Windows Forms necesita el siguiente procedimiento
     'Se puede modificar usando el Diseñador de Windows Forms.  
     'No lo modifique con el editor de código.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmProductos))
@@ -124,7 +124,6 @@ Partial Class FrmProductos
         Me.Label9 = New System.Windows.Forms.Label()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.Button8 = New System.Windows.Forms.Button()
-        Me.CmdNuevo = New System.Windows.Forms.Button()
         Me.ButtonBorrar = New System.Windows.Forms.Button()
         Me.ButtonAgregar = New System.Windows.Forms.Button()
         Me.CboCodigoProducto = New C1.Win.C1List.C1Combo()
@@ -152,6 +151,7 @@ Partial Class FrmProductos
         Me.Impuestos = New System.Windows.Forms.TabPage()
         Me.Alternativos = New System.Windows.Forms.TabPage()
         Me.Foto = New System.Windows.Forms.TabPage()
+        Me.CmdNuevo = New System.Windows.Forms.Button()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         CType(Me.TxtAumento, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -217,18 +217,18 @@ Partial Class FrmProductos
         'CmdINgresoAjuste
         '
         Me.CmdINgresoAjuste.Image = CType(resources.GetObject("CmdINgresoAjuste.Image"), System.Drawing.Image)
-        Me.CmdINgresoAjuste.Location = New System.Drawing.Point(237, 53)
+        Me.CmdINgresoAjuste.Location = New System.Drawing.Point(237, 49)
         Me.CmdINgresoAjuste.Name = "CmdINgresoAjuste"
-        Me.CmdINgresoAjuste.Size = New System.Drawing.Size(37, 38)
+        Me.CmdINgresoAjuste.Size = New System.Drawing.Size(35, 28)
         Me.CmdINgresoAjuste.TabIndex = 29
         Me.CmdINgresoAjuste.UseVisualStyleBackColor = True
         '
         'CmdGastosAjuste
         '
         Me.CmdGastosAjuste.Image = CType(resources.GetObject("CmdGastosAjuste.Image"), System.Drawing.Image)
-        Me.CmdGastosAjuste.Location = New System.Drawing.Point(237, 95)
+        Me.CmdGastosAjuste.Location = New System.Drawing.Point(237, 90)
         Me.CmdGastosAjuste.Name = "CmdGastosAjuste"
-        Me.CmdGastosAjuste.Size = New System.Drawing.Size(37, 38)
+        Me.CmdGastosAjuste.Size = New System.Drawing.Size(35, 28)
         Me.CmdGastosAjuste.TabIndex = 27
         Me.CmdGastosAjuste.UseVisualStyleBackColor = True
         '
@@ -269,7 +269,7 @@ Partial Class FrmProductos
         Me.CmdInventario.Image = CType(resources.GetObject("CmdInventario.Image"), System.Drawing.Image)
         Me.CmdInventario.Location = New System.Drawing.Point(237, 13)
         Me.CmdInventario.Name = "CmdInventario"
-        Me.CmdInventario.Size = New System.Drawing.Size(37, 40)
+        Me.CmdInventario.Size = New System.Drawing.Size(35, 28)
         Me.CmdInventario.TabIndex = 21
         Me.CmdInventario.UseVisualStyleBackColor = True
         '
@@ -332,16 +332,16 @@ Partial Class FrmProductos
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.Location = New System.Drawing.Point(243, 116)
         Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(29, 30)
+        Me.Button2.Size = New System.Drawing.Size(35, 28)
         Me.Button2.TabIndex = 170
         Me.Button2.UseVisualStyleBackColor = True
         '
         'CmdPrecios
         '
         Me.CmdPrecios.Image = CType(resources.GetObject("CmdPrecios.Image"), System.Drawing.Image)
-        Me.CmdPrecios.Location = New System.Drawing.Point(242, 14)
+        Me.CmdPrecios.Location = New System.Drawing.Point(242, 20)
         Me.CmdPrecios.Name = "CmdPrecios"
-        Me.CmdPrecios.Size = New System.Drawing.Size(29, 30)
+        Me.CmdPrecios.Size = New System.Drawing.Size(35, 28)
         Me.CmdPrecios.TabIndex = 169
         Me.CmdPrecios.UseVisualStyleBackColor = True
         '
@@ -443,7 +443,7 @@ Partial Class FrmProductos
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
         Me.Button1.Location = New System.Drawing.Point(241, 124)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(37, 34)
+        Me.Button1.Size = New System.Drawing.Size(35, 28)
         Me.Button1.TabIndex = 13
         Me.Button1.UseVisualStyleBackColor = True
         '
@@ -696,9 +696,9 @@ Partial Class FrmProductos
         '
         Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
         Me.Button5.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button5.Location = New System.Drawing.Point(73, 216)
+        Me.Button5.Location = New System.Drawing.Point(73, 210)
         Me.Button5.Name = "Button5"
-        Me.Button5.Size = New System.Drawing.Size(55, 49)
+        Me.Button5.Size = New System.Drawing.Size(55, 53)
         Me.Button5.TabIndex = 131
         Me.Button5.Text = "Quitar"
         Me.Button5.TextAlign = System.Drawing.ContentAlignment.BottomCenter
@@ -708,9 +708,9 @@ Partial Class FrmProductos
         '
         Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
         Me.Button4.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button4.Location = New System.Drawing.Point(12, 216)
+        Me.Button4.Location = New System.Drawing.Point(12, 210)
         Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(55, 49)
+        Me.Button4.Size = New System.Drawing.Size(55, 53)
         Me.Button4.TabIndex = 130
         Me.Button4.Text = "Agregar"
         Me.Button4.TextAlign = System.Drawing.ContentAlignment.BottomCenter
@@ -1084,7 +1084,7 @@ Partial Class FrmProductos
         Me.CmdBorrarComponente.Name = "CmdBorrarComponente"
         Me.CmdBorrarComponente.Size = New System.Drawing.Size(75, 67)
         Me.CmdBorrarComponente.TabIndex = 48
-        Me.CmdBorrarComponente.Text = "Borrar"
+        Me.CmdBorrarComponente.Text = "Quitar"
         Me.CmdBorrarComponente.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.CmdBorrarComponente.UseVisualStyleBackColor = True
         '
@@ -1125,7 +1125,7 @@ Partial Class FrmProductos
         Me.Button11.Name = "Button11"
         Me.Button11.Size = New System.Drawing.Size(75, 67)
         Me.Button11.TabIndex = 137
-        Me.Button11.Text = "Eliminar"
+        Me.Button11.Text = "Quitar"
         Me.Button11.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.Button11.UseVisualStyleBackColor = True
         '
@@ -1289,7 +1289,7 @@ Partial Class FrmProductos
         Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox1.Location = New System.Drawing.Point(-1, -1)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(714, 71)
+        Me.PictureBox1.Size = New System.Drawing.Size(813, 71)
         Me.PictureBox1.TabIndex = 3
         Me.PictureBox1.TabStop = False
         '
@@ -1299,7 +1299,7 @@ Partial Class FrmProductos
         Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label9.Location = New System.Drawing.Point(186, 29)
+        Me.Label9.Location = New System.Drawing.Point(250, 24)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(295, 13)
         Me.Label9.TabIndex = 4
@@ -1321,7 +1321,7 @@ Partial Class FrmProductos
         Me.Button8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
         Me.Button8.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button8.Location = New System.Drawing.Point(618, 473)
+        Me.Button8.Location = New System.Drawing.Point(698, 412)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(75, 66)
         Me.Button8.TabIndex = 21
@@ -1329,23 +1329,11 @@ Partial Class FrmProductos
         Me.Button8.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.Button8.UseVisualStyleBackColor = True
         '
-        'CmdNuevo
-        '
-        Me.CmdNuevo.Image = CType(resources.GetObject("CmdNuevo.Image"), System.Drawing.Image)
-        Me.CmdNuevo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdNuevo.Location = New System.Drawing.Point(11, 469)
-        Me.CmdNuevo.Name = "CmdNuevo"
-        Me.CmdNuevo.Size = New System.Drawing.Size(75, 67)
-        Me.CmdNuevo.TabIndex = 18
-        Me.CmdNuevo.Text = "Nuevo"
-        Me.CmdNuevo.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.CmdNuevo.UseVisualStyleBackColor = True
-        '
         'ButtonBorrar
         '
         Me.ButtonBorrar.Image = CType(resources.GetObject("ButtonBorrar.Image"), System.Drawing.Image)
         Me.ButtonBorrar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonBorrar.Location = New System.Drawing.Point(173, 469)
+        Me.ButtonBorrar.Location = New System.Drawing.Point(698, 332)
         Me.ButtonBorrar.Name = "ButtonBorrar"
         Me.ButtonBorrar.Size = New System.Drawing.Size(75, 67)
         Me.ButtonBorrar.TabIndex = 20
@@ -1358,7 +1346,7 @@ Partial Class FrmProductos
         '
         Me.ButtonAgregar.Image = CType(resources.GetObject("ButtonAgregar.Image"), System.Drawing.Image)
         Me.ButtonAgregar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonAgregar.Location = New System.Drawing.Point(92, 469)
+        Me.ButtonAgregar.Location = New System.Drawing.Point(702, 214)
         Me.ButtonAgregar.Name = "ButtonAgregar"
         Me.ButtonAgregar.Size = New System.Drawing.Size(75, 67)
         Me.ButtonAgregar.TabIndex = 19
@@ -1418,11 +1406,11 @@ Partial Class FrmProductos
         '
         'TxtNombreProducto
         '
-        Me.TxtNombreProducto.Location = New System.Drawing.Point(410, 82)
+        Me.TxtNombreProducto.Location = New System.Drawing.Point(410, 81)
         Me.TxtNombreProducto.Multiline = True
         Me.TxtNombreProducto.Name = "TxtNombreProducto"
         Me.TxtNombreProducto.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TxtNombreProducto.Size = New System.Drawing.Size(270, 38)
+        Me.TxtNombreProducto.Size = New System.Drawing.Size(363, 38)
         Me.TxtNombreProducto.TabIndex = 2
         '
         'Label3
@@ -1482,7 +1470,7 @@ Partial Class FrmProductos
         '
         'TextBox
         '
-        Me.TextBox.Location = New System.Drawing.Point(312, 484)
+        Me.TextBox.Location = New System.Drawing.Point(6, 294)
         Me.TextBox.Name = "TextBox"
         Me.TextBox.Size = New System.Drawing.Size(100, 20)
         Me.TextBox.TabIndex = 64
@@ -1497,22 +1485,23 @@ Partial Class FrmProductos
         Me.TabControl.Controls.Add(Me.Impuestos)
         Me.TabControl.Controls.Add(Me.Alternativos)
         Me.TabControl.Controls.Add(Me.Foto)
-        Me.TabControl.Location = New System.Drawing.Point(12, 117)
+        Me.TabControl.Location = New System.Drawing.Point(12, 119)
         Me.TabControl.Name = "TabControl"
         Me.TabControl.SelectedIndex = 0
-        Me.TabControl.Size = New System.Drawing.Size(684, 350)
+        Me.TabControl.Size = New System.Drawing.Size(684, 359)
         Me.TabControl.TabIndex = 65
         '
         'Generales
         '
         Me.Generales.Controls.Add(Me.GroupBox3)
+        Me.Generales.Controls.Add(Me.TextBox)
         Me.Generales.Controls.Add(Me.GroupBox5)
         Me.Generales.Controls.Add(Me.GroupBox2)
         Me.Generales.Controls.Add(Me.GroupBox1)
         Me.Generales.Location = New System.Drawing.Point(4, 22)
         Me.Generales.Name = "Generales"
         Me.Generales.Padding = New System.Windows.Forms.Padding(3)
-        Me.Generales.Size = New System.Drawing.Size(676, 324)
+        Me.Generales.Size = New System.Drawing.Size(676, 333)
         Me.Generales.TabIndex = 0
         Me.Generales.Text = "Generales"
         Me.Generales.UseVisualStyleBackColor = True
@@ -1524,7 +1513,7 @@ Partial Class FrmProductos
         Me.Inventario.Location = New System.Drawing.Point(4, 22)
         Me.Inventario.Name = "Inventario"
         Me.Inventario.Padding = New System.Windows.Forms.Padding(3)
-        Me.Inventario.Size = New System.Drawing.Size(676, 324)
+        Me.Inventario.Size = New System.Drawing.Size(676, 333)
         Me.Inventario.TabIndex = 1
         Me.Inventario.Text = "Inventario"
         Me.Inventario.UseVisualStyleBackColor = True
@@ -1536,7 +1525,7 @@ Partial Class FrmProductos
         Me.Historico.Location = New System.Drawing.Point(4, 22)
         Me.Historico.Name = "Historico"
         Me.Historico.Padding = New System.Windows.Forms.Padding(3)
-        Me.Historico.Size = New System.Drawing.Size(676, 324)
+        Me.Historico.Size = New System.Drawing.Size(676, 333)
         Me.Historico.TabIndex = 2
         Me.Historico.Text = "Historico"
         Me.Historico.UseVisualStyleBackColor = True
@@ -1551,7 +1540,7 @@ Partial Class FrmProductos
         Me.Componentes.Location = New System.Drawing.Point(4, 22)
         Me.Componentes.Name = "Componentes"
         Me.Componentes.Padding = New System.Windows.Forms.Padding(3)
-        Me.Componentes.Size = New System.Drawing.Size(676, 324)
+        Me.Componentes.Size = New System.Drawing.Size(676, 333)
         Me.Componentes.TabIndex = 3
         Me.Componentes.Text = "Lista Componentes"
         Me.Componentes.UseVisualStyleBackColor = True
@@ -1562,7 +1551,7 @@ Partial Class FrmProductos
         Me.Impuestos.Controls.Add(Me.GroupBox11)
         Me.Impuestos.Location = New System.Drawing.Point(4, 22)
         Me.Impuestos.Name = "Impuestos"
-        Me.Impuestos.Size = New System.Drawing.Size(676, 324)
+        Me.Impuestos.Size = New System.Drawing.Size(676, 333)
         Me.Impuestos.TabIndex = 4
         Me.Impuestos.Text = "Impuestos"
         Me.Impuestos.UseVisualStyleBackColor = True
@@ -1573,7 +1562,7 @@ Partial Class FrmProductos
         Me.Alternativos.Controls.Add(Me.GroupBox13)
         Me.Alternativos.Location = New System.Drawing.Point(4, 22)
         Me.Alternativos.Name = "Alternativos"
-        Me.Alternativos.Size = New System.Drawing.Size(676, 324)
+        Me.Alternativos.Size = New System.Drawing.Size(676, 333)
         Me.Alternativos.TabIndex = 5
         Me.Alternativos.Text = "Codigos Alternos"
         Me.Alternativos.UseVisualStyleBackColor = True
@@ -1585,18 +1574,30 @@ Partial Class FrmProductos
         Me.Foto.Controls.Add(Me.GroupBox6)
         Me.Foto.Location = New System.Drawing.Point(4, 22)
         Me.Foto.Name = "Foto"
-        Me.Foto.Size = New System.Drawing.Size(676, 324)
+        Me.Foto.Size = New System.Drawing.Size(676, 333)
         Me.Foto.TabIndex = 6
         Me.Foto.Text = "Foto"
         Me.Foto.UseVisualStyleBackColor = True
+        '
+        'CmdNuevo
+        '
+        Me.CmdNuevo.Image = CType(resources.GetObject("CmdNuevo.Image"), System.Drawing.Image)
+        Me.CmdNuevo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.CmdNuevo.Location = New System.Drawing.Point(698, 136)
+        Me.CmdNuevo.Name = "CmdNuevo"
+        Me.CmdNuevo.Size = New System.Drawing.Size(75, 67)
+        Me.CmdNuevo.TabIndex = 116
+        Me.CmdNuevo.Text = "Nuevo"
+        Me.CmdNuevo.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.CmdNuevo.UseVisualStyleBackColor = True
         '
         'FrmProductos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(709, 555)
+        Me.ClientSize = New System.Drawing.Size(780, 485)
+        Me.Controls.Add(Me.CmdNuevo)
         Me.Controls.Add(Me.TabControl)
-        Me.Controls.Add(Me.TextBox)
         Me.Controls.Add(Me.TxtNombreProducto)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.CboCodigoProducto)
@@ -1604,7 +1605,6 @@ Partial Class FrmProductos
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.ButtonBorrar)
         Me.Controls.Add(Me.ButtonAgregar)
-        Me.Controls.Add(Me.CmdNuevo)
         Me.Controls.Add(Me.Button8)
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.Label9)
@@ -1654,6 +1654,7 @@ Partial Class FrmProductos
         CType(Me.BindingCodigoAlternos, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabControl.ResumeLayout(False)
         Me.Generales.ResumeLayout(False)
+        Me.Generales.PerformLayout()
         Me.Inventario.ResumeLayout(False)
         Me.Historico.ResumeLayout(False)
         Me.Componentes.ResumeLayout(False)
@@ -1710,7 +1711,6 @@ Partial Class FrmProductos
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents Button8 As System.Windows.Forms.Button
     Friend WithEvents CboLinea As C1.Win.C1List.C1Combo
-    Friend WithEvents CmdNuevo As System.Windows.Forms.Button
     Friend WithEvents ButtonBorrar As System.Windows.Forms.Button
     Friend WithEvents ButtonAgregar As System.Windows.Forms.Button
     Friend WithEvents CboCodigoProducto As C1.Win.C1List.C1Combo
@@ -1797,5 +1797,5 @@ Partial Class FrmProductos
     Friend WithEvents Label32 As System.Windows.Forms.Label
     Friend WithEvents TxtMerma As System.Windows.Forms.TextBox
     Friend WithEvents Label31 As System.Windows.Forms.Label
-
+    Friend WithEvents CmdNuevo As Button
 End Class

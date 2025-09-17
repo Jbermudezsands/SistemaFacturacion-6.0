@@ -611,7 +611,7 @@ Partial Class FrmFacturasHistoricos
         Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button2.Location = New System.Drawing.Point(87, 12)
+        Me.Button2.Location = New System.Drawing.Point(86, 13)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(75, 66)
         Me.Button2.TabIndex = 187
@@ -623,6 +623,7 @@ Partial Class FrmFacturasHistoricos
         'ButtonBorrar
         '
         Me.ButtonBorrar.Image = CType(resources.GetObject("ButtonBorrar.Image"), System.Drawing.Image)
+        Me.ButtonBorrar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
         Me.ButtonBorrar.Location = New System.Drawing.Point(6, 12)
         Me.ButtonBorrar.Name = "ButtonBorrar"
         Me.ButtonBorrar.Size = New System.Drawing.Size(75, 67)

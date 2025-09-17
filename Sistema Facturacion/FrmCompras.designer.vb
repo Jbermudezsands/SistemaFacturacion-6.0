@@ -348,11 +348,11 @@ Partial Class FrmCompras
         '
         'PictureBox2
         '
-        Me.PictureBox2.BackColor = System.Drawing.Color.FromArgb(CType(CType(149, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(59, Byte), Integer))
+        Me.PictureBox2.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
-        Me.PictureBox2.Location = New System.Drawing.Point(14, 0)
+        Me.PictureBox2.Location = New System.Drawing.Point(37, 0)
         Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(78, 60)
+        Me.PictureBox2.Size = New System.Drawing.Size(69, 60)
         Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox2.TabIndex = 116
         Me.PictureBox2.TabStop = False
@@ -629,9 +629,9 @@ Partial Class FrmCompras
         'Button7
         '
         Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
-        Me.Button7.Location = New System.Drawing.Point(672, 102)
+        Me.Button7.Location = New System.Drawing.Point(672, 117)
         Me.Button7.Name = "Button7"
-        Me.Button7.Size = New System.Drawing.Size(37, 38)
+        Me.Button7.Size = New System.Drawing.Size(27, 27)
         Me.Button7.TabIndex = 156
         Me.Button7.UseVisualStyleBackColor = True
         Me.Button7.Visible = False

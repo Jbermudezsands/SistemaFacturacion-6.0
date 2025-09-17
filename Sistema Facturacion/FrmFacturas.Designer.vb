@@ -1252,7 +1252,7 @@ Partial Class FrmFacturas
         Me.MinimizeBox = False
         Me.Name = "FrmFacturas"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Propina"
+        Me.Text = "Facturacion"
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TrueDBGridMetodo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)

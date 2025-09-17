@@ -341,7 +341,7 @@ Partial Class FrmPlantillas
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
         Me.Button1.Location = New System.Drawing.Point(274, 56)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(37, 32)
+        Me.Button1.Size = New System.Drawing.Size(35, 28)
         Me.Button1.TabIndex = 128
         Me.Button1.UseVisualStyleBackColor = True
         '
@@ -400,9 +400,9 @@ Partial Class FrmPlantillas
         'Button7
         '
         Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
-        Me.Button7.Location = New System.Drawing.Point(660, 138)
+        Me.Button7.Location = New System.Drawing.Point(660, 143)
         Me.Button7.Name = "Button7"
-        Me.Button7.Size = New System.Drawing.Size(37, 38)
+        Me.Button7.Size = New System.Drawing.Size(35, 28)
         Me.Button7.TabIndex = 198
         Me.Button7.UseVisualStyleBackColor = True
         '
@@ -427,7 +427,7 @@ Partial Class FrmPlantillas
         'TxtDescuento
         '
         Me.TxtDescuento.ForeColor = System.Drawing.Color.Black
-        Me.TxtDescuento.Location = New System.Drawing.Point(68, 511)
+        Me.TxtDescuento.Location = New System.Drawing.Point(176, 484)
         Me.TxtDescuento.Name = "TxtDescuento"
         Me.TxtDescuento.Size = New System.Drawing.Size(67, 20)
         Me.TxtDescuento.TabIndex = 213
@@ -438,7 +438,7 @@ Partial Class FrmPlantillas
         '
         Me.Label14.AutoSize = True
         Me.Label14.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Label14.Location = New System.Drawing.Point(13, 513)
+        Me.Label14.Location = New System.Drawing.Point(121, 486)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(68, 13)
         Me.Label14.TabIndex = 212
@@ -448,7 +448,7 @@ Partial Class FrmPlantillas
         'TxtPagado
         '
         Me.TxtPagado.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtPagado.Location = New System.Drawing.Point(477, 511)
+        Me.TxtPagado.Location = New System.Drawing.Point(585, 484)
         Me.TxtPagado.Name = "TxtPagado"
         Me.TxtPagado.ReadOnly = True
         Me.TxtPagado.Size = New System.Drawing.Size(67, 20)
@@ -459,7 +459,7 @@ Partial Class FrmPlantillas
         '
         Me.Label10.AutoSize = True
         Me.Label10.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Label10.Location = New System.Drawing.Point(429, 516)
+        Me.Label10.Location = New System.Drawing.Point(537, 489)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(56, 13)
         Me.Label10.TabIndex = 210
@@ -468,7 +468,7 @@ Partial Class FrmPlantillas
         'TxtNetoPagar
         '
         Me.TxtNetoPagar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtNetoPagar.Location = New System.Drawing.Point(620, 511)
+        Me.TxtNetoPagar.Location = New System.Drawing.Point(810, 486)
         Me.TxtNetoPagar.Name = "TxtNetoPagar"
         Me.TxtNetoPagar.ReadOnly = True
         Me.TxtNetoPagar.Size = New System.Drawing.Size(75, 20)
@@ -479,7 +479,7 @@ Partial Class FrmPlantillas
         '
         Me.Label6.AutoSize = True
         Me.Label6.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Label6.Location = New System.Drawing.Point(550, 517)
+        Me.Label6.Location = New System.Drawing.Point(740, 492)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(73, 13)
         Me.Label6.TabIndex = 208
@@ -488,7 +488,7 @@ Partial Class FrmPlantillas
         'TxtIva
         '
         Me.TxtIva.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtIva.Location = New System.Drawing.Point(350, 510)
+        Me.TxtIva.Location = New System.Drawing.Point(458, 483)
         Me.TxtIva.Name = "TxtIva"
         Me.TxtIva.ReadOnly = True
         Me.TxtIva.Size = New System.Drawing.Size(73, 20)
@@ -499,7 +499,7 @@ Partial Class FrmPlantillas
         '
         Me.Label5.AutoSize = True
         Me.Label5.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Label5.Location = New System.Drawing.Point(310, 514)
+        Me.Label5.Location = New System.Drawing.Point(418, 487)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(42, 13)
         Me.Label5.TabIndex = 206
@@ -509,7 +509,7 @@ Partial Class FrmPlantillas
         '
         Me.TxtSubTotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TxtSubTotal.ForeColor = System.Drawing.Color.Black
-        Me.TxtSubTotal.Location = New System.Drawing.Point(225, 511)
+        Me.TxtSubTotal.Location = New System.Drawing.Point(333, 484)
         Me.TxtSubTotal.Name = "TxtSubTotal"
         Me.TxtSubTotal.ReadOnly = True
         Me.TxtSubTotal.Size = New System.Drawing.Size(67, 20)
@@ -520,7 +520,7 @@ Partial Class FrmPlantillas
         '
         Me.Label4.AutoSize = True
         Me.Label4.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Label4.Location = New System.Drawing.Point(167, 516)
+        Me.Label4.Location = New System.Drawing.Point(275, 489)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(62, 13)
         Me.Label4.TabIndex = 204
@@ -643,9 +643,9 @@ Partial Class FrmPlantillas
         '
         Me.PictureBox3.BackColor = System.Drawing.SystemColors.Control
         Me.PictureBox3.Image = CType(resources.GetObject("PictureBox3.Image"), System.Drawing.Image)
-        Me.PictureBox3.Location = New System.Drawing.Point(338, 185)
+        Me.PictureBox3.Location = New System.Drawing.Point(341, 185)
         Me.PictureBox3.Name = "PictureBox3"
-        Me.PictureBox3.Size = New System.Drawing.Size(105, 120)
+        Me.PictureBox3.Size = New System.Drawing.Size(105, 106)
         Me.PictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox3.TabIndex = 223
         Me.PictureBox3.TabStop = False
@@ -809,7 +809,7 @@ Partial Class FrmPlantillas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(914, 544)
+        Me.ClientSize = New System.Drawing.Size(914, 513)
         Me.Controls.Add(Me.GroupBox6)
         Me.Controls.Add(Me.TxtMonedaImprime)
         Me.Controls.Add(Me.CmdBorrarLinea)

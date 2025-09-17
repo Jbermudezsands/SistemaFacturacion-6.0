@@ -19,18 +19,18 @@ Partial Class FrmPreciosProductos
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmPreciosProductos))
-        Me.cmdAddDocente = New System.Windows.Forms.Button
-        Me.ButtonBorrar = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.LblProducto = New System.Windows.Forms.Label
+        Me.cmdAddDocente = New System.Windows.Forms.Button()
+        Me.ButtonBorrar = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
+        Me.LblProducto = New System.Windows.Forms.Label()
         Me.BindingDetalle = New System.Windows.Forms.BindingSource(Me.components)
-        Me.CmdPegar = New System.Windows.Forms.Button
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.CmdPegar = New System.Windows.Forms.Button()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.BindingDetalle, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -87,7 +87,7 @@ Partial Class FrmPreciosProductos
         Me.TrueDBGridComponentes.Name = "TrueDBGridComponentes"
         Me.TrueDBGridComponentes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75
+        Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75.0R
         Me.TrueDBGridComponentes.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridComponentes.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
         Me.TrueDBGridComponentes.Size = New System.Drawing.Size(345, 222)
         Me.TrueDBGridComponentes.TabIndex = 137

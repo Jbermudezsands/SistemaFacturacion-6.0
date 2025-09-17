@@ -352,4 +352,8 @@ Public Class FrmServicios
             ConvertirMonto = "Cordobas"
         End If
     End Sub
+
+    Private Sub CmdNuevo_Click(sender As Object, e As EventArgs)
+
+    End Sub
 End Class

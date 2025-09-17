@@ -20,50 +20,50 @@ Partial Class FrmVendedor
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmVendedor))
-        Me.TabControl1 = New System.Windows.Forms.TabControl
-        Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.TxtApellidos = New System.Windows.Forms.TextBox
-        Me.Label8 = New System.Windows.Forms.Label
-        Me.CboCodigoVendedor = New C1.Win.C1List.C1Combo
-        Me.CmdCuentas = New System.Windows.Forms.Button
-        Me.TxtCtaxCobrar = New System.Windows.Forms.TextBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.TxtTelefono = New System.Windows.Forms.TextBox
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.TxtDireccion = New System.Windows.Forms.TextBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.TxtNombre = New System.Windows.Forms.TextBox
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.Button6 = New System.Windows.Forms.Button
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.TabPage2 = New System.Windows.Forms.TabPage
-        Me.GroupBox4 = New System.Windows.Forms.GroupBox
-        Me.OptRecuperacionVentas = New System.Windows.Forms.RadioButton
-        Me.OptGrupoVendedores = New System.Windows.Forms.RadioButton
-        Me.OptVentas = New System.Windows.Forms.RadioButton
-        Me.OptRecuperacion = New System.Windows.Forms.RadioButton
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox
-        Me.Label12 = New System.Windows.Forms.Label
-        Me.TxtRecuperacion2 = New System.Windows.Forms.TextBox
-        Me.Label13 = New System.Windows.Forms.Label
-        Me.TxtComision2 = New System.Windows.Forms.TextBox
-        Me.Label14 = New System.Windows.Forms.Label
-        Me.Label15 = New System.Windows.Forms.Label
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.TxtRecuperacion1 = New System.Windows.Forms.TextBox
-        Me.Label11 = New System.Windows.Forms.Label
-        Me.TxtComision1 = New System.Windows.Forms.TextBox
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.CmdGrabar = New System.Windows.Forms.Button
-        Me.ButtonBorrar = New System.Windows.Forms.Button
-        Me.CmdNuevo = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.TxtApellidos = New System.Windows.Forms.TextBox()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.CboCodigoVendedor = New C1.Win.C1List.C1Combo()
+        Me.CmdCuentas = New System.Windows.Forms.Button()
+        Me.TxtCtaxCobrar = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.TxtTelefono = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.TxtDireccion = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.TxtNombre = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Button6 = New System.Windows.Forms.Button()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.OptRecuperacionVentas = New System.Windows.Forms.RadioButton()
+        Me.OptGrupoVendedores = New System.Windows.Forms.RadioButton()
+        Me.OptVentas = New System.Windows.Forms.RadioButton()
+        Me.OptRecuperacion = New System.Windows.Forms.RadioButton()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.TxtRecuperacion2 = New System.Windows.Forms.TextBox()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.TxtComision2 = New System.Windows.Forms.TextBox()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.TxtRecuperacion1 = New System.Windows.Forms.TextBox()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.TxtComision1 = New System.Windows.Forms.TextBox()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.CmdGrabar = New System.Windows.Forms.Button()
+        Me.ButtonBorrar = New System.Windows.Forms.Button()
+        Me.CmdNuevo = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         CType(Me.CboCodigoVendedor, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -158,9 +158,9 @@ Partial Class FrmVendedor
         'CmdCuentas
         '
         Me.CmdCuentas.Image = CType(resources.GetObject("CmdCuentas.Image"), System.Drawing.Image)
-        Me.CmdCuentas.Location = New System.Drawing.Point(277, 133)
+        Me.CmdCuentas.Location = New System.Drawing.Point(277, 146)
         Me.CmdCuentas.Name = "CmdCuentas"
-        Me.CmdCuentas.Size = New System.Drawing.Size(37, 38)
+        Me.CmdCuentas.Size = New System.Drawing.Size(35, 28)
         Me.CmdCuentas.TabIndex = 127
         Me.CmdCuentas.UseVisualStyleBackColor = True
         '

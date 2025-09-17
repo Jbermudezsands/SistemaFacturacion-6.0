@@ -389,17 +389,17 @@ Partial Class FrmTransferencias
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.Location = New System.Drawing.Point(431, 410)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(113, 16)
+        Me.Label5.Size = New System.Drawing.Size(112, 16)
         Me.Label5.TabIndex = 199
         Me.Label5.Text = "TOTAL COSTO"
         '
         'Button4
         '
         Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
-        Me.Button4.ImageAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.Button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.Button4.Location = New System.Drawing.Point(6, 405)
         Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(94, 23)
+        Me.Button4.Size = New System.Drawing.Size(100, 23)
         Me.Button4.TabIndex = 201
         Me.Button4.Text = "Borrar Linea"
         Me.Button4.TextAlign = System.Drawing.ContentAlignment.MiddleRight

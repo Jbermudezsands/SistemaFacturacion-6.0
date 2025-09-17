@@ -20,30 +20,30 @@ Partial Class FrmImpuestos
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmImpuestos))
-        Me.CboCodigoImpuesto = New C1.Win.C1List.C1Combo
-        Me.CmdGrabar = New System.Windows.Forms.Button
-        Me.ButtonBorrar = New System.Windows.Forms.Button
-        Me.CmdNuevo = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.TxtNombre = New System.Windows.Forms.TextBox
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.Button6 = New System.Windows.Forms.Button
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.LblImpuestos = New System.Windows.Forms.Label
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.TxtValor = New System.Windows.Forms.TextBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.Label15 = New System.Windows.Forms.Label
-        Me.TxtImpuestoxPagar = New System.Windows.Forms.TextBox
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.Label14 = New System.Windows.Forms.Label
-        Me.TxtImpuestoxCobrar = New System.Windows.Forms.TextBox
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.OptRetencion = New System.Windows.Forms.RadioButton
-        Me.OptIVA = New System.Windows.Forms.RadioButton
-        Me.ChkActivo = New System.Windows.Forms.CheckBox
+        Me.CboCodigoImpuesto = New C1.Win.C1List.C1Combo()
+        Me.CmdGrabar = New System.Windows.Forms.Button()
+        Me.ButtonBorrar = New System.Windows.Forms.Button()
+        Me.CmdNuevo = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.TxtNombre = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Button6 = New System.Windows.Forms.Button()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.LblImpuestos = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.TxtValor = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.TxtImpuestoxPagar = New System.Windows.Forms.TextBox()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.TxtImpuestoxCobrar = New System.Windows.Forms.TextBox()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.OptRetencion = New System.Windows.Forms.RadioButton()
+        Me.OptIVA = New System.Windows.Forms.RadioButton()
+        Me.ChkActivo = New System.Windows.Forms.CheckBox()
         CType(Me.CboCodigoImpuesto, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -216,9 +216,9 @@ Partial Class FrmImpuestos
         'Button2
         '
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.Location = New System.Drawing.Point(229, 190)
+        Me.Button2.Location = New System.Drawing.Point(229, 188)
         Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(37, 38)
+        Me.Button2.Size = New System.Drawing.Size(35, 28)
         Me.Button2.TabIndex = 137
         Me.Button2.UseVisualStyleBackColor = True
         '
@@ -241,9 +241,9 @@ Partial Class FrmImpuestos
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(229, 146)
+        Me.Button1.Location = New System.Drawing.Point(229, 156)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(37, 38)
+        Me.Button1.Size = New System.Drawing.Size(35, 28)
         Me.Button1.TabIndex = 134
         Me.Button1.UseVisualStyleBackColor = True
         '

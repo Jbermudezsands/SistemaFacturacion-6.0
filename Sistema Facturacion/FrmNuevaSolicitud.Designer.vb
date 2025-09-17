@@ -83,7 +83,7 @@ Partial Class FrmNuevaSolicitud
         Me.LblTitulo.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.LblTitulo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblTitulo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.LblTitulo.Location = New System.Drawing.Point(310, 21)
+        Me.LblTitulo.Location = New System.Drawing.Point(300, 22)
         Me.LblTitulo.Name = "LblTitulo"
         Me.LblTitulo.Size = New System.Drawing.Size(150, 13)
         Me.LblTitulo.TabIndex = 114

@@ -1,10 +1,64 @@
-﻿Imports System.Data.SqlTypes
+﻿Imports System.Data.Common
+Imports System.Data.SqlClient
+Imports System.Data.SqlTypes
 Imports System.Diagnostics.Contracts
 
 Public Class FrmContratosProveedor
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Public Numero_Contrato As String
+    Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder
+    Public Sub InsertarRowGrid()
+        Dim oTabla As DataTable, iPosicion As Double, CodigoProducto As String
 
+        iPosicion = Me.TrueDBGridComponentes.Row
+        CodigoProducto = Me.TrueDBGridComponentes.Columns("Cod_Productos").Text
+
+        CmdBuilder.RefreshSchema()
+        oTabla = ds.Tables("Detalle").GetChanges(DataRowState.Added)
+        If Not IsNothing(oTabla) Then
+            '//////////////////SI  TIENE REGISTROS NUEVOS 
+            da.Update(oTabla)
+            ds.Tables("Detalle").AcceptChanges()
+            da.Update(ds.Tables("Detalle"))
+
+            Me.TrueDBGridComponentes.Row = iPosicion
+
+        Else
+            oTabla = ds.Tables("Detalle").GetChanges(DataRowState.Modified)
+            If Not IsNothing(oTabla) Then
+                da.Update(oTabla)
+                ds.Tables("Detalle").AcceptChanges()
+                da.Update(ds.Tables("Detalle"))
+            End If
+        End If
+
+
+
+    End Sub
+
+    Public Sub Cargar_Grid_Detalle(Numero_Contrato As String)
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim SqlString As String
+
+        SqlString = "SELECT id_Detalle_Productos, Numero_Contrato, Tipo_Contrato, Cod_Productos, Descripcion_Productos, Cantidad, Precio_Unitario FROM Detalle_Contratos_Productos WHERE  (Numero_Contrato = '" & Numero_Contrato & "') AND (Tipo_Contrato = 'Proveedores')"
+        ds = New DataSet
+        da = New SqlDataAdapter(SqlString, MiConexion)
+        CmdBuilder = New SqlCommandBuilder(da)
+        da.Fill(ds, "Detalle")
+        Me.TrueDBGridComponentes.DataSource = ds.Tables("Detalle")
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Productos").Visible = False
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Contrato").Visible = False
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Contrato").Visible = False
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Productos").Width = 100
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Productos").Locked = True
+        Me.TrueDBGridComponentes.Columns("Cod_Productos").Caption = "Codigo"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Productos").Width = 300
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Productos").Locked = True
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 60
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 70
+        Me.TrueDBGridComponentes.Columns("Precio_Unitario").Caption = "Precio"
+
+    End Sub
 
     Private Sub TextBox2_TextChanged(sender As Object, e As EventArgs) Handles txtModelo.TextChanged
 
@@ -17,6 +71,12 @@ Public Class FrmContratosProveedor
     End Sub
     Public Sub Cargar_Contrato(Numero_Contrato As String)
         Dim Contrato As TablaContrato_Proveedor = New TablaContrato_Proveedor
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim SqlString As String
+
+        If Numero_Contrato = "-----0-----" Then
+            Exit Sub
+        End If
 
         Contrato = Cargar_Contrato_Proveedor(Numero_Contrato)
         If Contrato IsNot Nothing Then
@@ -44,20 +104,38 @@ Public Class FrmContratosProveedor
             ChkViernes.Checked = Contrato.Cobertura_Viernes
             ChkSabado.Checked = Contrato.Cobertura_Sabado
             ChkDomingo.Checked = Contrato.Cobertura_Domingo
-            TxtLunesInicio.Text = Contrato.Lunes_Fin
-            TxtMartesInicio.Text = Contrato.Martes_Inicio
-            TxtMartesFin.Text = Contrato.Martes_Fin
-            TxtMiercolesInicio.Text = Contrato.Miercoles_Inicio
-            TxtMiercolesFin.Text = Contrato.Miercoles_Fin
-            TxtJuevesInicio.Text = Contrato.Jueves_Inicio
-            TxtJuevesFin.Text = Contrato.Jueves_Fin
-            TxtViernesInicio.Text = Contrato.Viernes_Inicio
-            TxtViernesFin.Text = Contrato.Viernes_Fin
-            TxtSabadoInicio.Text = Contrato.Sabado_Inicio
-            TxtSabadoFin.Text = Contrato.Sabado_Fin
-            TxtDomingoInicio.Text = Contrato.Domingo_Inicio
-            TxtDomingoFin.Text = Contrato.Domingo_Fin
+            TxtLunesInicio.Text = Format(Contrato.Lunes_Inicio, "HH:mm")
+            TxtLunesFin.Text = Format(Contrato.Lunes_Fin, "HH:mm")
+            TxtMartesInicio.Text = Format(Contrato.Martes_Inicio, "HH:mm")
+            TxtMartesFin.Text = Format(Contrato.Martes_Fin, "HH:mm")
+            TxtMiercolesInicio.Text = Format(Contrato.Miercoles_Inicio, "HH:mm")
+            TxtMiercolesFin.Text = Format(Contrato.Miercoles_Fin, "HH:mm")
+            TxtJuevesInicio.Text = Format(Contrato.Jueves_Inicio, "HH:mm")
+            TxtJuevesFin.Text = Format(Contrato.Jueves_Fin, "HH:mm")
+            TxtViernesInicio.Text = Format(Contrato.Viernes_Inicio, "HH:mm")
+            TxtViernesFin.Text = Format(Contrato.Viernes_Fin, "HH:mm")
+            TxtSabadoInicio.Text = Format(Contrato.Sabado_Inicio, "HH:mm")
+            TxtSabadoFin.Text = Format(Contrato.Sabado_Fin, "HH:mm")
+            TxtDomingoInicio.Text = Format(Contrato.Domingo_Inicio, "HH:mm")
+            TxtDomingoFin.Text = Format(Contrato.Domingo_Fin, "HH:mm")
 
+            If Contrato.Estado = "Cancelado" Then
+                CmbEstado.Enabled = False
+                Me.Button1.Enabled = False
+                Me.Button2.Enabled = False
+                Me.CmdGuardar.Enabled = False
+                Me.CmdEliminar.Enabled = False
+                Me.Button4.Enabled = False
+            Else
+                CmbEstado.Enabled = True
+                Me.Button1.Enabled = True
+                Me.Button2.Enabled = True
+                Me.CmdGuardar.Enabled = True
+                Me.CmdEliminar.Enabled = True
+                Me.Button4.Enabled = True
+            End If
+
+            Cargar_Grid_Detalle(Contrato.Numero_Contrato)
 
         Else
             MsgBox("Contrato no Existe", vbCritical, "Zeus Facturacion")
@@ -67,6 +145,9 @@ Public Class FrmContratosProveedor
 
 
     Private Sub Limpiar_Contrato()
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim SqlString As String
+
         Me.TxtNumeroContrato.Text = "-----0-----"
         Me.CboCodigoProveedor.Text = ""
         Me.TxtContacto.Text = ""
@@ -104,6 +185,8 @@ Public Class FrmContratosProveedor
         TxtSabadoFin.Text = ""
         TxtDomingoInicio.Text = ""
         TxtDomingoFin.Text = ""
+
+        Cargar_Grid_Detalle("-----0-----")
     End Sub
 
 
@@ -134,8 +217,18 @@ Public Class FrmContratosProveedor
     Private Sub FrmContratosProveedor_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.MinimumSize = Size
         Me.MaximumSize = Size
-        Limpiar_Contrato()
 
+
+        Me.TabControl1.SelectedTab = Generales
+
+        Dim Sql As String = "SELECT * FROM Proveedor"
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter(Sql, MiConexion)
+        DataAdapter.Fill(DataSet, "ListaProveedores")
+        If Not DataSet.Tables("ListaProveedores").Rows.Count = 0 Then
+            Me.CboCodigoProveedor.DataSource = DataSet.Tables("ListaProveedores")
+        End If
+
+        Limpiar_Contrato()
         Cargar_Contrato(Numero_Contrato)
     End Sub
 
@@ -168,7 +261,7 @@ Public Class FrmContratosProveedor
         NumeroContrato = Me.TxtNumeroContrato.Text
 
         SQlString = "SELECT  * FROM  Contrato_Proveedor WHERE (Numero_Contrato = '" & NumeroContrato & "') "
-        Dataset = FillConsultaSQL(SqlString, "Consulta")
+        Dataset = FillConsultaSQL(SQlString, "Consulta")
         If Not DataSet.Tables("Consulta").Rows.Count <> 0 Then
             StrSqlUpdate = "DELETE FROM Contrato_Proveedor  WHERE (Numero_Contrato = '" & NumeroContrato & "')"
             MiConexion.Open()
@@ -266,6 +359,11 @@ Public Class FrmContratosProveedor
         Cont = Me.TrueDBGridConsultas.RowCount
         Me.LblTotalRegistros.Text = "Total Registros: " & Cont
     End Sub
+
+    Private Sub TrueDBGridComponentes_Click(sender As Object, e As EventArgs) Handles TrueDBGridComponentes.Click
+
+    End Sub
+
     Public Function GrabarEncabezado() As String
         Dim contrato As TablaContrato_Proveedor = New TablaContrato_Proveedor
 
@@ -364,6 +462,65 @@ Public Class FrmContratosProveedor
         Return Numero_Contrato
 
     End Function
+
+    Private Sub CmdEliminar_Click(sender As Object, e As EventArgs) Handles CmdEliminar.Click
+        Dim Resultado As Double, iPosicion As Double
+        Dim oDataRow As DataRow, oTablaBorrados As DataTable
+
+        Resultado = MsgBox("¿Esta Seguro de Eliminar la Linea?", MsgBoxStyle.OkCancel, "Sistema de Facturacion")
+
+        If Not Resultado = "1" Then
+            Exit Sub
+        End If
+
+        iPosicion = Me.TrueDBGridComponentes.Row
+
+        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////////////////////////////////BORRO EL REGISTRO SELECCIONADO CARGANDOLO EN DATAROW ///////////////////////////
+        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        oDataRow = ds.Tables("Detalle").Rows(iPosicion)
+        oDataRow.Delete()
+
+        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////Obtengo las filas borradas/////////////////////////////////////////////////////////////////////////////////
+        oTablaBorrados = ds.Tables("Detalle").GetChanges(DataRowState.Deleted)
+        If Not IsNothing(oTablaBorrados) Then
+            '//////////////////SI NO TIENE REGISTROS EN BORRADOS ESTAN EN PANTALLA LOS CAMBIOS 77777777
+            da.Update(oTablaBorrados)
+        End If
+        ds.Tables("Detalle").AcceptChanges()
+        da.Update(ds.Tables("Detalle"))
+    End Sub
+
+    Private Sub CmdGuardar_Click(sender As Object, e As EventArgs) Handles CmdGuardar.Click
+        Dim DetalleContrato As TablaDetalle_Contratos_Productos = New TablaDetalle_Contratos_Productos
+        Dim Numero_Contrato As String = "-----0-----"
+        Quien = "CodigoProductosComponente"
+        My.Forms.FrmConsultas.ShowDialog()
+
+
+        If Me.TxtNumeroContrato.Text = "-----0-----" Then
+            Numero_Contrato = GrabarEncabezado()
+        Else
+            Numero_Contrato = Me.TxtNumeroContrato.Text
+        End If
+
+
+        DetalleContrato.Numero_Contrato = Numero_Contrato
+        DetalleContrato.Tipo_Contrato = "Proveedores"
+        DetalleContrato.Cod_Productos = My.Forms.FrmConsultas.Codigo
+        DetalleContrato.Descripcion_Productos = My.Forms.FrmConsultas.Descripcion
+        DetalleContrato.Cantidad = 1
+        DetalleContrato.Precio_Unitario = 1
+
+        If DetalleContrato.Cod_Productos IsNot Nothing Then
+            Grabar_Detalle_ContratoProveedor(DetalleContrato)
+        End If
+
+        Cargar_Grid_Detalle(Numero_Contrato)
+
+    End Sub
+
     Private Sub BtnCargar_Click(sender As Object, e As EventArgs) Handles BtnCargar.Click
         Dim Cont As Double = Me.TrueDBGridConsultas.RowCount, i As Double = 0
         Dim DetalleContrato As TablaDetalle_Contratos_Productos = New TablaDetalle_Contratos_Productos
@@ -392,5 +549,11 @@ Public Class FrmContratosProveedor
             i = i + 1
         Loop
 
+        Cargar_Contrato(Numero_Contrato)
+
+    End Sub
+
+    Private Sub TrueDBGridComponentes_AfterUpdate(sender As Object, e As EventArgs) Handles TrueDBGridComponentes.AfterUpdate
+        InsertarRowGrid()
     End Sub
 End Class

@@ -177,7 +177,7 @@ Partial Class FrmTipoPrecios
         Me.CmdPrecios.Image = CType(resources.GetObject("CmdPrecios.Image"), System.Drawing.Image)
         Me.CmdPrecios.Location = New System.Drawing.Point(337, 16)
         Me.CmdPrecios.Name = "CmdPrecios"
-        Me.CmdPrecios.Size = New System.Drawing.Size(29, 30)
+        Me.CmdPrecios.Size = New System.Drawing.Size(35, 32)
         Me.CmdPrecios.TabIndex = 170
         Me.CmdPrecios.UseVisualStyleBackColor = True
         '

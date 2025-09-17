@@ -20,15 +20,15 @@ Partial Class FrmPermisos
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmPermisos))
-        Me.CboUsuario = New C1.Win.C1List.C1Combo
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.cmdEntrar = New System.Windows.Forms.Button
-        Me.txtPassword = New System.Windows.Forms.TextBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.Label1 = New System.Windows.Forms.Label
+        Me.CboUsuario = New C1.Win.C1List.C1Combo()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.cmdEntrar = New System.Windows.Forms.Button()
+        Me.txtPassword = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
         CType(Me.CboUsuario, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()

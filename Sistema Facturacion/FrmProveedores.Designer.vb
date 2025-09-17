@@ -108,7 +108,7 @@ Partial Class FrmProveedores
         Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label9.Location = New System.Drawing.Point(97, 21)
+        Me.Label9.Location = New System.Drawing.Point(119, 19)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(193, 13)
         Me.Label9.TabIndex = 70
@@ -219,9 +219,9 @@ Partial Class FrmProveedores
         'Button2
         '
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.Location = New System.Drawing.Point(278, 200)
+        Me.Button2.Location = New System.Drawing.Point(276, 194)
         Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(37, 38)
+        Me.Button2.Size = New System.Drawing.Size(35, 28)
         Me.Button2.TabIndex = 104
         Me.Button2.UseVisualStyleBackColor = True
         '
@@ -305,9 +305,9 @@ Partial Class FrmProveedores
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(278, 155)
+        Me.Button1.Location = New System.Drawing.Point(277, 165)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(37, 38)
+        Me.Button1.Size = New System.Drawing.Size(35, 28)
         Me.Button1.TabIndex = 103
         Me.Button1.UseVisualStyleBackColor = True
         '

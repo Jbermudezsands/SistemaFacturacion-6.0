@@ -39,6 +39,7 @@ Partial Class FrmComprasHistorico
         Me.TxtApellidos = New System.Windows.Forms.TextBox()
         Me.TxtNombres = New System.Windows.Forms.TextBox()
         Me.Button1 = New System.Windows.Forms.Button()
+        Me.OptExsonerado = New System.Windows.Forms.CheckBox()
         Me.TxtCodigoProveedor = New System.Windows.Forms.TextBox()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
@@ -75,7 +76,6 @@ Partial Class FrmComprasHistorico
         Me.TxtMonedaImprime = New System.Windows.Forms.TextBox()
         Me.CmdFacturar = New System.Windows.Forms.Button()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
-        Me.OptExsonerado = New System.Windows.Forms.CheckBox()
         Me.TxtReferencia = New System.Windows.Forms.TextBox()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Label16 = New System.Windows.Forms.Label()
@@ -274,11 +274,21 @@ Partial Class FrmComprasHistorico
         '
         Me.Button1.Enabled = False
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(194, 12)
+        Me.Button1.Location = New System.Drawing.Point(192, 14)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(37, 32)
+        Me.Button1.Size = New System.Drawing.Size(35, 28)
         Me.Button1.TabIndex = 128
         Me.Button1.UseVisualStyleBackColor = True
+        '
+        'OptExsonerado
+        '
+        Me.OptExsonerado.AutoSize = True
+        Me.OptExsonerado.Location = New System.Drawing.Point(234, 126)
+        Me.OptExsonerado.Name = "OptExsonerado"
+        Me.OptExsonerado.Size = New System.Drawing.Size(77, 17)
+        Me.OptExsonerado.TabIndex = 203
+        Me.OptExsonerado.Text = "Exonerado"
+        Me.OptExsonerado.UseVisualStyleBackColor = True
         '
         'TxtCodigoProveedor
         '
@@ -414,6 +424,7 @@ Partial Class FrmComprasHistorico
         '
         Me.ButtonBorrar.Enabled = False
         Me.ButtonBorrar.Image = CType(resources.GetObject("ButtonBorrar.Image"), System.Drawing.Image)
+        Me.ButtonBorrar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
         Me.ButtonBorrar.Location = New System.Drawing.Point(6, 18)
         Me.ButtonBorrar.Name = "ButtonBorrar"
         Me.ButtonBorrar.Size = New System.Drawing.Size(75, 67)
@@ -593,9 +604,9 @@ Partial Class FrmComprasHistorico
         '
         Me.Button7.Enabled = False
         Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
-        Me.Button7.Location = New System.Drawing.Point(660, 147)
+        Me.Button7.Location = New System.Drawing.Point(657, 156)
         Me.Button7.Name = "Button7"
-        Me.Button7.Size = New System.Drawing.Size(37, 38)
+        Me.Button7.Size = New System.Drawing.Size(35, 28)
         Me.Button7.TabIndex = 156
         Me.Button7.UseVisualStyleBackColor = True
         '
@@ -673,16 +684,6 @@ Partial Class FrmComprasHistorico
         Me.GroupBox5.Size = New System.Drawing.Size(200, 189)
         Me.GroupBox5.TabIndex = 202
         Me.GroupBox5.TabStop = False
-        '
-        'OptExsonerado
-        '
-        Me.OptExsonerado.AutoSize = True
-        Me.OptExsonerado.Location = New System.Drawing.Point(234, 126)
-        Me.OptExsonerado.Name = "OptExsonerado"
-        Me.OptExsonerado.Size = New System.Drawing.Size(77, 17)
-        Me.OptExsonerado.TabIndex = 203
-        Me.OptExsonerado.Text = "Exonerado"
-        Me.OptExsonerado.UseVisualStyleBackColor = True
         '
         'TxtReferencia
         '

@@ -102,6 +102,7 @@ Partial Class FrmActualiza
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage4 = New System.Windows.Forms.TabPage()
+        Me.Button23 = New System.Windows.Forms.Button()
         Me.GroupBox11 = New System.Windows.Forms.GroupBox()
         Me.GroupBox12 = New System.Windows.Forms.GroupBox()
         Me.OptDolares = New System.Windows.Forms.RadioButton()
@@ -146,7 +147,6 @@ Partial Class FrmActualiza
         Me.CmdCerrar = New System.Windows.Forms.Button()
         Me.BtnIniciar = New System.Windows.Forms.Button()
         Me.Label23 = New System.Windows.Forms.Label()
-        Me.Button23 = New System.Windows.Forms.Button()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -190,7 +190,7 @@ Partial Class FrmActualiza
         Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox1.Location = New System.Drawing.Point(0, -3)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(733, 60)
+        Me.PictureBox1.Size = New System.Drawing.Size(652, 60)
         Me.PictureBox1.TabIndex = 126
         Me.PictureBox1.TabStop = False
         '
@@ -211,7 +211,7 @@ Partial Class FrmActualiza
         Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label9.Location = New System.Drawing.Point(283, 22)
+        Me.Label9.Location = New System.Drawing.Point(218, 22)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(152, 13)
         Me.Label9.TabIndex = 129
@@ -334,13 +334,14 @@ Partial Class FrmActualiza
         'CmdCostear
         '
         Me.CmdCostear.Image = CType(resources.GetObject("CmdCostear.Image"), System.Drawing.Image)
+        Me.CmdCostear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.CmdCostear.Location = New System.Drawing.Point(379, 129)
         Me.CmdCostear.Name = "CmdCostear"
-        Me.CmdCostear.Size = New System.Drawing.Size(96, 59)
+        Me.CmdCostear.Size = New System.Drawing.Size(96, 47)
         Me.CmdCostear.TabIndex = 12
         Me.CmdCostear.Tag = "25"
         Me.CmdCostear.Text = "Iniciar"
-        Me.CmdCostear.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.CmdCostear.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.CmdCostear.UseVisualStyleBackColor = True
         '
         'ProgressBar4
@@ -588,13 +589,14 @@ Partial Class FrmActualiza
         'Button6
         '
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
-        Me.Button6.Location = New System.Drawing.Point(369, 129)
+        Me.Button6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button6.Location = New System.Drawing.Point(387, 117)
         Me.Button6.Name = "Button6"
-        Me.Button6.Size = New System.Drawing.Size(96, 59)
+        Me.Button6.Size = New System.Drawing.Size(88, 49)
         Me.Button6.TabIndex = 9
         Me.Button6.Tag = "25"
         Me.Button6.Text = "Iniciar"
-        Me.Button6.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.Button6.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button6.UseVisualStyleBackColor = True
         '
         'ProgressBar2
@@ -632,14 +634,14 @@ Partial Class FrmActualiza
         'Button5
         '
         Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
-        Me.Button5.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button5.Location = New System.Drawing.Point(380, 154)
+        Me.Button5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button5.Location = New System.Drawing.Point(380, 148)
         Me.Button5.Name = "Button5"
-        Me.Button5.Size = New System.Drawing.Size(90, 46)
+        Me.Button5.Size = New System.Drawing.Size(90, 52)
         Me.Button5.TabIndex = 8
         Me.Button5.Tag = "25"
         Me.Button5.Text = "Iniciar"
-        Me.Button5.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.Button5.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button5.UseVisualStyleBackColor = True
         '
         'ProgressBar1
@@ -860,13 +862,14 @@ Partial Class FrmActualiza
         'CmdIniciar
         '
         Me.CmdIniciar.Image = CType(resources.GetObject("CmdIniciar.Image"), System.Drawing.Image)
-        Me.CmdIniciar.Location = New System.Drawing.Point(381, 139)
+        Me.CmdIniciar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.CmdIniciar.Location = New System.Drawing.Point(381, 136)
         Me.CmdIniciar.Name = "CmdIniciar"
-        Me.CmdIniciar.Size = New System.Drawing.Size(96, 59)
+        Me.CmdIniciar.Size = New System.Drawing.Size(98, 50)
         Me.CmdIniciar.TabIndex = 4
         Me.CmdIniciar.Tag = "25"
         Me.CmdIniciar.Text = "Iniciar"
-        Me.CmdIniciar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.CmdIniciar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.CmdIniciar.UseVisualStyleBackColor = True
         '
         'ProgressBar
@@ -993,6 +996,19 @@ Partial Class FrmActualiza
         Me.TabPage4.Text = "Calculos"
         Me.TabPage4.UseVisualStyleBackColor = True
         '
+        'Button23
+        '
+        Me.Button23.Image = Global.Sistema_Facturacion.My.Resources.Resources.Unpinned
+        Me.Button23.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button23.Location = New System.Drawing.Point(467, 17)
+        Me.Button23.Name = "Button23"
+        Me.Button23.Size = New System.Drawing.Size(66, 34)
+        Me.Button23.TabIndex = 203
+        Me.Button23.Tag = "28"
+        Me.Button23.Text = "Auditar Notas"
+        Me.Button23.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button23.UseVisualStyleBackColor = True
+        '
         'GroupBox11
         '
         Me.GroupBox11.Controls.Add(Me.GroupBox12)
@@ -1068,13 +1084,14 @@ Partial Class FrmActualiza
         'Button16
         '
         Me.Button16.Image = CType(resources.GetObject("Button16.Image"), System.Drawing.Image)
+        Me.Button16.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.Button16.Location = New System.Drawing.Point(380, 141)
         Me.Button16.Name = "Button16"
-        Me.Button16.Size = New System.Drawing.Size(96, 59)
+        Me.Button16.Size = New System.Drawing.Size(92, 50)
         Me.Button16.TabIndex = 14
         Me.Button16.Tag = "25"
         Me.Button16.Text = "Iniciar"
-        Me.Button16.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.Button16.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button16.UseVisualStyleBackColor = True
         '
         'GroupBox8
@@ -1142,13 +1159,14 @@ Partial Class FrmActualiza
         'Button17
         '
         Me.Button17.Image = CType(resources.GetObject("Button17.Image"), System.Drawing.Image)
-        Me.Button17.Location = New System.Drawing.Point(393, 110)
+        Me.Button17.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button17.Location = New System.Drawing.Point(401, 110)
         Me.Button17.Name = "Button17"
-        Me.Button17.Size = New System.Drawing.Size(96, 59)
+        Me.Button17.Size = New System.Drawing.Size(88, 48)
         Me.Button17.TabIndex = 16
         Me.Button17.Tag = "25"
         Me.Button17.Text = "Iniciar"
-        Me.Button17.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.Button17.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button17.UseVisualStyleBackColor = True
         '
         'ProgressBar7
@@ -1244,13 +1262,14 @@ Partial Class FrmActualiza
         'Button20
         '
         Me.Button20.Image = CType(resources.GetObject("Button20.Image"), System.Drawing.Image)
-        Me.Button20.Location = New System.Drawing.Point(191, 64)
+        Me.Button20.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button20.Location = New System.Drawing.Point(238, 61)
         Me.Button20.Name = "Button20"
-        Me.Button20.Size = New System.Drawing.Size(96, 59)
+        Me.Button20.Size = New System.Drawing.Size(87, 52)
         Me.Button20.TabIndex = 5
         Me.Button20.Tag = "25"
         Me.Button20.Text = "Iniciar"
-        Me.Button20.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.Button20.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Button20.UseVisualStyleBackColor = True
         '
         'TabPage8
@@ -1454,19 +1473,6 @@ Partial Class FrmActualiza
         Me.Label23.Size = New System.Drawing.Size(86, 13)
         Me.Label23.TabIndex = 6
         Me.Label23.Text = "Activar Hilos PBI"
-        '
-        'Button23
-        '
-        Me.Button23.Image = Global.Sistema_Facturacion.My.Resources.Resources.Unpinned
-        Me.Button23.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button23.Location = New System.Drawing.Point(467, 17)
-        Me.Button23.Name = "Button23"
-        Me.Button23.Size = New System.Drawing.Size(66, 34)
-        Me.Button23.TabIndex = 203
-        Me.Button23.Tag = "28"
-        Me.Button23.Text = "Auditar Notas"
-        Me.Button23.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button23.UseVisualStyleBackColor = True
         '
         'FrmActualiza
         '

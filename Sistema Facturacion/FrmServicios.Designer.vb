@@ -53,12 +53,12 @@ Partial Class FrmServicios
         Me.Button2 = New System.Windows.Forms.Button()
         Me.ButtonBorrar = New System.Windows.Forms.Button()
         Me.ButtonAgregar = New System.Windows.Forms.Button()
-        Me.CmdNuevo = New System.Windows.Forms.Button()
         Me.Button8 = New System.Windows.Forms.Button()
         Me.CboActivo = New System.Windows.Forms.ComboBox()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.CboIva = New System.Windows.Forms.ComboBox()
         Me.Label14 = New System.Windows.Forms.Label()
+        Me.CmdNuevo = New System.Windows.Forms.Button()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -96,7 +96,7 @@ Partial Class FrmServicios
         Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label9.Location = New System.Drawing.Point(162, 23)
+        Me.Label9.Location = New System.Drawing.Point(204, 20)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(176, 13)
         Me.Label9.TabIndex = 164
@@ -372,9 +372,9 @@ Partial Class FrmServicios
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(198, 8)
+        Me.Button1.Location = New System.Drawing.Point(198, 13)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(37, 34)
+        Me.Button1.Size = New System.Drawing.Size(35, 28)
         Me.Button1.TabIndex = 20
         Me.Button1.UseVisualStyleBackColor = True
         '
@@ -406,9 +406,9 @@ Partial Class FrmServicios
         'Button2
         '
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.Location = New System.Drawing.Point(431, 8)
+        Me.Button2.Location = New System.Drawing.Point(433, 16)
         Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(37, 38)
+        Me.Button2.Size = New System.Drawing.Size(35, 28)
         Me.Button2.TabIndex = 24
         Me.Button2.UseVisualStyleBackColor = True
         '
@@ -437,18 +437,6 @@ Partial Class FrmServicios
         Me.ButtonAgregar.Text = "Guardar"
         Me.ButtonAgregar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.ButtonAgregar.UseVisualStyleBackColor = True
-        '
-        'CmdNuevo
-        '
-        Me.CmdNuevo.Image = CType(resources.GetObject("CmdNuevo.Image"), System.Drawing.Image)
-        Me.CmdNuevo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdNuevo.Location = New System.Drawing.Point(520, 65)
-        Me.CmdNuevo.Name = "CmdNuevo"
-        Me.CmdNuevo.Size = New System.Drawing.Size(75, 67)
-        Me.CmdNuevo.TabIndex = 177
-        Me.CmdNuevo.Text = "Nuevo"
-        Me.CmdNuevo.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.CmdNuevo.UseVisualStyleBackColor = True
         '
         'Button8
         '
@@ -499,18 +487,30 @@ Partial Class FrmServicios
         Me.Label14.TabIndex = 183
         Me.Label14.Text = "Tabla I.V.A"
         '
+        'CmdNuevo
+        '
+        Me.CmdNuevo.Image = CType(resources.GetObject("CmdNuevo.Image"), System.Drawing.Image)
+        Me.CmdNuevo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.CmdNuevo.Location = New System.Drawing.Point(520, 65)
+        Me.CmdNuevo.Name = "CmdNuevo"
+        Me.CmdNuevo.Size = New System.Drawing.Size(75, 67)
+        Me.CmdNuevo.TabIndex = 185
+        Me.CmdNuevo.Text = "Nuevo"
+        Me.CmdNuevo.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.CmdNuevo.UseVisualStyleBackColor = True
+        '
         'FrmServicios
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(606, 470)
+        Me.Controls.Add(Me.CmdNuevo)
         Me.Controls.Add(Me.CboIva)
         Me.Controls.Add(Me.Label14)
         Me.Controls.Add(Me.CboActivo)
         Me.Controls.Add(Me.Label13)
         Me.Controls.Add(Me.ButtonBorrar)
         Me.Controls.Add(Me.ButtonAgregar)
-        Me.Controls.Add(Me.CmdNuevo)
         Me.Controls.Add(Me.Button8)
         Me.Controls.Add(Me.GroupBox5)
         Me.Controls.Add(Me.GroupBox4)
@@ -576,7 +576,6 @@ Partial Class FrmServicios
     Friend WithEvents Button2 As System.Windows.Forms.Button
     Friend WithEvents ButtonBorrar As System.Windows.Forms.Button
     Friend WithEvents ButtonAgregar As System.Windows.Forms.Button
-    Friend WithEvents CmdNuevo As System.Windows.Forms.Button
     Friend WithEvents Button8 As System.Windows.Forms.Button
     Friend WithEvents ChkGrabado As System.Windows.Forms.CheckBox
     Friend WithEvents CboActivo As System.Windows.Forms.ComboBox
@@ -587,4 +586,5 @@ Partial Class FrmServicios
     Friend WithEvents LblDescripcion2 As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents CboRubro As C1.Win.C1List.C1Combo
+    Friend WithEvents CmdNuevo As Button
 End Class

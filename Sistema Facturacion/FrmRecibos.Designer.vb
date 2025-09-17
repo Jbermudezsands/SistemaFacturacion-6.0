@@ -443,7 +443,7 @@ Partial Class FrmRecibos
         Me.ButtonAgregar.Size = New System.Drawing.Size(62, 67)
         Me.ButtonAgregar.TabIndex = 220
         Me.ButtonAgregar.Tag = "25"
-        Me.ButtonAgregar.Text = "Recibir"
+        Me.ButtonAgregar.Text = "Imprimir"
         Me.ButtonAgregar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.ButtonAgregar.UseVisualStyleBackColor = True
         '

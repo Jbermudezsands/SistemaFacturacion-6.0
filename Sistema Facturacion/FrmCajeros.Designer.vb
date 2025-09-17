@@ -20,26 +20,26 @@ Partial Class FrmCajeros
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmCajeros))
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.CmdGrabar = New System.Windows.Forms.Button
-        Me.ButtonBorrar = New System.Windows.Forms.Button
-        Me.CmdNuevo = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.TabControl1 = New System.Windows.Forms.TabControl
-        Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.TxtApellidos = New System.Windows.Forms.TextBox
-        Me.Label8 = New System.Windows.Forms.Label
-        Me.CboCodigoVendedor = New C1.Win.C1List.C1Combo
-        Me.TxtTelefono = New System.Windows.Forms.TextBox
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.TxtDireccion = New System.Windows.Forms.TextBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.TxtNombre = New System.Windows.Forms.TextBox
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.Button6 = New System.Windows.Forms.Button
-        Me.Label1 = New System.Windows.Forms.Label
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.CmdGrabar = New System.Windows.Forms.Button()
+        Me.ButtonBorrar = New System.Windows.Forms.Button()
+        Me.CmdNuevo = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.TxtApellidos = New System.Windows.Forms.TextBox()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.CboCodigoVendedor = New C1.Win.C1List.C1Combo()
+        Me.TxtTelefono = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.TxtDireccion = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.TxtNombre = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Button6 = New System.Windows.Forms.Button()
+        Me.Label1 = New System.Windows.Forms.Label()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()

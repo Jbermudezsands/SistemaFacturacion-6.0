@@ -102,7 +102,7 @@ Partial Class FrmClientes
         '
         Me.CmdGrabar.Image = CType(resources.GetObject("CmdGrabar.Image"), System.Drawing.Image)
         Me.CmdGrabar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdGrabar.Location = New System.Drawing.Point(87, 451)
+        Me.CmdGrabar.Location = New System.Drawing.Point(91, 413)
         Me.CmdGrabar.Name = "CmdGrabar"
         Me.CmdGrabar.Size = New System.Drawing.Size(78, 68)
         Me.CmdGrabar.TabIndex = 106
@@ -115,7 +115,7 @@ Partial Class FrmClientes
         '
         Me.ButtonBorrar.Image = CType(resources.GetObject("ButtonBorrar.Image"), System.Drawing.Image)
         Me.ButtonBorrar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonBorrar.Location = New System.Drawing.Point(171, 451)
+        Me.ButtonBorrar.Location = New System.Drawing.Point(175, 413)
         Me.ButtonBorrar.Name = "ButtonBorrar"
         Me.ButtonBorrar.Size = New System.Drawing.Size(75, 67)
         Me.ButtonBorrar.TabIndex = 107
@@ -128,7 +128,7 @@ Partial Class FrmClientes
         '
         Me.CmdNuevo.Image = CType(resources.GetObject("CmdNuevo.Image"), System.Drawing.Image)
         Me.CmdNuevo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdNuevo.Location = New System.Drawing.Point(6, 451)
+        Me.CmdNuevo.Location = New System.Drawing.Point(10, 413)
         Me.CmdNuevo.Name = "CmdNuevo"
         Me.CmdNuevo.Size = New System.Drawing.Size(75, 67)
         Me.CmdNuevo.TabIndex = 105
@@ -141,7 +141,7 @@ Partial Class FrmClientes
         Me.Button8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
         Me.Button8.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button8.Location = New System.Drawing.Point(408, 453)
+        Me.Button8.Location = New System.Drawing.Point(412, 415)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(75, 66)
         Me.Button8.TabIndex = 108
@@ -155,7 +155,7 @@ Partial Class FrmClientes
         Me.LblTitulo.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.LblTitulo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblTitulo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.LblTitulo.Location = New System.Drawing.Point(172, 28)
+        Me.LblTitulo.Location = New System.Drawing.Point(151, 27)
         Me.LblTitulo.Name = "LblTitulo"
         Me.LblTitulo.Size = New System.Drawing.Size(160, 13)
         Me.LblTitulo.TabIndex = 111
@@ -188,7 +188,7 @@ Partial Class FrmClientes
         Me.TabControl1.Location = New System.Drawing.Point(12, 68)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(475, 377)
+        Me.TabControl1.Size = New System.Drawing.Size(475, 341)
         Me.TabControl1.TabIndex = 120
         '
         'TabPage1
@@ -227,7 +227,7 @@ Partial Class FrmClientes
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(467, 351)
+        Me.TabPage1.Size = New System.Drawing.Size(467, 315)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Registro del Cliente"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -288,7 +288,7 @@ Partial Class FrmClientes
         'ChkEfectivo
         '
         Me.ChkEfectivo.AutoSize = True
-        Me.ChkEfectivo.Location = New System.Drawing.Point(122, 326)
+        Me.ChkEfectivo.Location = New System.Drawing.Point(279, 232)
         Me.ChkEfectivo.Name = "ChkEfectivo"
         Me.ChkEfectivo.Size = New System.Drawing.Size(101, 17)
         Me.ChkEfectivo.TabIndex = 146
@@ -412,7 +412,7 @@ Partial Class FrmClientes
         'ChkInventario
         '
         Me.ChkInventario.AutoSize = True
-        Me.ChkInventario.Location = New System.Drawing.Point(123, 305)
+        Me.ChkInventario.Location = New System.Drawing.Point(279, 255)
         Me.ChkInventario.Name = "ChkInventario"
         Me.ChkInventario.Size = New System.Drawing.Size(172, 17)
         Me.ChkInventario.TabIndex = 138
@@ -522,9 +522,9 @@ Partial Class FrmClientes
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(279, 263)
+        Me.Button1.Location = New System.Drawing.Point(279, 278)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(37, 38)
+        Me.Button1.Size = New System.Drawing.Size(35, 28)
         Me.Button1.TabIndex = 127
         Me.Button1.UseVisualStyleBackColor = True
         '
@@ -596,7 +596,7 @@ Partial Class FrmClientes
         'Button6
         '
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
-        Me.Button6.Location = New System.Drawing.Point(340, 8)
+        Me.Button6.Location = New System.Drawing.Point(340, 10)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(37, 38)
         Me.Button6.TabIndex = 126
@@ -864,7 +864,7 @@ Partial Class FrmClientes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(498, 527)
+        Me.ClientSize = New System.Drawing.Size(498, 487)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.CmdGrabar)
         Me.Controls.Add(Me.ButtonBorrar)

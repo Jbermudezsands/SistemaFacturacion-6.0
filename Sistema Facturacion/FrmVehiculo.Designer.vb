@@ -20,22 +20,22 @@ Partial Class FrmVehiculo
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmVehiculo))
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.LblTitulo = New System.Windows.Forms.Label
-        Me.LblApellido = New System.Windows.Forms.Label
-        Me.TxtMarca = New System.Windows.Forms.TextBox
-        Me.LblNombre = New System.Windows.Forms.Label
-        Me.LblCodigo = New System.Windows.Forms.Label
-        Me.CmdGrabar = New System.Windows.Forms.Button
-        Me.ButtonBorrar = New System.Windows.Forms.Button
-        Me.CmdNuevo = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.CboActivo = New System.Windows.Forms.ComboBox
-        Me.CboPlaca = New C1.Win.C1List.C1Combo
-        Me.CboTipo = New C1.Win.C1List.C1Combo
-        Me.ChkVehiculoEvacuaciones = New System.Windows.Forms.CheckBox
-        Me.C1Button2 = New C1.Win.C1Input.C1Button
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.LblTitulo = New System.Windows.Forms.Label()
+        Me.LblApellido = New System.Windows.Forms.Label()
+        Me.TxtMarca = New System.Windows.Forms.TextBox()
+        Me.LblNombre = New System.Windows.Forms.Label()
+        Me.LblCodigo = New System.Windows.Forms.Label()
+        Me.CmdGrabar = New System.Windows.Forms.Button()
+        Me.ButtonBorrar = New System.Windows.Forms.Button()
+        Me.CmdNuevo = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.CboActivo = New System.Windows.Forms.ComboBox()
+        Me.CboPlaca = New C1.Win.C1List.C1Combo()
+        Me.CboTipo = New C1.Win.C1List.C1Combo()
+        Me.ChkVehiculoEvacuaciones = New System.Windows.Forms.CheckBox()
+        Me.C1Button2 = New C1.Win.C1Input.C1Button()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboPlaca, System.ComponentModel.ISupportInitialize).BeginInit()

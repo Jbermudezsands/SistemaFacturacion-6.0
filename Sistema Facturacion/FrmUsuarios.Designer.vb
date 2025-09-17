@@ -131,6 +131,7 @@ Partial Class FrmUsuarios
         '
         Me.Button2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
+        Me.Button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter
         Me.Button2.Location = New System.Drawing.Point(226, 355)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(78, 68)

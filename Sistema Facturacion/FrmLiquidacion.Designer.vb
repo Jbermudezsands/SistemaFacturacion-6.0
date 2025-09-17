@@ -286,7 +286,7 @@ Partial Class FrmLiquidacion
         Me.cmdEditar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdEditar.Image = CType(resources.GetObject("cmdEditar.Image"), System.Drawing.Image)
         Me.cmdEditar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.cmdEditar.Location = New System.Drawing.Point(89, 94)
+        Me.cmdEditar.Location = New System.Drawing.Point(89, 92)
         Me.cmdEditar.Name = "cmdEditar"
         Me.cmdEditar.Size = New System.Drawing.Size(75, 67)
         Me.cmdEditar.TabIndex = 41

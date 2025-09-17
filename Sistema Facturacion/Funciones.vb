@@ -95,16 +95,27 @@ Module Funciones
         Return Contrato
 
     End Function
+    Public Sub UpdateEstadoContrato(NumeroContrato As String, Estado As String)
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer = 0
+        Dim StrSqlUpdate As String
 
+        MiConexion.Open()
+        StrSqlUpdate = "UPDATE [Contrato_Proveedor] SET [Estado] = '" & Estado & "' " &
+                        "WHERE (Numero_Contrato = '" & NumeroContrato & "') "
+        ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+        iResultado = ComandoUpdate.ExecuteNonQuery
+        MiConexion.Close()
+    End Sub
     Public Sub Gravar_Contrato_Proveedor(Contrato As TablaContrato_Proveedor)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer = 0
         Dim Dataset As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim Sqlstring As String, StrSqlUpdate As String
 
-        Sqlstring = "SELECT  * FROM  Detalle_Contratos_Productos WHERE (Numero_Contrato = '" & Contrato.Numero_Contrato & "') "
+        Sqlstring = "SELECT  * FROM  Contrato_Proveedor WHERE (Numero_Contrato = '" & Contrato.Numero_Contrato & "') "
         Dataset = FillConsultaSQL(Sqlstring, "Consulta")
-        If Dataset.Tables("Consulta").Rows.Count <> 0 Then
+        If Dataset.Tables("Consulta").Rows.Count = 0 Then
             StrSqlUpdate = "INSERT INTO [Contrato_Proveedor] ([Numero_Contrato],[Codigo_Proveedor],[Contacto_Proveedor],[Telefono_Contacto],[Descripcion],[Fecha_Inicio],[Fecha_Fin],[Tipo_Servicio],[Tipo_Contrato],[Modelo],[Num_Respuesta],[Num_Resolucion],[Tiempo_Respuesta],[Tiempo_Resolucion],[Estado],[Comentarios],[Cobertura_Lunes],[Cobertura_Martes],[Cobertura_Miercoles],[Cobertura_Jueves],[Cobertura_Viernes],[Cobertura_Sabado],[Cobertura_Domingo],[Lunes_Inicio],[Lunes_Fin],[Martes_Inicio],[Martes_Fin],[Miercoles_Inicio],[Miercoles_Fin],[Jueves_Inicio],[Jueves_Fin],[Viernes_Inicio],[Viernes_Fin],[Sabado_Inicio],[Sabado_Fin],[Domingo_Inicio],[Domingo_Fin]) " &
                         "VALUES ('" & Contrato.Numero_Contrato & "','" & Contrato.Codigo_Proveedor & "','" & Contrato.Contacto_Proveedor & "','" & Contrato.Telefono_Contacto & "','" & Contrato.Descripcion & "','" & Contrato.Fecha_Inicio & "','" & Contrato.Fecha_Fin & "','" & Contrato.Tipo_Servicio & "','" & Contrato.Tipo_Contrato & "','" & Contrato.ModeloContrato & "','" & Contrato.Num_Respuesta & "'," & Contrato.Num_Resolucion & ",'" & Contrato.Tiempo_Respuesta & "','" & Contrato.Tiempo_Resolucion & "','" & Contrato.Estado & "','" & Contrato.Comentarios & "'," & Contrato.Cobertura_Lunes & "," & Contrato.Cobertura_Martes & "," & Contrato.Cobertura_Miercoles & "," & Contrato.Cobertura_Jueves & "," & Contrato.Cobertura_Viernes & "," & Contrato.Cobertura_Sabado & "," & Contrato.Cobertura_Domingo & " ,'" & Contrato.Lunes_Inicio & "','" & Contrato.Lunes_Fin & "','" & Contrato.Martes_Inicio & "','" & Contrato.Martes_Fin & "','" & Contrato.Miercoles_Inicio & "','" & Contrato.Miercoles_Fin & "','" & Contrato.Jueves_Inicio & "','" & Contrato.Jueves_Fin & "','" & Contrato.Viernes_Inicio & "','" & Contrato.Viernes_Fin & "','" & Contrato.Sabado_Inicio & "','" & Contrato.Sabado_Fin & "','" & Contrato.Domingo_Inicio & "','" & Contrato.Domingo_Fin & "') "
             MiConexion.Open()
@@ -116,7 +127,7 @@ Module Funciones
 
         Else
             MiConexion.Open()
-            StrSqlUpdate = "UPDATE [Contrato_Proveedor] SET [Codigo_Proveedor] = '" & Contrato.Codigo_Proveedor & "',[Contacto_Proveedor] = '" & Contrato.Contacto_Proveedor & "',[Telefono_Contacto] = '" & Contrato.Telefono_Contacto & "',[Descripcion] = '" & Contrato.Descripcion & "',[Fecha_Inicio] = '" & Contrato.Fecha_Inicio & "',[Fecha_Fin] = '" & Contrato.Fecha_Fin & "',[Tipo_Servicio] = '" & Contrato.Tipo_Servicio & "',[Tipo_Contrato] = '" & Contrato.Tipo_Contrato & "',[Modelo] = '" & Contrato.ModeloContrato & "',[Num_Respuesta] = " & Contrato.Num_Respuesta & ",[Num_Resolucion] = " & Contrato.Num_Resolucion & ",[Tiempo_Respuesta] = '" & Contrato.Tiempo_Respuesta & "' ,[Tiempo_Resolucion] = '" & Contrato.Tiempo_Resolucion & "',[Estado] = '" & Contrato.Estado & "',[Comentarios] ='" & Contrato.Comentarios & "',[Cobertura_Lunes] = " & Contrato.Cobertura_Lunes & ",[Cobertura_Martes] = " & Contrato.Cobertura_Martes & ",[Cobertura_Miercoles] = " & Contrato.Cobertura_Miercoles & ",[Cobertura_Jueves] = " & Contrato.Cobertura_Jueves & ",[Cobertura_Viernes] = " & Contrato.Cobertura_Viernes & ",[Cobertura_Sabado] = " & Contrato.Cobertura_Sabado & ",[Cobertura_Domingo] = " & Contrato.Cobertura_Domingo & ",[Lunes_Inicio] = '" & Contrato.Lunes_Inicio & "',[Lunes_Fin] = '" & Contrato.Lunes_Fin & "',[Martes_Inicio] = '" & Contrato.Martes_Inicio & "',[Martes_Fin] = '" & Contrato.Martes_Fin & "',[Miercoles_Inicio] = '" & Contrato.Miercoles_Inicio & "',[Miercoles_Fin] = '" & Contrato.Miercoles_Fin & "',[Jueves_Inicio] = '" & Contrato.Jueves_Inicio & "',[Jueves_Fin] = '" & Contrato.Miercoles_Fin & "',[Viernes_Inicio] = '" & Contrato.Viernes_Inicio & "',[Viernes_Fin] = '" & Contrato.Viernes_Fin & "',[Sabado_Inicio] = '" & Contrato.Sabado_Inicio & "',[Sabado_Fin] = '" & Contrato.Sabado_Fin & "',[Domingo_Inicio] = '" & Contrato.Domingo_Inicio & "',[Domingo_Fin] = '" & Contrato.Domingo_Fin & "' " &
+            StrSqlUpdate = "UPDATE [Contrato_Proveedor] SET [Codigo_Proveedor] = '" & Contrato.Codigo_Proveedor & "',[Contacto_Proveedor] = '" & Contrato.Contacto_Proveedor & "',[Telefono_Contacto] = '" & Contrato.Telefono_Contacto & "',[Descripcion] = '" & Contrato.Descripcion & "',[Fecha_Inicio] = '" & Contrato.Fecha_Inicio & "',[Fecha_Fin] = '" & Contrato.Fecha_Fin & "',[Tipo_Servicio] = '" & Contrato.Tipo_Servicio & "',[Tipo_Contrato] = '" & Contrato.Tipo_Contrato & "',[Modelo] = '" & Contrato.ModeloContrato & "',[Num_Respuesta] = " & Contrato.Num_Respuesta & ",[Num_Resolucion] = " & Contrato.Num_Resolucion & ",[Tiempo_Respuesta] = '" & Contrato.Tiempo_Respuesta & "' ,[Tiempo_Resolucion] = '" & Contrato.Tiempo_Resolucion & "',[Estado] = '" & Contrato.Estado & "',[Comentarios] ='" & Contrato.Comentarios & "',[Cobertura_Lunes] = " & Contrato.Cobertura_Lunes & ",[Cobertura_Martes] = " & Contrato.Cobertura_Martes & ",[Cobertura_Miercoles] = " & Contrato.Cobertura_Miercoles & ",[Cobertura_Jueves] = " & Contrato.Cobertura_Jueves & ",[Cobertura_Viernes] = " & Contrato.Cobertura_Viernes & ",[Cobertura_Sabado] = " & Contrato.Cobertura_Sabado & ",[Cobertura_Domingo] = " & Contrato.Cobertura_Domingo & ",[Lunes_Inicio] = '" & Contrato.Lunes_Inicio & "',[Lunes_Fin] = '" & Contrato.Lunes_Fin & "',[Martes_Inicio] = '" & Contrato.Martes_Inicio & "',[Martes_Fin] = '" & Contrato.Martes_Fin & "',[Miercoles_Inicio] = '" & Contrato.Miercoles_Inicio & "',[Miercoles_Fin] = '" & Contrato.Miercoles_Fin & "',[Jueves_Inicio] = '" & Contrato.Jueves_Inicio & "',[Jueves_Fin] = '" & Contrato.Jueves_Fin & "',[Viernes_Inicio] = '" & Contrato.Viernes_Inicio & "',[Viernes_Fin] = '" & Contrato.Viernes_Fin & "',[Sabado_Inicio] = '" & Contrato.Sabado_Inicio & "',[Sabado_Fin] = '" & Contrato.Sabado_Fin & "',[Domingo_Inicio] = '" & Contrato.Domingo_Inicio & "',[Domingo_Fin] = '" & Contrato.Domingo_Fin & "' " &
                             "WHERE (Numero_Contrato = '" & Contrato.Numero_Contrato & "') "
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery

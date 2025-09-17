@@ -481,6 +481,8 @@ Public Class FrmProductos
         Dim DataSet As New DataSet, DataAdapterProductos As New SqlClient.SqlDataAdapter, SqlProductos As String
         Dim SqlLinea As String = "SELECT * FROM Lineas ", SqlImpuestos As String = "SELECT * FROM Impuestos"
         Dim SqlDatos As String, DataAdapter As New SqlClient.SqlDataAdapter
+        Me.MinimumSize = Size
+        Me.MaximumSize = Size
 
         Me.OpenFileDialog1.Filter = "Image Files (*.jpg)|*.jpg"
 
@@ -615,10 +617,6 @@ Public Class FrmProductos
         Quien = "CuentaVentas"
         My.Forms.FrmConsultas.ShowDialog()
         Me.TxtCuentaVenta.Text = My.Forms.FrmConsultas.Codigo
-    End Sub
-
-    Private Sub CmdNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdNuevo.Click
-        Me.CboCodigoProducto.Text = ""
     End Sub
 
     Private Sub ButtonAgregar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAgregar.Click
@@ -2943,6 +2941,11 @@ Public Class FrmProductos
     Private Sub Inventario_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Inventario.Click
 
     End Sub
+
+    Private Sub CmdNuevo_Click(sender As Object, e As EventArgs) Handles CmdNuevo.Click
+        Me.CboCodigoProducto.Text = ""
+    End Sub
+
 
     Private Sub GroupBox4_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox4.Enter
 

@@ -497,9 +497,9 @@ Partial Class FrmNotaDebito
         'Button3
         '
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
-        Me.Button3.Location = New System.Drawing.Point(260, 77)
+        Me.Button3.Location = New System.Drawing.Point(257, 74)
         Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(37, 32)
+        Me.Button3.Size = New System.Drawing.Size(35, 28)
         Me.Button3.TabIndex = 144
         Me.Button3.UseVisualStyleBackColor = True
         '

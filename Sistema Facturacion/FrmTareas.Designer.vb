@@ -20,23 +20,23 @@ Partial Class FrmTareas
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmTareas))
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.PictureBox3 = New System.Windows.Forms.PictureBox
-        Me.TabControl1 = New System.Windows.Forms.TabControl
-        Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.TxtCtaCosto = New System.Windows.Forms.TextBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.CboCodigoCliente = New C1.Win.C1List.C1Combo
-        Me.TxtNombre = New System.Windows.Forms.TextBox
-        Me.LblNombre = New System.Windows.Forms.Label
-        Me.Button6 = New System.Windows.Forms.Button
-        Me.LblCodigo = New System.Windows.Forms.Label
-        Me.CmdGrabar = New System.Windows.Forms.Button
-        Me.ButtonBorrar = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.LblTitulo = New System.Windows.Forms.Label
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.TxtCtaCosto = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.CboCodigoCliente = New C1.Win.C1List.C1Combo()
+        Me.TxtNombre = New System.Windows.Forms.TextBox()
+        Me.LblNombre = New System.Windows.Forms.Label()
+        Me.Button6 = New System.Windows.Forms.Button()
+        Me.LblCodigo = New System.Windows.Forms.Label()
+        Me.CmdGrabar = New System.Windows.Forms.Button()
+        Me.ButtonBorrar = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.LblTitulo = New System.Windows.Forms.Label()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -99,7 +99,7 @@ Partial Class FrmTareas
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
         Me.Button1.Location = New System.Drawing.Point(276, 80)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(37, 38)
+        Me.Button1.Size = New System.Drawing.Size(35, 28)
         Me.Button1.TabIndex = 134
         Me.Button1.UseVisualStyleBackColor = True
         '

@@ -124,13 +124,13 @@ Partial Class FrmArqueo
         'CmdIniciar
         '
         Me.CmdIniciar.Image = CType(resources.GetObject("CmdIniciar.Image"), System.Drawing.Image)
-        Me.CmdIniciar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.CmdIniciar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.CmdIniciar.Location = New System.Drawing.Point(1052, 62)
         Me.CmdIniciar.Name = "CmdIniciar"
-        Me.CmdIniciar.Size = New System.Drawing.Size(75, 45)
+        Me.CmdIniciar.Size = New System.Drawing.Size(82, 45)
         Me.CmdIniciar.TabIndex = 123
         Me.CmdIniciar.Text = "Iniciar"
-        Me.CmdIniciar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.CmdIniciar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.CmdIniciar.UseVisualStyleBackColor = True
         '
         'Label9
@@ -149,7 +149,7 @@ Partial Class FrmArqueo
         '
         Me.PictureBox2.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
-        Me.PictureBox2.Location = New System.Drawing.Point(10, -1)
+        Me.PictureBox2.Location = New System.Drawing.Point(-1, -1)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(79, 60)
         Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage

@@ -20,21 +20,21 @@ Partial Class FrmPeriodos
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmPeriodos))
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.CboTipoNomina = New C1.Win.C1List.C1Combo
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.CmbTipoPlanilla = New System.Windows.Forms.ComboBox
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.TxtAño = New System.Windows.Forms.TextBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.DTPFechaInicio = New System.Windows.Forms.DateTimePicker
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.lstPlanilla = New System.Windows.Forms.ListBox
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.CmdGenerar = New System.Windows.Forms.Button
-        Me.CmdGrabar = New System.Windows.Forms.Button
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.CboTipoNomina = New C1.Win.C1List.C1Combo()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.CmbTipoPlanilla = New System.Windows.Forms.ComboBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.TxtAño = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.DTPFechaFin = New System.Windows.Forms.DateTimePicker()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.DTPFechaInicio = New System.Windows.Forms.DateTimePicker()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.lstPlanilla = New System.Windows.Forms.ListBox()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.CmdGenerar = New System.Windows.Forms.Button()
+        Me.CmdGrabar = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         CType(Me.CboTipoNomina, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
