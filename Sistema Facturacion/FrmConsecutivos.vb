@@ -9,6 +9,9 @@ Public Class FrmConsecutivos
 
     Private Sub FrmConsecutivos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim Consecutivofactura As Double
+        Me.MinimumSize = Size
+        Me.MaximumSize = Size
+
         If Quien = "Recibo" Then
             If FrmRecibos.ConsecutivoReciboSerie = True Then
                 Consecutivofactura = BuscaConsecutivoSerieNoEdita("Recibo", FrmRecibos.CmbSerie.Text)

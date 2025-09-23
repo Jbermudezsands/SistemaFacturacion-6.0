@@ -16,6 +16,8 @@
 	Private FechaVence As String
     Private DescripcionProducto As String
     Private CodigoBodega As String
+    Private MonedaCompra As String
+
 
 
     Public Property Numero_Compra As String
@@ -168,6 +170,15 @@
         End Get
         Set(value As String)
             CodigoBodega = value
+        End Set
+    End Property
+
+    Public Property Moneda_Compra As String
+        Get
+            Return MonedaCompra
+        End Get
+        Set(value As String)
+            MonedaCompra = value
         End Set
     End Property
 End Class

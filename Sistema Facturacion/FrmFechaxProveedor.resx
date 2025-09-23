@@ -121,7 +121,7 @@
   <data name="BtnBuscar.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABwAAAAaCAYAAACkVDyJAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wgAADsIBFShKgAAABDFJREFUSEu9lPlPVGcUhv07mv5gm67WigWk0oQUqAotdKQuiGCkKg5UK7KoNKKi
+        wAAADsABataJCQAABDFJREFUSEu9lPlPVGcUhv07mv5gm67WigWk0oQUqAotdKQuiGCkKg5UK7KoNKKi
         FCKCYMEZFgFFFLEgLqCyKsiwDBoxAkJdalgKZRWHkQFm4WnmSifMYOwFTd/k5CbfPed98n0558zjf9Y8
         y4PZSKvT8/SvQZRN7TQ0d/CwvZ/RsQnLNDPNCdgz8JzEc7dYFZSB9doYbL0SsF2fgO26ONx/TuNodhXt
         PUOWZYJmDSypaWW5fwr2vnJWhZ0lOKWMQ7m17D+jwP9oIct/SsPOJwnnrXIKq5oty2cHvFLZxJcbEnHd
@@ -145,7 +145,7 @@
   <data name="BtnProcesar.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAC0AAAAwCAYAAACFUvPfAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wAAADsABataJCQAACc1JREFUaEPtmIlzGvcVx/Pftp1pm5k2aZpOc0wSJ3ak2IlbO4ebw7EuS0ISuizJ
+        vgAADr4B6kKxwAAACc1JREFUaEPtmIlzGvcVx/Pftp1pm5k2aZpOc0wSJ3ak2IlbO4ebw7EuS0ISuizJ
         gCTEIXGf4hIg7mWB5T534dv5PQQCdFqR08lMvzNvgF3Qfn5v3/v+3uoN/Ab1xuiB34L+D/1r6Vaga2Kb
         oie+KiJWaiFTE1FsSqi02mh3hn7yi3Rj6HJLwlGhDl2yjNVQHla+2j/nydWhT1ZgTFVh5qqwpqtwZmpI
         VVpDf+OmemVolj0TV8F6uACZX8BCQMBycBiafSdcbCBYaMKbq8PB12BIVegO9NSQOmhKN0v/taHZLWZg
@@ -193,7 +193,7 @@
   <data name="BtnSalir.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wQAADsEBuJFr7QAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAmXSURBVFhHtZgJ
+        vwAADr8BOAVTJAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAmXSURBVFhHtZgJ
         cBRVHsbb9UJLMpmj557p6clkMomauLrEYECCrqRYr12WRa5ADkiMhggYYUElCBIWkJIjB+EIhxyG1UWT
         cKuIq6BVrIqyXqsLhZCEzPTcPT1HZ76tTq1KHgkhEH9Vr2rqfd9786939f89iroK8Bfq+uB422/9Y22l
         3j/atnoetX3JjbaF+NF28LkpcI1MDnE59i+44SnbvPfZS4P3pd21m6KuJ/sZcHyFlhQ+n10emMyeRYEd

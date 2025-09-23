@@ -20,32 +20,32 @@ Partial Class FrmConfigurar
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmConfigurar))
-        Me.ImgLogo = New System.Windows.Forms.PictureBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.TxtNombreEmpresa = New System.Windows.Forms.TextBox
-        Me.TxtDireccion = New System.Windows.Forms.TextBox
-        Me.TxtRuc = New System.Windows.Forms.TextBox
-        Me.TxtTelefono = New System.Windows.Forms.TextBox
-        Me.TxtRutaLogo = New System.Windows.Forms.TextBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.TxtConexion = New System.Windows.Forms.TextBox
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.CmdGrabar = New System.Windows.Forms.Button
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.OpenFileDialog = New System.Windows.Forms.OpenFileDialog
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.ChkSincroniza = New System.Windows.Forms.CheckBox
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.TxtRutaCompartida = New System.Windows.Forms.TextBox
-        Me.CmdRutoLogo = New System.Windows.Forms.Button
-        Me.CmdRutaCompartida = New System.Windows.Forms.Button
-        Me.FolderBrowserDialog = New System.Windows.Forms.FolderBrowserDialog
+        Me.ImgLogo = New System.Windows.Forms.PictureBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.TxtNombreEmpresa = New System.Windows.Forms.TextBox()
+        Me.TxtDireccion = New System.Windows.Forms.TextBox()
+        Me.TxtRuc = New System.Windows.Forms.TextBox()
+        Me.TxtTelefono = New System.Windows.Forms.TextBox()
+        Me.TxtRutaLogo = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.TxtConexion = New System.Windows.Forms.TextBox()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.CmdGrabar = New System.Windows.Forms.Button()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.OpenFileDialog = New System.Windows.Forms.OpenFileDialog()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.ChkSincroniza = New System.Windows.Forms.CheckBox()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.TxtRutaCompartida = New System.Windows.Forms.TextBox()
+        Me.CmdRutoLogo = New System.Windows.Forms.Button()
+        Me.CmdRutaCompartida = New System.Windows.Forms.Button()
+        Me.FolderBrowserDialog = New System.Windows.Forms.FolderBrowserDialog()
         CType(Me.ImgLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -175,6 +175,7 @@ Partial Class FrmConfigurar
         'Button2
         '
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
+        Me.Button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter
         Me.Button2.Location = New System.Drawing.Point(448, 371)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(78, 68)
@@ -257,18 +258,18 @@ Partial Class FrmConfigurar
         'CmdRutoLogo
         '
         Me.CmdRutoLogo.Image = CType(resources.GetObject("CmdRutoLogo.Image"), System.Drawing.Image)
-        Me.CmdRutoLogo.Location = New System.Drawing.Point(484, 237)
+        Me.CmdRutoLogo.Location = New System.Drawing.Point(483, 243)
         Me.CmdRutoLogo.Name = "CmdRutoLogo"
-        Me.CmdRutoLogo.Size = New System.Drawing.Size(29, 30)
+        Me.CmdRutoLogo.Size = New System.Drawing.Size(35, 28)
         Me.CmdRutoLogo.TabIndex = 171
         Me.CmdRutoLogo.UseVisualStyleBackColor = True
         '
         'CmdRutaCompartida
         '
         Me.CmdRutaCompartida.Image = CType(resources.GetObject("CmdRutaCompartida.Image"), System.Drawing.Image)
-        Me.CmdRutaCompartida.Location = New System.Drawing.Point(484, 268)
+        Me.CmdRutaCompartida.Location = New System.Drawing.Point(482, 271)
         Me.CmdRutaCompartida.Name = "CmdRutaCompartida"
-        Me.CmdRutaCompartida.Size = New System.Drawing.Size(29, 30)
+        Me.CmdRutaCompartida.Size = New System.Drawing.Size(35, 28)
         Me.CmdRutaCompartida.TabIndex = 172
         Me.CmdRutaCompartida.UseVisualStyleBackColor = True
         '

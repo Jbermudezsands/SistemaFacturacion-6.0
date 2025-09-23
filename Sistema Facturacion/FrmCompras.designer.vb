@@ -683,7 +683,7 @@ Partial Class FrmCompras
         Me.CmdFacturar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CmdFacturar.Image = CType(resources.GetObject("CmdFacturar.Image"), System.Drawing.Image)
         Me.CmdFacturar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdFacturar.Location = New System.Drawing.Point(78, 88)
+        Me.CmdFacturar.Location = New System.Drawing.Point(78, 85)
         Me.CmdFacturar.Name = "CmdFacturar"
         Me.CmdFacturar.Size = New System.Drawing.Size(62, 66)
         Me.CmdFacturar.TabIndex = 201
@@ -746,7 +746,7 @@ Partial Class FrmCompras
         Me.CmdProcesar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CmdProcesar.Image = CType(resources.GetObject("CmdProcesar.Image"), System.Drawing.Image)
         Me.CmdProcesar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdProcesar.Location = New System.Drawing.Point(78, 160)
+        Me.CmdProcesar.Location = New System.Drawing.Point(81, 157)
         Me.CmdProcesar.Name = "CmdProcesar"
         Me.CmdProcesar.Size = New System.Drawing.Size(65, 66)
         Me.CmdProcesar.TabIndex = 207
@@ -1027,7 +1027,7 @@ Partial Class FrmCompras
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(889, 502)
+        Me.ClientSize = New System.Drawing.Size(882, 502)
         Me.Controls.Add(Me.GroupBoxImportar)
         Me.Controls.Add(Me.ChkSolcitudxCta)
         Me.Controls.Add(Me.ChkAplicarCtasXPagar)

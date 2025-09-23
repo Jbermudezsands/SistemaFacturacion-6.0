@@ -5,10 +5,15 @@ Public Class FrmLotes
     Private Sub FrmLotes_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim SQlString As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim Fecha As Date
+
+        Fecha = Format(DateAdd("m", -1, Now), "dd/MM/yyyy")
+
         'Dim oDataRow As DataRow, i As Double
 
-        'SQlString = "SELECT id_Detalle_Lote, Cantidad, Numero_Lote, FechaVence, Tipo_Documento, Numero_Documento, Fecha, Codigo_Producto  FROM Detalle_Lote WHERE (Numero_Documento = '" & NumeroDocumento & "') AND (Fecha = CONVERT(DATETIME, '" & Format(Fecha, "yyyy-MM-dd") & "', 102)) AND (Tipo_Documento = '" & TipoDocumento & "') AND (Codigo_Producto = '" & CodigoProducto & "')"
-        SQlString = "SELECT *  FROM Lote  WHERE(Activo = 1)"
+
+        'SQlString = "SELECT *  FROM Lote  WHERE(Activo = 1)"
+        SQlString = "SELECT *  FROM Lote  WHERE (FechaVence >= CONVERT(DATETIME, '" & Format(Fecha, "yyyy-MM-dd") & "', 102)) AND (Activo = 1)"
         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
         DataAdapter.Fill(DataSet, "Lotes")
 

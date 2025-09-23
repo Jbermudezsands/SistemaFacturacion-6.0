@@ -76,6 +76,16 @@ Partial Class FrmPlanilla
         Me.ProgressBar2 = New System.Windows.Forms.ProgressBar()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.BindingDeducciones2 = New System.Windows.Forms.BindingSource(Me.components)
+        Me.Button4 = New System.Windows.Forms.Button()
+        Me.GroupBoxImportar = New System.Windows.Forms.GroupBox()
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.LblTotalRegistros = New System.Windows.Forms.Label()
+        Me.TxtError = New System.Windows.Forms.TextBox()
+        Me.BtnCancelar = New System.Windows.Forms.Button()
+        Me.BtnQuitar = New System.Windows.Forms.Button()
+        Me.BtnCargar = New System.Windows.Forms.Button()
+        Me.BtnAbrir = New System.Windows.Forms.Button()
+        Me.TrueDBGridConsultas = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
         Me.GroupBox1.SuspendLayout()
         CType(Me.CboTipoPlanilla, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -89,6 +99,8 @@ Partial Class FrmPlanilla
         CType(Me.TDGridDeducciones2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
         CType(Me.BindingDeducciones2, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBoxImportar.SuspendLayout()
+        CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox1
@@ -251,7 +263,7 @@ Partial Class FrmPlanilla
         Me.CmdCalcular.ImageAlign = System.Drawing.ContentAlignment.TopCenter
         Me.CmdCalcular.Location = New System.Drawing.Point(12, 392)
         Me.CmdCalcular.Name = "CmdCalcular"
-        Me.CmdCalcular.Size = New System.Drawing.Size(75, 67)
+        Me.CmdCalcular.Size = New System.Drawing.Size(69, 67)
         Me.CmdCalcular.TabIndex = 173
         Me.CmdCalcular.Text = "Calcular"
         Me.CmdCalcular.TextAlign = System.Drawing.ContentAlignment.BottomCenter
@@ -603,11 +615,11 @@ Partial Class FrmPlanilla
         Me.CmdNomina.Enabled = False
         Me.CmdNomina.Image = CType(resources.GetObject("CmdNomina.Image"), System.Drawing.Image)
         Me.CmdNomina.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdNomina.Location = New System.Drawing.Point(93, 392)
+        Me.CmdNomina.Location = New System.Drawing.Point(85, 392)
         Me.CmdNomina.Name = "CmdNomina"
-        Me.CmdNomina.Size = New System.Drawing.Size(75, 67)
+        Me.CmdNomina.Size = New System.Drawing.Size(69, 67)
         Me.CmdNomina.TabIndex = 175
-        Me.CmdNomina.Text = "Imp Nomina"
+        Me.CmdNomina.Text = "Nomina"
         Me.CmdNomina.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.CmdNomina.UseVisualStyleBackColor = True
         '
@@ -616,9 +628,9 @@ Partial Class FrmPlanilla
         Me.CmdColillas.Enabled = False
         Me.CmdColillas.Image = CType(resources.GetObject("CmdColillas.Image"), System.Drawing.Image)
         Me.CmdColillas.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdColillas.Location = New System.Drawing.Point(174, 392)
+        Me.CmdColillas.Location = New System.Drawing.Point(230, 392)
         Me.CmdColillas.Name = "CmdColillas"
-        Me.CmdColillas.Size = New System.Drawing.Size(75, 67)
+        Me.CmdColillas.Size = New System.Drawing.Size(69, 67)
         Me.CmdColillas.TabIndex = 176
         Me.CmdColillas.Text = "Imp Recep"
         Me.CmdColillas.TextAlign = System.Drawing.ContentAlignment.BottomCenter
@@ -641,9 +653,9 @@ Partial Class FrmPlanilla
         Me.CmdCerrar.Enabled = False
         Me.CmdCerrar.Image = CType(resources.GetObject("CmdCerrar.Image"), System.Drawing.Image)
         Me.CmdCerrar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdCerrar.Location = New System.Drawing.Point(336, 392)
+        Me.CmdCerrar.Location = New System.Drawing.Point(386, 392)
         Me.CmdCerrar.Name = "CmdCerrar"
-        Me.CmdCerrar.Size = New System.Drawing.Size(75, 67)
+        Me.CmdCerrar.Size = New System.Drawing.Size(69, 67)
         Me.CmdCerrar.TabIndex = 178
         Me.CmdCerrar.Text = "Cerrar Nom"
         Me.CmdCerrar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
@@ -651,9 +663,9 @@ Partial Class FrmPlanilla
         '
         'ProgressBar
         '
-        Me.ProgressBar.Location = New System.Drawing.Point(425, 396)
+        Me.ProgressBar.Location = New System.Drawing.Point(463, 392)
         Me.ProgressBar.Name = "ProgressBar"
-        Me.ProgressBar.Size = New System.Drawing.Size(475, 26)
+        Me.ProgressBar.Size = New System.Drawing.Size(459, 26)
         Me.ProgressBar.TabIndex = 180
         Me.ProgressBar.Visible = False
         '
@@ -662,7 +674,7 @@ Partial Class FrmPlanilla
         Me.LblProcesando.AutoSize = True
         Me.LblProcesando.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblProcesando.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.LblProcesando.Location = New System.Drawing.Point(438, 425)
+        Me.LblProcesando.Location = New System.Drawing.Point(460, 421)
         Me.LblProcesando.Name = "LblProcesando"
         Me.LblProcesando.Size = New System.Drawing.Size(322, 16)
         Me.LblProcesando.TabIndex = 181
@@ -670,7 +682,7 @@ Partial Class FrmPlanilla
         '
         'ProgressBar2
         '
-        Me.ProgressBar2.Location = New System.Drawing.Point(767, 425)
+        Me.ProgressBar2.Location = New System.Drawing.Point(789, 421)
         Me.ProgressBar2.Name = "ProgressBar2"
         Me.ProgressBar2.Size = New System.Drawing.Size(133, 23)
         Me.ProgressBar2.TabIndex = 182
@@ -681,19 +693,150 @@ Partial Class FrmPlanilla
         Me.Button2.Enabled = False
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
         Me.Button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button2.Location = New System.Drawing.Point(255, 392)
+        Me.Button2.Location = New System.Drawing.Point(302, 392)
         Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(75, 67)
+        Me.Button2.Size = New System.Drawing.Size(69, 67)
         Me.Button2.TabIndex = 183
         Me.Button2.Text = "Imp Colillas"
         Me.Button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.Button2.UseVisualStyleBackColor = True
         '
+        'Button4
+        '
+        Me.Button4.Enabled = False
+        Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
+        Me.Button4.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.Button4.Location = New System.Drawing.Point(156, 392)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(70, 67)
+        Me.Button4.TabIndex = 184
+        Me.Button4.Text = "Importar"
+        Me.Button4.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.Button4.UseVisualStyleBackColor = True
+        '
+        'GroupBoxImportar
+        '
+        Me.GroupBoxImportar.Controls.Add(Me.ProgressBar1)
+        Me.GroupBoxImportar.Controls.Add(Me.LblTotalRegistros)
+        Me.GroupBoxImportar.Controls.Add(Me.TxtError)
+        Me.GroupBoxImportar.Controls.Add(Me.BtnCancelar)
+        Me.GroupBoxImportar.Controls.Add(Me.BtnQuitar)
+        Me.GroupBoxImportar.Controls.Add(Me.BtnCargar)
+        Me.GroupBoxImportar.Controls.Add(Me.BtnAbrir)
+        Me.GroupBoxImportar.Controls.Add(Me.TrueDBGridConsultas)
+        Me.GroupBoxImportar.Location = New System.Drawing.Point(1073, 79)
+        Me.GroupBoxImportar.Name = "GroupBoxImportar"
+        Me.GroupBoxImportar.Size = New System.Drawing.Size(1021, 452)
+        Me.GroupBoxImportar.TabIndex = 271
+        Me.GroupBoxImportar.TabStop = False
+        Me.GroupBoxImportar.Text = "Importacion de Compras"
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(8, 398)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(538, 20)
+        Me.ProgressBar1.TabIndex = 215
+        Me.ProgressBar1.Visible = False
+        '
+        'LblTotalRegistros
+        '
+        Me.LblTotalRegistros.AutoSize = True
+        Me.LblTotalRegistros.Location = New System.Drawing.Point(552, 403)
+        Me.LblTotalRegistros.Name = "LblTotalRegistros"
+        Me.LblTotalRegistros.Size = New System.Drawing.Size(81, 13)
+        Me.LblTotalRegistros.TabIndex = 214
+        Me.LblTotalRegistros.Text = "Total Registros "
+        '
+        'TxtError
+        '
+        Me.TxtError.Location = New System.Drawing.Point(775, 234)
+        Me.TxtError.Multiline = True
+        Me.TxtError.Name = "TxtError"
+        Me.TxtError.Size = New System.Drawing.Size(86, 88)
+        Me.TxtError.TabIndex = 213
+        '
+        'BtnCancelar
+        '
+        Me.BtnCancelar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnCancelar.Image = CType(resources.GetObject("BtnCancelar.Image"), System.Drawing.Image)
+        Me.BtnCancelar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnCancelar.Location = New System.Drawing.Point(788, 336)
+        Me.BtnCancelar.Name = "BtnCancelar"
+        Me.BtnCancelar.Size = New System.Drawing.Size(72, 66)
+        Me.BtnCancelar.TabIndex = 212
+        Me.BtnCancelar.Tag = "27"
+        Me.BtnCancelar.Text = "Cancelar"
+        Me.BtnCancelar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnCancelar.UseVisualStyleBackColor = True
+        '
+        'BtnQuitar
+        '
+        Me.BtnQuitar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnQuitar.Image = CType(resources.GetObject("BtnQuitar.Image"), System.Drawing.Image)
+        Me.BtnQuitar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnQuitar.Location = New System.Drawing.Point(790, 161)
+        Me.BtnQuitar.Name = "BtnQuitar"
+        Me.BtnQuitar.Size = New System.Drawing.Size(70, 66)
+        Me.BtnQuitar.TabIndex = 211
+        Me.BtnQuitar.Tag = "27"
+        Me.BtnQuitar.Text = "Quitar"
+        Me.BtnQuitar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnQuitar.UseVisualStyleBackColor = True
+        '
+        'BtnCargar
+        '
+        Me.BtnCargar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnCargar.Image = CType(resources.GetObject("BtnCargar.Image"), System.Drawing.Image)
+        Me.BtnCargar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnCargar.Location = New System.Drawing.Point(788, 87)
+        Me.BtnCargar.Name = "BtnCargar"
+        Me.BtnCargar.Size = New System.Drawing.Size(70, 66)
+        Me.BtnCargar.TabIndex = 210
+        Me.BtnCargar.Tag = "27"
+        Me.BtnCargar.Text = "Cargar"
+        Me.BtnCargar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnCargar.UseVisualStyleBackColor = True
+        '
+        'BtnAbrir
+        '
+        Me.BtnAbrir.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnAbrir.Image = CType(resources.GetObject("BtnAbrir.Image"), System.Drawing.Image)
+        Me.BtnAbrir.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnAbrir.Location = New System.Drawing.Point(788, 19)
+        Me.BtnAbrir.Name = "BtnAbrir"
+        Me.BtnAbrir.Size = New System.Drawing.Size(70, 66)
+        Me.BtnAbrir.TabIndex = 209
+        Me.BtnAbrir.Tag = "27"
+        Me.BtnAbrir.Text = "Abrir"
+        Me.BtnAbrir.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnAbrir.UseVisualStyleBackColor = True
+        '
+        'TrueDBGridConsultas
+        '
+        Me.TrueDBGridConsultas.AlternatingRows = True
+        Me.TrueDBGridConsultas.Caption = "Listado de Productos"
+        Me.TrueDBGridConsultas.FilterBar = True
+        Me.TrueDBGridConsultas.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TrueDBGridConsultas.Images.Add(CType(resources.GetObject("TrueDBGridConsultas.Images"), System.Drawing.Image))
+        Me.TrueDBGridConsultas.Location = New System.Drawing.Point(8, 19)
+        Me.TrueDBGridConsultas.Name = "TrueDBGridConsultas"
+        Me.TrueDBGridConsultas.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TrueDBGridConsultas.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TrueDBGridConsultas.PreviewInfo.ZoomFactor = 75.0R
+        Me.TrueDBGridConsultas.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridConsultas.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TrueDBGridConsultas.Size = New System.Drawing.Size(763, 367)
+        Me.TrueDBGridConsultas.TabIndex = 134
+        Me.TrueDBGridConsultas.Text = "C1TrueDBGrid1"
+        Me.TrueDBGridConsultas.PropBag = resources.GetString("TrueDBGridConsultas.PropBag")
+        '
         'FrmPlanilla
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1034, 471)
+        Me.ClientSize = New System.Drawing.Size(1033, 527)
+        Me.Controls.Add(Me.GroupBoxImportar)
+        Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.ProgressBar2)
         Me.Controls.Add(Me.LblProcesando)
@@ -728,6 +871,9 @@ Partial Class FrmPlanilla
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         CType(Me.BindingDeducciones2, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBoxImportar.ResumeLayout(False)
+        Me.GroupBoxImportar.PerformLayout()
+        CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -787,4 +933,14 @@ Partial Class FrmPlanilla
     Friend WithEvents TxtNuevoPrecio As System.Windows.Forms.TextBox
     Friend WithEvents Label16 As System.Windows.Forms.Label
     Friend WithEvents Button3 As System.Windows.Forms.Button
+    Friend WithEvents Button4 As Button
+    Friend WithEvents GroupBoxImportar As GroupBox
+    Friend WithEvents ProgressBar1 As ProgressBar
+    Friend WithEvents LblTotalRegistros As Label
+    Friend WithEvents TxtError As TextBox
+    Friend WithEvents BtnCancelar As Button
+    Friend WithEvents BtnQuitar As Button
+    Friend WithEvents BtnCargar As Button
+    Friend WithEvents BtnAbrir As Button
+    Friend WithEvents TrueDBGridConsultas As C1.Win.C1TrueDBGrid.C1TrueDBGrid
 End Class

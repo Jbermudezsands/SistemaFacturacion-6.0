@@ -47,6 +47,9 @@ Public Class FrmListaSolicitud
     End Sub
 
     Private Sub FrmListaSolicitud_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.MinimumSize = Size
+        Me.MaximumSize = Size
+
         Quien = "Load"
         BtnActualizar_Click(sender, e)
     End Sub

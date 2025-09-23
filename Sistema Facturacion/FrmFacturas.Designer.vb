@@ -801,7 +801,7 @@ Partial Class FrmFacturas
         Me.Button8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
         Me.Button8.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button8.Location = New System.Drawing.Point(9, 234)
+        Me.Button8.Location = New System.Drawing.Point(76, 230)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(62, 68)
         Me.Button8.TabIndex = 184
@@ -1174,7 +1174,7 @@ Partial Class FrmFacturas
         Me.Button5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
         Me.Button5.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button5.Location = New System.Drawing.Point(77, 236)
+        Me.Button5.Location = New System.Drawing.Point(9, 230)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(62, 66)
         Me.Button5.TabIndex = 209

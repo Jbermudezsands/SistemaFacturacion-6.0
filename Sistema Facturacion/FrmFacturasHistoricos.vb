@@ -548,7 +548,7 @@ Public Class FrmFacturasHistoricos
                     FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
                 End If
 
-                GrabaMetodoDetalleFactura(NumeroFactura, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta)
+                GrabaMetodoDetalleFactura(NumeroFactura, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta, TablaFactura.Fecha_Factura, TablaFactura.Tipo_Factura)
                 iPosicion = iPosicion + 1
             Loop
 

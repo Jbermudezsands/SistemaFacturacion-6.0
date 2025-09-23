@@ -481,6 +481,7 @@ Public Class FrmProductos
         Dim DataSet As New DataSet, DataAdapterProductos As New SqlClient.SqlDataAdapter, SqlProductos As String
         Dim SqlLinea As String = "SELECT * FROM Lineas ", SqlImpuestos As String = "SELECT * FROM Impuestos"
         Dim SqlDatos As String, DataAdapter As New SqlClient.SqlDataAdapter
+
         Me.MinimumSize = Size
         Me.MaximumSize = Size
 

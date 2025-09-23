@@ -240,94 +240,32 @@ Public Class FrmFacturas
 
     End Sub
 
-
-    Public Sub AgregarFactura()
-
-        Dim iPosicion As Double, Registros As Double, NumeroFactura As String
-        Dim NombrePago As String, Monto As Double, NumeroTarjeta As String, FechaVenceTarjeta As String, CodTarea As String = Nothing
-        Dim CodigoProducto As String
+    Public Sub AgregarFacturaWorker(Factura As TablaFactura, dsDetalle As DataSet, dsMetodoPago As DataSet, Retencion1Porciento As Boolean, Retencion2Porciento As Boolean, worker As BackgroundWorker, e As DoWorkEventArgs)
+        Dim iPosicion As Double, Registros As Double, Monto As Double
+        Dim CodTarea As String = Nothing, DetalleFactura As New TablaDetalleFactura
         Dim IdDetalle As Double = -1
         Dim FacturaBodega As Boolean = False, CompraBodega As Boolean = False, CostoUnitario As Double = 0
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim NumeroNota As String, dsDetalle As DataSet, dsMetodoPago As New DataSet, DtMetodo As New DataTable
-        Dim Consecutivo As Double, SQlstring As String, Retencion1Porciento As Boolean, Retencion2Porciento As Boolean
-        Dim TablaDetalleFactura As TablaDetalleFactura = New TablaDetalleFactura
-
-        ActualizaMETODOFactura()
-
-        Dim TablaFactura As TablaFactura = New TablaFactura
-        '////////////////////////////////////////////////////////////////////////////////////////////////////
-        '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-
-        NumeroFactura = Me.TxtNumeroEnsamble.Text
-
-        TablaFactura.Numero_Factura = TablaFacturaPublica.Numero_Factura
-        TablaFactura.Fecha_Factura = TablaFacturaPublica.Fecha_Factura
-        TablaFactura.Tipo_Factura = TablaFacturaPublica.Tipo_Factura
-        TablaFactura.Fecha_Vencimiento = TablaFacturaPublica.Fecha_Vencimiento
-        TablaFactura.Moneda_Factura = TablaFacturaPublica.Moneda_Factura
-        TablaFactura.Moneda_Imprime = TablaFacturaPublica.Moneda_Imprime
-        TablaFactura.Cod_Cliente = TablaFacturaPublica.Cod_Cliente
-        TablaFactura.Cod_Vendedor = TablaFacturaPublica.Cod_Vendedor
-        TablaFactura.CodBodega1 = TablaFacturaPublica.CodBodega1
-        TablaFactura.Cod_Cajero = TablaFacturaPublica.Cod_Cajero
-        TablaFactura.Nombre_Cliente = TablaFacturaPublica.Nombre_Cliente
-        TablaFactura.Apellido_Cliente = TablaFacturaPublica.Apellido_Cliente
-        TablaFactura.Direccion_Cliente = TablaFacturaPublica.Direccion_Cliente
-        TablaFactura.Telefono_Cliente = TablaFacturaPublica.Telefono_Cliente
-        TablaFactura.Fecha_Envio = TablaFacturaPublica.Fecha_Envio
-        TablaFactura.Via_Envarque = TablaFacturaPublica.Via_Envarque
-        TablaFactura.SuReferencia1 = TablaFacturaPublica.SuReferencia1
-        TablaFactura.Nuestra_Referencia = TablaFacturaPublica.Nuestra_Referencia
-        TablaFactura.Codigo_Proyecto = TablaFacturaPublica.Codigo_Proyecto
-
-        TablaFactura.Sub_Total = TablaFacturaPublica.Sub_Total
-        TablaFactura.IVA_Factura = TablaFacturaPublica.IVA_Factura
-        TablaFactura.Pagado_Factura = TablaFacturaPublica.Pagado_Factura
-        TablaFactura.Neto_Pagar = TablaFacturaPublica.Neto_Pagar
-        TablaFactura.Metodo_Pago = TablaFacturaPublica.Metodo_Pago
-        TablaFactura.Exonerado_Factura = TablaFacturaPublica.Exonerado_Factura
-        TablaFactura.MontoRetencion1_Porciento = TablaFacturaPublica.MontoRetencion1_Porciento
-        TablaFactura.Retener1_Porciento = TablaFacturaPublica.Retener1_Porciento
-        TablaFactura.MontoRetencion2_Porciento = TablaFacturaPublica.MontoRetencion2_Porciento
-        TablaFactura.Retener2_Porciento = TablaFacturaPublica.Retener2_Porciento
-        TablaFactura.Codigo_Proyecto = TablaFacturaPublica.Codigo_Proyecto
-        TablaFactura.Referencia_Factura = TablaFacturaPublica.Referencia_Factura
-        TablaFactura.Fecha_Hora = TablaFacturaPublica.Fecha_Hora
-        TablaFactura.Descuentos_Factura = TablaFacturaPublica.Descuentos_Factura
-        TablaFactura.Observaciones_Factura = TablaFacturaPublica.Observaciones_Factura
-
-
-        dsDetalle = ds.Copy
-        DtMetodo = Me.BindingMetodo.DataSource
-        dsMetodoPago.Tables.Add(DtMetodo.Copy)
-        Retencion1Porciento = OptRet1Porciento.Checked
-        Retencion2Porciento = OptRet2Porciento.Checked
-
-        LimpiarFacturas()
+        Dim NombrePago As String, NumeroTarjeta As String, FechaVenceTarjeta As Date, SQlstring As String
+        Dim Consecutivo As Double, NumeroNota As String
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL ENCABEZADO DE LA FACTURA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         CambiarFechaFactura = False
-        GrabaFacturas(TablaFactura)
+        GrabaFacturas(Factura)
 
         If CambioCliente = True Then
-            Bitacora(Now, NombreUsuario, TablaFactura.Tipo_Factura, "Se Cambio de Cliente: " & Trim(TablaFactura.Cod_Cliente) & " " & TablaFactura.Numero_Factura)
+            Bitacora(Now, NombreUsuario, Factura.Tipo_Factura, "Se Cambio de Cliente: " & Trim(Factura.Cod_Cliente) & " " & Factura.Numero_Factura)
         End If
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL DETALLE DE LA FACTURA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
 
-
-        'Registros = Me.BindingDetalle.Count
         Registros = dsDetalle.Tables("DetalleFactura").Rows.Count
-        'iPosicion = Me.BindingDetalle.Position
 
-        'Registros = Me.BindingDetalle.Count
         iPosicion = 0
         Monto = 0
 
@@ -337,67 +275,70 @@ Public Class FrmFacturas
 
             My.Application.DoEvents()
 
-            TablaDetalleFactura.Numero_Factura = TablaFactura.Numero_Factura
-            TablaDetalleFactura.Cod_Producto = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Cod_Producto")
-            TablaDetalleFactura.Fecha_Factura = TablaFactura.Fecha_Factura
-            TablaDetalleFactura.Tipo_Factura = TablaFactura.Tipo_Factura
+
+            DetalleFactura.Numero_Factura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Numero_Factura")
+            DetalleFactura.Cod_Producto = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Cod_Producto")
+            DetalleFactura.Fecha_Factura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Fecha_Factura")
+            DetalleFactura.Tipo_Factura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Tipo_Factura")
+
+            worker.ReportProgress(iPosicion, "Factura:" & DetalleFactura.Cod_Producto)
 
             If CambiarFechaFactura = True Then
 
-                TablaDetalleFactura.Descripcion_Producto = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Descripcion_Producto")
-
-                If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Costo_Unitario")) Then
-                    CostoUnitario = CostoPromedioKardex(TablaDetalleFactura.Cod_Producto, TablaDetalleFactura.Fecha_Factura)
-                End If
-
+                DetalleFactura.Descripcion_Producto = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Descripcion_Producto")
 
                 If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("id_Detalle_Factura")) Then
-                    TablaDetalleFactura.Id_Detalle_Factura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("id_Detalle_Factura")
+                    DetalleFactura.Id_Detalle_Factura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("id_Detalle_Factura")
                 Else
-                    TablaDetalleFactura.Id_Detalle_Factura = -1
+                    DetalleFactura.Id_Detalle_Factura = -1
                 End If
 
 
                 If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Precio_Unitario")) Then
-                    TablaDetalleFactura.Precio_Unitario = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Precio_Unitario")
+                    DetalleFactura.Precio_Unitario = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Precio_Unitario")
                 Else
-                    TablaDetalleFactura.Precio_Unitario = 0
+                    DetalleFactura.Precio_Unitario = 0
                 End If
                 If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Descuento")) Then
-                    TablaDetalleFactura.Descuento_DetalleFactura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Descuento")
+                    DetalleFactura.Descuento_DetalleFactura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Descuento")
                 Else
-                    TablaDetalleFactura.Descuento_DetalleFactura = 0
+                    DetalleFactura.Descuento_DetalleFactura = 0
                 End If
                 If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Precio_Neto")) Then
-                    TablaDetalleFactura.Precio_Neto = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Precio_Neto")
+                    DetalleFactura.Precio_Neto = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Precio_Neto")
                 Else
-                    TablaDetalleFactura.Precio_Neto = 0
+                    DetalleFactura.Precio_Neto = 0
                 End If
                 If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Importe")) Then
-                    TablaDetalleFactura.Importe_DetalleFactura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Importe")
+                    DetalleFactura.Importe_DetalleFactura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Importe")
                 Else
-                    TablaDetalleFactura.Importe_DetalleFactura = 0
+                    DetalleFactura.Importe_DetalleFactura = 0
                 End If
                 If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Cantidad")) Then
-                    TablaDetalleFactura.Cantidad_DetalleFactura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Cantidad")
+                    DetalleFactura.Cantidad_DetalleFactura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Cantidad")
                 Else
-                    TablaDetalleFactura.Cantidad_DetalleFactura = 0
+                    DetalleFactura.Cantidad_DetalleFactura = 0
                 End If
 
                 If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Fecha_Vence")) Then
-                    TablaDetalleFactura.Fecha_Vence = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Fecha_Vence")
+                    DetalleFactura.Fecha_Vence = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Fecha_Vence")
                 Else
-                    TablaDetalleFactura.Fecha_Vence = "01/01/1900"
+                    DetalleFactura.Fecha_Vence = "01/01/1900"
                 End If
 
 
                 If FacturaTarea = True Then
                     If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("CodTarea")) Then
-                        TablaDetalleFactura.Cod_Tarea = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("CodTarea")
+                        DetalleFactura.Cod_Tarea = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("CodTarea")
                     Else
-                        TablaDetalleFactura.Cod_Tarea = 0
+                        DetalleFactura.Cod_Tarea = 0
                     End If
-                    GrabaDetalleFacturaTarea(NumeroFactura, TablaDetalleFactura.Cod_Producto, TablaDetalleFactura.Descripcion_Producto, TablaDetalleFactura.Precio_Unitario, TablaDetalleFactura.Descuento_DetalleFactura, TablaDetalleFactura.Precio_Neto, TablaDetalleFactura.Importe_DetalleFactura, TablaDetalleFactura.Cantidad_DetalleFactura, TablaDetalleFactura.Id_Detalle_Factura, TablaDetalleFactura.Cod_Tarea)
+
+                    If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Costo_Unitario")) Then
+                        CostoUnitario = CostoPromedioKardex(DetalleFactura.Cod_Producto, DetalleFactura.Fecha_Factura)
+                    End If
+
+                    GrabaDetalleFacturaTarea(DetalleFactura.Numero_Factura, DetalleFactura.Cod_Producto, DetalleFactura.Descripcion_Producto, DetalleFactura.Precio_Unitario, DetalleFactura.Descuento_DetalleFactura, DetalleFactura.Precio_Neto, DetalleFactura.Importe_DetalleFactura, DetalleFactura.Cantidad_DetalleFactura, DetalleFactura.Id_Detalle_Factura, DetalleFactura.Cod_Tarea)
                 ElseIf FacturaLotes = True Then
 
                     If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("CodTarea")) Then
@@ -405,14 +346,30 @@ Public Class FrmFacturas
                     Else
                         CodTarea = 0
                     End If
-                    GrabaDetalleFacturaLotes(NumeroFactura, TablaDetalleFactura.Cod_Producto, TablaDetalleFactura.Descripcion_Producto, TablaDetalleFactura.Precio_Unitario, TablaDetalleFactura.Descuento_DetalleFactura, TablaDetalleFactura.Precio_Neto, TablaDetalleFactura.Importe_DetalleFactura, TablaDetalleFactura.Cantidad_DetalleFactura, TablaDetalleFactura.Id_Detalle_Factura, TablaDetalleFactura.Cod_Tarea, TablaDetalleFactura.Fecha_Vence, TablaFactura.Tipo_Factura)
+
+                    If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Costo_Unitario")) Then
+                        CostoUnitario = CostoPromedioKardex(DetalleFactura.Cod_Producto, DetalleFactura.Fecha_Factura)
+                    End If
+
+                    GrabaDetalleFacturaLotes(DetalleFactura.Numero_Factura, DetalleFactura.Cod_Producto, DetalleFactura.Descripcion_Producto, DetalleFactura.Precio_Unitario, DetalleFactura.Descuento_DetalleFactura, DetalleFactura.Precio_Neto, DetalleFactura.Importe_DetalleFactura, DetalleFactura.Cantidad_DetalleFactura, DetalleFactura.Id_Detalle_Factura, DetalleFactura.Cod_Tarea, DetalleFactura.Fecha_Vence, DetalleFactura.Tipo_Factura)
 
                 Else
-                    GrabaDetalleFactura(NumeroFactura, TablaDetalleFactura.Cod_Producto, TablaDetalleFactura.Descripcion_Producto, TablaDetalleFactura.Precio_Unitario, TablaDetalleFactura.Descuento_DetalleFactura, TablaDetalleFactura.Precio_Neto, TablaDetalleFactura.Importe_DetalleFactura, TablaDetalleFactura.Cantidad_DetalleFactura, TablaDetalleFactura.Id_Detalle_Factura, CostoUnitario)
+                    '//////////////// POR LOS HILOS REPITO EL CODIGO DEL COSTO ////
+                    If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Costo_Unitario")) Then
+                        CostoUnitario = CostoPromedioKardex(DetalleFactura.Cod_Producto, DetalleFactura.Fecha_Factura)
+                    End If
+                    GrabaDetalleFactura(DetalleFactura.Numero_Factura, DetalleFactura.Cod_Producto, DetalleFactura.Descripcion_Producto, DetalleFactura.Precio_Unitario, DetalleFactura.Descuento_DetalleFactura, DetalleFactura.Precio_Neto, DetalleFactura.Importe_DetalleFactura, DetalleFactura.Cantidad_DetalleFactura, DetalleFactura.Id_Detalle_Factura, CostoUnitario)
                 End If
+            Else
+                '//////////////// POR LOS HILOS REPITO EL CODIGO DEL COSTO ////
+                If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Costo_Unitario")) Then
+                    CostoUnitario = CostoPromedioKardex(DetalleFactura.Cod_Producto, DetalleFactura.Fecha_Factura)
+                End If
+                GrabaDetalleFactura(DetalleFactura.Numero_Factura, DetalleFactura.Cod_Producto, DetalleFactura.Descripcion_Producto, DetalleFactura.Precio_Unitario, DetalleFactura.Descuento_DetalleFactura, DetalleFactura.Precio_Neto, DetalleFactura.Importe_DetalleFactura, DetalleFactura.Cantidad_DetalleFactura, DetalleFactura.Id_Detalle_Factura, CostoUnitario)
 
             End If
 
+            ActualizaDetalleBodega(Factura.CodBodega1, DetalleFactura.Cod_Producto)
             iPosicion = iPosicion + 1
         Loop
 
@@ -423,20 +380,19 @@ Public Class FrmFacturas
 
         End If
 
-        '''''''''''''''''''''ACTUALIZO EL LISTADO DE INVENTARIO PARA FACTURACION ---------------------------------
-        Registros = dsDetalle.Tables("DetalleFactura").Rows.Count
-        iPosicion = 0
-        Do While iPosicion < Registros
-            CodigoProducto = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Cod_Producto")
-            ActualizaDetalleBodega(TablaFactura.CodBodega1, CodigoProducto)
-            iPosicion = iPosicion + 1
-        Loop
+        ''''''''''''''''''''''ACTUALIZO EL LISTADO DE INVENTARIO PARA FACTURACION ---------------------------------
+        'Registros = dsDetalle.Tables("DetalleFactura").Rows.Count
+        'iPosicion = 0
+        'Do While iPosicion < Registros
+        '    CodigoProducto = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Cod_Producto")
+        '    ActualizaDetalleBodega(Factura.CodBodega1, DetalleFactura.Cod_Producto)
+        '    iPosicion = iPosicion + 1
+        'Loop
 
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO LOS METODOS DE PAGO /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-
 
         Registros = dsMetodoPago.Tables("MetodoPago").Rows.Count
         iPosicion = 0
@@ -446,23 +402,25 @@ Public Class FrmFacturas
             If Not IsDBNull(dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("NombrePago")) Then
                 NombrePago = dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("NombrePago")
                 Monto = dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("Monto") '+ Monto
-                If Not IsDBNull(dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("NumeroTarjeta")) Then
-                    NumeroTarjeta = dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("NumeroTarjeta")
-                Else
-                    NumeroTarjeta = 0
-                End If
-                If Not IsDBNull(dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("FechaVence")) Then
-                    FechaVenceTarjeta = dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("FechaVence")
-                Else
-                    FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
-                End If
+                If Monto <> 0 Then
+                    If Not IsDBNull(dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("NumeroTarjeta")) Then
+                        NumeroTarjeta = dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("NumeroTarjeta")
+                    Else
+                        NumeroTarjeta = 0
+                    End If
+                    If Not IsDBNull(dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("FechaVence")) Then
+                        FechaVenceTarjeta = dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("FechaVence")
+                    Else
+                        FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
+                    End If
 
-                GrabaMetodoDetalleFactura(NumeroFactura, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta)
+                    GrabaMetodoDetalleFactura(DetalleFactura.Numero_Factura, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta, DetalleFactura.Fecha_Factura, DetalleFactura.Tipo_Factura)
+                End If
             End If
             iPosicion = iPosicion + 1
         Loop
 
-        Bitacora(Now, NombreUsuario, TablaFactura.Tipo_Factura, "Grabo la Factura: " & TablaFactura.Numero_Factura)
+        Bitacora(Now, NombreUsuario, Factura.Tipo_Factura, "Grabo la Factura: " & Factura.Numero_Factura)
 
 
         If Retencion1Porciento = True Then
@@ -472,7 +430,7 @@ Public Class FrmFacturas
             DataAdapter = New SqlClient.SqlDataAdapter(SQlstring, MiConexion)
             DataAdapter.Fill(DataSet, "Retencion")
             If DataSet.Tables("Retencion").Rows.Count <> 0 Then
-                MontoIr = TablaFactura.Sub_Total
+                MontoIr = Factura.Sub_Total
                 MontoIr = Format(MontoIr * 0.01, "##,##0.00")
                 CodigoNota = DataSet.Tables("Retencion").Rows(0)("CodigoNB")
             Else
@@ -485,9 +443,9 @@ Public Class FrmFacturas
 
             Consecutivo = BuscaConsecutivo("NotaCredito")
             NumeroNota = Format(Consecutivo, "0000#")
-            GrabaNotaDebito(NumeroNota, TablaFactura.Fecha_Factura, CodigoNota, MontoIr, TablaFactura.Moneda_Factura, TablaFactura.Cod_Cliente, TablaFactura.Nombre_Cliente, TablaFactura.Observaciones_Factura, True, False, False)
+            GrabaNotaDebito(NumeroNota, Factura.Fecha_Factura, CodigoNota, MontoIr, Factura.Moneda_Factura, Factura.Cod_Cliente, Factura.Nombre_Cliente, Factura.Observaciones_Factura, True, False, False)
             'GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Factura", Me.TxtNumeroEnsamble.Text, MontoIr)
-            InsertarDetalleNotaDebito(NumeroNota, TablaFactura.Fecha_Factura, CodigoNota, "Generado Acutomaticamente por Factura", TablaFactura.Numero_Factura, MontoIr)
+            InsertarDetalleNotaDebito(NumeroNota, Factura.Fecha_Factura, CodigoNota, "Generado Acutomaticamente por Factura", Factura.Numero_Factura, MontoIr)
         End If
 
         If Retencion2Porciento = True Then
@@ -497,7 +455,7 @@ Public Class FrmFacturas
             DataAdapter = New SqlClient.SqlDataAdapter(SQlstring, MiConexion)
             DataAdapter.Fill(DataSet, "Retencion")
             If DataSet.Tables("Retencion").Rows.Count <> 0 Then
-                MontoIr = TablaFactura.Sub_Total
+                MontoIr = Factura.Sub_Total
                 MontoIr = Format(MontoIr * 0.02, "##,##0.00")
                 CodigoNota = DataSet.Tables("Retencion").Rows(0)("CodigoNB")
             Else
@@ -509,15 +467,14 @@ Public Class FrmFacturas
             DataSet.Tables("Retencion").Reset()
 
 
-
-            MontoIr = TablaFactura.Sub_Total
+            MontoIr = Factura.Sub_Total
 
             MontoIr = MontoIr * 0.02
             Consecutivo = BuscaConsecutivo("NotaCredito")
             NumeroNota = Format(Consecutivo, "0000#")
 
-            GrabaNotaDebito(NumeroNota, TablaFactura.Fecha_Factura, CodigoNota, MontoIr, TablaFactura.Moneda_Factura, TablaFactura.Cod_Cliente, TablaFactura.Nombre_Cliente, TablaFactura.Observaciones_Factura, True, False, False)
-            InsertarDetalleNotaDebito(NumeroNota, TablaFactura.Fecha_Factura, CodigoNota, "Generado Acutomaticamente por Factura", TablaFactura.Numero_Factura, MontoIr)
+            GrabaNotaDebito(NumeroNota, Factura.Fecha_Factura, CodigoNota, MontoIr, Factura.Moneda_Factura, Factura.Cod_Cliente, Factura.Nombre_Cliente, Factura.Observaciones_Factura, True, False, False)
+            InsertarDetalleNotaDebito(NumeroNota, Factura.Fecha_Factura, CodigoNota, "Generado Acutomaticamente por Factura", Factura.Numero_Factura, MontoIr)
             'GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Factura", Me.TxtNumeroEnsamble.Text, MontoIr)
         End If
 
@@ -565,6 +522,135 @@ Public Class FrmFacturas
         'End Try
     End Sub
 
+    Public Sub AgregarFactura()
+        Dim NumeroFactura As String
+        Dim CodTarea As String = Nothing
+        Dim IdDetalle As Double = -1
+        Dim FacturaBodega As Boolean = False, CompraBodega As Boolean = False, CostoUnitario As Double = 0
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim dsDetalle As DataSet, dsMetodoPago As New DataSet, DtMetodo As New DataTable
+        Dim Retencion1Porciento As Boolean, Retencion2Porciento As Boolean
+
+        ActualizaMETODOFactura()
+
+        Dim TablaFactura As TablaFactura = New TablaFactura
+        '////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////////BUSCO EL CONSECUTIVO DE LA FACTURA /////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+
+        NumeroFactura = Me.TxtNumeroEnsamble.Text
+
+        TablaFacturaPublica = New TablaFactura
+
+        NumeroFactura = Me.TxtNumeroEnsamble.Text
+
+        TablaFactura.Numero_Factura = NumeroFactura
+        TablaFactura.Fecha_Factura = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+        TablaFactura.Tipo_Factura = CboTipoProducto_Hilos()
+        TablaFactura.Fecha_Vencimiento = Format(DTVencimiento.Value, "dd/MM/yyyy")
+        TablaFactura.Moneda_Factura = TxtMonedaFactura.Text
+        TablaFactura.Moneda_Imprime = TxtMonedaImprime.Text
+        TablaFactura.Cod_Cliente = TxtCodigoClientes.Text
+        TablaFactura.Cod_Vendedor = CboCodigoVendedor.Text
+        TablaFactura.CodBodega1 = CboCodigoBodega.Text
+        TablaFactura.Cod_Cajero = CboCajero.Text
+        TablaFactura.Nombre_Cliente = TxtNombres.Text
+        TablaFactura.Apellido_Cliente = TxtApellidos.Text
+        TablaFactura.Direccion_Cliente = TxtDireccion.Text
+        TablaFactura.Telefono_Cliente = TxtTelefono.Text
+        TablaFactura.Fecha_Envio = Format(DTVencimiento.Value, "dd/MM/yyyy")
+        TablaFactura.Via_Envarque = ""
+        TablaFactura.SuReferencia1 = CboReferencia.Text
+        TablaFactura.Nuestra_Referencia = ""
+        TablaFactura.Codigo_Proyecto = CboProyecto.Text
+        TablaFactura.Observaciones_Factura = Me.TxtObservaciones.Text
+
+        If My.Forms.FrmFacturas.SubTotalGral <> 0 Then
+            TablaFactura.Sub_Total = Redondeo(My.Forms.FrmFacturas.SubTotalGral, 4)
+        Else
+            TablaFactura.Sub_Total = 0
+        End If
+
+        If My.Forms.FrmFacturas.IvaGral <> 0 Then
+            TablaFactura.IVA_Factura = Redondeo(My.Forms.FrmFacturas.IvaGral, 4)
+        Else
+            TablaFactura.IVA_Factura = 0
+        End If
+
+        If My.Forms.FrmFacturas.TxtPagado.Text <> "" Then
+            TablaFactura.Pagado_Factura = My.Forms.FrmFacturas.TxtPagado.Text
+        Else
+            TablaFactura.Pagado_Factura = 0
+        End If
+
+        If My.Forms.FrmFacturas.TxtNetoPagar.Text <> "" Then
+            TablaFactura.Neto_Pagar = My.Forms.FrmFacturas.TxtNetoPagar.Text
+        Else
+            TablaFactura.Neto_Pagar = 0
+        End If
+
+        If RadioButton1.Checked = True Then
+            TablaFactura.Metodo_Pago = "Credito"
+        Else
+            TablaFactura.Metodo_Pago = "Contado"
+        End If
+
+        If OptExsonerado.Checked = True Then
+            TablaFactura.Exonerado_Factura = 1
+        Else
+            TablaFactura.Exonerado_Factura = 0
+        End If
+
+        If OptRet1Porciento.Checked = True Then
+            TablaFactura.MontoRetencion1_Porciento = TablaFactura.Sub_Total * 0.01
+            TablaFactura.Retener1_Porciento = 1
+        Else
+            TablaFactura.MontoRetencion1_Porciento = 0
+            TablaFactura.Retener1_Porciento = 0
+        End If
+
+        If OptRet2Porciento.Checked = True Then
+            TablaFactura.MontoRetencion2_Porciento = TablaFactura.Sub_Total * 0.02
+            TablaFactura.Retener2_Porciento = 1
+        Else
+            TablaFactura.MontoRetencion2_Porciento = 0
+            TablaFactura.Retener2_Porciento = 0
+        End If
+
+
+        If Not CboProyecto.Text = "" Then
+            TablaFactura.Codigo_Proyecto = CboProyecto.Columns(0).Text
+        End If
+
+        If CboReferencia.Text <> "" Then
+            TablaFactura.Referencia_Factura = CboReferencia.Text
+        End If
+
+        TablaFactura.Fecha_Hora = Format(My.Forms.FrmFacturas.DTPFecha.Value, "dd/MM/yyyy") & " " & Format(Now, "HH:mm")
+        TablaFactura.Descuentos_Factura = CDbl(Val(TxtDescuento.Text))
+
+        dsDetalle = ds.Copy
+        'DtMetodo = New DataTable("MetodoPago")
+        'DtMetodo = Me.BindingMetodo.DataSource
+        'dsMetodoPago.Tables.Add(DtMetodo.Copy)
+        dsMetodoPago = dsMetodo.Copy
+        Retencion1Porciento = OptRet1Porciento.Checked
+        Retencion2Porciento = OptRet2Porciento.Checked
+
+        LimpiarFacturas()
+        My.Application.DoEvents()
+
+
+        Dim worker As BackgroundWorker
+        worker = New BackgroundWorker()
+        AddHandler worker.DoWork, AddressOf backgroundWorkerGrabar_DoWork
+        AddHandler worker.ProgressChanged, AddressOf backgroundWorkerGrabar_ProgressChanged
+        AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerGrabar_RunWorkerCompleted
+        worker.RunWorkerAsync({TablaFactura, dsDetalle, dsMetodoPago, Retencion1Porciento, Retencion2Porciento})
+
+
+    End Sub
+
     '////////////////////////////////HILOS PARA GRABAR FACTURA /////////////////
     Private Sub backgroundWorkerGrabar_DoWork(
 ByVal sender As Object,
@@ -573,16 +659,24 @@ Handles backgroundWorkerGrabar.DoWork
         Dim worker As BackgroundWorker =
         CType(sender, BackgroundWorker)
 
+        Dim dsDetalle As DataSet, dsMetodoPago As New DataSet, DtMetodo As New DataTable
+        Dim Retencion1Porciento As Boolean, Retencion2Porciento As Boolean
+        Dim Factura As TablaFactura = New TablaFactura
+
         If worker.CancellationPending Then
             e.Cancel = True
             Exit Sub
         Else
 
+            Factura = e.Argument(0)
+            dsDetalle = e.Argument(1)
+            dsMetodoPago = e.Argument(2)
+            Retencion1Porciento = e.Argument(3)
+            Retencion2Porciento = e.Argument(4)
 
             worker.WorkerReportsProgress = True
             worker.WorkerSupportsCancellation = True
-            'e.Result = BuscaExistenciaBodegaWoker(CodigoProducto, CodigoBodega, CostoProductoD, CostoProducto, worker, e)
-            AgregarFactura()
+            AgregarFacturaWorker(Factura, dsDetalle, dsMetodoPago, Retencion1Porciento, Retencion2Porciento, worker, e)
         End If
     End Sub
     Private Sub backgroundWorkerGrabar_RunWorkerCompleted(
@@ -594,12 +688,22 @@ Handles backgroundWorkerGrabar.RunWorkerCompleted
         ElseIf e.Cancelled Then
             Bitacora(Now, NombreUsuario, "Productos", "Hilo Cancelado")
         Else
-
+            MDIMain.txtSPlano3.Text = ""
 
         End If
 
     End Sub
+    Private Sub backgroundWorkerGrabar_ProgressChanged(
+ByVal sender As Object,
+ByVal e As ProgressChangedEventArgs) _
+Handles backgroundWorkerGrabar.ProgressChanged
+        Dim worker As BackgroundWorker =
+        CType(sender, BackgroundWorker)
 
+        MDIMain.txtSPlano3.Text = e.UserState.ToString
+
+
+    End Sub
 
     '////////////////////////////////HILOS PARA LEER LOTES ////////////////////////////
     Private Sub backgroundWorkerLote_DoWork(
@@ -2468,6 +2572,9 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim SqlDatos As String, i As Double = 0
 
+        Me.MinimumSize = Size
+        Me.MaximumSize = Size
+
         PrimerRegistroFactura = True
         SalirFactura = True
 
@@ -3318,104 +3425,105 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
             Exit Sub
         End If
 
-        TablaFacturaPublica = New TablaFactura
+        AgregarFactura()
 
-        NumeroFactura = Me.TxtNumeroEnsamble.Text
+        'TablaFacturaPublica = New TablaFactura
 
-        TablaFacturaPublica.Numero_Factura = NumeroFactura
-        TablaFacturaPublica.Fecha_Factura = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
-        TablaFacturaPublica.Tipo_Factura = CboTipoProducto_Hilos()
-        TablaFacturaPublica.Fecha_Vencimiento = Format(DTVencimiento.Value, "dd/MM/yyyy")
-        TablaFacturaPublica.Moneda_Factura = TxtMonedaFactura.Text
-        TablaFacturaPublica.Moneda_Imprime = TxtMonedaImprime.Text
-        TablaFacturaPublica.Cod_Cliente = TxtCodigoClientes.Text
-        TablaFacturaPublica.Cod_Vendedor = CboCodigoVendedor.Text
-        TablaFacturaPublica.CodBodega1 = CboCodigoBodega.Text
-        TablaFacturaPublica.Cod_Cajero = CboCajero.Text
-        TablaFacturaPublica.Nombre_Cliente = TxtNombres.Text
-        TablaFacturaPublica.Apellido_Cliente = TxtApellidos.Text
-        TablaFacturaPublica.Direccion_Cliente = TxtDireccion.Text
-        TablaFacturaPublica.Telefono_Cliente = TxtTelefono.Text
-        TablaFacturaPublica.Fecha_Envio = Format(DTVencimiento.Value, "dd/MM/yyyy")
-        TablaFacturaPublica.Via_Envarque = ""
-        TablaFacturaPublica.SuReferencia1 = CboReferencia.Text
-        TablaFacturaPublica.Nuestra_Referencia = ""
-        TablaFacturaPublica.Codigo_Proyecto = CboProyecto.Text
-        TablaFacturaPublica.Observaciones_Factura = Me.TxtObservaciones.Text
+        'NumeroFactura = Me.TxtNumeroEnsamble.Text
 
-        If My.Forms.FrmFacturas.SubTotalGral <> 0 Then
-            TablaFacturaPublica.Sub_Total = Redondeo(My.Forms.FrmFacturas.SubTotalGral, 4)
-        Else
-            TablaFacturaPublica.Sub_Total = 0
-        End If
+        'TablaFacturaPublica.Numero_Factura = NumeroFactura
+        'TablaFacturaPublica.Fecha_Factura = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+        'TablaFacturaPublica.Tipo_Factura = CboTipoProducto_Hilos()
+        'TablaFacturaPublica.Fecha_Vencimiento = Format(DTVencimiento.Value, "dd/MM/yyyy")
+        'TablaFacturaPublica.Moneda_Factura = TxtMonedaFactura.Text
+        'TablaFacturaPublica.Moneda_Imprime = TxtMonedaImprime.Text
+        'TablaFacturaPublica.Cod_Cliente = TxtCodigoClientes.Text
+        'TablaFacturaPublica.Cod_Vendedor = CboCodigoVendedor.Text
+        'TablaFacturaPublica.CodBodega1 = CboCodigoBodega.Text
+        'TablaFacturaPublica.Cod_Cajero = CboCajero.Text
+        'TablaFacturaPublica.Nombre_Cliente = TxtNombres.Text
+        'TablaFacturaPublica.Apellido_Cliente = TxtApellidos.Text
+        'TablaFacturaPublica.Direccion_Cliente = TxtDireccion.Text
+        'TablaFacturaPublica.Telefono_Cliente = TxtTelefono.Text
+        'TablaFacturaPublica.Fecha_Envio = Format(DTVencimiento.Value, "dd/MM/yyyy")
+        'TablaFacturaPublica.Via_Envarque = ""
+        'TablaFacturaPublica.SuReferencia1 = CboReferencia.Text
+        'TablaFacturaPublica.Nuestra_Referencia = ""
+        'TablaFacturaPublica.Codigo_Proyecto = CboProyecto.Text
+        'TablaFacturaPublica.Observaciones_Factura = Me.TxtObservaciones.Text
 
-        If My.Forms.FrmFacturas.IvaGral <> 0 Then
-            TablaFacturaPublica.IVA_Factura = Redondeo(My.Forms.FrmFacturas.IvaGral, 4)
-        Else
-            TablaFacturaPublica.IVA_Factura = 0
-        End If
+        'If My.Forms.FrmFacturas.SubTotalGral <> 0 Then
+        '    TablaFacturaPublica.Sub_Total = Redondeo(My.Forms.FrmFacturas.SubTotalGral, 4)
+        'Else
+        '    TablaFacturaPublica.Sub_Total = 0
+        'End If
 
-        If My.Forms.FrmFacturas.TxtPagado.Text <> "" Then
-            TablaFacturaPublica.Pagado_Factura = My.Forms.FrmFacturas.TxtPagado.Text
-        Else
-            TablaFacturaPublica.Pagado_Factura = 0
-        End If
+        'If My.Forms.FrmFacturas.IvaGral <> 0 Then
+        '    TablaFacturaPublica.IVA_Factura = Redondeo(My.Forms.FrmFacturas.IvaGral, 4)
+        'Else
+        '    TablaFacturaPublica.IVA_Factura = 0
+        'End If
 
-        If My.Forms.FrmFacturas.TxtNetoPagar.Text <> "" Then
-            TablaFacturaPublica.Neto_Pagar = My.Forms.FrmFacturas.TxtNetoPagar.Text
-        Else
-            TablaFacturaPublica.Neto_Pagar = 0
-        End If
+        'If My.Forms.FrmFacturas.TxtPagado.Text <> "" Then
+        '    TablaFacturaPublica.Pagado_Factura = My.Forms.FrmFacturas.TxtPagado.Text
+        'Else
+        '    TablaFacturaPublica.Pagado_Factura = 0
+        'End If
 
-        If RadioButton1.Checked = True Then
-            TablaFacturaPublica.Metodo_Pago = "Credito"
-        Else
-            TablaFacturaPublica.Metodo_Pago = "Contado"
-        End If
+        'If My.Forms.FrmFacturas.TxtNetoPagar.Text <> "" Then
+        '    TablaFacturaPublica.Neto_Pagar = My.Forms.FrmFacturas.TxtNetoPagar.Text
+        'Else
+        '    TablaFacturaPublica.Neto_Pagar = 0
+        'End If
 
-        If OptExsonerado.Checked = True Then
-            TablaFacturaPublica.Exonerado_Factura = 1
-        Else
-            TablaFacturaPublica.Exonerado_Factura = 0
-        End If
+        'If RadioButton1.Checked = True Then
+        '    TablaFacturaPublica.Metodo_Pago = "Credito"
+        'Else
+        '    TablaFacturaPublica.Metodo_Pago = "Contado"
+        'End If
 
-        If OptRet1Porciento.Checked = True Then
-            TablaFacturaPublica.MontoRetencion1_Porciento = TablaFacturaPublica.Sub_Total * 0.01
-            TablaFacturaPublica.Retener1_Porciento = 1
-        Else
-            TablaFacturaPublica.MontoRetencion1_Porciento = 0
-            TablaFacturaPublica.Retener1_Porciento = 0
-        End If
+        'If OptExsonerado.Checked = True Then
+        '    TablaFacturaPublica.Exonerado_Factura = 1
+        'Else
+        '    TablaFacturaPublica.Exonerado_Factura = 0
+        'End If
 
-        If OptRet2Porciento.Checked = True Then
-            TablaFacturaPublica.MontoRetencion2_Porciento = TablaFacturaPublica.Sub_Total * 0.02
-            TablaFacturaPublica.Retener2_Porciento = 1
-        Else
-            TablaFacturaPublica.MontoRetencion2_Porciento = 0
-            TablaFacturaPublica.Retener2_Porciento = 0
-        End If
+        'If OptRet1Porciento.Checked = True Then
+        '    TablaFacturaPublica.MontoRetencion1_Porciento = TablaFacturaPublica.Sub_Total * 0.01
+        '    TablaFacturaPublica.Retener1_Porciento = 1
+        'Else
+        '    TablaFacturaPublica.MontoRetencion1_Porciento = 0
+        '    TablaFacturaPublica.Retener1_Porciento = 0
+        'End If
+
+        'If OptRet2Porciento.Checked = True Then
+        '    TablaFacturaPublica.MontoRetencion2_Porciento = TablaFacturaPublica.Sub_Total * 0.02
+        '    TablaFacturaPublica.Retener2_Porciento = 1
+        'Else
+        '    TablaFacturaPublica.MontoRetencion2_Porciento = 0
+        '    TablaFacturaPublica.Retener2_Porciento = 0
+        'End If
 
 
-        If Not CboProyecto.Text = "" Then
-            TablaFacturaPublica.Codigo_Proyecto = CboProyecto.Columns(0).Text
-        End If
+        'If Not CboProyecto.Text = "" Then
+        '    TablaFacturaPublica.Codigo_Proyecto = CboProyecto.Columns(0).Text
+        'End If
 
-        If CboReferencia.Text <> "" Then
-            TablaFacturaPublica.Referencia_Factura = CboReferencia.Text
-        End If
+        'If CboReferencia.Text <> "" Then
+        '    TablaFacturaPublica.Referencia_Factura = CboReferencia.Text
+        'End If
 
-        TablaFacturaPublica.Fecha_Hora = Format(My.Forms.FrmFacturas.DTPFecha.Value, "dd/MM/yyyy") & " " & Format(Now, "HH:mm")
-        TablaFacturaPublica.Descuentos_Factura = CDbl(Val(TxtDescuento.Text))
+        'TablaFacturaPublica.Fecha_Hora = Format(My.Forms.FrmFacturas.DTPFecha.Value, "dd/MM/yyyy") & " " & Format(Now, "HH:mm")
+        'TablaFacturaPublica.Descuentos_Factura = CDbl(Val(TxtDescuento.Text))
 
-        LimpiarFacturas()
 
-        Dim worker As BackgroundWorker
-        worker = New BackgroundWorker()
-        AddHandler worker.DoWork, AddressOf backgroundWorkerGrabar_DoWork
-        AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerGrabar_RunWorkerCompleted
-        worker.RunWorkerAsync()
+        'Dim worker As BackgroundWorker
+        'worker = New BackgroundWorker()
+        'AddHandler worker.DoWork, AddressOf backgroundWorkerGrabar_DoWork
+        'AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerGrabar_RunWorkerCompleted
+        'worker.RunWorkerAsync()
 
-        'AgregarFactura()
+
 
         ''////////////////////////////////////////////////////////////////////////////////////////////////////
         ''/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
@@ -4291,7 +4399,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                         FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
                     End If
 
-                    GrabaMetodoDetalleFactura(NumeroFactura, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta)
+                    GrabaMetodoDetalleFactura(NumeroFactura, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta, TablaFactura.Fecha_Factura, TablaFactura.Tipo_Factura)
                     iPosicion = iPosicion + 1
                 Loop
 
@@ -11141,7 +11249,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                     FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
                 End If
 
-                GrabaMetodoDetalleFactura(NumeroFactura, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta)
+                GrabaMetodoDetalleFactura(NumeroFactura, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta, TablaFactura.Fecha_Factura, TablaFactura.Tipo_Factura)
                 iPosicion = iPosicion + 1
             Loop
 
@@ -12027,7 +12135,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                     FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
                 End If
 
-                GrabaMetodoDetalleFactura(NumeroFactura, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta)
+                GrabaMetodoDetalleFactura(NumeroFactura, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta, TablaFactura.Fecha_Factura, TablaFactura.Tipo_Factura)
                 iPosicion = iPosicion + 1
             Loop
 
@@ -12507,7 +12615,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                         FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
                     End If
 
-                    GrabaMetodoDetalleFactura(NumeroFactura, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta)
+                    GrabaMetodoDetalleFactura(NumeroFactura, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta, TablaFactura.Fecha_Factura, TablaFactura.Tipo_Factura)
                     iPosicion = iPosicion + 1
                 Loop
 

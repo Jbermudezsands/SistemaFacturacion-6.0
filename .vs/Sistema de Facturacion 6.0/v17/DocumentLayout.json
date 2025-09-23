@@ -3,12 +3,56 @@
   "WorkspaceRootPath": "D:\\Sistemas\\SistemaFacturacion-6.0\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|d:\\sistemas\\sistemafacturacion-6.0\\sistema facturacion\\frmservicios.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
-      "RelativeMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|solutionrelative:sistema facturacion\\frmservicios.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+      "AbsoluteMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|D:\\Sistemas\\SistemaFacturacion-6.0\\sistema facturacion\\frmfacturas.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|solutionrelative:sistema facturacion\\frmfacturas.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|d:\\sistemas\\sistemafacturacion-6.0\\sistema facturacion\\mdimain.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "AbsoluteMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|D:\\Sistemas\\SistemaFacturacion-6.0\\sistema facturacion\\frmfacturas.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|solutionrelative:sistema facturacion\\frmfacturas.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|d:\\sistemas\\sistemafacturacion-6.0\\sistema facturacion\\frmcompras.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|solutionrelative:sistema facturacion\\frmcompras.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|D:\\Sistemas\\SistemaFacturacion-6.0\\sistema facturacion\\frmcompras.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|solutionrelative:sistema facturacion\\frmcompras.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|D:\\Sistemas\\SistemaFacturacion-6.0\\sistema facturacion\\mdimain.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
       "RelativeMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|solutionrelative:sistema facturacion\\mdimain.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|D:\\Sistemas\\SistemaFacturacion-6.0\\sistema facturacion\\funciones.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|solutionrelative:sistema facturacion\\funciones.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|D:\\Sistemas\\SistemaFacturacion-6.0\\sistema facturacion\\frmcomprashistorico.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|solutionrelative:sistema facturacion\\frmcomprashistorico.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|D:\\Sistemas\\SistemaFacturacion-6.0\\sistema facturacion\\frmconsultas.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|solutionrelative:sistema facturacion\\frmconsultas.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|D:\\Sistemas\\SistemaFacturacion-6.0\\sistema facturacion\\frmconsultas.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|solutionrelative:sistema facturacion\\frmconsultas.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|D:\\Sistemas\\SistemaFacturacion-6.0\\sistema facturacion\\frmnuevasolicitud.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|solutionrelative:sistema facturacion\\frmnuevasolicitud.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|D:\\Sistemas\\SistemaFacturacion-6.0\\sistema facturacion\\frmfechaxproveedor.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|solutionrelative:sistema facturacion\\frmfechaxproveedor.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|D:\\Sistemas\\SistemaFacturacion-6.0\\sistema facturacion\\frmnuevasolicitud.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|solutionrelative:sistema facturacion\\frmnuevasolicitud.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|D:\\Sistemas\\SistemaFacturacion-6.0\\sistema facturacion\\frmplanilla.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{40CD44D8-8A28-4CD0-8D4C-794B06FB6E82}|Sistema Facturacion\\Sistema Facturacion 6.0.vbproj|solutionrelative:sistema facturacion\\frmplanilla.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +62,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,27 +70,157 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "FrmServicios.vb [Dise\u00F1o]",
-              "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmServicios.vb",
-              "RelativeDocumentMoniker": "Sistema Facturacion\\FrmServicios.vb",
-              "ToolTip": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmServicios.vb [Dise\u00F1o]",
-              "RelativeToolTip": "Sistema Facturacion\\FrmServicios.vb [Dise\u00F1o]",
+              "DocumentIndex": 2,
+              "Title": "FrmCompras.vb",
+              "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmCompras.vb",
+              "RelativeDocumentMoniker": "Sistema Facturacion\\FrmCompras.vb",
+              "ToolTip": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmCompras.vb",
+              "RelativeToolTip": "Sistema Facturacion\\FrmCompras.vb",
+              "ViewState": "AgIAABoOAAAAAAAAAAAAAB0OAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
-              "WhenOpened": "2025-09-17T02:24:00.253Z",
-              "EditorCaption": " [Dise\u00F1o]"
+              "WhenOpened": "2025-09-22T19:49:57.861Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "FrmCompras.vb [Dise\u00F1o]",
+              "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmCompras.vb",
+              "RelativeDocumentMoniker": "Sistema Facturacion\\FrmCompras.vb",
+              "ToolTip": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmCompras.vb [Dise\u00F1o]",
+              "RelativeToolTip": "Sistema Facturacion\\FrmCompras.vb [Dise\u00F1o]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-09-22T19:49:51.453Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FrmFacturas.vb",
+              "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmFacturas.vb",
+              "RelativeDocumentMoniker": "Sistema Facturacion\\FrmFacturas.vb",
+              "ToolTip": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmFacturas.vb",
+              "RelativeToolTip": "Sistema Facturacion\\FrmFacturas.vb",
+              "ViewState": "AgIAAHMCAAAAAAAAAAAAAIUCAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-09-21T19:24:24.225Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "FrmFacturas.vb [Dise\u00F1o]",
+              "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmFacturas.vb",
+              "RelativeDocumentMoniker": "Sistema Facturacion\\FrmFacturas.vb",
+              "ToolTip": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmFacturas.vb [Dise\u00F1o]",
+              "RelativeToolTip": "Sistema Facturacion\\FrmFacturas.vb [Dise\u00F1o]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-09-21T19:21:25.165Z",
+              "EditorCaption": " [Dise\u00F1o]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Funciones.vb",
+              "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\Funciones.vb",
+              "RelativeDocumentMoniker": "Sistema Facturacion\\Funciones.vb",
+              "ToolTip": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\Funciones.vb",
+              "RelativeToolTip": "Sistema Facturacion\\Funciones.vb",
+              "ViewState": "AgIAALUkAAAAAAAAAAAgwL0kAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-09-21T19:11:38.881Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "FrmComprasHistorico.vb",
+              "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmComprasHistorico.vb",
+              "RelativeDocumentMoniker": "Sistema Facturacion\\FrmComprasHistorico.vb",
+              "ToolTip": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmComprasHistorico.vb",
+              "RelativeToolTip": "Sistema Facturacion\\FrmComprasHistorico.vb",
+              "ViewState": "AgIAANEAAAAAAAAAAAAhwPIAAABKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-09-21T19:07:08.644Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "MDIMain.vb [Dise\u00F1o]",
               "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\MDIMain.vb",
               "RelativeDocumentMoniker": "Sistema Facturacion\\MDIMain.vb",
               "ToolTip": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\MDIMain.vb [Dise\u00F1o]",
               "RelativeToolTip": "Sistema Facturacion\\MDIMain.vb [Dise\u00F1o]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
-              "WhenOpened": "2025-09-16T23:49:45.609Z",
-              "EditorCaption": " [Dise\u00F1o]"
+              "WhenOpened": "2025-09-16T23:49:45.609Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "FrmConsultas.vb",
+              "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmConsultas.vb",
+              "RelativeDocumentMoniker": "Sistema Facturacion\\FrmConsultas.vb",
+              "ToolTip": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmConsultas.vb",
+              "RelativeToolTip": "Sistema Facturacion\\FrmConsultas.vb",
+              "ViewState": "AgIAAFwCAAAAAAAAAAAAAF0CAABKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-09-19T22:33:29.883Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "FrmNuevaSolicitud.vb [Dise\u00F1o]",
+              "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmNuevaSolicitud.vb",
+              "RelativeDocumentMoniker": "Sistema Facturacion\\FrmNuevaSolicitud.vb",
+              "ToolTip": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmNuevaSolicitud.vb [Dise\u00F1o]",
+              "RelativeToolTip": "Sistema Facturacion\\FrmNuevaSolicitud.vb [Dise\u00F1o]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-09-17T21:56:39.53Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "FrmFechaxProveedor.vb",
+              "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmFechaxProveedor.vb",
+              "RelativeDocumentMoniker": "Sistema Facturacion\\FrmFechaxProveedor.vb",
+              "ToolTip": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmFechaxProveedor.vb",
+              "RelativeToolTip": "Sistema Facturacion\\FrmFechaxProveedor.vb",
+              "ViewState": "AgIAABoAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-09-19T21:24:52.967Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "FrmConsultas.vb [Dise\u00F1o]",
+              "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmConsultas.vb",
+              "RelativeDocumentMoniker": "Sistema Facturacion\\FrmConsultas.vb",
+              "ToolTip": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmConsultas.vb [Dise\u00F1o]",
+              "RelativeToolTip": "Sistema Facturacion\\FrmConsultas.vb [Dise\u00F1o]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-09-19T22:11:58.203Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "FrmPlanilla.vb",
+              "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmPlanilla.vb",
+              "RelativeDocumentMoniker": "Sistema Facturacion\\FrmPlanilla.vb",
+              "ToolTip": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmPlanilla.vb",
+              "RelativeToolTip": "Sistema Facturacion\\FrmPlanilla.vb",
+              "ViewState": "AgIAAFIAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-09-18T17:53:18.809Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "FrmNuevaSolicitud.vb",
+              "DocumentMoniker": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmNuevaSolicitud.vb",
+              "RelativeDocumentMoniker": "Sistema Facturacion\\FrmNuevaSolicitud.vb",
+              "ToolTip": "D:\\Sistemas\\SistemaFacturacion-6.0\\Sistema Facturacion\\FrmNuevaSolicitud.vb",
+              "RelativeToolTip": "Sistema Facturacion\\FrmNuevaSolicitud.vb",
+              "ViewState": "AgIAAGEDAAAAAAAAAAAgwHcDAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-09-19T20:32:48.016Z"
             }
           ]
         }

@@ -4,15 +4,17 @@ Public Class FrmConsultas
     Public MiconexionContabilidad As New SqlClient.SqlConnection(ConexionContabilidad), Cantidad As Double, CodProducto As String, Fecha As Date, FechaHora As Date, Nombre_Recolector As String, Telefono_Recolector As String, Cecula_Recolector As String
     Public DescripcionImpuestos As String, TasaImpuestos As Double, TipoImpuesto As String, CodigoCliente As String, Tipo As String, CodigoProveedor As String, NumFactura As String, Conductor As String, CodProveedor As String
     Public CodBodega As String, TipoContrato As String, Codigo_Departamento As String, Codigo_Minsa As String, IdConsulta As Double
-
+    Public TieneContrato As Boolean
     Private Sub FrmConsultas_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
         Try
+
 
             Codigo = ""
             TipoProducto = ""
 
             Me.Size = New System.Drawing.Size(507, 424)
+
             Me.TrueDBGridConsultas.Size = New System.Drawing.Size(471, 222)
             Me.ButtonSalir.Location = New Point(400, 305)
 
@@ -28,6 +30,9 @@ Public Class FrmConsultas
                 Case "Contenedores"
 
                     Me.Size = New System.Drawing.Size(988, 424)
+                    Me.MinimumSize = Size
+                    Me.MaximumSize = Size
+
                     Me.Location = New Point(160, 160)
                     SQlProductos = "SELECT Codigo_Contenedor, Nombre_Contenedor, Activo FROM  Contenedor"
 
@@ -48,6 +53,8 @@ Public Class FrmConsultas
                 Case "TipoExamen"
 
                     Me.Size = New System.Drawing.Size(988, 424)
+                    Me.MinimumSize = Size
+                    Me.MaximumSize = Size
                     Me.Location = New Point(160, 160)
                     SQlProductos = "SELECT TipoExamen, IdTipoExamen FROM  TipoExamen"
 
@@ -68,6 +75,8 @@ Public Class FrmConsultas
                     Dim CodigoBodega As String = ""
 
                     Me.Size = New System.Drawing.Size(988, 424)
+                    Me.MinimumSize = Size
+                    Me.MaximumSize = Size
                     Me.Location = New Point(160, 160)
 
                     Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
@@ -93,6 +102,8 @@ Public Class FrmConsultas
                     Dim CodigoBodega As String = ""
 
                     Me.Size = New System.Drawing.Size(988, 424)
+                    Me.MinimumSize = Size
+                    Me.MaximumSize = Size
                     Me.Location = New Point(160, 160)
 
                     Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
@@ -121,6 +132,8 @@ Public Class FrmConsultas
                     Dim CodigoBodega As String = ""
 
                     Me.Size = New System.Drawing.Size(988, 424)
+                    Me.MinimumSize = Size
+                    Me.MaximumSize = Size
                     Me.Location = New Point(160, 160)
 
                     Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
@@ -152,6 +165,8 @@ Public Class FrmConsultas
                     Dim CodigoBodega As String = ""
 
                     Me.Size = New System.Drawing.Size(988, 424)
+                    Me.MinimumSize = Size
+                    Me.MaximumSize = Size
                     Me.Location = New Point(160, 160)
 
                     Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
@@ -210,6 +225,8 @@ Public Class FrmConsultas
                     Dim CodigoBodega As String = ""
 
                     Me.Size = New System.Drawing.Size(988, 424)
+                    Me.MinimumSize = Size
+                    Me.MaximumSize = Size
                     Me.Location = New Point(160, 160)
 
                     Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
@@ -237,6 +254,8 @@ Public Class FrmConsultas
                     Dim CodigoBodega As String = ""
 
                     Me.Size = New System.Drawing.Size(988, 424)
+                    Me.MinimumSize = Size
+                    Me.MaximumSize = Size
                     Me.Location = New Point(160, 160)
 
                     Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
@@ -265,6 +284,8 @@ Public Class FrmConsultas
                     Dim CodigoBodega As String = ""
 
                     Me.Size = New System.Drawing.Size(988, 424)
+                    Me.MinimumSize = Size
+                    Me.MaximumSize = Size
                     Me.Location = New Point(160, 160)
 
                     Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
@@ -302,6 +323,8 @@ Public Class FrmConsultas
 
 
                     Me.Size = New System.Drawing.Size(988, 424)
+                    Me.MinimumSize = Size
+                    Me.MaximumSize = Size
                     Me.Location = New Point(160, 160)
 
                     Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
@@ -328,6 +351,8 @@ Public Class FrmConsultas
 
 
                     Me.Size = New System.Drawing.Size(988, 424)
+                    Me.MinimumSize = Size
+                    Me.MaximumSize = Size
                     Me.Location = New Point(160, 160)
 
                     Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
@@ -617,7 +642,11 @@ Public Class FrmConsultas
                     DataAdapter.Fill(DataSet, "Consultas")
                     Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
                     Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
-                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(2).Width = 250
+                    Me.TrueDBGridConsultas.Columns("CodigoProyectos").Caption = "Codigo"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("CodigoProyectos").Width = 70
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("NombreProyectos").Width = 200
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("FechaInicio").Width = 70
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("FechaFin").Width = 70
                     MiConexion.Close()
 
                 Case "Proyectos"
@@ -627,7 +656,11 @@ Public Class FrmConsultas
                     DataAdapter.Fill(DataSet, "Consultas")
                     Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
                     Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
-                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(2).Width = 250
+                    Me.TrueDBGridConsultas.Columns("CodigoProyectos").Caption = "Codigo"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("CodigoProyectos").Width = 70
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("NombreProyectos").Width = 200
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("FechaInicio").Width = 70
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns("FechaFin").Width = 70
                     MiConexion.Close()
 
                 Case "NB"
@@ -1118,7 +1151,7 @@ Public Class FrmConsultas
                     Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(3).Width = 110
 
                 Case "Bodegas"
-                    SQlProductos = "SELECT  * FROM   Bodegas"
+                    SQlProductos = "SELECT  Cod_Bodega, Nombre_Bodega FROM   Bodegas"
                     MiConexion.Open()
                     DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
                     DataSet.Reset()
@@ -1137,6 +1170,38 @@ Public Class FrmConsultas
                     SQlProductos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, DetalleBodegas.Costo, DetalleBodegas.Existencia as Existencia_Unidades, Productos.Cod_Iva FROM  Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos  " &
                                    "WHERE (Productos.Tipo_Producto <> 'Ensambles') AND (DetalleBodegas.Cod_Bodegas = '" & CodigoBodega & "') ORDER BY Productos.Cod_Productos"
                     Me.TrueDBGridConsultas.Columns(0).Caption = "C�digo"
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    MiConexion.Open()
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Codigo"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(0).Width = 70
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 170
+                    Me.TrueDBGridConsultas.Columns(2).Caption = "Tipo"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(2).Width = 65
+                    Me.TrueDBGridConsultas.Columns(3).Caption = "Costo Prom"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(3).Width = 65
+                    Me.TrueDBGridConsultas.Columns(3).NumberFormat = "##,##0.00"
+                    Me.TrueDBGridConsultas.Columns(4).Caption = "Existencia"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(4).Width = 65
+                    Me.TrueDBGridConsultas.Columns(4).NumberFormat = "##,##0.00"
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(5).Visible = False
+
+                    MiConexion.Close()
+
+                Case "CodigoProductosCompraContrato"
+                    Dim CodigoBodega As String
+                    CodigoBodega = FrmCompras.CboCodigoBodega.Text
+
+                    SQlProductos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Productos.Tipo_Producto, DetalleBodegas.Costo, DetalleBodegas.Existencia_Unidades, Productos.Cod_Iva FROM  Detalle_Contratos_Productos INNER JOIN Contrato_Proveedor ON Detalle_Contratos_Productos.Numero_Contrato = Contrato_Proveedor.Numero_Contrato INNER JOIN Productos ON Detalle_Contratos_Productos.Cod_Productos = Productos.Cod_Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos  " &
+                                   "WHERE  (Contrato_Proveedor.Codigo_Proveedor = '" & CodigoProveedor & "')"
+
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Codigo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1304,6 +1369,20 @@ Public Class FrmConsultas
                 Case "Cuenta"
                     SQlProductos = "SELECT CodCuentas , DescripcionCuentas As Descripcion, TipoCuenta FROM Cuentas "
                     Me.TrueDBGridConsultas.Columns(0).Caption = "C�digo"
+                    Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
+                    MiConexion.Open()
+
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiconexionContabilidad)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+
+                    MiConexion.Close()
+
+                Case "CuentaContrato"
+                    SQlProductos = "SELECT CodCuentas , DescripcionCuentas As Descripcion, TipoCuenta FROM Cuentas "
+                    Me.TrueDBGridConsultas.Columns(0).Caption = "Codigo"
                     Me.TrueDBGridConsultas.Columns(1).Caption = "Descripcion"
                     MiConexion.Open()
 
@@ -1508,6 +1587,8 @@ Public Class FrmConsultas
 
                 Case "CodigoProductos"
                     Me.Size = New System.Drawing.Size(988, 424)
+                    Me.MinimumSize = Size
+                    Me.MaximumSize = Size
                     Me.Location = New Point(160, 160)
                     Me.TrueDBGridConsultas.Size = New System.Drawing.Size(950, 222)
                     Me.ButtonSalir.Location = New Point(880, 305)
@@ -1879,17 +1960,12 @@ Public Class FrmConsultas
                 Precio = 0 'Me.BindingConsultas.Item(Posicion)("Costo")
                 CodIva = Me.BindingConsultas.Item(Posicion)("Cod_Iva")
                 TipoProducto = Me.BindingConsultas.Item(Posicion)("Tipo_Producto")
-            Case "CodigoProductosCompra"
+
+            Case "CodigoProductosCompraContrato"
 
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("Cod_Productos")
                 Descripcion = Me.BindingConsultas.Item(Posicion)("Descripcion_Producto")
-
-                'If TieneMovimientos(Codigo, My.Forms.FrmCompras.DTPFechaHora.Value) = True Then
-                '    MsgBox(Mensaje, MsgBoxStyle.Critical, "Zeus Facturacion")
-                '    Codigo = "-----0-----"
-                '    Exit Sub
-                'End If
 
                 If Not IsDBNull(Me.BindingConsultas.Item(Posicion)("Costo")) Then
                     Precio = Me.BindingConsultas.Item(Posicion)("Costo")
@@ -1903,6 +1979,26 @@ Public Class FrmConsultas
                     MsgBox("El producto no tiene asignada la tabla iva", MsgBoxStyle.Critical, "Zeus Facturacion")
                 End If
                 TipoProducto = Me.BindingConsultas.Item(Posicion)("Tipo_Producto")
+
+            Case "CodigoProductosCompra"
+
+                Posicion = Me.BindingConsultas.Position
+                Codigo = Me.BindingConsultas.Item(Posicion)("Cod_Productos")
+                Descripcion = Me.BindingConsultas.Item(Posicion)("Descripcion_Producto")
+
+                If Not IsDBNull(Me.BindingConsultas.Item(Posicion)("Costo")) Then
+                    Precio = Me.BindingConsultas.Item(Posicion)("Costo")
+                Else
+                    Precio = 0
+                End If
+                If Not IsDBNull(Me.BindingConsultas.Item(Posicion)("Cod_Iva")) Then
+                    CodIva = Me.BindingConsultas.Item(Posicion)("Cod_Iva")
+                Else
+                    CodIva = 0
+                    MsgBox("El producto no tiene asignada la tabla iva", MsgBoxStyle.Critical, "Zeus Facturacion")
+                End If
+                TipoProducto = Me.BindingConsultas.Item(Posicion)("Tipo_Producto")
+
             Case "MetodoPago"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("NombrePago")

@@ -1,9 +1,50 @@
 Imports System.Data.SqlClient
+Imports Microsoft.Win32
+Imports System.Web.Services
 
 Public Class FrmNuevaSolicitud
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder, NumeroSolicitud As String
     Public Estatus As String = ""
+    Public Function ProductoNoContrato(CodigoProveedor As String) As Boolean
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim cont As Double, i As Double, Descripcion As String, CodigoProducto As String
+        Dim Comprado As Boolean, SqlString As String, Resultado As Boolean = False
+        Dim CsContratos As CsContratos = New CsContratos
+
+        cont = Me.TrueDBGridComponentes.RowCount
+        i = 0
+        Resultado = False
+
+        Do While cont > i
+
+            CodigoProducto = Me.TrueDBGridComponentes.Item(i)("Cod_Producto")
+            Descripcion = Me.TrueDBGridComponentes.Item(i)("Descripcion_Producto")
+            Comprado = Me.TrueDBGridComponentes.Item(i)("Comprado")
+
+            '///////////////si el producto es seleccionado //////////////////
+            '///////////////Verifico que este en el contrato //////////////////
+            If Comprado = True Then
+                SqlString = "SELECT Contrato_Proveedor.Codigo_Proveedor, Contrato_Proveedor.Numero_Contrato, Detalle_Contratos_Productos.Cod_Productos, Detalle_Contratos_Productos.Descripcion_Productos FROM Contrato_Proveedor INNER JOIN Detalle_Contratos_Productos ON Contrato_Proveedor.Numero_Contrato = Detalle_Contratos_Productos.Numero_Contrato  WHERE  (Contrato_Proveedor.Codigo_Proveedor = '" & CodigoProveedor & "') AND (Detalle_Contratos_Productos.Tipo_Contrato = 'Proveedores') AND (Detalle_Contratos_Productos.Cod_Productos = '" & CodigoProducto & "') "
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                DataAdapter.Fill(DataSet, "Contrato")
+                If DataSet.Tables("Contrato").Rows.Count = 0 Then
+                    Resultado = True
+                    Exit Do
+                End If
+
+            End If
+
+
+            i = i + 1
+        Loop
+
+        Return Resultado
+
+    End Function
+
+
+
     Public Sub InsertarRowGrid()
         Dim oTabla As DataTable, iPosicion As Double, CodigoProducto As String
 
@@ -127,7 +168,8 @@ Public Class FrmNuevaSolicitud
 
             Me.TrueDBGridComponentes.Columns("Comprado").ValueItems.Translate = True
         End With
- 
+
+
 
     End Sub
     Public Sub GrabarSolicitud(ByVal Numero_Solicitud As String, ByVal Fecha_Solicitud As Date, ByVal Gerencia_Solicitante As String, ByVal Departamento As String, ByVal Cod_Rubro As String, ByVal Concepto As String, ByVal Estado_Solicitud As String, ByVal Codigo_Bodega As String, ByVal Fecha_Requerido As Date, ByVal CodigoProyecto As String, ByVal Actualizar As Boolean, ByVal SolicitudxCta As Boolean)
@@ -153,7 +195,7 @@ Public Class FrmNuevaSolicitud
 
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Solicitud_Compra] ([Numero_Solicitud],[Fecha_Solicitud],[Fecha_Hora_Solicitud] ,[Gerencia_Solicitante],[Departamento_Solicitante],[Codigo_Rubro],[Concepto] ,[Estado_Solicitud] ,[Cod_Bodega], [Fecha_Requerido], [CodigoProyecto], [Solcitud_Cta_Contable]) " & _
+            StrSqlUpdate = "INSERT INTO [Solicitud_Compra] ([Numero_Solicitud],[Fecha_Solicitud],[Fecha_Hora_Solicitud] ,[Gerencia_Solicitante],[Departamento_Solicitante],[Codigo_Rubro],[Concepto] ,[Estado_Solicitud] ,[Cod_Bodega], [Fecha_Requerido], [CodigoProyecto], [Solcitud_Cta_Contable]) " &
                            "VALUES ('" & Numero_Solicitud & "', CONVERT(DATETIME, '" & Format(Fecha_Solicitud, "yyyy-MM-dd") & "', 102)  ,CONVERT(DATETIME, '" & Format(Fecha_Solicitud, "yyyy-MM-dd HH:mm:ss") & "', 102) , '" & Gerencia_Solicitante & "', '" & Departamento & "' ,'" & Cod_Rubro & "' ,'" & Concepto & "','" & Estado_Solicitud & "' ,'" & Codigo_Bodega & "', CONVERT(DATETIME, '" & Format(Fecha_Requerido, "yyyy-MM-dd") & "', 102), '" & CodigoProyecto & "' , '" & SolicitudxCta & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -174,7 +216,8 @@ Public Class FrmNuevaSolicitud
         Dim Sql As String, DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet, SqlString As String
         Dim item As C1.Win.C1TrueDBGrid.ValueItem = New C1.Win.C1TrueDBGrid.ValueItem()
 
-
+        Me.MinimumSize = Size
+        Me.MaximumSize = Size
 
 
 
@@ -559,7 +602,7 @@ Public Class FrmNuevaSolicitud
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '///////////////////////CARGO LAS SOLICUTIDS////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        Sql = "SELECT  Numero_Solicitud, Fecha_Solicitud, Fecha_Hora_Solicitud, Gerencia_Solicitante, Departamento_Solicitante, Codigo_Rubro, Concepto, Estado_Solicitud,  Cod_Bodega, CodigoProyecto, Fecha_Requerido, Solcitud_Cta_Contable  FROM Solicitud_Compra " & _
+        Sql = "SELECT  Numero_Solicitud, Fecha_Solicitud, Fecha_Hora_Solicitud, Gerencia_Solicitante, Departamento_Solicitante, Codigo_Rubro, Concepto, Estado_Solicitud,  Cod_Bodega, CodigoProyecto, Fecha_Requerido, Solcitud_Cta_Contable  FROM Solicitud_Compra " &
               "WHERE  (Numero_Solicitud = '" & Me.TxtNumeroEnsamble.Text & "')"
         MiConexion.Open()
         DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
@@ -812,18 +855,38 @@ Public Class FrmNuevaSolicitud
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, CodigoProveedor As String, Nombres As String, Apellidos As String
         Dim CodigoProducto As String, Comprado As Boolean, Cantidad As Double, iDetalleSolicitud As Double = 0
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Fecha_Compra As Date, Fecha_Vence As Date, Fecha_Hora As Date
-        Dim CodigoProyecto As String
+        Dim CodigoProyecto As String, TieneContrato As Boolean = False
 
         Fecha_Solicitud = CDate(Me.DTPFecha.Text + " " + Me.LblHora.Text)
         Fecha_Compra = Format(Now, "dd/MM/yyyy")
         Fecha_Vence = Format(Now, "dd/MM/yyyy")
         Fecha_Hora = Now
 
-        My.Forms.FrmFecha.ShowDialog()
-        Fecha_Compra = Format(My.Forms.FrmFecha.DTPFechaRequerido.Value, "dd/MM/yyyy")
+        'My.Forms.FrmFecha.ShowDialog()
+        My.Forms.FrmFechaxProveedor.Codigo_Proveedor = ""
+        My.Forms.FrmFechaxProveedor.ShowDialog()
+        Fecha_Compra = Format(My.Forms.FrmFechaxProveedor.DTPFechaRequerido.Value, "dd/MM/yyyy")
+        CodigoProveedor = FrmFechaxProveedor.Codigo_Proveedor
+        TieneContrato = FrmFechaxProveedor.TieneContrato
+
+        If CodigoProveedor = "" Then
+            MsgBox("Debe seleccionar un proveedor", vbCritical, "Zeus Facturacion")
+            Exit Sub
+        End If
 
         If Quien = "Cancelar" Then
             Exit Sub
+        End If
+
+        '//////////////////////////CONSULTO SI EL PROVEEDOR TIENE CONTRATO ///////////////
+        If TieneContrato = True Then
+            '//////////////////SI TIENE CONTRATO VALIDO LOS PRODUCTOS //////////////
+            If ProductoNoContrato(CodigoProveedor) = True Then
+                MsgBox("Existen productos que no pertenecen al contrato del Proveedor", vbCritical, "Zeus Facturacion")
+                Exit Sub
+            End If
+
+
         End If
 
         ConsecutivoCompra = BuscaConsecutivo("Orden_Compra")
@@ -836,8 +899,10 @@ Public Class FrmNuevaSolicitud
         End If
 
 
+
+
         '//////////////////////////////////////SELECCIONO EL PRIMER PROVEEDOR PARA LLENAR LOS DATOS BASICOS DE LA ORDEN DE COMPRA PARA SU POSTERIOR CAMBIO ////////////////
-        SqlString = "SELECT Cod_Proveedor, Nombre_Proveedor, Apellido_Proveedor, Direccion_Proveedor, Telefono, Cod_Cuenta_Proveedor, Cod_Cuenta_Pagar,  Cod_Cuenta_Cobrar, Merma, InventarioFisico, RUC, CodRuta FROM Proveedor ORDER BY Cod_Proveedor"
+        SqlString = "SELECT Cod_Proveedor, Nombre_Proveedor, Apellido_Proveedor, Direccion_Proveedor, Telefono, Cod_Cuenta_Proveedor, Cod_Cuenta_Pagar,  Cod_Cuenta_Cobrar, Merma, InventarioFisico, RUC, CodRuta FROM Proveedor WHERE (Cod_Proveedor = '" & CodigoProveedor & "') ORDER BY Cod_Proveedor"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "Proveedor")
         If DataSet.Tables("Proveedor").Rows.Count <> 0 Then
@@ -862,6 +927,7 @@ Public Class FrmNuevaSolicitud
                 Comprado = Me.TrueDBGridComponentes.Item(i)("Comprado")
                 Cantidad = Me.TrueDBGridComponentes.Item(i)("Cantidad")
                 iDetalleSolicitud = Me.TrueDBGridComponentes.Item(i)("Id_DetalleSolicitud")
+
 
 
                 MiConexion.Close()
@@ -951,8 +1017,7 @@ Public Class FrmNuevaSolicitud
             MsgBox("Debe Grabar primero la solicitud", MsgBoxStyle.Exclamation, "Zeus Facturacion")
             Exit Sub
         End If
-
-        SqlDatos = "SELECT * FROM DatosEmpresa"
+        sQLDatos = "SELECT * FROM DatosEmpresa"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
         DataAdapter.Fill(DataSet, "DatosEmpresa")
 

@@ -235,7 +235,7 @@ Public Class FrmComprasHistorico
             FechaLote = "01/01/1900"
         End If
 
-        GrabaDetalleCompra(NumeroCompra, CodigoProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, NumeroLote, FechaLote, DescripcionProducto)
+        GrabaDetalleCompra(NumeroCompra, CodigoProducto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, NumeroLote, FechaLote, DescripcionProducto, Compras.Fecha_Compra, Compras.Moneda_Compra, Compras.Tipo_Compra)
 
         Select Case Me.CboTipoProducto.Text
             Case "Mercancia Recibida"

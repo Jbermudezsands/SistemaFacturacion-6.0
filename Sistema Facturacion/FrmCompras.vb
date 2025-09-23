@@ -20,6 +20,7 @@ Public Class FrmCompras
     Public Delegate Sub delegadoGridRegistros(Compras As TablaCompras)
     Public ConexionExcel As String, MiConexionExcel As New OleDb.OleDbConnection, DataAdapterExcel As New OleDb.OleDbDataAdapter
     Public RutaBD As String, MiDataSet As New DataSet()
+    Public TieneContrato As Boolean, dsMetodo As New DataSet
 
     Public Sub LimpiarGridImporacion()
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -229,7 +230,11 @@ Handles backgroundWorkerGrabar.DoWork
         Dim worker As BackgroundWorker =
         CType(sender, BackgroundWorker)
 
-        Dim args As TablaCompras = e.Argument
+        Dim dsDetalle As New DataSet, dsMetodoPago As New DataSet, DtMetodo As New DataTable
+        Dim args As TablaCompras = e.Argument(0)
+
+        dsDetalle = e.Argument(1)
+        dsMetodoPago = e.Argument(2)
 
         If worker.CancellationPending Then
             e.Cancel = True
@@ -238,24 +243,34 @@ Handles backgroundWorkerGrabar.DoWork
 
             worker.WorkerReportsProgress = True
             worker.WorkerSupportsCancellation = True
-            AgregarComprasWorker(args, worker, e)
+            AgregarComprasWorker(args, dsDetalle, dsMetodoPago, worker, e)
         End If
     End Sub
     Private Sub backgroundWorkerGrabar_RunWorkerCompleted(
 ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs) _
 Handles backgroundWorkerGrabar.RunWorkerCompleted
 
+
+
         If (e.Error IsNot Nothing) Then
             Bitacora(Now, NombreUsuario, "Compras", "Error " & e.Error.Message)
         ElseIf e.Cancelled Then
             Bitacora(Now, NombreUsuario, "Compras", "Hilo Cancelado")
         Else
-
-
-
+            MDIMain.txtSPlano2.Text = ""
         End If
 
     End Sub
+    Private Sub backgroundWorkerGrabar_ProgressChanged(
+ByVal sender As Object, ByVal e As ProgressChangedEventArgs) _
+Handles backgroundWorkerGrabar.ProgressChanged
+
+
+        MDIMain.txtSPlano2.Text = "Compra:" & e.UserState.ToString
+
+
+    End Sub
+
 
     Private Sub backgroundWorkerAgregarEncabezado_DoWork(
 ByVal sender As Object,
@@ -379,16 +394,16 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
 
 
     End Sub
-    Public Sub AgregarComprasWorker(compras As TablaCompras, worker As BackgroundWorker, e As DoWorkEventArgs)
-        Dim dsDetalle As DataSet, dsMetodoPago As New DataSet, DtMetodo As New DataTable
+    Public Sub AgregarComprasWorker(compras As TablaCompras, dsDetalle As DataSet, dsMetodoPago As DataSet, worker As BackgroundWorker, e As DoWorkEventArgs)
+        'Dim dsDetalle As DataSet, dsMetodoPago As New DataSet, DtMetodo As New DataTable
         Dim Registros As Double, iPosicion As Double, Monto As Double, NombrePago As String, NumeroTarjeta As String, FechaVenceTarjeta As Date
         Dim TablaDetalleCompras As TablaDetalleCompras = New TablaDetalleCompras
 
-        dsDetalle = ds.Copy
-        DtMetodo = Me.BindingMetodo.DataSource
-        dsMetodoPago.Tables.Add(DtMetodo.Copy)
+        'dsDetalle = ds.Copy
+        'DtMetodo = Me.BindingMetodo.DataSource
+        'dsMetodoPago.Tables.Add(DtMetodo.Copy)
 
-        LimpiarCompras()
+        'LimpiarCompras()
 
 
         ''///////////////////////////////////////////////////////////////////////////
@@ -407,12 +422,16 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
 
         Do While iPosicion < Registros
 
+
+
             My.Application.DoEvents()
 
             TablaDetalleCompras.Numero_Compra = compras.Numero_Compra
             TablaDetalleCompras.Cod_Producto = dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Cod_Producto")
-            TablaDetalleCompras.Fecha_Compra = compras.Fecha_Compra
-            TablaDetalleCompras.Tipo_Compra = compras.Tipo_Compra
+            TablaDetalleCompras.Fecha_Compra = dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Fecha_Compra")
+            TablaDetalleCompras.Tipo_Compra = dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Tipo_Compra")
+            TablaDetalleCompras.Moneda_Compra = compras.Moneda_Compra
+            TablaDetalleCompras.Cod_Bodega = compras.Cod_Bodega
 
             TablaDetalleCompras.Descripcion_Producto = dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Descripcion_Producto")
 
@@ -471,35 +490,48 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
 
             End If
 
+            '///////////////PROGRESO DEL HILO GRABAR //////////////////////////
+            worker.ReportProgress(iPosicion, TablaDetalleCompras.Cod_Producto)
+
             If CambiarFechaCompra = True Then
 
-                GrabaDetalleCompra(NumeroCompra, TablaDetalleCompras.Cod_Producto, TablaDetalleCompras.Precio_Unitario, TablaDetalleCompras.Descuento, TablaDetalleCompras.Precio_Neto, TablaDetalleCompras.Importe, TablaDetalleCompras.Cantidad, TablaDetalleCompras.Numero_Lote, TablaDetalleCompras.Fecha_Vence, TablaDetalleCompras.Descripcion_Producto)
+                GrabaDetalleCompra(TablaDetalleCompras.Numero_Compra, TablaDetalleCompras.Cod_Producto, TablaDetalleCompras.Precio_Unitario, TablaDetalleCompras.Descuento, TablaDetalleCompras.Precio_Neto, TablaDetalleCompras.Importe, TablaDetalleCompras.Cantidad, TablaDetalleCompras.Numero_Lote, TablaDetalleCompras.Fecha_Vence, TablaDetalleCompras.Descripcion_Producto, TablaDetalleCompras.Fecha_Compra, TablaDetalleCompras.Moneda_Compra, TablaDetalleCompras.Tipo_Compra)
 
                 Select Case compras.Tipo_Compra
                     Case "Mercancia Recibida"
-                        ExistenciasCostos(TablaDetalleCompras.Cod_Producto, TablaDetalleCompras.Cantidad, TablaDetalleCompras.Precio_Neto, compras.Tipo_Compra, compras.Cod_Bodega)
+                        ExistenciasCostos(TablaDetalleCompras.Cod_Producto, TablaDetalleCompras.Cantidad, TablaDetalleCompras.Precio_Neto, TablaDetalleCompras.Tipo_Compra, TablaDetalleCompras.Cod_Bodega)
                 End Select
 
             ElseIf compras.Tipo_Compra = "Cuenta" Then
 
-                GrabaDetalleCompra(NumeroCompra, TablaDetalleCompras.Cod_Producto, TablaDetalleCompras.Precio_Unitario, TablaDetalleCompras.Descuento, TablaDetalleCompras.Precio_Neto, TablaDetalleCompras.Importe, TablaDetalleCompras.Cantidad, TablaDetalleCompras.Numero_Lote, TablaDetalleCompras.Fecha_Vence, TablaDetalleCompras.Descripcion_Producto)
+                GrabaDetalleCompra(TablaDetalleCompras.Numero_Compra, TablaDetalleCompras.Cod_Producto, TablaDetalleCompras.Precio_Unitario, TablaDetalleCompras.Descuento, TablaDetalleCompras.Precio_Neto, TablaDetalleCompras.Importe, TablaDetalleCompras.Cantidad, TablaDetalleCompras.Numero_Lote, TablaDetalleCompras.Fecha_Vence, TablaDetalleCompras.Descripcion_Producto, TablaDetalleCompras.Fecha_Compra, TablaDetalleCompras.Moneda_Compra, TablaDetalleCompras.Tipo_Compra)
 
                 Select Case compras.Tipo_Compra
                     Case "Mercancia Recibida"
-                        ExistenciasCostos(TablaDetalleCompras.Cod_Producto, TablaDetalleCompras.Cantidad, TablaDetalleCompras.Precio_Neto, compras.Tipo_Compra, compras.Cod_Bodega)
+                        ExistenciasCostos(TablaDetalleCompras.Cod_Producto, TablaDetalleCompras.Cantidad, TablaDetalleCompras.Precio_Neto, TablaDetalleCompras.Tipo_Compra, TablaDetalleCompras.Cod_Bodega)
                 End Select
 
 
             ElseIf compras.Tipo_Compra = "Cuenta DB" Then
 
-                GrabaDetalleCompra(NumeroCompra, TablaDetalleCompras.Cod_Producto, TablaDetalleCompras.Precio_Unitario, TablaDetalleCompras.Descuento, TablaDetalleCompras.Precio_Neto, TablaDetalleCompras.Importe, TablaDetalleCompras.Cantidad, TablaDetalleCompras.Numero_Lote, TablaDetalleCompras.Fecha_Vence, TablaDetalleCompras.Descripcion_Producto)
+                GrabaDetalleCompra(TablaDetalleCompras.Numero_Compra, TablaDetalleCompras.Cod_Producto, TablaDetalleCompras.Precio_Unitario, TablaDetalleCompras.Descuento, TablaDetalleCompras.Precio_Neto, TablaDetalleCompras.Importe, TablaDetalleCompras.Cantidad, TablaDetalleCompras.Numero_Lote, TablaDetalleCompras.Fecha_Vence, TablaDetalleCompras.Descripcion_Producto, TablaDetalleCompras.Fecha_Compra, TablaDetalleCompras.Moneda_Compra, TablaDetalleCompras.Tipo_Compra)
 
                 Select Case compras.Tipo_Compra
                     Case "Mercancia Recibida"
-                        ExistenciasCostos(TablaDetalleCompras.Cod_Producto, TablaDetalleCompras.Cantidad, TablaDetalleCompras.Precio_Neto, compras.Tipo_Compra, compras.Cod_Bodega)
+                        ExistenciasCostos(TablaDetalleCompras.Cod_Producto, TablaDetalleCompras.Cantidad, TablaDetalleCompras.Precio_Neto, TablaDetalleCompras.Tipo_Compra, TablaDetalleCompras.Cod_Bodega)
+                End Select
+
+            Else
+                '////////////////ESTA OPCION SI EDITAN ORDNES DE COMPRA Y MERCANCIA RECIBIDA
+                GrabaDetalleCompra(TablaDetalleCompras.Numero_Compra, TablaDetalleCompras.Cod_Producto, TablaDetalleCompras.Precio_Unitario, TablaDetalleCompras.Descuento, TablaDetalleCompras.Precio_Neto, TablaDetalleCompras.Importe, TablaDetalleCompras.Cantidad, TablaDetalleCompras.Numero_Lote, TablaDetalleCompras.Fecha_Vence, TablaDetalleCompras.Descripcion_Producto, TablaDetalleCompras.Fecha_Compra, TablaDetalleCompras.Moneda_Compra, TablaDetalleCompras.Tipo_Compra)
+
+                Select Case compras.Tipo_Compra
+                    Case "Mercancia Recibida"
+                        ExistenciasCostos(TablaDetalleCompras.Cod_Producto, TablaDetalleCompras.Cantidad, TablaDetalleCompras.Precio_Neto, TablaDetalleCompras.Tipo_Compra, TablaDetalleCompras.Cod_Bodega)
                 End Select
 
             End If
+
 
 
 
@@ -537,6 +569,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         Loop
 
         Bitacora(Now, NombreUsuario, compras.Tipo_Compra, "Grabo la Compra: " & compras.Numero_Compra)
+
 
         'GrabaMetodoDetalleCompra(NumeroCompra, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta)
 
@@ -856,14 +889,25 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
             Compras.Aplicar_CtasXPagar = 0
         End If
 
+        '/////////////////////////////Copio los DataSet ///////////////////////////
+        dsDetalle = ds.Copy
+        DtMetodo = Me.BindingMetodo.DataSource
+        dsMetodoPago.Tables.Add(DtMetodo.Copy)
+
+        LimpiarCompras()
+
+        My.Application.DoEvents()
 
         Dim worker As BackgroundWorker
         worker = New BackgroundWorker()
         AddHandler worker.DoWork, AddressOf backgroundWorkerGrabar_DoWork
+        AddHandler worker.ProgressChanged, AddressOf backgroundWorkerGrabar_ProgressChanged
         AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerGrabar_RunWorkerCompleted
-        worker.RunWorkerAsync(Compras)
+        worker.RunWorkerAsync({Compras, dsDetalle, dsMetodoPago})
+
 
         MsgBox("Se ha grabado con Exito!!!", MsgBoxStyle.Exclamation, "Sistema Facturacion")
+
 
         If Me.TxtNumeroEnsamble.Text <> "-----0-----" Then
             Select Case Me.CboTipoProducto.Text
@@ -1950,132 +1994,158 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         Dim Cantidad As Double, Precio As Double, SubTotal As Double, PorcientoDescuento As Double, Neto As Double
         Dim CodProducto As String, iPosicion As Double
 
+        If Me.TxtCodigoProveedor.Text = "" Then
+            MsgBox("Se Necesito el codigo Proveedor", vbCritical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+
         CodProducto = Me.TrueDBGridComponentes.Columns(0).Text
         iPosicion = Me.BindingDetalle.Position
 
 
-        If e.ColIndex = 0 Then
 
-            If Me.CboTipoProducto.Text = "Cuenta" Then
-                Quien = "Cuenta"
-                My.Forms.FrmConsultas.ShowDialog()
-            ElseIf Me.CboTipoProducto.Text = "Cuenta DB" Then
-                Quien = "Cuenta"
-                My.Forms.FrmConsultas.ShowDialog()
+        If e.ColIndex = 0 Then
+            If TieneContrato = False Then
+                If Me.CboTipoProducto.Text = "Cuenta" Then
+                    Quien = "Cuenta"
+                    My.Forms.FrmConsultas.ShowDialog()
+                ElseIf Me.CboTipoProducto.Text = "Cuenta DB" Then
+                    Quien = "Cuenta"
+                    My.Forms.FrmConsultas.ShowDialog()
+                Else
+                    Quien = "CodigoProductosCompra"
+                    My.Forms.FrmConsultas.ShowDialog()
+                End If
+
             Else
-                Quien = "CodigoProductosCompra"
-                My.Forms.FrmConsultas.ShowDialog()
+                '/////////////////////Tiene Contrato /////////////////////
+                If Me.CboTipoProducto.Text = "Cuenta" Then
+                    Quien = "CuentaContrato"
+                    My.Forms.FrmConsultas.TieneContrato = TieneContrato
+                    My.Forms.FrmConsultas.CodigoProveedor = Me.TxtCodigoProveedor.Text
+                    My.Forms.FrmConsultas.ShowDialog()
+                ElseIf Me.CboTipoProducto.Text = "Cuenta DB" Then
+                    Quien = "CuentaContrato"
+                    My.Forms.FrmConsultas.TieneContrato = TieneContrato
+                    My.Forms.FrmConsultas.CodigoProveedor = Me.TxtCodigoProveedor.Text
+                    My.Forms.FrmConsultas.ShowDialog()
+                Else
+                    Quien = "CodigoProductosCompraContrato"
+                    My.Forms.FrmConsultas.CodigoProveedor = Me.TxtCodigoProveedor.Text
+                    My.Forms.FrmConsultas.ShowDialog()
+                End If
             End If
 
             ActualizaMETODOcOMPRA()
 
-            If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
+                If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
 
 
-                Me.TrueDBGridComponentes.Columns(0).Text = My.Forms.FrmConsultas.Codigo
-                Me.TrueDBGridComponentes.Columns(1).Text = My.Forms.FrmConsultas.Descripcion
+                    Me.TrueDBGridComponentes.Columns(0).Text = My.Forms.FrmConsultas.Codigo
+                    Me.TrueDBGridComponentes.Columns(1).Text = My.Forms.FrmConsultas.Descripcion
 
-                If Me.CboTipoProducto.Text = "Cuenta" Then
-                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = 1
-                ElseIf Me.CboTipoProducto.Text = "Cuenta DB" Then
-                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = -1
-                Else
-
-                    '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    '/////////////////////////////////////////////////BUSCO EL ULTIMO PRECIO DE COMPRA /////////////////////////////////////////////
-                    '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    CodigoProducto = My.Forms.FrmConsultas.Codigo
-                    SQlString = "SELECT Cod_Producto, Cantidad, Precio_Unitario, Importe FROM Detalle_Compras WHERE (Cod_Producto = '" & CodigoProducto & "') AND (Precio_Unitario <> 0)"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-                    DataAdapter.Fill(DataSet, "Productos")
-                    Registros = DataSet.Tables("Productos").Rows.Count
-
-                    If Registros = 0 Then
-                        Me.TrueDBGridComponentes.Columns(3).Text = My.Forms.FrmConsultas.Precio
+                    If Me.CboTipoProducto.Text = "Cuenta" Then
+                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = 1
+                    ElseIf Me.CboTipoProducto.Text = "Cuenta DB" Then
+                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = -1
                     Else
 
-                        Precio = DataSet.Tables("Productos").Rows(Registros - 1)("Precio_Unitario")
-                        If Precio = 0 Then
-                            Me.TrueDBGridComponentes.Columns(3).Text = Format(My.Forms.FrmConsultas.Precio, "##,##0.0000")
+                        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        '/////////////////////////////////////////////////BUSCO EL ULTIMO PRECIO DE COMPRA /////////////////////////////////////////////
+                        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        CodigoProducto = My.Forms.FrmConsultas.Codigo
+                        SQlString = "SELECT Cod_Producto, Cantidad, Precio_Unitario, Importe FROM Detalle_Compras WHERE (Cod_Producto = '" & CodigoProducto & "') AND (Precio_Unitario <> 0)"
+                        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+                        DataAdapter.Fill(DataSet, "Productos")
+                        Registros = DataSet.Tables("Productos").Rows.Count
+
+                        If Registros = 0 Then
+                            Me.TrueDBGridComponentes.Columns(3).Text = My.Forms.FrmConsultas.Precio
                         Else
-                            Me.TrueDBGridComponentes.Columns(3).Text = Format(DataSet.Tables("Productos").Rows(Registros - 1)("Precio_Unitario"), "##,##0.0000")
+
+                            Precio = DataSet.Tables("Productos").Rows(Registros - 1)("Precio_Unitario")
+                            If Precio = 0 Then
+                                Me.TrueDBGridComponentes.Columns(3).Text = Format(My.Forms.FrmConsultas.Precio, "##,##0.0000")
+                            Else
+                                Me.TrueDBGridComponentes.Columns(3).Text = Format(DataSet.Tables("Productos").Rows(Registros - 1)("Precio_Unitario"), "##,##0.0000")
+                            End If
+
                         End If
 
+
+                        Me.TrueDBGridComponentes.Columns(3).Caption = "Precio Unit"
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
+                        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = False
+
+
+
+                        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        '////////////////////////////////BUSCO EL CODIGO PARA EL PRODUCTO///////////////////////////////////////////
+                        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        CodigoProducto = My.Forms.FrmConsultas.Codigo
+                        SQlString = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodigoProducto & "')"
+                        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+                        DataAdapter.Fill(DataSet, "TipoProductos")
+                        If DataSet.Tables("TipoProductos").Rows.Count <> 0 Then
+                            TipoProducto = DataSet.Tables("TipoProductos").Rows(0)("Tipo_Producto")
+                            TipoDescuento = DataSet.Tables("TipoProductos").Rows(0)("Unidad_Medida")
+                            PrecioDescCordobas = DataSet.Tables("TipoProductos").Rows(0)("Precio_Venta")
+                            PrecioDescDolar = DataSet.Tables("TipoProductos").Rows(0)("Precio_Lista")
+                        End If
+
+                        '///////////////////////////////////////DEFINO EL TIPO DE SERVICIO O DESCUENTO ////////////////////////////////////////////
+                        Select Case TipoDescuento
+                            Case "ImporteFijo"
+                                Me.TrueDBGridComponentes.Columns(2).Text = 1
+                                Cantidad = 1
+                                Me.TrueDBGridComponentes.Columns(4).Text = ""
+                                If Me.TxtMonedaFactura.Text = "Cordobas" Then
+                                    Me.TrueDBGridComponentes.Columns(3).Text = Format(PrecioDescCordobas, "##,##0.0000")
+                                    Precio = PrecioDescCordobas
+                                Else
+                                    Me.TrueDBGridComponentes.Columns(3).Text = Format(PrecioDescDolar, "##,##0.0000")
+                                    Precio = PrecioDescDolar
+                                End If
+
+                            Case "SubTotal"
+
+                                Me.TrueDBGridComponentes.Columns(2).Text = 1
+                                Cantidad = 1
+                                Me.TrueDBGridComponentes.Columns(4).Text = ""
+                                SubTotal = Me.TxtSubTotal.Text
+                                If PrecioDescCordobas <> 0 Then
+                                    PorcientoDescuento = (PrecioDescCordobas / 100)
+                                End If
+                                Precio = SubTotal * PorcientoDescuento
+                                Me.TrueDBGridComponentes.Columns(3).Text = Format(Precio, "##,##0.0000")
+
+                        End Select
+
+
+
+                        Select Case TipoProducto
+                            Case "Servicio"
+                                SubTotal = Cantidad * Precio
+                                Neto = SubTotal
+                                Me.TrueDBGridComponentes.Columns(5).Text = Format(Cantidad * Precio, "##,##0.0000")
+                                Me.TrueDBGridComponentes.Columns(6).Text = Format(Neto, "##,##0.0000")
+                            Case "Descuento"
+                                Neto = Math.Abs(Cantidad * Precio) * -1
+                                Me.TrueDBGridComponentes.Columns(5).Text = Format(Cantidad * Precio, "##,##0.0000")
+                                Me.TrueDBGridComponentes.Columns(6).Text = Format(Neto, "##,##0.0000")
+
+
+                        End Select
+
+
+
                     End If
-
-
-                    Me.TrueDBGridComponentes.Columns(3).Caption = "Precio Unit"
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
-                    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = False
-
-
-
-                    '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    '////////////////////////////////BUSCO EL CODIGO PARA EL PRODUCTO///////////////////////////////////////////
-                    '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    CodigoProducto = My.Forms.FrmConsultas.Codigo
-                    SQlString = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodigoProducto & "')"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-                    DataAdapter.Fill(DataSet, "TipoProductos")
-                    If DataSet.Tables("TipoProductos").Rows.Count <> 0 Then
-                        TipoProducto = DataSet.Tables("TipoProductos").Rows(0)("Tipo_Producto")
-                        TipoDescuento = DataSet.Tables("TipoProductos").Rows(0)("Unidad_Medida")
-                        PrecioDescCordobas = DataSet.Tables("TipoProductos").Rows(0)("Precio_Venta")
-                        PrecioDescDolar = DataSet.Tables("TipoProductos").Rows(0)("Precio_Lista")
-                    End If
-
-                    '///////////////////////////////////////DEFINO EL TIPO DE SERVICIO O DESCUENTO ////////////////////////////////////////////
-                    Select Case TipoDescuento
-                        Case "ImporteFijo"
-                            Me.TrueDBGridComponentes.Columns(2).Text = 1
-                            Cantidad = 1
-                            Me.TrueDBGridComponentes.Columns(4).Text = ""
-                            If Me.TxtMonedaFactura.Text = "Cordobas" Then
-                                Me.TrueDBGridComponentes.Columns(3).Text = Format(PrecioDescCordobas, "##,##0.0000")
-                                Precio = PrecioDescCordobas
-                            Else
-                                Me.TrueDBGridComponentes.Columns(3).Text = Format(PrecioDescDolar, "##,##0.0000")
-                                Precio = PrecioDescDolar
-                            End If
-
-                        Case "SubTotal"
-
-                            Me.TrueDBGridComponentes.Columns(2).Text = 1
-                            Cantidad = 1
-                            Me.TrueDBGridComponentes.Columns(4).Text = ""
-                            SubTotal = Me.TxtSubTotal.Text
-                            If PrecioDescCordobas <> 0 Then
-                                PorcientoDescuento = (PrecioDescCordobas / 100)
-                            End If
-                            Precio = SubTotal * PorcientoDescuento
-                            Me.TrueDBGridComponentes.Columns(3).Text = Format(Precio, "##,##0.0000")
-
-                    End Select
-
-
-
-                    Select Case TipoProducto
-                        Case "Servicio"
-                            SubTotal = Cantidad * Precio
-                            Neto = SubTotal
-                            Me.TrueDBGridComponentes.Columns(5).Text = Format(Cantidad * Precio, "##,##0.0000")
-                            Me.TrueDBGridComponentes.Columns(6).Text = Format(Neto, "##,##0.0000")
-                        Case "Descuento"
-                            Neto = Math.Abs(Cantidad * Precio) * -1
-                            Me.TrueDBGridComponentes.Columns(5).Text = Format(Cantidad * Precio, "##,##0.0000")
-                            Me.TrueDBGridComponentes.Columns(6).Text = Format(Neto, "##,##0.0000")
-
-
-                    End Select
-
-
-
                 End If
-            End If
 
-        ElseIf e.ColIndex = 8 Then
+            ElseIf e.ColIndex = 8 Then
 
-            Dim Posicion As Double
+                Dim Posicion As Double
             If Me.BindingDetalle.Count <> 0 Then
                 My.Forms.FrmLotes.TipoDocumento = Me.CboTipoProducto.Text
                 Posicion = Me.BindingDetalle.Position
@@ -2204,8 +2274,6 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
     Private Sub TxtCodigoProveedor_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtCodigoProveedor.TextChanged
         Try
 
-
-
             Dim SqlProveedor As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
             SqlProveedor = "SELECT  * FROM Proveedor  WHERE (Cod_Proveedor = '" & Me.TxtCodigoProveedor.Text & "')"
             DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
@@ -2222,6 +2290,9 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
                     Me.TxtTelefono.Text = DataSet.Tables("Proveedor").Rows(0)("Telefono")
                 End If
                 Me.TrueDBGridComponentes.Enabled = True
+
+                TieneContrato = TieneContratoProveedor(Me.TxtCodigoProveedor.Text)
+
             Else
 
                 Me.TxtNombres.Text = ""
@@ -2332,10 +2403,13 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////CARGO LAS FORMA DE PAGO////////////////////////////////////////////////////////////////////
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        dsMetodo.Reset()
         SqlString = "SELECT  NombrePago, Monto,NumeroTarjeta,FechaVence FROM Detalle_MetodoCompras WHERE (Numero_Compra = '-1')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "MetodoPago")
         Me.BindingMetodo.DataSource = DataSet.Tables("MetodoPago")
+        dsMetodo = New DataSet
+        dsMetodo = DataSet.Copy
         Me.TrueDBGridMetodo.DataSource = Me.BindingMetodo
         Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(1).Width = 110
         Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(1).Width = 70
@@ -3173,7 +3247,8 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
 
 
                     If FacturaTarea = True Then
-                        ds.Tables("DetalleCompra").Reset()
+                        ds.Reset()
+                        'ds.Tables("DetalleCompra").Reset()
                         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
                         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3216,7 +3291,8 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
                         Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Compra").Visible = False
 
                     ElseIf CboTipoProducto.Text = "Cuenta" Then
-                        ds.Tables("DetalleCompra").Reset()
+                        ds.Reset()
+                        'ds.Tables("DetalleCompra").Reset()
                         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
                         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3267,7 +3343,8 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
 
 
                     Else
-                        ds.Tables("DetalleCompra").Reset()
+                        ds.Reset()
+                        'ds.Tables("DetalleCompra").Reset()
                         '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
                         SqlCompras = "SELECT Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario,Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra, Detalle_Compras.Numero_Lote,Detalle_Compras.Fecha_Vence FROM  Detalle_Compras " &
                                      "WHERE (Detalle_Compras.Numero_Compra = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Compras.Tipo_Compra = '" & TipoCompra & "') ORDER BY Detalle_Compras.id_Detalle_Compra"
@@ -3313,11 +3390,14 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
 
                     End If
 
+                    dsMetodo.Reset()
                     '//////////////////////////////////////BUSCO LOS METODOS DE PAGOS///////////////////////////////////////////////////////////////////////////////////
                     SqlCompras = "SELECT  NombrePago, Monto, NumeroTarjeta, FechaVence  FROM Detalle_MetodoCompras " &
                                  "WHERE (Detalle_MetodoCompras.Numero_Compra = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_MetodoCompras.Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_MetodoCompras.Tipo_Compra = '" & TipoCompra & "') "
                     DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
                     DataAdapter.Fill(DataSet, "MetodoPago")
+                    dsMetodo = New DataSet
+                    dsMetodo = DataSet.Copy
                     Me.BindingMetodo.DataSource = DataSet.Tables("MetodoPago")
                     Me.TrueDBGridMetodo.DataSource = Me.BindingMetodo
                     Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(1).Width = 110
@@ -3536,6 +3616,8 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
 
         If PermiteEditar(Acceso, Me.CboTipoProducto.Text) = True Then
 
+            AgregarCompras()
+
             '26/08/2025
             ''////////////////////////////////////////////////////////////////////////////////////////////////////
             ''/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
@@ -3590,7 +3672,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
 
 
 
-            AgregarCompras()
+
 
             '26/08/2025
             '    '////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3840,7 +3922,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         Dim TipoCompra As String = "Mercancia Recibida", Numero As String, Fecha As String
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, CodigoProyecto As String
         Dim Fecha_Vence As Date, Fecha_Hora As Date, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim SqlString As String, Cuenta() As String
+        Dim SqlString As String, Cuenta() As String, CodigoProveedor As String
 
         Me.CmdFacturar.Enabled = True
 
@@ -3852,8 +3934,11 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         Fecha_Vence = Format(Now, "dd/MM/yyyy")
         Fecha_Hora = Now
 
-        My.Forms.FrmFecha.ShowDialog()
-        Fecha_Compra = Format(My.Forms.FrmFecha.DTPFechaRequerido.Value, "dd/MM/yyyy")
+        'My.Forms.FrmFecha.ShowDialog()
+        My.Forms.FrmFechaxProveedor.TxtCodigoProveedor.Text = Me.TxtCodigoProveedor.Text
+        My.Forms.FrmFechaxProveedor.ShowDialog()
+        Fecha_Compra = Format(My.Forms.FrmFechaxProveedor.DTPFechaRequerido.Value, "dd/MM/yyyy")
+        CodigoProveedor = My.Forms.FrmFechaxProveedor.Codigo_Proveedor
         Me.DTPFecha.Value = Fecha_Compra
 
         If Quien = "Cancelar" Then
@@ -3893,9 +3978,9 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
 
         If Me.ChkSolcitudxCta.Checked = False Then
-            GrabaEncabezadoCompras(NumeroCompra, Fecha_Compra, "Mercancia Recibida", Me.TxtCodigoProveedor.Text, Me.CboCodigoBodega.Text, Me.TxtNombres.Text, Me.TxtApellidos.Text, Fecha_Compra, Val(Me.TxtSubTotal.Text), Val(Me.TxtIva.Text), Val(Me.TxtPagado.Text), Val(Me.TxtNetoPagar.Text), Me.TxtMonedaFactura.Text, "Procesado por la Orden de Compra " & Me.TxtNumeroEnsamble.Text, CodigoProyecto, Me.ChkSolcitudxCta.Checked)
+            GrabaEncabezadoCompras(NumeroCompra, Fecha_Compra, "Mercancia Recibida", CodigoProveedor, Me.CboCodigoBodega.Text, Me.TxtNombres.Text, Me.TxtApellidos.Text, Fecha_Compra, Val(Me.TxtSubTotal.Text), Val(Me.TxtIva.Text), Val(Me.TxtPagado.Text), Val(Me.TxtNetoPagar.Text), Me.TxtMonedaFactura.Text, "Procesado por la Orden de Compra " & Me.TxtNumeroEnsamble.Text, CodigoProyecto, Me.ChkSolcitudxCta.Checked)
         Else
-            GrabaEncabezadoCompras(NumeroCompra, Fecha_Compra, "Cuenta", Me.TxtCodigoProveedor.Text, Me.CboCodigoBodega.Text, Me.TxtNombres.Text, Me.TxtApellidos.Text, Fecha_Compra, Val(Me.TxtSubTotal.Text), Val(Me.TxtIva.Text), Val(Me.TxtPagado.Text), Val(Me.TxtNetoPagar.Text), Me.TxtMonedaFactura.Text, "Procesado por la Orden de Compra " & Me.TxtNumeroEnsamble.Text, CodigoProyecto, Me.ChkSolcitudxCta.Checked)
+            GrabaEncabezadoCompras(NumeroCompra, Fecha_Compra, "Cuenta", CodigoProveedor, Me.CboCodigoBodega.Text, Me.TxtNombres.Text, Me.TxtApellidos.Text, Fecha_Compra, Val(Me.TxtSubTotal.Text), Val(Me.TxtIva.Text), Val(Me.TxtPagado.Text), Val(Me.TxtNetoPagar.Text), Me.TxtMonedaFactura.Text, "Procesado por la Orden de Compra " & Me.TxtNumeroEnsamble.Text, CodigoProyecto, Me.ChkSolcitudxCta.Checked)
         End If
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL DETALLE DE LA COMPRA /////////////////////////////////////////////

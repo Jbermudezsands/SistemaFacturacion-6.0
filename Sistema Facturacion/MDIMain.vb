@@ -1354,7 +1354,7 @@ Handles backgroundWorkerLote.RunWorkerCompleted
                 Case "Liquidacion" : Me.RibbonLiquidacion.Enabled = False : Me.RibbonLiquidacion1.Enabled = False
                 Case "Arqueo de Caja" : Me.RibbonArqueo.Enabled = False
                 Case "Vendedores" : Me.RibbonVendedores.Enabled = False
-                Case "Proveedores" : Me.RibbonProveedores.Enabled = False
+                Case "Proveedores" : Me.RibbonProveedores.Enabled = False : Me.RibbonProveedores1.Enabled = False
                 Case "Productos" : Me.RibbonProductos.Enabled = False : Me.RibbonProductos1.Enabled = False
                 Case "Linea Produtos" : Me.RibbonLineaProductos.Enabled = False
                 Case "Ensamble" : Me.RibbonEnsamble.Enabled = False
@@ -2144,6 +2144,19 @@ Handles backgroundWorkerLote.RunWorkerCompleted
     Private Sub RibbonContratosProveedores_Click(sender As Object, e As EventArgs) Handles RibbonContratosProveedores.Click
         FrmContratosProveedoresLista.MdiParent = Me
         FrmContratosProveedoresLista.Show()
+    End Sub
+
+    Private Sub RibbonProveedores1_Click(sender As Object, e As EventArgs) Handles RibbonProveedores1.Click
+        My.Forms.FrmProveedores.MdiParent = Me
+        My.Forms.FrmProveedores.Show()
+    End Sub
+
+    Private Sub txtSPlano3_TextChanged(sender As Object, e As EventArgs) Handles txtSPlano3.TextChanged
+        Me.RibbonLabelSPlano3.Text = Me.txtSPlano3.Text
+    End Sub
+
+    Private Sub txtSPlano4_TextChanged(sender As Object, e As EventArgs) Handles txtSPlano4.TextChanged
+        Me.RibbonLabelSPlano4.Text = Me.txtSPlano4.Text
     End Sub
 
     Private Sub RibbonButton21_Click(sender As Object, e As EventArgs) Handles RibbonButton21.Click

@@ -92,6 +92,9 @@ Public Class FrmPlanilla
         Dim SqlString As String, Fecha As Date
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
+        Me.MinimumSize = Size
+        Me.MaximumSize = Size
+
         'SqlString = "SELECT TipoNomina.CodTipoNomina, TipoNomina.TipoNomina, Periodos.Actual, Periodos.Periodo, Periodos.Inicio, Periodos.Final FROM  TipoNomina INNER JOIN Periodos ON TipoNomina.TipoNomina = Periodos.TipoNomina  WHERE(Periodos.Actual = 1)"
         SqlString = "SELECT TipoNomina.CodTipoNomina, TipoNomina.TipoNomina, Periodos.Actual, Periodos.Periodo, Periodos.Inicio, Periodos.Final FROM TipoNomina INNER JOIN Periodos ON TipoNomina.CodTipoNomina = Periodos.TipoNomina  WHERE(Periodos.Actual = 1) ORDER BY CodTipoNomina"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
@@ -1805,6 +1808,14 @@ Public Class FrmPlanilla
 
     Private Sub Label13_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label13.Click
 
+    End Sub
+
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        Me.GroupBoxImportar.Location = New Point(5, 63)
+    End Sub
+
+    Private Sub BtnCancelar_Click(sender As Object, e As EventArgs) Handles BtnCancelar.Click
+        Me.GroupBoxImportar.Location = New Point(1100, 63)
     End Sub
 
     Private Sub TxtNumNomina_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtNumNomina.TextChanged
