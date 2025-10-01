@@ -112,12 +112,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="PictureBox2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         /9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcGBwcI
@@ -335,217 +335,216 @@
   <data name="CboCodigoVendedor.Images" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAA0SURBVChTdYkBCgAgDAL9/6eLIsd0eSCKhw/r9aCLtC88
-        vAdHMEIXKUIUhMK76EfagglgA6CqHOQpL6GyAAAAAElFTkSuQmCC
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAxSURBVChTY2DABP/RBWAAWQIXG0UAncYAIAkYximBC+PU
+        gBXAJNBpOEAWwMVGARgSAKCqHOTbtTq+AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="CboCodigoVendedor.PropBag" xml:space="preserve">
-    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style3{}Style4{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Style10{}EvenRow{BackColor:Aqua;}Style11{}Group{BackColor:ControlDark;Border:None,,0, 0, 0, 0;AlignVert:Center;}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{AlignHorz:Near;}Style2{}Normal{}Style7{}Heading{Wrap:True;AlignVert:Center;Border:Raised,,1, 1, 1, 1;ForeColor:ControlText;BackColor:Control;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
+    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Style3{}RecordSelector{AlignImage:Center;}Normal{}EvenRow{BackColor:Aqua;}Style10{}Style7{}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}Style9{AlignHorz:Near;}Style4{}Footer{}Style2{}Style5{}Style11{}Style1{}OddRow{}Heading{ForeColor:ControlText;Wrap:True;AlignVert:Center;BackColor:Control;Border:Raised,,1, 1, 1, 1;}Style6{}Style8{}Group{Border:None,,0, 0, 0, 0;AlignVert:Center;BackColor:ControlDark;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
   </data>
   <data name="CboMunicipio.Images" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAA0SURBVChTdYkBCgAgDAL9/6eLIsd0eSCKhw/r9aCLtC88
-        vAdHMEIXKUIUhMK76EfagglgA6CqHOQpL6GyAAAAAElFTkSuQmCC
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAxSURBVChTY2DABP/RBWAAWQIXG0UAncYAIAkYximBC+PU
+        gBXAJNBpOEAWwMVGARgSAKCqHOTbtTq+AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="CboMunicipio.PropBag" xml:space="preserve">
-    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style3{}Style4{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Style10{}EvenRow{BackColor:Aqua;}Style11{}Group{BackColor:ControlDark;Border:None,,0, 0, 0, 0;AlignVert:Center;}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{AlignHorz:Near;}Style2{}Normal{}Style7{}Heading{Wrap:True;AlignVert:Center;Border:Raised,,1, 1, 1, 1;ForeColor:ControlText;BackColor:Control;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
+    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Style3{}RecordSelector{AlignImage:Center;}Normal{}EvenRow{BackColor:Aqua;}Style10{}Style7{}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}Style9{AlignHorz:Near;}Style4{}Footer{}Style2{}Style5{}Style11{}Style1{}OddRow{}Heading{ForeColor:ControlText;Wrap:True;AlignVert:Center;BackColor:Control;Border:Raised,,1, 1, 1, 1;}Style6{}Style8{}Group{Border:None,,0, 0, 0, 0;AlignVert:Center;BackColor:ControlDark;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
   </data>
   <data name="CboDepartamento.Images" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAA0SURBVChTdYkBCgAgDAL9/6eLIsd0eSCKhw/r9aCLtC88
-        vAdHMEIXKUIUhMK76EfagglgA6CqHOQpL6GyAAAAAElFTkSuQmCC
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAxSURBVChTY2DABP/RBWAAWQIXG0UAncYAIAkYximBC+PU
+        gBXAJNBpOEAWwMVGARgSAKCqHOTbtTq+AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="CboDepartamento.PropBag" xml:space="preserve">
-    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style3{}Style4{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Style10{}EvenRow{BackColor:Aqua;}Style11{}Group{AlignVert:Center;Border:None,,0, 0, 0, 0;BackColor:ControlDark;}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{AlignHorz:Near;}Style2{}Normal{}Style7{}Heading{Wrap:True;BackColor:Control;Border:Raised,,1, 1, 1, 1;ForeColor:ControlText;AlignVert:Center;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
+    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Style3{}RecordSelector{AlignImage:Center;}Normal{}EvenRow{BackColor:Aqua;}Style10{}Style7{}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}Style9{AlignHorz:Near;}Style4{}Footer{}Style2{}Style5{}Style11{}Style1{}OddRow{}Heading{AlignVert:Center;Wrap:True;ForeColor:ControlText;BackColor:Control;Border:Raised,,1, 1, 1, 1;}Style6{}Style8{}Group{Border:None,,0, 0, 0, 0;AlignVert:Center;BackColor:ControlDark;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
   </data>
   <data name="CboEndoso.Images" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAA0SURBVChTdYkBCgAgDAL9/6eLIsd0eSCKhw/r9aCLtC88
-        vAdHMEIXKUIUhMK76EfagglgA6CqHOQpL6GyAAAAAElFTkSuQmCC
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAxSURBVChTY2DABP/RBWAAWQIXG0UAncYAIAkYximBC+PU
+        gBXAJNBpOEAWwMVGARgSAKCqHOTbtTq+AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="CboEndoso.PropBag" xml:space="preserve">
-    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style3{}Style4{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Style10{}EvenRow{BackColor:Aqua;}Style11{}Group{BackColor:ControlDark;Border:None,,0, 0, 0, 0;AlignVert:Center;}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{AlignHorz:Near;}Style2{}Normal{}Style7{}Heading{Wrap:True;AlignVert:Center;Border:Raised,,1, 1, 1, 1;ForeColor:ControlText;BackColor:Control;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
+    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Style3{}RecordSelector{AlignImage:Center;}Normal{}EvenRow{BackColor:Aqua;}Style10{}Style7{}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}Style9{AlignHorz:Near;}Style4{}Footer{}Style2{}Style5{}Style11{}Style1{}OddRow{}Heading{ForeColor:ControlText;Wrap:True;AlignVert:Center;BackColor:Control;Border:Raised,,1, 1, 1, 1;}Style6{}Style8{}Group{Border:None,,0, 0, 0, 0;AlignVert:Center;BackColor:ControlDark;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
   </data>
   <data name="CboCodigoCliente.Images" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAA0SURBVChTdYkBCgAgDAL9/6eLIsd0eSCKhw/r9aCLtC88
-        vAdHMEIXKUIUhMK76EfagglgA6CqHOQpL6GyAAAAAElFTkSuQmCC
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAxSURBVChTY2DABP/RBWAAWQIXG0UAncYAIAkYximBC+PU
+        gBXAJNBpOEAWwMVGARgSAKCqHOTbtTq+AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="CboCodigoCliente.PropBag" xml:space="preserve">
-    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style3{}Style4{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Style10{}EvenRow{BackColor:Aqua;}Style11{}Group{AlignVert:Center;Border:None,,0, 0, 0, 0;BackColor:ControlDark;}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{AlignHorz:Near;}Style2{}Normal{}Style7{}Heading{Wrap:True;BackColor:Control;Border:Raised,,1, 1, 1, 1;ForeColor:ControlText;AlignVert:Center;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
+    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Style3{}RecordSelector{AlignImage:Center;}Normal{}EvenRow{BackColor:Aqua;}Style10{}Style7{}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}Style9{AlignHorz:Near;}Style4{}Footer{}Style2{}Style5{}Style11{}Style1{}OddRow{}Heading{AlignVert:Center;Wrap:True;ForeColor:ControlText;BackColor:Control;Border:Raised,,1, 1, 1, 1;}Style6{}Style8{}Group{Border:None,,0, 0, 0, 0;AlignVert:Center;BackColor:ControlDark;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
   </data>
   <data name="Button1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         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
-        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
-        SUVORK5CYII=
+        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
+        TkSuQmCC
 </value>
   </data>
   <data name="Button6.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         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
-        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
-        SUVORK5CYII=
+        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
+        TkSuQmCC
 </value>
   </data>
   <data name="Button2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAABZRJREFUSEud
-        lf1TVXUex88fsdu0M9U0zexu2+PaTq22qaWWsetqpdI0yDilpYYWRmpiBKisGWtooS4gCiioQFAieEUE
-        0kgQwQv3cp+A6wXuAw+Xy+XhPgOv/X4P/dDO3Jktzsxrzpnz/b5fn+98Zs7nKMsuOlj1nYsN10bYUDtC
-        nLhvu+ZSSWgYJqH+/yD2yL3xlTbWaoZZesFpVH5+xZQ7uTMaodMzTeNQhOsjMNLbDURgJhSd2bBY/9/L
-        be2maRTeq3ez5NyA4ye9orxV5aTDE+GI2U+a3senXSG0za1MTk3hHR+Pij8YoCA3n+LTBRTmnkKv60LX
-        2s6nhhBHLEFiawZZXNg3V2RdpZ36wRApuikOiAIp+iBtTc2Meb24R0ejEgr4+Pu2A+zU9PB+lYXCvNPo
-        b99Rswe7fGSaA6y97OJveVaj8kZZP3WuCCkdU6R3+tinC9FSf4MRt5vBoaGo+CbGiE0v4l+ik+kWKDiR
-        g7apRc1Kx35BpjnI8iIbyusXbdTaw+xtmySlfYo92hA/XK3D6RpkwO6Iitc9wrrPzpDWFSFZP8Op7BO0
-        Nt5Us9Ih2a/zs6LwHsrqEisaR4iPW8dFkQmS2gM0XNbQP2Dnnq0vKiNDLt5IO0uqGZINkJd1jKbrjWpW
-        OiSfiY4sO9ODsqqgm2p7kMTmcXa1jPPhnQC1FVVY79no7umNisvpYPGad3lzfwmvpxZzPOtrGqo1alY6
-        JMntkyzNs6DE5Jup6guw/UcvO295Sbgd4PLFckzmbroMpqiYxdrVK7XUaWq5VnMVrbaD6m8q1ax0SHbf
-        meCFkyaUlbkGKm0BttwcY3uTly3NfkpPF2E2CZlOHx19F0aDEZPRiFFgMZsoExmZlQ5JYsskz3+tR1lx
-        Qk95r59N9R5RZILNzWGSDhfzRZGGzwtqfhFyr8zIrHRsbRSH/WGcv2Z1oizL7qS0x8eGBi/bvtKQsPcY
-        W/ad5N1ficzIrHRs+t7L1htenv3iLsqLR7UUWyZ5rdZDdUnJTx/+7DxBdcTWjfF2g4e/fN6GsvhIGwWm
-        KWKqPdy4UkMoFMbvD4h7SH0Oh8NEIhHBtMr0tGBmhpmZ2Tlm55B75F7pWHPFI4bmKAsybqMsOtxKvnGS
-        FZfcXK+8RDAc4kbjLcouVlFytoIz+efJyykg+1geRzNPkJmRRUb6YdKSD7IvKY3diZ+wY2siX2Z+xfTs
-        jOqIqR4lVkzmp1KaRYGMFv7TNcGSihE0peX4fH4CgeC8kY7l37l5rWaYJ/b9iPLsgVtk67wsLBvi8vkL
-        Ylp6VSZ9U/jEUPMHRcFQgGAoSDASIhwRbZuJiNNOi9aIVoneS+T6+MSE6lhSMcw/qgb5056bokBqE0d1
-        4zxz3kVl0Tk8YoqWXrhE5qGTHEzNImVXBkkfppCw+WM2xW8nfv07rPtnHKteWcvKpat4aeHLPPf0IuJj
-        31EPJR2LSod4pcLJH5MaURYk3+TfHV4eP+ukNP8MQ8NuLJYejCaz+JgsGIwmDF0m9HojOr0BXaeBjk49
-        HR16tB067mo7aW/Tinc6ht2jqmNBiYslZQ7+kFiP8uc9DWTcHeP3px0U5+RgF3PGOeiaN9LxeKGLheft
-        PLK9DuXJ3ddJa/PwUJ6dwuzjDDjslJyr5MvDuRxKP0bqnkPs2pnKji27eW/jDja+uZnYNfGsfnU9MctW
-        s/z5lSx65gXi1m9U/xXSIQ+7oKifhxNqUR79qI69LW7uyxkgP+soPb1WTJZuMTWt9Fit9Frv0Ssmq9Vm
-        mxvXff3Y+vvp6x+gT4z0/gGHilWs9VptquPBU3YeLbDxwNYalAfermRHs4ff5Do4fjAVu60Hq9kwL2RW
-        On6X7+SRXCv3x5XPFbjvrTIV+fzkB5d4LOHbeSGz0iHFvxW+++PK+S9uLxNxS6+U0gAAAABJRU5ErkJg
-        gg==
+        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
 </value>
   </data>
   <data name="Button8.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         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
-        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
+        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
+        rkJggg==
 </value>
   </data>
   <data name="Button3.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        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
-        gg==
+        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
 </value>
   </data>
 </root>

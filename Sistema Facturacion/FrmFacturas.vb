@@ -750,11 +750,11 @@ Handles backgroundWorkerLote.RunWorkerCompleted
             ExistenciaLote = Argumentos.Existencia
 
 
-            TablaLotexProducto.Cod_Productos_LoteProducto = Argumentos.CodigoProducto
-            TablaLotexProducto.Numero_Lote_Producto = Argumentos.NumeroLote
-            TablaLotexProducto.Cod_Bodega_LoteProducto = Argumentos.CodigoBodega
-            TablaLotexProducto.Existencia_LoteProducto = Argumentos.Existencia
-            TablaLotexProducto.Fecha_Vence_LoteProducto = Argumentos.FechaVence
+            TablaLotexProducto.Cod_Productos = Argumentos.CodigoProducto
+            TablaLotexProducto.Numero_Lote = Argumentos.NumeroLote
+            TablaLotexProducto.Cod_Bodega = Argumentos.CodigoBodega
+            TablaLotexProducto.Existencia = Argumentos.Existencia
+            TablaLotexProducto.Fecha_Vence = Argumentos.FechaVence
 
 
 
@@ -764,7 +764,7 @@ Handles backgroundWorkerLote.RunWorkerCompleted
 
 
             If ExistenciaLote <= 0 Then
-                TablaLotexProducto.Activo_LoteProducto = False
+                TablaLotexProducto.Activo = False
                 UpdateLotexProducto(TablaLotexProducto)
 
             ElseIf ExistenciaLote > 0 Then
@@ -778,7 +778,7 @@ Handles backgroundWorkerLote.RunWorkerCompleted
                 End If
 
                 '/////////////////COMO ESTA ORGANIZADO DE MAYOR A MENOR CANCELO EL PROCESO EN CUANTO ENCUNTRO EL PRIMERO
-                TablaLotexProducto.Activo_LoteProducto = True
+                TablaLotexProducto.Activo = True
                 UpdateLotexProducto(TablaLotexProducto)
 
 
@@ -812,13 +812,13 @@ Handles backgroundWorkerLote.RunWorkerCompleted
             Exit Function
         Else
 
-            If Args.NumeroLote = "F-25162" Then
-                Args.NumeroLote = "F-25162"
+            If Args.NumeroLote = "F-23423" Then
+                Args.NumeroLote = "F-23423"
             End If
 
             '//////////////////////////////////BUSCO EL TOTAL DE LAS COMPRAS////////////////////////////////////////////////////////////////////
             SqlConsulta = "SELECT SUM(Detalle_Compras.Cantidad) AS Cantidad, SUM(Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto) AS Importe  FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  " &
-                      "WHERE (Detalle_Compras.Cod_Producto = '" & Args.CodigoProducto & "') AND (Compras.Cod_Bodega = '" & Args.CodigoBodega & "') AND (Detalle_Compras.Numero_Lote = '" & Args.NumeroLote & "')  GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Mercancia Recibida') "
+                      "WHERE (Detalle_Compras.Cod_Producto = '" & Args.CodigoProducto & "') AND (Compras.Cod_Bodega = '" & Args.CodigoBodega & "') AND (Detalle_Compras.Numero_Lote = '" & Args.NumeroLote & "')  GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = 'Mercancia Recibida') "
 
             DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
             DataAdapter.Fill(DataSet, "Compras")
@@ -1059,8 +1059,8 @@ Handles backgroundWorkerLote.RunWorkerCompleted
         Dim SQlString As String, iPosicion As Double = 0
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim Registro As Double = 0, FechaActual As Date = Format(Now, "dd/MM/yyyy")
-        Dim ExistenciaLote As Double, FechaVence As Date, NumeroLote As String
-        Dim ComandoUpdate As New SqlClient.SqlCommand, StrSqlUpdate As String, iResulteado As Integer
+        Dim NumeroLote As String
+        Dim ComandoUpdate As New SqlClient.SqlCommand
 
 
         SQlString = "SELECT  MAX(Detalle_Compras.Cod_Producto) AS Cod_Producto, Detalle_Compras.Numero_Lote, Lote.FechaVence as Fecha_Vence FROM Detalle_Compras INNER JOIN Lote ON Detalle_Compras.Numero_Lote = Lote.Numero_Lote WHERE  (Lote.Activo = 1) AND (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Lote.FechaVence >= CONVERT(DATETIME, '" & Format(FechaFiltro, "yyyy-MM-dd") & "', 102)) GROUP BY Detalle_Compras.Numero_Lote, Lote.FechaVence HAVING (NOT (Detalle_Compras.Numero_Lote IS NULL)) ORDER BY Lote.FechaVence"

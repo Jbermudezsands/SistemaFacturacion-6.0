@@ -393,16 +393,16 @@ Handles backgroundWorkerLote.RunWorkerCompleted
         args = BuscaExistenciaBodegaLote(CodigoProducto, CodigoBodega, NumeroLote, FechaVence)
         UpdateDetalleLoteHilos(args)
 
-        LotexProducto.Cod_Productos_LoteProducto = CodigoProducto
-        LotexProducto.Numero_Lote_Producto = NumeroLote
-        LotexProducto.Fecha_Vence_LoteProducto = FechaVence
-        LotexProducto.Cod_Bodega_LoteProducto = CodigoBodega
-        LotexProducto.Existencia_LoteProducto = args.Existencia_Lote
+        LotexProducto.Cod_Productos = CodigoProducto
+        LotexProducto.Numero_Lote = NumeroLote
+        LotexProducto.Fecha_Vence = FechaVence
+        LotexProducto.Cod_Bodega = CodigoBodega
+        LotexProducto.Existencia = args.Existencia_Lote
 
         If args.Existencia_Lote <> 0 Then
-            LotexProducto.Activo_LoteProducto = 1
+            LotexProducto.Activo = 1
         Else
-            LotexProducto.Activo_LoteProducto = 0
+            LotexProducto.Activo = 0
         End If
 
         UpdateLotexProducto(LotexProducto)

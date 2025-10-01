@@ -14,6 +14,7 @@ Public Class FrmCompras
     Public Fecha_Compra As Date, FechaHoraCompra As Date, NumeroCompra As String, TipoCompra As String, Impresora_Defecto As String
     Public WithEvents backgroundWorkerInsertar As System.ComponentModel.BackgroundWorker
     Public WithEvents backgroundWorkerGrabar As System.ComponentModel.BackgroundWorker
+    Public WithEvents backgroundWorkerMetodoCompra As System.ComponentModel.BackgroundWorker
     Public WithEvents backgroundWorkerAgregarEncabezado As System.ComponentModel.BackgroundWorker
     Public WithEvents backgroundWorkerExistenciaCosto As System.ComponentModel.BackgroundWorker
     Public WithEvents backgroundWorkerExistenciaLotexProducto As System.ComponentModel.BackgroundWorker
@@ -61,6 +62,216 @@ Public Class FrmCompras
         Me.ProgressBar.Value = 0
         Me.ProgressBar.Visible = False
     End Sub
+
+    '////////////////////////////////////PROCESOS GRABAR COMPRAS CON HILOS //////////////
+    Private Sub backgroundWorkerMetodoCompra_DoWork(
+ByVal sender As Object,
+ByVal e As DoWorkEventArgs) _
+Handles backgroundWorkerMetodoCompra.DoWork
+        Dim worker As BackgroundWorker =
+        CType(sender, BackgroundWorker)
+
+        Dim dsMetodo As New DataSet, dsDetalle As New DataSet, Compras As New TablaCompras
+
+        Compras = e.Argument(0)
+        dsDetalle = e.Argument(1)
+        dsMetodo = e.Argument(2)
+
+
+
+        If worker.CancellationPending Then
+            e.Cancel = True
+            Exit Sub
+        Else
+
+            worker.WorkerReportsProgress = True
+            worker.WorkerSupportsCancellation = True
+            e.Result = ActualizaMETODOcOMPRAWorker(Compras, dsDetalle, dsMetodo, worker, e)
+        End If
+    End Sub
+    Private Sub backgroundWorkerMetodoCompra_RunWorkerCompleted(
+ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs) _
+Handles backgroundWorkerMetodoCompra.RunWorkerCompleted
+
+
+
+        If (e.Error IsNot Nothing) Then
+            Bitacora(Now, NombreUsuario, "Compras", "Error " & e.Error.Message)
+        ElseIf e.Cancelled Then
+            Bitacora(Now, NombreUsuario, "Compras", "Hilo Cancelado")
+        Else
+
+            Dim Compras As New TablaCompras
+
+            MDIMain.txtSPlano3.Text = ""
+
+            Compras = e.Result
+
+            Me.TxtSubTotal.Text = Format(Compras.Sub_Total, "##,##0.00")
+            Me.TxtIva.Text = Format(Compras.IVA, "##,##0.00")
+            Me.TxtPagado.Text = Format(Compras.Pagado_Compra, "##,##0.00")
+            Me.TxtNetoPagar.Text = Format(Compras.Neto_Pagar, "##,##0.00")
+
+        End If
+
+    End Sub
+    Private Sub backgroundWorkerMetodoCompra_ProgressChanged(
+ByVal sender As Object, ByVal e As ProgressChangedEventArgs) _
+Handles backgroundWorkerMetodoCompra.ProgressChanged
+
+
+        MDIMain.txtSPlano3.Text = e.UserState.ToString
+
+
+    End Sub
+    Public Function ActualizaMETODOcOMPRAWorker(Compras As TablaCompras, dsDetalle As DataSet, dsMetodoPago As DataSet, worker As BackgroundWorker, e As DoWorkEventArgs) As TablaCompras
+        Dim Metodo As String, iPosicion As Double, Registros As Double, Monto As Double, Importe As Double
+        Dim Subtotal As Double, Iva As Double, Neto As Double, CodProducto As String, SQlString As String
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion), CodIva As String, Tasa As Double, Moneda As String, Fecha As String, SQLTasa As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, TasaCambio As Double, TipoMetodo As String, SQLMetodo As String, TasaIva As Double = 0
+        Dim Resultado As New TablaCompras
+
+        Registros = dsMetodoPago.Tables("MetodoPago").Rows.Count
+        iPosicion = 0
+
+
+        Resultado.Numero_Compra = Compras.Numero_Compra
+        Resultado.Fecha_Compra = Compras.Fecha_Compra
+        Resultado.Moneda_Compra = Compras.Moneda_Compra
+        Resultado.Tipo_Compra = Compras.Tipo_Compra
+        Resultado.Exonerado_Compra = Compras.Exonerado_Compra
+
+        Do While iPosicion < Registros
+            My.Application.DoEvents()
+            Metodo = dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("NombrePago")
+            TasaCambio = 1
+            Fecha = Format(Compras.Fecha_Compra, "yyyy-MM-dd")
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '//////////////////////////////BUSCO LA MONEDA DEL METODO DE PAGO///////////////////////////////////////////////////////
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            Moneda = "Cordobas"
+            TipoMetodo = "Cambio"
+            SQLMetodo = "SELECT * FROM MetodoPago WHERE (NombrePago = '" & Metodo & "')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SQLMetodo, MiConexion)
+            DataAdapter.Fill(DataSet, "Metodo")
+            If DataSet.Tables("Metodo").Rows.Count <> 0 Then
+                Moneda = DataSet.Tables("Metodo").Rows(0)("Moneda")
+                TipoMetodo = DataSet.Tables("Metodo").Rows(0)("TipoPago")
+            End If
+            DataSet.Tables("Metodo").Clear()
+
+
+            Select Case Moneda
+                Case "Cordobas"
+                    If Compras.Moneda_Compra = "Cordobas" Then
+                        TasaCambio = 1
+                    Else
+                        TasaCambio = BuscaTasaCambio(Fecha)
+                    End If
+
+                Case "Dolares"
+
+                    If Compras.Moneda_Compra = "Dolares" Then
+                        TasaCambio = 1
+                    Else
+                        SQLTasa = "SELECT  * FROM TasaCambio WHERE (FechaTasa = CONVERT(DATETIME, '" & Fecha & "', 102))"
+                        DataAdapter = New SqlClient.SqlDataAdapter(SQLTasa, MiConexion)
+                        DataAdapter.Fill(DataSet, "TasaCambio")
+                        If DataSet.Tables("TasaCambio").Rows.Count <> 0 Then
+                            TasaCambio = DataSet.Tables("TasaCambio").Rows(0)("MontoTasa")
+                        Else
+                            'TasaCambio = 0
+                            MsgBox("La Tasa de Cambio no Existe para esta Fecha", MsgBoxStyle.Critical, "Sistema Facturacion")
+                            'FrmFacturas.BindingMetodo.Item(iPosicion)("Monto") = 0
+                        End If
+                        DataSet.Tables("TasaCambio").Clear()
+                    End If
+
+            End Select
+
+            If TipoMetodo = "Cambio" Then
+                TasaCambio = TasaCambio * -1
+            End If
+
+
+            If Not IsDBNull(dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("Monto")) Then
+                Monto = (dsMetodoPago.Tables("MetodoPago").Rows(iPosicion)("Monto") * TasaCambio) + Monto
+                iPosicion = iPosicion + 1
+            Else
+                Monto = 0
+                iPosicion = iPosicion + 1
+            End If
+        Loop
+
+
+        Registros = dsDetalle.Tables("DetalleCompra").Rows.Count
+        iPosicion = 0
+
+        Do While iPosicion < Registros
+            If Not IsDBNull(dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Importe")) Then
+                Subtotal = CDbl(dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Importe")) + Subtotal
+            End If
+
+
+            If Not IsDBNull(dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Importe")) Then
+                Importe = CDbl(dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Importe"))
+            Else
+                Importe = 0
+            End If
+
+            If IsDBNull(dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Cod_Producto")) Then
+                Exit Function
+            End If
+
+            CodProducto = dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Cod_Producto")
+
+            '///////////////PROGRESO DEL HILO GRABAR //////////////////////////
+            worker.ReportProgress(1, "SP" & CodProducto)
+
+            'CodProducto = FrmCompras.TrueDBGridComponentes.Columns(0).Text
+            SQlString = "SELECT Productos.*  FROM Productos WHERE (Cod_Productos = '" & CodProducto & "') "
+            DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+            DataAdapter.Fill(DataSet, "Productos")
+            If Not DataSet.Tables("Productos").Rows.Count = 0 Then
+                CodIva = DataSet.Tables("Productos").Rows(0)("Cod_Iva")
+                SQlString = "SELECT *  FROM Impuestos WHERE  (Cod_Iva = '" & CodIva & "')"
+                DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+                DataAdapter.Fill(DataSet, "IVA")
+                If Not DataSet.Tables("IVA").Rows.Count = 0 Then
+                    Tasa = DataSet.Tables("IVA").Rows(0)("Impuesto")
+                    TasaIva = DataSet.Tables("IVA").Rows(0)("Impuesto")
+                End If
+                DataSet.Tables("IVA").Reset()
+            End If
+            DataSet.Tables("Productos").Reset()
+
+            Iva = Format(Iva + Importe * Tasa, "####0.00000000")
+
+            iPosicion = iPosicion + 1
+
+
+
+
+        Loop
+
+
+        If Compras.Exonerado_Compra = False Then
+            'Iva = Subtotal * Tasa
+        Else
+            Iva = 0
+        End If
+
+        Neto = (Subtotal + Iva) - Monto
+        Resultado.Sub_Total = Format(Subtotal, "##,##0.00")
+        Resultado.IVA = Format(Iva, "##,##0.00")
+        Resultado.Pagado_Compra = Format(Monto, "##,##0.00")
+        Resultado.Neto_Pagar = Format(Neto, "##,##0.00")
+
+        Return Resultado
+
+    End Function
+
+
 
     '//////////////////////////////////PROCESOS INSERTAR REGISTROS CON HILOS ////////////////////////////////
     Private Sub backgroundWorkerInsertar_DoWork(
@@ -359,7 +570,7 @@ Handles backgroundWorkerExistenciaLotexProducto.DoWork
 
             worker.WorkerReportsProgress = True
             worker.WorkerSupportsCancellation = True
-            ActualizaExistenciaLotexProducto(args.Numero_Lote_Producto, args.Cod_Bodega_LoteProducto, args.Cod_Productos_LoteProducto, args.Fecha_Vence_LoteProducto)
+            ActualizaExistenciaLotexProducto(args.Numero_Lote, args.Cod_Bodega, args.Cod_Productos, args.Fecha_Vence)
         End If
     End Sub
     Private Sub backgroundWorkerExistenciaLotexProducto_RunWorkerCompleted(
@@ -482,7 +693,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
                 If dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Fecha_Vence") = "0" Then
                     TablaDetalleCompras.Fecha_Vence = "01/01/1900"
                 Else
-                    TablaDetalleCompras.Fecha_Vence = Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")
+                    TablaDetalleCompras.Fecha_Vence = dsDetalle.Tables("DetalleCompra").Rows(iPosicion)("Fecha_Vence")
                 End If
 
             Else
@@ -738,11 +949,14 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         End If
 
 
-        Dim worker As BackgroundWorker
-        worker = New BackgroundWorker()
-        AddHandler worker.DoWork, AddressOf backgroundWorkerAgregarEncabezado_DoWork
-        AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerAgregarEncabezado_RunWorkerCompleted
-        worker.RunWorkerAsync(Compras)
+        GrabaCompras(Compras)
+
+        'Desactivado 27/09/2025
+        'Dim worker As BackgroundWorker
+        'worker = New BackgroundWorker()
+        'AddHandler worker.DoWork, AddressOf backgroundWorkerAgregarEncabezado_DoWork
+        'AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerAgregarEncabezado_RunWorkerCompleted
+        'worker.RunWorkerAsync(Compras)
 
     End Sub
 
@@ -1201,9 +1415,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
             ds.Tables("DetalleCompra").AcceptChanges()
             da.Update(ds.Tables("DetalleCompra"))
 
-
-
-            Me.TrueDBGridComponentes.Row = iPosicion
+            'Me.TrueDBGridComponentes.Row = iPosicion
 
         Else
             oTabla = ds.Tables("DetalleCompra").GetChanges(DataRowState.Modified)
@@ -1214,8 +1426,14 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
             End If
         End If
 
-        ActualizarGridInsertRow()
-        ActualizaDetalleBodega(Me.CboCodigoBodega.Text, CodigoProducto)
+
+
+
+        'Desactivado 26/09/2025
+        'ActualizarGridInsertRow()
+        'Me.TrueDBGridComponentes.Row = iPosicion
+        'Me.TrueDBGridComponentes.Col = 0
+        'ActualizaDetalleBodega(Me.CboCodigoBodega.Text, CodigoProducto)
 
 
     End Sub
@@ -1224,6 +1442,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
 
         TipoCompra = Me.CboTipoProducto.Text
 
+        My.Application.DoEvents()
 
         If FacturaTarea = True Then
             ds.Tables("DetalleCompra").Reset()
@@ -1508,38 +1727,35 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
 
 
 
-        Registros = Me.BindingDetalle.Count
-        iPosicion = Me.BindingDetalle.Position
+        'Registros = Me.BindingDetalle.Count
+        'iPosicion = Me.BindingDetalle.Position
 
-        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Cod_Producto")) Then
-            CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
-        End If
+        'If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Cod_Producto")) Then
+        '    CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
+        'End If
 
+        'If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")) Then
+        '    PrecioUnitario = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
+        'End If
+        'If Me.TrueDBGridComponentes.Columns(3).Text <> "" Then
+        '    PrecioUnitario = Me.TrueDBGridComponentes.Columns(3).Text
+        'Else
+        '    Me.TrueDBGridComponentes.Columns(3).Text = 0
+        'End If
+        'If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descuento")) Then
+        '    Descuento = Me.BindingDetalle.Item(iPosicion)("Descuento")
+        'End If
+        'If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Precio_Neto")) Then
+        '    PrecioNeto = Me.BindingDetalle.Item(iPosicion)("Precio_Neto")
 
-
-
-        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")) Then
-            PrecioUnitario = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
-        End If
-        If Me.TrueDBGridComponentes.Columns(3).Text <> "" Then
-            PrecioUnitario = Me.TrueDBGridComponentes.Columns(3).Text
-        Else
-            Me.TrueDBGridComponentes.Columns(3).Text = 0
-        End If
-        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descuento")) Then
-            Descuento = Me.BindingDetalle.Item(iPosicion)("Descuento")
-        End If
-        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Precio_Neto")) Then
-            PrecioNeto = Me.BindingDetalle.Item(iPosicion)("Precio_Neto")
-
-        End If
-        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Importe")) Then
-            Importe = Me.BindingDetalle.Item(iPosicion)("Importe")
-        End If
-        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Cantidad")) Then
-            Cantidad = Me.BindingDetalle.Item(iPosicion)("Cantidad")
-            Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
-        End If
+        'End If
+        'If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Importe")) Then
+        '    Importe = Me.BindingDetalle.Item(iPosicion)("Importe")
+        'End If
+        'If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Cantidad")) Then
+        '    Cantidad = Me.BindingDetalle.Item(iPosicion)("Cantidad")
+        '    Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
+        'End If
 
 
         'Select Case e.ColIndex
@@ -1610,48 +1826,79 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
 
         InsertarRowGrid()
 
-        Registros = Me.BindingDetalle.Count
-        iPosicion = Me.BindingDetalle.Position
+        Registros = Me.TrueDBGridComponentes.RowCount
+        iPosicion = Me.TrueDBGridComponentes.Row
         CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
 
-        'ActualizaDetalleBodega(Me.CboCodigoBodega.Text, CodigoProducto)
+        '///////////////////////////EXISTENCIA COSTO LA PROCESO EN SEGUNDO PLANO ///////////
+        '//////////////////////////PROCESO MUY LARGO ///////////////////////
+        Dim worker As BackgroundWorker, workerActualizaMetodo As BackgroundWorker, Detalle As New TablaDetalleCompras
+        Dim Compras As New TablaCompras, dsDetalle As New DataSet
+
+        worker = New BackgroundWorker()
+        workerActualizaMetodo = New BackgroundWorker()
 
         If FacturaTarea = True Then
-            NumeroLote = Me.BindingDetalle.Item(iPosicion)("Numero_Lote")
-            FechaVence = Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")
-
-            '///////////////////////////EXISTENCIA COSTO LA PROCESO EN SEGUNDO PLANO ///////////
-            '//////////////////////////PROCESO MUY LARGO ///////////////////////
-            Dim worker As BackgroundWorker, WorkerLote As BackgroundWorker, Detalle As TablaDetalleCompras = New TablaDetalleCompras
             Dim Lote As TablaLotexProducto = New TablaLotexProducto
-            worker = New BackgroundWorker()
+            Dim WorkerLote As BackgroundWorker
+            If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Numero_Lote")) Then
+                NumeroLote = Me.BindingDetalle.Item(iPosicion)("Numero_Lote")
+            Else
+                NumeroLote = "SIN LOTE"
+            End If
+            If IsDate(Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")) Then
+                FechaVence = Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")
+            Else
+                FechaVence = "01-01-1900"
+            End If
+
             WorkerLote = New BackgroundWorker()
 
-            Detalle.Cod_Producto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
-            Detalle.Cantidad = Me.BindingDetalle.Item(iPosicion)("Cantidad")
-            Detalle.Precio_Unitario = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
-            Detalle.Tipo_Compra = Me.CboTipoProducto.Text
-            Detalle.Cod_Bodega = Me.CboCodigoBodega.Text
+                Lote.Numero_Lote = NumeroLote
+                Lote.Cod_Bodega = Me.CboCodigoBodega.Text
+                Lote.Cod_Productos = CodigoProducto
+                If Not IsDate(FechaVence) Then
+                    FechaVence = "01-01-1900"
+                End If
+                Lote.Fecha_Vence = FechaVence
 
-            AddHandler worker.DoWork, AddressOf backgroundWorkerExistenciaCosto_DoWork
-            AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerExistenciaCosto_RunWorkerCompleted
-            worker.RunWorkerAsync(Detalle)
+                AddHandler WorkerLote.DoWork, AddressOf backgroundWorkerExistenciaLotexProducto_DoWork
+                AddHandler WorkerLote.RunWorkerCompleted, AddressOf backgroundWorkerExistenciaLotexProducto_RunWorkerCompleted
+                WorkerLote.RunWorkerAsync(Lote)
 
-            Lote.Numero_Lote_Producto = NumeroLote
-            Lote.Cod_Bodega_LoteProducto = Me.CboCodigoBodega.Text
-            Lote.Cod_Productos_LoteProducto = CodigoProducto
-            Lote.Fecha_Vence_LoteProducto = FechaVence
+                'ActualizaExistenciaLotexProducto(NumeroLote, Me.CboCodigoBodega.Text, CodigoProducto, FechaVence)
+            End If
 
-            AddHandler WorkerLote.DoWork, AddressOf backgroundWorkerExistenciaLotexProducto_DoWork
-            AddHandler WorkerLote.RunWorkerCompleted, AddressOf backgroundWorkerExistenciaLotexProducto_RunWorkerCompleted
-            WorkerLote.RunWorkerAsync(Lote)
 
-            'ActualizaExistenciaLotexProducto(NumeroLote, Me.CboCodigoBodega.Text, CodigoProducto, FechaVence)
-        End If
+            dsDetalle = ds.Copy
+        Compras.Numero_Compra = Me.TxtNumeroEnsamble.Text
+        Compras.Fecha_Compra = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+        Compras.Moneda_Compra = Me.TxtMonedaFactura.Text
+        Compras.Tipo_Compra = Me.CboTipoProducto.Text
+        Compras.Exonerado_Compra = OptExsonerado.Checked
 
+        '/////////////////////////ACTUALIZO METODO COMPRA SEGUNDO PLANO ////////////////////
+        AddHandler workerActualizaMetodo.DoWork, AddressOf backgroundWorkerMetodoCompra_DoWork
+        AddHandler workerActualizaMetodo.RunWorkerCompleted, AddressOf backgroundWorkerMetodoCompra_RunWorkerCompleted
+        workerActualizaMetodo.RunWorkerAsync({Compras, dsDetalle, dsMetodo})
+
+        Detalle.Cod_Producto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
+        Detalle.Cantidad = Me.BindingDetalle.Item(iPosicion)("Cantidad")
+        Detalle.Precio_Unitario = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
+        Detalle.Tipo_Compra = Me.CboTipoProducto.Text
+        Detalle.Cod_Bodega = Me.CboCodigoBodega.Text
+
+        '///////////////////////EXISTENCIA EN SEGUNDO PLANO ///////////////
+        AddHandler worker.DoWork, AddressOf backgroundWorkerExistenciaCosto_DoWork
+        AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerExistenciaCosto_RunWorkerCompleted
+        worker.RunWorkerAsync(Detalle)
+
+        ActualizarGridInsertRow()
+        Me.TrueDBGridComponentes.Row = iPosicion
+        Me.TrueDBGridComponentes.Col = 0
 
         Bitacora(Now, NombreUsuario, "Compras", "Modifico Producto: " & CodigoProducto)
-        Me.TrueDBGridComponentes.Col = 0
+
 
 
 
@@ -2458,10 +2705,10 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Locked = True
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(7).Visible = False
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(8).Button = True
-            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("TasaCambio").Visible = False
-            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
-            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
-            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("TasaCambio").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
 
         Else
 
@@ -3066,13 +3313,13 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Width = 61
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Locked = True
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Visible = True
-            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(7).Visible = False
-            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("TasaCambio").Visible = False
-            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
-            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
-            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
-            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = False
-            'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Lote").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(7).Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("TasaCambio").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Lote").Visible = False
 
 
         Else
@@ -4684,7 +4931,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
             End If
 
 
-            ActualizaMETODOcOMPRA()
+            'ActualizaMETODOcOMPRA()
 
 
 
@@ -4736,12 +4983,17 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
                 End If
 
                 If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")) Then
-                    FechaLote = Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")
+                    If IsDate(Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")) Then
+                        FechaLote = Me.BindingDetalle.Item(iPosicion)("Fecha_Vence")
+                    Else
+                        FechaLote = "01/01/1900"
+                    End If
                 Else
-                    FechaLote = "01/01/1900"
+                        FechaLote = "01/01/1900"
                 End If
             End If
 
+            '///////26-09-2025
             If Me.CboTipoProducto.Text <> "Cuenta" Then
                 If Me.CboTipoProducto.Text <> "Cuenta DB" Then
                     If TipoProducto <> "Descuento" And TipoProducto <> "Servicio" Then
@@ -4750,17 +5002,19 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
 
                             Select Case Me.CboTipoProducto.Text
                                 Case "Mercancia Recibida"
-                                    ActualizaCostoPromedio(CodigoProducto)
-                                    'DiferenciaCantidad = CDbl(Cantidad) - CDbl(CantidadAnterior)
-                                    'DiferenciaPrecio = CDbl(PrecioNeto) - CDbl(PrecioAnterior)
-                                    'ExistenciasCostos(CodigoProducto, DiferenciaCantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
-                                    'CostoAnterior = BuscaCosto(CodProducto, Me.CboCodigoBodega.Text)
-                                    'CostoBodega(CodProducto, Cantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
-                                    'CostoActual = BuscaCosto(CodProducto, Me.CboCodigoBodega.Text)
-                                    GrabaComprasHistoricos(NumeroCompra, Me.DTPFecha.Value, "Mercancia Recibida", CodProducto, CostoAnterior, CostoActual, Me.CboCodigoBodega.Text)
+                                    'Desactivado 26/09/2025
+                                    'ActualizaCostoPromedio(CodigoProducto)
+                                    ''DiferenciaCantidad = CDbl(Cantidad) - CDbl(CantidadAnterior)
+                                    ''DiferenciaPrecio = CDbl(PrecioNeto) - CDbl(PrecioAnterior)
+                                    ''ExistenciasCostos(CodigoProducto, DiferenciaCantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
+                                    ''CostoAnterior = BuscaCosto(CodProducto, Me.CboCodigoBodega.Text)
+                                    ''CostoBodega(CodProducto, Cantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
+                                    ''CostoActual = BuscaCosto(CodProducto, Me.CboCodigoBodega.Text)
+                                    'Desactivado 26/09/2025
+                                    'GrabaComprasHistoricos(NumeroCompra, Me.DTPFecha.Value, "Mercancia Recibida", CodProducto, CostoAnterior, CostoActual, Me.CboCodigoBodega.Text)
 
                                 Case "Devolucion de Compra"
-                                    ActualizaCostoPromedio(CodigoProducto)
+                                    'ActualizaCostoPromedio(CodigoProducto)
                                     'DiferenciaCantidad = CDbl(Cantidad) - CDbl(CantidadAnterior)
                                     'DiferenciaPrecio = CDbl(PrecioNeto) - CDbl(PrecioAnterior)
                                     'ExistenciasCostos(CodigoProducto, DiferenciaCantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
@@ -4781,7 +5035,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
 
         Me.Button7.Enabled = True
         Me.CboCodigoBodega.Enabled = True
-        ActualizaMETODOcOMPRA()
+        'ActualizaMETODOcOMPRA()
 
         CodigoProducto = 0
         PrecioUnitario = 0
@@ -5151,6 +5405,10 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
     End Sub
 
     Private Sub TrueDBGridConsultas_BindingContextChanged(sender As Object, e As EventArgs) Handles TrueDBGridConsultas.BindingContextChanged
+
+    End Sub
+
+    Private Sub TrueDBGridComponentes_AfterSort(sender As Object, e As C1.Win.C1TrueDBGrid.FilterEventArgs) Handles TrueDBGridComponentes.AfterSort
 
     End Sub
 End Class

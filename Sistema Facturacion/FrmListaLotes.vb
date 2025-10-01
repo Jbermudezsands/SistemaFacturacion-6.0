@@ -1,6 +1,11 @@
 Public Class FrmListaLotes
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Public CodigoProducto As String, FechaVence As Date, NombreLote As String, NumeroLote As String, Activo As Boolean
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        My.Forms.FrmNuevoLote.ShowDialog()
+    End Sub
+
     Private Sub FrmListaLotes_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim SQlString As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter

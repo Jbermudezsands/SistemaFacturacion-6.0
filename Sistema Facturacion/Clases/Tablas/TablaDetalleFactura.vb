@@ -16,6 +16,7 @@
     Private NoPresupuesto As String
     Private NumeroLote As String
     Private FechaVence As Date
+    Private CodBodega As String
 
     Public Property Numero_Factura As String
         Get
@@ -167,6 +168,15 @@
         End Get
         Set(value As Double)
             idDetalleFactura = value
+        End Set
+    End Property
+
+    Public Property Cod_Bodega As String
+        Get
+            Return CodBodega
+        End Get
+        Set(value As String)
+            CodBodega = value
         End Set
     End Property
 End Class

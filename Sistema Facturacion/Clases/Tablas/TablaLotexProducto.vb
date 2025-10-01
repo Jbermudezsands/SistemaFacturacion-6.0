@@ -1,62 +1,72 @@
 ﻿Public Class TablaLotexProducto
-    Private Cod_Productos As String
-    Private Numero_Lote As String
-    Private Cod_Bodega As String
-    Private Existencia As Double
-    Private Fecha_Vence As Date
-    Private Activo As Boolean
+    Private CodProductos As String
+    Private NumeroLote As String
+    Private CodBodega As String
+    Private ExistenciaLote As Double
+    Private FechaVence As Date
+    Private ActivoLote As Boolean
+    Private CantidadLote As Double
 
-    Public Property Cod_Productos_LoteProducto As String
+    Public Property Cod_Productos As String
         Get
-            Return Cod_Productos
+            Return CodProductos
         End Get
         Set(value As String)
-            Cod_Productos = value
+            CodProductos = value
         End Set
     End Property
 
-    Public Property Numero_Lote_Producto As String
+    Public Property Numero_Lote As String
         Get
-            Return Numero_Lote
+            Return NumeroLote
         End Get
         Set(value As String)
-            Numero_Lote = value
+            NumeroLote = value
         End Set
     End Property
 
-    Public Property Cod_Bodega_LoteProducto As String
+    Public Property Cod_Bodega As String
         Get
-            Return Cod_Bodega
+            Return CodBodega
         End Get
         Set(value As String)
-            Cod_Bodega = value
+            CodBodega = value
         End Set
     End Property
 
-    Public Property Existencia_LoteProducto As Double
+    Public Property Existencia As Double
         Get
-            Return Existencia
+            Return ExistenciaLote
         End Get
         Set(value As Double)
-            Existencia = value
+            ExistenciaLote = value
         End Set
     End Property
 
-    Public Property Fecha_Vence_LoteProducto As Date
+    Public Property Fecha_Vence As Date
         Get
-            Return Fecha_Vence
+            Return FechaVence
         End Get
         Set(value As Date)
-            Fecha_Vence = value
+            FechaVence = value
         End Set
     End Property
 
-    Public Property Activo_LoteProducto As Boolean
+    Public Property Activo As Boolean
         Get
-            Return Activo
+            Return ActivoLote
         End Get
         Set(value As Boolean)
-            Activo = value
+            ActivoLote = value
+        End Set
+    End Property
+
+    Public Property Cantidad As Double
+        Get
+            Return CantidadLote
+        End Get
+        Set(value As Double)
+            CantidadLote = value
         End Set
     End Property
 End Class

@@ -1,3 +1,4 @@
+Imports System.ComponentModel
 Imports System.Data.Common
 Imports System.Data.SqlTypes
 Imports GrapeCity.DD
@@ -5,6 +6,193 @@ Imports GrapeCity.DD
 Public Class FrmActualiza
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Public MiconexionContabilidad As New SqlClient.SqlConnection(ConexionContabilidad)
+    Public WithEvents backgroundWorkerLotes As System.ComponentModel.BackgroundWorker
+    Public WithEvents backgroundWorkerProductosLotes As System.ComponentModel.BackgroundWorker
+
+    '////////////////////////////////////PROCESOS LOTES CON HILOS //////////////
+    Private Sub backgroundWorkerlotes_DoWork(
+ByVal sender As Object,
+ByVal e As DoWorkEventArgs) _
+Handles backgroundWorkerLotes.DoWork
+        Dim worker As BackgroundWorker =
+        CType(sender, BackgroundWorker)
+
+
+        If worker.CancellationPending Then
+            e.Cancel = True
+            Exit Sub
+        Else
+
+            worker.WorkerReportsProgress = True
+            worker.WorkerSupportsCancellation = True
+            ProcesarLotesWorker(worker, e)
+        End If
+    End Sub
+    Private Sub backgroundWorkerLotes_RunWorkerCompleted(
+ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs) _
+Handles backgroundWorkerLotes.RunWorkerCompleted
+
+
+
+        If (e.Error IsNot Nothing) Then
+            Bitacora(Now, NombreUsuario, "Compras", "Error " & e.Error.Message)
+        ElseIf e.Cancelled Then
+            Bitacora(Now, NombreUsuario, "Compras", "Hilo Cancelado")
+        Else
+            MDIMain.txtSPlano2.Text = ""
+        End If
+
+    End Sub
+    Private Sub backgroundWorkerLotes_ProgressChanged(
+ByVal sender As Object, ByVal e As ProgressChangedEventArgs) _
+Handles backgroundWorkerLotes.ProgressChanged
+
+
+        MDIMain.txtSPlano2.Text = e.UserState.ToString
+
+
+    End Sub
+
+    Private Sub backgroundWorkerProductosLotes_DoWork(
+ByVal sender As Object,
+ByVal e As DoWorkEventArgs) _
+Handles backgroundWorkerProductosLotes.DoWork
+        Dim worker As BackgroundWorker =
+        CType(sender, BackgroundWorker)
+
+        Dim args As TablaDetalleFactura = e.Argument
+
+        If worker.CancellationPending Then
+            e.Cancel = True
+            Exit Sub
+        Else
+
+            worker.WorkerReportsProgress = True
+            worker.WorkerSupportsCancellation = True
+            'AgregarComprasWorker(args, dsDetalle, dsMetodoPago, worker, e)
+            ProcesarLotesProductosWorker(args, worker, e)
+        End If
+    End Sub
+    Private Sub backgroundWorkerProductosLotes_RunWorkerCompleted(
+ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs) _
+Handles backgroundWorkerProductosLotes.RunWorkerCompleted
+
+
+
+        If (e.Error IsNot Nothing) Then
+            Bitacora(Now, NombreUsuario, "Compras", "Error " & e.Error.Message)
+        ElseIf e.Cancelled Then
+            Bitacora(Now, NombreUsuario, "Compras", "Hilo Cancelado")
+        Else
+            MDIMain.txtSPlano2.Text = ""
+        End If
+
+    End Sub
+    Private Sub backgroundWorkerProductosLotes_ProgressChanged(
+ByVal sender As Object, ByVal e As ProgressChangedEventArgs) _
+Handles backgroundWorkerProductosLotes.ProgressChanged
+
+
+        MDIMain.txtSPlano2.Text = e.UserState.ToString
+
+
+    End Sub
+
+
+    Public Sub ProcesarLotesWorker(ByVal worker As BackgroundWorker, ByVal e As DoWorkEventArgs)
+        Dim CodigoInicio As String, CodigoFin As String, SQlstring As String
+        Dim DsLotes As New DataSet, DaLotes As New SqlClient.SqlDataAdapter
+        Dim i As Double = 0, Cont As Double = 0, DetalleFactura As New TablaDetalleFactura
+        Dim workerProducto As BackgroundWorker
+
+
+        If Me.TxtLoteInicio.Text = "" And Me.TxtLoteFin.Text = "" Then
+            SQlstring = "SELECT  Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.CodTarea, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Cantidad, Facturas.Cod_Bodega FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  WHERE  (Detalle_Facturas.CodTarea <> '0' AND  Detalle_Facturas.CodTarea <> '' AND  Detalle_Facturas.CodTarea <> 'SIN LOTE') AND (Facturas.Tipo_Factura <> 'Cotizacion') ORDER BY Fecha_Factura "
+        Else
+            CodigoInicio = Me.TxtLoteInicio.Text
+            CodigoFin = Me.TxtLoteFin.Text
+            SQlstring = "SELECT  Detalle_Facturas.Numero_Factura, Detalle_Facturas.Fecha_Factura, Detalle_Facturas.Tipo_Factura, Detalle_Facturas.CodTarea, Detalle_Facturas.Cod_Producto, Detalle_Facturas.Cantidad, Facturas.Cod_Bodega FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura WHERE  (Detalle_Facturas.CodTarea <> '0') AND (Facturas.Tipo_Factura <> 'Cotizacion') AND (Detalle_Facturas.CodTarea <> N'') AND (Detalle_Facturas.CodTarea <> N'SIN LOTE') AND (Detalle_Facturas.CodTarea BETWEEN '" & CodigoInicio & "' AND '" & CodigoFin & "') ORDER BY Fecha_Factura "
+        End If
+
+        DaLotes = New SqlClient.SqlDataAdapter(SQlstring, MiConexion)
+        DaLotes.Fill(DsLotes, "Lotes")
+        Cont = DsLotes.Tables("Lotes").Rows.Count
+        i = 0
+
+        Do While Cont > i
+            My.Application.DoEvents()
+
+            DetalleFactura.Numero_Factura = DsLotes.Tables("Lotes").Rows(i)("Numero_Factura")
+            DetalleFactura.Cod_Tarea = DsLotes.Tables("Lotes").Rows(i)("CodTarea")
+            DetalleFactura.Tipo_Factura = DsLotes.Tables("Lotes").Rows(i)("Tipo_Factura")
+            DetalleFactura.Cod_Producto = DsLotes.Tables("Lotes").Rows(i)("Cod_Producto")
+            DetalleFactura.Cantidad_DetalleFactura = DsLotes.Tables("Lotes").Rows(i)("Cantidad")
+            DetalleFactura.Fecha_Factura = DsLotes.Tables("Lotes").Rows(i)("Fecha_Factura")
+            DetalleFactura.Numero_Lote = DsLotes.Tables("Lotes").Rows(i)("CodTarea")
+            DetalleFactura.Cod_Bodega = DsLotes.Tables("Lotes").Rows(i)("Cod_Bodega")
+
+            '/////////////Con este HILO busco si este lote tenia existencias /////////
+            workerProducto = New BackgroundWorker()
+            AddHandler workerProducto.DoWork, AddressOf backgroundWorkerProductosLotes_DoWork
+            AddHandler workerProducto.ProgressChanged, AddressOf backgroundWorkerProductosLotes_ProgressChanged
+            AddHandler workerProducto.RunWorkerCompleted, AddressOf backgroundWorkerProductosLotes_RunWorkerCompleted
+            workerProducto.RunWorkerAsync(DetalleFactura)
+
+            i = i + 1
+        Loop
+
+    End Sub
+    Public Sub ProcesarLotesProductosWorker(DetalleFactura As TablaDetalleFactura, ByVal worker As BackgroundWorker, ByVal e As DoWorkEventArgs)
+        Dim Lote As New Lote, SqlString As String
+        Dim DataAdapter As New SqlClient.SqlDataAdapter, Dataset As New DataSet
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim i As Double, Cont As Double
+
+        '///////////Busco si este lote tiene existencias para esta fecha ////////
+        Lote = BuscaExistenciaFacturaLoteWorker(DetalleFactura, worker, e)
+
+        '///////////////////////////////////////////////////////////////////
+        '//////////SI LO FACTURADO ES MAYOR A LA EXISTENCIA BUSCO OTRO LOTE/
+        '//////////////////////////////////////////////////////////////////
+
+        If DetalleFactura.Cantidad_DetalleFactura > Lote.Existencia_Lote Then
+            Dim Detalle As New TablaDetalleFactura
+            Dim NuevoLote As New Lote
+
+            SqlString = "SELECT DISTINCT Detalle_Compras.Cod_Producto, Detalle_Compras.Cantidad, Compras.Fecha_Compra, Compras.Tipo_Compra, Compras.Cod_Bodega, Detalle_Compras.Numero_Lote FROM  Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra WHERE (Compras.Tipo_Compra <> 'Orden de Compra') AND (Compras.Fecha_Compra <= CONVERT(DATETIME, '" & Format(DetalleFactura.Fecha_Factura, "yyyy-MM-dd") & "', 102)) AND (Compras.Cod_Bodega = '" & DetalleFactura.Cod_Bodega & "') AND (Detalle_Compras.Numero_Lote IS NOT NULL) AND (Detalle_Compras.Numero_Lote <> 'SINLOTE') AND (Detalle_Compras.Numero_Lote <> N'0') ORDER BY Compras.Fecha_Compra "
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            DataAdapter.Fill(Dataset, "Consultas")
+            Cont = Dataset.Tables("Consultas").Rows.Count
+            i = 0
+
+            Do While Cont > i
+
+                NuevoLote = BuscaExistenciaFacturaLoteWorker(DetalleFactura, worker, e)
+                If NuevoLote.Existencia_Lote >= DetalleFactura.Cantidad_DetalleFactura Then
+                    '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
+                    StrSqlUpdate = "UPDATE [Detalle_Facturas] SET [CodTarea] = '" & NuevoLote.Numero_Lote & "' ,[Numero_Lote] = '" & NuevoLote.Numero_Lote & "' ,[Fecha_Vence] = '" & Lote.Fecha_Vence & "' WHERE  (Numero_Factura = '" & DetalleFactura.Numero_Factura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Format(DetalleFactura.Fecha_Factura, "yyyy-MM-dd") & "', 102)) AND (Tipo_Factura = '" & DetalleFactura.Tipo_Factura & "') "
+                    MiConexion.Open()
+                    ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                    iResultado = ComandoUpdate.ExecuteNonQuery
+                    MiConexion.Close()
+                    Exit Do
+                Else
+                    StrSqlUpdate = "UPDATE [Detalle_Facturas] SET [CodTarea] = 'SIN LOTE' ,[Numero_Lote] = 'SIN LOTE' WHERE  (Numero_Factura = '" & DetalleFactura.Numero_Factura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Format(DetalleFactura.Fecha_Factura, "yyyy-MM-dd") & "', 102)) AND (Tipo_Factura = '" & DetalleFactura.Tipo_Factura & "') "
+                    MiConexion.Open()
+                    ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                    iResultado = ComandoUpdate.ExecuteNonQuery
+                    MiConexion.Close()
+                End If
+
+                i = i + 1
+            Loop
+
+        End If
+
+
+    End Sub
+
+
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         If Me.OptCuentasCobrar.Checked = True Then
             Quien = "CuentaCobrar"
@@ -1556,5 +1744,27 @@ Public Class FrmActualiza
 
 
 
+    End Sub
+
+    Private Sub Button25_Click(sender As Object, e As EventArgs) Handles Button25.Click
+        My.Forms.FrmListaLotes.ShowDialog()
+        Me.TxtLoteInicio.Text = My.Forms.FrmListaLotes.NumeroLote
+    End Sub
+
+    Private Sub Button24_Click(sender As Object, e As EventArgs) Handles Button24.Click
+        My.Forms.FrmListaLotes.ShowDialog()
+        Me.TxtLoteFin.Text = My.Forms.FrmListaLotes.NumeroLote
+    End Sub
+
+    Private Sub BtnIniciarLotes_Click(sender As Object, e As EventArgs) Handles BtnIniciarLotes.Click
+        My.Application.DoEvents()
+
+        Dim worker As BackgroundWorker
+        worker = New BackgroundWorker()
+        AddHandler worker.DoWork, AddressOf backgroundWorkerlotes_DoWork
+        AddHandler worker.ProgressChanged, AddressOf backgroundWorkerLotes_ProgressChanged
+        AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerLotes_RunWorkerCompleted
+        worker.RunWorkerAsync()
+        'worker.RunWorkerAsync({Compras, dsDetalle, dsMetodoPago})
     End Sub
 End Class

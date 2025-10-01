@@ -7,6 +7,15 @@ Public Class FrmNuevoLote
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim Respuesta As Double
 
+        If Me.TxtNumeroLote.Text = "" Then
+            MsgBox("Digite el Numero de Lote", vbCritical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.TxtNombreLote.Text = "" Then
+            Me.TxtNombreLote.Text = Me.TxtNumeroLote.Text
+        End If
+
         SqlClientes = "SELECT * FROM Lote WHERE  (Numero_Lote = '" & Me.TxtNumeroLote.Text & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SQLClientes, MiConexion)
         DataAdapter.Fill(DataSet, "Clientes")
