@@ -1,3 +1,4 @@
+Imports System.ComponentModel
 Imports System.Math
 
 Public Class FrmCuentasXCobrar
@@ -6,6 +7,136 @@ Public Class FrmCuentasXCobrar
     Public DatasetReporte As New DataSet, ds As New DataSet
     Public TotalFactura As Double = 0, TotalAbonos As Double = 0, TotalCargos As Double = 0, TotalMora As Double, TotalMontoNotaDB As Double, TotalMontoNotaCR As Double
     Public dv As New DataView
+    Public WithEvents backgroundWorkerCalcular As System.ComponentModel.BackgroundWorker
+
+
+    '////////////////////////////////////PROCESOS CON HILOS //////////////
+    Private Sub backgroundWorkerCalcular_DoWork(
+ByVal sender As Object,
+ByVal e As DoWorkEventArgs) _
+Handles backgroundWorkerCalcular.DoWork
+        Dim worker As BackgroundWorker =
+        CType(sender, BackgroundWorker)
+
+        Dim dsMetodo As New DataSet, dsDetalle As New DataSet, Compras As New TablaCompras
+
+        Compras = e.Argument(0)
+        dsDetalle = e.Argument(1)
+        dsMetodo = e.Argument(2)
+
+
+
+        If worker.CancellationPending Then
+            e.Cancel = True
+            Exit Sub
+        Else
+
+            worker.WorkerReportsProgress = True
+            worker.WorkerSupportsCancellation = True
+            'e.Result = ActualizaMETODOcOMPRAWorker(Compras, dsDetalle, dsMetodo, worker, e)
+        End If
+    End Sub
+    Private Sub backgroundWorkerCalcular_RunWorkerCompleted(
+ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs) _
+Handles backgroundWorkerCalcular.RunWorkerCompleted
+
+
+
+        If (e.Error IsNot Nothing) Then
+            Bitacora(Now, NombreUsuario, "Compras", "Error " & e.Error.Message)
+        ElseIf e.Cancelled Then
+            Bitacora(Now, NombreUsuario, "Compras", "Hilo Cancelado")
+        Else
+
+            Dim Resultado As New CsResultadoCtasxCobrar, Filtro As String
+
+
+            MDIMain.txtSPlano3.Text = ""
+
+            Resultado = e.Result
+
+            Me.TxtCargos.Text = Format(Resultado.ClaseTotalVentas.TotalCargos, "##,##0.00")
+            Me.TxtAbonos.Text = Format(Resultado.ClaseTotalVentas.TotalAbonos, "##,##0.00")
+            Me.TxtMora.Text = Format(Resultado.ClaseTotalVentas.TotalMora, "##,##0.00")
+            Me.TxtNB.Text = Format(Resultado.ClaseTotalVentas.TotalMontoNotaDB - Resultado.ClaseTotalVentas.TotalMontoNotaCR, "##,##0.00")
+            Me.TxtSaldoFinal.Text = Format(Resultado.ClaseTotalVentas.TotalFactura, "##,##0.00")
+
+
+            If Me.ChkRegistrosCero.Checked = True Then
+                Filtro = "Fecha_Factura <= '" & Format(Me.DTPFechaFin.Value, "yyyy-MM-dd") & "' AND Total > " & MontoMayor & " "
+            Else
+                Filtro = "Fecha_Factura <= '" & Format(Me.DTPFechaFin.Value, "yyyy-MM-dd") & "'  "
+            End If
+
+
+            dv = New DataView(DatasetReporte.Tables("TotalVentas"))
+
+            Select Case Ordenar
+                Case "Cliente" : dv.Sort = "Cod_Cliente"
+            End Select
+
+            dv.RowFilter = Filtro
+
+
+
+
+
+
+
+
+            Me.Button1.Enabled = True
+            Me.Button3.Enabled = True
+            Me.Button5.Enabled = True
+            Me.CmdAjustes.Enabled = True
+
+
+            Me.TDGridImpuestos.DataSource = dv ' DatasetReporte.Tables("TotalVentas")
+            Me.TDGridImpuestos.Columns(0).Caption = "Fecha"
+            Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(0).Width = 73
+            Me.TDGridImpuestos.Columns(1).Caption = "Factura No"
+            Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(1).Width = 61
+            Me.TDGridImpuestos.Columns(2).Caption = "Recibo No"
+            Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(2).Width = 71
+            Me.TDGridImpuestos.Columns(3).Caption = "DB/CR No"
+            Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(3).Width = 80
+            Me.TDGridImpuestos.Columns(4).Caption = "Monto NB/CR"
+            Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(4).Width = 75
+            Me.TDGridImpuestos.Columns(5).Caption = "Cargo"
+            Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(5).Width = 70
+            Me.TDGridImpuestos.Columns(5).NumberFormat = "##,##0.00"
+            Me.TDGridImpuestos.Columns(6).Caption = "Fecha Vence"
+            Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(6).Width = 73
+            Me.TDGridImpuestos.Columns(7).Caption = "Abono"
+            Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(7).Width = 70
+            Me.TDGridImpuestos.Columns(7).NumberFormat = "##,##0.00"
+            Me.TDGridImpuestos.Columns(8).Caption = "Saldo"
+            Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(8).Width = 70
+            Me.TDGridImpuestos.Columns(8).NumberFormat = "##,##0.00"
+            Me.TDGridImpuestos.Columns(9).Caption = "Moratorio"
+            Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(9).Width = 70
+            Me.TDGridImpuestos.Columns(9).NumberFormat = "##,##0.00"
+            Me.TDGridImpuestos.Columns(10).Caption = "Dias"
+            Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(10).Width = 40
+            Me.TDGridImpuestos.Columns(11).Caption = "Total"
+            Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(11).Width = 70
+            Me.TDGridImpuestos.Columns(11).NumberFormat = "##,##0.00"
+            Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(12).Visible = False
+            Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(13).Visible = False
+
+        End If
+
+    End Sub
+    Private Sub backgroundWorkerCalcular_ProgressChanged(
+ByVal sender As Object, ByVal e As ProgressChangedEventArgs) _
+Handles backgroundWorkerCalcular.ProgressChanged
+
+
+        MDIMain.txtSPlano3.Text = e.UserState.ToString
+
+
+    End Sub
+
+
 
 
     Private Sub FrmCuentasXCobrar_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
@@ -71,54 +202,71 @@ Public Class FrmCuentasXCobrar
             Exit Sub
         End If
 
+        Dim worker As BackgroundWorker, Args As New CsFillCtasxCobrar
+
+        Args.Codigo_Cliente = CboCodigoCliente.Text
+        Args.Opt_Cordobas = OptCordobas.Checked
+        Args.Fecha_Fin = Me.DTPFechaFin.Value
+        Args.Proceso = "CtasxCobrar"
+        Args.Excluir_Cero = ChkRegistrosCero.Checked
+        Args.Ordenar = "Cliente"
+
+
+
+        '///////////////////////EXISTENCIA EN SEGUNDO PLANO ///////////////
+        AddHandler worker.DoWork, AddressOf backgroundWorkerCalcular_DoWork
+        AddHandler worker.ProgressChanged, AddressOf backgroundWorkerCalcular_ProgressChanged
+        AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerCalcular_RunWorkerCompleted
+        worker.RunWorkerAsync(Args)
+
 
         dv = dvCtasxCobrar(CboCodigoCliente.Text, OptCordobas.Checked, Me.DTPFechaFin.Value, "CtasxCobrar", ChkRegistrosCero.Checked, "Cliente")
-        TotalFactura = TotalCargos - TotalAbonos + TotalMora + TotalMontoNotaDB - TotalMontoNotaCR
+        'TotalFactura = TotalCargos - TotalAbonos + TotalMora + TotalMontoNotaDB - TotalMontoNotaCR
 
-        Me.TxtCargos.Text = Format(TotalCargos, "##,##0.00")
-        Me.TxtAbonos.Text = Format(TotalAbonos, "##,##0.00")
-        Me.TxtMora.Text = Format(TotalMora, "##,##0.00")
-        Me.TxtNB.Text = Format(TotalMontoNotaDB - TotalMontoNotaCR, "##,##0.00")
-        Me.TxtSaldoFinal.Text = Format(TotalFactura, "##,##0.00")
+        'Me.TxtCargos.Text = Format(TotalCargos, "##,##0.00")
+        'Me.TxtAbonos.Text = Format(TotalAbonos, "##,##0.00")
+        'Me.TxtMora.Text = Format(TotalMora, "##,##0.00")
+        'Me.TxtNB.Text = Format(TotalMontoNotaDB - TotalMontoNotaCR, "##,##0.00")
+        'Me.TxtSaldoFinal.Text = Format(TotalFactura, "##,##0.00")
 
-        Me.Button1.Enabled = True
-        Me.Button3.Enabled = True
-        Me.Button5.Enabled = True
-        Me.CmdAjustes.Enabled = True
+        'Me.Button1.Enabled = True
+        'Me.Button3.Enabled = True
+        'Me.Button5.Enabled = True
+        'Me.CmdAjustes.Enabled = True
 
 
-        Me.TDGridImpuestos.DataSource = dv ' DatasetReporte.Tables("TotalVentas")
-        Me.TDGridImpuestos.Columns(0).Caption = "Fecha"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(0).Width = 73
-        Me.TDGridImpuestos.Columns(1).Caption = "Factura No"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(1).Width = 61
-        Me.TDGridImpuestos.Columns(2).Caption = "Recibo No"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(2).Width = 71
-        Me.TDGridImpuestos.Columns(3).Caption = "DB/CR No"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(3).Width = 80
-        Me.TDGridImpuestos.Columns(4).Caption = "Monto NB/CR"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(4).Width = 75
-        Me.TDGridImpuestos.Columns(5).Caption = "Cargo"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(5).Width = 70
-        Me.TDGridImpuestos.Columns(5).NumberFormat = "##,##0.00"
-        Me.TDGridImpuestos.Columns(6).Caption = "Fecha Vence"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(6).Width = 73
-        Me.TDGridImpuestos.Columns(7).Caption = "Abono"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(7).Width = 70
-        Me.TDGridImpuestos.Columns(7).NumberFormat = "##,##0.00"
-        Me.TDGridImpuestos.Columns(8).Caption = "Saldo"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(8).Width = 70
-        Me.TDGridImpuestos.Columns(8).NumberFormat = "##,##0.00"
-        Me.TDGridImpuestos.Columns(9).Caption = "Moratorio"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(9).Width = 70
-        Me.TDGridImpuestos.Columns(9).NumberFormat = "##,##0.00"
-        Me.TDGridImpuestos.Columns(10).Caption = "Dias"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(10).Width = 40
-        Me.TDGridImpuestos.Columns(11).Caption = "Total"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(11).Width = 70
-        Me.TDGridImpuestos.Columns(11).NumberFormat = "##,##0.00"
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(12).Visible = False
-        Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(13).Visible = False
+        'Me.TDGridImpuestos.DataSource = dv ' DatasetReporte.Tables("TotalVentas")
+        'Me.TDGridImpuestos.Columns(0).Caption = "Fecha"
+        'Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(0).Width = 73
+        'Me.TDGridImpuestos.Columns(1).Caption = "Factura No"
+        'Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(1).Width = 61
+        'Me.TDGridImpuestos.Columns(2).Caption = "Recibo No"
+        'Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(2).Width = 71
+        'Me.TDGridImpuestos.Columns(3).Caption = "DB/CR No"
+        'Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(3).Width = 80
+        'Me.TDGridImpuestos.Columns(4).Caption = "Monto NB/CR"
+        'Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(4).Width = 75
+        'Me.TDGridImpuestos.Columns(5).Caption = "Cargo"
+        'Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(5).Width = 70
+        'Me.TDGridImpuestos.Columns(5).NumberFormat = "##,##0.00"
+        'Me.TDGridImpuestos.Columns(6).Caption = "Fecha Vence"
+        'Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(6).Width = 73
+        'Me.TDGridImpuestos.Columns(7).Caption = "Abono"
+        'Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(7).Width = 70
+        'Me.TDGridImpuestos.Columns(7).NumberFormat = "##,##0.00"
+        'Me.TDGridImpuestos.Columns(8).Caption = "Saldo"
+        'Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(8).Width = 70
+        'Me.TDGridImpuestos.Columns(8).NumberFormat = "##,##0.00"
+        'Me.TDGridImpuestos.Columns(9).Caption = "Moratorio"
+        'Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(9).Width = 70
+        'Me.TDGridImpuestos.Columns(9).NumberFormat = "##,##0.00"
+        'Me.TDGridImpuestos.Columns(10).Caption = "Dias"
+        'Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(10).Width = 40
+        'Me.TDGridImpuestos.Columns(11).Caption = "Total"
+        'Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(11).Width = 70
+        'Me.TDGridImpuestos.Columns(11).NumberFormat = "##,##0.00"
+        'Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(12).Visible = False
+        'Me.TDGridImpuestos.Splits.Item(0).DisplayColumns(13).Visible = False
 
     End Sub
 

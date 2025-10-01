@@ -7,6 +7,748 @@ Imports Sistema_Facturacion.FrmFacturas
 Imports System.ComponentModel
 
 Module Funciones
+
+    Public Function FillDataSetCtaxCobrarWorker(Args As CsFillCtasxCobrar, ByVal worker As BackgroundWorker, ByVal e As DoWorkEventArgs) As CsResultadoCtasxCobrar
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim SQlString As String, NumeroFactura As String, NumeroRecibo As String = "", MontoRecibo As Double
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Registros As Double, i As Double
+        Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer = 0, TasaCambio As Double, Saldo As Double
+        Dim oDataRow As DataRow, MontoFactura As Double, FechaFactura As Date, Dias As Double, TasaInteres As Double, MontoMora As Double, Total As Double
+        Dim Registros2 As Double, j As Double, TasaCambioRecibo As Double, TotalFactura As Double = 0, TotalAbonos As Double = 0, TotalCargos As Double = 0
+        Dim TotalMora As Double = 0, FechaVence As Date, NumeroNota As String = "", MontoNota As Double = 0, NumeroNotaCR As String = "", MontoNotaCR As Double = 0, TotalMontoNotaCR As Double = 0, TotalMontoNotaDB As Double = 0
+        Dim MontoMetodoFactura As Double = 0, TipoNota As String = ""
+        Dim DatasetReporte As New DataSet, CodigoCliente As String = Args.Codigo_Cliente, Proceso As String = Args.Proceso, OptCordobas As Boolean = Args.Opt_Cordobas, FechaFin As Date = Args.Fecha_Fin
+        Dim Resultado As New CsResultadoCtasxCobrar
+
+
+        If CodigoCliente = "" Then
+            Exit Function
+        End If
+
+
+        '*******************************************************************************************************************************
+        '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
+        '*******************************************************************************************************************************
+        DataSet.Reset()
+        DatasetReporte.Reset()
+        SQlString = "SELECT Facturas.Fecha_Factura, Facturas.Numero_Factura, Facturas.MetodoPago As Numero_Recibo, Facturas.Numero_Factura As NotaDebito, Facturas.SubTotal As MontoNota, Facturas.SubTotal As Monto, Facturas.Fecha_Factura As FechaVence, Facturas.IVA As Abono, Facturas.SubTotal AS Saldo, Facturas.SubTotal As Moratorio, Facturas.SubTotal As Dias, Facturas.SubTotal AS Total, Facturas.Cod_Cliente, Facturas.Nombre_Cliente  FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " &
+                    "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.MetodoPago = 'Credito') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '01/01/1900', 102) AND CONVERT(DATETIME, '01/01/1900', 102)) ORDER BY Facturas.Fecha_Factura, Facturas.Numero_Factura"
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapter.Fill(DatasetReporte, "TotalVentas")
+
+        If Proceso = "ReporteCtasxCobrar" Then
+            If Args.Clientes_Desde = "" And Args.Clientes_Hasta = "" Then
+                If Args.CodDepartamentoIni = "" And Args.CodDepartamentoFin = "" Then
+                    If Args.Vendedor_Desde = "" And Args.Vendedor_Hasta = "" Then
+                        SQlString = "SELECT *  FROM Facturas WHERE (Tipo_Factura = 'Factura') AND (Nombre_Cliente <> N'******CANCELADO') AND (Fecha_Factura <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102))"
+                    Else
+                        SQlString = "SELECT *  FROM Facturas WHERE (Tipo_Factura = 'Factura') AND (Nombre_Cliente <> N'******CANCELADO') AND (Fecha_Factura <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Cod_Vendedor BETWEEN '" & Args.Vendedor_Desde & "' AND '" & Args.Vendedor_Hasta & "')"
+                    End If
+                Else
+                    If Args.Vendedor_Desde = "" And Args.Vendedor_Hasta = "" Then
+                        SQlString = "SELECT  Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.Tipo_Factura, Facturas.MonedaFactura, Facturas.Cod_Cliente, Facturas.Cod_Bodega, Facturas.Cod_Vendedor, Facturas.Cod_Cajero, Facturas.Nombre_Cliente, Facturas.Apellido_Cliente, Facturas.Direccion_Cliente, Facturas.Telefono_Cliente, Facturas.Fecha_Vencimiento, Facturas.Observaciones, Facturas.Fecha_Envio, Facturas.Via_Envarque, Facturas.Descuento, Facturas.Fecha_Descuento, Facturas.Su_Referencia, Facturas.Nuestra_Referencia, Facturas.SubTotal, Facturas.IVA, Facturas.Pagado, Facturas.NetoPagar, Facturas.MontoCredito, Facturas.Contabilizado, Facturas.Activo, Facturas.Cancelado, Facturas.MetodoPago, Facturas.Exonerado, Facturas.Descuentos, Facturas.Marca, Facturas.FechaPago, Facturas.TransferenciaProcesada, Facturas.MonedaImprime, Facturas.CodigoProyecto, Facturas.Retener1Porciento, Facturas.Retener2Porciento, Facturas.MontoRetencion1Porciento, Facturas.MontoRetencion2Porciento, Facturas.Referencia, Facturas.Propina, Facturas.CalculaPropina, Facturas.FechaHora, Facturas.TipoProductor, Facturas.AplicarCtasXCobrar, Clientes.Departamento  FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Nombre_Cliente <> N'******CANCELADO') AND (Facturas.Fecha_Factura <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Clientes.Municipio BETWEEN  '" & Args.CodDepartamentoIni & "' AND '" & Args.CodDepartamentoFin & "')"
+                    Else
+                        SQlString = "SELECT  Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.Tipo_Factura, Facturas.MonedaFactura, Facturas.Cod_Cliente, Facturas.Cod_Bodega, Facturas.Cod_Vendedor, Facturas.Cod_Cajero, Facturas.Nombre_Cliente, Facturas.Apellido_Cliente, Facturas.Direccion_Cliente, Facturas.Telefono_Cliente, Facturas.Fecha_Vencimiento, Facturas.Observaciones, Facturas.Fecha_Envio, Facturas.Via_Envarque, Facturas.Descuento, Facturas.Fecha_Descuento, Facturas.Su_Referencia, Facturas.Nuestra_Referencia, Facturas.SubTotal, Facturas.IVA, Facturas.Pagado, Facturas.NetoPagar, Facturas.MontoCredito, Facturas.Contabilizado, Facturas.Activo, Facturas.Cancelado, Facturas.MetodoPago, Facturas.Exonerado, Facturas.Descuentos, Facturas.Marca, Facturas.FechaPago, Facturas.TransferenciaProcesada, Facturas.MonedaImprime, Facturas.CodigoProyecto, Facturas.Retener1Porciento, Facturas.Retener2Porciento, Facturas.MontoRetencion1Porciento, Facturas.MontoRetencion2Porciento, Facturas.Referencia, Facturas.Propina, Facturas.CalculaPropina, Facturas.FechaHora, Facturas.TipoProductor, Facturas.AplicarCtasXCobrar, Clientes.Departamento  FROM  Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente WHERE  (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Nombre_Cliente <> N'******CANCELADO') AND (Facturas.Fecha_Factura <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Facturas.Cod_Vendedor BETWEEN '" & Args.Vendedor_Desde & "' AND '" & Args.Vendedor_Hasta & "') AND (Clientes.Municipio BETWEEN  '" & Args.CodDepartamentoIni & "' AND '" & Args.CodDepartamentoFin & "')"
+
+                    End If
+                End If
+            ElseIf Args.CodDepartamentoIni = "" And Args.CodDepartamentoFin = "" Then
+                SQlString = "SELECT *  FROM Facturas WHERE (Tipo_Factura = 'Factura') AND (Cod_Cliente BETWEEN '" & FrmReportes.CmbClientes.Text & "' AND '" & FrmReportes.CmbClientes2.Text & "') AND (Nombre_Cliente <> N'******CANCELADO') AND (Fecha_Factura <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102))"
+
+            Else
+
+                SQlString = "SELECT  Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.Tipo_Factura, Facturas.MonedaFactura, Facturas.Cod_Cliente, Facturas.Cod_Bodega, Facturas.Cod_Vendedor, Facturas.Cod_Cajero, Facturas.Nombre_Cliente, Facturas.Apellido_Cliente, Facturas.Direccion_Cliente, Facturas.Telefono_Cliente, Facturas.Fecha_Vencimiento, Facturas.Observaciones, Facturas.Fecha_Envio, Facturas.Via_Envarque, Facturas.Descuento, Facturas.Fecha_Descuento, Facturas.Su_Referencia, Facturas.Nuestra_Referencia, Facturas.SubTotal, Facturas.IVA, Facturas.Pagado, Facturas.NetoPagar, Facturas.MontoCredito, Facturas.Contabilizado, Facturas.Activo, Facturas.Cancelado, Facturas.MetodoPago, Facturas.Exonerado, Facturas.Descuentos, Facturas.Marca, Facturas.FechaPago, Facturas.TransferenciaProcesada, Facturas.MonedaImprime, Facturas.CodigoProyecto, Facturas.Retener1Porciento, Facturas.Retener2Porciento, Facturas.MontoRetencion1Porciento, Facturas.MontoRetencion2Porciento, Facturas.Referencia, Facturas.Propina, Facturas.CalculaPropina, Facturas.FechaHora, Facturas.TipoProductor, Facturas.AplicarCtasXCobrar, Clientes.Departamento FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " &
+                            "WHERE  (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Cod_Cliente BETWEEN '" & Args.Clientes_Desde & "' AND '" & Args.Clientes_Hasta & "') AND (Facturas.Nombre_Cliente <> N'******CANCELADO') AND (Facturas.Fecha_Factura <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) And (Clientes.Departamento BETWEEN '" & Args.CodDepartamentoIni & "' AND '" & Args.CodDepartamentoFin & "') "
+
+            End If
+        Else
+            SQlString = "SELECT *  FROM Facturas WHERE (Tipo_Factura = 'Factura') AND (Cod_Cliente = '" & CodigoCliente & "') AND (Nombre_Cliente <> N'******CANCELADO') AND (Fecha_Factura <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102))"
+        End If
+
+
+
+
+        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////AGREGO LA CONSULTA PARA TODAS LAS FACTURAS DE CREDITO //////////////////////////////////////////////////////
+        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Clientes")
+        Registros = DataSet.Tables("Clientes").Rows.Count
+        i = 0
+        TotalFactura = 0
+        TotalAbonos = 0
+        TotalMora = 0
+        TotalCargos = 0
+        TotalMontoNotaDB = 0
+        TotalMontoNotaCR = 0
+
+        '/////////////LLENO LOS VALORES DE LAS BARRAS PROGRESSBAR ///////////////
+        Select Case Proceso
+            Case "AjustarTodos"
+                '///////////////PROGRESO DEL HILO GRABAR //////////////////////////
+                worker.ReportProgress(1, "SP" & CodigoCliente)
+
+                'FrmAjustarTodos.ProgressBar.Minimum = 0
+                'FrmAjustarTodos.ProgressBar.Visible = True
+                'FrmAjustarTodos.ProgressBar.Value = 0
+                'FrmAjustarTodos.ProgressBar.Maximum = DataSet.Tables("Clientes").Rows.Count
+
+            Case "CtasxCobrar"
+                worker.ReportProgress(1, "SP" & CodigoCliente)
+                'FrmCuentasXCobrar.ProgressBar.Minimum = 0
+                'FrmCuentasXCobrar.ProgressBar.Visible = True
+                'FrmCuentasXCobrar.ProgressBar.Value = 0
+                'FrmCuentasXCobrar.ProgressBar.Maximum = DataSet.Tables("Clientes").Rows.Count
+
+            Case "ReporteCtasxCobrar"
+                worker.ReportProgress(1, "SP" & CodigoCliente)
+                'FrmReportes.ProgressBar.Minimum = 0
+                'FrmReportes.ProgressBar.Visible = True
+                'FrmReportes.ProgressBar.Value = 0
+                'FrmReportes.ProgressBar.Maximum = DataSet.Tables("Clientes").Rows.Count
+        End Select
+
+        NombreCliente = ""
+
+        Do While Registros > i
+            NumeroRecibo = ""
+            MontoRecibo = 0
+            NombreCliente = DataSet.Tables("Clientes").Rows(i)("Nombre_Cliente")
+            CodigoCliente = DataSet.Tables("Clientes").Rows(i)("Cod_Cliente")
+
+            My.Application.DoEvents()
+
+
+            If OptCordobas = True Then
+                If DataSet.Tables("Clientes").Rows(i)("MonedaFactura") = "Cordobas" Then
+                    TasaCambio = 1
+                Else
+                    TasaCambio = BuscaTasaCambio(DataSet.Tables("Clientes").Rows(i)("Fecha_Factura"))
+                End If
+            Else
+                If DataSet.Tables("Clientes").Rows(i)("MonedaFactura") = "Dolares" Then
+                    TasaCambio = 1
+                Else
+                    TasaCambio = 1 / BuscaTasaCambio(DataSet.Tables("Clientes").Rows(i)("Fecha_Factura"))
+                End If
+            End If
+
+            NumeroFactura = DataSet.Tables("Clientes").Rows(i)("Numero_Factura")
+            FechaFactura = DataSet.Tables("Clientes").Rows(i)("Fecha_Factura")
+            FechaVence = DataSet.Tables("Clientes").Rows(i)("Fecha_Vencimiento")
+
+            If NumeroFactura = "42668" Then
+                NumeroFactura = "42668"
+            End If
+
+            Select Case Proceso
+                Case "AjustarTodos"
+                    'FrmAjustarTodos.Text = "Procesando Cliente: " & CodigoCliente & " Factura " & NumeroFactura & " Fecha: " & FechaFactura
+                Case "CtasxCobrar"
+                    'FrmCuentasXCobrar.Text = "Procesando Cliente: " & CodigoCliente & "      Factura: " & NumeroFactura & "      Fecha: " & FechaFactura
+                Case "ReporteCtasxCobrar"
+                    'FrmReportes.Text = "Procesando Cliente: " & CodigoCliente & "      Factura: " & NumeroFactura & "      Fecha: " & FechaFactura
+            End Select
+
+
+            If NumeroFactura = "M36816" Then
+                NumeroFactura = "M36816"
+            End If
+
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '//////////////////////////////////////BUSCO SI EXISTEN RECIBOS PARA LA FACTURA //////////////////////////////////////////////////////
+            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            'SQlString = "SELECT  MAX(DetalleRecibo.CodReciboPago) AS CodReciboPago, MAX(DetalleRecibo.Fecha_Recibo) AS Fecha_Recibo, DetalleRecibo.Numero_Factura, SUM(DetalleRecibo.MontoPagado) AS MontoPagado, Recibo.MonedaRecibo FROM DetalleRecibo INNER JOIN Recibo ON DetalleRecibo.CodReciboPago = Recibo.CodReciboPago AND DetalleRecibo.Fecha_Recibo = Recibo.Fecha_Recibo WHERE (DetalleRecibo.Fecha_Recibo <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) GROUP BY DetalleRecibo.Numero_Factura, Recibo.MonedaRecibo, Recibo.Cod_Cliente " & _
+            '            "HAVING (DetalleRecibo.Numero_Factura = '" & NumeroFactura & "') AND (Recibo.Cod_Cliente = '" & CodigoCliente & "')"
+
+            'SQlString = "SELECT MAX(DetalleRecibo.CodReciboPago) AS CodReciboPago, DetalleRecibo.Fecha_Recibo, DetalleRecibo.Numero_Factura, SUM(DetalleRecibo.MontoPagado) AS MontoPagado, Recibo.MonedaRecibo FROM DetalleRecibo INNER JOIN Recibo ON DetalleRecibo.CodReciboPago = Recibo.CodReciboPago AND DetalleRecibo.Fecha_Recibo = Recibo.Fecha_Recibo WHERE  (DetalleRecibo.Fecha_Recibo <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) GROUP BY DetalleRecibo.Numero_Factura, Recibo.MonedaRecibo, Recibo.Cod_Cliente, DetalleRecibo.Fecha_Recibo HAVING (DetalleRecibo.Numero_Factura = '" & NumeroFactura & "') AND (Recibo.Cod_Cliente = '" & Me.CodigoCliente & "')"
+            'SQlString = "SELECT DetalleRecibo.CodReciboPago, DetalleRecibo.Fecha_Recibo, DetalleRecibo.Numero_Factura, DetalleRecibo.MontoPagado, CASE WHEN Recibo.MonedaRecibo = 'Cordobas' THEN DetalleRecibo.MontoPagado ELSE DetalleRecibo.MontoPagado * TasaCambio.MontoTasa END AS MontoCordobas, CASE WHEN Recibo.MonedaRecibo = 'Dolares' THEN DetalleRecibo.MontoPagado ELSE DetalleRecibo.MontoPagado / TasaCambio.MontoTasa END AS MontoDolares, Recibo.Cod_Cliente FROM DetalleRecibo INNER JOIN Recibo ON DetalleRecibo.CodReciboPago = Recibo.CodReciboPago AND DetalleRecibo.Fecha_Recibo = Recibo.Fecha_Recibo INNER JOIN TasaCambio ON Recibo.Fecha_Recibo = TasaCambio.FechaTasa WHERE (DetalleRecibo.Fecha_Recibo <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Recibo.Cod_Cliente = '" & CodigoCliente & "')"
+
+            SQlString = "SELECT DetalleRecibo.CodReciboPago, DetalleRecibo.Fecha_Recibo, DetalleRecibo.Numero_Factura, DetalleRecibo.MontoPagado, CASE WHEN Recibo.MonedaRecibo = 'Cordobas' THEN DetalleRecibo.MontoPagado ELSE DetalleRecibo.MontoPagado * TasaCambio.MontoTasa END AS MontoCordobas, CASE WHEN Recibo.MonedaRecibo = 'Dolares' THEN DetalleRecibo.MontoPagado ELSE DetalleRecibo.MontoPagado / TasaCambio.MontoTasa END AS MontoDolares, Recibo.Cod_Cliente, Recibo.MonedaRecibo FROM DetalleRecibo INNER JOIN Recibo ON DetalleRecibo.CodReciboPago = Recibo.CodReciboPago AND DetalleRecibo.Fecha_Recibo = Recibo.Fecha_Recibo INNER JOIN TasaCambio ON Recibo.Fecha_Recibo = TasaCambio.FechaTasa WHERE (Recibo.Cod_Cliente = '" & CodigoCliente & "') AND (DetalleRecibo.Fecha_Recibo <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND " &
+                         "(DetalleRecibo.Numero_Factura = '" & NumeroFactura & "') "
+
+            DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+            DataAdapter.Fill(DataSet, "Recibos")
+            Registros2 = DataSet.Tables("Recibos").Rows.Count
+            j = 0
+
+            Do While Registros2 > j
+
+                If OptCordobas = True Then
+                    If DataSet.Tables("Recibos").Rows(j)("MonedaRecibo") = "Cordobas" Then
+                        TasaCambioRecibo = 1
+                    Else
+                        TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("Recibos").Rows(j)("Fecha_Recibo"))
+                    End If
+                Else
+                    If DataSet.Tables("Recibos").Rows(j)("MonedaRecibo") = "Dolares" Then
+                        TasaCambioRecibo = 1
+                    Else
+                        TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("Recibos").Rows(j)("Fecha_Recibo"))
+                    End If
+                End If
+                If NumeroRecibo = "" Then
+                    NumeroRecibo = DataSet.Tables("Recibos").Rows(j)("CodReciboPago")
+                Else
+                    NumeroRecibo = NumeroRecibo & "," & DataSet.Tables("Recibos").Rows(j)("CodReciboPago")
+                End If
+                MontoRecibo = MontoRecibo + DataSet.Tables("Recibos").Rows(j)("MontoPagado") * TasaCambioRecibo
+
+                j = j + 1
+            Loop
+
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '//////////////////////////////////////BUSCO SI EXISTEN NOTAS DE DEBITO PARA ESTA FACTURA //////////////////////////////////////////////////////
+            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            'SQlString = "SELECT Detalle_Nota.*, NotaDebito.Tipo, IndiceNota.MonedaNota FROM Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota WHERE  (NotaDebito.Tipo = 'Debito Clientes') AND (Detalle_Nota.Numero_Factura = '" & NumeroFactura & "')"
+            SQlString = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Monto, NotaDebito.Tipo, IndiceNota.MonedaNota, IndiceNota.Fecha_Nota AS Expr1, IndiceNota.Tipo_Nota AS Expr2 FROM Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota WHERE (Detalle_Nota.Fecha_Nota <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (NotaDebito.Tipo LIKE '%Debito Clientes%') AND (Detalle_Nota.Numero_Factura = '" & NumeroFactura & "') AND (IndiceNota.Cod_Cliente = '" & CodigoCliente & "')"
+
+            DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+            DataAdapter.Fill(DataSet, "NotaDB")
+            Registros2 = DataSet.Tables("NotaDB").Rows.Count
+            NumeroNota = ""
+            j = 0
+            MontoNota = 0
+            Do While Registros2 > j
+
+                TipoNota = DataSet.Tables("NotaDB").Rows(j)("Tipo")
+
+                If OptCordobas = True Then
+                    If TipoNota <> "Debito Clientes Dif $" Then
+                        If DataSet.Tables("NotaDB").Rows(j)("MonedaNota") = "Cordobas" Then
+                            TasaCambioRecibo = 1
+                        Else
+
+                            TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                            If TasaCambioRecibo <> 0 Then
+                                'TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                            Else
+                                MsgBox("No Existe Tasa de cambios!!! Fecha NB " & DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                            End If
+
+                        End If
+                    Else
+                        TasaCambioRecibo = 0
+                    End If
+                Else
+                    If TipoNota <> "Debito Clientes Dif C$" Then
+                        If DataSet.Tables("NotaDB").Rows(j)("MonedaNota") = "Dolares" Then
+                            TasaCambioRecibo = 1
+                        Else
+                            TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                        End If
+                    Else
+                        TasaCambioRecibo = 0
+                    End If
+                End If
+
+
+                If NumeroNota = "" Then
+                    NumeroNota = DataSet.Tables("NotaDB").Rows(j)("Numero_Nota")
+                Else
+                    NumeroNota = NumeroNota & "," & DataSet.Tables("NotaDB").Rows(j)("Numero_Nota")
+                End If
+                MontoNota = MontoNota + DataSet.Tables("NotaDB").Rows(j)("Monto") * TasaCambioRecibo
+
+                j = j + 1
+            Loop
+
+            DataSet.Tables("NotaDB").Reset()
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '//////////////////////////////////////BUSCO SI EXISTEN NOTAS DE CREDITO PARA ESTA FACTURA //////////////////////////////////////////////////////
+            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            'SQlString = "SELECT Detalle_Nota.*, NotaDebito.Tipo, IndiceNota.MonedaNota FROM Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota WHERE  (NotaDebito.Tipo = 'Credito Clientes') AND (Detalle_Nota.Numero_Factura = '" & NumeroFactura & "')"
+            SQlString = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Monto, NotaDebito.Tipo, IndiceNota.MonedaNota, IndiceNota.Fecha_Nota AS Expr1, IndiceNota.Tipo_Nota AS Expr2 FROM Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota WHERE (Detalle_Nota.Fecha_Nota <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (NotaDebito.Tipo LIKE '%Credito Clientes%') AND (Detalle_Nota.Numero_Factura = '" & NumeroFactura & "') AND (IndiceNota.Cod_Cliente = '" & CodigoCliente & "')"
+
+            DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+            DataAdapter.Fill(DataSet, "NotaCR")
+            Registros2 = DataSet.Tables("NotaCR").Rows.Count
+            NumeroNotaCR = ""
+            j = 0
+            MontoNotaCR = 0
+            Do While Registros2 > j
+
+                TipoNota = DataSet.Tables("NotaCR").Rows(j)("Tipo")
+
+                If OptCordobas = True Then
+                    If TipoNota <> "Credito Clientes Dif $" Then
+                        If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Cordobas" Then
+                            TasaCambioRecibo = 1
+                        Else
+                            TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                        End If
+                    Else
+                        TasaCambioRecibo = 0
+                    End If
+                Else
+                    If TipoNota <> "Credito Clientes Dif C$" Then
+                        If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Dolares" Then
+                            TasaCambioRecibo = 1
+                        Else
+
+
+                            TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                            If TasaCambioRecibo <> 0 Then
+                                TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                            Else
+                                MsgBox("No Existe Tasa de cambios!!! Fecha NC " & DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                            End If
+
+
+                        End If
+                    Else
+                        TasaCambioRecibo = 0
+                    End If
+                End If
+
+
+                If NumeroNotaCR = "" Then
+                    NumeroNotaCR = DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
+                Else
+                    NumeroNotaCR = NumeroNotaCR & "," & DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
+                End If
+                MontoNotaCR = MontoNotaCR + DataSet.Tables("NotaCR").Rows(j)("Monto") * TasaCambioRecibo
+                'MontoNotaCR +
+
+                j = j + 1
+            Loop
+            DataSet.Tables("NotaCR").Reset()
+
+            Dim MontoDev As Double, TotalMontoDev As Double, NumeroDev As String
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '//////////////////////////////////////BUSCO SI EXISTEN DEVOLUCION DE VENTAS PARA ESTA FACTURA //////////////////////////////////////////////////////
+            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            SQlString = "SELECT Facturas.Fecha_Factura, Facturas.Numero_Factura, Facturas.MetodoPago As Numero_Recibo, Facturas.Numero_Factura As NotaDebito, Facturas.SubTotal As MontoNota, Facturas.SubTotal As Monto, Facturas.Fecha_Factura As FechaVence, Facturas.IVA As Abono, Facturas.SubTotal AS Saldo, Facturas.SubTotal As Moratorio, Facturas.SubTotal As Dias, Facturas.SubTotal AS Total  FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " &
+            "WHERE (Facturas.Tipo_Factura = 'Devolucion de Venta') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '01/01/1900', 102) AND CONVERT(DATETIME, '01/01/1900', 102)) ORDER BY Facturas.Fecha_Factura, Facturas.Numero_Factura"
+
+            DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+            DataAdapter.Fill(DataSet, "DevVentas")
+            Registros2 = DataSet.Tables("DevVentas").Rows.Count
+            NumeroDev = ""
+            j = 0
+            MontoDev = 0
+            TotalMontoDev = 0
+            Do While Registros2 > j
+
+
+                If OptCordobas = True Then
+                    If TipoNota <> "Credito Clientes Dif $" Then
+                        If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Cordobas" Then
+                            TasaCambioRecibo = 1
+                        Else
+                            TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                        End If
+                    Else
+                        TasaCambioRecibo = 0
+                    End If
+                Else
+                    If TipoNota <> "Credito Clientes Dif C$" Then
+                        If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Dolares" Then
+                            TasaCambioRecibo = 1
+                        Else
+                            TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                        End If
+                    Else
+                        TasaCambioRecibo = 0
+                    End If
+                End If
+
+
+                If NumeroNotaCR = "" Then
+                    NumeroNotaCR = DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
+                Else
+                    NumeroNotaCR = NumeroNotaCR & "," & DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
+                End If
+                MontoNotaCR = DataSet.Tables("NotaCR").Rows(j)("Monto") * TasaCambioRecibo
+                'MontoNotaCR +
+                TotalMontoNotaCR = TotalMontoNotaCR + MontoNotaCR
+                j = j + 1
+            Loop
+            DataSet.Tables("DevVentas").Reset()
+
+
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '//////////////////////////////////////BUSCO EL DETALLE DE METODO PARA LAS FACTURAS DE CONTADO //////////////////////////////////////////////////////
+            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            MontoMetodoFactura = 0
+            SQlString = "SELECT * FROM Detalle_MetodoFacturas INNER JOIN MetodoPago ON Detalle_MetodoFacturas.NombrePago = MetodoPago.NombrePago WHERE (Detalle_MetodoFacturas.Tipo_Factura = 'Factura') AND (Detalle_MetodoFacturas.Numero_Factura = '" & NumeroFactura & "')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+            DataAdapter.Fill(DataSet, "MetodoFactura")
+            If DataSet.Tables("MetodoFactura").Rows.Count <> 0 Then
+                If OptCordobas = True Then
+                    If DataSet.Tables("MetodoFactura").Rows(0)("Moneda") = "Cordobas" Then
+                        TasaCambioRecibo = 1
+                    Else
+                        TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("MetodoFactura").Rows(0)("Fecha_Factura"))
+                    End If
+                Else
+                    If DataSet.Tables("MetodoFactura").Rows(0)("Moneda") = "Dolares" Then
+                        TasaCambioRecibo = 1
+                    Else
+                        TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("MetodoFactura").Rows(0)("Fecha_Factura"))
+                    End If
+                End If
+
+                MontoMetodoFactura = DataSet.Tables("MetodoFactura").Rows(0)("Monto") * TasaCambioRecibo
+
+            End If
+            DataSet.Tables("MetodoFactura").Reset()
+
+
+
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '//////////////////////////////////////BUSCO EL INTERES MORATORIO PARA ESTE CLIENTE //////////////////////////////////////////////////////
+            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            SQlString = "SELECT  * FROM Clientes WHERE (Cod_Cliente = '" & CodigoCliente & "')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+            DataAdapter.Fill(DataSet, "DatosCliente")
+            If Not DataSet.Tables("DatosCliente").Rows.Count = 0 Then
+                If Not IsDBNull(DataSet.Tables("DatosCliente").Rows(0)("InteresMoratorio")) Then
+                    TasaInteres = (DataSet.Tables("DatosCliente").Rows(0)("InteresMoratorio") / 100)
+                End If
+            End If
+
+            MontoFactura = Format((DataSet.Tables("Clientes").Rows(i)("SubTotal") + DataSet.Tables("Clientes").Rows(i)("IVA")) * TasaCambio, "##,##0.00")
+
+            '///////////////////////////////////////REDONDEO PARA LA SUMA //////////////////////////////
+            MontoFactura = Format(MontoFactura, "####0.00")
+            TotalMontoNotaDB = Format(TotalMontoNotaDB, "####0.00")
+            TotalMontoNotaCR = Format(TotalMontoNotaCR, "####0.00")
+            MontoMetodoFactura = Format(MontoMetodoFactura, "####0.00")
+
+            If NumeroFactura = "M02925" Then
+                NumeroFactura = "M02925"
+            End If
+
+            Dias = DateDiff(DateInterval.Day, FechaVence, FechaFin)
+            Saldo = MontoFactura - MontoRecibo + MontoNota - MontoNotaCR - MontoMetodoFactura
+            If Format(Saldo, "##,##0.00") = "0.00" Then
+                Dias = 0
+            End If
+            MontoMora = Dias * Saldo * TasaInteres
+            Total = Saldo + MontoMora
+
+            oDataRow = DatasetReporte.Tables("TotalVentas").NewRow
+            oDataRow("Fecha_Factura") = DataSet.Tables("Clientes").Rows(i)("Fecha_Factura")
+            oDataRow("Numero_Factura") = DataSet.Tables("Clientes").Rows(i)("Numero_Factura")
+            oDataRow("Numero_Recibo") = NumeroRecibo
+            If NumeroNota = "" Then
+                If NumeroNotaCR <> "" Then
+                    oDataRow("NotaDebito") = "NC:" & NumeroNotaCR
+                End If
+            ElseIf NumeroNotaCR = "" Then
+                If NumeroNota <> "" Then
+                    oDataRow("NotaDebito") = "NB:" & NumeroNota
+                End If
+            Else
+                oDataRow("NotaDebito") = "NC:" & NumeroNotaCR & " NB:" & NumeroNota
+            End If
+            oDataRow("Monto") = Format(MontoFactura, "##,##0.00")
+            oDataRow("FechaVence") = DataSet.Tables("Clientes").Rows(i)("Fecha_Vencimiento")
+            oDataRow("Abono") = Format(MontoRecibo + MontoMetodoFactura, "##,##0.00")
+            oDataRow("MontoNota") = Format(MontoNota - MontoNotaCR, "##,##0.00")
+            oDataRow("Saldo") = Format(Saldo, "##,##0.00")
+            oDataRow("Moratorio") = Format(MontoMora, "##,##0.00")
+            oDataRow("Dias") = Dias
+            oDataRow("Total") = Format(Total, "##,##0.00")
+            oDataRow("Cod_Cliente") = DataSet.Tables("Clientes").Rows(i)("Cod_Cliente")
+            oDataRow("Nombre_Cliente") = DataSet.Tables("Clientes").Rows(i)("Nombre_Cliente")
+            DatasetReporte.Tables("TotalVentas").Rows.Add(oDataRow)
+
+            If OptCordobas = True Then
+                ActualizaMontoCredito(DataSet.Tables("Clientes").Rows(i)("Numero_Factura"), DataSet.Tables("Clientes").Rows(i)("Fecha_Factura"), Saldo, "Cordobas")
+            Else
+                ActualizaMontoCredito(DataSet.Tables("Clientes").Rows(i)("Numero_Factura"), DataSet.Tables("Clientes").Rows(i)("Fecha_Factura"), Saldo, "Dolares")
+
+            End If
+
+
+
+            i = i + 1
+
+            Select Case Proceso
+                Case "AjustarTodos"
+                    'FrmAjustarTodos.ProgressBar.Value = FrmAjustarTodos.ProgressBar.Value + 1
+                Case "CtasxCobrar"
+                    'FrmCuentasXCobrar.ProgressBar.Value = FrmCuentasXCobrar.ProgressBar.Value + 1
+                Case "ReporteCtasxCobrar"
+                    'FrmReportes.ProgressBar.Value = FrmReportes.ProgressBar.Value + 1
+
+            End Select
+            'Me.ProgressBar.Value = i
+
+            TotalFactura = TotalFactura + Saldo
+            TotalAbonos = TotalAbonos + MontoRecibo
+            TotalCargos = TotalCargos + MontoFactura
+            TotalMontoNotaCR = TotalMontoNotaCR + MontoNotaCR
+            TotalMontoNotaDB = TotalMontoNotaDB + MontoNota
+            TotalMora = TotalMora + MontoMora
+            DataSet.Tables("DatosCliente").Reset()
+            DataSet.Tables("Recibos").Reset()
+        Loop
+
+
+        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////BUSCO SI EXISTEN NOTAS DE DEBITO SIN FACTURAS //////////////////////////////////////////////////////
+        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SQlString = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Monto, NotaDebito.Tipo, IndiceNota.MonedaNota, IndiceNota.Fecha_Nota AS Expr1, IndiceNota.Tipo_Nota AS Expr2 FROM Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota WHERE (NotaDebito.Tipo LIKE '%Debito Clientes%') AND (IndiceNota.Cod_Cliente = '" & CodigoCliente & "')  AND (Detalle_Nota.Numero_Factura = '0000')"
+
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapter.Fill(DataSet, "NotaDB")
+        Registros2 = DataSet.Tables("NotaDB").Rows.Count
+        NumeroNota = ""
+        j = 0
+        MontoNota = 0
+        Do While Registros2 > j
+
+            TipoNota = DataSet.Tables("NotaDB").Rows(j)("Tipo")
+
+            If OptCordobas = True Then
+                If TipoNota <> "Debito Clientes Dif $" Then
+                    If DataSet.Tables("NotaDB").Rows(j)("MonedaNota") = "Cordobas" Then
+                        TasaCambioRecibo = 1
+                    Else
+                        TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                    End If
+                Else
+                    TasaCambioRecibo = 0
+                End If
+            Else
+                If TipoNota <> "Debito Clientes Dif C$" Then
+                    If DataSet.Tables("NotaDB").Rows(j)("MonedaNota") = "Dolares" Then
+                        TasaCambioRecibo = 1
+                    Else
+                        TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"))
+                    End If
+                Else
+                    TasaCambioRecibo = 0
+                End If
+            End If
+
+            If NumeroNota = "" Then
+                NumeroNota = DataSet.Tables("NotaDB").Rows(j)("Numero_Nota")
+            Else
+                NumeroNota = DataSet.Tables("NotaDB").Rows(j)("Numero_Nota")
+            End If
+            MontoNota = DataSet.Tables("NotaDB").Rows(j)("Monto") * TasaCambioRecibo
+            'TotalMontoNotaDB = TotalMontoNotaDB + MontoNota
+
+            Dim Abono As Double = 0, AbonoNota As Double = 0
+
+            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '/////////////////////////////////////////////////////////BUSCO SI EXISTEN RECIBOS PARA LA NOTA DE DEBITO ///////////////////////////////
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            If OptCordobas = True Then
+                Abono = MontoReciboNotas(NumeroNota, "Cordobas")
+            Else
+                Abono = MontoReciboNotas(NumeroNota, "Dolares")
+            End If
+
+            If CadenaRecibo = "" Then
+                CadenaRecibo = "0000"
+            End If
+
+            RefNotaDebito = ""
+            '////////////////////////////////////BUSCO SI EXISTEN NOTAS PARA LA NOTA DE DEBITO /////////////////////////
+            If OptCordobas = True Then
+                AbonoNota = MontoNotaCreditoNota(NumeroNota, "Cordobas", CodigoCliente, NumeroNota)
+            Else
+                AbonoNota = MontoNotaCreditoNota(NumeroNota, "Dolares", CodigoCliente, NumeroNota)
+            End If
+
+
+            Dias = DateDiff(DateInterval.Day, DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota"), FechaFin)
+
+            If Format(MontoNota - Abono, "##,##0.00") = "0.00" Then
+                Dias = 0
+            End If
+
+            oDataRow = DatasetReporte.Tables("TotalVentas").NewRow
+            oDataRow("Fecha_Factura") = DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota")
+            oDataRow("Numero_Factura") = "0000"
+            oDataRow("Numero_Recibo") = CadenaRecibo
+            oDataRow("NotaDebito") = "NB:" & NumeroNota & RefNotaDebito
+            oDataRow("Monto") = "0"
+            oDataRow("FechaVence") = DataSet.Tables("NotaDB").Rows(j)("Fecha_Nota")
+            oDataRow("Abono") = Abono
+            oDataRow("MontoNota") = Format(MontoNota, "##,##0.00")
+            oDataRow("Saldo") = Format(MontoNota - Abono, "##,##0.00")
+            oDataRow("Moratorio") = "0"
+            oDataRow("Dias") = Dias
+            oDataRow("Total") = Format(MontoNota - Abono, "##,##0.00")
+            oDataRow("Cod_Cliente") = CodigoCliente
+            oDataRow("Nombre_Cliente") = NombreCliente
+            DatasetReporte.Tables("TotalVentas").Rows.Add(oDataRow)
+
+
+            'TotalFactura = TotalFactura + MontoNota
+            TotalMontoNotaDB = TotalMontoNotaDB + MontoNota
+
+            j = j + 1
+        Loop
+
+        DataSet.Tables("NotaDB").Reset()
+        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////BUSCO SI EXISTEN NOTAS DE CREDITO SIN FACTURAS //////////////////////////////////////////////////////
+        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        'SQlString = "SELECT Detalle_Nota.*, NotaDebito.Tipo, IndiceNota.MonedaNota FROM Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota WHERE  (NotaDebito.Tipo = 'Credito Clientes') AND (Detalle_Nota.Numero_Factura = '" & NumeroFactura & "')"
+        SQlString = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Monto, NotaDebito.Tipo, IndiceNota.MonedaNota, IndiceNota.Fecha_Nota AS Expr1, IndiceNota.Tipo_Nota AS Expr2 FROM Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota WHERE (NotaDebito.Tipo LIKE '%Credito Clientes%') AND (IndiceNota.Cod_Cliente = '" & CodigoCliente & "')  AND (Detalle_Nota.Numero_Factura = '0000')"
+
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapter.Fill(DataSet, "NotaCR")
+        Registros2 = DataSet.Tables("NotaCR").Rows.Count
+        NumeroNotaCR = ""
+        j = 0
+        MontoNotaCR = 0
+        Do While Registros2 > j
+
+            TipoNota = DataSet.Tables("NotaCR").Rows(j)("Tipo")
+
+            If OptCordobas = True Then
+                If TipoNota <> "Credito Clientes Dif $" Then
+                    If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Cordobas" Then
+                        TasaCambioRecibo = 1
+                    Else
+                        TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                    End If
+                Else
+                    TasaCambioRecibo = 0
+                End If
+            Else
+                If TipoNota <> "Credito Clientes Dif C$" Then
+                    If DataSet.Tables("NotaCR").Rows(j)("MonedaNota") = "Dolares" Then
+                        TasaCambioRecibo = 1
+                    Else
+                        TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"))
+                    End If
+                Else
+                    TasaCambioRecibo = 0
+                End If
+            End If
+
+            If NumeroNotaCR = "" Then
+                NumeroNotaCR = DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
+            Else
+                NumeroNotaCR = DataSet.Tables("NotaCR").Rows(j)("Numero_Nota")
+            End If
+            MontoNotaCR = DataSet.Tables("NotaCR").Rows(j)("Monto") * TasaCambioRecibo
+            'TotalMontoNotaCR = TotalMontoNotaCR + MontoNotaCR
+
+            'MontoNotaCR +
+
+            Dias = DateDiff(DateInterval.Day, DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota"), FechaFin)
+
+            If Format(TotalFactura - MontoNotaCR, "##,##0.00") = "0.00" Then
+                Dias = 0
+            End If
+
+            oDataRow = DatasetReporte.Tables("TotalVentas").NewRow
+            oDataRow("Fecha_Factura") = DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota")
+            oDataRow("Numero_Factura") = "0000"
+            oDataRow("Numero_Recibo") = "0000"
+            oDataRow("NotaDebito") = "NC:" & NumeroNotaCR
+            oDataRow("Monto") = "0"
+            oDataRow("FechaVence") = DataSet.Tables("NotaCR").Rows(j)("Fecha_Nota")
+            oDataRow("Abono") = "0"
+            oDataRow("MontoNota") = Format(-1 * MontoNotaCR, "##,##0.00")
+            oDataRow("Saldo") = Format(-1 * MontoNotaCR, "##,##0.00")
+            oDataRow("Moratorio") = "0"
+            oDataRow("Dias") = Dias
+            oDataRow("Total") = Format(-1 * MontoNotaCR, "##,##0.00")
+            oDataRow("Cod_Cliente") = CodigoCliente
+            oDataRow("Nombre_Cliente") = NombreCliente
+            DatasetReporte.Tables("TotalVentas").Rows.Add(oDataRow)
+
+            TotalFactura = TotalFactura - MontoNotaCR
+
+            j = j + 1
+        Loop
+        DataSet.Tables("NotaCR").Reset()
+
+
+        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////BUSCO SI EXISTEN RECIBOS SIN FACTURAS //////////////////////////////////////////////////////
+        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        'SQlString = "SELECT  MAX(DetalleRecibo.CodReciboPago) AS CodReciboPago, MAX(DetalleRecibo.Fecha_Recibo) AS Fecha_Recibo, DetalleRecibo.Numero_Factura, SUM(DetalleRecibo.MontoPagado) AS MontoPagado, Recibo.MonedaRecibo FROM DetalleRecibo INNER JOIN Recibo ON DetalleRecibo.CodReciboPago = Recibo.CodReciboPago AND DetalleRecibo.Fecha_Recibo = Recibo.Fecha_Recibo GROUP BY DetalleRecibo.Numero_Factura, Recibo.MonedaRecibo, Recibo.Cod_Cliente " & _
+        '            "HAVING (DetalleRecibo.Numero_Factura = '0') AND (Recibo.Cod_Cliente = '" & CodigoCliente & "')"
+
+        SQlString = "SELECT  DetalleRecibo.CodReciboPago, DetalleRecibo.Fecha_Recibo, DetalleRecibo.Numero_Factura, DetalleRecibo.MontoPagado, Recibo.MonedaRecibo FROM  DetalleRecibo INNER JOIN Recibo ON DetalleRecibo.CodReciboPago = Recibo.CodReciboPago AND DetalleRecibo.Fecha_Recibo = Recibo.Fecha_Recibo WHERE (DetalleRecibo.Numero_Factura = '0') AND (Recibo.Cod_Cliente = '" & CodigoCliente & "') ORDER BY DetalleRecibo.Fecha_Recibo"
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapter.Fill(DataSet, "RecibosSF")
+        Registros2 = DataSet.Tables("RecibosSF").Rows.Count
+        j = 0
+        MontoRecibo = 0
+
+        Do While Registros2 > j
+
+            If OptCordobas = True Then
+                If DataSet.Tables("RecibosSF").Rows(j)("MonedaRecibo") = "Cordobas" Then
+                    TasaCambioRecibo = 1
+                Else
+                    TasaCambioRecibo = BuscaTasaCambio(DataSet.Tables("RecibosSF").Rows(j)("Fecha_Recibo"))
+                End If
+            Else
+                If DataSet.Tables("RecibosSF").Rows(j)("MonedaRecibo") = "Dolares" Then
+                    TasaCambioRecibo = 1
+                Else
+                    TasaCambioRecibo = 1 / BuscaTasaCambio(DataSet.Tables("RecibosSF").Rows(j)("Fecha_Recibo"))
+                End If
+            End If
+            If NumeroRecibo = "" Then
+                NumeroRecibo = DataSet.Tables("RecibosSF").Rows(j)("CodReciboPago")
+            Else
+                NumeroRecibo = DataSet.Tables("RecibosSF").Rows(j)("CodReciboPago")
+            End If
+            MontoRecibo = DataSet.Tables("RecibosSF").Rows(j)("MontoPagado") * TasaCambioRecibo
+
+            Dias = DateDiff(DateInterval.Day, DataSet.Tables("RecibosSF").Rows(j)("Fecha_Recibo"), FechaFin)
+
+            oDataRow = DatasetReporte.Tables("TotalVentas").NewRow
+            oDataRow("Fecha_Factura") = DataSet.Tables("RecibosSF").Rows(j)("Fecha_Recibo")
+            oDataRow("Numero_Factura") = "0000"
+            oDataRow("Numero_Recibo") = NumeroRecibo
+            oDataRow("Monto") = "0"
+            oDataRow("FechaVence") = DataSet.Tables("RecibosSF").Rows(j)("Fecha_Recibo")
+            oDataRow("Abono") = Format(MontoRecibo, "##,##0.00")
+            oDataRow("MontoNota") = "0"
+            oDataRow("Saldo") = Format(-1 * MontoRecibo, "##,##0.00")
+            oDataRow("Moratorio") = "0"
+            oDataRow("Dias") = Dias
+            oDataRow("Total") = Format(-1 * MontoRecibo, "##,##0.00")
+            oDataRow("Cod_Cliente") = CodigoCliente
+            oDataRow("Nombre_Cliente") = NombreCliente
+            DatasetReporte.Tables("TotalVentas").Rows.Add(oDataRow)
+
+            TotalAbonos = TotalAbonos + MontoRecibo
+            TotalFactura = TotalFactura - MontoRecibo
+            j = j + 1
+        Loop
+
+        TotalFactura = TotalCargos - TotalAbonos + TotalMora + TotalMontoNotaDB - TotalMontoNotaCR
+
+        '//////////////////////////ENVIANDO LOS TOTALES ///////////////////
+        Resultado.DsTotalVentas = New DataSet
+        Resultado.ClaseTotalVentas = New CsTotalCtasxCobrar
+        Resultado.DsTotalVentas = DatasetReporte
+
+        Select Case Proceso
+
+            Case "CtasxCobrar"
+
+                Resultado.ClaseTotalVentas.TotalFactura = TotalFactura
+                Resultado.ClaseTotalVentas.TotalCargos = TotalCargos
+                Resultado.ClaseTotalVentas.TotalAbonos = TotalAbonos
+                Resultado.ClaseTotalVentas.TotalMora = TotalMora
+                Resultado.ClaseTotalVentas.TotalMontoNotaDB = TotalMontoNotaDB
+                Resultado.ClaseTotalVentas.TotalMontoNotaCR = TotalMontoNotaCR
+
+        End Select
+
+        Return Resultado
+
+    End Function
+
     Public Function BuscaExistenciaFacturaLoteWorker(Args As TablaDetalleFactura, ByVal worker As BackgroundWorker, ByVal e As DoWorkEventArgs) As Lote
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -131,7 +873,6 @@ Module Funciones
 
 
     End Function
-
     Public Function TieneContratoProveedor(CodigoProveedor As String) As Boolean
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SqlProveedor As String
@@ -556,6 +1297,7 @@ Module Funciones
 
 
     End Function
+
 
     Public Function FillDataSetCtaxCobrar(CodigoCliente As String, OptCordobas As Boolean, FechaFin As Date, Proceso As String) As DataSet
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)

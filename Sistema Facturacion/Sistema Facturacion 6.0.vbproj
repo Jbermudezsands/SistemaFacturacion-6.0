@@ -106,6 +106,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Clases\Consultas\CsContratos.vb" />
+    <Compile Include="Clases\Consultas\CsFillCtasxCobrar.vb" />
+    <Compile Include="Clases\Consultas\CsResultadoCtasxCobrar.vb" />
+    <Compile Include="Clases\Consultas\CsTotalCtasxCobrar.vb" />
     <Compile Include="Clases\Consultas\ReporteExistenciaLote.vb" />
     <Compile Include="Clases\Tablas\TablaCompras.vb" />
     <Compile Include="Clases\Tablas\FileName.vb" />
