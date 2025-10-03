@@ -12174,7 +12174,7 @@ Handles backgroundWorkerReportes.RunWorkerCompleted
 
                             End If
 
-                        Else
+                        ElseIf ExistenciaLote <> 0 Then
 
                             Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
                             Buscar_Fila = DataSetReportes.Tables("ExistenciaLotes").Select(Criterios)
@@ -12193,9 +12193,9 @@ Handles backgroundWorkerReportes.RunWorkerCompleted
                         End If
 
                         If Me.ChkAgrupVtas.Checked = True Then
-                            If ExistenciaLote < 0 Then
+                            If ExistenciaLote <0 Then
                                 '///////////////////////////////////SI LA EXISTENCIA ES MENOR A CERO GUARDO ESTE REGISTRO /////////////////////////////////////
-                                Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Codigo_Producto= '" & CodigoProducto & "'"
+                            Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Codigo_Producto= '" & CodigoProducto & "'"
                             Else
                                 Criterios = "Codigo_Bodega= '" & CodigoBodega & "' And Numero_Lote= '" & NumeroLote & "' And Codigo_Producto= '" & CodigoProducto & "'"
                             End If
@@ -12443,35 +12443,39 @@ Handles backgroundWorkerReportes.RunWorkerCompleted
                 Loop
 
 
-                If iPosicion = Cont Then
 
-                    Dim ViewerForm As New FrmViewer()
 
-                    If CmbAgrupado.Text = "Bodega" Then
-                        DvDetalleProductos = New DataView(DataSetReportes.Tables("ExistenciaLotes"))
-                        DvDetalleProductos.Sort = "Codigo_Bodega, Codigo_Producto, FechaVence"
-                        ArepExistenciaxLote.LblRango.Text = "Desde " & FechaIni & " Hasta " & FechaFin
-                        ArepExistenciaxLote.TextBox3.DataField = "Codigo_Bodega"
-                        ArepExistenciaxLote.Label17.Text = "Bodega"
+                Dim Filtro As String, ViewerForm As New FrmViewer()
 
-                    Else
+                Filtro = "Existencia <> 0 "
 
-                        DvDetalleProductos = New DataView(DataSetReportes.Tables("ExistenciaLotes"))
-                        DvDetalleProductos.Sort = "Codigo_Linea, Codigo_Producto, FechaVence"
-                        ArepExistenciaxLote.LblRango.Text = "Desde " & FechaIni & " Hasta " & FechaFin
-                        ArepExistenciaxLote.TextBox3.DataField = "Cod_Linea"
-                        ArepExistenciaxLote.Label17.Text = "Linea"
+                If CmbAgrupado.Text = "Bodega" Then
+                    DvDetalleProductos = New DataView(DataSetReportes.Tables("ExistenciaLotes"))
+                    DvDetalleProductos.Sort = "Codigo_Bodega, Codigo_Producto, FechaVence"
+                    ArepExistenciaxLote.LblRango.Text = "Desde " & FechaIni & " Hasta " & FechaFin
+                    ArepExistenciaxLote.TextBox3.DataField = "Codigo_Bodega"
+                    ArepExistenciaxLote.Label17.Text = "Bodega"
 
-                    End If
+                Else
 
-                    ViewerForm.arvMain.Document = ArepExistenciaxLote.Document
+                    DvDetalleProductos = New DataView(DataSetReportes.Tables("ExistenciaLotes"))
+                    DvDetalleProductos.Sort = "Codigo_Linea, Codigo_Producto, FechaVence"
+                    ArepExistenciaxLote.LblRango.Text = "Desde " & FechaIni & " Hasta " & FechaFin
+                    ArepExistenciaxLote.TextBox3.DataField = "Cod_Linea"
+                    ArepExistenciaxLote.Label17.Text = "Linea"
+
+                End If
+
+                DvDetalleProductos.RowFilter = Filtro
+
+                ViewerForm.arvMain.Document = ArepExistenciaxLote.Document
                     My.Application.DoEvents()
                     'ArepMovimientoProductos.DataSource = SQL
                     ArepExistenciaxLote.DataSource = DvDetalleProductos
                     ArepExistenciaxLote.Run(False)
                     ViewerForm.Show()
 
-                End If
+
 
 
             Case "Movimientos de Productos"

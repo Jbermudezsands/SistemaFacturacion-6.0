@@ -2779,6 +2779,9 @@
     <Content Include="carrito1.ico" />
     <Content Include="kpilot.ico" />
     <Content Include="productos.ico" />
+    <None Include="Reportes\Page1.rdlx">
+      <SubType>Component</SubType>
+    </None>
     <None Include="Resources\Pinned.png" />
     <None Include="Resources\Unpinned.png" />
     <None Include="Resources\billing1.ico" />
