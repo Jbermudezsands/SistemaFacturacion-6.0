@@ -724,7 +724,6 @@ Handles backgroundWorkerLote.DoWork
 
             worker.WorkerReportsProgress = True
             worker.WorkerSupportsCancellation = True
-            'e.Result = BuscaExistenciaBodegaLoteWorker(CodigoProducto, CodigoBodega, NumeroLote, fechaVence, worker, e)
             e.Result = BuscaExistenciaDetalleLoteWorker(args, worker, e)
 
         End If
@@ -1064,7 +1063,6 @@ Handles backgroundWorkerLote.RunWorkerCompleted
 
 
         SQlString = "SELECT  MAX(Detalle_Compras.Cod_Producto) AS Cod_Producto, Detalle_Compras.Numero_Lote, Lote.FechaVence as Fecha_Vence FROM Detalle_Compras INNER JOIN Lote ON Detalle_Compras.Numero_Lote = Lote.Numero_Lote WHERE  (Lote.Activo = 1) AND (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Lote.FechaVence >= CONVERT(DATETIME, '" & Format(FechaFiltro, "yyyy-MM-dd") & "', 102)) GROUP BY Detalle_Compras.Numero_Lote, Lote.FechaVence HAVING (NOT (Detalle_Compras.Numero_Lote IS NULL)) ORDER BY Lote.FechaVence"
-        'SQlString = "SELECT  Cod_Productos, Numero_Lote, Cod_Bodega, Existencia, Fecha_Vence, Activo FROM LotexProducto WHERE (Activo = 1) AND (Existencia > 0) AND (Fecha_Vence >= CONVERT(DATETIME, '" & Format(FechaFiltro, "yyyy-MM-dd") & "', 102)) AND (Cod_Productos = '" & CodigoProducto & "')"
 
         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
         DataAdapter.Fill(DataSet, "Lotes")

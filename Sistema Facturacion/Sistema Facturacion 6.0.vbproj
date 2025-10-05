@@ -106,7 +106,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Clases\Consultas\CsContratos.vb" />
+    <Compile Include="Clases\Consultas\ArgsReporteExistenciaLote.vb" />
     <Compile Include="Clases\Consultas\ReporteExistenciaLote.vb" />
+    <Compile Include="Clases\Consultas\RstCmbReporteExistenciaLote.vb" />
     <Compile Include="Clases\Tablas\TablaCompras.vb" />
     <Compile Include="Clases\Tablas\FileName.vb" />
     <Compile Include="Clases\Tablas\TablaContrato_Proveedor.vb" />
@@ -2779,6 +2781,9 @@
     <Content Include="carrito1.ico" />
     <Content Include="kpilot.ico" />
     <Content Include="productos.ico" />
+    <None Include="Reportes\Page1.rdlx">
+      <SubType>Component</SubType>
+    </None>
     <None Include="Resources\Pinned.png" />
     <None Include="Resources\Unpinned.png" />
     <None Include="Resources\billing1.ico" />
