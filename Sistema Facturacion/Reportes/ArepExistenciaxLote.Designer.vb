@@ -532,7 +532,7 @@ Partial Public Class ArepExistenciaxLote
         Me.TextBox7.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox7.Border.TopColor = System.Drawing.Color.Black
         Me.TextBox7.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.TextBox7.DataField = "Nombre_Producto"
+        Me.TextBox7.DataField = "Descripcion_Producto"
         Me.TextBox7.Height = 0.1875!
         Me.TextBox7.Left = 0.1875!
         Me.TextBox7.Name = "TextBox7"
@@ -564,7 +564,7 @@ Partial Public Class ArepExistenciaxLote
         Me.TextBox8.Style = "ddo-char-set: 0; font-weight: bold; font-size: 8.25pt; "
         Me.TextBox8.SummaryGroup = "GroupHeader1"
         Me.TextBox8.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
-        Me.TextBox8.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
+        Me.TextBox8.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox8.Text = Nothing
         Me.TextBox8.Top = 0!
         Me.TextBox8.Width = 1.15!
