@@ -1058,51 +1058,24 @@ Handles backgroundWorkerLote.RunWorkerCompleted
         Dim SQlString As String, iPosicion As Double = 0
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim Registro As Double = 0, FechaActual As Date = Format(Now, "dd/MM/yyyy")
-        Dim NumeroLote As String
+        Dim NumeroLote As String = "SINLOTE"
         Dim ComandoUpdate As New SqlClient.SqlCommand
 
+        FechaVenceLote = DateAdd(DateInterval.Month, -2, FechaFiltro)
 
-        SQlString = "SELECT  MAX(Detalle_Compras.Cod_Producto) AS Cod_Producto, Detalle_Compras.Numero_Lote, Lote.FechaVence as Fecha_Vence FROM Detalle_Compras INNER JOIN Lote ON Detalle_Compras.Numero_Lote = Lote.Numero_Lote WHERE  (Lote.Activo = 1) AND (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Lote.FechaVence >= CONVERT(DATETIME, '" & Format(FechaFiltro, "yyyy-MM-dd") & "', 102)) GROUP BY Detalle_Compras.Numero_Lote, Lote.FechaVence HAVING (NOT (Detalle_Compras.Numero_Lote IS NULL)) ORDER BY Lote.FechaVence"
-
+        'SQlString = "SELECT  MAX(Detalle_Compras.Cod_Producto) AS Cod_Producto, Detalle_Compras.Numero_Lote, Lote.FechaVence as Fecha_Vence FROM Detalle_Compras INNER JOIN Lote ON Detalle_Compras.Numero_Lote = Lote.Numero_Lote WHERE  (Lote.Activo = 1) AND (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Lote.FechaVence >= CONVERT(DATETIME, '" & Format(FechaFiltro, "yyyy-MM-dd") & "', 102)) GROUP BY Detalle_Compras.Numero_Lote, Lote.FechaVence HAVING (NOT (Detalle_Compras.Numero_Lote IS NULL)) ORDER BY Lote.FechaVence"
+        SQlString = "SELECT m.Cod_Producto, p.Descripcion_Producto, m.Numero_Lote, m.Cod_Bodega, SUM(m.Cantidad * m.TipoMovimiento) AS Existencia_Lote, p.Cod_Linea, L.FechaVence FROM  (SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE (dc.Tipo_Compra = 'Mercancia Recibida') UNION ALL SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, - 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE  (dc.Tipo_Compra = 'Devolucion de Compra') UNION ALL SELECT  df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, - 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE (df.Tipo_Factura = 'Factura') UNION ALL SELECT df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE (df.Tipo_Factura = 'Devolucion de Ventas') UNION ALL SELECT df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, - 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE  (df.Tipo_Factura = 'Transferencias Enviadas') UNION ALL SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM  Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE (dc.Tipo_Compra = 'Transferencias Recibidas')) AS m INNER JOIN Productos AS p ON m.Cod_Producto = p.Cod_Productos INNER JOIN Lote AS L ON m.Numero_Lote = L.Numero_Lote " &
+                    "WHERE (m.FechaMovimiento >= CONVERT(DATETIME, '" & Format(FechaVenceLote, "yyyy-MM-dd") & "', 102)) AND (m.Cod_Bodega = '" & CodigoBodega & "') AND (L.Numero_Lote <> 'SIN LOTE') AND (L.Numero_Lote <> 'SINLOTE') AND (L.Numero_Lote <> N'') AND (m.Cod_Producto = '" & CodigoProducto & "') AND (L.Activo = 1) GROUP BY m.Cod_Producto, p.Descripcion_Producto, m.Numero_Lote, m.Cod_Bodega, p.Cod_Linea, L.FechaVence ORDER BY L.FechaVence, m.Cod_Producto, p.Descripcion_Producto, m.Numero_Lote, m.Cod_Bodega"
         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
         DataAdapter.Fill(DataSet, "Lotes")
-        iPosicion = 0
-        LoteDefectoWorker = ""
-        FechaVenceLote = Format(Now, "dd/MM/yyyy")
 
-        Do While DataSet.Tables("Lotes").Rows.Count > iPosicion
-
-
-            Dim worker As BackgroundWorker
-            Dim args As ClaseLote = New ClaseLote
-
-            NumeroLote = DataSet.Tables("Lotes").Rows(iPosicion)("Numero_Lote")
-
-            args.CodigoProducto = CodigoProducto
-            args.CodigoBodega = CodigoBodega
-            args.NumeroLote = NumeroLote
-            args.FechaVence = DataSet.Tables("Lotes").Rows(iPosicion)("Fecha_Vence")
-
-            worker = New BackgroundWorker()
-            AddHandler worker.DoWork, AddressOf backgroundWorkerLote_DoWork
-            AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerLote_RunWorkerCompleted
-            worker.RunWorkerAsync(args)
-
-            'CodigoProducto = DataSet.Tables("Lotes").Rows(iPosicion)("Cod_Producto")
-
-            'If Not IsDBNull(DataSet.Tables("Lotes").Rows(iPosicion)("FechaVence")) Then
-            '    'FechaVence = DataSet.Tables("Lots").Rows(iPosicion)("FechaVence")
-            'End If
-
-            'ExistenciaLote = BuscaExistenciaBodegaLote(CodigoProducto, CodigoBodega, NumeroLote)
-
-
-            iPosicion = iPosicion + 1
-        Loop
+        If DataSet.Tables("Lotes").Rows.Count <> 0 Then
+            NumeroLote = DataSet.Tables("Lotes").Rows(0)("Numero_Lote")
+        End If
 
 
 
-
+        Return NumeroLote
 
     End Function
 
@@ -9474,9 +9447,13 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                         If TipoProducto <> "Descuento" Then
                             If My.Forms.FrmLotesFactura.NLotes <> "" Then
                                 Me.TrueDBGridComponentes.Columns("CodTarea").Text = My.Forms.FrmLotesFactura.NLotes
-                                Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
+                                If Me.TrueDBGridComponentes.Columns("Cantidad").Text = "" Then
+                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
+                                End If
                             Else
-                                Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
+                                If Me.TrueDBGridComponentes.Columns("Cantidad").Text = "" Then
+                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
+                                End If
                             End If
                         End If
                     End If
