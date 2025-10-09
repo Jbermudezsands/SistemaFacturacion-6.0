@@ -248,6 +248,7 @@ Public Class FrmFacturas
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim NombrePago As String, NumeroTarjeta As String, FechaVenceTarjeta As Date, SQlstring As String
         Dim Consecutivo As Double, NumeroNota As String
+        Dim RstCosto As New RstCostoPromedio
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL ENCABEZADO DE LA FACTURA /////////////////////////////////////////////
@@ -335,7 +336,8 @@ Public Class FrmFacturas
                     End If
 
                     If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Costo_Unitario")) Then
-                        CostoUnitario = CostoPromedioKardex(DetalleFactura.Cod_Producto, DetalleFactura.Fecha_Factura)
+                        RstCosto = CostoPromedioKardex(DetalleFactura.Cod_Producto, DetalleFactura.Fecha_Factura)
+                        CostoUnitario = RstCosto.Costo_Cordoba
                     End If
 
                     GrabaDetalleFacturaTarea(DetalleFactura.Numero_Factura, DetalleFactura.Cod_Producto, DetalleFactura.Descripcion_Producto, DetalleFactura.Precio_Unitario, DetalleFactura.Descuento_DetalleFactura, DetalleFactura.Precio_Neto, DetalleFactura.Importe_DetalleFactura, DetalleFactura.Cantidad_DetalleFactura, DetalleFactura.Id_Detalle_Factura, DetalleFactura.Cod_Tarea)
@@ -348,7 +350,8 @@ Public Class FrmFacturas
                     End If
 
                     If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Costo_Unitario")) Then
-                        CostoUnitario = CostoPromedioKardex(DetalleFactura.Cod_Producto, DetalleFactura.Fecha_Factura)
+                        RstCosto = CostoPromedioKardex(DetalleFactura.Cod_Producto, DetalleFactura.Fecha_Factura)
+                        CostoUnitario = RstCosto.Costo_Cordoba
                     End If
 
                     GrabaDetalleFacturaLotes(DetalleFactura.Numero_Factura, DetalleFactura.Cod_Producto, DetalleFactura.Descripcion_Producto, DetalleFactura.Precio_Unitario, DetalleFactura.Descuento_DetalleFactura, DetalleFactura.Precio_Neto, DetalleFactura.Importe_DetalleFactura, DetalleFactura.Cantidad_DetalleFactura, DetalleFactura.Id_Detalle_Factura, DetalleFactura.Cod_Tarea, DetalleFactura.Fecha_Vence, DetalleFactura.Tipo_Factura)
@@ -356,14 +359,16 @@ Public Class FrmFacturas
                 Else
                     '//////////////// POR LOS HILOS REPITO EL CODIGO DEL COSTO ////
                     If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Costo_Unitario")) Then
-                        CostoUnitario = CostoPromedioKardex(DetalleFactura.Cod_Producto, DetalleFactura.Fecha_Factura)
+                        RstCosto = CostoPromedioKardex(DetalleFactura.Cod_Producto, DetalleFactura.Fecha_Factura)
+                        CostoUnitario = RstCosto.Costo_Cordoba
                     End If
                     GrabaDetalleFactura(DetalleFactura.Numero_Factura, DetalleFactura.Cod_Producto, DetalleFactura.Descripcion_Producto, DetalleFactura.Precio_Unitario, DetalleFactura.Descuento_DetalleFactura, DetalleFactura.Precio_Neto, DetalleFactura.Importe_DetalleFactura, DetalleFactura.Cantidad_DetalleFactura, DetalleFactura.Id_Detalle_Factura, CostoUnitario)
                 End If
             Else
                 '//////////////// POR LOS HILOS REPITO EL CODIGO DEL COSTO ////
                 If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Costo_Unitario")) Then
-                    CostoUnitario = CostoPromedioKardex(DetalleFactura.Cod_Producto, DetalleFactura.Fecha_Factura)
+                    RstCosto = CostoPromedioKardex(DetalleFactura.Cod_Producto, DetalleFactura.Fecha_Factura)
+                    CostoUnitario = RstCosto.Costo_Cordoba
                 End If
                 GrabaDetalleFactura(DetalleFactura.Numero_Factura, DetalleFactura.Cod_Producto, DetalleFactura.Descripcion_Producto, DetalleFactura.Precio_Unitario, DetalleFactura.Descuento_DetalleFactura, DetalleFactura.Precio_Neto, DetalleFactura.Importe_DetalleFactura, DetalleFactura.Cantidad_DetalleFactura, DetalleFactura.Id_Detalle_Factura, CostoUnitario)
 
@@ -3202,7 +3207,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim TipoNota As String, NumeroNota As String, FechaVence As Date
         Dim Consecutivo As Double, SQlstring As String
-
+        Dim RstCosto As New RstCostoPromedio
 
         If Me.CboTipoProducto.Text = "" Then
             MsgBox("Seleccione un Tipo", MsgBoxStyle.Critical, "Zeus Facturacion")
@@ -3256,10 +3261,12 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
             Else
                 If FacturaTarea = True Then
                     'CostoUnitario = CostoPromedio(CodigoProducto)
-                    CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                    RstCosto = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                    CostoUnitario = RstCosto.Costo_Cordoba
                 Else
                     'CostoUnitario = CostoPromedio(CodigoProducto)
-                    CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                    RstCosto = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                    CostoUnitario = RstCosto.Costo_Cordoba
                 End If
                 Me.BindingDetalle.Item(iPosicion)("Costo_Unitario") = CostoUnitario
             End If
@@ -4060,6 +4067,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         Dim ArepFacturasTareas As New ArepFacturasTareas, FacturaBodega As Boolean = False, CompraBodega As Boolean = False
         Dim ArepFacturas2 As New ArepFacturas2, ArepSalidaBodega As New ArepSalidaBodega, Ancho As Double, Largo As Double
         Dim ArepCotizaciones As New ArepCotizaciones, ImprimeFacturaPreview As Boolean = True, CostoUnitario As Double = 0
+        Dim RstCosto As New RstCostoPromedio
 
         Try
 
@@ -4310,11 +4318,8 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                         'CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
                         'Me.BindingDetalle.Item(iPosicion)("Costo_Unitario") = CostoUnitario
                     Else
-                        If FacturaTarea = True Then
-                            CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
-                        Else
-                            CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
-                        End If
+                        RstCosto = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                        CostoUnitario = RstCosto.Costo_Cordoba
                         Me.BindingDetalle.Item(iPosicion)("Costo_Unitario") = CostoUnitario
                     End If
 
@@ -5813,6 +5818,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         Dim CodigoAlterno As String = "", Precio As Double = 0, Cantidad As Double = 0, Categoria As String
         Dim CostoUnitario As Double = 0, TasaCambio As Double = 1, TipoProducto As String = "", TipoDescuento As String = ""
         Dim SubTotal As Double = 0, PorcientoDescuento As Double = 0, Neto As Double = 0
+        Dim RstCosto As New RstCostoPromedio
 
         Try
 
@@ -5846,8 +5852,8 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                             '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                             If Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text = "" Then
-                                CostoUnitario = CostoPromedioKardex(CodProducto, Me.DTPFecha.Value)
-
+                                RstCosto = CostoPromedioKardex(CodProducto, Me.DTPFecha.Value)
+                                CostoUnitario = RstCosto.Costo_Cordoba
                                 Dim worker As BackgroundWorker, Lotes As Lote = New Lote
                                 worker = New BackgroundWorker()
                                 AddHandler worker.DoWork, AddressOf backgroundWorkerGrabar_DoWork
@@ -6079,8 +6085,8 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                                 DataAdapter.Fill(DataSet, "Alternos")
                                 If Not DataSet.Tables("Alternos").Rows.Count = 0 Then
                                     Me.TrueDBGridComponentes.Columns("Cod_Producto").Text = DataSet.Tables("Alternos").Rows(0)("Cod_Producto")
-                                    CostoUnitario = CostoPromedioKardex(DataSet.Tables("Alternos").Rows(0)("Cod_Producto"), Me.DTPFecha.Value)
-                                    'CostoUnitario = CostoPromedio(DataSet.Tables("Alternos").Rows(0)("Cod_Producto"))
+                                    RstCosto = CostoPromedioKardex(DataSet.Tables("Alternos").Rows(0)("Cod_Producto"), Me.DTPFecha.Value)
+                                    CostoUnitario = RstCosto.Costo_Cordoba
                                     Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text = CostoUnitario
                                     'Me.TrueDBGridComponentes.Col = 2
                                 Else
@@ -6655,6 +6661,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         Dim PrecioDescDolar As Double, PrecioDescCordobas As Double, PorcientoDescuento As Double, CodigoBodega As String = ""
         Dim ExistenciaNegativa As String = "NO", Existencia As Double = 0, Cantidad2 As Double = 0, Categoria As String, Mensaje As String
         Dim NumeroLote As String, ExistenciaLote As Double, Args As ReporteExistenciaLote = New ReporteExistenciaLote, resul As ReporteExistenciaLote = New ReporteExistenciaLote
+        Dim RstCosto As New RstCostoPromedio
 
         Try
 
@@ -7364,7 +7371,9 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                                     If Me.CboTipoProducto.Text = "Salida Bodega" Then
                                         If Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text = "" Then
-                                            Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text = CostoPromedioKardex(CodProducto, Me.DTPFecha.Value)
+                                            RstCosto = CostoPromedioKardex(CodProducto, Me.DTPFecha.Value)
+                                            Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text = RstCosto.Costo_Cordoba
+
                                         End If
 
                                         Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text
@@ -8947,7 +8956,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         Dim SqlString As String, CodTarea As String = "", CodigoProducto As String = "0000", iPosicion As Double = 0, CostoUnitario As Double = 0
         Dim Descuento As Double, PrecioUnitario As Double, PrecioNeto As Double, Cantidad As Double, NumeroLote As String, Sql As String, Monto As Double
         Dim TasaCambio As Double = 0
-
+        Dim RstCosto As New RstCostoPromedio
 
         If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
             Quien = "NumeroFacturas"
@@ -9083,11 +9092,8 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                 'CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
                 'Me.BindingDetalle.Item(iPosicion)("Costo_Unitario") = CostoUnitario
             Else
-                If FacturaTarea = True Then
-                    CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
-                Else
-                    CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
-                End If
+                RstCosto = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                CostoUnitario = RstCosto.Costo_Cordoba
                 Me.BindingDetalle.Item(iPosicion)("Costo_Unitario") = CostoUnitario
             End If
 
@@ -9102,6 +9108,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         Dim CodProducto As String, TipoProducto As String = "Servicio", TipoDescuento As String = "ImporteFijo", PrecioDescCordobas As Double, PrecioDescDolar As Double
         Dim Cantidad As Double, Precio As Double, SubTotal As Double, PorcientoDescuento As Double, Neto As Double, CodigoAlterno As String = ""
         Dim Categoria As String = "", PrecioTipo As Double = 0, CostoUnitario As Double
+        Dim RstCosto As New RstCostoPromedio
 
         'Try
 
@@ -9137,7 +9144,9 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
 
                     If Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text = "" Then
-                        CostoUnitario = CostoPromedioKardex(CodProducto, Me.DTPFecha.Value)
+                        RstCosto = CostoPromedioKardex(CodProducto, Me.DTPFecha.Value)
+                        RstCosto = CostoPromedioKardex2(CodProducto, Me.DTPFecha.Value)
+                        CostoUnitario = RstCosto.Costo_Cordoba
                     Else
                         CostoUnitario = Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text
                     End If
@@ -9163,7 +9172,8 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                     CodProducto = My.Forms.FrmConsultas.Codigo
 
                     If Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text = "" Then
-                        CostoUnitario = CostoPromedioKardex(CodProducto, Me.DTPFecha.Value)
+                        RstCosto = CostoPromedioKardex(CodProducto, Me.DTPFecha.Value)
+                        CostoUnitario = RstCosto.Costo_Cordoba
                     Else
                         CostoUnitario = Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text
                     End If
@@ -9514,6 +9524,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Existencia As Double
         Dim NumeroCotizacion As String, Fecha_Factura As Date
         Dim ExistenciaNegativa As String, SqlDatos As String, CostoUnitario As Double = 0
+        Dim RstCosto As New RstCostoPromedio
 
         'Try
 
@@ -9803,13 +9814,15 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
 
 
-            If FacturaTarea = True Then
-                CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
-            Else
-                CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
-            End If
+            'If FacturaTarea = True Then
+            '    CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
 
+            'Else
+            '    CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+            'End If
 
+            RstCosto = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+            CostoUnitario = RstCosto.Costo_Cordoba
 
             GrabaDetalleFactura(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CostoUnitario)
 
@@ -10926,6 +10939,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         Dim ArepFacturasTareas As New ArepFacturasTareas, FacturaBodega As Boolean = True, CompraBodega As Boolean = True, CostoUnitario As Double = 0
         Dim ArepFacturasTiras As New ArepFacturasTiras2, ImprimeFacturaPreview As Boolean = True
         Dim ArepFacturas2 As New ArepFacturas2
+        Dim RstCosto As New RstCostoPromedio
 
         Try
 
@@ -11162,11 +11176,14 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                     'CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
                     'Me.BindingDetalle.Item(iPosicion)("Costo_Unitario") = CostoUnitario
                 Else
-                    If FacturaTarea = True Then
-                        CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
-                    Else
-                        CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
-                    End If
+                    'If FacturaTarea = True Then
+                    '    CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                    'Else
+                    '    CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                    'End If
+
+                    RstCosto = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                    CostoUnitario = RstCosto.Costo_Cordoba
                     Me.BindingDetalle.Item(iPosicion)("Costo_Unitario") = CostoUnitario
                 End If
 
@@ -11838,6 +11855,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         Dim FacturaBodega As Boolean = False, CompraBodega As Boolean = False, CostoUnitario As Double = 0
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim CamposFactura As TablaFactura = New TablaFactura
+        Dim RstCosto As New RstCostoPromedio
 
         Try
 
@@ -12051,12 +12069,14 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                     'CostoUnitario = CostoPromedioKardexBodega(CodigoProducto, Me.DTPFecha.Value, Me.CboCodigoBodega.Text)
                     'CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
                 Else
-                    If FacturaTarea = True Then
-                        CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
-                    Else
-                        CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
-                    End If
+                    'If FacturaTarea = True Then
+                    '    CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                    'Else
+                    '    CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                    'End If
 
+                    RstCosto = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                    CostoUnitario = RstCosto.Costo_Cordoba
 
                 End If
 
@@ -12278,7 +12298,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         Dim TipoImpresion As String, SqlString As String, RutaBD As String, ConexionAccess As String
         Dim ArepCotizacionFoto As New ArepCotizacionFoto, CodTarea As String = Nothing
         Dim ArepOrdenTrabajo As New ArepFacturasTiras
-        Dim CodigoProducto As String
+        Dim CodigoProducto As String, RstCosto As New RstCostoPromedio
 
         Dim ArepFacturasTareas As New ArepFacturasTareas, FacturaBodega As Boolean = False, CompraBodega As Boolean = False
         Dim ArepFacturas2 As New ArepFacturas2, ArepSalidaBodega As New ArepSalidaBodega, Ancho As Double, Largo As Double
@@ -12530,11 +12550,14 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                         'CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
                         'Me.BindingDetalle.Item(iPosicion)("Costo_Unitario") = CostoUnitario
                     Else
-                        If FacturaTarea = True Then
-                            CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
-                        Else
-                            CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
-                        End If
+                        'If FacturaTarea = True Then
+                        '    CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                        'Else
+                        '    CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                        'End If
+
+                        RstCosto = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                        CostoUnitario = RstCosto.Costo_Cordoba
                         Me.BindingDetalle.Item(iPosicion)("Costo_Unitario") = CostoUnitario
                     End If
 
@@ -13647,6 +13670,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         Dim Descripcion_Producto As String, TipoFactura As String, FacturaBodega As Boolean = False, FacturaSerie As Boolean = False, CompraBodega As Boolean = False
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Existencia As Double
         Dim ExistenciaNegativa As String, SqlDatos As String, CostoUnitario As Double = 0
+        Dim RstCosto As New RstCostoPromedio
 
         'Try
 
@@ -13860,12 +13884,14 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
             If FacturaTarea = True Then
                 If IsDBNull(Me.BindingDetalle.Item(iPosicion)("Costo_Unitario")) Then
-                    CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                    RstCosto = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                    CostoUnitario = RstCosto.Costo_Cordoba
                 End If
 
             Else
                 If IsDBNull(Me.BindingDetalle.Item(iPosicion)("Costo_Unitario")) Then
-                    CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                    RstCosto = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                    CostoUnitario = RstCosto.Costo_Cordoba
                 End If
 
             End If

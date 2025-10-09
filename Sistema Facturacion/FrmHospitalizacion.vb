@@ -407,6 +407,7 @@ Public Class FrmHospitalizacion
         Dim ComandoUpdate As New SqlClient.SqlCommand, TasaImpuesto As Double
         Dim Numero_Expediente As String, ConsecutivoFacturaManual As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim RstCosto As New RstCostoPromedio
 
         Numero_Expediente = Me.TxtLetra.Text & "-" & Me.TxtCodigo.Text
 
@@ -499,8 +500,8 @@ Public Class FrmHospitalizacion
             SubTotal = SubTotal + Importe
             IVA = IVA + (Importe * TasaImpuesto)
 
-            CostoUnitario = CostoPromedioKardex(CodProductos, FechaFactura)
-
+            RstCosto = CostoPromedioKardex(CodProductos, FechaFactura)
+            CostoUnitario = RstCosto.Costo_Cordoba
             GrabaDetalleFacturaSalida(NumeroFactura, CodProductos, NombreProductos, PrecioVenta, 0, PrecioCompra, Importe, Cantidad, "Cordobas", FechaFactura, "Factura", CostoUnitario)
             ActualizaExistencia(CodProductos)
 

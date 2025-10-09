@@ -446,7 +446,7 @@ Public Class FrmEnsamble
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim Registros As Double = 0, Existencia As Double, CodigoProyecto As String
         Dim CantidadReal As Double = 0
-
+        Dim RstCosto As New RstCostoPromedio
 
 
         ButtonAgregar_Click(sender, e)
@@ -504,7 +504,8 @@ Public Class FrmEnsamble
                     StringMoneda = ""
                     'PrecioCompra = UltimoPrecioCompra(CodProductos) * TasaCambioCompara(Fecha, StringMoneda, "Cordobas")
                     Cantidad = DataSet.Tables("ListaProductos").Rows(IposicionFila)("Cantidad_Ensamble")
-                    PrecioCompra = CostoPromedioKardex(CodProductos, Fecha)
+                    RstCosto = CostoPromedioKardex(CodProductos, Fecha)
+                    PrecioCompra = RstCosto.Costo_Cordoba
                     '///////////SI EL COSTO ES CERO PERO SE DESCARGAR, SIGNIFICA FACTURACION EN NEGATIVO ///////////
                     If Cantidad <> 0 Then
                         If PrecioCompra = 0 Then
@@ -594,7 +595,8 @@ Public Class FrmEnsamble
                         StringMoneda = ""
                         'PrecioCompra = UltimoPrecioCompra(CodProductos) * TasaCambioCompara(Fecha, StringMoneda, "Cordobas")
                         Cantidad = DataSet.Tables("ListaProductos").Rows(IposicionFila)("Cantidad_Ensamble")
-                        PrecioCompra = CostoPromedioKardex(CodProductos, Fecha)
+                        RstCosto = CostoPromedioKardex(CodProductos, Fecha)
+                        PrecioCompra = RstCosto.Costo_Cordoba
                         '///////////SI EL COSTO ES CERO PERO SE DESCARGAR, SIGNIFICA FACTURACION EN NEGATIVO ///////////
                         If Cantidad <> 0 Then
                             If PrecioCompra = 0 Then
@@ -647,7 +649,8 @@ Public Class FrmEnsamble
                         StringMoneda = ""
                         'PrecioCompra = UltimoPrecioCompra(CodProductos) * TasaCambioCompara(Fecha, StringMoneda, "Cordobas")
                         Cantidad = DataSet.Tables("ListaProductos").Rows(IposicionFila)("Cantidad_Ensamble")
-                        PrecioCompra = CostoPromedioKardex(CodProductos, Fecha)
+                        RstCosto = CostoPromedioKardex(CodProductos, Fecha)
+                        PrecioCompra = RstCosto.Costo_Cordoba
                         '///////////SI EL COSTO ES CERO PERO SE DESCARGAR, SIGNIFICA FACTURACION EN NEGATIVO ///////////
                         If Cantidad <> 0 Then
                             If PrecioCompra = 0 Then
@@ -853,7 +856,7 @@ Public Class FrmEnsamble
         Dim ConsecutivoFactura As Double, NumeroFactura As String = "", NombreProductos As String, TPrecioUnitario As Double = 0
         Dim TipoServicio As String, TImporte As Double = 0, TasaCompra As Double, CodigoProyecto As String
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Registros As Double
-
+        Dim RstCosto As New RstCostoPromedio
 
 
 
@@ -935,7 +938,8 @@ Public Class FrmEnsamble
                     'PrecioCompra = UltimoPrecioCompra(CodProductos)
 
                     Cantidad = DataSet.Tables("ListaProductos").Rows(IposicionFila)("Cantidad_Ensamble")
-                    PrecioCompra = CostoPromedioKardex(CodProductos, Fecha)
+                    RstCosto = CostoPromedioKardex(CodProductos, Fecha)
+                    PrecioCompra = RstCosto.Costo_Cordoba
                     TPrecioUnitario = TPrecioUnitario + PrecioCompra
                     '///////////SI EL COSTO ES CERO PERO SE DESCARGAR, SIGNIFICA FACTURACION EN NEGATIVO ///////////
                     If Cantidad <> 0 Then

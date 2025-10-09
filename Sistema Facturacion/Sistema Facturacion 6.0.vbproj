@@ -109,6 +109,7 @@
     <Compile Include="Clases\Consultas\ArgsReporteExistenciaLote.vb" />
     <Compile Include="Clases\Consultas\ReporteExistenciaLote.vb" />
     <Compile Include="Clases\Consultas\RstCmbReporteExistenciaLote.vb" />
+    <Compile Include="Clases\Consultas\RstCostoPromedio.vb" />
     <Compile Include="Clases\Tablas\TablaCompras.vb" />
     <Compile Include="Clases\Tablas\FileName.vb" />
     <Compile Include="Clases\Tablas\TablaContrato_Proveedor.vb" />

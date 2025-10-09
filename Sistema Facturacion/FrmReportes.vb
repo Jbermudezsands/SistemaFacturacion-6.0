@@ -2842,7 +2842,7 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
         Dim SqlDatos As String = "", SQlDatosSuma As String, RpSegundoPlano As Boolean = False
         Dim SQL As New DataDynamics.ActiveReports.DataSources.SqlDBDataSource
         Dim DvEndoso As DataView, DvDetalleProductos As DataView
-
+        Dim RstCosto As New RstCostoPromedio
 
 
         Dim Fecha1 As Date, Fecha2 As Date
@@ -6325,12 +6325,13 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                         'Existencia = Inicial + Compras - Ventas
 
                         CostoPromedio = CostoPromedioKardexBodega(CodProducto, FechaFin, CodBodega)
-                        'CostoPromedio = CostoPromedioKardex(CodProducto, FechaFin)
+
 
                     Else
                         CodBodega = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Linea")
                         CodBodega = 1
-                        CostoPromedio = CostoPromedioKardex(CodProducto, FechaFin)
+                        RstCosto = CostoPromedioKardex(CodProducto, FechaFin)
+                        CostoPromedio = RstCosto.Costo_Cordoba
                         'Compras = Format(BuscaCompra(CodProducto, FechaIni, FechaFin), "####0.00")
                         'Ventas = Format(BuscaVenta(CodProducto, FechaIni, FechaFin), "####0.00")
                         'Inicial = Format(BuscaInventarioInicial(CodProducto, FechaIni), "####0.00")
@@ -6676,11 +6677,12 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                         Existencia = Inicial + Compras - Ventas
 
                         'CostoPromedio = CostoPromedioKardexBodega(CodProducto, FechaFin, CodBodega)
-                        CostoPromedio = CostoPromedioKardex(CodProducto, FechaFin)
-
+                        RstCosto = CostoPromedioKardex(CodProducto, FechaFin)
+                        CostoPromedio = RstCosto.Costo_Cordoba
                     Else
                         CodBodega = 1
-                        CostoPromedio = CostoPromedioKardex(CodProducto, FechaFin)
+                        RstCosto = CostoPromedioKardex(CodProducto, FechaFin)
+                        CostoPromedio = RstCosto.Costo_Cordoba
                         Compras = Format(BuscaCompra(CodProducto, FechaIni, FechaFin), "####0.00")
                         Ventas = Format(BuscaVenta(CodProducto, FechaIni, FechaFin), "####0.00")
                         Inicial = Format(BuscaInventarioInicial(CodProducto, FechaIni), "####0.00")
@@ -8814,8 +8816,8 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                     CodBodega = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Linea")
                     'Existencia = ExistenciaProductoFecha(CodProducto, FechaFin)
                     Existencia = Format(BuscaInventarioInicial(CodProducto, FechaFin))
-                    CostoPromedio = CostoPromedioKardex(CodProducto, FechaFin)
-
+                    RstCosto = CostoPromedioKardex(CodProducto, FechaFin)
+                    CostoPromedio = RstCosto.Costo_Cordoba
                     'If CodProducto = "102-08-119" Then
                     '    CodProducto = "102-08-119"
                     'End If
@@ -8924,7 +8926,8 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                     CodBodega = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Linea")
                     'Existencia = ExistenciaProductoFecha(CodProducto, FechaFin)
                     Existencia = Format(BuscaInventarioInicial(CodProducto, FechaFin))
-                    CostoPromedio = CostoPromedioKardex(CodProducto, FechaFin)
+                    RstCosto = CostoPromedioKardex(CodProducto, FechaFin)
+                    CostoPromedio = RstCosto.Costo_Cordoba
                     If Existencia <> 0 Then
                         If DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Descuento" And DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Servicio" Then
                             oDataRow = DataSet.Tables("BajoMinimo").NewRow
@@ -14015,12 +14018,13 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                         Existencia = Inicial + Compras - Ventas
 
                         'CostoPromedio = CostoPromedioKardexBodega(CodProducto, FechaFin, CodBodega)
-                        CostoPromedio = CostoPromedioKardex(CodProducto, FechaFin)
-
+                        RstCosto = CostoPromedioKardex(CodProducto, FechaFin)
+                        CostoPromedio = RstCosto.Costo_Cordoba
 
                     Else
                         CodBodega = 1
-                        CostoPromedio = CostoPromedioKardex(CodProducto, FechaFin)
+                        RstCosto = CostoPromedioKardex(CodProducto, FechaFin)
+                        CostoPromedio = RstCosto.Costo_Cordoba
                         Compras = Format(BuscaCompra(CodProducto, FechaIni, FechaFin), "####0.00")
                         Ventas = Format(BuscaVenta(CodProducto, FechaIni, FechaFin), "####0.00")
                         Inicial = Format(BuscaInventarioInicial(CodProducto, FechaIni), "####0.00")

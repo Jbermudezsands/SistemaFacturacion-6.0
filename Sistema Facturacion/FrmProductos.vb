@@ -2646,18 +2646,20 @@ Public Class FrmProductos
                 My.Application.DoEvents()
                 CodigoBodega = DataSet.Tables("Bodegas").Rows(iPosicionFila)("Cod_Bodegas")
 
-                Dim worker As BackgroundWorker
-                Dim args As ArgumentTypeProducto = New ArgumentTypeProducto
+                ExistenciaBodega = BuscaExistenciaBodega(CodigoProducto, CodigoBodega)
 
-                args.CodigoBodega = CodigoBodega
-                args.CodigoProducto = CodigoProducto
-                args.CostoProducto = CostoProducto
-                args.CostoProductoD = CostoProductoD
+                'Dim worker As BackgroundWorker
+                'Dim args As ArgumentTypeProducto = New ArgumentTypeProducto
 
-                worker = New BackgroundWorker()
-                AddHandler worker.DoWork, AddressOf backgroundWorker1_DoWork
-                AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorker1_RunWorkerCompleted
-                worker.RunWorkerAsync(args)
+                'args.CodigoBodega = CodigoBodega
+                'args.CodigoProducto = CodigoProducto
+                'args.CostoProducto = CostoProducto
+                'args.CostoProductoD = CostoProductoD
+
+                'worker = New BackgroundWorker()
+                'AddHandler worker.DoWork, AddressOf backgroundWorker1_DoWork
+                'AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorker1_RunWorkerCompleted
+                'worker.RunWorkerAsync(args)
 
                 'ExistenciaBodega = BuscaExistenciaBodega(CodigoProducto, CodigoBodega)
                 'ExistenciaBodega = BuscaExistenciaBodegaLote(CodigoProducto, CodigoBodega)

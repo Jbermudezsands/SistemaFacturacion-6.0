@@ -187,6 +187,7 @@ Public Class FrmTransferencias
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim CodProducto As String, SqlString As String, Cantidad As Double, PrecioCompra As Double, Descuento As Double, FOB As Double
         Dim Importe As Double, CodigoBodega As String = ""
+        Dim RstCosto As New RstCostoPromedio
 
         Try
 
@@ -205,8 +206,9 @@ Public Class FrmTransferencias
                         DataAdapter.Fill(DataSet, "Productos")
                         If DataSet.Tables("Productos").Rows.Count <> 0 Then
                             Me.TrueDBGridComponentes.Columns(1).Text = DataSet.Tables("Productos").Rows(0)("Descripcion_Producto")
-                            Me.TrueDBGridComponentes.Columns(3).Text = CostoPromedioKardex(CodProducto, Me.DTPFecha.Value)
-                            'Me.TrueDBGridComponentes.Columns(3).Text = DataSet.Tables("Productos").Rows(0)("Costo")
+
+                            RstCosto = CostoPromedioKardex(CodProducto, Me.DTPFecha.Value)
+                            Me.TrueDBGridComponentes.Columns(3).Text = RstCosto.Costo_Cordoba
 
                         Else
                             MsgBox("Este Producto no Existe", MsgBoxStyle.Critical, "Zeus Facturacion")
@@ -215,7 +217,8 @@ Public Class FrmTransferencias
                             Me.TrueDBGridComponentes.Columns(0).Text = My.Forms.FrmConsultas.Codigo
                             Me.TrueDBGridComponentes.Columns(1).Text = My.Forms.FrmConsultas.Descripcion
                             'Me.TrueDBGridComponentes.Columns(3).Text = My.Forms.FrmConsultas.Precio
-                            Me.TrueDBGridComponentes.Columns(3).Text = CostoPromedioKardex(My.Forms.FrmConsultas.Codigo, Me.DTPFecha.Value)
+                            RstCosto = CostoPromedioKardex(My.Forms.FrmConsultas.Codigo, Me.DTPFecha.Value)
+                            Me.TrueDBGridComponentes.Columns(3).Text = RstCosto.Costo_Cordoba
                         End If
                     End If
                 Case 2
@@ -432,6 +435,7 @@ Public Class FrmTransferencias
     End Sub
 
     Private Sub TrueDBGridComponentes_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridComponentes.ButtonClick
+        Dim RstCosto As New RstCostoPromedio
 
         If e.ColIndex = 0 Then
             Quien = "CodigoProductosDetalle"
@@ -440,7 +444,9 @@ Public Class FrmTransferencias
                 Me.TrueDBGridComponentes.Columns(0).Text = My.Forms.FrmConsultas.Codigo
                 Me.TrueDBGridComponentes.Columns(1).Text = My.Forms.FrmConsultas.Descripcion
                 'Me.TrueDBGridComponentes.Columns(3).Text = My.Forms.FrmConsultas.Precio
-                Me.TrueDBGridComponentes.Columns(3).Text = CostoPromedioKardex(My.Forms.FrmConsultas.Codigo, Me.DTPFecha.Value)
+                RstCosto = CostoPromedioKardex(My.Forms.FrmConsultas.Codigo, Me.DTPFecha.Value)
+                Me.TrueDBGridComponentes.Columns(3).Text = RstCosto.Costo_Cordoba
+
             Else
 
                 Me.TrueDBGridComponentes.Columns(0).Text = ""

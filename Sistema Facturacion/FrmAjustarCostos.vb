@@ -52,6 +52,7 @@ Public Class FrmAjustarCostos
         Dim DataAdapter As New SqlClient.SqlDataAdapter, RegistrosMaximos As Double, SqlSTring As String, ComandoUpdate As New SqlClient.SqlCommand
         Dim CodProductos As String, DescripcionProducto As String, Contador As Double = 0, j As Double = 0, iResultado As Integer
         Dim Cantidad As Double = 0, Registros As Double = 0, PrecioUnitario As Double = 0, StrSQLUpdate As String
+        Dim RstCosto As New RstCostoPromedio
 
 
         If Desde = "" And Hasta = "" Then
@@ -123,8 +124,9 @@ Public Class FrmAjustarCostos
                         Cantidad = DataSet.Tables("Salidas").Rows(iPosicionFila3)("Cantidad")
                     End If
                     TipoSalida = DataSet.Tables("Salidas").Rows(iPosicionFila3)("Tipo_Factura")
-                    PrecioCosto = CostoPromedioKardex(CodProductos, FechaCompra)
-                    PrecioCostoDolar = CostoPromedioDolar
+                    RstCosto = CostoPromedioKardex(CodProductos, FechaCompra)
+                    PrecioCosto = RstCosto.Costo_Cordoba
+                    PrecioCostoDolar = RstCosto.Costo_Dolar
                     PrecioUnitario = PrecioCosto
                     'PrecioUnitario = DataSet.Tables("Salidas").Rows(iPosicionFila3)("Precio_Unitario")
                     'PrecioCosto = CostoPromedioActualizaBodega(CodProductos, FechaCompra, CodigoBodega)

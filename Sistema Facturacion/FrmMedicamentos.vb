@@ -47,7 +47,7 @@ Public Class FrmMedicamentos
         Dim Respuesta As Double, PrecioVenta As Double, IVA As Double, CostoUnitario As Double
         Dim StrSqlUpdate As String, iResultado As Integer, SqlString As String, IdConsulta As Double
         Dim ComandoUpdate As New SqlClient.SqlCommand, TasaImpuesto As Double
-
+        Dim RstCosto As New RstCostoPromedio
 
         Posicion = Me.BindingDetalle.Position
 
@@ -137,8 +137,8 @@ Public Class FrmMedicamentos
             SubTotal = SubTotal + Importe
             IVA = IVA + (Importe * TasaImpuesto)
 
-            CostoUnitario = CostoPromedioKardex(CodProductos, FechaFactura)
-
+            RstCosto = CostoPromedioKardex(CodProductos, FechaFactura)
+            CostoUnitario = RstCosto.Costo_Cordoba
             GrabaDetalleFacturaSalida(NumeroFactura, CodProductos, NombreProductos, PrecioVenta, 0, PrecioCompra, Importe, Cantidad, "Cordobas", FechaFactura, "Factura", CostoUnitario)
             ActualizaExistencia(CodProductos)
 

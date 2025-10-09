@@ -28,6 +28,8 @@ Public Class FrmInventarioFisico
         Dim ConsecutivoFactura As Double, NumeroFactura As String, PrecioCompra As Double, PrecioVenta As Double, Existencia As Double
         Dim oDataRow As DataRow, Iposicion As Double, Registros As Double, Cantidad As Double, Importe As Double, NombreProductos As String
         Dim NumeroLote As String, FechaVence As String, CodigoBodega As String
+        Dim RstCosto As New RstCostoPromedio
+
 
 
         '////////////////////BUSCO EL CLIENTE PARA INVENTARIO //////////////////////////////////////
@@ -132,7 +134,8 @@ Public Class FrmInventarioFisico
                 PrecioVenta = UltimoPrecioVenta(CodProductos)
 
 
-                PrecioCompra = CostoPromedioKardex(CodProductos, Fecha)
+                RstCosto = CostoPromedioKardex(CodProductos, Fecha)
+                PrecioCompra = RstCosto.Costo_Cordoba
                 '///////////SI EL COSTO ES CERO PERO SE DESCARGAR, SIGNIFICA FACTURACION EN NEGATIVO ///////////
 
                 If PrecioCompra = 0 Then
@@ -590,7 +593,7 @@ Public Class FrmInventarioFisico
         Dim ConsecutivoCompra As Double, NumeroCompra As String, CodCliente As String, CodProveedor As String, NombreProveedor As String, NombreCliente As String
         Dim ConsecutivoFactura As Double, NumeroFactura As String, PrecioCompra As Double, PrecioVenta As Double, Existencia As Double
         Dim oDataRow As DataRow, Iposicion As Double, Registros As Double, Cantidad As Double, Importe As Double, NombreProductos As String
-        Dim CodigoBodega As String
+        Dim CodigoBodega As String, RstCosto As New RstCostoPromedio
 
 
         '////////////////////BUSCO EL CLIENTE PARA INVENTARIO //////////////////////////////////////
@@ -693,7 +696,8 @@ Public Class FrmInventarioFisico
                 PrecioVenta = UltimoPrecioVenta(CodProductos)
 
 
-                PrecioCompra = CostoPromedioKardex(CodProductos, Fecha)
+                RstCosto = CostoPromedioKardex(CodProductos, Fecha)
+                PrecioCompra = RstCosto.Costo_Cordoba
                 '///////////SI EL COSTO ES CERO PERO SE DESCARGAR, SIGNIFICA FACTURACION EN NEGATIVO ///////////
 
                 If PrecioCompra = 0 Then
@@ -893,7 +897,7 @@ Public Class FrmInventarioFisico
         Dim ConsecutivoCompra As Double, NumeroCompra As String, CodCliente As String, CodProveedor As String, NombreProveedor As String, NombreCliente As String
         Dim ConsecutivoFactura As Double, NumeroFactura As String, PrecioCompra As Double, PrecioVenta As Double, Existencia As Double
         Dim oDataRow As DataRow, Iposicion As Double, Registros As Double, Cantidad As Double, Importe As Double, NombreProductos As String
-
+        Dim RstCosto As New RstCostoPromedio
 
 
         '////////////////////BUSCO EL CLIENTE PARA INVENTARIO //////////////////////////////////////
@@ -993,7 +997,8 @@ Public Class FrmInventarioFisico
                 PrecioVenta = UltimoPrecioVenta(CodProductos)
 
 
-                PrecioCompra = CostoPromedioKardex(CodProductos, Fecha)
+                RstCosto = CostoPromedioKardex(CodProductos, Fecha)
+                PrecioCompra = RstCosto.Costo_Cordoba
                 '///////////SI EL COSTO ES CERO PERO SE DESCARGAR, SIGNIFICA FACTURACION EN NEGATIVO ///////////
 
                 If PrecioCompra = 0 Then
@@ -1322,6 +1327,7 @@ Public Class FrmInventarioFisico
         Dim Importe As Double, NombreProductos As String
         Dim NumeroLote As String, CodBodega As String, Nombres As String, Apellidos As String, PrecioUnitario As Double = 0, PrecioNeto As Double = 0, Descuento As Double = 0
         Dim SubTotal As Double, IVA As Double
+        Dim RstCosto As New RstCostoPromedio
 
         NumeroCompra = 0
         CodProductos = ""
@@ -1363,8 +1369,8 @@ Public Class FrmInventarioFisico
                 FechaVence = MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("FECHAVENCE")
             End If
 
-            PrecioCompra = CostoPromedioKardex(CodProductos, Me.DTPFechaLote.Value)
-
+            RstCosto = CostoPromedioKardex(CodProductos, Me.DTPFechaLote.Value)
+            PrecioCompra = RstCosto.Costo_Cordoba
             '/////////////////////////////////////////////////////////////////////////////////////////////////////
             '///////////////////////////BUSCO SI EXISTEN LO LOTES ////////////////////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1752,7 +1758,7 @@ Public Class FrmInventarioFisico
         Dim ConsecutivoFactura As Double, NumeroFactura As String, PrecioCompra As Double, PrecioVenta As Double, Existencia As Double
         Dim Iposicion As Double, Registros As Double, Cantidad As Double, Importe As Double, NombreProductos As String
         Dim Existencia2 As Double = 0
-
+        Dim RstCosto As New RstCostoPromedio
 
 
         '////////////////////BUSCO EL CLIENTE PARA INVENTARIO //////////////////////////////////////
@@ -1849,7 +1855,8 @@ Public Class FrmInventarioFisico
             PrecioVenta = UltimoPrecioVenta(CodProductos)
 
 
-            PrecioCompra = CostoPromedioKardex(CodProductos, Fecha)
+            RstCosto = CostoPromedioKardex(CodProductos, Fecha)
+            PrecioCompra = RstCosto.Costo_Cordoba
             '///////////SI EL COSTO ES CERO PERO SE DESCARGAR, SIGNIFICA FACTURACION EN NEGATIVO ///////////
 
             If PrecioCompra = 0 Then
