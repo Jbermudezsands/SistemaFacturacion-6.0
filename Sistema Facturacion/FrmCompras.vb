@@ -63,6 +63,69 @@ Public Class FrmCompras
         Me.ProgressBar.Visible = False
     End Sub
 
+    Public Sub BloquearControles(Bloquear As Boolean)
+
+        If Bloquear = True Then
+            Me.GroupBox1.Enabled = False  'Tipo Compra
+            Me.GroupBox2.Enabled = False 'Proveedor
+            Me.DTVencimiento.Enabled = False
+            Me.Button7.Enabled = False
+            Me.C1Button1.Enabled = False
+            Me.C1Button2.Enabled = False
+            Me.C1Button3.Enabled = False
+            Me.C1Button4.Enabled = False
+            Me.CboCodigoBodega.Enabled = False
+            Me.CboProyecto.Enabled = False
+            Me.TrueDBGridComponentes.Enabled = False
+            Me.TrueDBGridMetodo.Enabled = False
+            Me.Button4.Enabled = False 'Borrar linea
+            Me.GroupBox3.Enabled = False
+            Me.CmdNuevo.Enabled = False
+            Me.CmdProcesar.Enabled = False
+            Me.ButtonAgregar.Enabled = False
+            Me.ButtonBorrar.Enabled = False
+            Me.Button10.Enabled = False 'Importar
+            Me.GroupBox4.Enabled = False
+            Me.Button2.Enabled = False 'Imprimir
+            Me.ChkAplicarCtasXPagar.Enabled = False
+            ChkSolcitudxCta.Enabled = False
+            TxtReferencia.Enabled = False
+            Me.TxtMonedaImprime.Enabled = False
+
+        Else
+            Me.GroupBox1.Enabled = True   'Tipo Compra
+            Me.GroupBox2.Enabled = True 'Proveedor
+            Me.DTVencimiento.Enabled = True
+            Me.Button7.Enabled = True
+            Me.C1Button1.Enabled = True
+            Me.C1Button2.Enabled = True
+            Me.C1Button3.Enabled = True
+            Me.C1Button4.Enabled = True
+            Me.CboCodigoBodega.Enabled = True
+            Me.CboProyecto.Enabled = True
+            Me.TrueDBGridComponentes.Enabled = True
+            Me.TrueDBGridMetodo.Enabled = True
+            Me.Button4.Enabled = True 'Borrar linea
+            Me.GroupBox3.Enabled = True
+            Me.CmdNuevo.Enabled = True
+            Me.CmdProcesar.Enabled = True
+            Me.ButtonAgregar.Enabled = True
+            Me.ButtonBorrar.Enabled = True
+            Me.Button10.Enabled = True 'Importar
+            Me.GroupBox4.Enabled = True
+            Me.Button2.Enabled = True  'Imprimir
+            Me.ChkAplicarCtasXPagar.Enabled = True
+            ChkSolcitudxCta.Enabled = True
+            TxtReferencia.Enabled = True
+            Me.TxtMonedaImprime.Enabled = True
+        End If
+
+
+
+    End Sub
+
+
+
     Public Sub Imprime(
     ByVal NumeroEnsamble As String,
     ByVal TipoProducto As String,
@@ -690,9 +753,7 @@ Handles backgroundWorkerGrabar.RunWorkerCompleted
         Else
             MDIMain.txtSPlano2.Text = ""
 
-            If Quien = "Imprimir" Then
-
-            End If
+            BloquearControles(False)
         End If
 
     End Sub
@@ -1306,12 +1367,14 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
 
     End Sub
 
-    Public Sub AgregarCompras()
+    Public Sub AgregarCompras(Imprime As Boolean)
         Dim cod As String = "1", Compras As TablaCompras = New TablaCompras
         Dim ConsecutivoCompra As Double, SqlConsecutivo As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim FacturaBodega As Boolean = False, CompraBodega As Boolean = False
         Dim dsDetalle As DataSet, dsMetodoPago As New DataSet, DtMetodo As New DataTable
+
+        BloquearControles(True)
 
         ActualizaMETODOcOMPRA()
 
@@ -1466,8 +1529,9 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         worker.RunWorkerAsync({Compras, dsDetalle, dsMetodoPago})
 
 
-        MsgBox("Se ha grabado con Exito!!!", MsgBoxStyle.Exclamation, "Sistema Facturacion")
-
+        If Imprime = False Then
+            MsgBox("Se ha grabado con Exito!!!", MsgBoxStyle.Exclamation, "Sistema Facturacion")
+        End If
 
         If Me.TxtNumeroEnsamble.Text <> "-----0-----" Then
             Select Case Me.CboTipoProducto.Text
@@ -3176,7 +3240,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, DescripcionProducto As String
 
 
-        AgregarCompras()
+        AgregarCompras(False)
 
         ''////////////////////////////////////////////////////////////////////////////////////////////////////
         ''/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
@@ -4207,6 +4271,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
 
         'ConsecutivoCompra As Double
 
+        BloquearControles(True)
 
         ActualizaMETODOcOMPRA()
 
@@ -4372,7 +4437,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         ArepCompras.Run(False)
         'ArepCompras.Show()
 
-
+        BloquearControles(False)
 
         If Me.TxtNumeroEnsamble.Text <> "-----0-----" Then
             Select Case Me.CboTipoProducto.Text
@@ -4394,9 +4459,10 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         End If
 
 
+
         If PermiteEditar(Acceso, Me.CboTipoProducto.Text) = True Then
 
-            AgregarCompras()
+            AgregarCompras(True)
 
             '26/08/2025
             ''////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -5099,7 +5165,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         ''//////////////////////////////////////////////////////////////////////////////////////////////////////////7
         'GrabaCompras(NumeroCompra)
 
-        AgregarCompras()
+        AgregarCompras(False)
 
         ReDim CodigoProducto(1)
         CodigoProducto(0) = CodProducto
@@ -5406,7 +5472,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
             Exit Sub
         End If
 
-        AgregarCompras()
+        AgregarCompras(True)
 
         '28/08/2025
         ''////////////////////////////////////////////////////////////////////////////////////////////////////

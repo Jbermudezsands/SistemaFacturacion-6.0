@@ -1,111 +1,126 @@
-DECLARE 
-    @FechaCorte DATE = '2025-10-08',   -- Fecha límite
-    @CodBodega NVARCHAR(50) = '01';  -- Código de bodega (puedes dejar NULL para todas)
+DECLARE 	
+    @FechaCorte DATE = '2026-10-08',  -- Filtrar por fecha
+    @CodBodega NVARCHAR(50) = '01'  -- Filtrar por Bodega
 
--- =====================
--- MOVIMIENTOS DE ENTRADA
--- =====================
-WITH Entradas AS (
-    SELECT 
-        DC.Cod_Producto,
-        C.Cod_Bodega,
-        SUM(DC.Cantidad) AS Cantidad
+
+SELECT
+    P.Cod_Producto,
+    Prod.Descripcion_Producto AS Producto,
+    @CodBodega AS Cod_Bodega,
+    
+    -- Entradas separadas
+    ISNULL(MR.Cantidad,0) AS Mercancia_Recibida,
+    ISNULL(TR.Cantidad,0) AS Transferencia_Recibida,
+    ISNULL(DV.Cantidad,0) AS Devolucion_Venta,
+    
+    -- Salidas separadas
+    ISNULL(Fact.Cantidad,0) AS Factura,
+    ISNULL(SB.Cantidad,0) AS Salidas_Bodegas,
+    ISNULL(TE.Cantidad,0) AS Transferencia_Enviada,
+    ISNULL(DC.Cantidad,0) AS Devolucion_Compra,
+
+	ISNULL(MR.Cantidad,0) + ISNULL(TR.Cantidad,0) + ISNULL(DV.Cantidad,0)
+    - (ISNULL(Fact.Cantidad,0) + ISNULL(SB.Cantidad,0) + ISNULL(TE.Cantidad,0) + ISNULL(DC.Cantidad,0)) AS Existencia
+FROM
+    -- Todos los productos con algún movimiento
+    (SELECT Cod_Producto FROM Detalle_Compras WHERE Fecha_Compra <= @FechaCorte
+     UNION
+     SELECT Cod_Producto FROM Detalle_Facturas WHERE Fecha_Factura <= @FechaCorte
+    ) P
+INNER JOIN Productos Prod
+    ON P.Cod_Producto = Prod.Cod_Productos
+
+-- Entradas
+LEFT JOIN (
+    SELECT DC.Cod_Producto, SUM(DC.Cantidad) AS Cantidad
     FROM Detalle_Compras DC
-    INNER JOIN Compras C 
-        ON DC.Numero_Compra = C.Numero_Compra 
-        AND DC.Fecha_Compra = C.Fecha_Compra 
+    INNER JOIN Compras C
+        ON DC.Numero_Compra = C.Numero_Compra
+        AND DC.Fecha_Compra = C.Fecha_Compra
         AND DC.Tipo_Compra = C.Tipo_Compra
-    INNER JOIN Productos P 
-        ON DC.Cod_Producto = P.Cod_Productos
-    WHERE 
-        C.Fecha_Compra <= @FechaCorte
-        AND C.Tipo_Compra IN ('Mercancia Recibida', 'Transferencia Recibida')
-        AND P.Tipo_Producto NOT IN ('Servicio', 'Descuento')
-        AND (C.Cod_Bodega = @CodBodega)
-    GROUP BY DC.Cod_Producto, C.Cod_Bodega
+    WHERE C.Fecha_Compra <= @FechaCorte
+      AND C.Tipo_Compra = 'Mercancia Recibida'
+      AND C.Cod_Bodega = @CodBodega
+    GROUP BY DC.Cod_Producto
+) MR ON P.Cod_Producto = MR.Cod_Producto
 
-    UNION ALL
-
-    SELECT 
-        DF.Cod_Producto,
-        F.Cod_Bodega,
-        SUM(DF.Cantidad) AS Cantidad
-    FROM Detalle_Facturas DF
-    INNER JOIN Facturas F 
-        ON DF.Numero_Factura = F.Numero_Factura 
-        AND DF.Fecha_Factura = F.Fecha_Factura 
-        AND DF.Tipo_Factura = F.Tipo_Factura
-    INNER JOIN Productos P 
-        ON DF.Cod_Producto = P.Cod_Productos
-    WHERE 
-        F.Fecha_Factura <= @FechaCorte
-        AND F.Tipo_Factura = 'Devolucion de Venta'
-        AND P.Tipo_Producto NOT IN ('Servicio', 'Descuento')
-        AND (F.Cod_Bodega = @CodBodega)
-    GROUP BY DF.Cod_Producto, F.Cod_Bodega
-),
-
--- =====================
--- MOVIMIENTOS DE SALIDA
--- =====================
-Salidas AS (
-    SELECT 
-        DC.Cod_Producto,
-        C.Cod_Bodega,
-        SUM(DC.Cantidad) AS Cantidad
+LEFT JOIN (
+    SELECT DC.Cod_Producto, SUM(DC.Cantidad) AS Cantidad
     FROM Detalle_Compras DC
-    INNER JOIN Compras C 
-        ON DC.Numero_Compra = C.Numero_Compra 
-        AND DC.Fecha_Compra = C.Fecha_Compra 
+    INNER JOIN Compras C
+        ON DC.Numero_Compra = C.Numero_Compra
+        AND DC.Fecha_Compra = C.Fecha_Compra
         AND DC.Tipo_Compra = C.Tipo_Compra
-    INNER JOIN Productos P 
-        ON DC.Cod_Producto = P.Cod_Productos
-    WHERE 
-        C.Fecha_Compra <= @FechaCorte
-        AND C.Tipo_Compra = 'Devolucion de Compra'
-        AND P.Tipo_Producto NOT IN ('Servicio', 'Descuento')
-        AND (C.Cod_Bodega = @CodBodega)
-    GROUP BY DC.Cod_Producto, C.Cod_Bodega
+    WHERE C.Fecha_Compra <= @FechaCorte
+      AND C.Tipo_Compra = 'Transferencia Recibida'
+      AND C.Cod_Bodega = @CodBodega
+    GROUP BY DC.Cod_Producto
+) TR ON P.Cod_Producto = TR.Cod_Producto
 
-    UNION ALL
-
-    SELECT 
-        DF.Cod_Producto,
-        F.Cod_Bodega,
-        SUM(DF.Cantidad) AS Cantidad
+LEFT JOIN (
+    SELECT DF.Cod_Producto, SUM(DF.Cantidad) AS Cantidad
     FROM Detalle_Facturas DF
-    INNER JOIN Facturas F 
-        ON DF.Numero_Factura = F.Numero_Factura 
-        AND DF.Fecha_Factura = F.Fecha_Factura 
+    INNER JOIN Facturas F
+        ON DF.Numero_Factura = F.Numero_Factura
+        AND DF.Fecha_Factura = F.Fecha_Factura
         AND DF.Tipo_Factura = F.Tipo_Factura
-    INNER JOIN Productos P 
-        ON DF.Cod_Producto = P.Cod_Productos
-    WHERE 
-        F.Fecha_Factura <= @FechaCorte
-        AND F.Tipo_Factura IN ('Factura', 'Salidas Bodegas', 'Transferencia Enviada')
-        AND P.Tipo_Producto NOT IN ('Servicio', 'Descuento')
-        AND (F.Cod_Bodega = @CodBodega)
-    GROUP BY DF.Cod_Producto, F.Cod_Bodega
-)
+    WHERE F.Fecha_Factura <= @FechaCorte
+      AND F.Tipo_Factura = 'Devolucion de Venta'
+      AND F.Cod_Bodega = @CodBodega
+    GROUP BY DF.Cod_Producto
+) DV ON P.Cod_Producto = DV.Cod_Producto
 
--- =====================
--- EXISTENCIA FINAL POR PRODUCTO
--- =====================
-SELECT 
-    P.Cod_Productos,
-    P.Descripcion_Producto,
-    ISNULL(E.Cod_Bodega, SA.Cod_Bodega) AS Cod_Bodega,
-    ISNULL(SUM(E.Cantidad), 0) - ISNULL(SUM(SA.Cantidad), 0) AS Existencia
-FROM Productos P
-LEFT JOIN Entradas E ON P.Cod_Productos = E.Cod_Producto
-LEFT JOIN Salidas SA ON P.Cod_Productos = SA.Cod_Producto 
-    AND E.Cod_Bodega = SA.Cod_Bodega
-WHERE 
-    P.Tipo_Producto NOT IN ('Servicio', 'Descuento')
-GROUP BY 
-    P.Cod_Productos,
-    P.Descripcion_Producto,
-    E.Cod_Bodega,
-    SA.Cod_Bodega
-ORDER BY 
-    P.Descripcion_Producto;
+-- Salidas
+LEFT JOIN (
+    SELECT DF.Cod_Producto, SUM(DF.Cantidad) AS Cantidad
+    FROM Detalle_Facturas DF
+    INNER JOIN Facturas F
+        ON DF.Numero_Factura = F.Numero_Factura
+        AND DF.Fecha_Factura = F.Fecha_Factura
+        AND DF.Tipo_Factura = F.Tipo_Factura
+    WHERE F.Fecha_Factura <= @FechaCorte
+      AND F.Tipo_Factura = 'Factura'
+      AND F.Cod_Bodega = @CodBodega
+    GROUP BY DF.Cod_Producto
+) Fact ON P.Cod_Producto = Fact.Cod_Producto
+
+LEFT JOIN (
+    SELECT DF.Cod_Producto, SUM(DF.Cantidad) AS Cantidad
+    FROM Detalle_Facturas DF
+    INNER JOIN Facturas F
+        ON DF.Numero_Factura = F.Numero_Factura
+        AND DF.Fecha_Factura = F.Fecha_Factura
+        AND DF.Tipo_Factura = F.Tipo_Factura
+    WHERE F.Fecha_Factura <= @FechaCorte
+      AND F.Tipo_Factura = 'Salida Bodega'
+      AND F.Cod_Bodega = @CodBodega
+    GROUP BY DF.Cod_Producto
+) SB ON P.Cod_Producto = SB.Cod_Producto
+
+LEFT JOIN (
+    SELECT DF.Cod_Producto, SUM(DF.Cantidad) AS Cantidad
+    FROM Detalle_Facturas DF
+    INNER JOIN Facturas F
+        ON DF.Numero_Factura = F.Numero_Factura
+        AND DF.Fecha_Factura = F.Fecha_Factura
+        AND DF.Tipo_Factura = F.Tipo_Factura
+    WHERE F.Fecha_Factura <= @FechaCorte
+      AND F.Tipo_Factura = 'Transferencia Enviada'
+      AND F.Cod_Bodega = @CodBodega
+    GROUP BY DF.Cod_Producto
+) TE ON P.Cod_Producto = TE.Cod_Producto
+
+LEFT JOIN (
+    SELECT DC.Cod_Producto, SUM(DC.Cantidad) AS Cantidad
+    FROM Detalle_Compras DC
+    INNER JOIN Compras C
+        ON DC.Numero_Compra = C.Numero_Compra
+        AND DC.Fecha_Compra = C.Fecha_Compra
+        AND DC.Tipo_Compra = C.Tipo_Compra
+    WHERE C.Fecha_Compra <= @FechaCorte
+      AND C.Tipo_Compra = 'Devolucion de Compra'
+      AND C.Cod_Bodega = @CodBodega
+    GROUP BY DC.Cod_Producto
+) DC ON P.Cod_Producto = DC.Cod_Producto
+
+ORDER BY P.Cod_Producto;
