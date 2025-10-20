@@ -1,7 +1,7 @@
 DECLARE 	
-    @FechaCorte DATE = '2026-10-08',  -- Filtrar por fecha
+    @FechaCorte DATE = '2026-10-12',  -- Filtrar por fecha
     @CodBodega NVARCHAR(50) = '01',  -- Filtrar por Bodega
-    @CodProducto NVARCHAR(50) = '11RIMJP10';  -- Filtrar por producto específico
+    @CodProducto NVARCHAR(50) = '17RBIAM500';  -- Filtrar por producto específico
 
 SELECT
     P.Cod_Producto,

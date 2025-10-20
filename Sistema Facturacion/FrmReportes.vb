@@ -780,42 +780,123 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
     Public Function ReporteExistenciaxLoteWorker(Argumentos As ArgsReporteExistenciaLote, ByVal worker As BackgroundWorker, ByVal e As DoWorkEventArgs) As RstCmbReporteExistenciaLote
         Dim FechaIni As Date = CDate(Argumentos.FechaIni)
         Dim FechaFin As Date = CDate(Argumentos.FechaFin)
-        Dim CodBodega1 As String = Argumentos.CodBodegaIni
-        Dim CodBodega2 As String = Argumentos.CodBodegaFin
+        Dim CodBodegaDesde As String = Argumentos.CodBodegaIni, CodProductoDesde As String = Argumentos.CodProductoIni, CodProductoHasta As String = Argumentos.CodProductoFin
+        Dim CodBodegaHasta As String = Argumentos.CodBodegaFin
         Dim TipoReporte As String = Argumentos.TipoReporte
         Dim Agrupado As String = Argumentos.Agrupado, Rst As ReporteExistenciaLote = Nothing, Args As ReporteExistenciaLote = Nothing
         Dim DataSet As New DataSet, i As Integer, Cont As Integer
         Dim DataAdapter As SqlClient.SqlDataAdapter
         Dim RsFuncion As New RstCmbReporteExistenciaLote
 
+        ' =========================
+        ' Armar condiciones dinámicas
+        ' =========================
+        Dim FiltroBodega As String = ""
+        Dim FiltroProducto As String = ""
+
+
+
+
         ' Construir consulta según agrupado
         Dim SqlString As String = ""
 
         If Agrupado = "Bodega" Then
-            SqlString = "SELECT m.Cod_Producto, p.Descripcion_Producto, m.Numero_Lote, m.Cod_Bodega, SUM(m.Cantidad * m.TipoMovimiento) AS Existencia_Lote, p.Cod_Linea, L.FechaVence FROM (SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM  Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE (dc.Tipo_Compra = 'Mercancia Recibida') UNION ALL SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, - 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE (dc.Tipo_Compra = 'Devolucion de Compra') UNION ALL SELECT df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, - 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM  Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE (df.Tipo_Factura = 'Factura') UNION ALL SELECT df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE (df.Tipo_Factura = 'Devolucion de Ventas') UNION ALL SELECT df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, - 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM  Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE (df.Tipo_Factura = 'Transferencias Enviadas') UNION ALL SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE (dc.Tipo_Compra = 'Transferencias Recibidas')) AS m INNER JOIN Productos AS p ON m.Cod_Producto = p.Cod_Productos INNER JOIN Lote AS L ON m.Numero_Lote = L.Numero_Lote " &
-                        "WHERE (m.FechaMovimiento <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (m.Numero_Lote <> 'SIN LOTE') AND (m.Numero_Lote <> 'SINLOTE') AND (m.Numero_Lote <> '') "
-            If CodBodega1 <> "" And CodBodega2 <> "" Then
-                SqlString &= " AND (m.Cod_Bodega BETWEEN '" & CodBodega1 & "' AND '" & CodBodega2 & "')  "
+
+            If CodProductoDesde = "" And CodProductoHasta = "" Then
+                SqlString = "WITH Movimientos AS (SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote, 'SINLOTE') AS Lote, C.Cod_Bodega FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra = C.Numero_Compra AND DC.Fecha_Compra = C.Fecha_Compra AND DC.Tipo_Compra = C.Tipo_Compra WHERE DC.Fecha_Compra <= @FechaCorte AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta UNION SELECT DF.Cod_Producto, ISNULL(DF.CodTarea, 'SINLOTE') AS Lote, F.Cod_Bodega FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE DF.Fecha_Factura <= @FechaCorte AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta) SELECT L.Cod_Producto, Prod.Descripcion_Producto AS Producto, L.Cod_Bodega, L.Lote, Prod.Cod_Linea, Lte.FechaVence AS Fecha_Vencimiento, ISNULL(MR.Cantidad,0) AS Mercancia_Recibida, ISNULL(TR.Cantidad,0) AS Transferencia_Recibida, ISNULL(DV.Cantidad,0) AS Devolucion_Venta, ISNULL(Fact.Cantidad,0) AS Factura, ISNULL(SB.Cantidad,0) AS Salidas_Bodegas, ISNULL(TE.Cantidad,0) AS Transferencia_Enviada, ISNULL(DC.Cantidad,0) AS Devolucion_Compra, ISNULL(MR.Cantidad,0)+ISNULL(TR.Cantidad,0)+ISNULL(DV.Cantidad,0)-(ISNULL(Fact.Cantidad,0)+ISNULL(SB.Cantidad,0)+ISNULL(TE.Cantidad,0)+ISNULL(DC.Cantidad,0)) AS Existencia FROM Movimientos L INNER JOIN Productos Prod ON L.Cod_Producto = Prod.Cod_Productos LEFT JOIN Lote Lte ON L.Lote=Lte.Numero_Lote LEFT JOIN (SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'SINLOTE') AS Lote, C.Cod_Bodega, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE C.Fecha_Compra<=@FechaCorte AND C.Tipo_Compra='Mercancia Recibida' AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto,ISNULL(DC.Numero_Lote,'SINLOTE'),C.Cod_Bodega) MR ON L.Cod_Producto=MR.Cod_Producto AND L.Lote=MR.Lote AND L.Cod_Bodega=MR.Cod_Bodega LEFT JOIN (SELECT DC.Cod_Producto,ISNULL(DC.Numero_Lote,'SINLOTE') AS Lote,C.Cod_Bodega,SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE C.Fecha_Compra<=@FechaCorte AND C.Tipo_Compra='Transferencia Recibida' AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto,ISNULL(DC.Numero_Lote,'SINLOTE'),C.Cod_Bodega) TR ON L.Cod_Producto=TR.Cod_Producto AND L.Lote=TR.Lote AND L.Cod_Bodega=TR.Cod_Bodega LEFT JOIN (SELECT DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE') AS Lote,F.Cod_Bodega,SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE F.Fecha_Factura<=@FechaCorte AND F.Tipo_Factura='Devolucion de Venta' AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE'),F.Cod_Bodega) DV ON L.Cod_Producto=DV.Cod_Producto AND L.Lote=DV.Lote AND L.Cod_Bodega=DV.Cod_Bodega LEFT JOIN (SELECT DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE') AS Lote,F.Cod_Bodega,SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE F.Fecha_Factura<=@FechaCorte AND F.Tipo_Factura='Factura' AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE'),F.Cod_Bodega) Fact ON L.Cod_Producto=Fact.Cod_Producto AND L.Lote=Fact.Lote AND L.Cod_Bodega=Fact.Cod_Bodega LEFT JOIN (SELECT DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE') AS Lote,F.Cod_Bodega,SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE F.Fecha_Factura<=@FechaCorte AND F.Tipo_Factura='Salida Bodega' AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE'),F.Cod_Bodega) SB ON L.Cod_Producto=SB.Cod_Producto AND L.Lote=SB.Lote AND L.Cod_Bodega=SB.Cod_Bodega LEFT JOIN (SELECT DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE') AS Lote,F.Cod_Bodega,SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE F.Fecha_Factura<=@FechaCorte AND F.Tipo_Factura='Transferencia Enviada' AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE'),F.Cod_Bodega) TE ON L.Cod_Producto=TE.Cod_Producto AND L.Lote=TE.Lote AND L.Cod_Bodega=TE.Cod_Bodega LEFT JOIN (SELECT DC.Cod_Producto,ISNULL(DC.Numero_Lote,'SINLOTE') AS Lote,C.Cod_Bodega,SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE C.Fecha_Compra<=@FechaCorte AND C.Tipo_Compra='Devolucion de Compra' AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto,ISNULL(DC.Numero_Lote,'SINLOTE'),C.Cod_Bodega) DC ON L.Cod_Producto=DC.Cod_Producto AND L.Lote=DC.Lote AND L.Cod_Bodega=DC.Cod_Bodega ORDER BY L.Cod_Producto, L.Cod_Bodega, L.Lote; "
+
+            Else
+
+                If CodProductoDesde <> "" And CodProductoHasta <> "" Then
+                    FiltroProducto = "DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta"
+                End If
+
+                If CodBodegaDesde <> "" And CodBodegaHasta <> "" Then
+                    FiltroBodega = "C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta"
+                End If
+
+                Dim Condiciones As String = ""
+
+                If FiltroProducto <> "" And FiltroBodega <> "" Then
+                    Condiciones = FiltroProducto & " AND " & FiltroBodega
+                ElseIf FiltroProducto <> "" Then
+                    Condiciones = FiltroProducto
+                ElseIf FiltroBodega <> "" Then
+                    Condiciones = FiltroBodega
+                End If
+
+
+                SqlString = "WITH Movimientos AS (SELECT DC.Cod_Producto,ISNULL(DC.Numero_Lote,'SINLOTE') AS Lote,C.Cod_Bodega FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE DC.Fecha_Compra<=@FechaCorte"
+
+                If Condiciones <> "" Then
+                    SqlString &= " AND " & Condiciones
+                End If
+
+                SqlString &= " UNION SELECT DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE') AS Lote,F.Cod_Bodega FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE DF.Fecha_Factura<=@FechaCorte"
+
+                If Condiciones <> "" Then
+                    ' Para facturas, reemplazar los alias DC/C por DF/F según corresponda
+                    Dim CondicionesFacturas As String = Condiciones.Replace("DC.", "DF.").Replace("C.", "F.")
+                    SqlString &= " AND " & CondicionesFacturas
+                End If
+
+                SqlString &= ") SELECT L.Cod_Producto,Prod.Descripcion_Producto AS Producto,L.Cod_Bodega,L.Lote,Prod.Cod_Linea,Lte.FechaVence AS Fecha_Vencimiento,ISNULL(MR.Cantidad,0) AS Mercancia_Recibida,ISNULL(TR.Cantidad,0) AS Transferencia_Recibida,ISNULL(DV.Cantidad,0) AS Devolucion_Venta,ISNULL(Fact.Cantidad,0) AS Factura,ISNULL(SB.Cantidad,0) AS Salidas_Bodegas,ISNULL(TE.Cantidad,0) AS Transferencia_Enviada,ISNULL(DC.Cantidad,0) AS Devolucion_Compra,ISNULL(MR.Cantidad,0)+ISNULL(TR.Cantidad,0)+ISNULL(DV.Cantidad,0)-(ISNULL(Fact.Cantidad,0)+ISNULL(SB.Cantidad,0)+ISNULL(TE.Cantidad,0)+ISNULL(DC.Cantidad,0)) AS Existencia FROM Movimientos L INNER JOIN Productos Prod ON L.Cod_Producto=Prod.Cod_Productos LEFT JOIN Lote Lte ON L.Lote=Lte.Numero_Lote LEFT JOIN (SELECT DC.Cod_Producto,ISNULL(DC.Numero_Lote,'SINLOTE') AS Lote,C.Cod_Bodega,SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE C.Fecha_Compra<=@FechaCorte AND C.Tipo_Compra='Mercancia Recibida' AND DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto,ISNULL(DC.Numero_Lote,'SINLOTE'),C.Cod_Bodega) MR ON L.Cod_Producto=MR.Cod_Producto AND L.Lote=MR.Lote AND L.Cod_Bodega=MR.Cod_Bodega LEFT JOIN (SELECT DC.Cod_Producto,ISNULL(DC.Numero_Lote,'SINLOTE') AS Lote,C.Cod_Bodega,SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE C.Fecha_Compra<=@FechaCorte AND C.Tipo_Compra='Transferencia Recibida' AND DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto,ISNULL(DC.Numero_Lote,'SINLOTE'),C.Cod_Bodega) TR ON L.Cod_Producto=TR.Cod_Producto AND L.Lote=TR.Lote AND L.Cod_Bodega=TR.Cod_Bodega LEFT JOIN (SELECT DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE') AS Lote,F.Cod_Bodega,SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE F.Fecha_Factura<=@FechaCorte AND F.Tipo_Factura='Devolucion de Venta' AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE'),F.Cod_Bodega) DV ON L.Cod_Producto=DV.Cod_Producto AND L.Lote=DV.Lote AND L.Cod_Bodega=DV.Cod_Bodega LEFT JOIN (SELECT DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE') AS Lote,F.Cod_Bodega,SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE F.Fecha_Factura<=@FechaCorte AND F.Tipo_Factura='Factura' AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE'),F.Cod_Bodega) Fact ON L.Cod_Producto=Fact.Cod_Producto AND L.Lote=Fact.Lote AND L.Cod_Bodega=Fact.Cod_Bodega LEFT JOIN (SELECT DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE') AS Lote,F.Cod_Bodega,SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE F.Fecha_Factura<=@FechaCorte AND F.Tipo_Factura='Salida Bodega' AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE'),F.Cod_Bodega) SB ON L.Cod_Producto=SB.Cod_Producto AND L.Lote=SB.Lote AND L.Cod_Bodega=SB.Cod_Bodega LEFT JOIN (SELECT DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE') AS Lote,F.Cod_Bodega,SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE F.Fecha_Factura<=@FechaCorte AND F.Tipo_Factura='Transferencia Enviada' AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE'),F.Cod_Bodega) TE ON L.Cod_Producto=TE.Cod_Producto AND L.Lote=TE.Lote AND L.Cod_Bodega=TE.Cod_Bodega LEFT JOIN (SELECT DC.Cod_Producto,ISNULL(DC.Numero_Lote,'SINLOTE') AS Lote,C.Cod_Bodega,SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE C.Fecha_Compra<=@FechaCorte AND C.Tipo_Compra='Devolucion de Compra' AND DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto,ISNULL(DC.Numero_Lote,'SINLOTE'),C.Cod_Bodega) DC ON L.Cod_Producto=DC.Cod_Producto AND L.Lote=DC.Lote AND L.Cod_Bodega=DC.Cod_Bodega ORDER BY L.Cod_Producto,L.Cod_Bodega,L.Lote; "
+
+
             End If
-            If Argumentos.CodProductoIni <> "" And Argumentos.CodProductoFin <> "" Then
-                SqlString &= " AND (m.Cod_Producto BETWEEN '" & Argumentos.CodProductoIni & "' AND '" & Argumentos.CodProductoFin & "')"
+
+
+            ' Ejecutar consulta
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+
+            ' Parámetros obligatorios
+            DataAdapter.SelectCommand.Parameters.AddWithValue("@FechaCorte", FechaFin)
+
+
+            ' Parámetros opcionales (solo si no están vacíos)
+
+            If CodBodegaDesde <> "" And CodBodegaHasta <> "" Then
+                DataAdapter.SelectCommand.Parameters.AddWithValue("@CodBodegaDesde", CodBodegaDesde)
+                DataAdapter.SelectCommand.Parameters.AddWithValue("@CodBodegaHasta", CodBodegaHasta)
             End If
-            SqlString &= " GROUP BY m.Cod_Producto, p.Descripcion_Producto, m.Numero_Lote, m.Cod_Bodega, p.Cod_Linea, L.FechaVence ORDER BY m.Cod_Producto, p.Descripcion_Producto, m.Numero_Lote, m.Cod_Bodega "
+
+            If CodProductoDesde <> "" And CodProductoHasta <> "" Then
+                DataAdapter.SelectCommand.Parameters.AddWithValue("@CodProductoDesde", CodProductoDesde)
+                DataAdapter.SelectCommand.Parameters.AddWithValue("@CodProductoHasta", CodProductoHasta)
+            End If
+
+
+            DataAdapter.Fill(DataSet, "LotesDetalle")
+
+
         Else ' Agrupado = Linea
-            SqlString = "SELECT m.Cod_Producto, p.Descripcion_Producto, m.Numero_Lote, m.Cod_Bodega, SUM(m.Cantidad * m.TipoMovimiento) AS Existencia_Lote, p.Cod_Linea, L.FechaVence FROM (SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM  Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE (dc.Tipo_Compra = 'Mercancia Recibida') UNION ALL SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, - 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE (dc.Tipo_Compra = 'Devolucion de Compra') UNION ALL SELECT df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, - 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM  Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE (df.Tipo_Factura = 'Factura') UNION ALL SELECT df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE (df.Tipo_Factura = 'Devolucion de Ventas') UNION ALL SELECT df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, - 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM  Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE (df.Tipo_Factura = 'Transferencias Enviadas') UNION ALL SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE (dc.Tipo_Compra = 'Transferencias Recibidas')) AS m INNER JOIN Productos AS p ON m.Cod_Producto = p.Cod_Productos INNER JOIN Lote AS L ON m.Numero_Lote = L.Numero_Lote " &
-                        "WHERE (m.FechaMovimiento <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (m.Numero_Lote <> 'SIN LOTE') AND (m.Numero_Lote <> 'SINLOTE') AND (m.Numero_Lote <> '') "
-            If Argumentos.CodLIneaIni <> "" And Argumentos.CodLineaFin <> "" Then
-                SqlString &= " AND (p.Cod_Linea BETWEEN '" & Argumentos.CodLIneaIni & "' AND '" & Argumentos.CodLineaFin & "')"
+
+            SqlString = "WITH Movimientos AS (SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote, 'SINLOTE') AS Lote, C.Cod_Bodega FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra = C.Numero_Compra AND DC.Fecha_Compra = C.Fecha_Compra AND DC.Tipo_Compra = C.Tipo_Compra WHERE DC.Fecha_Compra <= @FechaCorte AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta UNION SELECT DF.Cod_Producto, ISNULL(DF.CodTarea, 'SINLOTE') AS Lote, F.Cod_Bodega FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE DF.Fecha_Factura <= @FechaCorte AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta) SELECT L.Cod_Producto, Prod.Descripcion_Producto AS Producto, L.Cod_Bodega, L.Lote, Prod.Cod_Linea, Lte.FechaVence AS Fecha_Vencimiento, ISNULL(MR.Cantidad,0) AS Mercancia_Recibida, ISNULL(TR.Cantidad,0) AS Transferencia_Recibida, ISNULL(DV.Cantidad,0) AS Devolucion_Venta, ISNULL(Fact.Cantidad,0) AS Factura, ISNULL(SB.Cantidad,0) AS Salidas_Bodegas, ISNULL(TE.Cantidad,0) AS Transferencia_Enviada, ISNULL(DC.Cantidad,0) AS Devolucion_Compra, ISNULL(MR.Cantidad,0)+ISNULL(TR.Cantidad,0)+ISNULL(DV.Cantidad,0)-(ISNULL(Fact.Cantidad,0)+ISNULL(SB.Cantidad,0)+ISNULL(TE.Cantidad,0)+ISNULL(DC.Cantidad,0)) AS Existencia FROM Movimientos L INNER JOIN Productos Prod ON L.Cod_Producto = Prod.Cod_Productos LEFT JOIN Lote Lte ON L.Lote=Lte.Numero_Lote LEFT JOIN (SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'SINLOTE') AS Lote, C.Cod_Bodega, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE C.Fecha_Compra<=@FechaCorte AND C.Tipo_Compra='Mercancia Recibida' AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto,ISNULL(DC.Numero_Lote,'SINLOTE'),C.Cod_Bodega) MR ON L.Cod_Producto=MR.Cod_Producto AND L.Lote=MR.Lote AND L.Cod_Bodega=MR.Cod_Bodega LEFT JOIN (SELECT DC.Cod_Producto,ISNULL(DC.Numero_Lote,'SINLOTE') AS Lote,C.Cod_Bodega,SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE C.Fecha_Compra<=@FechaCorte AND C.Tipo_Compra='Transferencia Recibida' AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto,ISNULL(DC.Numero_Lote,'SINLOTE'),C.Cod_Bodega) TR ON L.Cod_Producto=TR.Cod_Producto AND L.Lote=TR.Lote AND L.Cod_Bodega=TR.Cod_Bodega LEFT JOIN (SELECT DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE') AS Lote,F.Cod_Bodega,SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE F.Fecha_Factura<=@FechaCorte AND F.Tipo_Factura='Devolucion de Venta' AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE'),F.Cod_Bodega) DV ON L.Cod_Producto=DV.Cod_Producto AND L.Lote=DV.Lote AND L.Cod_Bodega=DV.Cod_Bodega LEFT JOIN (SELECT DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE') AS Lote,F.Cod_Bodega,SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE F.Fecha_Factura<=@FechaCorte AND F.Tipo_Factura='Factura' AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE'),F.Cod_Bodega) Fact ON L.Cod_Producto=Fact.Cod_Producto AND L.Lote=Fact.Lote AND L.Cod_Bodega=Fact.Cod_Bodega LEFT JOIN (SELECT DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE') AS Lote,F.Cod_Bodega,SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE F.Fecha_Factura<=@FechaCorte AND F.Tipo_Factura='Salida Bodega' AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE'),F.Cod_Bodega) SB ON L.Cod_Producto=SB.Cod_Producto AND L.Lote=SB.Lote AND L.Cod_Bodega=SB.Cod_Bodega LEFT JOIN (SELECT DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE') AS Lote,F.Cod_Bodega,SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE F.Fecha_Factura<=@FechaCorte AND F.Tipo_Factura='Transferencia Enviada' AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto,ISNULL(DF.CodTarea,'SINLOTE'),F.Cod_Bodega) TE ON L.Cod_Producto=TE.Cod_Producto AND L.Lote=TE.Lote AND L.Cod_Bodega=TE.Cod_Bodega LEFT JOIN (SELECT DC.Cod_Producto,ISNULL(DC.Numero_Lote,'SINLOTE') AS Lote,C.Cod_Bodega,SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE C.Fecha_Compra<=@FechaCorte AND C.Tipo_Compra='Devolucion de Compra' AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto,ISNULL(DC.Numero_Lote,'SINLOTE'),C.Cod_Bodega) DC ON L.Cod_Producto=DC.Cod_Producto AND L.Lote=DC.Lote AND L.Cod_Bodega=DC.Cod_Bodega ORDER BY L.Cod_Producto, L.Cod_Bodega, L.Lote; "
+
+            ' Ejecutar consulta
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+
+            ' Parámetros obligatorios
+            DataAdapter.SelectCommand.Parameters.AddWithValue("@FechaCorte", FechaFin)
+
+
+            ' Parámetros opcionales (solo si no están vacíos)
+
+            If CodBodegaDesde <> "" And CodBodegaHasta <> "" Then
+                DataAdapter.SelectCommand.Parameters.AddWithValue("@CodBodegaDesde", CodBodegaDesde)
+                DataAdapter.SelectCommand.Parameters.AddWithValue("@CodBodegaHasta", CodBodegaHasta)
             End If
-            If Argumentos.CodProductoIni <> "" And Argumentos.CodProductoFin <> "" Then
-                SqlString &= " AND (m.Cod_Producto BETWEEN '" & Argumentos.CodProductoIni & "' AND '" & Argumentos.CodProductoFin & "')"
+
+            If CodProductoDesde <> "" And CodProductoHasta <> "" Then
+                DataAdapter.SelectCommand.Parameters.AddWithValue("@CodProductoDesde", CodProductoDesde)
+                DataAdapter.SelectCommand.Parameters.AddWithValue("@CodProductoHasta", CodProductoHasta)
             End If
-            SqlString &= " GROUP BY m.Cod_Producto, p.Descripcion_Producto, m.Numero_Lote, m.Cod_Bodega, p.Cod_Linea, L.FechaVence ORDER BY m.Cod_Producto, p.Descripcion_Producto, m.Numero_Lote, p.Cod_Linea "
+
+            DataAdapter.Fill(DataSet, "LotesDetalle")
+
         End If
 
-        ' Ejecutar consulta
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "LotesDetalle")
+
 
         ' Llenar resultadosLotes
         resultadosLotes = New Concurrent.ConcurrentBag(Of ReporteExistenciaLote)
@@ -828,14 +909,15 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
         ProgressBarMaximum_Hilos(Cont)
         For Each fila As DataRow In DataSet.Tables("LotesDetalle").Rows
 
+
             Dim item As New ReporteExistenciaLote With {
-            .Numero_Lote = fila("Numero_Lote").ToString(),
+            .Numero_Lote = fila("Lote").ToString(),
             .Codigo_Producto = fila("Cod_Producto").ToString(),
-            .Descripcion_Producto = fila("Descripcion_Producto").ToString(),
+            .Descripcion_Producto = fila("Producto").ToString(),
             .Codigo_Bodega = fila("Cod_Bodega").ToString(),
+            .Fecha_Vence = If(IsDBNull(fila("Fecha_Vencimiento")), Nothing, CDate(fila("Fecha_Vencimiento"))),
             .Codigo_Linea = fila("Cod_Linea").ToString(),
-            .Fecha_Vence = If(IsDBNull(fila("FechaVence")), Nothing, CDate(fila("FechaVence"))),
-            .Existencia_Lote = fila("Existencia_Lote").ToString()  ' Puedes calcular la existencia aquí si tienes el campo correspondiente
+            .Existencia_Lote = fila("Existencia").ToString()  ' Puedes calcular la existencia aquí si tienes el campo correspondiente
         }
 
             resultadosLotes.Add(item)
@@ -844,7 +926,7 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
             'Dim porcentaje As Integer = CInt((i * 100.0) / Cont)
             '' Reportar progreso
             'worker.ReportProgress(porcentaje, fila("Numero_Lote").ToString())
-            worker.ReportProgress(i, fila("Numero_Lote").ToString())
+            worker.ReportProgress(i, fila("Lote").ToString())
         Next
 
         RsFuncion.Argslotes = Argumentos

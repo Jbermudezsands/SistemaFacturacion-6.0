@@ -8,6 +8,7 @@
     Private FechaVence As Date
     Private TipoReporte As String
     Private Agrupado As String
+    Private FechaReporte As Date
 
 
 
@@ -89,6 +90,15 @@
         End Get
         Set(value As String)
             Agrupado = value
+        End Set
+    End Property
+
+    Public Property Fecha_Reporte As Date
+        Get
+            Return FechaReporte
+        End Get
+        Set(value As Date)
+            FechaReporte = value
         End Set
     End Property
 End Class

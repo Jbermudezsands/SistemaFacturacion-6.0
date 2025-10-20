@@ -8176,6 +8176,190 @@ errSub:
         DataSet.Tables("Compras").Reset()
     End Function
     Public Function CostoPromedioKardex2(ByVal CodigoProducto As String, ByVal FechaCompras As Date) As RstCostoPromedio
+        Dim PrecioCosto As Double = 0
+        Dim PrecioCostoDolar As Double = 0
+        Dim FechaFactura As Date
+        Dim TotalCantidad As Double = 0
+        Dim TotalImporte As Double = 0
+        Dim TasaCambioDelDia As Double = 0
+        Dim MiConexion As New SqlConnection(Conexion)
+        Dim Resultado As New RstCostoPromedio
+
+        Try
+            MiConexion.Open()
+
+            '--------------------------------------------------------------
+            ' BUSCAR TASA DE CAMBIO DEL DÍA O LA ÚLTIMA DISPONIBLE
+            '--------------------------------------------------------------
+            Dim sqlTasa As String =
+            "SELECT TOP 1 MontoTasa 
+             FROM TasaCambio 
+             WHERE FechaTasa <= @FechaCorte 
+             ORDER BY FechaTasa DESC;"
+
+            Using cmdTasa As New SqlCommand(sqlTasa, MiConexion)
+                cmdTasa.Parameters.AddWithValue("@FechaCorte", FechaCompras)
+                Dim result = cmdTasa.ExecuteScalar()
+                If result IsNot Nothing Then
+                    TasaCambioDelDia = CDbl(result)
+                Else
+                    TasaCambioDelDia = 1 ' Evitar división por cero
+                End If
+            End Using
+
+            '--------------------------------------------------------------
+            ' CALCULAR TOTAL DE MOVIMIENTOS (COMPRAS, DEVOLUCIONES, VENTAS, ETC.)
+            '--------------------------------------------------------------
+            Dim sqlMovimientos As String =
+            "WITH Movimientos AS (
+                SELECT 
+                    @CodProducto AS Cod_Producto,
+
+                    -- ===================== CANTIDAD COMPRAS =====================
+                    SUM(CASE 
+                        WHEN C.Tipo_Compra = 'Mercancia Recibida' THEN DC.Cantidad
+                        WHEN C.Tipo_Compra = 'Devolucion de Compra' THEN -DC.Cantidad
+                        ELSE 0 END) AS CantidadCompras,
+
+                    -- ===================== IMPORTE COMPRAS =====================
+                    SUM(CASE 
+                        WHEN C.Tipo_Compra = 'Mercancia Recibida' AND C.MonedaCompra = 'Dolares' 
+                            THEN DC.Precio_Neto * DC.Cantidad * T.MontoTasa
+                        WHEN C.Tipo_Compra = 'Mercancia Recibida' AND C.MonedaCompra <> 'Dolares' 
+                            THEN DC.Precio_Neto * DC.Cantidad
+                        WHEN C.Tipo_Compra = 'Devolucion de Compra' AND C.MonedaCompra = 'Dolares' 
+                            THEN -DC.Precio_Neto * DC.Cantidad * T.MontoTasa
+                        WHEN C.Tipo_Compra = 'Devolucion de Compra' AND C.MonedaCompra <> 'Dolares' 
+                            THEN -DC.Precio_Neto * DC.Cantidad
+                        ELSE 0 END) AS TotalComprasC,
+
+                    -- ===================== CANTIDAD VENTAS =====================
+                    SUM(CASE 
+                        WHEN F.Tipo_Factura = 'Factura' THEN -DF.Cantidad
+                        WHEN F.Tipo_Factura = 'Devolucion de Venta' THEN DF.Cantidad
+                        ELSE 0 END) AS CantidadVentas,
+
+                    -- ===================== IMPORTE VENTAS =====================
+                    SUM(CASE 
+                        WHEN F.Tipo_Factura = 'Factura' THEN -DF.Costo_Unitario * DF.Cantidad
+                        WHEN F.Tipo_Factura = 'Devolucion de Venta' THEN DF.Costo_Unitario * DF.Cantidad
+                        ELSE 0 END) AS TotalVentasC,
+
+                    -- ===================== CANTIDAD SALIDAS BODEGA Y TRANSFERENCIAS =====================
+                    SUM(CASE 
+                        WHEN F.Tipo_Factura = 'Salida Bodega' THEN -DF.Cantidad
+                        WHEN F.Tipo_Factura = 'Transferencia Enviada' THEN -DF.Cantidad
+                        ELSE 0 END) AS CantidadSalidaBodega,
+
+                    -- ===================== IMPORTE SALIDAS BODEGA Y TRANSFERENCIAS =====================
+                    SUM(CASE 
+                        WHEN F.Tipo_Factura = 'Salida Bodega' THEN -DF.Costo_Unitario * DF.Cantidad
+                        WHEN F.Tipo_Factura = 'Transferencia Enviada' THEN -DF.Costo_Unitario * DF.Cantidad
+                        ELSE 0 END) AS TotalSalidaBodega,
+
+                    -- ===================== CANTIDAD TRANSFERENCIAS RECIBIDAS =====================
+                    SUM(CASE 
+                        WHEN F.Tipo_Factura = 'Transferencia Recibida' THEN DF.Cantidad
+                        ELSE 0 END) AS CantidadTransferRecibida,
+
+                    -- ===================== IMPORTE TRANSFERENCIAS RECIBIDAS =====================
+                    SUM(CASE 
+                        WHEN F.Tipo_Factura = 'Transferencia Recibida' THEN DF.Costo_Unitario * DF.Cantidad
+                        ELSE 0 END) AS TotalTransferRecibida
+
+
+                FROM TasaCambio T
+                LEFT JOIN Compras C ON T.FechaTasa = C.Fecha_Compra
+                LEFT JOIN Detalle_Compras DC ON DC.Numero_Compra = C.Numero_Compra
+                    AND DC.Fecha_Compra = C.Fecha_Compra
+                    AND DC.Tipo_Compra = C.Tipo_Compra
+                    AND DC.Cod_Producto = @CodProducto
+                LEFT JOIN Facturas F ON T.FechaTasa = F.Fecha_Factura
+                LEFT JOIN Detalle_Facturas DF ON DF.Numero_Factura = F.Numero_Factura
+                    AND DF.Fecha_Factura = F.Fecha_Factura
+                    AND DF.Tipo_Factura = F.Tipo_Factura
+                    AND DF.Cod_Producto = @CodProducto
+                WHERE (DC.Fecha_Compra <= @FechaCorte OR F.Fecha_Factura <= @FechaCorte)
+            )
+            SELECT 
+               ISNULL(SUM(CantidadCompras + CantidadVentas + CantidadSalidaBodega + CantidadTransferRecibida), 0) AS TotalCantidad,
+               ISNULL(SUM(TotalComprasC + TotalVentasC + TotalSalidaBodega + TotalTransferRecibida), 0) AS TotalImporte
+            FROM Movimientos;"
+
+            Using cmd As New SqlCommand(sqlMovimientos, MiConexion)
+                cmd.Parameters.AddWithValue("@CodProducto", CodigoProducto)
+                cmd.Parameters.AddWithValue("@FechaCorte", FechaCompras)
+
+                Using rd As SqlDataReader = cmd.ExecuteReader()
+                    If rd.Read() Then
+                        TotalCantidad = If(IsDBNull(rd("TotalCantidad")), 0, CDbl(rd("TotalCantidad")))
+                        TotalImporte = If(IsDBNull(rd("TotalImporte")), 0, CDbl(rd("TotalImporte")))
+                    End If
+                End Using
+            End Using
+
+            '--------------------------------------------------------------
+            ' CALCULAR COSTO PROMEDIO EN C$ Y US$
+            '--------------------------------------------------------------
+            If TotalCantidad <> 0 Then
+                PrecioCosto = Math.Round(TotalImporte / TotalCantidad, 6)
+                PrecioCostoDolar = Math.Round(PrecioCosto / TasaCambioDelDia, 6)
+            Else
+                PrecioCosto = 0
+                PrecioCostoDolar = 0
+            End If
+
+            '--------------------------------------------------------------
+            ' SI NO EXISTE COSTO PROMEDIO, BUSCAR EL ÚLTIMO COSTO DE VENTA
+            '--------------------------------------------------------------
+            If PrecioCosto = 0 Then
+                Dim sqlUltimoCosto As String =
+                "SELECT TOP 1 
+                    DF.Costo_Unitario, 
+                    DF.Fecha_Factura, 
+                    (DF.Costo_Unitario / T.MontoTasa) AS Costo_UnitarioDolar
+                 FROM Detalle_Facturas DF
+                 INNER JOIN TasaCambio T 
+                     ON DF.Fecha_Factura = T.FechaTasa
+                 WHERE DF.Cod_Producto = @CodProducto 
+                   AND DF.Costo_Unitario <> 0
+                   AND DF.Fecha_Factura <= @FechaCorte
+                 ORDER BY DF.Fecha_Factura DESC;"
+
+                Using cmdUltimo As New SqlCommand(sqlUltimoCosto, MiConexion)
+                    cmdUltimo.Parameters.AddWithValue("@CodProducto", CodigoProducto)
+                    cmdUltimo.Parameters.AddWithValue("@FechaCorte", FechaCompras)
+
+                    Using rd As SqlDataReader = cmdUltimo.ExecuteReader()
+                        If rd.Read() Then
+                            PrecioCosto = CDbl(rd("Costo_Unitario"))
+                            PrecioCostoDolar = CDbl(rd("Costo_UnitarioDolar"))
+                            FechaFactura = CDate(rd("Fecha_Factura"))
+                        End If
+                    End Using
+                End Using
+            End If
+
+        Catch ex As Exception
+            MsgBox("Error en CostoPromedioKardex: " & ex.Message, MsgBoxStyle.Critical, "Error")
+        Finally
+            If MiConexion.State = ConnectionState.Open Then MiConexion.Close()
+        End Try
+
+        ' Retorna ambos valores como una tupla
+        Resultado.Codigo_Producto = CodigoProducto
+        Resultado.Fecha_Compras = FechaCompras
+        Resultado.Costo_Cordoba = PrecioCosto
+        Resultado.Costo_Dolar = PrecioCostoDolar
+
+
+        Return Resultado
+    End Function
+
+
+
+
+    Public Function CostoPromedioKardex(ByVal CodigoProducto As String, ByVal FechaCompras As Date) As RstCostoPromedio
         Dim SqlCompras As String, Iposicion As Double, TotalImporte As Double, CantidadCompras As Double, MonedaCompra As String, Importe As Double, PrecioUnitario As Double, PrecioCostoDolar As Double, PrecioCosto As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion), Registros As Double, ImporteD As Double, TotalImporteD As Double
         Dim DataSet As New DataSet, TotalCantidad As Double = 0, TasaCambio As Double
@@ -8497,186 +8681,6 @@ errSub:
         Return RstCosto
     End Function
 
-    Public Function CostoPromedioKardex(ByVal CodigoProducto As String, ByVal FechaCompras As Date) As RstCostoPromedio
-        Dim PrecioCosto As Double = 0
-        Dim PrecioCostoDolar As Double = 0
-        Dim FechaFactura As Date
-        Dim TotalCantidad As Double = 0
-        Dim TotalImporte As Double = 0
-        Dim TasaCambioDelDia As Double = 0
-        Dim MiConexion As New SqlConnection(Conexion)
-        Dim Resultado As New RstCostoPromedio
-
-        Try
-            MiConexion.Open()
-
-            '--------------------------------------------------------------
-            ' BUSCAR TASA DE CAMBIO DEL DÍA O LA ÚLTIMA DISPONIBLE
-            '--------------------------------------------------------------
-            Dim sqlTasa As String =
-            "SELECT TOP 1 MontoTasa 
-             FROM TasaCambio 
-             WHERE FechaTasa <= @FechaCorte 
-             ORDER BY FechaTasa DESC;"
-
-            Using cmdTasa As New SqlCommand(sqlTasa, MiConexion)
-                cmdTasa.Parameters.AddWithValue("@FechaCorte", FechaCompras)
-                Dim result = cmdTasa.ExecuteScalar()
-                If result IsNot Nothing Then
-                    TasaCambioDelDia = CDbl(result)
-                Else
-                    TasaCambioDelDia = 1 ' Evitar división por cero
-                End If
-            End Using
-
-            '--------------------------------------------------------------
-            ' CALCULAR TOTAL DE MOVIMIENTOS (COMPRAS, DEVOLUCIONES, VENTAS, ETC.)
-            '--------------------------------------------------------------
-            Dim sqlMovimientos As String =
-            "WITH Movimientos AS (
-                SELECT 
-                    @CodProducto AS Cod_Producto,
-
-                    -- ===================== CANTIDAD COMPRAS =====================
-                    SUM(CASE 
-                        WHEN C.Tipo_Compra = 'Mercancia Recibida' THEN DC.Cantidad
-                        WHEN C.Tipo_Compra = 'Devolucion de Compra' THEN -DC.Cantidad
-                        ELSE 0 END) AS CantidadCompras,
-
-                    -- ===================== IMPORTE COMPRAS =====================
-                    SUM(CASE 
-                        WHEN C.Tipo_Compra = 'Mercancia Recibida' AND C.MonedaCompra = 'Dolares' 
-                            THEN DC.Precio_Neto * DC.Cantidad * T.MontoTasa
-                        WHEN C.Tipo_Compra = 'Mercancia Recibida' AND C.MonedaCompra <> 'Dolares' 
-                            THEN DC.Precio_Neto * DC.Cantidad
-                        WHEN C.Tipo_Compra = 'Devolucion de Compra' AND C.MonedaCompra = 'Dolares' 
-                            THEN -DC.Precio_Neto * DC.Cantidad * T.MontoTasa
-                        WHEN C.Tipo_Compra = 'Devolucion de Compra' AND C.MonedaCompra <> 'Dolares' 
-                            THEN -DC.Precio_Neto * DC.Cantidad
-                        ELSE 0 END) AS TotalComprasC,
-
-                    -- ===================== CANTIDAD VENTAS =====================
-                    SUM(CASE 
-                        WHEN F.Tipo_Factura = 'Factura' THEN -DF.Cantidad
-                        WHEN F.Tipo_Factura = 'Devolucion de Venta' THEN DF.Cantidad
-                        ELSE 0 END) AS CantidadVentas,
-
-                    -- ===================== IMPORTE VENTAS =====================
-                    SUM(CASE 
-                        WHEN F.Tipo_Factura = 'Factura' THEN -DF.Costo_Unitario * DF.Cantidad
-                        WHEN F.Tipo_Factura = 'Devolucion de Venta' THEN DF.Costo_Unitario * DF.Cantidad
-                        ELSE 0 END) AS TotalVentasC,
-
-                    -- ===================== CANTIDAD SALIDAS BODEGA Y TRANSFERENCIAS =====================
-                    SUM(CASE 
-                        WHEN F.Tipo_Factura = 'Salida Bodega' THEN -DF.Cantidad
-                        WHEN F.Tipo_Factura = 'Transferencia Enviada' THEN -DF.Cantidad
-                        ELSE 0 END) AS CantidadSalidaBodega,
-
-                    -- ===================== IMPORTE SALIDAS BODEGA Y TRANSFERENCIAS =====================
-                    SUM(CASE 
-                        WHEN F.Tipo_Factura = 'Salida Bodega' THEN -DF.Costo_Unitario * DF.Cantidad
-                        WHEN F.Tipo_Factura = 'Transferencia Enviada' THEN -DF.Costo_Unitario * DF.Cantidad
-                        ELSE 0 END) AS TotalSalidaBodega,
-
-                    -- ===================== CANTIDAD TRANSFERENCIAS RECIBIDAS =====================
-                    SUM(CASE 
-                        WHEN F.Tipo_Factura = 'Transferencia Recibida' THEN DF.Cantidad
-                        ELSE 0 END) AS CantidadTransferRecibida,
-
-                    -- ===================== IMPORTE TRANSFERENCIAS RECIBIDAS =====================
-                    SUM(CASE 
-                        WHEN F.Tipo_Factura = 'Transferencia Recibida' THEN DF.Costo_Unitario * DF.Cantidad
-                        ELSE 0 END) AS TotalTransferRecibida
-
-
-                FROM TasaCambio T
-                LEFT JOIN Compras C ON T.FechaTasa = C.Fecha_Compra
-                LEFT JOIN Detalle_Compras DC ON DC.Numero_Compra = C.Numero_Compra
-                    AND DC.Fecha_Compra = C.Fecha_Compra
-                    AND DC.Tipo_Compra = C.Tipo_Compra
-                    AND DC.Cod_Producto = @CodProducto
-                LEFT JOIN Facturas F ON T.FechaTasa = F.Fecha_Factura
-                LEFT JOIN Detalle_Facturas DF ON DF.Numero_Factura = F.Numero_Factura
-                    AND DF.Fecha_Factura = F.Fecha_Factura
-                    AND DF.Tipo_Factura = F.Tipo_Factura
-                    AND DF.Cod_Producto = @CodProducto
-                WHERE (DC.Fecha_Compra <= @FechaCorte OR F.Fecha_Factura <= @FechaCorte)
-            )
-            SELECT 
-               ISNULL(SUM(CantidadCompras + CantidadVentas + CantidadSalidaBodega + CantidadTransferRecibida), 0) AS TotalCantidad,
-               ISNULL(SUM(TotalComprasC + TotalVentasC + TotalSalidaBodega + TotalTransferRecibida), 0) AS TotalImporte
-            FROM Movimientos;"
-
-            Using cmd As New SqlCommand(sqlMovimientos, MiConexion)
-                cmd.Parameters.AddWithValue("@CodProducto", CodigoProducto)
-                cmd.Parameters.AddWithValue("@FechaCorte", FechaCompras)
-
-                Using rd As SqlDataReader = cmd.ExecuteReader()
-                    If rd.Read() Then
-                        TotalCantidad = If(IsDBNull(rd("TotalCantidad")), 0, CDbl(rd("TotalCantidad")))
-                        TotalImporte = If(IsDBNull(rd("TotalImporte")), 0, CDbl(rd("TotalImporte")))
-                    End If
-                End Using
-            End Using
-
-            '--------------------------------------------------------------
-            ' CALCULAR COSTO PROMEDIO EN C$ Y US$
-            '--------------------------------------------------------------
-            If TotalCantidad <> 0 Then
-                PrecioCosto = Math.Round(TotalImporte / TotalCantidad, 6)
-                PrecioCostoDolar = Math.Round(PrecioCosto / TasaCambioDelDia, 6)
-            Else
-                PrecioCosto = 0
-                PrecioCostoDolar = 0
-            End If
-
-            '--------------------------------------------------------------
-            ' SI NO EXISTE COSTO PROMEDIO, BUSCAR EL ÚLTIMO COSTO DE VENTA
-            '--------------------------------------------------------------
-            If PrecioCosto = 0 Then
-                Dim sqlUltimoCosto As String =
-                "SELECT TOP 1 
-                    DF.Costo_Unitario, 
-                    DF.Fecha_Factura, 
-                    (DF.Costo_Unitario / T.MontoTasa) AS Costo_UnitarioDolar
-                 FROM Detalle_Facturas DF
-                 INNER JOIN TasaCambio T 
-                     ON DF.Fecha_Factura = T.FechaTasa
-                 WHERE DF.Cod_Producto = @CodProducto 
-                   AND DF.Costo_Unitario <> 0
-                   AND DF.Fecha_Factura <= @FechaCorte
-                 ORDER BY DF.Fecha_Factura DESC;"
-
-                Using cmdUltimo As New SqlCommand(sqlUltimoCosto, MiConexion)
-                    cmdUltimo.Parameters.AddWithValue("@CodProducto", CodigoProducto)
-                    cmdUltimo.Parameters.AddWithValue("@FechaCorte", FechaCompras)
-
-                    Using rd As SqlDataReader = cmdUltimo.ExecuteReader()
-                        If rd.Read() Then
-                            PrecioCosto = CDbl(rd("Costo_Unitario"))
-                            PrecioCostoDolar = CDbl(rd("Costo_UnitarioDolar"))
-                            FechaFactura = CDate(rd("Fecha_Factura"))
-                        End If
-                    End Using
-                End Using
-            End If
-
-        Catch ex As Exception
-            MsgBox("Error en CostoPromedioKardex: " & ex.Message, MsgBoxStyle.Critical, "Error")
-        Finally
-            If MiConexion.State = ConnectionState.Open Then MiConexion.Close()
-        End Try
-
-        ' Retorna ambos valores como una tupla
-        Resultado.Codigo_Producto = CodigoProducto
-        Resultado.Fecha_Compras = FechaCompras
-        Resultado.Costo_Cordoba = PrecioCosto
-        Resultado.Costo_Dolar = PrecioCostoDolar
-
-
-        Return Resultado
-    End Function
 
 
     Public Function CostoPromedioActualizaBodega(ByVal CodigoProducto As String, ByVal FechaCompras As Date, ByVal CodBodega As String) As Double
@@ -14166,16 +14170,30 @@ errSub:
 
         TasaCambio = 0
         Existencia = 0
-        SqlConsulta = "SELECT Cod_Producto, Numero_Lote, Cod_Bodega, SUM(Cantidad * TipoMovimiento) AS Existencia_Lote FROM  (SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE (dc.Tipo_Compra = 'Mercancia Recibida') UNION ALL SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, - 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE (dc.Tipo_Compra = 'Devolucion de Compra') UNION ALL SELECT df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, - 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE  (df.Tipo_Factura = 'Factura') UNION ALL SELECT df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE (df.Tipo_Factura = 'Devolucion de Ventas') UNION ALL SELECT df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, - 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE (df.Tipo_Factura = 'Transferencias Enviadas') UNION ALL SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE (dc.Tipo_Compra = 'Transferencias Recibidas')) AS Movimientos  " &
-                      "WHERE (Cod_Producto = '" & Args.Codigo_Producto & "') AND (Numero_Lote = '" & Args.Numero_Lote & "') AND (Cod_Bodega = '" & Args.Codigo_Bodega & "') AND (Numero_Lote <> 'SIN LOTE') AND (Numero_Lote <> 'SINLOTE') AND (Numero_Lote <> '') GROUP BY Cod_Producto, Numero_Lote, Cod_Bodega ORDER BY Cod_Producto, Numero_Lote, Cod_Bodega"
+        'SqlConsulta = "SELECT Cod_Producto, Numero_Lote, Cod_Bodega, SUM(Cantidad * TipoMovimiento) AS Existencia_Lote FROM  (SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE (dc.Tipo_Compra = 'Mercancia Recibida') UNION ALL SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, - 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE (dc.Tipo_Compra = 'Devolucion de Compra') UNION ALL SELECT df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, - 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE  (df.Tipo_Factura = 'Factura') UNION ALL SELECT df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE (df.Tipo_Factura = 'Devolucion de Ventas') UNION ALL SELECT df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, - 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE (df.Tipo_Factura = 'Transferencias Enviadas') UNION ALL SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE (dc.Tipo_Compra = 'Transferencias Recibidas')) AS Movimientos  " &
+        '              "WHERE (Cod_Producto = '" & Args.Codigo_Producto & "') AND (Numero_Lote = '" & Args.Numero_Lote & "') AND (Cod_Bodega = '" & Args.Codigo_Bodega & "') AND (Numero_Lote <> 'SIN LOTE') AND (Numero_Lote <> 'SINLOTE') AND (Numero_Lote <> '') GROUP BY Cod_Producto, Numero_Lote, Cod_Bodega ORDER BY Cod_Producto, Numero_Lote, Cod_Bodega"
+        SqlConsulta = "WITH Movimientos AS (SELECT Cod_Producto, ISNULL(Numero_Lote,'SINLOTE') AS Lote FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE DC.Fecha_Compra<=@FechaCorte AND DC.Cod_Producto=@CodProducto AND C.Cod_Bodega=@CodBodega AND ISNULL(DC.Numero_Lote,'SINLOTE')=@NumeroLote UNION SELECT Cod_Producto, ISNULL(CodTarea,'SINLOTE') AS Lote FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE DF.Fecha_Factura<=@FechaCorte AND DF.Cod_Producto=@CodProducto AND F.Cod_Bodega=@CodBodega AND ISNULL(DF.CodTarea,'SINLOTE')=@NumeroLote) SELECT L.Cod_Producto, Prod.Descripcion_Producto AS Producto, @CodBodega AS Cod_Bodega, L.Lote, ISNULL(MR.Cantidad,0) AS Mercancia_Recibida, ISNULL(TR.Cantidad,0) AS Transferencia_Recibida, ISNULL(DV.Cantidad,0) AS Devolucion_Venta, ISNULL(Fact.Cantidad,0) AS Factura, ISNULL(SB.Cantidad,0) AS Salidas_Bodegas, ISNULL(TE.Cantidad,0) AS Transferencia_Enviada, ISNULL(DC.Cantidad,0) AS Devolucion_Compra, ISNULL(MR.Cantidad,0)+ISNULL(TR.Cantidad,0)+ISNULL(DV.Cantidad,0)-(ISNULL(Fact.Cantidad,0)+ISNULL(SB.Cantidad,0)+ISNULL(TE.Cantidad,0)+ISNULL(DC.Cantidad,0)) AS Existencia FROM Movimientos L INNER JOIN Productos Prod ON L.Cod_Producto=Prod.Cod_Productos LEFT JOIN (SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'SINLOTE') AS Lote, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE C.Fecha_Compra<=@FechaCorte AND C.Tipo_Compra='Mercancia Recibida' AND DC.Cod_Producto=@CodProducto AND C.Cod_Bodega=@CodBodega AND ISNULL(DC.Numero_Lote,'SINLOTE')=@NumeroLote GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,'SINLOTE')) MR ON L.Cod_Producto=MR.Cod_Producto AND L.Lote=MR.Lote LEFT JOIN (SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'SINLOTE') AS Lote, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE C.Fecha_Compra<=@FechaCorte AND C.Tipo_Compra='Transferencia Recibida' AND DC.Cod_Producto=@CodProducto AND C.Cod_Bodega=@CodBodega AND ISNULL(DC.Numero_Lote,'SINLOTE')=@NumeroLote GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,'SINLOTE')) TR ON L.Cod_Producto=TR.Cod_Producto AND L.Lote=TR.Lote LEFT JOIN (SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'SINLOTE') AS Lote, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura='Devolucion de Venta' AND DF.Cod_Producto=@CodProducto AND F.Cod_Bodega=@CodBodega AND ISNULL(DF.CodTarea,'SINLOTE')=@NumeroLote GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,'SINLOTE')) DV ON L.Cod_Producto=DV.Cod_Producto AND L.Lote=DV.Lote LEFT JOIN (SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'SINLOTE') AS Lote, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura='Factura' AND DF.Cod_Producto=@CodProducto AND F.Cod_Bodega=@CodBodega AND ISNULL(DF.CodTarea,'SINLOTE')=@NumeroLote GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,'SINLOTE')) Fact ON L.Cod_Producto=Fact.Cod_Producto AND L.Lote=Fact.Lote LEFT JOIN (SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'SINLOTE') AS Lote, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura='Salida Bodega' AND DF.Cod_Producto=@CodProducto AND F.Cod_Bodega=@CodBodega AND ISNULL(DF.CodTarea,'SINLOTE')=@NumeroLote GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,'SINLOTE')) SB ON L.Cod_Producto=SB.Cod_Producto AND L.Lote=SB.Lote LEFT JOIN (SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'SINLOTE') AS Lote, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura='Transferencia Enviada' AND DF.Cod_Producto=@CodProducto AND F.Cod_Bodega=@CodBodega AND ISNULL(DF.CodTarea,'SINLOTE')=@NumeroLote GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,'SINLOTE')) TE ON L.Cod_Producto=TE.Cod_Producto AND L.Lote=TE.Lote LEFT JOIN (SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'SINLOTE') AS Lote, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra='Devolucion de Compra' AND DC.Cod_Producto=@CodProducto AND C.Cod_Bodega=@CodBodega AND ISNULL(DC.Numero_Lote,'SINLOTE')=@NumeroLote GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,'SINLOTE')) DC ON L.Cod_Producto=DC.Cod_Producto AND L.Lote=DC.Lote ORDER BY L.Cod_Producto, L.Lote;"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+
+        ' Parámetros obligatorios
+        DataAdapter.SelectCommand.Parameters.AddWithValue("@FechaCorte", Format(Args.Fecha_Reporte, "dd/MM/yyyy"))
+
+
+        ' Parámetros opcionales (solo si no están vacíos)
+        DataAdapter.SelectCommand.Parameters.AddWithValue("@CodBodega", Args.Codigo_Bodega)
+        DataAdapter.SelectCommand.Parameters.AddWithValue("@CodProducto", Args.Codigo_Producto)
+        DataAdapter.SelectCommand.Parameters.AddWithValue("@NumeroLote", Args.Numero_Lote)
+
+
         DataAdapter.Fill(DataSet, "Existencia")
         If DataSet.Tables("Existencia").Rows.Count <> 0 Then
-            Existencia = DataSet.Tables("Existencia").Rows(0)("Existencia_Lote")
+            Existencia = DataSet.Tables("Existencia").Rows(0)("Existencia")
         End If
 
 
-        'Comentario cambio de consulta 04-10-2025
+        '************* CODIGO RETIRADO 04/10/2025*****************
+
+
         ''//////////////////////////////////BUSCO EL TOTAL DE LAS COMPRAS////////////////////////////////////////////////////////////////////
         'SqlConsulta = "SELECT SUM(Detalle_Compras.Cantidad) AS Cantidad, SUM(Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto) AS Importe  FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  " &
         '              "WHERE (Detalle_Compras.Cod_Producto = '" & Args.Codigo_Producto & "') AND (Compras.Cod_Bodega = '" & Args.Codigo_Bodega & "') AND (Detalle_Compras.Numero_Lote = '" & Args.Numero_Lote & "')  GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Mercancia Recibida') "
@@ -14274,6 +14292,7 @@ errSub:
         Result.Fecha_Vence = Args.Fecha_Vence
         Result.Tipo_Reporte = Args.Tipo_Reporte
         Result.Agrupado_Reporte = Args.Agrupado_Reporte
+        Result.Fecha_Reporte = Args.Fecha_Reporte
 
 
 
