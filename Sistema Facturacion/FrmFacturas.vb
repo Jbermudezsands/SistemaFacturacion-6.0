@@ -234,9 +234,11 @@ Public Class FrmFacturas
 
 
             End If
+
+            Me.TrueDBGridComponentes.Row = iPosicion
         End If
 
-        Me.TrueDBGridComponentes.Row = iPosicion
+
 
     End Sub
 
@@ -9051,6 +9053,18 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         Else
             Monto = 0
         End If
+
+        If Me.TrueDBGridComponentes.Columns("Cantidad").Text = "" Then
+            Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
+            Me.TrueDBGridComponentes.Columns("Importe").Text = 0
+        End If
+
+        If Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = "" Then
+            Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = 0
+            Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = 0
+            Me.TrueDBGridComponentes.Columns("Importe").Text = 0
+        End If
+
 
         If Me.TxtMonedaFactura.Text <> MonedaLimiteCredito Then
             If Me.TxtMonedaFactura.Text = "Cordobas" Then
