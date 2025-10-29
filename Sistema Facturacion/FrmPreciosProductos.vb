@@ -5,7 +5,7 @@ Public Class FrmPreciosProductos
         Dim SqlString As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-
+        Dim RstCosto As New RstCostoPromedio
 
 
         Quien = "CodigoTipoPrecio"
@@ -49,7 +49,7 @@ Public Class FrmPreciosProductos
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim oDataRow As DataRow, Iposicion As Double, FechaFin As Date
         Dim CostoUnitario As Double, PrecioVenta As Double, Incremento As Double, TasaCambio As Double, Porciento As Double, PrecioVentaDolar As Double
-
+        Dim RstCosto As New RstCostoPromedio
 
         '*******************************************************************************************************************************
         '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
@@ -76,7 +76,8 @@ Public Class FrmPreciosProductos
                 End If
                 Incremento = 1 + (CDbl(Porciento) / 100)
                 TasaCambio = BuscaTasaCambio(FechaFin)
-                CostoUnitario = CostoPromedioKardex(CodProducto, FechaFin)
+                RstCosto = CostoPromedioKardex(CodProducto, FechaFin)
+                CostoUnitario = RstCosto.Costo_Cordoba
                 PrecioVenta = Format(CostoUnitario * Incremento, "##,##0.00")
                 PrecioVentaDolar = Format(PrecioVenta / TasaCambio, "##,##0.00")
             Else

@@ -140,7 +140,7 @@ Public Class FrmTransformacion
         Dim Fecha As Date, MontoIva As Double, Sql As String, NumeroTransforma As String, Descripcion_Producto As String
         Dim CodBodegaOrigen As String, CodBodegaDestino As String, CodCliente As String, CodProveedor As String, NombreProveedor As String, ConsecutivoFactura As Double, NumeroFactura As String
         Dim Merma As Double, Basura As Double
-
+        Dim RstCosto As New RstCostoPromedio
 
         '////////////////////BUSCO EL CLIENTE PARA INVENTARIO //////////////////////////////////////
         SqlString = "SELECT  * FROM Clientes WHERE(InventarioFisico = 1)"
@@ -204,7 +204,8 @@ Public Class FrmTransformacion
             Basura = 0
             If Not IsDBNull(DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Cantidad")) Then
                 Cantidad = DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Cantidad")
-                PrecioUnitario = CostoPromedioKardex(CodigoProducto, Fecha)
+                RstCosto = CostoPromedioKardex(CodigoProducto, Fecha)
+                PrecioUnitario = RstCosto.Costo_Cordoba
             End If
 
             If Not IsDBNull(DataSet.Tables("DetalleRecepcion").Rows(iPosicion)("Merma")) Then

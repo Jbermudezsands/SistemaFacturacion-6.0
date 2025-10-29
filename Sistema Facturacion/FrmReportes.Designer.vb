@@ -658,7 +658,7 @@ Partial Class FrmReportes
         Me.GroupVendedor.Controls.Add(Me.Label9)
         Me.GroupVendedor.Controls.Add(Me.CmbVendedores)
         Me.GroupVendedor.Controls.Add(Me.Label10)
-        Me.GroupVendedor.Location = New System.Drawing.Point(1194, 113)
+        Me.GroupVendedor.Location = New System.Drawing.Point(1184, 103)
         Me.GroupVendedor.Name = "GroupVendedor"
         Me.GroupVendedor.Size = New System.Drawing.Size(277, 85)
         Me.GroupVendedor.TabIndex = 197
@@ -1161,7 +1161,7 @@ Partial Class FrmReportes
         Me.GroupBoxLinea.Controls.Add(Me.Label17)
         Me.GroupBoxLinea.Controls.Add(Me.CboCodigoLinea)
         Me.GroupBoxLinea.Controls.Add(Me.Label18)
-        Me.GroupBoxLinea.Location = New System.Drawing.Point(1193, 22)
+        Me.GroupBoxLinea.Location = New System.Drawing.Point(1179, 12)
         Me.GroupBoxLinea.Name = "GroupBoxLinea"
         Me.GroupBoxLinea.Size = New System.Drawing.Size(278, 85)
         Me.GroupBoxLinea.TabIndex = 203
@@ -1391,7 +1391,7 @@ Partial Class FrmReportes
         Me.GroupBoxProyectos.Controls.Add(Me.Label21)
         Me.GroupBoxProyectos.Controls.Add(Me.CboCodProyecto)
         Me.GroupBoxProyectos.Controls.Add(Me.Label22)
-        Me.GroupBoxProyectos.Location = New System.Drawing.Point(1194, 204)
+        Me.GroupBoxProyectos.Location = New System.Drawing.Point(1193, 194)
         Me.GroupBoxProyectos.Name = "GroupBoxProyectos"
         Me.GroupBoxProyectos.Size = New System.Drawing.Size(278, 85)
         Me.GroupBoxProyectos.TabIndex = 207
@@ -1537,7 +1537,7 @@ Partial Class FrmReportes
         Me.GroupBoxDepartamento.Controls.Add(Me.Label23)
         Me.GroupBoxDepartamento.Controls.Add(Me.CboCodDepartamentoIni)
         Me.GroupBoxDepartamento.Controls.Add(Me.Label24)
-        Me.GroupBoxDepartamento.Location = New System.Drawing.Point(1195, 295)
+        Me.GroupBoxDepartamento.Location = New System.Drawing.Point(1193, 285)
         Me.GroupBoxDepartamento.Name = "GroupBoxDepartamento"
         Me.GroupBoxDepartamento.Size = New System.Drawing.Size(277, 85)
         Me.GroupBoxDepartamento.TabIndex = 211
@@ -1650,7 +1650,7 @@ Partial Class FrmReportes
         Me.GroupBoxMunicipio.Controls.Add(Me.Label25)
         Me.GroupBoxMunicipio.Controls.Add(Me.CboMunicipioIni)
         Me.GroupBoxMunicipio.Controls.Add(Me.Label26)
-        Me.GroupBoxMunicipio.Location = New System.Drawing.Point(1194, 386)
+        Me.GroupBoxMunicipio.Location = New System.Drawing.Point(1193, 378)
         Me.GroupBoxMunicipio.Name = "GroupBoxMunicipio"
         Me.GroupBoxMunicipio.Size = New System.Drawing.Size(277, 85)
         Me.GroupBoxMunicipio.TabIndex = 212
@@ -1771,7 +1771,7 @@ Partial Class FrmReportes
         Me.GroupBoxLote.Controls.Add(Me.Label27)
         Me.GroupBoxLote.Controls.Add(Me.CboLoteIni)
         Me.GroupBoxLote.Controls.Add(Me.Label28)
-        Me.GroupBoxLote.Location = New System.Drawing.Point(1070, 424)
+        Me.GroupBoxLote.Location = New System.Drawing.Point(1072, 414)
         Me.GroupBoxLote.Name = "GroupBoxLote"
         Me.GroupBoxLote.Size = New System.Drawing.Size(192, 85)
         Me.GroupBoxLote.TabIndex = 214
@@ -1921,7 +1921,7 @@ Partial Class FrmReportes
         Me.GroupProveedores.Controls.Add(Me.Label31)
         Me.GroupProveedores.Controls.Add(Me.CboProveedores)
         Me.GroupProveedores.Controls.Add(Me.Label32)
-        Me.GroupProveedores.Location = New System.Drawing.Point(1268, 477)
+        Me.GroupProveedores.Location = New System.Drawing.Point(1194, 468)
         Me.GroupProveedores.Name = "GroupProveedores"
         Me.GroupProveedores.Size = New System.Drawing.Size(277, 86)
         Me.GroupProveedores.TabIndex = 216
@@ -2087,7 +2087,7 @@ Partial Class FrmReportes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(865, 504)
+        Me.ClientSize = New System.Drawing.Size(888, 504)
         Me.ControlBox = False
         Me.Controls.Add(Me.Imagen)
         Me.Controls.Add(Me.GroupProveedores)

@@ -7,6 +7,131 @@ Imports Sistema_Facturacion.FrmFacturas
 Imports System.ComponentModel
 
 Module Funciones
+    Public Function LoteDefectoFacturas(ByVal CodigoProducto As String, ByVal CodigoBodega As String, FechaFiltro As Date) As String
+        Dim NumeroLote As String = "SINLOTE"
+        Dim FechaVenceLote As Date = FechaFiltro 'DateAdd(DateInterval.Month, -2, FechaFiltro)
+
+        Using cn As New SqlClient.SqlConnection(Conexion)
+            cn.Open()
+
+            Dim SqlString As String = "WITH Movimientos AS (SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'') AS Lote, C.Cod_Bodega FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra = C.Numero_Compra AND DC.Fecha_Compra = C.Fecha_Compra AND DC.Tipo_Compra = C.Tipo_Compra WHERE DC.Fecha_Compra <= @FechaCorte AND DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta UNION SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE DF.Fecha_Factura <= @FechaCorte AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta), Existencias AS (SELECT L.Cod_Producto, Prod.Descripcion_Producto AS Producto, L.Cod_Bodega, L.Lote, Prod.Cod_Linea, Lte.FechaVence AS Fecha_Vencimiento, ISNULL(MR.Cantidad,0) AS Mercancia_Recibida, ISNULL(TR.Cantidad,0) AS Transferencia_Recibida, ISNULL(DV.Cantidad,0) AS Devolucion_Venta, ISNULL(Fact.Cantidad,0) AS Factura, ISNULL(SB.Cantidad,0) AS Salidas_Bodegas, ISNULL(TE.Cantidad,0) AS Transferencia_Enviada, ISNULL(DC.Cantidad,0) AS Devolucion_Compra, ISNULL(MR.Cantidad,0)+ISNULL(TR.Cantidad,0)+ISNULL(DV.Cantidad,0)-(ISNULL(Fact.Cantidad,0)+ISNULL(SB.Cantidad,0)+ISNULL(TE.Cantidad,0)+ISNULL(DC.Cantidad,0)) AS Existencia FROM Movimientos L INNER JOIN Productos Prod ON L.Cod_Producto=Prod.Cod_Productos LEFT JOIN Lote Lte ON L.Lote=Lte.Numero_Lote AND Lte.Activo=1 AND L.Lote NOT IN ('SIN LOTE','SINLOTE','') LEFT JOIN (SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'') AS Lote, C.Cod_Bodega, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE C.Fecha_Compra<=@FechaCorte AND C.Tipo_Compra='Mercancia Recibida' AND DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,''), C.Cod_Bodega) MR ON L.Cod_Producto=MR.Cod_Producto AND L.Lote=MR.Lote AND L.Cod_Bodega=MR.Cod_Bodega LEFT JOIN (SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'') AS Lote, C.Cod_Bodega, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE C.Fecha_Compra<=@FechaCorte AND C.Tipo_Compra='Transferencia Recibida' AND DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,''), C.Cod_Bodega) TR ON L.Cod_Producto=TR.Cod_Producto AND L.Lote=TR.Lote AND L.Cod_Bodega=TR.Cod_Bodega LEFT JOIN (SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE F.Fecha_Factura<=@FechaCorte AND F.Tipo_Factura='Devolucion de Venta' AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,''), F.Cod_Bodega) DV ON L.Cod_Producto=DV.Cod_Producto AND L.Lote=DV.Lote AND L.Cod_Bodega=DV.Cod_Bodega LEFT JOIN (SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE F.Fecha_Factura<=@FechaCorte AND F.Tipo_Factura='Factura' AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,''), F.Cod_Bodega) Fact ON L.Cod_Producto=Fact.Cod_Producto AND L.Lote=Fact.Lote AND L.Cod_Bodega=Fact.Cod_Bodega LEFT JOIN (SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE F.Fecha_Factura<=@FechaCorte AND F.Tipo_Factura='Salida Bodega' AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,''), F.Cod_Bodega) SB ON L.Cod_Producto=SB.Cod_Producto AND L.Lote=SB.Lote AND L.Cod_Bodega=SB.Cod_Bodega LEFT JOIN (SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE F.Fecha_Factura<=@FechaCorte AND F.Tipo_Factura='Transferencia Enviada' AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,''), F.Cod_Bodega) TE ON L.Cod_Producto=TE.Cod_Producto AND L.Lote=TE.Lote AND L.Cod_Bodega=TE.Cod_Bodega LEFT JOIN (SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'') AS Lote, C.Cod_Bodega, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE C.Fecha_Compra<=@FechaCorte AND C.Tipo_Compra='Devolucion de Compra' AND DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,''), C.Cod_Bodega) DC ON L.Cod_Producto=DC.Cod_Producto AND L.Lote=DC.Lote AND L.Cod_Bodega=DC.Cod_Bodega), LoteMasViejo AS (SELECT *, ROW_NUMBER() OVER(PARTITION BY Cod_Producto,Cod_Bodega ORDER BY Fecha_Vencimiento ASC) AS rn FROM Existencias WHERE Existencia>0 AND Fecha_Vencimiento IS NOT NULL) SELECT lote as Numero_Lote,* FROM LoteMasViejo WHERE rn=1 ORDER BY Cod_Producto, Cod_Bodega, Fecha_Vencimiento;"
+
+
+            Using cmd As New SqlClient.SqlCommand(SqlString, cn)
+                cmd.Parameters.AddWithValue("@FechaCorte", FechaVenceLote)
+                cmd.Parameters.AddWithValue("@CodBodegaDesde", CodigoBodega)
+                cmd.Parameters.AddWithValue("@CodBodegaHasta", CodigoBodega)
+                cmd.Parameters.AddWithValue("@CodProductoDesde", CodigoProducto)
+                cmd.Parameters.AddWithValue("@CodProductoHasta", CodigoProducto)
+
+                Dim result = cmd.ExecuteScalar()
+                If result IsNot Nothing Then NumeroLote = result.ToString()
+            End Using
+        End Using
+
+        Return NumeroLote
+
+
+    End Function
+
+
+
+
+    Public Function ObtenerExistenciasPorBodega(ByVal CodProducto As String, ByVal FechaCorte As Date) As DataSet
+        Dim DataSetExistencias As New DataSet
+        Dim Sql As String
+        Dim MiConexion As New SqlConnection(Conexion) ' Usa tu cadena de conexión existente
+        Dim DataAdapter As SqlDataAdapter
+
+        Try
+            Sql = "
+        WITH Entradas AS (
+            SELECT DC.Cod_Producto, C.Cod_Bodega, SUM(DC.Cantidad) AS Cantidad
+            FROM Detalle_Compras DC
+            INNER JOIN Compras C 
+                ON DC.Numero_Compra = C.Numero_Compra 
+                AND DC.Fecha_Compra = C.Fecha_Compra 
+                AND DC.Tipo_Compra = C.Tipo_Compra
+            WHERE 
+                C.Fecha_Compra <= @FechaCorte
+                AND C.Activo = 1
+                AND C.Tipo_Compra IN ('Mercancia Recibida', 'Transferencia Recibida')
+                AND DC.Cod_Producto = @CodProducto
+                AND P.Tipo_Producto NOT IN ('Servicio', 'Descuento')
+            GROUP BY DC.Cod_Producto, C.Cod_Bodega
+
+            UNION ALL
+
+            SELECT DF.Cod_Producto, F.Cod_Bodega, SUM(DF.Cantidad) AS Cantidad
+            FROM Detalle_Facturas DF
+            INNER JOIN Facturas F 
+                ON DF.Numero_Factura = F.Numero_Factura 
+                AND DF.Fecha_Factura = F.Fecha_Factura 
+                AND DF.Tipo_Factura = F.Tipo_Factura
+            WHERE 
+                F.Fecha_Factura <= @FechaCorte
+                AND F.Activo = 1
+                AND F.Tipo_Factura = 'Devolucion de Venta'
+                AND DF.Cod_Producto = @CodProducto
+                AND P.Tipo_Producto NOT IN ('Servicio', 'Descuento')
+            GROUP BY DF.Cod_Producto, F.Cod_Bodega
+        ),
+        Salidas AS (
+            SELECT DC.Cod_Producto, C.Cod_Bodega, SUM(DC.Cantidad) AS Cantidad
+            FROM Detalle_Compras DC
+            INNER JOIN Compras C 
+                ON DC.Numero_Compra = C.Numero_Compra 
+                AND DC.Fecha_Compra = C.Fecha_Compra 
+                AND DC.Tipo_Compra = C.Tipo_Compra
+            WHERE 
+                C.Fecha_Compra <= @FechaCorte
+                AND C.Activo = 1
+                AND C.Tipo_Compra = 'Devolucion de Compra'
+                AND DC.Cod_Producto = @CodProducto
+                AND P.Tipo_Producto NOT IN ('Servicio', 'Descuento')
+            GROUP BY DC.Cod_Producto, C.Cod_Bodega
+
+            UNION ALL
+
+            SELECT DF.Cod_Producto, F.Cod_Bodega, SUM(DF.Cantidad) AS Cantidad
+            FROM Detalle_Facturas DF
+            INNER JOIN Facturas F 
+                ON DF.Numero_Factura = F.Numero_Factura 
+                AND DF.Fecha_Factura = F.Fecha_Factura 
+                AND DF.Tipo_Factura = F.Tipo_Factura
+            WHERE 
+                F.Fecha_Factura <= @FechaCorte
+                AND F.Activo = 1
+                AND F.Tipo_Factura IN ('Factura', 'Salidas Bodegas', 'Transferencia Enviada')
+                AND DF.Cod_Producto = @CodProducto
+            GROUP BY DF.Cod_Producto, F.Cod_Bodega
+        )
+        SELECT 
+            ISNULL(B.Cod_Bodega, E.Cod_Bodega) AS Cod_Bodega,
+            B.Nombre_Bodega,
+            ISNULL(SUM(ISNULL(E.Cantidad,0)),0) - ISNULL(SUM(ISNULL(SA.Cantidad,0)),0) AS Existencia
+        FROM Bodegas B
+        LEFT JOIN Entradas E ON B.Cod_Bodega = E.Cod_Bodega
+        LEFT JOIN Salidas SA ON B.Cod_Bodega = SA.Cod_Bodega
+        GROUP BY B.Cod_Bodega, B.Nombre_Bodega
+        ORDER BY B.Nombre_Bodega;
+        "
+
+            DataAdapter = New SqlDataAdapter(Sql, MiConexion)
+            DataAdapter.SelectCommand.Parameters.AddWithValue("@CodProducto", CodProducto)
+            DataAdapter.SelectCommand.Parameters.AddWithValue("@FechaCorte", FechaCorte)
+
+            DataAdapter.Fill(DataSetExistencias, "ExistenciasBodega")
+
+        Catch ex As Exception
+            'MessageBox.Show("Error al obtener existencias por bodega: " & ex.Message)
+        End Try
+
+        Return DataSetExistencias
+    End Function
+
+
+
     Public Function BuscaExistenciaFacturaLoteWorker(Args As TablaDetalleFactura, ByVal worker As BackgroundWorker, ByVal e As DoWorkEventArgs) As Lote
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -403,8 +528,6 @@ Module Funciones
     End Function
 
 
-
-
     Public Function TieneContratoProveedor(CodigoProveedor As String) As Boolean
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SqlProveedor As String
@@ -425,7 +548,6 @@ Module Funciones
 
 
     End Function
-
 
     Public Sub Grabar_Detalle_ContratoProveedor(Detalle As TablaDetalle_Contratos_Productos)
         Dim Contrato As TablaContrato_Proveedor = New TablaContrato_Proveedor
@@ -5897,7 +6019,7 @@ errSub:
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SqlDatos As String, Iposicion As Double = 0
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim CostoUnitario As Double
+        Dim CostoUnitario As Double, RstCosto As New RstCostoPromedio
 
 
         BloquearPrecioVentas = False
@@ -5926,8 +6048,8 @@ errSub:
             If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("BloquearBajoCosto")) Then
                 If DataSet.Tables("DatosEmpresa").Rows(0)("BloquearBajoCosto") = "True" Then
 
-                    CostoUnitario = CostoPromedioKardex(CodigoProducto, FechaFactura)
-
+                    RstCosto = CostoPromedioKardex(CodigoProducto, FechaFactura)
+                    CostoUnitario = RstCosto.Costo_Cordoba
                     If Moneda <> "Cordobas" Then
                         PrecioVenta = PrecioVenta * BuscaTasaCambio(FechaFactura)
                     End If
@@ -5961,7 +6083,7 @@ errSub:
         Dim ComandoUpdate As New SqlClient.SqlCommand
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, PrecioVentaDolar As Double
         Dim FechaFin As Date, Porciento As Double, Incremento As Double, TasaCambio As Double, CostoUnitario As Double, PrecioVenta As Double, PrecioAnterior As Double = 0
-
+        Dim RstCosto As New RstCostoPromedio
 
         CategoriaPrecio = "0"
 
@@ -5994,7 +6116,8 @@ errSub:
                 End If
                 Incremento = 1 + (CDbl(Porciento) / 100)
                 TasaCambio = BuscaTasaCambio(FechaFin)
-                CostoUnitario = CostoPromedioKardex(CodigoProducto, FechaFin)
+                RstCosto = CostoPromedioKardex(CodigoProducto, FechaFin)
+                CostoUnitario = RstCosto.Costo_Cordoba
                 CostoUnitarioB = CostoUnitario
                 PrecioVenta = Format(CostoUnitario * Incremento, "##,##0.00")
                 PrecioVentaDolar = Format(PrecioVenta / TasaCambio, "##,##0.00")
@@ -6218,7 +6341,49 @@ errSub:
         End If
 
     End Function
+    Public Function GenerarNumeroTransferencia(NumeroTransferencia As String, TipoTransferencia As String, CodBodega As String) As String
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim ConsecutivoTrans As Double, SqlConsecutivo As String, FacturaBodega As Boolean = False, CompraBodega As Boolean = False
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
+
+        If NumeroTransferencia = "-----0-----" Then
+            Select Case TipoTransferencia
+                Case "Transferencia Enviada"
+                    ConsecutivoTrans = BuscaConsecutivo("Transferencia_Enviada")
+            End Select
+
+            '/////////////////////////////////////////////////////////////////////////////////////////
+            '///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
+            '////////////////////////////////////////////////////////////////////////////////////////
+            SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
+            DataAdapter.Fill(DataSet, "Configuracion")
+            If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
+                If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) = True Then
+                    FacturaBodega = True
+                End If
+
+                If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) = True Then
+                    CompraBodega = True
+                End If
+
+            End If
+
+            If FacturaBodega = True Then
+                NumeroTransferencia = CodBodega & "-" & Format(ConsecutivoTrans, "0000#")
+            Else
+                NumeroTransferencia = Format(ConsecutivoTrans, "0000#")
+            End If
+        Else
+            'ConsecutivoFactura = Me.TxtNumeroEnsamble.Text
+            'NumeroFactura = Format(ConsecutivoFactura, "0000#")
+            'NumeroTransferencia = Me.TxtNumeroEnsamble.Text
+        End If
+
+        Return NumeroTransferencia
+
+    End Function
 
     Public Function GenerarNumeroFactura(ByVal ConsecutivoFacturaManual As Boolean, ByVal TipoFactura As String) As String
         Dim ConsecutivoFactura As Double, SqlConsecutivo As String
@@ -8082,7 +8247,191 @@ errSub:
 
         DataSet.Tables("Compras").Reset()
     End Function
-    Public Function CostoPromedioKardex(ByVal CodigoProducto As String, ByVal FechaCompras As Date) As Double
+    Public Function CostoPromedioKardex2(ByVal CodigoProducto As String, ByVal FechaCompras As Date) As RstCostoPromedio
+        Dim PrecioCosto As Double = 0
+        Dim PrecioCostoDolar As Double = 0
+        Dim FechaFactura As Date
+        Dim TotalCantidad As Double = 0
+        Dim TotalImporte As Double = 0
+        Dim TasaCambioDelDia As Double = 0
+        Dim MiConexion As New SqlConnection(Conexion)
+        Dim Resultado As New RstCostoPromedio
+
+        Try
+            MiConexion.Open()
+
+            '--------------------------------------------------------------
+            ' BUSCAR TASA DE CAMBIO DEL DÍA O LA ÚLTIMA DISPONIBLE
+            '--------------------------------------------------------------
+            Dim sqlTasa As String =
+            "SELECT TOP 1 MontoTasa 
+             FROM TasaCambio 
+             WHERE FechaTasa <= @FechaCorte 
+             ORDER BY FechaTasa DESC;"
+
+            Using cmdTasa As New SqlCommand(sqlTasa, MiConexion)
+                cmdTasa.Parameters.AddWithValue("@FechaCorte", FechaCompras)
+                Dim result = cmdTasa.ExecuteScalar()
+                If result IsNot Nothing Then
+                    TasaCambioDelDia = CDbl(result)
+                Else
+                    TasaCambioDelDia = 1 ' Evitar división por cero
+                End If
+            End Using
+
+            '--------------------------------------------------------------
+            ' CALCULAR TOTAL DE MOVIMIENTOS (COMPRAS, DEVOLUCIONES, VENTAS, ETC.)
+            '--------------------------------------------------------------
+            Dim sqlMovimientos As String =
+            "WITH Movimientos AS (
+                SELECT 
+                    @CodProducto AS Cod_Producto,
+
+                    -- ===================== CANTIDAD COMPRAS =====================
+                    SUM(CASE 
+                        WHEN C.Tipo_Compra = 'Mercancia Recibida' THEN DC.Cantidad
+                        WHEN C.Tipo_Compra = 'Devolucion de Compra' THEN -DC.Cantidad
+                        ELSE 0 END) AS CantidadCompras,
+
+                    -- ===================== IMPORTE COMPRAS =====================
+                    SUM(CASE 
+                        WHEN C.Tipo_Compra = 'Mercancia Recibida' AND C.MonedaCompra = 'Dolares' 
+                            THEN DC.Precio_Neto * DC.Cantidad * T.MontoTasa
+                        WHEN C.Tipo_Compra = 'Mercancia Recibida' AND C.MonedaCompra <> 'Dolares' 
+                            THEN DC.Precio_Neto * DC.Cantidad
+                        WHEN C.Tipo_Compra = 'Devolucion de Compra' AND C.MonedaCompra = 'Dolares' 
+                            THEN -DC.Precio_Neto * DC.Cantidad * T.MontoTasa
+                        WHEN C.Tipo_Compra = 'Devolucion de Compra' AND C.MonedaCompra <> 'Dolares' 
+                            THEN -DC.Precio_Neto * DC.Cantidad
+                        ELSE 0 END) AS TotalComprasC,
+
+                    -- ===================== CANTIDAD VENTAS =====================
+                    SUM(CASE 
+                        WHEN F.Tipo_Factura = 'Factura' THEN -DF.Cantidad
+                        WHEN F.Tipo_Factura = 'Devolucion de Venta' THEN DF.Cantidad
+                        ELSE 0 END) AS CantidadVentas,
+
+                    -- ===================== IMPORTE VENTAS =====================
+                    SUM(CASE 
+                        WHEN F.Tipo_Factura = 'Factura' THEN -DF.Costo_Unitario * DF.Cantidad
+                        WHEN F.Tipo_Factura = 'Devolucion de Venta' THEN DF.Costo_Unitario * DF.Cantidad
+                        ELSE 0 END) AS TotalVentasC,
+
+                    -- ===================== CANTIDAD SALIDAS BODEGA Y TRANSFERENCIAS =====================
+                    SUM(CASE 
+                        WHEN F.Tipo_Factura = 'Salida Bodega' THEN -DF.Cantidad
+                        WHEN F.Tipo_Factura = 'Transferencia Enviada' THEN -DF.Cantidad
+                        ELSE 0 END) AS CantidadSalidaBodega,
+
+                    -- ===================== IMPORTE SALIDAS BODEGA Y TRANSFERENCIAS =====================
+                    SUM(CASE 
+                        WHEN F.Tipo_Factura = 'Salida Bodega' THEN -DF.Costo_Unitario * DF.Cantidad
+                        WHEN F.Tipo_Factura = 'Transferencia Enviada' THEN -DF.Costo_Unitario * DF.Cantidad
+                        ELSE 0 END) AS TotalSalidaBodega,
+
+                    -- ===================== CANTIDAD TRANSFERENCIAS RECIBIDAS =====================
+                    SUM(CASE 
+                        WHEN F.Tipo_Factura = 'Transferencia Recibida' THEN DF.Cantidad
+                        ELSE 0 END) AS CantidadTransferRecibida,
+
+                    -- ===================== IMPORTE TRANSFERENCIAS RECIBIDAS =====================
+                    SUM(CASE 
+                        WHEN F.Tipo_Factura = 'Transferencia Recibida' THEN DF.Costo_Unitario * DF.Cantidad
+                        ELSE 0 END) AS TotalTransferRecibida
+
+
+                FROM TasaCambio T
+                LEFT JOIN Compras C ON T.FechaTasa = C.Fecha_Compra
+                LEFT JOIN Detalle_Compras DC ON DC.Numero_Compra = C.Numero_Compra
+                    AND DC.Fecha_Compra = C.Fecha_Compra
+                    AND DC.Tipo_Compra = C.Tipo_Compra
+                    AND DC.Cod_Producto = @CodProducto
+                LEFT JOIN Facturas F ON T.FechaTasa = F.Fecha_Factura
+                LEFT JOIN Detalle_Facturas DF ON DF.Numero_Factura = F.Numero_Factura
+                    AND DF.Fecha_Factura = F.Fecha_Factura
+                    AND DF.Tipo_Factura = F.Tipo_Factura
+                    AND DF.Cod_Producto = @CodProducto
+                WHERE (DC.Fecha_Compra <= @FechaCorte OR F.Fecha_Factura <= @FechaCorte)
+            )
+            SELECT 
+               ISNULL(SUM(CantidadCompras + CantidadVentas + CantidadSalidaBodega + CantidadTransferRecibida), 0) AS TotalCantidad,
+               ISNULL(SUM(TotalComprasC + TotalVentasC + TotalSalidaBodega + TotalTransferRecibida), 0) AS TotalImporte
+            FROM Movimientos;"
+
+            Using cmd As New SqlCommand(sqlMovimientos, MiConexion)
+                cmd.Parameters.AddWithValue("@CodProducto", CodigoProducto)
+                cmd.Parameters.AddWithValue("@FechaCorte", FechaCompras)
+
+                Using rd As SqlDataReader = cmd.ExecuteReader()
+                    If rd.Read() Then
+                        TotalCantidad = If(IsDBNull(rd("TotalCantidad")), 0, CDbl(rd("TotalCantidad")))
+                        TotalImporte = If(IsDBNull(rd("TotalImporte")), 0, CDbl(rd("TotalImporte")))
+                    End If
+                End Using
+            End Using
+
+            '--------------------------------------------------------------
+            ' CALCULAR COSTO PROMEDIO EN C$ Y US$
+            '--------------------------------------------------------------
+            If TotalCantidad <> 0 Then
+                PrecioCosto = Math.Round(TotalImporte / TotalCantidad, 6)
+                PrecioCostoDolar = Math.Round(PrecioCosto / TasaCambioDelDia, 6)
+            Else
+                PrecioCosto = 0
+                PrecioCostoDolar = 0
+            End If
+
+            '--------------------------------------------------------------
+            ' SI NO EXISTE COSTO PROMEDIO, BUSCAR EL ÚLTIMO COSTO DE VENTA
+            '--------------------------------------------------------------
+            If PrecioCosto = 0 Then
+                Dim sqlUltimoCosto As String =
+                "SELECT TOP 1 
+                    DF.Costo_Unitario, 
+                    DF.Fecha_Factura, 
+                    (DF.Costo_Unitario / T.MontoTasa) AS Costo_UnitarioDolar
+                 FROM Detalle_Facturas DF
+                 INNER JOIN TasaCambio T 
+                     ON DF.Fecha_Factura = T.FechaTasa
+                 WHERE DF.Cod_Producto = @CodProducto 
+                   AND DF.Costo_Unitario <> 0
+                   AND DF.Fecha_Factura <= @FechaCorte
+                 ORDER BY DF.Fecha_Factura DESC;"
+
+                Using cmdUltimo As New SqlCommand(sqlUltimoCosto, MiConexion)
+                    cmdUltimo.Parameters.AddWithValue("@CodProducto", CodigoProducto)
+                    cmdUltimo.Parameters.AddWithValue("@FechaCorte", FechaCompras)
+
+                    Using rd As SqlDataReader = cmdUltimo.ExecuteReader()
+                        If rd.Read() Then
+                            PrecioCosto = CDbl(rd("Costo_Unitario"))
+                            PrecioCostoDolar = CDbl(rd("Costo_UnitarioDolar"))
+                            FechaFactura = CDate(rd("Fecha_Factura"))
+                        End If
+                    End Using
+                End Using
+            End If
+
+        Catch ex As Exception
+            MsgBox("Error en CostoPromedioKardex: " & ex.Message, MsgBoxStyle.Critical, "Error")
+        Finally
+            If MiConexion.State = ConnectionState.Open Then MiConexion.Close()
+        End Try
+
+        ' Retorna ambos valores como una tupla
+        Resultado.Codigo_Producto = CodigoProducto
+        Resultado.Fecha_Compras = FechaCompras
+        Resultado.Costo_Cordoba = PrecioCosto
+        Resultado.Costo_Dolar = PrecioCostoDolar
+
+
+        Return Resultado
+    End Function
+
+
+
+
+    Public Function CostoPromedioKardex(ByVal CodigoProducto As String, ByVal FechaCompras As Date) As RstCostoPromedio
         Dim SqlCompras As String, Iposicion As Double, TotalImporte As Double, CantidadCompras As Double, MonedaCompra As String, Importe As Double, PrecioUnitario As Double, PrecioCostoDolar As Double, PrecioCosto As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion), Registros As Double, ImporteD As Double, TotalImporteD As Double
         Dim DataSet As New DataSet, TotalCantidad As Double = 0, TasaCambio As Double
@@ -8092,7 +8441,7 @@ errSub:
         Dim CantDevCompra As Double = 0, CantDevVenta As Double = 0, CantVentas As Double = 0, CantTransEnviada As Double = 0, CantTransRecibida As Double = 0
         Dim TotalSalidaBodega As Double = 0, TotalSalidaBodegaD As Double = 0, CantSalida As Double = 0
         Dim TotalCantEntradas As Double = 0, TotalCantSalidas As Double = 0, TotalImporteEntradas As Double = 0, TotalImporteSalidas As Double = 0, TotalImporteEntradasD As Double = 0, TotalImporteSalidasD As Double = 0
-        Dim FechaFactura As Date
+        Dim FechaFactura As Date, RstCosto As New RstCostoPromedio
 
         '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////////////////////////////////////////////////BUSCO EL TOTAL DE COMPRAS DOLARES ////////////////////////////////////////////////
@@ -8394,12 +8743,16 @@ errSub:
 
         End If
 
-
-        CostoPromedioKardex = PrecioCosto
-        CostoPromedioDolar = PrecioCostoDolar
+        RstCosto.Codigo_Producto = CodigoProducto
+        RstCosto.Fecha_Compras = FechaCompras
+        RstCosto.Costo_Cordoba = PrecioCosto
+        RstCosto.Costo_Dolar = PrecioCostoDolar
 
         DataSet.Tables("Compras").Reset()
+
+        Return RstCosto
     End Function
+
 
 
     Public Function CostoPromedioActualizaBodega(ByVal CodigoProducto As String, ByVal FechaCompras As Date, ByVal CodBodega As String) As Double
@@ -10694,284 +11047,6 @@ errSub:
 
     End Sub
 
-    Public Sub ActualizaMETODOFactura()
-        Dim Metodo As String, iPosicion As Double, Registros As Double, Monto As Double
-        Dim Subtotal As Double, Iva As Double, Neto As Double, CodProducto As String, SQlString As String
-        Dim MiConexion As New SqlClient.SqlConnection(Conexion), CodIva As String, Tasa As Double, SQlMetodo As String
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Moneda As String, TasaCambio As Double
-        Dim Fecha As String, SQlTasa As String, TipoMetodo As String, MonedaFactura As String, TasaIva As Double = 0
-        Dim Descuento As Double = 0, SqlUpdate As String, Retencion1Porciento As Double = 0, Retencion2Porciento As Double = 0
-        Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, CalcularPropina As Boolean = False, PorcentajePropina As Integer = 0
-        Dim MontoPropina As Double = 0
-
-        Registros = FrmFacturas.BindingMetodo.Count
-        iPosicion = 0
-
-        Fecha = Format(FrmFacturas.DTPFecha.Value, "yyyy-MM-dd")
-
-
-        Do While iPosicion < Registros
-
-            If Not IsDBNull(FrmFacturas.BindingMetodo.Item(iPosicion)("NombrePago")) Then
-                Metodo = FrmFacturas.BindingMetodo.Item(iPosicion)("NombrePago")
-                TasaCambio = 1
-                Fecha = Format(FrmFacturas.DTPFecha.Value, "yyyy-MM-dd")
-                '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                '//////////////////////////////BUSCO LA MONEDA DEL METODO DE PAGO///////////////////////////////////////////////////////
-                '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                MonedaFactura = FrmFacturas.TxtMonedaFactura.Text
-                Moneda = "Cordobas"
-                TipoMetodo = "Cambio"
-                SQlMetodo = "SELECT * FROM MetodoPago WHERE (NombrePago = '" & Metodo & "')"
-                DataAdapter = New SqlClient.SqlDataAdapter(SQlMetodo, MiConexion)
-                DataAdapter.Fill(DataSet, "Metodo")
-                If DataSet.Tables("Metodo").Rows.Count <> 0 Then
-                    Moneda = DataSet.Tables("Metodo").Rows(0)("Moneda")
-                    TipoMetodo = DataSet.Tables("Metodo").Rows(0)("TipoPago")
-                End If
-                DataSet.Tables("Metodo").Clear()
-
-
-                Select Case Moneda
-                    Case "Cordobas"
-                        If MonedaFactura = "Cordobas" Then
-                            TasaCambio = 1
-                        Else
-                            SQlTasa = "SELECT  * FROM TasaCambio WHERE (FechaTasa = CONVERT(DATETIME, '" & Fecha & "', 102))"
-                            DataAdapter = New SqlClient.SqlDataAdapter(SQlTasa, MiConexion)
-                            DataAdapter.Fill(DataSet, "TasaCambio")
-                            If DataSet.Tables("TasaCambio").Rows.Count <> 0 Then
-                                TasaCambio = (1 / DataSet.Tables("TasaCambio").Rows(0)("MontoTasa"))
-                            Else
-                                'TasaCambio = 0
-                                MsgBox("La Tasa de Cambio no Existe para esta Fecha", MsgBoxStyle.Critical, "Sistema Facturacion")
-                                FrmFacturas.BindingMetodo.Item(iPosicion)("Monto") = 0
-                            End If
-                            DataSet.Tables("TasaCambio").Clear()
-                        End If
-
-                    Case "Dolares"
-                        If MonedaFactura = "Cordobas" Then
-                            SQlTasa = "SELECT  * FROM TasaCambio WHERE (FechaTasa = CONVERT(DATETIME, '" & Fecha & "', 102))"
-                            DataAdapter = New SqlClient.SqlDataAdapter(SQlTasa, MiConexion)
-                            DataAdapter.Fill(DataSet, "TasaCambio")
-                            If DataSet.Tables("TasaCambio").Rows.Count <> 0 Then
-                                TasaCambio = DataSet.Tables("TasaCambio").Rows(0)("MontoTasa")
-                            Else
-                                'TasaCambio = 0
-                                MsgBox("La Tasa de Cambio no Existe para esta Fecha", MsgBoxStyle.Critical, "Sistema Facturacion")
-                                FrmFacturas.BindingMetodo.Item(iPosicion)("Monto") = 0
-                            End If
-                            DataSet.Tables("TasaCambio").Clear()
-                        Else
-                            TasaCambio = 1
-                        End If
-                End Select
-
-                If TipoMetodo = "Cambio" Then
-                    TasaCambio = TasaCambio * -1
-                End If
-
-
-
-                If Not IsDBNull(FrmFacturas.BindingMetodo.Item(iPosicion)("Monto")) Then
-                    Monto = (FrmFacturas.BindingMetodo.Item(iPosicion)("Monto") * TasaCambio) + Monto
-                Else
-                    Monto = 0
-                End If
-
-            End If
-            iPosicion = iPosicion + 1
-        Loop
-
-
-
-        '**********************************************************************************************************************************
-        '//////////////////////////////BUSCO EL SUB TOTAL Y EL IVA ////////////////////////////////////////////////////////////////////////
-        '************************************************************************************************************************************
-
-        Registros = FrmFacturas.BindingDetalle.Count
-        iPosicion = 0
-
-        Do While iPosicion < Registros
-            If Not IsDBNull(FrmFacturas.BindingDetalle.Item(iPosicion)("Importe")) Then
-                Subtotal = Format(CDbl(FrmFacturas.BindingDetalle.Item(iPosicion)("Importe")) + Subtotal, "####0.0000")
-                My.Forms.FrmFacturas.SubTotalGral = Subtotal
-                If Not IsDBNull(FrmFacturas.BindingDetalle.Item(iPosicion)("Cod_Producto")) Then
-                    CodProducto = FrmFacturas.BindingDetalle.Item(iPosicion)("Cod_Producto")
-                Else
-                    CodProducto = ""
-                End If
-                SQlString = "SELECT Productos.*  FROM Productos WHERE (Cod_Productos = '" & CodProducto & "') "
-                DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-                DataAdapter.Fill(DataSet, "Productos")
-                If Not DataSet.Tables("Productos").Rows.Count = 0 Then
-                    CodIva = DataSet.Tables("Productos").Rows(0)("Cod_Iva")
-                    SQlString = "SELECT *  FROM Impuestos WHERE  (Cod_Iva = '" & CodIva & "')"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-                    DataAdapter.Fill(DataSet, "IVA")
-                    If Not DataSet.Tables("IVA").Rows.Count = 0 Then
-                        Tasa = DataSet.Tables("IVA").Rows(0)("Impuesto")
-                        TasaIva = DataSet.Tables("IVA").Rows(0)("Impuesto")
-                    End If
-                    Iva = Format(Iva + CDbl(FrmFacturas.BindingDetalle.Item(iPosicion)("Importe")) * Tasa, "####0.00000000")
-                    My.Forms.FrmFacturas.IvaGral = Iva
-                    DataSet.Tables("IVA").Clear()
-                End If
-                DataSet.Tables("Productos").Clear()
-
-
-            End If
-            iPosicion = iPosicion + 1
-        Loop
-
-        '----------------------------------------------------------------------------------------------------------------------------------------
-        '///////////////////////////BUSCO SI EXISTE NOTAS DE DEBITO Y CREDITO ///////////////////////////////////////////////////////////////////
-        '----------------------------------------------------------------------------------------------------------------------------------------
-        Retencion1Porciento = 0
-        If FrmFacturas.OptRet1Porciento.Checked = True Then
-            SQlString = "SELECT CodigoNB, Tipo, Descripcion, CuentaContable FROM NotaDebito WHERE (Tipo = 'Credito Clientes') AND (Descripcion LIKE N'%1%%')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-            DataAdapter.Fill(DataSet, "Retencion")
-            If DataSet.Tables("Retencion").Rows.Count <> 0 Then
-                Retencion1Porciento = Format(Subtotal * 0.01, "##,##0.00")
-            Else
-                MsgBox("No Existe Nota de Credito para Retencion 1%", MsgBoxStyle.Critical, "Zeus Facturacion")
-                FrmFacturas.OptRet1Porciento.Checked = False
-            End If
-            DataSet.Tables("Retencion").Reset()
-        End If
-
-        Retencion2Porciento = 0
-        If FrmFacturas.OptRet2Porciento.Checked = True Then
-            SQlString = "SELECT CodigoNB, Tipo, Descripcion, CuentaContable FROM NotaDebito WHERE (Tipo = 'Credito Clientes') AND (Descripcion LIKE N'%2%%')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-            DataAdapter.Fill(DataSet, "Retencion")
-            If DataSet.Tables("Retencion").Rows.Count <> 0 Then
-                Retencion2Porciento = Format(Subtotal * 0.02, "##,##0.00")
-            Else
-                MsgBox("No Existe Nota de Credito para Retencion 2%", MsgBoxStyle.Critical, "Zeus Facturacion")
-                FrmFacturas.OptRet2Porciento.Checked = False
-            End If
-            DataSet.Tables("Retencion").Reset()
-        End If
-
-
-        If FrmFacturas.OptExsonerado.Checked = False Then
-            'Iva = Subtotal * Tasa
-        Else
-            Iva = 0
-            FrmFacturas.IvaGral = 0
-        End If
-
-
-
-
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '///////////////////////////////BUSCO SI TIENE CONFIGURADO EFECTIVO DEFAUL/////////////////////////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        SQlString = "SELECT  * FROM DatosEmpresa "
-        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-        DataAdapter.Fill(DataSet, "DatosEmpresa")
-        If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
-
-            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("CalcularPropina")) Then
-                If DataSet.Tables("DatosEmpresa").Rows(0)("CalcularPropina") = True Then
-                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("PorcentajePropina")) Then
-                        PorcentajePropina = DataSet.Tables("DatosEmpresa").Rows(0)("PorcentajePropina")
-                    Else
-                        PorcentajePropina = 0
-                    End If
-
-
-                Else
-                    PorcentajePropina = 0
-                End If
-            End If
-
-            If FrmFacturas.ChkPropina.Checked = True Then
-                MontoPropina = Subtotal * (PorcentajePropina / 100)
-            End If
-
-
-
-
-            If DataSet.Tables("DatosEmpresa").Rows(0)("MetodoPagoDefecto") = "Efectivo" Then
-                '*************************************************************************************************************************
-                '//////////////////////////////////BUSCO LA FORMA DE PAGO PARA ESTA FACTURA /////////////////////////////////////////////
-                '**************************************************************************************************************************
-                SQlString = "SELECT  * FROM MetodoPago WHERE  (TipoPago = 'Efectivo') AND (Moneda = '" & FrmFacturas.TxtMonedaFactura.Text & "')"
-                DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-                DataAdapter.Fill(DataSet, "Metodo")
-                If DataSet.Tables("Metodo").Rows.Count <> 0 Then
-
-                    Metodo = DataSet.Tables("Metodo").Rows(0)("NombrePago")
-
-                    Registros = FrmFacturas.BindingMetodo.Count
-                    iPosicion = 0
-                    Fecha = Format(FrmFacturas.DTPFecha.Value, "yyyy-MM-dd")
-                    Do While iPosicion < Registros
-
-                        If Not IsDBNull(FrmFacturas.BindingMetodo.Item(iPosicion)("NombrePago")) Then
-                            If Metodo = FrmFacturas.BindingMetodo.Item(iPosicion)("NombrePago") Then
-                                FrmFacturas.BindingMetodo.Item(iPosicion)("Monto") = (Subtotal + Iva + MontoPropina - Retencion1Porciento - Retencion2Porciento)
-                                FrmFacturas.TrueDBGridMetodo.Columns(1).Text = (Subtotal + Iva + MontoPropina - Retencion1Porciento - Retencion2Porciento)
-                                Monto = (Subtotal + Iva + MontoPropina)
-                            End If
-                        End If
-
-                        iPosicion = iPosicion + 1
-                    Loop
-
-                End If
-            Else
-                If Monto = 0 Then
-                    Monto = Retencion1Porciento + Retencion2Porciento
-                Else
-                    Monto = Monto + Retencion1Porciento + Retencion2Porciento
-                End If
-            End If
-        End If
-
-
-
-
-
-
-
-        '**********************************************************************************************************************************
-        '/////////////////////////////SI ES CREDITO BORRO LOS METODOS DE PAGO ////////////////////////////////////////////////////////////////////////
-        '************************************************************************************************************************************
-        If FrmFacturas.RadioButton1.Checked = True Then
-            SqlUpdate = "DELETE FROM [Detalle_MetodoFacturas] WHERE (Numero_Factura = '" & FrmFacturas.TxtNumeroEnsamble.Text & "') AND (Tipo_Factura = '" & FrmFacturas.CboTipoProducto.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102))"
-            MiConexion.Open()
-            ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
-            iResultado = ComandoUpdate.ExecuteNonQuery
-            MiConexion.Close()
-            Monto = 0
-
-            If Retencion1Porciento <> 0 Then
-                Monto = Retencion1Porciento
-            End If
-
-            If Retencion2Porciento <> 0 Then
-                Monto = Monto + Retencion2Porciento
-            End If
-        End If
-
-
-
-        Descuento = CDbl(Val(FrmFacturas.TxtDescuento.Text))
-
-        Iva = Redondeo(Iva, 3)
-
-        Neto = CDbl((Format(Subtotal + Iva, "####0.00"))) - Monto - Descuento + MontoPropina
-        My.Forms.FrmFacturas.TxtSubTotal.Text = Format(Subtotal, "##,##0.000")
-        My.Forms.FrmFacturas.TxtIva.Text = Format(Iva, "##,##0.00")
-        FrmFacturas.TxtPagado.Text = Format(Monto, "##,##0.00")
-        FrmFacturas.TxtNetoPagar.Text = Format(Neto, "##,##0.00")
-        FrmFacturas.TxtPropina.Text = Format(MontoPropina, "##,##0.00")
-    End Sub
     Public Function Redondeo(ByVal Numero, ByVal Decimales)
         Redondeo = Int(Numero * 10 ^ Decimales + 1 / 2) / 10 ^ Decimales
     End Function
@@ -11213,45 +11288,133 @@ errSub:
         My.Forms.FrmFacturas.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
         PrimerRegistroFactura = True
     End Sub
+    Public Sub GrabaMetodoDetalleFactura(ByVal ConsecutivoFactura As String,
+                                     ByVal NombrePago As String,
+                                     ByVal Monto As Double,
+                                     ByVal NumeroTarjeta As String,
+                                     ByVal FechaVence As String,
+                                     ByVal FechaFactura As Date,
+                                     ByVal TipoFactura As String)
 
-    Public Sub GrabaMetodoDetalleFactura(ByVal ConsecutivoFactura As String, ByVal NombrePago As String, ByVal Monto As Double, ByVal NumeroTarjeta As String, ByVal FechaVence As String, FechaFactura As Date, TipoFactura As String)
-        Dim Sqldetalle As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-        Dim Fecha As String, MiConexion As New SqlClient.SqlConnection(Conexion), SqlUpdate As String, FechaVencimiento As String
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Using MiConexion As New SqlClient.SqlConnection(Conexion)
+            Dim Fecha As Date = FechaFactura
+            Dim FechaVencimiento As Date? = Nothing
 
-        Fecha = Format(FechaFactura, "yyyy-MM-dd")
-        FechaVencimiento = Format(CDate(FechaVence), "dd/MM/yyyy")
+            ' Convertir de manera segura
+            If Not String.IsNullOrWhiteSpace(FechaVence) Then
+                Try
+                    FechaVencimiento = CDate(FechaVence)
+                Catch ex As Exception
+                    FechaVencimiento = Nothing
+                End Try
+            End If
 
-        If ConsecutivoFactura = "-----0-----" Then
-            Exit Sub
-        End If
+            ' Verifica si ya existe el método
+            Dim SqlExiste As String = "
+            SELECT COUNT(*) 
+            FROM Detalle_MetodoFacturas
+            WHERE Numero_Factura = @NumFac
+              AND Fecha_Factura = @Fecha
+              AND Tipo_Factura = @Tipo
+              AND NombrePago = @NombrePago"
 
-        Sqldetalle = "SELECT *  FROM Detalle_MetodoFacturas WHERE (Numero_Factura = '" & ConsecutivoFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & TipoFactura & "') AND (NombrePago = '" & NombrePago & "')"
-        DataAdapter = New SqlClient.SqlDataAdapter(Sqldetalle, MiConexion)
-        DataAdapter.Fill(DataSet, "DetalleMetodoFactura")
-        If Not DataSet.Tables("DetalleMetodoFactura").Rows.Count = 0 Then
-            '//////////////////////////////////////////////////////////////////////////////////////////////
-            '////////////////////////////EDITO EL DETALLE DE COMPRAS///////////////////////////////////
-            '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlUpdate = "UPDATE [Detalle_MetodoFacturas] SET [NombrePago] = '" & NombrePago & "',[Monto] = " & Monto & ",[NumeroTarjeta] = '" & NumeroTarjeta & "',[FechaVence] = '" & FechaVencimiento & "' " &
-                         "WHERE (Numero_Factura = '" & ConsecutivoFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & TipoFactura & "') AND (NombrePago = '" & NombrePago & "')"
+            Dim SqlExisteCmd As New SqlClient.SqlCommand(SqlExiste, MiConexion)
+            SqlExisteCmd.Parameters.AddWithValue("@NumFac", ConsecutivoFactura)
+            SqlExisteCmd.Parameters.AddWithValue("@Fecha", Fecha)
+            SqlExisteCmd.Parameters.AddWithValue("@Tipo", TipoFactura)
+            SqlExisteCmd.Parameters.AddWithValue("@NombrePago", NombrePago)
+
             MiConexion.Open()
-            ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
-            iResultado = ComandoUpdate.ExecuteNonQuery
-            MiConexion.Close()
+            Dim existe As Integer = CInt(SqlExisteCmd.ExecuteScalar())
 
-        Else
-            MiConexion.Close()
-            SqlUpdate = "INSERT INTO [Detalle_MetodoFacturas] ([Numero_Factura],[Fecha_Factura],[Tipo_Factura],[NombrePago],[Monto],[NumeroTarjeta] ,[FechaVence]) " &
-                        "VALUES ('" & ConsecutivoFactura & "','" & Fecha & "','" & TipoFactura & "','" & NombrePago & "'," & Monto & " ,'" & NumeroTarjeta & "','" & FechaVencimiento & "')"
-            MiConexion.Open()
-            ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
-            iResultado = ComandoUpdate.ExecuteNonQuery
-            MiConexion.Close()
+            Dim SqlUpdate As String
 
-        End If
+            If existe > 0 Then
+                ' UPDATE
+                SqlUpdate = "
+                UPDATE Detalle_MetodoFacturas
+                SET Monto = @Monto,
+                    NumeroTarjeta = @NumeroTarjeta,
+                    FechaVence = @FechaVence
+                WHERE Numero_Factura = @NumFac
+                  AND Fecha_Factura = @Fecha
+                  AND Tipo_Factura = @Tipo
+                  AND NombrePago = @NombrePago"
+            Else
+                ' INSERT
+                SqlUpdate = "
+                INSERT INTO Detalle_MetodoFacturas
+                (Numero_Factura, Fecha_Factura, Tipo_Factura, NombrePago, Monto, NumeroTarjeta, FechaVence)
+                VALUES (@NumFac, @Fecha, @Tipo, @NombrePago, @Monto, @NumeroTarjeta, @FechaVence)"
+            End If
 
+            Using Comando As New SqlClient.SqlCommand(SqlUpdate, MiConexion)
+                Comando.Parameters.AddWithValue("@NumFac", ConsecutivoFactura)
+                Comando.Parameters.AddWithValue("@Fecha", Fecha)
+                Comando.Parameters.AddWithValue("@Tipo", TipoFactura)
+                Comando.Parameters.AddWithValue("@NombrePago", NombrePago)
+                Comando.Parameters.AddWithValue("@Monto", Monto)
+                Comando.Parameters.AddWithValue("@NumeroTarjeta", NumeroTarjeta)
+                If FechaVencimiento.HasValue Then
+                    Comando.Parameters.AddWithValue("@FechaVence", FechaVencimiento.Value)
+                Else
+                    Comando.Parameters.AddWithValue("@FechaVence", DBNull.Value)
+                End If
+
+                Comando.ExecuteNonQuery()
+            End Using
+        End Using
     End Sub
+
+
+
+    '************************CODIGO RETIRADO 28/10/2025 ***********************************
+    'Public Sub GrabaMetodoDetalleFactura(ByVal ConsecutivoFactura As String, ByVal NombrePago As String, ByVal Monto As Double, ByVal NumeroTarjeta As String, ByVal FechaVence As String, FechaFactura As Date, TipoFactura As String)
+    '    Dim Sqldetalle As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+    '    Dim Fecha As String, MiConexion As New SqlClient.SqlConnection(Conexion), SqlUpdate As String, FechaVencimiento As String
+    '    Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+
+    '    Fecha = Format(FechaFactura, "yyyy-MM-dd")
+    '    FechaVencimiento = Format(CDate(FechaVence), "dd/MM/yyyy")
+
+    '    If ConsecutivoFactura = "-----0-----" Then
+    '        Exit Sub
+    '    End If
+
+    '    Sqldetalle = "SELECT *  FROM Detalle_MetodoFacturas WHERE (Numero_Factura = '" & ConsecutivoFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & TipoFactura & "') AND (NombrePago = '" & NombrePago & "')"
+    '    DataAdapter = New SqlClient.SqlDataAdapter(Sqldetalle, MiConexion)
+    '    DataAdapter.Fill(DataSet, "DetalleMetodoFactura")
+    '    If Not DataSet.Tables("DetalleMetodoFactura").Rows.Count = 0 Then
+    '        '//////////////////////////////////////////////////////////////////////////////////////////////
+    '        '////////////////////////////EDITO EL DETALLE DE COMPRAS///////////////////////////////////
+    '        '/////////////////////////////////////////////////////////////////////////////////////////////////
+    '        SqlUpdate = "UPDATE [Detalle_MetodoFacturas] SET [NombrePago] = '" & NombrePago & "',[Monto] = " & Monto & ",[NumeroTarjeta] = '" & NumeroTarjeta & "',[FechaVence] = '" & FechaVencimiento & "' " &
+    '                     "WHERE (Numero_Factura = '" & ConsecutivoFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & TipoFactura & "') AND (NombrePago = '" & NombrePago & "')"
+    '        MiConexion.Open()
+    '        ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
+    '        iResultado = ComandoUpdate.ExecuteNonQuery
+    '        MiConexion.Close()
+
+    '    Else
+    '        MiConexion.Close()
+    '        SqlUpdate = "INSERT INTO [Detalle_MetodoFacturas] ([Numero_Factura],[Fecha_Factura],[Tipo_Factura],[NombrePago],[Monto],[NumeroTarjeta] ,[FechaVence]) " &
+    '                    "VALUES ('" & ConsecutivoFactura & "','" & Fecha & "','" & TipoFactura & "','" & NombrePago & "'," & Monto & " ,'" & NumeroTarjeta & "','" & FechaVencimiento & "')"
+    '        MiConexion.Open()
+    '        ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
+    '        iResultado = ComandoUpdate.ExecuteNonQuery
+    '        MiConexion.Close()
+
+    '    End If
+
+    'End Sub
+
+
+
+
+
+
+
+
     Public Sub GrabaDetalleFacturaTarea(ByVal ConsecutivoFactura As String, ByVal CodProducto As String, ByVal Descripcion_Producto As String, ByVal PrecioUnitario As Double, ByVal Descuento As Double, ByVal PrecioNeto As Double, ByVal Importe As Double, ByVal Cantidad As Double, ByVal IdDetalleFactura As Double, ByVal Tarea As String)
         Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim Fecha As String, MiConexion As New SqlClient.SqlConnection(Conexion), SqlUpdate As String, TasaCambio As Double
@@ -11763,7 +11926,7 @@ errSub:
             MsgBox(ex.ToString)
         End Try
     End Sub
-    Public Sub GrabaTransferenciasEntrada(ByVal ConsecutivoCompra As String, ByVal FechaTransferencia As Date, ByVal TipoCompra As String, ByVal CodigoBodega As String, ByVal BodegaOrigen As String, ByVal BodegaDestino As String)
+    Public Sub GrabaTransferenciasEntrada(ByVal ConsecutivoCompra As String, ByVal FechaTransferencia As Date, ByVal TipoCompra As String, ByVal CodigoBodega As String, ByVal BodegaOrigen As String, ByVal BodegaDestino As String, TotalCosto As Double, Observaciones As String)
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim Fecha As String
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -11775,11 +11938,13 @@ errSub:
 
             Fecha = Format(FechaTransferencia, "yyyy-MM-dd")
 
-            If FrmTransferencias.TxtTotalCosto.Text <> "" Then
-                Subtotal = FrmTransferencias.TxtTotalCosto.Text
-            Else
-                Subtotal = 0
-            End If
+            'If FrmTransferencias.TxtTotalCosto.Text <> "" Then
+            '    Subtotal = FrmTransferencias.TxtTotalCosto.Text
+            'Else
+            '    Subtotal = 0
+            'End If
+
+            Subtotal = TotalCosto
 
             '//////////////////////////////////BUSCO CUALQUIER PROVEEDOR PARA PODER GRABAR LA TRANSFERENCIA 
 
@@ -11798,7 +11963,7 @@ errSub:
                 '/////////////////////////////////////////////////////////////////////////////////////////////////
                 MiConexion.Close()
                 SqlCompras = "INSERT INTO [Compras] ([Numero_Compra] ,[Fecha_Compra],[Tipo_Compra],[Cod_Bodega],[Observaciones],[SubTotal],[Su_Referencia],[Nuestra_Referencia]) " &
-                "VALUES ('" & ConsecutivoCompra & "','" & FechaTransferencia & "','" & TipoCompra & "','" & CodigoBodega & "','" & FrmTransferencias.TxtObservaciones.Text & "'," & Subtotal & ",'" & BodegaOrigen & "','" & BodegaDestino & "')"
+                "VALUES ('" & ConsecutivoCompra & "','" & FechaTransferencia & "','" & TipoCompra & "','" & CodigoBodega & "','" & Observaciones & "'," & Subtotal & ",'" & BodegaOrigen & "','" & BodegaDestino & "')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
                 iResultado = ComandoUpdate.ExecuteNonQuery
@@ -11808,7 +11973,7 @@ errSub:
                 '//////////////////////////////////////////////////////////////////////////////////////////////
                 '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
                 '/////////////////////////////////////////////////////////////////////////////////////////////////
-                SqlCompras = "UPDATE [Compras]  SET [Observaciones] = '" & FrmFacturas.TxtObservaciones.Text & "',[SubTotal] = " & Subtotal & " ,[Su_Referencia] = '" & BodegaOrigen & "',[Nuestra_Referencia] = '" & BodegaDestino & "'   WHERE (Numero_Compra = '" & ConsecutivoCompra & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Compra = '" & TipoCompra & "')"
+                SqlCompras = "UPDATE [Compras]  SET [Observaciones] = '" & Observaciones & "',[SubTotal] = " & Subtotal & " ,[Su_Referencia] = '" & BodegaOrigen & "',[Nuestra_Referencia] = '" & BodegaDestino & "'   WHERE (Numero_Compra = '" & ConsecutivoCompra & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Compra = '" & TipoCompra & "')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
                 iResultado = ComandoUpdate.ExecuteNonQuery
@@ -11820,7 +11985,7 @@ errSub:
         End Try
     End Sub
 
-    Public Sub GrabaTransferenciasSalida(ByVal ConsecutivoFactura As String, ByVal FechaTransferencia As Date, ByVal TipoFactura As String, ByVal CodigoBodega As String, ByVal BodegaOrigen As String, ByVal BodegaDestino As String)
+    Public Sub GrabaTransferenciasSalida(ByVal ConsecutivoFactura As String, ByVal FechaTransferencia As Date, ByVal TipoFactura As String, ByVal CodigoBodega As String, ByVal BodegaOrigen As String, ByVal BodegaDestino As String, TotalCosto As Double, Observaciones As String)
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
         Dim Fecha As String
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -11832,8 +11997,8 @@ errSub:
 
             Fecha = Format(FechaTransferencia, "yyyy-MM-dd")
 
-            If FrmTransferencias.TxtTotalCosto.Text <> "" Then
-                Subtotal = FrmTransferencias.TxtTotalCosto.Text
+            If TotalCosto <> 0 Then
+                Subtotal = TotalCosto
             Else
                 Subtotal = 0
             End If
@@ -11852,7 +12017,7 @@ errSub:
                 '/////////////////////////////////////////////////////////////////////////////////////////////////
                 MiConexion.Close()
                 SqlCompras = "INSERT INTO [Facturas] ([Numero_Factura] ,[Fecha_Factura],[Tipo_Factura],[Cod_Bodega],[Observaciones],[SubTotal],[Su_Referencia],[Nuestra_Referencia]) " &
-                "VALUES ('" & ConsecutivoFactura & "','" & FechaTransferencia & "','" & TipoFactura & "','" & CodigoBodega & "','" & FrmTransferencias.TxtObservaciones.Text & "'," & Subtotal & ",'" & BodegaOrigen & "','" & BodegaDestino & "')"
+                "VALUES ('" & ConsecutivoFactura & "','" & FechaTransferencia & "','" & TipoFactura & "','" & CodigoBodega & "','" & Observaciones & "'," & Subtotal & ",'" & BodegaOrigen & "','" & BodegaDestino & "')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
                 iResultado = ComandoUpdate.ExecuteNonQuery
@@ -11862,7 +12027,7 @@ errSub:
                 '//////////////////////////////////////////////////////////////////////////////////////////////
                 '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
                 '/////////////////////////////////////////////////////////////////////////////////////////////////
-                SqlCompras = "UPDATE [Facturas]  SET [Observaciones] = '" & FrmFacturas.TxtObservaciones.Text & "',[SubTotal] = " & Subtotal & " ,[Su_Referencia] = '" & BodegaOrigen & "',[Nuestra_Referencia] = '" & BodegaDestino & "'   WHERE (Numero_Factura = '" & ConsecutivoFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & TipoFactura & "')"
+                SqlCompras = "UPDATE [Facturas]  SET [Observaciones] = '" & Observaciones & "',[SubTotal] = " & Subtotal & " ,[Su_Referencia] = '" & BodegaOrigen & "',[Nuestra_Referencia] = '" & BodegaDestino & "'   WHERE (Numero_Factura = '" & ConsecutivoFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & TipoFactura & "')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
                 iResultado = ComandoUpdate.ExecuteNonQuery
@@ -13384,446 +13549,490 @@ errSub:
     End Function
     Public Function BuscaExistenciaBodegaBascula(ByVal CodigoProducto As String, ByVal CodigoBodega As String) As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Fecha As String, UnidadComprada As Double
-        Dim SQlInventarioFisico As String, TasaCambio As Double, Existencia As Double = 0, SqlConsulta As String, DevolucionCompra As Double = 0
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim Existencia As Double = 0, SqlConsulta As String, DevolucionCompra As Double = 0
         Dim UnidadFacturada As Double = 0, DevolucionFactura As Double = 0, TransferenciaEnviada As Double = 0, TransferenciaRecibida As Double = 0
         Dim SalidaBodega As Double = 0, CostoVenta As Double = 0, ImporteFactura As Double = 0
-        Dim ImporteCompra As Double, ImporteDevCompra As Double = 0, ImporteVenta As Double = 0, ImporteSalida As Double = 0
-        Dim ImporteDevFactura As Double = 0
+        Dim FechaCorte = Format(Now, "dd/MM/yyyy")
 
-        '///////////////////////////FORMULA DE COMPRA PROMEDIO////////////////////////////////////////////////////////////////
-        ' CostoPromedio= ((Existencia*Costo)+(PrecioCompra*CantidadCompra))/(Existencia+CantidadComprada)
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        '///////////////////////////BUSCO LA EXISTENCIA SEGUN EL ULTIMO INVENTARIO FISICO////////////////////////////////////////
+        MiConexion.Open()
+        'Esta consulta calcula la existencia
+        SqlConsulta = " SELECT ISNULL(MR.Cantidad,0) + ISNULL(TR.Cantidad,0) + ISNULL(DV.Cantidad,0) - (ISNULL(Fact.Cantidad,0) + ISNULL(SB.Cantidad,0) + ISNULL(TE.Cantidad,0) + ISNULL(DC.Cantidad,0)) AS Existencia FROM (SELECT Cod_Producto FROM Detalle_Compras WHERE Fecha_Compra <= @FechaCorte UNION SELECT Cod_Producto FROM Detalle_Facturas WHERE Fecha_Factura <= @FechaCorte) P INNER JOIN Productos Prod ON P.Cod_Producto = Prod.Cod_Productos AND Prod.Cod_Productos = @CodigoProducto LEFT JOIN (SELECT DC.Cod_Producto, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra = C.Numero_Compra AND DC.Fecha_Compra = C.Fecha_Compra AND DC.Tipo_Compra = C.Tipo_Compra WHERE C.Fecha_Compra <= @FechaCorte AND C.Tipo_Compra = 'Mercancia Recibida' AND C.Cod_Bodega = @CodigoBodega GROUP BY DC.Cod_Producto) MR ON P.Cod_Producto = MR.Cod_Producto LEFT JOIN (SELECT DC.Cod_Producto, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra = C.Numero_Compra AND DC.Fecha_Compra = C.Fecha_Compra AND DC.Tipo_Compra = C.Tipo_Compra WHERE C.Fecha_Compra <= @FechaCorte AND C.Tipo_Compra = 'Transferencia Recibida' AND C.Cod_Bodega = @CodigoBodega GROUP BY DC.Cod_Producto) TR ON P.Cod_Producto = TR.Cod_Producto LEFT JOIN (SELECT DF.Cod_Producto, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE F.Fecha_Factura <= @FechaCorte AND F.Tipo_Factura = 'Devolucion de Venta' AND F.Cod_Bodega = @CodigoBodega GROUP BY DF.Cod_Producto) DV ON P.Cod_Producto = DV.Cod_Producto LEFT JOIN (SELECT DF.Cod_Producto, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE F.Fecha_Factura <= @FechaCorte AND F.Tipo_Factura = 'Factura' AND F.Cod_Bodega = @CodigoBodega GROUP BY DF.Cod_Producto) Fact ON P.Cod_Producto = Fact.Cod_Producto LEFT JOIN (SELECT DF.Cod_Producto, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE F.Fecha_Factura <= @FechaCorte AND F.Tipo_Factura = 'Salida Bodega' AND F.Cod_Bodega = @CodigoBodega GROUP BY DF.Cod_Producto) SB ON P.Cod_Producto = SB.Cod_Producto LEFT JOIN (SELECT DF.Cod_Producto, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE F.Fecha_Factura <= @FechaCorte AND F.Tipo_Factura = 'Transferencia Enviada' AND F.Cod_Bodega = @CodigoBodega GROUP BY DF.Cod_Producto) TE ON P.Cod_Producto = TE.Cod_Producto LEFT JOIN (SELECT DC.Cod_Producto, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra = C.Numero_Compra AND DC.Fecha_Compra = C.Fecha_Compra AND DC.Tipo_Compra = C.Tipo_Compra WHERE C.Fecha_Compra <= @FechaCorte AND C.Tipo_Compra = 'Devolucion de Compra' AND C.Cod_Bodega = @CodigoBodega GROUP BY DC.Cod_Producto) DC ON P.Cod_Producto = DC.Cod_Producto; "
 
-        CostoVenta = CostoPromedio(CodigoProducto)
+        Using cmd As New SqlCommand(SqlConsulta, MiConexion)
+            ' Agregar parámetros
+            cmd.Parameters.AddWithValue("@CodigoBodega", CodigoBodega)
+            cmd.Parameters.AddWithValue("@CodigoProducto", CodigoProducto)
+            cmd.Parameters.AddWithValue("@FechaCorte", FechaCorte)
 
-        TasaCambio = 0
-        SQlInventarioFisico = "SELECT * FROM InventarioFisico WHERE (Cod_Producto = '" & CodigoProducto & "') AND (Activo = 0) AND (CodBodega = '" & CodigoBodega & "') ORDER BY Fecha_Conteo DESC"
-        DataAdapter = New SqlClient.SqlDataAdapter(SQlInventarioFisico, MiConexion)
-        DataAdapter.Fill(DataSet, "InventarioFisico")
-        If DataSet.Tables("InventarioFisico").Rows.Count <> 0 Then
-            Existencia = 0
-            'Existencia = DataSet.Tables("InventarioFisico").Rows(0)("Cantidad_Contada")
-
-            Fecha = Format(CDate(DataSet.Tables("InventarioFisico").Rows(0)("Fecha_Conteo")), "yyyy-MM-dd")
-
-            '//////////////////////////////////BUSCO EL TOTAL DE LAS COMPRAS////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT SUM(Detalle_Compras.Cantidad) AS Cantidad FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  " &
-                          "WHERE (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Cod_Bodega = '" & CodigoBodega & "')  GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Mercancia Recibida') "
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "Compras")
-            If DataSet.Tables("Compras").Rows.Count <> 0 Then
-                UnidadComprada = DataSet.Tables("Compras").Rows(0)("Cantidad")
+            ' Ejecutar y obtener el resultado
+            Dim result = cmd.ExecuteScalar()
+            If result IsNot Nothing AndAlso IsNumeric(result) Then
+                Existencia = Convert.ToDouble(result)
             End If
 
-            '//////////////////////////////////BUSCO EL TOTAL DE LAS DEVOLUCION DE COMPRAS////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT  SUM(Detalle_Compras.Cantidad) AS Cantidad FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra " &
-                          "WHERE (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Cod_Bodega = '" & CodigoBodega & "') GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Devolucion de Compra')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "DevolucionCompras")
-            If DataSet.Tables("DevolucionCompras").Rows.Count <> 0 Then
-                DevolucionCompra = DataSet.Tables("DevolucionCompras").Rows(0)("Cantidad")
-            End If
+        End Using
 
-            '////////////////////////////////////BUSCO EL TOTAL DE LAS FACTURAS//////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
-                          "WHERE (Detalle_Facturas.Tipo_Factura = 'Factura') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Cod_Bodega =  '" & CodigoBodega & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "Facturas")
-            If DataSet.Tables("Facturas").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("Facturas").Rows(0)("Cantidad")) Then
-                    UnidadFacturada = DataSet.Tables("Facturas").Rows(0)("Cantidad")
-                    ImporteVenta = DataSet.Tables("Facturas").Rows(0)("Cantidad") * CostoVenta
-                Else
-                    UnidadFacturada = 0
-                    ImporteVenta = 0
-                End If
-            End If
+        MiConexion.Close()
 
-            '////////////////////////////////////BUSCO EL TOTAL DE LA SALIDA DE BODEGA//////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
-                          "WHERE (Detalle_Facturas.Tipo_Factura = 'Salida Bodega') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Cod_Bodega =  '" & CodigoBodega & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "SalidaBodega")
-            If DataSet.Tables("SalidaBodega").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("SalidaBodega").Rows(0)("Cantidad")) Then
-                    SalidaBodega = DataSet.Tables("SalidaBodega").Rows(0)("Cantidad")
-                    ImporteSalida = DataSet.Tables("SalidaBodega").Rows(0)("Cantidad") * CostoVenta
-                Else
-                    SalidaBodega = 0
-                    ImporteSalida = 0
-                End If
-            End If
+        Existencia = Format(Existencia, "####0.0000")
 
-            DataSet.Reset()
-            '////////////////////////////////////BUSCO EL TOTAL DE LA DEVOLUCION DE LAS  FACTURAS//////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT     SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " &
-                          "WHERE  (Detalle_Facturas.Tipo_Factura = 'Devolucion de Venta') AND (Detalle_Facturas.Cod_Producto =  '" & CodigoProducto & "') AND (Facturas.Cod_Bodega = '" & CodigoBodega & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "DevolucionFacturas")
-            If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")) Then
-                    DevolucionFactura = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")
+        Return Existencia
 
-                End If
-            End If
+        '********************CODIGO RETIRADO 12/10/2025 //////////////////////////
 
-            DataSet.Reset()
-            '////////////////////////////////////BUSCO EL TOTAL DE TRANSFERENCIAS ENVIADAS  //////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
-                          "WHERE (Detalle_Facturas.Tipo_Factura = 'Transferencia Enviada') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Su_Referencia = '" & CodigoBodega & "') AND (Facturas.TransferenciaProcesada = 1) "
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "DevolucionFacturas")
-            If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")) Then
-                    TransferenciaEnviada = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")
-                End If
-            End If
+        ''///////////////////////////FORMULA DE COMPRA PROMEDIO////////////////////////////////////////////////////////////////
+        '' CostoPromedio= ((Existencia*Costo)+(PrecioCompra*CantidadCompra))/(Existencia+CantidadComprada)
+        ''//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            DataSet.Reset()
-            '////////////////////////////////////BUSCO EL TOTAL DE TRANSFERENCIAS RECIBIDAS  //////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT     SUM(Detalle_Compras.Cantidad) AS Cantidad FROM Compras INNER JOIN Detalle_Compras ON Compras.Numero_Compra = Detalle_Compras.Numero_Compra AND Compras.Fecha_Compra = Detalle_Compras.Fecha_Compra AND Compras.Tipo_Compra = Detalle_Compras.Tipo_Compra " &
-                          "WHERE (Compras.TransferenciaProcesada = 1) AND (Compras.Cod_Bodega = '" & CodigoBodega & "') AND (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Tipo_Compra = 'Transferencia Recibida')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "TransferenciasRecibidas")
-            If DataSet.Tables("TransferenciasRecibidas").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")) Then
-                    TransferenciaRecibida = DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")
-                End If
-            End If
+        ''///////////////////////////BUSCO LA EXISTENCIA SEGUN EL ULTIMO INVENTARIO FISICO////////////////////////////////////////
 
-            'SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " & _
-            '              "WHERE (Detalle_Facturas.Tipo_Factura = 'Transferencia Enviada') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Nuestra_Referencia =  '" & CodigoBodega & "') AND (Facturas.TransferenciaProcesada = 1)"
-            'DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            'DataAdapter.Fill(DataSet, "TransferenciasRecibidas")
-            'If DataSet.Tables("TransferenciasRecibidas").Rows.Count <> 0 Then
-            '    If Not IsDBNull(DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")) Then
-            '        TransferenciaRecibida = DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")
-            '    End If
-            'End If
-        Else
-            '//////////////////////////////////BUSCO EL TOTAL DE LAS COMPRAS////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT SUM(Detalle_Compras.Cantidad) AS Cantidad, SUM(Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto) AS Importe  FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  " &
-                          "WHERE (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Cod_Bodega = '" & CodigoBodega & "')  GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Mercancia Recibida') "
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "Compras")
-            If DataSet.Tables("Compras").Rows.Count <> 0 Then
-                UnidadComprada = DataSet.Tables("Compras").Rows(0)("Cantidad")
-                ImporteCompra = DataSet.Tables("Compras").Rows(0)("Importe")
-            End If
+        'CostoVenta = CostoPromedio(CodigoProducto)
 
-            '//////////////////////////////////BUSCO EL TOTAL DE LAS DEVOLUCION DE COMPRAS////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT  SUM(Detalle_Compras.Cantidad) AS Cantidad,SUM(Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto) AS Importe FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra " &
-                          "WHERE (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Cod_Bodega = '" & CodigoBodega & "') GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Devolucion de Compra')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "DevolucionCompras")
-            If DataSet.Tables("DevolucionCompras").Rows.Count <> 0 Then
-                DevolucionCompra = DataSet.Tables("DevolucionCompras").Rows(0)("Cantidad")
-                ImporteDevCompra = DataSet.Tables("DevolucionCompras").Rows(0)("Importe")
-            End If
+        'TasaCambio = 0
+        'SQlInventarioFisico = "SELECT * FROM InventarioFisico WHERE (Cod_Producto = '" & CodigoProducto & "') AND (Activo = 0) AND (CodBodega = '" & CodigoBodega & "') ORDER BY Fecha_Conteo DESC"
+        'DataAdapter = New SqlClient.SqlDataAdapter(SQlInventarioFisico, MiConexion)
+        'DataAdapter.Fill(DataSet, "InventarioFisico")
+        'If DataSet.Tables("InventarioFisico").Rows.Count <> 0 Then
+        '    Existencia = 0
+        '    'Existencia = DataSet.Tables("InventarioFisico").Rows(0)("Cantidad_Contada")
 
-            '////////////////////////////////////BUSCO EL TOTAL DE LAS FACTURAS//////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
-                          "WHERE (Detalle_Facturas.Tipo_Factura = 'Factura') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Cod_Bodega =  '" & CodigoBodega & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "Facturas")
-            If DataSet.Tables("Facturas").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("Facturas").Rows(0)("Cantidad")) Then
-                    UnidadFacturada = DataSet.Tables("Facturas").Rows(0)("Cantidad")
-                    ImporteVenta = DataSet.Tables("Facturas").Rows(0)("Cantidad") * CostoVenta
-                Else
-                    UnidadFacturada = 0
-                    ImporteVenta = 0
-                End If
-            End If
+        '    Fecha = Format(CDate(DataSet.Tables("InventarioFisico").Rows(0)("Fecha_Conteo")), "yyyy-MM-dd")
 
-            '////////////////////////////////////BUSCO EL TOTAL DE LA SALIDA DE BODEGA//////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
-                          "WHERE (Detalle_Facturas.Tipo_Factura = 'Salida Bodega') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Cod_Bodega =  '" & CodigoBodega & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "SalidaBodega")
-            If DataSet.Tables("SalidaBodega").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("SalidaBodega").Rows(0)("Cantidad")) Then
-                    SalidaBodega = DataSet.Tables("SalidaBodega").Rows(0)("Cantidad")
-                Else
-                    SalidaBodega = 0
-                End If
-            End If
+        '    '//////////////////////////////////BUSCO EL TOTAL DE LAS COMPRAS////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT SUM(Detalle_Compras.Cantidad) AS Cantidad FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  " &
+        '                  "WHERE (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Cod_Bodega = '" & CodigoBodega & "')  GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Mercancia Recibida') "
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "Compras")
+        '    If DataSet.Tables("Compras").Rows.Count <> 0 Then
+        '        UnidadComprada = DataSet.Tables("Compras").Rows(0)("Cantidad")
+        '    End If
 
-            DataSet.Reset()
-            '////////////////////////////////////BUSCO EL TOTAL DE LA DEVOLUCION DE LAS  FACTURAS//////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT     SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " &
-                          "WHERE  (Detalle_Facturas.Tipo_Factura = 'Devolucion de Venta') AND (Detalle_Facturas.Cod_Producto =  '" & CodigoProducto & "') AND (Facturas.Cod_Bodega = '" & CodigoBodega & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "DevolucionFacturas")
-            If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")) Then
-                    DevolucionFactura = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")
-                    ImporteDevFactura = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad") * CostoVenta
-                End If
-            End If
+        '    '//////////////////////////////////BUSCO EL TOTAL DE LAS DEVOLUCION DE COMPRAS////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT  SUM(Detalle_Compras.Cantidad) AS Cantidad FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra " &
+        '                  "WHERE (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Cod_Bodega = '" & CodigoBodega & "') GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Devolucion de Compra')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "DevolucionCompras")
+        '    If DataSet.Tables("DevolucionCompras").Rows.Count <> 0 Then
+        '        DevolucionCompra = DataSet.Tables("DevolucionCompras").Rows(0)("Cantidad")
+        '    End If
 
-            DataSet.Reset()
-            '////////////////////////////////////BUSCO EL TOTAL DE TRANSFERENCIAS ENVIADAS  //////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
-                          "WHERE (Detalle_Facturas.Tipo_Factura = 'Transferencia Enviada') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Su_Referencia = '" & CodigoBodega & "') AND (Facturas.TransferenciaProcesada = 1) "
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "DevolucionFacturas")
-            If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")) Then
-                    TransferenciaEnviada = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")
-                End If
-            End If
+        '    '////////////////////////////////////BUSCO EL TOTAL DE LAS FACTURAS//////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
+        '                  "WHERE (Detalle_Facturas.Tipo_Factura = 'Factura') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Cod_Bodega =  '" & CodigoBodega & "')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "Facturas")
+        '    If DataSet.Tables("Facturas").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("Facturas").Rows(0)("Cantidad")) Then
+        '            UnidadFacturada = DataSet.Tables("Facturas").Rows(0)("Cantidad")
+        '            ImporteVenta = DataSet.Tables("Facturas").Rows(0)("Cantidad") * CostoVenta
+        '        Else
+        '            UnidadFacturada = 0
+        '            ImporteVenta = 0
+        '        End If
+        '    End If
 
-            DataSet.Reset()
-            '////////////////////////////////////BUSCO EL TOTAL DE TRANSFERENCIAS RECIBIDAS  //////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT     SUM(Detalle_Compras.Cantidad) AS Cantidad FROM Compras INNER JOIN Detalle_Compras ON Compras.Numero_Compra = Detalle_Compras.Numero_Compra AND Compras.Fecha_Compra = Detalle_Compras.Fecha_Compra AND Compras.Tipo_Compra = Detalle_Compras.Tipo_Compra " &
-                          "WHERE (Compras.TransferenciaProcesada = 1) AND (Compras.Cod_Bodega = '" & CodigoBodega & "') AND (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Tipo_Compra = 'Transferencia Recibida')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "TransferenciasRecibidas")
-            If DataSet.Tables("TransferenciasRecibidas").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")) Then
-                    TransferenciaRecibida = DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")
-                End If
-            End If
+        '    '////////////////////////////////////BUSCO EL TOTAL DE LA SALIDA DE BODEGA//////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
+        '                  "WHERE (Detalle_Facturas.Tipo_Factura = 'Salida Bodega') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Cod_Bodega =  '" & CodigoBodega & "')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "SalidaBodega")
+        '    If DataSet.Tables("SalidaBodega").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("SalidaBodega").Rows(0)("Cantidad")) Then
+        '            SalidaBodega = DataSet.Tables("SalidaBodega").Rows(0)("Cantidad")
+        '            ImporteSalida = DataSet.Tables("SalidaBodega").Rows(0)("Cantidad") * CostoVenta
+        '        Else
+        '            SalidaBodega = 0
+        '            ImporteSalida = 0
+        '        End If
+        '    End If
 
-            'SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " & _
-            '              "WHERE (Detalle_Facturas.Tipo_Factura = 'Transferencia Enviada') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Nuestra_Referencia =  '" & CodigoBodega & "') AND (Facturas.TransferenciaProcesada = 1)"
-            'DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            'DataAdapter.Fill(DataSet, "TransferenciasRecibidas")
-            'If DataSet.Tables("TransferenciasRecibidas").Rows.Count <> 0 Then
-            '    If Not IsDBNull(DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")) Then
-            '        TransferenciaRecibida = DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")
-            '    End If
-            'End If
-        End If
+        '    DataSet.Reset()
+        '    '////////////////////////////////////BUSCO EL TOTAL DE LA DEVOLUCION DE LAS  FACTURAS//////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT     SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " &
+        '                  "WHERE  (Detalle_Facturas.Tipo_Factura = 'Devolucion de Venta') AND (Detalle_Facturas.Cod_Producto =  '" & CodigoProducto & "') AND (Facturas.Cod_Bodega = '" & CodigoBodega & "')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "DevolucionFacturas")
+        '    If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")) Then
+        '            DevolucionFactura = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")
 
-        Existencia = Existencia + UnidadComprada - DevolucionCompra - UnidadFacturada - SalidaBodega + DevolucionFactura - TransferenciaEnviada + TransferenciaRecibida
-        BuscaExistenciaBodegaBascula = Format(Existencia, "####0.0000")
+        '        End If
+        '    End If
+
+        '    DataSet.Reset()
+        '    '////////////////////////////////////BUSCO EL TOTAL DE TRANSFERENCIAS ENVIADAS  //////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
+        '                  "WHERE (Detalle_Facturas.Tipo_Factura = 'Transferencia Enviada') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Su_Referencia = '" & CodigoBodega & "') AND (Facturas.TransferenciaProcesada = 1) "
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "DevolucionFacturas")
+        '    If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")) Then
+        '            TransferenciaEnviada = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")
+        '        End If
+        '    End If
+
+        '    DataSet.Reset()
+        '    '////////////////////////////////////BUSCO EL TOTAL DE TRANSFERENCIAS RECIBIDAS  //////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT     SUM(Detalle_Compras.Cantidad) AS Cantidad FROM Compras INNER JOIN Detalle_Compras ON Compras.Numero_Compra = Detalle_Compras.Numero_Compra AND Compras.Fecha_Compra = Detalle_Compras.Fecha_Compra AND Compras.Tipo_Compra = Detalle_Compras.Tipo_Compra " &
+        '                  "WHERE (Compras.TransferenciaProcesada = 1) AND (Compras.Cod_Bodega = '" & CodigoBodega & "') AND (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Tipo_Compra = 'Transferencia Recibida')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "TransferenciasRecibidas")
+        '    If DataSet.Tables("TransferenciasRecibidas").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")) Then
+        '            TransferenciaRecibida = DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")
+        '        End If
+        '    End If
+
+        '    'SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " & _
+        '    '              "WHERE (Detalle_Facturas.Tipo_Factura = 'Transferencia Enviada') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Nuestra_Referencia =  '" & CodigoBodega & "') AND (Facturas.TransferenciaProcesada = 1)"
+        '    'DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    'DataAdapter.Fill(DataSet, "TransferenciasRecibidas")
+        '    'If DataSet.Tables("TransferenciasRecibidas").Rows.Count <> 0 Then
+        '    '    If Not IsDBNull(DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")) Then
+        '    '        TransferenciaRecibida = DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")
+        '    '    End If
+        '    'End If
+        'Else
+        '    '//////////////////////////////////BUSCO EL TOTAL DE LAS COMPRAS////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT SUM(Detalle_Compras.Cantidad) AS Cantidad, SUM(Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto) AS Importe  FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  " &
+        '                  "WHERE (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Cod_Bodega = '" & CodigoBodega & "')  GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Mercancia Recibida') "
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "Compras")
+        '    If DataSet.Tables("Compras").Rows.Count <> 0 Then
+        '        UnidadComprada = DataSet.Tables("Compras").Rows(0)("Cantidad")
+        '        ImporteCompra = DataSet.Tables("Compras").Rows(0)("Importe")
+        '    End If
+
+        '    '//////////////////////////////////BUSCO EL TOTAL DE LAS DEVOLUCION DE COMPRAS////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT  SUM(Detalle_Compras.Cantidad) AS Cantidad,SUM(Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto) AS Importe FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra " &
+        '                  "WHERE (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Cod_Bodega = '" & CodigoBodega & "') GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Devolucion de Compra')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "DevolucionCompras")
+        '    If DataSet.Tables("DevolucionCompras").Rows.Count <> 0 Then
+        '        DevolucionCompra = DataSet.Tables("DevolucionCompras").Rows(0)("Cantidad")
+        '        ImporteDevCompra = DataSet.Tables("DevolucionCompras").Rows(0)("Importe")
+        '    End If
+
+        '    '////////////////////////////////////BUSCO EL TOTAL DE LAS FACTURAS//////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
+        '                  "WHERE (Detalle_Facturas.Tipo_Factura = 'Factura') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Cod_Bodega =  '" & CodigoBodega & "')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "Facturas")
+        '    If DataSet.Tables("Facturas").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("Facturas").Rows(0)("Cantidad")) Then
+        '            UnidadFacturada = DataSet.Tables("Facturas").Rows(0)("Cantidad")
+        '            ImporteVenta = DataSet.Tables("Facturas").Rows(0)("Cantidad") * CostoVenta
+        '        Else
+        '            UnidadFacturada = 0
+        '            ImporteVenta = 0
+        '        End If
+        '    End If
+
+        '    '////////////////////////////////////BUSCO EL TOTAL DE LA SALIDA DE BODEGA//////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
+        '                  "WHERE (Detalle_Facturas.Tipo_Factura = 'Salida Bodega') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Cod_Bodega =  '" & CodigoBodega & "')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "SalidaBodega")
+        '    If DataSet.Tables("SalidaBodega").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("SalidaBodega").Rows(0)("Cantidad")) Then
+        '            SalidaBodega = DataSet.Tables("SalidaBodega").Rows(0)("Cantidad")
+        '        Else
+        '            SalidaBodega = 0
+        '        End If
+        '    End If
+
+        '    DataSet.Reset()
+        '    '////////////////////////////////////BUSCO EL TOTAL DE LA DEVOLUCION DE LAS  FACTURAS//////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT     SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " &
+        '                  "WHERE  (Detalle_Facturas.Tipo_Factura = 'Devolucion de Venta') AND (Detalle_Facturas.Cod_Producto =  '" & CodigoProducto & "') AND (Facturas.Cod_Bodega = '" & CodigoBodega & "')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "DevolucionFacturas")
+        '    If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")) Then
+        '            DevolucionFactura = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")
+        '            ImporteDevFactura = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad") * CostoVenta
+        '        End If
+        '    End If
+
+        '    DataSet.Reset()
+        '    '////////////////////////////////////BUSCO EL TOTAL DE TRANSFERENCIAS ENVIADAS  //////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
+        '                  "WHERE (Detalle_Facturas.Tipo_Factura = 'Transferencia Enviada') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Su_Referencia = '" & CodigoBodega & "') AND (Facturas.TransferenciaProcesada = 1) "
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "DevolucionFacturas")
+        '    If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")) Then
+        '            TransferenciaEnviada = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")
+        '        End If
+        '    End If
+
+        '    DataSet.Reset()
+        '    '////////////////////////////////////BUSCO EL TOTAL DE TRANSFERENCIAS RECIBIDAS  //////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT     SUM(Detalle_Compras.Cantidad) AS Cantidad FROM Compras INNER JOIN Detalle_Compras ON Compras.Numero_Compra = Detalle_Compras.Numero_Compra AND Compras.Fecha_Compra = Detalle_Compras.Fecha_Compra AND Compras.Tipo_Compra = Detalle_Compras.Tipo_Compra " &
+        '                  "WHERE (Compras.TransferenciaProcesada = 1) AND (Compras.Cod_Bodega = '" & CodigoBodega & "') AND (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Tipo_Compra = 'Transferencia Recibida')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "TransferenciasRecibidas")
+        '    If DataSet.Tables("TransferenciasRecibidas").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")) Then
+        '            TransferenciaRecibida = DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")
+        '        End If
+        '    End If
+
+        '    'SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " & _
+        '    '              "WHERE (Detalle_Facturas.Tipo_Factura = 'Transferencia Enviada') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Nuestra_Referencia =  '" & CodigoBodega & "') AND (Facturas.TransferenciaProcesada = 1)"
+        '    'DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    'DataAdapter.Fill(DataSet, "TransferenciasRecibidas")
+        '    'If DataSet.Tables("TransferenciasRecibidas").Rows.Count <> 0 Then
+        '    '    If Not IsDBNull(DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")) Then
+        '    '        TransferenciaRecibida = DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")
+        '    '    End If
+        '    'End If
+        'End If
+
+        'Existencia = Existencia + UnidadComprada - DevolucionCompra - UnidadFacturada - SalidaBodega + DevolucionFactura - TransferenciaEnviada + TransferenciaRecibida
+        'BuscaExistenciaBodegaBascula = Format(Existencia, "####0.0000")
     End Function
+
 
     Public Function BuscaExistenciaBodega(ByVal CodigoProducto As String, ByVal CodigoBodega As String) As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Fecha As String, UnidadComprada As Double
-        Dim SQlInventarioFisico As String, TasaCambio As Double, Existencia As Double = 0, SqlConsulta As String, DevolucionCompra As Double = 0
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim Existencia As Double = 0, SqlConsulta As String, DevolucionCompra As Double = 0
         Dim UnidadFacturada As Double = 0, DevolucionFactura As Double = 0, TransferenciaEnviada As Double = 0, TransferenciaRecibida As Double = 0
         Dim SalidaBodega As Double = 0, CostoVenta As Double = 0, ImporteFactura As Double = 0
-        Dim ImporteCompra As Double, ImporteDevCompra As Double = 0, ImporteVenta As Double = 0, ImporteSalida As Double = 0
+        Dim ImporteDevCompra As Double = 0, ImporteVenta As Double = 0, ImporteSalida As Double = 0
         Dim ImporteDevFactura As Double = 0
+        Dim FechaCorte = Format(Now, "dd/MM/yyyy")
 
-        '///////////////////////////FORMULA DE COMPRA PROMEDIO////////////////////////////////////////////////////////////////
-        ' CostoPromedio= ((Existencia*Costo)+(PrecioCompra*CantidadCompra))/(Existencia+CantidadComprada)
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        '///////////////////////////BUSCO LA EXISTENCIA SEGUN EL ULTIMO INVENTARIO FISICO////////////////////////////////////////
+        MiConexion.Open()
+        'Esta consulta calcula la existencia
+        SqlConsulta = " SELECT ISNULL(MR.Cantidad,0) + ISNULL(TR.Cantidad,0) + ISNULL(DV.Cantidad,0) - (ISNULL(Fact.Cantidad,0) + ISNULL(SB.Cantidad,0) + ISNULL(TE.Cantidad,0) + ISNULL(DC.Cantidad,0)) AS Existencia FROM (SELECT Cod_Producto FROM Detalle_Compras WHERE Fecha_Compra <= @FechaCorte UNION SELECT Cod_Producto FROM Detalle_Facturas WHERE Fecha_Factura <= @FechaCorte) P INNER JOIN Productos Prod ON P.Cod_Producto = Prod.Cod_Productos AND Prod.Cod_Productos = @CodigoProducto LEFT JOIN (SELECT DC.Cod_Producto, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra = C.Numero_Compra AND DC.Fecha_Compra = C.Fecha_Compra AND DC.Tipo_Compra = C.Tipo_Compra WHERE C.Fecha_Compra <= @FechaCorte AND C.Tipo_Compra = 'Mercancia Recibida' AND C.Cod_Bodega = @CodigoBodega GROUP BY DC.Cod_Producto) MR ON P.Cod_Producto = MR.Cod_Producto LEFT JOIN (SELECT DC.Cod_Producto, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra = C.Numero_Compra AND DC.Fecha_Compra = C.Fecha_Compra AND DC.Tipo_Compra = C.Tipo_Compra WHERE C.Fecha_Compra <= @FechaCorte AND C.Tipo_Compra = 'Transferencia Recibida' AND C.Cod_Bodega = @CodigoBodega GROUP BY DC.Cod_Producto) TR ON P.Cod_Producto = TR.Cod_Producto LEFT JOIN (SELECT DF.Cod_Producto, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE F.Fecha_Factura <= @FechaCorte AND F.Tipo_Factura = 'Devolucion de Venta' AND F.Cod_Bodega = @CodigoBodega GROUP BY DF.Cod_Producto) DV ON P.Cod_Producto = DV.Cod_Producto LEFT JOIN (SELECT DF.Cod_Producto, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE F.Fecha_Factura <= @FechaCorte AND F.Tipo_Factura = 'Factura' AND F.Cod_Bodega = @CodigoBodega GROUP BY DF.Cod_Producto) Fact ON P.Cod_Producto = Fact.Cod_Producto LEFT JOIN (SELECT DF.Cod_Producto, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE F.Fecha_Factura <= @FechaCorte AND F.Tipo_Factura = 'Salida Bodega' AND F.Cod_Bodega = @CodigoBodega GROUP BY DF.Cod_Producto) SB ON P.Cod_Producto = SB.Cod_Producto LEFT JOIN (SELECT DF.Cod_Producto, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE F.Fecha_Factura <= @FechaCorte AND F.Tipo_Factura = 'Transferencia Enviada' AND F.Cod_Bodega = @CodigoBodega GROUP BY DF.Cod_Producto) TE ON P.Cod_Producto = TE.Cod_Producto LEFT JOIN (SELECT DC.Cod_Producto, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra = C.Numero_Compra AND DC.Fecha_Compra = C.Fecha_Compra AND DC.Tipo_Compra = C.Tipo_Compra WHERE C.Fecha_Compra <= @FechaCorte AND C.Tipo_Compra = 'Devolucion de Compra' AND C.Cod_Bodega = @CodigoBodega GROUP BY DC.Cod_Producto) DC ON P.Cod_Producto = DC.Cod_Producto; "
 
-        CostoVenta = CostoPromedio(CodigoProducto)
+        Using cmd As New SqlCommand(SqlConsulta, MiConexion)
+            ' Agregar parámetros
+            cmd.Parameters.AddWithValue("@CodigoBodega", CodigoBodega)
+            cmd.Parameters.AddWithValue("@CodigoProducto", CodigoProducto)
+            cmd.Parameters.AddWithValue("@FechaCorte", FechaCorte)
 
-        TasaCambio = 0
-        SQlInventarioFisico = "SELECT * FROM InventarioFisico WHERE (Cod_Producto = '" & CodigoProducto & "') AND (Activo = 0) AND (CodBodega = '" & CodigoBodega & "') ORDER BY Fecha_Conteo DESC"
-        DataAdapter = New SqlClient.SqlDataAdapter(SQlInventarioFisico, MiConexion)
-        DataAdapter.Fill(DataSet, "InventarioFisico")
-        If DataSet.Tables("InventarioFisico").Rows.Count <> 0 Then
-            Existencia = 0
-            'Existencia = DataSet.Tables("InventarioFisico").Rows(0)("Cantidad_Contada")
-
-            Fecha = Format(CDate(DataSet.Tables("InventarioFisico").Rows(0)("Fecha_Conteo")), "yyyy-MM-dd")
-
-            '//////////////////////////////////BUSCO EL TOTAL DE LAS COMPRAS////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT SUM(Detalle_Compras.Cantidad) AS Cantidad FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  " &
-                          "WHERE (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Cod_Bodega = '" & CodigoBodega & "')  GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Mercancia Recibida') "
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "Compras")
-            If DataSet.Tables("Compras").Rows.Count <> 0 Then
-                UnidadComprada = DataSet.Tables("Compras").Rows(0)("Cantidad")
+            ' Ejecutar y obtener el resultado
+            Dim result = cmd.ExecuteScalar()
+            If result IsNot Nothing AndAlso IsNumeric(result) Then
+                Existencia = Convert.ToDouble(result)
             End If
 
-            '//////////////////////////////////BUSCO EL TOTAL DE LAS DEVOLUCION DE COMPRAS////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT  SUM(Detalle_Compras.Cantidad) AS Cantidad FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra " &
-                          "WHERE (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Cod_Bodega = '" & CodigoBodega & "') GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Devolucion de Compra')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "DevolucionCompras")
-            If DataSet.Tables("DevolucionCompras").Rows.Count <> 0 Then
-                DevolucionCompra = DataSet.Tables("DevolucionCompras").Rows(0)("Cantidad")
-            End If
+        End Using
 
-            '////////////////////////////////////BUSCO EL TOTAL DE LAS FACTURAS//////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
-                          "WHERE (Detalle_Facturas.Tipo_Factura = 'Factura') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Cod_Bodega =  '" & CodigoBodega & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "Facturas")
-            If DataSet.Tables("Facturas").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("Facturas").Rows(0)("Cantidad")) Then
-                    UnidadFacturada = DataSet.Tables("Facturas").Rows(0)("Cantidad")
-                    ImporteVenta = DataSet.Tables("Facturas").Rows(0)("Cantidad") * CostoVenta
-                Else
-                    UnidadFacturada = 0
-                    ImporteVenta = 0
-                End If
-            End If
 
-            '////////////////////////////////////BUSCO EL TOTAL DE LA SALIDA DE BODEGA//////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
-                          "WHERE (Detalle_Facturas.Tipo_Factura = 'Salida Bodega') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Cod_Bodega =  '" & CodigoBodega & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "SalidaBodega")
-            If DataSet.Tables("SalidaBodega").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("SalidaBodega").Rows(0)("Cantidad")) Then
-                    SalidaBodega = DataSet.Tables("SalidaBodega").Rows(0)("Cantidad")
-                    ImporteSalida = DataSet.Tables("SalidaBodega").Rows(0)("Cantidad") * CostoVenta
-                Else
-                    SalidaBodega = 0
-                    ImporteSalida = 0
-                End If
-            End If
+        MiConexion.Close()
 
-            DataSet.Reset()
-            '////////////////////////////////////BUSCO EL TOTAL DE LA DEVOLUCION DE LAS  FACTURAS//////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT     SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " &
-                          "WHERE  (Detalle_Facturas.Tipo_Factura = 'Devolucion de Venta') AND (Detalle_Facturas.Cod_Producto =  '" & CodigoProducto & "') AND (Facturas.Cod_Bodega = '" & CodigoBodega & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "DevolucionFacturas")
-            If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")) Then
-                    DevolucionFactura = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")
 
-                End If
-            End If
+        '********** CODIGO RETIRADO 12/10/2025 *****************
 
-            DataSet.Reset()
-            '////////////////////////////////////BUSCO EL TOTAL DE TRANSFERENCIAS ENVIADAS  //////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
-                          "WHERE (Detalle_Facturas.Tipo_Factura = 'Transferencia Enviada') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Su_Referencia = '" & CodigoBodega & "') AND (Facturas.TransferenciaProcesada = 1) "
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "DevolucionFacturas")
-            If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")) Then
-                    TransferenciaEnviada = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")
-                End If
-            End If
+        ''///////////////////////////FORMULA DE COMPRA PROMEDIO////////////////////////////////////////////////////////////////
+        '' CostoPromedio= ((Existencia*Costo)+(PrecioCompra*CantidadCompra))/(Existencia+CantidadComprada)
+        ''//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            DataSet.Reset()
-            '////////////////////////////////////BUSCO EL TOTAL DE TRANSFERENCIAS RECIBIDAS  //////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT     SUM(Detalle_Compras.Cantidad) AS Cantidad FROM Compras INNER JOIN Detalle_Compras ON Compras.Numero_Compra = Detalle_Compras.Numero_Compra AND Compras.Fecha_Compra = Detalle_Compras.Fecha_Compra AND Compras.Tipo_Compra = Detalle_Compras.Tipo_Compra " &
-                          "WHERE (Compras.TransferenciaProcesada = 1) AND (Compras.Cod_Bodega = '" & CodigoBodega & "') AND (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Tipo_Compra = 'Transferencia Recibida')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "TransferenciasRecibidas")
-            If DataSet.Tables("TransferenciasRecibidas").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")) Then
-                    TransferenciaRecibida = DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")
-                End If
-            End If
+        ''///////////////////////////BUSCO LA EXISTENCIA SEGUN EL ULTIMO INVENTARIO FISICO////////////////////////////////////////
 
-            'SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " & _
-            '              "WHERE (Detalle_Facturas.Tipo_Factura = 'Transferencia Enviada') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Nuestra_Referencia =  '" & CodigoBodega & "') AND (Facturas.TransferenciaProcesada = 1)"
-            'DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            'DataAdapter.Fill(DataSet, "TransferenciasRecibidas")
-            'If DataSet.Tables("TransferenciasRecibidas").Rows.Count <> 0 Then
-            '    If Not IsDBNull(DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")) Then
-            '        TransferenciaRecibida = DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")
-            '    End If
-            'End If
-        Else
-            '//////////////////////////////////BUSCO EL TOTAL DE LAS COMPRAS////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT SUM(Detalle_Compras.Cantidad) AS Cantidad, SUM(Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto) AS Importe  FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  " &
-                          "WHERE (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Cod_Bodega = '" & CodigoBodega & "')  GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Mercancia Recibida') "
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "Compras")
-            If DataSet.Tables("Compras").Rows.Count <> 0 Then
-                UnidadComprada = DataSet.Tables("Compras").Rows(0)("Cantidad")
-                ImporteCompra = DataSet.Tables("Compras").Rows(0)("Importe")
-            End If
+        ''CostoVenta = CostoPromedio(CodigoProducto)
 
-            '//////////////////////////////////BUSCO EL TOTAL DE LAS DEVOLUCION DE COMPRAS////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT  SUM(Detalle_Compras.Cantidad) AS Cantidad,SUM(Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto) AS Importe FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra " &
-                          "WHERE (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Cod_Bodega = '" & CodigoBodega & "') GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Devolucion de Compra')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "DevolucionCompras")
-            If DataSet.Tables("DevolucionCompras").Rows.Count <> 0 Then
-                DevolucionCompra = DataSet.Tables("DevolucionCompras").Rows(0)("Cantidad")
-                ImporteDevCompra = DataSet.Tables("DevolucionCompras").Rows(0)("Importe")
-            End If
+        'TasaCambio = 0
+        'SQlInventarioFisico = "SELECT * FROM InventarioFisico WHERE (Cod_Producto = '" & CodigoProducto & "') AND (Activo = 0) AND (CodBodega = '" & CodigoBodega & "') ORDER BY Fecha_Conteo DESC"
+        'DataAdapter = New SqlClient.SqlDataAdapter(SQlInventarioFisico, MiConexion)
+        'DataAdapter.Fill(DataSet, "InventarioFisico")
+        'If DataSet.Tables("InventarioFisico").Rows.Count <> 0 Then
+        '    Existencia = 0
+        '    'Existencia = DataSet.Tables("InventarioFisico").Rows(0)("Cantidad_Contada")
 
-            '////////////////////////////////////BUSCO EL TOTAL DE LAS FACTURAS//////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
-                          "WHERE (Detalle_Facturas.Tipo_Factura = 'Factura') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Cod_Bodega =  '" & CodigoBodega & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "Facturas")
-            If DataSet.Tables("Facturas").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("Facturas").Rows(0)("Cantidad")) Then
-                    UnidadFacturada = DataSet.Tables("Facturas").Rows(0)("Cantidad")
-                    ImporteVenta = DataSet.Tables("Facturas").Rows(0)("Cantidad") * CostoVenta
-                Else
-                    UnidadFacturada = 0
-                    ImporteVenta = 0
-                End If
-            End If
+        '    Fecha = Format(CDate(DataSet.Tables("InventarioFisico").Rows(0)("Fecha_Conteo")), "yyyy-MM-dd")
 
-            '////////////////////////////////////BUSCO EL TOTAL DE LA SALIDA DE BODEGA//////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
-                          "WHERE (Detalle_Facturas.Tipo_Factura = 'Salida Bodega') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Cod_Bodega =  '" & CodigoBodega & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "SalidaBodega")
-            If DataSet.Tables("SalidaBodega").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("SalidaBodega").Rows(0)("Cantidad")) Then
-                    SalidaBodega = DataSet.Tables("SalidaBodega").Rows(0)("Cantidad")
-                Else
-                    SalidaBodega = 0
-                End If
-            End If
+        '    '//////////////////////////////////BUSCO EL TOTAL DE LAS COMPRAS////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT SUM(Detalle_Compras.Cantidad) AS Cantidad FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  " &
+        '                  "WHERE (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Cod_Bodega = '" & CodigoBodega & "')  GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Mercancia Recibida') "
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "Compras")
+        '    If DataSet.Tables("Compras").Rows.Count <> 0 Then
+        '        UnidadComprada = DataSet.Tables("Compras").Rows(0)("Cantidad")
+        '    End If
 
-            DataSet.Reset()
-            '////////////////////////////////////BUSCO EL TOTAL DE LA DEVOLUCION DE LAS  FACTURAS//////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT     SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " &
-                          "WHERE  (Detalle_Facturas.Tipo_Factura = 'Devolucion de Venta') AND (Detalle_Facturas.Cod_Producto =  '" & CodigoProducto & "') AND (Facturas.Cod_Bodega = '" & CodigoBodega & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "DevolucionFacturas")
-            If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")) Then
-                    DevolucionFactura = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")
-                    ImporteDevFactura = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad") * CostoVenta
-                End If
-            End If
+        '    '//////////////////////////////////BUSCO EL TOTAL DE LAS DEVOLUCION DE COMPRAS////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT  SUM(Detalle_Compras.Cantidad) AS Cantidad FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra " &
+        '                  "WHERE (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Cod_Bodega = '" & CodigoBodega & "') GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Devolucion de Compra')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "DevolucionCompras")
+        '    If DataSet.Tables("DevolucionCompras").Rows.Count <> 0 Then
+        '        DevolucionCompra = DataSet.Tables("DevolucionCompras").Rows(0)("Cantidad")
+        '    End If
 
-            DataSet.Reset()
-            '////////////////////////////////////BUSCO EL TOTAL DE TRANSFERENCIAS ENVIADAS  //////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
-                          "WHERE (Detalle_Facturas.Tipo_Factura = 'Transferencia Enviada') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Su_Referencia = '" & CodigoBodega & "') AND (Facturas.TransferenciaProcesada = 1) "
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "DevolucionFacturas")
-            If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")) Then
-                    TransferenciaEnviada = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")
-                End If
-            End If
+        '    '////////////////////////////////////BUSCO EL TOTAL DE LAS FACTURAS//////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
+        '                  "WHERE (Detalle_Facturas.Tipo_Factura = 'Factura') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Cod_Bodega =  '" & CodigoBodega & "')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "Facturas")
+        '    If DataSet.Tables("Facturas").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("Facturas").Rows(0)("Cantidad")) Then
+        '            UnidadFacturada = DataSet.Tables("Facturas").Rows(0)("Cantidad")
+        '            ImporteVenta = DataSet.Tables("Facturas").Rows(0)("Cantidad") * CostoVenta
+        '        Else
+        '            UnidadFacturada = 0
+        '            ImporteVenta = 0
+        '        End If
+        '    End If
 
-            DataSet.Reset()
-            '////////////////////////////////////BUSCO EL TOTAL DE TRANSFERENCIAS RECIBIDAS  //////////////////////////////////////////////////////////////////////
-            SqlConsulta = "SELECT     SUM(Detalle_Compras.Cantidad) AS Cantidad FROM Compras INNER JOIN Detalle_Compras ON Compras.Numero_Compra = Detalle_Compras.Numero_Compra AND Compras.Fecha_Compra = Detalle_Compras.Fecha_Compra AND Compras.Tipo_Compra = Detalle_Compras.Tipo_Compra " &
-                          "WHERE (Compras.TransferenciaProcesada = 1) AND (Compras.Cod_Bodega = '" & CodigoBodega & "') AND (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Tipo_Compra = 'Transferencia Recibida')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            DataAdapter.Fill(DataSet, "TransferenciasRecibidas")
-            If DataSet.Tables("TransferenciasRecibidas").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")) Then
-                    TransferenciaRecibida = DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")
-                End If
-            End If
+        '    '////////////////////////////////////BUSCO EL TOTAL DE LA SALIDA DE BODEGA//////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
+        '                  "WHERE (Detalle_Facturas.Tipo_Factura = 'Salida Bodega') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Cod_Bodega =  '" & CodigoBodega & "')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "SalidaBodega")
+        '    If DataSet.Tables("SalidaBodega").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("SalidaBodega").Rows(0)("Cantidad")) Then
+        '            SalidaBodega = DataSet.Tables("SalidaBodega").Rows(0)("Cantidad")
+        '            ImporteSalida = DataSet.Tables("SalidaBodega").Rows(0)("Cantidad") * CostoVenta
+        '        Else
+        '            SalidaBodega = 0
+        '            ImporteSalida = 0
+        '        End If
+        '    End If
 
-            'SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " & _
-            '              "WHERE (Detalle_Facturas.Tipo_Factura = 'Transferencia Enviada') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Nuestra_Referencia =  '" & CodigoBodega & "') AND (Facturas.TransferenciaProcesada = 1)"
-            'DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-            'DataAdapter.Fill(DataSet, "TransferenciasRecibidas")
-            'If DataSet.Tables("TransferenciasRecibidas").Rows.Count <> 0 Then
-            '    If Not IsDBNull(DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")) Then
-            '        TransferenciaRecibida = DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")
-            '    End If
-            'End If
-        End If
+        '    DataSet.Reset()
+        '    '////////////////////////////////////BUSCO EL TOTAL DE LA DEVOLUCION DE LAS  FACTURAS//////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT     SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " &
+        '                  "WHERE  (Detalle_Facturas.Tipo_Factura = 'Devolucion de Venta') AND (Detalle_Facturas.Cod_Producto =  '" & CodigoProducto & "') AND (Facturas.Cod_Bodega = '" & CodigoBodega & "')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "DevolucionFacturas")
+        '    If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")) Then
+        '            DevolucionFactura = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")
 
-        Existencia = Existencia + UnidadComprada - DevolucionCompra - UnidadFacturada - SalidaBodega + DevolucionFactura - TransferenciaEnviada + TransferenciaRecibida
-        BuscaExistenciaBodega = Format(Existencia, "####0.0000")
+        '        End If
+        '    End If
+
+        '    DataSet.Reset()
+        '    '////////////////////////////////////BUSCO EL TOTAL DE TRANSFERENCIAS ENVIADAS  //////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
+        '                  "WHERE (Detalle_Facturas.Tipo_Factura = 'Transferencia Enviada') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Su_Referencia = '" & CodigoBodega & "') AND (Facturas.TransferenciaProcesada = 1) "
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "DevolucionFacturas")
+        '    If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")) Then
+        '            TransferenciaEnviada = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")
+        '        End If
+        '    End If
+
+        '    DataSet.Reset()
+        '    '////////////////////////////////////BUSCO EL TOTAL DE TRANSFERENCIAS RECIBIDAS  //////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT     SUM(Detalle_Compras.Cantidad) AS Cantidad FROM Compras INNER JOIN Detalle_Compras ON Compras.Numero_Compra = Detalle_Compras.Numero_Compra AND Compras.Fecha_Compra = Detalle_Compras.Fecha_Compra AND Compras.Tipo_Compra = Detalle_Compras.Tipo_Compra " &
+        '                  "WHERE (Compras.TransferenciaProcesada = 1) AND (Compras.Cod_Bodega = '" & CodigoBodega & "') AND (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Tipo_Compra = 'Transferencia Recibida')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "TransferenciasRecibidas")
+        '    If DataSet.Tables("TransferenciasRecibidas").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")) Then
+        '            TransferenciaRecibida = DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")
+        '        End If
+        '    End If
+
+        '    'SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " & _
+        '    '              "WHERE (Detalle_Facturas.Tipo_Factura = 'Transferencia Enviada') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Nuestra_Referencia =  '" & CodigoBodega & "') AND (Facturas.TransferenciaProcesada = 1)"
+        '    'DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    'DataAdapter.Fill(DataSet, "TransferenciasRecibidas")
+        '    'If DataSet.Tables("TransferenciasRecibidas").Rows.Count <> 0 Then
+        '    '    If Not IsDBNull(DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")) Then
+        '    '        TransferenciaRecibida = DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")
+        '    '    End If
+        '    'End If
+        'Else
+        '    '//////////////////////////////////BUSCO EL TOTAL DE LAS COMPRAS////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT SUM(Detalle_Compras.Cantidad) AS Cantidad, SUM(Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto) AS Importe  FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  " &
+        '                  "WHERE (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Cod_Bodega = '" & CodigoBodega & "')  GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Mercancia Recibida') "
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "Compras")
+        '    If DataSet.Tables("Compras").Rows.Count <> 0 Then
+        '        UnidadComprada = DataSet.Tables("Compras").Rows(0)("Cantidad")
+        '        ImporteCompra = DataSet.Tables("Compras").Rows(0)("Importe")
+        '    End If
+
+        '    '//////////////////////////////////BUSCO EL TOTAL DE LAS DEVOLUCION DE COMPRAS////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT  SUM(Detalle_Compras.Cantidad) AS Cantidad,SUM(Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto) AS Importe FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra " &
+        '                  "WHERE (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Cod_Bodega = '" & CodigoBodega & "') GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Devolucion de Compra')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "DevolucionCompras")
+        '    If DataSet.Tables("DevolucionCompras").Rows.Count <> 0 Then
+        '        DevolucionCompra = DataSet.Tables("DevolucionCompras").Rows(0)("Cantidad")
+        '        ImporteDevCompra = DataSet.Tables("DevolucionCompras").Rows(0)("Importe")
+        '    End If
+
+        '    '////////////////////////////////////BUSCO EL TOTAL DE LAS FACTURAS//////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
+        '                  "WHERE (Detalle_Facturas.Tipo_Factura = 'Factura') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Cod_Bodega =  '" & CodigoBodega & "')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "Facturas")
+        '    If DataSet.Tables("Facturas").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("Facturas").Rows(0)("Cantidad")) Then
+        '            UnidadFacturada = DataSet.Tables("Facturas").Rows(0)("Cantidad")
+        '            ImporteVenta = DataSet.Tables("Facturas").Rows(0)("Cantidad") * CostoVenta
+        '        Else
+        '            UnidadFacturada = 0
+        '            ImporteVenta = 0
+        '        End If
+        '    End If
+
+        '    '////////////////////////////////////BUSCO EL TOTAL DE LA SALIDA DE BODEGA//////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
+        '                  "WHERE (Detalle_Facturas.Tipo_Factura = 'Salida Bodega') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Cod_Bodega =  '" & CodigoBodega & "')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "SalidaBodega")
+        '    If DataSet.Tables("SalidaBodega").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("SalidaBodega").Rows(0)("Cantidad")) Then
+        '            SalidaBodega = DataSet.Tables("SalidaBodega").Rows(0)("Cantidad")
+        '        Else
+        '            SalidaBodega = 0
+        '        End If
+        '    End If
+
+        '    DataSet.Reset()
+        '    '////////////////////////////////////BUSCO EL TOTAL DE LA DEVOLUCION DE LAS  FACTURAS//////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT     SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura  " &
+        '                  "WHERE  (Detalle_Facturas.Tipo_Factura = 'Devolucion de Venta') AND (Detalle_Facturas.Cod_Producto =  '" & CodigoProducto & "') AND (Facturas.Cod_Bodega = '" & CodigoBodega & "')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "DevolucionFacturas")
+        '    If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")) Then
+        '            DevolucionFactura = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")
+        '            ImporteDevFactura = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad") * CostoVenta
+        '        End If
+        '    End If
+
+        '    DataSet.Reset()
+        '    '////////////////////////////////////BUSCO EL TOTAL DE TRANSFERENCIAS ENVIADAS  //////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT SUM(Detalle_Facturas.Cantidad) AS Cantidad FROM Detalle_Facturas INNER JOIN Facturas ON Detalle_Facturas.Numero_Factura = Facturas.Numero_Factura AND Detalle_Facturas.Fecha_Factura = Facturas.Fecha_Factura AND Detalle_Facturas.Tipo_Factura = Facturas.Tipo_Factura " &
+        '                  "WHERE (Detalle_Facturas.Tipo_Factura = 'Transferencia Enviada') AND (Detalle_Facturas.Cod_Producto = '" & CodigoProducto & "') AND (Facturas.Su_Referencia = '" & CodigoBodega & "') AND (Facturas.TransferenciaProcesada = 1) "
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "DevolucionFacturas")
+        '    If DataSet.Tables("DevolucionFacturas").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")) Then
+        '            TransferenciaEnviada = DataSet.Tables("DevolucionFacturas").Rows(0)("Cantidad")
+        '        End If
+        '    End If
+
+        '    DataSet.Reset()
+        '    '////////////////////////////////////BUSCO EL TOTAL DE TRANSFERENCIAS RECIBIDAS  //////////////////////////////////////////////////////////////////////
+        '    SqlConsulta = "SELECT     SUM(Detalle_Compras.Cantidad) AS Cantidad FROM Compras INNER JOIN Detalle_Compras ON Compras.Numero_Compra = Detalle_Compras.Numero_Compra AND Compras.Fecha_Compra = Detalle_Compras.Fecha_Compra AND Compras.Tipo_Compra = Detalle_Compras.Tipo_Compra " &
+        '                  "WHERE (Compras.TransferenciaProcesada = 1) AND (Compras.Cod_Bodega = '" & CodigoBodega & "') AND (Detalle_Compras.Cod_Producto = '" & CodigoProducto & "') AND (Compras.Tipo_Compra = 'Transferencia Recibida')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+        '    DataAdapter.Fill(DataSet, "TransferenciasRecibidas")
+        '    If DataSet.Tables("TransferenciasRecibidas").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")) Then
+        '            TransferenciaRecibida = DataSet.Tables("TransferenciasRecibidas").Rows(0)("Cantidad")
+        '        End If
+        '    End If
+
+        'End If
+
+        'Existencia = Existencia + UnidadComprada - DevolucionCompra - UnidadFacturada - SalidaBodega + DevolucionFactura - TransferenciaEnviada + TransferenciaRecibida
+        'BuscaExistenciaBodega = Format(Existencia, "####0.0000")
     End Function
     Public Function BuscaExistenciaBodegaLote(Args As ReporteExistenciaLote) As ReporteExistenciaLote
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -13845,16 +14054,30 @@ errSub:
 
         TasaCambio = 0
         Existencia = 0
-        SqlConsulta = "SELECT Cod_Producto, Numero_Lote, Cod_Bodega, SUM(Cantidad * TipoMovimiento) AS Existencia_Lote FROM  (SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE (dc.Tipo_Compra = 'Mercancia Recibida') UNION ALL SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, - 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE (dc.Tipo_Compra = 'Devolucion de Compra') UNION ALL SELECT df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, - 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE  (df.Tipo_Factura = 'Factura') UNION ALL SELECT df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE (df.Tipo_Factura = 'Devolucion de Ventas') UNION ALL SELECT df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, - 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE (df.Tipo_Factura = 'Transferencias Enviadas') UNION ALL SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE (dc.Tipo_Compra = 'Transferencias Recibidas')) AS Movimientos  " &
-                      "WHERE (Cod_Producto = '" & Args.Codigo_Producto & "') AND (Numero_Lote = '" & Args.Numero_Lote & "') AND (Cod_Bodega = '" & Args.Codigo_Bodega & "') AND (Numero_Lote <> 'SIN LOTE') AND (Numero_Lote <> 'SINLOTE') AND (Numero_Lote <> '') GROUP BY Cod_Producto, Numero_Lote, Cod_Bodega ORDER BY Cod_Producto, Numero_Lote, Cod_Bodega"
+        'SqlConsulta = "SELECT Cod_Producto, Numero_Lote, Cod_Bodega, SUM(Cantidad * TipoMovimiento) AS Existencia_Lote FROM  (SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE (dc.Tipo_Compra = 'Mercancia Recibida') UNION ALL SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, - 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE (dc.Tipo_Compra = 'Devolucion de Compra') UNION ALL SELECT df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, - 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE  (df.Tipo_Factura = 'Factura') UNION ALL SELECT df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE (df.Tipo_Factura = 'Devolucion de Ventas') UNION ALL SELECT df.Cod_Producto, df.Numero_Lote, f.Cod_Bodega, df.Cantidad, - 1 AS TipoMovimiento, df.Fecha_Factura AS FechaMovimiento FROM Detalle_Facturas AS df INNER JOIN Facturas AS f ON df.Numero_Factura = f.Numero_Factura AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura WHERE (df.Tipo_Factura = 'Transferencias Enviadas') UNION ALL SELECT dc.Cod_Producto, dc.Numero_Lote, c.Cod_Bodega, dc.Cantidad, 1 AS TipoMovimiento, dc.Fecha_Compra AS FechaMovimiento FROM Detalle_Compras AS dc INNER JOIN Compras AS c ON dc.Numero_Compra = c.Numero_Compra AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra WHERE (dc.Tipo_Compra = 'Transferencias Recibidas')) AS Movimientos  " &
+        '              "WHERE (Cod_Producto = '" & Args.Codigo_Producto & "') AND (Numero_Lote = '" & Args.Numero_Lote & "') AND (Cod_Bodega = '" & Args.Codigo_Bodega & "') AND (Numero_Lote <> 'SIN LOTE') AND (Numero_Lote <> 'SINLOTE') AND (Numero_Lote <> '') GROUP BY Cod_Producto, Numero_Lote, Cod_Bodega ORDER BY Cod_Producto, Numero_Lote, Cod_Bodega"
+        SqlConsulta = "WITH Movimientos AS (SELECT Cod_Producto, ISNULL(Numero_Lote,'SINLOTE') AS Lote FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE DC.Fecha_Compra<=@FechaCorte AND DC.Cod_Producto=@CodProducto AND C.Cod_Bodega=@CodBodega AND ISNULL(DC.Numero_Lote,'SINLOTE')=@NumeroLote UNION SELECT Cod_Producto, ISNULL(CodTarea,'SINLOTE') AS Lote FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE DF.Fecha_Factura<=@FechaCorte AND DF.Cod_Producto=@CodProducto AND F.Cod_Bodega=@CodBodega AND ISNULL(DF.CodTarea,'SINLOTE')=@NumeroLote) SELECT L.Cod_Producto, Prod.Descripcion_Producto AS Producto, @CodBodega AS Cod_Bodega, L.Lote, ISNULL(MR.Cantidad,0) AS Mercancia_Recibida, ISNULL(TR.Cantidad,0) AS Transferencia_Recibida, ISNULL(DV.Cantidad,0) AS Devolucion_Venta, ISNULL(Fact.Cantidad,0) AS Factura, ISNULL(SB.Cantidad,0) AS Salidas_Bodegas, ISNULL(TE.Cantidad,0) AS Transferencia_Enviada, ISNULL(DC.Cantidad,0) AS Devolucion_Compra, ISNULL(MR.Cantidad,0)+ISNULL(TR.Cantidad,0)+ISNULL(DV.Cantidad,0)-(ISNULL(Fact.Cantidad,0)+ISNULL(SB.Cantidad,0)+ISNULL(TE.Cantidad,0)+ISNULL(DC.Cantidad,0)) AS Existencia FROM Movimientos L INNER JOIN Productos Prod ON L.Cod_Producto=Prod.Cod_Productos LEFT JOIN (SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'SINLOTE') AS Lote, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE C.Fecha_Compra<=@FechaCorte AND C.Tipo_Compra='Mercancia Recibida' AND DC.Cod_Producto=@CodProducto AND C.Cod_Bodega=@CodBodega AND ISNULL(DC.Numero_Lote,'SINLOTE')=@NumeroLote GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,'SINLOTE')) MR ON L.Cod_Producto=MR.Cod_Producto AND L.Lote=MR.Lote LEFT JOIN (SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'SINLOTE') AS Lote, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE C.Fecha_Compra<=@FechaCorte AND C.Tipo_Compra='Transferencia Recibida' AND DC.Cod_Producto=@CodProducto AND C.Cod_Bodega=@CodBodega AND ISNULL(DC.Numero_Lote,'SINLOTE')=@NumeroLote GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,'SINLOTE')) TR ON L.Cod_Producto=TR.Cod_Producto AND L.Lote=TR.Lote LEFT JOIN (SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'SINLOTE') AS Lote, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura='Devolucion de Venta' AND DF.Cod_Producto=@CodProducto AND F.Cod_Bodega=@CodBodega AND ISNULL(DF.CodTarea,'SINLOTE')=@NumeroLote GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,'SINLOTE')) DV ON L.Cod_Producto=DV.Cod_Producto AND L.Lote=DV.Lote LEFT JOIN (SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'SINLOTE') AS Lote, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura='Factura' AND DF.Cod_Producto=@CodProducto AND F.Cod_Bodega=@CodBodega AND ISNULL(DF.CodTarea,'SINLOTE')=@NumeroLote GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,'SINLOTE')) Fact ON L.Cod_Producto=Fact.Cod_Producto AND L.Lote=Fact.Lote LEFT JOIN (SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'SINLOTE') AS Lote, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura='Salida Bodega' AND DF.Cod_Producto=@CodProducto AND F.Cod_Bodega=@CodBodega AND ISNULL(DF.CodTarea,'SINLOTE')=@NumeroLote GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,'SINLOTE')) SB ON L.Cod_Producto=SB.Cod_Producto AND L.Lote=SB.Lote LEFT JOIN (SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'SINLOTE') AS Lote, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura='Transferencia Enviada' AND DF.Cod_Producto=@CodProducto AND F.Cod_Bodega=@CodBodega AND ISNULL(DF.CodTarea,'SINLOTE')=@NumeroLote GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,'SINLOTE')) TE ON L.Cod_Producto=TE.Cod_Producto AND L.Lote=TE.Lote LEFT JOIN (SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'SINLOTE') AS Lote, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra='Devolucion de Compra' AND DC.Cod_Producto=@CodProducto AND C.Cod_Bodega=@CodBodega AND ISNULL(DC.Numero_Lote,'SINLOTE')=@NumeroLote GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,'SINLOTE')) DC ON L.Cod_Producto=DC.Cod_Producto AND L.Lote=DC.Lote ORDER BY L.Cod_Producto, L.Lote;"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
+
+        ' Parámetros obligatorios
+        DataAdapter.SelectCommand.Parameters.AddWithValue("@FechaCorte", Format(Args.Fecha_Reporte, "dd/MM/yyyy"))
+
+
+        ' Parámetros opcionales (solo si no están vacíos)
+        DataAdapter.SelectCommand.Parameters.AddWithValue("@CodBodega", Args.Codigo_Bodega)
+        DataAdapter.SelectCommand.Parameters.AddWithValue("@CodProducto", Args.Codigo_Producto)
+        DataAdapter.SelectCommand.Parameters.AddWithValue("@NumeroLote", Args.Numero_Lote)
+
+
         DataAdapter.Fill(DataSet, "Existencia")
         If DataSet.Tables("Existencia").Rows.Count <> 0 Then
-            Existencia = DataSet.Tables("Existencia").Rows(0)("Existencia_Lote")
+            Existencia = DataSet.Tables("Existencia").Rows(0)("Existencia")
         End If
 
 
-        'Comentario cambio de consulta 04-10-2025
+        '************* CODIGO RETIRADO 04/10/2025*****************
+
+
         ''//////////////////////////////////BUSCO EL TOTAL DE LAS COMPRAS////////////////////////////////////////////////////////////////////
         'SqlConsulta = "SELECT SUM(Detalle_Compras.Cantidad) AS Cantidad, SUM(Detalle_Compras.Cantidad * Detalle_Compras.Precio_Neto) AS Importe  FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  " &
         '              "WHERE (Detalle_Compras.Cod_Producto = '" & Args.Codigo_Producto & "') AND (Compras.Cod_Bodega = '" & Args.Codigo_Bodega & "') AND (Detalle_Compras.Numero_Lote = '" & Args.Numero_Lote & "')  GROUP BY Detalle_Compras.Tipo_Compra HAVING  (Detalle_Compras.Tipo_Compra = N'Mercancia Recibida') "
@@ -13953,6 +14176,7 @@ errSub:
         Result.Fecha_Vence = Args.Fecha_Vence
         Result.Tipo_Reporte = Args.Tipo_Reporte
         Result.Agrupado_Reporte = Args.Agrupado_Reporte
+        Result.Fecha_Reporte = Args.Fecha_Reporte
 
 
 

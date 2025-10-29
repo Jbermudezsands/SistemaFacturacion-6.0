@@ -32,8 +32,8 @@ Public Class FrmTransferenciaListado
     End Sub
 
     Private Sub FrmTransferenciaListado_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dim Sql As String = "SELECT Facturas.Numero_Factura, Facturas.Fecha_Factura, Bodegas.Nombre_Bodega AS BodegaOrigen, Bodegas_1.Nombre_Bodega AS BodegaDestino, Facturas.Su_Referencia, Facturas.Nuestra_Referencia,Facturas.TransferenciaProcesada,Facturas.Cancelado FROM Facturas INNER JOIN Bodegas ON Facturas.Su_Referencia = Bodegas.Cod_Bodega INNER JOIN Bodegas AS Bodegas_1 ON Facturas.Nuestra_Referencia = Bodegas_1.Cod_Bodega  " & _
-                            "WHERE (Facturas.Tipo_Factura = 'Transferencia Enviada') ORDER BY Facturas.Numero_Factura"
+        Dim Sql As String = "SELECT Facturas.Numero_Factura, Facturas.Fecha_Factura, Bodegas.Nombre_Bodega AS BodegaOrigen, Bodegas_1.Nombre_Bodega AS BodegaDestino, Facturas.Su_Referencia, Facturas.Nuestra_Referencia,Facturas.TransferenciaProcesada,Facturas.Cancelado FROM Facturas INNER JOIN Bodegas ON Facturas.Su_Referencia = Bodegas.Cod_Bodega INNER JOIN Bodegas AS Bodegas_1 ON Facturas.Nuestra_Referencia = Bodegas_1.Cod_Bodega  " &
+                            "WHERE (Facturas.Tipo_Factura = 'Transferencia Enviada') ORDER BY Facturas.Fecha_Factura DESC, Facturas.Numero_Factura"
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter(Sql, MiConexion)
         DataAdapter.Fill(DataSet, "Transferencias")
         Me.TrueDBGridConsultas.DataSource = DataSet.Tables("Transferencias")

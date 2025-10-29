@@ -1,5 +1,243 @@
 Public Class FrmFacturasHistoricos
     Public MiConexion As New SqlClient.SqlConnection(Conexion), CodigoIva As String, CantidadAnterior As Double, PrecioAnterior As Double
+
+    Public Sub ActualizaMETODOFactura()
+        Dim Metodo As String, iPosicion As Double, Registros As Double, Monto As Double
+        Dim Subtotal As Double, Iva As Double, Neto As Double, CodProducto As String, SQlString As String
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion), CodIva As String, Tasa As Double, SQlMetodo As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Moneda As String, TasaCambio As Double
+        Dim Fecha As String, SQlTasa As String, TipoMetodo As String, MonedaFactura As String, TasaIva As Double = 0
+        Dim Descuento As Double = 0, SqlUpdate As String, Retencion1Porciento As Double = 0, Retencion2Porciento As Double = 0
+        Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, CalcularPropina As Boolean = False, PorcentajePropina As Integer = 0
+        Dim MontoPropina As Double = 0
+
+        Registros = BindingMetodo.Count
+        iPosicion = 0
+
+        Fecha = Format(DTPFecha.Value, "yyyy-MM-dd")
+
+        Do While iPosicion < Registros
+
+            If Not IsDBNull(BindingMetodo.Item(iPosicion)("NombrePago")) Then
+                Metodo = BindingMetodo.Item(iPosicion)("NombrePago")
+                TasaCambio = 1
+                Fecha = Format(DTPFecha.Value, "yyyy-MM-dd")
+                '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                '//////////////////////////////BUSCO LA MONEDA DEL METODO DE PAGO///////////////////////////////////////////////////////
+                '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                MonedaFactura = TxtMonedaFactura.Text
+                Moneda = "Cordobas"
+                TipoMetodo = "Cambio"
+                SQlMetodo = "SELECT * FROM MetodoPago WHERE (NombrePago = '" & Metodo & "')"
+                DataAdapter = New SqlClient.SqlDataAdapter(SQlMetodo, MiConexion)
+                DataAdapter.Fill(DataSet, "Metodo")
+                If DataSet.Tables("Metodo").Rows.Count <> 0 Then
+                    Moneda = DataSet.Tables("Metodo").Rows(0)("Moneda")
+                    TipoMetodo = DataSet.Tables("Metodo").Rows(0)("TipoPago")
+                End If
+                DataSet.Tables("Metodo").Clear()
+
+
+                Select Case Moneda
+                    Case "Cordobas"
+                        If MonedaFactura = "Cordobas" Then
+                            TasaCambio = 1
+                        Else
+                            SQlTasa = "SELECT  * FROM TasaCambio WHERE (FechaTasa = CONVERT(DATETIME, '" & Fecha & "', 102))"
+                            DataAdapter = New SqlClient.SqlDataAdapter(SQlTasa, MiConexion)
+                            DataAdapter.Fill(DataSet, "TasaCambio")
+                            If DataSet.Tables("TasaCambio").Rows.Count <> 0 Then
+                                TasaCambio = (1 / DataSet.Tables("TasaCambio").Rows(0)("MontoTasa"))
+                            Else
+                                'TasaCambio = 0
+                                MsgBox("La Tasa de Cambio no Existe para esta Fecha", MsgBoxStyle.Critical, "Sistema Facturacion")
+                                BindingMetodo.Item(iPosicion)("Monto") = 0
+                            End If
+                            DataSet.Tables("TasaCambio").Clear()
+                        End If
+
+                    Case "Dolares"
+                        If MonedaFactura = "Cordobas" Then
+                            SQlTasa = "SELECT  * FROM TasaCambio WHERE (FechaTasa = CONVERT(DATETIME, '" & Fecha & "', 102))"
+                            DataAdapter = New SqlClient.SqlDataAdapter(SQlTasa, MiConexion)
+                            DataAdapter.Fill(DataSet, "TasaCambio")
+                            If DataSet.Tables("TasaCambio").Rows.Count <> 0 Then
+                                TasaCambio = DataSet.Tables("TasaCambio").Rows(0)("MontoTasa")
+                            Else
+                                'TasaCambio = 0
+                                MsgBox("La Tasa de Cambio no Existe para esta Fecha", MsgBoxStyle.Critical, "Sistema Facturacion")
+                                BindingMetodo.Item(iPosicion)("Monto") = 0
+                            End If
+                            DataSet.Tables("TasaCambio").Clear()
+                        Else
+                            TasaCambio = 1
+                        End If
+                End Select
+
+                If TipoMetodo = "Cambio" Then
+                    TasaCambio = TasaCambio * -1
+                End If
+
+
+
+                If Not IsDBNull(BindingMetodo.Item(iPosicion)("Monto")) Then
+                    Monto = (BindingMetodo.Item(iPosicion)("Monto") * TasaCambio) + Monto
+                Else
+                    Monto = 0
+                End If
+
+            End If
+            iPosicion = iPosicion + 1
+        Loop
+
+
+
+        '**********************************************************************************************************************************
+        '//////////////////////////////BUSCO EL SUB TOTAL Y EL IVA ////////////////////////////////////////////////////////////////////////
+        '************************************************************************************************************************************
+
+        Registros = BindingDetalle.Count
+        iPosicion = 0
+
+        Do While iPosicion < Registros
+            If Not IsDBNull(BindingDetalle.Item(iPosicion)("Importe")) Then
+                Subtotal = Format(CDbl(BindingDetalle.Item(iPosicion)("Importe")) + Subtotal, "####0.0000")
+                If Not IsDBNull(BindingDetalle.Item(iPosicion)("Cod_Producto")) Then
+                    CodProducto = BindingDetalle.Item(iPosicion)("Cod_Producto")
+                Else
+                    CodProducto = ""
+                End If
+                SQlString = "SELECT Productos.*  FROM Productos WHERE (Cod_Productos = '" & CodProducto & "') "
+                DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+                DataAdapter.Fill(DataSet, "Productos")
+                If Not DataSet.Tables("Productos").Rows.Count = 0 Then
+                    CodIva = DataSet.Tables("Productos").Rows(0)("Cod_Iva")
+                    SQlString = "SELECT *  FROM Impuestos WHERE  (Cod_Iva = '" & CodIva & "')"
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+                    DataAdapter.Fill(DataSet, "IVA")
+                    If Not DataSet.Tables("IVA").Rows.Count = 0 Then
+                        Tasa = DataSet.Tables("IVA").Rows(0)("Impuesto")
+                        TasaIva = DataSet.Tables("IVA").Rows(0)("Impuesto")
+                    End If
+                    Iva = Format(Iva + CDbl(BindingDetalle.Item(iPosicion)("Importe")) * Tasa, "####0.00000000")
+                    DataSet.Tables("IVA").Clear()
+                End If
+                DataSet.Tables("Productos").Clear()
+
+
+            End If
+            iPosicion = iPosicion + 1
+        Loop
+
+
+
+        If OptExsonerado.Checked = False Then
+            'Iva = Subtotal * Tasa
+        Else
+            Iva = 0
+        End If
+
+
+
+
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '///////////////////////////////BUSCO SI TIENE CONFIGURADO EFECTIVO DEFAUL/////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SQlString = "SELECT  * FROM DatosEmpresa "
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+        DataAdapter.Fill(DataSet, "DatosEmpresa")
+        If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
+
+            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("CalcularPropina")) Then
+                If DataSet.Tables("DatosEmpresa").Rows(0)("CalcularPropina") = True Then
+                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("PorcentajePropina")) Then
+                        PorcentajePropina = DataSet.Tables("DatosEmpresa").Rows(0)("PorcentajePropina")
+                    Else
+                        PorcentajePropina = 0
+                    End If
+
+
+                Else
+                    PorcentajePropina = 0
+                End If
+            End If
+
+
+            If DataSet.Tables("DatosEmpresa").Rows(0)("MetodoPagoDefecto") = "Efectivo" Then
+                '*************************************************************************************************************************
+                '//////////////////////////////////BUSCO LA FORMA DE PAGO PARA ESTA FACTURA /////////////////////////////////////////////
+                '**************************************************************************************************************************
+                SQlString = "SELECT  * FROM MetodoPago WHERE  (TipoPago = 'Efectivo') AND (Moneda = '" & TxtMonedaFactura.Text & "')"
+                DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+                DataAdapter.Fill(DataSet, "Metodo")
+                If DataSet.Tables("Metodo").Rows.Count <> 0 Then
+
+                    Metodo = DataSet.Tables("Metodo").Rows(0)("NombrePago")
+
+                    Registros = BindingMetodo.Count
+                    iPosicion = 0
+                    Fecha = Format(DTPFecha.Value, "yyyy-MM-dd")
+                    Do While iPosicion < Registros
+
+                        If Not IsDBNull(BindingMetodo.Item(iPosicion)("NombrePago")) Then
+                            If Metodo = BindingMetodo.Item(iPosicion)("NombrePago") Then
+                                BindingMetodo.Item(iPosicion)("Monto") = (Subtotal + Iva + MontoPropina - Retencion1Porciento - Retencion2Porciento)
+                                TrueDBGridMetodo.Columns(1).Text = (Subtotal + Iva + MontoPropina - Retencion1Porciento - Retencion2Porciento)
+                                Monto = (Subtotal + Iva + MontoPropina)
+                            End If
+                        End If
+
+                        iPosicion = iPosicion + 1
+                    Loop
+
+                End If
+            Else
+                If Monto = 0 Then
+                    Monto = Retencion1Porciento + Retencion2Porciento
+                Else
+                    Monto = Monto + Retencion1Porciento + Retencion2Porciento
+                End If
+            End If
+        End If
+
+
+
+        '**********************************************************************************************************************************
+        '/////////////////////////////SI ES CREDITO BORRO LOS METODOS DE PAGO ////////////////////////////////////////////////////////////////////////
+        '************************************************************************************************************************************
+        If RadioButton1.Checked = True Then
+            SqlUpdate = "DELETE FROM [Detalle_MetodoFacturas] WHERE (Numero_Factura = '" & TxtNumeroEnsamble.Text & "') AND (Tipo_Factura = '" & CboTipoProducto.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102))"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+            Monto = 0
+
+            If Retencion1Porciento <> 0 Then
+                Monto = Retencion1Porciento
+            End If
+
+            If Retencion2Porciento <> 0 Then
+                Monto = Monto + Retencion2Porciento
+            End If
+        End If
+
+
+
+        Descuento = CDbl(Val(TxtDescuento.Text))
+
+        Iva = Redondeo(Iva, 3)
+
+        Neto = CDbl((Format(Subtotal + Iva, "####0.00"))) - Monto - Descuento + MontoPropina
+        TxtSubTotal.Text = Format(Subtotal, "##,##0.000")
+        TxtIva.Text = Format(Iva, "##,##0.00")
+        TxtPagado.Text = Format(Monto, "##,##0.00")
+        TxtNetoPagar.Text = Format(Neto, "##,##0.00")
+        'TxtPropina.Text = Format(MontoPropina, "##,##0.00")
+    End Sub
+
+
+
     Private Sub CboTipoProducto_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboTipoProducto.SelectedIndexChanged
         If Me.CboTipoProducto.Text <> "" Then
             Me.TrueDBGridComponentes.Enabled = True

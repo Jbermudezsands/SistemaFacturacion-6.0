@@ -616,7 +616,7 @@ Partial Class FrmClientes
         Me.TabPage3.Controls.Add(Me.GroupBox1)
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
         Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Size = New System.Drawing.Size(467, 351)
+        Me.TabPage3.Size = New System.Drawing.Size(467, 315)
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Referencia Credito"
         Me.TabPage3.UseVisualStyleBackColor = True
