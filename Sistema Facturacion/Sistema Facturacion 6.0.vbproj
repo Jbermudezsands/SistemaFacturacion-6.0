@@ -105,6 +105,7 @@
       <DependentUpon>FrmAjustarTodos.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Clases\Consultas\ArgsTransferencias.vb" />
     <Compile Include="Clases\Consultas\CsContratos.vb" />
     <Compile Include="Clases\Consultas\ArgsReporteExistenciaLote.vb" />
     <Compile Include="Clases\Consultas\ReporteExistenciaLote.vb" />

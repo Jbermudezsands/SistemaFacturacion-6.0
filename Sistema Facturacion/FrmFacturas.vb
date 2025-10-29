@@ -1,4 +1,4 @@
-Imports System.Data.SqlClient
+﻿Imports System.Data.SqlClient
 Imports System.Threading
 Imports System.IO
 Imports System.Drawing.Printing
@@ -18,6 +18,117 @@ Public Class FrmFacturas
     Public Delegate Sub delegadoListbox()
     Public Delegate Sub delegadoGridRegistros(Factura As TablaFactura)
     Public TablaFacturaPublica As TablaFactura
+
+    Public Sub GrabarMetodosPagoFactura(ByVal NumeroFactura As String,
+                                    ByVal FechaFactura As Date,
+                                    ByVal TipoFactura As String,
+                                    ByVal BindingMetodo As BindingSource,
+                                    ByVal EsCredito As Boolean)
+
+        Try
+            '------------------------------------------------------------
+            ' Validaciones iniciales
+            '------------------------------------------------------------
+            If NumeroFactura = "" Or NumeroFactura = "-----0-----" Then Exit Sub
+            If BindingMetodo Is Nothing Then Exit Sub
+
+            Using cn As New SqlClient.SqlConnection(Conexion)
+                cn.Open()
+
+                '------------------------------------------------------------
+                ' 1️⃣ BORRAR LOS MÉTODOS EXISTENTES (solo si no es crédito)
+                '------------------------------------------------------------
+                If Not EsCredito Then
+                    Dim sqlDelete As String = "
+                    DELETE FROM Detalle_MetodoFacturas
+                    WHERE Numero_Factura = @NumFac
+                      AND Fecha_Factura = @Fecha
+                      AND Tipo_Factura = @Tipo"
+                    Using cmdDelete As New SqlClient.SqlCommand(sqlDelete, cn)
+                        cmdDelete.Parameters.AddWithValue("@NumFac", NumeroFactura)
+                        cmdDelete.Parameters.AddWithValue("@Fecha", FechaFactura)
+                        cmdDelete.Parameters.AddWithValue("@Tipo", TipoFactura)
+                        cmdDelete.ExecuteNonQuery()
+                    End Using
+                End If
+
+                '------------------------------------------------------------
+                ' 2️ RECORRER Y GRABAR NUEVOS MÉTODOS DE PAGO
+                '------------------------------------------------------------
+                If BindingMetodo.Count > 0 AndAlso Not EsCredito Then
+                    For Each fila As DataRowView In BindingMetodo
+                        If fila Is Nothing Then Continue For
+                        If Not fila.Row.Table.Columns.Contains("NombrePago") Then Continue For
+                        If IsDBNull(fila("NombrePago")) OrElse fila("NombrePago").ToString.Trim = "" Then Continue For
+
+                        '--------------------------------------------------------
+                        ' Variables locales por fila
+                        '--------------------------------------------------------
+                        Dim NombrePago As String = fila("NombrePago").ToString.Trim
+                        Dim Monto As Double = 0
+                        Dim NumeroTarjeta As String = ""
+                        Dim FechaVenceTarjeta As Date?
+                        Dim FechaVenceTexto As String = ""
+
+                        ' Monto
+                        If fila.Row.Table.Columns.Contains("Monto") AndAlso Not IsDBNull(fila("Monto")) Then
+                            Monto = CDbl(fila("Monto"))
+                        End If
+
+                        ' Tarjeta
+                        If fila.Row.Table.Columns.Contains("NumeroTarjeta") AndAlso Not IsDBNull(fila("NumeroTarjeta")) Then
+                            NumeroTarjeta = fila("NumeroTarjeta").ToString.Trim
+                        End If
+
+                        ' Fecha vencimiento
+                        If fila.Row.Table.Columns.Contains("FechaVence") Then
+                            If Not IsDBNull(fila("FechaVence")) AndAlso fila("FechaVence").ToString.Trim <> "" Then
+                                Try
+                                    FechaVenceTarjeta = CDate(fila("FechaVence"))
+                                Catch
+                                    FechaVenceTarjeta = Nothing
+                                End Try
+                            End If
+                        End If
+
+                        '--------------------------------------------------------
+                        ' INSERTAR REGISTRO
+                        '--------------------------------------------------------
+                        Dim sqlInsert As String = "
+                        INSERT INTO Detalle_MetodoFacturas
+                        (Numero_Factura, Fecha_Factura, Tipo_Factura, NombrePago, Monto, NumeroTarjeta, FechaVence)
+                        VALUES (@NumFac, @Fecha, @Tipo, @NombrePago, @Monto, @NumeroTarjeta, @FechaVence)"
+
+                        Using cmd As New SqlClient.SqlCommand(sqlInsert, cn)
+                            cmd.Parameters.AddWithValue("@NumFac", NumeroFactura)
+                            cmd.Parameters.AddWithValue("@Fecha", FechaFactura)
+                            cmd.Parameters.AddWithValue("@Tipo", TipoFactura)
+                            cmd.Parameters.AddWithValue("@NombrePago", NombrePago)
+                            cmd.Parameters.AddWithValue("@Monto", Monto)
+                            cmd.Parameters.AddWithValue("@NumeroTarjeta", NumeroTarjeta)
+                            If FechaVenceTarjeta.HasValue Then
+                                cmd.Parameters.AddWithValue("@FechaVence", FechaVenceTarjeta.Value)
+                            Else
+                                cmd.Parameters.AddWithValue("@FechaVence", DBNull.Value)
+                            End If
+                            cmd.ExecuteNonQuery()
+                        End Using
+                    Next
+                End If
+
+                '------------------------------------------------------------
+                ' 3️ CONFIRMACIÓN
+                '------------------------------------------------------------
+                'MsgBox("Métodos de pago guardados correctamente.", MsgBoxStyle.Information, "Sistema de Facturación")
+
+            End Using
+
+        Catch ex As Exception
+            MsgBox("Error al grabar métodos de pago: " & ex.Message, MsgBoxStyle.Critical, "Error")
+        End Try
+
+    End Sub
+
 
 
     Public Class ClaseLote
@@ -44,6 +155,471 @@ Public Class FrmFacturas
         End If
 
     End Function
+
+    Public Sub ActualizaMETODOFactura()
+
+        '------------------------------------------------------------
+        ' Declaración de variables
+        '------------------------------------------------------------
+        Dim Metodo As String = ""
+        Dim iPosicion As Integer = 0
+        Dim Registros As Integer = 0
+        Dim Monto As Double = 0
+        Dim Subtotal As Double = 0
+        Dim Iva As Double = 0
+        Dim Neto As Double = 0
+        Dim CodProducto As String = ""
+        Dim SqlString As String = ""
+        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+        Dim CodIva As String = ""
+        Dim Tasa As Double = 0
+        Dim SqlMetodo As String = ""
+        Dim DataSet As New DataSet
+        Dim DataAdapter As New SqlClient.SqlDataAdapter
+        Dim Moneda As String = ""
+        Dim TasaCambio As Double = 1
+        Dim Fecha As String = Format(DTPFecha.Value, "yyyy-MM-dd")
+        Dim SqlTasa As String = ""
+        Dim TipoMetodo As String = ""
+        Dim MonedaFactura As String = TxtMonedaFactura.Text
+        Dim TasaIva As Double = 0
+        Dim Descuento As Double = 0
+        Dim Retencion1Porciento As Double = 0
+        Dim Retencion2Porciento As Double = 0
+        Dim SqlUpdate As String = ""
+        Dim ComandoUpdate As New SqlClient.SqlCommand
+        Dim iResultado As Integer = 0
+        Dim PorcentajePropina As Integer = 0
+        Dim MontoPropina As Double = 0
+
+        '------------------------------------------------------------
+        ' PREVENCIÓN: Si no hay BindingDetalle, salgo
+        '------------------------------------------------------------
+        If BindingDetalle Is Nothing OrElse BindingDetalle.Count = 0 Then Exit Sub
+
+        '------------------------------------------------------------
+        ' 1️ CALCULAR MONTOS DE MÉTODOS DE PAGO
+        '------------------------------------------------------------
+        Monto = 0
+        If BindingMetodo IsNot Nothing AndAlso BindingMetodo.Count > 0 Then
+
+            Registros = BindingMetodo.Count
+            For iPosicion = 0 To Registros - 1
+
+                ' Saltar filas vacías o sin nombre de pago
+                If BindingMetodo.Item(iPosicion) Is Nothing Then Continue For
+                If Not BindingMetodo.Item(iPosicion).Row.Table.Columns.Contains("NombrePago") Then Continue For
+                If BindingMetodo.Item(iPosicion)("NombrePago") Is Nothing OrElse BindingMetodo.Item(iPosicion)("NombrePago").ToString.Trim = "" Then Continue For
+
+                Metodo = BindingMetodo.Item(iPosicion)("NombrePago").ToString
+                Moneda = "Cordobas"
+                TipoMetodo = "Normal"
+                TasaCambio = 1
+
+                ' Buscar configuración del método de pago
+                SqlMetodo = "SELECT Moneda, TipoPago FROM MetodoPago WHERE (NombrePago = @Metodo)"
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlMetodo, MiConexion)
+                DataAdapter.SelectCommand.Parameters.AddWithValue("@Metodo", Metodo)
+                DataAdapter.Fill(DataSet, "Metodo")
+
+                If DataSet.Tables("Metodo").Rows.Count > 0 Then
+                    Moneda = DataSet.Tables("Metodo").Rows(0)("Moneda").ToString
+                    TipoMetodo = DataSet.Tables("Metodo").Rows(0)("TipoPago").ToString
+                End If
+                DataSet.Tables("Metodo").Clear()
+
+                ' Calcular tasa según monedas
+                Select Case Moneda
+                    Case "Cordobas"
+                        If MonedaFactura = "Dolares" Then
+                            SqlTasa = "SELECT TOP 1 MontoTasa FROM TasaCambio WHERE FechaTasa = @Fecha"
+                            DataAdapter = New SqlClient.SqlDataAdapter(SqlTasa, MiConexion)
+                            DataAdapter.SelectCommand.Parameters.AddWithValue("@Fecha", Fecha)
+                            DataAdapter.Fill(DataSet, "Tasa")
+                            If DataSet.Tables("Tasa").Rows.Count > 0 Then
+                                TasaCambio = 1 / CDbl(DataSet.Tables("Tasa").Rows(0)("MontoTasa"))
+                            Else
+                                MsgBox("No existe tasa de cambio para la fecha seleccionada.", MsgBoxStyle.Critical)
+                                Continue For
+                            End If
+                            DataSet.Tables("Tasa").Clear()
+                        End If
+
+                    Case "Dolares"
+                        If MonedaFactura = "Cordobas" Then
+                            SqlTasa = "SELECT TOP 1 MontoTasa FROM TasaCambio WHERE FechaTasa = @Fecha"
+                            DataAdapter = New SqlClient.SqlDataAdapter(SqlTasa, MiConexion)
+                            DataAdapter.SelectCommand.Parameters.AddWithValue("@Fecha", Fecha)
+                            DataAdapter.Fill(DataSet, "Tasa")
+                            If DataSet.Tables("Tasa").Rows.Count > 0 Then
+                                TasaCambio = CDbl(DataSet.Tables("Tasa").Rows(0)("MontoTasa"))
+                            Else
+                                MsgBox("No existe tasa de cambio para la fecha seleccionada.", MsgBoxStyle.Critical)
+                                Continue For
+                            End If
+                            DataSet.Tables("Tasa").Clear()
+                        End If
+                End Select
+
+                ' Aplicar tipo de método si es "Cambio"
+                If TipoMetodo = "Cambio" Then TasaCambio *= -1
+
+                ' Sumar monto convertido
+                If Not IsDBNull(BindingMetodo.Item(iPosicion)("Monto")) Then
+                    Monto += CDbl(BindingMetodo.Item(iPosicion)("Monto")) * TasaCambio
+                End If
+
+            Next
+        End If
+
+        '------------------------------------------------------------
+        ' 2️ CALCULAR SUBTOTAL E IVA
+        '------------------------------------------------------------
+        Subtotal = 0
+        Iva = 0
+
+        For Each row As DataRowView In BindingDetalle
+            If IsDBNull(row("Importe")) Then Continue For
+            Subtotal += CDbl(row("Importe"))
+
+            ' Buscar IVA del producto
+            If Not IsDBNull(row("Cod_Producto")) Then
+                SqlString = "SELECT p.Cod_Iva, i.Impuesto FROM Productos p INNER JOIN Impuestos i ON p.Cod_Iva = i.Cod_Iva WHERE p.Cod_Productos = @Cod"
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                DataAdapter.SelectCommand.Parameters.AddWithValue("@Cod", row("Cod_Producto"))
+                DataAdapter.Fill(DataSet, "IVA")
+                If DataSet.Tables("IVA").Rows.Count > 0 Then
+                    Tasa = CDbl(DataSet.Tables("IVA").Rows(0)("Impuesto"))
+                    Iva += CDbl(row("Importe")) * Tasa
+                End If
+                DataSet.Tables("IVA").Clear()
+            End If
+        Next
+
+        '------------------------------------------------------------
+        ' 3️ RETENCIONES, PROPINAS Y DESCUENTOS
+        '------------------------------------------------------------
+        If OptRet1Porciento.Checked Then Retencion1Porciento = Subtotal * 0.01
+        If OptRet2Porciento.Checked Then Retencion2Porciento = Subtotal * 0.02
+
+        ' Propina
+        SqlString = "SELECT CalcularPropina, PorcentajePropina FROM DatosEmpresa"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "DatosEmpresa")
+
+        If DataSet.Tables("DatosEmpresa").Rows.Count > 0 Then
+            If CBool(DataSet.Tables("DatosEmpresa").Rows(0)("CalcularPropina")) AndAlso ChkPropina.Checked Then
+                PorcentajePropina = CInt(DataSet.Tables("DatosEmpresa").Rows(0)("PorcentajePropina"))
+                MontoPropina = Subtotal * (PorcentajePropina / 100)
+            End If
+        End If
+        DataSet.Tables("DatosEmpresa").Clear()
+
+        Descuento = CDbl(Val(TxtDescuento.Text))
+
+        '------------------------------------------------------------
+        ' 4️ SI ES CREDITO, PAGADO = 0
+        '------------------------------------------------------------
+        If RadioButton1.Checked Then
+            Monto = Retencion1Porciento + Retencion2Porciento
+        End If
+
+        '------------------------------------------------------------
+        ' 5️ ACTUALIZAR TEXTOS
+        '------------------------------------------------------------
+        Iva = Redondeo(Iva, 3)
+        Neto = (Subtotal + Iva + MontoPropina) - (Monto + Descuento)
+
+        TxtSubTotal.Text = Format(Subtotal, "##,##0.000")
+        TxtIva.Text = Format(Iva, "##,##0.00")
+        TxtPagado.Text = Format(Monto, "##,##0.00")
+        TxtNetoPagar.Text = Format(Neto, "##,##0.00")
+        TxtPropina.Text = Format(MontoPropina, "##,##0.00")
+
+    End Sub
+
+
+
+    '***********CODIGO RETIRADO 28/10/2025 **********************
+    'Public Sub ActualizaMETODOFactura()
+    '    Dim Metodo As String, iPosicion As Double, Registros As Double, Monto As Double
+    '    Dim Subtotal As Double, Iva As Double, Neto As Double, CodProducto As String, SQlString As String
+    '    Dim MiConexion As New SqlClient.SqlConnection(Conexion), CodIva As String, Tasa As Double, SQlMetodo As String
+    '    Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Moneda As String, TasaCambio As Double
+    '    Dim Fecha As String, SQlTasa As String, TipoMetodo As String, MonedaFactura As String, TasaIva As Double = 0
+    '    Dim Descuento As Double = 0, SqlUpdate As String, Retencion1Porciento As Double = 0, Retencion2Porciento As Double = 0
+    '    Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, CalcularPropina As Boolean = False, PorcentajePropina As Integer = 0
+    '    Dim MontoPropina As Double = 0
+
+
+    '    Registros = BindingMetodo.Count
+    '    iPosicion = 0
+
+    '    Fecha = Format(DTPFecha.Value, "yyyy-MM-dd")
+
+    '    Do While iPosicion < Registros
+
+    '        If Not IsDBNull(BindingMetodo.Item(iPosicion)("NombrePago")) Then
+    '            Metodo = BindingMetodo.Item(iPosicion)("NombrePago")
+    '            TasaCambio = 1
+    '            Fecha = Format(DTPFecha.Value, "yyyy-MM-dd")
+    '            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '            '//////////////////////////////BUSCO LA MONEDA DEL METODO DE PAGO///////////////////////////////////////////////////////
+    '            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '            MonedaFactura = TxtMonedaFactura.Text
+    '            Moneda = "Cordobas"
+    '            TipoMetodo = "Cambio"
+    '            SQlMetodo = "SELECT * FROM MetodoPago WHERE (NombrePago = '" & Metodo & "')"
+    '            DataAdapter = New SqlClient.SqlDataAdapter(SQlMetodo, MiConexion)
+    '            DataAdapter.Fill(DataSet, "Metodo")
+    '            If DataSet.Tables("Metodo").Rows.Count <> 0 Then
+    '                Moneda = DataSet.Tables("Metodo").Rows(0)("Moneda")
+    '                TipoMetodo = DataSet.Tables("Metodo").Rows(0)("TipoPago")
+    '            End If
+    '            DataSet.Tables("Metodo").Clear()
+
+
+    '            Select Case Moneda
+    '                Case "Cordobas"
+    '                    If MonedaFactura = "Cordobas" Then
+    '                        TasaCambio = 1
+    '                    Else
+    '                        SQlTasa = "SELECT  * FROM TasaCambio WHERE (FechaTasa = CONVERT(DATETIME, '" & Fecha & "', 102))"
+    '                        DataAdapter = New SqlClient.SqlDataAdapter(SQlTasa, MiConexion)
+    '                        DataAdapter.Fill(DataSet, "TasaCambio")
+    '                        If DataSet.Tables("TasaCambio").Rows.Count <> 0 Then
+    '                            TasaCambio = (1 / DataSet.Tables("TasaCambio").Rows(0)("MontoTasa"))
+    '                        Else
+    '                            'TasaCambio = 0
+    '                            MsgBox("La Tasa de Cambio no Existe para esta Fecha", MsgBoxStyle.Critical, "Sistema Facturacion")
+    '                            BindingMetodo.Item(iPosicion)("Monto") = 0
+    '                        End If
+    '                        DataSet.Tables("TasaCambio").Clear()
+    '                    End If
+
+    '                Case "Dolares"
+    '                    If MonedaFactura = "Cordobas" Then
+    '                        SQlTasa = "SELECT  * FROM TasaCambio WHERE (FechaTasa = CONVERT(DATETIME, '" & Fecha & "', 102))"
+    '                        DataAdapter = New SqlClient.SqlDataAdapter(SQlTasa, MiConexion)
+    '                        DataAdapter.Fill(DataSet, "TasaCambio")
+    '                        If DataSet.Tables("TasaCambio").Rows.Count <> 0 Then
+    '                            TasaCambio = DataSet.Tables("TasaCambio").Rows(0)("MontoTasa")
+    '                        Else
+    '                            'TasaCambio = 0
+    '                            MsgBox("La Tasa de Cambio no Existe para esta Fecha", MsgBoxStyle.Critical, "Sistema Facturacion")
+    '                            BindingMetodo.Item(iPosicion)("Monto") = 0
+    '                        End If
+    '                        DataSet.Tables("TasaCambio").Clear()
+    '                    Else
+    '                        TasaCambio = 1
+    '                    End If
+    '            End Select
+
+    '            If TipoMetodo = "Cambio" Then
+    '                TasaCambio = TasaCambio * -1
+    '            End If
+
+
+
+    '            If Not IsDBNull(BindingMetodo.Item(iPosicion)("Monto")) Then
+    '                Monto = (BindingMetodo.Item(iPosicion)("Monto") * TasaCambio) + Monto
+    '            Else
+    '                Monto = 0
+    '            End If
+
+    '        End If
+    '        iPosicion = iPosicion + 1
+    '    Loop
+
+
+
+    '    '**********************************************************************************************************************************
+    '    '//////////////////////////////BUSCO EL SUB TOTAL Y EL IVA ////////////////////////////////////////////////////////////////////////
+    '    '************************************************************************************************************************************
+
+    '    Registros = BindingDetalle.Count
+    '    iPosicion = 0
+
+    '    Do While iPosicion < Registros
+    '        If Not IsDBNull(BindingDetalle.Item(iPosicion)("Importe")) Then
+    '            Subtotal = Format(CDbl(BindingDetalle.Item(iPosicion)("Importe")) + Subtotal, "####0.0000")
+    '            SubTotalGral = Subtotal
+    '            If Not IsDBNull(BindingDetalle.Item(iPosicion)("Cod_Producto")) Then
+    '                CodProducto = BindingDetalle.Item(iPosicion)("Cod_Producto")
+    '            Else
+    '                CodProducto = ""
+    '            End If
+    '            SQlString = "SELECT Productos.*  FROM Productos WHERE (Cod_Productos = '" & CodProducto & "') "
+    '            DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+    '            DataAdapter.Fill(DataSet, "Productos")
+    '            If Not DataSet.Tables("Productos").Rows.Count = 0 Then
+    '                CodIva = DataSet.Tables("Productos").Rows(0)("Cod_Iva")
+    '                SQlString = "SELECT *  FROM Impuestos WHERE  (Cod_Iva = '" & CodIva & "')"
+    '                DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+    '                DataAdapter.Fill(DataSet, "IVA")
+    '                If Not DataSet.Tables("IVA").Rows.Count = 0 Then
+    '                    Tasa = DataSet.Tables("IVA").Rows(0)("Impuesto")
+    '                    TasaIva = DataSet.Tables("IVA").Rows(0)("Impuesto")
+    '                End If
+    '                Iva = Format(Iva + CDbl(BindingDetalle.Item(iPosicion)("Importe")) * Tasa, "####0.00000000")
+    '                IvaGral = Iva
+    '                DataSet.Tables("IVA").Clear()
+    '            End If
+    '            DataSet.Tables("Productos").Clear()
+
+
+    '        End If
+    '        iPosicion = iPosicion + 1
+    '    Loop
+
+    '    '----------------------------------------------------------------------------------------------------------------------------------------
+    '    '///////////////////////////BUSCO SI EXISTE NOTAS DE DEBITO Y CREDITO ///////////////////////////////////////////////////////////////////
+    '    '----------------------------------------------------------------------------------------------------------------------------------------
+    '    Retencion1Porciento = 0
+    '    If OptRet1Porciento.Checked = True Then
+    '        SQlString = "SELECT CodigoNB, Tipo, Descripcion, CuentaContable FROM NotaDebito WHERE (Tipo = 'Credito Clientes') AND (Descripcion LIKE N'%1%%')"
+    '        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+    '        DataAdapter.Fill(DataSet, "Retencion")
+    '        If DataSet.Tables("Retencion").Rows.Count <> 0 Then
+    '            Retencion1Porciento = Format(Subtotal * 0.01, "##,##0.00")
+    '        Else
+    '            MsgBox("No Existe Nota de Credito para Retencion 1%", MsgBoxStyle.Critical, "Zeus Facturacion")
+    '            OptRet1Porciento.Checked = False
+    '        End If
+    '        DataSet.Tables("Retencion").Reset()
+    '    End If
+
+    '    Retencion2Porciento = 0
+    '    If OptRet2Porciento.Checked = True Then
+    '        SQlString = "SELECT CodigoNB, Tipo, Descripcion, CuentaContable FROM NotaDebito WHERE (Tipo = 'Credito Clientes') AND (Descripcion LIKE N'%2%%')"
+    '        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+    '        DataAdapter.Fill(DataSet, "Retencion")
+    '        If DataSet.Tables("Retencion").Rows.Count <> 0 Then
+    '            Retencion2Porciento = Format(Subtotal * 0.02, "##,##0.00")
+    '        Else
+    '            MsgBox("No Existe Nota de Credito para Retencion 2%", MsgBoxStyle.Critical, "Zeus Facturacion")
+    '            OptRet2Porciento.Checked = False
+    '        End If
+    '        DataSet.Tables("Retencion").Reset()
+    '    End If
+
+
+    '    If OptExsonerado.Checked = False Then
+    '        'Iva = Subtotal * Tasa
+    '    Else
+    '        Iva = 0
+    '        IvaGral = 0
+    '    End If
+
+
+
+
+    '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '    '///////////////////////////////BUSCO SI TIENE CONFIGURADO EFECTIVO DEFAUL/////////////////////////////////////////////////////////////////
+    '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '    SQlString = "SELECT  * FROM DatosEmpresa "
+    '    DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+    '    DataAdapter.Fill(DataSet, "DatosEmpresa")
+    '    If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
+
+    '        If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("CalcularPropina")) Then
+    '            If DataSet.Tables("DatosEmpresa").Rows(0)("CalcularPropina") = True Then
+    '                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("PorcentajePropina")) Then
+    '                    PorcentajePropina = DataSet.Tables("DatosEmpresa").Rows(0)("PorcentajePropina")
+    '                Else
+    '                    PorcentajePropina = 0
+    '                End If
+
+
+    '            Else
+    '                PorcentajePropina = 0
+    '            End If
+    '        End If
+
+    '        If ChkPropina.Checked = True Then
+    '            MontoPropina = Subtotal * (PorcentajePropina / 100)
+    '        End If
+
+
+
+
+    '        If DataSet.Tables("DatosEmpresa").Rows(0)("MetodoPagoDefecto") = "Efectivo" Then
+    '            '*************************************************************************************************************************
+    '            '//////////////////////////////////BUSCO LA FORMA DE PAGO PARA ESTA FACTURA /////////////////////////////////////////////
+    '            '**************************************************************************************************************************
+    '            SQlString = "SELECT  * FROM MetodoPago WHERE  (TipoPago = 'Efectivo') AND (Moneda = '" & TxtMonedaFactura.Text & "')"
+    '            DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+    '            DataAdapter.Fill(DataSet, "Metodo")
+    '            If DataSet.Tables("Metodo").Rows.Count <> 0 Then
+
+    '                Metodo = DataSet.Tables("Metodo").Rows(0)("NombrePago")
+
+    '                Registros = BindingMetodo.Count
+    '                iPosicion = 0
+    '                Fecha = Format(DTPFecha.Value, "yyyy-MM-dd")
+    '                Do While iPosicion < Registros
+
+    '                    If Not IsDBNull(BindingMetodo.Item(iPosicion)("NombrePago")) Then
+    '                        If Metodo = BindingMetodo.Item(iPosicion)("NombrePago") Then
+    '                            BindingMetodo.Item(iPosicion)("Monto") = (Subtotal + Iva + MontoPropina - Retencion1Porciento - Retencion2Porciento)
+    '                            TrueDBGridMetodo.Columns(1).Text = (Subtotal + Iva + MontoPropina - Retencion1Porciento - Retencion2Porciento)
+    '                            Monto = (Subtotal + Iva + MontoPropina)
+    '                        End If
+    '                    End If
+
+    '                    iPosicion = iPosicion + 1
+    '                Loop
+
+    '            End If
+    '        Else
+    '            If Monto = 0 Then
+    '                Monto = Retencion1Porciento + Retencion2Porciento
+    '            Else
+    '                Monto = Monto + Retencion1Porciento + Retencion2Porciento
+    '            End If
+    '        End If
+    '    End If
+
+
+
+
+
+
+
+    '    '**********************************************************************************************************************************
+    '    '/////////////////////////////SI ES CREDITO BORRO LOS METODOS DE PAGO ////////////////////////////////////////////////////////////////////////
+    '    '************************************************************************************************************************************
+    '    If RadioButton1.Checked = True Then
+    '        SqlUpdate = "DELETE FROM [Detalle_MetodoFacturas] WHERE (Numero_Factura = '" & TxtNumeroEnsamble.Text & "') AND (Tipo_Factura = '" & CboTipoProducto.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102))"
+    '        MiConexion.Open()
+    '        ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
+    '        iResultado = ComandoUpdate.ExecuteNonQuery
+    '        MiConexion.Close()
+    '        Monto = 0
+
+    '        If Retencion1Porciento <> 0 Then
+    '            Monto = Retencion1Porciento
+    '        End If
+
+    '        If Retencion2Porciento <> 0 Then
+    '            Monto = Monto + Retencion2Porciento
+    '        End If
+    '    End If
+
+
+
+    '    Descuento = CDbl(Val(TxtDescuento.Text))
+
+    '    Iva = Redondeo(Iva, 3)
+
+    '    Neto = CDbl((Format(Subtotal + Iva, "####0.00"))) - Monto - Descuento + MontoPropina
+    '    TxtSubTotal.Text = Format(Subtotal, "##,##0.000")
+    '    TxtIva.Text = Format(Iva, "##,##0.00")
+    '    TxtPagado.Text = Format(Monto, "##,##0.00")
+    '    TxtNetoPagar.Text = Format(Neto, "##,##0.00")
+    '    TxtPropina.Text = Format(MontoPropina, "##,##0.00")
+    'End Sub
+
 
     Public Sub InsertarRowGrid_Hilos(Factura As TablaFactura)
         Dim oTabla As DataTable, iPosicion As Double, CodigoProducto As String
@@ -1102,7 +1678,7 @@ Handles backgroundWorkerLote.RunWorkerCompleted
         'SQlString = "WITH Movimientos AS (SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote, '') AS Lote, C.Cod_Bodega FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra = C.Numero_Compra AND DC.Fecha_Compra = C.Fecha_Compra AND DC.Tipo_Compra = C.Tipo_Compra WHERE DC.Fecha_Compra <= @FechaCorte AND DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta UNION SELECT DF.Cod_Producto, ISNULL(DF.CodTarea, '') AS Lote, F.Cod_Bodega FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE DF.Fecha_Factura <= @FechaCorte AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta ), Existencias AS ( SELECT L.Cod_Producto, Prod.Descripcion_Producto AS Producto, L.Cod_Bodega, L.Lote, Prod.Cod_Linea, Lte.FechaVence AS Fecha_Vencimiento, ISNULL(MR.Cantidad,0) AS Mercancia_Recibida, ISNULL(TR.Cantidad,0) AS Transferencia_Recibida, ISNULL(DV.Cantidad,0) AS Devolucion_Venta, ISNULL(Fact.Cantidad,0) AS Factura, ISNULL(SB.Cantidad,0) AS Salidas_Bodegas, ISNULL(TE.Cantidad,0) AS Transferencia_Enviada, ISNULL(DC.Cantidad,0) AS Devolucion_Compra, ISNULL(MR.Cantidad,0) + ISNULL(TR.Cantidad,0) + ISNULL(DV.Cantidad,0) - (ISNULL(Fact.Cantidad,0) + ISNULL(SB.Cantidad,0) + ISNULL(TE.Cantidad,0) + ISNULL(DC.Cantidad,0)) AS Existencia FROM Movimientos L INNER JOIN Productos Prod ON L.Cod_Producto = Prod.Cod_Productos LEFT JOIN Lote Lte ON L.Lote = Lte.Numero_Lote AND Lte.Activo = 1 AND L.Lote NOT IN ('SIN LOTE', 'SINLOTE', '') LEFT JOIN ( SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'') AS Lote, C.Cod_Bodega, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra = C.Numero_Compra AND DC.Fecha_Compra = C.Fecha_Compra AND DC.Tipo_Compra = C.Tipo_Compra WHERE C.Fecha_Compra <= @FechaCorte AND C.Tipo_Compra = 'Mercancia Recibida' AND DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,''), C.Cod_Bodega ) MR ON L.Cod_Producto = MR.Cod_Producto AND L.Lote = MR.Lote AND L.Cod_Bodega = MR.Cod_Bodega LEFT JOIN ( SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'') AS Lote, C.Cod_Bodega, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra = C.Numero_Compra AND DC.Fecha_Compra = C.Fecha_Compra AND DC.Tipo_Compra = C.Tipo_Compra WHERE C.Fecha_Compra <= @FechaCorte AND C.Tipo_Compra = 'Transferencia Recibida' AND DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,''), C.Cod_Bodega ) TR ON L.Cod_Producto = TR.Cod_Producto AND L.Lote = TR.Lote AND L.Cod_Bodega = TR.Cod_Bodega LEFT JOIN ( SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE F.Fecha_Factura <= @FechaCorte AND F.Tipo_Factura = 'Devolucion de Venta' AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,''), F.Cod_Bodega ) DV ON L.Cod_Producto = DV.Cod_Producto AND L.Lote = DV.Lote AND L.Cod_Bodega = DV.Cod_Bodega LEFT JOIN ( SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE F.Fecha_Factura <= @FechaCorte AND F.Tipo_Factura = 'Factura' AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,''), F.Cod_Bodega ) Fact ON L.Cod_Producto = Fact.Cod_Producto AND L.Lote = Fact.Lote AND L.Cod_Bodega = Fact.Cod_Bodega LEFT JOIN ( SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE F.Fecha_Factura <= @FechaCorte AND F.Tipo_Factura = 'Salida Bodega' AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,''), F.Cod_Bodega ) SB ON L.Cod_Producto = SB.Cod_Producto AND L.Lote = SB.Lote AND L.Cod_Bodega = SB.Cod_Bodega LEFT JOIN ( SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE F.Fecha_Factura <= @FechaCorte AND F.Tipo_Factura = 'Transferencia Enviada' AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,''), F.Cod_Bodega ) TE ON L.Cod_Producto = TE.Cod_Producto AND L.Lote = TE.Lote AND L.Cod_Bodega = TE.Cod_Bodega LEFT JOIN ( SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'') AS Lote, C.Cod_Bodega, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra = C.Numero_Compra AND DC.Fecha_Compra = C.Fecha_Compra AND DC.Tipo_Compra = C.Tipo_Compra WHERE C.Fecha_Compra <= @FechaCorte AND C.Tipo_Compra = 'Devolucion de Compra' AND DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,''), C.Cod_Bodega ) DC ON L.Cod_Producto = DC.Cod_Producto AND L.Lote = DC.Lote AND L.Cod_Bodega = DC.Cod_Bodega ), LoteMasViejo AS ( SELECT *, ROW_NUMBER() OVER (PARTITION BY Cod_Producto, Cod_Bodega ORDER BY Fecha_Vencimiento ASC) AS rn FROM Existencias WHERE Existencia > 0 AND Fecha_Vencimiento IS NOT NULL ) SELECT * FROM LoteMasViejo WHERE rn = 1 ORDER BY Cod_Producto, Cod_Bodega, Fecha_Vencimiento;"
         'DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
 
-        '' Par�metros obligatorios
+        '' Parámetros obligatorios
         'DataAdapter.SelectCommand.Parameters.AddWithValue("@FechaCorte", FechaVenceLote)
         'DataAdapter.SelectCommand.Parameters.AddWithValue("@CodBodegaDesde", CodigoBodega)
         'DataAdapter.SelectCommand.Parameters.AddWithValue("@CodBodegaHasta", CodigoBodega)
@@ -3997,7 +4573,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
             Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, StrSQLUpdate As String = ""
             Dim SQlProductos As String, iPosicionFila As Double
 
-            Resultado = MsgBox("�Esta Seguro de Cancelar la Factura?", MsgBoxStyle.OkCancel, "Sistema de Facturacion")
+            Resultado = MsgBox("¿Esta Seguro de Cancelar la Factura?", MsgBoxStyle.OkCancel, "Sistema de Facturacion")
 
             If Not Resultado = "1" Then
                 Exit Sub
@@ -4394,27 +4970,38 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                 '/////////////////////////////GRABO LOS METODOS DE PAGO /////////////////////////////////////////////
                 '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
 
-                Me.BindingMetodo.MoveFirst()
-                Registros = Me.BindingMetodo.Count
-                iPosicion = 0
-                Monto = 0
-                Do While iPosicion < Registros
-                    NombrePago = Me.BindingMetodo.Item(iPosicion)("NombrePago")
-                    Monto = Me.BindingMetodo.Item(iPosicion)("Monto") + Monto
-                    If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")) Then
-                        NumeroTarjeta = Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")
-                    Else
-                        NumeroTarjeta = 0
-                    End If
-                    If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("FechaVence")) Then
-                        FechaVenceTarjeta = Me.BindingMetodo.Item(iPosicion)("FechaVence")
-                    Else
-                        FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
-                    End If
+                Dim EsCredito As Boolean = RadioButton1.Checked
 
-                    GrabaMetodoDetalleFactura(NumeroFactura, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta, TablaFactura.Fecha_Factura, TablaFactura.Tipo_Factura)
-                    iPosicion = iPosicion + 1
-                Loop
+                Call GrabarMetodosPagoFactura(NumeroFactura,
+                              TablaFactura.Fecha_Factura,
+                              TablaFactura.Tipo_Factura,
+                              Me.BindingMetodo,
+                              EsCredito)
+
+
+
+                '**************CODIGO RETIRADO 28/10/2025 ************************
+                'Me.BindingMetodo.MoveFirst()
+                'Registros = Me.BindingMetodo.Count
+                'iPosicion = 0
+                'Monto = 0
+                'Do While iPosicion < Registros
+                '    NombrePago = Me.BindingMetodo.Item(iPosicion)("NombrePago")
+                '    Monto = Me.BindingMetodo.Item(iPosicion)("Monto") + Monto
+                '    If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")) Then
+                '        NumeroTarjeta = Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")
+                '    Else
+                '        NumeroTarjeta = 0
+                '    End If
+                '    If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("FechaVence")) Then
+                '        FechaVenceTarjeta = Me.BindingMetodo.Item(iPosicion)("FechaVence")
+                '    Else
+                '        FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
+                '    End If
+
+                '    GrabaMetodoDetalleFactura(NumeroFactura, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta, TablaFactura.Fecha_Factura, TablaFactura.Tipo_Factura)
+                '    iPosicion = iPosicion + 1
+                'Loop
 
 
             End If
@@ -6764,7 +7351,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                 CodigoBodega = Me.CboCodigoBodega.Text
                 'Existencia = BuscaExistenciaBodega(CodProducto, CodigoBodega)
-                Existencia = BuscaInventarioInicialBodega(CodProducto, DateAdd(DateInterval.Day, 1, Me.DTPFecha.Value), CodigoBodega)
+                'Existencia = BuscaInventarioInicialBodega(CodProducto, DateAdd(DateInterval.Day, 1, Me.DTPFecha.Value), CodigoBodega)
                 Descuento = 0
                 Tasa = 0
 
@@ -6847,15 +7434,15 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                             resul = BuscaExistenciaBodegaLote(Args)
                             ExistenciaLote = resul.Existencia_Lote
 
-                            If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                            If ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
                                     If ExistenciaNegativa <> "SI" Then
-                                        If Existencia > 0 Then
-                                            Cantidad = Existencia
+                                        If ExistenciaLote > 0 Then
+                                            Cantidad = ExistenciaLote
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
                                                     Me.TrueDBGridComponentes.Columns("Cantidad").Text = Existencia
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                 End If
@@ -6867,7 +7454,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
                                                     Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                 End If
@@ -6943,15 +7530,15 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                             resul = BuscaExistenciaBodegaLote(Args)
                             ExistenciaLote = resul.Existencia_Lote
 
-                            If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                            If ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
                                     If ExistenciaNegativa <> "SI" Then
-                                        If Existencia > 0 Then
-                                            Cantidad = Existencia
+                                        If ExistenciaLote > 0 Then
+                                            Cantidad = ExistenciaLote
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = Existencia
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaLote
+                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                 End If
@@ -6963,7 +7550,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
                                                     Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                 End If
@@ -7035,11 +7622,12 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                             resul = BuscaExistenciaBodegaLote(Args)
                             ExistenciaLote = resul.Existencia_Lote
-                            If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+
+                            If ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
                                     If ExistenciaNegativa <> "SI" Then
-                                        If Existencia > 0 Then
-                                            Cantidad = Existencia
+                                        If ExistenciaLote > 0 Then
+                                            Cantidad = ExistenciaLote
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
                                                     Me.TrueDBGridComponentes.Columns("Cantidad").Text = Existencia
@@ -7055,7 +7643,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
                                                     Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                 End If
@@ -7123,10 +7711,10 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                         Case 4
 
 
-                            If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                            If ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
                                     If ExistenciaNegativa <> "SI" Then
-                                        If Existencia > 0 Then
+                                        If ExistenciaLote > 0 Then
                                             Cantidad = Existencia
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
@@ -7238,10 +7826,10 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                         Case 5
 
-                            If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                            If ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
                                     If ExistenciaNegativa <> "SI" Then
-                                        If Existencia > 0 Then
+                                        If ExistenciaLote > 0 Then
                                             Cantidad = Existencia
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
@@ -8015,6 +8603,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                         Case 1
 
 
+
                             If Me.TrueDBGridComponentes.Columns("Cantidad").Text = "" And Not IsNumeric(Me.TrueDBGridComponentes.Columns("Cantidad").Text) Then
                                 Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
                                 Exit Sub
@@ -8126,103 +8715,105 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                         Case 2
 
+                            Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
 
-                            If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" And IsNumeric(Me.TrueDBGridComponentes.Columns("Cantidad").Text) Then
-                                resul = BuscaExistenciaBodegaLote(Args)
-                                ExistenciaLote = resul.Existencia_Lote
+                            '**********************CODIGO RETIRADO 22/10/2025 *************************
+                            'If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" And IsNumeric(Me.TrueDBGridComponentes.Columns("Cantidad").Text) Then
+                            '    resul = BuscaExistenciaBodegaLote(Args)
+                            '    ExistenciaLote = resul.Existencia_Lote
 
-                                If ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
-                                    If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
-                                        If ExistenciaNegativa <> "SI" Then
-                                            If Existencia > 0 Then
-                                                Cantidad = Existencia
-                                                If TipoProducto <> "Servicio" Then
-                                                    If TipoProducto <> "Descuento" Then
-                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = Existencia
-                                                        MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
-                                                    Else
-                                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                        End If
-                                                    End If
-                                                Else
-                                                    If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                    End If
-                                                End If
-                                            Else
-                                                Cantidad = 0
-                                                If TipoProducto <> "Servicio" Then
-                                                    If TipoProducto <> "Descuento" Then
-                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                                        MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
-                                                    End If
-                                                End If
-                                            End If
-                                        Else
-                                            If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                            End If
-                                        End If
+                            '    If ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                            '        If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
+                            '            If ExistenciaNegativa <> "SI" Then
+                            '                If ExistenciaLote > 0 Then
+                            '                    Cantidad = ExistenciaLote
+                            '                    If TipoProducto <> "Servicio" Then
+                            '                        If TipoProducto <> "Descuento" Then
+                            '                            Me.TrueDBGridComponentes.Columns("Cantidad").Text = Existencia
+                            '                            MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                            '                        Else
+                            '                            If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                            '                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                            '                            End If
+                            '                        End If
+                            '                    Else
+                            '                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                            '                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                            '                        End If
+                            '                    End If
+                            '                Else
+                            '                    Cantidad = 0
+                            '                    If TipoProducto <> "Servicio" Then
+                            '                        If TipoProducto <> "Descuento" Then
+                            '                            Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
+                            '                            MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                            '                        End If
+                            '                    End If
+                            '                End If
+                            '            Else
+                            '                If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                            '                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                            '                End If
+                            '            End If
 
-                                    Else
-                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                    End If
+                            '        Else
+                            '            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                            '        End If
 
-                                ElseIf ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
-                                    If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
-                                        If ExistenciaNegativa <> "SI" Then
-                                            If ExistenciaLote > 0 Then
-                                                Cantidad = ExistenciaLote
-                                                If TipoProducto <> "Servicio" Then
-                                                    If TipoProducto <> "Descuento" Then
-                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaLote
-                                                        MsgBox("Existencia Negativa: Disponible Lote" & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
-                                                    Else
-                                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                        End If
-                                                    End If
-                                                Else
-                                                    If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                    End If
-                                                End If
-                                            Else
-                                                Cantidad = 0
-                                                If TipoProducto <> "Servicio" Then
-                                                    If TipoProducto <> "Descuento" Then
-                                                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                                        MsgBox("Existencia Negativa: Disponible Lote" & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
-                                                    Else
-                                                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                        End If
-                                                    End If
-                                                Else
-                                                    If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                    End If
-                                                End If
-                                            End If
-                                        Else
-                                            If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                            End If
-                                        End If
-                                    Else
-                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                    End If
+                            '    ElseIf ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                            '        If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
+                            '            If ExistenciaNegativa <> "SI" Then
+                            '                If ExistenciaLote > 0 Then
+                            '                    Cantidad = ExistenciaLote
+                            '                    If TipoProducto <> "Servicio" Then
+                            '                        If TipoProducto <> "Descuento" Then
+                            '                            Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaLote
+                            '                            MsgBox("Existencia Negativa: Disponible Lote" & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                            '                        Else
+                            '                            If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                            '                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                            '                            End If
+                            '                        End If
+                            '                    Else
+                            '                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                            '                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                            '                        End If
+                            '                    End If
+                            '                Else
+                            '                    Cantidad = 0
+                            '                    If TipoProducto <> "Servicio" Then
+                            '                        If TipoProducto <> "Descuento" Then
+                            '                            Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
+                            '                            MsgBox("Existencia Negativa: Disponible Lote" & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                            '                        Else
+                            '                            If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                            '                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                            '                            End If
+                            '                        End If
+                            '                    Else
+                            '                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                            '                            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                            '                        End If
+                            '                    End If
+                            '                End If
+                            '            Else
+                            '                If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                            '                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                            '                End If
+                            '            End If
+                            '        Else
+                            '            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                            '        End If
 
 
-                                Else
-                                    If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                                        Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                    End If
-                                End If
-                            End If
+                            '    Else
+                            '        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
+                            '            Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                            '        End If
+                            '    End If
+                            'End If
 
-                            'Existencia
+                            ''Existencia
 
 
                             '/////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -8342,7 +8933,6 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                             If Me.TrueDBGridComponentes.Columns("Cantidad").Text = "" And Not IsNumeric(Me.TrueDBGridComponentes.Columns("Cantidad").Text) Then
                                 Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                Exit Sub
                             End If
 
                             resul = BuscaExistenciaBodegaLote(Args)
@@ -8351,15 +8941,15 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                             If ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
                                     If ExistenciaNegativa <> "SI" Then
-                                        If Existencia > 0 Then
-                                            Cantidad = Existencia
+                                        If ExistenciaLote > 0 Then
+                                            Cantidad = ExistenciaLote
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
                                                     Me.TrueDBGridComponentes.Columns("Cantidad").Text = Existencia
                                                     If Me.TrueDBGridComponentes.Columns("Descuento").Text <> "" Then
                                                         Descuento = (CDbl(Me.TrueDBGridComponentes.Columns("Descuento").Text) / 100)
                                                     End If
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
                                                         Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
@@ -8378,7 +8968,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                                                 If TipoProducto <> "Descuento" Then
                                                     Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
                                                     Me.TrueDBGridComponentes.Columns("Descuento").Text = 0
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
                                                         Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
@@ -9530,6 +10120,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                         My.Forms.FrmLotesFactura.NumeroDocumento = Me.TxtNumeroEnsamble.Text
                         My.Forms.FrmLotesFactura.Fecha = Me.DTPFecha.Value
                         My.Forms.FrmLotesFactura.LblProducto.Text = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text + " " + Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text
+                        Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
                         If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then    'Not IsDBNull(Me.BindingDetalle.Item(Posicion)("Cantidad")) Then
                             My.Forms.FrmLotesFactura.Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                         Else
@@ -10374,7 +10965,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
             Case 123
                 My.Forms.FrmPermisos.ShowDialog()
-                If My.Forms.FrmPermisos.RContrase�a = True Then
+                If My.Forms.FrmPermisos.RContraseña = True Then
                     Me.TrueDBGridComponentes.Columns(3).Caption = "Precio Unit"
                     Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
                     Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = False
@@ -10642,7 +11233,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
         Try
 
-            Resultado = MsgBox("�Esta Seguro de Eliminar la Linea?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
+            Resultado = MsgBox("¿Esta Seguro de Eliminar la Linea?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
 
             If Not Resultado = "6" Then
                 Exit Sub
@@ -11308,31 +11899,39 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
             da.Update(ds.Tables("DetalleFactura"))
 
 
-            '////////////////////////////////////////////////////////////////////////////////////////////////////
-            '/////////////////////////////GRABO LOS METODOS DE PAGO /////////////////////////////////////////////
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+            Dim EsCredito As Boolean = RadioButton1.Checked
+            Call GrabarMetodosPagoFactura(NumeroFactura,
+                              TablaFactura.Fecha_Factura,
+                              TablaFactura.Tipo_Factura,
+                              Me.BindingMetodo,
+                              EsCredito)
 
-            'Me.BindingMetodo.MoveFirst()
-            Registros = Me.BindingMetodo.Count
-            iPosicion = 0
-            Monto = 0
-            Do While iPosicion < Registros
-                NombrePago = Me.BindingMetodo.Item(iPosicion)("NombrePago")
-                Monto = Me.BindingMetodo.Item(iPosicion)("Monto") + Monto
-                If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")) Then
-                    NumeroTarjeta = Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")
-                Else
-                    NumeroTarjeta = 0
-                End If
-                If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("FechaVence")) Then
-                    FechaVenceTarjeta = Me.BindingMetodo.Item(iPosicion)("FechaVence")
-                Else
-                    FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
-                End If
+            '********************CODIGO RETIRADO 28/10/2025 *******************
+            ''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''/////////////////////////////GRABO LOS METODOS DE PAGO /////////////////////////////////////////////
+            ''//////////////////////////////////////////////////////////////////////////////////////////////////////////7
 
-                GrabaMetodoDetalleFactura(NumeroFactura, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta, TablaFactura.Fecha_Factura, TablaFactura.Tipo_Factura)
-                iPosicion = iPosicion + 1
-            Loop
+            ''Me.BindingMetodo.MoveFirst()
+            'Registros = Me.BindingMetodo.Count
+            'iPosicion = 0
+            'Monto = 0
+            'Do While iPosicion < Registros
+            '    NombrePago = Me.BindingMetodo.Item(iPosicion)("NombrePago")
+            '    Monto = Me.BindingMetodo.Item(iPosicion)("Monto") + Monto
+            '    If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")) Then
+            '        NumeroTarjeta = Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")
+            '    Else
+            '        NumeroTarjeta = 0
+            '    End If
+            '    If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("FechaVence")) Then
+            '        FechaVenceTarjeta = Me.BindingMetodo.Item(iPosicion)("FechaVence")
+            '    Else
+            '        FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
+            '    End If
+
+            '    GrabaMetodoDetalleFactura(NumeroFactura, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta, TablaFactura.Fecha_Factura, TablaFactura.Tipo_Factura)
+            '    iPosicion = iPosicion + 1
+            'Loop
 
 
 
@@ -12393,9 +12992,9 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         Dim ArepFacturas2 As New ArepFacturas2, ArepSalidaBodega As New ArepSalidaBodega, Ancho As Double, Largo As Double
         Dim ArepCotizaciones As New ArepCotizaciones, ImprimeFacturaPreview As Boolean = True, CostoUnitario As Double = 0
 
-        Try
+        'Try
 
-            If Me.CboTipoProducto.Text = "" Then
+        If Me.CboTipoProducto.Text = "" Then
                 MsgBox("Seleccione un Tipo", MsgBoxStyle.Critical, "Zeus Facturacion")
                 Exit Sub
             End If
@@ -12680,34 +13279,42 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                 Loop
 
                 da.Update(ds.Tables("DetalleFactura"))
-                '////////////////////////////////////////////////////////////////////////////////////////////////////
-                '/////////////////////////////GRABO LOS METODOS DE PAGO /////////////////////////////////////////////
-                '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+            '////////////////////////////////////////////////////////////////////////////////////////////////////
+            '/////////////////////////////GRABO LOS METODOS DE PAGO /////////////////////////////////////////////
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+            Dim EsCredito As Boolean = RadioButton1.Checked
 
-                Me.BindingMetodo.MoveFirst()
-                Registros = Me.BindingMetodo.Count
-                iPosicion = 0
-                Monto = 0
-                Do While iPosicion < Registros
-                    NombrePago = Me.BindingMetodo.Item(iPosicion)("NombrePago")
-                    Monto = Me.BindingMetodo.Item(iPosicion)("Monto") + Monto
-                    If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")) Then
-                        NumeroTarjeta = Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")
-                    Else
-                        NumeroTarjeta = 0
-                    End If
-                    If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("FechaVence")) Then
-                        FechaVenceTarjeta = Me.BindingMetodo.Item(iPosicion)("FechaVence")
-                    Else
-                        FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
-                    End If
+            Call GrabarMetodosPagoFactura(NumeroFactura,
+                              TablaFactura.Fecha_Factura,
+                              TablaFactura.Tipo_Factura,
+                              Me.BindingMetodo,
+                              EsCredito)
 
-                    GrabaMetodoDetalleFactura(NumeroFactura, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta, TablaFactura.Fecha_Factura, TablaFactura.Tipo_Factura)
-                    iPosicion = iPosicion + 1
-                Loop
+            '************CODIGO RETIRADO 28/10/2025 ******************
+            'Me.BindingMetodo.MoveFirst()
+            '    Registros = Me.BindingMetodo.Count
+            '    iPosicion = 0
+            '    Monto = 0
+            '    Do While iPosicion < Registros
+            '        NombrePago = Me.BindingMetodo.Item(iPosicion)("NombrePago")
+            '        Monto = Me.BindingMetodo.Item(iPosicion)("Monto") + Monto
+            '        If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")) Then
+            '            NumeroTarjeta = Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")
+            '        Else
+            '            NumeroTarjeta = 0
+            '        End If
+            '        If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("FechaVence")) Then
+            '            FechaVenceTarjeta = Me.BindingMetodo.Item(iPosicion)("FechaVence")
+            '        Else
+            '            FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
+            '        End If
+
+            '        GrabaMetodoDetalleFactura(NumeroFactura, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta, TablaFactura.Fecha_Factura, TablaFactura.Tipo_Factura)
+            '        iPosicion = iPosicion + 1
+            '    Loop
 
 
-            End If
+        End If
 
             ActualizaMETODOFactura()
 
@@ -13746,9 +14353,9 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
             SalirFactura = True
 
 
-        Catch ex As Exception
-            MsgBox(ex.ToString)
-        End Try
+        'Catch ex As Exception
+        '    MsgBox(ex.ToString)
+        'End Try
 
     End Sub
 
@@ -14097,6 +14704,10 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
     End Sub
 
     Private Sub TrueDBGridComponentes_BackColorChanged(sender As Object, e As EventArgs) Handles TrueDBGridComponentes.BackColorChanged
+
+    End Sub
+
+    Private Sub TrueDBGridComponentes_BeforeRowColChange(sender As Object, e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TrueDBGridComponentes.BeforeRowColChange
 
     End Sub
 End Class

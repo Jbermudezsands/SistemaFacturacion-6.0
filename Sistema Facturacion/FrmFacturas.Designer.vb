@@ -984,7 +984,7 @@ Partial Class FrmFacturas
         Me.CmdProcesar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CmdProcesar.Image = CType(resources.GetObject("CmdProcesar.Image"), System.Drawing.Image)
         Me.CmdProcesar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdProcesar.Location = New System.Drawing.Point(76, 158)
+        Me.CmdProcesar.Location = New System.Drawing.Point(74, 158)
         Me.CmdProcesar.Name = "CmdProcesar"
         Me.CmdProcesar.Size = New System.Drawing.Size(65, 66)
         Me.CmdProcesar.TabIndex = 208

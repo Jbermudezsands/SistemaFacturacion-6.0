@@ -119,7 +119,7 @@ Partial Class FrmTransferencias
         Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label9.Location = New System.Drawing.Point(262, 29)
+        Me.Label9.Location = New System.Drawing.Point(241, 32)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(202, 13)
         Me.Label9.TabIndex = 101
@@ -397,7 +397,7 @@ Partial Class FrmTransferencias
         '
         Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
         Me.Button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button4.Location = New System.Drawing.Point(6, 405)
+        Me.Button4.Location = New System.Drawing.Point(12, 410)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(100, 23)
         Me.Button4.TabIndex = 201
