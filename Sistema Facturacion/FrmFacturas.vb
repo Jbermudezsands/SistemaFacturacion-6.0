@@ -186,27 +186,23 @@ Public Class FrmFacturas
         Dim Descuento As Double = 0
         Dim Retencion1Porciento As Double = 0
         Dim Retencion2Porciento As Double = 0
-        Dim SqlUpdate As String = ""
-        Dim ComandoUpdate As New SqlClient.SqlCommand
-        Dim iResultado As Integer = 0
         Dim PorcentajePropina As Integer = 0
         Dim MontoPropina As Double = 0
 
         '------------------------------------------------------------
-        ' PREVENCIÓN: Si no hay BindingDetalle, salgo
+        ' PREVENCIÓN: Si no hay detalle de productos, salir
         '------------------------------------------------------------
         If BindingDetalle Is Nothing OrElse BindingDetalle.Count = 0 Then Exit Sub
 
         '------------------------------------------------------------
-        ' 1️ CALCULAR MONTOS DE MÉTODOS DE PAGO
+        ' 1️⃣ CALCULAR MONTOS DE MÉTODOS DE PAGO (SI EXISTEN)
         '------------------------------------------------------------
         Monto = 0
+
         If BindingMetodo IsNot Nothing AndAlso BindingMetodo.Count > 0 Then
-
             Registros = BindingMetodo.Count
-            For iPosicion = 0 To Registros - 1
 
-                ' Saltar filas vacías o sin nombre de pago
+            For iPosicion = 0 To Registros - 1
                 If BindingMetodo.Item(iPosicion) Is Nothing Then Continue For
                 If Not BindingMetodo.Item(iPosicion).Row.Table.Columns.Contains("NombrePago") Then Continue For
                 If BindingMetodo.Item(iPosicion)("NombrePago") Is Nothing OrElse BindingMetodo.Item(iPosicion)("NombrePago").ToString.Trim = "" Then Continue For
@@ -261,19 +257,16 @@ Public Class FrmFacturas
                         End If
                 End Select
 
-                ' Aplicar tipo de método si es "Cambio"
                 If TipoMetodo = "Cambio" Then TasaCambio *= -1
 
-                ' Sumar monto convertido
                 If Not IsDBNull(BindingMetodo.Item(iPosicion)("Monto")) Then
                     Monto += CDbl(BindingMetodo.Item(iPosicion)("Monto")) * TasaCambio
                 End If
-
             Next
         End If
 
         '------------------------------------------------------------
-        ' 2️ CALCULAR SUBTOTAL E IVA
+        ' 2️⃣ CALCULAR SUBTOTAL E IVA
         '------------------------------------------------------------
         Subtotal = 0
         Iva = 0
@@ -281,6 +274,11 @@ Public Class FrmFacturas
         For Each row As DataRowView In BindingDetalle
             If IsDBNull(row("Importe")) Then Continue For
             Subtotal += CDbl(row("Importe"))
+
+            ' Si el cliente es exonerado, no calculamos IVA
+            If OptExsonerado.Checked Then
+                Continue For
+            End If
 
             ' Buscar IVA del producto
             If Not IsDBNull(row("Cod_Producto")) Then
@@ -296,13 +294,15 @@ Public Class FrmFacturas
             End If
         Next
 
+        ' Si está exonerado, forzar IVA en 0
+        If OptExsonerado.Checked Then Iva = 0
+
         '------------------------------------------------------------
-        ' 3️ RETENCIONES, PROPINAS Y DESCUENTOS
+        ' 3️⃣ RETENCIONES, PROPINAS Y DESCUENTOS
         '------------------------------------------------------------
         If OptRet1Porciento.Checked Then Retencion1Porciento = Subtotal * 0.01
         If OptRet2Porciento.Checked Then Retencion2Porciento = Subtotal * 0.02
 
-        ' Propina
         SqlString = "SELECT CalcularPropina, PorcentajePropina FROM DatosEmpresa"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "DatosEmpresa")
@@ -318,14 +318,14 @@ Public Class FrmFacturas
         Descuento = CDbl(Val(TxtDescuento.Text))
 
         '------------------------------------------------------------
-        ' 4️ SI ES CREDITO, PAGADO = 0
+        ' 4️⃣ SI ES CREDITO, PAGADO = 0
         '------------------------------------------------------------
         If RadioButton1.Checked Then
             Monto = Retencion1Porciento + Retencion2Porciento
         End If
 
         '------------------------------------------------------------
-        ' 5️ ACTUALIZAR TEXTOS
+        ' 5️⃣ CALCULAR Y ACTUALIZAR CAMPOS DE TEXTO
         '------------------------------------------------------------
         Iva = Redondeo(Iva, 3)
         Neto = (Subtotal + Iva + MontoPropina) - (Monto + Descuento)
@@ -337,7 +337,6 @@ Public Class FrmFacturas
         TxtPropina.Text = Format(MontoPropina, "##,##0.00")
 
     End Sub
-
 
 
     '***********CODIGO RETIRADO 28/10/2025 **********************
