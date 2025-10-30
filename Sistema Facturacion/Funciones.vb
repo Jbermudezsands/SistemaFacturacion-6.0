@@ -1,3 +1,4 @@
+Imports System.Data
 Imports System.Data.SqlClient
 Imports System.Threading
 Imports System.IO
@@ -5,8 +6,633 @@ Imports System.Drawing.Imaging
 Imports System.Math
 Imports Sistema_Facturacion.FrmFacturas
 Imports System.ComponentModel
+Imports System.Linq
 
 Module Funciones
+
+    ' ----------------- FillDataSetCtaxCobrar_Optimizado (Public y autosuficiente) -----------------
+    Public Function FillDataSetCtaxCobrar_Optimizado(CodigoCliente As String,
+                                                OptCordobas As Boolean,
+                                                FechaFin As Date,
+                                                Proceso As String) As DataSet
+        ' Validación inicial
+        If String.IsNullOrWhiteSpace(CodigoCliente) Then
+            Return Nothing
+        End If
+
+        Dim FechaFinDate As Date = FechaFin.Date
+        Dim connString As String = Conexion ' variable global que ya usas
+        Dim dsRepo As New DataSet
+
+        ' Totales locales (se asignarán al formulario al final)
+        Dim TotalFactura As Double = 0
+        Dim TotalAbonos As Double = 0
+        Dim TotalCargos As Double = 0
+        Dim TotalMontoNotaDB As Double = 0
+        Dim TotalMontoNotaCR As Double = 0
+        Dim TotalMora As Double = 0
+
+        ' Nombres de tablas internas dentro del DataSet temporal
+        Dim tblFacturasName = "FacturasCliente"
+        Dim tblRecibosName = "RecibosDetalle"
+        Dim tblNotasDBName = "NotasDBDetalle"
+        Dim tblNotasCRName = "NotasCRDetalle"
+        Dim tblTasasName = "TasaCambioLocal"
+
+        ' ------------------ Consultas (UN solo ruteo a la DB para evitar loops) ------------------
+        Dim sqlFacturas As String =
+        "SELECT Numero_Factura, Fecha_Factura, Fecha_Vencimiento, SubTotal, IVA, MonedaFactura, Cod_Cliente, Nombre_Cliente " &
+        "FROM Facturas " &
+        "WHERE Tipo_Factura='Factura' AND Cod_Cliente=@CodCliente AND Fecha_Factura <= @FechaFin " &
+        "ORDER BY Fecha_Factura, Numero_Factura;"
+
+        Dim sqlRecibos As String =
+        "SELECT dr.Numero_Factura, dr.MontoPagado, r.MonedaRecibo, dr.Fecha_Recibo, r.CodReciboPago " &
+        "FROM DetalleRecibo dr " &
+        "JOIN Recibo r ON dr.CodReciboPago = r.CodReciboPago AND dr.Fecha_Recibo = r.Fecha_Recibo " &
+        "WHERE r.Cod_Cliente=@CodCliente AND dr.Fecha_Recibo <= @FechaFin " &
+        "ORDER BY dr.Numero_Factura, dr.Fecha_Recibo;"
+
+        Dim sqlNotasDB As String =
+        "SELECT dn.Numero_Factura, dn.Monto, inx.MonedaNota, dn.Fecha_Nota, dn.Numero_Nota " &
+        "FROM Detalle_Nota dn " &
+        "JOIN IndiceNota inx ON dn.Numero_Nota = inx.Numero_Nota AND dn.Fecha_Nota = inx.Fecha_Nota AND dn.Tipo_Nota = inx.Tipo_Nota " &
+        "JOIN NotaDebito nb ON dn.Tipo_Nota = nb.CodigoNB " &
+        "WHERE inx.Cod_Cliente=@CodCliente AND dn.Fecha_Nota <= @FechaFin AND nb.Tipo LIKE '%Debito Clientes%' " &
+        "ORDER BY dn.Numero_Factura, dn.Fecha_Nota;"
+
+        Dim sqlNotasCR As String =
+        "SELECT dn.Numero_Factura, dn.Monto, inx.MonedaNota, dn.Fecha_Nota, dn.Numero_Nota " &
+        "FROM Detalle_Nota dn " &
+        "JOIN IndiceNota inx ON dn.Numero_Nota = inx.Numero_Nota AND dn.Fecha_Nota = inx.Fecha_Nota AND dn.Tipo_Nota = inx.Tipo_Nota " &
+        "JOIN NotaDebito nb ON dn.Tipo_Nota = nb.CodigoNB " &
+        "WHERE inx.Cod_Cliente=@CodCliente AND dn.Fecha_Nota <= @FechaFin AND nb.Tipo LIKE '%Credito Clientes%' " &
+        "ORDER BY dn.Numero_Factura, dn.Fecha_Nota;"
+
+        ' Abrir UNA sola conexión y traer los DataTables necesarios
+        Using cn As New SqlConnection(connString)
+            cn.Open()
+
+            Using cmd As New SqlCommand(sqlFacturas, cn)
+                cmd.Parameters.AddWithValue("@CodCliente", CodigoCliente)
+                cmd.Parameters.AddWithValue("@FechaFin", FechaFinDate)
+                Dim da As New SqlDataAdapter(cmd)
+                da.Fill(dsRepo, tblFacturasName)
+            End Using
+
+            Using cmd As New SqlCommand(sqlRecibos, cn)
+                cmd.Parameters.AddWithValue("@CodCliente", CodigoCliente)
+                cmd.Parameters.AddWithValue("@FechaFin", FechaFinDate)
+                Dim da As New SqlDataAdapter(cmd)
+                da.Fill(dsRepo, tblRecibosName)
+            End Using
+
+            Using cmd As New SqlCommand(sqlNotasDB, cn)
+                cmd.Parameters.AddWithValue("@CodCliente", CodigoCliente)
+                cmd.Parameters.AddWithValue("@FechaFin", FechaFinDate)
+                Dim da As New SqlDataAdapter(cmd)
+                da.Fill(dsRepo, tblNotasDBName)
+            End Using
+
+            Using cmd As New SqlCommand(sqlNotasCR, cn)
+                cmd.Parameters.AddWithValue("@CodCliente", CodigoCliente)
+                cmd.Parameters.AddWithValue("@FechaFin", FechaFinDate)
+                Dim da As New SqlDataAdapter(cmd)
+                da.Fill(dsRepo, tblNotasCRName)
+            End Using
+
+            ' Determinar fecha mínima entre facturas/recibos/notas para traer tasas necesarias
+            Dim minDate As Date = FechaFinDate
+            If dsRepo.Tables.Contains(tblFacturasName) AndAlso dsRepo.Tables(tblFacturasName).Rows.Count > 0 Then
+                Try
+                    Dim minF As Date = dsRepo.Tables(tblFacturasName).AsEnumerable().Min(Function(r) Convert.ToDateTime(r("Fecha_Factura")))
+                    If minF < minDate Then minDate = minF
+                Catch
+                End Try
+            End If
+            If dsRepo.Tables.Contains(tblRecibosName) AndAlso dsRepo.Tables(tblRecibosName).Rows.Count > 0 Then
+                Try
+                    Dim minR As Date = dsRepo.Tables(tblRecibosName).AsEnumerable().Min(Function(r) Convert.ToDateTime(r("Fecha_Recibo")))
+                    If minR < minDate Then minDate = minR
+                Catch
+                End Try
+            End If
+            If dsRepo.Tables.Contains(tblNotasDBName) AndAlso dsRepo.Tables(tblNotasDBName).Rows.Count > 0 Then
+                Try
+                    Dim minN As Date = dsRepo.Tables(tblNotasDBName).AsEnumerable().Min(Function(r) Convert.ToDateTime(r("Fecha_Nota")))
+                    If minN < minDate Then minDate = minN
+                Catch
+                End Try
+            End If
+            minDate = minDate.AddDays(-2) ' margen pequeño para seguridad
+
+            ' Traer tasas entre minDate y FechaFinDate
+            Dim sqlTasa As String = "SELECT FechaTasa, MontoTasa FROM TasaCambio WHERE FechaTasa BETWEEN @Desde AND @Hasta"
+            Using cmd As New SqlCommand(sqlTasa, cn)
+                cmd.Parameters.AddWithValue("@Desde", minDate)
+                cmd.Parameters.AddWithValue("@Hasta", FechaFinDate)
+                Dim da As New SqlDataAdapter(cmd)
+                da.Fill(dsRepo, tblTasasName)
+            End Using
+
+            cn.Close()
+        End Using
+
+        ' ------------------ Construir diccionarios/listas en memoria para búsquedas rápidas ------------------
+        Dim dictRecibos As New Dictionary(Of String, List(Of DataRow))(StringComparer.OrdinalIgnoreCase)
+        If dsRepo.Tables.Contains(tblRecibosName) Then
+            For Each r As DataRow In dsRepo.Tables(tblRecibosName).Rows
+                Dim k As String = If(IsDBNull(r("Numero_Factura")), "0000", r("Numero_Factura").ToString())
+                If Not dictRecibos.ContainsKey(k) Then dictRecibos(k) = New List(Of DataRow)
+                dictRecibos(k).Add(r)
+            Next
+        End If
+
+        Dim dictNotasDB As New Dictionary(Of String, List(Of DataRow))(StringComparer.OrdinalIgnoreCase)
+        If dsRepo.Tables.Contains(tblNotasDBName) Then
+            For Each r As DataRow In dsRepo.Tables(tblNotasDBName).Rows
+                Dim k As String = If(IsDBNull(r("Numero_Factura")), "0000", r("Numero_Factura").ToString())
+                If Not dictNotasDB.ContainsKey(k) Then dictNotasDB(k) = New List(Of DataRow)
+                dictNotasDB(k).Add(r)
+            Next
+        End If
+
+        Dim dictNotasCR As New Dictionary(Of String, List(Of DataRow))(StringComparer.OrdinalIgnoreCase)
+        If dsRepo.Tables.Contains(tblNotasCRName) Then
+            For Each r As DataRow In dsRepo.Tables(tblNotasCRName).Rows
+                Dim k As String = If(IsDBNull(r("Numero_Factura")), "0000", r("Numero_Factura").ToString())
+                If Not dictNotasCR.ContainsKey(k) Then dictNotasCR(k) = New List(Of DataRow)
+                dictNotasCR(k).Add(r)
+            Next
+        End If
+
+        Dim dictTasa As New Dictionary(Of Date, Double)
+        If dsRepo.Tables.Contains(tblTasasName) Then
+            For Each r As DataRow In dsRepo.Tables(tblTasasName).Rows
+                Try
+                    Dim d As Date = Convert.ToDateTime(r("FechaTasa")).Date
+                    Dim monto As Double = If(IsDBNull(r("MontoTasa")), 0, CDbl(r("MontoTasa")))
+                    dictTasa(d) = monto
+                Catch
+                End Try
+            Next
+        End If
+
+        ' Cargar InteresMoratorio del cliente UNA sola vez
+        Dim interesMoratorio As Double = 0
+        Try
+            Using cn2 As New SqlConnection(connString)
+                Using cmd2 As New SqlCommand("SELECT InteresMoratorio FROM Clientes WHERE Cod_Cliente=@CodCliente", cn2)
+                    cmd2.Parameters.AddWithValue("@CodCliente", CodigoCliente)
+                    cn2.Open()
+                    Dim obj = cmd2.ExecuteScalar()
+                    If obj IsNot Nothing AndAlso Not IsDBNull(obj) Then
+                        interesMoratorio = CDbl(obj) / 100.0 ' porcentaje -> fracción
+                    End If
+                    cn2.Close()
+                End Using
+            End Using
+        Catch
+            interesMoratorio = 0
+        End Try
+
+        ' ------------------ Construir DataTable TotalVentas (mismo esquema que usabas) ------------------
+        If dsRepo.Tables.Contains("TotalVentas") Then dsRepo.Tables.Remove("TotalVentas")
+        Dim dtTotal As New DataTable("TotalVentas")
+        dtTotal.Columns.Add("Fecha_Factura", GetType(Date))
+        dtTotal.Columns.Add("Numero_Factura", GetType(String))
+        dtTotal.Columns.Add("Numero_Recibo", GetType(String))
+        dtTotal.Columns.Add("NotaDebito", GetType(String))
+        dtTotal.Columns.Add("Monto", GetType(Double))
+        dtTotal.Columns.Add("FechaVence", GetType(Date))
+        dtTotal.Columns.Add("Abono", GetType(Double))
+        dtTotal.Columns.Add("MontoNota", GetType(Double))
+        dtTotal.Columns.Add("Saldo", GetType(Double))
+        dtTotal.Columns.Add("Moratorio", GetType(Double))
+        dtTotal.Columns.Add("Dias", GetType(Integer))
+        dtTotal.Columns.Add("Total", GetType(Double))
+        dtTotal.Columns.Add("Cod_Cliente", GetType(String))
+        dtTotal.Columns.Add("Nombre_Cliente", GetType(String))
+        dsRepo.Tables.Add(dtTotal)
+
+        ' DataTable para batch update de MontoCredito (solo cliente consultado)
+        Dim dtMontosCredito As New DataTable
+        dtMontosCredito.Columns.Add("Numero_Factura", GetType(String))
+        dtMontosCredito.Columns.Add("Fecha_Factura", GetType(Date))
+        dtMontosCredito.Columns.Add("MontoCredito", GetType(Double))
+
+        ' ------------------ RECORRER FACTURAS y calcular (usando estructuras en memoria) ------------------
+        If dsRepo.Tables.Contains(tblFacturasName) Then
+            For Each f As DataRow In dsRepo.Tables(tblFacturasName).Rows
+                ' Lectura segura de campos (evitar DBNull)
+                Dim numero As String = If(IsDBNull(f("Numero_Factura")), "", f("Numero_Factura").ToString())
+                Dim fechaF As Date = If(IsDBNull(f("Fecha_Factura")), FechaFinDate, CDate(f("Fecha_Factura")))
+                Dim fechaV As Date = If(IsDBNull(f("Fecha_Vencimiento")), fechaF, CDate(f("Fecha_Vencimiento")))
+                Dim subtotal As Double = If(IsDBNull(f("SubTotal")), 0, CDbl(f("SubTotal")))
+                Dim iva As Double = If(IsDBNull(f("IVA")), 0, CDbl(f("IVA")))
+                Dim montoFacturaRaw As Double = subtotal + iva
+                Dim monedaFactura As String = If(IsDBNull(f("MonedaFactura")), "Cordobas", f("MonedaFactura").ToString())
+                Dim nombreCliente As String = If(IsDBNull(f("Nombre_Cliente")), "", f("Nombre_Cliente").ToString())
+
+                ' Convertir montoFactura según moneda/fecha de factura
+                Dim tasaFactura As Double = GetTasaFromDict(dictTasa, fechaF)
+                Dim montoFactura As Double
+                If OptCordobas Then
+                    If String.Equals(monedaFactura, "Cordobas", StringComparison.OrdinalIgnoreCase) Then
+                        montoFactura = montoFacturaRaw
+                    Else
+                        montoFactura = If(tasaFactura <> 0, montoFacturaRaw * tasaFactura, montoFacturaRaw)
+                    End If
+                Else
+                    If String.Equals(monedaFactura, "Dolares", StringComparison.OrdinalIgnoreCase) Then
+                        montoFactura = montoFacturaRaw
+                    Else
+                        montoFactura = If(tasaFactura <> 0, montoFacturaRaw / tasaFactura, montoFacturaRaw)
+                    End If
+                End If
+
+                ' Abonos: sumar recibos asociados (convertir por fecha/moneda de cada recibo)
+                Dim montoReciboConvertidoTotal As Double = 0
+                Dim recibosList As New List(Of String)
+                If dictRecibos.ContainsKey(numero) Then
+                    For Each r As DataRow In dictRecibos(numero)
+                        Dim montoR As Double = If(IsDBNull(r("MontoPagado")), 0, CDbl(r("MontoPagado")))
+                        Dim monedaR As String = If(IsDBNull(r("MonedaRecibo")), "Cordobas", r("MonedaRecibo").ToString())
+                        Dim fechaR As Date = If(IsDBNull(r("Fecha_Recibo")), FechaFinDate, CDate(r("Fecha_Recibo")))
+                        Dim codRecibo As String = If(IsDBNull(r("CodReciboPago")), "", r("CodReciboPago").ToString())
+
+                        Dim tasaR As Double = GetTasaFromDict(dictTasa, fechaR)
+                        Dim montoRconv As Double
+                        If OptCordobas Then
+                            If String.Equals(monedaR, "Cordobas", StringComparison.OrdinalIgnoreCase) Then
+                                montoRconv = montoR
+                            Else
+                                montoRconv = If(tasaR <> 0, montoR * tasaR, montoR)
+                            End If
+                        Else
+                            If String.Equals(monedaR, "Dolares", StringComparison.OrdinalIgnoreCase) Then
+                                montoRconv = montoR
+                            Else
+                                montoRconv = If(tasaR <> 0, montoR / tasaR, montoR)
+                            End If
+                        End If
+
+                        montoReciboConvertidoTotal += montoRconv
+                        If Not String.IsNullOrEmpty(codRecibo) Then recibosList.Add(codRecibo)
+                    Next
+                End If
+                Dim recibosListStr As String = If(recibosList.Count > 0, String.Join(",", recibosList), "")
+
+                ' Notas DB por factura
+                Dim montoNBConvTotal As Double = 0
+                Dim notaListNB As New List(Of String)
+                If dictNotasDB.ContainsKey(numero) Then
+                    For Each nb As DataRow In dictNotasDB(numero)
+                        Dim montoN As Double = If(IsDBNull(nb("Monto")), 0, CDbl(nb("Monto")))
+                        Dim monedaN As String = If(IsDBNull(nb("MonedaNota")), "Cordobas", nb("MonedaNota").ToString())
+                        Dim fechaN As Date = If(IsDBNull(nb("Fecha_Nota")), FechaFinDate, CDate(nb("Fecha_Nota")))
+                        Dim numeroNota As String = If(IsDBNull(nb("Numero_Nota")), "", nb("Numero_Nota").ToString())
+
+                        Dim tasaN As Double = GetTasaFromDict(dictTasa, fechaN)
+                        Dim montoNconv As Double
+                        If OptCordobas Then
+                            If String.Equals(monedaN, "Cordobas", StringComparison.OrdinalIgnoreCase) Then
+                                montoNconv = montoN
+                            Else
+                                montoNconv = If(tasaN <> 0, montoN * tasaN, montoN)
+                            End If
+                        Else
+                            If String.Equals(monedaN, "Dolares", StringComparison.OrdinalIgnoreCase) Then
+                                montoNconv = montoN
+                            Else
+                                montoNconv = If(tasaN <> 0, montoN / tasaN, montoN)
+                            End If
+                        End If
+
+                        montoNBConvTotal += montoNconv
+                        If Not String.IsNullOrEmpty(numeroNota) Then notaListNB.Add(numeroNota)
+                    Next
+                End If
+
+                ' Notas CR por factura
+                Dim montoNCConvTotal As Double = 0
+                Dim notaListNC As New List(Of String)
+                If dictNotasCR.ContainsKey(numero) Then
+                    For Each nc As DataRow In dictNotasCR(numero)
+                        Dim montoN As Double = If(IsDBNull(nc("Monto")), 0, CDbl(nc("Monto")))
+                        Dim monedaN As String = If(IsDBNull(nc("MonedaNota")), "Cordobas", nc("MonedaNota").ToString())
+                        Dim fechaN As Date = If(IsDBNull(nc("Fecha_Nota")), FechaFinDate, CDate(nc("Fecha_Nota")))
+                        Dim numeroNota As String = If(IsDBNull(nc("Numero_Nota")), "", nc("Numero_Nota").ToString())
+
+                        Dim tasaN As Double = GetTasaFromDict(dictTasa, fechaN)
+                        Dim montoNconv As Double
+                        If OptCordobas Then
+                            If String.Equals(monedaN, "Cordobas", StringComparison.OrdinalIgnoreCase) Then
+                                montoNconv = montoN
+                            Else
+                                montoNconv = If(tasaN <> 0, montoN * tasaN, montoN)
+                            End If
+                        Else
+                            If String.Equals(monedaN, "Dolares", StringComparison.OrdinalIgnoreCase) Then
+                                montoNconv = montoN
+                            Else
+                                montoNconv = If(tasaN <> 0, montoN / tasaN, montoN)
+                            End If
+                        End If
+
+                        montoNCConvTotal += montoNconv
+                        If Not String.IsNullOrEmpty(numeroNota) Then notaListNC.Add(numeroNota)
+                    Next
+                End If
+
+                ' Cálculo saldo, días, mora, total
+                Dim dias As Integer = DateDiff(DateInterval.Day, fechaV, FechaFinDate)
+                Dim saldo As Double = montoFactura - montoReciboConvertidoTotal + montoNBConvTotal - montoNCConvTotal
+                If Math.Round(saldo, 2) = 0 Then dias = 0
+                Dim montoMora As Double = dias * saldo * interesMoratorio
+                Dim total As Double = saldo + montoMora
+
+                ' NotaDebito string (igual que antes)
+                Dim notaDebitoStr As String = ""
+                If montoNBConvTotal > 0 AndAlso montoNCConvTotal > 0 Then
+                    notaDebitoStr = "NC:" & String.Join(",", notaListNC) & " NB:" & String.Join(",", notaListNB)
+                ElseIf montoNCConvTotal > 0 Then
+                    notaDebitoStr = "NC:" & String.Join(",", notaListNC)
+                ElseIf montoNBConvTotal > 0 Then
+                    notaDebitoStr = "NB:" & String.Join(",", notaListNB)
+                End If
+
+                ' Agregar fila a TotalVentas
+                Dim orow As DataRow = dsRepo.Tables("TotalVentas").NewRow()
+                orow("Fecha_Factura") = fechaF
+                orow("Numero_Factura") = numero
+                orow("Numero_Recibo") = recibosListStr
+                orow("NotaDebito") = notaDebitoStr
+                orow("Monto") = montoFactura
+                orow("FechaVence") = fechaV
+                orow("Abono") = montoReciboConvertidoTotal
+                orow("MontoNota") = montoNBConvTotal - montoNCConvTotal
+                orow("Saldo") = saldo
+                orow("Moratorio") = montoMora
+                orow("Dias") = dias
+                orow("Total") = total
+                orow("Cod_Cliente") = CodigoCliente
+                orow("Nombre_Cliente") = nombreCliente
+                dsRepo.Tables("TotalVentas").Rows.Add(orow)
+
+                ' Guardar fila para batch update MontoCredito
+                Dim drUp As DataRow = dtMontosCredito.NewRow()
+                drUp("Numero_Factura") = numero
+                drUp("Fecha_Factura") = fechaF
+                drUp("MontoCredito") = saldo
+                dtMontosCredito.Rows.Add(drUp)
+
+                ' Acumular totales
+                TotalFactura += saldo
+                TotalAbonos += montoReciboConvertidoTotal
+                TotalCargos += montoFactura
+                TotalMontoNotaDB += montoNBConvTotal
+                TotalMontoNotaCR += montoNCConvTotal
+                TotalMora += montoMora
+            Next
+        End If
+
+        ' ------------------ RECIBOS SIN FACTURA (numero '0' o '0000') ------------------
+        For Each key As String In New String() {"0", "0000"}
+            If dictRecibos.ContainsKey(key) Then
+                Dim lista = dictRecibos(key)
+                For Each r As DataRow In lista
+                    Dim montoR As Double = If(IsDBNull(r("MontoPagado")), 0, CDbl(r("MontoPagado")))
+                    Dim monedaR As String = If(IsDBNull(r("MonedaRecibo")), "Cordobas", r("MonedaRecibo").ToString())
+                    Dim fechaR As Date = If(IsDBNull(r("Fecha_Recibo")), FechaFinDate, CDate(r("Fecha_Recibo")))
+                    Dim tasaR As Double = GetTasaFromDict(dictTasa, fechaR)
+                    Dim montoRconv As Double
+                    If OptCordobas Then
+                        If String.Equals(monedaR, "Cordobas", StringComparison.OrdinalIgnoreCase) Then
+                            montoRconv = montoR
+                        Else
+                            montoRconv = If(tasaR <> 0, montoR * tasaR, montoR)
+                        End If
+                    Else
+                        If String.Equals(monedaR, "Dolares", StringComparison.OrdinalIgnoreCase) Then
+                            montoRconv = montoR
+                        Else
+                            montoRconv = If(tasaR <> 0, montoR / tasaR, montoR)
+                        End If
+                    End If
+
+                    Dim dias As Integer = DateDiff(DateInterval.Day, fechaR, FechaFinDate)
+                    Dim orow As DataRow = dsRepo.Tables("TotalVentas").NewRow()
+                    orow("Fecha_Factura") = fechaR
+                    orow("Numero_Factura") = "0000"
+                    orow("Numero_Recibo") = If(IsDBNull(r("CodReciboPago")), "", r("CodReciboPago").ToString())
+                    orow("NotaDebito") = ""
+                    orow("Monto") = 0
+                    orow("FechaVence") = fechaR
+                    orow("Abono") = montoRconv
+                    orow("MontoNota") = 0
+                    orow("Saldo") = -montoRconv
+                    orow("Moratorio") = 0
+                    orow("Dias") = dias
+                    orow("Total") = -montoRconv
+                    orow("Cod_Cliente") = CodigoCliente
+                    orow("Nombre_Cliente") = If(dsRepo.Tables.Contains(tblFacturasName) AndAlso dsRepo.Tables(tblFacturasName).Rows.Count > 0,
+                                            dsRepo.Tables(tblFacturasName).Rows(0)("Nombre_Cliente").ToString(), "")
+                    dsRepo.Tables("TotalVentas").Rows.Add(orow)
+
+                    TotalAbonos += montoRconv
+                    TotalFactura -= montoRconv
+                Next
+            End If
+        Next
+
+        ' ------------------ NOTAS DB/CR SIN FACTURA (Numero_Factura = '0000') ------------------
+        If dictNotasDB.ContainsKey("0000") Then
+            For Each nb As DataRow In dictNotasDB("0000")
+                Dim montoN As Double = If(IsDBNull(nb("Monto")), 0, CDbl(nb("Monto")))
+                Dim monedaN As String = If(IsDBNull(nb("MonedaNota")), "Cordobas", nb("MonedaNota").ToString())
+                Dim fechaN As Date = If(IsDBNull(nb("Fecha_Nota")), FechaFinDate, CDate(nb("Fecha_Nota")))
+                Dim tasaN As Double = GetTasaFromDict(dictTasa, fechaN)
+                Dim montoNconv As Double
+                If OptCordobas Then
+                    If String.Equals(monedaN, "Cordobas", StringComparison.OrdinalIgnoreCase) Then
+                        montoNconv = montoN
+                    Else
+                        montoNconv = If(tasaN <> 0, montoN * tasaN, montoN)
+                    End If
+                Else
+                    If String.Equals(monedaN, "Dolares", StringComparison.OrdinalIgnoreCase) Then
+                        montoNconv = montoN
+                    Else
+                        montoNconv = If(tasaN <> 0, montoN / tasaN, montoN)
+                    End If
+                End If
+
+                Dim orow As DataRow = dsRepo.Tables("TotalVentas").NewRow()
+                orow("Fecha_Factura") = fechaN
+                orow("Numero_Factura") = "0000"
+                orow("Numero_Recibo") = "0000"
+                orow("NotaDebito") = "NB:" & If(IsDBNull(nb("Numero_Nota")), "", nb("Numero_Nota").ToString())
+                orow("Monto") = 0
+                orow("FechaVence") = fechaN
+                orow("Abono") = 0
+                orow("MontoNota") = montoNconv
+                orow("Saldo") = montoNconv
+                orow("Moratorio") = 0
+                orow("Dias") = 0
+                orow("Total") = montoNconv
+                orow("Cod_Cliente") = CodigoCliente
+                orow("Nombre_Cliente") = If(dsRepo.Tables.Contains(tblFacturasName) AndAlso dsRepo.Tables(tblFacturasName).Rows.Count > 0,
+                                        dsRepo.Tables(tblFacturasName).Rows(0)("Nombre_Cliente").ToString(), "")
+                dsRepo.Tables("TotalVentas").Rows.Add(orow)
+
+                TotalMontoNotaDB += montoNconv
+            Next
+        End If
+
+        If dictNotasCR.ContainsKey("0000") Then
+            For Each nc As DataRow In dictNotasCR("0000")
+                Dim montoN As Double = If(IsDBNull(nc("Monto")), 0, CDbl(nc("Monto")))
+                Dim monedaN As String = If(IsDBNull(nc("MonedaNota")), "Cordobas", nc("MonedaNota").ToString())
+                Dim fechaN As Date = If(IsDBNull(nc("Fecha_Nota")), FechaFinDate, CDate(nc("Fecha_Nota")))
+                Dim tasaN As Double = GetTasaFromDict(dictTasa, fechaN)
+                Dim montoNconv As Double
+                If OptCordobas Then
+                    If String.Equals(monedaN, "Cordobas", StringComparison.OrdinalIgnoreCase) Then
+                        montoNconv = montoN
+                    Else
+                        montoNconv = If(tasaN <> 0, montoN * tasaN, montoN)
+                    End If
+                Else
+                    If String.Equals(monedaN, "Dolares", StringComparison.OrdinalIgnoreCase) Then
+                        montoNconv = montoN
+                    Else
+                        montoNconv = If(tasaN <> 0, montoN / tasaN, montoN)
+                    End If
+                End If
+
+                Dim orow As DataRow = dsRepo.Tables("TotalVentas").NewRow()
+                orow("Fecha_Factura") = fechaN
+                orow("Numero_Factura") = "0000"
+                orow("Numero_Recibo") = "0000"
+                orow("NotaDebito") = "NC:" & If(IsDBNull(nc("Numero_Nota")), "", nc("Numero_Nota").ToString())
+                orow("Monto") = 0
+                orow("FechaVence") = fechaN
+                orow("Abono") = 0
+                orow("MontoNota") = -montoNconv
+                orow("Saldo") = -montoNconv
+                orow("Moratorio") = 0
+                orow("Dias") = 0
+                orow("Total") = -montoNconv
+                orow("Cod_Cliente") = CodigoCliente
+                orow("Nombre_Cliente") = If(dsRepo.Tables.Contains(tblFacturasName) AndAlso dsRepo.Tables(tblFacturasName).Rows.Count > 0,
+                                        dsRepo.Tables(tblFacturasName).Rows(0)("Nombre_Cliente").ToString(), "")
+                dsRepo.Tables("TotalVentas").Rows.Add(orow)
+
+                TotalMontoNotaCR += montoNconv
+                TotalFactura -= montoNconv
+            Next
+        End If
+
+        ' ------------------ Enviar totales al formulario (como antes) ------------------
+        Select Case Proceso
+            Case "CtasxCobrar"
+                Try
+                    FrmCuentasXCobrar.TotalFactura = TotalFactura
+                    FrmCuentasXCobrar.TotalCargos = TotalCargos
+                    FrmCuentasXCobrar.TotalAbonos = TotalAbonos
+                    FrmCuentasXCobrar.TotalMora = TotalMora
+                    FrmCuentasXCobrar.TotalMontoNotaDB = TotalMontoNotaDB
+                    FrmCuentasXCobrar.TotalMontoNotaCR = TotalMontoNotaCR
+                Catch
+                    ' Si el formulario no está disponible en este contexto, ignorar (no fatal)
+                End Try
+        End Select
+
+        ' ------------------ Ejecutar batch update de MontoCredito solo para este cliente ------------------
+        If dtMontosCredito.Rows.Count > 0 Then
+            Try
+                ActualizaMontoCredito_Batch(dtMontosCredito, CodigoCliente)
+            Catch ex As Exception
+                ' Registrar/log si tienes logger; no interrumpir el retorno del dataset
+            End Try
+        End If
+
+        Return dsRepo
+    End Function
+
+    ' ------------------ Helper: buscar tasa en diccionario (fecha exacta o menor más cercana) ------------------
+    Private Function GetTasaFromDict(dict As Dictionary(Of Date, Double), fecha As Date) As Double
+        If dict Is Nothing OrElse dict.Count = 0 Then Return 1.0
+        Dim f As Date = fecha.Date
+        If dict.ContainsKey(f) Then
+            Return dict(f)
+        Else
+            ' Buscar la fecha menor más cercana
+            Dim fechas = dict.Keys.Where(Function(d) d <= f).OrderByDescending(Function(d) d)
+            If fechas.Any() Then
+                Return dict(fechas.First())
+            Else
+                ' fallback: tomar la menor disponible
+                Dim minKey = dict.Keys.Min()
+                Return dict(minKey)
+            End If
+        End If
+    End Function
+
+    ' ------------------ Batch update de MontoCredito (usa SqlBulkCopy + UPDATE ... FROM) ------------------
+    Private Sub ActualizaMontoCredito_Batch(dtMontosCredito As DataTable, CodigoCliente As String)
+        If dtMontosCredito Is Nothing OrElse dtMontosCredito.Rows.Count = 0 Then Exit Sub
+
+        Dim connString As String = Conexion
+
+        Using cn As New SqlConnection(connString)
+            cn.Open()
+
+            ' Crear tabla temporal (local) en la misma conexión
+            Dim createTempSql As String =
+            "CREATE TABLE #TempMontosCredito (" &
+            "Numero_Factura NVARCHAR(100) NOT NULL," &
+            "Fecha_Factura DATETIME NOT NULL," &
+            "MontoCredito FLOAT NULL);"
+
+            Using cmdCreate As New SqlCommand(createTempSql, cn)
+                cmdCreate.ExecuteNonQuery()
+            End Using
+
+            ' Bulk copy a la tabla temporal
+            Using bulk As New SqlBulkCopy(cn)
+                bulk.DestinationTableName = "#TempMontosCredito"
+                bulk.ColumnMappings.Add("Numero_Factura", "Numero_Factura")
+                bulk.ColumnMappings.Add("Fecha_Factura", "Fecha_Factura")
+                bulk.ColumnMappings.Add("MontoCredito", "MontoCredito")
+                bulk.WriteToServer(dtMontosCredito)
+            End Using
+
+            ' UPDATE en bloque: solo facturas del cliente consultado
+            Dim updateSql As String =
+            "UPDATE f SET f.MontoCredito = t.MontoCredito " &
+            "FROM Facturas f " &
+            "INNER JOIN #TempMontosCredito t ON f.Numero_Factura = t.Numero_Factura AND f.Fecha_Factura = t.Fecha_Factura " &
+            "WHERE f.Tipo_Factura = 'Factura' AND f.Cod_Cliente = @CodCliente;"
+
+            Using cmdUpdate As New SqlCommand(updateSql, cn)
+                cmdUpdate.Parameters.AddWithValue("@CodCliente", CodigoCliente)
+                cmdUpdate.ExecuteNonQuery()
+            End Using
+
+            ' Eliminar temp table (opcional porque se elimina al cerrar la conexión)
+            Using cmdDrop As New SqlCommand("IF OBJECT_ID('tempdb..#TempMontosCredito') IS NOT NULL DROP TABLE #TempMontosCredito;", cn)
+                cmdDrop.ExecuteNonQuery()
+            End Using
+
+            cn.Close()
+        End Using
+    End Sub
+
+
+
+
     Public Function LoteDefectoFacturas(ByVal CodigoProducto As String, ByVal CodigoBodega As String, FechaFiltro As Date) As String
         Dim NumeroLote As String = "SINLOTE"
         Dim FechaVenceLote As Date = FechaFiltro 'DateAdd(DateInterval.Month, -2, FechaFiltro)
@@ -33,10 +659,6 @@ Module Funciones
 
 
     End Function
-
-
-
-
     Public Function ObtenerExistenciasPorBodega(ByVal CodProducto As String, ByVal FechaCorte As Date) As DataSet
         Dim DataSetExistencias As New DataSet
         Dim Sql As String
@@ -129,8 +751,6 @@ Module Funciones
 
         Return DataSetExistencias
     End Function
-
-
 
     Public Function BuscaExistenciaFacturaLoteWorker(Args As TablaDetalleFactura, ByVal worker As BackgroundWorker, ByVal e As DoWorkEventArgs) As Lote
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -853,32 +1473,61 @@ Module Funciones
         dv = New DataView(DatasetReporte.Tables("Consulta"))
         dv.Sort = Orden
     End Function
+
     Public Function dvCtasxCobrar(CodigoCliente As String, OptCordobas As Boolean, FechaFin As Date, Proceso As String, ExcluirCero As Boolean, Ordenar As String) As DataView
-        Dim dv As DataView, Filtro As String, MontoMayor As Double = 0
-        Dim DatasetReporte As New DataSet
-
-
-
-        DatasetReporte = FillDataSetCtaxCobrar(CodigoCliente, OptCordobas, FechaFin, Proceso).Copy()
-
-        If ExcluirCero = True Then
-            Filtro = "Fecha_Factura <= '" & Format(FechaFin, "yyyy-MM-dd") & "' AND Total > " & MontoMayor & " "
-        Else
-            Filtro = "Fecha_Factura <= '" & Format(FechaFin, "yyyy-MM-dd") & "'  "
+        Dim ds As DataSet = FillDataSetCtaxCobrar(CodigoCliente, OptCordobas, FechaFin, Proceso)
+        If ds Is Nothing OrElse Not ds.Tables.Contains("TotalVentas") Then
+            Return New DataView() ' vacío
         End If
 
+        Dim dv As New DataView(ds.Tables("TotalVentas"))
+        Dim filtro As String = "Fecha_Factura <= '" & Format(FechaFin, "yyyy-MM-dd") & "'"
 
-        dv = New DataView(DatasetReporte.Tables("TotalVentas"))
+        If ExcluirCero Then
+            ' Total o Saldo > 0? Usaremos Saldo > 0 para excluir ceros
+            filtro &= " AND Saldo <> 0"
+        End If
+
+        dv.RowFilter = filtro
 
         Select Case Ordenar
-            Case "Cliente" : dv.Sort = "Cod_Cliente"
+            Case "Cliente"
+                dv.Sort = "Cod_Cliente"
+            Case Else
+                dv.Sort = "Fecha_Factura, Numero_Factura"
         End Select
 
-        dv.RowFilter = Filtro
-
         Return dv
-
     End Function
+
+    'Public Function dvCtasxCobrar(CodigoCliente As String, OptCordobas As Boolean, FechaFin As Date, Proceso As String, ExcluirCero As Boolean, Ordenar As String) As DataView
+    '    Dim dv As DataView, Filtro As String, MontoMayor As Double = 0
+    '    Dim DatasetReporte As New DataSet
+
+
+
+    '    DatasetReporte = FillDataSetCtaxCobrar(CodigoCliente, OptCordobas, FechaFin, Proceso).Copy()
+
+    '    If ExcluirCero = True Then
+    '        Filtro = "Fecha_Factura <= '" & Format(FechaFin, "yyyy-MM-dd") & "' AND Total > " & MontoMayor & " "
+    '    Else
+    '        Filtro = "Fecha_Factura <= '" & Format(FechaFin, "yyyy-MM-dd") & "'  "
+    '    End If
+
+
+    '    dv = New DataView(DatasetReporte.Tables("TotalVentas"))
+
+    '    Select Case Ordenar
+    '        Case "Cliente" : dv.Sort = "Cod_Cliente"
+    '    End Select
+
+    '    dv.RowFilter = Filtro
+
+    '    Return dv
+
+    'End Function
+
+
     Public Function LlenarEstadoCtaXCobrar(CodigoCliente As String, OptCordobas As Boolean, FechaIni As Date, FechaFin As Date) As DataSet
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim oDataRow As DataRow, SqlString As String
@@ -951,6 +1600,8 @@ Module Funciones
 
 
     End Function
+
+
 
     Public Function FillDataSetCtaxCobrar(CodigoCliente As String, OptCordobas As Boolean, FechaFin As Date, Proceso As String) As DataSet
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
