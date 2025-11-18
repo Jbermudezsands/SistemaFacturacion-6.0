@@ -71,6 +71,8 @@ Partial Class FrmContratosProveedor
         Me.ChkMartes = New System.Windows.Forms.CheckBox()
         Me.ChkLunes = New System.Windows.Forms.CheckBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.TxtMonto = New System.Windows.Forms.TextBox()
         Me.Label19 = New System.Windows.Forms.Label()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.DtpFinContrato = New System.Windows.Forms.DateTimePicker()
@@ -241,11 +243,11 @@ Partial Class FrmContratosProveedor
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(60, 73)
+        Me.Label7.Location = New System.Drawing.Point(43, 71)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(45, 13)
+        Me.Label7.Size = New System.Drawing.Size(62, 13)
         Me.Label7.TabIndex = 251
-        Me.Label7.Text = "Modelo:"
+        Me.Label7.Text = "Referencia:"
         '
         'txtModelo
         '
@@ -609,6 +611,8 @@ Partial Class FrmContratosProveedor
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.Label13)
+        Me.GroupBox1.Controls.Add(Me.TxtMonto)
         Me.GroupBox1.Controls.Add(Me.Label19)
         Me.GroupBox1.Controls.Add(Me.Button3)
         Me.GroupBox1.Controls.Add(Me.DtpFinContrato)
@@ -633,6 +637,23 @@ Partial Class FrmContratosProveedor
         Me.GroupBox1.TabIndex = 244
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Datos Proveedor"
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(464, 97)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(40, 13)
+        Me.Label13.TabIndex = 341
+        Me.Label13.Text = "Monto:"
+        '
+        'TxtMonto
+        '
+        Me.TxtMonto.Enabled = False
+        Me.TxtMonto.Location = New System.Drawing.Point(507, 97)
+        Me.TxtMonto.Name = "TxtMonto"
+        Me.TxtMonto.Size = New System.Drawing.Size(123, 20)
+        Me.TxtMonto.TabIndex = 342
         '
         'Label19
         '
@@ -1071,4 +1092,6 @@ Partial Class FrmContratosProveedor
     Friend WithEvents TrueDBGridConsultas As C1.Win.C1TrueDBGrid.C1TrueDBGrid
     Friend WithEvents Button4 As Button
     Friend WithEvents OpenFileDialog As OpenFileDialog
+    Friend WithEvents Label13 As Label
+    Friend WithEvents TxtMonto As TextBox
 End Class

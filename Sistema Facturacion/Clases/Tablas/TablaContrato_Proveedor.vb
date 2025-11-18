@@ -4,6 +4,7 @@
     Private Contacto_Proveedor_Contrato As String
     Private Telefono_Contacto_Contrato As String
     Private Descripcion_Contrato As String
+    Private MontoContrato As Double
     Private FechaInicio As Date
     Private FechaFin As Date
     Private TipoServicio As String
@@ -367,6 +368,15 @@
         End Get
         Set(value As Date)
             DomingoFin = value
+        End Set
+    End Property
+
+    Public Property Monto As Double
+        Get
+            Return MontoContrato
+        End Get
+        Set(value As Double)
+            MontoContrato = value
         End Set
     End Property
 End Class

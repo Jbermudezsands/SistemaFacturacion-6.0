@@ -1385,7 +1385,7 @@ Handles backgroundWorkerGrabar.ProgressChanged
                     My.Forms.FrmLotesFactura.NombreProducto = Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text   'Me.BindingDetalle.Item(Posicion)("Descripcion_Producto")
                     My.Forms.FrmLotesFactura.NumeroDocumento = Me.TxtNumeroEnsamble.Text
                     My.Forms.FrmLotesFactura.Fecha = Me.DTPFecha.Value
-                    My.Forms.FrmLotesFactura.LblProducto.Text = Me.TrueDBGridComponentes.Columns("Cod_Productos").Text + " " + Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text
+                    My.Forms.FrmLotesFactura.LblProducto.Text = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text + " " + Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text
                     'If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then    'Not IsDBNull(Me.BindingDetalle.Item(Posicion)("Cantidad")) Then
                     '    My.Forms.FrmLotesFactura.Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                     'Else
@@ -2311,7 +2311,7 @@ Handles backgroundWorkerGrabar.ProgressChanged
 
         FechaFactura = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
 
-        CodProducto = Me.TrueDBGridComponentes.Columns("Cod_Productos").Text
+        CodProducto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
         iPosicion = Me.BindingDetalle.Position
         If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("id_Detalle_Factura")) Then
             idDetalle = Me.BindingDetalle.Item(iPosicion)("id_Detalle_Factura")

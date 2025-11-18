@@ -294,6 +294,8 @@ Public Class FrmFacturas
             End If
         Next
 
+
+
         ' Si está exonerado, forzar IVA en 0
         If OptExsonerado.Checked Then Iva = 0
 
@@ -335,6 +337,9 @@ Public Class FrmFacturas
         TxtPagado.Text = Format(Monto, "##,##0.00")
         TxtNetoPagar.Text = Format(Neto, "##,##0.00")
         TxtPropina.Text = Format(MontoPropina, "##,##0.00")
+
+        SubTotalGral = Subtotal
+        IvaGral = Iva
 
     End Sub
 
@@ -1146,6 +1151,8 @@ Public Class FrmFacturas
         TablaFactura.Nuestra_Referencia = ""
         TablaFactura.Codigo_Proyecto = CboProyecto.Text
         TablaFactura.Observaciones_Factura = Me.TxtObservaciones.Text
+        TablaFactura.Sub_Total = Me.TxtSubTotal.Text
+        TablaFactura.IVA_Factura = Me.TxtIva.Text
 
         If My.Forms.FrmFacturas.SubTotalGral <> 0 Then
             TablaFactura.Sub_Total = Redondeo(My.Forms.FrmFacturas.SubTotalGral, 4)
@@ -4795,7 +4802,8 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                 TablaFactura.Nuestra_Referencia = ""
                 TablaFactura.Codigo_Proyecto = CboProyecto.Text
                 TablaFactura.Observaciones_Factura = Me.TxtObservaciones.Text
-
+                TablaFactura.Sub_Total = Me.TxtSubTotal.Text
+                TablaFactura.IVA_Factura = Me.TxtIva.Text
 
 
 

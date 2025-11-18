@@ -1,7 +1,4 @@
-UPDATE [dbo].[DatosEmpresa]
-   SET [ActivarAuditoriaSPlano] = 0
-   go
-
-
+SELECT  MAX(Detalle_Compras.Numero_Compra) AS Numero_Compra, Detalle_Compras.Cod_Producto, SUM(Detalle_Compras.Cantidad) AS Cantidad, SUM(Detalle_Compras.Precio_Unitario) AS Precio_UnitarioD, SUM(Detalle_Compras.Precio_Unitario * TasaCambio.MontoTasa) AS Precio_Unitario, SUM(Detalle_Compras.Descuento * TasaCambio.MontoTasa) AS Descuento, SUM(Detalle_Compras.Descuento) AS DescuentoD, SUM(Detalle_Compras.Precio_Neto * TasaCambio.MontoTasa) AS Precio_Neto, SUM(Detalle_Compras.Precio_Neto) AS Precio_NetoD, SUM(Detalle_Compras.Precio_Neto * Detalle_Compras.Cantidad * TasaCambio.MontoTasa) AS Importe, SUM(Detalle_Compras.Precio_Neto * Detalle_Compras.Cantidad) AS ImporteD FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra INNER JOIN TasaCambio ON Compras.Fecha_Compra = TasaCambio.FechaTasa  WHERE  (Detalle_Compras.Fecha_Compra <= CONVERT(DATETIME, '2025-11-12', 
+102)) AND (Detalle_Compras.Tipo_Compra = 'Mercancia Recibida') AND (Compras.MonedaCompra = 'Dolares') GROUP BY Detalle_Compras.Cod_Producto HAVING (Detalle_Compras.Cod_Producto = 'MT-003')
 
 
