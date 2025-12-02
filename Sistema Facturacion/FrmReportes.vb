@@ -6983,8 +6983,133 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                 ArepSalidaProductosTipo2.Run(False)
                 ViewerForm.Show()
 
+        '    Case "Reporte Existencia Productos"
+
+        '        ' ===============================================
+        '        ' RANGO DE PRODUCTOS
+        '        ' ===============================================
+        '        Dim ProdDesde As String = Nothing
+        '        Dim ProdHasta As String = Nothing
+
+        '        If CboCodProducto.Text <> "" And CboCodProducto2.Text = "" Then
+        '            ProdDesde = CboCodProducto.Text
+        '            ProdHasta = "ZZZZZZZZZZ"
+        '        End If
+
+        '        If CboCodProducto.Text = "" And CboCodProducto2.Text <> "" Then
+        '            ProdDesde = "0000000000"
+        '            ProdHasta = CboCodProducto2.Text
+        '        End If
+
+        '        If CboCodProducto.Text <> "" And CboCodProducto2.Text <> "" Then
+        '            ProdDesde = CboCodProducto.Text
+        '            ProdHasta = CboCodProducto2.Text
+        '        End If
 
 
+        '        ' ===============================================
+        '        ' RANGO DE LÍNEAS
+        '        ' ===============================================
+        '        Dim LineaDesde As String = Nothing
+        '        Dim LineaHasta As String = Nothing
+
+        '        If CmbRango1.Text <> "" And CmbRango2.Text = "" Then
+        '            LineaDesde = CmbRango1.Text
+        '            LineaHasta = "ZZZZZZ"
+        '        End If
+
+        '        If CmbRango1.Text = "" And CmbRango2.Text <> "" Then
+        '            LineaDesde = "000000"
+        '            LineaHasta = CmbRango2.Text
+        '        End If
+
+        '        If CmbRango1.Text <> "" And CmbRango2.Text <> "" Then
+        '            LineaDesde = CmbRango1.Text
+        '            LineaHasta = CmbRango2.Text
+        '        End If
+
+
+        '        ' ===============================================
+        '        ' RANGO DE BODEGAS
+        '        ' ===============================================
+        '        Dim BodegaDesde As String = Nothing
+        '        Dim BodegaHasta As String = Nothing
+
+        '        If CmbAgrupado.Text = "Bodega" Then
+
+        '            If CmbRango1.Text <> "" And CmbRango2.Text = "" Then
+        '                BodegaDesde = CmbRango1.Text
+        '                BodegaHasta = "ZZZZZZ"
+        '            End If
+
+        '            If CmbRango1.Text = "" And CmbRango2.Text <> "" Then
+        '                BodegaDesde = "000000"
+        '                BodegaHasta = CmbRango2.Text
+        '            End If
+
+        '            If CmbRango1.Text <> "" And CmbRango2.Text <> "" Then
+        '                BodegaDesde = CmbRango1.Text
+        '                BodegaHasta = CmbRango2.Text
+        '            End If
+
+        '        End If
+
+
+        '        ' ===============================================
+        '        ' RANGO DE FECHAS
+        '        ' ===============================================
+        '        Dim FechaIni As Date = DTPFechaIni.Value
+        '        Dim FechaFin As Date = DTPFechaFin.Value
+
+
+        '        ' ===============================================
+        '        ' AGRUPACIÓN SELECCIONADA
+        '        ' ===============================================
+        '        Dim Agrupado As String = CmbAgrupado.Text
+
+
+        '        ' ===============================================
+        '        ' CONSULTA OPTIMIZADA
+        '        ' UNA SOLA CONSULTA SQL PARA TODO EL REPORTE
+        '        ' ===============================================
+        '        Dim dt As DataTable =
+        'ObtenerExistencias(Agrupado,
+        '                   ProdDesde, ProdHasta,
+        '                   LineaDesde, LineaHasta,
+        '                   BodegaDesde, BodegaHasta,
+        '                   FechaIni, FechaFin)
+
+
+        '        ' ===============================================
+        '        ' CONFIGURACIÓN DEL REPORTE
+        '        ' ===============================================
+        '        Dim reporte As New ArepExistencia
+        '        reporte.DataSource = dt
+
+        '        reporte.LblTitulo.Text = NombreEmpresa
+        '        reporte.LblDireccion.Text = DireccionEmpresa
+        '        reporte.LblRuc.Text = Ruc
+
+        '        reporte.Document.Name = "REPORTE EXISTENCIA POR PRODUCTOS"
+        '        reporte.LblNombre.Text = "REPORTE EXISTENCIA POR PRODUCTOS"
+
+        '        reporte.LblFecha.Text = "REGISTROS DESDE " &
+        '                    FechaIni.ToString("dd/MM/yyyy") &
+        '                    " HASTA " &
+        '                    FechaFin.ToString("dd/MM/yyyy")
+
+
+        '        ' ===============================================
+        '        ' VISOR DE REPORTE
+        '        ' ===============================================
+        '        Dim ViewerForm As New FrmViewer()
+        '        ViewerForm.arvMain.Document = reporte.Document
+        '        reporte.Run(False)
+        '        ViewerForm.Show()
+
+
+
+            '*************************CODIGO RETIRADO 27/11/2025 *********************************************
             Case "Reporte Existencia Productos"
                 Dim SqlString As String, Existencia As Double = 0, iPosicionFila As Double = 0, CodigoBodega As String
                 Dim oDataRow As DataRow, i As Double, Registro As Double = 0

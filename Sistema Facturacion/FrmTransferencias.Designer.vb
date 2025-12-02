@@ -102,10 +102,11 @@ Partial Class FrmTransferencias
         '
         'Button8
         '
+        Me.Button8.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
         Me.Button8.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button8.Location = New System.Drawing.Point(567, 443)
+        Me.Button8.Location = New System.Drawing.Point(558, 442)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(75, 66)
         Me.Button8.TabIndex = 98
@@ -119,7 +120,7 @@ Partial Class FrmTransferencias
         Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label9.Location = New System.Drawing.Point(241, 32)
+        Me.Label9.Location = New System.Drawing.Point(220, 34)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(202, 13)
         Me.Label9.TabIndex = 101
@@ -138,10 +139,12 @@ Partial Class FrmTransferencias
         '
         'PictureBox1
         '
+        Me.PictureBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox1.Location = New System.Drawing.Point(1, -1)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(762, 74)
+        Me.PictureBox1.Size = New System.Drawing.Size(648, 74)
         Me.PictureBox1.TabIndex = 99
         Me.PictureBox1.TabStop = False
         '
@@ -153,7 +156,7 @@ Partial Class FrmTransferencias
         Me.GroupBox1.Controls.Add(Me.Label11)
         Me.GroupBox1.Location = New System.Drawing.Point(6, 129)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(636, 52)
+        Me.GroupBox1.Size = New System.Drawing.Size(627, 52)
         Me.GroupBox1.TabIndex = 102
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Bodegas de Transferencias"
@@ -161,6 +164,7 @@ Partial Class FrmTransferencias
         'CboCodigoBodega2
         '
         Me.CboCodigoBodega2.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboCodigoBodega2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.CboCodigoBodega2.Caption = ""
         Me.CboCodigoBodega2.CaptionHeight = 17
         Me.CboCodigoBodega2.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
@@ -177,7 +181,7 @@ Partial Class FrmTransferencias
         Me.CboCodigoBodega2.EditorHeight = 15
         Me.CboCodigoBodega2.Images.Add(CType(resources.GetObject("CboCodigoBodega2.Images"), System.Drawing.Image))
         Me.CboCodigoBodega2.ItemHeight = 15
-        Me.CboCodigoBodega2.Location = New System.Drawing.Point(502, 19)
+        Me.CboCodigoBodega2.Location = New System.Drawing.Point(493, 19)
         Me.CboCodigoBodega2.MatchEntryTimeout = CType(2000, Long)
         Me.CboCodigoBodega2.MaxDropDownItems = CType(5, Short)
         Me.CboCodigoBodega2.MaxLength = 32767
@@ -192,8 +196,9 @@ Partial Class FrmTransferencias
         '
         'Label1
         '
+        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(418, 21)
+        Me.Label1.Location = New System.Drawing.Point(409, 21)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(78, 13)
         Me.Label1.TabIndex = 184
@@ -252,7 +257,7 @@ Partial Class FrmTransferencias
         Me.GroupBox2.Controls.Add(Me.Label4)
         Me.GroupBox2.Location = New System.Drawing.Point(6, 79)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(636, 48)
+        Me.GroupBox2.Size = New System.Drawing.Size(627, 48)
         Me.GroupBox2.TabIndex = 160
         Me.GroupBox2.TabStop = False
         '
@@ -270,8 +275,9 @@ Partial Class FrmTransferencias
         '
         'Button6
         '
+        Me.Button6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
-        Me.Button6.Location = New System.Drawing.Point(586, 10)
+        Me.Button6.Location = New System.Drawing.Point(577, 10)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(37, 32)
         Me.Button6.TabIndex = 127
@@ -279,8 +285,9 @@ Partial Class FrmTransferencias
         '
         'TxtNumeroEnsamble
         '
+        Me.TxtNumeroEnsamble.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TxtNumeroEnsamble.Enabled = False
-        Me.TxtNumeroEnsamble.Location = New System.Drawing.Point(502, 16)
+        Me.TxtNumeroEnsamble.Location = New System.Drawing.Point(493, 16)
         Me.TxtNumeroEnsamble.Name = "TxtNumeroEnsamble"
         Me.TxtNumeroEnsamble.Size = New System.Drawing.Size(76, 20)
         Me.TxtNumeroEnsamble.TabIndex = 122
@@ -288,8 +295,9 @@ Partial Class FrmTransferencias
         '
         'Label3
         '
+        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(452, 19)
+        Me.Label3.Location = New System.Drawing.Point(443, 19)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(44, 13)
         Me.Label3.TabIndex = 121
@@ -327,16 +335,18 @@ Partial Class FrmTransferencias
         Me.TrueDBGridComponentes.AllowAddNew = True
         Me.TrueDBGridComponentes.AllowDelete = True
         Me.TrueDBGridComponentes.AlternatingRows = True
+        Me.TrueDBGridComponentes.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TrueDBGridComponentes.Caption = "Listado de Productos"
         Me.TrueDBGridComponentes.GroupByCaption = "Drag a column header here to group by that column"
         Me.TrueDBGridComponentes.Images.Add(CType(resources.GetObject("TrueDBGridComponentes.Images"), System.Drawing.Image))
-        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(12, 214)
+        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(5, 214)
         Me.TrueDBGridComponentes.Name = "TrueDBGridComponentes"
         Me.TrueDBGridComponentes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75.0R
         Me.TrueDBGridComponentes.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridComponentes.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TrueDBGridComponentes.Size = New System.Drawing.Size(630, 193)
+        Me.TrueDBGridComponentes.Size = New System.Drawing.Size(632, 193)
         Me.TrueDBGridComponentes.TabIndex = 165
         Me.TrueDBGridComponentes.Text = "C1TrueDBGrid1"
         Me.TrueDBGridComponentes.PropBag = resources.GetString("TrueDBGridComponentes.PropBag")
@@ -356,7 +366,8 @@ Partial Class FrmTransferencias
         '
         'TxtObservaciones
         '
-        Me.TxtObservaciones.Location = New System.Drawing.Point(8, 13)
+        Me.TxtObservaciones.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TxtObservaciones.Location = New System.Drawing.Point(6, 13)
         Me.TxtObservaciones.Multiline = True
         Me.TxtObservaciones.Name = "TxtObservaciones"
         Me.TxtObservaciones.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
@@ -366,7 +377,7 @@ Partial Class FrmTransferencias
         'GroupBox4
         '
         Me.GroupBox4.Controls.Add(Me.TxtObservaciones)
-        Me.GroupBox4.Location = New System.Drawing.Point(353, 443)
+        Me.GroupBox4.Location = New System.Drawing.Point(349, 443)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(205, 67)
         Me.GroupBox4.TabIndex = 189
@@ -376,8 +387,9 @@ Partial Class FrmTransferencias
         'TxtTotalCosto
         '
         Me.TxtTotalCosto.AcceptsReturn = True
+        Me.TxtTotalCosto.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TxtTotalCosto.Enabled = False
-        Me.TxtTotalCosto.Location = New System.Drawing.Point(542, 413)
+        Me.TxtTotalCosto.Location = New System.Drawing.Point(530, 412)
         Me.TxtTotalCosto.Name = "TxtTotalCosto"
         Me.TxtTotalCosto.Size = New System.Drawing.Size(100, 20)
         Me.TxtTotalCosto.TabIndex = 200
@@ -385,9 +397,10 @@ Partial Class FrmTransferencias
         '
         'Label5
         '
+        Me.Label5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(424, 417)
+        Me.Label5.Location = New System.Drawing.Point(409, 416)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(112, 16)
         Me.Label5.TabIndex = 199
@@ -429,7 +442,7 @@ Partial Class FrmTransferencias
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(651, 513)
+        Me.ClientSize = New System.Drawing.Size(645, 513)
         Me.Controls.Add(Me.C1Button3)
         Me.Controls.Add(Me.C1Button2)
         Me.Controls.Add(Me.Button4)

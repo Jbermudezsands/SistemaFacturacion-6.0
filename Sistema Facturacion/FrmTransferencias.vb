@@ -12,6 +12,7 @@ Public Class FrmTransferencias
     Public dsCompra As New DataSet, daCompra As New SqlClient.SqlDataAdapter, CmdBuilderCompra As New SqlCommandBuilder
     Public WithEvents backgroundWorkerGrabar As System.ComponentModel.BackgroundWorker
     Private TransferenciaPendiente As Boolean = False
+    Private insertando As Boolean = False
 
     Private Sub ConfigurarAdaptadorDetalleFactura(ByVal cnn As SqlConnection)
 
@@ -177,60 +178,200 @@ Handles backgroundWorkerGrabar.ProgressChanged
     End Sub
 
     Public Sub InsertarRowGrid()
+
         Dim oTabla As DataTable
         Dim iPosicion As Double = Me.TrueDBGridComponentes.Row
 
         Try
+
+            If insertando Then Exit Sub
+            insertando = True
+
             ' === Validar conexión ===
             If MiConexion Is Nothing Then Throw New Exception("La conexión no ha sido inicializada.")
             If MiConexion.State <> ConnectionState.Open Then MiConexion.Open()
 
+            ' === Asegurar columna RowGUID en la tabla principal (ANTES DE GetChanges) ===
+            Dim tablaPrincipal As DataTable = ds.Tables("DetalleFactura")
+
+            If Not tablaPrincipal.Columns.Contains("RowGUID") Then
+                tablaPrincipal.Columns.Add("RowGUID", GetType(String))
+            End If
+
             ' === Buscar filas nuevas ===
-            oTabla = ds.Tables("DetalleFactura").GetChanges(DataRowState.Added)
+            oTabla = tablaPrincipal.GetChanges(DataRowState.Added)
 
             ' === INSERTAR FILAS NUEVAS ===
             If oTabla IsNot Nothing AndAlso oTabla.Rows.Count > 0 Then
 
                 For Each fila As DataRow In oTabla.Rows
+
                     Try
-                        ' 🔹 Insertar registro y obtener su ID real desde SQL
+                        ' ---------------------------------------------------------
+                        ' 1) Asignar GUID a la fila (si no lo tiene)
+                        ' ---------------------------------------------------------
+                        If fila("RowGUID") Is DBNull.Value OrElse fila("RowGUID").ToString().Trim() = "" Then
+
+                            Dim nuevoGUID As String = System.Guid.NewGuid().ToString()
+                            fila("RowGUID") = nuevoGUID
+
+                            ' Debemos asignar también el GUID a la fila ORIGINAL
+                            ' Ubicamos la fila real en el DataSet usando el mismo índice
+                            Dim indexReal As Integer = fila.Table.Rows.IndexOf(fila)
+                            tablaPrincipal.Rows(indexReal)("RowGUID") = nuevoGUID
+                        End If
+
+                        ' ---------------------------------------------------------
+                        ' 2) Guardamos en SQL y la función actualiza Id_Detalle_Factura
+                        ' ---------------------------------------------------------
                         InsertarDetalleFacturaYActualizarDS(fila, MiConexion)
 
-                        ' 🔹 Obtener el ID recién asignado por la función
-                        Dim nuevoId As Integer = CInt(fila("Id_Detalle_Factura"))
-
-                        ' 🔹 Buscar la fila correspondiente en el DataSet principal
-                        '    (la que todavía no tenía ID asignado)
-                        Dim filaOriginal() As DataRow = ds.Tables("DetalleFactura").Select("Id_Detalle_Factura IS NULL OR Id_Detalle_Factura = 0")
-
-                        If filaOriginal.Length > 0 Then
-                            filaOriginal(0)("Id_Detalle_Factura") = nuevoId
-                            filaOriginal(0).AcceptChanges()
+                        Dim nuevoId As Integer = 0
+                        If Not IsDBNull(fila("Id_Detalle_Factura")) Then
+                            nuevoId = CInt(fila("Id_Detalle_Factura"))
                         End If
+
+                        ' ---------------------------------------------------------
+                        ' 3) Buscar la fila original con el GUID
+                        ' ---------------------------------------------------------
+                        Dim guid As String = fila("RowGUID").ToString()
+                        Dim filasEncontradas() As DataRow =
+                        tablaPrincipal.Select("RowGUID = '" & guid.Replace("'", "''") & "'")
+
+                        If filasEncontradas Is Nothing OrElse filasEncontradas.Length = 0 Then
+                            MsgBox("No se encontró filaOriginal para GUID: " & guid, MsgBoxStyle.Exclamation)
+                            Continue For
+                        End If
+
+                        Dim filaOriginal As DataRow = filasEncontradas(0)
+
+                        ' ---------------------------------------------------------
+                        ' 4) Actualizar ID real en la fila original
+                        ' ---------------------------------------------------------
+                        filaOriginal("Id_Detalle_Factura") = nuevoId
+                        'filaOriginal.AcceptChanges()
+
+                        ' ---------------------------------------------------------
+                        ' 5) Grabar transferencia recibida en Detalle_Compras
+                        ' ---------------------------------------------------------
+                        GrabaDetalleTransferenciaEntrada(
+                        filaOriginal("Numero_Factura").ToString(),
+                        filaOriginal("Cod_Producto").ToString(),
+                        filaOriginal("Descripcion_Producto").ToString(),
+                        CDbl(If(IsDBNull(filaOriginal("Precio_Unitario")), 0, filaOriginal("Precio_Unitario"))),
+                        CDbl(If(IsDBNull(filaOriginal("Descuento")), 0, filaOriginal("Descuento"))),
+                        CDbl(If(IsDBNull(filaOriginal("Precio_Neto")), 0, filaOriginal("Precio_Neto"))),
+                        CDbl(If(IsDBNull(filaOriginal("Importe")), 0, filaOriginal("Importe"))),
+                        CDbl(If(IsDBNull(filaOriginal("Cantidad")), 0, filaOriginal("Cantidad"))),
+                        nuevoId,
+                        Me.DTPFecha.Value,
+                        "Transferencia Recibida",
+                        filaOriginal("CodTarea").ToString()
+                    )
 
                     Catch ex As Exception
                         MsgBox("Error al insertar detalle: " & ex.Message, MsgBoxStyle.Exclamation)
                     End Try
+
                 Next
 
-                ' 🔹 Sincronizar dataset principal y refrescar grid
-                ds.Tables("DetalleFactura").AcceptChanges()
+                ' ---------------------------------------------------------
+                ' Sincronizar DataSet y refrescar interfaz
+                ' ---------------------------------------------------------
+                tablaPrincipal.AcceptChanges()
                 Me.TrueDBGridComponentes.Refresh()
                 Me.TrueDBGridComponentes.Row = iPosicion
 
-                ' === SI NO HAY FILAS NUEVAS, BUSCAR MODIFICADAS ===
             Else
-                oTabla = ds.Tables("DetalleFactura").GetChanges(DataRowState.Modified)
+                ' === SI NO HAY FILAS NUEVAS, BUSCAR MODIFICADAS ===
+                oTabla = tablaPrincipal.GetChanges(DataRowState.Modified)
                 If oTabla IsNot Nothing AndAlso oTabla.Rows.Count > 0 Then
                     da.Update(oTabla)
-                    ds.Tables("DetalleFactura").AcceptChanges()
+                    tablaPrincipal.AcceptChanges()
                 End If
             End If
 
         Catch ex As Exception
             MsgBox("Error en InsertarRowGrid: " & ex.Message, MsgBoxStyle.Critical)
         End Try
+
+        insertando = False
     End Sub
+
+
+    'Public Sub InsertarRowGrid()
+    '    Dim oTabla As DataTable
+    '    Dim iPosicion As Double = Me.TrueDBGridComponentes.Row
+    '    Dim i As Integer = 0
+
+    '    Try
+    '        ' === Validar conexión ===
+    '        If MiConexion Is Nothing Then Throw New Exception("La conexión no ha sido inicializada.")
+    '        If MiConexion.State <> ConnectionState.Open Then MiConexion.Open()
+
+    '        ' === Buscar filas nuevas ===
+    '        oTabla = ds.Tables("DetalleFactura").GetChanges(DataRowState.Added)
+
+    '        ' === INSERTAR FILAS NUEVAS ===
+    '        If oTabla IsNot Nothing AndAlso oTabla.Rows.Count > 0 Then
+
+    '            i = 0
+    '            For Each fila As DataRow In oTabla.Rows
+    '                Try
+    '                    ' 🔹 Insertar registro y obtener su ID real desde SQL
+    '                    InsertarDetalleFacturaYActualizarDS(fila, MiConexion)
+
+    '                    ' 🔹 Obtener el ID recién asignado por la función
+    '                    Dim nuevoId As Integer = CInt(fila("Id_Detalle_Factura"))
+
+    '                    ' 🔹 Buscar la fila correspondiente en el DataSet principal
+    '                    '    (la que todavía no tenía ID asignado)
+    '                    Dim filaOriginal() As DataRow = ds.Tables("DetalleFactura").Select("Id_Detalle_Factura IS NULL OR Id_Detalle_Factura = 0")
+
+    '                    If filaOriginal.Length > 0 Then
+    '                        filaOriginal(0)("Id_Detalle_Factura") = nuevoId
+    '                        filaOriginal(0).AcceptChanges()
+
+    '                        GrabaDetalleTransferenciaEntrada(filaOriginal("Numero_Factura").ToString(),
+    '                        filaOriginal("Cod_Producto").ToString(),
+    '                        filaOriginal("Descripcion_Producto").ToString(),
+    '                        CDbl(filaOriginal("Precio_Unitario").ToString),
+    '                        CDbl(filaOriginal("Descuento").ToString),
+    '                        CDbl(filaOriginal("Precio_Neto").ToString),
+    '                        CDbl(filaOriginal("Importe").ToString),
+    '                        CDbl(filaOriginal("Cantidad").ToString),
+    '                        nuevoId,
+    '                        Me.DTPFecha.Value,
+    '                        "Transferencia Recibida",
+    '                        filaOriginal("Numero_Lote").ToString()
+    '                         )
+    '                    End If
+
+    '                Catch ex As Exception
+    '                    MsgBox("Error al insertar detalle: " & ex.Message, MsgBoxStyle.Exclamation)
+    '                End Try
+
+    '                i += 1
+    '            Next
+
+    '            ' 🔹 Sincronizar dataset principal y refrescar grid
+    '            ds.Tables("DetalleFactura").AcceptChanges()
+    '            Me.TrueDBGridComponentes.Refresh()
+    '            Me.TrueDBGridComponentes.Row = iPosicion
+
+    '            ' === SI NO HAY FILAS NUEVAS, BUSCAR MODIFICADAS ===
+    '        Else
+    '            oTabla = ds.Tables("DetalleFactura").GetChanges(DataRowState.Modified)
+    '            If oTabla IsNot Nothing AndAlso oTabla.Rows.Count > 0 Then
+    '                da.Update(oTabla)
+    '                ds.Tables("DetalleFactura").AcceptChanges()
+    '            End If
+    '        End If
+
+    '    Catch ex As Exception
+    '        MsgBox("Error en InsertarRowGrid: " & ex.Message, MsgBoxStyle.Critical)
+    '    End Try
+    'End Sub
 
 
 
@@ -705,16 +846,18 @@ Handles backgroundWorkerGrabar.ProgressChanged
 
 
         If FacturaTarea = True Then
-            Me.Size = New Size(776, 552)
-            Me.TrueDBGridComponentes.Size = New Size(736, 193)
-            Me.Button8.Location = New Point(673, 443)
-            Me.TxtTotalCosto.Location = New Point(648, 413)
+            Me.Size = New Size(850, 552)
+            Me.PictureBox1.Size = New Size(835, 74)
+            Me.TrueDBGridComponentes.Size = New Size(800, 193)
+            'Me.Button8.Location = New Point(673, 443)
+            'Me.TxtTotalCosto.Location = New Point(648, 413)
             Me.Label5.Location = New Point(530, 417)
-            Me.GroupBox1.Size = New Size(742, 50)
-            Me.GroupBox2.Size = New Size(742, 50)
+            Me.GroupBox1.Size = New Size(816, 52)
+            Me.GroupBox2.Size = New Size(816, 52)
             Me.TxtNumeroEnsamble.Location = New Point(600, 16)
             Me.Label3.Location = New Point(555, 19)
             Me.Button6.Location = New Point(699, 12)
+            Me.Label9.Location = New Point(316, 32)
 
         End If
 
@@ -739,7 +882,7 @@ Handles backgroundWorkerGrabar.ProgressChanged
         DataAdapter.Fill(DataSet, "Bodegas2")
         Me.CboCodigoBodega2.DataSource = DataSet.Tables("Bodegas2")
         If Not DataSet.Tables("Bodegas2").Rows.Count = 0 Then
-            If Not DataSet.Tables("Bodegas2").Rows.Count > 1 Then
+            If DataSet.Tables("Bodegas2").Rows.Count > 1 Then
                 Me.CboCodigoBodega2.Text = DataSet.Tables("Bodegas2").Rows(1)("Cod_Bodega")
             Else
                 Me.CboCodigoBodega2.Text = DataSet.Tables("Bodegas2").Rows(0)("Cod_Bodega")
@@ -1574,6 +1717,8 @@ Handles backgroundWorkerGrabar.ProgressChanged
             Dim PrecioNeto As Double = If(IsDBNull(fila("Precio_Neto")), 0, CDbl(fila("Precio_Neto")))
             Dim Importe As Double = If(IsDBNull(fila("Importe")), 0, CDbl(fila("Importe")))
             Dim CodTarea As String = If(IsDBNull(fila("CodTarea")), "SINLOTE", fila("CodTarea").ToString())
+            Dim IdDetalleSalida As Double = If(IsDBNull(fila("id_Detalle_Factura")), 0, CDbl(fila("id_Detalle_Factura")))
+
 
             ' Reportar progreso
             worker.ReportProgress(CInt((i + 1) / totalRegistros * 100), CodigoProducto)
@@ -2461,6 +2606,7 @@ Handles backgroundWorkerGrabar.ProgressChanged
             GrabaTransferenciasEntrada(NumeroFactura, Fecha, "Transferencia Recibida", BodegaDestino, BodegaOrigen, BodegaDestino, Total, Observaciones)
         Else
             NumeroFactura = Me.TxtNumeroEnsamble.Text
+
         End If
 
 

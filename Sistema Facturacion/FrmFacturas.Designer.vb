@@ -143,9 +143,9 @@ Partial Class FrmFacturas
         'Button7
         '
         Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
-        Me.Button7.Location = New System.Drawing.Point(688, 81)
+        Me.Button7.Location = New System.Drawing.Point(686, 156)
         Me.Button7.Name = "Button7"
-        Me.Button7.Size = New System.Drawing.Size(37, 38)
+        Me.Button7.Size = New System.Drawing.Size(37, 25)
         Me.Button7.TabIndex = 182
         Me.Button7.UseVisualStyleBackColor = True
         Me.Button7.Visible = False
@@ -1026,9 +1026,9 @@ Partial Class FrmFacturas
         'C1Button4
         '
         Me.C1Button4.Image = CType(resources.GetObject("C1Button4.Image"), System.Drawing.Image)
-        Me.C1Button4.Location = New System.Drawing.Point(686, 184)
+        Me.C1Button4.Location = New System.Drawing.Point(686, 185)
         Me.C1Button4.Name = "C1Button4"
-        Me.C1Button4.Size = New System.Drawing.Size(39, 24)
+        Me.C1Button4.Size = New System.Drawing.Size(37, 24)
         Me.C1Button4.TabIndex = 219
         Me.C1Button4.UseVisualStyleBackColor = True
         Me.C1Button4.VisualStyle = C1.Win.C1Input.VisualStyle.System
@@ -1079,7 +1079,7 @@ Partial Class FrmFacturas
         Me.C1Button5.Image = CType(resources.GetObject("C1Button5.Image"), System.Drawing.Image)
         Me.C1Button5.Location = New System.Drawing.Point(686, 129)
         Me.C1Button5.Name = "C1Button5"
-        Me.C1Button5.Size = New System.Drawing.Size(39, 24)
+        Me.C1Button5.Size = New System.Drawing.Size(37, 24)
         Me.C1Button5.TabIndex = 220
         Me.C1Button5.UseVisualStyleBackColor = True
         Me.C1Button5.VisualStyle = C1.Win.C1Input.VisualStyle.System
