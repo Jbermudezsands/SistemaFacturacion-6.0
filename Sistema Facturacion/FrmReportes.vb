@@ -12447,6 +12447,9 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                     Args.CodLIneaIni = Me.CmbRango1.Text
                     Args.CodLineaFin = Me.CmbRango2.Text
 
+                ElseIf Args.Agrupado = "Codigo Producto" Then
+                    Args.CodProductoIni = Me.CmbRango1.Text
+                    Args.CodProductoFin = Me.CmbRango2.Text
                 End If
 
                 Me.ProgressBar.Minimum = 0
