@@ -1,10 +1,12 @@
 Public Class FrmTransferenciaListado
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Private Sub C1Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles C1Button1.Click
+        My.Forms.FrmTransferencias.Transferencia_Procesado = False
         My.Forms.FrmTransferencias.TxtNumeroEnsamble.Text = "-----0-----"
         My.Forms.FrmTransferencias.NumeroTranferencia = "-----0-----"
         My.Forms.FrmTransferencias.CboCodigoBodega.Enabled = True
         My.Forms.FrmTransferencias.CboCodigoBodega2.Enabled = True
+        My.Forms.FrmTransferencias.CboTipoProducto.Text = "Transferencia Enviada"
         My.Forms.FrmTransferencias.ShowDialog()
 
         Dim Sql As String = "SELECT Facturas.Numero_Factura, Facturas.Fecha_Factura, Bodegas.Nombre_Bodega AS BodegaOrigen, Bodegas_1.Nombre_Bodega AS BodegaDestino, Facturas.Su_Referencia, Facturas.Nuestra_Referencia,Facturas.TransferenciaProcesada,Facturas.Cancelado FROM Facturas INNER JOIN Bodegas ON Facturas.Su_Referencia = Bodegas.Cod_Bodega INNER JOIN Bodegas AS Bodegas_1 ON Facturas.Nuestra_Referencia = Bodegas_1.Cod_Bodega  " & _
@@ -74,6 +76,7 @@ Public Class FrmTransferenciaListado
         My.Forms.FrmTransferencias.CodBodega2 = Me.TrueDBGridConsultas.Columns(5).Text
         My.Forms.FrmTransferencias.FechaTransferencia = Me.TrueDBGridConsultas.Columns(1).Text
         My.Forms.FrmTransferencias.DTPFecha.Value = Me.TrueDBGridConsultas.Columns(1).Text
+        My.Forms.FrmTransferencias.Transferencia_Procesado = Procesado
         If Procesado = True Then
 
             My.Forms.FrmTransferencias.Button4.Enabled = False

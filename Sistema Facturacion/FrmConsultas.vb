@@ -1041,9 +1041,9 @@ Public Class FrmConsultas
 
                 Case "Transferencias"
                     If FrmTransferencias.CboTipoProducto.Text <> "" Then
-                        SQlProductos = "SELECT Facturas.Numero_Factura AS Numero, Facturas.Fecha_Factura AS Fecha, Bodegas.Nombre_Bodega, Facturas.Tipo_Factura AS Tipo FROM  Facturas INNER JOIN Bodegas ON Facturas.Cod_Bodega = Bodegas.Cod_Bodega WHERE (Facturas.Activo = 1) AND (Facturas.Tipo_Factura = 'Transferencia Enviada') ORDER BY Numero"
+                        SQlProductos = "SELECT Facturas.Numero_Factura AS Numero, Facturas.Fecha_Factura AS Fecha, Bodegas.Nombre_Bodega, Facturas.Tipo_Factura AS Tipo FROM  Facturas INNER JOIN Bodegas ON Facturas.Cod_Bodega = Bodegas.Cod_Bodega WHERE (Facturas.Activo = 1) AND (Facturas.Tipo_Factura = 'Transferencia Enviada') ORDER BY Facturas.Fecha_Factura, Numero "
                     Else
-                        SQlProductos = "SELECT Facturas.Numero_Factura AS Numero, Facturas.Nombre_Cliente + ' ' + Facturas.Apellido_Cliente AS Cliente, Facturas.Fecha_Factura AS Fecha, Facturas.Tipo_Factura AS Tipo  FROM  Facturas INNER JOIN  Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente WHERE (Facturas.Activo = 1) ORDER BY Numero  "
+                        SQlProductos = "SELECT Facturas.Numero_Factura AS Numero, Facturas.Nombre_Cliente + ' ' + Facturas.Apellido_Cliente AS Cliente, Facturas.Fecha_Factura AS Fecha, Facturas.Tipo_Factura AS Tipo  FROM  Facturas INNER JOIN  Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente WHERE (Facturas.Activo = 1) ORDER BY Facturas.Fecha_Factura, Numero  "
                     End If
                     MiConexion.Open()
                     DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)

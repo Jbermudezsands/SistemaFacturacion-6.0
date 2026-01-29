@@ -6,13 +6,19 @@ Imports System.Web.UI.WebControls
 Imports C1.Win.C1TrueDBGrid
 
 Public Class FrmTransferencias
-    Public MiConexion As New SqlClient.SqlConnection(Conexion), CantidadAnterior As Double, PrecioAnterior As Double, NumeroEnsamble As String, NumeroTranferencia As String = "-----0-----", CodBodega1 As String, CodBodega2 As String, FechaTransferencia As Date, FacturaTarea As Boolean = False
+    Public MiConexion As New SqlClient.SqlConnection(Conexion), CantidadAnterior As Double, PrecioAnterior As Double, NumeroEnsamble As String, NumeroTranferencia As String = "-----0-----", CodBodega1 As String, CodBodega2 As String, FechaTransferencia As Date, FacturaTarea As Boolean = False, Transferencia_Procesado As Boolean
     Public NumeroLote As String = "SINLOTE", FechaLote As Date = "01/01/1900"
     Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder
     Public dsCompra As New DataSet, daCompra As New SqlClient.SqlDataAdapter, CmdBuilderCompra As New SqlCommandBuilder
     Public WithEvents backgroundWorkerGrabar As System.ComponentModel.BackgroundWorker
     Private TransferenciaPendiente As Boolean = False
     Private insertando As Boolean = False
+
+    Private Sub limpiarTransferencia()
+
+    End Sub
+
+
 
     Private Sub ConfigurarAdaptadorDetalleFactura(ByVal cnn As SqlConnection)
 
@@ -146,157 +152,346 @@ Handles backgroundWorkerGrabar.ProgressChanged
 
 
     End Sub
-    Private Sub InsertarDetalleFacturaYActualizarDS(fila As DataRow, cnn As SqlConnection)
-        Dim sql As String = "
-        INSERT INTO Detalle_Facturas
-            (Cod_Producto, Descripcion_Producto, CodTarea, Cantidad, Precio_Unitario,
-             Descuento, Precio_Neto, Importe, Numero_Factura, Fecha_Factura, Tipo_Factura)
-        VALUES
-            (@Cod_Producto, @Descripcion, @CodTarea, @Cantidad, @Precio_Unitario,
-             @Descuento, @Precio_Neto, @Importe, @Numero_Factura, @Fecha_Factura, @Tipo_Factura);
-        SELECT CAST(SCOPE_IDENTITY() AS INT);"
 
-        If cnn.State <> ConnectionState.Open Then cnn.Open()
+
+    Private Sub InsertarDetalleFacturaYActualizarDS(
+    fila As DataRow,
+    cnn As SqlConnection,
+    Optional tran As SqlTransaction = Nothing
+)
+
+        Dim sql As String = "
+    INSERT INTO Detalle_Facturas
+        (Cod_Producto, Descripcion_Producto, CodTarea, Cantidad, Precio_Unitario,
+         Descuento, Precio_Neto, Importe, Numero_Factura, Fecha_Factura, Tipo_Factura, Numero_Lote)
+    VALUES
+        (@Cod_Producto, @Descripcion, @CodTarea, @Cantidad, @Precio_Unitario,
+         @Descuento, @Precio_Neto, @Importe, @Numero_Factura, @Fecha_Factura, @Tipo_Factura, @CodTarea);
+    SELECT CAST(SCOPE_IDENTITY() AS INT);"
 
         Using cmd As New SqlCommand(sql, cnn)
-            cmd.Parameters.AddWithValue("@Cod_Producto", fila("Cod_Producto"))
-            cmd.Parameters.AddWithValue("@Descripcion", fila("Descripcion_Producto"))
-            cmd.Parameters.AddWithValue("@CodTarea", fila("CodTarea"))
-            cmd.Parameters.AddWithValue("@Cantidad", fila("Cantidad"))
-            cmd.Parameters.AddWithValue("@Precio_Unitario", fila("Precio_Unitario"))
-            cmd.Parameters.AddWithValue("@Descuento", fila("Descuento"))
-            cmd.Parameters.AddWithValue("@Precio_Neto", fila("Precio_Neto"))
-            cmd.Parameters.AddWithValue("@Importe", fila("Importe"))
-            cmd.Parameters.AddWithValue("@Numero_Factura", fila("Numero_Factura"))
-            cmd.Parameters.AddWithValue("@Fecha_Factura", fila("Fecha_Factura"))
-            cmd.Parameters.AddWithValue("@Tipo_Factura", fila("Tipo_Factura"))
 
-            Dim newId As Integer = Convert.ToInt32(cmd.ExecuteScalar())
+            If tran IsNot Nothing Then
+                cmd.Transaction = tran
+            End If
+
+            ' --- Parámetros TIPADOS (no AddWithValue) ---
+            cmd.Parameters.Add("@Cod_Producto", SqlDbType.VarChar, 50).Value =
+            fila("Cod_Producto")
+
+            cmd.Parameters.Add("@Descripcion", SqlDbType.VarChar, 200).Value =
+            fila("Descripcion_Producto")
+
+            cmd.Parameters.Add("@CodTarea", SqlDbType.VarChar, 50).Value =
+            fila("CodTarea")
+
+            cmd.Parameters.Add("@Cantidad", SqlDbType.Decimal).Value =
+            If(IsDBNull(fila("Cantidad")), 0D, fila("Cantidad"))
+
+            cmd.Parameters.Add("@Precio_Unitario", SqlDbType.Decimal).Value =
+            If(IsDBNull(fila("Precio_Unitario")), 0D, fila("Precio_Unitario"))
+
+            cmd.Parameters.Add("@Descuento", SqlDbType.Decimal).Value =
+            If(IsDBNull(fila("Descuento")), 0D, fila("Descuento"))
+
+            cmd.Parameters.Add("@Precio_Neto", SqlDbType.Decimal).Value =
+            If(IsDBNull(fila("Precio_Neto")), 0D, fila("Precio_Neto"))
+
+            cmd.Parameters.Add("@Importe", SqlDbType.Decimal).Value =
+            If(IsDBNull(fila("Importe")), 0D, fila("Importe"))
+
+            cmd.Parameters.Add("@Numero_Factura", SqlDbType.VarChar, 50).Value =
+            fila("Numero_Factura")
+
+            cmd.Parameters.Add("@Fecha_Factura", SqlDbType.DateTime).Value =
+            fila("Fecha_Factura")
+
+            cmd.Parameters.Add("@Tipo_Factura", SqlDbType.VarChar, 30).Value =
+            fila("Tipo_Factura")
+
+            ' --- Ejecutar ---
+            Dim newId As Integer = CInt(cmd.ExecuteScalar())
+
+            ' SOLO sincronizar ID (sin AcceptChanges)
             fila("Id_Detalle_Factura") = newId
-            fila.AcceptChanges()
+
         End Using
+
     End Sub
 
     Public Sub InsertarRowGrid()
 
-        Dim oTabla As DataTable
-        Dim iPosicion As Double = Me.TrueDBGridComponentes.Row
+        If insertando Then Exit Sub
+        insertando = True
+
+        Dim tablaPrincipal As DataTable = ds.Tables("DetalleFactura")
 
         Try
+            ' -----------------------------
+            ' Validar conexión
+            ' -----------------------------
+            If MiConexion Is Nothing Then
+                Throw New Exception("La conexión no ha sido inicializada.")
+            End If
 
-            If insertando Then Exit Sub
-            insertando = True
+            If MiConexion.State <> ConnectionState.Open Then
+                MiConexion.Open()
+            End If
 
-            ' === Validar conexión ===
-            If MiConexion Is Nothing Then Throw New Exception("La conexión no ha sido inicializada.")
-            If MiConexion.State <> ConnectionState.Open Then MiConexion.Open()
-
-            ' === Asegurar columna RowGUID en la tabla principal (ANTES DE GetChanges) ===
-            Dim tablaPrincipal As DataTable = ds.Tables("DetalleFactura")
-
+            ' -----------------------------
+            ' Asegurar columna RowGUID
+            ' -----------------------------
             If Not tablaPrincipal.Columns.Contains("RowGUID") Then
                 tablaPrincipal.Columns.Add("RowGUID", GetType(String))
             End If
 
-            ' === Buscar filas nuevas ===
-            oTabla = tablaPrincipal.GetChanges(DataRowState.Added)
+            ' -----------------------------
+            ' 1) Asignar GUID a filas nuevas
+            ' -----------------------------
+            For Each fila As DataRow In tablaPrincipal.Rows
+                If fila.RowState = DataRowState.Added Then
+                    If IsDBNull(fila("RowGUID")) OrElse fila("RowGUID").ToString() = "" Then
+                        fila("RowGUID") = Guid.NewGuid().ToString()
+                    End If
+                End If
+            Next
 
-            ' === INSERTAR FILAS NUEVAS ===
-            If oTabla IsNot Nothing AndAlso oTabla.Rows.Count > 0 Then
+            ' -----------------------------
+            ' 2) Obtener filas nuevas
+            ' -----------------------------
+            Dim filasNuevas As DataTable = tablaPrincipal.GetChanges(DataRowState.Added)
 
-                For Each fila As DataRow In oTabla.Rows
+            ' -----------------------------
+            ' 3) Insertar nuevas
+            ' -----------------------------
+            If filasNuevas IsNot Nothing AndAlso filasNuevas.Rows.Count > 0 Then
 
-                    Try
-                        ' ---------------------------------------------------------
-                        ' 1) Asignar GUID a la fila (si no lo tiene)
-                        ' ---------------------------------------------------------
-                        If fila("RowGUID") Is DBNull.Value OrElse fila("RowGUID").ToString().Trim() = "" Then
+                ' Diccionario GUID → fila original
+                Dim mapaFilas As New Dictionary(Of String, DataRow)
 
-                            Dim nuevoGUID As String = System.Guid.NewGuid().ToString()
-                            fila("RowGUID") = nuevoGUID
-
-                            ' Debemos asignar también el GUID a la fila ORIGINAL
-                            ' Ubicamos la fila real en el DataSet usando el mismo índice
-                            Dim indexReal As Integer = fila.Table.Rows.IndexOf(fila)
-                            tablaPrincipal.Rows(indexReal)("RowGUID") = nuevoGUID
-                        End If
-
-                        ' ---------------------------------------------------------
-                        ' 2) Guardamos en SQL y la función actualiza Id_Detalle_Factura
-                        ' ---------------------------------------------------------
-                        InsertarDetalleFacturaYActualizarDS(fila, MiConexion)
-
-                        Dim nuevoId As Integer = 0
-                        If Not IsDBNull(fila("Id_Detalle_Factura")) Then
-                            nuevoId = CInt(fila("Id_Detalle_Factura"))
-                        End If
-
-                        ' ---------------------------------------------------------
-                        ' 3) Buscar la fila original con el GUID
-                        ' ---------------------------------------------------------
-                        Dim guid As String = fila("RowGUID").ToString()
-                        Dim filasEncontradas() As DataRow =
-                        tablaPrincipal.Select("RowGUID = '" & guid.Replace("'", "''") & "'")
-
-                        If filasEncontradas Is Nothing OrElse filasEncontradas.Length = 0 Then
-                            MsgBox("No se encontró filaOriginal para GUID: " & guid, MsgBoxStyle.Exclamation)
-                            Continue For
-                        End If
-
-                        Dim filaOriginal As DataRow = filasEncontradas(0)
-
-                        ' ---------------------------------------------------------
-                        ' 4) Actualizar ID real en la fila original
-                        ' ---------------------------------------------------------
-                        filaOriginal("Id_Detalle_Factura") = nuevoId
-                        'filaOriginal.AcceptChanges()
-
-                        ' ---------------------------------------------------------
-                        ' 5) Grabar transferencia recibida en Detalle_Compras
-                        ' ---------------------------------------------------------
-                        GrabaDetalleTransferenciaEntrada(
-                        filaOriginal("Numero_Factura").ToString(),
-                        filaOriginal("Cod_Producto").ToString(),
-                        filaOriginal("Descripcion_Producto").ToString(),
-                        CDbl(If(IsDBNull(filaOriginal("Precio_Unitario")), 0, filaOriginal("Precio_Unitario"))),
-                        CDbl(If(IsDBNull(filaOriginal("Descuento")), 0, filaOriginal("Descuento"))),
-                        CDbl(If(IsDBNull(filaOriginal("Precio_Neto")), 0, filaOriginal("Precio_Neto"))),
-                        CDbl(If(IsDBNull(filaOriginal("Importe")), 0, filaOriginal("Importe"))),
-                        CDbl(If(IsDBNull(filaOriginal("Cantidad")), 0, filaOriginal("Cantidad"))),
-                        nuevoId,
-                        Me.DTPFecha.Value,
-                        "Transferencia Recibida",
-                        filaOriginal("CodTarea").ToString()
-                    )
-
-                    Catch ex As Exception
-                        MsgBox("Error al insertar detalle: " & ex.Message, MsgBoxStyle.Exclamation)
-                    End Try
-
+                For Each fila As DataRow In tablaPrincipal.Rows
+                    If fila.RowState = DataRowState.Added Then
+                        mapaFilas(fila("RowGUID").ToString()) = fila
+                    End If
                 Next
 
-                ' ---------------------------------------------------------
-                ' Sincronizar DataSet y refrescar interfaz
-                ' ---------------------------------------------------------
+                ' (Preparado para futura transacción SQL)
+                For Each filaNueva As DataRow In filasNuevas.Rows
+
+                    ' Insert SQL + retorno ID
+                    InsertarDetalleFacturaYActualizarDS(filaNueva, MiConexion)
+
+                    Dim nuevoId As Integer = CInt(filaNueva("Id_Detalle_Factura"))
+                    Dim guid As String = filaNueva("RowGUID").ToString()
+
+                    ' Sincronizar ID en fila original
+                    If mapaFilas.ContainsKey(guid) Then
+                        mapaFilas(guid)("Id_Detalle_Factura") = nuevoId
+                    End If
+
+                    ' Transferencia
+                    Dim filaOriginal As DataRow = mapaFilas(guid)
+
+                    GrabaDetalleTransferenciaEntrada(
+                    filaOriginal("Numero_Factura").ToString(),
+                    filaOriginal("Cod_Producto").ToString(),
+                    filaOriginal("Descripcion_Producto").ToString(),
+                    CDbl(If(IsDBNull(filaOriginal("Precio_Unitario")), 0, filaOriginal("Precio_Unitario"))),
+                    CDbl(If(IsDBNull(filaOriginal("Descuento")), 0, filaOriginal("Descuento"))),
+                    CDbl(If(IsDBNull(filaOriginal("Precio_Neto")), 0, filaOriginal("Precio_Neto"))),
+                    CDbl(If(IsDBNull(filaOriginal("Importe")), 0, filaOriginal("Importe"))),
+                    CDbl(If(IsDBNull(filaOriginal("Cantidad")), 0, filaOriginal("Cantidad"))),
+                    nuevoId,
+                    Me.DTPFecha.Value,
+                    "Transferencia Recibida",
+                    filaOriginal("CodTarea").ToString()
+                )
+                Next
+
+                ' -----------------------------
+                ' Confirmar cambios
+                ' -----------------------------
                 tablaPrincipal.AcceptChanges()
-                Me.TrueDBGridComponentes.Refresh()
-                Me.TrueDBGridComponentes.Row = iPosicion
+                TrueDBGridComponentes.Refresh()
 
             Else
-                ' === SI NO HAY FILAS NUEVAS, BUSCAR MODIFICADAS ===
-                oTabla = tablaPrincipal.GetChanges(DataRowState.Modified)
-                If oTabla IsNot Nothing AndAlso oTabla.Rows.Count > 0 Then
-                    da.Update(oTabla)
+                ' -----------------------------
+                ' 4) Filas modificadas
+                ' -----------------------------
+                Dim filasModificadas As DataTable =
+                tablaPrincipal.GetChanges(DataRowState.Modified)
+
+                If filasModificadas IsNot Nothing AndAlso filasModificadas.Rows.Count > 0 Then
+                    da.Update(filasModificadas)
                     tablaPrincipal.AcceptChanges()
                 End If
             End If
 
         Catch ex As Exception
             MsgBox("Error en InsertarRowGrid: " & ex.Message, MsgBoxStyle.Critical)
+        Finally
+            insertando = False
         End Try
 
-        insertando = False
     End Sub
+
+
+    '*************DESACTIVADO POR MEJORAS EN RENDIMIENTO 21/01/2026
+    'Private Sub InsertarDetalleFacturaYActualizarDS(fila As DataRow, cnn As SqlConnection)
+    '    Dim sql As String = "
+    '    INSERT INTO Detalle_Facturas
+    '        (Cod_Producto, Descripcion_Producto, CodTarea, Cantidad, Precio_Unitario,
+    '         Descuento, Precio_Neto, Importe, Numero_Factura, Fecha_Factura, Tipo_Factura)
+    '    VALUES
+    '        (@Cod_Producto, @Descripcion, @CodTarea, @Cantidad, @Precio_Unitario,
+    '         @Descuento, @Precio_Neto, @Importe, @Numero_Factura, @Fecha_Factura, @Tipo_Factura);
+    '    SELECT CAST(SCOPE_IDENTITY() AS INT);"
+
+    '    If cnn.State <> ConnectionState.Open Then cnn.Open()
+
+    '    Using cmd As New SqlCommand(sql, cnn)
+    '        cmd.Parameters.AddWithValue("@Cod_Producto", fila("Cod_Producto"))
+    '        cmd.Parameters.AddWithValue("@Descripcion", fila("Descripcion_Producto"))
+    '        cmd.Parameters.AddWithValue("@CodTarea", fila("CodTarea"))
+    '        cmd.Parameters.AddWithValue("@Cantidad", fila("Cantidad"))
+    '        cmd.Parameters.AddWithValue("@Precio_Unitario", fila("Precio_Unitario"))
+    '        cmd.Parameters.AddWithValue("@Descuento", fila("Descuento"))
+    '        cmd.Parameters.AddWithValue("@Precio_Neto", fila("Precio_Neto"))
+    '        cmd.Parameters.AddWithValue("@Importe", fila("Importe"))
+    '        cmd.Parameters.AddWithValue("@Numero_Factura", fila("Numero_Factura"))
+    '        cmd.Parameters.AddWithValue("@Fecha_Factura", fila("Fecha_Factura"))
+    '        cmd.Parameters.AddWithValue("@Tipo_Factura", fila("Tipo_Factura"))
+
+    '        Dim newId As Integer = Convert.ToInt32(cmd.ExecuteScalar())
+    '        fila("Id_Detalle_Factura") = newId
+    '        fila.AcceptChanges()
+    '    End Using
+    'End Sub
+
+    'Public Sub InsertarRowGrid()
+
+    '    Dim oTabla As DataTable
+    '    Dim iPosicion As Double = Me.TrueDBGridComponentes.Row
+
+    '    Try
+
+    '        If insertando Then Exit Sub
+    '        insertando = True
+
+    '        ' === Validar conexión ===
+    '        If MiConexion Is Nothing Then Throw New Exception("La conexión no ha sido inicializada.")
+    '        If MiConexion.State <> ConnectionState.Open Then MiConexion.Open()
+
+    '        ' === Asegurar columna RowGUID en la tabla principal (ANTES DE GetChanges) ===
+    '        Dim tablaPrincipal As DataTable = ds.Tables("DetalleFactura")
+
+    '        If Not tablaPrincipal.Columns.Contains("RowGUID") Then
+    '            tablaPrincipal.Columns.Add("RowGUID", GetType(String))
+    '        End If
+
+    '        ' === Buscar filas nuevas ===
+    '        oTabla = tablaPrincipal.GetChanges(DataRowState.Added)
+
+    '        ' === INSERTAR FILAS NUEVAS ===
+    '        If oTabla IsNot Nothing AndAlso oTabla.Rows.Count > 0 Then
+
+    '            For Each fila As DataRow In oTabla.Rows
+
+    '                Try
+    '                    ' ---------------------------------------------------------
+    '                    ' 1) Asignar GUID a la fila (si no lo tiene)
+    '                    ' ---------------------------------------------------------
+    '                    If fila("RowGUID") Is DBNull.Value OrElse fila("RowGUID").ToString().Trim() = "" Then
+
+    '                        Dim nuevoGUID As String = System.Guid.NewGuid().ToString()
+    '                        fila("RowGUID") = nuevoGUID
+
+    '                        ' Debemos asignar también el GUID a la fila ORIGINAL
+    '                        ' Ubicamos la fila real en el DataSet usando el mismo índice
+    '                        Dim indexReal As Integer = fila.Table.Rows.IndexOf(fila)
+    '                        tablaPrincipal.Rows(indexReal)("RowGUID") = nuevoGUID
+    '                    End If
+
+    '                    ' ---------------------------------------------------------
+    '                    ' 2) Guardamos en SQL y la función actualiza Id_Detalle_Factura
+    '                    ' ---------------------------------------------------------
+    '                    InsertarDetalleFacturaYActualizarDS(fila, MiConexion)
+
+    '                    Dim nuevoId As Integer = 0
+    '                    If Not IsDBNull(fila("Id_Detalle_Factura")) Then
+    '                        nuevoId = CInt(fila("Id_Detalle_Factura"))
+    '                    End If
+
+    '                    ' ---------------------------------------------------------
+    '                    ' 3) Buscar la fila original con el GUID
+    '                    ' ---------------------------------------------------------
+    '                    Dim guid As String = fila("RowGUID").ToString()
+    '                    Dim filasEncontradas() As DataRow =
+    '                    tablaPrincipal.Select("RowGUID = '" & guid.Replace("'", "''") & "'")
+
+    '                    If filasEncontradas Is Nothing OrElse filasEncontradas.Length = 0 Then
+    '                        MsgBox("No se encontró filaOriginal para GUID: " & guid, MsgBoxStyle.Exclamation)
+    '                        Continue For
+    '                    End If
+
+    '                    Dim filaOriginal As DataRow = filasEncontradas(0)
+
+    '                    ' ---------------------------------------------------------
+    '                    ' 4) Actualizar ID real en la fila original
+    '                    ' ---------------------------------------------------------
+    '                    filaOriginal("Id_Detalle_Factura") = nuevoId
+    '                    Me.TrueDBGridComponentes.Item(iPosicion - 1)("Id_Detalle_Factura") = nuevoId
+
+
+    '                    'filaOriginal.AcceptChanges()
+
+    '                    ' ---------------------------------------------------------
+    '                    ' 5) Grabar transferencia recibida en Detalle_Compras
+    '                    ' ---------------------------------------------------------
+    '                    GrabaDetalleTransferenciaEntrada(
+    '                    filaOriginal("Numero_Factura").ToString(),
+    '                    filaOriginal("Cod_Producto").ToString(),
+    '                    filaOriginal("Descripcion_Producto").ToString(),
+    '                    CDbl(If(IsDBNull(filaOriginal("Precio_Unitario")), 0, filaOriginal("Precio_Unitario"))),
+    '                    CDbl(If(IsDBNull(filaOriginal("Descuento")), 0, filaOriginal("Descuento"))),
+    '                    CDbl(If(IsDBNull(filaOriginal("Precio_Neto")), 0, filaOriginal("Precio_Neto"))),
+    '                    CDbl(If(IsDBNull(filaOriginal("Importe")), 0, filaOriginal("Importe"))),
+    '                    CDbl(If(IsDBNull(filaOriginal("Cantidad")), 0, filaOriginal("Cantidad"))),
+    '                    nuevoId,
+    '                    Me.DTPFecha.Value,
+    '                    "Transferencia Recibida",
+    '                    filaOriginal("CodTarea").ToString()
+    '                )
+
+    '                Catch ex As Exception
+    '                    MsgBox("Error al insertar detalle: " & ex.Message, MsgBoxStyle.Exclamation)
+    '                End Try
+
+    '            Next
+
+    '            ' ---------------------------------------------------------
+    '            ' Sincronizar DataSet y refrescar interfaz
+    '            ' ---------------------------------------------------------
+    '            tablaPrincipal.AcceptChanges()
+    '            Me.TrueDBGridComponentes.Refresh()
+    '            Me.TrueDBGridComponentes.Row = iPosicion
+
+
+    '        Else
+    '            ' === SI NO HAY FILAS NUEVAS, BUSCAR MODIFICADAS ===
+    '            oTabla = tablaPrincipal.GetChanges(DataRowState.Modified)
+    '            If oTabla IsNot Nothing AndAlso oTabla.Rows.Count > 0 Then
+    '                da.Update(oTabla)
+    '                tablaPrincipal.AcceptChanges()
+    '            End If
+    '        End If
+
+    '    Catch ex As Exception
+    '        MsgBox("Error en InsertarRowGrid: " & ex.Message, MsgBoxStyle.Critical)
+    '    End Try
+
+    '    insertando = False
+    'End Sub
 
 
     'Public Sub InsertarRowGrid()
@@ -374,10 +569,7 @@ Handles backgroundWorkerGrabar.ProgressChanged
     'End Sub
 
 
-
-
-
-
+    '**************CODIGO RETIRADO POR MEJORAS EN FUNCIONAMIENTO 21/01/2026
     'Public Sub InsertarRowGrid()
     '    Dim oTabla As DataTable, iPosicion As Double, CodigoProducto As String
 
@@ -468,7 +660,7 @@ Handles backgroundWorkerGrabar.ProgressChanged
         BloquearControlesDuranteTransferencia(False)
 
         Me.DTPFecha.Value = Format(Now, "dd/MM/yyyy")
-        Me.TxtNumeroEnsamble.Text = "----0-----"
+        Me.TxtNumeroEnsamble.Text = "-----0-----"
         Me.CboCodigoBodega.Enabled = True
         Me.CboCodigoBodega2.Enabled = True
 
@@ -601,10 +793,10 @@ Handles backgroundWorkerGrabar.ProgressChanged
 
             '========================= COLUMNA ID DETALLE =======================
 
-            .Splits(0).DisplayColumns("id_Detalle_Factura").Visible = False
-            .Splits(0).DisplayColumns("Numero_Factura").Visible = False
-            .Splits(0).DisplayColumns("Fecha_Factura").Visible = False
-            .Splits(0).DisplayColumns("Tipo_Factura").Visible = False
+            '.Splits(0).DisplayColumns("id_Detalle_Factura").Visible = False
+            '.Splits(0).DisplayColumns("Numero_Factura").Visible = False
+            '.Splits(0).DisplayColumns("Fecha_Factura").Visible = False
+            '.Splits(0).DisplayColumns("Tipo_Factura").Visible = False
 
 
 
@@ -822,7 +1014,6 @@ Handles backgroundWorkerGrabar.ProgressChanged
     'End Sub
 
 
-
     Private Sub FrmTransferencias_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
         Bloqueo(Me, Acceso, "Transferencia de Bodegas")
     End Sub
@@ -897,6 +1088,8 @@ Handles backgroundWorkerGrabar.ProgressChanged
             Me.CboCodigoBodega2.Text = FrmTransferenciaListado.TrueDBGridConsultas.Columns(5).Text
             Me.DTPFecha.Value = FechaTransferencia
             Me.TxtNumeroEnsamble.Text = NumeroTranferencia
+
+            Dim existe As Boolean = CargarTransferencia(TxtNumeroEnsamble.Text.Trim(), DTPFecha.Value, "Transferencia Enviada")
 
 
             'Procesado = FrmTransferenciaListado.TrueDBGridConsultas.Columns("Importe").Text
@@ -979,7 +1172,7 @@ Handles backgroundWorkerGrabar.ProgressChanged
 
 
 
-        If Procesado = True Then
+        If Transferencia_Procesado = True Then
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Locked = True
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Locked = True
@@ -1553,113 +1746,176 @@ Handles backgroundWorkerGrabar.ProgressChanged
         End If
     End Sub
 
+    Public Function CargarTransferencia(
+    numeroFactura As String,
+    fechaFactura As Date,
+    tipoFactura As String
+) As Boolean
+
+        If String.IsNullOrWhiteSpace(numeroFactura) Then Return False
+        If numeroFactura = "-----0-----" Then Return False
+
+        Dim sql As String = "
+        SELECT TOP 1 *
+        FROM Facturas
+        WHERE Numero_Factura = @Numero
+          AND Fecha_Factura = @Fecha
+          AND Tipo_Factura = @Tipo
+          AND Activo = 1"
+
+        Using cmd As New SqlCommand(sql, MiConexion)
+
+            cmd.Parameters.Add("@Numero", SqlDbType.VarChar, 50).Value = numeroFactura
+            cmd.Parameters.Add("@Fecha", SqlDbType.Date).Value = fechaFactura.Date
+            cmd.Parameters.Add("@Tipo", SqlDbType.VarChar, 30).Value = tipoFactura
+
+            If MiConexion.State <> ConnectionState.Open Then
+                MiConexion.Open()
+            End If
+
+            Using dr As SqlDataReader = cmd.ExecuteReader()
+                If Not dr.Read() Then
+                    Return False
+                End If
+
+                ' -------------------------------
+                ' Cargar datos en el formulario
+                ' -------------------------------
+                If Not IsDBNull(dr("Observaciones")) Then
+                    TxtObservaciones.Text = dr("Observaciones").ToString()
+                Else
+                    TxtObservaciones.Clear()
+                End If
+
+                TxtTotalCosto.Text = dr("SubTotal").ToString()
+                CboCodigoBodega.Text = dr("Cod_Bodega").ToString()
+
+                If Not IsDBNull(dr("Nuestra_Referencia")) Then
+                    CboCodigoBodega2.Text = dr("Nuestra_Referencia").ToString()
+                Else
+                    CboCodigoBodega2.Text = ""
+                End If
+            End Using
+        End Using
+
+        ' -------------------------------
+        ' Cargar detalle (grid)
+        ' -------------------------------
+        Cargar_Grid(False, numeroFactura, fechaFactura.ToString("yyyy-MM-dd"), tipoFactura)
+
+        Return True
+
+    End Function
+
 
 
     Private Sub TxtNumeroEnsamble_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtNumeroEnsamble.TextChanged
-        Dim SqlCompras As String, Fecha As String, TipoFactura As String
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+
+        'Dim SqlCompras As String, Fecha As String, TipoFactura As String
+        'Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
 
-        If Quien = "NumeroFacturas" Then
-            Exit Sub
-        End If
+        'If Quien = "NumeroFacturas" Then
+        '    Exit Sub
+        'End If
 
-        DataSet.Reset()
+        'DataSet.Reset()
 
-        If Me.TxtNumeroEnsamble.Text <> "-----0-----" Then
-            TipoFactura = Me.CboTipoProducto.Text
-            Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
-            SqlCompras = "SELECT  * FROM Facturas WHERE (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & TipoFactura & "')  AND (Activo = 1)"
+        'If Me.TxtNumeroEnsamble.Text <> "-----0-----" Then
+        '    TipoFactura = Me.CboTipoProducto.Text
+        '    Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
+        '    SqlCompras = "SELECT  * FROM Facturas WHERE (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & TipoFactura & "')  AND (Activo = 1)"
 
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
-            DataAdapter.Fill(DataSet, "Facturas")
-            If Not DataSet.Tables("Facturas").Rows.Count = 0 Then
-                '///////////////////////////////////CARGO LOS DATOS DEL PROVEEDOR/////////////////////////////////////////////////////////////////////////
-                '////////////////////////VENCIMIENTO DE LA FACTURA/////////////////////////////
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
+        '    DataAdapter.Fill(DataSet, "Facturas")
+        '    If Not DataSet.Tables("Facturas").Rows.Count = 0 Then
+        '        '///////////////////////////////////CARGO LOS DATOS DEL PROVEEDOR/////////////////////////////////////////////////////////////////////////
+        '        '////////////////////////VENCIMIENTO DE LA FACTURA/////////////////////////////
 
-                If Not IsDBNull(DataSet.Tables("Facturas").Rows(0)("Observaciones")) Then
-                    Me.TxtObservaciones.Text = DataSet.Tables("Facturas").Rows(0)("Observaciones")
-                End If
-                Me.TxtTotalCosto.Text = DataSet.Tables("Facturas").Rows(0)("SubTotal")
-                Me.CboCodigoBodega.Text = DataSet.Tables("Facturas").Rows(0)("Cod_Bodega")
-                Me.CboCodigoBodega2.Text = DataSet.Tables("Facturas").Rows(0)("Nuestra_Referencia")
+        '        If Not IsDBNull(DataSet.Tables("Facturas").Rows(0)("Observaciones")) Then
+        '            Me.TxtObservaciones.Text = DataSet.Tables("Facturas").Rows(0)("Observaciones")
+        '        End If
+        '        Me.TxtTotalCosto.Text = DataSet.Tables("Facturas").Rows(0)("SubTotal")
+        '        Me.CboCodigoBodega.Text = DataSet.Tables("Facturas").Rows(0)("Cod_Bodega")
+        '        If Not IsDBNull(DataSet.Tables("Facturas").Rows(0)("Nuestra_Referencia")) Then
+        '            Me.CboCodigoBodega2.Text = DataSet.Tables("Facturas").Rows(0)("Nuestra_Referencia")
+        '        End If
+        '        Cargar_Grid(False, Me.TxtNumeroEnsamble.Text, Fecha, TipoFactura)
 
-                Cargar_grid(False, Me.TxtNumeroEnsamble.Text, Fecha, TipoFactura)
+        '            '****************CODIGO RETIRADO   22/10/2025 ****************************
+        '            'If FacturaTarea = True Then
 
-                '****************CODIGO RETIRADO   22/10/2025 ****************************
-                'If FacturaTarea = True Then
-
-                '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                '    '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
-                '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                '    SqlCompras = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Facturas.CodTarea, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura FROM Detalle_Facturas INNER JOIN  Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos " &
-                '                 "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura"
-                '    DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
-                '    DataAdapter.Fill(DataSet, "DetalleFactura")
-                '    Me.BindingDetalle.DataSource = DataSet.Tables("DetalleFactura")
-                '    Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
-                '    Me.TrueDBGridComponentes.Columns("Cod_Productos").Caption = "Codigo"
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Productos").Button = True
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Productos").Width = 80
-                '    Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Caption = "Descripcion"
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 260
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
-                '    Me.TrueDBGridComponentes.Columns("Cantidad").Caption = "Cantidad"
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 54
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Locked = False
-                '    Me.TrueDBGridComponentes.Columns("Precio_Unitario").Caption = "Costo Unit"
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 62
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Locked = True
-                '    Me.TrueDBGridComponentes.Columns("Descuento").Caption = "%Desc"
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Width = 43
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Visible = False
-                '    Me.TrueDBGridComponentes.Columns("Precio_Neto").Caption = "Costo Neto"
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Width = 65
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Locked = True
-                '    Me.TrueDBGridComponentes.Columns("Importe").Caption = "Importe"
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Width = 61
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Locked = True
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Factura").Visible = False
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Button = True
-                '    Me.TrueDBGridComponentes.Columns("CodTarea").Caption = "Lote"
+        '            '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '            '    '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
+        '            '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '            '    SqlCompras = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Facturas.CodTarea, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura FROM Detalle_Facturas INNER JOIN  Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos " &
+        '            '                 "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura"
+        '            '    DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
+        '            '    DataAdapter.Fill(DataSet, "DetalleFactura")
+        '            '    Me.BindingDetalle.DataSource = DataSet.Tables("DetalleFactura")
+        '            '    Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
+        '            '    Me.TrueDBGridComponentes.Columns("Cod_Productos").Caption = "Codigo"
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Productos").Button = True
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Productos").Width = 80
+        '            '    Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Caption = "Descripcion"
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 260
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
+        '            '    Me.TrueDBGridComponentes.Columns("Cantidad").Caption = "Cantidad"
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 54
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Locked = False
+        '            '    Me.TrueDBGridComponentes.Columns("Precio_Unitario").Caption = "Costo Unit"
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 62
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Locked = True
+        '            '    Me.TrueDBGridComponentes.Columns("Descuento").Caption = "%Desc"
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Width = 43
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Visible = False
+        '            '    Me.TrueDBGridComponentes.Columns("Precio_Neto").Caption = "Costo Neto"
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Width = 65
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Locked = True
+        '            '    Me.TrueDBGridComponentes.Columns("Importe").Caption = "Importe"
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Width = 61
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Locked = True
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Factura").Visible = False
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("CodTarea").Button = True
+        '            '    Me.TrueDBGridComponentes.Columns("CodTarea").Caption = "Lote"
 
 
 
-                'Else
+        '            'Else
 
-                '    '///////////////////////////////////////BUSCO EL DETALLE DE LA FACTURA///////////////////////////////////////////////////////
-                '    SqlCompras = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura FROM  Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto " &
-                '        "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura"
-                '    DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
-                '    DataAdapter.Fill(DataSet, "DetalleFactura")
-                '    Me.BindingDetalle.DataSource = DataSet.Tables("DetalleFactura")
-                '    Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
-                '    Me.TrueDBGridComponentes.Columns("Cod_Productos").Caption = "Codigo"
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Productos").Button = True
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Productos").Width = 80
-                '    Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Caption = "Descripcion"
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 260
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
-                '    Me.TrueDBGridComponentes.Columns("Cantidad").Caption = "Cantidad"
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 54
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Locked = False
-                '    Me.TrueDBGridComponentes.Columns("Precio_Unitario").Caption = "Costo Unit"
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 62
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Locked = True
-                '    Me.TrueDBGridComponentes.Columns("Descuento").Caption = "%Desc"
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Width = 43
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Visible = False
-                '    Me.TrueDBGridComponentes.Columns("Precio_Neto").Caption = "Costo Neto"
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Width = 65
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Locked = True
-                '    Me.TrueDBGridComponentes.Columns("Importe").Caption = "Importe"
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Width = 61
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Locked = True
-                '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Factura").Visible = False
+        '            '    '///////////////////////////////////////BUSCO EL DETALLE DE LA FACTURA///////////////////////////////////////////////////////
+        '            '    SqlCompras = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura FROM  Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto " &
+        '            '        "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura"
+        '            '    DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
+        '            '    DataAdapter.Fill(DataSet, "DetalleFactura")
+        '            '    Me.BindingDetalle.DataSource = DataSet.Tables("DetalleFactura")
+        '            '    Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
+        '            '    Me.TrueDBGridComponentes.Columns("Cod_Productos").Caption = "Codigo"
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Productos").Button = True
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Productos").Width = 80
+        '            '    Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Caption = "Descripcion"
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Width = 260
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descripcion_Producto").Locked = True
+        '            '    Me.TrueDBGridComponentes.Columns("Cantidad").Caption = "Cantidad"
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Width = 54
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cantidad").Locked = False
+        '            '    Me.TrueDBGridComponentes.Columns("Precio_Unitario").Caption = "Costo Unit"
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Width = 62
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Unitario").Locked = True
+        '            '    Me.TrueDBGridComponentes.Columns("Descuento").Caption = "%Desc"
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Width = 43
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Descuento").Visible = False
+        '            '    Me.TrueDBGridComponentes.Columns("Precio_Neto").Caption = "Costo Neto"
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Width = 65
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Precio_Neto").Locked = True
+        '            '    Me.TrueDBGridComponentes.Columns("Importe").Caption = "Importe"
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Width = 61
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Importe").Locked = True
+        '            '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Factura").Visible = False
 
-                'End If
-            End If
-        End If
+        '            'End If
+        '        End If
+        '    End If
     End Sub
 
     Private Sub GroupBox2_Enter(sender As Object, e As EventArgs) Handles GroupBox2.Enter
@@ -1748,7 +2004,9 @@ Handles backgroundWorkerGrabar.ProgressChanged
         Next
     End Sub
 
+    Private Sub DTPFecha_ValueChanged(sender As Object, e As EventArgs) Handles DTPFecha.ValueChanged
 
+    End Sub
 
     Public Sub GrabarTransferenciasWorker(Args As ArgsTransferencias, dsTransferencia As DataSet, worker As BackgroundWorker, e As DoWorkEventArgs)
         Dim NumeroFactura As String = ""
@@ -2448,9 +2706,9 @@ Handles backgroundWorkerGrabar.ProgressChanged
         Dim FechaFactura As String, DiferenciaCantidad As Double, DiferenciaPrecio As Double
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
 
-        Resultado = MsgBox("¿Esta Seguro de Eliminar la Linea?", MsgBoxStyle.OkCancel, "Sistema de Facturacion")
+        Resultado = MsgBox("¿Esta Seguro de Eliminar la Linea?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
 
-        If Not Resultado = "1" Then
+        If Resultado = 7 Then
             Exit Sub
         End If
 

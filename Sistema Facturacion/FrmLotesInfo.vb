@@ -136,6 +136,7 @@ Public Class FrmLotesInfo
                 args.Descripcion_Producto = DescripcionProducto
                 args.Codigo_Bodega = CodigoBodega
                 args.Numero_Lote = NumeroLote
+                args.Fecha_Reporte = FechaVence
 
                 result = BuscaExistenciaBodegaLote(args)
                 ExistenciaLote = result.Existencia_Lote
