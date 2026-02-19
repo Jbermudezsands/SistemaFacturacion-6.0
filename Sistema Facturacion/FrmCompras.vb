@@ -967,7 +967,8 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
                 .Cantidad = If(IsDBNull(row("Cantidad")), 0, row("Cantidad")),
                 .Numero_Lote = If(IsDBNull(row("Numero_Lote")), "SINLOTE", row("Numero_Lote")),
                 .Fecha_Vence = If(IsDBNull(row("Fecha_Vence")) OrElse row("Fecha_Vence") = "0", CDate("1900-01-01"), row("Fecha_Vence"))
-            }
+                 }
+
 
                 ' Inserta el detalle (transaccional)
                 GrabaDetalleCompras(MiConexion, Transaccion, detalle)
@@ -1545,7 +1546,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         Me.Button7.Enabled = True
         Me.CboCodigoBodega.Enabled = True
 
-
+        BloquearControles(False)
     End Sub
     Public Sub Guardar_Registros_Row()
         Dim cod As String = "1", Compras As TablaCompras = New TablaCompras
@@ -1899,7 +1900,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         Else
             ds.Tables("DetalleCompra").Reset()
             '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
-            SqlCompras = "SELECT Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario,Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra FROM  Detalle_Compras " &
+            SqlCompras = "SELECT Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario,Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra, Detalle_Compras.Numero_Lote,Detalle_Compras.Fecha_Vence FROM  Detalle_Compras " &
                          "WHERE (Detalle_Compras.Numero_Compra = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Compras.Tipo_Compra = '" & TipoCompra & "') ORDER BY Detalle_Compras.id_Detalle_Compra"
             'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
             'DataAdapter.Fill(DataSet, "DetalleCompras")
@@ -1934,6 +1935,8 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Lote").Visible = False
+            Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Vence").Visible = False
         End If
 
     End Sub
@@ -3200,12 +3203,18 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
                 Me.Button7.Enabled = False
             End If
 
-            Me.CboCodigoBodega.Text = UsuarioBodegaCompra
-            Me.CboTipoProducto.Text = UsuarioTipoCompra
-            Me.TxtCodigoProveedor.Text = UsuarioProveedor
+            If UsuarioBodegaCompra <> "" Then
+                Me.CboCodigoBodega.Text = UsuarioBodegaCompra
+            End If
+            If UsuarioTipoCompra <> "" Then
+                Me.CboTipoProducto.Text = UsuarioTipoCompra
+            End If
+            If UsuarioProveedor <> "" Then
+                Me.TxtCodigoProveedor.Text = UsuarioProveedor
+            End If
         Else
 
-            My.Application.DoEvents()
+                My.Application.DoEvents()
             'Me.DTPFecha.Value = Fecha_Compra
             'Me.DTPFechaHora.Value = FechaHoraCompra
             'Me.CboTipoProducto.Text = "Orden de Compra"

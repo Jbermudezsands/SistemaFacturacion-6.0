@@ -793,10 +793,10 @@ Handles backgroundWorkerGrabar.ProgressChanged
 
             '========================= COLUMNA ID DETALLE =======================
 
-            '.Splits(0).DisplayColumns("id_Detalle_Factura").Visible = False
-            '.Splits(0).DisplayColumns("Numero_Factura").Visible = False
-            '.Splits(0).DisplayColumns("Fecha_Factura").Visible = False
-            '.Splits(0).DisplayColumns("Tipo_Factura").Visible = False
+            .Splits(0).DisplayColumns("id_Detalle_Factura").Visible = False
+            .Splits(0).DisplayColumns("Numero_Factura").Visible = False
+            .Splits(0).DisplayColumns("Fecha_Factura").Visible = False
+            .Splits(0).DisplayColumns("Tipo_Factura").Visible = False
 
 
 
@@ -2452,7 +2452,7 @@ Handles backgroundWorkerGrabar.ProgressChanged
         If Not Resultado = "1" Then
             Exit Sub
         End If
-
+        MiConexion.Close()
         Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
         '//////////////////////////////////////////////////////////////////////////////////////////////
         '////////////////////////////EDITO EL ENCABEZADO DE LA FACTURA///////////////////////////////////

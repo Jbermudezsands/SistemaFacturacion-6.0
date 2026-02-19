@@ -11139,6 +11139,9 @@ errSub:
 
         My.Forms.FrmCompras.TrueDBGridComponentes.AllowAddNew = True
         My.Forms.FrmCompras.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
+
+
+
     End Sub
     Public Function BuscaCosto(ByVal CodigoProductos As String, ByVal CodBodega As String) As Double
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter

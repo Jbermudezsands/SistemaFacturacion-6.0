@@ -157,6 +157,11 @@ Sistema Facturacion 6.0
   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:Sistema_Facturacion.My.Resources.Resources.LOGO">
+<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:Sistema_Facturacion.My.Resources.Resources.NoDisponible">
 <summary>
   Busca un recurso adaptado de tipo System.Drawing.Bitmap.

@@ -2159,6 +2159,11 @@ Handles backgroundWorkerLote.RunWorkerCompleted
         Me.RibbonLabelSPlano4.Text = Me.txtSPlano4.Text
     End Sub
 
+    Private Sub RibbonCodUnico_Click(sender As Object, e As EventArgs) Handles RibbonCodUnico.Click
+        My.Forms.FrmBeneficiario.MdiParent = Me
+        My.Forms.FrmBeneficiario.Show()
+    End Sub
+
     Private Sub RibbonButton21_Click(sender As Object, e As EventArgs) Handles RibbonButton21.Click
         My.Forms.FrmContenedores.MdiParent = Me
         My.Forms.FrmContenedores.Show()
