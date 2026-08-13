@@ -8,6 +8,7 @@ Imports System.Text
 Imports System.ComponentModel
 Imports Microsoft.Win32
 Imports Sistema_Facturacion.FrmFacturas
+Imports System.Data.SqlClient
 
 
 Public Class MDIMain
@@ -20,6 +21,87 @@ Public Class MDIMain
     Public FechaVenceLote As Date
     Public DataSetHebra As New DataSet, DataAdapterHebra As New SqlClient.SqlDataAdapter
     Public Delegate Sub delegadoRibbonLabel(Datos As String)
+    Private WithEvents BgAuditoria As New BackgroundWorker
+
+    '******************Funcion BackGround Worker *******************************
+    Private Sub BgAuditoria_DoWork(sender As Object, e As DoWorkEventArgs) Handles BgAuditoria.DoWork
+
+        BgAuditoria.ReportProgress(0, "Iniciando auditoría de lotes...")
+
+        Using cn As New SqlConnection(Conexion)
+
+            cn.Open()
+
+            BgAuditoria.ReportProgress(0, "Analizando movimientos de inventario...")
+
+            Dim cmd As New SqlCommand("SP_Auditoria_LotesNegativos", cn)
+            cmd.CommandType = CommandType.StoredProcedure
+            cmd.CommandTimeout = 0
+
+            cmd.ExecuteNonQuery()
+
+        End Using
+
+        BgAuditoria.ReportProgress(0, "Auditoría finalizada")
+
+    End Sub
+    Private Sub BgAuditoria_ProgressChanged(sender As Object, e As ProgressChangedEventArgs) Handles BgAuditoria.ProgressChanged
+
+        Dim mensaje As String = e.UserState.ToString()
+
+        txtSPlano.Text = mensaje
+        RibbonLabelSPlano.Text = mensaje
+
+    End Sub
+    Private Sub BgAuditoria_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BgAuditoria.RunWorkerCompleted
+
+        If e.Cancelled Then
+
+            txtSPlano.Text = "Auditoría cancelada"
+            RibbonLabelSPlano.Text = "Auditoría cancelada"
+
+            Me.Close()
+
+            Return
+
+        End If
+
+
+        txtSPlano.Text = "Auditoría completada"
+        RibbonLabelSPlano.Text = "Auditoría completada"
+
+
+        Dim errores As Integer = 0
+
+        Using cn As New SqlConnection(Conexion)
+
+            cn.Open()
+
+            Dim cmd As New SqlCommand("SELECT COUNT(*) FROM Auditoria_LotesNegativos WHERE Reparado = 0", cn)
+
+            errores = Convert.ToInt32(cmd.ExecuteScalar())
+
+        End Using
+
+
+        If errores > 0 Then
+
+            txtSPlano.Text = "Se detectaron " & errores & " errores de lotes"
+            RibbonLabelSPlano.Text = txtSPlano.Text
+
+            FrmRepararLotes.MdiParent = Me
+            FrmRepararLotes.Show()
+
+        Else
+
+            txtSPlano.Text = "Inventario verificado sin inconsistencias"
+            RibbonLabelSPlano.Text = txtSPlano.Text
+
+        End If
+
+    End Sub
+
+
     '/////////////////////////HILO ACTUALIZAR EXISTENCIA COSTO /////////////////////
     Private Sub backgroundWorkerActualizaCostoPromedio_DoWork(
 ByVal sender As Object,
@@ -276,93 +358,98 @@ Handles backgroundWorkerLote.RunWorkerCompleted
     End Function
 
 
-    Public Sub BusquedaProductosLotes()
-        Dim SQlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, NumeroLote As String
-        Dim i As Double, Cont As Double, Cont2 As Double = 0, CodigoProducto As String, CodigoBodega As String
-        Dim j As Double, Result As Boolean = False, ActivarLote As Boolean = False, FechaVence As Date
-        Dim MiConexionTemp As New SqlClient.SqlConnection(Conexion & ";Connection Timeout=30"), Cadena As String = ""
-        ''*******************************************************************************************************************************
-        ''/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
-        ''*******************************************************************************************************************************
-        DataSetHebra.Reset()
-        SQlString = "SELECT Numero_Lote, FechaVence, Cantidad as Existencia, Numero_Lote As Codigo_Producto,Numero_Lote As Nombre_Producto, Numero_Lote As Codigo_Bodega   FROM Detalle_Lote WHERE (Numero_Documento = '-1000000000') "
-        DataAdapterHebra = New SqlClient.SqlDataAdapter(SQlString, MiConexionTemp)
-        DataAdapterHebra.Fill(DataSetHebra, "ExistenciaLotes")
+
+    '************************CODIGO RETIRADO 08/03/2026
+    'Public Sub BusquedaProductosLotes()
+    '    Dim SQlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, NumeroLote As String
+    '    Dim i As Double, Cont As Double, Cont2 As Double = 0, CodigoProducto As String, CodigoBodega As String
+    '    Dim j As Double, Result As Boolean = False, ActivarLote As Boolean = False, FechaVence As Date
+    '    Dim MiConexionTemp As New SqlClient.SqlConnection(Conexion & ";Connection Timeout=30"), Cadena As String = ""
+    '    ''*******************************************************************************************************************************
+    '    ''/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
+    '    ''*******************************************************************************************************************************
+    '    DataSetHebra.Reset()
+    '    SQlString = "SELECT Numero_Lote, FechaVence, Cantidad as Existencia, Numero_Lote As Codigo_Producto,Numero_Lote As Nombre_Producto, Numero_Lote As Codigo_Bodega   FROM Detalle_Lote WHERE (Numero_Documento = '-1000000000') "
+    '    DataAdapterHebra = New SqlClient.SqlDataAdapter(SQlString, MiConexionTemp)
+    '    DataAdapterHebra.Fill(DataSetHebra, "ExistenciaLotes")
 
 
-        '///////////////////////VERIFICO SI LOS LOTES TIENEN PRODUCTOS //////////////////////////
-        SQlString = "SELECT Numero_Lote, Nombre_Lote, FechaVence, Activo, Existencia FROM Lote WHERE (Numero_Lote <> N' ')  AND (Numero_Lote <> N'SIN LOTE') ORDER BY FechaVence DESC "
-        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexionTemp)
-        DataAdapter.Fill(DataSet, "Lotes")
-        Cont2 = DataSet.Tables("Lotes").Rows.Count
-        j = 0
+    '    '///////////////////////VERIFICO SI LOS LOTES TIENEN PRODUCTOS //////////////////////////
+    '    SQlString = "SELECT Numero_Lote, Nombre_Lote, FechaVence, Activo, Existencia FROM Lote WHERE (Numero_Lote <> N' ')  AND (Numero_Lote <> N'SIN LOTE') ORDER BY FechaVence DESC "
+    '    DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexionTemp)
+    '    DataAdapter.Fill(DataSet, "Lotes")
+    '    Cont2 = DataSet.Tables("Lotes").Rows.Count
+    '    j = 0
 
 
-        Do While Cont2 > j
+    '    Do While Cont2 > j
 
-            My.Application.DoEvents()
+    '        My.Application.DoEvents()
 
-            '///////////////////////BUSCO LOS PRODUCTOS PARA ESTE LOTE /////////////////////////
-            NumeroLote = DataSet.Tables("Lotes").Rows(j)("Numero_Lote")
-            FechaVence = DataSet.Tables("Lotes").Rows(j)("FechaVence")
+    '        '///////////////////////BUSCO LOS PRODUCTOS PARA ESTE LOTE /////////////////////////
+    '        NumeroLote = DataSet.Tables("Lotes").Rows(j)("Numero_Lote")
+    '        FechaVence = DataSet.Tables("Lotes").Rows(j)("FechaVence")
 
-            SQlString = "SELECT DISTINCT Detalle_Compras.Cod_Producto AS Cod_Productos, Detalle_Compras.Numero_Lote, Lote.FechaVence, Productos.Descripcion_Producto, Compras.Cod_Bodega FROM Detalle_Compras INNER JOIN Lote ON Detalle_Compras.Numero_Lote = Lote.Numero_Lote INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  " &
-                        "WHERE  (Detalle_Compras.Numero_Lote = '" & NumeroLote & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexionTemp)
-            DataAdapter.Fill(DataSet, "Productos")
-            Cont = DataSet.Tables("Productos").Rows.Count
-            i = 0
+    '        SQlString = "SELECT DISTINCT Detalle_Compras.Cod_Producto AS Cod_Productos, Detalle_Compras.Numero_Lote, Lote.FechaVence, Productos.Descripcion_Producto, Compras.Cod_Bodega FROM Detalle_Compras INNER JOIN Lote ON Detalle_Compras.Numero_Lote = Lote.Numero_Lote INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  " &
+    '                    "WHERE  (Detalle_Compras.Numero_Lote = '" & NumeroLote & "')"
+    '        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexionTemp)
+    '        DataAdapter.Fill(DataSet, "Productos")
+    '        Cont = DataSet.Tables("Productos").Rows.Count
+    '        i = 0
 
-            If NumeroLote = "F-24575" Then
-                NumeroLote = "F-24575"
-            End If
-
-
-            Do While Cont > i
-                My.Application.DoEvents()
+    '        If NumeroLote = "F-24575" Then
+    '            NumeroLote = "F-24575"
+    '        End If
 
 
-
-                CodigoProducto = DataSet.Tables("Productos").Rows(i)("Cod_Productos")
-                CodigoBodega = DataSet.Tables("Productos").Rows(i)("Cod_Bodega")
-
-                Cadena = "SP Lote:" & NumeroLote & " Prod: " & CodigoProducto
-                RibbonLabel_Hilos(Cadena)
-
-                Result = LoteHilos(CodigoProducto, CodigoBodega, NumeroLote, FechaVence)
-
-                If Result = True Then
-                    ActivarLote = True
-                End If
-                i = i + 1
-            Loop
-
-            If MiConexionTemp.State = ConnectionState.Open Then
-                MiConexionTemp.Close()
-            End If
-            DataSet.Tables("Productos").Reset()
-
-            '////////////////////////////SI EXISTEN PRODUCTOS CON EXISTENCIAS ////////////////////////////
-            '/////////////////////////////////ACTIVO EL LOTE PROCESADO ////////////////////////////////////
-            If Cont > 0 Then
-                If NumeroLote <> "SIN LOTE" Then
-                    If ActivarLote = False Then
-                        UpdateActivarLoteHilos(NumeroLote, 0)
-                    ElseIf ActivarLote = True Then
-                        UpdateActivarLoteHilos(NumeroLote, 1)
-                    End If
-                End If
-            End If
-
-            ActivarLote = False
-            j = j + 1
-        Loop
-
-        DataSet.Tables("Lotes").Reset()
+    '        Do While Cont > i
+    '            My.Application.DoEvents()
 
 
 
-    End Sub
+    '            CodigoProducto = DataSet.Tables("Productos").Rows(i)("Cod_Productos")
+    '            CodigoBodega = DataSet.Tables("Productos").Rows(i)("Cod_Bodega")
+
+    '            Cadena = "SP Lote:" & NumeroLote & " Prod: " & CodigoProducto
+    '            RibbonLabel_Hilos(Cadena)
+
+    '            Result = LoteHilos(CodigoProducto, CodigoBodega, NumeroLote, FechaVence)
+
+    '            If Result = True Then
+    '                ActivarLote = True
+    '            End If
+    '            i = i + 1
+    '        Loop
+
+    '        If MiConexionTemp.State = ConnectionState.Open Then
+    '            MiConexionTemp.Close()
+    '        End If
+    '        DataSet.Tables("Productos").Reset()
+
+    '        '////////////////////////////SI EXISTEN PRODUCTOS CON EXISTENCIAS ////////////////////////////
+    '        '/////////////////////////////////ACTIVO EL LOTE PROCESADO ////////////////////////////////////
+    '        If Cont > 0 Then
+    '            If NumeroLote <> "SIN LOTE" Then
+    '                If ActivarLote = False Then
+    '                    UpdateActivarLoteHilos(NumeroLote, 0)
+    '                ElseIf ActivarLote = True Then
+    '                    UpdateActivarLoteHilos(NumeroLote, 1)
+    '                End If
+    '            End If
+    '        End If
+
+    '        ActivarLote = False
+    '        j = j + 1
+    '    Loop
+
+    '    DataSet.Tables("Lotes").Reset()
+
+
+
+    'End Sub
+
+
+
     Public Function LoteHilos(ByVal CodigoProducto As String, ByVal CodigoBodega As String, NumeroLote As String, FechaVence As Date) As Boolean
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim SQlString As String, iPosicion As Double = 0
@@ -1278,6 +1365,17 @@ Handles backgroundWorkerLote.RunWorkerCompleted
                 oHebraLotes.Abort()
             End If
         End If
+
+        If BgAuditoria IsNot Nothing AndAlso BgAuditoria.IsBusy Then
+
+            BgAuditoria.CancelAsync()
+
+            txtSPlano.Text = "Cancelando auditoría..."
+            RibbonLabelSPlano.Text = "Cancelando auditoría..."
+
+            e.Cancel = True
+
+        End If
     End Sub
 
     Private Sub FrmMDIMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -1286,6 +1384,9 @@ Handles backgroundWorkerLote.RunWorkerCompleted
         Dim FechaTasa As String, Monto As Double, FechaInicio As Date, FechaFin As Date, FechaBusca As Date, i As Double
         Dim SqlDatos As String, Cadena2 As String = "", Registros As Double = 0
         Dim ActivarAuditoriaSPlano As Boolean = False
+
+        BgAuditoria.WorkerReportsProgress = True
+        BgAuditoria.WorkerSupportsCancellation = False
 
         TasaCambio = BuscaTasaCambio(Now)
 
@@ -1608,8 +1709,10 @@ Handles backgroundWorkerLote.RunWorkerCompleted
 
         '//////////////////////////GENERO UNA NUEVA HEBRA //////////////////////////////
         If ActivarAuditoriaSPlano = True Then
-            oHebraLotes = New Thread(AddressOf BusquedaProductosLotes)
-            oHebraLotes.Start()
+            'oHebraLotes = New Thread(AddressOf BusquedaProductosLotes)
+            'oHebraLotes.IsBackground = True
+            'oHebraLotes.Start()
+            BgAuditoria.RunWorkerAsync()
         End If
 
 
@@ -2169,11 +2272,30 @@ Handles backgroundWorkerLote.RunWorkerCompleted
         My.Forms.FrmContenedores.Show()
     End Sub
 
+    Private Sub RibbonButton22_Click_2(sender As Object, e As EventArgs) Handles RibbonButton22.Click
+        My.Forms.FrmPreciosLeche.MdiParent = Me
+        My.Forms.FrmPreciosLeche.Show()
+    End Sub
+
     Private Sub RibbonHospitalizacion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonHospitalizacion.Click
         My.Forms.FrmHospitalizacion.MdiParent = Me
         My.Forms.FrmHospitalizacion.Show()
     End Sub
 
+
+    Public Sub MostrarEstadoPlano(Mensaje As String)
+
+        If Me.InvokeRequired Then
+            Me.Invoke(New Action(Of String)(AddressOf MostrarEstadoPlano), Mensaje)
+        Else
+            txtSPlano.Text = Mensaje
+            txtSPlano.Refresh()
+
+            RibbonLabelSPlano.Text = Mensaje
+            Application.DoEvents()
+        End If
+
+    End Sub
 
 
 End Class

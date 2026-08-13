@@ -29,6 +29,9 @@ Partial Class FrmProductor
         Me.Button8 = New System.Windows.Forms.Button()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.ChkPagarCheque = New System.Windows.Forms.CheckBox()
+        Me.CmbTipoProductor = New System.Windows.Forms.ComboBox()
+        Me.Label46 = New System.Windows.Forms.Label()
         Me.TxtNumeroCedula = New System.Windows.Forms.MaskedTextBox()
         Me.Label29 = New System.Windows.Forms.Label()
         Me.CboCodigoProductor = New C1.Win.C1List.C1Combo()
@@ -312,6 +315,9 @@ Partial Class FrmProductor
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.ChkPagarCheque)
+        Me.TabPage1.Controls.Add(Me.CmbTipoProductor)
+        Me.TabPage1.Controls.Add(Me.Label46)
         Me.TabPage1.Controls.Add(Me.TxtNumeroCedula)
         Me.TabPage1.Controls.Add(Me.Label29)
         Me.TabPage1.Controls.Add(Me.CboCodigoProductor)
@@ -355,6 +361,37 @@ Partial Class FrmProductor
         Me.TabPage1.Text = "Datos Generales"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
+        'ChkPagarCheque
+        '
+        Me.ChkPagarCheque.AutoSize = True
+        Me.ChkPagarCheque.Checked = True
+        Me.ChkPagarCheque.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.ChkPagarCheque.Location = New System.Drawing.Point(539, 273)
+        Me.ChkPagarCheque.Name = "ChkPagarCheque"
+        Me.ChkPagarCheque.Size = New System.Drawing.Size(94, 17)
+        Me.ChkPagarCheque.TabIndex = 171
+        Me.ChkPagarCheque.Text = "Pagar Cheque"
+        Me.ChkPagarCheque.UseVisualStyleBackColor = True
+        '
+        'CmbTipoProductor
+        '
+        Me.CmbTipoProductor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbTipoProductor.FormattingEnabled = True
+        Me.CmbTipoProductor.Items.AddRange(New Object() {"Productor", "Socio", "PreSocio"})
+        Me.CmbTipoProductor.Location = New System.Drawing.Point(128, 157)
+        Me.CmbTipoProductor.Name = "CmbTipoProductor"
+        Me.CmbTipoProductor.Size = New System.Drawing.Size(135, 21)
+        Me.CmbTipoProductor.TabIndex = 170
+        '
+        'Label46
+        '
+        Me.Label46.AutoSize = True
+        Me.Label46.Location = New System.Drawing.Point(37, 160)
+        Me.Label46.Name = "Label46"
+        Me.Label46.Size = New System.Drawing.Size(77, 13)
+        Me.Label46.TabIndex = 169
+        Me.Label46.Text = "Tipo Productor"
+        '
         'TxtNumeroCedula
         '
         Me.TxtNumeroCedula.Location = New System.Drawing.Point(485, 81)
@@ -388,7 +425,7 @@ Partial Class FrmProductor
         Me.CboCodigoProductor.EditorHeight = 15
         Me.CboCodigoProductor.Images.Add(CType(resources.GetObject("CboCodigoProductor.Images"), System.Drawing.Image))
         Me.CboCodigoProductor.ItemHeight = 15
-        Me.CboCodigoProductor.Location = New System.Drawing.Point(125, 139)
+        Me.CboCodigoProductor.Location = New System.Drawing.Point(128, 131)
         Me.CboCodigoProductor.MatchEntryTimeout = CType(2000, Long)
         Me.CboCodigoProductor.MaxDropDownItems = CType(5, Short)
         Me.CboCodigoProductor.MaxLength = 32767
@@ -397,7 +434,7 @@ Partial Class FrmProductor
         Me.CboCodigoProductor.RowDivider.Color = System.Drawing.Color.DarkGray
         Me.CboCodigoProductor.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
         Me.CboCodigoProductor.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboCodigoProductor.Size = New System.Drawing.Size(208, 21)
+        Me.CboCodigoProductor.Size = New System.Drawing.Size(205, 21)
         Me.CboCodigoProductor.TabIndex = 166
         Me.CboCodigoProductor.PropBag = resources.GetString("CboCodigoProductor.PropBag")
         '
@@ -406,7 +443,7 @@ Partial Class FrmProductor
         Me.ChkCausaIVA.AutoSize = True
         Me.ChkCausaIVA.Checked = True
         Me.ChkCausaIVA.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.ChkCausaIVA.Location = New System.Drawing.Point(485, 273)
+        Me.ChkCausaIVA.Location = New System.Drawing.Point(457, 273)
         Me.ChkCausaIVA.Name = "ChkCausaIVA"
         Me.ChkCausaIVA.Size = New System.Drawing.Size(76, 17)
         Me.ChkCausaIVA.TabIndex = 165
@@ -681,7 +718,7 @@ Partial Class FrmProductor
         Me.ChkActivo.AutoSize = True
         Me.ChkActivo.Checked = True
         Me.ChkActivo.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.ChkActivo.Location = New System.Drawing.Point(399, 273)
+        Me.ChkActivo.Location = New System.Drawing.Point(394, 273)
         Me.ChkActivo.Name = "ChkActivo"
         Me.ChkActivo.Size = New System.Drawing.Size(56, 17)
         Me.ChkActivo.TabIndex = 143
@@ -690,7 +727,7 @@ Partial Class FrmProductor
         '
         'TxtApellidos
         '
-        Me.TxtApellidos.Location = New System.Drawing.Point(127, 192)
+        Me.TxtApellidos.Location = New System.Drawing.Point(127, 206)
         Me.TxtApellidos.Name = "TxtApellidos"
         Me.TxtApellidos.Size = New System.Drawing.Size(249, 20)
         Me.TxtApellidos.TabIndex = 3
@@ -698,7 +735,7 @@ Partial Class FrmProductor
         'LblApellido
         '
         Me.LblApellido.AutoSize = True
-        Me.LblApellido.Location = New System.Drawing.Point(21, 192)
+        Me.LblApellido.Location = New System.Drawing.Point(21, 206)
         Me.LblApellido.Name = "LblApellido"
         Me.LblApellido.Size = New System.Drawing.Size(93, 13)
         Me.LblApellido.TabIndex = 141
@@ -706,7 +743,7 @@ Partial Class FrmProductor
         '
         'TxtDireccion
         '
-        Me.TxtDireccion.Location = New System.Drawing.Point(125, 215)
+        Me.TxtDireccion.Location = New System.Drawing.Point(125, 229)
         Me.TxtDireccion.Multiline = True
         Me.TxtDireccion.Name = "TxtDireccion"
         Me.TxtDireccion.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
@@ -716,7 +753,7 @@ Partial Class FrmProductor
         'LblDireccion
         '
         Me.LblDireccion.AutoSize = True
-        Me.LblDireccion.Location = New System.Drawing.Point(22, 215)
+        Me.LblDireccion.Location = New System.Drawing.Point(22, 229)
         Me.LblDireccion.Name = "LblDireccion"
         Me.LblDireccion.Size = New System.Drawing.Size(101, 13)
         Me.LblDireccion.TabIndex = 140
@@ -724,7 +761,7 @@ Partial Class FrmProductor
         '
         'TxtNombre
         '
-        Me.TxtNombre.Location = New System.Drawing.Point(127, 168)
+        Me.TxtNombre.Location = New System.Drawing.Point(127, 182)
         Me.TxtNombre.Name = "TxtNombre"
         Me.TxtNombre.Size = New System.Drawing.Size(249, 20)
         Me.TxtNombre.TabIndex = 1
@@ -732,7 +769,7 @@ Partial Class FrmProductor
         'LblNombre
         '
         Me.LblNombre.AutoSize = True
-        Me.LblNombre.Location = New System.Drawing.Point(21, 168)
+        Me.LblNombre.Location = New System.Drawing.Point(21, 182)
         Me.LblNombre.Name = "LblNombre"
         Me.LblNombre.Size = New System.Drawing.Size(93, 13)
         Me.LblNombre.TabIndex = 139
@@ -741,7 +778,7 @@ Partial Class FrmProductor
         'Button6
         '
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
-        Me.Button6.Location = New System.Drawing.Point(339, 126)
+        Me.Button6.Location = New System.Drawing.Point(339, 118)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(37, 38)
         Me.Button6.TabIndex = 137
@@ -750,7 +787,7 @@ Partial Class FrmProductor
         'LblCodigo
         '
         Me.LblCodigo.AutoSize = True
-        Me.LblCodigo.Location = New System.Drawing.Point(21, 139)
+        Me.LblCodigo.Location = New System.Drawing.Point(21, 135)
         Me.LblCodigo.Name = "LblCodigo"
         Me.LblCodigo.Size = New System.Drawing.Size(89, 13)
         Me.LblCodigo.TabIndex = 138
@@ -2153,4 +2190,7 @@ Partial Class FrmProductor
     Friend WithEvents Button15 As System.Windows.Forms.Button
     Friend WithEvents TxtCtaGastoPlanilla As System.Windows.Forms.TextBox
     Friend WithEvents Label45 As System.Windows.Forms.Label
+    Friend WithEvents CmbTipoProductor As ComboBox
+    Friend WithEvents Label46 As Label
+    Friend WithEvents ChkPagarCheque As CheckBox
 End Class

@@ -1,0 +1,26 @@
+********************************************
+IMPORTACION DE PLANILLA
+Archivo : SAN PEDRO2772026.csv
+Fecha   : 11/08/2026 10:32:06
+Registros: 5
+********************************************
+
+Código : 2066
+Tipo   : Productor
+Error  : El productor existe, pero se encuentra inactivo.
+------------------------------------------
+Código : 2078
+Tipo   : Productor
+Error  : El productor existe, pero se encuentra inactivo.
+------------------------------------------
+Código : 3371
+Tipo   : Productor
+Error  : El productor existe, pero se encuentra inactivo.
+------------------------------------------
+Código : 3373
+Tipo   : Productor
+Error  : El productor existe, pero se encuentra inactivo.
+------------------------------------------
+
+ERROR GENERAL
+Se encontraron errores durante la validación de los registros.

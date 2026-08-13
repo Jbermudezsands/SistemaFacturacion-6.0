@@ -84,6 +84,7 @@ Partial Class FrmFacturasHistoricos
         Me.BindingMetodo = New System.Windows.Forms.BindingSource(Me.components)
         Me.BindingDetalle = New System.Windows.Forms.BindingSource(Me.components)
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.BtnActivar = New System.Windows.Forms.Button()
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrueDBGridMetodo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -651,7 +652,7 @@ Partial Class FrmFacturasHistoricos
         Me.Button8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
         Me.Button8.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button8.Location = New System.Drawing.Point(48, 85)
+        Me.Button8.Location = New System.Drawing.Point(86, 85)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(75, 66)
         Me.Button8.TabIndex = 184
@@ -830,6 +831,7 @@ Partial Class FrmFacturasHistoricos
         '
         'GroupBox5
         '
+        Me.GroupBox5.Controls.Add(Me.BtnActivar)
         Me.GroupBox5.Controls.Add(Me.ButtonBorrar)
         Me.GroupBox5.Controls.Add(Me.Button8)
         Me.GroupBox5.Controls.Add(Me.Button2)
@@ -838,6 +840,19 @@ Partial Class FrmFacturasHistoricos
         Me.GroupBox5.Size = New System.Drawing.Size(167, 228)
         Me.GroupBox5.TabIndex = 200
         Me.GroupBox5.TabStop = False
+        '
+        'BtnActivar
+        '
+        Me.BtnActivar.Image = CType(resources.GetObject("BtnActivar.Image"), System.Drawing.Image)
+        Me.BtnActivar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnActivar.Location = New System.Drawing.Point(6, 86)
+        Me.BtnActivar.Name = "BtnActivar"
+        Me.BtnActivar.Size = New System.Drawing.Size(75, 65)
+        Me.BtnActivar.TabIndex = 188
+        Me.BtnActivar.Tag = "26"
+        Me.BtnActivar.Text = "Activar"
+        Me.BtnActivar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnActivar.UseVisualStyleBackColor = True
         '
         'FrmFacturasHistoricos
         '
@@ -974,4 +989,5 @@ Partial Class FrmFacturasHistoricos
     Friend WithEvents Label14 As System.Windows.Forms.Label
     Friend WithEvents TxtDescuento As System.Windows.Forms.TextBox
     Friend WithEvents GroupBox5 As System.Windows.Forms.GroupBox
+    Friend WithEvents BtnActivar As Button
 End Class

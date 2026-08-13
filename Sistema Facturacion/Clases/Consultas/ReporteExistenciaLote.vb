@@ -9,7 +9,8 @@
     Private TipoReporte As String
     Private Agrupado As String
     Private FechaReporte As Date
-
+    Public Existencia_Bodega As Double
+    Public Existencia_Valida As Double
 
 
     Public Property Numero_Lote As String

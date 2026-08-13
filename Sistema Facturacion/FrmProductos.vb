@@ -502,7 +502,9 @@ Public Class FrmProductos
         Me.CboIva.DataSource = DataSet.Tables("Impuestos")
         Me.CboIva.DisplayMember = "Descripcion_Iva"
 
-        Bloqueo(Me, Acceso, "Vendedores")
+        Bloqueo(Me, Acceso, "Productos")
+
+
     End Sub
 
     Private Sub FrmProductos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -547,6 +549,7 @@ Public Class FrmProductos
                 Me.TxtCostoPromedioDolar.Visible = False
                 Me.TxtUltimoPrecioCompra.Visible = False
                 Me.GroupBox10.Visible = False
+                Me.GroupBox4.Visible = False
 
         End Select
 

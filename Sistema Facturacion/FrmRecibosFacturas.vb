@@ -1074,7 +1074,7 @@ Public Class FrmRecibosFacturas
                             oDataRow("NombrePago") = NombrePago
                             oDataRow("Descripcion") = "PAGO " & Descripcion
                             If TipoFactura = "Factura" Then
-                                oDataRow("Numero_Nota") = "0000"
+                                'oDataRow("Numero_Nota") = "0000"
                                 oDataRow("Numero_Factura") = NumeroFactura
                             Else
                                 oDataRow("Numero_Nota") = NumeroFactura

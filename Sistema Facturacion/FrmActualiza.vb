@@ -1199,7 +1199,6 @@ Handles backgroundWorkerProductosLotes.ProgressChanged
         End If
 
 
-
         DataAdapter = New SqlClient.SqlDataAdapter(SQLProductos, MiConexion)
         DataAdapter.Fill(DataSet, "ListaProductos")
         MiConexion.Close()
@@ -1221,6 +1220,7 @@ Handles backgroundWorkerProductosLotes.ProgressChanged
                 '    CodProductos = Trim(DataSet.Tables("ListaProductos").Rows(iPosicionFila)("Cod_Productos"))
                 'End If
 
+                RepararCostoDevolucionesCompra(CodProductos, CodProductos)
 
                 '//////////////////////////////////////////////////////////////////////////////////////////////
                 '///////////////EL DETALLE DE LA FACTURA LA LLENO DE CERO PARA EL COSTO/////////////////////////////////////////////////
@@ -1769,5 +1769,9 @@ Handles backgroundWorkerProductosLotes.ProgressChanged
         AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerLotes_RunWorkerCompleted
         worker.RunWorkerAsync()
         'worker.RunWorkerAsync({Compras, dsDetalle, dsMetodoPago})
+    End Sub
+
+    Private Sub Button26_Click(sender As Object, e As EventArgs) Handles Button26.Click
+
     End Sub
 End Class

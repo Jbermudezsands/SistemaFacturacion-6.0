@@ -29,6 +29,7 @@ Partial Class FrmListaOrdenCompra
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.TDGridSolicitud = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
+        Me.BtnComprar = New System.Windows.Forms.Button()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TDGridSolicitud, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -52,9 +53,9 @@ Partial Class FrmListaOrdenCompra
         Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
         Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button1.Location = New System.Drawing.Point(817, 303)
+        Me.Button1.Location = New System.Drawing.Point(817, 327)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(114, 56)
+        Me.Button1.Size = New System.Drawing.Size(121, 56)
         Me.Button1.TabIndex = 255
         Me.Button1.Text = "Anular"
         Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -65,7 +66,7 @@ Partial Class FrmListaOrdenCompra
         Me.BtnActualizar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnActualizar.Image = CType(resources.GetObject("BtnActualizar.Image"), System.Drawing.Image)
         Me.BtnActualizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnActualizar.Location = New System.Drawing.Point(817, 181)
+        Me.BtnActualizar.Location = New System.Drawing.Point(817, 180)
         Me.BtnActualizar.Name = "BtnActualizar"
         Me.BtnActualizar.Size = New System.Drawing.Size(121, 56)
         Me.BtnActualizar.TabIndex = 254
@@ -78,7 +79,7 @@ Partial Class FrmListaOrdenCompra
         Me.BtnVer.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnVer.Image = CType(resources.GetObject("BtnVer.Image"), System.Drawing.Image)
         Me.BtnVer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnVer.Location = New System.Drawing.Point(817, 122)
+        Me.BtnVer.Location = New System.Drawing.Point(817, 121)
         Me.BtnVer.Name = "BtnVer"
         Me.BtnVer.Size = New System.Drawing.Size(121, 56)
         Me.BtnVer.TabIndex = 253
@@ -91,9 +92,9 @@ Partial Class FrmListaOrdenCompra
         Me.BtnSalir.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnSalir.Image = CType(resources.GetObject("BtnSalir.Image"), System.Drawing.Image)
         Me.BtnSalir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnSalir.Location = New System.Drawing.Point(817, 368)
+        Me.BtnSalir.Location = New System.Drawing.Point(817, 389)
         Me.BtnSalir.Name = "BtnSalir"
-        Me.BtnSalir.Size = New System.Drawing.Size(114, 56)
+        Me.BtnSalir.Size = New System.Drawing.Size(121, 56)
         Me.BtnSalir.TabIndex = 252
         Me.BtnSalir.Text = "Salir"
         Me.BtnSalir.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -145,16 +146,30 @@ Partial Class FrmListaOrdenCompra
         Me.TDGridSolicitud.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TDGridSolicitud.PreviewInfo.ZoomFactor = 75.0R
         Me.TDGridSolicitud.PrintInfo.PageSettings = CType(resources.GetObject("TDGridSolicitud.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TDGridSolicitud.Size = New System.Drawing.Size(801, 360)
+        Me.TDGridSolicitud.Size = New System.Drawing.Size(801, 381)
         Me.TDGridSolicitud.TabIndex = 248
         Me.TDGridSolicitud.Text = "C1TrueDBGrid1"
         Me.TDGridSolicitud.PropBag = resources.GetString("TDGridSolicitud.PropBag")
+        '
+        'BtnComprar
+        '
+        Me.BtnComprar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnComprar.Image = CType(resources.GetObject("BtnComprar.Image"), System.Drawing.Image)
+        Me.BtnComprar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.BtnComprar.Location = New System.Drawing.Point(817, 239)
+        Me.BtnComprar.Name = "BtnComprar"
+        Me.BtnComprar.Size = New System.Drawing.Size(121, 56)
+        Me.BtnComprar.TabIndex = 258
+        Me.BtnComprar.Text = "Comprar"
+        Me.BtnComprar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnComprar.UseVisualStyleBackColor = True
         '
         'FrmListaOrdenCompra
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(942, 439)
+        Me.ClientSize = New System.Drawing.Size(942, 457)
+        Me.Controls.Add(Me.BtnComprar)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.BtnActualizar)
@@ -184,4 +199,5 @@ Partial Class FrmListaOrdenCompra
     Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents TDGridSolicitud As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents BtnComprar As Button
 End Class

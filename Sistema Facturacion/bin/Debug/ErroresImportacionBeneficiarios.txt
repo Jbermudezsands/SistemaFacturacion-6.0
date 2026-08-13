@@ -1,0 +1,748 @@
+﻿===================================================
+Fecha : 30/07/2026 12:00:19
+Codigo: 5284
+Nombre: BENJAMIN TERCERO
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(4),@Tipo nvarchar(8),@Nom nvarchar(16),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:00:34
+Codigo: 6676-2
+Nombre: EDUARDO GARCIA
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(8),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:00:35
+Codigo: 659-2
+Nombre: EDUARDO JOSE
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(5),@Tipo nvarchar(9),@Nom nvarchar(12),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:00:54
+Codigo: 114
+Nombre: ISABEL ALANIZ
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(3),@Tipo nvarchar(9),@Nom nvarchar(13),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:00:55
+Codigo: 3999
+Nombre: JACOBO OPORTA
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(4),@Tipo nvarchar(5),@Nom nvarchar(13),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:00:58
+Codigo: 4098
+Nombre: JAVIER CISNERO
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(4),@Tipo nvarchar(5),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:01:24
+Codigo: 520
+Nombre: MARTHA LORENA
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(3),@Tipo nvarchar(5),@Nom nvarchar(13),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:01:31
+Codigo: 4189
+Nombre: NIT DISP
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(4),@Tipo nvarchar(5),@Nom nvarchar(8),@Ape nvarch' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:02
+Codigo: 3674-2
+Nombre: PEDRO JOAQUIN
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(9),@Nom nvarchar(13),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:28
+Codigo: 1074-1
+Nombre: DENIS ALEXANDER
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(5),@Nom nvarchar(15),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:28
+Codigo: 4472-1
+Nombre: CARINA DE LOS ANGELES
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(9),@Nom nvarchar(21),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:28
+Codigo: 6727 - 2
+Nombre: CLARA LUZ
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(8),@Tipo nvarchar(9),@Nom nvarchar(9),@Ape nvarch' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:28
+Codigo: 3674-2
+Nombre: CONSTRUCTORA SANTA FE LIMITADA SUCURSAL NICARAGUA
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(9),@Nom nvarchar(49),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:29
+Codigo: 6676-2
+Nombre: BOMONSA
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(8),@Nom nvarchar(7),@Ape nvarch' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:29
+Codigo: 2506-2
+Nombre: SOLUVET S.A
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(5),@Nom nvarchar(11),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:29
+Codigo: 659-2
+Nombre: SERVICIOS ORTEGA
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(5),@Tipo nvarchar(9),@Nom nvarchar(16),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:29
+Codigo: 4430-2
+Nombre: GREGORIA ALEJANDRA
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(5),@Nom nvarchar(18),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:29
+Codigo: 5881-2
+Nombre: HEYDI RUTH
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(9),@Nom nvarchar(10),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:35
+Codigo: 1074-1
+Nombre: JORGE GUTIERREZ
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(5),@Nom nvarchar(15),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:35
+Codigo: 4472-1
+Nombre: DALILA DEL SOCORRO
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(9),@Nom nvarchar(18),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:36
+Codigo: 6727 - 2
+Nombre: WILLIAM GEOVANY
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(8),@Tipo nvarchar(9),@Nom nvarchar(15),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:36
+Codigo: 3674-2
+Nombre: NESTOR WILLIAM
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(9),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:36
+Codigo: 6676-2
+Nombre: ELLIAN LUIS
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(8),@Nom nvarchar(11),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:37
+Codigo: 6238-1
+Nombre: ERICK ENRRIQUE
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(8),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:37
+Codigo: 6727 - 2
+Nombre: ZENEYDA DEL SOCORRO
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(8),@Tipo nvarchar(9),@Nom nvarchar(19),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:37
+Codigo: 6676-2
+Nombre: LUZ MARINA
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(8),@Nom nvarchar(10),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:37
+Codigo: 5491-2
+Nombre: ELVIS ANTONIO
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(9),@Nom nvarchar(13),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:37
+Codigo: 2506-2
+Nombre: COPAM, R.L.
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(5),@Nom nvarchar(11),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:40
+Codigo: 6727 - 2
+Nombre: SABDI GAMALIEL
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(8),@Tipo nvarchar(9),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:40
+Codigo: 3674-2
+Nombre: ANIVAL ANTONIO
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(9),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:40
+Codigo: 6676-2
+Nombre: GRISELDA VIEZABITH
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(8),@Nom nvarchar(18),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:40
+Codigo: 5491-2
+Nombre: SILVIA MARIA
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(9),@Nom nvarchar(12),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:40
+Codigo: 2506-2
+Nombre: FRANCISCO BARRERA
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(5),@Nom nvarchar(17),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:43
+Codigo: 6676-2
+Nombre: FELIX PEDRO
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(8),@Nom nvarchar(11),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:44
+Codigo: 2506-2
+Nombre: MINSA SILAIS
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(5),@Nom nvarchar(12),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:44
+Codigo: 2506-2
+Nombre: JORGE ULISES
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(5),@Nom nvarchar(12),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:45
+Codigo: 5466-2R
+Nombre: MARLIN LINETH
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(7),@Tipo nvarchar(8),@Nom nvarchar(13),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:49
+Codigo: 5750-2
+Nombre: AGROPECUARIA SAN JUAN SOCIEDAD ANONIMA
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(9),@Nom nvarchar(38),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:57
+Codigo: 5881-2
+Nombre: JOSE LEONEL
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(9),@Nom nvarchar(11),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 12:02:59
+Codigo: 6727 - 2
+Nombre: SABDI GAMALIEL
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(8),@Tipo nvarchar(9),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 13:16:10
+Codigo: 5284
+Nombre: BENJAMIN TERCERO
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(4),@Tipo nvarchar(8),@Nom nvarchar(16),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 13:16:37
+Codigo: 114
+Nombre: ISABEL ALANIZ
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(3),@Tipo nvarchar(9),@Nom nvarchar(13),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 13:16:38
+Codigo: 3999
+Nombre: JACOBO OPORTA
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(4),@Tipo nvarchar(5),@Nom nvarchar(13),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 13:16:41
+Codigo: 4098
+Nombre: JAVIER CISNERO
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(4),@Tipo nvarchar(5),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 13:17:04
+Codigo: 520
+Nombre: MARTHA LORENA
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(3),@Tipo nvarchar(5),@Nom nvarchar(13),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 13:17:10
+Codigo: 4189
+Nombre: NIT DISP
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(4),@Tipo nvarchar(5),@Nom nvarchar(8),@Ape nvarch' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 13:52:53
+Codigo: 6727-2
+Nombre: SABDI GAMALIEL
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(5),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 13:53:36
+Codigo: 6727-2
+Nombre: SABDI GAMALIEL
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(5),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 13:54:18
+Codigo: 6727-2
+Nombre: SABDI GAMALIEL
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(5),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 13:56:05
+Codigo: 6727-2
+Nombre: SABDI GAMALIEL
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(5),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 13:56:55
+Codigo: 6727-2
+Nombre: SABDI GAMALIEL
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(5),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 14:25:34
+Codigo: 6727-2
+Nombre: SABDI GAMAEL
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(5),@Nom nvarchar(12),@Ape nvarc' espera el parámetro '@Precio', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 14:26:51
+Codigo: 6727-2
+Nombre: SABDI GAMAEL
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(5),@Nom nvarchar(12),@Ape nvarc' espera el parámetro '@Precio', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 14:29:13
+Codigo: 6727-2
+Nombre: SABDI GAMAEL
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(5),@Nom nvarchar(12),@Ape nvarc' espera el parámetro '@CuentaPagaBanco', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 14:29:46
+Codigo: 6727-2
+Nombre: SABDI GAMAEL
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(5),@Nom nvarchar(12),@Ape nvarc' espera el parámetro '@CuentaPagaBanco', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 14:32:13
+Codigo: 6727-2
+Nombre: SABDI GAMAEL
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(5),@Nom nvarchar(12),@Ape nvarc' espera el parámetro '@CuentaPagaBanco', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 14:34:06
+Codigo: 6727-2
+Nombre: SABDI GAMAEL
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(6),@Tipo nvarchar(5),@Nom nvarchar(12),@Ape nvarc' espera el parámetro '@CuentaPagaBanco', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 30/07/2026 14:50:55
+Codigo: 7383
+Nombre: DOUGLAS ANTONIO
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(4),@Tipo nvarchar(5),@Nom nvarchar(15),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 31/07/2026 09:58:31
+Codigo: 5201
+Nombre: SABDI GAMALIEL
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(4),@Tipo nvarchar(5),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 31/07/2026 15:16:11
+Codigo: 1841
+Nombre: MARLON ELIECER
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(4),@Tipo nvarchar(9),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 31/07/2026 17:15:22
+Codigo: 1841
+Nombre: MARLON ELIECER
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(4),@Tipo nvarchar(9),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 31/07/2026 17:16:07
+Codigo: 1841
+Nombre: MARLON ELIECER
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(4),@Tipo nvarchar(9),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 31/07/2026 17:28:33
+Codigo: 1841
+Nombre: MARLON ELIECER
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(4),@Tipo nvarchar(9),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 31/07/2026 17:47:10
+Codigo: 1841
+Nombre: MARLON ELIECER
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(4),@Tipo nvarchar(9),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 31/07/2026 17:48:45
+Codigo: 1841
+Nombre: MARLON ELIECER
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(4),@Tipo nvarchar(5),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 31/07/2026 17:49:22
+Codigo: 1841
+Nombre: MARLON ELIECER
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(4),@Tipo nvarchar(8),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 31/07/2026 18:39:43
+Codigo: 1841
+Nombre: MARLON ELIECER
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(4),@Tipo nvarchar(9),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@CodTipoNomina', que no se ha proporcionado.
+
+===================================================
+
+===================================================
+Fecha : 31/07/2026 19:04:48
+Codigo: 1841
+Nombre: MARLON ELIECER
+Proceso : Guardar Productor
+
+Mensaje:
+La consulta con parámetros '(@Cod nvarchar(4),@Tipo nvarchar(5),@Nom nvarchar(14),@Ape nvarc' espera el parámetro '@Precio', que no se ha proporcionado.
+
+===================================================
+

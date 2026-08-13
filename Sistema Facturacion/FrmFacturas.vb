@@ -1069,6 +1069,32 @@ Public Class FrmFacturas
             'GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Factura", Me.TxtNumeroEnsamble.Text, MontoIr)
         End If
 
+        Try
+
+            '////////////////////////////////////////////////////////////////////////
+            '++++++++++++++++++++++VERIFICA LA FACTURAS LOS COSTOS ++++++++++++++++++++++++++++++++
+            '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            Select Case Factura.Tipo_Factura
+
+                Case "Factura",
+             "Salida Bodega",
+             "Transferencia Enviada",
+             "Devolucion de Venta"
+
+                    RepararCostosDocumento(
+                    dsDetalle,
+                    CDate(Factura.Fecha_Factura))
+
+            End Select
+
+        Catch ex As Exception
+
+            Bitacora(Now,
+             NombreUsuario,
+             "Reparacion Costos",
+             ex.Message)
+
+        End Try
 
         'MsgBox("Se ha grabado con Exito!!!", MsgBoxStyle.Exclamation, "Sistema Facturacion")
         'LimpiarFacturas()
@@ -1655,187 +1681,96 @@ Handles backgroundWorkerLote.RunWorkerCompleted
 
             'Dim SqlString As String = "WITH Movimientos AS (SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'') AS Lote, C.Cod_Bodega FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra = C.Numero_Compra AND DC.Fecha_Compra = C.Fecha_Compra AND DC.Tipo_Compra = C.Tipo_Compra WHERE DC.Fecha_Compra <= @FechaCorte AND DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta UNION SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE DF.Fecha_Factura <= @FechaCorte AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta), Existencias AS (SELECT L.Cod_Producto, Prod.Descripcion_Producto AS Producto, L.Cod_Bodega, L.Lote, Prod.Cod_Linea, Lte.FechaVence AS Fecha_Vencimiento, ISNULL(MR.Cantidad,0) AS Mercancia_Recibida, ISNULL(TR.Cantidad,0) AS Transferencia_Recibida, ISNULL(DV.Cantidad,0) AS Devolucion_Venta, ISNULL(Fact.Cantidad,0) AS Factura, ISNULL(SB.Cantidad,0) AS Salidas_Bodegas, ISNULL(TE.Cantidad,0) AS Transferencia_Enviada, ISNULL(DC.Cantidad,0) AS Devolucion_Compra, ISNULL(MR.Cantidad,0)+ISNULL(TR.Cantidad,0)+ISNULL(DV.Cantidad,0)-(ISNULL(Fact.Cantidad,0)+ISNULL(SB.Cantidad,0)+ISNULL(TE.Cantidad,0)+ISNULL(DC.Cantidad,0)) AS Existencia FROM Movimientos L INNER JOIN Productos Prod ON L.Cod_Producto=Prod.Cod_Productos LEFT JOIN Lote Lte ON L.Lote=Lte.Numero_Lote AND Lte.Activo=1 AND L.Lote NOT IN ('SIN LOTE','SINLOTE','') LEFT JOIN (SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'') AS Lote, C.Cod_Bodega, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE C.Fecha_Compra<=@FechaCorte AND C.Tipo_Compra='Mercancia Recibida' AND DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,''), C.Cod_Bodega) MR ON L.Cod_Producto=MR.Cod_Producto AND L.Lote=MR.Lote AND L.Cod_Bodega=MR.Cod_Bodega LEFT JOIN (SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'') AS Lote, C.Cod_Bodega, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE C.Fecha_Compra<=@FechaCorte AND C.Tipo_Compra='Transferencia Recibida' AND DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,''), C.Cod_Bodega) TR ON L.Cod_Producto=TR.Cod_Producto AND L.Lote=TR.Lote AND L.Cod_Bodega=TR.Cod_Bodega LEFT JOIN (SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE F.Fecha_Factura<=@FechaCorte AND F.Tipo_Factura='Devolucion de Venta' AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,''), F.Cod_Bodega) DV ON L.Cod_Producto=DV.Cod_Producto AND L.Lote=DV.Lote AND L.Cod_Bodega=DV.Cod_Bodega LEFT JOIN (SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE F.Fecha_Factura<=@FechaCorte AND F.Tipo_Factura='Factura' AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,''), F.Cod_Bodega) Fact ON L.Cod_Producto=Fact.Cod_Producto AND L.Lote=Fact.Lote AND L.Cod_Bodega=Fact.Cod_Bodega LEFT JOIN (SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE F.Fecha_Factura<=@FechaCorte AND F.Tipo_Factura='Salida Bodega' AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,''), F.Cod_Bodega) SB ON L.Cod_Producto=SB.Cod_Producto AND L.Lote=SB.Lote AND L.Cod_Bodega=SB.Cod_Bodega LEFT JOIN (SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura=F.Numero_Factura AND DF.Fecha_Factura=F.Fecha_Factura AND DF.Tipo_Factura=F.Tipo_Factura WHERE F.Fecha_Factura<=@FechaCorte AND F.Tipo_Factura='Transferencia Enviada' AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,''), F.Cod_Bodega) TE ON L.Cod_Producto=TE.Cod_Producto AND L.Lote=TE.Lote AND L.Cod_Bodega=TE.Cod_Bodega LEFT JOIN (SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'') AS Lote, C.Cod_Bodega, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra=C.Numero_Compra AND DC.Fecha_Compra=C.Fecha_Compra AND DC.Tipo_Compra=C.Tipo_Compra WHERE C.Fecha_Compra<=@FechaCorte AND C.Tipo_Compra='Devolucion de Compra' AND DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,''), C.Cod_Bodega) DC ON L.Cod_Producto=DC.Cod_Producto AND L.Lote=DC.Lote AND L.Cod_Bodega=DC.Cod_Bodega), LoteMasViejo AS (SELECT *, ROW_NUMBER() OVER(PARTITION BY Cod_Producto,Cod_Bodega ORDER BY Fecha_Vencimiento ASC) AS rn FROM Existencias WHERE Existencia>0 AND Fecha_Vencimiento IS NOT NULL) SELECT lote as Numero_Lote,* FROM LoteMasViejo WHERE rn=1 ORDER BY Cod_Producto, Cod_Bodega, Fecha_Vencimiento;"
 
-            Dim Sqlstring As String = "WITH Movimientos AS (
-                                                            SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'') AS Lote, C.Cod_Bodega
-                                                            FROM Detalle_Compras DC
-                                                            INNER JOIN Compras C 
-                                                                ON DC.Numero_Compra = C.Numero_Compra 
-                                                                AND DC.Fecha_Compra = C.Fecha_Compra 
-                                                                AND DC.Tipo_Compra = C.Tipo_Compra
-                                                            WHERE DC.Fecha_Compra <= @FechaCorte
-                                                                AND DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta
-                                                                AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta
+            Dim sqlstring As String = "WITH Movimientos AS (
 
-                                                            UNION
+    -- COMPRAS
+    SELECT 
+        DC.Cod_Producto,
+        REPLACE(UPPER(ISNULL(DC.Numero_Lote,'SINLOTE')),' ','') AS Lote,
+        C.Cod_Bodega,
+        CASE 
+            WHEN C.Tipo_Compra IN ('Mercancia Recibida','Transferencia Recibida')
+                THEN DC.Cantidad
+            WHEN C.Tipo_Compra = 'Devolucion de Compra'
+                THEN -DC.Cantidad
+            ELSE 0
+        END AS CantidadMovimiento
+    FROM Detalle_Compras DC
+    INNER JOIN Compras C
+        ON DC.Numero_Compra = C.Numero_Compra
+        AND DC.Fecha_Compra = C.Fecha_Compra
+        AND DC.Tipo_Compra = C.Tipo_Compra
+    WHERE C.Fecha_Compra <= @FechaCorte
+        AND DC.Cod_Producto = @CodProductoDesde
+        AND C.Cod_Bodega = @CodBodegaDesde
 
-                                                            SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega
-                                                            FROM Detalle_Facturas DF
-                                                            INNER JOIN Facturas F 
-                                                                ON DF.Numero_Factura = F.Numero_Factura 
-                                                                AND DF.Fecha_Factura = F.Fecha_Factura 
-                                                                AND DF.Tipo_Factura = F.Tipo_Factura
-                                                            WHERE DF.Fecha_Factura <= @FechaCorte
-                                                                AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta
-                                                                AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta
-                                                        ),
+    UNION ALL
 
-                                                        Existencias AS (
-                                                            SELECT 
-                                                                L.Cod_Producto,
-                                                                L.Cod_Bodega,
-                                                                L.Lote,
-                                                                Lte.FechaVence AS Fecha_Vencimiento,
+    -- FACTURAS
+    SELECT 
+        DF.Cod_Producto,
+        REPLACE(UPPER(ISNULL(DF.CodTarea,'SINLOTE')),' ',''),
+        F.Cod_Bodega,
+        CASE 
+            WHEN F.Tipo_Factura IN ('Factura','Salida Bodega','Transferencia Enviada')
+                THEN -DF.Cantidad
+            WHEN F.Tipo_Factura = 'Devolucion de Venta'
+                THEN DF.Cantidad
+            ELSE 0
+        END
+    FROM Detalle_Facturas DF
+    INNER JOIN Facturas F
+        ON DF.Numero_Factura = F.Numero_Factura
+        AND DF.Fecha_Factura = F.Fecha_Factura
+        AND DF.Tipo_Factura = F.Tipo_Factura
+    WHERE F.Fecha_Factura <= @FechaCorte
+        AND DF.Cod_Producto = @CodProductoDesde
+        AND F.Cod_Bodega = @CodBodegaDesde
+),
 
-                                                                ISNULL(MR.Cantidad,0)
-                                                                + ISNULL(TR.Cantidad,0)
-                                                                + ISNULL(DV.Cantidad,0)
-                                                                - (
-                                                                    ISNULL(Fact.Cantidad,0)
-                                                                    + ISNULL(SB.Cantidad,0)
-                                                                    + ISNULL(TE.Cantidad,0)
-                                                                    + ISNULL(DC.Cantidad,0)
-                                                                ) AS Existencia
+Existencias AS (
 
-                                                            FROM Movimientos L
+    SELECT
+        Cod_Producto,
+        Cod_Bodega,
+        Lote,
+        SUM(CantidadMovimiento) AS Existencia
+    FROM Movimientos
+    GROUP BY
+        Cod_Producto,
+        Cod_Bodega,
+        Lote
+),
 
-                                                            LEFT JOIN Lote Lte 
-                                                                ON L.Lote = Lte.Numero_Lote
-                                                                AND Lte.Activo = 1
-                                                                AND REPLACE(UPPER(L.Lote),' ','') <> 'SINLOTE'
+AjusteExistencias AS (
 
-                                                            -- MERCANCIA RECIBIDA
-                                                            LEFT JOIN (
-                                                                SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'') AS Lote, C.Cod_Bodega,
-                                                                       SUM(DC.Cantidad) AS Cantidad
-                                                                FROM Detalle_Compras DC
-                                                                INNER JOIN Compras C 
-                                                                    ON DC.Numero_Compra = C.Numero_Compra 
-                                                                    AND DC.Fecha_Compra = C.Fecha_Compra 
-                                                                    AND DC.Tipo_Compra = C.Tipo_Compra
-                                                                WHERE C.Fecha_Compra <= @FechaCorte
-                                                                    AND C.Tipo_Compra = 'Mercancia Recibida'
-                                                                GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,''), C.Cod_Bodega
-                                                            ) MR ON L.Cod_Producto = MR.Cod_Producto 
-                                                                AND L.Lote = MR.Lote 
-                                                                AND L.Cod_Bodega = MR.Cod_Bodega
+    SELECT
+        Cod_Producto,
+        Cod_Bodega,
+        Lote,
+        Existencia,
 
-                                                            -- TRANSFERENCIA RECIBIDA
-                                                            LEFT JOIN (
-                                                                SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'') AS Lote, C.Cod_Bodega,
-                                                                       SUM(DC.Cantidad) AS Cantidad
-                                                                FROM Detalle_Compras DC
-                                                                INNER JOIN Compras C 
-                                                                    ON DC.Numero_Compra = C.Numero_Compra 
-                                                                    AND DC.Fecha_Compra = C.Fecha_Compra 
-                                                                    AND DC.Tipo_Compra = C.Tipo_Compra
-                                                                WHERE C.Fecha_Compra <= @FechaCorte
-                                                                    AND C.Tipo_Compra = 'Transferencia Recibida'
-                                                                GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,''), C.Cod_Bodega
-                                                            ) TR ON L.Cod_Producto = TR.Cod_Producto 
-                                                                AND L.Lote = TR.Lote 
-                                                                AND L.Cod_Bodega = TR.Cod_Bodega
+        SUM(Existencia) OVER(
+            PARTITION BY Cod_Producto, Cod_Bodega
+        ) AS ExistenciaTotal
+    FROM Existencias
+),
 
-                                                            -- DEVOLUCION VENTA
-                                                            LEFT JOIN (
-                                                                SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega,
-                                                                       SUM(DF.Cantidad) AS Cantidad
-                                                                FROM Detalle_Facturas DF
-                                                                INNER JOIN Facturas F 
-                                                                    ON DF.Numero_Factura = F.Numero_Factura 
-                                                                    AND DF.Fecha_Factura = F.Fecha_Factura 
-                                                                    AND DF.Tipo_Factura = F.Tipo_Factura
-                                                                WHERE F.Fecha_Factura <= @FechaCorte
-                                                                    AND F.Tipo_Factura = 'Devolucion de Venta'
-                                                                GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,''), F.Cod_Bodega
-                                                            ) DV ON L.Cod_Producto = DV.Cod_Producto 
-                                                                AND L.Lote = DV.Lote 
-                                                                AND L.Cod_Bodega = DV.Cod_Bodega
+LoteMasViejo AS (
 
-                                                            -- FACTURA
-                                                            LEFT JOIN (
-                                                                SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega,
-                                                                       SUM(DF.Cantidad) AS Cantidad
-                                                                FROM Detalle_Facturas DF
-                                                                INNER JOIN Facturas F 
-                                                                    ON DF.Numero_Factura = F.Numero_Factura 
-                                                                    AND DF.Fecha_Factura = F.Fecha_Factura 
-                                                                    AND DF.Tipo_Factura = F.Tipo_Factura
-                                                                WHERE F.Fecha_Factura <= @FechaCorte
-                                                                    AND F.Tipo_Factura = 'Factura'
-                                                                GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,''), F.Cod_Bodega
-                                                            ) Fact ON L.Cod_Producto = Fact.Cod_Producto 
-                                                                AND L.Lote = Fact.Lote 
-                                                                AND L.Cod_Bodega = Fact.Cod_Bodega
+    SELECT *,
+        ROW_NUMBER() OVER(
+            PARTITION BY Cod_Producto, Cod_Bodega
+            ORDER BY Lote
+        ) AS rn
+    FROM AjusteExistencias
+    WHERE ExistenciaTotal > 0
+        AND Existencia > 0
+)
 
-                                                            -- SALIDA BODEGA
-                                                            LEFT JOIN (
-                                                                SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega,
-                                                                       SUM(DF.Cantidad) AS Cantidad
-                                                                FROM Detalle_Facturas DF
-                                                                INNER JOIN Facturas F 
-                                                                    ON DF.Numero_Factura = F.Numero_Factura 
-                                                                    AND DF.Fecha_Factura = F.Fecha_Factura 
-                                                                    AND DF.Tipo_Factura = F.Tipo_Factura
-                                                                WHERE F.Fecha_Factura <= @FechaCorte
-                                                                    AND F.Tipo_Factura = 'Salida Bodega'
-                                                                GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,''), F.Cod_Bodega
-                                                            ) SB ON L.Cod_Producto = SB.Cod_Producto 
-                                                                AND L.Lote = SB.Lote 
-                                                                AND L.Cod_Bodega = SB.Cod_Bodega
-
-                                                            -- TRANSFERENCIA ENVIADA
-                                                            LEFT JOIN (
-                                                                SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega,
-                                                                       SUM(DF.Cantidad) AS Cantidad
-                                                                FROM Detalle_Facturas DF
-                                                                INNER JOIN Facturas F 
-                                                                    ON DF.Numero_Factura = F.Numero_Factura 
-                                                                    AND DF.Fecha_Factura = F.Fecha_Factura 
-                                                                    AND DF.Tipo_Factura = F.Tipo_Factura
-                                                                WHERE F.Fecha_Factura <= @FechaCorte
-                                                                    AND F.Tipo_Factura = 'Transferencia Enviada'
-                                                                GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,''), F.Cod_Bodega
-                                                            ) TE ON L.Cod_Producto = TE.Cod_Producto 
-                                                                AND L.Lote = TE.Lote 
-                                                                AND L.Cod_Bodega = TE.Cod_Bodega
-
-                                                            -- DEVOLUCION COMPRA
-                                                            LEFT JOIN (
-                                                                SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'') AS Lote, C.Cod_Bodega,
-                                                                       SUM(DC.Cantidad) AS Cantidad
-                                                                FROM Detalle_Compras DC
-                                                                INNER JOIN Compras C 
-                                                                    ON DC.Numero_Compra = C.Numero_Compra 
-                                                                    AND DC.Fecha_Compra = C.Fecha_Compra 
-                                                                    AND DC.Tipo_Compra = C.Tipo_Compra
-                                                                WHERE C.Fecha_Compra <= @FechaCorte
-                                                                    AND C.Tipo_Compra = 'Devolucion de Compra'
-                                                                GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,''), C.Cod_Bodega
-                                                            ) DC ON L.Cod_Producto = DC.Cod_Producto 
-                                                                AND L.Lote = DC.Lote 
-                                                                AND L.Cod_Bodega = DC.Cod_Bodega
-                                                        ),
-
-                                                        LoteMasViejo AS (
-                                                            SELECT *,
-                                                                ROW_NUMBER() OVER(
-                                                                    PARTITION BY Cod_Producto, Cod_Bodega
-                                                                    ORDER BY 
-                                                                        CASE WHEN Fecha_Vencimiento IS NULL THEN 1 ELSE 0 END,
-                                                                        Fecha_Vencimiento ASC
-                                                                ) AS rn
-                                                            FROM Existencias
-                                                            WHERE Existencia > 0
-                                                                AND (
-                                                                        Fecha_Vencimiento IS NOT NULL
-                                                                        OR REPLACE(UPPER(Lote),' ','') = 'SINLOTE'
-                                                                    )
-                                                        )
-
-                                                        SELECT Lote AS Numero_Lote
-                                                        FROM LoteMasViejo
-                                                        WHERE rn = 1;
-                                                        "
+SELECT Lote
+FROM LoteMasViejo
+WHERE rn = 1"
 
             Using cmd As New SqlClient.SqlCommand(SqlString, cn)
                 cmd.Parameters.AddWithValue("@FechaCorte", FechaVenceLote)
@@ -1845,7 +1780,11 @@ Handles backgroundWorkerLote.RunWorkerCompleted
                 cmd.Parameters.AddWithValue("@CodProductoHasta", CodigoProducto)
 
                 Dim result = cmd.ExecuteScalar()
-                If result IsNot Nothing Then NumeroLote = result.ToString()
+                If result Is Nothing OrElse IsDBNull(result) Then
+                    NumeroLote = ""
+                Else
+                    NumeroLote = result.ToString()
+                End If
             End Using
         End Using
 
@@ -7212,15 +7151,51 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                             Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text = CostoUnitario
 
-                            SqlProveedor = "SELECT * FROM Codigos_Alternos WHERE (Cod_Producto = '" & CodProducto & "') AND (Descripcion_Producto = 'SAC')"
-                                DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-                                DataAdapter.Fill(DataSet, "Alternos")
-                                If Not DataSet.Tables("Alternos").Rows.Count = 0 Then
-                                    CodigoAlterno = DataSet.Tables("Alternos").Rows(0)("Cod_Alternativo")
-                                    Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = Trim(DataSet.Tables("Productos").Rows(0)("Descripcion_Producto")) & " ,SAC: " & CodigoAlterno
-                                Else
-                                    Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = Trim(DataSet.Tables("Productos").Rows(0)("Descripcion_Producto"))
-                                End If
+                            '////////////////////////BUSCO EL CODIGO ALTERNO //////////////////
+                            SqlProveedor = "SELECT Cod_Alternativo, Descripcion_Producto 
+                                            FROM Codigos_Alternos 
+                                            WHERE Cod_Producto = @CodProducto"
+
+                            Dim cmd As New SqlClient.SqlCommand(SqlProveedor, MiConexion)
+                            cmd.Parameters.AddWithValue("@CodProducto", CodProducto)
+
+                            Dim da As New SqlClient.SqlDataAdapter(cmd)
+                            Dim dt As New DataTable
+                            da.Fill(dt)
+
+                            Dim descripcionBase As String = Trim(DataSet.Tables("Productos").Rows(0)("Descripcion_Producto"))
+                            Dim descripcionFinal As String = descripcionBase
+
+                            If dt.Rows.Count > 0 Then
+                                For Each row As DataRow In dt.Rows
+                                    Dim tipo As String = row("Descripcion_Producto").ToString.Trim.ToUpper()
+                                    Dim codigo As String = row("Cod_Alternativo").ToString
+
+                                    Select Case codigo
+                                        Case "SAC"
+                                            descripcionFinal &= " ,SAC: " & tipo
+
+                                        Case "MARCA"
+                                            descripcionFinal &= " ,MARCA: " & tipo
+
+                                        Case Else
+                                            descripcionFinal &= " ," & codigo & ": " & tipo
+                                    End Select
+                                Next
+                            End If
+
+                            Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = descripcionFinal
+
+                            '///////CODIGO RETIRADO 24/03/2026 ////////////////////////////////
+                            'SqlProveedor = "SELECT * FROM Codigos_Alternos WHERE (Cod_Producto = '" & CodProducto & "') AND (Descripcion_Producto = 'SAC')"
+                            '    DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+                            '    DataAdapter.Fill(DataSet, "Alternos")
+                            '    If Not DataSet.Tables("Alternos").Rows.Count = 0 Then
+                            '        CodigoAlterno = DataSet.Tables("Alternos").Rows(0)("Cod_Alternativo")
+                            '        Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = Trim(DataSet.Tables("Productos").Rows(0)("Descripcion_Producto")) & " ,SAC: " & CodigoAlterno
+                            '    Else
+                            '        Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = Trim(DataSet.Tables("Productos").Rows(0)("Descripcion_Producto"))
+                            '    End If
 
 
                             If FacturaTarea = True Then
@@ -7998,13 +7973,13 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
     Private Sub TrueDBGridComponentes_BeforeColUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.BeforeColUpdateEventArgs) Handles TrueDBGridComponentes.BeforeColUpdate
 
-        Dim Cols As Double, Precio As Double, Cantidad As Double, Descuento As Double, SubTotal As Double, Neto As Double
+        Dim Cols As Double, Precio As Double, Cantidad As Double, CantDigitada As Double = 0, Descuento As Double, SubTotal As Double, Neto As Double
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Tasa As Double, SqlProveedor As String
         Dim CodProducto As String, Sql As String, RespuestaIVA As String = "Sumando IVA del Producto", CodImpuesto As String = "", TasaImpuesto As Double
         Dim TipoProducto As String = "Productos", TipoDescuento As String = "ImporteFijo", PrecioAnterior As Double = 0
         Dim PrecioDescDolar As Double, PrecioDescCordobas As Double, PorcientoDescuento As Double, CodigoBodega As String = ""
         Dim ExistenciaNegativa As String = "NO", Existencia As Double = 0, Cantidad2 As Double = 0, Categoria As String, Mensaje As String
-        Dim NumeroLote As String, ExistenciaLote As Double, Args As ReporteExistenciaLote = New ReporteExistenciaLote, resul As ReporteExistenciaLote = New ReporteExistenciaLote
+        Dim NumeroLote As String, ExistenciaLote As Double, ExistenciaBodega As Double = 0, ExistenciaValida As Double = 0, Args As ReporteExistenciaLote = New ReporteExistenciaLote, resul As ReporteExistenciaLote = New ReporteExistenciaLote
         Dim RstCosto As New RstCostoPromedio
 
         Try
@@ -8153,16 +8128,22 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                             resul = BuscaExistenciaBodegaLote(Args)
                             ExistenciaLote = resul.Existencia_Lote
+                            ExistenciaBodega = resul.Existencia_Bodega
+                            ExistenciaValida = resul.Existencia_Valida
 
-                            If ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                            If Not IsNumeric(Me.TrueDBGridComponentes.Columns("Cantidad")) Then
+                                CantDigitada = CDbl(Me.TrueDBGridComponentes.Columns("Cantidad").Text)
+                            End If
+
+                            If ExistenciaValida < CantDigitada Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
                                     If ExistenciaNegativa <> "SI" Then
-                                        If ExistenciaLote > 0 Then
-                                            Cantidad = ExistenciaLote
+                                        If ExistenciaValida > 0 Then
+                                            Cantidad = ExistenciaValida
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = Existencia
-                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaValida
+                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaValida, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                 End If
@@ -8195,16 +8176,16 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
 
 
-                            ElseIf ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                            ElseIf ExistenciaValida < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
 
                                     If ExistenciaNegativa <> "SI" Then
-                                        If ExistenciaLote > 0 Then
-                                            Cantidad = ExistenciaLote
+                                        If ExistenciaValida > 0 Then
+                                            Cantidad = ExistenciaValida
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaLote
-                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaValida
+                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaValida, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                 End If
@@ -8249,16 +8230,19 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                             resul = BuscaExistenciaBodegaLote(Args)
                             ExistenciaLote = resul.Existencia_Lote
+                            ExistenciaValida = resul.Existencia_Valida
+                            ExistenciaBodega = resul.Existencia_Bodega
 
-                            If ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+
+                            If ExistenciaValida < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
                                     If ExistenciaNegativa <> "SI" Then
-                                        If ExistenciaLote > 0 Then
-                                            Cantidad = ExistenciaLote
+                                        If ExistenciaValida > 0 Then
+                                            Cantidad = ExistenciaValida
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaLote
-                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaValida
+                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaValida, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                 End If
@@ -8270,7 +8254,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
                                                     Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaValida, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                 End If
@@ -8290,15 +8274,15 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                                 End If
 
 
-                            ElseIf ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                            ElseIf ExistenciaValida < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
                                     If ExistenciaNegativa <> "SI" Then
-                                        If ExistenciaLote > 0 Then
-                                            Cantidad = ExistenciaLote
+                                        If ExistenciaValida > 0 Then
+                                            Cantidad = ExistenciaValida
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaLote
-                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaValida
+                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaValida, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                 End If
@@ -8310,7 +8294,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
                                                     Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaValida, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                 End If
@@ -8342,16 +8326,18 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                             resul = BuscaExistenciaBodegaLote(Args)
                             ExistenciaLote = resul.Existencia_Lote
+                            ExistenciaBodega = resul.Existencia_Bodega
+                            ExistenciaValida = resul.Existencia_Valida
 
-                            If ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                            If ExistenciaValida > Cantidad2 Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
                                     If ExistenciaNegativa <> "SI" Then
                                         If ExistenciaLote > 0 Then
-                                            Cantidad = ExistenciaLote
+                                            Cantidad = ExistenciaValida
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = Existencia
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaValida
+                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaValida, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                 End If
@@ -8363,7 +8349,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
                                                     Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaValida, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                 End If
@@ -8382,15 +8368,15 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                                 End If
 
-                            ElseIf ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                            ElseIf ExistenciaValida < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
                                     If ExistenciaNegativa <> "SI" Then
-                                        If ExistenciaLote > 0 Then
-                                            Cantidad = ExistenciaLote
+                                        If ExistenciaValida > 0 Then
+                                            Cantidad = ExistenciaValida
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaLote
-                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaValida
+                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaValida, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                 End If
@@ -8402,7 +8388,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
                                                     Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaValida, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
                                                         Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
@@ -8745,6 +8731,8 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                         Case 1
 
+                            Existencia = BuscaExistenciaBodega(Args.Codigo_Producto, Args.Codigo_Bodega)
+
                             If Existencia < Cantidad2 Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
                                     If ExistenciaNegativa <> "SI" Then
@@ -8798,6 +8786,10 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                             End If
 
                         Case 2
+
+
+
+                            Existencia = BuscaExistenciaBodega(Args.Codigo_Producto, Args.Codigo_Bodega)
 
                             If Not IsNumeric(Me.TrueDBGridComponentes.Columns("Cantidad").Text) Then
                                 Exit Sub
@@ -8857,6 +8849,8 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                                 End If
                             End If
                         Case 3
+
+                            Existencia = BuscaExistenciaBodega(Args.Codigo_Producto, Args.Codigo_Bodega)
 
                             If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
@@ -8966,6 +8960,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
 
                         Case 4
+                            Existencia = BuscaExistenciaBodega(Args.Codigo_Producto, Args.Codigo_Bodega)
 
                             If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
@@ -9216,18 +9211,34 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                         Args.Numero_Lote = NumeroLote
                         Args.Codigo_Producto = CodProducto
 
-                        'Sql = "SELECT * FROM Lote WHERE  (Numero_Lote = '" & NumeroLote & "')"
-                        Sql = "SELECT *  FROM Detalle_Compras WHERE  (Numero_Lote = '" & NumeroLote & "') AND (Cod_Producto = '" & CodProducto & "')"
-                        DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
-                        DataAdapter.Fill(DataSet, "BuscaLote")
-                        If DataSet.Tables("BuscaLote").Rows.Count = 0 Then
-                            MsgBox("Este Lote no Existe", MsgBoxStyle.Critical, "Zeus Facturacion")
+                        '///////////////////////////CODIGO RETIRADO 27/07/2026 //////////////////////////////////
+                        ''Sql = "SELECT * FROM Lote WHERE  (Numero_Lote = '" & NumeroLote & "')"
+                        'Sql = "SELECT *  FROM Detalle_Compras WHERE  (Numero_Lote = '" & NumeroLote & "') AND (Cod_Producto = '" & CodProducto & "')"
+                        'DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+                        'DataAdapter.Fill(DataSet, "BuscaLote")
+                        'If DataSet.Tables("BuscaLote").Rows.Count = 0 Then
+                        '    MsgBox("Este Lote no Existe", MsgBoxStyle.Critical, "Zeus Facturacion")
+                        '    e.Cancel = True
+                        '    Exit Sub
+                        'End If
+                        'DataSet.Tables("BuscaLote").Reset()
+
+                        If Not ExisteLoteProducto(
+                                        CodProducto,
+                                        CboCodigoBodega.Text,
+                                        NumeroLote,
+                                        DTPFecha.Value) Then
+
+                            MsgBox("Este lote no existe para este producto.",
+                                       MsgBoxStyle.Critical,
+                                       "Zeus Facturación")
+
                             e.Cancel = True
                             Exit Sub
+
                         End If
 
 
-                        DataSet.Tables("BuscaLote").Reset()
 
                     Else
                         Me.TrueDBGridComponentes.Columns("CodTarea").Text = LoteDefecto(Me.TrueDBGridComponentes.Columns("Cod_Producto").Text, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
@@ -9556,16 +9567,20 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                             resul = BuscaExistenciaBodegaLote(Args)
                             ExistenciaLote = resul.Existencia_Lote
+                            ExistenciaBodega = resul.Existencia_Bodega
+                            ExistenciaValida = resul.Existencia_Valida
+
+                            'CantDigitada = CDbl(Me.TrueDBGridComponentes.Columns("Cantidad").Text)
                             'Existencia
-                            If ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
+                            If ExistenciaValida < CDbl(Cantidad2) Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
                                     If ExistenciaNegativa <> "SI" Then
-                                        If ExistenciaLote > 0 Then
-                                            Cantidad = ExistenciaLote
+                                        If ExistenciaValida > 0 Then
+                                            Cantidad = ExistenciaValida
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaLote
-                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaValida
+                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaValida, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                 End If
@@ -9657,6 +9672,9 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                             resul = BuscaExistenciaBodegaLote(Args)
                             ExistenciaLote = resul.Existencia_Lote
+                            ExistenciaBodega = resul.Existencia_Bodega
+                            ExistenciaValida = resul.Existencia_Valida
+
                             'Existencia
                             If ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
@@ -10524,8 +10542,6 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                 My.Forms.FrmConsultas.ShowDialog()
 
-
-
                 If My.Forms.FrmConsultas.Codigo = "-----0-----" Then
                     Exit Sub
                 End If
@@ -10551,8 +10567,16 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                     End If
 
                     '////////////////INICIO EL PROCESO DE LOS HILOS //////////////
+                    Dim NumLote As String
                     Me.TrueDBGridComponentes.Col = 2
-                    Me.TrueDBGridComponentes.Columns("CodTarea").Text = LoteDefectoWorker(My.Forms.FrmConsultas.Codigo, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
+                    NumLote = LoteDefectoWorker(My.Forms.FrmConsultas.Codigo, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
+                    If NumLote = "" Then
+                        MsgBox("El producto no tiene existencia disponible.", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+                        Exit Sub
+                    End If
+                    Me.TrueDBGridComponentes.Columns("CodTarea").Text = NumLote
+
+
                     My.Application.DoEvents()
 
 
@@ -10599,15 +10623,44 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                     '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-                    SqlProveedor = "SELECT * FROM Codigos_Alternos WHERE (Cod_Producto = '" & My.Forms.FrmConsultas.Codigo & "') AND (Descripcion_Producto = 'SAC')"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-                    DataAdapter.Fill(DataSet, "Alternos")
-                    If Not DataSet.Tables("Alternos").Rows.Count = 0 Then
-                        CodigoAlterno = DataSet.Tables("Alternos").Rows(0)("Cod_Alternativo")
-                        Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = Trim(My.Forms.FrmConsultas.Descripcion) & " ,SAC: " & CodigoAlterno
-                    Else
-                        Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = Trim(My.Forms.FrmConsultas.Descripcion)
+                    '////////////////////////BUSCO EL CODIGO ALTERNO //////////////////
+                    SqlProveedor = "SELECT Cod_Alternativo, Descripcion_Producto 
+                                                    FROM Codigos_Alternos 
+                                                    WHERE Cod_Producto = @CodProducto"
+
+                    Dim cmd As New SqlClient.SqlCommand(SqlProveedor, MiConexion)
+                    cmd.Parameters.AddWithValue("@CodProducto", CodProducto)
+
+                    Dim da As New SqlClient.SqlDataAdapter(cmd)
+                    Dim dt As New DataTable
+                    da.Fill(dt)
+
+                    Dim descripcionBase As String = Trim(Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text)
+                    Dim descripcionFinal As String = descripcionBase
+
+                    If dt.Rows.Count > 0 Then
+                        For Each row As DataRow In dt.Rows
+                            Dim tipo As String = row("Descripcion_Producto").ToString.Trim.ToUpper()
+                            Dim codigo As String = row("Cod_Alternativo").ToString
+
+                            Select Case codigo
+                                Case "SAC"
+                                    If CboTipoProducto.Text = "Cotizacion" Then
+                                        descripcionFinal &= " ,SAC: " & tipo
+                                    End If
+
+                                Case "MARCA"
+                                    descripcionFinal &= " ,MARCA: " & tipo
+
+                                Case Else
+                                    descripcionFinal &= " ," & codigo & ": " & tipo
+                            End Select
+                        Next
                     End If
+
+                    Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = descripcionFinal
+
+
 
                     'Me.TrueDBGridComponentes.Columns(1).Text = My.Forms.FrmConsultas.Descripcion
                     If Me.ChkPorcientoTarjeta.Checked = True Then
@@ -11048,6 +11101,10 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+
+
+
+        '//////////////////////////CAMBIO LA FECHA SEGUN LO SOLICITADO POR EL USUARIO
 
         Fecha_Factura = Format(Now, "dd/MM/yyyy")
 
@@ -12341,6 +12398,46 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
     End Sub
 
+    Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
+        Dim FechaInicio As Date
+        Dim Facturas As Integer
+        Dim DevCompras As Integer
+        Dim Fecha As Date = DTPFecha.Value.Date
+
+        Try
+
+            'If ExisteEntradaPosteriorProducto(
+            '"17RBIAM500",
+            '"01/01/2026") Then
+
+            '    FechaInicio = ObtenerPrimeraEntradaPosteriorProducto(
+            '                        "17RBIAM500",
+            '                        "01/01/2026")
+
+            '    RepararCostoProductoDesdeFecha(
+            '            "17RBIAM500",
+            '            FechaInicio)
+
+            '    RepararCostoDevolucionesCompraDesdeFecha(
+            '   "17RBIAM500",
+            '   FechaInicio)
+
+            '    MessageBox.Show(
+            '        "Facturas actualizadas : " & Facturas &
+            '        vbCrLf &
+            '        "Dev. Compra actualizadas : " & DevCompras)
+
+
+            'End If
+
+        Catch ex As Exception
+
+            MessageBox.Show(ex.Message)
+
+        End Try
+
+    End Sub
+
     Private Sub CmdProcesar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdProcesar.Click
         Dim SQL As New DataDynamics.ActiveReports.DataSources.SqlDBDataSource, RutaLogo As String, iPosicion As Double, Registros As Double
         Dim ArepFacturas As New ArepFacturas, SqlDatos As String, SQlDetalle As String, Fecha As String, Monto As Double, NombrePago As String
@@ -13248,8 +13345,10 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
     End Sub
 
         Private Sub C1Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles C1Button3.Click
-            Dim Posicion As Double
-            If Me.BindingDetalle.Count <> 0 Then
+        Dim Posicion As Double
+
+
+        If Me.BindingDetalle.Count <> 0 Then
                 My.Forms.FrmLotes.TipoDocumento = Me.CboTipoProducto.Text
                 Posicion = Me.BindingDetalle.Position
                 My.Forms.FrmLotesFactura.CodigoProducto = Me.BindingDetalle.Item(Posicion)("Cod_Productos")

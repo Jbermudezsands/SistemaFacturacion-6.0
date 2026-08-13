@@ -1,0 +1,2 @@
+CREATE INDEX IX_Auditoria_Producto
+ON Auditoria_LotesNegativos (Cod_Producto)

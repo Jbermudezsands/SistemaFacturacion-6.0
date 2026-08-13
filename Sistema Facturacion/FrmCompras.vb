@@ -1,4 +1,4 @@
-Imports System.ComponentModel
+﻿Imports System.ComponentModel
 Imports System.Data.Common
 Imports System.Data.SqlClient
 Imports System.Data.SqlTypes
@@ -22,6 +22,461 @@ Public Class FrmCompras
     Public ConexionExcel As String, MiConexionExcel As New OleDb.OleDbConnection, DataAdapterExcel As New OleDb.OleDbDataAdapter
     Public RutaBD As String, MiDataSet As New DataSet()
     Public TieneContrato As Boolean, dsMetodo As New DataSet
+    Public Sub InicializarFormulario()
+
+        Try
+
+            ' 🔹 Fechas
+            Me.DTPFecha.Value = Now
+            Me.DTVencimiento.Value = Now
+            Me.DTPFechaHora.Value = Now
+
+            ' 🔹 Empresa
+            CargarDatosEmpresa()
+
+            ' 🔹 Combos
+            CargarBodegas()
+            CargarProyectos()
+            CargarReferencias()
+
+            ' 🔹 Método pago vacío
+            InicializarMetodoPago()
+
+            ' 🔹 Número inicial
+            If EsSolicitud = False Then
+                Me.TxtNumeroEnsamble.Text = "-----0-----"
+            End If
+
+            ' 🔹 Grid vacío
+            InicializarGridDetalle()
+
+            ' 🔹 Moneda
+            CargarMoneda()
+
+            ' 🔹 Configuración usuario
+            ConfigurarUsuario()
+
+        Catch ex As Exception
+            MsgBox("Error al inicializar formulario: " & ex.Message)
+        End Try
+
+    End Sub
+
+    Private Sub CargarDatosEmpresa()
+
+        Dim DataSetLocal As New DataSet
+        Dim DataAdapterLocal As New SqlDataAdapter
+
+        Dim Sql As String = "SELECT * FROM DatosEmpresa"
+
+        DataAdapterLocal = New SqlDataAdapter(Sql, MiConexion)
+        DataAdapterLocal.Fill(DataSetLocal, "DatosEmpresa")
+
+        If DataSetLocal.Tables("DatosEmpresa").Rows.Count > 0 Then
+            FacturaTarea = DataSetLocal.Tables("DatosEmpresa").Rows(0)("Factura_Tarea")
+        End If
+
+    End Sub
+    Private Sub CargarBodegas()
+
+        Dim DataSetLocal As New DataSet
+        Dim DataAdapterLocal As New SqlDataAdapter
+
+        Dim Sql As String = "SELECT * FROM Bodegas"
+
+        DataAdapterLocal = New SqlDataAdapter(Sql, MiConexion)
+        DataAdapterLocal.Fill(DataSetLocal, "Bodegas")
+
+        Me.CboCodigoBodega.DataSource = DataSetLocal.Tables("Bodegas")
+
+        If DataSetLocal.Tables("Bodegas").Rows.Count > 0 Then
+            Me.CboCodigoBodega.Text = DataSetLocal.Tables("Bodegas").Rows(0)("Cod_Bodega")
+        End If
+
+        Me.CboCodigoBodega.Columns(0).Caption = "Codigo"
+        Me.CboCodigoBodega.Columns(1).Caption = "Nombre Bodega"
+
+    End Sub
+    Private Sub CargarProyectos()
+
+        Dim DataSetLocal As New DataSet
+        Dim DataAdapterLocal As New SqlDataAdapter
+
+        Dim Sql As String = "SELECT CodigoProyectos, NombreProyectos FROM Proyectos WHERE Activo = 1"
+
+        DataAdapterLocal = New SqlDataAdapter(Sql, MiConexion)
+        DataAdapterLocal.Fill(DataSetLocal, "Proyectos")
+
+        If DataSetLocal.Tables("Proyectos").Rows.Count > 0 Then
+            Me.CboProyecto.DataSource = DataSetLocal.Tables("Proyectos")
+            Me.CboProyecto.Splits(0).DisplayColumns(1).Width = 350
+        End If
+
+    End Sub
+    Private Sub CargarReferencias()
+
+        Me.CboReferencia.Items.Clear()
+
+        Me.CboReferencia.Items.Add("Produccion")
+        Me.CboReferencia.Items.Add("Compras")
+        Me.CboReferencia.Items.Add("Compras y Beneficios")
+        Me.CboReferencia.Items.Add("Re-Empaque de Productos")
+        Me.CboReferencia.Items.Add("Beneficios")
+        Me.CboReferencia.Items.Add("Correcciones")
+        Me.CboReferencia.Items.Add("Devoluciones")
+
+    End Sub
+    Private Sub InicializarMetodoPago()
+
+        dsMetodo.Reset()
+
+        Dim Sql As String = "SELECT NombrePago, Monto, NumeroTarjeta, FechaVence FROM Detalle_MetodoCompras WHERE Numero_Compra = '-1'"
+
+        Dim daLocal As New SqlDataAdapter(Sql, MiConexion)
+
+        daLocal.Fill(dsMetodo, "MetodoPago")
+
+        Me.BindingMetodo.DataSource = dsMetodo.Tables("MetodoPago")
+        Me.TrueDBGridMetodo.DataSource = Me.BindingMetodo
+
+    End Sub
+    Private Sub CargarMoneda()
+
+        Dim DataSetLocal As New DataSet
+        Dim DataAdapterLocal As New SqlDataAdapter
+
+        Dim Sql As String = "SELECT * FROM DatosEmpresa"
+
+        DataAdapterLocal = New SqlDataAdapter(Sql, MiConexion)
+        DataAdapterLocal.Fill(DataSetLocal, "DatosEmpresa")
+
+        If DataSetLocal.Tables("DatosEmpresa").Rows.Count > 0 Then
+            Me.TxtMonedaFactura.Text = DataSetLocal.Tables("DatosEmpresa").Rows(0)("MonedaCompra")
+            Me.TxtMonedaImprime.Text = DataSetLocal.Tables("DatosEmpresa").Rows(0)("MonedaImprimeCompra")
+        End If
+
+    End Sub
+    Private Sub ConfigurarUsuario()
+
+        If EsSolicitud = False Then
+
+            If UsuarioBodega <> "Ninguna" Then
+                Me.CboCodigoBodega.Text = UsuarioBodega
+                Me.CboCodigoBodega.Enabled = False
+                Me.Button7.Enabled = False
+            End If
+
+            If UsuarioBodegaCompra <> "" Then
+                Me.CboCodigoBodega.Text = UsuarioBodegaCompra
+            End If
+
+            If UsuarioTipoCompra <> "" Then
+                Me.CboTipoProducto.Text = UsuarioTipoCompra
+            End If
+
+            If UsuarioProveedor <> "" Then
+                Me.TxtCodigoProveedor.Text = UsuarioProveedor
+            End If
+
+        End If
+
+    End Sub
+    Private Sub ConfigurarGridDetalle()
+
+        With Me.TrueDBGridComponentes
+
+            If .Columns.Count = 0 Then Exit Sub
+
+            '-----------------------------------------
+            ' 🔹 CODIGO
+            '-----------------------------------------
+            .Columns("Cod_Producto").Caption = "Codigo"
+            .Splits(0).DisplayColumns("Cod_Producto").Button = True
+            .Splits(0).DisplayColumns("Cod_Producto").Width = 74
+
+            '-----------------------------------------
+            ' 🔹 DESCRIPCION
+            '-----------------------------------------
+            .Columns("Descripcion_Producto").Caption = "Descripcion"
+            .Splits(0).DisplayColumns("Descripcion_Producto").Width = 259
+
+            '-----------------------------------------
+            ' 🔹 CANTIDAD
+            '-----------------------------------------
+            .Columns("Cantidad").Caption = "Cantidad"
+            .Splits(0).DisplayColumns("Cantidad").Width = 64
+
+            '-----------------------------------------
+            ' 🔹 PRECIO UNITARIO
+            '-----------------------------------------
+            .Columns("Precio_Unitario").Caption = "Precio Unit"
+            .Splits(0).DisplayColumns("Precio_Unitario").Width = 62
+            .Splits(0).DisplayColumns("Precio_Unitario").Locked = False
+
+            '-----------------------------------------
+            ' 🔹 DESCUENTO
+            '-----------------------------------------
+            .Columns("Descuento").Caption = "%Desc"
+            .Splits(0).DisplayColumns("Descuento").Width = 43
+
+            '-----------------------------------------
+            ' 🔹 PRECIO NETO
+            '-----------------------------------------
+            .Columns("Precio_Neto").Caption = "Precio Neto"
+            .Splits(0).DisplayColumns("Precio_Neto").Width = 65
+            .Splits(0).DisplayColumns("Precio_Neto").Locked = True
+
+            '-----------------------------------------
+            ' 🔹 IMPORTE
+            '-----------------------------------------
+            .Columns("Importe").Caption = "Importe"
+            .Splits(0).DisplayColumns("Importe").Width = 61
+            .Splits(0).DisplayColumns("Importe").Locked = True
+
+            '-----------------------------------------
+            ' 🔹 OCULTAR CAMPOS TECNICOS
+            '-----------------------------------------
+            .Splits(0).DisplayColumns("id_Detalle_Compra").Visible = False
+            .Splits(0).DisplayColumns("TasaCambio").Visible = False
+            .Splits(0).DisplayColumns("Numero_Compra").Visible = False
+            .Splits(0).DisplayColumns("Fecha_Compra").Visible = False
+            .Splits(0).DisplayColumns("Tipo_Compra").Visible = False
+
+            '-----------------------------------------
+            ' 🔹 LOTE (SEGÚN CONFIGURACIÓN)
+            '-----------------------------------------
+            If FacturaTarea = True Then
+                .Splits(0).DisplayColumns("Numero_Lote").Visible = True
+                .Splits(0).DisplayColumns("Fecha_Vence").Visible = True
+
+                ' Botón en lote (como tu índice 8)
+                .Splits(0).DisplayColumns("Numero_Lote").Button = True
+            Else
+                .Splits(0).DisplayColumns("Numero_Lote").Visible = False
+                .Splits(0).DisplayColumns("Fecha_Vence").Visible = False
+            End If
+
+        End With
+
+    End Sub
+    Private Sub InicializarGridDetalle()
+
+        ds = New DataSet
+
+        Dim Sql As String
+
+        If FacturaTarea = True Then
+            Sql = "SELECT Cod_Producto, Descripcion_Producto, Cantidad, Precio_Unitario, Descuento, Precio_Neto, Importe, id_Detalle_Compra, Numero_Lote, Fecha_Vence, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra FROM Detalle_Compras WHERE Numero_Compra = '-1'"
+        Else
+            Sql = "SELECT Cod_Producto, Descripcion_Producto, Cantidad, Precio_Unitario, Descuento, Precio_Neto, Importe, id_Detalle_Compra, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra, Numero_Lote, Fecha_Vence FROM Detalle_Compras WHERE Numero_Compra = '-1'"
+        End If
+
+        da = New SqlDataAdapter(Sql, MiConexion)
+        CmdBuilder = New SqlCommandBuilder(da)
+        da.Fill(ds, "DetalleCompra")
+
+        Me.BindingDetalle.DataSource = ds.Tables("DetalleCompra")
+        Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
+
+        ConfigurarGridDetalle()
+
+    End Sub
+
+    Public Sub CargarDesdeOrden(fecha As Date, fechaHora As Date, numero As String)
+
+        Me.DTPFecha.Value = fecha
+        Me.DTPFechaHora.Value = fechaHora
+
+        ' 🔥 1. PRIMERO EL TIPO (CLAVE)
+        Me.CboTipoProducto.Text = "Orden de Compra"
+
+        ' 🔥 2. EVITAR EVENTO
+        Quien = "NumeroCompras"
+        Me.TxtNumeroEnsamble.Text = numero
+        Quien = ""
+
+        ' 🔥 3. CARGAR TODO
+        CargarCompraPorNumero()
+
+
+        Me.CboCodigoBodega.Enabled = False
+        Me.Button7.Enabled = False
+
+    End Sub
+    Private Sub CargarCompraPorNumero(Optional ByVal TipoForzado As String = "")
+
+        Dim SqlCompras As String
+        Dim TipoCompra As String
+        Dim Exonerado As Boolean = False
+
+        Try
+
+            '---------------------------------------------------
+            ' 🔹 1. VALIDACIONES
+            '---------------------------------------------------
+            If Me.TxtNumeroEnsamble.Text = "" Or Me.TxtNumeroEnsamble.Text = "-----0-----" Then Exit Sub
+
+            If TipoForzado <> "" Then
+                TipoCompra = TipoForzado
+            Else
+                TipoCompra = Me.CboTipoProducto.Text
+            End If
+
+            If TipoCompra = "" Then Exit Sub
+
+            '---------------------------------------------------
+            ' 🔹 2. ENCABEZADO (DataTable independiente)
+            '---------------------------------------------------
+            Dim dtEncabezado As New DataTable
+
+            SqlCompras = "SELECT * FROM Compras WHERE Numero_Compra = @Numero AND Tipo_Compra = @Tipo AND Activo = 1"
+
+            da = New SqlDataAdapter(SqlCompras, MiConexion)
+            da.SelectCommand.Parameters.AddWithValue("@Numero", Me.TxtNumeroEnsamble.Text)
+            da.SelectCommand.Parameters.AddWithValue("@Tipo", TipoCompra)
+
+            da.Fill(dtEncabezado)
+
+            If dtEncabezado.Rows.Count = 0 Then Exit Sub
+
+            With dtEncabezado.Rows(0)
+
+                Me.TxtCodigoProveedor.Text = .Item("Cod_Proveedor")
+                Me.TxtNombres.Text = .Item("Nombre_Proveedor")
+                Me.TxtApellidos.Text = .Item("Apellido_Proveedor")
+
+                If Not IsDBNull(.Item("Direccion_Proveedor")) Then
+                    Me.TxtDireccion.Text = .Item("Direccion_Proveedor")
+                End If
+
+                If Not IsDBNull(.Item("Telefono_Proveedor")) Then
+                    Me.TxtTelefono.Text = .Item("Telefono_Proveedor")
+                End If
+
+                If Not IsDBNull(.Item("Exonerado")) Then
+                    Exonerado = .Item("Exonerado")
+                End If
+
+                Me.OptExsonerado.Checked = Exonerado
+
+                Me.TxtSubTotal.Text = Format(.Item("SubTotal"), "##,##0.00")
+                Me.TxtIva.Text = Format(.Item("IVA"), "##,##0.00")
+                Me.TxtPagado.Text = Format(.Item("Pagado"), "##,##0.00")
+                Me.TxtNetoPagar.Text = Format(.Item("NetoPagar"), "##,##0.00")
+
+                Me.CboCodigoBodega.Text = .Item("Cod_Bodega")
+
+            End With
+
+            '---------------------------------------------------
+            ' 🔹 3. DETALLE (SOLO ds)
+            '---------------------------------------------------
+            If ds.Tables.Contains("DetalleCompra") Then
+                ds.Tables("DetalleCompra").Clear()
+            End If
+
+            SqlCompras = "SELECT Cod_Producto, Descripcion_Producto, Cantidad, Precio_Unitario, " &
+                     "Descuento, Precio_Neto, Importe, id_Detalle_Compra, " &
+                     "Numero_Lote, Fecha_Vence, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra " &
+                     "FROM Detalle_Compras " &
+                     "WHERE Numero_Compra = @Numero AND Tipo_Compra = @Tipo " &
+                     "ORDER BY id_Detalle_Compra"
+
+            da = New SqlDataAdapter(SqlCompras, MiConexion)
+            da.SelectCommand.Parameters.AddWithValue("@Numero", Me.TxtNumeroEnsamble.Text)
+            da.SelectCommand.Parameters.AddWithValue("@Tipo", TipoCompra)
+
+            da.Fill(ds, "DetalleCompra")
+
+            ' 🔥 REFRESCAR GRID (IMPORTANTE)
+            Me.TrueDBGridComponentes.DataSource = Nothing
+            Me.BindingDetalle.DataSource = ds.Tables("DetalleCompra")
+            Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
+
+            '---------------------------------------------------
+            ' 🔹 4. CONFIGURACIÓN GRID
+            '---------------------------------------------------
+            With Me.TrueDBGridComponentes
+
+                If .Columns.Count = 0 Then Exit Sub
+
+                .Columns("Cod_Producto").Caption = "Codigo"
+                .Splits(0).DisplayColumns("Cod_Producto").Button = True
+                .Splits(0).DisplayColumns("Cod_Producto").Width = 74
+
+                .Columns("Descripcion_Producto").Caption = "Descripcion"
+                .Splits(0).DisplayColumns("Descripcion_Producto").Width = 259
+
+                .Columns("Cantidad").Caption = "Ordenado"
+                .Splits(0).DisplayColumns("Cantidad").Width = 64
+
+                .Columns("Precio_Unitario").Caption = "Precio Unit"
+                .Splits(0).DisplayColumns("Precio_Unitario").Width = 62
+
+                .Columns("Descuento").Caption = "%Desc"
+                .Splits(0).DisplayColumns("Descuento").Width = 43
+
+                .Columns("Precio_Neto").Caption = "Precio Neto"
+                .Splits(0).DisplayColumns("Precio_Neto").Width = 65
+                .Splits(0).DisplayColumns("Precio_Neto").Locked = True
+
+                .Columns("Importe").Caption = "Importe"
+                .Splits(0).DisplayColumns("Importe").Width = 61
+                .Splits(0).DisplayColumns("Importe").Locked = True
+
+                ' Ocultos
+                .Splits(0).DisplayColumns("id_Detalle_Compra").Visible = False
+                .Splits(0).DisplayColumns("TasaCambio").Visible = False
+                .Splits(0).DisplayColumns("Numero_Compra").Visible = False
+                .Splits(0).DisplayColumns("Fecha_Compra").Visible = False
+                .Splits(0).DisplayColumns("Tipo_Compra").Visible = False
+
+                ' Lote
+                If FacturaTarea = True Then
+                    .Splits(0).DisplayColumns("Numero_Lote").Visible = True
+                    .Splits(0).DisplayColumns("Fecha_Vence").Visible = True
+                    .Splits(0).DisplayColumns("Numero_Lote").Button = True
+                Else
+                    .Splits(0).DisplayColumns("Numero_Lote").Visible = False
+                    .Splits(0).DisplayColumns("Fecha_Vence").Visible = False
+                End If
+
+            End With
+
+            '---------------------------------------------------
+            ' 🔹 5. PERMISOS
+            '---------------------------------------------------
+            If Me.CboTipoProducto.Text = "Orden de Compra" Then
+                Me.TrueDBGridComponentes.AllowUpdate = True
+                Me.TrueDBGridComponentes.AllowAddNew = True
+            ElseIf LiberarCompras = True Then
+                Me.TrueDBGridComponentes.AllowUpdate = True
+                Me.TrueDBGridComponentes.AllowAddNew = True
+            Else
+                Me.TrueDBGridComponentes.AllowUpdate = False
+            End If
+
+            '---------------------------------------------------
+            ' 🔹 6. MÉTODO DE PAGO (DataTable independiente)
+            '---------------------------------------------------
+            Dim dtMetodo As New DataTable
+
+            SqlCompras = "SELECT NombrePago, Monto FROM Detalle_MetodoCompras WHERE Numero_Compra = @Numero"
+
+            da = New SqlDataAdapter(SqlCompras, MiConexion)
+            da.SelectCommand.Parameters.AddWithValue("@Numero", Me.TxtNumeroEnsamble.Text)
+
+            da.Fill(dtMetodo)
+
+            Me.BindingMetodo.DataSource = dtMetodo
+            Me.TrueDBGridMetodo.DataSource = Me.BindingMetodo
+
+        Catch ex As Exception
+            MsgBox("Error al cargar compra: " & ex.Message)
+        End Try
+
+    End Sub
+
 
     Public Sub LimpiarGridImporacion()
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -943,6 +1398,13 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
             ''//////////////////////////////////////////////////////////////////////////
             GrabaCompras(compras)
 
+            Dim cmdDelete As New SqlClient.SqlCommand("
+                 DELETE FROM Detalle_Compras 
+                 WHERE Numero_Compra = @NumeroCompra", MiConexion, Transaccion)
+
+            cmdDelete.Parameters.AddWithValue("@NumeroCompra", compras.Numero_Compra)
+            cmdDelete.ExecuteNonQuery()
+
             ' ====================== DETALLES DE COMPRA ===========================
             For i As Integer = 0 To TotalRegistros - 1
                 If worker.CancellationPending Then
@@ -973,7 +1435,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
                 ' Inserta el detalle (transaccional)
                 GrabaDetalleCompras(MiConexion, Transaccion, detalle)
 
-                ' Solo recalcular existencias si es Mercanc�a Recibida
+                ' Solo recalcular existencias si es Mercancía Recibida
                 If compras.Tipo_Compra = "Mercancia Recibida" Then
                     'ExistenciasCostosTransactional(MiConexion, Transaccion, detalle.Cod_Producto, detalle.Cantidad, detalle.Precio_Neto, detalle.Tipo_Compra, detalle.Cod_Bodega)
                     'ExistenciasCostos(detalle.Cod_Producto, detalle.Cantidad, detalle.Precio_Neto, detalle.Tipo_Compra, detalle.Cod_Bodega)
@@ -983,7 +1445,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
                 worker.ReportProgress(CInt((i + 1) / TotalRegistros * 100), detalle.Cod_Producto)
             Next
 
-            ' ====================== M�TODOS DE PAGO ===========================
+            ' ====================== MÉTODOS DE PAGO ===========================
             If dsMetodoPago IsNot Nothing AndAlso dsMetodoPago.Tables.Contains("MetodoPago") Then
                 For Each row As DataRow In dsMetodoPago.Tables("MetodoPago").Rows
                     If Not IsDBNull(row("NombrePago")) Then
@@ -1265,7 +1727,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         Compras.Direccion_Proveedor = TxtDireccion.Text
         Compras.Telefono_Proveedor = TxtTelefono.Text
         Compras.Fecha_Vencimiento = DTVencimiento.Value
-        Compras.Observaciones_C�mpra = TxtObservaciones.Text
+        Compras.Observaciones_Cómpra = TxtObservaciones.Text
         Compras.Descuento_Compra = 0
         Compras.Fecha_Descuento = Now
         If Me.TxtSubTotal.Text <> "" Then
@@ -1440,7 +1902,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         Compras.Direccion_Proveedor = TxtDireccion.Text
         Compras.Telefono_Proveedor = TxtTelefono.Text
         Compras.Fecha_Vencimiento = DTVencimiento.Value
-        Compras.Observaciones_C�mpra = TxtObservaciones.Text
+        Compras.Observaciones_Cómpra = TxtObservaciones.Text
         Compras.Descuento_Compra = 0
         Compras.Fecha_Descuento = Now
         Compras.Sub_Total = TxtSubTotal.Text
@@ -1615,7 +2077,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         Compras.Direccion_Proveedor = TxtDireccion.Text
         Compras.Telefono_Proveedor = TxtTelefono.Text
         Compras.Fecha_Vencimiento = DTVencimiento.Value
-        Compras.Observaciones_C�mpra = TxtObservaciones.Text
+        Compras.Observaciones_Cómpra = TxtObservaciones.Text
         Compras.Descuento_Compra = 0
         Compras.Fecha_Descuento = Now
         Compras.Sub_Total = TxtSubTotal.Text
@@ -1698,117 +2160,136 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
 
     End Sub
 
+    Public Sub CargarCompra(ByVal FechaCompra As Date,
+                        ByVal FechaHoraCompra As Date,
+                        ByVal NumeroCompra As String,
+                        ByVal TipoCompra As String)
 
+        Dim ds As New DataSet
+        Dim da As SqlDataAdapter
+        Dim SqlString As String
 
-    Public Sub CargarCompra(ByVal FechaCompra As Date, ByVal FechaHoraCompra As Date, ByVal NumeroCompra As String, ByVal TipoCompra As String)
-        Dim SqlDatos As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SqlString As String
+        Try
 
-        SqlDatos = "SELECT * FROM DatosEmpresa"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-        DataAdapter.Fill(DataSet, "DatosEmpresa")
-        If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
-            FacturaTarea = DataSet.Tables("DatosEmpresa").Rows(0)("Factura_Tarea")
-        End If
+            Me.TrueDBGridComponentes.DataSource = Nothing
+            Me.BindingDetalle.DataSource = Nothing
 
+            '---------------------------------------------------------
+            ' 🔹 1. OBTENER CONFIGURACIÓN (FacturaTarea = usa lote)
+            '---------------------------------------------------------
+            Dim dtEmpresa As New DataTable
+            Dim daEmpresa As New SqlDataAdapter("SELECT Factura_Tarea FROM DatosEmpresa", MiConexion)
+            daEmpresa.Fill(dtEmpresa)
 
-        'If FacturaTarea = True Then
-        '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '    '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
-        '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '    SqlString = "SELECT  Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario, Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, Detalle_Compras.Numero_Lote,Detalle_Compras.Fecha_Vence, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra FROM  Detalle_Compras WHERE (Detalle_Compras.Numero_Compra = '-1')"
-        '    'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        '    'DataAdapter.Fill(DataSet, "DetalleCompra")
-        '    ds = New DataSet
-        '    da = New SqlDataAdapter(SqlString, MiConexion)
-        '    CmdBuilder = New SqlCommandBuilder(da)
-        '    da.Fill(ds, "DetalleCompra")
-        '    Me.BindingDetalle.DataSource = ds.Tables("DetalleCompra")
-        '    Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
-        '    Me.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
-        '    Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 259
-        '    'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
-        '    Me.TrueDBGridComponentes.Columns(2).Caption = "Ordenado"
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 64
-        '    Me.TrueDBGridComponentes.Columns(3).Caption = "Precio Unit"
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = False
-        '    Me.TrueDBGridComponentes.Columns(4).Caption = "%Desc"
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 43
-        '    Me.TrueDBGridComponentes.Columns(5).Caption = "Precio Neto"
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Width = 65
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Locked = True
-        '    Me.TrueDBGridComponentes.Columns(6).Caption = "Importe"
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Width = 61
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Locked = True
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(7).Visible = False
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(8).Button = True
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("TasaCambio").Visible = False
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
+            Dim FacturaTarea As Boolean = False
 
-        'Else
+            If dtEmpresa.Rows.Count > 0 Then
+                FacturaTarea = Convert.ToBoolean(dtEmpresa.Rows(0)("Factura_Tarea"))
+            End If
 
-        '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '    '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
-        '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '    SqlString = "SELECT  Detalle_Compras.Cod_Producto, Detalle_Compras.Descripcion_Producto, Detalle_Compras.Cantidad, Detalle_Compras.Precio_Unitario, Detalle_Compras.Descuento, Detalle_Compras.Precio_Neto, Detalle_Compras.Importe,Detalle_Compras.id_Detalle_Compra, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra FROM  Detalle_Compras  WHERE (Detalle_Compras.Numero_Compra = '-1')"
-        '    'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        '    'DataAdapter.Fill(DataSet, "DetalleCompra")
-        '    'Me.BindingDetalle.DataSource = DataSet.Tables("DetalleCompra")
-        '    ds = New DataSet
-        '    da = New SqlDataAdapter(SqlString, MiConexion)
-        '    CmdBuilder = New SqlCommandBuilder(da)
-        '    da.Fill(ds, "DetalleCompra")
-        '    Me.BindingDetalle.DataSource = ds.Tables("DetalleCompra")
-        '    Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
-        '    Me.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
-        '    Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 259
-        '    'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
-        '    Me.TrueDBGridComponentes.Columns(2).Caption = "Ordenado"
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 64
-        '    Me.TrueDBGridComponentes.Columns(3).Caption = "Precio Unit"
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = False
-        '    Me.TrueDBGridComponentes.Columns(4).Caption = "%Desc"
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 43
-        '    Me.TrueDBGridComponentes.Columns(5).Caption = "Precio Neto"
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Width = 65
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Locked = True
-        '    Me.TrueDBGridComponentes.Columns(6).Caption = "Importe"
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Width = 61
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Locked = True
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(7).Visible = False
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("TasaCambio").Visible = False
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Numero_Compra").Visible = False
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Fecha_Compra").Visible = False
-        '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Compra").Visible = False
+            '---------------------------------------------------------
+            ' 🔹 2. LIMPIAR GRID (EVITA BUGS)
+            '---------------------------------------------------------
+            Me.TrueDBGridComponentes.DataSource = Nothing
+            Me.BindingDetalle.DataSource = Nothing
 
-        'End If
+            '---------------------------------------------------------
+            ' 🔹 3. QUERY ÚNICO (SIEMPRE IGUAL)
+            '---------------------------------------------------------
+            SqlString = "SELECT Cod_Producto, Descripcion_Producto, Cantidad, Precio_Unitario, " &
+                    "Descuento, Precio_Neto, Importe, id_Detalle_Compra, " &
+                    "Numero_Lote, Fecha_Vence, " &
+                    "TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra " &
+                    "FROM Detalle_Compras " &
+                    "WHERE Numero_Compra = @NumeroCompra"
 
+            da = New SqlDataAdapter(SqlString, MiConexion)
+            da.SelectCommand.Parameters.AddWithValue("@NumeroCompra", NumeroCompra)
 
-        Me.DTPFecha.Value = FechaCompra
-        Me.DTPFechaHora.Value = FechaHoraCompra
-        Me.CboTipoProducto.Text = TipoCompra
-        'Me.TxtNumeroEnsamble.Text = "-----0-----"
-        Me.TxtNumeroEnsamble.Text = NumeroCompra
-        Me.CboCodigoBodega.Enabled = False
-        Me.Button7.Enabled = False
+            da.Fill(ds, "DetalleCompra")
 
-        If PermiteEditar(Acceso, "Compras") = False Then
-            Me.ButtonAgregar.Enabled = False
-            'Me.TrueDBGridComponentes.Enabled = False
-        Else
-            Me.ButtonAgregar.Enabled = True
-            Me.TrueDBGridComponentes.Enabled = True
+            '---------------------------------------------------------
+            ' 🔹 4. BINDING
+            '---------------------------------------------------------
+            Me.BindingDetalle.DataSource = ds.Tables("DetalleCompra")
+            Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
 
-        End If
+            '---------------------------------------------------------
+            ' 🔹 5. CONFIGURAR COLUMNAS (UNA SOLA VEZ)
+            '---------------------------------------------------------
+            With Me.TrueDBGridComponentes
+
+                .Columns("Cod_Producto").Caption = "Código"
+                .Splits(0).DisplayColumns("Cod_Producto").Width = 74
+                .Splits(0).DisplayColumns("Cod_Producto").Button = True
+
+                .Columns("Descripcion_Producto").Caption = "Descripción"
+                .Splits(0).DisplayColumns("Descripcion_Producto").Width = 259
+
+                .Columns("Cantidad").Caption = "Ordenado"
+                .Splits(0).DisplayColumns("Cantidad").Width = 64
+
+                .Columns("Precio_Unitario").Caption = "Precio Unit"
+                .Splits(0).DisplayColumns("Precio_Unitario").Width = 62
+
+                .Columns("Descuento").Caption = "%Desc"
+                .Splits(0).DisplayColumns("Descuento").Width = 43
+
+                .Columns("Precio_Neto").Caption = "Precio Neto"
+                .Splits(0).DisplayColumns("Precio_Neto").Width = 65
+                .Splits(0).DisplayColumns("Precio_Neto").Locked = True
+
+                .Columns("Importe").Caption = "Importe"
+                .Splits(0).DisplayColumns("Importe").Width = 61
+                .Splits(0).DisplayColumns("Importe").Locked = True
+
+                '-------------------------------------------------
+                ' 🔹 6. MANEJO DE LOTE (CLAVE)
+                '-------------------------------------------------
+                If FacturaTarea = True Then
+                    .Splits(0).DisplayColumns("Numero_Lote").Visible = True
+                    .Splits(0).DisplayColumns("Fecha_Vence").Visible = True
+                Else
+                    .Splits(0).DisplayColumns("Numero_Lote").Visible = False
+                    .Splits(0).DisplayColumns("Fecha_Vence").Visible = False
+                End If
+
+                '-------------------------------------------------
+                ' 🔹 7. OCULTAR COLUMNAS TÉCNICAS
+                '-------------------------------------------------
+                .Splits(0).DisplayColumns("id_Detalle_Compra").Visible = False
+                .Splits(0).DisplayColumns("TasaCambio").Visible = False
+                .Splits(0).DisplayColumns("Numero_Compra").Visible = False
+                .Splits(0).DisplayColumns("Fecha_Compra").Visible = False
+                .Splits(0).DisplayColumns("Tipo_Compra").Visible = False
+
+            End With
+
+            '---------------------------------------------------------
+            ' 🔹 8. CARGAR ENCABEZADO
+            '---------------------------------------------------------
+            Me.DTPFecha.Value = FechaCompra
+            Me.DTPFechaHora.Value = FechaHoraCompra
+            Me.CboTipoProducto.Text = TipoCompra
+            Me.TxtNumeroEnsamble.Text = NumeroCompra
+
+            Me.CboCodigoBodega.Enabled = False
+            Me.Button7.Enabled = False
+
+            '---------------------------------------------------------
+            ' 🔹 9. PERMISOS
+            '---------------------------------------------------------
+            If PermiteEditar(Acceso, "Compras") = False Then
+                Me.ButtonAgregar.Enabled = False
+            Else
+                Me.ButtonAgregar.Enabled = True
+                Me.TrueDBGridComponentes.Enabled = True
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show("Error al cargar la compra: " & ex.Message)
+        End Try
+
     End Sub
 
 
@@ -2970,28 +3451,30 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
     Private Sub FrmCompras_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
 
 
-        If EsSolicitud = True Then
+        'If EsSolicitud = True Then
 
-            Me.DTPFecha.Value = Fecha_Compra
-            Me.DTPFechaHora.Value = FechaHoraCompra
-            Me.CboTipoProducto.Text = "Orden de Compra"
-            'Me.TxtNumeroEnsamble.Text = "-----0-----"
-            Me.TxtNumeroEnsamble.Text = NumeroCompra
+        '    Me.DTPFecha.Value = Fecha_Compra
+        '    Me.DTPFechaHora.Value = FechaHoraCompra
+        '    Me.CboTipoProducto.Text = "Orden de Compra"
+        '    'Me.TxtNumeroEnsamble.Text = "-----0-----"
+        '    Me.TxtNumeroEnsamble.Text = NumeroCompra
+        '    Bloqueo(Me, Acceso, "Orden de Compra")
+        '    Me.CmdFacturar.Enabled = True
+        'Else
 
-            'EsSolicitud = False
-            Bloqueo(Me, Acceso, "Orden de Compra")
-        Else
 
-            'Bloqueo(Me, Acceso, "Compras")
-        End If
+        '    'Bloqueo(Me, Acceso, "Compras")
+        'End If
 
         'Me.DTPFecha.Value = Fecha_Compra
         'Me.DTPFechaHora.Value = FechaHoraCompra
         'Me.CboTipoProducto.Text = "Orden de Compra"
         ''Me.TxtNumeroEnsamble.Text = "-----0-----"
         'Me.TxtNumeroEnsamble.Text = NumeroCompra
-        'Me.CargarCompra(Fecha_Compra, FechaHoraCompra, NumeroCompra, "Orden de Compra")
-        'EsSolicitud = False
+        If EsSolicitud = True Then
+            Me.CargarCompra(Fecha_Compra, FechaHoraCompra, NumeroCompra, "Orden de Compra")
+            EsSolicitud = False
+        End If
     End Sub
 
     Private Sub FrmCompras_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
@@ -3002,12 +3485,16 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         Me.GroupBoxImportar.Location = New Point(905, 73)
     End Sub
 
+
+
+
+
+
     Private Sub FrmCompras_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim SqlDatos As String
 
-        Me.MinimumSize = Size
-        Me.MaximumSize = Size
+
 
         Me.DTPFecha.Value = Format(Now, "dd/MM/yyyy")
         Me.DTVencimiento.Value = Format(Now, "dd/MM/yyyy")
@@ -3214,7 +3701,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
             End If
         Else
 
-                My.Application.DoEvents()
+            My.Application.DoEvents()
             'Me.DTPFecha.Value = Fecha_Compra
             'Me.DTPFechaHora.Value = FechaHoraCompra
             'Me.CboTipoProducto.Text = "Orden de Compra"
@@ -3223,6 +3710,9 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
             'Me.CargarCompra(Fecha_Compra, FechaHoraCompra, NumeroCompra, "Orden de Compra")
             'EsSolicitud = False
         End If
+
+        'Me.MinimumSize = Size
+        'Me.MaximumSize = Size
 
     End Sub
 
@@ -3248,8 +3738,11 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         Dim ConsecutivoCompra As Double, SqlConsecutivo As String, CompraBodega As Boolean = False, FacturaBodega As Boolean
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, DescripcionProducto As String
 
+        ButtonAgregar.Enabled = False
 
         AgregarCompras(False)
+
+        ButtonAgregar.Enabled = True
 
         ''////////////////////////////////////////////////////////////////////////////////////////////////////
         ''/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
@@ -3545,6 +4038,26 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
 
 
     End Sub
+    Private Sub ConfigurarGrid(FacturaTarea As Boolean)
+
+        With Me.TrueDBGridComponentes
+
+            ' LOTE
+            .Splits(0).DisplayColumns("Numero_Lote").Visible = FacturaTarea
+            .Splits(0).DisplayColumns("Fecha_Vence").Visible = FacturaTarea
+
+            ' OCULTOS
+            .Splits(0).DisplayColumns("id_Detalle_Compra").Visible = False
+            .Splits(0).DisplayColumns("TasaCambio").Visible = False
+            .Splits(0).DisplayColumns("Numero_Compra").Visible = False
+            .Splits(0).DisplayColumns("Fecha_Compra").Visible = False
+            .Splits(0).DisplayColumns("Tipo_Compra").Visible = False
+
+        End With
+
+    End Sub
+
+
 
     Private Sub CboTipoProducto_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboTipoProducto.SelectedIndexChanged
 
@@ -4199,7 +4712,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         Dim Fecha As String, Resultado As Double
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SQlProductos As String, IposicionFila As Double
 
-        Resultado = MsgBox("�Esta Seguro de Cancelar la Compra?", MsgBoxStyle.OkCancel, "Sistema de Facturacion")
+        Resultado = MsgBox("¿Esta Seguro de Cancelar la Compra?", MsgBoxStyle.OkCancel, "Sistema de Facturacion")
 
         If Not Resultado = "1" Then
             Exit Sub
@@ -4891,6 +5404,10 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         Me.GroupBoxImportar.Visible = True
     End Sub
 
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+
+    End Sub
+
     Private Sub Button11_Click(sender As Object, e As EventArgs) Handles BtnAbrir.Click
         Dim Cont As Double, i As Double, oDataRow As DataRow, Registros As Double = 0
         Dim commandbuilder As New OleDb.OleDbCommandBuilder(Me.DataAdapterExcel)
@@ -5057,7 +5574,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, NumeroCompra As String, ConsecutivoCompra As Double
         Dim oDataRow As DataRow, oTablaBorrados As DataTable
 
-        Resultado = MsgBox("�Esta Seguro de Eliminar la Linea?", MsgBoxStyle.OkCancel, "Sistema de Facturacion")
+        Resultado = MsgBox("¿Esta Seguro de Eliminar la Linea?", MsgBoxStyle.OkCancel, "Sistema de Facturacion")
 
         If Not Resultado = "1" Then
             Exit Sub

@@ -110,6 +110,7 @@ Partial Class FrmFacturas
         Me.BtnSalida = New System.Windows.Forms.Button()
         Me.Button5 = New System.Windows.Forms.Button()
         Me.PictureBox3 = New System.Windows.Forms.PictureBox()
+        Me.Button10 = New System.Windows.Forms.Button()
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrueDBGridMetodo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
@@ -899,7 +900,7 @@ Partial Class FrmFacturas
         Me.CmdFacturar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CmdFacturar.Image = CType(resources.GetObject("CmdFacturar.Image"), System.Drawing.Image)
         Me.CmdFacturar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdFacturar.Location = New System.Drawing.Point(77, 86)
+        Me.CmdFacturar.Location = New System.Drawing.Point(77, 89)
         Me.CmdFacturar.Name = "CmdFacturar"
         Me.CmdFacturar.Size = New System.Drawing.Size(62, 66)
         Me.CmdFacturar.TabIndex = 194
@@ -984,7 +985,7 @@ Partial Class FrmFacturas
         Me.CmdProcesar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CmdProcesar.Image = CType(resources.GetObject("CmdProcesar.Image"), System.Drawing.Image)
         Me.CmdProcesar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdProcesar.Location = New System.Drawing.Point(74, 158)
+        Me.CmdProcesar.Location = New System.Drawing.Point(73, 158)
         Me.CmdProcesar.Name = "CmdProcesar"
         Me.CmdProcesar.Size = New System.Drawing.Size(65, 66)
         Me.CmdProcesar.TabIndex = 208
@@ -1160,7 +1161,7 @@ Partial Class FrmFacturas
         Me.BtnSalida.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnSalida.Image = CType(resources.GetObject("BtnSalida.Image"), System.Drawing.Image)
         Me.BtnSalida.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.BtnSalida.Location = New System.Drawing.Point(77, 87)
+        Me.BtnSalida.Location = New System.Drawing.Point(76, 91)
         Me.BtnSalida.Name = "BtnSalida"
         Me.BtnSalida.Size = New System.Drawing.Size(62, 66)
         Me.BtnSalida.TabIndex = 210
@@ -1194,11 +1195,22 @@ Partial Class FrmFacturas
         Me.PictureBox3.TabIndex = 227
         Me.PictureBox3.TabStop = False
         '
+        'Button10
+        '
+        Me.Button10.Location = New System.Drawing.Point(393, 148)
+        Me.Button10.Name = "Button10"
+        Me.Button10.Size = New System.Drawing.Size(75, 23)
+        Me.Button10.TabIndex = 228
+        Me.Button10.Text = "Button10"
+        Me.Button10.UseVisualStyleBackColor = True
+        Me.Button10.Visible = False
+        '
         'FrmFacturas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(888, 499)
+        Me.Controls.Add(Me.Button10)
         Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.GroupBox5)
         Me.Controls.Add(Me.DTPFechaHora)
@@ -1368,4 +1380,5 @@ Partial Class FrmFacturas
     Friend WithEvents TxtNumeroFactura As System.Windows.Forms.TextBox
     Friend WithEvents BtnFacturas As C1.Win.C1Input.C1Button
     Friend WithEvents ChkAplicarCtaXCobrar As System.Windows.Forms.CheckBox
+    Friend WithEvents Button10 As Button
 End Class

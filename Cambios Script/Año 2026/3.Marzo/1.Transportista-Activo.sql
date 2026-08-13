@@ -1,0 +1,2 @@
+ALTER TABLE Transportista
+ADD Activo bit NOT NULL DEFAULT 1

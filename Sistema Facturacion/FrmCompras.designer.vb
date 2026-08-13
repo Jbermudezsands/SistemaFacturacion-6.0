@@ -683,7 +683,7 @@ Partial Class FrmCompras
         Me.CmdFacturar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CmdFacturar.Image = CType(resources.GetObject("CmdFacturar.Image"), System.Drawing.Image)
         Me.CmdFacturar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdFacturar.Location = New System.Drawing.Point(78, 85)
+        Me.CmdFacturar.Location = New System.Drawing.Point(81, 88)
         Me.CmdFacturar.Name = "CmdFacturar"
         Me.CmdFacturar.Size = New System.Drawing.Size(62, 66)
         Me.CmdFacturar.TabIndex = 201

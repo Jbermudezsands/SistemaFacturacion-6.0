@@ -208,6 +208,10 @@ Public Class FrmUsuarios
             If Not IsDBNull(DataSet.Tables("Usuario").Rows(0)("CodProveedor")) Then
                 Me.CboProveedor.Text = DataSet.Tables("Usuario").Rows(0)("CodProveedor")
             End If
+
+            If Not IsDBNull(DataSet.Tables("Usuario").Rows(0)("PermiteActivarFactura")) Then
+                Me.ChkActivarFacturas.Checked = DataSet.Tables("Usuario").Rows(0)("PermiteActivarFactura")
+            End If
         Else
             Me.CboNivel.Text = ""
             Me.TxtContraseña.Text = ""
@@ -270,7 +274,7 @@ Public Class FrmUsuarios
             MiConexion.Close()
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
 
-            StrSqlUpdate = "UPDATE [Usuarios] SET [RecibeNotificacion] = '" & Notificacion & "', [Contraseña] = '" & Me.TxtContraseña.Text & "',[Nivel] = '" & Me.CboNivel.Text & "',[Bodega]= '" & Me.CboCodigoBodega.Text & "',[TipoFactura]= '" & Me.CboTipoProducto.Text & "',[CodVendedor]= '" & Me.CboCodigoVendedor.Text & "',[CodCliente]= '" & Me.CboCodigoCliente.Text & "',[SerieFactura]= '" & Me.CmbSerie.Text & "',[BodegaCompra]= '" & Me.CboCodigoBodegaCompra.Text & "', [TipoCompra]= '" & Me.CboTipoCompra.Text & "', [CodProveedor]= '" & Me.CboProveedor.Text & "'   " & _
+            StrSqlUpdate = "UPDATE [Usuarios] SET [PermiteActivarFactura] = '" & Me.ChkActivarFacturas.Checked & "', [RecibeNotificacion] = '" & Notificacion & "', [Contraseña] = '" & Me.TxtContraseña.Text & "',[Nivel] = '" & Me.CboNivel.Text & "',[Bodega]= '" & Me.CboCodigoBodega.Text & "',[TipoFactura]= '" & Me.CboTipoProducto.Text & "',[CodVendedor]= '" & Me.CboCodigoVendedor.Text & "',[CodCliente]= '" & Me.CboCodigoCliente.Text & "',[SerieFactura]= '" & Me.CmbSerie.Text & "',[BodegaCompra]= '" & Me.CboCodigoBodegaCompra.Text & "', [TipoCompra]= '" & Me.CboTipoCompra.Text & "', [CodProveedor]= '" & Me.CboProveedor.Text & "'   " &
                            "WHERE [Usuario] = '" & Me.CboUsuario.Text & "' "
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -281,8 +285,8 @@ Public Class FrmUsuarios
             MiConexion.Close()
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
             'Nivel = Me.CboNivel.Text
-            StrSqlUpdate = "INSERT INTO [Usuarios] ([Usuario],[RecibeNotificacion],[Contraseña],[Nivel],[Bodega],[TipoFactura],[CodVendedor],[CodCliente],[SerieFactura],[BodegaCompra],[TipoCompra],[CodProveedor]) " & _
-                           "VALUES('" & Me.CboUsuario.Text & "','" & Notificacion & "','" & Me.TxtContraseña.Text & "','" & Me.CboNivel.Text & "','" & Me.CboCodigoBodega.Text & "','" & Me.CboTipoProducto.Text & "','" & Me.CboCodigoVendedor.Text & "','" & Me.CboCodigoCliente.Text & "','" & Me.CmbSerie.Text & "','" & Me.CboCodigoBodegaCompra.Text & "','" & Me.CboTipoCompra.Text & "' ,'" & Me.CboProveedor.Text & "')"
+            StrSqlUpdate = "INSERT INTO [Usuarios] ([Usuario],[RecibeNotificacion],[PermiteActivarFactura], [Contraseña],[Nivel],[Bodega],[TipoFactura],[CodVendedor],[CodCliente],[SerieFactura],[BodegaCompra],[TipoCompra],[CodProveedor]) " &
+                           "VALUES('" & Me.CboUsuario.Text & "','" & Notificacion & "','" & ChkActivarFacturas.Checked & "','" & Me.TxtContraseña.Text & "','" & Me.CboNivel.Text & "','" & Me.CboCodigoBodega.Text & "','" & Me.CboTipoProducto.Text & "','" & Me.CboCodigoVendedor.Text & "','" & Me.CboCodigoCliente.Text & "','" & Me.CmbSerie.Text & "','" & Me.CboCodigoBodegaCompra.Text & "','" & Me.CboTipoCompra.Text & "' ,'" & Me.CboProveedor.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery

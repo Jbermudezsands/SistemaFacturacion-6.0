@@ -1,0 +1,3 @@
+CREATE NONCLUSTERED INDEX IX_CodigosAlternos_CodProducto
+ON Codigos_Alternos (Cod_Producto)
+INCLUDE (Cod_Alternativo, Descripcion_Producto)

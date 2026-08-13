@@ -2785,6 +2785,7 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                         Me.ListBox.Items.Add("Entrada de Productos")
                         Me.ListBox.Items.Add("Salida de Productos")
                         Me.ListBox.Items.Add("Control de Entradas y Salidas")
+                        Me.ListBox.Items.Add("Reporte de Transferencias")
                         Me.ListBox.Items.Add("Comprobante Compras x Proveedores")
                         Me.ListBox.Items.Add("Comprobante Salidas x Referencia")
                         Me.ListBox.Items.Add("Comprobante Compras x Rubro")
@@ -3087,6 +3088,70 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
 
 
     End Sub
+    Public Function ObtenerTransferencias(fechaInicio As Date, fechaFin As Date, codBodega As String) As DataTable
+
+        Dim dt As New DataTable()
+        Dim cn As New SqlClient.SqlConnection(Conexion)
+
+        Dim sql As String = "SELECT 
+                                            'TransferenciaEnviada' AS TipoTransferencia,
+                                            F.Numero_Factura AS NumeroTransferencia,
+                                            F.Su_Referencia AS BodegaOrigen,
+                                            F.Nuestra_Referencia AS BodegaDestino,
+                                            F.Fecha_Factura AS Fecha,
+                                            DF.Cod_Producto AS CodigoProducto,
+                                            ISNULL(P.Descripcion_Producto, DF.Descripcion_Producto) AS NombreProducto,
+                                            DF.Cantidad
+                                        FROM Facturas F
+                                        INNER JOIN Detalle_Facturas DF 
+                                            ON F.Numero_Factura = DF.Numero_Factura
+                                            AND F.Fecha_Factura = DF.Fecha_Factura
+                                            AND F.Tipo_Factura = DF.Tipo_Factura
+                                        LEFT JOIN Productos P 
+                                            ON P.Cod_Productos = DF.Cod_Producto
+                                        WHERE
+                                            F.Tipo_Factura = 'TransferenciaEnviada'
+                                            AND (F.Su_Referencia = @Bodega OR F.Nuestra_Referencia = @Bodega)
+                                            AND F.Fecha_Factura BETWEEN @FechaInicio AND @FechaFin
+
+                                        UNION ALL
+
+                                        SELECT 
+                                            'TransferenciaRecibida' AS TipoTransferencia,
+                                            C.Numero_Compra AS NumeroTransferencia,
+                                            C.Su_Referencia AS BodegaOrigen,
+                                            C.Nuestra_Referencia AS BodegaDestino,
+                                            C.Fecha_Compra AS Fecha,
+                                            DC.Cod_Producto AS CodigoProducto,
+                                            ISNULL(P.Descripcion_Producto, DC.Descripcion_Producto) AS NombreProducto,
+                                            DC.Cantidad
+                                        FROM Compras C
+                                        INNER JOIN Detalle_Compras DC 
+                                            ON C.Numero_Compra = DC.Numero_Compra
+                                            AND C.Fecha_Compra = DC.Fecha_Compra
+                                            AND C.Tipo_Compra = DC.Tipo_Compra
+                                        LEFT JOIN Productos P 
+                                            ON P.Cod_Productos = DC.Cod_Producto
+                                        WHERE
+                                            C.Tipo_Compra = 'Transferencia Recibida'
+                                            AND (C.Su_Referencia = @Bodega OR C.Nuestra_Referencia = @Bodega)
+                                            AND C.Fecha_Compra BETWEEN @FechaInicio AND @FechaFin
+
+                                        ORDER BY Fecha"
+
+
+        Dim cmd As New SqlClient.SqlCommand(sql, cn)
+        cmd.Parameters.AddWithValue("@FechaInicio", fechaInicio)
+        cmd.Parameters.AddWithValue("@FechaFin", fechaFin)
+        cmd.Parameters.AddWithValue("@Bodega", codBodega)
+
+        Dim da As New SqlClient.SqlDataAdapter(cmd)
+        da.Fill(dt)
+
+        Return dt
+
+    End Function
+
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
 
@@ -3128,6 +3193,37 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
         Fecha2 = Me.DTPFechaFin.Value
         My.Application.DoEvents()
         Select Case Me.ListBox.Text
+            Case "Reporte de Transferencias"
+                Dim rpt As New ArepTransferenciaListado()
+
+                Dim dt As DataTable = ObtenerTransferencias(
+                    Me.DTPFechaIni.Value,
+                    DTPFechaFin.Value,
+                    CmbRango1.Text
+                )
+
+
+
+
+                ' Opcional: pasar parámetros al encabezado
+
+
+                If Dir(RutaLogo) <> "" Then
+                    rpt.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                End If
+
+                rpt.LblTitulo.Text = NombreEmpresa
+                rpt.LblDireccion.Text = DireccionEmpresa
+                rpt.LblRuc.Text = Ruc
+
+                Dim ViewerForm As New FrmViewer()
+                ViewerForm.arvMain.Document = rpt.Document
+                My.Application.DoEvents()
+                rpt.DataSource = dt
+                rpt.Run(False)
+                ViewerForm.Show()
+
+
             Case "Reporte Solicitud de Compra"
                 Dim SQLString As String, CodProductos As String = "", FechaIni As Date, FechaFin As Date
                 Dim oDataRow As DataRow, Inicial As Double, Registros As Double, Contador As Double, i As Double, j As Double
@@ -6944,6 +7040,12 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                     End If
 
 
+                    '///////////////SI LA EXISTENCIA FINAL ES CERO EL SALDO LO HAGO CERO /////
+                    'If Existencia = 0 Then
+                    '    MontoInicial = 0
+                    '    MontoInicialD = 0
+                    'End If
+
                     'Me.TxtInicialM.Text = Format(Inicial * CostoPromedio, "##,##0.00")
                     'Me.TxtEntradaM.Text = Format(Compras * CostoPromedio, "##,##0.00")
                     'Me.TxtSalidaM.Text = Format(Ventas * CostoPromedio, "##,##0.00")
@@ -6983,7 +7085,8 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                                 oDataRow("SalidaD") = MontoSalida  'MontoSalida
                                 'If Existencia <> 0 Then
                                 'If (MontoInicial + MontoEntrada - MontoSalida) > 1 Then
-                                oDataRow("SaldoD") = MontoInicial + MontoEntrada - MontoSalida  'Existencia * CostoPromedio
+                                'MontoInicial + MontoEntrada - MontoSalida  ****CODIGO RETIRADO 22/05/2026
+                                oDataRow("SaldoD") = Existencia * CostoPromedio
                                 'Else
                                 '    oDataRow("SaldoD") = 0
                                 'End If
@@ -15294,6 +15397,13 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
         Me.ChkAgrupadoBodega.Visible = False
 
         Select Case ListBox.Text
+
+            Case "Reporte de Transferencias"
+                Me.GroupBox3.Visible = True
+                Me.CmbAgrupado.Text = "Bodega"
+                Me.ChkTransferencias.Visible = True
+                Me.ChkTransferencias.Location = New Point(487, 330)
+
             Case "Reporte de Lotes vencidos"
 
                 Me.GroupBoxFechaVence.Visible = True

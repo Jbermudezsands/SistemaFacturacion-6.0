@@ -112,7 +112,10 @@
     <Compile Include="Clases\Consultas\ReporteExistenciaLote.vb" />
     <Compile Include="Clases\Consultas\RstCmbReporteExistenciaLote.vb" />
     <Compile Include="Clases\Consultas\RstCostoPromedio.vb" />
+    <Compile Include="Clases\Consultas\CsCatalogos.vb" />
     <Compile Include="Clases\Tablas\Beneficiario.vb" />
+    <Compile Include="Clases\Tablas\NominaActiva.vb" />
+    <Compile Include="Clases\Tablas\ResultadoDesactivacion.vb" />
     <Compile Include="Clases\Tablas\TablaCompras.vb" />
     <Compile Include="Clases\Tablas\FileName.vb" />
     <Compile Include="Clases\Tablas\TablaContrato_Proveedor.vb" />
@@ -129,6 +132,12 @@
       <DependentUpon>FrmBeneficiario.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmBeneficiario.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCambiarTipoNomina.Designer.vb">
+      <DependentUpon>FrmCambiarTipoNomina.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmCambiarTipoNomina.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmContenedores.Designer.vb">
@@ -524,6 +533,12 @@
     <Compile Include="frmPlanillaConductores.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmPreciosLeche.Designer.vb">
+      <DependentUpon>FrmPreciosLeche.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPreciosLeche.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmPreConsultas.Designer.vb">
       <DependentUpon>FrmPreConsultas.vb</DependentUpon>
     </Compile>
@@ -600,6 +615,12 @@
       <DependentUpon>FrmRegistroTransporte.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmRegistroTransporte.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmRepararLotes.Designer.vb">
+      <DependentUpon>FrmRepararLotes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmRepararLotes.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmRespaldar.Designer.vb">
@@ -693,6 +714,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modulos\Conversion.vb" />
+    <Compile Include="Modulos\MotorCostos.vb" />
     <Compile Include="Reportes\ArepAdmision.Designer.vb">
       <DependentUpon>ArepAdmision.vb</DependentUpon>
     </Compile>
@@ -1087,6 +1109,12 @@
       <DependentUpon>ArepSubDetalleTransformacion.vb</DependentUpon>
     </Compile>
     <Compile Include="Reportes\ArepSubDetalleTransformacion.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\ArepTransferenciaListado.Designer.vb">
+      <DependentUpon>ArepTransferenciaListado.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepTransferenciaListado.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reportes\ArepTransformacion.Designer.vb">
@@ -1729,6 +1757,9 @@
     <EmbeddedResource Include="FrmBeneficiario.resx">
       <DependentUpon>FrmBeneficiario.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmCambiarTipoNomina.resx">
+      <DependentUpon>FrmCambiarTipoNomina.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmContenedores.resx">
       <DependentUpon>FrmContenedores.vb</DependentUpon>
     </EmbeddedResource>
@@ -1989,6 +2020,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>frmPlanillaConductores.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmPreciosLeche.resx">
+      <DependentUpon>FrmPreciosLeche.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmPreConsultas.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmPreConsultas.vb</DependentUpon>
@@ -2040,6 +2074,9 @@
     <EmbeddedResource Include="FrmRegistroTransporte.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FrmRegistroTransporte.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmRepararLotes.resx">
+      <DependentUpon>FrmRepararLotes.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmRespaldar.resx">
       <SubType>Designer</SubType>
@@ -2587,6 +2624,10 @@
     <EmbeddedResource Include="Reportes\ArepSubDetalleTransformacion.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ArepSubDetalleTransformacion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepTransferenciaListado.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ArepTransferenciaListado.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepTransferencias.resx">
       <SubType>Designer</SubType>

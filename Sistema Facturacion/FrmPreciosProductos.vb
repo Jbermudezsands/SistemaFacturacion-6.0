@@ -61,7 +61,7 @@ Public Class FrmPreciosProductos
         '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         '++++++++++++++++++++++CONSULTO SI EL TIPO DE PRECIO ES PORCENTUAL +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        SqlString = "SELECT  TipoPrecio.Tipo_Precio AS Descripcion, Precios.Monto_Precio, Precios.Monto_PrecioDolar, TipoPrecio.Cod_TipoPrecio, TipoPrecio.PrecioPorcentual, TipoPrecio.Porciento FROM Precios INNER JOIN  TipoPrecio ON Precios.Cod_TipoPrecio = TipoPrecio.Cod_TipoPrecio " & _
+        SqlString = "SELECT  TipoPrecio.Tipo_Precio AS Descripcion, Precios.Monto_Precio, Precios.Monto_PrecioDolar, TipoPrecio.Cod_TipoPrecio, TipoPrecio.PrecioPorcentual, TipoPrecio.Porciento, Precios.PrecioDolar FROM Precios INNER JOIN  TipoPrecio ON Precios.Cod_TipoPrecio = TipoPrecio.Cod_TipoPrecio " &
                     "WHERE (Precios.Cod_Productos = '" & CodProducto & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "PreciosFactura")

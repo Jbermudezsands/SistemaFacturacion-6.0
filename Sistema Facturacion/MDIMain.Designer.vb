@@ -170,15 +170,15 @@ Partial Class MDIMain
         Me.RibbonButton11 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonButton61 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonButton14 = New C1.Win.C1Ribbon.RibbonButton()
-        Me.RibbonButton171 = New C1.Win.C1Ribbon.RibbonButton()
-        Me.RibbonProcRecepcion = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonCodUnico = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonGroup14 = New C1.Win.C1Ribbon.RibbonGroup()
         Me.RibbonButton111 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonButton12 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonButton10 = New C1.Win.C1Ribbon.RibbonButton()
-        Me.RibbonSeparator2 = New C1.Win.C1Ribbon.RibbonSeparator()
         Me.RibbonButton15 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonSeparator2 = New C1.Win.C1Ribbon.RibbonSeparator()
+        Me.RibbonProcRecepcion = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton171 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonGroup15 = New C1.Win.C1Ribbon.RibbonGroup()
         Me.RibbonButton20 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonButtonDepartamento = New C1.Win.C1Ribbon.RibbonButton()
@@ -224,6 +224,7 @@ Partial Class MDIMain
         Me.txtSPlano2 = New System.Windows.Forms.TextBox()
         Me.txtSPlano3 = New System.Windows.Forms.TextBox()
         Me.txtSPlano4 = New System.Windows.Forms.TextBox()
+        Me.RibbonButton22 = New C1.Win.C1Ribbon.RibbonButton()
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton()
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1420,22 +1421,6 @@ Partial Class MDIMain
         Me.RibbonButton14.Text = "Transportista"
         Me.RibbonButton14.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
-        'RibbonButton171
-        '
-        Me.RibbonButton171.ID = "RibbonButton171"
-        Me.RibbonButton171.LargeImage = CType(resources.GetObject("RibbonButton171.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton171.SmallImage = CType(resources.GetObject("RibbonButton171.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton171.Text = "Transforma"
-        Me.RibbonButton171.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
-        '
-        'RibbonProcRecepcion
-        '
-        Me.RibbonProcRecepcion.ID = "RibbonProcRecepcion"
-        Me.RibbonProcRecepcion.LargeImage = CType(resources.GetObject("RibbonProcRecepcion.LargeImage"), System.Drawing.Image)
-        Me.RibbonProcRecepcion.SmallImage = CType(resources.GetObject("RibbonProcRecepcion.SmallImage"), System.Drawing.Image)
-        Me.RibbonProcRecepcion.Text = "Procesar Recepcion"
-        Me.RibbonProcRecepcion.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
-        '
         'RibbonCodUnico
         '
         Me.RibbonCodUnico.ID = "RibbonCodUnico"
@@ -1454,6 +1439,7 @@ Partial Class MDIMain
         Me.RibbonGroup14.Items.Add(Me.RibbonSeparator2)
         Me.RibbonGroup14.Items.Add(Me.RibbonProcRecepcion)
         Me.RibbonGroup14.Items.Add(Me.RibbonButton171)
+        Me.RibbonGroup14.Items.Add(Me.RibbonButton22)
         Me.RibbonGroup14.Text = "Calculos"
         '
         'RibbonButton111
@@ -1480,10 +1466,6 @@ Partial Class MDIMain
         Me.RibbonButton10.Text = "Liquidacion"
         Me.RibbonButton10.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
-        'RibbonSeparator2
-        '
-        Me.RibbonSeparator2.ID = "RibbonSeparator2"
-        '
         'RibbonButton15
         '
         Me.RibbonButton15.ID = "RibbonButton15"
@@ -1491,6 +1473,26 @@ Partial Class MDIMain
         Me.RibbonButton15.SmallImage = CType(resources.GetObject("RibbonButton15.SmallImage"), System.Drawing.Image)
         Me.RibbonButton15.Text = "Planilla Transportista"
         Me.RibbonButton15.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonSeparator2
+        '
+        Me.RibbonSeparator2.ID = "RibbonSeparator2"
+        '
+        'RibbonProcRecepcion
+        '
+        Me.RibbonProcRecepcion.ID = "RibbonProcRecepcion"
+        Me.RibbonProcRecepcion.LargeImage = CType(resources.GetObject("RibbonProcRecepcion.LargeImage"), System.Drawing.Image)
+        Me.RibbonProcRecepcion.SmallImage = CType(resources.GetObject("RibbonProcRecepcion.SmallImage"), System.Drawing.Image)
+        Me.RibbonProcRecepcion.Text = "Procesar Recepcion"
+        Me.RibbonProcRecepcion.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonButton171
+        '
+        Me.RibbonButton171.ID = "RibbonButton171"
+        Me.RibbonButton171.LargeImage = CType(resources.GetObject("RibbonButton171.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton171.SmallImage = CType(resources.GetObject("RibbonButton171.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton171.Text = "Transforma"
+        Me.RibbonButton171.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'RibbonGroup15
         '
@@ -1832,6 +1834,14 @@ Partial Class MDIMain
         Me.txtSPlano4.TabIndex = 23
         Me.txtSPlano4.Visible = False
         '
+        'RibbonButton22
+        '
+        Me.RibbonButton22.ID = "RibbonButton22"
+        Me.RibbonButton22.LargeImage = CType(resources.GetObject("RibbonButton22.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton22.SmallImage = CType(resources.GetObject("RibbonButton22.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton22.Text = "Precios Leche"
+        Me.RibbonButton22.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
         'MDIMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2061,4 +2071,5 @@ Partial Class MDIMain
     Friend WithEvents RibbonSeparator12 As C1.Win.C1Ribbon.RibbonSeparator
     Friend WithEvents txtSPlano4 As TextBox
     Friend WithEvents RibbonCodUnico As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButton22 As C1.Win.C1Ribbon.RibbonButton
 End Class

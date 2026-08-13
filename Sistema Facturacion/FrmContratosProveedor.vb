@@ -146,10 +146,10 @@ Public Class FrmContratosProveedor
 
     Private Sub Limpiar_Contrato()
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim SqlString As String
+
 
         Me.TxtNumeroContrato.Text = "-----0-----"
-        Me.TxtMonto.Text = ""
+        Me.TxtMonto.Text = "0.00"
         Me.CboCodigoProveedor.Text = ""
         Me.TxtContacto.Text = ""
         Me.TxtTelefono.Text = ""
@@ -386,7 +386,12 @@ Public Class FrmContratosProveedor
             Numero_Contrato = Me.TxtNumeroContrato.Text
         End If
 
-        contrato.Monto = TxtMonto.Text
+        contrato.Monto = 0
+        If TxtMonto.Text <> "" Then
+            contrato.Monto = TxtMonto.Text
+        End If
+
+
 
         contrato.Numero_Contrato = Numero_Contrato
         If Me.CboCodigoProveedor.Text <> "" Then

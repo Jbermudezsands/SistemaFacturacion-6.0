@@ -472,8 +472,23 @@ Public Class FrmConsultas
 
                     MiConexion.Close()
 
+                Case "CodigoBenficiario"
+                    SQlProductos = "SELECT Codigo_Beneficiario,
+                   Nombre_Beneficiario + ' ' + Apellido_Beneficiario AS NombreCompleto
+            FROM Beneficiario
+            ORDER BY Nombre_Beneficiario, Apellido_Beneficiario"
+                    MiConexion.Open()
+                    DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+                    DataSet.Reset()
+                    DataAdapter.Fill(DataSet, "Consultas")
+                    Me.BindingConsultas.DataSource = DataSet.Tables("Consultas")
+                    Me.TrueDBGridConsultas.DataSource = Me.BindingConsultas
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(0).Width = 150
+                    Me.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 300
+
+
                 Case "CodigoProductor"
-                    SQlProductos = "SELECT  CodProductor, NombreProductor, ApellidoProductor FROM Productor WHERE (TipoProductor = 'Productor')"
+                    SQlProductos = "SELECT  CodProductor, NombreProductor, ApellidoProductor, TipoProductor FROM Productor "
                     MiConexion.Open()
                     DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
                     DataSet.Reset()
@@ -1767,9 +1782,16 @@ Public Class FrmConsultas
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("CodTipoNomina")
                 Nombres = Me.BindingConsultas.Item(Posicion)("TipoNomina")
+            Case "CodigoBenficiario"
+                Posicion = Me.BindingConsultas.Position
+                Codigo = Me.BindingConsultas.Item(Posicion)("Codigo_Beneficiario")
+                Nombres = Me.BindingConsultas.Item(Posicion)("NombreCompleto")
+
+
             Case "CodigoProductor"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("CodProductor")
+                Tipo = Me.BindingConsultas.Item(Posicion)("TipoProductor")
                 Nombres = Me.BindingConsultas.Item(Posicion)("NombreProductor")
                 Apellidos = Me.BindingConsultas.Item(Posicion)("ApellidoProductor")
             Case "RecepcionPlanilla"
@@ -1903,15 +1925,26 @@ Public Class FrmConsultas
             Case "FacturasHistoricos"
                 Posicion = Me.BindingConsultas.Position
                 Nombres = Me.BindingConsultas.Item(Posicion)("Cliente")
-                If Me.BindingConsultas.Item(Posicion)("Cliente") = "******CANCELADO ******" Then
-                    MsgBox(Me.BindingConsultas.Item(Posicion)("Tipo") & " CANCELADA", MsgBoxStyle.Critical, "Zeus Facturacion")
-                    Nombres = Me.BindingConsultas.Item(Posicion)("Cliente")
-                Else
+
+                If UsuarioActivaFactura = True Then
                     Posicion = Me.BindingConsultas.Position
                     Codigo = Me.BindingConsultas.Item(Posicion)("Numero")
                     Fecha = Me.BindingConsultas.Item(Posicion)("Fecha")
                     TipoCompra = Me.BindingConsultas.Item(Posicion)("Tipo")
+                Else
+                    '///temporalmente por peticion buhler../////
+                    'If Me.BindingConsultas.Item(Posicion)("Cliente") = "******CANCELADO ******" Then
+                    '    MsgBox(Me.BindingConsultas.Item(Posicion)("Tipo") & " CANCELADA", MsgBoxStyle.Critical, "Zeus Facturacion")
+                    '    Nombres = Me.BindingConsultas.Item(Posicion)("Cliente")
+                    'Else
+                    Posicion = Me.BindingConsultas.Position
+                        Codigo = Me.BindingConsultas.Item(Posicion)("Numero")
+                        Fecha = Me.BindingConsultas.Item(Posicion)("Fecha")
+                        TipoCompra = Me.BindingConsultas.Item(Posicion)("Tipo")
+                    'End If
+
                 End If
+
             Case "Facturas"
                 Posicion = Me.BindingConsultas.Position
                 Codigo = Me.BindingConsultas.Item(Posicion)("Numero")
@@ -2096,7 +2129,9 @@ Public Class FrmConsultas
                 Codigo = Me.BindingConsultas.Item(Posicion)("Codigo")
                 Descripcion = Me.BindingConsultas.Item(Posicion)("Nombres")
 
-                TipoProducto = Me.BindingConsultas.Item(Posicion)("Apellidos")
+                If Not IsDBNull(Me.BindingConsultas.Item(Posicion)("Apellidos")) Then
+                    TipoProducto = Me.BindingConsultas.Item(Posicion)("Apellidos")
+                End If
 
             Case "CodigoProductos"
                 Posicion = Me.BindingConsultas.Position
