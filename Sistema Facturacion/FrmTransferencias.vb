@@ -153,7 +153,6 @@ Handles backgroundWorkerGrabar.ProgressChanged
 
     End Sub
 
-
     Private Sub InsertarDetalleFacturaYActualizarDS(
     fila As DataRow,
     cnn As SqlConnection,
@@ -162,11 +161,14 @@ Handles backgroundWorkerGrabar.ProgressChanged
 
         Dim sql As String = "
     INSERT INTO Detalle_Facturas
-        (Cod_Producto, Descripcion_Producto, CodTarea, Cantidad, Precio_Unitario,
-         Descuento, Precio_Neto, Importe, Numero_Factura, Fecha_Factura, Tipo_Factura, Numero_Lote)
+        (Cod_Producto, Descripcion_Producto, CodTarea, Cantidad,
+         Precio_Unitario, Costo_Unitario, Descuento, Precio_Neto,
+         Importe, Numero_Factura, Fecha_Factura, Tipo_Factura, Numero_Lote)
     VALUES
-        (@Cod_Producto, @Descripcion, @CodTarea, @Cantidad, @Precio_Unitario,
-         @Descuento, @Precio_Neto, @Importe, @Numero_Factura, @Fecha_Factura, @Tipo_Factura, @CodTarea);
+        (@Cod_Producto, @Descripcion, @CodTarea, @Cantidad,
+         @Precio_Unitario, @Costo_Unitario, @Descuento, @Precio_Neto,
+         @Importe, @Numero_Factura, @Fecha_Factura, @Tipo_Factura, @CodTarea);
+
     SELECT CAST(SCOPE_IDENTITY() AS INT);"
 
         Using cmd As New SqlCommand(sql, cnn)
@@ -175,7 +177,6 @@ Handles backgroundWorkerGrabar.ProgressChanged
                 cmd.Transaction = tran
             End If
 
-            ' --- Parámetros TIPADOS (no AddWithValue) ---
             cmd.Parameters.Add("@Cod_Producto", SqlDbType.VarChar, 50).Value =
             fila("Cod_Producto")
 
@@ -189,6 +190,9 @@ Handles backgroundWorkerGrabar.ProgressChanged
             If(IsDBNull(fila("Cantidad")), 0D, fila("Cantidad"))
 
             cmd.Parameters.Add("@Precio_Unitario", SqlDbType.Decimal).Value =
+            If(IsDBNull(fila("Precio_Unitario")), 0D, fila("Precio_Unitario"))
+
+            cmd.Parameters.Add("@Costo_Unitario", SqlDbType.Decimal).Value =
             If(IsDBNull(fila("Precio_Unitario")), 0D, fila("Precio_Unitario"))
 
             cmd.Parameters.Add("@Descuento", SqlDbType.Decimal).Value =
@@ -209,15 +213,14 @@ Handles backgroundWorkerGrabar.ProgressChanged
             cmd.Parameters.Add("@Tipo_Factura", SqlDbType.VarChar, 30).Value =
             fila("Tipo_Factura")
 
-            ' --- Ejecutar ---
             Dim newId As Integer = CInt(cmd.ExecuteScalar())
 
-            ' SOLO sincronizar ID (sin AcceptChanges)
             fila("Id_Detalle_Factura") = newId
 
         End Using
 
     End Sub
+
 
     Public Sub InsertarRowGrid()
 
@@ -1974,7 +1977,7 @@ Handles backgroundWorkerGrabar.ProgressChanged
             Dim Importe As Double = If(IsDBNull(fila("Importe")), 0, CDbl(fila("Importe")))
             Dim CodTarea As String = If(IsDBNull(fila("CodTarea")), "SINLOTE", fila("CodTarea").ToString())
             Dim IdDetalleSalida As Double = If(IsDBNull(fila("id_Detalle_Factura")), 0, CDbl(fila("id_Detalle_Factura")))
-
+            Dim CostoUnitario As Double = PrecioUnitario
 
             ' Reportar progreso
             worker.ReportProgress(CInt((i + 1) / totalRegistros * 100), CodigoProducto)
@@ -1983,10 +1986,10 @@ Handles backgroundWorkerGrabar.ProgressChanged
             Using cmdInsert As New SqlCommand("
             INSERT INTO Detalle_Compras
                 (Cod_Producto, Descripcion_Producto, Numero_Lote, Cantidad, Precio_Unitario,
-                 Descuento, Precio_Neto, Importe, Numero_Compra, Fecha_Compra, Tipo_Compra)
+                 Costo_Unitario, Descuento, Precio_Neto, Importe, Numero_Compra, Fecha_Compra, Tipo_Compra)
             VALUES
                 (@Cod_Producto, @Descripcion_Producto, @CodTarea, @Cantidad, @Precio_Unitario,
-                 @Descuento, @Precio_Neto, @Importe, @Numero_Factura, @Fecha_Factura, 'Transferencia Recibida')", cnn, trans)
+                 @Costo_Unitario, @Descuento, @Precio_Neto, @Importe, @Numero_Factura, @Fecha_Factura, 'Transferencia Recibida')", cnn, trans)
 
                 cmdInsert.Parameters.AddWithValue("@Cod_Producto", CodigoProducto)
                 cmdInsert.Parameters.AddWithValue("@Descripcion_Producto", Descripcion_Producto)
@@ -1998,6 +2001,7 @@ Handles backgroundWorkerGrabar.ProgressChanged
                 cmdInsert.Parameters.AddWithValue("@Importe", Importe)
                 cmdInsert.Parameters.AddWithValue("@Numero_Factura", NumeroFactura)
                 cmdInsert.Parameters.AddWithValue("@Fecha_Factura", Fecha)
+                cmdInsert.Parameters.AddWithValue("@Costo_Unitario", CostoUnitario)
 
                 cmdInsert.ExecuteNonQuery()
             End Using

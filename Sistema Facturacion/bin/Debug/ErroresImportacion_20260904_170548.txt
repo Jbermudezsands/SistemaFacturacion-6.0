@@ -1,0 +1,13 @@
+﻿ERRORES DE IMPORTACIÓN
+========================================
+Archivo: FormatoCuentasxcobrar Excel97-2003.xls
+Planilla: 00001
+Tipo de deducción: ProductosVeterinarios
+Fecha: 04/09/2026 17:05:48
+
+Línea 5: El tipo de productor no coincide para el código '2063'.
+    Tipo en Excel: 'Productor'
+    Tipo en planilla: 'Socio'.
+
+========================================
+Total de errores: 1

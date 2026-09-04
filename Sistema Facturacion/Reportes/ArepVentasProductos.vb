@@ -1,8 +1,9 @@
 Imports DataDynamics.ActiveReports 
 Imports DataDynamics.ActiveReports.Document 
 
-Public Class ArepVentasProductos 
+Public Class ArepVentasProductos
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
+    Public NombreReporte As String
     Private Sub GroupHeader1_Format(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupHeader1.Format
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim SqlString As String = "", CodBodega As String = ""
@@ -67,5 +68,15 @@ Public Class ArepVentasProductos
         Me.TxtImpuesto.Text = Format(Iva, "##,##0.00")
         Me.TxtTotal.Text = Format(SubTotal + Iva, "##,##0.00")
 
+    End Sub
+
+    Private Sub PageHeader1_Format(sender As Object, e As EventArgs) Handles PageHeader1.Format
+
+    End Sub
+
+    Private Sub ArepVentasProductos_ReportStart(sender As Object, e As EventArgs) Handles Me.ReportStart
+        If NombreReporte <> "" Then
+            Me.Label1.Text = NombreReporte
+        End If
     End Sub
 End Class

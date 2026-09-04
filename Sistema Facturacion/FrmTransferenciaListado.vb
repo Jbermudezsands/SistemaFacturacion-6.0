@@ -163,7 +163,7 @@ Public Class FrmTransferenciaListado
             Cantidad = DataSet.Tables("DetalleTransferencia").Rows(iPosicionFila2)("Cantidad")
             PrecioUnitario = DataSet.Tables("DetalleTransferencia").Rows(iPosicionFila2)("Precio_Unitario")
             FechaTransferencia = DataSet.Tables("DetalleTransferencia").Rows(iPosicionFila2)("Fecha_Factura")
-            SqlString = "SELECT  DetalleBodegas.Cod_Bodegas, Bodegas.Nombre_Bodega,DetalleBodegas.Existencia,DetalleBodegas.Costo,DetalleBodegas.CostoDolar FROM DetalleBodegas INNER JOIN Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  " & _
+            SqlString = "SELECT  DetalleBodegas.Cod_Bodegas, Bodegas.Nombre_Bodega,DetalleBodegas.Existencia,DetalleBodegas.Costo,DetalleBodegas.CostoDolar FROM DetalleBodegas INNER JOIN Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  " &
                         "WHERE (DetalleBodegas.Cod_Productos = '" & CodigoProducto & "')"
             DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
             DataAdapter.Fill(DataSet, "Bodegas")
@@ -191,6 +191,16 @@ Public Class FrmTransferenciaListado
             CostoBodega(CodigoProducto, Cantidad, PrecioUnitario, "Mercancia Recibida", CodBodegaTransferencia, FechaTransferencia)
             iPosicionFila2 = iPosicionFila2 + 1
         Loop
+
+        '==========================================================
+        ' REPARAR COSTOS DE LA TRANSFERENCIA
+        ' Usamos la misma función que las Facturas
+        '==========================================================
+        DataSet.Tables("DetalleTransferencia").TableName = "DetalleFactura"
+
+        RepararCostosDocumento(
+    DataSet,
+    FechaTransferencia)
 
 
 

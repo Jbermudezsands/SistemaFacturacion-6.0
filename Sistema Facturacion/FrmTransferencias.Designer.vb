@@ -340,7 +340,7 @@ Partial Class FrmTransferencias
         Me.TrueDBGridComponentes.Caption = "Listado de Productos"
         Me.TrueDBGridComponentes.GroupByCaption = "Drag a column header here to group by that column"
         Me.TrueDBGridComponentes.Images.Add(CType(resources.GetObject("TrueDBGridComponentes.Images"), System.Drawing.Image))
-        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(5, 214)
+        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(1, 213)
         Me.TrueDBGridComponentes.Name = "TrueDBGridComponentes"
         Me.TrueDBGridComponentes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)

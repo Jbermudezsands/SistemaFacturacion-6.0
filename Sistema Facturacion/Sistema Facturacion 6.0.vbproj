@@ -105,11 +105,15 @@
       <DependentUpon>FrmAjustarTodos.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Clases\Consultas\Auditoria.vb" />
     <Compile Include="Clases\Consultas\ArgsTransferencias.vb" />
     <Compile Include="Clases\Consultas\CsBeneficiario.vb" />
     <Compile Include="Clases\Consultas\CsContratos.vb" />
     <Compile Include="Clases\Consultas\ArgsReporteExistenciaLote.vb" />
+    <Compile Include="Clases\Consultas\MovimientoKardex.vb" />
     <Compile Include="Clases\Consultas\ReporteExistenciaLote.vb" />
+    <Compile Include="Clases\Consultas\ResultadoCostoKardex.vb" />
+    <Compile Include="Clases\Consultas\ResultadoSaldoInicialKardex.vb" />
     <Compile Include="Clases\Consultas\RstCmbReporteExistenciaLote.vb" />
     <Compile Include="Clases\Consultas\RstCostoPromedio.vb" />
     <Compile Include="Clases\Consultas\CsCatalogos.vb" />
@@ -128,6 +132,36 @@
     <Compile Include="Clases\Consultas\Lote.vb" />
     <Compile Include="Clases\Tablas\TablaLotexProducto.vb" />
     <Compile Include="Clases\Tablas\TablaProductos.vb" />
+    <Compile Include="Formularios\FrmAuditoriaFacturacion.Designer.vb">
+      <DependentUpon>FrmAuditoriaFacturacion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FrmAuditoriaFacturacion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FrmDeduccionPlanilla.Designer.vb">
+      <DependentUpon>FrmDeduccionPlanilla.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FrmDeduccionPlanilla.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FrmImportarDeduccion.Designer.vb">
+      <DependentUpon>FrmImportarDeduccion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FrmImportarDeduccion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FrmPlanPago.Designer.vb">
+      <DependentUpon>FrmPlanPago.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FrmPlanPago.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FrmRecibos_v2.Designer.vb">
+      <DependentUpon>FrmRecibos_v2.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FrmRecibos_v2.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmBeneficiario.Designer.vb">
       <DependentUpon>FrmBeneficiario.vb</DependentUpon>
     </Compile>
@@ -1754,6 +1788,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Formularios\FrmAuditoriaFacturacion.resx">
+      <DependentUpon>FrmAuditoriaFacturacion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FrmDeduccionPlanilla.resx">
+      <DependentUpon>FrmDeduccionPlanilla.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FrmImportarDeduccion.resx">
+      <DependentUpon>FrmImportarDeduccion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FrmPlanPago.resx">
+      <DependentUpon>FrmPlanPago.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmBeneficiario.resx">
       <DependentUpon>FrmBeneficiario.vb</DependentUpon>
     </EmbeddedResource>

@@ -1774,4 +1774,8 @@ Handles backgroundWorkerProductosLotes.ProgressChanged
     Private Sub Button26_Click(sender As Object, e As EventArgs) Handles Button26.Click
 
     End Sub
+
+    Private Sub BtnIniciar_Click(sender As Object, e As EventArgs) Handles BtnIniciar.Click
+        FrmAuditoriaFacturacion.ShowDialog()
+    End Sub
 End Class

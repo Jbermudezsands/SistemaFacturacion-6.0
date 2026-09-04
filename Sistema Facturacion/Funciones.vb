@@ -8,6 +8,8 @@ Imports Sistema_Facturacion.FrmFacturas
 Imports System.ComponentModel
 Imports System.Linq
 Imports System.Data.SqlTypes
+Imports System.Collections.Generic
+
 
 
 
@@ -3452,12 +3454,7 @@ WHERE CodProductor = @CodProductor
 
 
 
-
-
-
     '////////////////////////////FIN PLANILLA LECHEL PRODUCTORES 77777777777777777777777777777777777
-
-
 
 
     Public Function AjustarPreciosProductores(
@@ -3750,7 +3747,6 @@ WHERE CodProductor = @CodProductor
         End Using
 
     End Function
-
     Public Function AjustarPreciosProductores() As Boolean
 
         Using cn As New SqlConnection(Conexion)
@@ -4038,7 +4034,6 @@ WHERE CodProductor = @CodProductor
         Return dt
 
     End Function
-
     Public Function BuscarNombreProductor(Codigo As String,
                                        Tipo As String) As String
 
@@ -4070,7 +4065,6 @@ WHERE CodProductor = @CodProductor
         Return "*** NO EXISTE ***"
 
     End Function
-
     Public Function NormalizarLote(ByVal Lote As String) As String
 
         If IsDBNull(Lote) OrElse Lote Is Nothing Then
@@ -4080,6 +4074,1975 @@ WHERE CodProductor = @CodProductor
         Return UCase(Replace(Trim(Lote), " ", ""))
 
     End Function
+
+    '***********************************************************************************************************
+
+
+    '////////////////////////////////////FUNCIONES DE KARDEX //////////////////////////////////
+    Public Function ObtenerMovimientosSalidaKardex(
+    ByVal FechaInicial As Date,
+    ByVal FechaFinal As Date,
+    ByVal cn As SqlClient.SqlConnection,
+    Optional ByVal CodBodega As String = "") As DataTable
+
+        Dim Tabla As New DataTable()
+
+        Dim Sql As String =
+        "SELECT " &
+        "    DF.Numero_Factura, " &
+        "    DF.Fecha_Factura, " &
+        "    DF.Tipo_Factura, " &
+        "    DF.Cod_Producto, " &
+        "    DF.Cantidad, " &
+        "    DF.Costo_Unitario, " &
+        "    DF.Precio_Unitario " &
+        "FROM Detalle_Facturas AS DF "
+
+        '----------------------------------------------------------
+        ' SOLO AGREGAMOS EL ENCABEZADO CUANDO SE NECESITA FILTRAR
+        ' POR BODEGA.
+        '----------------------------------------------------------
+
+        If Not String.IsNullOrWhiteSpace(CodBodega) Then
+
+            Sql &=
+            "INNER JOIN Facturas AS F " &
+            "    ON F.Numero_Factura = DF.Numero_Factura " &
+            "   AND F.Fecha_Factura = DF.Fecha_Factura " &
+            "   AND F.Tipo_Factura = DF.Tipo_Factura "
+
+        End If
+
+        Sql &=
+        "INNER JOIN Productos AS P " &
+        "    ON P.Cod_Productos = DF.Cod_Producto " &
+        "WHERE DF.Fecha_Factura >= @FechaInicial " &
+        "  AND DF.Fecha_Factura < DATEADD(DAY, 1, @FechaFinal) " &
+        "  AND ISNULL(DF.Cantidad, 0) <> 0 " &
+        "  AND DF.Tipo_Factura IN " &
+        "      ('Factura', " &
+        "       'Devolucion de Venta', " &
+        "       'Salida Bodega', " &
+        "       'Transferencia Enviada') " &
+        "  AND P.Tipo_Producto NOT IN " &
+        "      ('Servicio', 'Descuento') "
+
+        If Not String.IsNullOrWhiteSpace(CodBodega) Then
+
+            Sql &=
+            "  AND F.Cod_Bodega = @CodBodega "
+
+        End If
+
+        Sql &=
+        "ORDER BY " &
+        "    DF.Fecha_Factura, " &
+        "    DF.Numero_Factura, " &
+        "    DF.Cod_Producto"
+
+        Using Cmd As New SqlClient.SqlCommand(Sql, cn)
+
+            Cmd.Parameters.Add(
+            "@FechaInicial",
+            SqlDbType.DateTime).Value =
+            FechaInicial.Date
+
+            Cmd.Parameters.Add(
+            "@FechaFinal",
+            SqlDbType.DateTime).Value =
+            FechaFinal.Date
+
+            If Not String.IsNullOrWhiteSpace(CodBodega) Then
+
+                Cmd.Parameters.Add(
+                "@CodBodega",
+                SqlDbType.VarChar, 50).Value =
+                CodBodega.Trim()
+
+            End If
+
+            Using DA As New SqlClient.SqlDataAdapter(Cmd)
+
+                DA.Fill(Tabla)
+
+            End Using
+
+        End Using
+
+        Return Tabla
+
+    End Function
+    Public Function ObtenerMovimientosSalidaKardexMasivo(
+    ByVal FechaInicial As Date,
+    ByVal FechaFinal As Date,
+    ByVal cn As SqlClient.SqlConnection,
+    Optional ByVal CodBodega As String = "") As DataTable
+
+        Dim Tabla As New DataTable()
+
+        Dim Sql As String =
+        "SELECT " &
+        "    DF.Numero_Factura, " &
+        "    DF.Fecha_Factura, " &
+        "    DF.Tipo_Factura, " &
+        "    DF.Cod_Producto, " &
+        "    DF.Cantidad, " &
+        "    DF.Costo_Unitario, " &
+        "    DF.Precio_Unitario " &
+        "FROM Detalle_Facturas AS DF "
+
+        If Not String.IsNullOrWhiteSpace(CodBodega) Then
+
+            Sql &=
+            "INNER JOIN Facturas AS F " &
+            "    ON F.Numero_Factura = DF.Numero_Factura " &
+            "   AND F.Fecha_Factura = DF.Fecha_Factura " &
+            "   AND F.Tipo_Factura = DF.Tipo_Factura "
+
+        End If
+
+        Sql &=
+        "INNER JOIN Productos AS P " &
+        "    ON P.Cod_Productos = DF.Cod_Producto " &
+        "WHERE DF.Fecha_Factura >= @FechaInicial " &
+        "  AND DF.Fecha_Factura < DATEADD(DAY, 1, @FechaFinal) " &
+        "  AND ISNULL(DF.Cantidad, 0) <> 0 " &
+        "  AND DF.Tipo_Factura IN " &
+        "      ('Factura', " &
+        "       'Devolucion de Venta', " &
+        "       'Salida Bodega', " &
+        "       'Transferencia Enviada') " &
+        "  AND P.Tipo_Producto NOT IN " &
+        "      ('Servicio', 'Descuento') "
+
+        If Not String.IsNullOrWhiteSpace(CodBodega) Then
+
+            Sql &=
+            "  AND F.Cod_Bodega = @CodBodega "
+
+        End If
+
+        Sql &=
+        "ORDER BY " &
+        "    DF.Fecha_Factura, " &
+        "    DF.Numero_Factura, " &
+        "    DF.Cod_Producto"
+
+        Using Cmd As New SqlClient.SqlCommand(
+        Sql,
+        cn)
+
+            Cmd.Parameters.Add(
+            "@FechaInicial",
+            SqlDbType.DateTime).Value =
+            FechaInicial.Date
+
+            Cmd.Parameters.Add(
+            "@FechaFinal",
+            SqlDbType.DateTime).Value =
+            FechaFinal.Date
+
+            If Not String.IsNullOrWhiteSpace(CodBodega) Then
+
+                Cmd.Parameters.Add(
+                "@CodBodega",
+                SqlDbType.VarChar,
+                50).Value =
+                CodBodega.Trim()
+
+            End If
+
+            Using DA As New SqlClient.SqlDataAdapter(Cmd)
+
+                DA.Fill(Tabla)
+
+            End Using
+
+        End Using
+
+        Return Tabla
+
+    End Function
+
+
+    Public Function ObtenerMovimientosEntradaKardex(
+    ByVal FechaInicial As Date,
+    ByVal FechaFinal As Date,
+    ByVal cn As SqlClient.SqlConnection,
+    Optional ByVal CodBodega As String = "") As DataTable
+
+        Dim Tabla As New DataTable()
+
+        Dim Sql As String =
+        "SELECT " &
+        "    DC.Numero_Compra, " &
+        "    DC.Fecha_Compra, " &
+        "    DC.Tipo_Compra, " &
+        "    DC.Cod_Producto, " &
+        "    DC.Cantidad, " &
+        "    DC.Costo_Unitario, " &
+        "    DC.Precio_Unitario " &
+        "FROM Detalle_Compras AS DC "
+
+        '----------------------------------------------------------
+        ' SOLO NECESITAMOS COMPRAS CUANDO FILTRAMOS POR BODEGA
+        '----------------------------------------------------------
+
+        If Not String.IsNullOrWhiteSpace(CodBodega) Then
+
+            Sql &=
+            "INNER JOIN Compras AS C " &
+            "    ON C.Numero_Compra = DC.Numero_Compra " &
+            "   AND C.Fecha_Compra = DC.Fecha_Compra " &
+            "   AND C.Tipo_Compra = DC.Tipo_Compra "
+
+        End If
+
+        Sql &=
+        "INNER JOIN Productos AS P " &
+        "    ON P.Cod_Productos = DC.Cod_Producto " &
+        "WHERE DC.Fecha_Compra >= @FechaInicial " &
+        "  AND DC.Fecha_Compra < DATEADD(DAY, 1, @FechaFinal) " &
+        "  AND ISNULL(DC.Cantidad, 0) <> 0 " &
+        "  AND DC.Tipo_Compra IN " &
+        "      ('Mercancia Recibida', " &
+        "       'Devolucion de Compra', " &
+        "       'Transferencia Recibida') " &
+        "  AND P.Tipo_Producto NOT IN " &
+        "      ('Servicio', 'Descuento') "
+
+        If Not String.IsNullOrWhiteSpace(CodBodega) Then
+
+            Sql &=
+            "  AND C.Cod_Bodega = @CodBodega "
+
+        End If
+
+        Sql &=
+        "ORDER BY " &
+        "    DC.Fecha_Compra, " &
+        "    DC.Numero_Compra, " &
+        "    DC.Cod_Producto"
+
+        Using Cmd As New SqlClient.SqlCommand(Sql, cn)
+
+            Cmd.Parameters.Add(
+            "@FechaInicial",
+            SqlDbType.DateTime).Value =
+            FechaInicial.Date
+
+            Cmd.Parameters.Add(
+            "@FechaFinal",
+            SqlDbType.DateTime).Value =
+            FechaFinal.Date
+
+            If Not String.IsNullOrWhiteSpace(CodBodega) Then
+
+                Cmd.Parameters.Add(
+                "@CodBodega",
+                SqlDbType.VarChar, 50).Value =
+                CodBodega.Trim()
+
+            End If
+
+            Using DA As New SqlClient.SqlDataAdapter(Cmd)
+
+                DA.Fill(Tabla)
+
+            End Using
+
+        End Using
+
+        Return Tabla
+
+    End Function
+    Public Function ObtenerMovimientosEntradaKardexMasivo(
+    ByVal FechaInicial As Date,
+    ByVal FechaFinal As Date,
+    ByVal cn As SqlClient.SqlConnection,
+    Optional ByVal CodBodega As String = "") As DataTable
+
+        Dim Tabla As New DataTable()
+
+        Dim Sql As String =
+        "SELECT " &
+        "    DC.Numero_Compra, " &
+        "    DC.Fecha_Compra, " &
+        "    DC.Tipo_Compra, " &
+        "    DC.Cod_Producto, " &
+        "    DC.Cantidad, " &
+        "    DC.Costo_Unitario, " &
+        "    DC.Precio_Unitario " &
+        "FROM Detalle_Compras AS DC "
+
+        '==========================================================
+        ' BODEGA
+        '==========================================================
+
+        If Not String.IsNullOrWhiteSpace(CodBodega) Then
+
+            Sql &=
+            "INNER JOIN Compras AS C " &
+            "    ON C.Numero_Compra = DC.Numero_Compra " &
+            "   AND C.Fecha_Compra = DC.Fecha_Compra " &
+            "   AND C.Tipo_Compra = DC.Tipo_Compra "
+
+        End If
+
+        '==========================================================
+        ' PRODUCTOS + FILTROS
+        '==========================================================
+
+        Sql &=
+        "INNER JOIN Productos AS P " &
+        "    ON P.Cod_Productos = DC.Cod_Producto " &
+        "WHERE DC.Fecha_Compra >= @FechaInicial " &
+        "  AND DC.Fecha_Compra < DATEADD(DAY, 1, @FechaFinal) " &
+        "  AND ISNULL(DC.Cantidad, 0) <> 0 " &
+        "  AND DC.Tipo_Compra IN " &
+        "      ('Mercancia Recibida', " &
+        "       'Devolucion de Compra', " &
+        "       'Transferencia Recibida') " &
+        "  AND P.Tipo_Producto NOT IN " &
+        "      ('Servicio', 'Descuento') "
+
+        '==========================================================
+        ' FILTRO BODEGA
+        '==========================================================
+
+        If Not String.IsNullOrWhiteSpace(CodBodega) Then
+
+            Sql &=
+            "  AND C.Cod_Bodega = @CodBodega "
+
+        End If
+
+        '==========================================================
+        ' ORDEN
+        '==========================================================
+
+        Sql &=
+        "ORDER BY " &
+        "    DC.Fecha_Compra, " &
+        "    DC.Numero_Compra, " &
+        "    DC.Cod_Producto"
+
+        '==========================================================
+        ' EJECUTAR
+        '==========================================================
+
+        Using Cmd As New SqlClient.SqlCommand(
+        Sql,
+        cn)
+
+            Cmd.Parameters.Add(
+            "@FechaInicial",
+            SqlDbType.DateTime).Value =
+            FechaInicial.Date
+
+            Cmd.Parameters.Add(
+            "@FechaFinal",
+            SqlDbType.DateTime).Value =
+            FechaFinal.Date
+
+            If Not String.IsNullOrWhiteSpace(CodBodega) Then
+
+                Cmd.Parameters.Add(
+                "@CodBodega",
+                SqlDbType.VarChar,
+                50).Value =
+                CodBodega.Trim()
+
+            End If
+
+            Using DA As New SqlClient.SqlDataAdapter(Cmd)
+
+                DA.Fill(Tabla)
+
+            End Using
+
+        End Using
+
+        Return Tabla
+
+    End Function
+
+
+    Public Function ObtenerMovimientosKardex(
+    ByVal FechaInicial As Date,
+    ByVal FechaFinal As Date,
+    ByVal cn As SqlClient.SqlConnection,
+    Optional ByVal CodBodega As String = "") As List(Of MovimientoKardex)
+
+        Dim Movimientos As New List(Of MovimientoKardex)()
+
+        '==========================================================
+        ' SALIDAS
+        '==========================================================
+
+        Dim TablaSalida As DataTable =
+        ObtenerMovimientosSalidaKardex(
+            FechaInicial,
+            FechaFinal,
+            cn,
+            CodBodega)
+
+        For Each Fila As DataRow In TablaSalida.Rows
+
+            Movimientos.Add(
+            ConvertirSalidaKardex(Fila))
+
+        Next
+
+
+        '==========================================================
+        ' ENTRADAS
+        '==========================================================
+
+        Dim TablaEntrada As DataTable =
+        ObtenerMovimientosEntradaKardex(
+            FechaInicial,
+            FechaFinal,
+            cn,
+            CodBodega)
+
+        For Each Fila As DataRow In TablaEntrada.Rows
+
+            Movimientos.Add(
+            ConvertirEntradaKardex(Fila))
+
+        Next
+
+
+        '==========================================================
+        ' ORDENAR
+        '==========================================================
+
+        Movimientos =
+        Movimientos.
+        OrderBy(Function(x) x.Fecha).
+        ThenBy(Function(x) x.Documento).
+        ThenBy(Function(x) x.CodProducto).
+        ToList()
+
+        Return Movimientos
+
+    End Function
+    Public Function ObtenerMovimientosKardexMasivo(
+    ByVal FechaInicial As Date,
+    ByVal FechaFinal As Date,
+    ByVal cn As SqlClient.SqlConnection,
+    Optional ByVal CodBodega As String = "") As List(Of MovimientoKardex)
+
+        Dim Movimientos As New List(Of MovimientoKardex)
+
+        '==========================================================
+        ' SALIDAS
+        '==========================================================
+
+        Dim TablaSalida As DataTable =
+        ObtenerMovimientosSalidaKardexMasivo(
+            FechaInicial,
+            FechaFinal,
+            cn,
+            CodBodega)
+
+        For Each Fila As DataRow In TablaSalida.Rows
+
+            Movimientos.Add(
+            ConvertirSalidaKardex(Fila))
+
+        Next
+
+
+        '==========================================================
+        ' ENTRADAS
+        '==========================================================
+
+        Dim TablaEntrada As DataTable =
+        ObtenerMovimientosEntradaKardexMasivo(
+            FechaInicial,
+            FechaFinal,
+            cn,
+            CodBodega)
+
+        For Each Fila As DataRow In TablaEntrada.Rows
+
+            Movimientos.Add(
+            ConvertirEntradaKardex(Fila))
+
+        Next
+
+
+        '==========================================================
+        ' ORDENAR UNA SOLA VEZ
+        '==========================================================
+
+        Movimientos =
+        Movimientos.
+        OrderBy(Function(x) x.Fecha).
+        ThenBy(Function(x) x.Documento).
+        ThenBy(Function(x) x.CodProducto).
+        ToList()
+
+
+        Return Movimientos
+
+    End Function
+
+    Public Function ProcesarKardexProducto(
+    ByVal CodProducto As String,
+    ByVal FechaInicial As Date,
+    ByVal FechaFinal As Date,
+    ByVal cn As SqlClient.SqlConnection,
+    Optional ByVal CodBodega As String = "") As List(Of MovimientoKardex)
+
+        Dim Resultado As New List(Of MovimientoKardex)
+
+        Dim Movimientos As List(Of MovimientoKardex) =
+        ObtenerMovimientosKardex(
+            FechaInicial,
+            FechaFinal,
+            cn,
+            CodBodega)
+
+        For Each Movimiento As MovimientoKardex In Movimientos
+
+            If String.Equals(
+            Movimiento.CodProducto.Trim(),
+            CodProducto.Trim(),
+            StringComparison.OrdinalIgnoreCase) Then
+
+                Resultado.Add(Movimiento)
+
+            End If
+
+        Next
+
+        Return Resultado
+
+    End Function
+
+    Public Function ConvertirSalidaKardex(
+    ByVal Fila As DataRow) As MovimientoKardex
+
+        Dim Movimiento As New MovimientoKardex()
+
+        '----------------------------------------------------------
+        ' DATOS BÁSICOS
+        '----------------------------------------------------------
+
+        Movimiento.Fecha =
+        If(IsDBNull(Fila("Fecha_Factura")),
+           Date.MinValue,
+           CDate(Fila("Fecha_Factura")))
+
+        Movimiento.Documento =
+        If(IsDBNull(Fila("Numero_Factura")),
+           "",
+           Fila("Numero_Factura").ToString())
+
+        Movimiento.TipoMovimiento =
+        If(IsDBNull(Fila("Tipo_Factura")),
+           "",
+           Fila("Tipo_Factura").ToString())
+
+        Movimiento.CodProducto =
+        If(IsDBNull(Fila("Cod_Producto")),
+           "",
+           Fila("Cod_Producto").ToString())
+
+        Movimiento.Cantidad =
+        If(IsDBNull(Fila("Cantidad")),
+           0,
+           CDbl(Fila("Cantidad")))
+
+        Movimiento.EsEntrada = False
+
+        '----------------------------------------------------------
+        ' DETERMINAR COSTO
+        '----------------------------------------------------------
+
+        Dim Resultado As ResultadoCostoKardex =
+        ObtenerCostoMovimientoKardex(
+            Fila,
+            False)
+
+        Movimiento.CostoUnitario =
+        Resultado.CostoUnitario
+
+        Movimiento.CostoTotal =
+        Resultado.CostoTotal
+
+        Movimiento.OrigenCosto =
+        Resultado.OrigenCosto
+
+        Movimiento.EsAnomalia =
+        Resultado.EsAnomalia
+
+        Return Movimiento
+
+    End Function
+    Public Function ObtenerCostoMovimientoKardex(
+    ByVal Fila As DataRow,
+    ByVal EsEntrada As Boolean) As ResultadoCostoKardex
+
+        Dim Resultado As New ResultadoCostoKardex()
+
+        Dim TipoMovimiento As String = ""
+
+        Dim Cantidad As Double = 0
+        Dim CostoUnitario As Double = 0
+        Dim PrecioUnitario As Double = 0
+
+        '----------------------------------------------------------
+        ' DATOS DEL MOVIMIENTO
+        '----------------------------------------------------------
+
+        If EsEntrada Then
+            TipoMovimiento = Fila("Tipo_Compra").ToString()
+        Else
+            TipoMovimiento = Fila("Tipo_Factura").ToString()
+        End If
+
+        If Not IsDBNull(Fila("Cantidad")) Then
+            Cantidad = CDbl(Fila("Cantidad"))
+        End If
+
+        If Not IsDBNull(Fila("Costo_Unitario")) Then
+            CostoUnitario = CDbl(Fila("Costo_Unitario"))
+        End If
+
+        If Not IsDBNull(Fila("Precio_Unitario")) Then
+            PrecioUnitario = CDbl(Fila("Precio_Unitario"))
+        End If
+
+        '----------------------------------------------------------
+        ' ENTRADAS
+        '----------------------------------------------------------
+
+        If EsEntrada Then
+
+            Select Case TipoMovimiento
+
+                Case "Mercancia Recibida"
+
+                    'En las compras históricas el costo
+                    'se encuentra almacenado en Precio_Unitario.
+
+                    If PrecioUnitario <> 0 Then
+
+                        Resultado.CostoUnitario = PrecioUnitario
+                        Resultado.OrigenCosto = "Precio_Unitario"
+
+                    Else
+
+                        Resultado.CostoUnitario = 0
+                        Resultado.OrigenCosto = "Sin costo"
+                        Resultado.EsAnomalia = True
+
+                    End If
+
+
+                Case "Transferencia Recibida"
+
+                    'Primero utilizamos Costo_Unitario.
+                    'Para transferencias históricas puede estar
+                    'en cero y el costo estar en Precio_Unitario.
+
+                    If CostoUnitario <> 0 Then
+
+                        Resultado.CostoUnitario = CostoUnitario
+                        Resultado.OrigenCosto = "Costo_Unitario"
+
+                    ElseIf PrecioUnitario <> 0 Then
+
+                        Resultado.CostoUnitario = PrecioUnitario
+                        Resultado.OrigenCosto = "Precio_Unitario"
+
+                    Else
+
+                        Resultado.CostoUnitario = 0
+                        Resultado.OrigenCosto = "Sin costo"
+                        Resultado.EsAnomalia = True
+
+                    End If
+
+
+                Case "Devolucion de Compra"
+
+                    'Actualmente encontramos 6 registros
+                    'sin costo en Detalle_Compras.
+                    '
+                    'NO intentamos inventar el costo.
+                    'El Auditor los revisará posteriormente.
+
+                    If CostoUnitario <> 0 Then
+
+                        Resultado.CostoUnitario = CostoUnitario
+                        Resultado.OrigenCosto = "Costo_Unitario"
+
+                    Else
+
+                        Resultado.CostoUnitario = 0
+                        Resultado.OrigenCosto = "Sin costo"
+                        Resultado.EsAnomalia = True
+
+                    End If
+
+
+                Case Else
+
+                    Resultado.CostoUnitario = 0
+                    Resultado.OrigenCosto = "Tipo no contemplado"
+                    Resultado.EsAnomalia = True
+
+            End Select
+
+            '----------------------------------------------------------
+            ' SALIDAS
+            '----------------------------------------------------------
+
+        Else
+
+            Select Case TipoMovimiento
+
+                Case "Factura"
+
+                    'En una factura el costo debe venir
+                    'de Costo_Unitario.
+
+                    If CostoUnitario <> 0 Then
+
+                        Resultado.CostoUnitario = CostoUnitario
+                        Resultado.OrigenCosto = "Costo_Unitario"
+
+                    Else
+
+                        Resultado.CostoUnitario = 0
+                        Resultado.OrigenCosto = "Sin costo"
+                        Resultado.EsAnomalia = True
+
+                    End If
+
+
+                Case "Devolucion de Venta"
+
+                    'El costo histórico debe estar
+                    'en Costo_Unitario.
+
+                    If CostoUnitario <> 0 Then
+
+                        Resultado.CostoUnitario = CostoUnitario
+                        Resultado.OrigenCosto = "Costo_Unitario"
+
+                    Else
+
+                        Resultado.CostoUnitario = 0
+                        Resultado.OrigenCosto = "Sin costo"
+                        Resultado.EsAnomalia = True
+
+                    End If
+
+
+                Case "Salida Bodega"
+
+                    'El costo debe estar en Costo_Unitario.
+
+                    If CostoUnitario <> 0 Then
+
+                        Resultado.CostoUnitario = CostoUnitario
+                        Resultado.OrigenCosto = "Costo_Unitario"
+
+                    Else
+
+                        Resultado.CostoUnitario = 0
+                        Resultado.OrigenCosto = "Sin costo"
+                        Resultado.EsAnomalia = True
+
+                    End If
+
+
+                Case "Transferencia Enviada"
+
+                    'Históricamente existen transferencias
+                    'donde el costo fue guardado en Precio_Unitario.
+
+                    If CostoUnitario <> 0 Then
+
+                        Resultado.CostoUnitario = CostoUnitario
+                        Resultado.OrigenCosto = "Costo_Unitario"
+
+                    ElseIf PrecioUnitario <> 0 Then
+
+                        Resultado.CostoUnitario = PrecioUnitario
+                        Resultado.OrigenCosto = "Precio_Unitario"
+
+                    Else
+
+                        Resultado.CostoUnitario = 0
+                        Resultado.OrigenCosto = "Sin costo"
+                        Resultado.EsAnomalia = True
+
+                    End If
+
+
+                Case Else
+
+                    Resultado.CostoUnitario = 0
+                    Resultado.OrigenCosto = "Tipo no contemplado"
+                    Resultado.EsAnomalia = True
+
+            End Select
+
+        End If
+
+        '----------------------------------------------------------
+        ' COSTO TOTAL
+        '----------------------------------------------------------
+
+        Resultado.CostoTotal =
+        Cantidad * Resultado.CostoUnitario
+
+        Return Resultado
+
+    End Function
+    Public Function ObtenerCostoUnitarioSalida(
+    ByVal CodigoProducto As String,
+    ByVal NumeroFactura As String,
+    ByVal FechaFactura As Date,
+    ByVal TipoFactura As String,
+    ByVal cn As SqlClient.SqlConnection) As Double
+
+        Dim Sql As String = ""
+        Dim Costo As Double = 0
+
+        Sql = "SELECT TOP 1 " &
+          "       ISNULL(Costo_Unitario, 0) AS Costo_Unitario, " &
+          "       ISNULL(Precio_Unitario, 0) AS Precio_Unitario " &
+          "FROM Detalle_Facturas " &
+          "WHERE Cod_Producto = @CodProducto " &
+          "  AND Numero_Factura = @NumeroFactura " &
+          "  AND Fecha_Factura = @FechaFactura " &
+          "  AND Tipo_Factura = @TipoFactura"
+
+        Using Cmd As New SqlClient.SqlCommand(Sql, cn)
+
+            Cmd.Parameters.Add("@CodProducto",
+                           SqlDbType.VarChar, 50).Value =
+                           CodigoProducto
+
+            Cmd.Parameters.Add("@NumeroFactura",
+                           SqlDbType.VarChar, 50).Value =
+                           NumeroFactura
+
+            Cmd.Parameters.Add("@FechaFactura",
+                           SqlDbType.DateTime).Value =
+                           FechaFactura
+
+            Cmd.Parameters.Add("@TipoFactura",
+                           SqlDbType.VarChar, 50).Value =
+                           TipoFactura
+
+            Using Reader As SqlClient.SqlDataReader = Cmd.ExecuteReader()
+
+                If Reader.Read() Then
+
+                    Dim CostoUnitario As Double = 0
+                    Dim PrecioUnitario As Double = 0
+
+                    If Not IsDBNull(Reader("Costo_Unitario")) Then
+                        CostoUnitario =
+                        CDbl(Reader("Costo_Unitario"))
+                    End If
+
+                    If Not IsDBNull(Reader("Precio_Unitario")) Then
+                        PrecioUnitario =
+                        CDbl(Reader("Precio_Unitario"))
+                    End If
+
+
+                    '========================================================
+                    ' REGLA ESPECIAL PARA TRANSFERENCIAS ENVIADAS
+                    '
+                    ' Las nuevas transferencias deben tener el costo en
+                    ' Costo_Unitario.
+                    '
+                    ' Las transferencias históricas pueden tenerlo en
+                    ' Precio_Unitario.
+                    '========================================================
+
+                    If TipoFactura = "Transferencia Enviada" Then
+
+                        If CostoUnitario <> 0 Then
+                            Costo = CostoUnitario
+                        Else
+                            Costo = PrecioUnitario
+                        End If
+
+                    Else
+
+                        Costo = CostoUnitario
+
+                    End If
+
+                End If
+
+            End Using
+
+        End Using
+
+        Return Costo
+
+    End Function
+    Public Function ConvertirEntradaKardex(
+    ByVal Fila As DataRow) As MovimientoKardex
+
+        Dim Movimiento As New MovimientoKardex()
+
+        '----------------------------------------------------------
+        ' DATOS BÁSICOS
+        '----------------------------------------------------------
+
+        Movimiento.Fecha =
+        If(IsDBNull(Fila("Fecha_Compra")),
+           Date.MinValue,
+           CDate(Fila("Fecha_Compra")))
+
+        Movimiento.Documento =
+        If(IsDBNull(Fila("Numero_Compra")),
+           "",
+           Fila("Numero_Compra").ToString())
+
+        Movimiento.TipoMovimiento =
+        If(IsDBNull(Fila("Tipo_Compra")),
+           "",
+           Fila("Tipo_Compra").ToString())
+
+        Movimiento.CodProducto =
+        If(IsDBNull(Fila("Cod_Producto")),
+           "",
+           Fila("Cod_Producto").ToString())
+
+        Movimiento.Cantidad =
+        If(IsDBNull(Fila("Cantidad")),
+           0,
+           CDbl(Fila("Cantidad")))
+
+        Movimiento.EsEntrada = True
+
+        '----------------------------------------------------------
+        ' DETERMINAR COSTO
+        '----------------------------------------------------------
+
+        Dim Resultado As ResultadoCostoKardex =
+        ObtenerCostoMovimientoKardex(
+            Fila,
+            True)
+
+        Movimiento.CostoUnitario =
+        Resultado.CostoUnitario
+
+        Movimiento.CostoTotal =
+        Resultado.CostoTotal
+
+        Movimiento.OrigenCosto =
+        Resultado.OrigenCosto
+
+        Movimiento.EsAnomalia =
+        Resultado.EsAnomalia
+
+        Return Movimiento
+
+    End Function
+
+    Public Function GenerarTotalKardexProducto(
+    ByVal CodProducto As String,
+    ByVal Descripcion As String,
+    ByVal FechaInicial As Date,
+    ByVal FechaFinal As Date,
+    ByVal cn As SqlClient.SqlConnection,
+    ByVal MovimientosProducto As List(Of MovimientoKardex),
+    Optional ByVal CodBodega As String = "",
+    Optional ByVal EsCordobas As Boolean = True) As DataTable
+
+        Dim Tabla As New DataTable()
+
+        '==========================================================
+        ' ESTRUCTURA
+        '==========================================================
+
+        Tabla.Columns.Add("Cod_Productos", GetType(String))
+        Tabla.Columns.Add("Descripcion_Producto", GetType(String))
+        Tabla.Columns.Add("Cod_Bodega", GetType(String))
+        Tabla.Columns.Add("Nombre_Bodega", GetType(String))
+
+        Tabla.Columns.Add("Inicial", GetType(Double))
+        Tabla.Columns.Add("Entrada", GetType(Double))
+        Tabla.Columns.Add("Salida", GetType(Double))
+        Tabla.Columns.Add("Saldo", GetType(Double))
+        Tabla.Columns.Add("CostoVenta", GetType(Double))
+
+        Tabla.Columns.Add("InicialD", GetType(Double))
+        Tabla.Columns.Add("EntradaD", GetType(Double))
+        Tabla.Columns.Add("SalidaD", GetType(Double))
+        Tabla.Columns.Add("SaldoD", GetType(Double))
+
+
+        '==========================================================
+        ' SALDO INICIAL
+        '==========================================================
+
+        Dim Inicial As Double = 0
+        Dim MontoInicial As Double = 0
+        Dim MontoInicialD As Double = 0
+
+        '==========================================================
+        ' SALDO INICIAL KARDEX
+        '==========================================================
+
+        Dim ResultadoInicial As ResultadoSaldoInicialKardex =
+    ObtenerSaldoInicialKardexBodega(
+        CodProducto,
+        FechaInicial,
+        CodBodega,
+        cn)
+
+        Inicial =
+    ResultadoInicial.CantidadInicial
+
+        MontoInicial =
+    ResultadoInicial.MontoInicial
+
+        MontoInicialD =
+    ResultadoInicial.MontoInicialD
+
+        'If String.IsNullOrWhiteSpace(CodBodega) Then
+
+        '    '------------------------------------------------------
+        '    ' PRODUCTO / LINEA / RUBRO
+        '    '
+        '    ' Por ahora conservamos la función histórica para
+        '    ' obtener la existencia inicial.
+        '    '------------------------------------------------------
+
+        '    Inicial =
+        '    BuscaInventarioInicial(
+        '        CodProducto,
+        '        FechaInicial)
+
+        'Else
+
+        '    '------------------------------------------------------
+        '    ' BODEGA
+        '    '
+        '    ' NUEVA FUNCION REFACTORIZADA
+        '    '------------------------------------------------------
+
+        '    Dim ResultadoInicial As ResultadoSaldoInicialKardex =
+        '    ObtenerSaldoInicialKardexBodega(
+        '        CodProducto,
+        '        FechaInicial,
+        '        CodBodega,
+        '        cn)
+
+        '    Inicial =
+        '    ResultadoInicial.CantidadInicial
+
+        '    MontoInicial =
+        '    ResultadoInicial.MontoInicial
+
+        '    MontoInicialD =
+        '    ResultadoInicial.MontoInicialD
+
+        'End If
+
+
+        '==========================================================
+        ' MOVIMIENTOS DEL PRODUCTO
+        '==========================================================
+
+
+
+        '==========================================================
+        ' ACUMULADORES FISICOS
+        '==========================================================
+
+        Dim Entrada As Double = 0
+        Dim Salida As Double = 0
+
+
+        '==========================================================
+        ' ACUMULADORES MONETARIOS CORDOBAS
+        '==========================================================
+
+        Dim MontoEntrada As Double = 0
+        Dim MontoSalida As Double = 0
+
+
+        '==========================================================
+        ' ACUMULADORES MONETARIOS DOLARES
+        '==========================================================
+
+        Dim MontoEntradaD As Double = 0
+        Dim MontoSalidaD As Double = 0
+
+
+        '==========================================================
+        ' COSTO DE VENTA
+        '==========================================================
+
+        Dim CostoVenta As Double = 0
+
+
+        '==========================================================
+        ' TASAS DE CAMBIO
+        '==========================================================
+
+        Dim Tasas As New Dictionary(Of Date, Double)
+
+        Dim SqlTasas As String =
+        "SELECT FechaTasa, MontoTasa " &
+        "FROM TasaCambio " &
+        "WHERE FechaTasa >= @FechaInicial " &
+        "  AND FechaTasa < DATEADD(DAY, 1, @FechaFinal)"
+
+
+        Using CmdTasas As New SqlClient.SqlCommand(
+        SqlTasas,
+        cn)
+
+            CmdTasas.Parameters.Add(
+            "@FechaInicial",
+            SqlDbType.DateTime).Value =
+            FechaInicial.Date
+
+            CmdTasas.Parameters.Add(
+            "@FechaFinal",
+            SqlDbType.DateTime).Value =
+            FechaFinal.Date
+
+            If cn.State <> ConnectionState.Open Then
+                cn.Open()
+            End If
+
+            Using Reader As SqlClient.SqlDataReader =
+            CmdTasas.ExecuteReader()
+
+                While Reader.Read()
+
+                    If Not IsDBNull(
+                    Reader("MontoTasa")) Then
+
+                        Dim FechaTasa As Date =
+                        CDate(
+                            Reader("FechaTasa")).Date
+
+                        Dim MontoTasa As Double =
+                        CDbl(
+                            Reader("MontoTasa"))
+
+                        If MontoTasa <> 0 Then
+
+                            If Not Tasas.ContainsKey(
+                            FechaTasa) Then
+
+                                Tasas.Add(
+                                FechaTasa,
+                                MontoTasa)
+
+                            End If
+
+                        End If
+
+                    End If
+
+                End While
+
+            End Using
+
+        End Using
+
+
+        '==========================================================
+        ' PROCESAR MOVIMIENTOS
+        '==========================================================
+
+        For Each Movimiento As MovimientoKardex In
+        MovimientosProducto
+
+            If Movimiento.EsEntrada Then
+
+                '--------------------------------------------------
+                ' EXISTENCIA
+                '--------------------------------------------------
+
+                Entrada +=
+                Movimiento.Cantidad
+
+                '--------------------------------------------------
+                ' MONTO CORDOBAS
+                '--------------------------------------------------
+
+                MontoEntrada +=
+                Movimiento.CostoTotal
+
+                '--------------------------------------------------
+                ' MONTO DOLARES
+                '--------------------------------------------------
+
+                MontoEntradaD +=
+                ObtenerImporteDolarMovimiento(
+                    Movimiento,
+                    Tasas)
+
+            Else
+
+                '--------------------------------------------------
+                ' EXISTENCIA
+                '--------------------------------------------------
+
+                Salida +=
+                Movimiento.Cantidad
+
+                '--------------------------------------------------
+                ' MONTO CORDOBAS
+                '--------------------------------------------------
+
+                MontoSalida +=
+                Movimiento.CostoTotal
+
+                '--------------------------------------------------
+                ' MONTO DOLARES
+                '--------------------------------------------------
+
+                MontoSalidaD +=
+                ObtenerImporteDolarMovimiento(
+                    Movimiento,
+                    Tasas)
+
+                '--------------------------------------------------
+                ' COSTO DE VENTA
+                '
+                ' Conservamos el cálculo existente.
+                '--------------------------------------------------
+
+                CostoVenta +=
+                Movimiento.CostoTotal
+
+            End If
+
+        Next
+
+
+        '==========================================================
+        ' COSTO PROMEDIO FINAL
+        '==========================================================
+
+        Dim RstCosto As RstCostoPromedio
+
+        RstCosto =
+        CostoPromedioKardex(
+            CodProducto,
+            FechaFinal)
+
+        Dim CostoPromedio As Double =
+        RstCosto.Costo_Cordoba
+
+        Dim CostoPromedioDolar As Double =
+        RstCosto.Costo_Dolar
+
+
+        '==========================================================
+        ' SALDO FISICO
+        '==========================================================
+
+        Dim Saldo As Double =
+        Inicial +
+        Entrada -
+        Salida
+
+
+        '==========================================================
+        ' SALDO MONETARIO CORDOBAS
+        '==========================================================
+
+        Dim SaldoMonetario As Double =
+        MontoInicial +
+        MontoEntrada -
+        MontoSalida
+
+
+        '==========================================================
+        ' SALDO MONETARIO DOLARES
+        '==========================================================
+
+        Dim SaldoMonetarioD As Double =
+        MontoInicialD +
+        MontoEntradaD -
+        MontoSalidaD
+
+
+        '==========================================================
+        ' CREAR FILA
+        '==========================================================
+
+        Dim Fila As DataRow =
+        Tabla.NewRow()
+
+        Fila("Cod_Productos") =
+        CodProducto
+
+        Fila("Descripcion_Producto") =
+        Descripcion
+
+        Fila("Cod_Bodega") =
+        CodBodega
+
+        Fila("Nombre_Bodega") =
+        ""
+
+
+        '==========================================================
+        ' EXISTENCIA FISICA
+        '==========================================================
+
+        Fila("Inicial") =
+        Inicial
+
+        Fila("Entrada") =
+        Entrada
+
+        Fila("Salida") =
+        Salida
+
+        Fila("Saldo") =
+        Saldo
+
+
+        '==========================================================
+        ' MOVIMIENTO MONETARIO
+        '==========================================================
+
+        If EsCordobas Then
+
+            Fila("CostoVenta") =
+            CostoPromedio
+
+            Fila("InicialD") =
+            MontoInicial
+
+            Fila("EntradaD") =
+            MontoEntrada
+
+            Fila("SalidaD") =
+            MontoSalida
+
+            Fila("SaldoD") =
+            SaldoMonetario
+
+        Else
+
+            Fila("CostoVenta") =
+            CostoPromedioDolar
+
+            Fila("InicialD") =
+            MontoInicialD
+
+            Fila("EntradaD") =
+            MontoEntradaD
+
+            Fila("SalidaD") =
+            MontoSalidaD
+
+            Fila("SaldoD") =
+            SaldoMonetarioD
+
+        End If
+
+
+        Tabla.Rows.Add(Fila)
+
+
+        Return Tabla
+
+    End Function
+
+    Public Function ObtenerTasaCambioSQL(
+    ByVal Fecha As Date,
+    ByVal cn As SqlClient.SqlConnection) As Double
+
+        Dim Tasa As Double = 0
+
+        Dim Sql As String =
+        "SELECT TOP 1 " &
+        "       ISNULL(MontoTasa, 0) " &
+        "FROM TasaCambio " &
+        "WHERE FechaTasa = @Fecha"
+
+        Using Cmd As New SqlClient.SqlCommand(Sql, cn)
+
+            Cmd.Parameters.Add(
+            "@Fecha",
+            SqlDbType.DateTime).Value =
+            Fecha.Date
+
+            If cn.State <> ConnectionState.Open Then
+                cn.Open()
+            End If
+
+            Dim Valor As Object =
+            Cmd.ExecuteScalar()
+
+            If Valor IsNot Nothing AndAlso
+           Not IsDBNull(Valor) Then
+
+                Tasa = CDbl(Valor)
+
+            End If
+
+        End Using
+
+        Return Tasa
+
+    End Function
+    Public Function ObtenerImporteDolarMovimiento(
+    ByVal Movimiento As MovimientoKardex,
+    ByVal Tasas As Dictionary(Of Date, Double)) As Double
+
+        Dim Tasa As Double = 0
+
+        If Tasas Is Nothing Then
+            Return 0
+        End If
+
+        If Tasas.ContainsKey(Movimiento.Fecha.Date) Then
+
+            Tasa =
+            Tasas(Movimiento.Fecha.Date)
+
+        End If
+
+        If Tasa = 0 Then
+            Return 0
+        End If
+
+        Return Movimiento.CostoTotal / Tasa
+
+    End Function
+    Public Function ObtenerSaldoInicialKardexBodega(
+    ByVal CodProducto As String,
+    ByVal FechaInicial As Date,
+    ByVal CodBodega As String,
+    ByVal cn As SqlClient.SqlConnection) As ResultadoSaldoInicialKardex
+
+        Dim Resultado As New ResultadoSaldoInicialKardex()
+
+        '==========================================================
+        ' VALIDACIONES
+        '==========================================================
+
+        If String.IsNullOrWhiteSpace(CodProducto) Then
+            Return Resultado
+        End If
+
+        If String.IsNullOrWhiteSpace(CodBodega) Then
+            Return Resultado
+        End If
+
+
+        '==========================================================
+        ' IMPORTANTE
+        '
+        ' El saldo inicial es TODO lo ocurrido ANTES de FechaInicial.
+        '
+        ' Ejemplo:
+        '
+        ' Reporte:
+        '   01/01/2026
+        '
+        ' Se toman movimientos:
+        '   Fecha < 01/01/2026
+        '
+        ' No se incluye el 01/01/2026.
+        '==========================================================
+
+        Dim Sql As String = ""
+
+        Sql &= "SELECT " & vbCrLf
+
+        Sql &= "    ISNULL(SUM(M.Cantidad), 0) AS CantidadInicial, " & vbCrLf
+
+        Sql &= "    ISNULL(SUM(M.Importe), 0) AS MontoInicial, " & vbCrLf
+
+        Sql &= "    ISNULL(SUM(M.ImporteD), 0) AS MontoInicialD " & vbCrLf
+
+        Sql &= "FROM " & vbCrLf
+
+        Sql &= "(" & vbCrLf
+
+
+        '==========================================================
+        ' 1. MERCANCIA RECIBIDA
+        '
+        ' La función original considera la moneda de la compra:
+        '
+        ' Cordobas:
+        '   Importe    = Cantidad * Precio_Neto
+        '   ImporteD   = Importe / Tasa
+        '
+        ' Dolares:
+        '   Importe    = Cantidad * Precio_Neto * Tasa
+        '   ImporteD   = Cantidad * Precio_Neto
+        '==========================================================
+
+        Sql &= "SELECT " & vbCrLf
+
+        Sql &= "    ISNULL(DC.Cantidad, 0) AS Cantidad, " & vbCrLf
+
+        Sql &= "    CASE " & vbCrLf
+        Sql &= "        WHEN C.MonedaCompra = 'Dolares' THEN " & vbCrLf
+        Sql &= "            ISNULL(DC.Cantidad, 0) * " &
+           "ISNULL(DC.Precio_Neto, 0) * " &
+           "ISNULL(TC.MontoTasa, 0) " & vbCrLf
+        Sql &= "        ELSE " & vbCrLf
+        Sql &= "            ISNULL(DC.Cantidad, 0) * " &
+           "ISNULL(DC.Precio_Neto, 0) " & vbCrLf
+        Sql &= "    END AS Importe, " & vbCrLf
+
+        Sql &= "    CASE " & vbCrLf
+        Sql &= "        WHEN C.MonedaCompra = 'Dolares' THEN " & vbCrLf
+        Sql &= "            ISNULL(DC.Cantidad, 0) * " &
+           "ISNULL(DC.Precio_Neto, 0) " & vbCrLf
+        Sql &= "        WHEN ISNULL(TC.MontoTasa, 0) <> 0 THEN " & vbCrLf
+        Sql &= "            (ISNULL(DC.Cantidad, 0) * " &
+           "ISNULL(DC.Precio_Neto, 0)) / " &
+           "TC.MontoTasa " & vbCrLf
+        Sql &= "        ELSE 0 " & vbCrLf
+        Sql &= "    END AS ImporteD " & vbCrLf
+
+        Sql &= "FROM Detalle_Compras AS DC " & vbCrLf
+
+        Sql &= "INNER JOIN Compras AS C " & vbCrLf
+        Sql &= "    ON C.Numero_Compra = DC.Numero_Compra " & vbCrLf
+        Sql &= "   AND C.Fecha_Compra = DC.Fecha_Compra " & vbCrLf
+        Sql &= "   AND C.Tipo_Compra = DC.Tipo_Compra " & vbCrLf
+
+        Sql &= "INNER JOIN TasaCambio AS TC " & vbCrLf
+        Sql &= "    ON TC.FechaTasa = DC.Fecha_Compra " & vbCrLf
+
+        Sql &= "WHERE DC.Cod_Producto = @CodProducto " & vbCrLf
+        Sql &= "  AND C.Cod_Bodega = @CodBodega " & vbCrLf
+        Sql &= "  AND DC.Fecha_Compra < @FechaInicial " & vbCrLf
+        Sql &= "  AND DC.Tipo_Compra = 'Mercancia Recibida' " & vbCrLf
+
+
+        Sql &= "UNION ALL " & vbCrLf
+
+
+        '==========================================================
+        ' 2. TRANSFERENCIA RECIBIDA
+        '
+        ' Entrada:
+        '   Cantidad
+        '
+        ' Valor:
+        '   Cantidad * Precio_Unitario
+        '==========================================================
+
+        Sql &= "SELECT " & vbCrLf
+
+        Sql &= "    ISNULL(DC.Cantidad, 0), " & vbCrLf
+
+        Sql &= "    ISNULL(DC.Cantidad, 0) * " &
+           "ISNULL(DC.Precio_Unitario, 0), " & vbCrLf
+
+        Sql &= "    CASE " & vbCrLf
+        Sql &= "        WHEN ISNULL(TC.MontoTasa, 0) <> 0 THEN " & vbCrLf
+        Sql &= "            (ISNULL(DC.Cantidad, 0) * " &
+           "ISNULL(DC.Precio_Unitario, 0)) / " &
+           "TC.MontoTasa " & vbCrLf
+        Sql &= "        ELSE 0 " & vbCrLf
+        Sql &= "    END " & vbCrLf
+
+        Sql &= "FROM Detalle_Compras AS DC " & vbCrLf
+
+        Sql &= "INNER JOIN Compras AS C " & vbCrLf
+        Sql &= "    ON C.Numero_Compra = DC.Numero_Compra " & vbCrLf
+        Sql &= "   AND C.Fecha_Compra = DC.Fecha_Compra " & vbCrLf
+        Sql &= "   AND C.Tipo_Compra = DC.Tipo_Compra " & vbCrLf
+
+        Sql &= "INNER JOIN TasaCambio AS TC " & vbCrLf
+        Sql &= "    ON TC.FechaTasa = DC.Fecha_Compra " & vbCrLf
+
+        Sql &= "WHERE DC.Cod_Producto = @CodProducto " & vbCrLf
+        Sql &= "  AND C.Cod_Bodega = @CodBodega " & vbCrLf
+        Sql &= "  AND DC.Fecha_Compra < @FechaInicial " & vbCrLf
+        Sql &= "  AND DC.Tipo_Compra = 'Transferencia Recibida' " & vbCrLf
+
+
+        Sql &= "UNION ALL " & vbCrLf
+
+
+        '==========================================================
+        ' 3. DEVOLUCION DE VENTA
+        '
+        ' Es una entrada.
+        '
+        ' Cantidad:
+        '   +
+        '
+        ' Valor:
+        '   Cantidad * Costo_Unitario
+        '==========================================================
+
+        Sql &= "SELECT " & vbCrLf
+
+        Sql &= "    ISNULL(DF.Cantidad, 0), " & vbCrLf
+
+        Sql &= "    ISNULL(DF.Cantidad, 0) * " &
+           "ISNULL(DF.Costo_Unitario, 0), " & vbCrLf
+
+        Sql &= "    CASE " & vbCrLf
+        Sql &= "        WHEN ISNULL(TC.MontoTasa, 0) <> 0 THEN " & vbCrLf
+        Sql &= "            (ISNULL(DF.Cantidad, 0) * " &
+           "ISNULL(DF.Costo_Unitario, 0)) / " &
+           "TC.MontoTasa " & vbCrLf
+        Sql &= "        ELSE 0 " & vbCrLf
+        Sql &= "    END " & vbCrLf
+
+        Sql &= "FROM Detalle_Facturas AS DF " & vbCrLf
+
+        Sql &= "INNER JOIN Facturas AS F " & vbCrLf
+        Sql &= "    ON F.Numero_Factura = DF.Numero_Factura " & vbCrLf
+        Sql &= "   AND F.Fecha_Factura = DF.Fecha_Factura " & vbCrLf
+        Sql &= "   AND F.Tipo_Factura = DF.Tipo_Factura " & vbCrLf
+
+        Sql &= "INNER JOIN TasaCambio AS TC " & vbCrLf
+        Sql &= "    ON TC.FechaTasa = DF.Fecha_Factura " & vbCrLf
+
+        Sql &= "WHERE DF.Cod_Producto = @CodProducto " & vbCrLf
+        Sql &= "  AND F.Cod_Bodega = @CodBodega " & vbCrLf
+        Sql &= "  AND DF.Fecha_Factura < @FechaInicial " & vbCrLf
+        Sql &= "  AND DF.Tipo_Factura = 'Devolucion de Venta' " & vbCrLf
+
+
+        Sql &= "UNION ALL " & vbCrLf
+
+
+        '==========================================================
+        ' 4. FACTURA
+        '
+        ' Es una salida.
+        '==========================================================
+
+        Sql &= "SELECT " & vbCrLf
+
+        Sql &= "    -ISNULL(DF.Cantidad, 0), " & vbCrLf
+
+        Sql &= "    -(ISNULL(DF.Cantidad, 0) * " &
+           "ISNULL(DF.Costo_Unitario, 0)), " & vbCrLf
+
+        Sql &= "    CASE " & vbCrLf
+        Sql &= "        WHEN ISNULL(TC.MontoTasa, 0) <> 0 THEN " & vbCrLf
+        Sql &= "            -(ISNULL(DF.Cantidad, 0) * " &
+           "ISNULL(DF.Costo_Unitario, 0)) / " &
+           "TC.MontoTasa " & vbCrLf
+        Sql &= "        ELSE 0 " & vbCrLf
+        Sql &= "    END " & vbCrLf
+
+        Sql &= "FROM Detalle_Facturas AS DF " & vbCrLf
+
+        Sql &= "INNER JOIN Facturas AS F " & vbCrLf
+        Sql &= "    ON F.Numero_Factura = DF.Numero_Factura " & vbCrLf
+        Sql &= "   AND F.Fecha_Factura = DF.Fecha_Factura " & vbCrLf
+        Sql &= "   AND F.Tipo_Factura = DF.Tipo_Factura " & vbCrLf
+
+        Sql &= "INNER JOIN TasaCambio AS TC " & vbCrLf
+        Sql &= "    ON TC.FechaTasa = DF.Fecha_Factura " & vbCrLf
+
+        Sql &= "WHERE DF.Cod_Producto = @CodProducto " & vbCrLf
+        Sql &= "  AND F.Cod_Bodega = @CodBodega " & vbCrLf
+        Sql &= "  AND DF.Fecha_Factura < @FechaInicial " & vbCrLf
+        Sql &= "  AND DF.Tipo_Factura = 'Factura' " & vbCrLf
+
+
+        Sql &= "UNION ALL " & vbCrLf
+
+
+        '==========================================================
+        ' 5. SALIDA BODEGA
+        '
+        ' Es una salida.
+        '
+        ' La función original utiliza Costo_Unitario.
+        '==========================================================
+
+        Sql &= "SELECT " & vbCrLf
+
+        Sql &= "    -ISNULL(DF.Cantidad, 0), " & vbCrLf
+
+        Sql &= "    -(ISNULL(DF.Cantidad, 0) * " &
+           "ISNULL(DF.Costo_Unitario, 0)), " & vbCrLf
+
+        Sql &= "    CASE " & vbCrLf
+        Sql &= "        WHEN ISNULL(TC.MontoTasa, 0) <> 0 THEN " & vbCrLf
+        Sql &= "            -(ISNULL(DF.Cantidad, 0) * " &
+           "ISNULL(DF.Costo_Unitario, 0)) / " &
+           "TC.MontoTasa " & vbCrLf
+        Sql &= "        ELSE 0 " & vbCrLf
+        Sql &= "    END " & vbCrLf
+
+        Sql &= "FROM Detalle_Facturas AS DF " & vbCrLf
+
+        Sql &= "INNER JOIN Facturas AS F " & vbCrLf
+        Sql &= "    ON F.Numero_Factura = DF.Numero_Factura " & vbCrLf
+        Sql &= "   AND F.Fecha_Factura = DF.Fecha_Factura " & vbCrLf
+        Sql &= "   AND F.Tipo_Factura = DF.Tipo_Factura " & vbCrLf
+
+        Sql &= "INNER JOIN TasaCambio AS TC " & vbCrLf
+        Sql &= "    ON TC.FechaTasa = DF.Fecha_Factura " & vbCrLf
+
+        Sql &= "WHERE DF.Cod_Producto = @CodProducto " & vbCrLf
+        Sql &= "  AND F.Cod_Bodega = @CodBodega " & vbCrLf
+        Sql &= "  AND DF.Fecha_Factura < @FechaInicial " & vbCrLf
+        Sql &= "  AND DF.Tipo_Factura = 'Salida Bodega' " & vbCrLf
+
+
+        Sql &= "UNION ALL " & vbCrLf
+
+
+        '==========================================================
+        ' 6. TRANSFERENCIA ENVIADA
+        '
+        ' Es una salida.
+        '
+        ' La función original utiliza:
+        '
+        '   Importe    = Cantidad * Precio_Unitario
+        '   ImporteD   = Cantidad * Costo_Unitario / Tasa
+        '
+        ' Conservamos esa lógica.
+        '==========================================================
+
+        Sql &= "SELECT " & vbCrLf
+
+        Sql &= "    -ISNULL(DF.Cantidad, 0), " & vbCrLf
+
+        Sql &= "    -(ISNULL(DF.Cantidad, 0) * " &
+           "ISNULL(DF.Precio_Unitario, 0)), " & vbCrLf
+
+        Sql &= "    CASE " & vbCrLf
+        Sql &= "        WHEN ISNULL(TC.MontoTasa, 0) <> 0 THEN " & vbCrLf
+        Sql &= "            -(ISNULL(DF.Cantidad, 0) * " &
+           "ISNULL(DF.Costo_Unitario, 0)) / " &
+           "TC.MontoTasa " & vbCrLf
+        Sql &= "        ELSE 0 " & vbCrLf
+        Sql &= "    END " & vbCrLf
+
+        Sql &= "FROM Detalle_Facturas AS DF " & vbCrLf
+
+        Sql &= "INNER JOIN Facturas AS F " & vbCrLf
+        Sql &= "    ON F.Numero_Factura = DF.Numero_Factura " & vbCrLf
+        Sql &= "   AND F.Fecha_Factura = DF.Fecha_Factura " & vbCrLf
+        Sql &= "   AND F.Tipo_Factura = DF.Tipo_Factura " & vbCrLf
+
+        Sql &= "INNER JOIN TasaCambio AS TC " & vbCrLf
+        Sql &= "    ON TC.FechaTasa = DF.Fecha_Factura " & vbCrLf
+
+        Sql &= "WHERE DF.Cod_Producto = @CodProducto " & vbCrLf
+        Sql &= "  AND F.Cod_Bodega = @CodBodega " & vbCrLf
+        Sql &= "  AND DF.Fecha_Factura < @FechaInicial " & vbCrLf
+        Sql &= "  AND DF.Tipo_Factura = 'Transferencia Enviada' " & vbCrLf
+
+
+        Sql &= "UNION ALL " & vbCrLf
+
+
+        '==========================================================
+        ' 7. DEVOLUCION DE COMPRA
+        '
+        ' Es una salida.
+        '
+        ' Utiliza Precio_Neto.
+        '==========================================================
+
+        Sql &= "SELECT " & vbCrLf
+
+        Sql &= "    -ISNULL(DC.Cantidad, 0), " & vbCrLf
+
+        Sql &= "    -(ISNULL(DC.Cantidad, 0) * " &
+           "ISNULL(DC.Precio_Neto, 0)), " & vbCrLf
+
+        Sql &= "    CASE " & vbCrLf
+        Sql &= "        WHEN C.MonedaCompra = 'Dolares' THEN " & vbCrLf
+        Sql &= "            -(ISNULL(DC.Cantidad, 0) * " &
+           "ISNULL(DC.Precio_Neto, 0)) " & vbCrLf
+
+        Sql &= "        WHEN ISNULL(TC.MontoTasa, 0) <> 0 THEN " & vbCrLf
+        Sql &= "            -(ISNULL(DC.Cantidad, 0) * " &
+           "ISNULL(DC.Precio_Neto, 0)) / " &
+           "TC.MontoTasa " & vbCrLf
+
+        Sql &= "        ELSE 0 " & vbCrLf
+        Sql &= "    END " & vbCrLf
+
+        Sql &= "FROM Detalle_Compras AS DC " & vbCrLf
+
+        Sql &= "INNER JOIN Compras AS C " & vbCrLf
+        Sql &= "    ON C.Numero_Compra = DC.Numero_Compra " & vbCrLf
+        Sql &= "   AND C.Fecha_Compra = DC.Fecha_Compra " & vbCrLf
+        Sql &= "   AND C.Tipo_Compra = DC.Tipo_Compra " & vbCrLf
+
+        Sql &= "INNER JOIN TasaCambio AS TC " & vbCrLf
+        Sql &= "    ON TC.FechaTasa = DC.Fecha_Compra " & vbCrLf
+
+        Sql &= "WHERE DC.Cod_Producto = @CodProducto " & vbCrLf
+        Sql &= "  AND C.Cod_Bodega = @CodBodega " & vbCrLf
+        Sql &= "  AND DC.Fecha_Compra < @FechaInicial " & vbCrLf
+        Sql &= "  AND DC.Tipo_Compra = 'Devolucion de Compra' " & vbCrLf
+
+
+        Sql &= ") AS M"
+
+
+        '==========================================================
+        ' EJECUTAR
+        '==========================================================
+
+        Using Cmd As New SqlClient.SqlCommand(Sql, cn)
+
+            Cmd.Parameters.Add(
+            "@CodProducto",
+            SqlDbType.VarChar,
+            50).Value =
+            CodProducto.Trim()
+
+            Cmd.Parameters.Add(
+            "@CodBodega",
+            SqlDbType.VarChar,
+            50).Value =
+            CodBodega.Trim()
+
+            Cmd.Parameters.Add(
+            "@FechaInicial",
+            SqlDbType.DateTime).Value =
+            FechaInicial.Date
+
+            Dim ConexionLaAbrimosNosotros As Boolean = False
+
+            Try
+
+                If cn.State <> ConnectionState.Open Then
+
+                    cn.Open()
+
+                    ConexionLaAbrimosNosotros = True
+
+                End If
+
+                Using Reader As SqlClient.SqlDataReader =
+                Cmd.ExecuteReader()
+
+                    If Reader.Read() Then
+
+                        If Not IsDBNull(
+                        Reader("CantidadInicial")) Then
+
+                            Resultado.CantidadInicial =
+                            CDbl(Reader("CantidadInicial"))
+
+                        End If
+
+                        If Not IsDBNull(
+                        Reader("MontoInicial")) Then
+
+                            Resultado.MontoInicial =
+                            CDbl(Reader("MontoInicial"))
+
+                        End If
+
+                        If Not IsDBNull(
+                        Reader("MontoInicialD")) Then
+
+                            Resultado.MontoInicialD =
+                            CDbl(Reader("MontoInicialD"))
+
+                        End If
+
+                    End If
+
+                End Using
+
+            Finally
+
+                If ConexionLaAbrimosNosotros AndAlso
+               cn.State = ConnectionState.Open Then
+
+                    cn.Close()
+
+                End If
+
+            End Try
+
+        End Using
+
+
+        '==========================================================
+        ' MISMA REGLA DE LA FUNCIÓN ORIGINAL
+        '
+        ' Si no existe inventario inicial, los valores monetarios
+        ' deben quedar en cero.
+        '==========================================================
+
+        If Resultado.CantidadInicial = 0 Then
+
+            Resultado.MontoInicial = 0
+            Resultado.MontoInicialD = 0
+
+        End If
+
+
+        Return Resultado
+
+    End Function
+
+    Public Function AgruparMovimientosKardexPorProducto(
+    ByVal Movimientos As List(Of MovimientoKardex)
+) As Dictionary(Of String, List(Of MovimientoKardex))
+
+        Dim Resultado As New Dictionary(
+        Of String, List(Of MovimientoKardex))(
+        StringComparer.OrdinalIgnoreCase)
+
+        For Each Movimiento As MovimientoKardex In Movimientos
+
+            Dim Codigo As String =
+            If(
+                Movimiento.CodProducto,
+                "").Trim()
+
+            If Codigo = "" Then
+                Continue For
+            End If
+
+            If Not Resultado.ContainsKey(Codigo) Then
+
+                Resultado.Add(
+                Codigo,
+                New List(Of MovimientoKardex))
+
+            End If
+
+            Resultado(Codigo).Add(Movimiento)
+
+        Next
+
+        Return Resultado
+
+    End Function
+
+    '*****************************************************************************************************************************************
 
     Public Function ExisteLoteProducto(
         ByVal CodProducto As String,

@@ -1,9 +1,9 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class FrmPlanilla
     Inherits System.Windows.Forms.Form
 
     'Form reemplaza a Dispose para limpiar la lista de componentes.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         If disposing AndAlso components IsNot Nothing Then
             components.Dispose()
@@ -17,7 +17,7 @@ Partial Class FrmPlanilla
     'NOTA: el Diseñador de Windows Forms necesita el siguiente procedimiento
     'Se puede modificar usando el Diseñador de Windows Forms.  
     'No lo modifique con el editor de código.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmPlanilla))
@@ -41,6 +41,8 @@ Partial Class FrmPlanilla
         Me.Deducciones = New System.Windows.Forms.TabPage()
         Me.TDGridDeducciones = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
         Me.Configuracion = New System.Windows.Forms.TabPage()
+        Me.BtnImportarDeducciones = New System.Windows.Forms.Button()
+        Me.btnDeducciones = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.TxtNuevoPrecio = New System.Windows.Forms.TextBox()
         Me.Label16 = New System.Windows.Forms.Label()
@@ -349,6 +351,8 @@ Partial Class FrmPlanilla
         '
         'Configuracion
         '
+        Me.Configuracion.Controls.Add(Me.BtnImportarDeducciones)
+        Me.Configuracion.Controls.Add(Me.btnDeducciones)
         Me.Configuracion.Controls.Add(Me.Button3)
         Me.Configuracion.Controls.Add(Me.TxtNuevoPrecio)
         Me.Configuracion.Controls.Add(Me.Label16)
@@ -361,6 +365,30 @@ Partial Class FrmPlanilla
         Me.Configuracion.TabIndex = 2
         Me.Configuracion.Text = "Configuracion"
         Me.Configuracion.UseVisualStyleBackColor = True
+        '
+        'BtnImportarDeducciones
+        '
+        Me.BtnImportarDeducciones.Image = CType(resources.GetObject("BtnImportarDeducciones.Image"), System.Drawing.Image)
+        Me.BtnImportarDeducciones.ImageAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.BtnImportarDeducciones.Location = New System.Drawing.Point(550, 234)
+        Me.BtnImportarDeducciones.Name = "BtnImportarDeducciones"
+        Me.BtnImportarDeducciones.Size = New System.Drawing.Size(99, 39)
+        Me.BtnImportarDeducciones.TabIndex = 208
+        Me.BtnImportarDeducciones.Text = "Importar Dedicciones"
+        Me.BtnImportarDeducciones.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnImportarDeducciones.UseVisualStyleBackColor = True
+        '
+        'btnDeducciones
+        '
+        Me.btnDeducciones.Image = CType(resources.GetObject("btnDeducciones.Image"), System.Drawing.Image)
+        Me.btnDeducciones.ImageAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.btnDeducciones.Location = New System.Drawing.Point(445, 235)
+        Me.btnDeducciones.Name = "btnDeducciones"
+        Me.btnDeducciones.Size = New System.Drawing.Size(99, 39)
+        Me.btnDeducciones.TabIndex = 207
+        Me.btnDeducciones.Text = "Deducciones"
+        Me.btnDeducciones.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnDeducciones.UseVisualStyleBackColor = True
         '
         'Button3
         '
@@ -393,7 +421,7 @@ Partial Class FrmPlanilla
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(905, 239)
+        Me.Button1.Location = New System.Drawing.Point(1014, 239)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(75, 23)
         Me.Button1.TabIndex = 172
@@ -753,7 +781,7 @@ Partial Class FrmPlanilla
         Me.GroupBoxImportar.Controls.Add(Me.BtnCargar)
         Me.GroupBoxImportar.Controls.Add(Me.BtnAbrir)
         Me.GroupBoxImportar.Controls.Add(Me.TrueDBGridConsultas)
-        Me.GroupBoxImportar.Location = New System.Drawing.Point(1254, 75)
+        Me.GroupBoxImportar.Location = New System.Drawing.Point(1277, 56)
         Me.GroupBoxImportar.Name = "GroupBoxImportar"
         Me.GroupBoxImportar.Size = New System.Drawing.Size(1142, 452)
         Me.GroupBoxImportar.TabIndex = 271
@@ -907,7 +935,7 @@ Partial Class FrmPlanilla
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1139, 497)
+        Me.ClientSize = New System.Drawing.Size(1136, 497)
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.GroupBoxImportar)
         Me.Controls.Add(Me.Button4)
@@ -1023,4 +1051,6 @@ Partial Class FrmPlanilla
     Friend WithEvents mnuVerBeneficiario As ToolStripMenuItem
     Friend WithEvents OpenFileDialog As OpenFileDialog
     Friend WithEvents BtnAbrirCsv As Button
+    Friend WithEvents btnDeducciones As Button
+    Friend WithEvents BtnImportarDeducciones As Button
 End Class

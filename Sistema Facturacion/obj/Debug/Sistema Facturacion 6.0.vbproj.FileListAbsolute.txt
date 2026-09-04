@@ -325,3 +325,7 @@ D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Factura
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.ArepTransferenciaListado.resources
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmCambiarTipoNomina.resources
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmPreciosLeche.resources
+D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmPlanPago.resources
+D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmAuditoriaFacturacion.resources
+D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmDeduccionPlanilla.resources
+D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmImportarDeduccion.resources

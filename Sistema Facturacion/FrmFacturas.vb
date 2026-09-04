@@ -12438,6 +12438,10 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
     End Sub
 
+    Private Sub ChkAplicarCtaXCobrar_CheckedChanged(sender As Object, e As EventArgs) Handles ChkAplicarCtaXCobrar.CheckedChanged
+
+    End Sub
+
     Private Sub CmdProcesar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdProcesar.Click
         Dim SQL As New DataDynamics.ActiveReports.DataSources.SqlDBDataSource, RutaLogo As String, iPosicion As Double, Registros As Double
         Dim ArepFacturas As New ArepFacturas, SqlDatos As String, SQlDetalle As String, Fecha As String, Monto As Double, NombrePago As String
@@ -13801,9 +13805,16 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         End Try
     End Sub
 
- 
-    Private Sub Button5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdCuentasxCobrar.Click
 
+    Private Sub Button5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnPlanPagos.Click
+        Dim Frm As New FrmPlanPago(
+    TxtNumeroEnsamble.Text,
+    DTPFecha.Value,
+    DTVencimiento.Value,
+    CDec(TxtNetoPagar.Text), TxtMonedaFactura.Text
+)
+
+        Frm.ShowDialog()
     End Sub
 
     Private Sub TrueDBGridComponentes_AfterSort(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.FilterEventArgs) Handles TrueDBGridComponentes.AfterSort

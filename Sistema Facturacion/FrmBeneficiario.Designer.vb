@@ -145,6 +145,8 @@ Partial Class FrmBeneficiario
         Me.TxtCtaBancoSocio = New System.Windows.Forms.TextBox()
         Me.Label38 = New System.Windows.Forms.Label()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.CboTransportistaSocio = New C1.Win.C1List.C1Combo()
+        Me.Label98 = New System.Windows.Forms.Label()
         Me.TxtPrecioSocio = New System.Windows.Forms.TextBox()
         Me.Label92 = New System.Windows.Forms.Label()
         Me.CboTipoNominaSocio = New C1.Win.C1List.C1Combo()
@@ -198,6 +200,8 @@ Partial Class FrmBeneficiario
         Me.TxtCtaBancoPreSocio = New System.Windows.Forms.TextBox()
         Me.Label53 = New System.Windows.Forms.Label()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.CboTransportistaPreSocio = New C1.Win.C1List.C1Combo()
+        Me.Label99 = New System.Windows.Forms.Label()
         Me.TxtPrecioPreSocio = New System.Windows.Forms.TextBox()
         Me.Label93 = New System.Windows.Forms.Label()
         Me.CboTipoNominaPreSocio = New C1.Win.C1List.C1Combo()
@@ -209,41 +213,6 @@ Partial Class FrmBeneficiario
         Me.Label25 = New System.Windows.Forms.Label()
         Me.Label30 = New System.Windows.Forms.Label()
         Me.Label32 = New System.Windows.Forms.Label()
-        Me.TabTransportista = New System.Windows.Forms.TabPage()
-        Me.GroupBox12 = New System.Windows.Forms.GroupBox()
-        Me.Button44 = New System.Windows.Forms.Button()
-        Me.TxtCtaFondos = New System.Windows.Forms.TextBox()
-        Me.Button45 = New System.Windows.Forms.Button()
-        Me.Label80 = New System.Windows.Forms.Label()
-        Me.TxtCtaOtras = New System.Windows.Forms.TextBox()
-        Me.Label81 = New System.Windows.Forms.Label()
-        Me.Button46 = New System.Windows.Forms.Button()
-        Me.TxtCtaVeterinario = New System.Windows.Forms.TextBox()
-        Me.Label82 = New System.Windows.Forms.Label()
-        Me.Button47 = New System.Windows.Forms.Button()
-        Me.TxtCtaTrazabilidad = New System.Windows.Forms.TextBox()
-        Me.Label83 = New System.Windows.Forms.Label()
-        Me.Button48 = New System.Windows.Forms.Button()
-        Me.TxtCtaInseminacion = New System.Windows.Forms.TextBox()
-        Me.Label84 = New System.Windows.Forms.Label()
-        Me.Button49 = New System.Windows.Forms.Button()
-        Me.TxtCtaTransporte = New System.Windows.Forms.TextBox()
-        Me.Label85 = New System.Windows.Forms.Label()
-        Me.Button50 = New System.Windows.Forms.Button()
-        Me.TxtCtaGastoPlanilla = New System.Windows.Forms.TextBox()
-        Me.Label86 = New System.Windows.Forms.Label()
-        Me.Button51 = New System.Windows.Forms.Button()
-        Me.TxtAnticipo = New System.Windows.Forms.TextBox()
-        Me.Label87 = New System.Windows.Forms.Label()
-        Me.Button52 = New System.Windows.Forms.Button()
-        Me.TxtCtaBolsa = New System.Windows.Forms.TextBox()
-        Me.Label88 = New System.Windows.Forms.Label()
-        Me.Button53 = New System.Windows.Forms.Button()
-        Me.TxtCtaIr = New System.Windows.Forms.TextBox()
-        Me.Label89 = New System.Windows.Forms.Label()
-        Me.Button54 = New System.Windows.Forms.Button()
-        Me.TxtCtaBanco = New System.Windows.Forms.TextBox()
-        Me.Label90 = New System.Windows.Forms.Label()
         Me.TabProductor = New System.Windows.Forms.TabPage()
         Me.GroupBox9 = New System.Windows.Forms.GroupBox()
         Me.Button32 = New System.Windows.Forms.Button()
@@ -286,6 +255,8 @@ Partial Class FrmBeneficiario
         Me.TxtCtaBancoProductor = New System.Windows.Forms.TextBox()
         Me.Label70 = New System.Windows.Forms.Label()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
+        Me.CboTransportistaProductor = New C1.Win.C1List.C1Combo()
+        Me.Label100 = New System.Windows.Forms.Label()
         Me.TxtPrecioProductor = New System.Windows.Forms.TextBox()
         Me.Label94 = New System.Windows.Forms.Label()
         Me.CboTipoNominaProductor = New C1.Win.C1List.C1Combo()
@@ -297,6 +268,48 @@ Partial Class FrmBeneficiario
         Me.Label57 = New System.Windows.Forms.Label()
         Me.Label58 = New System.Windows.Forms.Label()
         Me.Label59 = New System.Windows.Forms.Label()
+        Me.TabTransportista = New System.Windows.Forms.TabPage()
+        Me.TextBox3 = New System.Windows.Forms.TextBox()
+        Me.Label97 = New System.Windows.Forms.Label()
+        Me.GroupBox14 = New System.Windows.Forms.GroupBox()
+        Me.TextBox2 = New System.Windows.Forms.TextBox()
+        Me.Label96 = New System.Windows.Forms.Label()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.Label95 = New System.Windows.Forms.Label()
+        Me.GroupBox12 = New System.Windows.Forms.GroupBox()
+        Me.Button44 = New System.Windows.Forms.Button()
+        Me.TxtCtaFondos = New System.Windows.Forms.TextBox()
+        Me.Button45 = New System.Windows.Forms.Button()
+        Me.Label80 = New System.Windows.Forms.Label()
+        Me.TxtCtaOtras = New System.Windows.Forms.TextBox()
+        Me.Label81 = New System.Windows.Forms.Label()
+        Me.Button46 = New System.Windows.Forms.Button()
+        Me.TxtCtaVeterinario = New System.Windows.Forms.TextBox()
+        Me.Label82 = New System.Windows.Forms.Label()
+        Me.Button47 = New System.Windows.Forms.Button()
+        Me.TxtCtaTrazabilidad = New System.Windows.Forms.TextBox()
+        Me.Label83 = New System.Windows.Forms.Label()
+        Me.Button48 = New System.Windows.Forms.Button()
+        Me.TxtCtaInseminacion = New System.Windows.Forms.TextBox()
+        Me.Label84 = New System.Windows.Forms.Label()
+        Me.Button49 = New System.Windows.Forms.Button()
+        Me.TxtCtaTransporte = New System.Windows.Forms.TextBox()
+        Me.Label85 = New System.Windows.Forms.Label()
+        Me.Button50 = New System.Windows.Forms.Button()
+        Me.TxtCtaGastoPlanilla = New System.Windows.Forms.TextBox()
+        Me.Label86 = New System.Windows.Forms.Label()
+        Me.Button51 = New System.Windows.Forms.Button()
+        Me.TxtAnticipo = New System.Windows.Forms.TextBox()
+        Me.Label87 = New System.Windows.Forms.Label()
+        Me.Button52 = New System.Windows.Forms.Button()
+        Me.TxtCtaBolsa = New System.Windows.Forms.TextBox()
+        Me.Label88 = New System.Windows.Forms.Label()
+        Me.Button53 = New System.Windows.Forms.Button()
+        Me.TxtCtaIr = New System.Windows.Forms.TextBox()
+        Me.Label89 = New System.Windows.Forms.Label()
+        Me.Button54 = New System.Windows.Forms.Button()
+        Me.TxtCtaBanco = New System.Windows.Forms.TextBox()
+        Me.Label90 = New System.Windows.Forms.Label()
         Me.TabProveedor = New System.Windows.Forms.TabPage()
         Me.GroupBox11 = New System.Windows.Forms.GroupBox()
         Me.CboMunicipioProveedor = New C1.Win.C1List.C1Combo()
@@ -320,19 +333,6 @@ Partial Class FrmBeneficiario
         Me.TxtCtasxPagarProveedor = New System.Windows.Forms.TextBox()
         Me.Label71 = New System.Windows.Forms.Label()
         Me.TabEmpleado = New System.Windows.Forms.TabPage()
-        Me.GroupBox14 = New System.Windows.Forms.GroupBox()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.Label95 = New System.Windows.Forms.Label()
-        Me.TextBox2 = New System.Windows.Forms.TextBox()
-        Me.Label96 = New System.Windows.Forms.Label()
-        Me.TextBox3 = New System.Windows.Forms.TextBox()
-        Me.Label97 = New System.Windows.Forms.Label()
-        Me.CboTransportistaSocio = New C1.Win.C1List.C1Combo()
-        Me.Label98 = New System.Windows.Forms.Label()
-        Me.CboTransportistaPreSocio = New C1.Win.C1List.C1Combo()
-        Me.Label99 = New System.Windows.Forms.Label()
-        Me.CboTransportistaProductor = New C1.Win.C1List.C1Combo()
-        Me.Label100 = New System.Windows.Forms.Label()
         CType(Me.CboCodigoProductor, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox6.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -352,6 +352,7 @@ Partial Class FrmBeneficiario
         Me.TabSocio.SuspendLayout()
         Me.GroupBox13.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
+        CType(Me.CboTransportistaSocio, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboTipoNominaSocio, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboCooperativaSocio, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboDepartamentosSocio, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -360,21 +361,24 @@ Partial Class FrmBeneficiario
         Me.TabPreSocio.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
+        CType(Me.CboTransportistaPreSocio, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboTipoNominaPreSocio, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboRutaPreSocio, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboCooperativaPreSocio, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboDepartamentosPreSocio, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboEscolaridadPreSocio, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.TabTransportista.SuspendLayout()
-        Me.GroupBox12.SuspendLayout()
         Me.TabProductor.SuspendLayout()
         Me.GroupBox9.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
+        CType(Me.CboTransportistaProductor, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboTipoNominaProductor, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboRutaProductor, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboCooperativaProductor, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboDepartamentosProductor, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboEscolaridadProductor, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabTransportista.SuspendLayout()
+        Me.GroupBox14.SuspendLayout()
+        Me.GroupBox12.SuspendLayout()
         Me.TabProveedor.SuspendLayout()
         Me.GroupBox11.SuspendLayout()
         CType(Me.CboMunicipioProveedor, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -382,10 +386,6 @@ Partial Class FrmBeneficiario
         CType(Me.CboEndosoProveedor, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TxtDiasCreditoProveedor, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox10.SuspendLayout()
-        Me.GroupBox14.SuspendLayout()
-        CType(Me.CboTransportistaSocio, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.CboTransportistaPreSocio, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.CboTransportistaProductor, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TxtNumeroCedula
@@ -1741,6 +1741,46 @@ Partial Class FrmBeneficiario
         Me.GroupBox4.TabIndex = 0
         Me.GroupBox4.TabStop = False
         '
+        'CboTransportistaSocio
+        '
+        Me.CboTransportistaSocio.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboTransportistaSocio.Caption = ""
+        Me.CboTransportistaSocio.CaptionHeight = 17
+        Me.CboTransportistaSocio.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboTransportistaSocio.ColumnCaptionHeight = 17
+        Me.CboTransportistaSocio.ColumnFooterHeight = 17
+        Me.CboTransportistaSocio.ContentHeight = 15
+        Me.CboTransportistaSocio.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboTransportistaSocio.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
+        Me.CboTransportistaSocio.DropDownWidth = 300
+        Me.CboTransportistaSocio.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboTransportistaSocio.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboTransportistaSocio.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboTransportistaSocio.EditorHeight = 15
+        Me.CboTransportistaSocio.Images.Add(CType(resources.GetObject("CboTransportistaSocio.Images"), System.Drawing.Image))
+        Me.CboTransportistaSocio.ItemHeight = 15
+        Me.CboTransportistaSocio.Location = New System.Drawing.Point(317, 42)
+        Me.CboTransportistaSocio.MatchEntryTimeout = CType(2000, Long)
+        Me.CboTransportistaSocio.MaxDropDownItems = CType(5, Short)
+        Me.CboTransportistaSocio.MaxLength = 32767
+        Me.CboTransportistaSocio.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboTransportistaSocio.Name = "CboTransportistaSocio"
+        Me.CboTransportistaSocio.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboTransportistaSocio.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboTransportistaSocio.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboTransportistaSocio.Size = New System.Drawing.Size(135, 21)
+        Me.CboTransportistaSocio.TabIndex = 181
+        Me.CboTransportistaSocio.PropBag = resources.GetString("CboTransportistaSocio.PropBag")
+        '
+        'Label98
+        '
+        Me.Label98.AutoSize = True
+        Me.Label98.Location = New System.Drawing.Point(242, 47)
+        Me.Label98.Name = "Label98"
+        Me.Label98.Size = New System.Drawing.Size(68, 13)
+        Me.Label98.TabIndex = 182
+        Me.Label98.Text = "Transportista"
+        '
         'TxtPrecioSocio
         '
         Me.TxtPrecioSocio.Location = New System.Drawing.Point(317, 73)
@@ -2357,6 +2397,46 @@ Partial Class FrmBeneficiario
         Me.GroupBox5.TabIndex = 1
         Me.GroupBox5.TabStop = False
         '
+        'CboTransportistaPreSocio
+        '
+        Me.CboTransportistaPreSocio.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboTransportistaPreSocio.Caption = ""
+        Me.CboTransportistaPreSocio.CaptionHeight = 17
+        Me.CboTransportistaPreSocio.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboTransportistaPreSocio.ColumnCaptionHeight = 17
+        Me.CboTransportistaPreSocio.ColumnFooterHeight = 17
+        Me.CboTransportistaPreSocio.ContentHeight = 15
+        Me.CboTransportistaPreSocio.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboTransportistaPreSocio.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
+        Me.CboTransportistaPreSocio.DropDownWidth = 300
+        Me.CboTransportistaPreSocio.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboTransportistaPreSocio.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboTransportistaPreSocio.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboTransportistaPreSocio.EditorHeight = 15
+        Me.CboTransportistaPreSocio.Images.Add(CType(resources.GetObject("CboTransportistaPreSocio.Images"), System.Drawing.Image))
+        Me.CboTransportistaPreSocio.ItemHeight = 15
+        Me.CboTransportistaPreSocio.Location = New System.Drawing.Point(340, 42)
+        Me.CboTransportistaPreSocio.MatchEntryTimeout = CType(2000, Long)
+        Me.CboTransportistaPreSocio.MaxDropDownItems = CType(5, Short)
+        Me.CboTransportistaPreSocio.MaxLength = 32767
+        Me.CboTransportistaPreSocio.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboTransportistaPreSocio.Name = "CboTransportistaPreSocio"
+        Me.CboTransportistaPreSocio.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboTransportistaPreSocio.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboTransportistaPreSocio.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboTransportistaPreSocio.Size = New System.Drawing.Size(135, 21)
+        Me.CboTransportistaPreSocio.TabIndex = 183
+        Me.CboTransportistaPreSocio.PropBag = resources.GetString("CboTransportistaPreSocio.PropBag")
+        '
+        'Label99
+        '
+        Me.Label99.AutoSize = True
+        Me.Label99.Location = New System.Drawing.Point(265, 47)
+        Me.Label99.Name = "Label99"
+        Me.Label99.Size = New System.Drawing.Size(68, 13)
+        Me.Label99.TabIndex = 184
+        Me.Label99.Text = "Transportista"
+        '
         'TxtPrecioPreSocio
         '
         Me.TxtPrecioPreSocio.Location = New System.Drawing.Point(340, 69)
@@ -2564,341 +2644,6 @@ Partial Class FrmBeneficiario
         Me.Label32.Size = New System.Drawing.Size(62, 13)
         Me.Label32.TabIndex = 168
         Me.Label32.Text = "Escolaridad"
-        '
-        'TabTransportista
-        '
-        Me.TabTransportista.Controls.Add(Me.TextBox3)
-        Me.TabTransportista.Controls.Add(Me.Label97)
-        Me.TabTransportista.Controls.Add(Me.GroupBox14)
-        Me.TabTransportista.Controls.Add(Me.GroupBox12)
-        Me.TabTransportista.Location = New System.Drawing.Point(4, 22)
-        Me.TabTransportista.Name = "TabTransportista"
-        Me.TabTransportista.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabTransportista.Size = New System.Drawing.Size(616, 317)
-        Me.TabTransportista.TabIndex = 4
-        Me.TabTransportista.Text = "Transportista"
-        Me.TabTransportista.UseVisualStyleBackColor = True
-        '
-        'GroupBox12
-        '
-        Me.GroupBox12.Controls.Add(Me.Button44)
-        Me.GroupBox12.Controls.Add(Me.TxtCtaFondos)
-        Me.GroupBox12.Controls.Add(Me.Button45)
-        Me.GroupBox12.Controls.Add(Me.Label80)
-        Me.GroupBox12.Controls.Add(Me.TxtCtaOtras)
-        Me.GroupBox12.Controls.Add(Me.Label81)
-        Me.GroupBox12.Controls.Add(Me.Button46)
-        Me.GroupBox12.Controls.Add(Me.TxtCtaVeterinario)
-        Me.GroupBox12.Controls.Add(Me.Label82)
-        Me.GroupBox12.Controls.Add(Me.Button47)
-        Me.GroupBox12.Controls.Add(Me.TxtCtaTrazabilidad)
-        Me.GroupBox12.Controls.Add(Me.Label83)
-        Me.GroupBox12.Controls.Add(Me.Button48)
-        Me.GroupBox12.Controls.Add(Me.TxtCtaInseminacion)
-        Me.GroupBox12.Controls.Add(Me.Label84)
-        Me.GroupBox12.Controls.Add(Me.Button49)
-        Me.GroupBox12.Controls.Add(Me.TxtCtaTransporte)
-        Me.GroupBox12.Controls.Add(Me.Label85)
-        Me.GroupBox12.Controls.Add(Me.Button50)
-        Me.GroupBox12.Controls.Add(Me.TxtCtaGastoPlanilla)
-        Me.GroupBox12.Controls.Add(Me.Label86)
-        Me.GroupBox12.Controls.Add(Me.Button51)
-        Me.GroupBox12.Controls.Add(Me.TxtAnticipo)
-        Me.GroupBox12.Controls.Add(Me.Label87)
-        Me.GroupBox12.Controls.Add(Me.Button52)
-        Me.GroupBox12.Controls.Add(Me.TxtCtaBolsa)
-        Me.GroupBox12.Controls.Add(Me.Label88)
-        Me.GroupBox12.Controls.Add(Me.Button53)
-        Me.GroupBox12.Controls.Add(Me.TxtCtaIr)
-        Me.GroupBox12.Controls.Add(Me.Label89)
-        Me.GroupBox12.Controls.Add(Me.Button54)
-        Me.GroupBox12.Controls.Add(Me.TxtCtaBanco)
-        Me.GroupBox12.Controls.Add(Me.Label90)
-        Me.GroupBox12.Location = New System.Drawing.Point(3, 11)
-        Me.GroupBox12.Name = "GroupBox12"
-        Me.GroupBox12.Size = New System.Drawing.Size(468, 293)
-        Me.GroupBox12.TabIndex = 3
-        Me.GroupBox12.TabStop = False
-        '
-        'Button44
-        '
-        Me.Button44.Image = CType(resources.GetObject("Button44.Image"), System.Drawing.Image)
-        Me.Button44.Location = New System.Drawing.Point(225, 250)
-        Me.Button44.Name = "Button44"
-        Me.Button44.Size = New System.Drawing.Size(29, 30)
-        Me.Button44.TabIndex = 194
-        Me.Button44.UseVisualStyleBackColor = True
-        Me.Button44.Visible = False
-        '
-        'TxtCtaFondos
-        '
-        Me.TxtCtaFondos.AcceptsReturn = True
-        Me.TxtCtaFondos.Location = New System.Drawing.Point(119, 256)
-        Me.TxtCtaFondos.Name = "TxtCtaFondos"
-        Me.TxtCtaFondos.Size = New System.Drawing.Size(100, 20)
-        Me.TxtCtaFondos.TabIndex = 192
-        Me.TxtCtaFondos.Visible = False
-        '
-        'Button45
-        '
-        Me.Button45.Image = CType(resources.GetObject("Button45.Image"), System.Drawing.Image)
-        Me.Button45.Location = New System.Drawing.Point(225, 218)
-        Me.Button45.Name = "Button45"
-        Me.Button45.Size = New System.Drawing.Size(29, 30)
-        Me.Button45.TabIndex = 195
-        Me.Button45.UseVisualStyleBackColor = True
-        '
-        'Label80
-        '
-        Me.Label80.AutoSize = True
-        Me.Label80.Location = New System.Drawing.Point(0, 259)
-        Me.Label80.Name = "Label80"
-        Me.Label80.Size = New System.Drawing.Size(113, 13)
-        Me.Label80.TabIndex = 190
-        Me.Label80.Text = "Administracion Fondos"
-        Me.Label80.Visible = False
-        '
-        'TxtCtaOtras
-        '
-        Me.TxtCtaOtras.Location = New System.Drawing.Point(119, 224)
-        Me.TxtCtaOtras.Name = "TxtCtaOtras"
-        Me.TxtCtaOtras.Size = New System.Drawing.Size(100, 20)
-        Me.TxtCtaOtras.TabIndex = 193
-        '
-        'Label81
-        '
-        Me.Label81.AutoSize = True
-        Me.Label81.Location = New System.Drawing.Point(15, 227)
-        Me.Label81.Name = "Label81"
-        Me.Label81.Size = New System.Drawing.Size(98, 13)
-        Me.Label81.TabIndex = 191
-        Me.Label81.Text = "Otras Deducciones"
-        '
-        'Button46
-        '
-        Me.Button46.Image = CType(resources.GetObject("Button46.Image"), System.Drawing.Image)
-        Me.Button46.Location = New System.Drawing.Point(225, 182)
-        Me.Button46.Name = "Button46"
-        Me.Button46.Size = New System.Drawing.Size(29, 30)
-        Me.Button46.TabIndex = 189
-        Me.Button46.UseVisualStyleBackColor = True
-        '
-        'TxtCtaVeterinario
-        '
-        Me.TxtCtaVeterinario.Location = New System.Drawing.Point(119, 187)
-        Me.TxtCtaVeterinario.Name = "TxtCtaVeterinario"
-        Me.TxtCtaVeterinario.Size = New System.Drawing.Size(100, 20)
-        Me.TxtCtaVeterinario.TabIndex = 188
-        '
-        'Label82
-        '
-        Me.Label82.AutoSize = True
-        Me.Label82.Location = New System.Drawing.Point(2, 191)
-        Me.Label82.Name = "Label82"
-        Me.Label82.Size = New System.Drawing.Size(113, 13)
-        Me.Label82.TabIndex = 187
-        Me.Label82.Text = "Productos Veterinarios"
-        '
-        'Button47
-        '
-        Me.Button47.Image = CType(resources.GetObject("Button47.Image"), System.Drawing.Image)
-        Me.Button47.Location = New System.Drawing.Point(224, 82)
-        Me.Button47.Name = "Button47"
-        Me.Button47.Size = New System.Drawing.Size(29, 30)
-        Me.Button47.TabIndex = 186
-        Me.Button47.UseVisualStyleBackColor = True
-        '
-        'TxtCtaTrazabilidad
-        '
-        Me.TxtCtaTrazabilidad.Location = New System.Drawing.Point(119, 85)
-        Me.TxtCtaTrazabilidad.Name = "TxtCtaTrazabilidad"
-        Me.TxtCtaTrazabilidad.Size = New System.Drawing.Size(100, 20)
-        Me.TxtCtaTrazabilidad.TabIndex = 185
-        '
-        'Label83
-        '
-        Me.Label83.AutoSize = True
-        Me.Label83.Location = New System.Drawing.Point(49, 88)
-        Me.Label83.Name = "Label83"
-        Me.Label83.Size = New System.Drawing.Size(64, 13)
-        Me.Label83.TabIndex = 184
-        Me.Label83.Text = "Trazabilidad"
-        '
-        'Button48
-        '
-        Me.Button48.Image = CType(resources.GetObject("Button48.Image"), System.Drawing.Image)
-        Me.Button48.Location = New System.Drawing.Point(225, 50)
-        Me.Button48.Name = "Button48"
-        Me.Button48.Size = New System.Drawing.Size(29, 30)
-        Me.Button48.TabIndex = 183
-        Me.Button48.UseVisualStyleBackColor = True
-        '
-        'TxtCtaInseminacion
-        '
-        Me.TxtCtaInseminacion.Location = New System.Drawing.Point(119, 55)
-        Me.TxtCtaInseminacion.Name = "TxtCtaInseminacion"
-        Me.TxtCtaInseminacion.Size = New System.Drawing.Size(100, 20)
-        Me.TxtCtaInseminacion.TabIndex = 182
-        '
-        'Label84
-        '
-        Me.Label84.AutoSize = True
-        Me.Label84.Location = New System.Drawing.Point(44, 59)
-        Me.Label84.Name = "Label84"
-        Me.Label84.Size = New System.Drawing.Size(69, 13)
-        Me.Label84.TabIndex = 181
-        Me.Label84.Text = "Inseminacion"
-        '
-        'Button49
-        '
-        Me.Button49.Image = CType(resources.GetObject("Button49.Image"), System.Drawing.Image)
-        Me.Button49.Location = New System.Drawing.Point(225, 19)
-        Me.Button49.Name = "Button49"
-        Me.Button49.Size = New System.Drawing.Size(29, 30)
-        Me.Button49.TabIndex = 180
-        Me.Button49.UseVisualStyleBackColor = True
-        '
-        'TxtCtaTransporte
-        '
-        Me.TxtCtaTransporte.Location = New System.Drawing.Point(119, 24)
-        Me.TxtCtaTransporte.Name = "TxtCtaTransporte"
-        Me.TxtCtaTransporte.Size = New System.Drawing.Size(100, 20)
-        Me.TxtCtaTransporte.TabIndex = 179
-        '
-        'Label85
-        '
-        Me.Label85.AutoSize = True
-        Me.Label85.Location = New System.Drawing.Point(55, 24)
-        Me.Label85.Name = "Label85"
-        Me.Label85.Size = New System.Drawing.Size(58, 13)
-        Me.Label85.TabIndex = 178
-        Me.Label85.Text = "Transporte"
-        '
-        'Button50
-        '
-        Me.Button50.Image = CType(resources.GetObject("Button50.Image"), System.Drawing.Image)
-        Me.Button50.Location = New System.Drawing.Point(434, 18)
-        Me.Button50.Name = "Button50"
-        Me.Button50.Size = New System.Drawing.Size(29, 30)
-        Me.Button50.TabIndex = 177
-        Me.Button50.UseVisualStyleBackColor = True
-        '
-        'TxtCtaGastoPlanilla
-        '
-        Me.TxtCtaGastoPlanilla.Location = New System.Drawing.Point(331, 21)
-        Me.TxtCtaGastoPlanilla.Name = "TxtCtaGastoPlanilla"
-        Me.TxtCtaGastoPlanilla.Size = New System.Drawing.Size(100, 20)
-        Me.TxtCtaGastoPlanilla.TabIndex = 176
-        '
-        'Label86
-        '
-        Me.Label86.AutoSize = True
-        Me.Label86.Location = New System.Drawing.Point(260, 24)
-        Me.Label86.Name = "Label86"
-        Me.Label86.Size = New System.Drawing.Size(71, 13)
-        Me.Label86.TabIndex = 175
-        Me.Label86.Text = "Gasto Planilla"
-        '
-        'Button51
-        '
-        Me.Button51.Image = CType(resources.GetObject("Button51.Image"), System.Drawing.Image)
-        Me.Button51.Location = New System.Drawing.Point(225, 146)
-        Me.Button51.Name = "Button51"
-        Me.Button51.Size = New System.Drawing.Size(29, 30)
-        Me.Button51.TabIndex = 174
-        Me.Button51.UseVisualStyleBackColor = True
-        '
-        'TxtAnticipo
-        '
-        Me.TxtAnticipo.AcceptsReturn = True
-        Me.TxtAnticipo.Location = New System.Drawing.Point(119, 152)
-        Me.TxtAnticipo.Name = "TxtAnticipo"
-        Me.TxtAnticipo.Size = New System.Drawing.Size(100, 20)
-        Me.TxtAnticipo.TabIndex = 173
-        '
-        'Label87
-        '
-        Me.Label87.AutoSize = True
-        Me.Label87.Location = New System.Drawing.Point(17, 155)
-        Me.Label87.Name = "Label87"
-        Me.Label87.Size = New System.Drawing.Size(96, 13)
-        Me.Label87.TabIndex = 172
-        Me.Label87.Text = "Anticipo de Planilla"
-        '
-        'Button52
-        '
-        Me.Button52.Image = CType(resources.GetObject("Button52.Image"), System.Drawing.Image)
-        Me.Button52.Location = New System.Drawing.Point(225, 112)
-        Me.Button52.Name = "Button52"
-        Me.Button52.Size = New System.Drawing.Size(29, 30)
-        Me.Button52.TabIndex = 171
-        Me.Button52.UseVisualStyleBackColor = True
-        '
-        'TxtCtaBolsa
-        '
-        Me.TxtCtaBolsa.Location = New System.Drawing.Point(119, 117)
-        Me.TxtCtaBolsa.Name = "TxtCtaBolsa"
-        Me.TxtCtaBolsa.Size = New System.Drawing.Size(100, 20)
-        Me.TxtCtaBolsa.TabIndex = 170
-        '
-        'Label88
-        '
-        Me.Label88.AutoSize = True
-        Me.Label88.Location = New System.Drawing.Point(22, 117)
-        Me.Label88.Name = "Label88"
-        Me.Label88.Size = New System.Drawing.Size(86, 13)
-        Me.Label88.TabIndex = 169
-        Me.Label88.Text = "Bolsa de Valores"
-        '
-        'Button53
-        '
-        Me.Button53.Image = CType(resources.GetObject("Button53.Image"), System.Drawing.Image)
-        Me.Button53.Location = New System.Drawing.Point(434, 90)
-        Me.Button53.Name = "Button53"
-        Me.Button53.Size = New System.Drawing.Size(29, 30)
-        Me.Button53.TabIndex = 168
-        Me.Button53.UseVisualStyleBackColor = True
-        '
-        'TxtCtaIr
-        '
-        Me.TxtCtaIr.Location = New System.Drawing.Point(328, 92)
-        Me.TxtCtaIr.Name = "TxtCtaIr"
-        Me.TxtCtaIr.Size = New System.Drawing.Size(100, 20)
-        Me.TxtCtaIr.TabIndex = 167
-        '
-        'Label89
-        '
-        Me.Label89.AutoSize = True
-        Me.Label89.Location = New System.Drawing.Point(272, 92)
-        Me.Label89.Name = "Label89"
-        Me.Label89.Size = New System.Drawing.Size(55, 13)
-        Me.Label89.TabIndex = 166
-        Me.Label89.Text = "Cuenta IR"
-        '
-        'Button54
-        '
-        Me.Button54.Image = CType(resources.GetObject("Button54.Image"), System.Drawing.Image)
-        Me.Button54.Location = New System.Drawing.Point(434, 54)
-        Me.Button54.Name = "Button54"
-        Me.Button54.Size = New System.Drawing.Size(29, 30)
-        Me.Button54.TabIndex = 165
-        Me.Button54.UseVisualStyleBackColor = True
-        '
-        'TxtCtaBanco
-        '
-        Me.TxtCtaBanco.Location = New System.Drawing.Point(328, 52)
-        Me.TxtCtaBanco.Name = "TxtCtaBanco"
-        Me.TxtCtaBanco.Size = New System.Drawing.Size(100, 20)
-        Me.TxtCtaBanco.TabIndex = 164
-        '
-        'Label90
-        '
-        Me.Label90.AutoSize = True
-        Me.Label90.Location = New System.Drawing.Point(256, 59)
-        Me.Label90.Name = "Label90"
-        Me.Label90.Size = New System.Drawing.Size(75, 13)
-        Me.Label90.TabIndex = 141
-        Me.Label90.Text = "Cuenta Banco"
         '
         'TabProductor
         '
@@ -3308,6 +3053,46 @@ Partial Class FrmBeneficiario
         Me.GroupBox8.TabIndex = 2
         Me.GroupBox8.TabStop = False
         '
+        'CboTransportistaProductor
+        '
+        Me.CboTransportistaProductor.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboTransportistaProductor.Caption = ""
+        Me.CboTransportistaProductor.CaptionHeight = 17
+        Me.CboTransportistaProductor.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboTransportistaProductor.ColumnCaptionHeight = 17
+        Me.CboTransportistaProductor.ColumnFooterHeight = 17
+        Me.CboTransportistaProductor.ContentHeight = 15
+        Me.CboTransportistaProductor.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboTransportistaProductor.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
+        Me.CboTransportistaProductor.DropDownWidth = 300
+        Me.CboTransportistaProductor.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboTransportistaProductor.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboTransportistaProductor.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboTransportistaProductor.EditorHeight = 15
+        Me.CboTransportistaProductor.Images.Add(CType(resources.GetObject("CboTransportistaProductor.Images"), System.Drawing.Image))
+        Me.CboTransportistaProductor.ItemHeight = 15
+        Me.CboTransportistaProductor.Location = New System.Drawing.Point(340, 42)
+        Me.CboTransportistaProductor.MatchEntryTimeout = CType(2000, Long)
+        Me.CboTransportistaProductor.MaxDropDownItems = CType(5, Short)
+        Me.CboTransportistaProductor.MaxLength = 32767
+        Me.CboTransportistaProductor.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboTransportistaProductor.Name = "CboTransportistaProductor"
+        Me.CboTransportistaProductor.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboTransportistaProductor.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboTransportistaProductor.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboTransportistaProductor.Size = New System.Drawing.Size(135, 21)
+        Me.CboTransportistaProductor.TabIndex = 185
+        Me.CboTransportistaProductor.PropBag = resources.GetString("CboTransportistaProductor.PropBag")
+        '
+        'Label100
+        '
+        Me.Label100.AutoSize = True
+        Me.Label100.Location = New System.Drawing.Point(265, 47)
+        Me.Label100.Name = "Label100"
+        Me.Label100.Size = New System.Drawing.Size(68, 13)
+        Me.Label100.TabIndex = 186
+        Me.Label100.Text = "Transportista"
+        '
         'TxtPrecioProductor
         '
         Me.TxtPrecioProductor.Location = New System.Drawing.Point(340, 69)
@@ -3515,6 +3300,402 @@ Partial Class FrmBeneficiario
         Me.Label59.Size = New System.Drawing.Size(62, 13)
         Me.Label59.TabIndex = 168
         Me.Label59.Text = "Escolaridad"
+        '
+        'TabTransportista
+        '
+        Me.TabTransportista.Controls.Add(Me.TextBox3)
+        Me.TabTransportista.Controls.Add(Me.Label97)
+        Me.TabTransportista.Controls.Add(Me.GroupBox14)
+        Me.TabTransportista.Controls.Add(Me.GroupBox12)
+        Me.TabTransportista.Location = New System.Drawing.Point(4, 22)
+        Me.TabTransportista.Name = "TabTransportista"
+        Me.TabTransportista.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabTransportista.Size = New System.Drawing.Size(616, 317)
+        Me.TabTransportista.TabIndex = 4
+        Me.TabTransportista.Text = "Transportista"
+        Me.TabTransportista.UseVisualStyleBackColor = True
+        '
+        'TextBox3
+        '
+        Me.TextBox3.Location = New System.Drawing.Point(536, 107)
+        Me.TextBox3.Name = "TextBox3"
+        Me.TextBox3.Size = New System.Drawing.Size(66, 20)
+        Me.TextBox3.TabIndex = 198
+        '
+        'Label97
+        '
+        Me.Label97.AutoSize = True
+        Me.Label97.Location = New System.Drawing.Point(479, 110)
+        Me.Label97.Name = "Label97"
+        Me.Label97.Size = New System.Drawing.Size(40, 13)
+        Me.Label97.TabIndex = 197
+        Me.Label97.Text = "Precio:"
+        '
+        'GroupBox14
+        '
+        Me.GroupBox14.Controls.Add(Me.TextBox2)
+        Me.GroupBox14.Controls.Add(Me.Label96)
+        Me.GroupBox14.Controls.Add(Me.TextBox1)
+        Me.GroupBox14.Controls.Add(Me.Label95)
+        Me.GroupBox14.Location = New System.Drawing.Point(473, 12)
+        Me.GroupBox14.Name = "GroupBox14"
+        Me.GroupBox14.Size = New System.Drawing.Size(138, 84)
+        Me.GroupBox14.TabIndex = 196
+        Me.GroupBox14.TabStop = False
+        Me.GroupBox14.Text = "Deducciones"
+        '
+        'TextBox2
+        '
+        Me.TextBox2.Location = New System.Drawing.Point(63, 46)
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.Size = New System.Drawing.Size(66, 20)
+        Me.TextBox2.TabIndex = 183
+        '
+        'Label96
+        '
+        Me.Label96.AutoSize = True
+        Me.Label96.Location = New System.Drawing.Point(6, 53)
+        Me.Label96.Name = "Label96"
+        Me.Label96.Size = New System.Drawing.Size(33, 13)
+        Me.Label96.TabIndex = 182
+        Me.Label96.Text = "IMI %"
+        '
+        'TextBox1
+        '
+        Me.TextBox1.Location = New System.Drawing.Point(63, 23)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(66, 20)
+        Me.TextBox1.TabIndex = 181
+        '
+        'Label95
+        '
+        Me.Label95.AutoSize = True
+        Me.Label95.Location = New System.Drawing.Point(6, 26)
+        Me.Label95.Name = "Label95"
+        Me.Label95.Size = New System.Drawing.Size(29, 13)
+        Me.Label95.TabIndex = 180
+        Me.Label95.Text = "IR %"
+        '
+        'GroupBox12
+        '
+        Me.GroupBox12.Controls.Add(Me.Button44)
+        Me.GroupBox12.Controls.Add(Me.TxtCtaFondos)
+        Me.GroupBox12.Controls.Add(Me.Button45)
+        Me.GroupBox12.Controls.Add(Me.Label80)
+        Me.GroupBox12.Controls.Add(Me.TxtCtaOtras)
+        Me.GroupBox12.Controls.Add(Me.Label81)
+        Me.GroupBox12.Controls.Add(Me.Button46)
+        Me.GroupBox12.Controls.Add(Me.TxtCtaVeterinario)
+        Me.GroupBox12.Controls.Add(Me.Label82)
+        Me.GroupBox12.Controls.Add(Me.Button47)
+        Me.GroupBox12.Controls.Add(Me.TxtCtaTrazabilidad)
+        Me.GroupBox12.Controls.Add(Me.Label83)
+        Me.GroupBox12.Controls.Add(Me.Button48)
+        Me.GroupBox12.Controls.Add(Me.TxtCtaInseminacion)
+        Me.GroupBox12.Controls.Add(Me.Label84)
+        Me.GroupBox12.Controls.Add(Me.Button49)
+        Me.GroupBox12.Controls.Add(Me.TxtCtaTransporte)
+        Me.GroupBox12.Controls.Add(Me.Label85)
+        Me.GroupBox12.Controls.Add(Me.Button50)
+        Me.GroupBox12.Controls.Add(Me.TxtCtaGastoPlanilla)
+        Me.GroupBox12.Controls.Add(Me.Label86)
+        Me.GroupBox12.Controls.Add(Me.Button51)
+        Me.GroupBox12.Controls.Add(Me.TxtAnticipo)
+        Me.GroupBox12.Controls.Add(Me.Label87)
+        Me.GroupBox12.Controls.Add(Me.Button52)
+        Me.GroupBox12.Controls.Add(Me.TxtCtaBolsa)
+        Me.GroupBox12.Controls.Add(Me.Label88)
+        Me.GroupBox12.Controls.Add(Me.Button53)
+        Me.GroupBox12.Controls.Add(Me.TxtCtaIr)
+        Me.GroupBox12.Controls.Add(Me.Label89)
+        Me.GroupBox12.Controls.Add(Me.Button54)
+        Me.GroupBox12.Controls.Add(Me.TxtCtaBanco)
+        Me.GroupBox12.Controls.Add(Me.Label90)
+        Me.GroupBox12.Location = New System.Drawing.Point(3, 11)
+        Me.GroupBox12.Name = "GroupBox12"
+        Me.GroupBox12.Size = New System.Drawing.Size(468, 293)
+        Me.GroupBox12.TabIndex = 3
+        Me.GroupBox12.TabStop = False
+        '
+        'Button44
+        '
+        Me.Button44.Image = CType(resources.GetObject("Button44.Image"), System.Drawing.Image)
+        Me.Button44.Location = New System.Drawing.Point(225, 250)
+        Me.Button44.Name = "Button44"
+        Me.Button44.Size = New System.Drawing.Size(29, 30)
+        Me.Button44.TabIndex = 194
+        Me.Button44.UseVisualStyleBackColor = True
+        Me.Button44.Visible = False
+        '
+        'TxtCtaFondos
+        '
+        Me.TxtCtaFondos.AcceptsReturn = True
+        Me.TxtCtaFondos.Location = New System.Drawing.Point(119, 256)
+        Me.TxtCtaFondos.Name = "TxtCtaFondos"
+        Me.TxtCtaFondos.Size = New System.Drawing.Size(100, 20)
+        Me.TxtCtaFondos.TabIndex = 192
+        Me.TxtCtaFondos.Visible = False
+        '
+        'Button45
+        '
+        Me.Button45.Image = CType(resources.GetObject("Button45.Image"), System.Drawing.Image)
+        Me.Button45.Location = New System.Drawing.Point(225, 218)
+        Me.Button45.Name = "Button45"
+        Me.Button45.Size = New System.Drawing.Size(29, 30)
+        Me.Button45.TabIndex = 195
+        Me.Button45.UseVisualStyleBackColor = True
+        '
+        'Label80
+        '
+        Me.Label80.AutoSize = True
+        Me.Label80.Location = New System.Drawing.Point(0, 259)
+        Me.Label80.Name = "Label80"
+        Me.Label80.Size = New System.Drawing.Size(113, 13)
+        Me.Label80.TabIndex = 190
+        Me.Label80.Text = "Administracion Fondos"
+        Me.Label80.Visible = False
+        '
+        'TxtCtaOtras
+        '
+        Me.TxtCtaOtras.Location = New System.Drawing.Point(119, 224)
+        Me.TxtCtaOtras.Name = "TxtCtaOtras"
+        Me.TxtCtaOtras.Size = New System.Drawing.Size(100, 20)
+        Me.TxtCtaOtras.TabIndex = 193
+        '
+        'Label81
+        '
+        Me.Label81.AutoSize = True
+        Me.Label81.Location = New System.Drawing.Point(15, 227)
+        Me.Label81.Name = "Label81"
+        Me.Label81.Size = New System.Drawing.Size(98, 13)
+        Me.Label81.TabIndex = 191
+        Me.Label81.Text = "Otras Deducciones"
+        '
+        'Button46
+        '
+        Me.Button46.Image = CType(resources.GetObject("Button46.Image"), System.Drawing.Image)
+        Me.Button46.Location = New System.Drawing.Point(225, 182)
+        Me.Button46.Name = "Button46"
+        Me.Button46.Size = New System.Drawing.Size(29, 30)
+        Me.Button46.TabIndex = 189
+        Me.Button46.UseVisualStyleBackColor = True
+        '
+        'TxtCtaVeterinario
+        '
+        Me.TxtCtaVeterinario.Location = New System.Drawing.Point(119, 187)
+        Me.TxtCtaVeterinario.Name = "TxtCtaVeterinario"
+        Me.TxtCtaVeterinario.Size = New System.Drawing.Size(100, 20)
+        Me.TxtCtaVeterinario.TabIndex = 188
+        '
+        'Label82
+        '
+        Me.Label82.AutoSize = True
+        Me.Label82.Location = New System.Drawing.Point(2, 191)
+        Me.Label82.Name = "Label82"
+        Me.Label82.Size = New System.Drawing.Size(113, 13)
+        Me.Label82.TabIndex = 187
+        Me.Label82.Text = "Productos Veterinarios"
+        '
+        'Button47
+        '
+        Me.Button47.Image = CType(resources.GetObject("Button47.Image"), System.Drawing.Image)
+        Me.Button47.Location = New System.Drawing.Point(224, 82)
+        Me.Button47.Name = "Button47"
+        Me.Button47.Size = New System.Drawing.Size(29, 30)
+        Me.Button47.TabIndex = 186
+        Me.Button47.UseVisualStyleBackColor = True
+        '
+        'TxtCtaTrazabilidad
+        '
+        Me.TxtCtaTrazabilidad.Location = New System.Drawing.Point(119, 85)
+        Me.TxtCtaTrazabilidad.Name = "TxtCtaTrazabilidad"
+        Me.TxtCtaTrazabilidad.Size = New System.Drawing.Size(100, 20)
+        Me.TxtCtaTrazabilidad.TabIndex = 185
+        '
+        'Label83
+        '
+        Me.Label83.AutoSize = True
+        Me.Label83.Location = New System.Drawing.Point(49, 88)
+        Me.Label83.Name = "Label83"
+        Me.Label83.Size = New System.Drawing.Size(64, 13)
+        Me.Label83.TabIndex = 184
+        Me.Label83.Text = "Trazabilidad"
+        '
+        'Button48
+        '
+        Me.Button48.Image = CType(resources.GetObject("Button48.Image"), System.Drawing.Image)
+        Me.Button48.Location = New System.Drawing.Point(225, 50)
+        Me.Button48.Name = "Button48"
+        Me.Button48.Size = New System.Drawing.Size(29, 30)
+        Me.Button48.TabIndex = 183
+        Me.Button48.UseVisualStyleBackColor = True
+        '
+        'TxtCtaInseminacion
+        '
+        Me.TxtCtaInseminacion.Location = New System.Drawing.Point(119, 55)
+        Me.TxtCtaInseminacion.Name = "TxtCtaInseminacion"
+        Me.TxtCtaInseminacion.Size = New System.Drawing.Size(100, 20)
+        Me.TxtCtaInseminacion.TabIndex = 182
+        '
+        'Label84
+        '
+        Me.Label84.AutoSize = True
+        Me.Label84.Location = New System.Drawing.Point(44, 59)
+        Me.Label84.Name = "Label84"
+        Me.Label84.Size = New System.Drawing.Size(69, 13)
+        Me.Label84.TabIndex = 181
+        Me.Label84.Text = "Inseminacion"
+        '
+        'Button49
+        '
+        Me.Button49.Image = CType(resources.GetObject("Button49.Image"), System.Drawing.Image)
+        Me.Button49.Location = New System.Drawing.Point(225, 19)
+        Me.Button49.Name = "Button49"
+        Me.Button49.Size = New System.Drawing.Size(29, 30)
+        Me.Button49.TabIndex = 180
+        Me.Button49.UseVisualStyleBackColor = True
+        '
+        'TxtCtaTransporte
+        '
+        Me.TxtCtaTransporte.Location = New System.Drawing.Point(119, 24)
+        Me.TxtCtaTransporte.Name = "TxtCtaTransporte"
+        Me.TxtCtaTransporte.Size = New System.Drawing.Size(100, 20)
+        Me.TxtCtaTransporte.TabIndex = 179
+        '
+        'Label85
+        '
+        Me.Label85.AutoSize = True
+        Me.Label85.Location = New System.Drawing.Point(55, 24)
+        Me.Label85.Name = "Label85"
+        Me.Label85.Size = New System.Drawing.Size(58, 13)
+        Me.Label85.TabIndex = 178
+        Me.Label85.Text = "Transporte"
+        '
+        'Button50
+        '
+        Me.Button50.Image = CType(resources.GetObject("Button50.Image"), System.Drawing.Image)
+        Me.Button50.Location = New System.Drawing.Point(434, 18)
+        Me.Button50.Name = "Button50"
+        Me.Button50.Size = New System.Drawing.Size(29, 30)
+        Me.Button50.TabIndex = 177
+        Me.Button50.UseVisualStyleBackColor = True
+        '
+        'TxtCtaGastoPlanilla
+        '
+        Me.TxtCtaGastoPlanilla.Location = New System.Drawing.Point(331, 21)
+        Me.TxtCtaGastoPlanilla.Name = "TxtCtaGastoPlanilla"
+        Me.TxtCtaGastoPlanilla.Size = New System.Drawing.Size(100, 20)
+        Me.TxtCtaGastoPlanilla.TabIndex = 176
+        '
+        'Label86
+        '
+        Me.Label86.AutoSize = True
+        Me.Label86.Location = New System.Drawing.Point(260, 24)
+        Me.Label86.Name = "Label86"
+        Me.Label86.Size = New System.Drawing.Size(71, 13)
+        Me.Label86.TabIndex = 175
+        Me.Label86.Text = "Gasto Planilla"
+        '
+        'Button51
+        '
+        Me.Button51.Image = CType(resources.GetObject("Button51.Image"), System.Drawing.Image)
+        Me.Button51.Location = New System.Drawing.Point(225, 146)
+        Me.Button51.Name = "Button51"
+        Me.Button51.Size = New System.Drawing.Size(29, 30)
+        Me.Button51.TabIndex = 174
+        Me.Button51.UseVisualStyleBackColor = True
+        '
+        'TxtAnticipo
+        '
+        Me.TxtAnticipo.AcceptsReturn = True
+        Me.TxtAnticipo.Location = New System.Drawing.Point(119, 152)
+        Me.TxtAnticipo.Name = "TxtAnticipo"
+        Me.TxtAnticipo.Size = New System.Drawing.Size(100, 20)
+        Me.TxtAnticipo.TabIndex = 173
+        '
+        'Label87
+        '
+        Me.Label87.AutoSize = True
+        Me.Label87.Location = New System.Drawing.Point(17, 155)
+        Me.Label87.Name = "Label87"
+        Me.Label87.Size = New System.Drawing.Size(96, 13)
+        Me.Label87.TabIndex = 172
+        Me.Label87.Text = "Anticipo de Planilla"
+        '
+        'Button52
+        '
+        Me.Button52.Image = CType(resources.GetObject("Button52.Image"), System.Drawing.Image)
+        Me.Button52.Location = New System.Drawing.Point(225, 112)
+        Me.Button52.Name = "Button52"
+        Me.Button52.Size = New System.Drawing.Size(29, 30)
+        Me.Button52.TabIndex = 171
+        Me.Button52.UseVisualStyleBackColor = True
+        '
+        'TxtCtaBolsa
+        '
+        Me.TxtCtaBolsa.Location = New System.Drawing.Point(119, 117)
+        Me.TxtCtaBolsa.Name = "TxtCtaBolsa"
+        Me.TxtCtaBolsa.Size = New System.Drawing.Size(100, 20)
+        Me.TxtCtaBolsa.TabIndex = 170
+        '
+        'Label88
+        '
+        Me.Label88.AutoSize = True
+        Me.Label88.Location = New System.Drawing.Point(22, 117)
+        Me.Label88.Name = "Label88"
+        Me.Label88.Size = New System.Drawing.Size(86, 13)
+        Me.Label88.TabIndex = 169
+        Me.Label88.Text = "Bolsa de Valores"
+        '
+        'Button53
+        '
+        Me.Button53.Image = CType(resources.GetObject("Button53.Image"), System.Drawing.Image)
+        Me.Button53.Location = New System.Drawing.Point(434, 90)
+        Me.Button53.Name = "Button53"
+        Me.Button53.Size = New System.Drawing.Size(29, 30)
+        Me.Button53.TabIndex = 168
+        Me.Button53.UseVisualStyleBackColor = True
+        '
+        'TxtCtaIr
+        '
+        Me.TxtCtaIr.Location = New System.Drawing.Point(328, 92)
+        Me.TxtCtaIr.Name = "TxtCtaIr"
+        Me.TxtCtaIr.Size = New System.Drawing.Size(100, 20)
+        Me.TxtCtaIr.TabIndex = 167
+        '
+        'Label89
+        '
+        Me.Label89.AutoSize = True
+        Me.Label89.Location = New System.Drawing.Point(272, 92)
+        Me.Label89.Name = "Label89"
+        Me.Label89.Size = New System.Drawing.Size(55, 13)
+        Me.Label89.TabIndex = 166
+        Me.Label89.Text = "Cuenta IR"
+        '
+        'Button54
+        '
+        Me.Button54.Image = CType(resources.GetObject("Button54.Image"), System.Drawing.Image)
+        Me.Button54.Location = New System.Drawing.Point(434, 54)
+        Me.Button54.Name = "Button54"
+        Me.Button54.Size = New System.Drawing.Size(29, 30)
+        Me.Button54.TabIndex = 165
+        Me.Button54.UseVisualStyleBackColor = True
+        '
+        'TxtCtaBanco
+        '
+        Me.TxtCtaBanco.Location = New System.Drawing.Point(328, 52)
+        Me.TxtCtaBanco.Name = "TxtCtaBanco"
+        Me.TxtCtaBanco.Size = New System.Drawing.Size(100, 20)
+        Me.TxtCtaBanco.TabIndex = 164
+        '
+        'Label90
+        '
+        Me.Label90.AutoSize = True
+        Me.Label90.Location = New System.Drawing.Point(256, 59)
+        Me.Label90.Name = "Label90"
+        Me.Label90.Size = New System.Drawing.Size(75, 13)
+        Me.Label90.TabIndex = 141
+        Me.Label90.Text = "Cuenta Banco"
         '
         'TabProveedor
         '
@@ -3803,187 +3984,6 @@ Partial Class FrmBeneficiario
         Me.TabEmpleado.Text = "Empleado"
         Me.TabEmpleado.UseVisualStyleBackColor = True
         '
-        'GroupBox14
-        '
-        Me.GroupBox14.Controls.Add(Me.TextBox2)
-        Me.GroupBox14.Controls.Add(Me.Label96)
-        Me.GroupBox14.Controls.Add(Me.TextBox1)
-        Me.GroupBox14.Controls.Add(Me.Label95)
-        Me.GroupBox14.Location = New System.Drawing.Point(473, 12)
-        Me.GroupBox14.Name = "GroupBox14"
-        Me.GroupBox14.Size = New System.Drawing.Size(138, 84)
-        Me.GroupBox14.TabIndex = 196
-        Me.GroupBox14.TabStop = False
-        Me.GroupBox14.Text = "Deducciones"
-        '
-        'TextBox1
-        '
-        Me.TextBox1.Location = New System.Drawing.Point(63, 23)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(66, 20)
-        Me.TextBox1.TabIndex = 181
-        '
-        'Label95
-        '
-        Me.Label95.AutoSize = True
-        Me.Label95.Location = New System.Drawing.Point(6, 26)
-        Me.Label95.Name = "Label95"
-        Me.Label95.Size = New System.Drawing.Size(29, 13)
-        Me.Label95.TabIndex = 180
-        Me.Label95.Text = "IR %"
-        '
-        'TextBox2
-        '
-        Me.TextBox2.Location = New System.Drawing.Point(63, 46)
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(66, 20)
-        Me.TextBox2.TabIndex = 183
-        '
-        'Label96
-        '
-        Me.Label96.AutoSize = True
-        Me.Label96.Location = New System.Drawing.Point(6, 53)
-        Me.Label96.Name = "Label96"
-        Me.Label96.Size = New System.Drawing.Size(33, 13)
-        Me.Label96.TabIndex = 182
-        Me.Label96.Text = "IMI %"
-        '
-        'TextBox3
-        '
-        Me.TextBox3.Location = New System.Drawing.Point(536, 107)
-        Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.Size = New System.Drawing.Size(66, 20)
-        Me.TextBox3.TabIndex = 198
-        '
-        'Label97
-        '
-        Me.Label97.AutoSize = True
-        Me.Label97.Location = New System.Drawing.Point(479, 110)
-        Me.Label97.Name = "Label97"
-        Me.Label97.Size = New System.Drawing.Size(40, 13)
-        Me.Label97.TabIndex = 197
-        Me.Label97.Text = "Precio:"
-        '
-        'CboTransportistaSocio
-        '
-        Me.CboTransportistaSocio.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
-        Me.CboTransportistaSocio.Caption = ""
-        Me.CboTransportistaSocio.CaptionHeight = 17
-        Me.CboTransportistaSocio.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
-        Me.CboTransportistaSocio.ColumnCaptionHeight = 17
-        Me.CboTransportistaSocio.ColumnFooterHeight = 17
-        Me.CboTransportistaSocio.ContentHeight = 15
-        Me.CboTransportistaSocio.DeadAreaBackColor = System.Drawing.Color.Empty
-        Me.CboTransportistaSocio.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
-        Me.CboTransportistaSocio.DropDownWidth = 300
-        Me.CboTransportistaSocio.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CboTransportistaSocio.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CboTransportistaSocio.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CboTransportistaSocio.EditorHeight = 15
-        Me.CboTransportistaSocio.Images.Add(CType(resources.GetObject("CboTransportistaSocio.Images"), System.Drawing.Image))
-        Me.CboTransportistaSocio.ItemHeight = 15
-        Me.CboTransportistaSocio.Location = New System.Drawing.Point(317, 42)
-        Me.CboTransportistaSocio.MatchEntryTimeout = CType(2000, Long)
-        Me.CboTransportistaSocio.MaxDropDownItems = CType(5, Short)
-        Me.CboTransportistaSocio.MaxLength = 32767
-        Me.CboTransportistaSocio.MouseCursor = System.Windows.Forms.Cursors.Default
-        Me.CboTransportistaSocio.Name = "CboTransportistaSocio"
-        Me.CboTransportistaSocio.RowDivider.Color = System.Drawing.Color.DarkGray
-        Me.CboTransportistaSocio.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
-        Me.CboTransportistaSocio.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboTransportistaSocio.Size = New System.Drawing.Size(135, 21)
-        Me.CboTransportistaSocio.TabIndex = 181
-        Me.CboTransportistaSocio.PropBag = resources.GetString("CboTransportistaSocio.PropBag")
-        '
-        'Label98
-        '
-        Me.Label98.AutoSize = True
-        Me.Label98.Location = New System.Drawing.Point(242, 47)
-        Me.Label98.Name = "Label98"
-        Me.Label98.Size = New System.Drawing.Size(68, 13)
-        Me.Label98.TabIndex = 182
-        Me.Label98.Text = "Transportista"
-        '
-        'CboTransportistaPreSocio
-        '
-        Me.CboTransportistaPreSocio.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
-        Me.CboTransportistaPreSocio.Caption = ""
-        Me.CboTransportistaPreSocio.CaptionHeight = 17
-        Me.CboTransportistaPreSocio.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
-        Me.CboTransportistaPreSocio.ColumnCaptionHeight = 17
-        Me.CboTransportistaPreSocio.ColumnFooterHeight = 17
-        Me.CboTransportistaPreSocio.ContentHeight = 15
-        Me.CboTransportistaPreSocio.DeadAreaBackColor = System.Drawing.Color.Empty
-        Me.CboTransportistaPreSocio.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
-        Me.CboTransportistaPreSocio.DropDownWidth = 300
-        Me.CboTransportistaPreSocio.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CboTransportistaPreSocio.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CboTransportistaPreSocio.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CboTransportistaPreSocio.EditorHeight = 15
-        Me.CboTransportistaPreSocio.Images.Add(CType(resources.GetObject("CboTransportistaPreSocio.Images"), System.Drawing.Image))
-        Me.CboTransportistaPreSocio.ItemHeight = 15
-        Me.CboTransportistaPreSocio.Location = New System.Drawing.Point(340, 42)
-        Me.CboTransportistaPreSocio.MatchEntryTimeout = CType(2000, Long)
-        Me.CboTransportistaPreSocio.MaxDropDownItems = CType(5, Short)
-        Me.CboTransportistaPreSocio.MaxLength = 32767
-        Me.CboTransportistaPreSocio.MouseCursor = System.Windows.Forms.Cursors.Default
-        Me.CboTransportistaPreSocio.Name = "CboTransportistaPreSocio"
-        Me.CboTransportistaPreSocio.RowDivider.Color = System.Drawing.Color.DarkGray
-        Me.CboTransportistaPreSocio.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
-        Me.CboTransportistaPreSocio.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboTransportistaPreSocio.Size = New System.Drawing.Size(135, 21)
-        Me.CboTransportistaPreSocio.TabIndex = 183
-        Me.CboTransportistaPreSocio.PropBag = resources.GetString("CboTransportistaPreSocio.PropBag")
-        '
-        'Label99
-        '
-        Me.Label99.AutoSize = True
-        Me.Label99.Location = New System.Drawing.Point(265, 47)
-        Me.Label99.Name = "Label99"
-        Me.Label99.Size = New System.Drawing.Size(68, 13)
-        Me.Label99.TabIndex = 184
-        Me.Label99.Text = "Transportista"
-        '
-        'CboTransportistaProductor
-        '
-        Me.CboTransportistaProductor.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
-        Me.CboTransportistaProductor.Caption = ""
-        Me.CboTransportistaProductor.CaptionHeight = 17
-        Me.CboTransportistaProductor.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
-        Me.CboTransportistaProductor.ColumnCaptionHeight = 17
-        Me.CboTransportistaProductor.ColumnFooterHeight = 17
-        Me.CboTransportistaProductor.ContentHeight = 15
-        Me.CboTransportistaProductor.DeadAreaBackColor = System.Drawing.Color.Empty
-        Me.CboTransportistaProductor.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
-        Me.CboTransportistaProductor.DropDownWidth = 300
-        Me.CboTransportistaProductor.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CboTransportistaProductor.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CboTransportistaProductor.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CboTransportistaProductor.EditorHeight = 15
-        Me.CboTransportistaProductor.Images.Add(CType(resources.GetObject("CboTransportistaProductor.Images"), System.Drawing.Image))
-        Me.CboTransportistaProductor.ItemHeight = 15
-        Me.CboTransportistaProductor.Location = New System.Drawing.Point(340, 42)
-        Me.CboTransportistaProductor.MatchEntryTimeout = CType(2000, Long)
-        Me.CboTransportistaProductor.MaxDropDownItems = CType(5, Short)
-        Me.CboTransportistaProductor.MaxLength = 32767
-        Me.CboTransportistaProductor.MouseCursor = System.Windows.Forms.Cursors.Default
-        Me.CboTransportistaProductor.Name = "CboTransportistaProductor"
-        Me.CboTransportistaProductor.RowDivider.Color = System.Drawing.Color.DarkGray
-        Me.CboTransportistaProductor.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
-        Me.CboTransportistaProductor.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboTransportistaProductor.Size = New System.Drawing.Size(135, 21)
-        Me.CboTransportistaProductor.TabIndex = 185
-        Me.CboTransportistaProductor.PropBag = resources.GetString("CboTransportistaProductor.PropBag")
-        '
-        'Label100
-        '
-        Me.Label100.AutoSize = True
-        Me.Label100.Location = New System.Drawing.Point(265, 47)
-        Me.Label100.Name = "Label100"
-        Me.Label100.Size = New System.Drawing.Size(68, 13)
-        Me.Label100.TabIndex = 186
-        Me.Label100.Text = "Transportista"
-        '
         'FrmBeneficiario
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -4025,6 +4025,7 @@ Partial Class FrmBeneficiario
         Me.GroupBox13.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
+        CType(Me.CboTransportistaSocio, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboTipoNominaSocio, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboCooperativaSocio, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboDepartamentosSocio, System.ComponentModel.ISupportInitialize).EndInit()
@@ -4035,25 +4036,29 @@ Partial Class FrmBeneficiario
         Me.GroupBox7.PerformLayout()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
+        CType(Me.CboTransportistaPreSocio, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboTipoNominaPreSocio, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboRutaPreSocio, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboCooperativaPreSocio, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboDepartamentosPreSocio, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboEscolaridadPreSocio, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.TabTransportista.ResumeLayout(False)
-        Me.TabTransportista.PerformLayout()
-        Me.GroupBox12.ResumeLayout(False)
-        Me.GroupBox12.PerformLayout()
         Me.TabProductor.ResumeLayout(False)
         Me.GroupBox9.ResumeLayout(False)
         Me.GroupBox9.PerformLayout()
         Me.GroupBox8.ResumeLayout(False)
         Me.GroupBox8.PerformLayout()
+        CType(Me.CboTransportistaProductor, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboTipoNominaProductor, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboRutaProductor, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboCooperativaProductor, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboDepartamentosProductor, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboEscolaridadProductor, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabTransportista.ResumeLayout(False)
+        Me.TabTransportista.PerformLayout()
+        Me.GroupBox14.ResumeLayout(False)
+        Me.GroupBox14.PerformLayout()
+        Me.GroupBox12.ResumeLayout(False)
+        Me.GroupBox12.PerformLayout()
         Me.TabProveedor.ResumeLayout(False)
         Me.GroupBox11.ResumeLayout(False)
         Me.GroupBox11.PerformLayout()
@@ -4063,11 +4068,6 @@ Partial Class FrmBeneficiario
         CType(Me.TxtDiasCreditoProveedor, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox10.ResumeLayout(False)
         Me.GroupBox10.PerformLayout()
-        Me.GroupBox14.ResumeLayout(False)
-        Me.GroupBox14.PerformLayout()
-        CType(Me.CboTransportistaSocio, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.CboTransportistaPreSocio, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.CboTransportistaProductor, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

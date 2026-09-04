@@ -1,6 +1,7 @@
 Imports System.Data.SqlClient
 Imports System.Data.OleDb
 Imports System.IO
+Imports System.Data.Common
 
 Public Class FrmPlanilla
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -783,40 +784,296 @@ Public Class FrmPlanilla
                 Exit Sub
                 NumNomina = -1
             End If
-
-
-
-
-
-
-            Else
-                Me.CmdCalcular.Enabled = False
-            End If
+        Else
+            Me.CmdCalcular.Enabled = False
+        End If
     End Sub
 
     Private Sub CmdSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdSalir.Click
         Me.Close()
     End Sub
+    Public Sub EjecutarCalculoPlanilla()
 
-    Private Sub CmdCalcular_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdCalcular.Click
-        Dim SqlString As String, iPosicion As Double, Registros As Double
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim CodProductor As String, Nombres As String, Fecha As Date, Cantidad As Double, CantidadTotal As Double
-        Dim MontoLunes As Double, MontoMartes As Double, MontoMiercoles As Double, MontoJueves As Double, MontoViernes As Double, MontoSabado As Double, MontoDomingo As Double
-        Dim iPosicion2 As Double = 0, Registros2 As Double = 0, Contador As Double = 1, PrecioUnitario As Double, IngresoBruto, PorcientoIr As Double
-        Dim MontoIr As Double, MontoIMI As Double = 0, PorcientoPolicia As Double, MontoPolicia As Double, MontoVeterinario As Double, ROC1 As String = 0, ROC2 As String = 0, ROC3 As String = 0, ROC4 As String = 0, ROC5 As String = 0, ROC6 As String = 0, ROC7 As String = 0
-        Dim Anticipo As Double, Transporte As Double, Pulperia As Double, Inseminacion As Double, NCompra As String, PrecioLunes As Double, PrecioMartes As Double, PrecioMiercoles As Double, PrecioJueves As Double, PrecioViernes As Double, PrecioSabado As Double, PrecioDomingo As Double
-        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Trazabilidad As Double, Otros As Double
-        Dim CantPlanilla As Double = 0, PLunes As Double, PMartes As Double, PMiercoles As Double, PJueves As Double, PViernes As Double, PSabado As Double, PDomingo As Double
-        Dim PorcientoBolsa As Double = 0, MontoBolsa As Double = 0, ProductosVeterinarios As Double = 0, CantLunes As Double = 0, CantMartes As Double = 0, CantMiercoles As Double = 0, CantJueves As Double = 0, CantViernes As Double = 0, CantSabado As Double = 0, CantDomingo As Double = 0
-        Dim PrecioProductor As Double = 0, TipoProductor As String = "Productor", PorcientoIMI As Double = 0
+        Try
+
+            If Not ValidarDatosPlanilla() Then
+                Exit Sub
+            End If
+
+            ActualizarEncabezadoNomina()
+
+            CalcularDetallePlanilla()
+
+            CargarResultadosPlanilla()
+
+            HabilitarControlesPlanilla()
+
+        Catch ex As Exception
+
+            MessageBox.Show(
+            "Ocurrió un error al calcular la planilla." &
+            Environment.NewLine &
+            Environment.NewLine &
+            ex.Message,
+            "Zeus Acopio",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Error)
+
+        End Try
+
+    End Sub
+
+
+    Private Sub CmdCalcular_Click(ByVal sender As System.Object,
+                              ByVal e As System.EventArgs) Handles CmdCalcular.Click
+
+        EjecutarCalculoPlanilla()
+
+    End Sub
+
+    Private Function ValidarDatosPlanilla() As Boolean
 
         If Me.CboTipoPlanilla.Text = "" Then
-            MsgBox("Seleccione la Nomina, para Calcular", MsgBoxStyle.Critical, "Zeus Acopio")
-            Exit Sub
+
+            MsgBox("Seleccione la Nomina, para Calcular",
+               MsgBoxStyle.Critical,
+               "Zeus Acopio")
+
+            Return False
+
         End If
 
+        Return True
+
+    End Function
+
+    Private Sub ActualizarEncabezadoNomina()
+
+        Dim StrSqlUpdate As String
+        Dim ComandoUpdate As SqlClient.SqlCommand
+        Dim iResultado As Integer
+
+        StrSqlUpdate =
+        "UPDATE [Nomina] SET " &
+        "[PorcientoIR] = " & Val(Me.TxtIR.Text) &
+        ",[PorcientoPolicia] = " & Val(Me.TxtDeduccionPolicia.Text) &
+        ",[PrecioUnitario] = " & Val(Me.TxtPrecioLunes.Text) &
+        ",[PrecioLunes] = " & Val(Me.TxtPrecioLunes.Text) &
+        ",[PrecioMartes] = " & Val(Me.TxtPrecioMartes.Text) &
+        ",[PrecioMiercoles] = " & Val(Me.TxtPrecioMiercoles.Text) &
+        ",[PrecioJueves] = " & Val(Me.TxtPrecioJueves.Text) &
+        ",[PrecioViernes] = " & Val(Me.TxtPrecioViernes.Text) &
+        ",[PrecioSabado] = " & Val(Me.TxtPrecioSabado.Text) &
+        ",[PrecioDomingo] = " & Val(Me.TxtPrecioDomingo.Text) &
+        " WHERE (NumPlanilla = '" & Me.TxtNumNomina.Text & "')"
+
+        MiConexion.Open()
+
+        Try
+
+            ComandoUpdate =
+            New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+
+            iResultado = ComandoUpdate.ExecuteNonQuery()
+
+        Finally
+
+            MiConexion.Close()
+
+        End Try
+
+    End Sub
+
+
+    Private Sub HabilitarControlesPlanilla()
+
+        Me.CmdNomina.Enabled = True
+        Me.CmdColillas.Enabled = True
+        Me.Button2.Enabled = True
+        Me.CmdCerrar.Enabled = True
+        Me.Button4.Enabled = True
+
+    End Sub
+
+    Private Sub CargarDetalleIngresos()
+
+        Dim SqlString As String
+        Dim Fecha As Date
+
+        Dim dsLocal As New DataSet
+        Dim daLocal As New SqlClient.SqlDataAdapter
+
         Fecha = Me.DTPFechaIni.Value
+
+        If Fecha.DayOfWeek = 1 Then
+
+            SqlString = "SELECT CodProductor, Nombres, TipoProductor, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo, Total, PrecioVenta, TotalIngresos, NumNomina " &
+                    "FROM Detalle_Nomina " &
+                    "WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "')"
+
+        ElseIf Fecha.DayOfWeek = 0 Then
+
+            SqlString = "SELECT CodProductor, Nombres, TipoProductor, Domingo, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Total, PrecioVenta, TotalIngresos, NumNomina " &
+                    "FROM Detalle_Nomina " &
+                    "WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "')"
+
+        ElseIf Fecha.DayOfWeek = 6 Then
+
+            SqlString = "SELECT CodProductor, Nombres, TipoProductor, Sabado, Domingo, Lunes, Martes, Miercoles, Jueves, Viernes, Total, PrecioVenta, TotalIngresos, NumNomina " &
+                    "FROM Detalle_Nomina " &
+                    "WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "')"
+
+        Else
+
+            Exit Sub
+
+        End If
+
+        daLocal = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+
+        daLocal.Fill(dsLocal, "DetalleIngresos")
+
+        Me.TDGridIngresos.DataSource = dsLocal.Tables("DetalleIngresos")
+
+        '----------------------------------------------------------
+        ' Configuración del grid
+        '----------------------------------------------------------
+
+        Me.TDGridIngresos.Splits(0).DisplayColumns(0).Width = 70
+        Me.TDGridIngresos.Columns(0).Caption = "Codigo"
+        Me.TDGridIngresos.Splits(0).DisplayColumns("CodProductor").Locked = True
+
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Nombres").Width = 190
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Nombres").Locked = True
+
+        Me.TDGridIngresos.Splits(0).DisplayColumns("TipoProductor").Locked = True
+        Me.TDGridIngresos.Splits(0).DisplayColumns("TipoProductor").Width = 61
+        Me.TDGridIngresos.Columns("TipoProductor").Caption = "Tipo"
+
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Domingo").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Lunes").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Martes").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Miercoles").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Jueves").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Viernes").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Sabado").Width = 61
+
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Total").Width = 61
+        Me.TDGridIngresos.Splits(0).DisplayColumns("Total").Locked = True
+        Me.TDGridIngresos.Columns("Total").Caption = "Total Litros"
+
+        Me.TDGridIngresos.Splits(0).DisplayColumns("PrecioVenta").Width = 70
+        Me.TDGridIngresos.Columns("PrecioVenta").NumberFormat = "##,##0.00"
+        Me.TDGridIngresos.Columns("PrecioVenta").Caption = "PrecioUnit"
+
+        Me.TDGridIngresos.Splits(0).DisplayColumns("TotalIngresos").Width = 80
+        Me.TDGridIngresos.Splits(0).DisplayColumns("TotalIngresos").Locked = True
+        Me.TDGridIngresos.Columns("TotalIngresos").NumberFormat = "##,##0.00"
+
+        Me.TDGridIngresos.Splits(0).DisplayColumns("NumNomina").Visible = False
+
+        Me.TDGridIngresos.Splits(0).DisplayColumns("TipoProductor").Visible = True
+
+    End Sub
+
+    Private Sub CalcularDetallePlanilla()
+
+        Dim SqlString As String
+        Dim iPosicion As Double
+        Dim Registros As Double
+
+        Dim DataSet As New DataSet
+        Dim DataAdapter As New SqlClient.SqlDataAdapter
+
+        Dim CodProductor As String
+        Dim Nombres As String
+        Dim TipoProductor As String = "Productor"
+
+        Dim Fecha As Date
+
+        Dim Cantidad As Double
+        Dim CantidadTotal As Double
+
+        Dim MontoLunes As Double
+        Dim MontoMartes As Double
+        Dim MontoMiercoles As Double
+        Dim MontoJueves As Double
+        Dim MontoViernes As Double
+        Dim MontoSabado As Double
+        Dim MontoDomingo As Double
+
+        Dim PrecioUnitario As Double
+        Dim PrecioProductor As Double
+
+        Dim PrecioLunes As Double
+        Dim PrecioMartes As Double
+        Dim PrecioMiercoles As Double
+        Dim PrecioJueves As Double
+        Dim PrecioViernes As Double
+        Dim PrecioSabado As Double
+        Dim PrecioDomingo As Double
+
+        Dim PLunes As Double
+        Dim PMartes As Double
+        Dim PMiercoles As Double
+        Dim PJueves As Double
+        Dim PViernes As Double
+        Dim PSabado As Double
+        Dim PDomingo As Double
+
+        Dim CantLunes As Double
+        Dim CantMartes As Double
+        Dim CantMiercoles As Double
+        Dim CantJueves As Double
+        Dim CantViernes As Double
+        Dim CantSabado As Double
+        Dim CantDomingo As Double
+
+        Dim ROC1 As String = 0
+        Dim ROC2 As String = 0
+        Dim ROC3 As String = 0
+        Dim ROC4 As String = 0
+        Dim ROC5 As String = 0
+        Dim ROC6 As String = 0
+        Dim ROC7 As String = 0
+
+        Dim iPosicion2 As Double
+        Dim Registros2 As Double
+        Dim Contador As Double
+
+        Dim NCompra As String
+
+        Dim IngresoBruto As Double
+        Dim PorcientoIr As Double
+        Dim MontoIr As Double
+
+        Dim PorcientoPolicia As Double
+        Dim MontoPolicia As Double
+
+        Dim PorcientoBolsa As Double
+        Dim MontoBolsa As Double
+
+        Dim PorcientoIMI As Double
+        Dim MontoIMI As Double
+
+        Dim Anticipo As Double
+        Dim Transporte As Double
+        Dim Pulperia As Double
+        Dim Inseminacion As Double
+        Dim Trazabilidad As Double
+        Dim Otros As Double
+        Dim MontoVeterinario As Double
+
+        Dim StrSqlUpdate As String
+        Dim ComandoUpdate As SqlClient.SqlCommand
+        Dim iResultado As Integer
+
+        '=====================================================================
+        ' VALORES GENERALES
+        '=====================================================================
+
+        Fecha = Me.DTPFechaIni.Value
+
         If Me.TxtPrecioLunes.Text = "" Then
             PrecioUnitario = 0
         Else
@@ -865,39 +1122,49 @@ Public Class FrmPlanilla
         PrecioDomingo = Me.TxtPrecioDomingo.Text
 
 
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '//////////////////////////////////////////////ACTUALIZO LOS ENCABEZADOS DE LA NOMINA//////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        StrSqlUpdate = "UPDATE [Nomina] SET [PorcientoIR] = " & Val(Me.TxtIR.Text) & ",[PorcientoPolicia] =  " & Val(Me.TxtDeduccionPolicia.Text) & ",[PrecioUnitario] = " & Val(Me.TxtPrecioLunes.Text) & ", [PrecioLunes] = " & Val(Me.TxtPrecioLunes.Text) & ", [PrecioMartes] = " & Val(Me.TxtPrecioMartes.Text) & ", [PrecioMiercoles] = " & Val(Me.TxtPrecioMiercoles.Text) & ", [PrecioJueves] = " & Val(Me.TxtPrecioJueves.Text) & ", [PrecioViernes] = " & Val(Me.TxtPrecioViernes.Text) & ", [PrecioSabado] = " & Val(Me.TxtPrecioSabado.Text) & ", [PrecioDomingo] = " & Val(Me.TxtPrecioDomingo.Text) & " " & _
-                       "WHERE (NumPlanilla = '" & Me.TxtNumNomina.Text & "') "
-        MiConexion.Open()
-        ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-        iResultado = ComandoUpdate.ExecuteNonQuery
-        MiConexion.Close()
+        '=====================================================================
+        ' CARGO LOS PRODUCTORES ACTIVOS
+        '=====================================================================
 
+        SqlString =
+        "SELECT * FROM Productor " &
+        "WHERE (Activo = 1) " &
+        "AND (CodTipoNomina = '" & Me.CboTipoPlanilla.Text & "')"
 
-        '/////////////////////////////////////////CARGO LOS PRODUCTORES ACTIVOS/////////////////////////////////////////
+        DataAdapter =
+        New SqlClient.SqlDataAdapter(SqlString, MiConexion)
 
-        SqlString = "SELECT * FROM Productor WHERE  (Activo = 1) AND (CodTipoNomina = '" & Me.CboTipoPlanilla.Text & "')"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "Productor")
-        MiConexion.Close()
 
         iPosicion = 0
+
         Me.ProgressBar.Visible = True
         Me.ProgressBar.Minimum = 0
-        Me.ProgressBar.Visible = True
         Me.ProgressBar.Value = 0
-        Registros = DataSet.Tables("Productor").Rows.Count
-        Me.ProgressBar.Maximum = Registros
-        Do While iPosicion < Registros
-            My.Application.DoEvents()
-            CodProductor = DataSet.Tables("Productor").Rows(iPosicion)("CodProductor")
-            TipoProductor = DataSet.Tables("Productor").Rows(iPosicion)("TipoProductor")
 
-            If CodProductor = "0001841" Then
-                CodProductor = "0001841"
-            End If
+        Registros = DataSet.Tables("Productor").Rows.Count
+
+        Me.ProgressBar.Maximum = Registros
+
+
+        '=====================================================================
+        ' PROCESO DE PRODUCTORES
+        '=====================================================================
+
+        Do While iPosicion < Registros
+
+            My.Application.DoEvents()
+
+            CodProductor =
+            DataSet.Tables("Productor").Rows(iPosicion)("CodProductor")
+
+            TipoProductor =
+            DataSet.Tables("Productor").Rows(iPosicion)("TipoProductor")
+
+
+            '=================================================================
+            ' REINICIO DE VALORES DEL PRODUCTOR
+            '=================================================================
 
             MontoLunes = 0
             MontoMartes = 0
@@ -908,8 +1175,19 @@ Public Class FrmPlanilla
             MontoDomingo = 0
 
             PrecioProductor = 0
-            If Not IsDBNull(DataSet.Tables("Productor").Rows(iPosicion)("Precio")) Then
-                PrecioProductor = Format(DataSet.Tables("Productor").Rows(iPosicion)("Precio"), "0.0000")
+
+
+            '=================================================================
+            ' PRECIO DEL PRODUCTOR
+            '=================================================================
+
+            If Not IsDBNull(
+            DataSet.Tables("Productor").Rows(iPosicion)("Precio")) Then
+
+                PrecioProductor =
+                Format(
+                    DataSet.Tables("Productor").Rows(iPosicion)("Precio"),
+                    "0.0000")
 
                 PrecioLunes = PrecioProductor
                 PrecioMartes = PrecioProductor
@@ -918,13 +1196,29 @@ Public Class FrmPlanilla
                 PrecioViernes = PrecioProductor
                 PrecioSabado = PrecioProductor
                 PrecioDomingo = PrecioProductor
+
             End If
 
-            '//////////////////////////////////////////////CONSULTO SI ESTE PRODUCTOR YA TIENE UNA PLANILLA GRABADA ANTERIOR ////////////////////////////
-            SqlString = "SELECT Detalle_Nomina.* FROM Detalle_Nomina  WHERE  (NumNomina = '" & Me.TxtNumNomina.Text & "') AND (CodProductor = '" & CodProductor & "') AND (TipoProductor = '" & TipoProductor & "') "
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+
+            '=================================================================
+            ' CONSULTO SI ESTE PRODUCTOR YA TIENE PLANILLA
+            '=================================================================
+
+            SqlString =
+            "SELECT Detalle_Nomina.* " &
+            "FROM Detalle_Nomina " &
+            "WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "') " &
+            "AND (CodProductor = '" & CodProductor & "') " &
+            "AND (TipoProductor = '" & TipoProductor & "')"
+
+            DataAdapter =
+            New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+
             DataAdapter.Fill(DataSet, "Consulta")
+
+
             If DataSet.Tables("Consulta").Rows.Count <> 0 Then
+
                 If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Lunes")) Then
                     PLunes = DataSet.Tables("Consulta").Rows(0)("Lunes")
                 Else
@@ -969,62 +1263,39 @@ Public Class FrmPlanilla
 
 
                 If PrecioProductor = 0 Then
-                    PrecioUnitario = DataSet.Tables("Consulta").Rows(0)("PrecioVenta")
+                    PrecioUnitario =
+                    DataSet.Tables("Consulta").Rows(0)("PrecioVenta")
                 Else
                     PrecioUnitario = PrecioProductor
                 End If
 
                 PrecioLunes = PrecioUnitario
-                    PrecioMartes = PrecioUnitario
-                    PrecioMiercoles = PrecioUnitario
-                    PrecioJueves = PrecioUnitario
-                    PrecioViernes = PrecioUnitario
-                    PrecioSabado = PrecioUnitario
-                    PrecioDomingo = PrecioUnitario
+                PrecioMartes = PrecioUnitario
+                PrecioMiercoles = PrecioUnitario
+                PrecioJueves = PrecioUnitario
+                PrecioViernes = PrecioUnitario
+                PrecioSabado = PrecioUnitario
+                PrecioDomingo = PrecioUnitario
 
-                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioLunes")) Then
-                    '    PrecioLunes = DataSet.Tables("Consulta").Rows(0)("PrecioLunes")
-                    'End If
+            Else
 
-                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioMartes")) Then
-                    '    PrecioMartes = DataSet.Tables("Consulta").Rows(0)("PrecioMartes")
-                    'End If
-
-                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioMiercoles")) Then
-                    '    PrecioMiercoles = DataSet.Tables("Consulta").Rows(0)("PrecioMiercoles")
-                    'End If
-
-                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioJueves")) Then
-                    '    PrecioJueves = DataSet.Tables("Consulta").Rows(0)("PrecioJueves")
-                    'End If
-
-                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioViernes")) Then
-                    '    PrecioViernes = DataSet.Tables("Consulta").Rows(0)("PrecioViernes")
-                    'End If
-
-                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioSabado")) Then
-                    '    PrecioSabado = DataSet.Tables("Consulta").Rows(0)("PrecioSabado")
-                    'End If
-
-                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioDomingo")) Then
-                    '    PrecioDomingo = DataSet.Tables("Consulta").Rows(0)("PrecioDomingo")
-                    'End If
-
-                Else
-                    PLunes = 0
+                PLunes = 0
                 PMartes = 0
                 PMiercoles = 0
                 PJueves = 0
                 PViernes = 0
                 PSabado = 0
                 PDomingo = 0
+
             End If
 
             DataSet.Tables("Consulta").Reset()
 
 
-            '////////////////////////////////////////////CAMBIO EL PRECIO SI EL USUARIO DIGITA PRECIO PARA UN DIA /////////////////////////////
-            '////////////////////////////////////////////SI EL PRECIO ES CERO NO CAMBIO NADA /////////////////////////////////////////////////
+            '=================================================================
+            ' CAMBIO EL PRECIO SI EL USUARIO DIGITA PRECIO PARA UN DIA
+            ' SI EL PRECIO ES CERO NO CAMBIO NADA
+            '=================================================================
 
             If Val(Me.TxtPrecioLunes.Text) <> 0 Then
                 PrecioLunes = Me.TxtPrecioLunes.Text
@@ -1055,123 +1326,242 @@ Public Class FrmPlanilla
             End If
 
 
+            '=================================================================
+            ' DATOS DEL PRODUCTOR
+            '=================================================================
 
             Fecha = Me.DTPFechaIni.Value
-            Nombres = DataSet.Tables("Productor").Rows(iPosicion)("NombreProductor") + " " + DataSet.Tables("Productor").Rows(iPosicion)("ApellidoProductor")
-            Me.LblProcesando.Text = "PROCESANDO PRODUCTOR: " & CodProductor & " " & Nombres
+
+            Nombres =
+            DataSet.Tables("Productor").Rows(iPosicion)("NombreProductor") &
+            " " &
+            DataSet.Tables("Productor").Rows(iPosicion)("ApellidoProductor")
+
+            Me.LblProcesando.Text =
+            "PROCESANDO PRODUCTOR: " &
+            CodProductor &
+            " " &
+            Nombres
+
             CantidadTotal = 0
             Contador = 1
-            '///////////////////////////////////////////////77////////////////////////////////////////////////////////////////////////////
-            '//////////////////////////////////BUSCO LAS RECEPCIONES DEL PRODUCTOR///////////////////////////////////////////////////////
-            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+            '=================================================================
+            ' BUSCO LAS RECEPCIONES DEL PRODUCTOR
+            '=================================================================
+
             Me.ProgressBar2.Visible = True
             Me.ProgressBar2.Minimum = 0
-            Me.ProgressBar2.Visible = True
             Me.ProgressBar2.Value = 0
             Me.ProgressBar2.Maximum = 7
+
+
             Do While Fecha <= Me.DTPFechaFin.Value
 
-                '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                '//////////////////////////////////////////////////BUSCO LAS RECEPCIONES DE LECHE/////////////////////////////////////////////
-                '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                SqlString = "SELECT  * FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  " &
-                            "WHERE (Detalle_Compras.Tipo_Compra = 'Recepcion') AND (Compras.Cod_Proveedor = '" & CodProductor & "') AND (Compras.TipoProductor = '" & TipoProductor & "')  AND (Compras.Fecha_Compra = CONVERT(DATETIME, '" & Format(Fecha, "yyyy-MM-dd") & "', 102))"
-                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+
+                '=================================================================
+                ' BUSCO LAS RECEPCIONES DE LECHE
+                '=================================================================
+
+                SqlString =
+                "SELECT * FROM Detalle_Compras " &
+                "INNER JOIN Compras ON " &
+                "Detalle_Compras.Numero_Compra = Compras.Numero_Compra " &
+                "AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra " &
+                "AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra " &
+                "WHERE (Detalle_Compras.Tipo_Compra = 'Recepcion') " &
+                "AND (Compras.Cod_Proveedor = '" & CodProductor & "') " &
+                "AND (Compras.TipoProductor = '" & TipoProductor & "') " &
+                "AND (Compras.Fecha_Compra = CONVERT(DATETIME, '" &
+                Format(Fecha, "yyyy-MM-dd") &
+                "', 102))"
+
+                DataAdapter =
+                New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+
                 DataAdapter.Fill(DataSet, "Recepciones")
+
                 iPosicion2 = 0
                 Cantidad = 0
                 NCompra = 0
-                Registros2 = DataSet.Tables("Recepciones").Rows.Count
+
+                Registros2 =
+                DataSet.Tables("Recepciones").Rows.Count
 
                 Do While iPosicion2 < Registros2
-                    Cantidad = Cantidad + DataSet.Tables("Recepciones").Rows(iPosicion2)("Cantidad")
-                    NCompra = DataSet.Tables("Recepciones").Rows(iPosicion2)("Numero_Compra")
+
+                    Cantidad =
+                    Cantidad +
+                    DataSet.Tables("Recepciones").Rows(iPosicion2)("Cantidad")
+
+                    NCompra =
+                    DataSet.Tables("Recepciones").Rows(iPosicion2)("Numero_Compra")
+
                     iPosicion2 = iPosicion2 + 1
+
                 Loop
+
                 DataSet.Tables("Recepciones").Clear()
 
 
                 Contador = Fecha.DayOfWeek
 
-                If CodProductor = "0710" Then
-                    CodProductor = "0710"
-                End If
+
+                '=================================================================
+                ' DISTRIBUCIÓN POR DÍA
+                '=================================================================
 
                 Select Case Contador
+
                     Case 1
+
                         If PLunes > Cantidad Then
                             Cantidad = PLunes
                             ROC1 = 0
                         End If
+
                         CantLunes = Cantidad
-                        MontoLunes = Cantidad * Format(PrecioLunes, "##,##0.00")
+                        MontoLunes =
+                        Cantidad *
+                        Format(PrecioLunes, "##,##0.00")
+
                         ROC1 = NCompra
+
+
                     Case 2
+
                         If PMartes > Cantidad Then
                             Cantidad = PMartes
                             ROC2 = 0
                         End If
+
                         CantMartes = Cantidad
-                        MontoMartes = Cantidad * Format(PrecioMartes, "##,##0.00")
+                        MontoMartes =
+                        Cantidad *
+                        Format(PrecioMartes, "##,##0.00")
+
                         ROC2 = NCompra
+
+
                     Case 3
+
                         If PMiercoles > Cantidad Then
                             Cantidad = PMiercoles
                             ROC3 = 0
                         End If
+
                         CantMiercoles = Cantidad
-                        MontoMiercoles = Cantidad * Format(PrecioMiercoles, "##,##0.00")
+                        MontoMiercoles =
+                        Cantidad *
+                        Format(PrecioMiercoles, "##,##0.00")
+
                         ROC3 = NCompra
+
+
                     Case 4
+
                         If PJueves > Cantidad Then
                             Cantidad = PJueves
                             ROC4 = 0
                         End If
+
                         CantJueves = Cantidad
-                        MontoJueves = Cantidad * Format(PrecioJueves, "##,##0.00")
+                        MontoJueves =
+                        Cantidad *
+                        Format(PrecioJueves, "##,##0.00")
+
                         ROC4 = NCompra
+
+
                     Case 5
+
                         If PViernes > Cantidad Then
                             Cantidad = PViernes
                             ROC5 = 0
                         End If
+
                         CantViernes = Cantidad
-                        MontoViernes = Cantidad * Format(PrecioViernes, "##,##0.00")
+                        MontoViernes =
+                        Cantidad *
+                        Format(PrecioViernes, "##,##0.00")
+
                         ROC5 = NCompra
+
+
                     Case 6
+
                         If PSabado > Cantidad Then
                             Cantidad = PSabado
                             ROC6 = 0
                         End If
+
                         CantSabado = Cantidad
-                        MontoSabado = Cantidad * Format(PrecioSabado, "##,##0.00")
+                        MontoSabado =
+                        Cantidad *
+                        Format(PrecioSabado, "##,##0.00")
+
                         ROC6 = NCompra
+
+
                     Case 0
+
                         If PDomingo > Cantidad Then
                             Cantidad = PDomingo
                             ROC7 = 0
                         End If
 
                         CantDomingo = Cantidad
-                        MontoDomingo = Cantidad * Format(PrecioDomingo, "##,##0.00")
+                        MontoDomingo =
+                        Cantidad *
+                        Format(PrecioDomingo, "##,##0.00")
+
                         ROC7 = NCompra
+
                 End Select
 
 
-                '******************************************************************************
-                '**********CALCULO EL TOTAL INGRESOS Y LAS DEDUCCIONES DE LEY ******************
-                '************************************************************************************
+                '=================================================================
+                ' CALCULO TOTAL INGRESOS Y DEDUCCIONES DE LEY
+                '=================================================================
 
-                CantidadTotal = CantidadTotal + Cantidad
-                IngresoBruto = MontoLunes + MontoMartes + MontoMiercoles + MontoJueves + MontoViernes + MontoSabado + MontoDomingo
-                MontoIr = Format(PorcientoIr * IngresoBruto, "####0.00")
-                MontoPolicia = Format(PorcientoPolicia * CantidadTotal, "####0.00")
-                MontoBolsa = Format(PorcientoBolsa * IngresoBruto, "####0.00")
-                MontoIMI = Format(PorcientoIMI * IngresoBruto, "####0.00")
+                CantidadTotal =
+                CantidadTotal + Cantidad
 
-                '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                '/////////////////////////////////////////////////BUSCO LAS DEDUCCIONES/////////////////////////////////////////////////
-                '////////////////////////////////////////////////777777777777777777777777777777777777777777777777777777777777777777777
+                IngresoBruto =
+                MontoLunes +
+                MontoMartes +
+                MontoMiercoles +
+                MontoJueves +
+                MontoViernes +
+                MontoSabado +
+                MontoDomingo
+
+                MontoIr =
+                Format(
+                    PorcientoIr * IngresoBruto,
+                    "####0.00")
+
+                MontoPolicia =
+                Format(
+                    PorcientoPolicia * CantidadTotal,
+                    "####0.00")
+
+                MontoBolsa =
+                Format(
+                    PorcientoBolsa * IngresoBruto,
+                    "####0.00")
+
+                MontoIMI =
+                Format(
+                    PorcientoIMI * IngresoBruto,
+                    "####0.00")
+
+
+                '=================================================================
+                ' BUSCO LAS DEDUCCIONES
+                '=================================================================
+
                 Anticipo = 0
                 Transporte = 0
                 Pulperia = 0
@@ -1179,201 +1569,443 @@ Public Class FrmPlanilla
                 Trazabilidad = 0
                 Otros = 0
                 MontoVeterinario = 0
-                SqlString = "SELECT  * FROM Deducciones_Planilla WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "') AND (CodProductor = '" & CodProductor & "') AND (TipoProductor = '" & TipoProductor & "')"
-                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+
+
+                '-------------------------------------------------------------
+                ' IMPORTANTE:
+                ' Se toma el registro más reciente de Deducciones_Planilla.
+                ' Esto corresponde al comportamiento de btnEjecutar.
+                '-------------------------------------------------------------
+
+                SqlString =
+                "SELECT TOP 1 * FROM Deducciones_Planilla " &
+                "WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "') " &
+                "AND (CodProductor = '" & CodProductor & "') " &
+                "AND (TipoProductor = '" & TipoProductor & "') " &
+                "ORDER BY IdDeduccion DESC"
+
+                DataAdapter =
+                New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+
                 DataAdapter.Fill(DataSet, "DeduccionPlanilla")
+
+
                 If DataSet.Tables("DeduccionPlanilla").Rows.Count <> 0 Then
-                    Anticipo = DataSet.Tables("DeduccionPlanilla").Rows(0)("Anticipo")
-                    Transporte = DataSet.Tables("DeduccionPlanilla").Rows(0)("Transporte")
-                    Pulperia = DataSet.Tables("DeduccionPlanilla").Rows(0)("Pulperia")
-                    Inseminacion = DataSet.Tables("DeduccionPlanilla").Rows(0)("Inseminacion")
-                    Trazabilidad = DataSet.Tables("DeduccionPlanilla").Rows(0)("Trazabilidad")
-                    If Not IsDBNull(DataSet.Tables("DeduccionPlanilla").Rows(0)("ProductosVeterinarios")) Then
-                        MontoVeterinario = DataSet.Tables("DeduccionPlanilla").Rows(0)("ProductosVeterinarios")
+
+                    Anticipo =
+                    DataSet.Tables("DeduccionPlanilla").Rows(0)("Anticipo")
+
+                    Transporte =
+                    DataSet.Tables("DeduccionPlanilla").Rows(0)("Transporte")
+
+                    Pulperia =
+                    DataSet.Tables("DeduccionPlanilla").Rows(0)("Pulperia")
+
+                    Inseminacion =
+                    DataSet.Tables("DeduccionPlanilla").Rows(0)("Inseminacion")
+
+                    Trazabilidad =
+                    DataSet.Tables("DeduccionPlanilla").Rows(0)("Trazabilidad")
+
+                    If Not IsDBNull(
+                    DataSet.Tables("DeduccionPlanilla").Rows(0)(
+                        "ProductosVeterinarios")) Then
+
+                        MontoVeterinario =
+                        DataSet.Tables("DeduccionPlanilla").Rows(0)(
+                            "ProductosVeterinarios")
+
                     End If
-                    Otros = DataSet.Tables("DeduccionPlanilla").Rows(0)("OtrasDeducciones")
+
+                    Otros =
+                    DataSet.Tables("DeduccionPlanilla").Rows(0)(
+                        "OtrasDeducciones")
 
                 Else
-                    '///////////SI NO EXISTE AGREGO UNA DEDUCCION EN CERO CON EL PRODUCTOR////////////////
-                    StrSqlUpdate = "INSERT INTO [Deducciones_Planilla] ([NumNomina],[CodProductor],[TipoProductor],[NombreProductor],[NoAnticipo],[Anticipo],[Transporte],[Pulperia],[Inseminacion],[Trazabilidad],[OtrasDeducciones],[ProductosVeterinarios]) " &
-                                   "VALUES ('" & Me.TxtNumNomina.Text & "','" & CodProductor & "','" & TipoProductor & "','" & Nombres & "','0000',0,0,0,0,0,0,0)"
+
+                    '=========================================================
+                    ' SI NO EXISTE, CREO LA DEDUCCIÓN EN CERO
+                    '=========================================================
+
+                    StrSqlUpdate =
+                    "INSERT INTO [Deducciones_Planilla] " &
+                    "([NumNomina],[CodProductor],[TipoProductor]," &
+                    "[NombreProductor],[NoAnticipo],[Anticipo]," &
+                    "[Transporte],[Pulperia],[Inseminacion]," &
+                    "[Trazabilidad],[OtrasDeducciones]," &
+                    "[ProductosVeterinarios]) " &
+                    "VALUES ('" &
+                    Me.TxtNumNomina.Text & "','" &
+                    CodProductor & "','" &
+                    TipoProductor & "','" &
+                    Nombres & "','0000',0,0,0,0,0,0,0)"
+
                     MiConexion.Open()
-                    ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-                    iResultado = ComandoUpdate.ExecuteNonQuery
+
+                    ComandoUpdate =
+                    New SqlClient.SqlCommand(
+                        StrSqlUpdate,
+                        MiConexion)
+
+                    iResultado =
+                    ComandoUpdate.ExecuteNonQuery()
+
                     MiConexion.Close()
+
                 End If
+
                 DataSet.Tables("DeduccionPlanilla").Clear()
 
 
+                '=================================================================
+                ' PRODUCTOS VETERINARIOS
+                '=================================================================
 
-                '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                '/////////////////////////////////////////////////BUSCO LOS PRODUCTOS VETERINARIOS EN FACTURACION/////////////////////////////////////////////////
-                '////////////////////////////////////////////////777777777777777777777777777777777777777777777777777777777777777777777
-                SqlString = "SELECT DISTINCT MAX(Facturas.Numero_Factura) AS Numero_Factura, MAX(Facturas.Fecha_Factura) AS Fecha_Factura, SUM(Facturas.MontoCredito) AS MontoCredito, SUM(DetalleRecibo.MontoPagado - DetalleRecibo.MontoPagado) AS MontoPagado, SUM(Facturas.MontoCredito) AS Saldo FROM  Facturas LEFT OUTER JOIN DetalleRecibo ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura " &
-                            "WHERE (Facturas.Cod_Cliente = '" & CodProductor & "') AND (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Vencimiento <= CONVERT(DATETIME,'" & Format(Me.DTPFechaFin.Value, "yyyy-MM-dd") & "', 102)) HAVING (SUM(Facturas.MontoCredito) <> 0) AND (MAX(Facturas.TipoProductor) = '" & TipoProductor & "') ORDER BY MAX(Facturas.Numero_Factura) DESC"
-                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                SqlString =
+                "SELECT DISTINCT " &
+                "MAX(Facturas.Numero_Factura) AS Numero_Factura, " &
+                "MAX(Facturas.Fecha_Factura) AS Fecha_Factura, " &
+                "SUM(Facturas.MontoCredito) AS MontoCredito, " &
+                "SUM(DetalleRecibo.MontoPagado - DetalleRecibo.MontoPagado) AS MontoPagado, " &
+                "SUM(Facturas.MontoCredito) AS Saldo " &
+                "FROM Facturas " &
+                "LEFT OUTER JOIN DetalleRecibo ON " &
+                "Facturas.Numero_Factura = DetalleRecibo.Numero_Factura " &
+                "WHERE (Facturas.Cod_Cliente = '" & CodProductor & "') " &
+                "AND (Facturas.Tipo_Factura = 'Factura') " &
+                "AND (Facturas.Fecha_Vencimiento <= CONVERT(DATETIME,'" &
+                Format(Me.DTPFechaFin.Value, "yyyy-MM-dd") &
+                "', 102)) " &
+                "HAVING (SUM(Facturas.MontoCredito) <> 0) " &
+                "AND (MAX(Facturas.TipoProductor) = '" &
+                TipoProductor & "') " &
+                "ORDER BY MAX(Facturas.Numero_Factura) DESC"
+
+                DataAdapter =
+                New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+
                 DataAdapter.Fill(DataSet, "Veterinario")
+
+
                 If DataSet.Tables("Veterinario").Rows.Count <> 0 Then
-                    If Not IsDBNull(DataSet.Tables("Veterinario").Rows(0)("MontoCredito")) Then
-                        MontoVeterinario = MontoVeterinario + DataSet.Tables("Veterinario").Rows(0)("MontoCredito")
+
+                    If Not IsDBNull(
+                    DataSet.Tables("Veterinario").Rows(0)(
+                        "MontoCredito")) Then
+
+                        MontoVeterinario =
+                        MontoVeterinario +
+                        DataSet.Tables("Veterinario").Rows(0)(
+                            "MontoCredito")
+
                     End If
-                Else
-                    'MontoVeterinario = 0
+
                 End If
 
                 DataSet.Tables("Veterinario").Clear()
 
 
+                '=================================================================
+                ' SIGUIENTE DÍA
+                '=================================================================
+
                 Contador = Contador + 1
-                Fecha = DateAdd(DateInterval.Day, 1, Fecha)
-                Me.ProgressBar2.Value = Me.ProgressBar2.Value + 1
+
+                Fecha =
+                DateAdd(
+                    DateInterval.Day,
+                    1,
+                    Fecha)
+
+                Me.ProgressBar2.Value =
+                Me.ProgressBar2.Value + 1
+
             Loop
 
 
+            '=====================================================================
+            ' BUSCO DETALLE_NOMINA
+            '=====================================================================
 
+            SqlString =
+            "SELECT * FROM Detalle_Nomina " &
+            "WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "') " &
+            "AND (CodProductor = '" & CodProductor & "') " &
+            "AND (TipoProductor = '" & TipoProductor & "')"
 
+            DataAdapter =
+            New SqlClient.SqlDataAdapter(SqlString, MiConexion)
 
-            SqlString = "SELECT  * FROM Detalle_Nomina WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "') AND (CodProductor = '" & CodProductor & "') AND (TipoProductor = '" & TipoProductor & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
             DataAdapter.Fill(DataSet, "DetalleNomina")
+
+
+            '=====================================================================
+            ' INSERTAR DETALLE_NOMINA
+            '=====================================================================
+
             If DataSet.Tables("DetalleNomina").Rows.Count = 0 Then
-                StrSqlUpdate = "INSERT INTO [Detalle_Nomina] ([NumNomina],[CodProductor],[TipoProductor],[Roc1],[Lunes],[Roc2],[Martes],[Roc3],[Miercoles],[Roc4],[Jueves],[Roc5],[Viernes],[Roc6],[Sabado],[Roc7],[Domingo],[Total],[PrecioVenta],[TotalIngresos],[IR],[IMI],[DeduccionPolicia],[Anticipo],[DeduccionTransporte],[Pulperia],[Inseminacion],[Trazabilidad],[ProductosVeterinarios],[OtrasDeducciones],[Nombres],[Bolsa],[PrecioLunes],[PrecioMartes],[PrecioMiercoles],[PrecioJueves],[PrecioViernes],[PrecioSabado],[PrecioDomingo]) " &
-                               "VALUES ('" & Me.TxtNumNomina.Text & "','" & CodProductor & "','" & TipoProductor & "','" & ROC1 & "'," & CantLunes & ",'" & ROC2 & "'," & CantMartes & ",'" & ROC3 & "'," & CantMiercoles & ",'" & ROC4 & "'," & CantJueves & ",'" & ROC5 & "'," & CantViernes & ",'" & ROC6 & "'," & CantSabado & ",'" & ROC7 & "'," & CantDomingo & "," & CantidadTotal & " ," & PrecioUnitario & "," & IngresoBruto & "," & MontoIr & "," & MontoIMI & ", " & MontoPolicia & "," & Anticipo & "," & Transporte & "," & Pulperia & "," & Inseminacion & "," & Trazabilidad & " ," & MontoVeterinario & " ," & Otros & ", '" & Nombres & "', " & MontoBolsa & ", " & PrecioLunes & "," & PrecioMartes & ", " & PrecioMiercoles & ", " & PrecioJueves & ", " & PrecioViernes & ", " & PrecioSabado & ", " & PrecioDomingo & ")"
+
+                StrSqlUpdate =
+                "INSERT INTO [Detalle_Nomina] " &
+                "([NumNomina],[CodProductor],[TipoProductor]," &
+                "[Roc1],[Lunes],[Roc2],[Martes],[Roc3],[Miercoles]," &
+                "[Roc4],[Jueves],[Roc5],[Viernes],[Roc6],[Sabado]," &
+                "[Roc7],[Domingo],[Total],[PrecioVenta],[TotalIngresos]," &
+                "[IR],[IMI],[DeduccionPolicia],[Anticipo]," &
+                "[DeduccionTransporte],[Pulperia],[Inseminacion]," &
+                "[Trazabilidad],[ProductosVeterinarios]," &
+                "[OtrasDeducciones],[Nombres],[Bolsa]," &
+                "[PrecioLunes],[PrecioMartes],[PrecioMiercoles]," &
+                "[PrecioJueves],[PrecioViernes],[PrecioSabado]," &
+                "[PrecioDomingo]) " &
+                "VALUES ('" &
+                Me.TxtNumNomina.Text & "','" &
+                CodProductor & "','" &
+                TipoProductor & "','" &
+                ROC1 & "'," &
+                CantLunes & ",'" &
+                ROC2 & "'," &
+                CantMartes & ",'" &
+                ROC3 & "'," &
+                CantMiercoles & ",'" &
+                ROC4 & "'," &
+                CantJueves & ",'" &
+                ROC5 & "'," &
+                CantViernes & ",'" &
+                ROC6 & "'," &
+                CantSabado & ",'" &
+                ROC7 & "'," &
+                CantDomingo & "," &
+                CantidadTotal & "," &
+                PrecioUnitario & "," &
+                IngresoBruto & "," &
+                MontoIr & "," &
+                MontoIMI & "," &
+                MontoPolicia & "," &
+                Anticipo & "," &
+                Transporte & "," &
+                Pulperia & "," &
+                Inseminacion & "," &
+                Trazabilidad & "," &
+                MontoVeterinario & "," &
+                Otros & ",'" &
+                Nombres & "'," &
+                MontoBolsa & "," &
+                PrecioLunes & "," &
+                PrecioMartes & "," &
+                PrecioMiercoles & "," &
+                PrecioJueves & "," &
+                PrecioViernes & "," &
+                PrecioSabado & "," &
+                PrecioDomingo & ")"
+
                 MiConexion.Open()
-                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-                iResultado = ComandoUpdate.ExecuteNonQuery
+
+                ComandoUpdate =
+                New SqlClient.SqlCommand(
+                    StrSqlUpdate,
+                    MiConexion)
+
+                iResultado =
+                ComandoUpdate.ExecuteNonQuery()
+
                 MiConexion.Close()
+
 
             Else
 
-                'If Not IsDBNull(DataSet.Tables("DetalleNomina").Rows(0)("PrecioVenta")) Then
-                '    If DataSet.Tables("DetalleNomina").Rows(0)("PrecioVenta") <= 0 Then
-                '        PrecioUnitario = Me.TxtPrecioUnitario.Text
-                '    Else
-                '        PrecioUnitario = DataSet.Tables("DetalleNomina").Rows(0)("PrecioVenta")
-                '    End If
-                'Else
-                '    PrecioUnitario = Me.TxtPrecioUnitario.Text
-                'End If
+                '=================================================================
+                ' ACTUALIZAR DETALLE_NOMINA
+                '=================================================================
+
+                StrSqlUpdate =
+                "UPDATE [Detalle_Nomina] SET " &
+                "[Roc1] = '" & ROC1 & "'," &
+                "[Lunes] = " & CantLunes & "," &
+                "[Roc2] = '" & ROC2 & "'," &
+                "[Martes] = " & CantMartes & "," &
+                "[Roc3] = '" & ROC3 & "'," &
+                "[Miercoles] = '" & CantMiercoles & "'," &
+                "[Roc4] = '" & ROC4 & "'," &
+                "[Jueves] = " & CantJueves & "," &
+                "[Roc5] = '" & ROC5 & "'," &
+                "[Viernes] = " & CantViernes & "," &
+                "[Roc6] = '" & ROC6 & "'," &
+                "[Sabado] = " & CantSabado & "," &
+                "[Roc7] = '" & ROC7 & "'," &
+                "[Domingo] = " & CantDomingo & "," &
+                "[Total] = " & CantidadTotal & "," &
+                "[PrecioVenta] = " & PrecioUnitario & "," &
+                "[TotalIngresos] = " & IngresoBruto & "," &
+                "[IR] = " & MontoIr & "," &
+                "[IMI] = " & MontoIMI & "," &
+                "[DeduccionPolicia] = " & MontoPolicia & "," &
+                "[Anticipo] = " & Anticipo & "," &
+                "[DeduccionTransporte] = " & Transporte & "," &
+                "[Pulperia] = " & Pulperia & "," &
+                "[Inseminacion] = " & Inseminacion & "," &
+                "[ProductosVeterinarios] = " & MontoVeterinario & "," &
+                "[Trazabilidad] = " & Trazabilidad & "," &
+                "[OtrasDeducciones] = " & Otros & "," &
+                "[Nombres] = '" & Nombres & "'," &
+                "[Bolsa] = '" & MontoBolsa & "'," &
+                "[PrecioLunes] = '" & PrecioLunes & "'," &
+                "[PrecioMartes] = '" & PrecioMartes & "'," &
+                "[PrecioMiercoles] = '" & PrecioMiercoles & "'," &
+                "[PrecioJueves] = '" & PrecioJueves & "'," &
+                "[PrecioViernes] = '" & PrecioViernes & "'," &
+                "[PrecioSabado] = '" & PrecioSabado & "'," &
+                "[PrecioDomingo] = '" & PrecioDomingo & "' " &
+                "WHERE (NumNomina = '" &
+                Me.TxtNumNomina.Text & "') " &
+                "AND (CodProductor = '" &
+                CodProductor & "') " &
+                "AND (TipoProductor = '" &
+                TipoProductor & "')"
 
 
-                StrSqlUpdate = "UPDATE [Detalle_Nomina] SET [Roc1] = '" & ROC1 & "',[Lunes] = " & CantLunes & ",[Roc2] = '" & ROC2 & "',[Martes] = " & CantMartes & ",[Roc3] = '" & ROC3 & "',[Miercoles] = '" & CantMiercoles & "',[Roc4] = '" & ROC4 & "',[Jueves] = " & CantJueves & ",[Roc5] = '" & ROC5 & "',[Viernes] =" & CantViernes & ",[Roc6] = '" & ROC6 & "',[Sabado] = " & CantSabado & ",[Roc7] = '" & ROC7 & "',[Domingo] = " & CantDomingo & ",[Total] = " & CantidadTotal & ",[PrecioVenta] = " & PrecioUnitario & ",[TotalIngresos] = " & IngresoBruto & ",[IR] = " & MontoIr & ",[IMI] = " & MontoIMI & ", [DeduccionPolicia] = " & MontoPolicia & ",[Anticipo] = " & Anticipo & ",[DeduccionTransporte] = " & Transporte & " ,[Pulperia] = " & Pulperia & ",[Inseminacion] = " & Inseminacion & ",[ProductosVeterinarios] = " & MontoVeterinario & " ,[Trazabilidad] = " & Trazabilidad & ",[OtrasDeducciones] = " & Otros & " ,[Nombres] = '" & Nombres & "', [Bolsa] = '" & MontoBolsa & "' , [PrecioLunes] = '" & PrecioLunes & "',  [PrecioMartes] = '" & PrecioMartes & "',  [PrecioMiercoles] = '" & PrecioMiercoles & "' , [PrecioJueves] = '" & PrecioJueves & "', [PrecioViernes] = '" & PrecioViernes & "', [PrecioSabado] = '" & PrecioSabado & "', [PrecioDomingo] = '" & PrecioDomingo & "'   " &
-                               "WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "') AND (CodProductor = '" & CodProductor & "') AND (TipoProductor = '" & TipoProductor & "') "
                 MiConexion.Open()
-                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-                iResultado = ComandoUpdate.ExecuteNonQuery
+
+                ComandoUpdate =
+                New SqlClient.SqlCommand(
+                    StrSqlUpdate,
+                    MiConexion)
+
+                iResultado =
+                ComandoUpdate.ExecuteNonQuery()
+
                 MiConexion.Close()
+
             End If
+
             DataSet.Tables("DetalleNomina").Clear()
 
+
+            '=====================================================================
+            ' SIGUIENTE PRODUCTOR
+            '=====================================================================
+
             iPosicion = iPosicion + 1
+
             Me.ProgressBar.Value = iPosicion
+
         Loop
 
-        'Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres
-        ds.Tables("DetalleIngresos").Reset()
+    End Sub
+    Private Sub CargarDetalleDeducciones()
 
-        Fecha = Me.DTPFechaIni.Value
-        If Fecha.DayOfWeek = 1 Then
-            SqlString = "SELECT CodProductor, Nombres, TipoProductor, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado,  Domingo, Total, PrecioVenta, TotalIngresos, NumNomina FROM Detalle_Nomina WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "')  " 'AND (Detalle_Nomina.TipoProductor = '" & TipoProductor & "')
-        ElseIf Fecha.DayOfWeek = 0 Then
-            SqlString = "SELECT CodProductor, Nombres, TipoProductor, Domingo, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Total, PrecioVenta, TotalIngresos, NumNomina FROM Detalle_Nomina WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "')  " 'AND (Detalle_Nomina.TipoProductor = '" & TipoProductor & "')
-        ElseIf Fecha.DayOfWeek = 6 Then
-            SqlString = "SELECT CodProductor, Nombres, TipoProductor ,Sabado,  Domingo, Lunes, Martes, Miercoles, Jueves, Viernes, Total, PrecioVenta, TotalIngresos, NumNomina FROM Detalle_Nomina WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "')  " 'AND (Detalle_Nomina.TipoProductor = '" & TipoProductor & "')
-        End If
+        Dim SqlString As String
+        Dim DataSetLocal As New DataSet
+        Dim DataAdapterLocal As New SqlClient.SqlDataAdapter
 
-        ds = New DataSet
-        da = New SqlDataAdapter(SqlString, MiConexion)
-        CmdBuilder = New SqlCommandBuilder(da)
-        da.Fill(ds, "DetalleIngresos")
-        Me.TDGridIngresos.DataSource = ds.Tables("DetalleIngresos")
+        SqlString =
+        "SELECT Detalle_Nomina.CodProductor, " &
+        "Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, " &
+        "Detalle_Nomina.IR, " &
+        "Detalle_Nomina.IMI, " &
+        "Detalle_Nomina.Bolsa, " &
+        "Detalle_Nomina.DeduccionPolicia, " &
+        "Detalle_Nomina.Anticipo, " &
+        "Detalle_Nomina.DeduccionTransporte, " &
+        "Detalle_Nomina.Pulperia, " &
+        "Detalle_Nomina.Inseminacion, " &
+        "Detalle_Nomina.Trazabilidad, " &
+        "Detalle_Nomina.ProductosVeterinarios, " &
+        "Detalle_Nomina.OtrasDeducciones, " &
+        "Detalle_Nomina.IR + Detalle_Nomina.Bolsa + " &
+        "Detalle_Nomina.DeduccionPolicia + " &
+        "Detalle_Nomina.Anticipo + " &
+        "Detalle_Nomina.DeduccionTransporte + " &
+        "Detalle_Nomina.Pulperia + " &
+        "Detalle_Nomina.Inseminacion + " &
+        "Detalle_Nomina.ProductosVeterinarios + " &
+        "Detalle_Nomina.OtrasDeducciones + " &
+        "Detalle_Nomina.Trazabilidad AS TotalEgresos, " &
+        "Detalle_Nomina.TotalIngresos - (" &
+        "Detalle_Nomina.IR + " &
+        "Detalle_Nomina.Bolsa + " &
+        "Detalle_Nomina.DeduccionPolicia + " &
+        "Detalle_Nomina.Anticipo + " &
+        "Detalle_Nomina.DeduccionTransporte + " &
+        "Detalle_Nomina.Pulperia + " &
+        "Detalle_Nomina.Inseminacion + " &
+        "Detalle_Nomina.ProductosVeterinarios + " &
+        "Detalle_Nomina.OtrasDeducciones + " &
+        "Detalle_Nomina.Trazabilidad) AS NetoPagar " &
+        "FROM Detalle_Nomina " &
+        "INNER JOIN Productor ON " &
+        "Detalle_Nomina.CodProductor = Productor.CodProductor " &
+        "AND Detalle_Nomina.TipoProductor = Productor.TipoProductor " &
+        "WHERE (Detalle_Nomina.NumNomina = '" &
+        Me.TxtNumNomina.Text & "')"
 
-        'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        'DataAdapter.Fill(DataSet, "DetalleIngresos")
-        'Me.TDGridIngresos.DataSource = DataSet.Tables("DetalleIngresos")
-        Me.TDGridIngresos.Splits(0).DisplayColumns(0).Width = 70
-        Me.TDGridIngresos.Columns(0).Caption = "Codigo"
-        Me.TDGridIngresos.Splits(0).DisplayColumns("CodProductor").Locked = True
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Nombres").Width = 190
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Nombres").Locked = True
-        Me.TDGridIngresos.Splits(0).DisplayColumns("TipoProductor").Locked = True
-        Me.TDGridIngresos.Splits(0).DisplayColumns("TipoProductor").Width = 61
-        Me.TDGridIngresos.Columns("TipoProductor").Caption = "Tipo"
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Domingo").Width = 61
-        'Me.TDGridIngresos.Splits(0).DisplayColumns("Domingo").Locked = True
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Lunes").Width = 61
-        'Me.TDGridIngresos.Splits(0).DisplayColumns("Lunes").Locked = True
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Martes").Width = 61
-        'Me.TDGridIngresos.Splits(0).DisplayColumns("Martes").Locked = True
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Miercoles").Width = 61
-        'Me.TDGridIngresos.Splits(0).DisplayColumns("Miercoles").Locked = True
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Jueves").Width = 61
-        'Me.TDGridIngresos.Splits(0).DisplayColumns("Jueves").Locked = True
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Viernes").Width = 61
-        'Me.TDGridIngresos.Splits(0).DisplayColumns("Viernes").Locked = True
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Sabado").Width = 61
-        'Me.TDGridIngresos.Splits(0).DisplayColumns("Sabado").Locked = True
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Total").Width = 61
-        Me.TDGridIngresos.Splits(0).DisplayColumns("Total").Locked = True
-        Me.TDGridIngresos.Columns("Total").Caption = "Total Litros"
-        Me.TDGridIngresos.Splits(0).DisplayColumns("PrecioVenta").Width = 70
-        'Me.TDGridIngresos.Splits(0).DisplayColumns("PrecioVenta").Locked = True
-        Me.TDGridIngresos.Columns("PrecioVenta").NumberFormat = "##,##0.00"
-        Me.TDGridIngresos.Columns("PrecioVenta").Caption = "PrecioUnit"
-        Me.TDGridIngresos.Splits(0).DisplayColumns("TotalIngresos").Width = 80
-        Me.TDGridIngresos.Splits(0).DisplayColumns("TotalIngresos").Locked = True
-        Me.TDGridIngresos.Columns("TotalIngresos").NumberFormat = "##,##0.00"
-        Me.TDGridIngresos.Splits(0).DisplayColumns("NumNomina").Visible = False
-        Me.TDGridIngresos.Splits(0).DisplayColumns("TipoProductor").Visible = True
+        DataAdapterLocal =
+        New SqlClient.SqlDataAdapter(SqlString, MiConexion)
 
+        DataAdapterLocal.Fill(DataSetLocal, "DetalleEgresos")
 
-        SqlString = "SELECT Detalle_Nomina.CodProductor, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.IR, Detalle_Nomina.IMI, Detalle_Nomina.Bolsa, Detalle_Nomina.DeduccionPolicia, Detalle_Nomina.Anticipo, Detalle_Nomina.DeduccionTransporte, Detalle_Nomina.Pulperia,Detalle_Nomina.Inseminacion, Detalle_Nomina.Trazabilidad, Detalle_Nomina.ProductosVeterinarios,Detalle_Nomina.OtrasDeducciones, Detalle_Nomina.IR + Detalle_Nomina.Bolsa + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.Trazabilidad AS TotalEgresos, Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR + Detalle_Nomina.Bolsa + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.Trazabilidad) AS NetoPagar FROM  Detalle_Nomina INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor " &
-            "WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') " 'AND (Detalle_Nomina.TipoProductor = '" & TipoProductor & "')
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "DetalleEgresos")
-        Me.TDGridDeducciones.DataSource = DataSet.Tables("DetalleEgresos")
+        Me.TDGridDeducciones.DataSource =
+        DataSetLocal.Tables("DetalleEgresos")
+
+        '----------------------------------------------------------
+        ' Configuración del grid
+        '----------------------------------------------------------
+
         Me.TDGridDeducciones.Splits(0).DisplayColumns("CodProductor").Width = 50
         Me.TDGridDeducciones.Columns("CodProductor").Caption = "Codigo"
         Me.TDGridDeducciones.Splits(0).DisplayColumns("CodProductor").Locked = True
+
         Me.TDGridDeducciones.Splits(0).DisplayColumns("Nombres").Width = 180
         Me.TDGridDeducciones.Splits(0).DisplayColumns("Nombres").Locked = True
+
         Me.TDGridDeducciones.Splits(0).DisplayColumns("IR").Width = 60
         Me.TDGridDeducciones.Splits(0).DisplayColumns("IR").Locked = True
         Me.TDGridDeducciones.Columns("IR").NumberFormat = "##,##0.00"
+
         Me.TDGridDeducciones.Splits(0).DisplayColumns("IMI").Width = 60
         Me.TDGridDeducciones.Splits(0).DisplayColumns("IMI").Locked = True
+
         Me.TDGridDeducciones.Splits(0).DisplayColumns("DeduccionPolicia").Visible = False
+
         Me.TDGridDeducciones.Columns("IMI").NumberFormat = "##,##0.00"
         Me.TDGridDeducciones.Columns("IMI").Caption = "IMI"
+
         Me.TDGridDeducciones.Columns("Bolsa").NumberFormat = "##,##0.00"
         Me.TDGridDeducciones.Splits(0).DisplayColumns("Bolsa").Width = 60
         Me.TDGridDeducciones.Splits(0).DisplayColumns("Bolsa").Locked = True
-        Me.TDGridDeducciones.Columns("Bolsa").NumberFormat = "##,##0.00"
+
         Me.TDGridDeducciones.Splits(0).DisplayColumns("Anticipo").Width = 60
         Me.TDGridDeducciones.Splits(0).DisplayColumns("Anticipo").Locked = True
         Me.TDGridDeducciones.Columns("Anticipo").Caption = "Anticipo"
+
         Me.TDGridDeducciones.Columns("DeduccionTransporte").Caption = "Transporte"
         Me.TDGridDeducciones.Columns("DeduccionTransporte").NumberFormat = "##,##0.00"
         Me.TDGridDeducciones.Splits(0).DisplayColumns("DeduccionTransporte").Width = 60
         Me.TDGridDeducciones.Splits(0).DisplayColumns("DeduccionTransporte").Locked = True
+
         Me.TDGridDeducciones.Columns("Pulperia").NumberFormat = "##,##0.00"
         Me.TDGridDeducciones.Splits(0).DisplayColumns("Pulperia").Width = 50
         Me.TDGridDeducciones.Splits(0).DisplayColumns("Pulperia").Locked = True
         Me.TDGridDeducciones.Columns("Pulperia").Caption = "Fondos"
+
         Me.TDGridDeducciones.Columns(7).NumberFormat = "##,##0.00"
         Me.TDGridDeducciones.Splits(0).DisplayColumns(7).Width = 70
         Me.TDGridDeducciones.Splits(0).DisplayColumns(7).Locked = True
+
         Me.TDGridDeducciones.Columns("Trazabilidad").NumberFormat = "##,##0.00"
         Me.TDGridDeducciones.Splits(0).DisplayColumns("Trazabilidad").Width = 70
         Me.TDGridDeducciones.Splits(0).DisplayColumns("Trazabilidad").Locked = True
+
         Me.TDGridDeducciones.Columns("ProductosVeterinarios").NumberFormat = "##,##0.00"
         Me.TDGridDeducciones.Splits(0).DisplayColumns("ProductosVeterinarios").Width = 70
         Me.TDGridDeducciones.Splits(0).DisplayColumns("ProductosVeterinarios").Locked = True
         Me.TDGridDeducciones.Columns("ProductosVeterinarios").Caption = "Veterinario"
+
         Me.TDGridDeducciones.Columns("OtrasDeducciones").Caption = "Otras"
         Me.TDGridDeducciones.Columns("OtrasDeducciones").NumberFormat = "##,##0.00"
         Me.TDGridDeducciones.Splits(0).DisplayColumns("OtrasDeducciones").Width = 70
         Me.TDGridDeducciones.Splits(0).DisplayColumns("OtrasDeducciones").Locked = True
+
         Me.TDGridDeducciones.Columns("TotalEgresos").NumberFormat = "##,##0.00"
         Me.TDGridDeducciones.Splits(0).DisplayColumns("TotalEgresos").Width = 80
         Me.TDGridDeducciones.Splits(0).DisplayColumns("TotalEgresos").Locked = True
@@ -1386,88 +2018,767 @@ Public Class FrmPlanilla
         Me.TDGridDeducciones.Splits(0).DisplayColumns("NetoPagar").Width = 80
         Me.TDGridDeducciones.Splits(0).DisplayColumns("NetoPagar").Locked = True
 
+    End Sub
 
-        SqlString = "SELECT IdDeduccion, NumNomina, CodProductor, TipoProductor, NombreProductor, NoAnticipo, Anticipo, Transporte, Pulperia, Inseminacion, Trazabilidad, ProductosVeterinarios , OtrasDeducciones  FROM Deducciones_Planilla WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "')ORDER BY CodProductor"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "Deducciones")
-        Me.BindingDeducciones2.DataSource = DataSet.Tables("Deducciones")
-        Me.TDGridDeducciones2.DataSource = Me.BindingDeducciones2
+    Private Sub CargarDetalleDeducciones2()
+
+        Dim SqlString As String
+        Dim DataSetLocal As New DataSet
+        Dim DataAdapterLocal As New SqlClient.SqlDataAdapter
+
+        '----------------------------------------------------------
+        ' Consulta
+        '----------------------------------------------------------
+
+        SqlString =
+        "SELECT IdDeduccion, NumNomina, CodProductor, TipoProductor, " &
+        "NombreProductor, NoAnticipo, Anticipo, Transporte, Pulperia, " &
+        "Inseminacion, Trazabilidad, ProductosVeterinarios, " &
+        "OtrasDeducciones " &
+        "FROM Deducciones_Planilla " &
+        "WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "') " &
+        "ORDER BY CodProductor"
+
+        DataAdapterLocal =
+        New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+
+        DataAdapterLocal.Fill(DataSetLocal, "Deducciones")
+
+        '----------------------------------------------------------
+        ' Actualizar BindingSource
+        '----------------------------------------------------------
+
+        Me.BindingDeducciones2.DataSource =
+        DataSetLocal.Tables("Deducciones")
+
+        Me.BindingDeducciones2.ResetBindings(False)
+
+        Me.TDGridDeducciones2.DataSource =
+        Me.BindingDeducciones2
+
+        Me.TDGridDeducciones2.Refresh()
+
+        '----------------------------------------------------------
+        ' Configuración del grid
+        '----------------------------------------------------------
+
         Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(0).Visible = False
         Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(1).Visible = False
+
         Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(2).Button = True
         Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(2).Width = 100
+
         Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(3).Visible = False
+
         Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(4).Width = 156
+
         Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(5).Width = 78
         Me.TDGridDeducciones2.Columns(5).NumberFormat = "##,##0.00"
+
         Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(6).Width = 78
         Me.TDGridDeducciones2.Columns(6).NumberFormat = "##,##0.00"
+
         Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(7).Width = 78
         Me.TDGridDeducciones2.Columns(7).NumberFormat = "##,##0.00"
+
         Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns("Pulperia").Width = 78
         Me.TDGridDeducciones2.Columns("Pulperia").NumberFormat = "##,##0.00"
         Me.TDGridDeducciones2.Columns("Pulperia").Caption = "Fondos"
+
         Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(9).Width = 78
         Me.TDGridDeducciones2.Columns(9).NumberFormat = "##,##0.00"
+
         Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns("Trazabilidad").Width = 70
         Me.TDGridDeducciones2.Columns("Trazabilidad").NumberFormat = "##,##0.00"
+
         Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns("OtrasDeducciones").Width = 60
         Me.TDGridDeducciones2.Columns("OtrasDeducciones").Caption = "Otras"
         Me.TDGridDeducciones2.Columns("OtrasDeducciones").NumberFormat = "##,##0.00"
+
         Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns("ProductosVeterinarios").Width = 60
         Me.TDGridDeducciones2.Columns("ProductosVeterinarios").NumberFormat = "##,##0.00"
         Me.TDGridDeducciones2.Columns("ProductosVeterinarios").Caption = "Veterinario"
 
-        'SqlString = "SELECT Detalle_Nomina.CodProductor, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.IR,Detalle_Nomina.DeduccionPolicia, Detalle_Nomina.Anticipo, Detalle_Nomina.DeduccionTransporte, Detalle_Nomina.Pulperia,Detalle_Nomina.Inseminacion, Detalle_Nomina.ProductosVeterinarios,Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios AS TotalEgresos, Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios) AS NetoPagar FROM  Detalle_Nomina INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor " & _
-        '            "WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor')"
-        'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        'DataAdapter.Fill(DataSet, "DetalleEgresos")
-        'Me.TDGridDeducciones.DataSource = DataSet.Tables("DetalleEgresos")
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(0).Width = 70
-        'Me.TDGridDeducciones.Columns(0).Caption = "Codigo"
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(0).Locked = True
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(1).Width = 180
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(1).Locked = True
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(2).Width = 70
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(2).Locked = True
-        'Me.TDGridDeducciones.Columns(2).NumberFormat = "##,##0.00"
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(3).Width = 70
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(3).Locked = True
-        'Me.TDGridDeducciones.Columns(3).NumberFormat = "##,##0.00"
-        'Me.TDGridDeducciones.Columns(3).Caption = "Policia"
-        'Me.TDGridDeducciones.Columns(4).NumberFormat = "##,##0.00"
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(4).Width = 70
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(4).Locked = True
-        'Me.TDGridDeducciones.Columns(5).NumberFormat = "##,##0.00"
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(5).Width = 70
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(5).Locked = True
-        'Me.TDGridDeducciones.Columns(5).Caption = "Transporte"
-        'Me.TDGridDeducciones.Columns(6).NumberFormat = "##,##0.00"
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(6).Width = 70
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(6).Locked = True
-        'Me.TDGridDeducciones.Columns(7).NumberFormat = "##,##0.00"
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(7).Width = 70
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(7).Locked = True
-        'Me.TDGridDeducciones.Columns(8).NumberFormat = "##,##0.00"
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(8).Width = 70
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(8).Locked = True
-        'Me.TDGridDeducciones.Columns(8).Caption = "Veterinario"
-        'Me.TDGridDeducciones.Columns(9).NumberFormat = "##,##0.00"
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(9).Width = 80
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(9).Locked = True
-        'Me.TDGridDeducciones.Columns(10).NumberFormat = "##,##0.00"
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(10).Width = 80
-        'Me.TDGridDeducciones.Splits(0).DisplayColumns(10).Locked = True
+    End Sub
+    Private Sub CargarResultadosPlanilla()
 
-        Me.CmdNomina.Enabled = True
-        Me.CmdColillas.Enabled = True
-        Me.Button2.Enabled = True
-        Me.CmdCerrar.Enabled = True
-        Me.Button4.Enabled = True  'boton importar
-
-
+        CargarDetalleIngresos()
+        CargarDetalleDeducciones()
+        CargarDetalleDeducciones2()
 
     End Sub
+
+    '////////////////////CODIGO RETIRADO 02/09/2026
+    'Private Sub CmdCalcular_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdCalcular.Click
+    '    Dim SqlString As String, iPosicion As Double, Registros As Double
+    '    Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+    '    Dim CodProductor As String, Nombres As String, Fecha As Date, Cantidad As Double, CantidadTotal As Double
+    '    Dim MontoLunes As Double, MontoMartes As Double, MontoMiercoles As Double, MontoJueves As Double, MontoViernes As Double, MontoSabado As Double, MontoDomingo As Double
+    '    Dim iPosicion2 As Double = 0, Registros2 As Double = 0, Contador As Double = 1, PrecioUnitario As Double, IngresoBruto, PorcientoIr As Double
+    '    Dim MontoIr As Double, MontoIMI As Double = 0, PorcientoPolicia As Double, MontoPolicia As Double, MontoVeterinario As Double, ROC1 As String = 0, ROC2 As String = 0, ROC3 As String = 0, ROC4 As String = 0, ROC5 As String = 0, ROC6 As String = 0, ROC7 As String = 0
+    '    Dim Anticipo As Double, Transporte As Double, Pulperia As Double, Inseminacion As Double, NCompra As String, PrecioLunes As Double, PrecioMartes As Double, PrecioMiercoles As Double, PrecioJueves As Double, PrecioViernes As Double, PrecioSabado As Double, PrecioDomingo As Double
+    '    Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Trazabilidad As Double, Otros As Double
+    '    Dim CantPlanilla As Double = 0, PLunes As Double, PMartes As Double, PMiercoles As Double, PJueves As Double, PViernes As Double, PSabado As Double, PDomingo As Double
+    '    Dim PorcientoBolsa As Double = 0, MontoBolsa As Double = 0, ProductosVeterinarios As Double = 0, CantLunes As Double = 0, CantMartes As Double = 0, CantMiercoles As Double = 0, CantJueves As Double = 0, CantViernes As Double = 0, CantSabado As Double = 0, CantDomingo As Double = 0
+    '    Dim PrecioProductor As Double = 0, TipoProductor As String = "Productor", PorcientoIMI As Double = 0
+
+    '    If Me.CboTipoPlanilla.Text = "" Then
+    '        MsgBox("Seleccione la Nomina, para Calcular", MsgBoxStyle.Critical, "Zeus Acopio")
+    '        Exit Sub
+    '    End If
+
+    '    Fecha = Me.DTPFechaIni.Value
+    '    If Me.TxtPrecioLunes.Text = "" Then
+    '        PrecioUnitario = 0
+    '    Else
+    '        PrecioUnitario = Me.TxtPrecioLunes.Text
+    '    End If
+
+    '    PorcientoIr = Val(Me.TxtIR.Text) / 100
+    '    PorcientoBolsa = Val(Me.TxtBolsa.Text) / 100
+    '    PorcientoPolicia = Val(Me.TxtDeduccionPolicia.Text) / 100
+    '    PorcientoIMI = Val(Me.TxtIMI.Text) / 100
+
+    '    If Me.TxtPrecioLunes.Text = "" Then
+    '        Me.TxtPrecioLunes.Text = 0
+    '    End If
+
+    '    If Me.TxtPrecioMartes.Text = "" Then
+    '        Me.TxtPrecioMartes.Text = 0
+    '    End If
+
+    '    If Me.TxtPrecioMiercoles.Text = "" Then
+    '        Me.TxtPrecioMiercoles.Text = 0
+    '    End If
+
+    '    If Me.TxtPrecioJueves.Text = "" Then
+    '        Me.TxtPrecioJueves.Text = 0
+    '    End If
+
+    '    If Me.TxtPrecioViernes.Text = "" Then
+    '        Me.TxtPrecioViernes.Text = 0
+    '    End If
+
+    '    If Me.TxtPrecioSabado.Text = "" Then
+    '        Me.TxtPrecioSabado.Text = 0
+    '    End If
+
+    '    If Me.TxtPrecioDomingo.Text = "" Then
+    '        Me.TxtPrecioDomingo.Text = 0
+    '    End If
+
+    '    PrecioLunes = Me.TxtPrecioLunes.Text
+    '    PrecioMartes = Me.TxtPrecioMartes.Text
+    '    PrecioMiercoles = Me.TxtPrecioMiercoles.Text
+    '    PrecioJueves = Me.TxtPrecioJueves.Text
+    '    PrecioViernes = Me.TxtPrecioViernes.Text
+    '    PrecioSabado = Me.TxtPrecioSabado.Text
+    '    PrecioDomingo = Me.TxtPrecioDomingo.Text
+
+
+    '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '    '//////////////////////////////////////////////ACTUALIZO LOS ENCABEZADOS DE LA NOMINA//////////////////////////////////
+    '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '    StrSqlUpdate = "UPDATE [Nomina] SET [PorcientoIR] = " & Val(Me.TxtIR.Text) & ",[PorcientoPolicia] =  " & Val(Me.TxtDeduccionPolicia.Text) & ",[PrecioUnitario] = " & Val(Me.TxtPrecioLunes.Text) & ", [PrecioLunes] = " & Val(Me.TxtPrecioLunes.Text) & ", [PrecioMartes] = " & Val(Me.TxtPrecioMartes.Text) & ", [PrecioMiercoles] = " & Val(Me.TxtPrecioMiercoles.Text) & ", [PrecioJueves] = " & Val(Me.TxtPrecioJueves.Text) & ", [PrecioViernes] = " & Val(Me.TxtPrecioViernes.Text) & ", [PrecioSabado] = " & Val(Me.TxtPrecioSabado.Text) & ", [PrecioDomingo] = " & Val(Me.TxtPrecioDomingo.Text) & " " & _
+    '                   "WHERE (NumPlanilla = '" & Me.TxtNumNomina.Text & "') "
+    '    MiConexion.Open()
+    '    ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+    '    iResultado = ComandoUpdate.ExecuteNonQuery
+    '    MiConexion.Close()
+
+
+    '    '/////////////////////////////////////////CARGO LOS PRODUCTORES ACTIVOS/////////////////////////////////////////
+
+    '    SqlString = "SELECT * FROM Productor WHERE  (Activo = 1) AND (CodTipoNomina = '" & Me.CboTipoPlanilla.Text & "')"
+    '    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+    '    DataAdapter.Fill(DataSet, "Productor")
+    '    MiConexion.Close()
+
+    '    iPosicion = 0
+    '    Me.ProgressBar.Visible = True
+    '    Me.ProgressBar.Minimum = 0
+    '    Me.ProgressBar.Visible = True
+    '    Me.ProgressBar.Value = 0
+    '    Registros = DataSet.Tables("Productor").Rows.Count
+    '    Me.ProgressBar.Maximum = Registros
+    '    Do While iPosicion < Registros
+    '        My.Application.DoEvents()
+    '        CodProductor = DataSet.Tables("Productor").Rows(iPosicion)("CodProductor")
+    '        TipoProductor = DataSet.Tables("Productor").Rows(iPosicion)("TipoProductor")
+
+    '        If CodProductor = "0001841" Then
+    '            CodProductor = "0001841"
+    '        End If
+
+    '        MontoLunes = 0
+    '        MontoMartes = 0
+    '        MontoMiercoles = 0
+    '        MontoJueves = 0
+    '        MontoViernes = 0
+    '        MontoSabado = 0
+    '        MontoDomingo = 0
+
+    '        PrecioProductor = 0
+    '        If Not IsDBNull(DataSet.Tables("Productor").Rows(iPosicion)("Precio")) Then
+    '            PrecioProductor = Format(DataSet.Tables("Productor").Rows(iPosicion)("Precio"), "0.0000")
+
+    '            PrecioLunes = PrecioProductor
+    '            PrecioMartes = PrecioProductor
+    '            PrecioMiercoles = PrecioProductor
+    '            PrecioJueves = PrecioProductor
+    '            PrecioViernes = PrecioProductor
+    '            PrecioSabado = PrecioProductor
+    '            PrecioDomingo = PrecioProductor
+    '        End If
+
+    '        '//////////////////////////////////////////////CONSULTO SI ESTE PRODUCTOR YA TIENE UNA PLANILLA GRABADA ANTERIOR ////////////////////////////
+    '        SqlString = "SELECT Detalle_Nomina.* FROM Detalle_Nomina  WHERE  (NumNomina = '" & Me.TxtNumNomina.Text & "') AND (CodProductor = '" & CodProductor & "') AND (TipoProductor = '" & TipoProductor & "') "
+    '        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+    '        DataAdapter.Fill(DataSet, "Consulta")
+    '        If DataSet.Tables("Consulta").Rows.Count <> 0 Then
+    '            If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Lunes")) Then
+    '                PLunes = DataSet.Tables("Consulta").Rows(0)("Lunes")
+    '            Else
+    '                PLunes = 0
+    '            End If
+
+    '            If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Martes")) Then
+    '                PMartes = DataSet.Tables("Consulta").Rows(0)("Martes")
+    '            Else
+    '                PMartes = 0
+    '            End If
+
+    '            If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Miercoles")) Then
+    '                PMiercoles = DataSet.Tables("Consulta").Rows(0)("Miercoles")
+    '            Else
+    '                PMiercoles = 0
+    '            End If
+
+    '            If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Jueves")) Then
+    '                PJueves = DataSet.Tables("Consulta").Rows(0)("Jueves")
+    '            Else
+    '                PJueves = 0
+    '            End If
+
+    '            If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Viernes")) Then
+    '                PViernes = DataSet.Tables("Consulta").Rows(0)("Viernes")
+    '            Else
+    '                PViernes = 0
+    '            End If
+
+    '            If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Sabado")) Then
+    '                PSabado = DataSet.Tables("Consulta").Rows(0)("Sabado")
+    '            Else
+    '                PSabado = 0
+    '            End If
+
+    '            If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Domingo")) Then
+    '                PDomingo = DataSet.Tables("Consulta").Rows(0)("Domingo")
+    '            Else
+    '                PDomingo = 0
+    '            End If
+
+
+    '            If PrecioProductor = 0 Then
+    '                PrecioUnitario = DataSet.Tables("Consulta").Rows(0)("PrecioVenta")
+    '            Else
+    '                PrecioUnitario = PrecioProductor
+    '            End If
+
+    '            PrecioLunes = PrecioUnitario
+    '                PrecioMartes = PrecioUnitario
+    '                PrecioMiercoles = PrecioUnitario
+    '                PrecioJueves = PrecioUnitario
+    '                PrecioViernes = PrecioUnitario
+    '                PrecioSabado = PrecioUnitario
+    '                PrecioDomingo = PrecioUnitario
+
+    '                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioLunes")) Then
+    '                '    PrecioLunes = DataSet.Tables("Consulta").Rows(0)("PrecioLunes")
+    '                'End If
+
+    '                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioMartes")) Then
+    '                '    PrecioMartes = DataSet.Tables("Consulta").Rows(0)("PrecioMartes")
+    '                'End If
+
+    '                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioMiercoles")) Then
+    '                '    PrecioMiercoles = DataSet.Tables("Consulta").Rows(0)("PrecioMiercoles")
+    '                'End If
+
+    '                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioJueves")) Then
+    '                '    PrecioJueves = DataSet.Tables("Consulta").Rows(0)("PrecioJueves")
+    '                'End If
+
+    '                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioViernes")) Then
+    '                '    PrecioViernes = DataSet.Tables("Consulta").Rows(0)("PrecioViernes")
+    '                'End If
+
+    '                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioSabado")) Then
+    '                '    PrecioSabado = DataSet.Tables("Consulta").Rows(0)("PrecioSabado")
+    '                'End If
+
+    '                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioDomingo")) Then
+    '                '    PrecioDomingo = DataSet.Tables("Consulta").Rows(0)("PrecioDomingo")
+    '                'End If
+
+    '            Else
+    '                PLunes = 0
+    '            PMartes = 0
+    '            PMiercoles = 0
+    '            PJueves = 0
+    '            PViernes = 0
+    '            PSabado = 0
+    '            PDomingo = 0
+    '        End If
+
+    '        DataSet.Tables("Consulta").Reset()
+
+
+    '        '////////////////////////////////////////////CAMBIO EL PRECIO SI EL USUARIO DIGITA PRECIO PARA UN DIA /////////////////////////////
+    '        '////////////////////////////////////////////SI EL PRECIO ES CERO NO CAMBIO NADA /////////////////////////////////////////////////
+
+    '        If Val(Me.TxtPrecioLunes.Text) <> 0 Then
+    '            PrecioLunes = Me.TxtPrecioLunes.Text
+    '        End If
+
+    '        If Val(Me.TxtPrecioMartes.Text) <> 0 Then
+    '            PrecioMartes = Me.TxtPrecioMartes.Text
+    '        End If
+
+    '        If Val(Me.TxtPrecioMiercoles.Text) <> 0 Then
+    '            PrecioMiercoles = Me.TxtPrecioMiercoles.Text
+    '        End If
+
+    '        If Val(Me.TxtPrecioJueves.Text) <> 0 Then
+    '            PrecioJueves = Me.TxtPrecioJueves.Text
+    '        End If
+
+    '        If Val(Me.TxtPrecioViernes.Text) <> 0 Then
+    '            PrecioViernes = Me.TxtPrecioViernes.Text
+    '        End If
+
+    '        If Val(Me.TxtPrecioSabado.Text) <> 0 Then
+    '            PrecioSabado = Me.TxtPrecioSabado.Text
+    '        End If
+
+    '        If Val(Me.TxtPrecioDomingo.Text) <> 0 Then
+    '            PrecioDomingo = Me.TxtPrecioDomingo.Text
+    '        End If
+
+
+
+    '        Fecha = Me.DTPFechaIni.Value
+    '        Nombres = DataSet.Tables("Productor").Rows(iPosicion)("NombreProductor") + " " + DataSet.Tables("Productor").Rows(iPosicion)("ApellidoProductor")
+    '        Me.LblProcesando.Text = "PROCESANDO PRODUCTOR: " & CodProductor & " " & Nombres
+    '        CantidadTotal = 0
+    '        Contador = 1
+    '        '///////////////////////////////////////////////77////////////////////////////////////////////////////////////////////////////
+    '        '//////////////////////////////////BUSCO LAS RECEPCIONES DEL PRODUCTOR///////////////////////////////////////////////////////
+    '        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '        Me.ProgressBar2.Visible = True
+    '        Me.ProgressBar2.Minimum = 0
+    '        Me.ProgressBar2.Visible = True
+    '        Me.ProgressBar2.Value = 0
+    '        Me.ProgressBar2.Maximum = 7
+    '        Do While Fecha <= Me.DTPFechaFin.Value
+
+    '            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '            '//////////////////////////////////////////////////BUSCO LAS RECEPCIONES DE LECHE/////////////////////////////////////////////
+    '            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '            SqlString = "SELECT  * FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  " &
+    '                        "WHERE (Detalle_Compras.Tipo_Compra = 'Recepcion') AND (Compras.Cod_Proveedor = '" & CodProductor & "') AND (Compras.TipoProductor = '" & TipoProductor & "')  AND (Compras.Fecha_Compra = CONVERT(DATETIME, '" & Format(Fecha, "yyyy-MM-dd") & "', 102))"
+    '            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+    '            DataAdapter.Fill(DataSet, "Recepciones")
+    '            iPosicion2 = 0
+    '            Cantidad = 0
+    '            NCompra = 0
+    '            Registros2 = DataSet.Tables("Recepciones").Rows.Count
+
+    '            Do While iPosicion2 < Registros2
+    '                Cantidad = Cantidad + DataSet.Tables("Recepciones").Rows(iPosicion2)("Cantidad")
+    '                NCompra = DataSet.Tables("Recepciones").Rows(iPosicion2)("Numero_Compra")
+    '                iPosicion2 = iPosicion2 + 1
+    '            Loop
+    '            DataSet.Tables("Recepciones").Clear()
+
+
+    '            Contador = Fecha.DayOfWeek
+
+    '            If CodProductor = "0710" Then
+    '                CodProductor = "0710"
+    '            End If
+
+    '            Select Case Contador
+    '                Case 1
+    '                    If PLunes > Cantidad Then
+    '                        Cantidad = PLunes
+    '                        ROC1 = 0
+    '                    End If
+    '                    CantLunes = Cantidad
+    '                    MontoLunes = Cantidad * Format(PrecioLunes, "##,##0.00")
+    '                    ROC1 = NCompra
+    '                Case 2
+    '                    If PMartes > Cantidad Then
+    '                        Cantidad = PMartes
+    '                        ROC2 = 0
+    '                    End If
+    '                    CantMartes = Cantidad
+    '                    MontoMartes = Cantidad * Format(PrecioMartes, "##,##0.00")
+    '                    ROC2 = NCompra
+    '                Case 3
+    '                    If PMiercoles > Cantidad Then
+    '                        Cantidad = PMiercoles
+    '                        ROC3 = 0
+    '                    End If
+    '                    CantMiercoles = Cantidad
+    '                    MontoMiercoles = Cantidad * Format(PrecioMiercoles, "##,##0.00")
+    '                    ROC3 = NCompra
+    '                Case 4
+    '                    If PJueves > Cantidad Then
+    '                        Cantidad = PJueves
+    '                        ROC4 = 0
+    '                    End If
+    '                    CantJueves = Cantidad
+    '                    MontoJueves = Cantidad * Format(PrecioJueves, "##,##0.00")
+    '                    ROC4 = NCompra
+    '                Case 5
+    '                    If PViernes > Cantidad Then
+    '                        Cantidad = PViernes
+    '                        ROC5 = 0
+    '                    End If
+    '                    CantViernes = Cantidad
+    '                    MontoViernes = Cantidad * Format(PrecioViernes, "##,##0.00")
+    '                    ROC5 = NCompra
+    '                Case 6
+    '                    If PSabado > Cantidad Then
+    '                        Cantidad = PSabado
+    '                        ROC6 = 0
+    '                    End If
+    '                    CantSabado = Cantidad
+    '                    MontoSabado = Cantidad * Format(PrecioSabado, "##,##0.00")
+    '                    ROC6 = NCompra
+    '                Case 0
+    '                    If PDomingo > Cantidad Then
+    '                        Cantidad = PDomingo
+    '                        ROC7 = 0
+    '                    End If
+
+    '                    CantDomingo = Cantidad
+    '                    MontoDomingo = Cantidad * Format(PrecioDomingo, "##,##0.00")
+    '                    ROC7 = NCompra
+    '            End Select
+
+
+    '            '******************************************************************************
+    '            '**********CALCULO EL TOTAL INGRESOS Y LAS DEDUCCIONES DE LEY ******************
+    '            '************************************************************************************
+
+    '            CantidadTotal = CantidadTotal + Cantidad
+    '            IngresoBruto = MontoLunes + MontoMartes + MontoMiercoles + MontoJueves + MontoViernes + MontoSabado + MontoDomingo
+    '            MontoIr = Format(PorcientoIr * IngresoBruto, "####0.00")
+    '            MontoPolicia = Format(PorcientoPolicia * CantidadTotal, "####0.00")
+    '            MontoBolsa = Format(PorcientoBolsa * IngresoBruto, "####0.00")
+    '            MontoIMI = Format(PorcientoIMI * IngresoBruto, "####0.00")
+
+    '            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '            '/////////////////////////////////////////////////BUSCO LAS DEDUCCIONES/////////////////////////////////////////////////
+    '            '////////////////////////////////////////////////777777777777777777777777777777777777777777777777777777777777777777777
+    '            Anticipo = 0
+    '            Transporte = 0
+    '            Pulperia = 0
+    '            Inseminacion = 0
+    '            Trazabilidad = 0
+    '            Otros = 0
+    '            MontoVeterinario = 0
+    '            SqlString = "SELECT  * FROM Deducciones_Planilla WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "') AND (CodProductor = '" & CodProductor & "') AND (TipoProductor = '" & TipoProductor & "')"
+    '            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+    '            DataAdapter.Fill(DataSet, "DeduccionPlanilla")
+    '            If DataSet.Tables("DeduccionPlanilla").Rows.Count <> 0 Then
+    '                Anticipo = DataSet.Tables("DeduccionPlanilla").Rows(0)("Anticipo")
+    '                Transporte = DataSet.Tables("DeduccionPlanilla").Rows(0)("Transporte")
+    '                Pulperia = DataSet.Tables("DeduccionPlanilla").Rows(0)("Pulperia")
+    '                Inseminacion = DataSet.Tables("DeduccionPlanilla").Rows(0)("Inseminacion")
+    '                Trazabilidad = DataSet.Tables("DeduccionPlanilla").Rows(0)("Trazabilidad")
+    '                If Not IsDBNull(DataSet.Tables("DeduccionPlanilla").Rows(0)("ProductosVeterinarios")) Then
+    '                    MontoVeterinario = DataSet.Tables("DeduccionPlanilla").Rows(0)("ProductosVeterinarios")
+    '                End If
+    '                Otros = DataSet.Tables("DeduccionPlanilla").Rows(0)("OtrasDeducciones")
+
+    '            Else
+    '                '///////////SI NO EXISTE AGREGO UNA DEDUCCION EN CERO CON EL PRODUCTOR////////////////
+    '                StrSqlUpdate = "INSERT INTO [Deducciones_Planilla] ([NumNomina],[CodProductor],[TipoProductor],[NombreProductor],[NoAnticipo],[Anticipo],[Transporte],[Pulperia],[Inseminacion],[Trazabilidad],[OtrasDeducciones],[ProductosVeterinarios]) " &
+    '                               "VALUES ('" & Me.TxtNumNomina.Text & "','" & CodProductor & "','" & TipoProductor & "','" & Nombres & "','0000',0,0,0,0,0,0,0)"
+    '                MiConexion.Open()
+    '                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+    '                iResultado = ComandoUpdate.ExecuteNonQuery
+    '                MiConexion.Close()
+    '            End If
+    '            DataSet.Tables("DeduccionPlanilla").Clear()
+
+
+
+    '            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '            '/////////////////////////////////////////////////BUSCO LOS PRODUCTOS VETERINARIOS EN FACTURACION/////////////////////////////////////////////////
+    '            '////////////////////////////////////////////////777777777777777777777777777777777777777777777777777777777777777777777
+    '            SqlString = "SELECT DISTINCT MAX(Facturas.Numero_Factura) AS Numero_Factura, MAX(Facturas.Fecha_Factura) AS Fecha_Factura, SUM(Facturas.MontoCredito) AS MontoCredito, SUM(DetalleRecibo.MontoPagado - DetalleRecibo.MontoPagado) AS MontoPagado, SUM(Facturas.MontoCredito) AS Saldo FROM  Facturas LEFT OUTER JOIN DetalleRecibo ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura " &
+    '                        "WHERE (Facturas.Cod_Cliente = '" & CodProductor & "') AND (Facturas.Tipo_Factura = 'Factura') AND (Facturas.Fecha_Vencimiento <= CONVERT(DATETIME,'" & Format(Me.DTPFechaFin.Value, "yyyy-MM-dd") & "', 102)) HAVING (SUM(Facturas.MontoCredito) <> 0) AND (MAX(Facturas.TipoProductor) = '" & TipoProductor & "') ORDER BY MAX(Facturas.Numero_Factura) DESC"
+    '            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+    '            DataAdapter.Fill(DataSet, "Veterinario")
+    '            If DataSet.Tables("Veterinario").Rows.Count <> 0 Then
+    '                If Not IsDBNull(DataSet.Tables("Veterinario").Rows(0)("MontoCredito")) Then
+    '                    MontoVeterinario = MontoVeterinario + DataSet.Tables("Veterinario").Rows(0)("MontoCredito")
+    '                End If
+    '            Else
+    '                'MontoVeterinario = 0
+    '            End If
+
+    '            DataSet.Tables("Veterinario").Clear()
+
+
+    '            Contador = Contador + 1
+    '            Fecha = DateAdd(DateInterval.Day, 1, Fecha)
+    '            Me.ProgressBar2.Value = Me.ProgressBar2.Value + 1
+    '        Loop
+
+
+
+
+
+    '        SqlString = "SELECT  * FROM Detalle_Nomina WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "') AND (CodProductor = '" & CodProductor & "') AND (TipoProductor = '" & TipoProductor & "')"
+    '        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+    '        DataAdapter.Fill(DataSet, "DetalleNomina")
+    '        If DataSet.Tables("DetalleNomina").Rows.Count = 0 Then
+    '            StrSqlUpdate = "INSERT INTO [Detalle_Nomina] ([NumNomina],[CodProductor],[TipoProductor],[Roc1],[Lunes],[Roc2],[Martes],[Roc3],[Miercoles],[Roc4],[Jueves],[Roc5],[Viernes],[Roc6],[Sabado],[Roc7],[Domingo],[Total],[PrecioVenta],[TotalIngresos],[IR],[IMI],[DeduccionPolicia],[Anticipo],[DeduccionTransporte],[Pulperia],[Inseminacion],[Trazabilidad],[ProductosVeterinarios],[OtrasDeducciones],[Nombres],[Bolsa],[PrecioLunes],[PrecioMartes],[PrecioMiercoles],[PrecioJueves],[PrecioViernes],[PrecioSabado],[PrecioDomingo]) " &
+    '                           "VALUES ('" & Me.TxtNumNomina.Text & "','" & CodProductor & "','" & TipoProductor & "','" & ROC1 & "'," & CantLunes & ",'" & ROC2 & "'," & CantMartes & ",'" & ROC3 & "'," & CantMiercoles & ",'" & ROC4 & "'," & CantJueves & ",'" & ROC5 & "'," & CantViernes & ",'" & ROC6 & "'," & CantSabado & ",'" & ROC7 & "'," & CantDomingo & "," & CantidadTotal & " ," & PrecioUnitario & "," & IngresoBruto & "," & MontoIr & "," & MontoIMI & ", " & MontoPolicia & "," & Anticipo & "," & Transporte & "," & Pulperia & "," & Inseminacion & "," & Trazabilidad & " ," & MontoVeterinario & " ," & Otros & ", '" & Nombres & "', " & MontoBolsa & ", " & PrecioLunes & "," & PrecioMartes & ", " & PrecioMiercoles & ", " & PrecioJueves & ", " & PrecioViernes & ", " & PrecioSabado & ", " & PrecioDomingo & ")"
+    '            MiConexion.Open()
+    '            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+    '            iResultado = ComandoUpdate.ExecuteNonQuery
+    '            MiConexion.Close()
+
+    '        Else
+
+    '            'If Not IsDBNull(DataSet.Tables("DetalleNomina").Rows(0)("PrecioVenta")) Then
+    '            '    If DataSet.Tables("DetalleNomina").Rows(0)("PrecioVenta") <= 0 Then
+    '            '        PrecioUnitario = Me.TxtPrecioUnitario.Text
+    '            '    Else
+    '            '        PrecioUnitario = DataSet.Tables("DetalleNomina").Rows(0)("PrecioVenta")
+    '            '    End If
+    '            'Else
+    '            '    PrecioUnitario = Me.TxtPrecioUnitario.Text
+    '            'End If
+
+
+    '            StrSqlUpdate = "UPDATE [Detalle_Nomina] SET [Roc1] = '" & ROC1 & "',[Lunes] = " & CantLunes & ",[Roc2] = '" & ROC2 & "',[Martes] = " & CantMartes & ",[Roc3] = '" & ROC3 & "',[Miercoles] = '" & CantMiercoles & "',[Roc4] = '" & ROC4 & "',[Jueves] = " & CantJueves & ",[Roc5] = '" & ROC5 & "',[Viernes] =" & CantViernes & ",[Roc6] = '" & ROC6 & "',[Sabado] = " & CantSabado & ",[Roc7] = '" & ROC7 & "',[Domingo] = " & CantDomingo & ",[Total] = " & CantidadTotal & ",[PrecioVenta] = " & PrecioUnitario & ",[TotalIngresos] = " & IngresoBruto & ",[IR] = " & MontoIr & ",[IMI] = " & MontoIMI & ", [DeduccionPolicia] = " & MontoPolicia & ",[Anticipo] = " & Anticipo & ",[DeduccionTransporte] = " & Transporte & " ,[Pulperia] = " & Pulperia & ",[Inseminacion] = " & Inseminacion & ",[ProductosVeterinarios] = " & MontoVeterinario & " ,[Trazabilidad] = " & Trazabilidad & ",[OtrasDeducciones] = " & Otros & " ,[Nombres] = '" & Nombres & "', [Bolsa] = '" & MontoBolsa & "' , [PrecioLunes] = '" & PrecioLunes & "',  [PrecioMartes] = '" & PrecioMartes & "',  [PrecioMiercoles] = '" & PrecioMiercoles & "' , [PrecioJueves] = '" & PrecioJueves & "', [PrecioViernes] = '" & PrecioViernes & "', [PrecioSabado] = '" & PrecioSabado & "', [PrecioDomingo] = '" & PrecioDomingo & "'   " &
+    '                           "WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "') AND (CodProductor = '" & CodProductor & "') AND (TipoProductor = '" & TipoProductor & "') "
+    '            MiConexion.Open()
+    '            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+    '            iResultado = ComandoUpdate.ExecuteNonQuery
+    '            MiConexion.Close()
+    '        End If
+    '        DataSet.Tables("DetalleNomina").Clear()
+
+    '        iPosicion = iPosicion + 1
+    '        Me.ProgressBar.Value = iPosicion
+    '    Loop
+
+    '    'Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres
+    '    ds.Tables("DetalleIngresos").Reset()
+
+    '    Fecha = Me.DTPFechaIni.Value
+    '    If Fecha.DayOfWeek = 1 Then
+    '        SqlString = "SELECT CodProductor, Nombres, TipoProductor, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado,  Domingo, Total, PrecioVenta, TotalIngresos, NumNomina FROM Detalle_Nomina WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "')  " 'AND (Detalle_Nomina.TipoProductor = '" & TipoProductor & "')
+    '    ElseIf Fecha.DayOfWeek = 0 Then
+    '        SqlString = "SELECT CodProductor, Nombres, TipoProductor, Domingo, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Total, PrecioVenta, TotalIngresos, NumNomina FROM Detalle_Nomina WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "')  " 'AND (Detalle_Nomina.TipoProductor = '" & TipoProductor & "')
+    '    ElseIf Fecha.DayOfWeek = 6 Then
+    '        SqlString = "SELECT CodProductor, Nombres, TipoProductor ,Sabado,  Domingo, Lunes, Martes, Miercoles, Jueves, Viernes, Total, PrecioVenta, TotalIngresos, NumNomina FROM Detalle_Nomina WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "')  " 'AND (Detalle_Nomina.TipoProductor = '" & TipoProductor & "')
+    '    End If
+
+    '    ds = New DataSet
+    '    da = New SqlDataAdapter(SqlString, MiConexion)
+    '    CmdBuilder = New SqlCommandBuilder(da)
+    '    da.Fill(ds, "DetalleIngresos")
+    '    Me.TDGridIngresos.DataSource = ds.Tables("DetalleIngresos")
+
+    '    'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+    '    'DataAdapter.Fill(DataSet, "DetalleIngresos")
+    '    'Me.TDGridIngresos.DataSource = DataSet.Tables("DetalleIngresos")
+    '    Me.TDGridIngresos.Splits(0).DisplayColumns(0).Width = 70
+    '    Me.TDGridIngresos.Columns(0).Caption = "Codigo"
+    '    Me.TDGridIngresos.Splits(0).DisplayColumns("CodProductor").Locked = True
+    '    Me.TDGridIngresos.Splits(0).DisplayColumns("Nombres").Width = 190
+    '    Me.TDGridIngresos.Splits(0).DisplayColumns("Nombres").Locked = True
+    '    Me.TDGridIngresos.Splits(0).DisplayColumns("TipoProductor").Locked = True
+    '    Me.TDGridIngresos.Splits(0).DisplayColumns("TipoProductor").Width = 61
+    '    Me.TDGridIngresos.Columns("TipoProductor").Caption = "Tipo"
+    '    Me.TDGridIngresos.Splits(0).DisplayColumns("Domingo").Width = 61
+    '    'Me.TDGridIngresos.Splits(0).DisplayColumns("Domingo").Locked = True
+    '    Me.TDGridIngresos.Splits(0).DisplayColumns("Lunes").Width = 61
+    '    'Me.TDGridIngresos.Splits(0).DisplayColumns("Lunes").Locked = True
+    '    Me.TDGridIngresos.Splits(0).DisplayColumns("Martes").Width = 61
+    '    'Me.TDGridIngresos.Splits(0).DisplayColumns("Martes").Locked = True
+    '    Me.TDGridIngresos.Splits(0).DisplayColumns("Miercoles").Width = 61
+    '    'Me.TDGridIngresos.Splits(0).DisplayColumns("Miercoles").Locked = True
+    '    Me.TDGridIngresos.Splits(0).DisplayColumns("Jueves").Width = 61
+    '    'Me.TDGridIngresos.Splits(0).DisplayColumns("Jueves").Locked = True
+    '    Me.TDGridIngresos.Splits(0).DisplayColumns("Viernes").Width = 61
+    '    'Me.TDGridIngresos.Splits(0).DisplayColumns("Viernes").Locked = True
+    '    Me.TDGridIngresos.Splits(0).DisplayColumns("Sabado").Width = 61
+    '    'Me.TDGridIngresos.Splits(0).DisplayColumns("Sabado").Locked = True
+    '    Me.TDGridIngresos.Splits(0).DisplayColumns("Total").Width = 61
+    '    Me.TDGridIngresos.Splits(0).DisplayColumns("Total").Locked = True
+    '    Me.TDGridIngresos.Columns("Total").Caption = "Total Litros"
+    '    Me.TDGridIngresos.Splits(0).DisplayColumns("PrecioVenta").Width = 70
+    '    'Me.TDGridIngresos.Splits(0).DisplayColumns("PrecioVenta").Locked = True
+    '    Me.TDGridIngresos.Columns("PrecioVenta").NumberFormat = "##,##0.00"
+    '    Me.TDGridIngresos.Columns("PrecioVenta").Caption = "PrecioUnit"
+    '    Me.TDGridIngresos.Splits(0).DisplayColumns("TotalIngresos").Width = 80
+    '    Me.TDGridIngresos.Splits(0).DisplayColumns("TotalIngresos").Locked = True
+    '    Me.TDGridIngresos.Columns("TotalIngresos").NumberFormat = "##,##0.00"
+    '    Me.TDGridIngresos.Splits(0).DisplayColumns("NumNomina").Visible = False
+    '    Me.TDGridIngresos.Splits(0).DisplayColumns("TipoProductor").Visible = True
+
+
+    '    SqlString = "SELECT Detalle_Nomina.CodProductor, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.IR, Detalle_Nomina.IMI, Detalle_Nomina.Bolsa, Detalle_Nomina.DeduccionPolicia, Detalle_Nomina.Anticipo, Detalle_Nomina.DeduccionTransporte, Detalle_Nomina.Pulperia,Detalle_Nomina.Inseminacion, Detalle_Nomina.Trazabilidad, Detalle_Nomina.ProductosVeterinarios,Detalle_Nomina.OtrasDeducciones, Detalle_Nomina.IR + Detalle_Nomina.Bolsa + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.Trazabilidad AS TotalEgresos, Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR + Detalle_Nomina.Bolsa + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios + Detalle_Nomina.OtrasDeducciones + Detalle_Nomina.Trazabilidad) AS NetoPagar FROM  Detalle_Nomina INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor " &
+    '        "WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') " 'AND (Detalle_Nomina.TipoProductor = '" & TipoProductor & "')
+    '    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+    '    DataAdapter.Fill(DataSet, "DetalleEgresos")
+    '    Me.TDGridDeducciones.DataSource = DataSet.Tables("DetalleEgresos")
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("CodProductor").Width = 50
+    '    Me.TDGridDeducciones.Columns("CodProductor").Caption = "Codigo"
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("CodProductor").Locked = True
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("Nombres").Width = 180
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("Nombres").Locked = True
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("IR").Width = 60
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("IR").Locked = True
+    '    Me.TDGridDeducciones.Columns("IR").NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("IMI").Width = 60
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("IMI").Locked = True
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("DeduccionPolicia").Visible = False
+    '    Me.TDGridDeducciones.Columns("IMI").NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones.Columns("IMI").Caption = "IMI"
+    '    Me.TDGridDeducciones.Columns("Bolsa").NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("Bolsa").Width = 60
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("Bolsa").Locked = True
+    '    Me.TDGridDeducciones.Columns("Bolsa").NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("Anticipo").Width = 60
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("Anticipo").Locked = True
+    '    Me.TDGridDeducciones.Columns("Anticipo").Caption = "Anticipo"
+    '    Me.TDGridDeducciones.Columns("DeduccionTransporte").Caption = "Transporte"
+    '    Me.TDGridDeducciones.Columns("DeduccionTransporte").NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("DeduccionTransporte").Width = 60
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("DeduccionTransporte").Locked = True
+    '    Me.TDGridDeducciones.Columns("Pulperia").NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("Pulperia").Width = 50
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("Pulperia").Locked = True
+    '    Me.TDGridDeducciones.Columns("Pulperia").Caption = "Fondos"
+    '    Me.TDGridDeducciones.Columns(7).NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns(7).Width = 70
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns(7).Locked = True
+    '    Me.TDGridDeducciones.Columns("Trazabilidad").NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("Trazabilidad").Width = 70
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("Trazabilidad").Locked = True
+    '    Me.TDGridDeducciones.Columns("ProductosVeterinarios").NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("ProductosVeterinarios").Width = 70
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("ProductosVeterinarios").Locked = True
+    '    Me.TDGridDeducciones.Columns("ProductosVeterinarios").Caption = "Veterinario"
+    '    Me.TDGridDeducciones.Columns("OtrasDeducciones").Caption = "Otras"
+    '    Me.TDGridDeducciones.Columns("OtrasDeducciones").NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("OtrasDeducciones").Width = 70
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("OtrasDeducciones").Locked = True
+    '    Me.TDGridDeducciones.Columns("TotalEgresos").NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("TotalEgresos").Width = 80
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("TotalEgresos").Locked = True
+
+    '    Me.TDGridDeducciones.Columns("Inseminacion").NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("Inseminacion").Width = 70
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("Inseminacion").Locked = True
+
+    '    Me.TDGridDeducciones.Columns("NetoPagar").NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("NetoPagar").Width = 80
+    '    Me.TDGridDeducciones.Splits(0).DisplayColumns("NetoPagar").Locked = True
+
+
+    '    SqlString = "SELECT IdDeduccion, NumNomina, CodProductor, TipoProductor, NombreProductor, NoAnticipo, Anticipo, Transporte, Pulperia, Inseminacion, Trazabilidad, ProductosVeterinarios , OtrasDeducciones  FROM Deducciones_Planilla WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "')ORDER BY CodProductor"
+    '    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+    '    DataAdapter.Fill(DataSet, "Deducciones")
+    '    Me.BindingDeducciones2.DataSource = DataSet.Tables("Deducciones")
+    '    Me.TDGridDeducciones2.DataSource = Me.BindingDeducciones2
+    '    Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(0).Visible = False
+    '    Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(1).Visible = False
+    '    Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(2).Button = True
+    '    Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(2).Width = 100
+    '    Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(3).Visible = False
+    '    Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(4).Width = 156
+    '    Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(5).Width = 78
+    '    Me.TDGridDeducciones2.Columns(5).NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(6).Width = 78
+    '    Me.TDGridDeducciones2.Columns(6).NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(7).Width = 78
+    '    Me.TDGridDeducciones2.Columns(7).NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns("Pulperia").Width = 78
+    '    Me.TDGridDeducciones2.Columns("Pulperia").NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones2.Columns("Pulperia").Caption = "Fondos"
+    '    Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns(9).Width = 78
+    '    Me.TDGridDeducciones2.Columns(9).NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns("Trazabilidad").Width = 70
+    '    Me.TDGridDeducciones2.Columns("Trazabilidad").NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns("OtrasDeducciones").Width = 60
+    '    Me.TDGridDeducciones2.Columns("OtrasDeducciones").Caption = "Otras"
+    '    Me.TDGridDeducciones2.Columns("OtrasDeducciones").NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones2.Splits.Item(0).DisplayColumns("ProductosVeterinarios").Width = 60
+    '    Me.TDGridDeducciones2.Columns("ProductosVeterinarios").NumberFormat = "##,##0.00"
+    '    Me.TDGridDeducciones2.Columns("ProductosVeterinarios").Caption = "Veterinario"
+
+    '    'SqlString = "SELECT Detalle_Nomina.CodProductor, Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres, Detalle_Nomina.IR,Detalle_Nomina.DeduccionPolicia, Detalle_Nomina.Anticipo, Detalle_Nomina.DeduccionTransporte, Detalle_Nomina.Pulperia,Detalle_Nomina.Inseminacion, Detalle_Nomina.ProductosVeterinarios,Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios AS TotalEgresos, Detalle_Nomina.TotalIngresos - (Detalle_Nomina.IR + Detalle_Nomina.DeduccionPolicia + Detalle_Nomina.Anticipo + Detalle_Nomina.DeduccionTransporte + Detalle_Nomina.Pulperia + Detalle_Nomina.Inseminacion + Detalle_Nomina.ProductosVeterinarios) AS NetoPagar FROM  Detalle_Nomina INNER JOIN Productor ON Detalle_Nomina.CodProductor = Productor.CodProductor AND Detalle_Nomina.TipoProductor = Productor.TipoProductor " & _
+    '    '            "WHERE (Detalle_Nomina.NumNomina = '" & Me.TxtNumNomina.Text & "') AND (Detalle_Nomina.TipoProductor = 'Productor')"
+    '    'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+    '    'DataAdapter.Fill(DataSet, "DetalleEgresos")
+    '    'Me.TDGridDeducciones.DataSource = DataSet.Tables("DetalleEgresos")
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(0).Width = 70
+    '    'Me.TDGridDeducciones.Columns(0).Caption = "Codigo"
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(0).Locked = True
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(1).Width = 180
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(1).Locked = True
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(2).Width = 70
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(2).Locked = True
+    '    'Me.TDGridDeducciones.Columns(2).NumberFormat = "##,##0.00"
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(3).Width = 70
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(3).Locked = True
+    '    'Me.TDGridDeducciones.Columns(3).NumberFormat = "##,##0.00"
+    '    'Me.TDGridDeducciones.Columns(3).Caption = "Policia"
+    '    'Me.TDGridDeducciones.Columns(4).NumberFormat = "##,##0.00"
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(4).Width = 70
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(4).Locked = True
+    '    'Me.TDGridDeducciones.Columns(5).NumberFormat = "##,##0.00"
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(5).Width = 70
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(5).Locked = True
+    '    'Me.TDGridDeducciones.Columns(5).Caption = "Transporte"
+    '    'Me.TDGridDeducciones.Columns(6).NumberFormat = "##,##0.00"
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(6).Width = 70
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(6).Locked = True
+    '    'Me.TDGridDeducciones.Columns(7).NumberFormat = "##,##0.00"
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(7).Width = 70
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(7).Locked = True
+    '    'Me.TDGridDeducciones.Columns(8).NumberFormat = "##,##0.00"
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(8).Width = 70
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(8).Locked = True
+    '    'Me.TDGridDeducciones.Columns(8).Caption = "Veterinario"
+    '    'Me.TDGridDeducciones.Columns(9).NumberFormat = "##,##0.00"
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(9).Width = 80
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(9).Locked = True
+    '    'Me.TDGridDeducciones.Columns(10).NumberFormat = "##,##0.00"
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(10).Width = 80
+    '    'Me.TDGridDeducciones.Splits(0).DisplayColumns(10).Locked = True
+
+    '    Me.CmdNomina.Enabled = True
+    '    Me.CmdColillas.Enabled = True
+    '    Me.Button2.Enabled = True
+    '    Me.CmdCerrar.Enabled = True
+    '    Me.Button4.Enabled = True  'boton importar
+
+
+
+    'End Sub
 
     Private Sub TDGridDeducciones2_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles TDGridDeducciones2.AfterUpdate
 
@@ -1561,7 +2872,7 @@ Public Class FrmPlanilla
         DataAdapter.Fill(DataSet, "DetalleDeduccion")
         If DataSet.Tables("DetalleDeduccion").Rows.Count = 0 Then
             '///////////SI EXISTE EL LO ACTUALIZO////////////////
-            StrSqlUpdate = "INSERT INTO [Deducciones_Planilla] ([NumNomina],[CodProductor],[TipoProductor],[NombreProductor],[NoAnticipo],[Anticipo],[Transporte],[Pulperia],[Inseminacion],[Trazabilidad],[OtrasDeducciones],[ProductosVeterinarios]) " & _
+            StrSqlUpdate = "INSERT INTO [Deducciones_Planilla] ([NumNomina],[CodProductor],[TipoProductor],[NombreProductor],[NoAnticipo],[Anticipo],[Transporte],[Pulperia],[Inseminacion],[Trazabilidad],[OtrasDeducciones],[ProductosVeterinarios]) " &
                            "VALUES ('" & Me.TxtNumNomina.Text & "','" & CodProductor & "','Productor','" & NombreProductor & "','" & Me.TDGridDeducciones2.Columns(5).Text & "'," & Anticipo & "," & Transporte & "," & Pulperia & " ," & Inseminacion & "," & Trazabilidad & "," & Otros & "," & MontoVeterinario & ")"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -1742,7 +3053,7 @@ Public Class FrmPlanilla
             ArepPlanilla.TxtMartes.DataField = "Domingo"
             ArepPlanilla.TxtMiercoles.DataField = "Lunes"
             ArepPlanilla.TxtJueves.DataField = "Martes"
-            ArepPlanilla.txtviernes.DataField = "Miercoles"
+            ArepPlanilla.TxtViernes.DataField = "Miercoles"
             ArepPlanilla.TxtSabado.DataField = "Jueves"
             ArepPlanilla.TxtDomingo.DataField = "Viernes"
 
@@ -3356,6 +4667,39 @@ Public Class FrmPlanilla
 
         End Try
 
+    End Sub
+
+    Private Sub btnDeducciones_Click(ByVal sender As System.Object,
+                                 ByVal e As System.EventArgs) Handles btnDeducciones.Click
+
+        Dim frm As New FrmDeduccionPlanilla
+
+        frm.TipoPlanilla = Me.CboTipoPlanilla.Text
+        frm.FechaDesde = Me.DTPFechaIni.Value
+        frm.FechaHasta = Me.DTPFechaFin.Value
+        frm.NumeroPlanilla = Me.TxtNumNomina.Text
+
+        If frm.ShowDialog(Me) = DialogResult.OK Then
+
+            EjecutarCalculoPlanilla()
+
+        End If
+
+    End Sub
+
+    Private Sub BtnImportarDeducciones_Click(sender As Object, e As EventArgs) Handles BtnImportarDeducciones.Click
+        Dim frmDeduccion As New FrmImportarDeduccion
+
+        frmDeduccion.TipoPlanilla = Me.CboTipoPlanilla.Text
+        frmDeduccion.FechaDesde = Me.DTPFechaIni.Value
+        frmDeduccion.FechaHasta = Me.DTPFechaFin.Value
+        frmDeduccion.NumeroPlanilla = Me.TxtNumNomina.Text
+
+        If frmDeduccion.ShowDialog(Me) = DialogResult.OK Then
+
+            EjecutarCalculoPlanilla()
+
+        End If
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click

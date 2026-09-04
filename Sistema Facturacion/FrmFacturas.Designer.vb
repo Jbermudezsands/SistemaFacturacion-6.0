@@ -45,7 +45,6 @@ Partial Class FrmFacturas
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.ChkAplicarCtaXCobrar = New System.Windows.Forms.CheckBox()
         Me.BtnFacturas = New C1.Win.C1Input.C1Button()
         Me.TxtNumeroFactura = New System.Windows.Forms.TextBox()
         Me.ChkPropina = New System.Windows.Forms.CheckBox()
@@ -55,12 +54,13 @@ Partial Class FrmFacturas
         Me.OptRet1Porciento = New System.Windows.Forms.CheckBox()
         Me.OptExsonerado = New System.Windows.Forms.CheckBox()
         Me.TxtTelefono = New System.Windows.Forms.TextBox()
+        Me.BtnPlanPagos = New System.Windows.Forms.Button()
         Me.TxtDireccion = New System.Windows.Forms.TextBox()
         Me.TxtApellidos = New System.Windows.Forms.TextBox()
         Me.TxtNombres = New System.Windows.Forms.TextBox()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.TxtCodigoClientes = New System.Windows.Forms.TextBox()
-        Me.CmdCuentasxCobrar = New System.Windows.Forms.Button()
+        Me.ChkAplicarCtaXCobrar = New System.Windows.Forms.CheckBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.CmbSerie = New C1.Win.C1List.C1Combo()
         Me.TxtMonedaFactura = New System.Windows.Forms.ComboBox()
@@ -407,7 +407,6 @@ Partial Class FrmFacturas
         '
         'GroupBox2
         '
-        Me.GroupBox2.Controls.Add(Me.ChkAplicarCtaXCobrar)
         Me.GroupBox2.Controls.Add(Me.BtnFacturas)
         Me.GroupBox2.Controls.Add(Me.TxtNumeroFactura)
         Me.GroupBox2.Controls.Add(Me.ChkPropina)
@@ -417,6 +416,7 @@ Partial Class FrmFacturas
         Me.GroupBox2.Controls.Add(Me.OptRet1Porciento)
         Me.GroupBox2.Controls.Add(Me.OptExsonerado)
         Me.GroupBox2.Controls.Add(Me.TxtTelefono)
+        Me.GroupBox2.Controls.Add(Me.BtnPlanPagos)
         Me.GroupBox2.Controls.Add(Me.TxtDireccion)
         Me.GroupBox2.Controls.Add(Me.TxtApellidos)
         Me.GroupBox2.Controls.Add(Me.TxtNombres)
@@ -428,16 +428,6 @@ Partial Class FrmFacturas
         Me.GroupBox2.TabIndex = 160
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Informacion del Cliente"
-        '
-        'ChkAplicarCtaXCobrar
-        '
-        Me.ChkAplicarCtaXCobrar.AutoSize = True
-        Me.ChkAplicarCtaXCobrar.Location = New System.Drawing.Point(205, 19)
-        Me.ChkAplicarCtaXCobrar.Name = "ChkAplicarCtaXCobrar"
-        Me.ChkAplicarCtaXCobrar.Size = New System.Drawing.Size(108, 17)
-        Me.ChkAplicarCtaXCobrar.TabIndex = 228
-        Me.ChkAplicarCtaXCobrar.Text = "Aplicar CtasXCob"
-        Me.ChkAplicarCtaXCobrar.UseVisualStyleBackColor = True
         '
         'BtnFacturas
         '
@@ -523,6 +513,15 @@ Partial Class FrmFacturas
         Me.TxtTelefono.TabIndex = 132
         Me.TxtTelefono.Visible = False
         '
+        'BtnPlanPagos
+        '
+        Me.BtnPlanPagos.Location = New System.Drawing.Point(219, 16)
+        Me.BtnPlanPagos.Name = "BtnPlanPagos"
+        Me.BtnPlanPagos.Size = New System.Drawing.Size(85, 23)
+        Me.BtnPlanPagos.TabIndex = 147
+        Me.BtnPlanPagos.Text = "Plan Pagos"
+        Me.BtnPlanPagos.UseVisualStyleBackColor = True
+        '
         'TxtDireccion
         '
         Me.TxtDireccion.Location = New System.Drawing.Point(12, 97)
@@ -560,15 +559,16 @@ Partial Class FrmFacturas
         Me.TxtCodigoClientes.Size = New System.Drawing.Size(152, 20)
         Me.TxtCodigoClientes.TabIndex = 0
         '
-        'CmdCuentasxCobrar
+        'ChkAplicarCtaXCobrar
         '
-        Me.CmdCuentasxCobrar.Location = New System.Drawing.Point(343, 89)
-        Me.CmdCuentasxCobrar.Name = "CmdCuentasxCobrar"
-        Me.CmdCuentasxCobrar.Size = New System.Drawing.Size(85, 23)
-        Me.CmdCuentasxCobrar.TabIndex = 147
-        Me.CmdCuentasxCobrar.Text = "Ctas x Cobrar"
-        Me.CmdCuentasxCobrar.UseVisualStyleBackColor = True
-        Me.CmdCuentasxCobrar.Visible = False
+        Me.ChkAplicarCtaXCobrar.AutoSize = True
+        Me.ChkAplicarCtaXCobrar.Location = New System.Drawing.Point(576, 16)
+        Me.ChkAplicarCtaXCobrar.Name = "ChkAplicarCtaXCobrar"
+        Me.ChkAplicarCtaXCobrar.Size = New System.Drawing.Size(108, 17)
+        Me.ChkAplicarCtaXCobrar.TabIndex = 228
+        Me.ChkAplicarCtaXCobrar.Text = "Aplicar CtasXCob"
+        Me.ChkAplicarCtaXCobrar.UseVisualStyleBackColor = True
+        Me.ChkAplicarCtaXCobrar.Visible = False
         '
         'GroupBox1
         '
@@ -1210,6 +1210,7 @@ Partial Class FrmFacturas
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(888, 499)
+        Me.Controls.Add(Me.ChkAplicarCtaXCobrar)
         Me.Controls.Add(Me.Button10)
         Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.GroupBox5)
@@ -1220,7 +1221,6 @@ Partial Class FrmFacturas
         Me.Controls.Add(Me.TxtRetencion1Porciento)
         Me.Controls.Add(Me.C1Button5)
         Me.Controls.Add(Me.C1Button4)
-        Me.Controls.Add(Me.CmdCuentasxCobrar)
         Me.Controls.Add(Me.CboProyecto)
         Me.Controls.Add(Me.Label15)
         Me.Controls.Add(Me.C1Button3)
@@ -1315,7 +1315,7 @@ Partial Class FrmFacturas
     Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
-    Friend WithEvents CmdCuentasxCobrar As System.Windows.Forms.Button
+    Friend WithEvents BtnPlanPagos As System.Windows.Forms.Button
     Friend WithEvents TxtTelefono As System.Windows.Forms.TextBox
     Friend WithEvents TxtDireccion As System.Windows.Forms.TextBox
     Friend WithEvents TxtApellidos As System.Windows.Forms.TextBox
