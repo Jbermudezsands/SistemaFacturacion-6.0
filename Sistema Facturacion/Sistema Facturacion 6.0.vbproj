@@ -156,12 +156,6 @@
     <Compile Include="Formularios\FrmPlanPago.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Formularios\FrmRecibos_v2.Designer.vb">
-      <DependentUpon>FrmRecibos_v2.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Formularios\FrmRecibos_v2.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="FrmBeneficiario.Designer.vb">
       <DependentUpon>FrmBeneficiario.vb</DependentUpon>
     </Compile>

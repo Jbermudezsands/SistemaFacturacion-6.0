@@ -1,9 +1,9 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class FrmRecibos
     Inherits System.Windows.Forms.Form
 
     'Form reemplaza a Dispose para limpiar la lista de componentes.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         If disposing AndAlso components IsNot Nothing Then
             components.Dispose()
@@ -17,12 +17,11 @@ Partial Class FrmRecibos
     'NOTA: el Diseñador de Windows Forms necesita el siguiente procedimiento
     'Se puede modificar usando el Diseñador de Windows Forms.  
     'No lo modifique con el editor de código.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim lblSeccionCliente As System.Windows.Forms.Label
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmRecibos))
-        Me.Label9 = New System.Windows.Forms.Label()
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.CmbSerie = New C1.Win.C1List.C1Combo()
         Me.Button6 = New System.Windows.Forms.Button()
@@ -45,12 +44,6 @@ Partial Class FrmRecibos
         Me.TxtImporteRecibido = New System.Windows.Forms.TextBox()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
-        Me.TxtDescuento = New System.Windows.Forms.TextBox()
-        Me.Label10 = New System.Windows.Forms.Label()
-        Me.TxtNetoPagar = New System.Windows.Forms.TextBox()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.TxtSubTotal = New System.Windows.Forms.TextBox()
-        Me.Label4 = New System.Windows.Forms.Label()
         Me.CmdNuevo = New System.Windows.Forms.Button()
         Me.ButtonAgregar = New System.Windows.Forms.Button()
         Me.Button8 = New System.Windows.Forms.Button()
@@ -62,6 +55,7 @@ Partial Class FrmRecibos
         Me.BindingDetalleRecibo = New System.Windows.Forms.BindingSource(Me.components)
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.Button3 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.TxtTipoRecibo = New System.Windows.Forms.TextBox()
         Me.TxtMonedaFactura = New System.Windows.Forms.ComboBox()
@@ -69,13 +63,26 @@ Partial Class FrmRecibos
         Me.LblLetras = New System.Windows.Forms.Label()
         Me.ButtonBorrar = New System.Windows.Forms.Button()
         Me.TxtObservaciones = New System.Windows.Forms.TextBox()
-        Me.Label8 = New System.Windows.Forms.Label()
         Me.OptRet2Porciento = New System.Windows.Forms.CheckBox()
         Me.OptRet1Porciento = New System.Windows.Forms.CheckBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
-        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlHeader = New System.Windows.Forms.Panel()
+        Me.lblTitulo = New System.Windows.Forms.Label()
+        Me.pnlCliente = New System.Windows.Forms.Panel()
+        Me.pnlDetalle = New System.Windows.Forms.Panel()
+        Me.lblSeccionDetalle = New System.Windows.Forms.Label()
+        Me.tarjetaPorAplicar = New System.Windows.Forms.Panel()
+        Me.lblPorAplicar = New System.Windows.Forms.Label()
+        Me.TxtNetoPagar = New System.Windows.Forms.TextBox()
+        Me.tarjetaDescuento = New System.Windows.Forms.Panel()
+        Me.lblDescuento = New System.Windows.Forms.Label()
+        Me.TxtDescuento = New System.Windows.Forms.TextBox()
+        Me.tarjetaSubTotal = New System.Windows.Forms.Panel()
+        Me.lblSubTotal = New System.Windows.Forms.Label()
+        Me.TxtSubTotal = New System.Windows.Forms.TextBox()
+        Me.pnlTotales = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblObservaciones = New System.Windows.Forms.Label()
+        lblSeccionCliente = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         CType(Me.CmbSerie, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
@@ -88,32 +95,25 @@ Partial Class FrmRecibos
         CType(Me.BindingDetalleRecibo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
-        CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlHeader.SuspendLayout()
+        Me.pnlCliente.SuspendLayout()
+        Me.pnlDetalle.SuspendLayout()
+        Me.tarjetaPorAplicar.SuspendLayout()
+        Me.tarjetaDescuento.SuspendLayout()
+        Me.tarjetaSubTotal.SuspendLayout()
+        Me.pnlTotales.SuspendLayout()
         Me.SuspendLayout()
         '
-        'Label9
+        'lblSeccionCliente
         '
-        Me.Label9.AutoSize = True
-        Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
-        Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label9.Location = New System.Drawing.Point(301, 26)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(116, 13)
-        Me.Label9.TabIndex = 169
-        Me.Label9.Text = "RECIBOS DE CAJA"
-        '
-        'PictureBox2
-        '
-        Me.PictureBox2.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
-        Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
-        Me.PictureBox2.Location = New System.Drawing.Point(11, -3)
-        Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(97, 60)
-        Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox2.TabIndex = 168
-        Me.PictureBox2.TabStop = False
+        lblSeccionCliente.AutoSize = True
+        lblSeccionCliente.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
+        lblSeccionCliente.ForeColor = System.Drawing.Color.FromArgb(CType(CType(63, Byte), Integer), CType(CType(120, Byte), Integer), CType(CType(168, Byte), Integer))
+        lblSeccionCliente.Location = New System.Drawing.Point(9, 6)
+        lblSeccionCliente.Name = "lblSeccionCliente"
+        lblSeccionCliente.Size = New System.Drawing.Size(136, 15)
+        lblSeccionCliente.TabIndex = 0
+        lblSeccionCliente.Text = "Informacion del cliente"
         '
         'GroupBox1
         '
@@ -123,9 +123,9 @@ Partial Class FrmRecibos
         Me.GroupBox1.Controls.Add(Me.LblNumero)
         Me.GroupBox1.Controls.Add(Me.DTPFecha)
         Me.GroupBox1.Controls.Add(Me.Label2)
-        Me.GroupBox1.Location = New System.Drawing.Point(4, 63)
+        Me.GroupBox1.Location = New System.Drawing.Point(457, 7)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(550, 48)
+        Me.GroupBox1.Size = New System.Drawing.Size(419, 39)
         Me.GroupBox1.TabIndex = 170
         Me.GroupBox1.TabStop = False
         '
@@ -148,7 +148,7 @@ Partial Class FrmRecibos
         Me.CmbSerie.EditorHeight = 15
         Me.CmbSerie.Images.Add(CType(resources.GetObject("CmbSerie.Images"), System.Drawing.Image))
         Me.CmbSerie.ItemHeight = 15
-        Me.CmbSerie.Location = New System.Drawing.Point(357, 13)
+        Me.CmbSerie.Location = New System.Drawing.Point(246, 13)
         Me.CmbSerie.MatchEntryTimeout = CType(2000, Long)
         Me.CmbSerie.MaxDropDownItems = CType(5, Short)
         Me.CmbSerie.MaxLength = 32767
@@ -164,17 +164,18 @@ Partial Class FrmRecibos
         '
         'Button6
         '
+        Me.Button6.BackColor = System.Drawing.Color.FromArgb(CType(CType(63, Byte), Integer), CType(CType(120, Byte), Integer), CType(CType(168, Byte), Integer))
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
-        Me.Button6.Location = New System.Drawing.Point(488, 10)
+        Me.Button6.Location = New System.Drawing.Point(377, 6)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(37, 32)
         Me.Button6.TabIndex = 127
-        Me.Button6.UseVisualStyleBackColor = True
+        Me.Button6.UseVisualStyleBackColor = False
         '
         'TxtNumeroEnsamble
         '
         Me.TxtNumeroEnsamble.Enabled = False
-        Me.TxtNumeroEnsamble.Location = New System.Drawing.Point(406, 14)
+        Me.TxtNumeroEnsamble.Location = New System.Drawing.Point(295, 14)
         Me.TxtNumeroEnsamble.Name = "TxtNumeroEnsamble"
         Me.TxtNumeroEnsamble.Size = New System.Drawing.Size(76, 20)
         Me.TxtNumeroEnsamble.TabIndex = 122
@@ -183,7 +184,9 @@ Partial Class FrmRecibos
         'LblNumero
         '
         Me.LblNumero.AutoSize = True
-        Me.LblNumero.Location = New System.Drawing.Point(307, 20)
+        Me.LblNumero.BackColor = System.Drawing.Color.White
+        Me.LblNumero.ForeColor = System.Drawing.Color.FromArgb(CType(CType(38, Byte), Integer), CType(CType(55, Byte), Integer), CType(CType(70, Byte), Integer))
+        Me.LblNumero.Location = New System.Drawing.Point(196, 20)
         Me.LblNumero.Name = "LblNumero"
         Me.LblNumero.Size = New System.Drawing.Size(44, 13)
         Me.LblNumero.TabIndex = 121
@@ -193,7 +196,7 @@ Partial Class FrmRecibos
         '
         Me.DTPFecha.CustomFormat = ""
         Me.DTPFecha.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DTPFecha.Location = New System.Drawing.Point(58, 14)
+        Me.DTPFecha.Location = New System.Drawing.Point(68, 15)
         Me.DTPFecha.Name = "DTPFecha"
         Me.DTPFecha.Size = New System.Drawing.Size(104, 20)
         Me.DTPFecha.TabIndex = 120
@@ -201,7 +204,9 @@ Partial Class FrmRecibos
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(15, 16)
+        Me.Label2.BackColor = System.Drawing.Color.White
+        Me.Label2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(38, Byte), Integer), CType(CType(55, Byte), Integer), CType(CType(70, Byte), Integer))
+        Me.Label2.Location = New System.Drawing.Point(25, 17)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(37, 13)
         Me.Label2.TabIndex = 2
@@ -209,61 +214,67 @@ Partial Class FrmRecibos
         '
         'GroupBox2
         '
+        Me.GroupBox2.BackColor = System.Drawing.Color.White
         Me.GroupBox2.Controls.Add(Me.TxtTelefono)
         Me.GroupBox2.Controls.Add(Me.TxtDireccion)
         Me.GroupBox2.Controls.Add(Me.TxtApellidos)
         Me.GroupBox2.Controls.Add(Me.TxtNombres)
         Me.GroupBox2.Controls.Add(Me.Button1)
         Me.GroupBox2.Controls.Add(Me.TxtCodigoClientes)
-        Me.GroupBox2.Location = New System.Drawing.Point(4, 117)
+        Me.GroupBox2.Location = New System.Drawing.Point(6, 21)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(277, 158)
+        Me.GroupBox2.Size = New System.Drawing.Size(737, 80)
         Me.GroupBox2.TabIndex = 171
         Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Informacion del Cliente"
         '
         'TxtTelefono
         '
-        Me.TxtTelefono.Location = New System.Drawing.Point(12, 123)
+        Me.TxtTelefono.ForeColor = System.Drawing.Color.FromArgb(CType(CType(38, Byte), Integer), CType(CType(55, Byte), Integer), CType(CType(70, Byte), Integer))
+        Me.TxtTelefono.Location = New System.Drawing.Point(572, 45)
         Me.TxtTelefono.Name = "TxtTelefono"
-        Me.TxtTelefono.Size = New System.Drawing.Size(256, 20)
+        Me.TxtTelefono.Size = New System.Drawing.Size(160, 20)
         Me.TxtTelefono.TabIndex = 132
         '
         'TxtDireccion
         '
-        Me.TxtDireccion.Location = New System.Drawing.Point(12, 97)
+        Me.TxtDireccion.ForeColor = System.Drawing.Color.FromArgb(CType(CType(38, Byte), Integer), CType(CType(55, Byte), Integer), CType(CType(70, Byte), Integer))
+        Me.TxtDireccion.Location = New System.Drawing.Point(12, 45)
         Me.TxtDireccion.Name = "TxtDireccion"
-        Me.TxtDireccion.Size = New System.Drawing.Size(256, 20)
+        Me.TxtDireccion.Size = New System.Drawing.Size(560, 20)
         Me.TxtDireccion.TabIndex = 131
         '
         'TxtApellidos
         '
-        Me.TxtApellidos.Location = New System.Drawing.Point(12, 71)
+        Me.TxtApellidos.ForeColor = System.Drawing.Color.FromArgb(CType(CType(38, Byte), Integer), CType(CType(55, Byte), Integer), CType(CType(70, Byte), Integer))
+        Me.TxtApellidos.Location = New System.Drawing.Point(461, 21)
         Me.TxtApellidos.Name = "TxtApellidos"
-        Me.TxtApellidos.Size = New System.Drawing.Size(256, 20)
+        Me.TxtApellidos.Size = New System.Drawing.Size(270, 20)
         Me.TxtApellidos.TabIndex = 130
         '
         'TxtNombres
         '
-        Me.TxtNombres.Location = New System.Drawing.Point(12, 45)
+        Me.TxtNombres.ForeColor = System.Drawing.Color.FromArgb(CType(CType(38, Byte), Integer), CType(CType(55, Byte), Integer), CType(CType(70, Byte), Integer))
+        Me.TxtNombres.Location = New System.Drawing.Point(139, 20)
         Me.TxtNombres.Name = "TxtNombres"
-        Me.TxtNombres.Size = New System.Drawing.Size(256, 20)
+        Me.TxtNombres.Size = New System.Drawing.Size(320, 20)
         Me.TxtNombres.TabIndex = 129
         '
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(194, 12)
+        Me.Button1.Location = New System.Drawing.Point(100, 16)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(37, 32)
+        Me.Button1.Size = New System.Drawing.Size(30, 25)
         Me.Button1.TabIndex = 128
         Me.Button1.UseVisualStyleBackColor = True
         '
         'TxtCodigoClientes
         '
+        Me.TxtCodigoClientes.BackColor = System.Drawing.Color.White
+        Me.TxtCodigoClientes.ForeColor = System.Drawing.Color.FromArgb(CType(CType(38, Byte), Integer), CType(CType(55, Byte), Integer), CType(CType(70, Byte), Integer))
         Me.TxtCodigoClientes.Location = New System.Drawing.Point(12, 19)
         Me.TxtCodigoClientes.Name = "TxtCodigoClientes"
-        Me.TxtCodigoClientes.Size = New System.Drawing.Size(176, 20)
+        Me.TxtCodigoClientes.Size = New System.Drawing.Size(85, 20)
         Me.TxtCodigoClientes.TabIndex = 0
         '
         'TrueDBGridMetodo
@@ -274,7 +285,7 @@ Partial Class FrmRecibos
         Me.TrueDBGridMetodo.Caption = "Metodos de Pago"
         Me.TrueDBGridMetodo.GroupByCaption = "Drag a column header here to group by that column"
         Me.TrueDBGridMetodo.Images.Add(CType(resources.GetObject("TrueDBGridMetodo.Images"), System.Drawing.Image))
-        Me.TrueDBGridMetodo.Location = New System.Drawing.Point(925, 126)
+        Me.TrueDBGridMetodo.Location = New System.Drawing.Point(1142, 124)
         Me.TrueDBGridMetodo.Name = "TrueDBGridMetodo"
         Me.TrueDBGridMetodo.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridMetodo.PreviewInfo.Size = New System.Drawing.Size(0, 0)
@@ -289,56 +300,62 @@ Partial Class FrmRecibos
         'TxtImporteAplicado
         '
         Me.TxtImporteAplicado.Enabled = False
-        Me.TxtImporteAplicado.Location = New System.Drawing.Point(297, 284)
+        Me.TxtImporteAplicado.Location = New System.Drawing.Point(1253, 67)
         Me.TxtImporteAplicado.Name = "TxtImporteAplicado"
         Me.TxtImporteAplicado.Size = New System.Drawing.Size(87, 20)
         Me.TxtImporteAplicado.TabIndex = 211
+        Me.TxtImporteAplicado.Visible = False
         '
         'Label1
         '
         Me.Label1.AutoSize = True
         Me.Label1.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Label1.Location = New System.Drawing.Point(211, 288)
+        Me.Label1.Location = New System.Drawing.Point(1167, 71)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(89, 13)
         Me.Label1.TabIndex = 210
         Me.Label1.Text = "Importe Aplicado "
+        Me.Label1.Visible = False
         '
         'TxtPorAplicar
         '
         Me.TxtPorAplicar.Enabled = False
-        Me.TxtPorAplicar.Location = New System.Drawing.Point(460, 284)
+        Me.TxtPorAplicar.Location = New System.Drawing.Point(1225, 41)
         Me.TxtPorAplicar.Name = "TxtPorAplicar"
         Me.TxtPorAplicar.Size = New System.Drawing.Size(87, 20)
         Me.TxtPorAplicar.TabIndex = 209
+        Me.TxtPorAplicar.Visible = False
         '
         'Label5
         '
         Me.Label5.AutoSize = True
         Me.Label5.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Label5.Location = New System.Drawing.Point(400, 288)
+        Me.Label5.Location = New System.Drawing.Point(1165, 45)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(58, 13)
         Me.Label5.TabIndex = 208
         Me.Label5.Text = "Por Aplicar"
+        Me.Label5.Visible = False
         '
         'TxtImporteRecibido
         '
         Me.TxtImporteRecibido.Enabled = False
-        Me.TxtImporteRecibido.Location = New System.Drawing.Point(103, 284)
+        Me.TxtImporteRecibido.Location = New System.Drawing.Point(1243, 95)
         Me.TxtImporteRecibido.Name = "TxtImporteRecibido"
         Me.TxtImporteRecibido.Size = New System.Drawing.Size(88, 20)
         Me.TxtImporteRecibido.TabIndex = 207
+        Me.TxtImporteRecibido.Visible = False
         '
         'Label7
         '
         Me.Label7.AutoSize = True
         Me.Label7.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Label7.Location = New System.Drawing.Point(12, 287)
+        Me.Label7.Location = New System.Drawing.Point(1152, 98)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(96, 13)
         Me.Label7.TabIndex = 206
         Me.Label7.Text = "Importe Recibido   "
+        Me.Label7.Visible = False
         '
         'TrueDBGridComponentes
         '
@@ -348,7 +365,7 @@ Partial Class FrmRecibos
         Me.TrueDBGridComponentes.FilterBar = True
         Me.TrueDBGridComponentes.GroupByCaption = "Drag a column header here to group by that column"
         Me.TrueDBGridComponentes.Images.Add(CType(resources.GetObject("TrueDBGridComponentes.Images"), System.Drawing.Image))
-        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(925, 301)
+        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(1131, 299)
         Me.TrueDBGridComponentes.Name = "TrueDBGridComponentes"
         Me.TrueDBGridComponentes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
@@ -360,61 +377,9 @@ Partial Class FrmRecibos
         Me.TrueDBGridComponentes.Visible = False
         Me.TrueDBGridComponentes.PropBag = resources.GetString("TrueDBGridComponentes.PropBag")
         '
-        'TxtDescuento
-        '
-        Me.TxtDescuento.Location = New System.Drawing.Point(258, 465)
-        Me.TxtDescuento.Name = "TxtDescuento"
-        Me.TxtDescuento.Size = New System.Drawing.Size(67, 20)
-        Me.TxtDescuento.TabIndex = 218
-        '
-        'Label10
-        '
-        Me.Label10.AutoSize = True
-        Me.Label10.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Label10.Location = New System.Drawing.Point(194, 468)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(68, 13)
-        Me.Label10.TabIndex = 217
-        Me.Label10.Text = "Descuento   "
-        '
-        'TxtNetoPagar
-        '
-        Me.TxtNetoPagar.Enabled = False
-        Me.TxtNetoPagar.Location = New System.Drawing.Point(471, 465)
-        Me.TxtNetoPagar.Name = "TxtNetoPagar"
-        Me.TxtNetoPagar.Size = New System.Drawing.Size(75, 20)
-        Me.TxtNetoPagar.TabIndex = 216
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Label6.Location = New System.Drawing.Point(395, 468)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(79, 13)
-        Me.Label6.TabIndex = 215
-        Me.Label6.Text = "Total Recibido "
-        '
-        'TxtSubTotal
-        '
-        Me.TxtSubTotal.Enabled = False
-        Me.TxtSubTotal.Location = New System.Drawing.Point(80, 463)
-        Me.TxtSubTotal.Name = "TxtSubTotal"
-        Me.TxtSubTotal.Size = New System.Drawing.Size(67, 20)
-        Me.TxtSubTotal.TabIndex = 214
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Label4.Location = New System.Drawing.Point(22, 468)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(62, 13)
-        Me.Label4.TabIndex = 213
-        Me.Label4.Text = "Sub Total   "
-        '
         'CmdNuevo
         '
+        Me.CmdNuevo.BackColor = System.Drawing.Color.White
         Me.CmdNuevo.Image = CType(resources.GetObject("CmdNuevo.Image"), System.Drawing.Image)
         Me.CmdNuevo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
         Me.CmdNuevo.Location = New System.Drawing.Point(6, 14)
@@ -423,7 +388,7 @@ Partial Class FrmRecibos
         Me.CmdNuevo.TabIndex = 221
         Me.CmdNuevo.Text = "Nuevo"
         Me.CmdNuevo.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.CmdNuevo.UseVisualStyleBackColor = True
+        Me.CmdNuevo.UseVisualStyleBackColor = False
         '
         'ButtonAgregar
         '
@@ -468,7 +433,7 @@ Partial Class FrmRecibos
         Me.CboCajero.EditorHeight = 15
         Me.CboCajero.Images.Add(CType(resources.GetObject("CboCajero.Images"), System.Drawing.Image))
         Me.CboCajero.ItemHeight = 15
-        Me.CboCajero.Location = New System.Drawing.Point(353, 254)
+        Me.CboCajero.Location = New System.Drawing.Point(589, 108)
         Me.CboCajero.MatchEntryTimeout = CType(2000, Long)
         Me.CboCajero.MaxDropDownItems = CType(5, Short)
         Me.CboCajero.MaxLength = 32767
@@ -484,7 +449,7 @@ Partial Class FrmRecibos
         'LblCajero
         '
         Me.LblCajero.AutoSize = True
-        Me.LblCajero.Location = New System.Drawing.Point(301, 259)
+        Me.LblCajero.Location = New System.Drawing.Point(546, 116)
         Me.LblCajero.Name = "LblCajero"
         Me.LblCajero.Size = New System.Drawing.Size(37, 13)
         Me.LblCajero.TabIndex = 222
@@ -495,16 +460,17 @@ Partial Class FrmRecibos
         Me.TDBGridDetalle.AllowAddNew = True
         Me.TDBGridDetalle.AllowDelete = True
         Me.TDBGridDetalle.AlternatingRows = True
+        Me.TDBGridDetalle.BackColor = System.Drawing.Color.White
         Me.TDBGridDetalle.Caption = "Detalle de Recibos"
         Me.TDBGridDetalle.GroupByCaption = "Drag a column header here to group by that column"
         Me.TDBGridDetalle.Images.Add(CType(resources.GetObject("TDBGridDetalle.Images"), System.Drawing.Image))
-        Me.TDBGridDetalle.Location = New System.Drawing.Point(11, 311)
+        Me.TDBGridDetalle.Location = New System.Drawing.Point(13, 23)
         Me.TDBGridDetalle.Name = "TDBGridDetalle"
         Me.TDBGridDetalle.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TDBGridDetalle.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TDBGridDetalle.PreviewInfo.ZoomFactor = 75.0R
         Me.TDBGridDetalle.PrintInfo.PageSettings = CType(resources.GetObject("TDBGridDetalle.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TDBGridDetalle.Size = New System.Drawing.Size(535, 146)
+        Me.TDBGridDetalle.Size = New System.Drawing.Size(620, 146)
         Me.TDBGridDetalle.TabIndex = 224
         Me.TDBGridDetalle.Text = "C1TrueDBGrid1"
         Me.TDBGridDetalle.PropBag = resources.GetString("TDBGridDetalle.PropBag")
@@ -512,35 +478,50 @@ Partial Class FrmRecibos
         'GroupBox3
         '
         Me.GroupBox3.Controls.Add(Me.ProgressBar1)
+        Me.GroupBox3.Controls.Add(Me.Button3)
         Me.GroupBox3.Controls.Add(Me.Button2)
-        Me.GroupBox3.Location = New System.Drawing.Point(374, 144)
+        Me.GroupBox3.Location = New System.Drawing.Point(749, 22)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(155, 104)
+        Me.GroupBox3.Size = New System.Drawing.Size(125, 104)
         Me.GroupBox3.TabIndex = 225
         Me.GroupBox3.TabStop = False
         '
         'ProgressBar1
         '
-        Me.ProgressBar1.Location = New System.Drawing.Point(6, 15)
+        Me.ProgressBar1.Location = New System.Drawing.Point(11, 15)
         Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(140, 10)
+        Me.ProgressBar1.Size = New System.Drawing.Size(102, 10)
         Me.ProgressBar1.TabIndex = 223
+        '
+        'Button3
+        '
+        Me.Button3.ForeColor = System.Drawing.Color.FromArgb(CType(CType(37, Byte), Integer), CType(CType(99, Byte), Integer), CType(CType(235, Byte), Integer))
+        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
+        Me.Button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button3.Location = New System.Drawing.Point(11, 66)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(102, 32)
+        Me.Button3.TabIndex = 224
+        Me.Button3.Text = "Plan Pagos"
+        Me.Button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button3.UseVisualStyleBackColor = True
         '
         'Button2
         '
+        Me.Button2.BackColor = System.Drawing.Color.White
+        Me.Button2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(37, Byte), Integer), CType(CType(99, Byte), Integer), CType(CType(235, Byte), Integer))
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button2.Location = New System.Drawing.Point(36, 31)
+        Me.Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button2.Location = New System.Drawing.Point(12, 31)
         Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(75, 67)
+        Me.Button2.Size = New System.Drawing.Size(102, 32)
         Me.Button2.TabIndex = 222
         Me.Button2.Text = "Abonos"
-        Me.Button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.Button2.UseVisualStyleBackColor = False
         '
         'TxtTipoRecibo
         '
-        Me.TxtTipoRecibo.Location = New System.Drawing.Point(297, 124)
+        Me.TxtTipoRecibo.Location = New System.Drawing.Point(458, 146)
         Me.TxtTipoRecibo.Name = "TxtTipoRecibo"
         Me.TxtTipoRecibo.Size = New System.Drawing.Size(100, 20)
         Me.TxtTipoRecibo.TabIndex = 226
@@ -551,7 +532,7 @@ Partial Class FrmRecibos
         '
         Me.TxtMonedaFactura.FormattingEnabled = True
         Me.TxtMonedaFactura.Items.AddRange(New Object() {"Cordobas", "Dolares"})
-        Me.TxtMonedaFactura.Location = New System.Drawing.Point(472, 117)
+        Me.TxtMonedaFactura.Location = New System.Drawing.Point(633, 139)
         Me.TxtMonedaFactura.Name = "TxtMonedaFactura"
         Me.TxtMonedaFactura.Size = New System.Drawing.Size(78, 21)
         Me.TxtMonedaFactura.TabIndex = 228
@@ -560,7 +541,7 @@ Partial Class FrmRecibos
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(420, 120)
+        Me.Label13.Location = New System.Drawing.Point(581, 142)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(46, 13)
         Me.Label13.TabIndex = 227
@@ -569,10 +550,10 @@ Partial Class FrmRecibos
         'LblLetras
         '
         Me.LblLetras.AutoSize = True
-        Me.LblLetras.Font = New System.Drawing.Font("Cambria", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LblLetras.Location = New System.Drawing.Point(22, 492)
+        Me.LblLetras.Font = New System.Drawing.Font("Cambria", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblLetras.Location = New System.Drawing.Point(15, 171)
         Me.LblLetras.Name = "LblLetras"
-        Me.LblLetras.Size = New System.Drawing.Size(42, 14)
+        Me.LblLetras.Size = New System.Drawing.Size(44, 14)
         Me.LblLetras.TabIndex = 229
         Me.LblLetras.Text = "Label8"
         '
@@ -591,26 +572,18 @@ Partial Class FrmRecibos
         '
         'TxtObservaciones
         '
-        Me.TxtObservaciones.Location = New System.Drawing.Point(563, 375)
+        Me.TxtObservaciones.ForeColor = System.Drawing.Color.FromArgb(CType(CType(184, Byte), Integer), CType(CType(196, Byte), Integer), CType(CType(207, Byte), Integer))
+        Me.TxtObservaciones.Location = New System.Drawing.Point(494, 411)
         Me.TxtObservaciones.Multiline = True
         Me.TxtObservaciones.Name = "TxtObservaciones"
         Me.TxtObservaciones.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TxtObservaciones.Size = New System.Drawing.Size(204, 80)
+        Me.TxtObservaciones.Size = New System.Drawing.Size(386, 52)
         Me.TxtObservaciones.TabIndex = 231
-        '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(566, 358)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(78, 13)
-        Me.Label8.TabIndex = 232
-        Me.Label8.Text = "Observaciones"
         '
         'OptRet2Porciento
         '
         Me.OptRet2Porciento.AutoSize = True
-        Me.OptRet2Porciento.Location = New System.Drawing.Point(288, 228)
+        Me.OptRet2Porciento.Location = New System.Drawing.Point(128, 110)
         Me.OptRet2Porciento.Name = "OptRet2Porciento"
         Me.OptRet2Porciento.Size = New System.Drawing.Size(81, 17)
         Me.OptRet2Porciento.TabIndex = 187
@@ -620,69 +593,244 @@ Partial Class FrmRecibos
         'OptRet1Porciento
         '
         Me.OptRet1Porciento.AutoSize = True
-        Me.OptRet1Porciento.Location = New System.Drawing.Point(288, 208)
+        Me.OptRet1Porciento.BackColor = System.Drawing.Color.White
+        Me.OptRet1Porciento.Location = New System.Drawing.Point(22, 109)
         Me.OptRet1Porciento.Name = "OptRet1Porciento"
         Me.OptRet1Porciento.Size = New System.Drawing.Size(81, 17)
         Me.OptRet1Porciento.TabIndex = 186
         Me.OptRet1Porciento.Text = "Retener 1%"
-        Me.OptRet1Porciento.UseVisualStyleBackColor = True
+        Me.OptRet1Porciento.UseVisualStyleBackColor = False
         '
         'GroupBox4
         '
+        Me.GroupBox4.BackColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(234, Byte), Integer), CType(CType(247, Byte), Integer))
         Me.GroupBox4.Controls.Add(Me.CmdNuevo)
         Me.GroupBox4.Controls.Add(Me.ButtonAgregar)
         Me.GroupBox4.Controls.Add(Me.ButtonBorrar)
         Me.GroupBox4.Controls.Add(Me.Button8)
-        Me.GroupBox4.Location = New System.Drawing.Point(563, 180)
+        Me.GroupBox4.Location = New System.Drawing.Point(658, 8)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(204, 169)
         Me.GroupBox4.TabIndex = 233
         Me.GroupBox4.TabStop = False
         '
-        'PictureBox3
+        'pnlHeader
         '
-        Me.PictureBox3.Image = CType(resources.GetObject("PictureBox3.Image"), System.Drawing.Image)
-        Me.PictureBox3.Location = New System.Drawing.Point(565, 63)
-        Me.PictureBox3.Name = "PictureBox3"
-        Me.PictureBox3.Size = New System.Drawing.Size(204, 111)
-        Me.PictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox3.TabIndex = 234
-        Me.PictureBox3.TabStop = False
+        Me.pnlHeader.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.pnlHeader.BackColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(234, Byte), Integer), CType(CType(247, Byte), Integer))
+        Me.pnlHeader.Controls.Add(Me.lblTitulo)
+        Me.pnlHeader.Controls.Add(Me.GroupBox1)
+        Me.pnlHeader.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(234, Byte), Integer), CType(CType(247, Byte), Integer))
+        Me.pnlHeader.Location = New System.Drawing.Point(4, 1)
+        Me.pnlHeader.Name = "pnlHeader"
+        Me.pnlHeader.Size = New System.Drawing.Size(881, 55)
+        Me.pnlHeader.TabIndex = 235
         '
-        'PictureBox1
+        'lblTitulo
         '
-        Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
-        Me.PictureBox1.Location = New System.Drawing.Point(-3, -3)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(795, 60)
-        Me.PictureBox1.TabIndex = 167
-        Me.PictureBox1.TabStop = False
+        Me.lblTitulo.AutoSize = True
+        Me.lblTitulo.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Bold)
+        Me.lblTitulo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(38, Byte), Integer), CType(CType(55, Byte), Integer), CType(CType(70, Byte), Integer))
+        Me.lblTitulo.Location = New System.Drawing.Point(16, 16)
+        Me.lblTitulo.Name = "lblTitulo"
+        Me.lblTitulo.Size = New System.Drawing.Size(127, 21)
+        Me.lblTitulo.TabIndex = 0
+        Me.lblTitulo.Text = "Recibos de caja"
+        '
+        'pnlCliente
+        '
+        Me.pnlCliente.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.pnlCliente.BackColor = System.Drawing.Color.White
+        Me.pnlCliente.Controls.Add(lblSeccionCliente)
+        Me.pnlCliente.Controls.Add(Me.OptRet2Porciento)
+        Me.pnlCliente.Controls.Add(Me.GroupBox2)
+        Me.pnlCliente.Controls.Add(Me.OptRet1Porciento)
+        Me.pnlCliente.Controls.Add(Me.CboCajero)
+        Me.pnlCliente.Controls.Add(Me.LblCajero)
+        Me.pnlCliente.Controls.Add(Me.GroupBox3)
+        Me.pnlCliente.Location = New System.Drawing.Point(4, 62)
+        Me.pnlCliente.Name = "pnlCliente"
+        Me.pnlCliente.Size = New System.Drawing.Size(883, 136)
+        Me.pnlCliente.TabIndex = 236
+        '
+        'pnlDetalle
+        '
+        Me.pnlDetalle.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.pnlDetalle.BackColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(234, Byte), Integer), CType(CType(247, Byte), Integer))
+        Me.pnlDetalle.Controls.Add(Me.lblSeccionDetalle)
+        Me.pnlDetalle.Controls.Add(Me.TDBGridDetalle)
+        Me.pnlDetalle.Controls.Add(Me.LblLetras)
+        Me.pnlDetalle.Controls.Add(Me.GroupBox4)
+        Me.pnlDetalle.Location = New System.Drawing.Point(4, 203)
+        Me.pnlDetalle.Name = "pnlDetalle"
+        Me.pnlDetalle.Size = New System.Drawing.Size(886, 190)
+        Me.pnlDetalle.TabIndex = 237
+        '
+        'lblSeccionDetalle
+        '
+        Me.lblSeccionDetalle.AutoSize = True
+        Me.lblSeccionDetalle.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
+        Me.lblSeccionDetalle.ForeColor = System.Drawing.Color.FromArgb(CType(CType(91, Byte), Integer), CType(CType(127, Byte), Integer), CType(CType(166, Byte), Integer))
+        Me.lblSeccionDetalle.Location = New System.Drawing.Point(8, 5)
+        Me.lblSeccionDetalle.Name = "lblSeccionDetalle"
+        Me.lblSeccionDetalle.Size = New System.Drawing.Size(107, 15)
+        Me.lblSeccionDetalle.TabIndex = 0
+        Me.lblSeccionDetalle.Text = "Detalle de recibos"
+        '
+        'tarjetaPorAplicar
+        '
+        Me.tarjetaPorAplicar.BackColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(234, Byte), Integer), CType(CType(247, Byte), Integer))
+        Me.tarjetaPorAplicar.Controls.Add(Me.lblPorAplicar)
+        Me.tarjetaPorAplicar.Controls.Add(Me.TxtNetoPagar)
+        Me.tarjetaPorAplicar.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tarjetaPorAplicar.Location = New System.Drawing.Point(307, 3)
+        Me.tarjetaPorAplicar.Name = "tarjetaPorAplicar"
+        Me.tarjetaPorAplicar.Size = New System.Drawing.Size(173, 57)
+        Me.tarjetaPorAplicar.TabIndex = 3
+        '
+        'lblPorAplicar
+        '
+        Me.lblPorAplicar.AutoSize = True
+        Me.lblPorAplicar.Font = New System.Drawing.Font("Segoe UI", 8.5!)
+        Me.lblPorAplicar.ForeColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(96, Byte), Integer), CType(CType(148, Byte), Integer))
+        Me.lblPorAplicar.Location = New System.Drawing.Point(12, 6)
+        Me.lblPorAplicar.Name = "lblPorAplicar"
+        Me.lblPorAplicar.Size = New System.Drawing.Size(82, 15)
+        Me.lblPorAplicar.TabIndex = 0
+        Me.lblPorAplicar.Text = "Total Recibido"
+        '
+        'TxtNetoPagar
+        '
+        Me.TxtNetoPagar.BackColor = System.Drawing.Color.FromArgb(CType(CType(239, Byte), Integer), CType(CType(246, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.TxtNetoPagar.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TxtNetoPagar.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TxtNetoPagar.ForeColor = System.Drawing.Color.FromArgb(CType(CType(37, Byte), Integer), CType(CType(99, Byte), Integer), CType(CType(235, Byte), Integer))
+        Me.TxtNetoPagar.Location = New System.Drawing.Point(15, 25)
+        Me.TxtNetoPagar.Name = "TxtNetoPagar"
+        Me.TxtNetoPagar.ReadOnly = True
+        Me.TxtNetoPagar.Size = New System.Drawing.Size(138, 26)
+        Me.TxtNetoPagar.TabIndex = 216
+        Me.TxtNetoPagar.Text = "0.00"
+        Me.TxtNetoPagar.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'tarjetaDescuento
+        '
+        Me.tarjetaDescuento.BackColor = System.Drawing.Color.FromArgb(CType(CType(242, Byte), Integer), CType(CType(242, Byte), Integer), CType(CType(242, Byte), Integer))
+        Me.tarjetaDescuento.Controls.Add(Me.lblDescuento)
+        Me.tarjetaDescuento.Controls.Add(Me.TxtDescuento)
+        Me.tarjetaDescuento.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tarjetaDescuento.Location = New System.Drawing.Point(155, 3)
+        Me.tarjetaDescuento.Margin = New System.Windows.Forms.Padding(3, 3, 8, 3)
+        Me.tarjetaDescuento.Name = "tarjetaDescuento"
+        Me.tarjetaDescuento.Size = New System.Drawing.Size(141, 57)
+        Me.tarjetaDescuento.TabIndex = 1
+        '
+        'lblDescuento
+        '
+        Me.lblDescuento.AutoSize = True
+        Me.lblDescuento.Font = New System.Drawing.Font("Segoe UI", 8.5!)
+        Me.lblDescuento.ForeColor = System.Drawing.Color.FromArgb(CType(CType(107, Byte), Integer), CType(CType(114, Byte), Integer), CType(CType(128, Byte), Integer))
+        Me.lblDescuento.Location = New System.Drawing.Point(12, 5)
+        Me.lblDescuento.Name = "lblDescuento"
+        Me.lblDescuento.Size = New System.Drawing.Size(63, 15)
+        Me.lblDescuento.TabIndex = 0
+        Me.lblDescuento.Text = "Descuento"
+        '
+        'TxtDescuento
+        '
+        Me.TxtDescuento.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TxtDescuento.Enabled = False
+        Me.TxtDescuento.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Bold)
+        Me.TxtDescuento.ForeColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(41, Byte), Integer), CType(CType(55, Byte), Integer))
+        Me.TxtDescuento.Location = New System.Drawing.Point(15, 25)
+        Me.TxtDescuento.Name = "TxtDescuento"
+        Me.TxtDescuento.ReadOnly = True
+        Me.TxtDescuento.Size = New System.Drawing.Size(103, 20)
+        Me.TxtDescuento.TabIndex = 218
+        Me.TxtDescuento.Text = "0.00"
+        Me.TxtDescuento.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'tarjetaSubTotal
+        '
+        Me.tarjetaSubTotal.BackColor = System.Drawing.Color.FromArgb(CType(CType(242, Byte), Integer), CType(CType(242, Byte), Integer), CType(CType(242, Byte), Integer))
+        Me.tarjetaSubTotal.Controls.Add(Me.lblSubTotal)
+        Me.tarjetaSubTotal.Controls.Add(Me.TxtSubTotal)
+        Me.tarjetaSubTotal.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tarjetaSubTotal.Location = New System.Drawing.Point(3, 3)
+        Me.tarjetaSubTotal.Margin = New System.Windows.Forms.Padding(3, 3, 8, 3)
+        Me.tarjetaSubTotal.Name = "tarjetaSubTotal"
+        Me.tarjetaSubTotal.Size = New System.Drawing.Size(141, 57)
+        Me.tarjetaSubTotal.TabIndex = 0
+        '
+        'lblSubTotal
+        '
+        Me.lblSubTotal.AutoSize = True
+        Me.lblSubTotal.Font = New System.Drawing.Font("Segoe UI", 8.5!)
+        Me.lblSubTotal.ForeColor = System.Drawing.Color.FromArgb(CType(CType(91, Byte), Integer), CType(CType(107, Byte), Integer), CType(CType(120, Byte), Integer))
+        Me.lblSubTotal.Location = New System.Drawing.Point(12, 5)
+        Me.lblSubTotal.Name = "lblSubTotal"
+        Me.lblSubTotal.Size = New System.Drawing.Size(54, 15)
+        Me.lblSubTotal.TabIndex = 0
+        Me.lblSubTotal.Text = "Sub total"
+        '
+        'TxtSubTotal
+        '
+        Me.TxtSubTotal.BackColor = System.Drawing.Color.White
+        Me.TxtSubTotal.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TxtSubTotal.Enabled = False
+        Me.TxtSubTotal.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Bold)
+        Me.TxtSubTotal.ForeColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(41, Byte), Integer), CType(CType(55, Byte), Integer))
+        Me.TxtSubTotal.Location = New System.Drawing.Point(15, 25)
+        Me.TxtSubTotal.Name = "TxtSubTotal"
+        Me.TxtSubTotal.ReadOnly = True
+        Me.TxtSubTotal.Size = New System.Drawing.Size(117, 20)
+        Me.TxtSubTotal.TabIndex = 214
+        Me.TxtSubTotal.Text = "0.00"
+        Me.TxtSubTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'pnlTotales
+        '
+        Me.pnlTotales.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.pnlTotales.ColumnCount = 3
+        Me.pnlTotales.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 31.57895!))
+        Me.pnlTotales.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 31.57895!))
+        Me.pnlTotales.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 36.84211!))
+        Me.pnlTotales.Controls.Add(Me.tarjetaSubTotal, 0, 0)
+        Me.pnlTotales.Controls.Add(Me.tarjetaDescuento, 1, 0)
+        Me.pnlTotales.Controls.Add(Me.tarjetaPorAplicar, 2, 0)
+        Me.pnlTotales.Location = New System.Drawing.Point(5, 401)
+        Me.pnlTotales.Name = "pnlTotales"
+        Me.pnlTotales.RowCount = 1
+        Me.pnlTotales.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.pnlTotales.Size = New System.Drawing.Size(483, 63)
+        Me.pnlTotales.TabIndex = 238
+        '
+        'lblObservaciones
+        '
+        Me.lblObservaciones.AutoSize = True
+        Me.lblObservaciones.ForeColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(96, Byte), Integer), CType(CType(148, Byte), Integer))
+        Me.lblObservaciones.Location = New System.Drawing.Point(499, 395)
+        Me.lblObservaciones.Name = "lblObservaciones"
+        Me.lblObservaciones.Size = New System.Drawing.Size(78, 13)
+        Me.lblObservaciones.TabIndex = 239
+        Me.lblObservaciones.Text = "Observaciones"
         '
         'FrmRecibos
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(781, 515)
-        Me.Controls.Add(Me.PictureBox3)
-        Me.Controls.Add(Me.GroupBox4)
-        Me.Controls.Add(Me.OptRet2Porciento)
-        Me.Controls.Add(Me.Label8)
-        Me.Controls.Add(Me.OptRet1Porciento)
+        Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(238, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(250, Byte), Integer))
+        Me.ClientSize = New System.Drawing.Size(897, 468)
+        Me.Controls.Add(Me.lblObservaciones)
+        Me.Controls.Add(Me.pnlTotales)
+        Me.Controls.Add(Me.pnlDetalle)
+        Me.Controls.Add(Me.pnlCliente)
+        Me.Controls.Add(Me.pnlHeader)
         Me.Controls.Add(Me.TxtObservaciones)
-        Me.Controls.Add(Me.LblLetras)
         Me.Controls.Add(Me.TxtMonedaFactura)
         Me.Controls.Add(Me.Label13)
         Me.Controls.Add(Me.TxtTipoRecibo)
-        Me.Controls.Add(Me.GroupBox3)
-        Me.Controls.Add(Me.TDBGridDetalle)
-        Me.Controls.Add(Me.CboCajero)
-        Me.Controls.Add(Me.LblCajero)
-        Me.Controls.Add(Me.TxtDescuento)
-        Me.Controls.Add(Me.Label10)
-        Me.Controls.Add(Me.TxtNetoPagar)
-        Me.Controls.Add(Me.Label6)
-        Me.Controls.Add(Me.TxtSubTotal)
-        Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.TrueDBGridComponentes)
         Me.Controls.Add(Me.TxtImporteAplicado)
         Me.Controls.Add(Me.Label1)
@@ -691,17 +839,11 @@ Partial Class FrmRecibos
         Me.Controls.Add(Me.TxtImporteRecibido)
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.TrueDBGridMetodo)
-        Me.Controls.Add(Me.GroupBox2)
-        Me.Controls.Add(Me.GroupBox1)
-        Me.Controls.Add(Me.Label9)
-        Me.Controls.Add(Me.PictureBox2)
-        Me.Controls.Add(Me.PictureBox1)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "FrmRecibos"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Recibos"
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         CType(Me.CmbSerie, System.ComponentModel.ISupportInitialize).EndInit()
@@ -716,14 +858,23 @@ Partial Class FrmRecibos
         CType(Me.BindingDetalleRecibo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox4.ResumeLayout(False)
-        CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlHeader.ResumeLayout(False)
+        Me.pnlHeader.PerformLayout()
+        Me.pnlCliente.ResumeLayout(False)
+        Me.pnlCliente.PerformLayout()
+        Me.pnlDetalle.ResumeLayout(False)
+        Me.pnlDetalle.PerformLayout()
+        Me.tarjetaPorAplicar.ResumeLayout(False)
+        Me.tarjetaPorAplicar.PerformLayout()
+        Me.tarjetaDescuento.ResumeLayout(False)
+        Me.tarjetaDescuento.PerformLayout()
+        Me.tarjetaSubTotal.ResumeLayout(False)
+        Me.tarjetaSubTotal.PerformLayout()
+        Me.pnlTotales.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents Label9 As System.Windows.Forms.Label
-    Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents Button6 As System.Windows.Forms.Button
     Friend WithEvents TxtNumeroEnsamble As System.Windows.Forms.TextBox
@@ -745,12 +896,6 @@ Partial Class FrmRecibos
     Friend WithEvents TxtImporteRecibido As System.Windows.Forms.TextBox
     Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents TrueDBGridComponentes As C1.Win.C1TrueDBGrid.C1TrueDBGrid
-    Friend WithEvents TxtDescuento As System.Windows.Forms.TextBox
-    Friend WithEvents Label10 As System.Windows.Forms.Label
-    Friend WithEvents TxtNetoPagar As System.Windows.Forms.TextBox
-    Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents TxtSubTotal As System.Windows.Forms.TextBox
-    Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents CmdNuevo As System.Windows.Forms.Button
     Friend WithEvents ButtonAgregar As System.Windows.Forms.Button
     Friend WithEvents Button8 As System.Windows.Forms.Button
@@ -768,12 +913,26 @@ Partial Class FrmRecibos
     Friend WithEvents LblLetras As System.Windows.Forms.Label
     Friend WithEvents ButtonBorrar As System.Windows.Forms.Button
     Friend WithEvents TxtObservaciones As System.Windows.Forms.TextBox
-    Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents OptRet2Porciento As System.Windows.Forms.CheckBox
     Friend WithEvents OptRet1Porciento As System.Windows.Forms.CheckBox
     Friend WithEvents CmbSerie As C1.Win.C1List.C1Combo
     Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
-    Friend WithEvents PictureBox3 As System.Windows.Forms.PictureBox
     Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
-    Friend WithEvents PictureBox1 As PictureBox
+    Private WithEvents pnlHeader As Panel
+    Private WithEvents lblTitulo As Label
+    Private WithEvents pnlCliente As Panel
+    Friend WithEvents Button3 As Button
+    Private WithEvents pnlDetalle As Panel
+    Private WithEvents lblSeccionDetalle As Label
+    Private WithEvents tarjetaPorAplicar As Panel
+    Private WithEvents lblPorAplicar As Label
+    Friend WithEvents TxtNetoPagar As TextBox
+    Private WithEvents tarjetaDescuento As Panel
+    Private WithEvents lblDescuento As Label
+    Friend WithEvents TxtDescuento As TextBox
+    Private WithEvents tarjetaSubTotal As Panel
+    Private WithEvents lblSubTotal As Label
+    Friend WithEvents TxtSubTotal As TextBox
+    Private WithEvents pnlTotales As TableLayoutPanel
+    Private WithEvents lblObservaciones As Label
 End Class

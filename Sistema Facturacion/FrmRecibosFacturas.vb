@@ -1,12 +1,5 @@
 Public Class FrmRecibosFacturas
     Public MiConexion As New SqlClient.SqlConnection(Conexion), CodigoClientes As String
-    Private Sub CmdSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdSalir.Click
-        Me.TxtImporteAplicado.Text = ""
-        Me.TxtImporteRecibido.Text = ""
-        Me.TxtPorAplicar.Text = ""
-        ActualizaMETODORecibos()
-        Me.Close()
-    End Sub
     Public Sub ConsultaCreditos(ByVal CodigoCliente As String, ByVal FechaCorte As Date, ByVal Moneda As String)
 
         Dim SQlString As String, NumeroFactura As String, NumeroRecibo As String = "", MontoRecibo As Double
@@ -22,7 +15,7 @@ Public Class FrmRecibosFacturas
         '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
         '*******************************************************************************************************************************
         DataSet.Reset()
-        SQlString = "SELECT Facturas.Fecha_Factura, Facturas.Numero_Factura, Facturas.MetodoPago As Numero_Recibo, Facturas.Numero_Factura As NotaDebito, Facturas.SubTotal As MontoNota, Facturas.SubTotal As Monto, Facturas.Fecha_Factura As FechaVence, Facturas.IVA As Abono, Facturas.SubTotal AS Saldo, Facturas.SubTotal As Moratorio, Facturas.SubTotal As Dias, Facturas.SubTotal AS Total  FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " & _
+        SQlString = "SELECT Facturas.Fecha_Factura, Facturas.Numero_Factura, Facturas.MetodoPago As Numero_Recibo, Facturas.Numero_Factura As NotaDebito, Facturas.SubTotal As MontoNota, Facturas.SubTotal As Monto, Facturas.Fecha_Factura As FechaVence, Facturas.IVA As Abono, Facturas.SubTotal AS Saldo, Facturas.SubTotal As Moratorio, Facturas.SubTotal As Dias, Facturas.SubTotal AS Total  FROM Facturas INNER JOIN Clientes ON Facturas.Cod_Cliente = Clientes.Cod_Cliente  " &
                     "WHERE (Facturas.Tipo_Factura = 'Factura') AND (Facturas.MetodoPago = 'Credito') AND (Facturas.Fecha_Factura BETWEEN CONVERT(DATETIME, '01/01/1900', 102) AND CONVERT(DATETIME, '01/01/1900', 102)) ORDER BY Facturas.Fecha_Factura, Facturas.Numero_Factura"
         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
         DataAdapter.Fill(DataSet, "TotalVentas")
@@ -84,7 +77,7 @@ Public Class FrmRecibosFacturas
             '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             'SQlString = "SELECT  MAX(DetalleRecibo.CodReciboPago) AS CodReciboPago, MAX(DetalleRecibo.Fecha_Recibo) AS Fecha_Recibo, DetalleRecibo.Numero_Factura, SUM(DetalleRecibo.MontoPagado) AS MontoPagado, Recibo.MonedaRecibo FROM DetalleRecibo INNER JOIN Recibo ON DetalleRecibo.CodReciboPago = Recibo.CodReciboPago AND DetalleRecibo.Fecha_Recibo = Recibo.Fecha_Recibo GROUP BY DetalleRecibo.Numero_Factura, Recibo.MonedaRecibo " & _
             '            "HAVING (DetalleRecibo.Numero_Factura = '" & NumeroFactura & "')"
-            SQlString = "SELECT MAX(DetalleRecibo.CodReciboPago) AS CodReciboPago, MAX(DetalleRecibo.Fecha_Recibo) AS Fecha_Recibo, SUM(CASE WHEN Recibo.MonedaRecibo = 'Dolares' THEN DetalleRecibo.MontoPagado ELSE DetalleRecibo.MontoPagado / ISNULL(TasaCambio.MontoTasa, 1) END) AS MontoDolar, SUM(CASE WHEN Recibo.MonedaRecibo = 'Cordobas' THEN DetalleRecibo.MontoPagado ELSE DetalleRecibo.MontoPagado * ISNULL(TasaCambio.MontoTasa, 1) END) AS MontoCordobas, MAX(Recibo.MonedaRecibo) AS MonedaRecibo FROM DetalleRecibo INNER JOIN Recibo ON DetalleRecibo.CodReciboPago = Recibo.CodReciboPago AND DetalleRecibo.Fecha_Recibo = Recibo.Fecha_Recibo INNER JOIN TasaCambio ON DetalleRecibo.Fecha_Recibo = TasaCambio.FechaTasa  GROUP BY DetalleRecibo.Numero_Factura  " & _
+            SQlString = "SELECT MAX(DetalleRecibo.CodReciboPago) AS CodReciboPago, MAX(DetalleRecibo.Fecha_Recibo) AS Fecha_Recibo, SUM(CASE WHEN Recibo.MonedaRecibo = 'Dolares' THEN DetalleRecibo.MontoPagado ELSE DetalleRecibo.MontoPagado / ISNULL(TasaCambio.MontoTasa, 1) END) AS MontoDolar, SUM(CASE WHEN Recibo.MonedaRecibo = 'Cordobas' THEN DetalleRecibo.MontoPagado ELSE DetalleRecibo.MontoPagado * ISNULL(TasaCambio.MontoTasa, 1) END) AS MontoCordobas, MAX(Recibo.MonedaRecibo) AS MonedaRecibo FROM DetalleRecibo INNER JOIN Recibo ON DetalleRecibo.CodReciboPago = Recibo.CodReciboPago AND DetalleRecibo.Fecha_Recibo = Recibo.Fecha_Recibo INNER JOIN TasaCambio ON DetalleRecibo.Fecha_Recibo = TasaCambio.FechaTasa  GROUP BY DetalleRecibo.Numero_Factura  " &
                         "HAVING (DetalleRecibo.Numero_Factura = '" & NumeroFactura & "') "
             DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
             DataAdapter.Fill(DataSet, "Recibos")
@@ -873,7 +866,7 @@ Public Class FrmRecibosFacturas
         ActualizaMETODORecibos2()
     End Sub
 
-    Private Sub CmdProcesar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdProcesar.Click
+    Private Sub btnProcesar_Click(sender As Object, e As EventArgs) Handles btnProcesar.Click
         Dim Registros As Integer, iPosicion As Integer, RegistrosFacturas As Integer, iPosicionFacturas As Integer
         Dim MontoMetodo As Double, MontoFactura As Double, ResultadoFactura As Double, MontoRecibido As Double
         Dim Respuesta As Integer = 0, oDataRow As DataRow, SQlString As String, NombrePago As String, NumeroFactura As String = "", NumeroTarjeta As String
@@ -1049,7 +1042,7 @@ Public Class FrmRecibosFacturas
                     '/////////////////////////////////////////////////////////////////////////////////////////////////////
                     If TipoFactura = "NotaDebito" Then
                         'SQlString = "SELECT  Detalle_Nota.* FROM Detalle_Nota WHERE Numero_Nota = '" & Mid(NumeroFactura, 3, Len(NumeroFactura)) & "')"
-                        SQlString = "SELECT Detalle_Nota.Numero_Nota, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Fecha_Nota FROM  Detalle_Nota INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB  " & _
+                        SQlString = "SELECT Detalle_Nota.Numero_Nota, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Fecha_Nota FROM  Detalle_Nota INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB  " &
                                     "WHERE (Detalle_Nota.Numero_Nota = '" & Mid(NumeroFactura, 3, Len(NumeroFactura)) & "') AND (NotaDebito.Tipo LIKE N'%Debito Clientes%')"
                         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
                         DataAdapter.Fill(DataSet, "Consulta")
@@ -1152,5 +1145,25 @@ Public Class FrmRecibosFacturas
         FrmRecibos.TxtPorAplicar.Text = Me.TxtPorAplicar.Text
         FrmRecibos.TxtImporteAplicado.Text = Me.TxtImporteAplicado.Text
         Me.Close()
+    End Sub
+
+    Private Sub btnSalir_Click(sender As Object, e As EventArgs) Handles btnSalir.Click
+        Me.TxtImporteAplicado.Text = ""
+        Me.TxtImporteRecibido.Text = ""
+        Me.TxtPorAplicar.Text = ""
+        ActualizaMETODORecibos()
+        Me.Close()
+    End Sub
+
+    Private Sub btnAgregarMetodo_Click(sender As Object, e As EventArgs) Handles btnAgregarMetodo.Click
+        Dim Metodo As String
+        Quien = "MetodoPago"
+        My.Forms.FrmConsultas.ShowDialog()
+        Metodo = FrmConsultas.Codigo
+        Me.TrueDBGridMetodo.Columns(0).Text = Metodo
+    End Sub
+
+    Private Sub CmdProcesar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
     End Sub
 End Class

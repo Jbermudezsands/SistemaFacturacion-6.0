@@ -32,7 +32,6 @@ Public Class FrmRecibosCaja
 
     Private pnlDetalle As System.Windows.Forms.Panel
     Private lblSeccionDetalle As System.Windows.Forms.Label
-    Private btnAgregarFila As System.Windows.Forms.Button
     Private dgvDetalle As System.Windows.Forms.DataGridView
     Private colNombrePago As System.Windows.Forms.DataGridViewTextBoxColumn
     Private colDescripcion As System.Windows.Forms.DataGridViewTextBoxColumn
@@ -96,7 +95,6 @@ Public Class FrmRecibosCaja
         Me.lblCajero = New System.Windows.Forms.Label()
         Me.pnlDetalle = New System.Windows.Forms.Panel()
         Me.lblSeccionDetalle = New System.Windows.Forms.Label()
-        Me.btnAgregarFila = New System.Windows.Forms.Button()
         Me.dgvDetalle = New System.Windows.Forms.DataGridView()
         Me.colNombrePago = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colDescripcion = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -131,7 +129,8 @@ Public Class FrmRecibosCaja
         '
         'pnlHeader
         '
-        Me.pnlHeader.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right)), System.Windows.Forms.AnchorStyles)
+        Me.pnlHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlHeader.BackColor = System.Drawing.Color.White
         Me.pnlHeader.Controls.Add(Me.lblTitulo)
         Me.pnlHeader.Controls.Add(Me.btnNuevo)
@@ -146,21 +145,21 @@ Public Class FrmRecibosCaja
         '
         Me.lblTitulo.AutoSize = True
         Me.lblTitulo.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Bold)
-        Me.lblTitulo.ForeColor = System.Drawing.Color.FromArgb(31, 41, 55)
+        Me.lblTitulo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(41, Byte), Integer), CType(CType(55, Byte), Integer))
         Me.lblTitulo.Location = New System.Drawing.Point(16, 16)
         Me.lblTitulo.Name = "lblTitulo"
-        Me.lblTitulo.Size = New System.Drawing.Size(140, 21)
+        Me.lblTitulo.Size = New System.Drawing.Size(127, 21)
         Me.lblTitulo.TabIndex = 0
         Me.lblTitulo.Text = "Recibos de caja"
         '
         'btnNuevo
         '
-        Me.btnNuevo.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right)), System.Windows.Forms.AnchorStyles)
+        Me.btnNuevo.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnNuevo.BackColor = System.Drawing.Color.White
-        Me.btnNuevo.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(226, 229, 233)
+        Me.btnNuevo.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(226, Byte), Integer), CType(CType(229, Byte), Integer), CType(CType(233, Byte), Integer))
         Me.btnNuevo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnNuevo.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.btnNuevo.ForeColor = System.Drawing.Color.FromArgb(31, 41, 55)
+        Me.btnNuevo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(41, Byte), Integer), CType(CType(55, Byte), Integer))
         Me.btnNuevo.Location = New System.Drawing.Point(608, 12)
         Me.btnNuevo.Name = "btnNuevo"
         Me.btnNuevo.Size = New System.Drawing.Size(90, 32)
@@ -170,12 +169,12 @@ Public Class FrmRecibosCaja
         '
         'btnImprimir
         '
-        Me.btnImprimir.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right)), System.Windows.Forms.AnchorStyles)
+        Me.btnImprimir.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnImprimir.BackColor = System.Drawing.Color.White
-        Me.btnImprimir.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(226, 229, 233)
+        Me.btnImprimir.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(226, Byte), Integer), CType(CType(229, Byte), Integer), CType(CType(233, Byte), Integer))
         Me.btnImprimir.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnImprimir.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.btnImprimir.ForeColor = System.Drawing.Color.FromArgb(31, 41, 55)
+        Me.btnImprimir.ForeColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(41, Byte), Integer), CType(CType(55, Byte), Integer))
         Me.btnImprimir.Location = New System.Drawing.Point(706, 12)
         Me.btnImprimir.Name = "btnImprimir"
         Me.btnImprimir.Size = New System.Drawing.Size(90, 32)
@@ -185,12 +184,12 @@ Public Class FrmRecibosCaja
         '
         'btnEliminar
         '
-        Me.btnEliminar.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right)), System.Windows.Forms.AnchorStyles)
+        Me.btnEliminar.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnEliminar.BackColor = System.Drawing.Color.White
-        Me.btnEliminar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(226, 229, 233)
+        Me.btnEliminar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(226, Byte), Integer), CType(CType(229, Byte), Integer), CType(CType(233, Byte), Integer))
         Me.btnEliminar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnEliminar.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.btnEliminar.ForeColor = System.Drawing.Color.FromArgb(220, 38, 38)
+        Me.btnEliminar.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(38, Byte), Integer), CType(CType(38, Byte), Integer))
         Me.btnEliminar.Location = New System.Drawing.Point(804, 12)
         Me.btnEliminar.Name = "btnEliminar"
         Me.btnEliminar.Size = New System.Drawing.Size(90, 32)
@@ -200,7 +199,8 @@ Public Class FrmRecibosCaja
         '
         'pnlDatosGenerales
         '
-        Me.pnlDatosGenerales.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right)), System.Windows.Forms.AnchorStyles)
+        Me.pnlDatosGenerales.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlDatosGenerales.Controls.Add(Me.lblFecha)
         Me.pnlDatosGenerales.Controls.Add(Me.dtpFecha)
         Me.pnlDatosGenerales.Controls.Add(Me.lblNumero)
@@ -216,28 +216,28 @@ Public Class FrmRecibosCaja
         'lblFecha
         '
         Me.lblFecha.AutoSize = True
-        Me.lblFecha.ForeColor = System.Drawing.Color.FromArgb(107, 114, 128)
+        Me.lblFecha.ForeColor = System.Drawing.Color.FromArgb(CType(CType(107, Byte), Integer), CType(CType(114, Byte), Integer), CType(CType(128, Byte), Integer))
         Me.lblFecha.Location = New System.Drawing.Point(0, 0)
         Me.lblFecha.Name = "lblFecha"
-        Me.lblFecha.Size = New System.Drawing.Size(35, 13)
+        Me.lblFecha.Size = New System.Drawing.Size(38, 15)
         Me.lblFecha.TabIndex = 0
         Me.lblFecha.Text = "Fecha"
         '
         'dtpFecha
         '
-        Me.dtpFecha.Format = System.Windows.Forms.DateTimePickerFormat.Short
+        Me.dtpFecha.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.dtpFecha.Location = New System.Drawing.Point(0, 20)
         Me.dtpFecha.Name = "dtpFecha"
-        Me.dtpFecha.Size = New System.Drawing.Size(140, 20)
+        Me.dtpFecha.Size = New System.Drawing.Size(140, 23)
         Me.dtpFecha.TabIndex = 1
         '
         'lblNumero
         '
         Me.lblNumero.AutoSize = True
-        Me.lblNumero.ForeColor = System.Drawing.Color.FromArgb(107, 114, 128)
+        Me.lblNumero.ForeColor = System.Drawing.Color.FromArgb(CType(CType(107, Byte), Integer), CType(CType(114, Byte), Integer), CType(CType(128, Byte), Integer))
         Me.lblNumero.Location = New System.Drawing.Point(320, 0)
         Me.lblNumero.Name = "lblNumero"
-        Me.lblNumero.Size = New System.Drawing.Size(45, 13)
+        Me.lblNumero.Size = New System.Drawing.Size(51, 15)
         Me.lblNumero.TabIndex = 2
         Me.lblNumero.Text = "Numero"
         '
@@ -247,24 +247,24 @@ Public Class FrmRecibosCaja
         Me.cboTipoRecibo.Items.AddRange(New Object() {"B"})
         Me.cboTipoRecibo.Location = New System.Drawing.Point(320, 20)
         Me.cboTipoRecibo.Name = "cboTipoRecibo"
-        Me.cboTipoRecibo.Size = New System.Drawing.Size(55, 21)
+        Me.cboTipoRecibo.Size = New System.Drawing.Size(55, 23)
         Me.cboTipoRecibo.TabIndex = 3
         '
         'txtNumero
         '
         Me.txtNumero.Location = New System.Drawing.Point(380, 20)
         Me.txtNumero.Name = "txtNumero"
-        Me.txtNumero.Size = New System.Drawing.Size(150, 20)
+        Me.txtNumero.Size = New System.Drawing.Size(150, 23)
         Me.txtNumero.TabIndex = 4
         Me.txtNumero.Text = "0"
         '
         'lblMoneda
         '
         Me.lblMoneda.AutoSize = True
-        Me.lblMoneda.ForeColor = System.Drawing.Color.FromArgb(107, 114, 128)
+        Me.lblMoneda.ForeColor = System.Drawing.Color.FromArgb(CType(CType(107, Byte), Integer), CType(CType(114, Byte), Integer), CType(CType(128, Byte), Integer))
         Me.lblMoneda.Location = New System.Drawing.Point(650, 0)
         Me.lblMoneda.Name = "lblMoneda"
-        Me.lblMoneda.Size = New System.Drawing.Size(46, 13)
+        Me.lblMoneda.Size = New System.Drawing.Size(51, 15)
         Me.lblMoneda.TabIndex = 5
         Me.lblMoneda.Text = "Moneda"
         '
@@ -274,12 +274,13 @@ Public Class FrmRecibosCaja
         Me.cboMoneda.Items.AddRange(New Object() {"Cordobas", "Dolares"})
         Me.cboMoneda.Location = New System.Drawing.Point(650, 20)
         Me.cboMoneda.Name = "cboMoneda"
-        Me.cboMoneda.Size = New System.Drawing.Size(150, 21)
+        Me.cboMoneda.Size = New System.Drawing.Size(150, 23)
         Me.cboMoneda.TabIndex = 6
         '
         'pnlCliente
         '
-        Me.pnlCliente.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right)), System.Windows.Forms.AnchorStyles)
+        Me.pnlCliente.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlCliente.BackColor = System.Drawing.Color.White
         Me.pnlCliente.Controls.Add(Me.lblSeccionCliente)
         Me.pnlCliente.Controls.Add(Me.btnAbono)
@@ -300,22 +301,22 @@ Public Class FrmRecibosCaja
         '
         Me.lblSeccionCliente.AutoSize = True
         Me.lblSeccionCliente.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
-        Me.lblSeccionCliente.ForeColor = System.Drawing.Color.FromArgb(107, 114, 128)
+        Me.lblSeccionCliente.ForeColor = System.Drawing.Color.FromArgb(CType(CType(107, Byte), Integer), CType(CType(114, Byte), Integer), CType(CType(128, Byte), Integer))
         Me.lblSeccionCliente.Location = New System.Drawing.Point(16, 12)
         Me.lblSeccionCliente.Name = "lblSeccionCliente"
-        Me.lblSeccionCliente.Size = New System.Drawing.Size(140, 15)
+        Me.lblSeccionCliente.Size = New System.Drawing.Size(136, 15)
         Me.lblSeccionCliente.TabIndex = 0
         Me.lblSeccionCliente.Text = "Informacion del cliente"
         '
         'btnAbono
         '
-        Me.btnAbono.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right)), System.Windows.Forms.AnchorStyles)
+        Me.btnAbono.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnAbono.BackColor = System.Drawing.Color.White
-        Me.btnAbono.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(37, 99, 235)
+        Me.btnAbono.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(37, Byte), Integer), CType(CType(99, Byte), Integer), CType(CType(235, Byte), Integer))
         Me.btnAbono.FlatAppearance.BorderSize = 2
         Me.btnAbono.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnAbono.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.btnAbono.ForeColor = System.Drawing.Color.FromArgb(37, 99, 235)
+        Me.btnAbono.ForeColor = System.Drawing.Color.FromArgb(CType(CType(37, Byte), Integer), CType(CType(99, Byte), Integer), CType(CType(235, Byte), Integer))
         Me.btnAbono.Location = New System.Drawing.Point(666, 8)
         Me.btnAbono.Name = "btnAbono"
         Me.btnAbono.Size = New System.Drawing.Size(100, 32)
@@ -325,12 +326,12 @@ Public Class FrmRecibosCaja
         '
         'btnPlanPago
         '
-        Me.btnPlanPago.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right)), System.Windows.Forms.AnchorStyles)
+        Me.btnPlanPago.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnPlanPago.BackColor = System.Drawing.Color.White
-        Me.btnPlanPago.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(226, 229, 233)
+        Me.btnPlanPago.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(226, Byte), Integer), CType(CType(229, Byte), Integer), CType(CType(233, Byte), Integer))
         Me.btnPlanPago.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnPlanPago.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.btnPlanPago.ForeColor = System.Drawing.Color.FromArgb(31, 41, 55)
+        Me.btnPlanPago.ForeColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(41, Byte), Integer), CType(CType(55, Byte), Integer))
         Me.btnPlanPago.Location = New System.Drawing.Point(774, 8)
         Me.btnPlanPago.Name = "btnPlanPago"
         Me.btnPlanPago.Size = New System.Drawing.Size(120, 32)
@@ -340,16 +341,17 @@ Public Class FrmRecibosCaja
         '
         'txtBuscarCliente
         '
-        Me.txtBuscarCliente.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right)), System.Windows.Forms.AnchorStyles)
+        Me.txtBuscarCliente.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtBuscarCliente.Location = New System.Drawing.Point(16, 44)
         Me.txtBuscarCliente.Name = "txtBuscarCliente"
-        Me.txtBuscarCliente.Size = New System.Drawing.Size(830, 20)
+        Me.txtBuscarCliente.Size = New System.Drawing.Size(830, 23)
         Me.txtBuscarCliente.TabIndex = 3
         '
         'btnBuscarCliente
         '
-        Me.btnBuscarCliente.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right)), System.Windows.Forms.AnchorStyles)
-        Me.btnBuscarCliente.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(226, 229, 233)
+        Me.btnBuscarCliente.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnBuscarCliente.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(226, Byte), Integer), CType(CType(229, Byte), Integer), CType(CType(233, Byte), Integer))
         Me.btnBuscarCliente.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnBuscarCliente.Location = New System.Drawing.Point(858, 44)
         Me.btnBuscarCliente.Name = "btnBuscarCliente"
@@ -360,18 +362,20 @@ Public Class FrmRecibosCaja
         '
         'txtDireccion
         '
-        Me.txtDireccion.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right)), System.Windows.Forms.AnchorStyles)
+        Me.txtDireccion.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtDireccion.Location = New System.Drawing.Point(16, 78)
         Me.txtDireccion.Name = "txtDireccion"
-        Me.txtDireccion.Size = New System.Drawing.Size(437, 20)
+        Me.txtDireccion.Size = New System.Drawing.Size(437, 23)
         Me.txtDireccion.TabIndex = 5
         '
         'txtRucCedula
         '
-        Me.txtRucCedula.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right)), System.Windows.Forms.AnchorStyles)
+        Me.txtRucCedula.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtRucCedula.Location = New System.Drawing.Point(465, 78)
         Me.txtRucCedula.Name = "txtRucCedula"
-        Me.txtRucCedula.Size = New System.Drawing.Size(429, 20)
+        Me.txtRucCedula.Size = New System.Drawing.Size(429, 23)
         Me.txtRucCedula.TabIndex = 6
         '
         'chkRetener1
@@ -379,7 +383,7 @@ Public Class FrmRecibosCaja
         Me.chkRetener1.AutoSize = True
         Me.chkRetener1.Location = New System.Drawing.Point(16, 116)
         Me.chkRetener1.Name = "chkRetener1"
-        Me.chkRetener1.Size = New System.Drawing.Size(85, 17)
+        Me.chkRetener1.Size = New System.Drawing.Size(85, 19)
         Me.chkRetener1.TabIndex = 7
         Me.chkRetener1.Text = "Retener 1%"
         Me.chkRetener1.UseVisualStyleBackColor = True
@@ -389,28 +393,29 @@ Public Class FrmRecibosCaja
         Me.chkRetener2.AutoSize = True
         Me.chkRetener2.Location = New System.Drawing.Point(120, 116)
         Me.chkRetener2.Name = "chkRetener2"
-        Me.chkRetener2.Size = New System.Drawing.Size(85, 17)
+        Me.chkRetener2.Size = New System.Drawing.Size(85, 19)
         Me.chkRetener2.TabIndex = 8
         Me.chkRetener2.Text = "Retener 2%"
         Me.chkRetener2.UseVisualStyleBackColor = True
         '
         'lblCajero
         '
-        Me.lblCajero.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right)), System.Windows.Forms.AnchorStyles)
+        Me.lblCajero.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblCajero.AutoSize = True
-        Me.lblCajero.ForeColor = System.Drawing.Color.FromArgb(107, 114, 128)
+        Me.lblCajero.ForeColor = System.Drawing.Color.FromArgb(CType(CType(107, Byte), Integer), CType(CType(114, Byte), Integer), CType(CType(128, Byte), Integer))
         Me.lblCajero.Location = New System.Drawing.Point(800, 118)
         Me.lblCajero.Name = "lblCajero"
-        Me.lblCajero.Size = New System.Drawing.Size(65, 13)
+        Me.lblCajero.Size = New System.Drawing.Size(65, 15)
         Me.lblCajero.TabIndex = 9
         Me.lblCajero.Text = "Cajero: 001"
         '
         'pnlDetalle
         '
-        Me.pnlDetalle.Anchor = CType(((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right)), System.Windows.Forms.AnchorStyles)
+        Me.pnlDetalle.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlDetalle.BackColor = System.Drawing.Color.White
         Me.pnlDetalle.Controls.Add(Me.lblSeccionDetalle)
-        Me.pnlDetalle.Controls.Add(Me.btnAgregarFila)
         Me.pnlDetalle.Controls.Add(Me.dgvDetalle)
         Me.pnlDetalle.Location = New System.Drawing.Point(20, 322)
         Me.pnlDetalle.Name = "pnlDetalle"
@@ -421,34 +426,24 @@ Public Class FrmRecibosCaja
         '
         Me.lblSeccionDetalle.AutoSize = True
         Me.lblSeccionDetalle.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
-        Me.lblSeccionDetalle.ForeColor = System.Drawing.Color.FromArgb(107, 114, 128)
+        Me.lblSeccionDetalle.ForeColor = System.Drawing.Color.FromArgb(CType(CType(107, Byte), Integer), CType(CType(114, Byte), Integer), CType(CType(128, Byte), Integer))
         Me.lblSeccionDetalle.Location = New System.Drawing.Point(16, 12)
         Me.lblSeccionDetalle.Name = "lblSeccionDetalle"
-        Me.lblSeccionDetalle.Size = New System.Drawing.Size(120, 15)
+        Me.lblSeccionDetalle.Size = New System.Drawing.Size(107, 15)
         Me.lblSeccionDetalle.TabIndex = 0
         Me.lblSeccionDetalle.Text = "Detalle de recibos"
         '
-        'btnAgregarFila
-        '
-        Me.btnAgregarFila.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right)), System.Windows.Forms.AnchorStyles)
-        Me.btnAgregarFila.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(226, 229, 233)
-        Me.btnAgregarFila.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnAgregarFila.Location = New System.Drawing.Point(864, 8)
-        Me.btnAgregarFila.Name = "btnAgregarFila"
-        Me.btnAgregarFila.Size = New System.Drawing.Size(30, 24)
-        Me.btnAgregarFila.TabIndex = 1
-        Me.btnAgregarFila.Text = "+"
-        Me.btnAgregarFila.UseVisualStyleBackColor = True
-        '
         'dgvDetalle
         '
-        Me.dgvDetalle.Anchor = CType(((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right)), System.Windows.Forms.AnchorStyles)
+        Me.dgvDetalle.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvDetalle.BackgroundColor = System.Drawing.Color.White
         Me.dgvDetalle.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvDetalle.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.dgvDetalle.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colNombrePago, Me.colDescripcion, Me.colNumeroFactura, Me.colMontoPagado})
         Me.dgvDetalle.EnableHeadersVisualStyles = False
-        Me.dgvDetalle.GridColor = System.Drawing.Color.FromArgb(226, 229, 233)
+        Me.dgvDetalle.GridColor = System.Drawing.Color.FromArgb(CType(CType(226, Byte), Integer), CType(CType(229, Byte), Integer), CType(CType(233, Byte), Integer))
         Me.dgvDetalle.Location = New System.Drawing.Point(16, 44)
         Me.dgvDetalle.Name = "dgvDetalle"
         Me.dgvDetalle.RowHeadersVisible = False
@@ -481,7 +476,8 @@ Public Class FrmRecibosCaja
         '
         'pnlTotales
         '
-        Me.pnlTotales.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right)), System.Windows.Forms.AnchorStyles)
+        Me.pnlTotales.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlTotales.ColumnCount = 4
         Me.pnlTotales.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
         Me.pnlTotales.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
@@ -507,17 +503,17 @@ Public Class FrmRecibosCaja
         Me.tarjetaSubTotal.Location = New System.Drawing.Point(3, 3)
         Me.tarjetaSubTotal.Margin = New System.Windows.Forms.Padding(3, 3, 8, 3)
         Me.tarjetaSubTotal.Name = "tarjetaSubTotal"
-        Me.tarjetaSubTotal.Size = New System.Drawing.Size(214, 60)
+        Me.tarjetaSubTotal.Size = New System.Drawing.Size(216, 60)
         Me.tarjetaSubTotal.TabIndex = 0
         '
         'lblSubTotal
         '
         Me.lblSubTotal.AutoSize = True
         Me.lblSubTotal.Font = New System.Drawing.Font("Segoe UI", 8.5!)
-        Me.lblSubTotal.ForeColor = System.Drawing.Color.FromArgb(107, 114, 128)
+        Me.lblSubTotal.ForeColor = System.Drawing.Color.FromArgb(CType(CType(107, Byte), Integer), CType(CType(114, Byte), Integer), CType(CType(128, Byte), Integer))
         Me.lblSubTotal.Location = New System.Drawing.Point(12, 8)
         Me.lblSubTotal.Name = "lblSubTotal"
-        Me.lblSubTotal.Size = New System.Drawing.Size(52, 15)
+        Me.lblSubTotal.Size = New System.Drawing.Size(54, 15)
         Me.lblSubTotal.TabIndex = 0
         Me.lblSubTotal.Text = "Sub total"
         '
@@ -525,10 +521,10 @@ Public Class FrmRecibosCaja
         '
         Me.lblValorSubTotal.AutoSize = True
         Me.lblValorSubTotal.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Bold)
-        Me.lblValorSubTotal.ForeColor = System.Drawing.Color.FromArgb(31, 41, 55)
+        Me.lblValorSubTotal.ForeColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(41, Byte), Integer), CType(CType(55, Byte), Integer))
         Me.lblValorSubTotal.Location = New System.Drawing.Point(12, 28)
         Me.lblValorSubTotal.Name = "lblValorSubTotal"
-        Me.lblValorSubTotal.Size = New System.Drawing.Size(75, 20)
+        Me.lblValorSubTotal.Size = New System.Drawing.Size(62, 20)
         Me.lblValorSubTotal.TabIndex = 1
         Me.lblValorSubTotal.Text = "C$ 0.00"
         '
@@ -541,17 +537,17 @@ Public Class FrmRecibosCaja
         Me.tarjetaDescuento.Location = New System.Drawing.Point(230, 3)
         Me.tarjetaDescuento.Margin = New System.Windows.Forms.Padding(3, 3, 8, 3)
         Me.tarjetaDescuento.Name = "tarjetaDescuento"
-        Me.tarjetaDescuento.Size = New System.Drawing.Size(214, 60)
+        Me.tarjetaDescuento.Size = New System.Drawing.Size(216, 60)
         Me.tarjetaDescuento.TabIndex = 1
         '
         'lblDescuento
         '
         Me.lblDescuento.AutoSize = True
         Me.lblDescuento.Font = New System.Drawing.Font("Segoe UI", 8.5!)
-        Me.lblDescuento.ForeColor = System.Drawing.Color.FromArgb(107, 114, 128)
+        Me.lblDescuento.ForeColor = System.Drawing.Color.FromArgb(CType(CType(107, Byte), Integer), CType(CType(114, Byte), Integer), CType(CType(128, Byte), Integer))
         Me.lblDescuento.Location = New System.Drawing.Point(12, 8)
         Me.lblDescuento.Name = "lblDescuento"
-        Me.lblDescuento.Size = New System.Drawing.Size(62, 15)
+        Me.lblDescuento.Size = New System.Drawing.Size(63, 15)
         Me.lblDescuento.TabIndex = 0
         Me.lblDescuento.Text = "Descuento"
         '
@@ -559,10 +555,10 @@ Public Class FrmRecibosCaja
         '
         Me.lblValorDescuento.AutoSize = True
         Me.lblValorDescuento.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Bold)
-        Me.lblValorDescuento.ForeColor = System.Drawing.Color.FromArgb(31, 41, 55)
+        Me.lblValorDescuento.ForeColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(41, Byte), Integer), CType(CType(55, Byte), Integer))
         Me.lblValorDescuento.Location = New System.Drawing.Point(12, 28)
         Me.lblValorDescuento.Name = "lblValorDescuento"
-        Me.lblValorDescuento.Size = New System.Drawing.Size(75, 20)
+        Me.lblValorDescuento.Size = New System.Drawing.Size(62, 20)
         Me.lblValorDescuento.TabIndex = 1
         Me.lblValorDescuento.Text = "C$ 0.00"
         '
@@ -575,17 +571,17 @@ Public Class FrmRecibosCaja
         Me.tarjetaTotalRecibido.Location = New System.Drawing.Point(457, 3)
         Me.tarjetaTotalRecibido.Margin = New System.Windows.Forms.Padding(3, 3, 8, 3)
         Me.tarjetaTotalRecibido.Name = "tarjetaTotalRecibido"
-        Me.tarjetaTotalRecibido.Size = New System.Drawing.Size(214, 60)
+        Me.tarjetaTotalRecibido.Size = New System.Drawing.Size(216, 60)
         Me.tarjetaTotalRecibido.TabIndex = 2
         '
         'lblTotalRecibido
         '
         Me.lblTotalRecibido.AutoSize = True
         Me.lblTotalRecibido.Font = New System.Drawing.Font("Segoe UI", 8.5!)
-        Me.lblTotalRecibido.ForeColor = System.Drawing.Color.FromArgb(107, 114, 128)
+        Me.lblTotalRecibido.ForeColor = System.Drawing.Color.FromArgb(CType(CType(107, Byte), Integer), CType(CType(114, Byte), Integer), CType(CType(128, Byte), Integer))
         Me.lblTotalRecibido.Location = New System.Drawing.Point(12, 8)
         Me.lblTotalRecibido.Name = "lblTotalRecibido"
-        Me.lblTotalRecibido.Size = New System.Drawing.Size(82, 15)
+        Me.lblTotalRecibido.Size = New System.Drawing.Size(79, 15)
         Me.lblTotalRecibido.TabIndex = 0
         Me.lblTotalRecibido.Text = "Total recibido"
         '
@@ -593,21 +589,20 @@ Public Class FrmRecibosCaja
         '
         Me.lblValorTotalRecibido.AutoSize = True
         Me.lblValorTotalRecibido.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Bold)
-        Me.lblValorTotalRecibido.ForeColor = System.Drawing.Color.FromArgb(31, 41, 55)
+        Me.lblValorTotalRecibido.ForeColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(41, Byte), Integer), CType(CType(55, Byte), Integer))
         Me.lblValorTotalRecibido.Location = New System.Drawing.Point(12, 28)
         Me.lblValorTotalRecibido.Name = "lblValorTotalRecibido"
-        Me.lblValorTotalRecibido.Size = New System.Drawing.Size(75, 20)
+        Me.lblValorTotalRecibido.Size = New System.Drawing.Size(62, 20)
         Me.lblValorTotalRecibido.TabIndex = 1
         Me.lblValorTotalRecibido.Text = "C$ 0.00"
         '
         'tarjetaPorAplicar
         '
-        Me.tarjetaPorAplicar.BackColor = System.Drawing.Color.FromArgb(239, 246, 255)
+        Me.tarjetaPorAplicar.BackColor = System.Drawing.Color.FromArgb(CType(CType(239, Byte), Integer), CType(CType(246, Byte), Integer), CType(CType(255, Byte), Integer))
         Me.tarjetaPorAplicar.Controls.Add(Me.lblPorAplicar)
         Me.tarjetaPorAplicar.Controls.Add(Me.lblValorPorAplicar)
         Me.tarjetaPorAplicar.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tarjetaPorAplicar.Location = New System.Drawing.Point(684, 3)
-        Me.tarjetaPorAplicar.Margin = New System.Windows.Forms.Padding(3, 3, 3, 3)
         Me.tarjetaPorAplicar.Name = "tarjetaPorAplicar"
         Me.tarjetaPorAplicar.Size = New System.Drawing.Size(223, 60)
         Me.tarjetaPorAplicar.TabIndex = 3
@@ -616,7 +611,7 @@ Public Class FrmRecibosCaja
         '
         Me.lblPorAplicar.AutoSize = True
         Me.lblPorAplicar.Font = New System.Drawing.Font("Segoe UI", 8.5!)
-        Me.lblPorAplicar.ForeColor = System.Drawing.Color.FromArgb(37, 99, 235)
+        Me.lblPorAplicar.ForeColor = System.Drawing.Color.FromArgb(CType(CType(37, Byte), Integer), CType(CType(99, Byte), Integer), CType(CType(235, Byte), Integer))
         Me.lblPorAplicar.Location = New System.Drawing.Point(12, 8)
         Me.lblPorAplicar.Name = "lblPorAplicar"
         Me.lblPorAplicar.Size = New System.Drawing.Size(63, 15)
@@ -627,26 +622,28 @@ Public Class FrmRecibosCaja
         '
         Me.lblValorPorAplicar.AutoSize = True
         Me.lblValorPorAplicar.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Bold)
-        Me.lblValorPorAplicar.ForeColor = System.Drawing.Color.FromArgb(37, 99, 235)
+        Me.lblValorPorAplicar.ForeColor = System.Drawing.Color.FromArgb(CType(CType(37, Byte), Integer), CType(CType(99, Byte), Integer), CType(CType(235, Byte), Integer))
         Me.lblValorPorAplicar.Location = New System.Drawing.Point(12, 28)
         Me.lblValorPorAplicar.Name = "lblValorPorAplicar"
-        Me.lblValorPorAplicar.Size = New System.Drawing.Size(75, 20)
+        Me.lblValorPorAplicar.Size = New System.Drawing.Size(62, 20)
         Me.lblValorPorAplicar.TabIndex = 1
         Me.lblValorPorAplicar.Text = "C$ 0.00"
         '
         'lblObservaciones
         '
         Me.lblObservaciones.AutoSize = True
-        Me.lblObservaciones.ForeColor = System.Drawing.Color.FromArgb(107, 114, 128)
+        Me.lblObservaciones.ForeColor = System.Drawing.Color.FromArgb(CType(CType(107, Byte), Integer), CType(CType(114, Byte), Integer), CType(CType(128, Byte), Integer))
         Me.lblObservaciones.Location = New System.Drawing.Point(20, 672)
         Me.lblObservaciones.Name = "lblObservaciones"
-        Me.lblObservaciones.Size = New System.Drawing.Size(85, 13)
+        Me.lblObservaciones.Size = New System.Drawing.Size(84, 15)
         Me.lblObservaciones.TabIndex = 5
         Me.lblObservaciones.Text = "Observaciones"
         '
         'txtObservaciones
         '
-        Me.txtObservaciones.Anchor = CType(((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right)), System.Windows.Forms.AnchorStyles)
+        Me.txtObservaciones.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtObservaciones.Location = New System.Drawing.Point(20, 692)
         Me.txtObservaciones.Multiline = True
         Me.txtObservaciones.Name = "txtObservaciones"
@@ -655,10 +652,10 @@ Public Class FrmRecibosCaja
         '
         'FrmRecibosCaja
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.Color.FromArgb(243, 244, 246)
-        Me.ClientSize = New System.Drawing.Size(950, 760)
+        Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(246, Byte), Integer))
+        Me.ClientSize = New System.Drawing.Size(950, 749)
         Me.Controls.Add(Me.txtObservaciones)
         Me.Controls.Add(Me.lblObservaciones)
         Me.Controls.Add(Me.pnlTotales)
@@ -678,6 +675,7 @@ Public Class FrmRecibosCaja
         Me.pnlCliente.ResumeLayout(False)
         Me.pnlCliente.PerformLayout()
         Me.pnlDetalle.ResumeLayout(False)
+        Me.pnlDetalle.PerformLayout()
         CType(Me.dgvDetalle, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlTotales.ResumeLayout(False)
         Me.tarjetaSubTotal.ResumeLayout(False)
@@ -690,6 +688,10 @@ Public Class FrmRecibosCaja
         Me.tarjetaPorAplicar.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
+
+    End Sub
+
+    Private Sub FrmRecibosCaja_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
     End Sub
 
