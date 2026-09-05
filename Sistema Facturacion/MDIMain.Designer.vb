@@ -170,14 +170,15 @@ Partial Class MDIMain
         Me.RibbonButton11 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonButton61 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonButton14 = New C1.Win.C1Ribbon.RibbonButton()
-        Me.RibbonButton171 = New C1.Win.C1Ribbon.RibbonButton()
-        Me.RibbonProcRecepcion = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonCodUnico = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonGroup14 = New C1.Win.C1Ribbon.RibbonGroup()
         Me.RibbonButton111 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonButton12 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonButton10 = New C1.Win.C1Ribbon.RibbonButton()
-        Me.RibbonSeparator2 = New C1.Win.C1Ribbon.RibbonSeparator()
         Me.RibbonButton15 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonSeparator2 = New C1.Win.C1Ribbon.RibbonSeparator()
+        Me.RibbonProcRecepcion = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton171 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonGroup15 = New C1.Win.C1Ribbon.RibbonGroup()
         Me.RibbonButton20 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonButtonDepartamento = New C1.Win.C1Ribbon.RibbonButton()
@@ -213,16 +214,17 @@ Partial Class MDIMain
         Me.RibbonLabelSPlano2 = New C1.Win.C1Ribbon.RibbonLabel()
         Me.RibbonSeparator10 = New C1.Win.C1Ribbon.RibbonSeparator()
         Me.RibbonLabelSPlano3 = New C1.Win.C1Ribbon.RibbonLabel()
+        Me.RibbonSeparator11 = New C1.Win.C1Ribbon.RibbonSeparator()
+        Me.RibbonLabelSPlano4 = New C1.Win.C1Ribbon.RibbonLabel()
+        Me.RibbonSeparator12 = New C1.Win.C1Ribbon.RibbonSeparator()
         Me.RibbonLabel1 = New C1.Win.C1Ribbon.RibbonLabel()
         Me.TxtUsuario = New System.Windows.Forms.TextBox()
         Me.LabelSPlano = New System.Windows.Forms.Label()
         Me.txtSPlano = New System.Windows.Forms.TextBox()
         Me.txtSPlano2 = New System.Windows.Forms.TextBox()
         Me.txtSPlano3 = New System.Windows.Forms.TextBox()
-        Me.RibbonSeparator11 = New C1.Win.C1Ribbon.RibbonSeparator()
-        Me.RibbonLabelSPlano4 = New C1.Win.C1Ribbon.RibbonLabel()
-        Me.RibbonSeparator12 = New C1.Win.C1Ribbon.RibbonSeparator()
         Me.txtSPlano4 = New System.Windows.Forms.TextBox()
+        Me.RibbonButton22 = New C1.Win.C1Ribbon.RibbonButton()
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton()
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1385,8 +1387,7 @@ Partial Class MDIMain
         Me.RibbonGroup13.Items.Add(Me.RibbonButton11)
         Me.RibbonGroup13.Items.Add(Me.RibbonButton61)
         Me.RibbonGroup13.Items.Add(Me.RibbonButton14)
-        Me.RibbonGroup13.Items.Add(Me.RibbonButton171)
-        Me.RibbonGroup13.Items.Add(Me.RibbonProcRecepcion)
+        Me.RibbonGroup13.Items.Add(Me.RibbonCodUnico)
         Me.RibbonGroup13.Text = "Registros"
         '
         'RibbonProductor
@@ -1420,21 +1421,13 @@ Partial Class MDIMain
         Me.RibbonButton14.Text = "Transportista"
         Me.RibbonButton14.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
-        'RibbonButton171
+        'RibbonCodUnico
         '
-        Me.RibbonButton171.ID = "RibbonButton171"
-        Me.RibbonButton171.LargeImage = CType(resources.GetObject("RibbonButton171.LargeImage"), System.Drawing.Image)
-        Me.RibbonButton171.SmallImage = CType(resources.GetObject("RibbonButton171.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton171.Text = "Transforma"
-        Me.RibbonButton171.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
-        '
-        'RibbonProcRecepcion
-        '
-        Me.RibbonProcRecepcion.ID = "RibbonProcRecepcion"
-        Me.RibbonProcRecepcion.LargeImage = CType(resources.GetObject("RibbonProcRecepcion.LargeImage"), System.Drawing.Image)
-        Me.RibbonProcRecepcion.SmallImage = CType(resources.GetObject("RibbonProcRecepcion.SmallImage"), System.Drawing.Image)
-        Me.RibbonProcRecepcion.Text = "Procesar Recepcion"
-        Me.RibbonProcRecepcion.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        Me.RibbonCodUnico.ID = "RibbonCodUnico"
+        Me.RibbonCodUnico.LargeImage = CType(resources.GetObject("RibbonCodUnico.LargeImage"), System.Drawing.Image)
+        Me.RibbonCodUnico.SmallImage = CType(resources.GetObject("RibbonCodUnico.SmallImage"), System.Drawing.Image)
+        Me.RibbonCodUnico.Text = "Beneficiario"
+        Me.RibbonCodUnico.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'RibbonGroup14
         '
@@ -1442,8 +1435,11 @@ Partial Class MDIMain
         Me.RibbonGroup14.Items.Add(Me.RibbonButton111)
         Me.RibbonGroup14.Items.Add(Me.RibbonButton12)
         Me.RibbonGroup14.Items.Add(Me.RibbonButton10)
-        Me.RibbonGroup14.Items.Add(Me.RibbonSeparator2)
         Me.RibbonGroup14.Items.Add(Me.RibbonButton15)
+        Me.RibbonGroup14.Items.Add(Me.RibbonSeparator2)
+        Me.RibbonGroup14.Items.Add(Me.RibbonProcRecepcion)
+        Me.RibbonGroup14.Items.Add(Me.RibbonButton171)
+        Me.RibbonGroup14.Items.Add(Me.RibbonButton22)
         Me.RibbonGroup14.Text = "Calculos"
         '
         'RibbonButton111
@@ -1470,10 +1466,6 @@ Partial Class MDIMain
         Me.RibbonButton10.Text = "Liquidacion"
         Me.RibbonButton10.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
-        'RibbonSeparator2
-        '
-        Me.RibbonSeparator2.ID = "RibbonSeparator2"
-        '
         'RibbonButton15
         '
         Me.RibbonButton15.ID = "RibbonButton15"
@@ -1481,6 +1473,26 @@ Partial Class MDIMain
         Me.RibbonButton15.SmallImage = CType(resources.GetObject("RibbonButton15.SmallImage"), System.Drawing.Image)
         Me.RibbonButton15.Text = "Planilla Transportista"
         Me.RibbonButton15.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonSeparator2
+        '
+        Me.RibbonSeparator2.ID = "RibbonSeparator2"
+        '
+        'RibbonProcRecepcion
+        '
+        Me.RibbonProcRecepcion.ID = "RibbonProcRecepcion"
+        Me.RibbonProcRecepcion.LargeImage = CType(resources.GetObject("RibbonProcRecepcion.LargeImage"), System.Drawing.Image)
+        Me.RibbonProcRecepcion.SmallImage = CType(resources.GetObject("RibbonProcRecepcion.SmallImage"), System.Drawing.Image)
+        Me.RibbonProcRecepcion.Text = "Procesar Recepcion"
+        Me.RibbonProcRecepcion.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonButton171
+        '
+        Me.RibbonButton171.ID = "RibbonButton171"
+        Me.RibbonButton171.LargeImage = CType(resources.GetObject("RibbonButton171.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton171.SmallImage = CType(resources.GetObject("RibbonButton171.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton171.Text = "Transforma"
+        Me.RibbonButton171.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'RibbonGroup15
         '
@@ -1754,6 +1766,18 @@ Partial Class MDIMain
         '
         Me.RibbonLabelSPlano3.ID = "RibbonLabelSPlano3"
         '
+        'RibbonSeparator11
+        '
+        Me.RibbonSeparator11.ID = "RibbonSeparator11"
+        '
+        'RibbonLabelSPlano4
+        '
+        Me.RibbonLabelSPlano4.ID = "RibbonLabelSPlano4"
+        '
+        'RibbonSeparator12
+        '
+        Me.RibbonSeparator12.ID = "RibbonSeparator12"
+        '
         'RibbonLabel1
         '
         Me.RibbonLabel1.ID = "RibbonLabel1"
@@ -1802,18 +1826,6 @@ Partial Class MDIMain
         Me.txtSPlano3.TabIndex = 21
         Me.txtSPlano3.Visible = False
         '
-        'RibbonSeparator11
-        '
-        Me.RibbonSeparator11.ID = "RibbonSeparator11"
-        '
-        'RibbonLabelSPlano4
-        '
-        Me.RibbonLabelSPlano4.ID = "RibbonLabelSPlano4"
-        '
-        'RibbonSeparator12
-        '
-        Me.RibbonSeparator12.ID = "RibbonSeparator12"
-        '
         'txtSPlano4
         '
         Me.txtSPlano4.Location = New System.Drawing.Point(512, 265)
@@ -1821,6 +1833,14 @@ Partial Class MDIMain
         Me.txtSPlano4.Size = New System.Drawing.Size(100, 20)
         Me.txtSPlano4.TabIndex = 23
         Me.txtSPlano4.Visible = False
+        '
+        'RibbonButton22
+        '
+        Me.RibbonButton22.ID = "RibbonButton22"
+        Me.RibbonButton22.LargeImage = CType(resources.GetObject("RibbonButton22.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton22.SmallImage = CType(resources.GetObject("RibbonButton22.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton22.Text = "Precios Leche"
+        Me.RibbonButton22.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'MDIMain
         '
@@ -2050,4 +2070,6 @@ Partial Class MDIMain
     Friend WithEvents RibbonLabelSPlano4 As C1.Win.C1Ribbon.RibbonLabel
     Friend WithEvents RibbonSeparator12 As C1.Win.C1Ribbon.RibbonSeparator
     Friend WithEvents txtSPlano4 As TextBox
+    Friend WithEvents RibbonCodUnico As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButton22 As C1.Win.C1Ribbon.RibbonButton
 End Class

@@ -1337,9 +1337,9 @@ Public Class FrmRecibos
                 Me.TxtDireccion.Text = DataSet.Tables("Recibos").Rows(0)("DireccionCliente")
                 Me.TxtTelefono.Text = DataSet.Tables("Recibos").Rows(0)("TelefonoCliente")
                 Me.TxtMonedaFactura.Text = DataSet.Tables("Recibos").Rows(0)("MonedaRecibo")
-                Me.TxtSubTotal.Text = DataSet.Tables("Recibos").Rows(0)("Sub_Total")
-                Me.TxtDescuento.Text = DataSet.Tables("Recibos").Rows(0)("Descuento")
-                Me.TxtNetoPagar.Text = DataSet.Tables("Recibos").Rows(0)("Total")
+                Me.TxtSubTotal.Text = Format(DataSet.Tables("Recibos").Rows(0)("Sub_Total"), "##,##0.00")
+                Me.TxtDescuento.Text = Format(DataSet.Tables("Recibos").Rows(0)("Descuento"), "##,##0.00")
+                Me.TxtNetoPagar.Text = Format(DataSet.Tables("Recibos").Rows(0)("Total"), "##,##0.00")
 
                 If ConsecutivoReciboSerie = True Then
                     Me.CmbSerie.Text = Mid(Me.TxtNumeroEnsamble.Text, 1, 1)
@@ -1378,6 +1378,14 @@ Public Class FrmRecibos
     End Sub
     Private Sub TxtNumeroEnsamble_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtNumeroEnsamble.TextChanged
         Cargar_Recibos(TxtNumeroEnsamble.Text, DTPFecha.Value)
+    End Sub
+
+    Private Sub TxtNombres_TextChanged(sender As Object, e As EventArgs) Handles TxtNombres.TextChanged
+
+    End Sub
+
+    Private Sub LblNumero_Click(sender As Object, e As EventArgs) Handles LblNumero.Click
+
     End Sub
 
     Private Sub ButtonBorrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBorrar.Click

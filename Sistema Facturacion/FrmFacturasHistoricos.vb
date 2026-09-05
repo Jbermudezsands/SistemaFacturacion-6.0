@@ -1,5 +1,64 @@
+Imports System.Data.Common
+Imports System.Data.SqlTypes
+
 Public Class FrmFacturasHistoricos
     Public MiConexion As New SqlClient.SqlConnection(Conexion), CodigoIva As String, CantidadAnterior As Double, PrecioAnterior As Double
+    Public Sub limpiarHistoricoFactura()
+        Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim SqlDatos As String
+
+        Me.DTPFecha.Value = Format(Now, "dd/MM/yyyy")
+        Me.DTVencimiento.Value = Format(Now, "dd/MM/yyyy")
+
+
+        TxtCodigoClientes.Text = ""
+        Me.RadioButton1.Checked = True
+        Me.TxtNumeroEnsamble.Text = "-----0-----"
+
+
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlString = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario FROM Detalle_Facturas INNER JOIN  Productos ON Detalle_Facturas.Cod_Producto = Productos.Cod_Productos WHERE (Detalle_Facturas.Numero_Factura = N'-1')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "DetalleFactura")
+        Me.BindingDetalle.DataSource = DataSet.Tables("DetalleFactura")
+        Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
+        Me.TrueDBGridComponentes.Columns(0).Caption = "Codigo"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Button = True
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 74
+        Me.TrueDBGridComponentes.Columns(1).Caption = "Descripcion"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 259
+        'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
+        Me.TrueDBGridComponentes.Columns(2).Caption = "Cantidad"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 64
+        Me.TrueDBGridComponentes.Columns(3).Caption = "Precio Unit"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
+        'Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = False
+        Me.TrueDBGridComponentes.Columns(4).Caption = "%Desc"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 43
+        Me.TrueDBGridComponentes.Columns(5).Caption = "Precio Neto"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Width = 65
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Locked = True
+        Me.TrueDBGridComponentes.Columns(6).Caption = "Importe"
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Width = 61
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(6).Locked = True
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(7).Visible = False
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(8).Visible = False
+        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////MONEDA FACTURA//////////////////////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlDatos = "SELECT * FROM DatosEmpresa"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+        DataAdapter.Fill(DataSet, "DatosEmpresa")
+        If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+            Me.TxtMonedaFactura.Text = DataSet.Tables("DatosEmpresa").Rows(0)("MonedaFactura")
+            Me.TxtMonedaImprime.Text = DataSet.Tables("DatosEmpresa").Rows(0)("ModedaImprimeFactura")
+        End If
+    End Sub
+
+
+
 
     Public Sub ActualizaMETODOFactura()
         Dim Metodo As String, iPosicion As Double, Registros As Double, Monto As Double
@@ -329,6 +388,11 @@ Public Class FrmFacturasHistoricos
 
     Private Sub FrmFacturasHistoricos_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
         Bloqueo(Me, Acceso, "Historico Facturacion")
+
+        '////////////VERIFICO LA ACTIVACION DE FACTURA PARA EL USUARIO ////////////////////
+        If UsuarioActivaFactura = True Then
+            Me.BtnActivar.Visible = True
+        End If
     End Sub
 
     Private Sub FrmFacturas_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -814,7 +878,7 @@ Public Class FrmFacturasHistoricos
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Iposicion As Double, SqlProductos As String = ""
         Dim idDetalle As Double, StrSqlUpdate As String = "", CodProducto As String = "", DiferenciaCantidad As Double = 0
 
-        Resultado = MsgBox("¿Esta Seguro de Cancelar la Factura?", MsgBoxStyle.OkCancel, "Sistema de Facturacion")
+        Resultado = MsgBox("¿Esta Seguro de Anular la Factura?", MsgBoxStyle.OkCancel, "Sistema de Facturacion")
 
         If Not Resultado = "1" Then
             Exit Sub
@@ -823,7 +887,7 @@ Public Class FrmFacturasHistoricos
         '//////////////////////////////////////////////////////////////////////////////////////////////
         '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
         '/////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'False',[Nombre_Cliente] = '******CANCELADO',[Apellido_Cliente] = '******',[SubTotal]=0,[IVA]=0,[Pagado]=0,[NetoPagar]=0 " & _
+        SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'False',[Nombre_Cliente] = '******CANCELADO',[Apellido_Cliente] = '******',[SubTotal]=0,[IVA]=0,[Pagado]=0,[NetoPagar]=0 " &
                      "WHERE  (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
         MiConexion.Open()
         ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
@@ -833,8 +897,8 @@ Public Class FrmFacturasHistoricos
 
         '///////////////////////////////////////EDITO EL DETALLE DE LA FACTURA ////////////////////////////////////////////////
         MiConexion.Close()
-        StrSqlUpdate = "UPDATE [Detalle_Facturas] SET [Cantidad] =0,[Precio_Unitario] = 0,[Descuento] = 0,[Precio_Neto] =0,[Importe] = 0 " & _
-                       "WHERE (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "'))"
+        StrSqlUpdate = "UPDATE [Detalle_Facturas] SET [Cantidad] =0,[Precio_Unitario] = 0,[Descuento] = 0,[Precio_Neto] =0,[Importe] = 0 " &
+                       "WHERE (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
         MiConexion.Open()
         ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
         iResultado = ComandoUpdate.ExecuteNonQuery
@@ -845,7 +909,7 @@ Public Class FrmFacturasHistoricos
         '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         Iposicion = 0
         SqlProductos = "SELECT  *  FROM Detalle_Facturas WHERE (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
-        DataAdapter = New SqlClient.SqlDataAdapter(SQLProductos, MiConexion)
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlProductos, MiConexion)
         DataAdapter.Fill(DataSet, "Detalle")
         Do While Iposicion < DataSet.Tables("Detalle").Rows.Count
             idDetalle = DataSet.Tables("Detalle").Rows(Iposicion)("id_Detalle_Factura")
@@ -859,7 +923,7 @@ Public Class FrmFacturasHistoricos
             DataAdapter.Fill(DataSet, "DetalleBodegas")
             If DataSet.Tables("DetalleBodegas").Rows.Count <> 0 Then
                 MiConexion.Close()
-                StrSqlUpdate = "UPDATE [Detalle_Facturas] SET [Cantidad] =0,[Precio_Unitario] = 0,[Descuento] = 0,[Precio_Neto] =0,[Importe] = 0 " & _
+                StrSqlUpdate = "UPDATE [Detalle_Facturas] SET [Cantidad] =0,[Precio_Unitario] = 0,[Descuento] = 0,[Precio_Neto] =0,[Importe] = 0 " &
                                "WHERE (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "') AND (id_Detalle_Factura = " & idDetalle & ")"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -869,7 +933,7 @@ Public Class FrmFacturasHistoricos
             DataSet.Tables("DetalleBodegas").Reset()
 
             DiferenciaCantidad = DataSet.Tables("Detalle").Rows(Iposicion)("Cantidad") * -1
-            ExistenciasCostos(CodProducto, DiferenciaCantidad, 0, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
+            'ExistenciasCostos(CodProducto, DiferenciaCantidad, 0, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
 
 
             ActualizaExistencia(CodProducto)
@@ -878,9 +942,11 @@ Public Class FrmFacturasHistoricos
             Iposicion = Iposicion + 1
         Loop
 
-        Bitacora(Now, NombreUsuario, Me.CboTipoProducto.Text, "Anulo Facturo Historico: " & Me.TxtNumeroEnsamble.Text)
+        Bitacora(Now, NombreUsuario, "Historico Factura", "Anulo " & Me.CboTipoProducto.Text & "Numero: " & Me.TxtNumeroEnsamble.Text & " Cliente: " & TxtCodigoClientes.Text & " " & TxtNombres.Text & " " & TxtApellidos.Text)
 
-        LimpiarFacturas()
+        MsgBox("Anulado con Existo!!", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+
+        limpiarHistoricoFactura()
         Me.Button7.Enabled = True
         Me.CboCodigoBodega.Enabled = True
 
@@ -1140,20 +1206,20 @@ Public Class FrmFacturasHistoricos
             If MonedaFactura = "Cordobas" Then
                 If MonedaImprime = "Cordobas" Then
                     '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
-                    SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe FROM  Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto " & _
+                    SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe FROM  Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto " &
                         "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
                 ElseIf MonedaImprime = "Dolares" Then
-                    SQlDetalle = "SELECT     Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad,Detalle_Facturas.Precio_Unitario * (1 / TasaCambio.MontoTasa) AS Precio_Unitario, Detalle_Facturas.Descuento * (1 / TasaCambio.MontoTasa) AS Descuento, Detalle_Facturas.Precio_Neto * (1 / TasaCambio.MontoTasa) AS Precio_Neto, Detalle_Facturas.Importe * (1 / TasaCambio.MontoTasa) AS Importe, TasaCambio.MontoTasa FROM Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa  " & _
+                    SQlDetalle = "SELECT     Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad,Detalle_Facturas.Precio_Unitario * (1 / TasaCambio.MontoTasa) AS Precio_Unitario, Detalle_Facturas.Descuento * (1 / TasaCambio.MontoTasa) AS Descuento, Detalle_Facturas.Precio_Neto * (1 / TasaCambio.MontoTasa) AS Precio_Neto, Detalle_Facturas.Importe * (1 / TasaCambio.MontoTasa) AS Importe, TasaCambio.MontoTasa FROM Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa  " &
                                  "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND  (Detalle_Facturas.Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
 
                 End If
             ElseIf MonedaFactura = "Dolares" Then
                 If MonedaImprime = "Dolares" Then
                     '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
-                    SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe FROM  Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto " & _
+                    SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe FROM  Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto " &
                         "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
                 ElseIf MonedaImprime = "Cordobas" Then
-                    SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad,Detalle_Facturas.Precio_Unitario * TasaCambio.MontoTasa AS Precio_Unitario, Detalle_Facturas.Descuento * TasaCambio.MontoTasa AS Descuento,Detalle_Facturas.Precio_Neto * TasaCambio.MontoTasa AS Precio_Neto, Detalle_Facturas.Importe * TasaCambio.MontoTasa AS Importe,TasaCambio.MontoTasa FROM Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa " & _
+                    SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad,Detalle_Facturas.Precio_Unitario * TasaCambio.MontoTasa AS Precio_Unitario, Detalle_Facturas.Descuento * TasaCambio.MontoTasa AS Descuento,Detalle_Facturas.Precio_Neto * TasaCambio.MontoTasa AS Precio_Neto, Detalle_Facturas.Importe * TasaCambio.MontoTasa AS Importe,TasaCambio.MontoTasa FROM Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa " &
                         "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME,'" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
 
                 End If
@@ -1272,7 +1338,7 @@ Public Class FrmFacturasHistoricos
             '////////////////////////////EDITO EL ENCABEZADO DE LA FACTURA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
             If Me.CboTipoProducto.Text <> "Cotizacion" Then
-                SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'False' " & _
+                SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'False' " &
                              "WHERE  (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
@@ -1334,7 +1400,7 @@ Public Class FrmFacturasHistoricos
                 Me.TxtMonedaImprime.Text = DataSet.Tables("Facturas").Rows(0)("MonedaImprime")
 
                 '///////////////////////////////////////BUSCO EL DETALLE DE LA FACTURA///////////////////////////////////////////////////////
-                SqlCompras = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario FROM  Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto " & _
+                SqlCompras = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario FROM  Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto " &
                     "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "')"
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
                 DataAdapter.Fill(DataSet, "DetalleFacturas")
@@ -1364,7 +1430,7 @@ Public Class FrmFacturasHistoricos
 
                 If DataSet.Tables("Facturas").Rows(0)("MetodoPago") <> "Credito" Then
                     '//////////////////////////////////////BUSCO LOS METODOS DE PAGOS///////////////////////////////////////////////////////////////////////////////////
-                    SqlCompras = "SELECT  NombrePago, Monto, NumeroTarjeta, FechaVence  FROM Detalle_MetodoFacturas " & _
+                    SqlCompras = "SELECT  NombrePago, Monto, NumeroTarjeta, FechaVence  FROM Detalle_MetodoFacturas " &
                                  "WHERE (Detalle_MetodoFacturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_MetodoFacturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_MetodoFacturas.Tipo_Factura = '" & TipoFactura & "') "
                     DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
                     DataAdapter.Fill(DataSet, "MetodoPago")
@@ -2078,13 +2144,30 @@ Public Class FrmFacturasHistoricos
     Private Sub Button6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
         Quien = "FacturasHistoricos"
         My.Forms.FrmConsultas.ShowDialog()
-        If My.Forms.FrmConsultas.Nombres <> "******CANCELADO ******" Then
-            Me.DTPFecha.Value = My.Forms.FrmConsultas.Fecha
-            Me.CboTipoProducto.Text = My.Forms.FrmConsultas.TipoCompra
-            Me.TxtNumeroEnsamble.Text = My.Forms.FrmConsultas.Codigo
-            Me.CboCodigoBodega.Enabled = False
-            Me.Button7.Enabled = False
-        End If
+
+
+
+        Me.DTPFecha.Value = My.Forms.FrmConsultas.Fecha
+        Me.CboTipoProducto.Text = My.Forms.FrmConsultas.TipoCompra
+        Me.TxtNumeroEnsamble.Text = My.Forms.FrmConsultas.Codigo
+        Me.CboCodigoBodega.Enabled = False
+        Me.Button7.Enabled = False
+
+
+        'If My.Forms.FrmConsultas.Nombres <> "******CANCELADO ******" Then
+        '    Me.DTPFecha.Value = My.Forms.FrmConsultas.Fecha
+        '    Me.CboTipoProducto.Text = My.Forms.FrmConsultas.TipoCompra
+        '    Me.TxtNumeroEnsamble.Text = My.Forms.FrmConsultas.Codigo
+        '    Me.CboCodigoBodega.Enabled = False
+        '    Me.Button7.Enabled = False
+
+        'ElseIf UsuarioActivaFactura = True Then
+        '    Me.DTPFecha.Value = My.Forms.FrmConsultas.Fecha
+        '    Me.CboTipoProducto.Text = My.Forms.FrmConsultas.TipoCompra
+        '    Me.TxtNumeroEnsamble.Text = My.Forms.FrmConsultas.Codigo
+        '    Me.CboCodigoBodega.Enabled = False
+        '    Me.Button7.Enabled = False
+        'End If
     End Sub
 
     Private Sub CmdFacturar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdFacturar.Click
@@ -2106,7 +2189,7 @@ Public Class FrmFacturasHistoricos
             '//////////////////////////////////////////////////////////////////////////////////////////////
             '////////////////////////////EDITO EL ENCABEZADO DE LA FACTURA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'False' " & _
+            SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'False' " &
                          "WHERE  (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
@@ -2243,7 +2326,7 @@ Public Class FrmFacturasHistoricos
 
 
             '///////////////////////////////////////BUSCO EL DETALLE DE LA FACTURA///////////////////////////////////////////////////////
-            SqlCompras = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura FROM  Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto " & _
+            SqlCompras = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura FROM  Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto " &
                 "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "')"
             DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
             DataAdapter.Fill(DataSet, "DetalleFacturas")
@@ -2370,6 +2453,44 @@ Public Class FrmFacturasHistoricos
         'Loop
 
         ActualizaMETODOFactura()
+    End Sub
+
+    Private Sub BtnActivar_Click(sender As Object, e As EventArgs) Handles BtnActivar.Click
+        Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim Fecha As String, Resultado As Double
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Iposicion As Double, SqlProductos As String = ""
+        Dim idDetalle As Double, StrSqlUpdate As String = "", CodProducto As String = "", DiferenciaCantidad As Double = 0
+
+        Resultado = MsgBox("¿Esta Seguro de Activar " & Me.CboTipoProducto.Text & " ?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
+
+        If Not Resultado = 6 Then
+            Exit Sub
+        End If
+
+        Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
+        '//////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
+        '/////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'True' " &
+                     "WHERE  (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
+        MiConexion.Open()
+        ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
+        iResultado = ComandoUpdate.ExecuteNonQuery
+        MiConexion.Close()
+
+        Bitacora(Now, NombreUsuario, "Historico Factura", "Activo " & Me.CboTipoProducto.Text & " Numero: " & Me.TxtNumeroEnsamble.Text & " Cliente: " & TxtCodigoClientes.Text & " " & TxtNombres.Text & Me.TxtApellidos.Text)
+
+        limpiarHistoricoFactura()
+        Me.Button7.Enabled = True
+        Me.CboCodigoBodega.Enabled = True
+
+        MsgBox("Proceso Terminado!!!", MsgBoxStyle.Information, "Zeus Facturacion")
+
+
+    End Sub
+
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+
     End Sub
 
     Private Sub TrueDBGridComponentes_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TrueDBGridComponentes.KeyDown

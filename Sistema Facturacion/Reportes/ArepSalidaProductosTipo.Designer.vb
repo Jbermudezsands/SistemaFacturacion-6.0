@@ -411,7 +411,7 @@ Partial Public Class ArepSalidaProductosTipo
         '
         Me.Detail1.ColumnSpacing = 0.0!
         Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TextBox2, Me.TextBox3, Me.TextBox4, Me.TextBox5, Me.TextBox6, Me.TextBox7})
-        Me.Detail1.Height = 0.2291667!
+        Me.Detail1.Height = 0.21875!
         Me.Detail1.Name = "Detail1"
         '
         'TextBox2

@@ -37,6 +37,7 @@ Partial Class FrmActualiza
         Me.TextBox4 = New System.Windows.Forms.TextBox()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.TabPage5 = New System.Windows.Forms.TabPage()
+        Me.Button26 = New System.Windows.Forms.Button()
         Me.CmdCostear = New System.Windows.Forms.Button()
         Me.ProgressBar4 = New System.Windows.Forms.ProgressBar()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
@@ -145,6 +146,7 @@ Partial Class FrmActualiza
         Me.OptFacturas = New System.Windows.Forms.RadioButton()
         Me.TabPage9 = New System.Windows.Forms.TabPage()
         Me.GroupBox13 = New System.Windows.Forms.GroupBox()
+        Me.BtnIniciarLotes = New System.Windows.Forms.Button()
         Me.Button24 = New System.Windows.Forms.Button()
         Me.Button25 = New System.Windows.Forms.Button()
         Me.TxtLoteFin = New System.Windows.Forms.TextBox()
@@ -154,7 +156,6 @@ Partial Class FrmActualiza
         Me.CmdCerrar = New System.Windows.Forms.Button()
         Me.BtnIniciar = New System.Windows.Forms.Button()
         Me.Label23 = New System.Windows.Forms.Label()
-        Me.BtnIniciarLotes = New System.Windows.Forms.Button()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -328,6 +329,7 @@ Partial Class FrmActualiza
         '
         'TabPage5
         '
+        Me.TabPage5.Controls.Add(Me.Button26)
         Me.TabPage5.Controls.Add(Me.CmdCostear)
         Me.TabPage5.Controls.Add(Me.ProgressBar4)
         Me.TabPage5.Controls.Add(Me.GroupBox6)
@@ -340,6 +342,19 @@ Partial Class FrmActualiza
         Me.TabPage5.Text = "Ajustar Costo"
         Me.TabPage5.UseVisualStyleBackColor = True
         '
+        'Button26
+        '
+        Me.Button26.Image = CType(resources.GetObject("Button26.Image"), System.Drawing.Image)
+        Me.Button26.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button26.Location = New System.Drawing.Point(481, 129)
+        Me.Button26.Name = "Button26"
+        Me.Button26.Size = New System.Drawing.Size(96, 47)
+        Me.Button26.TabIndex = 13
+        Me.Button26.Tag = "25"
+        Me.Button26.Text = " Devolucion Compra"
+        Me.Button26.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button26.UseVisualStyleBackColor = True
+        '
         'CmdCostear
         '
         Me.CmdCostear.Image = CType(resources.GetObject("CmdCostear.Image"), System.Drawing.Image)
@@ -349,7 +364,7 @@ Partial Class FrmActualiza
         Me.CmdCostear.Size = New System.Drawing.Size(96, 47)
         Me.CmdCostear.TabIndex = 12
         Me.CmdCostear.Tag = "25"
-        Me.CmdCostear.Text = "Iniciar"
+        Me.CmdCostear.Text = "   Iniciar    Ajustes"
         Me.CmdCostear.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.CmdCostear.UseVisualStyleBackColor = True
         '
@@ -1467,6 +1482,18 @@ Partial Class FrmActualiza
         Me.GroupBox13.TabStop = False
         Me.GroupBox13.Text = "Analisis de Lotes con Existencias"
         '
+        'BtnIniciarLotes
+        '
+        Me.BtnIniciarLotes.Image = CType(resources.GetObject("BtnIniciarLotes.Image"), System.Drawing.Image)
+        Me.BtnIniciarLotes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.BtnIniciarLotes.Location = New System.Drawing.Point(475, 14)
+        Me.BtnIniciarLotes.Name = "BtnIniciarLotes"
+        Me.BtnIniciarLotes.Size = New System.Drawing.Size(75, 34)
+        Me.BtnIniciarLotes.TabIndex = 237
+        Me.BtnIniciarLotes.Text = "Iniciar"
+        Me.BtnIniciarLotes.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnIniciarLotes.UseVisualStyleBackColor = True
+        '
         'Button24
         '
         Me.Button24.Image = CType(resources.GetObject("Button24.Image"), System.Drawing.Image)
@@ -1549,18 +1576,6 @@ Partial Class FrmActualiza
         Me.Label23.Size = New System.Drawing.Size(86, 13)
         Me.Label23.TabIndex = 6
         Me.Label23.Text = "Activar Hilos PBI"
-        '
-        'BtnIniciarLotes
-        '
-        Me.BtnIniciarLotes.Image = CType(resources.GetObject("BtnIniciarLotes.Image"), System.Drawing.Image)
-        Me.BtnIniciarLotes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnIniciarLotes.Location = New System.Drawing.Point(475, 14)
-        Me.BtnIniciarLotes.Name = "BtnIniciarLotes"
-        Me.BtnIniciarLotes.Size = New System.Drawing.Size(75, 34)
-        Me.BtnIniciarLotes.TabIndex = 237
-        Me.BtnIniciarLotes.Text = "Iniciar"
-        Me.BtnIniciarLotes.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.BtnIniciarLotes.UseVisualStyleBackColor = True
         '
         'FrmActualiza
         '
@@ -1761,4 +1776,5 @@ Partial Class FrmActualiza
     Friend WithEvents TxtLoteInicio As TextBox
     Friend WithEvents Label25 As Label
     Friend WithEvents BtnIniciarLotes As Button
+    Friend WithEvents Button26 As Button
 End Class

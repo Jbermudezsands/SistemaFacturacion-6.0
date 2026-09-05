@@ -1,0 +1,114 @@
+********************************************
+IMPORTACION DE PLANILLA
+Archivo : MATIGUAS2672026.csv
+Fecha   : 11/08/2026 10:30:20
+Registros: 18
+********************************************
+
+Código : 250
+Tipo   : Socio
+Error  : No existe una nómina activa para el CREL CREL013 que corresponda a la fecha 26/07/2026.
+------------------------------------------
+Código : 250
+Tipo   : Socio
+Error  : No se encontró la nómina correspondiente para el transportista.
+------------------------------------------
+Código : 5793
+Tipo   : PreSocio
+Error  : No existe una nómina activa para el CREL CREL013 que corresponda a la fecha 26/07/2026.
+------------------------------------------
+Código : 4595
+Tipo   : Socio
+Error  : No existe una nómina activa para el CREL CREL013 que corresponda a la fecha 26/07/2026.
+------------------------------------------
+Código : 4595
+Tipo   : Socio
+Error  : No se encontró la nómina correspondiente para el transportista.
+------------------------------------------
+Código : 4200
+Tipo   : Productor
+Error  : El productor existe, pero se encuentra inactivo.
+------------------------------------------
+Código : 2202
+Tipo   : Socio
+Error  : No existe una nómina activa para el CREL CREL013 que corresponda a la fecha 26/07/2026.
+------------------------------------------
+Código : 5352
+Tipo   : Productor
+Error  : El productor existe, pero se encuentra inactivo.
+------------------------------------------
+Código : 5352
+Tipo   : Productor
+Error  : No se encontró la nómina correspondiente para el transportista.
+------------------------------------------
+Código : 7271
+Tipo   : PreSocio
+Error  : No existe una nómina activa para el CREL CREL013 que corresponda a la fecha 26/07/2026.
+------------------------------------------
+Código : 5959
+Tipo   : PreSocio
+Error  : No existe una nómina activa para el CREL CREL013 que corresponda a la fecha 26/07/2026.
+------------------------------------------
+Código : 3618
+Tipo   : Socio
+Error  : No existe una nómina activa para el CREL CREL013 que corresponda a la fecha 26/07/2026.
+------------------------------------------
+Código : 3618
+Tipo   : Socio
+Error  : No se encontró la nómina correspondiente para el transportista.
+------------------------------------------
+Código : 5336
+Tipo   : Productor
+Error  : El productor existe, pero se encuentra inactivo.
+------------------------------------------
+Código : 3502
+Tipo   : Productor
+Error  : El productor existe, pero se encuentra inactivo.
+------------------------------------------
+Código : 3502
+Tipo   : Productor
+Error  : No se encontró la nómina correspondiente para el transportista.
+------------------------------------------
+Código : 5911
+Tipo   : Productor
+Error  : No existe una nómina activa para el CREL CREL013 que corresponda a la fecha 26/07/2026.
+------------------------------------------
+Código : 7038
+Tipo   : PreSocio
+Error  : No existe una nómina activa para el CREL CREL013 que corresponda a la fecha 26/07/2026.
+------------------------------------------
+Código : 5782
+Tipo   : Productor
+Error  : No existe una nómina activa para el CREL CREL013 que corresponda a la fecha 26/07/2026.
+------------------------------------------
+Código : 300
+Tipo   : Socio
+Error  : No existe una nómina activa para el CREL CREL013 que corresponda a la fecha 26/07/2026.
+------------------------------------------
+Código : 300
+Tipo   : Socio
+Error  : No se encontró la nómina correspondiente para el transportista.
+------------------------------------------
+Código : 1151
+Tipo   : Socio
+Error  : No existe una nómina activa para el CREL CREL013 que corresponda a la fecha 26/07/2026.
+------------------------------------------
+Código : 1151
+Tipo   : Socio
+Error  : No se encontró la nómina correspondiente para el transportista.
+------------------------------------------
+Código : 94
+Tipo   : Productor
+Error  : El productor existe, pero se encuentra inactivo.
+------------------------------------------
+Código : 94
+Tipo   : Productor
+Error  : No se encontró la nómina correspondiente para el transportista.
+------------------------------------------
+Código : 5377
+Tipo   : PreSocio
+Error  : No existe una nómina activa para el CREL CREL013 que corresponda a la fecha 26/07/2026.
+------------------------------------------
+
+ERROR GENERAL
+Se encontraron errores durante la validación de los registros.

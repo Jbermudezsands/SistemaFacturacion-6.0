@@ -155,6 +155,8 @@ Public Class FrmAccesos
         Me.ChkEliminar.Text = "Eliminar"
         Me.ChkEditar.Visible = False
         Me.ChkCambiarBodega.Visible = False
+        Me.ChkVerCosto.Visible = False
+        Me.ChkVerCosto.Checked = False
 
         ListBox_SelectedIndexChanged(sender, e)
         Select Case Me.ListBoxOpciones.Text
@@ -339,6 +341,11 @@ Public Class FrmAccesos
                 Me.ChkImprimir.Visible = False
                 Me.ChkAnular.Visible = False
 
+
+            Case "Productos"
+                Me.ChkVerCosto.Visible = True
+                Me.ChkVerCosto.Location = New Point(7, 110)
+
         End Select
     End Sub
 
@@ -495,6 +502,17 @@ Public Class FrmAccesos
             End If
         Else
             Cadena = Cadena & "," & "NoPrevio"
+        End If
+
+        If Me.ChkVerCosto.Checked = True Then
+            If Cadena <> "" Then
+                Cadena = Cadena & "," & "VerCosto"
+            Else
+                Cadena = "VerCosto"
+            End If
+
+        Else
+            Cadena = Cadena & "," & "NoVerCosto"
         End If
 
 

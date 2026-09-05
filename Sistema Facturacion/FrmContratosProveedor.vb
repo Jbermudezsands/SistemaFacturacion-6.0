@@ -146,9 +146,10 @@ Public Class FrmContratosProveedor
 
     Private Sub Limpiar_Contrato()
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim SqlString As String
+
 
         Me.TxtNumeroContrato.Text = "-----0-----"
+        Me.TxtMonto.Text = "0.00"
         Me.CboCodigoProveedor.Text = ""
         Me.TxtContacto.Text = ""
         Me.TxtTelefono.Text = ""
@@ -238,6 +239,16 @@ Public Class FrmContratosProveedor
 
         If Me.CboCodigoProveedor.Text = "" Then
             MsgBox("Se necesito codigo Proveedo", vbCritical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.TxtMonto.Text = "" Then
+            MsgBox("El monto del Contrato no puede estar en Blanco", vbCritical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Not IsNumeric(Me.TxtMonto.Text) Then
+            MsgBox("El monto del Contrato debe ser numerico", vbCritical, "Zeus Facturacion")
             Exit Sub
         End If
 
@@ -374,6 +385,13 @@ Public Class FrmContratosProveedor
         Else
             Numero_Contrato = Me.TxtNumeroContrato.Text
         End If
+
+        contrato.Monto = 0
+        If TxtMonto.Text <> "" Then
+            contrato.Monto = TxtMonto.Text
+        End If
+
+
 
         contrato.Numero_Contrato = Numero_Contrato
         If Me.CboCodigoProveedor.Text <> "" Then
@@ -518,6 +536,10 @@ Public Class FrmContratosProveedor
         End If
 
         Cargar_Grid_Detalle(Numero_Contrato)
+
+    End Sub
+
+    Private Sub TxtNumeroContrato_TextChanged(sender As Object, e As EventArgs) Handles TxtNumeroContrato.TextChanged
 
     End Sub
 

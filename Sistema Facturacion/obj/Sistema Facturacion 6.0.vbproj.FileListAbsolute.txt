@@ -568,3 +568,7 @@ D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Factura
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmHospitalizacion.resources
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema_Facturacion.FrmExamen.resources
 D:\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Interop.ADODB.dll
+Y:\D\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\bin\Debug\Sistema Facturacion 6.0.exe.config
+Y:\D\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema Facturacion 6.0.exe
+Y:\D\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema Facturacion 6.xml
+Y:\D\Sistemas\SistemaFacturacion-6.0\Sistema Facturacion\obj\Debug\Sistema Facturacion 6.0.pdb

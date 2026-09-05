@@ -17,37 +17,38 @@ Partial Public Class ArepResumenFacturaProducto
     Private WithEvents PageFooter1 As DataDynamics.ActiveReports.PageFooter
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim OleDBDataSource1 As DataDynamics.ActiveReports.DataSources.OleDBDataSource = New DataDynamics.ActiveReports.DataSources.OleDBDataSource
+        Dim OleDBDataSource1 As DataDynamics.ActiveReports.DataSources.OleDBDataSource = New DataDynamics.ActiveReports.DataSources.OleDBDataSource()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ArepResumenFacturaProducto))
-        Me.PageHeader1 = New DataDynamics.ActiveReports.PageHeader
-        Me.LblTitulo = New DataDynamics.ActiveReports.Label
-        Me.LblDireccion = New DataDynamics.ActiveReports.Label
-        Me.LblRuc = New DataDynamics.ActiveReports.Label
-        Me.TextBox1 = New DataDynamics.ActiveReports.TextBox
-        Me.Label3 = New DataDynamics.ActiveReports.Label
-        Me.Label1 = New DataDynamics.ActiveReports.Label
-        Me.Line1 = New DataDynamics.ActiveReports.Line
-        Me.Line2 = New DataDynamics.ActiveReports.Line
-        Me.Label12 = New DataDynamics.ActiveReports.Label
-        Me.Label11 = New DataDynamics.ActiveReports.Label
-        Me.Label2 = New DataDynamics.ActiveReports.Label
-        Me.ImgLogo = New DataDynamics.ActiveReports.Picture
-        Me.Label9 = New DataDynamics.ActiveReports.Label
-        Me.Label14 = New DataDynamics.ActiveReports.Label
-        Me.Label4 = New DataDynamics.ActiveReports.Label
-        Me.Label6 = New DataDynamics.ActiveReports.Label
-        Me.Detail1 = New DataDynamics.ActiveReports.Detail
-        Me.TextBox5 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox2 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox3 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox4 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox6 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox7 = New DataDynamics.ActiveReports.TextBox
-        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
-        Me.TextBox12 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox14 = New DataDynamics.ActiveReports.TextBox
-        Me.ReportHeader1 = New DataDynamics.ActiveReports.ReportHeader
-        Me.ReportFooter1 = New DataDynamics.ActiveReports.ReportFooter
+        Me.PageHeader1 = New DataDynamics.ActiveReports.PageHeader()
+        Me.LblTitulo = New DataDynamics.ActiveReports.Label()
+        Me.LblDireccion = New DataDynamics.ActiveReports.Label()
+        Me.LblRuc = New DataDynamics.ActiveReports.Label()
+        Me.TextBox1 = New DataDynamics.ActiveReports.TextBox()
+        Me.Label3 = New DataDynamics.ActiveReports.Label()
+        Me.Label1 = New DataDynamics.ActiveReports.Label()
+        Me.Line1 = New DataDynamics.ActiveReports.Line()
+        Me.Line2 = New DataDynamics.ActiveReports.Line()
+        Me.Label12 = New DataDynamics.ActiveReports.Label()
+        Me.Label11 = New DataDynamics.ActiveReports.Label()
+        Me.Label2 = New DataDynamics.ActiveReports.Label()
+        Me.ImgLogo = New DataDynamics.ActiveReports.Picture()
+        Me.Label9 = New DataDynamics.ActiveReports.Label()
+        Me.Label14 = New DataDynamics.ActiveReports.Label()
+        Me.Label4 = New DataDynamics.ActiveReports.Label()
+        Me.Label6 = New DataDynamics.ActiveReports.Label()
+        Me.Detail1 = New DataDynamics.ActiveReports.Detail()
+        Me.TextBox5 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox2 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox3 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox4 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox6 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox7 = New DataDynamics.ActiveReports.TextBox()
+        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter()
+        Me.TextBox12 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox14 = New DataDynamics.ActiveReports.TextBox()
+        Me.ReportHeader1 = New DataDynamics.ActiveReports.ReportHeader()
+        Me.ReportFooter1 = New DataDynamics.ActiveReports.ReportFooter()
+        Me.Label5 = New DataDynamics.ActiveReports.Label()
         CType(Me.LblTitulo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblDireccion, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblRuc, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -70,12 +71,13 @@ Partial Public Class ArepResumenFacturaProducto
         CType(Me.TextBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox12, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox14, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Label5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         '
         'PageHeader1
         '
-        Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.LblTitulo, Me.LblDireccion, Me.LblRuc, Me.TextBox1, Me.Label3, Me.Label1, Me.Line1, Me.Line2, Me.Label12, Me.Label11, Me.Label2, Me.ImgLogo, Me.Label9, Me.Label14, Me.Label4, Me.Label6})
-        Me.PageHeader1.Height = 1.625!
+        Me.PageHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.LblTitulo, Me.LblDireccion, Me.LblRuc, Me.TextBox1, Me.Label3, Me.Label1, Me.Line1, Me.Line2, Me.Label12, Me.Label11, Me.Label2, Me.ImgLogo, Me.Label9, Me.Label14, Me.Label4, Me.Label6, Me.Label5})
+        Me.PageHeader1.Height = 1.791667!
         Me.PageHeader1.Name = "PageHeader1"
         '
         'LblTitulo
@@ -94,7 +96,7 @@ Partial Public Class ArepResumenFacturaProducto
         Me.LblTitulo.Name = "LblTitulo"
         Me.LblTitulo.Style = "ddo-char-set: 0; text-align: center; font-weight: bold; font-size: 14.25pt; "
         Me.LblTitulo.Text = "SYSTEMS AND SOLUTIONS"
-        Me.LblTitulo.Top = 0.0!
+        Me.LblTitulo.Top = 0!
         Me.LblTitulo.Width = 7.5!
         '
         'LblDireccion
@@ -203,13 +205,13 @@ Partial Public Class ArepResumenFacturaProducto
         Me.Line1.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Line1.Border.TopColor = System.Drawing.Color.Black
         Me.Line1.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Line1.Height = 0.0!
-        Me.Line1.Left = 0.0!
+        Me.Line1.Height = 0!
+        Me.Line1.Left = 0!
         Me.Line1.LineWeight = 1.0!
         Me.Line1.Name = "Line1"
         Me.Line1.Top = 1.25!
         Me.Line1.Width = 7.875!
-        Me.Line1.X1 = 0.0!
+        Me.Line1.X1 = 0!
         Me.Line1.X2 = 7.875!
         Me.Line1.Y1 = 1.25!
         Me.Line1.Y2 = 1.25!
@@ -224,16 +226,16 @@ Partial Public Class ArepResumenFacturaProducto
         Me.Line2.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Line2.Border.TopColor = System.Drawing.Color.Black
         Me.Line2.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Line2.Height = 0.0!
-        Me.Line2.Left = 0.0!
+        Me.Line2.Height = 0!
+        Me.Line2.Left = 0!
         Me.Line2.LineWeight = 1.0!
         Me.Line2.Name = "Line2"
-        Me.Line2.Top = 1.5625!
+        Me.Line2.Top = 1.75!
         Me.Line2.Width = 7.875!
-        Me.Line2.X1 = 0.0!
+        Me.Line2.X1 = 0!
         Me.Line2.X2 = 7.875!
-        Me.Line2.Y1 = 1.5625!
-        Me.Line2.Y2 = 1.5625!
+        Me.Line2.Y1 = 1.75!
+        Me.Line2.Y2 = 1.75!
         '
         'Label12
         '
@@ -245,14 +247,14 @@ Partial Public Class ArepResumenFacturaProducto
         Me.Label12.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label12.Border.TopColor = System.Drawing.Color.Black
         Me.Label12.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label12.Height = 0.1875!
+        Me.Label12.Height = 0.375!
         Me.Label12.HyperLink = Nothing
-        Me.Label12.Left = 2.5!
+        Me.Label12.Left = 2.125!
         Me.Label12.Name = "Label12"
         Me.Label12.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
-        Me.Label12.Text = "Unidad Medida"
+        Me.Label12.Text = "U/M"
         Me.Label12.Top = 1.3125!
-        Me.Label12.Width = 0.875!
+        Me.Label12.Width = 0.4375!
         '
         'Label11
         '
@@ -264,14 +266,14 @@ Partial Public Class ArepResumenFacturaProducto
         Me.Label11.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label11.Border.TopColor = System.Drawing.Color.Black
         Me.Label11.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label11.Height = 0.1875!
+        Me.Label11.Height = 0.375!
         Me.Label11.HyperLink = Nothing
-        Me.Label11.Left = 1.6875!
+        Me.Label11.Left = 1.5!
         Me.Label11.Name = "Label11"
         Me.Label11.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
         Me.Label11.Text = "Cantidad"
         Me.Label11.Top = 1.3125!
-        Me.Label11.Width = 0.8125!
+        Me.Label11.Width = 0.625!
         '
         'Label2
         '
@@ -283,7 +285,7 @@ Partial Public Class ArepResumenFacturaProducto
         Me.Label2.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label2.Border.TopColor = System.Drawing.Color.Black
         Me.Label2.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label2.Height = 0.1875!
+        Me.Label2.Height = 0.375!
         Me.Label2.HyperLink = Nothing
         Me.Label2.Left = 0.0625!
         Me.Label2.Name = "Label2"
@@ -306,10 +308,10 @@ Partial Public Class ArepResumenFacturaProducto
         Me.ImgLogo.Image = Nothing
         Me.ImgLogo.ImageData = Nothing
         Me.ImgLogo.Left = 0.0625!
-        Me.ImgLogo.LineWeight = 0.0!
+        Me.ImgLogo.LineWeight = 0!
         Me.ImgLogo.Name = "ImgLogo"
         Me.ImgLogo.SizeMode = DataDynamics.ActiveReports.SizeModes.Stretch
-        Me.ImgLogo.Top = 0.0!
+        Me.ImgLogo.Top = 0!
         Me.ImgLogo.Width = 1.6875!
         '
         'Label9
@@ -360,14 +362,14 @@ Partial Public Class ArepResumenFacturaProducto
         Me.Label4.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label4.Border.TopColor = System.Drawing.Color.Black
         Me.Label4.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.Label4.Height = 0.1875!
+        Me.Label4.Height = 0.375!
         Me.Label4.HyperLink = Nothing
         Me.Label4.Left = 0.75!
         Me.Label4.Name = "Label4"
         Me.Label4.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
         Me.Label4.Text = "Fecha"
         Me.Label4.Top = 1.3125!
-        Me.Label4.Width = 0.9375!
+        Me.Label4.Width = 0.75!
         '
         'Label6
         '
@@ -390,9 +392,9 @@ Partial Public Class ArepResumenFacturaProducto
         '
         'Detail1
         '
-        Me.Detail1.ColumnSpacing = 0.0!
+        Me.Detail1.ColumnSpacing = 0!
         Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TextBox5, Me.TextBox2, Me.TextBox3, Me.TextBox4, Me.TextBox6, Me.TextBox7})
-        Me.Detail1.Height = 0.2395833!
+        Me.Detail1.Height = 0.4583333!
         Me.Detail1.Name = "Detail1"
         '
         'TextBox5
@@ -412,7 +414,7 @@ Partial Public Class ArepResumenFacturaProducto
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.Style = "ddo-char-set: 0; text-align: center; font-size: 9pt; "
         Me.TextBox5.Text = Nothing
-        Me.TextBox5.Top = 0.0!
+        Me.TextBox5.Top = 0!
         Me.TextBox5.Width = 0.6875!
         '
         'TextBox2
@@ -432,8 +434,8 @@ Partial Public Class ArepResumenFacturaProducto
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.Style = "ddo-char-set: 0; text-align: center; font-size: 9pt; "
         Me.TextBox2.Text = Nothing
-        Me.TextBox2.Top = 0.0!
-        Me.TextBox2.Width = 0.9375!
+        Me.TextBox2.Top = 0!
+        Me.TextBox2.Width = 0.75!
         '
         'TextBox3
         '
@@ -447,14 +449,14 @@ Partial Public Class ArepResumenFacturaProducto
         Me.TextBox3.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox3.DataField = "Cantidad"
         Me.TextBox3.Height = 0.1875!
-        Me.TextBox3.Left = 1.6875!
+        Me.TextBox3.Left = 1.5!
         Me.TextBox3.MultiLine = False
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.OutputFormat = resources.GetString("TextBox3.OutputFormat")
         Me.TextBox3.Style = "ddo-char-set: 0; text-align: center; font-size: 9pt; "
         Me.TextBox3.Text = Nothing
-        Me.TextBox3.Top = 0.0!
-        Me.TextBox3.Width = 0.8125!
+        Me.TextBox3.Top = 0!
+        Me.TextBox3.Width = 0.6!
         '
         'TextBox4
         '
@@ -468,14 +470,14 @@ Partial Public Class ArepResumenFacturaProducto
         Me.TextBox4.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.TextBox4.DataField = "Unidad_Medida"
         Me.TextBox4.Height = 0.1875!
-        Me.TextBox4.Left = 2.5!
+        Me.TextBox4.Left = 2.125!
         Me.TextBox4.MultiLine = False
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.OutputFormat = resources.GetString("TextBox4.OutputFormat")
         Me.TextBox4.Style = "ddo-char-set: 0; text-align: center; font-size: 9pt; "
         Me.TextBox4.Text = Nothing
-        Me.TextBox4.Top = 0.0!
-        Me.TextBox4.Width = 0.875!
+        Me.TextBox4.Top = 0!
+        Me.TextBox4.Width = 0.44!
         '
         'TextBox6
         '
@@ -494,7 +496,7 @@ Partial Public Class ArepResumenFacturaProducto
         Me.TextBox6.Name = "TextBox6"
         Me.TextBox6.Style = "ddo-char-set: 0; text-align: left; font-size: 9pt; "
         Me.TextBox6.Text = Nothing
-        Me.TextBox6.Top = 0.0!
+        Me.TextBox6.Top = 0!
         Me.TextBox6.Width = 3.4375!
         '
         'TextBox7
@@ -515,7 +517,7 @@ Partial Public Class ArepResumenFacturaProducto
         Me.TextBox7.OutputFormat = resources.GetString("TextBox7.OutputFormat")
         Me.TextBox7.Style = "ddo-char-set: 0; text-align: right; font-size: 9pt; "
         Me.TextBox7.Text = Nothing
-        Me.TextBox7.Top = 0.0!
+        Me.TextBox7.Top = 0!
         Me.TextBox7.Width = 0.9375!
         '
         'PageFooter1
@@ -544,7 +546,7 @@ Partial Public Class ArepResumenFacturaProducto
         Me.TextBox12.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox12.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
         Me.TextBox12.Text = Nothing
-        Me.TextBox12.Top = 0.0!
+        Me.TextBox12.Top = 0!
         Me.TextBox12.Width = 0.9375!
         '
         'TextBox14
@@ -559,7 +561,7 @@ Partial Public Class ArepResumenFacturaProducto
         Me.TextBox14.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.Solid
         Me.TextBox14.DataField = "Cantidad"
         Me.TextBox14.Height = 0.1875!
-        Me.TextBox14.Left = 1.6875!
+        Me.TextBox14.Left = 1.5!
         Me.TextBox14.Name = "TextBox14"
         Me.TextBox14.OutputFormat = resources.GetString("TextBox14.OutputFormat")
         Me.TextBox14.Style = "ddo-char-set: 0; text-align: right; font-size: 9pt; "
@@ -567,12 +569,12 @@ Partial Public Class ArepResumenFacturaProducto
         Me.TextBox14.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox14.SummaryType = DataDynamics.ActiveReports.SummaryType.GrandTotal
         Me.TextBox14.Text = Nothing
-        Me.TextBox14.Top = 0.0!
-        Me.TextBox14.Width = 0.8125!
+        Me.TextBox14.Top = 0!
+        Me.TextBox14.Width = 0.625!
         '
         'ReportHeader1
         '
-        Me.ReportHeader1.Height = 0.0!
+        Me.ReportHeader1.Height = 0!
         Me.ReportHeader1.Name = "ReportHeader1"
         '
         'ReportFooter1
@@ -580,16 +582,35 @@ Partial Public Class ArepResumenFacturaProducto
         Me.ReportFooter1.Height = 0.25!
         Me.ReportFooter1.Name = "ReportFooter1"
         '
+        'Label5
+        '
+        Me.Label5.Border.BottomColor = System.Drawing.Color.Black
+        Me.Label5.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label5.Border.LeftColor = System.Drawing.Color.Black
+        Me.Label5.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label5.Border.RightColor = System.Drawing.Color.Black
+        Me.Label5.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label5.Border.TopColor = System.Drawing.Color.Black
+        Me.Label5.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.Label5.Height = 0.375!
+        Me.Label5.HyperLink = Nothing
+        Me.Label5.Left = 2.5625!
+        Me.Label5.Name = "Label5"
+        Me.Label5.Style = "ddo-char-set: 0; text-align: center; font-size: 8.25pt; "
+        Me.Label5.Text = "Codigo Producto"
+        Me.Label5.Top = 1.3125!
+        Me.Label5.Width = 0.625!
+        '
         'ArepResumenFacturaProducto
         '
         Me.MasterReport = False
-        OleDBDataSource1.ConnectionString = "Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial " & _
-            "Catalog=SistemaFacturacionRevetsa;Data Source=JUAN\SQL2012"
+        OleDBDataSource1.ConnectionString = "Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial " &
+    "Catalog=SistemaFacturacionRevetsa;Data Source=JUAN\SQL2012"
         OleDBDataSource1.SQL = resources.GetString("OleDBDataSource1.SQL")
         Me.DataSource = OleDBDataSource1
         Me.PageSettings.Margins.Bottom = 0.5!
         Me.PageSettings.Margins.Left = 0.3!
-        Me.PageSettings.Margins.Right = 0.0!
+        Me.PageSettings.Margins.Right = 0!
         Me.PageSettings.Margins.Top = 0.5!
         Me.PageSettings.PaperHeight = 11.0!
         Me.PageSettings.PaperWidth = 8.5!
@@ -599,11 +620,11 @@ Partial Public Class ArepResumenFacturaProducto
         Me.Sections.Add(Me.Detail1)
         Me.Sections.Add(Me.PageFooter1)
         Me.Sections.Add(Me.ReportFooter1)
-        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Arial; font-style: normal; text-decoration: none; font-weight: norma" & _
-                    "l; font-size: 10pt; color: Black; ", "Normal"))
+        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Arial; font-style: normal; text-decoration: none; font-weight: norma" &
+            "l; font-size: 10pt; color: Black; ", "Normal"))
         Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-size: 16pt; font-weight: bold; ", "Heading1", "Normal"))
-        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Times New Roman; font-size: 14pt; font-weight: bold; font-style: ita" & _
-                    "lic; ", "Heading2", "Normal"))
+        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Times New Roman; font-size: 14pt; font-weight: bold; font-style: ita" &
+            "lic; ", "Heading2", "Normal"))
         Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-size: 13pt; font-weight: bold; ", "Heading3", "Normal"))
         CType(Me.LblTitulo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LblDireccion, System.ComponentModel.ISupportInitialize).EndInit()
@@ -627,6 +648,7 @@ Partial Public Class ArepResumenFacturaProducto
         CType(Me.TextBox7, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox12, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox14, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Label5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
 
     End Sub
@@ -656,4 +678,5 @@ Partial Public Class ArepResumenFacturaProducto
     Friend WithEvents TextBox14 As DataDynamics.ActiveReports.TextBox
     Friend WithEvents ReportHeader1 As DataDynamics.ActiveReports.ReportHeader
     Friend WithEvents ReportFooter1 As DataDynamics.ActiveReports.ReportFooter
+    Friend WithEvents Label5 As DataDynamics.ActiveReports.Label
 End Class

@@ -1,0 +1,1137 @@
+﻿ERRORES DE IMPORTACIÓN
+========================================
+Archivo: FormatoCuentasxcobrar Excel97-2003.xls
+Planilla: 00001
+Tipo de deducción: ProductosVeterinarios
+Fecha: 04/09/2026 16:20:18
+
+Línea 2: El código de beneficiario '2525' no existe en la planilla 00001.
+
+Línea 3: El código de beneficiario '2525' no existe en la planilla 00001.
+
+Línea 4: El código de beneficiario '582' no existe en la planilla 00001.
+
+Línea 5: El código de beneficiario '582' no existe en la planilla 00001.
+
+Línea 6: El código de beneficiario '3002' no existe en la planilla 00001.
+
+Línea 7: El código de beneficiario '3002' no existe en la planilla 00001.
+
+Línea 8: El código de beneficiario '158' no existe en la planilla 00001.
+
+Línea 9: El código de beneficiario '2121' no existe en la planilla 00001.
+
+Línea 10: El código de beneficiario '2121' no existe en la planilla 00001.
+
+Línea 11: El código de beneficiario '162' no existe en la planilla 00001.
+
+Línea 12: El código de beneficiario '162' no existe en la planilla 00001.
+
+Línea 13: El código de beneficiario '7313' no existe en la planilla 00001.
+
+Línea 14: El código de beneficiario '7313' no existe en la planilla 00001.
+
+Línea 15: El código de beneficiario '7313' no existe en la planilla 00001.
+
+Línea 16: El código de beneficiario '7313' no existe en la planilla 00001.
+
+Línea 17: El código de beneficiario '7313' no existe en la planilla 00001.
+
+Línea 18: El código de beneficiario '3590' no existe en la planilla 00001.
+
+Línea 19: El código de beneficiario '3590' no existe en la planilla 00001.
+
+Línea 20: El código de beneficiario '3590' no existe en la planilla 00001.
+
+Línea 21: El código de beneficiario '4980' no existe en la planilla 00001.
+
+Línea 22: El código de beneficiario '4980' no existe en la planilla 00001.
+
+Línea 23: El código de beneficiario '4980' no existe en la planilla 00001.
+
+Línea 24: El código de beneficiario '4980' no existe en la planilla 00001.
+
+Línea 25: El código de beneficiario '4980' no existe en la planilla 00001.
+
+Línea 26: El código de beneficiario '7373' no existe en la planilla 00001.
+
+Línea 27: El código de beneficiario '7373' no existe en la planilla 00001.
+
+Línea 28: El código de beneficiario '5136' no existe en la planilla 00001.
+
+Línea 29: El código de beneficiario '5136' no existe en la planilla 00001.
+
+Línea 30: El código de beneficiario '4757' no existe en la planilla 00001.
+
+Línea 31: El código de beneficiario '4757' no existe en la planilla 00001.
+
+Línea 32: El código de beneficiario '4757' no existe en la planilla 00001.
+
+Línea 33: El código de beneficiario '3265' no existe en la planilla 00001.
+
+Línea 34: El código de beneficiario '3265' no existe en la planilla 00001.
+
+Línea 35: El código de beneficiario '5480' no existe en la planilla 00001.
+
+Línea 36: El código de beneficiario '5480' no existe en la planilla 00001.
+
+Línea 37: El código de beneficiario '6830' no existe en la planilla 00001.
+
+Línea 38: El código de beneficiario '6830' no existe en la planilla 00001.
+
+Línea 39: El código de beneficiario '6830' no existe en la planilla 00001.
+
+Línea 40: El código de beneficiario '7285' no existe en la planilla 00001.
+
+Línea 41: El código de beneficiario '7285' no existe en la planilla 00001.
+
+Línea 42: El código de beneficiario '7285' no existe en la planilla 00001.
+
+Línea 43: El código de beneficiario '4260' no existe en la planilla 00001.
+
+Línea 44: El código de beneficiario '4260' no existe en la planilla 00001.
+
+Línea 45: El código de beneficiario '3893' no existe en la planilla 00001.
+
+Línea 46: El código de beneficiario '3893' no existe en la planilla 00001.
+
+Línea 47: El código de beneficiario '3785' no existe en la planilla 00001.
+
+Línea 48: El código de beneficiario '3785' no existe en la planilla 00001.
+
+Línea 49: El código de beneficiario '135' no existe en la planilla 00001.
+
+Línea 50: El código de beneficiario '135' no existe en la planilla 00001.
+
+Línea 51: El código de beneficiario '583' no existe en la planilla 00001.
+
+Línea 52: El código de beneficiario '178' no existe en la planilla 00001.
+
+Línea 53: El código de beneficiario '178' no existe en la planilla 00001.
+
+Línea 54: El código de beneficiario '4433' no existe en la planilla 00001.
+
+Línea 55: El código de beneficiario '4433' no existe en la planilla 00001.
+
+Línea 56: El código de beneficiario '114' no existe en la planilla 00001.
+
+Línea 57: El código de beneficiario '114' no existe en la planilla 00001.
+
+Línea 58: El código de beneficiario '114' no existe en la planilla 00001.
+
+Línea 59: El código de beneficiario '181' no existe en la planilla 00001.
+
+Línea 60: El código de beneficiario '2013' no existe en la planilla 00001.
+
+Línea 61: El código de beneficiario '2013' no existe en la planilla 00001.
+
+Línea 62: El código de beneficiario '184' no existe en la planilla 00001.
+
+Línea 63: El código de beneficiario '3006' no existe en la planilla 00001.
+
+Línea 64: El código de beneficiario '3006' no existe en la planilla 00001.
+
+Línea 65: El código de beneficiario '3006' no existe en la planilla 00001.
+
+Línea 66: El código de beneficiario '3006' no existe en la planilla 00001.
+
+Línea 67: El código de beneficiario '4787' no existe en la planilla 00001.
+
+Línea 68: El código de beneficiario '4787' no existe en la planilla 00001.
+
+Línea 69: El código de beneficiario '187' no existe en la planilla 00001.
+
+Línea 70: El código de beneficiario '187' no existe en la planilla 00001.
+
+Línea 71: El código de beneficiario '188' no existe en la planilla 00001.
+
+Línea 72: El código de beneficiario '190' no existe en la planilla 00001.
+
+Línea 73: El código de beneficiario '191' no existe en la planilla 00001.
+
+Línea 74: El código de beneficiario '12' no existe en la planilla 00001.
+
+Línea 75: El código de beneficiario '195' no existe en la planilla 00001.
+
+Línea 76: El código de beneficiario '195' no existe en la planilla 00001.
+
+Línea 77: El código de beneficiario '2011' no existe en la planilla 00001.
+
+Línea 78: El código de beneficiario '2011' no existe en la planilla 00001.
+
+Línea 79: El código de beneficiario '2011' no existe en la planilla 00001.
+
+Línea 80: El código de beneficiario '2011' no existe en la planilla 00001.
+
+Línea 81: El código de beneficiario '197' no existe en la planilla 00001.
+
+Línea 82: El código de beneficiario '4076' no existe en la planilla 00001.
+
+Línea 83: El código de beneficiario '7003' no existe en la planilla 00001.
+
+Línea 84: El código de beneficiario '7003' no existe en la planilla 00001.
+
+Línea 85: El código de beneficiario '7003' no existe en la planilla 00001.
+
+Línea 86: El código de beneficiario '7003' no existe en la planilla 00001.
+
+Línea 87: El código de beneficiario '7003' no existe en la planilla 00001.
+
+Línea 88: El código de beneficiario '7003' no existe en la planilla 00001.
+
+Línea 89: El código de beneficiario '7003' no existe en la planilla 00001.
+
+Línea 90: El código de beneficiario '7064' no existe en la planilla 00001.
+
+Línea 91: El código de beneficiario '7064' no existe en la planilla 00001.
+
+Línea 92: El código de beneficiario '7064' no existe en la planilla 00001.
+
+Línea 93: El código de beneficiario '7064' no existe en la planilla 00001.
+
+Línea 94: El código de beneficiario '7064' no existe en la planilla 00001.
+
+Línea 95: El código de beneficiario '7064' no existe en la planilla 00001.
+
+Línea 96: El código de beneficiario '5425' no existe en la planilla 00001.
+
+Línea 97: El código de beneficiario '5425' no existe en la planilla 00001.
+
+Línea 98: El código de beneficiario '5425' no existe en la planilla 00001.
+
+Línea 99: El código de beneficiario '5425' no existe en la planilla 00001.
+
+Línea 100: El código de beneficiario '5425' no existe en la planilla 00001.
+
+Línea 101: El código de beneficiario '4409' no existe en la planilla 00001.
+
+Línea 102: El código de beneficiario '4409' no existe en la planilla 00001.
+
+Línea 103: El código de beneficiario '4409' no existe en la planilla 00001.
+
+Línea 104: El código de beneficiario '4409' no existe en la planilla 00001.
+
+Línea 105: El código de beneficiario '1503' no existe en la planilla 00001.
+
+Línea 106: El código de beneficiario '1508' no existe en la planilla 00001.
+
+Línea 107: El código de beneficiario '1508' no existe en la planilla 00001.
+
+Línea 108: El código de beneficiario '3605' no existe en la planilla 00001.
+
+Línea 109: El código de beneficiario '3605' no existe en la planilla 00001.
+
+Línea 110: El código de beneficiario '147' no existe en la planilla 00001.
+
+Línea 111: El código de beneficiario '147' no existe en la planilla 00001.
+
+Línea 112: El código de beneficiario '147' no existe en la planilla 00001.
+
+Línea 113: El código de beneficiario '121' no existe en la planilla 00001.
+
+Línea 114: El código de beneficiario '121' no existe en la planilla 00001.
+
+Línea 115: El código de beneficiario '210' no existe en la planilla 00001.
+
+Línea 116: El código de beneficiario '211' no existe en la planilla 00001.
+
+Línea 117: El código de beneficiario '211' no existe en la planilla 00001.
+
+Línea 118: El código de beneficiario '3306' no existe en la planilla 00001.
+
+Línea 119: El código de beneficiario '3306' no existe en la planilla 00001.
+
+Línea 120: El código de beneficiario '3306' no existe en la planilla 00001.
+
+Línea 121: El código de beneficiario '3306' no existe en la planilla 00001.
+
+Línea 122: El código de beneficiario '3306' no existe en la planilla 00001.
+
+Línea 123: El código de beneficiario '3306' no existe en la planilla 00001.
+
+Línea 124: El código de beneficiario '4017' no existe en la planilla 00001.
+
+Línea 125: El código de beneficiario '4017' no existe en la planilla 00001.
+
+Línea 126: El código de beneficiario '4017' no existe en la planilla 00001.
+
+Línea 127: El código de beneficiario '4017' no existe en la planilla 00001.
+
+Línea 128: El código de beneficiario '360' no existe en la planilla 00001.
+
+Línea 129: El código de beneficiario '360' no existe en la planilla 00001.
+
+Línea 130: El código de beneficiario '5135' no existe en la planilla 00001.
+
+Línea 131: El código de beneficiario '6328' no existe en la planilla 00001.
+
+Línea 132: El código de beneficiario '6328' no existe en la planilla 00001.
+
+Línea 133: El código de beneficiario '2314' no existe en la planilla 00001.
+
+Línea 134: El código de beneficiario '2314' no existe en la planilla 00001.
+
+Línea 135: El código de beneficiario '3001' no existe en la planilla 00001.
+
+Línea 136: El código de beneficiario '3976' no existe en la planilla 00001.
+
+Línea 137: El código de beneficiario '3976' no existe en la planilla 00001.
+
+Línea 138: El código de beneficiario '3009' no existe en la planilla 00001.
+
+Línea 139: El código de beneficiario '3009' no existe en la planilla 00001.
+
+Línea 140: El código de beneficiario '3009' no existe en la planilla 00001.
+
+Línea 141: El código de beneficiario '3009' no existe en la planilla 00001.
+
+Línea 142: El código de beneficiario '6905' no existe en la planilla 00001.
+
+Línea 143: El código de beneficiario '6905' no existe en la planilla 00001.
+
+Línea 144: El código de beneficiario '7412' no existe en la planilla 00001.
+
+Línea 145: El código de beneficiario '7412' no existe en la planilla 00001.
+
+Línea 146: El código de beneficiario '7412' no existe en la planilla 00001.
+
+Línea 147: El código de beneficiario '3674' no existe en la planilla 00001.
+
+Línea 148: El código de beneficiario '4135' no existe en la planilla 00001.
+
+Línea 149: El código de beneficiario '4135' no existe en la planilla 00001.
+
+Línea 150: El código de beneficiario '324' no existe en la planilla 00001.
+
+Línea 151: El código de beneficiario '324' no existe en la planilla 00001.
+
+Línea 152: El código de beneficiario '324' no existe en la planilla 00001.
+
+Línea 153: El código de beneficiario '324' no existe en la planilla 00001.
+
+Línea 154: El código de beneficiario '4011' no existe en la planilla 00001.
+
+Línea 155: El código de beneficiario '3846' no existe en la planilla 00001.
+
+Línea 156: El código de beneficiario '4781' no existe en la planilla 00001.
+
+Línea 157: El código de beneficiario '3869' no existe en la planilla 00001.
+
+Línea 158: El código de beneficiario '3869' no existe en la planilla 00001.
+
+Línea 159: El código de beneficiario '6880' no existe en la planilla 00001.
+
+Línea 160: El código de beneficiario '6880' no existe en la planilla 00001.
+
+Línea 161: El código de beneficiario '6880' no existe en la planilla 00001.
+
+Línea 162: El código de beneficiario '6880' no existe en la planilla 00001.
+
+Línea 163: El código de beneficiario '6880' no existe en la planilla 00001.
+
+Línea 164: El código de beneficiario '3680' no existe en la planilla 00001.
+
+Línea 165: El código de beneficiario '3680' no existe en la planilla 00001.
+
+Línea 166: El código de beneficiario '6822' no existe en la planilla 00001.
+
+Línea 167: El código de beneficiario '6822' no existe en la planilla 00001.
+
+Línea 168: El código de beneficiario '6822' no existe en la planilla 00001.
+
+Línea 169: El código de beneficiario '5173' no existe en la planilla 00001.
+
+Línea 170: El código de beneficiario '5173' no existe en la planilla 00001.
+
+Línea 171: El código de beneficiario '5040' no existe en la planilla 00001.
+
+Línea 172: El código de beneficiario '4572' no existe en la planilla 00001.
+
+Línea 173: El código de beneficiario '4572' no existe en la planilla 00001.
+
+Línea 174: El código de beneficiario '6278' no existe en la planilla 00001.
+
+Línea 175: El código de beneficiario '6278' no existe en la planilla 00001.
+
+Línea 176: El código de beneficiario '6278' no existe en la planilla 00001.
+
+Línea 177: El código de beneficiario '6278' no existe en la planilla 00001.
+
+Línea 178: El código de beneficiario '6278' no existe en la planilla 00001.
+
+Línea 179: El código de beneficiario '6058' no existe en la planilla 00001.
+
+Línea 180: El código de beneficiario '6058' no existe en la planilla 00001.
+
+Línea 181: El código de beneficiario '3719' no existe en la planilla 00001.
+
+Línea 182: El código de beneficiario '4239' no existe en la planilla 00001.
+
+Línea 183: El código de beneficiario '11' no existe en la planilla 00001.
+
+Línea 184: El código de beneficiario '2151' no existe en la planilla 00001.
+
+Línea 185: El código de beneficiario '2151' no existe en la planilla 00001.
+
+Línea 186: El código de beneficiario '481' no existe en la planilla 00001.
+
+Línea 187: El código de beneficiario '481' no existe en la planilla 00001.
+
+Línea 188: El código de beneficiario '4123' no existe en la planilla 00001.
+
+Línea 189: El código de beneficiario '4123' no existe en la planilla 00001.
+
+Línea 190: El código de beneficiario '4123' no existe en la planilla 00001.
+
+Línea 191: El código de beneficiario '4123' no existe en la planilla 00001.
+
+Línea 192: El código de beneficiario '4123' no existe en la planilla 00001.
+
+Línea 193: El código de beneficiario '4123' no existe en la planilla 00001.
+
+Línea 194: El código de beneficiario '4123' no existe en la planilla 00001.
+
+Línea 195: El código de beneficiario '5500' no existe en la planilla 00001.
+
+Línea 196: El código de beneficiario '5500' no existe en la planilla 00001.
+
+Línea 197: El código de beneficiario '5500' no existe en la planilla 00001.
+
+Línea 198: El código de beneficiario '7115' no existe en la planilla 00001.
+
+Línea 199: El código de beneficiario '7115' no existe en la planilla 00001.
+
+Línea 200: El código de beneficiario '4429' no existe en la planilla 00001.
+
+Línea 201: El código de beneficiario '4429' no existe en la planilla 00001.
+
+Línea 202: El código de beneficiario '4429' no existe en la planilla 00001.
+
+Línea 203: El código de beneficiario '6676' no existe en la planilla 00001.
+
+Línea 204: El código de beneficiario '6676' no existe en la planilla 00001.
+
+Línea 205: El código de beneficiario '6679' no existe en la planilla 00001.
+
+Línea 206: El código de beneficiario '6679' no existe en la planilla 00001.
+
+Línea 207: El código de beneficiario '6679' no existe en la planilla 00001.
+
+Línea 208: El código de beneficiario '6626' no existe en la planilla 00001.
+
+Línea 209: El código de beneficiario '3724' no existe en la planilla 00001.
+
+Línea 210: El código de beneficiario '5418' no existe en la planilla 00001.
+
+Línea 211: El código de beneficiario '5418' no existe en la planilla 00001.
+
+Línea 212: El código de beneficiario '5774' no existe en la planilla 00001.
+
+Línea 213: El código de beneficiario '6689' no existe en la planilla 00001.
+
+Línea 214: El código de beneficiario '6689' no existe en la planilla 00001.
+
+Línea 215: El código de beneficiario '6689' no existe en la planilla 00001.
+
+Línea 216: El código de beneficiario '4445' no existe en la planilla 00001.
+
+Línea 217: El código de beneficiario '4445' no existe en la planilla 00001.
+
+Línea 218: El código de beneficiario '4445' no existe en la planilla 00001.
+
+Línea 219: El código de beneficiario '4445' no existe en la planilla 00001.
+
+Línea 220: El código de beneficiario '4445' no existe en la planilla 00001.
+
+Línea 221: El código de beneficiario '4445' no existe en la planilla 00001.
+
+Línea 222: El código de beneficiario '5195' no existe en la planilla 00001.
+
+Línea 223: El código de beneficiario '5195' no existe en la planilla 00001.
+
+Línea 224: El código de beneficiario '5195' no existe en la planilla 00001.
+
+Línea 225: El código de beneficiario '5236' no existe en la planilla 00001.
+
+Línea 226: El código de beneficiario '7250' no existe en la planilla 00001.
+
+Línea 227: El código de beneficiario '3857' no existe en la planilla 00001.
+
+Línea 228: El código de beneficiario '5501' no existe en la planilla 00001.
+
+Línea 229: El código de beneficiario '5501' no existe en la planilla 00001.
+
+Línea 230: El código de beneficiario '7352' no existe en la planilla 00001.
+
+Línea 231: El código de beneficiario '6779' no existe en la planilla 00001.
+
+Línea 232: El código de beneficiario '6884' no existe en la planilla 00001.
+
+Línea 233: El código de beneficiario '6964' no existe en la planilla 00001.
+
+Línea 234: El código de beneficiario '4636' no existe en la planilla 00001.
+
+Línea 235: El código de beneficiario '4636' no existe en la planilla 00001.
+
+Línea 236: El código de beneficiario '5386' no existe en la planilla 00001.
+
+Línea 237: El código de beneficiario '5386' no existe en la planilla 00001.
+
+Línea 238: El código de beneficiario '5382' no existe en la planilla 00001.
+
+Línea 239: El código de beneficiario '5430' no existe en la planilla 00001.
+
+Línea 240: El código de beneficiario '5430' no existe en la planilla 00001.
+
+Línea 241: El código de beneficiario '5380' no existe en la planilla 00001.
+
+Línea 242: El código de beneficiario '1721' no existe en la planilla 00001.
+
+Línea 243: El código de beneficiario '1732' no existe en la planilla 00001.
+
+Línea 244: El código de beneficiario '1732' no existe en la planilla 00001.
+
+Línea 245: El código de beneficiario '103' no existe en la planilla 00001.
+
+Línea 246: El código de beneficiario '103' no existe en la planilla 00001.
+
+Línea 247: El código de beneficiario '103' no existe en la planilla 00001.
+
+Línea 248: El código de beneficiario '3402' no existe en la planilla 00001.
+
+Línea 249: El código de beneficiario '3402' no existe en la planilla 00001.
+
+Línea 250: El código de beneficiario '7415' no existe en la planilla 00001.
+
+Línea 251: El código de beneficiario '3347' no existe en la planilla 00001.
+
+Línea 252: El código de beneficiario '3347' no existe en la planilla 00001.
+
+Línea 253: El código de beneficiario '3345' no existe en la planilla 00001.
+
+Línea 254: El código de beneficiario '4722' no existe en la planilla 00001.
+
+Línea 255: El código de beneficiario '4722' no existe en la planilla 00001.
+
+Línea 256: El código de beneficiario '6000' no existe en la planilla 00001.
+
+Línea 257: El código de beneficiario '3865' no existe en la planilla 00001.
+
+Línea 258: El código de beneficiario '3865' no existe en la planilla 00001.
+
+Línea 259: El código de beneficiario '1418' no existe en la planilla 00001.
+
+Línea 260: El código de beneficiario '1418' no existe en la planilla 00001.
+
+Línea 261: El código de beneficiario '1418' no existe en la planilla 00001.
+
+Línea 262: El código de beneficiario '2511' no existe en la planilla 00001.
+
+Línea 263: El código de beneficiario '4797' no existe en la planilla 00001.
+
+Línea 264: El código de beneficiario '3831' no existe en la planilla 00001.
+
+Línea 265: El código de beneficiario '3831' no existe en la planilla 00001.
+
+Línea 266: El código de beneficiario '951' no existe en la planilla 00001.
+
+Línea 267: El código de beneficiario '951' no existe en la planilla 00001.
+
+Línea 268: El código de beneficiario '951' no existe en la planilla 00001.
+
+Línea 269: El código de beneficiario '951' no existe en la planilla 00001.
+
+Línea 270: El código de beneficiario '951' no existe en la planilla 00001.
+
+Línea 271: El código de beneficiario '951' no existe en la planilla 00001.
+
+Línea 272: El código de beneficiario '951' no existe en la planilla 00001.
+
+Línea 273: El código de beneficiario '175' no existe en la planilla 00001.
+
+Línea 274: El código de beneficiario '175' no existe en la planilla 00001.
+
+Línea 275: El código de beneficiario '175' no existe en la planilla 00001.
+
+Línea 276: El código de beneficiario '175' no existe en la planilla 00001.
+
+Línea 277: El código de beneficiario '6301' no existe en la planilla 00001.
+
+Línea 278: El código de beneficiario '667' no existe en la planilla 00001.
+
+Línea 279: El código de beneficiario '667' no existe en la planilla 00001.
+
+Línea 280: El código de beneficiario '4737' no existe en la planilla 00001.
+
+Línea 281: El código de beneficiario '812' no existe en la planilla 00001.
+
+Línea 282: El código de beneficiario '812' no existe en la planilla 00001.
+
+Línea 283: El código de beneficiario '721' no existe en la planilla 00001.
+
+Línea 284: El código de beneficiario '308' no existe en la planilla 00001.
+
+Línea 285: El código de beneficiario '7056' no existe en la planilla 00001.
+
+Línea 286: El código de beneficiario '7056' no existe en la planilla 00001.
+
+Línea 304: El código de beneficiario '7407' no existe en la planilla 00001.
+
+Línea 314: El código de beneficiario '252' no existe en la planilla 00001.
+
+Línea 315: El código de beneficiario '252' no existe en la planilla 00001.
+
+Línea 316: El código de beneficiario '252' no existe en la planilla 00001.
+
+Línea 317: El código de beneficiario '5536' no existe en la planilla 00001.
+
+Línea 318: El código de beneficiario '5536' no existe en la planilla 00001.
+
+Línea 319: El código de beneficiario '5536' no existe en la planilla 00001.
+
+Línea 320: El código de beneficiario '5536' no existe en la planilla 00001.
+
+Línea 321: El código de beneficiario '2052' no existe en la planilla 00001.
+
+Línea 322: El código de beneficiario '2052' no existe en la planilla 00001.
+
+Línea 323: El código de beneficiario '5761' no existe en la planilla 00001.
+
+Línea 324: El código de beneficiario '5761' no existe en la planilla 00001.
+
+Línea 325: El código de beneficiario '5761' no existe en la planilla 00001.
+
+Línea 326: El código de beneficiario '1194' no existe en la planilla 00001.
+
+Línea 327: El código de beneficiario '1194' no existe en la planilla 00001.
+
+Línea 328: El código de beneficiario '1814' no existe en la planilla 00001.
+
+Línea 329: El código de beneficiario '1814' no existe en la planilla 00001.
+
+Línea 330: El código de beneficiario '1814' no existe en la planilla 00001.
+
+Línea 331: El código de beneficiario '4423' no existe en la planilla 00001.
+
+Línea 332: El código de beneficiario '4423' no existe en la planilla 00001.
+
+Línea 333: El código de beneficiario '5823' no existe en la planilla 00001.
+
+Línea 334: El código de beneficiario '5823' no existe en la planilla 00001.
+
+Línea 335: El código de beneficiario '5823' no existe en la planilla 00001.
+
+Línea 336: El código de beneficiario '5926' no existe en la planilla 00001.
+
+Línea 337: El código de beneficiario '6801' no existe en la planilla 00001.
+
+Línea 338: El código de beneficiario '6801' no existe en la planilla 00001.
+
+Línea 339: El código de beneficiario '6801' no existe en la planilla 00001.
+
+Línea 340: El código de beneficiario '1665' no existe en la planilla 00001.
+
+Línea 341: El código de beneficiario '315' no existe en la planilla 00001.
+
+Línea 342: El código de beneficiario '315' no existe en la planilla 00001.
+
+Línea 343: El código de beneficiario '315' no existe en la planilla 00001.
+
+Línea 344: El código de beneficiario '2198' no existe en la planilla 00001.
+
+Línea 345: El código de beneficiario '2198' no existe en la planilla 00001.
+
+Línea 346: El código de beneficiario '5635' no existe en la planilla 00001.
+
+Línea 347: El código de beneficiario '5635' no existe en la planilla 00001.
+
+Línea 348: El código de beneficiario '5635' no existe en la planilla 00001.
+
+Línea 349: El código de beneficiario '5635' no existe en la planilla 00001.
+
+Línea 350: El código de beneficiario '2223' no existe en la planilla 00001.
+
+Línea 351: El código de beneficiario '2223' no existe en la planilla 00001.
+
+Línea 352: El código de beneficiario '2223' no existe en la planilla 00001.
+
+Línea 353: El código de beneficiario '2223' no existe en la planilla 00001.
+
+Línea 354: El código de beneficiario '2223' no existe en la planilla 00001.
+
+Línea 355: El código de beneficiario '2223' no existe en la planilla 00001.
+
+Línea 356: El código de beneficiario '305' no existe en la planilla 00001.
+
+Línea 357: El código de beneficiario '305' no existe en la planilla 00001.
+
+Línea 358: El código de beneficiario '305' no existe en la planilla 00001.
+
+Línea 359: El código de beneficiario '305' no existe en la planilla 00001.
+
+Línea 360: El código de beneficiario '65' no existe en la planilla 00001.
+
+Línea 361: El código de beneficiario '7339' no existe en la planilla 00001.
+
+Línea 362: El código de beneficiario '298' no existe en la planilla 00001.
+
+Línea 363: El código de beneficiario '298' no existe en la planilla 00001.
+
+Línea 364: El código de beneficiario '4151' no existe en la planilla 00001.
+
+Línea 365: El código de beneficiario '4151' no existe en la planilla 00001.
+
+Línea 366: El código de beneficiario '4151' no existe en la planilla 00001.
+
+Línea 367: El código de beneficiario '5258' no existe en la planilla 00001.
+
+Línea 368: El código de beneficiario '5337' no existe en la planilla 00001.
+
+Línea 369: El código de beneficiario '5337' no existe en la planilla 00001.
+
+Línea 370: El código de beneficiario '5337' no existe en la planilla 00001.
+
+Línea 371: El código de beneficiario '5337' no existe en la planilla 00001.
+
+Línea 372: El código de beneficiario '5337' no existe en la planilla 00001.
+
+Línea 373: El código de beneficiario '5337' no existe en la planilla 00001.
+
+Línea 374: El código de beneficiario '768' no existe en la planilla 00001.
+
+Línea 375: El código de beneficiario '768' no existe en la planilla 00001.
+
+Línea 376: El código de beneficiario '7007' no existe en la planilla 00001.
+
+Línea 377: El código de beneficiario '7007' no existe en la planilla 00001.
+
+Línea 378: El código de beneficiario '7007' no existe en la planilla 00001.
+
+Línea 379: El código de beneficiario '7007' no existe en la planilla 00001.
+
+Línea 380: El código de beneficiario '259' no existe en la planilla 00001.
+
+Línea 381: El código de beneficiario '259' no existe en la planilla 00001.
+
+Línea 382: El código de beneficiario '259' no existe en la planilla 00001.
+
+Línea 383: El código de beneficiario '148' no existe en la planilla 00001.
+
+Línea 384: El código de beneficiario '148' no existe en la planilla 00001.
+
+Línea 385: El código de beneficiario '148' no existe en la planilla 00001.
+
+Línea 386: El código de beneficiario '148' no existe en la planilla 00001.
+
+Línea 387: El código de beneficiario '148' no existe en la planilla 00001.
+
+Línea 388: El código de beneficiario '148' no existe en la planilla 00001.
+
+Línea 389: El código de beneficiario '148' no existe en la planilla 00001.
+
+Línea 390: El código de beneficiario '69' no existe en la planilla 00001.
+
+Línea 391: El código de beneficiario '69' no existe en la planilla 00001.
+
+Línea 392: El código de beneficiario '69' no existe en la planilla 00001.
+
+Línea 393: El código de beneficiario '585' no existe en la planilla 00001.
+
+Línea 394: El código de beneficiario '585' no existe en la planilla 00001.
+
+Línea 395: El código de beneficiario '357' no existe en la planilla 00001.
+
+Línea 396: El código de beneficiario '357' no existe en la planilla 00001.
+
+Línea 397: El código de beneficiario '357' no existe en la planilla 00001.
+
+Línea 398: El código de beneficiario '357' no existe en la planilla 00001.
+
+Línea 399: El código de beneficiario '3308' no existe en la planilla 00001.
+
+Línea 400: El código de beneficiario '3308' no existe en la planilla 00001.
+
+Línea 401: El código de beneficiario '3308' no existe en la planilla 00001.
+
+Línea 402: El código de beneficiario '3308' no existe en la planilla 00001.
+
+Línea 403: El código de beneficiario '5759' no existe en la planilla 00001.
+
+Línea 404: El código de beneficiario '5759' no existe en la planilla 00001.
+
+Línea 405: El código de beneficiario '79' no existe en la planilla 00001.
+
+Línea 406: El código de beneficiario '29' no existe en la planilla 00001.
+
+Línea 407: El código de beneficiario '97' no existe en la planilla 00001.
+
+Línea 408: El código de beneficiario '30' no existe en la planilla 00001.
+
+Línea 409: El código de beneficiario '30' no existe en la planilla 00001.
+
+Línea 410: El código de beneficiario '6966' no existe en la planilla 00001.
+
+Línea 411: El código de beneficiario '33' no existe en la planilla 00001.
+
+Línea 412: El código de beneficiario '33' no existe en la planilla 00001.
+
+Línea 413: El código de beneficiario '33' no existe en la planilla 00001.
+
+Línea 414: El código de beneficiario '3753' no existe en la planilla 00001.
+
+Línea 415: El código de beneficiario '3753' no existe en la planilla 00001.
+
+Línea 416: El código de beneficiario '1584' no existe en la planilla 00001.
+
+Línea 417: El código de beneficiario '1584' no existe en la planilla 00001.
+
+Línea 418: El código de beneficiario '4060' no existe en la planilla 00001.
+
+Línea 419: El código de beneficiario '4060' no existe en la planilla 00001.
+
+Línea 420: El código de beneficiario '4060' no existe en la planilla 00001.
+
+Línea 421: El código de beneficiario '4060' no existe en la planilla 00001.
+
+Línea 422: El código de beneficiario '3484' no existe en la planilla 00001.
+
+Línea 423: El código de beneficiario '3484' no existe en la planilla 00001.
+
+Línea 424: El código de beneficiario '39' no existe en la planilla 00001.
+
+Línea 425: El código de beneficiario '1831' no existe en la planilla 00001.
+
+Línea 426: El código de beneficiario '1831' no existe en la planilla 00001.
+
+Línea 427: El código de beneficiario '40' no existe en la planilla 00001.
+
+Línea 428: El código de beneficiario '40' no existe en la planilla 00001.
+
+Línea 429: El código de beneficiario '40' no existe en la planilla 00001.
+
+Línea 430: El código de beneficiario '4811' no existe en la planilla 00001.
+
+Línea 431: El código de beneficiario '4811' no existe en la planilla 00001.
+
+Línea 432: El código de beneficiario '4811' no existe en la planilla 00001.
+
+Línea 433: El código de beneficiario '4606' no existe en la planilla 00001.
+
+Línea 434: El código de beneficiario '4606' no existe en la planilla 00001.
+
+Línea 435: El código de beneficiario '4606' no existe en la planilla 00001.
+
+Línea 436: El código de beneficiario '4606' no existe en la planilla 00001.
+
+Línea 437: El código de beneficiario '6158' no existe en la planilla 00001.
+
+Línea 438: El código de beneficiario '6158' no existe en la planilla 00001.
+
+Línea 439: El código de beneficiario '6158' no existe en la planilla 00001.
+
+Línea 440: El código de beneficiario '49' no existe en la planilla 00001.
+
+Línea 441: El código de beneficiario '49' no existe en la planilla 00001.
+
+Línea 442: El código de beneficiario '49' no existe en la planilla 00001.
+
+Línea 443: El código de beneficiario '5171' no existe en la planilla 00001.
+
+Línea 444: El código de beneficiario '5171' no existe en la planilla 00001.
+
+Línea 445: El código de beneficiario '4828' no existe en la planilla 00001.
+
+Línea 446: El código de beneficiario '4828' no existe en la planilla 00001.
+
+Línea 447: El código de beneficiario '620' no existe en la planilla 00001.
+
+Línea 448: El código de beneficiario '620' no existe en la planilla 00001.
+
+Línea 449: El código de beneficiario '620' no existe en la planilla 00001.
+
+Línea 450: El código de beneficiario '54' no existe en la planilla 00001.
+
+Línea 451: El código de beneficiario '54' no existe en la planilla 00001.
+
+Línea 452: El código de beneficiario '54' no existe en la planilla 00001.
+
+Línea 453: El código de beneficiario '54' no existe en la planilla 00001.
+
+Línea 454: El código de beneficiario '54' no existe en la planilla 00001.
+
+Línea 455: El código de beneficiario '5600' no existe en la planilla 00001.
+
+Línea 456: El código de beneficiario '5600' no existe en la planilla 00001.
+
+Línea 457: El código de beneficiario '7316' no existe en la planilla 00001.
+
+Línea 458: El código de beneficiario '7316' no existe en la planilla 00001.
+
+Línea 459: El código de beneficiario '7316' no existe en la planilla 00001.
+
+Línea 460: El código de beneficiario '7316' no existe en la planilla 00001.
+
+Línea 461: El código de beneficiario '7316' no existe en la planilla 00001.
+
+Línea 462: El código de beneficiario '7316' no existe en la planilla 00001.
+
+Línea 463: El código de beneficiario '7316' no existe en la planilla 00001.
+
+Línea 464: El código de beneficiario '5623' no existe en la planilla 00001.
+
+Línea 465: El código de beneficiario '5623' no existe en la planilla 00001.
+
+Línea 466: El código de beneficiario '3883' no existe en la planilla 00001.
+
+Línea 467: El código de beneficiario '3883' no existe en la planilla 00001.
+
+Línea 468: El código de beneficiario '42' no existe en la planilla 00001.
+
+Línea 469: El código de beneficiario '42' no existe en la planilla 00001.
+
+Línea 470: El código de beneficiario '106' no existe en la planilla 00001.
+
+Línea 471: El código de beneficiario '4131' no existe en la planilla 00001.
+
+Línea 472: El código de beneficiario '4131' no existe en la planilla 00001.
+
+Línea 473: El código de beneficiario '4131' no existe en la planilla 00001.
+
+Línea 474: El código de beneficiario '4131' no existe en la planilla 00001.
+
+Línea 475: El código de beneficiario '6061' no existe en la planilla 00001.
+
+Línea 476: El código de beneficiario '703' no existe en la planilla 00001.
+
+Línea 477: El código de beneficiario '5899' no existe en la planilla 00001.
+
+Línea 478: El código de beneficiario '5899' no existe en la planilla 00001.
+
+Línea 479: El código de beneficiario '6159' no existe en la planilla 00001.
+
+Línea 480: El código de beneficiario '6159' no existe en la planilla 00001.
+
+Línea 481: El código de beneficiario '6159' no existe en la planilla 00001.
+
+Línea 482: El código de beneficiario '6159' no existe en la planilla 00001.
+
+Línea 483: El código de beneficiario '3739' no existe en la planilla 00001.
+
+Línea 484: El código de beneficiario '7216' no existe en la planilla 00001.
+
+Línea 485: El código de beneficiario '7216' no existe en la planilla 00001.
+
+Línea 486: El código de beneficiario '196' no existe en la planilla 00001.
+
+Línea 487: El código de beneficiario '196' no existe en la planilla 00001.
+
+Línea 488: El código de beneficiario '6752' no existe en la planilla 00001.
+
+Línea 489: El código de beneficiario '6752' no existe en la planilla 00001.
+
+Línea 490: El código de beneficiario '5490' no existe en la planilla 00001.
+
+Línea 491: El código de beneficiario '5490' no existe en la planilla 00001.
+
+Línea 492: El código de beneficiario '6665' no existe en la planilla 00001.
+
+Línea 493: El código de beneficiario '6665' no existe en la planilla 00001.
+
+Línea 494: El código de beneficiario '6665' no existe en la planilla 00001.
+
+Línea 495: El código de beneficiario '6166' no existe en la planilla 00001.
+
+Línea 496: El código de beneficiario '6166' no existe en la planilla 00001.
+
+Línea 497: El código de beneficiario '6166' no existe en la planilla 00001.
+
+Línea 498: El código de beneficiario '6166' no existe en la planilla 00001.
+
+Línea 499: El código de beneficiario '6166' no existe en la planilla 00001.
+
+Línea 500: El código de beneficiario '6166' no existe en la planilla 00001.
+
+Línea 501: El código de beneficiario '433' no existe en la planilla 00001.
+
+Línea 502: El código de beneficiario '433' no existe en la planilla 00001.
+
+Línea 503: El código de beneficiario '433' no existe en la planilla 00001.
+
+Línea 504: El código de beneficiario '433' no existe en la planilla 00001.
+
+Línea 505: El código de beneficiario '434' no existe en la planilla 00001.
+
+Línea 506: El código de beneficiario '5361' no existe en la planilla 00001.
+
+Línea 507: El código de beneficiario '5361' no existe en la planilla 00001.
+
+Línea 508: El código de beneficiario '647' no existe en la planilla 00001.
+
+Línea 509: El código de beneficiario '4595' no existe en la planilla 00001.
+
+Línea 510: El código de beneficiario '2202' no existe en la planilla 00001.
+
+Línea 511: El código de beneficiario '5352' no existe en la planilla 00001.
+
+Línea 512: El código de beneficiario '5352' no existe en la planilla 00001.
+
+Línea 513: El código de beneficiario '3618' no existe en la planilla 00001.
+
+Línea 514: El código de beneficiario '3618' no existe en la planilla 00001.
+
+Línea 515: El código de beneficiario '3618' no existe en la planilla 00001.
+
+Línea 516: El código de beneficiario '3618' no existe en la planilla 00001.
+
+Línea 517: El código de beneficiario '3618' no existe en la planilla 00001.
+
+Línea 518: El código de beneficiario '3618' no existe en la planilla 00001.
+
+Línea 519: El código de beneficiario '3618' no existe en la planilla 00001.
+
+Línea 520: El código de beneficiario '5336' no existe en la planilla 00001.
+
+Línea 521: El código de beneficiario '5336' no existe en la planilla 00001.
+
+Línea 522: El código de beneficiario '3502' no existe en la planilla 00001.
+
+Línea 523: El código de beneficiario '5911' no existe en la planilla 00001.
+
+Línea 524: El código de beneficiario '7038' no existe en la planilla 00001.
+
+Línea 525: El código de beneficiario '94' no existe en la planilla 00001.
+
+Línea 526: El código de beneficiario '94' no existe en la planilla 00001.
+
+Línea 527: El código de beneficiario '5377' no existe en la planilla 00001.
+
+Línea 528: El código de beneficiario '5956' no existe en la planilla 00001.
+
+Línea 529: El código de beneficiario '5956' no existe en la planilla 00001.
+
+Línea 530: El código de beneficiario '5956' no existe en la planilla 00001.
+
+Línea 531: El código de beneficiario '5956' no existe en la planilla 00001.
+
+Línea 532: El código de beneficiario '7133' no existe en la planilla 00001.
+
+Línea 533: El código de beneficiario '7133' no existe en la planilla 00001.
+
+Línea 534: El código de beneficiario '7133' no existe en la planilla 00001.
+
+Línea 535: El código de beneficiario '7098' no existe en la planilla 00001.
+
+Línea 536: El código de beneficiario '7098' no existe en la planilla 00001.
+
+Línea 537: El código de beneficiario '7098' no existe en la planilla 00001.
+
+Línea 538: El código de beneficiario '645' no existe en la planilla 00001.
+
+Línea 539: El código de beneficiario '645' no existe en la planilla 00001.
+
+Línea 540: El código de beneficiario '645' no existe en la planilla 00001.
+
+Línea 541: El código de beneficiario '645' no existe en la planilla 00001.
+
+Línea 542: El código de beneficiario '7357' no existe en la planilla 00001.
+
+Línea 543: El código de beneficiario '7357' no existe en la planilla 00001.
+
+Línea 544: El código de beneficiario '7357' no existe en la planilla 00001.
+
+Línea 545: El código de beneficiario '7357' no existe en la planilla 00001.
+
+Línea 546: El código de beneficiario '7134' no existe en la planilla 00001.
+
+Línea 547: El código de beneficiario '7134' no existe en la planilla 00001.
+
+Línea 548: El código de beneficiario '7134' no existe en la planilla 00001.
+
+Línea 549: El código de beneficiario '7134' no existe en la planilla 00001.
+
+Línea 550: El código de beneficiario '503' no existe en la planilla 00001.
+
+Línea 551: El código de beneficiario '503' no existe en la planilla 00001.
+
+Línea 552: El código de beneficiario '7304' no existe en la planilla 00001.
+
+Línea 553: El código de beneficiario '7304' no existe en la planilla 00001.
+
+Línea 554: El código de beneficiario '5811' no existe en la planilla 00001.
+
+Línea 555: El código de beneficiario '7329' no existe en la planilla 00001.
+
+Línea 556: El código de beneficiario '540' no existe en la planilla 00001.
+
+Línea 557: El código de beneficiario '540' no existe en la planilla 00001.
+
+Línea 558: El código de beneficiario '540' no existe en la planilla 00001.
+
+Línea 559: El código de beneficiario '5878' no existe en la planilla 00001.
+
+Línea 560: El código de beneficiario '5878' no existe en la planilla 00001.
+
+Línea 561: El código de beneficiario '421' no existe en la planilla 00001.
+
+Línea 562: El código de beneficiario '421' no existe en la planilla 00001.
+
+Línea 563: El código de beneficiario '545' no existe en la planilla 00001.
+
+Línea 564: El código de beneficiario '452' no existe en la planilla 00001.
+
+Línea 565: El código de beneficiario '452' no existe en la planilla 00001.
+
+Línea 566: El código de beneficiario '5099' no existe en la planilla 00001.
+
+Línea 567: El código de beneficiario '6667' no existe en la planilla 00001.
+
+Línea 568: El código de beneficiario '370' no existe en la planilla 00001.
+
+Línea 569: El código de beneficiario '370' no existe en la planilla 00001.
+
+Línea 570: El código de beneficiario '7161' no existe en la planilla 00001.
+
+Línea 571: El código de beneficiario '7161' no existe en la planilla 00001.
+
+Línea 572: El código de beneficiario '6585' no existe en la planilla 00001.
+
+Línea 573: El código de beneficiario '6540' no existe en la planilla 00001.
+
+Línea 574: El código de beneficiario '6540' no existe en la planilla 00001.
+
+Línea 575: El código de beneficiario '6540' no existe en la planilla 00001.
+
+Línea 576: El código de beneficiario '6540' no existe en la planilla 00001.
+
+Línea 577: El código de beneficiario '7202' no existe en la planilla 00001.
+
+Línea 578: El código de beneficiario '7202' no existe en la planilla 00001.
+
+Línea 579: El código de beneficiario '7202' no existe en la planilla 00001.
+
+Línea 580: El código de beneficiario '5020' no existe en la planilla 00001.
+
+Línea 581: El código de beneficiario '5932' no existe en la planilla 00001.
+
+Línea 582: El código de beneficiario '5932' no existe en la planilla 00001.
+
+Línea 583: El código de beneficiario '5932' no existe en la planilla 00001.
+
+Línea 584: El código de beneficiario '5932' no existe en la planilla 00001.
+
+Línea 585: El código de beneficiario '427' no existe en la planilla 00001.
+
+Línea 586: El código de beneficiario '427' no existe en la planilla 00001.
+
+Línea 587: El código de beneficiario '383' no existe en la planilla 00001.
+
+Línea 588: El código de beneficiario '1454' no existe en la planilla 00001.
+
+Línea 589: El código de beneficiario '1454' no existe en la planilla 00001.
+
+Línea 590: El código de beneficiario '5478' no existe en la planilla 00001.
+
+Línea 591: El código de beneficiario está vacío.
+
+========================================
+Total de errores: 564

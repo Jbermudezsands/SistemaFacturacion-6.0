@@ -20,35 +20,40 @@ Partial Class FrmConductor
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmConductor))
-        Me.CboActivo = New System.Windows.Forms.ComboBox
-        Me.ButtonGrabar = New System.Windows.Forms.Button
-        Me.ButtonBorrar = New System.Windows.Forms.Button
-        Me.ButtonNuevo = New System.Windows.Forms.Button
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.LblApellido = New System.Windows.Forms.Label
-        Me.CboCodigoConductor = New C1.Win.C1List.C1Combo
-        Me.TxtNombre = New System.Windows.Forms.TextBox
-        Me.LblNombre = New System.Windows.Forms.Label
-        Me.LblCodigo = New System.Windows.Forms.Label
-        Me.LblTitulo = New System.Windows.Forms.Label
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.TxtCedula = New System.Windows.Forms.TextBox
-        Me.TxtLicencia = New System.Windows.Forms.TextBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.CboLstaNegra = New System.Windows.Forms.ComboBox
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.TxtMotivo = New System.Windows.Forms.TextBox
-        Me.TxtCtaxPagar = New System.Windows.Forms.TextBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.ChkConductores = New System.Windows.Forms.CheckBox
+        Me.CboActivo = New System.Windows.Forms.ComboBox()
+        Me.ButtonGrabar = New System.Windows.Forms.Button()
+        Me.ButtonBorrar = New System.Windows.Forms.Button()
+        Me.ButtonNuevo = New System.Windows.Forms.Button()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.LblApellido = New System.Windows.Forms.Label()
+        Me.CboCodigoConductor = New C1.Win.C1List.C1Combo()
+        Me.TxtNombre = New System.Windows.Forms.TextBox()
+        Me.LblNombre = New System.Windows.Forms.Label()
+        Me.LblCodigo = New System.Windows.Forms.Label()
+        Me.LblTitulo = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.TxtCedula = New System.Windows.Forms.TextBox()
+        Me.TxtLicencia = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.CboLstaNegra = New System.Windows.Forms.ComboBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.TxtMotivo = New System.Windows.Forms.TextBox()
+        Me.TxtCtaxPagar = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.ChkConductores = New System.Windows.Forms.CheckBox()
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.TabPage2 = New System.Windows.Forms.TabPage()
         CType(Me.CboCodigoConductor, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabControl1.SuspendLayout()
+        Me.TabPage1.SuspendLayout()
         Me.SuspendLayout()
         '
         'CboActivo
@@ -56,7 +61,7 @@ Partial Class FrmConductor
         Me.CboActivo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboActivo.FormattingEnabled = True
         Me.CboActivo.Items.AddRange(New Object() {"Activo", "Inactivo"})
-        Me.CboActivo.Location = New System.Drawing.Point(110, 163)
+        Me.CboActivo.Location = New System.Drawing.Point(115, 115)
         Me.CboActivo.Name = "CboActivo"
         Me.CboActivo.Size = New System.Drawing.Size(121, 21)
         Me.CboActivo.TabIndex = 268
@@ -65,7 +70,7 @@ Partial Class FrmConductor
         '
         Me.ButtonGrabar.Image = CType(resources.GetObject("ButtonGrabar.Image"), System.Drawing.Image)
         Me.ButtonGrabar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonGrabar.Location = New System.Drawing.Point(99, 321)
+        Me.ButtonGrabar.Location = New System.Drawing.Point(477, 135)
         Me.ButtonGrabar.Name = "ButtonGrabar"
         Me.ButtonGrabar.Size = New System.Drawing.Size(78, 68)
         Me.ButtonGrabar.TabIndex = 265
@@ -78,7 +83,7 @@ Partial Class FrmConductor
         '
         Me.ButtonBorrar.Image = CType(resources.GetObject("ButtonBorrar.Image"), System.Drawing.Image)
         Me.ButtonBorrar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonBorrar.Location = New System.Drawing.Point(183, 321)
+        Me.ButtonBorrar.Location = New System.Drawing.Point(477, 209)
         Me.ButtonBorrar.Name = "ButtonBorrar"
         Me.ButtonBorrar.Size = New System.Drawing.Size(75, 67)
         Me.ButtonBorrar.TabIndex = 266
@@ -91,7 +96,7 @@ Partial Class FrmConductor
         '
         Me.ButtonNuevo.Image = CType(resources.GetObject("ButtonNuevo.Image"), System.Drawing.Image)
         Me.ButtonNuevo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonNuevo.Location = New System.Drawing.Point(18, 321)
+        Me.ButtonNuevo.Location = New System.Drawing.Point(477, 65)
         Me.ButtonNuevo.Name = "ButtonNuevo"
         Me.ButtonNuevo.Size = New System.Drawing.Size(75, 67)
         Me.ButtonNuevo.TabIndex = 264
@@ -104,7 +109,7 @@ Partial Class FrmConductor
         Me.Button8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
         Me.Button8.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button8.Location = New System.Drawing.Point(311, 321)
+        Me.Button8.Location = New System.Drawing.Point(477, 302)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(75, 66)
         Me.Button8.TabIndex = 267
@@ -115,7 +120,7 @@ Partial Class FrmConductor
         'LblApellido
         '
         Me.LblApellido.AutoSize = True
-        Me.LblApellido.Location = New System.Drawing.Point(49, 110)
+        Me.LblApellido.Location = New System.Drawing.Point(54, 62)
         Me.LblApellido.Name = "LblApellido"
         Me.LblApellido.Size = New System.Drawing.Size(40, 13)
         Me.LblApellido.TabIndex = 262
@@ -137,7 +142,7 @@ Partial Class FrmConductor
         Me.CboCodigoConductor.EditorHeight = 15
         Me.CboCodigoConductor.Images.Add(CType(resources.GetObject("CboCodigoConductor.Images"), System.Drawing.Image))
         Me.CboCodigoConductor.ItemHeight = 15
-        Me.CboCodigoConductor.Location = New System.Drawing.Point(110, 60)
+        Me.CboCodigoConductor.Location = New System.Drawing.Point(115, 12)
         Me.CboCodigoConductor.MatchEntryTimeout = CType(2000, Long)
         Me.CboCodigoConductor.MaxDropDownItems = CType(5, Short)
         Me.CboCodigoConductor.MaxLength = 32767
@@ -152,7 +157,7 @@ Partial Class FrmConductor
         '
         'TxtNombre
         '
-        Me.TxtNombre.Location = New System.Drawing.Point(111, 87)
+        Me.TxtNombre.Location = New System.Drawing.Point(116, 39)
         Me.TxtNombre.Name = "TxtNombre"
         Me.TxtNombre.Size = New System.Drawing.Size(275, 20)
         Me.TxtNombre.TabIndex = 259
@@ -160,7 +165,7 @@ Partial Class FrmConductor
         'LblNombre
         '
         Me.LblNombre.AutoSize = True
-        Me.LblNombre.Location = New System.Drawing.Point(49, 86)
+        Me.LblNombre.Location = New System.Drawing.Point(54, 38)
         Me.LblNombre.Name = "LblNombre"
         Me.LblNombre.Size = New System.Drawing.Size(44, 13)
         Me.LblNombre.TabIndex = 261
@@ -169,7 +174,7 @@ Partial Class FrmConductor
         'LblCodigo
         '
         Me.LblCodigo.AutoSize = True
-        Me.LblCodigo.Location = New System.Drawing.Point(53, 60)
+        Me.LblCodigo.Location = New System.Drawing.Point(58, 12)
         Me.LblCodigo.Name = "LblCodigo"
         Me.LblCodigo.Size = New System.Drawing.Size(40, 13)
         Me.LblCodigo.TabIndex = 260
@@ -181,7 +186,7 @@ Partial Class FrmConductor
         Me.LblTitulo.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.LblTitulo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblTitulo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.LblTitulo.Location = New System.Drawing.Point(119, 20)
+        Me.LblTitulo.Location = New System.Drawing.Point(180, 18)
         Me.LblTitulo.Name = "LblTitulo"
         Me.LblTitulo.Size = New System.Drawing.Size(192, 13)
         Me.LblTitulo.TabIndex = 257
@@ -191,7 +196,7 @@ Partial Class FrmConductor
         '
         Me.PictureBox2.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
         Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
-        Me.PictureBox2.Location = New System.Drawing.Point(12, -6)
+        Me.PictureBox2.Location = New System.Drawing.Point(2, -6)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(69, 60)
         Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -201,7 +206,7 @@ Partial Class FrmConductor
         'PictureBox1
         '
         Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
-        Me.PictureBox1.Location = New System.Drawing.Point(1, -6)
+        Me.PictureBox1.Location = New System.Drawing.Point(59, -6)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(515, 60)
         Me.PictureBox1.TabIndex = 255
@@ -209,14 +214,14 @@ Partial Class FrmConductor
         '
         'TxtCedula
         '
-        Me.TxtCedula.Location = New System.Drawing.Point(110, 112)
+        Me.TxtCedula.Location = New System.Drawing.Point(115, 64)
         Me.TxtCedula.Name = "TxtCedula"
         Me.TxtCedula.Size = New System.Drawing.Size(275, 20)
         Me.TxtCedula.TabIndex = 269
         '
         'TxtLicencia
         '
-        Me.TxtLicencia.Location = New System.Drawing.Point(110, 137)
+        Me.TxtLicencia.Location = New System.Drawing.Point(115, 89)
         Me.TxtLicencia.Name = "TxtLicencia"
         Me.TxtLicencia.Size = New System.Drawing.Size(275, 20)
         Me.TxtLicencia.TabIndex = 271
@@ -224,7 +229,7 @@ Partial Class FrmConductor
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(49, 135)
+        Me.Label1.Location = New System.Drawing.Point(54, 87)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(47, 13)
         Me.Label1.TabIndex = 270
@@ -233,7 +238,7 @@ Partial Class FrmConductor
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(59, 163)
+        Me.Label2.Location = New System.Drawing.Point(64, 115)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(37, 13)
         Me.Label2.TabIndex = 272
@@ -242,7 +247,7 @@ Partial Class FrmConductor
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(35, 193)
+        Me.Label3.Location = New System.Drawing.Point(40, 145)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(61, 13)
         Me.Label3.TabIndex = 274
@@ -253,7 +258,7 @@ Partial Class FrmConductor
         Me.CboLstaNegra.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboLstaNegra.FormattingEnabled = True
         Me.CboLstaNegra.Items.AddRange(New Object() {"Activo", "Inactivo"})
-        Me.CboLstaNegra.Location = New System.Drawing.Point(110, 190)
+        Me.CboLstaNegra.Location = New System.Drawing.Point(115, 142)
         Me.CboLstaNegra.Name = "CboLstaNegra"
         Me.CboLstaNegra.Size = New System.Drawing.Size(121, 21)
         Me.CboLstaNegra.TabIndex = 273
@@ -261,7 +266,7 @@ Partial Class FrmConductor
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(7, 231)
+        Me.Label4.Location = New System.Drawing.Point(12, 183)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(89, 13)
         Me.Label4.TabIndex = 275
@@ -269,7 +274,7 @@ Partial Class FrmConductor
         '
         'TxtMotivo
         '
-        Me.TxtMotivo.Location = New System.Drawing.Point(110, 217)
+        Me.TxtMotivo.Location = New System.Drawing.Point(115, 169)
         Me.TxtMotivo.Multiline = True
         Me.TxtMotivo.Name = "TxtMotivo"
         Me.TxtMotivo.Size = New System.Drawing.Size(275, 62)
@@ -277,7 +282,7 @@ Partial Class FrmConductor
         '
         'TxtCtaxPagar
         '
-        Me.TxtCtaxPagar.Location = New System.Drawing.Point(111, 285)
+        Me.TxtCtaxPagar.Location = New System.Drawing.Point(116, 237)
         Me.TxtCtaxPagar.Name = "TxtCtaxPagar"
         Me.TxtCtaxPagar.Size = New System.Drawing.Size(120, 20)
         Me.TxtCtaxPagar.TabIndex = 278
@@ -285,7 +290,7 @@ Partial Class FrmConductor
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(10, 288)
+        Me.Label5.Location = New System.Drawing.Point(15, 240)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(80, 13)
         Me.Label5.TabIndex = 277
@@ -294,7 +299,7 @@ Partial Class FrmConductor
         'Button1
         '
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.Location = New System.Drawing.Point(237, 281)
+        Me.Button1.Location = New System.Drawing.Point(242, 233)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(29, 30)
         Me.Button1.TabIndex = 279
@@ -303,7 +308,7 @@ Partial Class FrmConductor
         'Button2
         '
         Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.Location = New System.Drawing.Point(322, 55)
+        Me.Button2.Location = New System.Drawing.Point(327, 7)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(29, 30)
         Me.Button2.TabIndex = 280
@@ -312,41 +317,72 @@ Partial Class FrmConductor
         'ChkConductores
         '
         Me.ChkConductores.AutoSize = True
-        Me.ChkConductores.Location = New System.Drawing.Point(241, 163)
+        Me.ChkConductores.Location = New System.Drawing.Point(246, 115)
         Me.ChkConductores.Name = "ChkConductores"
         Me.ChkConductores.Size = New System.Drawing.Size(146, 17)
         Me.ChkConductores.TabIndex = 281
         Me.ChkConductores.Text = "Conductor Evacuaciones"
         Me.ChkConductores.UseVisualStyleBackColor = True
         '
+        'TabControl1
+        '
+        Me.TabControl1.Controls.Add(Me.TabPage1)
+        Me.TabControl1.Controls.Add(Me.TabPage2)
+        Me.TabControl1.Location = New System.Drawing.Point(12, 65)
+        Me.TabControl1.Name = "TabControl1"
+        Me.TabControl1.SelectedIndex = 0
+        Me.TabControl1.Size = New System.Drawing.Size(408, 303)
+        Me.TabControl1.TabIndex = 282
+        '
+        'TabPage1
+        '
+        Me.TabPage1.Controls.Add(Me.LblCodigo)
+        Me.TabPage1.Controls.Add(Me.ChkConductores)
+        Me.TabPage1.Controls.Add(Me.LblNombre)
+        Me.TabPage1.Controls.Add(Me.Button2)
+        Me.TabPage1.Controls.Add(Me.TxtNombre)
+        Me.TabPage1.Controls.Add(Me.Button1)
+        Me.TabPage1.Controls.Add(Me.CboCodigoConductor)
+        Me.TabPage1.Controls.Add(Me.TxtCtaxPagar)
+        Me.TabPage1.Controls.Add(Me.LblApellido)
+        Me.TabPage1.Controls.Add(Me.Label5)
+        Me.TabPage1.Controls.Add(Me.CboActivo)
+        Me.TabPage1.Controls.Add(Me.TxtMotivo)
+        Me.TabPage1.Controls.Add(Me.TxtCedula)
+        Me.TabPage1.Controls.Add(Me.Label4)
+        Me.TabPage1.Controls.Add(Me.Label1)
+        Me.TabPage1.Controls.Add(Me.Label3)
+        Me.TabPage1.Controls.Add(Me.TxtLicencia)
+        Me.TabPage1.Controls.Add(Me.CboLstaNegra)
+        Me.TabPage1.Controls.Add(Me.Label2)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage1.Size = New System.Drawing.Size(400, 277)
+        Me.TabPage1.TabIndex = 0
+        Me.TabPage1.Text = "Generales"
+        Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'TabPage2
+        '
+        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Size = New System.Drawing.Size(400, 277)
+        Me.TabPage2.TabIndex = 1
+        Me.TabPage2.Text = "Deducciones"
+        Me.TabPage2.UseVisualStyleBackColor = True
+        '
         'FrmConductor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(397, 399)
-        Me.Controls.Add(Me.ChkConductores)
-        Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.Button1)
-        Me.Controls.Add(Me.TxtCtaxPagar)
-        Me.Controls.Add(Me.Label5)
-        Me.Controls.Add(Me.TxtMotivo)
-        Me.Controls.Add(Me.Label4)
-        Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.CboLstaNegra)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.TxtLicencia)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.TxtCedula)
-        Me.Controls.Add(Me.CboActivo)
+        Me.ClientSize = New System.Drawing.Size(564, 397)
+        Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.ButtonGrabar)
         Me.Controls.Add(Me.ButtonBorrar)
         Me.Controls.Add(Me.ButtonNuevo)
         Me.Controls.Add(Me.Button8)
-        Me.Controls.Add(Me.LblApellido)
-        Me.Controls.Add(Me.CboCodigoConductor)
-        Me.Controls.Add(Me.TxtNombre)
-        Me.Controls.Add(Me.LblNombre)
-        Me.Controls.Add(Me.LblCodigo)
         Me.Controls.Add(Me.LblTitulo)
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.PictureBox1)
@@ -355,6 +391,9 @@ Partial Class FrmConductor
         CType(Me.CboCodigoConductor, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabControl1.ResumeLayout(False)
+        Me.TabPage1.ResumeLayout(False)
+        Me.TabPage1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -385,4 +424,7 @@ Partial Class FrmConductor
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents Button2 As System.Windows.Forms.Button
     Friend WithEvents ChkConductores As System.Windows.Forms.CheckBox
+    Friend WithEvents TabControl1 As TabControl
+    Friend WithEvents TabPage1 As TabPage
+    Friend WithEvents TabPage2 As TabPage
 End Class

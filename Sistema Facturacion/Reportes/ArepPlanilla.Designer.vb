@@ -17,147 +17,147 @@ Partial Public Class ArepPlanilla
     Private WithEvents PageFooter1 As DataDynamics.ActiveReports.PageFooter
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim OleDBDataSource1 As DataDynamics.ActiveReports.DataSources.OleDBDataSource = New DataDynamics.ActiveReports.DataSources.OleDBDataSource
+        Dim OleDBDataSource1 As DataDynamics.ActiveReports.DataSources.OleDBDataSource = New DataDynamics.ActiveReports.DataSources.OleDBDataSource()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ArepPlanilla))
-        Me.PageHeader1 = New DataDynamics.ActiveReports.PageHeader
-        Me.lblOrderNum = New DataDynamics.ActiveReports.Label
-        Me.lblOrderDate = New DataDynamics.ActiveReports.Label
-        Me.ImgLogo = New DataDynamics.ActiveReports.Picture
-        Me.LblEncabezado = New DataDynamics.ActiveReports.Label
-        Me.LblDireccion = New DataDynamics.ActiveReports.Label
-        Me.LblOrden = New DataDynamics.ActiveReports.Label
-        Me.LblFechaOrden = New DataDynamics.ActiveReports.Label
-        Me.LblCodigo = New DataDynamics.ActiveReports.Label
-        Me.LblNombre = New DataDynamics.ActiveReports.Label
-        Me.LblMiercoles = New DataDynamics.ActiveReports.Label
-        Me.LblLunes = New DataDynamics.ActiveReports.Label
-        Me.LblMartes = New DataDynamics.ActiveReports.Label
-        Me.LblJueves = New DataDynamics.ActiveReports.Label
-        Me.LblViernes = New DataDynamics.ActiveReports.Label
-        Me.LblSabado = New DataDynamics.ActiveReports.Label
-        Me.LblDomingo = New DataDynamics.ActiveReports.Label
-        Me.Label10 = New DataDynamics.ActiveReports.Label
-        Me.Label11 = New DataDynamics.ActiveReports.Label
-        Me.Label12 = New DataDynamics.ActiveReports.Label
-        Me.Label13 = New DataDynamics.ActiveReports.Label
-        Me.Label14 = New DataDynamics.ActiveReports.Label
-        Me.Label15 = New DataDynamics.ActiveReports.Label
-        Me.Label16 = New DataDynamics.ActiveReports.Label
-        Me.Label17 = New DataDynamics.ActiveReports.Label
-        Me.Label18 = New DataDynamics.ActiveReports.Label
-        Me.Label19 = New DataDynamics.ActiveReports.Label
-        Me.Label20 = New DataDynamics.ActiveReports.Label
-        Me.Label21 = New DataDynamics.ActiveReports.Label
-        Me.LblRuc = New DataDynamics.ActiveReports.Label
-        Me.LblPeriodo = New DataDynamics.ActiveReports.Label
-        Me.Label22 = New DataDynamics.ActiveReports.Label
-        Me.Label25 = New DataDynamics.ActiveReports.Label
-        Me.Detail1 = New DataDynamics.ActiveReports.Detail
-        Me.TextBox1 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox2 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox3 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox4 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox5 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox6 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox7 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox8 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox9 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox10 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox11 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox12 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox13 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox14 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox15 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox16 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox17 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox18 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox19 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox20 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox21 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox24 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox25 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox83 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox86 = New DataDynamics.ActiveReports.TextBox
-        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
-        Me.ReportHeader1 = New DataDynamics.ActiveReports.ReportHeader
-        Me.ReportFooter1 = New DataDynamics.ActiveReports.ReportFooter
-        Me.Label23 = New DataDynamics.ActiveReports.Label
-        Me.Label24 = New DataDynamics.ActiveReports.Label
-        Me.TextBox23 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox39 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox44 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox45 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox47 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox49 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox50 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox51 = New DataDynamics.ActiveReports.TextBox
-        Me.TxtPrecio = New DataDynamics.ActiveReports.TextBox
-        Me.TxtLunes = New DataDynamics.ActiveReports.TextBox
-        Me.TxtMartes = New DataDynamics.ActiveReports.TextBox
-        Me.TxtMiercoles = New DataDynamics.ActiveReports.TextBox
-        Me.TxtJueves = New DataDynamics.ActiveReports.TextBox
-        Me.TxtViernes = New DataDynamics.ActiveReports.TextBox
-        Me.TxtSabado = New DataDynamics.ActiveReports.TextBox
-        Me.TxtDomingo = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox61 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox62 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox53 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox64 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox65 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox66 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox67 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox68 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox69 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox70 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox71 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox72 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox73 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox74 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox75 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox76 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox77 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox78 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox79 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox80 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox81 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox63 = New DataDynamics.ActiveReports.TextBox
-        Me.TxtMontoLunes = New DataDynamics.ActiveReports.TextBox
-        Me.TxtMontoMartes = New DataDynamics.ActiveReports.TextBox
-        Me.TxtMontoMiercoles = New DataDynamics.ActiveReports.TextBox
-        Me.TxtMontoJueves = New DataDynamics.ActiveReports.TextBox
-        Me.TxtMontoViernes = New DataDynamics.ActiveReports.TextBox
-        Me.TxtMontoSabado = New DataDynamics.ActiveReports.TextBox
-        Me.TxtMontoDomingo = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox84 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox85 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox89 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox90 = New DataDynamics.ActiveReports.TextBox
-        Me.GroupHeader1 = New DataDynamics.ActiveReports.GroupHeader
-        Me.TextBox22 = New DataDynamics.ActiveReports.TextBox
-        Me.GroupFooter1 = New DataDynamics.ActiveReports.GroupFooter
-        Me.TextBox26 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox27 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox28 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox29 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox30 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox31 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox32 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox33 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox34 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox35 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox36 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox37 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox38 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox40 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox41 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox42 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox43 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox46 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox48 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox87 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox88 = New DataDynamics.ActiveReports.TextBox
-        Me.LblTipoNomina = New DataDynamics.ActiveReports.Label
-        Me.LblImpreso = New DataDynamics.ActiveReports.Label
+        Me.PageHeader1 = New DataDynamics.ActiveReports.PageHeader()
+        Me.lblOrderNum = New DataDynamics.ActiveReports.Label()
+        Me.lblOrderDate = New DataDynamics.ActiveReports.Label()
+        Me.ImgLogo = New DataDynamics.ActiveReports.Picture()
+        Me.LblEncabezado = New DataDynamics.ActiveReports.Label()
+        Me.LblDireccion = New DataDynamics.ActiveReports.Label()
+        Me.LblOrden = New DataDynamics.ActiveReports.Label()
+        Me.LblFechaOrden = New DataDynamics.ActiveReports.Label()
+        Me.LblCodigo = New DataDynamics.ActiveReports.Label()
+        Me.LblNombre = New DataDynamics.ActiveReports.Label()
+        Me.LblMiercoles = New DataDynamics.ActiveReports.Label()
+        Me.LblLunes = New DataDynamics.ActiveReports.Label()
+        Me.LblMartes = New DataDynamics.ActiveReports.Label()
+        Me.LblJueves = New DataDynamics.ActiveReports.Label()
+        Me.LblViernes = New DataDynamics.ActiveReports.Label()
+        Me.LblSabado = New DataDynamics.ActiveReports.Label()
+        Me.LblDomingo = New DataDynamics.ActiveReports.Label()
+        Me.Label10 = New DataDynamics.ActiveReports.Label()
+        Me.Label11 = New DataDynamics.ActiveReports.Label()
+        Me.Label12 = New DataDynamics.ActiveReports.Label()
+        Me.Label13 = New DataDynamics.ActiveReports.Label()
+        Me.Label14 = New DataDynamics.ActiveReports.Label()
+        Me.Label15 = New DataDynamics.ActiveReports.Label()
+        Me.Label16 = New DataDynamics.ActiveReports.Label()
+        Me.Label17 = New DataDynamics.ActiveReports.Label()
+        Me.Label18 = New DataDynamics.ActiveReports.Label()
+        Me.Label19 = New DataDynamics.ActiveReports.Label()
+        Me.Label20 = New DataDynamics.ActiveReports.Label()
+        Me.Label21 = New DataDynamics.ActiveReports.Label()
+        Me.LblRuc = New DataDynamics.ActiveReports.Label()
+        Me.LblPeriodo = New DataDynamics.ActiveReports.Label()
+        Me.Label22 = New DataDynamics.ActiveReports.Label()
+        Me.Label25 = New DataDynamics.ActiveReports.Label()
+        Me.LblTipoNomina = New DataDynamics.ActiveReports.Label()
+        Me.LblImpreso = New DataDynamics.ActiveReports.Label()
+        Me.Detail1 = New DataDynamics.ActiveReports.Detail()
+        Me.TextBox1 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox2 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox3 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox4 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox5 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox6 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox7 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox8 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox9 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox10 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox11 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox12 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox13 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox14 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox15 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox16 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox17 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox18 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox19 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox20 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox21 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox24 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox25 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox83 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox86 = New DataDynamics.ActiveReports.TextBox()
+        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter()
+        Me.ReportHeader1 = New DataDynamics.ActiveReports.ReportHeader()
+        Me.ReportFooter1 = New DataDynamics.ActiveReports.ReportFooter()
+        Me.Label23 = New DataDynamics.ActiveReports.Label()
+        Me.Label24 = New DataDynamics.ActiveReports.Label()
+        Me.TextBox23 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox39 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox44 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox45 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox47 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox49 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox50 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox51 = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtPrecio = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtLunes = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtMartes = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtMiercoles = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtJueves = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtViernes = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtSabado = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtDomingo = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox61 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox62 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox53 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox64 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox65 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox66 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox67 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox68 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox69 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox70 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox71 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox72 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox73 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox74 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox75 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox76 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox77 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox78 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox79 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox80 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox81 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox63 = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtMontoLunes = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtMontoMartes = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtMontoMiercoles = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtMontoJueves = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtMontoViernes = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtMontoSabado = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtMontoDomingo = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox84 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox85 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox89 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox90 = New DataDynamics.ActiveReports.TextBox()
+        Me.GroupHeader1 = New DataDynamics.ActiveReports.GroupHeader()
+        Me.TextBox22 = New DataDynamics.ActiveReports.TextBox()
+        Me.GroupFooter1 = New DataDynamics.ActiveReports.GroupFooter()
+        Me.TextBox26 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox27 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox28 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox29 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox30 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox31 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox32 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox33 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox34 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox35 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox36 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox37 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox38 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox40 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox41 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox42 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox43 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox46 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox48 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox87 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox88 = New DataDynamics.ActiveReports.TextBox()
         CType(Me.lblOrderNum, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.lblOrderDate, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ImgLogo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -190,6 +190,8 @@ Partial Public Class ArepPlanilla
         CType(Me.LblPeriodo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label22, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label25, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LblTipoNomina, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LblImpreso, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -288,8 +290,6 @@ Partial Public Class ArepPlanilla
         CType(Me.TextBox48, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox87, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox88, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.LblTipoNomina, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.LblImpreso, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         '
         'PageHeader1
@@ -349,11 +349,11 @@ Partial Public Class ArepPlanilla
         Me.ImgLogo.Height = 1.0!
         Me.ImgLogo.Image = Nothing
         Me.ImgLogo.ImageData = Nothing
-        Me.ImgLogo.Left = 0.0!
-        Me.ImgLogo.LineWeight = 0.0!
+        Me.ImgLogo.Left = 0!
+        Me.ImgLogo.LineWeight = 0!
         Me.ImgLogo.Name = "ImgLogo"
         Me.ImgLogo.SizeMode = DataDynamics.ActiveReports.SizeModes.Stretch
-        Me.ImgLogo.Top = 0.0!
+        Me.ImgLogo.Top = 0!
         Me.ImgLogo.Width = 1.5!
         '
         'LblEncabezado
@@ -370,10 +370,10 @@ Partial Public Class ArepPlanilla
         Me.LblEncabezado.HyperLink = Nothing
         Me.LblEncabezado.Left = 1.6875!
         Me.LblEncabezado.Name = "LblEncabezado"
-        Me.LblEncabezado.Style = "color: #404040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
-            "d-color: White; font-size: 15.75pt; "
+        Me.LblEncabezado.Style = "color: #404040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" &
+    "d-color: White; font-size: 15.75pt; "
         Me.LblEncabezado.Text = ""
-        Me.LblEncabezado.Top = 0.0!
+        Me.LblEncabezado.Top = 0!
         Me.LblEncabezado.Width = 9.6875!
         '
         'LblDireccion
@@ -863,7 +863,7 @@ Partial Public Class ArepPlanilla
         Me.LblPeriodo.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblPeriodo.Height = 0.1875!
         Me.LblPeriodo.HyperLink = Nothing
-        Me.LblPeriodo.Left = 0.0!
+        Me.LblPeriodo.Left = 0!
         Me.LblPeriodo.Name = "LblPeriodo"
         Me.LblPeriodo.Style = "ddo-char-set: 0; font-style: italic; font-size: 8.25pt; "
         Me.LblPeriodo.Text = ""
@@ -884,8 +884,8 @@ Partial Public Class ArepPlanilla
         Me.Label22.HyperLink = Nothing
         Me.Label22.Left = 1.666667!
         Me.Label22.Name = "Label22"
-        Me.Label22.Style = "color: #404040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" & _
-            "d-color: White; font-size: 15.75pt; "
+        Me.Label22.Style = "color: #404040; ddo-char-set: 0; text-align: center; font-weight: bold; backgroun" &
+    "d-color: White; font-size: 15.75pt; "
         Me.Label22.Text = "PLANILLA DE PAGO DE LECHE A SOCIOS Y CLIENTES"
         Me.Label22.Top = 0.3888889!
         Me.Label22.Width = 9.6875!
@@ -909,9 +909,47 @@ Partial Public Class ArepPlanilla
         Me.Label25.Top = 1.821429!
         Me.Label25.Width = 0.5!
         '
+        'LblTipoNomina
+        '
+        Me.LblTipoNomina.Border.BottomColor = System.Drawing.Color.Black
+        Me.LblTipoNomina.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblTipoNomina.Border.LeftColor = System.Drawing.Color.Black
+        Me.LblTipoNomina.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblTipoNomina.Border.RightColor = System.Drawing.Color.Black
+        Me.LblTipoNomina.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblTipoNomina.Border.TopColor = System.Drawing.Color.Black
+        Me.LblTipoNomina.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblTipoNomina.Height = 0.1875!
+        Me.LblTipoNomina.HyperLink = Nothing
+        Me.LblTipoNomina.Left = 4.375!
+        Me.LblTipoNomina.Name = "LblTipoNomina"
+        Me.LblTipoNomina.Style = "ddo-char-set: 0; font-style: italic; font-size: 8.25pt; "
+        Me.LblTipoNomina.Text = ""
+        Me.LblTipoNomina.Top = 1.05!
+        Me.LblTipoNomina.Width = 2.0!
+        '
+        'LblImpreso
+        '
+        Me.LblImpreso.Border.BottomColor = System.Drawing.Color.Black
+        Me.LblImpreso.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblImpreso.Border.LeftColor = System.Drawing.Color.Black
+        Me.LblImpreso.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblImpreso.Border.RightColor = System.Drawing.Color.Black
+        Me.LblImpreso.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblImpreso.Border.TopColor = System.Drawing.Color.Black
+        Me.LblImpreso.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblImpreso.Height = 0.1875!
+        Me.LblImpreso.HyperLink = Nothing
+        Me.LblImpreso.Left = 4.375!
+        Me.LblImpreso.Name = "LblImpreso"
+        Me.LblImpreso.Style = "ddo-char-set: 0; font-style: italic; font-size: 8.25pt; "
+        Me.LblImpreso.Text = ""
+        Me.LblImpreso.Top = 1.275!
+        Me.LblImpreso.Width = 4.0!
+        '
         'Detail1
         '
-        Me.Detail1.ColumnSpacing = 0.0!
+        Me.Detail1.ColumnSpacing = 0!
         Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.TextBox1, Me.TextBox2, Me.TextBox3, Me.TextBox4, Me.TextBox5, Me.TextBox6, Me.TextBox7, Me.TextBox8, Me.TextBox9, Me.TextBox10, Me.TextBox11, Me.TextBox12, Me.TextBox13, Me.TextBox14, Me.TextBox15, Me.TextBox16, Me.TextBox17, Me.TextBox18, Me.TextBox19, Me.TextBox20, Me.TextBox21, Me.TextBox24, Me.TextBox25, Me.TextBox83, Me.TextBox86})
         Me.Detail1.Height = 0.21875!
         Me.Detail1.Name = "Detail1"
@@ -932,7 +970,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox1.Text = "CodProductor"
-        Me.TextBox1.Top = 0.0!
+        Me.TextBox1.Top = 0!
         Me.TextBox1.Width = 0.6428571!
         '
         'TextBox2
@@ -952,7 +990,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox2.Text = "NombreProductor"
-        Me.TextBox2.Top = 0.0!
+        Me.TextBox2.Top = 0!
         Me.TextBox2.Width = 1.23!
         '
         'TextBox3
@@ -971,7 +1009,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox3.Text = "Lunes"
-        Me.TextBox3.Top = 0.0!
+        Me.TextBox3.Top = 0!
         Me.TextBox3.Width = 0.51!
         '
         'TextBox4
@@ -990,7 +1028,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox4.Text = "Martes"
-        Me.TextBox4.Top = 0.0!
+        Me.TextBox4.Top = 0!
         Me.TextBox4.Width = 0.52!
         '
         'TextBox5
@@ -1009,7 +1047,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox5.Text = "Miercoles"
-        Me.TextBox5.Top = 0.0!
+        Me.TextBox5.Top = 0!
         Me.TextBox5.Width = 0.46!
         '
         'TextBox6
@@ -1028,7 +1066,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox6.Name = "TextBox6"
         Me.TextBox6.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox6.Text = "Jueves"
-        Me.TextBox6.Top = 0.0!
+        Me.TextBox6.Top = 0!
         Me.TextBox6.Width = 0.52!
         '
         'TextBox7
@@ -1047,7 +1085,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox7.Name = "TextBox7"
         Me.TextBox7.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox7.Text = "Viernes"
-        Me.TextBox7.Top = 0.0!
+        Me.TextBox7.Top = 0!
         Me.TextBox7.Width = 0.52!
         '
         'TextBox8
@@ -1066,7 +1104,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox8.Name = "TextBox8"
         Me.TextBox8.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox8.Text = "Sabado"
-        Me.TextBox8.Top = 0.0!
+        Me.TextBox8.Top = 0!
         Me.TextBox8.Width = 0.52!
         '
         'TextBox9
@@ -1085,7 +1123,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox9.Name = "TextBox9"
         Me.TextBox9.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox9.Text = "Domingo"
-        Me.TextBox9.Top = 0.0!
+        Me.TextBox9.Top = 0!
         Me.TextBox9.Width = 0.52!
         '
         'TextBox10
@@ -1104,7 +1142,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox10.Name = "TextBox10"
         Me.TextBox10.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox10.Text = "TotalLitros"
-        Me.TextBox10.Top = 0.0!
+        Me.TextBox10.Top = 0!
         Me.TextBox10.Width = 0.625!
         '
         'TextBox11
@@ -1124,7 +1162,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox11.OutputFormat = resources.GetString("TextBox11.OutputFormat")
         Me.TextBox11.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox11.Text = "PrecioUnitario"
-        Me.TextBox11.Top = 0.0!
+        Me.TextBox11.Top = 0!
         Me.TextBox11.Width = 0.5625!
         '
         'TextBox12
@@ -1144,7 +1182,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox12.OutputFormat = resources.GetString("TextBox12.OutputFormat")
         Me.TextBox12.Style = "ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 8.25pt; "
         Me.TextBox12.Text = "IngresosBrutos"
-        Me.TextBox12.Top = 0.0!
+        Me.TextBox12.Top = 0!
         Me.TextBox12.Width = 0.74!
         '
         'TextBox13
@@ -1164,7 +1202,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox13.OutputFormat = resources.GetString("TextBox13.OutputFormat")
         Me.TextBox13.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox13.Text = "IR"
-        Me.TextBox13.Top = 0.0!
+        Me.TextBox13.Top = 0!
         Me.TextBox13.Width = 0.5!
         '
         'TextBox14
@@ -1204,7 +1242,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox15.OutputFormat = resources.GetString("TextBox15.OutputFormat")
         Me.TextBox15.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox15.Text = "Transporte"
-        Me.TextBox15.Top = 0.0!
+        Me.TextBox15.Top = 0!
         Me.TextBox15.Width = 0.5!
         '
         'TextBox16
@@ -1224,7 +1262,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox16.OutputFormat = resources.GetString("TextBox16.OutputFormat")
         Me.TextBox16.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox16.Text = "Anticipo"
-        Me.TextBox16.Top = 0.0!
+        Me.TextBox16.Top = 0!
         Me.TextBox16.Width = 0.4642856!
         '
         'TextBox17
@@ -1244,7 +1282,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox17.OutputFormat = resources.GetString("TextBox17.OutputFormat")
         Me.TextBox17.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox17.Text = "Pulperia"
-        Me.TextBox17.Top = 0.0!
+        Me.TextBox17.Top = 0!
         Me.TextBox17.Width = 0.5!
         '
         'TextBox18
@@ -1264,7 +1302,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox18.OutputFormat = resources.GetString("TextBox18.OutputFormat")
         Me.TextBox18.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox18.Text = "Inseminacion"
-        Me.TextBox18.Top = 0.0!
+        Me.TextBox18.Top = 0!
         Me.TextBox18.Width = 0.52!
         '
         'TextBox19
@@ -1284,7 +1322,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox19.OutputFormat = resources.GetString("TextBox19.OutputFormat")
         Me.TextBox19.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox19.Text = "ProductosVeterinarios"
-        Me.TextBox19.Top = 0.0!
+        Me.TextBox19.Top = 0!
         Me.TextBox19.Width = 0.5714285!
         '
         'TextBox20
@@ -1304,7 +1342,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox20.OutputFormat = resources.GetString("TextBox20.OutputFormat")
         Me.TextBox20.Style = "ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 8.25pt; "
         Me.TextBox20.Text = "TotalEgresos"
-        Me.TextBox20.Top = 0.0!
+        Me.TextBox20.Top = 0!
         Me.TextBox20.Width = 0.72!
         '
         'TextBox21
@@ -1324,7 +1362,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox21.OutputFormat = resources.GetString("TextBox21.OutputFormat")
         Me.TextBox21.Style = "ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 8.25pt; "
         Me.TextBox21.Text = "NetoPagar"
-        Me.TextBox21.Top = 0.0!
+        Me.TextBox21.Top = 0!
         Me.TextBox21.Width = 0.82!
         '
         'TextBox24
@@ -1384,7 +1422,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox83.OutputFormat = resources.GetString("TextBox83.OutputFormat")
         Me.TextBox83.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox83.Text = Nothing
-        Me.TextBox83.Top = 0.0!
+        Me.TextBox83.Top = 0!
         Me.TextBox83.Width = 0.58!
         '
         'TextBox86
@@ -1404,17 +1442,17 @@ Partial Public Class ArepPlanilla
         Me.TextBox86.OutputFormat = resources.GetString("TextBox86.OutputFormat")
         Me.TextBox86.Style = "ddo-char-set: 0; text-align: right; font-size: 8.25pt; "
         Me.TextBox86.Text = "Bolsa"
-        Me.TextBox86.Top = 0.0!
+        Me.TextBox86.Top = 0!
         Me.TextBox86.Width = 0.5!
         '
         'PageFooter1
         '
-        Me.PageFooter1.Height = 0.0!
+        Me.PageFooter1.Height = 0!
         Me.PageFooter1.Name = "PageFooter1"
         '
         'ReportHeader1
         '
-        Me.ReportHeader1.Height = 0.0!
+        Me.ReportHeader1.Height = 0!
         Me.ReportHeader1.Name = "ReportHeader1"
         '
         'ReportFooter1
@@ -2509,7 +2547,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox22.Name = "TextBox22"
         Me.TextBox22.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.TextBox22.Text = Nothing
-        Me.TextBox22.Top = 0.0!
+        Me.TextBox22.Top = 0!
         Me.TextBox22.Width = 5.944445!
         '
         'GroupFooter1
@@ -2537,7 +2575,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox26.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox26.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox26.Text = "Lunes"
-        Me.TextBox26.Top = 0.0!
+        Me.TextBox26.Top = 0!
         Me.TextBox26.Width = 0.52!
         '
         'TextBox27
@@ -2559,7 +2597,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox27.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox27.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox27.Text = "Martes"
-        Me.TextBox27.Top = 0.0!
+        Me.TextBox27.Top = 0!
         Me.TextBox27.Width = 0.52!
         '
         'TextBox28
@@ -2581,7 +2619,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox28.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox28.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox28.Text = "Miercoles"
-        Me.TextBox28.Top = 0.0!
+        Me.TextBox28.Top = 0!
         Me.TextBox28.Width = 0.46!
         '
         'TextBox29
@@ -2603,7 +2641,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox29.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox29.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox29.Text = "Jueves"
-        Me.TextBox29.Top = 0.0!
+        Me.TextBox29.Top = 0!
         Me.TextBox29.Width = 0.5!
         '
         'TextBox30
@@ -2625,7 +2663,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox30.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox30.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox30.Text = "Viernes"
-        Me.TextBox30.Top = 0.0!
+        Me.TextBox30.Top = 0!
         Me.TextBox30.Width = 0.52!
         '
         'TextBox31
@@ -2647,7 +2685,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox31.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox31.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox31.Text = "Sabado"
-        Me.TextBox31.Top = 0.0!
+        Me.TextBox31.Top = 0!
         Me.TextBox31.Width = 0.52!
         '
         'TextBox32
@@ -2669,7 +2707,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox32.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox32.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox32.Text = "Domingo"
-        Me.TextBox32.Top = 0.0!
+        Me.TextBox32.Top = 0!
         Me.TextBox32.Width = 0.52!
         '
         'TextBox33
@@ -2691,7 +2729,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox33.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox33.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox33.Text = "TotalLitros"
-        Me.TextBox33.Top = 0.0!
+        Me.TextBox33.Top = 0!
         Me.TextBox33.Width = 0.625!
         '
         'TextBox34
@@ -2714,7 +2752,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox34.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox34.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox34.Text = "PrecioUnitario"
-        Me.TextBox34.Top = 0.0!
+        Me.TextBox34.Top = 0!
         Me.TextBox34.Visible = False
         Me.TextBox34.Width = 0.5625!
         '
@@ -2738,7 +2776,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox35.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox35.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox35.Text = "IngresosBrutos"
-        Me.TextBox35.Top = 0.0!
+        Me.TextBox35.Top = 0!
         Me.TextBox35.Width = 0.75!
         '
         'TextBox36
@@ -2761,7 +2799,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox36.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox36.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox36.Text = "IR"
-        Me.TextBox36.Top = 0.0!
+        Me.TextBox36.Top = 0!
         Me.TextBox36.Width = 0.5!
         '
         'TextBox37
@@ -2808,7 +2846,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox38.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox38.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox38.Text = "Transporte"
-        Me.TextBox38.Top = 0.0!
+        Me.TextBox38.Top = 0!
         Me.TextBox38.Width = 0.5625!
         '
         'TextBox40
@@ -2831,7 +2869,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox40.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox40.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox40.Text = "Pulperia"
-        Me.TextBox40.Top = 0.0!
+        Me.TextBox40.Top = 0!
         Me.TextBox40.Width = 0.5!
         '
         'TextBox41
@@ -2854,7 +2892,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox41.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox41.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox41.Text = "Inseminacion"
-        Me.TextBox41.Top = 0.0!
+        Me.TextBox41.Top = 0!
         Me.TextBox41.Width = 0.4999999!
         '
         'TextBox42
@@ -2877,7 +2915,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox42.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox42.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox42.Text = "ProductosVeterinarios"
-        Me.TextBox42.Top = 0.0!
+        Me.TextBox42.Top = 0!
         Me.TextBox42.Width = 0.57!
         '
         'TextBox43
@@ -2900,7 +2938,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox43.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox43.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox43.Text = "TotalEgresos"
-        Me.TextBox43.Top = 0.0!
+        Me.TextBox43.Top = 0!
         Me.TextBox43.Width = 0.7142861!
         '
         'TextBox46
@@ -2922,7 +2960,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox46.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox46.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox46.Text = "Anticipo"
-        Me.TextBox46.Top = 0.0!
+        Me.TextBox46.Top = 0!
         Me.TextBox46.Width = 0.46!
         '
         'TextBox48
@@ -2945,7 +2983,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox48.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox48.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox48.Text = "NetoPagar"
-        Me.TextBox48.Top = 0.0!
+        Me.TextBox48.Top = 0!
         Me.TextBox48.Width = 0.82!
         '
         'TextBox87
@@ -2968,7 +3006,7 @@ Partial Public Class ArepPlanilla
         Me.TextBox87.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox87.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox87.Text = "Bolsa"
-        Me.TextBox87.Top = 0.0!
+        Me.TextBox87.Top = 0!
         Me.TextBox87.Width = 0.5000001!
         '
         'TextBox88
@@ -2991,52 +3029,14 @@ Partial Public Class ArepPlanilla
         Me.TextBox88.SummaryRunning = DataDynamics.ActiveReports.SummaryRunning.Group
         Me.TextBox88.SummaryType = DataDynamics.ActiveReports.SummaryType.SubTotal
         Me.TextBox88.Text = Nothing
-        Me.TextBox88.Top = 0.0!
+        Me.TextBox88.Top = 0!
         Me.TextBox88.Width = 0.58!
-        '
-        'LblTipoNomina
-        '
-        Me.LblTipoNomina.Border.BottomColor = System.Drawing.Color.Black
-        Me.LblTipoNomina.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblTipoNomina.Border.LeftColor = System.Drawing.Color.Black
-        Me.LblTipoNomina.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblTipoNomina.Border.RightColor = System.Drawing.Color.Black
-        Me.LblTipoNomina.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblTipoNomina.Border.TopColor = System.Drawing.Color.Black
-        Me.LblTipoNomina.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblTipoNomina.Height = 0.1875!
-        Me.LblTipoNomina.HyperLink = Nothing
-        Me.LblTipoNomina.Left = 4.375!
-        Me.LblTipoNomina.Name = "LblTipoNomina"
-        Me.LblTipoNomina.Style = "ddo-char-set: 0; font-style: italic; font-size: 8.25pt; "
-        Me.LblTipoNomina.Text = ""
-        Me.LblTipoNomina.Top = 1.05!
-        Me.LblTipoNomina.Width = 2.0!
-        '
-        'LblImpreso
-        '
-        Me.LblImpreso.Border.BottomColor = System.Drawing.Color.Black
-        Me.LblImpreso.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblImpreso.Border.LeftColor = System.Drawing.Color.Black
-        Me.LblImpreso.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblImpreso.Border.RightColor = System.Drawing.Color.Black
-        Me.LblImpreso.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblImpreso.Border.TopColor = System.Drawing.Color.Black
-        Me.LblImpreso.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
-        Me.LblImpreso.Height = 0.1875!
-        Me.LblImpreso.HyperLink = Nothing
-        Me.LblImpreso.Left = 4.375!
-        Me.LblImpreso.Name = "LblImpreso"
-        Me.LblImpreso.Style = "ddo-char-set: 0; font-style: italic; font-size: 8.25pt; "
-        Me.LblImpreso.Text = ""
-        Me.LblImpreso.Top = 1.275!
-        Me.LblImpreso.Width = 4.0!
         '
         'ArepPlanilla
         '
         Me.MasterReport = False
-        OleDBDataSource1.ConnectionString = "Provider=SQLOLEDB;Password=P@ssword;Persist Security Info=True;User ID=sa;Initial" & _
-            " Catalog=SistemaFacturacionMulukuku;Data Source=JUANBERMUDEZ-PC\SQL2014"
+        OleDBDataSource1.ConnectionString = "Provider=SQLOLEDB;Password=P@ssword;Persist Security Info=True;User ID=sa;Initial" &
+    " Catalog=SistemaFacturacionMulukuku;Data Source=JUANBERMUDEZ-PC\SQL2014"
         OleDBDataSource1.SQL = resources.GetString("OleDBDataSource1.SQL")
         Me.DataSource = OleDBDataSource1
         Me.PageSettings.Margins.Bottom = 0.3!
@@ -3054,11 +3054,11 @@ Partial Public Class ArepPlanilla
         Me.Sections.Add(Me.GroupFooter1)
         Me.Sections.Add(Me.PageFooter1)
         Me.Sections.Add(Me.ReportFooter1)
-        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Arial; font-style: normal; text-decoration: none; font-weight: norma" & _
-                    "l; font-size: 10pt; color: Black; ddo-char-set: 204; ", "Normal"))
+        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Arial; font-style: normal; text-decoration: none; font-weight: norma" &
+            "l; font-size: 10pt; color: Black; ddo-char-set: 204; ", "Normal"))
         Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-size: 16pt; font-weight: bold; ", "Heading1", "Normal"))
-        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Times New Roman; font-size: 14pt; font-weight: bold; font-style: ita" & _
-                    "lic; ", "Heading2", "Normal"))
+        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Times New Roman; font-size: 14pt; font-weight: bold; font-style: ita" &
+            "lic; ", "Heading2", "Normal"))
         Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-size: 13pt; font-weight: bold; ", "Heading3", "Normal"))
         CType(Me.lblOrderNum, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.lblOrderDate, System.ComponentModel.ISupportInitialize).EndInit()
@@ -3092,6 +3092,8 @@ Partial Public Class ArepPlanilla
         CType(Me.LblPeriodo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label22, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label25, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LblTipoNomina, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LblImpreso, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox3, System.ComponentModel.ISupportInitialize).EndInit()
@@ -3190,8 +3192,6 @@ Partial Public Class ArepPlanilla
         CType(Me.TextBox48, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox87, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox88, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.LblTipoNomina, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.LblImpreso, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
 
     End Sub

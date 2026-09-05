@@ -112,8 +112,8 @@ Public Class FrmActivar
             DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
             DataAdapter.Fill(DataSet, "Nomina")
             If DataSet.Tables("Nomina").Rows.Count = 0 Then
-                StrSqlUpdate = "INSERT INTO [Nomina] ([NumPlanilla],[CodTipoNomina],[FechaInicial],[FechaFinal],[Año],[mes],[Periodo]) " & _
-                               "VALUES( '" & NumeroPlanilla & "', '" & CodTipoNomina & "','" & Format(Me.DTPFechaIni.Value, "dd/MM/yyyy") & "','" & Format(Me.DTPFechaFin.Value, "dd/MM/yyyy") & "'," & Año & " ," & Mes & "," & Periodo & ")"
+                StrSqlUpdate = "INSERT INTO [Nomina] ([NumPlanilla],[CodTipoNomina],[FechaInicial],[FechaFinal],[Año],[mes],[Periodo],[Activo]) " &
+                               "VALUES( '" & NumeroPlanilla & "', '" & CodTipoNomina & "','" & Format(Me.DTPFechaIni.Value, "dd/MM/yyyy") & "','" & Format(Me.DTPFechaFin.Value, "dd/MM/yyyy") & "'," & Año & " ," & Mes & "," & Periodo & ",1)"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
                 iResultado = ComandoUpdate.ExecuteNonQuery

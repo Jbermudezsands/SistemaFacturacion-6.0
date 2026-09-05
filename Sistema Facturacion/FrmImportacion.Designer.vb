@@ -60,7 +60,7 @@ Partial Class FrmImportacion
         Me.Label5 = New System.Windows.Forms.Label()
         Me.BtnProcesarCtaxCob = New C1.Win.C1Input.C1Button()
         Me.ProgressBar = New System.Windows.Forms.ProgressBar()
-        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.TabBeneficiario = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.ChkLotes = New System.Windows.Forms.CheckBox()
@@ -83,6 +83,12 @@ Partial Class FrmImportacion
         Me.C1Button6 = New C1.Win.C1Input.C1Button()
         Me.C1Button7 = New C1.Win.C1Input.C1Button()
         Me.TrueDBGridContratos = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
+        Me.TabPage6 = New System.Windows.Forms.TabPage()
+        Me.BtnProcesaroBeneficiario = New C1.Win.C1Input.C1Button()
+        Me.TxtRutaBeneficiario = New System.Windows.Forms.TextBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.BtnLeerBeneficiario = New C1.Win.C1Input.C1Button()
+        Me.TrueDBGridBeneficiario = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -96,7 +102,7 @@ Partial Class FrmImportacion
         Me.GroupBox6.SuspendLayout()
         CType(Me.CmbSerie, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox7.SuspendLayout()
-        Me.TabControl1.SuspendLayout()
+        Me.TabBeneficiario.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.FrameTipo.SuspendLayout()
@@ -105,6 +111,8 @@ Partial Class FrmImportacion
         Me.TabPage4.SuspendLayout()
         Me.TabPage5.SuspendLayout()
         CType(Me.TrueDBGridContratos, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage6.SuspendLayout()
+        CType(Me.TrueDBGridBeneficiario, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'PictureBox2
@@ -558,18 +566,19 @@ Partial Class FrmImportacion
         Me.ProgressBar.Size = New System.Drawing.Size(682, 23)
         Me.ProgressBar.TabIndex = 109
         '
-        'TabControl1
+        'TabBeneficiario
         '
-        Me.TabControl1.Controls.Add(Me.TabPage1)
-        Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Controls.Add(Me.TabPage3)
-        Me.TabControl1.Controls.Add(Me.TabPage4)
-        Me.TabControl1.Controls.Add(Me.TabPage5)
-        Me.TabControl1.Location = New System.Drawing.Point(9, 61)
-        Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(926, 392)
-        Me.TabControl1.TabIndex = 110
+        Me.TabBeneficiario.Controls.Add(Me.TabPage1)
+        Me.TabBeneficiario.Controls.Add(Me.TabPage2)
+        Me.TabBeneficiario.Controls.Add(Me.TabPage3)
+        Me.TabBeneficiario.Controls.Add(Me.TabPage4)
+        Me.TabBeneficiario.Controls.Add(Me.TabPage5)
+        Me.TabBeneficiario.Controls.Add(Me.TabPage6)
+        Me.TabBeneficiario.Location = New System.Drawing.Point(9, 61)
+        Me.TabBeneficiario.Name = "TabBeneficiario"
+        Me.TabBeneficiario.SelectedIndex = 0
+        Me.TabBeneficiario.Size = New System.Drawing.Size(926, 392)
+        Me.TabBeneficiario.TabIndex = 110
         '
         'TabPage1
         '
@@ -831,12 +840,90 @@ Partial Class FrmImportacion
         Me.TrueDBGridContratos.Text = "C1TrueDBGrid1"
         Me.TrueDBGridContratos.PropBag = resources.GetString("TrueDBGridContratos.PropBag")
         '
+        'TabPage6
+        '
+        Me.TabPage6.Controls.Add(Me.BtnProcesaroBeneficiario)
+        Me.TabPage6.Controls.Add(Me.TxtRutaBeneficiario)
+        Me.TabPage6.Controls.Add(Me.Label10)
+        Me.TabPage6.Controls.Add(Me.BtnLeerBeneficiario)
+        Me.TabPage6.Controls.Add(Me.TrueDBGridBeneficiario)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage6.Name = "TabPage6"
+        Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage6.Size = New System.Drawing.Size(918, 366)
+        Me.TabPage6.TabIndex = 5
+        Me.TabPage6.Text = "Benefiario"
+        Me.TabPage6.UseVisualStyleBackColor = True
+        '
+        'BtnProcesaroBeneficiario
+        '
+        Me.BtnProcesaroBeneficiario.Image = CType(resources.GetObject("BtnProcesaroBeneficiario.Image"), System.Drawing.Image)
+        Me.BtnProcesaroBeneficiario.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnProcesaroBeneficiario.Location = New System.Drawing.Point(810, 17)
+        Me.BtnProcesaroBeneficiario.Name = "BtnProcesaroBeneficiario"
+        Me.BtnProcesaroBeneficiario.Size = New System.Drawing.Size(88, 48)
+        Me.BtnProcesaroBeneficiario.TabIndex = 136
+        Me.BtnProcesaroBeneficiario.Tag = "28"
+        Me.BtnProcesaroBeneficiario.Text = "Procesar"
+        Me.BtnProcesaroBeneficiario.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnProcesaroBeneficiario.UseVisualStyleBackColor = True
+        Me.BtnProcesaroBeneficiario.VisualStyleBaseStyle = C1.Win.C1Input.VisualStyle.Office2007Blue
+        '
+        'TxtRutaBeneficiario
+        '
+        Me.TxtRutaBeneficiario.Enabled = False
+        Me.TxtRutaBeneficiario.Location = New System.Drawing.Point(21, 36)
+        Me.TxtRutaBeneficiario.Name = "TxtRutaBeneficiario"
+        Me.TxtRutaBeneficiario.Size = New System.Drawing.Size(667, 20)
+        Me.TxtRutaBeneficiario.TabIndex = 135
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(21, 20)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(89, 13)
+        Me.Label10.TabIndex = 134
+        Me.Label10.Text = "Ruta de Archivos"
+        '
+        'BtnLeerBeneficiario
+        '
+        Me.BtnLeerBeneficiario.Image = CType(resources.GetObject("BtnLeerBeneficiario.Image"), System.Drawing.Image)
+        Me.BtnLeerBeneficiario.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnLeerBeneficiario.Location = New System.Drawing.Point(716, 17)
+        Me.BtnLeerBeneficiario.Name = "BtnLeerBeneficiario"
+        Me.BtnLeerBeneficiario.Size = New System.Drawing.Size(88, 48)
+        Me.BtnLeerBeneficiario.TabIndex = 133
+        Me.BtnLeerBeneficiario.Tag = "25"
+        Me.BtnLeerBeneficiario.Text = "Leer Archivo"
+        Me.BtnLeerBeneficiario.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnLeerBeneficiario.UseVisualStyleBackColor = True
+        Me.BtnLeerBeneficiario.VisualStyleBaseStyle = C1.Win.C1Input.VisualStyle.Office2007Blue
+        '
+        'TrueDBGridBeneficiario
+        '
+        Me.TrueDBGridBeneficiario.AllowUpdate = False
+        Me.TrueDBGridBeneficiario.AlternatingRows = True
+        Me.TrueDBGridBeneficiario.FilterBar = True
+        Me.TrueDBGridBeneficiario.GroupByCaption = "Drag a column header here to group by that column"
+        Me.TrueDBGridBeneficiario.Images.Add(CType(resources.GetObject("TrueDBGridBeneficiario.Images"), System.Drawing.Image))
+        Me.TrueDBGridBeneficiario.Location = New System.Drawing.Point(6, 71)
+        Me.TrueDBGridBeneficiario.Name = "TrueDBGridBeneficiario"
+        Me.TrueDBGridBeneficiario.PreviewInfo.Location = New System.Drawing.Point(0, 0)
+        Me.TrueDBGridBeneficiario.PreviewInfo.Size = New System.Drawing.Size(0, 0)
+        Me.TrueDBGridBeneficiario.PreviewInfo.ZoomFactor = 75.0R
+        Me.TrueDBGridBeneficiario.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridBeneficiario.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TrueDBGridBeneficiario.Size = New System.Drawing.Size(892, 267)
+        Me.TrueDBGridBeneficiario.TabIndex = 129
+        Me.TrueDBGridBeneficiario.Text = "C1TrueDBGrid1"
+        Me.TrueDBGridBeneficiario.PropBag = resources.GetString("TrueDBGridBeneficiario.PropBag")
+        '
         'FrmImportacion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(941, 488)
-        Me.Controls.Add(Me.TabControl1)
+        Me.Controls.Add(Me.TabBeneficiario)
         Me.Controls.Add(Me.ProgressBar)
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.Label9)
@@ -864,7 +951,7 @@ Partial Class FrmImportacion
         CType(Me.CmbSerie, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox7.ResumeLayout(False)
         Me.GroupBox7.PerformLayout()
-        Me.TabControl1.ResumeLayout(False)
+        Me.TabBeneficiario.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
@@ -876,6 +963,9 @@ Partial Class FrmImportacion
         Me.TabPage5.ResumeLayout(False)
         Me.TabPage5.PerformLayout()
         CType(Me.TrueDBGridContratos, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage6.ResumeLayout(False)
+        Me.TabPage6.PerformLayout()
+        CType(Me.TrueDBGridBeneficiario, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -915,7 +1005,7 @@ Partial Class FrmImportacion
     Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents CmbSerie As C1.Win.C1List.C1Combo
     Friend WithEvents LblMoneda As System.Windows.Forms.Label
-    Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
+    Friend WithEvents TabBeneficiario As System.Windows.Forms.TabControl
     Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents FrameTipo As System.Windows.Forms.GroupBox
@@ -941,4 +1031,10 @@ Partial Class FrmImportacion
     Friend WithEvents C1Button6 As C1.Win.C1Input.C1Button
     Friend WithEvents C1Button7 As C1.Win.C1Input.C1Button
     Friend WithEvents ChkLotes As System.Windows.Forms.CheckBox
+    Friend WithEvents TabPage6 As TabPage
+    Friend WithEvents TxtRutaBeneficiario As TextBox
+    Friend WithEvents Label10 As Label
+    Friend WithEvents BtnLeerBeneficiario As C1.Win.C1Input.C1Button
+    Friend WithEvents TrueDBGridBeneficiario As C1.Win.C1TrueDBGrid.C1TrueDBGrid
+    Friend WithEvents BtnProcesaroBeneficiario As C1.Win.C1Input.C1Button
 End Class

@@ -1,3 +1,5 @@
+﻿Imports DataDynamics.ActiveReports.Chart
+
 Public Class FrmImportacion
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Public MiConexionExcel As New OleDb.OleDbConnection
@@ -200,7 +202,7 @@ Public Class FrmImportacion
             DataAdapter = New SqlClient.SqlDataAdapter(SQL, MiConexion)
             DataAdapter.Fill(DataSet, "Productos")
             If DataSet.Tables("Productos").Rows.Count = 0 Then
-                StrSqlUpdate = "INSERT INTO [Productos] ([Cod_Productos],[Descripcion_Producto],[Ubicacion],[Cod_Linea],[Tipo_Producto],[Cod_Cuenta_Inventario],[Cod_Cuenta_Costo],[Cod_Cuenta_Ventas],[Unidad_Medida],[Precio_Venta],[Precio_Lista],[Descuento],[Existencia_Negativa],[Cod_Iva],[Activo],[Minimo],[Reorden],[Nota],[Cod_Cuenta_GastoAjuste],[Cod_Cuenta_IngresoAjuste],[CodComponente],[Cod_Rubro]) " & _
+                StrSqlUpdate = "INSERT INTO [Productos] ([Cod_Productos],[Descripcion_Producto],[Ubicacion],[Cod_Linea],[Tipo_Producto],[Cod_Cuenta_Inventario],[Cod_Cuenta_Costo],[Cod_Cuenta_Ventas],[Unidad_Medida],[Precio_Venta],[Precio_Lista],[Descuento],[Existencia_Negativa],[Cod_Iva],[Activo],[Minimo],[Reorden],[Nota],[Cod_Cuenta_GastoAjuste],[Cod_Cuenta_IngresoAjuste],[CodComponente],[Cod_Rubro]) " &
                                "VALUES('" & CodProducto & "','" & Descripcion & "','" & UnidadMedida & "','" & CodLinea & "','Productos' ,'" & CuentaInventario & "','" & CuentaCostos & "','" & CuentaVentas & "','" & UnidadMedida & "','" & PVtaCordobas & "','" & PVtaDolar & "','0.00','NO','" & CodIva & "','Activo','0.00' ,'0.00','Nota','" & CuentaGastoAjuste & "','" & CuentaIngresoAjuste & "','0','" & CodRubro & "')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -220,7 +222,7 @@ Public Class FrmImportacion
             DataAdapter = New SqlClient.SqlDataAdapter(SQL, MiConexion)
             DataAdapter.Fill(DataSet, "Bodega")
             If DataSet.Tables("Bodega").Rows.Count = 0 Then
-                StrSqlUpdate = "INSERT INTO [DetalleBodegas] ([Cod_Bodegas],[Cod_Productos]) " & _
+                StrSqlUpdate = "INSERT INTO [DetalleBodegas] ([Cod_Bodegas],[Cod_Productos]) " &
                                "VALUES ('" & CodBodega & "','" & CodProducto & "')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -348,7 +350,7 @@ Public Class FrmImportacion
         '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
         '/////////////////////////////////////////////////////////////////////////////////////////////////
         MiConexion.Close()
-        SQL = "UPDATE [Compras]  SET [SubTotal] = " & SubTotal & ",[IVA] = " & IVA & ",[Pagado] = '0',[NetoPagar] = " & SubTotal + IVA & ",[MontoCredito] = " & SubTotal + IVA & ",[MonedaCompra] = 'Cordobas'  " & _
+        SQL = "UPDATE [Compras]  SET [SubTotal] = " & SubTotal & ",[IVA] = " & IVA & ",[Pagado] = '0',[NetoPagar] = " & SubTotal + IVA & ",[MontoCredito] = " & SubTotal + IVA & ",[MonedaCompra] = 'Cordobas'  " &
                      "WHERE  (Numero_Compra = '" & NumeroCompra & "') AND (Tipo_Compra = '" & TipoCompra & "')"
         MiConexion.Open()
         ComandoUpdate = New SqlClient.SqlCommand(SQL, MiConexion)
@@ -386,7 +388,7 @@ Public Class FrmImportacion
         Me.TrueDBGridClientes.Splits.Item(0).DisplayColumns(4).Width = 100
         Me.TrueDBGridClientes.Splits.Item(0).DisplayColumns(5).Width = 100
         Me.TrueDBGridClientes.Splits.Item(0).DisplayColumns(6).Width = 100
-       
+
 
         MiConexionExcel.Close()
     End Sub
@@ -513,7 +515,7 @@ Public Class FrmImportacion
                 DataAdapter.Fill(DataSet, "Proveedor")
                 If DataSet.Tables("Proveedor").Rows.Count = 0 Then
                     MiConexion.Close()
-                    StrSqlUpdate = "INSERT INTO [Proveedor] ([Cod_Proveedor],[Nombre_Proveedor],[Apellido_Proveedor],[Direccion_Proveedor],[Telefono],[Cod_Cuenta_Pagar],[RUC]) " & _
+                    StrSqlUpdate = "INSERT INTO [Proveedor] ([Cod_Proveedor],[Nombre_Proveedor],[Apellido_Proveedor],[Direccion_Proveedor],[Telefono],[Cod_Cuenta_Pagar],[RUC]) " &
                                    "VALUES ('" & Codigo & "' ,'" & Nombres & "','" & Apellidos & "','" & Direccion & "','" & Telefono & "','" & CtaContable & "' ,'" & Ruc & "')"
                     MiConexion.Open()
                     ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -605,10 +607,10 @@ Public Class FrmImportacion
 
             MiConexion.Close()
             '///////////ACTUALIZO LA EXISTENCIA PARA CADA BODEGA ////////////////////////////////////////
-            StrSqlUpdate = "UPDATE [Productos] SET [Precio_Venta] = " & PrecioC & " ,[Precio_Lista] = " & PrecioD & " ,[Ultimo_Precio_Venta] = " & PrecioC & " " & _
+            StrSqlUpdate = "UPDATE [Productos] SET [Precio_Venta] = " & PrecioC & " ,[Precio_Lista] = " & PrecioD & " ,[Ultimo_Precio_Venta] = " & PrecioC & " " &
                            "WHERE (Cod_Productos = '" & CodProducto & "')"
             MiConexion.Open()
-            ComandoUpdate = New SqlClient.SqlCommand(StrSQLUpdate, MiConexion)
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
             MiConexion.Close()
 
@@ -852,7 +854,7 @@ Public Class FrmImportacion
 
             Else
                 '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-                StrSqlUpdate = "INSERT INTO [Contratos] ([Cod_Cliente],[Tipo_Servicios1],[Tipo_Servicios2],[Frecuencia],[Inicio_Contrato],[Fin_Contrato] ,[Contacto_Administrativo] ,[Contacto_Operativo],[Precio_Unitario] ,[Moneda],[Activo],[Activo2],[Anulado],[Retencion1],[Retencion2],[Exonerado],[Referencia],[Observaciones],[Precio_Unitario2],[Inicio_Contrato2],[Fin_Contrato2] ,[Moneda2] ,[Frecuencia2] ,[IdContrato1],[IdContrato2],[DiasFactura1],[DiasFactura2],[CodBodega1],[CodBodega2],[Contrato_Variable],[Contrato_Variable2]) " & _
+                StrSqlUpdate = "INSERT INTO [Contratos] ([Cod_Cliente],[Tipo_Servicios1],[Tipo_Servicios2],[Frecuencia],[Inicio_Contrato],[Fin_Contrato] ,[Contacto_Administrativo] ,[Contacto_Operativo],[Precio_Unitario] ,[Moneda],[Activo],[Activo2],[Anulado],[Retencion1],[Retencion2],[Exonerado],[Referencia],[Observaciones],[Precio_Unitario2],[Inicio_Contrato2],[Fin_Contrato2] ,[Moneda2] ,[Frecuencia2] ,[IdContrato1],[IdContrato2],[DiasFactura1],[DiasFactura2],[CodBodega1],[CodBodega2],[Contrato_Variable],[Contrato_Variable2]) " &
                                "VALUES ('" & CodigoCliente & "','" & TipoServicio1 & "' ,'" & TipoServicio2 & "' ,'" & Frecuencia1 & "' ,'" & MiDataSet.Tables("Contratos").Rows(iPosicionFila)("InicioContrato") & "' ,'" & MiDataSet.Tables("Contratos").Rows(iPosicionFila)("FinContrato") & "' , ' ' , ' ' , '" & MiDataSet.Tables("Contratos").Rows(iPosicionFila)("PrecioUnitario") & "' , '" & MiDataSet.Tables("Contratos").Rows(iPosicionFila)("Moneda") & "' ,1,1,0,0,0, 0, 'Importacion' ,' ' , " & MiDataSet.Tables("Contratos").Rows(iPosicionFila)("PrecioUnitario2") & " ,'" & MiDataSet.Tables("Contratos").Rows(iPosicionFila)("InicioContrato2") & "' ,'" & MiDataSet.Tables("Contratos").Rows(iPosicionFila)("FinContrato2") & "' ,'" & MiDataSet.Tables("Contratos").Rows(iPosicionFila)("Moneda2") & "' ," & MiDataSet.Tables("Contratos").Rows(iPosicionFila)("Frecuencia2") & "  , " & IdContrato1 & " ," & IdContrato2 & ", " & MiDataSet.Tables("Contratos").Rows(iPosicionFila)("DiasFacturar") & " ," & MiDataSet.Tables("Contratos").Rows(iPosicionFila)("DiasFacturar2") & ", '" & MiDataSet.Tables("Contratos").Rows(iPosicionFila)("Bodega") & "','" & MiDataSet.Tables("Contratos").Rows(iPosicionFila)("Bodega2") & "','" & ContratoVariable1 & "','" & ContratoVariable2 & "')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -911,6 +913,295 @@ Public Class FrmImportacion
         MiConexionExcel.Close()
     End Sub
 
+    Private Sub BtnLeerBeneficiario_Click(sender As Object, e As EventArgs) Handles BtnLeerBeneficiario.Click
+        Me.OpenFileDialog.ShowDialog()
+        RutaBD = OpenFileDialog.FileName
+        Me.TxtRutaBeneficiario.Text = RutaBD
+        ConexionExcel = "Provider=Microsoft.Jet.OLEDB.4.0;Extended Properties = 'Excel 8.0'; Data Source= " & RutaBD & " "
+        MiConexionExcel = New OleDb.OleDbConnection(ConexionExcel)
+        DataAdapterExcel = New OleDb.OleDbDataAdapter("SELECT * FROM [Hoja1$]", MiConexionExcel)
+
+        Dim commandbuilder As New OleDb.OleDbCommandBuilder(Me.DataAdapterExcel)
+        MiConexionExcel.Open()
+        DataAdapterExcel.Fill(MiDataSet, "Contratos")
+
+        Me.TrueDBGridBeneficiario.DataSource = MiDataSet.Tables("Contratos")
+
+        Me.TrueDBGridBeneficiario.Splits.Item(0).DisplayColumns(0).Width = 122
+        Me.TrueDBGridBeneficiario.Splits.Item(0).DisplayColumns(1).Width = 373
+        Me.TrueDBGridBeneficiario.Splits.Item(0).DisplayColumns(2).Width = 90
+        Me.TrueDBGridBeneficiario.Splits.Item(0).DisplayColumns(3).Width = 90
+
+        MiConexionExcel.Close()
+    End Sub
+
+    Private Sub BtnProcesaroBeneficiario_Click(sender As Object, e As EventArgs) Handles BtnProcesaroBeneficiario.Click
+
+        If MiDataSet Is Nothing OrElse Not MiDataSet.Tables.Contains("Contratos") Then
+            MessageBox.Show("Primero debe leer el archivo Excel.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Exit Sub
+        End If
+
+        Dim tabla As DataTable = MiDataSet.Tables("Contratos")
+        If tabla.Rows.Count = 0 Then
+            MessageBox.Show("El archivo no contiene registros.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Exit Sub
+        End If
+
+        Dim dal As New CsBeneficiario()
+        Dim procesados As Integer = 0
+        Dim errores As Integer = 0
+        Dim errMsg As New System.Text.StringBuilder()
+
+        Me.ProgressBar.Minimum = 0
+        Me.ProgressBar.Maximum = tabla.Rows.Count
+        Me.ProgressBar.Value = 0
+
+        For Each fila As DataRow In tabla.Rows
+            Try
+                If fila(0) Is DBNull.Value OrElse String.IsNullOrWhiteSpace(fila(0).ToString()) Then
+                    Continue For
+                End If
+
+                '////CLASIFICACION BENEFICIARIO
+                '1-SOCIO, 2-PRESOCIO, 3-TRANSPORTISTA, 4-PROVEEDOR, 5-PRODUCTOR, 6-CLIENTE, 7-NOMINA.
+
+                ' ── ROLES del beneficiario ────────────────────────────────────
+                Dim tiposRol As String = SafeStr(fila(5)).ToUpper()
+                Dim esNomina As Boolean = tiposRol.Contains("7")
+                Dim esCliente As Boolean = tiposRol.Contains("6")
+                Dim esProveedor As Boolean = tiposRol.Contains("4")
+                Dim esSocio As Boolean = tiposRol.Contains("1") AndAlso Not tiposRol.Contains("2")
+                Dim esPreSocio As Boolean = tiposRol.Contains("2")
+                Dim esProductor As Boolean = tiposRol.Contains("5")
+                Dim esTransportista As Boolean = tiposRol.Contains("3")
+
+                ' ── DATOS BASE (compartidos por todos los roles) ──────────────
+                Dim b As New Beneficiario()
+                b.Codigo = SafeStr(fila(0))
+                b.Nombre = (SafeStr(fila(1)) & " " & SafeStr(fila(2))).Trim()
+                b.Apellido = (SafeStr(fila(3)) & " " & SafeStr(fila(4))).Trim()
+                b.Direccion = SafeStr(fila(6))
+                b.Estado_Civil = SafeStr(fila(24))
+                b.Sexo = SafeStr(fila(9))
+                b.RUC = SafeStr(fila(10))
+                b.Cedula = SafeStr(fila(11))
+                b.Telefonos = SafeStr(fila(32))
+                b.Activo = True
+                b.Fecha_Admision = Date.Today
+                b.Fecha_Nacimiento = Date.MinValue
+
+                Me.Text = "Procesando: " & b.Codigo & " " & b.Nombre & " " & b.Apellido
+
+
+                ' ── 1. GRABAR BENEFICIARIO BASE (siempre) ─────────────────────
+                b.EsEmpleado = esNomina
+                b.EsCliente = esCliente
+                b.EsProveedor = esProveedor
+                b.EsSocio = esSocio
+                b.EsPreSocio = esPreSocio
+                b.EsProductor = esProductor
+                b.EsTransportista = esTransportista
+
+                ' INSERT o UPDATE tabla Beneficiario
+
+                ' ── 2. NÓMINA ─────────────────────────────────────────────────
+                'If esNomina Then
+                '    b.Cargo = SafeStr(fila(12))
+                '    b.Departamento = SafeStr(fila(13))
+                '    b.INSS = SafeStr(fila(14))
+                '    b.Hijos = SafeInt(fila(15))
+                '    b.TipoNomina = SafeStr(fila(16))
+                '    b.GrupoNomina = SafeStr(fila(17))
+                '    b.Turno = SafeStr(fila(18))
+                '    b.SueldoPeriodo = SafeDbl(fila(19))
+                '    b.TarifaHoraria = SafeDbl(fila(20))
+                '    b.CuentaBanco = SafeStr(fila(21))
+                '    b.Celular = SafeStr(fila(22))
+                '    b.Profesion = SafeStr(fila(23))
+                '    b.JefeInmediato = SafeStr(fila(25))
+                '    b.Incentivo = SafeDbl(fila(26))
+                '    b.SalarioDolarizado = SafeDbl(fila(27))
+                '    b.CorreoElectronico = SafeStr(fila(28))
+                '    b.CuentaBancoLAFISE = SafeStr(fila(29))
+                '    b.CuentaBancoBANPRO = SafeStr(fila(30))
+                '    b.CuentaBancoBDF = SafeStr(fila(31))
+                '    dal.GestionarEmpleado(b)
+                'End If
+
+                ' ── 3. CLIENTE (Col 33–39) ────────────────────────────────────
+                If esCliente Then
+                    b.Departamento = SafeStr(fila(33))
+                    b.Municipio = SafeStr(fila(34))
+                    b.MonedaCredito = SafeStr(fila(35))
+                    b.DiasCredito = SafeDbl(fila(36))
+                    b.LimiteCredito = SafeDbl(fila(37))
+                    b.Efectivo = (SafeStr(fila(38)).ToUpper() = "SI")
+                    b.CodCuentaCliente = SafeStr(fila(39))
+                    b.BloquearPorLimiteCredito = False
+                    b.CausaIva = False
+                    b.CreditoDisponible = False
+                End If
+
+                ' ── 4. PROVEEDOR (Col 40–44) ──────────────────────────────────
+                If esProveedor Then
+                    b.CodCuentaProveedor = SafeStr(fila(40))
+                    b.MonedaCreditoProveedor = SafeStr(fila(41))
+                    b.DiasCreditoProveedor = SafeDbl(fila(42))
+                    b.LimiteCreditoProveedor = SafeDbl(fila(43))
+                    b.EfectivoProveedor = (SafeStr(fila(44)).ToUpper() = "SI")
+
+                End If
+
+                ' ── 5. SOCIO (Col 45–60) ──────────────────────────────────────
+                If esSocio Then
+                    b.EscolaridadSocio = SafeStr(fila(45))
+                    b.CooperatiaSocio = SafeStr(fila(46))
+                    b.RutaSocio = SafeStr(fila(47))
+                    b.CtasxCobrarSocio = SafeStr(fila(48))
+                    b.CtasxPagarSocio = SafeStr(fila(49))
+                    b.CtaPlanillaSocio = SafeStr(fila(50))
+                    b.CtaBancoSocio = SafeStr(fila(51))
+                    b.CtaIrSocio = SafeStr(fila(52))
+                    b.CtaBolsaSocio = SafeStr(fila(53))
+                    b.CtaAnticipoSocio = SafeStr(fila(54))
+                    b.CtaTransporteSocio = SafeStr(fila(55))
+                    b.CtaInseminacionSocio = SafeStr(fila(56))
+                    b.CtaTrazabilidadSocio = SafeStr(fila(57))
+                    b.CtaVeterinariosSocio = SafeStr(fila(58))
+                    b.CtaFondosSocio = SafeStr(fila(59))
+                    b.CtaOtrasDeduccionesSocio = SafeStr(fila(60))
+
+                    '-----COLUMNAS EXTRAS PARA TODOS -----
+                    b.TipoPagoSocio = SafeStr(fila(109))
+                    b.CodTipoNominaSocio = SafeStr(fila(110))
+                    b.PrecioSocio = SafeStr(fila(111))
+
+                    b.TipoPagoProductor = SafeStr(fila(109))
+                    b.CodTipoNominaProductor = SafeStr(fila(110))
+                    b.PrecioProductor = SafeStr(fila(111))
+
+
+                End If
+
+                ' ── 6. PRE-SOCIO (Col 61–76) ──────────────────────────────────
+                If esPreSocio Then
+                    b.EscolaridadPreSocio = SafeStr(fila(61))
+                    b.CooperatiaPreSocio = SafeStr(fila(62))
+                    b.RutaPreSocio = SafeStr(fila(63))
+                    b.CtasxCobrarPreSocio = SafeStr(fila(64))
+                    b.CtasxPagarPreSocio = SafeStr(fila(65))
+                    b.CtaPlanillaPreSocio = SafeStr(fila(66))
+                    b.CtaBancoPreSocio = SafeStr(fila(67))
+                    b.CtaIrPreSocio = SafeStr(fila(68))
+                    b.CtaBolsaPreSocio = SafeStr(fila(69))
+                    b.CtaAnticipoPreSocio = SafeStr(fila(70))
+                    b.CtaTransportePreSocio = SafeStr(fila(71))
+                    b.CtaInseminacionPreSocio = SafeStr(fila(72))
+                    b.CtaTrazabilidadPreSocio = SafeStr(fila(73))
+                    b.CtaVeterinariosPreSocio = SafeStr(fila(74))
+                    b.CtaFondosPreSocio = SafeStr(fila(75))
+                    b.CtaOtrasDeduccionesPreSocio = SafeStr(fila(76))
+
+                    '-----COLUMNAS EXTRAS PARA TODOS -----
+                    b.TipoPagoPreSocio = SafeStr(fila(109))
+                    b.CodTipoNominaPreSocio = SafeStr(fila(110))
+                    b.PrecioPreSocio = SafeStr(fila(111))
+
+                    b.TipoPagoProductor = SafeStr(fila(109))
+                    b.CodTipoNominaProductor = SafeStr(fila(110))
+                    b.PrecioProductor = SafeStr(fila(111))
+                End If
+
+                ' ── 7. PRODUCTOR (Col 77–92) ──────────────────────────────────
+                If esProductor Then
+                    b.EscolaridadProductor = SafeStr(fila(77))
+                    b.CooperatiaProductor = SafeStr(fila(78))
+                    b.RutaProductor = SafeStr(fila(79))
+                    b.CtasxCobrarProductor = SafeStr(fila(80))
+                    b.CtasxPagarProductor = SafeStr(fila(81))
+                    b.CtaPlanillaProductor = SafeStr(fila(82))
+                    b.CtaBancoProductor = SafeStr(fila(83))
+                    b.CtaIrProductor = SafeStr(fila(84))
+                    b.CtaBolsaProductor = SafeStr(fila(85))
+                    b.CtaAnticipoProductor = SafeStr(fila(86))
+                    b.CtaTransporteProductor = SafeStr(fila(87))
+                    b.CtaInseminacionProductor = SafeStr(fila(88))
+                    b.CtaTrazabilidadProductor = SafeStr(fila(89))
+                    b.CtaVeterinariosProductor = SafeStr(fila(90))
+                    b.CtaFondosProductor = SafeStr(fila(91))
+                    b.CtaOtrasDeduccionesProductor = SafeStr(fila(92))
+
+                    '-----COLUMNAS EXTRAS PARA TODOS -----
+                    b.TipoPagoProductor = SafeStr(fila(109))
+                    b.CodTipoNominaProductor = SafeStr(fila(110))
+                    b.PrecioProductor = SafeStr(fila(111))
+                End If
+
+                ' ── 8. TRANSPORTISTA (Col 93–107) ─────────────────────────────
+                If esTransportista Then
+                    b.Licencia = SafeStr(fila(93))
+                    b.Precio = SafeDbl(fila(94))
+                    'b.RutaTransportista = SafeStr(fila(95))
+                    b.CtaGtosPlanillaTransp = SafeStr(fila(97))
+                    b.CtaBancoTransp = SafeStr(fila(98))
+                    b.CtaIrTransp = SafeStr(fila(99))
+                    b.CtaBolsaTransp = SafeStr(fila(100))
+                    b.CtaAnticipoTransp = SafeStr(fila(101))
+                    b.CtaTransportista = SafeStr(fila(102))
+                    b.CtaInseminacionTransp = SafeStr(fila(103))
+                    b.CtaTrazabilidadTransp = SafeStr(fila(104))
+                    b.CtaVeterinariaTransp = SafeStr(fila(105))
+                    b.CtaFondosTransp = SafeStr(fila(106))
+                    b.CtaOtrasDeduccionesTransp = SafeStr(fila(107))
+                End If
+
+                If b.Codigo = "5284" Then
+                    b.Codigo = "5284"
+                End If
+
+                dal.Guardar(b)
+
+                procesados += 1
+                Me.ProgressBar.Value = procesados
+
+            Catch ex As Exception
+                errores += 1
+                errMsg.AppendLine($"Código {SafeStr(fila(0))}: {ex.Message}")
+            End Try
+        Next
+
+        Dim resumen As String = $"Proceso finalizado.{Environment.NewLine}Procesados: {procesados}{Environment.NewLine}Errores: {errores}"
+        If errores > 0 Then
+            resumen &= $"{Environment.NewLine}{Environment.NewLine}Detalle de errores:{Environment.NewLine}{errMsg.ToString()}"
+        End If
+
+        MessageBox.Show(resumen, "Resultado de importación",
+                    MessageBoxButtons.OK,
+                    If(errores > 0, MessageBoxIcon.Warning, MessageBoxIcon.Information))
+
+    End Sub
+
+    ' ── Helpers ───────────────────────────────────────────────────────────────────
+    Private Function SafeStr(valor As Object) As String
+        If valor Is Nothing OrElse valor Is DBNull.Value Then Return ""
+        Return valor.ToString().Trim()
+    End Function
+
+    Private Function SafeDbl(valor As Object) As Double
+        If valor Is Nothing OrElse valor Is DBNull.Value Then Return 0
+        Dim result As Double
+        Double.TryParse(valor.ToString(), result)
+        Return result
+    End Function
+
+    Private Function SafeInt(valor As Object) As Integer
+        If valor Is Nothing OrElse valor Is DBNull.Value Then Return 0
+        Dim result As Integer
+        Integer.TryParse(valor.ToString(), result)
+        Return result
+    End Function
+
     Private Sub C1Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles C1Button2.Click
         Dim SQL As String, iPosicionFila As Double
         Dim DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet
@@ -958,7 +1249,9 @@ Public Class FrmImportacion
             Else
                 UnidadMedida = "UM"
             End If
-            CodLinea = MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("LINEA")
+            If Not IsDBNull(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("LINEA")) Then
+                CodLinea = MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("LINEA")
+            End If
             If Not IsDBNull(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("CTAINV")) Then
                 CuentaInventario = MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("CTAINV")
             End If
@@ -995,30 +1288,36 @@ Public Class FrmImportacion
 
             If Me.FacturaTarea = True Then
                 If Not IsDBNull(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("FVENCIMIENTO")) Then
-                    FVencimiento = MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("FVENCIMIENTO")
+
                     If Not IsDBNull(MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("LOTE")) Then
+
                         LOTE = MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("LOTE")
 
-                        If Len(LOTE) > 20 Then
-                            NumeroLote = Mid(LOTE, 1, 20)
-                        Else
-                            NumeroLote = LOTE
+                        If LOTE <> "SINLOTE" Then
+                            FVencimiento = MiDataSet.Tables("DatosExcel").Rows(iPosicionFila)("FVENCIMIENTO")
+                            If Len(LOTE) > 20 Then
+                                NumeroLote = Mid(LOTE, 1, 20)
+                            Else
+                                NumeroLote = LOTE
+                            End If
+
+                            '///////////////////////////AGREGO EL LOTE ////////////////////////////////////////
+                            NuevoLote(NumeroLote, FVencimiento, LOTE)
+                        End If
+                    Else
+                        LOTE = "SINLOTE"
+                            NumeroLote = "SINLOTE"
                         End If
 
-                        '///////////////////////////AGREGO EL LOTE ////////////////////////////////////////
-                        NuevoLote(NumeroLote, FVencimiento, LOTE)
                     Else
-                        LOTE = "0000"
-                        NumeroLote = "0000"
+                        FVencimiento = "01/01/1900"
                     End If
 
-                Else
-                    FVencimiento = "01/01/1900"
                 End If
 
 
 
-            End If
+
 
             Descripcion = Replace(Descripcion, "'", "")
 
@@ -1027,7 +1326,7 @@ Public Class FrmImportacion
             DataAdapter = New SqlClient.SqlDataAdapter(SQL, MiConexion)
             DataAdapter.Fill(DataSet, "Productos")
             If DataSet.Tables("Productos").Rows.Count = 0 Then
-                StrSqlUpdate = "INSERT INTO [Productos] ([Cod_Productos],[Descripcion_Producto],[Ubicacion],[Cod_Linea],[Tipo_Producto],[Cod_Cuenta_Inventario],[Cod_Cuenta_Costo],[Cod_Cuenta_Ventas],[Unidad_Medida],[Precio_Venta],[Precio_Lista],[Descuento],[Existencia_Negativa],[Cod_Iva],[Activo],[Minimo],[Reorden],[Nota],[Cod_Cuenta_GastoAjuste],[Cod_Cuenta_IngresoAjuste],[CodComponente],[Cod_Rubro]) " & _
+                StrSqlUpdate = "INSERT INTO [Productos] ([Cod_Productos],[Descripcion_Producto],[Ubicacion],[Cod_Linea],[Tipo_Producto],[Cod_Cuenta_Inventario],[Cod_Cuenta_Costo],[Cod_Cuenta_Ventas],[Unidad_Medida],[Precio_Venta],[Precio_Lista],[Descuento],[Existencia_Negativa],[Cod_Iva],[Activo],[Minimo],[Reorden],[Nota],[Cod_Cuenta_GastoAjuste],[Cod_Cuenta_IngresoAjuste],[CodComponente],[Cod_Rubro]) " &
                                "VALUES('" & CodProducto & "','" & Descripcion & "','" & UnidadMedida & "','" & CodLinea & "','Productos' ,'" & CuentaInventario & "','" & CuentaCostos & "','" & CuentaVentas & "','" & UnidadMedida & "','" & PVtaCordobas & "','" & PVtaDolar & "','0.00','NO','" & CodIva & "','Activo','0.00' ,'0.00','Nota','" & CuentaGastoAjuste & "','" & CuentaIngresoAjuste & "','0','" & CodRubro & "')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -1047,7 +1346,7 @@ Public Class FrmImportacion
             DataAdapter = New SqlClient.SqlDataAdapter(SQL, MiConexion)
             DataAdapter.Fill(DataSet, "Bodega")
             If DataSet.Tables("Bodega").Rows.Count = 0 Then
-                StrSqlUpdate = "INSERT INTO [DetalleBodegas] ([Cod_Bodegas],[Cod_Productos]) " & _
+                StrSqlUpdate = "INSERT INTO [DetalleBodegas] ([Cod_Bodegas],[Cod_Productos]) " &
                                "VALUES ('" & CodBodega & "','" & CodProducto & "')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -1184,7 +1483,7 @@ Public Class FrmImportacion
         '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
         '/////////////////////////////////////////////////////////////////////////////////////////////////
         MiConexion.Close()
-        SQL = "UPDATE [Compras]  SET [SubTotal] = " & SubTotal & ",[IVA] = " & IVA & ",[Pagado] = '0',[NetoPagar] = " & SubTotal + IVA & ",[MontoCredito] = " & SubTotal + IVA & ",[MonedaCompra] = 'Cordobas'  " & _
+        SQL = "UPDATE [Compras]  SET [SubTotal] = " & SubTotal & ",[IVA] = " & IVA & ",[Pagado] = '0',[NetoPagar] = " & SubTotal + IVA & ",[MontoCredito] = " & SubTotal + IVA & ",[MonedaCompra] = 'Cordobas'  " &
                      "WHERE  (Numero_Compra = '" & NumeroCompra & "') AND (Tipo_Compra = '" & TipoCompra & "')"
         MiConexion.Open()
         ComandoUpdate = New SqlClient.SqlCommand(SQL, MiConexion)

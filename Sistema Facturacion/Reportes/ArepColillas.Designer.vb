@@ -17,84 +17,84 @@ Partial Public Class ArepColillas
     Private WithEvents PageFooter1 As DataDynamics.ActiveReports.PageFooter
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim OleDBDataSource1 As DataDynamics.ActiveReports.DataSources.OleDBDataSource = New DataDynamics.ActiveReports.DataSources.OleDBDataSource
+        Dim OleDBDataSource1 As DataDynamics.ActiveReports.DataSources.OleDBDataSource = New DataDynamics.ActiveReports.DataSources.OleDBDataSource()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ArepColillas))
-        Me.PageHeader1 = New DataDynamics.ActiveReports.PageHeader
-        Me.Detail1 = New DataDynamics.ActiveReports.Detail
-        Me.LblEncabezado = New DataDynamics.ActiveReports.Label
-        Me.Label2 = New DataDynamics.ActiveReports.Label
-        Me.Label3 = New DataDynamics.ActiveReports.Label
-        Me.Label4 = New DataDynamics.ActiveReports.Label
-        Me.Label5 = New DataDynamics.ActiveReports.Label
-        Me.Label6 = New DataDynamics.ActiveReports.Label
-        Me.Label7 = New DataDynamics.ActiveReports.Label
-        Me.Label8 = New DataDynamics.ActiveReports.Label
-        Me.LblLunes = New DataDynamics.ActiveReports.Label
-        Me.LblMartes = New DataDynamics.ActiveReports.Label
-        Me.LblMiercoles = New DataDynamics.ActiveReports.Label
-        Me.LblJueves = New DataDynamics.ActiveReports.Label
-        Me.LblViernes = New DataDynamics.ActiveReports.Label
-        Me.LblSabado = New DataDynamics.ActiveReports.Label
-        Me.LblDomingo = New DataDynamics.ActiveReports.Label
-        Me.Label17 = New DataDynamics.ActiveReports.Label
-        Me.Label19 = New DataDynamics.ActiveReports.Label
-        Me.Label20 = New DataDynamics.ActiveReports.Label
-        Me.Label21 = New DataDynamics.ActiveReports.Label
-        Me.Label22 = New DataDynamics.ActiveReports.Label
-        Me.Label23 = New DataDynamics.ActiveReports.Label
-        Me.Label24 = New DataDynamics.ActiveReports.Label
-        Me.Label25 = New DataDynamics.ActiveReports.Label
-        Me.Label26 = New DataDynamics.ActiveReports.Label
-        Me.Label27 = New DataDynamics.ActiveReports.Label
-        Me.Label29 = New DataDynamics.ActiveReports.Label
-        Me.TextBox1 = New DataDynamics.ActiveReports.TextBox
-        Me.TxtMontoLunes = New DataDynamics.ActiveReports.TextBox
-        Me.TxtMontoMartes = New DataDynamics.ActiveReports.TextBox
-        Me.TxtMontoMiercoles = New DataDynamics.ActiveReports.TextBox
-        Me.TxtMontoJueves = New DataDynamics.ActiveReports.TextBox
-        Me.TxtMontoViernes = New DataDynamics.ActiveReports.TextBox
-        Me.TxtMontoSabado = New DataDynamics.ActiveReports.TextBox
-        Me.TxtMontoDomingo = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox9 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox10 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox11 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox12 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox13 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox14 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox15 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox16 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox17 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox18 = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox19 = New DataDynamics.ActiveReports.TextBox
-        Me.TxtFechaFinal = New DataDynamics.ActiveReports.TextBox
-        Me.TxtFechaInicial = New DataDynamics.ActiveReports.TextBox
-        Me.LblPeriodo = New DataDynamics.ActiveReports.Label
-        Me.TxtTotalIngresos = New DataDynamics.ActiveReports.TextBox
-        Me.TextBox20 = New DataDynamics.ActiveReports.TextBox
-        Me.Label1 = New DataDynamics.ActiveReports.Label
-        Me.Label14 = New DataDynamics.ActiveReports.Label
-        Me.TextBox21 = New DataDynamics.ActiveReports.TextBox
-        Me.Label18 = New DataDynamics.ActiveReports.Label
-        Me.TextBox22 = New DataDynamics.ActiveReports.TextBox
-        Me.Label28 = New DataDynamics.ActiveReports.Label
-        Me.TextBox23 = New DataDynamics.ActiveReports.TextBox
-        Me.LblPrecioLunes = New DataDynamics.ActiveReports.Label
-        Me.LblPrecioMartes = New DataDynamics.ActiveReports.Label
-        Me.LblPrecioMiercoles = New DataDynamics.ActiveReports.Label
-        Me.LblPrecioJueves = New DataDynamics.ActiveReports.Label
-        Me.LblPrecioViernes = New DataDynamics.ActiveReports.Label
-        Me.LblPrecioSabado = New DataDynamics.ActiveReports.Label
-        Me.LblPrecioDomingo = New DataDynamics.ActiveReports.Label
-        Me.TxtPrecioLunes = New DataDynamics.ActiveReports.TextBox
-        Me.TxtPrecioMartes = New DataDynamics.ActiveReports.TextBox
-        Me.TxtPrecioMiercoles = New DataDynamics.ActiveReports.TextBox
-        Me.TxtPrecioJueves = New DataDynamics.ActiveReports.TextBox
-        Me.TxtPrecioViernes = New DataDynamics.ActiveReports.TextBox
-        Me.TxtPrecioSabado = New DataDynamics.ActiveReports.TextBox
-        Me.TxtPrecioDomingo = New DataDynamics.ActiveReports.TextBox
-        Me.Label37 = New DataDynamics.ActiveReports.Label
-        Me.TextBox31 = New DataDynamics.ActiveReports.TextBox
-        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter
+        Me.PageHeader1 = New DataDynamics.ActiveReports.PageHeader()
+        Me.Detail1 = New DataDynamics.ActiveReports.Detail()
+        Me.LblEncabezado = New DataDynamics.ActiveReports.Label()
+        Me.Label2 = New DataDynamics.ActiveReports.Label()
+        Me.Label3 = New DataDynamics.ActiveReports.Label()
+        Me.Label4 = New DataDynamics.ActiveReports.Label()
+        Me.Label5 = New DataDynamics.ActiveReports.Label()
+        Me.Label6 = New DataDynamics.ActiveReports.Label()
+        Me.Label7 = New DataDynamics.ActiveReports.Label()
+        Me.Label8 = New DataDynamics.ActiveReports.Label()
+        Me.LblLunes = New DataDynamics.ActiveReports.Label()
+        Me.LblMartes = New DataDynamics.ActiveReports.Label()
+        Me.LblMiercoles = New DataDynamics.ActiveReports.Label()
+        Me.LblJueves = New DataDynamics.ActiveReports.Label()
+        Me.LblViernes = New DataDynamics.ActiveReports.Label()
+        Me.LblSabado = New DataDynamics.ActiveReports.Label()
+        Me.LblDomingo = New DataDynamics.ActiveReports.Label()
+        Me.Label17 = New DataDynamics.ActiveReports.Label()
+        Me.Label19 = New DataDynamics.ActiveReports.Label()
+        Me.Label20 = New DataDynamics.ActiveReports.Label()
+        Me.Label21 = New DataDynamics.ActiveReports.Label()
+        Me.Label22 = New DataDynamics.ActiveReports.Label()
+        Me.Label23 = New DataDynamics.ActiveReports.Label()
+        Me.Label24 = New DataDynamics.ActiveReports.Label()
+        Me.Label25 = New DataDynamics.ActiveReports.Label()
+        Me.Label26 = New DataDynamics.ActiveReports.Label()
+        Me.Label27 = New DataDynamics.ActiveReports.Label()
+        Me.Label29 = New DataDynamics.ActiveReports.Label()
+        Me.TextBox1 = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtMontoLunes = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtMontoMartes = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtMontoMiercoles = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtMontoJueves = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtMontoViernes = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtMontoSabado = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtMontoDomingo = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox9 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox10 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox11 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox12 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox13 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox14 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox15 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox16 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox17 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox18 = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox19 = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtFechaFinal = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtFechaInicial = New DataDynamics.ActiveReports.TextBox()
+        Me.LblPeriodo = New DataDynamics.ActiveReports.Label()
+        Me.TxtTotalIngresos = New DataDynamics.ActiveReports.TextBox()
+        Me.TextBox20 = New DataDynamics.ActiveReports.TextBox()
+        Me.Label1 = New DataDynamics.ActiveReports.Label()
+        Me.Label14 = New DataDynamics.ActiveReports.Label()
+        Me.TextBox21 = New DataDynamics.ActiveReports.TextBox()
+        Me.Label18 = New DataDynamics.ActiveReports.Label()
+        Me.TextBox22 = New DataDynamics.ActiveReports.TextBox()
+        Me.Label28 = New DataDynamics.ActiveReports.Label()
+        Me.TextBox23 = New DataDynamics.ActiveReports.TextBox()
+        Me.LblPrecioLunes = New DataDynamics.ActiveReports.Label()
+        Me.LblPrecioMartes = New DataDynamics.ActiveReports.Label()
+        Me.LblPrecioMiercoles = New DataDynamics.ActiveReports.Label()
+        Me.LblPrecioJueves = New DataDynamics.ActiveReports.Label()
+        Me.LblPrecioViernes = New DataDynamics.ActiveReports.Label()
+        Me.LblPrecioSabado = New DataDynamics.ActiveReports.Label()
+        Me.LblPrecioDomingo = New DataDynamics.ActiveReports.Label()
+        Me.TxtPrecioLunes = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtPrecioMartes = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtPrecioMiercoles = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtPrecioJueves = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtPrecioViernes = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtPrecioSabado = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtPrecioDomingo = New DataDynamics.ActiveReports.TextBox()
+        Me.Label37 = New DataDynamics.ActiveReports.Label()
+        Me.TextBox31 = New DataDynamics.ActiveReports.TextBox()
+        Me.PageFooter1 = New DataDynamics.ActiveReports.PageFooter()
         CType(Me.LblEncabezado, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -172,12 +172,12 @@ Partial Public Class ArepColillas
         '
         'PageHeader1
         '
-        Me.PageHeader1.Height = 0.0!
+        Me.PageHeader1.Height = 0!
         Me.PageHeader1.Name = "PageHeader1"
         '
         'Detail1
         '
-        Me.Detail1.ColumnSpacing = 0.0!
+        Me.Detail1.ColumnSpacing = 0!
         Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.LblEncabezado, Me.Label2, Me.Label3, Me.Label4, Me.Label5, Me.Label6, Me.Label7, Me.Label8, Me.LblLunes, Me.LblMartes, Me.LblMiercoles, Me.LblJueves, Me.LblViernes, Me.LblSabado, Me.LblDomingo, Me.Label17, Me.Label19, Me.Label20, Me.Label21, Me.Label22, Me.Label23, Me.Label24, Me.Label25, Me.Label26, Me.Label27, Me.Label29, Me.TextBox1, Me.TxtMontoLunes, Me.TxtMontoMartes, Me.TxtMontoMiercoles, Me.TxtMontoJueves, Me.TxtMontoViernes, Me.TxtMontoSabado, Me.TxtMontoDomingo, Me.TextBox9, Me.TextBox10, Me.TextBox11, Me.TextBox12, Me.TextBox13, Me.TextBox14, Me.TextBox15, Me.TextBox16, Me.TextBox17, Me.TextBox18, Me.TextBox19, Me.TxtFechaFinal, Me.TxtFechaInicial, Me.LblPeriodo, Me.TxtTotalIngresos, Me.TextBox20, Me.Label1, Me.Label14, Me.TextBox21, Me.Label18, Me.TextBox22, Me.Label28, Me.TextBox23, Me.LblPrecioLunes, Me.LblPrecioMartes, Me.LblPrecioMiercoles, Me.LblPrecioJueves, Me.LblPrecioViernes, Me.LblPrecioSabado, Me.LblPrecioDomingo, Me.TxtPrecioLunes, Me.TxtPrecioMartes, Me.TxtPrecioMiercoles, Me.TxtPrecioJueves, Me.TxtPrecioViernes, Me.TxtPrecioSabado, Me.TxtPrecioDomingo, Me.Label37, Me.TextBox31})
         Me.Detail1.Height = 3.270833!
         Me.Detail1.KeepTogether = True
@@ -195,11 +195,11 @@ Partial Public Class ArepColillas
         Me.LblEncabezado.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.LblEncabezado.Height = 0.1875!
         Me.LblEncabezado.HyperLink = Nothing
-        Me.LblEncabezado.Left = 0.0!
+        Me.LblEncabezado.Left = 0!
         Me.LblEncabezado.Name = "LblEncabezado"
         Me.LblEncabezado.Style = "ddo-char-set: 0; text-align: center; font-weight: bold; font-size: 11.25pt; "
         Me.LblEncabezado.Text = "Cooperativa 24 de Junio"
-        Me.LblEncabezado.Top = 0.0!
+        Me.LblEncabezado.Top = 0!
         Me.LblEncabezado.Width = 7.5625!
         '
         'Label2
@@ -214,7 +214,7 @@ Partial Public Class ArepColillas
         Me.Label2.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label2.Height = 0.1875!
         Me.Label2.HyperLink = Nothing
-        Me.Label2.Left = 0.0!
+        Me.Label2.Left = 0!
         Me.Label2.Name = "Label2"
         Me.Label2.Style = "ddo-char-set: 0; font-weight: bold; font-size: 8.25pt; "
         Me.Label2.Text = "NUMERO"
@@ -252,7 +252,7 @@ Partial Public Class ArepColillas
         Me.Label4.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label4.Height = 0.1875!
         Me.Label4.HyperLink = Nothing
-        Me.Label4.Left = 0.0!
+        Me.Label4.Left = 0!
         Me.Label4.Name = "Label4"
         Me.Label4.Style = "ddo-char-set: 0; font-weight: bold; font-size: 8.25pt; "
         Me.Label4.Text = "NOMINA #"
@@ -290,7 +290,7 @@ Partial Public Class ArepColillas
         Me.Label6.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label6.Height = 0.1875!
         Me.Label6.HyperLink = Nothing
-        Me.Label6.Left = 0.0!
+        Me.Label6.Left = 0!
         Me.Label6.Name = "Label6"
         Me.Label6.Style = "ddo-char-set: 0; text-align: center; font-weight: bold; font-size: 8.25pt; "
         Me.Label6.Text = "I N G R E S O S"
@@ -328,7 +328,7 @@ Partial Public Class ArepColillas
         Me.Label8.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label8.Height = 0.1875!
         Me.Label8.HyperLink = Nothing
-        Me.Label8.Left = 0.0!
+        Me.Label8.Left = 0!
         Me.Label8.Name = "Label8"
         Me.Label8.Style = "ddo-char-set: 0; font-size: 8.25pt; "
         Me.Label8.Text = "Precio Unitario"
@@ -480,7 +480,7 @@ Partial Public Class ArepColillas
         Me.Label17.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label17.Height = 0.1875!
         Me.Label17.HyperLink = Nothing
-        Me.Label17.Left = 0.0!
+        Me.Label17.Left = 0!
         Me.Label17.Name = "Label17"
         Me.Label17.Style = "ddo-char-set: 0; font-weight: bold; font-size: 8.25pt; "
         Me.Label17.Text = "Total Devengado"
@@ -1171,7 +1171,7 @@ Partial Public Class ArepColillas
         Me.Label1.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label1.Height = 0.0625!
         Me.Label1.HyperLink = Nothing
-        Me.Label1.Left = 0.0!
+        Me.Label1.Left = 0!
         Me.Label1.Name = "Label1"
         Me.Label1.Style = ""
         Me.Label1.Text = ""
@@ -1580,7 +1580,7 @@ Partial Public Class ArepColillas
         Me.Label37.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
         Me.Label37.Height = 0.1875!
         Me.Label37.HyperLink = Nothing
-        Me.Label37.Left = 0.0!
+        Me.Label37.Left = 0!
         Me.Label37.Name = "Label37"
         Me.Label37.Style = "ddo-char-set: 0; font-weight: bold; font-size: 8.25pt; "
         Me.Label37.Text = "RUTA:"
@@ -1610,14 +1610,14 @@ Partial Public Class ArepColillas
         '
         'PageFooter1
         '
-        Me.PageFooter1.Height = 0.0!
+        Me.PageFooter1.Height = 0!
         Me.PageFooter1.Name = "PageFooter1"
         '
         'ArepColillas
         '
         Me.MasterReport = False
-        OleDBDataSource1.ConnectionString = "Provider=SQLOLEDB.1;Password=P@ssword;Persist Security Info=True;User ID=sa;Initi" & _
-            "al Catalog=SistemaFacturacionMulukuku;Data Source=JUANBERMUDEZ-PC\SQL2014"
+        OleDBDataSource1.ConnectionString = "Provider=SQLOLEDB.1;Password=P@ssword;Persist Security Info=True;User ID=sa;Initi" &
+    "al Catalog=SistemaFacturacionMulukuku;Data Source=JUANBERMUDEZ-PC\SQL2014"
         OleDBDataSource1.SQL = resources.GetString("OleDBDataSource1.SQL")
         Me.DataSource = OleDBDataSource1
         Me.PageSettings.Margins.Bottom = 0.1!
@@ -1630,11 +1630,11 @@ Partial Public Class ArepColillas
         Me.Sections.Add(Me.PageHeader1)
         Me.Sections.Add(Me.Detail1)
         Me.Sections.Add(Me.PageFooter1)
-        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Arial; font-style: normal; text-decoration: none; font-weight: norma" & _
-                    "l; font-size: 10pt; color: Black; ", "Normal"))
+        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Arial; font-style: normal; text-decoration: none; font-weight: norma" &
+            "l; font-size: 10pt; color: Black; ", "Normal"))
         Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-size: 16pt; font-weight: bold; ", "Heading1", "Normal"))
-        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Times New Roman; font-size: 14pt; font-weight: bold; font-style: ita" & _
-                    "lic; ", "Heading2", "Normal"))
+        Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Times New Roman; font-size: 14pt; font-weight: bold; font-style: ita" &
+            "lic; ", "Heading2", "Normal"))
         Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-size: 13pt; font-weight: bold; ", "Heading3", "Normal"))
         CType(Me.LblEncabezado, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label2, System.ComponentModel.ISupportInitialize).EndInit()

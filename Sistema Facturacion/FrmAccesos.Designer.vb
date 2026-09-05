@@ -20,26 +20,27 @@ Partial Class FrmAccesos
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmAccesos))
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.ChkCambiarBodega = New System.Windows.Forms.CheckBox
-        Me.ChkEditar = New System.Windows.Forms.CheckBox
-        Me.ChkImprimir = New System.Windows.Forms.CheckBox
-        Me.ChkProcesar = New System.Windows.Forms.CheckBox
-        Me.ChkAnular = New System.Windows.Forms.CheckBox
-        Me.ChkEliminar = New System.Windows.Forms.CheckBox
-        Me.ChkGrabar = New System.Windows.Forms.CheckBox
-        Me.ChkAbrir = New System.Windows.Forms.CheckBox
-        Me.PictureBox3 = New System.Windows.Forms.PictureBox
-        Me.LblTitulo = New System.Windows.Forms.Label
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.ListBox = New System.Windows.Forms.ListBox
-        Me.ListBoxOpciones = New System.Windows.Forms.ListBox
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.Button7 = New System.Windows.Forms.Button
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.ChkPrevio = New System.Windows.Forms.CheckBox
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.ChkPrevio = New System.Windows.Forms.CheckBox()
+        Me.ChkCambiarBodega = New System.Windows.Forms.CheckBox()
+        Me.ChkEditar = New System.Windows.Forms.CheckBox()
+        Me.ChkImprimir = New System.Windows.Forms.CheckBox()
+        Me.ChkProcesar = New System.Windows.Forms.CheckBox()
+        Me.ChkAnular = New System.Windows.Forms.CheckBox()
+        Me.ChkEliminar = New System.Windows.Forms.CheckBox()
+        Me.ChkGrabar = New System.Windows.Forms.CheckBox()
+        Me.ChkAbrir = New System.Windows.Forms.CheckBox()
+        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
+        Me.LblTitulo = New System.Windows.Forms.Label()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.ListBox = New System.Windows.Forms.ListBox()
+        Me.ListBoxOpciones = New System.Windows.Forms.ListBox()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.Button7 = New System.Windows.Forms.Button()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.ChkVerCosto = New System.Windows.Forms.CheckBox()
         Me.GroupBox1.SuspendLayout()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -48,6 +49,7 @@ Partial Class FrmAccesos
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.ChkVerCosto)
         Me.GroupBox1.Controls.Add(Me.ChkPrevio)
         Me.GroupBox1.Controls.Add(Me.ChkCambiarBodega)
         Me.GroupBox1.Controls.Add(Me.ChkEditar)
@@ -59,15 +61,26 @@ Partial Class FrmAccesos
         Me.GroupBox1.Controls.Add(Me.ChkAbrir)
         Me.GroupBox1.Location = New System.Drawing.Point(429, 67)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(107, 199)
+        Me.GroupBox1.Size = New System.Drawing.Size(107, 228)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Accesos"
         '
+        'ChkPrevio
+        '
+        Me.ChkPrevio.AutoSize = True
+        Me.ChkPrevio.Location = New System.Drawing.Point(8, 176)
+        Me.ChkPrevio.Name = "ChkPrevio"
+        Me.ChkPrevio.Size = New System.Drawing.Size(56, 17)
+        Me.ChkPrevio.TabIndex = 8
+        Me.ChkPrevio.Text = "Previo"
+        Me.ChkPrevio.UseVisualStyleBackColor = True
+        Me.ChkPrevio.Visible = False
+        '
         'ChkCambiarBodega
         '
         Me.ChkCambiarBodega.AutoSize = True
-        Me.ChkCambiarBodega.Location = New System.Drawing.Point(6, 204)
+        Me.ChkCambiarBodega.Location = New System.Drawing.Point(6, 231)
         Me.ChkCambiarBodega.Name = "ChkCambiarBodega"
         Me.ChkCambiarBodega.Size = New System.Drawing.Size(92, 17)
         Me.ChkCambiarBodega.TabIndex = 7
@@ -213,7 +226,7 @@ Partial Class FrmAccesos
         '
         Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
         Me.Button8.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button8.Location = New System.Drawing.Point(429, 307)
+        Me.Button8.Location = New System.Drawing.Point(429, 356)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(75, 34)
         Me.Button8.TabIndex = 201
@@ -225,7 +238,7 @@ Partial Class FrmAccesos
         '
         Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
         Me.Button7.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button7.Location = New System.Drawing.Point(429, 272)
+        Me.Button7.Location = New System.Drawing.Point(429, 321)
         Me.Button7.Name = "Button7"
         Me.Button7.Size = New System.Drawing.Size(75, 34)
         Me.Button7.TabIndex = 200
@@ -255,16 +268,16 @@ Partial Class FrmAccesos
         Me.Button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.Button2.UseVisualStyleBackColor = True
         '
-        'ChkPrevio
+        'ChkVerCosto
         '
-        Me.ChkPrevio.AutoSize = True
-        Me.ChkPrevio.Location = New System.Drawing.Point(8, 176)
-        Me.ChkPrevio.Name = "ChkPrevio"
-        Me.ChkPrevio.Size = New System.Drawing.Size(56, 17)
-        Me.ChkPrevio.TabIndex = 8
-        Me.ChkPrevio.Text = "Previo"
-        Me.ChkPrevio.UseVisualStyleBackColor = True
-        Me.ChkPrevio.Visible = False
+        Me.ChkVerCosto.AutoSize = True
+        Me.ChkVerCosto.Location = New System.Drawing.Point(9, 199)
+        Me.ChkVerCosto.Name = "ChkVerCosto"
+        Me.ChkVerCosto.Size = New System.Drawing.Size(72, 17)
+        Me.ChkVerCosto.TabIndex = 9
+        Me.ChkVerCosto.Text = "Ver Costo"
+        Me.ChkVerCosto.UseVisualStyleBackColor = True
+        Me.ChkVerCosto.Visible = False
         '
         'FrmAccesos
         '
@@ -314,4 +327,5 @@ Partial Class FrmAccesos
     Friend WithEvents ChkEditar As System.Windows.Forms.CheckBox
     Friend WithEvents ChkCambiarBodega As System.Windows.Forms.CheckBox
     Friend WithEvents ChkPrevio As System.Windows.Forms.CheckBox
+    Friend WithEvents ChkVerCosto As CheckBox
 End Class

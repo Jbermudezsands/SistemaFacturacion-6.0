@@ -51,6 +51,7 @@ Partial Class FrmUsuarios
         Me.CboCodigoBodegaCompra = New C1.Win.C1List.C1Combo()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.ChkNotificacion = New System.Windows.Forms.CheckBox()
+        Me.ChkActivarFacturas = New System.Windows.Forms.CheckBox()
         CType(Me.CboUsuario, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -66,7 +67,7 @@ Partial Class FrmUsuarios
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(18, 75)
+        Me.Label1.Location = New System.Drawing.Point(20, 65)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(83, 13)
         Me.Label1.TabIndex = 0
@@ -75,7 +76,7 @@ Partial Class FrmUsuarios
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(65, 102)
+        Me.Label2.Location = New System.Drawing.Point(67, 92)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(31, 13)
         Me.Label2.TabIndex = 1
@@ -114,7 +115,7 @@ Partial Class FrmUsuarios
         Me.CboUsuario.EditorHeight = 15
         Me.CboUsuario.Images.Add(CType(resources.GetObject("CboUsuario.Images"), System.Drawing.Image))
         Me.CboUsuario.ItemHeight = 15
-        Me.CboUsuario.Location = New System.Drawing.Point(101, 75)
+        Me.CboUsuario.Location = New System.Drawing.Point(103, 65)
         Me.CboUsuario.MatchEntryTimeout = CType(2000, Long)
         Me.CboUsuario.MaxDropDownItems = CType(5, Short)
         Me.CboUsuario.MaxLength = 32767
@@ -235,7 +236,7 @@ Partial Class FrmUsuarios
         Me.CboCodigoBodega.EditorHeight = 15
         Me.CboCodigoBodega.Images.Add(CType(resources.GetObject("CboCodigoBodega.Images"), System.Drawing.Image))
         Me.CboCodigoBodega.ItemHeight = 15
-        Me.CboCodigoBodega.Location = New System.Drawing.Point(102, 122)
+        Me.CboCodigoBodega.Location = New System.Drawing.Point(104, 112)
         Me.CboCodigoBodega.MatchEntryTimeout = CType(2000, Long)
         Me.CboCodigoBodega.MaxDropDownItems = CType(5, Short)
         Me.CboCodigoBodega.MaxLength = 32767
@@ -251,7 +252,7 @@ Partial Class FrmUsuarios
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(51, 127)
+        Me.Label11.Location = New System.Drawing.Point(53, 117)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(44, 13)
         Me.Label11.TabIndex = 156
@@ -356,7 +357,7 @@ Partial Class FrmUsuarios
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(26, 148)
+        Me.Label3.Location = New System.Drawing.Point(26, 139)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(70, 13)
         Me.Label3.TabIndex = 199
@@ -381,7 +382,7 @@ Partial Class FrmUsuarios
         Me.CmbSerie.EditorHeight = 15
         Me.CmbSerie.Images.Add(CType(resources.GetObject("CmbSerie.Images"), System.Drawing.Image))
         Me.CmbSerie.ItemHeight = 15
-        Me.CmbSerie.Location = New System.Drawing.Point(102, 145)
+        Me.CmbSerie.Location = New System.Drawing.Point(104, 139)
         Me.CmbSerie.MatchEntryTimeout = CType(2000, Long)
         Me.CmbSerie.MaxDropDownItems = CType(5, Short)
         Me.CmbSerie.MaxLength = 32767
@@ -410,7 +411,7 @@ Partial Class FrmUsuarios
         Me.CboNivel.EditorHeight = 15
         Me.CboNivel.Images.Add(CType(resources.GetObject("CboNivel.Images"), System.Drawing.Image))
         Me.CboNivel.ItemHeight = 15
-        Me.CboNivel.Location = New System.Drawing.Point(102, 98)
+        Me.CboNivel.Location = New System.Drawing.Point(104, 88)
         Me.CboNivel.MatchEntryTimeout = CType(2000, Long)
         Me.CboNivel.MaxDropDownItems = CType(5, Short)
         Me.CboNivel.MaxLength = 32767
@@ -521,18 +522,29 @@ Partial Class FrmUsuarios
         'ChkNotificacion
         '
         Me.ChkNotificacion.AutoSize = True
-        Me.ChkNotificacion.Location = New System.Drawing.Point(170, 148)
+        Me.ChkNotificacion.Location = New System.Drawing.Point(169, 134)
         Me.ChkNotificacion.Name = "ChkNotificacion"
         Me.ChkNotificacion.Size = New System.Drawing.Size(129, 17)
         Me.ChkNotificacion.TabIndex = 223
         Me.ChkNotificacion.Text = "Recibir Notificaciones"
         Me.ChkNotificacion.UseVisualStyleBackColor = True
         '
+        'ChkActivarFacturas
+        '
+        Me.ChkActivarFacturas.AutoSize = True
+        Me.ChkActivarFacturas.Location = New System.Drawing.Point(169, 151)
+        Me.ChkActivarFacturas.Name = "ChkActivarFacturas"
+        Me.ChkActivarFacturas.Size = New System.Drawing.Size(103, 17)
+        Me.ChkActivarFacturas.TabIndex = 224
+        Me.ChkActivarFacturas.Text = "Activar Facturas"
+        Me.ChkActivarFacturas.UseVisualStyleBackColor = True
+        '
         'FrmUsuarios
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(310, 427)
+        Me.Controls.Add(Me.ChkActivarFacturas)
         Me.Controls.Add(Me.ChkNotificacion)
         Me.Controls.Add(Me.CboCodigoBodegaCompra)
         Me.Controls.Add(Me.Label5)
@@ -612,4 +624,5 @@ Partial Class FrmUsuarios
     Friend WithEvents CboCodigoBodegaCompra As C1.Win.C1List.C1Combo
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents ChkNotificacion As System.Windows.Forms.CheckBox
+    Friend WithEvents ChkActivarFacturas As CheckBox
 End Class

@@ -40,6 +40,14 @@ Public Class FrmConfigurar
                     End If
                 End If
 
+                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("RutaCompartida")) Then
+                    Me.TxtRutaCompartida.Text = DataSet.Tables("DatosEmpresa").Rows(0)("RutaCompartida")
+                End If
+
+                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Conexion_Contabilidad")) Then
+                    Me.TxtConexion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Conexion_Contabilidad")
+                End If
+
                 'If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Logo")) Then
                 '    Logo = DataSet.Tables("DatosEmpresa").Rows(0)("Logo")
                 '    myImagenConsulta = BytesToImagen(StringtoByte(Logo))
@@ -60,16 +68,6 @@ Public Class FrmConfigurar
                 End If
 
 
-
-
-
-                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("RutaCompartida")) Then
-                    Me.TxtRutaCompartida.Text = DataSet.Tables("DatosEmpresa").Rows(0)("RutaCompartida")
-                End If
-
-                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Conexion_Contabilidad")) Then
-                    Me.TxtConexion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Conexion_Contabilidad")
-                End If
 
 
 

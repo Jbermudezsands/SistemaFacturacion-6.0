@@ -1,11 +1,37 @@
-Public Class FrmListaOrdenCompra
+﻿Public Class FrmListaOrdenCompra
     Public Nuevo As Boolean = False
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
+
+    Private Sub BloquearBotones(Bloquear As Boolean)
+        If Bloquear = True Then
+            BtnVer.Enabled = False
+            BtnActualizar.Enabled = False
+            BtnComprar.Enabled = False
+            Button1.Enabled = False
+            Button2.Enabled = False
+            TDGridSolicitud.Enabled = False
+            BtnSalir.Enabled = False
+        Else
+            BtnVer.Enabled = True
+            BtnActualizar.Enabled = True
+            BtnComprar.Enabled = True
+            Button1.Enabled = True
+            Button2.Enabled = True
+            TDGridSolicitud.Enabled = True
+            BtnSalir.Enabled = True
+
+        End If
+
+
+
+
+    End Sub
+
     Private Sub BtnActualizar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnActualizar.Click
         Dim SqlString As String, DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet
 
         SqlString = "SELECT  DISTINCT Compras.Numero_Compra, Compras.Fecha_Compra, Compras.MonedaCompra, Compras.Nombre_Proveedor, Detalle_Solicitud.Numero_Solicitud, Compras.Estatus, Compras.FechaHora FROM Compras LEFT OUTER JOIN Detalle_Solicitud ON Compras.Numero_Compra = Detalle_Solicitud.Orden_Compra  " &
-                    "WHERE (Compras.Tipo_Compra = 'Orden de Compra') AND (Compras.Cancelado = 0) ORDER BY Compras.Estatus DESC, Compras.Fecha_Compra DESC, Compras.Numero_Compra"
+                    "WHERE (Compras.Tipo_Compra = 'Orden de Compra') AND (Compras.Cancelado = 0) AND (Compras.Activo = 1) ORDER BY Compras.Estatus DESC, Compras.Fecha_Compra DESC, Compras.Numero_Compra"
         MiConexion.Open()
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "Lista")
@@ -48,26 +74,40 @@ Public Class FrmListaOrdenCompra
 
     Private Sub BtnVer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnVer.Click
         Dim Fecha_Compra As Date, Fecha_Hora As Date, NumeroCompra As String
-
+        Dim frm As New FrmCompras
 
         NumeroCompra = Me.TDGridSolicitud.Columns("Numero_Compra").Text
         Fecha_Compra = Me.TDGridSolicitud.Columns("Fecha_Compra").Text
         Fecha_Hora = Me.TDGridSolicitud.Columns("FechaHora").Text
+        Quien = "Orden de Compra"
 
-        My.Forms.FrmCompras.Fecha_Compra = Fecha_Compra
-        My.Forms.FrmCompras.FechaHoraCompra = Fecha_Hora
-        My.Forms.FrmCompras.NumeroCompra = NumeroCompra
 
-        My.Forms.FrmCompras.EsSolicitud = True
-        '//////////////////////////////////////////CARGO LA ORDEN DE COMPRA EN EL MODULO DE COMPRAS //////////////
-        'My.Forms.FrmCompras.CboTipoProducto.Enabled = False
-        'My.Forms.FrmCompras.GroupBox1.Enabled = False
-        'My.Forms.FrmCompras.GroupBox5.Enabled = False
 
-        My.Forms.FrmCompras.TrueDBGridComponentes.Enabled = False
-        'My.Forms.FrmCompras.CargarCompra(Fecha_Compra, Fecha_Hora, NumeroCompra, "Orden de Compra")
-        My.Forms.FrmCompras.ShowDialog()
-        My.Forms.FrmCompras.EsSolicitud = False
+        frm.InicializarFormulario()
+
+        frm.Fecha_Compra = Fecha_Compra
+        frm.FechaHoraCompra = Fecha_Hora
+        frm.NumeroCompra = NumeroCompra
+        frm.EsSolicitud = True
+        frm.CboTipoProducto.Text = "Orden de Compra"
+        frm.DTPFecha.Value = Fecha_Compra
+
+
+        frm.CargarDesdeOrden(Fecha_Compra, Fecha_Hora, NumeroCompra)
+        'frm.CargarCompra(Fecha_Compra, Fecha_Hora, NumeroCompra, "Orden de Compra")
+
+        frm.TrueDBGridComponentes.Enabled = False
+
+        frm.ShowDialog()
+
+
+        '////////////////CODIGO RETIRADO 22/04/2026 ////////////////////
+        'My.Forms.FrmCompras.EsSolicitud = True
+        ''//////////////////////////////////////////CARGO LA ORDEN DE COMPRA EN EL MODULO DE COMPRAS //////////////
+
+        'My.Forms.FrmCompras.TrueDBGridComponentes.Enabled = False
+        'My.Forms.FrmCompras.ShowDialog()
+        'My.Forms.FrmCompras.EsSolicitud = False
 
     End Sub
 
@@ -76,12 +116,13 @@ Public Class FrmListaOrdenCompra
         Dim Fecha As String, Resultado As Double, Numero As String
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SQlProductos As String, IposicionFila As Double
 
-        Resultado = MsgBox("�Esta Seguro de Cancelar la Compra?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
+        Resultado = MsgBox("¿Esta Seguro de Cancelar la Compra?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
 
         If Resultado = "7" Then
             Exit Sub
         End If
 
+        BloquearBotones(True)
         Numero = Me.TDGridSolicitud.Columns("Numero_Compra").Text
         Fecha = Format(CDate(Me.TDGridSolicitud.Columns("Fecha_Compra").Text), "yyyy-MM-dd")
         '//////////////////////////////////////////////////////////////////////////////////////////////
@@ -141,6 +182,249 @@ Public Class FrmListaOrdenCompra
 
         Bitacora(Now, NombreUsuario, "Orden de Compra", "Eliminar la Orden Compra: " & Numero)
 
+        BloquearBotones(False)
 
     End Sub
+
+    Private Sub BtnComprar_Click(sender As Object, e As EventArgs) Handles BtnComprar.Click
+        Dim NumeroOrden As String = Me.TDGridSolicitud.Columns("Numero_Compra").Text
+        Dim FechaOrden As Date = Me.TDGridSolicitud.Columns("Fecha_Compra").Text
+        Dim TipoOrden As String = "Orden de Compra"
+
+        BloquearBotones(True)
+
+        ' 🔥 PEDIR FECHA AQUÍ (UI)
+        Dim frmFecha As New FrmFechaxProveedor
+        'frmFecha.TxtCodigoProveedor.Text = Me.TDGridSolicitud.Columns("Cod_Proveedor").Text
+
+        frmFecha.ShowDialog()
+
+        If Quien = "Cancelar" Then Exit Sub
+
+        Dim FechaCompra As Date = frmFecha.DTPFechaRequerido.Value
+        Dim CodigoProveedor As String = frmFecha.Codigo_Proveedor
+
+        ' 🔥 LLAMAR FUNCIÓN LIMPIA
+        ProcesarOrdenACompra(NumeroOrden, TipoOrden, FechaOrden, CodigoProveedor)
+
+        Me.BtnActualizar_Click(sender, e)
+
+        BloquearBotones(False)
+
+    End Sub
+    Private Function ObtenerEncabezadoOrden(ByVal NumeroOrden As String) As DataTable
+
+        Dim dt As New DataTable
+
+        Dim sql As String = "SELECT * FROM Compras 
+                         WHERE Numero_Compra = @Numero 
+                         AND Tipo_Compra = 'Orden de Compra'"
+
+        Dim da As New SqlClient.SqlDataAdapter(sql, MiConexion)
+        da.SelectCommand.Parameters.AddWithValue("@Numero", NumeroOrden)
+
+        da.Fill(dt)
+
+        Return dt
+
+    End Function
+
+    Private Function ObtenerDetalleOrden(ByVal NumeroOrden As String) As DataTable
+
+        Dim dt As New DataTable
+
+        Dim sql As String = "SELECT * FROM Detalle_Compras 
+                         WHERE Numero_Compra = @Numero 
+                         AND Tipo_Compra = 'Orden de Compra'"
+
+        Dim da As New SqlClient.SqlDataAdapter(sql, MiConexion)
+        da.SelectCommand.Parameters.AddWithValue("@Numero", NumeroOrden)
+
+        da.Fill(dt)
+
+        Return dt
+
+    End Function
+
+    Private Sub ProcesarOrdenACompra(ByVal NumeroOrden As String,
+                                     ByVal TipoOrden As String,
+                                     ByVal FechaCompra As Date,
+                                     ByVal CodigoProveedorInput As String)
+
+        Dim trans As SqlClient.SqlTransaction = Nothing
+
+        Try
+            If NumeroOrden = "" Then
+                MsgBox("Seleccione una orden válida")
+                Exit Sub
+            End If
+
+            MiConexion.Open()
+            trans = MiConexion.BeginTransaction()
+
+            '---------------------------------------------------
+            ' 🔹 1. OBTENER ENCABEZADO DESDE BD
+            '---------------------------------------------------
+            Dim dtEncabezado As New DataTable
+
+            Dim sqlEnc As String = "SELECT * FROM Compras 
+                               WHERE Numero_Compra = @Numero 
+                               AND Tipo_Compra = @Tipo"
+
+            Dim daEnc As New SqlClient.SqlDataAdapter(sqlEnc, MiConexion)
+            daEnc.SelectCommand.Transaction = trans
+            daEnc.SelectCommand.Parameters.AddWithValue("@Numero", NumeroOrden)
+            daEnc.SelectCommand.Parameters.AddWithValue("@Tipo", TipoOrden)
+
+            daEnc.Fill(dtEncabezado)
+
+            If dtEncabezado.Rows.Count = 0 Then
+                MsgBox("No se encontró la orden")
+                trans.Rollback()
+                MiConexion.Close()
+                Exit Sub
+            End If
+
+            Dim fila = dtEncabezado.Rows(0)
+
+            Dim CodigoProveedor As String = fila("Cod_Proveedor")
+            Dim Bodega As String = fila("Cod_Bodega")
+            Dim Nombre As String = fila("Nombre_Proveedor")
+            Dim Apellido As String = fila("Apellido_Proveedor")
+            Dim SubTotal As Double = fila("SubTotal")
+            Dim Iva As Double = fila("IVA")
+            Dim Pagado As Double = fila("Pagado")
+            Dim Neto As Double = fila("NetoPagar")
+            Dim Moneda As String = fila("MonedaCompra")
+
+            ' Si quieres priorizar el proveedor ingresado desde UI:
+            If CodigoProveedorInput <> "" Then
+                CodigoProveedor = CodigoProveedorInput
+            End If
+
+            '---------------------------------------------------
+            ' 🔹 2. OBTENER DETALLE DESDE BD
+            '---------------------------------------------------
+            Dim dtDetalle As New DataTable
+
+            Dim sqlDet As String = "SELECT * FROM Detalle_Compras 
+                               WHERE Numero_Compra = @Numero 
+                               AND Tipo_Compra = @Tipo"
+
+            Dim daDet As New SqlClient.SqlDataAdapter(sqlDet, MiConexion)
+            daDet.SelectCommand.Transaction = trans
+            daDet.SelectCommand.Parameters.AddWithValue("@Numero", NumeroOrden)
+            daDet.SelectCommand.Parameters.AddWithValue("@Tipo", TipoOrden)
+
+            daDet.Fill(dtDetalle)
+
+            If dtDetalle.Rows.Count = 0 Then
+                MsgBox("La orden no tiene detalle")
+                trans.Rollback()
+                MiConexion.Close()
+                Exit Sub
+            End If
+
+            '---------------------------------------------------
+            ' 🔹 3. GENERAR CONSECUTIVO
+            '---------------------------------------------------
+            Dim Consecutivo As Double = BuscaConsecutivo("Compra")
+            Dim NumeroCompraNueva As String = Format(Consecutivo, "0000#")
+
+            '---------------------------------------------------
+            ' 🔹 4. CREAR ENCABEZADO COMPRA
+            '---------------------------------------------------
+            GrabaEncabezadoCompras(NumeroCompraNueva,
+                                  FechaCompra,
+                                  "Mercancia Recibida",
+                                  CodigoProveedor,
+                                  Bodega,
+                                  Nombre,
+                                  Apellido,
+                                  FechaCompra,
+                                  SubTotal,
+                                  Iva,
+                                  Pagado,
+                                  Neto,
+                                  Moneda,
+                                  "Procesado desde Orden " & NumeroOrden,
+                                  "",
+                                  False)
+
+            '---------------------------------------------------
+            ' 🔹 5. CREAR DETALLE
+            '---------------------------------------------------
+            For Each row As DataRow In dtDetalle.Rows
+
+                Dim CodigoProducto As String = row("Cod_Producto")
+                Dim PrecioUnitario As Double = row("Precio_Unitario")
+                Dim Descuento As Double = If(IsDBNull(row("Descuento")), 0, row("Descuento"))
+                Dim PrecioNeto As Double = row("Precio_Neto")
+                Dim Importe As Double = row("Importe")
+                Dim Cantidad As Double = row("Cantidad")
+
+                GrabaDetalleCompraLiquidacion(NumeroCompraNueva,
+                                             CodigoProducto,
+                                             PrecioUnitario,
+                                             Descuento,
+                                             PrecioNeto,
+                                             Importe,
+                                             Cantidad,
+                                             Moneda,
+                                             FechaCompra,
+                                             "0000",
+                                             "01/01/1900")
+
+                ' 🔹 Inventario
+                'ExistenciasCostos(CodigoProducto, Cantidad, PrecioNeto, "Mercancia Recibida", Bodega)
+                CostoBodega(CodigoProducto, Cantidad, PrecioNeto, "Mercancia Recibida", Bodega, FechaCompra)
+
+            Next
+
+            '---------------------------------------------------
+            ' 🔹 6. INACTIVAR ORDEN
+            '---------------------------------------------------
+            Dim cmdUpdate As New SqlClient.SqlCommand(
+                "UPDATE Compras 
+             SET Activo = 0, Estatus = 'Comprado' 
+             WHERE Numero_Compra = @Numero AND Tipo_Compra = @Tipo",
+                MiConexion, trans)
+
+            cmdUpdate.Parameters.AddWithValue("@Numero", NumeroOrden)
+            cmdUpdate.Parameters.AddWithValue("@Tipo", TipoOrden)
+            cmdUpdate.ExecuteNonQuery()
+
+            '---------------------------------------------------
+            ' 🔹 7. RELACIONAR ORDEN CON COMPRA
+            '---------------------------------------------------
+            Dim cmdRelacion As New SqlClient.SqlCommand(
+                "UPDATE Compras 
+             SET Numero_Orden = @Orden 
+             WHERE Numero_Compra = @Compra 
+             AND Tipo_Compra = 'Mercancia Recibida'",
+                MiConexion, trans)
+
+            cmdRelacion.Parameters.AddWithValue("@Orden", NumeroOrden)
+            cmdRelacion.Parameters.AddWithValue("@Compra", NumeroCompraNueva)
+            cmdRelacion.ExecuteNonQuery()
+
+            '---------------------------------------------------
+            ' 🔹 8. CONFIRMAR
+            '---------------------------------------------------
+            trans.Commit()
+            MiConexion.Close()
+
+            MsgBox("Compra generada correctamente", MsgBoxStyle.Information)
+
+        Catch ex As Exception
+
+            If Not trans Is Nothing Then trans.Rollback()
+            If MiConexion.State = ConnectionState.Open Then MiConexion.Close()
+
+            MsgBox("Error al procesar: " & ex.Message)
+
+        End Try
+
+    End Sub
+
 End Class

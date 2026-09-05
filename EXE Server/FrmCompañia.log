@@ -1,0 +1,13 @@
+Line 66: Class ACTIVESKINLibCtl.SkinLabel of control SkinLabel1 was not a loaded control class.
+Line 74: Class MSDBCtls.DBCombo of control TxtNombreBD was not a loaded control class.
+Line 185: Class ACTIVESKINLibCtl.SkinLabel of control SkinLabel2 was not a loaded control class.
+Line 193: Class ACTIVESKINLibCtl.Skin of control Skin1 was not a loaded control class.
+Line 69: The property name OleObjectBlob in SkinLabel1 is invalid.
+Line 75: The property name Bindings in TxtNombreBD is invalid.
+Line 81: The property name _ExtentX in TxtNombreBD is invalid.
+Line 82: The property name _ExtentY in TxtNombreBD is invalid.
+Line 83: The property name _Version in TxtNombreBD is invalid.
+Line 84: The property name ListField in TxtNombreBD is invalid.
+Line 85: The property name Text in TxtNombreBD is invalid.
+Line 188: The property name OleObjectBlob in SkinLabel2 is invalid.
+Line 195: The property name OleObjectBlob in Skin1 is invalid.

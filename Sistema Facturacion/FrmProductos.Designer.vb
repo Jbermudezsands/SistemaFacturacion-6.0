@@ -764,6 +764,7 @@ Partial Class FrmProductos
         Me.GroupBox4.Size = New System.Drawing.Size(305, 309)
         Me.GroupBox4.TabIndex = 2
         Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Tag = "31"
         Me.GroupBox4.Text = "Datos del Producto"
         '
         'TxtDesperdicio

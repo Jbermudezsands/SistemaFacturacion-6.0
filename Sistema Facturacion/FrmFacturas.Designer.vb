@@ -45,7 +45,6 @@ Partial Class FrmFacturas
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.ChkAplicarCtaXCobrar = New System.Windows.Forms.CheckBox()
         Me.BtnFacturas = New C1.Win.C1Input.C1Button()
         Me.TxtNumeroFactura = New System.Windows.Forms.TextBox()
         Me.ChkPropina = New System.Windows.Forms.CheckBox()
@@ -55,12 +54,13 @@ Partial Class FrmFacturas
         Me.OptRet1Porciento = New System.Windows.Forms.CheckBox()
         Me.OptExsonerado = New System.Windows.Forms.CheckBox()
         Me.TxtTelefono = New System.Windows.Forms.TextBox()
+        Me.BtnPlanPagos = New System.Windows.Forms.Button()
         Me.TxtDireccion = New System.Windows.Forms.TextBox()
         Me.TxtApellidos = New System.Windows.Forms.TextBox()
         Me.TxtNombres = New System.Windows.Forms.TextBox()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.TxtCodigoClientes = New System.Windows.Forms.TextBox()
-        Me.CmdCuentasxCobrar = New System.Windows.Forms.Button()
+        Me.ChkAplicarCtaXCobrar = New System.Windows.Forms.CheckBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.CmbSerie = New C1.Win.C1List.C1Combo()
         Me.TxtMonedaFactura = New System.Windows.Forms.ComboBox()
@@ -110,6 +110,7 @@ Partial Class FrmFacturas
         Me.BtnSalida = New System.Windows.Forms.Button()
         Me.Button5 = New System.Windows.Forms.Button()
         Me.PictureBox3 = New System.Windows.Forms.PictureBox()
+        Me.Button10 = New System.Windows.Forms.Button()
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrueDBGridMetodo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
@@ -143,9 +144,9 @@ Partial Class FrmFacturas
         'Button7
         '
         Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
-        Me.Button7.Location = New System.Drawing.Point(688, 81)
+        Me.Button7.Location = New System.Drawing.Point(686, 156)
         Me.Button7.Name = "Button7"
-        Me.Button7.Size = New System.Drawing.Size(37, 38)
+        Me.Button7.Size = New System.Drawing.Size(37, 25)
         Me.Button7.TabIndex = 182
         Me.Button7.UseVisualStyleBackColor = True
         Me.Button7.Visible = False
@@ -406,7 +407,6 @@ Partial Class FrmFacturas
         '
         'GroupBox2
         '
-        Me.GroupBox2.Controls.Add(Me.ChkAplicarCtaXCobrar)
         Me.GroupBox2.Controls.Add(Me.BtnFacturas)
         Me.GroupBox2.Controls.Add(Me.TxtNumeroFactura)
         Me.GroupBox2.Controls.Add(Me.ChkPropina)
@@ -416,6 +416,7 @@ Partial Class FrmFacturas
         Me.GroupBox2.Controls.Add(Me.OptRet1Porciento)
         Me.GroupBox2.Controls.Add(Me.OptExsonerado)
         Me.GroupBox2.Controls.Add(Me.TxtTelefono)
+        Me.GroupBox2.Controls.Add(Me.BtnPlanPagos)
         Me.GroupBox2.Controls.Add(Me.TxtDireccion)
         Me.GroupBox2.Controls.Add(Me.TxtApellidos)
         Me.GroupBox2.Controls.Add(Me.TxtNombres)
@@ -427,16 +428,6 @@ Partial Class FrmFacturas
         Me.GroupBox2.TabIndex = 160
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Informacion del Cliente"
-        '
-        'ChkAplicarCtaXCobrar
-        '
-        Me.ChkAplicarCtaXCobrar.AutoSize = True
-        Me.ChkAplicarCtaXCobrar.Location = New System.Drawing.Point(205, 19)
-        Me.ChkAplicarCtaXCobrar.Name = "ChkAplicarCtaXCobrar"
-        Me.ChkAplicarCtaXCobrar.Size = New System.Drawing.Size(108, 17)
-        Me.ChkAplicarCtaXCobrar.TabIndex = 228
-        Me.ChkAplicarCtaXCobrar.Text = "Aplicar CtasXCob"
-        Me.ChkAplicarCtaXCobrar.UseVisualStyleBackColor = True
         '
         'BtnFacturas
         '
@@ -522,6 +513,15 @@ Partial Class FrmFacturas
         Me.TxtTelefono.TabIndex = 132
         Me.TxtTelefono.Visible = False
         '
+        'BtnPlanPagos
+        '
+        Me.BtnPlanPagos.Location = New System.Drawing.Point(219, 16)
+        Me.BtnPlanPagos.Name = "BtnPlanPagos"
+        Me.BtnPlanPagos.Size = New System.Drawing.Size(85, 23)
+        Me.BtnPlanPagos.TabIndex = 147
+        Me.BtnPlanPagos.Text = "Plan Pagos"
+        Me.BtnPlanPagos.UseVisualStyleBackColor = True
+        '
         'TxtDireccion
         '
         Me.TxtDireccion.Location = New System.Drawing.Point(12, 97)
@@ -559,15 +559,16 @@ Partial Class FrmFacturas
         Me.TxtCodigoClientes.Size = New System.Drawing.Size(152, 20)
         Me.TxtCodigoClientes.TabIndex = 0
         '
-        'CmdCuentasxCobrar
+        'ChkAplicarCtaXCobrar
         '
-        Me.CmdCuentasxCobrar.Location = New System.Drawing.Point(343, 89)
-        Me.CmdCuentasxCobrar.Name = "CmdCuentasxCobrar"
-        Me.CmdCuentasxCobrar.Size = New System.Drawing.Size(85, 23)
-        Me.CmdCuentasxCobrar.TabIndex = 147
-        Me.CmdCuentasxCobrar.Text = "Ctas x Cobrar"
-        Me.CmdCuentasxCobrar.UseVisualStyleBackColor = True
-        Me.CmdCuentasxCobrar.Visible = False
+        Me.ChkAplicarCtaXCobrar.AutoSize = True
+        Me.ChkAplicarCtaXCobrar.Location = New System.Drawing.Point(576, 16)
+        Me.ChkAplicarCtaXCobrar.Name = "ChkAplicarCtaXCobrar"
+        Me.ChkAplicarCtaXCobrar.Size = New System.Drawing.Size(108, 17)
+        Me.ChkAplicarCtaXCobrar.TabIndex = 228
+        Me.ChkAplicarCtaXCobrar.Text = "Aplicar CtasXCob"
+        Me.ChkAplicarCtaXCobrar.UseVisualStyleBackColor = True
+        Me.ChkAplicarCtaXCobrar.Visible = False
         '
         'GroupBox1
         '
@@ -899,7 +900,7 @@ Partial Class FrmFacturas
         Me.CmdFacturar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CmdFacturar.Image = CType(resources.GetObject("CmdFacturar.Image"), System.Drawing.Image)
         Me.CmdFacturar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdFacturar.Location = New System.Drawing.Point(77, 86)
+        Me.CmdFacturar.Location = New System.Drawing.Point(77, 89)
         Me.CmdFacturar.Name = "CmdFacturar"
         Me.CmdFacturar.Size = New System.Drawing.Size(62, 66)
         Me.CmdFacturar.TabIndex = 194
@@ -984,7 +985,7 @@ Partial Class FrmFacturas
         Me.CmdProcesar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CmdProcesar.Image = CType(resources.GetObject("CmdProcesar.Image"), System.Drawing.Image)
         Me.CmdProcesar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdProcesar.Location = New System.Drawing.Point(74, 158)
+        Me.CmdProcesar.Location = New System.Drawing.Point(73, 158)
         Me.CmdProcesar.Name = "CmdProcesar"
         Me.CmdProcesar.Size = New System.Drawing.Size(65, 66)
         Me.CmdProcesar.TabIndex = 208
@@ -1026,9 +1027,9 @@ Partial Class FrmFacturas
         'C1Button4
         '
         Me.C1Button4.Image = CType(resources.GetObject("C1Button4.Image"), System.Drawing.Image)
-        Me.C1Button4.Location = New System.Drawing.Point(686, 184)
+        Me.C1Button4.Location = New System.Drawing.Point(686, 185)
         Me.C1Button4.Name = "C1Button4"
-        Me.C1Button4.Size = New System.Drawing.Size(39, 24)
+        Me.C1Button4.Size = New System.Drawing.Size(37, 24)
         Me.C1Button4.TabIndex = 219
         Me.C1Button4.UseVisualStyleBackColor = True
         Me.C1Button4.VisualStyle = C1.Win.C1Input.VisualStyle.System
@@ -1079,7 +1080,7 @@ Partial Class FrmFacturas
         Me.C1Button5.Image = CType(resources.GetObject("C1Button5.Image"), System.Drawing.Image)
         Me.C1Button5.Location = New System.Drawing.Point(686, 129)
         Me.C1Button5.Name = "C1Button5"
-        Me.C1Button5.Size = New System.Drawing.Size(39, 24)
+        Me.C1Button5.Size = New System.Drawing.Size(37, 24)
         Me.C1Button5.TabIndex = 220
         Me.C1Button5.UseVisualStyleBackColor = True
         Me.C1Button5.VisualStyle = C1.Win.C1Input.VisualStyle.System
@@ -1160,7 +1161,7 @@ Partial Class FrmFacturas
         Me.BtnSalida.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnSalida.Image = CType(resources.GetObject("BtnSalida.Image"), System.Drawing.Image)
         Me.BtnSalida.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.BtnSalida.Location = New System.Drawing.Point(77, 87)
+        Me.BtnSalida.Location = New System.Drawing.Point(76, 91)
         Me.BtnSalida.Name = "BtnSalida"
         Me.BtnSalida.Size = New System.Drawing.Size(62, 66)
         Me.BtnSalida.TabIndex = 210
@@ -1194,11 +1195,23 @@ Partial Class FrmFacturas
         Me.PictureBox3.TabIndex = 227
         Me.PictureBox3.TabStop = False
         '
+        'Button10
+        '
+        Me.Button10.Location = New System.Drawing.Point(393, 148)
+        Me.Button10.Name = "Button10"
+        Me.Button10.Size = New System.Drawing.Size(75, 23)
+        Me.Button10.TabIndex = 228
+        Me.Button10.Text = "Button10"
+        Me.Button10.UseVisualStyleBackColor = True
+        Me.Button10.Visible = False
+        '
         'FrmFacturas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(888, 499)
+        Me.Controls.Add(Me.ChkAplicarCtaXCobrar)
+        Me.Controls.Add(Me.Button10)
         Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.GroupBox5)
         Me.Controls.Add(Me.DTPFechaHora)
@@ -1208,7 +1221,6 @@ Partial Class FrmFacturas
         Me.Controls.Add(Me.TxtRetencion1Porciento)
         Me.Controls.Add(Me.C1Button5)
         Me.Controls.Add(Me.C1Button4)
-        Me.Controls.Add(Me.CmdCuentasxCobrar)
         Me.Controls.Add(Me.CboProyecto)
         Me.Controls.Add(Me.Label15)
         Me.Controls.Add(Me.C1Button3)
@@ -1303,7 +1315,7 @@ Partial Class FrmFacturas
     Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
-    Friend WithEvents CmdCuentasxCobrar As System.Windows.Forms.Button
+    Friend WithEvents BtnPlanPagos As System.Windows.Forms.Button
     Friend WithEvents TxtTelefono As System.Windows.Forms.TextBox
     Friend WithEvents TxtDireccion As System.Windows.Forms.TextBox
     Friend WithEvents TxtApellidos As System.Windows.Forms.TextBox
@@ -1368,4 +1380,5 @@ Partial Class FrmFacturas
     Friend WithEvents TxtNumeroFactura As System.Windows.Forms.TextBox
     Friend WithEvents BtnFacturas As C1.Win.C1Input.C1Button
     Friend WithEvents ChkAplicarCtaXCobrar As System.Windows.Forms.CheckBox
+    Friend WithEvents Button10 As Button
 End Class

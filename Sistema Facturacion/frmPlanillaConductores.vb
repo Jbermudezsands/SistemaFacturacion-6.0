@@ -462,53 +462,85 @@ Public Class frmPlanillaConductores
             DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
             DataAdapter.Fill(DataSet, "Consulta")
             If DataSet.Tables("Consulta").Rows.Count <> 0 Then
-                PLunes = DataSet.Tables("Consulta").Rows(0)("Lunes")
-                PMartes = DataSet.Tables("Consulta").Rows(0)("Martes")
-                PMiercoles = DataSet.Tables("Consulta").Rows(0)("Miercoles")
-                PJueves = DataSet.Tables("Consulta").Rows(0)("Jueves")
-                PViernes = DataSet.Tables("Consulta").Rows(0)("Viernes")
-                PSabado = DataSet.Tables("Consulta").Rows(0)("Sabado")
-                PDomingo = DataSet.Tables("Consulta").Rows(0)("Domingo")
-                PrecioUnitario = DataSet.Tables("Consulta").Rows(0)("PrecioVenta")
+                If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Lunes")) Then
+                    PLunes = DataSet.Tables("Consulta").Rows(0)("Lunes")
+                Else
+                    PLunes = 0
+                End If
+                If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Martes")) Then
+                    PMartes = DataSet.Tables("Consulta").Rows(0)("Martes")
+                Else
+                    PMartes = 0
+                End If
+                If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Miercoles")) Then
+                    PMiercoles = DataSet.Tables("Consulta").Rows(0)("Miercoles")
+                Else
+                    PMiercoles = 0
+                End If
+                If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Jueves")) Then
+                    PJueves = DataSet.Tables("Consulta").Rows(0)("Jueves")
+                Else
+                    PJueves = 0
+                End If
+                If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Viernes")) Then
+                    PViernes = DataSet.Tables("Consulta").Rows(0)("Viernes")
+                Else
+                    PViernes = 0
+                End If
+                If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Sabado")) Then
+                    PSabado = DataSet.Tables("Consulta").Rows(0)("Sabado")
+                Else
+                    PSabado = 0
+                End If
+                If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Domingo")) Then
+                    PDomingo = DataSet.Tables("Consulta").Rows(0)("Domingo")
+                Else
+                    PDomingo = 0
+                End If
+                If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioVenta")) Then
+                    PrecioUnitario = DataSet.Tables("Consulta").Rows(0)("PrecioVenta")
+                Else
+                    PrecioUnitario = 0
+                End If
 
                 PrecioLunes = PrecioUnitario
-                PrecioMartes = PrecioUnitario
-                PrecioMiercoles = PrecioUnitario
-                PrecioJueves = PrecioUnitario
-                PrecioViernes = PrecioUnitario
-                PrecioSabado = PrecioUnitario
-                PrecioDomingo = PrecioUnitario
+                    PrecioMartes = PrecioUnitario
+                    PrecioMiercoles = PrecioUnitario
+                    PrecioJueves = PrecioUnitario
+                    PrecioViernes = PrecioUnitario
+                    PrecioSabado = PrecioUnitario
+                    PrecioDomingo = PrecioUnitario
 
-                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioLunes")) Then
-                '    PrecioLunes = DataSet.Tables("Consulta").Rows(0)("PrecioLunes")
-                'End If
+                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioLunes")) Then
+                    '    PrecioLunes = DataSet.Tables("Consulta").Rows(0)("PrecioLunes")
+                    'End If
 
-                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioMartes")) Then
-                '    PrecioMartes = DataSet.Tables("Consulta").Rows(0)("PrecioMartes")
-                'End If
+                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioMartes")) Then
+                    '    PrecioMartes = DataSet.Tables("Consulta").Rows(0)("PrecioMartes")
+                    'End If
 
-                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioMiercoles")) Then
-                '    PrecioMiercoles = DataSet.Tables("Consulta").Rows(0)("PrecioMiercoles")
-                'End If
+                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioMiercoles")) Then
+                    '    PrecioMiercoles = DataSet.Tables("Consulta").Rows(0)("PrecioMiercoles")
+                    'End If
 
-                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioJueves")) Then
-                '    PrecioJueves = DataSet.Tables("Consulta").Rows(0)("PrecioJueves")
-                'End If
+                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioJueves")) Then
+                    '    PrecioJueves = DataSet.Tables("Consulta").Rows(0)("PrecioJueves")
+                    'End If
 
-                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioViernes")) Then
-                '    PrecioViernes = DataSet.Tables("Consulta").Rows(0)("PrecioViernes")
-                'End If
+                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioViernes")) Then
+                    '    PrecioViernes = DataSet.Tables("Consulta").Rows(0)("PrecioViernes")
+                    'End If
 
-                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioSabado")) Then
-                '    PrecioSabado = DataSet.Tables("Consulta").Rows(0)("PrecioSabado")
-                'End If
+                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioSabado")) Then
+                    '    PrecioSabado = DataSet.Tables("Consulta").Rows(0)("PrecioSabado")
+                    'End If
 
-                'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioDomingo")) Then
-                '    PrecioDomingo = DataSet.Tables("Consulta").Rows(0)("PrecioDomingo")
-                'End If
+                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioDomingo")) Then
+                    '    PrecioDomingo = DataSet.Tables("Consulta").Rows(0)("PrecioDomingo")
+                    'End If
 
-            Else
-                PLunes = 0
+                Else
+                    PLunes = 0
                 PMartes = 0
                 PMiercoles = 0
                 PJueves = 0
