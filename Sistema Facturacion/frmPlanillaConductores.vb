@@ -5,6 +5,358 @@ Public Class frmPlanillaConductores
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder, dsEgreso As New DataSet, daEgreso As New SqlClient.SqlDataAdapter, CmdBuilderEgreso As New SqlCommandBuilder
 
+    ' Menú contextual del grid de ingresos
+    Private WithEvents MenuTransportista As New ContextMenuStrip()
+
+    ' Opción del submenú
+    Private WithEvents ItemVerProductores As New ToolStripMenuItem(
+    "Ver productores transportados")
+
+
+    Private Sub ConfigurarMenuTransportistas()
+
+        MenuTransportista.Items.Clear()
+
+        ItemVerProductores.Text = "Ver productores transportados"
+
+        MenuTransportista.Items.Add(ItemVerProductores)
+
+        TDGridIngresos.ContextMenuStrip = MenuTransportista
+
+    End Sub
+
+
+    Private Function ObtenerFechaViaje(
+    ByVal FechaInicial As Date,
+    ByVal FechaFinal As Date,
+    ByVal Dia As String
+) As Date
+
+        If FechaInicial.Date > FechaFinal.Date Then
+            Throw New ArgumentException(
+            "La fecha inicial no puede ser posterior a la fecha final.")
+        End If
+
+        If FechaFinal.Date <> FechaInicial.Date.AddDays(6) Then
+            Throw New ArgumentException(
+            "La planilla de leche debe comprender exactamente siete días.")
+        End If
+
+        Dim DiaObjetivo As DayOfWeek
+
+        Select Case Dia.Trim().ToLowerInvariant()
+
+            Case "lunes"
+                DiaObjetivo = DayOfWeek.Monday
+
+            Case "martes"
+                DiaObjetivo = DayOfWeek.Tuesday
+
+            Case "miercoles", "miércoles"
+                DiaObjetivo = DayOfWeek.Wednesday
+
+            Case "jueves"
+                DiaObjetivo = DayOfWeek.Thursday
+
+            Case "viernes"
+                DiaObjetivo = DayOfWeek.Friday
+
+            Case "sabado", "sábado"
+                DiaObjetivo = DayOfWeek.Saturday
+
+            Case "domingo"
+                DiaObjetivo = DayOfWeek.Sunday
+
+            Case Else
+                Throw New ArgumentException(
+                "Día de la semana no válido: " & Dia)
+
+        End Select
+
+        Dim DiferenciaDias As Integer
+
+        DiferenciaDias =
+        (CInt(DiaObjetivo) -
+         CInt(FechaInicial.DayOfWeek) + 7) Mod 7
+
+        Return FechaInicial.Date.AddDays(DiferenciaDias)
+
+    End Function
+
+    Private Sub GuardarDetallePrecioTransportista(
+    ByVal NumNominaTransportista As String,
+    ByVal DsViajes As DataSet,
+    ByVal PrecioLunes As Double,
+    ByVal PrecioMartes As Double,
+    ByVal PrecioMiercoles As Double,
+    ByVal PrecioJueves As Double,
+    ByVal PrecioViernes As Double,
+    ByVal PrecioSabado As Double,
+    ByVal PrecioDomingo As Double)
+
+        If DsViajes Is Nothing OrElse
+       Not DsViajes.Tables.Contains("Viajes") Then
+
+            Throw New ArgumentException(
+            "No se encontraron los datos de los viajes.")
+
+        End If
+
+        Dim TablaViajes As DataTable = DsViajes.Tables("Viajes")
+
+        'Por seguridad, no borrar el historial si la consulta
+        'no devolvió movimientos.
+        If TablaViajes.Rows.Count = 0 Then
+
+            Throw New InvalidOperationException(
+            "No se encontraron viajes para registrar. " &
+            "No se modificó el historial anterior.")
+
+        End If
+
+        Using ConexionSql As New SqlClient.SqlConnection(Conexion)
+
+            ConexionSql.Open()
+
+            Using Transaccion As SqlClient.SqlTransaction =
+            ConexionSql.BeginTransaction()
+
+                Try
+
+                    'Eliminar únicamente el historial de esta nómina.
+                    Using CmdEliminar As New SqlClient.SqlCommand(
+                    "DELETE FROM dbo.DetallePrecioTransportista " &
+                    "WHERE NumNominaTransportista = @NumNominaTransportista",
+                    ConexionSql,
+                    Transaccion)
+
+                        CmdEliminar.Parameters.Add(
+                        "@NumNominaTransportista",
+                        SqlDbType.NVarChar, 50).Value =
+                        NumNominaTransportista.Trim()
+
+                        CmdEliminar.ExecuteNonQuery()
+
+                    End Using
+
+                    Dim SqlInsertar As String =
+                    "INSERT INTO dbo.DetallePrecioTransportista " &
+                    "(" &
+                    "NumNominaTransportista, NumNominaLeche, " &
+                    "CodigoTransportista, CodProductor, TipoProductor, " &
+                    "FechaViaje, Dia, Litros, PrecioProductor, " &
+                    "PrecioTransportista, PrecioManual, PrecioAplicado, " &
+                    "OrigenPrecio, Importe" &
+                    ") VALUES (" &
+                    "@NumNominaTransportista, @NumNominaLeche, " &
+                    "@CodigoTransportista, @CodProductor, @TipoProductor, " &
+                    "@FechaViaje, @Dia, @Litros, @PrecioProductor, " &
+                    "@PrecioTransportista, @PrecioManual, @PrecioAplicado, " &
+                    "@OrigenPrecio, @Importe)"
+
+                    Using CmdInsertar As New SqlClient.SqlCommand(
+                    SqlInsertar, ConexionSql, Transaccion)
+
+                        CmdInsertar.Parameters.Add(
+                        "@NumNominaTransportista",
+                        SqlDbType.NVarChar, 50)
+
+                        CmdInsertar.Parameters.Add(
+                        "@NumNominaLeche",
+                        SqlDbType.NVarChar, 50)
+
+                        CmdInsertar.Parameters.Add(
+                        "@CodigoTransportista",
+                        SqlDbType.NVarChar, 50)
+
+                        CmdInsertar.Parameters.Add(
+                        "@CodProductor",
+                        SqlDbType.NVarChar, 50)
+
+                        CmdInsertar.Parameters.Add(
+                        "@TipoProductor",
+                        SqlDbType.NVarChar, 50)
+
+                        CmdInsertar.Parameters.Add(
+                        "@FechaViaje",
+                        SqlDbType.SmallDateTime)
+
+                        CmdInsertar.Parameters.Add(
+                        "@Dia",
+                        SqlDbType.NVarChar, 10)
+
+                        CmdInsertar.Parameters.Add(
+                        "@Litros",
+                        SqlDbType.Float)
+
+                        CmdInsertar.Parameters.Add(
+                        "@PrecioProductor",
+                        SqlDbType.Float)
+
+                        CmdInsertar.Parameters.Add(
+                        "@PrecioTransportista",
+                        SqlDbType.Float)
+
+                        CmdInsertar.Parameters.Add(
+                        "@PrecioManual",
+                        SqlDbType.Float)
+
+                        CmdInsertar.Parameters.Add(
+                        "@PrecioAplicado",
+                        SqlDbType.Float)
+
+                        CmdInsertar.Parameters.Add(
+                        "@OrigenPrecio",
+                        SqlDbType.NVarChar, 20)
+
+                        CmdInsertar.Parameters.Add(
+                        "@Importe",
+                        SqlDbType.Float)
+
+                        For Each Fila As DataRow In TablaViajes.Rows
+
+                            Dim Dia As String =
+                            Convert.ToString(Fila("Dia"))
+
+                            Dim FechaInicial As Date =
+                            Convert.ToDateTime(Fila("FechaInicial"))
+
+                            Dim FechaFinal As Date =
+                            Convert.ToDateTime(Fila("FechaFinal"))
+
+                            Dim FechaViaje As Date =
+                            ObtenerFechaViaje(
+                                FechaInicial, FechaFinal, Dia)
+
+                            Dim Litros As Double =
+                            Convert.ToDouble(Fila("Litros"))
+
+                            Dim PrecioProductor As Double =
+                            Convert.ToDouble(Fila("PrecioProductor"))
+
+                            Dim PrecioDelTransportista As Double =
+                            Convert.ToDouble(
+                                Fila("PrecioDelTransportista"))
+
+                            Dim PrecioManual As Double = 0
+                            Dim PrecioAplicado As Double = 0
+                            Dim OrigenPrecio As String = ""
+
+                            'Mantener la misma prioridad de precios
+                            'utilizada por CmdCalcular_Click.
+                            If PrecioProductor > 0 Then
+
+                                PrecioAplicado = PrecioProductor
+                                OrigenPrecio = "PRODUCTOR"
+
+                            ElseIf PrecioDelTransportista > 0 Then
+
+                                PrecioAplicado = PrecioDelTransportista
+                                OrigenPrecio = "TRANSPORTISTA"
+
+                            Else
+
+                                Select Case Dia
+
+                                    Case "Lunes"
+                                        PrecioManual = PrecioLunes
+
+                                    Case "Martes"
+                                        PrecioManual = PrecioMartes
+
+                                    Case "Miercoles"
+                                        PrecioManual = PrecioMiercoles
+
+                                    Case "Jueves"
+                                        PrecioManual = PrecioJueves
+
+                                    Case "Viernes"
+                                        PrecioManual = PrecioViernes
+
+                                    Case "Sabado"
+                                        PrecioManual = PrecioSabado
+
+                                    Case "Domingo"
+                                        PrecioManual = PrecioDomingo
+
+                                    Case Else
+                                        Throw New InvalidOperationException(
+                                        "Día no válido: " & Dia)
+
+                                End Select
+
+                                PrecioAplicado = PrecioManual
+                                OrigenPrecio = "MANUAL"
+
+                            End If
+
+                            CmdInsertar.Parameters(
+                            "@NumNominaTransportista").Value =
+                            NumNominaTransportista.Trim()
+
+                            CmdInsertar.Parameters(
+                            "@NumNominaLeche").Value =
+                            Convert.ToString(Fila("NumNominaLeche"))
+
+                            CmdInsertar.Parameters(
+                            "@CodigoTransportista").Value =
+                            Convert.ToString(Fila("CodigoTransportista"))
+
+                            CmdInsertar.Parameters(
+                            "@CodProductor").Value =
+                            Convert.ToString(Fila("CodProductor"))
+
+                            CmdInsertar.Parameters(
+                            "@TipoProductor").Value =
+                            Convert.ToString(Fila("TipoProductor"))
+
+                            CmdInsertar.Parameters(
+                            "@FechaViaje").Value = FechaViaje
+
+                            CmdInsertar.Parameters("@Dia").Value = Dia
+                            CmdInsertar.Parameters("@Litros").Value = Litros
+
+                            CmdInsertar.Parameters(
+                            "@PrecioProductor").Value =
+                            PrecioProductor
+
+                            CmdInsertar.Parameters(
+                            "@PrecioTransportista").Value =
+                            PrecioDelTransportista
+
+                            CmdInsertar.Parameters(
+                            "@PrecioManual").Value = PrecioManual
+
+                            CmdInsertar.Parameters(
+                            "@PrecioAplicado").Value = PrecioAplicado
+
+                            CmdInsertar.Parameters(
+                            "@OrigenPrecio").Value = OrigenPrecio
+
+                            CmdInsertar.Parameters(
+                            "@Importe").Value =
+                            Litros * PrecioAplicado
+
+                            CmdInsertar.ExecuteNonQuery()
+
+                        Next
+
+                    End Using
+
+                    Transaccion.Commit()
+
+                Catch
+
+                    Transaccion.Rollback()
+                    Throw
+
+                End Try
+
+            End Using
+
+        End Using
+
+    End Sub
 
 
     Public Sub InsertarRowGridIngresos()
@@ -215,6 +567,9 @@ Public Class frmPlanillaConductores
         Dim SqlString As String, NumNomina As String, Año As Double, Mes As Double, Periodo As Double
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
+
+        ConfigurarMenuTransportistas()
+
         SqlString = "SELECT  NominaTransportista.* FROM NominaTransportista  WHERE(Activo = 1)"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "TipoNomina")
@@ -353,6 +708,18 @@ Public Class frmPlanillaConductores
         Dim CantPlanilla As Double = 0, PLunes As Double, PMartes As Double, PMiercoles As Double, PJueves As Double, PViernes As Double, PSabado As Double, PDomingo As Double
         Dim PorcientoBolsa As Double = 0, MontoBolsa As Double = 0, ProductosVeterinarios As Double = 0, CantLunes As Double = 0, CantMartes As Double = 0, CantMiercoles As Double = 0, CantJueves As Double = 0, CantViernes As Double = 0, CantSabado As Double = 0, CantDomingo As Double = 0
 
+        Dim DsViajes As New DataSet
+        Dim DaViajes As SqlClient.SqlDataAdapter
+        Dim SqlViajes As String
+        Dim FilaViaje As DataRow
+
+        Dim LitrosViaje As Double
+        Dim PrecioProductor As Double
+        Dim PrecioDelTransportista As Double
+        Dim PrecioAplicado As Double
+        Dim CodigoTransportistaViaje As String
+
+        Dim OrigenPrecio As String
 
         'If Me.CboTipoPlanilla.Text = "" Then
         '    MsgBox("Seleccione la Nomina, para Calcular", MsgBoxStyle.Critical, "Zeus Acopio")
@@ -407,6 +774,83 @@ Public Class frmPlanillaConductores
         PrecioDomingo = Me.TxtPrecioDomingo.Text
 
 
+        ' ============================================================
+        ' CONSULTA OPTIMIZADA DE VIAJES DE LA NOMINA DE TRANSPORTISTAS
+        ' ============================================================
+
+
+        SqlViajes = ""
+
+        SqlViajes = SqlViajes &
+    "SELECT " &
+    "    D.NumNomina AS NumNominaLeche, " &
+    "    D.CodProductor, " &
+    "    D.TipoProductor, " &
+    "    N.FechaInicial, " &
+    "    N.FechaFinal, " &
+    "    V.Litros, " &
+    "    V.CodigoTransportista, " &
+    "    V.Dia, " &
+    "    ISNULL(P.Precio_Transportista, 0) AS PrecioProductor, " &
+    "    ISNULL(T.Precio, 0) AS PrecioDelTransportista " &
+    "FROM Detalle_Nomina AS D " &
+    "INNER JOIN Nomina AS N " &
+    "    ON N.NumPlanilla = D.NumNomina " &
+    "INNER JOIN NominaTransportista AS NT " &
+    "    ON NT.NumPlanilla = @NumPlanilla " &
+    "    AND N.FechaInicial = NT.FechaInicial " &
+    "    AND N.FechaFinal = NT.FechaFinal " &
+    "    AND N.Año = NT.Año " &
+    "    AND N.mes = NT.mes " &
+    "    AND N.Periodo = NT.Periodo " &
+    "CROSS APPLY " &
+    "( " &
+    "    VALUES " &
+    "        ('Lunes',      D.Lunes,      D.LunesIdTransportista), " &
+    "        ('Martes',     D.Martes,     D.MartesIdTransportista), " &
+    "        ('Miercoles',  D.Miercoles,  D.MiercolesIdTransportista), " &
+    "        ('Jueves',     D.Jueves,     D.JuevesIdTransportista), " &
+    "        ('Viernes',    D.Viernes,    D.ViernesIdTransportista), " &
+    "        ('Sabado',     D.Sabado,     D.SabadoIdTransportista), " &
+    "        ('Domingo',    D.Domingo,    D.DomingoIdTransportista) " &
+    ") AS V(Dia, Litros, CodigoTransportista) " &
+    "INNER JOIN Productor AS P " &
+    "    ON P.CodProductor = D.CodProductor " &
+    "    AND P.TipoProductor = D.TipoProductor " &
+    "LEFT JOIN Transportista AS T " &
+    "    ON T.CodigoTransportista = V.CodigoTransportista " &
+    "WHERE N.Activo = 1 " &
+    "    AND NT.Activo = 1 " &
+    "    AND ISNULL(V.Litros, 0) > 0 " &
+    "    AND ISNULL(V.CodigoTransportista, '') <> '' " &
+    "ORDER BY " &
+    "    D.NumNomina, " &
+    "    D.CodProductor, " &
+    "    V.Dia; "
+
+        ' ============================================================
+        ' EJECUTAR LA CONSULTA CON PARAMETRO
+        ' ============================================================
+
+        Using CmdViajes As New SqlClient.SqlCommand(SqlViajes, MiConexion)
+
+            CmdViajes.Parameters.Add(
+        "@NumPlanilla",
+        SqlDbType.NVarChar,
+        50
+    ).Value = Me.TxtNumNomina.Text.Trim()
+
+            Using AdaptadorViajes As New SqlClient.SqlDataAdapter(CmdViajes)
+
+                DsViajes.Clear()
+
+                AdaptadorViajes.Fill(DsViajes, "Viajes")
+
+            End Using
+
+        End Using
+
+
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         '//////////////////////////////////////////////ACTUALIZO LOS ENCABEZADOS DE LA NOMINA//////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -432,10 +876,11 @@ Public Class frmPlanillaConductores
         Me.ProgressBar.Value = 0
         Registros = DataSet.Tables("Conductor").Rows.Count
         Me.ProgressBar.Maximum = Registros
+
         Do While iPosicion < Registros
             My.Application.DoEvents()
             CodProductor = DataSet.Tables("Conductor").Rows(iPosicion)("Codigo")
-
+            Nombres = DataSet.Tables("Conductor").Rows(iPosicion)("Nombre")
 
             MontoLunes = 0
             MontoMartes = 0
@@ -445,252 +890,160 @@ Public Class frmPlanillaConductores
             MontoSabado = 0
             MontoDomingo = 0
 
+            '==========================================================
+            ' CALCULAR LITROS E INGRESOS POR TRANSPORTISTA Y DIA
+            '==========================================================
 
-            If Not IsDBNull(DataSet.Tables("Conductor").Rows(iPosicion)("Precio")) Then
-                PrecioUnitario = DataSet.Tables("Conductor").Rows(iPosicion)("Precio")
-                PrecioLunes = PrecioUnitario
-                PrecioMartes = PrecioUnitario
-                PrecioMiercoles = PrecioUnitario
-                PrecioJueves = PrecioUnitario
-                PrecioViernes = PrecioUnitario
-                PrecioSabado = PrecioUnitario
-                PrecioDomingo = PrecioUnitario
-            End If
+            'Inicializar cantidades e importes
+            CantLunes = 0
+            CantMartes = 0
+            CantMiercoles = 0
+            CantJueves = 0
+            CantViernes = 0
+            CantSabado = 0
+            CantDomingo = 0
 
-            '//////////////////////////////////////////////CONSULTO SI ESTE PRODUCTOR YA TIENE UNA PLANILLA GRABADA ANTERIOR ////////////////////////////
-            SqlString = "SELECT Detalle_NominaTransportista.* FROM Detalle_NominaTransportista  WHERE  (NumNomina = '" & Me.TxtNumNomina.Text & "') AND (CodigoTransportista = '" & CodProductor & "') "
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-            DataAdapter.Fill(DataSet, "Consulta")
-            If DataSet.Tables("Consulta").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Lunes")) Then
-                    PLunes = DataSet.Tables("Consulta").Rows(0)("Lunes")
-                Else
-                    PLunes = 0
-                End If
-                If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Martes")) Then
-                    PMartes = DataSet.Tables("Consulta").Rows(0)("Martes")
-                Else
-                    PMartes = 0
-                End If
-                If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Miercoles")) Then
-                    PMiercoles = DataSet.Tables("Consulta").Rows(0)("Miercoles")
-                Else
-                    PMiercoles = 0
-                End If
-                If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Jueves")) Then
-                    PJueves = DataSet.Tables("Consulta").Rows(0)("Jueves")
-                Else
-                    PJueves = 0
-                End If
-                If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Viernes")) Then
-                    PViernes = DataSet.Tables("Consulta").Rows(0)("Viernes")
-                Else
-                    PViernes = 0
-                End If
-                If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Sabado")) Then
-                    PSabado = DataSet.Tables("Consulta").Rows(0)("Sabado")
-                Else
-                    PSabado = 0
-                End If
-                If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Domingo")) Then
-                    PDomingo = DataSet.Tables("Consulta").Rows(0)("Domingo")
-                Else
-                    PDomingo = 0
-                End If
-                If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioVenta")) Then
-                    PrecioUnitario = DataSet.Tables("Consulta").Rows(0)("PrecioVenta")
-                Else
-                    PrecioUnitario = 0
-                End If
+            MontoLunes = 0
+            MontoMartes = 0
+            MontoMiercoles = 0
+            MontoJueves = 0
+            MontoViernes = 0
+            MontoSabado = 0
+            MontoDomingo = 0
 
-                PrecioLunes = PrecioUnitario
-                    PrecioMartes = PrecioUnitario
-                    PrecioMiercoles = PrecioUnitario
-                    PrecioJueves = PrecioUnitario
-                    PrecioViernes = PrecioUnitario
-                    PrecioSabado = PrecioUnitario
-                    PrecioDomingo = PrecioUnitario
-
-                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioLunes")) Then
-                    '    PrecioLunes = DataSet.Tables("Consulta").Rows(0)("PrecioLunes")
-                    'End If
-
-                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioMartes")) Then
-                    '    PrecioMartes = DataSet.Tables("Consulta").Rows(0)("PrecioMartes")
-                    'End If
-
-                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioMiercoles")) Then
-                    '    PrecioMiercoles = DataSet.Tables("Consulta").Rows(0)("PrecioMiercoles")
-                    'End If
-
-                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioJueves")) Then
-                    '    PrecioJueves = DataSet.Tables("Consulta").Rows(0)("PrecioJueves")
-                    'End If
-
-                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioViernes")) Then
-                    '    PrecioViernes = DataSet.Tables("Consulta").Rows(0)("PrecioViernes")
-                    'End If
-
-                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioSabado")) Then
-                    '    PrecioSabado = DataSet.Tables("Consulta").Rows(0)("PrecioSabado")
-                    'End If
-
-                    'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("PrecioDomingo")) Then
-                    '    PrecioDomingo = DataSet.Tables("Consulta").Rows(0)("PrecioDomingo")
-                    'End If
-
-                Else
-                    PLunes = 0
-                PMartes = 0
-                PMiercoles = 0
-                PJueves = 0
-                PViernes = 0
-                PSabado = 0
-                PDomingo = 0
-            End If
-
-            DataSet.Tables("Consulta").Reset()
-
-
-            '////////////////////////////////////////////CAMBIO EL PRECIO SI EL USUARIO DIGITA PRECIO PARA UN DIA /////////////////////////////
-            '////////////////////////////////////////////SI EL PRECIO ES CERO NO CAMBIO NADA /////////////////////////////////////////////////
-
-            If Val(Me.TxtPrecioLunes.Text) <> 0 Then
-                PrecioLunes = Me.TxtPrecioLunes.Text
-            End If
-
-            If Val(Me.TxtPrecioMartes.Text) <> 0 Then
-                PrecioMartes = Me.TxtPrecioMartes.Text
-            End If
-
-            If Val(Me.TxtPrecioMiercoles.Text) <> 0 Then
-                PrecioMiercoles = Me.TxtPrecioMiercoles.Text
-            End If
-
-            If Val(Me.TxtPrecioJueves.Text) <> 0 Then
-                PrecioJueves = Me.TxtPrecioJueves.Text
-            End If
-
-            If Val(Me.TxtPrecioViernes.Text) <> 0 Then
-                PrecioViernes = Me.TxtPrecioViernes.Text
-            End If
-
-            If Val(Me.TxtPrecioSabado.Text) <> 0 Then
-                PrecioSabado = Me.TxtPrecioSabado.Text
-            End If
-
-            If Val(Me.TxtPrecioDomingo.Text) <> 0 Then
-                PrecioDomingo = Me.TxtPrecioDomingo.Text
-            End If
-
-
-
-            Fecha = Me.DTPFechaIni.Value
-            Nombres = DataSet.Tables("Conductor").Rows(iPosicion)("Nombre")
-            Me.LblProcesando.Text = "PROCESANDO PRODUCTOR: " & CodProductor & " " & Nombres
             CantidadTotal = 0
-            Contador = 1
+            IngresoBruto = 0
+
+            'Procesar cada viaje registrado
+            For Each FilaViaje In DsViajes.Tables("Viajes").Rows
+
+                CodigoTransportistaViaje =
+        Convert.ToString(FilaViaje("CodigoTransportista"))
+
+                'Solo procesar los viajes de este transportista
+                If CodigoTransportistaViaje = CodProductor Then
+
+                    LitrosViaje = Convert.ToDouble(FilaViaje("Litros"))
+
+                    PrecioProductor =
+            Convert.ToDouble(FilaViaje("PrecioProductor"))
+
+                    PrecioDelTransportista =
+            Convert.ToDouble(FilaViaje("PrecioDelTransportista"))
+
+                    'Prioridad:
+                    '1. Precio específico del productor
+                    '2. Precio del transportista
+                    '3. Precio manual del día
+
+                    '==========================================================
+                    ' DETERMINAR EL PRECIO APLICADO Y SU ORIGEN
+                    '==========================================================
+
+                    If PrecioProductor > 0 Then
+
+                        PrecioAplicado = PrecioProductor
+                        OrigenPrecio = "PRODUCTOR"
+
+                    ElseIf PrecioDelTransportista > 0 Then
+
+                        PrecioAplicado = PrecioDelTransportista
+                        OrigenPrecio = "TRANSPORTISTA"
+
+                    Else
+
+                        Select Case Convert.ToString(FilaViaje("Dia"))
+
+                            Case "Lunes"
+                                PrecioAplicado = PrecioLunes
+
+                            Case "Martes"
+                                PrecioAplicado = PrecioMartes
+
+                            Case "Miercoles"
+                                PrecioAplicado = PrecioMiercoles
+
+                            Case "Jueves"
+                                PrecioAplicado = PrecioJueves
+
+                            Case "Viernes"
+                                PrecioAplicado = PrecioViernes
+
+                            Case "Sabado"
+                                PrecioAplicado = PrecioSabado
+
+                            Case "Domingo"
+                                PrecioAplicado = PrecioDomingo
+
+                            Case Else
+                                PrecioAplicado = 0
+
+                        End Select
+
+                        OrigenPrecio = "MANUAL"
+
+                    End If
 
 
-            Me.ProgressBar2.Visible = True
-            Me.ProgressBar2.Minimum = 0
-            Me.ProgressBar2.Visible = True
-            Me.ProgressBar2.Value = 0
-            Me.ProgressBar2.Maximum = 7
-            Do While Fecha <= Me.DTPFechaFin.Value
 
+                    'Acumular litros e importes según el día
+                    Select Case Convert.ToString(FilaViaje("Dia"))
 
+                        Case "Lunes"
+                            CantLunes += LitrosViaje
+                            MontoLunes += LitrosViaje * PrecioAplicado
 
-                Contador = Fecha.DayOfWeek
-                Cantidad = 0
+                        Case "Martes"
+                            CantMartes += LitrosViaje
+                            MontoMartes += LitrosViaje * PrecioAplicado
 
-                Select Case Contador
-                    Case 1
-                        If PLunes > Cantidad Then
-                            Cantidad = PLunes
-                        End If
-                        CantLunes = Cantidad
-                        MontoLunes = Cantidad * PrecioLunes
-                    Case 2
-                        If PMartes > Cantidad Then
-                            Cantidad = PMartes
-                        End If
-                        CantMartes = Cantidad
-                        MontoMartes = Cantidad * PrecioMartes
-                    Case 3
-                        If PMiercoles > Cantidad Then
-                            Cantidad = PMiercoles
-                        End If
-                        CantMiercoles = Cantidad
-                        MontoMiercoles = Cantidad * PrecioMiercoles
-                    Case 4
-                        If PJueves > Cantidad Then
-                            Cantidad = PJueves
-                        End If
-                        CantJueves = Cantidad
-                        MontoJueves = Cantidad * PrecioJueves
-                    Case 5
-                        If PViernes > Cantidad Then
-                            Cantidad = PViernes
-                        End If
-                        CantViernes = Cantidad
-                        MontoViernes = Cantidad * PrecioViernes
-                    Case 6
-                        If PSabado > Cantidad Then
-                            Cantidad = PSabado
-                        End If
-                        CantSabado = Cantidad
-                        MontoSabado = Cantidad * PrecioSabado
-                    Case 0
-                        If PDomingo > Cantidad Then
-                            Cantidad = PDomingo
-                        End If
-                        CantDomingo = Cantidad
-                        MontoDomingo = Cantidad * PrecioDomingo
-                End Select
+                        Case "Miercoles"
+                            CantMiercoles += LitrosViaje
+                            MontoMiercoles += LitrosViaje * PrecioAplicado
 
-                If CodProductor = "0101" Then
-                    CodProductor = "0101"
+                        Case "Jueves"
+                            CantJueves += LitrosViaje
+                            MontoJueves += LitrosViaje * PrecioAplicado
+
+                        Case "Viernes"
+                            CantViernes += LitrosViaje
+                            MontoViernes += LitrosViaje * PrecioAplicado
+
+                        Case "Sabado"
+                            CantSabado += LitrosViaje
+                            MontoSabado += LitrosViaje * PrecioAplicado
+
+                        Case "Domingo"
+                            CantDomingo += LitrosViaje
+                            MontoDomingo += LitrosViaje * PrecioAplicado
+
+                    End Select
+
                 End If
 
-                CantidadTotal = CantidadTotal + Cantidad
-                IngresoBruto = MontoLunes + MontoMartes + MontoMiercoles + MontoJueves + MontoViernes + MontoSabado + MontoDomingo
-                MontoIr = PorcientoIr * IngresoBruto
-                MontoPolicia = PorcientoPolicia * CantidadTotal
-                MontoBolsa = PorcientoBolsa * IngresoBruto
+            Next
 
+            'Calcular totales
+            CantidadTotal =
+            CantLunes + CantMartes + CantMiercoles +
+            CantJueves + CantViernes + CantSabado + CantDomingo
 
-                Contador = Contador + 1
-                Fecha = DateAdd(DateInterval.Day, 1, Fecha)
-                Me.ProgressBar2.Value = Me.ProgressBar2.Value + 1
-            Loop
+            IngresoBruto =
+            MontoLunes + MontoMartes + MontoMiercoles +
+            MontoJueves + MontoViernes + MontoSabado + MontoDomingo
 
+            'Calcular deducciones existentes
+            MontoIr = PorcientoIr * IngresoBruto
+            MontoPolicia = PorcientoPolicia * CantidadTotal
+            MontoBolsa = PorcientoBolsa * IngresoBruto
 
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            '/////////////////////////////////////////////////BUSCO LAS DEDUCCIONES/////////////////////////////////////////////////
-            '////////////////////////////////////////////////777777777777777777777777777777777777777777777777777777777777777777777
-            'Anticipo = 0
-            'Transporte = 0
-            'Pulperia = 0
-            'Inseminacion = 0
-            'Trazabilidad = 0
-            'Otros = 0
-            'MontoVeterinario = 0
-            'SqlString = "SELECT  * FROM Detalle_NominaTransportista WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "') AND (CodigoTransportista = '" & CodProductor & "') "
-            'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-            'DataAdapter.Fill(DataSet, "DeduccionPlanilla")
-            'If DataSet.Tables("DeduccionPlanilla").Rows.Count <> 0 Then
-            '    Anticipo = DataSet.Tables("DeduccionPlanilla").Rows(0)("Anticipo")
-            '    Transporte = DataSet.Tables("DeduccionPlanilla").Rows(0)("Transporte")
-            '    Pulperia = DataSet.Tables("DeduccionPlanilla").Rows(0)("Pulperia")
-            '    Inseminacion = DataSet.Tables("DeduccionPlanilla").Rows(0)("Inseminacion")
-            '    Trazabilidad = DataSet.Tables("DeduccionPlanilla").Rows(0)("Trazabilidad")
-            '    If Not IsDBNull(DataSet.Tables("DeduccionPlanilla").Rows(0)("ProductosVeterinarios")) Then
-            '        MontoVeterinario = DataSet.Tables("DeduccionPlanilla").Rows(0)("ProductosVeterinarios")
-            '    End If
-            '    Otros = DataSet.Tables("DeduccionPlanilla").Rows(0)("OtrasDeducciones")
+            'Calcular precio promedio ponderado del transportista
+            If CantidadTotal > 0 Then
+                PrecioUnitario = IngresoBruto / CantidadTotal
+            Else
+                PrecioUnitario = 0
+            End If
 
-            'End If
 
 
 
@@ -698,7 +1051,7 @@ Public Class frmPlanillaConductores
             DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
             DataAdapter.Fill(DataSet, "DetalleNomina")
             If DataSet.Tables("DetalleNomina").Rows.Count = 0 Then
-                StrSqlUpdate = "INSERT INTO [Detalle_NominaTransportista] ([NumNomina],[CodigoTransportista],[Lunes],[Martes],[Miercoles],[Jueves],[Viernes],[Sabado],[Domingo],[Total],[PrecioVenta],[TotalIngresos],[IR],[DeduccionPolicia],[Anticipo],[DeduccionTransporte],[Pulperia],[Inseminacion],[Trazabilidad],[ProductosVeterinarios],[OtrasDeducciones],[Nombres],[Bolsa],[PrecioLunes],[PrecioMartes],[PrecioMiercoles],[PrecioJueves],[PrecioViernes],[PrecioSabado],[PrecioDomingo]) " & _
+                StrSqlUpdate = "INSERT INTO [Detalle_NominaTransportista] ([NumNomina],[CodigoTransportista],[Lunes],[Martes],[Miercoles],[Jueves],[Viernes],[Sabado],[Domingo],[Total],[PrecioVenta],[TotalIngresos],[IR],[DeduccionPolicia],[Anticipo],[DeduccionTransporte],[Pulperia],[Inseminacion],[Trazabilidad],[ProductosVeterinarios],[OtrasDeducciones],[Nombres],[Bolsa],[PrecioLunes],[PrecioMartes],[PrecioMiercoles],[PrecioJueves],[PrecioViernes],[PrecioSabado],[PrecioDomingo]) " &
                                "VALUES ('" & Me.TxtNumNomina.Text & "','" & CodProductor & "'," & CantLunes & "," & CantMartes & "," & CantMiercoles & "," & CantJueves & "," & CantViernes & "," & CantSabado & "," & CantDomingo & "," & CantidadTotal & " ," & PrecioUnitario & "," & IngresoBruto & "," & MontoIr & "," & MontoPolicia & "," & Anticipo & "," & Transporte & "," & Pulperia & "," & Inseminacion & "," & Trazabilidad & " ," & MontoVeterinario & " ," & Otros & ", '" & Nombres & "', " & MontoBolsa & ", " & PrecioLunes & "," & PrecioMartes & ", " & PrecioMiercoles & ", " & PrecioJueves & ", " & PrecioViernes & ", " & PrecioSabado & ", " & PrecioDomingo & ")"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
@@ -707,13 +1060,15 @@ Public Class frmPlanillaConductores
 
             Else
 
-                StrSqlUpdate = "UPDATE [Detalle_NominaTransportista] SET [Lunes] = " & CantLunes & ",[Martes] = " & CantMartes & ",[Miercoles] = '" & CantMiercoles & "',[Jueves] = " & CantJueves & ",[Viernes] =" & CantViernes & ", [Sabado] = " & CantSabado & ",[Domingo] = " & CantDomingo & ",[Total] = " & CantidadTotal & ",[PrecioVenta] = " & PrecioUnitario & ",[TotalIngresos] = " & IngresoBruto & ",[IR] = " & MontoIr & ",[DeduccionPolicia] = " & MontoPolicia & ",[Nombres] = '" & Nombres & "', [Bolsa] = '" & MontoBolsa & "' , [PrecioLunes] = '" & PrecioLunes & "',  [PrecioMartes] = '" & PrecioMartes & "',  [PrecioMiercoles] = '" & PrecioMiercoles & "' , [PrecioJueves] = '" & PrecioJueves & "', [PrecioViernes] = '" & PrecioViernes & "', [PrecioSabado] = '" & PrecioSabado & "', [PrecioDomingo] = '" & PrecioDomingo & "'   " & _
+                StrSqlUpdate = "UPDATE [Detalle_NominaTransportista] SET [Lunes] = " & CantLunes & ",[Martes] = " & CantMartes & ",[Miercoles] = '" & CantMiercoles & "',[Jueves] = " & CantJueves & ",[Viernes] =" & CantViernes & ", [Sabado] = " & CantSabado & ",[Domingo] = " & CantDomingo & ",[Total] = " & CantidadTotal & ",[PrecioVenta] = " & PrecioUnitario & ",[TotalIngresos] = " & IngresoBruto & ",[IR] = " & MontoIr & ",[DeduccionPolicia] = " & MontoPolicia & ",[Nombres] = '" & Nombres & "', [Bolsa] = '" & MontoBolsa & "' , [PrecioLunes] = '" & PrecioLunes & "',  [PrecioMartes] = '" & PrecioMartes & "',  [PrecioMiercoles] = '" & PrecioMiercoles & "' , [PrecioJueves] = '" & PrecioJueves & "', [PrecioViernes] = '" & PrecioViernes & "', [PrecioSabado] = '" & PrecioSabado & "', [PrecioDomingo] = '" & PrecioDomingo & "'   " &
                                "WHERE (NumNomina = '" & Me.TxtNumNomina.Text & "') AND (CodigoTransportista = '" & CodProductor & "') "
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
                 iResultado = ComandoUpdate.ExecuteNonQuery
                 MiConexion.Close()
             End If
+
+
             DataSet.Tables("DetalleNomina").Clear()
 
             PLunes = 0
@@ -738,6 +1093,22 @@ Public Class frmPlanillaConductores
             iPosicion = iPosicion + 1
             Me.ProgressBar.Value = iPosicion
         Loop
+
+
+        '/////////////////TRAZABILIDAD /////////////////////////
+
+        GuardarDetallePrecioTransportista(
+    Me.TxtNumNomina.Text.Trim(),
+    DsViajes,
+    PrecioLunes,
+    PrecioMartes,
+    PrecioMiercoles,
+    PrecioJueves,
+    PrecioViernes,
+    PrecioSabado,
+    PrecioDomingo)
+
+
 
         'Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres
         ds.Tables("DetalleIngresos").Reset()
@@ -1414,5 +1785,60 @@ Public Class frmPlanillaConductores
 
 
         MsgBox("La Nomina se ha cerrado con Existo!!!", MsgBoxStyle.Critical, "Zeus Facturacion")
+    End Sub
+
+    Private Sub TDGridIngresos_MouseDown(
+    ByVal sender As Object,
+    ByVal e As MouseEventArgs
+) Handles TDGridIngresos.MouseDown
+
+        If e.Button = MouseButtons.Right Then
+
+            ' Seleccionar la fila sobre la que se hizo clic derecho
+            Dim posicion As Integer = TDGridIngresos.RowContaining(e.Y)
+
+            If posicion >= 0 Then
+                TDGridIngresos.Row = posicion
+            End If
+
+        End If
+
+    End Sub
+
+    Private Sub ItemVerProductores_Click(
+        ByVal sender As Object,
+        ByVal e As EventArgs
+    ) Handles ItemVerProductores.Click
+
+        If TDGridIngresos.Row < 0 Then
+            MessageBox.Show(
+                "Seleccione un transportista.",
+                "Nómina de transporte",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information)
+            Return
+        End If
+
+        Dim codigoTransportista As String =
+            Convert.ToString(
+                TDGridIngresos.Columns("CodigoTransportista").Value
+            ).Trim()
+
+        If codigoTransportista = "" Then
+            MessageBox.Show(
+                "No se pudo identificar el transportista seleccionado.",
+                "Nómina de transporte",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning)
+            Return
+        End If
+
+        Dim Frm As New frmProveedoresTransportados()
+
+        Frm.NumNominaTransportista = Me.TxtNumNomina.Text.Trim()
+        Frm.CodigoTransportista = codigoTransportista
+
+        Frm.ShowDialog(Me)
+
     End Sub
 End Class

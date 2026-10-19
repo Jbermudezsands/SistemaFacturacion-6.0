@@ -1239,6 +1239,9 @@ Public Class CsBeneficiario
         Dim precio As Object = DBNull.Value
         Dim pagarCheque As Boolean = False
         Dim cuentaPagarBanco As Object = DBNull.Value
+        Dim IdTransportista As Object = DBNull.Value
+        Dim PrecioTransporte As Object = DBNull.Value
+
 
 
         Select Case tipo
@@ -1258,6 +1261,15 @@ Public Class CsBeneficiario
                     cuentaPagarBanco = b.TipoPagoProductor
                 End If
 
+                If Not String.IsNullOrWhiteSpace(b.CodigoTransportistaProductor) Then
+                    IdTransportista = b.CodigoTransportistaProductor
+                End If
+
+
+                PrecioTransporte = If(b.PrecioTransportistaProductor > 0, b.PrecioTransportistaProductor, 0)
+
+
+
             Case "Socio"
 
                 If Not String.IsNullOrWhiteSpace(b.CodTipoNominaSocio) Then
@@ -1273,6 +1285,14 @@ Public Class CsBeneficiario
                     cuentaPagarBanco = b.TipoPagoSocio
                 End If
 
+                If Not String.IsNullOrWhiteSpace(b.CodigoTransportistaSocio) Then
+                    IdTransportista = b.CodigoTransportistaSocio
+                End If
+
+
+                PrecioTransporte = If(b.PrecioTransportistaSocio > 0, b.PrecioTransportistaSocio, 0)
+
+
             Case "PreSocio"
 
                 If Not String.IsNullOrWhiteSpace(b.CodTipoNominaPreSocio) Then
@@ -1287,6 +1307,14 @@ Public Class CsBeneficiario
                 ElseIf Not String.IsNullOrWhiteSpace(b.TipoPagoPreSocio) Then
                     cuentaPagarBanco = b.TipoPagoPreSocio
                 End If
+
+
+                If Not String.IsNullOrWhiteSpace(b.CodigoTransportistaPreSocio) Then
+                    IdTransportista = b.CodigoTransportistaPreSocio
+                End If
+
+                PrecioTransporte = If(b.PrecioTransportistaPreSocio > 0, b.PrecioTransportistaPreSocio, 0)
+
 
         End Select
 
@@ -1315,7 +1343,9 @@ Public Class CsBeneficiario
             CodTipoNomina,
             Precio,
             PagarCheque,
-            CuentaPagarBanco
+            CuentaPagarBanco,
+            CodigoTransportista,
+            Precio_Transportista
         )
         VALUES
         (
@@ -1323,13 +1353,13 @@ Public Class CsBeneficiario
             @FAdm,@FNac,@Dir,@Sexo,
             @Tel,@EstadoCivil,@Ced,@Ruc,
             1,@CodTipoNomina,@Precio,
-            @PagarCheque,@CuentaBanco
+            @PagarCheque,@CuentaBanco,@CodigoTransportista,@PrecioTransportista
         )"
 
             Using cmd As New SqlCommand(sql, cn, trans)
 
                 LlenarParametrosProductor(cmd, b, tipo, codTipoNomina,
-                                      precio, pagarCheque, cuentaPagarBanco)
+                                      precio, pagarCheque, cuentaPagarBanco, IdTransportista, PrecioTransporte)
 
                 cmd.ExecuteNonQuery()
 
@@ -1357,14 +1387,16 @@ Public Class CsBeneficiario
                 CodTipoNomina=@CodTipoNomina,
                 Precio=@Precio,
                 PagarCheque=@PagarCheque,
-                CuentaPagarBanco=@CuentaBanco
+                CuentaPagarBanco=@CuentaBanco,
+                CodigoTransportista=@CodigoTransportista,
+                Precio_Transportista=@PrecioTransportista
         WHERE CodProductor=@Cod
           AND TipoProductor=@Tipo"
 
             Using cmd As New SqlCommand(sql, cn, trans)
 
                 LlenarParametrosProductor(cmd, b, tipo, codTipoNomina,
-                                      precio, pagarCheque, cuentaPagarBanco)
+                                      precio, pagarCheque, cuentaPagarBanco, IdTransportista, PrecioTransporte)
 
                 cmd.ExecuteNonQuery()
 
@@ -1379,7 +1411,7 @@ Public Class CsBeneficiario
                                       codTipoNomina As Object,
                                       precio As Object,
                                       pagarCheque As Boolean,
-                                      cuentaBanco As Object)
+                                      cuentaBanco As Object, CodigoTransportista As Object, PrecioTranporte As Object)
 
         cmd.Parameters.AddWithValue("@Cod", b.Codigo)
         cmd.Parameters.AddWithValue("@Tipo", tipo)
@@ -1407,6 +1439,8 @@ Public Class CsBeneficiario
         cmd.Parameters.AddWithValue("@Precio", precio)
         cmd.Parameters.AddWithValue("@PagarCheque", pagarCheque)
         cmd.Parameters.AddWithValue("@CuentaBanco", cuentaBanco)
+        cmd.Parameters.AddWithValue("@CodigoTransportista", CodigoTransportista)
+        cmd.Parameters.AddWithValue("@PrecioTransportista", PrecioTranporte)
 
     End Sub
 
@@ -1841,6 +1875,10 @@ Public Class CsBeneficiario
                                     b.PrecioProductor = 0
                                 End If
 
+                                b.CodigoTransportistaProductor = dr("CodigoTransportista").ToString
+
+                                b.PrecioTransportistaProductor = dr("Precio_Transportista").ToString
+
 
                             End If
 
@@ -1881,6 +1919,10 @@ Public Class CsBeneficiario
                                     b.PrecioSocio = 0
                                 End If
 
+                                b.CodigoTransportistaSocio = dr("CodigoTransportista").ToString
+
+                                b.PrecioTransportistaSocio = dr("Precio_Transportista").ToString
+
                             End If
 
                     '=====================================================
@@ -1912,6 +1954,10 @@ Public Class CsBeneficiario
                                 b.CtaVeterinariosPreSocio = dr("Cuenta_Veterinario").ToString
                                 b.CtaFondosPreSocio = dr("Cuenta_Otras").ToString
                                 b.CtaPlanillaPreSocio = dr("Cuenta_GastoPlanilla").ToString
+
+                                b.CodigoTransportistaPreSocio = dr("CodigoTransportista").ToString
+
+                                b.PrecioTransportistaPreSocio = dr("Precio_Transportista").ToString
 
                                 If Not IsDBNull(dr("Precio")) Then
                                     b.PrecioPreSocio = CDbl(dr("Precio"))

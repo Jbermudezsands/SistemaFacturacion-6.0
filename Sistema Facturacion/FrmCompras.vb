@@ -296,25 +296,29 @@ Public Class FrmCompras
         Quien = ""
 
         ' 🔥 3. CARGAR TODO
-        CargarCompraPorNumero()
+        CargarCompraPorNumero(fecha)
 
 
-        Me.CboCodigoBodega.Enabled = False
+        'Me.CboCodigoBodega.Enabled = False
         Me.Button7.Enabled = False
 
     End Sub
-    Private Sub CargarCompraPorNumero(Optional ByVal TipoForzado As String = "")
+    Private Sub CargarCompraPorNumero(FechaCompra As Date,
+                                   Optional ByVal TipoForzado As String = "")
 
         Dim SqlCompras As String
         Dim TipoCompra As String
         Dim Exonerado As Boolean = False
+        Dim AplicaCtasXPagar As Boolean = False
+        Dim SolicitudCta As Boolean = False
 
         Try
 
             '---------------------------------------------------
-            ' 🔹 1. VALIDACIONES
+            ' 1. VALIDACIONES
             '---------------------------------------------------
-            If Me.TxtNumeroEnsamble.Text = "" Or Me.TxtNumeroEnsamble.Text = "-----0-----" Then Exit Sub
+            If Me.TxtNumeroEnsamble.Text = "" Or
+           Me.TxtNumeroEnsamble.Text = "-----0-----" Then Exit Sub
 
             If TipoForzado <> "" Then
                 TipoCompra = TipoForzado
@@ -324,78 +328,223 @@ Public Class FrmCompras
 
             If TipoCompra = "" Then Exit Sub
 
+
             '---------------------------------------------------
-            ' 🔹 2. ENCABEZADO (DataTable independiente)
+            ' 2. ENCABEZADO
             '---------------------------------------------------
+            ' La compra se identifica por:
+            ' Numero_Compra + Fecha_Compra + Tipo_Compra
+            '---------------------------------------------------
+
             Dim dtEncabezado As New DataTable
 
-            SqlCompras = "SELECT * FROM Compras WHERE Numero_Compra = @Numero AND Tipo_Compra = @Tipo AND Activo = 1"
+            SqlCompras = "SELECT * FROM Compras " &
+                     "WHERE Numero_Compra = @Numero " &
+                     "AND Fecha_Compra = @Fecha " &
+                     "AND Tipo_Compra = @Tipo"
 
             da = New SqlDataAdapter(SqlCompras, MiConexion)
-            da.SelectCommand.Parameters.AddWithValue("@Numero", Me.TxtNumeroEnsamble.Text)
-            da.SelectCommand.Parameters.AddWithValue("@Tipo", TipoCompra)
+
+            da.SelectCommand.Parameters.AddWithValue("@Numero",
+                                                  Me.TxtNumeroEnsamble.Text)
+
+            da.SelectCommand.Parameters.AddWithValue("@Fecha",
+                                                  FechaCompra)
+
+            da.SelectCommand.Parameters.AddWithValue("@Tipo",
+                                                  TipoCompra)
 
             da.Fill(dtEncabezado)
 
             If dtEncabezado.Rows.Count = 0 Then Exit Sub
 
+
+            '---------------------------------------------------
+            ' CARGAR DATOS DEL ENCABEZADO
+            '---------------------------------------------------
+
             With dtEncabezado.Rows(0)
 
-                Me.TxtCodigoProveedor.Text = .Item("Cod_Proveedor")
-                Me.TxtNombres.Text = .Item("Nombre_Proveedor")
-                Me.TxtApellidos.Text = .Item("Apellido_Proveedor")
+                '---------------------------------------------------
+                ' CARGAR DATOS DEL PROVEEDOR
+                '---------------------------------------------------
 
-                If Not IsDBNull(.Item("Direccion_Proveedor")) Then
-                    Me.TxtDireccion.Text = .Item("Direccion_Proveedor")
-                End If
+                With dtEncabezado.Rows(0)
 
-                If Not IsDBNull(.Item("Telefono_Proveedor")) Then
-                    Me.TxtTelefono.Text = .Item("Telefono_Proveedor")
-                End If
+                    Me.TxtCodigoProveedor.Text = .Item("Cod_Proveedor").ToString()
+                    Me.TxtNombres.Text = .Item("Nombre_Proveedor").ToString()
+                    Me.TxtApellidos.Text = .Item("Apellido_Proveedor").ToString()
 
-                If Not IsDBNull(.Item("Exonerado")) Then
-                    Exonerado = .Item("Exonerado")
-                End If
+                    '---------------------------------------------------
+                    ' DIRECCION
+                    '---------------------------------------------------
+                    If Not IsDBNull(.Item("Direccion_Proveedor")) Then
+                        Me.TxtDireccion.Text = .Item("Direccion_Proveedor").ToString()
+                    Else
+                        Me.TxtDireccion.Text = ""
+                    End If
 
-                Me.OptExsonerado.Checked = Exonerado
+                    '---------------------------------------------------
+                    ' TELEFONO
+                    '---------------------------------------------------
+                    If Not IsDBNull(.Item("Telefono_Proveedor")) Then
+                        Me.TxtTelefono.Text = .Item("Telefono_Proveedor").ToString()
+                    Else
+                        Me.TxtTelefono.Text = ""
+                    End If
 
-                Me.TxtSubTotal.Text = Format(.Item("SubTotal"), "##,##0.00")
-                Me.TxtIva.Text = Format(.Item("IVA"), "##,##0.00")
-                Me.TxtPagado.Text = Format(.Item("Pagado"), "##,##0.00")
-                Me.TxtNetoPagar.Text = Format(.Item("NetoPagar"), "##,##0.00")
+                    '---------------------------------------------------
+                    ' REFERENCIA DEL PROVEEDOR
+                    '---------------------------------------------------
+                    If Not IsDBNull(.Item("Su_Referencia")) Then
+                        Me.TxtReferencia.Text = .Item("Su_Referencia").ToString()
+                    Else
+                        Me.TxtReferencia.Text = ""
+                    End If
 
-                Me.CboCodigoBodega.Text = .Item("Cod_Bodega")
+                    '---------------------------------------------------
+                    ' APLICA CUENTAS POR PAGAR
+                    '---------------------------------------------------
+                    Exonerado = False
+
+                    If Not IsDBNull(.Item("Exonerado")) Then
+                        Exonerado = Convert.ToBoolean(.Item("Exonerado"))
+                    End If
+
+                    Me.OptExsonerado.Checked = Exonerado
+
+
+                    '---------------------------------------------------
+                    ' APLICA CUENTAS POR PAGAR
+                    '---------------------------------------------------
+                    AplicaCtasXPagar = False
+
+                    If Not IsDBNull(.Item("AplicarCtasXPagar")) Then
+                        AplicaCtasXPagar = Convert.ToBoolean(.Item("AplicarCtasXPagar"))
+                    End If
+
+                    Me.ChkAplicarCtasXPagar.Checked = AplicaCtasXPagar
+
+
+                    '---------------------------------------------------
+                    ' SOLICITUD CUENTA CONTABLE
+                    '---------------------------------------------------
+                    SolicitudCta = False
+
+                    If Not IsDBNull(.Item("Solcitud_Cta_Contable")) Then
+                        SolicitudCta = Convert.ToBoolean(.Item("Solcitud_Cta_Contable").ToString())
+                    End If
+
+                    Me.ChkSolcitudxCta.Checked = SolicitudCta
+
+                    '---------------------------------------------------
+                    ' VALORES MONETARIOS
+                    '---------------------------------------------------
+                    If Not IsDBNull(.Item("SubTotal")) Then
+                        Me.TxtSubTotal.Text =
+                            Format(.Item("SubTotal"), "##,##0.00")
+                    Else
+                        Me.TxtSubTotal.Text = "0.00"
+                    End If
+
+                    If Not IsDBNull(.Item("IVA")) Then
+                        Me.TxtIva.Text =
+                            Format(.Item("IVA"), "##,##0.00")
+                    Else
+                        Me.TxtIva.Text = "0.00"
+                    End If
+
+                    If Not IsDBNull(.Item("Pagado")) Then
+                        Me.TxtPagado.Text =
+                            Format(.Item("Pagado"), "##,##0.00")
+                    Else
+                        Me.TxtPagado.Text = "0.00"
+                    End If
+
+                    If Not IsDBNull(.Item("NetoPagar")) Then
+                        Me.TxtNetoPagar.Text =
+                            Format(.Item("NetoPagar"), "##,##0.00")
+                    Else
+                        Me.TxtNetoPagar.Text = "0.00"
+                    End If
+
+                    '---------------------------------------------------
+                    ' BODEGA
+                    '---------------------------------------------------
+                    If Not IsDBNull(.Item("Cod_Bodega")) Then
+                        Me.CboCodigoBodega.Text =
+                            .Item("Cod_Bodega").ToString()
+                    Else
+                        Me.CboCodigoBodega.Text = ""
+                    End If
+
+                End With
+
+
+
 
             End With
 
+
             '---------------------------------------------------
-            ' 🔹 3. DETALLE (SOLO ds)
+            ' 3. DETALLE DE LA COMPRA
             '---------------------------------------------------
+
             If ds.Tables.Contains("DetalleCompra") Then
                 ds.Tables("DetalleCompra").Clear()
             End If
 
-            SqlCompras = "SELECT Cod_Producto, Descripcion_Producto, Cantidad, Precio_Unitario, " &
-                     "Descuento, Precio_Neto, Importe, id_Detalle_Compra, " &
-                     "Numero_Lote, Fecha_Vence, TasaCambio, Numero_Compra, Fecha_Compra, Tipo_Compra " &
+            SqlCompras = "SELECT Cod_Producto, " &
+                     "Descripcion_Producto, " &
+                     "Cantidad, " &
+                     "Precio_Unitario, " &
+                     "Descuento, " &
+                     "Precio_Neto, " &
+                     "Importe, " &
+                     "id_Detalle_Compra, " &
+                     "Numero_Lote, " &
+                     "Fecha_Vence, " &
+                     "TasaCambio, " &
+                     "Numero_Compra, " &
+                     "Fecha_Compra, " &
+                     "Tipo_Compra " &
                      "FROM Detalle_Compras " &
-                     "WHERE Numero_Compra = @Numero AND Tipo_Compra = @Tipo " &
+                     "WHERE Numero_Compra = @Numero " &
+                     "AND Fecha_Compra = @Fecha " &
+                     "AND Tipo_Compra = @Tipo " &
                      "ORDER BY id_Detalle_Compra"
 
             da = New SqlDataAdapter(SqlCompras, MiConexion)
-            da.SelectCommand.Parameters.AddWithValue("@Numero", Me.TxtNumeroEnsamble.Text)
-            da.SelectCommand.Parameters.AddWithValue("@Tipo", TipoCompra)
+
+            da.SelectCommand.Parameters.AddWithValue("@Numero",
+                                                  Me.TxtNumeroEnsamble.Text)
+
+            da.SelectCommand.Parameters.AddWithValue("@Fecha",
+                                                  FechaCompra)
+
+            da.SelectCommand.Parameters.AddWithValue("@Tipo",
+                                                  TipoCompra)
 
             da.Fill(ds, "DetalleCompra")
 
-            ' 🔥 REFRESCAR GRID (IMPORTANTE)
-            Me.TrueDBGridComponentes.DataSource = Nothing
-            Me.BindingDetalle.DataSource = ds.Tables("DetalleCompra")
-            Me.TrueDBGridComponentes.DataSource = Me.BindingDetalle
 
             '---------------------------------------------------
-            ' 🔹 4. CONFIGURACIÓN GRID
+            ' 4. REFRESCAR GRID
             '---------------------------------------------------
+
+            Me.TrueDBGridComponentes.DataSource = Nothing
+
+            Me.BindingDetalle.DataSource =
+            ds.Tables("DetalleCompra")
+
+            Me.TrueDBGridComponentes.DataSource =
+            Me.BindingDetalle
+
+
+            '---------------------------------------------------
+            ' 5. CONFIGURACIÓN GRID
+            '---------------------------------------------------
+
             With Me.TrueDBGridComponentes
 
                 If .Columns.Count = 0 Then Exit Sub
@@ -424,59 +573,99 @@ Public Class FrmCompras
                 .Splits(0).DisplayColumns("Importe").Width = 61
                 .Splits(0).DisplayColumns("Importe").Locked = True
 
-                ' Ocultos
+                '---------------------------------------------------
+                ' COLUMNAS OCULTAS
+                '---------------------------------------------------
+
                 .Splits(0).DisplayColumns("id_Detalle_Compra").Visible = False
                 .Splits(0).DisplayColumns("TasaCambio").Visible = False
                 .Splits(0).DisplayColumns("Numero_Compra").Visible = False
                 .Splits(0).DisplayColumns("Fecha_Compra").Visible = False
                 .Splits(0).DisplayColumns("Tipo_Compra").Visible = False
 
-                ' Lote
+                '---------------------------------------------------
+                ' LOTE
+                '---------------------------------------------------
+
                 If FacturaTarea = True Then
+
                     .Splits(0).DisplayColumns("Numero_Lote").Visible = True
                     .Splits(0).DisplayColumns("Fecha_Vence").Visible = True
                     .Splits(0).DisplayColumns("Numero_Lote").Button = True
+
                 Else
+
                     .Splits(0).DisplayColumns("Numero_Lote").Visible = False
                     .Splits(0).DisplayColumns("Fecha_Vence").Visible = False
+
                 End If
 
             End With
 
+
             '---------------------------------------------------
-            ' 🔹 5. PERMISOS
+            ' 6. PERMISOS
             '---------------------------------------------------
+
             If Me.CboTipoProducto.Text = "Orden de Compra" Then
+
                 Me.TrueDBGridComponentes.AllowUpdate = True
                 Me.TrueDBGridComponentes.AllowAddNew = True
+
             ElseIf LiberarCompras = True Then
+
                 Me.TrueDBGridComponentes.AllowUpdate = True
                 Me.TrueDBGridComponentes.AllowAddNew = True
+
             Else
+
                 Me.TrueDBGridComponentes.AllowUpdate = False
+
             End If
 
+
             '---------------------------------------------------
-            ' 🔹 6. MÉTODO DE PAGO (DataTable independiente)
+            ' 7. MÉTODO DE PAGO
             '---------------------------------------------------
+            ' IMPORTANTE:
+            ' También se utiliza la clave completa:
+            ' Numero_Compra + Fecha_Compra + Tipo_Compra
+            '---------------------------------------------------
+
             Dim dtMetodo As New DataTable
 
-            SqlCompras = "SELECT NombrePago, Monto FROM Detalle_MetodoCompras WHERE Numero_Compra = @Numero"
+            SqlCompras = "SELECT NombrePago, Monto " &
+                     "FROM Detalle_MetodoCompras " &
+                     "WHERE Numero_Compra = @Numero " &
+                     "AND Fecha_Compra = @Fecha " &
+                     "AND Tipo_Compra = @Tipo"
 
             da = New SqlDataAdapter(SqlCompras, MiConexion)
-            da.SelectCommand.Parameters.AddWithValue("@Numero", Me.TxtNumeroEnsamble.Text)
+
+            da.SelectCommand.Parameters.AddWithValue("@Numero",
+                                                  Me.TxtNumeroEnsamble.Text)
+
+            da.SelectCommand.Parameters.AddWithValue("@Fecha",
+                                                  FechaCompra)
+
+            da.SelectCommand.Parameters.AddWithValue("@Tipo",
+                                                  TipoCompra)
 
             da.Fill(dtMetodo)
 
             Me.BindingMetodo.DataSource = dtMetodo
-            Me.TrueDBGridMetodo.DataSource = Me.BindingMetodo
+
+            Me.TrueDBGridMetodo.DataSource =
+            Me.BindingMetodo
+
 
         Catch ex As Exception
+
             MsgBox("Error al cargar compra: " & ex.Message)
+
         End Try
 
     End Sub
-
 
     Public Sub LimpiarGridImporacion()
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
@@ -1937,7 +2126,12 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         Compras.Estatus_Compra = "Grabado"
         Compras.Numero_Solicitud = 0
         Compras.Numero_Orden = 0
-        Compras.Solcitud_CtaContable = 0
+
+        If Me.ChkSolcitudxCta.Checked = True Then
+            Compras.Solcitud_CtaContable = 1
+        Else
+            Compras.Solcitud_CtaContable = 0
+        End If
 
         If TxtSubTotal.Text <> "" Then
             Compras.Sub_Total = TxtSubTotal.Text
@@ -2984,10 +3178,10 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
                         Cantidad = 1
                         Me.TrueDBGridComponentes.Columns(4).Text = ""
                         If Me.TxtMonedaFactura.Text = "Cordobas" Then
-                            Me.TrueDBGridComponentes.Columns(3).Text = Format(PrecioDescCordobas, "##,##0.0000")
+                            Me.TrueDBGridComponentes.Columns(3).Text = Format(PrecioDescCordobas, "##,##0.000000")
                             Precio = PrecioDescCordobas
                         Else
-                            Me.TrueDBGridComponentes.Columns(3).Text = Format(PrecioDescDolar, "##,##0.0000")
+                            Me.TrueDBGridComponentes.Columns(3).Text = Format(PrecioDescDolar, "##,##0.000000")
                             Precio = PrecioDescDolar
                         End If
 
@@ -3000,7 +3194,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
                             PorcientoDescuento = (PrecioDescCordobas / 100)
                         End If
                         Precio = SubTotal * PorcientoDescuento
-                        Me.TrueDBGridComponentes.Columns(3).Text = Format(Precio, "##,##0.0000")
+                        Me.TrueDBGridComponentes.Columns(3).Text = Format(Precio, "##,##0.000000")
 
                 End Select
 
@@ -3016,19 +3210,19 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
                 End Select
 
 
-                Me.TrueDBGridComponentes.Columns(5).Text = Format(Precio * (1 - Descuento), "##,##0.0000")
-                Me.TrueDBGridComponentes.Columns(6).Text = Format(Neto, "##,##0.0000")
+                Me.TrueDBGridComponentes.Columns(5).Text = Format(Precio * (1 - Descuento), "##,##0.00000000")
+                Me.TrueDBGridComponentes.Columns(6).Text = Format(Neto, "##,##0.00000000")
 
             End If
         End If
 
 
         If Me.CboTipoProducto.Text = "Cuenta" Then
-            Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = Format(Precio, "##,##0.0000")
-            Me.TrueDBGridComponentes.Columns("Importe").Text = Format(Precio, "##,##0.0000")
+            Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = Format(Precio, "##,##0.00000000")
+            Me.TrueDBGridComponentes.Columns("Importe").Text = Format(Precio, "##,##0.00000000")
         ElseIf Me.CboTipoProducto.Text = "Cuenta DB" Then
-            Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = Format(Precio, "##,##0.0000")
-            Me.TrueDBGridComponentes.Columns("Importe").Text = Format(Precio, "##,##0.0000")
+            Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = Format(Precio, "##,##0.00000000")
+            Me.TrueDBGridComponentes.Columns("Importe").Text = Format(Precio, "##,##0.00000000")
         End If
 
 
@@ -3701,14 +3895,20 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
             End If
         Else
 
+
             My.Application.DoEvents()
-            'Me.DTPFecha.Value = Fecha_Compra
-            'Me.DTPFechaHora.Value = FechaHoraCompra
-            'Me.CboTipoProducto.Text = "Orden de Compra"
-            ''Me.TxtNumeroEnsamble.Text = "-----0-----"
-            'Me.TxtNumeroEnsamble.Text = NumeroCompra
-            'Me.CargarCompra(Fecha_Compra, FechaHoraCompra, NumeroCompra, "Orden de Compra")
-            'EsSolicitud = False
+
+            Me.DTPFecha.Value = Fecha_Compra
+            Me.DTPFechaHora.Value = FechaHoraCompra
+            Me.CboTipoProducto.Text = "Orden de Compra"
+
+            Me.TxtNumeroEnsamble.Text = NumeroCompra
+
+            CargarCompraPorNumero(Fecha_Compra, "Orden de Compra")
+
+            Me.CboCodigoBodega.Enabled = False
+            Me.Button7.Enabled = False
+
         End If
 
         'Me.MinimumSize = Size
@@ -4760,7 +4960,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
                 '//////////////////////////////////////////////////////ACTUALIZO LAS BODEGAS /////////////////////////////////////
                 '///////////////////////////////////////////////////////DESPUS DE ELIMINAR /////////////////////////////////////////
 
-                ExistenciaBodega = BuscaExistenciaBodega(CodigoProducto, Me.CboCodigoBodega.Text)
+                ExistenciaBodega = BuscaExistenciaBodega(CodigoProducto, Me.CboCodigoBodega.Text, Now)
 
                 '////////////////////////////////////////////ACTUALIZO LA EXISTENCIA DE LA BODEGA////////////////////////////////////////////////////////
                 SqlCompras = "UPDATE [DetalleBodegas] SET [Existencia] = " & ExistenciaBodega & " " &
@@ -5756,10 +5956,10 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
                     Cantidad = 1
                     Me.TrueDBGridComponentes.Columns(4).Text = ""
                     If Me.TxtMonedaFactura.Text = "Cordobas" Then
-                        Me.TrueDBGridComponentes.Columns(3).Text = Format(PrecioDescCordobas, "##,##0.0000")
+                        Me.TrueDBGridComponentes.Columns(3).Text = Format(PrecioDescCordobas, "##,##0.0000000")
                         Precio = PrecioDescCordobas
                     Else
-                        Me.TrueDBGridComponentes.Columns(3).Text = Format(PrecioDescDolar, "##,##0.0000")
+                        Me.TrueDBGridComponentes.Columns(3).Text = Format(PrecioDescDolar, "##,##0.0000000")
                         Precio = PrecioDescDolar
                     End If
 
@@ -5772,7 +5972,7 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
                         PorcientoDescuento = (PrecioDescCordobas / 100)
                     End If
                     Precio = SubTotal * PorcientoDescuento
-                    Me.TrueDBGridComponentes.Columns(3).Text = Format(Precio, "##,##0.0000")
+                    Me.TrueDBGridComponentes.Columns(3).Text = Format(Precio, "##,##0.0000000")
 
                 Case "Unidades/Fracciones"
                     If Me.TrueDBGridComponentes.Columns(2).Text <> "" Then
@@ -5797,8 +5997,8 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
             End Select
 
 
-            Me.TrueDBGridComponentes.Columns(5).Text = Format(Precio * (1 - Descuento), "##,##0.0000")
-            Me.TrueDBGridComponentes.Columns(6).Text = Format(Neto, "##,##0.0000")
+            Me.TrueDBGridComponentes.Columns(5).Text = Format(Precio * (1 - Descuento), "##,##0.00000000")
+            Me.TrueDBGridComponentes.Columns(6).Text = Format(Neto, "##,##0.00000000")
 
         End If
 

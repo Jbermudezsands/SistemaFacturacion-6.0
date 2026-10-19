@@ -18,4 +18,6 @@ Module Variables
     Public ExistenciaWorker As Double = 0, LoteFacturaWorker As String
     Public TipoReporte As String, Agrupado As String
 
+    'Numero = Regex.Replace(NumeroFactura, "^[^0-9]+", "")
+
 End Module

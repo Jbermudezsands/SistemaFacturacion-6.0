@@ -86,6 +86,8 @@
     Public Property CodTipoNominaProductor As String
     Public Property PrecioProductor As String
     Public Property CuentaPagarBanco As String
+    Public Property CodigoTransportistaProductor As String
+    Public Property PrecioTransportistaProductor As String
 
     'Socio
     Public Property DepartamentoSocio As String
@@ -109,6 +111,8 @@
     Public Property TipoPagoSocio As String
     Public Property CodTipoNominaSocio As String
     Public Property PrecioSocio As String
+    Public Property CodigoTransportistaSocio As String
+    Public Property PrecioTransportistaSocio As String
 
     'PreSocio
     Public Property DepartamentoPreSocio As String
@@ -132,6 +136,9 @@
     Public Property TipoPagoPreSocio As String
     Public Property CodTipoNominaPreSocio As String
     Public Property PrecioPreSocio As String
+    Public Property CodigoTransportistaPreSocio As String
+    Public Property PrecioTransportistaPreSocio As String
+
 
     'Transportistas
     Public Property CtaTransportista As String

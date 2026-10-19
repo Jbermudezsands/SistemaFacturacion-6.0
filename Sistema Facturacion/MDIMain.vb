@@ -2277,6 +2277,36 @@ Handles backgroundWorkerLote.RunWorkerCompleted
         My.Forms.FrmPreciosLeche.Show()
     End Sub
 
+    Private Sub RibbonButton_Click_2(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub RibbonButton23_Click(sender As Object, e As EventArgs) Handles RibbonButton23.Click
+        My.Forms.FrmCreditosNuevos.ShowDialog()
+    End Sub
+
+    Private Sub RibbonSucursales_Click(sender As Object, e As EventArgs) Handles RibbonSucursales.Click
+        My.Forms.FrmSucursales.MdiParent = Me
+        My.Forms.FrmSucursales.Show()
+    End Sub
+
+    Private Sub RibbonButton24_Click(sender As Object, e As EventArgs) Handles RibbonButton24.Click
+        My.Forms.FrmFinanciamiento.MdiParent = Me
+        My.Forms.FrmFinanciamiento.Show()
+    End Sub
+
+
+
+    Private Sub RibbonButton25_Click(sender As Object, e As EventArgs) Handles RibbonDesembolso.Click
+        My.Forms.FrmDesembolsos.MdiParent = Me
+        My.Forms.FrmDesembolsos.Show()
+    End Sub
+
+    Private Sub RibbonListado_Click(sender As Object, e As EventArgs) Handles RibbonListado.Click
+        My.Forms.FrmListadoCredito.MdiParent = Me
+        My.Forms.FrmListadoCredito.Show()
+    End Sub
+
     Private Sub RibbonHospitalizacion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonHospitalizacion.Click
         My.Forms.FrmHospitalizacion.MdiParent = Me
         My.Forms.FrmHospitalizacion.Show()

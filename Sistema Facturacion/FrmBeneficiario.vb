@@ -164,6 +164,18 @@ Public Class FrmBeneficiario
         TxtCtaVeterinarioSocio.Text = b.CtaVeterinariosSocio
         TxtFondosAdmonSocio.Text = b.CtaFondosSocio
         TxtPrecioSocio.Text = b.PrecioSocio
+
+        If Not String.IsNullOrWhiteSpace(b.CodigoTransportistaSocio) Then
+            CboTransportistaSocio.SelectedValue = b.CodigoTransportistaSocio
+        Else
+            CboTransportistaSocio.SelectedIndex = -1
+        End If
+
+        If Not String.IsNullOrWhiteSpace(b.PrecioTransportistaSocio) Then
+            TxtCtoTransporteSocio.Text = b.PrecioTransportistaSocio
+        End If
+
+
         If b.EsSocio Then
             CboTipoNominaSocio.SelectedValue = b.CodTipoNominaSocio
         Else
@@ -192,6 +204,19 @@ Public Class FrmBeneficiario
         TxtCtaVeterinarioPreSocio.Text = b.CtaVeterinariosPreSocio
         TxtFondosAdmonPreSocio.Text = b.CtaFondosPreSocio
         TxtPrecioPreSocio.Text = b.PrecioPreSocio
+
+        If Not String.IsNullOrWhiteSpace(b.PrecioTransportistaPreSocio) Then
+            TxtCtoTransportePreSocio.Text = b.PrecioTransportistaPreSocio
+        End If
+
+
+        If Not String.IsNullOrWhiteSpace(b.CodigoTransportistaPreSocio) Then
+            CboTransportistaPreSocio.SelectedValue = b.CodigoTransportistaPreSocio
+        Else
+            CboTransportistaPreSocio.SelectedIndex = -1
+        End If
+
+
         If b.EsPreSocio Then
             CboTipoNominaPreSocio.SelectedValue = b.CodTipoNominaPreSocio
         Else
@@ -216,6 +241,19 @@ Public Class FrmBeneficiario
         TxtCtaVeterinarioProductor.Text = b.CtaVeterinariosProductor
         TxtFondosAdmonProductor.Text = b.CtaFondosProductor
         TxtPrecioProductor.Text = b.PrecioProductor
+
+        If Not String.IsNullOrWhiteSpace(b.PrecioTransportistaProductor) Then
+            TxtCtoTransporteProductor.Text = b.PrecioTransportistaProductor
+        End If
+
+        If Not String.IsNullOrWhiteSpace(b.CodigoTransportistaProductor) Then
+            CboTransportistaProductor.SelectedValue = b.CodigoTransportistaProductor
+        Else
+            CboTransportistaProductor.SelectedIndex = -1
+        End If
+
+
+
         If b.EsProductor Then
             CboTipoNominaProductor.SelectedValue = b.CodTipoNominaProductor
         Else
@@ -354,6 +392,7 @@ Public Class FrmBeneficiario
             b.DepartamentoSocio = CboDepartamentosSocio.ValueMember
             b.CooperatiaSocio = CboCooperativaSocio.ValueMember
             b.RutaSocio = CboRutaSocio.ValueMember
+            b.CodigoTransportistaSocio = CboTransportistaSocio.SelectedValue
             b.CtasxCobrarSocio = TxtCtasCobrarSocio.Text
             b.CtasxPagarSocio = TxtCtaxPagarSocio.Text
             b.CtaPlanillaSocio = TxtCtaGastoSocio.Text
@@ -369,12 +408,25 @@ Public Class FrmBeneficiario
             b.CtaOtrasDeduccionesSocio = TxtCtaOtrasSocio.Text
             b.CodTipoNominaSocio = CboTipoNominaSocio.SelectedValue
 
+            If Not IsNumeric(Me.TxtCtoTransporteSocio.Text) Then
+                Me.TxtCtoTransporteSocio.Text = "0.00"
+            End If
+
+            If Not IsNumeric(Me.TxtPrecioSocio.Text) Then
+                Me.TxtPrecioSocio.Text = "0.00"
+            End If
+
+
+            b.PrecioTransportistaSocio = Me.TxtCtoTransporteSocio.Text
+            b.PrecioSocio = TxtPrecioSocio.Text
+
 
             'PreSocio
             b.EscolaridadPreSocio = CboEscolaridadPreSocio.ValueMember
             b.DepartamentoPreSocio = CboDepartamentosPreSocio.ValueMember
             b.CooperatiaPreSocio = CboCooperativaPreSocio.ValueMember
             b.RutaPreSocio = CboRutaPreSocio.ValueMember
+            b.CodigoTransportistaPreSocio = CboTransportistaPreSocio.SelectedValue
             b.CtasxCobrarPreSocio = TxtCtasCobrarPreSocio.Text
             b.CtasxPagarPreSocio = TxtCtaxPagarPreSocio.Text
             b.CtaPlanillaPreSocio = TxtCtaGastoPreSocio.Text
@@ -390,11 +442,24 @@ Public Class FrmBeneficiario
             b.CtaOtrasDeduccionesPreSocio = TxtCtaOtrasPreSocio.Text
             b.CodTipoNominaPreSocio = CboTipoNominaPreSocio.SelectedValue
 
+            If Not IsNumeric(Me.TxtCtoTransportePreSocio.Text) Then
+                Me.TxtCtoTransportePreSocio.Text = "0.00"
+            End If
+
+            If Not IsNumeric(Me.TxtPrecioPreSocio.Text) Then
+                Me.TxtPrecioPreSocio.Text = "0.00"
+            End If
+
+
+            b.PrecioTransportistaPreSocio = Me.TxtCtoTransportePreSocio.Text
+            b.PrecioPreSocio = TxtPrecioPreSocio.Text
+
             'Productor
             b.EscolaridadProductor = CboEscolaridadProductor.ValueMember
             b.DepartamentoProductor = CboDepartamentosProductor.ValueMember
             b.CooperatiaProductor = CboCooperativaProductor.ValueMember
             b.RutaProductor = CboRutaProductor.ValueMember
+            b.CodigoTransportistaProductor = CboTransportistaProductor.SelectedValue
             b.CtasxCobrarProductor = TxtCtasCobrarProductor.Text
             b.CtasxPagarProductor = TxtCtaxPagarProductor.Text
             b.CtaPlanillaProductor = TxtCtaGastoProductor.Text
@@ -410,9 +475,21 @@ Public Class FrmBeneficiario
             b.CtaOtrasDeduccionesProductor = TxtCtaOtrasProductor.Text
             b.CodTipoNominaProductor = CboTipoNominaProductor.SelectedValue
 
-            b.Precio = 0
-            b.PrecioPreSocio = 0
-            b.PrecioProductor = 0
+            If Not IsNumeric(Me.TxtCtoTransporteProductor.Text) Then
+                Me.TxtCtoTransporteProductor.Text = "0.00"
+            End If
+
+            If Not IsNumeric(Me.TxtPrecioProductor.Text) Then
+                Me.TxtPrecioProductor.Text = "0.00"
+            End If
+
+
+            b.PrecioTransportistaProductor = Me.TxtCtoTransporteProductor.Text
+            b.PrecioProductor = TxtPrecioProductor.Text
+
+            'b.Precio = 0
+            'b.PrecioPreSocio = 0
+            'b.PrecioProductor = 0
 
             'Proveedor
             b.DepartamentoProveedor = Me.CboDepartamentoProveedor.Text
@@ -454,12 +531,16 @@ Public Class FrmBeneficiario
                                         b.Codigo,
                                         "Productor") Then Exit Sub
                 Else
-                    If TipoNominaProductorOriginal <> CboTipoNominaProductor.SelectedValue.ToString() Then
-                        If Not ProcesarCambioTipoNomina(dal,
+                    If CboTipoNominaProductor.SelectedValue IsNot Nothing Then
+                        If TipoNominaProductorOriginal <> CboTipoNominaProductor.SelectedValue.ToString() Then
+                            If Not ProcesarCambioTipoNomina(dal,
                                             b.Codigo,
                                             "Productor") Then Exit Sub
+                        End If
                     End If
+
                 End If
+
             End If
 
             '-------------------------------------------------------
@@ -471,10 +552,16 @@ Public Class FrmBeneficiario
                                         b.Codigo,
                                         "Socio") Then Exit Sub
                 Else
-                    If TipoNominaSocioOriginal <> CboTipoNominaSocio.SelectedValue.ToString() Then
-                        If Not ProcesarCambioTipoNomina(dal,
-                                            b.Codigo,
-                                            "Socio") Then Exit Sub
+                    If CboTipoNominaSocio.SelectedValue IsNot Nothing Then
+
+                        If TipoNominaSocioOriginal <> CboTipoNominaSocio.SelectedValue.ToString() Then
+
+                            If Not ProcesarCambioTipoNomina(dal,
+                                        b.Codigo,
+                                        "Socio") Then Exit Sub
+
+                        End If
+
                     End If
                 End If
             End If
@@ -488,12 +575,15 @@ Public Class FrmBeneficiario
                                         b.Codigo,
                                         "PreSocio") Then Exit Sub
                 Else
-                    If TipoNominaPreSocioOriginal <> CboTipoNominaPreSocio.SelectedValue.ToString() Then
-                        If Not ProcesarCambioTipoNomina(dal,
+                    If CboTipoNominaPreSocio.SelectedValue IsNot Nothing Then
+                        If TipoNominaPreSocioOriginal <> CboTipoNominaPreSocio.SelectedValue.ToString() Then
+                            If Not ProcesarCambioTipoNomina(dal,
                                             b.Codigo,
                                             "PreSocio") Then Exit Sub
+                        End If
                     End If
                 End If
+
             End If
 
 
@@ -522,7 +612,27 @@ Public Class FrmBeneficiario
         Dim dtEscol As DataTable = cat.ObtenerEscolaridad()
         Dim dtRuta As DataTable = cat.ObtnerRuta()
         Dim dtTipoNomina As DataTable = cat.ObtenerTipoNomina()
+        Dim dtTransportista As DataTable = cat.ObtenerTransportistas()
         Dim sql As String
+
+
+        'Transportistas
+        CboTransportistaSocio.DataSource = dtTransportista.Copy()
+        CboTransportistaSocio.DisplayMember = "Nombre"
+        CboTransportistaSocio.ValueMember = "Codigo"
+
+        CboTransportistaPreSocio.DataSource = dtTransportista.Copy()
+        CboTransportistaPreSocio.DisplayMember = "Nombre"
+        CboTransportistaPreSocio.ValueMember = "Codigo"
+
+        CboTransportistaProductor.DataSource = dtTransportista.Copy()
+        CboTransportistaProductor.DisplayMember = "Nombre"
+        CboTransportistaProductor.ValueMember = "Codigo"
+
+
+
+
+
 
 
         'Departamentos

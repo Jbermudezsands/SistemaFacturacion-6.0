@@ -1,0 +1,10 @@
+CREATE TABLE LogErrores (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Fecha DATETIME NOT NULL DEFAULT GETDATE(),
+    Usuario NVARCHAR(100) NULL,
+    Maquina NVARCHAR(100) NULL,
+    Formulario NVARCHAR(200) NULL,
+    Mensaje NVARCHAR(MAX) NULL,
+    StackTrace NVARCHAR(MAX) NULL,
+    TipoExcepcion NVARCHAR(200) NULL
+)

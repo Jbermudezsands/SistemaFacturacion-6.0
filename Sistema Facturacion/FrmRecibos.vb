@@ -1,10 +1,14 @@
-Imports System.Data.SqlClient
+﻿Imports System.Data.SqlClient
 Imports System.Drawing.Printing
+Imports GrapeCity.DD
+Imports System.Text.RegularExpressions
 
 Public Class FrmRecibos
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder
     Public ConsecutivoReciboSerie As Boolean = False, Impresora_Defecto As String
+    Private _MapaAplicacionesPlan As New Dictionary(Of AplicacionPlanPendiente, DataRow)
+
 
     Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
         Me.Close()
@@ -191,6 +195,13 @@ Public Class FrmRecibos
         MiConexion.Close()
 
 
+        If UsuarioTipoSerie <> "" Then
+            If UsuarioTipoSerie <> "Ninguna" Then
+                Me.CmbSerie.Text = UsuarioTipoSerie
+            End If
+        End If
+
+
 
         SqlDatos = "SELECT * FROM DatosEmpresa"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
@@ -346,7 +357,7 @@ Public Class FrmRecibos
         Dim ComandoUpdate As New SqlClient.SqlCommand, SqlConsecutivo As String, ConsecutivoManual As Boolean = False
         Dim Saldo As Double = 0, Retencion1 As Double = 0, Retencion2 As Double = 0, NumeroNota As String = "", Consecutivo As Double = 0
         Dim ReciboSerie As Boolean = False, idDetalle As Double = -1
-
+        Dim Servicio As New ServicioRecibos(Conexion)
 
 
         If ds.Tables("DetalleRecibo").Rows.Count = 0 Then
@@ -474,25 +485,84 @@ Public Class FrmRecibos
             End If
         Else
             If Not IsNumeric(Me.TxtNumeroEnsamble.Text) Then
-                ConsecutivoPago = Mid(Me.TxtNumeroEnsamble.Text, 2, Len(Me.TxtNumeroEnsamble.Text) - 1)
+                'ConsecutivoPago = Mid(Me.TxtNumeroEnsamble.Text, 2, Len(Me.TxtNumeroEnsamble.Text) - 1)
+                ConsecutivoPago = Regex.Replace(Me.TxtNumeroEnsamble.Text, "^[^0-9]+", "")
+
             Else
                 ConsecutivoPago = Me.TxtNumeroEnsamble.Text
             End If
 
         End If
 
-        If ConsecutivoReciboSerie = False Then
-            NumeroRecibo = Format(ConsecutivoPago, "0000#")
+
+        '==========================================================
+        ' DETERMINAR NUMERO DEL RECIBO
+        '==========================================================
+
+        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+
+            '------------------------------------------------------
+            ' RECIBO NUEVO
+            '------------------------------------------------------
+            If ConsecutivoReciboSerie = False Then
+
+                NumeroRecibo =
+            Format(ConsecutivoPago, "0000#")
+
+            Else
+
+                NumeroRecibo =
+            Me.CmbSerie.Text &
+            Format(ConsecutivoPago, "0000#")
+
+            End If
+
         Else
-            NumeroRecibo = Me.CmbSerie.Text & Format(ConsecutivoPago, "0000#")
+
+            '------------------------------------------------------
+            ' RECIBO EXISTENTE / EDICION
+            '
+            ' Conservar exactamente el numero existente.
+            ' No reconstruirlo utilizando CmbSerie.
+            '------------------------------------------------------
+            NumeroRecibo =
+        Me.TxtNumeroEnsamble.Text.Trim()
+
         End If
 
+
         CambiaFechaRecibo = False
+
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
         '/////////////////////////////GRABO EL ENCABEZADO DE LOS PAGOS /////////////////////////////////////////////
         '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-        GrabaRecibos(NumeroRecibo)
+        'GrabaRecibos(NumeroRecibo)
+        If Not Servicio.GrabarRecibo(
+    NumeroRecibo,
+    Me.DTPFecha.Value,
+    Me.TxtCodigoClientes.Text,
+    Me.CboCajero.Text,
+    Convert.ToDecimal(Me.TxtSubTotal.Text),
+    Convert.ToDecimal(Me.TxtDescuento.Text),
+    Convert.ToDecimal(Me.TxtNetoPagar.Text),
+    Me.TxtNombres.Text,
+    Me.TxtApellidos.Text,
+    Me.TxtDireccion.Text,
+    Me.TxtTelefono.Text,
+    Me.TxtMonedaFactura.Text,
+    Me.TxtObservaciones.Text) Then
+
+            MsgBox(
+        "No se pudo grabar el encabezado del recibo.",
+        MsgBoxStyle.Critical,
+        "Sistema Facturación")
+
+            Exit Sub
+
+        End If
+
+
 
 
         '////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -594,41 +664,72 @@ Public Class FrmRecibos
                 MontoPagado = 0
             End If
 
-
-            'MontoCredito = ds.Tables("DetalleRecibo").Rows(iPosicion)("Saldo")
             If MontoPagado <> 0 Then
 
-                If CambiaFechaRecibo = True Then
-                    GrabaDetalleRecibos(NumeroRecibo, NumeroCompra, MontoPagado, NombrePago, Descripcion, NumeroTarjeta, FechaVence, idDetalle)
+                If Not Servicio.GrabarDetalleRecibo(
+                    NumeroRecibo,
+                    Me.DTPFecha.Value,
+                    NumeroCompra,
+                    ObtenerDecimal(MontoPagado),
+                    NombrePago,
+                    Descripcion,
+                    NumeroTarjeta,
+                    FechaVence,
+                    ObtenerDecimal(ds.Tables("DetalleRecibo").Rows(iPosicion)("MontoFactura")),
+                    ObtenerDecimal(ds.Tables("DetalleRecibo").Rows(iPosicion)("AplicaFactura")),
+                    ObtenerDecimal(ds.Tables("DetalleRecibo").Rows(iPosicion)("SaldoFactura")),
+                    1D,
+                    NumeroNota,
+                    ObtenerDecimal(idDetalle)) Then
+
+                    MsgBox(
+                        "No se pudo grabar el detalle del recibo.",
+                        MsgBoxStyle.Critical,
+                        "Sistema Facturación")
+
+                    Exit Sub
+
                 End If
 
                 ActualizaMontoCreditoFactura(NumeroCompra, MontoCredito)
 
-                '///////////////////////////////////////////BUSCO SI LA FACTURA QUEDA EN CERO PARA DESACTIVARLAS /////////////////////
-                SQlString = "SELECT   *  FROM Facturas WHERE (Numero_Factura = '" & NumeroCompra & "') AND (Tipo_Factura = 'Factura') ORDER BY Fecha_Factura DESC"
-                DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-                DataAdapter.Fill(DataSet, "Factuas")
-                If DataSet.Tables("Factuas").Rows.Count <> 0 Then
-                    MiConexion.Close()
-                    MontoCredito = DataSet.Tables("Factuas").Rows(0)("MontoCredito")
-                    If MontoCredito = 0 Then
-
-                        SQlPagos = "UPDATE [Facturas]  SET [Activo] = 'False' " & _
-                                     "WHERE  (Numero_Factura = '" & NumeroCompra & "') AND (Tipo_Factura = 'Factura')"
-                        MiConexion.Open()
-                        ComandoUpdate = New SqlClient.SqlCommand(SQlPagos, MiConexion)
-                        iResultado = ComandoUpdate.ExecuteNonQuery
-                        MiConexion.Close()
-                    End If
-
-                End If
-
-            Else
-                ds.Tables("DetalleRecibo").Rows(iPosicion).Delete()
-                Registros = Registros - 1
-                iPosicion = iPosicion - 1
-
             End If
+
+            '*******************CODIGO RETIRADO 15/09/2026 ***********************************
+            ''MontoCredito = ds.Tables("DetalleRecibo").Rows(iPosicion)("Saldo")
+            'If MontoPagado <> 0 Then
+
+            '    If CambiaFechaRecibo = True Then
+            '        GrabaDetalleRecibos(NumeroRecibo, NumeroCompra, MontoPagado, NombrePago, Descripcion, NumeroTarjeta, FechaVence, idDetalle)
+            '    End If
+
+            '    ActualizaMontoCreditoFactura(NumeroCompra, MontoCredito)
+
+            '    '///////////////////////////////////////////BUSCO SI LA FACTURA QUEDA EN CERO PARA DESACTIVARLAS /////////////////////
+            '    SQlString = "SELECT   *  FROM Facturas WHERE (Numero_Factura = '" & NumeroCompra & "') AND (Tipo_Factura = 'Factura') ORDER BY Fecha_Factura DESC"
+            '    DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+            '    DataAdapter.Fill(DataSet, "Factuas")
+            '    If DataSet.Tables("Factuas").Rows.Count <> 0 Then
+            '        MiConexion.Close()
+            '        MontoCredito = DataSet.Tables("Factuas").Rows(0)("MontoCredito")
+            '        If MontoCredito = 0 Then
+
+            '            SQlPagos = "UPDATE [Facturas]  SET [Activo] = 'False' " & _
+            '                         "WHERE  (Numero_Factura = '" & NumeroCompra & "') AND (Tipo_Factura = 'Factura')"
+            '            MiConexion.Open()
+            '            ComandoUpdate = New SqlClient.SqlCommand(SQlPagos, MiConexion)
+            '            iResultado = ComandoUpdate.ExecuteNonQuery
+            '            MiConexion.Close()
+            '        End If
+
+            '    End If
+
+            'Else
+            '    ds.Tables("DetalleRecibo").Rows(iPosicion).Delete()
+            '    Registros = Registros - 1
+            '    iPosicion = iPosicion - 1
+
+            'End If
 
 
 
@@ -636,8 +737,52 @@ Public Class FrmRecibos
         Loop
 
         If CambiaFechaRecibo = False Then
-            da.Update(ds.Tables("DetalleRecibo"))
+
+            '==========================================================
+            ' GRABAR APLICACIONES DEL PLAN DE PAGOS
+            '==========================================================
+            If Not GrabarAplicacionesPlanPago(NumeroRecibo) Then
+
+                MessageBox.Show(
+            "El recibo fue guardado, pero no se pudieron " &
+            "registrar correctamente las aplicaciones del " &
+            "plan de pagos.",
+            "Recibo",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Warning)
+
+                Exit Sub
+
+            End If
+
         End If
+
+
+        '************CODIGO RETIRADO 15/09/2026 ****************************
+        'If CambiaFechaRecibo = False Then
+
+        '    da.Update(ds.Tables("DetalleRecibo"))
+
+
+        '    '==========================================================
+        '    ' GRABAR APLICACIONES DEL PLAN DE PAGOS
+        '    '==========================================================
+        '    If Not GrabarAplicacionesPlanPago(NumeroRecibo) Then
+
+        '        MessageBox.Show(
+        '    "El recibo fue guardado, pero no se pudieron " &
+        '    "registrar correctamente las aplicaciones del " &
+        '    "plan de pagos.",
+        '    "Recibo",
+        '    MessageBoxButtons.OK,
+        '    MessageBoxIcon.Warning)
+
+        '        Exit Sub
+
+        '    End If
+
+        'End If
+
 
         ''////////////////////////////////////////////////////////////////////////////////////////////////////
         ''/////////////////////////////GRABO LOS METODOS DE PAGO /////////////////////////////////////////////
@@ -1222,11 +1367,13 @@ Public Class FrmRecibos
 
 
     Private Sub TDBGridDetalle_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TDBGridDetalle.ButtonClick
-        Dim Metodo As String
-        Quien = "MetodoPago"
-        My.Forms.FrmConsultas.ShowDialog()
-        Metodo = FrmConsultas.Codigo
-        Me.TDBGridDetalle.Columns(0).Text = Metodo
+        'Dim Metodo As String
+        'Quien = "MetodoPago"
+        'My.Forms.FrmConsultas.ShowDialog()
+        'Metodo = FrmConsultas.Codigo
+        'Me.TDBGridDetalle.Columns(0).Text = Metodo
+
+        SeleccionarMetodoPago()
     End Sub
 
     Private Sub C1TrueDBGrid1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TDBGridDetalle.Click
@@ -1388,40 +1535,1365 @@ Public Class FrmRecibos
 
     End Sub
 
-    Private Sub ButtonBorrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBorrar.Click
-        Dim SQlString As String
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, SQLPagos As String
+    Private Sub Button3_Click_1(sender As Object, e As EventArgs)
 
-        '///////////////////////////////////////////BUSCO SI LA FACTURA QUEDA EN CERO PARA DESACTIVARLAS /////////////////////
-        SQlString = "SELECT  Recibo.*  FROM Recibo WHERE (Activo = 1) AND (CodReciboPago ='" & Me.TxtNumeroEnsamble.Text & "') AND (Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
-        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-        DataAdapter.Fill(DataSet, "Recibo")
-        If DataSet.Tables("Recibo").Rows.Count <> 0 Then
-            MiConexion.Close()
+    End Sub
 
-            SQLPagos = "UPDATE Recibo SET [Contabilizado] = 'True', [Activo] = 'False'   , [NombreCliente] = '******CANCELADO' ,[ApellidosCliente] = '******'  WHERE (Activo = 1) AND (CodReciboPago ='" & Me.TxtNumeroEnsamble.Text & "') AND (Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
-            MiConexion.Open()
-            ComandoUpdate = New SqlClient.SqlCommand(SQLPagos, MiConexion)
-            iResultado = ComandoUpdate.ExecuteNonQuery
-            MiConexion.Close()
+    Private Sub BtnPlanPagos_Click(
+    ByVal sender As System.Object,
+    ByVal e As System.EventArgs
+) Handles BtnPlanPagos.Click
 
-            SQLPagos = "UPDATE [DetalleRecibo] SET [MontoPagado] = 0 WHERE (CodReciboPago ='" & Me.TxtNumeroEnsamble.Text & "') "
-            MiConexion.Open()
-            ComandoUpdate = New SqlClient.SqlCommand(SQLPagos, MiConexion)
-            iResultado = ComandoUpdate.ExecuteNonQuery
-            MiConexion.Close()
+        Dim Datos As New DatosReciboPlanPago()
+
+        Datos.CodigoCliente = Me.TxtCodigoClientes.Text
+        Datos.CodReciboPago = Me.TxtNumeroEnsamble.Text
+        Datos.FechaRecibo = Me.DTPFecha.Value
+        Datos.MonedaRecibo = Me.TxtMonedaFactura.Text
+
+        Dim Frm As New FrmPlanPagoRecibos()
+
+        Frm.DatosRecibo = Datos
+
+        If Frm.ShowDialog() = DialogResult.OK Then
+
+            '======================================================
+            ' RECIBIR LAS APLICACIONES PREPARADAS
+            '======================================================
+            Dim Aplicaciones As List(Of AplicacionPlanPendiente) =
+            Frm.AplicacionesPendientes
+
+            '======================================================
+            ' VALIDAR QUE HAYA APLICACIONES
+            '======================================================
+            If Aplicaciones Is Nothing OrElse
+           Aplicaciones.Count = 0 Then
+
+                MessageBox.Show(
+                "No se recibieron aplicaciones del plan de pagos.",
+                "Recibo",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning)
+
+                Exit Sub
+
+            End If
+
+            '======================================================
+            ' ACTUALIZAR TOTALES DEL RECIBO
+            '======================================================
+            Me.TxtSubTotal.Text = Frm.TxtImporteRecibido.Text
+            Me.TxtDescuento.Text = "0.00"
+            Me.TxtNetoPagar.Text = Frm.TxtImporteRecibido.Text
+
+            '======================================================
+            ' AGREGAR LAS APLICACIONES AL DETALLE DEL RECIBO
+            '======================================================
+            AgregarAplicacionesPlanPago(Aplicaciones)
+
+            '======================================================
+            ' DEPURACION
+            '======================================================
+            For Each Aplicacion As AplicacionPlanPendiente In Aplicaciones
+
+                Debug.WriteLine(
+                "Factura: " & Aplicacion.NumeroFactura &
+                " | Cuota: " & Aplicacion.NumeroCuota &
+                " | Monto: " & Aplicacion.MontoAplicado.ToString("N2"))
+
+            Next
+
         End If
+
+    End Sub
+
+
+    Private Sub ButtonBorrar_Click(
+    ByVal sender As System.Object,
+    ByVal e As System.EventArgs) Handles ButtonBorrar.Click
+
+        Dim Servicio As New ServicioRecibos(Conexion)
+
+        Dim NumeroRecibo As String = Me.TxtNumeroEnsamble.Text.Trim()
+        Dim FechaRecibo As Date = Me.DTPFecha.Value.Date
+        Dim CodigoCliente As String = Me.TxtCodigoClientes.Text.Trim()
+
+        '==========================================================
+        ' VALIDACIONES BASICAS
+        '==========================================================
+
+        If NumeroRecibo = "" OrElse NumeroRecibo = "-----0-----" Then
+            MsgBox(
+            "No existe un número de recibo para anular.",
+            MsgBoxStyle.Exclamation,
+            "Sistema Facturación")
+
+            Exit Sub
+        End If
+
+        If CodigoCliente = "" Then
+            MsgBox(
+            "No se encontró el código del cliente.",
+            MsgBoxStyle.Exclamation,
+            "Sistema Facturación")
+
+            Exit Sub
+        End If
+
+        '==========================================================
+        ' CONFIRMAR ANULACION
+        '==========================================================
+
+        If MsgBox(
+        "¿Está seguro que desea anular el recibo " &
+        NumeroRecibo & "?",
+        MsgBoxStyle.YesNo Or MsgBoxStyle.Question,
+        "Anular Recibo") <> MsgBoxResult.Yes Then
+
+            Exit Sub
+
+        End If
+
+        '==========================================================
+        ' ANULAR RECIBO
+        '
+        ' El servicio se encarga de:
+        '
+        ' 1. Validar que el recibo exista y esté activo.
+        ' 2. Anular Recibo.
+        ' 3. Poner MontoPagado = 0 en DetalleRecibo.
+        ' 4. Anular las aplicaciones activas de Plan Pago.
+        ' 5. Registrar fecha, usuario y motivo de anulación.
+        ' 6. Ejecutar todo dentro de una transacción.
+        '==========================================================
+
+        Dim Usuario As String = Environment.UserName
+
+        Dim Motivo As String =
+        "Anulación de recibo desde FrmRecibos"
+
+        If Not Servicio.AnularRecibo(
+        NumeroRecibo,
+        FechaRecibo,
+        CodigoCliente,
+        Usuario,
+        Motivo) Then
+
+            MsgBox(
+            "No fue posible anular el recibo." &
+            vbCrLf &
+            "Verifique que el recibo exista, esté activo " &
+            "y que la fecha corresponda al recibo.",
+            MsgBoxStyle.Critical,
+            "Sistema Facturación")
+
+            Exit Sub
+
+        End If
+
+        '==========================================================
+        ' LIMPIAR FORMULARIO
+        '==========================================================
 
         LimpiaRecibo()
 
+        MsgBox(
+        "El recibo " & NumeroRecibo &
+        " fue anulado correctamente.",
+        MsgBoxStyle.Information,
+        "Sistema Facturación")
+
     End Sub
 
-    Private Sub TxtMonedaFactura_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtMonedaFactura.SelectedIndexChanged
+
+
+    '*********************CODIGO RETIRADO 15/09/2026 ***********************************
+    'Private Sub ButtonBorrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBorrar.Click
+    '    Dim SQlString As String
+    '    Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+    '    Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, SQLPagos As String
+
+    '    '///////////////////////////////////////////BUSCO SI LA FACTURA QUEDA EN CERO PARA DESACTIVARLAS /////////////////////
+    '    SQlString = "SELECT  Recibo.*  FROM Recibo WHERE (Activo = 1) AND (CodReciboPago ='" & Me.TxtNumeroEnsamble.Text & "') AND (Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
+    '    DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+    '    DataAdapter.Fill(DataSet, "Recibo")
+    '    If DataSet.Tables("Recibo").Rows.Count <> 0 Then
+    '        MiConexion.Close()
+
+    '        SQLPagos = "UPDATE Recibo SET [Contabilizado] = 'True', [Activo] = 'False'   , [NombreCliente] = '******CANCELADO' ,[ApellidosCliente] = '******'  WHERE (Activo = 1) AND (CodReciboPago ='" & Me.TxtNumeroEnsamble.Text & "') AND (Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
+    '        MiConexion.Open()
+    '        ComandoUpdate = New SqlClient.SqlCommand(SQLPagos, MiConexion)
+    '        iResultado = ComandoUpdate.ExecuteNonQuery
+    '        MiConexion.Close()
+
+    '        SQLPagos = "UPDATE [DetalleRecibo] SET [MontoPagado] = 0 WHERE (CodReciboPago ='" & Me.TxtNumeroEnsamble.Text & "') "
+    '        MiConexion.Open()
+    '        ComandoUpdate = New SqlClient.SqlCommand(SQLPagos, MiConexion)
+    '        iResultado = ComandoUpdate.ExecuteNonQuery
+    '        MiConexion.Close()
+    '    End If
+
+    '    LimpiaRecibo()
+
+    'End Sub
+
+    Private Sub pnlHeader_Paint(sender As Object, e As PaintEventArgs) Handles pnlHeader.Paint
 
     End Sub
 
-    Private Sub TxtTipoRecibo_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtTipoRecibo.TextChanged
+    Private Sub AgregarAplicacionesPlanPago(
+        ByVal Aplicaciones As List(Of AplicacionPlanPendiente))
+
+        If Aplicaciones Is Nothing Then Exit Sub
+
+        If Aplicaciones.Count = 0 Then Exit Sub
+
+        If Me.ds Is Nothing Then Exit Sub
+
+        If Not Me.ds.Tables.Contains("DetalleRecibo") Then Exit Sub
+
+
+        Dim Tabla As DataTable =
+    Me.ds.Tables("DetalleRecibo")
+
+
+        '==========================================================
+        ' ELIMINAR APLICACIONES DE PLAN DE PAGOS ANTERIORES
+        '
+        ' Si el usuario vuelve a abrir Plan Pagos antes de guardar
+        ' el recibo, reemplazamos las aplicaciones anteriores.
+        '
+        ' NO tocamos otros detalles del recibo.
+        '==========================================================
+        If _MapaAplicacionesPlan IsNot Nothing AndAlso
+   _MapaAplicacionesPlan.Count > 0 Then
+
+            Dim FilasAnteriores As New List(Of DataRow)
+
+            For Each Fila As DataRow In
+        _MapaAplicacionesPlan.Values
+
+                If Fila IsNot Nothing Then
+                    FilasAnteriores.Add(Fila)
+                End If
+
+            Next
+
+
+            For Each Fila As DataRow In FilasAnteriores
+
+                If Fila.RowState <> DataRowState.Detached Then
+                    Fila.Delete()
+                End If
+
+            Next
+
+        End If
+
+
+        '==========================================================
+        ' LIMPIAR EL MAPA
+        '==========================================================
+        _MapaAplicacionesPlan.Clear()
+
+
+        '==========================================================
+        ' AGREGAR CADA APLICACION COMO UNA FILA DE DETALLE
+        '==========================================================
+        For Each Aplicacion As AplicacionPlanPendiente In Aplicaciones
+
+            If Aplicacion Is Nothing Then Continue For
+
+            If Aplicacion.MontoAplicado <= 0D Then Continue For
+
+
+            '------------------------------------------------------
+            ' CREAR NUEVA FILA
+            '------------------------------------------------------
+            Dim Fila As DataRow =
+                Tabla.NewRow()
+
+
+            '======================================================
+            ' METODO DE PAGO
+            '======================================================
+            Fila("NombrePago") =
+                Aplicacion.NombrePago
+
+
+            '======================================================
+            ' FACTURA
+            '======================================================
+            Fila("Numero_Factura") =
+                Aplicacion.NumeroFactura
+
+
+            '======================================================
+            ' MONTO PAGADO
+            '======================================================
+            Fila("MontoPagado") =
+                Convert.ToDouble(Aplicacion.MontoAplicado)
+
+
+            '======================================================
+            ' DESCRIPCION
+            '======================================================
+            Fila("Descripcion") =
+                "PAGO PLAN CUOTA " &
+                Aplicacion.NumeroCuota.ToString()
+
+
+            '======================================================
+            ' DATOS DE LA FACTURA
+            '======================================================
+            Fila("MontoFactura") =
+                Convert.ToDouble(Aplicacion.MontoAplicado)
+
+            Fila("AplicaFactura") =
+                Convert.ToDouble(Aplicacion.MontoAplicado)
+
+            Fila("SaldoFactura") =
+                0D
+
+
+            '======================================================
+            ' NUMERO DE TARJETA
+            '======================================================
+            If String.IsNullOrEmpty(
+                Aplicacion.NumeroTarjeta) Then
+
+                Fila("NumeroTarjeta") =
+                    DBNull.Value
+
+            Else
+
+                Fila("NumeroTarjeta") =
+                    Aplicacion.NumeroTarjeta
+
+            End If
+
+
+            '======================================================
+            ' FECHA DE VENCIMIENTO DE TARJETA
+            '======================================================
+            If Aplicacion.FechaVence <> Date.MinValue Then
+
+                Fila("FechaVence") =
+                    Aplicacion.FechaVence
+
+            Else
+
+                Fila("FechaVence") =
+                    DBNull.Value
+
+            End If
+
+
+            '======================================================
+            ' DATOS DEL RECIBO
+            '
+            ' Todavía utilizamos los valores actuales del formulario.
+            ' ButtonAgregar_Click posteriormente asignará el
+            ' NumeroRecibo definitivo.
+            '======================================================
+            Fila("CodReciboPago") =
+                Me.TxtNumeroEnsamble.Text
+
+            Fila("Fecha_Recibo") =
+                Me.DTPFecha.Value
+
+
+
+            '======================================================
+            ' AGREGAR FILA AL DATATABLE
+            '======================================================
+            Tabla.Rows.Add(Fila)
+
+
+            '======================================================
+            ' GUARDAR LA RELACION:
+            '
+            ' AplicacionPlanPendiente
+            '             ↓
+            '          DataRow
+            '
+            ' IMPORTANTE:
+            ' No buscamos posteriormente por factura/monto.
+            ' Conservamos la referencia exacta al DataRow.
+            '======================================================
+            _MapaAplicacionesPlan.Add(
+                Aplicacion,
+                Fila)
+
+        Next
+
+    End Sub
+
+    Private Function GrabarAplicacionesPlanPago(
+    ByVal NumeroRecibo As String) As Boolean
+
+        '==========================================================
+        ' SI NO HAY APLICACIONES DE PLAN, NO HACER NADA
+        '==========================================================
+        If _MapaAplicacionesPlan Is Nothing Then
+            Return True
+        End If
+
+        If _MapaAplicacionesPlan.Count = 0 Then
+            Return True
+        End If
+
+
+        '==========================================================
+        ' IDS DE DETALLE RECIBO YA UTILIZADOS
+        '==========================================================
+        Dim IdsUtilizados As New List(Of Decimal)
+
+
+        Using CN As New SqlClient.SqlConnection(Conexion)
+
+            CN.Open()
+
+
+            '======================================================
+            ' INSERTAR APLICACION
+            '
+            ' Utilizamos solamente las columnas que realmente
+            ' existen en AplicacionPagoPlan.
+            '======================================================
+            Dim SQL As String = ""
+
+            SQL &= "INSERT INTO AplicacionPagoPlan "
+            SQL &= "("
+            SQL &= "idDetallePago, "
+            SQL &= "idDetalleRecibo, "
+            SQL &= "MontoAplicado, "
+            SQL &= "FechaAplicacion, "
+            SQL &= "UsuarioAplicacion, "
+            SQL &= "Anulado, "
+            SQL &= "FechaRegistro, "
+            SQL &= "CodReciboPago, "
+            SQL &= "Fecha_Recibo, "
+            SQL &= "Numero_Factura"
+            SQL &= ") "
+            SQL &= "VALUES "
+            SQL &= "("
+            SQL &= "@idDetallePago, "
+            SQL &= "@idDetalleRecibo, "
+            SQL &= "@MontoAplicado, "
+            SQL &= "SYSDATETIME(), "
+            SQL &= "@UsuarioAplicacion, "
+            SQL &= "0, "
+            SQL &= "SYSDATETIME(), "
+            SQL &= "@CodReciboPago, "
+            SQL &= "@Fecha_Recibo, "
+            SQL &= "@Numero_Factura"
+            SQL &= ")"
+
+
+            Using CMD As New SqlClient.SqlCommand(SQL, CN)
+
+                CMD.Parameters.Add(
+                "@idDetallePago",
+                SqlDbType.Int)
+
+
+                Dim ParamIdDetalleRecibo As SqlClient.SqlParameter =
+                CMD.Parameters.Add(
+                    "@idDetalleRecibo",
+                    SqlDbType.Decimal)
+
+                ParamIdDetalleRecibo.Precision = 18
+                ParamIdDetalleRecibo.Scale = 0
+
+
+                Dim ParamMonto As SqlClient.SqlParameter =
+                CMD.Parameters.Add(
+                    "@MontoAplicado",
+                    SqlDbType.Decimal)
+
+                ParamMonto.Precision = 18
+                ParamMonto.Scale = 2
+
+
+                CMD.Parameters.Add(
+                "@UsuarioAplicacion",
+                SqlDbType.NVarChar,
+                100)
+
+                CMD.Parameters.Add(
+                "@CodReciboPago",
+                SqlDbType.NVarChar,
+                50)
+
+                CMD.Parameters.Add(
+                "@Fecha_Recibo",
+                SqlDbType.SmallDateTime)
+
+                CMD.Parameters.Add(
+                "@Numero_Factura",
+                SqlDbType.NVarChar,
+                50)
+
+
+                '==================================================
+                ' RECORRER APLICACIONES
+                '==================================================
+                For Each Par As KeyValuePair(
+                Of AplicacionPlanPendiente, DataRow) _
+                In _MapaAplicacionesPlan
+
+
+                    Dim Aplicacion As AplicacionPlanPendiente =
+                    Par.Key
+
+                    Dim Fila As DataRow =
+                    Par.Value
+
+
+                    If Aplicacion Is Nothing Then
+                        Continue For
+                    End If
+
+                    If Fila Is Nothing Then
+                        Continue For
+                    End If
+
+
+                    '==================================================
+                    ' OBTENER ID DETALLE RECIBO
+                    '==================================================
+                    Dim IdDetalleRecibo As Decimal = 0D
+
+
+                    '--------------------------------------------------
+                    ' PRIMERO REVISAR SI EL DATAROW YA LO TIENE
+                    '--------------------------------------------------
+                    If Not IsDBNull(
+                    Fila("idDetalleRecibo")) Then
+
+                        IdDetalleRecibo =
+                        Convert.ToDecimal(
+                            Fila("idDetalleRecibo"))
+
+                    End If
+
+
+                    '==================================================
+                    ' SI NO LO TIENE, BUSCARLO EN SQL SERVER
+                    '==================================================
+                    If IdDetalleRecibo <= 0D Then
+
+                        Dim NumeroFactura As String = ""
+
+                        If Not IsDBNull(
+                        Fila("Numero_Factura")) Then
+
+                            NumeroFactura =
+                            Convert.ToString(
+                                Fila("Numero_Factura"))
+
+                        End If
+
+
+                        Dim NombrePago As String = ""
+
+                        If Not IsDBNull(
+                        Fila("NombrePago")) Then
+
+                            NombrePago =
+                            Convert.ToString(
+                                Fila("NombrePago"))
+
+                        End If
+
+
+                        Dim Descripcion As String = ""
+
+                        If Not IsDBNull(
+                        Fila("Descripcion")) Then
+
+                            Descripcion =
+                            Convert.ToString(
+                                Fila("Descripcion"))
+
+                        End If
+
+
+                        Dim MontoPagado As Decimal = 0D
+
+                        If Not IsDBNull(
+                        Fila("MontoPagado")) Then
+
+                            MontoPagado =
+                            Convert.ToDecimal(
+                                Fila("MontoPagado"))
+
+                        End If
+
+
+                        IdDetalleRecibo =
+                        ObtenerIdDetalleRecibo(
+                            NumeroRecibo,
+                            NumeroFactura,
+                            NombrePago,
+                            Descripcion,
+                            MontoPagado,
+                            IdsUtilizados)
+
+                    End If
+
+
+                    '==================================================
+                    ' VALIDAR ID
+                    '==================================================
+                    If IdDetalleRecibo <= 0D Then
+
+                        MessageBox.Show(
+                        "No se pudo obtener el idDetalleRecibo " &
+                        "para la cuota " &
+                        Aplicacion.NumeroCuota.ToString() &
+                        " de la factura " &
+                        Aplicacion.NumeroFactura &
+                        "." &
+                        vbCrLf & vbCrLf &
+                        "No se grabará la aplicación del plan de pagos.",
+                        "Recibo de plan de pagos",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning)
+
+                        Return False
+
+                    End If
+
+
+                    '==================================================
+                    ' GUARDAR ID EN EL DATAROW
+                    '==================================================
+                    If IsDBNull(
+                    Fila("idDetalleRecibo")) Then
+
+                        Fila("idDetalleRecibo") =
+                        IdDetalleRecibo
+
+                    End If
+
+
+                    '==================================================
+                    ' EVITAR UTILIZAR EL MISMO DETALLE DOS VECES
+                    '==================================================
+                    If Not IdsUtilizados.Contains(
+                    IdDetalleRecibo) Then
+
+                        IdsUtilizados.Add(
+                        IdDetalleRecibo)
+
+                    End If
+
+
+                    '==================================================
+                    ' ASIGNAR PARAMETROS
+                    '==================================================
+                    CMD.Parameters(
+                    "@idDetallePago").Value =
+                    Aplicacion.IdDetallePago
+
+
+                    CMD.Parameters(
+                    "@idDetalleRecibo").Value =
+                    IdDetalleRecibo
+
+
+                    CMD.Parameters(
+                    "@MontoAplicado").Value =
+                    Aplicacion.MontoAplicado
+
+
+                    '--------------------------------------------------
+                    ' Por ahora dejamos el usuario en NULL.
+                    ' Posteriormente podemos utilizar el cajero/usuario
+                    ' actual del sistema.
+                    '--------------------------------------------------
+                    CMD.Parameters(
+                    "@UsuarioAplicacion").Value =
+                    DBNull.Value
+
+                    CMD.Parameters(
+    "@CodReciboPago").Value =
+    NumeroRecibo
+
+                    If Not IsDBNull(Fila("Fecha_Recibo")) Then
+
+                        CMD.Parameters(
+        "@Fecha_Recibo").Value =
+        Convert.ToDateTime(
+            Fila("Fecha_Recibo"))
+
+                    Else
+
+                        MessageBox.Show(
+        "No se encontró la fecha del recibo " &
+        "para la cuota " &
+        Aplicacion.NumeroCuota.ToString() &
+        " de la factura " &
+        Aplicacion.NumeroFactura & ".",
+        "Recibo de plan de pagos",
+        MessageBoxButtons.OK,
+        MessageBoxIcon.Warning)
+
+                        Return False
+
+                    End If
+
+                    CMD.Parameters(
+    "@Numero_Factura").Value =
+    Aplicacion.NumeroFactura
+
+
+                    '==================================================
+                    ' INSERTAR
+                    '==================================================
+                    CMD.ExecuteNonQuery()
+
+                Next
+
+            End Using
+
+        End Using
+
+
+        Return True
+
+    End Function
+
+    Private Function ObtenerIdDetalleRecibo(
+        ByVal NumeroRecibo As String,
+        ByVal NumeroFactura As String,
+        ByVal NombrePago As String,
+        ByVal Descripcion As String,
+        ByVal MontoPagado As Decimal,
+        ByVal IdsUtilizados As List(Of Decimal)
+    ) As Decimal
+
+        Dim IdDetalleRecibo As Decimal = 0D
+
+        Dim SQL As String = ""
+
+        SQL &= "SELECT TOP 1 idDetalleRecibo "
+        SQL &= "FROM DetalleRecibo "
+        SQL &= "WHERE CodReciboPago = @CodReciboPago "
+        SQL &= "AND Numero_Factura = @Numero_Factura "
+        SQL &= "AND NombrePago = @NombrePago "
+        SQL &= "AND Descripcion = @Descripcion "
+        SQL &= "AND MontoPagado = @MontoPagado "
+
+        '==========================================================
+        ' EVITAR UTILIZAR DOS VECES EL MISMO DETALLE
+        '==========================================================
+        If IdsUtilizados IsNot Nothing AndAlso
+           IdsUtilizados.Count > 0 Then
+
+            SQL &= "AND idDetalleRecibo NOT IN ("
+
+            For i As Integer = 0 To IdsUtilizados.Count - 1
+
+                If i > 0 Then
+                    SQL &= ","
+                End If
+
+                SQL &= IdsUtilizados(i).ToString(
+                    System.Globalization.CultureInfo.InvariantCulture)
+
+            Next
+
+            SQL &= ") "
+
+        End If
+
+        SQL &= "ORDER BY idDetalleRecibo DESC"
+
+
+        Using CN As New SqlClient.SqlConnection(Conexion)
+
+            Using CMD As New SqlClient.SqlCommand(SQL, CN)
+
+                CMD.Parameters.Add(
+                    "@CodReciboPago",
+                    SqlDbType.NVarChar,
+                    50).Value = NumeroRecibo
+
+                CMD.Parameters.Add(
+                    "@Numero_Factura",
+                    SqlDbType.NVarChar,
+                    50).Value = NumeroFactura
+
+                CMD.Parameters.Add(
+                    "@NombrePago",
+                    SqlDbType.NVarChar,
+                    50).Value = NombrePago
+
+                CMD.Parameters.Add(
+                    "@Descripcion",
+                    SqlDbType.NVarChar,
+                    50).Value = Descripcion
+
+                CMD.Parameters.Add(
+                    "@MontoPagado",
+                    SqlDbType.Float).Value =
+                    Convert.ToDouble(MontoPagado)
+
+
+                CN.Open()
+
+                Dim Resultado As Object =
+                    CMD.ExecuteScalar()
+
+
+                If Resultado IsNot Nothing AndAlso
+                   Not IsDBNull(Resultado) Then
+
+                    IdDetalleRecibo =
+                        Convert.ToDecimal(Resultado)
+
+                End If
+
+            End Using
+
+        End Using
+
+
+        Return IdDetalleRecibo
+
+    End Function
+
+
+    Private Function ValidarDatosBasicosRecibo() As Boolean
+
+        If ds Is Nothing Then
+            Return False
+        End If
+
+        If Not ds.Tables.Contains("DetalleRecibo") Then
+            Return False
+        End If
+
+        If ds.Tables("DetalleRecibo").Rows.Count = 0 Then
+            Return False
+        End If
+
+        If Me.TxtCodigoClientes.Text.Trim() = "" Then
+            Return False
+        End If
+
+        Return True
+
+    End Function
+
+
+    Private Sub BtnAgregarLinea_Click(
+    ByVal sender As System.Object,
+    ByVal e As System.EventArgs) Handles BtnAgregarLinea.Click
+
+        '--------------------------------------------------
+        ' Posicionar el cursor en la nueva línea
+        '--------------------------------------------------
+        Me.TrueDBGridMetodo.Col = 0
+        Me.TrueDBGridMetodo.Focus()
+
+        SeleccionarMetodoPago()
+
+    End Sub
+
+    Private Sub SeleccionarMetodoPago()
+
+        Dim Metodo As String
+
+        Quien = "MetodoPago"
+
+        My.Forms.FrmConsultas.ShowDialog()
+
+        Metodo = FrmConsultas.Codigo
+
+        If Metodo <> "-----0-----" AndAlso Metodo.Trim <> "" Then
+
+            Me.TDBGridDetalle.Columns(0).Text = Metodo
+
+        Else
+
+            Me.TDBGridDetalle.Columns(0).Text = ""
+
+        End If
+
+    End Sub
+
+    Private Sub BtnQuitarLinea_Click(
+    ByVal sender As System.Object,
+    ByVal e As System.EventArgs) Handles BtnQuitarLinea.Click
+
+        Dim posicion As Integer
+
+        If Me.BindingMetodo.DataSource Is Nothing Then
+            Exit Sub
+        End If
+
+        If Me.BindingMetodo.Count = 0 Then
+            Exit Sub
+        End If
+
+        posicion = Me.BindingMetodo.Position
+
+        If posicion < 0 OrElse posicion >= Me.BindingMetodo.Count Then
+            Exit Sub
+        End If
+
+
+        '==========================================================
+        ' NO PERMITIR ELIMINAR EL ULTIMO METODO
+        '==========================================================
+
+        If Me.BindingMetodo.Count = 1 Then
+
+            MsgBox(
+            "Debe existir al menos un método de pago.",
+            MsgBoxStyle.Information,
+            "Sistema Facturacion")
+
+            Exit Sub
+
+        End If
+
+
+        '==========================================================
+        ' CONFIRMAR
+        '==========================================================
+
+        If MsgBox(
+        "¿Desea quitar el método de pago seleccionado?",
+        MsgBoxStyle.Question Or MsgBoxStyle.YesNo,
+        "Sistema Facturacion") <> MsgBoxResult.Yes Then
+
+            Exit Sub
+
+        End If
+
+
+        '==========================================================
+        ' ELIMINAR
+        '==========================================================
+
+        Me.BindingMetodo.RemoveAt(posicion)
+
+
+        '==========================================================
+        ' RECALCULAR
+        '==========================================================
+
+        ActualizaMETODORecibos2()
+
+    End Sub
+
+    Private Function ProcesarRetencionesRecibo() As Boolean
+
+        Dim DataSetRetencion As New DataSet
+        Dim DataAdapterRetencion As New SqlClient.SqlDataAdapter
+
+        Dim Registros As Integer
+        Dim iPosicion As Integer
+
+        Dim NumeroCompra As String
+        Dim MontoPagado As Double
+        Dim Saldo As Double
+
+        Dim SQlString As String
+
+        Dim Consecutivo As Double
+        Dim NumeroNota As String
+
+        '----------------------------------------------------------
+        ' Validamos que exista detalle
+        '----------------------------------------------------------
+        If ds Is Nothing Then
+            Return False
+        End If
+
+        If Not ds.Tables.Contains("DetalleRecibo") Then
+            Return False
+        End If
+
+        Registros = ds.Tables("DetalleRecibo").Rows.Count
+
+        '----------------------------------------------------------
+        ' Recorremos el detalle del recibo
+        '----------------------------------------------------------
+        iPosicion = 0
+
+        Do While iPosicion < Registros
+
+            '------------------------------------------------------
+            ' Numero de factura
+            '------------------------------------------------------
+            If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("Numero_Factura")) Then
+                NumeroCompra = ds.Tables("DetalleRecibo").Rows(iPosicion)("Numero_Factura")
+            Else
+                NumeroCompra = 0
+            End If
+
+            '------------------------------------------------------
+            ' Monto pagado
+            '------------------------------------------------------
+            MontoPagado = 0
+
+            If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("MontoPagado")) Then
+                MontoPagado = ds.Tables("DetalleRecibo").Rows(iPosicion)("MontoPagado")
+            End If
+
+            '------------------------------------------------------
+            ' Si existe retención seleccionada
+            '------------------------------------------------------
+            If Me.OptRet1Porciento.Checked = True Or
+               Me.OptRet2Porciento.Checked = True Then
+
+                Saldo = ValidarFacturaEnRecibo(
+                    Me.TxtCodigoClientes.Text,
+                    NumeroCompra,
+                    MontoPagado,
+                    Me.TxtMonedaFactura.Text)
+
+                '--------------------------------------------------
+                ' El pago no puede ser mayor al saldo
+                '--------------------------------------------------
+                If MontoPagado <= Saldo Then
+
+                    '==================================================
+                    ' RETENCION 1%
+                    '==================================================
+                    If Me.OptRet1Porciento.Checked = True Then
+
+                        Dim MontoIr As Double
+                        Dim CodigoNota As String
+
+                        SQlString =
+                            "SELECT CodigoNB, Tipo, Descripcion, CuentaContable " &
+                            "FROM NotaDebito " &
+                            "WHERE (Tipo = 'Credito Clientes') " &
+                            "AND (Descripcion LIKE N'%1%%')"
+
+                        DataAdapterRetencion =
+                            New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+
+                        DataAdapterRetencion.Fill(
+                            DataSetRetencion,
+                            "Retencion")
+
+                        If DataSetRetencion.Tables("Retencion").Rows.Count <> 0 Then
+
+                            MontoIr = Format(
+                                FSubTotal * 0.01,
+                                "##,##0.00")
+
+                            CodigoNota =
+                                DataSetRetencion.Tables("Retencion").Rows(0)("CodigoNB")
+
+                        Else
+
+                            MsgBox(
+                                "No Existe Nota de Credito para Retencion 1%",
+                                MsgBoxStyle.Critical,
+                                "Zeus Facturacion")
+
+                            Me.OptRet1Porciento.Checked = False
+
+                            MontoIr = 0
+                            CodigoNota = 0
+
+                        End If
+
+                        DataSetRetencion.Tables("Retencion").Reset()
+
+                        Consecutivo = BuscaConsecutivo("NotaCredito")
+
+                        NumeroNota = Format(
+                            Consecutivo,
+                            "0000#")
+
+                        GrabaNotaDebito(
+                            NumeroNota,
+                            Me.DTPFecha.Text,
+                            CodigoNota,
+                            MontoIr,
+                            Me.TxtMonedaFactura.Text,
+                            Me.TxtCodigoClientes.Text,
+                            Me.TxtNombres.Text,
+                            Me.TxtObservaciones.Text,
+                            True,
+                            False,
+                            False)
+
+                        InsertarDetalleNotaDebito(
+                            NumeroNota,
+                            Me.DTPFecha.Text,
+                            CodigoNota,
+                            "Generado Automaticamente por Recibos",
+                            NumeroCompra,
+                            MontoIr)
+
+                    End If
+
+                    '==================================================
+                    ' RETENCION 2%
+                    '==================================================
+                    If Me.OptRet2Porciento.Checked = True Then
+
+                        Dim MontoIr As Double
+                        Dim CodigoNota As String
+
+                        SQlString =
+                            "SELECT CodigoNB, Tipo, Descripcion, CuentaContable " &
+                            "FROM NotaDebito " &
+                            "WHERE (Tipo = 'Credito Clientes') " &
+                            "AND (Descripcion LIKE N'%2%%')"
+
+                        DataAdapterRetencion =
+                            New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+
+                        DataAdapterRetencion.Fill(
+                            DataSetRetencion,
+                            "Retencion")
+
+                        If DataSetRetencion.Tables("Retencion").Rows.Count <> 0 Then
+
+                            MontoIr = Format(
+                                FSubTotal * 0.02,
+                                "##,##0.00")
+
+                            CodigoNota =
+                                DataSetRetencion.Tables("Retencion").Rows(0)("CodigoNB")
+
+                        Else
+
+                            MsgBox(
+                                "No Existe Nota de Credito para Retencion 2%",
+                                MsgBoxStyle.Critical,
+                                "Zeus Facturacion")
+
+                            Me.OptRet1Porciento.Checked = False
+
+                            MontoIr = 0
+                            CodigoNota = 0
+
+                        End If
+
+                        DataSetRetencion.Tables("Retencion").Reset()
+
+                        Consecutivo = BuscaConsecutivo("NotaCredito")
+
+                        NumeroNota = Format(
+                            Consecutivo,
+                            "0000#")
+
+                        GrabaNotaDebito(
+                            NumeroNota,
+                            Me.DTPFecha.Text,
+                            CodigoNota,
+                            MontoIr,
+                            Me.TxtMonedaFactura.Text,
+                            Me.TxtCodigoClientes.Text,
+                            Me.TxtNombres.Text,
+                            Me.TxtObservaciones.Text,
+                            True,
+                            False,
+                            False)
+
+                        InsertarDetalleNotaDebito(
+                            NumeroNota,
+                            Me.DTPFecha.Text,
+                            CodigoNota,
+                            "Generado Automaticamente por Recibos",
+                            NumeroCompra,
+                            MontoIr)
+
+                    End If
+
+                Else
+
+                    MsgBox(
+                        "Esta Pagando Mas que el Saldo Pendiente!!",
+                        MsgBoxStyle.Critical,
+                        "Zeus Facturacion")
+
+                    Return False
+
+                End If
+
+            End If
+
+            iPosicion += 1
+
+        Loop
+
+        Return True
+
+    End Function
+    Private Function ObtenerNumeroRecibo(ByRef ConsecutivoPago As Double) As String
+
+        Dim DataSet As New DataSet
+        Dim DataAdapter As New SqlClient.SqlDataAdapter
+
+        Dim SqlConsecutivo As String
+        Dim ConsecutivoManual As Boolean = False
+
+        Dim NumeroRecibo As String = ""
+
+        '==========================================================
+        ' BUSCAR CONFIGURACION DE CONSECUTIVO MANUAL
+        '==========================================================
+        SqlConsecutivo = "SELECT ConsecutivoReciboManual FROM DatosEmpresa"
+
+        DataAdapter = New SqlClient.SqlDataAdapter(
+            SqlConsecutivo,
+            MiConexion)
+
+        DataAdapter.Fill(
+            DataSet,
+            "Configuracion")
+
+        If DataSet.Tables("Configuracion").Rows.Count <> 0 Then
+
+            If Not IsDBNull(
+                DataSet.Tables("Configuracion").Rows(0)(
+                    "ConsecutivoReciboManual")) Then
+
+                ConsecutivoManual =
+                    DataSet.Tables("Configuracion").Rows(0)(
+                        "ConsecutivoReciboManual")
+
+            End If
+
+        End If
+
+
+        '==========================================================
+        ' OBTENER CONSECUTIVO
+        '==========================================================
+        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+
+            '------------------------------------------------------
+            ' RECIBO NUEVO
+            '------------------------------------------------------
+            If ConsecutivoManual = True Then
+
+                FrmConsecutivos.LblTitulo.Text =
+                    "Consecutivos Recibos"
+
+                FrmConsecutivos.LblTitulo2.Text =
+                    "RECIBO NO"
+
+                Quien = "Recibo"
+
+                FrmConsecutivos.ShowDialog()
+
+                If FrmConsecutivos.TxtConsecutivo.Text <>
+                   "-----0-----" Then
+
+                    ConsecutivoPago =
+                        FrmConsecutivos.NumeroFactura
+
+                Else
+
+                    Return ""
+
+                End If
+
+            Else
+
+                If ConsecutivoReciboSerie = False Then
+
+                    ConsecutivoPago =
+                        BuscaConsecutivo("Recibo_Caja")
+
+                Else
+
+                    ConsecutivoPago =
+                        BuscaConsecutivoSerie(
+                            "Recibo",
+                            Me.CmbSerie.Text)
+
+                End If
+
+            End If
+
+        Else
+
+            '------------------------------------------------------
+            ' RECIBO EXISTENTE / EDICION
+            '
+            ' IMPORTANTE:
+            ' No reconstruimos el NumeroRecibo.
+            ' Conservamos exactamente el valor existente.
+            '------------------------------------------------------
+
+            If Not IsNumeric(
+                Me.TxtNumeroEnsamble.Text) Then
+
+                ConsecutivoPago =
+                    Regex.Replace(
+                        Me.TxtNumeroEnsamble.Text,
+                        "^[^0-9]+",
+                        "")
+
+            Else
+
+                ConsecutivoPago =
+                    Me.TxtNumeroEnsamble.Text
+
+            End If
+
+        End If
+
+
+        '==========================================================
+        ' DETERMINAR NUMERO DEL RECIBO
+        '==========================================================
+        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+
+            '------------------------------------------------------
+            ' RECIBO NUEVO
+            '------------------------------------------------------
+            If ConsecutivoReciboSerie = False Then
+
+                NumeroRecibo =
+                    Format(
+                        ConsecutivoPago,
+                        "0000#")
+
+            Else
+
+                NumeroRecibo =
+                    Me.CmbSerie.Text &
+                    Format(
+                        ConsecutivoPago,
+                        "0000#")
+
+            End If
+
+        Else
+
+            '------------------------------------------------------
+            ' RECIBO EXISTENTE / EDICION
+            '
+            ' Conservar exactamente el numero existente.
+            '------------------------------------------------------
+            NumeroRecibo =
+                Me.TxtNumeroEnsamble.Text.Trim()
+
+        End If
+
+
+        Return NumeroRecibo
+
+    End Function
+
+    Private Sub TDBGridDetalle_BackColorChanged(sender As Object, e As EventArgs) Handles TDBGridDetalle.BackColorChanged
 
     End Sub
 End Class

@@ -18,6 +18,9 @@
     Private FechaVence As Date
     Private CodBodega As String
 
+    Public Property MonedaFactura As String
+
+
     Public Property Numero_Factura As String
         Get
             Return NumeroFactura

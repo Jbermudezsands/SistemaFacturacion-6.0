@@ -656,7 +656,7 @@ Handles backgroundWorkerProductosLotes.ProgressChanged
                     DataAdapter = New SqlClient.SqlDataAdapter(SQLProductos, MiConexion)
                     DataAdapter.Fill(DataSet, "Proveedores")
                     If Not DataSet.Tables("Proveedores").Rows.Count = 0 Then
-                        ExistenciaBodegas = BuscaExistenciaBodega(CodProductos, CodigoBodega)
+                        ExistenciaBodegas = BuscaExistenciaBodega(CodProductos, CodigoBodega, Format(Now, "dd/MM/yyyy"))
                         Me.LblProcesos.Text = CodProductos & " Bodega " & CodigoBodega
 
                         '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////

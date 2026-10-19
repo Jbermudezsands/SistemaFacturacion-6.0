@@ -79,9 +79,8 @@
         NumeroCompra = Me.TDGridSolicitud.Columns("Numero_Compra").Text
         Fecha_Compra = Me.TDGridSolicitud.Columns("Fecha_Compra").Text
         Fecha_Hora = Me.TDGridSolicitud.Columns("FechaHora").Text
+
         Quien = "Orden de Compra"
-
-
 
         frm.InicializarFormulario()
 
@@ -89,14 +88,6 @@
         frm.FechaHoraCompra = Fecha_Hora
         frm.NumeroCompra = NumeroCompra
         frm.EsSolicitud = True
-        frm.CboTipoProducto.Text = "Orden de Compra"
-        frm.DTPFecha.Value = Fecha_Compra
-
-
-        frm.CargarDesdeOrden(Fecha_Compra, Fecha_Hora, NumeroCompra)
-        'frm.CargarCompra(Fecha_Compra, Fecha_Hora, NumeroCompra, "Orden de Compra")
-
-        frm.TrueDBGridComponentes.Enabled = False
 
         frm.ShowDialog()
 

@@ -607,7 +607,7 @@ Partial Class FrmFacturas
         Me.CmbSerie.EditorHeight = 15
         Me.CmbSerie.Images.Add(CType(resources.GetObject("CmbSerie.Images"), System.Drawing.Image))
         Me.CmbSerie.ItemHeight = 15
-        Me.CmbSerie.Location = New System.Drawing.Point(373, 14)
+        Me.CmbSerie.Location = New System.Drawing.Point(367, 14)
         Me.CmbSerie.MatchEntryTimeout = CType(2000, Long)
         Me.CmbSerie.MaxDropDownItems = CType(5, Short)
         Me.CmbSerie.MaxLength = 32767
@@ -616,7 +616,7 @@ Partial Class FrmFacturas
         Me.CmbSerie.RowDivider.Color = System.Drawing.Color.DarkGray
         Me.CmbSerie.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
         Me.CmbSerie.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CmbSerie.Size = New System.Drawing.Size(43, 21)
+        Me.CmbSerie.Size = New System.Drawing.Size(50, 21)
         Me.CmbSerie.TabIndex = 211
         Me.CmbSerie.Visible = False
         Me.CmbSerie.PropBag = resources.GetString("CmbSerie.PropBag")
@@ -643,7 +643,7 @@ Partial Class FrmFacturas
         '
         Me.CboTipoProducto.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CboTipoProducto.FormattingEnabled = True
-        Me.CboTipoProducto.Location = New System.Drawing.Point(43, 13)
+        Me.CboTipoProducto.Location = New System.Drawing.Point(36, 13)
         Me.CboTipoProducto.Name = "CboTipoProducto"
         Me.CboTipoProducto.Size = New System.Drawing.Size(135, 21)
         Me.CboTipoProducto.TabIndex = 128
@@ -669,7 +669,7 @@ Partial Class FrmFacturas
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(330, 17)
+        Me.Label3.Location = New System.Drawing.Point(323, 17)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(44, 13)
         Me.Label3.TabIndex = 121
@@ -679,7 +679,7 @@ Partial Class FrmFacturas
         '
         Me.DTPFecha.CustomFormat = ""
         Me.DTPFecha.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DTPFecha.Location = New System.Drawing.Point(222, 14)
+        Me.DTPFecha.Location = New System.Drawing.Point(214, 14)
         Me.DTPFecha.Name = "DTPFecha"
         Me.DTPFecha.Size = New System.Drawing.Size(104, 20)
         Me.DTPFecha.TabIndex = 120
@@ -687,7 +687,7 @@ Partial Class FrmFacturas
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(184, 16)
+        Me.Label2.Location = New System.Drawing.Point(177, 16)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(37, 13)
         Me.Label2.TabIndex = 2
@@ -696,7 +696,7 @@ Partial Class FrmFacturas
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(9, 16)
+        Me.Label1.Location = New System.Drawing.Point(7, 16)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(28, 13)
         Me.Label1.TabIndex = 0

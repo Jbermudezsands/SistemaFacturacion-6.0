@@ -550,7 +550,7 @@ End Sub
 Private Sub SmartButton1_Click()
 Dim Fechas1 As String, Fechas2 As String
 Dim CodigoCuenta As String, Concepto As String
-Dim X, Y, H, V, Page As Integer, Dia As String, Mes As String, Año As String
+Dim x, Y, H, V, Page As Integer, Dia As String, Mes As String, Año As String
 Dim i, j As Integer, Fechass As Date, Fecha As String
 Dim TotalDebito, TotalCredito, Totalpag As Double
 Dim SubTotal, Total, IGV As Double, Cadena As String
@@ -1178,10 +1178,10 @@ Descuento = 0
                         Printer.Print Simbolo & " " & Format(Pagado, "##,##0.00")
                         Printer.RightToLeft = True
                         
-                        Printer.CurrentX = Val(X16) '135
-                        Printer.CurrentY = Val(Y22) '288
-                        Printer.Print "Pagado"
-                        Printer.RightToLeft = True
+'                        Printer.CurrentX = Val(X16) '135
+'                        Printer.CurrentY = Val(Y22) '288
+'                        Printer.Print "Pagado"
+'                        Printer.RightToLeft = True
                       End If
                     
                        If X23 <> 0 Or Y23 <> 0 Then

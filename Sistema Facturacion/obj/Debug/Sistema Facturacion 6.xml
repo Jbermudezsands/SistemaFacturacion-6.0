@@ -177,5 +177,50 @@ Sistema Facturacion 6.0
   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="M:Sistema_Facturacion.ServicioRecibos.GrabarDetalleReciboPlanilla(System.String,System.DateTime,System.String,System.Decimal,System.String,System.String,System.String,System.Nullable{System.DateTime},System.Decimal,System.Decimal,System.Decimal,System.Int32,System.String)">
+ <summary>
+ Graba un detalle de recibo generado automáticamente desde Planilla
+ y devuelve el idDetalleRecibo generado.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmCreditosNuevos.CalcularAlVencimiento(System.Data.DataTable,System.Decimal,System.DateTime,System.DateTime,System.Decimal,System.Decimal)">
+ <summary>Pago único al vencimiento.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmCreditosNuevos.CalcularNivelada(System.Data.DataTable,System.Decimal,System.DateTime,System.Collections.Generic.List{System.DateTime},System.Decimal,System.Decimal)">
+ <summary>Cuota nivelada: el interés y el mantenimiento de valor totales se reparten en partes iguales.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmCreditosNuevos.CalcularSobreSaldo(System.Data.DataTable,System.Decimal,System.DateTime,System.Collections.Generic.List{System.DateTime},System.Decimal,System.Decimal)">
+ <summary>Cuota fija de principal con interés y mantenimiento de valor sobre el saldo pendiente.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmCreditosNuevos.PrincipalCuota(System.Decimal,System.Int32,System.Int32)">
+ <summary>Principal de la cuota i. La última cuota absorbe la diferencia por redondeo.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmCreditosNuevos.GrabarPrestamo">
+ <summary>Graba encabezado y detalle en una sola transacción. Devuelve el número de préstamo o "" si ya existía.</summary>
+</member>
+<member name="F:Sistema_Facturacion.FrmDesembolsos.CodigoTipoPrestamo">
+ <summary>Código del tipo de préstamo. Lo asigna FrmConsultas al seleccionar el préstamo.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmDesembolsos.RegistrarDesembolso(System.String,System.String,System.Decimal,System.DateTime)">
+ <summary>
+ Registra el desembolso en una sola transacción: si cualquier paso falla,
+ no se guarda nada.
+ </summary>
+</member>
+<member name="T:Sistema_Facturacion.FrmDesembolsos.DesembolsoException">
+ <summary>Error de validación del negocio (no es un fallo técnico).</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmFinanciamiento.ObtenerNombreFuente(System.String)">
+ <summary>Devuelve el nombre, o Nothing si la fuente no existe.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmFinanciamiento.GuardarFuente(System.String,System.String)">
+ <summary>Inserta o actualiza. Devuelve True si fue un registro nuevo.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmSucursales.ObtenerNombreSucursal(System.String)">
+ <summary>Devuelve el nombre, o Nothing si la sucursal no existe.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmSucursales.GuardarSucursal(System.String,System.String)">
+ <summary>Inserta o actualiza. Devuelve True si fue un registro nuevo.</summary>
+</member>
 </members>
 </doc>

@@ -1215,7 +1215,7 @@ Public Class FrmComprasHistorico
                 '//////////////////////////////////////////////////////ACTUALIZO LAS BODEGAS /////////////////////////////////////
                 '///////////////////////////////////////////////////////DESPUS DE ELIMINAR /////////////////////////////////////////
 
-                ExistenciaBodega = BuscaExistenciaBodega(CodigoProducto, Me.CboCodigoBodega.Text)
+                ExistenciaBodega = BuscaExistenciaBodega(CodigoProducto, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
 
                 '////////////////////////////////////////////ACTUALIZO LA EXISTENCIA DE LA BODEGA////////////////////////////////////////////////////////
                 SqlCompras = "UPDATE [DetalleBodegas] SET [Existencia] = " & ExistenciaBodega & " " & _

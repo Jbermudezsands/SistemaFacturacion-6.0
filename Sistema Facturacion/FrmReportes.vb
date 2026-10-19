@@ -7717,7 +7717,7 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
 
                             My.Application.DoEvents()
                             CodigoBodega = DataSet.Tables("Bodegas").Rows(iPosicionFila)("Cod_Bodegas")
-                            ExistenciaBodega = BuscaExistenciaBodega(CodigoProducto, CodigoBodega)
+                            ExistenciaBodega = BuscaExistenciaBodega(CodigoProducto, CodigoBodega, Now)
 
                             Existencia = Existencia + ExistenciaBodega
 

@@ -961,7 +961,7 @@ Public Class FrmProductos
                     CodigoBodega = DataSet.Tables("Bodegas").Rows(iPosicionFila)("Cod_Bodegas")
 
 
-                    ExistenciaBodega = BuscaExistenciaBodega(CodigoProducto, CodigoBodega)
+                    ExistenciaBodega = BuscaExistenciaBodega(CodigoProducto, CodigoBodega, Now)
                     Existencia = Existencia + ExistenciaBodega
                     MiConexion.Close()
                     '///////////ACTUALIZO LA EXISTENCIA PARA CADA BODEGA ////////////////////////////////////////
@@ -1640,59 +1640,304 @@ Public Class FrmProductos
     Private Sub Button6_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
         Quien = "CodigoProductos"
         My.Forms.FrmConsultas.ShowDialog()
-        Me.CboCodigoProducto.Text = My.Forms.FrmConsultas.Codigo
-        Me.CboTipoProducto.Text = My.Forms.FrmConsultas.TipoProducto
-        Me.TxtNombreProducto.Text = My.Forms.FrmConsultas.Descripcion
+        If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
+            Me.CboCodigoProducto.Text = My.Forms.FrmConsultas.Codigo
+            Me.CboTipoProducto.Text = My.Forms.FrmConsultas.TipoProducto
+            Me.TxtNombreProducto.Text = My.Forms.FrmConsultas.Descripcion
+        End If
+
     End Sub
 
+    'Private Sub ButtonBorrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBorrar.Click
+    '    Dim SQLProveedor As String
+    '    Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+    '    Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+    '    Dim Resultado As String
+
+    '    Try
+
+
+    '        Resultado = MsgBox("¿Esta Seguro de Eliminar el Producto?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
+
+    '        If Not Resultado = "6" Then
+    '            Exit Sub
+    '        End If
+
+
+
+
+    '        SQLProveedor = "SELECT Productos.*  FROM Productos WHERE (Cod_Productos = '" & Me.CboCodigoProducto.Columns(0).Text & "') "
+    '        DataAdapter = New SqlClient.SqlDataAdapter(SQLProveedor, MiConexion)
+    '        DataAdapter.Fill(DataSet, "Proveedores")
+    '        If Not DataSet.Tables("Proveedores").Rows.Count = 0 Then
+    '            '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
+
+
+    '            StrSqlUpdate = "DELETE FROM [Productos] WHERE (Cod_Productos = '" & Me.CboCodigoProducto.Columns(0).Text & "')"
+    '            MiConexion.Open()
+    '            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+    '            iResultado = ComandoUpdate.ExecuteNonQuery
+    '            MiConexion.Close()
+
+
+    '        End If
+
+    '        SQLProveedor = "SELECT Productos.*  FROM Productos"
+    '        DataAdapter = New SqlClient.SqlDataAdapter(SQLProveedor, MiConexion)
+    '        DataAdapter.Fill(DataSet, "ListaProductos")
+    '        If Not DataSet.Tables("ListaProductos").Rows.Count = 0 Then
+    '            Me.CboCodigoProducto.DataSource = DataSet.Tables("ListaProductos")
+    '        End If
+
+    '        ActualizaComboProducto()
+    '        Me.CboCodigoProducto.Text = ""
+
+    '    Catch ex As Exception
+    '        MsgBox(ex.ToString)
+    '    End Try
+    'End Sub
+
+
+
     Private Sub ButtonBorrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBorrar.Click
-        Dim SQLProveedor As String
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-        Dim Resultado As String
+
+        Dim CodigoProducto As String = Me.CboCodigoProducto.Columns(0).Text.Trim()
+
+        If CodigoProducto = "" Then
+            MsgBox("Seleccione un producto para eliminar.",
+               MsgBoxStyle.Exclamation,
+               "Sistema de Facturacion")
+            Exit Sub
+        End If
 
         Try
 
+            '----------------------------------------------------------
+            ' 1. CONFIRMAR ELIMINACIÓN
+            '----------------------------------------------------------
+            Dim Resultado As MsgBoxResult
 
-            Resultado = MsgBox("¿Esta Seguro de Eliminar el Producto?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
+            Resultado = MsgBox(
+            "¿Esta Seguro de Eliminar el Producto?",
+            MsgBoxStyle.YesNo Or MsgBoxStyle.Question,
+            "Sistema de Facturacion")
 
-            If Not Resultado = "6" Then
+            If Resultado <> MsgBoxResult.Yes Then
                 Exit Sub
             End If
 
 
+            '----------------------------------------------------------
+            ' 2. VERIFICAR SI EL PRODUCTO TIENE HISTORIAL
+            '
+            ' Se bloquea la eliminación si existe cualquier registro
+            ' histórico en:
+            '
+            '   Detalle_Compras
+            '   Detalle_Facturas
+            '
+            ' Las transferencias también quedan incluidas porque:
+            '
+            '   Transferencia Recibida -> Detalle_Compras
+            '   Transferencia Enviada -> Detalle_Facturas
+            '----------------------------------------------------------
+
+            Dim SQLValidacion As String =
+            "SELECT " &
+            "    CASE WHEN EXISTS (" &
+            "        SELECT 1 " &
+            "        FROM Detalle_Compras " &
+            "        WHERE Cod_Producto = @CodigoProducto " &
+            "    ) THEN 1 ELSE 0 END AS TieneCompras, " &
+            "    CASE WHEN EXISTS (" &
+            "        SELECT 1 " &
+            "        FROM Detalle_Facturas " &
+            "        WHERE Cod_Producto = @CodigoProducto " &
+            "    ) THEN 1 ELSE 0 END AS TieneFacturas"
 
 
-            SQLProveedor = "SELECT Productos.*  FROM Productos WHERE (Cod_Productos = '" & Me.CboCodigoProducto.Columns(0).Text & "') "
-            DataAdapter = New SqlClient.SqlDataAdapter(SQLProveedor, MiConexion)
-            DataAdapter.Fill(DataSet, "Proveedores")
-            If Not DataSet.Tables("Proveedores").Rows.Count = 0 Then
-                '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
+            Dim TieneCompras As Boolean = False
+            Dim TieneFacturas As Boolean = False
+
+            Using ComandoValidacion As New SqlClient.SqlCommand(SQLValidacion, MiConexion)
+
+                ComandoValidacion.Parameters.Add(
+                "@CodigoProducto",
+                SqlDbType.NVarChar,
+                50).Value = CodigoProducto
+
+                If MiConexion.State <> ConnectionState.Open Then
+                    MiConexion.Open()
+                End If
+
+                Using Lector As SqlClient.SqlDataReader = ComandoValidacion.ExecuteReader()
+
+                    If Lector.Read() Then
+                        TieneCompras = Convert.ToInt32(Lector("TieneCompras")) = 1
+                        TieneFacturas = Convert.ToInt32(Lector("TieneFacturas")) = 1
+                    End If
+
+                End Using
+
+                MiConexion.Close()
+
+            End Using
 
 
-                StrSqlUpdate = "DELETE FROM [Productos] WHERE (Cod_Productos = '" & Me.CboCodigoProducto.Columns(0).Text & "')"
-                MiConexion.Open()
-                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-                iResultado = ComandoUpdate.ExecuteNonQuery
+            '----------------------------------------------------------
+            ' 3. BLOQUEAR SI EXISTE CUALQUIER HISTORIAL
+            '----------------------------------------------------------
+
+            If TieneCompras OrElse TieneFacturas Then
+
+                Dim Mensaje As String =
+                "NO SE PUEDE ELIMINAR EL PRODUCTO." & vbCrLf & vbCrLf &
+                "El producto [" & CodigoProducto &
+                "] tiene registros históricos asociados." & vbCrLf & vbCrLf
+
+                If TieneCompras Then
+                    Mensaje &= "• Tiene registros en COMPRAS." & vbCrLf
+                End If
+
+                If TieneFacturas Then
+                    Mensaje &= "• Tiene registros en FACTURAS." & vbCrLf
+                End If
+
+                Mensaje &= vbCrLf &
+                       "Esto incluye movimientos históricos y transferencias." &
+                       vbCrLf & vbCrLf &
+                       "Para proteger la integridad histórica del sistema, " &
+                       "el producto no puede ser eliminado."
+
+                MsgBox(Mensaje,
+                   MsgBoxStyle.Exclamation,
+                   "Sistema de Facturacion")
+
+                Exit Sub
+
+            End If
+
+
+            '----------------------------------------------------------
+            ' 4. VERIFICAR QUE EL PRODUCTO EXISTA
+            '----------------------------------------------------------
+
+            Dim ExisteProducto As Boolean = False
+
+            Dim SQLExiste As String =
+            "SELECT CASE WHEN EXISTS (" &
+            "    SELECT 1 " &
+            "    FROM Productos " &
+            "    WHERE Cod_Productos = @CodigoProducto" &
+            ") THEN 1 ELSE 0 END"
+
+
+            Using ComandoExiste As New SqlClient.SqlCommand(SQLExiste, MiConexion)
+
+                ComandoExiste.Parameters.Add(
+                "@CodigoProducto",
+                SqlDbType.NVarChar,
+                50).Value = CodigoProducto
+
+                If MiConexion.State <> ConnectionState.Open Then
+                    MiConexion.Open()
+                End If
+
+                ExisteProducto = Convert.ToInt32(ComandoExiste.ExecuteScalar()) = 1
+
+                MiConexion.Close()
+
+            End Using
+
+
+            If Not ExisteProducto Then
+
+                MsgBox(
+                "El producto seleccionado no existe.",
+                MsgBoxStyle.Exclamation,
+                "Sistema de Facturacion")
+
+                Exit Sub
+
+            End If
+
+
+            '----------------------------------------------------------
+            ' 5. ELIMINAR PRODUCTO
+            '----------------------------------------------------------
+
+            Dim SQLDelete As String =
+            "DELETE FROM Productos " &
+            "WHERE Cod_Productos = @CodigoProducto"
+
+
+            Using ComandoDelete As New SqlClient.SqlCommand(SQLDelete, MiConexion)
+
+                ComandoDelete.Parameters.Add(
+                "@CodigoProducto",
+                SqlDbType.NVarChar,
+                50).Value = CodigoProducto
+
+                If MiConexion.State <> ConnectionState.Open Then
+                    MiConexion.Open()
+                End If
+
+                Dim RegistrosEliminados As Integer =
+                ComandoDelete.ExecuteNonQuery()
+
                 MiConexion.Close()
 
 
-            End If
+                If RegistrosEliminados > 0 Then
 
-            SQLProveedor = "SELECT Productos.*  FROM Productos"
-            DataAdapter = New SqlClient.SqlDataAdapter(SQLProveedor, MiConexion)
+                    MsgBox(
+                    "El producto fue eliminado correctamente.",
+                    MsgBoxStyle.Information,
+                    "Sistema de Facturacion")
+
+                End If
+
+            End Using
+
+
+            '----------------------------------------------------------
+            ' 6. ACTUALIZAR LISTA DE PRODUCTOS
+            '----------------------------------------------------------
+
+            Dim DataSet As New DataSet
+            Dim DataAdapter As New SqlClient.SqlDataAdapter(
+            "SELECT Productos.* FROM Productos",
+            MiConexion)
+
             DataAdapter.Fill(DataSet, "ListaProductos")
-            If Not DataSet.Tables("ListaProductos").Rows.Count = 0 Then
-                Me.CboCodigoProducto.DataSource = DataSet.Tables("ListaProductos")
+
+            If DataSet.Tables("ListaProductos").Rows.Count > 0 Then
+                Me.CboCodigoProducto.DataSource =
+                DataSet.Tables("ListaProductos")
             End If
 
             ActualizaComboProducto()
+
             Me.CboCodigoProducto.Text = ""
 
+
         Catch ex As Exception
-            MsgBox(ex.ToString)
+
+            If MiConexion.State = ConnectionState.Open Then
+                MiConexion.Close()
+            End If
+
+            MsgBox(
+            "No fue posible eliminar el producto." &
+            vbCrLf & vbCrLf &
+            ex.Message,
+            MsgBoxStyle.Critical,
+            "Sistema de Facturacion")
+
         End Try
+
     End Sub
+
 
     Private Sub CboLinea_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboLinea.TextChanged
 
@@ -2677,7 +2922,7 @@ Public Class FrmProductos
                 My.Application.DoEvents()
                 CodigoBodega = DataSet.Tables("Bodegas").Rows(iPosicionFila)("Cod_Bodegas")
 
-                ExistenciaBodega = BuscaExistenciaBodega(CodigoProducto, CodigoBodega)
+                ExistenciaBodega = BuscaExistenciaBodega(CodigoProducto, CodigoBodega, Now)
 
                 Dim worker As BackgroundWorker
                 Dim args As ArgumentTypeProducto = New ArgumentTypeProducto

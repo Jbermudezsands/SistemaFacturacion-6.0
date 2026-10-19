@@ -867,51 +867,61 @@ Public Class FrmFacturas
             DetalleFactura.Cod_Producto = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Cod_Producto")
             DetalleFactura.Fecha_Factura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Fecha_Factura")
             DetalleFactura.Tipo_Factura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Tipo_Factura")
+            DetalleFactura.MonedaFactura = Factura.Moneda_Factura
+
+            If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("id_Detalle_Factura")) Then
+                DetalleFactura.Id_Detalle_Factura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("id_Detalle_Factura")
+            Else
+                DetalleFactura.Id_Detalle_Factura = -1
+            End If
+
+            DetalleFactura.Descripcion_Producto = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Descripcion_Producto")
+
+
+            If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Precio_Unitario")) Then
+                DetalleFactura.Precio_Unitario = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Precio_Unitario")
+            Else
+                DetalleFactura.Precio_Unitario = 0
+            End If
+            If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Descuento")) Then
+                DetalleFactura.Descuento_DetalleFactura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Descuento")
+            Else
+                DetalleFactura.Descuento_DetalleFactura = 0
+            End If
+            If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Precio_Neto")) Then
+                DetalleFactura.Precio_Neto = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Precio_Neto")
+            Else
+                DetalleFactura.Precio_Neto = 0
+            End If
+            If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Importe")) Then
+                DetalleFactura.Importe_DetalleFactura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Importe")
+            Else
+                DetalleFactura.Importe_DetalleFactura = 0
+            End If
+            If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Cantidad")) Then
+                DetalleFactura.Cantidad_DetalleFactura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Cantidad")
+            Else
+                DetalleFactura.Cantidad_DetalleFactura = 0
+            End If
+
+            'If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Fecha_Vence")) Then
+            '    DetalleFactura.Fecha_Vence = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Fecha_Vence")
+            'Else
+            '    DetalleFactura.Fecha_Vence = "01/01/1900"
+            'End If
+
+            If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("CodTarea")) Then
+                DetalleFactura.Cod_Tarea = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("CodTarea")
+            Else
+                DetalleFactura.Cod_Tarea = 0
+            End If
+
+
+
 
             worker.ReportProgress(iPosicion, "Factura:" & DetalleFactura.Cod_Producto)
 
             If CambiarFechaFactura = True Then
-
-                DetalleFactura.Descripcion_Producto = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Descripcion_Producto")
-
-                If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("id_Detalle_Factura")) Then
-                    DetalleFactura.Id_Detalle_Factura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("id_Detalle_Factura")
-                Else
-                    DetalleFactura.Id_Detalle_Factura = -1
-                End If
-
-
-                If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Precio_Unitario")) Then
-                    DetalleFactura.Precio_Unitario = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Precio_Unitario")
-                Else
-                    DetalleFactura.Precio_Unitario = 0
-                End If
-                If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Descuento")) Then
-                    DetalleFactura.Descuento_DetalleFactura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Descuento")
-                Else
-                    DetalleFactura.Descuento_DetalleFactura = 0
-                End If
-                If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Precio_Neto")) Then
-                    DetalleFactura.Precio_Neto = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Precio_Neto")
-                Else
-                    DetalleFactura.Precio_Neto = 0
-                End If
-                If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Importe")) Then
-                    DetalleFactura.Importe_DetalleFactura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Importe")
-                Else
-                    DetalleFactura.Importe_DetalleFactura = 0
-                End If
-                If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Cantidad")) Then
-                    DetalleFactura.Cantidad_DetalleFactura = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Cantidad")
-                Else
-                    DetalleFactura.Cantidad_DetalleFactura = 0
-                End If
-
-                If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Fecha_Vence")) Then
-                    DetalleFactura.Fecha_Vence = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("Fecha_Vence")
-                Else
-                    DetalleFactura.Fecha_Vence = "01/01/1900"
-                End If
 
 
                 If FacturaTarea = True Then
@@ -948,7 +958,7 @@ Public Class FrmFacturas
                         RstCosto = CostoPromedioKardex(DetalleFactura.Cod_Producto, DetalleFactura.Fecha_Factura)
                         CostoUnitario = RstCosto.Costo_Cordoba
                     End If
-                    GrabaDetalleFactura(DetalleFactura.Numero_Factura, DetalleFactura.Cod_Producto, DetalleFactura.Descripcion_Producto, DetalleFactura.Precio_Unitario, DetalleFactura.Descuento_DetalleFactura, DetalleFactura.Precio_Neto, DetalleFactura.Importe_DetalleFactura, DetalleFactura.Cantidad_DetalleFactura, DetalleFactura.Id_Detalle_Factura, CostoUnitario)
+                    GrabaDetalleFactura(DetalleFactura.Numero_Factura, DetalleFactura.Cod_Producto, DetalleFactura.Descripcion_Producto, DetalleFactura.Precio_Unitario, DetalleFactura.Descuento_DetalleFactura, DetalleFactura.Precio_Neto, DetalleFactura.Importe_DetalleFactura, DetalleFactura.Cantidad_DetalleFactura, DetalleFactura.Id_Detalle_Factura, CostoUnitario, DetalleFactura.Fecha_Factura, DetalleFactura.Tipo_Factura, DetalleFactura.MonedaFactura)
                 End If
             Else
                 '//////////////// POR LOS HILOS REPITO EL CODIGO DEL COSTO ////
@@ -956,7 +966,7 @@ Public Class FrmFacturas
                     RstCosto = CostoPromedioKardex(DetalleFactura.Cod_Producto, DetalleFactura.Fecha_Factura)
                     CostoUnitario = RstCosto.Costo_Cordoba
                 End If
-                GrabaDetalleFactura(DetalleFactura.Numero_Factura, DetalleFactura.Cod_Producto, DetalleFactura.Descripcion_Producto, DetalleFactura.Precio_Unitario, DetalleFactura.Descuento_DetalleFactura, DetalleFactura.Precio_Neto, DetalleFactura.Importe_DetalleFactura, DetalleFactura.Cantidad_DetalleFactura, DetalleFactura.Id_Detalle_Factura, CostoUnitario)
+                GrabaDetalleFactura(DetalleFactura.Numero_Factura, DetalleFactura.Cod_Producto, DetalleFactura.Descripcion_Producto, DetalleFactura.Precio_Unitario, DetalleFactura.Descuento_DetalleFactura, DetalleFactura.Precio_Neto, DetalleFactura.Importe_DetalleFactura, DetalleFactura.Cantidad_DetalleFactura, DetalleFactura.Id_Detalle_Factura, CostoUnitario, DetalleFactura.Fecha_Factura, DetalleFactura.Tipo_Factura, DetalleFactura.MonedaFactura)
 
             End If
 
@@ -2870,6 +2880,8 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         Me.BtnFacturas.Visible = False
         Me.TxtNumeroFactura.Visible = False
 
+        Me.BtnPlanPagos.Visible = False
+
 
         Me.BtnSalida.Visible = False
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2907,6 +2919,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
         If Me.CboTipoProducto.Text = "Factura" Then
             Me.GroupBox3.Enabled = True
+            Me.BtnPlanPagos.Visible = True
         Else
             Me.GroupBox3.Enabled = False
             Me.RadioButton1.Checked = True
@@ -4061,6 +4074,8 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
 
             If CambiarFechaFactura = True Then
+
+
                 Dim Descripcion_Producto As String, PrecioUnitario As Double, Descuento As String, PrecioNeto As Double, Importe As Double, Cantidad As Double
 
 
@@ -4124,7 +4139,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                     GrabaDetalleFacturaLotes(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CodTarea, FechaVence, Me.CboTipoProducto.Text)
 
                 Else
-                    GrabaDetalleFactura(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CostoUnitario)
+                    GrabaDetalleFactura(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CostoUnitario, DTPFecha.Value, Me.CboTipoProducto.Text, TxtMonedaFactura.Text)
                 End If
 
             End If
@@ -5628,6 +5643,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                                     ArepFacturaMediaPagina.Run(True)
                                     ViewerForm.arvMain.Document.Print(False, False, False)
                                 End If
+
                             Case "Papel en Blanco, Lotes"
                                 SqlDatos = "SELECT * FROM DatosEmpresa"
                                 DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
@@ -7129,6 +7145,20 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                             TipoProducto = DataSet.Tables("Productos").Rows(0)("Tipo_Producto")
                             TipoDescuento = DataSet.Tables("Productos").Rows(0)("Unidad_Medida")
+
+                            '////////////////INICIO EL PROCESO DE LOS HILOS //////////////
+                            Dim NumLote As String
+                            NumLote = LoteDefectoWorker(CodProducto, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
+                            If NumLote = "" Then
+                                'MsgBox("El producto no tiene existencia disponible.", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+                                'Exit Sub
+                            End If
+                            Me.TrueDBGridComponentes.Columns("CodTarea").Text = NumLote
+
+
+                            My.Application.DoEvents()
+
+
 
                             '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                             '/////////////////////////////////////////////////////////BUSCO EL CODIGO SAC ////////////////////////////////////////////////////////////////
@@ -8731,7 +8761,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                         Case 1
 
-                            Existencia = BuscaExistenciaBodega(Args.Codigo_Producto, Args.Codigo_Bodega)
+                            Existencia = BuscaExistenciaBodega(Args.Codigo_Producto, Args.Codigo_Bodega, Me.DTPFecha.Value)
 
                             If Existencia < Cantidad2 Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
@@ -8789,7 +8819,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
 
 
-                            Existencia = BuscaExistenciaBodega(Args.Codigo_Producto, Args.Codigo_Bodega)
+                            Existencia = BuscaExistenciaBodega(Args.Codigo_Producto, Args.Codigo_Bodega, Me.DTPFecha.Value)
 
                             If Not IsNumeric(Me.TrueDBGridComponentes.Columns("Cantidad").Text) Then
                                 Exit Sub
@@ -8850,7 +8880,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                             End If
                         Case 3
 
-                            Existencia = BuscaExistenciaBodega(Args.Codigo_Producto, Args.Codigo_Bodega)
+                            Existencia = BuscaExistenciaBodega(Args.Codigo_Producto, Args.Codigo_Bodega, Me.DTPFecha.Value)
 
                             If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
@@ -8960,7 +8990,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
 
                         Case 4
-                            Existencia = BuscaExistenciaBodega(Args.Codigo_Producto, Args.Codigo_Bodega)
+                            Existencia = BuscaExistenciaBodega(Args.Codigo_Producto, Args.Codigo_Bodega, Me.DTPFecha.Value)
 
                             If Existencia < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
@@ -9241,7 +9271,21 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
 
                     Else
-                        Me.TrueDBGridComponentes.Columns("CodTarea").Text = LoteDefecto(Me.TrueDBGridComponentes.Columns("Cod_Producto").Text, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
+
+                        '////////////////INICIO EL PROCESO DE LOS HILOS //////////////
+                        Dim NumLote As String
+                        CodProducto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
+                        NumLote = LoteDefectoWorker(CodProducto, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
+                        If NumLote = "" Then
+                            'MsgBox("El producto no tiene existencia disponible.", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+                            'Exit Sub
+                        End If
+                        Me.TrueDBGridComponentes.Columns("CodTarea").Text = NumLote
+
+
+                        My.Application.DoEvents()
+
+                        'Me.TrueDBGridComponentes.Columns("CodTarea").Text = LoteDefecto(Me.TrueDBGridComponentes.Columns("Cod_Producto").Text, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
                     End If
                 End If
 
@@ -9904,7 +9948,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                 Else
 
-                    Existencia = BuscaExistenciaBodega(CodProducto, CodigoBodega)
+                    Existencia = BuscaExistenciaBodega(CodProducto, CodigoBodega, Me.DTPFecha.Value)
 
                     Select Case Cols
                         Case 0
@@ -10434,18 +10478,34 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                 If FacturaLotes = True Then
                     If Me.TrueDBGridComponentes.Columns("CodTarea").Text <> "" Then
                         NumeroLote = Me.TrueDBGridComponentes.Columns("CodTarea").Text
+                        CodigoProducto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
 
+                        If Not ExisteLoteProducto(
+                                        CodigoProducto,
+                                        CboCodigoBodega.Text,
+                                        NumeroLote,
+                                        DTPFecha.Value) Then
 
-                        Sql = "SELECT * FROM Lote WHERE  (Numero_Lote = '" & NumeroLote & "')"
-                        DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
-                        DataAdapter.Fill(DataSet, "BuscaLote")
-                        If DataSet.Tables("BuscaLote").Rows.Count = 0 Then
-                            MsgBox("Este Lote no Existe", MsgBoxStyle.Critical, "Zeus Facturacion")
+                            MsgBox("Este lote no existe para este producto.",
+                                       MsgBoxStyle.Critical,
+                                       "Zeus Facturación")
+
                             e.Cancel = True
                             Exit Sub
+
                         End If
 
-                        DataSet.Tables("BuscaLote").Reset()
+
+                        'Sql = "SELECT * FROM Lote WHERE  (Numero_Lote = '" & NumeroLote & "')"
+                        'DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+                        'DataAdapter.Fill(DataSet, "BuscaLote")
+                        'If DataSet.Tables("BuscaLote").Rows.Count = 0 Then
+                        '    MsgBox("Este Lote no Existe", MsgBoxStyle.Critical, "Zeus Facturacion")
+                        '    e.Cancel = True
+                        '    Exit Sub
+                        'End If
+
+                        'DataSet.Tables("BuscaLote").Reset()
 
                     End If
                 End If
@@ -10571,10 +10631,14 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                     Me.TrueDBGridComponentes.Col = 2
                     NumLote = LoteDefectoWorker(My.Forms.FrmConsultas.Codigo, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
                     If NumLote = "" Then
-                        MsgBox("El producto no tiene existencia disponible.", MsgBoxStyle.Exclamation, "Zeus Facturacion")
-                        Exit Sub
+                        If CboTipoProducto.Text <> "Cotizacion" Then
+                            MsgBox("El producto no tiene existencia disponible.", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+                            Exit Sub
+                        ElseIf CboTipoProducto.Text = "Cotizacion" Then
+                            NumLote = "SINLOTE"
+                        End If
                     End If
-                    Me.TrueDBGridComponentes.Columns("CodTarea").Text = NumLote
+                        Me.TrueDBGridComponentes.Columns("CodTarea").Text = NumLote
 
 
                     My.Application.DoEvents()
@@ -10595,9 +10659,9 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                     End If
 
                     Me.TrueDBGridComponentes.Columns("Descuento").Text = "0"
-                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = "1"
+                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = "0"
                     Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = PrecioUnitario
-                    Me.TrueDBGridComponentes.Columns("Importe").Text = PrecioUnitario
+                    Me.TrueDBGridComponentes.Columns("Importe").Text = 0 'PrecioUnitario
 
                 Else
 
@@ -10714,9 +10778,13 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                                 If FacturaTarea = True Then
                                     'Me.TrueDBGridComponentes.Columns(4).Text = PrecioDescCordobas
                                     Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = CostoUnitario
+                                    Me.TrueDBGridComponentes.Columns("Descuento").Text = 0
+                                    Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = CostoUnitario
                                 Else
                                     'Me.TrueDBGridComponentes.Columns(3).Text = PrecioDescCordobas
                                     Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = CostoUnitario
+                                    Me.TrueDBGridComponentes.Columns("Descuento").Text = 0
+                                    Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = CostoUnitario
                                 End If
                             End If
                             If Not IsDBNull(DataSet.Tables("Costo").Rows(0)("CostoDolar")) Then
@@ -10737,9 +10805,13 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                                 If FacturaTarea = True Then
                                     'Me.TrueDBGridComponentes.Columns(4).Text = PrecioDescCordobas
                                     Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = CostoUnitario
+                                    Me.TrueDBGridComponentes.Columns("Descuento").Text = 0
+                                    Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = CostoUnitario
                                 Else
                                     'Me.TrueDBGridComponentes.Columns(3).Text = PrecioDescCordobas
                                     Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = CostoUnitario
+                                    Me.TrueDBGridComponentes.Columns("Descuento").Text = 0
+                                    Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = CostoUnitario
                                 End If
                             End If
                             If Not IsDBNull(DataSet.Tables("Costo").Rows(0)("CostoDolar")) Then
@@ -11247,7 +11319,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
             'CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Productos")
             ExistenciaNegativa = ValidarExistenciaNegativa(CodigoProducto)
-            Existencia = BuscaExistenciaBodega(CodigoProducto, Me.CboCodigoBodega.Text)
+            Existencia = BuscaExistenciaBodega(CodigoProducto, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
             PrecioUnitario = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
             If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descuento")) Then
                 Descuento = Me.BindingDetalle.Item(iPosicion)("Descuento")
@@ -11292,7 +11364,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
             RstCosto = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
             CostoUnitario = RstCosto.Costo_Cordoba
 
-            GrabaDetalleFactura(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CostoUnitario)
+            GrabaDetalleFactura(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CostoUnitario, Me.DTPFecha.Value, Me.CboTipoProducto.Text, TxtMonedaFactura.Text)
 
 
             Select Case Me.CboTipoProducto.Text
@@ -11545,8 +11617,8 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                             'Existencia = ExistenciaProducto(CodProducto)
                             CodigoBodega = Me.CboCodigoBodega.Text
-                            Existencia = BuscaExistenciaBodega(CodProducto, CodigoBodega)
-                            Descuento = 0
+                        Existencia = BuscaExistenciaBodega(CodProducto, CodigoBodega, Me.DTPFecha.Value)
+                        Descuento = 0
                             Tasa = 0
 
                         If Not IsNumeric(Me.TrueDBGridComponentes.Columns("Cantidad").Text) Then
@@ -11664,8 +11736,8 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                             'Existencia = ExistenciaProducto(CodProducto)
                             CodigoBodega = Me.CboCodigoBodega.Text
-                            Existencia = BuscaExistenciaBodega(CodProducto, CodigoBodega)
-                            Descuento = 0
+                        Existencia = BuscaExistenciaBodega(CodProducto, CodigoBodega, Me.DTPFecha.Value)
+                        Descuento = 0
                             Tasa = 0
 
                             If Not IsNumeric(Me.TrueDBGridComponentes.Columns(2).Text) Then
@@ -13616,7 +13688,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                     End If
                     GrabaDetalleFacturaTarea(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CodTarea)
                 Else
-                    GrabaDetalleFactura(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CostoUnitario)
+                    GrabaDetalleFactura(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CostoUnitario, Me.DTPFecha.Value, Me.CboTipoProducto.Text, TxtMonedaFactura.Text)
                 End If
 
                 Select Case Me.CboTipoProducto.Text
@@ -15392,7 +15464,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
             'CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Productos")
             ExistenciaNegativa = ValidarExistenciaNegativa(CodigoProducto)
-            Existencia = BuscaExistenciaBodega(CodigoProducto, Me.CboCodigoBodega.Text)
+            Existencia = BuscaExistenciaBodega(CodigoProducto, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
             PrecioUnitario = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
             If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descuento")) Then
                 Descuento = Me.BindingDetalle.Item(iPosicion)("Descuento")
@@ -15439,7 +15511,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
 
 
-            GrabaDetalleFactura(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CostoUnitario)
+            GrabaDetalleFactura(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CostoUnitario, Me.DTPFecha.Value, Me.CboTipoProducto.Text, TxtMonedaFactura.Text)
 
 
             Select Case Me.CboTipoProducto.Text

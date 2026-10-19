@@ -29,6 +29,7 @@ Partial Class FrmTasaCambio
         Me.ButtonBorrar = New System.Windows.Forms.Button()
         Me.Button8 = New System.Windows.Forms.Button()
         Me.cmdAddDocente = New System.Windows.Forms.Button()
+        Me.BtnImportar = New System.Windows.Forms.Button()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -90,7 +91,7 @@ Partial Class FrmTasaCambio
         '
         Me.ButtonBorrar.Image = CType(resources.GetObject("ButtonBorrar.Image"), System.Drawing.Image)
         Me.ButtonBorrar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonBorrar.Location = New System.Drawing.Point(92, 311)
+        Me.ButtonBorrar.Location = New System.Drawing.Point(88, 311)
         Me.ButtonBorrar.Name = "ButtonBorrar"
         Me.ButtonBorrar.Size = New System.Drawing.Size(75, 67)
         Me.ButtonBorrar.TabIndex = 130
@@ -127,11 +128,25 @@ Partial Class FrmTasaCambio
         Me.cmdAddDocente.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.cmdAddDocente.UseVisualStyleBackColor = True
         '
+        'BtnImportar
+        '
+        Me.BtnImportar.Image = CType(resources.GetObject("BtnImportar.Image"), System.Drawing.Image)
+        Me.BtnImportar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.BtnImportar.Location = New System.Drawing.Point(167, 311)
+        Me.BtnImportar.Name = "BtnImportar"
+        Me.BtnImportar.Size = New System.Drawing.Size(75, 67)
+        Me.BtnImportar.TabIndex = 134
+        Me.BtnImportar.Tag = "29"
+        Me.BtnImportar.Text = "Importar"
+        Me.BtnImportar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.BtnImportar.UseVisualStyleBackColor = True
+        '
         'FrmTasaCambio
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(332, 382)
+        Me.Controls.Add(Me.BtnImportar)
         Me.Controls.Add(Me.cmdAddDocente)
         Me.Controls.Add(Me.ButtonBorrar)
         Me.Controls.Add(Me.Button8)
@@ -158,4 +173,5 @@ Partial Class FrmTasaCambio
     Friend WithEvents ButtonBorrar As System.Windows.Forms.Button
     Friend WithEvents Button8 As System.Windows.Forms.Button
     Friend WithEvents cmdAddDocente As System.Windows.Forms.Button
+    Friend WithEvents BtnImportar As Button
 End Class

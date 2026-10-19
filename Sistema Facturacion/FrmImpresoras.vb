@@ -23,12 +23,14 @@ Public Class FrmImpresoras
         For Each Impresoras In PrinterSettings.InstalledPrinters
             Me.CmbImpresorasRemision.Items.Add(Impresoras.ToString)
             Me.CmbImpresorasRecibo.Items.Add(Impresoras.ToString)
+            Me.CmbImpresorasComanda.Items.Add(Impresoras.ToString)
         Next
         ' selecciona la impresora predeterminada 
         Me.CmbImpresorasRemision.Text = s_Default_Printer
 
         Me.CmbImpresorasRemision.Text = BuscaImpresora("Factura")
         Me.CmbImpresorasRecibo.Text = BuscaImpresora("Recibo")
+        Me.CmbImpresorasComanda.Text = BuscaImpresora("Comanda")
 
     End Sub
 
@@ -50,6 +52,8 @@ Public Class FrmImpresoras
         GuardaImpresora("Factura", Me.CmbImpresorasRemision.Text)
 
         GuardaImpresora("Recibo", Me.CmbImpresorasRecibo.Text)
+
+        GuardaImpresora("Comanda", Me.CmbImpresorasComanda.Text)
 
 
 

@@ -1,3 +1,5 @@
+Imports System.Text.RegularExpressions
+
 Public Class FrmRecibosFacturas
     Public MiConexion As New SqlClient.SqlConnection(Conexion), CodigoClientes As String
     Public Sub ConsultaCreditos(ByVal CodigoCliente As String, ByVal FechaCorte As Date, ByVal Moneda As String)
@@ -62,8 +64,8 @@ Public Class FrmRecibosFacturas
 
             NumeroFactura = DataSet.Tables("Clientes").Rows(i)("Numero_Factura")
 
-            If NumeroFactura = "J11203" Then
-                NumeroFactura = "J11203"
+            If NumeroFactura = "M73054" Then
+                NumeroFactura = "M73054"
             End If
 
             FechaFactura = DataSet.Tables("Clientes").Rows(i)("Fecha_Factura")
@@ -341,276 +343,993 @@ Public Class FrmRecibosFacturas
 
     End Sub
 
+    Private Sub FrmRecibosFacturas_Load(
+    ByVal sender As System.Object,
+    ByVal e As System.EventArgs) Handles MyBase.Load
 
-    Private Sub FrmRecibosFacturas_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dim SqlString As String = "", DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim NumeroFactura As String, FechaFactura As Date, iPosicion As Double = 0, Registros As Double = 0, TasaCambio As Double = 0
-        Dim oDataRow As DataRow, MontoCredito As Double, Saldo As Double, MonedaFactura As String, MonedaRecibo As String
-        Dim NumeroNota As String = ""
+        Dim DataSet As New DataSet
+        Dim oDataRow As DataRow
 
+        Dim MonedaRecibo As String
 
         Me.TrueDBGridComponentes.Enabled = True
 
+        '==============================================================
+        ' OBTENER MONEDA DEL RECIBO
+        '==============================================================
 
-        MiConexion.Close()
-
-
-        ConsultaCreditos(CodigoClientes, Now, My.Forms.FrmRecibos.TxtMonedaFactura.Text)
-
-        SqlString = "SELECT DISTINCT  Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.MontoCredito, DetalleRecibo.MontoPagado - DetalleRecibo.MontoPagado AS MontoPagado, Facturas.MontoCredito AS Saldo, Facturas.MonedaFactura, Detalle_Facturas.TasaCambio FROM   Facturas INNER JOIN  Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura LEFT OUTER JOIN DetalleRecibo ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura  " & _
-                    "WHERE (Facturas.MontoCredito <> 0) AND (Facturas.Cod_Cliente = '" & CodigoClientes & "') AND (Facturas.Tipo_Factura = 'Factura') ORDER BY Facturas.Fecha_Factura"
-        MiConexion.Open()
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "Consultas")
-
-
-        SqlString = "SELECT DISTINCT  Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.MontoCredito, DetalleRecibo.MontoPagado - DetalleRecibo.MontoPagado AS MontoPagado, Facturas.MontoCredito AS Saldo, Facturas.Tipo_Factura FROM   Facturas INNER JOIN  Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura LEFT OUTER JOIN DetalleRecibo ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura  " & _
-                    "WHERE (Facturas.MontoCredito <> 0) AND (Facturas.Cod_Cliente = '-1') AND (Facturas.Tipo_Factura = 'Factura') ORDER BY Facturas.Fecha_Factura"
-
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "FacturaRecibos")
-        MiConexion.Close()
-
-        iPosicion = 0
-        Registros = DataSet.Tables("Consultas").Rows.Count
-
-        My.Forms.FrmRecibos.ProgressBar1.Minimum = 0
-        My.Forms.FrmRecibos.ProgressBar1.Maximum = Registros
-        My.Forms.FrmRecibos.ProgressBar1.Value = 0
-
-        Do While Registros > iPosicion
-            My.Application.DoEvents()
-
-            NumeroFactura = DataSet.Tables("Consultas").Rows(iPosicion)("Numero_Factura")
-            FechaFactura = DataSet.Tables("Consultas").Rows(iPosicion)("Fecha_Factura")
-            TasaCambio = BuscaTasaCambio(FechaFactura)
-            MontoCredito = DataSet.Tables("Consultas").Rows(iPosicion)("MontoCredito")
-            Saldo = DataSet.Tables("Consultas").Rows(iPosicion)("Saldo")
-            MonedaFactura = DataSet.Tables("Consultas").Rows(iPosicion)("MonedaFactura")
-
-            If CDbl(Format(Saldo, "0.00")) > 0 Then
-
-                If My.Forms.FrmRecibos.TxtMonedaFactura.Text = "Cordobas" Then
-                    If MonedaFactura = "Cordobas" Then
-                        oDataRow = DataSet.Tables("FacturaRecibos").NewRow
-                        oDataRow("Numero_Factura") = NumeroFactura
-                        oDataRow("Fecha_Factura") = FechaFactura
-                        oDataRow("MontoCredito") = Format(MontoCredito, "##,##0.00")
-                        oDataRow("MontoPagado") = 0
-                        oDataRow("Saldo") = Format(Saldo, "##,##0.00")
-                        oDataRow("Tipo_Factura") = "Factura"
-                        DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
-                    Else
-                        '//////////////MONTOS EN DOLARES /////////////////////////
-                        oDataRow = DataSet.Tables("FacturaRecibos").NewRow
-                        oDataRow("Numero_Factura") = NumeroFactura
-                        oDataRow("Fecha_Factura") = FechaFactura
-                        oDataRow("MontoCredito") = Format(MontoCredito * TasaCambio, "##,##0.00")
-                        oDataRow("MontoPagado") = 0
-                        oDataRow("Saldo") = Format(Saldo * TasaCambio, "##,##0.00")
-                        oDataRow("Tipo_Factura") = "Factura"
-                        DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
-                    End If
-                Else
-                    If MonedaFactura = "Cordobas" Then
-                        oDataRow = DataSet.Tables("FacturaRecibos").NewRow
-                        oDataRow("Numero_Factura") = NumeroFactura
-                        oDataRow("Fecha_Factura") = FechaFactura
-                        oDataRow("MontoCredito") = Format(MontoCredito / TasaCambio, "##,##0.00")
-                        oDataRow("MontoPagado") = 0
-                        oDataRow("Saldo") = Format(Saldo / TasaCambio, "##,##0.00")
-                        oDataRow("Tipo_Factura") = "Factura"
-                        DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
-                    Else
-                        oDataRow = DataSet.Tables("FacturaRecibos").NewRow
-                        oDataRow("Numero_Factura") = NumeroFactura
-                        oDataRow("Fecha_Factura") = FechaFactura
-                        oDataRow("MontoCredito") = Format(MontoCredito, "##,##0.00")
-                        oDataRow("MontoPagado") = 0
-                        oDataRow("Saldo") = Format(Saldo, "##,##0.00")
-                        oDataRow("Tipo_Factura") = "Factura"
-                        DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
-                    End If
-
-                End If
-
-            End If
-
-            My.Application.DoEvents()
-            iPosicion = iPosicion + 1
-            My.Forms.FrmRecibos.ProgressBar1.Value = My.Forms.FrmRecibos.ProgressBar1.Value + 1
-        Loop
-
-
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '///////////////////////////////////BUSCO LAS NOTAS DE DEBITOS SIN FACTURAS ////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        'SqlString = "SELECT Detalle_Nota.Numero_Factura, Detalle_Nota.Fecha_Nota, Detalle_Nota.Monto, Detalle_Nota.Numero_Nota,IndiceNota.MonedaNota FROM Detalle_Nota INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota WHERE (Detalle_Nota.Numero_Factura = N'0000') AND (IndiceNota.Cod_Cliente = '" & CodigoClientes & "')"
-        SqlString = "SELECT  Detalle_Nota.Numero_Factura, Detalle_Nota.Fecha_Nota, Detalle_Nota.Monto, Detalle_Nota.Numero_Nota, IndiceNota.MonedaNota, IndiceNota.Cod_Cliente,  IndiceNota.Nombre_Cliente, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Tipo_Nota, NotaDebito.Tipo FROM Detalle_Nota INNER JOIN  IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND  Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB WHERE (Detalle_Nota.Numero_Factura = N'0000') AND (IndiceNota.Cod_Cliente = '" & CodigoClientes & "') AND (NotaDebito.Tipo = 'Debito Clientes')"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "ConsultaNota")
-        MiConexion.Close()
-
-        iPosicion = 0
-        Registros = DataSet.Tables("ConsultaNota").Rows.Count
-
-        My.Forms.FrmRecibos.ProgressBar1.Minimum = 0
-        My.Forms.FrmRecibos.ProgressBar1.Maximum = Registros
-        My.Forms.FrmRecibos.ProgressBar1.Value = 0
-
-        Do While Registros > iPosicion
-            NumeroNota = DataSet.Tables("ConsultaNota").Rows(iPosicion)("Numero_Nota")
-            NumeroFactura = "NB" & NumeroNota
-            FechaFactura = DataSet.Tables("ConsultaNota").Rows(iPosicion)("Fecha_Nota")
-            TasaCambio = BuscaTasaCambio(FechaFactura)
-            MontoCredito = DataSet.Tables("ConsultaNota").Rows(iPosicion)("Monto")
-            MonedaFactura = DataSet.Tables("ConsultaNota").Rows(iPosicion)("MonedaNota")
-
-            '////////////////////////////////BUSCO UN RECIBO PARA ESTA NOTA DE DEBITO ///////////////////////////////////////////////
-            SqlString = "SELECT SUM(MontoPagado) AS MontoPagado FROM DetalleRecibo WHERE (Numero_Nota = '" & NumeroFactura & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-            DataAdapter.Fill(DataSet, "Saldo")
-            MiConexion.Close()
-            Saldo = MontoCredito
-            If DataSet.Tables("Saldo").Rows.Count <> 0 Then
-                If Not IsDBNull(DataSet.Tables("Saldo").Rows(0)("MontoPagado")) Then
-                    Saldo = MontoCredito - DataSet.Tables("Saldo").Rows(0)("MontoPagado")
-                    MontoCredito = Saldo
-                End If
-            Else
-                Saldo = MontoCredito
-            End If
-            DataSet.Tables("Saldo").Reset()
-
-
-
-            If My.Forms.FrmRecibos.TxtMonedaFactura.Text = "Cordobas" Then
-                If MonedaFactura = "Cordobas" Then
-                    oDataRow = DataSet.Tables("FacturaRecibos").NewRow
-                    oDataRow("Numero_Factura") = NumeroFactura
-                    oDataRow("Fecha_Factura") = FechaFactura
-                    oDataRow("MontoCredito") = Format(MontoCredito, "##,##0.00")
-                    oDataRow("MontoPagado") = 0
-                    oDataRow("Saldo") = Format(Saldo, "##,##0.00")
-                    oDataRow("Tipo_Factura") = "NotaDebito"
-                    DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
-                Else
-                    '//////////////MONTOS EN DOLARES /////////////////////////
-                    oDataRow = DataSet.Tables("FacturaRecibos").NewRow
-                    oDataRow("Numero_Factura") = NumeroFactura
-                    oDataRow("Fecha_Factura") = FechaFactura
-                    oDataRow("MontoCredito") = Format(MontoCredito * TasaCambio, "##,##0.00")
-                    oDataRow("MontoPagado") = 0
-                    oDataRow("Saldo") = Format(Saldo * TasaCambio, "##,##0.00")
-                    oDataRow("Tipo_Factura") = "NotaDebito"
-                    DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
-                End If
-            Else
-                If MonedaFactura = "Cordobas" Then
-                    oDataRow = DataSet.Tables("FacturaRecibos").NewRow
-                    oDataRow("Numero_Factura") = NumeroFactura
-                    oDataRow("Fecha_Factura") = FechaFactura
-                    oDataRow("MontoCredito") = Format(MontoCredito / TasaCambio, "##,##0.00")
-                    oDataRow("MontoPagado") = 0
-                    oDataRow("Saldo") = Format(Saldo / TasaCambio, "##,##0.00")
-                    oDataRow("Tipo_Factura") = "NotaDebito"
-                    DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
-                Else
-                    oDataRow = DataSet.Tables("FacturaRecibos").NewRow
-                    oDataRow("Numero_Factura") = NumeroFactura
-                    oDataRow("Fecha_Factura") = FechaFactura
-                    oDataRow("MontoCredito") = Format(MontoCredito, "##,##0.00")
-                    oDataRow("MontoPagado") = 0
-                    oDataRow("Saldo") = Format(Saldo, "##,##0.00")
-                    oDataRow("Tipo_Factura") = "NotaDebito"
-                    DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
-                End If
-
-            End If
-
-
-            My.Application.DoEvents()
-            iPosicion = iPosicion + 1
-            My.Forms.FrmRecibos.ProgressBar1.Value = My.Forms.FrmRecibos.ProgressBar1.Value + 1
-
-        Loop
-
-
-
-        Me.BindingFacturas.DataSource = DataSet.Tables("FacturaRecibos")
-        Me.TrueDBGridComponentes.DataSource = Me.BindingFacturas
-        Me.TrueDBGridComponentes.Columns(0).Caption = "Factura No"
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 70
-        Me.TrueDBGridComponentes.Columns(1).Caption = "Fecha Fact"
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 80
-        Me.TrueDBGridComponentes.Columns(2).Caption = "Monto Credito"
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 90
-        Me.TrueDBGridComponentes.Columns(3).Caption = "Monto Pagado"
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 90
-        Me.TrueDBGridComponentes.Columns(4).Caption = "Saldo"
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 90
-        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Factura").Visible = False
-
-        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '//////////////////////////CARGO LAS FORMA DE PAGO////////////////////////////////////////////////////////////////////
-        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '///////////////////////////////BUSCO SI TIENE CONFIGURADO EFECTIVO DEFAUL/////////////////////////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         MonedaRecibo = My.Forms.FrmRecibos.TxtMonedaFactura.Text
-        SqlString = "SELECT  * FROM DatosEmpresa "
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "DatosEmpresa")
-        If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
-            If DataSet.Tables("DatosEmpresa").Rows(0)("MetodoPagoDefecto") = "Efectivo" Then
-                '*************************************************************************************************************************
-                '//////////////////////////////////BUSCO LA FORMA DE PAGO PARA ESTA FACTURA /////////////////////////////////////////////
-                '**************************************************************************************************************************
-                SqlString = "SELECT  * FROM MetodoPago WHERE  (TipoPago = 'Efectivo') AND (Moneda = '" & MonedaRecibo & "')"
-                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-                DataAdapter.Fill(DataSet, "Metodo")
-                If DataSet.Tables("Metodo").Rows.Count <> 0 Then
-                    '************************************************************************************************************************
-                    '  ///////////////////////////AGREO LA FORMA DE PAGO DEL TOTAL //////////////////////////////////////////////////////////
-                    '*************************************************************************************************************************
-                    SqlString = "SELECT  NombrePago, Monto,NumeroTarjeta,FechaVence FROM Detalle_MetodoFacturas WHERE (Numero_Factura = '-1')"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-                    DataAdapter.Fill(DataSet, "MetodoPago")
 
-                    oDataRow = DataSet.Tables("MetodoPago").NewRow
-                    oDataRow("NombrePago") = DataSet.Tables("Metodo").Rows(0)("NombrePago")
-                    oDataRow("Monto") = 0
-                    oDataRow("NumeroTarjeta") = 0
-                    oDataRow("FechaVence") = Format(Now, "dd/MM/yyyy")
-                    DataSet.Tables("MetodoPago").Rows.Add(oDataRow)
 
-                    Me.BindingMetodo.DataSource = DataSet.Tables("MetodoPago")
-                    Me.TrueDBGridMetodo.DataSource = Me.BindingMetodo
-                    Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(1).Width = 110
-                    Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(1).Width = 70
-                    Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(0).Button = True
-                    Me.TrueDBGridMetodo.Columns(1).NumberFormat = "##,##0.00"
-                    Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(2).Visible = False
-                    Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(3).Visible = False
+        '==============================================================
+        ' CREAR ESTRUCTURA DE FACTURARECIBOS
+        '
+        ' Utilizamos la misma estructura que tenía el formulario
+        ' original para no afectar BindingFacturas ni el Grid.
+        '==============================================================
+
+        Dim SqlString As String =
+        "SELECT DISTINCT " &
+        "Facturas.Numero_Factura, " &
+        "Facturas.Fecha_Factura, " &
+        "Facturas.MontoCredito, " &
+        "DetalleRecibo.MontoPagado - DetalleRecibo.MontoPagado AS MontoPagado, " &
+        "Facturas.MontoCredito AS Saldo, " &
+        "Facturas.Tipo_Factura " &
+        "FROM Facturas " &
+        "INNER JOIN Detalle_Facturas " &
+        "ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura " &
+        "AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura " &
+        "AND Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura " &
+        "LEFT OUTER JOIN DetalleRecibo " &
+        "ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura " &
+        "WHERE Facturas.Cod_Cliente = '-1' " &
+        "AND Facturas.Tipo_Factura = 'Factura'"
+
+        Dim conexionBD As New SqlClient.SqlConnection(Conexion)
+
+        Try
+
+            conexionBD.Open()
+
+            Dim DataAdapter As New SqlClient.SqlDataAdapter(
+            SqlString,
+            conexionBD)
+
+            DataAdapter.Fill(DataSet, "FacturaRecibos")
+
+            DataAdapter.Dispose()
+
+        Finally
+
+            conexionBD.Close()
+            conexionBD.Dispose()
+
+        End Try
+
+
+        '==============================================================
+        ' OBTENER FACTURAS PENDIENTES
+        '==============================================================
+
+        Dim servicio As New FacturasCreditoService
+
+        Dim listaFacturas As List(Of FacturaCredito)
+
+        listaFacturas = servicio.ObtenerFacturasPendientes(
+        CodigoClientes,
+        Now,
+        MonedaRecibo)
+
+
+        '==============================================================
+        ' PROGRESO
+        '==============================================================
+
+        My.Forms.FrmRecibos.ProgressBar1.Minimum = 0
+
+        My.Forms.FrmRecibos.ProgressBar1.Maximum = listaFacturas.Count
+
+        My.Forms.FrmRecibos.ProgressBar1.Value = 0
+
+
+        '==============================================================
+        ' CARGAR FACTURAS EN FACTURARECIBOS
+        '==============================================================
+
+        Dim factura As FacturaCredito
+
+        For Each factura In listaFacturas
+
+            My.Application.DoEvents()
+
+
+            '----------------------------------------------------------
+            ' Solo mostrar facturas con saldo pendiente.
+            '
+            ' Se mantiene el comportamiento original:
+            ' CDbl(Format(Saldo, "0.00")) > 0
+            '----------------------------------------------------------
+
+            If CDbl(Format(factura.Saldo, "0.00")) > 0 Then
+
+                oDataRow =
+                DataSet.Tables("FacturaRecibos").NewRow
+
+
+                '------------------------------------------------------
+                ' Número
+                '------------------------------------------------------
+
+                oDataRow("Numero_Factura") =
+                factura.NumeroFactura
+
+
+                '------------------------------------------------------
+                ' Fecha
+                '------------------------------------------------------
+
+                oDataRow("Fecha_Factura") =
+                factura.FechaFactura
+
+
+                '------------------------------------------------------
+                ' IMPORTANTE:
+                '
+                ' MontoCredito es el monto disponible para aplicar
+                ' en el recibo.
+                '
+                ' Por eso utilizamos SALDO.
+                '------------------------------------------------------
+
+                oDataRow("MontoCredito") =
+                Format(
+                    factura.Saldo,
+                    "##,##0.00")
+
+
+                '------------------------------------------------------
+                ' MontoPagado representa lo que se aplicará
+                ' EN ESTE RECIBO.
+                '
+                ' Por eso comienza en cero.
+                '------------------------------------------------------
+
+                oDataRow("MontoPagado") = 0
+
+
+                '------------------------------------------------------
+                ' Saldo disponible
+                '------------------------------------------------------
+
+                oDataRow("Saldo") =
+                Format(
+                    factura.Saldo,
+                    "##,##0.00")
+
+
+                '------------------------------------------------------
+                ' Tipo
+                '------------------------------------------------------
+
+                oDataRow("Tipo_Factura") =
+                factura.TipoFactura
+
+                If String.IsNullOrEmpty(factura.TipoFactura) Then
+
+                    oDataRow("Tipo_Factura") = "Factura"
+
                 End If
+
+
+                DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
+
             End If
+
+
+            My.Forms.FrmRecibos.ProgressBar1.Value += 1
+
+        Next
+
+
+        '==============================================================
+        ' NOTAS DE DEBITO SIN FACTURA
+        '
+        ' Esta parte se conserva porque NO forma parte de
+        ' ObtenerFacturasPendientes.
+        '
+        ' Son notas con Numero_Factura = '0000'.
+        '==============================================================
+
+        SqlString =
+        "SELECT " &
+        "Detalle_Nota.Numero_Factura, " &
+        "Detalle_Nota.Fecha_Nota, " &
+        "Detalle_Nota.Monto, " &
+        "Detalle_Nota.Numero_Nota, " &
+        "IndiceNota.MonedaNota, " &
+        "IndiceNota.Cod_Cliente, " &
+        "IndiceNota.Nombre_Cliente, " &
+        "Detalle_Nota.CodigoNB, " &
+        "Detalle_Nota.Descripcion, " &
+        "Detalle_Nota.Tipo_Nota, " &
+        "NotaDebito.Tipo " &
+        "FROM Detalle_Nota " &
+        "INNER JOIN IndiceNota " &
+        "ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota " &
+        "AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota " &
+        "AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota " &
+        "INNER JOIN NotaDebito " &
+        "ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB " &
+        "WHERE Detalle_Nota.Numero_Factura = N'0000' " &
+        "AND IndiceNota.Cod_Cliente = @CodigoCliente " &
+        "AND NotaDebito.Tipo = 'Debito Clientes'"
+
+        Dim conexionNotas As New SqlClient.SqlConnection(Conexion)
+
+        Try
+
+            conexionNotas.Open()
+
+            Dim comandoNotas As New SqlClient.SqlCommand(
+            SqlString,
+            conexionNotas)
+
+            comandoNotas.Parameters.AddWithValue(
+            "@CodigoCliente",
+            CodigoClientes)
+
+            Dim lectorNotas As SqlClient.SqlDataReader =
+            comandoNotas.ExecuteReader()
+
+            Try
+
+                While lectorNotas.Read()
+
+                    Dim NumeroNota As String =
+                    Convert.ToString(
+                        lectorNotas("Numero_Nota"))
+
+                    Dim NumeroFacturaNota As String =
+                    "NB" & NumeroNota
+
+                    Dim FechaNota As Date =
+                    Convert.ToDateTime(
+                        lectorNotas("Fecha_Nota"))
+
+                    Dim MontoNota As Double = 0
+
+                    If Not IsDBNull(lectorNotas("Monto")) Then
+
+                        MontoNota =
+                        Convert.ToDouble(
+                            lectorNotas("Monto"))
+
+                    End If
+
+                    Dim MonedaNota As String =
+                    Convert.ToString(
+                        lectorNotas("MonedaNota"))
+
+
+                    '--------------------------------------------------
+                    ' Por ahora utilizamos la misma tasa de la nota.
+                    '--------------------------------------------------
+
+                    Dim TasaNota As Double = 0
+
+                    Dim conexionTasa As New SqlClient.SqlConnection(Conexion)
+
+                    Try
+
+                        conexionTasa.Open()
+
+                        Dim comandoTasa As New SqlClient.SqlCommand(
+                        "SELECT MontoTasa " &
+                        "FROM TasaCambio " &
+                        "WHERE FechaTasa >= @Fecha " &
+                        "AND FechaTasa < DATEADD(day, 1, @Fecha)",
+                        conexionTasa)
+
+                        comandoTasa.Parameters.AddWithValue(
+                        "@Fecha",
+                        FechaNota.Date)
+
+                        Dim resultadoTasa As Object =
+                        comandoTasa.ExecuteScalar()
+
+                        If Not resultadoTasa Is Nothing Then
+
+                            If Not IsDBNull(resultadoTasa) Then
+
+                                TasaNota =
+                                Convert.ToDouble(resultadoTasa)
+
+                            End If
+
+                        End If
+
+                        comandoTasa.Dispose()
+
+                    Finally
+
+                        conexionTasa.Close()
+                        conexionTasa.Dispose()
+
+                    End Try
+
+
+                    '--------------------------------------------------
+                    ' Saldo de la nota
+                    '--------------------------------------------------
+
+                    Dim SaldoNota As Double = MontoNota
+
+
+                    '--------------------------------------------------
+                    ' Buscar si la nota ya tiene recibos aplicados
+                    '--------------------------------------------------
+
+                    Dim conexionRecibo As New SqlClient.SqlConnection(Conexion)
+
+                    Try
+
+                        conexionRecibo.Open()
+
+                        Dim comandoRecibo As New SqlClient.SqlCommand(
+                        "SELECT SUM(MontoPagado) " &
+                        "FROM DetalleRecibo " &
+                        "WHERE Numero_Nota = @NumeroNota",
+                        conexionRecibo)
+
+                        comandoRecibo.Parameters.AddWithValue(
+                        "@NumeroNota",
+                        NumeroFacturaNota)
+
+                        Dim resultadoRecibo As Object =
+                        comandoRecibo.ExecuteScalar()
+
+                        If Not resultadoRecibo Is Nothing Then
+
+                            If Not IsDBNull(resultadoRecibo) Then
+
+                                SaldoNota -=
+                                Convert.ToDouble(resultadoRecibo)
+
+                            End If
+
+                        End If
+
+                        comandoRecibo.Dispose()
+
+                    Finally
+
+                        conexionRecibo.Close()
+                        conexionRecibo.Dispose()
+
+                    End Try
+
+
+                    '--------------------------------------------------
+                    ' Agregar únicamente si tiene saldo.
+                    '--------------------------------------------------
+
+                    If CDbl(Format(SaldoNota, "0.00")) > 0 Then
+
+                        oDataRow =
+                        DataSet.Tables("FacturaRecibos").NewRow
+
+                        oDataRow("Numero_Factura") =
+                        NumeroFacturaNota
+
+                        oDataRow("Fecha_Factura") =
+                        FechaNota
+
+
+                        If MonedaRecibo = "Cordobas" Then
+
+                            If MonedaNota = "Cordobas" Then
+
+                                oDataRow("MontoCredito") =
+                                Format(
+                                    MontoNota,
+                                    "##,##0.00")
+
+                                oDataRow("Saldo") =
+                                Format(
+                                    SaldoNota,
+                                    "##,##0.00")
+
+                            Else
+
+                                oDataRow("MontoCredito") =
+                                Format(
+                                    MontoNota * TasaNota,
+                                    "##,##0.00")
+
+                                oDataRow("Saldo") =
+                                Format(
+                                    SaldoNota * TasaNota,
+                                    "##,##0.00")
+
+                            End If
+
+                        Else
+
+                            If MonedaNota = "Cordobas" Then
+
+                                If TasaNota <> 0 Then
+
+                                    oDataRow("MontoCredito") =
+                                    Format(
+                                        MontoNota / TasaNota,
+                                        "##,##0.00")
+
+                                    oDataRow("Saldo") =
+                                    Format(
+                                        SaldoNota / TasaNota,
+                                        "##,##0.00")
+
+                                End If
+
+                            Else
+
+                                oDataRow("MontoCredito") =
+                                Format(
+                                    MontoNota,
+                                    "##,##0.00")
+
+                                oDataRow("Saldo") =
+                                Format(
+                                    SaldoNota,
+                                    "##,##0.00")
+
+                            End If
+
+                        End If
+
+
+                        oDataRow("MontoPagado") = 0
+
+                        oDataRow("Tipo_Factura") =
+                        "NotaDebito"
+
+
+                        DataSet.Tables("FacturaRecibos").Rows.Add(
+                        oDataRow)
+
+                    End If
+
+                End While
+
+            Finally
+
+                lectorNotas.Close()
+
+            End Try
+
+            comandoNotas.Dispose()
+
+        Finally
+
+            conexionNotas.Close()
+            conexionNotas.Dispose()
+
+        End Try
+
+
+        '==============================================================
+        ' ENLAZAR GRID
+        '==============================================================
+
+        Me.BindingFacturas.DataSource =
+        DataSet.Tables("FacturaRecibos")
+
+        Me.TrueDBGridComponentes.DataSource =
+        Me.BindingFacturas
+
+
+        '==============================================================
+        ' CONFIGURACION DEL GRID
+        '==============================================================
+
+        Me.TrueDBGridComponentes.Columns(0).Caption =
+        "Factura No"
+
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width =
+        70
+
+
+        Me.TrueDBGridComponentes.Columns(1).Caption =
+        "Fecha Fact"
+
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width =
+        80
+
+
+        Me.TrueDBGridComponentes.Columns(2).Caption =
+        "Monto Credito"
+
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width =
+        90
+
+
+        Me.TrueDBGridComponentes.Columns(3).Caption =
+        "Monto Pagado"
+
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width =
+        90
+
+
+        Me.TrueDBGridComponentes.Columns(4).Caption =
+        "Saldo"
+
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width =
+        90
+
+
+        Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(
+        "Tipo_Factura").Visible = False
+
+
+        '==============================================================
+        ' CARGAR METODOS DE PAGO
+        '
+        ' AQUÍ CONTINÚA EL CÓDIGO ORIGINAL QUE YA TENÍAS
+        ' PARA DatosEmpresa / MetodoPago.
+        '==============================================================
+
+        '==============================================================
+        ' CARGAR METODO DE PAGO POR DEFECTO
+        '==============================================================
+
+        Dim DataSetMetodo As New DataSet
+        Dim DataAdapterMetodo As SqlClient.SqlDataAdapter
+        Dim SqlMetodo As String
+
+        '--------------------------------------------------------------
+        ' Buscar configuración de la empresa
+        '--------------------------------------------------------------
+
+        SqlMetodo =
+            "SELECT MetodoPagoDefecto " &
+            "FROM DatosEmpresa"
+
+        Dim conexionMetodo As New SqlClient.SqlConnection(Conexion)
+
+        Try
+
+            conexionMetodo.Open()
+
+            DataAdapterMetodo =
+                New SqlClient.SqlDataAdapter(
+                    SqlMetodo,
+                    conexionMetodo)
+
+            DataAdapterMetodo.Fill(
+                DataSetMetodo,
+                "DatosEmpresa")
+
+            DataAdapterMetodo.Dispose()
+
+        Finally
+
+            conexionMetodo.Close()
+            conexionMetodo.Dispose()
+
+        End Try
+
+
+        '==============================================================
+        ' CREAR TABLA PARA LOS METODOS DE PAGO
+        '==============================================================
+
+        Dim TablaMetodo As New DataTable("MetodoPago")
+
+        TablaMetodo.Columns.Add("NombrePago", GetType(String))
+        TablaMetodo.Columns.Add("Monto", GetType(Double))
+        TablaMetodo.Columns.Add("NumeroTarjeta", GetType(String))
+        TablaMetodo.Columns.Add("FechaVence", GetType(Date))
+
+
+        '==============================================================
+        ' SI EL METODO POR DEFECTO ES EFECTIVO
+        '==============================================================
+
+        If DataSetMetodo.Tables("DatosEmpresa").Rows.Count > 0 Then
+
+            Dim MetodoPagoDefecto As String = ""
+
+            If Not IsDBNull(
+                DataSetMetodo.Tables("DatosEmpresa").Rows(0)("MetodoPagoDefecto")) Then
+
+                MetodoPagoDefecto =
+                    Convert.ToString(
+                        DataSetMetodo.Tables("DatosEmpresa").Rows(0)("MetodoPagoDefecto"))
+
+            End If
+
+
+            If MetodoPagoDefecto = "Efectivo" Then
+
+                Dim NombrePagoEfectivo As String = ""
+
+                '----------------------------------------------------------
+                ' Buscar Efectivo según la moneda del recibo
+                '----------------------------------------------------------
+
+                SqlMetodo =
+                    "SELECT TOP 1 NombrePago " &
+                    "FROM MetodoPago " &
+                    "WHERE TipoPago = @TipoPago " &
+                    "AND Moneda = @Moneda"
+
+                Dim conexionEfectivo As New SqlClient.SqlConnection(Conexion)
+
+                Try
+
+                    conexionEfectivo.Open()
+
+                    Dim comandoEfectivo As New SqlClient.SqlCommand(
+                        SqlMetodo,
+                        conexionEfectivo)
+
+                    comandoEfectivo.Parameters.AddWithValue(
+                        "@TipoPago",
+                        "Efectivo")
+
+                    comandoEfectivo.Parameters.AddWithValue(
+                        "@Moneda",
+                        MonedaRecibo)
+
+                    Dim resultado As Object =
+                        comandoEfectivo.ExecuteScalar()
+
+                    If Not resultado Is Nothing Then
+
+                        If Not IsDBNull(resultado) Then
+
+                            NombrePagoEfectivo =
+                                Convert.ToString(resultado)
+
+                        End If
+
+                    End If
+
+                    comandoEfectivo.Dispose()
+
+                Finally
+
+                    conexionEfectivo.Close()
+                    conexionEfectivo.Dispose()
+
+                End Try
+
+
+                '----------------------------------------------------------
+                ' Agregar Efectivo al grid
+                '----------------------------------------------------------
+
+                If NombrePagoEfectivo <> "" Then
+
+                    Dim filaMetodo As DataRow =
+                        TablaMetodo.NewRow()
+
+                    filaMetodo("NombrePago") =
+                        NombrePagoEfectivo
+
+                    filaMetodo("Monto") = 0
+
+                    filaMetodo("NumeroTarjeta") = ""
+
+                    filaMetodo("FechaVence") = Now.Date
+
+                    TablaMetodo.Rows.Add(filaMetodo)
+
+                End If
+
+            End If
+
         End If
 
 
+        '==============================================================
+        ' ENLAZAR METODO DE PAGO
+        '==============================================================
 
-        SqlString = "SELECT  NombrePago, Monto,NumeroTarjeta,FechaVence FROM Detalle_MetodoCompras WHERE (Numero_Compra = '-1')"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "MetodoPago")
-        Me.BindingMetodo.DataSource = DataSet.Tables("MetodoPago")
-        Me.TrueDBGridMetodo.DataSource = Me.BindingMetodo
+        Me.BindingMetodo.DataSource = TablaMetodo
+
+        Me.TrueDBGridMetodo.DataSource =
+            Me.BindingMetodo
+
+
+        '==============================================================
+        ' CONFIGURACION DEL GRID DE METODOS
+        '==============================================================
+
         Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(1).Width = 110
         Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(1).Width = 70
+
         Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(0).Button = True
-        Me.TrueDBGridMetodo.Columns(1).NumberFormat = "##,##0.00"
+
+        Me.TrueDBGridMetodo.Columns(1).NumberFormat =
+            "##,##0.00"
+
         Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(2).Visible = False
         Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(3).Visible = False
+
     End Sub
+
+
+    'Private Sub FrmRecibosFacturas_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    '    Dim SqlString As String = "", DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+    '    Dim NumeroFactura As String, FechaFactura As Date, iPosicion As Double = 0, Registros As Double = 0, TasaCambio As Double = 0
+    '    Dim oDataRow As DataRow, MontoCredito As Double, Saldo As Double, MonedaFactura As String, MonedaRecibo As String
+    '    Dim NumeroNota As String = ""
+
+
+    '    Me.TrueDBGridComponentes.Enabled = True
+
+
+    '    MiConexion.Close()
+
+
+    '    ConsultaCreditos(CodigoClientes, Now, My.Forms.FrmRecibos.TxtMonedaFactura.Text)
+
+    '    SqlString = "SELECT DISTINCT  Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.MontoCredito, DetalleRecibo.MontoPagado - DetalleRecibo.MontoPagado AS MontoPagado, Facturas.MontoCredito AS Saldo, Facturas.MonedaFactura, Detalle_Facturas.TasaCambio FROM   Facturas INNER JOIN  Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura LEFT OUTER JOIN DetalleRecibo ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura  " &
+    '                "WHERE (Facturas.MontoCredito <> 0) AND (Facturas.Cod_Cliente = '" & CodigoClientes & "') AND (Facturas.Tipo_Factura = 'Factura') ORDER BY Facturas.Fecha_Factura"
+    '    MiConexion.Open()
+    '    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+    '    DataAdapter.Fill(DataSet, "Consultas")
+
+
+    '    SqlString = "SELECT DISTINCT  Facturas.Numero_Factura, Facturas.Fecha_Factura, Facturas.MontoCredito, DetalleRecibo.MontoPagado - DetalleRecibo.MontoPagado AS MontoPagado, Facturas.MontoCredito AS Saldo, Facturas.Tipo_Factura FROM   Facturas INNER JOIN  Detalle_Facturas ON Facturas.Numero_Factura = Detalle_Facturas.Numero_Factura AND Facturas.Fecha_Factura = Detalle_Facturas.Fecha_Factura AND Facturas.Tipo_Factura = Detalle_Facturas.Tipo_Factura LEFT OUTER JOIN DetalleRecibo ON Facturas.Numero_Factura = DetalleRecibo.Numero_Factura  " &
+    '                "WHERE (Facturas.MontoCredito <> 0) AND (Facturas.Cod_Cliente = '-1') AND (Facturas.Tipo_Factura = 'Factura') ORDER BY Facturas.Fecha_Factura"
+
+    '    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+    '    DataAdapter.Fill(DataSet, "FacturaRecibos")
+    '    MiConexion.Close()
+
+    '    iPosicion = 0
+    '    Registros = DataSet.Tables("Consultas").Rows.Count
+
+    '    My.Forms.FrmRecibos.ProgressBar1.Minimum = 0
+    '    My.Forms.FrmRecibos.ProgressBar1.Maximum = Registros
+    '    My.Forms.FrmRecibos.ProgressBar1.Value = 0
+
+    '    Do While Registros > iPosicion
+    '        My.Application.DoEvents()
+
+    '        NumeroFactura = DataSet.Tables("Consultas").Rows(iPosicion)("Numero_Factura")
+    '        FechaFactura = DataSet.Tables("Consultas").Rows(iPosicion)("Fecha_Factura")
+    '        TasaCambio = BuscaTasaCambio(FechaFactura)
+    '        MontoCredito = DataSet.Tables("Consultas").Rows(iPosicion)("MontoCredito")
+    '        Saldo = DataSet.Tables("Consultas").Rows(iPosicion)("Saldo")
+    '        MonedaFactura = DataSet.Tables("Consultas").Rows(iPosicion)("MonedaFactura")
+
+    '        If CDbl(Format(Saldo, "0.00")) > 0 Then
+
+    '            If My.Forms.FrmRecibos.TxtMonedaFactura.Text = "Cordobas" Then
+    '                If MonedaFactura = "Cordobas" Then
+    '                    oDataRow = DataSet.Tables("FacturaRecibos").NewRow
+    '                    oDataRow("Numero_Factura") = NumeroFactura
+    '                    oDataRow("Fecha_Factura") = FechaFactura
+    '                    oDataRow("MontoCredito") = Format(MontoCredito, "##,##0.00")
+    '                    oDataRow("MontoPagado") = 0
+    '                    oDataRow("Saldo") = Format(Saldo, "##,##0.00")
+    '                    oDataRow("Tipo_Factura") = "Factura"
+    '                    DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
+    '                Else
+    '                    '//////////////MONTOS EN DOLARES /////////////////////////
+    '                    oDataRow = DataSet.Tables("FacturaRecibos").NewRow
+    '                    oDataRow("Numero_Factura") = NumeroFactura
+    '                    oDataRow("Fecha_Factura") = FechaFactura
+    '                    oDataRow("MontoCredito") = Format(MontoCredito * TasaCambio, "##,##0.00")
+    '                    oDataRow("MontoPagado") = 0
+    '                    oDataRow("Saldo") = Format(Saldo * TasaCambio, "##,##0.00")
+    '                    oDataRow("Tipo_Factura") = "Factura"
+    '                    DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
+    '                End If
+    '            Else
+    '                If MonedaFactura = "Cordobas" Then
+    '                    oDataRow = DataSet.Tables("FacturaRecibos").NewRow
+    '                    oDataRow("Numero_Factura") = NumeroFactura
+    '                    oDataRow("Fecha_Factura") = FechaFactura
+    '                    oDataRow("MontoCredito") = Format(MontoCredito / TasaCambio, "##,##0.00")
+    '                    oDataRow("MontoPagado") = 0
+    '                    oDataRow("Saldo") = Format(Saldo / TasaCambio, "##,##0.00")
+    '                    oDataRow("Tipo_Factura") = "Factura"
+    '                    DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
+    '                Else
+    '                    oDataRow = DataSet.Tables("FacturaRecibos").NewRow
+    '                    oDataRow("Numero_Factura") = NumeroFactura
+    '                    oDataRow("Fecha_Factura") = FechaFactura
+    '                    oDataRow("MontoCredito") = Format(MontoCredito, "##,##0.00")
+    '                    oDataRow("MontoPagado") = 0
+    '                    oDataRow("Saldo") = Format(Saldo, "##,##0.00")
+    '                    oDataRow("Tipo_Factura") = "Factura"
+    '                    DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
+    '                End If
+
+    '            End If
+
+    '        End If
+
+    '        My.Application.DoEvents()
+    '        iPosicion = iPosicion + 1
+    '        My.Forms.FrmRecibos.ProgressBar1.Value = My.Forms.FrmRecibos.ProgressBar1.Value + 1
+    '    Loop
+
+
+    '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '    '///////////////////////////////////BUSCO LAS NOTAS DE DEBITOS SIN FACTURAS ////////////////////////////////////////////
+    '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '    'SqlString = "SELECT Detalle_Nota.Numero_Factura, Detalle_Nota.Fecha_Nota, Detalle_Nota.Monto, Detalle_Nota.Numero_Nota,IndiceNota.MonedaNota FROM Detalle_Nota INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota WHERE (Detalle_Nota.Numero_Factura = N'0000') AND (IndiceNota.Cod_Cliente = '" & CodigoClientes & "')"
+    '    SqlString = "SELECT  Detalle_Nota.Numero_Factura, Detalle_Nota.Fecha_Nota, Detalle_Nota.Monto, Detalle_Nota.Numero_Nota, IndiceNota.MonedaNota, IndiceNota.Cod_Cliente,  IndiceNota.Nombre_Cliente, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Tipo_Nota, NotaDebito.Tipo FROM Detalle_Nota INNER JOIN  IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND  Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB WHERE (Detalle_Nota.Numero_Factura = N'0000') AND (IndiceNota.Cod_Cliente = '" & CodigoClientes & "') AND (NotaDebito.Tipo = 'Debito Clientes')"
+    '    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+    '    DataAdapter.Fill(DataSet, "ConsultaNota")
+    '    MiConexion.Close()
+
+    '    iPosicion = 0
+    '    Registros = DataSet.Tables("ConsultaNota").Rows.Count
+
+    '    My.Forms.FrmRecibos.ProgressBar1.Minimum = 0
+    '    My.Forms.FrmRecibos.ProgressBar1.Maximum = Registros
+    '    My.Forms.FrmRecibos.ProgressBar1.Value = 0
+
+    '    Do While Registros > iPosicion
+    '        NumeroNota = DataSet.Tables("ConsultaNota").Rows(iPosicion)("Numero_Nota")
+    '        NumeroFactura = "NB" & NumeroNota
+    '        FechaFactura = DataSet.Tables("ConsultaNota").Rows(iPosicion)("Fecha_Nota")
+    '        TasaCambio = BuscaTasaCambio(FechaFactura)
+    '        MontoCredito = DataSet.Tables("ConsultaNota").Rows(iPosicion)("Monto")
+    '        MonedaFactura = DataSet.Tables("ConsultaNota").Rows(iPosicion)("MonedaNota")
+
+    '        '////////////////////////////////BUSCO UN RECIBO PARA ESTA NOTA DE DEBITO ///////////////////////////////////////////////
+    '        SqlString = "SELECT SUM(MontoPagado) AS MontoPagado FROM DetalleRecibo WHERE (Numero_Nota = '" & NumeroFactura & "')"
+    '        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+    '        DataAdapter.Fill(DataSet, "Saldo")
+    '        MiConexion.Close()
+    '        Saldo = MontoCredito
+    '        If DataSet.Tables("Saldo").Rows.Count <> 0 Then
+    '            If Not IsDBNull(DataSet.Tables("Saldo").Rows(0)("MontoPagado")) Then
+    '                Saldo = MontoCredito - DataSet.Tables("Saldo").Rows(0)("MontoPagado")
+    '                MontoCredito = Saldo
+    '            End If
+    '        Else
+    '            Saldo = MontoCredito
+    '        End If
+    '        DataSet.Tables("Saldo").Reset()
+
+
+
+    '        If My.Forms.FrmRecibos.TxtMonedaFactura.Text = "Cordobas" Then
+    '            If MonedaFactura = "Cordobas" Then
+    '                oDataRow = DataSet.Tables("FacturaRecibos").NewRow
+    '                oDataRow("Numero_Factura") = NumeroFactura
+    '                oDataRow("Fecha_Factura") = FechaFactura
+    '                oDataRow("MontoCredito") = Format(MontoCredito, "##,##0.00")
+    '                oDataRow("MontoPagado") = 0
+    '                oDataRow("Saldo") = Format(Saldo, "##,##0.00")
+    '                oDataRow("Tipo_Factura") = "NotaDebito"
+    '                DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
+    '            Else
+    '                '//////////////MONTOS EN DOLARES /////////////////////////
+    '                oDataRow = DataSet.Tables("FacturaRecibos").NewRow
+    '                oDataRow("Numero_Factura") = NumeroFactura
+    '                oDataRow("Fecha_Factura") = FechaFactura
+    '                oDataRow("MontoCredito") = Format(MontoCredito * TasaCambio, "##,##0.00")
+    '                oDataRow("MontoPagado") = 0
+    '                oDataRow("Saldo") = Format(Saldo * TasaCambio, "##,##0.00")
+    '                oDataRow("Tipo_Factura") = "NotaDebito"
+    '                DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
+    '            End If
+    '        Else
+    '            If MonedaFactura = "Cordobas" Then
+    '                oDataRow = DataSet.Tables("FacturaRecibos").NewRow
+    '                oDataRow("Numero_Factura") = NumeroFactura
+    '                oDataRow("Fecha_Factura") = FechaFactura
+    '                oDataRow("MontoCredito") = Format(MontoCredito / TasaCambio, "##,##0.00")
+    '                oDataRow("MontoPagado") = 0
+    '                oDataRow("Saldo") = Format(Saldo / TasaCambio, "##,##0.00")
+    '                oDataRow("Tipo_Factura") = "NotaDebito"
+    '                DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
+    '            Else
+    '                oDataRow = DataSet.Tables("FacturaRecibos").NewRow
+    '                oDataRow("Numero_Factura") = NumeroFactura
+    '                oDataRow("Fecha_Factura") = FechaFactura
+    '                oDataRow("MontoCredito") = Format(MontoCredito, "##,##0.00")
+    '                oDataRow("MontoPagado") = 0
+    '                oDataRow("Saldo") = Format(Saldo, "##,##0.00")
+    '                oDataRow("Tipo_Factura") = "NotaDebito"
+    '                DataSet.Tables("FacturaRecibos").Rows.Add(oDataRow)
+    '            End If
+
+    '        End If
+
+
+    '        My.Application.DoEvents()
+    '        iPosicion = iPosicion + 1
+    '        My.Forms.FrmRecibos.ProgressBar1.Value = My.Forms.FrmRecibos.ProgressBar1.Value + 1
+
+    '    Loop
+
+
+
+    '    Me.BindingFacturas.DataSource = DataSet.Tables("FacturaRecibos")
+    '    Me.TrueDBGridComponentes.DataSource = Me.BindingFacturas
+    '    Me.TrueDBGridComponentes.Columns(0).Caption = "Factura No"
+    '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Width = 70
+    '    Me.TrueDBGridComponentes.Columns(1).Caption = "Fecha Fact"
+    '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 80
+    '    Me.TrueDBGridComponentes.Columns(2).Caption = "Monto Credito"
+    '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 90
+    '    Me.TrueDBGridComponentes.Columns(3).Caption = "Monto Pagado"
+    '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 90
+    '    Me.TrueDBGridComponentes.Columns(4).Caption = "Saldo"
+    '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 90
+    '    Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Tipo_Factura").Visible = False
+
+    '    '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '    '//////////////////////////CARGO LAS FORMA DE PAGO////////////////////////////////////////////////////////////////////
+    '    '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '    '///////////////////////////////BUSCO SI TIENE CONFIGURADO EFECTIVO DEFAUL/////////////////////////////////////////////////////////////////
+    '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '    MonedaRecibo = My.Forms.FrmRecibos.TxtMonedaFactura.Text
+    '    SqlString = "SELECT  * FROM DatosEmpresa "
+    '    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+    '    DataAdapter.Fill(DataSet, "DatosEmpresa")
+    '    If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
+    '        If DataSet.Tables("DatosEmpresa").Rows(0)("MetodoPagoDefecto") = "Efectivo" Then
+    '            '*************************************************************************************************************************
+    '            '//////////////////////////////////BUSCO LA FORMA DE PAGO PARA ESTA FACTURA /////////////////////////////////////////////
+    '            '**************************************************************************************************************************
+    '            SqlString = "SELECT  * FROM MetodoPago WHERE  (TipoPago = 'Efectivo') AND (Moneda = '" & MonedaRecibo & "')"
+    '            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+    '            DataAdapter.Fill(DataSet, "Metodo")
+    '            If DataSet.Tables("Metodo").Rows.Count <> 0 Then
+    '                '************************************************************************************************************************
+    '                '  ///////////////////////////AGREO LA FORMA DE PAGO DEL TOTAL //////////////////////////////////////////////////////////
+    '                '*************************************************************************************************************************
+    '                SqlString = "SELECT  NombrePago, Monto,NumeroTarjeta,FechaVence FROM Detalle_MetodoFacturas WHERE (Numero_Factura = '-1')"
+    '                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+    '                DataAdapter.Fill(DataSet, "MetodoPago")
+
+    '                oDataRow = DataSet.Tables("MetodoPago").NewRow
+    '                oDataRow("NombrePago") = DataSet.Tables("Metodo").Rows(0)("NombrePago")
+    '                oDataRow("Monto") = 0
+    '                oDataRow("NumeroTarjeta") = 0
+    '                oDataRow("FechaVence") = Format(Now, "dd/MM/yyyy")
+    '                DataSet.Tables("MetodoPago").Rows.Add(oDataRow)
+
+    '                Me.BindingMetodo.DataSource = DataSet.Tables("MetodoPago")
+    '                Me.TrueDBGridMetodo.DataSource = Me.BindingMetodo
+    '                Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(1).Width = 110
+    '                Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(1).Width = 70
+    '                Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(0).Button = True
+    '                Me.TrueDBGridMetodo.Columns(1).NumberFormat = "##,##0.00"
+    '                Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(2).Visible = False
+    '                Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(3).Visible = False
+    '            End If
+    '        End If
+    '    End If
+
+
+
+    '    SqlString = "SELECT  NombrePago, Monto,NumeroTarjeta,FechaVence FROM Detalle_MetodoCompras WHERE (Numero_Compra = '-1')"
+    '    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+    '    DataAdapter.Fill(DataSet, "MetodoPago")
+    '    Me.BindingMetodo.DataSource = DataSet.Tables("MetodoPago")
+    '    Me.TrueDBGridMetodo.DataSource = Me.BindingMetodo
+    '    Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(1).Width = 110
+    '    Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(1).Width = 70
+    '    Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(0).Button = True
+    '    Me.TrueDBGridMetodo.Columns(1).NumberFormat = "##,##0.00"
+    '    Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(2).Visible = False
+    '    Me.TrueDBGridMetodo.Splits.Item(0).DisplayColumns(3).Visible = False
+    'End Sub
 
 
     Private Sub TrueDBGridComponentes_AfterColUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridComponentes.AfterColUpdate
@@ -873,6 +1592,7 @@ Public Class FrmRecibosFacturas
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, FechaVence As Date, Pagado As Double = 0
         Dim SaldoFacturaInicial As Double, AplicaFactura As Double, SaldoFacturaFinal As Double, FechaFactura As Date, Descripcion As String = ""
         Dim TipoFactura As String
+        Dim LineaFactura As Boolean = False
 
         If Me.TxtImporteRecibido.Text <> "" Then
             MontoRecibido = Me.TxtImporteRecibido.Text
@@ -881,6 +1601,43 @@ Public Class FrmRecibosFacturas
             MsgBox("No se puede procesar, debe indicar el importe recibido", MsgBoxStyle.Critical, "Zeus Facturacion")
             Exit Sub
         End If
+
+        '==============================================================
+        ' CARGAR CONFIGURACION DE LA EMPRESA UNA SOLA VEZ
+        '==============================================================
+
+        Dim SqlConfig As String =
+             "SELECT LineaFactura FROM DatosEmpresa"
+
+        Dim ConexionConfig As New SqlClient.SqlConnection(Conexion)
+
+        Try
+
+            ConexionConfig.Open()
+
+            Dim ComandoConfig As New SqlClient.SqlCommand(
+        SqlConfig,
+        ConexionConfig)
+
+            Dim ResultadoConfig As Object =
+        ComandoConfig.ExecuteScalar()
+
+            If Not ResultadoConfig Is Nothing Then
+
+                If Not IsDBNull(ResultadoConfig) Then
+                    LineaFactura = Convert.ToBoolean(ResultadoConfig)
+                End If
+
+            End If
+
+            ComandoConfig.Dispose()
+
+        Finally
+
+            ConexionConfig.Close()
+            ConexionConfig.Dispose()
+
+        End Try
 
 
         '*****************************************************************************************************************************************************
@@ -923,23 +1680,46 @@ Public Class FrmRecibosFacturas
 
             If ResultadoFactura < 0 Then
 
-                '///////////////////////////////BUSCO LACONFIGURACION DEL RECIBO /////////////////////////////////
-                SQlString = "SELECT  * FROM DatosEmpresa"
-                DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-                DataAdapter.Fill(DataSet, "DatosEmpresa")
-                If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
-                    If DataSet.Tables("DatosEmpresa").Rows(0)("LineaFactura") = True Then
-                        SQlString = "SELECT *  FROM Detalle_Facturas WHERE (Numero_Factura = '" & NumeroFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Format(FechaFactura, "yyyy-MM-dd") & "', 102)) AND (Tipo_Factura = 'Factura')"
-                        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-                        DataAdapter.Fill(DataSet, "DetalleFacturas")
-                        If DataSet.Tables("DetalleFacturas").Rows.Count <> 0 Then
-                            Descripcion = DataSet.Tables("DetalleFacturas").Rows(0)("Descripcion_Producto")
-                        End If
+                If LineaFactura = True Then
+
+                    SQlString =
+                        "SELECT * FROM Detalle_Facturas " &
+                        "WHERE (Numero_Factura = '" & NumeroFactura & "') " &
+                        "AND (Fecha_Factura = CONVERT(DATETIME, '" &
+                        Format(FechaFactura, "yyyy-MM-dd") & "', 102)) " &
+                        "AND (Tipo_Factura = 'Factura')"
+
+                    DataAdapter =
+                        New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+
+                    DataAdapter.Fill(DataSet, "DetalleFacturas")
+
+                    If DataSet.Tables("DetalleFacturas").Rows.Count <> 0 Then
+
+                        Descripcion =
+                            DataSet.Tables("DetalleFacturas").Rows(0)("Descripcion_Producto")
+
                     End If
-                    'DataSet.Tables("DetalleFacturas").Clear()
+
                 End If
 
-                '
+                ''///////////////////////////////BUSCO LACONFIGURACION DEL RECIBO /////////////////////////////////
+                'SQlString = "SELECT  * FROM DatosEmpresa"
+                'DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+                'DataAdapter.Fill(DataSet, "DatosEmpresa")
+                'If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
+                '    If DataSet.Tables("DatosEmpresa").Rows(0)("LineaFactura") = True Then
+                '        SQlString = "SELECT *  FROM Detalle_Facturas WHERE (Numero_Factura = '" & NumeroFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Format(FechaFactura, "yyyy-MM-dd") & "', 102)) AND (Tipo_Factura = 'Factura')"
+                '        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+                '        DataAdapter.Fill(DataSet, "DetalleFacturas")
+                '        If DataSet.Tables("DetalleFacturas").Rows.Count <> 0 Then
+                '            Descripcion = DataSet.Tables("DetalleFacturas").Rows(0)("Descripcion_Producto")
+                '        End If
+                '    End If
+                '    'DataSet.Tables("DetalleFacturas").Clear()
+                'End If
+
+
 
 
                 If MontoMetodo >= System.Math.Abs(ResultadoFactura) Then
@@ -1023,27 +1803,54 @@ Public Class FrmRecibosFacturas
                     NumeroFactura = Me.BindingFacturas.Item(iPosicionFacturas)("Numero_Factura")
 
                     '///////////////////////////////BUSCO LACONFIGURACION DEL RECIBO /////////////////////////////////
-                    SQlString = "SELECT  * FROM DatosEmpresa"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-                    DataAdapter.Fill(DataSet, "DatosEmpresa")
-                    If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
-                        If DataSet.Tables("DatosEmpresa").Rows(0)("LineaFactura") = True Then
-                            SQlString = "SELECT *  FROM Detalle_Facturas WHERE (Numero_Factura = '" & NumeroFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Format(FechaFactura, "yyyy-MM-dd") & "', 102)) AND (Tipo_Factura = 'Factura')"
-                            DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-                            DataAdapter.Fill(DataSet, "DetalleFacturas")
-                            If DataSet.Tables("DetalleFacturas").Rows.Count <> 0 Then
-                                Descripcion = DataSet.Tables("DetalleFacturas").Rows(0)("Descripcion_Producto")
-                            End If
+                    If LineaFactura = True Then
+
+                        SQlString =
+                            "SELECT * FROM Detalle_Facturas " &
+                            "WHERE (Numero_Factura = '" & NumeroFactura & "') " &
+                            "AND (Fecha_Factura = CONVERT(DATETIME, '" &
+                            Format(FechaFactura, "yyyy-MM-dd") & "', 102)) " &
+                            "AND (Tipo_Factura = 'Factura')"
+
+                        DataAdapter =
+                            New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+
+                        DataAdapter.Fill(DataSet, "DetalleFacturas")
+
+                        If DataSet.Tables("DetalleFacturas").Rows.Count <> 0 Then
+
+                            Descripcion =
+                                DataSet.Tables("DetalleFacturas").Rows(0)("Descripcion_Producto")
+
                         End If
-                        'DataSet.Tables("DetalleFacturas").Clear()
+
                     End If
+
+
+                    'SQlString = "SELECT  * FROM DatosEmpresa"
+                    'DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+                    'DataAdapter.Fill(DataSet, "DatosEmpresa")
+                    'If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
+                    '    If DataSet.Tables("DatosEmpresa").Rows(0)("LineaFactura") = True Then
+                    '        SQlString = "SELECT *  FROM Detalle_Facturas WHERE (Numero_Factura = '" & NumeroFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Format(FechaFactura, "yyyy-MM-dd") & "', 102)) AND (Tipo_Factura = 'Factura')"
+                    '        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
+                    '        DataAdapter.Fill(DataSet, "DetalleFacturas")
+                    '        If DataSet.Tables("DetalleFacturas").Rows.Count <> 0 Then
+                    '            Descripcion = DataSet.Tables("DetalleFacturas").Rows(0)("Descripcion_Producto")
+                    '        End If
+                    '    End If
+                    '    'DataSet.Tables("DetalleFacturas").Clear()
+                    'End If
 
                     '/////////////////////////////////////SI ES UNA NOTA DE DEBITO IMPRIMO LAS OBSERVACIONES ///////////////
                     '/////////////////////////////////////////////////////////////////////////////////////////////////////
+                    Dim Numero As String
+                    Numero = Regex.Replace(NumeroFactura, "^[^0-9]+", "")
+
                     If TipoFactura = "NotaDebito" Then
                         'SQlString = "SELECT  Detalle_Nota.* FROM Detalle_Nota WHERE Numero_Nota = '" & Mid(NumeroFactura, 3, Len(NumeroFactura)) & "')"
                         SQlString = "SELECT Detalle_Nota.Numero_Nota, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Fecha_Nota FROM  Detalle_Nota INNER JOIN IndiceNota ON Detalle_Nota.Numero_Nota = IndiceNota.Numero_Nota AND Detalle_Nota.Fecha_Nota = IndiceNota.Fecha_Nota AND Detalle_Nota.Tipo_Nota = IndiceNota.Tipo_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB  " &
-                                    "WHERE (Detalle_Nota.Numero_Nota = '" & Mid(NumeroFactura, 3, Len(NumeroFactura)) & "') AND (NotaDebito.Tipo LIKE N'%Debito Clientes%')"
+                                    "WHERE (Detalle_Nota.Numero_Nota = '" & Numero & "') AND (NotaDebito.Tipo LIKE N'%Debito Clientes%')"
                         DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
                         DataAdapter.Fill(DataSet, "Consulta")
                         If DataSet.Tables("Consulta").Rows.Count <> 0 Then

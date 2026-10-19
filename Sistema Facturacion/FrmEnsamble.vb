@@ -528,7 +528,7 @@ Public Class FrmEnsamble
                         Exit Sub
                     End If
 
-                    Existencia = BuscaExistenciaBodega(CodProductos, Me.CboCodigoBodega.Text)
+                    Existencia = BuscaExistenciaBodega(CodProductos, Me.CboCodigoBodega.Text, Now)
 
                     If Cantidad > Existencia Then
                         MsgBox("No Existe inventario para este ensamble" & CodProductos, MsgBoxStyle.Critical, "Zeus Facturacion")

@@ -1,0 +1,17 @@
+﻿ERRORES DE IMPORTACIÓN
+========================================
+Archivo: FormatoCuentasxcobrar Excel97-2003.xls
+Planilla: 00002
+Tipo de deducción: Trazabilidad
+Fecha: 09/09/2026 16:02:19
+
+Línea 2: El código de beneficiario '1841' no existe en la planilla 00002.
+
+Línea 3: El código de beneficiario '2051' no existe en la planilla 00002.
+
+Línea 4: El código de beneficiario '2060' no existe en la planilla 00002.
+
+Línea 5: El código de beneficiario '2063' no existe en la planilla 00002.
+
+========================================
+Total de errores: 4

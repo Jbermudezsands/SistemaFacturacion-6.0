@@ -9,7 +9,22 @@ Namespace My
     ' NetworkAvailabilityChanged: se desencadena cuando la conexión de red está conectada o desconectada.
     Partial Friend Class MyApplication
 
+        Private Sub MyApplication_UnhandledException(sender As Object, e As Microsoft.VisualBasic.ApplicationServices.UnhandledExceptionEventArgs) Handles Me.UnhandledException
+
+            CsLogError.Registrar(e.Exception)
+
+            MessageBox.Show("Ocurrió un error inesperado. Se ha registrado para revisión." & vbCrLf & vbCrLf & e.Exception.Message,
+                             "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+            e.ExitApplication = False
+
+        End Sub
+
     End Class
+
+
+
+
 
 End Namespace
 

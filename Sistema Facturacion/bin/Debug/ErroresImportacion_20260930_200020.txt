@@ -1,0 +1,45 @@
+﻿ERRORES DE IMPORTACIÓN
+========================================
+Archivo: MATIGUAS DEDUCCIONES FARMACIA.xls
+Planilla: 00013
+Tipo de deducción: ProductosVeterinarios
+Fecha: 30/09/2026 20:00:20
+
+Línea 2: El código de beneficiario '250' no existe en la planilla 00013.
+
+Línea 3: El código de beneficiario '5793' no existe en la planilla 00013.
+
+Línea 4: El código de beneficiario '5377' no existe en la planilla 00013.
+
+Línea 5: El código de beneficiario '4595' no existe en la planilla 00013.
+
+Línea 6: El código de beneficiario '4200' no existe en la planilla 00013.
+
+Línea 7: El código de beneficiario '2202' no existe en la planilla 00013.
+
+Línea 8: El código de beneficiario '5352' no existe en la planilla 00013.
+
+Línea 9: El código de beneficiario '7271' no existe en la planilla 00013.
+
+Línea 10: El código de beneficiario '5959' no existe en la planilla 00013.
+
+Línea 11: El código de beneficiario '3618' no existe en la planilla 00013.
+
+Línea 12: El código de beneficiario '5336' no existe en la planilla 00013.
+
+Línea 13: El código de beneficiario '3502' no existe en la planilla 00013.
+
+Línea 14: El código de beneficiario '5911' no existe en la planilla 00013.
+
+Línea 15: El código de beneficiario '7038' no existe en la planilla 00013.
+
+Línea 16: El código de beneficiario '5782' no existe en la planilla 00013.
+
+Línea 17: El código de beneficiario '300' no existe en la planilla 00013.
+
+Línea 18: El código de beneficiario '1151' no existe en la planilla 00013.
+
+Línea 19: El código de beneficiario '94' no existe en la planilla 00013.
+
+========================================
+Total de errores: 18

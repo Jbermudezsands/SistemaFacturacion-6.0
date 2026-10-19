@@ -80,6 +80,8 @@ Public Class FrmTransferenciaListado
         If Procesado = True Then
 
             My.Forms.FrmTransferencias.Button4.Enabled = False
+            My.Forms.FrmTransferenciaBodegas.btnAgregar.Enabled = False
+            My.Forms.FrmTransferenciaBodegas.btnEscanear.Enabled = False
             My.Forms.FrmTransferencias.CboCodigoBodega.Enabled = False
             My.Forms.FrmTransferencias.CboCodigoBodega2.Enabled = False
             'My.Forms.FrmTransferencias.CboCodigoBodega.Enabled = True
@@ -88,6 +90,8 @@ Public Class FrmTransferenciaListado
 
             My.Forms.FrmTransferencias.TrueDBGridComponentes.Enabled = True
             My.Forms.FrmTransferencias.Button4.Enabled = True
+            My.Forms.FrmTransferenciaBodegas.btnAgregar.Enabled = True
+            My.Forms.FrmTransferenciaBodegas.btnEscanear.Enabled = True
             My.Forms.FrmTransferencias.CboCodigoBodega.Enabled = True
             My.Forms.FrmTransferencias.CboCodigoBodega2.Enabled = True
         End If
@@ -172,7 +176,7 @@ Public Class FrmTransferenciaListado
                 My.Application.DoEvents()
                 CodigoBodega = DataSet.Tables("Bodegas").Rows(iPosicionFila)("Cod_Bodegas")
 
-                ExistenciaBodega = BuscaExistenciaBodega(CodigoProducto, CodigoBodega)
+                ExistenciaBodega = BuscaExistenciaBodega(CodigoProducto, CodigoBodega, Now)
                 MiConexion.Close()
                 '///////////ACTUALIZO LA EXISTENCIA PARA CADA BODEGA ////////////////////////////////////////
                 StrSQLUpdate = "UPDATE [DetalleBodegas]  SET [Existencia] = '" & ExistenciaBodega & "'  WHERE (Cod_Productos = '" & CodigoProducto & "') AND (Cod_Bodegas = '" & CodigoBodega & "')"

@@ -145,6 +145,8 @@ Partial Class FrmBeneficiario
         Me.TxtCtaBancoSocio = New System.Windows.Forms.TextBox()
         Me.Label38 = New System.Windows.Forms.Label()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.TxtCtoTransporteSocio = New System.Windows.Forms.TextBox()
+        Me.Label101 = New System.Windows.Forms.Label()
         Me.CboTransportistaSocio = New C1.Win.C1List.C1Combo()
         Me.Label98 = New System.Windows.Forms.Label()
         Me.TxtPrecioSocio = New System.Windows.Forms.TextBox()
@@ -200,6 +202,8 @@ Partial Class FrmBeneficiario
         Me.TxtCtaBancoPreSocio = New System.Windows.Forms.TextBox()
         Me.Label53 = New System.Windows.Forms.Label()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.TxtCtoTransportePreSocio = New System.Windows.Forms.TextBox()
+        Me.Label102 = New System.Windows.Forms.Label()
         Me.CboTransportistaPreSocio = New C1.Win.C1List.C1Combo()
         Me.Label99 = New System.Windows.Forms.Label()
         Me.TxtPrecioPreSocio = New System.Windows.Forms.TextBox()
@@ -255,6 +259,8 @@ Partial Class FrmBeneficiario
         Me.TxtCtaBancoProductor = New System.Windows.Forms.TextBox()
         Me.Label70 = New System.Windows.Forms.Label()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
+        Me.TxtCtoTransporteProductor = New System.Windows.Forms.TextBox()
+        Me.Label103 = New System.Windows.Forms.Label()
         Me.CboTransportistaProductor = New C1.Win.C1List.C1Combo()
         Me.Label100 = New System.Windows.Forms.Label()
         Me.TxtPrecioProductor = New System.Windows.Forms.TextBox()
@@ -1722,6 +1728,8 @@ Partial Class FrmBeneficiario
         '
         'GroupBox4
         '
+        Me.GroupBox4.Controls.Add(Me.TxtCtoTransporteSocio)
+        Me.GroupBox4.Controls.Add(Me.Label101)
         Me.GroupBox4.Controls.Add(Me.CboTransportistaSocio)
         Me.GroupBox4.Controls.Add(Me.Label98)
         Me.GroupBox4.Controls.Add(Me.TxtPrecioSocio)
@@ -1740,6 +1748,23 @@ Partial Class FrmBeneficiario
         Me.GroupBox4.Size = New System.Drawing.Size(588, 103)
         Me.GroupBox4.TabIndex = 0
         Me.GroupBox4.TabStop = False
+        '
+        'TxtCtoTransporteSocio
+        '
+        Me.TxtCtoTransporteSocio.Location = New System.Drawing.Point(482, 73)
+        Me.TxtCtoTransporteSocio.Name = "TxtCtoTransporteSocio"
+        Me.TxtCtoTransporteSocio.Size = New System.Drawing.Size(73, 20)
+        Me.TxtCtoTransporteSocio.TabIndex = 184
+        Me.TxtCtoTransporteSocio.Text = "0"
+        '
+        'Label101
+        '
+        Me.Label101.AutoSize = True
+        Me.Label101.Location = New System.Drawing.Point(401, 79)
+        Me.Label101.Name = "Label101"
+        Me.Label101.Size = New System.Drawing.Size(80, 13)
+        Me.Label101.TabIndex = 183
+        Me.Label101.Text = "Cto Transporte:"
         '
         'CboTransportistaSocio
         '
@@ -1768,7 +1793,7 @@ Partial Class FrmBeneficiario
         Me.CboTransportistaSocio.RowDivider.Color = System.Drawing.Color.DarkGray
         Me.CboTransportistaSocio.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
         Me.CboTransportistaSocio.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboTransportistaSocio.Size = New System.Drawing.Size(135, 21)
+        Me.CboTransportistaSocio.Size = New System.Drawing.Size(238, 21)
         Me.CboTransportistaSocio.TabIndex = 181
         Me.CboTransportistaSocio.PropBag = resources.GetString("CboTransportistaSocio.PropBag")
         '
@@ -1787,6 +1812,7 @@ Partial Class FrmBeneficiario
         Me.TxtPrecioSocio.Name = "TxtPrecioSocio"
         Me.TxtPrecioSocio.Size = New System.Drawing.Size(79, 20)
         Me.TxtPrecioSocio.TabIndex = 180
+        Me.TxtPrecioSocio.Text = "0"
         '
         'Label92
         '
@@ -1824,7 +1850,7 @@ Partial Class FrmBeneficiario
         Me.CboTipoNominaSocio.RowDivider.Color = System.Drawing.Color.DarkGray
         Me.CboTipoNominaSocio.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
         Me.CboTipoNominaSocio.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboTipoNominaSocio.Size = New System.Drawing.Size(135, 21)
+        Me.CboTipoNominaSocio.Size = New System.Drawing.Size(238, 21)
         Me.CboTipoNominaSocio.TabIndex = 178
         Me.CboTipoNominaSocio.PropBag = resources.GetString("CboTipoNominaSocio.PropBag")
         '
@@ -2378,6 +2404,8 @@ Partial Class FrmBeneficiario
         '
         'GroupBox5
         '
+        Me.GroupBox5.Controls.Add(Me.TxtCtoTransportePreSocio)
+        Me.GroupBox5.Controls.Add(Me.Label102)
         Me.GroupBox5.Controls.Add(Me.CboTransportistaPreSocio)
         Me.GroupBox5.Controls.Add(Me.Label99)
         Me.GroupBox5.Controls.Add(Me.TxtPrecioPreSocio)
@@ -2393,9 +2421,26 @@ Partial Class FrmBeneficiario
         Me.GroupBox5.Controls.Add(Me.Label32)
         Me.GroupBox5.Location = New System.Drawing.Point(6, 6)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(563, 110)
+        Me.GroupBox5.Size = New System.Drawing.Size(590, 110)
         Me.GroupBox5.TabIndex = 1
         Me.GroupBox5.TabStop = False
+        '
+        'TxtCtoTransportePreSocio
+        '
+        Me.TxtCtoTransportePreSocio.Location = New System.Drawing.Point(511, 73)
+        Me.TxtCtoTransportePreSocio.Name = "TxtCtoTransportePreSocio"
+        Me.TxtCtoTransportePreSocio.Size = New System.Drawing.Size(73, 20)
+        Me.TxtCtoTransportePreSocio.TabIndex = 186
+        Me.TxtCtoTransportePreSocio.Text = "0"
+        '
+        'Label102
+        '
+        Me.Label102.AutoSize = True
+        Me.Label102.Location = New System.Drawing.Point(430, 79)
+        Me.Label102.Name = "Label102"
+        Me.Label102.Size = New System.Drawing.Size(80, 13)
+        Me.Label102.TabIndex = 185
+        Me.Label102.Text = "Cto Transporte:"
         '
         'CboTransportistaPreSocio
         '
@@ -2424,7 +2469,7 @@ Partial Class FrmBeneficiario
         Me.CboTransportistaPreSocio.RowDivider.Color = System.Drawing.Color.DarkGray
         Me.CboTransportistaPreSocio.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
         Me.CboTransportistaPreSocio.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboTransportistaPreSocio.Size = New System.Drawing.Size(135, 21)
+        Me.CboTransportistaPreSocio.Size = New System.Drawing.Size(244, 21)
         Me.CboTransportistaPreSocio.TabIndex = 183
         Me.CboTransportistaPreSocio.PropBag = resources.GetString("CboTransportistaPreSocio.PropBag")
         '
@@ -2439,15 +2484,16 @@ Partial Class FrmBeneficiario
         '
         'TxtPrecioPreSocio
         '
-        Me.TxtPrecioPreSocio.Location = New System.Drawing.Point(340, 69)
+        Me.TxtPrecioPreSocio.Location = New System.Drawing.Point(340, 73)
         Me.TxtPrecioPreSocio.Name = "TxtPrecioPreSocio"
         Me.TxtPrecioPreSocio.Size = New System.Drawing.Size(79, 20)
         Me.TxtPrecioPreSocio.TabIndex = 182
+        Me.TxtPrecioPreSocio.Text = "0"
         '
         'Label93
         '
         Me.Label93.AutoSize = True
-        Me.Label93.Location = New System.Drawing.Point(265, 72)
+        Me.Label93.Location = New System.Drawing.Point(265, 76)
         Me.Label93.Name = "Label93"
         Me.Label93.Size = New System.Drawing.Size(73, 13)
         Me.Label93.TabIndex = 181
@@ -2480,7 +2526,7 @@ Partial Class FrmBeneficiario
         Me.CboTipoNominaPreSocio.RowDivider.Color = System.Drawing.Color.DarkGray
         Me.CboTipoNominaPreSocio.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
         Me.CboTipoNominaPreSocio.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboTipoNominaPreSocio.Size = New System.Drawing.Size(135, 21)
+        Me.CboTipoNominaPreSocio.Size = New System.Drawing.Size(244, 21)
         Me.CboTipoNominaPreSocio.TabIndex = 179
         Me.CboTipoNominaPreSocio.PropBag = resources.GetString("CboTipoNominaPreSocio.PropBag")
         '
@@ -3034,6 +3080,8 @@ Partial Class FrmBeneficiario
         '
         'GroupBox8
         '
+        Me.GroupBox8.Controls.Add(Me.TxtCtoTransporteProductor)
+        Me.GroupBox8.Controls.Add(Me.Label103)
         Me.GroupBox8.Controls.Add(Me.CboTransportistaProductor)
         Me.GroupBox8.Controls.Add(Me.Label100)
         Me.GroupBox8.Controls.Add(Me.TxtPrecioProductor)
@@ -3052,6 +3100,23 @@ Partial Class FrmBeneficiario
         Me.GroupBox8.Size = New System.Drawing.Size(596, 103)
         Me.GroupBox8.TabIndex = 2
         Me.GroupBox8.TabStop = False
+        '
+        'TxtCtoTransporteProductor
+        '
+        Me.TxtCtoTransporteProductor.Location = New System.Drawing.Point(517, 68)
+        Me.TxtCtoTransporteProductor.Name = "TxtCtoTransporteProductor"
+        Me.TxtCtoTransporteProductor.Size = New System.Drawing.Size(73, 20)
+        Me.TxtCtoTransporteProductor.TabIndex = 188
+        Me.TxtCtoTransporteProductor.Text = "0"
+        '
+        'Label103
+        '
+        Me.Label103.AutoSize = True
+        Me.Label103.Location = New System.Drawing.Point(436, 74)
+        Me.Label103.Name = "Label103"
+        Me.Label103.Size = New System.Drawing.Size(80, 13)
+        Me.Label103.TabIndex = 187
+        Me.Label103.Text = "Cto Transporte:"
         '
         'CboTransportistaProductor
         '
@@ -3080,7 +3145,7 @@ Partial Class FrmBeneficiario
         Me.CboTransportistaProductor.RowDivider.Color = System.Drawing.Color.DarkGray
         Me.CboTransportistaProductor.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
         Me.CboTransportistaProductor.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboTransportistaProductor.Size = New System.Drawing.Size(135, 21)
+        Me.CboTransportistaProductor.Size = New System.Drawing.Size(250, 21)
         Me.CboTransportistaProductor.TabIndex = 185
         Me.CboTransportistaProductor.PropBag = resources.GetString("CboTransportistaProductor.PropBag")
         '
@@ -3099,6 +3164,7 @@ Partial Class FrmBeneficiario
         Me.TxtPrecioProductor.Name = "TxtPrecioProductor"
         Me.TxtPrecioProductor.Size = New System.Drawing.Size(79, 20)
         Me.TxtPrecioProductor.TabIndex = 184
+        Me.TxtPrecioProductor.Text = "0"
         '
         'Label94
         '
@@ -3136,7 +3202,7 @@ Partial Class FrmBeneficiario
         Me.CboTipoNominaProductor.RowDivider.Color = System.Drawing.Color.DarkGray
         Me.CboTipoNominaProductor.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
         Me.CboTipoNominaProductor.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboTipoNominaProductor.Size = New System.Drawing.Size(135, 21)
+        Me.CboTipoNominaProductor.Size = New System.Drawing.Size(250, 21)
         Me.CboTipoNominaProductor.TabIndex = 179
         Me.CboTipoNominaProductor.PropBag = resources.GetString("CboTipoNominaProductor.PropBag")
         '
@@ -4383,4 +4449,10 @@ Partial Class FrmBeneficiario
     Friend WithEvents Label99 As Label
     Friend WithEvents CboTransportistaProductor As C1.Win.C1List.C1Combo
     Friend WithEvents Label100 As Label
+    Friend WithEvents TxtCtoTransporteSocio As TextBox
+    Friend WithEvents Label101 As Label
+    Friend WithEvents TxtCtoTransportePreSocio As TextBox
+    Friend WithEvents Label102 As Label
+    Friend WithEvents TxtCtoTransporteProductor As TextBox
+    Friend WithEvents Label103 As Label
 End Class

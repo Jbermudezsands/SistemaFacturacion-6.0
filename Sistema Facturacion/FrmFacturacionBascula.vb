@@ -1,3 +1,5 @@
+Imports System.Text.RegularExpressions
+
 Public Class FrmFacturacionBascula
     Public MiConexion As New SqlClient.SqlConnection(Conexion), ConsecutivoFacturaManual As Boolean = False
     Public Function GenerarNumeroFacturaBascula(ByVal ConsecutivoFacturaManual As Boolean, ByVal TipoFactura As String) As String
@@ -112,7 +114,9 @@ Public Class FrmFacturacionBascula
             DataAdapter.Fill(DataSet, "Facturas")
             If DataSet.Tables("Facturas").Rows.Count <> 0 Then
                 NumeroFactura = DataSet.Tables("Facturas").Rows(0)("Numero_Factura")
-                Numero = Mid(NumeroFactura, Len("M") + 1, Len(NumeroFactura)) 'My.Forms.FrmFacturas.CmbSerie.Text
+                'Numero = Mid(NumeroFactura, Len("M") + 1, Len(NumeroFactura)) 'My.Forms.FrmFacturas.CmbSerie.Text
+                Numero = Regex.Replace(NumeroFactura, "^[^0-9]+", "")
+
                 ConsecutivoFactura = Numero + 1
             End If
 

@@ -54,8 +54,8 @@ Partial Class FrmRecibos
         Me.BindingMetodo = New System.Windows.Forms.BindingSource(Me.components)
         Me.BindingDetalleRecibo = New System.Windows.Forms.BindingSource(Me.components)
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.BtnPlanPagos = New System.Windows.Forms.Button()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
-        Me.Button3 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.TxtTipoRecibo = New System.Windows.Forms.TextBox()
         Me.TxtMonedaFactura = New System.Windows.Forms.ComboBox()
@@ -70,6 +70,8 @@ Partial Class FrmRecibos
         Me.lblTitulo = New System.Windows.Forms.Label()
         Me.pnlCliente = New System.Windows.Forms.Panel()
         Me.pnlDetalle = New System.Windows.Forms.Panel()
+        Me.BtnQuitarLinea = New System.Windows.Forms.Button()
+        Me.BtnAgregarLinea = New System.Windows.Forms.Button()
         Me.lblSeccionDetalle = New System.Windows.Forms.Label()
         Me.tarjetaPorAplicar = New System.Windows.Forms.Panel()
         Me.lblPorAplicar = New System.Windows.Forms.Label()
@@ -477,8 +479,8 @@ Partial Class FrmRecibos
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.BtnPlanPagos)
         Me.GroupBox3.Controls.Add(Me.ProgressBar1)
-        Me.GroupBox3.Controls.Add(Me.Button3)
         Me.GroupBox3.Controls.Add(Me.Button2)
         Me.GroupBox3.Location = New System.Drawing.Point(749, 22)
         Me.GroupBox3.Name = "GroupBox3"
@@ -486,25 +488,25 @@ Partial Class FrmRecibos
         Me.GroupBox3.TabIndex = 225
         Me.GroupBox3.TabStop = False
         '
+        'BtnPlanPagos
+        '
+        Me.BtnPlanPagos.ForeColor = System.Drawing.Color.FromArgb(CType(CType(37, Byte), Integer), CType(CType(99, Byte), Integer), CType(CType(235, Byte), Integer))
+        Me.BtnPlanPagos.Image = CType(resources.GetObject("BtnPlanPagos.Image"), System.Drawing.Image)
+        Me.BtnPlanPagos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.BtnPlanPagos.Location = New System.Drawing.Point(11, 66)
+        Me.BtnPlanPagos.Name = "BtnPlanPagos"
+        Me.BtnPlanPagos.Size = New System.Drawing.Size(102, 32)
+        Me.BtnPlanPagos.TabIndex = 225
+        Me.BtnPlanPagos.Text = "Plan Pagos"
+        Me.BtnPlanPagos.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnPlanPagos.UseVisualStyleBackColor = True
+        '
         'ProgressBar1
         '
         Me.ProgressBar1.Location = New System.Drawing.Point(11, 15)
         Me.ProgressBar1.Name = "ProgressBar1"
         Me.ProgressBar1.Size = New System.Drawing.Size(102, 10)
         Me.ProgressBar1.TabIndex = 223
-        '
-        'Button3
-        '
-        Me.Button3.ForeColor = System.Drawing.Color.FromArgb(CType(CType(37, Byte), Integer), CType(CType(99, Byte), Integer), CType(CType(235, Byte), Integer))
-        Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
-        Me.Button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button3.Location = New System.Drawing.Point(11, 66)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(102, 32)
-        Me.Button3.TabIndex = 224
-        Me.Button3.Text = "Plan Pagos"
-        Me.Button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button3.UseVisualStyleBackColor = True
         '
         'Button2
         '
@@ -553,9 +555,9 @@ Partial Class FrmRecibos
         Me.LblLetras.Font = New System.Drawing.Font("Cambria", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblLetras.Location = New System.Drawing.Point(15, 171)
         Me.LblLetras.Name = "LblLetras"
-        Me.LblLetras.Size = New System.Drawing.Size(44, 14)
+        Me.LblLetras.Size = New System.Drawing.Size(10, 14)
         Me.LblLetras.TabIndex = 229
-        Me.LblLetras.Text = "Label8"
+        Me.LblLetras.Text = "."
         '
         'ButtonBorrar
         '
@@ -608,7 +610,7 @@ Partial Class FrmRecibos
         Me.GroupBox4.Controls.Add(Me.ButtonAgregar)
         Me.GroupBox4.Controls.Add(Me.ButtonBorrar)
         Me.GroupBox4.Controls.Add(Me.Button8)
-        Me.GroupBox4.Location = New System.Drawing.Point(658, 8)
+        Me.GroupBox4.Location = New System.Drawing.Point(675, 16)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(204, 169)
         Me.GroupBox4.TabIndex = 233
@@ -657,6 +659,8 @@ Partial Class FrmRecibos
         '
         Me.pnlDetalle.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.pnlDetalle.BackColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(234, Byte), Integer), CType(CType(247, Byte), Integer))
+        Me.pnlDetalle.Controls.Add(Me.BtnQuitarLinea)
+        Me.pnlDetalle.Controls.Add(Me.BtnAgregarLinea)
         Me.pnlDetalle.Controls.Add(Me.lblSeccionDetalle)
         Me.pnlDetalle.Controls.Add(Me.TDBGridDetalle)
         Me.pnlDetalle.Controls.Add(Me.LblLetras)
@@ -665,6 +669,30 @@ Partial Class FrmRecibos
         Me.pnlDetalle.Name = "pnlDetalle"
         Me.pnlDetalle.Size = New System.Drawing.Size(886, 190)
         Me.pnlDetalle.TabIndex = 237
+        '
+        'BtnQuitarLinea
+        '
+        Me.BtnQuitarLinea.BackColor = System.Drawing.Color.White
+        Me.BtnQuitarLinea.ForeColor = System.Drawing.Color.FromArgb(CType(CType(37, Byte), Integer), CType(CType(99, Byte), Integer), CType(CType(235, Byte), Integer))
+        Me.BtnQuitarLinea.Image = CType(resources.GetObject("BtnQuitarLinea.Image"), System.Drawing.Image)
+        Me.BtnQuitarLinea.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.BtnQuitarLinea.Location = New System.Drawing.Point(633, 56)
+        Me.BtnQuitarLinea.Name = "BtnQuitarLinea"
+        Me.BtnQuitarLinea.Size = New System.Drawing.Size(35, 32)
+        Me.BtnQuitarLinea.TabIndex = 235
+        Me.BtnQuitarLinea.UseVisualStyleBackColor = False
+        '
+        'BtnAgregarLinea
+        '
+        Me.BtnAgregarLinea.BackColor = System.Drawing.Color.White
+        Me.BtnAgregarLinea.ForeColor = System.Drawing.Color.FromArgb(CType(CType(37, Byte), Integer), CType(CType(99, Byte), Integer), CType(CType(235, Byte), Integer))
+        Me.BtnAgregarLinea.Image = CType(resources.GetObject("BtnAgregarLinea.Image"), System.Drawing.Image)
+        Me.BtnAgregarLinea.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.BtnAgregarLinea.Location = New System.Drawing.Point(633, 21)
+        Me.BtnAgregarLinea.Name = "BtnAgregarLinea"
+        Me.BtnAgregarLinea.Size = New System.Drawing.Size(35, 32)
+        Me.BtnAgregarLinea.TabIndex = 234
+        Me.BtnAgregarLinea.UseVisualStyleBackColor = False
         '
         'lblSeccionDetalle
         '
@@ -921,7 +949,6 @@ Partial Class FrmRecibos
     Private WithEvents pnlHeader As Panel
     Private WithEvents lblTitulo As Label
     Private WithEvents pnlCliente As Panel
-    Friend WithEvents Button3 As Button
     Private WithEvents pnlDetalle As Panel
     Private WithEvents lblSeccionDetalle As Label
     Private WithEvents tarjetaPorAplicar As Panel
@@ -935,4 +962,7 @@ Partial Class FrmRecibos
     Friend WithEvents TxtSubTotal As TextBox
     Private WithEvents pnlTotales As TableLayoutPanel
     Private WithEvents lblObservaciones As Label
+    Friend WithEvents BtnPlanPagos As Button
+    Friend WithEvents BtnAgregarLinea As Button
+    Friend WithEvents BtnQuitarLinea As Button
 End Class

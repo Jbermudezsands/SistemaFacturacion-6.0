@@ -18,6 +18,59 @@ Public Class FrmTransferencias
 
     End Sub
 
+    Private Sub SeleccionarProducto()
+
+        Dim RstCosto As New RstCostoPromedio
+        Dim Numero_lote As String = ""
+
+        Quien = "CodigoProductosDetalle"
+
+        My.Forms.FrmConsultas.ShowDialog()
+
+        If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
+
+            Me.TrueDBGridComponentes.Columns("Cod_Producto").Text =
+            My.Forms.FrmConsultas.Codigo
+
+            Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text =
+            My.Forms.FrmConsultas.Descripcion
+
+            My.Application.DoEvents()
+
+            'Buscar lote por defecto
+            If FacturaTarea = True Then
+
+                Numero_lote = LoteDefectoFacturas(
+                My.Forms.FrmConsultas.Codigo,
+                Me.CboCodigoBodega.Text,
+                Me.DTPFecha.Value)
+
+                Me.TrueDBGridComponentes.Columns("CodTarea").Text =
+                Numero_lote
+
+            End If
+
+            'Obtener costo
+            RstCosto = CostoPromedioKardex(
+            My.Forms.FrmConsultas.Codigo,
+            Me.DTPFecha.Value)
+
+            Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text =
+            RstCosto.Costo_Cordoba
+
+        Else
+
+            Me.TrueDBGridComponentes.Columns("Cod_Producto").Text = ""
+            Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = ""
+            Me.TrueDBGridComponentes.Columns("Cantidad").Text = ""
+
+            If FacturaTarea = True Then
+                Me.TrueDBGridComponentes.Columns("CodTarea").Text = ""
+            End If
+
+        End If
+
+    End Sub
 
 
     Private Sub ConfigurarAdaptadorDetalleFactura(ByVal cnn As SqlConnection)
@@ -666,8 +719,9 @@ Handles backgroundWorkerGrabar.ProgressChanged
         Me.TxtNumeroEnsamble.Text = "-----0-----"
         Me.CboCodigoBodega.Enabled = True
         Me.CboCodigoBodega2.Enabled = True
+        Me.TxtTotalCosto.Text = "0.00"
 
-        Cargar_grid(True, "", Now, "")
+        Cargar_Grid(True, "", Now, "")
 
     End Sub
 
@@ -765,7 +819,11 @@ Handles backgroundWorkerGrabar.ProgressChanged
 
             '====================== COLUMNA DESCRIPCIÓN =======================
             .Columns("Descripcion_Producto").Caption = "Descripción"
-            .Splits(0).DisplayColumns("Descripcion_Producto").Width = 260
+            If FacturaTarea = True Then
+                .Splits(0).DisplayColumns("Descripcion_Producto").Width = 260
+            Else
+                .Splits(0).DisplayColumns("Descripcion_Producto").Width = 360
+            End If
             .Splits(0).DisplayColumns("Descripcion_Producto").Locked = True
 
             '========================= COLUMNA CANTIDAD =========================
@@ -815,7 +873,7 @@ Handles backgroundWorkerGrabar.ProgressChanged
                 End If
             Else
                 ' Si la empresa no maneja lotes, ocúltala si existe
-                .Splits(0).DisplayColumns("CodTarea").Visible = False
+                '.Splits(0).DisplayColumns("CodTarea").Visible = False
 
             End If
 
@@ -1039,21 +1097,21 @@ Handles backgroundWorkerGrabar.ProgressChanged
         End If
 
 
-        If FacturaTarea = True Then
-            Me.Size = New Size(850, 552)
-            Me.PictureBox1.Size = New Size(835, 74)
-            Me.TrueDBGridComponentes.Size = New Size(800, 193)
-            'Me.Button8.Location = New Point(673, 443)
-            'Me.TxtTotalCosto.Location = New Point(648, 413)
-            Me.Label5.Location = New Point(530, 417)
-            Me.GroupBox1.Size = New Size(816, 52)
-            Me.GroupBox2.Size = New Size(816, 52)
-            Me.TxtNumeroEnsamble.Location = New Point(600, 16)
-            Me.Label3.Location = New Point(555, 19)
-            Me.Button6.Location = New Point(699, 12)
-            Me.Label9.Location = New Point(316, 32)
+        'If FacturaTarea = True Then
+        '    Me.Size = New Size(1000, 552)
+        '    'Me.PictureBox1.Size = New Size(835, 74)
+        '    Me.TrueDBGridComponentes.Size = New Size(800, 193)
+        '    'Me.Button8.Location = New Point(673, 443)
+        '    'Me.TxtTotalCosto.Location = New Point(648, 413)
+        '    'Me.Label5.Location = New Point(530, 417)
+        '    'Me.GroupBox1.Size = New Size(816, 52)
+        '    Me.GroupBox2.Size = New Size(816, 52)
+        '    Me.TxtNumeroEnsamble.Location = New Point(600, 16)
+        '    Me.Label3.Location = New Point(555, 19)
+        '    Me.Button6.Location = New Point(699, 12)
+        '    'Me.Label9.Location = New Point(316, 32)
 
-        End If
+        'End If
 
         Me.DTPFecha.Value = Format(Now, "dd/MM/yyyy")
         '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1186,6 +1244,8 @@ Handles backgroundWorkerGrabar.ProgressChanged
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("id_Detalle_Factura").Locked = True
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Button = False
             Me.Button4.Enabled = False
+            Me.btnEscanear.Enabled = False
+            btnAgregar.Enabled = False
             Me.CboCodigoBodega.Enabled = False
             Me.CboCodigoBodega2.Enabled = False
         Else
@@ -1200,6 +1260,8 @@ Handles backgroundWorkerGrabar.ProgressChanged
             Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns("Cod_Producto").Button = True
             Me.TrueDBGridComponentes.Enabled = True
             Me.Button4.Enabled = True
+            Me.btnEscanear.Enabled = True
+            btnAgregar.Enabled = True
             Me.CboCodigoBodega.Enabled = True
             Me.CboCodigoBodega2.Enabled = True
         End If
@@ -1220,7 +1282,7 @@ Handles backgroundWorkerGrabar.ProgressChanged
 
     End Sub
 
-    Private Sub GroupBox1_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox1.Enter
+    Private Sub GroupBox1_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
     End Sub
 
@@ -1679,36 +1741,38 @@ Handles backgroundWorkerGrabar.ProgressChanged
         Dim Numero_lote As String = ""
 
         If e.ColIndex = 0 Then
-            Quien = "CodigoProductosDetalle"
-            My.Forms.FrmConsultas.ShowDialog()
-            If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
-                Me.TrueDBGridComponentes.Columns("Cod_Producto").Text = My.Forms.FrmConsultas.Codigo
-                Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = My.Forms.FrmConsultas.Descripcion
-                My.Application.DoEvents()
 
-                '////////////BUSCO EL LOTE CON EXISTENCIA QUE ESTE POR VENCER ///////////
-                If FacturaTarea = True Then
-                    Numero_lote = LoteDefectoFacturas(My.Forms.FrmConsultas.Codigo, Me.CboCodigoBodega.Text, DTPFecha.Value)
-                    Me.TrueDBGridComponentes.Columns("CodTarea").Text = Numero_lote
-                End If
+            SeleccionarProducto()
+            'Quien = "CodigoProductosDetalle"
+            'My.Forms.FrmConsultas.ShowDialog()
+            'If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
+            '    Me.TrueDBGridComponentes.Columns("Cod_Producto").Text = My.Forms.FrmConsultas.Codigo
+            '    Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = My.Forms.FrmConsultas.Descripcion
+            '    My.Application.DoEvents()
 
-
-                'Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = My.Forms.FrmConsultas.Precio
-                RstCosto = CostoPromedioKardex(My.Forms.FrmConsultas.Codigo, Me.DTPFecha.Value)
-                Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = RstCosto.Costo_Cordoba
-
-            Else
-
-                Me.TrueDBGridComponentes.Columns("Cod_Producto").Text = ""
-                Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = ""
-                Me.TrueDBGridComponentes.Columns("Cantidad").Text = ""
+            '    '////////////BUSCO EL LOTE CON EXISTENCIA QUE ESTE POR VENCER ///////////
+            '    If FacturaTarea = True Then
+            '        Numero_lote = LoteDefectoFacturas(My.Forms.FrmConsultas.Codigo, Me.CboCodigoBodega.Text, DTPFecha.Value)
+            '        Me.TrueDBGridComponentes.Columns("CodTarea").Text = Numero_lote
+            '    End If
 
 
-                If FacturaTarea = True Then
-                    Me.TrueDBGridComponentes.Columns("CodTarea").Text = ""
-                End If
+            '    'Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = My.Forms.FrmConsultas.Precio
+            '    RstCosto = CostoPromedioKardex(My.Forms.FrmConsultas.Codigo, Me.DTPFecha.Value)
+            '    Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = RstCosto.Costo_Cordoba
 
-            End If
+            'Else
+
+            '    Me.TrueDBGridComponentes.Columns("Cod_Producto").Text = ""
+            '    Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = ""
+            '    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ""
+
+
+            '    If FacturaTarea = True Then
+            '        Me.TrueDBGridComponentes.Columns("CodTarea").Text = ""
+            '    End If
+
+            'End If
 
         ElseIf e.ColIndex = 2 Then
 
@@ -2009,6 +2073,175 @@ Handles backgroundWorkerGrabar.ProgressChanged
     End Sub
 
     Private Sub DTPFecha_ValueChanged(sender As Object, e As EventArgs) Handles DTPFecha.ValueChanged
+
+    End Sub
+
+    Private Sub btnBorrarLinea_Click(sender As Object, e As EventArgs) Handles btnBorrarLinea.Click
+        Dim Resultado As Double, CodProducto As String, iPosicion As Double, PrecioUnitario As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double
+        Dim SqlString As String, idDetalle As Double, NombreProducto As String, Descuento As Double
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim FechaFactura As String, DiferenciaCantidad As Double, DiferenciaPrecio As Double
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+
+        Resultado = MsgBox("¿Esta Seguro de Eliminar la Linea?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
+
+        If Resultado = 7 Then
+            Exit Sub
+        End If
+
+        FechaFactura = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
+
+        CodProducto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
+        iPosicion = Me.BindingDetalle.Position
+        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("id_Detalle_Factura")) Then
+            idDetalle = Me.BindingDetalle.Item(iPosicion)("id_Detalle_Factura")
+        Else
+            idDetalle = -1
+        End If
+        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")) Then
+            PrecioUnitario = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
+        End If
+        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descuento")) Then
+            Descuento = Me.BindingDetalle.Item(iPosicion)("Descuento")
+        End If
+        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Precio_Neto")) Then
+            PrecioNeto = Me.BindingDetalle.Item(iPosicion)("Precio_Neto")
+        End If
+        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Importe")) Then
+            Importe = Me.BindingDetalle.Item(iPosicion)("Importe")
+        End If
+
+        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Cantidad")) Then
+            Cantidad = Me.BindingDetalle.Item(iPosicion)("Cantidad")
+        End If
+        NombreProducto = Replace(Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto"), "'", "")
+
+        Me.BindingDetalle.RemoveCurrent()
+
+        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////////////////////BUSCO EL PRODUCTO PARA ELIMINARLO DE LA FACTURA///////////////////////////////////////////////////////////
+        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlString = "SELECT * FROM Detalle_Facturas WHERE (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & FechaFactura & "', 102)) AND (Cod_Producto = '" & CodProducto & "')  AND (Descripcion_Producto = '" & NombreProducto & "') AND (id_Detalle_Factura = '" & idDetalle & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Detalle")
+        If Not DataSet.Tables("Detalle").Rows.Count = 0 Then
+            '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
+            MiConexion.Close()
+            StrSqlUpdate = " DELETE FROM Detalle_Facturas WHERE (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & FechaFactura & "', 102)) AND (Cod_Producto = '" & CodProducto & "') AND (Descripcion_Producto = '" & NombreProducto & "') AND (id_Detalle_Factura = '" & idDetalle & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+            Select Case Me.CboTipoProducto.Text
+                Case "Transferencia Enviada"
+                    DiferenciaCantidad = CDbl(CantidadAnterior) - CDbl(Cantidad)
+                    DiferenciaPrecio = CDbl(PrecioNeto) - CDbl(PrecioAnterior)
+                    ExistenciasCostos(CodProducto, DiferenciaCantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
+                Case "Transferencia Recibida"
+                    DiferenciaCantidad = CDbl(Cantidad) - CDbl(CantidadAnterior)
+                    DiferenciaPrecio = CDbl(Cantidad) - CDbl(CantidadAnterior)
+                    ExistenciasCostos(CodProducto, DiferenciaCantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
+            End Select
+        End If
+
+        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////////////////////BUSCO EL PRODUCTO PARA ELIMINARLO DE LA FACTURA///////////////////////////////////////////////////////////
+        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlString = "SELECT * FROM Detalle_Compras WHERE (Numero_Compra = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & FechaFactura & "', 102)) AND (Cod_Producto = '" & CodProducto & "') AND (id_Detalle_Transferencia = '" & idDetalle & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "Detalle")
+        If Not DataSet.Tables("Detalle").Rows.Count = 0 Then
+            '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
+            MiConexion.Close()
+            StrSqlUpdate = " DELETE FROM Detalle_Compras WHERE (Numero_Compra = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Compra = CONVERT(DATETIME, '" & FechaFactura & "', 102)) AND (Cod_Producto = '" & CodProducto & "') AND (id_Detalle_Transferencia = '" & idDetalle & "')"
+            MiConexion.Open()
+            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexion.Close()
+
+
+        End If
+    End Sub
+
+
+    Private Sub btnAgregar_Click(sender As Object, e As EventArgs) Handles btnAgregar.Click
+        Try
+
+            '--------------------------------------------------
+            ' Validar que la transferencia permita modificaciones
+            '--------------------------------------------------
+            If Transferencia_Procesado = True Then
+                Exit Sub
+            End If
+
+
+            '--------------------------------------------------
+            ' Las bodegas deben ser diferentes
+            '--------------------------------------------------
+            If Me.CboCodigoBodega.Text = Me.CboCodigoBodega2.Text Then
+
+                MsgBox("Es necesario que las Bodegas sean distintas.",
+                   MsgBoxStyle.Critical,
+                   "Zeus Facturación")
+
+                Exit Sub
+
+            End If
+
+
+            '--------------------------------------------------
+            ' Crear una nueva fila
+            '--------------------------------------------------
+            Me.BindingDetalle.AddNew()
+
+
+            '--------------------------------------------------
+            ' Posicionarnos en la nueva fila
+            '--------------------------------------------------
+            Me.BindingDetalle.Position = Me.BindingDetalle.Count - 1
+
+
+            '--------------------------------------------------
+            ' Inicializar datos básicos
+            '--------------------------------------------------
+            Me.TrueDBGridComponentes.Columns("Numero_Factura").Text =
+            Me.TxtNumeroEnsamble.Text
+
+            Me.TrueDBGridComponentes.Columns("Fecha_Factura").Value =
+            Me.DTPFecha.Value
+
+            Me.TrueDBGridComponentes.Columns("Tipo_Factura").Text =
+            "Transferencia Enviada"
+
+            Me.TrueDBGridComponentes.Columns("Cantidad").Value = 0
+
+            Me.TrueDBGridComponentes.Columns("Descuento").Value = 0
+
+            Me.TrueDBGridComponentes.Columns("Precio_Neto").Value = 0
+
+            Me.TrueDBGridComponentes.Columns("Importe").Value = 0
+
+
+            '--------------------------------------------------
+            ' Posicionar el cursor en Código de Producto
+            '--------------------------------------------------
+            Me.TrueDBGridComponentes.Col = 0
+            Me.TrueDBGridComponentes.Focus()
+
+            SeleccionarProducto()
+
+
+        Catch ex As Exception
+
+            MsgBox("Error al agregar la línea: " & ex.Message,
+               MsgBoxStyle.Critical,
+               "Zeus Facturación")
+
+        End Try
+    End Sub
+
+    Private Sub btnEscanear_Click(sender As Object, e As EventArgs) Handles btnEscanear.Click
 
     End Sub
 

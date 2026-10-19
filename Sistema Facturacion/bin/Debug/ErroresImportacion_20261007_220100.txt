@@ -1,0 +1,10 @@
+********************************************
+IMPORTACION DE PLANILLA
+Archivo : MATIGUAS2672026.csv
+Fecha   : 07/10/2026 22:00:59
+Registros: 18
+********************************************
+
+
+ERROR GENERAL
+La columna 'IdTransportista' no pertenece a la tabla .

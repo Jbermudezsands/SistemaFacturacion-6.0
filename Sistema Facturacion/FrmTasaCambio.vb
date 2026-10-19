@@ -81,6 +81,28 @@ Public Class FrmTasaCambio
 
     End Sub
 
+    Private Sub BtnImportar_Click(sender As Object, e As EventArgs) Handles BtnImportar.Click
+        Dim dlg As New OpenFileDialog
+        dlg.Filter = "Archivos de texto (*.txt)|*.txt"
+        dlg.Title = "Seleccione el archivo de tasas de cambio"
+
+        If dlg.ShowDialog() <> Windows.Forms.DialogResult.OK Then Exit Sub
+
+        Try
+            Dim n As Integer = ImportarTasaCambio(dlg.FileName)
+
+            ' Actualizar el grid
+            If MiConexion.State <> ConnectionState.Open Then MiConexion.Open()
+            Dim da As New SqlClient.SqlDataAdapter("SELECT * FROM TasaCambio", MiConexion)
+            DataSet.Tables("Consultas").Clear()
+            da.Fill(DataSet, "Consultas")
+
+            MessageBox.Show(n & " registros importados.", "Importar", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Catch ex As Exception
+            MessageBox.Show("Error al importar: " & ex.Message, "Importar", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
     Private Sub TrueDBGridConsultas_BeforeUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TrueDBGridConsultas.BeforeUpdate
         Dim FechaTasa As String, Monto As Double, Fecha As String
 
@@ -112,7 +134,7 @@ Public Class FrmTasaCambio
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
             MiConexion.Close()
-            StrSqlUpdate = "INSERT INTO [TasaCambio] ([FechaTasa],[MontoTasa]) " & _
+            StrSqlUpdate = "INSERT INTO [TasaCambio] ([FechaTasa],[MontoTasa]) " &
                            "VALUES ('" & FechaTasa & "','" & Monto & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)

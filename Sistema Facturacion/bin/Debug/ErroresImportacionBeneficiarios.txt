@@ -746,3 +746,36 @@ La consulta con parámetros '(@Cod nvarchar(4),@Tipo nvarchar(5),@Nom nvarchar(1
 
 ===================================================
 
+===================================================
+Fecha : 02/10/2026 13:35:38
+Codigo: 2066
+Nombre: ANTONIO VARGAS
+Proceso : Guardar Productor
+
+Mensaje:
+Sintaxis incorrecta cerca de 'CodigoTransportista'.
+
+===================================================
+
+===================================================
+Fecha : 02/10/2026 13:55:46
+Codigo: 2066
+Nombre: ANTONIO VARGAS
+Proceso : Guardar Productor
+
+Mensaje:
+Sintaxis incorrecta cerca de 'CodigoTransportista'.
+
+===================================================
+
+===================================================
+Fecha : 14/10/2026 12:22:38
+Codigo: 0007403
+Nombre: ERVIN JOSE
+Proceso : Guardar Productor
+
+Mensaje:
+La conversión de la cadena "" en el tipo 'Double' no es válida.
+
+===================================================
+

@@ -20,22 +20,26 @@ Partial Class FrmImpresoras
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmImpresoras))
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.CmbImpresorasRecibo = New System.Windows.Forms.ComboBox
-        Me.CmbImpresorasRemision = New System.Windows.Forms.ComboBox
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.PrintDialog1 = New System.Windows.Forms.PrintDialog
-        Me.PrintDocument = New System.Drawing.Printing.PrintDocument
-        Me.BtnSalir = New System.Windows.Forms.Button
-        Me.BtnGuardarRem = New System.Windows.Forms.Button
-        Me.BtnGuardar = New System.Windows.Forms.Button
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.CmbImpresorasRecibo = New System.Windows.Forms.ComboBox()
+        Me.CmbImpresorasRemision = New System.Windows.Forms.ComboBox()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.PrintDialog1 = New System.Windows.Forms.PrintDialog()
+        Me.PrintDocument = New System.Drawing.Printing.PrintDocument()
+        Me.BtnSalir = New System.Windows.Forms.Button()
+        Me.BtnGuardarRem = New System.Windows.Forms.Button()
+        Me.BtnGuardar = New System.Windows.Forms.Button()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.CmbImpresorasComanda = New System.Windows.Forms.ComboBox()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.CmbImpresorasComanda)
+        Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.Label3)
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Controls.Add(Me.CmbImpresorasRecibo)
@@ -50,7 +54,7 @@ Partial Class FrmImpresoras
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(15, 80)
+        Me.Label3.Location = New System.Drawing.Point(15, 67)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(90, 13)
         Me.Label3.TabIndex = 3
@@ -59,7 +63,7 @@ Partial Class FrmImpresoras
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(15, 26)
+        Me.Label1.Location = New System.Drawing.Point(15, 21)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(92, 13)
         Me.Label1.TabIndex = 3
@@ -68,7 +72,7 @@ Partial Class FrmImpresoras
         'CmbImpresorasRecibo
         '
         Me.CmbImpresorasRecibo.FormattingEnabled = True
-        Me.CmbImpresorasRecibo.Location = New System.Drawing.Point(10, 96)
+        Me.CmbImpresorasRecibo.Location = New System.Drawing.Point(10, 83)
         Me.CmbImpresorasRecibo.Name = "CmbImpresorasRecibo"
         Me.CmbImpresorasRecibo.Size = New System.Drawing.Size(351, 21)
         Me.CmbImpresorasRecibo.TabIndex = 2
@@ -76,7 +80,7 @@ Partial Class FrmImpresoras
         'CmbImpresorasRemision
         '
         Me.CmbImpresorasRemision.FormattingEnabled = True
-        Me.CmbImpresorasRemision.Location = New System.Drawing.Point(10, 45)
+        Me.CmbImpresorasRemision.Location = New System.Drawing.Point(10, 38)
         Me.CmbImpresorasRemision.Name = "CmbImpresorasRemision"
         Me.CmbImpresorasRemision.Size = New System.Drawing.Size(351, 21)
         Me.CmbImpresorasRemision.TabIndex = 2
@@ -102,7 +106,7 @@ Partial Class FrmImpresoras
         Me.BtnSalir.Image = CType(resources.GetObject("BtnSalir.Image"), System.Drawing.Image)
         Me.BtnSalir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.BtnSalir.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.BtnSalir.Location = New System.Drawing.Point(290, 178)
+        Me.BtnSalir.Location = New System.Drawing.Point(290, 191)
         Me.BtnSalir.Name = "BtnSalir"
         Me.BtnSalir.Size = New System.Drawing.Size(114, 58)
         Me.BtnSalir.TabIndex = 232
@@ -132,7 +136,7 @@ Partial Class FrmImpresoras
         Me.BtnGuardar.Image = CType(resources.GetObject("BtnGuardar.Image"), System.Drawing.Image)
         Me.BtnGuardar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.BtnGuardar.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.BtnGuardar.Location = New System.Drawing.Point(21, 178)
+        Me.BtnGuardar.Location = New System.Drawing.Point(21, 191)
         Me.BtnGuardar.Name = "BtnGuardar"
         Me.BtnGuardar.Size = New System.Drawing.Size(114, 58)
         Me.BtnGuardar.TabIndex = 233
@@ -140,11 +144,28 @@ Partial Class FrmImpresoras
         Me.BtnGuardar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.BtnGuardar.UseVisualStyleBackColor = True
         '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(15, 111)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(101, 13)
+        Me.Label2.TabIndex = 4
+        Me.Label2.Text = "Impresora Comanda"
+        '
+        'CmbImpresorasComanda
+        '
+        Me.CmbImpresorasComanda.FormattingEnabled = True
+        Me.CmbImpresorasComanda.Location = New System.Drawing.Point(10, 127)
+        Me.CmbImpresorasComanda.Name = "CmbImpresorasComanda"
+        Me.CmbImpresorasComanda.Size = New System.Drawing.Size(351, 21)
+        Me.CmbImpresorasComanda.TabIndex = 5
+        '
         'FrmImpresoras
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(414, 243)
+        Me.ClientSize = New System.Drawing.Size(414, 267)
         Me.Controls.Add(Me.BtnGuardar)
         Me.Controls.Add(Me.BtnSalir)
         Me.Controls.Add(Me.BtnGuardarRem)
@@ -168,4 +189,6 @@ Partial Class FrmImpresoras
     Friend WithEvents BtnGuardar As System.Windows.Forms.Button
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents CmbImpresorasRecibo As System.Windows.Forms.ComboBox
+    Friend WithEvents Label2 As Label
+    Friend WithEvents CmbImpresorasComanda As ComboBox
 End Class

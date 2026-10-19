@@ -356,4 +356,174 @@ Public Class FrmServicios
     Private Sub CmdNuevo_Click(sender As Object, e As EventArgs)
 
     End Sub
+
+    Private Sub CmdNuevo_Click_1(sender As Object, e As EventArgs) Handles CmdNuevo.Click
+
+    End Sub
+
+    Private Sub btnNuevo_Click(sender As Object, e As EventArgs) Handles btnNuevo.Click
+
+    End Sub
+
+    Private Sub btnGuardar_Click(sender As Object, e As EventArgs) Handles btnGuardar.Click
+
+        Dim SQLProductos As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim TipoProducto As String, UnidadMedida As String = "Unidades/Fracciones", CodProducto As String = ""
+        Dim Iposicion As Double, Codbodega As String
+        Try
+
+
+            If Me.CboCodigoProducto.Text = "" Then
+                MsgBox("Se necesita el Codigo del Producto", MsgBoxStyle.Critical, "Sistema de Facturacion")
+                Exit Sub
+            End If
+
+
+            If Me.OptServicio.Checked = True Then
+                TipoProducto = "Servicio"
+
+            Else
+                TipoProducto = "Descuento"
+
+            End If
+
+            If Me.OptImporteFijo.Checked = True Then
+                UnidadMedida = "ImporteFijo"
+
+            ElseIf Me.OptUnidades.Checked = True Then
+                UnidadMedida = "Unidades/Fracciones"
+            ElseIf Me.OptSubTotal.Checked = True Then
+                UnidadMedida = "SubTotal"
+            End If
+
+            If Me.TxtPrecioDolar.Text = "" Then
+                Me.TxtPrecioDolar.Text = 0
+            End If
+
+            If Me.TxtPrecioCordobas.Text = "" Then
+                Me.TxtPrecioCordobas.Text = 0
+            End If
+
+            If Me.OptServicio.Checked = True Then
+                CodProducto = Me.CboCodigoProducto.Text
+                'If Mid(Me.CboCodigoProducto.Text, 1, 4) <> "SERV" Then
+                '    CodProducto = "SERV" & Me.CboCodigoProducto.Text
+                'Else
+                '    CodProducto = Me.CboCodigoProducto.Text
+                'End If
+            ElseIf Me.OptDescuento.Checked = True Then
+                If Mid(Me.CboCodigoProducto.Text, 1, 4) <> "DESC" Then
+                    CodProducto = "DESC" & Me.CboCodigoProducto.Text
+                Else
+                    CodProducto = Me.CboCodigoProducto.Text
+                End If
+            End If
+
+
+            SQLProductos = "SELECT Productos.*  FROM Productos WHERE (Cod_Productos = '" & CodProducto & "') "
+            DataAdapter = New SqlClient.SqlDataAdapter(SQLProductos, MiConexion)
+            DataAdapter.Fill(DataSet, "Proveedores")
+            If Not DataSet.Tables("Proveedores").Rows.Count = 0 Then
+                '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
+                StrSqlUpdate = "UPDATE [Productos] SET [Descripcion_Producto] = '" & Me.TxtNombreProducto.Text & "',[Ubicacion] = 'Servicio',[Tipo_Producto] = '" & TipoProducto & "',[Cod_Cuenta_Costo] = '" & Me.TxtCtaCosto.Text & "',[Cod_Cuenta_Ventas] = '" & Me.TxtCuentaVenta.Text & "',[Unidad_Medida] = '" & UnidadMedida & "',[Precio_Venta] = '" & Me.TxtPrecioCordobas.Text & "',[Precio_Lista] = '" & Me.TxtPrecioDolar.Text & "',[Existencia_Negativa] = 'SI',[Cod_Iva] = '" & Me.CboIva.Text & "' ,[Activo] = '" & Me.CboActivo.Text & "' ,[Minimo] = '0' ,[Reorden] = '0',[Nota] = 'Nota:',[Cod_Cuenta_GastoAjuste]= '" & Me.TxtCtaCosto.Text & "',[Cod_Cuenta_IngresoAjuste]= '" & Me.TxtCuentaVenta.Text & "',[CodComponente]= '0',[Cod_Rubro]= '" & Me.CboRubro.Text & "'  WHERE (Cod_Productos = '" & CodProducto & "')"
+                MiConexion.Open()
+                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                iResultado = ComandoUpdate.ExecuteNonQuery
+                MiConexion.Close()
+
+            Else
+
+                MiConexion.Close()
+                '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
+                StrSqlUpdate = "INSERT INTO [Productos] ([Cod_Productos],[Descripcion_Producto],[Ubicacion],[Tipo_Producto],[Cod_Cuenta_Costo],[Cod_Cuenta_Ventas],[Unidad_Medida],[Precio_Venta],[Precio_Lista],[Descuento],[Existencia_Negativa],[Cod_Iva],[Activo],[Minimo],[Reorden],[Nota],[Cod_Cuenta_GastoAjuste],[Cod_Cuenta_IngresoAjuste],[CodComponente],[Cod_Rubro]) " &
+                               "VALUES('" & CodProducto & "','" & Me.TxtNombreProducto.Text & "','Servicio','" & TipoProducto & "' ,'" & Me.TxtCtaCosto.Text & "','" & Me.TxtCuentaVenta.Text & "','" & UnidadMedida & "','" & Me.TxtPrecioCordobas.Text & "','" & Me.TxtPrecioDolar.Text & "','0','SI','" & Me.CboIva.Text & "','" & Me.CboActivo.Text & "','0' ,'0','Nota:','" & Me.TxtCtaCosto.Text & "','" & Me.TxtCuentaVenta.Text & "','0','" & Me.CboRubro.Text & "')"
+                MiConexion.Open()
+                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                iResultado = ComandoUpdate.ExecuteNonQuery
+                MiConexion.Close()
+
+            End If
+
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '///////////////////////////////////////BUSCO LAS BODEGAS//////////////////////////////////////////////////////////////////////////
+            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            Iposicion = 0
+            SQLProductos = "SELECT  *  FROM Bodegas "
+            DataAdapter = New SqlClient.SqlDataAdapter(SQLProductos, MiConexion)
+            DataAdapter.Fill(DataSet, "Bodegas")
+            Do While Iposicion < DataSet.Tables("Bodegas").Rows.Count
+                Codbodega = DataSet.Tables("Bodegas").Rows(Iposicion)("Cod_Bodega")
+
+                '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                '/////////////////////////////////////BUSCO SI EXISTE EN LAS BODEGAS DETALLES///////////////////////////////////////////////////////
+                '(//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                SQLProductos = "SELECT  * FROM DetalleBodegas WHERE (Cod_Productos = '" & CodProducto & "') AND (Cod_Bodegas = '" & Codbodega & "')"
+                DataAdapter = New SqlClient.SqlDataAdapter(SQLProductos, MiConexion)
+                DataAdapter.Fill(DataSet, "DetalleBodegas")
+                If DataSet.Tables("DetalleBodegas").Rows.Count = 0 Then
+                    MiConexion.Open()
+                    StrSqlUpdate = "INSERT INTO [DetalleBodegas] ([Cod_Bodegas],[Cod_Productos]) " &
+                                   "VALUES('" & Codbodega & "','" & CodProducto & "') "
+                    ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                    iResultado = ComandoUpdate.ExecuteNonQuery
+                    MiConexion.Close()
+                End If
+                DataSet.Tables("DetalleBodegas").Reset()
+                Iposicion = Iposicion + 1
+            Loop
+
+            Me.CboCodigoProducto.Text = ""
+
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+
+    End Sub
+
+    Private Sub btnEliminar_Click(sender As Object, e As EventArgs) Handles btnEliminar.Click
+
+        Dim SQLProveedor As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim Resultado As String
+
+        Try
+
+            Resultado = MsgBox("¿Esta Seguro de Eliminar el Producto?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
+
+            If Not Resultado = "6" Then
+                Exit Sub
+            End If
+
+            SQLProveedor = "SELECT Productos.*  FROM Productos WHERE (Cod_Productos = '" & Me.CboCodigoProducto.Columns(0).Text & "') "
+            DataAdapter = New SqlClient.SqlDataAdapter(SQLProveedor, MiConexion)
+            DataAdapter.Fill(DataSet, "Proveedores")
+            If Not DataSet.Tables("Proveedores").Rows.Count = 0 Then
+                '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
+
+                StrSqlUpdate = "DELETE FROM [Productos] WHERE (Cod_Productos = '" & Me.CboCodigoProducto.Columns(0).Text & "')"
+                MiConexion.Open()
+                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+                iResultado = ComandoUpdate.ExecuteNonQuery
+                MiConexion.Close()
+
+            End If
+
+            SQLProveedor = "SELECT Cod_Productos, Descripcion_Producto FROM Productos WHERE  (Tipo_Producto = 'Servicio') OR (Tipo_Producto = N'Descuento')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SQLProveedor, MiConexion)
+            DataAdapter.Fill(DataSet, "ListaProductos")
+            If Not DataSet.Tables("ListaProductos").Rows.Count = 0 Then
+                Me.CboCodigoProducto.DataSource = DataSet.Tables("ListaProductos")
+            End If
+
+            ActualizaComboProducto()
+            Me.CboCodigoProducto.Text = ""
+
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+    End Sub
+
 End Class

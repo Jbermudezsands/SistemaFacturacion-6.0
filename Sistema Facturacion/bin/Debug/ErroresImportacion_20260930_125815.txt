@@ -1,0 +1,6 @@
+Código : 2066
+Tipo   : Productor
+Error  : El productor ya tiene una recepción registrada para la fecha 26/07/2026.
+ROC anterior: 2472594
+ROC actual: 2472503
+------------------------------------------

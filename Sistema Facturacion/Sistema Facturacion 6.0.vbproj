@@ -110,6 +110,16 @@
     <Compile Include="Clases\Consultas\CsBeneficiario.vb" />
     <Compile Include="Clases\Consultas\CsContratos.vb" />
     <Compile Include="Clases\Consultas\ArgsReporteExistenciaLote.vb" />
+    <Compile Include="Clases\Consultas\CsLogError.vb" />
+    <Compile Include="Clases\Consultas\PlanillaPlanPagoService.vb" />
+    <Compile Include="Clases\Consultas\PlanPagoReciboService.vb" />
+    <Compile Include="Clases\Consultas\ServicioRecibos.vb" />
+    <Compile Include="Clases\Tablas\AplicacionPlanPendiente.vb" />
+    <Compile Include="Clases\Tablas\DatosReciboPlanilla.vb" />
+    <Compile Include="Clases\Tablas\DatosReciboPlanPago.vb" />
+    <Compile Include="Clases\Tablas\DetallePlanPagoRecibo.vb" />
+    <Compile Include="Clases\Tablas\FacturaCredito.vb" />
+    <Compile Include="Clases\Consultas\FacturasCreditoService.vb" />
     <Compile Include="Clases\Consultas\MovimientoKardex.vb" />
     <Compile Include="Clases\Consultas\ReporteExistenciaLote.vb" />
     <Compile Include="Clases\Consultas\ResultadoCostoKardex.vb" />
@@ -118,7 +128,10 @@
     <Compile Include="Clases\Consultas\RstCostoPromedio.vb" />
     <Compile Include="Clases\Consultas\CsCatalogos.vb" />
     <Compile Include="Clases\Tablas\Beneficiario.vb" />
+    <Compile Include="Clases\Tablas\FacturaPlanPagoRecibo.vb" />
+    <Compile Include="Clases\Tablas\MetodoPagoRecibo.vb" />
     <Compile Include="Clases\Tablas\NominaActiva.vb" />
+    <Compile Include="Clases\Tablas\PlanillaPlanPagoItem.vb" />
     <Compile Include="Clases\Tablas\ResultadoDesactivacion.vb" />
     <Compile Include="Clases\Tablas\TablaCompras.vb" />
     <Compile Include="Clases\Tablas\FileName.vb" />
@@ -138,10 +151,28 @@
     <Compile Include="Formularios\FrmAuditoriaFacturacion.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formularios\FrmCreditosNuevos.designer.vb">
+      <DependentUpon>FrmCreditosNuevos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FrmCreditosNuevos.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\FrmDeduccionPlanilla.Designer.vb">
       <DependentUpon>FrmDeduccionPlanilla.vb</DependentUpon>
     </Compile>
     <Compile Include="Formularios\FrmDeduccionPlanilla.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FrmDesembolsos.Designer.vb">
+      <DependentUpon>FrmDesembolsos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FrmDesembolsos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FrmFinanciamiento.Designer.vb">
+      <DependentUpon>FrmFinanciamiento.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FrmFinanciamiento.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formularios\FrmImportarDeduccion.Designer.vb">
@@ -150,10 +181,46 @@
     <Compile Include="Formularios\FrmImportarDeduccion.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formularios\FrmListadoCredito.Designer.vb">
+      <DependentUpon>FrmListadoCredito.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FrmListadoCredito.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\FrmPlanPago.Designer.vb">
       <DependentUpon>FrmPlanPago.vb</DependentUpon>
     </Compile>
     <Compile Include="Formularios\FrmPlanPago.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FrmPlanPagoRecibos.Designer.vb">
+      <DependentUpon>FrmPlanPagoRecibos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FrmPlanPagoRecibos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\frmServiciosMiscelaneos.Designer.vb">
+      <DependentUpon>frmServiciosMiscelaneos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\frmServiciosMiscelaneos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FrmSucursales.Designer.vb">
+      <DependentUpon>FrmSucursales.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FrmSucursales.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FrmTransferenciaBodegas_V2.Designer.vb">
+      <DependentUpon>FrmTransferenciaBodegas_V2.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FrmTransferenciaBodegas_V2.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\ProductoresTransportista.Designer.vb">
+      <DependentUpon>ProductoresTransportista.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\ProductoresTransportista.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmBeneficiario.Designer.vb">
@@ -809,6 +876,12 @@
     <Compile Include="Reportes\ArepCotizacionesMembretes.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\ArepCuotas.Designer.vb">
+      <DependentUpon>ArepCuotas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\ArepCuotas.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\ArepDepartamentoResumen.Designer.vb">
       <DependentUpon>ArepDepartamentoResumen.vb</DependentUpon>
     </Compile>
@@ -839,6 +912,7 @@
     <Compile Include="Reportes\ArepDevolucionVentas.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\ArepEstadoCredito.Designer.vb" />
     <Compile Include="Reportes\ArepEstadoCuentas.Designer.vb">
       <DependentUpon>ArepEstadoCuentas.vb</DependentUpon>
     </Compile>
@@ -1788,11 +1862,35 @@
     <EmbeddedResource Include="Formularios\FrmDeduccionPlanilla.resx">
       <DependentUpon>FrmDeduccionPlanilla.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FrmDesembolsos.resx">
+      <DependentUpon>FrmDesembolsos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FrmFinanciamiento.resx">
+      <DependentUpon>FrmFinanciamiento.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formularios\FrmImportarDeduccion.resx">
       <DependentUpon>FrmImportarDeduccion.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FrmListadoCredito.resx">
+      <DependentUpon>FrmListadoCredito.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formularios\FrmPlanPago.resx">
       <DependentUpon>FrmPlanPago.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FrmPlanPagoRecibos.resx">
+      <DependentUpon>FrmPlanPagoRecibos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\frmServiciosMiscelaneos.resx">
+      <DependentUpon>frmServiciosMiscelaneos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FrmSucursales.resx">
+      <DependentUpon>FrmSucursales.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FrmTransferenciaBodegas_V2.resx">
+      <DependentUpon>FrmTransferenciaBodegas_V2.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\ProductoresTransportista.resx">
+      <DependentUpon>ProductoresTransportista.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmBeneficiario.resx">
       <DependentUpon>FrmBeneficiario.vb</DependentUpon>
@@ -2238,6 +2336,9 @@
       <DependentUpon>ArepCotizacionesMembretes.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepCuotas.resx">
+      <DependentUpon>ArepCuotas.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reportes\ArepDepartamentoResumen.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ArepDepartamentoResumen.vb</DependentUpon>
@@ -2262,6 +2363,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>ArepEntradaProductos.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\ArepEstadoCredito.resx" />
     <EmbeddedResource Include="Reportes\ArepEstadoCuentas.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ArepEstadoCuentas.vb</DependentUpon>

@@ -1,3 +1,6 @@
+
+Imports System.Text.RegularExpressions
+
 Public Class FrmConsecutivos
     Public NumeroFactura As String
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -127,7 +130,23 @@ Public Class FrmConsecutivos
         MiConexion.Close()
         If Quien = "Recibo" Then
             If FrmRecibos.ConsecutivoReciboSerie = True Then
-                NumeroFactura = Mid(NumeroFactura, 2, Len(NumeroFactura))
+                'NumeroFactura = Mid(NumeroFactura, 2, Len(NumeroFactura))
+
+                NumeroFactura = Regex.Replace(NumeroFactura, "^[^0-9]+", "")
+
+                If NumeroFactura = "" OrElse Not IsNumeric(NumeroFactura) Then
+
+                    MsgBox(
+                            "El número del recibo no tiene un consecutivo numérico válido: " &
+                            NumeroFactura,
+                            MsgBoxStyle.Critical,
+                            "Sistema Facturacion")
+
+                    Exit Sub
+
+                End If
+
+
                 SQLUpdate = "UPDATE [ConsecutivoSerie]  SET [Recibo] = " & NumeroFactura & " WHERE (Serie = '" & FrmRecibos.CmbSerie.Text & "') "
             Else
                 SQLUpdate = "UPDATE [Consecutivos]  SET [Recibo_Caja] = " & NumeroFactura & ""

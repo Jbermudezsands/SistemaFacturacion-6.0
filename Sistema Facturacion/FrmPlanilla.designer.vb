@@ -22,6 +22,7 @@ Partial Class FrmPlanilla
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmPlanilla))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Button6 = New System.Windows.Forms.Button()
         Me.TxtNumNomina = New System.Windows.Forms.TextBox()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.LblTotalPlanilla = New System.Windows.Forms.Label()
@@ -116,6 +117,7 @@ Partial Class FrmPlanilla
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.Button6)
         Me.GroupBox1.Controls.Add(Me.TxtNumNomina)
         Me.GroupBox1.Controls.Add(Me.Label7)
         Me.GroupBox1.Controls.Add(Me.LblTotalPlanilla)
@@ -130,6 +132,15 @@ Partial Class FrmPlanilla
         Me.GroupBox1.Size = New System.Drawing.Size(1103, 51)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
+        '
+        'Button6
+        '
+        Me.Button6.Location = New System.Drawing.Point(1034, 16)
+        Me.Button6.Name = "Button6"
+        Me.Button6.Size = New System.Drawing.Size(8, 8)
+        Me.Button6.TabIndex = 185
+        Me.Button6.Text = "Button6"
+        Me.Button6.UseVisualStyleBackColor = True
         '
         'TxtNumNomina
         '
@@ -394,7 +405,7 @@ Partial Class FrmPlanilla
         '
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
         Me.Button3.ImageAlign = System.Drawing.ContentAlignment.BottomLeft
-        Me.Button3.Location = New System.Drawing.Point(325, 243)
+        Me.Button3.Location = New System.Drawing.Point(336, 243)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(77, 23)
         Me.Button3.TabIndex = 206
@@ -404,7 +415,7 @@ Partial Class FrmPlanilla
         '
         'TxtNuevoPrecio
         '
-        Me.TxtNuevoPrecio.Location = New System.Drawing.Point(276, 245)
+        Me.TxtNuevoPrecio.Location = New System.Drawing.Point(287, 245)
         Me.TxtNuevoPrecio.Name = "TxtNuevoPrecio"
         Me.TxtNuevoPrecio.Size = New System.Drawing.Size(43, 20)
         Me.TxtNuevoPrecio.TabIndex = 174
@@ -415,9 +426,9 @@ Partial Class FrmPlanilla
         Me.Label16.AutoSize = True
         Me.Label16.Location = New System.Drawing.Point(162, 247)
         Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(108, 13)
+        Me.Label16.Size = New System.Drawing.Size(121, 13)
         Me.Label16.TabIndex = 173
-        Me.Label16.Text = "Nuevo Precio Planilla"
+        Me.Label16.Text = "Nuevo Precio Productor"
         '
         'Button1
         '
@@ -781,7 +792,7 @@ Partial Class FrmPlanilla
         Me.GroupBoxImportar.Controls.Add(Me.BtnCargar)
         Me.GroupBoxImportar.Controls.Add(Me.BtnAbrir)
         Me.GroupBoxImportar.Controls.Add(Me.TrueDBGridConsultas)
-        Me.GroupBoxImportar.Location = New System.Drawing.Point(1277, 56)
+        Me.GroupBoxImportar.Location = New System.Drawing.Point(1224, 75)
         Me.GroupBoxImportar.Name = "GroupBoxImportar"
         Me.GroupBoxImportar.Size = New System.Drawing.Size(1142, 452)
         Me.GroupBoxImportar.TabIndex = 271
@@ -935,7 +946,7 @@ Partial Class FrmPlanilla
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1136, 497)
+        Me.ClientSize = New System.Drawing.Size(1139, 497)
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.GroupBoxImportar)
         Me.Controls.Add(Me.Button4)
@@ -1053,4 +1064,5 @@ Partial Class FrmPlanilla
     Friend WithEvents BtnAbrirCsv As Button
     Friend WithEvents btnDeducciones As Button
     Friend WithEvents BtnImportarDeducciones As Button
+    Friend WithEvents Button6 As Button
 End Class

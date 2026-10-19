@@ -1,0 +1,82 @@
+********************************************
+IMPORTACION DE PLANILLA
+Archivo : MATIGUAS2672026.csv
+Fecha   : 07/10/2026 22:15:08
+Registros: 18
+********************************************
+
+Código : 250
+Tipo   : Socio
+Error  : La columna 'IdTransportista' no pertenece a la tabla .
+------------------------------------------
+Código : 5793
+Tipo   : PreSocio
+Error  : La columna 'IdTransportista' no pertenece a la tabla .
+------------------------------------------
+Código : 5377
+Tipo   : PreSocio
+Error  : La columna 'IdTransportista' no pertenece a la tabla .
+------------------------------------------
+Código : 4595
+Tipo   : Socio
+Error  : La columna 'IdTransportista' no pertenece a la tabla .
+------------------------------------------
+Código : 4200
+Tipo   : Socio
+Error  : La columna 'IdTransportista' no pertenece a la tabla .
+------------------------------------------
+Código : 2202
+Tipo   : Socio
+Error  : La columna 'IdTransportista' no pertenece a la tabla .
+------------------------------------------
+Código : 5352
+Tipo   : Socio
+Error  : La columna 'IdTransportista' no pertenece a la tabla .
+------------------------------------------
+Código : 7271
+Tipo   : PreSocio
+Error  : La columna 'IdTransportista' no pertenece a la tabla .
+------------------------------------------
+Código : 5959
+Tipo   : PreSocio
+Error  : La columna 'IdTransportista' no pertenece a la tabla .
+------------------------------------------
+Código : 3618
+Tipo   : Socio
+Error  : La columna 'IdTransportista' no pertenece a la tabla .
+------------------------------------------
+Código : 5336
+Tipo   : Socio
+Error  : La columna 'IdTransportista' no pertenece a la tabla .
+------------------------------------------
+Código : 3502
+Tipo   : Socio
+Error  : La columna 'IdTransportista' no pertenece a la tabla .
+------------------------------------------
+Código : 5911
+Tipo   : Productor
+Error  : La columna 'IdTransportista' no pertenece a la tabla .
+------------------------------------------
+Código : 7038
+Tipo   : PreSocio
+Error  : La columna 'IdTransportista' no pertenece a la tabla .
+------------------------------------------
+Código : 5782
+Tipo   : Productor
+Error  : La columna 'IdTransportista' no pertenece a la tabla .
+------------------------------------------
+Código : 300
+Tipo   : Socio
+Error  : La columna 'IdTransportista' no pertenece a la tabla .
+------------------------------------------
+Código : 1151
+Tipo   : Socio
+Error  : La columna 'IdTransportista' no pertenece a la tabla .
+------------------------------------------
+Código : 94
+Tipo   : Socio
+Error  : La columna 'IdTransportista' no pertenece a la tabla .
+------------------------------------------
+
+ERROR GENERAL
+Se encontraron errores durante la validación de los registros.

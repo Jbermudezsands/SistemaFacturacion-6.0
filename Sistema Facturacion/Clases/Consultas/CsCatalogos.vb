@@ -2,6 +2,27 @@
 
 Public Class CsCatalogos
 
+    Public Function ObtenerTransportistas() As DataTable
+
+        Dim dt As New DataTable()
+
+        Using cn As New SqlConnection(Conexion)
+            cn.Open()
+
+            Dim sql As String = "
+                          SELECT Codigo, Nombre 
+                          FROM Conductor
+                          WHERE Activo = 1"
+
+            Using da As New SqlDataAdapter(sql, cn)
+                da.Fill(dt)
+            End Using
+        End Using
+
+        Return dt
+
+    End Function
+
     Public Function ObtenerDepartamentos() As DataTable
 
         Dim dt As New DataTable()

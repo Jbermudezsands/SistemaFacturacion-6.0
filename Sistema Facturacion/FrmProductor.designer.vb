@@ -71,6 +71,10 @@ Partial Class FrmProductor
         Me.ImgFoto = New System.Windows.Forms.PictureBox()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.GroupBox11 = New System.Windows.Forms.GroupBox()
+        Me.TxtCtoTransporteSocio = New System.Windows.Forms.TextBox()
+        Me.Label101 = New System.Windows.Forms.Label()
+        Me.CboTransportistaSocio = New C1.Win.C1List.C1Combo()
+        Me.Label98 = New System.Windows.Forms.Label()
         Me.CboTipoNomina = New C1.Win.C1List.C1Combo()
         Me.Label30 = New System.Windows.Forms.Label()
         Me.GroupBox12 = New System.Windows.Forms.GroupBox()
@@ -197,6 +201,7 @@ Partial Class FrmProductor
         CType(Me.ImgFoto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox11.SuspendLayout()
+        CType(Me.CboTransportistaSocio, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboTipoNomina, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox12.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -857,6 +862,10 @@ Partial Class FrmProductor
         '
         'GroupBox11
         '
+        Me.GroupBox11.Controls.Add(Me.TxtCtoTransporteSocio)
+        Me.GroupBox11.Controls.Add(Me.Label101)
+        Me.GroupBox11.Controls.Add(Me.CboTransportistaSocio)
+        Me.GroupBox11.Controls.Add(Me.Label98)
         Me.GroupBox11.Controls.Add(Me.CboTipoNomina)
         Me.GroupBox11.Controls.Add(Me.Label30)
         Me.GroupBox11.Controls.Add(Me.GroupBox12)
@@ -864,10 +873,66 @@ Partial Class FrmProductor
         Me.GroupBox11.Controls.Add(Me.Label33)
         Me.GroupBox11.Location = New System.Drawing.Point(326, 20)
         Me.GroupBox11.Name = "GroupBox11"
-        Me.GroupBox11.Size = New System.Drawing.Size(315, 88)
+        Me.GroupBox11.Size = New System.Drawing.Size(315, 132)
         Me.GroupBox11.TabIndex = 2
         Me.GroupBox11.TabStop = False
         Me.GroupBox11.Text = "Bases de Calculo"
+        '
+        'TxtCtoTransporteSocio
+        '
+        Me.TxtCtoTransporteSocio.Location = New System.Drawing.Point(112, 105)
+        Me.TxtCtoTransporteSocio.Name = "TxtCtoTransporteSocio"
+        Me.TxtCtoTransporteSocio.Size = New System.Drawing.Size(120, 20)
+        Me.TxtCtoTransporteSocio.TabIndex = 186
+        '
+        'Label101
+        '
+        Me.Label101.AutoSize = True
+        Me.Label101.Location = New System.Drawing.Point(31, 111)
+        Me.Label101.Name = "Label101"
+        Me.Label101.Size = New System.Drawing.Size(80, 13)
+        Me.Label101.TabIndex = 185
+        Me.Label101.Text = "Cto Transporte:"
+        '
+        'CboTransportistaSocio
+        '
+        Me.CboTransportistaSocio.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboTransportistaSocio.Caption = ""
+        Me.CboTransportistaSocio.CaptionHeight = 17
+        Me.CboTransportistaSocio.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboTransportistaSocio.ColumnCaptionHeight = 17
+        Me.CboTransportistaSocio.ColumnFooterHeight = 17
+        Me.CboTransportistaSocio.ContentHeight = 15
+        Me.CboTransportistaSocio.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboTransportistaSocio.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
+        Me.CboTransportistaSocio.DropDownWidth = 300
+        Me.CboTransportistaSocio.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboTransportistaSocio.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboTransportistaSocio.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboTransportistaSocio.EditorHeight = 15
+        Me.CboTransportistaSocio.Images.Add(CType(resources.GetObject("CboTransportistaSocio.Images"), System.Drawing.Image))
+        Me.CboTransportistaSocio.ItemHeight = 15
+        Me.CboTransportistaSocio.Location = New System.Drawing.Point(112, 78)
+        Me.CboTransportistaSocio.MatchEntryTimeout = CType(2000, Long)
+        Me.CboTransportistaSocio.MaxDropDownItems = CType(5, Short)
+        Me.CboTransportistaSocio.MaxLength = 32767
+        Me.CboTransportistaSocio.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboTransportistaSocio.Name = "CboTransportistaSocio"
+        Me.CboTransportistaSocio.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboTransportistaSocio.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboTransportistaSocio.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboTransportistaSocio.Size = New System.Drawing.Size(176, 21)
+        Me.CboTransportistaSocio.TabIndex = 183
+        Me.CboTransportistaSocio.PropBag = resources.GetString("CboTransportistaSocio.PropBag")
+        '
+        'Label98
+        '
+        Me.Label98.AutoSize = True
+        Me.Label98.Location = New System.Drawing.Point(37, 83)
+        Me.Label98.Name = "Label98"
+        Me.Label98.Size = New System.Drawing.Size(68, 13)
+        Me.Label98.TabIndex = 184
+        Me.Label98.Text = "Transportista"
         '
         'CboTipoNomina
         '
@@ -887,7 +952,7 @@ Partial Class FrmProductor
         Me.CboTipoNomina.EditorHeight = 15
         Me.CboTipoNomina.Images.Add(CType(resources.GetObject("CboTipoNomina.Images"), System.Drawing.Image))
         Me.CboTipoNomina.ItemHeight = 15
-        Me.CboTipoNomina.Location = New System.Drawing.Point(112, 48)
+        Me.CboTipoNomina.Location = New System.Drawing.Point(112, 49)
         Me.CboTipoNomina.MatchEntryTimeout = CType(2000, Long)
         Me.CboTipoNomina.MaxDropDownItems = CType(5, Short)
         Me.CboTipoNomina.MaxLength = 32767
@@ -896,14 +961,14 @@ Partial Class FrmProductor
         Me.CboTipoNomina.RowDivider.Color = System.Drawing.Color.DarkGray
         Me.CboTipoNomina.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
         Me.CboTipoNomina.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboTipoNomina.Size = New System.Drawing.Size(120, 21)
+        Me.CboTipoNomina.Size = New System.Drawing.Size(176, 21)
         Me.CboTipoNomina.TabIndex = 143
         Me.CboTipoNomina.PropBag = resources.GetString("CboTipoNomina.PropBag")
         '
         'Label30
         '
         Me.Label30.AutoSize = True
-        Me.Label30.Location = New System.Drawing.Point(9, 56)
+        Me.Label30.Location = New System.Drawing.Point(37, 57)
         Me.Label30.Name = "Label30"
         Me.Label30.Size = New System.Drawing.Size(67, 13)
         Me.Label30.TabIndex = 142
@@ -946,7 +1011,7 @@ Partial Class FrmProductor
         'Label33
         '
         Me.Label33.AutoSize = True
-        Me.Label33.Location = New System.Drawing.Point(6, 22)
+        Me.Label33.Location = New System.Drawing.Point(31, 29)
         Me.Label33.Name = "Label33"
         Me.Label33.Size = New System.Drawing.Size(70, 13)
         Me.Label33.TabIndex = 141
@@ -961,7 +1026,7 @@ Partial Class FrmProductor
         Me.GroupBox3.Controls.Add(Me.GroupBox4)
         Me.GroupBox3.Controls.Add(Me.TxtComunidad)
         Me.GroupBox3.Controls.Add(Me.Label17)
-        Me.GroupBox3.Location = New System.Drawing.Point(326, 114)
+        Me.GroupBox3.Location = New System.Drawing.Point(326, 158)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(315, 106)
         Me.GroupBox3.TabIndex = 1
@@ -1991,6 +2056,7 @@ Partial Class FrmProductor
         Me.TabPage2.ResumeLayout(False)
         Me.GroupBox11.ResumeLayout(False)
         Me.GroupBox11.PerformLayout()
+        CType(Me.CboTransportistaSocio, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboTipoNomina, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox12.ResumeLayout(False)
         Me.GroupBox12.PerformLayout()
@@ -2193,4 +2259,8 @@ Partial Class FrmProductor
     Friend WithEvents CmbTipoProductor As ComboBox
     Friend WithEvents Label46 As Label
     Friend WithEvents ChkPagarCheque As CheckBox
+    Friend WithEvents CboTransportistaSocio As C1.Win.C1List.C1Combo
+    Friend WithEvents Label98 As Label
+    Friend WithEvents TxtCtoTransporteSocio As TextBox
+    Friend WithEvents Label101 As Label
 End Class

@@ -108,7 +108,7 @@ Public Class FrmInventarioFisico
                 CantidadContada = Trim(Me.BindingInventario.Item(iPosicionFila)("Cantidad_Contada"))
                 CodigoBodega = Trim(Me.BindingInventario.Item(iPosicionFila)("CodBodega"))
                 'Existencia = Trim(Me.BindingInventario.Item(iPosicionFila)("Existencia_Unidades"))
-                Existencia = BuscaExistenciaBodega(CodProductos, CodigoBodega)
+                Existencia = BuscaExistenciaBodega(CodProductos, CodigoBodega, Me.DTPFechaConteo.Value)
 
                 Agotado = Trim(Me.BindingInventario.Item(iPosicionFila)("Agotado"))
                 If Agotado = False Then
@@ -452,7 +452,7 @@ Public Class FrmInventarioFisico
 
                 If Not IsDBNull(DataSet.Tables("ListaProductos").Rows(iPosicionFila)("Existencia")) Then
                     'Existencia = Trim(DataSet.Tables("ListaProductos").Rows(iPosicionFila)("Existencia_Unidades"))
-                    Existencia = BuscaExistenciaBodega(CodProductos, CodBodega)
+                    Existencia = BuscaExistenciaBodega(CodProductos, CodBodega, Me.DTPFechaConteo.Value)
                 End If
                 Sql = "SELECT  *  FROM InventarioFisico WHERE (Cod_Producto = '" & CodProductos & "') AND (Fecha_Conteo = CONVERT(DATETIME, '" & FechaConteo & "', 102)) AND (Activo = 0) AND (CodBodega = '" & Me.CboCodigoBodega.Text & "') ORDER BY Cod_Producto"
                 DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
@@ -670,7 +670,7 @@ Public Class FrmInventarioFisico
                 CantidadContada = Trim(DataSet.Tables("InventarioFisico").Rows(iPosicionFila)("Cantidad_Contada"))
                 CodigoBodega = Trim(Me.BindingInventario.Item(iPosicionFila)("CodBodega"))
                 'Existencia = Trim(DataSet.Tables("InventarioFisico").Rows(iPosicionFila)("Existencia_Unidades"))
-                Existencia = BuscaExistenciaBodega(CodProductos, CodigoBodega)
+                Existencia = BuscaExistenciaBodega(CodProductos, CodigoBodega, Me.DTPFechaConteo.Value)
 
                 'Agotado = Trim(Me.BindingInventario.Item(iPosicionFila)("Agotado"))
                 If CantidadContada = 0 Then
@@ -1594,7 +1594,7 @@ Public Class FrmInventarioFisico
 
             If CodigoProduto <> DvLoteProductos.Item(i)("CODIGO") Then
                 CodigoProduto = DvLoteProductos.Item(i)("CODIGO")
-                Existencia = BuscaExistenciaBodega(CodigoProduto, CodigoBodega)
+                Existencia = BuscaExistenciaBodega(CodigoProduto, CodigoBodega, Me.DTPFechaConteo.Value)
             End If
 
 
