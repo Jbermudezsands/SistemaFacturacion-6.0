@@ -341,6 +341,9 @@ Sistema Facturacion 6.0
 <member name="M:Sistema_Facturacion.FrmSucursales.GuardarSucursal(System.String,System.String)">
  <summary>Inserta o actualiza. Devuelve True si fue un registro nuevo.</summary>
 </member>
+<member name="T:Sistema_Facturacion.ModalidadRepository">
+ <summary>Acceso a datos para la tabla dbo.Modalidades.</summary>
+</member>
 <member name="M:Sistema_Facturacion.FrmCuentasXCobrar.Consultar(System.Action)">
  <summary>
  Calcula en segundo plano (BackgroundWorker, compatible con .NET Framework 4) y muestra el resultado.

@@ -2312,6 +2312,24 @@ Handles backgroundWorkerLote.RunWorkerCompleted
         My.Forms.FrmListadoCredito.Show()
     End Sub
 
+    Private Sub RibbonButton25_Click_1(sender As Object, e As EventArgs) Handles RibbonButton25.Click
+        With My.Forms.FrmTipoPrestamos
+            .MdiParent = Me
+            .WindowState = FormWindowState.Normal
+            .Show()
+            .Activate()
+        End With
+    End Sub
+
+    Private Sub RibbonButtonModalidades_Click(sender As Object, e As EventArgs) Handles RibbonButtonModalidades.Click
+        With My.Forms.FrmModalidades
+            .MdiParent = Me
+            .WindowState = FormWindowState.Normal
+            .Show()
+            .Activate()
+        End With
+    End Sub
+
     Private Sub RibbonHospitalizacion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonHospitalizacion.Click
         My.Forms.FrmHospitalizacion.MdiParent = Me
         My.Forms.FrmHospitalizacion.Show()
