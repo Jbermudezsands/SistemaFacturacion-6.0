@@ -15,6 +15,7 @@ Imports System.Globalization
 
 
 
+
 Module Funciones
 
     Public Function ImportarTasaCambio(ByVal rutaArchivo As String) As Integer
@@ -18285,45 +18286,145 @@ errSub:
     End Sub
 
 
-    Public Sub GrabaDetalleNotaDebito(ByVal ConsecutivoNotaDebito As String, ByVal FechaNota As Date, ByVal TipoNota As String, ByVal Descripcion As String, ByVal NumeroFactura As String, ByVal Monto As Double)
-        Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Fecha As String
-        Dim SqlString As String, MiConexion As New SqlClient.SqlConnection(Conexion)
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, idDetalleNota As Double
-
-        Fecha = Format(FechaNota, "yyyy-MM-dd")
-
-        'SqlString = "SELECT * FROM Detalle_Nota WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Nota = '" & TipoNota & "') AND (id_Detalle_Nota = '" & idDetalleNota & "')"
-        SqlString = "SELECT Detalle_Nota.id_Detalle_Nota, Detalle_Nota.Numero_Nota, Detalle_Nota.Fecha_Nota, Detalle_Nota.Tipo_Nota, Detalle_Nota.CodigoNB, Detalle_Nota.Descripcion, Detalle_Nota.Numero_Factura, Detalle_Nota.Monto,  NotaDebito.Tipo FROM  Detalle_Nota INNER JOIN NotaDebito ON Detalle_Nota.Tipo_Nota = NotaDebito.CodigoNB  " &
-                    "WHERE (Detalle_Nota.Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Detalle_Nota.Tipo_Nota = '" & TipoNota & "') AND (Detalle_Nota.Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102))"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "NotaDebito")
-        If DataSet.Tables("NotaDebito").Rows.Count = 0 Then
+    Public Sub GrabaDetalleNotaDebito(
+ByVal ConsecutivoNotaDebito As String,
+ByVal FechaNota As Date,
+ByVal TipoNota As String,
+ByVal Descripcion As String,
+ByVal NumeroFactura As String,
+ByVal Monto As Double)
 
 
+        Dim SqlConexion As New SqlClient.SqlConnection(Conexion)
 
-            '//////////////////////////////////////////////////////////////////////////////////////////////
-            '////////////////////////////AGREGO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
-            '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "INSERT INTO [Detalle_Nota] ([Numero_Nota],[Fecha_Nota],[Tipo_Nota],[Descripcion],[Numero_Factura],[Monto]) " &
-                         "VALUES ('" & ConsecutivoNotaDebito & "','" & Format(FechaNota, "dd/MM/yyyy") & "','" & TipoNota & "','" & Descripcion & "','" & NumeroFactura & "'," & Monto & ")"
-            MiConexion.Open()
-            ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
-            iResultado = ComandoUpdate.ExecuteNonQuery
-            MiConexion.Close()
+        Try
+            SqlConexion.Open()
 
-        Else
+            Dim IdDetalleNota As Object = Nothing
 
-            idDetalleNota = DataSet.Tables("NotaDebito").Rows(0)("id_Detalle_Nota")
-            '//////////////////////////////////////////////////////////////////////////////////////////////
-            '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
-            '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "UPDATE [Detalle_Nota]  SET [Tipo_Nota] = '" & TipoNota & "' ,[Descripcion] = '" & Descripcion & "',[Monto] =" & Monto & "  WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Fecha_Nota = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Nota = '" & TipoNota & "') AND (id_Detalle_Nota = '" & idDetalleNota & "')"
-            MiConexion.Open()
-            ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
-            iResultado = ComandoUpdate.ExecuteNonQuery
-            MiConexion.Close()
-        End If
+            'Buscar el detalle existente.
+            Dim SqlBuscar As String =
+        "SELECT TOP 1 id_Detalle_Nota " &
+        "FROM Detalle_Nota " &
+        "WHERE Numero_Nota = @NumeroNota " &
+        "AND Fecha_Nota >= @FechaInicio " &
+        "AND Fecha_Nota < @FechaFin " &
+        "AND Tipo_Nota = @TipoNota " &
+        "ORDER BY id_Detalle_Nota"
+
+            Using ComandoBuscar As New SqlClient.SqlCommand(SqlBuscar, SqlConexion)
+
+                ComandoBuscar.Parameters.Add(
+                "@NumeroNota", SqlDbType.NVarChar, 50).Value =
+                ConsecutivoNotaDebito
+
+                ComandoBuscar.Parameters.Add(
+                "@FechaInicio", SqlDbType.DateTime).Value =
+                FechaNota.Date
+
+                ComandoBuscar.Parameters.Add(
+                "@FechaFin", SqlDbType.DateTime).Value =
+                FechaNota.Date.AddDays(1)
+
+                ComandoBuscar.Parameters.Add(
+                "@TipoNota", SqlDbType.NVarChar, 50).Value =
+                TipoNota
+
+                IdDetalleNota = ComandoBuscar.ExecuteScalar()
+
+            End Using
+
+            If IdDetalleNota Is Nothing OrElse IsDBNull(IdDetalleNota) Then
+
+                'No existe detalle: insertar.
+                Dim SqlInsertar As String =
+            "INSERT INTO Detalle_Nota " &
+            "(Numero_Nota, Fecha_Nota, Tipo_Nota, Descripcion, Numero_Factura, Monto) " &
+            "VALUES " &
+            "(@NumeroNota, @FechaNota, @TipoNota, @Descripcion, @NumeroFactura, @Monto)"
+
+                Using ComandoInsertar As New SqlClient.SqlCommand(SqlInsertar, SqlConexion)
+
+                    ComandoInsertar.Parameters.Add(
+                "@NumeroNota", SqlDbType.NVarChar, 50).Value =
+                ConsecutivoNotaDebito
+
+                    ComandoInsertar.Parameters.Add(
+                "@FechaNota", SqlDbType.DateTime).Value =
+                FechaNota
+
+                    ComandoInsertar.Parameters.Add(
+                "@TipoNota", SqlDbType.NVarChar, 50).Value =
+                TipoNota
+
+                    ComandoInsertar.Parameters.Add(
+                "@Descripcion", SqlDbType.NVarChar, 255).Value =
+                If(Descripcion Is Nothing, "", Descripcion)
+
+                    ComandoInsertar.Parameters.Add(
+                "@NumeroFactura", SqlDbType.NVarChar, 50).Value =
+                If(NumeroFactura Is Nothing, "", NumeroFactura)
+
+                    ComandoInsertar.Parameters.Add(
+                "@Monto", SqlDbType.Decimal).Value =
+                Monto
+
+                    ComandoInsertar.Parameters("@Monto").Precision = 18
+                    ComandoInsertar.Parameters("@Monto").Scale = 2
+
+                    ComandoInsertar.ExecuteNonQuery()
+
+                End Using
+
+
+
+            Else
+
+                'Existe detalle: actualizar.
+                Dim SqlActualizar As String =
+            "UPDATE Detalle_Nota SET " &
+            "Descripcion = @Descripcion, " &
+            "Monto = @Monto " &
+            "WHERE id_Detalle_Nota = @IdDetalleNota"
+
+                Using ComandoActualizar As New SqlClient.SqlCommand(SqlActualizar, SqlConexion)
+
+                    ComandoActualizar.Parameters.Add(
+                "@Descripcion", SqlDbType.NVarChar, 255).Value =
+                If(Descripcion Is Nothing, "", Descripcion)
+
+                    ComandoActualizar.Parameters.Add(
+                "@Monto", SqlDbType.Decimal).Value =
+                Monto
+
+                    ComandoActualizar.Parameters("@Monto").Precision = 18
+                    ComandoActualizar.Parameters("@Monto").Scale = 2
+
+                    ComandoActualizar.Parameters.Add(
+                "@IdDetalleNota", SqlDbType.Decimal).Value =
+                Convert.ToDecimal(IdDetalleNota)
+
+                    ComandoActualizar.ExecuteNonQuery()
+
+                End Using
+
+            End If
+
+        Finally
+
+            If SqlConexion.State <> ConnectionState.Closed Then
+                SqlConexion.Close()
+            End If
+
+            SqlConexion.Dispose()
+
+        End Try
+
+
     End Sub
+
+
+
     Public Sub InsertarDetalleNotaDebito(ByVal ConsecutivoNotaDebito As String, ByVal FechaNota As Date, ByVal TipoNota As String, ByVal Descripcion As String, ByVal NumeroFactura As String, ByVal Monto As Double)
         Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Fecha As String
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -18344,61 +18445,163 @@ errSub:
 
 
     End Sub
-    Public Sub GrabaNotaDebito(ByVal ConsecutivoNotaDebito As String, ByVal FechaNota As Date, ByVal TipoNota As String, ByVal CuentaContable As String, ByVal Moneda As String, ByVal CodigoCliente As String, ByVal NombreCliente As String, ByVal Observaciones As String, ByVal Activo As Boolean, ByVal Contabilizado As Boolean, ByVal TipoCuenta As Boolean)
-        Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Fecha As String
-        Dim SqlString As String, MiConexion As New SqlClient.SqlConnection(Conexion)
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim NotaActivo As Integer, NotaContabilizado As Integer, Tipo As Double = 0
 
-        If Activo = True Then
-            NotaActivo = 1
-        Else
-            NotaActivo = 0
-        End If
+    Public Sub GrabaNotaDebito(
+ByVal ConsecutivoNotaDebito As String,
+ByVal FechaNota As Date,
+ByVal TipoNota As String,
+ByVal CuentaContable As String,
+ByVal Moneda As String,
+ByVal CodigoCliente As String,
+ByVal NombreCliente As String,
+ByVal Observaciones As String,
+ByVal Activo As Boolean,
+ByVal Contabilizado As Boolean,
+ByVal TipoCuenta As Boolean)
 
-        If Contabilizado = True Then
-            NotaContabilizado = 1
-        Else
-            NotaContabilizado = 0
-        End If
 
-        If TipoCuenta = False Then
-            Tipo = 0
-        Else
-            Tipo = 1
-        End If
+        Dim NotaActivo As Integer = If(Activo, 1, 0)
+        Dim NotaContabilizado As Integer = If(Contabilizado, 1, 0)
+        Dim ValorTipoCuenta As Integer = If(TipoCuenta, 1, 0)
 
-        Fecha = Format(FechaNota, "yyyy-MM-dd")
+        Dim SqlConexion As New SqlClient.SqlConnection(Conexion)
 
-        SqlString = "SELECT  *  FROM IndiceNota WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Tipo_Nota = '" & TipoNota & "') AND (Fecha_Nota = CONVERT(DATETIME, '" & Format(FechaNota, "yyyy-MM-dd") & "', 102))"
+        Try
+            SqlConexion.Open()
 
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "NotaDebito")
-        If DataSet.Tables("NotaDebito").Rows.Count = 0 Then
+            Dim ExisteNota As Boolean = False
 
-            '//////////////////////////////////////////////////////////////////////////////////////////////
-            '////////////////////////////AGREGO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
-            '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "INSERT INTO [IndiceNota] ([Numero_Nota],[Fecha_Nota],[Tipo_Nota],[MonedaNota],[Cod_Cliente],[Nombre_Cliente],[Observaciones],[Marca],[TipoCuenta]) " &
-                         "VALUES ('" & ConsecutivoNotaDebito & "','" & Format(FechaNota, "dd/MM/yyyy") & "','" & TipoNota & "','" & Moneda & "','" & CodigoCliente & "','" & NombreCliente & "' ,'" & Observaciones & "','True', " & Tipo & ")"
-            MiConexion.Open()
-            ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
-            iResultado = ComandoUpdate.ExecuteNonQuery
-            MiConexion.Close()
+            Dim SqlBuscar As String =
+        "SELECT COUNT(1) " &
+        "FROM IndiceNota " &
+        "WHERE Numero_Nota = @NumeroNota " &
+        "AND Tipo_Nota = @TipoNota " &
+        "AND Fecha_Nota >= @FechaInicio " &
+        "AND Fecha_Nota < @FechaFin"
 
-        Else
-            '//////////////////////////////////////////////////////////////////////////////////////////////
-            '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
-            '/////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlCompras = "UPDATE [IndiceNota] SET [MonedaNota] = '" & Moneda & "',[Cod_Cliente] = '" & CodigoCliente & "',[Nombre_Cliente] = '" & NombreCliente & "' ,[Observaciones] = '" & Observaciones & "' ,[Activo] =" & NotaActivo & ",[Contabilizado] =" & NotaContabilizado & ",[Marca] ='True',[TipoCuenta] =" & Tipo & " " &
-                         "WHERE (Numero_Nota = '" & ConsecutivoNotaDebito & "') AND (Tipo_Nota = '" & TipoNota & "') AND (Fecha_Nota = CONVERT(DATETIME, '" & Format(FechaNota, "yyyy-MM-dd") & "', 102)) "
-            MiConexion.Open()
-            ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
-            iResultado = ComandoUpdate.ExecuteNonQuery
-            MiConexion.Close()
+            Using ComandoBuscar As New SqlClient.SqlCommand(SqlBuscar, SqlConexion)
 
-        End If
+                ComandoBuscar.Parameters.Add(
+            "@NumeroNota", SqlDbType.NVarChar, 50).Value =
+            ConsecutivoNotaDebito
+
+                ComandoBuscar.Parameters.Add(
+            "@TipoNota", SqlDbType.NVarChar, 100).Value =
+            TipoNota
+
+                ComandoBuscar.Parameters.Add(
+            "@FechaInicio", SqlDbType.DateTime).Value =
+            FechaNota.Date
+
+                ComandoBuscar.Parameters.Add(
+            "@FechaFin", SqlDbType.DateTime).Value =
+            FechaNota.Date.AddDays(1)
+
+                ExisteNota = Convert.ToInt32(
+            ComandoBuscar.ExecuteScalar()) > 0
+
+            End Using
+
+            Dim SqlGuardar As String
+
+            If ExisteNota Then
+
+                SqlGuardar =
+            "UPDATE IndiceNota SET " &
+            "MonedaNota = @Moneda, " &
+            "Cod_Cliente = @CodigoCliente, " &
+            "Nombre_Cliente = @NombreCliente, " &
+            "Observaciones = @Observaciones, " &
+            "Activo = @Activo, " &
+            "Contabilizado = @Contabilizado, " &
+            "Marca = 'True', " &
+            "TipoCuenta = @TipoCuenta " &
+            "WHERE Numero_Nota = @NumeroNota " &
+            "AND Tipo_Nota = @TipoNota " &
+            "AND Fecha_Nota >= @FechaInicio " &
+            "AND Fecha_Nota < @FechaFin"
+
+            Else
+
+                SqlGuardar =
+            "INSERT INTO IndiceNota " &
+            "(Numero_Nota, Fecha_Nota, Tipo_Nota, MonedaNota, " &
+            "Cod_Cliente, Nombre_Cliente, Observaciones, Marca, TipoCuenta) " &
+            "VALUES " &
+            "(@NumeroNota, @FechaNota, @TipoNota, @Moneda, " &
+            "@CodigoCliente, @NombreCliente, @Observaciones, 'True', @TipoCuenta)"
+
+            End If
+
+            Using ComandoGuardar As New SqlClient.SqlCommand(SqlGuardar, SqlConexion)
+
+                ComandoGuardar.Parameters.Add(
+            "@NumeroNota", SqlDbType.NVarChar, 50).Value =
+            ConsecutivoNotaDebito
+
+                ComandoGuardar.Parameters.Add(
+            "@TipoNota", SqlDbType.NVarChar, 100).Value =
+            TipoNota
+
+                ComandoGuardar.Parameters.Add(
+            "@FechaInicio", SqlDbType.DateTime).Value =
+            FechaNota.Date
+
+                ComandoGuardar.Parameters.Add(
+            "@FechaFin", SqlDbType.DateTime).Value =
+            FechaNota.Date.AddDays(1)
+
+                ComandoGuardar.Parameters.Add(
+            "@FechaNota", SqlDbType.DateTime).Value =
+            FechaNota
+
+                ComandoGuardar.Parameters.Add(
+            "@Moneda", SqlDbType.NVarChar, 50).Value =
+            Moneda
+
+                ComandoGuardar.Parameters.Add(
+            "@CodigoCliente", SqlDbType.NVarChar, 50).Value =
+            CodigoCliente
+
+                ComandoGuardar.Parameters.Add(
+            "@NombreCliente", SqlDbType.NVarChar, 200).Value =
+            NombreCliente
+
+                ComandoGuardar.Parameters.Add(
+            "@Observaciones", SqlDbType.NVarChar, -1).Value =
+            If(Observaciones Is Nothing, "", Observaciones)
+
+                ComandoGuardar.Parameters.Add(
+            "@Activo", SqlDbType.Int).Value =
+            NotaActivo
+
+                ComandoGuardar.Parameters.Add(
+            "@Contabilizado", SqlDbType.Int).Value =
+            NotaContabilizado
+
+                ComandoGuardar.Parameters.Add(
+            "@TipoCuenta", SqlDbType.Int).Value =
+            ValorTipoCuenta
+
+                ComandoGuardar.ExecuteNonQuery()
+
+            End Using
+
+        Finally
+
+            If SqlConexion.State <> ConnectionState.Closed Then
+                SqlConexion.Close()
+            End If
+
+            SqlConexion.Dispose()
+
+        End Try
+
+
     End Sub
+
+
+
     'Public Sub GrabaCompras(ByVal cn As SqlClient.SqlConnection,
     '                    ByVal tx As SqlClient.SqlTransaction,
     '                    ByVal Compras As TablaCompras)
@@ -27023,4 +27226,51 @@ LEFT JOIN Existencias E
         FrmPlantillas.TxtPagado.Text = Format(Monto, "##,##0.00")
         FrmPlantillas.TxtNetoPagar.Text = Format(Neto, "##,##0.00")
     End Sub
+
+
+    Public Sub AplicarDeduccionesTransportePlanilla(
+        ByVal NumNominaTransportista As String)
+
+        Dim Sql As String =
+            ";WITH TotalesTransporte AS (" &
+            "    SELECT " &
+            "        NumNominaLeche, " &
+            "        CodProductor, " &
+            "        TipoProductor, " &
+            "        SUM(ISNULL(Importe, 0)) AS TotalTransporte " &
+            "    FROM dbo.DetallePrecioTransportista " &
+            "    WHERE NumNominaTransportista = @NumNominaTransportista " &
+            "    GROUP BY " &
+            "        NumNominaLeche, " &
+            "        CodProductor, " &
+            "        TipoProductor " &
+            ") " &
+            "UPDATE DP " &
+            "SET DP.Transporte = T.TotalTransporte " &
+            "FROM dbo.Deducciones_Planilla DP " &
+            "INNER JOIN TotalesTransporte T " &
+            "    ON DP.NumNomina = T.NumNominaLeche " &
+            "    AND DP.CodProductor = T.CodProductor " &
+            "    AND DP.TipoProductor = T.TipoProductor " &
+            "WHERE T.TotalTransporte > 0;"
+
+        Using ConexionSql As New SqlClient.SqlConnection(Conexion)
+
+            Using Cmd As New SqlClient.SqlCommand(Sql, ConexionSql)
+
+                Cmd.Parameters.Add(
+                        "@NumNominaTransportista",
+                        SqlDbType.NVarChar, 50).Value =
+                        NumNominaTransportista.Trim()
+
+                ConexionSql.Open()
+
+                Cmd.ExecuteNonQuery()
+
+            End Using
+
+        End Using
+
+    End Sub
+
 End Module

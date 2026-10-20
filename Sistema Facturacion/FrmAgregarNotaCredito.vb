@@ -4,6 +4,10 @@ Public Class FrmAgregarNotaCredito
     Public Numero_Factura As String, Fecha_Factura As String, MontoFactura As Double, ds As New DataSet, Numero_Nota As String = "", MontoNota As Double, MonedaEstado As String
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
 
+    Private Sub GroupBox1_Enter(sender As Object, e As EventArgs) Handles GroupBox1.Enter
+
+    End Sub
+
     Private Sub FrmAgregarNotaCredito_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.LblNumeroFactura.Text = Numero_Factura
         Me.LblMontoFactura.Text = MontoFactura

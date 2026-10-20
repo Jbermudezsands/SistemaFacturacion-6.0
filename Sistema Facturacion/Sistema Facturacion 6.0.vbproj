@@ -111,6 +111,12 @@
     <Compile Include="Clases\Consultas\CsContratos.vb" />
     <Compile Include="Clases\Consultas\ArgsReporteExistenciaLote.vb" />
     <Compile Include="Clases\Consultas\CsLogError.vb" />
+    <Compile Include="Clases\Consultas\CxC_Compatibilidad.vb" />
+    <Compile Include="Clases\Consultas\CxC_Modelos.vb" />
+    <Compile Include="Clases\Consultas\CxC_Motor.vb" />
+    <Compile Include="Clases\Consultas\CxC_Repositorio.vb" />
+    <Compile Include="Clases\Consultas\CxC_Resultado.vb" />
+    <Compile Include="Clases\Consultas\CxC_Servicio.vb" />
     <Compile Include="Clases\Consultas\PlanillaPlanPagoService.vb" />
     <Compile Include="Clases\Consultas\PlanPagoReciboService.vb" />
     <Compile Include="Clases\Consultas\ServicioRecibos.vb" />
@@ -1891,6 +1897,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\ProductoresTransportista.resx">
       <DependentUpon>ProductoresTransportista.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmAgregarNotaCredito.resx">
+      <DependentUpon>FrmAgregarNotaCredito.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmBeneficiario.resx">
       <DependentUpon>FrmBeneficiario.vb</DependentUpon>

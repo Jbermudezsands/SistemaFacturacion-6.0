@@ -177,6 +177,125 @@ Sistema Facturacion 6.0
   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="F:Sistema_Facturacion.CxC_Compatibilidad.CampoZonaReportesCxC">
+ <summary>
+ Campo de Clientes que filtran los combos "CboCodDepartamentoIni/Fin" de FrmReportes.
+ El código anterior usaba Municipio en unas ramas y Departamento en otra; ajuste aquí si aplica.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.CxC_Compatibilidad.CrearServicioCxC">
+ <summary>
+ Crea el servicio con la conexión del sistema.
+ Ya no se enlaza ActualizaMontoCredito: su UPDATE está comentado, así que por cada factura solo hacía
+ 1 a 3 consultas sin guardar nada, y podía mostrar un MsgBox desde el hilo de fondo.
+ Si algún día se reactiva MontoCredito, se asigna aquí servicio.AlActualizarSaldoFactura.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.CxC_Compatibilidad.FiltroCxCDesdeReportes(System.DateTime,System.Boolean)">
+ <summary>Filtro de cuentas por cobrar armado con los combos de FrmReportes.</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxC_Compatibilidad.MostrarAdvertenciasCxC(System.Collections.Generic.IEnumerable{System.String})">
+ <summary>Muestra las advertencias del cálculo (tasas faltantes, pagos a facturas inexistentes, etc.).</summary>
+</member>
+<member name="T:Sistema_Facturacion.CampoZonaCxC">
+ <summary>Campo de Clientes que se usa para el filtro "Departamento" de los reportes.</summary>
+</member>
+<member name="M:Sistema_Facturacion.DineroCxC.Redondear(System.Decimal)">
+ <summary>Redondeo comercial (0.005 -> 0.01), igual que ROUND() de SQL Server.</summary>
+</member>
+<member name="M:Sistema_Facturacion.TasaCambioCache.FechasSinTasa">
+ <summary>Fechas que se necesitaron para convertir y que no existen en TasaCambio.</summary>
+</member>
+<member name="M:Sistema_Facturacion.TasaCambioCache.Convertir(System.Decimal,Sistema_Facturacion.MonedaCxC,Sistema_Facturacion.MonedaCxC,System.DateTime)">
+ <summary>
+ Convierte un monto a la moneda destino con la tasa de la fecha del documento y lo redondea a 2 decimales.
+ Si no hay tasa para esa fecha devuelve 0 (igual que antes) y la fecha queda registrada en FechasSinTasa.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.ClaveCxC.EsSinFactura(System.String)">
+ <summary>Números de factura que en el sistema significan "sin factura".</summary>
+</member>
+<member name="P:Sistema_Facturacion.CxCClienteDoc.InteresMoratorio">
+ <summary>Clientes.InteresMoratorio tal como está guardado (porcentaje diario).</summary>
+</member>
+<member name="P:Sistema_Facturacion.CxCFacturaDoc.Monto">
+ <summary>SubTotal + IVA en la moneda de la factura.</summary>
+</member>
+<member name="P:Sistema_Facturacion.CxCNotaDoc.TipoNota">
+ <summary>NotaDebito.Tipo: "Debito Clientes", "Credito Clientes Dif $", etc.</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxCNotaDoc.AplicaEn(Sistema_Facturacion.MonedaCxC)">
+ <summary>
+ Las notas de diferencial cambiario solo aplican en su moneda:
+ "Dif $" no se cuenta en córdobas y "Dif C$" no se cuenta en dólares.
+ </summary>
+</member>
+<member name="T:Sistema_Facturacion.CxCDatos">
+ <summary>Todo lo que se necesita para calcular, cargado en una sola ida a la base de datos.</summary>
+</member>
+<member name="P:Sistema_Facturacion.CxCFiltro.IncluirDocumentosSinFactura">
+ <summary>Notas y recibos que no están asociados a una factura (Numero_Factura = '0' / '0000').</summary>
+</member>
+<member name="P:Sistema_Facturacion.CxCMovimiento.ClaveDocumento">
+ <summary>Línea de saldo a la que pertenece (factura, nota sin factura o recibo sin factura).</summary>
+</member>
+<member name="P:Sistema_Facturacion.CxCLinea.MontoNota">
+ <summary>Neto de notas (NB - NC), columna "MontoNota".</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxCMotor.MovimientosDelFiltro(Sistema_Facturacion.CxCDatos,Sistema_Facturacion.CxCFiltro,System.Collections.Generic.List{System.String})">
+ <summary>Movimientos de los clientes del filtro (con vendedor: clientes que tienen facturas de esos vendedores).</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxCMotor.BuscarFactura(System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{Sistema_Facturacion.CxCFacturaDoc}},System.String,System.String,System.DateTime)">
+ <summary>Si el número de factura se repite, toma la más reciente con fecha menor o igual al documento.</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxCRepositorio.Cargar(Sistema_Facturacion.CxCFiltro)">
+ <summary>Carga todos los documentos de los clientes del filtro hasta la fecha de corte.</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxCRepositorio.ListarClientes">
+ <summary>Lista de clientes para el combo del formulario (Codigo, Nombres).</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxCRepositorio.BuscarNotaPorTipo(System.String)">
+ <summary>Código de la nota de diferencial cambiario configurada (NotaDebito.Tipo).</summary>
+</member>
+<member name="P:Sistema_Facturacion.CxCResultado.TotalAbonos">
+ <summary>Recibos + pagos de contado (antes los pagos de contado no se sumaban y el saldo final no cuadraba).</summary>
+</member>
+<member name="P:Sistema_Facturacion.CxCResultado.SaldoFinal">
+ <summary>Cargos - Abonos + NB - NC + Mora. Siempre es igual a la suma de la columna Total.</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxCResultado.ToDataView(System.Boolean,System.Boolean)">
+ <summary>Equivalente a dvCtasxCobrar: vista ordenada por cliente o por fecha.</summary>
+</member>
+<member name="T:Sistema_Facturacion.CxCTablas">
+ <summary>Convierte las filas a las tablas que ya consumen los reportes de ActiveReports.</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxCTablas.EstadoCuenta(System.Collections.Generic.IEnumerable{Sistema_Facturacion.CxCEstadoCuentaFila})">
+ <summary>Columnas de ArepEstadoCuentasClientes.</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxCTablas.SaldosClientes(System.Collections.Generic.IEnumerable{Sistema_Facturacion.CxCSaldoClienteFila})">
+ <summary>Columnas de ArepSaldoClientes.</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxCTablas.Antiguedad(System.Collections.Generic.IEnumerable{Sistema_Facturacion.CxCAntiguedadFila})">
+ <summary>Columnas de ArepSaldoClientesHistoricos.</summary>
+</member>
+<member name="P:Sistema_Facturacion.CxCServicio.AlActualizarSaldoFactura">
+ <summary>
+ Se invoca por cada factura después de calcular, para mantener Facturas.MontoCredito
+ (antes FillDataSetCtaxCobrar llamaba a ActualizaMontoCredito en el mismo ciclo).
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.CxCServicio.CalcularSaldos(Sistema_Facturacion.CxCFiltro,System.Boolean)">
+ <summary>Saldo por factura (grid de Cuentas x Cobrar y reporte de cuentas por cobrar).</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxCServicio.EstadoCuenta(Sistema_Facturacion.CxCFiltro,System.DateTime,System.Collections.Generic.List{System.String})">
+ <summary>Estado de cuenta (ArepEstadoCuentasClientes).</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxCServicio.SaldosClientes(Sistema_Facturacion.CxCFiltro,System.DateTime,System.Collections.Generic.List{System.String})">
+ <summary>Saldo inicial, débitos, créditos y saldo final por cliente (ArepSaldoClientes).</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxCServicio.Antiguedad(Sistema_Facturacion.CxCFiltro,System.Collections.Generic.List{System.String})">
+ <summary>Antigüedad de saldos: corriente, 30, 60, 90 y más de 90 días (ArepSaldoClientesHistoricos).</summary>
+</member>
 <member name="M:Sistema_Facturacion.ServicioRecibos.GrabarDetalleReciboPlanilla(System.String,System.DateTime,System.String,System.Decimal,System.String,System.String,System.String,System.Nullable{System.DateTime},System.Decimal,System.Decimal,System.Decimal,System.Int32,System.String)">
  <summary>
  Graba un detalle de recibo generado automáticamente desde Planilla
@@ -221,6 +340,27 @@ Sistema Facturacion 6.0
 </member>
 <member name="M:Sistema_Facturacion.FrmSucursales.GuardarSucursal(System.String,System.String)">
  <summary>Inserta o actualiza. Devuelve True si fue un registro nuevo.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmCuentasXCobrar.Consultar(System.Action)">
+ <summary>
+ Calcula en segundo plano (BackgroundWorker, compatible con .NET Framework 4) y muestra el resultado.
+ "despues" se ejecuta al terminar, solo si el cálculo fue exitoso.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmCuentasXCobrar.AsignarTotales(Sistema_Facturacion.CxCResultado)">
+ <summary>Totales públicos que antes llenaba FillDataSetCtaxCobrar (se conservan por compatibilidad).</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmCuentasXCobrar.RefrescarVista">
+ <summary>Vuelve a armar la vista del grid (sin ir a la base de datos).</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmCuentasXCobrar.TDGridImpuestos_FetchRowStyle(System.Object,C1.Win.C1TrueDBGrid.FetchRowStyleEventArgs)">
+ <summary>Rojo: factura vencida con saldo. Verde: saldo a favor del cliente.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmReportes.SaldoInicialCliente(System.String,System.DateTime,System.String)">
+ <summary>
+ Saldo del cliente ANTES de la fecha indicada (documentos con fecha menor a FechaFin).
+ Usa el mismo cálculo de Cuentas x Cobrar (CxCServicio), así cuadra con la pantalla y los reportes.
+ </summary>
 </member>
 </members>
 </doc>

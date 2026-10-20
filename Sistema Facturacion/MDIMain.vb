@@ -1196,8 +1196,12 @@ Handles backgroundWorkerLote.RunWorkerCompleted
     End Sub
 
     Private Sub RibbonButton41_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonCtasXCobrar1.Click
-        My.Forms.FrmCuentasXCobrar.MdiParent = Me
-        My.Forms.FrmCuentasXCobrar.Show()
+        With My.Forms.FrmCuentasXCobrar
+            .MdiParent = Me
+            .WindowState = FormWindowState.Normal
+            .Show()
+            .Activate()
+        End With
     End Sub
 
     Private Sub RibbonHistoricoFactura_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonHistoricoFactura.Click
@@ -1714,6 +1718,7 @@ Handles backgroundWorkerLote.RunWorkerCompleted
             'oHebraLotes.Start()
             BgAuditoria.RunWorkerAsync()
         End If
+
 
 
 
