@@ -20,22 +20,22 @@ Partial Class FrmAgregarNotaCredito
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmAgregarNotaCredito))
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox
-        Me.TxtMontoRecibo = New System.Windows.Forms.TextBox
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.LblMontoFactura = New System.Windows.Forms.Label
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.LblNumeroFactura = New System.Windows.Forms.Label
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.Button8 = New System.Windows.Forms.Button
-        Me.Button7 = New System.Windows.Forms.Button
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.TDGridImpuestos = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.LblMontoNota = New System.Windows.Forms.Label
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.LblNumeroNota = New System.Windows.Forms.Label
-        Me.Label2 = New System.Windows.Forms.Label
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.TxtMontoRecibo = New System.Windows.Forms.TextBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.LblMontoFactura = New System.Windows.Forms.Label()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.LblNumeroFactura = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.Button7 = New System.Windows.Forms.Button()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.TDGridImpuestos = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.LblMontoNota = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.LblNumeroNota = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.GroupBox3.SuspendLayout()
         CType(Me.TDGridImpuestos, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -69,7 +69,7 @@ Partial Class FrmAgregarNotaCredito
         Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label10.Location = New System.Drawing.Point(266, 25)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(107, 16)
+        Me.Label10.Size = New System.Drawing.Size(106, 16)
         Me.Label10.TabIndex = 228
         Me.Label10.Text = "Monto Asignar"
         '
@@ -79,7 +79,7 @@ Partial Class FrmAgregarNotaCredito
         Me.LblMontoFactura.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblMontoFactura.Location = New System.Drawing.Point(122, 66)
         Me.LblMontoFactura.Name = "LblMontoFactura"
-        Me.LblMontoFactura.Size = New System.Drawing.Size(84, 16)
+        Me.LblMontoFactura.Size = New System.Drawing.Size(83, 16)
         Me.LblMontoFactura.TabIndex = 227
         Me.LblMontoFactura.Text = "5000000.00"
         '
@@ -89,7 +89,7 @@ Partial Class FrmAgregarNotaCredito
         Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label7.Location = New System.Drawing.Point(9, 66)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(106, 16)
+        Me.Label7.Size = New System.Drawing.Size(105, 16)
         Me.Label7.TabIndex = 226
         Me.Label7.Text = "Monto Factura"
         '
@@ -110,13 +110,12 @@ Partial Class FrmAgregarNotaCredito
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.Location = New System.Drawing.Point(9, 25)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(88, 16)
+        Me.Label5.Size = New System.Drawing.Size(87, 16)
         Me.Label5.TabIndex = 224
         Me.Label5.Text = "Factura No:"
         '
         'Button8
         '
-        Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
         Me.Button8.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.Button8.Location = New System.Drawing.Point(515, 71)
         Me.Button8.Name = "Button8"
@@ -128,7 +127,6 @@ Partial Class FrmAgregarNotaCredito
         '
         'Button7
         '
-        Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
         Me.Button7.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.Button7.Location = New System.Drawing.Point(515, 12)
         Me.Button7.Name = "Button7"
@@ -162,8 +160,7 @@ Partial Class FrmAgregarNotaCredito
         Me.TDGridImpuestos.Name = "TDGridImpuestos"
         Me.TDGridImpuestos.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TDGridImpuestos.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TDGridImpuestos.PreviewInfo.ZoomFactor = 75
-        Me.TDGridImpuestos.PrintInfo.PageSettings = CType(resources.GetObject("TDGridImpuestos.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
+        Me.TDGridImpuestos.PreviewInfo.ZoomFactor = 75.0R
         Me.TDGridImpuestos.Size = New System.Drawing.Size(902, 208)
         Me.TDGridImpuestos.TabIndex = 229
         Me.TDGridImpuestos.Text = "C1TrueDBGrid1"
@@ -198,7 +195,7 @@ Partial Class FrmAgregarNotaCredito
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.Location = New System.Drawing.Point(240, 41)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(106, 16)
+        Me.Label3.Size = New System.Drawing.Size(105, 16)
         Me.Label3.TabIndex = 228
         Me.Label3.Text = "Monto Factura"
         '
@@ -218,7 +215,7 @@ Partial Class FrmAgregarNotaCredito
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.Location = New System.Drawing.Point(6, 41)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(103, 16)
+        Me.Label2.Size = New System.Drawing.Size(102, 16)
         Me.Label2.TabIndex = 226
         Me.Label2.Text = "Numero Nota:"
         '

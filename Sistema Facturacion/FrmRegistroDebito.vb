@@ -1,149 +1,136 @@
 Public Class FrmRegistroDebito
     Public MiConexion As New SqlClient.SqlConnection(Conexion), MiconexionContabilidad As New SqlClient.SqlConnection(ConexionContabilidad), TipoNota As String, ConsecutivoConSerie As Boolean, NumeroFactura As String, NumeroRuc As String, NombreCliente As String, Codigo As String, Monto As Double
+    Private TablaCodigosNota As DataTable
+    Private TablaCuentasContables As DataTable
+
     Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
         Me.Close()
     End Sub
 
-    Private Sub FrmRegistroDebito_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dim SqlString As String = ""
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
+    Private Sub FrmRegistroDebito_Load(ByVal sender As System.Object,
+                                   ByVal e As System.EventArgs) Handles MyBase.Load
 
-        If Quien = "Historico" Then
-            Me.Button1.Enabled = False
-            Me.Button2.Enabled = False
-            Me.Button4.Enabled = False
-            Me.Button3.Enabled = False
-            Me.CmbSerie.Enabled = False
-            Me.DTPFecha.Enabled = False
-            ChkFactura.Enabled = False
-            ChkSseries.Enabled = False
-            ChkTipoCuenta.Enabled = False
-            TxtMonto.Enabled = False
-            TxtDescripcion.Enabled = False
-            CmbCodigo.Enabled = False
-            TxtObservaciones.Enabled = False
-        Else
-            Me.Button1.Enabled = True
-            Me.Button2.Enabled = True
-            Me.Button4.Enabled = True
-            Me.Button3.Enabled = True
-            Me.CmbSerie.Enabled = True
-            Me.DTPFecha.Enabled = True
-            ChkFactura.Enabled = True
-            ChkSseries.Enabled = True
-            ChkTipoCuenta.Enabled = True
-            TxtMonto.Enabled = True
-            TxtDescripcion.Enabled = True
-            CmbCodigo.Enabled = True
-            TxtObservaciones.Enabled = True
-        End If
+        Try
+            '1. Configurar el formulario según el modo de apertura.
+            ConfigurarModoFormulario()
 
-        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '///////////////////////CARGO LOS DATOS DEL CLIENTE////////////////////////////////////////////////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        DataSet.Reset()
-        SqlString = "SELECT * FROM Clientes WHERE (Cod_Cliente = '" & Me.TxtCodCliente.Text & "') "
-        MiConexion.Open()
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "Clientes")
-        If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("RUC")) Then
-                NumeroRuc = DataSet.Tables("Clientes").Rows(0)("RUC")
-            End If
-            NombreCliente = DataSet.Tables("Clientes").Rows(0)("Nombre_Cliente")
-        End If
-        MiConexion.Close()
+            '2. Cargar los datos del cliente.
+            CargarDatosCliente()
 
-        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '///////////////////////CARGO LOS SERIES////////////////////////////////////////////////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        DataSet.Reset()
-        SqlString = "SELECT DISTINCT Serie FROM ConsecutivoSerie ORDER BY Serie DESC"
-        MiConexion.Open()
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "ConsecutivoSerie")
-        CmbSerie.DataSource = DataSet.Tables("ConsecutivoSerie")
-        If Not DataSet.Tables("ConsecutivoSerie").Rows.Count = 0 Then
-            Me.CmbSerie.Text = DataSet.Tables("ConsecutivoSerie").Rows(0)("Serie")
-        End If
-        MiConexion.Close()
+            '3. Cargar las series y la serie asignada al usuario.
+            CargarSeries()
 
+            '4. Cargar la configuración de la empresa.
+            CargarConfiguracionEmpresa()
 
-        '//////////////////////////////////////////////////////////////////////////////////////////////////
-        '/////////////////////////CARGO LA SERIE PARA CADA USUARIO ////////////////////////////////////////
-        '////////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlString = "SELECT Usuarios.* FROM Usuarios WHERE (Usuario = '" & NombreUsuario & "')"
-        MiConexion.Open()
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "DefaulUsuario")
-        If Not DataSet.Tables("DefaulUsuario").Rows.Count = 0 Then
-            Me.CmbSerie.Text = DataSet.Tables("DefaulUsuario").Rows(0)("SerieFactura")
-        End If
-        MiConexion.Close()
+            '5. Cargar los códigos de las notas.
+            CargarCodigosNota()
 
+            '6. Configurar la descripción del tipo de nota.
+            ConfigurarTipoNota()
 
-        SqlString = "SELECT * FROM DatosEmpresa"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "DatosEmpresa")
-        If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
-            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("ConsecutivoReciboSerie")) Then
-                If DataSet.Tables("DatosEmpresa").Rows(0)("ConsecutivoReciboSerie") = True Then
-                    Me.CmbSerie.Visible = True
-                    Me.LblNumero.Location = New Point(335, 24)
-                    ConsecutivoConSerie = True
-                Else
-                    Me.CmbSerie.Visible = False
-                    Me.LblNumero.Location = New Point(382, 17)
-                    ConsecutivoConSerie = False
-                End If
-            End If
+            '7. Inicializar los valores del formulario.
+            InicializarValoresFormulario()
 
-        End If
+        Catch ex As Exception
 
-        If LblMoneda.Text = "Cordobas" Then
-            SqlString = "SELECT CodigoNB AS Cod, Descripcion, Tipo FROM NotaDebito WHERE Tipo = '" & TipoNota & "' OR Tipo='" & TipoNota & " Dif C$' "
-        Else
-            SqlString = "SELECT CodigoNB AS Cod, Descripcion, Tipo FROM NotaDebito WHERE Tipo = '" & TipoNota & "' OR Tipo='" & TipoNota & " Dif $'"
-        End If
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "Notas")
-        If Not DataSet.Tables("Notas").Rows.Count = 0 Then
-            Me.CmbCodigo.DataSource = DataSet.Tables("Notas")
-        End If
+            MessageBox.Show(
+            "Error al cargar el formulario de notas." &
+            Environment.NewLine & ex.Message,
+            "Sistema de Facturación",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Error)
 
-
-
-        If TipoNota = "Debito Proveedor" Then
-            Me.Label2.Text = "Proveedor"
-        ElseIf TipoNota = "Credito Proveedor" Then
-            Me.Label2.Text = "Proveedor"
-        End If
-
-        If Quien = "CtasXcob" Then
-            Me.CmbCodigo.Text = Codigo
-            Me.TxtMonto.Text = Monto
-
-        Else
-            Me.CmbCodigo.Text = ""
-            Me.TxtMonto.Text = ""
-            Me.TxtDescripcion.Text = ""
-        End If
+        End Try
 
     End Sub
 
-    Private Sub CmbCodigo_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmbCodigo.TextChanged
-        Dim SQL As String = "SELECT  *  FROM NotaDebito WHERE (CodigoNB = '" & Me.CmbCodigo.Text & "')"
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter(SQL, MiConexion)
-        DataAdapter.Fill(DataSet, "Notas")
-        If Not DataSet.Tables("Notas").Rows.Count = 0 Then
-            If Not IsDBNull(DataSet.Tables("Notas").Rows(0)("Descripcion")) Then
-                Me.TxtDescripcion.Text = DataSet.Tables("Notas").Rows(0)("Descripcion")
-            End If
-        Else
-            Me.TxtDescripcion.Text = ""
+    Private Sub CmbCodigo_TextChanged(ByVal sender As System.Object,
+                                  ByVal e As System.EventArgs) Handles CmbCodigo.TextChanged
 
-        End If
+        Try
+            'Si el control está enlazado a una tabla, buscar primero
+            'la descripción entre los datos que ya están cargados.
+            If TypeOf CmbCodigo.DataSource Is DataTable Then
+
+                Dim TablaNotas As DataTable =
+                DirectCast(CmbCodigo.DataSource, DataTable)
+
+                If TablaNotas.Columns.Contains("Cod") AndAlso
+               TablaNotas.Columns.Contains("Descripcion") Then
+
+                    Dim Filas() As DataRow =
+                    TablaNotas.Select(
+                        "Cod = '" & CmbCodigo.Text.Replace("'", "''") & "'")
+
+                    If Filas.Length > 0 Then
+
+                        If Not IsDBNull(Filas(0)("Descripcion")) Then
+                            TxtDescripcion.Text =
+                            Convert.ToString(Filas(0)("Descripcion"))
+                        Else
+                            TxtDescripcion.Text = ""
+                        End If
+
+                        Return
+
+                    End If
+
+                End If
+
+            End If
+
+            'Si el código no está en la lista, consultar la base de datos.
+            If String.IsNullOrWhiteSpace(CmbCodigo.Text) Then
+                TxtDescripcion.Text = ""
+                Return
+            End If
+
+            Dim SqlString As String =
+            "SELECT Descripcion " &
+            "FROM NotaDebito " &
+            "WHERE CodigoNB = @Codigo"
+
+            Using ConexionLocal As New SqlClient.SqlConnection(Conexion)
+
+                Using Comando As New SqlClient.SqlCommand(
+                SqlString, ConexionLocal)
+
+                    Comando.Parameters.AddWithValue(
+                    "@Codigo", CmbCodigo.Text)
+
+                    ConexionLocal.Open()
+
+                    Dim Resultado As Object = Comando.ExecuteScalar()
+
+                    If Resultado IsNot Nothing AndAlso
+                   Not IsDBNull(Resultado) Then
+
+                        TxtDescripcion.Text =
+                        Convert.ToString(Resultado)
+
+                    Else
+
+                        TxtDescripcion.Text = ""
+
+                    End If
+
+                End Using
+
+            End Using
+
+        Catch ex As Exception
+
+            MessageBox.Show(
+            "Error al consultar la descripción de la nota: " &
+            ex.Message,
+            "Sistema de Facturación",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Error)
+
+        End Try
+
     End Sub
 
     Private Sub TxtMonto_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TxtMonto.LostFocus
@@ -670,35 +657,353 @@ Public Class FrmRegistroDebito
         End If
     End Sub
 
-    Private Sub ChkTipoCuenta_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChkTipoCuenta.CheckedChanged
-        Dim SqlString As String = ""
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+    Private Sub ChkTipoCuenta_CheckedChanged(
+    ByVal sender As System.Object,
+    ByVal e As System.EventArgs) Handles ChkTipoCuenta.CheckedChanged
 
-        If Me.ChkTipoCuenta.Checked = True Then
-            'Quien = "Cuenta"
-            'My.Forms.FrmConsultas.ShowDialog()
-            SqlString = "SELECT CodCuentas , DescripcionCuentas As Descripcion, TipoCuenta FROM Cuentas "
+        Try
 
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiconexionContabilidad)
-            DataAdapter.Fill(DataSet, "Cuenta")
-            If Not DataSet.Tables("Cuenta").Rows.Count = 0 Then
-                Me.CmbCodigo.DataSource = DataSet.Tables("Cuenta")
+            If Me.ChkTipoCuenta.Checked Then
+
+                'Cargar las cuentas solamente la primera vez.
+                If TablaCuentasContables Is Nothing Then
+
+                    TablaCuentasContables = New DataTable
+
+                    Dim SqlString As String =
+                    "SELECT CodCuentas AS Cod, " &
+                    "DescripcionCuentas AS Descripcion, " &
+                    "TipoCuenta " &
+                    "FROM Cuentas"
+
+                    Using ConexionContable As New SqlClient.SqlConnection(
+                    ConexionContabilidad)
+
+                        Using Adaptador As New SqlClient.SqlDataAdapter(
+                        SqlString, ConexionContable)
+
+                            Adaptador.Fill(TablaCuentasContables)
+
+                        End Using
+
+                    End Using
+
+                End If
+
+                'Mostrar las cuentas contables.
+                Me.CmbCodigo.DataSource = Nothing
+                Me.CmbCodigo.DataSource = TablaCuentasContables
+                Me.CmbCodigo.DisplayMember = "Cod"
+                Me.CmbCodigo.ValueMember = "Cod"
+
+            Else
+
+                'Volver a mostrar los códigos de las notas.
+                Me.CmbCodigo.DataSource = Nothing
+
+                If TablaCodigosNota IsNot Nothing AndAlso
+               TablaCodigosNota.Rows.Count > 0 Then
+
+                    Me.CmbCodigo.DataSource = TablaCodigosNota
+                    Me.CmbCodigo.DisplayMember = "Cod"
+                    Me.CmbCodigo.ValueMember = "Cod"
+
+                Else
+
+                    CargarCodigosNota()
+
+                End If
+
             End If
 
+        Catch ex As Exception
 
+            MessageBox.Show(
+            "Error al cargar los códigos: " & ex.Message,
+            "Sistema de Facturación",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Error)
+
+        End Try
+
+    End Sub
+
+    Private Sub ConfigurarModoFormulario()
+
+        Dim PermitirEdicion As Boolean = (Quien <> "Historico")
+
+        Me.Button1.Enabled = PermitirEdicion
+        Me.Button2.Enabled = PermitirEdicion
+        Me.Button4.Enabled = PermitirEdicion
+        Me.Button3.Enabled = PermitirEdicion
+
+        Me.CmbSerie.Enabled = PermitirEdicion
+        Me.DTPFecha.Enabled = PermitirEdicion
+
+        Me.ChkFactura.Enabled = PermitirEdicion
+        Me.ChkSseries.Enabled = PermitirEdicion
+        Me.ChkTipoCuenta.Enabled = PermitirEdicion
+
+        Me.TxtMonto.Enabled = PermitirEdicion
+        Me.TxtDescripcion.Enabled = PermitirEdicion
+        Me.CmbCodigo.Enabled = PermitirEdicion
+        Me.TxtObservaciones.Enabled = PermitirEdicion
+
+    End Sub
+
+    Private Sub CargarDatosCliente()
+
+        NumeroRuc = ""
+        NombreCliente = ""
+
+        Dim SqlString As String =
+            "SELECT RUC, Nombre_Cliente " &
+            "FROM Clientes " &
+            "WHERE Cod_Cliente = @CodigoCliente"
+
+        Using MiConexion As New SqlClient.SqlConnection(Conexion)
+
+            Using Comando As New SqlClient.SqlCommand(SqlString, MiConexion)
+
+                Comando.Parameters.AddWithValue(
+                    "@CodigoCliente",
+                    Me.TxtCodCliente.Text)
+
+                MiConexion.Open()
+
+                Using Lector As SqlClient.SqlDataReader =
+                    Comando.ExecuteReader()
+
+                    If Lector.Read() Then
+
+                        If Not IsDBNull(Lector("RUC")) Then
+                            NumeroRuc = Convert.ToString(Lector("RUC"))
+                        End If
+
+                        If Not IsDBNull(Lector("Nombre_Cliente")) Then
+                            NombreCliente =
+                                Convert.ToString(Lector("Nombre_Cliente"))
+                        End If
+
+                    End If
+
+                End Using
+
+            End Using
+
+        End Using
+
+    End Sub
+
+
+    Private Sub CargarSeries()
+
+        Dim TablaSeries As New DataTable
+
+        Dim SqlSeries As String =
+            "SELECT DISTINCT Serie " &
+            "FROM ConsecutivoSerie " &
+            "ORDER BY Serie DESC"
+
+        Dim SqlUsuario As String =
+            "SELECT SerieFactura " &
+            "FROM Usuarios " &
+            "WHERE Usuario = @Usuario"
+
+        Using MiConexion As New SqlClient.SqlConnection(Conexion)
+
+            MiConexion.Open()
+
+            'Cargar las series disponibles.
+            Using Adaptador As New SqlClient.SqlDataAdapter(
+                SqlSeries, MiConexion)
+
+                Adaptador.Fill(TablaSeries)
+
+            End Using
+
+            Me.CmbSerie.DataSource = TablaSeries
+
+            'Conservar la selección inicial de la primera serie.
+            If TablaSeries.Rows.Count > 0 Then
+
+                Me.CmbSerie.Text =
+                    Convert.ToString(TablaSeries.Rows(0)("Serie"))
+
+            End If
+
+            'Buscar la serie asignada al usuario.
+            Using Comando As New SqlClient.SqlCommand(
+                SqlUsuario, MiConexion)
+
+                Comando.Parameters.AddWithValue(
+                    "@Usuario", NombreUsuario)
+
+                Dim Resultado As Object = Comando.ExecuteScalar()
+
+                If Resultado IsNot Nothing AndAlso
+                   Not IsDBNull(Resultado) Then
+
+                    Me.CmbSerie.Text = Convert.ToString(Resultado)
+
+                End If
+
+            End Using
+
+        End Using
+
+    End Sub
+
+    Private Sub CargarConfiguracionEmpresa()
+
+        Dim SqlString As String =
+            "SELECT ConsecutivoReciboSerie " &
+            "FROM DatosEmpresa"
+
+        Using MiConexion As New SqlClient.SqlConnection(Conexion)
+
+            Using Comando As New SqlClient.SqlCommand(
+                SqlString, MiConexion)
+
+                MiConexion.Open()
+
+                Dim Resultado As Object = Comando.ExecuteScalar()
+
+                If Resultado IsNot Nothing AndAlso
+                   Not IsDBNull(Resultado) Then
+
+                    ConsecutivoConSerie =
+                        Convert.ToBoolean(Resultado)
+
+                Else
+
+                    ConsecutivoConSerie = False
+
+                End If
+
+            End Using
+
+        End Using
+
+        'Configurar la visualización de la serie.
+        If ConsecutivoConSerie Then
+
+            Me.CmbSerie.Visible = True
+            Me.LblNumero.Location = New Point(335, 24)
 
         Else
-            If LblMoneda.Text = "Cordobas" Then
-                SqlString = "SELECT CodigoNB AS Cod, Descripcion, Tipo FROM NotaDebito WHERE Tipo = '" & TipoNota & "' OR Tipo='" & TipoNota & " Dif C$' "
-            Else
-                SqlString = "SELECT CodigoNB AS Cod, Descripcion, Tipo FROM NotaDebito WHERE Tipo = '" & TipoNota & "' OR Tipo='" & TipoNota & " Dif $'"
-            End If
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-            DataAdapter.Fill(DataSet, "Notas")
-            If Not DataSet.Tables("Notas").Rows.Count = 0 Then
-                Me.CmbCodigo.DataSource = DataSet.Tables("Notas")
-            End If
+
+            Me.CmbSerie.Visible = False
+            Me.LblNumero.Location = New Point(382, 17)
+
         End If
 
     End Sub
+
+
+    Private Sub CargarCodigosNota()
+
+        Dim SqlString As String
+
+        If Me.LblMoneda.Text = "Cordobas" Then
+
+            SqlString =
+                "SELECT CodigoNB AS Cod, Descripcion, Tipo " &
+                "FROM NotaDebito " &
+                "WHERE Tipo = @TipoNota " &
+                "OR Tipo = @TipoDiferencia"
+
+        Else
+
+            SqlString =
+                "SELECT CodigoNB AS Cod, Descripcion, Tipo " &
+                "FROM NotaDebito " &
+                "WHERE Tipo = @TipoNota " &
+                "OR Tipo = @TipoDiferencia"
+
+        End If
+
+        Dim TipoDiferencia As String
+
+        If Me.LblMoneda.Text = "Cordobas" Then
+
+            TipoDiferencia = TipoNota & " Dif C$"
+
+        Else
+
+            TipoDiferencia = TipoNota & " Dif $"
+
+        End If
+
+        Dim TablaNotas As New DataTable
+
+        Using MiConexion As New SqlClient.SqlConnection(Conexion)
+
+            Using Comando As New SqlClient.SqlCommand(
+                SqlString, MiConexion)
+
+                Comando.Parameters.AddWithValue(
+                    "@TipoNota", TipoNota)
+
+                Comando.Parameters.AddWithValue(
+                    "@TipoDiferencia", TipoDiferencia)
+
+                Using Adaptador As New SqlClient.SqlDataAdapter(Comando)
+
+                    Adaptador.Fill(TablaNotas)
+
+                End Using
+
+            End Using
+
+        End Using
+
+        TablaCodigosNota = TablaNotas
+
+        If TablaCodigosNota.Rows.Count > 0 Then
+
+            Me.CmbCodigo.DataSource = TablaCodigosNota
+            Me.CmbCodigo.DisplayMember = "Cod"
+            Me.CmbCodigo.ValueMember = "Cod"
+
+        Else
+
+            Me.CmbCodigo.DataSource = Nothing
+            Me.CmbCodigo.Text = ""
+
+        End If
+
+    End Sub
+
+    Private Sub ConfigurarTipoNota()
+
+        If TipoNota = "Debito Proveedor" OrElse
+           TipoNota = "Credito Proveedor" Then
+
+            Me.Label2.Text = "Proveedor"
+
+        End If
+
+    End Sub
+
+    Private Sub InicializarValoresFormulario()
+
+        If Quien = "CtasXcob" Then
+
+            Me.CmbCodigo.Text = Codigo
+            Me.TxtMonto.Text = Monto.ToString()
+
+        Else
+
+            Me.CmbCodigo.Text = ""
+            Me.TxtMonto.Text = ""
+            Me.TxtDescripcion.Text = ""
+
+        End If
+
+    End Sub
+
+
+
+
 End Class

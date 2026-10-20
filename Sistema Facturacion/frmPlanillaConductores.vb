@@ -1108,6 +1108,9 @@ Public Class frmPlanillaConductores
     PrecioSabado,
     PrecioDomingo)
 
+        AplicarDeduccionesTransportePlanilla(
+    Me.TxtNumNomina.Text.Trim())
+
 
 
         'Productor.NombreProductor + ' ' + Productor.ApellidoProductor AS Nombres

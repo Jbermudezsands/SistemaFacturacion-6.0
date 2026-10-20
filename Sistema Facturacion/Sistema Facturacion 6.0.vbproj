@@ -111,9 +111,17 @@
     <Compile Include="Clases\Consultas\CsContratos.vb" />
     <Compile Include="Clases\Consultas\ArgsReporteExistenciaLote.vb" />
     <Compile Include="Clases\Consultas\CsLogError.vb" />
+    <Compile Include="Clases\Consultas\CsTipoPrestamo.vb" />
+    <Compile Include="Clases\Consultas\CxC_Compatibilidad.vb" />
+    <Compile Include="Clases\Consultas\CxC_Modelos.vb" />
+    <Compile Include="Clases\Consultas\CxC_Motor.vb" />
+    <Compile Include="Clases\Consultas\CxC_Repositorio.vb" />
+    <Compile Include="Clases\Consultas\CxC_Resultado.vb" />
+    <Compile Include="Clases\Consultas\CxC_Servicio.vb" />
     <Compile Include="Clases\Consultas\PlanillaPlanPagoService.vb" />
     <Compile Include="Clases\Consultas\PlanPagoReciboService.vb" />
     <Compile Include="Clases\Consultas\ServicioRecibos.vb" />
+    <Compile Include="Clases\Consultas\TipoPrestamoService.vb" />
     <Compile Include="Clases\Tablas\AplicacionPlanPendiente.vb" />
     <Compile Include="Clases\Tablas\DatosReciboPlanilla.vb" />
     <Compile Include="Clases\Tablas\DatosReciboPlanPago.vb" />
@@ -145,6 +153,7 @@
     <Compile Include="Clases\Consultas\Lote.vb" />
     <Compile Include="Clases\Tablas\TablaLotexProducto.vb" />
     <Compile Include="Clases\Tablas\TablaProductos.vb" />
+    <Compile Include="Clases\Tablas\TipoPrestamo.vb" />
     <Compile Include="Formularios\FrmAuditoriaFacturacion.Designer.vb">
       <DependentUpon>FrmAuditoriaFacturacion.vb</DependentUpon>
     </Compile>
@@ -187,6 +196,12 @@
     <Compile Include="Formularios\FrmListadoCredito.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formularios\FrmModalidades.Designer.vb">
+      <DependentUpon>FrmModalidades.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FrmModalidades.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\FrmPlanPago.Designer.vb">
       <DependentUpon>FrmPlanPago.vb</DependentUpon>
     </Compile>
@@ -211,12 +226,21 @@
     <Compile Include="Formularios\FrmSucursales.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formularios\FrmTipoPrestamos.Designer.vb">
+      <DependentUpon>FrmTipoPrestamos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FrmTipoPrestamos.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\FrmTransferenciaBodegas_V2.Designer.vb">
       <DependentUpon>FrmTransferenciaBodegas_V2.vb</DependentUpon>
     </Compile>
     <Compile Include="Formularios\FrmTransferenciaBodegas_V2.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Clases\Tablas\Modalidad.vb" />
+    <Compile Include="Clases\Tablas\ModalidadRepository.vb" />
+    <Compile Include="Clases\Consultas\ModalidadService.vb" />
     <Compile Include="Formularios\ProductoresTransportista.Designer.vb">
       <DependentUpon>ProductoresTransportista.vb</DependentUpon>
     </Compile>
@@ -1874,6 +1898,9 @@
     <EmbeddedResource Include="Formularios\FrmListadoCredito.resx">
       <DependentUpon>FrmListadoCredito.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FrmModalidades.resx">
+      <DependentUpon>FrmModalidades.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formularios\FrmPlanPago.resx">
       <DependentUpon>FrmPlanPago.vb</DependentUpon>
     </EmbeddedResource>
@@ -1886,11 +1913,17 @@
     <EmbeddedResource Include="Formularios\FrmSucursales.resx">
       <DependentUpon>FrmSucursales.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FrmTipoPrestamos.resx">
+      <DependentUpon>FrmTipoPrestamos.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formularios\FrmTransferenciaBodegas_V2.resx">
       <DependentUpon>FrmTransferenciaBodegas_V2.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\ProductoresTransportista.resx">
       <DependentUpon>ProductoresTransportista.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmAgregarNotaCredito.resx">
+      <DependentUpon>FrmAgregarNotaCredito.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmBeneficiario.resx">
       <DependentUpon>FrmBeneficiario.vb</DependentUpon>

@@ -931,9 +931,6 @@
   <data name="TDGridDeducciones.PreviewInfo.UIStrings.Content" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>AAEAAAD/////AQAAAAAAAAARAQAAAAAAAAAL</value>
   </data>
-  <data name="Label4.Text" xml:space="preserve">
-    <value>% IR</value>
-  </data>
   <data name="&gt;&gt;Label8.Name" xml:space="preserve">
     <value>Label8</value>
   </data>
@@ -1029,6 +1026,9 @@
   </data>
   <data name="Label15.Text" xml:space="preserve">
     <value>Precio Domingo</value>
+  </data>
+  <data name="Label10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 13</value>
   </data>
   <data name="&gt;&gt;TxtIR.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1184,9 +1184,6 @@
   <data name="&gt;&gt;Label13.Name" xml:space="preserve">
     <value>Label13</value>
   </data>
-  <data name="Label13.Location" type="System.Drawing.Point, System.Drawing">
-    <value>17, 181</value>
-  </data>
   <data name="TxtPrecioDomingo.TabIndex" type="System.Int32, mscorlib">
     <value>187</value>
   </data>
@@ -1231,6 +1228,9 @@
   </data>
   <data name="Label5.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
+  </data>
+  <data name="&gt;&gt;TxtPrecioJueves.Parent" xml:space="preserve">
+    <value>GroupBox2</value>
   </data>
   <data name="Label2.Location" type="System.Drawing.Point, System.Drawing">
     <value>354, 25</value>
@@ -1889,8 +1889,8 @@
   <data name="&gt;&gt;TxtPrecioMiercoles.Name" xml:space="preserve">
     <value>TxtPrecioMiercoles</value>
   </data>
-  <data name="&gt;&gt;Label11.Parent" xml:space="preserve">
-    <value>GroupBox2</value>
+  <data name="Label4.Text" xml:space="preserve">
+    <value>% IR</value>
   </data>
   <data name="&gt;&gt;TxtPrecioSabado.Name" xml:space="preserve">
     <value>TxtPrecioSabado</value>
@@ -2036,8 +2036,8 @@
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>
-  <data name="Label10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 13</value>
+  <data name="Label13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 181</value>
   </data>
   <data name="&gt;&gt;Label15.Name" xml:space="preserve">
     <value>Label15</value>
@@ -2140,7 +2140,7 @@
   <data name="Label13.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;TxtPrecioJueves.Parent" xml:space="preserve">
+  <data name="&gt;&gt;Label11.Parent" xml:space="preserve">
     <value>GroupBox2</value>
   </data>
   <data name="Label6.Text" xml:space="preserve">

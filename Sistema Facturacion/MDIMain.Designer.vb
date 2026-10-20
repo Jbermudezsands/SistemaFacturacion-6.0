@@ -211,6 +211,7 @@ Partial Class MDIMain
         Me.RibbonButton23 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonSucursales = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonButton24 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButton25 = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonGroup22 = New C1.Win.C1Ribbon.RibbonGroup()
         Me.RibbonDesembolso = New C1.Win.C1Ribbon.RibbonButton()
         Me.RibbonListado = New C1.Win.C1Ribbon.RibbonButton()
@@ -233,7 +234,7 @@ Partial Class MDIMain
         Me.txtSPlano2 = New System.Windows.Forms.TextBox()
         Me.txtSPlano3 = New System.Windows.Forms.TextBox()
         Me.txtSPlano4 = New System.Windows.Forms.TextBox()
-        Me.RibbonButton25 = New C1.Win.C1Ribbon.RibbonButton()
+        Me.RibbonButtonModalidades = New C1.Win.C1Ribbon.RibbonButton()
         ListadoCompañia = New C1.Win.C1Ribbon.RibbonButton()
         CType(Me.c1Ribbon1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1StatusBar1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1743,6 +1744,7 @@ Partial Class MDIMain
         Me.RibbonGroup21.Items.Add(Me.RibbonSucursales)
         Me.RibbonGroup21.Items.Add(Me.RibbonButton24)
         Me.RibbonGroup21.Items.Add(Me.RibbonButton25)
+        Me.RibbonGroup21.Items.Add(Me.RibbonButtonModalidades)
         Me.RibbonGroup21.Text = "Catalogo"
         '
         'RibbonButton23
@@ -1767,6 +1769,14 @@ Partial Class MDIMain
         Me.RibbonButton24.SmallImage = CType(resources.GetObject("RibbonButton24.SmallImage"), System.Drawing.Image)
         Me.RibbonButton24.Text = "Financiamiento"
         Me.RibbonButton24.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
+        '
+        'RibbonButton25
+        '
+        Me.RibbonButton25.ID = "RibbonButton25"
+        Me.RibbonButton25.LargeImage = CType(resources.GetObject("RibbonButton25.LargeImage"), System.Drawing.Image)
+        Me.RibbonButton25.SmallImage = CType(resources.GetObject("RibbonButton25.SmallImage"), System.Drawing.Image)
+        Me.RibbonButton25.Text = "Tipo-Prestamo"
+        Me.RibbonButton25.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'RibbonGroup22
         '
@@ -1914,11 +1924,13 @@ Partial Class MDIMain
         Me.txtSPlano4.TabIndex = 23
         Me.txtSPlano4.Visible = False
         '
-        'RibbonButton25
+        'RibbonButtonModalidades
         '
-        Me.RibbonButton25.ID = "RibbonButton25"
-        Me.RibbonButton25.SmallImage = CType(resources.GetObject("RibbonButton25.SmallImage"), System.Drawing.Image)
-        Me.RibbonButton25.Text = "Modalidad"
+        Me.RibbonButtonModalidades.ID = "RibbonButtonModalidades"
+        Me.RibbonButtonModalidades.LargeImage = CType(resources.GetObject("RibbonButtonModalidades.LargeImage"), System.Drawing.Image)
+        Me.RibbonButtonModalidades.SmallImage = CType(resources.GetObject("RibbonButtonModalidades.SmallImage"), System.Drawing.Image)
+        Me.RibbonButtonModalidades.Text = "Modalidades"
+        Me.RibbonButtonModalidades.TextImageRelation = C1.Win.C1Ribbon.TextImageRelation.ImageAboveText
         '
         'MDIMain
         '
@@ -2159,4 +2171,5 @@ Partial Class MDIMain
     Friend WithEvents RibbonDesembolso As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonListado As C1.Win.C1Ribbon.RibbonButton
     Friend WithEvents RibbonButton25 As C1.Win.C1Ribbon.RibbonButton
+    Friend WithEvents RibbonButtonModalidades As C1.Win.C1Ribbon.RibbonButton
 End Class

@@ -1196,8 +1196,12 @@ Handles backgroundWorkerLote.RunWorkerCompleted
     End Sub
 
     Private Sub RibbonButton41_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonCtasXCobrar1.Click
-        My.Forms.FrmCuentasXCobrar.MdiParent = Me
-        My.Forms.FrmCuentasXCobrar.Show()
+        With My.Forms.FrmCuentasXCobrar
+            .MdiParent = Me
+            .WindowState = FormWindowState.Normal
+            .Show()
+            .Activate()
+        End With
     End Sub
 
     Private Sub RibbonHistoricoFactura_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonHistoricoFactura.Click
@@ -1714,6 +1718,7 @@ Handles backgroundWorkerLote.RunWorkerCompleted
             'oHebraLotes.Start()
             BgAuditoria.RunWorkerAsync()
         End If
+
 
 
 
@@ -2305,6 +2310,24 @@ Handles backgroundWorkerLote.RunWorkerCompleted
     Private Sub RibbonListado_Click(sender As Object, e As EventArgs) Handles RibbonListado.Click
         My.Forms.FrmListadoCredito.MdiParent = Me
         My.Forms.FrmListadoCredito.Show()
+    End Sub
+
+    Private Sub RibbonButton25_Click_1(sender As Object, e As EventArgs) Handles RibbonButton25.Click
+        With My.Forms.FrmTipoPrestamos
+            .MdiParent = Me
+            .WindowState = FormWindowState.Normal
+            .Show()
+            .Activate()
+        End With
+    End Sub
+
+    Private Sub RibbonButtonModalidades_Click(sender As Object, e As EventArgs) Handles RibbonButtonModalidades.Click
+        With My.Forms.FrmModalidades
+            .MdiParent = Me
+            .WindowState = FormWindowState.Normal
+            .Show()
+            .Activate()
+        End With
     End Sub
 
     Private Sub RibbonHospitalizacion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonHospitalizacion.Click
