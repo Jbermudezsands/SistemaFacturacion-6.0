@@ -115,11 +115,13 @@
     <Compile Include="Clases\Consultas\CxC_Compatibilidad.vb" />
     <Compile Include="Clases\Consultas\CxC_Modelos.vb" />
     <Compile Include="Clases\Consultas\CxC_Motor.vb" />
+    <Compile Include="Clases\Consultas\CxC_Recibos.vb" />
     <Compile Include="Clases\Consultas\CxC_Repositorio.vb" />
     <Compile Include="Clases\Consultas\CxC_Resultado.vb" />
     <Compile Include="Clases\Consultas\CxC_Servicio.vb" />
     <Compile Include="Clases\Consultas\PlanillaPlanPagoService.vb" />
     <Compile Include="Clases\Consultas\PlanPagoReciboService.vb" />
+    <Compile Include="Clases\Consultas\ReporteLotesVencimientoService.vb" />
     <Compile Include="Clases\Consultas\ServicioRecibos.vb" />
     <Compile Include="Clases\Consultas\TipoPrestamoService.vb" />
     <Compile Include="Clases\Tablas\AplicacionPlanPendiente.vb" />
@@ -137,6 +139,8 @@
     <Compile Include="Clases\Consultas\CsCatalogos.vb" />
     <Compile Include="Clases\Tablas\Beneficiario.vb" />
     <Compile Include="Clases\Tablas\FacturaPlanPagoRecibo.vb" />
+    <Compile Include="Clases\Tablas\FiltroReporteLotesVencimiento.vb" />
+    <Compile Include="Clases\Tablas\LoteVencimiento.vb" />
     <Compile Include="Clases\Tablas\MetodoPagoRecibo.vb" />
     <Compile Include="Clases\Tablas\NominaActiva.vb" />
     <Compile Include="Clases\Tablas\PlanillaPlanPagoItem.vb" />

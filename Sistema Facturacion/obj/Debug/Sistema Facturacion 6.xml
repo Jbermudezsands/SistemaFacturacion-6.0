@@ -215,6 +215,12 @@ Sistema Facturacion 6.0
 <member name="M:Sistema_Facturacion.ClaveCxC.EsSinFactura(System.String)">
  <summary>Números de factura que en el sistema significan "sin factura".</summary>
 </member>
+<member name="M:Sistema_Facturacion.ClaveCxC.EsPagoNota(System.String)">
+ <summary>True si el "número de factura" de un recibo es en realidad el pago de una nota ("NB00012").</summary>
+</member>
+<member name="M:Sistema_Facturacion.ClaveCxC.NumeroNotaPagada(System.String,System.String)">
+ <summary>Número de la nota de débito que paga un recibo, sin el prefijo "NB".</summary>
+</member>
 <member name="P:Sistema_Facturacion.CxCClienteDoc.InteresMoratorio">
  <summary>Clientes.InteresMoratorio tal como está guardado (porcentaje diario).</summary>
 </member>
@@ -242,11 +248,131 @@ Sistema Facturacion 6.0
 <member name="P:Sistema_Facturacion.CxCLinea.MontoNota">
  <summary>Neto de notas (NB - NC), columna "MontoNota".</summary>
 </member>
+<member name="P:Sistema_Facturacion.CxCLinea.NumeroNotaDebito">
+ <summary>En una línea NotaDebitoSinFactura: el número de la nota.</summary>
+</member>
 <member name="M:Sistema_Facturacion.CxCMotor.MovimientosDelFiltro(Sistema_Facturacion.CxCDatos,Sistema_Facturacion.CxCFiltro,System.Collections.Generic.List{System.String})">
  <summary>Movimientos de los clientes del filtro (con vendedor: clientes que tienen facturas de esos vendedores).</summary>
 </member>
 <member name="M:Sistema_Facturacion.CxCMotor.BuscarFactura(System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{Sistema_Facturacion.CxCFacturaDoc}},System.String,System.String,System.DateTime)">
  <summary>Si el número de factura se repite, toma la más reciente con fecha menor o igual al documento.</summary>
+</member>
+<member name="P:Sistema_Facturacion.ReciboLinea.IdDetalleRecibo">
+ <summary>0 = línea nueva. Al editar, el idDetalleRecibo existente.</summary>
+</member>
+<member name="P:Sistema_Facturacion.ReciboLinea.MontoPagado">
+ <summary>Monto pagado en la moneda del recibo.</summary>
+</member>
+<member name="P:Sistema_Facturacion.ReciboLinea.NumeroNota">
+ <summary>Nota de débito que se paga con esta línea (cuando no es una factura).</summary>
+</member>
+<member name="P:Sistema_Facturacion.ReciboLinea.PagaFactura">
+ <summary>True si la línea paga una factura (no "0"/"0000" ni una nota "NB...").</summary>
+</member>
+<member name="P:Sistema_Facturacion.ReciboCaja.Numero">
+ <summary>Vacío o "-----0-----" = recibo nuevo. Al editar, el número existente.</summary>
+</member>
+<member name="P:Sistema_Facturacion.ReciboCaja.Moneda">
+ <summary>"Cordobas" o "Dolares".</summary>
+</member>
+<member name="P:Sistema_Facturacion.ReciboCaja.Serie">
+ <summary>Serie del recibo (vacío = consecutivo sin serie).</summary>
+</member>
+<member name="P:Sistema_Facturacion.ReciboCaja.ConsecutivoManual">
+ <summary>Mayor que 0 = número digitado por el usuario (consecutivo manual).</summary>
+</member>
+<member name="P:Sistema_Facturacion.ReciboCaja.Usuario">
+ <summary>Usuario para la bitácora del plan de pagos y la anulación.</summary>
+</member>
+<member name="P:Sistema_Facturacion.ReciboCaja.LineasEliminadas">
+ <summary>Al editar: idDetalleRecibo de las líneas que el usuario quitó.</summary>
+</member>
+<member name="P:Sistema_Facturacion.ReciboSaldoFactura.Monto">
+ <summary>SubTotal + IVA convertido a la moneda pedida (tasa de la fecha de la factura).</summary>
+</member>
+<member name="P:Sistema_Facturacion.ReciboRetencion.Base">
+ <summary>SubTotal sin IVA de la factura, en la moneda del recibo.</summary>
+</member>
+<member name="P:Sistema_Facturacion.ReciboRetencion.NumeroNota">
+ <summary>Número de la nota de crédito creada (se llena al grabar).</summary>
+</member>
+<member name="P:Sistema_Facturacion.ConfiguracionRecibos.ConsecutivoManual">
+ <summary>DatosEmpresa.ConsecutivoReciboManual</summary>
+</member>
+<member name="P:Sistema_Facturacion.ConfiguracionRecibos.UsaSerie">
+ <summary>DatosEmpresa.ConsecutivoReciboSerie</summary>
+</member>
+<member name="T:Sistema_Facturacion.ReciboException">
+ <summary>Error de negocio: el mensaje se muestra tal cual al usuario.</summary>
+</member>
+<member name="P:Sistema_Facturacion.Recibos.ValidarSaldo">
+ <summary>Si es True (por defecto) no deja pagar más que el saldo de la factura.</summary>
+</member>
+<member name="P:Sistema_Facturacion.Recibos.CodigoNotaAlcaldia1">
+ <summary>Opcional: CodigoNB fijo de la nota "Alcaldia 1%". Vacío = se busca en NotaDebito.</summary>
+</member>
+<member name="P:Sistema_Facturacion.Recibos.CodigoNotaRetencion2">
+ <summary>Opcional: CodigoNB fijo de la nota "Retencion 2%". Vacío = se busca en NotaDebito.</summary>
+</member>
+<member name="P:Sistema_Facturacion.Recibos.ActualizarMontoCredito">
+ <summary>Si es True, después de grabar/anular recalcula Facturas.MontoCredito con el motor de CxC.</summary>
+</member>
+<member name="M:Sistema_Facturacion.Recibos.TomarConsecutivo(System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction,System.String,System.String)">
+ <summary>
+ Incrementa y devuelve un consecutivo en una sola instrucción (atómica).
+ serie vacía = tabla Consecutivos; con serie = tabla ConsecutivoSerie.
+ Devuelve 0 si no existe la fila (igual que BuscaConsecutivo / BuscaConsecutivoSerie).
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.Recibos.TomarConsecutivo(System.String,System.String,System.String)">
+ <summary>Versión con conexión propia (para BuscaConsecutivo / BuscaConsecutivoSerie y Planilla).</summary>
+</member>
+<member name="M:Sistema_Facturacion.Recibos.FormatearNumero(System.String,System.Decimal)">
+ <summary>Formato del número: serie + al menos 5 dígitos (igual que Format(n, "0000#")).</summary>
+</member>
+<member name="M:Sistema_Facturacion.Recibos.SaldosDesdeResultado(Sistema_Facturacion.CxCResultado)">
+ <summary>Saldo y monto por número de factura a partir del resultado del motor de CxC.</summary>
+</member>
+<member name="M:Sistema_Facturacion.Recibos.SaldoFactura(System.String,System.String,System.DateTime,System.String)">
+ <summary>Saldo pendiente de una factura en la moneda indicada (reemplaza a ValidarFacturaEnRecibo).
+ Devuelve Nothing si la factura no existe para ese cliente.</summary>
+</member>
+<member name="M:Sistema_Facturacion.Recibos.CalcularRetenciones(Sistema_Facturacion.ReciboCaja,System.Collections.Generic.List{System.String})">
+ <summary>Calcula (sin grabar) las retenciones que generará el recibo. Sirve para mostrarlas en pantalla.</summary>
+</member>
+<member name="M:Sistema_Facturacion.Recibos.BuscarTipoRetencion(System.Data.SqlClient.SqlConnection,System.String,System.String)">
+ <summary>Devuelve {CodigoNB, Descripcion} del catálogo NotaDebito para "x%".
+ "Alcaldia 1%" coincide con 1; "Devolucion de facturas 15%" ya NO coincide (antes sí, con LIKE '%1%%').</summary>
+</member>
+<member name="M:Sistema_Facturacion.Recibos.NotaRetencionExistente(System.Data.SqlClient.SqlConnection,System.String,System.String,System.String,System.String)">
+ <summary>{Numero_Nota, Observaciones} de una nota de retención ya registrada para la factura, o Nothing.</summary>
+</member>
+<member name="M:Sistema_Facturacion.Recibos.EtiquetaRetencion(System.String,System.DateTime)">
+ <summary>Texto que enlaza la nota de retención con su recibo (IndiceNota.Observaciones).</summary>
+</member>
+<member name="M:Sistema_Facturacion.Recibos.BaseRetencion(System.Decimal,System.Decimal,System.Decimal)">
+ <summary>SubTotal sin IVA en la moneda del recibo; montoConvertido = SubTotal+IVA ya convertido por el motor.</summary>
+</member>
+<member name="M:Sistema_Facturacion.Recibos.RevisarPago(System.String,System.Decimal,System.Decimal,System.Decimal,System.String)">
+ <summary>"" si el pago cabe en el saldo; si no, el mensaje de error.</summary>
+</member>
+<member name="M:Sistema_Facturacion.Recibos.Validar(Sistema_Facturacion.ReciboCaja)">
+ <summary>Devuelve la lista de errores (vacía = se puede grabar). No toca la base de datos salvo para leer.</summary>
+</member>
+<member name="M:Sistema_Facturacion.Recibos.MontosPropiosPorFactura(System.Data.SqlClient.SqlConnection,Sistema_Facturacion.ReciboCaja)">
+ <summary>Lo que el recibo (en edición) ya tenía pagado por factura (sus notas de retención se conservan).</summary>
+</member>
+<member name="M:Sistema_Facturacion.Recibos.FechaReciboExistente(System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction,System.String)">
+ <summary>Fecha del recibo con ese número (cualquier fecha) o Nothing. Bloquea el número hasta el fin de la transacción.</summary>
+</member>
+<member name="M:Sistema_Facturacion.Recibos.RegrabarMetodosPago(System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction,System.String,System.DateTime)">
+ <summary>Detalle_MetodoRecibo = suma del detalle por método de pago (siempre cuadra con el recibo).</summary>
+</member>
+<member name="M:Sistema_Facturacion.Recibos.Anular(System.String,System.DateTime,System.String,System.String,System.String)">
+ <summary>Anula el recibo, sus aplicaciones al plan de pagos y las notas de retención que generó. Todo en una transacción.</summary>
+</member>
+<member name="M:Sistema_Facturacion.Recibos.Cargar(System.String,System.Nullable{System.DateTime})">
+ <summary>Carga un recibo. Si no se indica la fecha, toma el más reciente con ese número. Nothing si no existe.</summary>
 </member>
 <member name="M:Sistema_Facturacion.CxCRepositorio.Cargar(Sistema_Facturacion.CxCFiltro)">
  <summary>Carga todos los documentos de los clientes del filtro hasta la fecha de corte.</summary>
@@ -295,6 +421,18 @@ Sistema Facturacion 6.0
 </member>
 <member name="M:Sistema_Facturacion.CxCServicio.Antiguedad(Sistema_Facturacion.CxCFiltro,System.Collections.Generic.List{System.String})">
  <summary>Antigüedad de saldos: corriente, 30, 60, 90 y más de 90 días (ArepSaldoClientesHistoricos).</summary>
+</member>
+<member name="M:Sistema_Facturacion.ReporteLotesVencimientoService.ObtenerLotes(Sistema_Facturacion.FiltroReporteLotesVencimiento)">
+ <summary>
+ Lotes activos con existencia que vencen dentro del intervalo
+ del filtro, ordenados por fecha de vencimiento.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.ReporteLotesVencimientoService.ObtenerTablaReporte(Sistema_Facturacion.FiltroReporteLotesVencimiento)">
+ <summary>
+ Misma información que ObtenerLotes, con los nombres de campo
+ que usa el reporte ArepProductoVencimiento.
+ </summary>
 </member>
 <member name="M:Sistema_Facturacion.ServicioRecibos.GrabarDetalleReciboPlanilla(System.String,System.DateTime,System.String,System.Decimal,System.String,System.String,System.String,System.Nullable{System.DateTime},System.Decimal,System.Decimal,System.Decimal,System.Int32,System.String)">
  <summary>
@@ -358,6 +496,10 @@ Sistema Facturacion 6.0
 </member>
 <member name="M:Sistema_Facturacion.FrmCuentasXCobrar.TDGridImpuestos_FetchRowStyle(System.Object,C1.Win.C1TrueDBGrid.FetchRowStyleEventArgs)">
  <summary>Rojo: factura vencida con saldo. Verde: saldo a favor del cliente.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmRecibosFacturas.DescripcionDocumento(System.String,System.DateTime,System.String,System.Boolean)">
+ <summary>Descripción para la línea del recibo: el primer producto de la factura (si LineaFactura
+ está activo) o la descripción de la nota de débito. Siempre la del documento que se paga.</summary>
 </member>
 <member name="M:Sistema_Facturacion.FrmReportes.SaldoInicialCliente(System.String,System.DateTime,System.String)">
  <summary>

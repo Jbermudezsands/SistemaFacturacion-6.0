@@ -119,21 +119,8 @@ Partial Class FrmReportes
         Me.GroupBoxMunicipio = New System.Windows.Forms.GroupBox()
         Me.Button17 = New System.Windows.Forms.Button()
         Me.Button18 = New System.Windows.Forms.Button()
-        Me.CboMunicipio2 = New C1.Win.C1List.C1Combo()
-        Me.Label25 = New System.Windows.Forms.Label()
-        Me.CboMunicipioIni = New C1.Win.C1List.C1Combo()
-        Me.Label26 = New System.Windows.Forms.Label()
-        Me.ChkFacturasCero = New System.Windows.Forms.CheckBox()
         Me.GroupBoxLote = New System.Windows.Forms.GroupBox()
         Me.CboLoteFin = New C1.Win.C1List.C1Combo()
-        Me.Label27 = New System.Windows.Forms.Label()
-        Me.CboLoteIni = New C1.Win.C1List.C1Combo()
-        Me.Label28 = New System.Windows.Forms.Label()
-        Me.GroupBoxAño = New System.Windows.Forms.GroupBox()
-        Me.CboAño = New System.Windows.Forms.ComboBox()
-        Me.CboMes = New System.Windows.Forms.ComboBox()
-        Me.Label29 = New System.Windows.Forms.Label()
-        Me.Label30 = New System.Windows.Forms.Label()
         Me.GroupProveedores = New System.Windows.Forms.GroupBox()
         Me.BtnProveedor1 = New System.Windows.Forms.Button()
         Me.BtnProveedor2 = New System.Windows.Forms.Button()
@@ -143,6 +130,19 @@ Partial Class FrmReportes
         Me.Label31 = New System.Windows.Forms.Label()
         Me.CboProveedores = New C1.Win.C1List.C1Combo()
         Me.Label32 = New System.Windows.Forms.Label()
+        Me.Label27 = New System.Windows.Forms.Label()
+        Me.CboLoteIni = New C1.Win.C1List.C1Combo()
+        Me.Label28 = New System.Windows.Forms.Label()
+        Me.CboMunicipio2 = New C1.Win.C1List.C1Combo()
+        Me.Label25 = New System.Windows.Forms.Label()
+        Me.CboMunicipioIni = New C1.Win.C1List.C1Combo()
+        Me.Label26 = New System.Windows.Forms.Label()
+        Me.ChkFacturasCero = New System.Windows.Forms.CheckBox()
+        Me.GroupBoxAño = New System.Windows.Forms.GroupBox()
+        Me.CboAño = New System.Windows.Forms.ComboBox()
+        Me.CboMes = New System.Windows.Forms.ComboBox()
+        Me.Label29 = New System.Windows.Forms.Label()
+        Me.Label30 = New System.Windows.Forms.Label()
         Me.ChkAgrupadoBodega = New System.Windows.Forms.CheckBox()
         Me.ListaImagenes = New System.Windows.Forms.ImageList(Me.components)
         Me.GroupBoxFechaVence = New System.Windows.Forms.GroupBox()
@@ -187,15 +187,15 @@ Partial Class FrmReportes
         CType(Me.CboCodDepartamentoFin, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboCodDepartamentoIni, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBoxMunicipio.SuspendLayout()
-        CType(Me.CboMunicipio2, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.CboMunicipioIni, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBoxLote.SuspendLayout()
         CType(Me.CboLoteFin, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.CboLoteIni, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBoxAño.SuspendLayout()
         Me.GroupProveedores.SuspendLayout()
         CType(Me.CboProveedores2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboProveedores, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.CboLoteIni, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.CboMunicipio2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.CboMunicipioIni, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBoxAño.SuspendLayout()
         Me.GroupBoxFechaVence.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -1646,6 +1646,7 @@ Partial Class FrmReportes
         '
         Me.GroupBoxMunicipio.Controls.Add(Me.Button17)
         Me.GroupBoxMunicipio.Controls.Add(Me.Button18)
+        Me.GroupBoxMunicipio.Controls.Add(Me.GroupBoxLote)
         Me.GroupBoxMunicipio.Controls.Add(Me.CboMunicipio2)
         Me.GroupBoxMunicipio.Controls.Add(Me.Label25)
         Me.GroupBoxMunicipio.Controls.Add(Me.CboMunicipioIni)
@@ -1675,103 +1676,14 @@ Partial Class FrmReportes
         Me.Button18.TabIndex = 73
         Me.Button18.UseVisualStyleBackColor = True
         '
-        'CboMunicipio2
-        '
-        Me.CboMunicipio2.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
-        Me.CboMunicipio2.Caption = ""
-        Me.CboMunicipio2.CaptionHeight = 17
-        Me.CboMunicipio2.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
-        Me.CboMunicipio2.ColumnCaptionHeight = 17
-        Me.CboMunicipio2.ColumnFooterHeight = 17
-        Me.CboMunicipio2.ContentHeight = 15
-        Me.CboMunicipio2.DeadAreaBackColor = System.Drawing.Color.Empty
-        Me.CboMunicipio2.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
-        Me.CboMunicipio2.DropDownWidth = 300
-        Me.CboMunicipio2.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CboMunicipio2.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CboMunicipio2.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CboMunicipio2.EditorHeight = 15
-        Me.CboMunicipio2.Images.Add(CType(resources.GetObject("CboMunicipio2.Images"), System.Drawing.Image))
-        Me.CboMunicipio2.ItemHeight = 15
-        Me.CboMunicipio2.Location = New System.Drawing.Point(61, 46)
-        Me.CboMunicipio2.MatchEntryTimeout = CType(2000, Long)
-        Me.CboMunicipio2.MaxDropDownItems = CType(5, Short)
-        Me.CboMunicipio2.MaxLength = 32767
-        Me.CboMunicipio2.MouseCursor = System.Windows.Forms.Cursors.Default
-        Me.CboMunicipio2.Name = "CboMunicipio2"
-        Me.CboMunicipio2.RowDivider.Color = System.Drawing.Color.DarkGray
-        Me.CboMunicipio2.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
-        Me.CboMunicipio2.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboMunicipio2.Size = New System.Drawing.Size(158, 21)
-        Me.CboMunicipio2.TabIndex = 64
-        Me.CboMunicipio2.PropBag = resources.GetString("CboMunicipio2.PropBag")
-        '
-        'Label25
-        '
-        Me.Label25.AutoSize = True
-        Me.Label25.Location = New System.Drawing.Point(20, 46)
-        Me.Label25.Name = "Label25"
-        Me.Label25.Size = New System.Drawing.Size(35, 13)
-        Me.Label25.TabIndex = 66
-        Me.Label25.Text = "Hasta"
-        '
-        'CboMunicipioIni
-        '
-        Me.CboMunicipioIni.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
-        Me.CboMunicipioIni.Caption = ""
-        Me.CboMunicipioIni.CaptionHeight = 17
-        Me.CboMunicipioIni.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
-        Me.CboMunicipioIni.ColumnCaptionHeight = 17
-        Me.CboMunicipioIni.ColumnFooterHeight = 17
-        Me.CboMunicipioIni.ContentHeight = 15
-        Me.CboMunicipioIni.DeadAreaBackColor = System.Drawing.Color.Empty
-        Me.CboMunicipioIni.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
-        Me.CboMunicipioIni.DropDownWidth = 300
-        Me.CboMunicipioIni.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CboMunicipioIni.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CboMunicipioIni.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CboMunicipioIni.EditorHeight = 15
-        Me.CboMunicipioIni.Images.Add(CType(resources.GetObject("CboMunicipioIni.Images"), System.Drawing.Image))
-        Me.CboMunicipioIni.ItemHeight = 15
-        Me.CboMunicipioIni.Location = New System.Drawing.Point(61, 19)
-        Me.CboMunicipioIni.MatchEntryTimeout = CType(2000, Long)
-        Me.CboMunicipioIni.MaxDropDownItems = CType(5, Short)
-        Me.CboMunicipioIni.MaxLength = 32767
-        Me.CboMunicipioIni.MouseCursor = System.Windows.Forms.Cursors.Default
-        Me.CboMunicipioIni.Name = "CboMunicipioIni"
-        Me.CboMunicipioIni.RowDivider.Color = System.Drawing.Color.DarkGray
-        Me.CboMunicipioIni.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
-        Me.CboMunicipioIni.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboMunicipioIni.Size = New System.Drawing.Size(158, 21)
-        Me.CboMunicipioIni.TabIndex = 61
-        Me.CboMunicipioIni.PropBag = resources.GetString("CboMunicipioIni.PropBag")
-        '
-        'Label26
-        '
-        Me.Label26.AutoSize = True
-        Me.Label26.Location = New System.Drawing.Point(17, 20)
-        Me.Label26.Name = "Label26"
-        Me.Label26.Size = New System.Drawing.Size(38, 13)
-        Me.Label26.TabIndex = 63
-        Me.Label26.Text = "Desde"
-        '
-        'ChkFacturasCero
-        '
-        Me.ChkFacturasCero.AutoSize = True
-        Me.ChkFacturasCero.Location = New System.Drawing.Point(474, 396)
-        Me.ChkFacturasCero.Name = "ChkFacturasCero"
-        Me.ChkFacturasCero.Size = New System.Drawing.Size(144, 17)
-        Me.ChkFacturasCero.TabIndex = 213
-        Me.ChkFacturasCero.Text = "Incluir Facturas con Cero"
-        Me.ChkFacturasCero.UseVisualStyleBackColor = True
-        '
         'GroupBoxLote
         '
         Me.GroupBoxLote.Controls.Add(Me.CboLoteFin)
+        Me.GroupBoxLote.Controls.Add(Me.GroupProveedores)
         Me.GroupBoxLote.Controls.Add(Me.Label27)
         Me.GroupBoxLote.Controls.Add(Me.CboLoteIni)
         Me.GroupBoxLote.Controls.Add(Me.Label28)
-        Me.GroupBoxLote.Location = New System.Drawing.Point(1072, 414)
+        Me.GroupBoxLote.Location = New System.Drawing.Point(23, 22)
         Me.GroupBoxLote.Name = "GroupBoxLote"
         Me.GroupBoxLote.Size = New System.Drawing.Size(192, 85)
         Me.GroupBoxLote.TabIndex = 214
@@ -1810,107 +1722,6 @@ Partial Class FrmReportes
         Me.CboLoteFin.TabIndex = 64
         Me.CboLoteFin.PropBag = resources.GetString("CboLoteFin.PropBag")
         '
-        'Label27
-        '
-        Me.Label27.AutoSize = True
-        Me.Label27.Location = New System.Drawing.Point(8, 46)
-        Me.Label27.Name = "Label27"
-        Me.Label27.Size = New System.Drawing.Size(35, 13)
-        Me.Label27.TabIndex = 66
-        Me.Label27.Text = "Hasta"
-        '
-        'CboLoteIni
-        '
-        Me.CboLoteIni.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
-        Me.CboLoteIni.Caption = ""
-        Me.CboLoteIni.CaptionHeight = 17
-        Me.CboLoteIni.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
-        Me.CboLoteIni.ColumnCaptionHeight = 17
-        Me.CboLoteIni.ColumnFooterHeight = 17
-        Me.CboLoteIni.ContentHeight = 15
-        Me.CboLoteIni.DeadAreaBackColor = System.Drawing.Color.Empty
-        Me.CboLoteIni.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
-        Me.CboLoteIni.DropDownWidth = 300
-        Me.CboLoteIni.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CboLoteIni.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CboLoteIni.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CboLoteIni.EditorHeight = 15
-        Me.CboLoteIni.Images.Add(CType(resources.GetObject("CboLoteIni.Images"), System.Drawing.Image))
-        Me.CboLoteIni.ItemHeight = 15
-        Me.CboLoteIni.Location = New System.Drawing.Point(49, 18)
-        Me.CboLoteIni.MatchEntryTimeout = CType(2000, Long)
-        Me.CboLoteIni.MaxDropDownItems = CType(5, Short)
-        Me.CboLoteIni.MaxLength = 32767
-        Me.CboLoteIni.MouseCursor = System.Windows.Forms.Cursors.Default
-        Me.CboLoteIni.Name = "CboLoteIni"
-        Me.CboLoteIni.RowDivider.Color = System.Drawing.Color.DarkGray
-        Me.CboLoteIni.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
-        Me.CboLoteIni.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboLoteIni.Size = New System.Drawing.Size(134, 21)
-        Me.CboLoteIni.TabIndex = 61
-        Me.CboLoteIni.PropBag = resources.GetString("CboLoteIni.PropBag")
-        '
-        'Label28
-        '
-        Me.Label28.AutoSize = True
-        Me.Label28.Location = New System.Drawing.Point(5, 20)
-        Me.Label28.Name = "Label28"
-        Me.Label28.Size = New System.Drawing.Size(38, 13)
-        Me.Label28.TabIndex = 63
-        Me.Label28.Text = "Desde"
-        '
-        'GroupBoxAño
-        '
-        Me.GroupBoxAño.Controls.Add(Me.CboAño)
-        Me.GroupBoxAño.Controls.Add(Me.CboMes)
-        Me.GroupBoxAño.Controls.Add(Me.Label29)
-        Me.GroupBoxAño.Controls.Add(Me.Label30)
-        Me.GroupBoxAño.Location = New System.Drawing.Point(904, 471)
-        Me.GroupBoxAño.Name = "GroupBoxAño"
-        Me.GroupBoxAño.Size = New System.Drawing.Size(352, 52)
-        Me.GroupBoxAño.TabIndex = 215
-        Me.GroupBoxAño.TabStop = False
-        Me.GroupBoxAño.Text = "Rango de Fechas"
-        Me.GroupBoxAño.Visible = False
-        '
-        'CboAño
-        '
-        Me.CboAño.DisplayMember = "Año"
-        Me.CboAño.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CboAño.FormattingEnabled = True
-        Me.CboAño.Location = New System.Drawing.Point(225, 20)
-        Me.CboAño.Name = "CboAño"
-        Me.CboAño.Size = New System.Drawing.Size(121, 21)
-        Me.CboAño.TabIndex = 4
-        '
-        'CboMes
-        '
-        Me.CboMes.DisplayMember = "Mes"
-        Me.CboMes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CboMes.FormattingEnabled = True
-        Me.CboMes.Location = New System.Drawing.Point(41, 19)
-        Me.CboMes.Name = "CboMes"
-        Me.CboMes.Size = New System.Drawing.Size(121, 21)
-        Me.CboMes.TabIndex = 3
-        '
-        'Label29
-        '
-        Me.Label29.AutoSize = True
-        Me.Label29.Location = New System.Drawing.Point(181, 23)
-        Me.Label29.Name = "Label29"
-        Me.Label29.Size = New System.Drawing.Size(26, 13)
-        Me.Label29.TabIndex = 2
-        Me.Label29.Text = "Año"
-        '
-        'Label30
-        '
-        Me.Label30.AutoSize = True
-        Me.Label30.Location = New System.Drawing.Point(7, 20)
-        Me.Label30.Name = "Label30"
-        Me.Label30.Size = New System.Drawing.Size(27, 13)
-        Me.Label30.TabIndex = 0
-        Me.Label30.Text = "Mes"
-        '
         'GroupProveedores
         '
         Me.GroupProveedores.Controls.Add(Me.BtnProveedor1)
@@ -1921,7 +1732,7 @@ Partial Class FrmReportes
         Me.GroupProveedores.Controls.Add(Me.Label31)
         Me.GroupProveedores.Controls.Add(Me.CboProveedores)
         Me.GroupProveedores.Controls.Add(Me.Label32)
-        Me.GroupProveedores.Location = New System.Drawing.Point(1194, 468)
+        Me.GroupProveedores.Location = New System.Drawing.Point(24, 45)
         Me.GroupProveedores.Name = "GroupProveedores"
         Me.GroupProveedores.Size = New System.Drawing.Size(277, 86)
         Me.GroupProveedores.TabIndex = 216
@@ -2038,6 +1849,197 @@ Partial Class FrmReportes
         Me.Label32.TabIndex = 63
         Me.Label32.Text = "Desde"
         '
+        'Label27
+        '
+        Me.Label27.AutoSize = True
+        Me.Label27.Location = New System.Drawing.Point(8, 46)
+        Me.Label27.Name = "Label27"
+        Me.Label27.Size = New System.Drawing.Size(35, 13)
+        Me.Label27.TabIndex = 66
+        Me.Label27.Text = "Hasta"
+        '
+        'CboLoteIni
+        '
+        Me.CboLoteIni.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboLoteIni.Caption = ""
+        Me.CboLoteIni.CaptionHeight = 17
+        Me.CboLoteIni.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboLoteIni.ColumnCaptionHeight = 17
+        Me.CboLoteIni.ColumnFooterHeight = 17
+        Me.CboLoteIni.ContentHeight = 15
+        Me.CboLoteIni.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboLoteIni.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
+        Me.CboLoteIni.DropDownWidth = 300
+        Me.CboLoteIni.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboLoteIni.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboLoteIni.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboLoteIni.EditorHeight = 15
+        Me.CboLoteIni.Images.Add(CType(resources.GetObject("CboLoteIni.Images"), System.Drawing.Image))
+        Me.CboLoteIni.ItemHeight = 15
+        Me.CboLoteIni.Location = New System.Drawing.Point(49, 18)
+        Me.CboLoteIni.MatchEntryTimeout = CType(2000, Long)
+        Me.CboLoteIni.MaxDropDownItems = CType(5, Short)
+        Me.CboLoteIni.MaxLength = 32767
+        Me.CboLoteIni.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboLoteIni.Name = "CboLoteIni"
+        Me.CboLoteIni.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboLoteIni.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboLoteIni.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboLoteIni.Size = New System.Drawing.Size(134, 21)
+        Me.CboLoteIni.TabIndex = 61
+        Me.CboLoteIni.PropBag = resources.GetString("CboLoteIni.PropBag")
+        '
+        'Label28
+        '
+        Me.Label28.AutoSize = True
+        Me.Label28.Location = New System.Drawing.Point(5, 20)
+        Me.Label28.Name = "Label28"
+        Me.Label28.Size = New System.Drawing.Size(38, 13)
+        Me.Label28.TabIndex = 63
+        Me.Label28.Text = "Desde"
+        '
+        'CboMunicipio2
+        '
+        Me.CboMunicipio2.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboMunicipio2.Caption = ""
+        Me.CboMunicipio2.CaptionHeight = 17
+        Me.CboMunicipio2.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboMunicipio2.ColumnCaptionHeight = 17
+        Me.CboMunicipio2.ColumnFooterHeight = 17
+        Me.CboMunicipio2.ContentHeight = 15
+        Me.CboMunicipio2.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboMunicipio2.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
+        Me.CboMunicipio2.DropDownWidth = 300
+        Me.CboMunicipio2.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboMunicipio2.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboMunicipio2.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboMunicipio2.EditorHeight = 15
+        Me.CboMunicipio2.Images.Add(CType(resources.GetObject("CboMunicipio2.Images"), System.Drawing.Image))
+        Me.CboMunicipio2.ItemHeight = 15
+        Me.CboMunicipio2.Location = New System.Drawing.Point(61, 46)
+        Me.CboMunicipio2.MatchEntryTimeout = CType(2000, Long)
+        Me.CboMunicipio2.MaxDropDownItems = CType(5, Short)
+        Me.CboMunicipio2.MaxLength = 32767
+        Me.CboMunicipio2.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboMunicipio2.Name = "CboMunicipio2"
+        Me.CboMunicipio2.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboMunicipio2.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboMunicipio2.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboMunicipio2.Size = New System.Drawing.Size(158, 21)
+        Me.CboMunicipio2.TabIndex = 64
+        Me.CboMunicipio2.PropBag = resources.GetString("CboMunicipio2.PropBag")
+        '
+        'Label25
+        '
+        Me.Label25.AutoSize = True
+        Me.Label25.Location = New System.Drawing.Point(20, 46)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(35, 13)
+        Me.Label25.TabIndex = 66
+        Me.Label25.Text = "Hasta"
+        '
+        'CboMunicipioIni
+        '
+        Me.CboMunicipioIni.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
+        Me.CboMunicipioIni.Caption = ""
+        Me.CboMunicipioIni.CaptionHeight = 17
+        Me.CboMunicipioIni.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
+        Me.CboMunicipioIni.ColumnCaptionHeight = 17
+        Me.CboMunicipioIni.ColumnFooterHeight = 17
+        Me.CboMunicipioIni.ContentHeight = 15
+        Me.CboMunicipioIni.DeadAreaBackColor = System.Drawing.Color.Empty
+        Me.CboMunicipioIni.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
+        Me.CboMunicipioIni.DropDownWidth = 300
+        Me.CboMunicipioIni.EditorBackColor = System.Drawing.SystemColors.Window
+        Me.CboMunicipioIni.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboMunicipioIni.EditorForeColor = System.Drawing.SystemColors.WindowText
+        Me.CboMunicipioIni.EditorHeight = 15
+        Me.CboMunicipioIni.Images.Add(CType(resources.GetObject("CboMunicipioIni.Images"), System.Drawing.Image))
+        Me.CboMunicipioIni.ItemHeight = 15
+        Me.CboMunicipioIni.Location = New System.Drawing.Point(61, 19)
+        Me.CboMunicipioIni.MatchEntryTimeout = CType(2000, Long)
+        Me.CboMunicipioIni.MaxDropDownItems = CType(5, Short)
+        Me.CboMunicipioIni.MaxLength = 32767
+        Me.CboMunicipioIni.MouseCursor = System.Windows.Forms.Cursors.Default
+        Me.CboMunicipioIni.Name = "CboMunicipioIni"
+        Me.CboMunicipioIni.RowDivider.Color = System.Drawing.Color.DarkGray
+        Me.CboMunicipioIni.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
+        Me.CboMunicipioIni.RowSubDividerColor = System.Drawing.Color.DarkGray
+        Me.CboMunicipioIni.Size = New System.Drawing.Size(158, 21)
+        Me.CboMunicipioIni.TabIndex = 61
+        Me.CboMunicipioIni.PropBag = resources.GetString("CboMunicipioIni.PropBag")
+        '
+        'Label26
+        '
+        Me.Label26.AutoSize = True
+        Me.Label26.Location = New System.Drawing.Point(17, 20)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(38, 13)
+        Me.Label26.TabIndex = 63
+        Me.Label26.Text = "Desde"
+        '
+        'ChkFacturasCero
+        '
+        Me.ChkFacturasCero.AutoSize = True
+        Me.ChkFacturasCero.Location = New System.Drawing.Point(474, 396)
+        Me.ChkFacturasCero.Name = "ChkFacturasCero"
+        Me.ChkFacturasCero.Size = New System.Drawing.Size(144, 17)
+        Me.ChkFacturasCero.TabIndex = 213
+        Me.ChkFacturasCero.Text = "Incluir Facturas con Cero"
+        Me.ChkFacturasCero.UseVisualStyleBackColor = True
+        '
+        'GroupBoxAño
+        '
+        Me.GroupBoxAño.Controls.Add(Me.CboAño)
+        Me.GroupBoxAño.Controls.Add(Me.CboMes)
+        Me.GroupBoxAño.Controls.Add(Me.Label29)
+        Me.GroupBoxAño.Controls.Add(Me.Label30)
+        Me.GroupBoxAño.Location = New System.Drawing.Point(904, 471)
+        Me.GroupBoxAño.Name = "GroupBoxAño"
+        Me.GroupBoxAño.Size = New System.Drawing.Size(352, 52)
+        Me.GroupBoxAño.TabIndex = 215
+        Me.GroupBoxAño.TabStop = False
+        Me.GroupBoxAño.Text = "Rango de Fechas"
+        Me.GroupBoxAño.Visible = False
+        '
+        'CboAño
+        '
+        Me.CboAño.DisplayMember = "Año"
+        Me.CboAño.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboAño.FormattingEnabled = True
+        Me.CboAño.Location = New System.Drawing.Point(225, 20)
+        Me.CboAño.Name = "CboAño"
+        Me.CboAño.Size = New System.Drawing.Size(121, 21)
+        Me.CboAño.TabIndex = 4
+        '
+        'CboMes
+        '
+        Me.CboMes.DisplayMember = "Mes"
+        Me.CboMes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboMes.FormattingEnabled = True
+        Me.CboMes.Location = New System.Drawing.Point(41, 19)
+        Me.CboMes.Name = "CboMes"
+        Me.CboMes.Size = New System.Drawing.Size(121, 21)
+        Me.CboMes.TabIndex = 3
+        '
+        'Label29
+        '
+        Me.Label29.AutoSize = True
+        Me.Label29.Location = New System.Drawing.Point(181, 23)
+        Me.Label29.Name = "Label29"
+        Me.Label29.Size = New System.Drawing.Size(26, 13)
+        Me.Label29.TabIndex = 2
+        Me.Label29.Text = "Año"
+        '
+        'Label30
+        '
+        Me.Label30.AutoSize = True
+        Me.Label30.Location = New System.Drawing.Point(7, 20)
+        Me.Label30.Name = "Label30"
+        Me.Label30.Size = New System.Drawing.Size(27, 13)
+        Me.Label30.TabIndex = 0
+        Me.Label30.Text = "Mes"
+        '
         'ChkAgrupadoBodega
         '
         Me.ChkAgrupadoBodega.AutoSize = True
@@ -2087,11 +2089,9 @@ Partial Class FrmReportes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(884, 631)
+        Me.ClientSize = New System.Drawing.Size(862, 631)
         Me.ControlBox = False
         Me.Controls.Add(Me.Imagen)
-        Me.Controls.Add(Me.GroupProveedores)
-        Me.Controls.Add(Me.GroupBoxLote)
         Me.Controls.Add(Me.ChkFacturasCero)
         Me.Controls.Add(Me.GroupBoxMunicipio)
         Me.Controls.Add(Me.GroupBoxProyectos)
@@ -2176,18 +2176,18 @@ Partial Class FrmReportes
         CType(Me.CboCodDepartamentoIni, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBoxMunicipio.ResumeLayout(False)
         Me.GroupBoxMunicipio.PerformLayout()
-        CType(Me.CboMunicipio2, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.CboMunicipioIni, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBoxLote.ResumeLayout(False)
         Me.GroupBoxLote.PerformLayout()
         CType(Me.CboLoteFin, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.CboLoteIni, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBoxAño.ResumeLayout(False)
-        Me.GroupBoxAño.PerformLayout()
         Me.GroupProveedores.ResumeLayout(False)
         Me.GroupProveedores.PerformLayout()
         CType(Me.CboProveedores2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CboProveedores, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.CboLoteIni, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.CboMunicipio2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.CboMunicipioIni, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBoxAño.ResumeLayout(False)
+        Me.GroupBoxAño.PerformLayout()
         Me.GroupBoxFechaVence.ResumeLayout(False)
         Me.GroupBoxFechaVence.PerformLayout()
         Me.ResumeLayout(False)

@@ -346,507 +346,121 @@ Public Class FrmRecibos
         LimpiaRecibo()
     End Sub
 
+
     Private Sub ButtonAgregar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAgregar.Click
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Monto As Double
-        Dim ConsecutivoPago As Double, NumeroCompra As String, Registros As Double, iPosicion As Double, Cadena As String
-        Dim NumeroRecibo As String, MontoPagado As Double, MontoCredito As Double, NombrePago As String = ""
-        Dim ArepPagoClientes As New ArepPagoClientes, NumeroTarjeta As String, FechaVenceTarjeta As String
-        Dim SQL As New DataDynamics.ActiveReports.DataSources.SqlDBDataSource, SQlPagos As String, Descripcion As String = "", FechaVence As Date
-        Dim SQlString As String, ArepRecibos2 As New ArepRecibo2
-        Dim iResultado As Integer, ArepReciboTira As New ArepReciboTira, ArepReciboTira2 As New ArepReciboCajaTira
-        Dim ComandoUpdate As New SqlClient.SqlCommand, SqlConsecutivo As String, ConsecutivoManual As Boolean = False
-        Dim Saldo As Double = 0, Retencion1 As Double = 0, Retencion2 As Double = 0, NumeroNota As String = "", Consecutivo As Double = 0
-        Dim ReciboSerie As Boolean = False, idDetalle As Double = -1
-        Dim Servicio As New ServicioRecibos(Conexion)
 
+        If ds.Tables("DetalleRecibo").Rows.Count = 0 Then Exit Sub
+        If Me.TxtCodigoClientes.Text.Trim() = "" Then Exit Sub
 
-        If ds.Tables("DetalleRecibo").Rows.Count = 0 Then
-            Exit Sub
-        End If
+        Me.BindingDetalleRecibo.EndEdit()
 
-        If Me.TxtCodigoClientes.Text = "" Then
-            Exit Sub
-        End If
+        Dim servicio As New Recibos(Conexion)
+        Dim config As ConfiguracionRecibos = servicio.LeerConfiguracion()
 
-        Me.BindingDetalleRecibo.MoveFirst()
-        Registros = ds.Tables("DetalleRecibo").Rows.Count  'Me.BindingDetalleRecibo.Count
-        iPosicion = 0
-        Do While iPosicion < Registros
+        '------------------------------------------------------------------
+        ' ENCABEZADO
+        '------------------------------------------------------------------
+        Dim recibo As New ReciboCaja With {
+            .Fecha = Me.DTPFecha.Value.Date,
+            .CodCliente = Me.TxtCodigoClientes.Text.Trim(),
+            .Cajero = Me.CboCajero.Text,
+            .NombreCliente = Me.TxtNombres.Text,
+            .Apellidos = Me.TxtApellidos.Text,
+            .Direccion = Me.TxtDireccion.Text,
+            .Telefono = Me.TxtTelefono.Text,
+            .Moneda = Me.TxtMonedaFactura.Text.Trim(),
+            .Observaciones = Me.TxtObservaciones.Text,
+            .Descuento = CeldaDecimal(Me.TxtDescuento.Text),
+            .RetencionAlcaldia1 = Me.OptRet1Porciento.Checked,
+            .RetencionIR2 = Me.OptRet2Porciento.Checked,
+            .Usuario = Me.CboCajero.Text}
 
-            If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("Numero_Factura")) Then
-                NumeroCompra = ds.Tables("DetalleRecibo").Rows(iPosicion)("Numero_Factura")
-            Else
-                NumeroCompra = 0
-            End If
+        '------------------------------------------------------------------
+        ' NÚMERO: nuevo (automático / manual, con o sin serie) o edición
+        '------------------------------------------------------------------
+        If Me.TxtNumeroEnsamble.Text = Recibos.SinNumero Then
+            If ConsecutivoReciboSerie Then recibo.Serie = Me.CmbSerie.Text.Trim()
 
-            If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("MontoPagado")) Then
-                MontoPagado = ds.Tables("DetalleRecibo").Rows(iPosicion)("MontoPagado")
-            End If
-
-            If Me.OptRet1Porciento.Checked = True Or Me.OptRet2Porciento.Checked = True Then
-                Saldo = ValidarFacturaEnRecibo(Me.TxtCodigoClientes.Text, NumeroCompra, MontoPagado, Me.TxtMonedaFactura.Text)
-                If MontoPagado <= Saldo Then
-
-
-                    If Me.OptRet1Porciento.Checked = True Then
-                        Dim MontoIr As Double, CodigoNota As String
-
-                        SQlString = "SELECT CodigoNB, Tipo, Descripcion, CuentaContable FROM NotaDebito WHERE (Tipo = 'Credito Clientes') AND (Descripcion LIKE N'%1%%')"
-                        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-                        DataAdapter.Fill(DataSet, "Retencion")
-                        If DataSet.Tables("Retencion").Rows.Count <> 0 Then
-                            MontoIr = Format(FSubTotal * 0.01, "##,##0.00")
-                            CodigoNota = DataSet.Tables("Retencion").Rows(0)("CodigoNB")
-                        Else
-                            MsgBox("No Existe Nota de Credito para Retencion 1%", MsgBoxStyle.Critical, "Zeus Facturacion")
-                            Me.OptRet1Porciento.Checked = False
-                            MontoIr = 0
-                            CodigoNota = 0
-                        End If
-                        DataSet.Tables("Retencion").Reset()
-
-                        Consecutivo = BuscaConsecutivo("NotaCredito")
-                        NumeroNota = Format(Consecutivo, "0000#")
-                        GrabaNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, MontoIr, Me.TxtMonedaFactura.Text, Me.TxtCodigoClientes.Text, Me.TxtNombres.Text, Me.TxtObservaciones.Text, True, False, False)
-                        InsertarDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Recibos", NumeroCompra, MontoIr)
-                        'GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Recibos", NumeroCompra, MontoIr)
-                    End If
-
-
-                    If Me.OptRet2Porciento.Checked = True Then
-                        Dim MontoIr As Double, CodigoNota As String
-
-                        SQlString = "SELECT CodigoNB, Tipo, Descripcion, CuentaContable FROM NotaDebito WHERE (Tipo = 'Credito Clientes') AND (Descripcion LIKE N'%2%%')"
-                        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-                        DataAdapter.Fill(DataSet, "Retencion")
-                        If DataSet.Tables("Retencion").Rows.Count <> 0 Then
-                            MontoIr = Format(FSubTotal * 0.02, "##,##0.00")
-                            CodigoNota = DataSet.Tables("Retencion").Rows(0)("CodigoNB")
-                        Else
-                            MsgBox("No Existe Nota de Credito para Retencion 2%", MsgBoxStyle.Critical, "Zeus Facturacion")
-                            Me.OptRet1Porciento.Checked = False
-                            MontoIr = 0
-                            CodigoNota = 0
-                        End If
-                        DataSet.Tables("Retencion").Reset()
-                        Consecutivo = BuscaConsecutivo("NotaCredito")
-                        NumeroNota = Format(Consecutivo, "0000#")
-                        GrabaNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, MontoIr, Me.TxtMonedaFactura.Text, Me.TxtCodigoClientes.Text, Me.TxtNombres.Text, Me.TxtObservaciones.Text, True, False, False)
-                        InsertarDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Recibos", NumeroCompra, MontoIr)
-                        'GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, CodigoNota, "Generado Automaticamente por Recibos", NumeroCompra, MontoIr)
-                    End If
-
-
-                Else
-                    MsgBox("Esta Pagando Mas que el Saldo Pendiente!!", MsgBoxStyle.Critical, "Zeus Facturacion")
-                    Exit Sub
-                End If
-            End If
-
-            iPosicion = iPosicion + 1
-        Loop
-
-        '/////////////////////////////////////////////////////////////////////////////////////////
-        '///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO MANUAL /////////////////////////////////
-        '////////////////////////////////////////////////////////////////////////////////////////
-        SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
-        DataAdapter.Fill(DataSet, "Configuracion")
-        If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
-            If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoReciboManual")) Then
-                ConsecutivoManual = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoReciboManual")
-            End If
-        End If
-
-        '////////////////////////////////////////////////////////////////////////////////////////////////////
-        '/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
-            If ConsecutivoManual = True Then
+            If config.ConsecutivoManual Then
                 FrmConsecutivos.LblTitulo.Text = "Consecutivos Recibos"
                 FrmConsecutivos.LblTitulo2.Text = "RECIBO NO"
                 Quien = "Recibo"
                 FrmConsecutivos.ShowDialog()
-                If FrmConsecutivos.TxtConsecutivo.Text <> "-----0-----" Then
-                    ConsecutivoPago = FrmConsecutivos.NumeroFactura
-                Else
-                    Exit Sub
-                End If
-            Else
-                'ConsecutivoPago = BuscaConsecutivo("Recibo_Caja")
-
-                If ConsecutivoReciboSerie = False Then
-                    ConsecutivoReciboSerie = BuscaConsecutivo("Recibo_Caja")
-                Else
-                    ConsecutivoReciboSerie = BuscaConsecutivoSerie("Recibo", Me.CmbSerie.Text)
-                End If
-
-
+                If FrmConsecutivos.TxtConsecutivo.Text = Recibos.SinNumero Then Exit Sub
+                recibo.ConsecutivoManual = CDec(FrmConsecutivos.NumeroFactura)
             End If
         Else
-            If Not IsNumeric(Me.TxtNumeroEnsamble.Text) Then
-                'ConsecutivoPago = Mid(Me.TxtNumeroEnsamble.Text, 2, Len(Me.TxtNumeroEnsamble.Text) - 1)
-                ConsecutivoPago = Regex.Replace(Me.TxtNumeroEnsamble.Text, "^[^0-9]+", "")
-
-            Else
-                ConsecutivoPago = Me.TxtNumeroEnsamble.Text
-            End If
-
+            recibo.Numero = Me.TxtNumeroEnsamble.Text.Trim()
         End If
 
+        '------------------------------------------------------------------
+        ' DETALLE
+        '------------------------------------------------------------------
+        Dim lineaPorFila As New Dictionary(Of DataRow, ReciboLinea)
 
-        '==========================================================
-        ' DETERMINAR NUMERO DEL RECIBO
-        '==========================================================
+        For Each fila As DataRow In ds.Tables("DetalleRecibo").Rows
+            If fila.RowState = DataRowState.Deleted Then Continue For
 
-        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+            Dim linea As New ReciboLinea With {
+                .IdDetalleRecibo = CeldaDecimal(fila("idDetalleRecibo")),
+                .NumeroFactura = Celda(fila("Numero_Factura"), "0"),
+                .MontoPagado = CeldaDecimal(fila("MontoPagado")),
+                .NombrePago = Celda(fila("NombrePago")),
+                .Descripcion = Celda(fila("Descripcion")),
+                .NumeroTarjeta = Celda(fila("NumeroTarjeta")),
+                .MontoFactura = CeldaDecimal(fila("MontoFactura")),
+                .AplicaFactura = CeldaDecimal(fila("AplicaFactura")),
+                .SaldoFactura = CeldaDecimal(fila("SaldoFactura")),
+                .NumeroNota = Celda(fila("Numero_Nota"))}
 
-            '------------------------------------------------------
-            ' RECIBO NUEVO
-            '------------------------------------------------------
-            If ConsecutivoReciboSerie = False Then
+            If Not IsDBNull(fila("FechaVence")) Then linea.FechaVence = CDate(fila("FechaVence"))
 
-                NumeroRecibo =
-            Format(ConsecutivoPago, "0000#")
+            recibo.Lineas.Add(linea)
+            lineaPorFila(fila) = linea
+        Next
 
-            Else
-
-                NumeroRecibo =
-            Me.CmbSerie.Text &
-            Format(ConsecutivoPago, "0000#")
-
-            End If
-
-        Else
-
-            '------------------------------------------------------
-            ' RECIBO EXISTENTE / EDICION
-            '
-            ' Conservar exactamente el numero existente.
-            ' No reconstruirlo utilizando CmbSerie.
-            '------------------------------------------------------
-            NumeroRecibo =
-        Me.TxtNumeroEnsamble.Text.Trim()
-
+        '------------------------------------------------------------------
+        ' APLICACIONES DEL PLAN DE PAGOS (se graban en la misma transacción)
+        '------------------------------------------------------------------
+        If _MapaAplicacionesPlan IsNot Nothing Then
+            For Each par As KeyValuePair(Of AplicacionPlanPendiente, DataRow) In _MapaAplicacionesPlan
+                If par.Key Is Nothing OrElse par.Value Is Nothing Then Continue For
+                Dim linea As ReciboLinea = Nothing
+                If lineaPorFila.TryGetValue(par.Value, linea) Then
+                    linea.AplicacionesPlan.Add(New ReciboAplicacionPlan With {
+                        .IdDetallePago = CInt(par.Key.IdDetallePago),
+                        .NumeroCuota = CInt(par.Key.NumeroCuota),
+                        .MontoAplicado = CDec(par.Key.MontoAplicado)})
+                End If
+            Next
         End If
 
+        '------------------------------------------------------------------
+        ' GRABAR (una sola transacción)
+        '------------------------------------------------------------------
+        Me.Cursor = Cursors.WaitCursor
+        Dim resultado As ReciboResultado = servicio.Grabar(recibo)
+        Me.Cursor = Cursors.Default
 
-        CambiaFechaRecibo = False
-
-
-        '////////////////////////////////////////////////////////////////////////////////////////////////////
-        '/////////////////////////////GRABO EL ENCABEZADO DE LOS PAGOS /////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-        'GrabaRecibos(NumeroRecibo)
-        If Not Servicio.GrabarRecibo(
-    NumeroRecibo,
-    Me.DTPFecha.Value,
-    Me.TxtCodigoClientes.Text,
-    Me.CboCajero.Text,
-    Convert.ToDecimal(Me.TxtSubTotal.Text),
-    Convert.ToDecimal(Me.TxtDescuento.Text),
-    Convert.ToDecimal(Me.TxtNetoPagar.Text),
-    Me.TxtNombres.Text,
-    Me.TxtApellidos.Text,
-    Me.TxtDireccion.Text,
-    Me.TxtTelefono.Text,
-    Me.TxtMonedaFactura.Text,
-    Me.TxtObservaciones.Text) Then
-
-            MsgBox(
-        "No se pudo grabar el encabezado del recibo.",
-        MsgBoxStyle.Critical,
-        "Sistema Facturación")
-
+        If Not resultado.Exito Then
+            MsgBox(resultado.Mensaje, MsgBoxStyle.Critical, "Zeus Facturacion")
             Exit Sub
-
         End If
 
-
-
-
-        '////////////////////////////////////////////////////////////////////////////////////////////////////
-        '/////////////////////////////GRABO EL DETALLE DEL RECIBO/////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-        Me.BindingDetalleRecibo.MoveFirst()
-        Registros = Me.BindingDetalleRecibo.Count
-        iPosicion = 0
-
-        Do While iPosicion < Registros
-
-            If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("idDetalleRecibo")) Then
-                idDetalle = ds.Tables("DetalleRecibo").Rows(iPosicion)("idDetalleRecibo")
-            Else
-                idDetalle = -1
-            End If
-
-            If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("Numero_Factura")) Then
-                NumeroCompra = ds.Tables("DetalleRecibo").Rows(iPosicion)("Numero_Factura")
-            Else
-                NumeroCompra = 0
-                ds.Tables("DetalleRecibo").Rows(iPosicion)("Numero_Factura") = 0
-            End If
-
-            ds.Tables("DetalleRecibo").Rows(iPosicion)("CodReciboPago") = NumeroRecibo
-            ds.Tables("DetalleRecibo").Rows(iPosicion)("Fecha_Recibo") = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
-
-
-            NombrePago = ds.Tables("DetalleRecibo").Rows(iPosicion)("NombrePago")
-            If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("Descripcion")) Then
-                Descripcion = ds.Tables("DetalleRecibo").Rows(iPosicion)("Descripcion")
-            End If
-            If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("NumeroTarjeta")) Then
-                NumeroTarjeta = ds.Tables("DetalleRecibo").Rows(iPosicion)("NumeroTarjeta")
-            Else
-                NumeroTarjeta = 0
-            End If
-
-            If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("FechaVence")) Then
-                FechaVence = ds.Tables("DetalleRecibo").Rows(iPosicion)("FechaVence")
-            Else
-                FechaVence = Format(Now, "dd/MM/yyyy")
-            End If
-
-
-            MontoPagado = 0
-            MontoCredito = 0
-
-            If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("MontoPagado")) Then
-                If iPosicion <> 0 Then
-                    If Me.BindingDetalleRecibo.Item(iPosicion - 1)("NombrePago") = ds.Tables("DetalleRecibo").Rows(iPosicion)("NombrePago") Then
-                        MontoPagado = MontoPagado + ds.Tables("DetalleRecibo").Rows(iPosicion)("MontoPagado")
-                        If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("SaldoFactura")) Then
-                            MontoCredito = MontoCredito + ds.Tables("DetalleRecibo").Rows(iPosicion)("SaldoFactura")
-                        Else
-                            MontoCredito = MontoCredito
-                        End If
-                        Cadena = NombrePago & " $" & MontoPagado
-
-                        '//////////////////////////////////////////////////////////////////////////////////////
-                        '///////////////////////SI CAMBIA LA FECHA DEL RECIBO /////////////////////////////////
-                        '///////////////////////////////////////////////////////////////////////////////////////
-
-                        'If CambiaFechaRecibo = True Then
-                        '    GrabaMetodoDetalleRecibo(NumeroRecibo, NombrePago, MontoPagado, NumeroTarjeta, FechaVence)
-                        'End If
-                    Else
-                        MontoPagado = ds.Tables("DetalleRecibo").Rows(iPosicion)("MontoPagado")
-                        If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("SaldoFactura")) Then
-                            MontoCredito = ds.Tables("DetalleRecibo").Rows(iPosicion)("SaldoFactura")
-                        Else
-                            MontoCredito = MontoCredito
-                        End If
-
-                        '//////////////////////////////////////////////////////////////////////////////////////
-                        '///////////////////////SI CAMBIA LA FECHA DEL RECIBO /////////////////////////////////
-                        '///////////////////////////////////////////////////////////////////////////////////////
-                        'If CambiaFechaRecibo = True Then
-                        '    GrabaMetodoDetalleRecibo(NumeroRecibo, NombrePago, MontoPagado, NumeroTarjeta, FechaVence)
-                        'End If
-
-                    End If
-                Else
-
-                    MontoPagado = ds.Tables("DetalleRecibo").Rows(iPosicion)("MontoPagado")
-                    If Not IsDBNull(ds.Tables("DetalleRecibo").Rows(iPosicion)("SaldoFactura")) Then
-                        MontoCredito = ds.Tables("DetalleRecibo").Rows(iPosicion)("SaldoFactura")
-                    End If
-
-
-                    GrabaMetodoDetalleRecibo(NumeroRecibo, NombrePago, MontoPagado, NumeroTarjeta, FechaVence)
-                End If
-
-            Else
-                MontoPagado = 0
-            End If
-
-            If MontoPagado <> 0 Then
-
-                If Not Servicio.GrabarDetalleRecibo(
-                    NumeroRecibo,
-                    Me.DTPFecha.Value,
-                    NumeroCompra,
-                    ObtenerDecimal(MontoPagado),
-                    NombrePago,
-                    Descripcion,
-                    NumeroTarjeta,
-                    FechaVence,
-                    ObtenerDecimal(ds.Tables("DetalleRecibo").Rows(iPosicion)("MontoFactura")),
-                    ObtenerDecimal(ds.Tables("DetalleRecibo").Rows(iPosicion)("AplicaFactura")),
-                    ObtenerDecimal(ds.Tables("DetalleRecibo").Rows(iPosicion)("SaldoFactura")),
-                    1D,
-                    NumeroNota,
-                    ObtenerDecimal(idDetalle)) Then
-
-                    MsgBox(
-                        "No se pudo grabar el detalle del recibo.",
-                        MsgBoxStyle.Critical,
-                        "Sistema Facturación")
-
-                    Exit Sub
-
-                End If
-
-                ActualizaMontoCreditoFactura(NumeroCompra, MontoCredito)
-
-            End If
-
-            '*******************CODIGO RETIRADO 15/09/2026 ***********************************
-            ''MontoCredito = ds.Tables("DetalleRecibo").Rows(iPosicion)("Saldo")
-            'If MontoPagado <> 0 Then
-
-            '    If CambiaFechaRecibo = True Then
-            '        GrabaDetalleRecibos(NumeroRecibo, NumeroCompra, MontoPagado, NombrePago, Descripcion, NumeroTarjeta, FechaVence, idDetalle)
-            '    End If
-
-            '    ActualizaMontoCreditoFactura(NumeroCompra, MontoCredito)
-
-            '    '///////////////////////////////////////////BUSCO SI LA FACTURA QUEDA EN CERO PARA DESACTIVARLAS /////////////////////
-            '    SQlString = "SELECT   *  FROM Facturas WHERE (Numero_Factura = '" & NumeroCompra & "') AND (Tipo_Factura = 'Factura') ORDER BY Fecha_Factura DESC"
-            '    DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-            '    DataAdapter.Fill(DataSet, "Factuas")
-            '    If DataSet.Tables("Factuas").Rows.Count <> 0 Then
-            '        MiConexion.Close()
-            '        MontoCredito = DataSet.Tables("Factuas").Rows(0)("MontoCredito")
-            '        If MontoCredito = 0 Then
-
-            '            SQlPagos = "UPDATE [Facturas]  SET [Activo] = 'False' " & _
-            '                         "WHERE  (Numero_Factura = '" & NumeroCompra & "') AND (Tipo_Factura = 'Factura')"
-            '            MiConexion.Open()
-            '            ComandoUpdate = New SqlClient.SqlCommand(SQlPagos, MiConexion)
-            '            iResultado = ComandoUpdate.ExecuteNonQuery
-            '            MiConexion.Close()
-            '        End If
-
-            '    End If
-
-            'Else
-            '    ds.Tables("DetalleRecibo").Rows(iPosicion).Delete()
-            '    Registros = Registros - 1
-            '    iPosicion = iPosicion - 1
-
-            'End If
-
-
-
-            iPosicion = iPosicion + 1
-        Loop
-
-        If CambiaFechaRecibo = False Then
-
-            '==========================================================
-            ' GRABAR APLICACIONES DEL PLAN DE PAGOS
-            '==========================================================
-            If Not GrabarAplicacionesPlanPago(NumeroRecibo) Then
-
-                MessageBox.Show(
-            "El recibo fue guardado, pero no se pudieron " &
-            "registrar correctamente las aplicaciones del " &
-            "plan de pagos.",
-            "Recibo",
-            MessageBoxButtons.OK,
-            MessageBoxIcon.Warning)
-
-                Exit Sub
-
-            End If
-
-        End If
-
-
-        '************CODIGO RETIRADO 15/09/2026 ****************************
-        'If CambiaFechaRecibo = False Then
-
-        '    da.Update(ds.Tables("DetalleRecibo"))
-
-
-        '    '==========================================================
-        '    ' GRABAR APLICACIONES DEL PLAN DE PAGOS
-        '    '==========================================================
-        '    If Not GrabarAplicacionesPlanPago(NumeroRecibo) Then
-
-        '        MessageBox.Show(
-        '    "El recibo fue guardado, pero no se pudieron " &
-        '    "registrar correctamente las aplicaciones del " &
-        '    "plan de pagos.",
-        '    "Recibo",
-        '    MessageBoxButtons.OK,
-        '    MessageBoxIcon.Warning)
-
-        '        Exit Sub
-
-        '    End If
-
-        'End If
-
-
-        ''////////////////////////////////////////////////////////////////////////////////////////////////////
-        ''/////////////////////////////GRABO LOS METODOS DE PAGO /////////////////////////////////////////////
-        ''//////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        SQlString = "SELECT NombrePago, MAX(NumeroTarjeta) AS NumeroTarjeta, MAX(FechaVence) AS FechaVence, SUM(MontoPagado) AS MontoPagado  FROM DetalleRecibo WHERE (CodReciboPago = '" & NumeroRecibo & "') GROUP BY NombrePago"
-        DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
-        DataAdapter.Fill(DataSet, "MetodoPago")
-        Registros = DataSet.Tables("MetodoPago").Rows.Count
-        iPosicion = 0
-        Cadena = ""
-
-        Do While iPosicion < Registros
-            NombrePago = DataSet.Tables("MetodoPago").Rows(iPosicion)("NombrePago")
-            Monto = DataSet.Tables("MetodoPago").Rows(iPosicion)("MontoPagado")
-            If Not IsDBNull(DataSet.Tables("MetodoPago").Rows(iPosicion)("NumeroTarjeta")) Then
-                NumeroTarjeta = DataSet.Tables("MetodoPago").Rows(iPosicion)("NumeroTarjeta")
-            End If
-            If Not IsDBNull(DataSet.Tables("MetodoPago").Rows(iPosicion)("FechaVence")) Then
-                FechaVenceTarjeta = DataSet.Tables("MetodoPago").Rows(iPosicion)("FechaVence")
-            End If
-
-            Cadena = Cadena & " " & NombrePago & " $" & Monto
-            GrabaMetodoDetalleRecibo(NumeroRecibo, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta)
-
-            iPosicion = iPosicion + 1
-        Loop
-
-
-        '//////////////////////////////////////////BUSCO TODAS LAS FACTURAS QUE ESTAN EN CERO PARA DESACTIVARLAS ///////////////////////////////
-
-
-
-
-
-        'Me.BindingMetodo.MoveFirst()
-        'Registros = Me.BindingMetodo.Count
-        'iPosicion = 0
-        'Monto = 0
-        'Do While iPosicion < Registros
-        '    NombrePago = Me.BindingMetodo.Item(iPosicion)("NombrePago")
-        '    Monto = Me.BindingMetodo.Item(iPosicion)("Monto") + Monto
-        '    If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")) Then
-        '        NumeroTarjeta = Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")
-        '    Else
-        '        NumeroTarjeta = 0
-        '    End If
-        '    If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("FechaVence")) Then
-        '        FechaVenceTarjeta = Me.BindingMetodo.Item(iPosicion)("FechaVence")
-        '    Else
-        '        FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
-        '    End If
-
-        '    Cadena = NombrePago & " $" & Monto
-        '    ArepPagoClientes.TxtMetodo.Text = NombrePago & " $" & Monto
-        '    GrabaMetodoDetalleRecibo(NumeroRecibo, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta)
-        '    iPosicion = iPosicion + 1
-        'Loop
-
-        Imprimir_Recibo(NumeroRecibo, TxtCodigoClientes.Text)
+        Dim aviso As String = ""
+        For Each r As ReciboRetencion In resultado.Retenciones
+            aviso &= String.Format("Nota de crédito {0}: {1} factura {2} = {3:N2}", r.NumeroNota, r.DescripcionNota, r.NumeroFactura, r.Monto) & vbCrLf
+        Next
+        For Each a As String In resultado.Advertencias
+            aviso &= a & vbCrLf
+        Next
+        If aviso <> "" Then MsgBox(aviso, MsgBoxStyle.Information, "Recibo " & resultado.Numero)
+
+        Imprimir_Recibo(resultado.Numero, Me.TxtCodigoClientes.Text)
         LimpiaRecibo()
 
-
     End Sub
+
     Public Sub Imprimir_Recibo(NumeroRecibo As String, Cod_Cliente As String)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SqlDatos As String
         Dim MontoPagado As Double, MontoCredito As Double, Descuento As Double, NombrePago As String = ""
@@ -2893,7 +2507,22 @@ Public Class FrmRecibos
 
     End Function
 
-    Private Sub TDBGridDetalle_BackColorChanged(sender As Object, e As EventArgs) Handles TDBGridDetalle.BackColorChanged
 
-    End Sub
+
+    Private Function Celda(ByVal valor As Object, Optional ByVal siVacio As String = "") As String
+        If valor Is Nothing OrElse IsDBNull(valor) Then Return siVacio
+        Dim texto As String = CStr(valor).Trim()
+        Return If(texto = "", siVacio, texto)
+    End Function
+
+    Private Function CeldaDecimal(ByVal valor As Object) As Decimal
+        If valor Is Nothing OrElse IsDBNull(valor) Then Return 0D
+        If Not TypeOf valor Is String Then Return Convert.ToDecimal(valor)
+        Dim numero As Decimal
+        If Decimal.TryParse(CStr(valor), numero) Then Return numero
+        Return 0D
+    End Function
+
+
+
 End Class

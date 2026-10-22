@@ -144,6 +144,20 @@ Friend NotInheritable Class ClaveCxC
         Dim n = Normalizar(numeroFactura)
         Return n = "" OrElse n = "0" OrElse n = "0000"
     End Function
+
+    ''' <summary>True si el "número de factura" de un recibo es en realidad el pago de una nota ("NB00012").</summary>
+    Public Shared Function EsPagoNota(numeroFactura As String) As Boolean
+        Dim n = Normalizar(numeroFactura)
+        Return n.Length > 2 AndAlso n.StartsWith("NB", StringComparison.Ordinal)
+    End Function
+
+    ''' <summary>Número de la nota de débito que paga un recibo, sin el prefijo "NB".</summary>
+    Public Shared Function NumeroNotaPagada(numeroFactura As String, numeroNota As String) As String
+        Dim n = Normalizar(numeroNota)
+        If n = "" AndAlso EsPagoNota(numeroFactura) Then n = Normalizar(numeroFactura)
+        If n.Length > 2 AndAlso n.StartsWith("NB", StringComparison.Ordinal) Then n = n.Substring(2)
+        Return n
+    End Function
 End Class
 
 '-----------------------------------------------------------------------------------------------------
@@ -339,6 +353,13 @@ Public Class CxCLinea
     Public ReadOnly Property MontoNota As Decimal
         Get
             Return NotaDebitoMonto - NotaCreditoMonto
+        End Get
+    End Property
+
+    ''' <summary>En una línea NotaDebitoSinFactura: el número de la nota.</summary>
+    Public ReadOnly Property NumeroNotaDebito As String
+        Get
+            Return If(NotasDebito.Count = 0, "", NotasDebito(0))
         End Get
     End Property
 

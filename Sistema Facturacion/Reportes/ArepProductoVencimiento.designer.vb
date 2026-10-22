@@ -13,7 +13,9 @@ Partial Public Class ArepProductoVencimiento
     'It can be modified using the ActiveReports Designer.
     'Do not modify it using the code editor.
     Private WithEvents PageHeader1 As DataDynamics.ActiveReports.PageHeader
+    Private WithEvents GroupHeader1 As DataDynamics.ActiveReports.GroupHeader
     Private WithEvents Detail1 As DataDynamics.ActiveReports.Detail
+    Private WithEvents GroupFooter1 As DataDynamics.ActiveReports.GroupFooter
     Private WithEvents PageFooter1 As DataDynamics.ActiveReports.PageFooter
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
@@ -36,7 +38,12 @@ Partial Public Class ArepProductoVencimiento
         Me.Label9 = New DataDynamics.ActiveReports.Label()
         Me.Line2 = New DataDynamics.ActiveReports.Line()
         Me.Label5 = New DataDynamics.ActiveReports.Label()
+        Me.GroupHeader1 = New DataDynamics.ActiveReports.GroupHeader()
+        Me.LblLinea = New DataDynamics.ActiveReports.Label()
+        Me.TxtCodLinea = New DataDynamics.ActiveReports.TextBox()
+        Me.TxtDescripcionLinea = New DataDynamics.ActiveReports.TextBox()
         Me.Detail1 = New DataDynamics.ActiveReports.Detail()
+        Me.GroupFooter1 = New DataDynamics.ActiveReports.GroupFooter()
         Me.TxtCodProducto = New DataDynamics.ActiveReports.TextBox()
         Me.TextBox3 = New DataDynamics.ActiveReports.TextBox()
         Me.TextBox4 = New DataDynamics.ActiveReports.TextBox()
@@ -58,6 +65,9 @@ Partial Public Class ArepProductoVencimiento
         CType(Me.Label8, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label9, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label5, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LblLinea, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TxtCodLinea, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TxtDescripcionLinea, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TxtCodProducto, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TextBox4, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -382,6 +392,72 @@ Partial Public Class ArepProductoVencimiento
         Me.Label5.Top = 1.1875!
         Me.Label5.Width = 0.6875!
         '
+        'GroupHeader1
+        '
+        Me.GroupHeader1.BackColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(241, Byte), Integer))
+        Me.GroupHeader1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.LblLinea, Me.TxtCodLinea, Me.TxtDescripcionLinea})
+        Me.GroupHeader1.DataField = "Cod_Linea"
+        Me.GroupHeader1.GroupKeepTogether = DataDynamics.ActiveReports.GroupKeepTogether.FirstDetail
+        Me.GroupHeader1.Height = 0.25!
+        Me.GroupHeader1.Name = "GroupHeader1"
+        '
+        'LblLinea
+        '
+        Me.LblLinea.Border.BottomColor = System.Drawing.Color.Black
+        Me.LblLinea.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblLinea.Border.LeftColor = System.Drawing.Color.Black
+        Me.LblLinea.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblLinea.Border.RightColor = System.Drawing.Color.Black
+        Me.LblLinea.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblLinea.Border.TopColor = System.Drawing.Color.Black
+        Me.LblLinea.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblLinea.Height = 0.1875!
+        Me.LblLinea.HyperLink = Nothing
+        Me.LblLinea.Left = 0.0625!
+        Me.LblLinea.Name = "LblLinea"
+        Me.LblLinea.Style = "ddo-char-set: 0; font-weight: bold; font-size: 9pt; "
+        Me.LblLinea.Text = "Linea:"
+        Me.LblLinea.Top = 0.03125!
+        Me.LblLinea.Width = 0.5!
+        '
+        'TxtCodLinea
+        '
+        Me.TxtCodLinea.Border.BottomColor = System.Drawing.Color.Black
+        Me.TxtCodLinea.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TxtCodLinea.Border.LeftColor = System.Drawing.Color.Black
+        Me.TxtCodLinea.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TxtCodLinea.Border.RightColor = System.Drawing.Color.Black
+        Me.TxtCodLinea.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TxtCodLinea.Border.TopColor = System.Drawing.Color.Black
+        Me.TxtCodLinea.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TxtCodLinea.DataField = "Cod_Linea"
+        Me.TxtCodLinea.Height = 0.1875!
+        Me.TxtCodLinea.Left = 0.625!
+        Me.TxtCodLinea.Name = "TxtCodLinea"
+        Me.TxtCodLinea.Style = "ddo-char-set: 0; font-weight: bold; font-size: 9pt; "
+        Me.TxtCodLinea.Text = Nothing
+        Me.TxtCodLinea.Top = 0.03125!
+        Me.TxtCodLinea.Width = 1.0!
+        '
+        'TxtDescripcionLinea
+        '
+        Me.TxtDescripcionLinea.Border.BottomColor = System.Drawing.Color.Black
+        Me.TxtDescripcionLinea.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TxtDescripcionLinea.Border.LeftColor = System.Drawing.Color.Black
+        Me.TxtDescripcionLinea.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TxtDescripcionLinea.Border.RightColor = System.Drawing.Color.Black
+        Me.TxtDescripcionLinea.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TxtDescripcionLinea.Border.TopColor = System.Drawing.Color.Black
+        Me.TxtDescripcionLinea.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.TxtDescripcionLinea.DataField = "Descripcion_Linea"
+        Me.TxtDescripcionLinea.Height = 0.1875!
+        Me.TxtDescripcionLinea.Left = 1.6875!
+        Me.TxtDescripcionLinea.Name = "TxtDescripcionLinea"
+        Me.TxtDescripcionLinea.Style = "ddo-char-set: 0; font-weight: bold; font-size: 9pt; "
+        Me.TxtDescripcionLinea.Text = Nothing
+        Me.TxtDescripcionLinea.Top = 0.03125!
+        Me.TxtDescripcionLinea.Width = 4.5!
+        '
         'Detail1
         '
         Me.Detail1.ColumnSpacing = 0!
@@ -504,6 +580,11 @@ Partial Public Class ArepProductoVencimiento
         Me.TextBox2.Top = 0!
         Me.TextBox2.Width = 0.6875!
         '
+        'GroupFooter1
+        '
+        Me.GroupFooter1.Height = 0.125!
+        Me.GroupFooter1.Name = "GroupFooter1"
+        '
         'PageFooter1
         '
         Me.PageFooter1.Height = 0.25!
@@ -523,7 +604,9 @@ Partial Public Class ArepProductoVencimiento
         Me.PageSettings.PaperWidth = 8.5!
         Me.PrintWidth = 7.989583!
         Me.Sections.Add(Me.PageHeader1)
+        Me.Sections.Add(Me.GroupHeader1)
         Me.Sections.Add(Me.Detail1)
+        Me.Sections.Add(Me.GroupFooter1)
         Me.Sections.Add(Me.PageFooter1)
         Me.StyleSheet.Add(New DDCssLib.StyleSheetRule("font-family: Arial; font-style: normal; text-decoration: none; font-weight: norma" &
             "l; font-size: 10pt; color: Black; ", "Normal"))
@@ -545,6 +628,9 @@ Partial Public Class ArepProductoVencimiento
         CType(Me.Label8, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label9, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label5, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LblLinea, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TxtCodLinea, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TxtDescripcionLinea, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TxtCodProducto, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TextBox4, System.ComponentModel.ISupportInitialize).EndInit()
@@ -577,4 +663,7 @@ Partial Public Class ArepProductoVencimiento
     Friend WithEvents TextBox6 As DataDynamics.ActiveReports.TextBox
     Friend WithEvents Label5 As DataDynamics.ActiveReports.Label
     Friend WithEvents TextBox2 As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents LblLinea As DataDynamics.ActiveReports.Label
+    Friend WithEvents TxtCodLinea As DataDynamics.ActiveReports.TextBox
+    Friend WithEvents TxtDescripcionLinea As DataDynamics.ActiveReports.TextBox
 End Class
