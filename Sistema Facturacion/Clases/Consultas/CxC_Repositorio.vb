@@ -142,7 +142,7 @@ DROP TABLE #CliCxC;"
                 cmd.Parameters.Add("@Tipo", SqlDbType.NVarChar, 50).Value = tipo
                 cn.Open()
                 Dim valor = cmd.ExecuteScalar()
-                If valor Is Nothing OrElse IsDBNull(valor) Then Return Nothing
+                If valor Is Nothing OrElse Convert.IsDBNull(valor) Then Return Nothing
                 Return CStr(valor)
             End Using
         End Using

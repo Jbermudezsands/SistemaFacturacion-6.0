@@ -8601,6 +8601,7 @@ WHERE
 
 
     End Function
+
     Public Function BuscaExistenciaLineaLoteWorker(Args As ReporteExistenciaLote, ByVal worker As BackgroundWorker, ByVal e As DoWorkEventArgs) As ReporteExistenciaLote
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, UnidadComprada As Double
@@ -17964,44 +17965,56 @@ errSub:
 
 
     End Function
+
     Public Function BuscaConsecutivoSerie(ByVal NombreCampo As String, ByVal TipoSerie As String) As Double
-
-        Dim SqlConsecutivo As String, SQlUpdate As String, CodConsecutivo As Double
-        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, FacturaBodega As Boolean = False, CompraBodega As Boolean = False
-
-
-        '/////////////////////////////////////////////////////////////////////////////////////////
-        '///////////////////////BUSCO EL CONSECUTIVO COMPONENTES/////////////////////////////////
-        '////////////////////////////////////////////////////////////////////////////////////////
-
-        SqlConsecutivo = "SELECT  * FROM ConsecutivoSerie WHERE (Serie = '" & TipoSerie & "')"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
-        DataAdapter.Fill(DataSet, "Consecutivo")
-        If Not DataSet.Tables("Consecutivo").Rows.Count = 0 Then
-            If Not IsDBNull(DataSet.Tables("Consecutivo").Rows(0)(NombreCampo)) Then
-                CodConsecutivo = DataSet.Tables("Consecutivo").Rows(0)(NombreCampo) + 1
-            Else
-                CodConsecutivo = 1
-            End If
-            BuscaConsecutivoSerie = CodConsecutivo
-
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            '////////////////////////////ACTUALIZO EL CONSECUTIVO///////////////////////////////////////////////////
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            MiConexion.Close()
-            SQlUpdate = "UPDATE [ConsecutivoSerie]  SET [" & NombreCampo & "] = " & CodConsecutivo & " WHERE (Serie = '" & TipoSerie & "')"
-            MiConexion.Open()
-            ComandoUpdate = New SqlClient.SqlCommand(SQlUpdate, MiConexion)
-            iResultado = ComandoUpdate.ExecuteNonQuery
-            MiConexion.Close()
-
-        Else
-            BuscaConsecutivoSerie = 0
-        End If
-
+        If String.IsNullOrEmpty(TipoSerie) Then Return 0
+        Return CDbl(Recibos.TomarConsecutivo(Conexion, NombreCampo, TipoSerie))
     End Function
+
+
+
+    'Public Function BuscaConsecutivoSerie(ByVal NombreCampo As String, ByVal TipoSerie As String) As Double
+
+    '    Dim SqlConsecutivo As String, SQlUpdate As String, CodConsecutivo As Double
+    '    Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+    '    Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+    '    Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, FacturaBodega As Boolean = False, CompraBodega As Boolean = False
+
+
+    '    '/////////////////////////////////////////////////////////////////////////////////////////
+    '    '///////////////////////BUSCO EL CONSECUTIVO COMPONENTES/////////////////////////////////
+    '    '////////////////////////////////////////////////////////////////////////////////////////
+
+    '    SqlConsecutivo = "SELECT  * FROM ConsecutivoSerie WHERE (Serie = '" & TipoSerie & "')"
+    '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
+    '    DataAdapter.Fill(DataSet, "Consecutivo")
+    '    If Not DataSet.Tables("Consecutivo").Rows.Count = 0 Then
+    '        If Not IsDBNull(DataSet.Tables("Consecutivo").Rows(0)(NombreCampo)) Then
+    '            CodConsecutivo = DataSet.Tables("Consecutivo").Rows(0)(NombreCampo) + 1
+    '        Else
+    '            CodConsecutivo = 1
+    '        End If
+    '        BuscaConsecutivoSerie = CodConsecutivo
+
+    '        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '        '////////////////////////////ACTUALIZO EL CONSECUTIVO///////////////////////////////////////////////////
+    '        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '        MiConexion.Close()
+    '        SQlUpdate = "UPDATE [ConsecutivoSerie]  SET [" & NombreCampo & "] = " & CodConsecutivo & " WHERE (Serie = '" & TipoSerie & "')"
+    '        MiConexion.Open()
+    '        ComandoUpdate = New SqlClient.SqlCommand(SQlUpdate, MiConexion)
+    '        iResultado = ComandoUpdate.ExecuteNonQuery
+    '        MiConexion.Close()
+
+    '    Else
+    '        BuscaConsecutivoSerie = 0
+    '    End If
+
+    'End Function
+
+
+
+
     Public Function BuscaConsecutivoSerieNoEdita(ByVal NombreCampo As String, ByVal TipoSerie As String) As Double
 
         Dim SqlConsecutivo As String, SQlUpdate As String, CodConsecutivo As Double
@@ -18031,64 +18044,68 @@ errSub:
 
     End Function
 
-
-
-
     Public Function BuscaConsecutivo(ByVal NombreCampo As String) As Double
-
-        Dim SqlConsecutivo As String, SQlUpdate As String, CodConsecutivo As Double
-        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, FacturaBodega As Boolean = False, CompraBodega As Boolean = False
-
-        '/////////////////////////////////////////////////////////////////////////////////////////
-        '///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
-        '////////////////////////////////////////////////////////////////////////////////////////
-        SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
-        DataAdapter.Fill(DataSet, "Configuracion")
-        If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
-            If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) = True Then
-                FacturaBodega = True
-            End If
-
-            If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) = True Then
-                CompraBodega = True
-            End If
-
-        End If
-
-
-        '/////////////////////////////////////////////////////////////////////////////////////////
-        '///////////////////////BUSCO EL CONSECUTIVO COMPONENTES/////////////////////////////////
-        '////////////////////////////////////////////////////////////////////////////////////////
-
-        SqlConsecutivo = "SELECT  * FROM  Consecutivos"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
-        DataAdapter.Fill(DataSet, "Consecutivo")
-        If Not DataSet.Tables("Consecutivo").Rows.Count = 0 Then
-            If Not IsDBNull(DataSet.Tables("Consecutivo").Rows(0)(NombreCampo)) Then
-                CodConsecutivo = DataSet.Tables("Consecutivo").Rows(0)(NombreCampo) + 1
-            Else
-                CodConsecutivo = 1
-            End If
-            BuscaConsecutivo = CodConsecutivo
-
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            '////////////////////////////ACTUALIZO EL CONSECUTIVO///////////////////////////////////////////////////
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            MiConexion.Close()
-            SQlUpdate = "UPDATE [Consecutivos]  SET [" & NombreCampo & "] = " & CodConsecutivo & ""
-            MiConexion.Open()
-            ComandoUpdate = New SqlClient.SqlCommand(SQlUpdate, MiConexion)
-            iResultado = ComandoUpdate.ExecuteNonQuery
-            MiConexion.Close()
-
-        Else
-            BuscaConsecutivo = 0
-        End If
-
+        Return CDbl(Recibos.TomarConsecutivo(Conexion, NombreCampo))
     End Function
+
+
+    'Public Function BuscaConsecutivo(ByVal NombreCampo As String) As Double
+
+    '    Dim SqlConsecutivo As String, SQlUpdate As String, CodConsecutivo As Double
+    '    Dim MiConexion As New SqlClient.SqlConnection(Conexion)
+    '    Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+    '    Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, FacturaBodega As Boolean = False, CompraBodega As Boolean = False
+
+    '    '/////////////////////////////////////////////////////////////////////////////////////////
+    '    '///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
+    '    '////////////////////////////////////////////////////////////////////////////////////////
+    '    SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
+    '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
+    '    DataAdapter.Fill(DataSet, "Configuracion")
+    '    If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
+    '        If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) = True Then
+    '            FacturaBodega = True
+    '        End If
+
+    '        If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) = True Then
+    '            CompraBodega = True
+    '        End If
+
+    '    End If
+
+
+    '    '/////////////////////////////////////////////////////////////////////////////////////////
+    '    '///////////////////////BUSCO EL CONSECUTIVO COMPONENTES/////////////////////////////////
+    '    '////////////////////////////////////////////////////////////////////////////////////////
+
+    '    SqlConsecutivo = "SELECT  * FROM  Consecutivos"
+    '    DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
+    '    DataAdapter.Fill(DataSet, "Consecutivo")
+    '    If Not DataSet.Tables("Consecutivo").Rows.Count = 0 Then
+    '        If Not IsDBNull(DataSet.Tables("Consecutivo").Rows(0)(NombreCampo)) Then
+    '            CodConsecutivo = DataSet.Tables("Consecutivo").Rows(0)(NombreCampo) + 1
+    '        Else
+    '            CodConsecutivo = 1
+    '        End If
+    '        BuscaConsecutivo = CodConsecutivo
+
+    '        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '        '////////////////////////////ACTUALIZO EL CONSECUTIVO///////////////////////////////////////////////////
+    '        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '        MiConexion.Close()
+    '        SQlUpdate = "UPDATE [Consecutivos]  SET [" & NombreCampo & "] = " & CodConsecutivo & ""
+    '        MiConexion.Open()
+    '        ComandoUpdate = New SqlClient.SqlCommand(SQlUpdate, MiConexion)
+    '        iResultado = ComandoUpdate.ExecuteNonQuery
+    '        MiConexion.Close()
+
+    '    Else
+    '        BuscaConsecutivo = 0
+    '    End If
+
+    'End Function
+
+
     Public Function BuscaConsecutivoNoEdita(ByVal NombreCampo As String) As Double
 
         Dim SqlConsecutivo As String, CodConsecutivo As Double
@@ -27227,6 +27244,12 @@ LEFT JOIN Existencias E
         FrmPlantillas.TxtNetoPagar.Text = Format(Neto, "##,##0.00")
     End Sub
 
+    Public Function ObtenerNumeroReciboPlanilla(ByVal serie As String) As String
+        If String.IsNullOrWhiteSpace(serie) Then Return ""
+        Dim consecutivo As Decimal = Recibos.TomarConsecutivo(Conexion, "Recibo", serie)
+        If consecutivo <= 0D Then Return ""
+        Return Recibos.FormatearNumero(serie, consecutivo)
+    End Function
 
     Public Sub AplicarDeduccionesTransportePlanilla(
         ByVal NumNominaTransportista As String)

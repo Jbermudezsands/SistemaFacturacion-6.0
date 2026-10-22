@@ -107,13 +107,16 @@ Public Class CxCMotor
                 .Credito = tasas.Convertir(rc.Monto, rc.Moneda, destino, rc.Fecha)
             }
 
-            If ClaveCxC.EsSinFactura(rc.NumeroFactura) Then
+            ' Pago de una nota de débito sin factura: FrmRecibos guarda Numero_Factura = "NB" + número de nota
+            ' (y a veces Numero_Nota = "NB" + número). Se quita el prefijo para encontrar la nota.
+            Dim numeroNotaPagada = ClaveCxC.NumeroNotaPagada(rc.NumeroFactura, rc.NumeroNota)
+            If ClaveCxC.EsSinFactura(rc.NumeroFactura) OrElse ClaveCxC.EsPagoNota(rc.NumeroFactura) Then
                 Dim claveNota As String = Nothing
-                If ClaveCxC.Normalizar(rc.NumeroNota) <> "" AndAlso
-                   notasDebitoSinFactura.TryGetValue(ClaveCxC.Componer(cli, ClaveCxC.Normalizar(rc.NumeroNota)), claveNota) Then
+                If numeroNotaPagada <> "" AndAlso
+                   notasDebitoSinFactura.TryGetValue(ClaveCxC.Componer(cli, numeroNotaPagada), claveNota) Then
                     mov.ClaveDocumento = claveNota
                     mov.TipoLinea = TipoLineaCxC.NotaDebitoSinFactura
-                    mov.Concepto = "Pago de la Nota No " & rc.NumeroNota.Trim()
+                    mov.Concepto = "Pago de la Nota No " & numeroNotaPagada
                 Else
                     mov.ClaveDocumento = ClaveCxC.Componer("R", cli, ClaveCxC.Normalizar(rc.CodRecibo), ClaveCxC.Fecha(rc.Fecha))
                     mov.TipoLinea = TipoLineaCxC.ReciboSinFactura

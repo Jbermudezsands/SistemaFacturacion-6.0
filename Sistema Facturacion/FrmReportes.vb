@@ -3178,83 +3178,74 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                 objExcel.ActiveSheet.Range("A5", "G5").Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous
 
 
-
             Case "Reporte de Lotes vencidos"
-                Dim SQLString As String, CodProductos As String = "", FechaIni As Date, FechaFin As Date
-                Dim oDataRow As DataRow, Inicial As Double, Registros As Double, Contador As Double, i As Double, Result As ReporteExistenciaLote = New ReporteExistenciaLote
-                Dim CodigoProducto As String, CodigoBodega As String, NumeroLote As String, ExistenciaLote As Double = 0
-                Dim DvConsulta As New DataView, ArepProductoVencimiento As New ArepProductoVencimiento
-                Dim FechaMaxVence As Date, args As ReporteExistenciaLote = New ReporteExistenciaLote
 
-                FechaIni = Format(Me.DTPFechaIni.Value, "yyyy-MM-dd")
-                FechaFin = Format(Me.DTPFechaFin.Value, "yyyy-MM-dd")
-                FechaMaxVence = Format(Me.DTPFechaVence.Value, "yyyy-MM-dd")
+                Dim Filtro As FiltroReporteLotesVencimiento
+                Dim Servicio As ReporteLotesVencimientoService
+                Dim TablaLotes As DataTable
+                Dim DvConsulta As DataView
+                Dim ArepProductoVencimiento As New ArepProductoVencimiento
 
-                '*******************************************************************************************************************************
-                '/////////////////////////AGREGO UNA CONSULTA QUE NUNCA TENDRA REGISTROS PARA PODER AGREGARLOS /////////////////////////////////
-                '*******************************************************************************************************************************
-                DataSet.Reset()
-                SQLString = "SELECT DISTINCT Detalle_Compras.Cod_Producto, Productos.Descripcion_Producto, Lote.Numero_Lote, Lote.FechaVence, Lote.Activo, Detalle_Compras.Cantidad, Compras.Cod_Bodega FROM  Lote INNER JOIN  Detalle_Compras ON Lote.Numero_Lote = Detalle_Compras.Numero_Lote INNER JOIN  Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN  Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  WHERE (Lote.Activo = 1) AND (Lote.FechaVence <= CONVERT(DATETIME, '01-01-1800', 102))"
-                'SQLString = "SELECT DISTINCT Detalle_Compras.Cod_Producto, Productos.Descripcion_Producto, Lote.Numero_Lote, Lote.FechaVence, Lote.Activo, Detalle_Compras.Cantidad, Compras.Cod_Bodega, DATEDIFF(Day, Lote.FechaVence, '13/08/2024 15:44:36') AS Dias FROM Lote INNER JOIN Detalle_Compras ON Lote.Numero_Lote = Detalle_Compras.Numero_Lote INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  WHERE  (DATEDIFF(Day, Lote.FechaVence, CONVERT(DATETIME, '" & Format("dd/MM/yyyy", Now) & "', 102)) >= 10000) AND (Lote.Activo = 1) ORDER BY Lote.FechaVence"
+                If String.IsNullOrWhiteSpace(Me.CmbRango1.Text) OrElse
+                   String.IsNullOrWhiteSpace(Me.CmbRango2.Text) Then
 
-                DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
-                DataAdapter.Fill(DataSet, "DetalleMovimientos")
+                    MessageBox.Show(
+                        "Seleccione el intervalo de bodegas.",
+                        "Reporte de lotes por vencer",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning)
 
+                    Exit Select
 
-                'SQLString = "SELECT DISTINCT Detalle_Compras.Cod_Producto, Productos.Descripcion_Producto, Lote.Numero_Lote, Lote.FechaVence, Lote.Activo, Detalle_Compras.Cantidad, Compras.Cod_Bodega, DATEDIFF(Day, Lote.FechaVence, '" & Format(Me.DTPFechaIni.Value, "yyyy-MM-dd") & "') AS Dias FROM Lote INNER JOIN Detalle_Compras ON Lote.Numero_Lote = Detalle_Compras.Numero_Lote INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra  WHERE  (DATEDIFF(Day, Lote.FechaVence, CONVERT(DATETIME, '" & Format(FechaMaxVence, "yyyy-MM-dd") & "', 102)) >= - 90) AND (Lote.Activo = 1) ORDER BY Lote.FechaVence"
-
-                If Me.CboCodigoLinea.Text = "" And CboCodigoLinea2.Text = "" Then
-                    SQLString = "SELECT DISTINCT Detalle_Compras.Cod_Producto, Productos.Descripcion_Producto, Lote.Numero_Lote, Lote.FechaVence, Lote.Activo, Detalle_Compras.Cantidad, Compras.Cod_Bodega, DATEDIFF(Day, Lote.FechaVence, '2024-08-19') AS Dias, Productos.Cod_Linea FROM Lote INNER JOIN Detalle_Compras ON Lote.Numero_Lote = Detalle_Compras.Numero_Lote INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra WHERE  (Lote.Activo = 1) AND (Lote.FechaVence <= CONVERT(DATETIME, '" & Format(FechaMaxVence, "yyyy-MM-dd") & "', 102)) ORDER BY Lote.FechaVence"
-                Else
-                    SQLString = "SELECT DISTINCT Detalle_Compras.Cod_Producto, Productos.Descripcion_Producto, Lote.Numero_Lote, Lote.FechaVence, Lote.Activo, Detalle_Compras.Cantidad, Compras.Cod_Bodega, DATEDIFF(Day, Lote.FechaVence, '2024-08-19') AS Dias, Productos.Cod_Linea FROM Lote INNER JOIN Detalle_Compras ON Lote.Numero_Lote = Detalle_Compras.Numero_Lote INNER JOIN Productos ON Detalle_Compras.Cod_Producto = Productos.Cod_Productos INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra WHERE  (Lote.Activo = 1) AND (Lote.FechaVence <= CONVERT(DATETIME, '" & Format(FechaMaxVence, "yyyy-MM-dd") & "', 102)) AND (Productos.Cod_Linea BETWEEN '" & Me.CboCodigoLinea.Text & "' AND '" & Me.CboCodigoLinea2.Text & "') ORDER BY Lote.FechaVence"
                 End If
 
-                DataAdapter = New SqlClient.SqlDataAdapter(SQLString, MiConexion)
-                DataAdapter.Fill(DataSet, "Salidas")
-                Me.ProgressBar1.Maximum = DataSet.Tables("Salidas").Rows.Count
-                Me.ProgressBar1.Minimum = 0
-                Me.ProgressBar1.Value = 0
-                Me.ProgressBar1.Visible = True
-                Registros = 0
+                Try
 
-                Do While DataSet.Tables("Salidas").Rows.Count > Registros
+                    Me.Cursor = Cursors.WaitCursor
 
-                    CodigoProducto = DataSet.Tables("Salidas").Rows(Registros)("Cod_Producto")
-                    NumeroLote = DataSet.Tables("Salidas").Rows(Registros)("Numero_Lote")
-                    CodigoBodega = DataSet.Tables("Salidas").Rows(Registros)("Cod_Bodega")
+                    Filtro = CrearFiltroLotesVencimiento()
+                    Servicio = New ReporteLotesVencimientoService(Conexion)
+                    TablaLotes = Servicio.ObtenerTablaReporte(Filtro)
 
-                    Me.Text = "Procesando el Lote No:" & NumeroLote
+                    If TablaLotes.Rows.Count = 0 Then
 
-                    My.Application.DoEvents()
+                        MessageBox.Show(
+                            "No hay lotes con existencia que venzan en el periodo seleccionado.",
+                            "Reporte de lotes por vencer",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information)
 
-                    args.Codigo_Producto = CodigoProducto
-                    args.Codigo_Bodega = CodigoBodega
-                    args.Numero_Lote = NumeroLote
+                        Exit Select
 
-                    Result = BuscaExistenciaBodegaLote(args)
-                    ExistenciaLote = Result.Existencia_Lote
+                    End If
 
-                    oDataRow = DataSet.Tables("DetalleMovimientos").NewRow
-                    oDataRow("Cod_Producto") = DataSet.Tables("Salidas").Rows(Registros)("Cod_Producto")
-                    oDataRow("Descripcion_Producto") = DataSet.Tables("Salidas").Rows(Registros)("Descripcion_Producto")
-                    oDataRow("Numero_Lote") = DataSet.Tables("Salidas").Rows(Registros)("Numero_Lote")
-                    oDataRow("FechaVence") = DataSet.Tables("Salidas").Rows(Registros)("FechaVence")
-                    oDataRow("Cod_Bodega") = DataSet.Tables("Salidas").Rows(Registros)("Cod_Bodega")
-                    oDataRow("Cantidad") = ExistenciaLote
-                    DataSet.Tables("DetalleMovimientos").Rows.Add(oDataRow)
+                    DvConsulta = New DataView(TablaLotes)
+                    DvConsulta.Sort = "Cod_Linea, FechaVence, Cod_Producto"
 
-                    Registros = Registros + 1
-                    Me.ProgressBar1.Value = Me.ProgressBar1.Value + 1
-                Loop
-                DataSet.Tables("Salidas").Reset()
+                    ArepProductoVencimiento.DataSource = DvConsulta
+                    ArepProductoVencimiento.Show()
 
+                Catch ex As ArgumentException
 
+                    MessageBox.Show(
+                        ex.Message,
+                        "Reporte de lotes por vencer",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning)
 
-                DvConsulta = New DataView(DataSet.Tables("DetalleMovimientos"))
-                DvConsulta.Sort = "Cod_Producto"
+                Catch ex As Exception
 
-                ArepProductoVencimiento.DataSource = DvConsulta
-                ArepProductoVencimiento.Show()
+                    MessageBox.Show(
+                        "Error al generar el reporte: " & ex.Message,
+                        "Reporte de lotes por vencer",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error)
+
+                Finally
+
+                    Me.Cursor = Cursors.Default
+
+                End Try
 
 
 
@@ -17811,6 +17802,7 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
 
             Case "Reporte de Lotes vencidos"
 
+                Me.GroupBox3.Visible = True
                 Me.GroupBoxFechaVence.Visible = True
                 Me.GroupBoxFechaVence.Location = New Point(280, 200)
                 Me.GroupBoxLinea.Location = New Point(280, 123)
@@ -18404,4 +18396,98 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
         My.Forms.FrmConsultas.ShowDialog()
         Me.CboProveedores.Text = My.Forms.FrmConsultas.Codigo
     End Sub
+
+
+    Private Function CrearFiltroLotesVencimiento() _
+    As FiltroReporteLotesVencimiento
+
+        Dim filtro As New FiltroReporteLotesVencimiento()
+
+        ' Lotes que vencen desde la fecha seleccionada hasta 9 meses despues.
+        filtro.FechaDesde = Me.DTPFechaVence.Value.Date
+        filtro.FechaHasta = filtro.FechaDesde.AddMonths(9)
+        filtro.FechaCorte = Date.Today
+
+        ' Rango de lineas (opcional).
+        If Me.CboCodigoLinea.Text.Trim() <> String.Empty AndAlso
+           Me.CboCodigoLinea2.Text.Trim() <> String.Empty Then
+
+            filtro.CodigoLineaDesde = Me.CboCodigoLinea.Text.Trim()
+            filtro.CodigoLineaHasta = Me.CboCodigoLinea2.Text.Trim()
+
+            filtro.FiltrarPorLinea = True
+
+        End If
+
+        ' Rango de bodegas (obligatorio en este reporte).
+        filtro.CodigoBodegaDesde = Me.CmbRango1.Text.Trim()
+        filtro.CodigoBodegaHasta = Me.CmbRango2.Text.Trim()
+        filtro.FiltrarPorBodega = True
+
+        Return filtro
+
+    End Function
+
+
+    Private Sub CargarBodegasReporteLotes()
+
+        Dim dt As New DataTable
+        Dim sql As String
+
+        Try
+            Using cn As New SqlClient.SqlConnection(Conexion)
+
+                sql = "SELECT Cod_Bodega, Nombre_Bodega " &
+                      "FROM Bodegas " &
+                      "ORDER BY Cod_Bodega"
+
+                Using da As New SqlClient.SqlDataAdapter(sql, cn)
+                    da.Fill(dt)
+                End Using
+
+            End Using
+
+            CmbRango1.DataSource = Nothing
+            CmbRango2.DataSource = Nothing
+
+            CmbRango1.DisplayMember = "Nombre_Bodega"
+            CmbRango1.ValueMember = "Cod_Bodega"
+            CmbRango1.DataSource = dt.Copy()
+
+            CmbRango2.DisplayMember = "Nombre_Bodega"
+            CmbRango2.ValueMember = "Cod_Bodega"
+            CmbRango2.DataSource = dt.Copy()
+
+            If dt.Rows.Count > 0 Then
+                CmbRango1.SelectedIndex = 0
+                CmbRango2.SelectedIndex = dt.Rows.Count - 1
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show(
+                "Error al cargar las bodegas: " & ex.Message,
+                "Reporte de lotes",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error)
+        End Try
+
+    End Sub
+
+
+    Private Sub PrepararFiltrosReporteLotes()
+
+        CargarBodegasReporteLotes()
+
+        ' Los filtros de línea ya están disponibles:
+        ' CboCodigoLinea
+        ' CboCodigoLinea2
+
+        ' Los filtros de bodega son:
+        ' CmbRango1
+        ' CmbRango2
+
+    End Sub
+
+
+
 End Class

@@ -1544,21 +1544,25 @@ Handles backgroundWorkerLote.RunWorkerCompleted
                     Me.RibbonTab5.Visible = True
                     Me.RibbonTab6.Visible = False
                     Me.RibbonTab7.Visible = False
+                    Me.RibbonTab9.Visible = False
 
                 ElseIf Trim(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) = "Planilla" Then
                     Me.RibbonTab5.Visible = False
                     Me.RibbonTab6.Visible = True
                     Me.RibbonTab7.Visible = False
+                    Me.RibbonTab9.Visible = True
 
                 ElseIf Trim(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) = "Facturacion" Then
                     Me.RibbonTab5.Visible = False
                     Me.RibbonTab6.Visible = False
                     Me.RibbonTab7.Visible = False
+                    Me.RibbonTab9.Visible = False
 
                 ElseIf Trim(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) = "Clinica" Then
                     Me.RibbonTab5.Visible = False
                     Me.RibbonTab6.Visible = False
                     Me.RibbonTab7.Visible = True
+                    Me.RibbonTab9.Visible = False
 
                 End If
 

@@ -71,7 +71,7 @@ Partial Class FrmTipoPrestamos
         Me.PicEncabezado.BackColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(59, Byte), Integer), CType(CType(92, Byte), Integer))
         Me.PicEncabezado.Location = New System.Drawing.Point(0, 0)
         Me.PicEncabezado.Name = "PicEncabezado"
-        Me.PicEncabezado.Size = New System.Drawing.Size(480, 64)
+        Me.PicEncabezado.Size = New System.Drawing.Size(480, 52)
         Me.PicEncabezado.TabIndex = 21
         Me.PicEncabezado.TabStop = False
         '
@@ -79,7 +79,7 @@ Partial Class FrmTipoPrestamos
         '
         Me.PicIcono.BackColor = System.Drawing.Color.FromArgb(CType(CType(44, Byte), Integer), CType(CType(79, Byte), Integer), CType(CType(120, Byte), Integer))
         Me.PicIcono.Image = CType(resources.GetObject("PicIcono.Image"), System.Drawing.Image)
-        Me.PicIcono.Location = New System.Drawing.Point(16, 12)
+        Me.PicIcono.Location = New System.Drawing.Point(16, 7)
         Me.PicIcono.Name = "PicIcono"
         Me.PicIcono.Size = New System.Drawing.Size(40, 40)
         Me.PicIcono.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -92,7 +92,7 @@ Partial Class FrmTipoPrestamos
         Me.LblTitulo.BackColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(59, Byte), Integer), CType(CType(92, Byte), Integer))
         Me.LblTitulo.Font = New System.Drawing.Font("Segoe UI Semibold", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblTitulo.ForeColor = System.Drawing.Color.White
-        Me.LblTitulo.Location = New System.Drawing.Point(66, 17)
+        Me.LblTitulo.Location = New System.Drawing.Point(66, 12)
         Me.LblTitulo.Name = "LblTitulo"
         Me.LblTitulo.Size = New System.Drawing.Size(194, 25)
         Me.LblTitulo.TabIndex = 22
@@ -110,7 +110,7 @@ Partial Class FrmTipoPrestamos
         Me.PnlGeneral.Controls.Add(Me.LblModalidad)
         Me.PnlGeneral.Controls.Add(Me.CboCodigoModalidad)
         Me.PnlGeneral.Controls.Add(Me.CmdBuscarModalidad)
-        Me.PnlGeneral.Location = New System.Drawing.Point(16, 80)
+        Me.PnlGeneral.Location = New System.Drawing.Point(12, 58)
         Me.PnlGeneral.Name = "PnlGeneral"
         Me.PnlGeneral.Size = New System.Drawing.Size(448, 176)
         Me.PnlGeneral.TabIndex = 1
@@ -262,7 +262,7 @@ Partial Class FrmTipoPrestamos
         Me.GrpIntereses.Controls.Add(Me.TxtMaximoCuotas)
         Me.GrpIntereses.Font = New System.Drawing.Font("Segoe UI Semibold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GrpIntereses.ForeColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(59, Byte), Integer), CType(CType(92, Byte), Integer))
-        Me.GrpIntereses.Location = New System.Drawing.Point(16, 268)
+        Me.GrpIntereses.Location = New System.Drawing.Point(16, 240)
         Me.GrpIntereses.Name = "GrpIntereses"
         Me.GrpIntereses.Size = New System.Drawing.Size(448, 214)
         Me.GrpIntereses.TabIndex = 2
@@ -475,9 +475,9 @@ Partial Class FrmTipoPrestamos
         Me.PnlAcciones.Controls.Add(Me.CmdEliminar)
         Me.PnlAcciones.Controls.Add(Me.CmdCerrar)
         Me.PnlAcciones.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.PnlAcciones.Location = New System.Drawing.Point(0, 498)
+        Me.PnlAcciones.Location = New System.Drawing.Point(0, 462)
         Me.PnlAcciones.Name = "PnlAcciones"
-        Me.PnlAcciones.Size = New System.Drawing.Size(480, 70)
+        Me.PnlAcciones.Size = New System.Drawing.Size(472, 70)
         Me.PnlAcciones.TabIndex = 3
         '
         'CmdGuardar
@@ -541,7 +541,7 @@ Partial Class FrmTipoPrestamos
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(248, Byte), Integer))
         Me.CancelButton = Me.CmdCerrar
-        Me.ClientSize = New System.Drawing.Size(480, 568)
+        Me.ClientSize = New System.Drawing.Size(472, 532)
         Me.Controls.Add(Me.PnlAcciones)
         Me.Controls.Add(Me.GrpIntereses)
         Me.Controls.Add(Me.PnlGeneral)
