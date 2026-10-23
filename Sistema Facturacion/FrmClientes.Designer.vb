@@ -83,6 +83,11 @@ Partial Class FrmClientes
         Me.Label7 = New System.Windows.Forms.Label()
         Me.TxtLimite = New System.Windows.Forms.TextBox()
         Me.Label6 = New System.Windows.Forms.Label()
+        Me.TabPage4 = New System.Windows.Forms.TabPage()
+        Me.ImgFotoCliente = New System.Windows.Forms.PictureBox()
+        Me.CmdCargarFoto = New System.Windows.Forms.Button()
+        Me.CmdBorrarFotoCliente = New System.Windows.Forms.Button()
+        Me.OpenFileDialogFoto = New System.Windows.Forms.OpenFileDialog()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -96,6 +101,8 @@ Partial Class FrmClientes
         Me.GroupBox1.SuspendLayout()
         CType(Me.TxtDiasCredito, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.C1Combo1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage4.SuspendLayout()
+        CType(Me.ImgFotoCliente, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'CmdGrabar
@@ -185,6 +192,7 @@ Partial Class FrmClientes
         '
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage3)
+        Me.TabControl1.Controls.Add(Me.TabPage4)
         Me.TabControl1.Location = New System.Drawing.Point(12, 68)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
@@ -860,6 +868,51 @@ Partial Class FrmClientes
         Me.Label6.TabIndex = 0
         Me.Label6.Text = "Limite de Credito"
         '
+        'TabPage4
+        '
+        Me.TabPage4.Controls.Add(Me.ImgFotoCliente)
+        Me.TabPage4.Controls.Add(Me.CmdCargarFoto)
+        Me.TabPage4.Controls.Add(Me.CmdBorrarFotoCliente)
+        Me.TabPage4.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage4.Name = "TabPage4"
+        Me.TabPage4.Size = New System.Drawing.Size(467, 315)
+        Me.TabPage4.TabIndex = 3
+        Me.TabPage4.Text = "Foto"
+        Me.TabPage4.UseVisualStyleBackColor = True
+        '
+        'ImgFotoCliente
+        '
+        Me.ImgFotoCliente.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.ImgFotoCliente.Location = New System.Drawing.Point(123, 20)
+        Me.ImgFotoCliente.Name = "ImgFotoCliente"
+        Me.ImgFotoCliente.Size = New System.Drawing.Size(220, 200)
+        Me.ImgFotoCliente.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.ImgFotoCliente.TabIndex = 0
+        Me.ImgFotoCliente.TabStop = False
+        '
+        'CmdCargarFoto
+        '
+        Me.CmdCargarFoto.Location = New System.Drawing.Point(123, 235)
+        Me.CmdCargarFoto.Name = "CmdCargarFoto"
+        Me.CmdCargarFoto.Size = New System.Drawing.Size(105, 30)
+        Me.CmdCargarFoto.TabIndex = 1
+        Me.CmdCargarFoto.Text = "Cargar foto"
+        Me.CmdCargarFoto.UseVisualStyleBackColor = True
+        '
+        'CmdBorrarFotoCliente
+        '
+        Me.CmdBorrarFotoCliente.Location = New System.Drawing.Point(238, 235)
+        Me.CmdBorrarFotoCliente.Name = "CmdBorrarFotoCliente"
+        Me.CmdBorrarFotoCliente.Size = New System.Drawing.Size(105, 30)
+        Me.CmdBorrarFotoCliente.TabIndex = 2
+        Me.CmdBorrarFotoCliente.Text = "Quitar foto"
+        Me.CmdBorrarFotoCliente.UseVisualStyleBackColor = True
+        '
+        'OpenFileDialogFoto
+        '
+        Me.OpenFileDialogFoto.FileName = "OpenFileDialogFoto"
+        Me.OpenFileDialogFoto.Filter = "Imagenes (*.jpg;*.jpeg;*.png;*.bmp)|*.jpg;*.jpeg;*.png;*.bmp"
+        '
         'FrmClientes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -891,6 +944,8 @@ Partial Class FrmClientes
         Me.GroupBox1.PerformLayout()
         CType(Me.TxtDiasCredito, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.C1Combo1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage4.ResumeLayout(False)
+        CType(Me.ImgFotoCliente, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -919,6 +974,11 @@ Partial Class FrmClientes
     Friend WithEvents Button6 As System.Windows.Forms.Button
     Friend WithEvents LblCodigo As System.Windows.Forms.Label
     Friend WithEvents TabPage3 As System.Windows.Forms.TabPage
+    Friend WithEvents TabPage4 As System.Windows.Forms.TabPage
+    Friend WithEvents ImgFotoCliente As System.Windows.Forms.PictureBox
+    Friend WithEvents CmdCargarFoto As System.Windows.Forms.Button
+    Friend WithEvents CmdBorrarFotoCliente As System.Windows.Forms.Button
+    Friend WithEvents OpenFileDialogFoto As System.Windows.Forms.OpenFileDialog
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
