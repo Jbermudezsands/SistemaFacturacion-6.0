@@ -63,6 +63,7 @@ Public Class FrmClientes
 
     Private Sub CmdNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdNuevo.Click
         Me.CboCodigoCliente.Text = ""
+        Me.ImgFotoCliente.Image = Nothing
     End Sub
 
     Private Sub CmdGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGrabar.Click
@@ -89,18 +90,20 @@ Public Class FrmClientes
         DataAdapter.Fill(DataSet, "Clientes")
         If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-            StrSqlUpdate = "UPDATE [Clientes]  SET [Nombre_Cliente] = '" & Me.TxtNombre.Text & "',[Apellido_Cliente] = '" & Me.TxtApellidos.Text & "',[Direccion_Cliente] = '" & Me.TxtDireccion.Text & "',[Telefono] = '" & Me.TxtTelefono.Text & "',[Cod_Cuenta_Cliente] = '" & Me.TxtCtaxCobrar.Text & "',[Limite_Credito] = '" & Me.TxtLimite.Text & "' ,[RUC] ='" & Me.TxtRUC.Text & "'  ,[CausaIva] = '" & Me.ChkCausaIVA.Checked & "' ,[Credito_Disponible] = '" & Me.ChkCreditoDisponible.Checked & "',[Año] = '" & Me.TxtAño.Text & "',[Grado] = '" & Me.TxtGrado.Text & "',[Turno] = '" & Me.CmbTurno.Text & "',[InventarioFisico] = '" & Me.ChkInventario.Checked & "',[DiasCredito] = '" & Me.TxtDiasCredito.Value & "',[Departamento] = '" & Me.CboDepartamento.Text & "' ,[Municipio] = '" & Me.CboMunicipio.Text & "' ,[Endoso] = '" & Me.CboEndoso.Text & "',[Activo] = '" & Me.ChkActivo.Checked & "',[Efectivo] = '" & Me.ChkEfectivo.Checked & "',[Cedula] = '" & Me.TxtCedula.Text & "',[Estado] = '" & Me.CmbEstado.Text & "',[CodVendedor] = '" & Me.CboCodigoVendedor.Text & "',[MonedaCredito] = '" & Me.CboMonedaFactura.Text & "',[BloquearPorLimiteCredito] = '" & Me.ChkBloqueoLimite.Checked & "' WHERE (Cod_Cliente = '" & Me.CboCodigoCliente.Text & "')"
+            StrSqlUpdate = "UPDATE [Clientes]  SET [Nombre_Cliente] = '" & Me.TxtNombre.Text & "',[Apellido_Cliente] = '" & Me.TxtApellidos.Text & "',[Direccion_Cliente] = '" & Me.TxtDireccion.Text & "',[Telefono] = '" & Me.TxtTelefono.Text & "',[Cod_Cuenta_Cliente] = '" & Me.TxtCtaxCobrar.Text & "',[Limite_Credito] = '" & Me.TxtLimite.Text & "' ,[RUC] ='" & Me.TxtRUC.Text & "'  ,[CausaIva] = '" & Me.ChkCausaIVA.Checked & "' ,[Credito_Disponible] = '" & Me.ChkCreditoDisponible.Checked & "',[Año] = '" & Me.TxtAño.Text & "',[Grado] = '" & Me.TxtGrado.Text & "',[Turno] = '" & Me.CmbTurno.Text & "',[InventarioFisico] = '" & Me.ChkInventario.Checked & "',[DiasCredito] = '" & Me.TxtDiasCredito.Value & "',[Departamento] = '" & Me.CboDepartamento.Text & "' ,[Municipio] = '" & Me.CboMunicipio.Text & "' ,[Endoso] = '" & Me.CboEndoso.Text & "',[Activo] = '" & Me.ChkActivo.Checked & "',[Efectivo] = '" & Me.ChkEfectivo.Checked & "',[Cedula] = '" & Me.TxtCedula.Text & "',[Estado] = '" & Me.CmbEstado.Text & "',[CodVendedor] = '" & Me.CboCodigoVendedor.Text & "',[MonedaCredito] = '" & Me.CboMonedaFactura.Text & "',[BloquearPorLimiteCredito] = '" & Me.ChkBloqueoLimite.Checked & "',[Foto] = @Foto WHERE (Cod_Cliente = '" & Me.CboCodigoCliente.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            ComandoUpdate.Parameters.AddWithValue("@Foto", FotoParaGuardar())
             iResultado = ComandoUpdate.ExecuteNonQuery
             MiConexion.Close()
 
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Clientes] ([Cod_Cliente],[Nombre_Cliente],[Apellido_Cliente],[Direccion_Cliente],[Telefono],[Cod_Cuenta_Cliente],[Año],[Grado],[Turno],[InventarioFisico],[RUC],[Limite_Credito],[DiasCredito],[Departamento],[Municipio],[Endoso],[Activo],[Efectivo],[Cedula],[Estado],[CodVendedor],[CausaIva],[MonedaCredito],[BloquearPorLimiteCredito]) " & _
-                           "VALUES('" & Me.CboCodigoCliente.Text & "','" & Me.TxtNombre.Text & "','" & Me.TxtApellidos.Text & "','" & Me.TxtDireccion.Text & "','" & Me.TxtTelefono.Text & "','" & Me.TxtCtaxCobrar.Text & "','" & Me.TxtAño.Text & "','" & Me.TxtGrado.Text & "','" & Me.CmbTurno.Text & "','" & Me.ChkInventario.Checked & "','" & Me.TxtRUC.Text & "','" & Me.TxtLimite.Text & "','" & Me.TxtDiasCredito.Value & "','" & Me.CboDepartamento.Text & "','" & Me.CboMunicipio.Text & "','" & Me.CboEndoso.Text & "','" & Me.ChkActivo.Checked & "','" & Me.ChkEfectivo.Checked & "','" & Me.TxtCedula.Text & "','" & Me.CmbEstado.Text & "','" & Me.CboCodigoVendedor.Text & "','" & Me.ChkCausaIVA.Checked & "','" & Me.CboMonedaFactura.Text & "','" & Me.ChkBloqueoLimite.Checked & "')"
+            StrSqlUpdate = "INSERT INTO [Clientes] ([Cod_Cliente],[Nombre_Cliente],[Apellido_Cliente],[Direccion_Cliente],[Telefono],[Cod_Cuenta_Cliente],[Año],[Grado],[Turno],[InventarioFisico],[RUC],[Limite_Credito],[DiasCredito],[Departamento],[Municipio],[Endoso],[Activo],[Efectivo],[Cedula],[Estado],[CodVendedor],[CausaIva],[MonedaCredito],[BloquearPorLimiteCredito],[Foto]) " & _
+                           "VALUES('" & Me.CboCodigoCliente.Text & "','" & Me.TxtNombre.Text & "','" & Me.TxtApellidos.Text & "','" & Me.TxtDireccion.Text & "','" & Me.TxtTelefono.Text & "','" & Me.TxtCtaxCobrar.Text & "','" & Me.TxtAño.Text & "','" & Me.TxtGrado.Text & "','" & Me.CmbTurno.Text & "','" & Me.ChkInventario.Checked & "','" & Me.TxtRUC.Text & "','" & Me.TxtLimite.Text & "','" & Me.TxtDiasCredito.Value & "','" & Me.CboDepartamento.Text & "','" & Me.CboMunicipio.Text & "','" & Me.CboEndoso.Text & "','" & Me.ChkActivo.Checked & "','" & Me.ChkEfectivo.Checked & "','" & Me.TxtCedula.Text & "','" & Me.CmbEstado.Text & "','" & Me.CboCodigoVendedor.Text & "','" & Me.ChkCausaIVA.Checked & "','" & Me.CboMonedaFactura.Text & "','" & Me.ChkBloqueoLimite.Checked & "',@Foto)"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
+            ComandoUpdate.Parameters.AddWithValue("@Foto", FotoParaGuardar())
             iResultado = ComandoUpdate.ExecuteNonQuery
             MiConexion.Close()
 
@@ -169,7 +172,9 @@ Public Class FrmClientes
         Dim SqlString As String
 
         DataAdapter.Fill(DataSet, "Clientes")
+        Me.ImgFotoCliente.Image = Nothing
         If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
+            CargarFotoCliente(DataSet.Tables("Clientes").Rows(0))
             If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("MonedaCredito")) Then
                 Me.CboMonedaFactura.Text = DataSet.Tables("Clientes").Rows(0)("MonedaCredito")
             End If
@@ -346,5 +351,28 @@ Public Class FrmClientes
 
     Private Sub CboMunicipio_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboMunicipio.TextChanged
 
+    End Sub
+
+    Private Sub CargarFotoCliente(ByVal Fila As DataRow)
+        If Fila.Table.Columns.Contains("Foto") AndAlso Not IsDBNull(Fila("Foto")) AndAlso Trim(Fila("Foto").ToString) <> "" Then
+            Me.ImgFotoCliente.Image = BytesToImagen(StringtoByte(Fila("Foto").ToString))
+        End If
+    End Sub
+
+    Private Function FotoParaGuardar() As Object
+        If Me.ImgFotoCliente.Image Is Nothing Then
+            Return DBNull.Value
+        End If
+        Return bytesToString(ImagenToBytes(Me.ImgFotoCliente.Image))
+    End Function
+
+    Private Sub CmdCargarFoto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdCargarFoto.Click
+        If Me.OpenFileDialogFoto.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            Me.ImgFotoCliente.Image = CambiarTamañoImagenMesa(Image.FromFile(Me.OpenFileDialogFoto.FileName))
+        End If
+    End Sub
+
+    Private Sub CmdBorrarFotoCliente_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdBorrarFotoCliente.Click
+        Me.ImgFotoCliente.Image = Nothing
     End Sub
 End Class

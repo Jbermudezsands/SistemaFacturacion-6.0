@@ -51,6 +51,23 @@ Module Conversion
     End Function
 
 
+    '--- Foto de mesa: 240x150, mantiene proporcion y rellena de blanco.
+    '--- ImagenToBytes guarda en JPEG, que no tiene transparencia: sin el relleno los PNG con fondo transparente quedan negros.
+    Function CambiarTamañoImagenMesa(Imagen As Image) As Image
+        Dim ancho As Integer = 240, alto As Integer = 150
+        Dim NuevoBitmap As Bitmap = New Bitmap(ancho, alto)
+        Using Graficos As Graphics = Graphics.FromImage(NuevoBitmap)
+            Graficos.Clear(Color.White)
+            Graficos.CompositingQuality = Drawing2D.CompositingQuality.HighQuality
+            Graficos.SmoothingMode = Drawing2D.SmoothingMode.HighQuality
+            Graficos.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+            Dim Escala As Double = Math.Min(ancho / Imagen.Width, alto / Imagen.Height)
+            Dim w As Integer = CInt(Imagen.Width * Escala)
+            Dim h As Integer = CInt(Imagen.Height * Escala)
+            Graficos.DrawImage(Imagen, (ancho - w) \ 2, (alto - h) \ 2, w, h)
+        End Using
+        Return NuevoBitmap
+    End Function
     Function StringtoByte(ByVal Cadena As String) As Byte()
 
         Dim resultado As String = Cadena
