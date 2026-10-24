@@ -136,7 +136,7 @@ Public Class FrmRecibos
     End Sub
 
     Private Sub FrmRecibos_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Recibo de Caja")
+        Seguridad.Bloqueo(Me, Acceso, "Recibo de Caja")
     End Sub
     Public Sub Bloquear_Botones(Bloquear As Boolean)
         If Bloquear = True Then

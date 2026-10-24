@@ -29,6 +29,7 @@ Public Class FrmCuentasXCobrar
     Private _consultando As Boolean
     Private _iniciando As Boolean = True
     Private _datosEmpresaCargados As Boolean
+    Private _accionesHabilitadas As Boolean
 
     Private Shared ReadOnly ColorVencido As Color = Color.FromArgb(185, 28, 28)
     Private Shared ReadOnly ColorFavor As Color = Color.FromArgb(21, 128, 61)
@@ -39,7 +40,9 @@ Public Class FrmCuentasXCobrar
     ' CARGA
     '=================================================================================================
     Private Sub FrmCuentasXCobrar_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Ctas x Cobrar")
+        Seguridad.Bloqueo(Me, Acceso, "Ctas x Cobrar")
+        ' Bloqueo habilita lo que el perfil permite; mientras no haya una consulta, las acciones siguen apagadas
+        If Not _accionesHabilitadas Then HabilitarAcciones(False)
     End Sub
 
     Private Sub FrmCuentasXCobrar_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -244,12 +247,13 @@ Public Class FrmCuentasXCobrar
     End Sub
 
     Private Sub HabilitarAcciones(habilitar As Boolean)
+        _accionesHabilitadas = habilitar
         Me.Button1.Enabled = habilitar
         Me.Button3.Enabled = habilitar
         Me.Button5.Enabled = habilitar
         Me.CmdAjustes.Enabled = habilitar
         ' Se vuelven a aplicar los permisos del usuario sobre los botones
-        If habilitar Then Bloqueo(Me, Acceso, "Ctas x Cobrar")
+        If habilitar Then Seguridad.Bloqueo(Me, Acceso, "Ctas x Cobrar")
     End Sub
 
     Private Sub LimpiarResumen()

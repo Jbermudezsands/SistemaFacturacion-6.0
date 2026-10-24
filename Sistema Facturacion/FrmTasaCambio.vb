@@ -4,7 +4,7 @@ Public Class FrmTasaCambio
     Public MiconexionContabilidad As New SqlClient.SqlConnection(ConexionContabilidad)
 
     Private Sub FrmTasaCambio_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Tasa de Cambio")
+        Seguridad.Bloqueo(Me, Acceso, "Tasa de Cambio")
     End Sub
 
     Private Sub FrmTasaCambio_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load

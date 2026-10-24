@@ -119,7 +119,7 @@ Public Class FrmCajeros
     End Sub
 
     Private Sub FrmCajeros_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Impuestos")
+        Seguridad.Bloqueo(Me, Acceso, "Impuestos")
     End Sub
 
     Private Sub FrmCajeros_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load

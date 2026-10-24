@@ -2,7 +2,7 @@ Public Class FrmProveedores
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
 
     Private Sub FrmProveedores_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Proveedores")
+        Seguridad.Bloqueo(Me, Acceso, "Proveedores")
     End Sub
     Private Sub FrmProveedores_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim Sql As String = "SELECT * FROM Proveedor"

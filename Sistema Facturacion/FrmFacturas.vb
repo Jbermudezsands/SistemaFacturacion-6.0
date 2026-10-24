@@ -2965,11 +2965,11 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         End If
 
         Select Case Me.CboTipoProducto.Text
-            Case "Factura" : Bloqueo(Me, Acceso, "Facturacion")
-            Case "Cotizacion" : Bloqueo(Me, Acceso, "Cotizacion")
-            Case "Devolucion de Venta" : Bloqueo(Me, Acceso, "Devolucion de Venta")
-            Case "Salida Bodega" : Bloqueo(Me, Acceso, "Salida Bodega")
-            Case "Orden de Trabajo" : Bloqueo(Me, Acceso, "Salida Bodega")
+            Case "Factura" : Seguridad.Bloqueo(Me, Acceso, "Facturacion")
+            Case "Cotizacion" : Seguridad.Bloqueo(Me, Acceso, "Cotizacion")
+            Case "Devolucion de Venta" : Seguridad.Bloqueo(Me, Acceso, "Devolucion de Venta")
+            Case "Salida Bodega" : Seguridad.Bloqueo(Me, Acceso, "Salida Bodega")
+            Case "Orden de Trabajo" : Seguridad.Bloqueo(Me, Acceso, "Salida Bodega")
         End Select
 
     End Sub
@@ -3315,10 +3315,10 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
     Private Sub FrmFacturas_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
         'Select Case Me.CboTipoProducto.Text
-        '    Case "Factura" : Bloqueo(Me, Acceso, "Facturacion")
-        '    Case "Cotizacion" : Bloqueo(Me, Acceso, "Cotizacion")
-        '    Case "Devolucion de Venta" : Bloqueo(Me, Acceso, "Devolucion de Venta")
-        '    Case "Salida Bodega" : Bloqueo(Me, Acceso, "Salida Bodega")
+        '    Case "Factura" : Seguridad.Bloqueo(Me, Acceso, "Facturacion")
+        '    Case "Cotizacion" : Seguridad.Bloqueo(Me, Acceso, "Cotizacion")
+        '    Case "Devolucion de Venta" : Seguridad.Bloqueo(Me, Acceso, "Devolucion de Venta")
+        '    Case "Salida Bodega" : Seguridad.Bloqueo(Me, Acceso, "Salida Bodega")
         'End Select
 
         Me.TxtCodigoClientes.Focus()

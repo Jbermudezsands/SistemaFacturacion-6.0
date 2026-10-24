@@ -7,7 +7,7 @@ Public Class FrmLineaProductos
     Public MiConexion As New SqlClient.SqlConnection(Conexion), RutaCompartida As String
 
     Private Sub FrmLineaProductos_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Linea Produtos")
+        Seguridad.Bloqueo(Me, Acceso, "Linea Produtos")
     End Sub
 
     Private Sub FrmLineaProductos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load

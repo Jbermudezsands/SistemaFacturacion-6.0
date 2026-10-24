@@ -5,7 +5,7 @@ Public Class FrmImpuestos
     End Sub
 
     Private Sub FrmImpuestos_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Impuestos")
+        Seguridad.Bloqueo(Me, Acceso, "Impuestos")
     End Sub
 
     Private Sub FrmImpuestos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load

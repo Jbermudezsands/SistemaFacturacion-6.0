@@ -10,7 +10,7 @@ Public Class FrmImportacion
     Public RutaBD As String, FacturaTarea As Boolean = False
 
     Private Sub FrmImportacion_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Importacion")
+        Seguridad.Bloqueo(Me, Acceso, "Importacion")
     End Sub
 
 

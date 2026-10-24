@@ -502,7 +502,7 @@ Public Class FrmProductos
         Me.CboIva.DataSource = DataSet.Tables("Impuestos")
         Me.CboIva.DisplayMember = "Descripcion_Iva"
 
-        Bloqueo(Me, Acceso, "Productos")
+        Seguridad.Bloqueo(Me, Acceso, "Productos")
 
 
     End Sub

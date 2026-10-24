@@ -2,7 +2,7 @@ Public Class FrmClientes
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
 
     Private Sub FrmClientes_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Clientes")
+        Seguridad.Bloqueo(Me, Acceso, "Clientes")
     End Sub
     Private Sub FrmClientes_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim Sql As String, SqlConsulta As String = "SELECT Endoso.* FROM Endoso"

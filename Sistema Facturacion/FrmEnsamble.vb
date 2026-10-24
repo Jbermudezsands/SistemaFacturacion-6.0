@@ -5,7 +5,7 @@ Public Class FrmEnsamble
     End Sub
 
     Private Sub FrmEnsamble_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Ensamble")
+        Seguridad.Bloqueo(Me, Acceso, "Ensamble")
     End Sub
 
     Private Sub FrmEnsamble_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load

@@ -177,6 +177,62 @@ Sistema Facturacion 6.0
   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="M:Sistema_Facturacion.Seguridad.#ctor">
+ <summary>Usa la cadena de conexión global del sistema.</summary>
+</member>
+<member name="M:Sistema_Facturacion.Seguridad.Bloqueo(System.Windows.Forms.Control,System.String,System.String)">
+ <summary>
+ Aplica a los controles de "contenedor" los permisos que el perfil tiene sobre el modulo.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.Seguridad.AplicarPermisoEditar(Sistema_Facturacion.PermisoModulo,System.String)">
+ <summary>Los formularios de ventas consultan EditarFactura para permitir o no modificar un documento.</summary>
+</member>
+<member name="M:Sistema_Facturacion.Seguridad.ObtenerPermisos(System.String,System.String)">
+ <summary>Permisos del perfil (por nombre) sobre el modulo. Vacío si no hay registro.</summary>
+</member>
+<member name="P:Sistema_Facturacion.ModuloAcceso.Acciones">
+ <summary>Acciones configurables del modulo, en el orden en que se muestran (Abrir va siempre).</summary>
+</member>
+<member name="M:Sistema_Facturacion.CatalogoModulos.Base(System.String)">
+ <summary>Modulo con las acciones habituales: Grabar, Eliminar y Procesar.</summary>
+</member>
+<member name="T:Sistema_Facturacion.PerfilSeguridad">
+ <summary>Perfil de seguridad (tabla Perfil).</summary>
+</member>
+<member name="T:Sistema_Facturacion.PermisoModulo">
+ <summary>
+ Permisos de un perfil sobre un modulo. Cada accion puede estar concedida (True), negada (False)
+ o sin definir (Nothing): lo que no esta definido no se toca en el formulario.
+ </summary>
+</member>
+<member name="F:Sistema_Facturacion.PermisoModulo.Orden">
+ <summary>Orden en que se guardan las acciones en la cadena.</summary>
+</member>
+<member name="P:Sistema_Facturacion.PermisoModulo.Definido">
+ <summary>True si el perfil tiene al menos una accion definida para el modulo.</summary>
+</member>
+<member name="M:Sistema_Facturacion.PermisoModulo.Desde(System.String)">
+ <summary>Interpreta la cadena guardada en Accesos.Acceso. Ignora los nombres que no conoce.</summary>
+</member>
+<member name="M:Sistema_Facturacion.PermisoModulo.TryDesdeTag(System.Object,Sistema_Facturacion.AccionPermiso@)">
+ <summary>Accion que corresponde al Tag de un boton (25 a 31). False si el Tag no es de seguridad.</summary>
+</member>
+<member name="M:Sistema_Facturacion.PermisoModulo.Estado(Sistema_Facturacion.AccionPermiso)">
+ <summary>Estado de una accion: True concedida, False negada, Nothing sin definir.</summary>
+</member>
+<member name="M:Sistema_Facturacion.PermisoModulo.ToString">
+ <summary>Cadena para guardar en Accesos.Acceso (solo las acciones definidas).</summary>
+</member>
+<member name="M:Sistema_Facturacion.SeguridadRepositorio.ObtenerAcceso(System.String,System.String)">
+ <summary>Cadena Acceso del perfil (por nombre) en el modulo, o Nothing si no hay registro.</summary>
+</member>
+<member name="M:Sistema_Facturacion.SeguridadRepositorio.CrearPerfil(System.String)">
+ <summary>Crea el perfil si no existe. Devuelve False si ya existía.</summary>
+</member>
+<member name="M:Sistema_Facturacion.SeguridadRepositorio.EliminarPerfil(Sistema_Facturacion.PerfilSeguridad)">
+ <summary>Elimina el perfil, sus accesos y los usuarios que lo tienen como Nivel (todo o nada).</summary>
+</member>
 <member name="F:Sistema_Facturacion.CxC_Compatibilidad.CampoZonaReportesCxC">
  <summary>
  Campo de Clientes que filtran los combos "CboCodDepartamentoIni/Fin" de FrmReportes.
@@ -481,6 +537,12 @@ Sistema Facturacion 6.0
 </member>
 <member name="T:Sistema_Facturacion.ModalidadRepository">
  <summary>Acceso a datos para la tabla dbo.Modalidades.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmAccesos.MostrarPermisos">
+ <summary>Muestra solo las acciones del módulo y las marca según lo guardado para el perfil.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmAccesos.Lista_DrawItem(System.Object,System.Windows.Forms.DrawItemEventArgs)">
+ <summary>Dibuja las filas de las dos listas con el estilo del sistema (selección azul claro).</summary>
 </member>
 <member name="M:Sistema_Facturacion.FrmCuentasXCobrar.Consultar(System.Action)">
  <summary>

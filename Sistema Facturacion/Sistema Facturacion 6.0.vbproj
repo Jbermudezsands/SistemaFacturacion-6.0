@@ -106,6 +106,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Clases\Consultas\Auditoria.vb" />
+    <Compile Include="Clases\Seguridad\Seguridad.vb" />
+    <Compile Include="Clases\Seguridad\SeguridadModelos.vb" />
+    <Compile Include="Clases\Seguridad\SeguridadRepositorio.vb" />
     <Compile Include="Clases\Consultas\ArgsTransferencias.vb" />
     <Compile Include="Clases\Consultas\CsBeneficiario.vb" />
     <Compile Include="Clases\Consultas\CsContratos.vb" />

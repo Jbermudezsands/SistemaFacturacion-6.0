@@ -274,7 +274,7 @@ Public Class FrmLiquidacion
     End Sub
 
     Private Sub FrmLiquidacion_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Liquidacion")
+        Seguridad.Bloqueo(Me, Acceso, "Liquidacion")
     End Sub
 
     Private Sub FrmLiquidacion_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
