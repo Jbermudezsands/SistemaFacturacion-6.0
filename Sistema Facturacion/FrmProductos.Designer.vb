@@ -60,6 +60,8 @@ Partial Class FrmProductos
         Me.CmdGenerar = New System.Windows.Forms.Button()
         Me.Label24 = New System.Windows.Forms.Label()
         Me.CboRubro = New C1.Win.C1List.C1Combo()
+        Me.LblTipoImpresion = New System.Windows.Forms.Label()
+        Me.CboTipoImpresion = New System.Windows.Forms.ComboBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.CboTipoProducto = New System.Windows.Forms.ComboBox()
         Me.CboLinea = New C1.Win.C1List.C1Combo()
@@ -423,7 +425,7 @@ Partial Class FrmProductos
         Me.GroupBox2.Controls.Add(Me.TxtDescuento)
         Me.GroupBox2.Controls.Add(Me.Label7)
         Me.GroupBox2.Controls.Add(Me.Label5)
-        Me.GroupBox2.Location = New System.Drawing.Point(6, 124)
+        Me.GroupBox2.Location = New System.Drawing.Point(6, 150)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(284, 164)
         Me.GroupBox2.TabIndex = 32
@@ -528,6 +530,8 @@ Partial Class FrmProductos
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.CboTipoImpresion)
+        Me.GroupBox1.Controls.Add(Me.LblTipoImpresion)
         Me.GroupBox1.Controls.Add(Me.CmdGenerar)
         Me.GroupBox1.Controls.Add(Me.Label24)
         Me.GroupBox1.Controls.Add(Me.CboRubro)
@@ -540,7 +544,7 @@ Partial Class FrmProductos
         Me.GroupBox1.Controls.Add(Me.Label4)
         Me.GroupBox1.Location = New System.Drawing.Point(6, 5)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(284, 120)
+        Me.GroupBox1.Size = New System.Drawing.Size(284, 146)
         Me.GroupBox1.TabIndex = 31
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Datos Generales"
@@ -562,6 +566,24 @@ Partial Class FrmProductos
         Me.Label24.Size = New System.Drawing.Size(41, 13)
         Me.Label24.TabIndex = 172
         Me.Label24.Text = "Rubros"
+        '
+        'LblTipoImpresion
+        '
+        Me.LblTipoImpresion.AutoSize = True
+        Me.LblTipoImpresion.Location = New System.Drawing.Point(10, 122)
+        Me.LblTipoImpresion.Name = "LblTipoImpresion"
+        Me.LblTipoImpresion.Size = New System.Drawing.Size(55, 13)
+        Me.LblTipoImpresion.TabIndex = 173
+        Me.LblTipoImpresion.Text = "Impresión"
+        '
+        'CboTipoImpresion
+        '
+        Me.CboTipoImpresion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboTipoImpresion.FormattingEnabled = True
+        Me.CboTipoImpresion.Location = New System.Drawing.Point(65, 117)
+        Me.CboTipoImpresion.Name = "CboTipoImpresion"
+        Me.CboTipoImpresion.Size = New System.Drawing.Size(212, 21)
+        Me.CboTipoImpresion.TabIndex = 174
         '
         'CboRubro
         '
@@ -1770,6 +1792,8 @@ Partial Class FrmProductos
     Friend WithEvents cmdAddDocente As System.Windows.Forms.Button
     Friend WithEvents Label24 As System.Windows.Forms.Label
     Friend WithEvents CboRubro As C1.Win.C1List.C1Combo
+    Friend WithEvents LblTipoImpresion As System.Windows.Forms.Label
+    Friend WithEvents CboTipoImpresion As System.Windows.Forms.ComboBox
     Friend WithEvents BindingImpuestos As System.Windows.Forms.BindingSource
     Friend WithEvents CmdPrecios As System.Windows.Forms.Button
     Friend WithEvents Button2 As System.Windows.Forms.Button

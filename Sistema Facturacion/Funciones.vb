@@ -10949,6 +10949,13 @@ errSub:
             ComandoUpdate = New OleDb.OleDbCommand(StrSqlUpdate, MiConexionImpresora)
             iResultado = ComandoUpdate.ExecuteNonQuery
             MiConexionImpresora.Close()
+        Else
+            ' El tipo de impresora no existe en Impresoras.dll (p. ej. ComandaBar): se agrega
+            MiConexionImpresora.Open()
+            StrSqlUpdate = "INSERT INTO [Impresoras] ([Impresora], [TipoImpresora]) VALUES ('" & Replace(Impresora, "'", "''") & "', '" & Replace(Modulo, "'", "''") & "')"
+            ComandoUpdate = New OleDb.OleDbCommand(StrSqlUpdate, MiConexionImpresora)
+            iResultado = ComandoUpdate.ExecuteNonQuery
+            MiConexionImpresora.Close()
         End If
 
 
