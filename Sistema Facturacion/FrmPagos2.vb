@@ -105,7 +105,7 @@ Public Class FrmPagos2
     End Sub
 
     Private Sub FrmPagos_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Pagos")
+        Seguridad.Bloqueo(Me, Acceso, "Pagos")
     End Sub
     Private Sub FrmPagos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SqlProveedor As String

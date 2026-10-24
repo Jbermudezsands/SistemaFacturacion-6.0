@@ -97,7 +97,7 @@ Public Class FrmTipoPrecios
     End Sub
 
     Private Sub FrmTipoPrecios_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Tipos de Precios")
+        Seguridad.Bloqueo(Me, Acceso, "Tipos de Precios")
     End Sub
 
     Private Sub FrmTipoPrecios_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load

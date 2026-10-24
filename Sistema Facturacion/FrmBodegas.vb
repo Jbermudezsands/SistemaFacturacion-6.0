@@ -3,7 +3,7 @@ Public Class FrmBodegas
     Public DataSet As New DataSet
 
     Private Sub FrmBodegas_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Bodegas")
+        Seguridad.Bloqueo(Me, Acceso, "Bodegas")
     End Sub
 
 

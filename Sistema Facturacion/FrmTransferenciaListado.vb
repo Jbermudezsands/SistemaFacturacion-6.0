@@ -30,7 +30,7 @@ Public Class FrmTransferenciaListado
     End Sub
 
     Private Sub FrmTransferenciaListado_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Transferencia de Bodegas")
+        Seguridad.Bloqueo(Me, Acceso, "Transferencia de Bodegas")
     End Sub
 
     Private Sub FrmTransferenciaListado_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load

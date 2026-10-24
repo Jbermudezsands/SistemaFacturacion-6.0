@@ -9,7 +9,7 @@ Public Class FrmConfigurar
     End Sub
 
     Private Sub FrmConfigurar_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Configurar")
+        Seguridad.Bloqueo(Me, Acceso, "Configurar")
     End Sub
 
     Private Sub FrmConfigurar_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load

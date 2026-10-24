@@ -19,7 +19,7 @@ Public Class FrmVendedor
     End Sub
 
     Private Sub FrmVendedor_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Vendedores")
+        Seguridad.Bloqueo(Me, Acceso, "Vendedores")
     End Sub
 
     Private Sub FrmVendedor_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load

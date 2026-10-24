@@ -387,7 +387,7 @@ Public Class FrmFacturasHistoricos
     End Sub
 
     Private Sub FrmFacturasHistoricos_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Historico Facturacion")
+        Seguridad.Bloqueo(Me, Acceso, "Historico Facturacion")
 
         '////////////VERIFICO LA ACTIVACION DE FACTURA PARA EL USUARIO ////////////////////
         If UsuarioActivaFactura = True Then

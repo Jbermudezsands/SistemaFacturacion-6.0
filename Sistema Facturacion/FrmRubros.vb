@@ -2,7 +2,7 @@ Public Class FrmRubros
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
 
     Private Sub FrmRubros_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Rubros")
+        Seguridad.Bloqueo(Me, Acceso, "Rubros")
     End Sub
 
     Private Sub FrmRubros_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load

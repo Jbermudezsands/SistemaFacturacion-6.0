@@ -1,579 +1,254 @@
+﻿Option Strict On
+Option Explicit On
+Option Infer On
+
+Imports System.Collections.Generic
+Imports System.Drawing
+Imports System.Windows.Forms
+
+'=====================================================================================================
+'  PERFILES Y ACCESOS
+'  Elegir un perfil y un módulo, marcar lo que el perfil puede hacer y guardar.
+'  La lógica (perfiles, permisos, bloqueo de formularios) vive en la clase Seguridad.
+'=====================================================================================================
 Public Class FrmAccesos
 
+    Private _seguridad As Seguridad
+    Private _modulos As List(Of ModuloAcceso)
+    Private _permisosCargados As PermisoModulo
+    Private _cargando As Boolean
+    Private ReadOnly _casillas As New Dictionary(Of AccionPermiso, CheckBox)
 
-    Public MiConexion As New SqlClient.SqlConnection(Conexion)
-    Public Sub ActualizarLista()
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SqlString As String
-        Dim Iposicion As Double = 0
+    Private Shared ReadOnly ColorSeleccion As Color = Color.FromArgb(238, 242, 255)
+    Private Shared ReadOnly ColorSeleccionTexto As Color = Color.FromArgb(30, 64, 175)
+    Private Shared ReadOnly ColorTexto As Color = Color.FromArgb(31, 41, 55)
+    Private Shared ReadOnly ColorMuted As Color = Color.FromArgb(100, 116, 139)
+    Private Shared ReadOnly ColorOk As Color = Color.FromArgb(21, 128, 61)
+    Private Shared ReadOnly ColorError As Color = Color.FromArgb(185, 28, 28)
 
-        Me.ListBox.Items.Clear()
+    Private ReadOnly Property PerfilSeleccionado As PerfilSeguridad
+        Get
+            Return TryCast(Me.LstPerfiles.SelectedItem, PerfilSeguridad)
+        End Get
+    End Property
 
-        SqlString = "SELECT *  FROM Perfil"
-        DataSet.Reset()
-        MiConexion.Open()
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "Perfil")
-        Iposicion = 0
-        Do While DataSet.Tables("Perfil").Rows.Count > Iposicion
-            Me.ListBox.Items.Add(DataSet.Tables("Perfil").Rows(Iposicion)("NombrePerfil"))
+    Private ReadOnly Property ModuloSeleccionado As ModuloAcceso
+        Get
+            Return TryCast(Me.LstModulos.SelectedItem, ModuloAcceso)
+        End Get
+    End Property
 
-            Iposicion = Iposicion + 1
-        Loop
-        MiConexion.Close()
+    '=================================================================================================
+    ' CARGA
+    '=================================================================================================
+    Private Sub FrmAccesos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        _seguridad = New Seguridad(Conexion)
+
+        _casillas(AccionPermiso.Abrir) = Me.ChkAbrir
+        _casillas(AccionPermiso.Grabar) = Me.ChkGrabar
+        _casillas(AccionPermiso.Eliminar) = Me.ChkEliminar
+        _casillas(AccionPermiso.Anular) = Me.ChkAnular
+        _casillas(AccionPermiso.Procesar) = Me.ChkProcesar
+        _casillas(AccionPermiso.Imprimir) = Me.ChkImprimir
+        _casillas(AccionPermiso.Editar) = Me.ChkEditar
+        _casillas(AccionPermiso.CambiarBodega) = Me.ChkCambiarBodega
+        _casillas(AccionPermiso.VerCosto) = Me.ChkVerCosto
+
+        _modulos = CatalogoModulos.Todos()
+        FiltrarModulos()
+        CargarPerfiles(Nothing)
+        MostrarPermisos()
     End Sub
-    Public Sub GrabaAccesos(ByVal IdPerfil As Double, ByVal Modulo As String, ByVal Acceso As String)
-        Dim SQLClientes As String
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
 
-        SQLClientes = "SELECT *  FROM Accesos WHERE (IdPerfil = " & IdPerfil & ") AND (Modulo = '" & Modulo & "')"
-        DataAdapter = New SqlClient.SqlDataAdapter(SQLClientes, MiConexion)
-        DataAdapter.Fill(DataSet, "Perfil")
-        If DataSet.Tables("Perfil").Rows.Count = 0 Then
-            '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Accesos] ([IdPerfil],[Modulo],[Acceso]) VALUES (" & IdPerfil & ", '" & Modulo & "' , '" & Acceso & "')"
-            MiConexion.Open()
-            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-            iResultado = ComandoUpdate.ExecuteNonQuery
-            MiConexion.Close()
-        Else
-            '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "UPDATE [Accesos] SET [Acceso] = '" & Acceso & "'  WHERE (IdPerfil = " & IdPerfil & ") AND (Modulo = '" & Modulo & "')"
-            MiConexion.Open()
-            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-            iResultado = ComandoUpdate.ExecuteNonQuery
-            MiConexion.Close()
+    Private Sub CargarPerfiles(ByVal seleccionar As String)
+        Try
+            Dim perfiles = _seguridad.ListarPerfiles()
+            Me.LstPerfiles.BeginUpdate()
+            Me.LstPerfiles.Items.Clear()
+            For Each perfil As PerfilSeguridad In perfiles
+                Me.LstPerfiles.Items.Add(perfil)
+                If seleccionar IsNot Nothing AndAlso String.Equals(perfil.Nombre, seleccionar, StringComparison.OrdinalIgnoreCase) Then
+                    Me.LstPerfiles.SelectedItem = perfil
+                End If
+            Next
+            Me.LstPerfiles.EndUpdate()
+        Catch ex As Exception
+            MostrarEstado("No se pudieron cargar los perfiles: " & ex.Message, ColorError)
+        End Try
+        Me.BtnEliminarPerfil.Enabled = (PerfilSeleccionado IsNot Nothing)
+    End Sub
+
+    Private Sub FiltrarModulos()
+        Dim texto = Me.TxtBuscarModulo.Text.Trim()
+        Dim anterior = ModuloSeleccionado
+
+        Me.LstModulos.BeginUpdate()
+        Me.LstModulos.Items.Clear()
+        For Each modulo As ModuloAcceso In _modulos
+            If texto.Length = 0 OrElse modulo.Nombre.IndexOf(texto, StringComparison.OrdinalIgnoreCase) >= 0 Then
+                Me.LstModulos.Items.Add(modulo)
+                If anterior IsNot Nothing AndAlso modulo Is anterior Then Me.LstModulos.SelectedItem = modulo
+            End If
+        Next
+        Me.LstModulos.EndUpdate()
+    End Sub
+
+    '=================================================================================================
+    ' SELECCIÓN
+    '=================================================================================================
+    Private Sub LstPerfiles_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles LstPerfiles.SelectedIndexChanged
+        Me.BtnEliminarPerfil.Enabled = (PerfilSeleccionado IsNot Nothing)
+        MostrarPermisos()
+    End Sub
+
+    Private Sub LstModulos_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles LstModulos.SelectedIndexChanged
+        MostrarPermisos()
+    End Sub
+
+    Private Sub TxtBuscarModulo_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TxtBuscarModulo.TextChanged
+        FiltrarModulos()
+        MostrarPermisos()
+    End Sub
+
+    ''' <summary>Muestra solo las acciones del módulo y las marca según lo guardado para el perfil.</summary>
+    Private Sub MostrarPermisos()
+        Dim perfil = PerfilSeleccionado
+        Dim modulo = ModuloSeleccionado
+
+        _cargando = True
+        _permisosCargados = Nothing
+        Me.BtnGuardar.Enabled = False
+        For Each par As KeyValuePair(Of AccionPermiso, CheckBox) In _casillas
+            par.Value.Visible = False
+            par.Value.Checked = False
+        Next
+
+        If perfil Is Nothing OrElse modulo Is Nothing Then
+            Me.LblContexto.Text = "Elija un perfil y un módulo para ver sus permisos."
+            _cargando = False
+            Exit Sub
         End If
+
+        Try
+            _permisosCargados = _seguridad.ObtenerPermisos(perfil.Nombre, modulo.Nombre)
+
+            ' Lo que no está definido no se bloquea: se muestra marcado, como funciona en la realidad
+            Me.ChkAbrir.Visible = True
+            Me.ChkAbrir.Text = "Abrir"
+            Me.ChkAbrir.Checked = _permisosCargados.Estado(AccionPermiso.Abrir).GetValueOrDefault(True)
+            For Each par As KeyValuePair(Of AccionPermiso, String) In modulo.Acciones
+                Dim casilla = _casillas(par.Key)
+                casilla.Text = par.Value
+                casilla.Checked = _permisosCargados.Estado(par.Key).GetValueOrDefault(True)
+                casilla.Visible = True
+            Next
+
+            Dim ayuda = If(_permisosCargados.Definido,
+                           "Marque lo que este perfil puede hacer.",
+                           "Sin configuración guardada: el perfil tiene acceso completo.")
+            Me.LblContexto.Text = perfil.Nombre & "  ·  " & modulo.Nombre & vbCrLf & ayuda
+            Me.BtnGuardar.Enabled = True
+        Catch ex As Exception
+            Me.LblContexto.Text = "No se pudieron leer los permisos."
+            MostrarEstado("No se pudieron leer los permisos: " & ex.Message, ColorError)
+        Finally
+            _cargando = False
+        End Try
     End Sub
 
+    '=================================================================================================
+    ' GUARDAR
+    '=================================================================================================
+    Private Sub BtnGuardar_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnGuardar.Click
+        Dim perfil = PerfilSeleccionado
+        Dim modulo = ModuloSeleccionado
+        If perfil Is Nothing OrElse modulo Is Nothing OrElse _permisosCargados Is Nothing Then Exit Sub
 
+        ' Las acciones que el módulo no muestra se conservan tal como estaban guardadas
+        Dim permisos = _permisosCargados.Clonar()
+        permisos.Establecer(AccionPermiso.Abrir, Me.ChkAbrir.Checked)
+        For Each par As KeyValuePair(Of AccionPermiso, String) In modulo.Acciones
+            permisos.Establecer(par.Key, _casillas(par.Key).Checked)
+        Next
 
-    Private Sub FrmControlPermisos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SqlString As String
-        Dim Iposicion As Double = 0
-
-        SqlString = "SELECT *  FROM Perfil"
-        DataSet.Reset()
-        MiConexion.Open()
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "Perfil")
-        Iposicion = 0
-        Do While DataSet.Tables("Perfil").Rows.Count > Iposicion
-            Me.ListBox.Items.Add(DataSet.Tables("Perfil").Rows(Iposicion)("NombrePerfil"))
-
-            Iposicion = Iposicion + 1
-        Loop
-        MiConexion.Close()
-
-
-        ''-----------------------------AGREGO LOS USUARIOS A LA LISTA --------------------------------
-        ''--------------------------------------------------------------------------------------------
-        'SqlString = "SELECT  Usuarios.* FROM Usuarios "
-        'DataSet.Reset()
-        'MiConexion.Open()
-        'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        'DataAdapter.Fill(DataSet, "Usuarios")
-        'Iposicion = 0
-        'Do While DataSet.Tables("Usuarios").Rows.Count >= Iposicion
-        '    Me.ListBoxOpciones.Items.Add(DataSet.Tables("Usuarios").Rows(Iposicion)("Usuario"))
-
-        '    Iposicion = Iposicion + 1
-        'Loop
-        'MiConexion.Close()
-
-
-
-
-        Me.ListBoxOpciones.Items.Add("Facturacion")
-        Me.ListBoxOpciones.Items.Add("Cotizacion")
-        Me.ListBoxOpciones.Items.Add("Devolucion de Venta")
-        Me.ListBoxOpciones.Items.Add("Salida Bodega")
-        Me.ListBoxOpciones.Items.Add("Orden de Trabajo")
-        Me.ListBoxOpciones.Items.Add("Compras")
-        Me.ListBoxOpciones.Items.Add("Pagos")
-        Me.ListBoxOpciones.Items.Add("Recibo de Caja")
-        Me.ListBoxOpciones.Items.Add("Ensamble")
-        Me.ListBoxOpciones.Items.Add("Arqueo de Caja")
-        Me.ListBoxOpciones.Items.Add("Ctas x Cobrar")
-        Me.ListBoxOpciones.Items.Add("Ctas x Pagar")
-        Me.ListBoxOpciones.Items.Add("Clientes")
-        Me.ListBoxOpciones.Items.Add("Proveedores")
-        Me.ListBoxOpciones.Items.Add("Productos")
-        Me.ListBoxOpciones.Items.Add("Vendedores")
-        Me.ListBoxOpciones.Items.Add("Bodegas")
-        Me.ListBoxOpciones.Items.Add("Linea Produtos")
-        Me.ListBoxOpciones.Items.Add("Impuestos")
-        Me.ListBoxOpciones.Items.Add("Tasa de Cambio")
-        Me.ListBoxOpciones.Items.Add("Servicios")
-        Me.ListBoxOpciones.Items.Add("Cajeros")
-        Me.ListBoxOpciones.Items.Add("Liquidacion")
-        Me.ListBoxOpciones.Items.Add("Transferencia de Bodegas")
-        Me.ListBoxOpciones.Items.Add("Rubros")
-        Me.ListBoxOpciones.Items.Add("Tipos de Precios")
-        Me.ListBoxOpciones.Items.Add("Notas de Debito y Credito")
-        Me.ListBoxOpciones.Items.Add("Proyectos")
-        Me.ListBoxOpciones.Items.Add("Tareas")
-        Me.ListBoxOpciones.Items.Add("Historico Facturacion")
-        Me.ListBoxOpciones.Items.Add("Historico Compras")
-        Me.ListBoxOpciones.Items.Add("Plantilla Ventas/Compras")
-        Me.ListBoxOpciones.Items.Add("Reportes Generales")
-        Me.ListBoxOpciones.Items.Add("Reportes Ventas/Compras")
-        Me.ListBoxOpciones.Items.Add("Reportes Inventario")
-        Me.ListBoxOpciones.Items.Add("Reportes Cuentas x Cobrar")
-        Me.ListBoxOpciones.Items.Add("Exportar a Excel")
-        Me.ListBoxOpciones.Items.Add("Importacion")
-        Me.ListBoxOpciones.Items.Add("Usuarios")
-        Me.ListBoxOpciones.Items.Add("Configurar")
-        Me.ListBoxOpciones.Items.Add("Ajustes")
-        Me.ListBoxOpciones.Items.Add("Personalizar")
-        Me.ListBoxOpciones.Items.Add("Inventario Fisico")
-        Me.ListBoxOpciones.Items.Add("Actualizacion")
-        Me.ListBoxOpciones.Items.Add("Perfiles y Accesos")
-
-
-
-
+        Try
+            _seguridad.GuardarPermisos(perfil, modulo.Nombre, permisos)
+            _permisosCargados = permisos
+            MostrarEstado("Permisos guardados: " & perfil.Nombre & " · " & modulo.Nombre & ". Se aplican la próxima vez que el usuario abra el formulario.", ColorOk)
+        Catch ex As Exception
+            MostrarEstado("No se pudo guardar: " & ex.Message, ColorError)
+            MsgBox("No se pudieron guardar los permisos." & vbCrLf & ex.Message, MsgBoxStyle.Critical, "Zeus Facturacion")
+        End Try
     End Sub
 
-    Private Sub ListBox_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListBox.SelectedIndexChanged
-
-        ConfiguracionAcceso(Me.ListBox.Text, Me.ListBoxOpciones.Text)
-    End Sub
-
-    Private Sub ListBoxOpciones_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListBoxOpciones.SelectedIndexChanged
-        Me.ChkAnular.Visible = False
-        Me.ChkProcesar.Visible = False
-        Me.ChkImprimir.Visible = False
-
-        Me.ChkGrabar.Visible = True
-        Me.ChkGrabar.Location = New Point(7, 43)
-        Me.ChkGrabar.Text = "Grabar"
-        Me.ChkProcesar.Visible = True
-        Me.ChkProcesar.Location = New Point(7, 89)
-        Me.ChkEliminar.Visible = True
-        Me.ChkEliminar.Location = New Point(7, 66)
-        Me.ChkEliminar.Text = "Eliminar"
-        Me.ChkEditar.Visible = False
-        Me.ChkCambiarBodega.Visible = False
-        Me.ChkVerCosto.Visible = False
-        Me.ChkVerCosto.Checked = False
-
-        ListBox_SelectedIndexChanged(sender, e)
-        Select Case Me.ListBoxOpciones.Text
-            Case "Orden de Trabajo"
-                Me.ChkAnular.Visible = True
-                Me.ChkAnular.Location = New Point(7, 133)
-                Me.ChkProcesar.Visible = True
-                Me.ChkProcesar.Location = New Point(7, 89)
-                Me.ChkImprimir.Visible = True
-                Me.ChkImprimir.Location = New Point(7, 110)
-                Me.ChkEditar.Visible = True
-            Case "Salida Bodega"
-                Me.ChkAnular.Visible = True
-                Me.ChkAnular.Location = New Point(7, 133)
-                Me.ChkProcesar.Visible = True
-                Me.ChkProcesar.Location = New Point(7, 89)
-                Me.ChkImprimir.Visible = True
-                Me.ChkImprimir.Location = New Point(7, 110)
-                Me.ChkEditar.Visible = True
-            Case "Cotizacion"
-                Me.ChkAnular.Visible = True
-                Me.ChkAnular.Location = New Point(7, 133)
-                Me.ChkProcesar.Visible = True
-                Me.ChkProcesar.Location = New Point(7, 89)
-                Me.ChkImprimir.Visible = True
-                Me.ChkImprimir.Location = New Point(7, 110)
-                Me.ChkEditar.Visible = True
-            Case "Devolucion de Venta"
-                Me.ChkAnular.Visible = True
-                Me.ChkAnular.Location = New Point(7, 133)
-                Me.ChkProcesar.Visible = True
-                Me.ChkProcesar.Location = New Point(7, 89)
-                Me.ChkImprimir.Visible = True
-                Me.ChkImprimir.Location = New Point(7, 110)
-                Me.ChkEditar.Visible = True
-            Case "Facturacion"
-                Me.ChkAnular.Visible = True
-                Me.ChkAnular.Location = New Point(7, 133)
-                Me.ChkProcesar.Visible = True
-                Me.ChkProcesar.Location = New Point(7, 89)
-                Me.ChkImprimir.Visible = True
-                Me.ChkImprimir.Location = New Point(7, 110)
-                Me.ChkEditar.Visible = True
-            Case "Compras"
-                Me.ChkAnular.Visible = True
-                Me.ChkAnular.Location = New Point(7, 133)
-                Me.ChkProcesar.Visible = True
-                Me.ChkProcesar.Location = New Point(7, 89)
-                Me.ChkImprimir.Visible = True
-                Me.ChkImprimir.Location = New Point(7, 110)
-                Me.ChkEditar.Visible = True
-            Case "Ensamble"
-                Me.ChkProcesar.Visible = True
-
-                Me.ChkImprimir.Visible = True
-            Case "Arqueo de Caja"
-                Me.ChkImprimir.Visible = True
-                Me.ChkImprimir.Location = New Point(7, 66)
-
-            Case "Ctas x Cobrar"
-                Me.ChkGrabar.Text = "Consultar"
-                Me.ChkImprimir.Visible = True
-                Me.ChkImprimir.Location = New Point(7, 110)
-
-            Case "Liquidacion"
-                Me.ChkImprimir.Visible = True
-                Me.ChkImprimir.Location = New Point(7, 89)
-            Case "Transferencia de Bodegas"
-                Me.ChkImprimir.Visible = True
-                Me.ChkImprimir.Location = New Point(7, 89)
-                Me.ChkCambiarBodega.Visible = True
-                Me.ChkCambiarBodega.Location = New Point(7, 110)
-                Me.ChkEditar.Visible = True
-
-            Case "Historico Facturacion"
-                Me.ChkGrabar.Visible = False
-                Me.ChkProcesar.Visible = False
-                Me.ChkEliminar.Visible = False
-                Me.ChkAnular.Visible = True
-                Me.ChkAnular.Location = New Point(7, 43)
-                Me.ChkImprimir.Visible = True
-                Me.ChkImprimir.Location = New Point(7, 66)
-
-            Case "Historico Compras"
-                Me.ChkGrabar.Visible = False
-                Me.ChkProcesar.Visible = False
-                Me.ChkEliminar.Visible = False
-                Me.ChkAnular.Visible = True
-                Me.ChkAnular.Location = New Point(7, 43)
-                Me.ChkImprimir.Visible = True
-                Me.ChkImprimir.Location = New Point(7, 66)
-
-            Case "Plantilla Ventas/Compras"
-                Me.ChkGrabar.Visible = True
-                Me.ChkGrabar.Location = New Point(7, 43)
-                Me.ChkProcesar.Visible = True
-                Me.ChkProcesar.Location = New Point(7, 89)
-                Me.ChkEliminar.Visible = True
-                Me.ChkEliminar.Location = New Point(7, 66)
-                Me.ChkImprimir.Visible = True
-                Me.ChkImprimir.Location = New Point(7, 110)
-                Me.ChkAnular.Visible = False
-
-            Case "Reportes Generales"
-                Me.ChkGrabar.Visible = False
-                Me.ChkProcesar.Visible = False
-                Me.ChkEliminar.Visible = False
-                Me.ChkImprimir.Visible = False
-                Me.ChkAnular.Visible = False
-
-            Case "Reportes Ventas/Compras"
-                Me.ChkGrabar.Visible = False
-                Me.ChkProcesar.Visible = False
-                Me.ChkEliminar.Visible = False
-                Me.ChkImprimir.Visible = False
-                Me.ChkAnular.Visible = False
-
-            Case "Reportes Inventario"
-                Me.ChkGrabar.Visible = False
-                Me.ChkProcesar.Visible = False
-                Me.ChkEliminar.Visible = False
-                Me.ChkImprimir.Visible = False
-                Me.ChkAnular.Visible = False
-
-            Case "Reportes Cuentas x Cobrar"
-                Me.ChkGrabar.Visible = False
-                Me.ChkProcesar.Visible = False
-                Me.ChkEliminar.Visible = False
-                Me.ChkImprimir.Visible = False
-                Me.ChkAnular.Visible = False
-
-            Case "Exportar a Excel"
-                Me.ChkGrabar.Visible = True
-                Me.ChkGrabar.Location = New Point(7, 43)
-                Me.ChkGrabar.Text = "Exportar"
-                Me.ChkProcesar.Visible = False
-                Me.ChkEliminar.Visible = False
-                Me.ChkImprimir.Visible = False
-                Me.ChkAnular.Visible = False
-
-            Case "Importacion"
-                Me.ChkGrabar.Visible = True
-                Me.ChkGrabar.Location = New Point(7, 43)
-                Me.ChkGrabar.Text = "Leer Archivo"
-                Me.ChkProcesar.Visible = True
-                Me.ChkEliminar.Location = New Point(7, 66)
-                Me.ChkEliminar.Visible = False
-                Me.ChkImprimir.Visible = False
-                Me.ChkAnular.Visible = False
-
-            Case "Configurar"
-                Me.ChkGrabar.Visible = True
-                Me.ChkProcesar.Visible = False
-                Me.ChkEliminar.Visible = False
-                Me.ChkImprimir.Visible = False
-                Me.ChkAnular.Visible = False
-
-            Case "Inventario Fisico"
-                Me.ChkGrabar.Visible = True
-                Me.ChkGrabar.Location = New Point(7, 43)
-                Me.ChkProcesar.Visible = True
-                Me.ChkProcesar.Location = New Point(7, 89)
-                Me.ChkEliminar.Visible = True
-                Me.ChkEliminar.Location = New Point(7, 66)
-                Me.ChkEliminar.Text = "Iniciar"
-                Me.ChkImprimir.Visible = True
-                Me.ChkImprimir.Location = New Point(7, 110)
-                Me.ChkAnular.Visible = False
-
-            Case "Ajustes"
-                Me.ChkGrabar.Visible = True
-                Me.ChkGrabar.Text = "Iniciar"
-                Me.ChkProcesar.Visible = False
-                Me.ChkEliminar.Visible = False
-                Me.ChkImprimir.Visible = False
-                Me.ChkAnular.Visible = False
-
-            Case "Actualizacion"
-                Me.ChkGrabar.Visible = False
-                Me.ChkProcesar.Visible = False
-                Me.ChkEliminar.Visible = False
-                Me.ChkImprimir.Visible = False
-                Me.ChkAnular.Visible = False
-
-
-            Case "Productos"
-                Me.ChkVerCosto.Visible = True
-                Me.ChkVerCosto.Location = New Point(7, 110)
-
-        End Select
-    End Sub
-
-    Private Sub CheckBox2_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChkGrabar.CheckedChanged
-
-    End Sub
-
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+    '=================================================================================================
+    ' PERFILES
+    '=================================================================================================
+    Private Sub BtnNuevoPerfil_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnNuevoPerfil.Click
+        My.Forms.FrmAccesosAddPerfil.TxtPerfil.Text = ""
         My.Forms.FrmAccesosAddPerfil.ShowDialog()
-        ActualizarLista()
-
+        CargarPerfiles(My.Forms.FrmAccesosAddPerfil.TxtPerfil.Text.Trim())
+        MostrarPermisos()
     End Sub
 
-    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-        Dim SQLClientes As String
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-        Dim Cadena As String
+    Private Sub BtnEliminarPerfil_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnEliminarPerfil.Click
+        Dim perfil = PerfilSeleccionado
+        If perfil Is Nothing Then Exit Sub
 
-        Cadena = "�Esta segura de Elimnar el Perfil?" & vbLf
-        Cadena = Cadena & " si existen usarios se eliminaran tambien con el Perfil"
+        Try
+            Dim usuarios = _seguridad.ContarUsuarios(perfil)
+            Dim mensaje = "¿Está seguro de eliminar el perfil '" & perfil.Nombre & "'?"
+            If usuarios > 0 Then mensaje &= vbLf & "Se eliminarán también los " & usuarios & " usuario(s) que tienen este perfil."
 
-        If MsgBox(Cadena, MsgBoxStyle.YesNo, "Zeus Facturacion") = MsgBoxResult.Yes Then
+            If MsgBox(mensaje, MsgBoxStyle.YesNo Or MsgBoxStyle.Question, "Zeus Facturacion") <> MsgBoxResult.Yes Then Exit Sub
 
-            SQLClientes = "SELECT  NombrePerfil FROM Perfil WHERE (NombrePerfil = '" & Me.ListBox.Text & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SQLClientes, MiConexion)
-            DataAdapter.Fill(DataSet, "Perfil")
-            If Not DataSet.Tables("Perfil").Rows.Count = 0 Then
-                '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-                StrSqlUpdate = "DELETE FROM [Perfil] WHERE (NombrePerfil = '" & Me.ListBox.Text & "')"
-                MiConexion.Open()
-                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-                iResultado = ComandoUpdate.ExecuteNonQuery
-                MiConexion.Close()
-            End If
-
-            SQLClientes = "SELECT  Nivel FROM Usuarios WHERE (Nivel = '" & Me.ListBox.Text & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SQLClientes, MiConexion)
-            DataAdapter.Fill(DataSet, "Usuarios")
-            If Not DataSet.Tables("Usuarios").Rows.Count = 0 Then
-                '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-                StrSqlUpdate = "DELETE FROM [Usuarios] WHERE (Nivel = '" & Me.ListBox.Text & "')"
-                MiConexion.Open()
-                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-                iResultado = ComandoUpdate.ExecuteNonQuery
-                MiConexion.Close()
-            End If
-
-            ActualizarLista()
-
-        End If
+            _seguridad.EliminarPerfil(perfil)
+            CargarPerfiles(Nothing)
+            MostrarPermisos()
+            MostrarEstado("Perfil eliminado: " & perfil.Nombre, ColorOk)
+        Catch ex As Exception
+            MostrarEstado("No se pudo eliminar el perfil: " & ex.Message, ColorError)
+        End Try
     End Sub
 
-    Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
-        Dim SQLClientes As String
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-        Dim Cadena As String, IdPerfil As Double, Modulo As String
-
-        '''''''''''''''''''''''---------------------------------------------------------------------------
-        '--------------------BUSCO EL ID DE LOS PERFILES DE USUARIOS -------------------------------------
-        '-------------------------------------------------------------------------------------------------
-
-        Cadena = ""
-
-
-        If Me.ChkAbrir.Checked = True Then
-            If Cadena <> "" Then
-                Cadena = Cadena & "," & "Abrir"
-            Else
-                Cadena = "Abrir"
-            End If
-        Else
-            Cadena = "NoAbrir"
-        End If
-
-        If Me.ChkGrabar.Checked = True Then
-            If Cadena <> "" Then
-                Cadena = Cadena & "," & "Grabar"
-            Else
-                Cadena = "Grabar"
-            End If
-        Else
-            Cadena = Cadena & "," & "NoGrabar"
-        End If
-
-        If Me.ChkEliminar.Checked = True Then
-            If Cadena <> "" Then
-                Cadena = Cadena & "," & "Eliminar"
-            Else
-                Cadena = "Eliminar"
-            End If
-        Else
-            Cadena = Cadena & "," & "NoEliminar"
-        End If
-
-        If Me.ChkAnular.Checked = True Then
-            If Cadena <> "" Then
-                Cadena = Cadena & "," & "Anular"
-            Else
-                Cadena = "Anular"
-            End If
-        Else
-            Cadena = Cadena & "," & "NoAnular"
-        End If
-
-        If Me.ChkProcesar.Checked = True Then
-            If Cadena <> "" Then
-                Cadena = Cadena & "," & "Procesar"
-            Else
-                Cadena = "Procesar"
-            End If
-        Else
-            Cadena = Cadena & "," & "NoProcesar"
-        End If
-
-        If Me.ChkImprimir.Checked = True Then
-            If Cadena <> "" Then
-                Cadena = Cadena & "," & "Imprimir"
-            Else
-                Cadena = "Imprimir"
-            End If
-        Else
-            Cadena = Cadena & "," & "NoImprimir"
-        End If
-
-        If Me.ChkEditar.Checked = True Then
-            If Cadena <> "" Then
-                Cadena = Cadena & "," & "Editar"
-            Else
-                Cadena = "Editar"
-            End If
-        Else
-            Cadena = Cadena & "," & "NoEditar"
-        End If
-
-
-        If Me.ChkCambiarBodega.Checked = True Then
-            If Cadena <> "" Then
-                Cadena = Cadena & "," & "CambiarBodega"
-            Else
-                Cadena = "CambiarBodega"
-            End If
-        Else
-            Cadena = Cadena & "," & "NoCambiarBodega"
-        End If
-
-
-        If Me.ChkPrevio.Checked = True Then
-            If Cadena <> "" Then
-                Cadena = Cadena & "," & "Previo"
-            Else
-                Cadena = "Previo"
-            End If
-        Else
-            Cadena = Cadena & "," & "NoPrevio"
-        End If
-
-        If Me.ChkVerCosto.Checked = True Then
-            If Cadena <> "" Then
-                Cadena = Cadena & "," & "VerCosto"
-            Else
-                Cadena = "VerCosto"
-            End If
-
-        Else
-            Cadena = Cadena & "," & "NoVerCosto"
-        End If
-
-
-        SQLClientes = "SELECT  * FROM Perfil WHERE (NombrePerfil = '" & Me.ListBox.Text & "')"
-        DataAdapter = New SqlClient.SqlDataAdapter(SQLClientes, MiConexion)
-        DataAdapter.Fill(DataSet, "Perfil")
-
-
-
-
-
-        If Not DataSet.Tables("Perfil").Rows.Count = 0 Then
-
-            IdPerfil = DataSet.Tables("Perfil").Rows(0)("IdPerfil")
-            Modulo = Me.ListBoxOpciones.Text
-
-            '------------------------------------------------------------------------------------------
-            '------------------------BUSCO SI ESTA GRABADO EN LA TABLA DE ACCESOS --------------------
-            '---------------------------------------------------------------------------------------------
-            SQLClientes = "SELECT  * FROM Accesos WHERE (IdPerfil = " & IdPerfil & ") AND (Modulo = '" & Modulo & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SQLClientes, MiConexion)
-            DataAdapter.Fill(DataSet, "Acceso")
-
-            If Not DataSet.Tables("Acceso").Rows.Count = 0 Then
-
-                '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-                StrSqlUpdate = "UPDATE [Accesos]  SET [Acceso] = '" & Cadena & "'  WHERE (IdPerfil = " & IdPerfil & ") AND (Modulo = '" & Modulo & "')"
-                MiConexion.Open()
-                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-                iResultado = ComandoUpdate.ExecuteNonQuery
-                MiConexion.Close()
-
-
-                MsgBox("Registro Correcto !!", MsgBoxStyle.Critical, "Zeus Facturacion")
-            Else
-                '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-                StrSqlUpdate = "INSERT INTO [Accesos] ([IdPerfil] ,[Modulo] ,[Acceso])" & _
-                               "VALUES (" & IdPerfil & " , '" & Modulo & "',  '" & Cadena & "')"
-                MiConexion.Open()
-                ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-                iResultado = ComandoUpdate.ExecuteNonQuery
-                MiConexion.Close()
-
-                MsgBox("Registro Correcto !!", MsgBoxStyle.Critical, "Zeus Facturacion")
-            End If
-
-        End If
-
-
-
-
-
-
-
-    End Sub
-
-    Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
+    Private Sub BtnSalir_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnSalir.Click
         Me.Close()
     End Sub
 
-    Private Sub GroupBox1_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox1.Enter
+    '=================================================================================================
+    ' PRESENTACIÓN
+    '=================================================================================================
+    Private Sub MostrarEstado(ByVal texto As String, ByVal color As Color)
+        Me.LblEstado.Text = texto
+        Me.LblEstado.ForeColor = color
+    End Sub
 
+    Private Sub Casilla_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) _
+        Handles ChkAbrir.CheckedChanged, ChkGrabar.CheckedChanged, ChkEliminar.CheckedChanged, ChkAnular.CheckedChanged,
+                ChkProcesar.CheckedChanged, ChkImprimir.CheckedChanged, ChkEditar.CheckedChanged,
+                ChkCambiarBodega.CheckedChanged, ChkVerCosto.CheckedChanged
+        If _cargando Then Exit Sub
+        MostrarEstado("Hay cambios sin guardar.", ColorMuted)
+    End Sub
+
+    ''' <summary>Dibuja las filas de las dos listas con el estilo del sistema (selección azul claro).</summary>
+    Private Sub Lista_DrawItem(ByVal sender As Object, ByVal e As DrawItemEventArgs) Handles LstPerfiles.DrawItem, LstModulos.DrawItem
+        If e.Index < 0 Then Exit Sub
+        Dim lista = DirectCast(sender, ListBox)
+        Dim seleccionado = (e.State And DrawItemState.Selected) = DrawItemState.Selected
+
+        Using fondo As New SolidBrush(If(seleccionado, ColorSeleccion, lista.BackColor))
+            e.Graphics.FillRectangle(fondo, e.Bounds)
+        End Using
+        If seleccionado Then
+            Using barra As New SolidBrush(Color.FromArgb(37, 99, 235))
+                e.Graphics.FillRectangle(barra, e.Bounds.X, e.Bounds.Y, 3, e.Bounds.Height)
+            End Using
+        End If
+
+        Dim texto = lista.Items(e.Index).ToString()
+        Dim area As New Rectangle(e.Bounds.X + 14, e.Bounds.Y, e.Bounds.Width - 14, e.Bounds.Height)
+        TextRenderer.DrawText(e.Graphics, texto, lista.Font, area, If(seleccionado, ColorSeleccionTexto, ColorTexto),
+                              TextFormatFlags.VerticalCenter Or TextFormatFlags.Left Or TextFormatFlags.EndEllipsis)
     End Sub
 End Class

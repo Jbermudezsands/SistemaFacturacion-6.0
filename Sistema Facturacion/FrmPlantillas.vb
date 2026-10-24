@@ -6,7 +6,7 @@ Public Class FrmPlantillas
     End Sub
 
     Private Sub FrmPlantillas_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Plantilla Ventas/Compras")
+        Seguridad.Bloqueo(Me, Acceso, "Plantilla Ventas/Compras")
     End Sub
 
     Private Sub FrmPlantillas_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load

@@ -2,7 +2,7 @@ Public Class FrmUsuarios
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
 
     Private Sub FrmUsuarios_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Usuarios")
+        Seguridad.Bloqueo(Me, Acceso, "Usuarios")
     End Sub
     Private Sub FrmUsuarios_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim SqlUsuarios As String

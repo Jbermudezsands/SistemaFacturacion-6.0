@@ -3652,12 +3652,12 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         '    Me.CboTipoProducto.Text = "Orden de Compra"
         '    'Me.TxtNumeroEnsamble.Text = "-----0-----"
         '    Me.TxtNumeroEnsamble.Text = NumeroCompra
-        '    Bloqueo(Me, Acceso, "Orden de Compra")
+        '    Seguridad.Bloqueo(Me, Acceso, "Orden de Compra")
         '    Me.CmdFacturar.Enabled = True
         'Else
 
 
-        '    'Bloqueo(Me, Acceso, "Compras")
+        '    'Seguridad.Bloqueo(Me, Acceso, "Compras")
         'End If
 
         'Me.DTPFecha.Value = Fecha_Compra

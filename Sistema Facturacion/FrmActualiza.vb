@@ -464,7 +464,7 @@ Handles backgroundWorkerProductosLotes.ProgressChanged
     End Sub
 
     Private Sub FrmActualiza_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Ajustes")
+        Seguridad.Bloqueo(Me, Acceso, "Ajustes")
     End Sub
 
     Private Sub FrmActualiza_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load

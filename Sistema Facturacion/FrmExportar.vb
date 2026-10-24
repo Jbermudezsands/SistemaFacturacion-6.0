@@ -697,7 +697,7 @@ Public Class FrmExportar
     End Function
 
     Private Sub FrmExportar_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Exportar a Excel")
+        Seguridad.Bloqueo(Me, Acceso, "Exportar a Excel")
     End Sub
 
 

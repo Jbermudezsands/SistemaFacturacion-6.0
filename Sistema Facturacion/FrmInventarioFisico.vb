@@ -331,7 +331,7 @@ Public Class FrmInventarioFisico
         Me.Close()
     End Sub
     Private Sub FrmInventarioFisico_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Inventario Fisico")
+        Seguridad.Bloqueo(Me, Acceso, "Inventario Fisico")
     End Sub
 
     Private Sub FrmInventarioFisico_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load

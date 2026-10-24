@@ -5,7 +5,7 @@ Public Class FrmArqueo
     Public ds As New DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder
 
     Private Sub FrmArqueo_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Arqueo de Caja")
+        Seguridad.Bloqueo(Me, Acceso, "Arqueo de Caja")
     End Sub
     Private Sub FrmArqueo_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter

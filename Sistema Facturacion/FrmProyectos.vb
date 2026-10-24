@@ -2,7 +2,7 @@ Public Class FrmProyectos
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
 
     Private Sub FrmProyectos_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        Bloqueo(Me, Acceso, "Proyectos")
+        Seguridad.Bloqueo(Me, Acceso, "Proyectos")
     End Sub
     Private Sub Proyectos_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim Sql As String
