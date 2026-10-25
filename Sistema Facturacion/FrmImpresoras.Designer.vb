@@ -54,7 +54,7 @@ Partial Class FrmImpresoras
         Me.LblSubtitulo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(176, Byte), Integer), CType(CType(190, Byte), Integer), CType(CType(214, Byte), Integer))
         Me.LblSubtitulo.Location = New System.Drawing.Point(20, 36)
         Me.LblSubtitulo.Name = "LblSubtitulo"
-        Me.LblSubtitulo.Size = New System.Drawing.Size(274, 15)
+        Me.LblSubtitulo.Size = New System.Drawing.Size(259, 15)
         Me.LblSubtitulo.TabIndex = 1
         Me.LblSubtitulo.Text = "Impresora que usa cada documento del sistema"
         '
@@ -65,7 +65,7 @@ Partial Class FrmImpresoras
         Me.LblTitulo.ForeColor = System.Drawing.Color.White
         Me.LblTitulo.Location = New System.Drawing.Point(17, 6)
         Me.LblTitulo.Name = "LblTitulo"
-        Me.LblTitulo.Size = New System.Drawing.Size(107, 30)
+        Me.LblTitulo.Size = New System.Drawing.Size(120, 30)
         Me.LblTitulo.TabIndex = 0
         Me.LblTitulo.Text = "Impresoras"
         '
@@ -80,86 +80,10 @@ Partial Class FrmImpresoras
         Me.PnlCard.Controls.Add(Me.LblRecibo)
         Me.PnlCard.Controls.Add(Me.CmbImpresorasRemision)
         Me.PnlCard.Controls.Add(Me.LblFactura)
-        Me.PnlCard.Location = New System.Drawing.Point(20, 80)
+        Me.PnlCard.Location = New System.Drawing.Point(20, 65)
         Me.PnlCard.Name = "PnlCard"
         Me.PnlCard.Size = New System.Drawing.Size(420, 330)
         Me.PnlCard.TabIndex = 1
-        '
-        'LblFactura
-        '
-        Me.LblFactura.AutoSize = True
-        Me.LblFactura.ForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(85, Byte), Integer), CType(CType(105, Byte), Integer))
-        Me.LblFactura.Location = New System.Drawing.Point(20, 16)
-        Me.LblFactura.Name = "LblFactura"
-        Me.LblFactura.Size = New System.Drawing.Size(113, 15)
-        Me.LblFactura.TabIndex = 0
-        Me.LblFactura.Text = "Impresora de Factura"
-        '
-        'CmbImpresorasRemision
-        '
-        Me.CmbImpresorasRemision.BackColor = System.Drawing.Color.White
-        Me.CmbImpresorasRemision.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.CmbImpresorasRemision.Font = New System.Drawing.Font("Segoe UI", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CmbImpresorasRemision.ForeColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(41, Byte), Integer), CType(CType(55, Byte), Integer))
-        Me.CmbImpresorasRemision.FormattingEnabled = True
-        Me.CmbImpresorasRemision.Location = New System.Drawing.Point(20, 36)
-        Me.CmbImpresorasRemision.Name = "CmbImpresorasRemision"
-        Me.CmbImpresorasRemision.Size = New System.Drawing.Size(380, 25)
-        Me.CmbImpresorasRemision.TabIndex = 1
-        '
-        'LblRecibo
-        '
-        Me.LblRecibo.AutoSize = True
-        Me.LblRecibo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(85, Byte), Integer), CType(CType(105, Byte), Integer))
-        Me.LblRecibo.Location = New System.Drawing.Point(20, 92)
-        Me.LblRecibo.Name = "LblRecibo"
-        Me.LblRecibo.Size = New System.Drawing.Size(107, 15)
-        Me.LblRecibo.TabIndex = 2
-        Me.LblRecibo.Text = "Impresora de Recibo"
-        '
-        'CmbImpresorasRecibo
-        '
-        Me.CmbImpresorasRecibo.BackColor = System.Drawing.Color.White
-        Me.CmbImpresorasRecibo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.CmbImpresorasRecibo.Font = New System.Drawing.Font("Segoe UI", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CmbImpresorasRecibo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(41, Byte), Integer), CType(CType(55, Byte), Integer))
-        Me.CmbImpresorasRecibo.FormattingEnabled = True
-        Me.CmbImpresorasRecibo.Location = New System.Drawing.Point(20, 112)
-        Me.CmbImpresorasRecibo.Name = "CmbImpresorasRecibo"
-        Me.CmbImpresorasRecibo.Size = New System.Drawing.Size(380, 25)
-        Me.CmbImpresorasRecibo.TabIndex = 3
-        '
-        'LblComanda
-        '
-        Me.LblComanda.AutoSize = True
-        Me.LblComanda.ForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(85, Byte), Integer), CType(CType(105, Byte), Integer))
-        Me.LblComanda.Location = New System.Drawing.Point(20, 168)
-        Me.LblComanda.Name = "LblComanda"
-        Me.LblComanda.Size = New System.Drawing.Size(172, 15)
-        Me.LblComanda.TabIndex = 4
-        Me.LblComanda.Text = "Impresora de Comanda (Cocina)"
-        '
-        'CmbImpresorasComanda
-        '
-        Me.CmbImpresorasComanda.BackColor = System.Drawing.Color.White
-        Me.CmbImpresorasComanda.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.CmbImpresorasComanda.Font = New System.Drawing.Font("Segoe UI", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CmbImpresorasComanda.ForeColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(41, Byte), Integer), CType(CType(55, Byte), Integer))
-        Me.CmbImpresorasComanda.FormattingEnabled = True
-        Me.CmbImpresorasComanda.Location = New System.Drawing.Point(20, 188)
-        Me.CmbImpresorasComanda.Name = "CmbImpresorasComanda"
-        Me.CmbImpresorasComanda.Size = New System.Drawing.Size(380, 25)
-        Me.CmbImpresorasComanda.TabIndex = 5
-        '
-        'LblComandaBar
-        '
-        Me.LblComandaBar.AutoSize = True
-        Me.LblComandaBar.ForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(85, Byte), Integer), CType(CType(105, Byte), Integer))
-        Me.LblComandaBar.Location = New System.Drawing.Point(20, 244)
-        Me.LblComandaBar.Name = "LblComandaBar"
-        Me.LblComandaBar.Size = New System.Drawing.Size(154, 15)
-        Me.LblComandaBar.TabIndex = 6
-        Me.LblComandaBar.Text = "Impresora de Comanda Bar"
         '
         'CmbImpresorasComandaBar
         '
@@ -173,6 +97,82 @@ Partial Class FrmImpresoras
         Me.CmbImpresorasComandaBar.Size = New System.Drawing.Size(380, 25)
         Me.CmbImpresorasComandaBar.TabIndex = 7
         '
+        'LblComandaBar
+        '
+        Me.LblComandaBar.AutoSize = True
+        Me.LblComandaBar.ForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(85, Byte), Integer), CType(CType(105, Byte), Integer))
+        Me.LblComandaBar.Location = New System.Drawing.Point(20, 244)
+        Me.LblComandaBar.Name = "LblComandaBar"
+        Me.LblComandaBar.Size = New System.Drawing.Size(151, 15)
+        Me.LblComandaBar.TabIndex = 6
+        Me.LblComandaBar.Text = "Impresora de Comanda Bar"
+        '
+        'CmbImpresorasComanda
+        '
+        Me.CmbImpresorasComanda.BackColor = System.Drawing.Color.White
+        Me.CmbImpresorasComanda.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.CmbImpresorasComanda.Font = New System.Drawing.Font("Segoe UI", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CmbImpresorasComanda.ForeColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(41, Byte), Integer), CType(CType(55, Byte), Integer))
+        Me.CmbImpresorasComanda.FormattingEnabled = True
+        Me.CmbImpresorasComanda.Location = New System.Drawing.Point(20, 188)
+        Me.CmbImpresorasComanda.Name = "CmbImpresorasComanda"
+        Me.CmbImpresorasComanda.Size = New System.Drawing.Size(380, 25)
+        Me.CmbImpresorasComanda.TabIndex = 5
+        '
+        'LblComanda
+        '
+        Me.LblComanda.AutoSize = True
+        Me.LblComanda.ForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(85, Byte), Integer), CType(CType(105, Byte), Integer))
+        Me.LblComanda.Location = New System.Drawing.Point(20, 168)
+        Me.LblComanda.Name = "LblComanda"
+        Me.LblComanda.Size = New System.Drawing.Size(179, 15)
+        Me.LblComanda.TabIndex = 4
+        Me.LblComanda.Text = "Impresora de Comanda (Cocina)"
+        '
+        'CmbImpresorasRecibo
+        '
+        Me.CmbImpresorasRecibo.BackColor = System.Drawing.Color.White
+        Me.CmbImpresorasRecibo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.CmbImpresorasRecibo.Font = New System.Drawing.Font("Segoe UI", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CmbImpresorasRecibo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(41, Byte), Integer), CType(CType(55, Byte), Integer))
+        Me.CmbImpresorasRecibo.FormattingEnabled = True
+        Me.CmbImpresorasRecibo.Location = New System.Drawing.Point(20, 112)
+        Me.CmbImpresorasRecibo.Name = "CmbImpresorasRecibo"
+        Me.CmbImpresorasRecibo.Size = New System.Drawing.Size(380, 25)
+        Me.CmbImpresorasRecibo.TabIndex = 3
+        '
+        'LblRecibo
+        '
+        Me.LblRecibo.AutoSize = True
+        Me.LblRecibo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(85, Byte), Integer), CType(CType(105, Byte), Integer))
+        Me.LblRecibo.Location = New System.Drawing.Point(20, 92)
+        Me.LblRecibo.Name = "LblRecibo"
+        Me.LblRecibo.Size = New System.Drawing.Size(115, 15)
+        Me.LblRecibo.TabIndex = 2
+        Me.LblRecibo.Text = "Impresora de Recibo"
+        '
+        'CmbImpresorasRemision
+        '
+        Me.CmbImpresorasRemision.BackColor = System.Drawing.Color.White
+        Me.CmbImpresorasRemision.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.CmbImpresorasRemision.Font = New System.Drawing.Font("Segoe UI", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CmbImpresorasRemision.ForeColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(41, Byte), Integer), CType(CType(55, Byte), Integer))
+        Me.CmbImpresorasRemision.FormattingEnabled = True
+        Me.CmbImpresorasRemision.Location = New System.Drawing.Point(20, 36)
+        Me.CmbImpresorasRemision.Name = "CmbImpresorasRemision"
+        Me.CmbImpresorasRemision.Size = New System.Drawing.Size(380, 25)
+        Me.CmbImpresorasRemision.TabIndex = 1
+        '
+        'LblFactura
+        '
+        Me.LblFactura.AutoSize = True
+        Me.LblFactura.ForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(85, Byte), Integer), CType(CType(105, Byte), Integer))
+        Me.LblFactura.Location = New System.Drawing.Point(20, 16)
+        Me.LblFactura.Name = "LblFactura"
+        Me.LblFactura.Size = New System.Drawing.Size(118, 15)
+        Me.LblFactura.TabIndex = 0
+        Me.LblFactura.Text = "Impresora de Factura"
+        '
         'BtnGuardar
         '
         Me.BtnGuardar.BackColor = System.Drawing.Color.FromArgb(CType(CType(37, Byte), Integer), CType(CType(99, Byte), Integer), CType(CType(235, Byte), Integer))
@@ -183,7 +183,7 @@ Partial Class FrmImpresoras
         Me.BtnGuardar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.BtnGuardar.Font = New System.Drawing.Font("Segoe UI Semibold", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnGuardar.ForeColor = System.Drawing.Color.White
-        Me.BtnGuardar.Location = New System.Drawing.Point(20, 430)
+        Me.BtnGuardar.Location = New System.Drawing.Point(20, 400)
         Me.BtnGuardar.Name = "BtnGuardar"
         Me.BtnGuardar.Size = New System.Drawing.Size(140, 42)
         Me.BtnGuardar.TabIndex = 2
@@ -199,7 +199,7 @@ Partial Class FrmImpresoras
         Me.BtnSalir.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.BtnSalir.Font = New System.Drawing.Font("Segoe UI Semibold", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnSalir.ForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(85, Byte), Integer), CType(CType(105, Byte), Integer))
-        Me.BtnSalir.Location = New System.Drawing.Point(300, 430)
+        Me.BtnSalir.Location = New System.Drawing.Point(300, 400)
         Me.BtnSalir.Name = "BtnSalir"
         Me.BtnSalir.Size = New System.Drawing.Size(140, 42)
         Me.BtnSalir.TabIndex = 3
@@ -211,7 +211,7 @@ Partial Class FrmImpresoras
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(244, Byte), Integer), CType(CType(246, Byte), Integer), CType(CType(250, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(460, 492)
+        Me.ClientSize = New System.Drawing.Size(460, 448)
         Me.Controls.Add(Me.BtnSalir)
         Me.Controls.Add(Me.BtnGuardar)
         Me.Controls.Add(Me.PnlCard)
