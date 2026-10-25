@@ -610,6 +610,7 @@ Public Class FrmProductos
             Me.CboRubro.DataSource = DataSet.Tables("Rubros")
             Me.CboRubro.Text = DataSet.Tables("Rubros").Rows(0)("Nombre_Rubro")
         End If
+        CargarTiposImpresion()
 
         '/////////////////////////////////////////UNIDAD DE MEDIDA /////////////////////////////////////////////////////////////
         SqlProductos = "SELECT DISTINCT Unidad_Medida  FROM Productos WHERE  (Unidad_Medida <> ' ') ORDER BY Unidad_Medida"
@@ -703,13 +704,14 @@ Public Class FrmProductos
         End If
 
         Foto = bytesToString(ImagenToBytes(Me.ImgFoto.Image))
+        Dim TipoImpresion As String = TipoImpresionSeleccionado()
 
         SQLProductos = "SELECT Productos.*  FROM Productos WHERE (Cod_Productos = '" & Me.CboCodigoProducto.Text & "') "
         DataAdapter = New SqlClient.SqlDataAdapter(SQLProductos, MiConexion)
         DataAdapter.Fill(DataSet, "Proveedores")
         If Not DataSet.Tables("Proveedores").Rows.Count = 0 Then
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-            StrSqlUpdate = "UPDATE [Productos] SET [Descripcion_Producto] = '" & Me.TxtNombreProducto.Text & "',[Ubicacion] = '" & Me.TxtUbicacion.Text & "',[Cod_Linea] = '" & Me.CboLinea.Columns(0).Text & "',[Tipo_Producto] = '" & Me.CboTipoProducto.Text & "',[Cod_Cuenta_Inventario] = '" & Me.TxtCtaInventario.Text & "' ,[Cod_Cuenta_Costo] = '" & Me.TxtCtaCosto.Text & "',[Cod_Cuenta_Ventas] = '" & Me.TxtCuentaVenta.Text & "',[Unidad_Medida] = '" & Me.CboUnidad.Text & "',[Precio_Venta] = '" & CDbl(Me.TxtPrecioVenta.Text) & "',[Precio_Lista] = '" & CDbl(Me.TxtPrecioCompra.Text) & "',[Descuento] = '" & Me.TxtDescuento.Text & "',[Existencia_Negativa] = '" & Me.CboExistencia.Text & "',[Cod_Iva] = '" & Me.CboIva.Text & "' ,[Activo] = '" & Me.CboActivo.Text & "' ,[Minimo] = '" & Me.TxtMinimo.Text & "' ,[Reorden] = '" & Me.TxtReorden.Text & "',[Nota] = '" & Me.TxtNota.Text & "',[Cod_Cuenta_GastoAjuste]= '" & Me.TxtGastoAjuste.Text & "',[Cod_Cuenta_IngresoAjuste]= '" & Me.TxtIngresoAjuste.Text & "',[CodComponente]= " & CodComponente & ",[Cod_Rubro]= '" & CodRubro & "', [Porcentaje_Aumento]= " & Me.TxtAumento.Value & ",  [Rendimiento]= " & Me.TxtRendimiento.Text & " ,[Merma]= " & Me.TxtMerma.Text & " ,  [Desperdicio]= " & Me.TxtDesperdicio.Text & ", [Foto]= '" & Foto & "'    WHERE (Cod_Productos = '" & Me.CboCodigoProducto.Text & "')"
+            StrSqlUpdate = "UPDATE [Productos] SET [Descripcion_Producto] = '" & Me.TxtNombreProducto.Text & "',[Ubicacion] = '" & Me.TxtUbicacion.Text & "',[Cod_Linea] = '" & Me.CboLinea.Columns(0).Text & "',[Tipo_Producto] = '" & Me.CboTipoProducto.Text & "',[Cod_Cuenta_Inventario] = '" & Me.TxtCtaInventario.Text & "' ,[Cod_Cuenta_Costo] = '" & Me.TxtCtaCosto.Text & "',[Cod_Cuenta_Ventas] = '" & Me.TxtCuentaVenta.Text & "',[Unidad_Medida] = '" & Me.CboUnidad.Text & "',[Precio_Venta] = '" & CDbl(Me.TxtPrecioVenta.Text) & "',[Precio_Lista] = '" & CDbl(Me.TxtPrecioCompra.Text) & "',[Descuento] = '" & Me.TxtDescuento.Text & "',[Existencia_Negativa] = '" & Me.CboExistencia.Text & "',[Cod_Iva] = '" & Me.CboIva.Text & "' ,[Activo] = '" & Me.CboActivo.Text & "' ,[Minimo] = '" & Me.TxtMinimo.Text & "' ,[Reorden] = '" & Me.TxtReorden.Text & "',[Nota] = '" & Me.TxtNota.Text & "',[Cod_Cuenta_GastoAjuste]= '" & Me.TxtGastoAjuste.Text & "',[Cod_Cuenta_IngresoAjuste]= '" & Me.TxtIngresoAjuste.Text & "',[CodComponente]= " & CodComponente & ",[Cod_Rubro]= '" & CodRubro & "', [Porcentaje_Aumento]= " & Me.TxtAumento.Value & ",  [Rendimiento]= " & Me.TxtRendimiento.Text & " ,[Merma]= " & Me.TxtMerma.Text & " ,  [Desperdicio]= " & Me.TxtDesperdicio.Text & ", [Foto]= '" & Foto & "', [TipoImpresion]= '" & TipoImpresion & "'    WHERE (Cod_Productos = '" & Me.CboCodigoProducto.Text & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -718,8 +720,8 @@ Public Class FrmProductos
         Else
             MiConexion.Close()
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Productos] ([Cod_Productos],[Descripcion_Producto],[Ubicacion],[Cod_Linea],[Tipo_Producto],[Cod_Cuenta_Inventario],[Cod_Cuenta_Costo],[Cod_Cuenta_Ventas],[Unidad_Medida],[Precio_Venta],[Precio_Lista],[Descuento],[Existencia_Negativa],[Cod_Iva],[Activo],[Minimo],[Reorden],[Nota],[Cod_Cuenta_GastoAjuste],[Cod_Cuenta_IngresoAjuste],[CodComponente],[Cod_Rubro],[Porcentaje_Aumento],[Rendimiento],[Merma],[Desperdicio],[Foto]) " &
-                           "VALUES('" & Me.CboCodigoProducto.Text & "','" & Me.TxtNombreProducto.Text & "','" & Me.TxtUbicacion.Text & "','" & Me.CboLinea.Columns(0).Text & "','" & Me.CboTipoProducto.Text & "' ,'" & Me.TxtCtaInventario.Text & "','" & Me.TxtCtaCosto.Text & "','" & Me.TxtCuentaVenta.Text & "','" & Me.CboUnidad.Text & "','" & CDbl(Me.TxtPrecioVenta.Text) & "','" & CDbl(Me.TxtPrecioCompra.Text) & "','" & Me.TxtDescuento.Text & "','" & Me.CboExistencia.Text & "','" & Me.CboIva.Text & "','" & Me.CboActivo.Text & "','" & Me.TxtMinimo.Text & "' ,'" & Me.TxtReorden.Text & "','" & Me.TxtNota.Text & "','" & Me.TxtGastoAjuste.Text & "','" & Me.TxtIngresoAjuste.Text & "'," & CodComponente & ",'" & CodRubro & "'," & Me.TxtAumento.Value & "," & Me.TxtRendimiento.Text & ", " & Me.TxtMerma.Text & " ," & Me.TxtDesperdicio.Text & ", '" & Foto & "')"
+            StrSqlUpdate = "INSERT INTO [Productos] ([Cod_Productos],[Descripcion_Producto],[Ubicacion],[Cod_Linea],[Tipo_Producto],[Cod_Cuenta_Inventario],[Cod_Cuenta_Costo],[Cod_Cuenta_Ventas],[Unidad_Medida],[Precio_Venta],[Precio_Lista],[Descuento],[Existencia_Negativa],[Cod_Iva],[Activo],[Minimo],[Reorden],[Nota],[Cod_Cuenta_GastoAjuste],[Cod_Cuenta_IngresoAjuste],[CodComponente],[Cod_Rubro],[Porcentaje_Aumento],[Rendimiento],[Merma],[Desperdicio],[Foto],[TipoImpresion]) " &
+                           "VALUES('" & Me.CboCodigoProducto.Text & "','" & Me.TxtNombreProducto.Text & "','" & Me.TxtUbicacion.Text & "','" & Me.CboLinea.Columns(0).Text & "','" & Me.CboTipoProducto.Text & "' ,'" & Me.TxtCtaInventario.Text & "','" & Me.TxtCtaCosto.Text & "','" & Me.TxtCuentaVenta.Text & "','" & Me.CboUnidad.Text & "','" & CDbl(Me.TxtPrecioVenta.Text) & "','" & CDbl(Me.TxtPrecioCompra.Text) & "','" & Me.TxtDescuento.Text & "','" & Me.CboExistencia.Text & "','" & Me.CboIva.Text & "','" & Me.CboActivo.Text & "','" & Me.TxtMinimo.Text & "' ,'" & Me.TxtReorden.Text & "','" & Me.TxtNota.Text & "','" & Me.TxtGastoAjuste.Text & "','" & Me.TxtIngresoAjuste.Text & "'," & CodComponente & ",'" & CodRubro & "'," & Me.TxtAumento.Value & "," & Me.TxtRendimiento.Text & ", " & Me.TxtMerma.Text & " ," & Me.TxtDesperdicio.Text & ", '" & Foto & "', '" & TipoImpresion & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -874,6 +876,7 @@ Public Class FrmProductos
                         Me.CboRubro.DataSource = DataSet.Tables("Rubros")
                         Me.CboRubro.Text = DataSet.Tables("Rubros").Rows(0)("Nombre_Rubro")
                     End If
+                    MostrarTipoImpresion(Nothing)
 
                     '/////////////////////////////////////////UNIDAD DE MEDIDA /////////////////////////////////////////////////////////////
                     SqlProductos = "SELECT DISTINCT Unidad_Medida  FROM Productos WHERE  (Unidad_Medida <> ' ') ORDER BY Unidad_Medida"
@@ -1129,6 +1132,7 @@ Public Class FrmProductos
                 If Not DataSet.Tables("Rubro").Rows.Count = 0 Then
                     Me.CboRubro.Text = DataSet.Tables("Rubro").Rows(0)("Nombre_Rubro")
                 End If
+                MostrarTipoImpresion(DataSet.Tables("Producto").Rows(0))
 
 
 
@@ -2820,6 +2824,7 @@ Public Class FrmProductos
             Else
                 CodRubro = ""
             End If
+            MostrarTipoImpresion(DataSet.Tables("Producto").Rows(0))
 
 
             '////////BUSCO EL IMPUESTO DEL PRODUCTO///////////////////////
@@ -3224,6 +3229,51 @@ Public Class FrmProductos
     Private Sub CmdNuevo_Click(sender As Object, e As EventArgs) Handles CmdNuevo.Click
         Me.CboCodigoProducto.Text = ""
     End Sub
+
+    '////// TipoImpresion: tipos de impresora de comanda definidos en Impresoras.dll //////
+    Private Sub CargarTiposImpresion()
+        Dim Tipos As New List(Of String)
+        Try
+            Dim Ruta As String = My.Application.Info.DirectoryPath & "\Impresoras.dll"
+            Using Cn As New System.Data.OleDb.OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & Ruta & ";")
+                Using Cmd As New System.Data.OleDb.OleDbCommand("SELECT DISTINCT TipoImpresora FROM Impresoras WHERE TipoImpresora LIKE 'Comanda%'", Cn)
+                    Cn.Open()
+                    Using Lector As System.Data.OleDb.OleDbDataReader = Cmd.ExecuteReader()
+                        Do While Lector.Read()
+                            If Not IsDBNull(Lector(0)) AndAlso Lector(0).ToString().Trim() <> "" Then
+                                Tipos.Add(Lector(0).ToString().Trim())
+                            End If
+                        Loop
+                    End Using
+                End Using
+            End Using
+        Catch ex As Exception
+            ' Si no se puede leer Impresoras.dll se usan los tipos por defecto
+        End Try
+
+        If Not Tipos.Contains("Comanda") Then Tipos.Insert(0, "Comanda")
+        If Not Tipos.Contains("ComandaBar") Then Tipos.Add("ComandaBar")
+
+        Me.CboTipoImpresion.Items.Clear()
+        For Each Tipo As String In Tipos
+            Me.CboTipoImpresion.Items.Add(Tipo)
+        Next
+        Me.CboTipoImpresion.SelectedItem = "Comanda"
+    End Sub
+
+    Private Sub MostrarTipoImpresion(ByVal Fila As DataRow)
+        Dim Tipo As String = "Comanda"
+        If Fila IsNot Nothing AndAlso Fila.Table.Columns.Contains("TipoImpresion") AndAlso Not IsDBNull(Fila("TipoImpresion")) Then
+            If Fila("TipoImpresion").ToString().Trim() <> "" Then Tipo = Fila("TipoImpresion").ToString().Trim()
+        End If
+        If Not Me.CboTipoImpresion.Items.Contains(Tipo) Then Me.CboTipoImpresion.Items.Add(Tipo)
+        Me.CboTipoImpresion.SelectedItem = Tipo
+    End Sub
+
+    Private Function TipoImpresionSeleccionado() As String
+        If Me.CboTipoImpresion.Text.Trim() = "" Then Return "Comanda"
+        Return Replace(Me.CboTipoImpresion.Text.Trim(), "'", "")
+    End Function
 
 
     Private Sub GroupBox4_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox4.Enter
