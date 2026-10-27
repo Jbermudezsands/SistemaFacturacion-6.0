@@ -130,20 +130,6 @@ Partial Class FrmActualiza
         Me.TabPage7 = New System.Windows.Forms.TabPage()
         Me.Button20 = New System.Windows.Forms.Button()
         Me.TabPage8 = New System.Windows.Forms.TabPage()
-        Me.BtnModificar = New System.Windows.Forms.Button()
-        Me.Button21 = New System.Windows.Forms.Button()
-        Me.BtnAnular = New System.Windows.Forms.Button()
-        Me.BtnActivar = New System.Windows.Forms.Button()
-        Me.BtnEliminar = New System.Windows.Forms.Button()
-        Me.TxtNumero = New System.Windows.Forms.TextBox()
-        Me.LblNumero = New System.Windows.Forms.Label()
-        Me.GroupBox10 = New System.Windows.Forms.GroupBox()
-        Me.OptClientes = New System.Windows.Forms.RadioButton()
-        Me.OptCompras = New System.Windows.Forms.RadioButton()
-        Me.OptPagos = New System.Windows.Forms.RadioButton()
-        Me.OptTransformacion = New System.Windows.Forms.RadioButton()
-        Me.OptRecibos = New System.Windows.Forms.RadioButton()
-        Me.OptFacturas = New System.Windows.Forms.RadioButton()
         Me.TabPage9 = New System.Windows.Forms.TabPage()
         Me.GroupBox13 = New System.Windows.Forms.GroupBox()
         Me.BtnIniciarLotes = New System.Windows.Forms.Button()
@@ -179,7 +165,6 @@ Partial Class FrmActualiza
         Me.GroupBox9.SuspendLayout()
         Me.TabPage7.SuspendLayout()
         Me.TabPage8.SuspendLayout()
-        Me.GroupBox10.SuspendLayout()
         Me.TabPage9.SuspendLayout()
         Me.GroupBox13.SuspendLayout()
         Me.SuspendLayout()
@@ -1298,14 +1283,8 @@ Partial Class FrmActualiza
         '
         'TabPage8
         '
-        Me.TabPage8.Controls.Add(Me.BtnModificar)
-        Me.TabPage8.Controls.Add(Me.Button21)
-        Me.TabPage8.Controls.Add(Me.BtnAnular)
-        Me.TabPage8.Controls.Add(Me.BtnActivar)
-        Me.TabPage8.Controls.Add(Me.BtnEliminar)
-        Me.TabPage8.Controls.Add(Me.TxtNumero)
-        Me.TabPage8.Controls.Add(Me.LblNumero)
-        Me.TabPage8.Controls.Add(Me.GroupBox10)
+        Me.TabPage8.Controls.Add(Me.BtnIniciar)
+        Me.TabPage8.Controls.Add(Me.Label23)
         Me.TabPage8.Location = New System.Drawing.Point(4, 22)
         Me.TabPage8.Name = "TabPage8"
         Me.TabPage8.Padding = New System.Windows.Forms.Padding(3)
@@ -1314,150 +1293,10 @@ Partial Class FrmActualiza
         Me.TabPage8.Text = "Auditoria"
         Me.TabPage8.UseVisualStyleBackColor = True
         '
-        'BtnModificar
-        '
-        Me.BtnModificar.Location = New System.Drawing.Point(415, 101)
-        Me.BtnModificar.Name = "BtnModificar"
-        Me.BtnModificar.Size = New System.Drawing.Size(75, 23)
-        Me.BtnModificar.TabIndex = 174
-        Me.BtnModificar.Text = "Modificar"
-        Me.BtnModificar.UseVisualStyleBackColor = True
-        '
-        'Button21
-        '
-        Me.Button21.Image = CType(resources.GetObject("Button21.Image"), System.Drawing.Image)
-        Me.Button21.Location = New System.Drawing.Point(333, 19)
-        Me.Button21.Name = "Button21"
-        Me.Button21.Size = New System.Drawing.Size(29, 30)
-        Me.Button21.TabIndex = 173
-        Me.Button21.UseVisualStyleBackColor = True
-        '
-        'BtnAnular
-        '
-        Me.BtnAnular.Location = New System.Drawing.Point(415, 72)
-        Me.BtnAnular.Name = "BtnAnular"
-        Me.BtnAnular.Size = New System.Drawing.Size(75, 23)
-        Me.BtnAnular.TabIndex = 5
-        Me.BtnAnular.Text = "Anular"
-        Me.BtnAnular.UseVisualStyleBackColor = True
-        '
-        'BtnActivar
-        '
-        Me.BtnActivar.Location = New System.Drawing.Point(415, 43)
-        Me.BtnActivar.Name = "BtnActivar"
-        Me.BtnActivar.Size = New System.Drawing.Size(75, 23)
-        Me.BtnActivar.TabIndex = 4
-        Me.BtnActivar.Text = "Activar"
-        Me.BtnActivar.UseVisualStyleBackColor = True
-        '
-        'BtnEliminar
-        '
-        Me.BtnEliminar.Location = New System.Drawing.Point(415, 15)
-        Me.BtnEliminar.Name = "BtnEliminar"
-        Me.BtnEliminar.Size = New System.Drawing.Size(75, 23)
-        Me.BtnEliminar.TabIndex = 3
-        Me.BtnEliminar.Text = "Eliminar"
-        Me.BtnEliminar.UseVisualStyleBackColor = True
-        '
-        'TxtNumero
-        '
-        Me.TxtNumero.AcceptsReturn = True
-        Me.TxtNumero.Location = New System.Drawing.Point(227, 25)
-        Me.TxtNumero.Name = "TxtNumero"
-        Me.TxtNumero.Size = New System.Drawing.Size(100, 20)
-        Me.TxtNumero.TabIndex = 2
-        '
-        'LblNumero
-        '
-        Me.LblNumero.AutoSize = True
-        Me.LblNumero.Location = New System.Drawing.Point(149, 25)
-        Me.LblNumero.Name = "LblNumero"
-        Me.LblNumero.Size = New System.Drawing.Size(47, 13)
-        Me.LblNumero.TabIndex = 1
-        Me.LblNumero.Text = "Numero:"
-        '
-        'GroupBox10
-        '
-        Me.GroupBox10.Controls.Add(Me.OptClientes)
-        Me.GroupBox10.Controls.Add(Me.OptCompras)
-        Me.GroupBox10.Controls.Add(Me.OptPagos)
-        Me.GroupBox10.Controls.Add(Me.OptTransformacion)
-        Me.GroupBox10.Controls.Add(Me.OptRecibos)
-        Me.GroupBox10.Controls.Add(Me.OptFacturas)
-        Me.GroupBox10.Location = New System.Drawing.Point(11, 6)
-        Me.GroupBox10.Name = "GroupBox10"
-        Me.GroupBox10.Size = New System.Drawing.Size(118, 181)
-        Me.GroupBox10.TabIndex = 0
-        Me.GroupBox10.TabStop = False
-        '
-        'OptClientes
-        '
-        Me.OptClientes.AutoSize = True
-        Me.OptClientes.Location = New System.Drawing.Point(8, 134)
-        Me.OptClientes.Name = "OptClientes"
-        Me.OptClientes.Size = New System.Drawing.Size(62, 17)
-        Me.OptClientes.TabIndex = 4
-        Me.OptClientes.Text = "Clientes"
-        Me.OptClientes.UseVisualStyleBackColor = True
-        '
-        'OptCompras
-        '
-        Me.OptCompras.AutoSize = True
-        Me.OptCompras.Location = New System.Drawing.Point(8, 111)
-        Me.OptCompras.Name = "OptCompras"
-        Me.OptCompras.Size = New System.Drawing.Size(66, 17)
-        Me.OptCompras.TabIndex = 3
-        Me.OptCompras.Text = "Compras"
-        Me.OptCompras.UseVisualStyleBackColor = True
-        '
-        'OptPagos
-        '
-        Me.OptPagos.AutoSize = True
-        Me.OptPagos.Location = New System.Drawing.Point(8, 88)
-        Me.OptPagos.Name = "OptPagos"
-        Me.OptPagos.Size = New System.Drawing.Size(55, 17)
-        Me.OptPagos.TabIndex = 2
-        Me.OptPagos.Text = "Pagos"
-        Me.OptPagos.UseVisualStyleBackColor = True
-        '
-        'OptTransformacion
-        '
-        Me.OptTransformacion.AutoSize = True
-        Me.OptTransformacion.Location = New System.Drawing.Point(7, 65)
-        Me.OptTransformacion.Name = "OptTransformacion"
-        Me.OptTransformacion.Size = New System.Drawing.Size(98, 17)
-        Me.OptTransformacion.TabIndex = 1
-        Me.OptTransformacion.Text = "Transformacion"
-        Me.OptTransformacion.UseVisualStyleBackColor = True
-        '
-        'OptRecibos
-        '
-        Me.OptRecibos.AutoSize = True
-        Me.OptRecibos.Location = New System.Drawing.Point(6, 43)
-        Me.OptRecibos.Name = "OptRecibos"
-        Me.OptRecibos.Size = New System.Drawing.Size(64, 17)
-        Me.OptRecibos.TabIndex = 1
-        Me.OptRecibos.Text = "Recibos"
-        Me.OptRecibos.UseVisualStyleBackColor = True
-        '
-        'OptFacturas
-        '
-        Me.OptFacturas.AutoSize = True
-        Me.OptFacturas.Checked = True
-        Me.OptFacturas.Location = New System.Drawing.Point(6, 19)
-        Me.OptFacturas.Name = "OptFacturas"
-        Me.OptFacturas.Size = New System.Drawing.Size(66, 17)
-        Me.OptFacturas.TabIndex = 0
-        Me.OptFacturas.TabStop = True
-        Me.OptFacturas.Text = "Facturas"
-        Me.OptFacturas.UseVisualStyleBackColor = True
-        '
         'TabPage9
         '
         Me.TabPage9.Controls.Add(Me.GroupBox13)
         Me.TabPage9.Controls.Add(Me.CmdCerrar)
-        Me.TabPage9.Controls.Add(Me.BtnIniciar)
-        Me.TabPage9.Controls.Add(Me.Label23)
         Me.TabPage9.Location = New System.Drawing.Point(4, 22)
         Me.TabPage9.Name = "TabPage9"
         Me.TabPage9.Padding = New System.Windows.Forms.Padding(3)
@@ -1560,10 +1399,10 @@ Partial Class FrmActualiza
         '
         Me.BtnIniciar.Image = CType(resources.GetObject("BtnIniciar.Image"), System.Drawing.Image)
         Me.BtnIniciar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnIniciar.Location = New System.Drawing.Point(123, 17)
+        Me.BtnIniciar.Location = New System.Drawing.Point(263, 80)
         Me.BtnIniciar.Name = "BtnIniciar"
         Me.BtnIniciar.Size = New System.Drawing.Size(75, 34)
-        Me.BtnIniciar.TabIndex = 236
+        Me.BtnIniciar.TabIndex = 238
         Me.BtnIniciar.Text = "Iniciar"
         Me.BtnIniciar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.BtnIniciar.UseVisualStyleBackColor = True
@@ -1571,11 +1410,11 @@ Partial Class FrmActualiza
         'Label23
         '
         Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(26, 28)
+        Me.Label23.Location = New System.Drawing.Point(166, 91)
         Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(86, 13)
-        Me.Label23.TabIndex = 6
-        Me.Label23.Text = "Activar Hilos PBI"
+        Me.Label23.Size = New System.Drawing.Size(76, 13)
+        Me.Label23.TabIndex = 237
+        Me.Label23.Text = "Activar Auditor"
         '
         'FrmActualiza
         '
@@ -1631,10 +1470,7 @@ Partial Class FrmActualiza
         Me.TabPage7.ResumeLayout(False)
         Me.TabPage8.ResumeLayout(False)
         Me.TabPage8.PerformLayout()
-        Me.GroupBox10.ResumeLayout(False)
-        Me.GroupBox10.PerformLayout()
         Me.TabPage9.ResumeLayout(False)
-        Me.TabPage9.PerformLayout()
         Me.GroupBox13.ResumeLayout(False)
         Me.GroupBox13.PerformLayout()
         Me.ResumeLayout(False)
@@ -1744,24 +1580,8 @@ Partial Class FrmActualiza
     Friend WithEvents Button20 As System.Windows.Forms.Button
     Friend WithEvents ProgressBarFactura As System.Windows.Forms.ProgressBar
     Friend WithEvents TabPage8 As System.Windows.Forms.TabPage
-    Friend WithEvents GroupBox10 As System.Windows.Forms.GroupBox
-    Friend WithEvents OptTransformacion As System.Windows.Forms.RadioButton
-    Friend WithEvents OptRecibos As System.Windows.Forms.RadioButton
-    Friend WithEvents OptFacturas As System.Windows.Forms.RadioButton
-    Friend WithEvents OptCompras As System.Windows.Forms.RadioButton
-    Friend WithEvents OptPagos As System.Windows.Forms.RadioButton
-    Friend WithEvents LblNumero As System.Windows.Forms.Label
-    Friend WithEvents TxtNumero As System.Windows.Forms.TextBox
-    Friend WithEvents BtnEliminar As System.Windows.Forms.Button
-    Friend WithEvents BtnActivar As System.Windows.Forms.Button
-    Friend WithEvents BtnAnular As System.Windows.Forms.Button
-    Friend WithEvents BtnModificar As System.Windows.Forms.Button
-    Friend WithEvents Button21 As System.Windows.Forms.Button
-    Friend WithEvents OptClientes As System.Windows.Forms.RadioButton
     Friend WithEvents TabPage9 As System.Windows.Forms.TabPage
-    Friend WithEvents Label23 As System.Windows.Forms.Label
     Friend WithEvents CmdCerrar As System.Windows.Forms.Button
-    Friend WithEvents BtnIniciar As System.Windows.Forms.Button
     Friend WithEvents GroupBox11 As GroupBox
     Friend WithEvents Button22 As Button
     Friend WithEvents GroupBox12 As GroupBox
@@ -1777,4 +1597,6 @@ Partial Class FrmActualiza
     Friend WithEvents Label25 As Label
     Friend WithEvents BtnIniciarLotes As Button
     Friend WithEvents Button26 As Button
+    Friend WithEvents BtnIniciar As Button
+    Friend WithEvents Label23 As Label
 End Class

@@ -1604,74 +1604,16 @@ Handles backgroundWorkerProductosLotes.ProgressChanged
         'End If
     End Sub
 
-    Private Sub OptClientes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptClientes.CheckedChanged
-        If Me.OptClientes.Checked = True Then
-            Me.LblNumero.Text = "Codigo Clientes"
-            Me.BtnEliminar.Enabled = True
-            Me.BtnActivar.Enabled = False
-            Me.BtnModificar.Enabled = False
-            Me.BtnAnular.Enabled = False
-        End If
-    End Sub
-
-    Private Sub OptFacturas_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptFacturas.CheckedChanged
-        If Me.OptFacturas.Checked = True Then
-            Me.LblNumero.Text = "Numero Factura"
-            Me.BtnEliminar.Enabled = True
-            Me.BtnActivar.Enabled = True
-            Me.BtnModificar.Enabled = False
-            Me.BtnAnular.Enabled = True
-        End If
 
 
-    End Sub
-
-    Private Sub OptRecibos_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptRecibos.CheckedChanged
-
-        If Me.OptRecibos.Checked = True Then
-            Me.LblNumero.Text = "Numero Recibo"
-            Me.BtnEliminar.Enabled = True
-            Me.BtnActivar.Enabled = False
-            Me.BtnModificar.Enabled = False
-            Me.BtnAnular.Enabled = True
-        End If
 
 
-    End Sub
 
-    Private Sub OptTransformacion_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptTransformacion.CheckedChanged
 
-        If Me.OptTransformacion.Checked = True Then
-            Me.LblNumero.Text = "Numero Transformacion"
-            Me.BtnEliminar.Enabled = True
-            Me.BtnActivar.Enabled = False
-            Me.BtnModificar.Enabled = False
-            Me.BtnAnular.Enabled = True
-        End If
 
-    End Sub
 
-    Private Sub OptPagos_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptPagos.CheckedChanged
 
-        If Me.OptPagos.Checked = True Then
-            Me.LblNumero.Text = "Numero Pago Proveedores"
-            Me.BtnEliminar.Enabled = True
-            Me.BtnActivar.Enabled = False
-            Me.BtnModificar.Enabled = False
-            Me.BtnAnular.Enabled = True
-        End If
-    End Sub
 
-    Private Sub OptCompras_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptCompras.CheckedChanged
-
-        If Me.OptCompras.Checked = True Then
-            Me.LblNumero.Text = "Numero Compra"
-            Me.BtnEliminar.Enabled = True
-            Me.BtnActivar.Enabled = True
-            Me.BtnModificar.Enabled = True
-            Me.BtnAnular.Enabled = True
-        End If
-    End Sub
 
     Private Sub Button22_Click_1(sender As Object, e As EventArgs) Handles Button22.Click
         If Me.OptCordobas.Checked = True Then
@@ -1775,7 +1717,9 @@ Handles backgroundWorkerProductosLotes.ProgressChanged
 
     End Sub
 
-    Private Sub BtnIniciar_Click(sender As Object, e As EventArgs) Handles BtnIniciar.Click
+
+
+    Private Sub BtnIniciar_Click_1(sender As Object, e As EventArgs) Handles BtnIniciar.Click
         FrmAuditoriaFacturacion.ShowDialog()
     End Sub
 End Class

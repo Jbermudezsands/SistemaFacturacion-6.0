@@ -750,6 +750,7 @@ ByVal e As EventArgs) Handles dgvRegistros.SelectionChanged
 
 
         btnReparar.Enabled = False
+        btnEliminar.Enabled = False
         btnMarcarRevisado.Enabled = False
 
         If dgvRegistros.CurrentRow Is Nothing Then
@@ -765,6 +766,21 @@ ByVal e As EventArgs) Handles dgvRegistros.SelectionChanged
         If hallazgo Is Nothing Then
 
             Return
+
+        End If
+
+        ' --------------------------------------------------------
+        ' ELIMINAR (solo duplicados confirmados por el auditor)
+        ' --------------------------------------------------------
+
+        If hallazgo.EsDuplicado AndAlso
+   hallazgo.PuedeEliminar AndAlso
+   hallazgo.Estado =
+   Auditoria.EstadoHallazgo.Detectado AndAlso
+   (hallazgo.Codigo = "TRANS-001" OrElse
+    hallazgo.Codigo = "TRANS-002") Then
+
+            btnEliminar.Enabled = True
 
         End If
 
@@ -1073,6 +1089,36 @@ ByVal e As EventArgs) Handles dgvRegistros.SelectionChanged
                     Environment.NewLine &
                     "¿Desea continuar?"
 
+                Case "COST-008"
+
+                    mensaje =
+                    "Se corregirá el costo de " &
+                    If(hallazgo.LineasAfectadas > 1,
+                       hallazgo.LineasAfectadas.ToString() &
+                       " líneas de factura",
+                       "UNA línea de factura") &
+                    ". Origen del costo: " &
+                    hallazgo.OrigenCosto & "." &
+                    Environment.NewLine &
+                    Environment.NewLine &
+                    "Documento: " &
+                    hallazgo.Documento &
+                    Environment.NewLine &
+                    "Producto: " &
+                    hallazgo.Producto &
+                    Environment.NewLine &
+                    "Costo actual: " &
+                    hallazgo.CostoUnitario.ToString("N6") &
+                    Environment.NewLine &
+                    "Costo nuevo: " &
+                    hallazgo.CostoPropuesto.ToString("N6") &
+                    Environment.NewLine &
+                    Environment.NewLine &
+                    "No se modifica ninguna otra línea ni el kardex." &
+                    Environment.NewLine &
+                    Environment.NewLine &
+                    "¿Desea continuar?"
+
             ' ========================================================
             ' TRANSFERENCIA ENVIADA SIN RECIBIDA
             ' ========================================================
@@ -1131,6 +1177,41 @@ ByVal e As EventArgs) Handles dgvRegistros.SelectionChanged
                     Environment.NewLine &
                     Environment.NewLine &
                     "No se calculará ni modificará ningún costo." &
+                    Environment.NewLine &
+                    Environment.NewLine &
+                    "¿Desea continuar?"
+
+            ' ========================================================
+            ' RECIBIDA VINCULADA A ENVIADA DE OTRO PRODUCTO
+            ' ========================================================
+
+                Case "TRANS-003"
+
+                    mensaje =
+                    "Se corregirá el vínculo de la Transferencia Recibida " &
+                    "(id_Detalle_Transferencia)." &
+                    Environment.NewLine &
+                    Environment.NewLine &
+                    "Control: TRANS-003" &
+                    Environment.NewLine &
+                    "Documento: " &
+                    hallazgo.Documento &
+                    Environment.NewLine &
+                    "ID Detalle Compra: " &
+                    hallazgo.IdDetalleCompra.ToString("0") &
+                    Environment.NewLine &
+                    "Producto: " &
+                    hallazgo.Producto &
+                    Environment.NewLine &
+                    "Vínculo actual: " &
+                    hallazgo.IdDetalleTransferencia.ToString("0") &
+                    Environment.NewLine &
+                    "Vínculo nuevo: " &
+                    hallazgo.IdDetalleFactura.ToString("0") &
+                    Environment.NewLine &
+                    Environment.NewLine &
+                    "No se crearán ni eliminarán líneas, y no se " &
+                    "modificarán cantidades ni costos." &
                     Environment.NewLine &
                     Environment.NewLine &
                     "¿Desea continuar?"
@@ -1194,6 +1275,11 @@ ByVal e As EventArgs) Handles dgvRegistros.SelectionChanged
                     reparado =
                     _Auditor.RepararCosto(hallazgo)
 
+                Case "COST-008"
+
+                    reparado =
+                    _Auditor.RepararCosto008(hallazgo)
+
             ' ========================================================
             ' TRANS-001
             ' ========================================================
@@ -1212,6 +1298,16 @@ ByVal e As EventArgs) Handles dgvRegistros.SelectionChanged
 
                     reparado =
                     _Auditor.RepararTransferencia002(
+                        hallazgo)
+
+            ' ========================================================
+            ' TRANS-003
+            ' ========================================================
+
+                Case "TRANS-003"
+
+                    reparado =
+                    _Auditor.RepararTransferencia003(
                         hallazgo)
 
             End Select
@@ -1293,6 +1389,48 @@ ByVal e As EventArgs) Handles dgvRegistros.SelectionChanged
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information)
 
+                    Case "TRANS-003"
+
+                        lblEstadoValor.Text =
+                        "Vínculo de transferencia corregido."
+
+                        MessageBox.Show(
+                        "El vínculo de la Transferencia Recibida fue corregido." &
+                        Environment.NewLine &
+                        Environment.NewLine &
+                        "Documento: " &
+                        hallazgo.Documento &
+                        Environment.NewLine &
+                        "ID Detalle Compra: " &
+                        hallazgo.IdDetalleCompra.ToString("0") &
+                        Environment.NewLine &
+                        "Nuevo id_Detalle_Transferencia: " &
+                        hallazgo.IdDetalleFactura.ToString("0"),
+                        "Auditoría",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information)
+
+                    Case "COST-008"
+
+                        lblEstadoValor.Text =
+                        "Costo reparado correctamente."
+
+                        MessageBox.Show(
+                        "El costo de la línea fue corregido." &
+                        Environment.NewLine &
+                        Environment.NewLine &
+                        "Documento: " &
+                        hallazgo.Documento &
+                        Environment.NewLine &
+                        "Producto: " &
+                        hallazgo.Producto &
+                        Environment.NewLine &
+                        "Costo nuevo: " &
+                        hallazgo.CostoUnitario.ToString("N6"),
+                        "Auditoría",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information)
+
                     Case Else
 
                         lblEstadoValor.Text =
@@ -1324,7 +1462,13 @@ ByVal e As EventArgs) Handles dgvRegistros.SelectionChanged
                 Environment.NewLine &
                 Environment.NewLine &
                 "El registro pudo haber sido modificado " &
-                "por otro proceso o la contraparte ya puede existir.",
+                "por otro proceso o la contraparte ya puede existir." &
+                If((hallazgo.Codigo = "TRANS-003" OrElse
+                    hallazgo.Codigo = "COST-008") AndAlso
+                   Not String.IsNullOrEmpty(_Auditor.UltimoError),
+                   Environment.NewLine & Environment.NewLine &
+                   "Detalle: " & _Auditor.UltimoError,
+                   String.Empty),
                 "Auditoría",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Warning)
@@ -1336,6 +1480,144 @@ ByVal e As EventArgs) Handles dgvRegistros.SelectionChanged
             MessageBox.Show(
             ex.Message,
             "Error al reparar",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Error)
+
+        Finally
+
+            ActualizarBotones()
+
+        End Try
+
+    End Sub
+    Private Sub btnEliminar_Click(
+    ByVal sender As Object,
+    ByVal e As EventArgs) Handles btnEliminar.Click
+
+        Try
+
+            If dgvRegistros.CurrentRow Is Nothing Then Return
+
+            Dim hallazgo As Auditoria.HallazgoAuditoria =
+            TryCast(dgvRegistros.CurrentRow.DataBoundItem,
+                    Auditoria.HallazgoAuditoria)
+
+            If hallazgo Is Nothing Then Return
+
+            If Not (hallazgo.EsDuplicado AndAlso hallazgo.PuedeEliminar) Then
+
+                MessageBox.Show(
+                "El registro seleccionado no está disponible para eliminación.",
+                "Auditoría",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information)
+
+                Return
+
+            End If
+
+            Dim idDetalle As String
+            Dim tabla As String
+
+            Select Case hallazgo.Codigo
+
+                Case "TRANS-001"
+                    tabla = "Detalle_Facturas (Transferencia Enviada)"
+                    idDetalle = "ID Detalle Factura: " &
+                    hallazgo.IdDetalleFactura.ToString("0")
+
+                Case "TRANS-002"
+                    tabla = "Detalle_Compras (Transferencia Recibida)"
+                    idDetalle = "ID Detalle Compra: " &
+                    hallazgo.IdDetalleCompra.ToString("0")
+
+                Case Else
+                    MessageBox.Show(
+                    "El control " & hallazgo.Codigo &
+                    " no tiene eliminación definida.",
+                    "Auditoría",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning)
+                    Return
+
+            End Select
+
+            Dim mensaje As String =
+            "Se eliminará UN detalle duplicado." &
+            Environment.NewLine & Environment.NewLine &
+            "Tabla: " & tabla &
+            Environment.NewLine &
+            "Documento: " & hallazgo.Documento &
+            Environment.NewLine &
+            idDetalle &
+            Environment.NewLine &
+            "Fecha: " & hallazgo.Fecha.ToString("dd/MM/yyyy") &
+            Environment.NewLine &
+            "Producto: " & hallazgo.Producto &
+            Environment.NewLine &
+            "Cantidad: " & hallazgo.Cantidad.ToString("N6") &
+            Environment.NewLine & Environment.NewLine &
+            "Esta operación no se puede deshacer. " &
+            "Verifique que cuenta con un respaldo de la base de datos." &
+            Environment.NewLine & Environment.NewLine &
+            "¿Desea continuar?"
+
+            If MessageBox.Show(
+                mensaje,
+                "Confirmar eliminación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning,
+                MessageBoxDefaultButton.Button2) <> DialogResult.Yes Then
+
+                Return
+
+            End If
+
+            btnEliminar.Enabled = False
+
+            Dim eliminado As Boolean = False
+
+            If hallazgo.Codigo = "TRANS-001" Then
+                eliminado = _Auditor.EliminarTransferencia001(hallazgo)
+            Else
+                eliminado = _Auditor.EliminarTransferencia002(hallazgo)
+            End If
+
+            If eliminado Then
+
+                lblEstadoValor.Text = "Duplicado eliminado correctamente."
+
+                MostrarEvidencia()
+                dgvRegistros.Refresh()
+
+                MessageBox.Show(
+                "El detalle duplicado fue eliminado correctamente.",
+                "Auditoría",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information)
+
+            Else
+
+                lblEstadoValor.Text =
+                "No fue posible eliminar " & hallazgo.Codigo & "."
+
+                MessageBox.Show(
+                "No se eliminó el registro." &
+                Environment.NewLine & Environment.NewLine &
+                "Una recepción referencia el detalle o no existe otra " &
+                "línea equivalente con su contraparte. " &
+                "Revise el caso manualmente.",
+                "Auditoría",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning)
+
+            End If
+
+        Catch ex As Exception
+
+            MessageBox.Show(
+            ex.Message,
+            "Error al eliminar",
             MessageBoxButtons.OK,
             MessageBoxIcon.Error)
 

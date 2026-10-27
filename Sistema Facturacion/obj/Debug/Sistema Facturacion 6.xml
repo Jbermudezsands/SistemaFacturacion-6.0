@@ -569,5 +569,17 @@ Sistema Facturacion 6.0
  Usa el mismo cálculo de Cuentas x Cobrar (CxCServicio), así cuadra con la pantalla y los reportes.
  </summary>
 </member>
+<member name="M:Sistema_Facturacion.FrmReportes.EsperarTarea(System.Threading.Tasks.Task)">
+ <summary>
+ Espera una tarea en segundo plano sin congelar la interfaz
+ (los Timer siguen disparando), y relanza su excepcion si fallo.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmReportes.TotalizarLotes(System.Data.DataTable)">
+ <summary>
+ Une en una sola linea los registros con igual Cod_Producto y Numero_Lote,
+ sumando la cantidad y listando las bodegas totalizadas ("01,02,03").
+ </summary>
+</member>
 </members>
 </doc>
