@@ -873,7 +873,7 @@ Public Class Auditoria
             Dim codigosData As String() = New String() {
                 "DATA-001", "DATA-002", "DATA-003", "DATA-004",
                 "TC-001", "TC-002",
-                "COST-006", "COST-007", "COST-008"}
+                "COST-006", "COST-007", "COST-008", "DATA-005"}
 
             For indiceData As Integer = 0 To codigosData.Length - 1
 
@@ -927,6 +927,9 @@ Public Class Auditoria
 
                         Case "COST-007"
                             hallazgosData = AuditarCost007(controlData)
+
+                        Case "DATA-005"
+                            hallazgosData = AuditarData005(controlData)
 
                         Case Else
                             hallazgosData = AuditarCost008(controlData)
@@ -1118,6 +1121,12 @@ Public Class Auditoria
             "DATA-004",
             "Cantidad negativa",
             SeveridadAuditoria.Media,
+            False))
+
+        controles.Add(CrearControl(
+            "DATA-005",
+            "Detalle sin cabecera",
+            SeveridadAuditoria.Baja,
             False))
 
         controles.Add(CrearControl(
@@ -4463,6 +4472,26 @@ Public Class Auditoria
 
 
     ' ============================================================
+    ' CABECERA DEL DETALLE
+    '
+    ' El kardex y el costo promedio unen Detalle_Facturas con
+    ' Facturas (INNER JOIN): un detalle sin cabecera pertenece a un
+    ' documento que nunca se guardó y no afecta inventario ni costos.
+    ' Reportarlo en los controles de costo y transferencias es un
+    ' falso positivo (y su "reparación" crearía movimientos reales).
+    ' Esos detalles huérfanos se informan aparte en DATA-005.
+    ' ============================================================
+    Private Function ExisteCabeceraFactura(
+        ByVal alias_ As String) As String
+
+        Return "EXISTS (SELECT 1 FROM Facturas cab " &
+            "WHERE cab.Numero_Factura = " & alias_ & ".Numero_Factura " &
+            "AND cab.Fecha_Factura = " & alias_ & ".Fecha_Factura " &
+            "AND cab.Tipo_Factura = " & alias_ & ".Tipo_Factura)"
+
+    End Function
+
+    ' ============================================================
     ' COST-001
     ' FACTURA CON COSTO UNITARIO CERO
     ' ============================================================
@@ -4485,6 +4514,7 @@ Public Class Auditoria
             "LEFT JOIN Productos p " &
             "    ON p.Cod_Productos = df.Cod_Producto " &
             "WHERE df.Tipo_Factura = @TipoFactura " &
+            "  AND " & ExisteCabeceraFactura("df") & " " &
             "  AND ISNULL(df.Cantidad, 0) <> 0 " &
             "  AND ISNULL(df.Costo_Unitario, 0) = 0 " &
             "  AND ISNULL(p.Tipo_Producto, '') " &
@@ -4764,6 +4794,7 @@ Public Class Auditoria
             "LEFT JOIN Productos p " &
             "    ON p.Cod_Productos = df.Cod_Producto " &
             "WHERE df.Tipo_Factura = @TipoFactura " &
+            "  AND " & ExisteCabeceraFactura("df") & " " &
             "  AND ISNULL(df.Cantidad, 0) <> 0 " &
             "  AND ISNULL(df.Costo_Unitario, 0) = 0 " &
             "  AND ISNULL(p.Tipo_Producto, '') " &
@@ -5021,6 +5052,7 @@ Public Class Auditoria
             "LEFT JOIN Productos p " &
             "    ON p.Cod_Productos = df.Cod_Producto " &
             "WHERE df.Tipo_Factura = @TipoFactura " &
+            "  AND " & ExisteCabeceraFactura("df") & " " &
             "  AND ISNULL(df.Cantidad, 0) <> 0 " &
             "  AND ISNULL(df.Costo_Unitario, 0) = 0 " &
             "  AND ISNULL(p.Tipo_Producto, '') " &
@@ -5309,6 +5341,7 @@ Public Class Auditoria
             "LEFT JOIN Productos p " &
             "    ON p.Cod_Productos = df.Cod_Producto " &
             "WHERE df.Tipo_Factura = @TipoFactura " &
+            "  AND " & ExisteCabeceraFactura("df") & " " &
             "  AND ISNULL(df.Cantidad, 0) <> 0 " &
             "  AND ISNULL(df.Precio_Unitario, 0) = 0 " &
             "  AND ISNULL(p.Tipo_Producto, '') " &
@@ -5334,6 +5367,7 @@ Public Class Auditoria
             "LEFT JOIN Productos p " &
             "    ON p.Cod_Productos = df.Cod_Producto " &
             "WHERE df.Tipo_Factura = @TipoFactura " &
+            "  AND " & ExisteCabeceraFactura("df") & " " &
             "  AND ISNULL(df.Cantidad, 0) <> 0 " &
             "  AND ISNULL(df.Precio_Unitario, 0) = 0 " &
             "  AND ISNULL(p.Tipo_Producto, '') " &
@@ -6377,6 +6411,7 @@ Public Class Auditoria
         sqlEnviadas &= "    Precio_Unitario " & vbCrLf
         sqlEnviadas &= "FROM Detalle_Facturas " & vbCrLf
         sqlEnviadas &= "WHERE Tipo_Factura = N'Transferencia Enviada' " & vbCrLf
+        sqlEnviadas &= "AND " & ExisteCabeceraFactura("Detalle_Facturas") & " " & vbCrLf
         sqlEnviadas &= "AND ISNULL(Descripcion_Producto, '') NOT LIKE '%CANCELADO%' "
 
         Using cn As New SqlConnection(Conexion)
@@ -8284,6 +8319,88 @@ Public Class Auditoria
     End Function
 
     ' ============================================================
+    ' DATA-005
+    ' DETALLE SIN CABECERA
+    '
+    ' Informativo: un hallazgo por documento. Un detalle con cantidad
+    ' sin cabecera (Facturas/Compras) no entra al kardex ni al costo
+    ' promedio, por eso los demás controles lo excluyen. Las líneas
+    ' sin Tipo_Factura se reportan en DATA-001.
+    ' No se elimina nada.
+    ' ============================================================
+    Private Function AuditarData005(
+        ByVal control As ControlAuditoria) As List(Of HallazgoAuditoria)
+
+        Dim hallazgos As New List(Of HallazgoAuditoria)
+
+        Dim dt As New DataTable()
+
+        Dim sql As String = ""
+
+        sql &= "SELECT N'Detalle_Facturas' AS Tabla, " & vbCrLf
+        sql &= "    d.Tipo_Factura AS Tipo, d.Numero_Factura AS Documento, " & vbCrLf
+        sql &= "    d.Fecha_Factura AS Fecha, COUNT(*) AS Lineas " & vbCrLf
+        sql &= "FROM Detalle_Facturas d " & vbCrLf
+        sql &= "WHERE ISNULL(d.Cantidad, 0) <> 0 " & vbCrLf
+        sql &= "AND LTRIM(RTRIM(ISNULL(d.Tipo_Factura, ''))) <> '' " & vbCrLf
+        sql &= "AND NOT " & ExisteCabeceraFactura("d") & " " & vbCrLf
+        sql &= "GROUP BY d.Tipo_Factura, d.Numero_Factura, d.Fecha_Factura " & vbCrLf
+        sql &= "UNION ALL " & vbCrLf
+        sql &= "SELECT N'Detalle_Compras', " & vbCrLf
+        sql &= "    d.Tipo_Compra, d.Numero_Compra, " & vbCrLf
+        sql &= "    d.Fecha_Compra, COUNT(*) " & vbCrLf
+        sql &= "FROM Detalle_Compras d " & vbCrLf
+        sql &= "WHERE ISNULL(d.Cantidad, 0) <> 0 " & vbCrLf
+        sql &= "AND NOT EXISTS (SELECT 1 FROM Compras cab " & vbCrLf
+        sql &= "    WHERE cab.Numero_Compra = d.Numero_Compra " & vbCrLf
+        sql &= "    AND cab.Fecha_Compra = d.Fecha_Compra " & vbCrLf
+        sql &= "    AND cab.Tipo_Compra = d.Tipo_Compra) " & vbCrLf
+        sql &= "GROUP BY d.Tipo_Compra, d.Numero_Compra, d.Fecha_Compra " & vbCrLf
+        sql &= "ORDER BY 4, 3"
+
+        Using cn As New SqlConnection(Conexion)
+
+            cn.Open()
+
+            Using da As New SqlDataAdapter(sql, cn)
+                da.SelectCommand.CommandTimeout = 300
+                da.Fill(dt)
+            End Using
+
+        End Using
+
+        For Each r As DataRow In dt.Rows
+
+            Dim tabla As String = LeerTextoData(r("Tabla"))
+            Dim tipo As String = LeerTextoData(r("Tipo"))
+            Dim documento As String = LeerTextoData(r("Documento"))
+            Dim fecha As DateTime = LeerFechaData(r("Fecha"))
+            Dim lineas As Integer = Convert.ToInt32(r("Lineas"))
+
+            hallazgos.Add(
+            NuevoHallazgoData(
+                control, "DATA-005", tipo,
+                documento, fecha,
+                String.Empty, 0, 0, 0,
+                SeveridadAuditoria.Baja,
+                "Detalle sin cabecera: " & tipo & ".",
+                "El documento tiene " & lineas.ToString("N0") &
+                " línea(s) en " & tabla & " con cantidad, pero no " &
+                "existe su cabecera." &
+                Environment.NewLine &
+                "No entra al kardex ni al costo promedio, por eso los " &
+                "demás controles lo excluyen. Probablemente es un " &
+                "documento que no llegó a guardarse. No se elimina " &
+                "automáticamente.",
+                "REVISIÓN MANUAL"))
+
+        Next
+
+        Return hallazgos
+
+    End Function
+
+    ' ============================================================
     ' DATA-003
     ' COSTO NEGATIVO
     '
@@ -8482,7 +8599,7 @@ Public Class Auditoria
     ' ejecuta la auditoría (un paso por control). Dentro de un paso
     ' los controles que informan su avance usan PorcentajeSegmento.
     ' ============================================================
-    Private Const TOTAL_PASOS_PROGRESO As Integer = 18
+    Private Const TOTAL_PASOS_PROGRESO As Integer = 19
 
     Private _SegmentoInicio As Integer = 0
     Private _SegmentoFin As Integer = 100
@@ -8545,6 +8662,7 @@ Public Class Auditoria
         "AND ISNULL(df.Precio_Unitario, 0) = 0 " &
         "AND ISNULL(df.Costo_Unitario, 0) > 0 " &
         "AND ISNULL(p.Tipo_Producto, '') NOT IN ('Servicio', 'Descuento') " &
+        "AND " & ExisteCabeceraFactura("df") & " " &
         "AND NOT EXISTS (SELECT 1 FROM Detalle_Facturas s " &
         "WHERE s.Numero_Factura = df.Numero_Factura " &
         "AND s.Fecha_Factura = df.Fecha_Factura " &
@@ -8638,6 +8756,7 @@ Public Class Auditoria
         " FROM Detalle_Facturas " &
         " WHERE Tipo_Factura = N'Factura' " &
         " AND ISNULL(Cantidad, 0) <> 0 " &
+        " AND " & ExisteCabeceraFactura("Detalle_Facturas") & " " &
         " AND ISNULL(Costo_Unitario, 0) > 0) u " &
         "WHERE u.rn = 1 " &
         "AND u.Fecha_Factura >= DATEADD(day, -" &
@@ -8880,6 +8999,7 @@ Public Class Auditoria
         "ORDER BY Fecha_Factura, id_Detalle_Factura) AS rn " &
         "INTO #m FROM Detalle_Facturas " &
         "WHERE Tipo_Factura = N'Factura' AND ISNULL(Cantidad, 0) <> 0 " &
+        "AND " & ExisteCabeceraFactura("Detalle_Facturas") & " " &
         "AND ISNULL(Costo_Unitario, 0) > 0; " &
         "CREATE UNIQUE CLUSTERED INDEX ix_m ON #m(Cod_Producto, rn); " &
         "SELECT a.Cod_Producto, p.Fecha_Factura AS FechaAnt, " &
