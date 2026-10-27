@@ -144,6 +144,9 @@ Public Class Auditoria
 
         Public Property CostoPropuesto As Double
         Public Property CostoPropuestoDolar As Double
+
+        ' Líneas que corrige una reparación (0 = una sola línea).
+        Public Property LineasAfectadas As Integer
         Public Property TieneCostoPropuesto As Boolean
         Public Property OrigenCosto As String
 
@@ -325,6 +328,9 @@ Public Class Auditoria
     Public Event Progreso(ByVal porcentaje As Integer,
                           ByVal mensaje As String)
 
+    ' Motivo de la última reparación rechazada (para mostrarlo al usuario).
+    Public Property UltimoError As String = String.Empty
+
     ' ============================================================
     ' PROPIEDADES
     ' ============================================================
@@ -416,8 +422,8 @@ Public Class Auditoria
 
                 End If
 
-                RaiseEvent Progreso(
-                15,
+                IniciarPasoProgreso(
+                1,
                 "Verificando COST-001 - Facturas con costo cero...")
 
                 Dim hallazgos001 As List(Of HallazgoAuditoria) =
@@ -461,8 +467,8 @@ Public Class Auditoria
 
             End If
 
-            RaiseEvent Progreso(
-            25,
+            IniciarPasoProgreso(
+            2,
             "Verificando COST-002 - Devoluciones con costo cero...")
 
             Dim control002 As ControlAuditoria =
@@ -512,8 +518,8 @@ Public Class Auditoria
 
             End If
 
-            RaiseEvent Progreso(
-            35,
+            IniciarPasoProgreso(
+            3,
             "Verificando COST-003 - Salidas de Bodega con costo cero...")
 
             Dim control003 As ControlAuditoria =
@@ -563,8 +569,8 @@ Public Class Auditoria
 
             End If
 
-            RaiseEvent Progreso(
-    60,
+            IniciarPasoProgreso(
+    4,
     "Verificando COST-004 - Transferencias Enviadas con costo en Precio_Unitario...")
 
             Dim control004 As ControlAuditoria =
@@ -614,8 +620,8 @@ Public Class Auditoria
 
             End If
 
-            RaiseEvent Progreso(
-    75,
+            IniciarPasoProgreso(
+    5,
     "Verificando COST-005 - Transferencias Recibidas con Precio_Unitario cero...")
 
             Dim control005 As ControlAuditoria =
@@ -666,8 +672,8 @@ Public Class Auditoria
 
             End If
 
-            RaiseEvent Progreso(
-    85,
+            IniciarPasoProgreso(
+    6,
     "Verificando TRANS-001 - Transferencias Enviadas sin Transferencia Recibida...")
 
             Dim controlTrans001 As ControlAuditoria =
@@ -718,8 +724,8 @@ Public Class Auditoria
 
             End If
 
-            RaiseEvent Progreso(
-    95,
+            IniciarPasoProgreso(
+    7,
     "Verificando TRANS-002 - Transferencias Recibidas sin Transferencia Enviada...")
 
             Dim controlTrans002 As ControlAuditoria =
@@ -757,6 +763,204 @@ Public Class Auditoria
 
 
             ' ====================================================
+            ' TRANS-003
+            ' DIFERENCIA DE CANTIDAD ENTRE TRANSFERENCIAS
+            ' ====================================================
+
+            If DebeCancelar() Then
+
+                resultado.Cancelada = True
+                resultado.FechaFin = DateTime.Now
+
+                Return resultado
+
+            End If
+
+            IniciarPasoProgreso(
+    8,
+    "Verificando TRANS-003 - Diferencia de cantidad entre transferencias...")
+
+            Dim controlTrans003 As ControlAuditoria =
+    controles.Find(
+        Function(c) c.Codigo = "TRANS-003")
+
+            If controlTrans003 IsNot Nothing Then
+
+                Dim hallazgosTrans003 As List(Of HallazgoAuditoria) =
+        AuditarTrans003(controlTrans003)
+
+                controlTrans003.Ejecutado = True
+
+                controlTrans003.CantidadHallazgos =
+        hallazgosTrans003.Count
+
+                If hallazgosTrans003.Count > 0 Then
+
+                    controlTrans003.Estado =
+            "Revisar"
+
+                Else
+
+                    controlTrans003.Estado =
+            "Correcto"
+
+                End If
+
+                resultado.Hallazgos.AddRange(
+        hallazgosTrans003)
+
+                resultado.ControlesEjecutados += 1
+
+            End If
+
+
+            ' ====================================================
+            ' TRANS-004
+            ' DIFERENCIA DE COSTO ENTRE TRANSFERENCIAS
+            ' ====================================================
+
+            If DebeCancelar() Then
+
+                resultado.Cancelada = True
+                resultado.FechaFin = DateTime.Now
+
+                Return resultado
+
+            End If
+
+            IniciarPasoProgreso(
+    9,
+    "Verificando TRANS-004 - Diferencia de costo entre transferencias...")
+
+            Dim controlTrans004 As ControlAuditoria =
+    controles.Find(
+        Function(c) c.Codigo = "TRANS-004")
+
+            If controlTrans004 IsNot Nothing Then
+
+                Dim hallazgosTrans004 As List(Of HallazgoAuditoria) =
+        AuditarTrans004(controlTrans004)
+
+                controlTrans004.Ejecutado = True
+
+                controlTrans004.CantidadHallazgos =
+        hallazgosTrans004.Count
+
+                If hallazgosTrans004.Count > 0 Then
+
+                    controlTrans004.Estado =
+            "Revisar"
+
+                Else
+
+                    controlTrans004.Estado =
+            "Correcto"
+
+                End If
+
+                resultado.Hallazgos.AddRange(
+        hallazgosTrans004)
+
+                resultado.ControlesEjecutados += 1
+
+            End If
+
+
+            ' ====================================================
+            ' DATA-001 A DATA-004
+            ' ====================================================
+
+            Dim codigosData As String() = New String() {
+                "DATA-001", "DATA-002", "DATA-003", "DATA-004",
+                "TC-001", "TC-002",
+                "COST-006", "COST-007", "COST-008", "DATA-005"}
+
+            For indiceData As Integer = 0 To codigosData.Length - 1
+
+                Dim codigoData As String = codigosData(indiceData)
+
+                If DebeCancelar() Then
+
+                    resultado.Cancelada = True
+                    resultado.FechaFin = DateTime.Now
+
+                    Return resultado
+
+                End If
+
+                Dim codigoActual As String = codigoData
+
+                IniciarPasoProgreso(
+                10 + indiceData,
+                "Verificando " & codigoActual & "...")
+
+                Dim controlData As ControlAuditoria =
+                controles.Find(
+                    Function(c) c.Codigo = codigoActual)
+
+                If controlData IsNot Nothing Then
+
+                    Dim hallazgosData As List(Of HallazgoAuditoria)
+
+                    Select Case codigoActual
+
+                        Case "DATA-001"
+                            hallazgosData = AuditarData001(controlData)
+
+                        Case "DATA-002"
+                            hallazgosData = AuditarData002(controlData)
+
+                        Case "DATA-003"
+                            hallazgosData = AuditarData003(controlData)
+
+                        Case "DATA-004"
+                            hallazgosData = AuditarData004(controlData)
+
+                        Case "TC-001"
+                            hallazgosData = AuditarTc001(controlData)
+
+                        Case "TC-002"
+                            hallazgosData = AuditarTc002(controlData)
+
+                        Case "COST-006"
+                            hallazgosData = AuditarCost006(controlData)
+
+                        Case "COST-007"
+                            hallazgosData = AuditarCost007(controlData)
+
+                        Case "DATA-005"
+                            hallazgosData = AuditarData005(controlData)
+
+                        Case Else
+                            hallazgosData = AuditarCost008(controlData)
+
+                    End Select
+
+                    controlData.Ejecutado = True
+
+                    controlData.CantidadHallazgos =
+                    hallazgosData.Count
+
+                    If hallazgosData.Count > 0 Then
+
+                        controlData.Estado = "Revisar"
+
+                    Else
+
+                        controlData.Estado = "Correcto"
+
+                    End If
+
+                    resultado.Hallazgos.AddRange(hallazgosData)
+
+                    resultado.ControlesEjecutados += 1
+
+                End If
+
+            Next
+
+
+            ' ====================================================
             ' RESULTADO
             ' ====================================================
 
@@ -783,8 +987,20 @@ Public Class Auditoria
             ' CONFIABILIDAD DE COSTOS
             ' ====================================================
 
-            resultado.CostosConfiables =
-            (resultado.TotalHallazgos = 0)
+            ' Los hallazgos informativos no restan confiabilidad.
+
+            resultado.CostosConfiables = True
+
+            For Each hallazgo As HallazgoAuditoria In resultado.Hallazgos
+
+                If hallazgo.Severidad <> SeveridadAuditoria.Informativa Then
+
+                    resultado.CostosConfiables = False
+                    Exit For
+
+                End If
+
+            Next
 
             ' ====================================================
             ' FINALIZAR
@@ -905,6 +1121,12 @@ Public Class Auditoria
             "DATA-004",
             "Cantidad negativa",
             SeveridadAuditoria.Media,
+            False))
+
+        controles.Add(CrearControl(
+            "DATA-005",
+            "Detalle sin cabecera",
+            SeveridadAuditoria.Baja,
             False))
 
         controles.Add(CrearControl(
@@ -1941,14 +2163,19 @@ Public Class Auditoria
                         " Cod_Producto, " &
                         " Cantidad, " &
                         " Precio_Unitario, " &
-                        " ISNULL(TRY_CONVERT(float, Descuento), 0), " &
+                        " CASE WHEN ISNUMERIC(Descuento) = 1 " &
+                        "      AND Descuento NOT LIKE '%[^0-9.-]%' " &
+                        "      THEN CONVERT(float, Descuento) ELSE 0 END, " &
                         " Precio_Neto, " &
                         " Importe, " &
                         " TasaCambio, " &
                         " id_Detalle_Factura, " &
                         " Costo_Unitario, " &
                         " ISNULL(Numero_Lote, N'SINLOTE'), " &
-                        " ISNULL(Fecha_Vence, CONVERT(smalldatetime, '1900-01-01')), " &
+                        " CASE WHEN Fecha_Vence IS NULL " &
+                        "      OR Fecha_Vence <= CONVERT(smalldatetime, '19000101', 112) " &
+                        "      THEN NULL " &
+                        "      ELSE CONVERT(nvarchar(10), Fecha_Vence, 103) END, " &
                         " Descripcion_Producto " &
                         "FROM Detalle_Facturas " &
                         "WHERE id_Detalle_Factura = @Id"
@@ -2206,6 +2433,204 @@ Public Class Auditoria
         End Try
 
     End Function
+    ' ============================================================
+    ' REPARAR TRANS-003 (VÍNCULO CON PRODUCTO DISTINTO)
+    '
+    ' Corrige únicamente Detalle_Compras.id_Detalle_Transferencia
+    ' de una recibida, para que apunte a la enviada correcta.
+    ' No crea ni elimina líneas y no modifica cantidades ni costos.
+    '
+    '   hallazgo.IdDetalleCompra        = recibida a corregir
+    '   hallazgo.IdDetalleTransferencia = vínculo actual (incorrecto)
+    '   hallazgo.IdDetalleFactura       = enviada correcta
+    ' ============================================================
+    Public Function RepararTransferencia003(
+    ByVal hallazgo As HallazgoAuditoria) As Boolean
+
+        UltimoError = String.Empty
+
+        If hallazgo Is Nothing Then Return False
+
+        UltimoError =
+        "Datos del hallazgo: control=" & hallazgo.Codigo &
+        ", reparable=" & hallazgo.Reparable.ToString() &
+        ", IdDetalleCompra=" & hallazgo.IdDetalleCompra.ToString("0") &
+        ", vínculo actual=" & hallazgo.IdDetalleTransferencia.ToString("0") &
+        ", enviada destino=" & hallazgo.IdDetalleFactura.ToString("0") & "."
+
+        If hallazgo.Codigo <> "TRANS-003" Then Return False
+        If Not hallazgo.Reparable Then Return False
+        If hallazgo.IdDetalleCompra <= 0 Then Return False
+        If hallazgo.IdDetalleTransferencia <= 0 Then Return False
+        If hallazgo.IdDetalleFactura <= 0 Then Return False
+
+        Try
+
+            Using cn As New SqlConnection(Conexion)
+
+                cn.Open()
+
+                Using trans As SqlTransaction = cn.BeginTransaction()
+
+                    Try
+
+                        ' ====================================================
+                        ' LA ENVIADA DESTINO DEBE COINCIDIR EN DOCUMENTO,
+                        ' PRODUCTO Y CANTIDAD, Y EL VÍNCULO ACTUAL DEBE
+                        ' SEGUIR SIENDO EL DETECTADO
+                        ' ====================================================
+
+                        Dim datosHallazgo As String = UltimoError
+
+                        UltimoError =
+                        "La enviada destino no coincide en documento, " &
+                        "producto y cantidad con la recibida, o el vínculo " &
+                        "actual ya no es el detectado. " & datosHallazgo
+
+                        Dim sqlValida As String =
+                        "SELECT COUNT(*) " &
+                        "FROM Detalle_Compras c " &
+                        "INNER JOIN Detalle_Facturas f " &
+                        "  ON f.id_Detalle_Factura = @Nuevo " &
+                        " AND f.Tipo_Factura = N'Transferencia Enviada' " &
+                        " AND f.Numero_Factura = c.Numero_Compra " &
+                        " AND LTRIM(RTRIM(f.Cod_Producto)) = LTRIM(RTRIM(c.Cod_Producto)) " &
+                        " AND f.Cantidad = c.Cantidad " &
+                        "WHERE c.id_Detalle_Compra = @IdCompra " &
+                        "AND c.Tipo_Compra = N'Transferencia Recibida' " &
+                        "AND c.id_Detalle_Transferencia = @Actual"
+
+                        Using cmd As New SqlCommand(
+                        sqlValida, cn, trans)
+
+                            cmd.Parameters.Add("@Nuevo", SqlDbType.Decimal).Value =
+                            hallazgo.IdDetalleFactura
+                            cmd.Parameters.Add("@IdCompra", SqlDbType.Decimal).Value =
+                            hallazgo.IdDetalleCompra
+                            cmd.Parameters.Add("@Actual", SqlDbType.Decimal).Value =
+                            hallazgo.IdDetalleTransferencia
+
+                            If Convert.ToInt32(cmd.ExecuteScalar()) <> 1 Then
+
+                                trans.Rollback()
+                                Return False
+
+                            End If
+
+                        End Using
+
+
+                        ' ====================================================
+                        ' LA ENVIADA DESTINO NO DEBE TENER YA UNA RECIBIDA
+                        ' ====================================================
+
+                        UltimoError =
+                        "La enviada destino ya tiene una recibida relacionada. " &
+                        datosHallazgo
+
+                        Dim sqlLibre As String =
+                        "SELECT COUNT(*) " &
+                        "FROM Detalle_Compras " &
+                        "WHERE id_Detalle_Transferencia = @Nuevo " &
+                        "AND Tipo_Compra = N'Transferencia Recibida'"
+
+                        Using cmd As New SqlCommand(
+                        sqlLibre, cn, trans)
+
+                            cmd.Parameters.Add("@Nuevo", SqlDbType.Decimal).Value =
+                            hallazgo.IdDetalleFactura
+
+                            If Convert.ToInt32(cmd.ExecuteScalar()) > 0 Then
+
+                                trans.Rollback()
+                                Return False
+
+                            End If
+
+                        End Using
+
+
+                        ' ====================================================
+                        ' CORREGIR SOLO EL VÍNCULO
+                        ' ====================================================
+
+                        UltimoError =
+                        "El UPDATE no afectó exactamente una fila. " &
+                        datosHallazgo
+
+                        Dim sqlUpdate As String =
+                        "UPDATE Detalle_Compras " &
+                        "SET id_Detalle_Transferencia = @Nuevo " &
+                        "WHERE id_Detalle_Compra = @IdCompra " &
+                        "AND Tipo_Compra = N'Transferencia Recibida' " &
+                        "AND id_Detalle_Transferencia = @Actual"
+
+                        Using cmd As New SqlCommand(
+                        sqlUpdate, cn, trans)
+
+                            cmd.Parameters.Add("@Nuevo", SqlDbType.Decimal).Value =
+                            hallazgo.IdDetalleFactura
+                            cmd.Parameters.Add("@IdCompra", SqlDbType.Decimal).Value =
+                            hallazgo.IdDetalleCompra
+                            cmd.Parameters.Add("@Actual", SqlDbType.Decimal).Value =
+                            hallazgo.IdDetalleTransferencia
+
+                            If cmd.ExecuteNonQuery() <> 1 Then
+
+                                trans.Rollback()
+                                Return False
+
+                            End If
+
+                        End Using
+
+
+                        trans.Commit()
+
+                    Catch
+
+                        Try
+                            trans.Rollback()
+                        Catch
+                        End Try
+
+                        Throw
+
+                    End Try
+
+                End Using
+
+            End Using
+
+
+            hallazgo.Estado = EstadoHallazgo.Reparado
+            hallazgo.Reparable = False
+            hallazgo.PuedeEliminar = False
+            hallazgo.Accion = "REPARADO"
+
+            UltimoError = String.Empty
+
+            hallazgo.Motivo =
+            "Se corrigió el vínculo de la Transferencia Recibida." &
+            Environment.NewLine &
+            "ID Detalle Compra: " &
+            hallazgo.IdDetalleCompra.ToString("0") &
+            Environment.NewLine &
+            "Nuevo id_Detalle_Transferencia: " &
+            hallazgo.IdDetalleFactura.ToString("0")
+
+            Return True
+
+        Catch ex As Exception
+
+            UltimoError = "Error de SQL Server: " & ex.Message
+
+            Return False
+
+        End Try
+
+    End Function
+
     Private Function CrearClaveTransferencia(
     ByVal documento As String,
     ByVal fecha As DateTime,
@@ -2217,6 +2642,65 @@ Public Class Auditoria
            producto.Trim().ToUpperInvariant() & "|" &
            cantidad.ToString("0.######",
                              Globalization.CultureInfo.InvariantCulture)
+
+    End Function
+
+    ' Fragmento SQL: existe una enviada del mismo documento, producto y
+    ' cantidad que la recibida "c", sin ninguna recibida relacionada.
+    Private Const SQL_EXISTE_CANDIDATA As String =
+        "EXISTS (SELECT 1 FROM Detalle_Facturas f2 " &
+        "WHERE f2.Tipo_Factura = N'Transferencia Enviada' " &
+        "AND f2.Numero_Factura = c.Numero_Compra " &
+        "AND LTRIM(RTRIM(f2.Cod_Producto)) = LTRIM(RTRIM(c.Cod_Producto)) " &
+        "AND f2.Cantidad = c.Cantidad " &
+        "AND ISNULL(f2.Descripcion_Producto, '') NOT LIKE '%CANCELADO%' " &
+        "AND NOT EXISTS (SELECT 1 FROM Detalle_Compras c3 " &
+        "WHERE c3.id_Detalle_Transferencia = f2.id_Detalle_Factura " &
+        "AND c3.Tipo_Compra = N'Transferencia Recibida'))"
+
+    Private Function CrearClaveSinFecha(
+    ByVal documento As String,
+    ByVal producto As String,
+    ByVal cantidad As Double) As String
+
+        Return documento.Trim().ToUpperInvariant() & "|" &
+           producto.Trim().ToUpperInvariant() & "|" &
+           cantidad.ToString("0.######",
+                             Globalization.CultureInfo.InvariantCulture)
+
+    End Function
+
+    ' Devuelve el conjunto de ids de una consulta de una sola columna.
+    Private Function ObtenerIdsTransferencia(
+    ByVal sql As String) As HashSet(Of Decimal)
+
+        Dim ids As New HashSet(Of Decimal)()
+
+        Using cn As New SqlConnection(Conexion)
+
+            cn.Open()
+
+            Using cmd As New SqlCommand(sql, cn)
+
+                cmd.CommandTimeout = 300
+
+                Using rd As SqlDataReader = cmd.ExecuteReader()
+
+                    While rd.Read()
+
+                        If Not rd.IsDBNull(0) Then
+                            ids.Add(Convert.ToDecimal(rd.GetValue(0)))
+                        End If
+
+                    End While
+
+                End Using
+
+            End Using
+
+        End Using
+
+        Return ids
 
     End Function
 
@@ -2258,6 +2742,70 @@ Public Class Auditoria
                             hallazgo.IdDetalleFactura
 
                             If Convert.ToInt32(cmd.ExecuteScalar()) <> 1 Then
+
+                                trans.Rollback()
+                                Return False
+
+                            End If
+
+                        End Using
+
+
+                        ' ====================================================
+                        ' NINGUNA RECEPCIÓN DEBE APUNTAR A ESTE DETALLE
+                        ' ====================================================
+
+                        Dim sqlReferenciado As String =
+                        "SELECT COUNT(*) " &
+                        "FROM Detalle_Compras " &
+                        "WHERE id_Detalle_Transferencia = @Id"
+
+                        Using cmd As New SqlCommand(
+                        sqlReferenciado, cn, trans)
+
+                            cmd.Parameters.Add(
+                            "@Id",
+                            SqlDbType.Decimal).Value =
+                            hallazgo.IdDetalleFactura
+
+                            If Convert.ToInt32(cmd.ExecuteScalar()) > 0 Then
+
+                                trans.Rollback()
+                                Return False
+
+                            End If
+
+                        End Using
+
+
+                        ' ====================================================
+                        ' DEBE QUEDAR OTRA LÍNEA ENVIADA (MISMO DOCUMENTO,
+                        ' PRODUCTO Y CANTIDAD) CON RECEPCIÓN RELACIONADA
+                        ' ====================================================
+
+                        Dim sqlSobreviviente As String =
+                        "SELECT COUNT(*) " &
+                        "FROM Detalle_Facturas o " &
+                        "INNER JOIN Detalle_Facturas d " &
+                        "  ON d.Numero_Factura = o.Numero_Factura " &
+                        " AND d.Cod_Producto = o.Cod_Producto " &
+                        " AND d.Cantidad = o.Cantidad " &
+                        " AND d.Tipo_Factura = N'Transferencia Enviada' " &
+                        " AND d.id_Detalle_Factura <> o.id_Detalle_Factura " &
+                        "WHERE o.id_Detalle_Factura = @Id " &
+                        "AND EXISTS (SELECT 1 FROM Detalle_Compras c " &
+                        "    WHERE c.id_Detalle_Transferencia = d.id_Detalle_Factura " &
+                        "    AND c.Tipo_Compra = N'Transferencia Recibida')"
+
+                        Using cmd As New SqlCommand(
+                        sqlSobreviviente, cn, trans)
+
+                            cmd.Parameters.Add(
+                            "@Id",
+                            SqlDbType.Decimal).Value =
+                            hallazgo.IdDetalleFactura
+
+                            If Convert.ToInt32(cmd.ExecuteScalar()) < 1 Then
 
                                 trans.Rollback()
                                 Return False
@@ -2371,6 +2919,44 @@ Public Class Auditoria
                             hallazgo.IdDetalleCompra
 
                             If Convert.ToInt32(cmd.ExecuteScalar()) <> 1 Then
+
+                                trans.Rollback()
+                                Return False
+
+                            End If
+
+                        End Using
+
+
+                        ' ====================================================
+                        ' DEBE QUEDAR OTRA RECEPCIÓN (MISMO DOCUMENTO,
+                        ' PRODUCTO Y CANTIDAD) RELACIONADA CON UNA ENVIADA
+                        ' EXISTENTE
+                        ' ====================================================
+
+                        Dim sqlSobreviviente As String =
+                        "SELECT COUNT(*) " &
+                        "FROM Detalle_Compras o " &
+                        "INNER JOIN Detalle_Compras d " &
+                        "  ON d.Numero_Compra = o.Numero_Compra " &
+                        " AND d.Cod_Producto = o.Cod_Producto " &
+                        " AND d.Cantidad = o.Cantidad " &
+                        " AND d.Tipo_Compra = N'Transferencia Recibida' " &
+                        " AND d.id_Detalle_Compra <> o.id_Detalle_Compra " &
+                        "WHERE o.id_Detalle_Compra = @Id " &
+                        "AND EXISTS (SELECT 1 FROM Detalle_Facturas f " &
+                        "    WHERE f.id_Detalle_Factura = d.id_Detalle_Transferencia " &
+                        "    AND f.Tipo_Factura = N'Transferencia Enviada')"
+
+                        Using cmd As New SqlCommand(
+                        sqlSobreviviente, cn, trans)
+
+                            cmd.Parameters.Add(
+                            "@Id",
+                            SqlDbType.Decimal).Value =
+                            hallazgo.IdDetalleCompra
+
+                            If Convert.ToInt32(cmd.ExecuteScalar()) < 1 Then
 
                                 trans.Rollback()
                                 Return False
@@ -3886,6 +4472,26 @@ Public Class Auditoria
 
 
     ' ============================================================
+    ' CABECERA DEL DETALLE
+    '
+    ' El kardex y el costo promedio unen Detalle_Facturas con
+    ' Facturas (INNER JOIN): un detalle sin cabecera pertenece a un
+    ' documento que nunca se guardó y no afecta inventario ni costos.
+    ' Reportarlo en los controles de costo y transferencias es un
+    ' falso positivo (y su "reparación" crearía movimientos reales).
+    ' Esos detalles huérfanos se informan aparte en DATA-005.
+    ' ============================================================
+    Private Function ExisteCabeceraFactura(
+        ByVal alias_ As String) As String
+
+        Return "EXISTS (SELECT 1 FROM Facturas cab " &
+            "WHERE cab.Numero_Factura = " & alias_ & ".Numero_Factura " &
+            "AND cab.Fecha_Factura = " & alias_ & ".Fecha_Factura " &
+            "AND cab.Tipo_Factura = " & alias_ & ".Tipo_Factura)"
+
+    End Function
+
+    ' ============================================================
     ' COST-001
     ' FACTURA CON COSTO UNITARIO CERO
     ' ============================================================
@@ -3908,6 +4514,7 @@ Public Class Auditoria
             "LEFT JOIN Productos p " &
             "    ON p.Cod_Productos = df.Cod_Producto " &
             "WHERE df.Tipo_Factura = @TipoFactura " &
+            "  AND " & ExisteCabeceraFactura("df") & " " &
             "  AND ISNULL(df.Cantidad, 0) <> 0 " &
             "  AND ISNULL(df.Costo_Unitario, 0) = 0 " &
             "  AND ISNULL(p.Tipo_Producto, '') " &
@@ -4187,6 +4794,7 @@ Public Class Auditoria
             "LEFT JOIN Productos p " &
             "    ON p.Cod_Productos = df.Cod_Producto " &
             "WHERE df.Tipo_Factura = @TipoFactura " &
+            "  AND " & ExisteCabeceraFactura("df") & " " &
             "  AND ISNULL(df.Cantidad, 0) <> 0 " &
             "  AND ISNULL(df.Costo_Unitario, 0) = 0 " &
             "  AND ISNULL(p.Tipo_Producto, '') " &
@@ -4444,6 +5052,7 @@ Public Class Auditoria
             "LEFT JOIN Productos p " &
             "    ON p.Cod_Productos = df.Cod_Producto " &
             "WHERE df.Tipo_Factura = @TipoFactura " &
+            "  AND " & ExisteCabeceraFactura("df") & " " &
             "  AND ISNULL(df.Cantidad, 0) <> 0 " &
             "  AND ISNULL(df.Costo_Unitario, 0) = 0 " &
             "  AND ISNULL(p.Tipo_Producto, '') " &
@@ -4732,6 +5341,7 @@ Public Class Auditoria
             "LEFT JOIN Productos p " &
             "    ON p.Cod_Productos = df.Cod_Producto " &
             "WHERE df.Tipo_Factura = @TipoFactura " &
+            "  AND " & ExisteCabeceraFactura("df") & " " &
             "  AND ISNULL(df.Cantidad, 0) <> 0 " &
             "  AND ISNULL(df.Precio_Unitario, 0) = 0 " &
             "  AND ISNULL(p.Tipo_Producto, '') " &
@@ -4757,6 +5367,7 @@ Public Class Auditoria
             "LEFT JOIN Productos p " &
             "    ON p.Cod_Productos = df.Cod_Producto " &
             "WHERE df.Tipo_Factura = @TipoFactura " &
+            "  AND " & ExisteCabeceraFactura("df") & " " &
             "  AND ISNULL(df.Cantidad, 0) <> 0 " &
             "  AND ISNULL(df.Precio_Unitario, 0) = 0 " &
             "  AND ISNULL(p.Tipo_Producto, '') " &
@@ -4799,7 +5410,7 @@ Public Class Auditoria
         If totalRegistros = 0 Then
 
             RaiseEvent Progreso(
-                95,
+                PorcentajeSegmento(1),
                 "COST-004 finalizado. No se encontraron " &
                 "transferencias enviadas con Precio_Unitario cero.")
 
@@ -4809,7 +5420,7 @@ Public Class Auditoria
 
 
         RaiseEvent Progreso(
-            85,
+            PorcentajeSegmento(0),
             "Verificando COST-004 - Transferencias Enviadas con Precio_Unitario cero...")
 
 
@@ -5114,18 +5725,9 @@ Public Class Auditoria
 
 
                         Dim porcentaje As Integer =
-                            85 +
-                            CInt(
-                                (registrosProcesados * 10.0) /
-                                totalRegistros)
-
-
-                        If porcentaje > 95 Then
-
-                            porcentaje =
-                                95
-
-                        End If
+                            PorcentajeSegmento(
+                                registrosProcesados /
+                                CDbl(totalRegistros))
 
 
                         RaiseEvent Progreso(
@@ -5151,7 +5753,7 @@ Public Class Auditoria
         ' ============================================================
 
         RaiseEvent Progreso(
-            95,
+            PorcentajeSegmento(1),
             "COST-004 finalizado. " &
             hallazgos.Count.ToString() &
             " hallazgo(s) encontrado(s).")
@@ -5266,7 +5868,7 @@ Public Class Auditoria
         If totalRegistros = 0 Then
 
             RaiseEvent Progreso(
-                95,
+                PorcentajeSegmento(1),
                 "COST-005 finalizado. No se encontraron " &
                 "transferencias recibidas con Precio_Unitario cero.")
 
@@ -5276,7 +5878,7 @@ Public Class Auditoria
 
 
         RaiseEvent Progreso(
-            85,
+            PorcentajeSegmento(0),
             "Verificando COST-005 - Transferencias Recibidas con Precio_Unitario cero...")
 
 
@@ -5578,16 +6180,9 @@ Public Class Auditoria
                         registrosProcesados += 1
 
                         Dim porcentaje As Integer =
-                            85 +
-                            CInt(
-                                (registrosProcesados * 10.0) /
-                                totalRegistros)
-
-                        If porcentaje > 95 Then
-
-                            porcentaje = 95
-
-                        End If
+                            PorcentajeSegmento(
+                                registrosProcesados /
+                                CDbl(totalRegistros))
 
                         RaiseEvent Progreso(
                             porcentaje,
@@ -5610,7 +6205,7 @@ Public Class Auditoria
         ' ============================================================
 
         RaiseEvent Progreso(
-            95,
+            PorcentajeSegmento(1),
             "COST-005 finalizado. " &
             hallazgos.Count.ToString() &
             " hallazgo(s) encontrado(s).")
@@ -5670,6 +6265,76 @@ Public Class Auditoria
             End Using
 
         End Using
+
+
+        ' ============================================================
+        ' RECIBIDAS CON VÍNCULO A UNA ENVIADA DE OTRO PRODUCTO
+        '
+        ' Su id_Detalle_Transferencia es incorrecto (lo reporta
+        ' TRANS-003). Se tratan como sin relación para que no
+        ' oculten ni clasifiquen mal a la enviada que les corresponde.
+        ' ============================================================
+
+        Dim recibidasMalVinculadas As HashSet(Of Decimal) =
+        ObtenerIdsTransferencia(
+            "SELECT c.id_Detalle_Compra " &
+            "FROM Detalle_Compras c " &
+            "LEFT JOIN Detalle_Facturas f " &
+            "  ON f.id_Detalle_Factura = c.id_Detalle_Transferencia " &
+            " AND f.Tipo_Factura = N'Transferencia Enviada' " &
+            "WHERE c.Tipo_Compra = N'Transferencia Recibida' " &
+            "AND ISNULL(c.id_Detalle_Transferencia, 0) <> 0 " &
+            "AND (f.id_Detalle_Factura IS NULL " &
+            "     OR LTRIM(RTRIM(f.Cod_Producto)) <> LTRIM(RTRIM(c.Cod_Producto)) " &
+            "     OR (f.Numero_Factura <> c.Numero_Compra " &
+            "         AND f.Cantidad <> c.Cantidad) " &
+            "     OR (f.Cantidad <> c.Cantidad AND " &
+            SQL_EXISTE_CANDIDATA & "))")
+
+        If recibidasMalVinculadas.Count > 0 Then
+
+            For Each r As DataRow In dtRecibidas.Rows
+
+                If recibidasMalVinculadas.Contains(
+                   ObtenerDecimal(r("id_Detalle_Compra"))) Then
+
+                    r("id_Detalle_Transferencia") = 0
+
+                End If
+
+            Next
+
+        End If
+
+
+        ' ============================================================
+        ' ENVIADAS YA RELACIONADAS POR ID
+        '
+        ' Una enviada referenciada por id_Detalle_Transferencia ya
+        ' tiene contraparte, aunque la clave documento/fecha/producto/
+        ' cantidad no coincida. Es la misma comprobación que aplica
+        ' RepararTransferencia001.
+        ' ============================================================
+
+        Dim enviadasRelacionadasActivas As New HashSet(Of Decimal)()
+
+        For Each r As DataRow In dtRecibidas.Rows
+
+            Dim idRel As Decimal =
+            ObtenerDecimal(r("id_Detalle_Transferencia"))
+
+            If idRel > 0D Then
+                enviadasRelacionadasActivas.Add(idRel)
+            End If
+
+        Next
+
+        Dim enviadasRelacionadasTodas As HashSet(Of Decimal) =
+        ObtenerIdsTransferencia(
+            "SELECT DISTINCT id_Detalle_Transferencia " &
+            "FROM Detalle_Compras " &
+            "WHERE Tipo_Compra = N'Transferencia Recibida' " &
+            "AND id_Detalle_Transferencia > 0")
 
 
         ' ============================================================
@@ -5746,7 +6411,8 @@ Public Class Auditoria
         sqlEnviadas &= "    Precio_Unitario " & vbCrLf
         sqlEnviadas &= "FROM Detalle_Facturas " & vbCrLf
         sqlEnviadas &= "WHERE Tipo_Factura = N'Transferencia Enviada' " & vbCrLf
-        sqlRecibidas &= "AND ISNULL(Descripcion_Producto, '') NOT LIKE '%CANCELADO%' "
+        sqlEnviadas &= "AND " & ExisteCabeceraFactura("Detalle_Facturas") & " " & vbCrLf
+        sqlEnviadas &= "AND ISNULL(Descripcion_Producto, '') NOT LIKE '%CANCELADO%' "
 
         Using cn As New SqlConnection(Conexion)
 
@@ -5767,6 +6433,62 @@ Public Class Auditoria
         ' ============================================================
         ' ANALIZAR EN MEMORIA
         ' ============================================================
+
+        ' Claves (documento|producto|cantidad, sin fecha) de enviadas
+        ' que ya tienen una recepción relacionada por id.
+        Dim clavesSinFechaRelacionadas As New HashSet(Of String)(
+            StringComparer.OrdinalIgnoreCase)
+
+        For Each f0 As DataRow In dtEnviadas.Rows
+
+            If enviadasRelacionadasActivas.Contains(
+               ObtenerDecimal(f0("id_Detalle_Factura"))) Then
+
+                clavesSinFechaRelacionadas.Add(
+                    CrearClaveSinFecha(
+                        If(IsDBNull(f0("Numero_Factura")), "",
+                           f0("Numero_Factura").ToString()),
+                        If(IsDBNull(f0("Cod_Producto")), "",
+                           f0("Cod_Producto").ToString()),
+                        ObtenerDouble(f0("Cantidad"))))
+
+            End If
+
+        Next
+
+        ' Claves (documento|producto|cantidad, sin fecha) de enviadas
+        ' que tienen una recibida equivalente histórica (misma clave
+        ' con fecha, aunque sin vínculo por id).
+        Dim clavesSinFechaHistoricas As New HashSet(Of String)(
+            StringComparer.OrdinalIgnoreCase)
+
+        For Each f1 As DataRow In dtEnviadas.Rows
+
+            Dim doc1 As String =
+            If(IsDBNull(f1("Numero_Factura")), "",
+               f1("Numero_Factura").ToString())
+
+            Dim prod1 As String =
+            If(IsDBNull(f1("Cod_Producto")), "",
+               f1("Cod_Producto").ToString())
+
+            Dim cant1 As Double = ObtenerDouble(f1("Cantidad"))
+
+            Dim fec1 As DateTime =
+            If(IsDBNull(f1("Fecha_Factura")),
+               DateTime.MinValue,
+               Convert.ToDateTime(f1("Fecha_Factura")))
+
+            If recibidasPorClave.ContainsKey(
+               CrearClaveTransferencia(
+                   doc1.Trim(), fec1, prod1.Trim(), cant1)) Then
+
+                clavesSinFechaHistoricas.Add(
+                    CrearClaveSinFecha(doc1, prod1, cant1))
+
+            End If
+
+        Next
 
         For Each f As DataRow In dtEnviadas.Rows
 
@@ -5807,6 +6529,57 @@ Public Class Auditoria
                 producto,
                 cantidad)
 
+
+            ' ============================================================
+            ' RELACIÓN POR ID
+            ' ============================================================
+
+            If enviadasRelacionadasActivas.Contains(idFactura) Then
+
+                Continue For
+
+            End If
+
+            If enviadasRelacionadasTodas.Contains(idFactura) Then
+
+                ' La única recepción relacionada está cancelada:
+                ' no se repara automáticamente (la reparación la
+                ' rechazaría por encontrar una contraparte).
+                Dim hRev As New HallazgoAuditoria()
+
+                hRev.Control = control
+                hRev.Codigo = "TRANS-001"
+                hRev.Documento = documento
+                hRev.Fecha = fecha
+                hRev.Tipo = "Transferencia Enviada"
+                hRev.Producto = producto
+                hRev.Cantidad = cantidad
+                hRev.PrecioUnitario = precio
+                hRev.CostoUnitario = precio
+                hRev.IdDetalleFactura = idFactura
+                hRev.EsDuplicado = False
+                hRev.PuedeEliminar = False
+                hRev.Reparable = False
+                hRev.Estado = EstadoHallazgo.Detectado
+                hRev.Severidad = SeveridadAuditoria.Media
+                hRev.Descripcion =
+                "Transferencia Enviada con recepción cancelada."
+                hRev.Motivo =
+                "Existe una Transferencia Recibida relacionada " &
+                "con este detalle, pero está cancelada." &
+                Environment.NewLine &
+                "Documento: " & documento &
+                Environment.NewLine &
+                "ID Detalle Factura: " & idFactura.ToString() &
+                Environment.NewLine &
+                "Producto: " & producto
+                hRev.Accion = "REVISIÓN MANUAL"
+
+                hallazgos.Add(hRev)
+
+                Continue For
+
+            End If
 
             Dim candidatas As List(Of DataRow) = Nothing
 
@@ -5873,6 +6646,67 @@ Public Class Auditoria
                 cantidad.ToString("N6")
 
                 h.Accion = "REPARAR"
+
+                ' Otra línea enviada del mismo documento, producto y
+                ' cantidad ya tiene recepción (p. ej. 01-00544): puede ser
+                ' una línea duplicada o editada. No se repara
+                ' automáticamente para no duplicar el ingreso.
+                If clavesSinFechaHistoricas.Contains(
+                   CrearClaveSinFecha(documento, producto, cantidad)) AndAlso
+                   Not clavesSinFechaRelacionadas.Contains(
+                   CrearClaveSinFecha(documento, producto, cantidad)) Then
+
+                    ' La línea hermana tiene su recibida histórica sin
+                    ' vínculo por id: no hay sobreviviente enlazado que
+                    ' permita eliminar con seguridad. Solo revisión manual.
+                    h.Reparable = False
+                    h.EsDuplicado = False
+                    h.PuedeEliminar = False
+                    h.Estado = EstadoHallazgo.Detectado
+                    h.Severidad = SeveridadAuditoria.Media
+                    h.Descripcion =
+                    "Transferencia Enviada posiblemente duplicada."
+                    h.Motivo =
+                    "Otra línea enviada del mismo documento, producto " &
+                    "y cantidad ya tiene su Transferencia Recibida " &
+                    "(sin vínculo por id). Esta línea podría ser un " &
+                    "duplicado; revisar manualmente." &
+                    Environment.NewLine &
+                    "Documento: " & documento &
+                    Environment.NewLine &
+                    "ID Detalle Factura: " & idFactura.ToString("0") &
+                    Environment.NewLine &
+                    "Producto: " & producto &
+                    Environment.NewLine &
+                    "Cantidad: " & cantidad.ToString("N6")
+                    h.Accion = "REVISIÓN MANUAL"
+
+                ElseIf clavesSinFechaRelacionadas.Contains(
+                   CrearClaveSinFecha(documento, producto, cantidad)) Then
+
+                    h.Reparable = False
+                    h.EsDuplicado = True
+                    h.PuedeEliminar = True
+                    h.Estado = EstadoHallazgo.Detectado
+                    h.Severidad = SeveridadAuditoria.Media
+                    h.Descripcion =
+                    "Transferencia Enviada duplicada (distinta fecha)."
+                    h.Motivo =
+                    "Otra línea enviada del mismo documento, producto " &
+                    "y cantidad ya tiene Transferencia Recibida, pero " &
+                    "con distinta fecha. Es un probable duplicado: " &
+                    "puede eliminarse con el botón Eliminar." &
+                    Environment.NewLine &
+                    "Documento: " & documento &
+                    Environment.NewLine &
+                    "ID Detalle Factura: " & idFactura.ToString() &
+                    Environment.NewLine &
+                    "Producto: " & producto &
+                    Environment.NewLine &
+                    "Cantidad: " & cantidad.ToString("N6")
+                    h.Accion = "ELIMINAR"
+
+                End If
 
                 hallazgos.Add(h)
 
@@ -6099,6 +6933,29 @@ Public Class Auditoria
 
 
         ' ============================================================
+        ' IDS DE ENVIADAS EXISTENTES
+        '
+        ' Una recibida cuyo id_Detalle_Transferencia apunta a una
+        ' enviada existente ya tiene contraparte, aunque la clave
+        ' documento/fecha/producto/cantidad no coincida. Es la misma
+        ' comprobación que aplica RepararTransferencia002.
+        ' ============================================================
+
+        Dim enviadasActivas As New HashSet(Of Decimal)()
+
+        For Each f As DataRow In dtEnviadas.Rows
+            enviadasActivas.Add(
+                ObtenerDecimal(f("id_Detalle_Factura")))
+        Next
+
+        Dim enviadasTodas As HashSet(Of Decimal) =
+        ObtenerIdsTransferencia(
+            "SELECT id_Detalle_Factura " &
+            "FROM Detalle_Facturas " &
+            "WHERE Tipo_Factura = N'Transferencia Enviada'")
+
+
+        ' ============================================================
         ' ÍNDICE DE ENVIADAS
         ' ============================================================
 
@@ -6172,8 +7029,8 @@ Public Class Auditoria
         sqlRecibidas &= "    Costo_Unitario, " & vbCrLf
         sqlRecibidas &= "    id_Detalle_Transferencia " & vbCrLf
         sqlRecibidas &= "FROM Detalle_Compras " & vbCrLf
-        sqlRecibidas &= "WHERE Tipo_Compra = N'Transferencia Recibida'"
-        sqlEnviadas &= "AND ISNULL(Descripcion_Producto, '') NOT LIKE '%CANCELADO%' "
+        sqlRecibidas &= "WHERE Tipo_Compra = N'Transferencia Recibida' " & vbCrLf
+        sqlRecibidas &= "AND ISNULL(Descripcion_Producto, '') NOT LIKE '%CANCELADO%' "
 
         Using cn As New SqlConnection(Conexion)
 
@@ -6238,6 +7095,62 @@ Public Class Auditoria
                     producto,
                     cantidad)
 
+
+            ' ============================================================
+            ' RELACIÓN POR ID
+            ' ============================================================
+
+            If idTransferencia > 0D Then
+
+                If enviadasActivas.Contains(idTransferencia) Then
+
+                    Continue For
+
+                End If
+
+                If enviadasTodas.Contains(idTransferencia) Then
+
+                    ' La enviada relacionada está cancelada: no se repara
+                    ' automáticamente (la reparación la rechazaría por
+                    ' encontrar una contraparte).
+                    Dim hRev As New HallazgoAuditoria()
+
+                    hRev.Control = control
+                    hRev.Codigo = "TRANS-002"
+                    hRev.Documento = documento
+                    hRev.Fecha = fecha
+                    hRev.Tipo = "Transferencia Recibida"
+                    hRev.Producto = producto
+                    hRev.Cantidad = cantidad
+                    hRev.PrecioUnitario = precio
+                    hRev.CostoUnitario = precio
+                    hRev.IdDetalleCompra = idCompra
+                    hRev.IdDetalleTransferencia = idTransferencia
+                    hRev.EsDuplicado = False
+                    hRev.PuedeEliminar = False
+                    hRev.Reparable = False
+                    hRev.Estado = EstadoHallazgo.Detectado
+                    hRev.Severidad = SeveridadAuditoria.Media
+                    hRev.Descripcion =
+                    "Transferencia Recibida con envío cancelado."
+                    hRev.Motivo =
+                    "Existe una Transferencia Enviada relacionada " &
+                    "con este detalle, pero está cancelada." &
+                    Environment.NewLine &
+                    "Documento: " & documento &
+                    Environment.NewLine &
+                    "ID Detalle Compra: " & idCompra.ToString() &
+                    Environment.NewLine &
+                    "Producto: " & producto
+                    hRev.Accion = "REVISIÓN MANUAL"
+
+                    hallazgos.Add(hRev)
+
+                    Continue For
+
+                End If
+
+            End If
 
             Dim candidatas As List(Of DataRow) = Nothing
 
@@ -6495,6 +7408,2444 @@ Public Class Auditoria
 
         Next
 
+
+        Return hallazgos
+
+    End Function
+
+    ' ============================================================
+    ' TRANS-003
+    ' DIFERENCIA DE CANTIDAD ENTRE TRANSFERENCIAS
+    '
+    ' Parte A: enviada y recibida relacionadas por
+    '          id_Detalle_Transferencia con cantidades distintas
+    '          (si hay varias recibidas para una enviada se suman).
+    ' Parte B: enviada y recibida sin relación por id, únicas para
+    '          su documento y producto, con cantidades distintas.
+    '
+    ' Solo detecta. No calcula costos ni repara: REVISION MANUAL.
+    ' ============================================================
+    Private Function AuditarTrans003(
+        ByVal control As ControlAuditoria) As List(Of HallazgoAuditoria)
+
+        Dim hallazgos As New List(Of HallazgoAuditoria)
+
+        ' ============================================================
+        ' PARTE A: RELACIONADAS POR ID
+        ' ============================================================
+
+        Dim dtA As New DataTable()
+
+        Dim sqlA As String = ""
+
+        sqlA &= "SELECT f.id_Detalle_Factura, f.Numero_Factura, " & vbCrLf
+        sqlA &= "    f.Fecha_Factura, f.Cod_Producto, " & vbCrLf
+        sqlA &= "    f.Cantidad AS CantEnviada, f.Precio_Unitario, " & vbCrLf
+        sqlA &= "    SUM(c.Cantidad) AS CantRecibida, " & vbCrLf
+        sqlA &= "    COUNT(*) AS NumRecibidas, " & vbCrLf
+        sqlA &= "    MIN(c.id_Detalle_Compra) AS IdCompra " & vbCrLf
+        sqlA &= "FROM Detalle_Facturas f " & vbCrLf
+        sqlA &= "INNER JOIN Detalle_Compras c " & vbCrLf
+        sqlA &= "    ON c.id_Detalle_Transferencia = f.id_Detalle_Factura " & vbCrLf
+        sqlA &= "    AND c.Tipo_Compra = N'Transferencia Recibida' " & vbCrLf
+        sqlA &= "    AND LTRIM(RTRIM(c.Cod_Producto)) = LTRIM(RTRIM(f.Cod_Producto)) " & vbCrLf
+        sqlA &= "    AND (c.Numero_Compra = f.Numero_Factura " & vbCrLf
+        sqlA &= "         OR c.Cantidad = f.Cantidad) " & vbCrLf
+        sqlA &= "    AND NOT (c.Cantidad <> f.Cantidad AND " &
+                SQL_EXISTE_CANDIDATA & ") " & vbCrLf
+        sqlA &= "    AND ISNULL(c.Descripcion_Producto, '') NOT LIKE '%CANCELADO%' " & vbCrLf
+        sqlA &= "WHERE f.Tipo_Factura = N'Transferencia Enviada' " & vbCrLf
+        sqlA &= "AND ISNULL(f.Descripcion_Producto, '') NOT LIKE '%CANCELADO%' " & vbCrLf
+        sqlA &= "GROUP BY f.id_Detalle_Factura, f.Numero_Factura, " & vbCrLf
+        sqlA &= "    f.Fecha_Factura, f.Cod_Producto, " & vbCrLf
+        sqlA &= "    f.Cantidad, f.Precio_Unitario " & vbCrLf
+        sqlA &= "HAVING ABS(f.Cantidad - SUM(c.Cantidad)) > 0.000001"
+
+        Using cn As New SqlConnection(Conexion)
+
+            cn.Open()
+
+            Using da As New SqlDataAdapter(sqlA, cn)
+
+                da.SelectCommand.CommandTimeout = 300
+
+                da.Fill(dtA)
+
+            End Using
+
+        End Using
+
+        For Each r As DataRow In dtA.Rows
+
+            Dim cantEnv As Double = ObtenerDouble(r("CantEnviada"))
+            Dim cantRec As Double = ObtenerDouble(r("CantRecibida"))
+            Dim precio As Double = ObtenerDouble(r("Precio_Unitario"))
+            Dim numRec As Integer = Convert.ToInt32(r("NumRecibidas"))
+
+            Dim idFactura As Decimal =
+            ObtenerDecimal(r("id_Detalle_Factura"))
+
+            Dim idCompra As Decimal =
+            ObtenerDecimal(r("IdCompra"))
+
+            Dim documento As String =
+            If(IsDBNull(r("Numero_Factura")), "",
+               r("Numero_Factura").ToString().Trim())
+
+            Dim producto As String =
+            If(IsDBNull(r("Cod_Producto")), "",
+               r("Cod_Producto").ToString().Trim())
+
+            Dim h As New HallazgoAuditoria()
+
+            h.Control = control
+            h.Codigo = "TRANS-003"
+            h.Documento = documento
+            h.Fecha = If(IsDBNull(r("Fecha_Factura")),
+                         DateTime.MinValue,
+                         Convert.ToDateTime(r("Fecha_Factura")))
+            h.Tipo = "Transferencia Enviada"
+            h.Producto = producto
+            h.Cantidad = cantEnv
+            h.PrecioUnitario = precio
+            h.CostoUnitario = precio
+            h.IdDetalleFactura = idFactura
+            h.IdDetalleCompra = idCompra
+            h.IdDetalleTransferencia = idFactura
+            h.EsDuplicado = False
+            h.PuedeEliminar = False
+            h.Reparable = False
+            h.Estado = EstadoHallazgo.Detectado
+            h.Severidad = SeveridadAuditoria.Alta
+            h.Descripcion =
+            "Diferencia de cantidad entre Transferencia Enviada y Recibida."
+            h.Motivo =
+            "La cantidad enviada no coincide con la recibida " &
+            "(relacionadas por id_Detalle_Transferencia)." &
+            Environment.NewLine &
+            "Documento: " & documento &
+            Environment.NewLine &
+            "ID Detalle Factura (enviada): " & idFactura.ToString("0") &
+            Environment.NewLine &
+            "ID Detalle Compra (recibida): " & idCompra.ToString("0") &
+            If(numRec > 1,
+               " (+" & (numRec - 1).ToString() & " más)", "") &
+            Environment.NewLine &
+            "Producto: " & producto &
+            Environment.NewLine &
+            "Cantidad enviada: " & cantEnv.ToString("N6") &
+            Environment.NewLine &
+            "Cantidad recibida: " & cantRec.ToString("N6") &
+            Environment.NewLine &
+            "Diferencia: " & (cantEnv - cantRec).ToString("N6")
+            h.Accion = "REVISIÓN MANUAL"
+
+            hallazgos.Add(h)
+
+        Next
+
+
+        ' ============================================================
+        ' PARTE B: SIN RELACIÓN POR ID, UNA SOLA LÍNEA POR LADO
+        ' ============================================================
+
+        Dim dtEnv As New DataTable()
+        Dim dtRec As New DataTable()
+
+        Dim sqlEnv As String = ""
+
+        sqlEnv &= "SELECT f.id_Detalle_Factura, f.Numero_Factura, " & vbCrLf
+        sqlEnv &= "    f.Fecha_Factura, f.Cod_Producto, " & vbCrLf
+        sqlEnv &= "    f.Cantidad, f.Precio_Unitario " & vbCrLf
+        sqlEnv &= "FROM Detalle_Facturas f " & vbCrLf
+        sqlEnv &= "WHERE f.Tipo_Factura = N'Transferencia Enviada' " & vbCrLf
+        sqlEnv &= "AND ISNULL(f.Descripcion_Producto, '') NOT LIKE '%CANCELADO%' " & vbCrLf
+        sqlEnv &= "AND NOT EXISTS (SELECT 1 FROM Detalle_Compras c " & vbCrLf
+        sqlEnv &= "    WHERE c.id_Detalle_Transferencia = f.id_Detalle_Factura " & vbCrLf
+        sqlEnv &= "    AND c.Tipo_Compra = N'Transferencia Recibida')"
+
+        Dim sqlRec As String = ""
+
+        sqlRec &= "SELECT c.id_Detalle_Compra, c.Numero_Compra, " & vbCrLf
+        sqlRec &= "    c.Fecha_Compra, c.Cod_Producto, " & vbCrLf
+        sqlRec &= "    c.Cantidad, c.Precio_Unitario " & vbCrLf
+        sqlRec &= "FROM Detalle_Compras c " & vbCrLf
+        sqlRec &= "WHERE c.Tipo_Compra = N'Transferencia Recibida' " & vbCrLf
+        sqlRec &= "AND ISNULL(c.Descripcion_Producto, '') NOT LIKE '%CANCELADO%' " & vbCrLf
+        sqlRec &= "AND ISNULL(c.id_Detalle_Transferencia, 0) = 0"
+
+        Using cn As New SqlConnection(Conexion)
+
+            cn.Open()
+
+            Using da As New SqlDataAdapter(sqlEnv, cn)
+                da.SelectCommand.CommandTimeout = 300
+                da.Fill(dtEnv)
+            End Using
+
+            Using da As New SqlDataAdapter(sqlRec, cn)
+                da.SelectCommand.CommandTimeout = 300
+                da.Fill(dtRec)
+            End Using
+
+        End Using
+
+        Dim enviadasPorDoc As New Dictionary(
+        Of String, List(Of DataRow))(StringComparer.OrdinalIgnoreCase)
+
+        For Each f As DataRow In dtEnv.Rows
+
+            Dim k As String =
+            If(IsDBNull(f("Numero_Factura")), "",
+               f("Numero_Factura").ToString().Trim()) & "|" &
+            If(IsDBNull(f("Cod_Producto")), "",
+               f("Cod_Producto").ToString().Trim())
+
+            If Not enviadasPorDoc.ContainsKey(k) Then
+                enviadasPorDoc.Add(k, New List(Of DataRow))
+            End If
+
+            enviadasPorDoc(k).Add(f)
+
+        Next
+
+        Dim recibidasPorDoc As New Dictionary(
+        Of String, List(Of DataRow))(StringComparer.OrdinalIgnoreCase)
+
+        For Each c As DataRow In dtRec.Rows
+
+            Dim k As String =
+            If(IsDBNull(c("Numero_Compra")), "",
+               c("Numero_Compra").ToString().Trim()) & "|" &
+            If(IsDBNull(c("Cod_Producto")), "",
+               c("Cod_Producto").ToString().Trim())
+
+            If Not recibidasPorDoc.ContainsKey(k) Then
+                recibidasPorDoc.Add(k, New List(Of DataRow))
+            End If
+
+            recibidasPorDoc(k).Add(c)
+
+        Next
+
+        For Each kv As KeyValuePair(Of String, List(Of DataRow)) In enviadasPorDoc
+
+            Dim listaRec As List(Of DataRow) = Nothing
+
+            If kv.Value.Count <> 1 Then Continue For
+            If Not recibidasPorDoc.TryGetValue(kv.Key, listaRec) Then Continue For
+            If listaRec.Count <> 1 Then Continue For
+
+            Dim f As DataRow = kv.Value(0)
+            Dim c As DataRow = listaRec(0)
+
+            Dim cantEnv As Double = ObtenerDouble(f("Cantidad"))
+            Dim cantRec As Double = ObtenerDouble(c("Cantidad"))
+
+            If Math.Abs(cantEnv - cantRec) <= 0.000001 Then Continue For
+
+            ' Si ambas son cero no hay efecto de inventario.
+            If Math.Abs(cantEnv) < 0.000001 AndAlso
+               Math.Abs(cantRec) < 0.000001 Then Continue For
+
+            Dim idFactura As Decimal =
+            ObtenerDecimal(f("id_Detalle_Factura"))
+
+            Dim idCompra As Decimal =
+            ObtenerDecimal(c("id_Detalle_Compra"))
+
+            Dim documento As String =
+            If(IsDBNull(f("Numero_Factura")), "",
+               f("Numero_Factura").ToString().Trim())
+
+            Dim producto As String =
+            If(IsDBNull(f("Cod_Producto")), "",
+               f("Cod_Producto").ToString().Trim())
+
+            Dim precio As Double = ObtenerDouble(f("Precio_Unitario"))
+
+            Dim h As New HallazgoAuditoria()
+
+            h.Control = control
+            h.Codigo = "TRANS-003"
+            h.Documento = documento
+            h.Fecha = If(IsDBNull(f("Fecha_Factura")),
+                         DateTime.MinValue,
+                         Convert.ToDateTime(f("Fecha_Factura")))
+            h.Tipo = "Transferencia Enviada"
+            h.Producto = producto
+            h.Cantidad = cantEnv
+            h.PrecioUnitario = precio
+            h.CostoUnitario = precio
+            h.IdDetalleFactura = idFactura
+            h.IdDetalleCompra = idCompra
+            h.EsDuplicado = False
+            h.PuedeEliminar = False
+            h.Reparable = False
+            h.Estado = EstadoHallazgo.Detectado
+            h.Severidad = SeveridadAuditoria.Alta
+            h.Descripcion =
+            "Diferencia de cantidad entre Transferencia Enviada y Recibida " &
+            "(sin relación por id)."
+            h.Motivo =
+            "Una única línea enviada y una única recibida del mismo " &
+            "documento y producto, sin relación por " &
+            "id_Detalle_Transferencia, tienen cantidades distintas." &
+            Environment.NewLine &
+            "Documento: " & documento &
+            Environment.NewLine &
+            "ID Detalle Factura (enviada): " & idFactura.ToString("0") &
+            Environment.NewLine &
+            "ID Detalle Compra (recibida): " & idCompra.ToString("0") &
+            Environment.NewLine &
+            "Producto: " & producto &
+            Environment.NewLine &
+            "Cantidad enviada: " & cantEnv.ToString("N6") &
+            Environment.NewLine &
+            "Cantidad recibida: " & cantRec.ToString("N6") &
+            Environment.NewLine &
+            "Diferencia: " & (cantEnv - cantRec).ToString("N6")
+            h.Accion = "REVISIÓN MANUAL"
+
+            hallazgos.Add(h)
+
+        Next
+
+
+        ' ============================================================
+        ' PARTE C: RECIBIDA VINCULADA A UNA ENVIADA DE OTRO PRODUCTO
+        '
+        ' El id_Detalle_Transferencia apunta a una enviada cuyo
+        ' producto no coincide (p. ej. 02-00665). Es reparable solo si
+        ' existe una única enviada candidata (mismo documento, producto
+        ' y cantidad) que no tenga ya una recibida relacionada.
+        ' La reparación corrige únicamente el id del vínculo.
+        ' ============================================================
+
+        Dim dtC As New DataTable()
+
+        Dim sqlC As String = ""
+
+        sqlC &= "SELECT c.id_Detalle_Compra, c.Numero_Compra, " & vbCrLf
+        sqlC &= "    c.Fecha_Compra, c.Cod_Producto, c.Cantidad, " & vbCrLf
+        sqlC &= "    c.Precio_Unitario, " & vbCrLf
+        sqlC &= "    c.id_Detalle_Transferencia AS IdActual, " & vbCrLf
+        sqlC &= "    fa.Cod_Producto AS ProductoActual, " & vbCrLf
+        sqlC &= "    fa.Numero_Factura AS DocumentoActual, " & vbCrLf
+        sqlC &= "    fa.Cantidad AS CantidadActual, " & vbCrLf
+        sqlC &= "    x.NumCand, x.IdCand " & vbCrLf
+        sqlC &= "FROM Detalle_Compras c " & vbCrLf
+        sqlC &= "LEFT JOIN Detalle_Facturas fa " & vbCrLf
+        sqlC &= "    ON fa.id_Detalle_Factura = c.id_Detalle_Transferencia " & vbCrLf
+        sqlC &= "    AND fa.Tipo_Factura = N'Transferencia Enviada' " & vbCrLf
+        sqlC &= "OUTER APPLY (" & vbCrLf
+        sqlC &= "    SELECT COUNT(*) AS NumCand, " & vbCrLf
+        sqlC &= "        MIN(f.id_Detalle_Factura) AS IdCand " & vbCrLf
+        sqlC &= "    FROM Detalle_Facturas f " & vbCrLf
+        sqlC &= "    WHERE f.Tipo_Factura = N'Transferencia Enviada' " & vbCrLf
+        sqlC &= "    AND f.Numero_Factura = c.Numero_Compra " & vbCrLf
+        sqlC &= "    AND LTRIM(RTRIM(f.Cod_Producto)) = LTRIM(RTRIM(c.Cod_Producto)) " & vbCrLf
+        sqlC &= "    AND f.Cantidad = c.Cantidad " & vbCrLf
+        sqlC &= "    AND ISNULL(f.Descripcion_Producto, '') NOT LIKE '%CANCELADO%' " & vbCrLf
+        sqlC &= "    AND NOT EXISTS (SELECT 1 FROM Detalle_Compras c2 " & vbCrLf
+        sqlC &= "        WHERE c2.id_Detalle_Transferencia = f.id_Detalle_Factura " & vbCrLf
+        sqlC &= "        AND c2.Tipo_Compra = N'Transferencia Recibida')" & vbCrLf
+        sqlC &= ") x " & vbCrLf
+        sqlC &= "WHERE c.Tipo_Compra = N'Transferencia Recibida' " & vbCrLf
+        sqlC &= "AND ISNULL(c.Descripcion_Producto, '') NOT LIKE '%CANCELADO%' " & vbCrLf
+        sqlC &= "AND ISNULL(c.Cantidad, 0) <> 0 " & vbCrLf
+        sqlC &= "AND ISNULL(c.id_Detalle_Transferencia, 0) <> 0 " & vbCrLf
+        sqlC &= "AND (fa.id_Detalle_Factura IS NULL " & vbCrLf
+        sqlC &= "     OR LTRIM(RTRIM(fa.Cod_Producto)) <> LTRIM(RTRIM(c.Cod_Producto)) " & vbCrLf
+        sqlC &= "     OR (fa.Numero_Factura <> c.Numero_Compra " & vbCrLf
+        sqlC &= "         AND fa.Cantidad <> c.Cantidad) " & vbCrLf
+        sqlC &= "     OR (fa.Cantidad <> c.Cantidad AND " &
+                SQL_EXISTE_CANDIDATA & "))"
+
+        Using cn As New SqlConnection(Conexion)
+
+            cn.Open()
+
+            Using da As New SqlDataAdapter(sqlC, cn)
+
+                da.SelectCommand.CommandTimeout = 300
+
+                da.Fill(dtC)
+
+            End Using
+
+        End Using
+
+        ' Candidatas reclamadas por más de una recibida: no se reparan.
+        Dim reclamos As New Dictionary(Of Decimal, Integer)()
+
+        For Each r As DataRow In dtC.Rows
+
+            If Not IsDBNull(r("IdCand")) AndAlso
+               Convert.ToInt32(r("NumCand")) = 1 Then
+
+                Dim idc As Decimal = ObtenerDecimal(r("IdCand"))
+
+                If reclamos.ContainsKey(idc) Then
+                    reclamos(idc) += 1
+                Else
+                    reclamos.Add(idc, 1)
+                End If
+
+            End If
+
+        Next
+
+        For Each r As DataRow In dtC.Rows
+
+            Dim idCompra As Decimal =
+            ObtenerDecimal(r("id_Detalle_Compra"))
+
+            Dim idActual As Decimal =
+            ObtenerDecimal(r("IdActual"))
+
+            Dim numCand As Integer = Convert.ToInt32(r("NumCand"))
+
+            Dim idCand As Decimal =
+            If(IsDBNull(r("IdCand")), 0D, ObtenerDecimal(r("IdCand")))
+
+            Dim documento As String =
+            If(IsDBNull(r("Numero_Compra")), "",
+               r("Numero_Compra").ToString().Trim())
+
+            Dim producto As String =
+            If(IsDBNull(r("Cod_Producto")), "",
+               r("Cod_Producto").ToString().Trim())
+
+            Dim productoActual As String =
+            If(IsDBNull(r("ProductoActual")), "",
+               r("ProductoActual").ToString().Trim())
+
+            Dim documentoActual As String =
+            If(IsDBNull(r("DocumentoActual")), "",
+               r("DocumentoActual").ToString().Trim())
+
+            Dim cantidadActual As Double =
+            ObtenerDouble(r("CantidadActual"))
+
+            Dim cantidad As Double = ObtenerDouble(r("Cantidad"))
+            Dim precio As Double = ObtenerDouble(r("Precio_Unitario"))
+
+            Dim reparable As Boolean =
+            (numCand = 1 AndAlso idCand > 0D AndAlso
+             reclamos.ContainsKey(idCand) AndAlso
+             reclamos(idCand) = 1)
+
+            Dim h As New HallazgoAuditoria()
+
+            h.Control = control
+            h.Codigo = "TRANS-003"
+            h.Documento = documento
+            h.Fecha = If(IsDBNull(r("Fecha_Compra")),
+                         DateTime.MinValue,
+                         Convert.ToDateTime(r("Fecha_Compra")))
+            h.Tipo = "Transferencia Recibida"
+            h.Producto = producto
+            h.Cantidad = cantidad
+            h.PrecioUnitario = precio
+            h.CostoUnitario = precio
+            h.IdDetalleCompra = idCompra
+            h.IdDetalleTransferencia = idActual
+            h.IdDetalleFactura = If(reparable, idCand, 0D)
+            h.IdDetalleRelacionado = If(reparable, idCand, 0D)
+            h.EsDuplicado = False
+            h.PuedeEliminar = False
+            h.Severidad = SeveridadAuditoria.Alta
+            h.Descripcion =
+            "Transferencia Recibida vinculada a una enviada incorrecta."
+
+            Dim motivo As String =
+            "El id_Detalle_Transferencia de la recibida apunta a una " &
+            "enviada inexistente, de otro producto o de otro " &
+            "documento con distinta cantidad." &
+            Environment.NewLine &
+            "Documento: " & documento &
+            Environment.NewLine &
+            "ID Detalle Compra (recibida): " & idCompra.ToString("0") &
+            Environment.NewLine &
+            "Producto recibido: " & producto &
+            Environment.NewLine &
+            "Cantidad: " & cantidad.ToString("N6") &
+            Environment.NewLine &
+            "Vínculo actual: " & idActual.ToString("0") &
+            If(documentoActual = String.Empty AndAlso
+               productoActual = String.Empty,
+               " (el id no existe como Transferencia Enviada)",
+               " (documento " & documentoActual &
+               ", producto " & productoActual &
+               ", cantidad " & cantidadActual.ToString("N6") & ")")
+
+            If reparable Then
+
+                h.Reparable = True
+                h.Estado = EstadoHallazgo.Reparable
+                h.Accion = "REPARAR"
+
+                h.Motivo = motivo &
+                Environment.NewLine &
+                "Enviada correcta encontrada: " & idCand.ToString("0") &
+                Environment.NewLine &
+                "Se corregirá solamente id_Detalle_Transferencia."
+
+            Else
+
+                h.Reparable = False
+                h.Estado = EstadoHallazgo.Detectado
+                h.Accion = "REVISIÓN MANUAL"
+
+                h.Motivo = motivo &
+                Environment.NewLine &
+                "No existe una única enviada candidata " &
+                "(mismo documento, producto y cantidad, sin recibida)."
+
+            End If
+
+            hallazgos.Add(h)
+
+        Next
+
+        Return hallazgos
+
+    End Function
+
+    ' ============================================================
+    ' TRANS-004
+    ' DIFERENCIA DE COSTO ENTRE TRANSFERENCIAS
+    '
+    ' Compara, para cada par relacionado por id_Detalle_Transferencia:
+    '   Enviada  : Detalle_Facturas.Costo_Unitario
+    '   Recibida : Detalle_Compras.Precio_Unitario
+    ' (en la recibida el costo se guarda en Precio_Unitario).
+    '
+    ' Se omiten los pares donde alguno de los dos valores es cero:
+    ' esos casos pertenecen a COST-004 y COST-005.
+    '
+    ' Solo detecta. No calcula costos ni repara: REVISION MANUAL.
+    ' ============================================================
+    Private Function AuditarTrans004(
+        ByVal control As ControlAuditoria) As List(Of HallazgoAuditoria)
+
+        Const TOLERANCIA As Double = 0.01
+
+        Dim hallazgos As New List(Of HallazgoAuditoria)
+
+        Dim dt As New DataTable()
+
+        Dim sql As String = ""
+
+        sql &= "SELECT f.id_Detalle_Factura, f.Numero_Factura, " & vbCrLf
+        sql &= "    f.Fecha_Factura, f.Cod_Producto, " & vbCrLf
+        sql &= "    f.Cantidad, f.Costo_Unitario AS CostoEnviada, " & vbCrLf
+        sql &= "    c.id_Detalle_Compra, " & vbCrLf
+        sql &= "    c.Precio_Unitario AS CostoRecibida " & vbCrLf
+        sql &= "FROM Detalle_Facturas f " & vbCrLf
+        sql &= "INNER JOIN Detalle_Compras c " & vbCrLf
+        sql &= "    ON c.id_Detalle_Transferencia = f.id_Detalle_Factura " & vbCrLf
+        sql &= "    AND c.Tipo_Compra = N'Transferencia Recibida' " & vbCrLf
+        sql &= "    AND LTRIM(RTRIM(c.Cod_Producto)) = LTRIM(RTRIM(f.Cod_Producto)) " & vbCrLf
+        sql &= "    AND (c.Numero_Compra = f.Numero_Factura " & vbCrLf
+        sql &= "         OR c.Cantidad = f.Cantidad) " & vbCrLf
+        sql &= "    AND ISNULL(c.Descripcion_Producto, '') NOT LIKE '%CANCELADO%' " & vbCrLf
+        sql &= "WHERE f.Tipo_Factura = N'Transferencia Enviada' " & vbCrLf
+        sql &= "AND ISNULL(f.Descripcion_Producto, '') NOT LIKE '%CANCELADO%' " & vbCrLf
+        sql &= "AND ISNULL(f.Cantidad, 0) <> 0 " & vbCrLf
+        sql &= "AND ISNULL(f.Costo_Unitario, 0) <> 0 " & vbCrLf
+        sql &= "AND ISNULL(c.Precio_Unitario, 0) <> 0 " & vbCrLf
+        sql &= "AND ABS(f.Costo_Unitario - c.Precio_Unitario) > " &
+               TOLERANCIA.ToString(
+                   Globalization.CultureInfo.InvariantCulture)
+
+        Using cn As New SqlConnection(Conexion)
+
+            cn.Open()
+
+            Using da As New SqlDataAdapter(sql, cn)
+
+                da.SelectCommand.CommandTimeout = 300
+
+                da.Fill(dt)
+
+            End Using
+
+        End Using
+
+        For Each r As DataRow In dt.Rows
+
+            Dim costoEnv As Double = ObtenerDouble(r("CostoEnviada"))
+            Dim costoRec As Double = ObtenerDouble(r("CostoRecibida"))
+            Dim cantidad As Double = ObtenerDouble(r("Cantidad"))
+
+            Dim idFactura As Decimal =
+            ObtenerDecimal(r("id_Detalle_Factura"))
+
+            Dim idCompra As Decimal =
+            ObtenerDecimal(r("id_Detalle_Compra"))
+
+            Dim documento As String =
+            If(IsDBNull(r("Numero_Factura")), "",
+               r("Numero_Factura").ToString().Trim())
+
+            Dim producto As String =
+            If(IsDBNull(r("Cod_Producto")), "",
+               r("Cod_Producto").ToString().Trim())
+
+            Dim h As New HallazgoAuditoria()
+
+            h.Control = control
+            h.Codigo = "TRANS-004"
+            h.Documento = documento
+            h.Fecha = If(IsDBNull(r("Fecha_Factura")),
+                         DateTime.MinValue,
+                         Convert.ToDateTime(r("Fecha_Factura")))
+            h.Tipo = "Transferencia Enviada"
+            h.Producto = producto
+            h.Cantidad = cantidad
+            h.PrecioUnitario = costoRec
+            h.CostoUnitario = costoEnv
+            h.IdDetalleFactura = idFactura
+            h.IdDetalleCompra = idCompra
+            h.IdDetalleTransferencia = idFactura
+            h.EsDuplicado = False
+            h.PuedeEliminar = False
+            h.Reparable = False
+            h.Estado = EstadoHallazgo.Detectado
+            h.Severidad = SeveridadAuditoria.Alta
+            h.Descripcion =
+            "Diferencia de costo entre Transferencia Enviada y Recibida."
+            h.Motivo =
+            "El Costo_Unitario de la enviada no coincide con el " &
+            "Precio_Unitario (costo) de la recibida." &
+            Environment.NewLine &
+            "Documento: " & documento &
+            Environment.NewLine &
+            "ID Detalle Factura (enviada): " & idFactura.ToString("0") &
+            Environment.NewLine &
+            "ID Detalle Compra (recibida): " & idCompra.ToString("0") &
+            Environment.NewLine &
+            "Producto: " & producto &
+            Environment.NewLine &
+            "Costo enviada (Costo_Unitario): " & costoEnv.ToString("N6") &
+            Environment.NewLine &
+            "Costo recibida (Precio_Unitario): " & costoRec.ToString("N6") &
+            Environment.NewLine &
+            "Diferencia: " & (costoEnv - costoRec).ToString("N6")
+            h.Accion = "REVISIÓN MANUAL"
+
+            hallazgos.Add(h)
+
+        Next
+
+        Return hallazgos
+
+    End Function
+
+    ' ============================================================
+    ' HALLAZGO DE DATOS (DATA-xxx)
+    ' Siempre queda para revisión manual: no se asigna tipo, cantidad
+    ' ni costo sin evidencia suficiente.
+    ' ============================================================
+    Private Function NuevoHallazgoData(
+        ByVal control As ControlAuditoria,
+        ByVal codigo As String,
+        ByVal tipo As String,
+        ByVal documento As String,
+        ByVal fecha As DateTime,
+        ByVal producto As String,
+        ByVal cantidad As Double,
+        ByVal precio As Double,
+        ByVal costo As Double,
+        ByVal severidad As SeveridadAuditoria,
+        ByVal descripcion As String,
+        ByVal motivo As String,
+        ByVal accion As String) As HallazgoAuditoria
+
+        Dim h As New HallazgoAuditoria()
+
+        h.Control = control
+        h.Codigo = codigo
+        h.Documento = documento
+        h.Fecha = fecha
+        h.Tipo = tipo
+        h.Producto = producto
+        h.Cantidad = cantidad
+        h.PrecioUnitario = precio
+        h.CostoUnitario = costo
+        h.EsDuplicado = False
+        h.PuedeEliminar = False
+        h.Reparable = False
+        h.Estado = EstadoHallazgo.Detectado
+        h.Severidad = severidad
+        h.Descripcion = descripcion
+        h.Motivo = motivo
+        h.Accion = accion
+
+        Return h
+
+    End Function
+
+    Private Function LeerFechaData(ByVal valor As Object) As DateTime
+
+        If valor Is Nothing OrElse IsDBNull(valor) Then
+            Return DateTime.MinValue
+        End If
+
+        Return Convert.ToDateTime(valor)
+
+    End Function
+
+    Private Function LeerTextoData(ByVal valor As Object) As String
+
+        If valor Is Nothing OrElse IsDBNull(valor) Then
+            Return String.Empty
+        End If
+
+        Return valor.ToString().Trim()
+
+    End Function
+
+    ' ============================================================
+    ' DATA-001
+    ' DETALLE SIN TIPO_FACTURA
+    '
+    ' Líneas con cantidad distinta de cero: un hallazgo por línea.
+    ' Líneas con cantidad cero (sin efecto en inventario): un único
+    ' hallazgo resumen. No se infiere el tipo: no existe cabecera.
+    ' ============================================================
+    Private Function AuditarData001(
+        ByVal control As ControlAuditoria) As List(Of HallazgoAuditoria)
+
+        Dim hallazgos As New List(Of HallazgoAuditoria)
+
+        Dim dt As New DataTable()
+
+        Dim sql As String = ""
+
+        sql &= "SELECT id_Detalle_Factura, Numero_Factura, " & vbCrLf
+        sql &= "    Fecha_Factura, Cod_Producto, Cantidad, " & vbCrLf
+        sql &= "    Precio_Unitario, Costo_Unitario " & vbCrLf
+        sql &= "FROM Detalle_Facturas " & vbCrLf
+        sql &= "WHERE LTRIM(RTRIM(ISNULL(Tipo_Factura, ''))) = '' " & vbCrLf
+        sql &= "AND ISNULL(Cantidad, 0) <> 0 " & vbCrLf
+        sql &= "ORDER BY Fecha_Factura, Numero_Factura, id_Detalle_Factura"
+
+        Dim dtResumen As New DataTable()
+
+        Dim sqlResumen As String = ""
+
+        sqlResumen &= "SELECT COUNT(*) AS Lineas, " & vbCrLf
+        sqlResumen &= "    COUNT(DISTINCT Numero_Factura) AS Documentos, " & vbCrLf
+        sqlResumen &= "    MIN(Fecha_Factura) AS Desde, " & vbCrLf
+        sqlResumen &= "    MAX(Fecha_Factura) AS Hasta " & vbCrLf
+        sqlResumen &= "FROM Detalle_Facturas " & vbCrLf
+        sqlResumen &= "WHERE LTRIM(RTRIM(ISNULL(Tipo_Factura, ''))) = '' " & vbCrLf
+        sqlResumen &= "AND ISNULL(Cantidad, 0) = 0"
+
+        Using cn As New SqlConnection(Conexion)
+
+            cn.Open()
+
+            Using da As New SqlDataAdapter(sql, cn)
+                da.SelectCommand.CommandTimeout = 300
+                da.Fill(dt)
+            End Using
+
+            Using da As New SqlDataAdapter(sqlResumen, cn)
+                da.SelectCommand.CommandTimeout = 300
+                da.Fill(dtResumen)
+            End Using
+
+        End Using
+
+        For Each r As DataRow In dt.Rows
+
+            Dim idFactura As Decimal =
+            ObtenerDecimal(r("id_Detalle_Factura"))
+
+            Dim documento As String = LeerTextoData(r("Numero_Factura"))
+            Dim producto As String = LeerTextoData(r("Cod_Producto"))
+            Dim cantidad As Double = ObtenerDouble(r("Cantidad"))
+            Dim precio As Double = ObtenerDouble(r("Precio_Unitario"))
+            Dim costo As Double = ObtenerDouble(r("Costo_Unitario"))
+
+            Dim h As HallazgoAuditoria =
+            NuevoHallazgoData(
+                control, "DATA-001", "(sin tipo)",
+                documento, LeerFechaData(r("Fecha_Factura")),
+                producto, cantidad, precio, costo,
+                SeveridadAuditoria.Alta,
+                "Detalle de factura sin Tipo_Factura.",
+                "El detalle no tiene Tipo_Factura y no existe una " &
+                "cabecera en Facturas con ese número y fecha, por lo " &
+                "que el tipo no puede inferirse. Tiene cantidad y " &
+                "afecta el inventario." &
+                Environment.NewLine &
+                "Documento: " & documento &
+                Environment.NewLine &
+                "ID Detalle Factura: " & idFactura.ToString("0") &
+                Environment.NewLine &
+                "Producto: " & producto &
+                Environment.NewLine &
+                "Cantidad: " & cantidad.ToString("N6") &
+                Environment.NewLine &
+                "Precio unitario: " & precio.ToString("N6") &
+                Environment.NewLine &
+                "Costo unitario: " & costo.ToString("N6"),
+                "REVISIÓN MANUAL")
+
+            h.IdDetalleFactura = idFactura
+
+            hallazgos.Add(h)
+
+        Next
+
+        If dtResumen.Rows.Count > 0 Then
+
+            Dim lineas As Integer =
+            Convert.ToInt32(dtResumen.Rows(0)("Lineas"))
+
+            If lineas > 0 Then
+
+                Dim desde As DateTime =
+                LeerFechaData(dtResumen.Rows(0)("Desde"))
+
+                Dim hasta As DateTime =
+                LeerFechaData(dtResumen.Rows(0)("Hasta"))
+
+                hallazgos.Add(
+                NuevoHallazgoData(
+                    control, "DATA-001", "(sin tipo)",
+                    "(varios)", desde,
+                    String.Empty, 0, 0, 0,
+                    SeveridadAuditoria.Media,
+                    "Detalles sin Tipo_Factura con cantidad cero.",
+                    "Hay " & lineas.ToString("N0") &
+                    " detalles sin Tipo_Factura y con cantidad cero " &
+                    "(" & Convert.ToInt32(
+                        dtResumen.Rows(0)("Documentos")).ToString("N0") &
+                    " documentos, del " & desde.ToString("dd/MM/yyyy") &
+                    " al " & hasta.ToString("dd/MM/yyyy") & ")." &
+                    Environment.NewLine &
+                    "No tienen cabecera en Facturas ni efecto en " &
+                    "inventario. Revisar qué proceso las genera; no se " &
+                    "eliminan ni se les asigna tipo automáticamente.",
+                    "REVISIÓN MANUAL"))
+
+            End If
+
+        End If
+
+        Return hallazgos
+
+    End Function
+
+    ' ============================================================
+    ' DATA-002
+    ' CANTIDAD CERO
+    '
+    ' Informativo: un hallazgo resumen por tabla y tipo de movimiento.
+    ' No se elimina nada: pueden ser líneas canceladas o históricas.
+    ' Las líneas sin Tipo_Factura se reportan en DATA-001.
+    ' ============================================================
+    Private Function AuditarData002(
+        ByVal control As ControlAuditoria) As List(Of HallazgoAuditoria)
+
+        Dim hallazgos As New List(Of HallazgoAuditoria)
+
+        Dim dt As New DataTable()
+
+        Dim sql As String = ""
+
+        sql &= "SELECT N'Detalle_Facturas' AS Tabla, " & vbCrLf
+        sql &= "    Tipo_Factura AS Tipo, COUNT(*) AS Lineas, " & vbCrLf
+        sql &= "    MIN(Fecha_Factura) AS Desde, MAX(Fecha_Factura) AS Hasta " & vbCrLf
+        sql &= "FROM Detalle_Facturas " & vbCrLf
+        sql &= "WHERE Cantidad = 0 " & vbCrLf
+        sql &= "AND LTRIM(RTRIM(ISNULL(Tipo_Factura, ''))) <> '' " & vbCrLf
+        sql &= "GROUP BY Tipo_Factura " & vbCrLf
+        sql &= "UNION ALL " & vbCrLf
+        sql &= "SELECT N'Detalle_Compras', " & vbCrLf
+        sql &= "    Tipo_Compra, COUNT(*), " & vbCrLf
+        sql &= "    MIN(Fecha_Compra), MAX(Fecha_Compra) " & vbCrLf
+        sql &= "FROM Detalle_Compras " & vbCrLf
+        sql &= "WHERE Cantidad = 0 " & vbCrLf
+        sql &= "GROUP BY Tipo_Compra " & vbCrLf
+        sql &= "ORDER BY 1, 2"
+
+        Using cn As New SqlConnection(Conexion)
+
+            cn.Open()
+
+            Using da As New SqlDataAdapter(sql, cn)
+                da.SelectCommand.CommandTimeout = 300
+                da.Fill(dt)
+            End Using
+
+        End Using
+
+        For Each r As DataRow In dt.Rows
+
+            Dim tabla As String = LeerTextoData(r("Tabla"))
+            Dim tipo As String = LeerTextoData(r("Tipo"))
+            Dim lineas As Integer = Convert.ToInt32(r("Lineas"))
+            Dim desde As DateTime = LeerFechaData(r("Desde"))
+            Dim hasta As DateTime = LeerFechaData(r("Hasta"))
+
+            hallazgos.Add(
+            NuevoHallazgoData(
+                control, "DATA-002", tipo,
+                "(varios)", desde,
+                String.Empty, 0, 0, 0,
+                SeveridadAuditoria.Baja,
+                "Detalles con cantidad cero: " & tipo & ".",
+                "Hay " & lineas.ToString("N0") &
+                " detalles de " & tipo & " con cantidad cero en " &
+                tabla & " (del " & desde.ToString("dd/MM/yyyy") &
+                " al " & hasta.ToString("dd/MM/yyyy") & ")." &
+                Environment.NewLine &
+                "Es informativo: pueden ser líneas canceladas o " &
+                "históricas sin efecto en inventario. No se eliminan " &
+                "automáticamente.",
+                "INFORMATIVO"))
+
+        Next
+
+        Return hallazgos
+
+    End Function
+
+    ' ============================================================
+    ' DATA-005
+    ' DETALLE SIN CABECERA
+    '
+    ' Informativo: un hallazgo por documento. Un detalle con cantidad
+    ' sin cabecera (Facturas/Compras) no entra al kardex ni al costo
+    ' promedio, por eso los demás controles lo excluyen. Las líneas
+    ' sin Tipo_Factura se reportan en DATA-001.
+    ' No se elimina nada.
+    ' ============================================================
+    Private Function AuditarData005(
+        ByVal control As ControlAuditoria) As List(Of HallazgoAuditoria)
+
+        Dim hallazgos As New List(Of HallazgoAuditoria)
+
+        Dim dt As New DataTable()
+
+        Dim sql As String = ""
+
+        sql &= "SELECT N'Detalle_Facturas' AS Tabla, " & vbCrLf
+        sql &= "    d.Tipo_Factura AS Tipo, d.Numero_Factura AS Documento, " & vbCrLf
+        sql &= "    d.Fecha_Factura AS Fecha, COUNT(*) AS Lineas " & vbCrLf
+        sql &= "FROM Detalle_Facturas d " & vbCrLf
+        sql &= "WHERE ISNULL(d.Cantidad, 0) <> 0 " & vbCrLf
+        sql &= "AND LTRIM(RTRIM(ISNULL(d.Tipo_Factura, ''))) <> '' " & vbCrLf
+        sql &= "AND NOT " & ExisteCabeceraFactura("d") & " " & vbCrLf
+        sql &= "GROUP BY d.Tipo_Factura, d.Numero_Factura, d.Fecha_Factura " & vbCrLf
+        sql &= "UNION ALL " & vbCrLf
+        sql &= "SELECT N'Detalle_Compras', " & vbCrLf
+        sql &= "    d.Tipo_Compra, d.Numero_Compra, " & vbCrLf
+        sql &= "    d.Fecha_Compra, COUNT(*) " & vbCrLf
+        sql &= "FROM Detalle_Compras d " & vbCrLf
+        sql &= "WHERE ISNULL(d.Cantidad, 0) <> 0 " & vbCrLf
+        sql &= "AND NOT EXISTS (SELECT 1 FROM Compras cab " & vbCrLf
+        sql &= "    WHERE cab.Numero_Compra = d.Numero_Compra " & vbCrLf
+        sql &= "    AND cab.Fecha_Compra = d.Fecha_Compra " & vbCrLf
+        sql &= "    AND cab.Tipo_Compra = d.Tipo_Compra) " & vbCrLf
+        sql &= "GROUP BY d.Tipo_Compra, d.Numero_Compra, d.Fecha_Compra " & vbCrLf
+        sql &= "ORDER BY 4, 3"
+
+        Using cn As New SqlConnection(Conexion)
+
+            cn.Open()
+
+            Using da As New SqlDataAdapter(sql, cn)
+                da.SelectCommand.CommandTimeout = 300
+                da.Fill(dt)
+            End Using
+
+        End Using
+
+        For Each r As DataRow In dt.Rows
+
+            Dim tabla As String = LeerTextoData(r("Tabla"))
+            Dim tipo As String = LeerTextoData(r("Tipo"))
+            Dim documento As String = LeerTextoData(r("Documento"))
+            Dim fecha As DateTime = LeerFechaData(r("Fecha"))
+            Dim lineas As Integer = Convert.ToInt32(r("Lineas"))
+
+            hallazgos.Add(
+            NuevoHallazgoData(
+                control, "DATA-005", tipo,
+                documento, fecha,
+                String.Empty, 0, 0, 0,
+                SeveridadAuditoria.Baja,
+                "Detalle sin cabecera: " & tipo & ".",
+                "El documento tiene " & lineas.ToString("N0") &
+                " línea(s) en " & tabla & " con cantidad, pero no " &
+                "existe su cabecera." &
+                Environment.NewLine &
+                "No entra al kardex ni al costo promedio, por eso los " &
+                "demás controles lo excluyen. Probablemente es un " &
+                "documento que no llegó a guardarse. No se elimina " &
+                "automáticamente.",
+                "REVISIÓN MANUAL"))
+
+        Next
+
+        Return hallazgos
+
+    End Function
+
+    ' ============================================================
+    ' DATA-003
+    ' COSTO NEGATIVO
+    '
+    ' Costo_Unitario menor que cero en Detalle_Facturas o
+    ' Detalle_Compras. Un hallazgo por línea; no se corrige sin
+    ' determinar el costo correcto.
+    ' ============================================================
+    Private Function AuditarData003(
+        ByVal control As ControlAuditoria) As List(Of HallazgoAuditoria)
+
+        Dim hallazgos As New List(Of HallazgoAuditoria)
+
+        Dim dt As New DataTable()
+
+        Dim sql As String = ""
+
+        sql &= "SELECT N'Detalle_Facturas' AS Tabla, " & vbCrLf
+        sql &= "    id_Detalle_Factura AS Id, Numero_Factura AS Documento, " & vbCrLf
+        sql &= "    Fecha_Factura AS Fecha, Tipo_Factura AS Tipo, " & vbCrLf
+        sql &= "    Cod_Producto, Cantidad, Precio_Unitario, Costo_Unitario " & vbCrLf
+        sql &= "FROM Detalle_Facturas " & vbCrLf
+        sql &= "WHERE Costo_Unitario < 0 " & vbCrLf
+        sql &= "UNION ALL " & vbCrLf
+        sql &= "SELECT N'Detalle_Compras', " & vbCrLf
+        sql &= "    id_Detalle_Compra, Numero_Compra, " & vbCrLf
+        sql &= "    Fecha_Compra, Tipo_Compra, " & vbCrLf
+        sql &= "    Cod_Producto, Cantidad, Precio_Unitario, Costo_Unitario " & vbCrLf
+        sql &= "FROM Detalle_Compras " & vbCrLf
+        sql &= "WHERE Costo_Unitario < 0 " & vbCrLf
+        sql &= "ORDER BY 4, 3"
+
+        Using cn As New SqlConnection(Conexion)
+
+            cn.Open()
+
+            Using da As New SqlDataAdapter(sql, cn)
+                da.SelectCommand.CommandTimeout = 300
+                da.Fill(dt)
+            End Using
+
+        End Using
+
+        For Each r As DataRow In dt.Rows
+
+            Dim tabla As String = LeerTextoData(r("Tabla"))
+            Dim id As Decimal = ObtenerDecimal(r("Id"))
+            Dim documento As String = LeerTextoData(r("Documento"))
+            Dim tipo As String = LeerTextoData(r("Tipo"))
+            Dim producto As String = LeerTextoData(r("Cod_Producto"))
+            Dim cantidad As Double = ObtenerDouble(r("Cantidad"))
+            Dim precio As Double = ObtenerDouble(r("Precio_Unitario"))
+            Dim costo As Double = ObtenerDouble(r("Costo_Unitario"))
+
+            Dim h As HallazgoAuditoria =
+            NuevoHallazgoData(
+                control, "DATA-003", tipo,
+                documento, LeerFechaData(r("Fecha")),
+                producto, cantidad, precio, costo,
+                SeveridadAuditoria.Media,
+                "Costo unitario negativo.",
+                "El Costo_Unitario es negativo. No se corrige " &
+                "automáticamente: hay que determinar el costo correcto." &
+                Environment.NewLine &
+                "Tabla: " & tabla &
+                Environment.NewLine &
+                "Tipo: " & tipo &
+                Environment.NewLine &
+                "Documento: " & documento &
+                Environment.NewLine &
+                "ID del detalle: " & id.ToString("0") &
+                Environment.NewLine &
+                "Producto: " & producto &
+                Environment.NewLine &
+                "Cantidad: " & cantidad.ToString("N6") &
+                Environment.NewLine &
+                "Precio unitario: " & precio.ToString("N6") &
+                Environment.NewLine &
+                "Costo unitario: " & costo.ToString("N6"),
+                "REVISIÓN MANUAL")
+
+            If tabla = "Detalle_Facturas" Then
+                h.IdDetalleFactura = id
+            Else
+                h.IdDetalleCompra = id
+            End If
+
+            hallazgos.Add(h)
+
+        Next
+
+        Return hallazgos
+
+    End Function
+
+    ' ============================================================
+    ' DATA-004
+    ' CANTIDAD NEGATIVA
+    '
+    ' Cantidad menor que cero en Detalle_Facturas o Detalle_Compras.
+    ' Un hallazgo por línea. Algunos tipos de movimiento pueden usar
+    ' cantidades negativas como convención: se muestra el tipo y no
+    ' se modifica nada.
+    ' ============================================================
+    Private Function AuditarData004(
+        ByVal control As ControlAuditoria) As List(Of HallazgoAuditoria)
+
+        Dim hallazgos As New List(Of HallazgoAuditoria)
+
+        Dim dt As New DataTable()
+
+        Dim sql As String = ""
+
+        sql &= "SELECT N'Detalle_Facturas' AS Tabla, " & vbCrLf
+        sql &= "    id_Detalle_Factura AS Id, Numero_Factura AS Documento, " & vbCrLf
+        sql &= "    Fecha_Factura AS Fecha, Tipo_Factura AS Tipo, " & vbCrLf
+        sql &= "    Cod_Producto, Cantidad, Precio_Unitario, Costo_Unitario " & vbCrLf
+        sql &= "FROM Detalle_Facturas " & vbCrLf
+        sql &= "WHERE Cantidad < 0 " & vbCrLf
+        sql &= "UNION ALL " & vbCrLf
+        sql &= "SELECT N'Detalle_Compras', " & vbCrLf
+        sql &= "    id_Detalle_Compra, Numero_Compra, " & vbCrLf
+        sql &= "    Fecha_Compra, Tipo_Compra, " & vbCrLf
+        sql &= "    Cod_Producto, Cantidad, Precio_Unitario, Costo_Unitario " & vbCrLf
+        sql &= "FROM Detalle_Compras " & vbCrLf
+        sql &= "WHERE Cantidad < 0 " & vbCrLf
+        sql &= "ORDER BY 4, 3"
+
+        Using cn As New SqlConnection(Conexion)
+
+            cn.Open()
+
+            Using da As New SqlDataAdapter(sql, cn)
+                da.SelectCommand.CommandTimeout = 300
+                da.Fill(dt)
+            End Using
+
+        End Using
+
+        For Each r As DataRow In dt.Rows
+
+            Dim tabla As String = LeerTextoData(r("Tabla"))
+            Dim id As Decimal = ObtenerDecimal(r("Id"))
+            Dim documento As String = LeerTextoData(r("Documento"))
+            Dim tipo As String = LeerTextoData(r("Tipo"))
+            Dim producto As String = LeerTextoData(r("Cod_Producto"))
+            Dim cantidad As Double = ObtenerDouble(r("Cantidad"))
+            Dim precio As Double = ObtenerDouble(r("Precio_Unitario"))
+            Dim costo As Double = ObtenerDouble(r("Costo_Unitario"))
+
+            Dim h As HallazgoAuditoria =
+            NuevoHallazgoData(
+                control, "DATA-004", tipo,
+                documento, LeerFechaData(r("Fecha")),
+                producto, cantidad, precio, costo,
+                SeveridadAuditoria.Media,
+                "Cantidad negativa.",
+                "La cantidad es negativa. Puede ser una convención " &
+                "legítima del tipo de movimiento o un dato inválido; " &
+                "no se modifica automáticamente." &
+                Environment.NewLine &
+                "Tabla: " & tabla &
+                Environment.NewLine &
+                "Tipo: " & tipo &
+                Environment.NewLine &
+                "Documento: " & documento &
+                Environment.NewLine &
+                "ID del detalle: " & id.ToString("0") &
+                Environment.NewLine &
+                "Producto: " & producto &
+                Environment.NewLine &
+                "Cantidad: " & cantidad.ToString("N6") &
+                Environment.NewLine &
+                "Precio unitario: " & precio.ToString("N6") &
+                Environment.NewLine &
+                "Costo unitario: " & costo.ToString("N6"),
+                "REVISIÓN MANUAL")
+
+            If tabla = "Detalle_Facturas" Then
+                h.IdDetalleFactura = id
+            Else
+                h.IdDetalleCompra = id
+            End If
+
+            hallazgos.Add(h)
+
+        Next
+
+        Return hallazgos
+
+    End Function
+
+    ' ============================================================
+    ' PROGRESO
+    '
+    ' La barra se reparte en partes iguales entre los controles que
+    ' ejecuta la auditoría (un paso por control). Dentro de un paso
+    ' los controles que informan su avance usan PorcentajeSegmento.
+    ' ============================================================
+    Private Const TOTAL_PASOS_PROGRESO As Integer = 19
+
+    Private _SegmentoInicio As Integer = 0
+    Private _SegmentoFin As Integer = 100
+
+    Private Sub IniciarPasoProgreso(
+        ByVal paso As Integer,
+        ByVal mensaje As String)
+
+        _SegmentoInicio = ((paso - 1) * 100) \ TOTAL_PASOS_PROGRESO
+        _SegmentoFin = (paso * 100) \ TOTAL_PASOS_PROGRESO
+
+        RaiseEvent Progreso(_SegmentoInicio, mensaje)
+
+    End Sub
+
+    Private Function PorcentajeSegmento(
+        ByVal fraccion As Double) As Integer
+
+        If fraccion < 0 Then fraccion = 0
+        If fraccion > 1 Then fraccion = 1
+
+        Return _SegmentoInicio +
+            CInt((_SegmentoFin - _SegmentoInicio) * fraccion)
+
+    End Function
+
+    ' ============================================================
+    ' COST-006
+    ' PRECIO CERO CON COSTO EXISTENTE
+    '
+    ' Informativo. Un precio cero con costo puede ser válido
+    ' (bonificación, regalía). No se declara error ni se repara.
+    ' No se reportan las bonificaciones: líneas con precio cero cuyo
+    ' documento tiene otra línea del mismo producto con precio.
+    ' Hay decenas de miles de líneas, por eso se resume en un
+    ' hallazgo por tipo de documento y mes.
+    ' ============================================================
+    Private Function AuditarCost006(
+        ByVal control As ControlAuditoria) As List(Of HallazgoAuditoria)
+
+        Dim hallazgos As New List(Of HallazgoAuditoria)
+
+        Dim dt As New DataTable()
+
+        Dim sql As String =
+        "SELECT df.Tipo_Factura AS Tipo, " &
+        "YEAR(df.Fecha_Factura) AS Anio, " &
+        "MONTH(df.Fecha_Factura) AS Mes, " &
+        "COUNT(*) AS Lineas, " &
+        "COUNT(DISTINCT df.Numero_Factura) AS Docs, " &
+        "COUNT(DISTINCT df.Cod_Producto) AS Productos, " &
+        "SUM(CONVERT(float, df.Cantidad)) AS Unidades, " &
+        "SUM(CONVERT(float, df.Cantidad) * " &
+        "CONVERT(float, df.Costo_Unitario)) AS CostoTotal, " &
+        "MIN(df.Numero_Factura) AS Muestra " &
+        "FROM Detalle_Facturas df " &
+        "LEFT JOIN Productos p ON p.Cod_Productos = df.Cod_Producto " &
+        "WHERE df.Tipo_Factura IN (N'Factura', N'Devolucion de Venta') " &
+        "AND ISNULL(df.Cantidad, 0) <> 0 " &
+        "AND ISNULL(df.Precio_Unitario, 0) = 0 " &
+        "AND ISNULL(df.Costo_Unitario, 0) > 0 " &
+        "AND ISNULL(p.Tipo_Producto, '') NOT IN ('Servicio', 'Descuento') " &
+        "AND " & ExisteCabeceraFactura("df") & " " &
+        "AND NOT EXISTS (SELECT 1 FROM Detalle_Facturas s " &
+        "WHERE s.Numero_Factura = df.Numero_Factura " &
+        "AND s.Fecha_Factura = df.Fecha_Factura " &
+        "AND s.Tipo_Factura = df.Tipo_Factura " &
+        "AND s.Cod_Producto = df.Cod_Producto " &
+        "AND ISNULL(s.Precio_Unitario, 0) > 0) " &
+        "GROUP BY df.Tipo_Factura, YEAR(df.Fecha_Factura), " &
+        "MONTH(df.Fecha_Factura) " &
+        "ORDER BY YEAR(df.Fecha_Factura), MONTH(df.Fecha_Factura), " &
+        "df.Tipo_Factura"
+
+        Using cn As New SqlConnection(Conexion)
+
+            cn.Open()
+
+            Using da As New SqlDataAdapter(sql, cn)
+                da.SelectCommand.CommandTimeout = 300
+                da.Fill(dt)
+            End Using
+
+        End Using
+
+        For Each r As DataRow In dt.Rows
+
+            Dim tipo As String = LeerTextoData(r("Tipo"))
+            Dim anio As Integer = Convert.ToInt32(r("Anio"))
+            Dim mes As Integer = Convert.ToInt32(r("Mes"))
+            Dim lineas As Integer = Convert.ToInt32(r("Lineas"))
+            Dim docs As Integer = Convert.ToInt32(r("Docs"))
+            Dim productos As Integer = Convert.ToInt32(r("Productos"))
+            Dim unidades As Double = ObtenerDouble(r("Unidades"))
+            Dim costoTotal As Double = ObtenerDouble(r("CostoTotal"))
+            Dim muestra As String = LeerTextoData(r("Muestra"))
+
+            hallazgos.Add(
+            NuevoHallazgoData(
+                control, "COST-006", tipo,
+                muestra, New DateTime(anio, mes, 1),
+                String.Empty, unidades, 0, costoTotal,
+                SeveridadAuditoria.Informativa,
+                "Precio cero con costo existente (informativo).",
+                lineas.ToString("N0") & " línea(s) de " & tipo &
+                " con Precio_Unitario en cero y Costo_Unitario " &
+                "mayor que cero en " & mes.ToString("00") & "/" &
+                anio.ToString() & "." &
+                Environment.NewLine &
+                docs.ToString("N0") & " documento(s), " &
+                productos.ToString("N0") & " producto(s), " &
+                unidades.ToString("N2") & " unidad(es). " &
+                "Costo total de esas unidades: " &
+                costoTotal.ToString("N2") & "." &
+                Environment.NewLine &
+                "Documento de muestra: " & muestra &
+                Environment.NewLine &
+                "Puede ser válido (bonificación, regalía). No se " &
+                "modifica ningún precio.",
+                "INFORMATIVO"))
+
+        Next
+
+        Return hallazgos
+
+    End Function
+
+    ' ============================================================
+    ' COST-007
+    ' COSTO HISTÓRICO DIFERENTE DEL COSTO PROMEDIO
+    '
+    ' Informativo. Para cada producto vendido en los últimos
+    ' COST007_DIAS días (respecto a su última venta), compara el
+    ' Costo_Unitario de su última línea de Factura con el resultado
+    ' de CostoPromedioKardex para la fecha de esa línea.
+    ' No modifica CostoPromedioKardex ni ningún dato.
+    ' ============================================================
+    Private Const COST007_DIAS As Integer = 90
+
+    Private Function AuditarCost007(
+        ByVal control As ControlAuditoria) As List(Of HallazgoAuditoria)
+
+        Dim hallazgos As New List(Of HallazgoAuditoria)
+
+        Dim dt As New DataTable()
+
+        Dim sql As String =
+        "SELECT u.Cod_Producto, u.Fecha_Factura, u.Numero_Factura, " &
+        "u.Costo_Unitario " &
+        "FROM (SELECT Cod_Producto, Fecha_Factura, Numero_Factura, " &
+        " Costo_Unitario, " &
+        " ROW_NUMBER() OVER (PARTITION BY Cod_Producto " &
+        "  ORDER BY Fecha_Factura DESC, id_Detalle_Factura DESC) AS rn " &
+        " FROM Detalle_Facturas " &
+        " WHERE Tipo_Factura = N'Factura' " &
+        " AND ISNULL(Cantidad, 0) <> 0 " &
+        " AND " & ExisteCabeceraFactura("Detalle_Facturas") & " " &
+        " AND ISNULL(Costo_Unitario, 0) > 0) u " &
+        "WHERE u.rn = 1 " &
+        "AND u.Fecha_Factura >= DATEADD(day, -" &
+        COST007_DIAS.ToString() &
+        ", (SELECT MAX(Fecha_Factura) FROM Detalle_Facturas " &
+        " WHERE Tipo_Factura = N'Factura')) " &
+        "ORDER BY u.Cod_Producto"
+
+        Using cn As New SqlConnection(Conexion)
+
+            cn.Open()
+
+            Using da As New SqlDataAdapter(sql, cn)
+                da.SelectCommand.CommandTimeout = 300
+                da.Fill(dt)
+            End Using
+
+        End Using
+
+        Dim procesados As Integer = 0
+
+        For Each r As DataRow In dt.Rows
+
+            If DebeCancelar() Then
+                Exit For
+            End If
+
+            procesados += 1
+
+            RaiseEvent Progreso(
+                PorcentajeSegmento(procesados / CDbl(dt.Rows.Count)),
+                "Verificando COST-007 - producto " &
+                procesados.ToString() & " de " &
+                dt.Rows.Count.ToString() & "...")
+
+            Dim producto As String = LeerTextoData(r("Cod_Producto"))
+            Dim fecha As DateTime = LeerFechaData(r("Fecha_Factura"))
+            Dim documento As String = LeerTextoData(r("Numero_Factura"))
+            Dim historico As Double = ObtenerDouble(r("Costo_Unitario"))
+
+            Dim rst As RstCostoPromedio =
+                CostoPromedioKardex(producto, fecha)
+
+            Dim promedio As Double = rst.Costo_Cordoba
+
+            Dim diferencia As Double = Math.Abs(historico - promedio)
+
+            If diferencia <= 0.01 OrElse
+               diferencia / historico <= 0.01 Then
+                Continue For
+            End If
+
+            hallazgos.Add(
+            NuevoHallazgoData(
+                control, "COST-007", "Factura",
+                documento, fecha,
+                producto, 0, 0, historico,
+                SeveridadAuditoria.Informativa,
+                "Costo histórico diferente del costo promedio (informativo).",
+                "Última venta del producto: factura " & documento &
+                " del " & fecha.ToString("dd/MM/yyyy") & "." &
+                Environment.NewLine &
+                "Costo histórico (Detalle_Facturas): " &
+                historico.ToString("N6") & Environment.NewLine &
+                "Costo promedio (CostoPromedioKardex a esa fecha): " &
+                promedio.ToString("N6") & Environment.NewLine &
+                "Diferencia: " & (historico - promedio).ToString("N6") &
+                Environment.NewLine &
+                "Una diferencia no es automáticamente un error: " &
+                "ambos costos pueden tener significados distintos. " &
+                "No se repara.",
+                "INFORMATIVO"))
+
+        Next
+
+        Return hallazgos
+
+    End Function
+
+    ' ============================================================
+    ' COST-008
+    ' CAMBIO DE COSTO SIN MOVIMIENTO DE ENTRADA JUSTIFICATIVO
+    '
+    ' Por producto, ordena las líneas de Factura con costo por
+    ' fecha e id y toma el PRIMER cambio de costo (diferencia mayor
+    ' a 0.01 y a 2%) que no tiene ninguna entrada (Mercancía
+    ' Recibida, Transferencia Recibida o Devolución de Compra, con
+    ' cantidad) entre la fecha de la línea anterior y la del cambio,
+    ' ambas inclusive. Solo detecta; no existe aún una regla de
+    ' reparación segura.
+    ' ============================================================
+    ' Otras líneas del mismo producto en el mismo documento que la
+    ' línea del cambio (alias u = #u).
+    Private Const SQL_HERMANAS_COST008 As String =
+        "WHERE s.Numero_Factura = u.DocNue " &
+        "AND s.Fecha_Factura = u.FechaNue " &
+        "AND s.Tipo_Factura = N'Factura' " &
+        "AND s.Cod_Producto = u.Cod_Producto " &
+        "AND s.id_Detalle_Factura <> u.IdNue " &
+        "AND ISNULL(s.Cantidad, 0) <> 0 " &
+        "AND ISNULL(s.Costo_Unitario, 0) > 0"
+
+    Private Const ORIGEN_RETORNO_COST008 As String =
+        "Costo anterior y posterior idénticos (retorno exacto)"
+
+    ' ------------------------------------------------------------
+    ' Evalúa la regla 1 de COST-008. Devuelve el número de líneas
+    ' del bloque (1 a 4) o 0 si la regla no se cumple. Usa la tabla
+    ' temporal #m de la misma conexión.
+    '
+    ' Se cumple cuando:
+    '   - las líneas del producto en el documento son consecutivas,
+    '     todas con el costo del cambio, y son TODAS las del producto
+    '     en ese documento,
+    '   - la línea siguiente al bloque tiene el costo anterior
+    '     (diferencia menor a 0.011),
+    '   - no hay entradas desde la línea anterior hasta la siguiente.
+    ' ------------------------------------------------------------
+    Private Function EvaluarRetornoExactoCost008(
+        ByVal cn As SqlConnection,
+        ByVal producto As String,
+        ByVal rn As Integer,
+        ByVal documento As String,
+        ByVal fechaNue As DateTime,
+        ByVal fechaAnt As DateTime,
+        ByVal costoAnt As Double,
+        ByVal costoNue As Double) As Integer
+
+        Dim docs As New List(Of String)
+        Dim fechas As New List(Of DateTime)
+        Dim costos As New List(Of Double)
+
+        Using cmd As New SqlCommand(
+        "SELECT Numero_Factura, Fecha_Factura, Costo_Unitario " &
+        "FROM #m WHERE Cod_Producto = @Producto " &
+        "AND rn >= @Rn AND rn <= @Rn + 5 ORDER BY rn", cn)
+
+            cmd.Parameters.Add("@Producto", SqlDbType.NVarChar, 50).Value =
+                producto
+            cmd.Parameters.Add("@Rn", SqlDbType.Int).Value = rn
+
+            Using dr As SqlDataReader = cmd.ExecuteReader()
+
+                While dr.Read()
+
+                    docs.Add(LeerTextoData(dr(0)))
+                    fechas.Add(LeerFechaData(dr(1)))
+                    costos.Add(ObtenerDouble(dr(2)))
+
+                End While
+
+            End Using
+
+        End Using
+
+        Dim n As Integer = 0
+
+        While n < docs.Count AndAlso
+              docs(n) = documento AndAlso
+              fechas(n) = fechaNue AndAlso
+              Math.Abs(costos(n) - costoNue) < 0.0001
+
+            n += 1
+
+        End While
+
+        If n = 0 OrElse n > 4 OrElse n >= docs.Count Then
+            Return 0
+        End If
+
+        If Math.Abs(costos(n) - costoAnt) >= 0.011 Then
+            Return 0
+        End If
+
+        Dim fechaSig As DateTime = fechas(n)
+
+        ' Deben ser todas las líneas del producto en el documento.
+        Using cmd As New SqlCommand(
+        "SELECT COUNT(*) FROM #m WHERE Cod_Producto = @Producto " &
+        "AND Numero_Factura = @Documento AND Fecha_Factura = @Fecha", cn)
+
+            cmd.Parameters.Add("@Producto", SqlDbType.NVarChar, 50).Value =
+                producto
+            cmd.Parameters.Add("@Documento", SqlDbType.NVarChar, 50).Value =
+                documento
+            cmd.Parameters.Add("@Fecha", SqlDbType.SmallDateTime).Value =
+                fechaNue
+
+            If Convert.ToInt32(cmd.ExecuteScalar()) <> n Then
+                Return 0
+            End If
+
+        End Using
+
+        ' Sin entradas entre la línea anterior y la siguiente.
+        Using cmd As New SqlCommand(
+        "SELECT COUNT(*) FROM Detalle_Compras c " &
+        "WHERE c.Cod_Producto = @Producto " &
+        "AND c.Fecha_Compra >= @FechaAnt " &
+        "AND c.Fecha_Compra < DATEADD(day, 1, @FechaSig) " &
+        "AND ISNULL(c.Cantidad, 0) <> 0 " &
+        "AND c.Tipo_Compra IN (N'Mercancia Recibida', " &
+        "N'Transferencia Recibida', N'Devolucion de Compra')", cn)
+
+            cmd.Parameters.Add("@Producto", SqlDbType.NVarChar, 50).Value =
+                producto
+            cmd.Parameters.Add("@FechaAnt", SqlDbType.SmallDateTime).Value =
+                fechaAnt
+            cmd.Parameters.Add("@FechaSig", SqlDbType.SmallDateTime).Value =
+                fechaSig
+
+            If Convert.ToInt32(cmd.ExecuteScalar()) <> 0 Then
+                Return 0
+            End If
+
+        End Using
+
+        Return n
+
+    End Function
+
+    Private Function AuditarCost008(
+        ByVal control As ControlAuditoria) As List(Of HallazgoAuditoria)
+
+        Dim hallazgos As New List(Of HallazgoAuditoria)
+
+        Dim dt As New DataTable()
+
+        Const ENTRADAS As String =
+            "c.Tipo_Compra IN (N'Mercancia Recibida', " &
+            "N'Transferencia Recibida', N'Devolucion de Compra')"
+
+        Dim sql As String =
+        "IF OBJECT_ID('tempdb..#m') IS NOT NULL DROP TABLE #m; " &
+        "IF OBJECT_ID('tempdb..#c') IS NOT NULL DROP TABLE #c; " &
+        "IF OBJECT_ID('tempdb..#u') IS NOT NULL DROP TABLE #u; " &
+        "SELECT Cod_Producto, Fecha_Factura, id_Detalle_Factura, " &
+        "Numero_Factura, Costo_Unitario, " &
+        "ROW_NUMBER() OVER (PARTITION BY Cod_Producto " &
+        "ORDER BY Fecha_Factura, id_Detalle_Factura) AS rn " &
+        "INTO #m FROM Detalle_Facturas " &
+        "WHERE Tipo_Factura = N'Factura' AND ISNULL(Cantidad, 0) <> 0 " &
+        "AND " & ExisteCabeceraFactura("Detalle_Facturas") & " " &
+        "AND ISNULL(Costo_Unitario, 0) > 0; " &
+        "CREATE UNIQUE CLUSTERED INDEX ix_m ON #m(Cod_Producto, rn); " &
+        "SELECT a.Cod_Producto, p.Fecha_Factura AS FechaAnt, " &
+        "p.Numero_Factura AS DocAnt, p.Costo_Unitario AS CostoAnt, " &
+        "a.Fecha_Factura AS FechaNue, a.Numero_Factura AS DocNue, " &
+        "a.id_Detalle_Factura AS IdNue, a.Costo_Unitario AS CostoNue, " &
+        "a.rn AS Rn " &
+        "INTO #c FROM #m a INNER JOIN #m p " &
+        "ON p.Cod_Producto = a.Cod_Producto AND p.rn = a.rn - 1 " &
+        "WHERE ABS(a.Costo_Unitario - p.Costo_Unitario) > 0.01 " &
+        "AND ABS(a.Costo_Unitario - p.Costo_Unitario) / " &
+        "p.Costo_Unitario > 0.02; " &
+        "SELECT x.*, ROW_NUMBER() OVER (PARTITION BY x.Cod_Producto " &
+        "ORDER BY x.FechaNue, x.IdNue) AS k " &
+        "INTO #u FROM #c x WHERE NOT EXISTS (SELECT 1 " &
+        "FROM Detalle_Compras c WHERE c.Cod_Producto = x.Cod_Producto " &
+        "AND c.Fecha_Compra >= x.FechaAnt " &
+        "AND c.Fecha_Compra < DATEADD(day, 1, x.FechaNue) " &
+        "AND ISNULL(c.Cantidad, 0) <> 0 AND " & ENTRADAS & "); " &
+        "SELECT u.Cod_Producto, u.FechaAnt, u.DocAnt, u.CostoAnt, " &
+        "u.FechaNue, u.DocNue, u.CostoNue, u.IdNue, u.Rn, " &
+        "(SELECT COUNT(*) FROM Detalle_Facturas s " & SQL_HERMANAS_COST008 &
+        ") AS Hermanas, " &
+        "(SELECT MIN(s.Costo_Unitario) FROM Detalle_Facturas s " &
+        SQL_HERMANAS_COST008 & ") AS CostoHermMin, " &
+        "(SELECT MAX(s.Costo_Unitario) FROM Detalle_Facturas s " &
+        SQL_HERMANAS_COST008 & ") AS CostoHermMax, " &
+        "e.Fecha_Compra AS FechaEnt, e.Tipo_Compra AS TipoEnt, " &
+        "e.Numero_Compra AS DocEnt, e.Costo_Unitario AS CostoEnt " &
+        "FROM #u u OUTER APPLY (SELECT TOP 1 c.Fecha_Compra, " &
+        "c.Tipo_Compra, c.Numero_Compra, c.Costo_Unitario " &
+        "FROM Detalle_Compras c WHERE c.Cod_Producto = u.Cod_Producto " &
+        "AND c.Fecha_Compra < u.FechaAnt " &
+        "AND ISNULL(c.Cantidad, 0) <> 0 AND " & ENTRADAS & " " &
+        "ORDER BY c.Fecha_Compra DESC) e " &
+        "WHERE u.k = 1 ORDER BY u.Cod_Producto;"
+
+        ' Regla 1 (retorno exacto): IdNue -> líneas del bloque.
+        Dim bloques As New Dictionary(Of Decimal, Integer)
+
+        Using cn As New SqlConnection(Conexion)
+
+            cn.Open()
+
+            Using da As New SqlDataAdapter(sql, cn)
+                da.SelectCommand.CommandTimeout = 600
+                da.Fill(dt)
+            End Using
+
+            ' Las tablas temporales #m viven en esta conexión.
+            For Each r As DataRow In dt.Rows
+
+                Dim lineas As Integer =
+                    EvaluarRetornoExactoCost008(
+                        cn,
+                        LeerTextoData(r("Cod_Producto")),
+                        Convert.ToInt32(r("Rn")),
+                        LeerTextoData(r("DocNue")),
+                        LeerFechaData(r("FechaNue")),
+                        LeerFechaData(r("FechaAnt")),
+                        ObtenerDouble(r("CostoAnt")),
+                        ObtenerDouble(r("CostoNue")))
+
+                If lineas > 0 Then
+                    bloques(Convert.ToDecimal(r("IdNue"))) = lineas
+                End If
+
+            Next
+
+        End Using
+
+        For Each r As DataRow In dt.Rows
+
+            Dim producto As String = LeerTextoData(r("Cod_Producto"))
+            Dim fechaAnt As DateTime = LeerFechaData(r("FechaAnt"))
+            Dim docAnt As String = LeerTextoData(r("DocAnt"))
+            Dim costoAnt As Double = ObtenerDouble(r("CostoAnt"))
+            Dim fechaNue As DateTime = LeerFechaData(r("FechaNue"))
+            Dim docNue As String = LeerTextoData(r("DocNue"))
+            Dim costoNue As Double = ObtenerDouble(r("CostoNue"))
+
+            Dim ultimaEntrada As String
+
+            If IsDBNull(r("FechaEnt")) Then
+
+                ultimaEntrada = "No hay entradas anteriores del producto."
+
+            Else
+
+                ultimaEntrada =
+                    "Última entrada anterior: " &
+                    LeerTextoData(r("TipoEnt")) & " " &
+                    LeerTextoData(r("DocEnt")) & " del " &
+                    LeerFechaData(r("FechaEnt")).ToString("dd/MM/yyyy") &
+                    " (costo " &
+                    ObtenerDouble(r("CostoEnt")).ToString("N6") & ")."
+
+            End If
+
+            ' --------------------------------------------------------
+            ' REGLA DE REPARACIÓN SEGURA
+            '
+            ' La línea del cambio es la única del mismo producto en
+            ' su documento con un costo distinto: todas las demás
+            ' líneas del producto en ese documento tienen el mismo
+            ' costo, y ese costo es el del movimiento anterior.
+            ' Solo en ese caso se propone ese costo.
+            ' --------------------------------------------------------
+
+            Dim hermanas As Integer = Convert.ToInt32(r("Hermanas"))
+            Dim reparable As Boolean = False
+            Dim costoHermano As Double = 0
+
+            If hermanas > 0 Then
+
+                Dim minimo As Double = ObtenerDouble(r("CostoHermMin"))
+                Dim maximo As Double = ObtenerDouble(r("CostoHermMax"))
+
+                If Math.Abs(maximo - minimo) < 0.0001 AndAlso
+                   Math.Abs(minimo - costoAnt) < 0.011 AndAlso
+                   Math.Abs(minimo - costoNue) > 0.01 Then
+
+                    reparable = True
+                    costoHermano = minimo
+
+                End If
+
+            End If
+
+            ' --------------------------------------------------------
+            ' REGLA 1: RETORNO EXACTO
+            '
+            ' Las líneas del producto en este documento (1 a 4) tienen
+            ' un costo distinto, el movimiento anterior y el posterior
+            ' tienen el mismo costo y no hay entradas entre ambos.
+            ' Sin entradas el costo no puede cambiar: se propone el
+            ' costo anterior.
+            ' --------------------------------------------------------
+
+            Dim lineasBloque As Integer = 0
+
+            If Not reparable Then
+
+                bloques.TryGetValue(
+                    Convert.ToDecimal(r("IdNue")), lineasBloque)
+
+            End If
+
+            Dim motivo As String =
+                "Movimiento anterior: factura " & docAnt & " del " &
+                fechaAnt.ToString("dd/MM/yyyy") & ", costo " &
+                costoAnt.ToString("N6") & "." & Environment.NewLine &
+                "Movimiento del cambio: factura " & docNue & " del " &
+                fechaNue.ToString("dd/MM/yyyy") & ", costo " &
+                costoNue.ToString("N6") & "." & Environment.NewLine &
+                "Entradas encontradas entre ambos movimientos: 0 " &
+                "(Mercancía Recibida, Transferencia Recibida, " &
+                "Devolución de Compra)." & Environment.NewLine &
+                ultimaEntrada & Environment.NewLine &
+                "Es el primer cambio injustificado de este producto."
+
+            If reparable Then
+
+                motivo &= Environment.NewLine &
+                    "Las otras " & hermanas.ToString() &
+                    " línea(s) de este producto en el mismo documento " &
+                    "tienen costo " & costoHermano.ToString("N6") &
+                    ". Solo esta línea difiere: se propone ese costo."
+
+            ElseIf lineasBloque > 0 Then
+
+                motivo &= Environment.NewLine &
+                    "Las " & lineasBloque.ToString() &
+                    " línea(s) del producto en este documento tienen " &
+                    "costo " & costoNue.ToString("N6") &
+                    "; la línea anterior y la posterior tienen " &
+                    costoAnt.ToString("N6") &
+                    " y no hay entradas entre ambas. Sin entradas el " &
+                    "costo no puede cambiar: se propone el costo anterior."
+
+            Else
+
+                motivo &= Environment.NewLine &
+                    "No se repara: no hay una regla segura para " &
+                    "determinar el costo correcto."
+
+            End If
+
+            Dim h As HallazgoAuditoria =
+            NuevoHallazgoData(
+                control, "COST-008", "Factura",
+                docNue, fechaNue,
+                producto, 0, 0, costoNue,
+                SeveridadAuditoria.Alta,
+                "Cambio de costo sin movimiento de entrada justificativo.",
+                motivo,
+                "REVISIÓN MANUAL")
+
+            If reparable Then
+
+                h.IdDetalleFactura = Convert.ToDecimal(r("IdNue"))
+                h.Reparable = True
+                h.TieneCostoPropuesto = True
+                h.CostoPropuesto = costoHermano
+                h.CostoPropuestoDolar = 0
+                h.OrigenCosto = "Líneas del mismo producto en el documento"
+                h.Estado = EstadoHallazgo.Reparable
+                h.Accion = "REPARAR"
+
+            ElseIf lineasBloque > 0 Then
+
+                h.IdDetalleFactura = Convert.ToDecimal(r("IdNue"))
+                h.Reparable = True
+                h.TieneCostoPropuesto = True
+                h.CostoPropuesto = costoAnt
+                h.CostoPropuestoDolar = 0
+                h.OrigenCosto = ORIGEN_RETORNO_COST008
+                h.LineasAfectadas = lineasBloque
+                h.Estado = EstadoHallazgo.Reparable
+                h.Accion = "REPARAR"
+
+            End If
+
+            hallazgos.Add(h)
+
+        Next
+
+        Return hallazgos
+
+    End Function
+
+    ' ============================================================
+    ' REPARAR COST-008
+    '
+    ' Corrige Costo_Unitario de UNA línea de Detalle_Facturas con el
+    ' costo que tienen las demás líneas del mismo producto en el
+    ' mismo documento. No usa CostoPromedioKardex ni toca otras
+    ' líneas, tablas o transferencias.
+    '
+    ' Dentro de una transacción vuelve a comprobar que:
+    '   - la línea conserva el costo detectado,
+    '   - existen otras líneas del producto en el documento,
+    '   - todas tienen exactamente el costo propuesto.
+    ' ============================================================
+    Public Function RepararCosto008(
+        ByVal hallazgo As HallazgoAuditoria) As Boolean
+
+        UltimoError = String.Empty
+
+        Try
+
+            If hallazgo Is Nothing OrElse
+               hallazgo.Codigo <> "COST-008" OrElse
+               Not hallazgo.Reparable OrElse
+               Not hallazgo.TieneCostoPropuesto OrElse
+               hallazgo.IdDetalleFactura <= 0 OrElse
+               hallazgo.CostoPropuesto <= 0 Then
+
+                UltimoError = "El hallazgo no es reparable."
+                Return False
+
+            End If
+
+            If hallazgo.OrigenCosto = ORIGEN_RETORNO_COST008 Then
+                Return RepararCosto008Bloque(hallazgo)
+            End If
+
+            Dim costoAnterior As Double = hallazgo.CostoUnitario
+            Dim costoNuevo As Double = hallazgo.CostoPropuesto
+
+            Using cn As New SqlConnection(Conexion)
+
+                cn.Open()
+
+                Using tx As SqlTransaction = cn.BeginTransaction()
+
+                    ' ----------------------------------------------------
+                    ' COMPROBAR LAS LÍNEAS HERMANAS
+                    ' ----------------------------------------------------
+
+                    Dim hermanas As Integer = 0
+                    Dim distintas As Integer = 0
+
+                    Using cmd As New SqlCommand(
+                    "SELECT COUNT(*), " &
+                    "SUM(CASE WHEN ABS(s.Costo_Unitario - @Costo) > " &
+                    "0.0001 THEN 1 ELSE 0 END) " &
+                    "FROM Detalle_Facturas s " &
+                    "WHERE s.Numero_Factura = @Documento " &
+                    "AND s.Fecha_Factura = @Fecha " &
+                    "AND s.Tipo_Factura = N'Factura' " &
+                    "AND s.Cod_Producto = @Producto " &
+                    "AND s.id_Detalle_Factura <> @IdDetalle " &
+                    "AND ISNULL(s.Cantidad, 0) <> 0 " &
+                    "AND ISNULL(s.Costo_Unitario, 0) > 0",
+                    cn, tx)
+
+                        cmd.Parameters.Add("@Costo", SqlDbType.Float).Value =
+                            costoNuevo
+                        cmd.Parameters.Add("@Documento", SqlDbType.NVarChar, 50).Value =
+                            hallazgo.Documento
+                        cmd.Parameters.Add("@Fecha", SqlDbType.SmallDateTime).Value =
+                            hallazgo.Fecha
+                        cmd.Parameters.Add("@Producto", SqlDbType.NVarChar, 50).Value =
+                            hallazgo.Producto
+                        cmd.Parameters.Add("@IdDetalle", SqlDbType.Decimal).Value =
+                            hallazgo.IdDetalleFactura
+
+                        Using dr As SqlDataReader = cmd.ExecuteReader()
+
+                            If dr.Read() Then
+
+                                hermanas = Convert.ToInt32(dr(0))
+
+                                If Not IsDBNull(dr(1)) Then
+                                    distintas = Convert.ToInt32(dr(1))
+                                End If
+
+                            End If
+
+                        End Using
+
+                    End Using
+
+                    If hermanas = 0 OrElse distintas > 0 Then
+
+                        tx.Rollback()
+
+                        UltimoError =
+                            "Las otras líneas del producto en el documento " &
+                            "ya no tienen el costo propuesto. Vuelva a " &
+                            "ejecutar la auditoría."
+
+                        Return False
+
+                    End If
+
+                    ' ----------------------------------------------------
+                    ' ACTUALIZAR LA LÍNEA
+                    ' ----------------------------------------------------
+
+                    Dim filas As Integer
+
+                    Using cmd As New SqlCommand(
+                    "UPDATE Detalle_Facturas " &
+                    "SET Costo_Unitario = @CostoNuevo " &
+                    "WHERE id_Detalle_Factura = @IdDetalle " &
+                    "AND Numero_Factura = @Documento " &
+                    "AND Fecha_Factura = @Fecha " &
+                    "AND Tipo_Factura = N'Factura' " &
+                    "AND Cod_Producto = @Producto " &
+                    "AND ABS(ISNULL(Costo_Unitario, 0) - @CostoActual) " &
+                    "< 0.000001",
+                    cn, tx)
+
+                        cmd.Parameters.Add("@CostoNuevo", SqlDbType.Float).Value =
+                            costoNuevo
+                        cmd.Parameters.Add("@CostoActual", SqlDbType.Float).Value =
+                            costoAnterior
+                        cmd.Parameters.Add("@IdDetalle", SqlDbType.Decimal).Value =
+                            hallazgo.IdDetalleFactura
+                        cmd.Parameters.Add("@Documento", SqlDbType.NVarChar, 50).Value =
+                            hallazgo.Documento
+                        cmd.Parameters.Add("@Fecha", SqlDbType.SmallDateTime).Value =
+                            hallazgo.Fecha
+                        cmd.Parameters.Add("@Producto", SqlDbType.NVarChar, 50).Value =
+                            hallazgo.Producto
+
+                        filas = cmd.ExecuteNonQuery()
+
+                    End Using
+
+                    If filas <> 1 Then
+
+                        tx.Rollback()
+
+                        UltimoError =
+                            "La línea cambió después de la auditoría " &
+                            "(filas afectadas: " & filas.ToString() &
+                            "). Vuelva a ejecutar la auditoría."
+
+                        Return False
+
+                    End If
+
+                    tx.Commit()
+
+                End Using
+
+            End Using
+
+            ' El costo ya está guardado: un fallo de la bitácora no
+            ' debe informar la reparación como fallida.
+            Try
+
+                Bitacora(
+                    Now,
+                    NombreUsuario,
+                    "Auditoria Facturacion",
+                    "Reparo costo COST-008:" & hallazgo.Documento &
+                    " Prod:" & hallazgo.Producto &
+                    " Det:" & hallazgo.IdDetalleFactura.ToString("0") &
+                    " " & costoAnterior.ToString("N6") &
+                    "->" & costoNuevo.ToString("N6"))
+
+            Catch
+            End Try
+
+            hallazgo.CostoUnitario = costoNuevo
+
+            hallazgo.Motivo =
+                "El Costo_Unitario fue corregido desde " &
+                costoAnterior.ToString("N6") & " hasta " &
+                costoNuevo.ToString("N6") &
+                " con el costo de las otras líneas del producto " &
+                "en el mismo documento."
+
+            hallazgo.Estado = EstadoHallazgo.Reparado
+            hallazgo.Reparable = False
+            hallazgo.TieneCostoPropuesto = False
+            hallazgo.Accion = "REPARADO"
+
+            Return True
+
+        Catch ex As Exception
+
+            UltimoError = ex.Message
+
+            Return False
+
+        End Try
+
+    End Function
+
+    ' ============================================================
+    ' REPARAR COST-008 - REGLA 1 (RETORNO EXACTO)
+    '
+    ' Corrige Costo_Unitario de las LineasAfectadas líneas del
+    ' producto en el documento (todas con el costo detectado) con el
+    ' costo anterior, que es también el posterior. Dentro de una
+    ' transacción comprueba que el producto tiene en el documento
+    ' exactamente esas líneas y que todas conservan el costo
+    ' detectado. No toca otras líneas ni tablas.
+    ' ============================================================
+    Private Function RepararCosto008Bloque(
+        ByVal hallazgo As HallazgoAuditoria) As Boolean
+
+        Dim esperadas As Integer = hallazgo.LineasAfectadas
+
+        If esperadas < 1 OrElse esperadas > 4 Then
+
+            UltimoError = "El hallazgo no tiene un bloque de líneas válido."
+            Return False
+
+        End If
+
+        Dim costoAnterior As Double = hallazgo.CostoUnitario
+        Dim costoNuevo As Double = hallazgo.CostoPropuesto
+
+        Using cn As New SqlConnection(Conexion)
+
+            cn.Open()
+
+            Using tx As SqlTransaction = cn.BeginTransaction()
+
+                Dim total As Integer = 0
+                Dim conformes As Integer = 0
+
+                Using cmd As New SqlCommand(
+                "SELECT COUNT(*), " &
+                "SUM(CASE WHEN ABS(Costo_Unitario - @CostoActual) < " &
+                "0.0001 THEN 1 ELSE 0 END) " &
+                "FROM Detalle_Facturas " &
+                "WHERE Numero_Factura = @Documento " &
+                "AND Fecha_Factura = @Fecha " &
+                "AND Tipo_Factura = N'Factura' " &
+                "AND Cod_Producto = @Producto " &
+                "AND ISNULL(Cantidad, 0) <> 0 " &
+                "AND ISNULL(Costo_Unitario, 0) > 0",
+                cn, tx)
+
+                    cmd.Parameters.Add("@CostoActual", SqlDbType.Float).Value =
+                        costoAnterior
+                    cmd.Parameters.Add("@Documento", SqlDbType.NVarChar, 50).Value =
+                        hallazgo.Documento
+                    cmd.Parameters.Add("@Fecha", SqlDbType.SmallDateTime).Value =
+                        hallazgo.Fecha
+                    cmd.Parameters.Add("@Producto", SqlDbType.NVarChar, 50).Value =
+                        hallazgo.Producto
+
+                    Using dr As SqlDataReader = cmd.ExecuteReader()
+
+                        If dr.Read() Then
+
+                            total = Convert.ToInt32(dr(0))
+
+                            If Not IsDBNull(dr(1)) Then
+                                conformes = Convert.ToInt32(dr(1))
+                            End If
+
+                        End If
+
+                    End Using
+
+                End Using
+
+                If total <> esperadas OrElse conformes <> esperadas Then
+
+                    tx.Rollback()
+
+                    UltimoError =
+                        "Las líneas del producto en el documento cambiaron " &
+                        "después de la auditoría (esperadas: " &
+                        esperadas.ToString() & ", encontradas: " &
+                        total.ToString() & ", con el costo detectado: " &
+                        conformes.ToString() &
+                        "). Vuelva a ejecutar la auditoría."
+
+                    Return False
+
+                End If
+
+                Dim filas As Integer
+
+                Using cmd As New SqlCommand(
+                "UPDATE Detalle_Facturas " &
+                "SET Costo_Unitario = @CostoNuevo " &
+                "WHERE Numero_Factura = @Documento " &
+                "AND Fecha_Factura = @Fecha " &
+                "AND Tipo_Factura = N'Factura' " &
+                "AND Cod_Producto = @Producto " &
+                "AND ISNULL(Cantidad, 0) <> 0 " &
+                "AND ABS(ISNULL(Costo_Unitario, 0) - @CostoActual) " &
+                "< 0.0001",
+                cn, tx)
+
+                    cmd.Parameters.Add("@CostoNuevo", SqlDbType.Float).Value =
+                        costoNuevo
+                    cmd.Parameters.Add("@CostoActual", SqlDbType.Float).Value =
+                        costoAnterior
+                    cmd.Parameters.Add("@Documento", SqlDbType.NVarChar, 50).Value =
+                        hallazgo.Documento
+                    cmd.Parameters.Add("@Fecha", SqlDbType.SmallDateTime).Value =
+                        hallazgo.Fecha
+                    cmd.Parameters.Add("@Producto", SqlDbType.NVarChar, 50).Value =
+                        hallazgo.Producto
+
+                    filas = cmd.ExecuteNonQuery()
+
+                End Using
+
+                If filas <> esperadas Then
+
+                    tx.Rollback()
+
+                    UltimoError =
+                        "Filas afectadas: " & filas.ToString() &
+                        " (esperadas: " & esperadas.ToString() &
+                        "). No se realizó ningún cambio."
+
+                    Return False
+
+                End If
+
+                tx.Commit()
+
+            End Using
+
+        End Using
+
+        Try
+
+            Bitacora(
+                Now,
+                NombreUsuario,
+                "Auditoria Facturacion",
+                "Reparo costo COST-008 (retorno exacto):" &
+                hallazgo.Documento &
+                " Prod:" & hallazgo.Producto &
+                " Lineas:" & esperadas.ToString() &
+                " " & costoAnterior.ToString("N6") &
+                "->" & costoNuevo.ToString("N6"))
+
+        Catch
+        End Try
+
+        hallazgo.CostoUnitario = costoNuevo
+
+        hallazgo.Motivo =
+            "El Costo_Unitario de " & esperadas.ToString() &
+            " línea(s) fue corregido desde " &
+            costoAnterior.ToString("N6") & " hasta " &
+            costoNuevo.ToString("N6") &
+            ": el movimiento anterior y el posterior tenían ese costo " &
+            "y no había entradas entre ambos."
+
+        hallazgo.Estado = EstadoHallazgo.Reparado
+        hallazgo.Reparable = False
+        hallazgo.TieneCostoPropuesto = False
+        hallazgo.Accion = "REPARADO"
+
+        Return True
+
+    End Function
+
+    ' ============================================================
+    ' CONSULTA BASE DE TC-001 Y TC-002
+    '
+    ' Documentos en dólares agrupados por tabla, tipo y día.
+    ' La tasa válida de cada día está en la tabla TasaCambio.
+    ' (El campo TasaCambio de los detalles no se usa: no es una
+    ' regla confiable, la mayoría de las líneas en dólares lo
+    ' tienen en cero.)
+    ' ============================================================
+    Private Const SQL_DOCUMENTOS_DOLARES As String =
+        "SELECT N'Facturas' AS Tabla, Tipo_Factura AS Tipo, " &
+        "CONVERT(varchar(8), Fecha_Factura, 112) AS Dia, " &
+        "COUNT(*) AS Docs, MIN(Numero_Factura) AS Muestra " &
+        "FROM Facturas WHERE MonedaFactura = N'Dolares' " &
+        "GROUP BY Tipo_Factura, CONVERT(varchar(8), Fecha_Factura, 112) " &
+        "UNION ALL " &
+        "SELECT N'Compras', Tipo_Compra, " &
+        "CONVERT(varchar(8), Fecha_Compra, 112), " &
+        "COUNT(*), MIN(Numero_Compra) " &
+        "FROM Compras WHERE MonedaCompra = N'Dolares' " &
+        "GROUP BY Tipo_Compra, CONVERT(varchar(8), Fecha_Compra, 112) " &
+        "UNION ALL " &
+        "SELECT N'Recibo', N'Recibo', " &
+        "CONVERT(varchar(8), Fecha_Recibo, 112), " &
+        "COUNT(*), MIN(CodReciboPago) " &
+        "FROM Recibo WHERE MonedaRecibo = N'Dolares' " &
+        "GROUP BY CONVERT(varchar(8), Fecha_Recibo, 112)"
+
+    Private Function LeerDiaTasa(ByVal valor As Object) As DateTime
+
+        Return DateTime.ParseExact(
+            LeerTextoData(valor),
+            "yyyyMMdd",
+            Globalization.CultureInfo.InvariantCulture)
+
+    End Function
+
+    ' ============================================================
+    ' TC-001
+    ' TASA DE CAMBIO INEXISTENTE
+    '
+    ' Documentos en dólares cuya fecha no tiene fila en TasaCambio.
+    ' Un hallazgo por tabla, tipo y día. No se asigna ninguna tasa.
+    ' ============================================================
+    Private Function AuditarTc001(
+        ByVal control As ControlAuditoria) As List(Of HallazgoAuditoria)
+
+        Dim hallazgos As New List(Of HallazgoAuditoria)
+
+        Dim dt As New DataTable()
+
+        Dim sql As String =
+        "SELECT d.Tabla, d.Tipo, d.Dia, d.Docs, d.Muestra " &
+        "FROM (" & SQL_DOCUMENTOS_DOLARES & ") d " &
+        "WHERE NOT EXISTS (SELECT 1 FROM TasaCambio x " &
+        "WHERE x.FechaTasa >= CONVERT(smalldatetime, d.Dia, 112) " &
+        "AND x.FechaTasa < DATEADD(day, 1, " &
+        "CONVERT(smalldatetime, d.Dia, 112))) " &
+        "ORDER BY d.Dia, d.Tabla, d.Tipo"
+
+        Using cn As New SqlConnection(Conexion)
+
+            cn.Open()
+
+            Using da As New SqlDataAdapter(sql, cn)
+                da.SelectCommand.CommandTimeout = 300
+                da.Fill(dt)
+            End Using
+
+        End Using
+
+        For Each r As DataRow In dt.Rows
+
+            Dim tabla As String = LeerTextoData(r("Tabla"))
+            Dim tipo As String = LeerTextoData(r("Tipo"))
+            Dim dia As DateTime = LeerDiaTasa(r("Dia"))
+            Dim docs As Integer = Convert.ToInt32(r("Docs"))
+            Dim muestra As String = LeerTextoData(r("Muestra"))
+
+            hallazgos.Add(
+            NuevoHallazgoData(
+                control, "TC-001", tabla & " - " & tipo,
+                muestra, dia,
+                String.Empty, 0, 0, 0,
+                SeveridadAuditoria.Alta,
+                "Documentos en dólares sin tasa de cambio.",
+                "No existe una fila en TasaCambio para el " &
+                dia.ToString("dd/MM/yyyy") & ", pero hay " &
+                docs.ToString("N0") & " documento(s) en dólares de " &
+                tabla & " (" & tipo & ")." &
+                Environment.NewLine &
+                "Documento de muestra: " & muestra &
+                Environment.NewLine &
+                "No se asigna una tasa automáticamente: hay que " &
+                "confirmar la tasa que correspondía a esa fecha.",
+                "REVISIÓN MANUAL"))
+
+        Next
+
+        Return hallazgos
+
+    End Function
+
+    ' ============================================================
+    ' TC-002
+    ' TASA DE CAMBIO CERO O FUERA DE RANGO
+    '
+    ' (a) Documentos en dólares en un día cuya tasa en TasaCambio es
+    '     cero o nula.
+    ' (b) Tasas atípicas: una tasa que difiere más de 5% de la tasa
+    '     válida anterior Y de la siguiente (pico aislado, típico de
+    '     un error de captura). Se informa cuántos documentos hay ese
+    '     día.
+    ' No se corrige ninguna tasa histórica sin confirmar su valor.
+    ' ============================================================
+    Private Function AuditarTc002(
+        ByVal control As ControlAuditoria) As List(Of HallazgoAuditoria)
+
+        Dim hallazgos As New List(Of HallazgoAuditoria)
+
+        Dim dtCero As New DataTable()
+        Dim dtAtipicas As New DataTable()
+
+        Dim sqlCero As String =
+        "SELECT d.Tabla, d.Tipo, d.Dia, d.Docs, d.Muestra " &
+        "FROM (" & SQL_DOCUMENTOS_DOLARES & ") d " &
+        "INNER JOIN TasaCambio x " &
+        "ON x.FechaTasa >= CONVERT(smalldatetime, d.Dia, 112) " &
+        "AND x.FechaTasa < DATEADD(day, 1, " &
+        "CONVERT(smalldatetime, d.Dia, 112)) " &
+        "WHERE x.MontoTasa IS NULL OR x.MontoTasa <= 0 " &
+        "ORDER BY d.Dia, d.Tabla, d.Tipo"
+
+        Dim sqlAtipicas As String =
+        "SELECT o.FechaTasa, o.MontoTasa, o.Anterior, o.Siguiente, " &
+        "(SELECT COUNT(*) FROM Facturas f " &
+        " WHERE f.Fecha_Factura >= o.FechaTasa " &
+        " AND f.Fecha_Factura < DATEADD(day, 1, o.FechaTasa)) AS Facturas, " &
+        "(SELECT COUNT(*) FROM Facturas f " &
+        " WHERE f.MonedaFactura = N'Dolares' " &
+        " AND f.Fecha_Factura >= o.FechaTasa " &
+        " AND f.Fecha_Factura < DATEADD(day, 1, o.FechaTasa)) AS FacturasDolares, " &
+        "(SELECT COUNT(*) FROM Compras c " &
+        " WHERE c.Fecha_Compra >= o.FechaTasa " &
+        " AND c.Fecha_Compra < DATEADD(day, 1, o.FechaTasa)) AS Compras " &
+        "FROM (" &
+        " SELECT t.FechaTasa, t.MontoTasa, " &
+        " p.MontoTasa AS Anterior, n.MontoTasa AS Siguiente " &
+        " FROM TasaCambio t " &
+        " OUTER APPLY (SELECT TOP 1 a.MontoTasa FROM TasaCambio a " &
+        "  WHERE a.FechaTasa < t.FechaTasa AND a.MontoTasa > 0 " &
+        "  ORDER BY a.FechaTasa DESC) p " &
+        " OUTER APPLY (SELECT TOP 1 b.MontoTasa FROM TasaCambio b " &
+        "  WHERE b.FechaTasa > t.FechaTasa AND b.MontoTasa > 0 " &
+        "  ORDER BY b.FechaTasa) n " &
+        " WHERE t.MontoTasa > 0 " &
+        " AND p.MontoTasa IS NOT NULL AND n.MontoTasa IS NOT NULL " &
+        " AND ABS(t.MontoTasa - p.MontoTasa) / p.MontoTasa > 0.05 " &
+        " AND ABS(t.MontoTasa - n.MontoTasa) / n.MontoTasa > 0.05" &
+        ") o ORDER BY o.FechaTasa"
+
+        Using cn As New SqlConnection(Conexion)
+
+            cn.Open()
+
+            Using da As New SqlDataAdapter(sqlCero, cn)
+                da.SelectCommand.CommandTimeout = 300
+                da.Fill(dtCero)
+            End Using
+
+            Using da As New SqlDataAdapter(sqlAtipicas, cn)
+                da.SelectCommand.CommandTimeout = 300
+                da.Fill(dtAtipicas)
+            End Using
+
+        End Using
+
+        For Each r As DataRow In dtCero.Rows
+
+            Dim tabla As String = LeerTextoData(r("Tabla"))
+            Dim tipo As String = LeerTextoData(r("Tipo"))
+            Dim dia As DateTime = LeerDiaTasa(r("Dia"))
+            Dim docs As Integer = Convert.ToInt32(r("Docs"))
+            Dim muestra As String = LeerTextoData(r("Muestra"))
+
+            hallazgos.Add(
+            NuevoHallazgoData(
+                control, "TC-002", tabla & " - " & tipo,
+                muestra, dia,
+                String.Empty, 0, 0, 0,
+                SeveridadAuditoria.Alta,
+                "Documentos en dólares con tasa de cambio en cero.",
+                "La tasa de TasaCambio para el " &
+                dia.ToString("dd/MM/yyyy") &
+                " es cero o nula, y hay " & docs.ToString("N0") &
+                " documento(s) en dólares de " & tabla &
+                " (" & tipo & ")." &
+                Environment.NewLine &
+                "Documento de muestra: " & muestra &
+                Environment.NewLine &
+                "No se corrige la tasa automáticamente: hay que " &
+                "confirmar la tasa que correspondía a esa fecha.",
+                "REVISIÓN MANUAL"))
+
+        Next
+
+        For Each r As DataRow In dtAtipicas.Rows
+
+            Dim dia As DateTime = LeerFechaData(r("FechaTasa"))
+            Dim tasa As Double = ObtenerDouble(r("MontoTasa"))
+            Dim anterior As Double = ObtenerDouble(r("Anterior"))
+            Dim siguiente As Double = ObtenerDouble(r("Siguiente"))
+            Dim facturas As Integer = Convert.ToInt32(r("Facturas"))
+            Dim facturasDolares As Integer =
+            Convert.ToInt32(r("FacturasDolares"))
+            Dim compras As Integer = Convert.ToInt32(r("Compras"))
+
+            hallazgos.Add(
+            NuevoHallazgoData(
+                control, "TC-002", "TasaCambio",
+                "(tasa del día)", dia,
+                String.Empty, 0, tasa, 0,
+                SeveridadAuditoria.Alta,
+                "Tasa de cambio atípica.",
+                "La tasa del " & dia.ToString("dd/MM/yyyy") &
+                " es " & tasa.ToString("N4") &
+                " y difiere más de 5% de la tasa válida anterior (" &
+                anterior.ToString("N4") & ") y de la siguiente (" &
+                siguiente.ToString("N4") & "). Puede ser un error " &
+                "de captura." &
+                Environment.NewLine &
+                "Ese día hay " & facturas.ToString("N0") &
+                " factura(s) (" & facturasDolares.ToString("N0") &
+                " en dólares) y " & compras.ToString("N0") &
+                " compra(s)." &
+                Environment.NewLine &
+                "No se corrige automáticamente: hay que confirmar " &
+                "la tasa correcta de esa fecha.",
+                "REVISIÓN MANUAL"))
+
+        Next
 
         Return hallazgos
 

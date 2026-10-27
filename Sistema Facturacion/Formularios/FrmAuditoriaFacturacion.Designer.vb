@@ -52,6 +52,7 @@ Partial Class FrmAuditoriaFacturacion
     Friend WithEvents btnDetener As System.Windows.Forms.Button
     Friend WithEvents btnReparar As System.Windows.Forms.Button
     Friend WithEvents btnMarcarRevisado As System.Windows.Forms.Button
+    Friend WithEvents btnEliminar As System.Windows.Forms.Button
 
     ' Estado y progreso
     Friend WithEvents lblEstadoCaption As System.Windows.Forms.Label
@@ -123,6 +124,7 @@ Partial Class FrmAuditoriaFacturacion
         Me.btnDetener = New System.Windows.Forms.Button()
         Me.btnReparar = New System.Windows.Forms.Button()
         Me.btnMarcarRevisado = New System.Windows.Forms.Button()
+        Me.btnEliminar = New System.Windows.Forms.Button()
         Me.lblEstadoCaption = New System.Windows.Forms.Label()
         Me.lblEstadoValor = New System.Windows.Forms.Label()
         Me.pbAuditoria = New System.Windows.Forms.ProgressBar()
@@ -194,6 +196,7 @@ Partial Class FrmAuditoriaFacturacion
         Me.pnlToolbar.Controls.Add(Me.btnDetener)
         Me.pnlToolbar.Controls.Add(Me.btnReparar)
         Me.pnlToolbar.Controls.Add(Me.btnMarcarRevisado)
+        Me.pnlToolbar.Controls.Add(Me.btnEliminar)
         Me.pnlToolbar.Controls.Add(Me.lblEstadoCaption)
         Me.pnlToolbar.Controls.Add(Me.lblEstadoValor)
         Me.pnlToolbar.Controls.Add(Me.pbAuditoria)
@@ -268,6 +271,23 @@ Partial Class FrmAuditoriaFacturacion
         Me.btnMarcarRevisado.TabIndex = 3
         Me.btnMarcarRevisado.Text = "✓  Marcar Revisado"
         Me.btnMarcarRevisado.UseVisualStyleBackColor = False
+        '
+        'btnEliminar
+        '
+        Me.btnEliminar.BackColor = System.Drawing.Color.White
+        Me.btnEliminar.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnEliminar.Enabled = False
+        Me.btnEliminar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(38, Byte), Integer), CType(CType(38, Byte), Integer))
+        Me.btnEliminar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(254, Byte), Integer), CType(CType(242, Byte), Integer), CType(CType(242, Byte), Integer))
+        Me.btnEliminar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnEliminar.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.btnEliminar.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(38, Byte), Integer), CType(CType(38, Byte), Integer))
+        Me.btnEliminar.Location = New System.Drawing.Point(586, 10)
+        Me.btnEliminar.Name = "btnEliminar"
+        Me.btnEliminar.Size = New System.Drawing.Size(110, 34)
+        Me.btnEliminar.TabIndex = 4
+        Me.btnEliminar.Text = "Eliminar"
+        Me.btnEliminar.UseVisualStyleBackColor = False
         '
         'lblEstadoCaption
         '

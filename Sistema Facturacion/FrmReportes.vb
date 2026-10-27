@@ -3031,6 +3031,10 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
         'Me.LblProcesando.Visible = True
         'My.Application.DoEvents()
 
+        Dim TotalizarActivo As Boolean =
+            ChkTotalizar IsNot Nothing AndAlso ChkTotalizar.Visible AndAlso ChkTotalizar.Checked
+        If ChkTotalizar IsNot Nothing Then ChkTotalizar.Visible = False
+
         Imagen.Visible = True
         Imagen.Location = New Point(9, 63)
         MostrarImagen = True
@@ -3205,7 +3209,19 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
 
                     Filtro = CrearFiltroLotesVencimiento()
                     Servicio = New ReporteLotesVencimientoService(Conexion)
-                    TablaLotes = Servicio.ObtenerTablaReporte(Filtro)
+                    ' La consulta corre en otro hilo para que Timer1 siga animando la imagen.
+                    Dim FiltroTarea As FiltroReporteLotesVencimiento = Filtro
+                    Dim ServicioTarea As ReporteLotesVencimientoService = Servicio
+                    Dim TareaConsulta As Task(Of DataTable) =
+                        Task(Of DataTable).Factory.StartNew(
+                            Function() ServicioTarea.ObtenerTablaReporte(FiltroTarea))
+
+                    EsperarTarea(TareaConsulta)
+                    TablaLotes = TareaConsulta.Result
+
+                    If TotalizarActivo Then
+                        TablaLotes = TotalizarLotes(TablaLotes)
+                    End If
 
                     If TablaLotes.Rows.Count = 0 Then
 
@@ -3222,8 +3238,23 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                     DvConsulta = New DataView(TablaLotes)
                     DvConsulta.Sort = "Cod_Linea, FechaVence, Cod_Producto"
 
+                    If Dir(RutaLogo) <> "" Then
+                        ArepProductoVencimiento.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                    End If
+
+                    ArepProductoVencimiento.LblTitulo.Text = NombreEmpresa
+                    ArepProductoVencimiento.LblDireccion.Text = DireccionEmpresa
+                    ArepProductoVencimiento.LblRuc.Text = Ruc
+
                     ArepProductoVencimiento.DataSource = DvConsulta
-                    ArepProductoVencimiento.Show()
+                    EsperarTarea(Task.Factory.StartNew(Sub() ArepProductoVencimiento.Run(False)))
+
+                    Dim ViewerForm As New FrmViewer()
+                    ViewerForm.arvMain.Document = ArepProductoVencimiento.Document
+                    ViewerForm.Show()
+
+                    'ArepProductoVencimiento.DataSource = DvConsulta
+                    'ArepProductoVencimiento.Show()
 
                 Catch ex As ArgumentException
 
@@ -17512,6 +17543,9 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
             Me.LblProcesando.Visible = False
             Me.ProgressBar.Visible = False
             Me.ProgressBar1.Visible = False
+            If ChkTotalizar IsNot Nothing AndAlso Me.ListBox.Text = "Reporte de Lotes vencidos" Then
+                ChkTotalizar.Visible = True
+            End If
         End If
 
 
@@ -17771,6 +17805,85 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
         Me.CmbClientes2.Text = My.Forms.FrmConsultas.Codigo
     End Sub
 
+    ' CheckBox creado en tiempo de ejecucion para "Reporte de Lotes vencidos".
+    Private ChkTotalizar As CheckBox
+
+    ''' <summary>
+    ''' Espera una tarea en segundo plano sin congelar la interfaz
+    ''' (los Timer siguen disparando), y relanza su excepcion si fallo.
+    ''' </summary>
+    Private Sub EsperarTarea(ByVal tarea As Task)
+
+        Do Until tarea.IsCompleted
+            My.Application.DoEvents()
+            System.Threading.Thread.Sleep(20)
+        Loop
+
+        If tarea.IsFaulted Then
+            Throw tarea.Exception.InnerException
+        End If
+
+    End Sub
+
+    Private Sub MostrarChkTotalizar(ByVal visible As Boolean)
+
+        If ChkTotalizar Is Nothing Then
+            If Not visible Then Return
+
+            ChkTotalizar = New CheckBox()
+            ChkTotalizar.Name = "ChkTotalizar"
+            ChkTotalizar.Text = "Totalizar"
+            ChkTotalizar.AutoSize = True
+            ChkTotalizar.BackColor = Color.Transparent
+            Me.GroupBoxFechaVence.Parent.Controls.Add(ChkTotalizar)
+        End If
+
+        ChkTotalizar.Checked = False
+        ChkTotalizar.Location = New Point(
+            Me.GroupBoxFechaVence.Left + 6,
+            Me.GroupBoxFechaVence.Bottom + 8)
+        ChkTotalizar.Visible = visible
+        If visible Then ChkTotalizar.BringToFront()
+
+    End Sub
+
+    ''' <summary>
+    ''' Une en una sola linea los registros con igual Cod_Producto y Numero_Lote,
+    ''' sumando la cantidad y listando las bodegas totalizadas ("01,02,03").
+    ''' </summary>
+    Private Function TotalizarLotes(ByVal origen As DataTable) As DataTable
+
+        Dim resultado As DataTable = origen.Clone()
+        Dim indices As New Dictionary(Of String, DataRow)
+        Dim bodegas As New Dictionary(Of String, List(Of String))
+        Dim clave As String, fila As DataRow, bodega As String
+
+        For Each r As DataRow In origen.Rows
+
+            clave = Convert.ToString(r("Cod_Producto")) & "|" & Convert.ToString(r("Numero_Lote"))
+            bodega = Convert.ToString(r("Cod_Bodega")).Trim()
+
+            If indices.TryGetValue(clave, fila) Then
+                fila("Cantidad") = Convert.ToDouble(fila("Cantidad")) + Convert.ToDouble(r("Cantidad"))
+                If Not bodegas(clave).Contains(bodega) Then bodegas(clave).Add(bodega)
+            Else
+                fila = resultado.NewRow()
+                fila.ItemArray = r.ItemArray
+                resultado.Rows.Add(fila)
+                indices.Add(clave, fila)
+                bodegas.Add(clave, New List(Of String)(New String() {bodega}))
+            End If
+
+        Next
+
+        For Each kv As KeyValuePair(Of String, DataRow) In indices
+            bodegas(kv.Key).Sort(StringComparer.Ordinal)
+            kv.Value("Cod_Bodega") = String.Join(",", bodegas(kv.Key).ToArray())
+        Next
+
+        Return resultado
+
+    End Function
     Private Sub ListBox_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListBox.SelectedIndexChanged
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
 
@@ -17791,6 +17904,7 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
         Me.ChkFacturasCero.Visible = False
         Me.CmbAgrupado.Enabled = True
         Me.ChkAgrupadoBodega.Visible = False
+        MostrarChkTotalizar(False)
 
         Select Case ListBox.Text
 
@@ -17801,12 +17915,14 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                 Me.ChkTransferencias.Location = New Point(487, 330)
 
             Case "Reporte de Lotes vencidos"
-
+                Me.GroupBox1.Visible = False
                 Me.GroupBox3.Visible = True
                 Me.GroupBoxFechaVence.Visible = True
                 Me.GroupBoxFechaVence.Location = New Point(280, 200)
                 Me.GroupBoxLinea.Location = New Point(280, 123)
                 Me.GroupBoxLinea.Visible = True
+                Me.CmbAgrupado.Text = "Bodega"
+                MostrarChkTotalizar(True)
 
             Case "Reporte Solicitud de Compra"
                 Me.GroupBox1.Visible = True
@@ -18364,6 +18480,10 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
     End Sub
 
     Private Sub Button19_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+    End Sub
+
+    Private Sub Imagen_Click(sender As Object, e As EventArgs) Handles Imagen.Click
 
     End Sub
 
