@@ -233,6 +233,46 @@ Sistema Facturacion 6.0
 <member name="M:Sistema_Facturacion.SeguridadRepositorio.EliminarPerfil(Sistema_Facturacion.PerfilSeguridad)">
  <summary>Elimina el perfil, sus accesos y los usuarios que lo tienen como Nivel (todo o nada).</summary>
 </member>
+<member name="T:Sistema_Facturacion.ParametrosPlanCredito">
+ <summary>Datos de entrada para calcular el plan de pagos de un crédito (equivale a los controles de FrmNuevoCredito del Sistema de Crédito 5.0).</summary>
+</member>
+<member name="P:Sistema_Facturacion.ParametrosPlanCredito.AlVencimiento">
+ <summary>Si es True hay un solo pago en <see cref="P:Sistema_Facturacion.ParametrosPlanCredito.FechaVencimiento"/>.</summary>
+</member>
+<member name="P:Sistema_Facturacion.ParametrosPlanCredito.DiasPeriodo">
+ <summary>Cada cuántos días vence la cuota; con <see cref="P:Sistema_Facturacion.ParametrosPlanCredito.CadaMes"/> es el día del mes.</summary>
+</member>
+<member name="P:Sistema_Facturacion.ParametrosPlanCredito.InteresDiario">
+ <summary>Interés diario en porcentaje (0.10 = 0.10 %).</summary>
+</member>
+<member name="P:Sistema_Facturacion.ParametrosPlanCredito.InteresMensual">
+ <summary>Interés mensual en porcentaje, usado cuando las cuotas son "de cada mes".</summary>
+</member>
+<member name="P:Sistema_Facturacion.ParametrosPlanCredito.MantoValorMensual">
+ <summary>Mantenimiento de valor (deslizamiento) MENSUAL en porcentaje. Cero en dólares.</summary>
+</member>
+<member name="T:Sistema_Facturacion.CalculadoraPlanCredito">
+ <summary>
+ Cálculo del plan de pagos igual al de FrmNuevoCredito (VB6, CalcularCuotas).
+   - Interés (TipoPrestamo.InteresDiario) es % DIARIO; si las cuotas son "de cada mes" se usa el % mensual fijo.
+   - Mant. de valor (TipoPrestamo.InteresDeslizamiento) es % MENSUAL; en cuotas por días se divide entre 30.4166.
+   - Saldo decreciente: interés y mant. de valor sobre el saldo pendiente.
+   - Nivelada: interés y mant. de valor sobre el monto original (iguales en todas las cuotas).
+   - Capital = monto / cuotas; la última cuota liquida el saldo, absorbiendo el redondeo.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.CalculadoraPlanCredito.GenerarFechas(System.DateTime,System.Int32,System.Int32,System.Boolean)">
+ <summary>
+ Fechas de vencimiento. CadaMes: <paramref name="dias"/> es el día del mes (si el mes no lo tiene se usa el último día).
+ Si no, vence cada <paramref name="dias"/> días. Siempre parte de la fecha inicial.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.CalculadoraPlanCredito.CuotaReferencia(System.Decimal,System.Int32)">
+ <summary>Valor de la cuota que se muestra en pantalla: monto / número de cuotas.</summary>
+</member>
+<member name="M:Sistema_Facturacion.CalculadoraPlanCredito.Redondear(System.Decimal)">
+ <summary>Redondeo comercial a 2 decimales (Math.Round por defecto es bancario).</summary>
+</member>
 <member name="F:Sistema_Facturacion.CxC_Compatibilidad.CampoZonaReportesCxC">
  <summary>
  Campo de Clientes que filtran los combos "CboCodDepartamentoIni/Fin" de FrmReportes.
@@ -495,18 +535,6 @@ Sistema Facturacion 6.0
  Graba un detalle de recibo generado automáticamente desde Planilla
  y devuelve el idDetalleRecibo generado.
  </summary>
-</member>
-<member name="M:Sistema_Facturacion.FrmCreditosNuevos.CalcularAlVencimiento(System.Data.DataTable,System.Decimal,System.DateTime,System.DateTime,System.Decimal,System.Decimal)">
- <summary>Pago único al vencimiento.</summary>
-</member>
-<member name="M:Sistema_Facturacion.FrmCreditosNuevos.CalcularNivelada(System.Data.DataTable,System.Decimal,System.DateTime,System.Collections.Generic.List{System.DateTime},System.Decimal,System.Decimal)">
- <summary>Cuota nivelada: el interés y el mantenimiento de valor totales se reparten en partes iguales.</summary>
-</member>
-<member name="M:Sistema_Facturacion.FrmCreditosNuevos.CalcularSobreSaldo(System.Data.DataTable,System.Decimal,System.DateTime,System.Collections.Generic.List{System.DateTime},System.Decimal,System.Decimal)">
- <summary>Cuota fija de principal con interés y mantenimiento de valor sobre el saldo pendiente.</summary>
-</member>
-<member name="M:Sistema_Facturacion.FrmCreditosNuevos.PrincipalCuota(System.Decimal,System.Int32,System.Int32)">
- <summary>Principal de la cuota i. La última cuota absorbe la diferencia por redondeo.</summary>
 </member>
 <member name="M:Sistema_Facturacion.FrmCreditosNuevos.GrabarPrestamo">
  <summary>Graba encabezado y detalle en una sola transacción. Devuelve el número de préstamo o "" si ya existía.</summary>

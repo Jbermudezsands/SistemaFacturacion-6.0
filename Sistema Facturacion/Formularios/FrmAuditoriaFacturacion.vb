@@ -773,12 +773,14 @@ ByVal e As EventArgs) Handles dgvRegistros.SelectionChanged
         ' ELIMINAR (solo duplicados confirmados por el auditor)
         ' --------------------------------------------------------
 
-        If hallazgo.EsDuplicado AndAlso
+        If (hallazgo.EsDuplicado OrElse hallazgo.EsCancelada) AndAlso
    hallazgo.PuedeEliminar AndAlso
    hallazgo.Estado =
    Auditoria.EstadoHallazgo.Detectado AndAlso
    (hallazgo.Codigo = "TRANS-001" OrElse
-    hallazgo.Codigo = "TRANS-002") Then
+    hallazgo.Codigo = "TRANS-002" OrElse
+    (hallazgo.EsCancelada AndAlso
+     hallazgo.Codigo = "TRANS-003")) Then
 
             btnEliminar.Enabled = True
 
@@ -1504,7 +1506,8 @@ ByVal e As EventArgs) Handles dgvRegistros.SelectionChanged
 
             If hallazgo Is Nothing Then Return
 
-            If Not (hallazgo.EsDuplicado AndAlso hallazgo.PuedeEliminar) Then
+            If Not ((hallazgo.EsDuplicado OrElse hallazgo.EsCancelada) AndAlso
+                    hallazgo.PuedeEliminar) Then
 
                 MessageBox.Show(
                 "El registro seleccionado no está disponible para eliminación.",
@@ -1526,7 +1529,7 @@ ByVal e As EventArgs) Handles dgvRegistros.SelectionChanged
                     idDetalle = "ID Detalle Factura: " &
                     hallazgo.IdDetalleFactura.ToString("0")
 
-                Case "TRANS-002"
+                Case "TRANS-002", "TRANS-003"
                     tabla = "Detalle_Compras (Transferencia Recibida)"
                     idDetalle = "ID Detalle Compra: " &
                     hallazgo.IdDetalleCompra.ToString("0")
@@ -1543,7 +1546,10 @@ ByVal e As EventArgs) Handles dgvRegistros.SelectionChanged
             End Select
 
             Dim mensaje As String =
-            "Se eliminará UN detalle duplicado." &
+            If(hallazgo.EsCancelada,
+               "Se eliminará UNA línea de una transferencia cancelada " &
+               "(sin contraparte válida).",
+               "Se eliminará UN detalle duplicado.") &
             Environment.NewLine & Environment.NewLine &
             "Tabla: " & tabla &
             Environment.NewLine &
@@ -1577,7 +1583,9 @@ ByVal e As EventArgs) Handles dgvRegistros.SelectionChanged
 
             Dim eliminado As Boolean = False
 
-            If hallazgo.Codigo = "TRANS-001" Then
+            If hallazgo.EsCancelada Then
+                eliminado = _Auditor.EliminarLineaCancelada(hallazgo)
+            ElseIf hallazgo.Codigo = "TRANS-001" Then
                 eliminado = _Auditor.EliminarTransferencia001(hallazgo)
             Else
                 eliminado = _Auditor.EliminarTransferencia002(hallazgo)
@@ -1585,13 +1593,19 @@ ByVal e As EventArgs) Handles dgvRegistros.SelectionChanged
 
             If eliminado Then
 
-                lblEstadoValor.Text = "Duplicado eliminado correctamente."
+                lblEstadoValor.Text =
+                If(hallazgo.EsCancelada,
+                   "Línea cancelada eliminada correctamente.",
+                   "Duplicado eliminado correctamente.")
 
                 MostrarEvidencia()
                 dgvRegistros.Refresh()
 
                 MessageBox.Show(
-                "El detalle duplicado fue eliminado correctamente.",
+                If(hallazgo.EsCancelada,
+                   "La línea de la transferencia cancelada fue " &
+                   "eliminada correctamente.",
+                   "El detalle duplicado fue eliminado correctamente."),
                 "Auditoría",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information)
@@ -1604,9 +1618,12 @@ ByVal e As EventArgs) Handles dgvRegistros.SelectionChanged
                 MessageBox.Show(
                 "No se eliminó el registro." &
                 Environment.NewLine & Environment.NewLine &
-                "Una recepción referencia el detalle o no existe otra " &
-                "línea equivalente con su contraparte. " &
-                "Revise el caso manualmente.",
+                If(hallazgo.EsCancelada AndAlso
+                   Not String.IsNullOrEmpty(_Auditor.UltimoError),
+                   _Auditor.UltimoError,
+                   "Una recepción referencia el detalle o no existe otra " &
+                   "línea equivalente con su contraparte. " &
+                   "Revise el caso manualmente."),
                 "Auditoría",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Warning)

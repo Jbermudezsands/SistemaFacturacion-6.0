@@ -5416,11 +5416,10 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                 Dim dv As DataView, Filtro As String, MontoAjuste As Double
 
 
-                If CmbClientes.Text = "" Then
-                    dv = dvCtasxCobrar("0000", OptCordobas.Checked, Me.DTPFechaFin.Value, "ReporteCtasxCobrar", True, "Cliente")
-                Else
-                    dv = dvCtasxCobrar(CmbClientes.Text, OptCordobas.Checked, Me.DTPFechaFin.Value, "ReporteCtasxCobrar", True, "Cliente")
-                End If
+                ' Mismo motor de calculo (CxCServicio) que FrmCuentasXCobrar: montos redondeados a 2 decimales y dias vencidos
+                Dim resultadoCxC As CxCResultado = CrearServicioCxC().CalcularSaldos(FiltroCxCDesdeReportes(Me.DTPFechaFin.Value, OptCordobas.Checked))
+                MostrarAdvertenciasCxC(resultadoCxC.Advertencias)
+                dv = resultadoCxC.ToDataView(True, True)
 
 
                 TotalFactura = TotalCargos - TotalAbonos + TotalMora + TotalMontoNotaDB - TotalMontoNotaCR
@@ -7894,6 +7893,14 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                 'ArepReporteKardexLinea.DataSource = SQL
                 ArepReporteKardex.Document.Name = "ACTIVIDAD PRODUCTOS POR BODEGA"
                 ArepReporteKardex.LblRango.Text = "REPORTE DE INVENTARIO AL: " & Me.DTPFechaFin.Value
+                'Fijar la pagina explicitamente: evita "Page header/footer too large" cuando la impresora predeterminada trae un papel pequeno
+                ArepReporteKardex.PageSettings.Orientation = DataDynamics.ActiveReports.Document.PageOrientation.Portrait
+                ArepReporteKardex.PageSettings.PaperWidth = 8.5!
+                ArepReporteKardex.PageSettings.PaperHeight = 11.0!
+                ArepReporteKardex.PageSettings.Margins.Top = 0.5!
+                ArepReporteKardex.PageSettings.Margins.Bottom = 0.5!
+                ArepReporteKardex.PageSettings.Margins.Left = 0.5!
+                ArepReporteKardex.PageSettings.Margins.Right = 0.2!
                 'ArepReporteKardex.LblCodigo.Text = "Codigo Bodega"
                 'ArepReporteKardex.LblNombre.Text = "Nombre Bodega"
                 Dim ViewerForm As New FrmViewer()
@@ -17245,7 +17252,9 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                 ArepListadoClientes.LblTitulo.Text = NombreEmpresa
                 ArepListadoClientes.LblDireccion.Text = DireccionEmpresa
                 ArepListadoClientes.LblRuc.Text = Ruc
-                SqlDatos = "SELECT Clientes.*, Nombre_Cliente + ' ' + Apellido_Cliente AS Nombres FROM Clientes "
+                'Solo las columnas que usa el reporte (evita traer campos pesados y el error de memoria)
+                SqlDatos = "SELECT Cod_Cliente, Nombre_Cliente + ' ' + Apellido_Cliente AS Nombres, Telefono, Cod_Cuenta_Cliente, " & _
+                           "Departamento, Municipio, Direccion_Cliente FROM Clientes ORDER BY Nombre_Cliente, Apellido_Cliente"
                 SQL.ConnectionString = Conexion
                 SQL.SQL = SqlDatos
 
@@ -17253,11 +17262,8 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                 ArepListadoClientes.Document.Name = "Listado de Clientes"
                 Dim ViewerForm As New FrmViewer()
                 ViewerForm.arvMain.Document = ArepListadoClientes.Document
-                My.Application.DoEvents()
-                'ArepListadoClientes.Run(False)
-                'ViewerForm.Show()
-
-                ArepListadoClientes.Show()
+                ArepListadoClientes.Run(False)
+                ViewerForm.Show()
 
             Case "Listado de Proveedores"
 

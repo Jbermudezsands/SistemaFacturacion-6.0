@@ -8,6 +8,7 @@ Public Class FrmCreditosNuevos
     '==========================================================================================
     Public MaximoCuotas As Double
     Public InteresDeslizamiento As Double
+    Public InteresMensual As Double
     Public DataSetCredito As New DataSet
 
     Private Const TABLA_PLAN As String = "DetalleCredito"
@@ -65,7 +66,7 @@ Public Class FrmCreditosNuevos
 
         '--- Tipos de préstamo (se traen todos los parámetros para no volver a consultar)
         Dim tipos As DataTable = ObtenerTabla( _
-            "SELECT CodTipoPrestamo, TipoPrestamo, InteresDiario, MaxCuotas, InteresDeslizamiento, " & _
+            "SELECT CodTipoPrestamo, TipoPrestamo, InteresMensual, InteresDiario, MaxCuotas, InteresDeslizamiento, " & _
             "       CAST(CodTipoPrestamo AS varchar(50)) + ' - ' + ISNULL(TipoPrestamo,'') AS Descripcion " & _
             "FROM dbo.TipoPrestamo ORDER BY CodTipoPrestamo")
         CboTipoPrestamos.DisplayMember = "Descripcion"
@@ -176,12 +177,14 @@ Public Class FrmCreditosNuevos
             TxtModalidad.Text = ""
             TxtInteresDiario.Text = ""
             MaximoCuotas = 0
+            InteresMensual = 0
             InteresDeslizamiento = 0
             TxtNumeroCuotas.Maximum = 1000
         Else
             TxtModalidad.Text = Convert.ToString(fila("TipoPrestamo"))
             TxtInteresDiario.Text = ADecimal(fila("InteresDiario")).ToString("0.######")
             MaximoCuotas = CDbl(ADecimal(fila("MaxCuotas")))
+            InteresMensual = CDbl(ADecimal(fila("InteresMensual")))
             InteresDeslizamiento = CDbl(ADecimal(fila("InteresDeslizamiento")))
 
             If MaximoCuotas >= 1 Then
@@ -289,7 +292,7 @@ Public Class FrmCreditosNuevos
         Dim monto As Decimal = ObtenerMonto()
         Dim cuotas As Decimal = TxtNumeroCuotas.Value
         If monto > 0D AndAlso cuotas > 0D Then
-            TxtCuota.Text = Redondear(monto / cuotas).ToString("#,##0.00")
+            TxtCuota.Text = CalculadoraPlanCredito.CuotaReferencia(monto, CInt(cuotas)).ToString("#,##0.00")
         Else
             TxtCuota.Text = "0.00"
         End If
@@ -303,35 +306,39 @@ Public Class FrmCreditosNuevos
         If Not ValidarCalculo() Then Exit Sub
 
         Try
+            Dim cuotas As List(Of CuotaCredito) = New CalculadoraPlanCredito().Calcular(ObtenerParametrosPlan())
             Dim plan As DataTable = CrearTablaPlan()
-            Dim monto As Decimal = ObtenerMonto()
-            Dim inicio As Date = DtpFechaINI.Value.Date
-            Dim tasaInteres As Decimal = ObtenerDecimal(TxtInteresDiario.Text) / 100D
-            Dim tasaManto As Decimal = 0D
-            If OptCS.Checked Then tasaManto = CDec(InteresDeslizamiento) / 100D 'Mantenimiento de valor solo en córdobas
-
-            If Chkvence.Checked Then
-                CalcularAlVencimiento(plan, monto, inicio, DtpFechaVencimiento.Value.Date, tasaInteres, tasaManto)
-            Else
-                Dim cuotas As Integer = CInt(TxtNumeroCuotas.Value)
-                Dim fechas As List(Of Date) = GenerarFechas(inicio, cuotas, ObtenerEntero(CboDias.Text), ChkCadaMes.Checked)
-
-                If ChkCuotaNivelada.Checked Then
-                    CalcularNivelada(plan, monto, inicio, fechas, tasaInteres, tasaManto)
-                Else
-                    CalcularSobreSaldo(plan, monto, inicio, fechas, tasaInteres, tasaManto)
-                End If
-            End If
+            For Each c As CuotaCredito In cuotas
+                AgregarCuota(plan, c)
+            Next
 
             If DataSetCredito.Tables.Contains(TABLA_PLAN) Then DataSetCredito.Tables.Remove(TABLA_PLAN)
             DataSetCredito.Tables.Add(plan)
 
             TDGridCredito.DataSource = plan
             ActualizarTotales()
+        Catch ex As ArgumentException
+            Advertir(ex.Message, Nothing)
         Catch ex As Exception
             MostrarError("Ocurrió un error al calcular el plan de pagos.", ex)
         End Try
     End Sub
+
+    Private Function ObtenerParametrosPlan() As ParametrosPlanCredito
+        Return New ParametrosPlanCredito With {
+            .Monto = ObtenerMonto(),
+            .NumCuotas = CInt(TxtNumeroCuotas.Value),
+            .FechaInicial = DtpFechaINI.Value.Date,
+            .AlVencimiento = Chkvence.Checked,
+            .FechaVencimiento = DtpFechaVencimiento.Value.Date,
+            .DiasPeriodo = ObtenerEntero(CboDias.Text),
+            .CadaMes = ChkCadaMes.Checked,
+            .Nivelada = ChkCuotaNivelada.Checked,
+            .InteresDiario = ObtenerDecimal(TxtInteresDiario.Text),
+            .InteresMensual = CDec(InteresMensual),
+            .MantoValorMensual = If(OptUS.Checked, 0D, CDec(InteresDeslizamiento))
+        }
+    End Function
 
     Private Function ValidarCalculo() As Boolean
         If CboTipoPrestamos.SelectedIndex = -1 Then
@@ -362,84 +369,6 @@ Public Class FrmCreditosNuevos
         Return True
     End Function
 
-    ''' <summary>Pago único al vencimiento.</summary>
-    Private Sub CalcularAlVencimiento(ByVal plan As DataTable, ByVal monto As Decimal, ByVal inicio As Date, ByVal vence As Date, _
-                                      ByVal tasaInteres As Decimal, ByVal tasaManto As Decimal)
-        Dim dias As Integer = (vence - inicio).Days
-        AgregarCuota(plan, 1, monto, monto * tasaInteres * dias, monto * tasaManto * dias, vence)
-    End Sub
-
-    ''' <summary>Cuota nivelada: el interés y el mantenimiento de valor totales se reparten en partes iguales.</summary>
-    Private Sub CalcularNivelada(ByVal plan As DataTable, ByVal monto As Decimal, ByVal inicio As Date, ByVal fechas As List(Of Date), _
-                                 ByVal tasaInteres As Decimal, ByVal tasaManto As Decimal)
-        Dim n As Integer = fechas.Count
-        Dim totalInteres As Decimal = 0D
-        Dim totalManto As Decimal = 0D
-        Dim anterior As Date = inicio
-
-        For i As Integer = 1 To n
-            Dim dias As Integer = (fechas(i - 1) - anterior).Days
-            Dim principal As Decimal = PrincipalCuota(monto, n, i)
-            'Igual que el sistema original: el interés se calcula sobre el principal de cada cuota
-            totalInteres += principal * tasaInteres * dias
-            totalManto += principal * tasaManto * dias
-            anterior = fechas(i - 1)
-        Next
-
-        Dim interesCuota As Decimal = Redondear(totalInteres / n)
-        Dim mantoCuota As Decimal = Redondear(totalManto / n)
-
-        For i As Integer = 1 To n
-            AgregarCuota(plan, i, PrincipalCuota(monto, n, i), interesCuota, mantoCuota, fechas(i - 1))
-        Next
-    End Sub
-
-    ''' <summary>Cuota fija de principal con interés y mantenimiento de valor sobre el saldo pendiente.</summary>
-    Private Sub CalcularSobreSaldo(ByVal plan As DataTable, ByVal monto As Decimal, ByVal inicio As Date, ByVal fechas As List(Of Date), _
-                                   ByVal tasaInteres As Decimal, ByVal tasaManto As Decimal)
-        Dim n As Integer = fechas.Count
-        Dim saldo As Decimal = monto
-        Dim anterior As Date = inicio
-
-        For i As Integer = 1 To n
-            Dim dias As Integer = (fechas(i - 1) - anterior).Days
-            Dim principal As Decimal = PrincipalCuota(monto, n, i)
-            AgregarCuota(plan, i, principal, saldo * tasaInteres * dias, saldo * tasaManto * dias, fechas(i - 1))
-            saldo -= principal
-            anterior = fechas(i - 1)
-        Next
-    End Sub
-
-    ''' <summary>Principal de la cuota i. La última cuota absorbe la diferencia por redondeo.</summary>
-    Private Function PrincipalCuota(ByVal monto As Decimal, ByVal n As Integer, ByVal i As Integer) As Decimal
-        Dim cuotaBase As Decimal = Redondear(monto / n)
-        If i = n Then Return monto - cuotaBase * (n - 1)
-        Return cuotaBase
-    End Function
-
-    Private Function GenerarFechas(ByVal inicio As Date, ByVal cuotas As Integer, ByVal dias As Integer, ByVal cadaMes As Boolean) As List(Of Date)
-        Dim fechas As New List(Of Date)
-
-        If cadaMes Then
-            'El día indicado de cada mes, a partir del mes siguiente a la fecha inicial.
-            'Si el mes no tiene ese día (ej. 31 en abril) se usa el último día del mes.
-            Dim primerMes As Date = New Date(inicio.Year, inicio.Month, 1).AddMonths(1)
-            For i As Integer = 0 To cuotas - 1
-                Dim mes As Date = primerMes.AddMonths(i)
-                Dim dia As Integer = Math.Min(dias, Date.DaysInMonth(mes.Year, mes.Month))
-                fechas.Add(New Date(mes.Year, mes.Month, dia))
-            Next
-        Else
-            'Cada X días a partir de la fecha inicial
-            Dim fecha As Date = inicio
-            For i As Integer = 0 To cuotas - 1
-                fecha = fecha.AddDays(dias)
-                fechas.Add(fecha)
-            Next
-        End If
-
-        Return fechas
-    End Function
 
     Private Function CrearTablaPlan() As DataTable
         Dim tabla As New DataTable(TABLA_PLAN)
@@ -452,15 +381,14 @@ Public Class FrmCreditosNuevos
         Return tabla
     End Function
 
-    Private Sub AgregarCuota(ByVal plan As DataTable, ByVal numero As Integer, ByVal principal As Decimal, ByVal interes As Decimal, _
-                             ByVal manto As Decimal, ByVal fecha As Date)
+    Private Sub AgregarCuota(ByVal plan As DataTable, ByVal cuota As CuotaCredito)
         Dim fila As DataRow = plan.NewRow()
-        fila("NumCuota") = numero
-        fila("Cuota") = Redondear(principal)
-        fila("Interes") = Redondear(interes)
-        fila("MantoValor") = Redondear(manto)
-        fila("Pago") = Redondear(principal) + Redondear(interes) + Redondear(manto)
-        fila("FechaPago") = fecha
+        fila("NumCuota") = cuota.NumCuota
+        fila("Cuota") = cuota.Capital
+        fila("Interes") = cuota.Interes
+        fila("MantoValor") = cuota.MantoValor
+        fila("Pago") = cuota.Pago
+        fila("FechaPago") = cuota.Fecha
         plan.Rows.Add(fila)
     End Sub
 
@@ -743,10 +671,6 @@ Public Class FrmCreditosNuevos
     Private Function ADecimal(ByVal valor As Object) As Decimal
         If valor Is Nothing OrElse IsDBNull(valor) Then Return 0D
         Return Convert.ToDecimal(valor)
-    End Function
-
-    Private Function Redondear(ByVal valor As Decimal) As Decimal
-        Return Math.Round(valor, 2, MidpointRounding.AwayFromZero)
     End Function
 
     Private Function Advertir(ByVal mensaje As String, ByVal control As Control) As Boolean

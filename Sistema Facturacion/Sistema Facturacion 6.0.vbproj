@@ -114,6 +114,7 @@
     <Compile Include="Clases\Consultas\CsContratos.vb" />
     <Compile Include="Clases\Consultas\ArgsReporteExistenciaLote.vb" />
     <Compile Include="Clases\Consultas\CsLogError.vb" />
+    <Compile Include="Clases\Consultas\CalculadoraPlanCredito.vb" />
     <Compile Include="Clases\Consultas\CsTipoPrestamo.vb" />
     <Compile Include="Clases\Consultas\CxC_Compatibilidad.vb" />
     <Compile Include="Clases\Consultas\CxC_Modelos.vb" />

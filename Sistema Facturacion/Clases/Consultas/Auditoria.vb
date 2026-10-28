@@ -116,6 +116,9 @@ Public Class Auditoria
 
         Public Property EsDuplicado As Boolean
         Public Property PuedeEliminar As Boolean
+
+        ' La línea pertenece a un documento cancelado (cantidad cero).
+        Public Property EsCancelada As Boolean
         Public Property IdDetalleRelacionado As Decimal
         Public Property IdDetalleCompra As Decimal
         Public Property IdDetalleTransferencia As Decimal
@@ -685,6 +688,8 @@ Public Class Auditoria
                 Dim hallazgosTrans001 As List(Of HallazgoAuditoria) =
         AuditarTrans001(controlTrans001)
 
+                MarcarLineasCanceladas(hallazgosTrans001)
+
                 controlTrans001.Ejecutado = True
 
                 controlTrans001.CantidadHallazgos =
@@ -737,6 +742,8 @@ Public Class Auditoria
                 Dim hallazgosTrans002 As List(Of HallazgoAuditoria) =
         AuditarTrans002(controlTrans002)
 
+                MarcarLineasCanceladas(hallazgosTrans002)
+
                 controlTrans002.Ejecutado = True
 
                 controlTrans002.CantidadHallazgos =
@@ -788,6 +795,8 @@ Public Class Auditoria
 
                 Dim hallazgosTrans003 As List(Of HallazgoAuditoria) =
         AuditarTrans003(controlTrans003)
+
+                MarcarLineasCanceladas(hallazgosTrans003)
 
                 controlTrans003.Ejecutado = True
 
@@ -8589,6 +8598,315 @@ Public Class Auditoria
         Next
 
         Return hallazgos
+
+    End Function
+
+    ' ============================================================
+    ' LÍNEAS DE TRANSFERENCIAS CANCELADAS
+    '
+    ' Al cancelar una transferencia (FrmTransferencias) el sistema
+    ' marca los encabezados (Facturas.Cancelado/Activo y
+    ' Compras.Activo = 0) y deja las líneas con cantidad e importe en
+    ' cero; no las borra ni cambia su descripción. Si quedaron sin
+    ' contraparte lo correcto es eliminarlas, no crear la
+    ' contraparte. Toda línea de un documento cancelado puede
+    ' eliminarse, aun si conserva cantidad (cancelación incompleta).
+    ' ============================================================
+    Private Const SQL_ENVIADAS_CANCELADAS As String =
+        "SELECT d.id_Detalle_Factura " &
+        "FROM Detalle_Facturas d " &
+        "INNER JOIN Facturas f " &
+        "ON f.Numero_Factura = d.Numero_Factura " &
+        "AND f.Fecha_Factura = d.Fecha_Factura " &
+        "AND f.Tipo_Factura = d.Tipo_Factura " &
+        "WHERE d.Tipo_Factura = N'Transferencia Enviada' " &
+        "AND (f.Cancelado = 1 OR f.Activo = 0)"
+
+    Private Const SQL_RECIBIDAS_CANCELADAS As String =
+        "SELECT c.id_Detalle_Compra " &
+        "FROM Detalle_Compras c " &
+        "INNER JOIN Compras h " &
+        "ON h.Numero_Compra = c.Numero_Compra " &
+        "AND h.Fecha_Compra = c.Fecha_Compra " &
+        "AND h.Tipo_Compra = c.Tipo_Compra " &
+        "WHERE c.Tipo_Compra = N'Transferencia Recibida' " &
+        "AND h.Activo = 0"
+
+    Private Sub MarcarLineasCanceladas(
+        ByVal hallazgos As List(Of HallazgoAuditoria))
+
+        If hallazgos Is Nothing OrElse hallazgos.Count = 0 Then
+            Return
+        End If
+
+        Dim enviadas As HashSet(Of Decimal) =
+            ObtenerIdsTransferencia(SQL_ENVIADAS_CANCELADAS)
+
+        Dim recibidas As HashSet(Of Decimal) =
+            ObtenerIdsTransferencia(SQL_RECIBIDAS_CANCELADAS)
+
+        ' TRANS-003: solo las recibidas canceladas cuyo vínculo apunta
+        ' a una enviada que no existe.
+        Dim recibidasVinculoRoto As HashSet(Of Decimal) =
+            ObtenerIdsTransferencia(
+                "SELECT x.id_Detalle_Compra FROM (" &
+                SQL_RECIBIDAS_CANCELADAS & ") x " &
+                "INNER JOIN Detalle_Compras c " &
+                "ON c.id_Detalle_Compra = x.id_Detalle_Compra " &
+                "WHERE ISNULL(c.id_Detalle_Transferencia, 0) = 0 " &
+                "OR NOT EXISTS (SELECT 1 FROM Detalle_Facturas d " &
+                "WHERE d.id_Detalle_Factura = c.id_Detalle_Transferencia " &
+                "AND d.Tipo_Factura = N'Transferencia Enviada')")
+
+        For Each h As HallazgoAuditoria In hallazgos
+
+            If h.EsDuplicado OrElse h.Estado = EstadoHallazgo.Reparado Then
+                Continue For
+            End If
+
+            Dim cancelada As Boolean = False
+
+            Select Case h.Codigo
+
+                Case "TRANS-001"
+                    cancelada = enviadas.Contains(h.IdDetalleFactura)
+
+                Case "TRANS-002"
+                    cancelada = recibidas.Contains(h.IdDetalleCompra)
+
+                Case "TRANS-003"
+                    cancelada = recibidasVinculoRoto.Contains(h.IdDetalleCompra)
+
+            End Select
+
+            If Not cancelada Then
+                Continue For
+            End If
+
+            h.EsCancelada = True
+            h.PuedeEliminar = True
+            h.Reparable = False
+            h.TieneCostoPropuesto = False
+            h.Estado = EstadoHallazgo.Detectado
+            h.Accion = "ELIMINAR"
+
+            h.Motivo =
+                "La transferencia está cancelada: su encabezado está " &
+                "inactivo y la línea no tiene contraparte válida." &
+                Environment.NewLine &
+                If(h.Cantidad <> 0,
+                   "La línea conserva cantidad (" &
+                   h.Cantidad.ToString("N2") & "): la cancelación " &
+                   "quedó incompleta y al eliminarla se corrige el " &
+                   "inventario.",
+                   "La línea tiene cantidad cero: no afecta el " &
+                   "inventario.") &
+                Environment.NewLine &
+                "No se crea la contraparte: se puede eliminar la línea."
+
+        Next
+
+    End Sub
+
+    ' ------------------------------------------------------------
+    ' Elimina UNA línea de una transferencia cancelada (hallazgos
+    ' TRANS-001, TRANS-002 y TRANS-003 marcados como EsCancelada).
+    ' Dentro de una transacción vuelve a comprobar que el
+    ' encabezado sigue cancelado, que la línea tiene cantidad e
+    ' importe en cero y que nadie la referencia.
+    ' ------------------------------------------------------------
+    Public Function EliminarLineaCancelada(
+        ByVal hallazgo As HallazgoAuditoria) As Boolean
+
+        UltimoError = String.Empty
+
+        Try
+
+            If hallazgo Is Nothing OrElse
+               Not hallazgo.EsCancelada OrElse
+               Not hallazgo.PuedeEliminar Then
+
+                UltimoError = "El hallazgo no es una línea cancelada."
+                Return False
+
+            End If
+
+            Dim esEnviada As Boolean = (hallazgo.Codigo = "TRANS-001")
+
+            If Not esEnviada AndAlso
+               hallazgo.Codigo <> "TRANS-002" AndAlso
+               hallazgo.Codigo <> "TRANS-003" Then
+
+                UltimoError = "El control no admite eliminación."
+                Return False
+
+            End If
+
+            Dim id As Decimal =
+                If(esEnviada, hallazgo.IdDetalleFactura,
+                   hallazgo.IdDetalleCompra)
+
+            If id <= 0 Then
+
+                UltimoError = "El hallazgo no tiene identificador de línea."
+                Return False
+
+            End If
+
+            ' La misma consulta que usó la auditoría, filtrada por id.
+            Dim sqlCancelada As String =
+                If(esEnviada, SQL_ENVIADAS_CANCELADAS,
+                   SQL_RECIBIDAS_CANCELADAS)
+
+            Dim columnaId As String =
+                If(esEnviada, "d.id_Detalle_Factura", "c.id_Detalle_Compra")
+
+            Using cn As New SqlConnection(Conexion)
+
+                cn.Open()
+
+                Using tx As SqlTransaction = cn.BeginTransaction()
+
+                    Using cmd As New SqlCommand(
+                    "SELECT COUNT(*) FROM (" & sqlCancelada &
+                    " AND " & columnaId & " = @Id) z", cn, tx)
+
+                        cmd.Parameters.Add("@Id", SqlDbType.Decimal).Value = id
+
+                        If Convert.ToInt32(cmd.ExecuteScalar()) <> 1 Then
+
+                            tx.Rollback()
+
+                            UltimoError =
+                                "La línea ya no pertenece a un documento " &
+                                "cancelado. Vuelva a ejecutar la auditoría."
+
+                            Return False
+
+                        End If
+
+                    End Using
+
+                    If esEnviada Then
+
+                        ' Ninguna recepción debe apuntar a esta línea.
+                        Using cmd As New SqlCommand(
+                        "SELECT COUNT(*) FROM Detalle_Compras " &
+                        "WHERE id_Detalle_Transferencia = @Id", cn, tx)
+
+                            cmd.Parameters.Add("@Id", SqlDbType.Decimal).Value = id
+
+                            If Convert.ToInt32(cmd.ExecuteScalar()) > 0 Then
+
+                                tx.Rollback()
+
+                                UltimoError =
+                                    "Una recepción referencia esta línea."
+
+                                Return False
+
+                            End If
+
+                        End Using
+
+                    ElseIf hallazgo.Codigo = "TRANS-003" Then
+
+                        ' El vínculo debe seguir roto.
+                        Using cmd As New SqlCommand(
+                        "SELECT COUNT(*) FROM Detalle_Compras c " &
+                        "WHERE c.id_Detalle_Compra = @Id " &
+                        "AND ISNULL(c.id_Detalle_Transferencia, 0) <> 0 " &
+                        "AND EXISTS (SELECT 1 FROM Detalle_Facturas d " &
+                        "WHERE d.id_Detalle_Factura = " &
+                        "c.id_Detalle_Transferencia " &
+                        "AND d.Tipo_Factura = N'Transferencia Enviada')",
+                        cn, tx)
+
+                            cmd.Parameters.Add("@Id", SqlDbType.Decimal).Value = id
+
+                            If Convert.ToInt32(cmd.ExecuteScalar()) > 0 Then
+
+                                tx.Rollback()
+
+                                UltimoError =
+                                    "El vínculo de la recepción ya existe."
+
+                                Return False
+
+                            End If
+
+                        End Using
+
+                    End If
+
+                    Dim sqlDelete As String =
+                        If(esEnviada,
+                           "DELETE FROM Detalle_Facturas " &
+                           "WHERE id_Detalle_Factura = @Id " &
+                           "AND Tipo_Factura = N'Transferencia Enviada'",
+                           "DELETE FROM Detalle_Compras " &
+                           "WHERE id_Detalle_Compra = @Id " &
+                           "AND Tipo_Compra = N'Transferencia Recibida'")
+
+                    Using cmd As New SqlCommand(sqlDelete, cn, tx)
+
+                        cmd.Parameters.Add("@Id", SqlDbType.Decimal).Value = id
+
+                        Dim filas As Integer = cmd.ExecuteNonQuery()
+
+                        If filas <> 1 Then
+
+                            tx.Rollback()
+
+                            UltimoError =
+                                "Filas eliminadas: " & filas.ToString() &
+                                ". No se realizó ningún cambio."
+
+                            Return False
+
+                        End If
+
+                    End Using
+
+                    tx.Commit()
+
+                End Using
+
+            End Using
+
+            Try
+
+                Bitacora(
+                    Now,
+                    NombreUsuario,
+                    "Auditoria Facturacion",
+                    "Elimino linea de transferencia cancelada " &
+                    hallazgo.Codigo & ":" & hallazgo.Documento &
+                    " Prod:" & hallazgo.Producto &
+                    " Det:" & id.ToString("0"))
+
+            Catch
+            End Try
+
+            hallazgo.Estado = EstadoHallazgo.Reparado
+            hallazgo.Reparable = False
+            hallazgo.PuedeEliminar = False
+            hallazgo.Accion = "ELIMINADO"
+
+            hallazgo.Motivo =
+                "Se eliminó la línea de la transferencia cancelada." &
+                Environment.NewLine &
+                "ID de la línea: " & id.ToString("0")
+
+            Return True
+
+        Catch ex As Exception
+
+            UltimoError = ex.Message
+
+            Return False
+
+        End Try
 
     End Function
 

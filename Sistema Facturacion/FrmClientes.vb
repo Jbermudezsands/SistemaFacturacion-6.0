@@ -1,48 +1,17 @@
+Imports System.Data.SqlClient
+
 Public Class FrmClientes
-    Public MiConexion As New SqlClient.SqlConnection(Conexion)
 
     Private Sub FrmClientes_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
         Seguridad.Bloqueo(Me, Acceso, "Clientes")
     End Sub
+
     Private Sub FrmClientes_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dim Sql As String, SqlConsulta As String = "SELECT Endoso.* FROM Endoso"
+        CargarClientes()
 
-
-        If CodigoClienteNumero = True Then
-            Sql = "SELECT Cod_Cliente AS CodigoCliente, Nombre_Cliente + ' ' + Apellido_Cliente AS Nombres,REPLACE(STR(Cod_Cliente), ' ', '0') AS Orden FROM Clientes ORDER BY Orden"
-        Else
-            Sql = "SELECT Cod_Cliente AS CodigoCliente, Nombre_Cliente + ' ' + Apellido_Cliente AS Nombres FROM Clientes "
-        End If
-
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter(Sql, MiConexion)
-        DataAdapter.Fill(DataSet, "Clientes")
-        If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
-            Me.CboCodigoCliente.DataSource = DataSet.Tables("Clientes")
-        End If
-
-        If CodigoClienteNumero = True Then
-            Me.CboCodigoCliente.Splits.Item(0).DisplayColumns(2).Visible = False
-        End If
-
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-        DataAdapter.Fill(DataSet, "Endoso")
-        Me.CboEndoso.DataSource = DataSet.Tables("Endoso")
-
-        '---------------------BUSCO LOS DEPARTAMENTOS -------------------------------------------------------------
-        SqlConsulta = "SELECT DISTINCT Departamento FROM Clientes "
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-        DataAdapter.Fill(DataSet, "Departamentos")
-        Me.CboDepartamento.DataSource = DataSet.Tables("Departamentos")
-
-        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '///////////////////////CARGO LOS VENDEDORES////////////////////////////////////////////////////////////////////////////////////////
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        Sql = "SELECT Cod_Vendedor, Nombre_Vendedor + ' ' + Apellido_Vendedor AS Nombres FROM Vendedores"
-        MiConexion.Open()
-        DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
-        DataAdapter.Fill(DataSet, "Vendedores")
-        CboCodigoVendedor.DataSource = DataSet.Tables("Vendedores")
-        MiConexion.Close()
+        Me.CboEndoso.DataSource = ObtenerTabla("SELECT Endoso.* FROM Endoso")
+        Me.CboDepartamento.DataSource = ObtenerTabla("SELECT DISTINCT Departamento FROM Clientes")
+        CboCodigoVendedor.DataSource = ObtenerTabla("SELECT Cod_Vendedor, Nombre_Vendedor + ' ' + Apellido_Vendedor AS Nombres FROM Vendedores")
 
         Me.LblCodigo.Text = "Codigo " & NombreCliente
         Me.LblNombre.Text = "Nombre " & NombreCliente
@@ -50,15 +19,129 @@ Public Class FrmClientes
         Me.LblDireccion.Text = "Direccion " & NombreCliente
         Me.LblTitulo.Text = "REGISTRO DE " & UCase(NombreCliente)
         Me.Text = UCase(NombreCliente)
-
     End Sub
+
+#Region "Acceso a datos"
+
+    ' Cada consulta abre y cierra su propia conexion (Using), asi un error
+    ' nunca deja una conexion abierta para la siguiente operacion.
+    Private Function ObtenerTabla(ByVal sql As String, ByVal ParamArray parametros() As SqlParameter) As DataTable
+        Dim tabla As New DataTable("Tabla")
+        Using cn As New SqlConnection(Conexion)
+            Using cmd As New SqlCommand(sql, cn)
+                If parametros IsNot Nothing AndAlso parametros.Length > 0 Then
+                    cmd.Parameters.AddRange(parametros)
+                End If
+                Using da As New SqlDataAdapter(cmd)
+                    da.Fill(tabla)
+                End Using
+            End Using
+        End Using
+        Return tabla
+    End Function
+
+    Private Sub CargarClientes()
+        Dim sql As String
+        If CodigoClienteNumero = True Then
+            sql = "SELECT Cod_Cliente AS CodigoCliente, Nombre_Cliente + ' ' + Apellido_Cliente AS Nombres, REPLACE(STR(Cod_Cliente), ' ', '0') AS Orden FROM Clientes ORDER BY Orden"
+        Else
+            sql = "SELECT Cod_Cliente AS CodigoCliente, Nombre_Cliente + ' ' + Apellido_Cliente AS Nombres FROM Clientes"
+        End If
+
+        Dim tabla As DataTable = ObtenerTabla(sql)
+        If tabla.Rows.Count = 0 Then
+            Exit Sub
+        End If
+
+        Me.CboCodigoCliente.DataSource = tabla
+        If CodigoClienteNumero = True Then
+            Me.CboCodigoCliente.Splits.Item(0).DisplayColumns(2).Visible = False
+        End If
+    End Sub
+
+    Private Function ClienteExiste(ByVal codigo As String) As Boolean
+        Using cn As New SqlConnection(Conexion)
+            Using cmd As New SqlCommand("SELECT COUNT(*) FROM Clientes WHERE Cod_Cliente = @Cod", cn)
+                cmd.Parameters.AddWithValue("@Cod", codigo)
+                cn.Open()
+                Return CInt(cmd.ExecuteScalar()) > 0
+            End Using
+        End Using
+    End Function
+
+    Private Sub AgregarParametrosCliente(ByVal cmd As SqlCommand)
+        With cmd.Parameters
+            .AddWithValue("@Cod", Me.CboCodigoCliente.Text)
+            .AddWithValue("@Nombre", Me.TxtNombre.Text)
+            .AddWithValue("@Apellido", Me.TxtApellidos.Text)
+            .AddWithValue("@Direccion", Me.TxtDireccion.Text)
+            .AddWithValue("@Telefono", Me.TxtTelefono.Text)
+            .AddWithValue("@CtaCliente", Me.TxtCtaxCobrar.Text)
+            .AddWithValue("@Limite", Me.TxtLimite.Text)
+            .AddWithValue("@RUC", Me.TxtRUC.Text)
+            .AddWithValue("@CausaIva", Me.ChkCausaIVA.Checked)
+            .AddWithValue("@CreditoDisp", Me.ChkCreditoDisponible.Checked)
+            .AddWithValue("@Anio", Me.TxtAño.Text)
+            .AddWithValue("@Grado", Me.TxtGrado.Text)
+            .AddWithValue("@Turno", Me.CmbTurno.Text)
+            .AddWithValue("@Inventario", Me.ChkInventario.Checked)
+            .AddWithValue("@DiasCredito", Me.TxtDiasCredito.Value)
+            .AddWithValue("@Departamento", Me.CboDepartamento.Text)
+            .AddWithValue("@Municipio", Me.CboMunicipio.Text)
+            .AddWithValue("@Endoso", Me.CboEndoso.Text)
+            .AddWithValue("@Activo", Me.ChkActivo.Checked)
+            .AddWithValue("@Efectivo", Me.ChkEfectivo.Checked)
+            .AddWithValue("@Cedula", Me.TxtCedula.Text)
+            .AddWithValue("@Estado", Me.CmbEstado.Text)
+            .AddWithValue("@Vendedor", Me.CboCodigoVendedor.Text)
+            .AddWithValue("@Moneda", Me.CboMonedaFactura.Text)
+            .AddWithValue("@BloqueoLimite", Me.ChkBloqueoLimite.Checked)
+            .AddWithValue("@Foto", FotoParaGuardar())
+        End With
+    End Sub
+
+    Private Sub GuardarCliente(ByVal existe As Boolean)
+        Dim sql As String
+        If existe Then
+            sql = "UPDATE [Clientes] SET [Nombre_Cliente] = @Nombre, [Apellido_Cliente] = @Apellido, [Direccion_Cliente] = @Direccion, [Telefono] = @Telefono, " & _
+                  "[Cod_Cuenta_Cliente] = @CtaCliente, [Limite_Credito] = @Limite, [RUC] = @RUC, [CausaIva] = @CausaIva, [Credito_Disponible] = @CreditoDisp, " & _
+                  "[Año] = @Anio, [Grado] = @Grado, [Turno] = @Turno, [InventarioFisico] = @Inventario, [DiasCredito] = @DiasCredito, [Departamento] = @Departamento, " & _
+                  "[Municipio] = @Municipio, [Endoso] = @Endoso, [Activo] = @Activo, [Efectivo] = @Efectivo, [Cedula] = @Cedula, [Estado] = @Estado, " & _
+                  "[CodVendedor] = @Vendedor, [MonedaCredito] = @Moneda, [BloquearPorLimiteCredito] = @BloqueoLimite, [Foto] = @Foto " & _
+                  "WHERE (Cod_Cliente = @Cod)"
+        Else
+            sql = "INSERT INTO [Clientes] ([Cod_Cliente],[Nombre_Cliente],[Apellido_Cliente],[Direccion_Cliente],[Telefono],[Cod_Cuenta_Cliente],[Año],[Grado],[Turno]," & _
+                  "[InventarioFisico],[RUC],[Limite_Credito],[DiasCredito],[Departamento],[Municipio],[Endoso],[Activo],[Efectivo],[Cedula],[Estado],[CodVendedor]," & _
+                  "[CausaIva],[MonedaCredito],[BloquearPorLimiteCredito],[Foto]) " & _
+                  "VALUES (@Cod,@Nombre,@Apellido,@Direccion,@Telefono,@CtaCliente,@Anio,@Grado,@Turno,@Inventario,@RUC,@Limite,@DiasCredito,@Departamento,@Municipio," & _
+                  "@Endoso,@Activo,@Efectivo,@Cedula,@Estado,@Vendedor,@CausaIva,@Moneda,@BloqueoLimite,@Foto)"
+        End If
+
+        Using cn As New SqlConnection(Conexion)
+            Using cmd As New SqlCommand(sql, cn)
+                AgregarParametrosCliente(cmd)
+                cn.Open()
+                cmd.ExecuteNonQuery()
+            End Using
+        End Using
+    End Sub
+
+    Private Sub EliminarCliente(ByVal codigo As String)
+        Using cn As New SqlConnection(Conexion)
+            Using cmd As New SqlCommand("DELETE FROM [Clientes] WHERE (Cod_Cliente = @Cod)", cn)
+                cmd.Parameters.AddWithValue("@Cod", codigo)
+                cn.Open()
+                cmd.ExecuteNonQuery()
+            End Using
+        End Using
+    End Sub
+
+#End Region
+
+#Region "Botones"
 
     Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
         Me.Close()
-    End Sub
-
-    Private Sub CboCodigoCliente_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
     End Sub
 
     Private Sub CmdNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdNuevo.Click
@@ -67,256 +150,36 @@ Public Class FrmClientes
     End Sub
 
     Private Sub CmdGrabar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdGrabar.Click
-        Dim SQLClientes As String
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-
         If Me.TxtRUC.Text <> "" Then
             Me.TxtApellidos.Text = "RUC #" & Me.TxtRUC.Text
-        Else
-            'Me.TxtApellidos.Text = " "
         End If
-
 
         If Trim(Me.CboCodigoCliente.Text) = "" Then
             MsgBox("Se necesito Codigo de Cliente", MsgBoxStyle.Critical, "Zeus Facturacion")
             Exit Sub
         End If
 
+        GuardarCliente(ClienteExiste(Me.CboCodigoCliente.Text))
 
-        'SQLClientes = "SELECT *,REPLACE(STR(Cod_Cliente), ' ', '0') AS Orden FROM Clientes WHERE  (Cod_Cliente = '" & Me.CboCodigoCliente.Text & "') ORDER BY Orden"
-        SQLClientes = "SELECT * FROM Clientes WHERE  (Cod_Cliente = '" & Me.CboCodigoCliente.Text & "') "
-        DataAdapter = New SqlClient.SqlDataAdapter(SQLClientes, MiConexion)
-        DataAdapter.Fill(DataSet, "Clientes")
-        If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
-            '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-            StrSqlUpdate = "UPDATE [Clientes]  SET [Nombre_Cliente] = '" & Me.TxtNombre.Text & "',[Apellido_Cliente] = '" & Me.TxtApellidos.Text & "',[Direccion_Cliente] = '" & Me.TxtDireccion.Text & "',[Telefono] = '" & Me.TxtTelefono.Text & "',[Cod_Cuenta_Cliente] = '" & Me.TxtCtaxCobrar.Text & "',[Limite_Credito] = '" & Me.TxtLimite.Text & "' ,[RUC] ='" & Me.TxtRUC.Text & "'  ,[CausaIva] = '" & Me.ChkCausaIVA.Checked & "' ,[Credito_Disponible] = '" & Me.ChkCreditoDisponible.Checked & "',[Año] = '" & Me.TxtAño.Text & "',[Grado] = '" & Me.TxtGrado.Text & "',[Turno] = '" & Me.CmbTurno.Text & "',[InventarioFisico] = '" & Me.ChkInventario.Checked & "',[DiasCredito] = '" & Me.TxtDiasCredito.Value & "',[Departamento] = '" & Me.CboDepartamento.Text & "' ,[Municipio] = '" & Me.CboMunicipio.Text & "' ,[Endoso] = '" & Me.CboEndoso.Text & "',[Activo] = '" & Me.ChkActivo.Checked & "',[Efectivo] = '" & Me.ChkEfectivo.Checked & "',[Cedula] = '" & Me.TxtCedula.Text & "',[Estado] = '" & Me.CmbEstado.Text & "',[CodVendedor] = '" & Me.CboCodigoVendedor.Text & "',[MonedaCredito] = '" & Me.CboMonedaFactura.Text & "',[BloquearPorLimiteCredito] = '" & Me.ChkBloqueoLimite.Checked & "',[Foto] = @Foto WHERE (Cod_Cliente = '" & Me.CboCodigoCliente.Text & "')"
-            MiConexion.Open()
-            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-            ComandoUpdate.Parameters.AddWithValue("@Foto", FotoParaGuardar())
-            iResultado = ComandoUpdate.ExecuteNonQuery
-            MiConexion.Close()
-
-        Else
-            '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Clientes] ([Cod_Cliente],[Nombre_Cliente],[Apellido_Cliente],[Direccion_Cliente],[Telefono],[Cod_Cuenta_Cliente],[Año],[Grado],[Turno],[InventarioFisico],[RUC],[Limite_Credito],[DiasCredito],[Departamento],[Municipio],[Endoso],[Activo],[Efectivo],[Cedula],[Estado],[CodVendedor],[CausaIva],[MonedaCredito],[BloquearPorLimiteCredito],[Foto]) " & _
-                           "VALUES('" & Me.CboCodigoCliente.Text & "','" & Me.TxtNombre.Text & "','" & Me.TxtApellidos.Text & "','" & Me.TxtDireccion.Text & "','" & Me.TxtTelefono.Text & "','" & Me.TxtCtaxCobrar.Text & "','" & Me.TxtAño.Text & "','" & Me.TxtGrado.Text & "','" & Me.CmbTurno.Text & "','" & Me.ChkInventario.Checked & "','" & Me.TxtRUC.Text & "','" & Me.TxtLimite.Text & "','" & Me.TxtDiasCredito.Value & "','" & Me.CboDepartamento.Text & "','" & Me.CboMunicipio.Text & "','" & Me.CboEndoso.Text & "','" & Me.ChkActivo.Checked & "','" & Me.ChkEfectivo.Checked & "','" & Me.TxtCedula.Text & "','" & Me.CmbEstado.Text & "','" & Me.CboCodigoVendedor.Text & "','" & Me.ChkCausaIVA.Checked & "','" & Me.CboMonedaFactura.Text & "','" & Me.ChkBloqueoLimite.Checked & "',@Foto)"
-            MiConexion.Open()
-            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-            ComandoUpdate.Parameters.AddWithValue("@Foto", FotoParaGuardar())
-            iResultado = ComandoUpdate.ExecuteNonQuery
-            MiConexion.Close()
-
-        End If
         Bitacora(Now, NombreUsuario, "Clientes", "Grabo el cliente: " & Me.TxtNombre.Text)
-        Dim Sql As String = "SELECT Cod_Cliente, Nombre_Cliente + ' ' + Apellido_Cliente AS Nombres  FROM Clientes "
-        DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
-        DataSet.Tables("Clientes").Reset()
-        DataAdapter.Fill(DataSet, "Clientes")
-        If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
-            Me.CboCodigoCliente.DataSource = DataSet.Tables("Clientes")
-
-        End If
-
+        CargarClientes()
         Me.CboCodigoCliente.Text = ""
-
     End Sub
 
     Private Sub ButtonBorrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBorrar.Click
-        Dim SQLProveedor As String
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-        Dim Resultado As String, StrSQl As String
-
-        Resultado = MsgBox("¿Esta Seguro de Eliminar el Usuario?", MsgBoxStyle.OkCancel, "Sistema de Facturacion")
-
-        If Not Resultado = "1" Then
+        If MsgBox("¿Esta Seguro de Eliminar el Usuario?", MsgBoxStyle.OkCancel, "Sistema de Facturacion") <> MsgBoxResult.Ok Then
             Exit Sub
         End If
 
-
-
-
-        SQLProveedor = "SELECT *,REPLACE(STR(Cod_Cliente), ' ', '0') AS Orden FROM Clientes WHERE  (Cod_Cliente = '" & Me.CboCodigoCliente.Text & "') ORDER BY Orden"
-        DataAdapter = New SqlClient.SqlDataAdapter(SQLProveedor, MiConexion)
-        DataAdapter.Fill(DataSet, "Clientes")
-        If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
-            '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-
-
-            StrSqlUpdate = "DELETE FROM [Clientes] WHERE (Cod_Cliente = '" & Me.CboCodigoCliente.Text & "')"
-            MiConexion.Open()
-            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-            iResultado = ComandoUpdate.ExecuteNonQuery
-            MiConexion.Close()
-
-
+        If Trim(Me.CboCodigoCliente.Text) = "" Then
+            Exit Sub
         End If
+
+        EliminarCliente(Me.CboCodigoCliente.Text)
 
         Bitacora(Now, NombreUsuario, "Clientes", "Borro el cliente: " & Me.TxtNombre.Text)
-
-        StrSQl = "SELECT Cod_Cliente, Nombre_Cliente + ' ' + Apellido_Cliente AS Nombres  FROM Clientes "
-        DataAdapter = New SqlClient.SqlDataAdapter(StrSQl, MiConexion)
-        DataSet.Tables("Clientes").Reset()
-        DataAdapter.Fill(DataSet, "Clientes")
-        If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
-            Me.CboCodigoCliente.DataSource = DataSet.Tables("Clientes")
-
-        End If
+        CargarClientes()
         Me.CboCodigoCliente.Text = ""
-    End Sub
-
-    Private Sub CboCodigoCliente_TextChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboCodigoCliente.TextChanged
-        Dim SQL As String = "SELECT * FROM Clientes WHERE  (Cod_Cliente = '" & Me.CboCodigoCliente.Text & "')"
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter(SQL, MiConexion)
-        Dim SqlString As String
-
-        DataAdapter.Fill(DataSet, "Clientes")
-        Me.ImgFotoCliente.Image = Nothing
-        If Not DataSet.Tables("Clientes").Rows.Count = 0 Then
-            CargarFotoCliente(DataSet.Tables("Clientes").Rows(0))
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("MonedaCredito")) Then
-                Me.CboMonedaFactura.Text = DataSet.Tables("Clientes").Rows(0)("MonedaCredito")
-            End If
-
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Año")) Then
-                Me.TxtAño.Text = DataSet.Tables("Clientes").Rows(0)("Año")
-            End If
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Grado")) Then
-                Me.TxtGrado.Text = DataSet.Tables("Clientes").Rows(0)("Grado")
-            End If
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Turno")) Then
-                Me.CmbTurno.Text = DataSet.Tables("Clientes").Rows(0)("Turno")
-            End If
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Nombre_Cliente")) Then
-                Me.TxtNombre.Text = DataSet.Tables("Clientes").Rows(0)("Nombre_Cliente")
-            End If
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Apellido_Cliente")) Then
-                Me.TxtApellidos.Text = DataSet.Tables("Clientes").Rows(0)("Apellido_Cliente")
-            End If
-
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Telefono")) Then
-                Me.TxtTelefono.Text = DataSet.Tables("Clientes").Rows(0)("Telefono")
-            End If
-
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Direccion_Cliente")) Then
-                Me.TxtDireccion.Text = DataSet.Tables("Clientes").Rows(0)("Direccion_Cliente")
-            End If
-
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Cod_Cuenta_Cliente")) Then
-                Me.TxtCtaxCobrar.Text = DataSet.Tables("Clientes").Rows(0)("Cod_Cuenta_Cliente")
-            End If
-
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Limite_Credito")) Then
-                Me.TxtLimite.Text = DataSet.Tables("Clientes").Rows(0)("Limite_Credito")
-            End If
-
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("RUC")) Then
-                Me.TxtRUC.Text = DataSet.Tables("Clientes").Rows(0)("RUC")
-            End If
-
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("DiasCredito")) Then
-                Me.TxtDiasCredito.Value = DataSet.Tables("Clientes").Rows(0)("DiasCredito")
-            End If
-
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Departamento")) Then
-                Me.CboDepartamento.Text = DataSet.Tables("Clientes").Rows(0)("Departamento")
-            End If
-
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Municipio")) Then
-                Me.CboMunicipio.Text = DataSet.Tables("Clientes").Rows(0)("Municipio")
-            End If
-
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Endoso")) Then
-                Me.CboEndoso.Text = DataSet.Tables("Clientes").Rows(0)("Endoso")
-            End If
-
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Cedula")) Then
-                Me.TxtCedula.Text = DataSet.Tables("Clientes").Rows(0)("Cedula")
-            End If
-
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Estado")) Then
-                Me.CmbEstado.Text = DataSet.Tables("Clientes").Rows(0)("Estado")
-            End If
-
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("CausaIva")) Then
-                If DataSet.Tables("Clientes").Rows(0)("CausaIva") = 0 Then
-                    Me.ChkCausaIVA.Checked = False
-                Else
-                    Me.ChkCausaIVA.Checked = True
-                End If
-            End If
-
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Credito_Disponible")) Then
-                If DataSet.Tables("Clientes").Rows(0)("Credito_Disponible") = 0 Then
-                    Me.ChkCreditoDisponible.Checked = False
-                Else
-                    Me.ChkCreditoDisponible.Checked = True
-                End If
-            End If
-
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("InventarioFisico")) Then
-                If DataSet.Tables("Clientes").Rows(0)("InventarioFisico") = 0 Then
-                    Me.ChkInventario.Checked = False
-                Else
-                    Me.ChkInventario.Checked = True
-                End If
-            Else
-                Me.ChkInventario.Checked = False
-            End If
-
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Activo")) Then
-                If DataSet.Tables("Clientes").Rows(0)("Activo") = 0 Then
-                    Me.ChkActivo.Checked = False
-                Else
-                    Me.ChkActivo.Checked = True
-                End If
-            Else
-                Me.ChkActivo.Checked = False
-            End If
-
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("Efectivo")) Then
-                If DataSet.Tables("Clientes").Rows(0)("Efectivo") = 0 Then
-                    Me.ChkEfectivo.Checked = False
-                Else
-                    Me.ChkEfectivo.Checked = True
-                End If
-            Else
-                Me.ChkEfectivo.Checked = False
-            End If
-
-            Me.ChkBloqueoLimite.Checked = False
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("BloquearPorLimiteCredito")) Then
-                If DataSet.Tables("Clientes").Rows(0)("BloquearPorLimiteCredito") = 0 Then
-                    Me.ChkBloqueoLimite.Checked = False
-                Else
-                    Me.ChkBloqueoLimite.Checked = True
-                End If
-            End If
-
-
-            If Not IsDBNull(DataSet.Tables("Clientes").Rows(0)("CodVendedor")) Then
-                Me.CboCodigoVendedor.Text = DataSet.Tables("Clientes").Rows(0)("CodVendedor")
-            End If
-
-
-        Else
-            Me.TxtNombre.Text = ""
-            Me.TxtApellidos.Text = ""
-            Me.TxtCtaxCobrar.Text = ""
-            Me.TxtDireccion.Text = ""
-            Me.TxtTelefono.Text = ""
-            Me.TxtCedula.Text = ""
-            Me.CmbEstado.Text = ""
-
-            Me.ChkCausaIVA.Checked = True
-            Me.ChkActivo.Checked = True
-
-        End If
-    End Sub
-
-    Private Sub TxtNombre_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtNombre.TextChanged
-
     End Sub
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
@@ -331,26 +194,89 @@ Public Class FrmClientes
         Me.CboCodigoCliente.Text = My.Forms.FrmConsultas.Codigo
     End Sub
 
-    Private Sub TabPage1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TabPage1.Click
+    Private Sub CmdCargarFoto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdCargarFoto.Click
+        If Me.OpenFileDialogFoto.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            Me.ImgFotoCliente.Image = CambiarTamañoImagenMesa(Image.FromFile(Me.OpenFileDialogFoto.FileName))
+        End If
+    End Sub
 
+    Private Sub CmdBorrarFotoCliente_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdBorrarFotoCliente.Click
+        Me.ImgFotoCliente.Image = Nothing
+    End Sub
+
+#End Region
+
+#Region "Carga de datos en pantalla"
+
+    Private Sub CboCodigoCliente_TextChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboCodigoCliente.TextChanged
+        Dim tabla As DataTable = ObtenerTabla("SELECT * FROM Clientes WHERE (Cod_Cliente = @Cod)", New SqlParameter("@Cod", Me.CboCodigoCliente.Text))
+
+        Me.ImgFotoCliente.Image = Nothing
+        If tabla.Rows.Count = 0 Then
+            Me.TxtNombre.Text = ""
+            Me.TxtApellidos.Text = ""
+            Me.TxtCtaxCobrar.Text = ""
+            Me.TxtDireccion.Text = ""
+            Me.TxtTelefono.Text = ""
+            Me.TxtCedula.Text = ""
+            Me.CmbEstado.Text = ""
+
+            Me.ChkCausaIVA.Checked = True
+            Me.ChkActivo.Checked = True
+            Exit Sub
+        End If
+
+        Dim fila As DataRow = tabla.Rows(0)
+        CargarFotoCliente(fila)
+
+        AsignarTexto(Me.CboMonedaFactura, fila, "MonedaCredito")
+        AsignarTexto(Me.TxtAño, fila, "Año")
+        AsignarTexto(Me.TxtGrado, fila, "Grado")
+        AsignarTexto(Me.CmbTurno, fila, "Turno")
+        AsignarTexto(Me.TxtNombre, fila, "Nombre_Cliente")
+        AsignarTexto(Me.TxtApellidos, fila, "Apellido_Cliente")
+        AsignarTexto(Me.TxtTelefono, fila, "Telefono")
+        AsignarTexto(Me.TxtDireccion, fila, "Direccion_Cliente")
+        AsignarTexto(Me.TxtCtaxCobrar, fila, "Cod_Cuenta_Cliente")
+        AsignarTexto(Me.TxtLimite, fila, "Limite_Credito")
+        AsignarTexto(Me.TxtRUC, fila, "RUC")
+        AsignarTexto(Me.CboDepartamento, fila, "Departamento")
+        AsignarTexto(Me.CboMunicipio, fila, "Municipio")
+        AsignarTexto(Me.CboEndoso, fila, "Endoso")
+        AsignarTexto(Me.TxtCedula, fila, "Cedula")
+        AsignarTexto(Me.CmbEstado, fila, "Estado")
+        AsignarTexto(Me.CboCodigoVendedor, fila, "CodVendedor")
+
+        If Not IsDBNull(fila("DiasCredito")) Then
+            Me.TxtDiasCredito.Value = CDec(fila("DiasCredito"))
+        End If
+
+        AsignarCheck(Me.ChkCausaIVA, fila, "CausaIva", Me.ChkCausaIVA.Checked)
+        AsignarCheck(Me.ChkCreditoDisponible, fila, "Credito_Disponible", Me.ChkCreditoDisponible.Checked)
+        AsignarCheck(Me.ChkInventario, fila, "InventarioFisico", False)
+        AsignarCheck(Me.ChkActivo, fila, "Activo", False)
+        AsignarCheck(Me.ChkEfectivo, fila, "Efectivo", False)
+        AsignarCheck(Me.ChkBloqueoLimite, fila, "BloquearPorLimiteCredito", False)
+    End Sub
+
+    ' Solo asigna cuando la columna trae valor (igual que antes: si es NULL no toca el control).
+    Private Sub AsignarTexto(ByVal control As Control, ByVal fila As DataRow, ByVal columna As String)
+        If Not IsDBNull(fila(columna)) Then
+            control.Text = fila(columna).ToString()
+        End If
+    End Sub
+
+    Private Sub AsignarCheck(ByVal check As CheckBox, ByVal fila As DataRow, ByVal columna As String, ByVal valorSiNulo As Boolean)
+        If IsDBNull(fila(columna)) Then
+            check.Checked = valorSiNulo
+        Else
+            check.Checked = Convert.ToBoolean(fila(columna))
+        End If
     End Sub
 
     Private Sub CboDepartamento_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboDepartamento.TextChanged
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SqlConsulta As String
-
-        '---------------------BUSCO LOS DEPARTAMENTOS -------------------------------------------------------------
-        SqlConsulta = "SELECT DISTINCT Municipio FROM Clientes WHERE  (Departamento LIKE '%" & Me.CboDepartamento.Text & "') "
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlConsulta, MiConexion)
-        DataAdapter.Fill(DataSet, "Departamentos")
-        Me.CboMunicipio.DataSource = DataSet.Tables("Departamentos")
-    End Sub
-
-    Private Sub CboMunicipio_ItemChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CboMunicipio.ItemChanged
-
-    End Sub
-
-    Private Sub CboMunicipio_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboMunicipio.TextChanged
-
+        Me.CboMunicipio.DataSource = ObtenerTabla("SELECT DISTINCT Municipio FROM Clientes WHERE (Departamento LIKE '%' + @Dep)", _
+                                                  New SqlParameter("@Dep", Me.CboDepartamento.Text))
     End Sub
 
     Private Sub CargarFotoCliente(ByVal Fila As DataRow)
@@ -366,13 +292,6 @@ Public Class FrmClientes
         Return bytesToString(ImagenToBytes(Me.ImgFotoCliente.Image))
     End Function
 
-    Private Sub CmdCargarFoto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdCargarFoto.Click
-        If Me.OpenFileDialogFoto.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            Me.ImgFotoCliente.Image = CambiarTamañoImagenMesa(Image.FromFile(Me.OpenFileDialogFoto.FileName))
-        End If
-    End Sub
+#End Region
 
-    Private Sub CmdBorrarFotoCliente_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdBorrarFotoCliente.Click
-        Me.ImgFotoCliente.Image = Nothing
-    End Sub
 End Class
