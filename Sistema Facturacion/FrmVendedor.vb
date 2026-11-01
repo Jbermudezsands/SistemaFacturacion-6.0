@@ -53,6 +53,9 @@ Public Class FrmVendedor
             TipoComision = "RecuperacionVentas"
         End If
 
+        Dim TipoVendedor As String = "Mesero"
+        If Me.CboTipo.Text <> "" Then TipoVendedor = Me.CboTipo.Text
+
         MiConexion.Close()
 
 
@@ -61,7 +64,7 @@ Public Class FrmVendedor
         DataAdapter.Fill(DataSet, "Vendedores")
         If Not DataSet.Tables("Vendedores").Rows.Count = 0 Then
             '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-            StrSqlUpdate = "UPDATE [Vendedores] SET [Nombre_Vendedor] = '" & Me.TxtNombre.Text & "',[Apellido_Vendedor] = '" & Me.TxtApellidos.Text & "',[Direccion_Vendedor] = '" & Me.TxtDireccion.Text & "',[Telefono_Vendedor] = '" & Me.TxtTelefono.Text & "',[Cod_Cuenta_Vendedor] = '" & Me.TxtCtaxCobrar.Text & "',[Comision1] = " & Me.TxtComision1.Text & ",[Comision2] = " & Me.TxtComision2.Text & ",[Recuperacion1] = '" & Me.TxtRecuperacion1.Text & "',[Recuperacion2] = '" & Me.TxtRecuperacion2.Text & "',[TipoComision] = '" & TipoComision & "'  WHERE Cod_Vendedor= '" & Me.CboCodigoVendedor.Text & "'"
+            StrSqlUpdate = "UPDATE [Vendedores] SET [Nombre_Vendedor] = '" & Me.TxtNombre.Text & "',[Apellido_Vendedor] = '" & Me.TxtApellidos.Text & "',[Direccion_Vendedor] = '" & Me.TxtDireccion.Text & "',[Telefono_Vendedor] = '" & Me.TxtTelefono.Text & "',[Cod_Cuenta_Vendedor] = '" & Me.TxtCtaxCobrar.Text & "',[Comision1] = " & Me.TxtComision1.Text & ",[Comision2] = " & Me.TxtComision2.Text & ",[Recuperacion1] = '" & Me.TxtRecuperacion1.Text & "',[Recuperacion2] = '" & Me.TxtRecuperacion2.Text & "',[TipoComision] = '" & TipoComision & "',[Tipo] = '" & TipoVendedor & "'  WHERE Cod_Vendedor= '" & Me.CboCodigoVendedor.Text & "'"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -69,8 +72,8 @@ Public Class FrmVendedor
 
         Else
             '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-            StrSqlUpdate = "INSERT INTO [Vendedores] ([Cod_Vendedor],[Nombre_Vendedor],[Apellido_Vendedor],[Direccion_Vendedor],[Telefono_Vendedor],[Cod_Cuenta_Vendedor],[Comision1],[Comision2],[Recuperacion1],[Recuperacion2],[TipoComision]) " & _
-                           "VALUES ('" & Me.CboCodigoVendedor.Text & "','" & Me.TxtNombre.Text & "','" & Me.TxtApellidos.Text & "','" & Me.TxtDireccion.Text & "','" & Me.TxtTelefono.Text & "','" & Me.TxtCtaxCobrar.Text & "'," & Me.TxtComision1.Text & "," & Me.TxtComision2.Text & " ," & Me.TxtRecuperacion1.Text & " ," & Me.TxtRecuperacion2.Text & ",'" & TipoComision & "')"
+            StrSqlUpdate = "INSERT INTO [Vendedores] ([Cod_Vendedor],[Nombre_Vendedor],[Apellido_Vendedor],[Direccion_Vendedor],[Telefono_Vendedor],[Cod_Cuenta_Vendedor],[Comision1],[Comision2],[Recuperacion1],[Recuperacion2],[TipoComision],[Tipo]) " & _
+                           "VALUES ('" & Me.CboCodigoVendedor.Text & "','" & Me.TxtNombre.Text & "','" & Me.TxtApellidos.Text & "','" & Me.TxtDireccion.Text & "','" & Me.TxtTelefono.Text & "','" & Me.TxtCtaxCobrar.Text & "'," & Me.TxtComision1.Text & "," & Me.TxtComision2.Text & " ," & Me.TxtRecuperacion1.Text & " ," & Me.TxtRecuperacion2.Text & ",'" & TipoComision & "','" & TipoVendedor & "')"
             MiConexion.Open()
             ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
             iResultado = ComandoUpdate.ExecuteNonQuery
@@ -137,8 +140,14 @@ Public Class FrmVendedor
             End If
 
             Me.TxtTelefono.Text = DataSet.Tables("Vendedores").Rows(0)("Telefono_Vendedor")
+
+            Me.CboTipo.Text = "Mesero"
+            If DataSet.Tables("Vendedores").Columns.Contains("Tipo") AndAlso Not IsDBNull(DataSet.Tables("Vendedores").Rows(0)("Tipo")) Then
+                Me.CboTipo.Text = DataSet.Tables("Vendedores").Rows(0)("Tipo")
+            End If
         Else
 
+            Me.CboTipo.Text = "Mesero"
             Me.TxtRecuperacion1.Text = "0"
             Me.TxtRecuperacion2.Text = "0"
             Me.TxtComision1.Text = "0"

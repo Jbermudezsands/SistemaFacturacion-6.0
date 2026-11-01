@@ -57,6 +57,7 @@ Public Class FrmServicios
         DataAdapterProductos.Fill(DataSet, "ListaProductos")
         If Not DataSet.Tables("ListaProductos").Rows.Count = 0 Then
             Me.CboCodigoProducto.DataSource = DataSet.Tables("ListaProductos")
+            AjustarCombo(Me.CboCodigoProducto, New Integer() {90, 330}, 450)
         End If
 
         DataAdapterProductos = New SqlClient.SqlDataAdapter(SqlImpuestos, MiConexion)
@@ -69,9 +70,22 @@ Public Class FrmServicios
         DataAdapterProductos.Fill(DataSet, "Rubros")
         If Not DataSet.Tables("Rubros").Rows.Count = 0 Then
             Me.CboRubro.DataSource = DataSet.Tables("Rubros")
+            AjustarCombo(Me.CboRubro, New Integer() {70, 260}, 380)
         End If
 
 
+    End Sub
+
+    Private Sub AjustarCombo(ByVal Combo As C1.Win.C1List.C1Combo, ByVal Anchos() As Integer, ByVal AnchoLista As Short)
+        Try
+            Combo.DropDownWidth = AnchoLista
+            Combo.MaxDropDownItems = 10
+            Dim Columnas As C1.Win.C1List.C1DisplayColumnCollection = Combo.Splits(0).DisplayColumns
+            For i As Integer = 0 To Math.Min(Anchos.Length, Columnas.Count) - 1
+                Columnas(i).Width = Anchos(i)
+            Next
+        Catch ex As Exception
+        End Try
     End Sub
 
     Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
@@ -326,6 +340,7 @@ Public Class FrmServicios
             DataAdapter.Fill(DataSet, "ListaProductos")
             If Not DataSet.Tables("ListaProductos").Rows.Count = 0 Then
                 Me.CboCodigoProducto.DataSource = DataSet.Tables("ListaProductos")
+            AjustarCombo(Me.CboCodigoProducto, New Integer() {90, 330}, 450)
             End If
 
             ActualizaComboProducto()
@@ -516,6 +531,7 @@ Public Class FrmServicios
             DataAdapter.Fill(DataSet, "ListaProductos")
             If Not DataSet.Tables("ListaProductos").Rows.Count = 0 Then
                 Me.CboCodigoProducto.DataSource = DataSet.Tables("ListaProductos")
+            AjustarCombo(Me.CboCodigoProducto, New Integer() {90, 330}, 450)
             End If
 
             ActualizaComboProducto()

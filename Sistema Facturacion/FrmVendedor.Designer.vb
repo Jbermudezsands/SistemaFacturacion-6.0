@@ -27,6 +27,8 @@ Partial Class FrmVendedor
         Me.CboCodigoVendedor = New C1.Win.C1List.C1Combo()
         Me.CmdCuentas = New System.Windows.Forms.Button()
         Me.TxtCtaxCobrar = New System.Windows.Forms.TextBox()
+        Me.LblTipo = New System.Windows.Forms.Label()
+        Me.CboTipo = New System.Windows.Forms.ComboBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.TxtTelefono = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -102,6 +104,8 @@ Partial Class FrmVendedor
         Me.TabPage1.Controls.Add(Me.Label2)
         Me.TabPage1.Controls.Add(Me.Button6)
         Me.TabPage1.Controls.Add(Me.Label1)
+        Me.TabPage1.Controls.Add(Me.LblTipo)
+        Me.TabPage1.Controls.Add(Me.CboTipo)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
@@ -163,6 +167,25 @@ Partial Class FrmVendedor
         Me.CmdCuentas.Size = New System.Drawing.Size(35, 28)
         Me.CmdCuentas.TabIndex = 127
         Me.CmdCuentas.UseVisualStyleBackColor = True
+        '
+        'LblTipo
+        '
+        Me.LblTipo.AutoSize = True
+        Me.LblTipo.Location = New System.Drawing.Point(18, 181)
+        Me.LblTipo.Name = "LblTipo"
+        Me.LblTipo.Size = New System.Drawing.Size(28, 13)
+        Me.LblTipo.TabIndex = 134
+        Me.LblTipo.Text = "Tipo"
+        '
+        'CboTipo
+        '
+        Me.CboTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboTipo.FormattingEnabled = True
+        Me.CboTipo.Items.AddRange(New Object() {"Mesero", "Cajero", "Administrador"})
+        Me.CboTipo.Location = New System.Drawing.Point(123, 178)
+        Me.CboTipo.Name = "CboTipo"
+        Me.CboTipo.Size = New System.Drawing.Size(148, 21)
+        Me.CboTipo.TabIndex = 126
         '
         'TxtCtaxCobrar
         '
@@ -588,6 +611,8 @@ Partial Class FrmVendedor
     Friend WithEvents CmdCuentas As System.Windows.Forms.Button
     Friend WithEvents TxtCtaxCobrar As System.Windows.Forms.TextBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents LblTipo As System.Windows.Forms.Label
+    Friend WithEvents CboTipo As System.Windows.Forms.ComboBox
     Friend WithEvents TxtTelefono As System.Windows.Forms.TextBox
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents TxtDireccion As System.Windows.Forms.TextBox

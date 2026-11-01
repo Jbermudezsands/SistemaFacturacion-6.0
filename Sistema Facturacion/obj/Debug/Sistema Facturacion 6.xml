@@ -518,6 +518,85 @@ Sistema Facturacion 6.0
 <member name="M:Sistema_Facturacion.CxCServicio.Antiguedad(Sistema_Facturacion.CxCFiltro,System.Collections.Generic.List{System.String})">
  <summary>Antigüedad de saldos: corriente, 30, 60, 90 y más de 90 días (ArepSaldoClientesHistoricos).</summary>
 </member>
+<member name="P:Sistema_Facturacion.CxPCompraDoc.Referencia">
+ <summary>Su_Referencia: número de factura del proveedor (vacío si no se digitó).</summary>
+</member>
+<member name="P:Sistema_Facturacion.CxPCompraDoc.Monto">
+ <summary>SubTotal + IVA en la moneda de la compra.</summary>
+</member>
+<member name="P:Sistema_Facturacion.CxPCompraDoc.NetoPagar">
+ <summary>NetoPagar: monto de las devoluciones de compra.</summary>
+</member>
+<member name="P:Sistema_Facturacion.CxPNotaDoc.TipoNota">
+ <summary>NotaDebito.Tipo: "Debito Proveedores", "Credito Proveedores Dif $", etc.</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxPNotaDoc.AplicaEn(Sistema_Facturacion.MonedaCxC)">
+ <summary>
+ Las notas de diferencial cambiario solo aplican en su moneda:
+ "Dif $" no se cuenta en córdobas y "Dif C$" no se cuenta en dólares.
+ </summary>
+</member>
+<member name="T:Sistema_Facturacion.CxPDatos">
+ <summary>Todo lo que se necesita para calcular, cargado en una sola ida a la base de datos.</summary>
+</member>
+<member name="T:Sistema_Facturacion.CxPEmpresa">
+ <summary>Encabezado del estado de cuenta impreso (tabla DatosEmpresa).</summary>
+</member>
+<member name="P:Sistema_Facturacion.CxPLinea.NumeroFactura">
+ <summary>Número de factura del proveedor (Su_Referencia) o, si no hay, el número de compra.</summary>
+</member>
+<member name="P:Sistema_Facturacion.CxPLinea.MontoNota">
+ <summary>Neto de notas (NB - NC), columna "MontoNota".</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxPMotor.BuscarCompra(System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{Sistema_Facturacion.CxPCompraDoc}},System.String,System.DateTime)">
+ <summary>Compra con ese número; si hay varias, la más reciente que no sea posterior al documento.</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxPMotor.EsPagoSinCompra(System.String)">
+ <summary>Pagos que no son de una compra: número "0" o con una "T" (anticipos / transferencias).</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxPMotor.TextoNotas(Sistema_Facturacion.CxPLinea)">
+ <summary>"NC:12,13 NB:4" (primero las notas de crédito, igual que el formulario anterior).</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxPEstilos.PintarFila(C1.Win.C1TrueDBGrid.C1TrueDBGrid,C1.Win.C1TrueDBGrid.FetchRowStyleEventArgs)">
+ <summary>Rojo: compra vencida con saldo. Verde: saldo a favor (se pagó de más o hay devoluciones).</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxPAreaMdi.EspacioTapado(System.Windows.Forms.Form)">
+ <summary>Alto, en píxeles, que el formulario principal tapa del área de ventanas hijas.</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxPAreaMdi.AjustarAlArea(System.Windows.Forms.Form)">
+ <summary>Cuando la ventana no está maximizada, la ajusta al área disponible del formulario principal.</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxPRepositorio.Cargar(Sistema_Facturacion.CxPFiltro)">
+ <summary>Carga todos los documentos del proveedor hasta la fecha de corte.</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxPRepositorio.ListarProveedores">
+ <summary>Lista de proveedores para el combo del formulario (Cod_Proveedor, Nombres).</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxPRepositorio.ObtenerEmpresa">
+ <summary>Datos de la empresa para el encabezado del reporte (vacíos si no hay registro).</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxPRepositorio.ActualizarMontoCredito(System.Collections.Generic.IEnumerable{Sistema_Facturacion.CxPLinea})">
+ <summary>
+ Guarda en Compras lo pagado y el saldo a crédito (en la moneda de la compra), igual que hacía el
+ formulario anterior. Todo en una sola transacción. Devuelve cuántas compras se actualizaron.
+ </summary>
+</member>
+<member name="P:Sistema_Facturacion.CxPResultado.TasasFaltantes">
+ <summary>True si faltó alguna tasa de cambio: los montos convertidos de esas fechas salen en 0.</summary>
+</member>
+<member name="P:Sistema_Facturacion.CxPResultado.TotalAbonos">
+ <summary>Pagos + pagos de contado + devoluciones de compra.</summary>
+</member>
+<member name="P:Sistema_Facturacion.CxPResultado.SaldoFinal">
+ <summary>Cargos - Abonos - NB + NC + Mora. Siempre es igual a la suma de la columna Total.</summary>
+</member>
+<member name="M:Sistema_Facturacion.CxPServicio.CalcularSaldos(Sistema_Facturacion.CxPFiltro,System.Boolean)">
+ <summary>
+ Saldo por compra del proveedor. Con actualizarMontoCredito se guarda en Compras lo pagado y el
+ saldo a crédito (como hacía el formulario anterior); si faltan tasas de cambio no se guarda nada,
+ para no grabar montos convertidos en 0.
+ </summary>
+</member>
 <member name="M:Sistema_Facturacion.ReporteLotesVencimientoService.ObtenerLotes(Sistema_Facturacion.FiltroReporteLotesVencimiento)">
  <summary>
  Lotes activos con existencia que vencen dentro del intervalo
@@ -534,6 +613,337 @@ Sistema Facturacion 6.0
  <summary>
  Graba un detalle de recibo generado automáticamente desde Planilla
  y devuelve el idDetalleRecibo generado.
+ </summary>
+</member>
+<member name="T:Sistema_Facturacion.ArqueoCalculadora">
+ <summary>
+ Cálculos del arqueo de caja. No accede a datos ni a controles, de modo que se puede probar de forma aislada.
+ Se usa Decimal y un redondeo único a 2 decimales (AwayFromZero) para evitar los errores de Double.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.ArqueoCalculadora.CalcularMonto(System.Decimal,System.Decimal)">
+ <summary>Monto de un renglón de denominaciones: valor del billete/moneda por la cantidad.</summary>
+</member>
+<member name="M:Sistema_Facturacion.ArqueoCalculadora.ConvertirDolaresACordobas(System.Decimal,System.Decimal)">
+ <summary>Convierte dólares a córdobas. Se convierte el total, no cada renglón, para no acumular redondeos.</summary>
+</member>
+<member name="T:Sistema_Facturacion.ArqueoImpresion">
+ <summary>Arma y muestra el reporte ArepArqueoCaja a partir de los datos del arqueo.</summary>
+</member>
+<member name="T:Sistema_Facturacion.ArqueoMoneda">
+ <summary>Monedas que maneja el arqueo. Coinciden con el valor guardado en MetodoPago.Moneda.</summary>
+</member>
+<member name="T:Sistema_Facturacion.ArqueoCabecera">
+ <summary>Encabezado de un arqueo (tabla Arqueo).</summary>
+</member>
+<member name="P:Sistema_Facturacion.ArqueoCabecera.TotalCordobasDolares">
+ <summary>Total contado en córdobas (efectivo + cheques/tarjetas, dólares convertidos). Nulo mientras no se ha grabado.</summary>
+</member>
+<member name="P:Sistema_Facturacion.ArqueoCabecera.ValorFacturas">
+ <summary>Monto que debió recibirse según facturas y recibos. Nulo mientras no se ha grabado.</summary>
+</member>
+<member name="P:Sistema_Facturacion.ArqueoCabecera.EfectivoEsperado">
+ <summary>Efectivo esperado y tasa capturados al iniciar el arqueo. Nulo en arqueos anteriores a esa captura.</summary>
+</member>
+<member name="P:Sistema_Facturacion.ArqueoCabecera.EsEditable">
+ <summary>Un arqueo grabado ya no se modifica; solo uno iniciado y aún no grabado admite cambios.</summary>
+</member>
+<member name="T:Sistema_Facturacion.ArqueoDenominacion">
+ <summary>Renglón del conteo de efectivo por denominación (tabla Detalle_Arqueo).</summary>
+</member>
+<member name="P:Sistema_Facturacion.ArqueoDenominacion.Monto">
+ <summary>Siempre se recalcula como Valor x Cantidad; no se confía en el monto digitado en pantalla.</summary>
+</member>
+<member name="T:Sistema_Facturacion.ArqueoPagoDiferido">
+ <summary>Pago no efectivo (cheque, tarjeta, transferencia) de una factura o recibo pendiente de arquear.</summary>
+</member>
+<member name="P:Sistema_Facturacion.ArqueoPagoDiferido.Documento">
+ <summary>Referencia que se guarda en Detalle_ArqueoCheque.NumeroFactura: "Fact" o "Rec" + número.</summary>
+</member>
+<member name="T:Sistema_Facturacion.ArqueoEfectivoEsperado">
+ <summary>Efectivo que el sistema espera haber recibido del cajero (facturas y recibos pendientes de arquear).</summary>
+</member>
+<member name="T:Sistema_Facturacion.ArqueoEntradaCalculo">
+ <summary>Datos que alimentan el cálculo del arqueo.</summary>
+</member>
+<member name="T:Sistema_Facturacion.ArqueoResumen">
+ <summary>Resultado del cálculo del arqueo. Todos los montos están redondeados a 2 decimales.</summary>
+</member>
+<member name="P:Sistema_Facturacion.ArqueoResumen.TotalContado">
+ <summary>Total contado expresado en córdobas.</summary>
+</member>
+<member name="P:Sistema_Facturacion.ArqueoResumen.TotalEsperado">
+ <summary>Total que debió recibirse en córdobas, incluyendo el fondo de apertura.</summary>
+</member>
+<member name="P:Sistema_Facturacion.ArqueoResumen.Diferencia">
+ <summary>TotalEsperado - TotalContado. Positivo = faltante, negativo = sobrante.</summary>
+</member>
+<member name="P:Sistema_Facturacion.ArqueoResumen.FaltaTasaCambio">
+ <summary>Hay montos en dólares y no existe tasa de cambio para la fecha: los totales no son confiables.</summary>
+</member>
+<member name="T:Sistema_Facturacion.ArqueoEmpresa">
+ <summary>Datos de la empresa para el encabezado del reporte.</summary>
+</member>
+<member name="T:Sistema_Facturacion.ArqueoRepositorio">
+ <summary>Acceso a datos del arqueo de caja. Todas las consultas son parametrizadas.</summary>
+</member>
+<member name="M:Sistema_Facturacion.ArqueoRepositorio.ObtenerTasaCambio(System.DateTime)">
+ <summary>Tasa de cambio oficial de la fecha; 0 si no está registrada.</summary>
+</member>
+<member name="M:Sistema_Facturacion.ArqueoRepositorio.ObtenerDetalleEfectivo(Sistema_Facturacion.ArqueoCabecera,System.String)">
+ <summary>Conteo por denominación guardado. Columnas: idDenominacion, Valor, Canitdad, Monto (nombre de columna heredado de la BD).</summary>
+</member>
+<member name="M:Sistema_Facturacion.ArqueoRepositorio.ObtenerDetalleCheques(Sistema_Facturacion.ArqueoCabecera,System.String)">
+ <summary>Cheques/tarjetas guardados en el arqueo. Columnas: Factura#/Recibo#, NombrePago, Tarjeta#/Cheque#, Monto.</summary>
+</member>
+<member name="M:Sistema_Facturacion.ArqueoRepositorio.SumarEfectivoFacturas(System.String,System.DateTime,System.String)">
+ <summary>Efectivo de facturas del cajero en el día, aún no arqueado (consulta previa, sin marcar).</summary>
+</member>
+<member name="M:Sistema_Facturacion.ArqueoRepositorio.SumarEfectivoRecibos(System.String,System.DateTime,System.String)">
+ <summary>Efectivo de recibos del cajero en el día, aún no arqueado (consulta previa, sin marcar).</summary>
+</member>
+<member name="M:Sistema_Facturacion.ArqueoRepositorio.ObtenerPagosDiferidosPendientes(System.String,System.DateTime)">
+ <summary>Pagos no efectivo (cheque, tarjeta...) de facturas y recibos pendientes hasta la fecha del arqueo, inclusive.</summary>
+</member>
+<member name="M:Sistema_Facturacion.ArqueoRepositorio.CrearArqueo(Sistema_Facturacion.ArqueoCabecera,System.Collections.Generic.IEnumerable{Sistema_Facturacion.ArqueoDenominacion},System.Collections.Generic.IEnumerable{Sistema_Facturacion.ArqueoPagoDiferido})">
+ <summary>
+ Crea el arqueo completo en una sola transacción: captura y marca el efectivo esperado, encabezado,
+ renglones de denominaciones en cero, detalle de cheques/tarjetas y marca de "arqueado" en los pagos incluidos.
+ cab.EfectivoEsperado debe traer la tasa de cambio; los montos se calculan dentro de la transacción.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.ArqueoRepositorio.GuardarArqueo(Sistema_Facturacion.ArqueoCabecera,System.Collections.Generic.IEnumerable{Sistema_Facturacion.ArqueoDenominacion})">
+ <summary>Graba el cierre del arqueo: conteo por denominación y totales del encabezado.</summary>
+</member>
+<member name="M:Sistema_Facturacion.ArqueoRepositorio.CapturarEfectivoEsperado(System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction,Sistema_Facturacion.ArqueoCabecera)">
+ <summary>
+ Suma el efectivo pendiente del cajero en el día y lo marca como arqueado, en la misma transacción,
+ para que otro arqueo del mismo cajero y día no lo cuente de nuevo.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.ArqueoRepositorio.MarcarComoArqueado(System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction,Sistema_Facturacion.ArqueoPagoDiferido)">
+ <summary>Marca como arqueado solo el pago incluido (documento, fecha y forma de pago), no todo el documento.</summary>
+</member>
+<member name="M:Sistema_Facturacion.ArqueoRepositorio.AgregarDecimal(System.Data.SqlClient.SqlCommand,System.String,System.Decimal)">
+ <summary>Un parámetro Decimal sin precisión/escala trunca los centavos; se fija explícitamente.</summary>
+</member>
+<member name="T:Sistema_Facturacion.ArqueoServicio">
+ <summary>Reglas de negocio y validaciones del arqueo de caja. Los formularios solo hablan con esta clase.</summary>
+</member>
+<member name="M:Sistema_Facturacion.ArqueoServicio.IniciarArqueo(System.String,System.DateTime,System.Decimal)">
+ <summary>
+ Inicia un arqueo: toma los cheques/tarjetas pendientes del cajero, crea las denominaciones en cero
+ y marca los pagos incluidos como arqueados, todo en una transacción.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.ArqueoServicio.ObtenerEfectivoEsperado(Sistema_Facturacion.ArqueoCabecera)">
+ <summary>Efectivo esperado de un arqueo: el capturado al iniciarlo; si es anterior a esa captura, se calcula en vivo.</summary>
+</member>
+<member name="M:Sistema_Facturacion.ArqueoServicio.ObtenerEfectivoEsperado(System.String,System.DateTime)">
+ <summary>Efectivo de facturas y recibos que el cajero debió recaudar, y la tasa de cambio de la fecha.</summary>
+</member>
+<member name="M:Sistema_Facturacion.ArqueoServicio.Guardar(Sistema_Facturacion.ArqueoCabecera,Sistema_Facturacion.ArqueoEfectivoEsperado,System.Data.DataTable,System.Data.DataTable,System.Data.DataTable,System.Data.DataTable,System.String,System.String)">
+ <summary>Graba el conteo y los totales. El monto de cada renglón se recalcula; no se toma del grid.</summary>
+</member>
+<member name="T:Sistema_Facturacion.TipoOrigenMovimiento">
+ <summary>
+ Origen del movimiento: Detalle_Compras o Detalle_Facturas.
+ </summary>
+</member>
+<member name="T:Sistema_Facturacion.MovimientoCosto">
+ <summary>
+ Movimiento de un producto tal como lo necesita CostoPromedioKardex.
+ Los campos numericos son Nullable porque la BD permite NULL y el SQL original
+ ignora los NULL dentro de SUM(); el calculador replica ese comportamiento.
+ </summary>
+</member>
+<member name="P:Sistema_Facturacion.MovimientoCosto.Moneda">
+ <summary>Compras.MonedaCompra (solo compras).</summary>
+</member>
+<member name="P:Sistema_Facturacion.MovimientoCosto.Tasa">
+ <summary>TasaCambio.MontoTasa de la fecha del documento. Nothing = no existe tasa ese dia.</summary>
+</member>
+<member name="P:Sistema_Facturacion.MovimientoCosto.Importe">
+ <summary>Solo Detalle_Facturas: importe de la linea.</summary>
+</member>
+<member name="P:Sistema_Facturacion.MovimientoCosto.TieneCabecera">
+ <summary>True si existe la cabecera (Facturas / Compras) del documento.</summary>
+</member>
+<member name="T:Sistema_Facturacion.UltimoCostoCandidato">
+ <summary>
+ Fila de Detalle_Facturas con Costo_Unitario &lt;&gt; 0 (cualquier tipo). Se usa solo como
+ respaldo "ultimo costo utilizado" cuando el promedio da cero.
+ </summary>
+</member>
+<member name="F:Sistema_Facturacion.OrigenCostoCalculado.Promedio">
+ <summary>Importe / cantidad acumulados (formula de CostoPromedioKardex).</summary>
+</member>
+<member name="F:Sistema_Facturacion.OrigenCostoCalculado.UltimoCosto">
+ <summary>El promedio dio cero y se uso el ultimo Costo_Unitario conocido.</summary>
+</member>
+<member name="F:Sistema_Facturacion.OrigenCostoCalculado.SinCosto">
+ <summary>Sin promedio ni ultimo costo: costo cero.</summary>
+</member>
+<member name="T:Sistema_Facturacion.ResultadoCosteo">
+ <summary>
+ Resultado de un calculo de costo. Equivale a RstCostoPromedio mas informacion de diagnostico.
+ </summary>
+</member>
+<member name="P:Sistema_Facturacion.ResultadoCosteo.MovimientosSinTasa">
+ <summary>Movimientos descartados porque no existe TasaCambio ese dia (el SQL original los pierde en silencio).</summary>
+</member>
+<member name="M:Sistema_Facturacion.ResultadoCosteo.ARstCostoPromedio">
+ <summary>Convierte al DTO que usan hoy los formularios y reportes.</summary>
+</member>
+<member name="T:Sistema_Facturacion.RepositorioMovimientos">
+ <summary>
+ Acceso a datos del motor de costos. Una consulta por tabla, todas parametrizadas.
+ Replica los JOIN de CostoPromedioKardex: Detalle con su cabecera (Compras / Facturas)
+ y TasaCambio por fecha. La tasa se une con LEFT JOIN para poder CONTAR los movimientos
+ que el INNER JOIN original descarta en silencio.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.RepositorioMovimientos.CargarMovimientos(System.String,System.Nullable{System.DateTime})">
+ <summary>
+ Carga las compras (Mercancia Recibida / Devolucion de Compra) y los movimientos de facturas
+ (Factura / Salida Bodega / Devolucion de Venta) de un producto hasta la fecha de corte.
+ Si fechaCorte es Nothing se carga todo el historial.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.RepositorioMovimientos.CargarCandidatosUltimoCosto(System.String,System.Nullable{System.DateTime})">
+ <summary>
+ Filas de Detalle_Facturas (cualquier tipo, igual que el SQL original) con Costo_Unitario &lt;&gt; 0
+ y TasaCambio existente, ordenadas por fecha e id. Es el respaldo "ultimo costo utilizado".
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.RepositorioMovimientos.ListarProductos(System.String,System.String)">
+ <summary>
+ Codigos de producto (tabla Productos) en el rango indicado. Rango vacio = todos.
+ Misma regla que CmdCostear: Cod_Productos BETWEEN Desde AND Hasta.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.RepositorioMovimientos.CargarComprasKardex(System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction,System.String,System.Nullable{System.DateTime})">
+ <summary>Compras del kardex (Mercancia Recibida / Devolucion de Compra) con cabecera y tasa.</summary>
+</member>
+<member name="M:Sistema_Facturacion.RepositorioMovimientos.CargarFilasFactura(System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction,System.String)">
+ <summary>
+ TODAS las filas de Detalle_Facturas del producto (cualquier tipo), con indicador de cabecera y tasa.
+ Copia el estado original (GuardarOriginal) para poder calcular que filas cambian.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.RepositorioMovimientos.CargarTransferenciasRecibidas(System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction,System.String)">
+ <summary>Filas 'Transferencia Recibida' (Detalle_Compras) del producto.</summary>
+</member>
+<member name="M:Sistema_Facturacion.RepositorioMovimientos.CargarDevolucionesCompra(System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction,System.String)">
+ <summary>Filas 'Devolucion de Compra' (Detalle_Compras) del producto, sin exigir cabecera (igual que el original).</summary>
+</member>
+<member name="M:Sistema_Facturacion.RepositorioMovimientos.ActualizarCostos(System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction,System.Boolean,Sistema_Facturacion.MovimientoCosto)">
+ <summary>
+ Actualiza por id solo las columnas que cambiaron respecto del original.
+ tabla = "Detalle_Facturas" o "Detalle_Compras". Devuelve 1 si hubo cambios, 0 si no.
+ </summary>
+</member>
+<member name="T:Sistema_Facturacion.CalculadorCostoPromedio">
+ <summary>
+ Replica EN MEMORIA de CostoPromedioKardex (Funciones.vb). No inventa reglas: cada condicion
+ esta tomada de las consultas originales. Como el original es una suma acumulada hasta la
+ fecha, una sola pasada ordenada por fecha entrega el costo de todas las fechas pedidas.
+
+ Reglas replicadas:
+  - Compras 'Mercancia Recibida': importe = Precio_Neto * Cantidad. Compras en Dolares: C$ = x Tasa;
+    otras monedas: US$ = / Tasa. MonedaCompra NULL no entra (NULL &lt;&gt; 'Dolares' es desconocido en SQL).
+  - 'Devolucion de Compra': se resta con su propio Precio_Neto * Cantidad (no Costo_Unitario).
+  - 'Factura' y 'Devolucion de Venta': Cantidad * Costo_Unitario &lt;&gt; 0.
+  - 'Salida Bodega': filtro Cantidad * Precio_Unitario &lt;&gt; 0; la cantidad cuenta solo si
+    Costo_Unitario &lt;&gt; 0 (NULL cuenta); si el importe total de salidas es 0 la cantidad de salidas se anula.
+  - Transferencias Enviada/Recibida: EXCLUIDAS (igual que el original).
+  - Movimientos de una fecha sin TasaCambio se descartan (INNER JOIN original) y se cuentan en el resultado.
+  - Costo = Format(Importe / Cantidad, "##,##0.000000000") convertido a Double (igual que el original).
+  - Si el costo es 0: ultimo Costo_Unitario &lt;&gt; 0 de Detalle_Facturas a esa fecha; US$ = costo * tasa de esa fecha.
+    (Se conserva la multiplicacion del original aunque conceptualmente sea sospechosa; ver informe.)
+ </summary>
+</member>
+<member name="T:Sistema_Facturacion.CalculadorCostoPromedio.Acumulador">
+ <summary>Sumas acumuladas del kardex. Copiar() permite evaluar escenarios sin alterar la base acumulada.</summary>
+</member>
+<member name="M:Sistema_Facturacion.CalculadorCostoPromedio.CostoAFecha(System.String,System.DateTime,System.Collections.Generic.List{Sistema_Facturacion.MovimientoCosto},System.Collections.Generic.List{Sistema_Facturacion.UltimoCostoCandidato})">
+ <summary>Costo promedio a una fecha (equivale a CostoPromedioKardex(codigo, fecha)).</summary>
+</member>
+<member name="M:Sistema_Facturacion.CalculadorCostoPromedio.CostosPorFechas(System.String,System.Collections.Generic.IEnumerable{System.DateTime},System.Collections.Generic.List{Sistema_Facturacion.MovimientoCosto},System.Collections.Generic.List{Sistema_Facturacion.UltimoCostoCandidato})">
+ <summary>
+ Costo promedio en cada fecha pedida con UN solo recorrido de los movimientos.
+ La clave del diccionario es fecha.Date.
+ </summary>
+</member>
+<member name="T:Sistema_Facturacion.DiferenciaCosto">
+ <summary>Una fecha/producto donde el motor y CostoPromedioKardex no coinciden.</summary>
+</member>
+<member name="T:Sistema_Facturacion.ComparadorCostos">
+ <summary>
+ Herramienta de validacion (Fase 5): ejecuta la funcion ORIGINAL CostoPromedioKardex y el
+ CalculadorCostoPromedio del motor sobre los mismos productos/fechas y reporta diferencias.
+ No modifica datos. La funcion original NO se toca.
+ </summary>
+</member>
+<member name="P:Sistema_Facturacion.ComparadorCostos.Cancelar">
+ <summary>Poner en True para detener la comparacion de forma segura.</summary>
+</member>
+<member name="M:Sistema_Facturacion.ComparadorCostos.Comparar(System.Collections.Generic.List{System.String},System.Int32,System.Double)">
+ <param name="codigos">Productos a comparar.</param>
+ <param name="maxFechasPorProducto">0 = todas las fechas con movimiento; N = muestra de N fechas repartidas (siempre incluye primera, ultima y hoy).</param>
+ <param name="tolerancia">Diferencia absoluta aceptada (C$ y US$).</param>
+</member>
+<member name="M:Sistema_Facturacion.ComparadorCostos.ExportarCsv(Sistema_Facturacion.ResumenComparacion,System.String)">
+ <summary>Guarda las diferencias, errores y advertencias en un CSV (separador coma, punto decimal).</summary>
+</member>
+<member name="M:Sistema_Facturacion.ComparadorCostos.SeleccionarFechas(System.Collections.Generic.List{Sistema_Facturacion.MovimientoCosto},System.Collections.Generic.List{Sistema_Facturacion.UltimoCostoCandidato},System.Int32)">
+ <summary>Fechas con movimiento del producto (mas hoy), reducidas a una muestra repartida si se pide.</summary>
+</member>
+<member name="T:Sistema_Facturacion.ReparadorCostos">
+ <summary>
+ Recosteo masivo por producto. Replica el proceso de FrmActualiza.CmdCostear_Click:
+   1. Costo de las 'Devolucion de Compra' = CostoPromedioKardex a su fecha (con el estado ANTERIOR de las facturas).
+   2. Costo_Unitario = 0 en TODO Detalle_Facturas del producto.
+   3. Cada fila (con cabecera y Tipo &lt;&gt; 'Cotizacion') en orden de fecha: costo = Kardex a su fecha con el estado actual
+      (las ya costeadas cuentan, las pendientes estan en 0); si da 0 y Cantidad &lt;&gt; 0, ultimo costo conocido.
+   4. Escritura segun tipo: Transferencia Enviada y Salida Bodega -> Costo, Precio_Unitario, Precio_Neto e Importe
+      (la Enviada tambien actualiza su Transferencia Recibida); otros tipos -> solo Costo_Unitario.
+ Diferencias deliberadas respecto del original: todo el producto se calcula en memoria con UNA lectura (no una consulta
+ por fila), se escribe solo lo que cambia, con parametros y en UNA transaccion por producto. Los resultados deben ser
+ identicos (ver validacion con copias de la BD).
+ Comportamientos del original que se conservan a proposito: la clave del UPDATE es Numero + Fecha(sin hora) + Tipo
+ (lineas repetidas del mismo producto en un documento reciben el mismo costo; filas con hora no coinciden y quedan en 0)
+ y los valores se redondean a 15 digitos (Math.Abs(x).ToString()).
+ </summary>
+</member>
+<member name="P:Sistema_Facturacion.ReparadorCostos.Cancelar">
+ <summary>Poner en True para detener el proceso entre productos (cada producto es atomico).</summary>
+</member>
+<member name="M:Sistema_Facturacion.ReparadorCostos.RecalcularRango(System.String,System.String,System.Boolean)">
+ <param name="aplicar">False = simulacion: calcula y cuenta cambios sin escribir nada.</param>
+</member>
+<member name="M:Sistema_Facturacion.ReparadorCostos.Redondear15(System.Double)">
+ <summary>Equivale a escribir el valor como texto con Double.ToString() (15 digitos) y que SQL lo lea.</summary>
+</member>
+<member name="T:Sistema_Facturacion.MotorCostos">
+ <summary>
+ Fachada del Motor de Costos. Independiente de formularios: recibe parametros y devuelve resultados.
+
+ FASE 4a: solo lectura. Expone el calculo de costo promedio en memoria (replica validada contra
+ CostoPromedioKardex con ComparadorCostos). Todavia NO esta conectado a ningun formulario ni reporte
+ y NO reemplaza ninguna funcion existente.
+
+ Pendiente (fases siguientes): RepararDocumento, RecalcularProducto, RecalcularRango, ReconstruirDesde,
+ costo para transferencias y costo por bodega.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.MotorCostos.CostoGeneral(System.String,System.DateTime)">
+ <summary>Costo general del producto a una fecha. Equivale a CostoPromedioKardex(codigo, fecha).</summary>
+</member>
+<member name="M:Sistema_Facturacion.MotorCostos.CostoGeneralPorFechas(System.String,System.Collections.Generic.IEnumerable{System.DateTime})">
+ <summary>
+ Costo general del producto en varias fechas con una sola lectura de la BD (para reportes y recosteo).
+ La clave del diccionario es fecha.Date.
  </summary>
 </member>
 <member name="M:Sistema_Facturacion.FrmCreditosNuevos.GrabarPrestamo">
@@ -557,6 +967,13 @@ Sistema Facturacion 6.0
 <member name="M:Sistema_Facturacion.FrmFinanciamiento.GuardarFuente(System.String,System.String)">
  <summary>Inserta o actualiza. Devuelve True si fue un registro nuevo.</summary>
 </member>
+<member name="T:Sistema_Facturacion.FrmComparadorCostos">
+ <summary>
+ Pantalla de validacion del Motor de Costos (Fase 5). Compara CostoPromedioKardex (original)
+ contra el motor para un rango de productos. Solo lectura: no modifica datos.
+ Se construye por codigo (sin Designer).
+ </summary>
+</member>
 <member name="M:Sistema_Facturacion.FrmSucursales.ObtenerNombreSucursal(System.String)">
  <summary>Devuelve el nombre, o Nothing si la sucursal no existe.</summary>
 </member>
@@ -571,6 +988,15 @@ Sistema Facturacion 6.0
 </member>
 <member name="M:Sistema_Facturacion.FrmAccesos.Lista_DrawItem(System.Object,System.Windows.Forms.DrawItemEventArgs)">
  <summary>Dibuja las filas de las dos listas con el estilo del sistema (selección azul claro).</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmCuentasXPagar.Consultar(System.Action)">
+ <summary>
+ Calcula en segundo plano (BackgroundWorker, compatible con .NET Framework 4) y muestra el resultado.
+ "despues" se ejecuta al terminar, solo si el cálculo fue exitoso.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmCuentasXPagar.RefrescarVista">
+ <summary>Vuelve a armar la vista del grid (sin ir a la base de datos).</summary>
 </member>
 <member name="M:Sistema_Facturacion.FrmCuentasXCobrar.Consultar(System.Action)">
  <summary>
@@ -590,6 +1016,21 @@ Sistema Facturacion 6.0
 <member name="M:Sistema_Facturacion.FrmRecibosFacturas.DescripcionDocumento(System.String,System.DateTime,System.String,System.Boolean)">
  <summary>Descripción para la línea del recibo: el primer producto de la factura (si LineaFactura
  está activo) o la descripción de la nota de débito. Siempre la del documento que se paga.</summary>
+</member>
+<member name="T:Sistema_Facturacion.FrmArqueo">
+ <summary>
+ Arqueo de caja. El formulario solo maneja la pantalla; las reglas, los cálculos y el acceso a datos
+ están en ArqueoServicio, ArqueoCalculadora y ArqueoRepositorio (carpeta Clases\Arqueo).
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmArqueo.GridEfectivo_AfterColUpdate(System.Object,C1.Win.C1TrueDBGrid.ColEventArgs)">
+ <summary>Al digitar la cantidad de una denominación se recalcula el monto del renglón y los totales.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmArqueo.AplicarEstado">
+ <summary>Habilita o bloquea los controles según haya un arqueo abierto y si este aún admite cambios.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmArqueo.EstilizarGrid(C1.Win.C1TrueDBGrid.C1TrueDBGrid)">
+ <summary>Aplica a los grids de ComponentOne la misma paleta del resto del diseño.</summary>
 </member>
 <member name="M:Sistema_Facturacion.FrmReportes.SaldoInicialCliente(System.String,System.DateTime,System.String)">
  <summary>

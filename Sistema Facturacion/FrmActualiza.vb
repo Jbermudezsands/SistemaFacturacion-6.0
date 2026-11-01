@@ -471,6 +471,23 @@ Handles backgroundWorkerProductosLotes.ProgressChanged
         'Me.DTPFechaFin.Value = Now
 
         Me.TabControl1.SelectedTab = Me.TabPage2
+        AgregarBotonComparadorCostos()
+    End Sub
+
+    '' Motor de Costos Fase 4a: acceso al comparador (solo lectura), creado por codigo para no tocar el Designer.
+    Private Sub AgregarBotonComparadorCostos()
+        Dim Boton As New Button
+        Boton.Name = "CmdCompararMotorCostos"
+        Boton.Text = "Comparar Motor de Costos"
+        Boton.Location = New System.Drawing.Point(273, 129)
+        Boton.Size = New System.Drawing.Size(100, 47)
+        AddHandler Boton.Click, AddressOf CmdCompararMotorCostos_Click
+        Me.TabPage5.Controls.Add(Boton)
+    End Sub
+
+    Private Sub CmdCompararMotorCostos_Click(ByVal sender As Object, ByVal e As EventArgs)
+        Dim Frm As New FrmComparadorCostos
+        Frm.Show(Me)
     End Sub
 
     Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
@@ -1183,7 +1200,72 @@ Handles backgroundWorkerProductosLotes.ProgressChanged
 
     End Sub
 
+    '' Motor de Costos: el recosteo por rango de productos lo ejecuta ReparadorCostos (una transaccion por producto).
+    '' Mientras corre, el mismo boton funciona como "Cancelar" (se detiene al terminar el producto en curso).
+    Private _ReparadorCostos As ReparadorCostos
+
     Private Sub CmdCostear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdCostear.Click
+        If _ReparadorCostos IsNot Nothing Then
+            _ReparadorCostos.Cancelar = True
+            Me.CmdCostear.Text = "Cancelando..."
+            Return
+        End If
+
+        Dim Desde As String = Me.TxtDesdeCosto.Text.Trim()
+        Dim Hasta As String = Me.TxtHastaCosto.Text.Trim()
+        Dim Alcance As String = IIf(Desde = "" And Hasta = "", "TODOS los productos", "los productos desde '" & Desde & "' hasta '" & Hasta & "'").ToString()
+
+        If MessageBox.Show("Se recalcularan los costos de " & Alcance & "." & vbCrLf & "Este proceso modifica Detalle_Facturas y Detalle_Compras. Desea continuar?",
+                           "Zeus Facturacion", MessageBoxButtons.YesNo, MessageBoxIcon.Question) <> DialogResult.Yes Then
+            Return
+        End If
+
+        Dim TextoBoton As String = Me.CmdCostear.Text
+        Dim TextoFormulario As String = Me.Text
+        _ReparadorCostos = New ReparadorCostos(Conexion)
+        AddHandler _ReparadorCostos.Progreso, AddressOf ReparadorCostos_Progreso
+        Me.CmdCostear.Text = "Cancelar"
+        Me.ProgressBar5.Minimum = 0
+        Me.ProgressBar5.Value = 0
+        Me.ProgressBar5.Visible = True
+
+        Try
+            Dim Resumen As ResumenReparacion = _ReparadorCostos.RecalcularRango(Desde, Hasta, True)
+
+            Dim Mensaje As String = "Productos procesados: " & Resumen.Productos & vbCrLf &
+                                    "Productos con cambios: " & Resumen.ProductosConCambios & vbCrLf &
+                                    "Filas de facturas modificadas: " & Resumen.FilasFacturaModificadas & vbCrLf &
+                                    "Filas de compras modificadas: " & Resumen.FilasCompraModificadas & vbCrLf &
+                                    "Tiempo: " & Format(Resumen.Milisegundos / 1000, "0.0") & " segundos"
+            If Resumen.Cancelado Then Mensaje = "PROCESO CANCELADO." & vbCrLf & Mensaje
+            If Resumen.Errores.Count > 0 Then
+                Mensaje &= vbCrLf & vbCrLf & "Errores (" & Resumen.Errores.Count & "), los productos con error no se modificaron:"
+                For i As Integer = 0 To Math.Min(4, Resumen.Errores.Count - 1)
+                    Mensaje &= vbCrLf & Resumen.Errores(i)
+                Next
+            End If
+            MessageBox.Show(Mensaje, "Zeus Facturacion", MessageBoxButtons.OK, IIf(Resumen.Errores.Count > 0, MessageBoxIcon.Warning, MessageBoxIcon.Information))
+        Catch ex As Exception
+            MessageBox.Show("No se pudo completar el proceso: " & ex.Message, "Zeus Facturacion", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
+            RemoveHandler _ReparadorCostos.Progreso, AddressOf ReparadorCostos_Progreso
+            _ReparadorCostos = Nothing
+            Me.CmdCostear.Text = TextoBoton
+            Me.Text = TextoFormulario
+            Me.ProgressBar5.Visible = False
+        End Try
+    End Sub
+
+    Private Sub ReparadorCostos_Progreso(ByVal Actual As Integer, ByVal Total As Integer, ByVal Mensaje As String)
+        Me.ProgressBar5.Maximum = Math.Max(1, Total)
+        Me.ProgressBar5.Value = Math.Min(Me.ProgressBar5.Maximum, Actual)
+        Me.Text = "Procesando " & Actual & " de " & Total & " - " & Mensaje
+        My.Application.DoEvents()
+    End Sub
+
+    '' Rutina anterior de CmdCostear_Click, conservada solo para comparar resultados con el Motor de Costos.
+    '' Ya no esta conectada al boton. No usar en produccion.
+    Private Sub CostearRutaAnterior()
         Dim iPosicionFila As Double, PrecioCostoDolar As Double, NumeroFactura As String = "", TipoSalida As String = "", FechaCompra As Date
         Dim DataSet As New DataSet, SQLProductos As String, PrecioCosto As Double, iPosicionFila2 As Double = 0, iPosicionFila3 As Double = 0
         Dim DataAdapter As New SqlClient.SqlDataAdapter, RegistrosMaximos As Double, SqlSTring As String, ComandoUpdate As New SqlClient.SqlCommand
