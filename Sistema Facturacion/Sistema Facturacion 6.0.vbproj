@@ -139,6 +139,12 @@
     <Compile Include="Clases\Arqueo\ArqueoModelos.vb" />
     <Compile Include="Clases\Arqueo\ArqueoRepositorio.vb" />
     <Compile Include="Clases\Arqueo\ArqueoServicio.vb" />
+    <Compile Include="Clases\Ensamble\EnsambleImpresion.vb" />
+    <Compile Include="Clases\Ensamble\EnsambleModelos.vb" />
+    <Compile Include="Clases\Ensamble\EnsambleProcesoServicio.vb" />
+    <Compile Include="Clases\Ensamble\EnsambleRepositorio.vb" />
+    <Compile Include="Clases\Ensamble\EnsambleServicio.vb" />
+    <Compile Include="Clases\Interfaz\GridConFiltros.vb" />
     <Compile Include="Clases\Tablas\AplicacionPlanPendiente.vb" />
     <Compile Include="Clases\Tablas\DatosReciboPlanilla.vb" />
     <Compile Include="Clases\Tablas\DatosReciboPlanPago.vb" />

@@ -745,6 +745,146 @@ Sistema Facturacion 6.0
 <member name="M:Sistema_Facturacion.ArqueoServicio.Guardar(Sistema_Facturacion.ArqueoCabecera,Sistema_Facturacion.ArqueoEfectivoEsperado,System.Data.DataTable,System.Data.DataTable,System.Data.DataTable,System.Data.DataTable,System.String,System.String)">
  <summary>Graba el conteo y los totales. El monto de cada renglón se recalcula; no se toma del grid.</summary>
 </member>
+<member name="T:Sistema_Facturacion.EnsambleNegocioException">
+ <summary>Error de regla de negocio: el mensaje es apto para mostrarse tal cual al usuario.</summary>
+</member>
+<member name="T:Sistema_Facturacion.TiposEnsamble">
+ <summary>Tipos de documento de ensamble y sus consecutivos.</summary>
+</member>
+<member name="F:Sistema_Facturacion.TiposEnsamble.SinNumero">
+ <summary>Texto que muestra el formulario mientras el documento no tiene número.</summary>
+</member>
+<member name="M:Sistema_Facturacion.TiposEnsamble.CampoConsecutivo(System.String)">
+ <summary>Nombre del consecutivo que usa BuscaConsecutivo para cada tipo.</summary>
+</member>
+<member name="T:Sistema_Facturacion.EnsambleEncabezado">
+ <summary>Datos del documento de ensamble tal como están en pantalla.</summary>
+</member>
+<member name="P:Sistema_Facturacion.EnsambleEncabezado.Numero">
+ <summary>Número del documento; 0 cuando todavía no se ha guardado.</summary>
+</member>
+<member name="T:Sistema_Facturacion.ComponentesGrid">
+ <summary>
+ Unifica las dos formas de tabla que alimentan el grid (Componentes y Detalle_Ensamble)
+ en una sola con columnas Cod_Producto, Descripcion_Producto, Requerido y Desecho.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleProcesoServicio.Procesar(Sistema_Facturacion.EnsambleEncabezado,System.Double)">
+ <summary>
+ Saca de la bodega origen los componentes y recibe el producto terminado en la bodega destino.
+ <paramref name="rendimientoGeneral"/> es el rendimiento por unidad del producto elegido.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleProcesoServicio.VerificarCostosYExistencias(Sistema_Facturacion.EnsambleEncabezado,System.Data.DataTable)">
+ <summary>Cada componente que no es servicio debe tener costo y existencia suficiente en la bodega origen.</summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleProcesoServicio.Deshacer(Sistema_Facturacion.EnsambleEncabezado)">
+ <summary>
+ Recibe los componentes en la bodega origen y da salida al producto terminado.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleProcesoServicio.CalcularCosto(System.String,System.Double,System.DateTime)">
+ <summary>
+ Costo promedio en córdobas del kardex a la fecha. Si es cero y se está descargando,
+ significa facturación en negativo: se toma el último costo facturado.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleProcesoServicio.AplicarServicio(System.Data.DataRow,System.Double,System.Double@,System.Double@,System.Double@,System.Double@)">
+ <summary>
+ Calcula cantidad, precio e importe de un servicio según su unidad de medida
+ (importe fijo, por unidad/fracción o porcentaje del subtotal acumulado).
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleRepositorio.ObtenerProducto(System.String)">
+ <summary>Producto por código; Nothing si no existe.</summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleRepositorio.ObtenerComponentes(System.Double)">
+ <summary>Componentes de la receta, por unidad de producto.</summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleRepositorio.ObtenerComponentes(System.Double,System.Double)">
+ <summary>Componentes de la receta con Requerido y Desecho multiplicados por la cantidad a ensamblar.</summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleRepositorio.ObtenerClienteInventario">
+ <summary>Primera fila de Clientes marcada como cuenta de inventario físico (Nothing si no hay).</summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleRepositorio.ObtenerProveedorInventario">
+ <summary>Primera fila de Proveedor marcada como cuenta de inventario físico (Nothing si no hay).</summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleRepositorio.UltimoCostoFactura(System.String,System.DateTime)">
+ <summary>Costo unitario de la última salida facturada hasta la fecha (para productos sin costo promedio).</summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleRepositorio.TotalSalidaBodega(System.String,System.DateTime)">
+ <summary>Importe (cantidad x costo) de la salida de bodega generada por el ensamble.</summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleRepositorio.TotalCompra(System.String,System.DateTime)">
+ <summary>Importe (cantidad x precio) de la compra generada por el desensamble.</summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleRepositorio.Guardar(Sistema_Facturacion.EnsambleEncabezado)">
+ <summary>
+ Inserta o actualiza el encabezado y deja el detalle del ensamble igual a la receta
+ escalada por la cantidad, todo en una sola transacción.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleRepositorio.Eliminar(System.Double,System.DateTime,System.String)">
+ <summary>Borra detalle y encabezado. Devuelve False si el ensamble no existía.</summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleRepositorio.Inactivar(System.Double,System.DateTime,System.String)">
+ <summary>Marca el ensamble como inactivo (ya procesado).</summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleRepositorio.DesactivarSalidaBodega(System.String,System.DateTime)">
+ <summary>Deja inactiva la salida de bodega recién creada hasta que se complete el proceso.</summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleRepositorio.DesactivarCompra(System.String,System.DateTime)">
+ <summary>Deja inactiva la compra recién creada hasta que se complete el proceso.</summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleServicio.ObtenerComponentes(System.Double)">
+ <summary>Componentes de la receta por unidad, listos para el grid.</summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleServicio.ObtenerComponentes(System.Double,System.Double)">
+ <summary>Componentes de la receta escalados por la cantidad, listos para el grid.</summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleServicio.ObtenerDetalle(System.Double,System.DateTime,System.String)">
+ <summary>Detalle guardado de un ensamble, listo para el grid.</summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleServicio.Guardar(Sistema_Facturacion.EnsambleEncabezado)">
+ <summary>
+ Valida y guarda el ensamble (encabezado y detalle). Si no tiene número le asigna el siguiente
+ consecutivo de su tipo. Devuelve el número del documento.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleServicio.Eliminar(System.Double,System.DateTime,System.String)">
+ <summary>Elimina el ensamble y su detalle y deja constancia en la bitácora.</summary>
+</member>
+<member name="M:Sistema_Facturacion.EnsambleServicio.Inactivar(System.Double,System.DateTime,System.String)">
+ <summary>Marca el ensamble como inactivo (ya procesado o convertido).</summary>
+</member>
+<member name="E:Sistema_Facturacion.GridConFiltros.ResumenCambiado">
+ <summary>Se dispara cuando cambia la lista (datos nuevos o filtro aplicado).</summary>
+</member>
+<member name="P:Sistema_Facturacion.GridConFiltros.FilasVisibles">
+ <summary>Filas que se ven con el filtro actual.</summary>
+</member>
+<member name="P:Sistema_Facturacion.GridConFiltros.FilasTotales">
+ <summary>Filas totales sin filtro.</summary>
+</member>
+<member name="P:Sistema_Facturacion.GridConFiltros.FilaActual">
+ <summary>Fila seleccionada en el grid (Nothing si no hay).</summary>
+</member>
+<member name="M:Sistema_Facturacion.GridConFiltros.AgregarColumna(System.String,System.String,System.Single,System.String,System.Windows.Forms.DataGridViewContentAlignment)">
+ <summary>Agrega una columna de texto al grid y su caja de filtro.</summary>
+</member>
+<member name="M:Sistema_Facturacion.GridConFiltros.Enlazar(System.Data.DataTable)">
+ <summary>Enlaza una tabla al grid y limpia los filtros.</summary>
+</member>
+<member name="M:Sistema_Facturacion.GridConFiltros.LimpiarFiltros">
+ <summary>Borra el texto de todas las cajas de filtro.</summary>
+</member>
+<member name="M:Sistema_Facturacion.GridConFiltros.EscaparLike(System.String)">
+ <summary>Escapa el texto para usarlo dentro de un LIKE de DataView.RowFilter.</summary>
+</member>
+<member name="M:Sistema_Facturacion.GridConFiltros.PosicionarFiltros">
+ <summary>Alinea cada caja de filtro con su columna (ancho, scroll horizontal, etc.).</summary>
+</member>
 <member name="T:Sistema_Facturacion.TipoOrigenMovimiento">
  <summary>
  Origen del movimiento: Detalle_Compras o Detalle_Facturas.
@@ -1031,6 +1171,40 @@ Sistema Facturacion 6.0
 </member>
 <member name="M:Sistema_Facturacion.FrmArqueo.EstilizarGrid(C1.Win.C1TrueDBGrid.C1TrueDBGrid)">
  <summary>Aplica a los grids de ComponentOne la misma paleta del resto del diseño.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmEnsamble.MostrarComponentes(System.Data.DataTable)">
+ <summary>
+ Muestra los componentes en el grid. Lo usan también las rutinas de Funciones.vb
+ (antes manipulaban el C1TrueDBGrid directamente).
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmEnsamble.CambiarTipoConservandoDatos(System.String)">
+ <summary>Cambia el tipo sin limpiar el producto, la cantidad ni los componentes.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmEnsamble.ActualizarSegunTipo">
+ <summary>Muestra solo el botón de proceso que corresponde al tipo elegido.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmEnsamble.CargarDesdeConsulta(System.String,System.Boolean)">
+ <summary>
+ Abre la consulta y carga el ensamble elegido. Con <paramref name="comoReferencia"/> el número
+ elegido queda como referencia del nuevo documento (ej. una orden que se va a recibir) en lugar
+ de ser el número del documento actual.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmEnsamble.CmdOrden_Click(System.Object,System.EventArgs)">
+ <summary>Convierte la orden de ensamble guardada en un ensamble recibido listo para procesar.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmEnsamble.Limpiar">
+ <summary>
+ Deja el formulario listo para un documento nuevo. Es pública porque
+ <c>LimpiaEnsamble</c> (Funciones.vb) la invoca.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmEnsamble.GuardarActual">
+ <summary>Guarda el documento en pantalla y muestra el número asignado.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmEnsamble.Ejecutar(System.Action)">
+ <summary>Ejecuta una acción con cursor de espera y manejo uniforme de errores.</summary>
 </member>
 <member name="M:Sistema_Facturacion.FrmReportes.SaldoInicialCliente(System.String,System.DateTime,System.String)">
  <summary>

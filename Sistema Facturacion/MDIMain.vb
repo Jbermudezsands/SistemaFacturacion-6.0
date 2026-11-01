@@ -1383,11 +1383,10 @@ Handles backgroundWorkerLote.RunWorkerCompleted
     End Sub
 
     Private Sub FrmMDIMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dim TasaCambio As Double, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SQl As String
-        Dim StrSqlUpdate As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, Fecha As String
-        Dim FechaTasa As String, Monto As Double, FechaInicio As Date, FechaFin As Date, FechaBusca As Date, i As Double
-        Dim SqlDatos As String, Cadena2 As String = "", Registros As Double = 0
+        Dim TasaCambio As Double
+        Dim DatosEmpresa As DataRow
         Dim ActivarAuditoriaSPlano As Boolean = False
+        Dim Cadena2 As String = ""
 
         BgAuditoria.WorkerReportsProgress = True
         BgAuditoria.WorkerSupportsCancellation = False
@@ -1397,7 +1396,80 @@ Handles backgroundWorkerLote.RunWorkerCompleted
         Me.Text = "Nombre Compañia: " & NombreCompañia
         Me.RibbonLabel2.Text = "Nombre Compañia: " & NombreCompañia
 
-        '/////////////////////////Cierro las herabas abiertas/////////////////
+        DetenerHebrasPrevias()
+
+        Version = My.Application.Info.Version.ToString
+        RibbonLabel1.Text = "V." & Mid(Version, 1, Len(Version) - 2)
+
+        '/////////////////////// CIERRO LAS OPCIONES QUE EL PERFIL NO TIENE ACCESO ///////////////////////
+        AplicarRestriccionesPerfil()
+
+        '/////////////////////// DATOS DE LA EMPRESA (UNA SOLA CONSULTA) ///////////////////////
+        DatosEmpresa = LeerDatosEmpresa()
+
+        If DatosEmpresa IsNot Nothing Then
+
+            If Not IsDBNull(DatosEmpresa("Version")) Then
+                AplicarVersionSistema(CStr(DatosEmpresa("Version")))
+            End If
+
+            If Not IsDBNull(DatosEmpresa("CodigoClienteNumerico")) Then
+                CodigoClienteNumero = CBool(DatosEmpresa("CodigoClienteNumerico"))
+            End If
+
+            '/////////////////////// TASA DE CAMBIO: SI NO EXISTE, LA SINCRONIZO CON EL SISTEMA CONTABLE ///////////////////////
+            If Not IsDBNull(DatosEmpresa("SincronizarTasa")) Then
+                If CBool(DatosEmpresa("SincronizarTasa")) Then
+                    ExisteConexion = ValidarConexionContable(Now)
+                    If TasaCambio = 0 Then
+                        If ExisteConexion = True Then
+                            TasaCambio = BuscaTasaCambioContabilidad(Now)
+                        End If
+
+                        If TasaCambio = 0 Then
+                            MsgBox("No Existe Tasa de Cambio en el Sistema Contable", MsgBoxStyle.Critical, "Zeus Facturacion")
+                            My.Forms.FrmTasaCambio.ShowDialog()
+                        Else
+                            SincronizarTasasDelMes()
+                        End If
+                    End If
+                ElseIf TasaCambio = 0 Then
+                    ExisteConexion = False
+                    MsgBox("No Existe Tasa de Cambio", MsgBoxStyle.Critical, "Zeus Facturacion")
+                    My.Forms.FrmTasaCambio.ShowDialog()
+                End If
+            End If
+
+            If Not IsDBNull(DatosEmpresa("ActivarAuditoriaSPlano")) Then
+                ActivarAuditoriaSPlano = CBool(DatosEmpresa("ActivarAuditoriaSPlano"))
+            End If
+
+            '////////////////////////////////////// LICENCIAMIENTO ZEUS //////////////////////////////////////
+            If Not IsDBNull(DatosEmpresa("Valor")) Then
+                If CStr(DatosEmpresa("Valor")) <> "" Then
+                    Cadena2 = Decrypt(CStr(DatosEmpresa("Valor")))
+                End If
+            End If
+
+            If Cadena2 = "SinLicencia" Then
+                Me.Close()
+                Return
+            End If
+
+        End If
+
+        '////////////////////////// TAREAS EN SEGUNDO PLANO //////////////////////////
+        If RecibeNotificacion = True Then
+            oHebraNotificacion = New Thread(AddressOf ConsultaBajoMinimo)
+            oHebraNotificacion.Start()
+        End If
+
+        If ActivarAuditoriaSPlano = True Then
+            BgAuditoria.RunWorkerAsync()
+        End If
+    End Sub
+
+    Private Sub DetenerHebrasPrevias()
         If Not (oHebraNotificacion Is Nothing) Then
             If oHebraNotificacion.IsAlive Then
                 oHebraNotificacion.Abort()
@@ -1409,406 +1481,217 @@ Handles backgroundWorkerLote.RunWorkerCompleted
                 oHebraLotes.Abort()
             End If
         End If
+    End Sub
 
-        Version = My.Application.Info.Version.ToString
-        RibbonLabel1.Text = "V." & Mid(Version, 1, Len(Version) - 2)
+    '/////////////////////// Lee la fila de DatosEmpresa; Nothing si la tabla esta vacia ///////////////////////
+    Private Function LeerDatosEmpresa() As DataRow
+        Dim Tabla As New DataTable
 
+        Using cn As New SqlConnection(Conexion)
+            Using da As New SqlDataAdapter("SELECT * FROM DatosEmpresa", cn)
+                da.Fill(Tabla)
+            End Using
+        End Using
 
+        If Tabla.Rows.Count = 0 Then Return Nothing
+        Return Tabla.Rows(0)
+    End Function
 
-        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '/////////////////////// /CIERRO TODAS LAS OPCIONES QUE EL PERFIL NO TIENE ACCESO /////////////////////////////////////////////
-        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        i = 0
-        SQl = "SELECT  Accesos.IdPerfil, Accesos.Modulo, Accesos.Acceso FROM  Accesos INNER JOIN Perfil ON Accesos.IdPerfil = Perfil.IdPerfil  " & _
-               "WHERE (Accesos.Acceso LIKE '%NoAbrir%') AND (Perfil.NombrePerfil = '" & Acceso & "')"
-        DataAdapter = New SqlClient.SqlDataAdapter(SQl, MiConexion)
-        DataAdapter.Fill(DataSet, "Acceso")
-        Registros = DataSet.Tables("Acceso").Rows.Count
+    '/////////////////////// Deshabilita en el Ribbon los modulos con acceso "NoAbrir" para el perfil actual ///////////////////////
+    Private Sub AplicarRestriccionesPerfil()
+        Dim Modulos As New System.Collections.Generic.List(Of String)
 
-        My.Application.DoEvents()
-        Do While Registros > i
+        Using cn As New SqlConnection(Conexion)
+            Using cmd As New SqlCommand("SELECT Accesos.Modulo FROM Accesos INNER JOIN Perfil ON Accesos.IdPerfil = Perfil.IdPerfil " &
+                                        "WHERE (Accesos.Acceso LIKE '%NoAbrir%') AND (Perfil.NombrePerfil = @Perfil)", cn)
+                cmd.Parameters.AddWithValue("@Perfil", Acceso & "")
+                cn.Open()
+                Using rd As SqlDataReader = cmd.ExecuteReader()
+                    While rd.Read()
+                        If Not rd.IsDBNull(0) Then Modulos.Add(Convert.ToString(rd.GetValue(0)))
+                    End While
+                End Using
+            End Using
+        End Using
 
-            Select Case DataSet.Tables("Acceso").Rows(i)("Modulo")
+        For Each Modulo As String In Modulos
+            DeshabilitarModulo(Modulo)
+        Next
+    End Sub
 
-                Case "Personalizar" : Me.RibbonPersonalizar.Enabled = False
-                Case "Perfiles y Accesos" : Me.RibbonPerfiles.Enabled = False : Me.RibbonPerfiles1.Enabled = False
-                Case "Ajustes" : Me.RibbonAjustes.Enabled = False
-                Case "Actualizacion" : Me.RibbonActualizacion.Enabled = False : Me.RibbonActualizacion1.Enabled = False
-                Case "Inventario Fisico" : Me.RibbonInventarioFisico.Enabled = False
-                Case "Configurar" : Me.RibbonConfigurar.Enabled = False : Me.RibbonConfigurar1.Enabled = False
-                Case "Exportar a Excel" : Me.RibbonExportar.Enabled = False
-                Case "Importacion" : Me.RibbonImportar.Enabled = False
-                Case "Usuarios" : Me.RibbonUsuarios.Enabled = False : Me.RibbonUsuarios1.Enabled = False : Me.MenuUsuarios.Enabled = False
-                Case "Reportes Inventario" : Me.RibbonInventarioFisico.Enabled = False
-                Case "Reportes Ventas/Compras" : Me.RibbonReporteVentasCompras.Enabled = False
-                Case "Reportes Generales" : Me.RibbonReporteGenerales.Enabled = False
-                Case "Reportes Cuentas x Cobrar" : Me.RibbonReporteCtasXCob.Enabled = False
-                Case "Plantilla Ventas/Compras" : Me.RibbonPlantillaVtasCompras.Enabled = False
-                Case "Historico Facturacion" : Me.RibbonHistoricoFactura.Enabled = False : Me.RibbonHistoricoFactura1.Enabled = False
-                Case "Historico Compras" : Me.RibbonHistoricoCompras.Enabled = False : Me.RibbonHistoricoCompras1.Enabled = False
-                Case "Tareas" : Me.RibbonTareas.Enabled = False
-                Case "Cajeros" : Me.RibbonCajeros.Enabled = False
-                Case "Transferencia de Bodegas" : Me.RibbonTransferencia.Enabled = False : Me.RibbonTransferencia1.Enabled = False
-                Case "Tipos de Precios" : Me.RibbonTiposPrecios.Enabled = False
-                Case "Tasa de Cambio" : Me.RibbonTasaCambio.Enabled = False : Me.RibbonTasaCambio1.Enabled = False
-                Case "Servicios" : Me.RibbonServicios.Enabled = False : Me.RibbonServicios1.Enabled = False
-                Case "Rubros" : Me.RibbonRubros.Enabled = False
-                Case "Proyectos" : Me.RibbonProyectos.Enabled = False
-                Case "Notas de Debito y Credito" : Me.RibbonNotaDebitoCredito.Enabled = False
-                Case "Impuestos" : Me.RibbonImpuestos.Enabled = False
-                Case "Liquidacion" : Me.RibbonLiquidacion.Enabled = False : Me.RibbonLiquidacion1.Enabled = False
-                Case "Arqueo de Caja" : Me.RibbonArqueo.Enabled = False
-                Case "Vendedores" : Me.RibbonVendedores.Enabled = False
-                Case "Proveedores" : Me.RibbonProveedores.Enabled = False : Me.RibbonProveedores1.Enabled = False
-                Case "Productos" : Me.RibbonProductos.Enabled = False : Me.RibbonProductos1.Enabled = False
-                Case "Linea Produtos" : Me.RibbonLineaProductos.Enabled = False
-                Case "Ensamble" : Me.RibbonEnsamble.Enabled = False
-                Case "Ctas x Pagar" : Me.RibbonCtasXPagar.Enabled = False
-                Case "Ctas x Cobrar" : Me.RibbonCtasxCobrar.Enabled = False : Me.RibbonCtasXCobrar1.Enabled = False
-                Case "Bodegas" : Me.RibbonBodegas.Enabled = False
-                Case "Arqueo de Caja" : Me.RibbonArqueo.Enabled = False
-                Case "Compras" : Me.RibbonCompras.Enabled = False : Me.RibbonCompras1.Enabled = False
-                Case "Facturacion" : Me.RibbonFacturacion.Enabled = False : Me.RibbonFacturacion1.Enabled = False
-                Case "Pagos" : Me.RibbonPagos.Enabled = False
-                Case "Recibo de Caja" : RibbonRecibos.Enabled = False : RibbonRecibos1.Enabled = False
-                Case "Clientes" : Me.RibbonClietes.Enabled = False : Me.RibbonClietes1.Enabled = False
+    Private Sub DeshabilitarModulo(ByVal Modulo As String)
+        Select Case Modulo
 
-            End Select
-            My.Application.DoEvents()
+            Case "Personalizar" : Me.RibbonPersonalizar.Enabled = False
+            Case "Perfiles y Accesos" : Me.RibbonPerfiles.Enabled = False : Me.RibbonPerfiles1.Enabled = False
+            Case "Ajustes" : Me.RibbonAjustes.Enabled = False
+            Case "Actualizacion" : Me.RibbonActualizacion.Enabled = False : Me.RibbonActualizacion1.Enabled = False
+            Case "Inventario Fisico" : Me.RibbonInventarioFisico.Enabled = False
+            Case "Configurar" : Me.RibbonConfigurar.Enabled = False : Me.RibbonConfigurar1.Enabled = False
+            Case "Exportar a Excel" : Me.RibbonExportar.Enabled = False
+            Case "Importacion" : Me.RibbonImportar.Enabled = False
+            Case "Usuarios" : Me.RibbonUsuarios.Enabled = False : Me.RibbonUsuarios1.Enabled = False : Me.MenuUsuarios.Enabled = False
+            Case "Reportes Inventario" : Me.RibbonInventarioFisico.Enabled = False
+            Case "Reportes Ventas/Compras" : Me.RibbonReporteVentasCompras.Enabled = False
+            Case "Reportes Generales" : Me.RibbonReporteGenerales.Enabled = False
+            Case "Reportes Cuentas x Cobrar" : Me.RibbonReporteCtasXCob.Enabled = False
+            Case "Plantilla Ventas/Compras" : Me.RibbonPlantillaVtasCompras.Enabled = False
+            Case "Historico Facturacion" : Me.RibbonHistoricoFactura.Enabled = False : Me.RibbonHistoricoFactura1.Enabled = False
+            Case "Historico Compras" : Me.RibbonHistoricoCompras.Enabled = False : Me.RibbonHistoricoCompras1.Enabled = False
+            Case "Tareas" : Me.RibbonTareas.Enabled = False
+            Case "Cajeros" : Me.RibbonCajeros.Enabled = False
+            Case "Transferencia de Bodegas" : Me.RibbonTransferencia.Enabled = False : Me.RibbonTransferencia1.Enabled = False
+            Case "Tipos de Precios" : Me.RibbonTiposPrecios.Enabled = False
+            Case "Tasa de Cambio" : Me.RibbonTasaCambio.Enabled = False : Me.RibbonTasaCambio1.Enabled = False
+            Case "Servicios" : Me.RibbonServicios.Enabled = False : Me.RibbonServicios1.Enabled = False
+            Case "Rubros" : Me.RibbonRubros.Enabled = False
+            Case "Proyectos" : Me.RibbonProyectos.Enabled = False
+            Case "Notas de Debito y Credito" : Me.RibbonNotaDebitoCredito.Enabled = False
+            Case "Impuestos" : Me.RibbonImpuestos.Enabled = False
+            Case "Liquidacion" : Me.RibbonLiquidacion.Enabled = False : Me.RibbonLiquidacion1.Enabled = False
+            Case "Arqueo de Caja" : Me.RibbonArqueo.Enabled = False
+            Case "Vendedores" : Me.RibbonVendedores.Enabled = False
+            Case "Proveedores" : Me.RibbonProveedores.Enabled = False : Me.RibbonProveedores1.Enabled = False
+            Case "Productos" : Me.RibbonProductos.Enabled = False : Me.RibbonProductos1.Enabled = False
+            Case "Linea Produtos" : Me.RibbonLineaProductos.Enabled = False
+            Case "Ensamble" : Me.RibbonEnsamble.Enabled = False
+            Case "Ctas x Pagar" : Me.RibbonCtasXPagar.Enabled = False
+            Case "Ctas x Cobrar" : Me.RibbonCtasxCobrar.Enabled = False : Me.RibbonCtasXCobrar1.Enabled = False
+            Case "Bodegas" : Me.RibbonBodegas.Enabled = False
+            Case "Compras" : Me.RibbonCompras.Enabled = False : Me.RibbonCompras1.Enabled = False
+            Case "Facturacion" : Me.RibbonFacturacion.Enabled = False : Me.RibbonFacturacion1.Enabled = False
+            Case "Pagos" : Me.RibbonPagos.Enabled = False
+            Case "Recibo de Caja" : RibbonRecibos.Enabled = False : RibbonRecibos1.Enabled = False
+            Case "Clientes" : Me.RibbonClietes.Enabled = False : Me.RibbonClietes1.Enabled = False
 
-            i = i + 1
-        Loop
+        End Select
+    End Sub
 
-        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '/////////////////////////////////SI LA TASA DE CAMBIO NO EXISTE, LA SINCRONIZO CON EL SISTEMA CONTABLE//////////////////////////////////
-        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '/////////////////////// Ajusta el Ribbon segun la version del sistema (DatosEmpresa.Version) ///////////////////////
+    Private Sub AplicarVersionSistema(ByVal VersionSistema As String)
+        If VersionSistema = "Inventario" Then
+            Me.RibbonPersonalizar.Enabled = True
+            Me.RibbonPerfiles.Enabled = False : Me.RibbonPerfiles1.Enabled = False
+            Me.RibbonAjustes.Enabled = True
+            Me.RibbonActualizacion.Enabled = False : Me.RibbonActualizacion1.Enabled = False
+            Me.RibbonInventarioFisico.Enabled = True
+            Me.RibbonConfigurar.Enabled = True : Me.RibbonConfigurar1.Enabled = True
+            Me.RibbonExportar.Enabled = False
+            Me.RibbonImportar.Enabled = False
+            Me.RibbonUsuarios.Enabled = True : Me.RibbonUsuarios1.Enabled = True : Me.MenuUsuarios.Enabled = True
+            Me.RibbonCompras.Enabled = True : Me.RibbonCompras1.Enabled = True
+            Me.RibbonReporteGenerales.Enabled = False
+            Me.RibbonReporteCtasXCob.Enabled = False
+            Me.RibbonPlantillaVtasCompras.Enabled = False
+            Me.RibbonHistoricoFactura.Enabled = True : Me.RibbonHistoricoFactura1.Enabled = True
+            Me.RibbonHistoricoCompras.Enabled = True : Me.RibbonHistoricoCompras1.Enabled = True
+            Me.RibbonTareas.Enabled = False
+            Me.RibbonCajeros.Enabled = False
+            Me.RibbonTransferencia.Enabled = False : Me.RibbonTransferencia1.Enabled = False
+            Me.RibbonTiposPrecios.Enabled = False
+            Me.RibbonTasaCambio.Enabled = True : Me.RibbonTasaCambio1.Enabled = True
+            Me.RibbonServicios.Enabled = False : Me.RibbonServicios1.Enabled = False
+            Me.RibbonRubros.Enabled = True
+            Me.RibbonProyectos.Enabled = False
+            Me.RibbonNotaDebitoCredito.Enabled = False
+            Me.RibbonImpuestos.Enabled = True
+            Me.RibbonLiquidacion.Enabled = True : Me.RibbonLiquidacion1.Enabled = True
+            Me.RibbonArqueo.Enabled = False
+            Me.RibbonVendedores.Enabled = False
+            Me.RibbonProveedores.Enabled = True
+            Me.RibbonProductos.Enabled = True : Me.RibbonProductos1.Enabled = True
+            Me.RibbonLineaProductos.Enabled = True
+            Me.RibbonEnsamble.Enabled = True
+            Me.RibbonCtasXPagar.Enabled = False
+            Me.RibbonCtasxCobrar.Enabled = False : Me.RibbonCtasXCobrar1.Enabled = False
+            Me.RibbonBodegas.Enabled = False
+            Me.RibbonReporteVentasCompras.Enabled = False
+            Me.RibbonFacturacion.Enabled = True : Me.RibbonFacturacion1.Enabled = True
+            Me.RibbonPagos.Enabled = False
+            Me.RibbonClietes.Enabled = True : Me.RibbonClietes1.Enabled = True
+            Me.RibbonRecibos.Enabled = False
 
+        ElseIf Trim(VersionSistema) = "Bascula" Then
+            Me.RibbonTab5.Visible = True
+            Me.RibbonTab6.Visible = False
+            Me.RibbonTab7.Visible = False
+            Me.RibbonTab9.Visible = False
 
+        ElseIf Trim(VersionSistema) = "Planilla" Then
+            Me.RibbonTab5.Visible = False
+            Me.RibbonTab6.Visible = True
+            Me.RibbonTab7.Visible = False
+            Me.RibbonTab9.Visible = True
 
-        ActivarAuditoriaSPlano = False
-        SQl = "SELECT *  FROM DatosEmpresa "
-        DataAdapter = New SqlClient.SqlDataAdapter(SQl, MiConexion)
-        DataAdapter.Fill(DataSet, "DatosEmpresa")
-        If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+        ElseIf Trim(VersionSistema) = "Facturacion" Then
+            Me.RibbonTab5.Visible = False
+            Me.RibbonTab6.Visible = False
+            Me.RibbonTab7.Visible = False
+            Me.RibbonTab9.Visible = False
 
-            My.Application.DoEvents()
+        ElseIf Trim(VersionSistema) = "Clinica" Then
+            Me.RibbonTab5.Visible = False
+            Me.RibbonTab6.Visible = False
+            Me.RibbonTab7.Visible = True
+            Me.RibbonTab9.Visible = False
 
-            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) Then
-                If DataSet.Tables("DatosEmpresa").Rows(0)("Version") = "Inventario" Then
-                    Me.RibbonPersonalizar.Enabled = True
-                    Me.RibbonPerfiles.Enabled = False : Me.RibbonPerfiles1.Enabled = False
-                    Me.RibbonAjustes.Enabled = True
-                    Me.RibbonActualizacion.Enabled = False : Me.RibbonActualizacion1.Enabled = False
-                    Me.RibbonInventarioFisico.Enabled = True
-                    Me.RibbonConfigurar.Enabled = True : Me.RibbonConfigurar1.Enabled = True
-                    Me.RibbonExportar.Enabled = False
-                    Me.RibbonImportar.Enabled = False
-                    Me.RibbonUsuarios.Enabled = True : Me.RibbonUsuarios1.Enabled = True : Me.MenuUsuarios.Enabled = True
-                    Me.RibbonInventarioFisico.Enabled = True
-                    Me.RibbonCompras.Enabled = True : Me.RibbonCompras1.Enabled = True
-                    Me.RibbonReporteGenerales.Enabled = False
-                    Me.RibbonReporteCtasXCob.Enabled = False
-                    Me.RibbonPlantillaVtasCompras.Enabled = False
-                    Me.RibbonHistoricoFactura.Enabled = True : Me.RibbonHistoricoFactura1.Enabled = True
-                    Me.RibbonHistoricoCompras.Enabled = True : Me.RibbonHistoricoCompras1.Enabled = True
-                    Me.RibbonTareas.Enabled = False
-                    Me.RibbonCajeros.Enabled = False
-                    Me.RibbonTransferencia.Enabled = False : Me.RibbonTransferencia1.Enabled = False
-                    Me.RibbonTiposPrecios.Enabled = False
-                    Me.RibbonTasaCambio.Enabled = True : Me.RibbonTasaCambio1.Enabled = True
-                    Me.RibbonServicios.Enabled = False : Me.RibbonServicios1.Enabled = False
-                    Me.RibbonRubros.Enabled = True
-                    Me.RibbonProyectos.Enabled = False
-                    Me.RibbonNotaDebitoCredito.Enabled = False
-                    Me.RibbonImpuestos.Enabled = True
-                    Me.RibbonLiquidacion.Enabled = True : Me.RibbonLiquidacion1.Enabled = True
-                    Me.RibbonArqueo.Enabled = False
-                    Me.RibbonVendedores.Enabled = False
-                    Me.RibbonProveedores.Enabled = True
-                    Me.RibbonProductos.Enabled = True : Me.RibbonProductos1.Enabled = True
-                    Me.RibbonLineaProductos.Enabled = True
-                    Me.RibbonEnsamble.Enabled = True
-                    Me.RibbonCtasXPagar.Enabled = False
-                    Me.RibbonCtasxCobrar.Enabled = False : Me.RibbonCtasXCobrar1.Enabled = False
-                    Me.RibbonBodegas.Enabled = False
-                    Me.RibbonArqueo.Enabled = False
-                    Me.RibbonReporteVentasCompras.Enabled = False
-                    Me.RibbonFacturacion.Enabled = True : Me.RibbonFacturacion1.Enabled = True
-                    Me.RibbonPagos.Enabled = False
-                    Me.RibbonArqueo.Enabled = False
-                    Me.RibbonClietes.Enabled = True : Me.RibbonClietes1.Enabled = True
-                    Me.RibbonRecibos.Enabled = False
+        End If
+    End Sub
 
+    '/////////////////////// Copia las tasas del mes desde el sistema contable: 1 consulta remota y 1 transaccion local ///////////////////////
+    Private Sub SincronizarTasasDelMes()
+        Dim FechaInicio As Date = DateSerial(Year(Now), Month(Now), 1)
+        Dim FechaFin As Date = DateSerial(Year(Now), Month(Now) + 1, 0)
+        Dim Tasas As New System.Collections.Generic.Dictionary(Of Date, Double)
 
-                ElseIf Trim(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) = "Bascula" Then
-                    Me.RibbonTab5.Visible = True
-                    Me.RibbonTab6.Visible = False
-                    Me.RibbonTab7.Visible = False
-                    Me.RibbonTab9.Visible = False
-
-                ElseIf Trim(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) = "Planilla" Then
-                    Me.RibbonTab5.Visible = False
-                    Me.RibbonTab6.Visible = True
-                    Me.RibbonTab7.Visible = False
-                    Me.RibbonTab9.Visible = True
-
-                ElseIf Trim(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) = "Facturacion" Then
-                    Me.RibbonTab5.Visible = False
-                    Me.RibbonTab6.Visible = False
-                    Me.RibbonTab7.Visible = False
-                    Me.RibbonTab9.Visible = False
-
-                ElseIf Trim(DataSet.Tables("DatosEmpresa").Rows(0)("Version")) = "Clinica" Then
-                    Me.RibbonTab5.Visible = False
-                    Me.RibbonTab6.Visible = False
-                    Me.RibbonTab7.Visible = True
-                    Me.RibbonTab9.Visible = False
-
-                End If
-
-
-            End If
-
-            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("CodigoClienteNumerico")) Then
-                If DataSet.Tables("DatosEmpresa").Rows(0)("CodigoClienteNumerico") = True Then
-                    CodigoClienteNumero = True
-                Else
-                    CodigoClienteNumero = False
-                End If
-            End If
-
-            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("SincronizarTasa")) Then
-                If DataSet.Tables("DatosEmpresa").Rows(0)("SincronizarTasa") = True Then
-                    ExisteConexion = ValidarConexionContable(Now)
-                    If TasaCambio = 0 Then
-                        If ExisteConexion = True Then
-                            TasaCambio = BuscaTasaCambioContabilidad(Now)
-                        End If
-
-                        If TasaCambio = 0 Then
-                            MsgBox("No Existe Tasa de Cambio en el Sistema Contable", MsgBoxStyle.Critical, "Zeus Facturacion")
-                            My.Forms.FrmTasaCambio.ShowDialog()
-                        Else
-
-                            '/////////////////SI EN EL SISTEMA CONTABLE EXISTE LA TABLA LA GRABO/////////////////////////////////////////
-
-
-
-                            FechaInicio = DateSerial(Year(Now), Month(Now), 1)
-                            FechaFin = DateSerial(Year(Now), Month(Now) + 1, 0)
-                            FechaBusca = DateSerial(Year(Now), Month(Now), 1)
-                            Fecha = Format(FechaInicio, "yyyy-MM-dd")
-                            FechaTasa = Format(FechaInicio, "dd/MM/yyyy")
-                            i = 1
-                            Monto = TasaCambio
-
-                            Do While FechaFin >= FechaBusca
-                                TasaCambio = BuscaTasaCambioContabilidad(FechaBusca)
-
-                                My.Application.DoEvents()
-
-                                If Val(TasaCambio) <> 0 Then
-                                    Monto = TasaCambio
-                                    '////////////////////////////////////RECORRO TODO EL MES PARA GRABAR TODAS LAS TASAS ////////////////////////
-
-                                    SQl = "SELECT *  FROM TasaCambio WHERE (FechaTasa = CONVERT(DATETIME, '" & Fecha & "', 102))"
-                                    DataAdapter = New SqlClient.SqlDataAdapter(SQl, MiConexion)
-                                    DataAdapter.Fill(DataSet, "Consulta")
-                                    If Not DataSet.Tables("Consulta").Rows.Count = 0 Then
-                                        '///////////SI EXISTE EL USUARIO LO ACTUALIZO////////////////
-                                        If Monto <> 0 Then
-                                            MiConexion.Close()
-                                            StrSqlUpdate = "UPDATE [TasaCambio] SET [MontoTasa] = '" & Monto & "' WHERE (FechaTasa = CONVERT(DATETIME, '" & Fecha & "', 102))"
-                                            MiConexion.Open()
-                                            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-                                            iResultado = ComandoUpdate.ExecuteNonQuery
-                                            MiConexion.Close()
-                                        End If
-
-                                    Else
-                                        '/////////SI NO EXISTE LO AGREGO COMO NUEVO/////////////////
-                                        If Monto <> 0 Then
-                                            MiConexion.Close()
-                                            StrSqlUpdate = "INSERT INTO [TasaCambio] ([FechaTasa],[MontoTasa]) " &
-                                                           "VALUES ('" & FechaTasa & "','" & Monto & "')"
-                                            MiConexion.Open()
-                                            ComandoUpdate = New SqlClient.SqlCommand(StrSqlUpdate, MiConexion)
-                                            iResultado = ComandoUpdate.ExecuteNonQuery
-                                            MiConexion.Close()
-                                        End If
-
-                                    End If
-                                    DataSet.Tables("Consulta").Reset()
-
+        '/////////////////////// TASAS DEL MES EN EL SISTEMA CONTABLE ///////////////////////
+        Try
+            Using cnConta As New SqlConnection(ConexionContabilidad)
+                Using cmd As New SqlCommand("SELECT FechaTasas, MontoCordobas FROM Tasas WHERE FechaTasas >= @Inicio AND FechaTasas < @Fin", cnConta)
+                    cmd.Parameters.Add("@Inicio", SqlDbType.DateTime).Value = FechaInicio
+                    cmd.Parameters.Add("@Fin", SqlDbType.DateTime).Value = FechaFin.AddDays(1)
+                    cnConta.Open()
+                    Using rd As SqlDataReader = cmd.ExecuteReader()
+                        While rd.Read()
+                            If Not rd.IsDBNull(0) AndAlso Not rd.IsDBNull(1) Then
+                                Dim Dia As Date = Convert.ToDateTime(rd.GetValue(0))
+                                Dim Monto As Double = Convert.ToDouble(rd.GetValue(1))
+                                '/////////// Misma regla de antes: solo fechas exactas (sin hora) y montos distintos de cero ///////////
+                                If Dia.TimeOfDay.Ticks = 0 AndAlso Monto <> 0 AndAlso Not Tasas.ContainsKey(Dia) Then
+                                    Tasas.Add(Dia, Monto)
                                 End If
+                            End If
+                        End While
+                    End Using
+                End Using
+            End Using
+            ExisteConexion = True
+        Catch ex As Exception
+            MsgBox("No se pudo Sincronizar la tasa con el Sistema Contable", MsgBoxStyle.Critical, "Zeus Facturacion")
+            ExisteConexion = False
+            Return
+        End Try
 
+        If Tasas.Count = 0 Then Return
 
-                                i = i + 1
-                                FechaBusca = DateSerial(Year(FechaBusca), Month(FechaBusca), i)
-                                Fecha = Format(FechaBusca, "yyyy-MM-dd")
-                                FechaTasa = Format(FechaBusca, "dd/MM/yyyy")
-                            Loop
+        '/////////////////////// ACTUALIZO O AGREGO CADA TASA EN LA BASE LOCAL ///////////////////////
+        Using cn As New SqlConnection(Conexion)
+            cn.Open()
+            Using tx As SqlTransaction = cn.BeginTransaction()
+                Using cmd As New SqlCommand("UPDATE [TasaCambio] SET [MontoTasa] = @Monto WHERE (FechaTasa = @Fecha); " &
+                                            "IF @@ROWCOUNT = 0 INSERT INTO [TasaCambio] ([FechaTasa],[MontoTasa]) VALUES (@Fecha, @Monto)", cn, tx)
+                    Dim pFecha As SqlParameter = cmd.Parameters.Add("@Fecha", SqlDbType.DateTime)
+                    Dim pMonto As SqlParameter = cmd.Parameters.Add("@Monto", SqlDbType.Float)
 
-                        End If
-                    End If
-                Else
-                    '/////////////////// SI NO SE SINCRONIZA, VERIFICO SI TIENE LA TASA ////////////////////////
-                    If TasaCambio = 0 Then
-                        ExisteConexion = False
-                        MsgBox("No Existe Tasa de Cambio", MsgBoxStyle.Critical, "Zeus Facturacion")
-                        My.Forms.FrmTasaCambio.ShowDialog()
-                    End If
-                End If
-            End If
-
-            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("ActivarAuditoriaSPlano")) Then
-                If DataSet.Tables("DatosEmpresa").Rows(0)("ActivarAuditoriaSPlano") = True Then
-                    ActivarAuditoriaSPlano = True
-                End If
-            End If
-
-
-            '//////////////////////////////////////LICENCIAMIENTO ZEUS //////////////////
-            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Valor")) Then
-                If Not DataSet.Tables("DatosEmpresa").Rows(0)("Valor") = "" Then
-                    Cadena2 = DataSet.Tables("DatosEmpresa").Rows(0)("Valor")
-                    Cadena2 = Decrypt(Cadena2)
-                End If
-            End If
-
-            If Cadena2 = "SinLicencia" Then
-                Me.Close()
-            End If
-
-            Dim Cadena As String = "", CadenaDiv() As String, Max As Double, InstanciaDiv() As String, Instancia As String = ""
-
-            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            '////////////////////////////////////////BUSCO LA INSTANCIA DE LA BASE DE DATOS QUE SE CONECTO ///////////////////////////////
-            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            CadenaDiv = Conexion.Split(";")
-            Max = UBound(CadenaDiv)
-            i = 0
-            For i = 0 To Max
-                Cadena = CadenaDiv(i).IndexOf("Source")
-                If Cadena <> -1 Then  '/////////////////SI NO LO ENCUNTRA ES IGUAL A MENOS UNO ////////////////
-                    InstanciaDiv = CadenaDiv(i).Split("=")
-                    Instancia = Trim(InstanciaDiv(1))
-                Else
-                    '////////////////////////7BUSCO LA PALABRA SI ESTA MINUSCULA /////////////////////////////////////
-                    Cadena = CadenaDiv(i).IndexOf("source")
-                    If Cadena <> -1 Then  '/////////////////SI NO LO ENCUNA ES IGUAL A MENOS UNO ////////////////
-                        InstanciaDiv = CadenaDiv(i).Split("=")
-                        Instancia = Trim(InstanciaDiv(1))
-                    End If
-                End If
-
-            Next
-
-
-
-        End If
-        DataSet.Tables("DatosEmpresa").Clear()
-
-        '//////////////////////////GENERO UNA NUEVA HEBRA ////////////////////////////////////////////
-        If RecibeNotificacion = True Then
-            oHebraNotificacion = New Thread(AddressOf ConsultaBajoMinimo)
-            oHebraNotificacion.Start()
-        End If
-
-        '//////////////////////////GENERO UNA NUEVA HEBRA //////////////////////////////
-        If ActivarAuditoriaSPlano = True Then
-            'oHebraLotes = New Thread(AddressOf BusquedaProductosLotes)
-            'oHebraLotes.IsBackground = True
-            'oHebraLotes.Start()
-            BgAuditoria.RunWorkerAsync()
-        End If
-
-
-
-
-
-        'SqlDatos = "SELECT * FROM DatosEmpresa"
-        'DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-        'DataAdapter.Fill(DataSet, "DatosEmpresa")
-        'If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
-
-        '    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Valor")) Then
-        '        If Not DataSet.Tables("DatosEmpresa").Rows(0)("Valor") = "" Then
-        '            Cadena2 = DataSet.Tables("DatosEmpresa").Rows(0)("Valor")
-        '            Cadena2 = Decrypt(Cadena2)
-        '        End If
-        '    End If
-
-        '    If Cadena2 = "SinLicencia" Then
-        '        Me.Close()
-        '    End If
-
-        '    Dim Cadena As String = "", CadenaDiv() As String, Max As Double, InstanciaDiv() As String, Instancia As String = ""
-
-        '    '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '    '////////////////////////////////////////BUSCO LA INSTANCIA DE LA BASE DE DATOS QUE SE CONECTO ///////////////////////////////
-        '    '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        '    CadenaDiv = Conexion.Split(";")
-        '    Max = UBound(CadenaDiv)
-        '    i = 0
-        '    For i = 0 To Max
-        '        Cadena = CadenaDiv(i).IndexOf("Source")
-        '        If Cadena <> -1 Then  '/////////////////SI NO LO ENCUNTRA ES IGUAL A MENOS UNO ////////////////
-        '            InstanciaDiv = CadenaDiv(i).Split("=")
-        '            Instancia = Trim(InstanciaDiv(1))
-        '        Else
-        '            '////////////////////////7BUSCO LA PALABRA SI ESTA MINUSCULA /////////////////////////////////////
-        '            Cadena = CadenaDiv(i).IndexOf("source")
-        '            If Cadena <> -1 Then  '/////////////////SI NO LO ENCUNA ES IGUAL A MENOS UNO ////////////////
-        '                InstanciaDiv = CadenaDiv(i).Split("=")
-        '                Instancia = Trim(InstanciaDiv(1))
-        '            End If
-        '        End If
-
-        '    Next
-
-        '    '////////////////////////////////////////////////////////////////////////////////////////////////
-        '    '////////////////////////////////////////BUSCO SI LA INSTANCIA ESTA REGISTRADA //////////////////
-        '    '///////////////////////////////////////////////////////////////////////////////////////////////
-        '    'Cadena2 = "JUANBERMUDEZ\SQL2005;F1C784F5-F935-4BC6-9BBE-4C29F9407560;Siempre;30"
-        '    'If Cadena2.IndexOf(Instancia) <> -1 Then
-
-
-        '    'Else
-        '    '    MsgBox("No Tiene Registro de Licencia", MsgBoxStyle.Exclamation, "Zeus Facturacion")
-        '    '    Me.Close()
-
-        '    'End If
-
-        '    'JUANBERMUDEZ\SQL2005;F1C784F5-F935-4BC6-9BBE-4C29F9407560;Siempre;30
-        '    'JUANBERMUDEZ\SQL2005;F1C784F5-F935-4BC6-9BBE-4C29F9407560;Demo;30
-        '    'JUANBERMUDEZ\SQL2005;F1C784F5-F935-4BC6-9BBE-4C29F9407560;Renta;30
-
-
-
-        '    'Cadena = Encrypt("Siempre")
-
-        '    '¯°±ž  ABC0
-        '    'Á×ÓÛÞàÓ  Siempre
-
-        '    'If Cadena2 <> "Siempre" Then
-        '    '    If Cadena2 = "" Then
-        '    '        MsgBox("Licencia Demo ha Caducado!!!!", vbCritical, " Demos")
-        '    '        Me.Close()
-        '    '    Else
-        '    '        If CDbl(Mid(Cadena2, 4, 9)) > 9600 Then
-        '    '            MsgBox("Licencia Demo ha Caducado!!!!", vbCritical, " Demos")
-        '    '            Me.Close()
-        '    '        End If
-        '    '    End If
-
-
-
-        '    'End If
-
-        '    FechaIngreso = Now
-
-        'End If
+                    For Each Tasa As System.Collections.Generic.KeyValuePair(Of Date, Double) In Tasas
+                        pFecha.Value = Tasa.Key
+                        pMonto.Value = Tasa.Value
+                        cmd.ExecuteNonQuery()
+                    Next
+                End Using
+                tx.Commit()
+            End Using
+        End Using
     End Sub
 
     Private Sub RibbonButton2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RibbonProyectos.Click

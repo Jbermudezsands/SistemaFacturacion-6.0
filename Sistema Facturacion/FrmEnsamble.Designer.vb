@@ -1,658 +1,801 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class FrmEnsamble
     Inherits System.Windows.Forms.Form
 
     'Form reemplaza a Dispose para limpiar la lista de componentes.
     <System.Diagnostics.DebuggerNonUserCode()> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-        If disposing AndAlso components IsNot Nothing Then
-            components.Dispose()
-        End If
-        MyBase.Dispose(disposing)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
     End Sub
 
     'Requerido por el Diseñador de Windows Forms
     Private components As System.ComponentModel.IContainer
 
-    'NOTA: el Diseñador de Windows Forms necesita el siguiente procedimiento
-    'Se puede modificar usando el Diseñador de Windows Forms.  
-    'No lo modifique con el editor de código.
+    'NOTA: el Diseñador de Windows Forms necesita el siguiente procedimiento.
+    'Solo contiene asignaciones de propiedades (sin bucles) para que el diseñador lo abra sin problemas.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmEnsamble))
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.CboBodegaDestino = New C1.Win.C1List.C1Combo()
-        Me.Label8 = New System.Windows.Forms.Label()
-        Me.CboCodigoBodega = New C1.Win.C1List.C1Combo()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.CboTipoProducto = New System.Windows.Forms.ComboBox()
-        Me.Button6 = New System.Windows.Forms.Button()
+        Me.PnlHeader = New System.Windows.Forms.Panel()
+        Me.LblNumeroEnsamble = New System.Windows.Forms.Label()
+        Me.LblSubtitulo = New System.Windows.Forms.Label()
+        Me.LblTitulo = New System.Windows.Forms.Label()
+        Me.PnlDocumento = New System.Windows.Forms.Panel()
+        Me.LblNombreBodegaDestino = New System.Windows.Forms.Label()
+        Me.CboBodegaDestino = New System.Windows.Forms.ComboBox()
+        Me.LblBodegaDestino = New System.Windows.Forms.Label()
+        Me.LblNombreBodegaOrigen = New System.Windows.Forms.Label()
+        Me.CboCodigoBodega = New System.Windows.Forms.ComboBox()
+        Me.LblBodegaOrigen = New System.Windows.Forms.Label()
+        Me.BtnBuscarEnsamble = New System.Windows.Forms.Button()
         Me.TxtNumeroEnsamble = New System.Windows.Forms.TextBox()
-        Me.Label3 = New System.Windows.Forms.Label()
+        Me.LblNumero = New System.Windows.Forms.Label()
         Me.DTPFecha = New System.Windows.Forms.DateTimePicker()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Label9 = New System.Windows.Forms.Label()
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.LblFecha = New System.Windows.Forms.Label()
+        Me.CboTipoProducto = New System.Windows.Forms.ComboBox()
+        Me.LblTipo = New System.Windows.Forms.Label()
+        Me.LblTituloDocumento = New System.Windows.Forms.Label()
+        Me.PnlProducto = New System.Windows.Forms.Panel()
+        Me.TxtNumero = New System.Windows.Forms.TextBox()
         Me.LblUnidadMedida = New System.Windows.Forms.Label()
         Me.TxtRendimiento = New System.Windows.Forms.TextBox()
-        Me.Label30 = New System.Windows.Forms.Label()
-        Me.C1Button2 = New C1.Win.C1Input.C1Button()
-        Me.TxtNumero = New System.Windows.Forms.TextBox()
-        Me.CmdAgregarProducto = New System.Windows.Forms.Button()
+        Me.LblRendimiento = New System.Windows.Forms.Label()
         Me.TxtCantidad = New System.Windows.Forms.TextBox()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.TxtDescripcion = New System.Windows.Forms.TextBox()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.TxtCodigo = New System.Windows.Forms.TextBox()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
+        Me.LblCantidad = New System.Windows.Forms.Label()
         Me.CmdEnsambles = New System.Windows.Forms.Button()
-        Me.ButtonBorrar = New System.Windows.Forms.Button()
-        Me.ButtonAgregar = New System.Windows.Forms.Button()
-        Me.Button8 = New System.Windows.Forms.Button()
-        Me.CmdProcesar = New System.Windows.Forms.Button()
-        Me.Button2 = New System.Windows.Forms.Button()
-        Me.CmdNuevo = New System.Windows.Forms.Button()
-        Me.CmdOrden = New System.Windows.Forms.Button()
+        Me.CmdAgregarProducto = New System.Windows.Forms.Button()
+        Me.TxtDescripcion = New System.Windows.Forms.TextBox()
+        Me.LblDescripcion = New System.Windows.Forms.Label()
+        Me.TxtCodigo = New System.Windows.Forms.TextBox()
+        Me.LblCodigo = New System.Windows.Forms.Label()
+        Me.LblTituloProducto = New System.Windows.Forms.Label()
+        Me.PnlComponentes = New System.Windows.Forms.Panel()
+        Me.GridComponentes = New System.Windows.Forms.DataGridView()
+        Me.PnlFiltros = New System.Windows.Forms.Panel()
+        Me.BtnSeries = New System.Windows.Forms.Button()
+        Me.LblResumen = New System.Windows.Forms.Label()
+        Me.LblTituloComponentes = New System.Windows.Forms.Label()
+        Me.PnlAcciones = New System.Windows.Forms.Panel()
+        Me.BtnSalir = New System.Windows.Forms.Button()
         Me.CmdDesahacer = New System.Windows.Forms.Button()
+        Me.CmdOrden = New System.Windows.Forms.Button()
+        Me.CmdProcesar = New System.Windows.Forms.Button()
+        Me.BtnImprimir = New System.Windows.Forms.Button()
+        Me.ButtonBorrar = New System.Windows.Forms.Button()
         Me.CmdGrabar = New System.Windows.Forms.Button()
-        Me.BindingComponentes = New System.Windows.Forms.BindingSource(Me.components)
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
-        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
-        Me.GroupBox1.SuspendLayout()
-        CType(Me.CboBodegaDestino, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox2.SuspendLayout()
-        CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.BindingComponentes, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox3.SuspendLayout()
-        CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.CmdNuevo = New System.Windows.Forms.Button()
+        Me.LblEstado = New System.Windows.Forms.Label()
+        Me.PnlHeader.SuspendLayout()
+        Me.PnlDocumento.SuspendLayout()
+        Me.PnlProducto.SuspendLayout()
+        Me.PnlComponentes.SuspendLayout()
+        CType(Me.GridComponentes, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.PnlAcciones.SuspendLayout()
         Me.SuspendLayout()
         '
-        'GroupBox1
+        'PnlHeader
         '
-        Me.GroupBox1.Controls.Add(Me.CboBodegaDestino)
-        Me.GroupBox1.Controls.Add(Me.Label8)
-        Me.GroupBox1.Controls.Add(Me.CboCodigoBodega)
-        Me.GroupBox1.Controls.Add(Me.Label7)
-        Me.GroupBox1.Controls.Add(Me.CboTipoProducto)
-        Me.GroupBox1.Controls.Add(Me.Button6)
-        Me.GroupBox1.Controls.Add(Me.TxtNumeroEnsamble)
-        Me.GroupBox1.Controls.Add(Me.Label3)
-        Me.GroupBox1.Controls.Add(Me.DTPFecha)
-        Me.GroupBox1.Controls.Add(Me.Label2)
-        Me.GroupBox1.Controls.Add(Me.Label1)
-        Me.GroupBox1.Location = New System.Drawing.Point(3, 66)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(545, 70)
-        Me.GroupBox1.TabIndex = 0
-        Me.GroupBox1.TabStop = False
+        Me.PnlHeader.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.PnlHeader.Controls.Add(Me.LblNumeroEnsamble)
+        Me.PnlHeader.Controls.Add(Me.LblSubtitulo)
+        Me.PnlHeader.Controls.Add(Me.LblTitulo)
+        Me.PnlHeader.Dock = System.Windows.Forms.DockStyle.Top
+        Me.PnlHeader.Location = New System.Drawing.Point(0, 0)
+        Me.PnlHeader.Name = "PnlHeader"
+        Me.PnlHeader.Size = New System.Drawing.Size(980, 58)
+        Me.PnlHeader.TabIndex = 0
         '
-        'CboBodegaDestino
+        'LblNumeroEnsamble
         '
-        Me.CboBodegaDestino.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
-        Me.CboBodegaDestino.Caption = ""
-        Me.CboBodegaDestino.CaptionHeight = 17
-        Me.CboBodegaDestino.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
-        Me.CboBodegaDestino.ColumnCaptionHeight = 17
-        Me.CboBodegaDestino.ColumnFooterHeight = 17
-        Me.CboBodegaDestino.ComboStyle = C1.Win.C1List.ComboStyleEnum.DropdownList
-        Me.CboBodegaDestino.ContentHeight = 15
-        Me.CboBodegaDestino.DeadAreaBackColor = System.Drawing.Color.Empty
-        Me.CboBodegaDestino.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CboBodegaDestino.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CboBodegaDestino.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CboBodegaDestino.EditorHeight = 15
-        Me.CboBodegaDestino.Images.Add(CType(resources.GetObject("CboBodegaDestino.Images"), System.Drawing.Image))
-        Me.CboBodegaDestino.ItemHeight = 15
-        Me.CboBodegaDestino.Location = New System.Drawing.Point(358, 43)
-        Me.CboBodegaDestino.MatchEntryTimeout = CType(2000, Long)
-        Me.CboBodegaDestino.MaxDropDownItems = CType(5, Short)
-        Me.CboBodegaDestino.MaxLength = 32767
-        Me.CboBodegaDestino.MouseCursor = System.Windows.Forms.Cursors.Default
-        Me.CboBodegaDestino.Name = "CboBodegaDestino"
-        Me.CboBodegaDestino.RowDivider.Color = System.Drawing.Color.DarkGray
-        Me.CboBodegaDestino.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
-        Me.CboBodegaDestino.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboBodegaDestino.Size = New System.Drawing.Size(115, 21)
-        Me.CboBodegaDestino.TabIndex = 140
-        Me.CboBodegaDestino.PropBag = resources.GetString("CboBodegaDestino.PropBag")
+        Me.LblNumeroEnsamble.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.LblNumeroEnsamble.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblNumeroEnsamble.ForeColor = System.Drawing.Color.White
+        Me.LblNumeroEnsamble.Location = New System.Drawing.Point(540, 17)
+        Me.LblNumeroEnsamble.Name = "LblNumeroEnsamble"
+        Me.LblNumeroEnsamble.Size = New System.Drawing.Size(424, 24)
+        Me.LblNumeroEnsamble.TabIndex = 2
+        Me.LblNumeroEnsamble.Text = "Ensamble Nº —"
+        Me.LblNumeroEnsamble.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'Label8
+        'LblSubtitulo
         '
-        Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(273, 46)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(83, 13)
-        Me.Label8.TabIndex = 139
-        Me.Label8.Text = "Bodega Destino"
+        Me.LblSubtitulo.AutoSize = True
+        Me.LblSubtitulo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(190, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(225, Byte), Integer))
+        Me.LblSubtitulo.Location = New System.Drawing.Point(18, 36)
+        Me.LblSubtitulo.Name = "LblSubtitulo"
+        Me.LblSubtitulo.Size = New System.Drawing.Size(327, 15)
+        Me.LblSubtitulo.TabIndex = 1
+        Me.LblSubtitulo.Text = "Órdenes de ensamble, ensambles recibidos y desensambles"
         '
-        'CboCodigoBodega
+        'LblTitulo
         '
-        Me.CboCodigoBodega.AddItemSeparator = Global.Microsoft.VisualBasic.ChrW(59)
-        Me.CboCodigoBodega.Caption = ""
-        Me.CboCodigoBodega.CaptionHeight = 17
-        Me.CboCodigoBodega.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
-        Me.CboCodigoBodega.ColumnCaptionHeight = 17
-        Me.CboCodigoBodega.ColumnFooterHeight = 17
-        Me.CboCodigoBodega.ComboStyle = C1.Win.C1List.ComboStyleEnum.DropdownList
-        Me.CboCodigoBodega.ContentHeight = 15
-        Me.CboCodigoBodega.DeadAreaBackColor = System.Drawing.Color.Empty
-        Me.CboCodigoBodega.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CboCodigoBodega.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CboCodigoBodega.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CboCodigoBodega.EditorHeight = 15
-        Me.CboCodigoBodega.Images.Add(CType(resources.GetObject("CboCodigoBodega.Images"), System.Drawing.Image))
-        Me.CboCodigoBodega.ItemHeight = 15
-        Me.CboCodigoBodega.Location = New System.Drawing.Point(106, 43)
-        Me.CboCodigoBodega.MatchEntryTimeout = CType(2000, Long)
-        Me.CboCodigoBodega.MaxDropDownItems = CType(5, Short)
-        Me.CboCodigoBodega.MaxLength = 32767
-        Me.CboCodigoBodega.MouseCursor = System.Windows.Forms.Cursors.Default
-        Me.CboCodigoBodega.Name = "CboCodigoBodega"
-        Me.CboCodigoBodega.RowDivider.Color = System.Drawing.Color.DarkGray
-        Me.CboCodigoBodega.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
-        Me.CboCodigoBodega.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboCodigoBodega.Size = New System.Drawing.Size(115, 21)
-        Me.CboCodigoBodega.TabIndex = 138
-        Me.CboCodigoBodega.PropBag = resources.GetString("CboCodigoBodega.PropBag")
+        Me.LblTitulo.AutoSize = True
+        Me.LblTitulo.Font = New System.Drawing.Font("Segoe UI Semibold", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblTitulo.ForeColor = System.Drawing.Color.White
+        Me.LblTitulo.Location = New System.Drawing.Point(14, 4)
+        Me.LblTitulo.Name = "LblTitulo"
+        Me.LblTitulo.Size = New System.Drawing.Size(230, 30)
+        Me.LblTitulo.TabIndex = 0
+        Me.LblTitulo.Text = "Control de ensambles"
         '
-        'Label7
+        'PnlDocumento
         '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(23, 45)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(78, 13)
-        Me.Label7.TabIndex = 137
-        Me.Label7.Text = "Bodega Origen"
+        Me.PnlDocumento.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PnlDocumento.BackColor = System.Drawing.Color.White
+        Me.PnlDocumento.Controls.Add(Me.LblNombreBodegaDestino)
+        Me.PnlDocumento.Controls.Add(Me.CboBodegaDestino)
+        Me.PnlDocumento.Controls.Add(Me.LblBodegaDestino)
+        Me.PnlDocumento.Controls.Add(Me.LblNombreBodegaOrigen)
+        Me.PnlDocumento.Controls.Add(Me.CboCodigoBodega)
+        Me.PnlDocumento.Controls.Add(Me.LblBodegaOrigen)
+        Me.PnlDocumento.Controls.Add(Me.BtnBuscarEnsamble)
+        Me.PnlDocumento.Controls.Add(Me.TxtNumeroEnsamble)
+        Me.PnlDocumento.Controls.Add(Me.LblNumero)
+        Me.PnlDocumento.Controls.Add(Me.DTPFecha)
+        Me.PnlDocumento.Controls.Add(Me.LblFecha)
+        Me.PnlDocumento.Controls.Add(Me.CboTipoProducto)
+        Me.PnlDocumento.Controls.Add(Me.LblTipo)
+        Me.PnlDocumento.Controls.Add(Me.LblTituloDocumento)
+        Me.PnlDocumento.Location = New System.Drawing.Point(16, 66)
+        Me.PnlDocumento.Name = "PnlDocumento"
+        Me.PnlDocumento.Size = New System.Drawing.Size(948, 96)
+        Me.PnlDocumento.TabIndex = 1
+        '
+        'LblTituloDocumento
+        '
+        Me.LblTituloDocumento.AutoSize = True
+        Me.LblTituloDocumento.Font = New System.Drawing.Font("Segoe UI Semibold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblTituloDocumento.ForeColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.LblTituloDocumento.Location = New System.Drawing.Point(14, 8)
+        Me.LblTituloDocumento.Name = "LblTituloDocumento"
+        Me.LblTituloDocumento.Size = New System.Drawing.Size(129, 17)
+        Me.LblTituloDocumento.TabIndex = 0
+        Me.LblTituloDocumento.Text = "Datos del documento"
+        '
+        'LblTipo
+        '
+        Me.LblTipo.AutoSize = True
+        Me.LblTipo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
+        Me.LblTipo.Location = New System.Drawing.Point(16, 40)
+        Me.LblTipo.Name = "LblTipo"
+        Me.LblTipo.Size = New System.Drawing.Size(29, 15)
+        Me.LblTipo.TabIndex = 1
+        Me.LblTipo.Text = "Tipo"
         '
         'CboTipoProducto
         '
         Me.CboTipoProducto.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboTipoProducto.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.CboTipoProducto.FormattingEnabled = True
         Me.CboTipoProducto.Items.AddRange(New Object() {"Orden de Ensamble", "Ensamble Recibido", "Deshacer Ensamble"})
-        Me.CboTipoProducto.Location = New System.Drawing.Point(43, 13)
+        Me.CboTipoProducto.Location = New System.Drawing.Point(110, 36)
         Me.CboTipoProducto.Name = "CboTipoProducto"
-        Me.CboTipoProducto.Size = New System.Drawing.Size(135, 21)
-        Me.CboTipoProducto.TabIndex = 128
+        Me.CboTipoProducto.Size = New System.Drawing.Size(170, 23)
+        Me.CboTipoProducto.TabIndex = 2
         '
-        'Button6
+        'LblFecha
         '
-        Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
-        Me.Button6.Location = New System.Drawing.Point(502, 10)
-        Me.Button6.Name = "Button6"
-        Me.Button6.Size = New System.Drawing.Size(37, 32)
-        Me.Button6.TabIndex = 127
-        Me.Button6.UseVisualStyleBackColor = True
-        '
-        'TxtNumeroEnsamble
-        '
-        Me.TxtNumeroEnsamble.Enabled = False
-        Me.TxtNumeroEnsamble.Location = New System.Drawing.Point(420, 13)
-        Me.TxtNumeroEnsamble.Name = "TxtNumeroEnsamble"
-        Me.TxtNumeroEnsamble.Size = New System.Drawing.Size(76, 20)
-        Me.TxtNumeroEnsamble.TabIndex = 122
-        Me.TxtNumeroEnsamble.Text = "-----0-----"
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(370, 16)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(44, 13)
-        Me.Label3.TabIndex = 121
-        Me.Label3.Text = "Numero"
+        Me.LblFecha.AutoSize = True
+        Me.LblFecha.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
+        Me.LblFecha.Location = New System.Drawing.Point(310, 40)
+        Me.LblFecha.Name = "LblFecha"
+        Me.LblFecha.Size = New System.Drawing.Size(38, 15)
+        Me.LblFecha.TabIndex = 3
+        Me.LblFecha.Text = "Fecha"
         '
         'DTPFecha
         '
-        Me.DTPFecha.CustomFormat = ""
         Me.DTPFecha.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DTPFecha.Location = New System.Drawing.Point(227, 14)
+        Me.DTPFecha.Location = New System.Drawing.Point(356, 36)
         Me.DTPFecha.Name = "DTPFecha"
-        Me.DTPFecha.Size = New System.Drawing.Size(104, 20)
-        Me.DTPFecha.TabIndex = 120
+        Me.DTPFecha.Size = New System.Drawing.Size(120, 23)
+        Me.DTPFecha.TabIndex = 4
         '
-        'Label2
+        'LblNumero
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(184, 16)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(37, 13)
-        Me.Label2.TabIndex = 2
-        Me.Label2.Text = "Fecha"
+        Me.LblNumero.AutoSize = True
+        Me.LblNumero.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
+        Me.LblNumero.Location = New System.Drawing.Point(506, 40)
+        Me.LblNumero.Name = "LblNumero"
+        Me.LblNumero.Size = New System.Drawing.Size(51, 15)
+        Me.LblNumero.TabIndex = 5
+        Me.LblNumero.Text = "Número"
         '
-        'Label1
+        'TxtNumeroEnsamble
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(9, 16)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(28, 13)
-        Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Tipo"
+        Me.TxtNumeroEnsamble.BackColor = System.Drawing.Color.FromArgb(CType(CType(245, Byte), Integer), CType(CType(247, Byte), Integer), CType(CType(250, Byte), Integer))
+        Me.TxtNumeroEnsamble.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TxtNumeroEnsamble.Location = New System.Drawing.Point(566, 36)
+        Me.TxtNumeroEnsamble.Name = "TxtNumeroEnsamble"
+        Me.TxtNumeroEnsamble.ReadOnly = True
+        Me.TxtNumeroEnsamble.Size = New System.Drawing.Size(100, 23)
+        Me.TxtNumeroEnsamble.TabIndex = 6
+        Me.TxtNumeroEnsamble.TabStop = False
+        Me.TxtNumeroEnsamble.Text = "-----0-----"
+        Me.TxtNumeroEnsamble.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'Label9
+        'BtnBuscarEnsamble
         '
-        Me.Label9.AutoSize = True
-        Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
-        Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label9.Location = New System.Drawing.Point(253, 26)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(175, 13)
-        Me.Label9.TabIndex = 114
-        Me.Label9.Text = "ENSAMBLE DE PRODUCTOS"
+        Me.BtnBuscarEnsamble.BackColor = System.Drawing.Color.FromArgb(CType(CType(236, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(245, Byte), Integer))
+        Me.BtnBuscarEnsamble.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.BtnBuscarEnsamble.FlatAppearance.BorderSize = 0
+        Me.BtnBuscarEnsamble.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(215, Byte), Integer), CType(CType(225, Byte), Integer), CType(CType(238, Byte), Integer))
+        Me.BtnBuscarEnsamble.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnBuscarEnsamble.Location = New System.Drawing.Point(672, 35)
+        Me.BtnBuscarEnsamble.Name = "BtnBuscarEnsamble"
+        Me.BtnBuscarEnsamble.Size = New System.Drawing.Size(34, 25)
+        Me.BtnBuscarEnsamble.TabIndex = 7
+        Me.BtnBuscarEnsamble.TabStop = False
+        Me.BtnBuscarEnsamble.Text = "..."
+        Me.BtnBuscarEnsamble.UseVisualStyleBackColor = False
         '
-        'PictureBox2
+        'LblBodegaOrigen
         '
-        Me.PictureBox2.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
-        Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
-        Me.PictureBox2.Location = New System.Drawing.Point(5, 0)
-        Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(69, 60)
-        Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox2.TabIndex = 113
-        Me.PictureBox2.TabStop = False
+        Me.LblBodegaOrigen.AutoSize = True
+        Me.LblBodegaOrigen.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
+        Me.LblBodegaOrigen.Location = New System.Drawing.Point(16, 68)
+        Me.LblBodegaOrigen.Name = "LblBodegaOrigen"
+        Me.LblBodegaOrigen.Size = New System.Drawing.Size(80, 15)
+        Me.LblBodegaOrigen.TabIndex = 8
+        Me.LblBodegaOrigen.Text = "Bodega origen"
         '
-        'PictureBox1
+        'CboCodigoBodega
         '
-        Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
-        Me.PictureBox1.Location = New System.Drawing.Point(-6, 0)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(744, 60)
-        Me.PictureBox1.TabIndex = 112
-        Me.PictureBox1.TabStop = False
+        Me.CboCodigoBodega.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboCodigoBodega.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.CboCodigoBodega.FormattingEnabled = True
+        Me.CboCodigoBodega.Location = New System.Drawing.Point(110, 64)
+        Me.CboCodigoBodega.Name = "CboCodigoBodega"
+        Me.CboCodigoBodega.Size = New System.Drawing.Size(120, 23)
+        Me.CboCodigoBodega.TabIndex = 9
         '
-        'GroupBox2
+        'LblNombreBodegaOrigen
         '
-        Me.GroupBox2.Controls.Add(Me.LblUnidadMedida)
-        Me.GroupBox2.Controls.Add(Me.TxtRendimiento)
-        Me.GroupBox2.Controls.Add(Me.Label30)
-        Me.GroupBox2.Controls.Add(Me.C1Button2)
-        Me.GroupBox2.Controls.Add(Me.TxtNumero)
-        Me.GroupBox2.Controls.Add(Me.CmdAgregarProducto)
-        Me.GroupBox2.Controls.Add(Me.TxtCantidad)
-        Me.GroupBox2.Controls.Add(Me.Label6)
-        Me.GroupBox2.Controls.Add(Me.TxtDescripcion)
-        Me.GroupBox2.Controls.Add(Me.Label5)
-        Me.GroupBox2.Controls.Add(Me.TxtCodigo)
-        Me.GroupBox2.Controls.Add(Me.Label4)
-        Me.GroupBox2.Controls.Add(Me.TrueDBGridComponentes)
-        Me.GroupBox2.Controls.Add(Me.CmdEnsambles)
-        Me.GroupBox2.Location = New System.Drawing.Point(5, 142)
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(543, 296)
-        Me.GroupBox2.TabIndex = 115
-        Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Detalle Ensamble"
+        Me.LblNombreBodegaOrigen.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblNombreBodegaOrigen.ForeColor = System.Drawing.Color.FromArgb(CType(CType(37, Byte), Integer), CType(CType(99, Byte), Integer), CType(CType(235, Byte), Integer))
+        Me.LblNombreBodegaOrigen.Location = New System.Drawing.Point(238, 67)
+        Me.LblNombreBodegaOrigen.Name = "LblNombreBodegaOrigen"
+        Me.LblNombreBodegaOrigen.Size = New System.Drawing.Size(230, 18)
+        Me.LblNombreBodegaOrigen.TabIndex = 10
         '
-        'LblUnidadMedida
+        'LblBodegaDestino
         '
-        Me.LblUnidadMedida.AutoSize = True
-        Me.LblUnidadMedida.Location = New System.Drawing.Point(367, 240)
-        Me.LblUnidadMedida.Name = "LblUnidadMedida"
-        Me.LblUnidadMedida.Size = New System.Drawing.Size(27, 13)
-        Me.LblUnidadMedida.TabIndex = 214
-        Me.LblUnidadMedida.Text = "Lbrs"
+        Me.LblBodegaDestino.AutoSize = True
+        Me.LblBodegaDestino.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
+        Me.LblBodegaDestino.Location = New System.Drawing.Point(506, 68)
+        Me.LblBodegaDestino.Name = "LblBodegaDestino"
+        Me.LblBodegaDestino.Size = New System.Drawing.Size(87, 15)
+        Me.LblBodegaDestino.TabIndex = 11
+        Me.LblBodegaDestino.Text = "Bodega destino"
         '
-        'TxtRendimiento
+        'CboBodegaDestino
         '
-        Me.TxtRendimiento.Location = New System.Drawing.Point(291, 235)
-        Me.TxtRendimiento.Name = "TxtRendimiento"
-        Me.TxtRendimiento.Size = New System.Drawing.Size(73, 20)
-        Me.TxtRendimiento.TabIndex = 213
+        Me.CboBodegaDestino.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CboBodegaDestino.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.CboBodegaDestino.FormattingEnabled = True
+        Me.CboBodegaDestino.Location = New System.Drawing.Point(600, 64)
+        Me.CboBodegaDestino.Name = "CboBodegaDestino"
+        Me.CboBodegaDestino.Size = New System.Drawing.Size(120, 23)
+        Me.CboBodegaDestino.TabIndex = 12
         '
-        'Label30
+        'LblNombreBodegaDestino
         '
-        Me.Label30.AutoSize = True
-        Me.Label30.Location = New System.Drawing.Point(287, 218)
-        Me.Label30.Name = "Label30"
-        Me.Label30.Size = New System.Drawing.Size(118, 13)
-        Me.Label30.TabIndex = 212
-        Me.Label30.Text = "Rendimiento Ensamble:"
+        Me.LblNombreBodegaDestino.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblNombreBodegaDestino.ForeColor = System.Drawing.Color.FromArgb(CType(CType(37, Byte), Integer), CType(CType(99, Byte), Integer), CType(CType(235, Byte), Integer))
+        Me.LblNombreBodegaDestino.Location = New System.Drawing.Point(728, 67)
+        Me.LblNombreBodegaDestino.Name = "LblNombreBodegaDestino"
+        Me.LblNombreBodegaDestino.Size = New System.Drawing.Size(210, 18)
+        Me.LblNombreBodegaDestino.TabIndex = 13
         '
-        'C1Button2
+        'PnlProducto
         '
-        Me.C1Button2.Image = CType(resources.GetObject("C1Button2.Image"), System.Drawing.Image)
-        Me.C1Button2.Location = New System.Drawing.Point(10, 215)
-        Me.C1Button2.Name = "C1Button2"
-        Me.C1Button2.Size = New System.Drawing.Size(39, 24)
-        Me.C1Button2.TabIndex = 211
-        Me.C1Button2.UseVisualStyleBackColor = True
-        Me.C1Button2.VisualStyle = C1.Win.C1Input.VisualStyle.System
+        Me.PnlProducto.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PnlProducto.BackColor = System.Drawing.Color.White
+        Me.PnlProducto.Controls.Add(Me.TxtNumero)
+        Me.PnlProducto.Controls.Add(Me.LblUnidadMedida)
+        Me.PnlProducto.Controls.Add(Me.TxtRendimiento)
+        Me.PnlProducto.Controls.Add(Me.LblRendimiento)
+        Me.PnlProducto.Controls.Add(Me.TxtCantidad)
+        Me.PnlProducto.Controls.Add(Me.LblCantidad)
+        Me.PnlProducto.Controls.Add(Me.CmdEnsambles)
+        Me.PnlProducto.Controls.Add(Me.CmdAgregarProducto)
+        Me.PnlProducto.Controls.Add(Me.TxtDescripcion)
+        Me.PnlProducto.Controls.Add(Me.LblDescripcion)
+        Me.PnlProducto.Controls.Add(Me.TxtCodigo)
+        Me.PnlProducto.Controls.Add(Me.LblCodigo)
+        Me.PnlProducto.Controls.Add(Me.LblTituloProducto)
+        Me.PnlProducto.Location = New System.Drawing.Point(16, 170)
+        Me.PnlProducto.Name = "PnlProducto"
+        Me.PnlProducto.Size = New System.Drawing.Size(948, 96)
+        Me.PnlProducto.TabIndex = 2
         '
-        'TxtNumero
+        'LblTituloProducto
         '
-        Me.TxtNumero.Location = New System.Drawing.Point(10, 252)
-        Me.TxtNumero.Name = "TxtNumero"
-        Me.TxtNumero.Size = New System.Drawing.Size(100, 20)
-        Me.TxtNumero.TabIndex = 140
-        Me.TxtNumero.Text = "0"
-        Me.TxtNumero.Visible = False
+        Me.LblTituloProducto.AutoSize = True
+        Me.LblTituloProducto.Font = New System.Drawing.Font("Segoe UI Semibold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblTituloProducto.ForeColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.LblTituloProducto.Location = New System.Drawing.Point(14, 8)
+        Me.LblTituloProducto.Name = "LblTituloProducto"
+        Me.LblTituloProducto.Size = New System.Drawing.Size(130, 17)
+        Me.LblTituloProducto.TabIndex = 0
+        Me.LblTituloProducto.Text = "Producto a ensamblar"
         '
-        'CmdAgregarProducto
+        'LblCodigo
         '
-        Me.CmdAgregarProducto.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.CmdAgregarProducto.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
-        Me.CmdAgregarProducto.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CmdAgregarProducto.Image = CType(resources.GetObject("CmdAgregarProducto.Image"), System.Drawing.Image)
-        Me.CmdAgregarProducto.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdAgregarProducto.Location = New System.Drawing.Point(449, 218)
-        Me.CmdAgregarProducto.Name = "CmdAgregarProducto"
-        Me.CmdAgregarProducto.Size = New System.Drawing.Size(75, 67)
-        Me.CmdAgregarProducto.TabIndex = 138
-        Me.CmdAgregarProducto.Tag = "30"
-        Me.CmdAgregarProducto.Text = "Productos"
-        Me.CmdAgregarProducto.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.CmdAgregarProducto.UseVisualStyleBackColor = True
-        '
-        'TxtCantidad
-        '
-        Me.TxtCantidad.Location = New System.Drawing.Point(464, 19)
-        Me.TxtCantidad.Name = "TxtCantidad"
-        Me.TxtCantidad.Size = New System.Drawing.Size(56, 20)
-        Me.TxtCantidad.TabIndex = 137
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(411, 22)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(49, 13)
-        Me.Label6.TabIndex = 136
-        Me.Label6.Text = "Cantidad"
-        '
-        'TxtDescripcion
-        '
-        Me.TxtDescripcion.Enabled = False
-        Me.TxtDescripcion.Location = New System.Drawing.Point(214, 19)
-        Me.TxtDescripcion.Name = "TxtDescripcion"
-        Me.TxtDescripcion.Size = New System.Drawing.Size(191, 20)
-        Me.TxtDescripcion.TabIndex = 135
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(145, 22)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(63, 13)
-        Me.Label5.TabIndex = 134
-        Me.Label5.Text = "Descripcion"
+        Me.LblCodigo.AutoSize = True
+        Me.LblCodigo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
+        Me.LblCodigo.Location = New System.Drawing.Point(16, 40)
+        Me.LblCodigo.Name = "LblCodigo"
+        Me.LblCodigo.Size = New System.Drawing.Size(46, 15)
+        Me.LblCodigo.TabIndex = 1
+        Me.LblCodigo.Text = "Código"
         '
         'TxtCodigo
         '
-        Me.TxtCodigo.Enabled = False
-        Me.TxtCodigo.Location = New System.Drawing.Point(63, 19)
+        Me.TxtCodigo.BackColor = System.Drawing.Color.FromArgb(CType(CType(245, Byte), Integer), CType(CType(247, Byte), Integer), CType(CType(250, Byte), Integer))
+        Me.TxtCodigo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TxtCodigo.Location = New System.Drawing.Point(110, 36)
         Me.TxtCodigo.Name = "TxtCodigo"
-        Me.TxtCodigo.Size = New System.Drawing.Size(76, 20)
-        Me.TxtCodigo.TabIndex = 133
+        Me.TxtCodigo.ReadOnly = True
+        Me.TxtCodigo.Size = New System.Drawing.Size(120, 23)
+        Me.TxtCodigo.TabIndex = 2
+        Me.TxtCodigo.TabStop = False
         '
-        'Label4
+        'LblDescripcion
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(17, 22)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(40, 13)
-        Me.Label4.TabIndex = 132
-        Me.Label4.Text = "Codigo"
+        Me.LblDescripcion.AutoSize = True
+        Me.LblDescripcion.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
+        Me.LblDescripcion.Location = New System.Drawing.Point(250, 40)
+        Me.LblDescripcion.Name = "LblDescripcion"
+        Me.LblDescripcion.Size = New System.Drawing.Size(69, 15)
+        Me.LblDescripcion.TabIndex = 3
+        Me.LblDescripcion.Text = "Descripción"
         '
-        'TrueDBGridComponentes
+        'TxtDescripcion
         '
-        Me.TrueDBGridComponentes.AlternatingRows = True
-        Me.TrueDBGridComponentes.Caption = "Listado de Componentes"
-        Me.TrueDBGridComponentes.FilterBar = True
-        Me.TrueDBGridComponentes.GroupByCaption = "Drag a column header here to group by that column"
-        Me.TrueDBGridComponentes.Images.Add(CType(resources.GetObject("TrueDBGridComponentes.Images"), System.Drawing.Image))
-        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(10, 45)
-        Me.TrueDBGridComponentes.Name = "TrueDBGridComponentes"
-        Me.TrueDBGridComponentes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
-        Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75.0R
-        Me.TrueDBGridComponentes.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridComponentes.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TrueDBGridComponentes.Size = New System.Drawing.Size(514, 167)
-        Me.TrueDBGridComponentes.TabIndex = 131
-        Me.TrueDBGridComponentes.Text = "C1TrueDBGrid1"
-        Me.TrueDBGridComponentes.PropBag = resources.GetString("TrueDBGridComponentes.PropBag")
+        Me.TxtDescripcion.BackColor = System.Drawing.Color.FromArgb(CType(CType(245, Byte), Integer), CType(CType(247, Byte), Integer), CType(CType(250, Byte), Integer))
+        Me.TxtDescripcion.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TxtDescripcion.Location = New System.Drawing.Point(326, 36)
+        Me.TxtDescripcion.Name = "TxtDescripcion"
+        Me.TxtDescripcion.ReadOnly = True
+        Me.TxtDescripcion.Size = New System.Drawing.Size(340, 23)
+        Me.TxtDescripcion.TabIndex = 4
+        Me.TxtDescripcion.TabStop = False
+        '
+        'CmdAgregarProducto
+        '
+        Me.CmdAgregarProducto.BackColor = System.Drawing.Color.FromArgb(CType(CType(37, Byte), Integer), CType(CType(99, Byte), Integer), CType(CType(235, Byte), Integer))
+        Me.CmdAgregarProducto.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.CmdAgregarProducto.FlatAppearance.BorderSize = 0
+        Me.CmdAgregarProducto.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(29, Byte), Integer), CType(CType(78, Byte), Integer), CType(CType(216, Byte), Integer))
+        Me.CmdAgregarProducto.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.CmdAgregarProducto.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CmdAgregarProducto.ForeColor = System.Drawing.Color.White
+        Me.CmdAgregarProducto.Location = New System.Drawing.Point(688, 33)
+        Me.CmdAgregarProducto.Name = "CmdAgregarProducto"
+        Me.CmdAgregarProducto.Size = New System.Drawing.Size(116, 30)
+        Me.CmdAgregarProducto.TabIndex = 5
+        Me.CmdAgregarProducto.Tag = "30"
+        Me.CmdAgregarProducto.Text = "Productos"
+        Me.CmdAgregarProducto.UseVisualStyleBackColor = False
         '
         'CmdEnsambles
         '
-        Me.CmdEnsambles.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.CmdEnsambles.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
-        Me.CmdEnsambles.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CmdEnsambles.Image = CType(resources.GetObject("CmdEnsambles.Image"), System.Drawing.Image)
-        Me.CmdEnsambles.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdEnsambles.Location = New System.Drawing.Point(449, 218)
+        Me.CmdEnsambles.BackColor = System.Drawing.Color.FromArgb(CType(CType(236, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(245, Byte), Integer))
+        Me.CmdEnsambles.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.CmdEnsambles.FlatAppearance.BorderSize = 0
+        Me.CmdEnsambles.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(215, Byte), Integer), CType(CType(225, Byte), Integer), CType(CType(238, Byte), Integer))
+        Me.CmdEnsambles.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.CmdEnsambles.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CmdEnsambles.ForeColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.CmdEnsambles.Location = New System.Drawing.Point(812, 33)
         Me.CmdEnsambles.Name = "CmdEnsambles"
-        Me.CmdEnsambles.Size = New System.Drawing.Size(75, 67)
-        Me.CmdEnsambles.TabIndex = 139
+        Me.CmdEnsambles.Size = New System.Drawing.Size(116, 30)
+        Me.CmdEnsambles.TabIndex = 6
         Me.CmdEnsambles.Text = "Ensambles"
-        Me.CmdEnsambles.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.CmdEnsambles.UseVisualStyleBackColor = True
+        Me.CmdEnsambles.UseVisualStyleBackColor = False
         '
-        'ButtonBorrar
+        'LblCantidad
         '
-        Me.ButtonBorrar.Image = CType(resources.GetObject("ButtonBorrar.Image"), System.Drawing.Image)
-        Me.ButtonBorrar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonBorrar.Location = New System.Drawing.Point(6, 92)
-        Me.ButtonBorrar.Name = "ButtonBorrar"
-        Me.ButtonBorrar.Size = New System.Drawing.Size(75, 67)
-        Me.ButtonBorrar.TabIndex = 119
-        Me.ButtonBorrar.Tag = "29"
-        Me.ButtonBorrar.Text = "Eliminar"
-        Me.ButtonBorrar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.ButtonBorrar.UseVisualStyleBackColor = True
+        Me.LblCantidad.AutoSize = True
+        Me.LblCantidad.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
+        Me.LblCantidad.Location = New System.Drawing.Point(16, 68)
+        Me.LblCantidad.Name = "LblCantidad"
+        Me.LblCantidad.Size = New System.Drawing.Size(55, 15)
+        Me.LblCantidad.TabIndex = 7
+        Me.LblCantidad.Text = "Cantidad"
         '
-        'ButtonAgregar
+        'TxtCantidad
         '
-        Me.ButtonAgregar.Image = CType(resources.GetObject("ButtonAgregar.Image"), System.Drawing.Image)
-        Me.ButtonAgregar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ButtonAgregar.Location = New System.Drawing.Point(376, 465)
-        Me.ButtonAgregar.Name = "ButtonAgregar"
-        Me.ButtonAgregar.Size = New System.Drawing.Size(75, 67)
-        Me.ButtonAgregar.TabIndex = 118
-        Me.ButtonAgregar.Text = "Guardar"
-        Me.ButtonAgregar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.ButtonAgregar.UseVisualStyleBackColor = True
-        Me.ButtonAgregar.Visible = False
+        Me.TxtCantidad.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TxtCantidad.Location = New System.Drawing.Point(110, 64)
+        Me.TxtCantidad.Name = "TxtCantidad"
+        Me.TxtCantidad.Size = New System.Drawing.Size(120, 23)
+        Me.TxtCantidad.TabIndex = 8
+        Me.TxtCantidad.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
-        'Button8
+        'LblRendimiento
         '
-        Me.Button8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button8.Image = CType(resources.GetObject("Button8.Image"), System.Drawing.Image)
-        Me.Button8.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button8.Location = New System.Drawing.Point(87, 164)
-        Me.Button8.Name = "Button8"
-        Me.Button8.Size = New System.Drawing.Size(75, 67)
-        Me.Button8.TabIndex = 116
-        Me.Button8.Text = "Salir"
-        Me.Button8.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.Button8.UseVisualStyleBackColor = True
+        Me.LblRendimiento.AutoSize = True
+        Me.LblRendimiento.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
+        Me.LblRendimiento.Location = New System.Drawing.Point(250, 68)
+        Me.LblRendimiento.Name = "LblRendimiento"
+        Me.LblRendimiento.Size = New System.Drawing.Size(120, 15)
+        Me.LblRendimiento.TabIndex = 9
+        Me.LblRendimiento.Text = "Rendimiento ensamble"
         '
-        'CmdProcesar
+        'TxtRendimiento
         '
-        Me.CmdProcesar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CmdProcesar.Image = CType(resources.GetObject("CmdProcesar.Image"), System.Drawing.Image)
-        Me.CmdProcesar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdProcesar.Location = New System.Drawing.Point(6, 165)
-        Me.CmdProcesar.Name = "CmdProcesar"
-        Me.CmdProcesar.Size = New System.Drawing.Size(75, 66)
-        Me.CmdProcesar.TabIndex = 122
-        Me.CmdProcesar.Text = "Procesar"
-        Me.CmdProcesar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.CmdProcesar.UseVisualStyleBackColor = True
+        Me.TxtRendimiento.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TxtRendimiento.Location = New System.Drawing.Point(396, 64)
+        Me.TxtRendimiento.Name = "TxtRendimiento"
+        Me.TxtRendimiento.Size = New System.Drawing.Size(110, 23)
+        Me.TxtRendimiento.TabIndex = 10
+        Me.TxtRendimiento.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
-        'Button2
+        'LblUnidadMedida
         '
-        Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
-        Me.Button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.Button2.Location = New System.Drawing.Point(87, 92)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(75, 66)
-        Me.Button2.TabIndex = 123
-        Me.Button2.Tag = "27"
-        Me.Button2.Text = "Imprimir"
-        Me.Button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.LblUnidadMedida.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblUnidadMedida.ForeColor = System.Drawing.Color.FromArgb(CType(CType(37, Byte), Integer), CType(CType(99, Byte), Integer), CType(CType(235, Byte), Integer))
+        Me.LblUnidadMedida.Location = New System.Drawing.Point(514, 67)
+        Me.LblUnidadMedida.Name = "LblUnidadMedida"
+        Me.LblUnidadMedida.Size = New System.Drawing.Size(120, 18)
+        Me.LblUnidadMedida.TabIndex = 11
+        '
+        'TxtNumero
+        '
+        Me.TxtNumero.Location = New System.Drawing.Point(700, 64)
+        Me.TxtNumero.Name = "TxtNumero"
+        Me.TxtNumero.Size = New System.Drawing.Size(100, 23)
+        Me.TxtNumero.TabIndex = 12
+        Me.TxtNumero.TabStop = False
+        Me.TxtNumero.Text = "0"
+        Me.TxtNumero.Visible = False
+        '
+        'PnlComponentes
+        '
+        Me.PnlComponentes.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PnlComponentes.BackColor = System.Drawing.Color.White
+        Me.PnlComponentes.Controls.Add(Me.GridComponentes)
+        Me.PnlComponentes.Controls.Add(Me.PnlFiltros)
+        Me.PnlComponentes.Controls.Add(Me.BtnSeries)
+        Me.PnlComponentes.Controls.Add(Me.LblResumen)
+        Me.PnlComponentes.Controls.Add(Me.LblTituloComponentes)
+        Me.PnlComponentes.Location = New System.Drawing.Point(16, 274)
+        Me.PnlComponentes.Name = "PnlComponentes"
+        Me.PnlComponentes.Size = New System.Drawing.Size(948, 182)
+        Me.PnlComponentes.TabIndex = 3
+        '
+        'LblTituloComponentes
+        '
+        Me.LblTituloComponentes.AutoSize = True
+        Me.LblTituloComponentes.Font = New System.Drawing.Font("Segoe UI Semibold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblTituloComponentes.ForeColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.LblTituloComponentes.Location = New System.Drawing.Point(14, 10)
+        Me.LblTituloComponentes.Name = "LblTituloComponentes"
+        Me.LblTituloComponentes.Size = New System.Drawing.Size(147, 17)
+        Me.LblTituloComponentes.TabIndex = 0
+        Me.LblTituloComponentes.Text = "Listado de componentes"
+        '
+        'LblResumen
+        '
+        Me.LblResumen.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.LblResumen.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
+        Me.LblResumen.Location = New System.Drawing.Point(600, 12)
+        Me.LblResumen.Name = "LblResumen"
+        Me.LblResumen.Size = New System.Drawing.Size(220, 18)
+        Me.LblResumen.TabIndex = 1
+        Me.LblResumen.Text = "0 componentes"
+        Me.LblResumen.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'BtnSeries
+        '
+        Me.BtnSeries.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnSeries.BackColor = System.Drawing.Color.FromArgb(CType(CType(236, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(245, Byte), Integer))
+        Me.BtnSeries.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.BtnSeries.FlatAppearance.BorderSize = 0
+        Me.BtnSeries.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(215, Byte), Integer), CType(CType(225, Byte), Integer), CType(CType(238, Byte), Integer))
+        Me.BtnSeries.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnSeries.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnSeries.ForeColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.BtnSeries.Location = New System.Drawing.Point(832, 6)
+        Me.BtnSeries.Name = "BtnSeries"
+        Me.BtnSeries.Size = New System.Drawing.Size(100, 28)
+        Me.BtnSeries.TabIndex = 2
+        Me.BtnSeries.Text = "Series"
+        Me.BtnSeries.UseVisualStyleBackColor = False
+        '
+        'PnlFiltros
+        '
+        Me.PnlFiltros.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PnlFiltros.BackColor = System.Drawing.Color.FromArgb(CType(CType(236, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(245, Byte), Integer))
+        Me.PnlFiltros.Location = New System.Drawing.Point(16, 38)
+        Me.PnlFiltros.Name = "PnlFiltros"
+        Me.PnlFiltros.Size = New System.Drawing.Size(916, 28)
+        Me.PnlFiltros.TabIndex = 3
+        '
+        'GridComponentes
+        '
+        Me.GridComponentes.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GridComponentes.AllowUserToAddRows = False
+        Me.GridComponentes.AllowUserToDeleteRows = False
+        Me.GridComponentes.AllowUserToResizeRows = False
+        Me.GridComponentes.BackgroundColor = System.Drawing.Color.White
+        Me.GridComponentes.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.GridComponentes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
+        Me.GridComponentes.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
+        Me.GridComponentes.ColumnHeadersHeight = 32
+        Me.GridComponentes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
+        Me.GridComponentes.EnableHeadersVisualStyles = False
+        Me.GridComponentes.GridColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(233, Byte), Integer), CType(CType(238, Byte), Integer))
+        Me.GridComponentes.Location = New System.Drawing.Point(16, 66)
+        Me.GridComponentes.MultiSelect = False
+        Me.GridComponentes.Name = "GridComponentes"
+        Me.GridComponentes.ReadOnly = True
+        Me.GridComponentes.RowHeadersVisible = False
+        Me.GridComponentes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.GridComponentes.Size = New System.Drawing.Size(916, 108)
+        Me.GridComponentes.TabIndex = 4
+        '
+        'PnlAcciones
+        '
+        Me.PnlAcciones.BackColor = System.Drawing.Color.White
+        Me.PnlAcciones.Controls.Add(Me.BtnSalir)
+        Me.PnlAcciones.Controls.Add(Me.CmdDesahacer)
+        Me.PnlAcciones.Controls.Add(Me.CmdOrden)
+        Me.PnlAcciones.Controls.Add(Me.CmdProcesar)
+        Me.PnlAcciones.Controls.Add(Me.BtnImprimir)
+        Me.PnlAcciones.Controls.Add(Me.ButtonBorrar)
+        Me.PnlAcciones.Controls.Add(Me.CmdGrabar)
+        Me.PnlAcciones.Controls.Add(Me.CmdNuevo)
+        Me.PnlAcciones.Controls.Add(Me.LblEstado)
+        Me.PnlAcciones.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.PnlAcciones.Location = New System.Drawing.Point(0, 464)
+        Me.PnlAcciones.Name = "PnlAcciones"
+        Me.PnlAcciones.Size = New System.Drawing.Size(980, 56)
+        Me.PnlAcciones.TabIndex = 4
+        '
+        'LblEstado
+        '
+        Me.LblEstado.AutoEllipsis = True
+        Me.LblEstado.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblEstado.ForeColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.LblEstado.Location = New System.Drawing.Point(16, 10)
+        Me.LblEstado.Name = "LblEstado"
+        Me.LblEstado.Size = New System.Drawing.Size(296, 36)
+        Me.LblEstado.TabIndex = 0
+        Me.LblEstado.Text = "Seleccione el tipo de ensamble"
+        Me.LblEstado.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'CmdNuevo
         '
-        Me.CmdNuevo.Image = CType(resources.GetObject("CmdNuevo.Image"), System.Drawing.Image)
-        Me.CmdNuevo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdNuevo.Location = New System.Drawing.Point(6, 19)
+        Me.CmdNuevo.BackColor = System.Drawing.Color.FromArgb(CType(CType(236, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(245, Byte), Integer))
+        Me.CmdNuevo.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.CmdNuevo.FlatAppearance.BorderSize = 0
+        Me.CmdNuevo.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(215, Byte), Integer), CType(CType(225, Byte), Integer), CType(CType(238, Byte), Integer))
+        Me.CmdNuevo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.CmdNuevo.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CmdNuevo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.CmdNuevo.Location = New System.Drawing.Point(324, 10)
         Me.CmdNuevo.Name = "CmdNuevo"
-        Me.CmdNuevo.Size = New System.Drawing.Size(75, 67)
-        Me.CmdNuevo.TabIndex = 124
+        Me.CmdNuevo.Size = New System.Drawing.Size(96, 36)
+        Me.CmdNuevo.TabIndex = 1
         Me.CmdNuevo.Text = "Nuevo"
-        Me.CmdNuevo.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.CmdNuevo.UseVisualStyleBackColor = True
-        '
-        'CmdOrden
-        '
-        Me.CmdOrden.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CmdOrden.Image = CType(resources.GetObject("CmdOrden.Image"), System.Drawing.Image)
-        Me.CmdOrden.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdOrden.Location = New System.Drawing.Point(6, 165)
-        Me.CmdOrden.Name = "CmdOrden"
-        Me.CmdOrden.Size = New System.Drawing.Size(75, 66)
-        Me.CmdOrden.TabIndex = 125
-        Me.CmdOrden.Tag = "28"
-        Me.CmdOrden.Text = "Procesar"
-        Me.CmdOrden.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.CmdOrden.UseVisualStyleBackColor = True
-        '
-        'CmdDesahacer
-        '
-        Me.CmdDesahacer.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CmdDesahacer.Image = CType(resources.GetObject("CmdDesahacer.Image"), System.Drawing.Image)
-        Me.CmdDesahacer.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdDesahacer.Location = New System.Drawing.Point(6, 165)
-        Me.CmdDesahacer.Name = "CmdDesahacer"
-        Me.CmdDesahacer.Size = New System.Drawing.Size(75, 66)
-        Me.CmdDesahacer.TabIndex = 126
-        Me.CmdDesahacer.Tag = "28"
-        Me.CmdDesahacer.Text = "Deshacer "
-        Me.CmdDesahacer.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.CmdDesahacer.UseVisualStyleBackColor = True
+        Me.CmdNuevo.UseVisualStyleBackColor = False
         '
         'CmdGrabar
         '
-        Me.CmdGrabar.Image = CType(resources.GetObject("CmdGrabar.Image"), System.Drawing.Image)
-        Me.CmdGrabar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.CmdGrabar.Location = New System.Drawing.Point(87, 19)
+        Me.CmdGrabar.BackColor = System.Drawing.Color.FromArgb(CType(CType(22, Byte), Integer), CType(CType(163, Byte), Integer), CType(CType(74, Byte), Integer))
+        Me.CmdGrabar.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.CmdGrabar.FlatAppearance.BorderSize = 0
+        Me.CmdGrabar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(21, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(61, Byte), Integer))
+        Me.CmdGrabar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.CmdGrabar.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CmdGrabar.ForeColor = System.Drawing.Color.White
+        Me.CmdGrabar.Location = New System.Drawing.Point(432, 10)
         Me.CmdGrabar.Name = "CmdGrabar"
-        Me.CmdGrabar.Size = New System.Drawing.Size(75, 67)
-        Me.CmdGrabar.TabIndex = 127
+        Me.CmdGrabar.Size = New System.Drawing.Size(96, 36)
+        Me.CmdGrabar.TabIndex = 2
         Me.CmdGrabar.Tag = "25"
         Me.CmdGrabar.Text = "Guardar"
-        Me.CmdGrabar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.CmdGrabar.UseVisualStyleBackColor = True
+        Me.CmdGrabar.UseVisualStyleBackColor = False
         '
-        'GroupBox3
+        'ButtonBorrar
         '
-        Me.GroupBox3.Controls.Add(Me.CmdNuevo)
-        Me.GroupBox3.Controls.Add(Me.CmdProcesar)
-        Me.GroupBox3.Controls.Add(Me.Button8)
-        Me.GroupBox3.Controls.Add(Me.CmdOrden)
-        Me.GroupBox3.Controls.Add(Me.CmdDesahacer)
-        Me.GroupBox3.Controls.Add(Me.CmdGrabar)
-        Me.GroupBox3.Controls.Add(Me.ButtonBorrar)
-        Me.GroupBox3.Controls.Add(Me.Button2)
-        Me.GroupBox3.Location = New System.Drawing.Point(554, 195)
-        Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(169, 243)
-        Me.GroupBox3.TabIndex = 128
-        Me.GroupBox3.TabStop = False
+        Me.ButtonBorrar.BackColor = System.Drawing.Color.FromArgb(CType(CType(236, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(245, Byte), Integer))
+        Me.ButtonBorrar.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.ButtonBorrar.FlatAppearance.BorderSize = 0
+        Me.ButtonBorrar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(254, Byte), Integer), CType(CType(226, Byte), Integer), CType(CType(226, Byte), Integer))
+        Me.ButtonBorrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.ButtonBorrar.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonBorrar.ForeColor = System.Drawing.Color.FromArgb(CType(CType(185, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.ButtonBorrar.Location = New System.Drawing.Point(540, 10)
+        Me.ButtonBorrar.Name = "ButtonBorrar"
+        Me.ButtonBorrar.Size = New System.Drawing.Size(96, 36)
+        Me.ButtonBorrar.TabIndex = 3
+        Me.ButtonBorrar.Tag = "29"
+        Me.ButtonBorrar.Text = "Eliminar"
+        Me.ButtonBorrar.UseVisualStyleBackColor = False
         '
-        'PictureBox3
+        'BtnImprimir
         '
-        Me.PictureBox3.Image = CType(resources.GetObject("PictureBox3.Image"), System.Drawing.Image)
-        Me.PictureBox3.Location = New System.Drawing.Point(555, 76)
-        Me.PictureBox3.Name = "PictureBox3"
-        Me.PictureBox3.Size = New System.Drawing.Size(168, 113)
-        Me.PictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox3.TabIndex = 129
-        Me.PictureBox3.TabStop = False
+        Me.BtnImprimir.BackColor = System.Drawing.Color.FromArgb(CType(CType(236, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(245, Byte), Integer))
+        Me.BtnImprimir.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.BtnImprimir.FlatAppearance.BorderSize = 0
+        Me.BtnImprimir.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(215, Byte), Integer), CType(CType(225, Byte), Integer), CType(CType(238, Byte), Integer))
+        Me.BtnImprimir.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnImprimir.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnImprimir.ForeColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.BtnImprimir.Location = New System.Drawing.Point(648, 10)
+        Me.BtnImprimir.Name = "BtnImprimir"
+        Me.BtnImprimir.Size = New System.Drawing.Size(96, 36)
+        Me.BtnImprimir.TabIndex = 4
+        Me.BtnImprimir.Tag = "27"
+        Me.BtnImprimir.Text = "Imprimir"
+        Me.BtnImprimir.UseVisualStyleBackColor = False
+        '
+        'CmdProcesar
+        '
+        Me.CmdProcesar.BackColor = System.Drawing.Color.FromArgb(CType(CType(37, Byte), Integer), CType(CType(99, Byte), Integer), CType(CType(235, Byte), Integer))
+        Me.CmdProcesar.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.CmdProcesar.FlatAppearance.BorderSize = 0
+        Me.CmdProcesar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(29, Byte), Integer), CType(CType(78, Byte), Integer), CType(CType(216, Byte), Integer))
+        Me.CmdProcesar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.CmdProcesar.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CmdProcesar.ForeColor = System.Drawing.Color.White
+        Me.CmdProcesar.Location = New System.Drawing.Point(756, 10)
+        Me.CmdProcesar.Name = "CmdProcesar"
+        Me.CmdProcesar.Size = New System.Drawing.Size(96, 36)
+        Me.CmdProcesar.TabIndex = 5
+        Me.CmdProcesar.Text = "Procesar"
+        Me.CmdProcesar.UseVisualStyleBackColor = False
+        Me.CmdProcesar.Visible = False
+        '
+        'CmdOrden
+        '
+        Me.CmdOrden.BackColor = System.Drawing.Color.FromArgb(CType(CType(37, Byte), Integer), CType(CType(99, Byte), Integer), CType(CType(235, Byte), Integer))
+        Me.CmdOrden.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.CmdOrden.FlatAppearance.BorderSize = 0
+        Me.CmdOrden.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(29, Byte), Integer), CType(CType(78, Byte), Integer), CType(CType(216, Byte), Integer))
+        Me.CmdOrden.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.CmdOrden.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CmdOrden.ForeColor = System.Drawing.Color.White
+        Me.CmdOrden.Location = New System.Drawing.Point(756, 10)
+        Me.CmdOrden.Name = "CmdOrden"
+        Me.CmdOrden.Size = New System.Drawing.Size(96, 36)
+        Me.CmdOrden.TabIndex = 6
+        Me.CmdOrden.Tag = "28"
+        Me.CmdOrden.Text = "Procesar"
+        Me.CmdOrden.UseVisualStyleBackColor = False
+        Me.CmdOrden.Visible = False
+        '
+        'CmdDesahacer
+        '
+        Me.CmdDesahacer.BackColor = System.Drawing.Color.FromArgb(CType(CType(217, Byte), Integer), CType(CType(119, Byte), Integer), CType(CType(6, Byte), Integer))
+        Me.CmdDesahacer.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.CmdDesahacer.FlatAppearance.BorderSize = 0
+        Me.CmdDesahacer.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(180, Byte), Integer), CType(CType(83, Byte), Integer), CType(CType(9, Byte), Integer))
+        Me.CmdDesahacer.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.CmdDesahacer.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CmdDesahacer.ForeColor = System.Drawing.Color.White
+        Me.CmdDesahacer.Location = New System.Drawing.Point(756, 10)
+        Me.CmdDesahacer.Name = "CmdDesahacer"
+        Me.CmdDesahacer.Size = New System.Drawing.Size(96, 36)
+        Me.CmdDesahacer.TabIndex = 7
+        Me.CmdDesahacer.Tag = "28"
+        Me.CmdDesahacer.Text = "Deshacer"
+        Me.CmdDesahacer.UseVisualStyleBackColor = False
+        Me.CmdDesahacer.Visible = False
+        '
+        'BtnSalir
+        '
+        Me.BtnSalir.BackColor = System.Drawing.Color.FromArgb(CType(CType(236, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(245, Byte), Integer))
+        Me.BtnSalir.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.BtnSalir.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.BtnSalir.FlatAppearance.BorderSize = 0
+        Me.BtnSalir.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(254, Byte), Integer), CType(CType(226, Byte), Integer), CType(CType(226, Byte), Integer))
+        Me.BtnSalir.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnSalir.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnSalir.ForeColor = System.Drawing.Color.FromArgb(CType(CType(185, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.BtnSalir.Location = New System.Drawing.Point(864, 10)
+        Me.BtnSalir.Name = "BtnSalir"
+        Me.BtnSalir.Size = New System.Drawing.Size(96, 36)
+        Me.BtnSalir.TabIndex = 8
+        Me.BtnSalir.Text = "Salir"
+        Me.BtnSalir.UseVisualStyleBackColor = False
         '
         'FrmEnsamble
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(737, 451)
-        Me.Controls.Add(Me.PictureBox3)
-        Me.Controls.Add(Me.GroupBox3)
-        Me.Controls.Add(Me.ButtonAgregar)
-        Me.Controls.Add(Me.GroupBox2)
-        Me.Controls.Add(Me.Label9)
-        Me.Controls.Add(Me.PictureBox2)
-        Me.Controls.Add(Me.PictureBox1)
-        Me.Controls.Add(Me.GroupBox1)
-        Me.MaximizeBox = False
+        Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(248, Byte), Integer))
+        Me.CancelButton = Me.BtnSalir
+        Me.ClientSize = New System.Drawing.Size(980, 520)
+        Me.Controls.Add(Me.PnlComponentes)
+        Me.Controls.Add(Me.PnlProducto)
+        Me.Controls.Add(Me.PnlDocumento)
+        Me.Controls.Add(Me.PnlAcciones)
+        Me.Controls.Add(Me.PnlHeader)
+        Me.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable
+        Me.MaximizeBox = True
         Me.MinimizeBox = False
         Me.Name = "FrmEnsamble"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Control de Ensambles"
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
-        CType(Me.CboBodegaDestino, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox2.PerformLayout()
-        CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.BindingComponentes, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox3.ResumeLayout(False)
-        CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.PnlHeader.ResumeLayout(False)
+        Me.PnlHeader.PerformLayout()
+        Me.PnlDocumento.ResumeLayout(False)
+        Me.PnlDocumento.PerformLayout()
+        Me.PnlProducto.ResumeLayout(False)
+        Me.PnlProducto.PerformLayout()
+        Me.PnlComponentes.ResumeLayout(False)
+        Me.PnlComponentes.PerformLayout()
+        CType(Me.GridComponentes, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.PnlAcciones.ResumeLayout(False)
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents Label9 As System.Windows.Forms.Label
-    Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents DTPFecha As System.Windows.Forms.DateTimePicker
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents TxtNumeroEnsamble As System.Windows.Forms.TextBox
-    Friend WithEvents Button6 As System.Windows.Forms.Button
-    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
-    Friend WithEvents TrueDBGridComponentes As C1.Win.C1TrueDBGrid.C1TrueDBGrid
-    Friend WithEvents TxtCodigo As System.Windows.Forms.TextBox
-    Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents TxtDescripcion As System.Windows.Forms.TextBox
-    Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents TxtCantidad As System.Windows.Forms.TextBox
-    Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents CmdAgregarProducto As System.Windows.Forms.Button
-    Friend WithEvents ButtonBorrar As System.Windows.Forms.Button
-    Friend WithEvents ButtonAgregar As System.Windows.Forms.Button
-    Friend WithEvents Button8 As System.Windows.Forms.Button
-    Friend WithEvents BindingComponentes As System.Windows.Forms.BindingSource
+
+    Friend WithEvents PnlHeader As System.Windows.Forms.Panel
+    Friend WithEvents LblTitulo As System.Windows.Forms.Label
+    Friend WithEvents LblSubtitulo As System.Windows.Forms.Label
+    Friend WithEvents LblNumeroEnsamble As System.Windows.Forms.Label
+    Friend WithEvents PnlDocumento As System.Windows.Forms.Panel
+    Friend WithEvents LblTituloDocumento As System.Windows.Forms.Label
+    Friend WithEvents LblTipo As System.Windows.Forms.Label
     Friend WithEvents CboTipoProducto As System.Windows.Forms.ComboBox
-    Friend WithEvents CmdProcesar As System.Windows.Forms.Button
+    Friend WithEvents LblFecha As System.Windows.Forms.Label
+    Friend WithEvents DTPFecha As System.Windows.Forms.DateTimePicker
+    Friend WithEvents LblNumero As System.Windows.Forms.Label
+    Friend WithEvents TxtNumeroEnsamble As System.Windows.Forms.TextBox
+    Friend WithEvents BtnBuscarEnsamble As System.Windows.Forms.Button
+    Friend WithEvents LblBodegaOrigen As System.Windows.Forms.Label
+    Friend WithEvents CboCodigoBodega As System.Windows.Forms.ComboBox
+    Friend WithEvents LblNombreBodegaOrigen As System.Windows.Forms.Label
+    Friend WithEvents LblBodegaDestino As System.Windows.Forms.Label
+    Friend WithEvents CboBodegaDestino As System.Windows.Forms.ComboBox
+    Friend WithEvents LblNombreBodegaDestino As System.Windows.Forms.Label
+    Friend WithEvents PnlProducto As System.Windows.Forms.Panel
+    Friend WithEvents LblTituloProducto As System.Windows.Forms.Label
+    Friend WithEvents LblCodigo As System.Windows.Forms.Label
+    Friend WithEvents TxtCodigo As System.Windows.Forms.TextBox
+    Friend WithEvents LblDescripcion As System.Windows.Forms.Label
+    Friend WithEvents TxtDescripcion As System.Windows.Forms.TextBox
+    Friend WithEvents CmdAgregarProducto As System.Windows.Forms.Button
     Friend WithEvents CmdEnsambles As System.Windows.Forms.Button
+    Friend WithEvents LblCantidad As System.Windows.Forms.Label
+    Friend WithEvents TxtCantidad As System.Windows.Forms.TextBox
+    Friend WithEvents LblRendimiento As System.Windows.Forms.Label
+    Friend WithEvents TxtRendimiento As System.Windows.Forms.TextBox
+    Friend WithEvents LblUnidadMedida As System.Windows.Forms.Label
     Friend WithEvents TxtNumero As System.Windows.Forms.TextBox
-    Friend WithEvents Button2 As System.Windows.Forms.Button
-    Friend WithEvents CboCodigoBodega As C1.Win.C1List.C1Combo
-    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents PnlComponentes As System.Windows.Forms.Panel
+    Friend WithEvents LblTituloComponentes As System.Windows.Forms.Label
+    Friend WithEvents LblResumen As System.Windows.Forms.Label
+    Friend WithEvents BtnSeries As System.Windows.Forms.Button
+    Friend WithEvents PnlFiltros As System.Windows.Forms.Panel
+    Friend WithEvents GridComponentes As System.Windows.Forms.DataGridView
+    Friend WithEvents PnlAcciones As System.Windows.Forms.Panel
+    Friend WithEvents LblEstado As System.Windows.Forms.Label
     Friend WithEvents CmdNuevo As System.Windows.Forms.Button
+    Friend WithEvents CmdGrabar As System.Windows.Forms.Button
+    Friend WithEvents ButtonBorrar As System.Windows.Forms.Button
+    Friend WithEvents BtnImprimir As System.Windows.Forms.Button
+    Friend WithEvents CmdProcesar As System.Windows.Forms.Button
     Friend WithEvents CmdOrden As System.Windows.Forms.Button
     Friend WithEvents CmdDesahacer As System.Windows.Forms.Button
-    Friend WithEvents CmdGrabar As System.Windows.Forms.Button
-    Friend WithEvents C1Button2 As C1.Win.C1Input.C1Button
-    Friend WithEvents LblUnidadMedida As System.Windows.Forms.Label
-    Friend WithEvents TxtRendimiento As System.Windows.Forms.TextBox
-    Friend WithEvents Label30 As System.Windows.Forms.Label
-    Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
-    Friend WithEvents PictureBox3 As System.Windows.Forms.PictureBox
-    Friend WithEvents CboBodegaDestino As C1.Win.C1List.C1Combo
-    Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents BtnSalir As System.Windows.Forms.Button
 End Class

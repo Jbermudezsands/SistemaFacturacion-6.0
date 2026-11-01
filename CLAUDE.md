@@ -65,3 +65,15 @@ Solo con **Visual Studio 2019+** en Windows (no hay CI ni tests automatizados):
 - No tocar `Backup/`, `Backup1/`, `Respaldo/`, binarios (`.exe`, `.dll`, `.ocx`, `.rar`, `.zip`) ni archivos de usuario de VS (`.suo`, `.vs/`).
 - Hay un `.sln` adicional (`Sistema de Facturacion Colegios - copia.sln`): es una copia; el oficial es `Sistema de Facturacion 6.0.sln`.
 - Rama de trabajo actual al crear este archivo: `ReparacionRecibo`; rama principal: `master`.
+
+## Dimensiones de formularios dentro del MDI
+
+El área visible del MDI (`MDIMain`) deja unos **~520 px de alto útil** y **~1000 px de ancho** para un formulario hijo (medido con una captura a 1033x600, con la barra de menús arriba y la barra de estado abajo). Un formulario de 680 px de alto queda cortado y esconde la barra de botones. Al rediseñar o ajustar formularios hijos, partir de estas medidas:
+
+- `ClientSize` máximo: **980 x 520**. `StartPosition = CenterParent`. Preferir `FormBorderStyle = Sizable` y `MaximizeBox = True`, con `Anchor` en las tarjetas y el grid para que crezcan al maximizar.
+- Referencia: `FrmEnsamble` (`Sistema Facturacion/FrmEnsamble.Designer.vb`), estilo de `FrmCreditosNuevos`:
+  - Encabezado (`PnlHeader`, Dock Top): alto **58**.
+  - Barra de acciones (`PnlAcciones`, Dock Bottom): alto **56**, botones de 96 x 36 en y=10, separados cada 108 px.
+  - Tarjetas blancas de datos: ancho **948**, x=16, alto **~96** (dos filas: inputs en y=36 y y=64), separadas 8 px.
+  - Tarjeta del grid (`PnlComponentes`): x=16, y=274, 948 x 182, Anchor en los cuatro lados. Dentro: fila de filtros (`PnlFiltros`) en y=38 con alto 28 y grid en y=66 de 916 x 108 (cabecera de 32, filas de 26).
+- Los combos con `FlatStyle.Flat` sobre fondo blanco no muestran borde; si quedan sin selección parecen vacíos. Seleccionar el primer ítem explícitamente al cargar el origen de datos.

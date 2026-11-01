@@ -15043,44 +15043,7 @@ errSub:
     End Sub
 
     Public Sub LimpiaEnsamble()
-        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        Dim SqlString As String, CodComponente As Double
-
-
-        CodComponente = -10000
-
-
-        FrmEnsamble.TxtCodigo.Text = ""
-        FrmEnsamble.TxtDescripcion.Text = ""
-        FrmEnsamble.TxtCantidad.Text = 1
-        FrmEnsamble.TxtNumeroEnsamble.Text = "-----0-----"
-        FrmEnsamble.TxtNumero.Text = ""
-
-
-        '//////////////////////////////////////////////////////////////////////////////////////////////
-        '///////////////BUSCO LOS COMPONENTES DEL PRODUCTO/////////////////////////////////////////////////
-        '/////////////////////////////////////////////////////////////////////////////////////////////
-
-        SqlString = "SELECT *  FROM Componentes WHERE (Cod_Componente = '" & CodComponente & "')"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "Componentes")
-        FrmEnsamble.BindingComponentes.DataSource = DataSet.Tables("Componentes")
-        FrmEnsamble.TrueDBGridComponentes.DataSource = FrmEnsamble.BindingComponentes
-
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Visible = False
-        FrmEnsamble.TrueDBGridComponentes.Columns(1).Caption = "Componente"
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 74
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 250
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Locked = True
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = True
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 68
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Visible = False
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Locked = True
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Width = 74
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Locked = True
+        FrmEnsamble.Limpiar()
     End Sub
     Public Sub ActulizacionFacturaEnsamble(ByVal Numero As String, ByVal Tipo As String, ByVal Fecha As Date, ByVal Excento As Boolean)
         Dim MiConexion As New SqlClient.SqlConnection(Conexion)
@@ -17646,29 +17609,7 @@ errSub:
     End Sub
 
     Public Sub ActualizaComponenteEnsamble(ByVal CodComponente As String, ByVal Cantidad As Double)
-        Dim SqlString As String
-        Dim MiConexion As New SqlClient.SqlConnection(Conexion)
-        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-        '//////////////////////////////////////////////////////////////////////////////////////////////
-        '///////////////BUSCO LOS COMPONENTES DEL PRODUCTO/////////////////////////////////////////////////
-        '/////////////////////////////////////////////////////////////////////////////////////////////
-
-        SqlString = "SELECT  Cod_Componente, Cod_Producto, Descripcion_Producto, Requerido * " & Cantidad & " AS Requerido, Recuperable, Desecho * " & Cantidad & " AS Desecho  FROM Componentes WHERE (Cod_Componente = '" & CodComponente & "')"
-        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-        DataAdapter.Fill(DataSet, "Componentes")
-        FrmEnsamble.BindingComponentes.DataSource = DataSet.Tables("Componentes")
-        FrmEnsamble.TrueDBGridComponentes.DataSource = FrmEnsamble.BindingComponentes
-
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(0).Visible = False
-        FrmEnsamble.TrueDBGridComponentes.Columns(1).Caption = "Componente"
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Width = 74
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(1).Locked = True
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Width = 250
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(2).Locked = True
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Width = 68
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(4).Visible = False
-        FrmEnsamble.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(5).Width = 74
+        FrmEnsamble.MostrarComponentes(New EnsambleRepositorio(Conexion).ObtenerComponentes(Val(CodComponente), Cantidad))
     End Sub
     Public Function ConsultaConsecutivo(ByVal NombreCampo As String) As Double
 
