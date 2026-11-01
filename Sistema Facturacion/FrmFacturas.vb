@@ -1,4 +1,4 @@
-ÔªøImports System.Data.SqlClient
+Imports System.Data.SqlClient
 Imports System.Threading
 Imports System.IO
 Imports System.Drawing.Printing
@@ -11,6 +11,15 @@ Public Class FrmFacturas
     Public ds As New DataSet, dsMetodo As DataSet, da As New SqlClient.SqlDataAdapter, CmdBuilder As New SqlCommandBuilder, CambioCliente As Boolean, Impresora_Defecto As String
     Private oHebraCliente As Thread, SaldoClienteH As Double, LimiteCredito As Double, MonedaLimiteCredito As String, BloqueoLimiteCredito As Boolean = False, FechaVenceLote As Date
     Private CodigoCliente As String, FechaFin As Date, Moneda As String, PedirCantEscaner As Boolean
+    Private PrecioProductoDigitado As Double = -1
+    Private PagoPersonalizado As Boolean = False
+    'Caches para no repetir consultas en cada celda editada del grid de productos
+    Private IvaProductoCache As String = Nothing
+    Private ImpuestosCache As New Dictionary(Of String, Double)
+    Private ClienteValidado As String = Nothing
+    Private LotesValidados As New Dictionary(Of String, Boolean)
+    Private FilaEliminadaBD As DataRow = Nothing
+    Private CompletandoCodigoAlterno As Boolean = False
     Public WithEvents backgroundWorkerLote As System.ComponentModel.BackgroundWorker
     Public WithEvents backgroundWorkerInsertar As System.ComponentModel.BackgroundWorker
     Public WithEvents backgroundWorkerGrabar As System.ComponentModel.BackgroundWorker
@@ -40,7 +49,7 @@ Public Class FrmFacturas
                 cn.Open()
 
                 '------------------------------------------------------------
-                ' 1Ô∏è‚É£ BORRAR LOS M√âTODOS EXISTENTES (solo si no es cr√©dito)
+                ' 1?? BORRAR LOS M…TODOS EXISTENTES (solo si no es crÈdito)
                 '------------------------------------------------------------
                 If Not EsCredito Then
                     Dim sqlDelete As String = "
@@ -57,7 +66,7 @@ Public Class FrmFacturas
                 End If
 
                 '------------------------------------------------------------
-                ' 2Ô∏è RECORRER Y GRABAR NUEVOS M√âTODOS DE PAGO
+                ' 2? RECORRER Y GRABAR NUEVOS M…TODOS DE PAGO
                 '------------------------------------------------------------
                 If BindingMetodo.Count > 0 AndAlso Not EsCredito Then
                     For Each fila As DataRowView In BindingMetodo
@@ -121,14 +130,14 @@ Public Class FrmFacturas
                 End If
 
                 '------------------------------------------------------------
-                ' 3Ô∏è CONFIRMACI√ìN
+                ' 3? CONFIRMACI”N
                 '------------------------------------------------------------
-                'MsgBox("M√©todos de pago guardados correctamente.", MsgBoxStyle.Information, "Sistema de Facturaci√≥n")
+                'MsgBox("MÈtodos de pago guardados correctamente.", MsgBoxStyle.Information, "Sistema de FacturaciÛn")
 
             End Using
 
         Catch ex As Exception
-            MsgBox("Error al grabar m√©todos de pago: " & ex.Message, MsgBoxStyle.Critical, "Error")
+            MsgBox("Error al grabar mÈtodos de pago: " & ex.Message, MsgBoxStyle.Critical, "Error")
         End Try
 
     End Sub
@@ -164,7 +173,7 @@ Public Class FrmFacturas
     'Public Sub ActualizaMETODOFactura()
 
     '    '------------------------------------------------------------
-    '    ' Declaraci√≥n de variables
+    '    ' DeclaraciÛn de variables
     '    '------------------------------------------------------------
     '    Dim Metodo As String = ""
     '    Dim iPosicion As Integer = 0
@@ -195,12 +204,12 @@ Public Class FrmFacturas
     '    Dim MontoPropina As Double = 0
 
     '    '------------------------------------------------------------
-    '    ' PREVENCI√ìN: Si no hay detalle de productos, salir
+    '    ' PREVENCI”N: Si no hay detalle de productos, salir
     '    '------------------------------------------------------------
     '    If BindingDetalle Is Nothing OrElse BindingDetalle.Count = 0 Then Exit Sub
 
     '    '------------------------------------------------------------
-    '    ' 1Ô∏è‚É£ CALCULAR MONTOS DE M√âTODOS DE PAGO (SI EXISTEN)
+    '    ' 1?? CALCULAR MONTOS DE M…TODOS DE PAGO (SI EXISTEN)
     '    '------------------------------------------------------------
     '    Monto = 0
 
@@ -217,7 +226,7 @@ Public Class FrmFacturas
     '            TipoMetodo = "Normal"
     '            TasaCambio = 1
 
-    '            ' Buscar configuraci√≥n del m√©todo de pago
+    '            ' Buscar configuraciÛn del mÈtodo de pago
     '            SqlMetodo = "SELECT Moneda, TipoPago FROM MetodoPago WHERE (NombrePago = @Metodo)"
     '            DataAdapter = New SqlClient.SqlDataAdapter(SqlMetodo, MiConexion)
     '            DataAdapter.SelectCommand.Parameters.AddWithValue("@Metodo", Metodo)
@@ -229,7 +238,7 @@ Public Class FrmFacturas
     '            End If
     '            DataSet.Tables("Metodo").Clear()
 
-    '            ' Calcular tasa seg√∫n monedas
+    '            ' Calcular tasa seg˙n monedas
     '            Select Case Moneda
     '                Case "Cordobas"
     '                    If MonedaFactura = "Dolares" Then
@@ -271,7 +280,7 @@ Public Class FrmFacturas
     '    End If
 
     '    '------------------------------------------------------------
-    '    ' 2Ô∏è‚É£ CALCULAR SUBTOTAL E IVA
+    '    ' 2?? CALCULAR SUBTOTAL E IVA
     '    '------------------------------------------------------------
     '    Subtotal = 0
     '    Iva = 0
@@ -301,11 +310,11 @@ Public Class FrmFacturas
 
 
 
-    '    ' Si est√° exonerado, forzar IVA en 0
+    '    ' Si est· exonerado, forzar IVA en 0
     '    If OptExsonerado.Checked Then Iva = 0
 
     '    '------------------------------------------------------------
-    '    ' 3Ô∏è‚É£ RETENCIONES, PROPINAS Y DESCUENTOS
+    '    ' 3?? RETENCIONES, PROPINAS Y DESCUENTOS
     '    '------------------------------------------------------------
     '    If OptRet1Porciento.Checked Then Retencion1Porciento = Subtotal * 0.01
     '    If OptRet2Porciento.Checked Then Retencion2Porciento = Subtotal * 0.02
@@ -325,14 +334,14 @@ Public Class FrmFacturas
     '    Descuento = CDbl(Val(TxtDescuento.Text))
 
     '    '------------------------------------------------------------
-    '    ' 4Ô∏è‚É£ SI ES CREDITO, PAGADO = 0
+    '    ' 4?? SI ES CREDITO, PAGADO = 0
     '    '------------------------------------------------------------
     '    If RadioButton1.Checked Then
     '        Monto = Retencion1Porciento + Retencion2Porciento
     '    End If
 
     '    '------------------------------------------------------------
-    '    ' 5Ô∏è‚É£ CALCULAR Y ACTUALIZAR CAMPOS DE TEXTO
+    '    ' 5?? CALCULAR Y ACTUALIZAR CAMPOS DE TEXTO
     '    '------------------------------------------------------------
     '    Iva = Redondeo(Iva, 3)
     '    Neto = (Subtotal + Iva + MontoPropina) - (Monto + Descuento)
@@ -519,6 +528,15 @@ Public Class FrmFacturas
             IvaGral = 0
         End If
 
+        'Regla: todos los descuentos se restan del subtotal ANTES de calcular el IVA.
+        'El IVA acumulado por producto se reduce en la misma proporcion del descuento (respeta tasas distintas por producto).
+        Descuento = CDbl(Val(Replace(TxtDescuento.Text, ",", "")))
+        If Descuento > 0 AndAlso Subtotal > 0 Then
+            If Descuento > Subtotal Then Descuento = Subtotal
+            Iva = Iva * ((Subtotal - Descuento) / Subtotal)
+            IvaGral = Iva
+        End If
+
 
 
 
@@ -568,10 +586,10 @@ Public Class FrmFacturas
                     Do While iPosicion < Registros
 
                         If Not IsDBNull(BindingMetodo.Item(iPosicion)("NombrePago")) Then
-                            If Metodo = BindingMetodo.Item(iPosicion)("NombrePago") Then
-                                BindingMetodo.Item(iPosicion)("Monto") = (Subtotal + Iva + MontoPropina - Retencion1Porciento - Retencion2Porciento)
-                                TrueDBGridMetodo.Columns(1).Text = (Subtotal + Iva + MontoPropina - Retencion1Porciento - Retencion2Porciento)
-                                Monto = (Subtotal + Iva + MontoPropina)
+                            If Metodo = BindingMetodo.Item(iPosicion)("NombrePago") AndAlso Not PagoPersonalizado Then
+                                BindingMetodo.Item(iPosicion)("Monto") = (Subtotal - Descuento + Iva + MontoPropina - Retencion1Porciento - Retencion2Porciento)
+                                TrueDBGridMetodo.Columns(1).Text = (Subtotal - Descuento + Iva + MontoPropina - Retencion1Porciento - Retencion2Porciento)
+                                Monto = (Subtotal - Descuento + Iva + MontoPropina)
                             End If
                         End If
 
@@ -616,7 +634,8 @@ Public Class FrmFacturas
 
 
 
-        Descuento = CDbl(Val(TxtDescuento.Text))
+        Descuento = CDbl(Val(Replace(TxtDescuento.Text, ",", "")))
+        If Descuento > Subtotal Then Descuento = Subtotal
 
         Iva = Redondeo(Iva, 3)
 
@@ -626,6 +645,130 @@ Public Class FrmFacturas
         TxtPagado.Text = Format(Monto, "##,##0.00")
         TxtNetoPagar.Text = Format(Neto, "##,##0.00")
         TxtPropina.Text = Format(MontoPropina, "##,##0.00")
+
+        ActualizarResumenPago()
+    End Sub
+
+    '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '////////////////////////////////// PAGOS DE CONTADO (FrmPagoContado) ///////////////////////////////////////////
+    '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    'Total que deben cubrir los metodos de pago: lo pagado + lo pendiente, sin las retenciones (que no son metodos)
+    Private Function TotalAPagarContado() As Double
+        Dim SubTotal As Double = Val(Replace(Me.TxtSubTotal.Text, ",", ""))
+        Dim Retenciones As Double = 0
+
+        If Me.OptRet1Porciento.Checked Then Retenciones += Math.Round(SubTotal * 0.01, 2)
+        If Me.OptRet2Porciento.Checked Then Retenciones += Math.Round(SubTotal * 0.02, 2)
+
+        Return Math.Round(Val(Replace(Me.TxtNetoPagar.Text, ",", "")) + Val(Replace(Me.TxtPagado.Text, ",", "")) - Retenciones, 2)
+    End Function
+
+    'Muestra con la ventana de pagos cerrada cuanto se ha pagado, que metodos se usaron y cuanto falta o se devuelve
+    Public Sub ActualizarResumenPago()
+        If Me.LblResumenPago Is Nothing OrElse Me.BindingMetodo Is Nothing Then Exit Sub
+
+        Me.BtnPagos.Visible = Me.RadioButton2.Checked
+        Me.LblResumenPago.Visible = Me.RadioButton2.Checked
+        If Not Me.RadioButton2.Checked Then Exit Sub
+
+        Dim Dt As DataTable = TryCast(Me.BindingMetodo.DataSource, DataTable)
+        Dim DtCatalogo As New DataTable, Detalle As String = "", Pagado As Double = 0, Total As Double
+        Dim Tasa As Double = 1, Cambio As Double = 0, Pendiente As Double = 0
+
+        If Dt Is Nothing Then Exit Sub
+
+        Try
+            Using Adaptador As New SqlClient.SqlDataAdapter("SELECT NombrePago, TipoPago, Moneda FROM MetodoPago", MiConexion)
+                Adaptador.Fill(DtCatalogo)
+            End Using
+            Tasa = BuscaTasaCambio(Me.DTPFecha.Value)
+            If Tasa = 0 Then Tasa = 1
+        Catch
+            'Sin catalogo se muestran los montos tal cual
+        End Try
+
+        For Each Fila As DataRow In Dt.Rows
+            If Fila.RowState = DataRowState.Deleted OrElse IsDBNull(Fila("NombrePago")) OrElse IsDBNull(Fila("Monto")) Then Continue For
+
+            Dim Nombre As String = CStr(Fila("NombrePago")).Trim()
+            Dim Monto As Double = CDbl(Fila("Monto"))
+            Dim MonedaMetodo As String = Me.TxtMonedaFactura.Text
+            Dim TipoMetodo As String = ""
+            Dim Filas() As DataRow = DtCatalogo.Select("NombrePago = '" & Replace(Nombre, "'", "''") & "'")
+
+            If Filas.Length > 0 Then
+                MonedaMetodo = CStr(Filas(0)("Moneda")).Trim()
+                TipoMetodo = CStr(Filas(0)("TipoPago")).Trim()
+            End If
+
+            Dim MontoFactura As Double = Monto
+            If MonedaMetodo <> Me.TxtMonedaFactura.Text Then
+                If MonedaMetodo = "Dolares" Then MontoFactura = Monto * Tasa Else MontoFactura = Monto / Tasa
+            End If
+
+            If TipoMetodo = "Cambio" Then MontoFactura = MontoFactura * -1
+
+            Pagado += MontoFactura
+            If Detalle <> "" Then Detalle &= vbCrLf
+            Detalle &= Nombre & ": " & Format(Monto, "##,##0.00")
+        Next
+
+        Total = TotalAPagarContado()
+        Pendiente = Math.Round(Total - Pagado, 2)
+        If Pendiente < 0 Then
+            Cambio = -Pendiente
+            Pendiente = 0
+        End If
+
+        If Detalle = "" Then Detalle = "Sin pagos registrados"
+
+        Me.LblResumenPago.Text = "Pagado: " & Format(Pagado, "##,##0.00") & "   Pendiente: " & Format(Pendiente, "##,##0.00") &
+                                 IIf(Cambio > 0, "   Cambio: " & Format(Cambio, "##,##0.00"), "").ToString() & vbCrLf & Detalle
+
+        If Pendiente > 0 Then
+            Me.LblResumenPago.ForeColor = Color.FromArgb(200, 90, 0)
+        Else
+            Me.LblResumenPago.ForeColor = Color.FromArgb(30, 130, 60)
+        End If
+    End Sub
+
+    Private Sub BtnPagos_Click(sender As Object, e As EventArgs) Handles BtnPagos.Click
+        Dim Dt As DataTable = TryCast(Me.BindingMetodo.DataSource, DataTable)
+        Dim Pago As New FrmPagoContado
+
+        If Dt Is Nothing Then Exit Sub
+
+        If Me.BindingDetalle Is Nothing OrElse Me.BindingDetalle.Count = 0 Then
+            MsgBox("Seleccione un Producto primero", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If TotalAPagarContado() <= 0 Then
+            MsgBox("El total de la factura es cero. Digite la cantidad de los productos antes de registrar el pago.", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        Pago.MontoAPagar = TotalAPagarContado()
+        Pago.MonedaFactura = Me.TxtMonedaFactura.Text
+        Pago.FechaFactura = Me.DTPFecha.Value
+        Pago.MetodosIniciales = Dt
+
+        If Pago.ShowDialog() <> Windows.Forms.DialogResult.OK Then Exit Sub
+
+        Dt.Rows.Clear()
+        For Each Fila As DataRow In Pago.Resultado.Rows
+            Dim Nueva As DataRow = Dt.NewRow()
+            Nueva("NombrePago") = Fila("NombrePago")
+            Nueva("Monto") = Fila("Monto")
+            Nueva("NumeroTarjeta") = Fila("NumeroTarjeta")
+            Nueva("FechaVence") = Fila("FechaVence")
+            Dt.Rows.Add(Nueva)
+        Next
+
+        'Los montos digitados por el usuario no deben ser reemplazados por el efectivo por defecto
+        PagoPersonalizado = True
+        ActualizaMETODOFactura()
     End Sub
 
 
@@ -910,7 +1053,7 @@ Public Class FrmFacturas
             '    DetalleFactura.Fecha_Vence = "01/01/1900"
             'End If
 
-            If Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("CodTarea")) Then
+            If dsDetalle.Tables("DetalleFactura").Columns.Contains("CodTarea") AndAlso Not IsDBNull(dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("CodTarea")) Then
                 DetalleFactura.Cod_Tarea = dsDetalle.Tables("DetalleFactura").Rows(iPosicion)("CodTarea")
             Else
                 DetalleFactura.Cod_Tarea = 0
@@ -1818,7 +1961,7 @@ WHERE rn = 1"
         'SQlString = "WITH Movimientos AS (SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote, '') AS Lote, C.Cod_Bodega FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra = C.Numero_Compra AND DC.Fecha_Compra = C.Fecha_Compra AND DC.Tipo_Compra = C.Tipo_Compra WHERE DC.Fecha_Compra <= @FechaCorte AND DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta UNION SELECT DF.Cod_Producto, ISNULL(DF.CodTarea, '') AS Lote, F.Cod_Bodega FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE DF.Fecha_Factura <= @FechaCorte AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta ), Existencias AS ( SELECT L.Cod_Producto, Prod.Descripcion_Producto AS Producto, L.Cod_Bodega, L.Lote, Prod.Cod_Linea, Lte.FechaVence AS Fecha_Vencimiento, ISNULL(MR.Cantidad,0) AS Mercancia_Recibida, ISNULL(TR.Cantidad,0) AS Transferencia_Recibida, ISNULL(DV.Cantidad,0) AS Devolucion_Venta, ISNULL(Fact.Cantidad,0) AS Factura, ISNULL(SB.Cantidad,0) AS Salidas_Bodegas, ISNULL(TE.Cantidad,0) AS Transferencia_Enviada, ISNULL(DC.Cantidad,0) AS Devolucion_Compra, ISNULL(MR.Cantidad,0) + ISNULL(TR.Cantidad,0) + ISNULL(DV.Cantidad,0) - (ISNULL(Fact.Cantidad,0) + ISNULL(SB.Cantidad,0) + ISNULL(TE.Cantidad,0) + ISNULL(DC.Cantidad,0)) AS Existencia FROM Movimientos L INNER JOIN Productos Prod ON L.Cod_Producto = Prod.Cod_Productos LEFT JOIN Lote Lte ON L.Lote = Lte.Numero_Lote AND Lte.Activo = 1 AND L.Lote NOT IN ('SIN LOTE', 'SINLOTE', '') LEFT JOIN ( SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'') AS Lote, C.Cod_Bodega, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra = C.Numero_Compra AND DC.Fecha_Compra = C.Fecha_Compra AND DC.Tipo_Compra = C.Tipo_Compra WHERE C.Fecha_Compra <= @FechaCorte AND C.Tipo_Compra = 'Mercancia Recibida' AND DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,''), C.Cod_Bodega ) MR ON L.Cod_Producto = MR.Cod_Producto AND L.Lote = MR.Lote AND L.Cod_Bodega = MR.Cod_Bodega LEFT JOIN ( SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'') AS Lote, C.Cod_Bodega, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra = C.Numero_Compra AND DC.Fecha_Compra = C.Fecha_Compra AND DC.Tipo_Compra = C.Tipo_Compra WHERE C.Fecha_Compra <= @FechaCorte AND C.Tipo_Compra = 'Transferencia Recibida' AND DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,''), C.Cod_Bodega ) TR ON L.Cod_Producto = TR.Cod_Producto AND L.Lote = TR.Lote AND L.Cod_Bodega = TR.Cod_Bodega LEFT JOIN ( SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE F.Fecha_Factura <= @FechaCorte AND F.Tipo_Factura = 'Devolucion de Venta' AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,''), F.Cod_Bodega ) DV ON L.Cod_Producto = DV.Cod_Producto AND L.Lote = DV.Lote AND L.Cod_Bodega = DV.Cod_Bodega LEFT JOIN ( SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE F.Fecha_Factura <= @FechaCorte AND F.Tipo_Factura = 'Factura' AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,''), F.Cod_Bodega ) Fact ON L.Cod_Producto = Fact.Cod_Producto AND L.Lote = Fact.Lote AND L.Cod_Bodega = Fact.Cod_Bodega LEFT JOIN ( SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE F.Fecha_Factura <= @FechaCorte AND F.Tipo_Factura = 'Salida Bodega' AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,''), F.Cod_Bodega ) SB ON L.Cod_Producto = SB.Cod_Producto AND L.Lote = SB.Lote AND L.Cod_Bodega = SB.Cod_Bodega LEFT JOIN ( SELECT DF.Cod_Producto, ISNULL(DF.CodTarea,'') AS Lote, F.Cod_Bodega, SUM(DF.Cantidad) AS Cantidad FROM Detalle_Facturas DF INNER JOIN Facturas F ON DF.Numero_Factura = F.Numero_Factura AND DF.Fecha_Factura = F.Fecha_Factura AND DF.Tipo_Factura = F.Tipo_Factura WHERE F.Fecha_Factura <= @FechaCorte AND F.Tipo_Factura = 'Transferencia Enviada' AND DF.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND F.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DF.Cod_Producto, ISNULL(DF.CodTarea,''), F.Cod_Bodega ) TE ON L.Cod_Producto = TE.Cod_Producto AND L.Lote = TE.Lote AND L.Cod_Bodega = TE.Cod_Bodega LEFT JOIN ( SELECT DC.Cod_Producto, ISNULL(DC.Numero_Lote,'') AS Lote, C.Cod_Bodega, SUM(DC.Cantidad) AS Cantidad FROM Detalle_Compras DC INNER JOIN Compras C ON DC.Numero_Compra = C.Numero_Compra AND DC.Fecha_Compra = C.Fecha_Compra AND DC.Tipo_Compra = C.Tipo_Compra WHERE C.Fecha_Compra <= @FechaCorte AND C.Tipo_Compra = 'Devolucion de Compra' AND DC.Cod_Producto BETWEEN @CodProductoDesde AND @CodProductoHasta AND C.Cod_Bodega BETWEEN @CodBodegaDesde AND @CodBodegaHasta GROUP BY DC.Cod_Producto, ISNULL(DC.Numero_Lote,''), C.Cod_Bodega ) DC ON L.Cod_Producto = DC.Cod_Producto AND L.Lote = DC.Lote AND L.Cod_Bodega = DC.Cod_Bodega ), LoteMasViejo AS ( SELECT *, ROW_NUMBER() OVER (PARTITION BY Cod_Producto, Cod_Bodega ORDER BY Fecha_Vencimiento ASC) AS rn FROM Existencias WHERE Existencia > 0 AND Fecha_Vencimiento IS NOT NULL ) SELECT * FROM LoteMasViejo WHERE rn = 1 ORDER BY Cod_Producto, Cod_Bodega, Fecha_Vencimiento;"
         'DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
 
-        '' Par√°metros obligatorios
+        '' Par·metros obligatorios
         'DataAdapter.SelectCommand.Parameters.AddWithValue("@FechaCorte", FechaVenceLote)
         'DataAdapter.SelectCommand.Parameters.AddWithValue("@CodBodegaDesde", CodigoBodega)
         'DataAdapter.SelectCommand.Parameters.AddWithValue("@CodBodegaHasta", CodigoBodega)
@@ -2039,7 +2182,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
             'SQlString = "SELECT MAX(DetalleRecibo.CodReciboPago) AS CodReciboPago, DetalleRecibo.Fecha_Recibo, DetalleRecibo.Numero_Factura, SUM(DetalleRecibo.MontoPagado) AS MontoPagado, Recibo.MonedaRecibo FROM DetalleRecibo INNER JOIN Recibo ON DetalleRecibo.CodReciboPago = Recibo.CodReciboPago AND DetalleRecibo.Fecha_Recibo = Recibo.Fecha_Recibo WHERE  (DetalleRecibo.Fecha_Recibo <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) GROUP BY DetalleRecibo.Numero_Factura, Recibo.MonedaRecibo, Recibo.Cod_Cliente, DetalleRecibo.Fecha_Recibo HAVING (DetalleRecibo.Numero_Factura = '" & NumeroFactura & "') AND (Recibo.Cod_Cliente = '" & codigocliente  & "')"
             'SQlString = "SELECT DetalleRecibo.CodReciboPago, DetalleRecibo.Fecha_Recibo, DetalleRecibo.Numero_Factura, DetalleRecibo.MontoPagado, CASE WHEN Recibo.MonedaRecibo = 'Cordobas' THEN DetalleRecibo.MontoPagado ELSE DetalleRecibo.MontoPagado * TasaCambio.MontoTasa END AS MontoCordobas, CASE WHEN Recibo.MonedaRecibo = 'Dolares' THEN DetalleRecibo.MontoPagado ELSE DetalleRecibo.MontoPagado / TasaCambio.MontoTasa END AS MontoDolares, Recibo.Cod_Cliente FROM DetalleRecibo INNER JOIN Recibo ON DetalleRecibo.CodReciboPago = Recibo.CodReciboPago AND DetalleRecibo.Fecha_Recibo = Recibo.Fecha_Recibo INNER JOIN TasaCambio ON Recibo.Fecha_Recibo = TasaCambio.FechaTasa WHERE (DetalleRecibo.Fecha_Recibo <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND (Recibo.Cod_Cliente = '" & codigocliente & "')"
 
-            SQlString = "SELECT DetalleRecibo.CodReciboPago, DetalleRecibo.Fecha_Recibo, DetalleRecibo.Numero_Factura, DetalleRecibo.MontoPagado, CASE WHEN Recibo.MonedaRecibo = 'Cordobas' THEN DetalleRecibo.MontoPagado ELSE DetalleRecibo.MontoPagado * TasaCambio.MontoTasa END AS MontoCordobas, CASE WHEN Recibo.MonedaRecibo = 'Dolares' THEN DetalleRecibo.MontoPagado ELSE DetalleRecibo.MontoPagado / TasaCambio.MontoTasa END AS MontoDolares, Recibo.Cod_Cliente, Recibo.MonedaRecibo FROM DetalleRecibo INNER JOIN Recibo ON DetalleRecibo.CodReciboPago = Recibo.CodReciboPago AND DetalleRecibo.Fecha_Recibo = Recibo.Fecha_Recibo INNER JOIN TasaCambio ON Recibo.Fecha_Recibo = TasaCambio.FechaTasa WHERE (Recibo.Cod_Cliente = '" & CodigoCliente & "') AND (DetalleRecibo.Fecha_Recibo <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND " & _
+            SQlString = "SELECT DetalleRecibo.CodReciboPago, DetalleRecibo.Fecha_Recibo, DetalleRecibo.Numero_Factura, DetalleRecibo.MontoPagado, CASE WHEN Recibo.MonedaRecibo = 'Cordobas' THEN DetalleRecibo.MontoPagado ELSE DetalleRecibo.MontoPagado * TasaCambio.MontoTasa END AS MontoCordobas, CASE WHEN Recibo.MonedaRecibo = 'Dolares' THEN DetalleRecibo.MontoPagado ELSE DetalleRecibo.MontoPagado / TasaCambio.MontoTasa END AS MontoDolares, Recibo.Cod_Cliente, Recibo.MonedaRecibo FROM DetalleRecibo INNER JOIN Recibo ON DetalleRecibo.CodReciboPago = Recibo.CodReciboPago AND DetalleRecibo.Fecha_Recibo = Recibo.Fecha_Recibo INNER JOIN TasaCambio ON Recibo.Fecha_Recibo = TasaCambio.FechaTasa WHERE (Recibo.Cod_Cliente = '" & CodigoCliente & "') AND (DetalleRecibo.Fecha_Recibo <= CONVERT(DATETIME, '" & Format(FechaFin, "yyyy-MM-dd") & "', 102)) AND " &
                          "(DetalleRecibo.Numero_Factura = '" & NumeroFactura & "') "
 
             DataAdapter = New SqlClient.SqlDataAdapter(SQlString, MiConexion)
@@ -2583,7 +2726,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
             'SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM Detalle_Facturas   " & _
             '                 "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura "
             'Detalle_Facturas.id_Detalle_Factura
-            SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura ,Detalle_Facturas.id_Detalle_Factura FROM Detalle_Facturas   " & _
+            SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura ,Detalle_Facturas.id_Detalle_Factura FROM Detalle_Facturas   " &
                                                 "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND  (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura "
             'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
             'DataAdapter.Fill(DataSet, "DetalleFactura")
@@ -2636,7 +2779,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
             'SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM Detalle_Facturas   " & _
             '                 "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura "
             'Detalle_Facturas.id_Detalle_Factura
-            SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura, Detalle_Facturas.id_Detalle_Factura FROM Detalle_Facturas   " & _
+            SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.CodTarea ,Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario, Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura, Detalle_Facturas.id_Detalle_Factura FROM Detalle_Facturas   " &
                                                 "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND  (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura "
             'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
             'DataAdapter.Fill(DataSet, "DetalleFactura")
@@ -2679,7 +2822,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         Else
             '///////////////////////////////////////BUSCO EL DETALLE DE LA FACTURA///////////////////////////////////////////////////////
             'Detalle_Facturas.id_Detalle_Factura
-            SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura, Detalle_Facturas.id_Detalle_Factura FROM  Detalle_Facturas " & _
+            SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura, Detalle_Facturas.id_Detalle_Factura FROM  Detalle_Facturas " &
                          "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura"
             'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
             'SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM  Detalle_Facturas " & _
@@ -2829,7 +2972,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             '///////////////////////////////CARGO EL DETALLE DE COMPRAS/////////////////////////////////////////////////////////////////
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlString = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM  Detalle_Facturas " & _
+            SqlString = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario,Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM  Detalle_Facturas " &
                 "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "') ORDER BY id_Detalle_Factura"
             ds = New DataSet
             da = New SqlDataAdapter(SqlString, MiConexion)
@@ -2974,11 +3117,11 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
     End Sub
 
-        Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
-            Me.Close()
-        End Sub
+    Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
+        Me.Close()
+    End Sub
 
-        Private Sub RadioButton2_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RadioButton2.CheckedChanged
+    Private Sub RadioButton2_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RadioButton2.CheckedChanged
         ''-------------------------------------------------
         '' NO EJECUTAR DURANTE CARGA DE FACTURA
         ''-------------------------------------------------
@@ -2993,7 +3136,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         '        MsgBox("Seleccione un Producto primero",
         '               MsgBoxStyle.Critical, "Zeus Facturacion")
 
-        '        ' Revertir a Cr√©dito
+        '        ' Revertir a CrÈdito
         '        Me.RadioButton1.Checked = True
         '        Exit Sub
         '    End If
@@ -3008,14 +3151,14 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         'Me.LblCajero.Visible = True
 
         ''-------------------------------------------------
-        '' MOSTRAR M√âTODO POR DEFECTO (SI APLICA)
+        '' MOSTRAR M…TODO POR DEFECTO (SI APLICA)
         ''-------------------------------------------------
         'If Me.RadioButton2.Checked Then
         '    MostrarMetodoPagoPorDefecto()
         'End If
 
         ''-------------------------------------------------
-        '' REC√ÅLCULO
+        '' REC¡LCULO
         ''-------------------------------------------------
         'ActualizaMETODOFactura()
 
@@ -3056,7 +3199,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                     oDataRow = DataSet.Tables("MetodoPago").NewRow
                     oDataRow("NombrePago") = DataSet.Tables("Metodo").Rows(0)("NombrePago")
                     If Me.TxtNetoPagar.Text <> "" Then
-                        oDataRow("Monto") = Redondeo(Me.SubTotalGral + Me.IvaGral, 3)
+                        oDataRow("Monto") = Redondeo(Me.SubTotalGral - Val(Replace(Me.TxtDescuento.Text, ",", "")) + Me.IvaGral, 3)
                     Else
                         oDataRow("Monto") = 0
                     End If
@@ -3150,18 +3293,20 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
         ActualizaMETODOFactura()
 
+        'El grid de metodos queda oculto; los pagos se manejan con FrmPagoContado (BtnPagos) y LblResumenPago
+        Me.TrueDBGridMetodo.Visible = False
         If Me.RadioButton2.Checked = True Then
-            Me.TrueDBGridMetodo.Visible = True
             Me.CboCajero.Visible = True
             Me.LblCajero.Visible = True
         Else
-            Me.TrueDBGridMetodo.Visible = False
+            PagoPersonalizado = False
             Me.CboCajero.Visible = False
             Me.LblCajero.Visible = False
         End If
+        ActualizarResumenPago()
     End Sub
 
-        Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
 
         Quien = "CodigoCliente"
         My.Forms.FrmConsultas.ShowDialog()
@@ -3342,7 +3487,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
     End Sub
 
-        Private Sub FrmFacturas_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub FrmFacturas_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim SqlDatos As String, i As Double = 0
 
@@ -3787,146 +3932,146 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
     End Sub
 
-        Private Sub TrueDBGridMetodo_BeforeUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TrueDBGridMetodo.BeforeUpdate
-            Dim MetodoPago As String, SqlMetodo As String, MetodoConsulta As String, TipoPago As String
-            Dim DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet
+    Private Sub TrueDBGridMetodo_BeforeUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TrueDBGridMetodo.BeforeUpdate
+        Dim MetodoPago As String, SqlMetodo As String, MetodoConsulta As String, TipoPago As String
+        Dim DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet
 
-            SqlMetodo = "SELECT * FROM MetodoPago "
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlMetodo, MiConexion)
-            DataAdapter.Fill(DataSet, "Consulta")
-            If Not DataSet.Tables("Consulta").Rows.Count = 0 Then
-                MetodoConsulta = DataSet.Tables("Consulta").Rows(0)("NombrePago")
-                TipoPago = DataSet.Tables("Consulta").Rows(0)("TipoPago")
-            Else
-                MsgBox("No existen Metodos de Pago", MsgBoxStyle.Critical, "Sistema Facturacion")
-                Exit Sub
-            End If
-
-            If Me.TrueDBGridMetodo.Columns(0).Text = "" Then
-                Exit Sub
-            Else
-                MetodoPago = Me.TrueDBGridMetodo.Columns(0).Text
-                SqlMetodo = "SELECT * FROM MetodoPago WHERE (NombrePago = '" & MetodoPago & "')"
-                DataAdapter = New SqlClient.SqlDataAdapter(SqlMetodo, MiConexion)
-                DataAdapter.Fill(DataSet, "Metodo")
-                If DataSet.Tables("Metodo").Rows.Count = 0 Then
-                    MsgBox("Metodo de Pago no Existe,", MsgBoxStyle.Critical, "Sistema Facturacion")
-                    Me.TrueDBGridMetodo.Columns(0).Text = MetodoConsulta
-                Else
-                    TipoPago = DataSet.Tables("Metodo").Rows(0)("TipoPago")
-                End If
-            End If
-
-
-
-            Select Case TipoPago
-                Case "Cheques"
-                    My.Forms.FrmMetodosPagos.TxtNumeroTarjeta.Mask = ""
-                    My.Forms.FrmMetodosPagos.ShowDialog()
-                    If FrmMetodosPagos.Numero <> "" Then
-                        Me.TrueDBGridMetodo.Columns(2).Text = FrmMetodosPagos.Numero
-                    End If
-                    If FrmMetodosPagos.Fecha <> "" Then
-                        Me.TrueDBGridMetodo.Columns(3).Text = FrmMetodosPagos.Fecha
-                    End If
-
-                Case "Tarjetas"
-                    My.Forms.FrmMetodosPagos.TxtNumeroTarjeta.Mask = "####-####-####-####"
-                    My.Forms.FrmMetodosPagos.ShowDialog()
-                    If FrmMetodosPagos.Numero <> "" Then
-                        Me.TrueDBGridMetodo.Columns(2).Text = FrmMetodosPagos.Numero
-                    End If
-                    If FrmMetodosPagos.Fecha <> "" Then
-                        Me.TrueDBGridMetodo.Columns(3).Text = FrmMetodosPagos.Fecha
-                    End If
-            End Select
-
-
-            ActualizaMETODOFactura()
-        End Sub
-
-        Private Sub TrueDBGridMetodo_BindingContextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridMetodo.BindingContextChanged
-
-        End Sub
-
-        Private Sub TrueDBGridMetodo_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridMetodo.ButtonClick
-            Dim Metodo As String
-            Quien = "MetodoPago"
-            My.Forms.FrmConsultas.ShowDialog()
-            Metodo = FrmConsultas.Codigo
-            Me.TrueDBGridMetodo.Columns(0).Text = Metodo
-        End Sub
-
-        Private Sub TrueDBGridMetodo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridMetodo.Click
-
-        End Sub
-
-
-
-        Private Sub TrueDBGridMetodo_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridMetodo.DoubleClick
-            Dim MetodoPago As String, SqlMetodo As String, MetodoConsulta As String, TipoPago As String
-            Dim DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet
-
-            SqlMetodo = "SELECT * FROM MetodoPago "
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlMetodo, MiConexion)
-            DataAdapter.Fill(DataSet, "Consulta")
-            If Not DataSet.Tables("Consulta").Rows.Count = 0 Then
-                MetodoConsulta = DataSet.Tables("Consulta").Rows(0)("NombrePago")
-                TipoPago = DataSet.Tables("Consulta").Rows(0)("TipoPago")
-            Else
+        SqlMetodo = "SELECT * FROM MetodoPago "
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlMetodo, MiConexion)
+        DataAdapter.Fill(DataSet, "Consulta")
+        If Not DataSet.Tables("Consulta").Rows.Count = 0 Then
+            MetodoConsulta = DataSet.Tables("Consulta").Rows(0)("NombrePago")
+            TipoPago = DataSet.Tables("Consulta").Rows(0)("TipoPago")
+        Else
             MsgBox("No existen Metodos de Pago", MsgBoxStyle.Critical, "Sistema Facturacion")
-                Exit Sub
-            End If
+            Exit Sub
+        End If
 
-            If Me.TrueDBGridMetodo.Columns(0).Text = "" Then
-                Exit Sub
+        If Me.TrueDBGridMetodo.Columns(0).Text = "" Then
+            Exit Sub
+        Else
+            MetodoPago = Me.TrueDBGridMetodo.Columns(0).Text
+            SqlMetodo = "SELECT * FROM MetodoPago WHERE (NombrePago = '" & MetodoPago & "')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlMetodo, MiConexion)
+            DataAdapter.Fill(DataSet, "Metodo")
+            If DataSet.Tables("Metodo").Rows.Count = 0 Then
+                MsgBox("Metodo de Pago no Existe,", MsgBoxStyle.Critical, "Sistema Facturacion")
+                Me.TrueDBGridMetodo.Columns(0).Text = MetodoConsulta
             Else
-                MetodoPago = Me.TrueDBGridMetodo.Columns(0).Text
-                SqlMetodo = "SELECT * FROM MetodoPago WHERE (NombrePago = '" & MetodoPago & "')"
-                DataAdapter = New SqlClient.SqlDataAdapter(SqlMetodo, MiConexion)
-                DataAdapter.Fill(DataSet, "Metodo")
-                If DataSet.Tables("Metodo").Rows.Count = 0 Then
-                    MsgBox("Metodo de Pago no Existe,", MsgBoxStyle.Critical, "Sistema Facturacion")
-                    Me.TrueDBGridMetodo.Columns(0).Text = MetodoConsulta
-                Else
-                    TipoPago = DataSet.Tables("Metodo").Rows(0)("TipoPago")
-                End If
+                TipoPago = DataSet.Tables("Metodo").Rows(0)("TipoPago")
             End If
+        End If
 
 
 
-            Select Case TipoPago
-                Case "Cheques"
-                    My.Forms.FrmMetodosPagos.TxtNumeroTarjeta.Mask = ""
-                    My.Forms.FrmMetodosPagos.ShowDialog()
-                    If Me.TrueDBGridMetodo.Columns(2).Text <> "" Then
-                        FrmMetodosPagos.TxtNumeroTarjeta.Text = Me.TrueDBGridMetodo.Columns(2).Text
-                    End If
-                    If Me.TrueDBGridMetodo.Columns(3).Text <> "" Then
-                        FrmMetodosPagos.Fecha = Me.TrueDBGridMetodo.Columns(3).Text
-                    End If
+        Select Case TipoPago
+            Case "Cheques"
+                My.Forms.FrmMetodosPagos.TxtNumeroTarjeta.Mask = ""
+                My.Forms.FrmMetodosPagos.ShowDialog()
+                If FrmMetodosPagos.Numero <> "" Then
+                    Me.TrueDBGridMetodo.Columns(2).Text = FrmMetodosPagos.Numero
+                End If
+                If FrmMetodosPagos.Fecha <> "" Then
+                    Me.TrueDBGridMetodo.Columns(3).Text = FrmMetodosPagos.Fecha
+                End If
 
-                Case "Tarjetas"
-                    My.Forms.FrmMetodosPagos.TxtNumeroTarjeta.Mask = "####-####-####-####"
+            Case "Tarjetas"
+                My.Forms.FrmMetodosPagos.TxtNumeroTarjeta.Mask = "####-####-####-####"
+                My.Forms.FrmMetodosPagos.ShowDialog()
+                If FrmMetodosPagos.Numero <> "" Then
+                    Me.TrueDBGridMetodo.Columns(2).Text = FrmMetodosPagos.Numero
+                End If
+                If FrmMetodosPagos.Fecha <> "" Then
+                    Me.TrueDBGridMetodo.Columns(3).Text = FrmMetodosPagos.Fecha
+                End If
+        End Select
 
-                    If Me.TrueDBGridMetodo.Columns(2).Text <> "" Then
-                        FrmMetodosPagos.TxtNumeroTarjeta.Text = Me.TrueDBGridMetodo.Columns(2).Text
-                    End If
-                    If Me.TrueDBGridMetodo.Columns(3).Text <> "" Then
-                        FrmMetodosPagos.Fecha = Me.TrueDBGridMetodo.Columns(3).Text
-                    End If
-                    My.Forms.FrmMetodosPagos.ShowDialog()
-            End Select
 
-            Me.CboCodigoBodega.Enabled = False
-            Me.Button7.Enabled = False
-            ActualizaMETODOFactura()
-        End Sub
+        ActualizaMETODOFactura()
+    End Sub
 
-        Private Sub CmdNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdNuevo.Click
-            Dim SqlString As String
-            Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-            Dim FacturaSerie As Boolean = False
+    Private Sub TrueDBGridMetodo_BindingContextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridMetodo.BindingContextChanged
+
+    End Sub
+
+    Private Sub TrueDBGridMetodo_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridMetodo.ButtonClick
+        Dim Metodo As String
+        Quien = "MetodoPago"
+        My.Forms.FrmConsultas.ShowDialog()
+        Metodo = FrmConsultas.Codigo
+        Me.TrueDBGridMetodo.Columns(0).Text = Metodo
+    End Sub
+
+    Private Sub TrueDBGridMetodo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridMetodo.Click
+
+    End Sub
+
+
+
+    Private Sub TrueDBGridMetodo_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridMetodo.DoubleClick
+        Dim MetodoPago As String, SqlMetodo As String, MetodoConsulta As String, TipoPago As String
+        Dim DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet
+
+        SqlMetodo = "SELECT * FROM MetodoPago "
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlMetodo, MiConexion)
+        DataAdapter.Fill(DataSet, "Consulta")
+        If Not DataSet.Tables("Consulta").Rows.Count = 0 Then
+            MetodoConsulta = DataSet.Tables("Consulta").Rows(0)("NombrePago")
+            TipoPago = DataSet.Tables("Consulta").Rows(0)("TipoPago")
+        Else
+            MsgBox("No existen Metodos de Pago", MsgBoxStyle.Critical, "Sistema Facturacion")
+            Exit Sub
+        End If
+
+        If Me.TrueDBGridMetodo.Columns(0).Text = "" Then
+            Exit Sub
+        Else
+            MetodoPago = Me.TrueDBGridMetodo.Columns(0).Text
+            SqlMetodo = "SELECT * FROM MetodoPago WHERE (NombrePago = '" & MetodoPago & "')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlMetodo, MiConexion)
+            DataAdapter.Fill(DataSet, "Metodo")
+            If DataSet.Tables("Metodo").Rows.Count = 0 Then
+                MsgBox("Metodo de Pago no Existe,", MsgBoxStyle.Critical, "Sistema Facturacion")
+                Me.TrueDBGridMetodo.Columns(0).Text = MetodoConsulta
+            Else
+                TipoPago = DataSet.Tables("Metodo").Rows(0)("TipoPago")
+            End If
+        End If
+
+
+
+        Select Case TipoPago
+            Case "Cheques"
+                My.Forms.FrmMetodosPagos.TxtNumeroTarjeta.Mask = ""
+                My.Forms.FrmMetodosPagos.ShowDialog()
+                If Me.TrueDBGridMetodo.Columns(2).Text <> "" Then
+                    FrmMetodosPagos.TxtNumeroTarjeta.Text = Me.TrueDBGridMetodo.Columns(2).Text
+                End If
+                If Me.TrueDBGridMetodo.Columns(3).Text <> "" Then
+                    FrmMetodosPagos.Fecha = Me.TrueDBGridMetodo.Columns(3).Text
+                End If
+
+            Case "Tarjetas"
+                My.Forms.FrmMetodosPagos.TxtNumeroTarjeta.Mask = "####-####-####-####"
+
+                If Me.TrueDBGridMetodo.Columns(2).Text <> "" Then
+                    FrmMetodosPagos.TxtNumeroTarjeta.Text = Me.TrueDBGridMetodo.Columns(2).Text
+                End If
+                If Me.TrueDBGridMetodo.Columns(3).Text <> "" Then
+                    FrmMetodosPagos.Fecha = Me.TrueDBGridMetodo.Columns(3).Text
+                End If
+                My.Forms.FrmMetodosPagos.ShowDialog()
+        End Select
+
+        Me.CboCodigoBodega.Enabled = False
+        Me.Button7.Enabled = False
+        ActualizaMETODOFactura()
+    End Sub
+
+    Private Sub CmdNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdNuevo.Click
+        Dim SqlString As String
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim FacturaSerie As Boolean = False
 
 
         If SalirFactura = False Then
@@ -3934,60 +4079,60 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
             Exit Sub
         End If
 
-            LimpiarFacturas()
-            Me.Button7.Enabled = True
-            Me.CboCodigoBodega.Enabled = True
+        LimpiarFacturas()
+        Me.Button7.Enabled = True
+        Me.CboCodigoBodega.Enabled = True
 
-            If NombreCliente = "Alumnos" Then
-                Me.Label12.Visible = False
-                Me.CboCodigoVendedor.Visible = False
-            End If
+        If NombreCliente = "Alumnos" Then
+            Me.Label12.Visible = False
+            Me.CboCodigoVendedor.Visible = False
+        End If
 
-            If UsuarioBodega <> "Ninguna" Then
-                Me.CboCodigoBodega.Text = UsuarioBodega
-                Me.CboCodigoBodega.Enabled = False
-                Me.Button7.Enabled = False
-            End If
+        If UsuarioBodega <> "Ninguna" Then
+            Me.CboCodigoBodega.Text = UsuarioBodega
+            Me.CboCodigoBodega.Enabled = False
+            Me.Button7.Enabled = False
+        End If
 
-            If UsuarioTipoFactura <> "Ninguna" Then
-                Me.CboTipoProducto.Text = UsuarioTipoFactura
-            End If
+        If UsuarioTipoFactura <> "Ninguna" Then
+            Me.CboTipoProducto.Text = UsuarioTipoFactura
+        End If
 
-            If UsuarioVendedor <> "Ninguna" Then
-                Me.CboCodigoVendedor.Text = UsuarioVendedor
-            End If
+        If UsuarioVendedor <> "Ninguna" Then
+            Me.CboCodigoVendedor.Text = UsuarioVendedor
+        End If
 
-            If UsuarioCliente <> "Ninguna" Then
-                Me.TxtCodigoClientes.Text = UsuarioCliente
-            End If
+        If UsuarioCliente <> "Ninguna" Then
+            Me.TxtCodigoClientes.Text = UsuarioCliente
+        End If
 
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            '///////////////////////////////BUSCO SI TIENE CONFIGURADO EFECTIVO DEFAUL/////////////////////////////////////////////////////////////////
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            SqlString = "SELECT  * FROM DatosEmpresa "
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-            DataAdapter.Fill(DataSet, "DatosEmpresa")
-            If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
-                If DataSet.Tables("DatosEmpresa").Rows(0)("MetodoPagoDefecto") = "Efectivo" Then
-                    Me.RadioButton2.Checked = True
-                Else
-                    Me.RadioButton2.Checked = False
-                End If
-
-                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("ConsecutivoFacSerie")) Then
-                    If DataSet.Tables("DatosEmpresa").Rows(0)("ConsecutivoFacSerie") = True Then
-                        FacturaSerie = True
-                    End If
-                End If
-
-            End If
-
-            If FacturaSerie = True Then
-                Me.CmbSerie.Visible = True
-                Me.CmbSerie.Enabled = True
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '///////////////////////////////BUSCO SI TIENE CONFIGURADO EFECTIVO DEFAUL/////////////////////////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SqlString = "SELECT  * FROM DatosEmpresa "
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+        DataAdapter.Fill(DataSet, "DatosEmpresa")
+        If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
+            If DataSet.Tables("DatosEmpresa").Rows(0)("MetodoPagoDefecto") = "Efectivo" Then
+                Me.RadioButton2.Checked = True
             Else
-                Me.CmbSerie.Visible = False
-                Me.CmbSerie.Enabled = False
+                Me.RadioButton2.Checked = False
+            End If
+
+            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("ConsecutivoFacSerie")) Then
+                If DataSet.Tables("DatosEmpresa").Rows(0)("ConsecutivoFacSerie") = True Then
+                    FacturaSerie = True
+                End If
+            End If
+
+        End If
+
+        If FacturaSerie = True Then
+            Me.CmbSerie.Visible = True
+            Me.CmbSerie.Enabled = True
+        Else
+            Me.CmbSerie.Visible = False
+            Me.CmbSerie.Enabled = False
         End If
 
 
@@ -3996,7 +4141,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
 
 
-        End Sub
+    End Sub
     Private Sub GrabaItemFactura(ByVal IdDetalleFactura As Double)
         Dim iPosicion As Double, Registros As Double, NumeroFactura As String
         Dim NombrePago As String, Monto As Double, NumeroTarjeta As String, FechaVenceTarjeta As String, CodTarea As String = Nothing
@@ -4188,7 +4333,20 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
 
         If BloqueoLimiteCredito = True Then
-            If SaldoClienteH > LimiteCredito Then
+            'El limite se convierte a la moneda de la factura una sola vez, sin modificar el campo LimiteCredito
+            Dim LimiteCreditoFactura As Double = LimiteCredito
+            If Me.TxtMonedaFactura.Text <> MonedaLimiteCredito Then
+                Dim TasaLimite As Double = BuscaTasaCambio(Me.DTPFecha.Value)
+                If TasaLimite <> 0 Then
+                    If Me.TxtMonedaFactura.Text = "Cordobas" Then
+                        LimiteCreditoFactura = LimiteCredito * TasaLimite
+                    Else
+                        LimiteCreditoFactura = LimiteCredito / TasaLimite
+                    End If
+                End If
+            End If
+
+            If SaldoClienteH > LimiteCreditoFactura Then
                 MsgBox("Limite de Credito Excedido", MsgBoxStyle.Critical, "Zeus Facturacion")
                 Exit Sub
             End If
@@ -4749,48 +4907,48 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         'End Try
     End Sub
 
-        Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
-            Quien = "Bodegas"
-            My.Forms.FrmConsultas.ShowDialog()
-            Me.CboCodigoBodega.Text = My.Forms.FrmConsultas.Codigo
-        End Sub
+    Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
+        Quien = "Bodegas"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.CboCodigoBodega.Text = My.Forms.FrmConsultas.Codigo
+    End Sub
 
-        Private Sub ButtonBorrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBorrar.Click
-            Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
-            Dim Fecha As String, Resultado As Double, Existencia As Double = 0
-            Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, StrSQLUpdate As String = ""
-            Dim SQlProductos As String, iPosicionFila As Double
+    Private Sub ButtonBorrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBorrar.Click
+        Dim SqlCompras As String, ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer
+        Dim Fecha As String, Resultado As Double, Existencia As Double = 0
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, StrSQLUpdate As String = ""
+        Dim SQlProductos As String, iPosicionFila As Double
 
-            Resultado = MsgBox("¬øEsta Seguro de Cancelar la Factura?", MsgBoxStyle.OkCancel, "Sistema de Facturacion")
+        Resultado = MsgBox("øEsta Seguro de Cancelar la Factura?", MsgBoxStyle.OkCancel, "Sistema de Facturacion")
 
-            If Not Resultado = "1" Then
-                Exit Sub
-            End If
+        If Not Resultado = "1" Then
+            Exit Sub
+        End If
         Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
 
         '//////////////////////////////////////////////////////////////////////////////////////////////
         '////////////////////////////EDITO EL ENCABEZADO DE LA COMPRA///////////////////////////////////
         '/////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'False',[Nombre_Cliente] = '******CANCELADO',[Apellido_Cliente] = '******',[SubTotal]=0,[IVA]=0,[Pagado]=0,[NetoPagar]=0 " & _
+        SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'False',[Nombre_Cliente] = '******CANCELADO',[Apellido_Cliente] = '******',[SubTotal]=0,[IVA]=0,[Pagado]=0,[NetoPagar]=0 " &
                      "WHERE  (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
         EjecutarConsulta(SqlCompras)
 
-        SqlCompras = "UPDATE [Detalle_Facturas]  SET [Cantidad] = 0,[Precio_Unitario] = 0,[Descuento] = 0,[Precio_Neto] = 0 ,[Importe] = 0 " & _
+        SqlCompras = "UPDATE [Detalle_Facturas]  SET [Cantidad] = 0,[Precio_Unitario] = 0,[Descuento] = 0,[Precio_Neto] = 0 ,[Importe] = 0 " &
                      "WHERE  (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND  (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
         EjecutarConsulta(SqlCompras)
 
 
 
-            '////////////////////////////////////////////////////////////////////////////////////////////////////
-            '/////////////////////////////GRABO EL DETALLE DE LA FACTURA /////////////////////////////////////////////
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-            Dim Idetalle As Double = 0, CodigoProducto As String = "", DiferenciaCantidad As Double = 0
-            SQlProductos = "SELECT * FROM Detalle_Facturas WHERE  (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
-            DataAdapter.Fill(DataSet, "Detalle")
-            MiConexion.Close()
-            iPosicionFila = 0
-            If Not DataSet.Tables("Detalle").Rows.Count = 0 Then
+        '////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////////GRABO EL DETALLE DE LA FACTURA /////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+        Dim Idetalle As Double = 0, CodigoProducto As String = "", DiferenciaCantidad As Double = 0
+        SQlProductos = "SELECT * FROM Detalle_Facturas WHERE  (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
+        DataAdapter = New SqlClient.SqlDataAdapter(SQlProductos, MiConexion)
+        DataAdapter.Fill(DataSet, "Detalle")
+        MiConexion.Close()
+        iPosicionFila = 0
+        If Not DataSet.Tables("Detalle").Rows.Count = 0 Then
             Do While iPosicionFila < (DataSet.Tables("Detalle").Rows.Count)
 
                 Idetalle = DataSet.Tables("Detalle").Rows(iPosicionFila)("id_Detalle_Factura")
@@ -4819,38 +4977,38 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
 
 
-            End If
+        End If
 
-            Bitacora(Now, NombreUsuario, Me.CboTipoProducto.Text, "Elimino la Factura: " & Me.TxtNumeroEnsamble.Text)
+        Bitacora(Now, NombreUsuario, Me.CboTipoProducto.Text, "Elimino la Factura: " & Me.TxtNumeroEnsamble.Text)
 
-            LimpiarFacturas()
-            Me.Button7.Enabled = True
-            Me.CboCodigoBodega.Enabled = True
+        LimpiarFacturas()
+        Me.Button7.Enabled = True
+        Me.CboCodigoBodega.Enabled = True
 
-            If NombreCliente = "Alumnos" Then
-                Me.Label12.Visible = False
-                Me.CboCodigoVendedor.Visible = False
-            End If
+        If NombreCliente = "Alumnos" Then
+            Me.Label12.Visible = False
+            Me.CboCodigoVendedor.Visible = False
+        End If
 
-            If UsuarioBodega <> "Ninguna" Then
-                Me.CboCodigoBodega.Text = UsuarioBodega
-                Me.CboCodigoBodega.Enabled = False
-                Me.Button7.Enabled = False
-            End If
+        If UsuarioBodega <> "Ninguna" Then
+            Me.CboCodigoBodega.Text = UsuarioBodega
+            Me.CboCodigoBodega.Enabled = False
+            Me.Button7.Enabled = False
+        End If
 
-            If UsuarioTipoFactura <> "Ninguna" Then
-                Me.CboTipoProducto.Text = UsuarioTipoFactura
-            End If
+        If UsuarioTipoFactura <> "Ninguna" Then
+            Me.CboTipoProducto.Text = UsuarioTipoFactura
+        End If
 
-            If UsuarioVendedor <> "Ninguna" Then
-                Me.CboCodigoVendedor.Text = UsuarioVendedor
-            End If
+        If UsuarioVendedor <> "Ninguna" Then
+            Me.CboCodigoVendedor.Text = UsuarioVendedor
+        End If
 
-            If UsuarioCliente <> "Ninguna" Then
+        If UsuarioCliente <> "Ninguna" Then
             Me.TxtCodigoClientes.Text = UsuarioCliente
-            End If
+        End If
 
-        End Sub
+    End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
 
@@ -5541,7 +5699,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                 '/////////////////////////////////////////////////////////////////////////////////////////////////
                 MiConexion.Close()
                 If Me.CboTipoProducto.Text <> "Cotizacion" Then
-                    SqlCompras = "UPDATE [Facturas]  SET [FechaPago] = '" & Format(Now, "dd/MM/yyyy") & "' " & _
+                    SqlCompras = "UPDATE [Facturas]  SET [FechaPago] = '" & Format(Now, "dd/MM/yyyy") & "' " &
                                  "WHERE  (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
                     MiConexion.Open()
                     ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
@@ -5560,20 +5718,20 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
             If MonedaFactura = "Cordobas" Then
                 If MonedaImprime = "Cordobas" Then
                     '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
-                    SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Productos.Unidad_Medida, Detalle_Facturas.CodTarea FROM  Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto " & _
+                    SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Productos.Unidad_Medida, Detalle_Facturas.CodTarea FROM  Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto " &
                         "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
                 ElseIf MonedaImprime = "Dolares" Then
-                    SQlDetalle = "SELECT     Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad,Detalle_Facturas.Precio_Unitario * (1 / TasaCambio.MontoTasa) AS Precio_Unitario, Detalle_Facturas.Descuento * (1 / TasaCambio.MontoTasa) AS Descuento, Detalle_Facturas.Precio_Neto * (1 / TasaCambio.MontoTasa) AS Precio_Neto, Detalle_Facturas.Importe * (1 / TasaCambio.MontoTasa) AS Importe, TasaCambio.MontoTasa, Productos.Unidad_Medida, Detalle_Facturas.CodTarea FROM Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa  " & _
+                    SQlDetalle = "SELECT     Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad,Detalle_Facturas.Precio_Unitario * (1 / TasaCambio.MontoTasa) AS Precio_Unitario, Detalle_Facturas.Descuento * (1 / TasaCambio.MontoTasa) AS Descuento, Detalle_Facturas.Precio_Neto * (1 / TasaCambio.MontoTasa) AS Precio_Neto, Detalle_Facturas.Importe * (1 / TasaCambio.MontoTasa) AS Importe, TasaCambio.MontoTasa, Productos.Unidad_Medida, Detalle_Facturas.CodTarea FROM Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa  " &
                                  "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND  (Detalle_Facturas.Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
 
                 End If
             ElseIf MonedaFactura = "Dolares" Then
                 If MonedaImprime = "Dolares" Then
                     '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
-                    SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Productos.Unidad_Medida,Detalle_Facturas.CodTarea FROM  Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto " & _
+                    SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Productos.Unidad_Medida,Detalle_Facturas.CodTarea FROM  Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto " &
                         "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
                 ElseIf MonedaImprime = "Cordobas" Then
-                    SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad,Detalle_Facturas.Precio_Unitario * TasaCambio.MontoTasa AS Precio_Unitario, Detalle_Facturas.Descuento * TasaCambio.MontoTasa AS Descuento,Detalle_Facturas.Precio_Neto * TasaCambio.MontoTasa AS Precio_Neto, Detalle_Facturas.Importe * TasaCambio.MontoTasa AS Importe,TasaCambio.MontoTasa,Productos.Unidad_Medida, Detalle_Facturas.CodTarea FROM Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa " & _
+                    SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad,Detalle_Facturas.Precio_Unitario * TasaCambio.MontoTasa AS Precio_Unitario, Detalle_Facturas.Descuento * TasaCambio.MontoTasa AS Descuento,Detalle_Facturas.Precio_Neto * TasaCambio.MontoTasa AS Precio_Neto, Detalle_Facturas.Importe * TasaCambio.MontoTasa AS Importe,TasaCambio.MontoTasa,Productos.Unidad_Medida, Detalle_Facturas.CodTarea FROM Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa " &
                         "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME,'" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
 
                 End If
@@ -6690,7 +6848,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
             If dsLocal.Tables("Facturas").Rows(0)("MetodoPago").ToString <> "Credito" Then
                 FacturaContado = CargarMetodoPagoFactura(NumeroFactura, TipoFactura)
             Else
-                ' Si es cr√©dito, limpiamos el grid
+                ' Si es crÈdito, limpiamos el grid
                 BindingMetodo.DataSource = Nothing
                 TrueDBGridMetodo.DataSource = Nothing
             End If
@@ -6885,7 +7043,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
 
         '-------------------------------------------------
-        ' CONFIGURACI√ìN VISUAL DEL GRID
+        ' CONFIGURACI”N VISUAL DEL GRID
         '-------------------------------------------------
         ConfigurarGridDetalleFactura(FacturaTarea)
 
@@ -6963,7 +7121,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         Dim TipoMetodoDefecto As String = ""
 
         '-------------------------------------------------
-        ' 1Ô∏è‚É£ BUSCAR M√âTODO POR DEFECTO EN DATOS EMPRESA
+        ' 1?? BUSCAR M…TODO POR DEFECTO EN DATOS EMPRESA
         '-------------------------------------------------
         Using cmd As New SqlClient.SqlCommand(
         "SELECT MetodoPagoDefecto FROM DatosEmpresa", MiConexion)
@@ -6977,7 +7135,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         End Using
 
         '-------------------------------------------------
-        ' 2Ô∏è‚É£ SI NO HAY EN EMPRESA, BUSCAR EN CLIENTE
+        ' 2?? SI NO HAY EN EMPRESA, BUSCAR EN CLIENTE
         '-------------------------------------------------
         If TipoMetodoDefecto = "" Then
 
@@ -7000,12 +7158,12 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         End If
 
         '-------------------------------------------------
-        ' 3Ô∏è‚É£ SI NO HAY M√âTODO POR DEFECTO ‚Üí SALIR
+        ' 3?? SI NO HAY M…TODO POR DEFECTO ? SALIR
         '-------------------------------------------------
         If TipoMetodoDefecto = "" Then Exit Sub
 
         '-------------------------------------------------
-        ' 4Ô∏è‚É£ BUSCAR NOMBRE DEL M√âTODO EN CAT√ÅLOGO
+        ' 4?? BUSCAR NOMBRE DEL M…TODO EN CAT¡LOGO
         '-------------------------------------------------
         Dim NombrePago As String = ""
 
@@ -7029,7 +7187,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         If NombrePago = "" Then Exit Sub
 
         '-------------------------------------------------
-        ' 5Ô∏è‚É£ CALCULAR MONTO
+        ' 5?? CALCULAR MONTO
         '-------------------------------------------------
         Dim Monto As Double = 0
         If TxtNetoPagar.Text <> "" Then
@@ -7037,7 +7195,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         End If
 
         '-------------------------------------------------
-        ' 6Ô∏è‚É£ AGREGAR FILA A dtMetodoPago
+        ' 6?? AGREGAR FILA A dtMetodoPago
         '-------------------------------------------------
         Dim dr As DataRow = dtMetodoPago.NewRow()
         dr("NombrePago") = NombrePago
@@ -7049,7 +7207,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         dtMetodoPago.AcceptChanges()
 
         '-------------------------------------------------
-        ' 7Ô∏è‚É£ REFRESCAR GRID
+        ' 7?? REFRESCAR GRID
         '-------------------------------------------------
         BindingMetodo.DataSource = Nothing
         TrueDBGridMetodo.DataSource = Nothing
@@ -7111,6 +7269,22 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
     End Sub
 
 
+    'La columna CodTarea (lote) no existe en el detalle de las empresas que no manejan lotes
+    Private Function LeerColumnaLote() As String
+        Try
+            Return Me.TrueDBGridComponentes.Columns("CodTarea").Text
+        Catch ex As ArgumentException
+            Return ""
+        End Try
+    End Function
+
+    Private Sub EscribirColumnaLote(Lote As String)
+        Try
+            Me.TrueDBGridComponentes.Columns("CodTarea").Text = Lote
+        Catch ex As ArgumentException
+        End Try
+    End Sub
+
     Private Sub TrueDBGridComponentes_AfterColEdit(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridComponentes.AfterColEdit
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim CodProducto As String, SqlString As String, SqlProveedor As String, PrecioDescCordobas As String = 0, PrecioDescDolar As String = 0
@@ -7128,12 +7302,12 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                 Case 0
 
-                    If PerteneceProductoBodega(Me.CboCodigoBodega.Text, Me.TrueDBGridComponentes.Columns("Cod_Producto").Text) = False Then
+                    'Primero el codigo vacio: evita consultar la bodega sin producto
+                    If Me.TrueDBGridComponentes.Columns("Cod_Producto").Text = "" Then
                         Exit Sub
                     End If
 
-
-                    If Me.TrueDBGridComponentes.Columns("Cod_Producto").Text = "" Then
+                    If PerteneceProductoBodega(Me.CboCodigoBodega.Text, Me.TrueDBGridComponentes.Columns("Cod_Producto").Text) = False Then
                         Exit Sub
                     Else
                         CodProducto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
@@ -7148,15 +7322,13 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                             '////////////////INICIO EL PROCESO DE LOS HILOS //////////////
                             Dim NumLote As String
-                            NumLote = LoteDefectoWorker(CodProducto, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
-                            If NumLote = "" Then
-                                'MsgBox("El producto no tiene existencia disponible.", MsgBoxStyle.Exclamation, "Zeus Facturacion")
-                                'Exit Sub
+                            If FacturaTarea = True AndAlso PrecioProductoDigitado >= 0 Then
+                                'El lote ya lo asigno CompletarProductoDigitado
+                                NumLote = LeerColumnaLote()
+                            Else
+                                NumLote = LoteDefectoWorker(CodProducto, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
+                                EscribirColumnaLote(NumLote)
                             End If
-                            Me.TrueDBGridComponentes.Columns("CodTarea").Text = NumLote
-
-
-                            My.Application.DoEvents()
 
 
 
@@ -7167,13 +7339,6 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                             If Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text = "" Then
                                 RstCosto = CostoPromedioKardex(CodProducto, Me.DTPFecha.Value)
                                 CostoUnitario = RstCosto.Costo_Cordoba
-                                Dim worker As BackgroundWorker, Lotes As Lote = New Lote
-                                worker = New BackgroundWorker()
-                                AddHandler worker.DoWork, AddressOf backgroundWorkerGrabar_DoWork
-                                AddHandler worker.RunWorkerCompleted, AddressOf backgroundWorkerGrabar_RunWorkerCompleted
-                                Lotes.Codigo_Producto = CodProducto
-                                worker.RunWorkerAsync()
-
                                 'ActualizaCostoPromedio(CodProducto)
                             Else
                                 CostoUnitario = Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text
@@ -7262,165 +7427,165 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                                     End If
                                 Else
                                     If Me.ChkPorcientoTarjeta.Checked = True Then
-                                            Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = Format(DataSet.Tables("Productos").Rows(0)("Precio_Venta") * (1 + (IncrementoTarjeta / 100)), "##,##0.00")
-                                        Else
-                                            If Me.CboTipoProducto.Text = "Salida Bodega" Then
-                                                '///////////////////////////////////////////BUSCO EL COSTO PROMEDIO PARA LA BODEGA ////////////////////////////////////////
-                                                SqlProveedor = "SELECT  * FROM DetalleBodegas WHERE (Cod_Bodegas = '" & Me.CboCodigoBodega.Text & "') AND (Cod_Productos = '" & CodProducto & "')"
-                                                DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-                                                DataAdapter.Fill(DataSet, "Costo")
-                                                If DataSet.Tables("Costo").Rows.Count <> 0 Then
-                                                    If Not IsDBNull(DataSet.Tables("Costo").Rows(0)("Costo")) Then
-                                                        'PrecioDescCordobas = DataSet.Tables("Costo").Rows(0)("Costo")
-                                                        PrecioDescCordobas = CostoUnitario
-                                                        If FacturaTarea = True Then
-                                                            Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = PrecioDescCordobas
-                                                        Else
-                                                            Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = PrecioDescCordobas
-                                                        End If
-                                                    End If
-                                                    If Not IsDBNull(DataSet.Tables("Costo").Rows(0)("CostoDolar")) Then
-                                                        PrecioDescDolar = DataSet.Tables("Costo").Rows(0)("CostoDolar")
+                                        Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = Format(DataSet.Tables("Productos").Rows(0)("Precio_Venta") * (1 + (IncrementoTarjeta / 100)), "##,##0.00")
+                                    Else
+                                        If Me.CboTipoProducto.Text = "Salida Bodega" Then
+                                            '///////////////////////////////////////////BUSCO EL COSTO PROMEDIO PARA LA BODEGA ////////////////////////////////////////
+                                            SqlProveedor = "SELECT  * FROM DetalleBodegas WHERE (Cod_Bodegas = '" & Me.CboCodigoBodega.Text & "') AND (Cod_Productos = '" & CodProducto & "')"
+                                            DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+                                            DataAdapter.Fill(DataSet, "Costo")
+                                            If DataSet.Tables("Costo").Rows.Count <> 0 Then
+                                                If Not IsDBNull(DataSet.Tables("Costo").Rows(0)("Costo")) Then
+                                                    'PrecioDescCordobas = DataSet.Tables("Costo").Rows(0)("Costo")
+                                                    PrecioDescCordobas = CostoUnitario
+                                                    If FacturaTarea = True Then
+                                                        Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = PrecioDescCordobas
+                                                    Else
+                                                        Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = PrecioDescCordobas
                                                     End If
                                                 End If
-                                                DataSet.Tables("Costo").Reset()
-                                            Else
-                                                If Me.ChkPorcientoTarjeta.Checked = True Then
-                                                    Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = Format(DataSet.Tables("Productos").Rows(0)("Precio_Venta") * (1 + (IncrementoTarjeta / 100)), "##,##0.00")
-                                                Else
-                                                    Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = DataSet.Tables("Productos").Rows(0)("Precio_Venta")
+                                                If Not IsDBNull(DataSet.Tables("Costo").Rows(0)("CostoDolar")) Then
+                                                    PrecioDescDolar = DataSet.Tables("Costo").Rows(0)("CostoDolar")
                                                 End If
                                             End If
-                                            'Me.TrueDBGridComponentes.Columns(4).Text = DataSet.Tables("Productos").Rows(0)("Precio_Venta")
+                                            DataSet.Tables("Costo").Reset()
+                                        Else
+                                            If Me.ChkPorcientoTarjeta.Checked = True Then
+                                                Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = Format(DataSet.Tables("Productos").Rows(0)("Precio_Venta") * (1 + (IncrementoTarjeta / 100)), "##,##0.00")
+                                            Else
+                                                Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = DataSet.Tables("Productos").Rows(0)("Precio_Venta")
+                                            End If
                                         End If
+                                        'Me.TrueDBGridComponentes.Columns(4).Text = DataSet.Tables("Productos").Rows(0)("Precio_Venta")
                                     End If
-                                Else
+                                End If
+                            Else
                                 '////////////////////////////////////////////////////////////////////////////////////////////////////
                                 '///////////////////////////////SI NO ES FACTURACION POR LOTE PARA ESTA OPCION ////////////////////////
                                 '//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
                                 If Me.TxtMonedaFactura.Text = "Dolares" Then
-                                        If Me.CboTipoProducto.Text = "Salida Bodega" Then
-                                            '///////////////////////////////////////////BUSCO EL COSTO PROMEDIO PARA LA BODEGA ////////////////////////////////////////
-                                            SqlProveedor = "SELECT  * FROM DetalleBodegas WHERE (Cod_Bodegas = '" & Me.CboCodigoBodega.Text & "') AND (Cod_Productos = '" & CodProducto & "')"
-                                            DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-                                            DataAdapter.Fill(DataSet, "Costo")
-                                            If DataSet.Tables("Costo").Rows.Count <> 0 Then
-                                                If Not IsDBNull(DataSet.Tables("Costo").Rows(0)("Costo")) Then
-                                                    'PrecioDescCordobas = DataSet.Tables("Costo").Rows(0)("Costo")
-                                                    PrecioDescCordobas = CostoUnitario
-                                                    If Not IsDBNull(DataSet.Tables("Costo").Rows(0)("CostoDolar")) Then
-                                                        PrecioDescDolar = DataSet.Tables("Costo").Rows(0)("CostoDolar")
-                                                    End If
-                                                    If FacturaTarea = True Then
-                                                        Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = PrecioDescDolar
-                                                    Else
-                                                        Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = PrecioDescDolar
-                                                    End If
+                                    If Me.CboTipoProducto.Text = "Salida Bodega" Then
+                                        '///////////////////////////////////////////BUSCO EL COSTO PROMEDIO PARA LA BODEGA ////////////////////////////////////////
+                                        SqlProveedor = "SELECT  * FROM DetalleBodegas WHERE (Cod_Bodegas = '" & Me.CboCodigoBodega.Text & "') AND (Cod_Productos = '" & CodProducto & "')"
+                                        DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+                                        DataAdapter.Fill(DataSet, "Costo")
+                                        If DataSet.Tables("Costo").Rows.Count <> 0 Then
+                                            If Not IsDBNull(DataSet.Tables("Costo").Rows(0)("Costo")) Then
+                                                'PrecioDescCordobas = DataSet.Tables("Costo").Rows(0)("Costo")
+                                                PrecioDescCordobas = CostoUnitario
+                                                If Not IsDBNull(DataSet.Tables("Costo").Rows(0)("CostoDolar")) Then
+                                                    PrecioDescDolar = DataSet.Tables("Costo").Rows(0)("CostoDolar")
                                                 End If
-
+                                                If FacturaTarea = True Then
+                                                    Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = PrecioDescDolar
+                                                Else
+                                                    Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = PrecioDescDolar
+                                                End If
                                             End If
-                                            DataSet.Tables("Costo").Reset()
+
+                                        End If
+                                        DataSet.Tables("Costo").Reset()
 
 
 
-                                        Else  '///////////////////////SI NO ES SALIDA DE BODEGGA PONGO LOS PRECIOS DE VENTA ////////////////////////////////////////////
-                                            If Me.ChkPorcientoTarjeta.Checked = True Then
-                                                Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = Format(DataSet.Tables("Productos").Rows(0)("Precio_Lista") * (1 + (IncrementoTarjeta / 100)), "##,##0.00")
+                                    Else  '///////////////////////SI NO ES SALIDA DE BODEGGA PONGO LOS PRECIOS DE VENTA ////////////////////////////////////////////
+                                        If Me.ChkPorcientoTarjeta.Checked = True Then
+                                            Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = Format(DataSet.Tables("Productos").Rows(0)("Precio_Lista") * (1 + (IncrementoTarjeta / 100)), "##,##0.00")
+                                        Else
+                                            Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = DataSet.Tables("Productos").Rows(0)("Precio_Lista")
+                                        End If
+
+                                        ''''---------------------------------CLASIFICO LA CATEGORIA DEL PRECIO --------------------------------------
+                                        Categoria = CategoriaPrecio(Me.TrueDBGridComponentes.Columns("Cod_Producto").Text, Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text, Me.TxtMonedaFactura.Text)
+
+
+                                        Me.TrueDBGridComponentes.Columns("Descuento").Text = 0
+                                        If Categoria <> "" Then
+                                            Me.TrueDBGridComponentes.Columns("Descuento").Text = Categoria
+                                        Else
+                                            Me.TrueDBGridComponentes.Columns("Descuento").Text = 0
+                                        End If
+                                        'End If
+                                    End If
+                                Else '/////////////////////SI LA FACTUACION ES EN CORDOBAS ///////////////////////////////////
+                                    If Me.CboTipoProducto.Text = "Salida Bodega" Then
+
+                                        '///////////////////////////////////////////BUSCO EL COSTO PROMEDIO PARA LA BODEGA ////////////////////////////////////////
+                                        SqlProveedor = "SELECT  * FROM DetalleBodegas WHERE (Cod_Bodegas = '" & Me.CboCodigoBodega.Text & "') AND (Cod_Productos = '" & CodProducto & "')"
+                                        DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+                                        DataAdapter.Fill(DataSet, "Costo")
+                                        If DataSet.Tables("Costo").Rows.Count <> 0 Then
+                                            If Not IsDBNull(DataSet.Tables("Costo").Rows(0)("Costo")) Then
+                                                'PrecioDescCordobas = DataSet.Tables("Costo").Rows(0)("Costo")
+                                                'If Not IsDBNull(DataSet.Tables("Costo").Rows(0)("CostoDolar")) Then
+                                                '    PrecioDescDolar = DataSet.Tables("Costo").Rows(0)("CostoDolar")
+                                                'End If
+                                                'PrecioDescCordobas = CostoPromedioKardex(CodProducto, Me.DTPFecha.Value)
+                                                PrecioDescCordobas = CostoUnitario
+                                                If FacturaTarea = True Then
+                                                    Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = PrecioDescCordobas
+                                                Else
+                                                    Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = PrecioDescCordobas
+                                                End If
+                                            End If
+
+                                        End If
+                                        DataSet.Tables("Costo").Reset()
+
+
+                                    Else  '//////////////////////SI NO ES SALIDA DE BODEGA /////////////////////////////////////////////
+
+
+
+                                        If Me.ChkPorcientoTarjeta.Checked = True Then
+                                            If Not Me.TrueDBGridComponentes.Columns("Cantidad").Text = "" Then
+                                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                             Else
-                                                Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = DataSet.Tables("Productos").Rows(0)("Precio_Lista")
+                                                Cantidad = 0
                                             End If
 
-                                            ''''---------------------------------CLASIFICO LA CATEGORIA DEL PRECIO --------------------------------------
+                                            Precio = Format(DataSet.Tables("Productos").Rows(0)("Precio_Venta") * (1 + (IncrementoTarjeta / 100)), "##,##0.00")
+                                            Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = Precio
+
                                             Categoria = CategoriaPrecio(Me.TrueDBGridComponentes.Columns("Cod_Producto").Text, Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text, Me.TxtMonedaFactura.Text)
 
-
-                                            Me.TrueDBGridComponentes.Columns("Descuento").Text = 0
-                                            If Categoria <> "" Then
-                                                Me.TrueDBGridComponentes.Columns("Descuento").Text = Categoria
-                                            Else
-                                                Me.TrueDBGridComponentes.Columns("Descuento").Text = 0
-                                            End If
-                                            'End If
-                                        End If
-                                    Else '/////////////////////SI LA FACTUACION ES EN CORDOBAS ///////////////////////////////////
-                                        If Me.CboTipoProducto.Text = "Salida Bodega" Then
-
-                                            '///////////////////////////////////////////BUSCO EL COSTO PROMEDIO PARA LA BODEGA ////////////////////////////////////////
-                                            SqlProveedor = "SELECT  * FROM DetalleBodegas WHERE (Cod_Bodegas = '" & Me.CboCodigoBodega.Text & "') AND (Cod_Productos = '" & CodProducto & "')"
-                                            DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-                                            DataAdapter.Fill(DataSet, "Costo")
-                                            If DataSet.Tables("Costo").Rows.Count <> 0 Then
-                                                If Not IsDBNull(DataSet.Tables("Costo").Rows(0)("Costo")) Then
-                                                    'PrecioDescCordobas = DataSet.Tables("Costo").Rows(0)("Costo")
-                                                    'If Not IsDBNull(DataSet.Tables("Costo").Rows(0)("CostoDolar")) Then
-                                                    '    PrecioDescDolar = DataSet.Tables("Costo").Rows(0)("CostoDolar")
-                                                    'End If
-                                                    'PrecioDescCordobas = CostoPromedioKardex(CodProducto, Me.DTPFecha.Value)
-                                                    PrecioDescCordobas = CostoUnitario
-                                                    If FacturaTarea = True Then
-                                                        Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = PrecioDescCordobas
-                                                    Else
-                                                        Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = PrecioDescCordobas
-                                                    End If
-                                                End If
-
-                                            End If
-                                            DataSet.Tables("Costo").Reset()
-
-
-                                        Else  '//////////////////////SI NO ES SALIDA DE BODEGA /////////////////////////////////////////////
-
-
-
-                                            If Me.ChkPorcientoTarjeta.Checked = True Then
-                                                If Not Me.TrueDBGridComponentes.Columns("Cantidad").Text = "" Then
-                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                            If Me.TrueDBGridComponentes.Columns("Descuento").Text = "" Then
+                                                If Categoria <> "" Then
+                                                    Me.TrueDBGridComponentes.Columns("Descuento").Text = Categoria
                                                 Else
-                                                    Cantidad = 0
-                                                End If
-
-                                                Precio = Format(DataSet.Tables("Productos").Rows(0)("Precio_Venta") * (1 + (IncrementoTarjeta / 100)), "##,##0.00")
-                                                Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = Precio
-
-                                                Categoria = CategoriaPrecio(Me.TrueDBGridComponentes.Columns("Cod_Producto").Text, Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text, Me.TxtMonedaFactura.Text)
-
-                                                If Me.TrueDBGridComponentes.Columns("Descuento").Text = "" Then
-                                                    If Categoria <> "" Then
-                                                        Me.TrueDBGridComponentes.Columns("Descuento").Text = Categoria
-                                                    Else
-                                                        Me.TrueDBGridComponentes.Columns("Descuento").Text = 0
-                                                    End If
-                                                End If
-
-                                                Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = Cantidad * Precio
-                                                Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = Format(Cantidad * Precio, "##,##0.00")
-                                            Else
-                                                If Not Me.TrueDBGridComponentes.Columns("Cantidad").Text = "" Then
-                                                    Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
-                                                Else
-                                                    Cantidad = 0
-                                                End If
-                                                Precio = Format(DataSet.Tables("Productos").Rows(0)("Precio_Venta"), "##,##0.00")
-                                                Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = DataSet.Tables("Productos").Rows(0)("Precio_Venta")
-                                                If Me.TrueDBGridComponentes.Columns("Descuento").Text = "" Then
                                                     Me.TrueDBGridComponentes.Columns("Descuento").Text = 0
                                                 End If
-                                                Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = Format(Cantidad * Precio, "##,##0.00")
-                                                Me.TrueDBGridComponentes.Columns("Importe").Text = Format(Cantidad * Precio, "##,##0.00")
                                             End If
+
+                                            Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = Cantidad * Precio
+                                            Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = Format(Cantidad * Precio, "##,##0.00")
+                                        Else
+                                            If Not Me.TrueDBGridComponentes.Columns("Cantidad").Text = "" Then
+                                                Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
+                                            Else
+                                                Cantidad = 0
+                                            End If
+                                            Precio = Format(DataSet.Tables("Productos").Rows(0)("Precio_Venta"), "##,##0.00")
+                                            Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = DataSet.Tables("Productos").Rows(0)("Precio_Venta")
+                                            If Me.TrueDBGridComponentes.Columns("Descuento").Text = "" Then
+                                                Me.TrueDBGridComponentes.Columns("Descuento").Text = 0
+                                            End If
+                                            Me.TrueDBGridComponentes.Columns("Precio_Neto").Text = Format(Cantidad * Precio, "##,##0.00")
+                                            Me.TrueDBGridComponentes.Columns("Importe").Text = Format(Cantidad * Precio, "##,##0.00")
                                         End If
                                     End If
                                 End If
+                            End If
 
-                            Else
+                        Else
 
-                                '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                '//////////////////////////////////////////////////SI NO EXISTE EL CODIGO LO BUSCO EN CODIGOS ALTERNO /////////////
-                                '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                            '//////////////////////////////////////////////////SI NO EXISTE EL CODIGO LO BUSCO EN CODIGOS ALTERNO /////////////
+                            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                                CodProducto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
+                            CodProducto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
                             SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
                             DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
                             DataAdapter.Fill(DataSet, "Productos")
@@ -7438,6 +7603,31 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                                     CostoUnitario = RstCosto.Costo_Cordoba
                                     Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text = CostoUnitario
                                     'Me.TrueDBGridComponentes.Col = 2
+
+                                    '//////////////COMPLETO LA FILA CON EL CODIGO REAL, IGUAL QUE SI LO HUBIERAN DIGITADO //////////////
+                                    'Antes solo se cambiaba el codigo y el costo: quedaban sin descripcion, precio ni lote
+                                    If Not CompletandoCodigoAlterno Then
+                                        If FacturaTarea = True Then
+                                            'Precio por tipo, lote por defecto e importe (deja PrecioProductoDigitado para la segunda pasada)
+                                            If Not CompletarProductoDigitado() Then
+                                                'Producto real no valido (bodega o existencia): se limpia la fila como lo haria e.Cancel
+                                                Me.TrueDBGridComponentes.Columns("Cod_Producto").Text = ""
+                                                Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = ""
+                                                EscribirColumnaLote("")
+                                                Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text = ""
+                                                Exit Sub
+                                            End If
+                                        End If
+
+                                        'Segunda pasada (una sola vez) con el codigo real: descripcion, precios y tipo de producto
+                                        CompletandoCodigoAlterno = True
+                                        Try
+                                            TrueDBGridComponentes_AfterColEdit(sender, e)
+                                        Finally
+                                            CompletandoCodigoAlterno = False
+                                        End Try
+                                        Exit Sub
+                                    End If
                                 Else
                                     MsgBox("Este Producto no Existe", MsgBoxStyle.Critical, "Zeus Facturacion")
                                     If Me.TxtMonedaFactura.Text = "Dolares" Then
@@ -7465,6 +7655,13 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
 
                         End If
+                    End If
+
+                    If FacturaTarea = True AndAlso PrecioProductoDigitado >= 0 Then
+                        'Respeto el precio que calculo CompletarProductoDigitado (igual que el boton de consulta)
+                        Precio = PrecioProductoDigitado
+                        Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = Precio.ToString()
+                        PrecioProductoDigitado = -1
                     End If
 
                     PrecioDescCordobas = Precio
@@ -7599,9 +7796,16 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         End Try
     End Sub
 
-        Private Sub TrueDBGridComponentes_AfterDelete(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.AfterDelete
-            ActualizaMETODOFactura()
-        End Sub
+    Private Sub TrueDBGridComponentes_AfterDelete(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.AfterDelete
+        'BeforeDelete ya borro la linea en la base de datos: se acepta solo el borrado (no los demas cambios
+        'pendientes) para que da.Update no genere otro DELETE sobre una fila inexistente (DBConcurrencyException)
+        If FilaEliminadaBD IsNot Nothing AndAlso FilaEliminadaBD.RowState = DataRowState.Deleted Then
+            FilaEliminadaBD.AcceptChanges()
+        End If
+        FilaEliminadaBD = Nothing
+
+        ActualizaMETODOFactura()
+    End Sub
 
     Private Sub TrueDBGridComponentes_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.AfterUpdate
 
@@ -7625,29 +7829,12 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
             Exit Sub
         End If
 
-        If Me.TxtCodigoClientes.Text = "" Then
+        If Not ClienteExiste(Me.TxtCodigoClientes.Text) Then
             Exit Sub
-        Else
-
-            SqlProveedor = "SELECT  * FROM Clientes  WHERE (Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-            DataAdapter.Fill(DataSet, "Clientes")
-            If DataSet.Tables("Clientes").Rows.Count = 0 Then
-                Exit Sub
-            End If
         End If
 
-
-        If Me.TrueDBGridComponentes.Columns("Cod_Producto").Text = "" Then
+        If Not ExisteProducto(Me.TrueDBGridComponentes.Columns("Cod_Producto").Text) Then
             Exit Sub
-        Else
-            CodProducto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
-            SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-            DataAdapter.Fill(DataSet, "Productos")
-            If DataSet.Tables("Productos").Rows.Count = 0 Then
-                Exit Sub
-            End If
         End If
 
 
@@ -7923,11 +8110,11 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
     End Sub
 
-        Private Sub TrueDBGridComponentes_BeforeColEdit(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.BeforeColEditEventArgs) Handles TrueDBGridComponentes.BeforeColEdit
-            Dim Cols As Double, iPosicion As Double
+    Private Sub TrueDBGridComponentes_BeforeColEdit(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.BeforeColEditEventArgs) Handles TrueDBGridComponentes.BeforeColEdit
+        Dim Cols As Double
 
-            Try
-                Columna = e.ColIndex
+        Try
+            Columna = e.ColIndex
             If FacturaTarea = True Then
                 Cols = e.ColIndex
 
@@ -7940,24 +8127,15 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                             Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
                         End If
 
-                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                            iPosicion = Me.BindingDetalle.Position
-                            CantidadAnterior = Me.BindingDetalle.Item(iPosicion)("Cantidad")
-                        Else
-                            CantidadAnterior = 0
-                        End If
+                        'En una fila nueva el valor guardado es DBNull: ValorAnteriorDetalle devuelve 0
+                        CantidadAnterior = ValorAnteriorDetalle("Cantidad")
                     Case 4
                         If Not IsNumeric(Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text) Then
                             Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = 0
                         End If
 
 
-                        If Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text <> "" Then
-                            iPosicion = Me.BindingDetalle.Position
-                            PrecioAnterior = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
-                        Else
-                            PrecioAnterior = 0
-                        End If
+                        PrecioAnterior = ValorAnteriorDetalle("Precio_Unitario")
                 End Select
             Else
                 Cols = e.ColIndex
@@ -7968,12 +8146,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                             Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
                         End If
 
-                        If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
-                            iPosicion = Me.BindingDetalle.Position
-                            CantidadAnterior = Me.BindingDetalle.Item(iPosicion)("Cantidad")
-                        Else
-                            CantidadAnterior = 0
-                        End If
+                        CantidadAnterior = ValorAnteriorDetalle("Cantidad")
 
                         'ActualizaMETODOFactura()
                     Case 3
@@ -7983,12 +8156,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                         End If
 
 
-                        If Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text <> "" Then
-                            iPosicion = Me.BindingDetalle.Position
-                            PrecioAnterior = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
-                        Else
-                            PrecioAnterior = 0
-                        End If
+                        PrecioAnterior = ValorAnteriorDetalle("Precio_Unitario")
 
                         'ActualizaMETODOFactura()
                 End Select
@@ -7996,10 +8164,219 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
 
 
-            Catch ex As Exception
-                MsgBox(ex.ToString)
-            End Try
-        End Sub
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+    End Sub
+
+    '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    '/////////////////////// AYUDAS DEL GRID DE PRODUCTOS (CONSULTAS CACHEADAS) /////////////////////////////////////////
+    '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    'Configuracion del IVA (DatosEmpresa.IvaProducto); se lee una sola vez por formulario
+    Private Function ConfiguracionIvaProducto() As String
+        If IvaProductoCache Is Nothing Then
+            IvaProductoCache = "Sumando IVA del Producto"
+            Using cn As New SqlClient.SqlConnection(Conexion)
+                Using cmd As New SqlClient.SqlCommand("SELECT TOP 1 IvaProducto FROM DatosEmpresa", cn)
+                    cn.Open()
+                    Dim Valor As Object = cmd.ExecuteScalar()
+                    If Valor IsNot Nothing AndAlso Not IsDBNull(Valor) Then IvaProductoCache = CStr(Valor)
+                End Using
+            End Using
+        End If
+        Return IvaProductoCache
+    End Function
+
+    'Porcentaje del impuesto por Cod_Iva, cacheado
+    Private Function TasaImpuestoProducto(ByVal CodIva As String) As Double
+        Dim Tasa As Double = 0
+
+        If CodIva Is Nothing Then CodIva = ""
+        If ImpuestosCache.TryGetValue(CodIva, Tasa) Then Return Tasa
+
+        Using cn As New SqlClient.SqlConnection(Conexion)
+            Using cmd As New SqlClient.SqlCommand("SELECT TOP 1 Impuesto FROM Impuestos WHERE Cod_Iva = @CodIva", cn)
+                cmd.Parameters.AddWithValue("@CodIva", CodIva)
+                cn.Open()
+                Dim Valor As Object = cmd.ExecuteScalar()
+                If Valor IsNot Nothing AndAlso Not IsDBNull(Valor) Then Tasa = CDbl(Valor)
+            End Using
+        End Using
+
+        ImpuestosCache(CodIva) = Tasa
+        Return Tasa
+    End Function
+
+    'Valida que el cliente exista; recuerda el ultimo codigo valido para no consultar en cada celda
+    Private Function ClienteExiste(ByVal CodCliente As String) As Boolean
+        If CodCliente = "" Then Return False
+        If CodCliente = ClienteValidado Then Return True
+
+        Using cn As New SqlClient.SqlConnection(Conexion)
+            Using cmd As New SqlClient.SqlCommand("SELECT COUNT(*) FROM Clientes WHERE Cod_Cliente = @Cod", cn)
+                cmd.Parameters.AddWithValue("@Cod", CodCliente)
+                cn.Open()
+                If CInt(cmd.ExecuteScalar()) = 0 Then Return False
+            End Using
+        End Using
+
+        ClienteValidado = CodCliente
+        Return True
+    End Function
+
+    Private Function ExisteProducto(ByVal CodProducto As String) As Boolean
+        If CodProducto = "" Then Return False
+
+        Using cn As New SqlClient.SqlConnection(Conexion)
+            Using cmd As New SqlClient.SqlCommand("SELECT COUNT(*) FROM Productos WHERE Cod_Productos = @Cod", cn)
+                cmd.Parameters.AddWithValue("@Cod", CodProducto)
+                cn.Open()
+                Return CInt(cmd.ExecuteScalar()) > 0
+            End Using
+        End Using
+    End Function
+
+    'ExisteLoteProducto recorre compras y facturas; solo se repite si cambia producto, bodega, lote o fecha
+    Private Function LoteProductoValido(ByVal CodProducto As String, ByVal CodBodega As String, ByVal NumeroLote As String, ByVal Fecha As Date) As Boolean
+        Dim Clave As String = CodProducto & "|" & CodBodega & "|" & NumeroLote & "|" & Fecha.ToString("yyyyMMdd")
+
+        If LotesValidados.ContainsKey(Clave) Then Return True
+        If Not ExisteLoteProducto(CodProducto, CodBodega, NumeroLote, Fecha) Then Return False
+
+        LotesValidados(Clave) = True
+        Return True
+    End Function
+
+    'Valor numerico de una celda del grid (vacio o texto invalido = 0)
+    Private Function NumeroCelda(ByVal Texto As String) As Double
+        If IsNumeric(Texto) Then Return CDbl(Texto)
+        Return 0
+    End Function
+
+    'Valor guardado en la fila actual del detalle antes de editar (0 si es una fila nueva)
+    Private Function ValorAnteriorDetalle(ByVal Campo As String) As Double
+        Dim iPosicion As Integer = Me.BindingDetalle.Position
+
+        If iPosicion < 0 OrElse iPosicion >= Me.BindingDetalle.Count Then Return 0
+        Dim Valor As Object = Me.BindingDetalle.Item(iPosicion)(Campo)
+        If IsDBNull(Valor) OrElse Not IsNumeric(Valor) Then Return 0
+        Return CDbl(Valor)
+    End Function
+
+    'Completa la fila cuando el usuario digita el codigo del producto, con el mismo resultado que el boton de consulta:
+    'descripcion, costo, precio, lote por defecto. Devuelve False (y cancela la actualizacion) si el codigo no es valido.
+    'Sin e (llamada desde AfterColEdit para un codigo alterno ya traducido) solo devuelve False.
+    Private Function CompletarProductoDigitado(Optional ByVal e As C1.Win.C1TrueDBGrid.BeforeColUpdateEventArgs = Nothing) As Boolean
+        Dim Grid As C1.Win.C1TrueDBGrid.C1TrueDBGrid = Me.TrueDBGridComponentes
+        Dim CodProducto As String = Grid.Columns("Cod_Producto").Text.Trim()
+        Dim DtProducto As New DataTable, DtAlterno As New DataTable, DtAlternos As New DataTable
+        Dim TipoProducto As String = "", Descripcion As String = "", Precio As Double = 0
+        Dim NumLote As String = ""
+
+        If CodProducto = "" Then Return True
+
+        '/////////////////////// BUSCO EL PRODUCTO, SI NO EXISTE BUSCO EL CODIGO ALTERNO ///////////////////////
+        Using da As New SqlClient.SqlDataAdapter("SELECT * FROM Productos WHERE Cod_Productos = @Cod", MiConexion)
+            da.SelectCommand.Parameters.AddWithValue("@Cod", CodProducto)
+            da.Fill(DtProducto)
+        End Using
+
+        If DtProducto.Rows.Count = 0 Then
+            Using da As New SqlClient.SqlDataAdapter("SELECT Cod_Producto FROM Codigos_Alternos WHERE Cod_Alternativo = @Cod", MiConexion)
+                da.SelectCommand.Parameters.AddWithValue("@Cod", CodProducto)
+                da.Fill(DtAlterno)
+            End Using
+
+            If DtAlterno.Rows.Count = 0 Then
+                MsgBox("El Producto Seleccionado no Existe", MsgBoxStyle.Critical, "Zeus Facturacion")
+                If e IsNot Nothing Then e.Cancel = True
+                Return False
+            End If
+
+            'No se cambia Cod_Producto aqui: la columna se esta actualizando y el valor se perderia (fila en blanco).
+            'AfterColEdit traduce el codigo alterno y vuelve a llamar esta funcion con el codigo real.
+            PrecioProductoDigitado = -1
+            Return True
+        End If
+
+        If PerteneceProductoBodega(Me.CboCodigoBodega.Text, CodProducto) = False Then
+            MsgBox("No Pertenece el Producto a esta Bodega", MsgBoxStyle.Critical, "Zeus Facturacion")
+            If e IsNot Nothing Then e.Cancel = True
+            Return False
+        End If
+
+        TipoProducto = DtProducto.Rows(0)("Tipo_Producto").ToString()
+        Descripcion = Trim(DtProducto.Rows(0)("Descripcion_Producto").ToString())
+
+        '/////////////////////// DESCRIPCION CON LOS CODIGOS ALTERNOS (SAC, MARCA, ETC) ///////////////////////
+        Using da As New SqlClient.SqlDataAdapter("SELECT Cod_Alternativo, Descripcion_Producto FROM Codigos_Alternos WHERE Cod_Producto = @Cod", MiConexion)
+            da.SelectCommand.Parameters.AddWithValue("@Cod", CodProducto)
+            da.Fill(DtAlternos)
+        End Using
+
+        For Each Fila As DataRow In DtAlternos.Rows
+            Dim Tipo As String = Fila("Descripcion_Producto").ToString().Trim().ToUpper()
+            Dim Codigo As String = Fila("Cod_Alternativo").ToString()
+
+            Select Case Codigo
+                Case "SAC"
+                    If CboTipoProducto.Text = "Cotizacion" Then
+                        Descripcion &= " ,SAC: " & Tipo
+                    End If
+                Case "MARCA"
+                    Descripcion &= " ,MARCA: " & Tipo
+                Case Else
+                    Descripcion &= " ," & Codigo & ": " & Tipo
+            End Select
+        Next
+
+        Grid.Columns("Descripcion_Producto").Text = Descripcion
+
+        '/////////////////////// COSTO ///////////////////////
+        Grid.Columns("Costo_Unitario").Text = CostoPromedioKardex(CodProducto, Me.DTPFecha.Value).Costo_Cordoba
+
+        '/////////////////////// LOTE POR DEFECTO ///////////////////////
+        If TipoProducto <> "Servicio" And TipoProducto <> "Descuento" Then
+            NumLote = Convert.ToString(LoteDefectoWorker(CodProducto, Me.CboCodigoBodega.Text, Me.DTPFecha.Value))
+
+            If NumLote = "" Then
+                If FacturaLotes = True Then
+                    If CboTipoProducto.Text <> "Cotizacion" Then
+                        MsgBox("El producto no tiene existencia disponible.", MsgBoxStyle.Exclamation, "Zeus Facturacion")
+                        If e IsNot Nothing Then e.Cancel = True
+                        Return False
+                    End If
+                    NumLote = "SINLOTE"
+                End If
+            End If
+        End If
+
+        Grid.Columns("CodTarea").Text = NumLote
+
+        '/////////////////////// PRECIO ///////////////////////
+        Precio = BuscaPrecioTipo(CodProducto, Me.CboCodigoBodega.Text, Me.TxtMonedaFactura.Text)
+        If Precio = 0 Then
+            If Me.TxtMonedaFactura.Text = "Dolares" Then
+                Precio = Val(DtProducto.Rows(0)("Precio_Lista").ToString())
+            Else
+                Precio = Val(DtProducto.Rows(0)("Precio_Venta").ToString())
+            End If
+        End If
+
+        If Me.ChkPorcientoTarjeta.Checked = True Then
+            Precio = Math.Round(Precio * (1 + (IncrementoTarjeta / 100)), 2)
+        End If
+
+        PrecioProductoDigitado = Precio
+        Grid.Columns("Precio_Unitario").Text = Precio.ToString()
+        If Grid.Columns("Descuento").Text = "" Then Grid.Columns("Descuento").Text = "0"
+        If Grid.Columns("Cantidad").Text = "" Then Grid.Columns("Cantidad").Text = "1"
+        Grid.Columns("Precio_Neto").Text = Precio.ToString()
+        Grid.Columns("Importe").Text = Format(Precio * Val(Grid.Columns("Cantidad").Text), "##,##0.00")
+
+        Return True
+    End Function
 
     Private Sub TrueDBGridComponentes_BeforeColUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.BeforeColUpdateEventArgs) Handles TrueDBGridComponentes.BeforeColUpdate
 
@@ -8049,14 +8426,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                 '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 '////////////////////////////////////////////BUSCO LA CONFIGURACION DEL PRECIO///////////////////////////////////////////////////
                 '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                Sql = "SELECT  * FROM DatosEmpresa"
-                DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
-                DataAdapter.Fill(DataSet, "DatosEmpresa")
-                If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
-                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")) Then
-                        RespuestaIVA = DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")
-                    End If
-                End If
+                RespuestaIVA = ConfiguracionIvaProducto()
 
                 '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 '////////////////////////////////BUSCO EL CODIGO DEL IMPUESTO PARA EL PRODUCTO///////////////////////////////////////////
@@ -9075,14 +9445,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                 '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 '//////////////////////////////////BUSCO EL PORCENTAJE DEL IMPUESTO////////////////////////////////////////////////////////
                 '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                Sql = "SELECT  * FROM Impuestos WHERE (Cod_Iva = '" & CodImpuesto & "')"
-                DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
-                DataAdapter.Fill(DataSet, "Impuesto")
-                If DataSet.Tables("Impuesto").Rows.Count <> 0 Then
-                    TasaImpuesto = DataSet.Tables("Impuesto").Rows(0)("Impuesto")
-                Else
-                    TasaImpuesto = 0
-                End If
+                TasaImpuesto = TasaImpuestoProducto(CodImpuesto)
 
 
 
@@ -9202,37 +9565,29 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                     MsgBox("Es necesario que seleccione un Cliente", MsgBoxStyle.Critical, "Sistema Facturacion")
                     Me.TrueDBGridComponentes.Enabled = False
                     Exit Sub
-                Else
-
-                    SqlProveedor = "SELECT  * FROM Clientes  WHERE (Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-                    DataAdapter.Fill(DataSet, "Clientes")
-                    If DataSet.Tables("Clientes").Rows.Count = 0 Then
-                        MsgBox("El Codigo del Cliente no Existe", MsgBoxStyle.Critical, "Sistema Facturacion")
-                        Me.TrueDBGridComponentes.Enabled = False
-                        Exit Sub
-                    End If
+                ElseIf Not ClienteExiste(Me.TxtCodigoClientes.Text) Then
+                    MsgBox("El Codigo del Cliente no Existe", MsgBoxStyle.Critical, "Sistema Facturacion")
+                    Me.TrueDBGridComponentes.Enabled = False
+                    Exit Sub
                 End If
 
 
                 If Me.TrueDBGridComponentes.Columns("Cod_Producto").Text = "" Then
                     MsgBox("Necesita Seleccionar un producto", MsgBoxStyle.Critical, "Sistema Facturacion")
                     Exit Sub
-                Else
-
-                    CodProducto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
-                    SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-                    DataAdapter.Fill(DataSet, "Productos")
-                    If DataSet.Tables("Productos").Rows.Count = 0 Then
-                        MsgBox("El Producto Seleccionado no Existe", MsgBoxStyle.Critical, "Sistema Facturacion")
-                        Exit Sub
-                    End If
+                ElseIf Not ExisteProducto(Me.TrueDBGridComponentes.Columns("Cod_Producto").Text) Then
+                    MsgBox("El Producto Seleccionado no Existe", MsgBoxStyle.Critical, "Sistema Facturacion")
+                    Exit Sub
                 End If
             Else
                 '**************************************************************************************************************************************************
                 '//////////////////////////////////////////////////////////////CON ESTA CONSULTA VALIDO SI ES CON TAREAS//////////////////////////////////////////////////////////
                 '**********************************************************************************************************************************************************
+                '///////////////////////SI DIGITAN EL CODIGO LO TRATO IGUAL QUE EL BOTON DE CONSULTA //////////////////////////////////////
+                If e.ColIndex = 0 Then
+                    If Not CompletarProductoDigitado(e) Then Exit Sub
+                End If
+
                 If FacturaLotes = True Then
                     If Me.TrueDBGridComponentes.Columns("CodTarea").Text <> "" Then
                         NumeroLote = Me.TrueDBGridComponentes.Columns("CodTarea").Text
@@ -9253,7 +9608,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                         'End If
                         'DataSet.Tables("BuscaLote").Reset()
 
-                        If Not ExisteLoteProducto(
+                        If Not LoteProductoValido(
                                         CodProducto,
                                         CboCodigoBodega.Text,
                                         NumeroLote,
@@ -9261,7 +9616,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                             MsgBox("Este lote no existe para este producto.",
                                        MsgBoxStyle.Critical,
-                                       "Zeus Facturaci√≥n")
+                                       "Zeus FacturaciÛn")
 
                             e.Cancel = True
                             Exit Sub
@@ -9282,8 +9637,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                         End If
                         Me.TrueDBGridComponentes.Columns("CodTarea").Text = NumLote
 
-
-                        My.Application.DoEvents()
+                        'Sin DoEvents: dentro de BeforeColUpdate procesaria teclas/clics a mitad de la validacion
 
                         'Me.TrueDBGridComponentes.Columns("CodTarea").Text = LoteDefecto(Me.TrueDBGridComponentes.Columns("Cod_Producto").Text, Me.CboCodigoBodega.Text, Me.DTPFecha.Value)
                     End If
@@ -9300,7 +9654,8 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                 End If
 
                 If Me.TrueDBGridComponentes.Columns("Descuento").Text <> "" Then
-                    If Not IsNumeric(Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text) Then
+                    'Antes se validaba Precio_Unitario aqui; un descuento no numerico hacia fallar CDbl mas abajo
+                    If Not IsNumeric(Me.TrueDBGridComponentes.Columns("Descuento").Text) Then
                         Exit Sub
                     End If
                 End If
@@ -9316,23 +9671,19 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                 '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 '////////////////////////////////////////////BUSCO LA CONFIGURACION DEL PRECIO///////////////////////////////////////////////////
                 '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                Sql = "SELECT  * FROM DatosEmpresa"
-                DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
-                DataAdapter.Fill(DataSet, "DatosEmpresa")
-                If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
-                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")) Then
-                        RespuestaIVA = DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")
-                    End If
-                End If
+                RespuestaIVA = ConfiguracionIvaProducto()
 
                 '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 '////////////////////////////////BUSCO EL CODIGO DEL IMPUESTO PARA EL PRODUCTO///////////////////////////////////////////
                 '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                Dim ProductoEncontrado As Boolean = False
                 CodProducto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
-                SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
-                DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-                DataAdapter.Fill(DataSet, "Productos")
+                Using daProducto As New SqlClient.SqlDataAdapter("SELECT Cod_Iva, Tipo_Producto, Unidad_Medida, Precio_Venta, Precio_Lista, Existencia_Negativa FROM Productos WHERE Cod_Productos = @Cod", MiConexion)
+                    daProducto.SelectCommand.Parameters.AddWithValue("@Cod", CodProducto)
+                    daProducto.Fill(DataSet, "Productos")
+                End Using
                 If DataSet.Tables("Productos").Rows.Count <> 0 Then
+                    ProductoEncontrado = True
                     CodImpuesto = DataSet.Tables("Productos").Rows(0)("Cod_Iva")
                     TipoProducto = DataSet.Tables("Productos").Rows(0)("Tipo_Producto")
                     TipoDescuento = DataSet.Tables("Productos").Rows(0)("Unidad_Medida")
@@ -9360,20 +9711,14 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                     Select Case Cols
                         Case 0
 
-                            CodProducto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
-                            SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
-                            DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-                            DataAdapter.Fill(DataSet, "Productos")
-                            If DataSet.Tables("Productos").Rows.Count = 0 Then
+                            'El producto ya se consulto arriba (CodImpuesto incluido); no se repite la consulta
+                            If Not ProductoEncontrado Then
                                 MsgBox("El Producto Seleccionado no Existe", MsgBoxStyle.Critical, "Sistema Facturacion")
                                 Exit Sub
-                            Else
-                                CodImpuesto = DataSet.Tables("Productos").Rows(0)("Cod_Iva")
-                                Me.TrueDBGridComponentes.Columns("Descripcion_Producto").Text = DataSet.Tables("Productos").Rows(0)("Descripcion_Producto")
-                                Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = DataSet.Tables("Productos").Rows(0)("Ultimo_Precio_Compra")
                             End If
-                            DataSet.Tables("Productos").Clear()
 
+                            'Para que el importe y los totales se calculen con la cantidad que dejo CompletarProductoDigitado
+                            Cantidad = Val(Me.TrueDBGridComponentes.Columns("Cantidad").Text)
 
                         Case 1
 
@@ -9636,7 +9981,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
                                                     Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    MsgBox("Existencia Negativa: Disponible " & ExistenciaValida, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
                                                 End If
@@ -9727,7 +10072,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                                             Cantidad = ExistenciaLote
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = Existencia
+                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaLote
                                                     If Me.TrueDBGridComponentes.Columns("Descuento").Text <> "" Then
                                                         Descuento = (CDbl(Me.TrueDBGridComponentes.Columns("Descuento").Text) / 100)
                                                     End If
@@ -9837,15 +10182,15 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                             If ExistenciaLote < Me.TrueDBGridComponentes.Columns("Cantidad").Text Then
                                 If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
                                     If ExistenciaNegativa <> "SI" Then
-                                        If Existencia > 0 Then
-                                            Cantidad = Existencia
+                                        If ExistenciaLote > 0 Then
+                                            Cantidad = ExistenciaLote
                                             If Me.TrueDBGridComponentes.Columns("Descuento").Text <> "" Then
                                                 Descuento = (CDbl(Me.TrueDBGridComponentes.Columns("Descuento").Text) / 100)
                                             End If
                                             If TipoProducto <> "Servicio" Then
                                                 If TipoProducto <> "Descuento" Then
-                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = Existencia
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    Me.TrueDBGridComponentes.Columns("Cantidad").Text = ExistenciaLote
+                                                    MsgBox("Existencia Negativa: Disponible Lote " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
                                                         Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
@@ -9863,7 +10208,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                                                 If TipoProducto <> "Descuento" Then
                                                     Me.TrueDBGridComponentes.Columns("Cantidad").Text = 0
                                                     Me.TrueDBGridComponentes.Columns("Descuento").Text = 0
-                                                    MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
+                                                    MsgBox("Existencia Negativa: Disponible Lote " & ExistenciaLote, MsgBoxStyle.Critical, "Zeus Facturacion")
                                                 Else
                                                     If Me.TrueDBGridComponentes.Columns("Cantidad").Text <> "" Then
                                                         Cantidad = Me.TrueDBGridComponentes.Columns("Cantidad").Text
@@ -9945,6 +10290,11 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                             End If
 
                     End Select
+
+                    'Cantidad y descuento salen siempre de la fila (ya ajustada por existencias arriba): al editar la
+                    'descripcion el importe quedaba en 0, y al editar cantidad/lote o en cotizaciones se perdia el descuento
+                    Cantidad = NumeroCelda(Me.TrueDBGridComponentes.Columns("Cantidad").Text)
+                    Descuento = NumeroCelda(Me.TrueDBGridComponentes.Columns("Descuento").Text) / 100
 
                 Else
 
@@ -10194,14 +10544,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                 '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 '//////////////////////////////////BUSCO EL PORCENTAJE DEL IMPUESTO////////////////////////////////////////////////////////
                 '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                Sql = "SELECT  * FROM Impuestos WHERE (Cod_Iva = '" & CodImpuesto & "')"
-                DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
-                DataAdapter.Fill(DataSet, "Impuesto")
-                If DataSet.Tables("Impuesto").Rows.Count <> 0 Then
-                    TasaImpuesto = DataSet.Tables("Impuesto").Rows(0)("Impuesto")
-                Else
-                    TasaImpuesto = 0
-                End If
+                TasaImpuesto = TasaImpuestoProducto(CodImpuesto)
 
 
 
@@ -10245,6 +10588,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                             Me.TrueDBGridComponentes.Columns("Cantidad").Text = 1
                             Cantidad = 1
                             Me.TrueDBGridComponentes.Columns("Descuento").Text = ""
+                            Descuento = 0
                             If Me.TxtMonedaFactura.Text = "Cordobas" Then
                                 Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = Format(PrecioDescCordobas, "##,##0.00")
                                 Precio = PrecioDescCordobas
@@ -10257,6 +10601,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                             Me.TrueDBGridComponentes.Columns("Cantidad").Text = 1
                             Cantidad = 1
                             Me.TrueDBGridComponentes.Columns("Descuento").Text = ""
+                            Descuento = 0
                             SubTotal = Me.TxtSubTotal.Text
                             If PrecioDescCordobas <> 0 Then
                                 PorcientoDescuento = (PrecioDescCordobas / 100)
@@ -10270,6 +10615,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                             Me.TrueDBGridComponentes.Columns("Cantidad").Text = 1
                             Cantidad = 1
                             Me.TrueDBGridComponentes.Columns("Descuento").Text = ""
+                            Descuento = 0
                             If Me.TxtMonedaFactura.Text = "Cordobas" Then
                                 Me.TrueDBGridComponentes.Columns("Precio_Unitario").Text = Format(PrecioDescCordobas, "##,##0.00")
                                 Precio = PrecioDescCordobas
@@ -10282,6 +10628,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                             Me.TrueDBGridComponentes.Columns("Cantidad").Text = 1
                             Cantidad = 1
                             Me.TrueDBGridComponentes.Columns("Descuento").Text = ""
+                            Descuento = 0
                             SubTotal = Me.TxtSubTotal.Text
                             If PrecioDescCordobas <> 0 Then
                                 PorcientoDescuento = (PrecioDescCordobas / 100)
@@ -10317,32 +10664,19 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                     MsgBox("Es necesario que seleccione un Cliente", MsgBoxStyle.Critical, "Sistema Facturacion")
                     Me.TrueDBGridComponentes.Enabled = False
                     Exit Sub
-                Else
-
-                    SqlProveedor = "SELECT  * FROM Clientes  WHERE (Cod_Cliente = '" & Me.TxtCodigoClientes.Text & "')"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-                    DataAdapter.Fill(DataSet, "Clientes")
-                    If DataSet.Tables("Clientes").Rows.Count = 0 Then
-                        MsgBox("El Codigo del Cliente no Existe", MsgBoxStyle.Critical, "Sistema Facturacion")
-                        Me.TrueDBGridComponentes.Enabled = False
-                        Exit Sub
-                    End If
+                ElseIf Not ClienteExiste(Me.TxtCodigoClientes.Text) Then
+                    MsgBox("El Codigo del Cliente no Existe", MsgBoxStyle.Critical, "Sistema Facturacion")
+                    Me.TrueDBGridComponentes.Enabled = False
+                    Exit Sub
                 End If
 
 
                 If Me.TrueDBGridComponentes.Columns("Cod_Producto").Text = "" Then
                     MsgBox("Necesita Seleccionar un producto", MsgBoxStyle.Critical, "Sistema Facturacion")
                     Exit Sub
-                Else
-
-                    CodProducto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
-                    SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-                    DataAdapter.Fill(DataSet, "Productos")
-                    If DataSet.Tables("Productos").Rows.Count = 0 Then
-                        MsgBox("El Producto Seleccionado no Existe", MsgBoxStyle.Critical, "Sistema Facturacion")
-                        Exit Sub
-                    End If
+                ElseIf Not ExisteProducto(Me.TrueDBGridComponentes.Columns("Cod_Producto").Text) Then
+                    MsgBox("El Producto Seleccionado no Existe", MsgBoxStyle.Critical, "Sistema Facturacion")
+                    Exit Sub
                 End If
 
 
@@ -10359,45 +10693,56 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         End Try
     End Sub
 
-        Private Sub TrueDBGridComponentes_BeforeDelete(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TrueDBGridComponentes.BeforeDelete
-            Dim SQlString As String, iPosicion As Double, TipoFactura As String, Fecha As String
-            Dim Descripcion_Producto As String, CodigoProducto As String, NumeroFactura As String
-            Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-            Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, IdDetalle As Double
+    Private Sub TrueDBGridComponentes_BeforeDelete(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TrueDBGridComponentes.BeforeDelete
+        Dim SQlString As String, iPosicion As Integer, Fila As DataRowView
+        Dim Descripcion_Producto As String, CodigoProducto As String, IdDetalle As Double
 
-            Try
+        FilaEliminadaBD = Nothing
 
+        Try
 
+            iPosicion = Me.BindingDetalle.Position
+            If iPosicion < 0 OrElse iPosicion >= Me.BindingDetalle.Count Then Exit Sub
+            Fila = CType(Me.BindingDetalle.Item(iPosicion), DataRowView)
 
-                iPosicion = Me.BindingDetalle.Position
+            If Not IsDBNull(Fila("id_Detalle_Factura")) Then
+                IdDetalle = CDbl(Fila("id_Detalle_Factura"))
+            Else
+                IdDetalle = -1
+            End If
 
-                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("id_Detalle_Factura")) Then
-                    IdDetalle = Me.BindingDetalle.Item(iPosicion)("id_Detalle_Factura")
-                Else
-                    IdDetalle = -1
-                End If
+            'La tabla del detalle trae Cod_Producto (antes se leia "Cod_Productos", que no existe, y el borrado fallaba siempre)
+            Descripcion_Producto = If(IsDBNull(Fila("Descripcion_Producto")), "", CStr(Fila("Descripcion_Producto")))
+            CodigoProducto = If(IsDBNull(Fila("Cod_Producto")), "", CStr(Fila("Cod_Producto")))
 
-                Descripcion_Producto = Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto")
-                CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Productos")
-                TipoFactura = Me.CboTipoProducto.Text
-                Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
-                NumeroFactura = Me.TxtNumeroEnsamble.Text
+            If IdDetalle = -1 Then
+                'Sin id se borra una sola linea que coincida (antes podia borrar varias iguales)
+                SQlString = "DELETE TOP (1) FROM Detalle_Facturas WHERE Numero_Factura = @Numero AND Fecha_Factura = @Fecha AND Tipo_Factura = @Tipo AND Cod_Producto = @Producto AND Descripcion_Producto = @Descripcion"
+            Else
+                SQlString = "DELETE FROM Detalle_Facturas WHERE Numero_Factura = @Numero AND Fecha_Factura = @Fecha AND Tipo_Factura = @Tipo AND Cod_Producto = @Producto AND id_Detalle_Factura = @Id"
+            End If
 
+            Using cn As New SqlClient.SqlConnection(Conexion)
+                Using cmd As New SqlClient.SqlCommand(SQlString, cn)
+                    cmd.Parameters.AddWithValue("@Numero", Me.TxtNumeroEnsamble.Text)
+                    cmd.Parameters.AddWithValue("@Fecha", Me.DTPFecha.Value.Date)
+                    cmd.Parameters.AddWithValue("@Tipo", Me.CboTipoProducto.Text)
+                    cmd.Parameters.AddWithValue("@Producto", CodigoProducto)
+                    cmd.Parameters.AddWithValue("@Descripcion", Descripcion_Producto)
+                    cmd.Parameters.AddWithValue("@Id", IdDetalle)
+                    cn.Open()
+                    cmd.ExecuteNonQuery()
+                End Using
+            End Using
 
-                MiConexion.Close()
-                If IdDetalle = -1 Then
-                    SQlString = "DELETE FROM  Detalle_Facturas WHERE (Numero_Factura = '" & NumeroFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & TipoFactura & "') AND (Cod_Producto = '" & CodigoProducto & "') AND (Descripcion_Producto = '" & Descripcion_Producto & "')"
-                Else
-                    SQlString = "DELETE FROM  Detalle_Facturas WHERE (Numero_Factura = '" & NumeroFactura & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & TipoFactura & "') AND (Cod_Producto = '" & CodigoProducto & "') AND (Descripcion_Producto = '" & Descripcion_Producto & "') AND (id_Detalle_Factura = " & IdDetalle & ")"
-                End If
-                MiConexion.Open()
-                ComandoUpdate = New SqlClient.SqlCommand(SQlString, MiConexion)
-                iResultado = ComandoUpdate.ExecuteNonQuery
-                MiConexion.Close()
+            'Solo si la fila ya estaba grabada; AfterDelete la saca del DataTable para que da.Update no la borre otra vez
+            If Fila.Row.RowState <> DataRowState.Added Then FilaEliminadaBD = Fila.Row
 
-            Catch ex As Exception
-                MsgBox(Err.Description)
-            End Try
+        Catch ex As Exception
+            'Si no se pudo borrar en la base de datos, la fila se queda en el grid
+            MsgBox("No se pudo eliminar la linea: " & ex.Message, MsgBoxStyle.Critical, "Zeus Facturacion")
+            e.Cancel = True
+        End Try
     End Sub
 
     Private Sub TrueDBGridComponentes_BeforeUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TrueDBGridComponentes.BeforeUpdate
@@ -10413,17 +10758,11 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
             If NumeroFactura = "-00001" Then
                 Me.TxtNumeroEnsamble.Text = "-----0-----"
                 e.Cancel = True
+                'Sin numero de factura no se debe seguir preparando la fila
+                Exit Sub
             Else
                 Me.TxtNumeroEnsamble.Text = NumeroFactura
             End If
-        End If
-
-        '//////////////////////////////////////////////////////BUSCO EL LIMITE DE CREDITO DE UN CLIENTE //////////////////////////////////////////
-        TasaCambio = BuscaTasaCambio(Me.DTPFecha.Value)
-        If Me.TrueDBGridComponentes.Columns("Importe").Text <> "" Then
-            Monto = Me.TrueDBGridComponentes.Columns("Importe").Text
-        Else
-            Monto = 0
         End If
 
         If Me.TrueDBGridComponentes.Columns("Cantidad").Text = "" Then
@@ -10438,14 +10777,10 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         End If
 
 
-        If Me.TxtMonedaFactura.Text <> MonedaLimiteCredito Then
-            If Me.TxtMonedaFactura.Text = "Cordobas" Then
-                LimiteCredito = LimiteCredito * TasaCambio
-            Else
-                LimiteCredito = LimiteCredito / TasaCambio
-            End If
-        End If
-
+        '//////////////////////////////////////////////////////LIMITE DE CREDITO DE UN CLIENTE //////////////////////////////////////////
+        'Antes se convertia aqui LimiteCredito (campo del formulario) con la tasa en CADA fila: el limite se multiplicaba
+        'o dividia acumulativamente y daÒaba la validacion de BloqueoLimiteCredito. Si se reactiva la validacion,
+        'convertir sobre una variable local (y calcular Monto/TasaCambio solo entonces).
         'If Me.CboTipoProducto.Text = "Factura" Then
         '    If (SaldoClienteH + Monto) > LimiteCredito Then
         '        MsgBox("Limite Credito Excedido", MsgBoxStyle.Critical, "Zeus Facturacion")
@@ -10464,8 +10799,9 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                 Sql = "SELECT * FROM Productos WHERE (Cod_Productos = '" & CodigoProducto & "')"
                 DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
                 DataAdapter.Fill(DataSet, "TipoProducto")
-                If DataSet.Tables("TipoProducto").Rows.Count = 0 Then
-                    If DataSet.Tables("TipoProducto").Rows(0)("Tipo_Producto") <> "Servicio" Or DataSet.Tables("TipoProducto").Rows(0)("Tipo_Producto") <> "Descuento" Then
+                If DataSet.Tables("TipoProducto").Rows.Count <> 0 Then
+                    'Solo se exige el lote cuando se factura por lotes y el producto no es servicio ni descuento
+                    If FacturaLotes = True AndAlso DataSet.Tables("TipoProducto").Rows(0)("Tipo_Producto") <> "Servicio" AndAlso DataSet.Tables("TipoProducto").Rows(0)("Tipo_Producto") <> "Descuento" Then
                         MsgBox("Se necesita el Codigo de la Tarea", MsgBoxStyle.Critical, "Zeus Facturacion")
                         e.Cancel = True
                     End If
@@ -10480,7 +10816,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                         NumeroLote = Me.TrueDBGridComponentes.Columns("CodTarea").Text
                         CodigoProducto = Me.TrueDBGridComponentes.Columns("Cod_Producto").Text
 
-                        If Not ExisteLoteProducto(
+                        If Not LoteProductoValido(
                                         CodigoProducto,
                                         CboCodigoBodega.Text,
                                         NumeroLote,
@@ -10488,7 +10824,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                             MsgBox("Este lote no existe para este producto.",
                                        MsgBoxStyle.Critical,
-                                       "Zeus Facturaci√≥n")
+                                       "Zeus FacturaciÛn")
 
                             e.Cancel = True
                             Exit Sub
@@ -10579,7 +10915,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
     End Sub
 
 
-        Private Sub TrueDBGridComponentes_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridComponentes.ButtonClick
+    Private Sub TrueDBGridComponentes_ButtonClick(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) Handles TrueDBGridComponentes.ButtonClick
 
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SqlProveedor As String
         Dim CodProducto As String, TipoProducto As String = "Servicio", TipoDescuento As String = "ImporteFijo", PrecioDescCordobas As Double, PrecioDescDolar As Double
@@ -10638,7 +10974,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                             NumLote = "SINLOTE"
                         End If
                     End If
-                        Me.TrueDBGridComponentes.Columns("CodTarea").Text = NumLote
+                    Me.TrueDBGridComponentes.Columns("CodTarea").Text = NumLote
 
 
                     My.Application.DoEvents()
@@ -11019,12 +11355,12 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         '    MsgBox(ex.ToString)
         'End Try
 
-        End Sub
+    End Sub
 
 
-        Private Sub Button6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
-            Quien = "Facturas"
-            My.Forms.FrmConsultas.ShowDialog()
+    Private Sub Button6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
+        Quien = "Facturas"
+        My.Forms.FrmConsultas.ShowDialog()
         If My.Forms.FrmConsultas.Codigo <> "-----0-----" Then
             If Not My.Forms.FrmConsultas.TipoCompra = Nothing Then
                 Me.DTPFecha.Value = My.Forms.FrmConsultas.Fecha
@@ -11050,13 +11386,13 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                 End If
             End If
         End If
-        End Sub
+    End Sub
 
-        Private Sub CmdFacturar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdFacturar.Click
-            Dim NumeroFactura As String, iPosicion As Double, Registros As Double
-            Dim CodigoProducto As String, PrecioUnitario As Double, Descuento As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double
-            Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, SqlCompras As String, Fecha As String, IdDetalle As Double
-            Dim Descripcion_Producto As String, TipoFactura As String, FacturaBodega As Boolean = False, FacturaSerie As Boolean = False, CompraBodega As Boolean = False
+    Private Sub CmdFacturar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdFacturar.Click
+        Dim NumeroFactura As String, iPosicion As Double, Registros As Double
+        Dim CodigoProducto As String, PrecioUnitario As Double, Descuento As Double, PrecioNeto As Double, Importe As Double, Cantidad As Double
+        Dim ComandoUpdate As New SqlClient.SqlCommand, iResultado As Integer, SqlCompras As String, Fecha As String, IdDetalle As Double
+        Dim Descripcion_Producto As String, TipoFactura As String, FacturaBodega As Boolean = False, FacturaSerie As Boolean = False, CompraBodega As Boolean = False
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, Existencia As Double
         Dim NumeroCotizacion As String, Fecha_Factura As Date
         Dim ExistenciaNegativa As String, SqlDatos As String, CostoUnitario As Double = 0
@@ -11160,7 +11496,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         '//////////////////////////////////////////////////////////////////////////////////////////////
         '////////////////////////////EDITO EL ENCABEZADO DE LA COTIZACION///////////////////////////////////
         '/////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'False', [Nuestra_Referencia] = '" & NumeroFactura & "' " & _
+        SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'False', [Nuestra_Referencia] = '" & NumeroFactura & "' " &
                      "WHERE  (Numero_Factura = '" & NumeroCotizacion & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = 'Cotizacion')"
         MiConexion.Open()
         ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
@@ -11285,7 +11621,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         '//////////////////////////////////////////////////////////////////////////////////////////////
         '////////////////////////////EDITO EL ENCABEZADO DE LA FACTURA///////////////////////////////////
         '/////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlCompras = "UPDATE [Facturas]  SET [Nuestra_Referencia] = '" & NumeroCotizacion & "' " & _
+        SqlCompras = "UPDATE [Facturas]  SET [Nuestra_Referencia] = '" & NumeroCotizacion & "' " &
                      "WHERE  (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
         MiConexion.Open()
         ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
@@ -11387,7 +11723,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
 
         '///////////////////////////////////////BUSCO EL DETALLE DE LA FACTURA///////////////////////////////////////////////////////
-        SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario, Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM  Detalle_Facturas  " & _
+        SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario, Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM  Detalle_Facturas  " &
             "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "')"
         'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
         'DataAdapter.Fill(DataSet, "DetalleFacturas")
@@ -11432,106 +11768,106 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         '    MsgBox(ex.ToString)
         'End Try
 
-        End Sub
+    End Sub
 
 
-        Private Sub TxtDescuento_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtDescuento.TextChanged
-            If IsNumeric(Me.TxtDescuento.Text) Then
-                ActualizaMETODOFactura()
-            Else
-                MsgBox("TIENE QUE DIGITAR NUMEROS", MsgBoxStyle.Critical, "Zeus Facturacion")
-            End If
-        End Sub
+    Private Sub TxtDescuento_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TxtDescuento.TextChanged
+        If IsNumeric(Me.TxtDescuento.Text) Then
+            ActualizaMETODOFactura()
+        Else
+            MsgBox("TIENE QUE DIGITAR NUMEROS", MsgBoxStyle.Critical, "Zeus Facturacion")
+        End If
+    End Sub
 
-        Private Sub OptExsonerado_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptExsonerado.CheckedChanged
-            'Dim CodImpuesto As String = "", Sql As String, TasaImpuesto As Double
-            'Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, RespuestaIVA As String = "Sumando IVA del Producto"
-            'Dim Precio As Double, SubTotal As Double, Cantidad As Double, Neto As Double, Descuento As Double
+    Private Sub OptExsonerado_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptExsonerado.CheckedChanged
+        'Dim CodImpuesto As String = "", Sql As String, TasaImpuesto As Double
+        'Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, RespuestaIVA As String = "Sumando IVA del Producto"
+        'Dim Precio As Double, SubTotal As Double, Cantidad As Double, Neto As Double, Descuento As Double
 
-            'Dim iPosicion As Double, Registros As Double, CodProducto As String, SqlProveedor As String
+        'Dim iPosicion As Double, Registros As Double, CodProducto As String, SqlProveedor As String
 
-            'Registros = Me.BindingDetalle.Count
-            'iPosicion = 0
+        'Registros = Me.BindingDetalle.Count
+        'iPosicion = 0
 
-            'Do While iPosicion < Registros
-            '    Precio = 0
-            '    Descuento = 0
-            '    SubTotal = 0
-            '    Cantidad = 0
-            '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            '    '////////////////////////////////////////////BUSCO LA CONFIGURACION DEL PRECIO///////////////////////////////////////////////////
-            '    '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            '    Sql = "SELECT  * FROM DatosEmpresa"
-            '    DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
-            '    DataAdapter.Fill(DataSet, "DatosEmpresa")
-            '    If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
-            '        If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")) Then
-            '            RespuestaIVA = DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")
-            '        End If
-            '    End If
+        'Do While iPosicion < Registros
+        '    Precio = 0
+        '    Descuento = 0
+        '    SubTotal = 0
+        '    Cantidad = 0
+        '    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '    '////////////////////////////////////////////BUSCO LA CONFIGURACION DEL PRECIO///////////////////////////////////////////////////
+        '    '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '    Sql = "SELECT  * FROM DatosEmpresa"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+        '    DataAdapter.Fill(DataSet, "DatosEmpresa")
+        '    If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
+        '        If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")) Then
+        '            RespuestaIVA = DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")
+        '        End If
+        '    End If
 
-            '    '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            '    '////////////////////////////////BUSCO EL CODIGO DEL IMPUESTO PARA EL PRODUCTO///////////////////////////////////////////
-            '    '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            '    CodProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Productos")
-            '    SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
-            '    DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-            '    DataAdapter.Fill(DataSet, "Productos")
-            '    If DataSet.Tables("Productos").Rows.Count <> 0 Then
-            '        CodImpuesto = DataSet.Tables("Productos").Rows(0)("Cod_Iva")
-            '    End If
-
-
-            '    '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            '    '//////////////////////////////////BUSCO EL PORCENTAJE DEL IMPUESTO////////////////////////////////////////////////////////
-            '    '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            '    Sql = "SELECT  * FROM Impuestos WHERE (Cod_Iva = '" & CodImpuesto & "')"
-            '    DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
-            '    DataAdapter.Fill(DataSet, "Impuesto")
-            '    If DataSet.Tables("Impuesto").Rows.Count <> 0 Then
-            '        TasaImpuesto = DataSet.Tables("Impuesto").Rows(0)("Impuesto")
-            '    Else
-            '        TasaImpuesto = 0
-            '    End If
+        '    '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '    '////////////////////////////////BUSCO EL CODIGO DEL IMPUESTO PARA EL PRODUCTO///////////////////////////////////////////
+        '    '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '    CodProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Productos")
+        '    SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+        '    DataAdapter.Fill(DataSet, "Productos")
+        '    If DataSet.Tables("Productos").Rows.Count <> 0 Then
+        '        CodImpuesto = DataSet.Tables("Productos").Rows(0)("Cod_Iva")
+        '    End If
 
 
+        '    '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '    '//////////////////////////////////BUSCO EL PORCENTAJE DEL IMPUESTO////////////////////////////////////////////////////////
+        '    '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '    Sql = "SELECT  * FROM Impuestos WHERE (Cod_Iva = '" & CodImpuesto & "')"
+        '    DataAdapter = New SqlClient.SqlDataAdapter(Sql, MiConexion)
+        '    DataAdapter.Fill(DataSet, "Impuesto")
+        '    If DataSet.Tables("Impuesto").Rows.Count <> 0 Then
+        '        TasaImpuesto = DataSet.Tables("Impuesto").Rows(0)("Impuesto")
+        '    Else
+        '        TasaImpuesto = 0
+        '    End If
 
 
-            '    If RespuestaIVA = "Sumando IVA del Producto" Then
-            '        Precio = CDbl(Me.BindingDetalle.Item(iPosicion)("Precio_Unitario"))
-            '    Else
-            '        If Me.OptExsonerado.Checked = False Then
-            '            Precio = CDbl(Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")) / (1 + TasaImpuesto)
-            '            'Me.BindingDetalle.Item(iPosicion)("Precio_Unitario") = Format(Precio, "##,##0.00")
-            '        Else
-            '            Precio = CDbl(Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")) * (1 + TasaImpuesto)
-            '            'Me.BindingDetalle.Item(iPosicion)("Precio_Unitario") = Format(Precio, "##,##0.00")
-            '        End If
-            '    End If
 
 
-            '    Cantidad = CDbl(Val(Me.BindingDetalle.Item(iPosicion)("Cantidad")))
-            '    If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descuento")) Then
-            '        Descuento = CDbl(Val(Me.BindingDetalle.Item(iPosicion)("Descuento")))
-            '    Else
-            '        Descuento = 0
-            '    End If
+        '    If RespuestaIVA = "Sumando IVA del Producto" Then
+        '        Precio = CDbl(Me.BindingDetalle.Item(iPosicion)("Precio_Unitario"))
+        '    Else
+        '        If Me.OptExsonerado.Checked = False Then
+        '            Precio = CDbl(Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")) / (1 + TasaImpuesto)
+        '            'Me.BindingDetalle.Item(iPosicion)("Precio_Unitario") = Format(Precio, "##,##0.00")
+        '        Else
+        '            Precio = CDbl(Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")) * (1 + TasaImpuesto)
+        '            'Me.BindingDetalle.Item(iPosicion)("Precio_Unitario") = Format(Precio, "##,##0.00")
+        '        End If
+        '    End If
 
-            '    SubTotal = Cantidad * Precio
-            '    Neto = SubTotal * (1 - Descuento)
-            '    Me.BindingDetalle.Item(iPosicion)("Precio_Neto") = Format(Precio * (1 - Descuento), "##,##0.00")
-            '    Me.BindingDetalle.Item(iPosicion)("Importe") = Format(Neto, "##,##0.00")
 
-            '    iPosicion = iPosicion + 1
-            'Loop
+        '    Cantidad = CDbl(Val(Me.BindingDetalle.Item(iPosicion)("Cantidad")))
+        '    If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descuento")) Then
+        '        Descuento = CDbl(Val(Me.BindingDetalle.Item(iPosicion)("Descuento")))
+        '    Else
+        '        Descuento = 0
+        '    End If
+
+        '    SubTotal = Cantidad * Precio
+        '    Neto = SubTotal * (1 - Descuento)
+        '    Me.BindingDetalle.Item(iPosicion)("Precio_Neto") = Format(Precio * (1 - Descuento), "##,##0.00")
+        '    Me.BindingDetalle.Item(iPosicion)("Importe") = Format(Neto, "##,##0.00")
+
+        '    iPosicion = iPosicion + 1
+        'Loop
 
         ActualizaMETODOFactura()
-        End Sub
+    End Sub
 
-        Private Sub TrueDBGridComponentes_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TrueDBGridComponentes.KeyDown
-            Dim Cantidad As Double, PrecioProducto As Double, Descuento As Double, PrecioNeto As Double, Total As Double
-            Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SqlProveedor As String
-            Dim CodProducto As String, TipoProducto As String = "Servicio", TipoDescuento As String = "ImporteFijo", PrecioDescCordobas As Double, PrecioDescDolar As Double
+    Private Sub TrueDBGridComponentes_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TrueDBGridComponentes.KeyDown
+        Dim Cantidad As Double, PrecioProducto As Double, Descuento As Double, PrecioNeto As Double, Total As Double
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, SqlProveedor As String
+        Dim CodProducto As String, TipoProducto As String = "Servicio", TipoDescuento As String = "ImporteFijo", PrecioDescCordobas As Double, PrecioDescDolar As Double
         Dim Precio As Double, SubTotal As Double, PorcientoDescuento As Double, Neto As Double, SQl As String = "", Categoria As String
 
         Select Case e.KeyCode
@@ -11586,40 +11922,40 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                         End If
 
                     Case 2
-                            Dim Posicion As Double, CodigoBodega As String = "", ExistenciaNegativa As String = "NO", RespuestaIVA As String = "Sumando IVA del Producto"
-                            Dim CodImpuesto As String = "", Existencia As Double = 0, Tasa As Double = 0                         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                            '////////////////////////////////////////////BUSCO LA CONFIGURACION DEL PRECIO///////////////////////////////////////////////////
-                            '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                            SQl = "SELECT  * FROM DatosEmpresa"
-                            DataAdapter = New SqlClient.SqlDataAdapter(SQl, MiConexion)
-                            DataAdapter.Fill(DataSet, "DatosEmpresa")
-                            If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
-                                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")) Then
-                                    RespuestaIVA = DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")
-                                End If
+                        Dim Posicion As Double, CodigoBodega As String = "", ExistenciaNegativa As String = "NO", RespuestaIVA As String = "Sumando IVA del Producto"
+                        Dim CodImpuesto As String = "", Existencia As Double = 0, Tasa As Double = 0                         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        '////////////////////////////////////////////BUSCO LA CONFIGURACION DEL PRECIO///////////////////////////////////////////////////
+                        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        SQl = "SELECT  * FROM DatosEmpresa"
+                        DataAdapter = New SqlClient.SqlDataAdapter(SQl, MiConexion)
+                        DataAdapter.Fill(DataSet, "DatosEmpresa")
+                        If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
+                            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")) Then
+                                RespuestaIVA = DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")
                             End If
+                        End If
 
-                            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                            '////////////////////////////////BUSCO EL CODIGO DEL IMPUESTO PARA EL PRODUCTO///////////////////////////////////////////
-                            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                            CodProducto = Me.TrueDBGridComponentes.Columns(0).Text
-                            SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
-                            DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-                            DataAdapter.Fill(DataSet, "Productos")
-                            If DataSet.Tables("Productos").Rows.Count <> 0 Then
-                                CodImpuesto = DataSet.Tables("Productos").Rows(0)("Cod_Iva")
-                                TipoProducto = DataSet.Tables("Productos").Rows(0)("Tipo_Producto")
-                                TipoDescuento = DataSet.Tables("Productos").Rows(0)("Unidad_Medida")
-                                PrecioDescCordobas = DataSet.Tables("Productos").Rows(0)("Precio_Venta")
-                                PrecioDescDolar = DataSet.Tables("Productos").Rows(0)("Precio_Lista")
-                                ExistenciaNegativa = DataSet.Tables("Productos").Rows(0)("Existencia_Negativa")
-                            End If
+                        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        '////////////////////////////////BUSCO EL CODIGO DEL IMPUESTO PARA EL PRODUCTO///////////////////////////////////////////
+                        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        CodProducto = Me.TrueDBGridComponentes.Columns(0).Text
+                        SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
+                        DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+                        DataAdapter.Fill(DataSet, "Productos")
+                        If DataSet.Tables("Productos").Rows.Count <> 0 Then
+                            CodImpuesto = DataSet.Tables("Productos").Rows(0)("Cod_Iva")
+                            TipoProducto = DataSet.Tables("Productos").Rows(0)("Tipo_Producto")
+                            TipoDescuento = DataSet.Tables("Productos").Rows(0)("Unidad_Medida")
+                            PrecioDescCordobas = DataSet.Tables("Productos").Rows(0)("Precio_Venta")
+                            PrecioDescDolar = DataSet.Tables("Productos").Rows(0)("Precio_Lista")
+                            ExistenciaNegativa = DataSet.Tables("Productos").Rows(0)("Existencia_Negativa")
+                        End If
 
-                            'Existencia = ExistenciaProducto(CodProducto)
-                            CodigoBodega = Me.CboCodigoBodega.Text
+                        'Existencia = ExistenciaProducto(CodProducto)
+                        CodigoBodega = Me.CboCodigoBodega.Text
                         Existencia = BuscaExistenciaBodega(CodProducto, CodigoBodega, Me.DTPFecha.Value)
                         Descuento = 0
-                            Tasa = 0
+                        Tasa = 0
 
                         If Not IsNumeric(Me.TrueDBGridComponentes.Columns("Cantidad").Text) Then
                             Exit Sub
@@ -11699,122 +12035,122 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
 
 
-                            Posicion = Me.TrueDBGridComponentes.Row
-                            Me.TrueDBGridComponentes.Row = Posicion + 1
-                            Me.TrueDBGridComponentes.Col = 0
+                        Posicion = Me.TrueDBGridComponentes.Row
+                        Me.TrueDBGridComponentes.Row = Posicion + 1
+                        Me.TrueDBGridComponentes.Col = 0
 
 
                     Case 3
-                            Dim Posicion As Double, CodigoBodega As String = "", ExistenciaNegativa As String = "NO", RespuestaIVA As String = "Sumando IVA del Producto"
-                            Dim CodImpuesto As String = "", Existencia As Double = 0, Tasa As Double = 0                         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                            '////////////////////////////////////////////BUSCO LA CONFIGURACION DEL PRECIO///////////////////////////////////////////////////
-                            '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                            SQl = "SELECT  * FROM DatosEmpresa"
-                            DataAdapter = New SqlClient.SqlDataAdapter(SQl, MiConexion)
-                            DataAdapter.Fill(DataSet, "DatosEmpresa")
-                            If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
-                                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")) Then
-                                    RespuestaIVA = DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")
-                                End If
+                        Dim Posicion As Double, CodigoBodega As String = "", ExistenciaNegativa As String = "NO", RespuestaIVA As String = "Sumando IVA del Producto"
+                        Dim CodImpuesto As String = "", Existencia As Double = 0, Tasa As Double = 0                         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        '////////////////////////////////////////////BUSCO LA CONFIGURACION DEL PRECIO///////////////////////////////////////////////////
+                        '///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        SQl = "SELECT  * FROM DatosEmpresa"
+                        DataAdapter = New SqlClient.SqlDataAdapter(SQl, MiConexion)
+                        DataAdapter.Fill(DataSet, "DatosEmpresa")
+                        If DataSet.Tables("DatosEmpresa").Rows.Count <> 0 Then
+                            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")) Then
+                                RespuestaIVA = DataSet.Tables("DatosEmpresa").Rows(0)("IvaProducto")
                             End If
+                        End If
 
-                            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                            '////////////////////////////////BUSCO EL CODIGO DEL IMPUESTO PARA EL PRODUCTO///////////////////////////////////////////
-                            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                            CodProducto = Me.TrueDBGridComponentes.Columns(0).Text
-                            SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
-                            DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
-                            DataAdapter.Fill(DataSet, "Productos")
-                            If DataSet.Tables("Productos").Rows.Count <> 0 Then
-                                CodImpuesto = DataSet.Tables("Productos").Rows(0)("Cod_Iva")
-                                TipoProducto = DataSet.Tables("Productos").Rows(0)("Tipo_Producto")
-                                TipoDescuento = DataSet.Tables("Productos").Rows(0)("Unidad_Medida")
-                                PrecioDescCordobas = DataSet.Tables("Productos").Rows(0)("Precio_Venta")
-                                PrecioDescDolar = DataSet.Tables("Productos").Rows(0)("Precio_Lista")
-                                ExistenciaNegativa = DataSet.Tables("Productos").Rows(0)("Existencia_Negativa")
-                            End If
+                        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        '////////////////////////////////BUSCO EL CODIGO DEL IMPUESTO PARA EL PRODUCTO///////////////////////////////////////////
+                        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        CodProducto = Me.TrueDBGridComponentes.Columns(0).Text
+                        SqlProveedor = "SELECT  * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
+                        DataAdapter = New SqlClient.SqlDataAdapter(SqlProveedor, MiConexion)
+                        DataAdapter.Fill(DataSet, "Productos")
+                        If DataSet.Tables("Productos").Rows.Count <> 0 Then
+                            CodImpuesto = DataSet.Tables("Productos").Rows(0)("Cod_Iva")
+                            TipoProducto = DataSet.Tables("Productos").Rows(0)("Tipo_Producto")
+                            TipoDescuento = DataSet.Tables("Productos").Rows(0)("Unidad_Medida")
+                            PrecioDescCordobas = DataSet.Tables("Productos").Rows(0)("Precio_Venta")
+                            PrecioDescDolar = DataSet.Tables("Productos").Rows(0)("Precio_Lista")
+                            ExistenciaNegativa = DataSet.Tables("Productos").Rows(0)("Existencia_Negativa")
+                        End If
 
-                            'Existencia = ExistenciaProducto(CodProducto)
-                            CodigoBodega = Me.CboCodigoBodega.Text
+                        'Existencia = ExistenciaProducto(CodProducto)
+                        CodigoBodega = Me.CboCodigoBodega.Text
                         Existencia = BuscaExistenciaBodega(CodProducto, CodigoBodega, Me.DTPFecha.Value)
                         Descuento = 0
-                            Tasa = 0
+                        Tasa = 0
 
-                            If Not IsNumeric(Me.TrueDBGridComponentes.Columns(2).Text) Then
-                                Exit Sub
-                            End If
+                        If Not IsNumeric(Me.TrueDBGridComponentes.Columns(2).Text) Then
+                            Exit Sub
+                        End If
 
 
 
-                            If Existencia < Me.TrueDBGridComponentes.Columns(2).Text Then
-                                If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
-                                    If ExistenciaNegativa <> "SI" Then
-                                        If Existencia > 0 Then
-                                            Cantidad = Existencia
-                                            Me.TrueDBGridComponentes.Columns(2).Text = Existencia
-                                            MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
-                                        Else
-                                            Cantidad = 0
-                                            Me.TrueDBGridComponentes.Columns(2).Text = 0
-                                            MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
-                                        End If
+                        If Existencia < Me.TrueDBGridComponentes.Columns(2).Text Then
+                            If Me.CboTipoProducto.Text <> "Cotizacion" And Me.CboTipoProducto.Text <> "Devolucion de Venta" Then
+                                If ExistenciaNegativa <> "SI" Then
+                                    If Existencia > 0 Then
+                                        Cantidad = Existencia
+                                        Me.TrueDBGridComponentes.Columns(2).Text = Existencia
+                                        MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
                                     Else
-                                        If Me.TrueDBGridComponentes.Columns(2).Text <> "" Then
-                                            Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
-                                        End If
+                                        Cantidad = 0
+                                        Me.TrueDBGridComponentes.Columns(2).Text = 0
+                                        MsgBox("Existencia Negativa: Disponible " & Existencia, MsgBoxStyle.Critical, "Zeus Facturacion")
                                     End If
-
                                 Else
-                                    Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
-                                End If
-                            Else
-                                If Me.TrueDBGridComponentes.Columns(2).Text <> "" Then
-                                    Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
-                                End If
-                            End If
-
-                            If Me.ChkPorcientoTarjeta.Checked = True Then
-                                If Not Me.TrueDBGridComponentes.Columns(2).Text = "" Then
-                                    Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
-                                Else
-                                    Cantidad = 0
-                                End If
-
-                                Precio = Me.TrueDBGridComponentes.Columns(4).Text
-                                Precio = Format(Precio * (1 + (IncrementoTarjeta / 100)), "##,##0.00")
-                                Me.TrueDBGridComponentes.Columns(3).Text = Precio
-
-                                Categoria = CategoriaPrecio(Me.TrueDBGridComponentes.Columns(0).Text, Me.TrueDBGridComponentes.Columns(3).Text, Me.TxtMonedaFactura.Text)
-
-                                If Me.TrueDBGridComponentes.Columns(4).Text = "" Then
-                                    If Categoria <> "" Then
-                                        Me.TrueDBGridComponentes.Columns(4).Text = Categoria
-                                    Else
-                                        Me.TrueDBGridComponentes.Columns(4).Text = 0
+                                    If Me.TrueDBGridComponentes.Columns(2).Text <> "" Then
+                                        Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
                                     End If
                                 End If
 
-                                Me.TrueDBGridComponentes.Columns(5).Text = Cantidad * Precio
-                                Me.TrueDBGridComponentes.Columns(5).Text = Format(Cantidad * Precio, "##,##0.00")
                             Else
-                                If Not Me.TrueDBGridComponentes.Columns(2).Text = "" Then
-                                    Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
-                                Else
-                                    Cantidad = 0
-                                End If
-                                Precio = Me.TrueDBGridComponentes.Columns(3).Text
+                                Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
+                            End If
+                        Else
+                            If Me.TrueDBGridComponentes.Columns(2).Text <> "" Then
+                                Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
+                            End If
+                        End If
 
-                                If Me.TrueDBGridComponentes.Columns(3).Text = "" Then
-                                    Me.TrueDBGridComponentes.Columns(3).Text = 0
-                                End If
-                                Me.TrueDBGridComponentes.Columns(5).Text = Format(Cantidad * Precio, "##,##0.00")
-                                Me.TrueDBGridComponentes.Columns(6).Text = Format(Cantidad * Precio, "##,##0.00")
+                        If Me.ChkPorcientoTarjeta.Checked = True Then
+                            If Not Me.TrueDBGridComponentes.Columns(2).Text = "" Then
+                                Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
+                            Else
+                                Cantidad = 0
                             End If
 
+                            Precio = Me.TrueDBGridComponentes.Columns(4).Text
+                            Precio = Format(Precio * (1 + (IncrementoTarjeta / 100)), "##,##0.00")
+                            Me.TrueDBGridComponentes.Columns(3).Text = Precio
 
-                            Posicion = Me.TrueDBGridComponentes.Row
-                            Me.TrueDBGridComponentes.Row = Posicion + 1
-                            Me.TrueDBGridComponentes.Col = 0
+                            Categoria = CategoriaPrecio(Me.TrueDBGridComponentes.Columns(0).Text, Me.TrueDBGridComponentes.Columns(3).Text, Me.TxtMonedaFactura.Text)
+
+                            If Me.TrueDBGridComponentes.Columns(4).Text = "" Then
+                                If Categoria <> "" Then
+                                    Me.TrueDBGridComponentes.Columns(4).Text = Categoria
+                                Else
+                                    Me.TrueDBGridComponentes.Columns(4).Text = 0
+                                End If
+                            End If
+
+                            Me.TrueDBGridComponentes.Columns(5).Text = Cantidad * Precio
+                            Me.TrueDBGridComponentes.Columns(5).Text = Format(Cantidad * Precio, "##,##0.00")
+                        Else
+                            If Not Me.TrueDBGridComponentes.Columns(2).Text = "" Then
+                                Cantidad = Me.TrueDBGridComponentes.Columns(2).Text
+                            Else
+                                Cantidad = 0
+                            End If
+                            Precio = Me.TrueDBGridComponentes.Columns(3).Text
+
+                            If Me.TrueDBGridComponentes.Columns(3).Text = "" Then
+                                Me.TrueDBGridComponentes.Columns(3).Text = 0
+                            End If
+                            Me.TrueDBGridComponentes.Columns(5).Text = Format(Cantidad * Precio, "##,##0.00")
+                            Me.TrueDBGridComponentes.Columns(6).Text = Format(Cantidad * Precio, "##,##0.00")
+                        End If
+
+
+                        Posicion = Me.TrueDBGridComponentes.Row
+                        Me.TrueDBGridComponentes.Row = Posicion + 1
+                        Me.TrueDBGridComponentes.Col = 0
 
 
 
@@ -11825,7 +12161,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
             Case 123
                 My.Forms.FrmPermisos.ShowDialog()
-                If My.Forms.FrmPermisos.RContrase√±a = True Then
+                If My.Forms.FrmPermisos.RContraseÒa = True Then
                     Me.TrueDBGridComponentes.Columns(3).Caption = "Precio Unit"
                     Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Width = 62
                     Me.TrueDBGridComponentes.Splits.Item(0).DisplayColumns(3).Locked = False
@@ -12049,7 +12385,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
                         'My.Forms.FrmPreciosProductos.NombreProducto = Me.TxtNombreProducto.Text
                 End Select
         End Select
-        End Sub
+    End Sub
 
     Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
 
@@ -12093,7 +12429,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
         Try
 
-            Resultado = MsgBox("¬øEsta Seguro de Eliminar la Linea?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
+            Resultado = MsgBox("øEsta Seguro de Eliminar la Linea?", MsgBoxStyle.YesNo, "Sistema de Facturacion")
 
             If Not Resultado = "6" Then
                 Exit Sub
@@ -12353,110 +12689,110 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
     End Sub
 
-        Private Sub C1Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles C1Button1.Click
-            Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
-            Dim SqlString As String, NumeroFactura As String, Fecha As String, TipoFactura As String
-            Dim oDataRow As DataRow, IposicionFila As Double, Registros As Double, CodProducto As String, Descripcion As String, PrecioNeto As Double, CostoPromedio As Double, CostoPromedioDolar As Double
-            Dim Margen As Double, TMargen As Double, TipoProducto As String, Cantidad As Double, n As Double = 0, SubTotal As Double, TotalCostos As Double
-            Dim PrecioUnitario As Double, Descuento As Double
+    Private Sub C1Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles C1Button1.Click
+        Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
+        Dim SqlString As String, NumeroFactura As String, Fecha As String, TipoFactura As String
+        Dim oDataRow As DataRow, IposicionFila As Double, Registros As Double, CodProducto As String, Descripcion As String, PrecioNeto As Double, CostoPromedio As Double, CostoPromedioDolar As Double
+        Dim Margen As Double, TMargen As Double, TipoProducto As String, Cantidad As Double, n As Double = 0, SubTotal As Double, TotalCostos As Double
+        Dim PrecioUnitario As Double, Descuento As Double
 
-            TipoFactura = Me.CboTipoProducto.Text
-            NumeroFactura = Me.TxtNumeroEnsamble.Text
-            Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
-            IposicionFila = 0
+        TipoFactura = Me.CboTipoProducto.Text
+        NumeroFactura = Me.TxtNumeroEnsamble.Text
+        Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
+        IposicionFila = 0
 
 
-            Registros = Me.BindingDetalle.Count
+        Registros = Me.BindingDetalle.Count
 
-            Do While IposicionFila < Registros
-                My.Application.DoEvents()
+        Do While IposicionFila < Registros
+            My.Application.DoEvents()
 
 
             CodProducto = Me.BindingDetalle.Item(IposicionFila)("Cod_Producto")
-                Descripcion = Me.BindingDetalle.Item(IposicionFila)("Descripcion_Producto")
-                PrecioUnitario = Me.BindingDetalle.Item(IposicionFila)("Precio_Unitario")
-                If Not IsDBNull(Me.BindingDetalle.Item(IposicionFila)("Descuento")) Then
-                    Descuento = Me.BindingDetalle.Item(IposicionFila)("Descuento")
-                End If
-                'SubTotal = Me.BindingDetalle.Item(IposicionFila)("Importe") + SubTotal
-                Cantidad = Me.BindingDetalle.Item(IposicionFila)("Cantidad")
-                PrecioNeto = PrecioUnitario - Descuento
+            Descripcion = Me.BindingDetalle.Item(IposicionFila)("Descripcion_Producto")
+            PrecioUnitario = Me.BindingDetalle.Item(IposicionFila)("Precio_Unitario")
+            If Not IsDBNull(Me.BindingDetalle.Item(IposicionFila)("Descuento")) Then
+                Descuento = Me.BindingDetalle.Item(IposicionFila)("Descuento")
+            End If
+            'SubTotal = Me.BindingDetalle.Item(IposicionFila)("Importe") + SubTotal
+            Cantidad = Me.BindingDetalle.Item(IposicionFila)("Cantidad")
+            PrecioNeto = PrecioUnitario - Descuento
 
 
-                '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                '////////////////////////////////////////////BUSCO EL COSTO PROMEDIO DEL PRODUCTO ///////////////////////////////////////////////////////////
-                '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                SqlString = "SELECT * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
-                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-                DataAdapter.Fill(DataSet, "Producto")
-                If DataSet.Tables("Producto").Rows.Count <> 0 Then
-                    CostoPromedio = DataSet.Tables("Producto").Rows(0)("Costo_Promedio")
-                    CostoPromedioDolar = DataSet.Tables("Producto").Rows(0)("Costo_Promedio_Dolar")
-                End If
+            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////////////////////////BUSCO EL COSTO PROMEDIO DEL PRODUCTO ///////////////////////////////////////////////////////////
+            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            SqlString = "SELECT * FROM Productos WHERE (Cod_Productos = '" & CodProducto & "')"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+            DataAdapter.Fill(DataSet, "Producto")
+            If DataSet.Tables("Producto").Rows.Count <> 0 Then
+                CostoPromedio = DataSet.Tables("Producto").Rows(0)("Costo_Promedio")
+                CostoPromedioDolar = DataSet.Tables("Producto").Rows(0)("Costo_Promedio_Dolar")
+            End If
 
 
 
-                TipoProducto = DataSet.Tables("Producto").Rows(0)("Tipo_Producto")
+            TipoProducto = DataSet.Tables("Producto").Rows(0)("Tipo_Producto")
 
-                DataSet.Tables("Producto").Clear()
+            DataSet.Tables("Producto").Clear()
 
-                If TipoProducto <> "Descuento" Then
+            If TipoProducto <> "Descuento" Then
 
-                    If Me.TxtMonedaFactura.Text = "Cordobas" Then
-                        TotalCostos = (CostoPromedio * Cantidad) + TotalCostos
-                    Else
-                        TotalCostos = (CostoPromedioDolar * Cantidad) + TotalCostos
-                    End If
-
-                    SubTotal = Cantidad * PrecioNeto + SubTotal
-
-                    If Me.TxtMonedaFactura.Text = "Cordobas" Then
-                        Margen = (PrecioNeto / CostoPromedio) - 1
-                    Else
-                        Margen = (PrecioNeto / CostoPromedioDolar) - 1
-                    End If
-                    TMargen = Margen + TMargen
-
-
-                    SqlString = "SELECT  Cod_Producto, Descripcion_Producto , Precio_Neto, Importe AS Costo_Promedio, TasaCambio AS Margen FROM Detalle_Facturas WHERE (Numero_Factura = '-1') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & TipoFactura & "') "
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-                    DataAdapter.Fill(DataSet, "DetalleFactura2")
-                    oDataRow = DataSet.Tables("DetalleFactura2").NewRow
-                    oDataRow("Cod_Producto") = CodProducto
-                    oDataRow("Descripcion_Producto") = Descripcion
-                    oDataRow("Precio_Neto") = PrecioNeto
-                    If Me.TxtMonedaFactura.Text = "Cordobas" Then
-                        oDataRow("Costo_Promedio") = CostoPromedio
-                    Else
-                        oDataRow("Costo_Promedio") = CostoPromedioDolar
-                    End If
-                    oDataRow("Margen") = Margen
-                    DataSet.Tables("DetalleFactura2").Rows.Add(oDataRow)
-
-                    n = n + 1
+                If Me.TxtMonedaFactura.Text = "Cordobas" Then
+                    TotalCostos = (CostoPromedio * Cantidad) + TotalCostos
                 Else
-                    SubTotal = SubTotal - (Cantidad * PrecioNeto)
+                    TotalCostos = (CostoPromedioDolar * Cantidad) + TotalCostos
                 End If
 
-                IposicionFila = IposicionFila + 1
-            Loop
+                SubTotal = Cantidad * PrecioNeto + SubTotal
 
-            'TMargen = TMargen / n
-            TMargen = ((SubTotal / TotalCostos) - 1)
-            My.Forms.FrmMargenes.TxtMargen.Text = Format(TMargen, "0.00%")
+                If Me.TxtMonedaFactura.Text = "Cordobas" Then
+                    Margen = (PrecioNeto / CostoPromedio) - 1
+                Else
+                    Margen = (PrecioNeto / CostoPromedioDolar) - 1
+                End If
+                TMargen = Margen + TMargen
 
-            My.Forms.FrmMargenes.TrueDBGridConsultas.DataSource = DataSet.Tables("DetalleFactura2")
-            My.Forms.FrmMargenes.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(0).Width = 100
-            My.Forms.FrmMargenes.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 171
-            My.Forms.FrmMargenes.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(2).Width = 78
-            My.Forms.FrmMargenes.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(3).Width = 78
-            My.Forms.FrmMargenes.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(4).Width = 78
-            My.Forms.FrmMargenes.TrueDBGridConsultas.Columns(2).NumberFormat = "##,##0.00"
-            My.Forms.FrmMargenes.TrueDBGridConsultas.Columns(3).NumberFormat = "##,##0.00"
-            My.Forms.FrmMargenes.TrueDBGridConsultas.Columns(4).NumberFormat = "0.00%"
 
-            My.Forms.FrmMargenes.ShowDialog()
-        End Sub
+                SqlString = "SELECT  Cod_Producto, Descripcion_Producto , Precio_Neto, Importe AS Costo_Promedio, TasaCambio AS Margen FROM Detalle_Facturas WHERE (Numero_Factura = '-1') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & TipoFactura & "') "
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                DataAdapter.Fill(DataSet, "DetalleFactura2")
+                oDataRow = DataSet.Tables("DetalleFactura2").NewRow
+                oDataRow("Cod_Producto") = CodProducto
+                oDataRow("Descripcion_Producto") = Descripcion
+                oDataRow("Precio_Neto") = PrecioNeto
+                If Me.TxtMonedaFactura.Text = "Cordobas" Then
+                    oDataRow("Costo_Promedio") = CostoPromedio
+                Else
+                    oDataRow("Costo_Promedio") = CostoPromedioDolar
+                End If
+                oDataRow("Margen") = Margen
+                DataSet.Tables("DetalleFactura2").Rows.Add(oDataRow)
+
+                n = n + 1
+            Else
+                SubTotal = SubTotal - (Cantidad * PrecioNeto)
+            End If
+
+            IposicionFila = IposicionFila + 1
+        Loop
+
+        'TMargen = TMargen / n
+        TMargen = ((SubTotal / TotalCostos) - 1)
+        My.Forms.FrmMargenes.TxtMargen.Text = Format(TMargen, "0.00%")
+
+        My.Forms.FrmMargenes.TrueDBGridConsultas.DataSource = DataSet.Tables("DetalleFactura2")
+        My.Forms.FrmMargenes.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(0).Width = 100
+        My.Forms.FrmMargenes.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(1).Width = 171
+        My.Forms.FrmMargenes.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(2).Width = 78
+        My.Forms.FrmMargenes.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(3).Width = 78
+        My.Forms.FrmMargenes.TrueDBGridConsultas.Splits.Item(0).DisplayColumns(4).Width = 78
+        My.Forms.FrmMargenes.TrueDBGridConsultas.Columns(2).NumberFormat = "##,##0.00"
+        My.Forms.FrmMargenes.TrueDBGridConsultas.Columns(3).NumberFormat = "##,##0.00"
+        My.Forms.FrmMargenes.TrueDBGridConsultas.Columns(4).NumberFormat = "0.00%"
+
+        My.Forms.FrmMargenes.ShowDialog()
+    End Sub
 
     Private Sub TxtMonedaFactura_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TxtMonedaFactura.SelectedIndexChanged
 
@@ -13420,29 +13756,29 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
     End Sub
 
-        Private Sub C1Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles C1Button3.Click
+    Private Sub C1Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles C1Button3.Click
         Dim Posicion As Double
 
 
         If Me.BindingDetalle.Count <> 0 Then
-                My.Forms.FrmLotes.TipoDocumento = Me.CboTipoProducto.Text
-                Posicion = Me.BindingDetalle.Position
-                My.Forms.FrmLotesFactura.CodigoProducto = Me.BindingDetalle.Item(Posicion)("Cod_Productos")
-                My.Forms.FrmLotesFactura.NombreProducto = Me.BindingDetalle.Item(Posicion)("Descripcion_Producto")
-                My.Forms.FrmLotesFactura.NumeroDocumento = Me.TxtNumeroEnsamble.Text
-                My.Forms.FrmLotesFactura.Fecha = Me.DTPFecha.Value
-                My.Forms.FrmLotesFactura.LblProducto.Text = Me.BindingDetalle.Item(Posicion)("Cod_Productos") + " " + Me.BindingDetalle.Item(Posicion)("Descripcion_Producto")
-                If Not IsDBNull(Me.BindingDetalle.Item(Posicion)("Cantidad")) Then
-                    My.Forms.FrmLotesFactura.Cantidad = Me.BindingDetalle.Item(Posicion)("Cantidad")
-                Else
-                    My.Forms.FrmLotesFactura.Cantidad = 1
-                End If
-                My.Forms.FrmLotesFactura.LblCantidad.Text = Me.BindingDetalle.Item(Posicion)("Cantidad")
-                My.Forms.FrmLotesFactura.CodigoBodega = Me.CboCodigoBodega.Text
-                My.Forms.FrmLotesFactura.TipoDocumento = Me.CboTipoProducto.Text
-                My.Forms.FrmLotesFactura.ShowDialog()
+            My.Forms.FrmLotes.TipoDocumento = Me.CboTipoProducto.Text
+            Posicion = Me.BindingDetalle.Position
+            My.Forms.FrmLotesFactura.CodigoProducto = Me.BindingDetalle.Item(Posicion)("Cod_Productos")
+            My.Forms.FrmLotesFactura.NombreProducto = Me.BindingDetalle.Item(Posicion)("Descripcion_Producto")
+            My.Forms.FrmLotesFactura.NumeroDocumento = Me.TxtNumeroEnsamble.Text
+            My.Forms.FrmLotesFactura.Fecha = Me.DTPFecha.Value
+            My.Forms.FrmLotesFactura.LblProducto.Text = Me.BindingDetalle.Item(Posicion)("Cod_Productos") + " " + Me.BindingDetalle.Item(Posicion)("Descripcion_Producto")
+            If Not IsDBNull(Me.BindingDetalle.Item(Posicion)("Cantidad")) Then
+                My.Forms.FrmLotesFactura.Cantidad = Me.BindingDetalle.Item(Posicion)("Cantidad")
+            Else
+                My.Forms.FrmLotesFactura.Cantidad = 1
             End If
-        End Sub
+            My.Forms.FrmLotesFactura.LblCantidad.Text = Me.BindingDetalle.Item(Posicion)("Cantidad")
+            My.Forms.FrmLotesFactura.CodigoBodega = Me.CboCodigoBodega.Text
+            My.Forms.FrmLotesFactura.TipoDocumento = Me.CboTipoProducto.Text
+            My.Forms.FrmLotesFactura.ShowDialog()
+        End If
+    End Sub
 
     Public Sub Graba()
 
@@ -13776,18 +14112,18 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
 
     Private Sub C1Button5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles C1Button5.Click
-            Quien = "Bodegas"
-            My.Forms.FrmConsultas.ShowDialog()
-            Me.CboCodigoBodega.Text = My.Forms.FrmConsultas.Codigo
-        End Sub
+        Quien = "Bodegas"
+        My.Forms.FrmConsultas.ShowDialog()
+        Me.CboCodigoBodega.Text = My.Forms.FrmConsultas.Codigo
+    End Sub
 
-        Private Sub C1Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles C1Button4.Click
-            Quien = "ProyectosFactura"
-            My.Forms.FrmConsultas.ShowDialog()
-            If Not My.Forms.FrmConsultas.Descripcion = "" Then
-                Me.CboProyecto.Text = My.Forms.FrmConsultas.Descripcion
-            End If
-        End Sub
+    Private Sub C1Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles C1Button4.Click
+        Quien = "ProyectosFactura"
+        My.Forms.FrmConsultas.ShowDialog()
+        If Not My.Forms.FrmConsultas.Descripcion = "" Then
+            Me.CboProyecto.Text = My.Forms.FrmConsultas.Descripcion
+        End If
+    End Sub
 
 
     Private Sub TrueDBGridComponentes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrueDBGridComponentes.Click
@@ -13837,7 +14173,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
             '////////////////////////////EDITO EL ENCABEZADO DE LA FACTURA///////////////////////////////////
             '/////////////////////////////////////////////////////////////////////////////////////////////////
             If Me.CboTipoProducto.Text <> "Cotizacion" Then
-                SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'False' " & _
+                SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'False' " &
                              "WHERE  (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
@@ -13912,290 +14248,290 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         'Try
 
         If Me.CboTipoProducto.Text = "" Then
-                MsgBox("Seleccione un Tipo", MsgBoxStyle.Critical, "Zeus Facturacion")
-                Exit Sub
+            MsgBox("Seleccione un Tipo", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If BuscaTasaCambio(Me.DTPFecha.Value) = 0 Then
+            MsgBox("No Existe Tasa de Cambio", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+            MsgBox("No se puede grabar antes de asignar numero factura", MsgBoxStyle.Critical, "Zeus Facturacion")
+            Exit Sub
+        End If
+
+        Me.Button2.Enabled = False
+
+
+        If PermiteEditar(Acceso, Me.CboTipoProducto.Text) = True Then
+
+            SqlDatos = "SELECT * FROM DatosEmpresa"
+            DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+            DataAdapter.Fill(DataSet, "DatosEmpresa")
+            If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                ConsecutivoFacturaSerie = DataSet.Tables("DatosEmpresa").Rows(0)("ConsecutivoFacSerie")
             End If
 
-            If BuscaTasaCambio(Me.DTPFecha.Value) = 0 Then
-                MsgBox("No Existe Tasa de Cambio", MsgBoxStyle.Critical, "Zeus Facturacion")
-                Exit Sub
+
+            ''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
+            ''//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+            'If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+            '    Select Case Me.CboTipoProducto.Text
+            '        Case "Cotizacion"
+            '            ConsecutivoFactura = BuscaConsecutivo("Cotizacion")
+            '        Case "Factura"
+            '            If ConsecutivoFacturaManual = False Then
+            '                ConsecutivoFactura = BuscaConsecutivo("Factura")
+            '            Else
+            '                FrmConsecutivos.ShowDialog()
+            '                ConsecutivoFactura = FrmConsecutivos.NumeroFactura
+            '            End If
+            '        Case "Devolucion de Venta"
+            '            ConsecutivoFactura = BuscaConsecutivo("DevFactura")
+            '        Case "Transferencia Enviada"
+            '            ConsecutivoFactura = BuscaConsecutivo("Transferencia_Enviada")
+            '        Case "Salida Bodega"
+            '            ConsecutivoFactura = BuscaConsecutivo("SalidaBodega")
+            '    End Select
+
+            ''/////////////////////////////////////////////////////////////////////////////////////////
+            ''///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
+            ''////////////////////////////////////////////////////////////////////////////////////////
+            'SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
+            'DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
+            'DataAdapter.Fill(DataSet, "Configuracion")
+            'If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
+            '    If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) Then
+            '        FacturaBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")
+            '    End If
+
+            '    If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) Then
+            '        CompraBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")
+            '    End If
+
+            'End If
+
+            'If FacturaBodega = True Then
+            '    NumeroFactura = Me.CboCodigoBodega.Columns(0).Text & "-" & Format(ConsecutivoFactura, "0000#")
+            'Else
+            '    NumeroFactura = Format(ConsecutivoFactura, "0000#")
+            'End If
+
+            'Else
+            ''ConsecutivoFactura = Me.TxtNumeroEnsamble.Text
+            ''NumeroFactura = Format(ConsecutivoFactura, "0000#")
+            'NumeroFactura = Me.TxtNumeroEnsamble.Text
+            'End If
+
+            'If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
+            '    NumeroFactura = GenerarNumeroFactura(ConsecutivoFacturaManual, Me.CboTipoProducto.Text)
+            'Else
+            '    NumeroFactura = Me.TxtNumeroEnsamble.Text
+            'End If
+
+
+            NumeroFactura = Me.TxtNumeroEnsamble.Text
+
+            Dim TablaFactura As TablaFactura = New TablaFactura
+
+            TablaFactura.Numero_Factura = NumeroFactura
+            TablaFactura.Fecha_Factura = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+            TablaFactura.Tipo_Factura = CboTipoProducto.Text
+            TablaFactura.Fecha_Vencimiento = Format(DTVencimiento.Value, "dd/MM/yyyy")
+            TablaFactura.Moneda_Factura = TxtMonedaFactura.Text
+            TablaFactura.Moneda_Imprime = TxtMonedaImprime.Text
+            TablaFactura.Cod_Cliente = TxtCodigoClientes.Text
+            TablaFactura.Cod_Vendedor = CboCodigoVendedor.Text
+            TablaFactura.CodBodega1 = CboCodigoBodega.Text
+            TablaFactura.Cod_Cajero = CboCajero.Text
+            TablaFactura.Nombre_Cliente = TxtNombres.Text
+            TablaFactura.Apellido_Cliente = TxtApellidos.Text
+            TablaFactura.Direccion_Cliente = TxtDireccion.Text
+            TablaFactura.Telefono_Cliente = TxtTelefono.Text
+            TablaFactura.Fecha_Envio = Format(DTVencimiento.Value, "dd/MM/yyyy")
+            TablaFactura.Via_Envarque = ""
+            TablaFactura.SuReferencia1 = CboReferencia.Text
+            TablaFactura.Nuestra_Referencia = ""
+            TablaFactura.Codigo_Proyecto = CboProyecto.Text
+
+
+
+
+            If My.Forms.FrmFacturas.SubTotalGral <> 0 Then
+                TablaFactura.Sub_Total = Redondeo(My.Forms.FrmFacturas.SubTotalGral, 4)
+            Else
+                TablaFactura.Sub_Total = 0
             End If
 
-            If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
-                MsgBox("No se puede grabar antes de asignar numero factura", MsgBoxStyle.Critical, "Zeus Facturacion")
-                Exit Sub
+            If My.Forms.FrmFacturas.IvaGral <> 0 Then
+                TablaFactura.IVA_Factura = Redondeo(My.Forms.FrmFacturas.IvaGral, 4)
+            Else
+                TablaFactura.IVA_Factura = 0
             End If
 
-            Me.Button2.Enabled = False
+            If My.Forms.FrmFacturas.TxtPagado.Text <> "" Then
+                TablaFactura.Pagado_Factura = My.Forms.FrmFacturas.TxtPagado.Text
+            Else
+                TablaFactura.Pagado_Factura = 0
+            End If
+
+            If My.Forms.FrmFacturas.TxtNetoPagar.Text <> "" Then
+                TablaFactura.Neto_Pagar = My.Forms.FrmFacturas.TxtNetoPagar.Text
+            Else
+                TablaFactura.Neto_Pagar = 0
+            End If
+
+            If RadioButton1.Checked = True Then
+                TablaFactura.Metodo_Pago = "Credito"
+            Else
+                TablaFactura.Metodo_Pago = "Contado"
+            End If
+
+            If OptExsonerado.Checked = True Then
+                TablaFactura.Exonerado_Factura = 1
+            Else
+                TablaFactura.Exonerado_Factura = 0
+            End If
+
+            If OptRet1Porciento.Checked = True Then
+                TablaFactura.MontoRetencion1_Porciento = TablaFactura.Sub_Total * 0.01
+                TablaFactura.Retener1_Porciento = 1
+            Else
+                TablaFactura.MontoRetencion1_Porciento = 0
+                TablaFactura.Retener1_Porciento = 0
+            End If
+
+            If OptRet2Porciento.Checked = True Then
+                TablaFactura.MontoRetencion2_Porciento = TablaFactura.Sub_Total * 0.02
+                TablaFactura.Retener2_Porciento = 1
+            Else
+                TablaFactura.MontoRetencion2_Porciento = 0
+                TablaFactura.Retener2_Porciento = 0
+            End If
 
 
-            If PermiteEditar(Acceso, Me.CboTipoProducto.Text) = True Then
+            If Not CboProyecto.Text = "" Then
+                TablaFactura.Codigo_Proyecto = CboProyecto.Columns(0).Text
+            End If
 
-                SqlDatos = "SELECT * FROM DatosEmpresa"
-                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                DataAdapter.Fill(DataSet, "DatosEmpresa")
-                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
-                    ConsecutivoFacturaSerie = DataSet.Tables("DatosEmpresa").Rows(0)("ConsecutivoFacSerie")
-                End If
+            If CboReferencia.Text <> "" Then
+                TablaFactura.Referencia_Factura = CboReferencia.Text
+            End If
 
+            TablaFactura.Fecha_Hora = Format(My.Forms.FrmFacturas.DTPFecha.Value, "dd/MM/yyyy") & " " & Format(Now, "HH:mm")
+            TablaFactura.Descuentos_Factura = CDbl(Val(TxtDescuento.Text))
 
-                ''////////////////////////////////////////////////////////////////////////////////////////////////////
-                ''/////////////////////////////BUSCO EL CONSECUTIVO DE LA COMPRA /////////////////////////////////////////////
-                ''//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-                'If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
-                '    Select Case Me.CboTipoProducto.Text
-                '        Case "Cotizacion"
-                '            ConsecutivoFactura = BuscaConsecutivo("Cotizacion")
-                '        Case "Factura"
-                '            If ConsecutivoFacturaManual = False Then
-                '                ConsecutivoFactura = BuscaConsecutivo("Factura")
-                '            Else
-                '                FrmConsecutivos.ShowDialog()
-                '                ConsecutivoFactura = FrmConsecutivos.NumeroFactura
-                '            End If
-                '        Case "Devolucion de Venta"
-                '            ConsecutivoFactura = BuscaConsecutivo("DevFactura")
-                '        Case "Transferencia Enviada"
-                '            ConsecutivoFactura = BuscaConsecutivo("Transferencia_Enviada")
-                '        Case "Salida Bodega"
-                '            ConsecutivoFactura = BuscaConsecutivo("SalidaBodega")
-                '    End Select
+            '////////////////////////////////////////////////////////////////////////////////////////////////////
+            '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+            GrabaFacturas(TablaFactura)
 
-                ''/////////////////////////////////////////////////////////////////////////////////////////
-                ''///////////////////////BUSCO SI TIENE ACTIVADA LA OPCION DE CONSECUTIVO X BODEGA /////////////////////////////////
-                ''////////////////////////////////////////////////////////////////////////////////////////
-                'SqlConsecutivo = "SELECT * FROM  DatosEmpresa"
-                'DataAdapter = New SqlClient.SqlDataAdapter(SqlConsecutivo, MiConexion)
-                'DataAdapter.Fill(DataSet, "Configuracion")
-                'If Not DataSet.Tables("Configuracion").Rows.Count = 0 Then
-                '    If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")) Then
-                '        FacturaBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoFacBodega")
-                '    End If
-
-                '    If Not IsDBNull(DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")) Then
-                '        CompraBodega = DataSet.Tables("Configuracion").Rows(0)("ConsecutivoComBodega")
-                '    End If
-
-                'End If
-
-                'If FacturaBodega = True Then
-                '    NumeroFactura = Me.CboCodigoBodega.Columns(0).Text & "-" & Format(ConsecutivoFactura, "0000#")
-                'Else
-                '    NumeroFactura = Format(ConsecutivoFactura, "0000#")
-                'End If
-
-                'Else
-                ''ConsecutivoFactura = Me.TxtNumeroEnsamble.Text
-                ''NumeroFactura = Format(ConsecutivoFactura, "0000#")
-                'NumeroFactura = Me.TxtNumeroEnsamble.Text
-                'End If
-
-                'If Me.TxtNumeroEnsamble.Text = "-----0-----" Then
-                '    NumeroFactura = GenerarNumeroFactura(ConsecutivoFacturaManual, Me.CboTipoProducto.Text)
-                'Else
-                '    NumeroFactura = Me.TxtNumeroEnsamble.Text
-                'End If
+            '////////////////////////////////////////////////////////////////////////////////////////////////////
+            '/////////////////////////////GRABO EL DETALLE DE LA FACTURA /////////////////////////////////////////////
+            '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
 
 
-                NumeroFactura = Me.TxtNumeroEnsamble.Text
-
-                Dim TablaFactura As TablaFactura = New TablaFactura
-
-                TablaFactura.Numero_Factura = NumeroFactura
-                TablaFactura.Fecha_Factura = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
-                TablaFactura.Tipo_Factura = CboTipoProducto.Text
-                TablaFactura.Fecha_Vencimiento = Format(DTVencimiento.Value, "dd/MM/yyyy")
-                TablaFactura.Moneda_Factura = TxtMonedaFactura.Text
-                TablaFactura.Moneda_Imprime = TxtMonedaImprime.Text
-                TablaFactura.Cod_Cliente = TxtCodigoClientes.Text
-                TablaFactura.Cod_Vendedor = CboCodigoVendedor.Text
-                TablaFactura.CodBodega1 = CboCodigoBodega.Text
-                TablaFactura.Cod_Cajero = CboCajero.Text
-                TablaFactura.Nombre_Cliente = TxtNombres.Text
-                TablaFactura.Apellido_Cliente = TxtApellidos.Text
-                TablaFactura.Direccion_Cliente = TxtDireccion.Text
-                TablaFactura.Telefono_Cliente = TxtTelefono.Text
-                TablaFactura.Fecha_Envio = Format(DTVencimiento.Value, "dd/MM/yyyy")
-                TablaFactura.Via_Envarque = ""
-                TablaFactura.SuReferencia1 = CboReferencia.Text
-                TablaFactura.Nuestra_Referencia = ""
-                TablaFactura.Codigo_Proyecto = CboProyecto.Text
+            Registros = Me.BindingDetalle.Count
+            'iPosicion = Me.BindingDetalle.Position
 
 
+            Me.BindingDetalle.MoveFirst()
+            Registros = Me.BindingDetalle.Count
+            iPosicion = 0
+            Monto = 0
+            Do While iPosicion < Registros
+
+                My.Application.DoEvents()
+
+                '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("id_Detalle_Factura")) Then
+                '            IdDetalle = Me.BindingDetalle.Item(iPosicion)("id_Detalle_Factura")
+                '        Else
+                '            IdDetalle = -1
+                '        End If
+
+                CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
+                'Me.BindingDetalle.Item(iPosicion)("Numero_Factura") = NumeroFactura
+                'Me.BindingDetalle.Item(iPosicion)("Fecha_Factura") = DTPFecha.Value
+                'Me.BindingDetalle.Item(iPosicion)("Tipo_Factura") = CboTipoProducto.Text
+                Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto") = Replace(Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto"), "'", "")
 
 
-                If My.Forms.FrmFacturas.SubTotalGral <> 0 Then
-                    TablaFactura.Sub_Total = Redondeo(My.Forms.FrmFacturas.SubTotalGral, 4)
+                ActualizaDetalleBodega(Me.CboCodigoBodega.Text, CodigoProducto)
+                '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")) Then
+                '            PrecioUnitario = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
+                '        Else
+                '            PrecioUnitario = 0
+                '        End If
+                '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descuento")) Then
+                '            Descuento = Me.BindingDetalle.Item(iPosicion)("Descuento")
+                '        End If
+                '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Precio_Neto")) Then
+                '            PrecioNeto = Me.BindingDetalle.Item(iPosicion)("Precio_Neto")
+                '        Else
+                '            PrecioNeto = 0
+                '        End If
+                '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Importe")) Then
+                '            Importe = Me.BindingDetalle.Item(iPosicion)("Importe")
+                '        Else
+                '            Importe = 0
+                '        End If
+                '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Cantidad")) Then
+                '            Cantidad = Me.BindingDetalle.Item(iPosicion)("Cantidad")
+                '        Else
+                '            Cantidad = 0
+                '        End If
+
+                CostoUnitario = 0
+
+                If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Costo_Unitario")) Then
+                    'CostoUnitario = CostoPromedioKardexBodega(CodigoProducto, Me.DTPFecha.Value, Me.CboCodigoBodega.Text)
+                    'CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                    'Me.BindingDetalle.Item(iPosicion)("Costo_Unitario") = CostoUnitario
                 Else
-                    TablaFactura.Sub_Total = 0
-                End If
-
-                If My.Forms.FrmFacturas.IvaGral <> 0 Then
-                    TablaFactura.IVA_Factura = Redondeo(My.Forms.FrmFacturas.IvaGral, 4)
-                Else
-                    TablaFactura.IVA_Factura = 0
-                End If
-
-                If My.Forms.FrmFacturas.TxtPagado.Text <> "" Then
-                    TablaFactura.Pagado_Factura = My.Forms.FrmFacturas.TxtPagado.Text
-                Else
-                    TablaFactura.Pagado_Factura = 0
-                End If
-
-                If My.Forms.FrmFacturas.TxtNetoPagar.Text <> "" Then
-                    TablaFactura.Neto_Pagar = My.Forms.FrmFacturas.TxtNetoPagar.Text
-                Else
-                    TablaFactura.Neto_Pagar = 0
-                End If
-
-                If RadioButton1.Checked = True Then
-                    TablaFactura.Metodo_Pago = "Credito"
-                Else
-                    TablaFactura.Metodo_Pago = "Contado"
-                End If
-
-                If OptExsonerado.Checked = True Then
-                    TablaFactura.Exonerado_Factura = 1
-                Else
-                    TablaFactura.Exonerado_Factura = 0
-                End If
-
-                If OptRet1Porciento.Checked = True Then
-                    TablaFactura.MontoRetencion1_Porciento = TablaFactura.Sub_Total * 0.01
-                    TablaFactura.Retener1_Porciento = 1
-                Else
-                    TablaFactura.MontoRetencion1_Porciento = 0
-                    TablaFactura.Retener1_Porciento = 0
-                End If
-
-                If OptRet2Porciento.Checked = True Then
-                    TablaFactura.MontoRetencion2_Porciento = TablaFactura.Sub_Total * 0.02
-                    TablaFactura.Retener2_Porciento = 1
-                Else
-                    TablaFactura.MontoRetencion2_Porciento = 0
-                    TablaFactura.Retener2_Porciento = 0
-                End If
-
-
-                If Not CboProyecto.Text = "" Then
-                    TablaFactura.Codigo_Proyecto = CboProyecto.Columns(0).Text
-                End If
-
-                If CboReferencia.Text <> "" Then
-                    TablaFactura.Referencia_Factura = CboReferencia.Text
-                End If
-
-                TablaFactura.Fecha_Hora = Format(My.Forms.FrmFacturas.DTPFecha.Value, "dd/MM/yyyy") & " " & Format(Now, "HH:mm")
-                TablaFactura.Descuentos_Factura = CDbl(Val(TxtDescuento.Text))
-
-                '////////////////////////////////////////////////////////////////////////////////////////////////////
-                '/////////////////////////////GRABO EL ENCABEZADO DE LA COMPRA /////////////////////////////////////////////
-                '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-                GrabaFacturas(TablaFactura)
-
-                '////////////////////////////////////////////////////////////////////////////////////////////////////
-                '/////////////////////////////GRABO EL DETALLE DE LA FACTURA /////////////////////////////////////////////
-                '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-
-
-                Registros = Me.BindingDetalle.Count
-                'iPosicion = Me.BindingDetalle.Position
-
-
-                Me.BindingDetalle.MoveFirst()
-                Registros = Me.BindingDetalle.Count
-                iPosicion = 0
-                Monto = 0
-                Do While iPosicion < Registros
-
-                    My.Application.DoEvents()
-
-                    '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("id_Detalle_Factura")) Then
-                    '            IdDetalle = Me.BindingDetalle.Item(iPosicion)("id_Detalle_Factura")
-                    '        Else
-                    '            IdDetalle = -1
-                    '        End If
-
-                    CodigoProducto = Me.BindingDetalle.Item(iPosicion)("Cod_Producto")
-                    'Me.BindingDetalle.Item(iPosicion)("Numero_Factura") = NumeroFactura
-                    'Me.BindingDetalle.Item(iPosicion)("Fecha_Factura") = DTPFecha.Value
-                    'Me.BindingDetalle.Item(iPosicion)("Tipo_Factura") = CboTipoProducto.Text
-                    Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto") = Replace(Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto"), "'", "")
-
-
-                    ActualizaDetalleBodega(Me.CboCodigoBodega.Text, CodigoProducto)
-                    '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")) Then
-                    '            PrecioUnitario = Me.BindingDetalle.Item(iPosicion)("Precio_Unitario")
-                    '        Else
-                    '            PrecioUnitario = 0
-                    '        End If
-                    '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Descuento")) Then
-                    '            Descuento = Me.BindingDetalle.Item(iPosicion)("Descuento")
-                    '        End If
-                    '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Precio_Neto")) Then
-                    '            PrecioNeto = Me.BindingDetalle.Item(iPosicion)("Precio_Neto")
-                    '        Else
-                    '            PrecioNeto = 0
-                    '        End If
-                    '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Importe")) Then
-                    '            Importe = Me.BindingDetalle.Item(iPosicion)("Importe")
-                    '        Else
-                    '            Importe = 0
-                    '        End If
-                    '        If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Cantidad")) Then
-                    '            Cantidad = Me.BindingDetalle.Item(iPosicion)("Cantidad")
-                    '        Else
-                    '            Cantidad = 0
-                    '        End If
-
-                    CostoUnitario = 0
-
-                    If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("Costo_Unitario")) Then
-                        'CostoUnitario = CostoPromedioKardexBodega(CodigoProducto, Me.DTPFecha.Value, Me.CboCodigoBodega.Text)
-                        'CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
-                        'Me.BindingDetalle.Item(iPosicion)("Costo_Unitario") = CostoUnitario
-                    Else
-                        'If FacturaTarea = True Then
-                        '    CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
-                        'Else
-                        '    CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
-                        'End If
-
-                        RstCosto = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
-                        CostoUnitario = RstCosto.Costo_Cordoba
-                        Me.BindingDetalle.Item(iPosicion)("Costo_Unitario") = CostoUnitario
-                    End If
-
-
-
-                    'Descripcion_Producto = Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto")
-
                     'If FacturaTarea = True Then
-                    '    If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("CodTarea")) Then
-                    '        CodTarea = Me.BindingDetalle.Item(iPosicion)("CodTarea")
-                    '    Else
-                    '        CodTarea = 0
-                    '    End If
-                    '    GrabaDetalleFacturaTarea(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CodTarea)
+                    '    CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
                     'Else
-                    '    GrabaDetalleFactura(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CostoUnitario)
+                    '    CostoUnitario = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
                     'End If
 
-                    'Select Case Me.CboTipoProducto.Text
-                    '    Case "Factura"
-                    '        DiferenciaCantidad = CDbl(Cantidad) - CDbl(CantidadAnterior)
-                    '        DiferenciaPrecio = CDbl(PrecioAnterior) - CDbl(PrecioNeto)
-                    '        ExistenciasCostos(CodigoProducto, DiferenciaCantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
-                    '    Case "Devolucion de Venta"
-                    '        DiferenciaCantidad = CDbl(Cantidad) - CDbl(CantidadAnterior)
-                    '        DiferenciaPrecio = CDbl(Cantidad) - CDbl(CantidadAnterior)
-                    '        ExistenciasCostos(CodigoProducto, DiferenciaCantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
-                    'End Select
+                    RstCosto = CostoPromedioKardex(CodigoProducto, Me.DTPFecha.Value)
+                    CostoUnitario = RstCosto.Costo_Cordoba
+                    Me.BindingDetalle.Item(iPosicion)("Costo_Unitario") = CostoUnitario
+                End If
 
-                    iPosicion = iPosicion + 1
-                Loop
 
-                da.Update(ds.Tables("DetalleFactura"))
+
+                'Descripcion_Producto = Me.BindingDetalle.Item(iPosicion)("Descripcion_Producto")
+
+                'If FacturaTarea = True Then
+                '    If Not IsDBNull(Me.BindingDetalle.Item(iPosicion)("CodTarea")) Then
+                '        CodTarea = Me.BindingDetalle.Item(iPosicion)("CodTarea")
+                '    Else
+                '        CodTarea = 0
+                '    End If
+                '    GrabaDetalleFacturaTarea(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CodTarea)
+                'Else
+                '    GrabaDetalleFactura(NumeroFactura, CodigoProducto, Descripcion_Producto, PrecioUnitario, Descuento, PrecioNeto, Importe, Cantidad, IdDetalle, CostoUnitario)
+                'End If
+
+                'Select Case Me.CboTipoProducto.Text
+                '    Case "Factura"
+                '        DiferenciaCantidad = CDbl(Cantidad) - CDbl(CantidadAnterior)
+                '        DiferenciaPrecio = CDbl(PrecioAnterior) - CDbl(PrecioNeto)
+                '        ExistenciasCostos(CodigoProducto, DiferenciaCantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
+                '    Case "Devolucion de Venta"
+                '        DiferenciaCantidad = CDbl(Cantidad) - CDbl(CantidadAnterior)
+                '        DiferenciaPrecio = CDbl(Cantidad) - CDbl(CantidadAnterior)
+                '        ExistenciasCostos(CodigoProducto, DiferenciaCantidad, PrecioNeto, Me.CboTipoProducto.Text, Me.CboCodigoBodega.Text)
+                'End Select
+
+                iPosicion = iPosicion + 1
+            Loop
+
+            da.Update(ds.Tables("DetalleFactura"))
             '////////////////////////////////////////////////////////////////////////////////////////////////////
             '/////////////////////////////GRABO LOS METODOS DE PAGO /////////////////////////////////////////////
             '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
@@ -14233,1041 +14569,1041 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
         End If
 
-            ActualizaMETODOFactura()
+        ActualizaMETODOFactura()
 
-            SqlDatos = "SELECT * FROM DatosEmpresa"
-            DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-            DataAdapter.Fill(DataSet, "DatosEmpresa")
+        SqlDatos = "SELECT * FROM DatosEmpresa"
+        DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+        DataAdapter.Fill(DataSet, "DatosEmpresa")
 
-            If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+        If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
 
-                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")) Then
-                    ImprimeFacturaPreview = DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")
-                Else
-                    ImprimeFacturaPreview = False
-                End If
-
-                'ArepCotizaciones.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
-                'ArepCotizaciones.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
-                'ArepCotizaciones.LblCorreo.Text = EmailVendedor(Me.CboCodigoVendedor.Columns(0).Text)
-                'ArepCotizaciones.LblMoneda.Text = Me.TxtMonedaImprime.Text
-                'ArepCotizaciones.LblLetras.Text = Letras(Me.TxtNetoPagar.Text, Me.TxtMonedaFactura.Text)
-
-                'ArepCotizacionFoto.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
-                'ArepCotizacionFoto.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
-
-                'ArepFacturas.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
-                'ArepFacturas.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
-
-                'ArepFacturasTareas.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
-                'ArepFacturasTareas.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
-
-                'ArepFacturasTiras.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
-                'ArepFacturasTiras.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
-
-                'ArepSalidaBodega.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
-                'ArepSalidaBodega.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
-
-                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")) Then
-                    ArepFacturasTiras.LblTelefono.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")
-                End If
-                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")) Then
-                    ArepFacturas.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
-                    'ArepCotizacionFoto.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
-                    ArepFacturasTareas.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
-                    ArepFacturasTiras.LblRuc.Text = "RUC: " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
-                    ArepSalidaBodega.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
-                    ArepFacturaMediaPagina.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
-                    'ArepCotizaciones.LblRuc.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")
-                End If
-                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
-                    RutaLogo = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
-                    If Dir(RutaLogo) <> "" Then
-                        ArepFacturas.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                        'ArepCotizacionFoto.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                        ArepFacturasTareas.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                        ArepFacturasTiras.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                        ArepSalidaBodega.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                        'ArepCotizaciones.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                    End If
-
-                End If
-            End If
-
-            'ArepFacturasTiras.TxtVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
-
-            'ArepCotizacionFoto.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
-            'ArepCotizacionFoto.Label1.Text = "Cliente"
-            'ArepCotizacionFoto.LblNotas.Text = Me.TxtObservaciones.Text
-            'ArepCotizacionFoto.LblOrden.Text = Me.TxtNumeroEnsamble.Text
-            'ArepCotizacionFoto.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
-            'ArepCotizacionFoto.LblTipoCompra.Text = Me.CboTipoProducto.Text
-            'ArepCotizacionFoto.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
-            'ArepCotizacionFoto.LblNombres.Text = Me.TxtNombres.Text
-            'ArepCotizacionFoto.LblApellidos.Text = Me.TxtApellidos.Text
-            'ArepCotizacionFoto.LblDireccionProveedor.Text = Me.TxtDireccion.Text
-            'ArepCotizacionFoto.LblTelefono.Text = Me.TxtTelefono.Text
-            'ArepCotizacionFoto.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
-            'ArepCotizacionFoto.LblBodegas.Text = Me.CboCodigoBodega.Columns(0).Text + " " + Me.CboCodigoBodega.Columns(1).Text
-
-            'ArepSalidaBodega.LblNotas.Text = Me.TxtObservaciones.Text
-            'ArepSalidaBodega.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
-
-            ''//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            'ArepCotizaciones.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
-            'ArepCotizaciones.LblNotas.Text = Me.TxtObservaciones.Text
-            'ArepCotizaciones.LblOrden.Text = Me.TxtNumeroEnsamble.Text
-            'ArepCotizaciones.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
-            'ArepCotizaciones.LblNombres.Text = Me.TxtNombres.Text
-            'ArepCotizaciones.LblDireccionProveedor.Text = Me.TxtDireccion.Text
-            'ArepCotizaciones.LblTelefono.Text = Me.TxtTelefono.Text
-            'ArepCotizaciones.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
-
-            ArepFacturaMediaPagina.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
-            ArepFacturas.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
-            ArepFacturas2.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
-            ArepFacturas.Label1.Text = "Cliente"
-            ArepFacturaMediaPagina.LblOrden.Text = Me.TxtNumeroEnsamble.Text
-            ArepFacturas.LblNotas.Text = Me.TxtObservaciones.Text
-            ArepFacturas.LblOrden.Text = Me.TxtNumeroEnsamble.Text
-            ArepFacturas.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
-            ArepFacturaMediaPagina.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
-            ArepFacturas.LblTipoCompra.Text = Me.CboTipoProducto.Text
-            ArepFacturas.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
-            ArepFacturas.LblNombres.Text = Me.TxtNombres.Text
-            ArepFacturaMediaPagina.LblNombres.Text = Me.TxtNombres.Text
-            ArepFacturas.LblApellidos.Text = Me.TxtApellidos.Text
-            ArepFacturaMediaPagina.LblApellidos.Text = Me.TxtApellidos.Text
-
-            ArepFacturas.LblDireccionProveedor.Text = Me.TxtDireccion.Text
-            ArepFacturas.LblTelefono.Text = Me.TxtTelefono.Text
-            ArepFacturas.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
-            ArepFacturas.LblBodegas.Text = Me.CboCodigoBodega.Columns(0).Text + " " + Me.CboCodigoBodega.Columns(1).Text
-
-            ArepFacturas2.Label1.Text = "Cliente"
-            ArepFacturas2.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
-            ArepFacturas2.LblNotas.Text = Me.TxtObservaciones.Text
-            ArepFacturas2.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
-            ArepFacturas2.LblNombres.Text = Me.TxtNombres.Text
-            ArepFacturas2.LblApellidos.Text = Me.TxtApellidos.Text
-            ArepFacturas2.LblDireccionProveedor.Text = Me.TxtDireccion.Text
-            ArepFacturas2.LblTelefono.Text = Me.TxtTelefono.Text
-            ArepFacturas2.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
-            ArepFacturas2.LblBodegas.Text = Me.CboCodigoBodega.Columns(0).Text + " " + Me.CboCodigoBodega.Columns(1).Text
-
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            ArepFacturasTareas.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
-            ArepFacturasTareas.Label1.Text = "Cliente"
-            ArepFacturasTareas.LblNotas.Text = Me.TxtObservaciones.Text
-            ArepFacturasTareas.LblOrden.Text = Me.TxtNumeroEnsamble.Text
-            ArepFacturasTareas.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
-            ArepFacturasTareas.LblTipoCompra.Text = Me.CboTipoProducto.Text
-            ArepFacturasTareas.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
-            ArepFacturasTareas.LblNombres.Text = Me.TxtNombres.Text
-            ArepFacturasTareas.LblApellidos.Text = Me.TxtApellidos.Text
-            ArepFacturasTareas.LblDireccionProveedor.Text = Me.TxtDireccion.Text
-            ArepFacturasTareas.LblTelefono.Text = Me.TxtTelefono.Text
-            ArepFacturasTareas.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
-            ArepFacturaMediaPagina.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
-            ArepFacturasTareas.LblBodegas.Text = Me.CboCodigoBodega.Columns(0).Text + " " + Me.CboCodigoBodega.Columns(1).Text
-
-            ArepSalidaBodega.LblBodegas.Text = Me.CboCodigoBodega.Columns(0).Text + " " + Me.CboCodigoBodega.Columns(1).Text
-
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            ArepFacturasTiras.LblOrden.Text = Me.TxtNumeroEnsamble.Text
-            ArepFacturasTiras.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
-            ArepFacturasTiras.LblTipoCompra.Text = Me.CboTipoProducto.Text
-            ArepFacturasTiras.LblNombres.Text = Me.TxtNombres.Text & " " & Me.TxtApellidos.Text
-            ArepFacturasTiras.LblApellidos.Text = Me.TxtApellidos.Text
-
-
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            ArepOrdenTrabajo.LblOrden.Text = Me.TxtNumeroEnsamble.Text
-            ArepOrdenTrabajo.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
-            ArepOrdenTrabajo.LblTipoCompra.Text = Me.CboTipoProducto.Text
-            ArepOrdenTrabajo.LblNombres.Text = Me.TxtNombres.Text & " " & Me.TxtApellidos.Text
-
-
-
-            ArepSalidaBodega.LblOrden.Text = Me.TxtNumeroEnsamble.Text
-            ArepSalidaBodega.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
-            ArepSalidaBodega.LblTipoCompra.Text = Me.CboTipoProducto.Text
-            ArepSalidaBodega.LblNombres.Text = Me.TxtNombres.Text & " " & Me.TxtApellidos.Text
-
-            MonedaFactura = Me.TxtMonedaFactura.Text
-            MonedaImprime = Me.TxtMonedaImprime.Text
-            Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
-
-            If MonedaFactura = "Cordobas" Then
-                If MonedaImprime = "Cordobas" Then
-                    TasaCambio = 1
-                Else
-                    TasaCambio = (1 / BuscaTasaCambio(Me.DTPFecha.Value))
-                End If
-            ElseIf MonedaFactura = "Dolares" Then
-                If MonedaImprime = "Cordobas" Then
-                    TasaCambio = BuscaTasaCambio(Me.DTPFecha.Value)
-                Else
-                    TasaCambio = 1
-                End If
-            End If
-
-            'If Val(Me.TxtSubTotal.Text) <> 0 Then
-            '    ArepCotizacionFoto.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
-            'Else
-            '    ArepCotizacionFoto.LblSubTotal.Text = "0.00"
-            'End If
-
-            If Val(Me.TxtIva.Text) <> 0 Then
-                ArepSalidaBodega.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")) Then
+                ImprimeFacturaPreview = DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")
             Else
-                ArepSalidaBodega.LblIva.Text = "0.00"
+                ImprimeFacturaPreview = False
             End If
 
-            'If Val(Me.TxtIva.Text) <> 0 Then
-            '    ArepCotizacionFoto.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
-            'Else
-            '    ArepCotizacionFoto.LblIva.Text = "0.00"
-            'End If
+            'ArepCotizaciones.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+            'ArepCotizaciones.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+            'ArepCotizaciones.LblCorreo.Text = EmailVendedor(Me.CboCodigoVendedor.Columns(0).Text)
+            'ArepCotizaciones.LblMoneda.Text = Me.TxtMonedaImprime.Text
+            'ArepCotizaciones.LblLetras.Text = Letras(Me.TxtNetoPagar.Text, Me.TxtMonedaFactura.Text)
 
-            'If Val(Me.TxtPagado.Text) <> 0 Then
-            '    ArepCotizacionFoto.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
-            'Else
-            '    ArepCotizacionFoto.LblPagado.Text = "0.00"
-            'End If
-            'If Val(Me.TxtNetoPagar.Text) <> 0 Then
-            '    ArepCotizacionFoto.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
-            'Else
-            '    ArepCotizacionFoto.LblTotal.Text = "0.00"
-            'End If
-            'If Val(Me.TxtDescuento.Text) <> 0 Then
-            '    ArepCotizacionFoto.LblDescuento.Text = Format(CDbl(Me.TxtDescuento.Text) * TasaCambio, "##,##0.00")
-            'Else
-            '    ArepCotizacionFoto.LblDescuento.Text = "0.00"
-            'End If
+            'ArepCotizacionFoto.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+            'ArepCotizacionFoto.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
 
+            'ArepFacturas.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+            'ArepFacturas.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
 
-            If Val(Me.TxtSubTotal.Text) <> 0 Then
-                'ArepCotizaciones.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
-                ArepFacturas.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
-                ArepFacturas2.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
-                ArepFacturasTiras.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
-                ArepOrdenTrabajo.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
-                ArepSalidaBodega.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
-                ArepFacturasTiras.LblPropina.Text = Format(CDbl(Me.TxtPropina.Text) * TasaCambio, "##,##0.00")
-                ArepFacturaMediaPagina.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
-                ArepFacturasTareas.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+            'ArepFacturasTareas.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+            'ArepFacturasTareas.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
 
-            Else
-                'ArepCotizaciones.LblSubTotal.Text = "0.00"
-                ArepFacturas.LblSubTotal.Text = "0.00"
-                ArepFacturas2.LblSubTotal.Text = "0.00"
-                ArepFacturasTiras.LblSubTotal.Text = "0.00"
-                ArepSalidaBodega.LblSubTotal.Text = "0.00"
-                ArepOrdenTrabajo.LblSubTotal.Text = "0.00"
-                ArepFacturasTiras.LblPropina.Text = "0.00"
-                ArepFacturaMediaPagina.LblSubTotal.Text = "0.00"
-                ArepFacturasTareas.LblSubTotal.Text = "0.00"
+            'ArepFacturasTiras.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+            'ArepFacturasTiras.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+
+            'ArepSalidaBodega.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+            'ArepSalidaBodega.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+
+            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")) Then
+                ArepFacturasTiras.LblTelefono.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")
             End If
-
-            If Val(Me.TxtIva.Text) <> 0 Then
-                'ArepCotizaciones.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
-                ArepFacturas.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
-                ArepFacturas2.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
-                ArepFacturasTiras.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
-                ArepOrdenTrabajo.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
-                ArepSalidaBodega.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
-                ArepFacturaMediaPagina.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
-                ArepFacturasTareas.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
-            Else
-                'ArepCotizaciones.LblIva.Text = "0.00"
-                ArepFacturas.LblIva.Text = "0.00"
-                ArepFacturas2.LblIva.Text = "0.00"
-                ArepFacturasTiras.LblIva.Text = "0.00"
-                ArepOrdenTrabajo.LblIva.Text = "0.00"
-                ArepFacturaMediaPagina.LblIva.Text = "0.00"
-                ArepFacturasTareas.LblIva.Text = "0.00"
+            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")) Then
+                ArepFacturas.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
+                'ArepCotizacionFoto.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
+                ArepFacturasTareas.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
+                ArepFacturasTiras.LblRuc.Text = "RUC: " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
+                ArepSalidaBodega.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
+                ArepFacturaMediaPagina.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
+                'ArepCotizaciones.LblRuc.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")
             End If
-
-            If Val(Me.TxtPagado.Text) <> 0 Then
-                ArepFacturas.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
-                ArepFacturas2.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
-                ArepFacturasTiras.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
-                ArepOrdenTrabajo.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
-                ArepFacturaMediaPagina.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
-                ArepFacturasTareas.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
-            Else
-                ArepFacturas.LblPagado.Text = "0.00"
-                ArepFacturas2.LblPagado.Text = "0.00"
-                ArepFacturasTiras.LblPagado.Text = "0.00"
-                ArepOrdenTrabajo.LblPagado.Text = "0.00"
-                ArepFacturaMediaPagina.LblPagado.Text = "0.00"
-                ArepFacturasTareas.LblPagado.Text = "0.00"
-            End If
-
-            If Val(Me.TxtNetoPagar.Text) <> 0 Then
-                'ArepCotizaciones.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
-                ArepFacturas.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
-                ArepFacturas2.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
-                ArepFacturasTiras.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
-                ArepOrdenTrabajo.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
-                ArepSalidaBodega.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
-                ArepFacturaMediaPagina.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
-                ArepFacturasTareas.LblPagado.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
-            Else
-                'ArepCotizaciones.LblTotal.Text = "0.00"
-                ArepFacturas.LblTotal.Text = "0.00"
-                ArepFacturas2.LblTotal.Text = "0.00"
-                ArepFacturasTiras.LblTotal.Text = "0.00"
-                ArepOrdenTrabajo.LblTotal.Text = "0.00"
-                ArepSalidaBodega.LblTotal.Text = "0.00"
-                ArepFacturaMediaPagina.LblTotal.Text = "0.00"
-                ArepFacturasTareas.LblPagado.Text = "0.00"
-
-            End If
-            If Val(Me.TxtDescuento.Text) <> 0 Then
-                ArepFacturas.LblDescuento.Text = Format(CDbl(Me.TxtDescuento.Text) * TasaCambio, "##,##0.00")
-                ArepFacturas2.LblDescuento.Text = Format(CDbl(Me.TxtDescuento.Text) * TasaCambio, "##,##0.00")
-                ArepFacturaMediaPagina.LblDescuento.Text = Format(CDbl(Me.TxtDescuento.Text) * TasaCambio, "##,##0.00")
-                ArepFacturasTareas.LblDescuento.Text = Format(CDbl(Me.TxtDescuento.Text) * TasaCambio, "##,##0.00")
-            Else
-                ArepFacturas.LblDescuento.Text = "0.00"
-                ArepFacturas2.LblDescuento.Text = "0.00"
-                ArepFacturaMediaPagina.LblDescuento.Text = "0.00"
-                ArepFacturasTareas.LblDescuento.Text = "0.00"
-            End If
-
-
-            ArepFacturasTiras.LblTotal1.Text = Format((CDbl(Me.TxtIva.Text) + CDbl(Me.TxtSubTotal.Text) + CDbl(Me.TxtPropina.Text)) * TasaCambio, "##,##0.00")
-            ArepOrdenTrabajo.LblTotal1.Text = Format((CDbl(Me.TxtIva.Text) + CDbl(Me.TxtSubTotal.Text)) * TasaCambio, "##,##0.00")
-            ArepSalidaBodega.LblTotal.Text = Format((CDbl(Me.TxtIva.Text) + CDbl(Me.TxtSubTotal.Text)) * TasaCambio, "##,##0.00")
-            ArepFacturasTareas.LblTotal.Text = Format((CDbl(Me.TxtIva.Text) + CDbl(Me.TxtSubTotal.Text)) * TasaCambio, "##,##0.00")
-
-
-
-            '////////////////////////////////////////////////////////////////////////////////////////////////////
-            '/////////////////////////////IMPRIMO LOS METODOS DE PAGO /////////////////////////////////////////////
-            '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
-
-            Me.BindingMetodo.MoveFirst()
-            Registros = Me.BindingMetodo.Count
-            iPosicion = 0
-            Monto = 0
-            ArepFacturas.TxtMetodo.Text = "Credito"
-            ArepFacturas2.TxtMetodo.Text = "Credito"
-            ArepCotizacionFoto.TxtMetodo.Text = "Credito"
-            Do While iPosicion < Registros
-                NombrePago = Me.BindingMetodo.Item(iPosicion)("NombrePago")
-                Monto = Me.BindingMetodo.Item(iPosicion)("Monto") + Monto
-                If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")) Then
-                    NumeroTarjeta = Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")
-                Else
-                    NumeroTarjeta = 0
-                End If
-                If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("FechaVence")) Then
-                    FechaVenceTarjeta = Me.BindingMetodo.Item(iPosicion)("FechaVence")
-                Else
-                    FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
+            If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
+                RutaLogo = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
+                If Dir(RutaLogo) <> "" Then
+                    ArepFacturas.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                    'ArepCotizacionFoto.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                    ArepFacturasTareas.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                    ArepFacturasTiras.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                    ArepSalidaBodega.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                    'ArepCotizaciones.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
                 End If
 
-                ArepFacturas.TxtMetodo.Text = NombrePago & " " & Monto
-                ArepFacturas2.TxtMetodo.Text = NombrePago & " " & Monto
-                ArepCotizacionFoto.TxtMetodo.Text = NombrePago & " " & Monto
+            End If
+        End If
 
-                '//////////////////////////////////////////////////////////////////////////////////////////////
-                '////////////////////////////EDITO EL ENCABEZADO DE LA FACTURA SI EXISTEN FORMA DE PAGO///////////////////////////////////
-                '/////////////////////////////////////////////////////////////////////////////////////////////////
-                MiConexion.Close()
-                If Me.CboTipoProducto.Text <> "Cotizacion" Then
-                    SqlCompras = "UPDATE [Facturas]  SET [FechaPago] = '" & Format(Now, "dd/MM/yyyy") & "' " & _
+        'ArepFacturasTiras.TxtVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+
+        'ArepCotizacionFoto.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+        'ArepCotizacionFoto.Label1.Text = "Cliente"
+        'ArepCotizacionFoto.LblNotas.Text = Me.TxtObservaciones.Text
+        'ArepCotizacionFoto.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+        'ArepCotizacionFoto.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+        'ArepCotizacionFoto.LblTipoCompra.Text = Me.CboTipoProducto.Text
+        'ArepCotizacionFoto.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
+        'ArepCotizacionFoto.LblNombres.Text = Me.TxtNombres.Text
+        'ArepCotizacionFoto.LblApellidos.Text = Me.TxtApellidos.Text
+        'ArepCotizacionFoto.LblDireccionProveedor.Text = Me.TxtDireccion.Text
+        'ArepCotizacionFoto.LblTelefono.Text = Me.TxtTelefono.Text
+        'ArepCotizacionFoto.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
+        'ArepCotizacionFoto.LblBodegas.Text = Me.CboCodigoBodega.Columns(0).Text + " " + Me.CboCodigoBodega.Columns(1).Text
+
+        'ArepSalidaBodega.LblNotas.Text = Me.TxtObservaciones.Text
+        'ArepSalidaBodega.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
+
+        ''//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        'ArepCotizaciones.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+        'ArepCotizaciones.LblNotas.Text = Me.TxtObservaciones.Text
+        'ArepCotizaciones.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+        'ArepCotizaciones.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+        'ArepCotizaciones.LblNombres.Text = Me.TxtNombres.Text
+        'ArepCotizaciones.LblDireccionProveedor.Text = Me.TxtDireccion.Text
+        'ArepCotizaciones.LblTelefono.Text = Me.TxtTelefono.Text
+        'ArepCotizaciones.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
+
+        ArepFacturaMediaPagina.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+        ArepFacturas.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+        ArepFacturas2.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+        ArepFacturas.Label1.Text = "Cliente"
+        ArepFacturaMediaPagina.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+        ArepFacturas.LblNotas.Text = Me.TxtObservaciones.Text
+        ArepFacturas.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+        ArepFacturas.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+        ArepFacturaMediaPagina.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+        ArepFacturas.LblTipoCompra.Text = Me.CboTipoProducto.Text
+        ArepFacturas.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
+        ArepFacturas.LblNombres.Text = Me.TxtNombres.Text
+        ArepFacturaMediaPagina.LblNombres.Text = Me.TxtNombres.Text
+        ArepFacturas.LblApellidos.Text = Me.TxtApellidos.Text
+        ArepFacturaMediaPagina.LblApellidos.Text = Me.TxtApellidos.Text
+
+        ArepFacturas.LblDireccionProveedor.Text = Me.TxtDireccion.Text
+        ArepFacturas.LblTelefono.Text = Me.TxtTelefono.Text
+        ArepFacturas.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
+        ArepFacturas.LblBodegas.Text = Me.CboCodigoBodega.Columns(0).Text + " " + Me.CboCodigoBodega.Columns(1).Text
+
+        ArepFacturas2.Label1.Text = "Cliente"
+        ArepFacturas2.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+        ArepFacturas2.LblNotas.Text = Me.TxtObservaciones.Text
+        ArepFacturas2.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
+        ArepFacturas2.LblNombres.Text = Me.TxtNombres.Text
+        ArepFacturas2.LblApellidos.Text = Me.TxtApellidos.Text
+        ArepFacturas2.LblDireccionProveedor.Text = Me.TxtDireccion.Text
+        ArepFacturas2.LblTelefono.Text = Me.TxtTelefono.Text
+        ArepFacturas2.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
+        ArepFacturas2.LblBodegas.Text = Me.CboCodigoBodega.Columns(0).Text + " " + Me.CboCodigoBodega.Columns(1).Text
+
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ArepFacturasTareas.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+        ArepFacturasTareas.Label1.Text = "Cliente"
+        ArepFacturasTareas.LblNotas.Text = Me.TxtObservaciones.Text
+        ArepFacturasTareas.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+        ArepFacturasTareas.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+        ArepFacturasTareas.LblTipoCompra.Text = Me.CboTipoProducto.Text
+        ArepFacturasTareas.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
+        ArepFacturasTareas.LblNombres.Text = Me.TxtNombres.Text
+        ArepFacturasTareas.LblApellidos.Text = Me.TxtApellidos.Text
+        ArepFacturasTareas.LblDireccionProveedor.Text = Me.TxtDireccion.Text
+        ArepFacturasTareas.LblTelefono.Text = Me.TxtTelefono.Text
+        ArepFacturasTareas.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
+        ArepFacturaMediaPagina.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
+        ArepFacturasTareas.LblBodegas.Text = Me.CboCodigoBodega.Columns(0).Text + " " + Me.CboCodigoBodega.Columns(1).Text
+
+        ArepSalidaBodega.LblBodegas.Text = Me.CboCodigoBodega.Columns(0).Text + " " + Me.CboCodigoBodega.Columns(1).Text
+
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ArepFacturasTiras.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+        ArepFacturasTiras.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+        ArepFacturasTiras.LblTipoCompra.Text = Me.CboTipoProducto.Text
+        ArepFacturasTiras.LblNombres.Text = Me.TxtNombres.Text & " " & Me.TxtApellidos.Text
+        ArepFacturasTiras.LblApellidos.Text = Me.TxtApellidos.Text
+
+
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ArepOrdenTrabajo.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+        ArepOrdenTrabajo.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+        ArepOrdenTrabajo.LblTipoCompra.Text = Me.CboTipoProducto.Text
+        ArepOrdenTrabajo.LblNombres.Text = Me.TxtNombres.Text & " " & Me.TxtApellidos.Text
+
+
+
+        ArepSalidaBodega.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+        ArepSalidaBodega.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+        ArepSalidaBodega.LblTipoCompra.Text = Me.CboTipoProducto.Text
+        ArepSalidaBodega.LblNombres.Text = Me.TxtNombres.Text & " " & Me.TxtApellidos.Text
+
+        MonedaFactura = Me.TxtMonedaFactura.Text
+        MonedaImprime = Me.TxtMonedaImprime.Text
+        Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
+
+        If MonedaFactura = "Cordobas" Then
+            If MonedaImprime = "Cordobas" Then
+                TasaCambio = 1
+            Else
+                TasaCambio = (1 / BuscaTasaCambio(Me.DTPFecha.Value))
+            End If
+        ElseIf MonedaFactura = "Dolares" Then
+            If MonedaImprime = "Cordobas" Then
+                TasaCambio = BuscaTasaCambio(Me.DTPFecha.Value)
+            Else
+                TasaCambio = 1
+            End If
+        End If
+
+        'If Val(Me.TxtSubTotal.Text) <> 0 Then
+        '    ArepCotizacionFoto.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+        'Else
+        '    ArepCotizacionFoto.LblSubTotal.Text = "0.00"
+        'End If
+
+        If Val(Me.TxtIva.Text) <> 0 Then
+            ArepSalidaBodega.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+        Else
+            ArepSalidaBodega.LblIva.Text = "0.00"
+        End If
+
+        'If Val(Me.TxtIva.Text) <> 0 Then
+        '    ArepCotizacionFoto.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+        'Else
+        '    ArepCotizacionFoto.LblIva.Text = "0.00"
+        'End If
+
+        'If Val(Me.TxtPagado.Text) <> 0 Then
+        '    ArepCotizacionFoto.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
+        'Else
+        '    ArepCotizacionFoto.LblPagado.Text = "0.00"
+        'End If
+        'If Val(Me.TxtNetoPagar.Text) <> 0 Then
+        '    ArepCotizacionFoto.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+        'Else
+        '    ArepCotizacionFoto.LblTotal.Text = "0.00"
+        'End If
+        'If Val(Me.TxtDescuento.Text) <> 0 Then
+        '    ArepCotizacionFoto.LblDescuento.Text = Format(CDbl(Me.TxtDescuento.Text) * TasaCambio, "##,##0.00")
+        'Else
+        '    ArepCotizacionFoto.LblDescuento.Text = "0.00"
+        'End If
+
+
+        If Val(Me.TxtSubTotal.Text) <> 0 Then
+            'ArepCotizaciones.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+            ArepFacturas.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+            ArepFacturas2.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+            ArepFacturasTiras.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+            ArepOrdenTrabajo.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+            ArepSalidaBodega.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+            ArepFacturasTiras.LblPropina.Text = Format(CDbl(Me.TxtPropina.Text) * TasaCambio, "##,##0.00")
+            ArepFacturaMediaPagina.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+            ArepFacturasTareas.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+
+        Else
+            'ArepCotizaciones.LblSubTotal.Text = "0.00"
+            ArepFacturas.LblSubTotal.Text = "0.00"
+            ArepFacturas2.LblSubTotal.Text = "0.00"
+            ArepFacturasTiras.LblSubTotal.Text = "0.00"
+            ArepSalidaBodega.LblSubTotal.Text = "0.00"
+            ArepOrdenTrabajo.LblSubTotal.Text = "0.00"
+            ArepFacturasTiras.LblPropina.Text = "0.00"
+            ArepFacturaMediaPagina.LblSubTotal.Text = "0.00"
+            ArepFacturasTareas.LblSubTotal.Text = "0.00"
+        End If
+
+        If Val(Me.TxtIva.Text) <> 0 Then
+            'ArepCotizaciones.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+            ArepFacturas.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+            ArepFacturas2.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+            ArepFacturasTiras.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+            ArepOrdenTrabajo.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+            ArepSalidaBodega.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+            ArepFacturaMediaPagina.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+            ArepFacturasTareas.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+        Else
+            'ArepCotizaciones.LblIva.Text = "0.00"
+            ArepFacturas.LblIva.Text = "0.00"
+            ArepFacturas2.LblIva.Text = "0.00"
+            ArepFacturasTiras.LblIva.Text = "0.00"
+            ArepOrdenTrabajo.LblIva.Text = "0.00"
+            ArepFacturaMediaPagina.LblIva.Text = "0.00"
+            ArepFacturasTareas.LblIva.Text = "0.00"
+        End If
+
+        If Val(Me.TxtPagado.Text) <> 0 Then
+            ArepFacturas.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
+            ArepFacturas2.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
+            ArepFacturasTiras.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
+            ArepOrdenTrabajo.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
+            ArepFacturaMediaPagina.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
+            ArepFacturasTareas.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
+        Else
+            ArepFacturas.LblPagado.Text = "0.00"
+            ArepFacturas2.LblPagado.Text = "0.00"
+            ArepFacturasTiras.LblPagado.Text = "0.00"
+            ArepOrdenTrabajo.LblPagado.Text = "0.00"
+            ArepFacturaMediaPagina.LblPagado.Text = "0.00"
+            ArepFacturasTareas.LblPagado.Text = "0.00"
+        End If
+
+        If Val(Me.TxtNetoPagar.Text) <> 0 Then
+            'ArepCotizaciones.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+            ArepFacturas.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+            ArepFacturas2.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+            ArepFacturasTiras.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+            ArepOrdenTrabajo.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+            ArepSalidaBodega.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+            ArepFacturaMediaPagina.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+            ArepFacturasTareas.LblPagado.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+        Else
+            'ArepCotizaciones.LblTotal.Text = "0.00"
+            ArepFacturas.LblTotal.Text = "0.00"
+            ArepFacturas2.LblTotal.Text = "0.00"
+            ArepFacturasTiras.LblTotal.Text = "0.00"
+            ArepOrdenTrabajo.LblTotal.Text = "0.00"
+            ArepSalidaBodega.LblTotal.Text = "0.00"
+            ArepFacturaMediaPagina.LblTotal.Text = "0.00"
+            ArepFacturasTareas.LblPagado.Text = "0.00"
+
+        End If
+        If Val(Me.TxtDescuento.Text) <> 0 Then
+            ArepFacturas.LblDescuento.Text = Format(CDbl(Me.TxtDescuento.Text) * TasaCambio, "##,##0.00")
+            ArepFacturas2.LblDescuento.Text = Format(CDbl(Me.TxtDescuento.Text) * TasaCambio, "##,##0.00")
+            ArepFacturaMediaPagina.LblDescuento.Text = Format(CDbl(Me.TxtDescuento.Text) * TasaCambio, "##,##0.00")
+            ArepFacturasTareas.LblDescuento.Text = Format(CDbl(Me.TxtDescuento.Text) * TasaCambio, "##,##0.00")
+        Else
+            ArepFacturas.LblDescuento.Text = "0.00"
+            ArepFacturas2.LblDescuento.Text = "0.00"
+            ArepFacturaMediaPagina.LblDescuento.Text = "0.00"
+            ArepFacturasTareas.LblDescuento.Text = "0.00"
+        End If
+
+
+        ArepFacturasTiras.LblTotal1.Text = Format((CDbl(Me.TxtIva.Text) + CDbl(Me.TxtSubTotal.Text) + CDbl(Me.TxtPropina.Text)) * TasaCambio, "##,##0.00")
+        ArepOrdenTrabajo.LblTotal1.Text = Format((CDbl(Me.TxtIva.Text) + CDbl(Me.TxtSubTotal.Text)) * TasaCambio, "##,##0.00")
+        ArepSalidaBodega.LblTotal.Text = Format((CDbl(Me.TxtIva.Text) + CDbl(Me.TxtSubTotal.Text)) * TasaCambio, "##,##0.00")
+        ArepFacturasTareas.LblTotal.Text = Format((CDbl(Me.TxtIva.Text) + CDbl(Me.TxtSubTotal.Text)) * TasaCambio, "##,##0.00")
+
+
+
+        '////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////////IMPRIMO LOS METODOS DE PAGO /////////////////////////////////////////////
+        '//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+
+        Me.BindingMetodo.MoveFirst()
+        Registros = Me.BindingMetodo.Count
+        iPosicion = 0
+        Monto = 0
+        ArepFacturas.TxtMetodo.Text = "Credito"
+        ArepFacturas2.TxtMetodo.Text = "Credito"
+        ArepCotizacionFoto.TxtMetodo.Text = "Credito"
+        Do While iPosicion < Registros
+            NombrePago = Me.BindingMetodo.Item(iPosicion)("NombrePago")
+            Monto = Me.BindingMetodo.Item(iPosicion)("Monto") + Monto
+            If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")) Then
+                NumeroTarjeta = Me.BindingMetodo.Item(iPosicion)("NumeroTarjeta")
+            Else
+                NumeroTarjeta = 0
+            End If
+            If Not IsDBNull(Me.BindingMetodo.Item(iPosicion)("FechaVence")) Then
+                FechaVenceTarjeta = Me.BindingMetodo.Item(iPosicion)("FechaVence")
+            Else
+                FechaVenceTarjeta = Format(Now, "dd/MM/yyyy")
+            End If
+
+            ArepFacturas.TxtMetodo.Text = NombrePago & " " & Monto
+            ArepFacturas2.TxtMetodo.Text = NombrePago & " " & Monto
+            ArepCotizacionFoto.TxtMetodo.Text = NombrePago & " " & Monto
+
+            '//////////////////////////////////////////////////////////////////////////////////////////////
+            '////////////////////////////EDITO EL ENCABEZADO DE LA FACTURA SI EXISTEN FORMA DE PAGO///////////////////////////////////
+            '/////////////////////////////////////////////////////////////////////////////////////////////////
+            MiConexion.Close()
+            If Me.CboTipoProducto.Text <> "Cotizacion" Then
+                SqlCompras = "UPDATE [Facturas]  SET [FechaPago] = '" & Format(Now, "dd/MM/yyyy") & "' " &
                                  "WHERE  (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
-                    MiConexion.Open()
-                    ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
-                    iResultado = ComandoUpdate.ExecuteNonQuery
-                    MiConexion.Close()
-                End If
+                MiConexion.Open()
+                ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
+                iResultado = ComandoUpdate.ExecuteNonQuery
+                MiConexion.Close()
+            End If
 
-                iPosicion = iPosicion + 1
-            Loop
+            iPosicion = iPosicion + 1
+        Loop
 
 
 
-            SQlDetalle = ""
-            Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
+        SQlDetalle = ""
+        Fecha = Format(Me.DTPFecha.Value, "yyyy-MM-dd")
 
-            If MonedaFactura = "Cordobas" Then
-                If MonedaImprime = "Cordobas" Then
-                    '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
-                    SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Productos.Unidad_Medida, Detalle_Facturas.CodTarea FROM  Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto " & _
+        If MonedaFactura = "Cordobas" Then
+            If MonedaImprime = "Cordobas" Then
+                '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
+                SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Productos.Unidad_Medida, Detalle_Facturas.CodTarea FROM  Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto " &
                         "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
-                ElseIf MonedaImprime = "Dolares" Then
-                    SQlDetalle = "SELECT     Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad,Detalle_Facturas.Precio_Unitario * (1 / TasaCambio.MontoTasa) AS Precio_Unitario, Detalle_Facturas.Descuento * (1 / TasaCambio.MontoTasa) AS Descuento, Detalle_Facturas.Precio_Neto * (1 / TasaCambio.MontoTasa) AS Precio_Neto, Detalle_Facturas.Importe * (1 / TasaCambio.MontoTasa) AS Importe, TasaCambio.MontoTasa, Productos.Unidad_Medida, Detalle_Facturas.CodTarea FROM Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa  " & _
+            ElseIf MonedaImprime = "Dolares" Then
+                SQlDetalle = "SELECT     Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad,Detalle_Facturas.Precio_Unitario * (1 / TasaCambio.MontoTasa) AS Precio_Unitario, Detalle_Facturas.Descuento * (1 / TasaCambio.MontoTasa) AS Descuento, Detalle_Facturas.Precio_Neto * (1 / TasaCambio.MontoTasa) AS Precio_Neto, Detalle_Facturas.Importe * (1 / TasaCambio.MontoTasa) AS Importe, TasaCambio.MontoTasa, Productos.Unidad_Medida, Detalle_Facturas.CodTarea FROM Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa  " &
                                  "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND  (Detalle_Facturas.Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
 
-                End If
-            ElseIf MonedaFactura = "Dolares" Then
-                If MonedaImprime = "Dolares" Then
-                    '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
-                    SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Productos.Unidad_Medida,Detalle_Facturas.CodTarea FROM  Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto " & _
+            End If
+        ElseIf MonedaFactura = "Dolares" Then
+            If MonedaImprime = "Dolares" Then
+                '///////////////////////////////////////BUSCO EL DETALLE DE LA COMPRA///////////////////////////////////////////////////////
+                SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Productos.Unidad_Medida,Detalle_Facturas.CodTarea FROM  Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto " &
                         "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
-                ElseIf MonedaImprime = "Cordobas" Then
-                    SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad,Detalle_Facturas.Precio_Unitario * TasaCambio.MontoTasa AS Precio_Unitario, Detalle_Facturas.Descuento * TasaCambio.MontoTasa AS Descuento,Detalle_Facturas.Precio_Neto * TasaCambio.MontoTasa AS Precio_Neto, Detalle_Facturas.Importe * TasaCambio.MontoTasa AS Importe,TasaCambio.MontoTasa,Productos.Unidad_Medida, Detalle_Facturas.CodTarea FROM Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa " & _
+            ElseIf MonedaImprime = "Cordobas" Then
+                SQlDetalle = "SELECT Productos.Cod_Productos, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad,Detalle_Facturas.Precio_Unitario * TasaCambio.MontoTasa AS Precio_Unitario, Detalle_Facturas.Descuento * TasaCambio.MontoTasa AS Descuento,Detalle_Facturas.Precio_Neto * TasaCambio.MontoTasa AS Precio_Neto, Detalle_Facturas.Importe * TasaCambio.MontoTasa AS Importe,TasaCambio.MontoTasa,Productos.Unidad_Medida, Detalle_Facturas.CodTarea FROM Productos INNER JOIN Detalle_Facturas ON Productos.Cod_Productos = Detalle_Facturas.Cod_Producto INNER JOIN TasaCambio ON Detalle_Facturas.Fecha_Factura = TasaCambio.FechaTasa " &
                         "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME,'" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
 
-                End If
             End If
+        End If
 
 
-            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            '////////////////////////////////VERIFICO QUE TIPO DE IMPRESION ESTA CONFIGURADA/////////////////////////////////////////////////////////
-            '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////////////////////VERIFICO QUE TIPO DE IMPRESION ESTA CONFIGURADA/////////////////////////////////////////////////////////
+        '////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            NumeroFactura = Me.TxtNumeroEnsamble.Text
+        NumeroFactura = Me.TxtNumeroEnsamble.Text
 
-            Select Case Me.CboTipoProducto.Text
-                Case "Factura"
+        Select Case Me.CboTipoProducto.Text
+            Case "Factura"
 
-                    '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    '///////////////////////////////////SELECCIONO LA IMPRESORA CONFIGURADA PARA LAS FACTURAS /////////////
-                    '///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    Dim pd As New PrintDocument
-                    Dim ImpresoraFactura As String
-                    Dim s_Default_Printer As String = pd.PrinterSettings.PrinterName
+                '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                '///////////////////////////////////SELECCIONO LA IMPRESORA CONFIGURADA PARA LAS FACTURAS /////////////
+                '///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                Dim pd As New PrintDocument
+                Dim ImpresoraFactura As String
+                Dim s_Default_Printer As String = pd.PrinterSettings.PrinterName
 
-                    Impresora_Defecto = s_Default_Printer
-                    ImpresoraFactura = BuscaImpresora("Factura")
-                    Establecer_Impresora(ImpresoraFactura)
+                Impresora_Defecto = s_Default_Printer
+                ImpresoraFactura = BuscaImpresora("Factura")
+                Establecer_Impresora(ImpresoraFactura)
 
-                    TipoImpresion = Me.CboTipoProducto.Text
+                TipoImpresion = Me.CboTipoProducto.Text
 
-                    'If Me.CmbSerie.Visible = True Then
-                    '    TipoImpresion = Me.CboTipoProducto.Text & Me.CmbSerie.Text
-                    'Else
-                    '    TipoImpresion = Me.CboTipoProducto.Text
-                    'End If
+                'If Me.CmbSerie.Visible = True Then
+                '    TipoImpresion = Me.CboTipoProducto.Text & Me.CmbSerie.Text
+                'Else
+                '    TipoImpresion = Me.CboTipoProducto.Text
+                'End If
 
-                    SqlString = "SELECT  *  FROM Impresion WHERE (Impresion = '" & TipoImpresion & " ')"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-                    DataAdapter.Fill(DataSet, "Coordenadas")
-                    If Not DataSet.Tables("Coordenadas").Rows.Count = 0 Then
+                SqlString = "SELECT  *  FROM Impresion WHERE (Impresion = '" & TipoImpresion & " ')"
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                DataAdapter.Fill(DataSet, "Coordenadas")
+                If Not DataSet.Tables("Coordenadas").Rows.Count = 0 Then
 
-                        Select Case DataSet.Tables("Coordenadas").Rows(0)("Configuracion")
+                    Select Case DataSet.Tables("Coordenadas").Rows(0)("Configuracion")
 
-                            Case "Papel en Blanco MediaPagina"
+                        Case "Papel en Blanco MediaPagina"
 
-                                SqlDatos = "SELECT * FROM DatosEmpresa"
-                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                                DataAdapter.Fill(DataSet, "DatosEmpresa")
-                                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
-                                    ArepFacturaMediaPagina.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
-                                    ArepFacturaMediaPagina.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
-                                End If
+                            SqlDatos = "SELECT * FROM DatosEmpresa"
+                            DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                            DataAdapter.Fill(DataSet, "DatosEmpresa")
+                            If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                                ArepFacturaMediaPagina.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                ArepFacturaMediaPagina.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                            End If
 
-                                SQL.ConnectionString = Conexion
-                                SQL.SQL = SQlDetalle
-                                ArepFacturaMediaPagina.DataSource = SQL
-                                ArepFacturaMediaPagina.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+                            SQL.ConnectionString = Conexion
+                            SQL.SQL = SQlDetalle
+                            ArepFacturaMediaPagina.DataSource = SQL
+                            ArepFacturaMediaPagina.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
 
-                                Dim ViewerForm As New FrmViewer()
-                                ViewerForm.arvMain.Document = ArepFacturaMediaPagina.Document
+                            Dim ViewerForm As New FrmViewer()
+                            ViewerForm.arvMain.Document = ArepFacturaMediaPagina.Document
+                            ViewerForm.Show()
+
+                            If ImprimeFacturaPreview = True Then
                                 ViewerForm.Show()
+                                ArepFacturaMediaPagina.Run(True)
+                            Else
+                                ArepFacturaMediaPagina.Run(True)
+                                ViewerForm.arvMain.Document.Print(False, False, False)
+                            End If
+                        Case "Papel en Blanco, Lotes"
+                            SqlDatos = "SELECT * FROM DatosEmpresa"
+                            DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                            DataAdapter.Fill(DataSet, "DatosEmpresa")
+                            If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                                ArepFacturasTareas.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                ArepFacturasTareas.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                            End If
 
-                                If ImprimeFacturaPreview = True Then
-                                    ViewerForm.Show()
-                                    ArepFacturaMediaPagina.Run(True)
-                                Else
-                                    ArepFacturaMediaPagina.Run(True)
-                                    ViewerForm.arvMain.Document.Print(False, False, False)
-                                End If
-                            Case "Papel en Blanco, Lotes"
-                                SqlDatos = "SELECT * FROM DatosEmpresa"
-                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                                DataAdapter.Fill(DataSet, "DatosEmpresa")
-                                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
-                                    ArepFacturasTareas.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
-                                    ArepFacturasTareas.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
-                                End If
+                            SQL.ConnectionString = Conexion
+                            SQL.SQL = SQlDetalle
+                            ArepFacturasTareas.DataSource = SQL
+                            ArepFacturasTareas.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
 
-                                SQL.ConnectionString = Conexion
-                                SQL.SQL = SQlDetalle
-                                ArepFacturasTareas.DataSource = SQL
-                                ArepFacturasTareas.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+                            Dim ViewerForm As New FrmViewer()
+                            ViewerForm.arvMain.Document = ArepFacturasTareas.Document
+                            'ViewerForm.Show()
 
+                            If ImprimeFacturaPreview = True Then
+                                ViewerForm.Show()
+                                ArepFacturasTareas.Run(True)
+                            Else
+                                ArepFacturasTareas.Run(True)
+                                ViewerForm.arvMain.Document.Print(False, False, False)
+                            End If
+
+                        Case "Papel en Blanco, Sin Encabezado"
+                            SqlDatos = "SELECT * FROM DatosEmpresa"
+                            DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                            DataAdapter.Fill(DataSet, "DatosEmpresa")
+                            If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                                ArepFacturasTareas.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                ArepFacturasTareas.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                            End If
+
+                            SQL.ConnectionString = Conexion
+                            SQL.SQL = SQlDetalle
+                            ArepFacturas2.DataSource = SQL
+                            ArepFacturas2.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+                            ArepFacturas2.LblLetras.Text = Letras(CDbl(Me.TxtSubTotal.Text) + CDbl(Me.TxtIva.Text), Me.TxtMonedaFactura.Text)
+
+                            Dim ViewerForm As New FrmViewer()
+                            ViewerForm.arvMain.Document = ArepFacturas2.Document
+                            ViewerForm.Show()
+
+                            If ImprimeFacturaPreview = True Then
+                                ViewerForm.Show()
+                                ArepFacturas2.Run(True)
+                            Else
+                                ArepFacturas2.Run(True)
+                                ViewerForm.arvMain.Document.Print(False, False, False)
+                            End If
+
+                        Case "Tira de Papel"
+
+                            SqlDatos = "SELECT * FROM DatosEmpresa"
+                            DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                            DataAdapter.Fill(DataSet, "DatosEmpresa")
+                            If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                                ArepFacturasTiras.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                ArepFacturasTiras.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+
+                                ArepOrdenTrabajo.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                ArepOrdenTrabajo.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                            End If
+
+                            ArepFacturasTiras.TxtVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+                            ArepOrdenTrabajo.TxtVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+
+                            SQL.ConnectionString = Conexion
+                            SQL.SQL = SQlDetalle
+                            ArepFacturasTiras.DataSource = SQL
+                            ArepFacturasTiras.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+
+                            ArepOrdenTrabajo.DataSource = SQL
+                            ArepOrdenTrabajo.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+                            If MonedaImprime = "Cordobas" Then
+                                ArepFacturasTiras.Simbolo1.Text = "C$"
+                                ArepFacturasTiras.Simbolo2.Text = "C$"
+                                ArepFacturasTiras.Simbolo3.Text = "C$"
+                                ArepFacturasTiras.Simbolo4.Text = "C$"
+                                ArepFacturasTiras.Simbolo5.Text = "C$"
+
+                                ArepOrdenTrabajo.Simbolo1.Text = "C$"
+                                ArepOrdenTrabajo.Simbolo2.Text = "C$"
+                                ArepOrdenTrabajo.Simbolo3.Text = "C$"
+                                ArepOrdenTrabajo.Simbolo4.Text = "C$"
+                                ArepOrdenTrabajo.Simbolo5.Text = "C$"
+                            Else
+                                ArepFacturasTiras.Simbolo1.Text = "$"
+                                ArepFacturasTiras.Simbolo2.Text = "$"
+                                ArepFacturasTiras.Simbolo3.Text = "$"
+                                ArepFacturasTiras.Simbolo4.Text = "$"
+                                ArepFacturasTiras.Simbolo5.Text = "$"
+
+                                ArepOrdenTrabajo.Simbolo1.Text = "$"
+                                ArepOrdenTrabajo.Simbolo2.Text = "$"
+                                ArepOrdenTrabajo.Simbolo3.Text = "$"
+                                ArepOrdenTrabajo.Simbolo4.Text = "$"
+                                ArepOrdenTrabajo.Simbolo5.Text = "$"
+                            End If
+
+
+                            If Me.CboReferencia.Text = "Orden de Trabajo" Then
                                 Dim ViewerForm As New FrmViewer()
-                                ViewerForm.arvMain.Document = ArepFacturasTareas.Document
+                                ViewerForm.arvMain.Document = ArepOrdenTrabajo.Document
+
                                 'ViewerForm.Show()
-
+                                'ArepFacturasTiras.Run(True)
                                 If ImprimeFacturaPreview = True Then
                                     ViewerForm.Show()
-                                    ArepFacturasTareas.Run(True)
+                                    ArepOrdenTrabajo.Run(True)
                                 Else
-                                    ArepFacturasTareas.Run(True)
+                                    ArepOrdenTrabajo.Run(True)
                                     ViewerForm.arvMain.Document.Print(False, False, False)
                                 End If
 
-                            Case "Papel en Blanco, Sin Encabezado"
-                                SqlDatos = "SELECT * FROM DatosEmpresa"
-                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                                DataAdapter.Fill(DataSet, "DatosEmpresa")
-                                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
-                                    ArepFacturasTareas.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
-                                    ArepFacturasTareas.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
-                                End If
 
-                                SQL.ConnectionString = Conexion
-                                SQL.SQL = SQlDetalle
-                                ArepFacturas2.DataSource = SQL
-                                ArepFacturas2.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
-                                ArepFacturas2.LblLetras.Text = Letras(CDbl(Me.TxtSubTotal.Text) + CDbl(Me.TxtIva.Text), Me.TxtMonedaFactura.Text)
-
+                            Else
                                 Dim ViewerForm As New FrmViewer()
-                                ViewerForm.arvMain.Document = ArepFacturas2.Document
-                                ViewerForm.Show()
+                                ViewerForm.arvMain.Document = ArepFacturasTiras.Document
 
+                                'ViewerForm.Show()
+                                'ArepFacturasTiras.Run(True)
                                 If ImprimeFacturaPreview = True Then
                                     ViewerForm.Show()
-                                    ArepFacturas2.Run(True)
+                                    ArepFacturasTiras.Run(True)
                                 Else
-                                    ArepFacturas2.Run(True)
+                                    ArepFacturasTiras.Run(True)
                                     ViewerForm.arvMain.Document.Print(False, False, False)
                                 End If
-
-                            Case "Tira de Papel"
-
-                                SqlDatos = "SELECT * FROM DatosEmpresa"
-                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                                DataAdapter.Fill(DataSet, "DatosEmpresa")
-                                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
-                                    ArepFacturasTiras.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
-                                    ArepFacturasTiras.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
-
-                                    ArepOrdenTrabajo.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
-                                    ArepOrdenTrabajo.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
-                                End If
-
-                                ArepFacturasTiras.TxtVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
-                                ArepOrdenTrabajo.TxtVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
-
-                                SQL.ConnectionString = Conexion
-                                SQL.SQL = SQlDetalle
-                                ArepFacturasTiras.DataSource = SQL
-                                ArepFacturasTiras.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
-
-                                ArepOrdenTrabajo.DataSource = SQL
-                                ArepOrdenTrabajo.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
-                                If MonedaImprime = "Cordobas" Then
-                                    ArepFacturasTiras.Simbolo1.Text = "C$"
-                                    ArepFacturasTiras.Simbolo2.Text = "C$"
-                                    ArepFacturasTiras.Simbolo3.Text = "C$"
-                                    ArepFacturasTiras.Simbolo4.Text = "C$"
-                                    ArepFacturasTiras.Simbolo5.Text = "C$"
-
-                                    ArepOrdenTrabajo.Simbolo1.Text = "C$"
-                                    ArepOrdenTrabajo.Simbolo2.Text = "C$"
-                                    ArepOrdenTrabajo.Simbolo3.Text = "C$"
-                                    ArepOrdenTrabajo.Simbolo4.Text = "C$"
-                                    ArepOrdenTrabajo.Simbolo5.Text = "C$"
-                                Else
-                                    ArepFacturasTiras.Simbolo1.Text = "$"
-                                    ArepFacturasTiras.Simbolo2.Text = "$"
-                                    ArepFacturasTiras.Simbolo3.Text = "$"
-                                    ArepFacturasTiras.Simbolo4.Text = "$"
-                                    ArepFacturasTiras.Simbolo5.Text = "$"
-
-                                    ArepOrdenTrabajo.Simbolo1.Text = "$"
-                                    ArepOrdenTrabajo.Simbolo2.Text = "$"
-                                    ArepOrdenTrabajo.Simbolo3.Text = "$"
-                                    ArepOrdenTrabajo.Simbolo4.Text = "$"
-                                    ArepOrdenTrabajo.Simbolo5.Text = "$"
-                                End If
-
-
-                                If Me.CboReferencia.Text = "Orden de Trabajo" Then
-                                    Dim ViewerForm As New FrmViewer()
-                                    ViewerForm.arvMain.Document = ArepOrdenTrabajo.Document
-
-                                    'ViewerForm.Show()
-                                    'ArepFacturasTiras.Run(True)
-                                    If ImprimeFacturaPreview = True Then
-                                        ViewerForm.Show()
-                                        ArepOrdenTrabajo.Run(True)
-                                    Else
-                                        ArepOrdenTrabajo.Run(True)
-                                        ViewerForm.arvMain.Document.Print(False, False, False)
-                                    End If
-
-
-                                Else
-                                    Dim ViewerForm As New FrmViewer()
-                                    ViewerForm.arvMain.Document = ArepFacturasTiras.Document
-
-                                    'ViewerForm.Show()
-                                    'ArepFacturasTiras.Run(True)
-                                    If ImprimeFacturaPreview = True Then
-                                        ViewerForm.Show()
-                                        ArepFacturasTiras.Run(True)
-                                    Else
-                                        ArepFacturasTiras.Run(True)
-                                        ViewerForm.arvMain.Document.Print(False, False, False)
-                                    End If
-                                End If
+                            End If
 
 
 
                                 'ArepFacturas.Run(False)
                                 'ArepFacturas.Show()
-                            Case "Papel en Blanco"
+                        Case "Papel en Blanco"
 
-                                SqlDatos = "SELECT * FROM DatosEmpresa"
-                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                                DataAdapter.Fill(DataSet, "DatosEmpresa")
-                                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
-                                    ArepFacturas.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
-                                    ArepFacturas.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
-                                End If
+                            SqlDatos = "SELECT * FROM DatosEmpresa"
+                            DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                            DataAdapter.Fill(DataSet, "DatosEmpresa")
+                            If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                                ArepFacturas.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                ArepFacturas.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                            End If
 
-                                SQL.ConnectionString = Conexion
-                                SQL.SQL = SQlDetalle
-                                ArepFacturas.DataSource = SQL
-                                ArepFacturas.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+                            SQL.ConnectionString = Conexion
+                            SQL.SQL = SQlDetalle
+                            ArepFacturas.DataSource = SQL
+                            ArepFacturas.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
 
-                                Dim ViewerForm As New FrmViewer()
-                                ViewerForm.arvMain.Document = ArepFacturas.Document
+                            Dim ViewerForm As New FrmViewer()
+                            ViewerForm.arvMain.Document = ArepFacturas.Document
+                            ViewerForm.Show()
+
+                            If ImprimeFacturaPreview = True Then
                                 ViewerForm.Show()
+                                ArepFacturas.Run(True)
+                            Else
+                                ArepFacturas.Run(True)
+                                ViewerForm.arvMain.Document.Print(False, False, False)
+                            End If
 
-                                If ImprimeFacturaPreview = True Then
-                                    ViewerForm.Show()
-                                    ArepFacturas.Run(True)
-                                Else
-                                    ArepFacturas.Run(True)
-                                    ViewerForm.arvMain.Document.Print(False, False, False)
-                                End If
+                        Case "Personalizado"
 
-                            Case "Personalizado"
+                            SqlDatos = "SELECT * FROM DatosEmpresa"
+                            DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                            DataAdapter.Fill(DataSet, "DatosEmpresa")
+                            If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                                ArepFacturas.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                ArepFacturas.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                            End If
 
-                                SqlDatos = "SELECT * FROM DatosEmpresa"
-                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                                DataAdapter.Fill(DataSet, "DatosEmpresa")
-                                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
-                                    ArepFacturas.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
-                                    ArepFacturas.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
-                                End If
+                            SQL.ConnectionString = Conexion
+                            SQL.SQL = SQlDetalle
+                            ArepFacturas.DataSource = SQL
+                            ArepFacturas.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
 
-                                SQL.ConnectionString = Conexion
-                                SQL.SQL = SQlDetalle
-                                ArepFacturas.DataSource = SQL
-                                ArepFacturas.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+                            Dim ViewerForm As New FrmViewer()
+                            ViewerForm.arvMain.Document = ArepFacturas.Document
+                            ViewerForm.Show()
 
-                                Dim ViewerForm As New FrmViewer()
-                                ViewerForm.arvMain.Document = ArepFacturas.Document
+                            If ImprimeFacturaPreview = True Then
                                 ViewerForm.Show()
+                                ArepFacturas.Run(True)
+                            Else
+                                ArepFacturas.Run(True)
+                                ViewerForm.arvMain.Document.Print(False, False, False)
+                            End If
 
-                                If ImprimeFacturaPreview = True Then
-                                    ViewerForm.Show()
-                                    ArepFacturas.Run(True)
+                            'TipoImpresion = Me.CboTipoProducto.Text
+
+
+                            'Dim StrSQLUpdate As String
+                            'Dim RutaReportes As String, StrSQLAccess As String = "SELECT * FROM Usuarios " 'WHERE (((Usuarios.TipoImpresion)='Factura'))
+                            'RutaBD = My.Application.Info.DirectoryPath & "\TrueDbGridFr.dll"
+                            'ConexionAccess = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source= " & RutaBD & " "
+
+                            'Dim MiConexionAccess As New OleDb.OleDbConnection(ConexionAccess), ComandoUpdateAccess As New OleDb.OleDbCommand
+                            'Dim DataAdapterAccess As New OleDb.OleDbDataAdapter(StrSQLAccess, MiConexionAccess)
+                            'Dim DatasetDatos As New DataSet
+
+
+                            'MiConexionAccess.Open()
+                            'DataAdapterAccess.Fill(DatasetDatos, "Usuarios")
+
+
+                            'StrSQLUpdate = "UPDATE Usuarios SET [TipoImpresion] = '" & TipoImpresion & "',[NumeroImpresion] = '" & Me.TxtNumeroEnsamble.Text & "' "
+                            'ComandoUpdateAccess = New OleDb.OleDbCommand(StrSQLUpdate, MiConexionAccess)
+                            'iResultado = ComandoUpdateAccess.ExecuteNonQuery
+                            'MiConexionAccess.Close()
+
+                            ''///////////////////////////CON ESTE ARCHIVO SE CAMBIA LA CONEXION PARA IMPRIMIR /////////////////////////
+                            'EscribirArchivo()
+
+                            'RutaReportes = My.Application.Info.DirectoryPath & "\Imprime.exe"
+                            'If Dir(RutaReportes) <> "" Then
+                            '    Shell(RutaReportes)
+                            'End If
+
+                    End Select
+                End If
+
+            Case "Cotizacion"
+                TipoImpresion = Me.CboTipoProducto.Text
+                SqlString = "SELECT  *  FROM Impresion WHERE (Impresion = '" & TipoImpresion & " ')"
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                DataAdapter.Fill(DataSet, "Coordenadas")
+                If Not DataSet.Tables("Coordenadas").Rows.Count = 0 Then
+                    Select Case DataSet.Tables("Coordenadas").Rows(0)("Configuracion")
+                        Case "Papel en Blanco Membrete"
+                            Dim ArepCotizacionesMembretes As New ArepCotizacionesMembretes
+                            SqlDatos = "SELECT * FROM DatosEmpresa"
+                            DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                            DataAdapter.Fill(DataSet, "DatosEmpresa")
+                            If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")) Then
+                                    ImprimeFacturaPreview = DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")
                                 Else
-                                    ArepFacturas.Run(True)
-                                    ViewerForm.arvMain.Document.Print(False, False, False)
+                                    ImprimeFacturaPreview = False
                                 End If
 
-                                'TipoImpresion = Me.CboTipoProducto.Text
+                                ArepCotizacionesMembretes.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                ArepCotizacionesMembretes.LblNombrePie.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                ArepCotizacionesMembretes.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                                ArepCotizacionesMembretes.LblCorreo.Text = EmailVendedor(Me.CboCodigoVendedor.Columns(0).Text)
+                                ArepCotizacionesMembretes.LblTelefonoVendedor.Text = TelefonoVendedor(Me.CboCodigoVendedor.Columns(0).Text)
+                                ArepCotizacionesMembretes.LblMoneda.Text = Me.TxtMonedaImprime.Text
+                                ArepCotizacionesMembretes.LblLetras.Text = Letras(Me.TxtNetoPagar.Text, Me.TxtMonedaFactura.Text)
 
+                                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")) Then
+                                    ArepCotizacionesMembretes.LblRuc.Text = "Numero RUC: " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
+                                End If
 
-                                'Dim StrSQLUpdate As String
-                                'Dim RutaReportes As String, StrSQLAccess As String = "SELECT * FROM Usuarios " 'WHERE (((Usuarios.TipoImpresion)='Factura'))
-                                'RutaBD = My.Application.Info.DirectoryPath & "\TrueDbGridFr.dll"
-                                'ConexionAccess = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source= " & RutaBD & " "
+                                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")) Then
+                                    ArepCotizacionesMembretes.LblTelefonos.Text = "Telefono: " & DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")
+                                End If
 
-                                'Dim MiConexionAccess As New OleDb.OleDbConnection(ConexionAccess), ComandoUpdateAccess As New OleDb.OleDbCommand
-                                'Dim DataAdapterAccess As New OleDb.OleDbDataAdapter(StrSQLAccess, MiConexionAccess)
-                                'Dim DatasetDatos As New DataSet
-
-
-                                'MiConexionAccess.Open()
-                                'DataAdapterAccess.Fill(DatasetDatos, "Usuarios")
-
-
-                                'StrSQLUpdate = "UPDATE Usuarios SET [TipoImpresion] = '" & TipoImpresion & "',[NumeroImpresion] = '" & Me.TxtNumeroEnsamble.Text & "' "
-                                'ComandoUpdateAccess = New OleDb.OleDbCommand(StrSQLUpdate, MiConexionAccess)
-                                'iResultado = ComandoUpdateAccess.ExecuteNonQuery
-                                'MiConexionAccess.Close()
-
-                                ''///////////////////////////CON ESTE ARCHIVO SE CAMBIA LA CONEXION PARA IMPRIMIR /////////////////////////
-                                'EscribirArchivo()
-
-                                'RutaReportes = My.Application.Info.DirectoryPath & "\Imprime.exe"
-                                'If Dir(RutaReportes) <> "" Then
-                                '    Shell(RutaReportes)
-                                'End If
-
-                        End Select
-                    End If
-
-                Case "Cotizacion"
-                    TipoImpresion = Me.CboTipoProducto.Text
-                    SqlString = "SELECT  *  FROM Impresion WHERE (Impresion = '" & TipoImpresion & " ')"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-                    DataAdapter.Fill(DataSet, "Coordenadas")
-                    If Not DataSet.Tables("Coordenadas").Rows.Count = 0 Then
-                        Select Case DataSet.Tables("Coordenadas").Rows(0)("Configuracion")
-                            Case "Papel en Blanco Membrete"
-                                Dim ArepCotizacionesMembretes As New ArepCotizacionesMembretes
-                                SqlDatos = "SELECT * FROM DatosEmpresa"
-                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                                DataAdapter.Fill(DataSet, "DatosEmpresa")
-                                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
-                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")) Then
-                                        ImprimeFacturaPreview = DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")
-                                    Else
-                                        ImprimeFacturaPreview = False
-                                    End If
-
-                                    ArepCotizacionesMembretes.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
-                                    ArepCotizacionesMembretes.LblNombrePie.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
-                                    ArepCotizacionesMembretes.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
-                                    ArepCotizacionesMembretes.LblCorreo.Text = EmailVendedor(Me.CboCodigoVendedor.Columns(0).Text)
-                                    ArepCotizacionesMembretes.LblTelefonoVendedor.Text = TelefonoVendedor(Me.CboCodigoVendedor.Columns(0).Text)
-                                    ArepCotizacionesMembretes.LblMoneda.Text = Me.TxtMonedaImprime.Text
-                                    ArepCotizacionesMembretes.LblLetras.Text = Letras(Me.TxtNetoPagar.Text, Me.TxtMonedaFactura.Text)
-
-                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")) Then
-                                        ArepCotizacionesMembretes.LblRuc.Text = "Numero RUC: " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
-                                    End If
-
-                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")) Then
-                                        ArepCotizacionesMembretes.LblTelefonos.Text = "Telefono: " & DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")
-                                    End If
-
-                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
-                                        RutaLogo = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
-                                        If Dir(RutaLogo) <> "" Then
-                                            ArepCotizaciones.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                                        End If
+                                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
+                                    RutaLogo = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
+                                    If Dir(RutaLogo) <> "" Then
+                                        ArepCotizaciones.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
                                     End If
                                 End If
-                                ''//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                ArepCotizacionesMembretes.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
-                                ArepCotizacionesMembretes.LblNotas.Text = Me.TxtObservaciones.Text
-                                ArepCotizacionesMembretes.LblOrden.Text = Me.TxtNumeroEnsamble.Text
-                                ArepCotizacionesMembretes.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
-                                ArepCotizacionesMembretes.LblNombres.Text = Me.TxtNombres.Text
-                                ArepCotizacionesMembretes.LblDireccionProveedor.Text = Me.TxtDireccion.Text
-                                ArepCotizacionesMembretes.LblTelefono.Text = Me.TxtTelefono.Text
-                                ArepCotizacionesMembretes.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
+                            End If
+                            ''//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                            ArepCotizacionesMembretes.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+                            ArepCotizacionesMembretes.LblNotas.Text = Me.TxtObservaciones.Text
+                            ArepCotizacionesMembretes.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+                            ArepCotizacionesMembretes.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+                            ArepCotizacionesMembretes.LblNombres.Text = Me.TxtNombres.Text
+                            ArepCotizacionesMembretes.LblDireccionProveedor.Text = Me.TxtDireccion.Text
+                            ArepCotizacionesMembretes.LblTelefono.Text = Me.TxtTelefono.Text
+                            ArepCotizacionesMembretes.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
 
-                                If Val(Me.TxtSubTotal.Text) <> 0 Then
-                                    ArepCotizacionesMembretes.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+                            If Val(Me.TxtSubTotal.Text) <> 0 Then
+                                ArepCotizacionesMembretes.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+                            Else
+                                ArepCotizacionesMembretes.LblSubTotal.Text = "0.00"
+                            End If
+                            If Val(Me.TxtIva.Text) <> 0 Then
+                                ArepCotizacionesMembretes.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+                            Else
+                                ArepCotizacionesMembretes.LblIva.Text = "0.00"
+                            End If
+                            If Val(Me.TxtNetoPagar.Text) <> 0 Then
+                                ArepCotizacionesMembretes.LblTotal.Text = Format((CDbl(Me.TxtSubTotal.Text) + CDbl(Me.TxtIva.Text)) * TasaCambio, "##,##0.00")
+                            Else
+                                ArepCotizacionesMembretes.LblTotal.Text = "0.00"
+                            End If
+
+                            SQL.ConnectionString = Conexion
+                            SQL.SQL = SQlDetalle
+                            ArepCotizacionesMembretes.DataSource = SQL
+                            ArepCotizacionesMembretes.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+
+                            Dim ViewerForm As New FrmViewer()
+                            ViewerForm.arvMain.Document = ArepCotizacionesMembretes.Document
+                            ViewerForm.Show()
+                            ArepCotizacionesMembretes.Run(True)
+
+                        Case "Papel en Blanco"
+                            SqlDatos = "SELECT * FROM DatosEmpresa"
+                            DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                            DataAdapter.Fill(DataSet, "DatosEmpresa")
+                            If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")) Then
+                                    ImprimeFacturaPreview = DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")
                                 Else
-                                    ArepCotizacionesMembretes.LblSubTotal.Text = "0.00"
-                                End If
-                                If Val(Me.TxtIva.Text) <> 0 Then
-                                    ArepCotizacionesMembretes.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
-                                Else
-                                    ArepCotizacionesMembretes.LblIva.Text = "0.00"
-                                End If
-                                If Val(Me.TxtNetoPagar.Text) <> 0 Then
-                                    ArepCotizacionesMembretes.LblTotal.Text = Format((CDbl(Me.TxtSubTotal.Text) + CDbl(Me.TxtIva.Text)) * TasaCambio, "##,##0.00")
-                                Else
-                                    ArepCotizacionesMembretes.LblTotal.Text = "0.00"
+                                    ImprimeFacturaPreview = False
                                 End If
 
-                                SQL.ConnectionString = Conexion
-                                SQL.SQL = SQlDetalle
-                                ArepCotizacionesMembretes.DataSource = SQL
-                                ArepCotizacionesMembretes.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+                                ArepCotizaciones.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                ArepCotizaciones.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                                ArepCotizaciones.LblCorreo.Text = EmailVendedor(Me.CboCodigoVendedor.Columns(0).Text)
+                                ArepCotizaciones.LblTelefonoVendedor.Text = TelefonoVendedor(Me.CboCodigoVendedor.Columns(0).Text)
+                                ArepCotizaciones.LblMoneda.Text = Me.TxtMonedaImprime.Text
+                                ArepCotizaciones.LblLetras.Text = Letras(Me.TxtNetoPagar.Text, Me.TxtMonedaFactura.Text)
 
-                                Dim ViewerForm As New FrmViewer()
-                                ViewerForm.arvMain.Document = ArepCotizacionesMembretes.Document
-                                ViewerForm.Show()
-                                ArepCotizacionesMembretes.Run(True)
-
-                            Case "Papel en Blanco"
-                                SqlDatos = "SELECT * FROM DatosEmpresa"
-                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                                DataAdapter.Fill(DataSet, "DatosEmpresa")
-                                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
-                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")) Then
-                                        ImprimeFacturaPreview = DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")
-                                    Else
-                                        ImprimeFacturaPreview = False
-                                    End If
-
-                                    ArepCotizaciones.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
-                                    ArepCotizaciones.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
-                                    ArepCotizaciones.LblCorreo.Text = EmailVendedor(Me.CboCodigoVendedor.Columns(0).Text)
-                                    ArepCotizaciones.LblTelefonoVendedor.Text = TelefonoVendedor(Me.CboCodigoVendedor.Columns(0).Text)
-                                    ArepCotizaciones.LblMoneda.Text = Me.TxtMonedaImprime.Text
-                                    ArepCotizaciones.LblLetras.Text = Letras(Me.TxtNetoPagar.Text, Me.TxtMonedaFactura.Text)
-
-                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")) Then
-                                        ArepCotizaciones.LblRuc.Text = "Numero RUC: " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
-                                    End If
-
-                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")) Then
-                                        ArepCotizaciones.LblTelefonos.Text = "Telefono: " & DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")
-                                    End If
-
-                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
-                                        RutaLogo = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
-                                        If Dir(RutaLogo) <> "" Then
-                                            ArepCotizaciones.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                                        End If
-                                    End If
-                                End If
-                                ''//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                ArepCotizaciones.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
-                                ArepCotizaciones.LblNotas.Text = Me.TxtObservaciones.Text
-                                ArepCotizaciones.LblOrden.Text = Me.TxtNumeroEnsamble.Text
-                                ArepCotizaciones.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
-                                ArepCotizaciones.LblNombres.Text = Me.TxtNombres.Text
-                                ArepCotizaciones.LblDireccionProveedor.Text = Me.TxtDireccion.Text
-                                ArepCotizaciones.LblTelefono.Text = Me.TxtTelefono.Text
-                                ArepCotizaciones.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
-
-                                If Val(Me.TxtSubTotal.Text) <> 0 Then
-                                    ArepCotizaciones.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
-                                Else
-                                    ArepCotizaciones.LblSubTotal.Text = "0.00"
-                                End If
-                                If Val(Me.TxtIva.Text) <> 0 Then
-                                    ArepCotizaciones.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
-                                Else
-                                    ArepCotizaciones.LblIva.Text = "0.00"
-                                End If
-                                If Val(Me.TxtNetoPagar.Text) <> 0 Then
-                                    ArepCotizaciones.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
-                                Else
-                                    ArepCotizaciones.LblTotal.Text = "0.00"
+                                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")) Then
+                                    ArepCotizaciones.LblRuc.Text = "Numero RUC: " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
                                 End If
 
-                                SQL.ConnectionString = Conexion
-                                SQL.SQL = SQlDetalle
-                                ArepCotizaciones.DataSource = SQL
-                                ArepCotizaciones.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+                                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")) Then
+                                    ArepCotizaciones.LblTelefonos.Text = "Telefono: " & DataSet.Tables("DatosEmpresa").Rows(0)("Telefono")
+                                End If
 
-                                Dim ViewerForm As New FrmViewer()
-                                ViewerForm.arvMain.Document = ArepCotizaciones.Document
-                                ViewerForm.Show()
-                                ArepCotizaciones.Run(True)
-                            Case "Cotizacion con Fotos"
-                                SqlDatos = "SELECT * FROM DatosEmpresa"
-                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                                DataAdapter.Fill(DataSet, "DatosEmpresa")
-                                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
-
-                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")) Then
-                                        ImprimeFacturaPreview = DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")
-                                    Else
-                                        ImprimeFacturaPreview = False
-                                    End If
-
-                                    ArepCotizacionFoto.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
-                                    ArepCotizacionFoto.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
-
-                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")) Then
-                                        ArepCotizacionFoto.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
-                                    End If
-                                    If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
-                                        RutaLogo = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
-                                        If Dir(RutaLogo) <> "" Then
-                                            ArepCotizacionFoto.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
-                                        End If
-
+                                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
+                                    RutaLogo = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
+                                    If Dir(RutaLogo) <> "" Then
+                                        ArepCotizaciones.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
                                     End If
                                 End If
-                                '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                ArepCotizacionFoto.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
-                                ArepCotizacionFoto.Label1.Text = "Cliente"
-                                ArepCotizacionFoto.LblNotas.Text = Me.TxtObservaciones.Text
-                                ArepCotizacionFoto.LblOrden.Text = Me.TxtNumeroEnsamble.Text
-                                ArepCotizacionFoto.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
-                                ArepCotizacionFoto.LblTipoCompra.Text = Me.CboTipoProducto.Text
-                                ArepCotizacionFoto.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
-                                ArepCotizacionFoto.LblNombres.Text = Me.TxtNombres.Text
-                                ArepCotizacionFoto.LblApellidos.Text = Me.TxtApellidos.Text
-                                ArepCotizacionFoto.LblDireccionProveedor.Text = Me.TxtDireccion.Text
-                                ArepCotizacionFoto.LblTelefono.Text = Me.TxtTelefono.Text
-                                ArepCotizacionFoto.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
-                                ArepCotizacionFoto.LblBodegas.Text = Me.CboCodigoBodega.Columns(0).Text + " " + Me.CboCodigoBodega.Columns(1).Text
+                            End If
+                            ''//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                            ArepCotizaciones.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+                            ArepCotizaciones.LblNotas.Text = Me.TxtObservaciones.Text
+                            ArepCotizaciones.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+                            ArepCotizaciones.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+                            ArepCotizaciones.LblNombres.Text = Me.TxtNombres.Text
+                            ArepCotizaciones.LblDireccionProveedor.Text = Me.TxtDireccion.Text
+                            ArepCotizaciones.LblTelefono.Text = Me.TxtTelefono.Text
+                            ArepCotizaciones.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
 
-                                If Val(Me.TxtSubTotal.Text) <> 0 Then
-                                    ArepCotizacionFoto.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+                            If Val(Me.TxtSubTotal.Text) <> 0 Then
+                                ArepCotizaciones.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+                            Else
+                                ArepCotizaciones.LblSubTotal.Text = "0.00"
+                            End If
+                            If Val(Me.TxtIva.Text) <> 0 Then
+                                ArepCotizaciones.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+                            Else
+                                ArepCotizaciones.LblIva.Text = "0.00"
+                            End If
+                            If Val(Me.TxtNetoPagar.Text) <> 0 Then
+                                ArepCotizaciones.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+                            Else
+                                ArepCotizaciones.LblTotal.Text = "0.00"
+                            End If
+
+                            SQL.ConnectionString = Conexion
+                            SQL.SQL = SQlDetalle
+                            ArepCotizaciones.DataSource = SQL
+                            ArepCotizaciones.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+
+                            Dim ViewerForm As New FrmViewer()
+                            ViewerForm.arvMain.Document = ArepCotizaciones.Document
+                            ViewerForm.Show()
+                            ArepCotizaciones.Run(True)
+                        Case "Cotizacion con Fotos"
+                            SqlDatos = "SELECT * FROM DatosEmpresa"
+                            DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                            DataAdapter.Fill(DataSet, "DatosEmpresa")
+                            If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+
+                                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")) Then
+                                    ImprimeFacturaPreview = DataSet.Tables("DatosEmpresa").Rows(0)("ImprimirSinPreview")
                                 Else
-                                    ArepCotizacionFoto.LblSubTotal.Text = "0.00"
-                                End If
-                                If Val(Me.TxtIva.Text) <> 0 Then
-                                    ArepCotizacionFoto.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
-                                Else
-                                    ArepCotizacionFoto.LblIva.Text = "0.00"
-                                End If
-                                If Val(Me.TxtPagado.Text) <> 0 Then
-                                    ArepCotizacionFoto.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
-                                Else
-                                    ArepCotizacionFoto.LblPagado.Text = "0.00"
-                                End If
-                                If Val(Me.TxtNetoPagar.Text) <> 0 Then
-                                    ArepCotizacionFoto.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
-                                Else
-                                    ArepCotizacionFoto.LblTotal.Text = "0.00"
-                                End If
-                                If Val(Me.TxtDescuento.Text) <> 0 Then
-                                    ArepCotizacionFoto.LblDescuento.Text = Format(CDbl(Me.TxtDescuento.Text) * TasaCambio, "##,##0.00")
-                                Else
-                                    ArepCotizacionFoto.LblDescuento.Text = "0.00"
+                                    ImprimeFacturaPreview = False
                                 End If
 
-                                SQL.ConnectionString = Conexion
-                                SQL.SQL = SQlDetalle
-                                ArepCotizacionFoto.DataSource = SQL
-                                ArepCotizacionFoto.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
-                                ArepCotizacionFoto.TxtMetodo.Visible = False
+                                ArepCotizacionFoto.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                ArepCotizacionFoto.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
 
-                                Dim ViewerForm As New FrmViewer()
-                                ViewerForm.arvMain.Document = ArepCotizacionFoto.Document
-                                ViewerForm.Show()
-                                ArepCotizacionFoto.Run(True)
-
-
-                        End Select
-                    End If
-
-                Case "Salida Bodega"
-
-                    TipoImpresion = Me.CboTipoProducto.Text
-
-                    SqlString = "SELECT  *  FROM Impresion WHERE (Impresion = '" & TipoImpresion & " ')"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-                    DataAdapter.Fill(DataSet, "Coordenadas")
-                    If Not DataSet.Tables("Coordenadas").Rows.Count = 0 Then
-                        Select Case DataSet.Tables("Coordenadas").Rows(0)("Configuracion")
-                            Case "Papel en Blanco"
-                                SqlDatos = "SELECT * FROM DatosEmpresa"
-                                DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
-                                DataAdapter.Fill(DataSet, "DatosEmpresa")
-                                If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
-                                    ArepSalidaBodega.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
-                                    ArepSalidaBodega.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")) Then
+                                    ArepCotizacionFoto.LblRuc.Text = "Numero RUC " & DataSet.Tables("DatosEmpresa").Rows(0)("Numero_Ruc")
                                 End If
+                                If Not IsDBNull(DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")) Then
+                                    RutaLogo = DataSet.Tables("DatosEmpresa").Rows(0)("Ruta_Logo")
+                                    If Dir(RutaLogo) <> "" Then
+                                        ArepCotizacionFoto.ImgLogo.Image = New System.Drawing.Bitmap(RutaLogo)
+                                    End If
 
-                                ArepSalidaBodega.LblNotas.Text = Me.TxtObservaciones.Text
-                                ArepSalidaBodega.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
-
-
-                                SqlString = "SELECT  *  FROM Impresion WHERE (Impresion = '" & TipoImpresion & " ')"
-                                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
-                                DataAdapter.Fill(DataSet, "Coordenadas")
-                                Ancho = DataSet.Tables("Coordenadas").Rows(0)("Ancho")
-                                Largo = DataSet.Tables("Coordenadas").Rows(0)("Largo")
-
-                                SQL.ConnectionString = Conexion
-                                SQL.SQL = SQlDetalle
-                                ArepSalidaBodega.DataSource = SQL
-                                ArepSalidaBodega.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
-                                'ArepSalidaBodega.PageSettings.PaperWidth = Str(Ancho)
-                                'ArepSalidaBodega.PageSettings.PaperHeight = Largo
-                                'ArepSalidaBodega.PageSettings.PaperKind = System.Drawing.Printing.PaperKind.Custom
-
-                                Dim ViewerForm As New FrmViewer()
-                                ViewerForm.arvMain.Document = ArepSalidaBodega.Document
-                                ViewerForm.Show()
-                                ArepSalidaBodega.Run(False)
-
-                            Case "Personalizado"
-
-                                If ConsecutivoFacturaSerie = False Then
-                                    TipoImpresion = Me.CboTipoProducto.Text
-                                Else
-                                    TipoImpresion = Me.CboTipoProducto.Text & Me.CmbSerie.Text
                                 End If
+                            End If
+                            '/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                            ArepCotizacionFoto.LblVendedor.Text = Me.CboCodigoVendedor.Columns(1).Text
+                            ArepCotizacionFoto.Label1.Text = "Cliente"
+                            ArepCotizacionFoto.LblNotas.Text = Me.TxtObservaciones.Text
+                            ArepCotizacionFoto.LblOrden.Text = Me.TxtNumeroEnsamble.Text
+                            ArepCotizacionFoto.LblFechaOrden.Text = Format(Me.DTPFecha.Value, "dd/MM/yyyy")
+                            ArepCotizacionFoto.LblTipoCompra.Text = Me.CboTipoProducto.Text
+                            ArepCotizacionFoto.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
+                            ArepCotizacionFoto.LblNombres.Text = Me.TxtNombres.Text
+                            ArepCotizacionFoto.LblApellidos.Text = Me.TxtApellidos.Text
+                            ArepCotizacionFoto.LblDireccionProveedor.Text = Me.TxtDireccion.Text
+                            ArepCotizacionFoto.LblTelefono.Text = Me.TxtTelefono.Text
+                            ArepCotizacionFoto.LblFechaVence.Text = Format(Me.DTVencimiento.Value, "dd/MM/yyyy")
+                            ArepCotizacionFoto.LblBodegas.Text = Me.CboCodigoBodega.Columns(0).Text + " " + Me.CboCodigoBodega.Columns(1).Text
 
-                                Dim StrSQLUpdate As String
-                                Dim RutaReportes As String, StrSQLAccess As String = "SELECT * FROM Usuarios " 'WHERE (((Usuarios.TipoImpresion)='Factura'))
-                                RutaBD = My.Application.Info.DirectoryPath & "\TrueDbGridFr.dll"
-                                ConexionAccess = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source= " & RutaBD & " "
+                            If Val(Me.TxtSubTotal.Text) <> 0 Then
+                                ArepCotizacionFoto.LblSubTotal.Text = Format(CDbl(Me.TxtSubTotal.Text) * TasaCambio, "##,##0.00")
+                            Else
+                                ArepCotizacionFoto.LblSubTotal.Text = "0.00"
+                            End If
+                            If Val(Me.TxtIva.Text) <> 0 Then
+                                ArepCotizacionFoto.LblIva.Text = Format(CDbl(Me.TxtIva.Text) * TasaCambio, "##,##0.00")
+                            Else
+                                ArepCotizacionFoto.LblIva.Text = "0.00"
+                            End If
+                            If Val(Me.TxtPagado.Text) <> 0 Then
+                                ArepCotizacionFoto.LblPagado.Text = Format(CDbl(Me.TxtPagado.Text) * TasaCambio, "##,##0.00")
+                            Else
+                                ArepCotizacionFoto.LblPagado.Text = "0.00"
+                            End If
+                            If Val(Me.TxtNetoPagar.Text) <> 0 Then
+                                ArepCotizacionFoto.LblTotal.Text = Format(CDbl(Me.TxtNetoPagar.Text) * TasaCambio, "##,##0.00")
+                            Else
+                                ArepCotizacionFoto.LblTotal.Text = "0.00"
+                            End If
+                            If Val(Me.TxtDescuento.Text) <> 0 Then
+                                ArepCotizacionFoto.LblDescuento.Text = Format(CDbl(Me.TxtDescuento.Text) * TasaCambio, "##,##0.00")
+                            Else
+                                ArepCotizacionFoto.LblDescuento.Text = "0.00"
+                            End If
 
-                                Dim MiConexionAccess As New OleDb.OleDbConnection(ConexionAccess), ComandoUpdateAccess As New OleDb.OleDbCommand
-                                Dim DataAdapterAccess As New OleDb.OleDbDataAdapter(StrSQLAccess, MiConexionAccess)
-                                Dim DatasetDatos As New DataSet
+                            SQL.ConnectionString = Conexion
+                            SQL.SQL = SQlDetalle
+                            ArepCotizacionFoto.DataSource = SQL
+                            ArepCotizacionFoto.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+                            ArepCotizacionFoto.TxtMetodo.Visible = False
 
-
-                                MiConexionAccess.Open()
-                                DataAdapterAccess.Fill(DatasetDatos, "Usuarios")
-
-
-                                StrSQLUpdate = "UPDATE Usuarios SET [TipoImpresion] = '" & TipoImpresion & "',[NumeroImpresion] = '" & NumeroFactura & "' "
-                                ComandoUpdateAccess = New OleDb.OleDbCommand(StrSQLUpdate, MiConexionAccess)
-                                iResultado = ComandoUpdateAccess.ExecuteNonQuery
-                                MiConexionAccess.Close()
-
-                                '///////////////////////////CON ESTE ARCHIVO SE CAMBIA LA CONEXION PARA IMPRIMIR /////////////////////////
-                                EscribirArchivo()
-
-                                RutaReportes = My.Application.Info.DirectoryPath & "\Imprime.exe"
-                                If Dir(RutaReportes) <> "" Then
-                                    Shell(RutaReportes)
-                                End If
-                        End Select
-                    End If
-
-                Case Else
-                    SQL.ConnectionString = Conexion
-                    SQL.SQL = SQlDetalle
-                    ArepFacturas.DataSource = SQL
-                    ArepFacturas.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
-                    Dim ViewerForm As New FrmViewer()
-                    ViewerForm.arvMain.Document = ArepFacturas.Document
-                    ViewerForm.Show()
-                    ArepFacturas.Run(False)
-                    'ArepFacturas.Run(False)
-                    'ArepFacturas.Show()
-            End Select
-
-
-            '//////////////////////////////////////////////////////////////////////////////////////////////
-            '////////////////////////////EDITO EL ENCABEZADO DE LA FACTURA///////////////////////////////////
-            '/////////////////////////////////////////////////////////////////////////////////////////////////
-            If Me.CboTipoProducto.Text <> "Cotizacion" Then
-                'SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'False' " & _
-                '             "WHERE  (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
-                'MiConexion.Open()
-                'ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
-                'iResultado = ComandoUpdate.ExecuteNonQuery
-                'MiConexion.Close()
-            End If
-
-            Bitacora(Now, NombreUsuario, Me.CboTipoProducto.Text, "Imprimio la Factura Previo: " & Me.TxtNumeroEnsamble.Text)
-
-            LimpiarFacturas()
-
-            If NombreCliente = "Alumnos" Then
-                Me.Label12.Visible = False
-                Me.CboCodigoVendedor.Visible = False
-            End If
-
-            If UsuarioBodega <> "Ninguna" Then
-                Me.CboCodigoBodega.Text = UsuarioBodega
-                Me.CboCodigoBodega.Enabled = False
-                Me.Button7.Enabled = False
-            End If
-
-            If UsuarioTipoFactura <> "Ninguna" Then
-                Me.CboTipoProducto.Text = UsuarioTipoFactura
-            End If
-
-            If UsuarioVendedor <> "Ninguna" Then
-                Me.CboCodigoVendedor.Text = UsuarioVendedor
-            End If
-
-            If UsuarioCliente <> "Ninguna" Then
-                Me.TxtCodigoClientes.Text = UsuarioCliente
-            End If
+                            Dim ViewerForm As New FrmViewer()
+                            ViewerForm.arvMain.Document = ArepCotizacionFoto.Document
+                            ViewerForm.Show()
+                            ArepCotizacionFoto.Run(True)
 
 
-            Me.Button2.Enabled = True
+                    End Select
+                End If
 
-            'CmdCerrar_Click(sender, e)
+            Case "Salida Bodega"
 
-            SalirFactura = True
+                TipoImpresion = Me.CboTipoProducto.Text
+
+                SqlString = "SELECT  *  FROM Impresion WHERE (Impresion = '" & TipoImpresion & " ')"
+                DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                DataAdapter.Fill(DataSet, "Coordenadas")
+                If Not DataSet.Tables("Coordenadas").Rows.Count = 0 Then
+                    Select Case DataSet.Tables("Coordenadas").Rows(0)("Configuracion")
+                        Case "Papel en Blanco"
+                            SqlDatos = "SELECT * FROM DatosEmpresa"
+                            DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
+                            DataAdapter.Fill(DataSet, "DatosEmpresa")
+                            If Not DataSet.Tables("DatosEmpresa").Rows.Count = 0 Then
+                                ArepSalidaBodega.LblDireccion.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Direccion_Empresa")
+                                ArepSalidaBodega.LblEncabezado.Text = DataSet.Tables("DatosEmpresa").Rows(0)("Nombre_Empresa")
+                            End If
+
+                            ArepSalidaBodega.LblNotas.Text = Me.TxtObservaciones.Text
+                            ArepSalidaBodega.LblCodProveedor.Text = Me.TxtCodigoClientes.Text
+
+
+                            SqlString = "SELECT  *  FROM Impresion WHERE (Impresion = '" & TipoImpresion & " ')"
+                            DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
+                            DataAdapter.Fill(DataSet, "Coordenadas")
+                            Ancho = DataSet.Tables("Coordenadas").Rows(0)("Ancho")
+                            Largo = DataSet.Tables("Coordenadas").Rows(0)("Largo")
+
+                            SQL.ConnectionString = Conexion
+                            SQL.SQL = SQlDetalle
+                            ArepSalidaBodega.DataSource = SQL
+                            ArepSalidaBodega.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+                            'ArepSalidaBodega.PageSettings.PaperWidth = Str(Ancho)
+                            'ArepSalidaBodega.PageSettings.PaperHeight = Largo
+                            'ArepSalidaBodega.PageSettings.PaperKind = System.Drawing.Printing.PaperKind.Custom
+
+                            Dim ViewerForm As New FrmViewer()
+                            ViewerForm.arvMain.Document = ArepSalidaBodega.Document
+                            ViewerForm.Show()
+                            ArepSalidaBodega.Run(False)
+
+                        Case "Personalizado"
+
+                            If ConsecutivoFacturaSerie = False Then
+                                TipoImpresion = Me.CboTipoProducto.Text
+                            Else
+                                TipoImpresion = Me.CboTipoProducto.Text & Me.CmbSerie.Text
+                            End If
+
+                            Dim StrSQLUpdate As String
+                            Dim RutaReportes As String, StrSQLAccess As String = "SELECT * FROM Usuarios " 'WHERE (((Usuarios.TipoImpresion)='Factura'))
+                            RutaBD = My.Application.Info.DirectoryPath & "\TrueDbGridFr.dll"
+                            ConexionAccess = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source= " & RutaBD & " "
+
+                            Dim MiConexionAccess As New OleDb.OleDbConnection(ConexionAccess), ComandoUpdateAccess As New OleDb.OleDbCommand
+                            Dim DataAdapterAccess As New OleDb.OleDbDataAdapter(StrSQLAccess, MiConexionAccess)
+                            Dim DatasetDatos As New DataSet
+
+
+                            MiConexionAccess.Open()
+                            DataAdapterAccess.Fill(DatasetDatos, "Usuarios")
+
+
+                            StrSQLUpdate = "UPDATE Usuarios SET [TipoImpresion] = '" & TipoImpresion & "',[NumeroImpresion] = '" & NumeroFactura & "' "
+                            ComandoUpdateAccess = New OleDb.OleDbCommand(StrSQLUpdate, MiConexionAccess)
+                            iResultado = ComandoUpdateAccess.ExecuteNonQuery
+                            MiConexionAccess.Close()
+
+                            '///////////////////////////CON ESTE ARCHIVO SE CAMBIA LA CONEXION PARA IMPRIMIR /////////////////////////
+                            EscribirArchivo()
+
+                            RutaReportes = My.Application.Info.DirectoryPath & "\Imprime.exe"
+                            If Dir(RutaReportes) <> "" Then
+                                Shell(RutaReportes)
+                            End If
+                    End Select
+                End If
+
+            Case Else
+                SQL.ConnectionString = Conexion
+                SQL.SQL = SQlDetalle
+                ArepFacturas.DataSource = SQL
+                ArepFacturas.Document.Name = "Reporte de " & Me.CboTipoProducto.Text
+                Dim ViewerForm As New FrmViewer()
+                ViewerForm.arvMain.Document = ArepFacturas.Document
+                ViewerForm.Show()
+                ArepFacturas.Run(False)
+                'ArepFacturas.Run(False)
+                'ArepFacturas.Show()
+        End Select
+
+
+        '//////////////////////////////////////////////////////////////////////////////////////////////
+        '////////////////////////////EDITO EL ENCABEZADO DE LA FACTURA///////////////////////////////////
+        '/////////////////////////////////////////////////////////////////////////////////////////////////
+        If Me.CboTipoProducto.Text <> "Cotizacion" Then
+            'SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'False' " & _
+            '             "WHERE  (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
+            'MiConexion.Open()
+            'ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
+            'iResultado = ComandoUpdate.ExecuteNonQuery
+            'MiConexion.Close()
+        End If
+
+        Bitacora(Now, NombreUsuario, Me.CboTipoProducto.Text, "Imprimio la Factura Previo: " & Me.TxtNumeroEnsamble.Text)
+
+        LimpiarFacturas()
+
+        If NombreCliente = "Alumnos" Then
+            Me.Label12.Visible = False
+            Me.CboCodigoVendedor.Visible = False
+        End If
+
+        If UsuarioBodega <> "Ninguna" Then
+            Me.CboCodigoBodega.Text = UsuarioBodega
+            Me.CboCodigoBodega.Enabled = False
+            Me.Button7.Enabled = False
+        End If
+
+        If UsuarioTipoFactura <> "Ninguna" Then
+            Me.CboTipoProducto.Text = UsuarioTipoFactura
+        End If
+
+        If UsuarioVendedor <> "Ninguna" Then
+            Me.CboCodigoVendedor.Text = UsuarioVendedor
+        End If
+
+        If UsuarioCliente <> "Ninguna" Then
+            Me.TxtCodigoClientes.Text = UsuarioCliente
+        End If
+
+
+        Me.Button2.Enabled = True
+
+        'CmdCerrar_Click(sender, e)
+
+        SalirFactura = True
 
 
         'Catch ex As Exception
@@ -15307,7 +15643,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         '//////////////////////////////////////////////////////////////////////////////////////////////
         '////////////////////////////EDITO EL ENCABEZADO DE LA FACTURA///////////////////////////////////
         '/////////////////////////////////////////////////////////////////////////////////////////////////
-        SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'False' " & _
+        SqlCompras = "UPDATE [Facturas]  SET [Activo] = 'False' " &
                      "WHERE  (Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Tipo_Factura = '" & Me.CboTipoProducto.Text & "')"
         MiConexion.Open()
         ComandoUpdate = New SqlClient.SqlCommand(SqlCompras, MiConexion)
@@ -15535,7 +15871,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
         Bitacora(Now, NombreUsuario, "Facturacion", "Se Genero una Salida: " & Me.TxtNumeroEnsamble.Text)
 
         '///////////////////////////////////////BUSCO EL DETALLE DE LA FACTURA///////////////////////////////////////////////////////
-        SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario, Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM  Detalle_Facturas  " & _
+        SqlCompras = "SELECT Detalle_Facturas.Cod_Producto, Detalle_Facturas.Descripcion_Producto, Detalle_Facturas.Cantidad, Detalle_Facturas.Precio_Unitario,Detalle_Facturas.Descuento, Detalle_Facturas.Precio_Neto, Detalle_Facturas.Importe, Detalle_Facturas.id_Detalle_Factura,Detalle_Facturas.Costo_Unitario, Detalle_Facturas.Numero_Factura,Detalle_Facturas.Fecha_Factura,Detalle_Facturas.Tipo_Factura FROM  Detalle_Facturas  " &
             "WHERE (Detalle_Facturas.Numero_Factura = '" & Me.TxtNumeroEnsamble.Text & "') AND (Detalle_Facturas.Fecha_Factura = CONVERT(DATETIME, '" & Fecha & "', 102)) AND (Detalle_Facturas.Tipo_Factura = '" & TipoFactura & "')"
         'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
         'DataAdapter.Fill(DataSet, "DetalleFacturas")

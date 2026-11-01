@@ -88,6 +88,8 @@ Partial Class FrmFacturas
         Me.CmdFacturar = New System.Windows.Forms.Button()
         Me.CboCajero = New C1.Win.C1List.C1Combo()
         Me.LblCajero = New System.Windows.Forms.Label()
+        Me.BtnPagos = New System.Windows.Forms.Button()
+        Me.LblResumenPago = New System.Windows.Forms.Label()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.TxtMonedaImprime = New System.Windows.Forms.ComboBox()
         Me.C1Button1 = New C1.Win.C1Input.C1Button()
@@ -949,6 +951,24 @@ Partial Class FrmFacturas
         Me.LblCajero.Text = "Cajero"
         Me.LblCajero.Visible = False
         '
+        'BtnPagos
+        '
+        Me.BtnPagos.Location = New System.Drawing.Point(487, 212)
+        Me.BtnPagos.Name = "BtnPagos"
+        Me.BtnPagos.Size = New System.Drawing.Size(220, 26)
+        Me.BtnPagos.TabIndex = 197
+        Me.BtnPagos.Text = "Pagos de contado..."
+        Me.BtnPagos.UseVisualStyleBackColor = True
+        Me.BtnPagos.Visible = False
+        '
+        'LblResumenPago
+        '
+        Me.LblResumenPago.Location = New System.Drawing.Point(490, 238)
+        Me.LblResumenPago.Name = "LblResumenPago"
+        Me.LblResumenPago.Size = New System.Drawing.Size(220, 51)
+        Me.LblResumenPago.TabIndex = 198
+        Me.LblResumenPago.Visible = False
+        '
         'Button3
         '
         Me.Button3.Image = CType(resources.GetObject("Button3.Image"), System.Drawing.Image)
@@ -1232,6 +1252,8 @@ Partial Class FrmFacturas
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.CboCajero)
         Me.Controls.Add(Me.LblCajero)
+        Me.Controls.Add(Me.BtnPagos)
+        Me.Controls.Add(Me.LblResumenPago)
         Me.Controls.Add(Me.CboCodigoVendedor)
         Me.Controls.Add(Me.Label12)
         Me.Controls.Add(Me.CboCodigoBodega2)
@@ -1346,6 +1368,8 @@ Partial Class FrmFacturas
     Friend WithEvents CmdFacturar As System.Windows.Forms.Button
     Friend WithEvents CboCajero As C1.Win.C1List.C1Combo
     Friend WithEvents LblCajero As System.Windows.Forms.Label
+    Friend WithEvents BtnPagos As System.Windows.Forms.Button
+    Friend WithEvents LblResumenPago As System.Windows.Forms.Label
     Friend WithEvents Label13 As System.Windows.Forms.Label
     Friend WithEvents OptExsonerado As System.Windows.Forms.CheckBox
     Friend WithEvents Label14 As System.Windows.Forms.Label

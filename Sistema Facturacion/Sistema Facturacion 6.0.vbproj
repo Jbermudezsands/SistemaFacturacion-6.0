@@ -123,11 +123,22 @@
     <Compile Include="Clases\Consultas\CxC_Repositorio.vb" />
     <Compile Include="Clases\Consultas\CxC_Resultado.vb" />
     <Compile Include="Clases\Consultas\CxC_Servicio.vb" />
+    <Compile Include="Clases\Consultas\CxP_Modelos.vb" />
+    <Compile Include="Clases\Consultas\CxP_Motor.vb" />
+    <Compile Include="Clases\Consultas\CxP_Presentacion.vb" />
+    <Compile Include="Clases\Consultas\CxP_Repositorio.vb" />
+    <Compile Include="Clases\Consultas\CxP_Resultado.vb" />
+    <Compile Include="Clases\Consultas\CxP_Servicio.vb" />
     <Compile Include="Clases\Consultas\PlanillaPlanPagoService.vb" />
     <Compile Include="Clases\Consultas\PlanPagoReciboService.vb" />
     <Compile Include="Clases\Consultas\ReporteLotesVencimientoService.vb" />
     <Compile Include="Clases\Consultas\ServicioRecibos.vb" />
     <Compile Include="Clases\Consultas\TipoPrestamoService.vb" />
+    <Compile Include="Clases\Arqueo\ArqueoCalculadora.vb" />
+    <Compile Include="Clases\Arqueo\ArqueoImpresion.vb" />
+    <Compile Include="Clases\Arqueo\ArqueoModelos.vb" />
+    <Compile Include="Clases\Arqueo\ArqueoRepositorio.vb" />
+    <Compile Include="Clases\Arqueo\ArqueoServicio.vb" />
     <Compile Include="Clases\Tablas\AplicacionPlanPendiente.vb" />
     <Compile Include="Clases\Tablas\DatosReciboPlanilla.vb" />
     <Compile Include="Clases\Tablas\DatosReciboPlanPago.vb" />
@@ -140,6 +151,13 @@
     <Compile Include="Clases\Consultas\ResultadoSaldoInicialKardex.vb" />
     <Compile Include="Clases\Consultas\RstCmbReporteExistenciaLote.vb" />
     <Compile Include="Clases\Consultas\RstCostoPromedio.vb" />
+    <Compile Include="Clases\Costos\MovimientoCosto.vb" />
+    <Compile Include="Clases\Costos\ResultadoCosteo.vb" />
+    <Compile Include="Clases\Costos\RepositorioMovimientos.vb" />
+    <Compile Include="Clases\Costos\CalculadorCostoPromedio.vb" />
+    <Compile Include="Clases\Costos\ComparadorCostos.vb" />
+    <Compile Include="Clases\Costos\ReparadorCostos.vb" />
+    <Compile Include="Clases\Costos\MotorCostos.vb" />
     <Compile Include="Clases\Consultas\CsCatalogos.vb" />
     <Compile Include="Clases\Tablas\Beneficiario.vb" />
     <Compile Include="Clases\Tablas\FacturaPlanPagoRecibo.vb" />
@@ -186,6 +204,12 @@
     <Compile Include="Formularios\FrmDesembolsos.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formularios\FrmPagoContado.Designer.vb">
+      <DependentUpon>FrmPagoContado.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FrmPagoContado.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\FrmFinanciamiento.Designer.vb">
       <DependentUpon>FrmFinanciamiento.vb</DependentUpon>
     </Compile>
@@ -212,6 +236,9 @@
     </Compile>
     <Compile Include="Formularios\FrmPlanPago.Designer.vb">
       <DependentUpon>FrmPlanPago.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FrmComparadorCostos.vb">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formularios\FrmPlanPago.vb">
       <SubType>Form</SubType>
@@ -841,7 +868,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modulos\Conversion.vb" />
-    <Compile Include="Modulos\MotorCostos.vb" />
     <Compile Include="Reportes\ArepAdmision.Designer.vb">
       <DependentUpon>ArepAdmision.vb</DependentUpon>
     </Compile>
@@ -1896,6 +1922,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\FrmDesembolsos.resx">
       <DependentUpon>FrmDesembolsos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FrmPagoContado.resx">
+      <DependentUpon>FrmPagoContado.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\FrmFinanciamiento.resx">
       <DependentUpon>FrmFinanciamiento.vb</DependentUpon>
