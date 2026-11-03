@@ -1163,6 +1163,9 @@ Sistema Facturacion 6.0
  están en ArqueoServicio, ArqueoCalculadora y ArqueoRepositorio (carpeta Clases\Arqueo).
  </summary>
 </member>
+<member name="M:Sistema_Facturacion.FrmArqueo.PedirFondoApertura(System.Decimal@)">
+ <summary>Pide al usuario el fondo de apertura de caja con el que inicia el arqueo. Devuelve False si cancela.</summary>
+</member>
 <member name="M:Sistema_Facturacion.FrmArqueo.GridEfectivo_AfterColUpdate(System.Object,C1.Win.C1TrueDBGrid.ColEventArgs)">
  <summary>Al digitar la cantidad de una denominación se recalcula el monto del renglón y los totales.</summary>
 </member>

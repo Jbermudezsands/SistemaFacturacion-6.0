@@ -37,6 +37,7 @@ Public NotInheritable Class ArqueoImpresion
         reporte.LblTotalChequeCordobas.Text = Formatear(resumen.ChequesCordobas)
         reporte.LblTotalChequeDolares.Text = Formatear(resumen.ChequesDolares)
         reporte.LbltotalCordobasDolares.Text = Formatear(resumen.TotalContado)
+        reporte.LblFondoApertura.Text = Formatear(resumen.FondoApertura)
         reporte.LblMontoRecibidos.Text = Formatear(resumen.TotalEsperado)
         reporte.LblDiferencia.Text = Formatear(resumen.Diferencia)
         reporte.LblObservaciones.Text = cab.Observaciones

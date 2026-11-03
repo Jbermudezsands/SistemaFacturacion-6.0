@@ -147,8 +147,6 @@ Partial Class FrmArqueo
         Me.PnlDatos.Controls.Add(Me.BtnBuscar)
         Me.PnlDatos.Controls.Add(Me.TxtNumeroArqueo)
         Me.PnlDatos.Controls.Add(Me.LblNumero)
-        Me.PnlDatos.Controls.Add(Me.TxtFondoApertura)
-        Me.PnlDatos.Controls.Add(Me.LblFondo)
         Me.PnlDatos.Controls.Add(Me.DTFecha)
         Me.PnlDatos.Controls.Add(Me.LblFecha)
         Me.PnlDatos.Controls.Add(Me.CboCajero)
@@ -201,20 +199,23 @@ Partial Class FrmArqueo
         '
         Me.LblFondo.AutoSize = True
         Me.LblFondo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
-        Me.LblFondo.Location = New System.Drawing.Point(478, 12)
+        Me.LblFondo.Location = New System.Drawing.Point(16, 129)
         Me.LblFondo.Name = "LblFondo"
         Me.LblFondo.Size = New System.Drawing.Size(99, 15)
         Me.LblFondo.TabIndex = 4
-        Me.LblFondo.Text = "Fondo apertura C$"
+        Me.LblFondo.Text = "Fondo Apertura C$"
         '
         'TxtFondoApertura
         '
         Me.TxtFondoApertura.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TxtFondoApertura.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtFondoApertura.Location = New System.Drawing.Point(478, 34)
+        Me.TxtFondoApertura.BackColor = System.Drawing.Color.FromArgb(CType(CType(245, Byte), Integer), CType(CType(247, Byte), Integer), CType(CType(250, Byte), Integer))
+        Me.TxtFondoApertura.Location = New System.Drawing.Point(372, 126)
         Me.TxtFondoApertura.Name = "TxtFondoApertura"
-        Me.TxtFondoApertura.Size = New System.Drawing.Size(120, 23)
-        Me.TxtFondoApertura.TabIndex = 5
+        Me.TxtFondoApertura.ReadOnly = True
+        Me.TxtFondoApertura.Size = New System.Drawing.Size(144, 23)
+        Me.TxtFondoApertura.TabIndex = 13
+        Me.TxtFondoApertura.TabStop = False
         Me.TxtFondoApertura.Text = "0.00"
         Me.TxtFondoApertura.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
@@ -222,7 +223,7 @@ Partial Class FrmArqueo
         '
         Me.LblNumero.AutoSize = True
         Me.LblNumero.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
-        Me.LblNumero.Location = New System.Drawing.Point(614, 12)
+        Me.LblNumero.Location = New System.Drawing.Point(478, 12)
         Me.LblNumero.Name = "LblNumero"
         Me.LblNumero.Size = New System.Drawing.Size(66, 15)
         Me.LblNumero.TabIndex = 6
@@ -232,7 +233,7 @@ Partial Class FrmArqueo
         '
         Me.TxtNumeroArqueo.BackColor = System.Drawing.Color.FromArgb(CType(CType(245, Byte), Integer), CType(CType(247, Byte), Integer), CType(CType(250, Byte), Integer))
         Me.TxtNumeroArqueo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TxtNumeroArqueo.Location = New System.Drawing.Point(614, 34)
+        Me.TxtNumeroArqueo.Location = New System.Drawing.Point(478, 34)
         Me.TxtNumeroArqueo.Name = "TxtNumeroArqueo"
         Me.TxtNumeroArqueo.ReadOnly = True
         Me.TxtNumeroArqueo.Size = New System.Drawing.Size(90, 23)
@@ -248,7 +249,7 @@ Partial Class FrmArqueo
         Me.BtnBuscar.FlatAppearance.BorderSize = 0
         Me.BtnBuscar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(215, Byte), Integer), CType(CType(225, Byte), Integer), CType(CType(238, Byte), Integer))
         Me.BtnBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.BtnBuscar.Location = New System.Drawing.Point(710, 33)
+        Me.BtnBuscar.Location = New System.Drawing.Point(574, 33)
         Me.BtnBuscar.Name = "BtnBuscar"
         Me.BtnBuscar.Size = New System.Drawing.Size(34, 25)
         Me.BtnBuscar.TabIndex = 8
@@ -265,7 +266,7 @@ Partial Class FrmArqueo
         Me.BtnIniciar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.BtnIniciar.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnIniciar.ForeColor = System.Drawing.Color.White
-        Me.BtnIniciar.Location = New System.Drawing.Point(768, 28)
+        Me.BtnIniciar.Location = New System.Drawing.Point(632, 28)
         Me.BtnIniciar.Name = "BtnIniciar"
         Me.BtnIniciar.Size = New System.Drawing.Size(130, 36)
         Me.BtnIniciar.TabIndex = 9
@@ -506,6 +507,8 @@ Partial Class FrmArqueo
         Me.PnlResumen.Controls.Add(Me.LblDiferencia)
         Me.PnlResumen.Controls.Add(Me.TxtValorFacturas)
         Me.PnlResumen.Controls.Add(Me.LblTotalEsperado)
+        Me.PnlResumen.Controls.Add(Me.TxtFondoApertura)
+        Me.PnlResumen.Controls.Add(Me.LblFondo)
         Me.PnlResumen.Controls.Add(Me.TxtCordobasDolares)
         Me.PnlResumen.Controls.Add(Me.LblTotalContado)
         Me.PnlResumen.Controls.Add(Me.TxtTasaCambio)
@@ -517,7 +520,7 @@ Partial Class FrmArqueo
         Me.PnlResumen.Controls.Add(Me.LblTituloResumen)
         Me.PnlResumen.Location = New System.Drawing.Point(544, 398)
         Me.PnlResumen.Name = "PnlResumen"
-        Me.PnlResumen.Size = New System.Drawing.Size(540, 190)
+        Me.PnlResumen.Size = New System.Drawing.Size(540, 200)
         Me.PnlResumen.TabIndex = 15
         '
         'LblTituloResumen
@@ -535,7 +538,7 @@ Partial Class FrmArqueo
         '
         Me.LblEsperadoCordobas.AutoSize = True
         Me.LblEsperadoCordobas.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
-        Me.LblEsperadoCordobas.Location = New System.Drawing.Point(16, 41)
+        Me.LblEsperadoCordobas.Location = New System.Drawing.Point(16, 37)
         Me.LblEsperadoCordobas.Name = "LblEsperadoCordobas"
         Me.LblEsperadoCordobas.Size = New System.Drawing.Size(240, 15)
         Me.LblEsperadoCordobas.TabIndex = 1
@@ -545,7 +548,7 @@ Partial Class FrmArqueo
         '
         Me.TxtSumaFacturaCordobas.BackColor = System.Drawing.Color.FromArgb(CType(CType(245, Byte), Integer), CType(CType(247, Byte), Integer), CType(CType(250, Byte), Integer))
         Me.TxtSumaFacturaCordobas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TxtSumaFacturaCordobas.Location = New System.Drawing.Point(372, 38)
+        Me.TxtSumaFacturaCordobas.Location = New System.Drawing.Point(372, 34)
         Me.TxtSumaFacturaCordobas.Name = "TxtSumaFacturaCordobas"
         Me.TxtSumaFacturaCordobas.ReadOnly = True
         Me.TxtSumaFacturaCordobas.Size = New System.Drawing.Size(144, 23)
@@ -558,7 +561,7 @@ Partial Class FrmArqueo
         '
         Me.LblEsperadoDolares.AutoSize = True
         Me.LblEsperadoDolares.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
-        Me.LblEsperadoDolares.Location = New System.Drawing.Point(16, 66)
+        Me.LblEsperadoDolares.Location = New System.Drawing.Point(16, 60)
         Me.LblEsperadoDolares.Name = "LblEsperadoDolares"
         Me.LblEsperadoDolares.Size = New System.Drawing.Size(246, 15)
         Me.LblEsperadoDolares.TabIndex = 3
@@ -568,7 +571,7 @@ Partial Class FrmArqueo
         '
         Me.TxtSumaFacturaDolares.BackColor = System.Drawing.Color.FromArgb(CType(CType(245, Byte), Integer), CType(CType(247, Byte), Integer), CType(CType(250, Byte), Integer))
         Me.TxtSumaFacturaDolares.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TxtSumaFacturaDolares.Location = New System.Drawing.Point(372, 63)
+        Me.TxtSumaFacturaDolares.Location = New System.Drawing.Point(372, 57)
         Me.TxtSumaFacturaDolares.Name = "TxtSumaFacturaDolares"
         Me.TxtSumaFacturaDolares.ReadOnly = True
         Me.TxtSumaFacturaDolares.Size = New System.Drawing.Size(144, 23)
@@ -581,7 +584,7 @@ Partial Class FrmArqueo
         '
         Me.LblTasa.AutoSize = True
         Me.LblTasa.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
-        Me.LblTasa.Location = New System.Drawing.Point(16, 91)
+        Me.LblTasa.Location = New System.Drawing.Point(16, 83)
         Me.LblTasa.Name = "LblTasa"
         Me.LblTasa.Size = New System.Drawing.Size(130, 15)
         Me.LblTasa.TabIndex = 5
@@ -591,7 +594,7 @@ Partial Class FrmArqueo
         '
         Me.TxtTasaCambio.BackColor = System.Drawing.Color.FromArgb(CType(CType(245, Byte), Integer), CType(CType(247, Byte), Integer), CType(CType(250, Byte), Integer))
         Me.TxtTasaCambio.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TxtTasaCambio.Location = New System.Drawing.Point(372, 88)
+        Me.TxtTasaCambio.Location = New System.Drawing.Point(372, 80)
         Me.TxtTasaCambio.Name = "TxtTasaCambio"
         Me.TxtTasaCambio.ReadOnly = True
         Me.TxtTasaCambio.Size = New System.Drawing.Size(144, 23)
@@ -604,7 +607,7 @@ Partial Class FrmArqueo
         '
         Me.LblTotalContado.AutoSize = True
         Me.LblTotalContado.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
-        Me.LblTotalContado.Location = New System.Drawing.Point(16, 116)
+        Me.LblTotalContado.Location = New System.Drawing.Point(16, 106)
         Me.LblTotalContado.Name = "LblTotalContado"
         Me.LblTotalContado.Size = New System.Drawing.Size(224, 15)
         Me.LblTotalContado.TabIndex = 7
@@ -615,7 +618,7 @@ Partial Class FrmArqueo
         Me.TxtCordobasDolares.BackColor = System.Drawing.Color.FromArgb(CType(CType(245, Byte), Integer), CType(CType(247, Byte), Integer), CType(CType(250, Byte), Integer))
         Me.TxtCordobasDolares.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TxtCordobasDolares.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtCordobasDolares.Location = New System.Drawing.Point(372, 113)
+        Me.TxtCordobasDolares.Location = New System.Drawing.Point(372, 103)
         Me.TxtCordobasDolares.Name = "TxtCordobasDolares"
         Me.TxtCordobasDolares.ReadOnly = True
         Me.TxtCordobasDolares.Size = New System.Drawing.Size(144, 23)
@@ -628,7 +631,7 @@ Partial Class FrmArqueo
         '
         Me.LblTotalEsperado.AutoSize = True
         Me.LblTotalEsperado.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
-        Me.LblTotalEsperado.Location = New System.Drawing.Point(16, 141)
+        Me.LblTotalEsperado.Location = New System.Drawing.Point(16, 152)
         Me.LblTotalEsperado.Name = "LblTotalEsperado"
         Me.LblTotalEsperado.Size = New System.Drawing.Size(207, 15)
         Me.LblTotalEsperado.TabIndex = 9
@@ -639,7 +642,7 @@ Partial Class FrmArqueo
         Me.TxtValorFacturas.BackColor = System.Drawing.Color.FromArgb(CType(CType(245, Byte), Integer), CType(CType(247, Byte), Integer), CType(CType(250, Byte), Integer))
         Me.TxtValorFacturas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TxtValorFacturas.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtValorFacturas.Location = New System.Drawing.Point(372, 138)
+        Me.TxtValorFacturas.Location = New System.Drawing.Point(372, 149)
         Me.TxtValorFacturas.Name = "TxtValorFacturas"
         Me.TxtValorFacturas.ReadOnly = True
         Me.TxtValorFacturas.Size = New System.Drawing.Size(144, 23)
@@ -653,7 +656,7 @@ Partial Class FrmArqueo
         Me.LblDiferencia.AutoSize = True
         Me.LblDiferencia.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblDiferencia.ForeColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
-        Me.LblDiferencia.Location = New System.Drawing.Point(16, 166)
+        Me.LblDiferencia.Location = New System.Drawing.Point(16, 176)
         Me.LblDiferencia.Name = "LblDiferencia"
         Me.LblDiferencia.Size = New System.Drawing.Size(220, 15)
         Me.LblDiferencia.TabIndex = 11
@@ -664,7 +667,7 @@ Partial Class FrmArqueo
         Me.TxtDiferencia.BackColor = System.Drawing.Color.FromArgb(CType(CType(245, Byte), Integer), CType(CType(247, Byte), Integer), CType(CType(250, Byte), Integer))
         Me.TxtDiferencia.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TxtDiferencia.Font = New System.Drawing.Font("Segoe UI Semibold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtDiferencia.Location = New System.Drawing.Point(372, 163)
+        Me.TxtDiferencia.Location = New System.Drawing.Point(372, 172)
         Me.TxtDiferencia.Name = "TxtDiferencia"
         Me.TxtDiferencia.ReadOnly = True
         Me.TxtDiferencia.Size = New System.Drawing.Size(144, 25)

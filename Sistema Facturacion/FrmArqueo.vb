@@ -70,19 +70,15 @@ Public Class FrmArqueo
     '=================================================================================================
 
     Private Sub BtnIniciar_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnIniciar.Click
-        Dim fondo As Decimal
-        If Not LeerMonto(TxtFondoApertura.Text, fondo) Then
-            Aviso("El fondo de apertura no es un número válido.")
-            TxtFondoApertura.Focus()
-            Return
-        End If
-
         Dim codCajero As String = Convert.ToString(CboCajero.SelectedValue)
         If String.IsNullOrWhiteSpace(codCajero) Then
             Aviso("Seleccione un cajero.")
             CboCajero.Focus()
             Return
         End If
+
+        Dim fondo As Decimal
+        If Not PedirFondoApertura(fondo) Then Return
 
         Try
             Cursor = Cursors.WaitCursor
@@ -165,12 +161,64 @@ Public Class FrmArqueo
         Close()
     End Sub
 
-    Private Sub TxtFondoApertura_Leave(ByVal sender As Object, ByVal e As EventArgs) Handles TxtFondoApertura.Leave
-        Dim fondo As Decimal
-        If LeerMonto(TxtFondoApertura.Text, fondo) Then
-            TxtFondoApertura.Text = fondo.ToString("N2")
-        End If
-    End Sub
+    ''' <summary>Pide al usuario el fondo de apertura de caja con el que inicia el arqueo. Devuelve False si cancela.</summary>
+    Private Function PedirFondoApertura(ByRef fondo As Decimal) As Boolean
+        Using dlg As New Form()
+            dlg.Text = Titulo
+            dlg.FormBorderStyle = FormBorderStyle.FixedDialog
+            dlg.StartPosition = FormStartPosition.CenterParent
+            dlg.MaximizeBox = False
+            dlg.MinimizeBox = False
+            dlg.ShowInTaskbar = False
+            dlg.ClientSize = New Size(320, 130)
+
+            Dim lbl As New Label()
+            lbl.Text = "Fondo de apertura de caja (C$):"
+            lbl.AutoSize = True
+            lbl.Location = New Point(16, 16)
+
+            Dim txt As New TextBox()
+            txt.Text = "0.00"
+            txt.TextAlign = HorizontalAlignment.Right
+            txt.Location = New Point(16, 40)
+            txt.Size = New Size(288, 23)
+
+            Dim btnAceptar As New Button()
+            btnAceptar.Text = "Aceptar"
+            btnAceptar.Location = New Point(132, 88)
+            btnAceptar.Size = New Size(84, 28)
+            btnAceptar.DialogResult = DialogResult.None
+
+            Dim btnCancelar As New Button()
+            btnCancelar.Text = "Cancelar"
+            btnCancelar.Location = New Point(220, 88)
+            btnCancelar.Size = New Size(84, 28)
+            btnCancelar.DialogResult = DialogResult.Cancel
+
+            dlg.Controls.AddRange(New Control() {lbl, txt, btnAceptar, btnCancelar})
+            dlg.AcceptButton = btnAceptar
+            dlg.CancelButton = btnCancelar
+
+            Dim valor As Decimal
+            AddHandler btnAceptar.Click,
+                Sub(s As Object, ev As EventArgs)
+                    If LeerMonto(txt.Text, valor) Then
+                        dlg.DialogResult = DialogResult.OK
+                    Else
+                        Aviso("El fondo de apertura no es un número válido.")
+                        txt.Focus()
+                        txt.SelectAll()
+                    End If
+                End Sub
+
+            dlg.ActiveControl = txt
+            txt.SelectAll()
+
+            If dlg.ShowDialog(Me) <> DialogResult.OK Then Return False
+            fondo = valor
+            Return True
+        End Using
+    End Function
 
     ''' <summary>Al digitar la cantidad de una denominación se recalcula el monto del renglón y los totales.</summary>
     Private Sub GridEfectivo_AfterColUpdate(ByVal sender As Object, ByVal e As C1.Win.C1TrueDBGrid.ColEventArgs) _
@@ -323,6 +371,7 @@ Public Class FrmArqueo
         TxtSumaFacturaDolares.Text = resumen.EfectivoEsperadoDolares.ToString("N2")
         TxtTasaCambio.Text = resumen.TasaCambio.ToString("N4")
         TxtCordobasDolares.Text = resumen.TotalContado.ToString("N2")
+        TxtFondoApertura.Text = resumen.FondoApertura.ToString("N2")
         TxtValorFacturas.Text = resumen.TotalEsperado.ToString("N2")
         TxtDiferencia.Text = resumen.Diferencia.ToString("N2")
 
@@ -357,7 +406,6 @@ Public Class FrmArqueo
 
         CboCajero.Enabled = Not hayArqueo
         DTFecha.Enabled = Not hayArqueo
-        TxtFondoApertura.Enabled = Not hayArqueo
         BtnIniciar.Enabled = Not hayArqueo
 
         TxtObservaciones.ReadOnly = Not editable

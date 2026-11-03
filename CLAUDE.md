@@ -77,3 +77,13 @@ El área visible del MDI (`MDIMain`) deja unos **~520 px de alto útil** y **~10
   - Tarjetas blancas de datos: ancho **948**, x=16, alto **~96** (dos filas: inputs en y=36 y y=64), separadas 8 px.
   - Tarjeta del grid (`PnlComponentes`): x=16, y=274, 948 x 182, Anchor en los cuatro lados. Dentro: fila de filtros (`PnlFiltros`) en y=38 con alto 28 y grid en y=66 de 916 x 108 (cabecera de 32, filas de 26).
 - Los combos con `FlatStyle.Flat` sobre fondo blanco no muestran borde; si quedan sin selección parecen vacíos. Seleccionar el primer ítem explícitamente al cargar el origen de datos.
+
+## Scripts SQL: dónde guardarlos
+
+Cuando se pida guardar un script SQL, **siempre** guardarlo dentro de `Cambios Script/` (raíz del repositorio `SistemaFacturacion-6.0`), con esta organización:
+
+- Primer nivel: carpeta del año, `Año <AAAA>` (p. ej. `Año 2026`).
+- Segundo nivel: carpeta del **mes en que se crea el script**, numerada por mes con el nombre en español: `1.Enero`, `2.Febrero`, `3.Marzo`, … `9.Septiembre`, `10. Octubre`, `11.Noviembre`, `12.Diciembre`. Si la carpeta del mes no existe, crearla.
+- Dentro del mes: archivos `N.NombreDescriptivo.sql`, donde `N` es un **número incremental** que indica el orden de los cambios (p. ej. `6.Arqueo - Efectivo esperado.sql`). Antes de guardar, listar la carpeta del mes y usar el siguiente número libre (máximo existente + 1; empieza en 1 si el mes es nuevo).
+- El mes y el año se toman de la fecha actual, salvo que el usuario indique otro.
+- Los scripts deben ser idempotentes (`IF NOT EXISTS` / `IF COL_LENGTH`).
