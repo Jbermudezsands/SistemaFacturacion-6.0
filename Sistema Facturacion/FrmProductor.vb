@@ -306,7 +306,10 @@ Public Class FrmProductor
     End Sub
 
     Private Sub CboCodigoProductor_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CboCodigoProductor.TextChanged
-        Dim SQL As String = "SELECT * FROM Productor WHERE (CodProductor = '" & Me.CboCodigoProductor.Text & "') AND (TipoProductor = '" & Me.CmbTipoProductor.Text & "')"
+        Dim SQL As String = "SELECT TOP 1 * FROM Productor WHERE (CodProductor = '" & Me.CboCodigoProductor.Text.Replace("'", "''").Trim() & "')"
+        If Me.CmbTipoProductor.Text <> "" Then
+            SQL &= " AND (TipoProductor = '" & Me.CmbTipoProductor.Text & "')"
+        End If
         Dim DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter(SQL, MiConexion)
         Dim FuentesAgua As Boolean, ViviendaPropia As Boolean, TenenciaTierra As String, TieneContrato As Boolean, RutaOrigen As String
 

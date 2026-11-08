@@ -137,7 +137,7 @@ Partial Class FrmRegistroDebito
         Me.Label4.AutoSize = True
         Me.Label4.BackColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(59, Byte), Integer), CType(CType(92, Byte), Integer))
         Me.Label4.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.ForeColor = System.Drawing.Color.FromArgb(CType(CType(184, Byte), Integer), CType(CType(199, Byte), Integer), CType(CType(218, Byte), Integer))
+        Me.Label4.ForeColor = System.Drawing.Color.White
         Me.Label4.Location = New System.Drawing.Point(402, 24)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(27, 15)
@@ -149,7 +149,7 @@ Partial Class FrmRegistroDebito
         Me.LblNumero.AutoSize = True
         Me.LblNumero.BackColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(59, Byte), Integer), CType(CType(92, Byte), Integer))
         Me.LblNumero.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LblNumero.ForeColor = System.Drawing.Color.FromArgb(CType(CType(184, Byte), Integer), CType(CType(199, Byte), Integer), CType(CType(218, Byte), Integer))
+        Me.LblNumero.ForeColor = System.Drawing.Color.White
         Me.LblNumero.Location = New System.Drawing.Point(68, 42)
         Me.LblNumero.Name = "LblNumero"
         Me.LblNumero.Size = New System.Drawing.Size(37, 15)
@@ -361,11 +361,11 @@ Partial Class FrmRegistroDebito
         '
         Me.TxtNumeroEnsamble.BackColor = System.Drawing.Color.FromArgb(CType(CType(44, Byte), Integer), CType(CType(79, Byte), Integer), CType(CType(120, Byte), Integer))
         Me.TxtNumeroEnsamble.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TxtNumeroEnsamble.Enabled = False
         Me.TxtNumeroEnsamble.Font = New System.Drawing.Font("Consolas", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtNumeroEnsamble.ForeColor = System.Drawing.Color.FromArgb(CType(CType(226, Byte), Integer), CType(CType(232, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.TxtNumeroEnsamble.ForeColor = System.Drawing.Color.White
         Me.TxtNumeroEnsamble.Location = New System.Drawing.Point(436, 20)
         Me.TxtNumeroEnsamble.Name = "TxtNumeroEnsamble"
+        Me.TxtNumeroEnsamble.ReadOnly = True
         Me.TxtNumeroEnsamble.Size = New System.Drawing.Size(132, 23)
         Me.TxtNumeroEnsamble.TabIndex = 181
         Me.TxtNumeroEnsamble.Text = "-----0-----"

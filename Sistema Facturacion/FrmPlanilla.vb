@@ -345,6 +345,44 @@ Public Class FrmPlanilla
     End Sub
 
 
+    Private Function GuardarInformeAdvertenciasTXT(
+    ByVal lineas As List(Of String)) As String
+
+        'Informe informativo: nunca debe detener la importacion.
+        Dim nombre As String =
+        "InformeImportacion_" &
+        Format(Now, "yyyyMMdd_HHmmss") & ".txt"
+
+        Try
+
+            Dim ruta As String =
+            IO.Path.Combine(Application.StartupPath, nombre)
+
+            Try
+
+                IO.File.WriteAllLines(
+                ruta, lineas, System.Text.Encoding.UTF8)
+
+            Catch
+
+                'Si la carpeta del sistema no permite escribir
+                ruta = IO.Path.Combine(IO.Path.GetTempPath(), nombre)
+
+                IO.File.WriteAllLines(
+                ruta, lineas, System.Text.Encoding.UTF8)
+
+            End Try
+
+            Return ruta
+
+        Catch
+
+            Return ""
+
+        End Try
+
+    End Function
+
     Private Function ExisteDetalleNomina(Codigo As String,
                                      Tipo As String) As Boolean
 
@@ -5580,6 +5618,8 @@ Public Class FrmPlanilla
             Dim dtTransportistas As DataTable =
             CrearTablaTransportistasProcesados()
 
+            Dim asignaciones As New List(Of String)
+
 
             '=====================================================
             ' CONEXIÓN
@@ -5602,6 +5642,12 @@ Public Class FrmPlanilla
                         '=========================================
                         ' PROCESAR CSV
                         '=========================================
+
+                        'Si el archivo trae IdTransp vacio o 0 y el maestro del
+                        'productor tiene transportista, se usa el del maestro.
+                        asignaciones =
+                        AplicarTransportistaDelMaestro(
+                            dtCsvPlanilla, cn, trans)
 
                         For Each filaCsv As DataRow In
                         dtCsvPlanilla.Rows
@@ -5825,6 +5871,47 @@ Public Class FrmPlanilla
             End If
 
 
+            '=====================================================
+            ' INFORME DE ADVERTENCIAS (SOLO INFORMATIVO)
+            '
+            ' Se genera despues del COMMIT, solo lee la BD y
+            ' cualquier falla se ignora para no afectar la carga.
+            '=====================================================
+
+            Dim textoInforme As String = ""
+
+            Try
+
+                Dim advertencias As List(Of String) =
+                GenerarAdvertenciasTransportista(
+                    dtCsvPlanilla,
+                    IO.Path.GetFileName(RutaArchivoCsv),
+                    asignaciones)
+
+                If advertencias.Count > 0 Then
+
+                    Dim rutaInforme As String =
+                    GuardarInformeAdvertenciasTXT(advertencias)
+
+                    If rutaInforme <> "" Then
+
+                        textoInforme =
+                        Environment.NewLine &
+                        Environment.NewLine &
+                        "Se generó un informe de advertencias:" &
+                        Environment.NewLine &
+                        rutaInforme
+
+                    End If
+
+                End If
+
+            Catch
+
+                'El informe no es parte del proceso de carga.
+
+            End Try
+
             MessageBox.Show(
             "La planilla fue cargada correctamente." &
             Environment.NewLine &
@@ -5836,7 +5923,8 @@ Public Class FrmPlanilla
             dtPlanillaProcesada.Rows.Count.ToString("N0") &
             Environment.NewLine &
             "Transportistas: " &
-            dtTransportistas.Rows.Count.ToString("N0"),
+            dtTransportistas.Rows.Count.ToString("N0") &
+            textoInforme,
             "Importar Planilla",
             MessageBoxButtons.OK,
             MessageBoxIcon.Information)

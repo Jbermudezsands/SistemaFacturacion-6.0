@@ -120,14 +120,6 @@
   <data name="&gt;&gt;ProgressBar2.Name" xml:space="preserve">
     <value>ProgressBar2</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="TDGridDeducciones.Images" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAADFJREFUKFNjYMAE/9EFYABZAhcbRQCdxgAgCRjGKYEL49SAFcAk0Gk4QBbAxUYB
-        GBIAoKoc5Nu1Or4AAAAASUVORK5CYII=
-</value>
-  </data>
   <data name="&gt;&gt;Button2.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
@@ -206,6 +198,7 @@
   <data name="TDGridDeducciones.TabIndex" type="System.Int32, mscorlib">
     <value>171</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="TxtPrecioMartes.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 20</value>
   </data>
@@ -221,8 +214,8 @@
   <data name="TxtDeduccionPolicia.Location" type="System.Drawing.Point, System.Drawing">
     <value>93, 62</value>
   </data>
-  <data name="TDGridIngresos.PrintInfo.PageHeaderHeight" type="System.Int32, mscorlib">
-    <value>30</value>
+  <data name="&gt;&gt;TxtPrecioLunes.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;TxtPrecioJueves.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -260,8 +253,8 @@
   <data name="GroupBox2.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;Configuracion.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="Label5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="TxtIR.Text" xml:space="preserve">
     <value>1</value>
@@ -271,6 +264,9 @@
   </data>
   <data name="&gt;&gt;Button1.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="&gt;&gt;Label11.Parent" xml:space="preserve">
+    <value>GroupBox2</value>
   </data>
   <data name="TxtPrecioViernes.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -299,11 +295,17 @@
   <data name="&gt;&gt;Label1.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;Configuracion.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="PictureBox2.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, -1</value>
   </data>
   <data name="TxtPrecioJueves.Text" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="Label6.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
   <data name="Button1.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -344,6 +346,9 @@
   <data name="Label9.Location" type="System.Drawing.Point, System.Drawing">
     <value>395, 22</value>
   </data>
+  <data name="ProgressBar.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="&gt;&gt;Ingresos.Name" xml:space="preserve">
     <value>Ingresos</value>
   </data>
@@ -371,9 +376,6 @@
   <data name="CmdNomina.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>BottomCenter</value>
   </data>
-  <data name="&gt;&gt;GroupBox1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
   <data name="Label4.Location" type="System.Drawing.Point, System.Drawing">
     <value>16, 19</value>
   </data>
@@ -386,11 +388,11 @@
   <data name="Label12.Size" type="System.Drawing.Size, System.Drawing">
     <value>74, 13</value>
   </data>
-  <data name="TDGridDeducciones.PrintInfo.PageHeaderHeight" type="System.Int32, mscorlib">
-    <value>30</value>
-  </data>
   <data name="&gt;&gt;GroupBox2.Parent" xml:space="preserve">
     <value>Configuracion</value>
+  </data>
+  <data name="GroupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 56</value>
   </data>
   <data name="TxtBolsa.Location" type="System.Drawing.Point, System.Drawing">
     <value>93, 39</value>
@@ -403,9 +405,6 @@
   </data>
   <data name="&gt;&gt;PictureBox2.Name" xml:space="preserve">
     <value>PictureBox2</value>
-  </data>
-  <data name="&gt;&gt;TxtPrecioDomingo.Name" xml:space="preserve">
-    <value>TxtPrecioDomingo</value>
   </data>
   <data name="Button2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>BottomCenter</value>
@@ -437,6 +436,9 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>1025, 471</value>
   </data>
+  <data name="CmdBorraLinea.TabIndex" type="System.Int32, mscorlib">
+    <value>185</value>
+  </data>
   <data name="&gt;&gt;Label14.Name" xml:space="preserve">
     <value>Label14</value>
   </data>
@@ -445,9 +447,6 @@
   </data>
   <data name="TDGridDeducciones.Text" xml:space="preserve">
     <value>C1TrueDBGrid1</value>
-  </data>
-  <data name="TDGridIngresos.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 6</value>
   </data>
   <data name="TxtNumNomina.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 20</value>
@@ -488,8 +487,8 @@
   <data name="Label7.Text" xml:space="preserve">
     <value>No. Nomina</value>
   </data>
-  <data name="LblTotalPlanilla.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="CmdCalcular.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomCenter</value>
   </data>
   <data name="&gt;&gt;LblProcesando.Parent" xml:space="preserve">
     <value>$this</value>
@@ -587,9 +586,6 @@
   <data name="&gt;&gt;GroupBox2.Name" xml:space="preserve">
     <value>GroupBox2</value>
   </data>
-  <data name="TDGridDeducciones.PreviewInfo.Caption" xml:space="preserve">
-    <value>PrintPreview Window</value>
-  </data>
   <data name="&gt;&gt;CmdCalcular.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
@@ -611,8 +607,8 @@
   <data name="TDGridDeducciones.GroupByCaption" xml:space="preserve">
     <value>Drag a column header here to group by that column</value>
   </data>
-  <data name="TxtIR.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="&gt;&gt;TxtBolsa.ZOrder" xml:space="preserve">
+    <value>12</value>
   </data>
   <data name="CmdNomina.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -629,6 +625,9 @@
   <data name="TxtPrecioSabado.Location" type="System.Drawing.Point, System.Drawing">
     <value>92, 202</value>
   </data>
+  <data name="CmdCalcular.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopCenter</value>
+  </data>
   <data name="Label9.TabIndex" type="System.Int32, mscorlib">
     <value>187</value>
   </data>
@@ -638,17 +637,17 @@
   <data name="TxtPrecioJueves.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 20</value>
   </data>
+  <data name="CmdNomina.TabIndex" type="System.Int32, mscorlib">
+    <value>190</value>
+  </data>
   <data name="Button2.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 76</value>
   </data>
-  <data name="&gt;&gt;TxtBolsa.Parent" xml:space="preserve">
-    <value>GroupBox2</value>
+  <data name="LblTotalPlanilla.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="TDGridDeducciones.PrintInfo.PageFooter" xml:space="preserve">
     <value />
-  </data>
-  <data name="LblProcesando.Text" xml:space="preserve">
-    <value>Calculando  00001 JUAN BERMUDEZ HERNANDEZ</value>
   </data>
   <data name="&gt;&gt;CmdCerrar.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -671,8 +670,14 @@
   <data name="TxtNumNomina.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
+  <data name="&gt;&gt;Label14.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
   <data name="&gt;&gt;DTPFechaIni.Name" xml:space="preserve">
     <value>DTPFechaIni</value>
+  </data>
+  <data name="&gt;&gt;TxtPrecioMartes.Parent" xml:space="preserve">
+    <value>GroupBox2</value>
   </data>
   <data name="&gt;&gt;Label14.Parent" xml:space="preserve">
     <value>GroupBox2</value>
@@ -683,9 +688,6 @@
   <data name="TxtNumNomina.TabIndex" type="System.Int32, mscorlib">
     <value>183</value>
   </data>
-  <data name="CmdCalcular.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>BottomCenter</value>
-  </data>
   <data name="Label10.Location" type="System.Drawing.Point, System.Drawing">
     <value>20, 112</value>
   </data>
@@ -694,9 +696,6 @@
   </data>
   <data name="CmdNomina.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopCenter</value>
-  </data>
-  <data name="TDGridIngresos.PrintInfo.RepeatColumnHeaders" type="System.Boolean, mscorlib">
-    <value>True</value>
   </data>
   <data name="&gt;&gt;LblProcesando.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -710,14 +709,8 @@
   <data name="Label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 13</value>
   </data>
-  <data name="TDGridDeducciones.PrintInfo.ShowOptionsDialog" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="&gt;&gt;TabControl1.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="ProgressBar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>417, 398</value>
   </data>
   <data name="DTPFechaFin.Location" type="System.Drawing.Point, System.Drawing">
     <value>639, 22</value>
@@ -731,17 +724,20 @@
   <data name="&gt;&gt;TxtPrecioDomingo.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;PictureBox2.ZOrder" xml:space="preserve">
-    <value>10</value>
+  <data name="TDGridIngresos.FilterBar" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="GroupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 56</value>
+  <data name="TxtPrecioDomingo.TabIndex" type="System.Int32, mscorlib">
+    <value>187</value>
+  </data>
+  <data name="Label10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 13</value>
   </data>
   <data name="&gt;&gt;TxtPrecioLunes.Name" xml:space="preserve">
     <value>TxtPrecioLunes</value>
   </data>
-  <data name="&gt;&gt;Button2.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;TxtDeduccionPolicia.ZOrder" xml:space="preserve">
+    <value>16</value>
   </data>
   <data name="TDGridIngresos.PrintInfo.PageFooterHeight" type="System.Int32, mscorlib">
     <value>30</value>
@@ -907,11 +903,17 @@
         vvz5iH8V+1XQnTT//8z/AUDSQoTHDfQmAAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="TDGridDeducciones.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
+  </data>
   <data name="Label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 16</value>
   </data>
-  <data name="ProgressBar.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="&gt;&gt;Label10.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="CmdCerrar.TabIndex" type="System.Int32, mscorlib">
+    <value>193</value>
   </data>
   <data name="TxtBolsa.Text" xml:space="preserve">
     <value>0</value>
@@ -922,14 +924,11 @@
   <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;Label13.ZOrder" xml:space="preserve">
-    <value>5</value>
+  <data name="&gt;&gt;TxtBolsa.Parent" xml:space="preserve">
+    <value>GroupBox2</value>
   </data>
   <data name="&gt;&gt;PictureBox2.Type" xml:space="preserve">
     <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="TDGridDeducciones.PreviewInfo.UIStrings.Content" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>AAEAAAD/////AQAAAAAAAAARAQAAAAAAAAAL</value>
   </data>
   <data name="&gt;&gt;Label8.Name" xml:space="preserve">
     <value>Label8</value>
@@ -968,9 +967,6 @@
   <data name="CmdSalir.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 67</value>
   </data>
-  <data name="ProgressBar2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>759, 427</value>
-  </data>
   <data name="CboTipoPlanilla.Images" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
@@ -978,17 +974,20 @@
         GBIAoKoc5Nu1Or4AAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="TDGridDeducciones.PropBag" xml:space="preserve">
-    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;DataCols&gt;&lt;C1DataColumn Caption="Codigo" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;C1DataColumn Caption="Nombre Productor" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;C1DataColumn Caption="IR" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;C1DataColumn Caption="Trazabilidad" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;C1DataColumn Caption="Anticipo" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;C1DataColumn Caption="Transporte" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;C1DataColumn Caption="Pulperia" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;C1DataColumn Caption="Inseminacion" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;C1DataColumn Caption="Producto Vet" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;C1DataColumn Caption="Total Egreso" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;C1DataColumn Caption="Neto Pagar" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;/DataCols&gt;&lt;Styles type="C1.Win.C1TrueDBGrid.Design.ContextWrapper"&gt;&lt;Data&gt;Style11{}OddRow{}Style142{}Style70{}Style6{}RecordSelector{AlignImage:Center;}Style85{}Style105{}Style118{AlignHorz:Near;}Style73{}Style110{}Style127{}Style122{}Style131{AlignHorz:Near;}Style90{}FilterBar{}Style8{AlignHorz:Near;}Style119{AlignHorz:Near;}Style129{}Style139{}Style79{AlignHorz:Near;}Style93{}Style15{}Style74{}Style116{}Style1{AlignHorz:Near;}Style141{}Style77{BackColor:215, 228, 242;}Style109{}Style72{}Style100{AlignHorz:Near;}Style117{}Style113{AlignHorz:Near;}Style126{}Style135{}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style121{}Style134{}Style130{AlignHorz:Near;}Style83{Font:Microsoft Sans Serif, 8.25pt;AlignHorz:Near;}Style101{AlignHorz:Near;}Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}Style78{}Style111{}Style92{}Style14{}EvenRow{BackColor:Aqua;}Style10{}Style89{AlignHorz:Near;}Group{AlignVert:Center;Border:None,,0, 0, 0, 0;BackColor:ControlDark;}Style86{}Footer{}Style80{}Style76{}Style140{}Style104{}Style84{}Style108{}Style71{}Style107{AlignHorz:Near;}Heading{Wrap:True;BackColor:Control;Border:Flat,ControlDark,0, 1, 0, 1;ForeColor:ControlText;AlignVert:Center;}Style87{}Style125{AlignHorz:Near;}Style138{AlignHorz:Near;}Style120{}Style137{AlignHorz:Near;}Style133{}Style82{AlignHorz:Near;}Style4{}Style112{AlignHorz:Near;}Style91{}Style3{}Style81{}Style88{AlignHorz:Near;}Style103{}Style5{}Normal{}Style75{}Editor{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Style106{AlignHorz:Near;}Style115{}Style128{}Style124{AlignHorz:Near;}Caption{AlignHorz:Center;}Style123{}Style136{}Style132{}Style2{AlignHorz:Near;}Style7{AlignHorz:Near;}Style9{}Style114{}Style102{}Style12{}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1TrueDBGrid.MergeView Name="Split[0,0]" AlternatingRowStyle="True" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" FilterBar="True" MarqueeStyle="DottedCellBorder" RecordSelectorWidth="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="2"&gt;&lt;Height&gt;210&lt;/Height&gt;&lt;CaptionStyle parent="Heading" me="Style79" /&gt;&lt;EditorStyle parent="Editor" me="Style71" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style77" /&gt;&lt;FilterBarStyle parent="FilterBar" me="Style136" /&gt;&lt;FooterStyle parent="Footer" me="Style73" /&gt;&lt;GroupStyle parent="Group" me="Style81" /&gt;&lt;HeadingStyle parent="Heading" me="Style72" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style76" /&gt;&lt;InactiveStyle parent="Inactive" me="Style75" /&gt;&lt;OddRowStyle parent="OddRow" me="Style78" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style80" /&gt;&lt;SelectedStyle parent="Selected" me="Style74" /&gt;&lt;Style parent="Normal" me="Style70" /&gt;&lt;internalCols&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style82" /&gt;&lt;Style parent="Style70" me="Style83" /&gt;&lt;FooterStyle parent="Style73" me="Style84" /&gt;&lt;EditorStyle parent="Style71" me="Style85" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style87" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style86" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Width&gt;78&lt;/Width&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;0&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style88" /&gt;&lt;Style parent="Style70" me="Style89" /&gt;&lt;FooterStyle parent="Style73" me="Style90" /&gt;&lt;EditorStyle parent="Style71" me="Style91" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style93" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style92" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;1&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style100" /&gt;&lt;Style parent="Style70" me="Style101" /&gt;&lt;FooterStyle parent="Style73" me="Style102" /&gt;&lt;EditorStyle parent="Style71" me="Style103" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style105" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style104" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Width&gt;69&lt;/Width&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;2&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style112" /&gt;&lt;Style parent="Style70" me="Style113" /&gt;&lt;FooterStyle parent="Style73" me="Style114" /&gt;&lt;EditorStyle parent="Style71" me="Style115" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style117" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style116" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Width&gt;77&lt;/Width&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;4&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style118" /&gt;&lt;Style parent="Style70" me="Style119" /&gt;&lt;FooterStyle parent="Style73" me="Style120" /&gt;&lt;EditorStyle parent="Style71" me="Style121" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style123" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style122" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Width&gt;79&lt;/Width&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;5&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style124" /&gt;&lt;Style parent="Style70" me="Style125" /&gt;&lt;FooterStyle parent="Style73" me="Style126" /&gt;&lt;EditorStyle parent="Style71" me="Style127" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style129" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style128" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Width&gt;79&lt;/Width&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;6&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style130" /&gt;&lt;Style parent="Style70" me="Style131" /&gt;&lt;FooterStyle parent="Style73" me="Style132" /&gt;&lt;EditorStyle parent="Style71" me="Style133" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style135" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style134" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Width&gt;84&lt;/Width&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;7&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style106" /&gt;&lt;Style parent="Style70" me="Style107" /&gt;&lt;FooterStyle parent="Style73" me="Style108" /&gt;&lt;EditorStyle parent="Style71" me="Style109" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style111" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style110" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Width&gt;79&lt;/Width&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;3&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style137" /&gt;&lt;Style parent="Style70" me="Style138" /&gt;&lt;FooterStyle parent="Style73" me="Style139" /&gt;&lt;EditorStyle parent="Style71" me="Style140" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style142" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style141" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Width&gt;76&lt;/Width&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;8&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style1" /&gt;&lt;Style parent="Style70" me="Style2" /&gt;&lt;FooterStyle parent="Style73" me="Style3" /&gt;&lt;EditorStyle parent="Style71" me="Style4" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style6" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style5" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Width&gt;84&lt;/Width&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;9&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style7" /&gt;&lt;Style parent="Style70" me="Style8" /&gt;&lt;FooterStyle parent="Style73" me="Style9" /&gt;&lt;EditorStyle parent="Style71" me="Style10" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style12" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style11" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;10&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;/internalCols&gt;&lt;ClientRect&gt;0, 17, 992, 210&lt;/ClientRect&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;/C1.Win.C1TrueDBGrid.MergeView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="Editor" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Normal" me="FilterBar" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;ClientArea&gt;0, 0, 992, 227&lt;/ClientArea&gt;&lt;PrintPageHeaderStyle parent="" me="Style14" /&gt;&lt;PrintPageFooterStyle parent="" me="Style15" /&gt;&lt;/Blob&gt;</value>
-  </data>
   <data name="&gt;&gt;Label9.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
   <data name="CboTipoPlanilla.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
+  <data name="CmdSalir.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomCenter</value>
+  </data>
   <data name="&gt;&gt;TDGridIngresos.Type" xml:space="preserve">
     <value>C1.Win.C1TrueDBGrid.C1TrueDBGrid, C1.Win.C1TrueDBGrid.2, Version=2.0.20063.60825, Culture=neutral, PublicKeyToken=75ae3fb0e2b1e0da</value>
+  </data>
+  <data name="Button1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>905, 213</value>
   </data>
   <data name="&gt;&gt;TxtNumNomina.Name" xml:space="preserve">
     <value>TxtNumNomina</value>
@@ -1014,8 +1013,8 @@
   <data name="&gt;&gt;Label15.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;TxtBolsa.ZOrder" xml:space="preserve">
-    <value>12</value>
+  <data name="Label13.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <assembly alias="C1.Win.C1List.2" name="C1.Win.C1List.2, Version=2.1.20073.132, Culture=neutral, PublicKeyToken=6b24f8f981dbd7bc" />
   <data name="resource.Style2" type="C1.Win.C1List.LineStyleEnum, C1.Win.C1List.2">
@@ -1027,11 +1026,14 @@
   <data name="Label15.Text" xml:space="preserve">
     <value>Precio Domingo</value>
   </data>
-  <data name="Label10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 13</value>
+  <data name="TDGridIngresos.TabIndex" type="System.Int32, mscorlib">
+    <value>170</value>
   </data>
-  <data name="&gt;&gt;TxtIR.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;Label10.Name" xml:space="preserve">
+    <value>Label10</value>
+  </data>
+  <data name="ProgressBar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>475, 26</value>
   </data>
   <data name="&gt;&gt;TxtPrecioDomingo.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1041,6 +1043,9 @@
   </data>
   <data name="&gt;&gt;DTPFechaIni.Parent" xml:space="preserve">
     <value>GroupBox1</value>
+  </data>
+  <data name="LblProcesando.Size" type="System.Drawing.Size, System.Drawing">
+    <value>323, 16</value>
   </data>
   <data name="TDGridDeducciones.PrintInfo.RepeatSplitHeaders" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1063,8 +1068,8 @@
   <data name="&gt;&gt;Label4.Parent" xml:space="preserve">
     <value>GroupBox2</value>
   </data>
-  <data name="Label5.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="TxtIR.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
   <data name="Label12.Location" type="System.Drawing.Point, System.Drawing">
     <value>18, 157</value>
@@ -1074,9 +1079,6 @@
   </data>
   <data name="TDGridIngresos.PreviewInfo.ToolBars" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="&gt;&gt;DTPFechaFin.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="TDGridIngresos.PrintInfo.RepeatSplitHeaders" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1184,9 +1186,6 @@
   <data name="&gt;&gt;Label13.Name" xml:space="preserve">
     <value>Label13</value>
   </data>
-  <data name="TxtPrecioDomingo.TabIndex" type="System.Int32, mscorlib">
-    <value>187</value>
-  </data>
   <data name="&gt;&gt;CmdSalir.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
@@ -1195,489 +1194,6 @@
   </data>
   <data name="&gt;&gt;CmdSalir.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label6.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="Label11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 134</value>
-  </data>
-  <data name="DTPFechaIni.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;Label7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 89</value>
-  </data>
-  <data name="CmdCerrar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 76</value>
-  </data>
-  <data name="CmdCalcular.TabIndex" type="System.Int32, mscorlib">
-    <value>188</value>
-  </data>
-  <data name="Label14.Text" xml:space="preserve">
-    <value>Precio Sabado</value>
-  </data>
-  <data name="Label4.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="resource.Color" type="System.Drawing.Color, System.Drawing">
-    <value>DarkGray</value>
-  </data>
-  <data name="Label5.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;TxtPrecioJueves.Parent" xml:space="preserve">
-    <value>GroupBox2</value>
-  </data>
-  <data name="Label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>354, 25</value>
-  </data>
-  <data name="PictureBox2.TabIndex" type="System.Int32, mscorlib">
-    <value>186</value>
-  </data>
-  <data name="&gt;&gt;Ingresos.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="CmdCalcular.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 394</value>
-  </data>
-  <data name="&gt;&gt;Label14.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;Label5.Name" xml:space="preserve">
-    <value>Label5</value>
-  </data>
-  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 13</value>
-  </data>
-  <data name="Label7.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 13</value>
-  </data>
-  <data name="CboTipoPlanilla.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 21</value>
-  </data>
-  <data name="DTPFechaFin.TabIndex" type="System.Int32, mscorlib">
-    <value>178</value>
-  </data>
-  <data name="&gt;&gt;TxtPrecioMiercoles.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="CboTipoPlanilla.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="TxtPrecioSabado.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 20</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="PictureBox2.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
-    <value>StretchImage</value>
-  </data>
-  <data name="&gt;&gt;ProgressBar.Name" xml:space="preserve">
-    <value>ProgressBar</value>
-  </data>
-  <data name="CmdCerrar.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>TopCenter</value>
-  </data>
-  <data name="&gt;&gt;TDGridDeducciones.Type" xml:space="preserve">
-    <value>C1.Win.C1TrueDBGrid.C1TrueDBGrid, C1.Win.C1TrueDBGrid.2, Version=2.0.20063.60825, Culture=neutral, PublicKeyToken=75ae3fb0e2b1e0da</value>
-  </data>
-  <data name="&gt;&gt;Button1.Name" xml:space="preserve">
-    <value>Button1</value>
-  </data>
-  <data name="Deducciones.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="&gt;&gt;Deducciones.Parent" xml:space="preserve">
-    <value>TabControl1</value>
-  </data>
-  <data name="&gt;&gt;Label15.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label4.ZOrder" xml:space="preserve">
-    <value>19</value>
-  </data>
-  <data name="&gt;&gt;Label5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>771, 26</value>
-  </data>
-  <data name="&gt;&gt;TDGridDeducciones.Parent" xml:space="preserve">
-    <value>Deducciones</value>
-  </data>
-  <data name="&gt;&gt;ProgressBar2.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;CmdNomina.Name" xml:space="preserve">
-    <value>CmdNomina</value>
-  </data>
-  <data name="&gt;&gt;Label6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="ProgressBar.TabIndex" type="System.Int32, mscorlib">
-    <value>194</value>
-  </data>
-  <data name="CmdCerrar.TabIndex" type="System.Int32, mscorlib">
-    <value>193</value>
-  </data>
-  <data name="resource.Style" type="C1.Win.C1List.LineStyleEnum, C1.Win.C1List.2">
-    <value>None</value>
-  </data>
-  <data name="&gt;&gt;Label7.Name" xml:space="preserve">
-    <value>Label7</value>
-  </data>
-  <data name="&gt;&gt;TxtBolsa.Name" xml:space="preserve">
-    <value>TxtBolsa</value>
-  </data>
-  <data name="&gt;&gt;LblProcesando.Name" xml:space="preserve">
-    <value>LblProcesando</value>
-  </data>
-  <data name="&gt;&gt;TxtDeduccionPolicia.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>561, 25</value>
-  </data>
-  <data name="Label12.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="CmdCerrar.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>BottomCenter</value>
-  </data>
-  <data name="LblTotalPlanilla.Text" xml:space="preserve">
-    <value>fff</value>
-  </data>
-  <data name="&gt;&gt;Label5.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="&gt;&gt;Label9.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;TDGridDeducciones.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;Button1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>268, 13</value>
-  </data>
-  <data name="TDGridIngresos.PrintInfo.RepeatGridHeader" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="TxtPrecioLunes.Text" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;Label3.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
-  </data>
-  <data name="Deducciones.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="&gt;&gt;DTPFechaFin.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
-  </data>
-  <data name="&gt;&gt;Button2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="TxtPrecioLunes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 20</value>
-  </data>
-  <data name="&gt;&gt;Ingresos.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="TDGridDeducciones.PrintInfo.OwnerDrawPageFooter" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="ProgressBar2.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="TxtPrecioMiercoles.Location" type="System.Drawing.Point, System.Drawing">
-    <value>92, 131</value>
-  </data>
-  <data name="TDGridIngresos.PreviewInfo.Caption" xml:space="preserve">
-    <value>PrintPreview Window</value>
-  </data>
-  <data name="TDGridDeducciones.AlternatingRows" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;Label2.Parent" xml:space="preserve">
-    <value>GroupBox1</value>
-  </data>
-  <data name="&gt;&gt;Configuracion.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmPlanillaConductores</value>
-  </data>
-  <data name="&gt;&gt;CmdCerrar.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="CmdCalcular.Text" xml:space="preserve">
-    <value>Calcular</value>
-  </data>
-  <data name="TDGridDeducciones.PrintInfo.ShowSelection" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="Button2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>166, 394</value>
-  </data>
-  <data name="CmdCalcular.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="TabControl1.TabIndex" type="System.Int32, mscorlib">
-    <value>189</value>
-  </data>
-  <data name="Configuracion.Text" xml:space="preserve">
-    <value>Configuracion</value>
-  </data>
-  <data name="&gt;&gt;TxtIR.Name" xml:space="preserve">
-    <value>TxtIR</value>
-  </data>
-  <data name="Label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 13</value>
-  </data>
-  <data name="&gt;&gt;Label10.Name" xml:space="preserve">
-    <value>Label10</value>
-  </data>
-  <data name="&gt;&gt;Label2.Name" xml:space="preserve">
-    <value>Label2</value>
-  </data>
-  <data name="&gt;&gt;TDGridIngresos.Parent" xml:space="preserve">
-    <value>Ingresos</value>
-  </data>
-  <data name="Label3.TabIndex" type="System.Int32, mscorlib">
-    <value>177</value>
-  </data>
-  <data name="&gt;&gt;ProgressBar.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="LblProcesando.Location" type="System.Drawing.Point, System.Drawing">
-    <value>430, 427</value>
-  </data>
-  <data name="TxtPrecioSabado.TabIndex" type="System.Int32, mscorlib">
-    <value>185</value>
-  </data>
-  <data name="CmdNomina.Location" type="System.Drawing.Point, System.Drawing">
-    <value>85, 394</value>
-  </data>
-  <data name="CmdBorraLinea.TabIndex" type="System.Int32, mscorlib">
-    <value>185</value>
-  </data>
-  <data name="Label13.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
-  <data name="&gt;&gt;ProgressBar.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;CmdBorraLinea.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="DTPFechaIni.Size" type="System.Drawing.Size, System.Drawing">
-    <value>117, 20</value>
-  </data>
-  <data name="LblTotalPlanilla.Location" type="System.Drawing.Point, System.Drawing">
-    <value>545, 48</value>
-  </data>
-  <data name="CmdSalir.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>TopCenter</value>
-  </data>
-  <data name="TabControl1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 109</value>
-  </data>
-  <data name="&gt;&gt;TxtPrecioSabado.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="CmdBorraLinea.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-8, -1</value>
-  </data>
-  <data name="Label10.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="TDGridIngresos.PrintInfo.PrintHorizontalSplits" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="Label8.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="resource.Color2" type="System.Drawing.Color, System.Drawing">
-    <value>DarkGray</value>
-  </data>
-  <data name="resource.Color1" type="System.Drawing.Color, System.Drawing">
-    <value>DarkGray</value>
-  </data>
-  <data name="LblProcesando.TabIndex" type="System.Int32, mscorlib">
-    <value>195</value>
-  </data>
-  <data name="&gt;&gt;Label10.Parent" xml:space="preserve">
-    <value>GroupBox2</value>
-  </data>
-  <data name="TDGridIngresos.PrintInfo.OneFormPerPage" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;TxtPrecioSabado.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="TxtIR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>95, 16</value>
-  </data>
-  <data name="DTPFechaFin.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="CmdCalcular.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        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
-</value>
-  </data>
-  <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="Label7.TabIndex" type="System.Int32, mscorlib">
-    <value>182</value>
-  </data>
-  <data name="TxtPrecioMiercoles.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 20</value>
-  </data>
-  <data name="&gt;&gt;Configuracion.Name" xml:space="preserve">
-    <value>Configuracion</value>
-  </data>
-  <data name="&gt;&gt;TxtIR.Parent" xml:space="preserve">
-    <value>GroupBox2</value>
-  </data>
-  <data name="TDGridIngresos.PreviewInfo.UIStrings.Content" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>AAEAAAD/////AQAAAAAAAAARAQAAAAAAAAAL</value>
-  </data>
-  <data name="Button1.Text" xml:space="preserve">
-    <value>Borrar Linea</value>
-  </data>
-  <assembly alias="C1.Win.C1TrueDBGrid.2" name="C1.Win.C1TrueDBGrid.2, Version=2.0.20063.60825, Culture=neutral, PublicKeyToken=75ae3fb0e2b1e0da" />
-  <data name="resource.Style1" type="C1.Win.C1TrueDBGrid.LineStyleEnum, C1.Win.C1TrueDBGrid.2">
-    <value>Single</value>
-  </data>
-  <data name="Label15.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 226</value>
-  </data>
-  <data name="TDGridIngresos.PrintInfo.ProgressCaption" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;Ingresos.Parent" xml:space="preserve">
-    <value>TabControl1</value>
-  </data>
-  <data name="CmdBorraLinea.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1041, 60</value>
-  </data>
-  <data name="TxtPrecioSabado.Text" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="Button2.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>TopCenter</value>
-  </data>
-  <data name="Configuracion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="&gt;&gt;GroupBox2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Ingresos.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="Label13.Text" xml:space="preserve">
-    <value>Precio Viernes</value>
-  </data>
-  <data name="Label9.Text" xml:space="preserve">
-    <value>REGISTROS DE PLANILLAS CONDUCTORES</value>
-  </data>
-  <data name="Label2.Text" xml:space="preserve">
-    <value>Inicio Periodo</value>
   </data>
   <data name="CmdSalir.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1771,8 +1287,400 @@
         OnMwAhhhq4RNO9QY3n8DhliBmtsAUHPoD2rWhgAD9BW/jdB4xQD4PxS4fuosSkURAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="TDGridIngresos.FilterBar" type="System.Boolean, mscorlib">
+  <data name="&gt;&gt;Label6.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="Label11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 134</value>
+  </data>
+  <data name="DTPFechaIni.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;Label7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Label6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>23, 89</value>
+  </data>
+  <data name="CmdCerrar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 76</value>
+  </data>
+  <data name="CmdCalcular.TabIndex" type="System.Int32, mscorlib">
+    <value>188</value>
+  </data>
+  <data name="Label14.Text" xml:space="preserve">
+    <value>Precio Sabado</value>
+  </data>
+  <data name="Label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 13</value>
+  </data>
+  <data name="Label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>354, 25</value>
+  </data>
+  <data name="PictureBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>186</value>
+  </data>
+  <data name="&gt;&gt;Ingresos.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="CmdCalcular.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 394</value>
+  </data>
+  <data name="TDGridDeducciones.PrintInfo.PageHeaderHeight" type="System.Int32, mscorlib">
+    <value>30</value>
+  </data>
+  <data name="&gt;&gt;Label5.Name" xml:space="preserve">
+    <value>Label5</value>
+  </data>
+  <data name="&gt;&gt;PictureBox2.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="Label7.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>71, 13</value>
+  </data>
+  <data name="CboTipoPlanilla.Size" type="System.Drawing.Size, System.Drawing">
+    <value>223, 21</value>
+  </data>
+  <data name="DTPFechaFin.TabIndex" type="System.Int32, mscorlib">
+    <value>178</value>
+  </data>
+  <data name="&gt;&gt;TxtPrecioMiercoles.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="CboTipoPlanilla.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="TxtPrecioSabado.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 20</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="PictureBox2.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>StretchImage</value>
+  </data>
+  <data name="&gt;&gt;ProgressBar.Name" xml:space="preserve">
+    <value>ProgressBar</value>
+  </data>
+  <data name="CmdCerrar.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopCenter</value>
+  </data>
+  <data name="&gt;&gt;TDGridDeducciones.Type" xml:space="preserve">
+    <value>C1.Win.C1TrueDBGrid.C1TrueDBGrid, C1.Win.C1TrueDBGrid.2, Version=2.0.20063.60825, Culture=neutral, PublicKeyToken=75ae3fb0e2b1e0da</value>
+  </data>
+  <data name="&gt;&gt;Button1.Name" xml:space="preserve">
+    <value>Button1</value>
+  </data>
+  <data name="Deducciones.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="&gt;&gt;Deducciones.Parent" xml:space="preserve">
+    <value>TabControl1</value>
+  </data>
+  <data name="&gt;&gt;Label15.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TDGridDeducciones.PrintInfo.RepeatGridHeader" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;Label4.ZOrder" xml:space="preserve">
+    <value>19</value>
+  </data>
+  <data name="Button2.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="Label7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>771, 26</value>
+  </data>
+  <data name="&gt;&gt;TDGridDeducciones.Parent" xml:space="preserve">
+    <value>Deducciones</value>
+  </data>
+  <data name="&gt;&gt;ProgressBar2.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;CmdNomina.Name" xml:space="preserve">
+    <value>CmdNomina</value>
+  </data>
+  <data name="&gt;&gt;Label7.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;Label6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TDGridIngresos.PrintInfo.PageHeaderHeight" type="System.Int32, mscorlib">
+    <value>30</value>
+  </data>
+  <data name="resource.Style" type="C1.Win.C1List.LineStyleEnum, C1.Win.C1List.2">
+    <value>None</value>
+  </data>
+  <data name="&gt;&gt;Label7.Name" xml:space="preserve">
+    <value>Label7</value>
+  </data>
+  <data name="&gt;&gt;TxtDeduccionPolicia.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Label3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>561, 25</value>
+  </data>
+  <data name="Label12.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="CmdCerrar.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomCenter</value>
+  </data>
+  <data name="LblTotalPlanilla.Text" xml:space="preserve">
+    <value>fff</value>
+  </data>
+  <data name="&gt;&gt;Label5.ZOrder" xml:space="preserve">
+    <value>17</value>
+  </data>
+  <data name="&gt;&gt;Label9.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="Label13.Text" xml:space="preserve">
+    <value>Precio Viernes</value>
+  </data>
+  <data name="&gt;&gt;TDGridDeducciones.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;Button1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Label9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>268, 13</value>
+  </data>
+  <data name="TDGridIngresos.PrintInfo.RepeatGridHeader" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="Label15.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 226</value>
+  </data>
+  <data name="TxtPrecioLunes.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;Label3.Parent" xml:space="preserve">
+    <value>GroupBox1</value>
+  </data>
+  <data name="Deducciones.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="&gt;&gt;Button2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TxtPrecioLunes.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 20</value>
+  </data>
+  <data name="&gt;&gt;Ingresos.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;PictureBox2.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="TDGridDeducciones.PrintInfo.OwnerDrawPageFooter" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="ProgressBar2.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="TxtPrecioMiercoles.Location" type="System.Drawing.Point, System.Drawing">
+    <value>92, 131</value>
+  </data>
+  <data name="TDGridIngresos.PreviewInfo.Caption" xml:space="preserve">
+    <value>PrintPreview Window</value>
+  </data>
+  <data name="TDGridDeducciones.AlternatingRows" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;Label2.Parent" xml:space="preserve">
+    <value>GroupBox1</value>
+  </data>
+  <data name="&gt;&gt;Configuracion.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>frmPlanillaConductores</value>
+  </data>
+  <data name="&gt;&gt;TxtPrecioMiercoles.Name" xml:space="preserve">
+    <value>TxtPrecioMiercoles</value>
+  </data>
+  <data name="&gt;&gt;CmdCerrar.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="CmdCalcular.Text" xml:space="preserve">
+    <value>Calcular</value>
+  </data>
+  <data name="TDGridDeducciones.PrintInfo.ShowSelection" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Button2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>166, 394</value>
+  </data>
+  <data name="TDGridIngresos.PrintInfo.RepeatColumnFooters" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="CmdCalcular.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="TabControl1.TabIndex" type="System.Int32, mscorlib">
+    <value>189</value>
+  </data>
+  <data name="Configuracion.Text" xml:space="preserve">
+    <value>Configuracion</value>
+  </data>
+  <data name="&gt;&gt;TxtIR.Name" xml:space="preserve">
+    <value>TxtIR</value>
+  </data>
+  <data name="TDGridDeducciones.PreviewInfo.Caption" xml:space="preserve">
+    <value>PrintPreview Window</value>
+  </data>
+  <data name="Ingresos.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1006, 257</value>
+  </data>
+  <data name="&gt;&gt;TDGridIngresos.Parent" xml:space="preserve">
+    <value>Ingresos</value>
+  </data>
+  <data name="Label3.TabIndex" type="System.Int32, mscorlib">
+    <value>177</value>
+  </data>
+  <data name="&gt;&gt;ProgressBar.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="LblProcesando.Location" type="System.Drawing.Point, System.Drawing">
+    <value>430, 427</value>
+  </data>
+  <data name="TxtPrecioSabado.TabIndex" type="System.Int32, mscorlib">
+    <value>185</value>
+  </data>
+  <data name="CmdNomina.Location" type="System.Drawing.Point, System.Drawing">
+    <value>85, 394</value>
+  </data>
+  <data name="&gt;&gt;DTPFechaFin.Parent" xml:space="preserve">
+    <value>GroupBox1</value>
+  </data>
+  <data name="Label13.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="&gt;&gt;ProgressBar.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;CmdBorraLinea.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="DTPFechaIni.Size" type="System.Drawing.Size, System.Drawing">
+    <value>117, 20</value>
+  </data>
+  <data name="LblTotalPlanilla.Location" type="System.Drawing.Point, System.Drawing">
+    <value>545, 48</value>
+  </data>
+  <data name="CmdSalir.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopCenter</value>
+  </data>
+  <data name="TabControl1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 109</value>
+  </data>
+  <data name="&gt;&gt;TxtPrecioSabado.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="CmdBorraLinea.Location" type="System.Drawing.Point, System.Drawing">
+    <value>-8, -1</value>
+  </data>
+  <data name="Label10.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="TDGridIngresos.PrintInfo.PrintHorizontalSplits" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="Label8.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="resource.Color2" type="System.Drawing.Color, System.Drawing">
+    <value>DarkGray</value>
+  </data>
+  <data name="resource.Color1" type="System.Drawing.Color, System.Drawing">
+    <value>DarkGray</value>
+  </data>
+  <data name="LblProcesando.TabIndex" type="System.Int32, mscorlib">
+    <value>195</value>
+  </data>
+  <data name="&gt;&gt;Label10.Parent" xml:space="preserve">
+    <value>GroupBox2</value>
+  </data>
+  <data name="TDGridIngresos.PrintInfo.OneFormPerPage" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;TxtPrecioSabado.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="TxtIR.Location" type="System.Drawing.Point, System.Drawing">
+    <value>95, 16</value>
+  </data>
+  <data name="DTPFechaFin.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="Label7.TabIndex" type="System.Int32, mscorlib">
+    <value>182</value>
+  </data>
+  <data name="&gt;&gt;Configuracion.Name" xml:space="preserve">
+    <value>Configuracion</value>
+  </data>
+  <data name="&gt;&gt;TxtIR.Parent" xml:space="preserve">
+    <value>GroupBox2</value>
+  </data>
+  <data name="TDGridIngresos.PreviewInfo.UIStrings.Content" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>AAEAAAD/////AQAAAAAAAAARAQAAAAAAAAAL</value>
+  </data>
+  <data name="Button1.Text" xml:space="preserve">
+    <value>Borrar Linea</value>
+  </data>
+  <assembly alias="C1.Win.C1TrueDBGrid.2" name="C1.Win.C1TrueDBGrid.2, Version=2.0.20063.60825, Culture=neutral, PublicKeyToken=75ae3fb0e2b1e0da" />
+  <data name="resource.Style1" type="C1.Win.C1TrueDBGrid.LineStyleEnum, C1.Win.C1TrueDBGrid.2">
+    <value>Single</value>
+  </data>
+  <data name="&gt;&gt;TxtPrecioDomingo.Name" xml:space="preserve">
+    <value>TxtPrecioDomingo</value>
+  </data>
+  <data name="TDGridIngresos.PrintInfo.ProgressCaption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;Ingresos.Parent" xml:space="preserve">
+    <value>TabControl1</value>
+  </data>
+  <data name="CmdBorraLinea.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1041, 60</value>
+  </data>
+  <data name="TxtPrecioSabado.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="Button2.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopCenter</value>
+  </data>
+  <data name="&gt;&gt;GroupBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Ingresos.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="TDGridDeducciones.PropBag" xml:space="preserve">
+    <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;DataCols&gt;&lt;C1DataColumn Caption="Codigo" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;C1DataColumn Caption="Nombre Productor" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;C1DataColumn Caption="IR" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;C1DataColumn Caption="Trazabilidad" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;C1DataColumn Caption="Anticipo" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;C1DataColumn Caption="Transporte" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;C1DataColumn Caption="Pulperia" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;C1DataColumn Caption="Inseminacion" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;C1DataColumn Caption="Producto Vet" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;C1DataColumn Caption="Total Egreso" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;C1DataColumn Caption="Neto Pagar" DataField=""&gt;&lt;ValueItems /&gt;&lt;GroupInfo /&gt;&lt;/C1DataColumn&gt;&lt;/DataCols&gt;&lt;Styles type="C1.Win.C1TrueDBGrid.Design.ContextWrapper"&gt;&lt;Data&gt;Style11{}OddRow{}Style142{}Style70{}Style6{}RecordSelector{AlignImage:Center;}Style85{}Style105{}Style118{AlignHorz:Near;}Style73{}Style110{}Style127{}Style122{}Style131{AlignHorz:Near;}Style90{}FilterBar{}Style8{AlignHorz:Near;}Style119{AlignHorz:Near;}Style129{}Style139{}Style79{AlignHorz:Near;}Style93{}Style15{}Style74{}Style116{}Style1{AlignHorz:Near;}Style141{}Style77{BackColor:215, 228, 242;}Style109{}Style72{}Style100{AlignHorz:Near;}Style117{}Style113{AlignHorz:Near;}Style126{}Style135{}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style121{}Style134{}Style130{AlignHorz:Near;}Style83{Font:Microsoft Sans Serif, 8.25pt;AlignHorz:Near;}Style101{AlignHorz:Near;}Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}Style78{}Style111{}Style92{}Style14{}EvenRow{BackColor:Aqua;}Style10{}Style89{AlignHorz:Near;}Group{AlignVert:Center;Border:None,,0, 0, 0, 0;BackColor:ControlDark;}Style86{}Footer{}Style80{}Style76{}Style140{}Style104{}Style84{}Style108{}Style71{}Style107{AlignHorz:Near;}Heading{Wrap:True;BackColor:Control;Border:Flat,ControlDark,0, 1, 0, 1;ForeColor:ControlText;AlignVert:Center;}Style87{}Style125{AlignHorz:Near;}Style138{AlignHorz:Near;}Style120{}Style137{AlignHorz:Near;}Style133{}Style82{AlignHorz:Near;}Style4{}Style112{AlignHorz:Near;}Style91{}Style3{}Style81{}Style88{AlignHorz:Near;}Style103{}Style5{}Normal{}Style75{}Editor{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Style106{AlignHorz:Near;}Style115{}Style128{}Style124{AlignHorz:Near;}Caption{AlignHorz:Center;}Style123{}Style136{}Style132{}Style2{AlignHorz:Near;}Style7{AlignHorz:Near;}Style9{}Style114{}Style102{}Style12{}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1TrueDBGrid.MergeView Name="Split[0,0]" AlternatingRowStyle="True" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" FilterBar="True" MarqueeStyle="DottedCellBorder" RecordSelectorWidth="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="2"&gt;&lt;Height&gt;210&lt;/Height&gt;&lt;CaptionStyle parent="Heading" me="Style79" /&gt;&lt;EditorStyle parent="Editor" me="Style71" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style77" /&gt;&lt;FilterBarStyle parent="FilterBar" me="Style136" /&gt;&lt;FooterStyle parent="Footer" me="Style73" /&gt;&lt;GroupStyle parent="Group" me="Style81" /&gt;&lt;HeadingStyle parent="Heading" me="Style72" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style76" /&gt;&lt;InactiveStyle parent="Inactive" me="Style75" /&gt;&lt;OddRowStyle parent="OddRow" me="Style78" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style80" /&gt;&lt;SelectedStyle parent="Selected" me="Style74" /&gt;&lt;Style parent="Normal" me="Style70" /&gt;&lt;internalCols&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style82" /&gt;&lt;Style parent="Style70" me="Style83" /&gt;&lt;FooterStyle parent="Style73" me="Style84" /&gt;&lt;EditorStyle parent="Style71" me="Style85" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style87" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style86" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Width&gt;78&lt;/Width&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;0&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style88" /&gt;&lt;Style parent="Style70" me="Style89" /&gt;&lt;FooterStyle parent="Style73" me="Style90" /&gt;&lt;EditorStyle parent="Style71" me="Style91" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style93" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style92" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;1&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style100" /&gt;&lt;Style parent="Style70" me="Style101" /&gt;&lt;FooterStyle parent="Style73" me="Style102" /&gt;&lt;EditorStyle parent="Style71" me="Style103" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style105" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style104" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Width&gt;69&lt;/Width&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;2&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style112" /&gt;&lt;Style parent="Style70" me="Style113" /&gt;&lt;FooterStyle parent="Style73" me="Style114" /&gt;&lt;EditorStyle parent="Style71" me="Style115" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style117" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style116" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Width&gt;77&lt;/Width&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;4&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style118" /&gt;&lt;Style parent="Style70" me="Style119" /&gt;&lt;FooterStyle parent="Style73" me="Style120" /&gt;&lt;EditorStyle parent="Style71" me="Style121" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style123" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style122" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Width&gt;79&lt;/Width&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;5&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style124" /&gt;&lt;Style parent="Style70" me="Style125" /&gt;&lt;FooterStyle parent="Style73" me="Style126" /&gt;&lt;EditorStyle parent="Style71" me="Style127" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style129" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style128" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Width&gt;79&lt;/Width&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;6&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style130" /&gt;&lt;Style parent="Style70" me="Style131" /&gt;&lt;FooterStyle parent="Style73" me="Style132" /&gt;&lt;EditorStyle parent="Style71" me="Style133" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style135" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style134" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Width&gt;84&lt;/Width&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;7&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style106" /&gt;&lt;Style parent="Style70" me="Style107" /&gt;&lt;FooterStyle parent="Style73" me="Style108" /&gt;&lt;EditorStyle parent="Style71" me="Style109" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style111" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style110" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Width&gt;79&lt;/Width&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;3&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style137" /&gt;&lt;Style parent="Style70" me="Style138" /&gt;&lt;FooterStyle parent="Style73" me="Style139" /&gt;&lt;EditorStyle parent="Style71" me="Style140" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style142" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style141" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Width&gt;76&lt;/Width&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;8&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style1" /&gt;&lt;Style parent="Style70" me="Style2" /&gt;&lt;FooterStyle parent="Style73" me="Style3" /&gt;&lt;EditorStyle parent="Style71" me="Style4" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style6" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style5" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Width&gt;84&lt;/Width&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;9&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;C1DisplayColumn&gt;&lt;HeadingStyle parent="Style72" me="Style7" /&gt;&lt;Style parent="Style70" me="Style8" /&gt;&lt;FooterStyle parent="Style73" me="Style9" /&gt;&lt;EditorStyle parent="Style71" me="Style10" /&gt;&lt;GroupHeaderStyle parent="Style70" me="Style12" /&gt;&lt;GroupFooterStyle parent="Style70" me="Style11" /&gt;&lt;Visible&gt;True&lt;/Visible&gt;&lt;ColumnDivider&gt;DarkGray,Single&lt;/ColumnDivider&gt;&lt;Height&gt;15&lt;/Height&gt;&lt;DCIdx&gt;10&lt;/DCIdx&gt;&lt;/C1DisplayColumn&gt;&lt;/internalCols&gt;&lt;ClientRect&gt;0, 17, 992, 210&lt;/ClientRect&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;/C1.Win.C1TrueDBGrid.MergeView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="Editor" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Normal" me="FilterBar" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;ClientArea&gt;0, 0, 992, 227&lt;/ClientArea&gt;&lt;PrintPageHeaderStyle parent="" me="Style14" /&gt;&lt;PrintPageFooterStyle parent="" me="Style15" /&gt;&lt;/Blob&gt;</value>
+  </data>
+  <data name="Label9.Text" xml:space="preserve">
+    <value>REGISTROS DE PLANILLAS CONDUCTORES</value>
+  </data>
+  <data name="Label2.Text" xml:space="preserve">
+    <value>Inicio Periodo</value>
+  </data>
+  <data name="ProgressBar.TabIndex" type="System.Int32, mscorlib">
+    <value>194</value>
+  </data>
+  <data name="&gt;&gt;Label13.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="Ingresos.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -1785,6 +1693,9 @@
   </data>
   <data name="Label12.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
+  </data>
+  <data name="Label8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 13</value>
   </data>
   <data name="&gt;&gt;CmdCalcular.Name" xml:space="preserve">
     <value>CmdCalcular</value>
@@ -1850,6 +1761,35 @@
         JqKl6p8l8WDnjxbPaM8Qkblc6bFF/gOuJxX/A9fm6lmDS3bvAAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="TDGridIngresos.PrintInfo.PageSettings" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBDdWx0
+        dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAACRTeXN0ZW0uRHJh
+        d2luZy5QcmludGluZy5QYWdlU2V0dGluZ3MHAAAAD3ByaW50ZXJTZXR0aW5ncwVjb2xvcglwYXBlclNp
+        emULcGFwZXJTb3VyY2URcHJpbnRlclJlc29sdXRpb24JbGFuZHNjYXBlB21hcmdpbnMEBAQEBAQEJ1N5
+        c3RlbS5EcmF3aW5nLlByaW50aW5nLlByaW50ZXJTZXR0aW5ncwIAAAAgU3lzdGVtLkRyYXdpbmcuUHJp
+        bnRpbmcuVHJpU3RhdGUCAAAAIVN5c3RlbS5EcmF3aW5nLlByaW50aW5nLlBhcGVyU2l6ZQIAAAAjU3lz
+        dGVtLkRyYXdpbmcuUHJpbnRpbmcuUGFwZXJTb3VyY2UCAAAAKVN5c3RlbS5EcmF3aW5nLlByaW50aW5n
+        LlByaW50ZXJSZXNvbHV0aW9uAgAAACBTeXN0ZW0uRHJhd2luZy5QcmludGluZy5UcmlTdGF0ZQIAAAAf
+        U3lzdGVtLkRyYXdpbmcuUHJpbnRpbmcuTWFyZ2lucwIAAAACAAAACQMAAAAF/P///yBTeXN0ZW0uRHJh
+        d2luZy5QcmludGluZy5UcmlTdGF0ZQEAAAAFdmFsdWUAAgIAAAAACgoKAfv////8////AAkGAAAABQMA
+        AAAnU3lzdGVtLkRyYXdpbmcuUHJpbnRpbmcuUHJpbnRlclNldHRpbmdzEgAAAAtwcmludGVyTmFtZQpk
+        cml2ZXJOYW1lCm91dHB1dFBvcnQLcHJpbnRUb0ZpbGUUcHJpbnREaWFsb2dEaXNwbGF5ZWQKZXh0cmFi
+        eXRlcwlleHRyYWluZm8GY29waWVzBmR1cGxleAdjb2xsYXRlE2RlZmF1bHRQYWdlU2V0dGluZ3MIZnJv
+        bVBhZ2UGdG9QYWdlB21heFBhZ2UHbWluUGFnZQpwcmludFJhbmdlDGRldm1vZGVieXRlcw1jYWNoZWRE
+        ZXZtb2RlAQEBAAAABwAEBAQAAAAABAAHAQEHAgceU3lzdGVtLkRyYXdpbmcuUHJpbnRpbmcuRHVwbGV4
+        AgAAACBTeXN0ZW0uRHJhd2luZy5QcmludGluZy5UcmlTdGF0ZQIAAAAkU3lzdGVtLkRyYXdpbmcuUHJp
+        bnRpbmcuUGFnZVNldHRpbmdzAgAAAAgICAgiU3lzdGVtLkRyYXdpbmcuUHJpbnRpbmcuUHJpbnRSYW5n
+        ZQIAAAAHAgIAAAAKBgcAAAAACQcAAAAAAAAACv//Bfj///8eU3lzdGVtLkRyYXdpbmcuUHJpbnRpbmcu
+        RHVwbGV4AQAAAAd2YWx1ZV9fAAgCAAAA/////wH3/////P///wAJCgAAAAAAAAAAAAAADycAAAAAAAAF
+        9f///yJTeXN0ZW0uRHJhd2luZy5QcmludGluZy5QcmludFJhbmdlAQAAAAd2YWx1ZV9fAAgCAAAAAAAA
+        AAAACgUGAAAAH1N5c3RlbS5EcmF3aW5nLlByaW50aW5nLk1hcmdpbnMIAAAABGxlZnQFcmlnaHQDdG9w
+        BmJvdHRvbQpkb3VibGVMZWZ0C2RvdWJsZVJpZ2h0CWRvdWJsZVRvcAxkb3VibGVCb3R0b20AAAAAAAAA
+        AAgICAgGBgYGAgAAAGQAAABkAAAAZAAAAGQAAAAAAAAAAABZQAAAAAAAAFlAAAAAAAAAWUAAAAAAAABZ
+        QAEKAAAAAQAAAAkDAAAAAfP////8////AAoKCgHy/////P///wAJDwAAAAEPAAAABgAAAGQAAABkAAAA
+        ZAAAAGQAAAAAAAAAAABZQAAAAAAAAFlAAAAAAAAAWUAAAAAAAABZQAs=
+</value>
+  </data>
   <data name="Label15.Size" type="System.Drawing.Size, System.Drawing">
     <value>82, 13</value>
   </data>
@@ -1883,32 +1823,114 @@
   <data name="TDGridDeducciones.PrintInfo.OwnerDrawPageHeader" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="PictureBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 60</value>
-  </data>
-  <data name="&gt;&gt;TxtPrecioMiercoles.Name" xml:space="preserve">
-    <value>TxtPrecioMiercoles</value>
+  <data name="CmdCalcular.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
+        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACwwAAAsMAT9AIsgAABMzSURBVGhD3VppVFVXlq5/3au7
+        f3ev6qpKKokmTqiAyDwP7z3Gxxt48JjnQRGiiEOCQ0ycBZV5EIEHOOEIDoCIKCLILAgIziaaZHWnUtV/
+        e62v17efEBVMpf65+sf2Xu4599zznT18e+/n7wD8jrJ6zcZ/2fbVXt+D+WXbq6pPbMsvqNh5ILfwYEFh
+        xc6S0potBw+V7Ms7WJxbUlq9tbCockduXmEe53Ds0OHSfbl5RbnFJdVbi4qPfmUeK99VWiZje81jVduK
+        io9uz80ryjucX77bPFa2h3+/OVa2p7SsJodX/s3nHOf9oUOl+yqPHtt+uKB8x+59+UnpmV/8fnr/8g/F
+        GJFSGBaeDL9AI1xc1XB11cLdQw83Ny1cXYLlnuLqqoGrmxbuniG/jLnrfhlz1ZjH3HVzj3HNV2O8/kNj
+        bjq4uAbDW6mHPjQeEVGp7XMASTaFhiUhICAOWl0i4hJXIyZ+FaLj3h/hnsLCUxDgzz0mIDwyuX8WEENo
+        sokgsjavw8Xuw+iYKEHrUAFaBt8faR8tQsdYMfYXb4VOl8gDnw1E6RNjIuLW4UI8+d86dD8uQ8+T90u6
+        H5Xi3l+qcO+nKmzbsxk+XtGzgfh4RZsystbi2kgRBl4cQcd48XspnVMlGPqhUrSiUsbOBqLwjjatysxE
+        y0ABBl6+v0C6HpSi/7sj2HU45/85EJpW+rq1uDpc+F6b1q2pUgx+X4m9he8wLQJJW5OBGxMlmPifannp
+        5v2S90pujBej93kFxv9ajT0FW+Z2dq0u0RSkjsfu/Bz0fXsEd388iv5vK9D3/P2RwZeVGP2pCrVNexEZ
+        nYqgoPjZQCKiU036kCQEBsQjISUdm7ZvQPaWbKz/cv0ckvWWvD3+j86bPTfrC8q6N2TjtvXIWP85tNpE
+        qNXxiIhOnQ3EGJFiCo9MgTEiBTptMgL8ExEYkIigQLPwnqIOSkKAfzx8VdFyDQokeArHE2bm8Tnf8/ON
+        ha8q5tWz5NfG31yT73I9pTIaTk5aONgHw9UlBC7O+hlxtNfCySEYak0MomJXca/vApKKiKg0aHQxUPjq
+        YO+kgOUKNyxcYgdrG3cofLXwDwpDWHgSYmLXwBiRjMBgIzx91LCx84T1SnestPOCo4sKKv8QBGujEBm9
+        CtEx6dAZ4uAbEAI3zwBYr/TA0uVOMt/NK0DWDDUmItSYjGBtDDbl7ELNsTOoqm3AkeoTIkdNp1B7/Cx2
+        7y8Ec8JgTTTCI+fQSHhkqik6Nh1qTRRW2LrBYrkd0jOyUVpejaqaY8jeuAVWK12w1NIBSj89omLSZbNW
+        Ns5YZLESickZaDhzAdt37IGzmwqLLGxg7+QFXUicaNnF3VfWtLRxRtaGL3HpSivWrv8Cy6wc5bmrhx+U
+        qhBs/zoPA6P3MfbgCfrvjuNW77AI74fGpjD59FuUVNRCHRwFnT5uNpCIqDRTVMxq+PqHYKW9B+wcvRAS
+        GoPQ8Hicb7yMGtNxLLKwhfVKV3gpgqE3xMNbqcHH85chJi4VDafPITElA7l5hSgsKsdH85bJOoHqcGh0
+        0XBw9sGHHy/BN7tycbLhPJJSP8eZc4346pu9+OOfF8HW3hNKXz2OVB3H8NgUWtq70NR8Hf1D9zAwPIam
+        5g5caevE0NgkzjQ2IyZuDQKCwucGEhm9Gr4BobB39pYTnPeZJdw8/VFUUonVa7Lx8afLZUM+Sg0MYQlQ
+        qHRyoo4uCuQdKsLl5qsorzQhIWkNPl1oLRoJCo6AVh8jcwikoKgCR6vr8enCFSgqOYJD+SX44KPFsHP0
+        hsrPgOIyE+4M3sONrj509gzg6fPv8PT5C9y6M4jrnXfQO3QPx083gdYTqI74O0CczED+84MF2LPvEKpN
+        x8XceMLc3AwQXx0WL7WFh08QDheUobHpCmrrTyF11VosWGwjWg3SmIHQ3CyW24ufbd2+C4NDw2hpvSY+
+        Nn+BFRycfARIUWmNmFLv4Ci+/e57TD16iqmHT/Hdix/QOziC2/13cayhUUw7UB35biAqf4MAsVzhDE+f
+        QJxqOCd2/4cPFoodE4i3MhghofGyqT98uAA5W79BRaUJ//Sv/47MdZtQf6wBi5faw8beHYHBZtNyclWK
+        dgnws0U2ON94CfmFZfjjh4vg4OIzo5HSI3UYGJlA6/UuXGhux72JBxi7/xCNzddx5Von+kcmcOrcZcTG
+        07TeoRFGF19/A1bau+PP85Yie9NWVFbVyoYtljvIqXJzXgo1QsOT4K3QYKGFjQA8dLgYV5rbYKo7gfik
+        dMxfaC3rqDWR4vA0SR4Cn3+etRnlR6qh9NNi8VI72Dl5ifa8FTqUVNRhbOoJbnYP4GpHN7ruDIq03ejG
+        tZs9mHj0DKcvXIExPAVBwXNohOE3Kno1DMZE2aitgyc8vAPhxM3buYupOTh7CxiecGx8JoK10XD3CsCS
+        ZfawtnVDQvIaqPz1WLhkJRxdfCQsM2JxXXM49xZR+GpEQ1Y2LrIeNcIQrNZEIyF5LY43NKJncBQ3uvtw
+        9Ua3yPWuXjGrlvZbyN64A/6B4Qg1Js0NhPGZkUs4IjwZam00gjSR0BviJEpRaH7RwiEpchXwYYkI1kXD
+        R6WHf5BRzC7UmCTj5JGIyDSJMlw/JDRBDiAoOFLmcc1wGc+QOX7+YVAoQxCXmIm09A1ISl0nkrJqPVJX
+        Z8M/0AgfhY4cQs6bGwjJkBPooPQDv0ADnN18sdTSCa4e/kJo5A5unB/lZnmSnMuo5OSqgo9KCx+VRoQR
+        iyBosnR4jnENrmnn6CMmS1H66aSZEBKaCL0hAdt2HICp/gwqqo6hrLJepLyyXp7l5VfIt8kjv0qIBGHr
+        6Cl2+9G8pdDowlFbdwJJqZnCGYxeNBOetNJXh6WW9lhm7YTNOTtw8XILdu7OhUKlwWeLV4h5EgD9ydFV
+        AVsHD8xbYIXA4DCZFxIWK2a4wtYVzq4qKFR67NlfiLsTD0X67o6hq29YhITYd3ccD569wNHaU5J9aHRz
+        pPGvRy06HoVh8eDhYvz889+QnrEBf/posdj4NCEyDJOVefqVVfXYsn23gJ0O31yDUYtmR58wk6IFyipq
+        ZD4jFg/G2U0JWwcvqPxCUFF1HIOj99HU0oHR8SlMPniMyQdP5J6Ri1Hr9IVmxMZnICDw7xCik6sCH3y8
+        BGnpWTiQW4i8g0XCDYxkdOLXCZEpCx2WRNd5qwefr9sMR2eFZAAE9DqPUMORMcno7OrBjZtdiIxJgeUK
+        F9GU/SseISH2DY+JU19uu4n//svPIpev3pS/qZnfTIhLltvDxcMXZ881oayiWlj7cEEpFlrQDNzeAEJg
+        NnYeWLLcAUEaI5pbrmHvgXx8+IkF7Bw9Z4AQFM2opKwKe/cfhkYfKakPNU3GnwZSVFYjQLhphtuf/vJX
+        /PzXv6G98w4utnSgf8QM5DcRImM7HZB2zDRiYHBE8iOe3lIrxxlCpPMyRQnWhkteRq7h/PzCcklneNLT
+        hEgzo/Yqj9Zi4+bt+Gj+MpjqTmLzlzvEZDlOIHRs+sKlqzdx/8FjjIzdx+jYJCYfPsHF1g4BaSbEjLkJ
+        MTwyTZzdLzBMTo+boL3/+RMLrMvOQWJKJj55tTn6CGsXH6UW8xdaCe8UFJWj63YPCorK4KMKltNnSqPW
+        MnzHi3/w/bCIBFTX1KP9+k18vWu/cJSFpb1ohGG1oKQa96Yeo2dgRHKta513RDO8J0lOPv4WJ89egsGY
+        xMg1GwjDLyNRWESyRCNnVyVcPf2kfiAwboQMTgLUhsTKiehCYuGtUMPKxlWc2RAWKyF4mZUT3L38JbQy
+        nNMM/APD4O7pj8XL7AU45/I9mipTIWYAGm2s2D4dnqZ0qbUDF1uuizS1XBd2P9vYgoy1OdQGeWluIGZC
+        TEdsXIYQHomQG/ALCJPCiKzPcZIXxxnP+WEWWjx5Lx8NHVDmMeRyXmTUKgHDTIBX+hZJlqkQfYdzeYA8
+        GK7n6xcKD69guV+VvglJKVkiqas2IDltPZS+Bnj5aKUAjIiag0emCZEb5OYZZUhcLJgMYXGwsnGTpI+O
+        TlMhWPoJ6xeaB3kgIioZnt5qWK90g7dSDb+AUPmg2THD4a0IFs1ZLHeUipKa8fQJgqd3kIDSh8QjLCIF
+        Bw6V4fylqzh17pI4NuXEmYuijcqakwIoUB05d6k7TYgBQUassHPDp4ussSp9PU41nEfD6fNYlZ6Fzxat
+        kCqRBRVPV6HSYv4CS3gqglBYXIGbnd3iKyp/ncylP9HRqQWa5qKltnKtrjmGtvYbUGsjMG+BpXyPmYGP
+        Uo/cQ+XiIwyznXcGcat3SIT3t/vu4uGzl6g7eR66kHimOrOBvB61yOw8ObXGiN//aQHWZX8p5S4TQ2tb
+        V4laQogqrTh1eFQS1mRukE3uO5Av0Y48xGx3ukLkeoyGrD8qjtSg6WIL4hPTJQDwvRlCPHpMCLG147aE
+        4Gm51HYTzdc6MTA6gdPnr7w7ar1dWPGEmE6szsjGwMCwEN0HH1tIBvw6jzi5KWHn5I1//rf/QExcGi5f
+        aROiY4ryNiEyWLAeYerCEJ2VvWUGyOuEKJnv7X4ppFhgUfrkWZ+5Qmz4jYRIEBR+hKdYXFopRRA3s9za
+        6U0grgrM+8xKUv6mi1ewYdNW/OHDX4qw14FwTb4fFByGispaZK7dPAsICZHpOktbFlXjk4+ksJqYfITb
+        vUMC8jcBoWmxOnT18MVXX+9FRFQSdu89KL7i4qbCUkszIZpzLZqWjWyyt3dACitmtTQjakNyrWnTclG+
+        AuIsSSPzrYzPN71lWoZfTOt6Fy613pgRsjorRHZYGn7NtF53dhY8rK+zsr9EY9NllJYfhUYXIQ5sY8eI
+        ZHZ2+siHHy+GzhANU+0JnDh5Bjt27pf032xCbzo7CZJreynVyNqQI+TIzgzXZH5GZz+YfwT3ptgKGhMS
+        pGYovO/qHcLD5y9Rf+qCHOSczj5Tj0SkChgPr0BJSSjLrV2wwtZdNGHWRpzwAoskLx81lls54aNPlmH+
+        AmtYvppr5+Al/S9yhLl1Y5RnFBtbdyxYvBLLLJ3g8MofCVgfkiDhPy+/HI2Xr+HMhRacOntZpOHcFZy/
+        1CYpPIusoHeF32lCZBFEjiDD8yRZkZEQyRksqIQw4zNlnF1BQ2gi4pM+F2FVR0lIWiuq1+rNlSXf02hj
+        BBTHpudREpPXyuanx/0CjPDwnJsQU9KyhRA9vTWvCPEdFeJMiuKnF7tnFqwzRCE0PE7SDp6ch3cQNPoY
+        aVlmrs3BuaZWyYGu3ezG1Y7bIkwvOnsGJQGk1lR+odibW4yOrj6R6XlMORid6A9btu+Ft48WxsgUlB2t
+        lzH6BrVAYbOO885caP71FOX1pJG2zdohLmE1LjReRtu160KIdEySF8Mny1wy7dTT72QzHV39cjXf96F7
+        YES6IZtzdiE5dT26+0cweG9SEkAKwU5f2R7lJmkRW7/aJ39z/vVbvXIgJEOuybUnn7xKGsPekTS+HbUY
+        ceqOnZLOSHRsGs6euyiV4JJldmLjkdFpONvUKgTF0+VGJLK0dYp2eKKs5lh/r8veLpui5jq7B9B1Zwi3
+        etjmGUIHuyN9w5IYJqVmYcfOPIlazddu4XRjC4ZGJjA0Mi73V9puyvd+NY1/nUfYlNaGRKKyqg4afRSU
+        vlrUHz8tP9hLKm/vifCoVHFANtPIuO2dPVI79PTfxaWrN+S0e4fHkLNtLzLX5aC5/Zak5g8ePcPT5y/x
+        8PFzPP/uewyP3pcUhOYTn5iJbTv2izbIGaPjk/jhx/8SGRmbxK2eAdE0eeTvFlZSIS6zR4A6FEeO1krV
+        5+bph7r6k4iOS5XcajaQWwJkeHQC3X3DUpYSCIsgAslYl4OW613o7r+LexNTuD/1GGMTDzD18An6h+9J
+        c+ENIAOj0pQbujuOl9//iBcvf8Tg8Dg6u/vNhPhbSl2aFmsEMjpJK+9gMQ7kFaC27qSQFpmZ2S1Nix+n
+        GcyYVuubpsWx7V/nYv3Gr3Cjux8dt/tw7UY32ukbr6St47YkgwTPsPr1roPy8wG1fLbpqnTiB4bGcKap
+        VXIu+tmvNh9ebwcxtaAJsSNYVVOPU6fPiYZYvrIN6uSikv5T3YnzePjshZjQ7YG7onYKU4zhiQfS0lm3
+        fpuEUvrH+KNnsuk3hOb27AWamtslnG/Y/A1G7j/C8PgDWWdauC6/8+DZS1TVNbAVxJbQbCAzhBiVJnU2
+        y1U6tZkQnbFipbnny1qeEUurM1eJ/NHl/MU2MbOTZy6JkMgYlr/efUg2x2Jp4xc7xUnPNrbOzCPRnbt4
+        FbUnziE9czMUSr30iXfuOSzPuc6J0xdFpgmR3+PBsB6Zs0EXakwSQpwuhMgpTEPYLObz6Z/lZsai0hCs
+        iYJ/gFEKIhJjiCFBhP/LiABIbiRDvsteLdmYY9PzDIZEeS8gMFw2xnXJOyRgEuQbc9mFDImX73Ftmvac
+        PBJqTEoxhidfNUakHJPOfGz6HLKGjW7Tq98bCdwUqI40KVQhJpVf6IwofQ0iGl0stUyiNekN8SZfv1CT
+        wtfwxly+6xdgNBnCEmUe19XoYmbWeHsuv/fKetpDjck7pvf/f8c1I50YflvnAAAAAElFTkSuQmCC
+</value>
   </data>
   <data name="Label4.Text" xml:space="preserve">
     <value>% IR</value>
   </data>
-  <data name="&gt;&gt;TxtPrecioSabado.Name" xml:space="preserve">
-    <value>TxtPrecioSabado</value>
-  </data>
   <data name="&gt;&gt;TxtPrecioJueves.Name" xml:space="preserve">
     <value>TxtPrecioJueves</value>
   </data>
-  <data name="TDGridIngresos.PrintInfo.RepeatColumnFooters" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="&gt;&gt;DTPFechaFin.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
-  <data name="Button1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>905, 213</value>
+  <data name="&gt;&gt;LblProcesando.Name" xml:space="preserve">
+    <value>LblProcesando</value>
+  </data>
+  <data name="Label14.TabIndex" type="System.Int32, mscorlib">
+    <value>184</value>
   </data>
   <data name="Button2.Text" xml:space="preserve">
     <value>Imp Colillas</value>
   </data>
-  <data name="ProgressBar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>475, 26</value>
+  <data name="Configuracion.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
   </data>
   <data name="Label5.Location" type="System.Drawing.Point, System.Drawing">
     <value>14, 65</value>
@@ -1918,6 +1940,9 @@
   </data>
   <data name="&gt;&gt;Button1.Parent" xml:space="preserve">
     <value>Configuracion</value>
+  </data>
+  <data name="&gt;&gt;Label11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
     <value>8</value>
@@ -1932,12 +1957,6 @@
     <value>GroupBox2</value>
   </data>
   <data name="TxtPrecioMartes.Text" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="TxtNumNomina.Location" type="System.Drawing.Point, System.Drawing">
-    <value>866, 22</value>
-  </data>
-  <data name="TxtDeduccionPolicia.Text" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="&gt;&gt;TabControl1.Parent" xml:space="preserve">
@@ -1964,17 +1983,14 @@
   <data name="Label3.Text" xml:space="preserve">
     <value>Inicio Periodo</value>
   </data>
-  <data name="&gt;&gt;Label7.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="TDGridIngresos.PrintInfo.RepeatColumnHeaders" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="&gt;&gt;TxtPrecioMartes.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
-  <data name="&gt;&gt;TxtPrecioLunes.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="LblProcesando.Size" type="System.Drawing.Size, System.Drawing">
-    <value>323, 16</value>
+  <data name="&gt;&gt;Button2.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="GroupBox1.Size" type="System.Drawing.Size, System.Drawing">
     <value>980, 51</value>
@@ -1987,6 +2003,9 @@
   </data>
   <data name="GroupBox2.Location" type="System.Drawing.Point, System.Drawing">
     <value>7, 5</value>
+  </data>
+  <data name="&gt;&gt;Label12.Parent" xml:space="preserve">
+    <value>GroupBox2</value>
   </data>
   <data name="&gt;&gt;Label13.Parent" xml:space="preserve">
     <value>GroupBox2</value>
@@ -2012,8 +2031,8 @@
   <data name="&gt;&gt;TxtPrecioLunes.Parent" xml:space="preserve">
     <value>GroupBox2</value>
   </data>
-  <data name="Label14.TabIndex" type="System.Int32, mscorlib">
-    <value>184</value>
+  <data name="&gt;&gt;TxtBolsa.Name" xml:space="preserve">
+    <value>TxtBolsa</value>
   </data>
   <data name="Label10.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2021,8 +2040,8 @@
   <data name="CboTipoPlanilla.PropBag" xml:space="preserve">
     <value>&lt;?xml version="1.0"?&gt;&lt;Blob&gt;&lt;Styles type="C1.Win.C1List.Design.ContextWrapper"&gt;&lt;Data&gt;Inactive{ForeColor:InactiveCaptionText;BackColor:InactiveCaption;}OddRow{}Style5{}Style1{}RecordSelector{AlignImage:Center;}Style6{}Style8{}Footer{}Style3{}Style4{}HighlightRow{ForeColor:HighlightText;BackColor:Highlight;}Style10{}EvenRow{BackColor:Aqua;}Style11{}Group{AlignVert:Center;Border:None,,0, 0, 0, 0;BackColor:ControlDark;}Caption{AlignHorz:Center;}Selected{ForeColor:HighlightText;BackColor:Highlight;}Style9{AlignHorz:Near;}Style2{}Normal{}Style7{}Heading{Wrap:True;BackColor:Control;Border:Raised,,1, 1, 1, 1;ForeColor:ControlText;AlignVert:Center;}&lt;/Data&gt;&lt;/Styles&gt;&lt;Splits&gt;&lt;C1.Win.C1List.ListBoxView AllowColSelect="False" Name="Split[0,0]" CaptionHeight="17" ColumnCaptionHeight="17" ColumnFooterHeight="17" DefRecSelWidth="17" VerticalScrollGroup="1" HorizontalScrollGroup="1"&gt;&lt;ClientRect&gt;0, 0, 116, 156&lt;/ClientRect&gt;&lt;Height&gt;156&lt;/Height&gt;&lt;BorderSide&gt;Right&lt;/BorderSide&gt;&lt;VScrollBar&gt;&lt;Width&gt;17&lt;/Width&gt;&lt;/VScrollBar&gt;&lt;HScrollBar&gt;&lt;Height&gt;17&lt;/Height&gt;&lt;/HScrollBar&gt;&lt;CaptionStyle parent="Style2" me="Style9" /&gt;&lt;EvenRowStyle parent="EvenRow" me="Style7" /&gt;&lt;FooterStyle parent="Footer" me="Style3" /&gt;&lt;GroupStyle parent="Group" me="Style11" /&gt;&lt;HeadingStyle parent="Heading" me="Style2" /&gt;&lt;HighLightRowStyle parent="HighlightRow" me="Style6" /&gt;&lt;InactiveStyle parent="Inactive" me="Style4" /&gt;&lt;OddRowStyle parent="OddRow" me="Style8" /&gt;&lt;RecordSelectorStyle parent="RecordSelector" me="Style10" /&gt;&lt;SelectedStyle parent="Selected" me="Style5" /&gt;&lt;Style parent="Normal" me="Style1" /&gt;&lt;/C1.Win.C1List.ListBoxView&gt;&lt;/Splits&gt;&lt;NamedStyles&gt;&lt;Style parent="" me="Normal" /&gt;&lt;Style parent="Normal" me="Heading" /&gt;&lt;Style parent="Heading" me="Footer" /&gt;&lt;Style parent="Heading" me="Caption" /&gt;&lt;Style parent="Heading" me="Inactive" /&gt;&lt;Style parent="Normal" me="Selected" /&gt;&lt;Style parent="Normal" me="HighlightRow" /&gt;&lt;Style parent="Normal" me="EvenRow" /&gt;&lt;Style parent="Normal" me="OddRow" /&gt;&lt;Style parent="Heading" me="RecordSelector" /&gt;&lt;Style parent="Caption" me="Group" /&gt;&lt;/NamedStyles&gt;&lt;vertSplits&gt;1&lt;/vertSplits&gt;&lt;horzSplits&gt;1&lt;/horzSplits&gt;&lt;Layout&gt;Modified&lt;/Layout&gt;&lt;DefaultRecSelWidth&gt;17&lt;/DefaultRecSelWidth&gt;&lt;/Blob&gt;</value>
   </data>
-  <data name="CmdNomina.TabIndex" type="System.Int32, mscorlib">
-    <value>190</value>
+  <data name="LblProcesando.Text" xml:space="preserve">
+    <value>Calculando  00001 JUAN BERMUDEZ HERNANDEZ</value>
   </data>
   <data name="Label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>69, 13</value>
@@ -2057,11 +2076,11 @@
   <data name="Label8.Location" type="System.Drawing.Point, System.Drawing">
     <value>14, 42</value>
   </data>
-  <data name="&gt;&gt;TxtDeduccionPolicia.ZOrder" xml:space="preserve">
-    <value>16</value>
+  <data name="TxtNumNomina.Location" type="System.Drawing.Point, System.Drawing">
+    <value>866, 22</value>
   </data>
-  <data name="Button2.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="PictureBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>107, 60</value>
   </data>
   <data name="&gt;&gt;Label8.ZOrder" xml:space="preserve">
     <value>13</value>
@@ -2072,43 +2091,20 @@
   <data name="TDGridIngresos.PrintInfo.UseGridColors" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="Label5.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="TDGridDeducciones.PreviewInfo.UIStrings.Content" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>AAEAAAD/////AQAAAAAAAAARAQAAAAAAAAAL</value>
+  </data>
+  <data name="&gt;&gt;Label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;CmdSalir.Name" xml:space="preserve">
     <value>CmdSalir</value>
   </data>
-  <data name="TDGridIngresos.TabIndex" type="System.Int32, mscorlib">
-    <value>170</value>
-  </data>
-  <data name="TDGridIngresos.PrintInfo.PageSettings" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBDdWx0
-        dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAACRTeXN0ZW0uRHJh
-        d2luZy5QcmludGluZy5QYWdlU2V0dGluZ3MHAAAAD3ByaW50ZXJTZXR0aW5ncwVjb2xvcglwYXBlclNp
-        emULcGFwZXJTb3VyY2URcHJpbnRlclJlc29sdXRpb24JbGFuZHNjYXBlB21hcmdpbnMEBAQEBAQEJ1N5
-        c3RlbS5EcmF3aW5nLlByaW50aW5nLlByaW50ZXJTZXR0aW5ncwIAAAAgU3lzdGVtLkRyYXdpbmcuUHJp
-        bnRpbmcuVHJpU3RhdGUCAAAAIVN5c3RlbS5EcmF3aW5nLlByaW50aW5nLlBhcGVyU2l6ZQIAAAAjU3lz
-        dGVtLkRyYXdpbmcuUHJpbnRpbmcuUGFwZXJTb3VyY2UCAAAAKVN5c3RlbS5EcmF3aW5nLlByaW50aW5n
-        LlByaW50ZXJSZXNvbHV0aW9uAgAAACBTeXN0ZW0uRHJhd2luZy5QcmludGluZy5UcmlTdGF0ZQIAAAAf
-        U3lzdGVtLkRyYXdpbmcuUHJpbnRpbmcuTWFyZ2lucwIAAAACAAAACQMAAAAF/P///yBTeXN0ZW0uRHJh
-        d2luZy5QcmludGluZy5UcmlTdGF0ZQEAAAAFdmFsdWUAAgIAAAAACgoKAfv////8////AAkGAAAABQMA
-        AAAnU3lzdGVtLkRyYXdpbmcuUHJpbnRpbmcuUHJpbnRlclNldHRpbmdzEgAAAAtwcmludGVyTmFtZQpk
-        cml2ZXJOYW1lCm91dHB1dFBvcnQLcHJpbnRUb0ZpbGUUcHJpbnREaWFsb2dEaXNwbGF5ZWQKZXh0cmFi
-        eXRlcwlleHRyYWluZm8GY29waWVzBmR1cGxleAdjb2xsYXRlE2RlZmF1bHRQYWdlU2V0dGluZ3MIZnJv
-        bVBhZ2UGdG9QYWdlB21heFBhZ2UHbWluUGFnZQpwcmludFJhbmdlDGRldm1vZGVieXRlcw1jYWNoZWRE
-        ZXZtb2RlAQEBAAAABwAEBAQAAAAABAAHAQEHAgceU3lzdGVtLkRyYXdpbmcuUHJpbnRpbmcuRHVwbGV4
-        AgAAACBTeXN0ZW0uRHJhd2luZy5QcmludGluZy5UcmlTdGF0ZQIAAAAkU3lzdGVtLkRyYXdpbmcuUHJp
-        bnRpbmcuUGFnZVNldHRpbmdzAgAAAAgICAgiU3lzdGVtLkRyYXdpbmcuUHJpbnRpbmcuUHJpbnRSYW5n
-        ZQIAAAAHAgIAAAAKBgcAAAAACQcAAAAAAAAACv//Bfj///8eU3lzdGVtLkRyYXdpbmcuUHJpbnRpbmcu
-        RHVwbGV4AQAAAAd2YWx1ZV9fAAgCAAAA/////wH3/////P///wAJCgAAAAAAAAAAAAAADycAAAAAAAAF
-        9f///yJTeXN0ZW0uRHJhd2luZy5QcmludGluZy5QcmludFJhbmdlAQAAAAd2YWx1ZV9fAAgCAAAAAAAA
-        AAAACgUGAAAAH1N5c3RlbS5EcmF3aW5nLlByaW50aW5nLk1hcmdpbnMIAAAABGxlZnQFcmlnaHQDdG9w
-        BmJvdHRvbQpkb3VibGVMZWZ0C2RvdWJsZVJpZ2h0CWRvdWJsZVRvcAxkb3VibGVCb3R0b20AAAAAAAAA
-        AAgICAgGBgYGAgAAAGQAAABkAAAAZAAAAGQAAAAAAAAAAABZQAAAAAAAAFlAAAAAAAAAWUAAAAAAAABZ
-        QAEKAAAAAQAAAAkDAAAAAfP////8////AAoKCgHy/////P///wAJDwAAAAEPAAAABgAAAGQAAABkAAAA
-        ZAAAAGQAAAAAAAAAAABZQAAAAAAAAFlAAAAAAAAAWUAAAAAAAABZQAs=
-</value>
-  </data>
-  <data name="Label8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 13</value>
+  <data name="TxtDeduccionPolicia.Text" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="GroupBox2.Text" xml:space="preserve">
     <value>Configuracion Planilla</value>
@@ -2116,38 +2112,42 @@
   <data name="LblProcesando.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 9.75pt</value>
   </data>
-  <data name="TDGridDeducciones.PrintInfo.RepeatGridHeader" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="resource.Color" type="System.Drawing.Color, System.Drawing">
+    <value>DarkGray</value>
   </data>
   <data name="Label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="CmdCalcular.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>TopCenter</value>
+  <data name="&gt;&gt;GroupBox1.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="&gt;&gt;TxtPrecioMartes.Parent" xml:space="preserve">
-    <value>GroupBox2</value>
+  <data name="TDGridDeducciones.PrintInfo.ShowOptionsDialog" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="&gt;&gt;Deducciones.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="CmdSalir.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>BottomCenter</value>
+  <data name="Label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 13</value>
   </data>
   <data name="Ingresos.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="Label13.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;TxtPrecioSabado.Name" xml:space="preserve">
+    <value>TxtPrecioSabado</value>
   </data>
-  <data name="&gt;&gt;Label11.Parent" xml:space="preserve">
+  <data name="&gt;&gt;TxtPrecioJueves.Parent" xml:space="preserve">
     <value>GroupBox2</value>
   </data>
   <data name="Label6.Text" xml:space="preserve">
     <value>Precio Lunes</value>
   </data>
-  <data name="&gt;&gt;Label10.ZOrder" xml:space="preserve">
-    <value>11</value>
+  <data name="TDGridDeducciones.Images" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        vAAADrwBlbxySQAAADFJREFUKFNjYMAE/9EFYABZAhcbRQCdxgAgCRjGKYEL49SAFcAk0Gk4QBbAxUYB
+        GBIAoKoc5Nu1Or4AAAAASUVORK5CYII=
+</value>
   </data>
   <data name="&gt;&gt;TxtPrecioMiercoles.Parent" xml:space="preserve">
     <value>GroupBox2</value>
@@ -2155,8 +2155,8 @@
   <data name="&gt;&gt;TxtPrecioMartes.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="TDGridDeducciones.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 6</value>
+  <data name="ProgressBar2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>759, 427</value>
   </data>
   <data name="&gt;&gt;Label12.Name" xml:space="preserve">
     <value>Label12</value>
@@ -2176,8 +2176,8 @@
   <data name="CboTipoPlanilla.Location" type="System.Drawing.Point, System.Drawing">
     <value>120, 19</value>
   </data>
-  <data name="Label6.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="TxtPrecioMiercoles.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 20</value>
   </data>
   <data name="&gt;&gt;TxtNumNomina.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -2188,11 +2188,11 @@
   <data name="&gt;&gt;TDGridIngresos.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;Label11.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="TDGridIngresos.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
   </data>
-  <data name="Ingresos.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1006, 257</value>
+  <data name="&gt;&gt;TxtIR.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="TxtPrecioLunes.Location" type="System.Drawing.Point, System.Drawing">
     <value>93, 86</value>
@@ -2212,8 +2212,8 @@
   <data name="Button1.TabIndex" type="System.Int32, mscorlib">
     <value>172</value>
   </data>
-  <data name="&gt;&gt;Label12.Parent" xml:space="preserve">
-    <value>GroupBox2</value>
+  <data name="ProgressBar.Location" type="System.Drawing.Point, System.Drawing">
+    <value>417, 398</value>
   </data>
   <data name="Label13.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 13</value>
@@ -2236,8 +2236,8 @@
   <data name="&gt;&gt;Label14.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;PictureBox2.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;Label2.Name" xml:space="preserve">
+    <value>Label2</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

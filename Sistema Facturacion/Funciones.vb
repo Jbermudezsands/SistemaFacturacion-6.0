@@ -1890,24 +1890,161 @@ WHERE NumNomina = @NumNomina
         End Using
 
 
-        If existe Then
+        If Not existe Then
 
-            Return ActualizarDetalleNominaTransportista(
-                    fila,
-                    fecha,
-                    cn,
-                    trans)
-
-        Else
-
-            Return InsertarDetalleNominaTransportista(
+            If Not InsertarDetalleNominaTransportista(
             fila,
             cn,
-            trans)
+            trans) Then
+
+                Return False
+
+            End If
 
         End If
 
+
+        '=====================================================
+        ' EL DIA SE RECALCULA CON TODOS LOS CREL DE LA SEMANA
+        '
+        ' El CSV trae un solo CREL. Si el transportista tambien
+        ' recogio leche en otro CREL el mismo dia, ese archivo
+        ' no debe borrar los litros del otro. La fuente confiable
+        ' es Detalle_Nomina (la misma que usa Calcular).
+        '=====================================================
+
+        AjustarDiaTransportistaDesdeNomina(
+        fila,
+        fecha,
+        cn,
+        trans)
+
+        Return ActualizarDetalleNominaTransportista(
+                fila,
+                fecha,
+                cn,
+                trans)
+
     End Function
+
+    '=========================================================
+    ' LITROS Y PRECIO DEL DIA, SUMANDO TODOS LOS CREL
+    '
+    ' Usa las mismas reglas de precio que Calcular:
+    '   1. Productor.Precio_Transportista
+    '   2. Transportista.Precio
+    '   3. Precio manual del dia en NominaTransportista
+    '
+    ' Si no encuentra litros en Detalle_Nomina, deja la fila
+    ' tal como vino del CSV.
+    '=========================================================
+    Private Sub AjustarDiaTransportistaDesdeNomina(
+    ByVal fila As DataRow,
+    ByVal fecha As DateTime,
+    ByVal cn As SqlConnection,
+    ByVal trans As SqlTransaction)
+
+        Dim dia As String = ""
+
+        Select Case fecha.DayOfWeek
+
+            Case DayOfWeek.Monday
+                dia = "Lunes"
+
+            Case DayOfWeek.Tuesday
+                dia = "Martes"
+
+            Case DayOfWeek.Wednesday
+                dia = "Miercoles"
+
+            Case DayOfWeek.Thursday
+                dia = "Jueves"
+
+            Case DayOfWeek.Friday
+                dia = "Viernes"
+
+            Case DayOfWeek.Saturday
+                dia = "Sabado"
+
+            Case DayOfWeek.Sunday
+                dia = "Domingo"
+
+        End Select
+
+        If dia = "" Then
+            Exit Sub
+        End If
+
+
+        'El nombre del dia sale de la lista fija anterior,
+        'nunca del usuario.
+        Dim sql As String =
+        "SELECT " &
+        "    ISNULL(SUM(D." & dia & "), 0) AS Litros, " &
+        "    ISNULL(SUM(D." & dia & " * " &
+        "        CASE " &
+        "            WHEN ISNULL(P.Precio_Transportista, 0) > 0 THEN P.Precio_Transportista " &
+        "            WHEN ISNULL(T.Precio, 0) > 0 THEN T.Precio " &
+        "            ELSE ISNULL(NT.Precio" & dia & ", 0) " &
+        "        END), 0) AS Importe " &
+        "FROM Detalle_Nomina AS D " &
+        "INNER JOIN Nomina AS N " &
+        "    ON N.NumPlanilla = D.NumNomina " &
+        "INNER JOIN NominaTransportista AS NT " &
+        "    ON NT.NumPlanilla = @NumNomina " &
+        "    AND N.FechaInicial = NT.FechaInicial " &
+        "    AND N.FechaFinal = NT.FechaFinal " &
+        "    AND N.Año = NT.Año " &
+        "    AND N.mes = NT.mes " &
+        "    AND N.Periodo = NT.Periodo " &
+        "INNER JOIN Productor AS P " &
+        "    ON P.CodProductor = D.CodProductor " &
+        "    AND P.TipoProductor = D.TipoProductor " &
+        "LEFT JOIN Transportista AS T " &
+        "    ON T.CodigoTransportista = D." & dia & "IdTransportista " &
+        "WHERE N.Activo = 1 " &
+        "    AND NT.Activo = 1 " &
+        "    AND ISNULL(D." & dia & ", 0) > 0 " &
+        "    AND D." & dia & "IdTransportista = @Codigo"
+
+        Dim litros As Double = 0
+        Dim importe As Double = 0
+
+        Using cmd As New SqlCommand(sql, cn, trans)
+
+            cmd.Parameters.Add(
+            "@NumNomina",
+            SqlDbType.NVarChar,
+            50).Value =
+            fila("NumNomina").ToString().Trim()
+
+            cmd.Parameters.Add(
+            "@Codigo",
+            SqlDbType.NVarChar,
+            50).Value =
+            fila("CodigoTransportista").ToString().Trim()
+
+            Using dr As SqlDataReader = cmd.ExecuteReader()
+
+                If dr.Read() Then
+
+                    litros = Convert.ToDouble(dr("Litros"))
+                    importe = Convert.ToDouble(dr("Importe"))
+
+                End If
+
+            End Using
+
+        End Using
+
+        If litros <= 0 Then
+            Exit Sub
+        End If
+
+        fila(dia) = litros
+        fila("Precio" & dia) = importe / litros
+
+    End Sub
 
     Public Function ActualizarDetalleNominaTransportista(
     ByVal fila As DataRow,
@@ -4392,6 +4529,423 @@ WHERE CodProductor = @CodProductor
     End Sub
 
 
+
+    '=========================================================
+    ' INFORME DE ADVERTENCIAS DE TRANSPORTISTAS
+    '
+    ' Solo LEE. No bloquea ni modifica la importacion: se
+    ' ejecuta despues del COMMIT y devuelve las lineas del
+    ' informe (lista vacia si no hay nada que advertir).
+    '=========================================================
+    Public Function GenerarAdvertenciasTransportista(
+    ByVal dtCsv As DataTable,
+    ByVal nombreArchivo As String,
+    ByVal asignaciones As List(Of String)) As List(Of String)
+
+        Dim informe As New List(Of String)
+
+        If asignaciones Is Nothing Then
+            asignaciones = New List(Of String)
+        End If
+
+        If dtCsv Is Nothing OrElse dtCsv.Rows.Count = 0 Then
+            Return informe
+        End If
+
+        Dim maestroTransp As New Dictionary(Of String, String)
+        Dim maestroPrecio As New Dictionary(Of String, Double)
+        Dim maestroNombre As New Dictionary(Of String, String)
+        Dim precioTransportista As New Dictionary(Of String, Double)
+        Dim precioManual(6) As Double
+        Dim manualDisponible As Boolean = False
+
+        Using cn As New SqlConnection(Conexion)
+
+            cn.Open()
+
+            'Maestro de productores
+            Using cmd As New SqlCommand(
+            "SELECT CodProductor, TipoProductor, " &
+            "ISNULL(CodigoTransportista, '') AS CodigoTransportista, " &
+            "ISNULL(Precio_Transportista, 0) AS Precio, " &
+            "ISNULL(NombreProductor, '') + ' ' + " &
+            "ISNULL(ApellidoProductor, '') AS Nombre " &
+            "FROM Productor", cn)
+
+                Using dr As SqlDataReader = cmd.ExecuteReader()
+
+                    While dr.Read()
+
+                        Dim clave As String =
+                        dr("CodProductor").ToString().Trim() &
+                        "|" &
+                        dr("TipoProductor").ToString().Trim()
+
+                        maestroTransp(clave) =
+                        dr("CodigoTransportista").ToString().Trim()
+
+                        maestroPrecio(clave) =
+                        Convert.ToDouble(dr("Precio"))
+
+                        maestroNombre(clave) =
+                        dr("Nombre").ToString().Trim()
+
+                    End While
+
+                End Using
+
+            End Using
+
+            'Precio por transportista (paso 2 de Calcular)
+            Using cmd As New SqlCommand(
+            "SELECT CodigoTransportista, ISNULL(Precio, 0) AS Precio " &
+            "FROM Transportista", cn)
+
+                Using dr As SqlDataReader = cmd.ExecuteReader()
+
+                    While dr.Read()
+
+                        precioTransportista(
+                        dr("CodigoTransportista").ToString().Trim()) =
+                        Convert.ToDouble(dr("Precio"))
+
+                    End While
+
+                End Using
+
+            End Using
+
+            'Precio manual por dia (paso 3 de Calcular)
+            Using cmd As New SqlCommand(
+            "SELECT ISNULL(PrecioLunes, 0) AS PrecioLunes, " &
+            "ISNULL(PrecioMartes, 0) AS PrecioMartes, " &
+            "ISNULL(PrecioMiercoles, 0) AS PrecioMiercoles, " &
+            "ISNULL(PrecioJueves, 0) AS PrecioJueves, " &
+            "ISNULL(PrecioViernes, 0) AS PrecioViernes, " &
+            "ISNULL(PrecioSabado, 0) AS PrecioSabado, " &
+            "ISNULL(PrecioDomingo, 0) AS PrecioDomingo " &
+            "FROM NominaTransportista WHERE Activo = 1", cn)
+
+                Dim cantidadNominas As Integer = 0
+
+                Using dr As SqlDataReader = cmd.ExecuteReader()
+
+                    While dr.Read()
+
+                        cantidadNominas += 1
+
+                        precioManual(0) = Convert.ToDouble(dr("PrecioDomingo"))
+                        precioManual(1) = Convert.ToDouble(dr("PrecioLunes"))
+                        precioManual(2) = Convert.ToDouble(dr("PrecioMartes"))
+                        precioManual(3) = Convert.ToDouble(dr("PrecioMiercoles"))
+                        precioManual(4) = Convert.ToDouble(dr("PrecioJueves"))
+                        precioManual(5) = Convert.ToDouble(dr("PrecioViernes"))
+                        precioManual(6) = Convert.ToDouble(dr("PrecioSabado"))
+
+                    End While
+
+                End Using
+
+                manualDisponible = (cantidadNominas = 1)
+
+            End Using
+
+        End Using
+
+
+        Dim sinTranspInformativo As New List(Of String)
+        Dim distintoMaestro As New List(Of String)
+        Dim precioCero As New List(Of String)
+
+        Dim litrosInformativo As Double = 0
+        Dim litrosPrecioCero As Double = 0
+
+        For Each fila As DataRow In dtCsv.Rows
+
+            Dim litros As Double = 0
+
+            If Not IsDBNull(fila("Cantidad")) Then
+                litros = Convert.ToDouble(fila("Cantidad"))
+            End If
+
+            If litros <= 0 Then
+                Continue For
+            End If
+
+            Dim fecha As DateTime = Convert.ToDateTime(fila("Fecha"))
+            Dim codigo As String = fila("Idbenef").ToString().Trim()
+            Dim tipo As String = fila("TipoProductor").ToString().Trim()
+            Dim idTransp As String = fila("IdTransp").ToString().Trim()
+            Dim clave As String = codigo & "|" & tipo
+
+            Dim codMaestro As String = ""
+            Dim nombre As String = ""
+            Dim pMaestro As Double = 0
+
+            If maestroTransp.ContainsKey(clave) Then
+                codMaestro = maestroTransp(clave)
+                pMaestro = maestroPrecio(clave)
+                nombre = maestroNombre(clave)
+            End If
+
+            Dim detalle As String =
+            fila("CREL").ToString().Trim() & " | " &
+            fecha.ToString("dd/MM/yyyy") & " | " &
+            codigo & " " & tipo & " " & nombre & " | " &
+            litros.ToString("N2") & " L"
+
+            If idTransp = "" OrElse idTransp = "0" Then
+
+                'Si el maestro tiene transportista, ya se asigno (o se
+                'informo que no se pudo) en AplicarTransportistaDelMaestro
+                'y aparece en la seccion 1.
+                If codMaestro = "" OrElse codMaestro = "0" Then
+
+                    sinTranspInformativo.Add(detalle)
+
+                    litrosInformativo += litros
+
+                End If
+
+            Else
+
+                If codMaestro = "" OrElse codMaestro = "0" Then
+
+                    distintoMaestro.Add(
+                    detalle & " | archivo: " & idTransp &
+                    " | maestro: (sin transportista)")
+
+                ElseIf codMaestro.TrimStart("0"c) <>
+                       idTransp.TrimStart("0"c) Then
+
+                    distintoMaestro.Add(
+                    detalle & " | archivo: " & idTransp &
+                    " | maestro: " & codMaestro)
+
+                End If
+
+                If manualDisponible Then
+
+                    Dim pTransp As Double = 0
+
+                    If precioTransportista.ContainsKey(idTransp) Then
+                        pTransp = precioTransportista(idTransp)
+                    End If
+
+                    If pMaestro <= 0 AndAlso
+                       pTransp <= 0 AndAlso
+                       precioManual(CInt(fecha.DayOfWeek)) <= 0 Then
+
+                        precioCero.Add(
+                        detalle & " | transportista: " & idTransp)
+
+                        litrosPrecioCero += litros
+
+                    End If
+
+                End If
+
+            End If
+
+        Next
+
+        If asignaciones.Count = 0 AndAlso
+           sinTranspInformativo.Count = 0 AndAlso
+           distintoMaestro.Count = 0 AndAlso
+           precioCero.Count = 0 Then
+
+            Return informe
+
+        End If
+
+
+        informe.Add("********************************************")
+        informe.Add("INFORME DE ADVERTENCIAS DE LA IMPORTACION")
+        informe.Add("Archivo : " & nombreArchivo)
+        informe.Add("Fecha   : " & Now.ToString("dd/MM/yyyy HH:mm:ss"))
+        informe.Add("Registros: " & dtCsv.Rows.Count.ToString())
+        informe.Add("********************************************")
+        informe.Add("Este informe es solo informativo. La importacion")
+        informe.Add("y el calculo de la planilla no se detuvieron.")
+        informe.Add("")
+
+        If asignaciones.Count > 0 Then
+
+            informe.Add("1. EL ARCHIVO TRAIA SIN TRANSPORTISTA (VACIO O 0) Y EL")
+            informe.Add("   MAESTRO DEL PRODUCTOR SI TIENE UNO  (REVISAR)")
+            informe.Add("   Se uso el transportista del maestro. Si algun")
+            informe.Add("   productor entrega por su cuenta, quitele el")
+            informe.Add("   transportista en el maestro de productores.")
+            informe.Add("   Registros: " & asignaciones.Count.ToString())
+            informe.AddRange(asignaciones)
+            informe.Add("")
+
+        End If
+
+        If distintoMaestro.Count > 0 Then
+
+            informe.Add("2. TRANSPORTISTA DEL ARCHIVO DISTINTO AL DEL MAESTRO")
+            informe.Add("   Registros: " & distintoMaestro.Count.ToString())
+            informe.AddRange(distintoMaestro)
+            informe.Add("")
+
+        End If
+
+        If precioCero.Count > 0 Then
+
+            informe.Add("3. PRECIO DE TRANSPORTE EN CERO")
+            informe.Add("   El productor, el transportista y el precio manual")
+            informe.Add("   del dia estan en 0: Calcular los pagaria a 0.")
+            informe.Add("   Registros: " & precioCero.Count.ToString() &
+                        " | Litros: " & litrosPrecioCero.ToString("N2"))
+            informe.AddRange(precioCero)
+            informe.Add("")
+
+        End If
+
+        If sinTranspInformativo.Count > 0 Then
+
+            informe.Add("4. SIN TRANSPORTISTA EN EL ARCHIVO NI EN EL MAESTRO")
+            informe.Add("   (informativo: probablemente entregan por su cuenta)")
+            informe.Add("   Registros: " & sinTranspInformativo.Count.ToString() &
+                        " | Litros: " & litrosInformativo.ToString("N2"))
+            informe.AddRange(sinTranspInformativo)
+            informe.Add("")
+
+        End If
+
+        Return informe
+
+    End Function
+
+    '=========================================================
+    ' TRANSPORTISTA DEL MAESTRO CUANDO EL ARCHIVO TRAE 0
+    '
+    ' El CSV sale de un Excel donde IdTransp es una busqueda
+    ' (BUSCARV) que devuelve 0 si el productor no esta en la
+    ' tabla auxiliar. Un productor con litros y transportista 0
+    ' quedaba fuera de la planilla de transportistas sin aviso.
+    '
+    ' Si IdTransp viene vacio o en 0 y Productor.CodigoTransportista
+    ' tiene un conductor activo, se usa ese. Si el archivo trae un
+    ' transportista, nunca se cambia.
+    '
+    ' Devuelve las lineas para el informe (asignados y los que
+    ' no se pudieron asignar).
+    '=========================================================
+    Public Function AplicarTransportistaDelMaestro(
+    ByVal dtCsv As DataTable,
+    ByVal cn As SqlConnection,
+    ByVal trans As SqlTransaction) As List(Of String)
+
+        Dim lineas As New List(Of String)
+
+        If dtCsv Is Nothing OrElse dtCsv.Rows.Count = 0 Then
+            Return lineas
+        End If
+
+        Dim maestro As New Dictionary(Of String, String)
+        Dim conductorActivo As New Dictionary(Of String, Boolean)
+
+        Using cmd As New SqlCommand(
+        "SELECT CodProductor, TipoProductor, " &
+        "ISNULL(CodigoTransportista, '') AS CodigoTransportista " &
+        "FROM Productor", cn, trans)
+
+            Using dr As SqlDataReader = cmd.ExecuteReader()
+
+                While dr.Read()
+
+                    maestro(
+                    dr("CodProductor").ToString().Trim() & "|" &
+                    dr("TipoProductor").ToString().Trim()) =
+                    dr("CodigoTransportista").ToString().Trim()
+
+                End While
+
+            End Using
+
+        End Using
+
+        Using cmd As New SqlCommand(
+        "SELECT Codigo, Activo FROM Conductor", cn, trans)
+
+            Using dr As SqlDataReader = cmd.ExecuteReader()
+
+                While dr.Read()
+
+                    conductorActivo(dr("Codigo").ToString().Trim()) =
+                    (Not IsDBNull(dr("Activo"))) AndAlso
+                    Convert.ToBoolean(dr("Activo"))
+
+                End While
+
+            End Using
+
+        End Using
+
+
+        For Each fila As DataRow In dtCsv.Rows
+
+            Dim litros As Double = 0
+
+            If Not IsDBNull(fila("Cantidad")) Then
+                litros = Convert.ToDouble(fila("Cantidad"))
+            End If
+
+            If litros <= 0 Then
+                Continue For
+            End If
+
+            Dim idTransp As String = fila("IdTransp").ToString().Trim()
+
+            If idTransp <> "" AndAlso idTransp <> "0" Then
+                Continue For
+            End If
+
+            Dim codigo As String = fila("Idbenef").ToString().Trim()
+            Dim tipo As String = fila("TipoProductor").ToString().Trim()
+            Dim clave As String = codigo & "|" & tipo
+
+            If Not maestro.ContainsKey(clave) Then
+                Continue For
+            End If
+
+            Dim codMaestro As String = maestro(clave)
+
+            If codMaestro = "" OrElse codMaestro = "0" Then
+                Continue For
+            End If
+
+            Dim fecha As DateTime = Convert.ToDateTime(fila("Fecha"))
+
+            Dim detalle As String =
+            fila("CREL").ToString().Trim() & " | " &
+            fecha.ToString("dd/MM/yyyy") & " | " &
+            codigo & " " & tipo & " | " &
+            litros.ToString("N2") & " L"
+
+            If conductorActivo.ContainsKey(codMaestro) AndAlso
+               conductorActivo(codMaestro) Then
+
+                fila("IdTransp") = codMaestro
+
+                lineas.Add(
+                detalle & " | transportista asignado: " & codMaestro)
+
+            Else
+
+                lineas.Add(
+                detalle & " | NO ASIGNADO: el transportista del maestro (" &
+                codMaestro & ") no existe o esta inactivo")
+
+            End If
+
+        Next
+
+        Return lineas
+
+    End Function
 
     '////////////////////////////FIN PLANILLA LECHEL PRODUCTORES 77777777777777777777777777777777777
 

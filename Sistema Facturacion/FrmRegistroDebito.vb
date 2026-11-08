@@ -217,7 +217,7 @@ Public Class FrmRegistroDebito
 
 
         Me.TxtNumeroEnsamble.Text = NumeroNota
-        GrabaNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, Me.TxtMonto.Text, Me.LblMoneda.Text, Me.TxtCodCliente.Text, Me.LblNombre.Text, Me.TxtObservaciones.Text, True, False, TipoCuenta)
+        GrabaNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, Me.TxtMonto.Text, NormalizarMoneda(Me.LblMoneda.Text), Me.TxtCodCliente.Text, Me.LblNombre.Text, Me.TxtObservaciones.Text, True, False, TipoCuenta)
         'InsertarDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, Me.TxtDescripcion.Text, Me.LblFactura.Text, Me.TxtMonto.Text)
         GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, Me.TxtDescripcion.Text, Me.LblFactura.Text, Me.TxtMonto.Text)
         My.Forms.FrmCuentasXCobrar.CmdGrabar.PerformClick()
@@ -289,20 +289,30 @@ Public Class FrmRegistroDebito
 
         If My.Forms.FrmCuentasXCobrar.OptCordobas.Checked = True Then
             Me.LblMoneda.Text = My.Forms.FrmCuentasXCobrar.OptCordobas.Text
-            If Moneda = "Cordobas" Then
+            If MonedaEsCordobas(Moneda) Then
                 Me.TxtMonto.Text = Format(Monto, "##,##0.00")
             Else
                 Me.TxtMonto.Text = Format(Monto * TasaCambio, "##,##0.00")
             End If
         Else
             Me.LblMoneda.Text = My.Forms.FrmCuentasXCobrar.OptDolares.Text
-            If Moneda = "Dolares" Then
+            If Not MonedaEsCordobas(Moneda) Then
                 Me.TxtMonto.Text = Format(Monto, "##,##0.00")
             Else
                 Me.TxtMonto.Text = Format(Monto / TasaCambio, "##,##0.00")
             End If
         End If
     End Sub
+
+    ' La moneda se guarda como 'Cordobas'/'Dolares' (sin tilde); el rotulo de pantalla es 'Córdobas'. Se compara sin depender de tilde/mayusculas.
+    Private Shared Function MonedaEsCordobas(ByVal Moneda As String) As Boolean
+        Return Moneda IsNot Nothing AndAlso Moneda.Trim().ToUpper().StartsWith("C")
+    End Function
+
+    Private Shared Function NormalizarMoneda(ByVal Moneda As String) As String
+        If MonedaEsCordobas(Moneda) Then Return "Cordobas"
+        Return "Dolares"
+    End Function
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
         Dim NumeroNota As String, Monto As Double = 0, NombreCliente = "*******ANULADO*******"
@@ -315,7 +325,7 @@ Public Class FrmRegistroDebito
         End If
 
         NumeroNota = Me.TxtNumeroEnsamble.Text
-        GrabaNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, Monto, Me.LblMoneda.Text, Me.TxtCodCliente.Text, NombreCliente, Me.TxtObservaciones.Text, False, True, False)
+        GrabaNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, Monto, NormalizarMoneda(Me.LblMoneda.Text), Me.TxtCodCliente.Text, NombreCliente, Me.TxtObservaciones.Text, False, True, False)
         AnularDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, NombreCliente, Me.LblFactura.Text, 0)
         'InsertarDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, NombreCliente, Me.LblFactura.Text, Monto)
         'GrabaDetalleNotaDebito(NumeroNota, Me.DTPFecha.Text, Me.CmbCodigo.Text, NombreCliente, Me.LblFactura.Text, Monto)
@@ -562,7 +572,7 @@ Public Class FrmRegistroDebito
 
         Monto = Me.TxtMonto.Text
         MontoLetras = Letras(Monto, Me.LblMoneda.Text)
-        If Me.LblMoneda.Text = "Cordobas" Then
+        If MonedaEsCordobas(Me.LblMoneda.Text) Then
             Monto = Me.TxtMonto.Text
             MontoDolar = Format(Monto / BuscaTasaCambio(Me.DTPFecha.Value), "##,##0.00")
         Else
@@ -905,7 +915,7 @@ Public Class FrmRegistroDebito
 
         Dim SqlString As String
 
-        If Me.LblMoneda.Text = "Cordobas" Then
+        If MonedaEsCordobas(Me.LblMoneda.Text) Then
 
             SqlString =
                 "SELECT CodigoNB AS Cod, Descripcion, Tipo " &
@@ -925,7 +935,7 @@ Public Class FrmRegistroDebito
 
         Dim TipoDiferencia As String
 
-        If Me.LblMoneda.Text = "Cordobas" Then
+        If MonedaEsCordobas(Me.LblMoneda.Text) Then
 
             TipoDiferencia = TipoNota & " Dif C$"
 

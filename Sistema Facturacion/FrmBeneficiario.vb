@@ -734,22 +734,47 @@ Public Class FrmBeneficiario
         Me.Close()
     End Sub
 
-    Private Sub CboCodigoProductor_Close(sender As Object, e As EventArgs) Handles CboCodigoProductor.Close
-        If CboCodigoProductor.SelectedIndex < 0 Then Exit Sub
+    Private CargandoBeneficiario As Boolean = False
 
-        Dim codigo As String = CboCodigoProductor.Columns("Codigo_Beneficiario").Value.ToString()
+    Private Sub CargarBeneficiarioPorCodigo(codigo As String)
 
-        Dim cs As New CsBeneficiario
-        Dim b As Beneficiario = cs.CargarBeneficiario(codigo)
+        If CargandoBeneficiario Then Exit Sub
+        If String.IsNullOrWhiteSpace(codigo) Then Exit Sub
 
-        If b IsNot Nothing Then
-            LlenarFormulario(b)
-        End If
+        CargandoBeneficiario = True
+        Try
+            Dim cs As New CsBeneficiario
+            Dim b As Beneficiario = cs.CargarBeneficiario(codigo.Trim())
+
+            If b IsNot Nothing AndAlso Not String.IsNullOrEmpty(b.Codigo) Then
+                LlenarFormulario(b)
+
+                ClienteOriginal = ChkCliente.Checked
+                ProveedorOriginal = ChkProveedor.Checked
+                ProductorOriginal = ChkProductor.Checked
+                SocioOriginal = ChkSocio.Checked
+                PreSocioOriginal = ChkPreSocio.Checked
+                EmpleadoOriginal = ChkEmpleado.Checked
+                TransportistaOriginal = ChkTransportista.Checked
+
+                TipoNominaProductorOriginal = b.CodTipoNominaProductor
+                TipoNominaSocioOriginal = b.CodTipoNominaSocio
+                TipoNominaPreSocioOriginal = b.CodTipoNominaPreSocio
+            End If
+        Finally
+            CargandoBeneficiario = False
+        End Try
 
     End Sub
 
-    Private Sub CboCodigoProductor_TextChanged(sender As Object, e As EventArgs) Handles CboCodigoProductor.TextChanged
+    Private Sub CboCodigoProductor_Close(sender As Object, e As EventArgs) Handles CboCodigoProductor.Close
+        If CboCodigoProductor.SelectedIndex < 0 Then Exit Sub
 
+        CargarBeneficiarioPorCodigo(CboCodigoProductor.Columns("Codigo_Beneficiario").Value.ToString())
+    End Sub
+
+    Private Sub CboCodigoProductor_TextChanged(sender As Object, e As EventArgs) Handles CboCodigoProductor.TextChanged
+        CargarBeneficiarioPorCodigo(CboCodigoProductor.Text)
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
