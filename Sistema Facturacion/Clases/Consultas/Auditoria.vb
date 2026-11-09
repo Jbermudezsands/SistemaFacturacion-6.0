@@ -226,6 +226,9 @@ Public Class Auditoria
         Public Property TotalHallazgos As Integer
         Public Property TotalReparables As Integer
 
+        ' Hallazgos descartados porque el usuario los marcó como revisados / declarados.
+        Public Property HallazgosExcluidos As Integer
+
         Public Property CostosConfiables As Boolean
 
         Public Property Cancelada As Boolean
@@ -970,6 +973,13 @@ Public Class Auditoria
 
 
             ' ====================================================
+            ' DESCARTAR HALLAZGOS MARCADOS COMO REVISADOS
+            ' (costos ya declarados, autoauditados, etc.)
+            ' ====================================================
+
+            AplicarExclusiones(resultado)
+
+            ' ====================================================
             ' RESULTADO
             ' ====================================================
 
@@ -1221,7 +1231,7 @@ Public Class Auditoria
         Dim diferenciaDolar As Double
 
         costoOriginal =
-        CostoPromedioKardex(
+        Funciones.CostoPromedioKardexOriginal(
             CodigoProducto,
             Fecha)
 
@@ -3089,7 +3099,7 @@ Public Class Auditoria
         rstCosto.Costo_Dolar
 
         hallazgo.OrigenCosto =
-        "CostoPromedioKardex"
+        "MotorCostos"
 
         ' ============================================================
         ' DETERMINAR SI EL HALLAZGO ES REPARABLE
@@ -3170,7 +3180,7 @@ Public Class Auditoria
         rstCosto.Costo_Dolar
 
         hallazgo.OrigenCosto =
-        "CostoPromedioKardex"
+        "MotorCostos"
 
         If rstCosto.Costo_Cordoba > 0 Then
 
@@ -3256,7 +3266,7 @@ Public Class Auditoria
         rstCosto.Costo_Dolar
 
         hallazgo.OrigenCosto =
-        "CostoPromedioKardex"
+        "MotorCostos"
 
         ' ============================================================
         ' COSTO VÁLIDO
@@ -3372,7 +3382,7 @@ Public Class Auditoria
             6)
 
         hallazgo.OrigenCosto =
-        "CostoPromedioKardex"
+        "MotorCostos"
 
         ' ============================================================
         ' COSTO VÁLIDO
@@ -3507,7 +3517,7 @@ Public Class Auditoria
         rstCosto.Costo_Dolar
 
         hallazgo.OrigenCosto =
-        "CostoPromedioKardex"
+        "MotorCostos"
 
 
         ' ============================================================
@@ -3565,7 +3575,7 @@ Public Class Auditoria
             "La transferencia recibida tiene Precio_Unitario " &
             "en cero y no fue posible determinar un " &
             "costo histórico válido mediante " &
-            "CostoPromedioKardex."
+            "Motor de Costos."
 
         End If
 
@@ -3787,6 +3797,16 @@ Public Class Auditoria
                     If filasAfectadas <> 1 Then
                         Return False
                     End If
+
+                    ' Trazabilidad: valor anterior y nuevo de la linea reparada.
+                    RegistrarAjusteHallazgo(
+                    hallazgo,
+                    If(esTransferenciaRecibida, "Detalle_Compras", "Detalle_Facturas"),
+                    costoAnterior,
+                    costoNuevo,
+                    If(esTransferencia, CType(precioAnterior, Double?), Nothing),
+                    If(esTransferencia, CType(precioNuevo, Double?), Nothing),
+                    "Reparacion de auditoria " & hallazgo.Codigo)
 
                 End Using
 
@@ -4032,7 +4052,7 @@ Public Class Auditoria
                     "La transferencia enviada tenía Precio_Unitario " &
                     "en cero. Se determinó un costo histórico de " &
                     costoNuevo.ToString("N6") &
-                    " mediante CostoPromedioKardex. " &
+                    " mediante Motor de Costos. " &
                     "El valor fue asignado a Precio_Unitario y " &
                     "Costo_Unitario."
 
@@ -4042,7 +4062,7 @@ Public Class Auditoria
                     "La transferencia recibida tenía Precio_Unitario " &
                     "en cero. Se determinó un costo histórico de " &
                     costoNuevo.ToString("N6") &
-                    " mediante CostoPromedioKardex. " &
+                    " mediante Motor de Costos. " &
                     "El valor fue asignado a Precio_Unitario y " &
                     "Costo_Unitario."
 
@@ -4058,7 +4078,7 @@ Public Class Auditoria
                 costoAnterior.ToString("N6") &
                 " hasta " &
                 costoGuardado.ToString("N6") &
-                " utilizando CostoPromedioKardex."
+                " utilizando Motor de Costos."
 
             End If
 
@@ -9139,7 +9159,7 @@ Public Class Auditoria
                 Environment.NewLine &
                 "Costo histórico (Detalle_Facturas): " &
                 historico.ToString("N6") & Environment.NewLine &
-                "Costo promedio (CostoPromedioKardex a esa fecha): " &
+                "Costo promedio (Motor de Costos a esa fecha): " &
                 promedio.ToString("N6") & Environment.NewLine &
                 "Diferencia: " & (historico - promedio).ToString("N6") &
                 Environment.NewLine &
@@ -9709,6 +9729,10 @@ Public Class Auditoria
 
             End Using
 
+            RegistrarAjusteHallazgo(
+                hallazgo, "Detalle_Facturas", costoAnterior, costoNuevo, Nothing, Nothing,
+                "Reparacion de auditoria COST-008 (costo de las lineas hermanas del documento)")
+
             ' El costo ya está guardado: un fallo de la bitácora no
             ' debe informar la reparación como fallida.
             Try
@@ -9887,6 +9911,11 @@ Public Class Auditoria
             End Using
 
         End Using
+
+        RegistrarAjusteHallazgo(
+            hallazgo, "Detalle_Facturas", costoAnterior, costoNuevo, Nothing, Nothing,
+            "Reparacion de auditoria COST-008 (retorno exacto) - " & esperadas.ToString() &
+            " linea(s) del producto en el documento; IdDetalle indicado = primera linea del hallazgo")
 
         Try
 
@@ -10169,4 +10198,266 @@ Public Class Auditoria
 
     End Function
 
+    ' ============================================================
+    ' REPARACION DE TODO LO POSTERIOR (OPCION DEL USUARIO)
+    '
+    ' Recalcula con el Motor de Costos todos los movimientos del
+    ' producto desde la fecha del hallazgo reparado. Los demas
+    ' hallazgos de costo del mismo producto (fecha igual o posterior)
+    ' que quedaron resueltos por ese recalculo se marcan como
+    ' Reparados para que no vuelvan a ejecutarse.
+    ' Devuelve cuantos hallazgos adicionales se marcaron.
+    ' ============================================================
+    Public Property FilasRecalculadasUltimaReparacion As Integer
+
+    Public Function ReparacionPosteriorMotor(
+    ByVal origen As HallazgoAuditoria,
+    ByVal todos As IEnumerable(Of HallazgoAuditoria)) As Integer
+
+        FilasRecalculadasUltimaReparacion = 0
+        UltimoError = String.Empty
+
+        If origen Is Nothing OrElse String.IsNullOrWhiteSpace(origen.Producto) Then
+            Return 0
+        End If
+
+        Dim marcados As Integer = 0
+
+        Try
+
+            Dim motor As New MotorCostos(Conexion)
+            motor.IndicarOrigen("FrmAuditoriaFacturacion.ReparacionPosteriorMotor",
+                                "Hallazgo " & origen.Codigo & " " & origen.Tipo & " " & origen.Documento)
+            Dim r As ResultadoReparacionProducto =
+            motor.RecalcularDesde(origen.Producto.Trim(), origen.Fecha)
+
+            FilasRecalculadasUltimaReparacion =
+            r.FilasFacturaModificadas + r.FilasCompraModificadas
+
+            motor.ProcesarPendientes()
+
+            If todos Is Nothing Then
+                Return 0
+            End If
+
+            For Each h As HallazgoAuditoria In todos
+
+                If Object.ReferenceEquals(h, origen) Then Continue For
+                If h.Estado = EstadoHallazgo.Reparado OrElse Not h.Reparable Then Continue For
+                If Not EsCodigoDeCosto(h.Codigo) Then Continue For
+                If Not String.Equals((h.Producto & "").Trim(), origen.Producto.Trim(), StringComparison.OrdinalIgnoreCase) Then Continue For
+                If h.Fecha.Date < origen.Fecha.Date Then Continue For
+
+                If MarcarSiQuedoResuelto(h, origen) Then
+                    marcados += 1
+                End If
+
+            Next
+
+        Catch ex As Exception
+
+            UltimoError = ex.Message
+
+        End Try
+
+        Return marcados
+
+    End Function
+
+    Private Shared Function EsCodigoDeCosto(ByVal codigo As String) As Boolean
+        Select Case codigo
+            Case "COST-001", "COST-002", "COST-003", "COST-004", "COST-005", "COST-008"
+                Return True
+        End Select
+        Return False
+    End Function
+
+    ' Lee la linea del hallazgo y, si el recalculo ya la dejo correcta, la marca como reparada.
+    Private Function MarcarSiQuedoResuelto(
+    ByVal h As HallazgoAuditoria,
+    ByVal origen As HallazgoAuditoria) As Boolean
+
+        Dim esCompra As Boolean = (h.Codigo = "COST-005")
+        Dim id As Decimal = h.IdDetalleFactura
+        If esCompra AndAlso h.IdDetalleCompra > 0 Then id = h.IdDetalleCompra
+        If id <= 0 Then Return False
+
+        Dim sql As String
+        If esCompra Then
+            sql = "SELECT Precio_Unitario, Costo_Unitario FROM Detalle_Compras WHERE id_Detalle_Compra = @Id"
+        Else
+            sql = "SELECT Precio_Unitario, Costo_Unitario FROM Detalle_Facturas WHERE id_Detalle_Factura = @Id"
+        End If
+
+        Dim precio As Double = 0
+        Dim costo As Double = 0
+
+        Using cn As New SqlConnection(Conexion)
+            cn.Open()
+            Using cmd As New SqlCommand(sql, cn)
+                cmd.Parameters.Add("@Id", SqlDbType.Decimal).Value = id
+                Using dr As SqlDataReader = cmd.ExecuteReader()
+                    If Not dr.Read() Then Return False
+                    If Not IsDBNull(dr("Precio_Unitario")) Then precio = Convert.ToDouble(dr("Precio_Unitario"))
+                    If Not IsDBNull(dr("Costo_Unitario")) Then costo = Convert.ToDouble(dr("Costo_Unitario"))
+                End Using
+            End Using
+        End Using
+
+        Dim resuelto As Boolean
+
+        Select Case h.Codigo
+            Case "COST-001", "COST-002", "COST-003"
+                resuelto = (costo > 0)
+            Case "COST-004", "COST-005"
+                resuelto = (costo > 0 AndAlso precio > 0)
+            Case "COST-008"
+                ' Solo si el costo quedo igual al propuesto por el motor (tolerancia 0.01)
+                resuelto = (costo > 0 AndAlso Math.Abs(costo - h.CostoPropuesto) <= 0.01)
+            Case Else
+                resuelto = False
+        End Select
+
+        If Not resuelto Then Return False
+
+        Dim costoAnterior As Double = h.CostoUnitario
+
+        h.CostoUnitario = costo
+        If h.Codigo = "COST-004" OrElse h.Codigo = "COST-005" Then
+            h.PrecioUnitario = precio
+        End If
+
+        h.Motivo =
+        "El Costo_Unitario quedo en " & costo.ToString("N6") &
+        " (antes " & costoAnterior.ToString("N6") & ") al recalcular con el " &
+        "Motor de Costos todo lo posterior a la reparacion del documento " &
+        origen.Documento & " (" & origen.Fecha.ToString("dd/MM/yyyy") & ")."
+
+        h.Estado = EstadoHallazgo.Reparado
+        h.Reparable = False
+        h.TieneCostoPropuesto = False
+
+        Bitacora(
+        Now,
+        NombreUsuario,
+        "Auditoria Facturacion",
+        "Reparo costo (recalculo posterior) " & h.Codigo & ":" & h.Documento &
+        " Prod:" & h.Producto & " " & costoAnterior.ToString("N6") & "->" & costo.ToString("N6"))
+
+        Return True
+
+    End Function
+
+    ' ============================================================
+    ' HALLAZGOS EXCLUIDOS (AuditoriaHallazgosExcluidos)
+    '
+    ' Quita del resultado los hallazgos que el usuario marcó como
+    ' Revisado / Autoauditado / Declarado al fisco y ajusta el
+    ' contador y el estado de cada control. Si la tabla no existe o
+    ' falla la lectura, la auditoría sigue mostrando todo.
+    ' ============================================================
+    Private Sub AplicarExclusiones(ByVal resultado As ResultadoAuditoria)
+
+        Dim claves As HashSet(Of String)
+
+        Try
+            claves = ExclusionesAuditoria.CargarClaves(Conexion)
+        Catch
+            Return
+        End Try
+
+        If claves Is Nothing OrElse claves.Count = 0 Then Return
+
+        Dim conservados As New List(Of HallazgoAuditoria)()
+
+        For Each h As HallazgoAuditoria In resultado.Hallazgos
+
+            If claves.Contains(ExclusionesAuditoria.Clave(h)) Then
+
+                resultado.HallazgosExcluidos += 1
+
+                Dim control As ControlAuditoria =
+                resultado.Controles.Find(
+                    Function(c) String.Equals(c.Codigo, h.Codigo, StringComparison.OrdinalIgnoreCase))
+
+                If control IsNot Nothing AndAlso control.CantidadHallazgos > 0 Then
+                    control.CantidadHallazgos -= 1
+                End If
+
+            Else
+
+                conservados.Add(h)
+
+            End If
+
+        Next
+
+        resultado.Hallazgos = conservados
+
+        For Each c As ControlAuditoria In resultado.Controles
+            If c.Ejecutado AndAlso c.CantidadHallazgos = 0 Then
+                c.Estado = "Correcto"
+            End If
+        Next
+
+    End Sub
+
+    ' ============================================================
+    ' TRAZABILIDAD (AjusteCostosLog)
+    ' Registra el valor anterior y el nuevo de una linea reparada con
+    ' UPDATE directo. Nunca lanza excepciones: el ajuste ya se guardo.
+    ' ============================================================
+    Private Sub RegistrarAjusteHallazgo(
+    ByVal h As HallazgoAuditoria,
+    ByVal tabla As String,
+    ByVal costoAnterior As Double,
+    ByVal costoNuevo As Double,
+    ByVal precioAnterior As Double?,
+    ByVal precioNuevo As Double?,
+    ByVal observaciones As String)
+
+        Try
+            Dim d As New DatosAjuste
+            d.Tabla = tabla
+            d.IdDetalle = h.IdDetalleFactura
+            d.Tipo = h.Tipo
+            d.Numero = h.Documento
+            d.Fecha = h.Fecha
+            d.Producto = h.Producto
+            d.Cantidad = h.Cantidad
+            d.CostoAnterior = costoAnterior
+            d.CostoNuevo = costoNuevo
+            d.PrecioUAnterior = precioAnterior
+            d.PrecioUNuevo = precioNuevo
+            d.Observaciones = observaciones
+
+            BitacoraAjusteCostos.RegistrarDirecto(
+                Conexion,
+                New ContextoAjusteCostos(
+                    "FrmAuditoriaFacturacion.Reparar " & h.Codigo,
+                    "Hallazgo " & h.Codigo & " " & h.Tipo & " " & h.Documento),
+                d)
+        Catch
+        End Try
+
+    End Sub
+
+    ' ============================================================
+    ' MOTOR DE COSTOS
+    ' Este metodo oculta a Funciones.CostoPromedioKardex dentro de la
+    ' auditoria y delega en MotorCostos.CostoGeneral (mismo resultado,
+    ' una sola lectura por producto). Si el motor falla se usa la
+    ' funcion original para no detener la auditoria.
+    ' ============================================================
+    Private Function CostoPromedioKardex(
+    ByVal CodigoProducto As String,
+    ByVal Fecha As Date) As RstCostoPromedio
+
+        Try
+            Return New MotorCostos(Conexion).CostoGeneral(CodigoProducto, Fecha).ARstCostoPromedio()
+        Catch ex As Exception
+            Return Funciones.CostoPromedioKardexOriginal(CodigoProducto, Fecha)
+        End Try
+
+    End Function
 End Class

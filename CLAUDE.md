@@ -87,3 +87,13 @@ Cuando se pida guardar un script SQL, **siempre** guardarlo dentro de `Cambios S
 - Dentro del mes: archivos `N.NombreDescriptivo.sql`, donde `N` es un **número incremental** que indica el orden de los cambios (p. ej. `6.Arqueo - Efectivo esperado.sql`). Antes de guardar, listar la carpeta del mes y usar el siguiente número libre (máximo existente + 1; empieza en 1 si el mes es nuevo).
 - El mes y el año se toman de la fecha actual, salvo que el usuario indique otro.
 - Los scripts deben ser idempotentes (`IF NOT EXISTS` / `IF COL_LENGTH`).
+
+## Base de datos de pruebas
+
+Esta cadena apunta a una base de **pruebas** (no es produccion): cualquier cambio o error no tiene efecto real. Se puede usar para probar directamente con `sqlcmd`:
+
+```
+Password=P@ssword;Persist Security Info=True;User ID=sa;Initial Catalog=SistemaFacturacionRevetsa;Data Source=JUANBERMUDEZ\SQL2022
+```
+
+Ejemplo: `sqlcmd -S "JUANBERMUDEZ\SQL2022" -U sa -P "P@ssword" -d SistemaFacturacionRevetsa -C -Q "SELECT 1"`

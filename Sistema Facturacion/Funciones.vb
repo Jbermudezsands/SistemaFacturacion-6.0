@@ -6549,6 +6549,19 @@ WHERE CodProductor = @CodProductor
 
     End Function
 
+    ''' <summary>Motor con precarga masiva para el Reporte de Kardex (lo asigna FrmReportes antes del ciclo de productos).</summary>
+    Public MotorKardexReporte As MotorCostos
+
+    Private Function CostoKardexReporte(ByVal CodProducto As String, ByVal Fecha As Date) As RstCostoPromedio
+        Try
+            Dim motor As MotorCostos = MotorKardexReporte
+            If motor Is Nothing Then motor = New MotorCostos(Conexion)
+            Return motor.CostoGeneral(CodProducto, Fecha).ARstCostoPromedio()
+        Catch ex As Exception
+            Return CostoPromedioKardexOriginal(CodProducto, Fecha)
+        End Try
+    End Function
+
     Public Function GenerarTotalKardexProducto(
     ByVal CodProducto As String,
     ByVal Descripcion As String,
@@ -6834,10 +6847,7 @@ WHERE CodProductor = @CodProductor
 
         Dim RstCosto As RstCostoPromedio
 
-        RstCosto =
-        CostoPromedioKardex(
-            CodProducto,
-            FechaFinal)
+        RstCosto = CostoKardexReporte(CodProducto, FechaFinal)
 
         Dim CostoPromedio As Double =
         RstCosto.Costo_Cordoba
@@ -16010,8 +16020,7 @@ errSub:
 
             'DataSet.Tables("Compras").Reset()
 
-            PrecioCosto = CostoPromedioBodega(CodigoProducto, CodigoBodega)
-            PrecioCostoDolar = CostoPromedioDolar
+            ' Costeo general (ya no se costea por bodega): PrecioCosto / PrecioCostoDolar vienen de CostoPromedio(CodigoProducto).
 
             '///////////ACTUALIZO LA EXISTENCIA PARA CADA BODEGA ////////////////////////////////////////
             StrSQLUpdate = "UPDATE [DetalleBodegas]  SET [Costo] = '" & Math.Abs(PrecioCosto) & "',[CostoDolar] = '" & Math.Abs(PrecioCostoDolar) & "'  WHERE (Cod_Productos = '" & CodigoProducto & "') AND (Cod_Bodegas = '" & CodigoBodega & "')"
@@ -16268,7 +16277,18 @@ errSub:
 
         DataSet.Tables("Compras").Reset()
     End Function
+    ''' <summary>MOTOR DE COSTOS: el costo es UNICO por producto (general), sin importar la bodega. CodBodega se ignora a proposito.</summary>
     Public Function CostoPromedioBodega(ByVal CodigoProducto As String, ByVal CodBodega As String) As Double
+        Try
+            Dim rst As RstCostoPromedio = New MotorCostos(Conexion).CostoActual(CodigoProducto)
+            CostoPromedioDolar = rst.Costo_Dolar
+            Return rst.Costo_Cordoba
+        Catch ex As Exception
+            Return CostoPromedio(CodigoProducto)
+        End Try
+    End Function
+
+    Public Function CostoPromedioBodegaOriginal(ByVal CodigoProducto As String, ByVal CodBodega As String) As Double
         Dim SqlCompras As String, Iposicion As Double, TotalImporte As Double, CantidadCompras As Double, MonedaCompra As String, Importe As Double, PrecioUnitario As Double, PrecioCostoDolar As Double, PrecioCosto As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion), Registros As Double, ImporteD As Double, TotalImporteD As Double
         Dim DataSet As New DataSet, TotalCantidad As Double = 0
@@ -16537,7 +16557,7 @@ errSub:
             PrecioCostoDolar = 0
         End If
 
-        CostoPromedioBodega = PrecioCosto
+        CostoPromedioBodegaOriginal = PrecioCosto
         If TotalCantidad <> 0 Then
             CostoPromedioDolar = PrecioCostoDolar
         End If
@@ -16546,7 +16566,20 @@ errSub:
     End Function
 
 
+    ''' <summary>MOTOR DE COSTOS: el costo es UNICO por producto (Kardex general a la fecha), sin importar la bodega. CodBodega se ignora a proposito.</summary>
     Public Function CostoPromedioKardexBodega(ByVal CodigoProducto As String, ByVal FechaCompras As Date, ByVal CodBodega As String) As Double
+        Try
+            Dim rst As RstCostoPromedio = New MotorCostos(Conexion).CostoGeneral(CodigoProducto, FechaCompras).ARstCostoPromedio()
+            CostoPromedioDolar = rst.Costo_Dolar
+            Return rst.Costo_Cordoba
+        Catch ex As Exception
+            Dim r2 As RstCostoPromedio = CostoPromedioKardexOriginal(CodigoProducto, FechaCompras)
+            CostoPromedioDolar = r2.Costo_Dolar
+            Return r2.Costo_Cordoba
+        End Try
+    End Function
+
+    Public Function CostoPromedioKardexBodegaOriginal(ByVal CodigoProducto As String, ByVal FechaCompras As Date, ByVal CodBodega As String) As Double
         Dim SqlCompras As String, Iposicion As Double, TotalImporte As Double, CantidadCompras As Double, MonedaCompra As String, Importe As Double, PrecioUnitario As Double, PrecioCostoDolar As Double, PrecioCosto As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion), Registros As Double, ImporteD As Double, TotalImporteD As Double
         Dim DataSet As New DataSet, TotalCantidad As Double = 0, TasaCambio As Double
@@ -16811,7 +16844,7 @@ errSub:
             PrecioCostoDolar = 0
         End If
 
-        CostoPromedioKardexBodega = PrecioCosto
+        CostoPromedioKardexBodegaOriginal = PrecioCosto
         CostoPromedioDolar = PrecioCostoDolar
 
         DataSet.Tables("Compras").Reset()
@@ -17267,7 +17300,19 @@ errSub:
 
 
 
+    ''' <summary>
+    ''' MOTOR DE COSTOS: reemplaza al procedimiento anterior. Mismo resultado que CostoPromedioKardexOriginal (validado con
+    ''' ComparadorCostos) pero en memoria. Si el motor falla, usa la rutina original.
+    ''' </summary>
     Public Function CostoPromedioKardex(ByVal CodigoProducto As String, ByVal FechaCompras As Date) As RstCostoPromedio
+        Try
+            Return New MotorCostos(Conexion).CostoGeneral(CodigoProducto, FechaCompras).ARstCostoPromedio()
+        Catch ex As Exception
+            Return CostoPromedioKardexOriginal(CodigoProducto, FechaCompras)
+        End Try
+    End Function
+
+    Public Function CostoPromedioKardexOriginal(ByVal CodigoProducto As String, ByVal FechaCompras As Date) As RstCostoPromedio
         Dim SqlCompras As String, Iposicion As Double, TotalImporte As Double, CantidadCompras As Double, MonedaCompra As String, Importe As Double, PrecioUnitario As Double, PrecioCostoDolar As Double, PrecioCosto As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion), Registros As Double, ImporteD As Double, TotalImporteD As Double
         Dim DataSet As New DataSet, TotalCantidad As Double = 0, TasaCambio As Double
@@ -19658,6 +19703,58 @@ ByVal TipoCuenta As Boolean)
 
     End Function
 
+    ''' <summary>
+    ''' MOTOR DE COSTOS: costo UNICO por producto (general), sin importar la bodega. Devuelve el costo actual calculado por el
+    ''' motor. Si el motor no puede calcular un costo (sin existencia, error), conserva el costo ya guardado en Productos.
+    ''' </summary>
+    Private Sub CostoMotorProducto(ByVal CodigoProducto As String, ByRef CostoCordoba As Double, ByRef CostoDolar As Double)
+        CostoCordoba = 0
+        CostoDolar = 0
+        Try
+            Dim rst As RstCostoPromedio = New MotorCostos(Conexion).CostoActual(CodigoProducto)
+            CostoCordoba = rst.Costo_Cordoba
+            CostoDolar = rst.Costo_Dolar
+        Catch ex As Exception
+            CostoCordoba = 0
+            CostoDolar = 0
+        End Try
+        If CostoCordoba <> 0 Then Return
+        Try
+            Using cn As New SqlClient.SqlConnection(Conexion)
+                cn.Open()
+                Using cmd As New SqlClient.SqlCommand("SELECT ISNULL(Costo_Promedio,0), ISNULL(Costo_Promedio_Dolar,0) FROM Productos WHERE Cod_Productos = @p", cn)
+                    cmd.Parameters.AddWithValue("@p", CodigoProducto)
+                    Using r As SqlClient.SqlDataReader = cmd.ExecuteReader()
+                        If r.Read() Then
+                            CostoCordoba = Convert.ToDouble(r.GetValue(0))
+                            CostoDolar = Convert.ToDouble(r.GetValue(1))
+                        End If
+                    End Using
+                End Using
+            End Using
+        Catch ex As Exception
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' MOTOR DE COSTOS: escribe el MISMO costo general en todas las bodegas del producto (DetalleBodegas.Costo/CostoDolar) y
+    ''' recalcula el valor del inventario de cada bodega. No hay costo por bodega.
+    ''' </summary>
+    Private Sub AplicarCostoGeneral(ByVal CodigoProducto As String, ByVal CostoCordoba As Double, ByVal CostoDolar As Double)
+        If CostoCordoba = 0 Then Return
+        Try
+            Using cn As New SqlClient.SqlConnection(Conexion)
+                cn.Open()
+                Using cmd As New SqlClient.SqlCommand("UPDATE DetalleBodegas SET Costo = @c, CostoDolar = @d, Existencia_Dinero = Existencia * @c, Existencia_DineroDolar = Existencia * @d WHERE Cod_Productos = @p", cn)
+                    cmd.Parameters.Add("@c", System.Data.SqlDbType.Float).Value = CostoCordoba
+                    cmd.Parameters.Add("@d", System.Data.SqlDbType.Float).Value = CostoDolar
+                    cmd.Parameters.Add("@p", System.Data.SqlDbType.NVarChar, 100).Value = CodigoProducto
+                    cmd.ExecuteNonQuery()
+                End Using
+            End Using
+        Catch ex As Exception
+        End Try
+    End Sub
     Public Sub ExistenciasCostos(ByVal CodigoProductos As String, ByVal CantidadCompra As Double, ByVal PrecioCompra As Double, ByVal Tipo As String, ByVal CodBodega As String)
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, CodigoBodega As String, iPosicionFila As Double
         Dim MiConexion As New SqlClient.SqlConnection(Conexion), Existencia As Double, CostoPromedio As Double, Costo As Double
@@ -19666,20 +19763,12 @@ ByVal TipoCuenta As Boolean)
 
         DataSet.Reset()
         'SqlString = "SELECT *  FROM Productos WHERE (Cod_Productos = '" & CodigoProductos & "')"
-        SqlString = "SELECT SUM(Cantidad) AS Cantidad, AVG(Precio_Neto) AS PrecioNeto, SUM(Cantidad * Precio_Neto) AS Costo_Promedio, Cod_Producto FROM Detalle_Compras GROUP BY Cod_Producto  " &
-                    "HAVING  (Cod_Producto = '" & CodigoProductos & "')"
+        SqlString = "SELECT Cod_Bodegas, Cod_Productos, Existencia  FROM DetalleBodegas WHERE (Cod_Productos = '" & CodigoProductos & "')"
         DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
         DataAdapter.Fill(DataSet, "Consulta")
         Existencia = 0
         Costo = 0
-        If Not DataSet.Tables("Consulta").Rows.Count = 0 Then
-            'If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Existencia_Unidades")) Then
-            '    'Existencia = DataSet.Tables("Consulta").Rows(0)("Existencia_Unidades")
-            'End If
-            If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Costo_Promedio")) Then
-                Costo = DataSet.Tables("Consulta").Rows(0)("Costo_Promedio")
-            End If
-        End If
+        CostoMotorProducto(CodigoProductos, Costo, CostoPromedioDolar)
 
 
 
@@ -19717,23 +19806,7 @@ ByVal TipoCuenta As Boolean)
                 '///////////////////LA VARIABLE EXISTENCIA TIENE TAMBIEN ACUMULADA LA COMPRA ACTUAL////////////////////////////////////
                 'Existencia + CantidadCompra
                 Existencia = Math.Abs(Existencia - CantidadCompra)
-                TasaCambio = BuscaTasaCambio(FrmCompras.DTPFecha.Value)
-
-                If TasaCambio = 0 Then
-                    MsgBox("la Tasa de Cambio es Cero, Temporalmente se agrega la Tasa Cambio igual a 1 ", MsgBoxStyle.Critical, "Zeus Facturacion")
-                    TasaCambio = 1
-                End If
-
-                If (Existencia + CantidadCompra) <> 0 Then
-                    If FrmCompras.TxtMonedaFactura.Text = "Cordobas" Then
-                        'CostoPromedio = Format(((Existencia * Costo) + (PrecioCompra * CantidadCompra)) / (Existencia + CantidadCompra), "##,##0.00")
-                        CostoPromedio = (Costo / (Existencia + CantidadCompra))
-                        CostoPromedioDolar = Format(CostoPromedio / TasaCambio, "##,##0.00")
-                    Else
-                        CostoPromedioDolar = Format(((Existencia * Costo) + (PrecioCompra * CantidadCompra)) / (Existencia + CantidadCompra), "##,##0.000")
-                        CostoPromedio = Format(CostoPromedioDolar * TasaCambio, "##,##0.00")
-                    End If
-                End If
+                CostoPromedio = Costo
 
                 ExistenciaTotal = Existencia + CantidadCompra
 
@@ -19767,15 +19840,11 @@ ByVal TipoCuenta As Boolean)
                 'Existencia + CantidadCompra
                 Existencia = Math.Abs(Existencia + CantidadCompra)
 
-                If (Existencia - CantidadCompra) <> 0 Then
-                    CostoPromedio = Format(((Existencia * Costo) - (PrecioCompra * CantidadCompra)) / (Existencia - CantidadCompra), "##,##0.00")
-                Else
-                    CostoPromedio = 0
-                End If
+                CostoPromedio = Costo
 
                 ExistenciaTotal = Existencia - CantidadCompra
                 '///////////////////////////////////////ACTUALIZO LA EXISTENCIA DE PRODUCTOS////////////////////////////////////////////////////////////////
-                SqlUpdate = "UPDATE [Productos] SET [Existencia_Unidades] = " & ExistenciaTotal & ",[Costo_Promedio] = " & CostoPromedio & " ,[Ultimo_Precio_Compra] = " & PrecioCompra & " ,[Existencia_Dinero] = " & ExistenciaTotal * CostoPromedio & " " &
+                SqlUpdate = "UPDATE [Productos] SET [Existencia_Unidades] = " & ExistenciaTotal & ",[Costo_Promedio] = " & CostoPromedio & " ,[Costo_Promedio_Dolar] = " & CostoPromedioDolar & " ,[Ultimo_Precio_Compra] = " & PrecioCompra & " ,[Existencia_Dinero] = " & ExistenciaTotal * CostoPromedio & " " &
                             "WHERE (Cod_Productos = '" & CodigoProductos & "')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
@@ -19846,6 +19915,7 @@ ByVal TipoCuenta As Boolean)
 
 
 
+        If Tipo = "Mercancia Recibida" OrElse Tipo = "Devolucion de Compra" Then AplicarCostoGeneral(CodigoProductos, Costo, CostoPromedioDolar)
     End Sub
     Public Sub ExistenciasCostosBodega(ByVal CodigoProductos As String, ByVal CantidadCompra As Double, ByVal PrecioCompra As Double, ByVal Tipo As String, ByVal CodBodega As String, ByVal FechaCompra As Date)
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter, CodigoBodega As String, iPosicionFila As Double
@@ -19859,14 +19929,7 @@ ByVal TipoCuenta As Boolean)
         DataAdapter.Fill(DataSet, "Consulta")
         Existencia = 0
         Costo = 0
-        If Not DataSet.Tables("Consulta").Rows.Count = 0 Then
-            If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Existencia_Unidades")) Then
-                'Existencia = DataSet.Tables("Consulta").Rows(0)("Existencia_Unidades")
-            End If
-            If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Costo_Promedio")) Then
-                Costo = DataSet.Tables("Consulta").Rows(0)("Costo_Promedio")
-            End If
-        End If
+        CostoMotorProducto(CodigoProductos, Costo, CostoPromedioDolar)
 
 
 
@@ -19904,21 +19967,7 @@ ByVal TipoCuenta As Boolean)
                 '///////////////////LA VARIABLE EXISTENCIA TIENE TAMBIEN ACUMULADA LA COMPRA ACTUAL////////////////////////////////////
                 'Existencia + CantidadCompra
                 Existencia = Math.Abs(Existencia - CantidadCompra)
-                TasaCambio = BuscaTasaCambio(FechaCompra)
-
-                If TasaCambio = 0 Then
-                    MsgBox("la Tasa de Cambio es Cero", MsgBoxStyle.Critical, "Zeus Facturacion")
-                End If
-
-                If (Existencia + CantidadCompra) <> 0 Then
-                    If FrmCompras.TxtMonedaFactura.Text = "Cordobas" Then
-                        CostoPromedio = Format(((Existencia * Costo) + (PrecioCompra * CantidadCompra)) / (Existencia + CantidadCompra), "##,##0.00")
-                        CostoPromedioDolar = Format(CostoPromedio / TasaCambio, "##,##0.00")
-                    Else
-                        CostoPromedioDolar = Format(((Existencia * Costo) + (PrecioCompra * CantidadCompra)) / (Existencia + CantidadCompra), "##,##0.000")
-                        CostoPromedio = Format(CostoPromedioDolar * TasaCambio, "##,##0.00")
-                    End If
-                End If
+                CostoPromedio = Costo
 
                 ExistenciaTotal = Existencia + CantidadCompra
 
@@ -19949,15 +19998,11 @@ ByVal TipoCuenta As Boolean)
                 'Existencia + CantidadCompra
                 Existencia = Math.Abs(Existencia + CantidadCompra)
 
-                If (Existencia - CantidadCompra) <> 0 Then
-                    CostoPromedio = Format(((Existencia * Costo) - (PrecioCompra * CantidadCompra)) / (Existencia - CantidadCompra), "##,##0.00")
-                Else
-                    CostoPromedio = 0
-                End If
+                CostoPromedio = Costo
 
                 ExistenciaTotal = Existencia - CantidadCompra
                 '///////////////////////////////////////ACTUALIZO LA EXISTENCIA DE PRODUCTOS////////////////////////////////////////////////////////////////
-                SqlUpdate = "UPDATE [Productos] SET [Existencia_Unidades] = " & ExistenciaTotal & ",[Costo_Promedio] = " & CostoPromedio & " ,[Ultimo_Precio_Compra] = " & PrecioCompra & " ,[Existencia_Dinero] = " & ExistenciaTotal * CostoPromedio & " " &
+                SqlUpdate = "UPDATE [Productos] SET [Existencia_Unidades] = " & ExistenciaTotal & ",[Costo_Promedio] = " & CostoPromedio & " ,[Costo_Promedio_Dolar] = " & CostoPromedioDolar & " ,[Ultimo_Precio_Compra] = " & PrecioCompra & " ,[Existencia_Dinero] = " & ExistenciaTotal * CostoPromedio & " " &
                             "WHERE (Cod_Productos = '" & CodigoProductos & "')"
                 MiConexion.Open()
                 ComandoUpdate = New SqlClient.SqlCommand(SqlUpdate, MiConexion)
@@ -20028,6 +20073,7 @@ ByVal TipoCuenta As Boolean)
 
 
 
+        If Tipo = "Mercancia Recibida" OrElse Tipo = "Devolucion de Compra" Then AplicarCostoGeneral(CodigoProductos, Costo, CostoPromedioDolar)
     End Sub
 
 
@@ -20044,14 +20090,7 @@ ByVal TipoCuenta As Boolean)
         DataAdapter.Fill(DataSet, "Consulta")
         Existencia = 0
         Costo = 0
-        If Not DataSet.Tables("Consulta").Rows.Count = 0 Then
-            If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Existencia_Unidades")) Then
-                'Existencia = DataSet.Tables("Consulta").Rows(0)("Existencia_Unidades")
-            End If
-            If Not IsDBNull(DataSet.Tables("Consulta").Rows(0)("Costo")) Then
-                Costo = DataSet.Tables("Consulta").Rows(0)("Costo")
-            End If
-        End If
+        CostoMotorProducto(CodigoProductos, Costo, CostoPromedioDolar)
 
 
 
@@ -20084,21 +20123,7 @@ ByVal TipoCuenta As Boolean)
                 '///////////////////LA VARIABLE EXISTENCIA TIENE TAMBIEN ACUMULADA LA COMPRA ACTUAL////////////////////////////////////
                 'Existencia + CantidadCompra
                 Existencia = Math.Abs(Existencia - CantidadCompra)
-                TasaCambio = BuscaTasaCambio(FechaCompra)
-
-                If TasaCambio = 0 Then
-                    MsgBox("la Tasa de Cambio es Cero", MsgBoxStyle.Critical, "Zeus Facturacion")
-                End If
-
-                If (Existencia + CantidadCompra) <> 0 Then
-                    'If FrmCompras.TxtMonedaFactura.Text = "Cordobas" Then
-                    CostoPromedio = Format(((Existencia * Costo) + (PrecioCompra * CantidadCompra)) / (Existencia + CantidadCompra), "##,##0.00")
-                    CostoPromedioDolar = Format(CostoPromedio / TasaCambio, "##,##0.0000")
-                    'Else
-                    '    CostoPromedioDolar = Format(((Existencia * Costo) + (PrecioCompra * CantidadCompra)) / (Existencia + CantidadCompra), "##,##0.000")
-                    '    CostoPromedio = Format(CostoPromedioDolar * TasaCambio, "##,##0.00")
-                    'End If
-                End If
+                CostoPromedio = Costo
 
                 ExistenciaTotal = Existencia + CantidadCompra
 
@@ -20121,11 +20146,7 @@ ByVal TipoCuenta As Boolean)
                 'Existencia + CantidadCompra
                 Existencia = Math.Abs(Existencia + CantidadCompra)
 
-                If (Existencia - CantidadCompra) <> 0 Then
-                    CostoPromedio = Format(((Existencia * Costo) - (PrecioCompra * CantidadCompra)) / (Existencia - CantidadCompra), "##,##0.00")
-                Else
-                    CostoPromedio = 0
-                End If
+                CostoPromedio = Costo
 
                 ExistenciaTotal = Existencia - CantidadCompra
 
@@ -20142,6 +20163,7 @@ ByVal TipoCuenta As Boolean)
 
 
 
+        If Tipo = "Mercancia Recibida" OrElse Tipo = "Devolucion de Compra" Then AplicarCostoGeneral(CodigoProductos, Costo, CostoPromedioDolar)
     End Sub
 
     Public Function Redondeo(ByVal Numero, ByVal Decimales)
@@ -23907,8 +23929,9 @@ LEFT JOIN Existencias E
 
         FechaIni2 = FechaIni
 
-        CostoPromedio = CostoPromedioKardexBodega(CodigoProducto, FechaIni2.AddDays(-1), CodBodega)
-        CostoPromedioD = CostoPromedioDolar
+        Dim RstCostoGeneral As RstCostoPromedio = CostoPromedioKardex(CodigoProducto, FechaIni2.AddDays(-1))
+        CostoPromedio = RstCostoGeneral.Costo_Cordoba
+        CostoPromedioD = RstCostoGeneral.Costo_Dolar
 
 
 

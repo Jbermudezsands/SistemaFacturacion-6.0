@@ -285,6 +285,135 @@ Public Class RepositorioMovimientos
     End Function
 
     ' ------------------------------------------------------------------
+    ' Carga masiva (reportes): TODOS los productos en 3 consultas
+    ' ------------------------------------------------------------------
+
+    ''' <summary>
+    ''' Movimientos de costo (mismas reglas y JOIN que CargarMovimientos) de todos los productos hasta fechaCorte,
+    ''' agrupados por Cod_Producto. Reemplaza N lecturas por 2 consultas.
+    ''' </summary>
+    Public Function CargarMovimientosMasivo(ByVal fechaCorte As Date) As Dictionary(Of String, List(Of MovimientoCosto))
+        Dim dic As New Dictionary(Of String, List(Of MovimientoCosto))(StringComparer.OrdinalIgnoreCase)
+        Dim sqlCompras As String =
+            "SELECT dc.id_Detalle_Compra, dc.Numero_Compra, dc.Fecha_Compra, dc.Tipo_Compra, " &
+            "       dc.Cantidad, dc.Precio_Unitario, dc.Precio_Neto, dc.Costo_Unitario, " &
+            "       c.MonedaCompra, tc.MontoTasa, dc.Cod_Producto " &
+            "FROM Detalle_Compras dc " &
+            "INNER JOIN Compras c ON dc.Numero_Compra = c.Numero_Compra " &
+            "    AND dc.Fecha_Compra = c.Fecha_Compra AND dc.Tipo_Compra = c.Tipo_Compra " &
+            "LEFT JOIN TasaCambio tc ON c.Fecha_Compra = tc.FechaTasa " &
+            "WHERE dc.Cod_Producto IS NOT NULL " &
+            "  AND dc.Tipo_Compra IN ('Mercancia Recibida', 'Devolucion de Compra') " &
+            "  AND dc.Fecha_Compra <= @Fecha " &
+            "ORDER BY dc.Fecha_Compra, dc.id_Detalle_Compra"
+        Dim sqlFacturas As String =
+            "SELECT df.id_Detalle_Factura, df.Numero_Factura, df.Fecha_Factura, df.Tipo_Factura, " &
+            "       df.Cantidad, df.Precio_Unitario, df.Precio_Neto, df.Costo_Unitario, tc.MontoTasa, df.Cod_Producto " &
+            "FROM Detalle_Facturas df " &
+            "INNER JOIN Facturas f ON df.Numero_Factura = f.Numero_Factura " &
+            "    AND df.Fecha_Factura = f.Fecha_Factura AND df.Tipo_Factura = f.Tipo_Factura " &
+            "LEFT JOIN TasaCambio tc ON f.Fecha_Factura = tc.FechaTasa " &
+            "WHERE df.Cod_Producto IS NOT NULL " &
+            "  AND df.Tipo_Factura IN ('Factura', 'Salida Bodega', 'Devolucion de Venta') " &
+            "  AND df.Fecha_Factura <= @Fecha " &
+            "ORDER BY df.Fecha_Factura, df.id_Detalle_Factura"
+
+        Using cn As New SqlConnection(_cadenaConexion)
+            cn.Open()
+            Using cmd As New SqlCommand(sqlCompras, cn)
+                cmd.CommandTimeout = 300
+                cmd.Parameters.Add("@Fecha", SqlDbType.DateTime).Value = fechaCorte.Date
+                Using rd As SqlDataReader = cmd.ExecuteReader()
+                    While rd.Read()
+                        Dim m As New MovimientoCosto
+                        m.Origen = TipoOrigenMovimiento.Compra
+                        m.Id = Convert.ToDecimal(rd.GetValue(0))
+                        m.Numero = Convert.ToString(rd.GetValue(1))
+                        m.Fecha = Convert.ToDateTime(rd.GetValue(2))
+                        m.Tipo = Convert.ToString(rd.GetValue(3))
+                        m.CodProducto = Convert.ToString(rd.GetValue(10))
+                        m.Cantidad = LeerDouble(rd, 4)
+                        m.PrecioUnitario = LeerDouble(rd, 5)
+                        m.PrecioNeto = LeerDouble(rd, 6)
+                        m.CostoUnitario = LeerDouble(rd, 7)
+                        If Not rd.IsDBNull(8) Then m.Moneda = Convert.ToString(rd.GetValue(8))
+                        m.Tasa = LeerDouble(rd, 9)
+                        m.TieneCabecera = True
+                        AgregarAGrupo(dic, m)
+                    End While
+                End Using
+            End Using
+            Using cmd As New SqlCommand(sqlFacturas, cn)
+                cmd.CommandTimeout = 300
+                cmd.Parameters.Add("@Fecha", SqlDbType.DateTime).Value = fechaCorte.Date
+                Using rd As SqlDataReader = cmd.ExecuteReader()
+                    While rd.Read()
+                        Dim m As New MovimientoCosto
+                        m.Origen = TipoOrigenMovimiento.Factura
+                        m.Id = Convert.ToDecimal(rd.GetValue(0))
+                        m.Numero = Convert.ToString(rd.GetValue(1))
+                        m.Fecha = Convert.ToDateTime(rd.GetValue(2))
+                        m.Tipo = Convert.ToString(rd.GetValue(3))
+                        m.CodProducto = Convert.ToString(rd.GetValue(9))
+                        m.Cantidad = LeerDouble(rd, 4)
+                        m.PrecioUnitario = LeerDouble(rd, 5)
+                        m.PrecioNeto = LeerDouble(rd, 6)
+                        m.CostoUnitario = LeerDouble(rd, 7)
+                        m.Tasa = LeerDouble(rd, 8)
+                        m.TieneCabecera = True
+                        AgregarAGrupo(dic, m)
+                    End While
+                End Using
+            End Using
+        End Using
+        Return dic
+    End Function
+
+    ''' <summary>Candidatos de "ultimo costo utilizado" de todos los productos hasta fechaCorte, por Cod_Producto.</summary>
+    Public Function CargarCandidatosMasivo(ByVal fechaCorte As Date) As Dictionary(Of String, List(Of UltimoCostoCandidato))
+        Dim dic As New Dictionary(Of String, List(Of UltimoCostoCandidato))(StringComparer.OrdinalIgnoreCase)
+        Const sql As String =
+            "SELECT df.id_Detalle_Factura, df.Fecha_Factura, df.Costo_Unitario, tc.MontoTasa, df.Cod_Producto " &
+            "FROM Detalle_Facturas df " &
+            "INNER JOIN TasaCambio tc ON df.Fecha_Factura = tc.FechaTasa " &
+            "WHERE df.Cod_Producto IS NOT NULL AND df.Costo_Unitario <> 0 AND df.Fecha_Factura <= @Fecha " &
+            "ORDER BY df.Fecha_Factura, df.id_Detalle_Factura"
+        Using cn As New SqlConnection(_cadenaConexion)
+            cn.Open()
+            Using cmd As New SqlCommand(sql, cn)
+                cmd.CommandTimeout = 300
+                cmd.Parameters.Add("@Fecha", SqlDbType.DateTime).Value = fechaCorte.Date
+                Using rd As SqlDataReader = cmd.ExecuteReader()
+                    While rd.Read()
+                        Dim c As New UltimoCostoCandidato
+                        c.Id = Convert.ToDecimal(rd.GetValue(0))
+                        c.Fecha = Convert.ToDateTime(rd.GetValue(1))
+                        c.CostoUnitario = Convert.ToDouble(rd.GetValue(2))
+                        c.Tasa = If(rd.IsDBNull(3), 0.0, Convert.ToDouble(rd.GetValue(3)))
+                        Dim cod As String = Convert.ToString(rd.GetValue(4))
+                        Dim l As List(Of UltimoCostoCandidato) = Nothing
+                        If Not dic.TryGetValue(cod, l) Then
+                            l = New List(Of UltimoCostoCandidato)
+                            dic.Add(cod, l)
+                        End If
+                        l.Add(c)
+                    End While
+                End Using
+            End Using
+        End Using
+        Return dic
+    End Function
+
+    Private Shared Sub AgregarAGrupo(ByVal dic As Dictionary(Of String, List(Of MovimientoCosto)), ByVal m As MovimientoCosto)
+        Dim l As List(Of MovimientoCosto) = Nothing
+        If Not dic.TryGetValue(m.CodProducto, l) Then
+            l = New List(Of MovimientoCosto)
+            dic.Add(m.CodProducto, l)
+        End If
+        l.Add(m)
+    End Sub
+
+    ' ------------------------------------------------------------------
     ' Escritura (siempre dentro de la transaccion recibida)
     ' ------------------------------------------------------------------
 
@@ -326,11 +455,16 @@ Public Class RepositorioMovimientos
         cmd.Parameters.Add("@Id", SqlDbType.Decimal).Value = m.Id
         Try
             cmd.ExecuteNonQuery()
+            ' Trazabilidad: valor anterior y nuevo, en la misma transaccion del ajuste.
+            BitacoraAjusteCostos.Registrar(cn, tx, Contexto, esFactura, m)
         Finally
             cmd.Dispose()
         End Try
         Return 1
     End Function
+
+    ''' <summary>Quien / desde donde se ajusta (para AjusteCostosLog). Si es Nothing se genera uno al registrar.</summary>
+    Public Property Contexto As ContextoAjusteCostos
 
     Public Shared Function Distinto(ByVal a As Double?, ByVal b As Double?) As Boolean
         If a.HasValue <> b.HasValue Then Return True

@@ -1651,6 +1651,13 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
             ' ====================== CONFIRMAR ===========================
             Transaccion.Commit()
             Bitacora(Now, NombreUsuario, compras.Tipo_Compra, "Grabo la Compra: " & compras.Numero_Compra)
+            'Motor de Costos: procesa la cola de recosteo (la compra cambio el promedio desde su fecha)
+            Try
+                Dim MotorCostosPend As New MotorCostos(Conexion)
+                MotorCostosPend.ProcesarPendientes()
+            Catch ex As Exception
+                Bitacora(Now, NombreUsuario, "Reparacion Costos", ex.Message)
+            End Try
 
         Catch ex As Exception
             Try
@@ -1838,6 +1845,13 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         Loop
 
         Bitacora(Now, NombreUsuario, compras.Tipo_Compra, "Grabo la Compra: " & compras.Numero_Compra)
+        'Motor de Costos: procesa la cola de recosteo (la compra cambio el promedio desde su fecha)
+        Try
+            Dim MotorCostosPend As New MotorCostos(Conexion)
+            MotorCostosPend.ProcesarPendientes()
+        Catch ex As Exception
+            Bitacora(Now, NombreUsuario, "Reparacion Costos", ex.Message)
+        End Try
 
 
         'GrabaMetodoDetalleCompra(NumeroCompra, NombrePago, Monto, NumeroTarjeta, FechaVenceTarjeta)
@@ -4976,6 +4990,13 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         End If
 
         Bitacora(Now, NombreUsuario, Me.CboTipoProducto.Text, "Eliminar la Compra: " & Me.TxtNumeroEnsamble.Text)
+        'Motor de Costos: procesa la cola de recosteo (la compra cambio el promedio desde su fecha)
+        Try
+            Dim MotorCostosPend As New MotorCostos(Conexion)
+            MotorCostosPend.ProcesarPendientes()
+        Catch ex As Exception
+            Bitacora(Now, NombreUsuario, "Reparacion Costos", ex.Message)
+        End Try
 
         LimpiarCompras()
         Me.Button7.Enabled = True
@@ -5896,6 +5917,13 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         ReDim CodigoProducto(1)
         CodigoProducto(0) = CodProducto
         Bitacora(Now, NombreUsuario, "Compras", "Elimino Producto: " & CodProducto & " Compra No." & Me.TxtNumeroEnsamble.Text)
+        'Motor de Costos: procesa la cola de recosteo (la compra cambio el promedio desde su fecha)
+        Try
+            Dim MotorCostosPend As New MotorCostos(Conexion)
+            MotorCostosPend.ProcesarPendientes()
+        Catch ex As Exception
+            Bitacora(Now, NombreUsuario, "Reparacion Costos", ex.Message)
+        End Try
         'My.Forms.FrmAjustarCostos.Registros = 1
         'My.Forms.FrmAjustarCostos.ShowDialog()
         My.Application.DoEvents()
@@ -6288,6 +6316,13 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
 
 
         Bitacora(Now, NombreUsuario, Me.CboTipoProducto.Text, "Grabar la Compra: " & Me.TxtNumeroEnsamble.Text)
+        'Motor de Costos: procesa la cola de recosteo (la compra cambio el promedio desde su fecha)
+        Try
+            Dim MotorCostosPend As New MotorCostos(Conexion)
+            MotorCostosPend.ProcesarPendientes()
+        Catch ex As Exception
+            Bitacora(Now, NombreUsuario, "Reparacion Costos", ex.Message)
+        End Try
 
         ActualizaMETODOcOMPRA()
 
@@ -6438,6 +6473,13 @@ Handles backgroundWorkerExistenciaLotexProducto.RunWorkerCompleted
         End If
 
         Bitacora(Now, NombreUsuario, "Compras", "Proceso la Compra: " & Me.TxtNumeroEnsamble.Text)
+        'Motor de Costos: procesa la cola de recosteo (la compra cambio el promedio desde su fecha)
+        Try
+            Dim MotorCostosPend As New MotorCostos(Conexion)
+            MotorCostosPend.ProcesarPendientes()
+        Catch ex As Exception
+            Bitacora(Now, NombreUsuario, "Reparacion Costos", ex.Message)
+        End Try
 
     End Sub
 

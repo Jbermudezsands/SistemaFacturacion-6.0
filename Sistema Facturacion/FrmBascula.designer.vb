@@ -19,45 +19,45 @@ Partial Class FrmBascula
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmBascula))
-        Me.LblPeso = New System.Windows.Forms.Label
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.txtsubtotal = New System.Windows.Forms.TextBox
-        Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid
-        Me.Button6 = New System.Windows.Forms.Button
-        Me.Eventos = New System.Windows.Forms.GroupBox
-        Me.Button_Ticket = New System.Windows.Forms.Button
-        Me.Button_Salir = New System.Windows.Forms.Button
-        Me.Button_Reporte = New System.Windows.Forms.Button
-        Me.Button_Desconectar = New System.Windows.Forms.Button
-        Me.Button_Grabar = New System.Windows.Forms.Button
-        Me.Button_Conectar = New System.Windows.Forms.Button
-        Me.Button_Pesada = New System.Windows.Forms.Button
-        Me.GroupBox7 = New System.Windows.Forms.GroupBox
-        Me.TxtTipoRemision = New System.Windows.Forms.TextBox
-        Me.TxtNumeroRemision = New System.Windows.Forms.TextBox
-        Me.lblbdega = New System.Windows.Forms.Label
+        Me.LblPeso = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.txtsubtotal = New System.Windows.Forms.TextBox()
+        Me.TrueDBGridComponentes = New C1.Win.C1TrueDBGrid.C1TrueDBGrid()
+        Me.Button6 = New System.Windows.Forms.Button()
+        Me.Eventos = New System.Windows.Forms.GroupBox()
+        Me.Button_Ticket = New System.Windows.Forms.Button()
+        Me.Button_Salir = New System.Windows.Forms.Button()
+        Me.Button_Reporte = New System.Windows.Forms.Button()
+        Me.Button_Desconectar = New System.Windows.Forms.Button()
+        Me.Button_Grabar = New System.Windows.Forms.Button()
+        Me.Button_Conectar = New System.Windows.Forms.Button()
+        Me.Button_Pesada = New System.Windows.Forms.Button()
+        Me.GroupBox7 = New System.Windows.Forms.GroupBox()
+        Me.TxtTipoRemision = New System.Windows.Forms.TextBox()
+        Me.TxtNumeroRemision = New System.Windows.Forms.TextBox()
+        Me.lblbdega = New System.Windows.Forms.Label()
         Me.BindingDetalle = New System.Windows.Forms.BindingSource(Me.components)
         Me.sp = New System.IO.Ports.SerialPort(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.ToolTip = New System.Windows.Forms.ToolTip(Me.components)
-        Me.LblEstado = New System.Windows.Forms.Label
-        Me.Grupo = New System.Windows.Forms.GroupBox
-        Me.DtpHoraManual = New System.Windows.Forms.DateTimePicker
-        Me.DTPFecha = New System.Windows.Forms.Label
-        Me.LblHora = New System.Windows.Forms.Label
-        Me.lbldatosre = New System.Windows.Forms.Label
-        Me.CboIngresoBascula = New C1.Win.C1List.C1Combo
-        Me.DTPRemFechCarga = New System.Windows.Forms.DateTimePicker
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.TxtTara = New System.Windows.Forms.TextBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.TxtNeto = New System.Windows.Forms.TextBox
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.ChkTaraSaco = New System.Windows.Forms.CheckBox
+        Me.LblEstado = New System.Windows.Forms.Label()
+        Me.Grupo = New System.Windows.Forms.GroupBox()
+        Me.DtpHoraManual = New System.Windows.Forms.DateTimePicker()
+        Me.DTPFecha = New System.Windows.Forms.Label()
+        Me.LblHora = New System.Windows.Forms.Label()
+        Me.lbldatosre = New System.Windows.Forms.Label()
+        Me.CboIngresoBascula = New C1.Win.C1List.C1Combo()
+        Me.DTPRemFechCarga = New System.Windows.Forms.DateTimePicker()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.TxtTara = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.TxtNeto = New System.Windows.Forms.TextBox()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.ChkTaraSaco = New System.Windows.Forms.CheckBox()
         CType(Me.TrueDBGridComponentes, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Eventos.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
@@ -109,7 +109,7 @@ Partial Class FrmBascula
         Me.TrueDBGridComponentes.Name = "TrueDBGridComponentes"
         Me.TrueDBGridComponentes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
-        Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75
+        Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75.0R
         Me.TrueDBGridComponentes.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridComponentes.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
         Me.TrueDBGridComponentes.Size = New System.Drawing.Size(988, 175)
         Me.TrueDBGridComponentes.TabIndex = 234
@@ -274,7 +274,7 @@ Partial Class FrmBascula
         Me.lblbdega.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
         Me.lblbdega.Location = New System.Drawing.Point(748, 15)
         Me.lblbdega.Name = "lblbdega"
-        Me.lblbdega.Size = New System.Drawing.Size(97, 16)
+        Me.lblbdega.Size = New System.Drawing.Size(96, 16)
         Me.lblbdega.TabIndex = 12
         Me.lblbdega.Text = "No Remision"
         '
@@ -410,7 +410,7 @@ Partial Class FrmBascula
         Me.Label10.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
         Me.Label10.Location = New System.Drawing.Point(540, 73)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(97, 16)
+        Me.Label10.Size = New System.Drawing.Size(96, 16)
         Me.Label10.TabIndex = 248
         Me.Label10.Text = "Fecha Carga"
         '

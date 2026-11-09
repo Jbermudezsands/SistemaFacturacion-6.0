@@ -46,7 +46,25 @@ Public Class FrmAjustarCostos
         Next
     End Sub
 
+    ''' <summary>
+    ''' MOTOR DE COSTOS: recosteo de los productos del rango con ReparadorCostos (mismo proceso que CmdCostear de
+    ''' FrmActualiza). La rutina anterior se conserva como CostearRutaAnterior, sin llamadores.
+    ''' </summary>
     Public Sub Costear(ByVal Desde As String, ByVal Hasta As String)
+        Try
+            Me.Text = "Recalculando costos " & Desde
+            My.Application.DoEvents()
+            Dim reparador As New ReparadorCostos(Conexion, New ContextoAjusteCostos("FrmAjustarCostos.Costear", "Productos " & Desde & " a " & Hasta))
+            Dim resumen As ResumenReparacion = reparador.RecalcularRango(Desde, Hasta, True)
+            If resumen.Errores.Count > 0 Then
+                Bitacora(Now, NombreUsuario, "Reparacion Costos", String.Join(" | ", resumen.Errores.ToArray()))
+            End If
+        Catch ex As Exception
+            Bitacora(Now, NombreUsuario, "Reparacion Costos", ex.Message)
+        End Try
+    End Sub
+
+    Private Sub CostearRutaAnterior(ByVal Desde As String, ByVal Hasta As String)
         Dim iPosicionFila As Double, PrecioCostoDolar As Double, NumeroFactura As String = "", TipoSalida As String = "", FechaCompra As Date
         Dim DataSet As New DataSet, SQLProductos As String, PrecioCosto As Double, iPosicionFila2 As Double = 0, iPosicionFila3 As Double = 0
         Dim DataAdapter As New SqlClient.SqlDataAdapter, RegistrosMaximos As Double, SqlSTring As String, ComandoUpdate As New SqlClient.SqlCommand

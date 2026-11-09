@@ -74,6 +74,24 @@ Public Class FrmComparadorCostos
         AddHandler BtnExportar.Click, AddressOf BtnExportar_Click
     End Sub
 
+    Public Property ProductoDesde As String
+        Get
+            Return TxtDesde.Text
+        End Get
+        Set(ByVal value As String)
+            TxtDesde.Text = value
+        End Set
+    End Property
+
+    Public Property ProductoHasta As String
+        Get
+            Return TxtHasta.Text
+        End Get
+        Set(ByVal value As String)
+            TxtHasta.Text = value
+        End Set
+    End Property
+
     Private Sub AgregarEtiqueta(ByVal texto As String, ByVal x As Integer, ByVal y As Integer)
         Dim l As New Label
         l.Text = texto

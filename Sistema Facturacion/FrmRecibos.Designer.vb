@@ -523,7 +523,7 @@ Partial Class FrmRecibos
         '
         'TxtTipoRecibo
         '
-        Me.TxtTipoRecibo.Location = New System.Drawing.Point(458, 146)
+        Me.TxtTipoRecibo.Location = New System.Drawing.Point(19, 62)
         Me.TxtTipoRecibo.Name = "TxtTipoRecibo"
         Me.TxtTipoRecibo.Size = New System.Drawing.Size(100, 20)
         Me.TxtTipoRecibo.TabIndex = 226
@@ -534,7 +534,7 @@ Partial Class FrmRecibos
         '
         Me.TxtMonedaFactura.FormattingEnabled = True
         Me.TxtMonedaFactura.Items.AddRange(New Object() {"Cordobas", "Dolares"})
-        Me.TxtMonedaFactura.Location = New System.Drawing.Point(633, 139)
+        Me.TxtMonedaFactura.Location = New System.Drawing.Point(437, 110)
         Me.TxtMonedaFactura.Name = "TxtMonedaFactura"
         Me.TxtMonedaFactura.Size = New System.Drawing.Size(78, 21)
         Me.TxtMonedaFactura.TabIndex = 228
@@ -543,7 +543,7 @@ Partial Class FrmRecibos
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(581, 142)
+        Me.Label13.Location = New System.Drawing.Point(385, 113)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(46, 13)
         Me.Label13.TabIndex = 227
@@ -643,6 +643,8 @@ Partial Class FrmRecibos
         '
         Me.pnlCliente.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.pnlCliente.BackColor = System.Drawing.Color.White
+        Me.pnlCliente.Controls.Add(Me.TxtMonedaFactura)
+        Me.pnlCliente.Controls.Add(Me.Label13)
         Me.pnlCliente.Controls.Add(lblSeccionCliente)
         Me.pnlCliente.Controls.Add(Me.OptRet2Porciento)
         Me.pnlCliente.Controls.Add(Me.GroupBox2)
@@ -650,7 +652,7 @@ Partial Class FrmRecibos
         Me.pnlCliente.Controls.Add(Me.CboCajero)
         Me.pnlCliente.Controls.Add(Me.LblCajero)
         Me.pnlCliente.Controls.Add(Me.GroupBox3)
-        Me.pnlCliente.Location = New System.Drawing.Point(4, 62)
+        Me.pnlCliente.Location = New System.Drawing.Point(4, 61)
         Me.pnlCliente.Name = "pnlCliente"
         Me.pnlCliente.Size = New System.Drawing.Size(883, 136)
         Me.pnlCliente.TabIndex = 236
@@ -856,8 +858,6 @@ Partial Class FrmRecibos
         Me.Controls.Add(Me.pnlCliente)
         Me.Controls.Add(Me.pnlHeader)
         Me.Controls.Add(Me.TxtObservaciones)
-        Me.Controls.Add(Me.TxtMonedaFactura)
-        Me.Controls.Add(Me.Label13)
         Me.Controls.Add(Me.TxtTipoRecibo)
         Me.Controls.Add(Me.TrueDBGridComponentes)
         Me.Controls.Add(Me.TxtImporteAplicado)

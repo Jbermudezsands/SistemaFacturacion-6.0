@@ -537,4 +537,17 @@ Public Class FrmHospitalizacion
 
         MsgBox("Se ha Procesado la Factura  No." & NumeroFactura, MsgBoxStyle.Information, "Zeus Facturacion")
     End Sub
+
+    '/////////////////////////////////////////////////////////////////////////////////////////////////
+    '/ MOTOR DE COSTOS: este metodo del formulario oculta a Funciones.CostoPromedioKardex y delega en
+    '/ MotorCostos.CostoGeneral (mismo resultado, una sola lectura de BD). Si el motor falla se usa
+    '/ la funcion original.
+    '/////////////////////////////////////////////////////////////////////////////////////////////////
+    Private Function CostoPromedioKardex(ByVal CodigoProducto As String, ByVal FechaCompras As Date) As RstCostoPromedio
+        Try
+            Return New MotorCostos(Conexion).CostoGeneral(CodigoProducto, FechaCompras).ARstCostoPromedio()
+        Catch ex As Exception
+            Return Funciones.CostoPromedioKardexOriginal(CodigoProducto, FechaCompras)
+        End Try
+    End Function
 End Class

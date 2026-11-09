@@ -177,6 +177,18 @@ Handles backgroundWorkerGrabar.DoWork
             worker.WorkerReportsProgress = True
             worker.WorkerSupportsCancellation = True
             GrabarTransferenciasWorker(args, dsDetalle, worker, e)
+            'Motor de Costos: si el producto tiene entradas posteriores a la fecha de la transferencia,
+            'recalcula los costos desde esa fecha (Enviada y Recibida conservan el mismo costo).
+            If Not e.Cancel Then
+                Try
+                    Dim MotorCostosPend As New MotorCostos(Conexion)
+                    MotorCostosPend.IndicarOrigen("FrmTransferencias", "Transferencia " & args.Numero & " " & args.Fecha.ToString("dd/MM/yyyy"))
+                    MotorCostosPend.RepararDocumento(dsDetalle.Tables("DetalleFactura"), args.Fecha)
+                    MotorCostosPend.ProcesarPendientes()
+                Catch ex As Exception
+                    Bitacora(Now, NombreUsuario, "Reparacion Costos", ex.Message)
+                End Try
+            End If
         End If
     End Sub
     Private Sub backgroundWorkerGrabar_RunWorkerCompleted(
@@ -1080,6 +1092,13 @@ Handles backgroundWorkerGrabar.ProgressChanged
     End Sub
 
     Private Sub FrmTransferencias_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        'Motor de Costos: antes de costear, aplica los recosteos pendientes por cambios en compras
+        Try
+            Dim MotorCostosPend As New MotorCostos(Conexion)
+            MotorCostosPend.ProcesarPendientes()
+        Catch ex As Exception
+            Bitacora(Now, NombreUsuario, "Reparacion Costos", ex.Message)
+        End Try
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim Procesado As Boolean = True, SqlDatos As String
 
@@ -3119,4 +3138,18 @@ Handles backgroundWorkerGrabar.ProgressChanged
             e.Cancel = True
         End If
     End Sub
+
+    '/////////////////////////////////////////////////////////////////////////////////////////////////
+    '/ MOTOR DE COSTOS: este metodo del formulario oculta a Funciones.CostoPromedioKardex y delega en
+    '/ MotorCostos.CostoParaTransferencia (mismo resultado, una sola lectura de BD). Si el motor falla
+    '/ se usa la funcion original para no detener el proceso.
+    '/ Enviada y Recibida usan el mismo costo (Kardex a la fecha; las transferencias no entran al promedio).
+    '/////////////////////////////////////////////////////////////////////////////////////////////////
+    Private Function CostoPromedioKardex(ByVal CodigoProducto As String, ByVal FechaCompras As Date) As RstCostoPromedio
+        Try
+            Return New MotorCostos(Conexion).CostoParaTransferencia(CodigoProducto, FechaCompras)
+        Catch ex As Exception
+            Return Funciones.CostoPromedioKardexOriginal(CodigoProducto, FechaCompras)
+        End Try
+    End Function
 End Class

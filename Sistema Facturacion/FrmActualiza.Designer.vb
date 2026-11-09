@@ -130,6 +130,8 @@ Partial Class FrmActualiza
         Me.TabPage7 = New System.Windows.Forms.TabPage()
         Me.Button20 = New System.Windows.Forms.Button()
         Me.TabPage8 = New System.Windows.Forms.TabPage()
+        Me.BtnIniciar = New System.Windows.Forms.Button()
+        Me.Label23 = New System.Windows.Forms.Label()
         Me.TabPage9 = New System.Windows.Forms.TabPage()
         Me.GroupBox13 = New System.Windows.Forms.GroupBox()
         Me.BtnIniciarLotes = New System.Windows.Forms.Button()
@@ -140,8 +142,6 @@ Partial Class FrmActualiza
         Me.TxtLoteInicio = New System.Windows.Forms.TextBox()
         Me.Label25 = New System.Windows.Forms.Label()
         Me.CmdCerrar = New System.Windows.Forms.Button()
-        Me.BtnIniciar = New System.Windows.Forms.Button()
-        Me.Label23 = New System.Windows.Forms.Label()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -429,7 +429,7 @@ Partial Class FrmActualiza
         '
         Me.ProgressBar5.Location = New System.Drawing.Point(9, 129)
         Me.ProgressBar5.Name = "ProgressBar5"
-        Me.ProgressBar5.Size = New System.Drawing.Size(337, 23)
+        Me.ProgressBar5.Size = New System.Drawing.Size(354, 23)
         Me.ProgressBar5.TabIndex = 8
         '
         'Label20
@@ -1293,6 +1293,27 @@ Partial Class FrmActualiza
         Me.TabPage8.Text = "Auditoria"
         Me.TabPage8.UseVisualStyleBackColor = True
         '
+        'BtnIniciar
+        '
+        Me.BtnIniciar.Image = CType(resources.GetObject("BtnIniciar.Image"), System.Drawing.Image)
+        Me.BtnIniciar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.BtnIniciar.Location = New System.Drawing.Point(263, 80)
+        Me.BtnIniciar.Name = "BtnIniciar"
+        Me.BtnIniciar.Size = New System.Drawing.Size(75, 34)
+        Me.BtnIniciar.TabIndex = 238
+        Me.BtnIniciar.Text = "Iniciar"
+        Me.BtnIniciar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.BtnIniciar.UseVisualStyleBackColor = True
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Location = New System.Drawing.Point(166, 91)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(76, 13)
+        Me.Label23.TabIndex = 237
+        Me.Label23.Text = "Activar Auditor"
+        '
         'TabPage9
         '
         Me.TabPage9.Controls.Add(Me.GroupBox13)
@@ -1394,27 +1415,6 @@ Partial Class FrmActualiza
         Me.CmdCerrar.Text = "Cerrar"
         Me.CmdCerrar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.CmdCerrar.UseVisualStyleBackColor = True
-        '
-        'BtnIniciar
-        '
-        Me.BtnIniciar.Image = CType(resources.GetObject("BtnIniciar.Image"), System.Drawing.Image)
-        Me.BtnIniciar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnIniciar.Location = New System.Drawing.Point(263, 80)
-        Me.BtnIniciar.Name = "BtnIniciar"
-        Me.BtnIniciar.Size = New System.Drawing.Size(75, 34)
-        Me.BtnIniciar.TabIndex = 238
-        Me.BtnIniciar.Text = "Iniciar"
-        Me.BtnIniciar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.BtnIniciar.UseVisualStyleBackColor = True
-        '
-        'Label23
-        '
-        Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(166, 91)
-        Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(76, 13)
-        Me.Label23.TabIndex = 237
-        Me.Label23.Text = "Activar Auditor"
         '
         'FrmActualiza
         '

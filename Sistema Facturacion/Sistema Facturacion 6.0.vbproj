@@ -106,6 +106,13 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Clases\Consultas\Auditoria.vb" />
+    <Compile Include="Clases\Consultas\ExclusionesAuditoria.vb" />
+    <Compile Include="Formularios\FrmMarcarHallazgo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FrmHallazgosExcluidos.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Clases\Seguridad\Seguridad.vb" />
     <Compile Include="Clases\Seguridad\SeguridadModelos.vb" />
     <Compile Include="Clases\Seguridad\SeguridadRepositorio.vb" />
@@ -157,6 +164,7 @@
     <Compile Include="Clases\Consultas\ResultadoSaldoInicialKardex.vb" />
     <Compile Include="Clases\Consultas\RstCmbReporteExistenciaLote.vb" />
     <Compile Include="Clases\Consultas\RstCostoPromedio.vb" />
+    <Compile Include="Clases\Costos\BitacoraAjusteCostos.vb" />
     <Compile Include="Clases\Costos\MovimientoCosto.vb" />
     <Compile Include="Clases\Costos\ResultadoCosteo.vb" />
     <Compile Include="Clases\Costos\RepositorioMovimientos.vb" />
@@ -243,7 +251,14 @@
     <Compile Include="Formularios\FrmPlanPago.Designer.vb">
       <DependentUpon>FrmPlanPago.vb</DependentUpon>
     </Compile>
+    <Compile Include="Formularios\FrmTrazabilidadCostos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Clases\Costos\RepositorioTrazabilidadCostos.vb" />
     <Compile Include="Formularios\FrmComparadorCostos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FrmSimulacionCostos.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formularios\FrmPlanPago.vb">

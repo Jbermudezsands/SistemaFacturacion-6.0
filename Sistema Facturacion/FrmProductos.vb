@@ -3279,4 +3279,16 @@ Public Class FrmProductos
     Private Sub GroupBox4_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox4.Enter
 
     End Sub
+    ' Motor de Costos: equivale a Funciones.CostoPromedio (historial completo, sin respaldo de ultimo costo).
+    ' Conserva el efecto lateral sobre la variable global CostoPromedioDolar.
+    Private Function CostoPromedio(ByVal CodigoProducto As String) As Double
+        Try
+            Dim rst As RstCostoPromedio = New MotorCostos(Conexion).CostoActual(CodigoProducto)
+            CostoPromedioDolar = rst.Costo_Dolar
+            Return rst.Costo_Cordoba
+        Catch ex As Exception
+            Return Funciones.CostoPromedio(CodigoProducto)
+        End Try
+    End Function
+
 End Class

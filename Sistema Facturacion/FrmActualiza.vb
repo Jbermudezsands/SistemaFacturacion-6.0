@@ -472,6 +472,11 @@ Handles backgroundWorkerProductosLotes.ProgressChanged
 
         Me.TabControl1.SelectedTab = Me.TabPage2
         AgregarBotonComparadorCostos()
+        AgregarBotonTrazabilidadCostos()
+        'Opcion 'Ultimo P/Compra' eliminada: solo se usa el costo del motor (promedio).
+        Me.OptUltimoPrecio.Visible = False
+        Me.OptUltimoPrecio.Checked = False
+        Me.OptPromedio.Checked = True
     End Sub
 
     '' Motor de Costos Fase 4a: acceso al comparador (solo lectura), creado por codigo para no tocar el Designer.
@@ -479,14 +484,77 @@ Handles backgroundWorkerProductosLotes.ProgressChanged
         Dim Boton As New Button
         Boton.Name = "CmdCompararMotorCostos"
         Boton.Text = "Comparar Motor de Costos"
+        ' La barra de progreso original ocupa x=9..363; se acorta para dejar espacio a los botones.
+        Me.ProgressBar5.Width = 150
         Boton.Location = New System.Drawing.Point(273, 129)
         Boton.Size = New System.Drawing.Size(100, 47)
         AddHandler Boton.Click, AddressOf CmdCompararMotorCostos_Click
         Me.TabPage5.Controls.Add(Boton)
+        Boton.BringToFront()
+
+        ' Boton Simular: calcula sin escribir y muestra las filas que cambiarian.
+        _CmdSimularCostos = New Button
+        _CmdSimularCostos.Name = "CmdSimularCostos"
+        _CmdSimularCostos.Text = "Simular Ajuste"
+        _CmdSimularCostos.Location = New System.Drawing.Point(167, 129)
+        _CmdSimularCostos.Size = New System.Drawing.Size(100, 47)
+        AddHandler _CmdSimularCostos.Click, AddressOf CmdSimularCostos_Click
+        Me.TabPage5.Controls.Add(_CmdSimularCostos)
+        _CmdSimularCostos.BringToFront()
+
+        ' Fecha de inicio del ajuste (casilla desmarcada = todo el historial).
+        Dim Grupo As New GroupBox
+        Grupo.Text = "Ajustar desde fecha"
+        Grupo.Location = New System.Drawing.Point(481, 57)
+        Grupo.Size = New System.Drawing.Size(119, 54)
+        _DtpFechaInicioCosto = New DateTimePicker
+        _DtpFechaInicioCosto.Format = DateTimePickerFormat.Short
+        _DtpFechaInicioCosto.ShowCheckBox = True
+        _DtpFechaInicioCosto.Checked = False
+        _DtpFechaInicioCosto.Location = New System.Drawing.Point(8, 22)
+        _DtpFechaInicioCosto.Size = New System.Drawing.Size(103, 20)
+        Grupo.Controls.Add(_DtpFechaInicioCosto)
+        Me.TabPage5.Controls.Add(Grupo)
+    End Sub
+
+    '' Trazabilidad de ajustes de costo: boton debajo de "Iniciar" (pestana Auditoria), creado por codigo.
+    Private Sub AgregarBotonTrazabilidadCostos()
+        Dim Boton As New Button
+        Boton.Name = "CmdTrazabilidadCostos"
+        Boton.Text = "Trazabilidad"
+        Boton.Location = New System.Drawing.Point(Me.BtnIniciar.Left - 15, Me.BtnIniciar.Bottom + 8)
+        Boton.Size = New System.Drawing.Size(105, 34)
+        AddHandler Boton.Click, AddressOf CmdTrazabilidadCostos_Click
+        Me.TabPage8.Controls.Add(Boton)
+        Boton.BringToFront()
+    End Sub
+
+    Private Sub CmdTrazabilidadCostos_Click(ByVal sender As Object, ByVal e As EventArgs)
+        Using Frm As New FrmTrazabilidadCostos
+            Frm.ShowDialog(Me)
+        End Using
+    End Sub
+
+    Private _CmdSimularCostos As Button
+    Private _DtpFechaInicioCosto As DateTimePicker
+
+    '' Fecha de inicio elegida por el usuario; Nothing = sin limite (todo el historial).
+    Private Function FechaInicioAjusteCosto() As Date?
+        If _DtpFechaInicioCosto IsNot Nothing AndAlso _DtpFechaInicioCosto.Checked Then
+            Return _DtpFechaInicioCosto.Value.Date
+        End If
+        Return Nothing
+    End Function
+
+    Private Sub CmdSimularCostos_Click(ByVal sender As Object, ByVal e As EventArgs)
+        If _ReparadorCostos IsNot Nothing Then Return
+        EjecutarCosteo(False)
     End Sub
 
     Private Sub CmdCompararMotorCostos_Click(ByVal sender As Object, ByVal e As EventArgs)
         Dim Frm As New FrmComparadorCostos
+        Frm.ProductoDesde = Me.TxtDesdeCosto.Text
+        Frm.ProductoHasta = Me.TxtHastaCosto.Text
         Frm.Show(Me)
     End Sub
 
@@ -759,45 +827,15 @@ Handles backgroundWorkerProductosLotes.ProgressChanged
 
                 Existencia = ExistenciaProducto(CodProductos)
 
-                If Me.OptUltimoPrecio.Checked = True Then
-
-                    SqlCompras = "SELECT * FROM  Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra WHERE (Detalle_Compras.Cod_Producto = '" & CodProductos & "') AND (Detalle_Compras.Tipo_Compra = 'Mercancia Recibida')"
-                    DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
-                    DataAdapter.Fill(DataSet, "Compras")
-                    Registros = DataSet.Tables("Compras").Rows.Count - 1
-                    If DataSet.Tables("Compras").Rows.Count <> 0 Then
-                        MonedaCompra = DataSet.Tables("Compras").Rows(Registros)("MonedaCompra")
-                        If MonedaCompra = "Cordobas" Then
-                            PrecioCosto = Trim(DataSet.Tables("Compras").Rows(Registros)("Precio_Unitario"))
-                            FechaCompra = Trim(DataSet.Tables("Compras").Rows(Registros)("Fecha_Compra"))
-                            TasaCambio = BuscaTasaCambio(FechaCompra)
-                            If TasaCambio = 0 Then
-                                MsgBox("TASA DE CAMBIO CERO,", MsgBoxStyle.Critical, "Zeus Facturacion ")
-
-                            Else
-                                PrecioCostoDolar = (PrecioCosto / TasaCambio)
-                            End If
-                        Else
-                            PrecioCostoDolar = Trim(DataSet.Tables("Compras").Rows(Registros)("Precio_Unitario"))
-                            FechaCompra = Trim(DataSet.Tables("Compras").Rows(Registros)("Fecha_Compra"))
-                            TasaCambio = BuscaTasaCambio(FechaCompra)
-                            If TasaCambio = 0 Then
-                                MsgBox("TASA DE CAMBIO CERO,", MsgBoxStyle.Critical, "Zeus Facturacion ")
-                            Else
-                                PrecioCosto = (PrecioCosto * TasaCambio)
-                            End If
-                        End If
-                    End If
-
-                    DataSet.Tables("Compras").Clear()
-
-                ElseIf Me.OptPromedio.Checked = True Then
+                'MOTOR DE COSTOS: se elimino la opcion 'Ultimo P/Compra'. El costo es unico por producto y lo da el motor.
+                If Me.OptPromedio.Checked = True Then
 
                     If CodProductos = "130-11-02-01" Then
                         'Cantidad = 0
                     End If
 
                     PrecioCosto = CostoPromedio(CodProductos)
+                    PrecioCostoDolar = CostoPromedioDolar
 
                     'SqlCompras = "SELECT MAX(Detalle_Compras.Numero_Compra) AS Numero_Compra, MAX(Detalle_Compras.Fecha_Compra) AS Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cod_Producto, SUM(Detalle_Compras.Cantidad) AS Cantidad, SUM(Detalle_Compras.Precio_Unitario) AS Precio_Unitario, SUM(Detalle_Compras.Descuento) AS Descuento, SUM(Detalle_Compras.Precio_Neto) AS Precio_Neto, Compras.MonedaCompra, SUM(Detalle_Compras.Precio_Unitario * Detalle_Compras.Cantidad) AS Importe FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra GROUP BY Detalle_Compras.Tipo_Compra, Detalle_Compras.Cod_Producto, Compras.MonedaCompra HAVING (Detalle_Compras.Cod_Producto = '" & CodProductos & "') AND (Detalle_Compras.Tipo_Compra = 'Mercancia Recibida')"
                     'DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
@@ -901,117 +939,17 @@ Handles backgroundWorkerProductosLotes.ProgressChanged
                         'ExistenciaBodega = BuscaExistenciaBodega(CodProductos, CodigoBodega)
                         'Existencia = Existencia + ExistenciaBodega
 
-                        If Me.OptUltimoPrecio.Checked = True Then
-
-                            '//////////////////////////////////////////////BUSCO LA ULTIMA COMPRA //////////////////////////////
-                            SqlSTring = "SELECT  * FROM  Detalle_Compras INNER JOIN  Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra WHERE  (Compras.Cod_Bodega = '" & CodigoBodega & "') AND (Detalle_Compras.Cod_Producto = '" & CodProductos & "')"
-                            DataAdapter = New SqlClient.SqlDataAdapter(SqlSTring, MiConexion)
-                            DataAdapter.Fill(DataSet, "UltCompra")
-                            j = DataSet.Tables("UltCompra").Rows.Count - 1
-                            If DataSet.Tables("UltCompra").Rows.Count <> 0 Then
-                                MonedaCompra = DataSet.Tables("UltCompra").Rows(j)("MonedaCompra")
-                                If MonedaCompra = "Cordobas" Then
-                                    PrecioCosto = Trim(DataSet.Tables("UltCompra").Rows(j)("Precio_Unitario"))
-                                    FechaCompra = Trim(DataSet.Tables("UltCompra").Rows(j)("Fecha_Compra"))
-                                    TasaCambio = BuscaTasaCambio(FechaCompra)
-                                    If TasaCambio = 0 Then
-                                        MsgBox("TASA DE CAMBIO CERO,", MsgBoxStyle.Critical, "Zeus Facturacion ")
-
-                                    Else
-                                        PrecioCostoDolar = (PrecioCosto / TasaCambio)
-                                    End If
-                                Else
-                                    PrecioCostoDolar = Trim(DataSet.Tables("UltCompra").Rows(j)("Precio_Unitario"))
-                                    FechaCompra = Trim(DataSet.Tables("UltCompra").Rows(j)("Fecha_Compra"))
-                                    TasaCambio = BuscaTasaCambio(FechaCompra)
-                                    If TasaCambio = 0 Then
-                                        MsgBox("TASA DE CAMBIO CERO,", MsgBoxStyle.Critical, "Zeus Facturacion ")
-                                    Else
-                                        PrecioCosto = (PrecioCosto * TasaCambio)
-                                    End If
-                                End If
-
-                                DataSet.Tables("UltCompra").Reset()
-                                MiConexion.Close()
-
-
-
-                                '///////////ACTUALIZO LA EXISTENCIA PARA CADA BODEGA ////////////////////////////////////////
-                                StrSQLUpdate = "UPDATE [DetalleBodegas]  SET [Costo] = '" & Math.Abs(PrecioCosto) & "',[CostoDolar] = '" & Math.Abs(PrecioCostoDolar) & "'  WHERE (Cod_Productos = '" & CodProductos & "') AND (Cod_Bodegas = '" & CodigoBodega & "')"
-                                MiConexion.Open()
-                                ComandoUpdate = New SqlClient.SqlCommand(StrSQLUpdate, MiConexion)
-                                iResultado = ComandoUpdate.ExecuteNonQuery
-                                MiConexion.Close()
-                            End If
-
-                        ElseIf Me.OptPromedio.Checked = True Then
-
-                            SqlCompras = "SELECT MAX(Detalle_Compras.Numero_Compra) AS Numero_Compra, MAX(Detalle_Compras.Fecha_Compra) AS Fecha_Compra, Detalle_Compras.Tipo_Compra, Detalle_Compras.Cod_Producto, SUM(Detalle_Compras.Cantidad) AS Cantidad, SUM(Detalle_Compras.Precio_Unitario) AS Precio_Unitario, SUM(Detalle_Compras.Descuento) AS Descuento, SUM(Detalle_Compras.Precio_Neto) AS Precio_Neto, Compras.MonedaCompra, SUM(Detalle_Compras.Precio_Unitario * Detalle_Compras.Cantidad) AS Importe FROM Detalle_Compras INNER JOIN Compras ON Detalle_Compras.Numero_Compra = Compras.Numero_Compra AND Detalle_Compras.Fecha_Compra = Compras.Fecha_Compra AND Detalle_Compras.Tipo_Compra = Compras.Tipo_Compra GROUP BY Detalle_Compras.Tipo_Compra, Detalle_Compras.Cod_Producto, Compras.MonedaCompra HAVING (Detalle_Compras.Cod_Producto = '" & CodProductos & "') AND (Detalle_Compras.Tipo_Compra = 'Mercancia Recibida')"
-                            DataAdapter = New SqlClient.SqlDataAdapter(SqlCompras, MiConexion)
-                            DataAdapter.Fill(DataSet, "Compras")
-                            Registros = DataSet.Tables("Compras").Rows.Count - 1
-                            Iposicion = 0
-                            TotalImporte = 0
-                            Iposicion = 0
-                            Cantidad = 0
-                            Do While Iposicion < DataSet.Tables("Compras").Rows.Count
-                                MonedaCompra = DataSet.Tables("Compras").Rows(Iposicion)("MonedaCompra")
-                                If MonedaCompra = "Cordobas" Then
-                                    PrecioUnitario = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Precio_Unitario"))
-                                    Cantidad = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Cantidad")) + Cantidad
-                                    Importe = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Importe"))
-                                    TotalImporte = TotalImporte + Importe
-                                    FechaCompra = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Fecha_Compra"))
-                                    TasaCambio = BuscaTasaCambio(FechaCompra)
-                                    If TasaCambio = 0 Then
-                                        MsgBox("TASA DE CAMBIO CERO,", MsgBoxStyle.Critical, "Zeus Facturacion ")
-
-                                    Else
-                                        PrecioCostoDolar = (PrecioCosto / TasaCambio)
-                                    End If
-                                Else
-                                    PrecioUnitario = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Precio_Unitario"))
-                                    Cantidad = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Cantidad")) + Cantidad
-                                    Importe = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Importe"))
-                                    FechaCompra = Trim(DataSet.Tables("Compras").Rows(Iposicion)("Fecha_Compra"))
-                                    If TasaCambio = 0 Then
-                                        MsgBox("TASA DE CAMBIO CERO,", MsgBoxStyle.Critical, "Zeus Facturacion ")
-                                    Else
-                                        TotalImporte = (Importe * TasaCambio) + TotalImporte
-                                    End If
-
-                                End If
-
-                                If Cantidad <> 0 Then
-                                    PrecioCosto = Format(TotalImporte / Cantidad, "##,##0.00")
-                                    PrecioCostoDolar = Format((PrecioCosto / TasaCambio), "##,##0.00")
-                                Else
-                                    PrecioCosto = PrecioUnitario
-                                    If PrecioCosto <> 0 Then
-                                        PrecioCostoDolar = Format((PrecioCosto / TasaCambio), "##,##0.00")
-                                    Else
-                                        PrecioCostoDolar = 0
-                                    End If
-                                End If
-                                'PrecioCosto = Format(TotalImporte / Cantidad, "##,##0.00")
-                                'PrecioCostoDolar = Format((PrecioCosto / TasaCambio), "##,##0.00")
-
-                                DataSet.Tables("Compras").Reset()
-
-
-                                '///////////ACTUALIZO LA EXISTENCIA PARA CADA BODEGA ////////////////////////////////////////
-                                StrSQLUpdate = "UPDATE [DetalleBodegas]  SET [Costo] = '" & Math.Abs(PrecioCosto) & "',[CostoDolar] = '" & Math.Abs(PrecioCostoDolar) & "'  WHERE (Cod_Productos = '" & CodProductos & "') AND (Cod_Bodegas = '" & CodigoBodega & "')"
-                                MiConexion.Open()
-                                ComandoUpdate = New SqlClient.SqlCommand(StrSQLUpdate, MiConexion)
-                                iResultado = ComandoUpdate.ExecuteNonQuery
-                                MiConexion.Close()
-
-                                Iposicion = Iposicion + 1
-
-                            Loop
-
-
-                        End If
+                        'MOTOR DE COSTOS: el costo es UNICO por producto. Se escribe la misma cifra del producto en cada bodega
+                        '(ya no se calcula ultimo precio ni promedio por bodega).
+                        StrSQLUpdate = "UPDATE [DetalleBodegas]  SET [Costo] = @c, [CostoDolar] = @d  WHERE (Cod_Productos = @p) AND (Cod_Bodegas = @b)"
+                        ComandoUpdate = New SqlClient.SqlCommand(StrSQLUpdate, MiConexion)
+                        ComandoUpdate.Parameters.AddWithValue("@c", Math.Abs(PrecioCosto))
+                        ComandoUpdate.Parameters.AddWithValue("@d", Math.Abs(PrecioCostoDolar))
+                        ComandoUpdate.Parameters.AddWithValue("@p", CodProductos)
+                        ComandoUpdate.Parameters.AddWithValue("@b", CodigoBodega)
+                        MiConexion.Open()
+                        iResultado = ComandoUpdate.ExecuteNonQuery
+                        MiConexion.Close()
                         i = i + 1
                         Me.ProgressBar4.Value = i
                     Loop
@@ -1211,26 +1149,49 @@ Handles backgroundWorkerProductosLotes.ProgressChanged
             Return
         End If
 
+        EjecutarCosteo(True)
+    End Sub
+
+    '' Aplicar = False: simulacion (no escribe nada, muestra las filas que cambiarian en FrmSimulacionCostos).
+    '' Aplicar = True : ajuste real.
+    Private Sub EjecutarCosteo(ByVal Aplicar As Boolean)
         Dim Desde As String = Me.TxtDesdeCosto.Text.Trim()
         Dim Hasta As String = Me.TxtHastaCosto.Text.Trim()
+        Dim FechaInicio As Date? = FechaInicioAjusteCosto()
         Dim Alcance As String = IIf(Desde = "" And Hasta = "", "TODOS los productos", "los productos desde '" & Desde & "' hasta '" & Hasta & "'").ToString()
+        If FechaInicio.HasValue Then
+            Alcance &= ", a partir del " & FechaInicio.Value.ToString("dd/MM/yyyy") & " (lo anterior no se modifica)"
+        Else
+            Alcance &= ", de TODO el historial (no se indico fecha de inicio)"
+        End If
 
-        If MessageBox.Show("Se recalcularan los costos de " & Alcance & "." & vbCrLf & "Este proceso modifica Detalle_Facturas y Detalle_Compras. Desea continuar?",
-                           "Zeus Facturacion", MessageBoxButtons.YesNo, MessageBoxIcon.Question) <> DialogResult.Yes Then
-            Return
+        If Aplicar Then
+            If MessageBox.Show("Se recalcularan los costos de " & Alcance & "." & vbCrLf & "Este proceso modifica Detalle_Facturas y Detalle_Compras. Desea continuar?",
+                               "Zeus Facturacion", MessageBoxButtons.YesNo, MessageBoxIcon.Question) <> DialogResult.Yes Then
+                Return
+            End If
         End If
 
         Dim TextoBoton As String = Me.CmdCostear.Text
         Dim TextoFormulario As String = Me.Text
-        _ReparadorCostos = New ReparadorCostos(Conexion)
+        _ReparadorCostos = New ReparadorCostos(Conexion, New ContextoAjusteCostos("FrmActualiza.CmdCostear", Alcance))
         AddHandler _ReparadorCostos.Progreso, AddressOf ReparadorCostos_Progreso
         Me.CmdCostear.Text = "Cancelar"
+        If _CmdSimularCostos IsNot Nothing Then _CmdSimularCostos.Enabled = False
         Me.ProgressBar5.Minimum = 0
         Me.ProgressBar5.Value = 0
         Me.ProgressBar5.Visible = True
 
         Try
-            Dim Resumen As ResumenReparacion = _ReparadorCostos.RecalcularRango(Desde, Hasta, True)
+            Dim Resumen As ResumenReparacion = _ReparadorCostos.RecalcularRango(Desde, Hasta, Aplicar, FechaInicio, Not Aplicar)
+
+            If Not Aplicar Then
+                RestaurarBotonesCosteo(TextoBoton, TextoFormulario)
+                Using FrmSim As New FrmSimulacionCostos(Resumen)
+                    FrmSim.ShowDialog(Me)
+                End Using
+                Return
+            End If
 
             Dim Mensaje As String = "Productos procesados: " & Resumen.Productos & vbCrLf &
                                     "Productos con cambios: " & Resumen.ProductosConCambios & vbCrLf &
@@ -1250,10 +1211,15 @@ Handles backgroundWorkerProductosLotes.ProgressChanged
         Finally
             RemoveHandler _ReparadorCostos.Progreso, AddressOf ReparadorCostos_Progreso
             _ReparadorCostos = Nothing
-            Me.CmdCostear.Text = TextoBoton
-            Me.Text = TextoFormulario
-            Me.ProgressBar5.Visible = False
+            RestaurarBotonesCosteo(TextoBoton, TextoFormulario)
         End Try
+    End Sub
+
+    Private Sub RestaurarBotonesCosteo(ByVal TextoBoton As String, ByVal TextoFormulario As String)
+        Me.CmdCostear.Text = TextoBoton
+        Me.Text = TextoFormulario
+        Me.ProgressBar5.Visible = False
+        If _CmdSimularCostos IsNot Nothing Then _CmdSimularCostos.Enabled = True
     End Sub
 
     Private Sub ReparadorCostos_Progreso(ByVal Actual As Integer, ByVal Total As Integer, ByVal Mensaje As String)
@@ -1686,17 +1652,6 @@ Handles backgroundWorkerProductosLotes.ProgressChanged
         'End If
     End Sub
 
-
-
-
-
-
-
-
-
-
-
-
     Private Sub Button22_Click_1(sender As Object, e As EventArgs) Handles Button22.Click
         If Me.OptCordobas.Checked = True Then
             FrmAjustarTodos.OptCordobas.Checked = True
@@ -1804,4 +1759,16 @@ Handles backgroundWorkerProductosLotes.ProgressChanged
     Private Sub BtnIniciar_Click_1(sender As Object, e As EventArgs) Handles BtnIniciar.Click
         FrmAuditoriaFacturacion.ShowDialog()
     End Sub
+    ' Motor de Costos: equivale a Funciones.CostoPromedio (historial completo, sin respaldo de ultimo costo).
+    ' Conserva el efecto lateral sobre la variable global CostoPromedioDolar.
+    Private Function CostoPromedio(ByVal CodigoProducto As String) As Double
+        Try
+            Dim rst As RstCostoPromedio = New MotorCostos(Conexion).CostoActual(CodigoProducto)
+            CostoPromedioDolar = rst.Costo_Dolar
+            Return rst.Costo_Cordoba
+        Catch ex As Exception
+            Return Funciones.CostoPromedio(CodigoProducto)
+        End Try
+    End Function
+
 End Class

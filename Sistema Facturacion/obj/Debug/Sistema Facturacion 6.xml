@@ -177,6 +177,51 @@ Sistema Facturacion 6.0
   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="T:Sistema_Facturacion.ExclusionesAuditoria">
+ <summary>
+ Hallazgos que el usuario marco como Revisado / Autoauditado / Declarado al fisco (tabla AuditoriaHallazgosExcluidos).
+ El Auditor los descarta al final de cada ejecucion, por lo que no vuelven a aparecer como hallazgo.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.ExclusionesAuditoria.Clave(Sistema_Facturacion.Auditoria.HallazgoAuditoria)">
+ <summary>Identidad estable de un hallazgo entre ejecuciones (no incluye fecha, cantidad ni costos, que pueden cambiar).</summary>
+</member>
+<member name="M:Sistema_Facturacion.ExclusionesAuditoria.CargarClaves(System.String)">
+ <summary>Claves de los hallazgos excluidos y activos. Nothing si la tabla aun no existe (script 6 sin aplicar).</summary>
+</member>
+<member name="M:Sistema_Facturacion.ExclusionesAuditoria.Marcar(System.String,Sistema_Facturacion.Auditoria.HallazgoAuditoria,System.String,System.String)">
+ <summary>
+ Marca el hallazgo como excluido. Guarda los valores que tenia al momento de marcarlo como evidencia.
+ Lanza excepcion con mensaje en español si no se pudo guardar (el hallazgo NO queda marcado).
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.ExclusionesAuditoria.Listar(System.String,System.Boolean)">
+ <summary>Hallazgos excluidos, los mas recientes primero. incluirReactivados = True agrega los que ya volvieron a la auditoria.</summary>
+</member>
+<member name="M:Sistema_Facturacion.ExclusionesAuditoria.Reactivar(System.String,System.Int32,System.String)">
+ <summary>
+ Regresa el hallazgo a la auditoria (marcado por error). La fila se conserva como evidencia con quien, cuando y por que
+ se reactivo. Devuelve False si ya estaba reactivado.
+ </summary>
+</member>
+<member name="T:Sistema_Facturacion.FrmMarcarHallazgo">
+ <summary>
+ Pide la clasificacion y el motivo con que un hallazgo de la auditoria deja de mostrarse (p. ej. costo ya declarado
+ al fisco). Controles creados por codigo, sin Designer.
+ </summary>
+</member>
+<member name="T:Sistema_Facturacion.FrmHallazgosExcluidos">
+ <summary>
+ Lista los hallazgos de la auditoria marcados como Revisado / Autoauditado / Declarado al fisco y permite regresar
+ a la auditoria los que se marcaron por error. Controles creados por codigo, sin Designer.
+ </summary>
+</member>
+<member name="P:Sistema_Facturacion.FrmHallazgosExcluidos.HuboReactivaciones">
+ <summary>True si se regreso algun hallazgo: la auditoria abierta debe ejecutarse de nuevo para mostrarlo.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmHallazgosExcluidos.PedirMotivo(System.String)">
+ <summary>Pide el motivo para regresar el hallazgo. Devuelve Nothing si el usuario cancela.</summary>
+</member>
 <member name="M:Sistema_Facturacion.Seguridad.#ctor">
  <summary>Usa la cadena de conexión global del sistema.</summary>
 </member>
@@ -885,6 +930,43 @@ Sistema Facturacion 6.0
 <member name="M:Sistema_Facturacion.GridConFiltros.PosicionarFiltros">
  <summary>Alinea cada caja de filtro con su columna (ancho, scroll horizontal, etc.).</summary>
 </member>
+<member name="T:Sistema_Facturacion.ContextoAjusteCostos">
+ <summary>
+ Quien / desde donde / por que se ajusta un costo. Todas las filas modificadas en una misma ejecucion
+ comparten el mismo Lote.
+ </summary>
+</member>
+<member name="P:Sistema_Facturacion.ContextoAjusteCostos.Origen">
+ <summary>Formulario o proceso, p. ej. "FrmActualiza.CmdCostear". Si no se indica se deduce de la pila de llamadas.</summary>
+</member>
+<member name="P:Sistema_Facturacion.ContextoAjusteCostos.Referencia">
+ <summary>Documento que disparo el ajuste (p. ej. "Factura 000123") o el rango de productos.</summary>
+</member>
+<member name="M:Sistema_Facturacion.ContextoAjusteCostos.Con(System.String,System.String)">
+ <summary>Copia con otro origen / referencia pero el mismo lote.</summary>
+</member>
+<member name="M:Sistema_Facturacion.ContextoAjusteCostos.DeducirOrigen">
+ <summary>Primer formulario (Frm*) o clase de auditoria en la pila de llamadas.</summary>
+</member>
+<member name="T:Sistema_Facturacion.BitacoraAjusteCostos">
+ <summary>
+ Escribe en AjusteCostosLog una fila por linea de Detalle_Facturas / Detalle_Compras modificada, con el valor
+ anterior y el nuevo. Se registra dentro de la MISMA transaccion del ajuste (si el ajuste se revierte, la bitacora
+ tambien). Si la tabla aun no existe (script 5.AjusteCostosLog no aplicado) no se detiene el ajuste.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.BitacoraAjusteCostos.Registrar(System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction,Sistema_Facturacion.ContextoAjusteCostos,System.Boolean,Sistema_Facturacion.MovimientoCosto)">
+ <summary>Registra una linea ajustada por el motor (valores tomados de MovimientoCosto: Original* = antes).</summary>
+</member>
+<member name="M:Sistema_Facturacion.BitacoraAjusteCostos.RegistrarDirecto(System.String,Sistema_Facturacion.ContextoAjusteCostos,Sistema_Facturacion.DatosAjuste)">
+ <summary>
+ Registra un ajuste hecho con un UPDATE directo (reparaciones de la auditoria). Abre su propia conexion:
+ un fallo al registrar nunca debe invalidar el ajuste que ya se guardo, por eso no lanza excepciones.
+ </summary>
+</member>
+<member name="T:Sistema_Facturacion.DatosAjuste">
+ <summary>Datos de una linea ajustada (antes / despues).</summary>
+</member>
 <member name="T:Sistema_Facturacion.TipoOrigenMovimiento">
  <summary>
  Origen del movimiento: Detalle_Compras o Detalle_Facturas.
@@ -977,11 +1059,23 @@ Sistema Facturacion 6.0
 <member name="M:Sistema_Facturacion.RepositorioMovimientos.CargarDevolucionesCompra(System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction,System.String)">
  <summary>Filas 'Devolucion de Compra' (Detalle_Compras) del producto, sin exigir cabecera (igual que el original).</summary>
 </member>
+<member name="M:Sistema_Facturacion.RepositorioMovimientos.CargarMovimientosMasivo(System.DateTime)">
+ <summary>
+ Movimientos de costo (mismas reglas y JOIN que CargarMovimientos) de todos los productos hasta fechaCorte,
+ agrupados por Cod_Producto. Reemplaza N lecturas por 2 consultas.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.RepositorioMovimientos.CargarCandidatosMasivo(System.DateTime)">
+ <summary>Candidatos de "ultimo costo utilizado" de todos los productos hasta fechaCorte, por Cod_Producto.</summary>
+</member>
 <member name="M:Sistema_Facturacion.RepositorioMovimientos.ActualizarCostos(System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction,System.Boolean,Sistema_Facturacion.MovimientoCosto)">
  <summary>
  Actualiza por id solo las columnas que cambiaron respecto del original.
  tabla = "Detalle_Facturas" o "Detalle_Compras". Devuelve 1 si hubo cambios, 0 si no.
  </summary>
+</member>
+<member name="P:Sistema_Facturacion.RepositorioMovimientos.Contexto">
+ <summary>Quien / desde donde se ajusta (para AjusteCostosLog). Si es Nothing se genera uno al registrar.</summary>
 </member>
 <member name="T:Sistema_Facturacion.CalculadorCostoPromedio">
  <summary>
@@ -1039,6 +1133,15 @@ Sistema Facturacion 6.0
 <member name="M:Sistema_Facturacion.ComparadorCostos.SeleccionarFechas(System.Collections.Generic.List{Sistema_Facturacion.MovimientoCosto},System.Collections.Generic.List{Sistema_Facturacion.UltimoCostoCandidato},System.Int32)">
  <summary>Fechas con movimiento del producto (mas hoy), reducidas a una muestra repartida si se pide.</summary>
 </member>
+<member name="T:Sistema_Facturacion.CambioCostoDetalle">
+ <summary>Una fila de Detalle_Facturas / Detalle_Compras cuyo costo (o importe) cambiaria con el recosteo.</summary>
+</member>
+<member name="P:Sistema_Facturacion.CambioCostoDetalle.MaxDiferencia">
+ <summary>Mayor diferencia absoluta entre lo guardado y lo nuevo (costo, precios e importe). Un NULL contra un valor cuenta como diferencia total.</summary>
+</member>
+<member name="P:Sistema_Facturacion.ResumenReparacion.Detalles">
+ <summary>Filas que cambiarian (solo si se pidio recopilar el detalle).</summary>
+</member>
 <member name="T:Sistema_Facturacion.ReparadorCostos">
  <summary>
  Recosteo masivo por producto. Replica el proceso de FrmActualiza.CmdCostear_Click:
@@ -1059,8 +1162,20 @@ Sistema Facturacion 6.0
 <member name="P:Sistema_Facturacion.ReparadorCostos.Cancelar">
  <summary>Poner en True para detener el proceso entre productos (cada producto es atomico).</summary>
 </member>
-<member name="M:Sistema_Facturacion.ReparadorCostos.RecalcularRango(System.String,System.String,System.Boolean)">
+<member name="M:Sistema_Facturacion.ReparadorCostos.#ctor(System.String,Sistema_Facturacion.ContextoAjusteCostos)">
+ <summary>Constructor con trazabilidad explicita: origen (formulario/proceso) y referencia (documento o rango).</summary>
+</member>
+<member name="P:Sistema_Facturacion.ReparadorCostos.Contexto">
+ <summary>Contexto de trazabilidad (AjusteCostosLog). Todas las filas ajustadas por esta instancia comparten su Lote.</summary>
+</member>
+<member name="M:Sistema_Facturacion.ReparadorCostos.RecalcularRango(System.String,System.String,System.Boolean,System.Nullable{System.DateTime},System.Boolean)">
  <param name="aplicar">False = simulacion: calcula y cuenta cambios sin escribir nada.</param>
+ <param name="fechaDesde">Si se indica, solo se recalculan las filas con Fecha &gt;= fechaDesde (las anteriores no se tocan).</param>
+ <param name="recopilarDetalle">True = guarda en Resumen.Detalles cada fila que cambiaria (para la simulacion).</param>
+</member>
+<member name="M:Sistema_Facturacion.ReparadorCostos.RecalcularProducto(System.String,System.Boolean,System.Nullable{System.DateTime},System.Boolean)">
+ <param name="desde">Si se indica, solo se recalculan las filas con Fecha &gt;= desde; las anteriores conservan su costo
+ guardado (son la base del promedio). Nothing = todo el producto (comportamiento de CmdCostear).</param>
 </member>
 <member name="M:Sistema_Facturacion.ReparadorCostos.Redondear15(System.Double)">
  <summary>Equivale a escribir el valor como texto con Double.ToString() (15 digitos) y que SQL lo lea.</summary>
@@ -1079,6 +1194,61 @@ Sistema Facturacion 6.0
 </member>
 <member name="M:Sistema_Facturacion.MotorCostos.CostoGeneral(System.String,System.DateTime)">
  <summary>Costo general del producto a una fecha. Equivale a CostoPromedioKardex(codigo, fecha).</summary>
+</member>
+<member name="M:Sistema_Facturacion.MotorCostos.PrecargarAFecha(System.DateTime)">
+ <summary>
+ Carga de una vez los movimientos de TODOS los productos hasta la fecha. Despues, CostoGeneral(cod, esa fecha)
+ se resuelve en memoria (para reportes que costean miles de productos a la misma fecha). Usar siempre con
+ LimpiarPrecarga al terminar. Para otra fecha, CostoGeneral consulta la BD como siempre.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.MotorCostos.CostoActual(System.String)">
+ <summary>
+ Equivale a Funciones.CostoPromedio(codigo): costo con TODO el historial (sin fecha de corte) y SIN el respaldo de
+ "ultimo costo" (si no hay existencia neta devuelve 0), redondeado a 6 decimales como el original.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.MotorCostos.CostoParaFactura(System.String,System.DateTime)">
+ <summary>
+ Costo con el que se graba una linea de Factura / Devolucion de Venta / Salida Bodega al fecha del documento.
+ Mismo resultado que CostoPromedioKardex(codigo, fecha). La regla "si la linea ya tiene Costo_Unitario no se
+ recalcula" la aplica el formulario (solo llama cuando el costo esta vacio).
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.MotorCostos.CostoParaTransferencia(System.String,System.DateTime)">
+ <summary>
+ Costo de una linea de Transferencia. Las transferencias no entran al promedio (igual que Kardex), por lo
+ que el costo es el Kardex a la fecha; la Enviada y la Recibida usan el MISMO valor.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.MotorCostos.RecalcularDesde(System.String,System.DateTime)">
+ <summary>
+ Recalcula los costos guardados (Detalle_Facturas / Devolucion de Compra / Transferencia Recibida) del producto
+ desde la fecha indicada en adelante. Lo anterior no se toca. Una transaccion por producto.
+ </summary>
+</member>
+<member name="P:Sistema_Facturacion.MotorCostos.Contexto">
+ <summary>
+ Trazabilidad (AjusteCostosLog): los formularios pueden indicar origen y referencia antes de llamar a
+ RepararDocumento / ProcesarPendientes / RecalcularDesde. Todo lo ajustado por esta instancia comparte el Lote.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.MotorCostos.RepararDocumento(System.Data.DataTable,System.DateTime)">
+ <summary>
+ Para un documento grabado con fecha F (Factura, Devolucion de Venta, Salida Bodega, Transferencia): si el producto tiene
+ entradas POSTERIORES a F (compras, devoluciones de compra o devoluciones de venta), el costo de los movimientos
+ posteriores cambia, porque el documento saco/metio unidades al costo del dia F. En ese caso se recalcula el producto
+ desde F. Reemplaza a Funciones.RepararCostosDocumento (mismo criterio de deteccion, un solo recorrido por producto).
+ Devuelve cuantos productos se recalcularon.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.MotorCostos.ProcesarPendientes">
+ <summary>
+ Procesa la cola CostosPendientes (la llena el disparador de Detalle_Compras al registrar, editar o anular
+ una compra). Recalcula cada producto desde su fecha mas antigua pendiente. Si un producto falla queda en la
+ cola para el siguiente intento. Devuelve la cantidad de productos recalculados. Si la tabla aun no existe
+ (script no aplicado) devuelve 0.
+ </summary>
 </member>
 <member name="M:Sistema_Facturacion.MotorCostos.CostoGeneralPorFechas(System.String,System.Collections.Generic.IEnumerable{System.DateTime})">
  <summary>
@@ -1107,11 +1277,33 @@ Sistema Facturacion 6.0
 <member name="M:Sistema_Facturacion.FrmFinanciamiento.GuardarFuente(System.String,System.String)">
  <summary>Inserta o actualiza. Devuelve True si fue un registro nuevo.</summary>
 </member>
+<member name="T:Sistema_Facturacion.FrmTrazabilidadCostos">
+ <summary>
+ Consulta de la trazabilidad de ajustes de costo (tabla AjusteCostosLog): que linea se modifico, como estaba antes,
+ como quedo, quien lo hizo, desde que formulario y por que documento. Doble clic en una fila = ver todo su lote.
+ Controles creados por codigo (sin Designer), tamano pensado para el area util del MDI.
+ </summary>
+</member>
+<member name="T:Sistema_Facturacion.FiltroTrazabilidadCostos">
+ <summary>Filtros de la consulta de trazabilidad. Un campo vacio / Nothing no filtra.</summary>
+</member>
+<member name="T:Sistema_Facturacion.RepositorioTrazabilidadCostos">
+ <summary>Consulta (solo lectura) de AjusteCostosLog. Todas las consultas son parametrizadas.</summary>
+</member>
+<member name="M:Sistema_Facturacion.RepositorioTrazabilidadCostos.Buscar(Sistema_Facturacion.FiltroTrazabilidadCostos)">
+ <summary>Devuelve las filas mas recientes primero. Lanza SqlException 208 si la tabla no existe.</summary>
+</member>
 <member name="T:Sistema_Facturacion.FrmComparadorCostos">
  <summary>
  Pantalla de validacion del Motor de Costos (Fase 5). Compara CostoPromedioKardex (original)
  contra el motor para un rango de productos. Solo lectura: no modifica datos.
  Se construye por codigo (sin Designer).
+ </summary>
+</member>
+<member name="T:Sistema_Facturacion.FrmSimulacionCostos">
+ <summary>
+ Muestra el resultado de la SIMULACION del ajuste de costos: las filas de facturas/compras que cambiarian.
+ Solo lectura: no modifica la base de datos. Se construye por codigo (sin Designer).
  </summary>
 </member>
 <member name="M:Sistema_Facturacion.FrmSucursales.ObtenerNombreSucursal(System.String)">
@@ -1128,6 +1320,12 @@ Sistema Facturacion 6.0
 </member>
 <member name="M:Sistema_Facturacion.FrmAccesos.Lista_DrawItem(System.Object,System.Windows.Forms.DrawItemEventArgs)">
  <summary>Dibuja las filas de las dos listas con el estilo del sistema (selección azul claro).</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmAjustarCostos.Costear(System.String,System.String)">
+ <summary>
+ MOTOR DE COSTOS: recosteo de los productos del rango con ReparadorCostos (mismo proceso que CmdCostear de
+ FrmActualiza). La rutina anterior se conserva como CostearRutaAnterior, sin llamadores.
+ </summary>
 </member>
 <member name="M:Sistema_Facturacion.FrmCuentasXPagar.Consultar(System.Action)">
  <summary>
@@ -1225,6 +1423,33 @@ Sistema Facturacion 6.0
  <summary>
  Une en una sola linea los registros con igual Cod_Producto y Numero_Lote,
  sumando la cantidad y listando las bodegas totalizadas ("01,02,03").
+ </summary>
+</member>
+<member name="F:Sistema_Facturacion.Funciones.MotorKardexReporte">
+ <summary>Motor con precarga masiva para el Reporte de Kardex (lo asigna FrmReportes antes del ciclo de productos).</summary>
+</member>
+<member name="M:Sistema_Facturacion.Funciones.CostoPromedioBodega(System.String,System.String)">
+ <summary>MOTOR DE COSTOS: el costo es UNICO por producto (general), sin importar la bodega. CodBodega se ignora a proposito.</summary>
+</member>
+<member name="M:Sistema_Facturacion.Funciones.CostoPromedioKardexBodega(System.String,System.DateTime,System.String)">
+ <summary>MOTOR DE COSTOS: el costo es UNICO por producto (Kardex general a la fecha), sin importar la bodega. CodBodega se ignora a proposito.</summary>
+</member>
+<member name="M:Sistema_Facturacion.Funciones.CostoPromedioKardex(System.String,System.DateTime)">
+ <summary>
+ MOTOR DE COSTOS: reemplaza al procedimiento anterior. Mismo resultado que CostoPromedioKardexOriginal (validado con
+ ComparadorCostos) pero en memoria. Si el motor falla, usa la rutina original.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.Funciones.CostoMotorProducto(System.String,System.Double@,System.Double@)">
+ <summary>
+ MOTOR DE COSTOS: costo UNICO por producto (general), sin importar la bodega. Devuelve el costo actual calculado por el
+ motor. Si el motor no puede calcular un costo (sin existencia, error), conserva el costo ya guardado en Productos.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.Funciones.AplicarCostoGeneral(System.String,System.Double,System.Double)">
+ <summary>
+ MOTOR DE COSTOS: escribe el MISMO costo general en todas las bodegas del producto (DetalleBodegas.Costo/CostoDolar) y
+ recalcula el valor del inventario de cada bodega. No hay costo por bodega.
  </summary>
 </member>
 </members>

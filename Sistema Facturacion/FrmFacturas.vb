@@ -1234,9 +1234,12 @@ Public Class FrmFacturas
              "Transferencia Enviada",
              "Devolucion de Venta"
 
-                    RepararCostosDocumento(
-                    dsDetalle,
-                    CDate(Factura.Fecha_Factura))
+                    'Motor de Costos (reemplaza RepararCostosDocumento): si el producto tiene entradas posteriores a la fecha
+                    'del documento, recalcula los costos desde esa fecha; luego aplica los recosteos pendientes de compras.
+                    Dim MotorCostosPend As New MotorCostos(Conexion)
+                    MotorCostosPend.IndicarOrigen("FrmFacturas", Factura.Tipo_Factura & " " & Factura.Numero_Factura & " " & Factura.Fecha_Factura)
+                    MotorCostosPend.RepararDocumento(dsDetalle.Tables("DetalleFactura"), CDate(Factura.Fecha_Factura))
+                    MotorCostosPend.ProcesarPendientes()
 
             End Select
 
@@ -3488,6 +3491,13 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
     End Sub
 
     Private Sub FrmFacturas_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        'Motor de Costos: antes de costear, aplica los recosteos pendientes por cambios en compras
+        Try
+            Dim MotorCostosPend As New MotorCostos(Conexion)
+            MotorCostosPend.ProcesarPendientes()
+        Catch ex As Exception
+            Bitacora(Now, NombreUsuario, "Reparacion Costos", ex.Message)
+        End Try
         Dim SqlString As String, DataSet As New DataSet, DataAdapter As New SqlClient.SqlDataAdapter
         Dim SqlDatos As String, i As Double = 0
 
@@ -8466,7 +8476,7 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
                 If FacturaTarea = True Then
                     If Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text = "" Then
-                        Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text = CostoPromedioKardexBodega(CodProducto, Me.DTPFecha.Value, Me.CboCodigoBodega.Text)
+                        Me.TrueDBGridComponentes.Columns("Costo_Unitario").Text = CostoPromedioKardex(CodProducto, Me.DTPFecha.Value).Costo_Cordoba
                     End If
 
                     Select Case Cols
@@ -15963,4 +15973,17 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
     Private Sub TrueDBGridComponentes_BeforeRowColChange(sender As Object, e As C1.Win.C1TrueDBGrid.CancelEventArgs) Handles TrueDBGridComponentes.BeforeRowColChange
 
     End Sub
+
+    '/////////////////////////////////////////////////////////////////////////////////////////////////
+    '/ MOTOR DE COSTOS: este metodo del formulario oculta a Funciones.CostoPromedioKardex y delega en
+    '/ MotorCostos.CostoParaFactura (mismo resultado, una sola lectura de BD). Si el motor falla se usa
+    '/ la funcion original para no detener la facturacion.
+    '/////////////////////////////////////////////////////////////////////////////////////////////////
+    Private Function CostoPromedioKardex(ByVal CodigoProducto As String, ByVal FechaCompras As Date) As RstCostoPromedio
+        Try
+            Return New MotorCostos(Conexion).CostoParaFactura(CodigoProducto, FechaCompras)
+        Catch ex As Exception
+            Return Funciones.CostoPromedioKardexOriginal(CodigoProducto, FechaCompras)
+        End Try
+    End Function
 End Class

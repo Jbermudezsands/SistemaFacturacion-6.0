@@ -7,7 +7,40 @@ Imports System.Data.SqlClient
 Imports System.Diagnostics
 Imports System.Globalization
 
+''' <summary>Una fila de Detalle_Facturas / Detalle_Compras cuyo costo (o importe) cambiaria con el recosteo.</summary>
+Public Class CambioCostoDetalle
+    Public Property CodigoProducto As String
+    Public Property Tabla As String
+    Public Property Tipo As String
+    Public Property Numero As String
+    Public Property Fecha As Date
+    Public Property Cantidad As Double?
+    Public Property CostoAnterior As Double?
+    Public Property CostoNuevo As Double?
+    Public Property ImporteAnterior As Double?
+    Public Property ImporteNuevo As Double?
+    Public Property PrecioUnitarioAnterior As Double?
+    Public Property PrecioUnitarioNuevo As Double?
+    Public Property PrecioNetoAnterior As Double?
+    Public Property PrecioNetoNuevo As Double?
+
+    ''' <summary>Mayor diferencia absoluta entre lo guardado y lo nuevo (costo, precios e importe). Un NULL contra un valor cuenta como diferencia total.</summary>
+    Public ReadOnly Property MaxDiferencia As Double
+        Get
+            Return Math.Max(Math.Max(Dif(CostoAnterior, CostoNuevo), Dif(ImporteAnterior, ImporteNuevo)),
+                            Math.Max(Dif(PrecioUnitarioAnterior, PrecioUnitarioNuevo), Dif(PrecioNetoAnterior, PrecioNetoNuevo)))
+        End Get
+    End Property
+
+    Private Shared Function Dif(ByVal a As Double?, ByVal b As Double?) As Double
+        If a.HasValue <> b.HasValue Then Return Double.MaxValue
+        If Not a.HasValue Then Return 0.0
+        Return Math.Abs(a.Value - b.Value)
+    End Function
+End Class
+
 Public Class ResultadoReparacionProducto
+    Public Property Detalles As New List(Of CambioCostoDetalle)
     Public Property CodigoProducto As String
     Public Property FilasProcesadas As Integer
     Public Property FilasFacturaModificadas As Integer
@@ -24,6 +57,10 @@ Public Class ResumenReparacion
     Public Property Aplicado As Boolean
     Public Property Cancelado As Boolean
     Public Property Milisegundos As Long
+    ''' <summary>Filas que cambiarian (solo si se pidio recopilar el detalle).</summary>
+    Public Property Detalles As New List(Of CambioCostoDetalle)
+    Public Property DetalleTruncado As Boolean
+    Public Property FechaDesde As Date?
     Public Property Errores As New List(Of String)
     Public Property Advertencias As New List(Of String)
 End Class
@@ -55,16 +92,35 @@ Public Class ReparadorCostos
 
     Public Sub New(ByVal cadenaConexion As String)
         _repositorio = New RepositorioMovimientos(cadenaConexion)
+        _repositorio.Contexto = New ContextoAjusteCostos()
     End Sub
+
+    ''' <summary>Constructor con trazabilidad explicita: origen (formulario/proceso) y referencia (documento o rango).</summary>
+    Public Sub New(ByVal cadenaConexion As String, ByVal contexto As ContextoAjusteCostos)
+        _repositorio = New RepositorioMovimientos(cadenaConexion)
+        _repositorio.Contexto = If(contexto, New ContextoAjusteCostos())
+    End Sub
+
+    ''' <summary>Contexto de trazabilidad (AjusteCostosLog). Todas las filas ajustadas por esta instancia comparten su Lote.</summary>
+    Public ReadOnly Property Contexto As ContextoAjusteCostos
+        Get
+            Return _repositorio.Contexto
+        End Get
+    End Property
 
     ' ------------------------------------------------------------------
     ' Rango de productos (equivale a TxtDesdeCosto / TxtHastaCosto)
     ' ------------------------------------------------------------------
 
     ''' <param name="aplicar">False = simulacion: calcula y cuenta cambios sin escribir nada.</param>
-    Public Function RecalcularRango(ByVal desde As String, ByVal hasta As String, ByVal aplicar As Boolean) As ResumenReparacion
+    ''' <param name="fechaDesde">Si se indica, solo se recalculan las filas con Fecha &gt;= fechaDesde (las anteriores no se tocan).</param>
+    ''' <param name="recopilarDetalle">True = guarda en Resumen.Detalles cada fila que cambiaria (para la simulacion).</param>
+    Public Function RecalcularRango(ByVal desde As String, ByVal hasta As String, ByVal aplicar As Boolean,
+                                    Optional ByVal fechaDesde As Date? = Nothing,
+                                    Optional ByVal recopilarDetalle As Boolean = False) As ResumenReparacion
         Dim resumen As New ResumenReparacion
         resumen.Aplicado = aplicar
+        resumen.FechaDesde = fechaDesde
         Cancelar = False
         Dim crono As Stopwatch = Stopwatch.StartNew()
 
@@ -78,8 +134,15 @@ Public Class ReparadorCostos
             End If
             RaiseEvent Progreso(i + 1, codigos.Count, codigos(i))
             Try
-                Dim r As ResultadoReparacionProducto = RecalcularProducto(codigos(i), aplicar)
+                Dim r As ResultadoReparacionProducto = RecalcularProducto(codigos(i), aplicar, fechaDesde, recopilarDetalle)
                 If r.FilasFacturaModificadas + r.FilasCompraModificadas > 0 Then resumen.ProductosConCambios += 1
+                For Each d As CambioCostoDetalle In r.Detalles
+                    If resumen.Detalles.Count < LimiteDetalle Then
+                        resumen.Detalles.Add(d)
+                    Else
+                        resumen.DetalleTruncado = True
+                    End If
+                Next
                 resumen.FilasFacturaModificadas += r.FilasFacturaModificadas
                 resumen.FilasCompraModificadas += r.FilasCompraModificadas
                 For Each a As String In r.Advertencias
@@ -99,7 +162,10 @@ Public Class ReparadorCostos
     ' Un producto (transaccion propia)
     ' ------------------------------------------------------------------
 
-    Public Function RecalcularProducto(ByVal codProducto As String, ByVal aplicar As Boolean) As ResultadoReparacionProducto
+    ''' <param name="desde">Si se indica, solo se recalculan las filas con Fecha &gt;= desde; las anteriores conservan su costo
+    ''' guardado (son la base del promedio). Nothing = todo el producto (comportamiento de CmdCostear).</param>
+    Public Function RecalcularProducto(ByVal codProducto As String, ByVal aplicar As Boolean, Optional ByVal desde As Date? = Nothing,
+                                       Optional ByVal recopilarDetalle As Boolean = False) As ResultadoReparacionProducto
         Using cn As New SqlConnection(_repositorio.CadenaConexion)
             cn.Open()
             Dim tx As SqlTransaction = cn.BeginTransaction()
@@ -107,16 +173,25 @@ Public Class ReparadorCostos
                 Dim filas As List(Of MovimientoCosto) = Nothing
                 Dim recibidas As List(Of MovimientoCosto) = Nothing
                 Dim devoluciones As List(Of MovimientoCosto) = Nothing
-                Dim resultado As ResultadoReparacionProducto = Calcular(cn, tx, codProducto, filas, recibidas, devoluciones)
+                Dim resultado As ResultadoReparacionProducto = Calcular(cn, tx, codProducto, desde, filas, recibidas, devoluciones)
 
                 For Each f As MovimientoCosto In filas
-                    If CambioAlgo(f) Then resultado.FilasFacturaModificadas += 1
+                    If CambioAlgo(f) Then
+                        resultado.FilasFacturaModificadas += 1
+                        If recopilarDetalle Then resultado.Detalles.Add(CrearDetalle(codProducto, "Detalle_Facturas", f))
+                    End If
                 Next
                 For Each c As MovimientoCosto In recibidas
-                    If CambioAlgo(c) Then resultado.FilasCompraModificadas += 1
+                    If CambioAlgo(c) Then
+                        resultado.FilasCompraModificadas += 1
+                        If recopilarDetalle Then resultado.Detalles.Add(CrearDetalle(codProducto, "Detalle_Compras", c))
+                    End If
                 Next
                 For Each c As MovimientoCosto In devoluciones
-                    If CambioAlgo(c) Then resultado.FilasCompraModificadas += 1
+                    If CambioAlgo(c) Then
+                        resultado.FilasCompraModificadas += 1
+                        If recopilarDetalle Then resultado.Detalles.Add(CrearDetalle(codProducto, "Detalle_Compras", c))
+                    End If
                 Next
 
                 If aplicar Then
@@ -149,7 +224,7 @@ Public Class ReparadorCostos
     ' Calculo en memoria
     ' ------------------------------------------------------------------
 
-    Private Function Calcular(ByVal cn As SqlConnection, ByVal tx As SqlTransaction, ByVal cod As String,
+    Private Function Calcular(ByVal cn As SqlConnection, ByVal tx As SqlTransaction, ByVal cod As String, ByVal desde As Date?,
                               ByRef filas As List(Of MovimientoCosto),
                               ByRef recibidas As List(Of MovimientoCosto),
                               ByRef devoluciones As List(Of MovimientoCosto)) As ResultadoReparacionProducto
@@ -182,13 +257,17 @@ Public Class ReparadorCostos
             Next
             Dim costos As Dictionary(Of Date, ResultadoCosteo) = _calculador.CostosPorFechas(cod, fechasDev, movs0, cands0)
             For Each d As MovimientoCosto In devoluciones
-                d.CostoUnitario = Redondear15(costos(d.Fecha.Date).CostoCordoba)
+                If Not desde.HasValue OrElse d.Fecha.Date >= desde.Value.Date Then
+                    d.CostoUnitario = Redondear15(costos(d.Fecha.Date).CostoCordoba)
+                End If
             Next
         End If
 
         ' ---- Paso 2: costo cero en todo Detalle_Facturas del producto ----
+        ' Las cotizaciones no se tocan (el original las dejaba en 0, ahora conservan su costo guardado).
         For Each f As MovimientoCosto In filas
-            f.CostoUnitario = 0.0
+            If EsTipo(f.Tipo, "Cotizacion") Then Continue For
+            If Not desde.HasValue OrElse f.Fecha.Date >= desde.Value.Date Then f.CostoUnitario = 0.0
         Next
 
         ' ---- Estructuras de apoyo ----
@@ -224,6 +303,12 @@ Public Class ReparadorCostos
         Dim iFac As Integer = 0
         Dim cantidadActual As Double = 0
         Dim i As Integer = 0
+        If desde.HasValue Then
+            ' Las filas anteriores a "desde" no se tocan: solo aportan su costo guardado al promedio
+            While i < procesadas.Count AndAlso procesadas(i).Fecha.Date < desde.Value.Date
+                i += 1
+            End While
+        End If
 
         While i < procesadas.Count
             Dim fechaGrupo As Date = procesadas(i).Fecha
@@ -316,6 +401,27 @@ Public Class ReparadorCostos
             t.Importe = importe
         Next
     End Sub
+
+    Private Const LimiteDetalle As Integer = 100000
+
+    Private Shared Function CrearDetalle(ByVal cod As String, ByVal tabla As String, ByVal m As MovimientoCosto) As CambioCostoDetalle
+        Dim d As New CambioCostoDetalle
+        d.CodigoProducto = cod
+        d.Tabla = tabla
+        d.Tipo = If(m.Tipo, "").TrimEnd()
+        d.Numero = If(m.Numero, "").TrimEnd()
+        d.Fecha = m.Fecha
+        d.Cantidad = m.Cantidad
+        d.CostoAnterior = m.OriginalCostoUnitario
+        d.CostoNuevo = m.CostoUnitario
+        d.ImporteAnterior = m.OriginalImporte
+        d.ImporteNuevo = m.Importe
+        d.PrecioUnitarioAnterior = m.OriginalPrecioUnitario
+        d.PrecioUnitarioNuevo = m.PrecioUnitario
+        d.PrecioNetoAnterior = m.OriginalPrecioNeto
+        d.PrecioNetoNuevo = m.PrecioNeto
+        Return d
+    End Function
 
     Private Shared Function CambioAlgo(ByVal m As MovimientoCosto) As Boolean
         Return RepositorioMovimientos.Distinto(m.CostoUnitario, m.OriginalCostoUnitario) _

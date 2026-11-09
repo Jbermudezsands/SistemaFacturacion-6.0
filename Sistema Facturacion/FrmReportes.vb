@@ -6549,7 +6549,9 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                         'Inicial = Format(BuscaInventarioInicialBodega(CodProducto, FechaIni, CodBodega), "####0.00")
                         'Existencia = Inicial + Compras - Ventas
 
-                        CostoPromedio = CostoPromedioKardexBodega(CodProducto, FechaFin, CodBodega)
+                        Dim RstCostoGen As RstCostoPromedio = CostoPromedioKardex(CodProducto, FechaFin)
+                        CostoPromedio = RstCostoGen.Costo_Cordoba
+                        CostoPromedioDolar = RstCostoGen.Costo_Dolar
 
 
                     Else
@@ -6877,6 +6879,12 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                 Me.ProgressBar.Visible = True
                 Registro = DataSet.Tables("Productos").Rows.Count
                 Iposicion = 0
+                Try
+                    _motorReporte = New MotorCostos(Conexion)
+                    _motorReporte.PrecargarAFecha(Me.DTPFechaFin.Value.Date)
+                Catch exPre As Exception
+                    _motorReporte = Nothing
+                End Try
                 Do While Iposicion < Registro
 
 
@@ -7018,6 +7026,7 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
 
                     Iposicion = Iposicion + 1
                 Loop
+                _motorReporte = Nothing
 
 
 
@@ -16157,6 +16166,12 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                 ' Esto evita consultar una vez por cada producto.
                 '======================================================================
 
+                Try
+                    Funciones.MotorKardexReporte = New MotorCostos(Conexion)
+                    Funciones.MotorKardexReporte.PrecargarAFecha(FechaFinalKardex)
+                Catch exPre As Exception
+                    Funciones.MotorKardexReporte = Nothing
+                End Try
                 Dim MovimientosPorProducto As New Dictionary(
         Of String, List(Of MovimientoKardex))(
         StringComparer.OrdinalIgnoreCase)
@@ -18614,6 +18629,20 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
 
     End Sub
 
+    '/////////////////////////////////////////////////////////////////////////////////////////////////
+    '/ MOTOR DE COSTOS: este metodo del formulario oculta a Funciones.CostoPromedioKardex y delega en
+    '/ MotorCostos.CostoGeneral (mismo resultado, una sola lectura de BD). Si el motor falla se usa
+    '/ la funcion original.
+    '/////////////////////////////////////////////////////////////////////////////////////////////////
+    Private _motorReporte As MotorCostos
 
-
+    Private Function CostoPromedioKardex(ByVal CodigoProducto As String, ByVal FechaCompras As Date) As RstCostoPromedio
+        Try
+            Dim motor As MotorCostos = _motorReporte
+            If motor Is Nothing Then motor = New MotorCostos(Conexion)
+            Return motor.CostoGeneral(CodigoProducto, FechaCompras).ARstCostoPromedio()
+        Catch ex As Exception
+            Return Funciones.CostoPromedioKardexOriginal(CodigoProducto, FechaCompras)
+        End Try
+    End Function
 End Class

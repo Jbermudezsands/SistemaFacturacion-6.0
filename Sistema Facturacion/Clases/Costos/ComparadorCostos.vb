@@ -89,7 +89,7 @@ Public Class ComparadorCostos
                     Dim original As RstCostoPromedio
                     cronoOriginal.Start()
                     Try
-                        original = CostoPromedioKardex(codigo, f)
+                        original = CostoPromedioKardexOriginal(codigo, f)
                     Finally
                         cronoOriginal.Stop()
                     End Try

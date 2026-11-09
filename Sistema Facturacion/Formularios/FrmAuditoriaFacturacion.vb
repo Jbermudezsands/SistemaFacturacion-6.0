@@ -195,6 +195,14 @@ Public Class FrmAuditoriaFacturacion
             lblEstadoValor.Text =
             "Auditoría finalizada."
 
+            If _ResultadoAuditoria.HallazgosExcluidos > 0 Then
+
+                lblEstadoValor.Text &=
+                " (" & _ResultadoAuditoria.HallazgosExcluidos.ToString() &
+                " hallazgo(s) omitidos por estar marcados como revisados)"
+
+            End If
+
         Catch ex As Exception
 
             MessageBox.Show(
@@ -222,6 +230,53 @@ Public Class FrmAuditoriaFacturacion
     Public Sub New()
 
         InitializeComponent()
+
+        AgregarBotonExcluidos()
+
+    End Sub
+
+    ' ============================================================
+    ' BOTÓN "HALLAZGOS EXCLUIDOS" (creado por código, a la derecha
+    ' de Eliminar, con el mismo estilo que Marcar Revisado)
+    ' ============================================================
+
+    Private WithEvents btnExcluidos As Button
+
+    Private Sub AgregarBotonExcluidos()
+
+        btnExcluidos = New Button()
+        btnExcluidos.Name = "btnExcluidos"
+        btnExcluidos.Text = "Hallazgos excluidos"
+        btnExcluidos.BackColor = btnMarcarRevisado.BackColor
+        btnExcluidos.ForeColor = btnMarcarRevisado.ForeColor
+        btnExcluidos.Font = btnMarcarRevisado.Font
+        btnExcluidos.FlatStyle = FlatStyle.Flat
+        btnExcluidos.FlatAppearance.BorderSize = 0
+        btnExcluidos.FlatAppearance.MouseOverBackColor = btnMarcarRevisado.FlatAppearance.MouseOverBackColor
+        btnExcluidos.Cursor = Cursors.Hand
+        btnExcluidos.UseVisualStyleBackColor = False
+        btnExcluidos.Size = New Size(150, 34)
+        btnExcluidos.Location = New Point(btnEliminar.Right + 8, btnEliminar.Top)
+        pnlToolbar.Controls.Add(btnExcluidos)
+
+    End Sub
+
+    Private Sub btnExcluidos_Click(
+    ByVal sender As Object,
+    ByVal e As EventArgs) Handles btnExcluidos.Click
+
+        Using frm As New FrmHallazgosExcluidos()
+
+            frm.ShowDialog(Me)
+
+            If frm.HuboReactivaciones Then
+
+                lblEstadoValor.Text =
+                "Hallazgos regresados a la auditoría: ejecute la auditoría para volver a verlos."
+
+            End If
+
+        End Using
 
     End Sub
 
@@ -802,8 +857,11 @@ ByVal e As EventArgs) Handles dgvRegistros.SelectionChanged
         ' MARCAR REVISADO
         ' --------------------------------------------------------
 
-        If hallazgo.Estado =
-   Auditoria.EstadoHallazgo.Detectado Then
+        ' Se puede marcar mientras no esté reparado ni ya revisado
+        ' (un costo reparable también: puede estar ya declarado al fisco).
+        If hallazgo.Estado = Auditoria.EstadoHallazgo.Detectado OrElse
+           hallazgo.Estado = Auditoria.EstadoHallazgo.Reparable OrElse
+           hallazgo.Estado = Auditoria.EstadoHallazgo.NoReparable Then
 
             btnMarcarRevisado.Enabled = True
 
@@ -1248,6 +1306,42 @@ ByVal e As EventArgs) Handles dgvRegistros.SelectionChanged
             End If
 
             ' ============================================================
+            ' ALCANCE DE LA REPARACION DE COSTOS (solo controles de costo)
+            '   Si  = reparar este costo y recalcular TODO lo posterior del
+            '         producto con el Motor de Costos
+            '   No  = reparar solamente este costo
+            ' ============================================================
+
+            Dim repararPosterior As Boolean = False
+
+            If hallazgo.Codigo = "COST-001" OrElse hallazgo.Codigo = "COST-002" OrElse
+               hallazgo.Codigo = "COST-003" OrElse hallazgo.Codigo = "COST-004" OrElse
+               hallazgo.Codigo = "COST-005" OrElse hallazgo.Codigo = "COST-008" Then
+
+                Dim alcance As DialogResult =
+                MessageBox.Show(
+                    "¿Cómo desea reparar?" & Environment.NewLine & Environment.NewLine &
+                    "SÍ  = Reparar este costo y recalcular todo lo posterior del producto " &
+                    hallazgo.Producto & " (desde " & hallazgo.Fecha.ToString("dd/MM/yyyy") & ")." &
+                    Environment.NewLine &
+                    "       Los demás hallazgos de costo que queden resueltos se marcarán como reparados." &
+                    Environment.NewLine & Environment.NewLine &
+                    "NO  = Reparar solamente el costo de este documento." &
+                    Environment.NewLine & Environment.NewLine &
+                    "CANCELAR = No reparar.",
+                    "Alcance de la reparación",
+                    MessageBoxButtons.YesNoCancel,
+                    MessageBoxIcon.Question)
+
+                If alcance = DialogResult.Cancel Then
+                    Return
+                End If
+
+                repararPosterior = (alcance = DialogResult.Yes)
+
+            End If
+
+            ' ============================================================
             ' DESHABILITAR BOTÓN
             ' ============================================================
 
@@ -1313,6 +1407,37 @@ ByVal e As EventArgs) Handles dgvRegistros.SelectionChanged
                         hallazgo)
 
             End Select
+
+            ' ============================================================
+            ' MOTOR DE COSTOS: REPARAR TODO LO POSTERIOR (si el usuario lo eligio)
+            ' Recalcula el producto desde la fecha del hallazgo y marca como
+            ' reparados los demas hallazgos de costo que quedaron resueltos.
+            ' ============================================================
+            Dim adicionalesMarcados As Integer = 0
+
+            If reparado AndAlso repararPosterior Then
+                adicionalesMarcados = _Auditor.ReparacionPosteriorMotor(hallazgo, _Hallazgos)
+
+                If adicionalesMarcados > 0 AndAlso _ResultadoAuditoria IsNot Nothing Then
+                    _ResultadoAuditoria.TotalReparables =
+                    Math.Max(0, _ResultadoAuditoria.TotalReparables - adicionalesMarcados)
+                    lblReparablesValor.Text = _ResultadoAuditoria.TotalReparables.ToString()
+                End If
+
+                dgvRegistros.Refresh()
+
+                MessageBox.Show(
+                    "Recálculo posterior del producto " & hallazgo.Producto & " completado." &
+                    Environment.NewLine & Environment.NewLine &
+                    "Filas de costo actualizadas: " & _Auditor.FilasRecalculadasUltimaReparacion.ToString() &
+                    Environment.NewLine &
+                    "Otros hallazgos marcados como reparados: " & adicionalesMarcados.ToString() &
+                    If(Not String.IsNullOrEmpty(_Auditor.UltimoError),
+                       Environment.NewLine & Environment.NewLine & "Aviso: " & _Auditor.UltimoError, ""),
+                    "Auditoría",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information)
+            End If
 
             ' ============================================================
             ' RESULTADO
@@ -1492,6 +1617,144 @@ ByVal e As EventArgs) Handles dgvRegistros.SelectionChanged
         End Try
 
     End Sub
+    ' ============================================================
+    ' MARCAR REVISADO
+    '
+    ' El hallazgo (por ejemplo un costo ya declarado al fisco) deja
+    ' de aparecer en las próximas auditorías. No modifica ningún
+    ' dato del documento: solo guarda quién, cuándo y por qué.
+    ' ============================================================
+    Private Sub btnMarcarRevisado_Click(
+    ByVal sender As Object,
+    ByVal e As EventArgs) Handles btnMarcarRevisado.Click
+
+        Try
+
+            If dgvRegistros.CurrentRow Is Nothing Then Return
+
+            Dim hallazgo As Auditoria.HallazgoAuditoria =
+            TryCast(dgvRegistros.CurrentRow.DataBoundItem,
+                    Auditoria.HallazgoAuditoria)
+
+            If hallazgo Is Nothing Then Return
+
+            Dim resumen As String =
+            hallazgo.Codigo & " - " & hallazgo.Descripcion &
+            Environment.NewLine &
+            "Documento: " & hallazgo.Documento & "  (" & hallazgo.Tipo & ")" &
+            Environment.NewLine &
+            "Fecha: " & If(hallazgo.Fecha = DateTime.MinValue, "", hallazgo.Fecha.ToString("dd/MM/yyyy")) &
+            "   Producto: " & hallazgo.Producto &
+            Environment.NewLine &
+            "Cantidad: " & hallazgo.Cantidad.ToString("N2") &
+            "   Costo: " & hallazgo.CostoUnitario.ToString("N6")
+
+            Dim clasificacion As String
+            Dim motivo As String
+
+            Using dlg As New FrmMarcarHallazgo(resumen)
+
+                If dlg.ShowDialog(Me) <> DialogResult.OK Then Return
+
+                clasificacion = dlg.Clasificacion
+                motivo = dlg.Motivo
+
+            End Using
+
+            ExclusionesAuditoria.Marcar(Conexion, hallazgo, clasificacion, motivo)
+
+            Try
+                Bitacora(
+                Now,
+                NombreUsuario,
+                "Auditoria Facturacion",
+                "Marco hallazgo como " & clasificacion & " " & hallazgo.Codigo & ":" &
+                hallazgo.Documento & " Prod:" & hallazgo.Producto & " Motivo:" & motivo)
+            Catch
+            End Try
+
+            QuitarHallazgoMarcado(hallazgo)
+
+            lblEstadoValor.Text =
+            "Hallazgo " & hallazgo.Codigo & " marcado como " & clasificacion & "."
+
+        Catch ex As Exception
+
+            MessageBox.Show(
+            "No se pudo marcar el hallazgo: " & ex.Message,
+            "Auditoría",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Warning)
+
+        Finally
+
+            ActualizarBotones()
+
+        End Try
+
+    End Sub
+
+    ' Retira el hallazgo marcado de la pantalla y ajusta los contadores sin volver a ejecutar la auditoría.
+    Private Sub QuitarHallazgoMarcado(ByVal hallazgo As Auditoria.HallazgoAuditoria)
+
+        Dim eraReparable As Boolean = hallazgo.Reparable
+
+        hallazgo.Estado = Auditoria.EstadoHallazgo.Revisado
+        hallazgo.Reparable = False
+
+        If _Hallazgos IsNot Nothing Then _Hallazgos.Remove(hallazgo)
+
+        If _Controles IsNot Nothing Then
+
+            For Each c As Auditoria.ControlAuditoria In _Controles
+
+                If String.Equals(c.Codigo, hallazgo.Codigo, StringComparison.OrdinalIgnoreCase) Then
+
+                    If c.CantidadHallazgos > 0 Then c.CantidadHallazgos -= 1
+                    If c.Ejecutado AndAlso c.CantidadHallazgos = 0 Then c.Estado = "Correcto"
+                    Exit For
+
+                End If
+
+            Next
+
+        End If
+
+        If _ResultadoAuditoria IsNot Nothing Then
+
+            If _ResultadoAuditoria.TotalHallazgos > 0 Then _ResultadoAuditoria.TotalHallazgos -= 1
+            If eraReparable AndAlso _ResultadoAuditoria.TotalReparables > 0 Then _ResultadoAuditoria.TotalReparables -= 1
+            _ResultadoAuditoria.HallazgosExcluidos += 1
+
+            lblHallazgosValor.Text = _ResultadoAuditoria.TotalHallazgos.ToString()
+            lblReparablesValor.Text = _ResultadoAuditoria.TotalReparables.ToString()
+
+            ' Confiabilidad: los informativos no restan.
+            Dim confiables As Boolean = True
+
+            If _Hallazgos IsNot Nothing Then
+
+                For Each h As Auditoria.HallazgoAuditoria In _Hallazgos
+
+                    If h.Severidad <> Auditoria.SeveridadAuditoria.Informativa Then
+                        confiables = False
+                        Exit For
+                    End If
+
+                Next
+
+            End If
+
+            _ResultadoAuditoria.CostosConfiables = confiables
+            lblCostosValor.Text = If(confiables, "CONFIABLES", "NO CONFIABLES")
+
+        End If
+
+        dgvControles.Refresh()
+        CargarRegistrosControl()
+
+    End Sub
+
     Private Sub btnEliminar_Click(
     ByVal sender As Object,
     ByVal e As EventArgs) Handles btnEliminar.Click

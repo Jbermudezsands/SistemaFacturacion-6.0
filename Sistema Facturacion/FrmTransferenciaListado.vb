@@ -202,9 +202,15 @@ Public Class FrmTransferenciaListado
         '==========================================================
         DataSet.Tables("DetalleTransferencia").TableName = "DetalleFactura"
 
-        RepararCostosDocumento(
-    DataSet,
-    FechaTransferencia)
+        'Motor de Costos: procesa recosteos pendientes
+        Try
+            Dim MotorCostosPend As New MotorCostos(Conexion)
+            MotorCostosPend.IndicarOrigen("FrmTransferenciaListado", "Transferencia " & NumeroTransferencia & " " & FechaTransferencia.ToString("dd/MM/yyyy"))
+            MotorCostosPend.RepararDocumento(DataSet.Tables("DetalleFactura"), FechaTransferencia)
+            MotorCostosPend.ProcesarPendientes()
+        Catch ex As Exception
+            Bitacora(Now, NombreUsuario, "Reparacion Costos", ex.Message)
+        End Try
 
 
 
