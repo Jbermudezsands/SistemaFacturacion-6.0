@@ -2,6 +2,7 @@ Public Class FrmBascula
     Public MiConexion As New SqlClient.SqlConnection(Conexion)
     Public IdLugarAcopio As Double, IdEstadoFisico As Double, IdCategoria As Double, IdTipoLugarAcopio As Double, EstadoFisico As String, Categoria As String, IdCalidad As Double, Calidad As String, TipoPesada As String, TaraRemision As Double, SubTotalRemision As Double, TotalRemision As Double, QQRemision As Double, Posicion As Double, CadenaRecibos As String, IdRemisionPergamino As Double, IdCosecha As Double
     Delegate Sub delegado(ByVal data As String)
+    Public WithEvents Bascula As BasculaConexion
 
     Public Sub SumaPesadaRemision(ByVal ConsecutivoRemision As String, ByVal TipoRemision As String, ByVal Calidad As String, ByVal EstadoFisico As String, ByVal TipoPesada As String)
 
@@ -55,40 +56,43 @@ Public Class FrmBascula
 
     End Sub
 
-    Private Sub sp_DataReceived(ByVal sender As System.Object, ByVal e As System.IO.Ports.SerialDataReceivedEventArgs) Handles sp.DataReceived
-        Dim s As String '= sp.ReadExisting, Pesada As Double
-
-        Dim escribeport3 As New delegado(AddressOf Me.mostar)
-
-
-
-        s = sp.ReadLine
-
-        Select Case Mid(s, 1, 4)
-            Case "TARA" : Exit Sub
-            Case "NETO" : Exit Sub
-            Case "" : Exit Sub
-        End Select
-
-        If Len(s) > 5 Then
-            s = SoloNumeros(s)
-            Me.Invoke(escribeport3, s)
-        End If
-
-
-
-
+    '=================================================================================================
+    ' BÁSCULA (clases BasculaConexion / BasculaParser / BasculaDisenio)
+    '=================================================================================================
+    Private Sub Bascula_PesoRecibido(ByVal peso As Double, ByVal linea As String) Handles Bascula.PesoRecibido
+        Try
+            mostar(peso)
+        Catch ex As Exception
+            MsgBox("No se pudo registrar la pesada: " & ex.Message, MsgBoxStyle.Critical, "Zeus Bascula")
+        End Try
     End Sub
 
-    Sub mostar(ByVal d As String)
+    Private ReadOnly ToolTipBascula As New ToolTip()
+
+    Private Sub Bascula_EstadoCambiado(ByVal estado As EstadoBascula, ByVal mensaje As String) Handles Bascula.EstadoCambiado
+        BasculaDisenio.MostrarEstado(Me.LblEstado, estado)
+        Me.ToolTipBascula.SetToolTip(Me.LblEstado, mensaje)
+    End Sub
+
+    Private Sub FrmBascula_FormClosedBascula(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
+        If Me.Bascula IsNot Nothing Then Me.Bascula.Dispose()
+    End Sub
+
+    Private Sub FrmBascula_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        ' El diseño (posiciones, colores, fecha y hora grandes) esta en FrmBascula.designer.vb.
+        BasculaDisenio.EstiloRejillaC1(Me.TrueDBGridComponentes)
+        If Not Bascula.EstaConectado Then Bascula.ConectarGuardado()
+    End Sub
+
+    Sub mostar(ByVal Pesada As Double)
         Dim Posicion As Double
-        Dim Cadena As String, Pesada As Double, PesoEntero As Double, PesoDecimal As Double
+        Dim PesoEntero As Double, PesoDecimal As Double
         Dim PorcientoMerma As Double, CodigoProducto As String
 
         'Cadena = Mid(d, 7, Len(d))
         'Pesada = CDbl(Cadena)
-        Cadena = d
-        Pesada = SoloNumeros(Cadena)
+
+
         '-------------------------------SI SE ACTIVA EL REDONDEO CAMBIO LA PESADA
 
         'If Me.ChkRedondeo.Checked = True Then
@@ -300,6 +304,7 @@ Public Class FrmBascula
 
         Dim sql As String, DataAdapter As New SqlClient.SqlDataAdapter, DataSet As New DataSet, TipoRemision As String, SqlString As String, Fecha As Date
         Dim Cont As Double
+        Me.Bascula = New BasculaConexion("Bascula", Me)
 
         Fecha = Format(CDate(Me.DTPFecha.Text), "yyyy-MM-dd")
 
@@ -386,14 +391,17 @@ Public Class FrmBascula
     End Sub
 
     Private Sub Button11_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button_Conectar.Click
-        My.Forms.FrmPuertos.Pregunta = "Bascula"
-        My.Forms.FrmPuertos.ShowDialog()
+        Using f As New FrmPuertos()
+            f.Bascula = Me.Bascula
+            f.Pregunta = "Bascula"
+            f.ShowDialog(Me)
+        End Using
     End Sub
 
     Private Sub Button_Desconectar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button_Desconectar.Click
-        Me.sp.Close()
-        Me.LblEstado.Text = "DESCONECT"
-        Me.LblEstado.ForeColor = Color.Black
+        If Me.Bascula IsNot Nothing Then Me.Bascula.Desconectar()
+
+
     End Sub
 
     Private Sub Button_Salir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button_Salir.Click
@@ -405,7 +413,7 @@ Public Class FrmBascula
         End If
 
 
-        Me.sp.Close()
+        If Me.Bascula IsNot Nothing Then Me.Bascula.Desconectar()
         Me.Close()
 
     End Sub

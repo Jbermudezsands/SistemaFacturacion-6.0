@@ -1087,7 +1087,7 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
             .Codigo_Producto = fila("Cod_Producto").ToString(),
             .Descripcion_Producto = fila("Producto").ToString(),
             .Codigo_Bodega = If(DataSet.Tables("LotesDetalle").Columns.Contains("Cod_Bodega"), fila("Cod_Bodega").ToString(), ""),
-            .Fecha_Vence = If(IsDBNull(fila("Fecha_Vencimiento")) OrElse fila("Fecha_Vencimiento").ToString() = "",Nothing, CDate(fila("Fecha_Vencimiento"))), 
+            .Fecha_Vence = If(IsDBNull(fila("Fecha_Vencimiento")) OrElse fila("Fecha_Vencimiento").ToString() = "", Nothing, CDate(fila("Fecha_Vencimiento"))),
             .Codigo_Linea = If(DataSet.Tables("LotesDetalle").Columns.Contains("Cod_Linea"), fila("Cod_Linea").ToString(), ""),
             .Existencia_Lote = If(IsDBNull(fila("Existencia")), 0, fila("Existencia"))
         }
@@ -3042,6 +3042,7 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
         ProgressBar1.Value = 0
         Button2.Enabled = False
         Button8.Enabled = False
+        LblProcesando.Text = "Procesando, Espere......"
         LblProcesando.Visible = True
         My.Application.DoEvents()
 
@@ -7707,28 +7708,28 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                     Case "Codigo Producto"
                         If Me.CboCodProducto.Text = "" Then
                             If Me.CboCodProducto2.Text = "" Then
-                                SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) ORDER BY Productos.Cod_Productos"
+                                SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo) ORDER BY Productos.Cod_Productos"
                             Else
-                                SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) AND (Productos.Cod_Productos BETWEEN '" & CodigoInicio & "' AND '" & Me.CboCodProducto2.Text & "') ORDER BY Productos.Cod_Productos"
+                                SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo) AND (Productos.Cod_Productos BETWEEN '" & CodigoInicio & "' AND '" & Me.CboCodProducto2.Text & "') ORDER BY Productos.Cod_Productos"
                             End If
                         ElseIf Me.CboCodProducto2.Text = "" Then
-                            SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) AND (Productos.Cod_Productos BETWEEN '" & Me.CboCodProducto.Text & "' AND '" & CodigoFin & "') ORDER BY Productos.Cod_Productos"
+                            SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo) AND (Productos.Cod_Productos BETWEEN '" & Me.CboCodProducto.Text & "' AND '" & CodigoFin & "') ORDER BY Productos.Cod_Productos"
                         Else
-                            SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) AND (Productos.Cod_Productos BETWEEN '" & Me.CboCodProducto.Text & "' AND '" & Me.CboCodProducto2.Text & "') ORDER BY Productos.Cod_Productos"
+                            SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo) AND (Productos.Cod_Productos BETWEEN '" & Me.CboCodProducto.Text & "' AND '" & Me.CboCodProducto2.Text & "') ORDER BY Productos.Cod_Productos"
                         End If
 
                     Case "Linea"
                         If Me.CmbRango1.Text = "" Then
                             If Me.CmbRango2.Text = "" Then
-                                SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) ORDER BY Productos.Cod_Linea"
+                                SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo) ORDER BY Productos.Cod_Linea"
                             Else
-                                SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) AND (Productos.Cod_Linea BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Linea"
+                                SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo) AND (Productos.Cod_Linea BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Linea"
                             End If
 
                         ElseIf Me.CmbRango2.Text = "" Then
-                            SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) ORDER BY Productos.Cod_Linea"
+                            SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo) ORDER BY Productos.Cod_Linea"
                         Else
-                            SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) AND (Productos.Cod_Linea BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Linea"
+                            SqlDatos = "SELECT * FROM Productos INNER JOIN Lineas ON Productos.Cod_Linea = Lineas.Cod_Linea WHERE(Productos.Activo = Productos.Activo) AND (Productos.Cod_Linea BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Linea"
                         End If
 
 
@@ -7736,7 +7737,7 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                         If Me.CboCodProducto.Text = "" And Me.CboCodProducto2.Text = "" Then
                             If Me.CmbRango1.Text = "" Then
                                 If Me.CmbRango2.Text = "" Then
-                                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega WHERE (Productos.Costo_Promedio <> 0) ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
+                                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega WHERE (1 = 1) ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
                                 Else
                                     SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  WHERE (Bodegas.Cod_Bodega BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
                                 End If
@@ -7754,7 +7755,7 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                             Cadena = " AND (Productos.Cod_Productos BETWEEN '" & Me.CboCodProducto.Text & "' AND '" & Me.CboCodProducto2.Text & "') ORDER BY Bodegas.Cod_Bodega, Productos.Cod_Productos"
                             If Me.CmbRango1.Text = "" Then
                                 If Me.CmbRango2.Text = "" Then
-                                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega WHERE (Productos.Costo_Promedio <> 0) " & Cadena
+                                    SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega WHERE (1 = 1) " & Cadena
                                 Else
                                     SqlDatos = "SELECT Productos.Cod_Productos, Productos.Descripcion_Producto, Bodegas.Cod_Bodega As Cod_Linea, Bodegas.Nombre_Bodega As Descripcion_Linea, DetalleBodegas.Existencia,Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Tipo_Producto FROM Productos INNER JOIN DetalleBodegas ON Productos.Cod_Productos = DetalleBodegas.Cod_Productos INNER JOIN  Bodegas ON DetalleBodegas.Cod_Bodegas = Bodegas.Cod_Bodega  WHERE (Bodegas.Cod_Bodega BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') " & Cadena
                                 End If
@@ -7773,19 +7774,19 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                         If Me.CmbRango1.Text = "" Then
                             If Me.CmbRango2.Text = "" Then
                                 SqlDatos = "SELECT Productos.Cod_Productos, Productos.Tipo_Producto, Productos.Descripcion_Producto, Productos.Ubicacion, Productos.Cod_Linea, Productos.Cod_Cuenta_Inventario, Productos.Cod_Cuenta_Costo, Productos.Cod_Cuenta_Ventas, Productos.Cod_Cuenta_GastoAjuste, Productos.Cod_Cuenta_IngresoAjuste, Productos.Unidad_Medida, Productos.Precio_Venta, Productos.Precio_Lista, Productos.Descuento, Productos.Existencia_Negativa, Productos.Cod_Iva, Productos.Activo, Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Ultimo_Precio_Venta, Productos.Ultimo_Precio_Compra, Productos.Existencia_Dinero, Productos.Existencia_Unidades, Productos.Existencia_DineroDolar, Productos.Minimo, Productos.Reorden, Productos.Nota, Productos.CodComponente, Productos.Cod_Rubro, Rubro.Nombre_Rubro FROM Productos INNER JOIN  Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro  " &
-                                           "WHERE  (Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) ORDER BY Productos.Cod_Rubro"
+                                           "WHERE  (Productos.Activo = Productos.Activo) ORDER BY Productos.Cod_Rubro"
                             Else
                                 SqlDatos = "SELECT Productos.Cod_Productos, Productos.Tipo_Producto, Productos.Descripcion_Producto, Productos.Ubicacion, Productos.Cod_Linea, Productos.Cod_Cuenta_Inventario, Productos.Cod_Cuenta_Costo, Productos.Cod_Cuenta_Ventas, Productos.Cod_Cuenta_GastoAjuste, Productos.Cod_Cuenta_IngresoAjuste, Productos.Unidad_Medida, Productos.Precio_Venta, Productos.Precio_Lista, Productos.Descuento, Productos.Existencia_Negativa, Productos.Cod_Iva, Productos.Activo, Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Ultimo_Precio_Venta, Productos.Ultimo_Precio_Compra, Productos.Existencia_Dinero, Productos.Existencia_Unidades, Productos.Existencia_DineroDolar, Productos.Minimo, Productos.Reorden, Productos.Nota, Productos.CodComponente, Productos.Cod_Rubro, Rubro.Nombre_Rubro FROM Productos INNER JOIN  Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro  " &
-                                           "WHERE  (Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) AND (Productos.Cod_Rubro BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Rubro"
+                                           "WHERE  (Productos.Activo = Productos.Activo) AND (Productos.Cod_Rubro BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Rubro"
 
                             End If
 
                         ElseIf Me.CmbRango2.Text = "" Then
                             SqlDatos = "SELECT Productos.Cod_Productos, Productos.Tipo_Producto, Productos.Descripcion_Producto, Productos.Ubicacion, Productos.Cod_Linea, Productos.Cod_Cuenta_Inventario, Productos.Cod_Cuenta_Costo, Productos.Cod_Cuenta_Ventas, Productos.Cod_Cuenta_GastoAjuste, Productos.Cod_Cuenta_IngresoAjuste, Productos.Unidad_Medida, Productos.Precio_Venta, Productos.Precio_Lista, Productos.Descuento, Productos.Existencia_Negativa, Productos.Cod_Iva, Productos.Activo, Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Ultimo_Precio_Venta, Productos.Ultimo_Precio_Compra, Productos.Existencia_Dinero, Productos.Existencia_Unidades, Productos.Existencia_DineroDolar, Productos.Minimo, Productos.Reorden, Productos.Nota, Productos.CodComponente, Productos.Cod_Rubro, Rubro.Nombre_Rubro FROM Productos INNER JOIN  Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro  " &
-                                       "WHERE  (Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) ORDER BY Productos.Cod_Rubro"
+                                       "WHERE  (Productos.Activo = Productos.Activo) ORDER BY Productos.Cod_Rubro"
                         Else
                             SqlDatos = "SELECT Productos.Cod_Productos, Productos.Tipo_Producto, Productos.Descripcion_Producto, Productos.Ubicacion, Productos.Cod_Linea, Productos.Cod_Cuenta_Inventario, Productos.Cod_Cuenta_Costo, Productos.Cod_Cuenta_Ventas, Productos.Cod_Cuenta_GastoAjuste, Productos.Cod_Cuenta_IngresoAjuste, Productos.Unidad_Medida, Productos.Precio_Venta, Productos.Precio_Lista, Productos.Descuento, Productos.Existencia_Negativa, Productos.Cod_Iva, Productos.Activo, Productos.Costo_Promedio, Productos.Costo_Promedio_Dolar, Productos.Ultimo_Precio_Venta, Productos.Ultimo_Precio_Compra, Productos.Existencia_Dinero, Productos.Existencia_Unidades, Productos.Existencia_DineroDolar, Productos.Minimo, Productos.Reorden, Productos.Nota, Productos.CodComponente, Productos.Cod_Rubro, Rubro.Nombre_Rubro FROM Productos INNER JOIN  Rubro ON Productos.Cod_Rubro = Rubro.Codigo_Rubro  " &
-                                       "WHERE  (Productos.Activo = Productos.Activo) AND (Productos.Costo_Promedio <> 0) AND (Productos.Cod_Rubro BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Rubro"
+                                       "WHERE  (Productos.Activo = Productos.Activo) AND (Productos.Cod_Rubro BETWEEN '" & Me.CmbRango1.Text & "' AND '" & Me.CmbRango2.Text & "') ORDER BY Productos.Cod_Rubro"
                         End If
 
 
@@ -7795,6 +7796,11 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                 '*****************************************************************************************************************************************
                 '////////////////////////////////////////////CON ESTE CICLO RECORRO LA CONSULTA //////////////////////////////////////////
                 '*****************************************************************************************************************************************
+                '/////////// UNIDADES DE TODOS LOS PRODUCTOS EN UNA CONSULTA (MotorUnidades) ///////////
+                ActualizarProgreso("Calculando existencias...")
+                Dim DicUnidades As System.Collections.Generic.Dictionary(Of String, ResultadoUnidades) =
+                    New MotorUnidades(Conexion).CalcularDiccionario(Me.DTPFechaIni.Value, Me.DTPFechaFin.Value, ConstruirFiltroUnidades(Me.CmbAgrupado.Text))
+
                 DataAdapter = New SqlClient.SqlDataAdapter(SqlDatos, MiConexion)
                 DataAdapter.Fill(DataSet, "Productos")
                 Me.ProgressBar.Maximum = DataSet.Tables("Productos").Rows.Count
@@ -7815,28 +7821,25 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                     '/////////////////ESTE ES EL COSTO PROMEDIO GENERAL ////////////////////
                     'CostoPromedio = DataSet.Tables("Productos").Rows(Iposicion)("Costo_Promedio")
 
-                    If Me.CmbAgrupado.Text = "Bodega" Then
-                        CodBodega = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Linea")
-
-                        Compras = Format(BuscaCompraBodega(CodProducto, FechaIni, FechaFin, CodBodega), "####0.00")
-                        Ventas = Format(BuscaVentaBodega(CodProducto, FechaIni, FechaFin, CodBodega), "####0.00")
-                        Inicial = Format(BuscaInventarioInicialBodega(CodProducto, FechaIni, CodBodega), "####0.00")
-                        Existencia = Inicial + Compras - Ventas
-
-                        'CostoPromedio = CostoPromedioKardexBodega(CodProducto, FechaFin, CodBodega)
-
-                    Else
-
-                        'CostoPromedio = CostoPromedioKardex(CodProducto, FechaFin)
-                        Compras = Format(BuscaCompra(CodProducto, FechaIni, FechaFin), "####0.00")
-                        Ventas = Format(BuscaVenta(CodProducto, FechaIni, FechaFin), "####0.00")
-                        Inicial = Format(BuscaInventarioInicial(CodProducto, FechaIni), "####0.00")
-                        Existencia = Inicial + Compras - Ventas
+                    '/////////// UNIDADES: UNICA FUENTE = MotorUnidades (igual que el Kardex) ///////////
+                    Dim EsPorBodega As Boolean = (Me.CmbAgrupado.Text = "Bodega")
+                    If EsPorBodega Then
+                        CodBodega = DataSet.Tables("Productos").Rows(Iposicion)("Cod_Linea").ToString()
                     End If
 
-
+                    Dim ResUnidades As ResultadoUnidades = Nothing
+                    If DicUnidades.TryGetValue(ResultadoUnidades.Clave(CodProducto, If(EsPorBodega, CodBodega, "")), ResUnidades) Then
+                        Inicial = ResUnidades.Inicial
+                        Compras = ResUnidades.Entrada
+                        Ventas = ResUnidades.Salida
+                    Else
+                        Inicial = 0
+                        Compras = 0
+                        Ventas = 0
+                    End If
+                    Existencia = Inicial + Compras - Ventas
                     If DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Descuento" And DataSet.Tables("Productos").Rows(Iposicion)("Tipo_Producto") <> "Servicio" Then
-                        If (Inicial + Compras + Ventas) <> 0 Then
+                        If Inicial <> 0 Or Compras <> 0 Or Ventas <> 0 Then
                             oDataRow = DataSet.Tables("TotalKARDEX").NewRow
                             oDataRow("Cod_Productos") = CodProducto
                             oDataRow("Descripcion_Producto") = NombreProducto
@@ -7846,39 +7849,18 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                             oDataRow("Entrada") = Compras
                             oDataRow("Salida") = Ventas
                             oDataRow("Saldo") = Existencia
-                            If Me.OptCordobas.Checked = True Then
-                                oDataRow("CostoVenta") = CostoPromedio
-                                oDataRow("InicialD") = MontoInicial 'Inicial * CostoPromedio  
-                                oDataRow("EntradaD") = MontoEntrada 'Compras * CostoPromedio 
-                                oDataRow("SalidaD") = MontoSalida  'MontoSalida
-                                If Existencia <> 0 Then
-                                    oDataRow("SaldoD") = MontoInicial + MontoEntrada - MontoSalida  'Existencia * CostoPromedio
-                                Else
-                                    oDataRow("SaldoD") = 0
-                                End If
-                            Else
-                                oDataRow("CostoVenta") = CostoPromedioDolar
-                                oDataRow("InicialD") = MontoInicialD
-                                oDataRow("EntradaD") = MontoEntradaD
-                                oDataRow("SalidaD") = MontoSalidaD
-                                If Existencia <> 0 Then
-                                    oDataRow("SaldoD") = MontoInicialD + MontoEntradaD - MontoSalidaD
-                                Else
-                                    oDataRow("SaldoD") = 0
-                                End If
-                            End If
+                            '/ Reporte solo de unidades: los montos no se muestran.
+                            oDataRow("CostoVenta") = 0
+                            oDataRow("InicialD") = 0
+                            oDataRow("EntradaD") = 0
+                            oDataRow("SalidaD") = 0
+                            oDataRow("SaldoD") = 0
                             DataSet.Tables("TotalKARDEX").Rows.Add(oDataRow)
                         End If
                     End If
 
 
-                    Me.Text = "Procesando: " & CodProducto
-
-                    If Me.ProgressBar.Maximum <> 0 Then
-                        Me.ProgressBar.Value = Me.ProgressBar.Value + 1
-                    End If
-
-                    My.Application.DoEvents()
+                    ActualizarProgreso("Procesando: " & CodProducto & " - " & NombreProducto, CInt(Iposicion) + 1, CInt(Registro))
 
 
 
@@ -7915,6 +7897,7 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                 Dim ViewerForm As New FrmViewer()
                 ViewerForm.arvMain.Document = ArepReporteKardex.Document
                 My.Application.DoEvents()
+                ActualizarProgreso("Generando reporte...")
                 ArepReporteKardex.Run(False)
                 ViewerForm.Show()
 
@@ -7962,14 +7945,14 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                 '       -> Detalle_Facturas.Importe
                 '
                 ' DEVOLUCION / SALIDA / TRANSFERENCIA
-                '       -> Cantidad * Costo_Unitario
+                '       -> Cantidad * Precio_Neto
                 '----------------------------------------------------------
 
                 SqlDatos &= "    SUM( "
                 SqlDatos &= "        CASE "
 
                 '----------------------------------------------------------
-                ' MOVIMIENTOS QUE UTILIZAN COSTO
+                ' MOVIMIENTOS QUE UTILIZAN PRECIO NETO
                 '----------------------------------------------------------
                 SqlDatos &= "            WHEN Facturas.Tipo_Factura IN "
                 SqlDatos &= "                ('Devolucion de Venta', "
@@ -7980,19 +7963,19 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                 If EsDolares Then
 
                     '------------------------------------------------------
-                    ' COSTO -> DOLARES
+                    ' PRECIO NETO -> DOLARES
                     '------------------------------------------------------
                     SqlDatos &= "                (Detalle_Facturas.Cantidad * "
-                    SqlDatos &= "                 ROUND(Detalle_Facturas.Costo_Unitario, 4)) "
+                    SqlDatos &= "                 ROUND(Detalle_Facturas.Precio_Neto, 4)) "
                     SqlDatos &= "                / TasaCambio.MontoTasa "
 
                 Else
 
                     '------------------------------------------------------
-                    ' COSTO -> CORDOBAS
+                    ' PRECIO NETO -> CORDOBAS
                     '------------------------------------------------------
                     SqlDatos &= "                Detalle_Facturas.Cantidad * "
-                    SqlDatos &= "                ROUND(Detalle_Facturas.Costo_Unitario, 4) "
+                    SqlDatos &= "                ROUND(Detalle_Facturas.Precio_Neto, 4) "
 
                 End If
 
@@ -8223,9 +8206,11 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                 CantidadAcumulada = 0
                 Do While Registros > i
                     My.Application.DoEvents()
-                    If DataSet.Tables("TotalFacturas").Rows(i)("Cantidad") <> 0 Then
-                        Cantidad = DataSet.Tables("TotalFacturas").Rows(i)("Cantidad")
-                        Importe = DataSet.Tables("TotalFacturas").Rows(i)("Importe")
+                    '--- Se incluyen las lineas con Cantidad = 0 que tienen Importe (cargos/ajustes de precio),
+                    '--- igual que el Reporte de Ventas x Productos. Solo se descartan si Cantidad e Importe son 0.
+                    Cantidad = IIf(IsDBNull(DataSet.Tables("TotalFacturas").Rows(i)("Cantidad")), 0, DataSet.Tables("TotalFacturas").Rows(i)("Cantidad"))
+                    Importe = IIf(IsDBNull(DataSet.Tables("TotalFacturas").Rows(i)("Importe")), 0, DataSet.Tables("TotalFacturas").Rows(i)("Importe"))
+                    If Cantidad <> 0 Or Importe <> 0 Then
                         CodBodega = DataSet.Tables("TotalFacturas").Rows(i)("Cod_Bodega")
                         CodigoProducto = DataSet.Tables("TotalFacturas").Rows(i)("Cod_Producto")
                         CostoUnitario = 0
@@ -8276,7 +8261,11 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                         If TipoProducto <> "Descuento" Then
                             Costo = Cantidad * CostoUnitario
                             Utilidad = Importe - Costo
-                            Porciento = Utilidad / Importe
+                            If Importe <> 0 Then
+                                Porciento = Utilidad / Importe
+                            Else
+                                Porciento = 0
+                            End If
                         Else
                             Costo = 0
                             Utilidad = 0
@@ -8302,22 +8291,28 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                         Buscar_Fila = DataSet.Tables("TotalVentas").Select(Criterios)
                         If Buscar_Fila.Length > 0 Then
                             Posicion = DataSet.Tables("TotalVentas").Rows.IndexOf(Buscar_Fila(0))
-                            Importe = DataSet.Tables("TotalFacturas").Rows(i)("Importe")
                             MontoAcumulado = DataSet.Tables("TotalVentas").Rows(Posicion)("Importe")
-                            Cantidad = DataSet.Tables("TotalFacturas").Rows(i)("Cantidad")
                             CantidadAcumulada = DataSet.Tables("TotalVentas").Rows(Posicion)("Cantidad")
                             DataSet.Tables("TotalVentas").Rows(Posicion)("Importe") = DataSet.Tables("TotalVentas").Rows(Posicion)("Importe") + Importe * TasaCambio
                             DataSet.Tables("TotalVentas").Rows(Posicion)("Cantidad") = Cantidad + DataSet.Tables("TotalVentas").Rows(Posicion)("Cantidad")
                             DataSet.Tables("TotalVentas").Rows(Posicion)("Costo") = DataSet.Tables("TotalVentas").Rows(Posicion)("Costo") + Costo
                             DataSet.Tables("TotalVentas").Rows(Posicion)("Utilidad") = DataSet.Tables("TotalVentas").Rows(Posicion)("Importe") - DataSet.Tables("TotalVentas").Rows(Posicion)("Costo")
-                            DataSet.Tables("TotalVentas").Rows(Posicion)("Porciento") = DataSet.Tables("TotalVentas").Rows(Posicion)("Utilidad") / DataSet.Tables("TotalVentas").Rows(Posicion)("Importe")
+                            If DataSet.Tables("TotalVentas").Rows(Posicion)("Importe") <> 0 Then
+                                DataSet.Tables("TotalVentas").Rows(Posicion)("Porciento") = DataSet.Tables("TotalVentas").Rows(Posicion)("Utilidad") / DataSet.Tables("TotalVentas").Rows(Posicion)("Importe")
+                            Else
+                                DataSet.Tables("TotalVentas").Rows(Posicion)("Porciento") = 0
+                            End If
                             DataSet.Tables("TotalVentas").Rows(Posicion)("Cod_Bodega") = CodBodega
                             DataSet.Tables("TotalVentas").Rows(Posicion)("Nombre_Bodega") = DataSet.Tables("TotalFacturas").Rows(i)("Nombre_Bodega")
                             DataSet.Tables("TotalVentas").Rows(Posicion)("Cod_Linea") = DataSet.Tables("TotalFacturas").Rows(i)("Cod_Linea")
                             DataSet.Tables("TotalVentas").Rows(Posicion)("Descripcion_Linea") = DataSet.Tables("TotalFacturas").Rows(i)("Descripcion_Linea")
                         Else
                             Utilidad = (Importe * TasaCambio) - Costo
-                            Porciento = Utilidad / Costo
+                            If Costo <> 0 Then
+                                Porciento = Utilidad / Costo
+                            Else
+                                Porciento = 0
+                            End If
 
                             oDataRow = DataSet.Tables("TotalVentas").NewRow
                             oDataRow("Cod_Productos") = CodigoProducto
@@ -8775,14 +8770,21 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                     ' CANTIDAD
                     '---------------------------------------------------------------
 
+                    '---------------------------------------------------------------
+                    ' Se incluyen las lineas con Cantidad = 0 que tienen Importe
+                    ' (cargos/ajustes de precio), igual que el Reporte de Ventas
+                    ' x Productos. Solo se descartan si Cantidad e Importe son 0.
+                    '---------------------------------------------------------------
+
                     If IsDBNull(Fila("Cantidad")) Then
-                        Continue For
+                        Cantidad = 0
+                    Else
+                        Cantidad =
+                            CDbl(Fila("Cantidad"))
                     End If
 
-                    Cantidad =
-                        CDbl(Fila("Cantidad"))
-
-                    If Cantidad = 0 Then
+                    If Cantidad = 0 AndAlso
+                       (IsDBNull(Fila("Importe")) OrElse CDbl(Fila("Importe")) = 0) Then
                         Continue For
                     End If
 
@@ -16166,12 +16168,14 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                 ' Esto evita consultar una vez por cada producto.
                 '======================================================================
 
+                ActualizarProgreso("Cargando costos...")
                 Try
                     Funciones.MotorKardexReporte = New MotorCostos(Conexion)
                     Funciones.MotorKardexReporte.PrecargarAFecha(FechaFinalKardex)
                 Catch exPre As Exception
                     Funciones.MotorKardexReporte = Nothing
                 End Try
+                ActualizarProgreso("Cargando movimientos...")
                 Dim MovimientosPorProducto As New Dictionary(
         Of String, List(Of MovimientoKardex))(
         StringComparer.OrdinalIgnoreCase)
@@ -16341,6 +16345,20 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
 
 
                 '======================================================================
+                ' UNIDADES (Inicial / Entrada / Salida) DESDE MotorUnidades
+                '
+                ' Misma fuente y mismos filtros que Kardex Unidades.
+                '======================================================================
+
+                ActualizarProgreso("Calculando existencias...")
+                Dim ContadorKardex As Integer = 0
+                Dim UnidadesKardex As System.Collections.Generic.Dictionary(Of String, ResultadoUnidades) =
+                    New MotorUnidades(Conexion).CalcularDiccionario(
+                        FechaInicialKardex,
+                        FechaFinalKardex,
+                        ConstruirFiltroUnidades(Agrupado))
+
+                '======================================================================
                 ' PROCESAR CADA PRODUCTO
                 '======================================================================
 
@@ -16469,6 +16487,27 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                     ' OBTENER TOTAL DEL PRODUCTO
                     '==================================================================
 
+                    '==================================================================
+                    ' UNIDADES DEL PRODUCTO (MotorUnidades)
+                    '
+                    ' Solo se filtra por bodega cuando el agrupado es Bodega. Para
+                    ' Producto / Linea / Rubro CodBodega es la LINEA (solo se muestra)
+                    ' y NO debe usarse como filtro de bodega.
+                    '==================================================================
+
+                    ContadorKardex += 1
+                    ActualizarProgreso("Procesando: " & CodProducto & " - " & NombreProducto, ContadorKardex, TablaProductos.Rows.Count)
+
+                    Dim CodBodegaFiltro As String = If(Agrupado = "Bodega", CodBodega, "")
+
+                    Dim UnidadesProducto As ResultadoUnidades = Nothing
+
+                    If Not UnidadesKardex.TryGetValue(ResultadoUnidades.Clave(CodProducto, CodBodegaFiltro), UnidadesProducto) Then
+                        UnidadesProducto = New ResultadoUnidades()
+                        UnidadesProducto.CodProducto = CodProducto
+                        UnidadesProducto.CodBodega = CodBodegaFiltro
+                    End If
+
                     Dim ResultadoProducto As DataTable
 
 
@@ -16480,8 +16519,9 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                 FechaFinalKardex,
                 MiConexion,
                 MovimientosProducto,
-                CodBodega,
-                Me.OptCordobas.Checked)
+                CodBodegaFiltro,
+                Me.OptCordobas.Checked,
+                UnidadesProducto)
 
 
                     '==================================================================
@@ -16572,23 +16612,6 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                     ' ACTUALIZAR PROGRESO
                     '==================================================================
 
-                    Me.Text =
-            "Procesando: " &
-            CodProducto
-
-
-                    If Me.ProgressBar.Maximum <> 0 Then
-
-                        If Me.ProgressBar.Value <
-               Me.ProgressBar.Maximum Then
-
-                            Me.ProgressBar.Value += 1
-
-                        End If
-
-                    End If
-
-
                     My.Application.DoEvents()
 
                 Next
@@ -16643,6 +16666,7 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                     My.Application.DoEvents()
 
 
+                    ActualizarProgreso("Generando reporte...")
                     ArepReporteKardex.Run(False)
 
 
@@ -16688,6 +16712,7 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                     My.Application.DoEvents()
 
 
+                    ActualizarProgreso("Generando reporte...")
                     ArepReporteKardexLinea.Run(False)
 
 
@@ -16741,6 +16766,7 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                     My.Application.DoEvents()
 
 
+                    ActualizarProgreso("Generando reporte...")
                     ArepReporteKardexLinea.Run(False)
 
 
@@ -16794,6 +16820,7 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                     My.Application.DoEvents()
 
 
+                    ActualizarProgreso("Generando reporte...")
                     ArepReporteKardexLinea.Run(False)
 
 
@@ -17268,7 +17295,7 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
                 ArepListadoClientes.LblDireccion.Text = DireccionEmpresa
                 ArepListadoClientes.LblRuc.Text = Ruc
                 'Solo las columnas que usa el reporte (evita traer campos pesados y el error de memoria)
-                SqlDatos = "SELECT Cod_Cliente, Nombre_Cliente + ' ' + Apellido_Cliente AS Nombres, Telefono, Cod_Cuenta_Cliente, " & _
+                SqlDatos = "SELECT Cod_Cliente, Nombre_Cliente + ' ' + Apellido_Cliente AS Nombres, Telefono, Cod_Cuenta_Cliente, " &
                            "Departamento, Municipio, Direccion_Cliente FROM Clientes ORDER BY Nombre_Cliente, Apellido_Cliente"
                 SQL.ConnectionString = Conexion
                 SQL.SQL = SqlDatos
@@ -18644,5 +18671,50 @@ Handles backgroundWorkerRptExistenciaLote.ProgressChanged
         Catch ex As Exception
             Return Funciones.CostoPromedioKardexOriginal(CodigoProducto, FechaCompras)
         End Try
+    End Function
+
+    ''' <summary>
+    ''' Muestra el avance de un reporte: texto (por ejemplo el producto que se procesa), barra y pantalla.
+    ''' Refresca los controles y atiende los mensajes para que la ventana no parezca congelada.
+    ''' </summary>
+    Private Sub ActualizarProgreso(ByVal Texto As String, Optional ByVal Actual As Integer = -1, Optional ByVal Total As Integer = 0)
+        If Texto.Length > 70 Then Texto = Texto.Substring(0, 70) & "..."
+
+        If Total > 0 AndAlso Actual >= 0 Then
+            If Me.ProgressBar.Maximum <> Total Then Me.ProgressBar.Maximum = Total
+            Me.ProgressBar.Value = Math.Min(Actual, Total)
+            Texto = Texto & "   (" & Actual.ToString() & " de " & Total.ToString() & ")"
+        End If
+
+        Me.LblProcesando.Text = Texto
+        Me.LblProcesando.Left = Math.Max(0, (Me.ClientSize.Width - Me.LblProcesando.Width) \ 2)
+        Me.LblProcesando.Refresh()
+        Me.ProgressBar.Refresh()
+        My.Application.DoEvents()
+    End Sub
+    ''' <summary>
+    ''' Arma el FiltroUnidades segun el agrupado y los combos del formulario. Lo usan Kardex y Kardex Unidades
+    ''' para que ambos apliquen exactamente los mismos filtros (Producto, Linea, Bodega, Rubro).
+    ''' </summary>
+    Private Function ConstruirFiltroUnidades(ByVal Agrupado As String) As FiltroUnidades
+        Dim f As New FiltroUnidades
+        Select Case Agrupado.Trim()
+            Case "Codigo Producto"
+                f.ProductoDesde = Me.CboCodProducto.Text.Trim()
+                f.ProductoHasta = Me.CboCodProducto2.Text.Trim()
+            Case "Linea"
+                f.LineaDesde = Me.CmbRango1.Text.Trim()
+                f.LineaHasta = Me.CmbRango2.Text.Trim()
+            Case "Bodega"
+                f.BodegaDesde = Me.CmbRango1.Text.Trim()
+                f.BodegaHasta = Me.CmbRango2.Text.Trim()
+                f.ProductoDesde = Me.CboCodProducto.Text.Trim()
+                f.ProductoHasta = Me.CboCodProducto2.Text.Trim()
+                f.AgruparPorBodega = True
+            Case "Rubro"
+                f.RubroDesde = Me.CmbRango1.Text.Trim()
+                f.RubroHasta = Me.CmbRango2.Text.Trim()
+        End Select
+        Return f
     End Function
 End Class

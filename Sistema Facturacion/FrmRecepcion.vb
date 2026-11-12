@@ -1,6 +1,7 @@
 Public Class FrmRecepcion
     Public MiConexion As New SqlClient.SqlConnection(Conexion), Año As String, Mes As String, Dia As String, ConsecutivoFacturaSerie As Boolean = False, Numero_Recepcion As String, PesoBruto As Double = 0, Procesar As Boolean = False, Tara As Double
     Public VentaAbierta As Boolean = False
+    Public WithEvents Bascula As BasculaConexion
     Delegate Sub delegado(ByVal data As String)
     Private Sub Siguiente()
         If Me.TrueDBGridComponentes.RowCount <> 0 Then
@@ -15,7 +16,7 @@ Public Class FrmRecepcion
     End Sub
 
     Private Sub FrmRecepcion_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
-        Me.Button10_Click(sender, e)
+        If Me.Bascula IsNot Nothing Then Me.Bascula.Dispose()
     End Sub
 
 
@@ -25,6 +26,7 @@ Public Class FrmRecepcion
         Dim SqlProductos As String, SqlString As String, Ruta As String, LeeArchivo As String
 
         Procesar = False
+        Me.Bascula = New BasculaConexion("Recepcion", Me)
         DataSet.Reset()
 
         Me.CmbTipoPesada.Text = "PESADA BASCULA"
@@ -44,7 +46,7 @@ Public Class FrmRecepcion
 
             Me.GroupBox2.Visible = False
             Me.GroupBoxRecolector.Visible = True
-            Me.GroupBoxRecolector.Location = New Point(535, 140)
+            Me.GroupBoxRecolector.Location = New Point(544, 176)
 
         ElseIf Quien = "SalidaBascula" Then
             Me.CboTipoRecepcion.Text = "Salidabascula"
@@ -377,14 +379,17 @@ Public Class FrmRecepcion
     End Sub
 
     Public Sub Button11_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button11.Click
-        My.Forms.FrmPuertos.Pregunta = "Recepcion"
-        My.Forms.FrmPuertos.ShowDialog()
+        Using f As New FrmPuertos()
+            f.Bascula = Me.Bascula
+            f.Pregunta = "Recepcion"
+            f.ShowDialog(Me)
+        End Using
     End Sub
 
     Public Sub Button10_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button10.Click
-        Me.sp.Close()
-        Me.LblEstado.Text = "DESCONECT"
-        Me.LblEstado.ForeColor = Color.Black
+        If Me.Bascula IsNot Nothing Then Me.Bascula.Desconectar()
+
+
     End Sub
 
     Private Sub Button12_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button12.Click
@@ -643,51 +648,42 @@ Public Class FrmRecepcion
 
     End Sub
 
-    Private Sub sp_DataReceived(ByVal sender As System.Object, ByVal e As System.IO.Ports.SerialDataReceivedEventArgs) Handles sp.DataReceived
-        Dim s As String '= sp.ReadExisting, Pesada As Double
+    '=================================================================================================
+    ' BÁSCULA (clases BasculaConexion / BasculaParser / BasculaDisenio)
+    '=================================================================================================
+    Private Sub Bascula_PesoRecibido(ByVal peso As Double, ByVal linea As String) Handles Bascula.PesoRecibido
+        Try
+            mostar(peso)
+        Catch ex As Exception
+            MsgBox("No se pudo registrar la pesada: " & ex.Message, MsgBoxStyle.Critical, "Zeus Bascula")
+        End Try
+    End Sub
 
-        Dim escribeport3 As New delegado(AddressOf Me.mostar)
+    Private Sub Bascula_EstadoCambiado(ByVal estado As EstadoBascula, ByVal mensaje As String) Handles Bascula.EstadoCambiado
+        BasculaDisenio.MostrarEstado(Me.LblEstado, estado)
+        Me.ToolTipBascula.SetToolTip(Me.LblEstado, mensaje)
+    End Sub
 
-        s = sp.ReadLine
+    Private ReadOnly ToolTipBascula As New ToolTip()
 
-        If Len(s) = 19 Then
-            If Mid(s, 1, 5) <> "GROSS" Then
-                Exit Sub
-            End If
+    Private Sub FrmRecepcion_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        ' El diseño (posiciones, colores, fecha y hora grandes) esta en FrmRecepcion.Designer.vb.
+        BasculaDisenio.EstiloRejillaC1(Me.TrueDBGridComponentes)
+        ' Reabre el ultimo puerto usado (sin mensajes si no esta disponible).
+        If Me.CmbTipoPesada.Text = "PESADA BASCULA" AndAlso Not Bascula.EstaConectado Then
+            Bascula.ConectarGuardado()
         End If
-
-        Select Case Mid(s, 1, 4)
-            Case "TARA" : Exit Sub
-            Case "NETO" : Exit Sub
-            Case "TEL:2263-5025" : Exit Sub
-            Case "" : Exit Sub
-
-        End Select
-
-        If Len(s) > 5 Then
-            s = SoloNumeros(s)
-
-            If s = "2263-5025" Then  ''''SOBRE PASA EL " Then  SOLO EMTRIDES---
-                Exit Sub
-            End If
-
-            If s <> "" Then
-                Me.Invoke(escribeport3, s)
-            End If
-
-        End If
-
     End Sub
 
 
-    Sub mostar(ByVal d As String)
+    Sub mostar(ByVal Pesada As Double)
         Dim Posicion As Double
-        Dim Cadena As String, Pesada As Double, PesoEntero As Double, PesoDecimal As Double
+        Dim PesoEntero As Double, PesoDecimal As Double
 
-        'Cadena = Mid(d, 7, Len(d))
-        'Pesada = CDbl(Cadena)
-        Cadena = d
-        Pesada = SoloNumeros(Cadena)
+
+
+
+
         '-------------------------------SI SE ACTIVA EL REDONDEO CAMBIO LA PESADA
         If Me.ChkTaraSaco.Checked = True Then
             PesoEntero = Int(Pesada)
@@ -1177,9 +1173,9 @@ Public Class FrmRecepcion
     End Sub
 
     Private Sub BtnTara_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnTara.Click
-        Button10_Click(sender, e)
+        If Me.Bascula IsNot Nothing Then Me.Bascula.Desconectar()
         My.Forms.FrmTara.ShowDialog()
-        Button11_Click(sender, e)
+        If Me.Bascula IsNot Nothing Then Me.Bascula.ConectarGuardado()
     End Sub
 
 

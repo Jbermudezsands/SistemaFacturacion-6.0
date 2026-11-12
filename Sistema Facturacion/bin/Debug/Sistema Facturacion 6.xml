@@ -515,6 +515,133 @@ Sistema Facturacion 6.0
 <member name="M:Sistema_Facturacion.Recibos.Cargar(System.String,System.Nullable{System.DateTime})">
  <summary>Carga un recibo. Si no se indica la fecha, toma el más reciente con ese número. Nothing si no existe.</summary>
 </member>
+<member name="M:Sistema_Facturacion.ReciboMonedaConversion.Limpiar">
+ <summary>Quita los datos en caché (llamar al cambiar de fecha o recargar métodos).</summary>
+</member>
+<member name="M:Sistema_Facturacion.ReciboMonedaConversion.MonedaMetodo(System.String)">
+ <summary>Moneda configurada en el método de pago ("Cordobas" o "Dolares"). Vacío si no existe.</summary>
+</member>
+<member name="M:Sistema_Facturacion.ReciboMonedaConversion.TasaDelDia(System.DateTime)">
+ <summary>Tasa de cambio (córdobas por dólar) del día; 0 si no existe.</summary>
+</member>
+<member name="M:Sistema_Facturacion.ReciboMonedaConversion.RequiereConversion(System.String,System.String)">
+ <summary>True si el método está en una moneda distinta a la del recibo.</summary>
+</member>
+<member name="M:Sistema_Facturacion.ReciboMonedaConversion.Factor(System.String,System.String,System.DateTime)">
+ <summary>
+ Factor para pasar el monto digitado (moneda del método) a la moneda del recibo.
+ Devuelve 1 si no hay conversión; 0 si hace falta tasa y no existe para la fecha.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.ReciboMonedaConversion.Convertir(System.Decimal,System.String,System.String,System.DateTime)">
+ <summary>Convierte el monto digitado a la moneda del recibo (redondeo a 2 decimales). Nothing-seguro: tasa faltante = 0.</summary>
+</member>
+<member name="M:Sistema_Facturacion.ReciboMonedaConversion.ConvertirInverso(System.Decimal,System.String,System.String,System.DateTime)">
+ <summary>Operación inversa: del monto del recibo al monto en la moneda del método (para mostrar al editar).</summary>
+</member>
+<member name="M:Sistema_Facturacion.ReciboMonedaConversion.Aviso(System.String,System.String,System.DateTime)">
+ <summary>Texto informativo para el cajero ("Recibe dólares, se aplica en córdobas a tasa X").</summary>
+</member>
+<member name="P:Sistema_Facturacion.BasculaConfig.SenalesDtrRts">
+ <summary>Activa DTR y RTS (necesario en varios adaptadores USB-serial y básculas).</summary>
+</member>
+<member name="M:Sistema_Facturacion.BasculaParser.Interpretar(System.String)">
+ <summary>
+ Devuelve el peso de una línea recibida, o Nothing si la línea no es una lectura
+ (TARA, NETO, teléfonos, líneas vacías o muy cortas).
+ Mismas reglas que usaban FrmRecepcion y FrmBascula.
+ </summary>
+</member>
+<member name="E:Sistema_Facturacion.BasculaConexion.PesoRecibido">
+ <summary>Se interpretó una lectura de peso (en el hilo de pantalla).</summary>
+</member>
+<member name="E:Sistema_Facturacion.BasculaConexion.LineaRecibida">
+ <summary>Cualquier línea cruda recibida (para la consola de pruebas de FrmPuertos).</summary>
+</member>
+<member name="M:Sistema_Facturacion.BasculaConexion.#ctor(System.String,System.Windows.Forms.Control)">
+ <param name="clave">Identifica la báscula: "Recepcion", "Bascula", "Tara"...</param>
+ <param name="duenio">Formulario/control cuyo hilo recibe los eventos.</param>
+</member>
+<member name="P:Sistema_Facturacion.BasculaConexion.SuprimirPeso">
+ <summary>True mientras se prueba la báscula (FrmPuertos): se muestran las líneas pero NO se registran pesadas.</summary>
+</member>
+<member name="M:Sistema_Facturacion.BasculaConexion.Conectar(Sistema_Facturacion.BasculaConfig,System.String@)">
+ <summary>Abre el puerto con la configuración dada (y la guarda). Devuelve False con el motivo en <paramref name="motivo"/>.</summary>
+</member>
+<member name="M:Sistema_Facturacion.BasculaConexion.ConectarGuardado">
+ <summary>Abre el último puerto guardado, sin mensajes si no se puede (arranque automático).</summary>
+</member>
+<member name="M:Sistema_Facturacion.BasculaConexion.Publicar(System.Windows.Forms.MethodInvoker)">
+ <summary>Entrega la acción en el hilo de pantalla, ignorando formularios ya cerrados.</summary>
+</member>
+<member name="M:Sistema_Facturacion.BasculaDisenio.PrepararFormulario(System.Windows.Forms.Form,System.Boolean)">
+ <summary>Fondo, fuente y maximizado. Llamar en el Load del formulario.</summary>
+</member>
+<member name="M:Sistema_Facturacion.BasculaDisenio.EstiloBoton(System.Windows.Forms.Button,System.Drawing.Color)">
+ <summary>Botón plano con color de acento.</summary>
+</member>
+<member name="M:Sistema_Facturacion.BasculaDisenio.EstiloTarjeta(System.Windows.Forms.GroupBox)">
+ <summary>GroupBox como tarjeta blanca.</summary>
+</member>
+<member name="M:Sistema_Facturacion.BasculaDisenio.TextoOscuro(System.Windows.Forms.Control)">
+ <summary>Las etiquetas del diseño anterior eran blancas (fondo oscuro): en tarjeta blanca se oscurecen.</summary>
+</member>
+<member name="M:Sistema_Facturacion.BasculaDisenio.AjustarFechaHora(System.Windows.Forms.Control,System.Windows.Forms.Label,System.Windows.Forms.Label)">
+ <summary>
+ Pone la fecha y la hora SIEMPRE grandes: el tamaño de letra crece con el ancho disponible
+ (mínimo 28 pt) y los dos textos se centran en la tarjeta.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.BasculaDisenio.DistribuirBotonesVertical(System.Windows.Forms.Control,System.Collections.Generic.Dictionary{System.Windows.Forms.Control,System.Drawing.Color})">
+ <summary>Reparte los botones de un panel en columna ocupando todo su alto.</summary>
+</member>
+<member name="M:Sistema_Facturacion.BasculaDisenio.DistribuirBotonesHorizontal(System.Windows.Forms.Control,System.Collections.Generic.Dictionary{System.Windows.Forms.Control,System.Drawing.Color})">
+ <summary>Reparte los botones visibles de un panel en una fila ocupando todo su ancho.</summary>
+</member>
+<member name="M:Sistema_Facturacion.BasculaDisenio.MostrarEstado(System.Windows.Forms.Label,Sistema_Facturacion.EstadoBascula)">
+ <summary>Texto y color del indicador de estado de la báscula.</summary>
+</member>
+<member name="M:Sistema_Facturacion.BasculaDisenio.EstiloBotonesDe(System.Windows.Forms.Control,System.Drawing.Color)">
+ <summary>Aplica el estilo a todos los botones normales de un contenedor (recursivo).</summary>
+</member>
+<member name="M:Sistema_Facturacion.BasculaDisenio.EstiloRejillaC1(C1.Win.C1TrueDBGrid.C1TrueDBGrid)">
+ <summary>Encabezado de la rejilla C1 (aplica si el control expone HeadingStyle).</summary>
+</member>
+<member name="M:Sistema_Facturacion.SalidaBasculaFila.Desde(System.Func{System.String,System.Object})">
+ <summary>Crea la fila desde un lector de valores por nombre de columna (grid, DataRow...).</summary>
+</member>
+<member name="M:Sistema_Facturacion.SalidaBasculaRepositorio.ListarPendientes">
+ <summary>Salidas de báscula pendientes de facturar (las mismas que mostraba el grid).</summary>
+</member>
+<member name="M:Sistema_Facturacion.SalidaBasculaRepositorio.ListarPesadas(System.String,System.String)">
+ <summary>Pesadas de la salida, sin agrupar (para el ticket).</summary>
+</member>
+<member name="M:Sistema_Facturacion.SalidaBasculaRepositorio.EstructuraTicket">
+ <summary>Tabla vacía con la estructura del reporte de ticket.</summary>
+</member>
+<member name="M:Sistema_Facturacion.SalidaBasculaRepositorio.ListarLineasAgrupadas(System.String,System.String)">
+ <summary>Pesadas agrupadas por producto (lo que se factura).</summary>
+</member>
+<member name="M:Sistema_Facturacion.SalidaBasculaServicio.ConstruirTicket(Sistema_Facturacion.SalidaBasculaFila)">
+ <summary>
+ Tabla del ticket: una fila por producto con el detalle de pesadas ("1-250Lb , 2-300Lb") y la cantidad total.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.SalidaBasculaServicio.DatosEmpresa">
+ <summary>Datos de la empresa para el encabezado del ticket (puede ser Nothing).</summary>
+</member>
+<member name="M:Sistema_Facturacion.SalidaBasculaServicio.ConsecutivoFacturaManual">
+ <summary>
+ ¿Se maneja consecutivo de factura manual? (configuración de la empresa).
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.SalidaBasculaServicio.Facturar(Sistema_Facturacion.SalidaBasculaFila,System.Func{System.String})">
+ <summary>
+ Genera la factura de la salida. <paramref name="obtenerNumero"/> entrega el número de factura
+ (puede pedir el consecutivo manual al usuario) y devuelve "-----0-----" si se canceló.
+ Devuelve el número de factura, o "" si el usuario canceló.
+ </summary>
+</member>
 <member name="M:Sistema_Facturacion.CxCRepositorio.Cargar(Sistema_Facturacion.CxCFiltro)">
  <summary>Carga todos los documentos de los clientes del filtro hasta la fecha de corte.</summary>
 </member>
@@ -1256,6 +1383,65 @@ Sistema Facturacion 6.0
  La clave del diccionario es fecha.Date.
  </summary>
 </member>
+<member name="T:Sistema_Facturacion.FiltroUnidades">
+ <summary>
+ Filtros que acepta MotorUnidades. Todos son opcionales: cadena vacia = sin filtro en ese criterio.
+ Se pueden combinar (por ejemplo Bodega + rango de productos). Equivalen a los combos del formulario de
+ reportes (Codigo Producto, Linea, Bodega, Rubro; desde / hasta).
+ </summary>
+</member>
+<member name="P:Sistema_Facturacion.FiltroUnidades.AgruparPorBodega">
+ <summary>
+ True = una fila por producto Y bodega (reportes agrupados por bodega).
+ False = una fila por producto con todas las bodegas sumadas (o solo las del rango de bodegas, si se indica).
+ </summary>
+</member>
+<member name="T:Sistema_Facturacion.ResultadoUnidades">
+ <summary>
+ Existencia fisica (unidades) de un producto en un periodo: Inicial + Entrada - Salida = Saldo.
+ CodBodega solo se llena cuando el calculo se pidio agrupado por bodega.
+ </summary>
+</member>
+<member name="P:Sistema_Facturacion.ResultadoUnidades.TieneActividad">
+ <summary>True si el producto tiene algo que mostrar en el periodo.</summary>
+</member>
+<member name="T:Sistema_Facturacion.MotorUnidades">
+ <summary>
+ Motor unico de existencias fisicas (unidades): Inicial, Entrada, Salida y Saldo por producto, con filtros
+ por producto, linea, bodega y rubro. Todos los reportes que muestren unidades deben usar esta clase para
+ que den el mismo resultado.
+
+ REGLA UNICA (validada contra DetalleBodegas):
+   Entradas : Mercancia Recibida + Transferencia Recibida (Detalle_Compras) + Devolucion de Venta (Detalle_Facturas)
+   Salidas  : Factura + Salida Bodega + Transferencia Enviada (Detalle_Facturas) + Devolucion de Compra (Detalle_Compras)
+   Inicial  : todo lo anterior con fecha MENOR a la fecha inicial.
+   Periodo  : fecha desde la fecha inicial hasta la fecha final, ambas incluidas.
+ Cotizaciones y demas tipos no mueven existencia. Productos Servicio / Descuento se excluyen.
+ Solo lectura: no toca costos ni montos (eso es de MotorCostos).
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.MotorUnidades.Calcular(System.DateTime,System.DateTime,Sistema_Facturacion.FiltroUnidades)">
+ <summary>
+ Inicial / Entrada / Salida / Saldo de todos los productos que tengan movimiento (o inicial) y cumplan el filtro.
+ Productos sin ningun movimiento hasta la fecha final no aparecen: el reporte decide como tratarlos (cero).
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.MotorUnidades.CalcularDiccionario(System.DateTime,System.DateTime,Sistema_Facturacion.FiltroUnidades)">
+ <summary>Igual que Calcular, indexado por ResultadoUnidades.Clave(producto, bodega) para buscar fila por fila.</summary>
+</member>
+<member name="M:Sistema_Facturacion.MotorUnidades.CalcularProducto(System.String,System.DateTime,System.DateTime,System.String)">
+ <summary>Resultado de un solo producto (todas las bodegas, o solo codBodega si se indica). Nunca devuelve Nothing.</summary>
+</member>
+<member name="M:Sistema_Facturacion.MotorUnidades.ExistenciaAFecha(System.String,System.DateTime,System.String)">
+ <summary>Existencia (saldo) del producto al cierre de la fecha indicada.</summary>
+</member>
+<member name="M:Sistema_Facturacion.MotorUnidades.Consultar(System.DateTime,System.DateTime,Sistema_Facturacion.FiltroUnidades)">
+ <param name="desde">Primer dia del periodo (el Inicial es todo lo anterior).</param>
+ <param name="limite">Primer dia FUERA del periodo (fecha final + 1 dia).</param>
+</member>
+<member name="M:Sistema_Facturacion.MotorUnidades.AgregarRango(System.Text.StringBuilder,System.Collections.Generic.List{System.Data.SqlClient.SqlParameter},System.String,System.String,System.String,System.String)">
+ <summary>Agrega "AND columna >= @XDesde" / "AND columna &lt;= @XHasta" solo si el valor no viene vacio.</summary>
+</member>
 <member name="M:Sistema_Facturacion.FrmCreditosNuevos.GrabarPrestamo">
  <summary>Graba encabezado y detalle en una sola transacción. Devuelve el número de préstamo o "" si ya existía.</summary>
 </member>
@@ -1336,6 +1522,44 @@ Sistema Facturacion 6.0
 <member name="M:Sistema_Facturacion.FrmCuentasXPagar.RefrescarVista">
  <summary>Vuelve a armar la vista del grid (sin ir a la base de datos).</summary>
 </member>
+<member name="T:Sistema_Facturacion.FrmFacturacionBascula">
+ <summary>
+ Facturación de las salidas de báscula pendientes.
+
+ La lógica (consultas, ticket y facturación) está en <see cref="T:Sistema_Facturacion.SalidaBasculaServicio"/>
+ (Clases\Bascula\SalidaBasculaServicio.vb); el formulario solo muestra y recibe las acciones.
+ El grid TrueDBGridConsultas conserva su barra de filtros (FilterBar) y su configuración.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmFacturacionBascula.Cargar">
+ <summary>Carga las salidas pendientes. Se mantiene el mismo enlace de datos del grid.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmFacturacionBascula.FilaSeleccionada">
+ <summary>Fila seleccionada del grid (respeta los filtros del grid). Nothing si no hay selección.</summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmFacturacionBascula.Button1_Click(System.Object,System.EventArgs)">
+ <summary>Anular la salida seleccionada.</summary>
+</member>
+<member name="T:Sistema_Facturacion.FrmPuertos">
+ <summary>
+ Configuración y prueba del puerto serial de una báscula.
+ Se usa con cualquier formulario que tenga un <see cref="T:Sistema_Facturacion.BasculaConexion"/>:
+
+     Using f As New FrmPuertos()
+         f.Bascula = Me.Bascula
+         f.ShowDialog(Me)
+     End Using
+
+ (Compatibilidad: si solo se asigna <see cref="F:Sistema_Facturacion.FrmPuertos.Pregunta"/> = "Recepcion" o "Bascula", se usa la
+ conexión de FrmRecepcion / FrmBascula.)
+ </summary>
+</member>
+<member name="P:Sistema_Facturacion.FrmPuertos.Bascula">
+ <summary>Conexión de la báscula que se va a configurar.</summary>
+</member>
+<member name="T:Sistema_Facturacion.FrmPuertos.Opcion">
+ <summary>Elemento de lista con texto en español y valor del enum.</summary>
+</member>
 <member name="M:Sistema_Facturacion.FrmCuentasXCobrar.Consultar(System.Action)">
  <summary>
  Calcula en segundo plano (BackgroundWorker, compatible con .NET Framework 4) y muestra el resultado.
@@ -1407,6 +1631,9 @@ Sistema Facturacion 6.0
 <member name="M:Sistema_Facturacion.FrmEnsamble.Ejecutar(System.Action)">
  <summary>Ejecuta una acción con cursor de espera y manejo uniforme de errores.</summary>
 </member>
+<member name="M:Sistema_Facturacion.FrmRecibos.NombreMonedaRecibo(System.String)">
+ <summary>Texto de la moneda del recibo para impresión (Córdobas / Dólares).</summary>
+</member>
 <member name="M:Sistema_Facturacion.FrmReportes.SaldoInicialCliente(System.String,System.DateTime,System.String)">
  <summary>
  Saldo del cliente ANTES de la fecha indicada (documentos con fecha menor a FechaFin).
@@ -1423,6 +1650,18 @@ Sistema Facturacion 6.0
  <summary>
  Une en una sola linea los registros con igual Cod_Producto y Numero_Lote,
  sumando la cantidad y listando las bodegas totalizadas ("01,02,03").
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmReportes.ActualizarProgreso(System.String,System.Int32,System.Int32)">
+ <summary>
+ Muestra el avance de un reporte: texto (por ejemplo el producto que se procesa), barra y pantalla.
+ Refresca los controles y atiende los mensajes para que la ventana no parezca congelada.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.FrmReportes.ConstruirFiltroUnidades(System.String)">
+ <summary>
+ Arma el FiltroUnidades segun el agrupado y los combos del formulario. Lo usan Kardex y Kardex Unidades
+ para que ambos apliquen exactamente los mismos filtros (Producto, Linea, Bodega, Rubro).
  </summary>
 </member>
 <member name="F:Sistema_Facturacion.Funciones.MotorKardexReporte">
@@ -1450,6 +1689,13 @@ Sistema Facturacion 6.0
  <summary>
  MOTOR DE COSTOS: escribe el MISMO costo general en todas las bodegas del producto (DetalleBodegas.Costo/CostoDolar) y
  recalcula el valor del inventario de cada bodega. No hay costo por bodega.
+ </summary>
+</member>
+<member name="M:Sistema_Facturacion.Funciones.ActualizaMETODORecibos">
+ <summary>
+ Recalcula los totales del recibo. El monto de cada línea está en la moneda de su MÉTODO DE PAGO;
+ si es distinta a la moneda del recibo se convierte con la tasa de cambio de la fecha del recibo
+ (clase ReciboMonedaConversion). Los totales quedan siempre en la moneda del recibo.
  </summary>
 </member>
 </members>

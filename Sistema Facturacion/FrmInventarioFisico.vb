@@ -1493,8 +1493,16 @@ Public Class FrmInventarioFisico
 
     Private Sub CmdNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CmdNuevo.Click
         Quien = "Repesaje"
-        If Me.TrueDBGridConsultas.Columns("NumeroRecepcion").Text <> "" Then
-            Me.Numero_Repesaje = Me.TrueDBGridConsultas.Columns("NumeroRecepcion").Text
+        ' La rejilla del inventario puede no tener la columna NumeroRecepcion (o estar vacia):
+        ' en ese caso se trata como un repesaje nuevo en lugar de lanzar "DataField or Caption not found".
+        Dim numeroRecepcion As String = ""
+        Try
+            numeroRecepcion = Me.TrueDBGridConsultas.Columns("NumeroRecepcion").Text
+        Catch ex As ArgumentException
+            numeroRecepcion = ""
+        End Try
+        If numeroRecepcion <> "" Then
+            Me.Numero_Repesaje = numeroRecepcion
         Else
             Me.Numero_Repesaje = "-----0-----"
             Me.NumeroTemporal = Me.Random.Next()

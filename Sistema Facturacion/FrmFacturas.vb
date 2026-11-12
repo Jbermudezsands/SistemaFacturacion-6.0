@@ -4991,6 +4991,20 @@ Handles backgroundWorkerInsertar.RunWorkerCompleted
 
         Bitacora(Now, NombreUsuario, Me.CboTipoProducto.Text, "Elimino la Factura: " & Me.TxtNumeroEnsamble.Text)
 
+        '++++++++++++++++++++++VERIFICA LA FACTURAS LOS COSTOS ++++++++++++++++++++++++++++++++
+        'Al anular el documento ya no saca/mete unidades: recalcula los costos posteriores de los productos afectados.
+        Try
+            Select Case Me.CboTipoProducto.Text
+                Case "Factura", "Salida Bodega", "Transferencia Enviada", "Devolucion de Venta"
+                    Dim MotorCostosPend As New MotorCostos(Conexion)
+                    MotorCostosPend.IndicarOrigen("FrmFacturas", "Anulacion " & Me.CboTipoProducto.Text & " " & Me.TxtNumeroEnsamble.Text & " " & Fecha)
+                    MotorCostosPend.RepararDocumento(DataSet.Tables("Detalle"), CDate(Fecha))
+                    MotorCostosPend.ProcesarPendientes()
+            End Select
+        Catch ex As Exception
+            Bitacora(Now, NombreUsuario, "Reparacion Costos", ex.Message)
+        End Try
+
         LimpiarFacturas()
         Me.Button7.Enabled = True
         Me.CboCodigoBodega.Enabled = True

@@ -50,6 +50,7 @@ Partial Public Class ArepReciboCajaTira
         Me.LblPagadoRecibo = New DataDynamics.ActiveReports.Label
         Me.Label10 = New DataDynamics.ActiveReports.Label
         Me.LblMontoTexto = New DataDynamics.ActiveReports.Label
+        Me.LblMoneda = New DataDynamics.ActiveReports.Label
         Me.Label11 = New DataDynamics.ActiveReports.Label
         Me.LblObservaciones = New DataDynamics.ActiveReports.Label
         CType(Me.Label6, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -78,6 +79,7 @@ Partial Public Class ArepReciboCajaTira
         CType(Me.LblPagadoRecibo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label10, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblMontoTexto, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LblMoneda, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label11, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblObservaciones, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -552,7 +554,7 @@ Partial Public Class ArepReciboCajaTira
         '
         'ReportFooter1
         '
-        Me.ReportFooter1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.LblPagadoRecibo, Me.Label10, Me.LblMontoTexto, Me.Label11, Me.LblObservaciones})
+        Me.ReportFooter1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.LblPagadoRecibo, Me.Label10, Me.LblMontoTexto, Me.Label11, Me.LblObservaciones, Me.LblMoneda})
         Me.ReportFooter1.Height = 2.0625!
         Me.ReportFooter1.Name = "ReportFooter1"
         '
@@ -595,6 +597,25 @@ Partial Public Class ArepReciboCajaTira
         Me.Label10.Top = 0.0!
         Me.Label10.Width = 1.125!
         '
+        'LblMoneda
+        '
+        Me.LblMoneda.Border.BottomColor = System.Drawing.Color.Black
+        Me.LblMoneda.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblMoneda.Border.LeftColor = System.Drawing.Color.Black
+        Me.LblMoneda.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblMoneda.Border.RightColor = System.Drawing.Color.Black
+        Me.LblMoneda.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblMoneda.Border.TopColor = System.Drawing.Color.Black
+        Me.LblMoneda.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblMoneda.Height = 0.1875!
+        Me.LblMoneda.HyperLink = Nothing
+        Me.LblMoneda.Left = 0.6666667!
+        Me.LblMoneda.Name = "LblMoneda"
+        Me.LblMoneda.Style = "ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 8.25pt; "
+        Me.LblMoneda.Text = ""
+        Me.LblMoneda.Top = 0.1875!
+        Me.LblMoneda.Width = 2.05!
+        '
         'LblMontoTexto
         '
         Me.LblMontoTexto.Border.BottomColor = System.Drawing.Color.Black
@@ -611,7 +632,7 @@ Partial Public Class ArepReciboCajaTira
         Me.LblMontoTexto.Name = "LblMontoTexto"
         Me.LblMontoTexto.Style = "ddo-char-set: 0; font-size: 8.25pt; font-family: Arial; "
         Me.LblMontoTexto.Text = ""
-        Me.LblMontoTexto.Top = 0.2777778!
+        Me.LblMontoTexto.Top = 0.4652778!
         Me.LblMontoTexto.Width = 2.333333!
         '
         'Label11
@@ -649,7 +670,7 @@ Partial Public Class ArepReciboCajaTira
         Me.LblObservaciones.Name = "LblObservaciones"
         Me.LblObservaciones.Style = "ddo-char-set: 0; font-size: 8.25pt; font-family: Arial; "
         Me.LblObservaciones.Text = ""
-        Me.LblObservaciones.Top = 0.6666667!
+        Me.LblObservaciones.Top = 0.8541667!
         Me.LblObservaciones.Width = 2.333333!
         '
         'ArepReciboCajaTira
@@ -703,6 +724,7 @@ Partial Public Class ArepReciboCajaTira
         CType(Me.LblPagadoRecibo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label10, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LblMontoTexto, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LblMoneda, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label11, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LblObservaciones, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
@@ -733,6 +755,7 @@ Partial Public Class ArepReciboCajaTira
     Friend WithEvents LblPagadoRecibo As DataDynamics.ActiveReports.Label
     Private WithEvents Label10 As DataDynamics.ActiveReports.Label
     Friend WithEvents LblMontoTexto As DataDynamics.ActiveReports.Label
+    Friend WithEvents LblMoneda As DataDynamics.ActiveReports.Label
     Friend WithEvents Label11 As DataDynamics.ActiveReports.Label
     Friend WithEvents TextBox4 As DataDynamics.ActiveReports.TextBox
     Friend WithEvents TextBox2 As DataDynamics.ActiveReports.TextBox

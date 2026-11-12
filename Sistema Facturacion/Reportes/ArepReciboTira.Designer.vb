@@ -50,6 +50,7 @@ Partial Public Class ArepReciboTira
         Me.Label8 = New DataDynamics.ActiveReports.Label
         Me.Label2 = New DataDynamics.ActiveReports.Label
         Me.LblMontoTexto = New DataDynamics.ActiveReports.Label
+        Me.LblMoneda = New DataDynamics.ActiveReports.Label
         CType(Me.ImgLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblDireccion, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblRuc, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -76,6 +77,7 @@ Partial Public Class ArepReciboTira
         CType(Me.Label8, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblMontoTexto, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LblMoneda, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         '
         'PageHeader1
@@ -536,7 +538,7 @@ Partial Public Class ArepReciboTira
         '
         'ReportFooter1
         '
-        Me.ReportFooter1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.LblPagadoRecibo, Me.Label8, Me.Label2, Me.LblMontoTexto})
+        Me.ReportFooter1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.LblPagadoRecibo, Me.Label8, Me.Label2, Me.LblMontoTexto, Me.LblMoneda})
         Me.ReportFooter1.Height = 2.09375!
         Me.ReportFooter1.Name = "ReportFooter1"
         '
@@ -598,6 +600,25 @@ Partial Public Class ArepReciboTira
         Me.Label2.Top = 1.368421!
         Me.Label2.Width = 1.578947!
         '
+        'LblMoneda
+        '
+        Me.LblMoneda.Border.BottomColor = System.Drawing.Color.Black
+        Me.LblMoneda.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblMoneda.Border.LeftColor = System.Drawing.Color.Black
+        Me.LblMoneda.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblMoneda.Border.RightColor = System.Drawing.Color.Black
+        Me.LblMoneda.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblMoneda.Border.TopColor = System.Drawing.Color.Black
+        Me.LblMoneda.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblMoneda.Height = 0.1875!
+        Me.LblMoneda.HyperLink = Nothing
+        Me.LblMoneda.Left = 0.6842105!
+        Me.LblMoneda.Name = "LblMoneda"
+        Me.LblMoneda.Style = "ddo-char-set: 0; text-align: right; font-weight: bold; font-size: 8.25pt; "
+        Me.LblMoneda.Text = ""
+        Me.LblMoneda.Top = 0.1875!
+        Me.LblMoneda.Width = 1.98!
+        '
         'LblMontoTexto
         '
         Me.LblMontoTexto.Border.BottomColor = System.Drawing.Color.Black
@@ -614,7 +635,7 @@ Partial Public Class ArepReciboTira
         Me.LblMontoTexto.Name = "LblMontoTexto"
         Me.LblMontoTexto.Style = "ddo-char-set: 0; font-size: 9.75pt; font-family: Cambria; "
         Me.LblMontoTexto.Text = ""
-        Me.LblMontoTexto.Top = 0.3157895!
+        Me.LblMontoTexto.Top = 0.5157895!
         Me.LblMontoTexto.Width = 2.368421!
         '
         'ArepReciboTira
@@ -668,6 +689,7 @@ Partial Public Class ArepReciboTira
         CType(Me.Label8, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LblMontoTexto, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LblMoneda, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
 
     End Sub
@@ -698,5 +720,6 @@ Partial Public Class ArepReciboTira
     Private WithEvents Label8 As DataDynamics.ActiveReports.Label
     Friend WithEvents Label2 As DataDynamics.ActiveReports.Label
     Friend WithEvents LblMontoTexto As DataDynamics.ActiveReports.Label
+    Friend WithEvents LblMoneda As DataDynamics.ActiveReports.Label
     Friend WithEvents Label5 As DataDynamics.ActiveReports.Label
 End Class

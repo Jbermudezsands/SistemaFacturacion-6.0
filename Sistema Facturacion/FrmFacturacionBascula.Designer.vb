@@ -1,4 +1,4 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class FrmFacturacionBascula
     Inherits System.Windows.Forms.Form
 
@@ -33,6 +33,7 @@ Partial Class FrmFacturacionBascula
         Me.BindingDetalle = New System.Windows.Forms.BindingSource(Me.components)
         Me.ProgressBar = New System.Windows.Forms.ProgressBar
         Me.Button1 = New System.Windows.Forms.Button
+        Me.LblResumen = New System.Windows.Forms.Label
         CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -46,140 +47,197 @@ Partial Class FrmFacturacionBascula
         Me.TrueDBGridConsultas.FilterBar = True
         Me.TrueDBGridConsultas.GroupByCaption = "Drag a column header here to group by that column"
         Me.TrueDBGridConsultas.Images.Add(CType(resources.GetObject("TrueDBGridConsultas.Images"), System.Drawing.Image))
-        Me.TrueDBGridConsultas.Location = New System.Drawing.Point(12, 75)
+        Me.TrueDBGridConsultas.Location = New System.Drawing.Point(8, 102)
+        Me.TrueDBGridConsultas.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TrueDBGridConsultas.Name = "TrueDBGridConsultas"
         Me.TrueDBGridConsultas.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridConsultas.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TrueDBGridConsultas.PreviewInfo.ZoomFactor = 75
         Me.TrueDBGridConsultas.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridConsultas.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TrueDBGridConsultas.Size = New System.Drawing.Size(765, 363)
+        Me.TrueDBGridConsultas.Size = New System.Drawing.Size(796, 410)
         Me.TrueDBGridConsultas.TabIndex = 130
         Me.TrueDBGridConsultas.Text = "C1TrueDBGrid1"
         Me.TrueDBGridConsultas.PropBag = resources.GetString("TrueDBGridConsultas.PropBag")
         '
         'PictureBox1
         '
-        Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
-        Me.PictureBox1.Location = New System.Drawing.Point(-5, -1)
+        Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.PictureBox1.Location = New System.Drawing.Point(0, 0)
+        Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(914, 70)
+        Me.PictureBox1.Size = New System.Drawing.Size(980, 72)
         Me.PictureBox1.TabIndex = 184
         Me.PictureBox1.TabStop = False
         '
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
-        Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label9.Location = New System.Drawing.Point(321, 30)
+        Me.Label9.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.Label9.Font = New System.Drawing.Font("Segoe UI Semibold", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label9.ForeColor = System.Drawing.Color.White
+        Me.Label9.Location = New System.Drawing.Point(108, 20)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(227, 13)
         Me.Label9.TabIndex = 185
-        Me.Label9.Text = "FACTURACION  SALIDA DE BASCULA"
+        Me.Label9.Text = "Facturación de salidas de báscula"
         '
         'PictureBox2
         '
-        Me.PictureBox2.BackColor = System.Drawing.Color.FromArgb(CType(CType(161, Byte), Integer), CType(CType(193, Byte), Integer), CType(CType(245, Byte), Integer))
+        Me.PictureBox2.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
         Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
-        Me.PictureBox2.Location = New System.Drawing.Point(12, -1)
+        Me.PictureBox2.Location = New System.Drawing.Point(12, 6)
         Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(89, 70)
+        Me.PictureBox2.Size = New System.Drawing.Size(80, 60)
         Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox2.TabIndex = 186
         Me.PictureBox2.TabStop = False
         '
         'BtnProcesar
         '
-        Me.BtnProcesar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnProcesar.Font = New System.Drawing.Font("Segoe UI Semibold", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnProcesar.Image = CType(resources.GetObject("BtnProcesar.Image"), System.Drawing.Image)
         Me.BtnProcesar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnProcesar.Location = New System.Drawing.Point(783, 75)
+        Me.BtnProcesar.Location = New System.Drawing.Point(812, 80)
+        Me.BtnProcesar.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnProcesar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnProcesar.FlatAppearance.BorderSize = 0
+        Me.BtnProcesar.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.BtnProcesar.ForeColor = System.Drawing.Color.White
+        Me.BtnProcesar.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.BtnProcesar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.BtnProcesar.Name = "BtnProcesar"
-        Me.BtnProcesar.Size = New System.Drawing.Size(114, 56)
+        Me.BtnProcesar.Size = New System.Drawing.Size(160, 52)
         Me.BtnProcesar.TabIndex = 234
         Me.BtnProcesar.Text = "Facturar"
-        Me.BtnProcesar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.BtnProcesar.UseVisualStyleBackColor = True
+        Me.BtnProcesar.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.BtnProcesar.UseVisualStyleBackColor = False
         '
         'BtnSalir
         '
-        Me.BtnSalir.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnSalir.Font = New System.Drawing.Font("Segoe UI Semibold", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnSalir.Image = CType(resources.GetObject("BtnSalir.Image"), System.Drawing.Image)
         Me.BtnSalir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnSalir.Location = New System.Drawing.Point(783, 414)
+        Me.BtnSalir.Location = New System.Drawing.Point(812, 460)
+        Me.BtnSalir.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnSalir.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnSalir.FlatAppearance.BorderSize = 0
+        Me.BtnSalir.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.BtnSalir.ForeColor = System.Drawing.Color.White
+        Me.BtnSalir.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.BtnSalir.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.BtnSalir.Name = "BtnSalir"
-        Me.BtnSalir.Size = New System.Drawing.Size(114, 56)
+        Me.BtnSalir.Size = New System.Drawing.Size(160, 52)
         Me.BtnSalir.TabIndex = 235
         Me.BtnSalir.Text = "Salir"
-        Me.BtnSalir.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.BtnSalir.UseVisualStyleBackColor = True
+        Me.BtnSalir.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.BtnSalir.UseVisualStyleBackColor = False
         '
         'BtnImprimir
         '
-        Me.BtnImprimir.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnImprimir.Font = New System.Drawing.Font("Segoe UI Semibold", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnImprimir.Image = CType(resources.GetObject("BtnImprimir.Image"), System.Drawing.Image)
         Me.BtnImprimir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnImprimir.Location = New System.Drawing.Point(783, 137)
+        Me.BtnImprimir.Location = New System.Drawing.Point(812, 140)
+        Me.BtnImprimir.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnImprimir.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnImprimir.FlatAppearance.BorderSize = 0
+        Me.BtnImprimir.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.BtnImprimir.ForeColor = System.Drawing.Color.White
+        Me.BtnImprimir.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.BtnImprimir.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.BtnImprimir.Name = "BtnImprimir"
-        Me.BtnImprimir.Size = New System.Drawing.Size(114, 56)
+        Me.BtnImprimir.Size = New System.Drawing.Size(160, 52)
         Me.BtnImprimir.TabIndex = 236
         Me.BtnImprimir.Text = "Imprimir"
-        Me.BtnImprimir.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.BtnImprimir.UseVisualStyleBackColor = True
+        Me.BtnImprimir.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.BtnImprimir.UseVisualStyleBackColor = False
         '
         'BtnVer
         '
-        Me.BtnVer.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnVer.Font = New System.Drawing.Font("Segoe UI Semibold", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnVer.Image = CType(resources.GetObject("BtnVer.Image"), System.Drawing.Image)
         Me.BtnVer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnVer.Location = New System.Drawing.Point(783, 199)
+        Me.BtnVer.Location = New System.Drawing.Point(812, 200)
+        Me.BtnVer.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnVer.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnVer.FlatAppearance.BorderSize = 0
+        Me.BtnVer.BackColor = System.Drawing.Color.FromArgb(CType(CType(37, Byte), Integer), CType(CType(99, Byte), Integer), CType(CType(235, Byte), Integer))
+        Me.BtnVer.ForeColor = System.Drawing.Color.White
+        Me.BtnVer.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.BtnVer.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.BtnVer.Name = "BtnVer"
-        Me.BtnVer.Size = New System.Drawing.Size(114, 56)
+        Me.BtnVer.Size = New System.Drawing.Size(160, 52)
         Me.BtnVer.TabIndex = 237
         Me.BtnVer.Text = "Ver"
-        Me.BtnVer.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.BtnVer.UseVisualStyleBackColor = True
+        Me.BtnVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.BtnVer.UseVisualStyleBackColor = False
         '
         'BtnActualizar
         '
-        Me.BtnActualizar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnActualizar.Font = New System.Drawing.Font("Segoe UI Semibold", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.BtnActualizar.Image = CType(resources.GetObject("BtnActualizar.Image"), System.Drawing.Image)
         Me.BtnActualizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnActualizar.Location = New System.Drawing.Point(783, 261)
+        Me.BtnActualizar.Location = New System.Drawing.Point(812, 260)
+        Me.BtnActualizar.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BtnActualizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnActualizar.FlatAppearance.BorderSize = 0
+        Me.BtnActualizar.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.BtnActualizar.ForeColor = System.Drawing.Color.White
+        Me.BtnActualizar.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.BtnActualizar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.BtnActualizar.Name = "BtnActualizar"
-        Me.BtnActualizar.Size = New System.Drawing.Size(114, 56)
+        Me.BtnActualizar.Size = New System.Drawing.Size(160, 52)
         Me.BtnActualizar.TabIndex = 239
         Me.BtnActualizar.Text = "Actualiza"
-        Me.BtnActualizar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.BtnActualizar.UseVisualStyleBackColor = True
+        Me.BtnActualizar.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.BtnActualizar.UseVisualStyleBackColor = False
         '
         'ProgressBar
         '
-        Me.ProgressBar.Location = New System.Drawing.Point(12, 444)
+        Me.ProgressBar.Location = New System.Drawing.Point(8, 486)
+        Me.ProgressBar.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ProgressBar.Name = "ProgressBar"
-        Me.ProgressBar.Size = New System.Drawing.Size(765, 26)
+        Me.ProgressBar.Size = New System.Drawing.Size(796, 26)
         Me.ProgressBar.TabIndex = 240
         Me.ProgressBar.Visible = False
         '
         'Button1
         '
-        Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button1.Font = New System.Drawing.Font("Segoe UI Semibold", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
         Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button1.Location = New System.Drawing.Point(783, 323)
+        Me.Button1.Location = New System.Drawing.Point(812, 320)
+        Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button1.FlatAppearance.BorderSize = 0
+        Me.Button1.BackColor = System.Drawing.Color.FromArgb(CType(CType(185, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(28, Byte), Integer))
+        Me.Button1.ForeColor = System.Drawing.Color.White
+        Me.Button1.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(114, 56)
+        Me.Button1.Size = New System.Drawing.Size(160, 52)
         Me.Button1.TabIndex = 241
         Me.Button1.Text = "Anular"
-        Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.Button1.UseVisualStyleBackColor = False
+        '
+        'LblResumen
+        '
+        Me.LblResumen.AutoSize = True
+        Me.LblResumen.Font = New System.Drawing.Font("Segoe UI", 10.0!, System.Drawing.FontStyle.Bold)
+        Me.LblResumen.ForeColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.LblResumen.Location = New System.Drawing.Point(8, 80)
+        Me.LblResumen.Name = "LblResumen"
+        Me.LblResumen.Size = New System.Drawing.Size(200, 19)
+        Me.LblResumen.TabIndex = 242
+        Me.LblResumen.Text = "Salidas pendientes de facturar"
         '
         'FrmFacturacionBascula
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(905, 479)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
+        Me.ClientSize = New System.Drawing.Size(980, 520)
+        Me.Controls.Add(Me.LblResumen)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.ProgressBar)
         Me.Controls.Add(Me.BtnActualizar)
@@ -191,8 +249,9 @@ Partial Class FrmFacturacionBascula
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.TrueDBGridConsultas)
+        Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(248, Byte), Integer))
         Me.Name = "FrmFacturacionBascula"
-        Me.Text = "FrmFacturacionBascula"
+        Me.Text = "Zeus Facturación - Salidas de báscula"
         CType(Me.TrueDBGridConsultas, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
@@ -213,4 +272,5 @@ Partial Class FrmFacturacionBascula
     Friend WithEvents BindingDetalle As System.Windows.Forms.BindingSource
     Friend WithEvents ProgressBar As System.Windows.Forms.ProgressBar
     Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents LblResumen As System.Windows.Forms.Label
 End Class

@@ -1,4 +1,4 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class FrmRecepcion
     Inherits System.Windows.Forms.Form
 
@@ -69,7 +69,6 @@ Partial Class FrmRecepcion
         Me.Button11 = New System.Windows.Forms.Button()
         Me.Button4 = New System.Windows.Forms.Button()
         Me.BindingDetalle = New System.Windows.Forms.BindingSource(Me.components)
-        Me.sp = New System.IO.Ports.SerialPort(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.txtobservaciones = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -99,6 +98,10 @@ Partial Class FrmRecepcion
         Me.Label10 = New System.Windows.Forms.Label()
         Me.TxtMerma = New System.Windows.Forms.TextBox()
         Me.Label7 = New System.Windows.Forms.Label()
+        Me.PnlTotales = New System.Windows.Forms.Panel()
+        Me.LblTituloSubtotal = New System.Windows.Forms.Label()
+        Me.LblTituloPeso = New System.Windows.Forms.Label()
+        Me.Panel1 = New System.Windows.Forms.Panel()
         Me.GroupBox1.SuspendLayout()
         CType(Me.CboCodigoBodega, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboCodigoProducto, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -114,11 +117,13 @@ Partial Class FrmRecepcion
         CType(Me.CboPlaca, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CboConductor, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBoxRecolector.SuspendLayout()
+        Me.PnlTotales.SuspendLayout()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox1
         '
-        Me.GroupBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(27, Byte), Integer), CType(CType(94, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.GroupBox1.BackColor = System.Drawing.Color.White
         Me.GroupBox1.Controls.Add(Me.ChkCaluloMermaOculto)
         Me.GroupBox1.Controls.Add(Me.ChkCalculoMerma)
         Me.GroupBox1.Controls.Add(Me.BtnTara)
@@ -131,20 +136,21 @@ Partial Class FrmRecepcion
         Me.GroupBox1.Controls.Add(Me.CboCodigoProducto)
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.txtid)
-        Me.GroupBox1.Location = New System.Drawing.Point(3, 143)
+        Me.GroupBox1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(41, Byte), Integer))
+        Me.GroupBox1.Location = New System.Drawing.Point(8, 176)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(528, 175)
+        Me.GroupBox1.Size = New System.Drawing.Size(528, 177)
         Me.GroupBox1.TabIndex = 225
         Me.GroupBox1.TabStop = False
         '
         'ChkCaluloMermaOculto
         '
         Me.ChkCaluloMermaOculto.AutoSize = True
-        Me.ChkCaluloMermaOculto.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ChkCaluloMermaOculto.ForeColor = System.Drawing.Color.White
+        Me.ChkCaluloMermaOculto.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ChkCaluloMermaOculto.ForeColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(41, Byte), Integer))
         Me.ChkCaluloMermaOculto.Location = New System.Drawing.Point(143, 115)
         Me.ChkCaluloMermaOculto.Name = "ChkCaluloMermaOculto"
-        Me.ChkCaluloMermaOculto.Size = New System.Drawing.Size(135, 29)
+        Me.ChkCaluloMermaOculto.Size = New System.Drawing.Size(128, 34)
         Me.ChkCaluloMermaOculto.TabIndex = 251
         Me.ChkCaluloMermaOculto.Text = "Reproceso"
         Me.ChkCaluloMermaOculto.UseVisualStyleBackColor = True
@@ -155,11 +161,11 @@ Partial Class FrmRecepcion
         Me.ChkCalculoMerma.AutoSize = True
         Me.ChkCalculoMerma.Checked = True
         Me.ChkCalculoMerma.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.ChkCalculoMerma.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ChkCalculoMerma.ForeColor = System.Drawing.Color.White
+        Me.ChkCalculoMerma.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ChkCalculoMerma.ForeColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(41, Byte), Integer))
         Me.ChkCalculoMerma.Location = New System.Drawing.Point(305, 142)
         Me.ChkCalculoMerma.Name = "ChkCalculoMerma"
-        Me.ChkCalculoMerma.Size = New System.Drawing.Size(182, 29)
+        Me.ChkCalculoMerma.Size = New System.Drawing.Size(178, 34)
         Me.ChkCalculoMerma.TabIndex = 250
         Me.ChkCalculoMerma.Text = "Calcular Merma"
         Me.ChkCalculoMerma.UseVisualStyleBackColor = True
@@ -178,12 +184,12 @@ Partial Class FrmRecepcion
         'CmbTipoPesada
         '
         Me.CmbTipoPesada.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CmbTipoPesada.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CmbTipoPesada.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CmbTipoPesada.FormattingEnabled = True
         Me.CmbTipoPesada.Items.AddRange(New Object() {"PESADA BASCULA", "PESADA MANUAL"})
         Me.CmbTipoPesada.Location = New System.Drawing.Point(9, 78)
         Me.CmbTipoPesada.Name = "CmbTipoPesada"
-        Me.CmbTipoPesada.Size = New System.Drawing.Size(205, 32)
+        Me.CmbTipoPesada.Size = New System.Drawing.Size(205, 33)
         Me.CmbTipoPesada.TabIndex = 248
         '
         'C1Button2
@@ -204,12 +210,12 @@ Partial Class FrmRecepcion
         Me.CboCodigoBodega.ColumnCaptionHeight = 17
         Me.CboCodigoBodega.ColumnFooterHeight = 17
         Me.CboCodigoBodega.ComboStyle = C1.Win.C1List.ComboStyleEnum.DropdownList
-        Me.CboCodigoBodega.ContentHeight = 33
+        Me.CboCodigoBodega.ContentHeight = 38
         Me.CboCodigoBodega.DeadAreaBackColor = System.Drawing.Color.Empty
         Me.CboCodigoBodega.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CboCodigoBodega.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 20.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboCodigoBodega.EditorFont = New System.Drawing.Font("Segoe UI", 20.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CboCodigoBodega.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CboCodigoBodega.EditorHeight = 33
+        Me.CboCodigoBodega.EditorHeight = 38
         Me.CboCodigoBodega.Images.Add(CType(resources.GetObject("CboCodigoBodega.Images"), System.Drawing.Image))
         Me.CboCodigoBodega.ItemHeight = 15
         Me.CboCodigoBodega.Location = New System.Drawing.Point(318, 80)
@@ -221,13 +227,13 @@ Partial Class FrmRecepcion
         Me.CboCodigoBodega.RowDivider.Color = System.Drawing.Color.DarkGray
         Me.CboCodigoBodega.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
         Me.CboCodigoBodega.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboCodigoBodega.Size = New System.Drawing.Size(158, 39)
+        Me.CboCodigoBodega.Size = New System.Drawing.Size(158, 44)
         Me.CboCodigoBodega.TabIndex = 246
         Me.CboCodigoBodega.PropBag = resources.GetString("CboCodigoBodega.PropBag")
         '
         'CmdPesada
         '
-        Me.CmdPesada.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CmdPesada.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CmdPesada.Image = CType(resources.GetObject("CmdPesada.Image"), System.Drawing.Image)
         Me.CmdPesada.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.CmdPesada.Location = New System.Drawing.Point(11, 115)
@@ -243,11 +249,11 @@ Partial Class FrmRecepcion
         Me.ChkTaraSaco.AutoSize = True
         Me.ChkTaraSaco.Checked = True
         Me.ChkTaraSaco.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.ChkTaraSaco.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ChkTaraSaco.ForeColor = System.Drawing.Color.White
+        Me.ChkTaraSaco.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ChkTaraSaco.ForeColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(41, Byte), Integer))
         Me.ChkTaraSaco.Location = New System.Drawing.Point(305, 116)
         Me.ChkTaraSaco.Name = "ChkTaraSaco"
-        Me.ChkTaraSaco.Size = New System.Drawing.Size(215, 29)
+        Me.ChkTaraSaco.Size = New System.Drawing.Size(200, 34)
         Me.ChkTaraSaco.TabIndex = 239
         Me.ChkTaraSaco.Text = "Calcular Tara Saco"
         Me.ChkTaraSaco.UseVisualStyleBackColor = True
@@ -255,11 +261,11 @@ Partial Class FrmRecepcion
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
+        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
         Me.Label6.Location = New System.Drawing.Point(9, 9)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(99, 20)
+        Me.Label6.Size = New System.Drawing.Size(92, 21)
         Me.Label6.TabIndex = 182
         Me.Label6.Text = "PRODUCTO"
         '
@@ -273,16 +279,16 @@ Partial Class FrmRecepcion
         Me.CboCodigoProducto.ColumnCaptionHeight = 17
         Me.CboCodigoProducto.ColumnFooterHeight = 17
         Me.CboCodigoProducto.ComboStyle = C1.Win.C1List.ComboStyleEnum.DropdownList
-        Me.CboCodigoProducto.ContentHeight = 33
+        Me.CboCodigoProducto.ContentHeight = 38
         Me.CboCodigoProducto.DeadAreaBackColor = System.Drawing.Color.Empty
         Me.CboCodigoProducto.DisplayMember = "Descripcion_Producto"
         Me.CboCodigoProducto.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
         Me.CboCodigoProducto.DropDownWidth = 600
         Me.CboCodigoProducto.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CboCodigoProducto.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 20.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboCodigoProducto.EditorFont = New System.Drawing.Font("Segoe UI", 20.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CboCodigoProducto.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CboCodigoProducto.EditorHeight = 33
-        Me.CboCodigoProducto.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboCodigoProducto.EditorHeight = 38
+        Me.CboCodigoProducto.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CboCodigoProducto.Images.Add(CType(resources.GetObject("CboCodigoProducto.Images"), System.Drawing.Image))
         Me.CboCodigoProducto.ItemHeight = 35
         Me.CboCodigoProducto.Location = New System.Drawing.Point(8, 33)
@@ -294,7 +300,7 @@ Partial Class FrmRecepcion
         Me.CboCodigoProducto.RowDivider.Color = System.Drawing.Color.DarkGray
         Me.CboCodigoProducto.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
         Me.CboCodigoProducto.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboCodigoProducto.Size = New System.Drawing.Size(467, 39)
+        Me.CboCodigoProducto.Size = New System.Drawing.Size(467, 44)
         Me.CboCodigoProducto.TabIndex = 181
         Me.CboCodigoProducto.VisualStyle = C1.Win.C1List.VisualStyle.System
         Me.CboCodigoProducto.PropBag = resources.GetString("CboCodigoProducto.PropBag")
@@ -302,11 +308,11 @@ Partial Class FrmRecepcion
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
         Me.Label2.Location = New System.Drawing.Point(256, 86)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(56, 15)
+        Me.Label2.Size = New System.Drawing.Size(49, 15)
         Me.Label2.TabIndex = 3
         Me.Label2.Text = "Bodega"
         '
@@ -324,16 +330,20 @@ Partial Class FrmRecepcion
         Me.TrueDBGridComponentes.AllowAddNew = True
         Me.TrueDBGridComponentes.AllowDelete = True
         Me.TrueDBGridComponentes.AlternatingRows = True
+        Me.TrueDBGridComponentes.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TrueDBGridComponentes.Caption = "Listado de Productos"
+        Me.TrueDBGridComponentes.FlatStyle = C1.Win.C1TrueDBGrid.FlatModeEnum.Flat
         Me.TrueDBGridComponentes.GroupByCaption = "Drag a column header here to group by that column"
         Me.TrueDBGridComponentes.Images.Add(CType(resources.GetObject("TrueDBGridComponentes.Images"), System.Drawing.Image))
-        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(-3, 324)
+        Me.TrueDBGridComponentes.Location = New System.Drawing.Point(8, 361)
         Me.TrueDBGridComponentes.Name = "TrueDBGridComponentes"
         Me.TrueDBGridComponentes.PreviewInfo.Location = New System.Drawing.Point(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.Size = New System.Drawing.Size(0, 0)
         Me.TrueDBGridComponentes.PreviewInfo.ZoomFactor = 75.0R
         Me.TrueDBGridComponentes.PrintInfo.PageSettings = CType(resources.GetObject("TrueDBGridComponentes.PrintInfo.PageSettings"), System.Drawing.Printing.PageSettings)
-        Me.TrueDBGridComponentes.Size = New System.Drawing.Size(988, 261)
+        Me.TrueDBGridComponentes.Size = New System.Drawing.Size(986, 347)
         Me.TrueDBGridComponentes.TabIndex = 224
         Me.TrueDBGridComponentes.Text = "C1TrueDBGrid1"
         Me.TrueDBGridComponentes.PropBag = resources.GetString("TrueDBGridComponentes.PropBag")
@@ -341,51 +351,56 @@ Partial Class FrmRecepcion
         'lbldatosre
         '
         Me.lbldatosre.AutoSize = True
-        Me.lbldatosre.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbldatosre.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
+        Me.lbldatosre.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbldatosre.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
         Me.lbldatosre.Location = New System.Drawing.Point(124, -1)
         Me.lbldatosre.Name = "lbldatosre"
-        Me.lbldatosre.Size = New System.Drawing.Size(189, 20)
+        Me.lbldatosre.Size = New System.Drawing.Size(168, 21)
         Me.lbldatosre.TabIndex = 176
         Me.lbldatosre.Text = "DATOS DE RECEPCION"
+        Me.lbldatosre.Visible = False
         '
         'GroupBox9
         '
-        Me.GroupBox9.BackColor = System.Drawing.Color.FromArgb(CType(CType(27, Byte), Integer), CType(CType(94, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.GroupBox9.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox9.BackColor = System.Drawing.Color.White
         Me.GroupBox9.Controls.Add(Me.DTPFecha)
         Me.GroupBox9.Controls.Add(Me.LblHora)
         Me.GroupBox9.Controls.Add(Me.lbldatosre)
-        Me.GroupBox9.Location = New System.Drawing.Point(537, 50)
+        Me.GroupBox9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(41, Byte), Integer))
+        Me.GroupBox9.Location = New System.Drawing.Point(544, 64)
         Me.GroupBox9.Name = "GroupBox9"
-        Me.GroupBox9.Size = New System.Drawing.Size(448, 91)
+        Me.GroupBox9.Size = New System.Drawing.Size(630, 104)
         Me.GroupBox9.TabIndex = 223
         Me.GroupBox9.TabStop = False
         '
         'DTPFecha
         '
-        Me.DTPFecha.AutoSize = True
-        Me.DTPFecha.Font = New System.Drawing.Font("Microsoft Sans Serif", 21.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DTPFecha.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
-        Me.DTPFecha.Location = New System.Drawing.Point(33, 38)
+        Me.DTPFecha.Font = New System.Drawing.Font("Segoe UI", 32.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DTPFecha.ForeColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(41, Byte), Integer))
+        Me.DTPFecha.Location = New System.Drawing.Point(8, 22)
         Me.DTPFecha.Name = "DTPFecha"
-        Me.DTPFecha.Size = New System.Drawing.Size(169, 33)
+        Me.DTPFecha.Size = New System.Drawing.Size(303, 72)
         Me.DTPFecha.TabIndex = 182
         Me.DTPFecha.Text = "20/10/2017"
+        Me.DTPFecha.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'LblHora
         '
-        Me.LblHora.AutoSize = True
-        Me.LblHora.Font = New System.Drawing.Font("Microsoft Sans Serif", 21.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LblHora.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
-        Me.LblHora.Location = New System.Drawing.Point(208, 38)
+        Me.LblHora.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.LblHora.Font = New System.Drawing.Font("Segoe UI", 32.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblHora.ForeColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(41, Byte), Integer))
+        Me.LblHora.Location = New System.Drawing.Point(319, 22)
         Me.LblHora.Name = "LblHora"
-        Me.LblHora.Size = New System.Drawing.Size(205, 33)
+        Me.LblHora.Size = New System.Drawing.Size(303, 72)
         Me.LblHora.TabIndex = 181
         Me.LblHora.Text = "10:23:55 p.m."
+        Me.LblHora.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'GroupBox6
         '
-        Me.GroupBox6.BackColor = System.Drawing.Color.FromArgb(CType(CType(27, Byte), Integer), CType(CType(94, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.GroupBox6.BackColor = System.Drawing.Color.White
         Me.GroupBox6.Controls.Add(Me.C1Button3)
         Me.GroupBox6.Controls.Add(Me.Button14)
         Me.GroupBox6.Controls.Add(Me.CboCodigoProveedor)
@@ -394,9 +409,10 @@ Partial Class FrmRecepcion
         Me.GroupBox6.Controls.Add(Me.lblnombre)
         Me.GroupBox6.Controls.Add(Me.lblproveedor)
         Me.GroupBox6.Controls.Add(Me.Button2)
-        Me.GroupBox6.Location = New System.Drawing.Point(3, 50)
+        Me.GroupBox6.ForeColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(41, Byte), Integer))
+        Me.GroupBox6.Location = New System.Drawing.Point(8, 64)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(528, 91)
+        Me.GroupBox6.Size = New System.Drawing.Size(528, 104)
         Me.GroupBox6.TabIndex = 222
         Me.GroupBox6.TabStop = False
         '
@@ -428,14 +444,14 @@ Partial Class FrmRecepcion
         Me.CboCodigoProveedor.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal
         Me.CboCodigoProveedor.ColumnCaptionHeight = 17
         Me.CboCodigoProveedor.ColumnFooterHeight = 17
-        Me.CboCodigoProveedor.ContentHeight = 26
+        Me.CboCodigoProveedor.ContentHeight = 30
         Me.CboCodigoProveedor.DeadAreaBackColor = System.Drawing.Color.Empty
         Me.CboCodigoProveedor.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
         Me.CboCodigoProveedor.DropDownWidth = 300
         Me.CboCodigoProveedor.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CboCodigoProveedor.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboCodigoProveedor.EditorFont = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CboCodigoProveedor.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CboCodigoProveedor.EditorHeight = 26
+        Me.CboCodigoProveedor.EditorHeight = 30
         Me.CboCodigoProveedor.Images.Add(CType(resources.GetObject("CboCodigoProveedor.Images"), System.Drawing.Image))
         Me.CboCodigoProveedor.ItemHeight = 35
         Me.CboCodigoProveedor.Location = New System.Drawing.Point(66, 22)
@@ -447,48 +463,48 @@ Partial Class FrmRecepcion
         Me.CboCodigoProveedor.RowDivider.Color = System.Drawing.Color.DarkGray
         Me.CboCodigoProveedor.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
         Me.CboCodigoProveedor.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboCodigoProveedor.Size = New System.Drawing.Size(172, 32)
+        Me.CboCodigoProveedor.Size = New System.Drawing.Size(172, 36)
         Me.CboCodigoProveedor.TabIndex = 183
         Me.CboCodigoProveedor.PropBag = resources.GetString("CboCodigoProveedor.PropBag")
         '
         'datosprov
         '
         Me.datosprov.AutoSize = True
-        Me.datosprov.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.datosprov.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
+        Me.datosprov.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.datosprov.ForeColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
         Me.datosprov.Location = New System.Drawing.Point(44, -1)
         Me.datosprov.Name = "datosprov"
-        Me.datosprov.Size = New System.Drawing.Size(207, 20)
+        Me.datosprov.Size = New System.Drawing.Size(183, 21)
         Me.datosprov.TabIndex = 25
         Me.datosprov.Text = "DATOS DEL PROVEEDOR"
         '
         'txtnombre
         '
-        Me.txtnombre.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtnombre.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtnombre.Location = New System.Drawing.Point(66, 60)
         Me.txtnombre.Name = "txtnombre"
-        Me.txtnombre.Size = New System.Drawing.Size(338, 24)
+        Me.txtnombre.Size = New System.Drawing.Size(338, 27)
         Me.txtnombre.TabIndex = 178
         '
         'lblnombre
         '
         Me.lblnombre.AutoSize = True
-        Me.lblnombre.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblnombre.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
+        Me.lblnombre.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblnombre.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
         Me.lblnombre.Location = New System.Drawing.Point(4, 63)
         Me.lblnombre.Name = "lblnombre"
-        Me.lblnombre.Size = New System.Drawing.Size(58, 15)
+        Me.lblnombre.Size = New System.Drawing.Size(53, 15)
         Me.lblnombre.TabIndex = 174
         Me.lblnombre.Text = "Nombre"
         '
         'lblproveedor
         '
         Me.lblproveedor.AutoSize = True
-        Me.lblproveedor.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblproveedor.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
+        Me.lblproveedor.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblproveedor.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
         Me.lblproveedor.Location = New System.Drawing.Point(8, 29)
         Me.lblproveedor.Name = "lblproveedor"
-        Me.lblproveedor.Size = New System.Drawing.Size(52, 15)
+        Me.lblproveedor.Size = New System.Drawing.Size(45, 15)
         Me.lblproveedor.TabIndex = 2
         Me.lblproveedor.Text = "Código"
         '
@@ -503,7 +519,9 @@ Partial Class FrmRecepcion
         '
         'GroupBox7
         '
-        Me.GroupBox7.BackColor = System.Drawing.Color.FromArgb(CType(CType(27, Byte), Integer), CType(CType(94, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.GroupBox7.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox7.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
         Me.GroupBox7.Controls.Add(Me.CmbSerie)
         Me.GroupBox7.Controls.Add(Me.LblSucursal)
         Me.GroupBox7.Controls.Add(Me.Button5)
@@ -511,9 +529,9 @@ Partial Class FrmRecepcion
         Me.GroupBox7.Controls.Add(Me.CboTipoRecepcion)
         Me.GroupBox7.Controls.Add(Me.lbltipo)
         Me.GroupBox7.Controls.Add(Me.lblbdega)
-        Me.GroupBox7.Location = New System.Drawing.Point(3, 2)
+        Me.GroupBox7.Location = New System.Drawing.Point(8, 8)
         Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(988, 42)
+        Me.GroupBox7.Size = New System.Drawing.Size(1166, 48)
         Me.GroupBox7.TabIndex = 221
         Me.GroupBox7.TabStop = False
         '
@@ -526,14 +544,14 @@ Partial Class FrmRecepcion
         Me.CmbSerie.ColumnCaptionHeight = 17
         Me.CmbSerie.ColumnFooterHeight = 17
         Me.CmbSerie.ComboStyle = C1.Win.C1List.ComboStyleEnum.DropdownList
-        Me.CmbSerie.ContentHeight = 15
+        Me.CmbSerie.ContentHeight = 17
         Me.CmbSerie.DeadAreaBackColor = System.Drawing.Color.Empty
         Me.CmbSerie.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
         Me.CmbSerie.DropDownWidth = 100
         Me.CmbSerie.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CmbSerie.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CmbSerie.EditorFont = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CmbSerie.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CmbSerie.EditorHeight = 15
+        Me.CmbSerie.EditorHeight = 17
         Me.CmbSerie.Images.Add(CType(resources.GetObject("CmbSerie.Images"), System.Drawing.Image))
         Me.CmbSerie.ItemHeight = 15
         Me.CmbSerie.Location = New System.Drawing.Point(786, 14)
@@ -545,7 +563,7 @@ Partial Class FrmRecepcion
         Me.CmbSerie.RowDivider.Color = System.Drawing.Color.DarkGray
         Me.CmbSerie.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
         Me.CmbSerie.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CmbSerie.Size = New System.Drawing.Size(54, 21)
+        Me.CmbSerie.Size = New System.Drawing.Size(54, 23)
         Me.CmbSerie.TabIndex = 212
         Me.CmbSerie.Visible = False
         Me.CmbSerie.PropBag = resources.GetString("CmbSerie.PropBag")
@@ -554,18 +572,19 @@ Partial Class FrmRecepcion
         '
         Me.LblSucursal.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.LblSucursal.AutoSize = True
-        Me.LblSucursal.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblSucursal.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblSucursal.ForeColor = System.Drawing.Color.White
-        Me.LblSucursal.Location = New System.Drawing.Point(313, 11)
+        Me.LblSucursal.Location = New System.Drawing.Point(417, 11)
         Me.LblSucursal.Name = "LblSucursal"
-        Me.LblSucursal.Size = New System.Drawing.Size(331, 25)
+        Me.LblSucursal.Size = New System.Drawing.Size(291, 30)
         Me.LblSucursal.TabIndex = 185
         Me.LblSucursal.Text = "RECEPCION DE PRODUCTOS"
         '
         'Button5
         '
+        Me.Button5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button5.Image = CType(resources.GetObject("Button5.Image"), System.Drawing.Image)
-        Me.Button5.Location = New System.Drawing.Point(955, 9)
+        Me.Button5.Location = New System.Drawing.Point(1125, 9)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(29, 30)
         Me.Button5.TabIndex = 180
@@ -594,60 +613,69 @@ Partial Class FrmRecepcion
         'lbltipo
         '
         Me.lbltipo.AutoSize = True
-        Me.lbltipo.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbltipo.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbltipo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
         Me.lbltipo.Location = New System.Drawing.Point(13, 17)
         Me.lbltipo.Name = "lbltipo"
-        Me.lbltipo.Size = New System.Drawing.Size(35, 15)
+        Me.lbltipo.Size = New System.Drawing.Size(31, 15)
         Me.lbltipo.TabIndex = 25
         Me.lbltipo.Text = "Tipo"
         '
         'lblbdega
         '
         Me.lblbdega.AutoSize = True
-        Me.lblbdega.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblbdega.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblbdega.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
         Me.lblbdega.Location = New System.Drawing.Point(676, 16)
         Me.lblbdega.Name = "lblbdega"
-        Me.lblbdega.Size = New System.Drawing.Size(103, 16)
+        Me.lblbdega.Size = New System.Drawing.Size(90, 17)
         Me.lblbdega.TabIndex = 12
         Me.lblbdega.Text = "Nº Recepción"
         '
         'LblPeso
         '
         Me.LblPeso.AutoSize = True
-        Me.LblPeso.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LblPeso.ForeColor = System.Drawing.Color.Maroon
-        Me.LblPeso.Location = New System.Drawing.Point(942, 585)
+        Me.LblPeso.Font = New System.Drawing.Font("Segoe UI Semibold", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblPeso.ForeColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.LblPeso.Location = New System.Drawing.Point(10, 35)
         Me.LblPeso.Name = "LblPeso"
-        Me.LblPeso.Size = New System.Drawing.Size(49, 24)
+        Me.LblPeso.Size = New System.Drawing.Size(69, 37)
         Me.LblPeso.TabIndex = 228
         Me.LblPeso.Text = "0.00"
         '
         'Button6
         '
-        Me.Button6.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Button6.BackColor = System.Drawing.Color.FromArgb(CType(CType(190, Byte), Integer), CType(CType(60, Byte), Integer), CType(CType(60, Byte), Integer))
+        Me.Button6.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Button6.FlatAppearance.BorderSize = 0
+        Me.Button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button6.Font = New System.Drawing.Font("Segoe UI Semibold", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button6.ForeColor = System.Drawing.Color.White
         Me.Button6.Image = CType(resources.GetObject("Button6.Image"), System.Drawing.Image)
         Me.Button6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button6.Location = New System.Drawing.Point(12, 598)
+        Me.Button6.Location = New System.Drawing.Point(1000, 384)
         Me.Button6.Name = "Button6"
-        Me.Button6.Size = New System.Drawing.Size(161, 33)
+        Me.Button6.Size = New System.Drawing.Size(172, 36)
         Me.Button6.TabIndex = 227
         Me.Button6.Text = "Borrar Linea"
-        Me.Button6.UseVisualStyleBackColor = True
+        Me.Button6.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button6.UseVisualStyleBackColor = False
         '
         'txtsubtotal
         '
         Me.txtsubtotal.Enabled = False
-        Me.txtsubtotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtsubtotal.Location = New System.Drawing.Point(886, 612)
+        Me.txtsubtotal.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtsubtotal.Location = New System.Drawing.Point(10, 98)
         Me.txtsubtotal.Name = "txtsubtotal"
-        Me.txtsubtotal.Size = New System.Drawing.Size(105, 26)
+        Me.txtsubtotal.Size = New System.Drawing.Size(152, 29)
         Me.txtsubtotal.TabIndex = 226
         '
         'Eventos
         '
-        Me.Eventos.BackColor = System.Drawing.Color.FromArgb(CType(CType(27, Byte), Integer), CType(CType(94, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.Eventos.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Eventos.BackColor = System.Drawing.Color.White
         Me.Eventos.Controls.Add(Me.BtnProcesar)
         Me.Eventos.Controls.Add(Me.CmdNuevo)
         Me.Eventos.Controls.Add(Me.Button10)
@@ -656,119 +684,157 @@ Partial Class FrmRecepcion
         Me.Eventos.Controls.Add(Me.Button12)
         Me.Eventos.Controls.Add(Me.Button11)
         Me.Eventos.Controls.Add(Me.Button4)
-        Me.Eventos.Location = New System.Drawing.Point(1006, 2)
+        Me.Eventos.ForeColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(41, Byte), Integer))
+        Me.Eventos.Location = New System.Drawing.Point(1182, 8)
         Me.Eventos.Name = "Eventos"
-        Me.Eventos.Size = New System.Drawing.Size(136, 517)
+        Me.Eventos.Size = New System.Drawing.Size(170, 704)
         Me.Eventos.TabIndex = 229
         Me.Eventos.TabStop = False
         '
         'BtnProcesar
         '
-        Me.BtnProcesar.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnProcesar.BackColor = System.Drawing.Color.FromArgb(CType(CType(14, Byte), Integer), CType(CType(116, Byte), Integer), CType(CType(144, Byte), Integer))
+        Me.BtnProcesar.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.BtnProcesar.FlatAppearance.BorderSize = 0
+        Me.BtnProcesar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnProcesar.Font = New System.Drawing.Font("Segoe UI Semibold", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnProcesar.ForeColor = System.Drawing.Color.White
         Me.BtnProcesar.Image = CType(resources.GetObject("BtnProcesar.Image"), System.Drawing.Image)
         Me.BtnProcesar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.BtnProcesar.Location = New System.Drawing.Point(13, 385)
+        Me.BtnProcesar.Location = New System.Drawing.Point(8, 500)
         Me.BtnProcesar.Name = "BtnProcesar"
-        Me.BtnProcesar.Size = New System.Drawing.Size(114, 56)
+        Me.BtnProcesar.Size = New System.Drawing.Size(154, 72)
         Me.BtnProcesar.TabIndex = 233
         Me.BtnProcesar.Text = "Procesar"
-        Me.BtnProcesar.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.BtnProcesar.UseVisualStyleBackColor = True
+        Me.BtnProcesar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.BtnProcesar.UseVisualStyleBackColor = False
         '
         'CmdNuevo
         '
-        Me.CmdNuevo.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!)
+        Me.CmdNuevo.BackColor = System.Drawing.Color.FromArgb(CType(CType(37, Byte), Integer), CType(CType(99, Byte), Integer), CType(CType(235, Byte), Integer))
+        Me.CmdNuevo.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.CmdNuevo.FlatAppearance.BorderSize = 0
+        Me.CmdNuevo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.CmdNuevo.Font = New System.Drawing.Font("Segoe UI Semibold", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CmdNuevo.ForeColor = System.Drawing.Color.White
         Me.CmdNuevo.Image = CType(resources.GetObject("CmdNuevo.Image"), System.Drawing.Image)
         Me.CmdNuevo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.CmdNuevo.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.CmdNuevo.Location = New System.Drawing.Point(13, 14)
+        Me.CmdNuevo.Location = New System.Drawing.Point(8, 20)
         Me.CmdNuevo.Name = "CmdNuevo"
-        Me.CmdNuevo.Size = New System.Drawing.Size(114, 56)
+        Me.CmdNuevo.Size = New System.Drawing.Size(154, 72)
         Me.CmdNuevo.TabIndex = 229
         Me.CmdNuevo.Text = "Nuevo"
-        Me.CmdNuevo.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.CmdNuevo.UseVisualStyleBackColor = True
+        Me.CmdNuevo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.CmdNuevo.UseVisualStyleBackColor = False
         '
         'Button10
         '
-        Me.Button10.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button10.BackColor = System.Drawing.Color.FromArgb(CType(CType(190, Byte), Integer), CType(CType(60, Byte), Integer), CType(CType(60, Byte), Integer))
+        Me.Button10.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Button10.FlatAppearance.BorderSize = 0
+        Me.Button10.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button10.Font = New System.Drawing.Font("Segoe UI Semibold", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button10.ForeColor = System.Drawing.Color.White
         Me.Button10.Image = CType(resources.GetObject("Button10.Image"), System.Drawing.Image)
         Me.Button10.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button10.Location = New System.Drawing.Point(13, 197)
+        Me.Button10.Location = New System.Drawing.Point(8, 260)
         Me.Button10.Name = "Button10"
-        Me.Button10.Size = New System.Drawing.Size(114, 56)
+        Me.Button10.Size = New System.Drawing.Size(154, 72)
         Me.Button10.TabIndex = 215
         Me.Button10.Text = "Des-" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Conectar"
-        Me.Button10.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button10.UseVisualStyleBackColor = True
+        Me.Button10.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button10.UseVisualStyleBackColor = False
         '
         'Button9
         '
-        Me.Button9.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button9.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.Button9.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Button9.FlatAppearance.BorderSize = 0
+        Me.Button9.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button9.Font = New System.Drawing.Font("Segoe UI Semibold", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button9.ForeColor = System.Drawing.Color.White
         Me.Button9.Image = CType(resources.GetObject("Button9.Image"), System.Drawing.Image)
         Me.Button9.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button9.Location = New System.Drawing.Point(15, 456)
+        Me.Button9.Location = New System.Drawing.Point(8, 580)
         Me.Button9.Name = "Button9"
-        Me.Button9.Size = New System.Drawing.Size(114, 55)
+        Me.Button9.Size = New System.Drawing.Size(154, 72)
         Me.Button9.TabIndex = 231
         Me.Button9.Text = "Salir"
-        Me.Button9.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button9.UseVisualStyleBackColor = True
+        Me.Button9.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button9.UseVisualStyleBackColor = False
         '
         'Button7
         '
-        Me.Button7.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button7.BackColor = System.Drawing.Color.FromArgb(CType(CType(22, Byte), Integer), CType(CType(163, Byte), Integer), CType(CType(74, Byte), Integer))
+        Me.Button7.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Button7.FlatAppearance.BorderSize = 0
+        Me.Button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button7.Font = New System.Drawing.Font("Segoe UI Semibold", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button7.ForeColor = System.Drawing.Color.White
         Me.Button7.Image = CType(resources.GetObject("Button7.Image"), System.Drawing.Image)
         Me.Button7.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button7.Location = New System.Drawing.Point(13, 73)
+        Me.Button7.Location = New System.Drawing.Point(8, 100)
         Me.Button7.Name = "Button7"
-        Me.Button7.Size = New System.Drawing.Size(114, 56)
+        Me.Button7.Size = New System.Drawing.Size(154, 72)
         Me.Button7.TabIndex = 179
         Me.Button7.Text = "Grabar"
-        Me.Button7.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button7.UseVisualStyleBackColor = True
+        Me.Button7.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button7.UseVisualStyleBackColor = False
         '
         'Button12
         '
-        Me.Button12.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button12.BackColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(85, Byte), Integer), CType(CType(105, Byte), Integer))
+        Me.Button12.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Button12.FlatAppearance.BorderSize = 0
+        Me.Button12.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button12.Font = New System.Drawing.Font("Segoe UI Semibold", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button12.ForeColor = System.Drawing.Color.White
         Me.Button12.Image = CType(resources.GetObject("Button12.Image"), System.Drawing.Image)
         Me.Button12.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button12.Location = New System.Drawing.Point(13, 261)
+        Me.Button12.Location = New System.Drawing.Point(8, 340)
         Me.Button12.Name = "Button12"
-        Me.Button12.Size = New System.Drawing.Size(114, 57)
+        Me.Button12.Size = New System.Drawing.Size(154, 72)
         Me.Button12.TabIndex = 232
         Me.Button12.Text = "Ticket"
-        Me.Button12.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button12.UseVisualStyleBackColor = True
+        Me.Button12.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button12.UseVisualStyleBackColor = False
         '
         'Button11
         '
-        Me.Button11.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button11.BackColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(85, Byte), Integer), CType(CType(105, Byte), Integer))
+        Me.Button11.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Button11.FlatAppearance.BorderSize = 0
+        Me.Button11.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button11.Font = New System.Drawing.Font("Segoe UI Semibold", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button11.ForeColor = System.Drawing.Color.White
         Me.Button11.Image = CType(resources.GetObject("Button11.Image"), System.Drawing.Image)
         Me.Button11.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button11.Location = New System.Drawing.Point(13, 135)
+        Me.Button11.Location = New System.Drawing.Point(8, 180)
         Me.Button11.Name = "Button11"
-        Me.Button11.Size = New System.Drawing.Size(114, 56)
+        Me.Button11.Size = New System.Drawing.Size(154, 72)
         Me.Button11.TabIndex = 214
         Me.Button11.Text = "Conectar"
-        Me.Button11.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button11.UseVisualStyleBackColor = True
+        Me.Button11.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button11.UseVisualStyleBackColor = False
         '
         'Button4
         '
-        Me.Button4.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button4.BackColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(85, Byte), Integer), CType(CType(105, Byte), Integer))
+        Me.Button4.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Button4.FlatAppearance.BorderSize = 0
+        Me.Button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button4.Font = New System.Drawing.Font("Segoe UI Semibold", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button4.ForeColor = System.Drawing.Color.White
         Me.Button4.Image = CType(resources.GetObject("Button4.Image"), System.Drawing.Image)
         Me.Button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button4.Location = New System.Drawing.Point(13, 324)
+        Me.Button4.Location = New System.Drawing.Point(8, 420)
         Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(114, 55)
+        Me.Button4.Size = New System.Drawing.Size(154, 72)
         Me.Button4.TabIndex = 230
         Me.Button4.Text = "Reporte"
-        Me.Button4.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button4.UseVisualStyleBackColor = True
-        '
-        'sp
-        '
+        Me.Button4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.Button4.UseVisualStyleBackColor = False
         '
         'Timer1
         '
@@ -776,27 +842,27 @@ Partial Class FrmRecepcion
         '
         'txtobservaciones
         '
-        Me.txtobservaciones.Location = New System.Drawing.Point(231, 608)
+        Me.txtobservaciones.Location = New System.Drawing.Point(10, 31)
         Me.txtobservaciones.Multiline = True
         Me.txtobservaciones.Name = "txtobservaciones"
         Me.txtobservaciones.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtobservaciones.Size = New System.Drawing.Size(430, 53)
+        Me.txtobservaciones.Size = New System.Drawing.Size(150, 130)
         Me.txtobservaciones.TabIndex = 183
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
-        Me.Label1.Location = New System.Drawing.Point(227, 589)
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
+        Me.Label1.Location = New System.Drawing.Point(13, 4)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(149, 20)
+        Me.Label1.Size = New System.Drawing.Size(132, 21)
         Me.Label1.TabIndex = 184
         Me.Label1.Text = "OBSERVACIONES"
         '
         'GroupBox2
         '
-        Me.GroupBox2.BackColor = System.Drawing.Color.FromArgb(CType(CType(27, Byte), Integer), CType(CType(94, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.GroupBox2.BackColor = System.Drawing.Color.White
         Me.GroupBox2.Controls.Add(Me.Label5)
         Me.GroupBox2.Controls.Add(Me.Label3)
         Me.GroupBox2.Controls.Add(Me.C1Button1)
@@ -807,7 +873,8 @@ Partial Class FrmRecepcion
         Me.GroupBox2.Controls.Add(Me.TxtCedula)
         Me.GroupBox2.Controls.Add(Me.CboConductor)
         Me.GroupBox2.Controls.Add(Me.Label4)
-        Me.GroupBox2.Location = New System.Drawing.Point(535, 140)
+        Me.GroupBox2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(41, Byte), Integer))
+        Me.GroupBox2.Location = New System.Drawing.Point(544, 176)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(450, 177)
         Me.GroupBox2.TabIndex = 237
@@ -816,22 +883,22 @@ Partial Class FrmRecepcion
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
+        Me.Label5.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
         Me.Label5.Location = New System.Drawing.Point(46, 61)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(50, 16)
+        Me.Label5.Size = New System.Drawing.Size(45, 17)
         Me.Label5.TabIndex = 248
         Me.Label5.Text = "Marca"
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
         Me.Label3.Location = New System.Drawing.Point(45, 29)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(47, 16)
+        Me.Label3.Size = New System.Drawing.Size(40, 17)
         Me.Label3.TabIndex = 247
         Me.Label3.Text = "Placa"
         '
@@ -855,10 +922,10 @@ Partial Class FrmRecepcion
         '
         'TxtMarca
         '
-        Me.TxtMarca.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TxtMarca.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TxtMarca.Location = New System.Drawing.Point(104, 53)
         Me.TxtMarca.Name = "TxtMarca"
-        Me.TxtMarca.Size = New System.Drawing.Size(243, 29)
+        Me.TxtMarca.Size = New System.Drawing.Size(243, 33)
         Me.TxtMarca.TabIndex = 244
         '
         'CboPlaca
@@ -871,15 +938,15 @@ Partial Class FrmRecepcion
         Me.CboPlaca.ColumnCaptionHeight = 17
         Me.CboPlaca.ColumnFooterHeight = 17
         Me.CboPlaca.ComboStyle = C1.Win.C1List.ComboStyleEnum.DropdownList
-        Me.CboPlaca.ContentHeight = 24
+        Me.CboPlaca.ContentHeight = 28
         Me.CboPlaca.DeadAreaBackColor = System.Drawing.Color.Empty
         Me.CboPlaca.DisplayMember = "Placa"
         Me.CboPlaca.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
         Me.CboPlaca.DropDownWidth = 300
         Me.CboPlaca.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CboPlaca.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboPlaca.EditorFont = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CboPlaca.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CboPlaca.EditorHeight = 24
+        Me.CboPlaca.EditorHeight = 28
         Me.CboPlaca.Images.Add(CType(resources.GetObject("CboPlaca.Images"), System.Drawing.Image))
         Me.CboPlaca.ItemHeight = 35
         Me.CboPlaca.Location = New System.Drawing.Point(104, 20)
@@ -891,27 +958,27 @@ Partial Class FrmRecepcion
         Me.CboPlaca.RowDivider.Color = System.Drawing.Color.DarkGray
         Me.CboPlaca.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
         Me.CboPlaca.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboPlaca.Size = New System.Drawing.Size(243, 30)
+        Me.CboPlaca.Size = New System.Drawing.Size(243, 34)
         Me.CboPlaca.TabIndex = 243
         Me.CboPlaca.PropBag = resources.GetString("CboPlaca.PropBag")
         '
         'Label34
         '
         Me.Label34.AutoSize = True
-        Me.Label34.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label34.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
+        Me.Label34.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label34.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
         Me.Label34.Location = New System.Drawing.Point(37, 127)
         Me.Label34.Name = "Label34"
-        Me.Label34.Size = New System.Drawing.Size(56, 16)
+        Me.Label34.Size = New System.Drawing.Size(50, 17)
         Me.Label34.TabIndex = 242
         Me.Label34.Text = "Cedula"
         '
         'TxtCedula
         '
-        Me.TxtCedula.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TxtCedula.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TxtCedula.Location = New System.Drawing.Point(102, 120)
         Me.TxtCedula.Name = "TxtCedula"
-        Me.TxtCedula.Size = New System.Drawing.Size(243, 29)
+        Me.TxtCedula.Size = New System.Drawing.Size(243, 33)
         Me.TxtCedula.TabIndex = 241
         '
         'CboConductor
@@ -924,15 +991,15 @@ Partial Class FrmRecepcion
         Me.CboConductor.ColumnCaptionHeight = 17
         Me.CboConductor.ColumnFooterHeight = 17
         Me.CboConductor.ComboStyle = C1.Win.C1List.ComboStyleEnum.DropdownList
-        Me.CboConductor.ContentHeight = 24
+        Me.CboConductor.ContentHeight = 28
         Me.CboConductor.DeadAreaBackColor = System.Drawing.Color.Empty
         Me.CboConductor.DisplayMember = "Nombre"
         Me.CboConductor.DropdownPosition = C1.Win.C1List.DropdownPositionEnum.LeftDown
         Me.CboConductor.DropDownWidth = 300
         Me.CboConductor.EditorBackColor = System.Drawing.SystemColors.Window
-        Me.CboConductor.EditorFont = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CboConductor.EditorFont = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CboConductor.EditorForeColor = System.Drawing.SystemColors.WindowText
-        Me.CboConductor.EditorHeight = 24
+        Me.CboConductor.EditorHeight = 28
         Me.CboConductor.Images.Add(CType(resources.GetObject("CboConductor.Images"), System.Drawing.Image))
         Me.CboConductor.ItemHeight = 35
         Me.CboConductor.Location = New System.Drawing.Point(103, 86)
@@ -944,45 +1011,46 @@ Partial Class FrmRecepcion
         Me.CboConductor.RowDivider.Color = System.Drawing.Color.DarkGray
         Me.CboConductor.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None
         Me.CboConductor.RowSubDividerColor = System.Drawing.Color.DarkGray
-        Me.CboConductor.Size = New System.Drawing.Size(243, 30)
+        Me.CboConductor.Size = New System.Drawing.Size(243, 34)
         Me.CboConductor.TabIndex = 240
         Me.CboConductor.PropBag = resources.GetString("CboConductor.PropBag")
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
+        Me.Label4.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
         Me.Label4.Location = New System.Drawing.Point(23, 94)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(77, 16)
+        Me.Label4.Size = New System.Drawing.Size(72, 17)
         Me.Label4.TabIndex = 239
         Me.Label4.Text = "Conductor"
         '
         'LblEstado
         '
-        Me.LblEstado.AutoSize = True
-        Me.LblEstado.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LblEstado.ForeColor = System.Drawing.Color.BlanchedAlmond
-        Me.LblEstado.Location = New System.Drawing.Point(854, 651)
+        Me.LblEstado.BackColor = System.Drawing.Color.FromArgb(CType(CType(108, Byte), Integer), CType(CType(117, Byte), Integer), CType(CType(125, Byte), Integer))
+        Me.LblEstado.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblEstado.ForeColor = System.Drawing.Color.White
+        Me.LblEstado.Location = New System.Drawing.Point(10, 131)
         Me.LblEstado.Name = "LblEstado"
-        Me.LblEstado.Size = New System.Drawing.Size(137, 24)
+        Me.LblEstado.Size = New System.Drawing.Size(152, 28)
         Me.LblEstado.TabIndex = 238
-        Me.LblEstado.Text = "DESCONECT"
+        Me.LblEstado.Text = "DESCONECTADO"
+        Me.LblEstado.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'txtapellido
         '
-        Me.txtapellido.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtapellido.Location = New System.Drawing.Point(849, 546)
+        Me.txtapellido.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtapellido.Location = New System.Drawing.Point(295, 543)
         Me.txtapellido.Name = "txtapellido"
-        Me.txtapellido.Size = New System.Drawing.Size(338, 24)
+        Me.txtapellido.Size = New System.Drawing.Size(338, 27)
         Me.txtapellido.TabIndex = 185
         Me.txtapellido.Visible = False
         '
         'CmdFacturar
         '
         Me.CmdFacturar.Enabled = False
-        Me.CmdFacturar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CmdFacturar.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CmdFacturar.Image = CType(resources.GetObject("CmdFacturar.Image"), System.Drawing.Image)
         Me.CmdFacturar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
         Me.CmdFacturar.Location = New System.Drawing.Point(1175, 176)
@@ -996,7 +1064,7 @@ Partial Class FrmRecepcion
         '
         'GroupBoxRecolector
         '
-        Me.GroupBoxRecolector.BackColor = System.Drawing.Color.FromArgb(CType(CType(27, Byte), Integer), CType(CType(94, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.GroupBoxRecolector.BackColor = System.Drawing.Color.White
         Me.GroupBoxRecolector.Controls.Add(Me.C1Button6)
         Me.GroupBoxRecolector.Controls.Add(Me.ListBoxRecolector)
         Me.GroupBoxRecolector.Controls.Add(Me.TxtTelefonoRecolector)
@@ -1006,7 +1074,8 @@ Partial Class FrmRecepcion
         Me.GroupBoxRecolector.Controls.Add(Me.Label9)
         Me.GroupBoxRecolector.Controls.Add(Me.TxtCedulaRecolector)
         Me.GroupBoxRecolector.Controls.Add(Me.Label10)
-        Me.GroupBoxRecolector.Location = New System.Drawing.Point(535, 137)
+        Me.GroupBoxRecolector.ForeColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(41, Byte), Integer))
+        Me.GroupBoxRecolector.Location = New System.Drawing.Point(544, 176)
         Me.GroupBoxRecolector.Name = "GroupBoxRecolector"
         Me.GroupBoxRecolector.Size = New System.Drawing.Size(450, 177)
         Me.GroupBoxRecolector.TabIndex = 240
@@ -1034,20 +1103,20 @@ Partial Class FrmRecepcion
         '
         'TxtTelefonoRecolector
         '
-        Me.TxtTelefonoRecolector.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TxtTelefonoRecolector.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TxtTelefonoRecolector.Location = New System.Drawing.Point(104, 55)
         Me.TxtTelefonoRecolector.Name = "TxtTelefonoRecolector"
-        Me.TxtTelefonoRecolector.Size = New System.Drawing.Size(243, 29)
+        Me.TxtTelefonoRecolector.Size = New System.Drawing.Size(243, 33)
         Me.TxtTelefonoRecolector.TabIndex = 249
         '
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
+        Me.Label8.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
         Me.Label8.Location = New System.Drawing.Point(10, 26)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(83, 16)
+        Me.Label8.Size = New System.Drawing.Size(72, 17)
         Me.Label8.TabIndex = 248
         Me.Label8.Text = "Recolector"
         '
@@ -1062,93 +1131,137 @@ Partial Class FrmRecepcion
         '
         'TxtRecolector
         '
-        Me.TxtRecolector.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TxtRecolector.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TxtRecolector.Location = New System.Drawing.Point(104, 20)
         Me.TxtRecolector.Name = "TxtRecolector"
-        Me.TxtRecolector.Size = New System.Drawing.Size(243, 29)
+        Me.TxtRecolector.Size = New System.Drawing.Size(243, 33)
         Me.TxtRecolector.TabIndex = 244
         '
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
+        Me.Label9.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
         Me.Label9.Location = New System.Drawing.Point(40, 98)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(56, 16)
+        Me.Label9.Size = New System.Drawing.Size(50, 17)
         Me.Label9.TabIndex = 242
         Me.Label9.Text = "Cedula"
         '
         'TxtCedulaRecolector
         '
-        Me.TxtCedulaRecolector.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TxtCedulaRecolector.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TxtCedulaRecolector.Location = New System.Drawing.Point(103, 90)
         Me.TxtCedulaRecolector.Name = "TxtCedulaRecolector"
-        Me.TxtCedulaRecolector.Size = New System.Drawing.Size(243, 29)
+        Me.TxtCedulaRecolector.Size = New System.Drawing.Size(243, 33)
         Me.TxtCedulaRecolector.TabIndex = 241
         '
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
+        Me.Label10.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.ForeColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(115, Byte), Integer))
         Me.Label10.Location = New System.Drawing.Point(31, 61)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(62, 16)
+        Me.Label10.Size = New System.Drawing.Size(58, 17)
         Me.Label10.TabIndex = 239
         Me.Label10.Text = "Nombre"
         '
         'TxtMerma
         '
         Me.TxtMerma.AcceptsReturn = True
-        Me.TxtMerma.Enabled = False
-        Me.TxtMerma.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtMerma.Location = New System.Drawing.Point(738, 612)
+        Me.TxtMerma.BackColor = System.Drawing.Color.White
+        Me.TxtMerma.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TxtMerma.Location = New System.Drawing.Point(1010, 679)
         Me.TxtMerma.Name = "TxtMerma"
-        Me.TxtMerma.Size = New System.Drawing.Size(105, 26)
+        Me.TxtMerma.ReadOnly = True
+        Me.TxtMerma.Size = New System.Drawing.Size(149, 29)
         Me.TxtMerma.TabIndex = 241
+        Me.TxtMerma.Visible = False
         '
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.ForeColor = System.Drawing.Color.FromArgb(CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer), CType(CType(253, Byte), Integer))
-        Me.Label7.Location = New System.Drawing.Point(747, 589)
+        Me.Label7.Font = New System.Drawing.Font("Segoe UI Semibold", 9.75!, System.Drawing.FontStyle.Bold)
+        Me.Label7.ForeColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.Label7.Location = New System.Drawing.Point(1008, 662)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(69, 20)
+        Me.Label7.Size = New System.Drawing.Size(56, 17)
         Me.Label7.TabIndex = 242
         Me.Label7.Text = "MERMA"
         Me.Label7.Visible = False
         '
+        'PnlTotales
+        '
+        Me.PnlTotales.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PnlTotales.BackColor = System.Drawing.Color.White
+        Me.PnlTotales.Controls.Add(Me.LblEstado)
+        Me.PnlTotales.Controls.Add(Me.txtsubtotal)
+        Me.PnlTotales.Controls.Add(Me.LblTituloSubtotal)
+        Me.PnlTotales.Controls.Add(Me.LblPeso)
+        Me.PnlTotales.Controls.Add(Me.LblTituloPeso)
+        Me.PnlTotales.Location = New System.Drawing.Point(1002, 458)
+        Me.PnlTotales.Name = "PnlTotales"
+        Me.PnlTotales.Size = New System.Drawing.Size(172, 174)
+        Me.PnlTotales.TabIndex = 243
+        '
+        'LblTituloSubtotal
+        '
+        Me.LblTituloSubtotal.AutoSize = True
+        Me.LblTituloSubtotal.Font = New System.Drawing.Font("Segoe UI Semibold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblTituloSubtotal.ForeColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.LblTituloSubtotal.Location = New System.Drawing.Point(10, 78)
+        Me.LblTituloSubtotal.Name = "LblTituloSubtotal"
+        Me.LblTituloSubtotal.Size = New System.Drawing.Size(68, 17)
+        Me.LblTituloSubtotal.TabIndex = 1
+        Me.LblTituloSubtotal.Text = "SUBTOTAL"
+        '
+        'LblTituloPeso
+        '
+        Me.LblTituloPeso.AutoSize = True
+        Me.LblTituloPeso.Font = New System.Drawing.Font("Segoe UI Semibold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblTituloPeso.ForeColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(58, Byte), Integer), CType(CType(95, Byte), Integer))
+        Me.LblTituloPeso.Location = New System.Drawing.Point(10, 14)
+        Me.LblTituloPeso.Name = "LblTituloPeso"
+        Me.LblTituloPeso.Size = New System.Drawing.Size(80, 17)
+        Me.LblTituloPeso.TabIndex = 0
+        Me.LblTituloPeso.Text = "TOTAL PESO"
+        '
+        'Panel1
+        '
+        Me.Panel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.Label1)
+        Me.Panel1.Controls.Add(Me.txtobservaciones)
+        Me.Panel1.Location = New System.Drawing.Point(1000, 174)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(172, 179)
+        Me.Panel1.TabIndex = 244
+        '
         'FrmRecepcion
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(27, Byte), Integer), CType(CType(94, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(1286, 682)
-        Me.Controls.Add(Me.Label7)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
+        Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(248, Byte), Integer))
+        Me.ClientSize = New System.Drawing.Size(1360, 720)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.TxtMerma)
+        Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.GroupBoxRecolector)
         Me.Controls.Add(Me.CmdFacturar)
         Me.Controls.Add(Me.txtapellido)
-        Me.Controls.Add(Me.LblEstado)
-        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.GroupBox2)
-        Me.Controls.Add(Me.txtobservaciones)
+        Me.Controls.Add(Me.PnlTotales)
         Me.Controls.Add(Me.Eventos)
-        Me.Controls.Add(Me.LblPeso)
         Me.Controls.Add(Me.Button6)
-        Me.Controls.Add(Me.txtsubtotal)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.TrueDBGridComponentes)
         Me.Controls.Add(Me.GroupBox9)
         Me.Controls.Add(Me.GroupBox6)
         Me.Controls.Add(Me.GroupBox7)
-        Me.MaximizeBox = False
-        Me.MinimizeBox = False
+        Me.MinimumSize = New System.Drawing.Size(1100, 680)
         Me.Name = "FrmRecepcion"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "FrmRecepcion"
+        Me.Text = "Zeus Facturación - Recepción de productos"
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
@@ -1171,6 +1284,10 @@ Partial Class FrmRecepcion
         CType(Me.CboConductor, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBoxRecolector.ResumeLayout(False)
         Me.GroupBoxRecolector.PerformLayout()
+        Me.PnlTotales.ResumeLayout(False)
+        Me.PnlTotales.PerformLayout()
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1209,7 +1326,6 @@ Partial Class FrmRecepcion
     Friend WithEvents Button4 As System.Windows.Forms.Button
     Friend WithEvents Button12 As System.Windows.Forms.Button
     Friend WithEvents BindingDetalle As System.Windows.Forms.BindingSource
-    Friend WithEvents sp As System.IO.Ports.SerialPort
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents txtobservaciones As System.Windows.Forms.TextBox
@@ -1237,6 +1353,9 @@ Partial Class FrmRecepcion
     Friend WithEvents BtnProcesar As System.Windows.Forms.Button
     Friend WithEvents CmdFacturar As System.Windows.Forms.Button
     Friend WithEvents CmbTipoPesada As System.Windows.Forms.ComboBox
+    Friend WithEvents PnlTotales As System.Windows.Forms.Panel
+    Friend WithEvents LblTituloPeso As System.Windows.Forms.Label
+    Friend WithEvents LblTituloSubtotal As System.Windows.Forms.Label
     Friend WithEvents GroupBoxRecolector As System.Windows.Forms.GroupBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents C1Button4 As C1.Win.C1Input.C1Button
@@ -1253,4 +1372,5 @@ Partial Class FrmRecepcion
     Friend WithEvents ChkCaluloMermaOculto As System.Windows.Forms.CheckBox
     Friend WithEvents C1Button3 As C1.Win.C1Input.C1Button
     Friend WithEvents C1Button6 As C1.Win.C1Input.C1Button
+    Friend WithEvents Panel1 As Panel
 End Class

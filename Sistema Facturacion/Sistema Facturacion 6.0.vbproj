@@ -127,6 +127,10 @@
     <Compile Include="Clases\Consultas\CxC_Modelos.vb" />
     <Compile Include="Clases\Consultas\CxC_Motor.vb" />
     <Compile Include="Clases\Consultas\CxC_Recibos.vb" />
+    <Compile Include="Clases\Consultas\ReciboMonedaConversion.vb" />
+    <Compile Include="Clases\Bascula\BasculaConexion.vb" />
+    <Compile Include="Clases\Bascula\BasculaDisenio.vb" />
+    <Compile Include="Clases\Bascula\SalidaBasculaServicio.vb" />
     <Compile Include="Clases\Consultas\CxC_Repositorio.vb" />
     <Compile Include="Clases\Consultas\CxC_Resultado.vb" />
     <Compile Include="Clases\Consultas\CxC_Servicio.vb" />
@@ -172,6 +176,9 @@
     <Compile Include="Clases\Costos\ComparadorCostos.vb" />
     <Compile Include="Clases\Costos\ReparadorCostos.vb" />
     <Compile Include="Clases\Costos\MotorCostos.vb" />
+    <Compile Include="Clases\Unidades\FiltroUnidades.vb" />
+    <Compile Include="Clases\Unidades\ResultadoUnidades.vb" />
+    <Compile Include="Clases\Unidades\MotorUnidades.vb" />
     <Compile Include="Clases\Consultas\CsCatalogos.vb" />
     <Compile Include="Clases\Tablas\Beneficiario.vb" />
     <Compile Include="Clases\Tablas\FacturaPlanPagoRecibo.vb" />

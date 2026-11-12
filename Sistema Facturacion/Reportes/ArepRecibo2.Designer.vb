@@ -34,6 +34,7 @@ Partial Public Class ArepRecibo2
         Me.TxtFecha = New DataDynamics.ActiveReports.TextBox
         Me.TxtNoRecibo = New DataDynamics.ActiveReports.TextBox
         Me.Label10 = New DataDynamics.ActiveReports.Label
+        Me.LblMoneda = New DataDynamics.ActiveReports.Label
         Me.TxtMonto = New DataDynamics.ActiveReports.TextBox
         Me.ImgLogo = New DataDynamics.ActiveReports.Picture
         Me.LblTitulo = New DataDynamics.ActiveReports.Label
@@ -57,6 +58,7 @@ Partial Public Class ArepRecibo2
         CType(Me.TxtFecha, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TxtNoRecibo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Label10, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LblMoneda, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TxtMonto, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ImgLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LblTitulo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -75,7 +77,7 @@ Partial Public Class ArepRecibo2
         'Detail1
         '
         Me.Detail1.ColumnSpacing = 0.0!
-        Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.Label1, Me.Label2, Me.Label3, Me.Label4, Me.Label5, Me.Label6, Me.Label7, Me.Label8, Me.TxtRecibimosDe, Me.TxtLaSumaDe, Me.TxtConcepto, Me.TxtFecha, Me.TxtNoRecibo, Me.Label10, Me.TxtMonto, Me.ImgLogo, Me.LblTitulo, Me.LblDireccion, Me.LblRuc, Me.Label9, Me.Label11, Me.TxtObservaciones})
+        Me.Detail1.Controls.AddRange(New DataDynamics.ActiveReports.ARControl() {Me.Label1, Me.Label2, Me.Label3, Me.Label4, Me.Label5, Me.Label6, Me.Label7, Me.Label8, Me.TxtRecibimosDe, Me.TxtLaSumaDe, Me.TxtConcepto, Me.TxtFecha, Me.TxtNoRecibo, Me.Label10, Me.TxtMonto, Me.ImgLogo, Me.LblTitulo, Me.LblDireccion, Me.LblRuc, Me.Label9, Me.Label11, Me.TxtObservaciones, Me.LblMoneda})
         Me.Detail1.Height = 4.21875!
         Me.Detail1.Name = "Detail1"
         '
@@ -321,6 +323,25 @@ Partial Public Class ArepRecibo2
         Me.TxtNoRecibo.Top = 1.421053!
         Me.TxtNoRecibo.Width = 1.631579!
         '
+        'LblMoneda
+        '
+        Me.LblMoneda.Border.BottomColor = System.Drawing.Color.Black
+        Me.LblMoneda.Border.BottomStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblMoneda.Border.LeftColor = System.Drawing.Color.Black
+        Me.LblMoneda.Border.LeftStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblMoneda.Border.RightColor = System.Drawing.Color.Black
+        Me.LblMoneda.Border.RightStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblMoneda.Border.TopColor = System.Drawing.Color.Black
+        Me.LblMoneda.Border.TopStyle = DataDynamics.ActiveReports.BorderLineStyle.None
+        Me.LblMoneda.Height = 0.2!
+        Me.LblMoneda.HyperLink = Nothing
+        Me.LblMoneda.Left = 5.105263!
+        Me.LblMoneda.Name = "LblMoneda"
+        Me.LblMoneda.Style = "ddo-char-set: 0; font-weight: bold; font-size: 9.75pt; "
+        Me.LblMoneda.Text = ""
+        Me.LblMoneda.Top = 1.631579!
+        Me.LblMoneda.Width = 2.0!
+        '
         'Label10
         '
         Me.Label10.Border.BottomColor = System.Drawing.Color.Black
@@ -532,6 +553,7 @@ Partial Public Class ArepRecibo2
         CType(Me.TxtFecha, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TxtNoRecibo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Label10, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LblMoneda, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TxtMonto, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ImgLogo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LblTitulo, System.ComponentModel.ISupportInitialize).EndInit()
@@ -557,6 +579,7 @@ Partial Public Class ArepRecibo2
     Friend WithEvents TxtFecha As DataDynamics.ActiveReports.TextBox
     Friend WithEvents TxtNoRecibo As DataDynamics.ActiveReports.TextBox
     Friend WithEvents Label10 As DataDynamics.ActiveReports.Label
+    Friend WithEvents LblMoneda As DataDynamics.ActiveReports.Label
     Friend WithEvents TxtMonto As DataDynamics.ActiveReports.TextBox
     Friend WithEvents ImgLogo As DataDynamics.ActiveReports.Picture
     Friend WithEvents LblTitulo As DataDynamics.ActiveReports.Label

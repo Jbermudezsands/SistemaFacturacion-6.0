@@ -347,6 +347,14 @@ Public Class FrmRecibos
     End Sub
 
 
+    ''' <summary>Texto de la moneda del recibo para impresión (Córdobas / Dólares).</summary>
+    Private Shared Function NombreMonedaRecibo(ByVal moneda As String) As String
+        Dim m As String = If(moneda, "").Trim()
+        If m.StartsWith("Dol", StringComparison.OrdinalIgnoreCase) Then Return "Dólares (US$)"
+        If m.StartsWith("Cor", StringComparison.OrdinalIgnoreCase) Then Return "Córdobas (C$)"
+        Return m
+    End Function
+
     Private Sub ButtonAgregar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAgregar.Click
 
         If ds.Tables("DetalleRecibo").Rows.Count = 0 Then Exit Sub
@@ -398,13 +406,27 @@ Public Class FrmRecibos
         '------------------------------------------------------------------
         Dim lineaPorFila As New Dictionary(Of DataRow, ReciboLinea)
 
+        ' El monto digitado está en la moneda del método de pago; se convierte a la moneda del
+        ' recibo con la tasa de cambio del día (ej.: recibo en córdobas pagado con "Efectivo $").
+        Dim conv As New ReciboMonedaConversion(Conexion)
+        Dim monedaRecibo As String = Me.TxtMonedaFactura.Text.Trim()
+
         For Each fila As DataRow In ds.Tables("DetalleRecibo").Rows
             If fila.RowState = DataRowState.Deleted Then Continue For
+
+            Dim metodoLinea As String = Celda(fila("NombrePago"))
+            Dim factorLinea As Decimal = conv.Factor(metodoLinea, monedaRecibo, recibo.Fecha)
+            If factorLinea = 0D Then
+                MsgBox(conv.Aviso(metodoLinea, monedaRecibo, recibo.Fecha) & vbCrLf & "Registre la tasa de cambio del día para grabar el recibo.",
+                       MsgBoxStyle.Critical, "Zeus Facturacion")
+                Exit Sub
+            End If
 
             Dim linea As New ReciboLinea With {
                 .IdDetalleRecibo = CeldaDecimal(fila("idDetalleRecibo")),
                 .NumeroFactura = Celda(fila("Numero_Factura"), "0"),
-                .MontoPagado = CeldaDecimal(fila("MontoPagado")),
+                .MontoPagado = conv.Convertir(CeldaDecimal(fila("MontoPagado")), metodoLinea, monedaRecibo, recibo.Fecha),
+                .TasaCambio = If(factorLinea = 1D, 1D, If(conv.MonedaMetodo(metodoLinea) = "Dolares", factorLinea, Math.Round(1D / factorLinea, 4))),
                 .NombrePago = Celda(fila("NombrePago")),
                 .Descripcion = Celda(fila("Descripcion")),
                 .NumeroTarjeta = Celda(fila("NumeroTarjeta")),
@@ -677,6 +699,12 @@ Public Class FrmRecibos
         ArepReciboTira.TxtVendedor.Text = Me.CboCajero.Columns(1).Text
         ArepRecibos2.TxtMonto.Text = Format(CDbl(Me.TxtNetoPagar.Text), "##,##0.00")
 
+        ' Moneda del recibo en los tres formatos de impresión.
+        Dim textoMoneda As String = NombreMonedaRecibo(Me.TxtMonedaFactura.Text)
+        ArepRecibos2.LblMoneda.Text = "Moneda: " & textoMoneda
+        ArepReciboTira.LblMoneda.Text = "Moneda: " & textoMoneda
+        ArepReciboTira2.LblMoneda.Text = "Moneda: " & textoMoneda
+
         ArepReciboTira2.LblPagadoRecibo.Text = Me.TxtNetoPagar.Text
         ArepReciboTira2.LblMontoTexto.Text = Me.LblLetras.Text
         ArepReciboTira2.TxtVendedor.Text = Me.CboCajero.Columns(1).Text
@@ -885,7 +913,21 @@ Public Class FrmRecibos
         End If
     End Sub
 
+    Private _MetodoAvisado As String = ""
+
     Private Sub TDBGridDetalle_AfterUpdate(ByVal sender As Object, ByVal e As System.EventArgs) Handles TDBGridDetalle.AfterUpdate
+        ' Avisa una vez cuando el método de pago está en otra moneda que el recibo (se convertirá a la tasa del día).
+        Try
+            Dim metodo As String = Me.TDBGridDetalle.Columns(0).Text.Trim()
+            If metodo <> "" AndAlso metodo <> _MetodoAvisado Then
+                Dim conv As New ReciboMonedaConversion(Conexion)
+                Dim aviso As String = conv.Aviso(metodo, Me.TxtMonedaFactura.Text.Trim(), Me.DTPFecha.Value.Date)
+                _MetodoAvisado = metodo
+                If aviso <> "" Then MsgBox(aviso, MsgBoxStyle.Information, "Zeus Facturacion")
+            End If
+        Catch
+            ' el aviso es informativo; no debe impedir el cálculo
+        End Try
         ActualizaMETODORecibos()
     End Sub
 
@@ -1114,6 +1156,18 @@ Public Class FrmRecibos
                 da = New SqlDataAdapter(SqlString, MiConexion)
                 CmdBuilder = New SqlCommandBuilder(da)
                 da.Fill(ds, "DetalleRecibo")
+
+                ' Lo guardado está en la moneda del recibo; la rejilla muestra la moneda del método de pago.
+                Dim convCarga As New ReciboMonedaConversion(Conexion)
+                Dim monedaCarga As String = Me.TxtMonedaFactura.Text.Trim()
+                For Each filaCarga As DataRow In ds.Tables("DetalleRecibo").Rows
+                    If IsDBNull(filaCarga("MontoPagado")) OrElse IsDBNull(filaCarga("NombrePago")) Then Continue For
+                    If convCarga.RequiereConversion(CStr(filaCarga("NombrePago")), monedaCarga) Then
+                        filaCarga("MontoPagado") = convCarga.ConvertirInverso(CDec(filaCarga("MontoPagado")), CStr(filaCarga("NombrePago")), monedaCarga, FechaRecibo)
+                    End If
+                Next
+                ds.Tables("DetalleRecibo").AcceptChanges()
+
                 Me.BindingDetalleRecibo.DataSource = ds.Tables("DetalleRecibo")
                 'DataAdapter = New SqlClient.SqlDataAdapter(SqlString, MiConexion)
                 'DataAdapter.Fill(DataSet, "DetalleRecibo")
